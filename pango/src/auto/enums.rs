@@ -182,31 +182,31 @@ pub enum AttrType {
     Overline,
     #[doc(alias = "PANGO_ATTR_OVERLINE_COLOR")]
     OverlineColor,
-    #[cfg(any(feature = "v1_50"))]
+    #[cfg(feature = "v1_50")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     #[doc(alias = "PANGO_ATTR_LINE_HEIGHT")]
     LineHeight,
-    #[cfg(any(feature = "v1_50"))]
+    #[cfg(feature = "v1_50")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     #[doc(alias = "PANGO_ATTR_ABSOLUTE_LINE_HEIGHT")]
     AbsoluteLineHeight,
-    #[cfg(any(feature = "v1_50"))]
+    #[cfg(feature = "v1_50")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     #[doc(alias = "PANGO_ATTR_TEXT_TRANSFORM")]
     TextTransform,
-    #[cfg(any(feature = "v1_50"))]
+    #[cfg(feature = "v1_50")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     #[doc(alias = "PANGO_ATTR_WORD")]
     Word,
-    #[cfg(any(feature = "v1_50"))]
+    #[cfg(feature = "v1_50")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     #[doc(alias = "PANGO_ATTR_SENTENCE")]
     Sentence,
-    #[cfg(any(feature = "v1_50"))]
+    #[cfg(feature = "v1_50")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     #[doc(alias = "PANGO_ATTR_BASELINE_SHIFT")]
     BaselineShift,
-    #[cfg(any(feature = "v1_50"))]
+    #[cfg(feature = "v1_50")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     #[doc(alias = "PANGO_ATTR_FONT_SCALE")]
     FontScale,
@@ -259,19 +259,19 @@ impl fmt::Display for AttrType {
                 Self::InsertHyphens => "InsertHyphens",
                 Self::Overline => "Overline",
                 Self::OverlineColor => "OverlineColor",
-                #[cfg(any(feature = "v1_50"))]
+                #[cfg(feature = "v1_50")]
                 Self::LineHeight => "LineHeight",
-                #[cfg(any(feature = "v1_50"))]
+                #[cfg(feature = "v1_50")]
                 Self::AbsoluteLineHeight => "AbsoluteLineHeight",
-                #[cfg(any(feature = "v1_50"))]
+                #[cfg(feature = "v1_50")]
                 Self::TextTransform => "TextTransform",
-                #[cfg(any(feature = "v1_50"))]
+                #[cfg(feature = "v1_50")]
                 Self::Word => "Word",
-                #[cfg(any(feature = "v1_50"))]
+                #[cfg(feature = "v1_50")]
                 Self::Sentence => "Sentence",
-                #[cfg(any(feature = "v1_50"))]
+                #[cfg(feature = "v1_50")]
                 Self::BaselineShift => "BaselineShift",
-                #[cfg(any(feature = "v1_50"))]
+                #[cfg(feature = "v1_50")]
                 Self::FontScale => "FontScale",
                 _ => "Unknown",
             }
@@ -316,19 +316,19 @@ impl IntoGlib for AttrType {
             Self::InsertHyphens => ffi::PANGO_ATTR_INSERT_HYPHENS,
             Self::Overline => ffi::PANGO_ATTR_OVERLINE,
             Self::OverlineColor => ffi::PANGO_ATTR_OVERLINE_COLOR,
-            #[cfg(any(feature = "v1_50"))]
+            #[cfg(feature = "v1_50")]
             Self::LineHeight => ffi::PANGO_ATTR_LINE_HEIGHT,
-            #[cfg(any(feature = "v1_50"))]
+            #[cfg(feature = "v1_50")]
             Self::AbsoluteLineHeight => ffi::PANGO_ATTR_ABSOLUTE_LINE_HEIGHT,
-            #[cfg(any(feature = "v1_50"))]
+            #[cfg(feature = "v1_50")]
             Self::TextTransform => ffi::PANGO_ATTR_TEXT_TRANSFORM,
-            #[cfg(any(feature = "v1_50"))]
+            #[cfg(feature = "v1_50")]
             Self::Word => ffi::PANGO_ATTR_WORD,
-            #[cfg(any(feature = "v1_50"))]
+            #[cfg(feature = "v1_50")]
             Self::Sentence => ffi::PANGO_ATTR_SENTENCE,
-            #[cfg(any(feature = "v1_50"))]
+            #[cfg(feature = "v1_50")]
             Self::BaselineShift => ffi::PANGO_ATTR_BASELINE_SHIFT,
-            #[cfg(any(feature = "v1_50"))]
+            #[cfg(feature = "v1_50")]
             Self::FontScale => ffi::PANGO_ATTR_FONT_SCALE,
             Self::__Unknown(value) => value,
         }
@@ -370,19 +370,19 @@ impl FromGlib<ffi::PangoAttrType> for AttrType {
             ffi::PANGO_ATTR_INSERT_HYPHENS => Self::InsertHyphens,
             ffi::PANGO_ATTR_OVERLINE => Self::Overline,
             ffi::PANGO_ATTR_OVERLINE_COLOR => Self::OverlineColor,
-            #[cfg(any(feature = "v1_50"))]
+            #[cfg(feature = "v1_50")]
             ffi::PANGO_ATTR_LINE_HEIGHT => Self::LineHeight,
-            #[cfg(any(feature = "v1_50"))]
+            #[cfg(feature = "v1_50")]
             ffi::PANGO_ATTR_ABSOLUTE_LINE_HEIGHT => Self::AbsoluteLineHeight,
-            #[cfg(any(feature = "v1_50"))]
+            #[cfg(feature = "v1_50")]
             ffi::PANGO_ATTR_TEXT_TRANSFORM => Self::TextTransform,
-            #[cfg(any(feature = "v1_50"))]
+            #[cfg(feature = "v1_50")]
             ffi::PANGO_ATTR_WORD => Self::Word,
-            #[cfg(any(feature = "v1_50"))]
+            #[cfg(feature = "v1_50")]
             ffi::PANGO_ATTR_SENTENCE => Self::Sentence,
-            #[cfg(any(feature = "v1_50"))]
+            #[cfg(feature = "v1_50")]
             ffi::PANGO_ATTR_BASELINE_SHIFT => Self::BaselineShift,
-            #[cfg(any(feature = "v1_50"))]
+            #[cfg(feature = "v1_50")]
             ffi::PANGO_ATTR_FONT_SCALE => Self::FontScale,
             value => Self::__Unknown(value),
         }
@@ -442,7 +442,7 @@ impl From<AttrType> for glib::Value {
     }
 }
 
-#[cfg(any(feature = "v1_50"))]
+#[cfg(feature = "v1_50")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
@@ -458,7 +458,7 @@ pub enum BaselineShift {
     __Unknown(i32),
 }
 
-#[cfg(any(feature = "v1_50"))]
+#[cfg(feature = "v1_50")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
 impl fmt::Display for BaselineShift {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
@@ -475,7 +475,7 @@ impl fmt::Display for BaselineShift {
     }
 }
 
-#[cfg(any(feature = "v1_50"))]
+#[cfg(feature = "v1_50")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
 #[doc(hidden)]
 impl IntoGlib for BaselineShift {
@@ -492,7 +492,7 @@ impl IntoGlib for BaselineShift {
     }
 }
 
-#[cfg(any(feature = "v1_50"))]
+#[cfg(feature = "v1_50")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
 #[doc(hidden)]
 impl FromGlib<ffi::PangoBaselineShift> for BaselineShift {
@@ -507,7 +507,7 @@ impl FromGlib<ffi::PangoBaselineShift> for BaselineShift {
     }
 }
 
-#[cfg(any(feature = "v1_50"))]
+#[cfg(feature = "v1_50")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
 impl StaticType for BaselineShift {
     #[inline]
@@ -516,7 +516,7 @@ impl StaticType for BaselineShift {
     }
 }
 
-#[cfg(any(feature = "v1_50"))]
+#[cfg(feature = "v1_50")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
 impl glib::HasParamSpec for BaselineShift {
     type ParamSpec = glib::ParamSpecEnum;
@@ -528,13 +528,13 @@ impl glib::HasParamSpec for BaselineShift {
     }
 }
 
-#[cfg(any(feature = "v1_50"))]
+#[cfg(feature = "v1_50")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
 impl glib::value::ValueType for BaselineShift {
     type Type = Self;
 }
 
-#[cfg(any(feature = "v1_50"))]
+#[cfg(feature = "v1_50")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
 unsafe impl<'a> FromValue<'a> for BaselineShift {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
@@ -545,7 +545,7 @@ unsafe impl<'a> FromValue<'a> for BaselineShift {
     }
 }
 
-#[cfg(any(feature = "v1_50"))]
+#[cfg(feature = "v1_50")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
 impl ToValue for BaselineShift {
     #[inline]
@@ -563,7 +563,7 @@ impl ToValue for BaselineShift {
     }
 }
 
-#[cfg(any(feature = "v1_50"))]
+#[cfg(feature = "v1_50")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
 impl From<BaselineShift> for glib::Value {
     #[inline]
@@ -1158,7 +1158,7 @@ impl From<EllipsizeMode> for glib::Value {
     }
 }
 
-#[cfg(any(feature = "v1_50"))]
+#[cfg(feature = "v1_50")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
@@ -1176,7 +1176,7 @@ pub enum FontScale {
     __Unknown(i32),
 }
 
-#[cfg(any(feature = "v1_50"))]
+#[cfg(feature = "v1_50")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
 impl fmt::Display for FontScale {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
@@ -1194,7 +1194,7 @@ impl fmt::Display for FontScale {
     }
 }
 
-#[cfg(any(feature = "v1_50"))]
+#[cfg(feature = "v1_50")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
 #[doc(hidden)]
 impl IntoGlib for FontScale {
@@ -1212,7 +1212,7 @@ impl IntoGlib for FontScale {
     }
 }
 
-#[cfg(any(feature = "v1_50"))]
+#[cfg(feature = "v1_50")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
 #[doc(hidden)]
 impl FromGlib<ffi::PangoFontScale> for FontScale {
@@ -1228,7 +1228,7 @@ impl FromGlib<ffi::PangoFontScale> for FontScale {
     }
 }
 
-#[cfg(any(feature = "v1_50"))]
+#[cfg(feature = "v1_50")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
 impl StaticType for FontScale {
     #[inline]
@@ -1237,7 +1237,7 @@ impl StaticType for FontScale {
     }
 }
 
-#[cfg(any(feature = "v1_50"))]
+#[cfg(feature = "v1_50")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
 impl glib::HasParamSpec for FontScale {
     type ParamSpec = glib::ParamSpecEnum;
@@ -1249,13 +1249,13 @@ impl glib::HasParamSpec for FontScale {
     }
 }
 
-#[cfg(any(feature = "v1_50"))]
+#[cfg(feature = "v1_50")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
 impl glib::value::ValueType for FontScale {
     type Type = Self;
 }
 
-#[cfg(any(feature = "v1_50"))]
+#[cfg(feature = "v1_50")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
 unsafe impl<'a> FromValue<'a> for FontScale {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
@@ -1266,7 +1266,7 @@ unsafe impl<'a> FromValue<'a> for FontScale {
     }
 }
 
-#[cfg(any(feature = "v1_50"))]
+#[cfg(feature = "v1_50")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
 impl ToValue for FontScale {
     #[inline]
@@ -1284,7 +1284,7 @@ impl ToValue for FontScale {
     }
 }
 
-#[cfg(any(feature = "v1_50"))]
+#[cfg(feature = "v1_50")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
 impl From<FontScale> for glib::Value {
     #[inline]
@@ -1566,7 +1566,7 @@ impl From<GravityHint> for glib::Value {
     }
 }
 
-#[cfg(any(feature = "v1_46"))]
+#[cfg(feature = "v1_46")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_46")))]
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
@@ -1580,7 +1580,7 @@ pub enum Overline {
     __Unknown(i32),
 }
 
-#[cfg(any(feature = "v1_46"))]
+#[cfg(feature = "v1_46")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_46")))]
 impl fmt::Display for Overline {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
@@ -1596,7 +1596,7 @@ impl fmt::Display for Overline {
     }
 }
 
-#[cfg(any(feature = "v1_46"))]
+#[cfg(feature = "v1_46")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_46")))]
 #[doc(hidden)]
 impl IntoGlib for Overline {
@@ -1612,7 +1612,7 @@ impl IntoGlib for Overline {
     }
 }
 
-#[cfg(any(feature = "v1_46"))]
+#[cfg(feature = "v1_46")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_46")))]
 #[doc(hidden)]
 impl FromGlib<ffi::PangoOverline> for Overline {
@@ -1626,7 +1626,7 @@ impl FromGlib<ffi::PangoOverline> for Overline {
     }
 }
 
-#[cfg(any(feature = "v1_46"))]
+#[cfg(feature = "v1_46")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_46")))]
 impl StaticType for Overline {
     #[inline]
@@ -1635,7 +1635,7 @@ impl StaticType for Overline {
     }
 }
 
-#[cfg(any(feature = "v1_46"))]
+#[cfg(feature = "v1_46")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_46")))]
 impl glib::HasParamSpec for Overline {
     type ParamSpec = glib::ParamSpecEnum;
@@ -1647,13 +1647,13 @@ impl glib::HasParamSpec for Overline {
     }
 }
 
-#[cfg(any(feature = "v1_46"))]
+#[cfg(feature = "v1_46")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_46")))]
 impl glib::value::ValueType for Overline {
     type Type = Self;
 }
 
-#[cfg(any(feature = "v1_46"))]
+#[cfg(feature = "v1_46")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_46")))]
 unsafe impl<'a> FromValue<'a> for Overline {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
@@ -1664,7 +1664,7 @@ unsafe impl<'a> FromValue<'a> for Overline {
     }
 }
 
-#[cfg(any(feature = "v1_46"))]
+#[cfg(feature = "v1_46")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_46")))]
 impl ToValue for Overline {
     #[inline]
@@ -1682,7 +1682,7 @@ impl ToValue for Overline {
     }
 }
 
-#[cfg(any(feature = "v1_46"))]
+#[cfg(feature = "v1_46")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_46")))]
 impl From<Overline> for glib::Value {
     #[inline]
@@ -2765,15 +2765,15 @@ impl From<Style> for glib::Value {
 pub enum TabAlign {
     #[doc(alias = "PANGO_TAB_LEFT")]
     Left,
-    #[cfg(any(feature = "v1_50"))]
+    #[cfg(feature = "v1_50")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     #[doc(alias = "PANGO_TAB_RIGHT")]
     Right,
-    #[cfg(any(feature = "v1_50"))]
+    #[cfg(feature = "v1_50")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     #[doc(alias = "PANGO_TAB_CENTER")]
     Center,
-    #[cfg(any(feature = "v1_50"))]
+    #[cfg(feature = "v1_50")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     #[doc(alias = "PANGO_TAB_DECIMAL")]
     Decimal,
@@ -2788,11 +2788,11 @@ impl fmt::Display for TabAlign {
             "TabAlign::{}",
             match *self {
                 Self::Left => "Left",
-                #[cfg(any(feature = "v1_50"))]
+                #[cfg(feature = "v1_50")]
                 Self::Right => "Right",
-                #[cfg(any(feature = "v1_50"))]
+                #[cfg(feature = "v1_50")]
                 Self::Center => "Center",
-                #[cfg(any(feature = "v1_50"))]
+                #[cfg(feature = "v1_50")]
                 Self::Decimal => "Decimal",
                 _ => "Unknown",
             }
@@ -2808,11 +2808,11 @@ impl IntoGlib for TabAlign {
     fn into_glib(self) -> ffi::PangoTabAlign {
         match self {
             Self::Left => ffi::PANGO_TAB_LEFT,
-            #[cfg(any(feature = "v1_50"))]
+            #[cfg(feature = "v1_50")]
             Self::Right => ffi::PANGO_TAB_RIGHT,
-            #[cfg(any(feature = "v1_50"))]
+            #[cfg(feature = "v1_50")]
             Self::Center => ffi::PANGO_TAB_CENTER,
-            #[cfg(any(feature = "v1_50"))]
+            #[cfg(feature = "v1_50")]
             Self::Decimal => ffi::PANGO_TAB_DECIMAL,
             Self::__Unknown(value) => value,
         }
@@ -2825,11 +2825,11 @@ impl FromGlib<ffi::PangoTabAlign> for TabAlign {
     unsafe fn from_glib(value: ffi::PangoTabAlign) -> Self {
         match value {
             ffi::PANGO_TAB_LEFT => Self::Left,
-            #[cfg(any(feature = "v1_50"))]
+            #[cfg(feature = "v1_50")]
             ffi::PANGO_TAB_RIGHT => Self::Right,
-            #[cfg(any(feature = "v1_50"))]
+            #[cfg(feature = "v1_50")]
             ffi::PANGO_TAB_CENTER => Self::Center,
-            #[cfg(any(feature = "v1_50"))]
+            #[cfg(feature = "v1_50")]
             ffi::PANGO_TAB_DECIMAL => Self::Decimal,
             value => Self::__Unknown(value),
         }
@@ -2889,7 +2889,7 @@ impl From<TabAlign> for glib::Value {
     }
 }
 
-#[cfg(any(feature = "v1_50"))]
+#[cfg(feature = "v1_50")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
@@ -2907,7 +2907,7 @@ pub enum TextTransform {
     __Unknown(i32),
 }
 
-#[cfg(any(feature = "v1_50"))]
+#[cfg(feature = "v1_50")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
 impl fmt::Display for TextTransform {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
@@ -2925,7 +2925,7 @@ impl fmt::Display for TextTransform {
     }
 }
 
-#[cfg(any(feature = "v1_50"))]
+#[cfg(feature = "v1_50")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
 #[doc(hidden)]
 impl IntoGlib for TextTransform {
@@ -2943,7 +2943,7 @@ impl IntoGlib for TextTransform {
     }
 }
 
-#[cfg(any(feature = "v1_50"))]
+#[cfg(feature = "v1_50")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
 #[doc(hidden)]
 impl FromGlib<ffi::PangoTextTransform> for TextTransform {
@@ -2959,7 +2959,7 @@ impl FromGlib<ffi::PangoTextTransform> for TextTransform {
     }
 }
 
-#[cfg(any(feature = "v1_50"))]
+#[cfg(feature = "v1_50")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
 impl StaticType for TextTransform {
     #[inline]
@@ -2968,7 +2968,7 @@ impl StaticType for TextTransform {
     }
 }
 
-#[cfg(any(feature = "v1_50"))]
+#[cfg(feature = "v1_50")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
 impl glib::HasParamSpec for TextTransform {
     type ParamSpec = glib::ParamSpecEnum;
@@ -2980,13 +2980,13 @@ impl glib::HasParamSpec for TextTransform {
     }
 }
 
-#[cfg(any(feature = "v1_50"))]
+#[cfg(feature = "v1_50")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
 impl glib::value::ValueType for TextTransform {
     type Type = Self;
 }
 
-#[cfg(any(feature = "v1_50"))]
+#[cfg(feature = "v1_50")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
 unsafe impl<'a> FromValue<'a> for TextTransform {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
@@ -2997,7 +2997,7 @@ unsafe impl<'a> FromValue<'a> for TextTransform {
     }
 }
 
-#[cfg(any(feature = "v1_50"))]
+#[cfg(feature = "v1_50")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
 impl ToValue for TextTransform {
     #[inline]
@@ -3015,7 +3015,7 @@ impl ToValue for TextTransform {
     }
 }
 
-#[cfg(any(feature = "v1_50"))]
+#[cfg(feature = "v1_50")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
 impl From<TextTransform> for glib::Value {
     #[inline]
@@ -3167,23 +3167,23 @@ pub enum Variant {
     Normal,
     #[doc(alias = "PANGO_VARIANT_SMALL_CAPS")]
     SmallCaps,
-    #[cfg(any(feature = "v1_50"))]
+    #[cfg(feature = "v1_50")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     #[doc(alias = "PANGO_VARIANT_ALL_SMALL_CAPS")]
     AllSmallCaps,
-    #[cfg(any(feature = "v1_50"))]
+    #[cfg(feature = "v1_50")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     #[doc(alias = "PANGO_VARIANT_PETITE_CAPS")]
     PetiteCaps,
-    #[cfg(any(feature = "v1_50"))]
+    #[cfg(feature = "v1_50")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     #[doc(alias = "PANGO_VARIANT_ALL_PETITE_CAPS")]
     AllPetiteCaps,
-    #[cfg(any(feature = "v1_50"))]
+    #[cfg(feature = "v1_50")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     #[doc(alias = "PANGO_VARIANT_UNICASE")]
     Unicase,
-    #[cfg(any(feature = "v1_50"))]
+    #[cfg(feature = "v1_50")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     #[doc(alias = "PANGO_VARIANT_TITLE_CAPS")]
     TitleCaps,
@@ -3199,15 +3199,15 @@ impl fmt::Display for Variant {
             match *self {
                 Self::Normal => "Normal",
                 Self::SmallCaps => "SmallCaps",
-                #[cfg(any(feature = "v1_50"))]
+                #[cfg(feature = "v1_50")]
                 Self::AllSmallCaps => "AllSmallCaps",
-                #[cfg(any(feature = "v1_50"))]
+                #[cfg(feature = "v1_50")]
                 Self::PetiteCaps => "PetiteCaps",
-                #[cfg(any(feature = "v1_50"))]
+                #[cfg(feature = "v1_50")]
                 Self::AllPetiteCaps => "AllPetiteCaps",
-                #[cfg(any(feature = "v1_50"))]
+                #[cfg(feature = "v1_50")]
                 Self::Unicase => "Unicase",
-                #[cfg(any(feature = "v1_50"))]
+                #[cfg(feature = "v1_50")]
                 Self::TitleCaps => "TitleCaps",
                 _ => "Unknown",
             }
@@ -3224,15 +3224,15 @@ impl IntoGlib for Variant {
         match self {
             Self::Normal => ffi::PANGO_VARIANT_NORMAL,
             Self::SmallCaps => ffi::PANGO_VARIANT_SMALL_CAPS,
-            #[cfg(any(feature = "v1_50"))]
+            #[cfg(feature = "v1_50")]
             Self::AllSmallCaps => ffi::PANGO_VARIANT_ALL_SMALL_CAPS,
-            #[cfg(any(feature = "v1_50"))]
+            #[cfg(feature = "v1_50")]
             Self::PetiteCaps => ffi::PANGO_VARIANT_PETITE_CAPS,
-            #[cfg(any(feature = "v1_50"))]
+            #[cfg(feature = "v1_50")]
             Self::AllPetiteCaps => ffi::PANGO_VARIANT_ALL_PETITE_CAPS,
-            #[cfg(any(feature = "v1_50"))]
+            #[cfg(feature = "v1_50")]
             Self::Unicase => ffi::PANGO_VARIANT_UNICASE,
-            #[cfg(any(feature = "v1_50"))]
+            #[cfg(feature = "v1_50")]
             Self::TitleCaps => ffi::PANGO_VARIANT_TITLE_CAPS,
             Self::__Unknown(value) => value,
         }
@@ -3246,15 +3246,15 @@ impl FromGlib<ffi::PangoVariant> for Variant {
         match value {
             ffi::PANGO_VARIANT_NORMAL => Self::Normal,
             ffi::PANGO_VARIANT_SMALL_CAPS => Self::SmallCaps,
-            #[cfg(any(feature = "v1_50"))]
+            #[cfg(feature = "v1_50")]
             ffi::PANGO_VARIANT_ALL_SMALL_CAPS => Self::AllSmallCaps,
-            #[cfg(any(feature = "v1_50"))]
+            #[cfg(feature = "v1_50")]
             ffi::PANGO_VARIANT_PETITE_CAPS => Self::PetiteCaps,
-            #[cfg(any(feature = "v1_50"))]
+            #[cfg(feature = "v1_50")]
             ffi::PANGO_VARIANT_ALL_PETITE_CAPS => Self::AllPetiteCaps,
-            #[cfg(any(feature = "v1_50"))]
+            #[cfg(feature = "v1_50")]
             ffi::PANGO_VARIANT_UNICASE => Self::Unicase,
-            #[cfg(any(feature = "v1_50"))]
+            #[cfg(feature = "v1_50")]
             ffi::PANGO_VARIANT_TITLE_CAPS => Self::TitleCaps,
             value => Self::__Unknown(value),
         }

@@ -19,12 +19,8 @@ impl Initable {
     pub const NONE: Option<&'static Initable> = None;
 }
 
-pub trait InitableExt: 'static {
+pub trait InitableExt: IsA<Initable> + 'static {
     #[doc(alias = "g_initable_init")]
-    unsafe fn init(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<(), glib::Error>;
-}
-
-impl<O: IsA<Initable>> InitableExt for O {
     unsafe fn init(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<(), glib::Error> {
         let mut error = ptr::null_mut();
         let is_ok = ffi::g_initable_init(
@@ -40,6 +36,8 @@ impl<O: IsA<Initable>> InitableExt for O {
         }
     }
 }
+
+impl<O: IsA<Initable>> InitableExt for O {}
 
 impl fmt::Display for Initable {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {

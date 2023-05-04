@@ -140,7 +140,7 @@ impl LayoutIter {
         unsafe { from_glib_none(ffi::pango_layout_iter_get_run(self.to_glib_none_mut().0)) }
     }
 
-    #[cfg(any(feature = "v1_50"))]
+    #[cfg(feature = "v1_50")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     #[doc(alias = "pango_layout_iter_get_run_baseline")]
     #[doc(alias = "get_run_baseline")]

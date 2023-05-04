@@ -26,144 +26,18 @@ impl Mount {
     pub const NONE: Option<&'static Mount> = None;
 }
 
-pub trait MountExt: 'static {
+pub trait MountExt: IsA<Mount> + 'static {
     #[doc(alias = "g_mount_can_eject")]
-    fn can_eject(&self) -> bool;
-
-    #[doc(alias = "g_mount_can_unmount")]
-    fn can_unmount(&self) -> bool;
-
-    #[doc(alias = "g_mount_eject_with_operation")]
-    fn eject_with_operation<P: FnOnce(Result<(), glib::Error>) + 'static>(
-        &self,
-        flags: MountUnmountFlags,
-        mount_operation: Option<&impl IsA<MountOperation>>,
-        cancellable: Option<&impl IsA<Cancellable>>,
-        callback: P,
-    );
-
-    fn eject_with_operation_future(
-        &self,
-        flags: MountUnmountFlags,
-        mount_operation: Option<&(impl IsA<MountOperation> + Clone + 'static)>,
-    ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>>;
-
-    #[doc(alias = "g_mount_get_default_location")]
-    #[doc(alias = "get_default_location")]
-    fn default_location(&self) -> File;
-
-    #[doc(alias = "g_mount_get_drive")]
-    #[doc(alias = "get_drive")]
-    fn drive(&self) -> Option<Drive>;
-
-    #[doc(alias = "g_mount_get_icon")]
-    #[doc(alias = "get_icon")]
-    fn icon(&self) -> Icon;
-
-    #[doc(alias = "g_mount_get_name")]
-    #[doc(alias = "get_name")]
-    fn name(&self) -> glib::GString;
-
-    #[doc(alias = "g_mount_get_root")]
-    #[doc(alias = "get_root")]
-    fn root(&self) -> File;
-
-    #[doc(alias = "g_mount_get_sort_key")]
-    #[doc(alias = "get_sort_key")]
-    fn sort_key(&self) -> Option<glib::GString>;
-
-    #[doc(alias = "g_mount_get_symbolic_icon")]
-    #[doc(alias = "get_symbolic_icon")]
-    fn symbolic_icon(&self) -> Icon;
-
-    #[doc(alias = "g_mount_get_uuid")]
-    #[doc(alias = "get_uuid")]
-    fn uuid(&self) -> Option<glib::GString>;
-
-    #[doc(alias = "g_mount_get_volume")]
-    #[doc(alias = "get_volume")]
-    fn volume(&self) -> Option<Volume>;
-
-    #[doc(alias = "g_mount_guess_content_type")]
-    fn guess_content_type<P: FnOnce(Result<Vec<glib::GString>, glib::Error>) + 'static>(
-        &self,
-        force_rescan: bool,
-        cancellable: Option<&impl IsA<Cancellable>>,
-        callback: P,
-    );
-
-    fn guess_content_type_future(
-        &self,
-        force_rescan: bool,
-    ) -> Pin<
-        Box_<dyn std::future::Future<Output = Result<Vec<glib::GString>, glib::Error>> + 'static>,
-    >;
-
-    #[doc(alias = "g_mount_guess_content_type_sync")]
-    fn guess_content_type_sync(
-        &self,
-        force_rescan: bool,
-        cancellable: Option<&impl IsA<Cancellable>>,
-    ) -> Result<Vec<glib::GString>, glib::Error>;
-
-    #[doc(alias = "g_mount_is_shadowed")]
-    fn is_shadowed(&self) -> bool;
-
-    #[doc(alias = "g_mount_remount")]
-    fn remount<P: FnOnce(Result<(), glib::Error>) + 'static>(
-        &self,
-        flags: MountMountFlags,
-        mount_operation: Option<&impl IsA<MountOperation>>,
-        cancellable: Option<&impl IsA<Cancellable>>,
-        callback: P,
-    );
-
-    fn remount_future(
-        &self,
-        flags: MountMountFlags,
-        mount_operation: Option<&(impl IsA<MountOperation> + Clone + 'static)>,
-    ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>>;
-
-    #[doc(alias = "g_mount_shadow")]
-    fn shadow(&self);
-
-    #[doc(alias = "g_mount_unmount_with_operation")]
-    fn unmount_with_operation<P: FnOnce(Result<(), glib::Error>) + 'static>(
-        &self,
-        flags: MountUnmountFlags,
-        mount_operation: Option<&impl IsA<MountOperation>>,
-        cancellable: Option<&impl IsA<Cancellable>>,
-        callback: P,
-    );
-
-    fn unmount_with_operation_future(
-        &self,
-        flags: MountUnmountFlags,
-        mount_operation: Option<&(impl IsA<MountOperation> + Clone + 'static)>,
-    ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>>;
-
-    #[doc(alias = "g_mount_unshadow")]
-    fn unshadow(&self);
-
-    #[doc(alias = "changed")]
-    fn connect_changed<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
-
-    #[doc(alias = "pre-unmount")]
-    fn connect_pre_unmount<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
-
-    #[doc(alias = "unmounted")]
-    fn connect_unmounted<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
-}
-
-impl<O: IsA<Mount>> MountExt for O {
     fn can_eject(&self) -> bool {
         unsafe { from_glib(ffi::g_mount_can_eject(self.as_ref().to_glib_none().0)) }
     }
 
+    #[doc(alias = "g_mount_can_unmount")]
     fn can_unmount(&self) -> bool {
         unsafe { from_glib(ffi::g_mount_can_unmount(self.as_ref().to_glib_none().0)) }
     }
 
+    #[doc(alias = "g_mount_eject_with_operation")]
     fn eject_with_operation<P: FnOnce(Result<(), glib::Error>) + 'static>(
         &self,
         flags: MountUnmountFlags,
@@ -237,6 +111,8 @@ impl<O: IsA<Mount>> MountExt for O {
         ))
     }
 
+    #[doc(alias = "g_mount_get_default_location")]
+    #[doc(alias = "get_default_location")]
     fn default_location(&self) -> File {
         unsafe {
             from_glib_full(ffi::g_mount_get_default_location(
@@ -245,26 +121,38 @@ impl<O: IsA<Mount>> MountExt for O {
         }
     }
 
+    #[doc(alias = "g_mount_get_drive")]
+    #[doc(alias = "get_drive")]
     fn drive(&self) -> Option<Drive> {
         unsafe { from_glib_full(ffi::g_mount_get_drive(self.as_ref().to_glib_none().0)) }
     }
 
+    #[doc(alias = "g_mount_get_icon")]
+    #[doc(alias = "get_icon")]
     fn icon(&self) -> Icon {
         unsafe { from_glib_full(ffi::g_mount_get_icon(self.as_ref().to_glib_none().0)) }
     }
 
+    #[doc(alias = "g_mount_get_name")]
+    #[doc(alias = "get_name")]
     fn name(&self) -> glib::GString {
         unsafe { from_glib_full(ffi::g_mount_get_name(self.as_ref().to_glib_none().0)) }
     }
 
+    #[doc(alias = "g_mount_get_root")]
+    #[doc(alias = "get_root")]
     fn root(&self) -> File {
         unsafe { from_glib_full(ffi::g_mount_get_root(self.as_ref().to_glib_none().0)) }
     }
 
+    #[doc(alias = "g_mount_get_sort_key")]
+    #[doc(alias = "get_sort_key")]
     fn sort_key(&self) -> Option<glib::GString> {
         unsafe { from_glib_none(ffi::g_mount_get_sort_key(self.as_ref().to_glib_none().0)) }
     }
 
+    #[doc(alias = "g_mount_get_symbolic_icon")]
+    #[doc(alias = "get_symbolic_icon")]
     fn symbolic_icon(&self) -> Icon {
         unsafe {
             from_glib_full(ffi::g_mount_get_symbolic_icon(
@@ -273,14 +161,19 @@ impl<O: IsA<Mount>> MountExt for O {
         }
     }
 
+    #[doc(alias = "g_mount_get_uuid")]
+    #[doc(alias = "get_uuid")]
     fn uuid(&self) -> Option<glib::GString> {
         unsafe { from_glib_full(ffi::g_mount_get_uuid(self.as_ref().to_glib_none().0)) }
     }
 
+    #[doc(alias = "g_mount_get_volume")]
+    #[doc(alias = "get_volume")]
     fn volume(&self) -> Option<Volume> {
         unsafe { from_glib_full(ffi::g_mount_get_volume(self.as_ref().to_glib_none().0)) }
     }
 
+    #[doc(alias = "g_mount_guess_content_type")]
     fn guess_content_type<P: FnOnce(Result<Vec<glib::GString>, glib::Error>) + 'static>(
         &self,
         force_rescan: bool,
@@ -347,6 +240,7 @@ impl<O: IsA<Mount>> MountExt for O {
         ))
     }
 
+    #[doc(alias = "g_mount_guess_content_type_sync")]
     fn guess_content_type_sync(
         &self,
         force_rescan: bool,
@@ -368,10 +262,12 @@ impl<O: IsA<Mount>> MountExt for O {
         }
     }
 
+    #[doc(alias = "g_mount_is_shadowed")]
     fn is_shadowed(&self) -> bool {
         unsafe { from_glib(ffi::g_mount_is_shadowed(self.as_ref().to_glib_none().0)) }
     }
 
+    #[doc(alias = "g_mount_remount")]
     fn remount<P: FnOnce(Result<(), glib::Error>) + 'static>(
         &self,
         flags: MountMountFlags,
@@ -442,12 +338,14 @@ impl<O: IsA<Mount>> MountExt for O {
         ))
     }
 
+    #[doc(alias = "g_mount_shadow")]
     fn shadow(&self) {
         unsafe {
             ffi::g_mount_shadow(self.as_ref().to_glib_none().0);
         }
     }
 
+    #[doc(alias = "g_mount_unmount_with_operation")]
     fn unmount_with_operation<P: FnOnce(Result<(), glib::Error>) + 'static>(
         &self,
         flags: MountUnmountFlags,
@@ -524,12 +422,14 @@ impl<O: IsA<Mount>> MountExt for O {
         ))
     }
 
+    #[doc(alias = "g_mount_unshadow")]
     fn unshadow(&self) {
         unsafe {
             ffi::g_mount_unshadow(self.as_ref().to_glib_none().0);
         }
     }
 
+    #[doc(alias = "changed")]
     fn connect_changed<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn changed_trampoline<P: IsA<Mount>, F: Fn(&P) + 'static>(
             this: *mut ffi::GMount,
@@ -551,6 +451,7 @@ impl<O: IsA<Mount>> MountExt for O {
         }
     }
 
+    #[doc(alias = "pre-unmount")]
     fn connect_pre_unmount<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn pre_unmount_trampoline<P: IsA<Mount>, F: Fn(&P) + 'static>(
             this: *mut ffi::GMount,
@@ -572,6 +473,7 @@ impl<O: IsA<Mount>> MountExt for O {
         }
     }
 
+    #[doc(alias = "unmounted")]
     fn connect_unmounted<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn unmounted_trampoline<P: IsA<Mount>, F: Fn(&P) + 'static>(
             this: *mut ffi::GMount,
@@ -593,6 +495,8 @@ impl<O: IsA<Mount>> MountExt for O {
         }
     }
 }
+
+impl<O: IsA<Mount>> MountExt for O {}
 
 impl fmt::Display for Mount {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {

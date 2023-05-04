@@ -107,50 +107,9 @@ impl DataInputStreamBuilder {
     }
 }
 
-pub trait DataInputStreamExt: 'static {
+pub trait DataInputStreamExt: IsA<DataInputStream> + 'static {
     #[doc(alias = "g_data_input_stream_get_byte_order")]
     #[doc(alias = "get_byte_order")]
-    fn byte_order(&self) -> DataStreamByteOrder;
-
-    #[doc(alias = "g_data_input_stream_get_newline_type")]
-    #[doc(alias = "get_newline_type")]
-    fn newline_type(&self) -> DataStreamNewlineType;
-
-    #[doc(alias = "g_data_input_stream_read_byte")]
-    fn read_byte(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<u8, glib::Error>;
-
-    #[doc(alias = "g_data_input_stream_read_int16")]
-    fn read_int16(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<i16, glib::Error>;
-
-    #[doc(alias = "g_data_input_stream_read_int32")]
-    fn read_int32(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<i32, glib::Error>;
-
-    #[doc(alias = "g_data_input_stream_read_int64")]
-    fn read_int64(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<i64, glib::Error>;
-
-    #[doc(alias = "g_data_input_stream_read_uint16")]
-    fn read_uint16(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<u16, glib::Error>;
-
-    #[doc(alias = "g_data_input_stream_read_uint32")]
-    fn read_uint32(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<u32, glib::Error>;
-
-    #[doc(alias = "g_data_input_stream_read_uint64")]
-    fn read_uint64(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<u64, glib::Error>;
-
-    #[doc(alias = "g_data_input_stream_set_byte_order")]
-    fn set_byte_order(&self, order: DataStreamByteOrder);
-
-    #[doc(alias = "g_data_input_stream_set_newline_type")]
-    fn set_newline_type(&self, type_: DataStreamNewlineType);
-
-    #[doc(alias = "byte-order")]
-    fn connect_byte_order_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
-
-    #[doc(alias = "newline-type")]
-    fn connect_newline_type_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
-}
-
-impl<O: IsA<DataInputStream>> DataInputStreamExt for O {
     fn byte_order(&self) -> DataStreamByteOrder {
         unsafe {
             from_glib(ffi::g_data_input_stream_get_byte_order(
@@ -159,6 +118,8 @@ impl<O: IsA<DataInputStream>> DataInputStreamExt for O {
         }
     }
 
+    #[doc(alias = "g_data_input_stream_get_newline_type")]
+    #[doc(alias = "get_newline_type")]
     fn newline_type(&self) -> DataStreamNewlineType {
         unsafe {
             from_glib(ffi::g_data_input_stream_get_newline_type(
@@ -167,6 +128,7 @@ impl<O: IsA<DataInputStream>> DataInputStreamExt for O {
         }
     }
 
+    #[doc(alias = "g_data_input_stream_read_byte")]
     fn read_byte(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<u8, glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
@@ -183,6 +145,7 @@ impl<O: IsA<DataInputStream>> DataInputStreamExt for O {
         }
     }
 
+    #[doc(alias = "g_data_input_stream_read_int16")]
     fn read_int16(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<i16, glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
@@ -199,6 +162,7 @@ impl<O: IsA<DataInputStream>> DataInputStreamExt for O {
         }
     }
 
+    #[doc(alias = "g_data_input_stream_read_int32")]
     fn read_int32(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<i32, glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
@@ -215,6 +179,7 @@ impl<O: IsA<DataInputStream>> DataInputStreamExt for O {
         }
     }
 
+    #[doc(alias = "g_data_input_stream_read_int64")]
     fn read_int64(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<i64, glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
@@ -231,6 +196,7 @@ impl<O: IsA<DataInputStream>> DataInputStreamExt for O {
         }
     }
 
+    #[doc(alias = "g_data_input_stream_read_uint16")]
     fn read_uint16(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<u16, glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
@@ -247,6 +213,7 @@ impl<O: IsA<DataInputStream>> DataInputStreamExt for O {
         }
     }
 
+    #[doc(alias = "g_data_input_stream_read_uint32")]
     fn read_uint32(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<u32, glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
@@ -263,6 +230,7 @@ impl<O: IsA<DataInputStream>> DataInputStreamExt for O {
         }
     }
 
+    #[doc(alias = "g_data_input_stream_read_uint64")]
     fn read_uint64(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<u64, glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
@@ -279,6 +247,7 @@ impl<O: IsA<DataInputStream>> DataInputStreamExt for O {
         }
     }
 
+    #[doc(alias = "g_data_input_stream_set_byte_order")]
     fn set_byte_order(&self, order: DataStreamByteOrder) {
         unsafe {
             ffi::g_data_input_stream_set_byte_order(
@@ -288,6 +257,7 @@ impl<O: IsA<DataInputStream>> DataInputStreamExt for O {
         }
     }
 
+    #[doc(alias = "g_data_input_stream_set_newline_type")]
     fn set_newline_type(&self, type_: DataStreamNewlineType) {
         unsafe {
             ffi::g_data_input_stream_set_newline_type(
@@ -297,6 +267,7 @@ impl<O: IsA<DataInputStream>> DataInputStreamExt for O {
         }
     }
 
+    #[doc(alias = "byte-order")]
     fn connect_byte_order_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_byte_order_trampoline<
             P: IsA<DataInputStream>,
@@ -322,6 +293,7 @@ impl<O: IsA<DataInputStream>> DataInputStreamExt for O {
         }
     }
 
+    #[doc(alias = "newline-type")]
     fn connect_newline_type_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_newline_type_trampoline<
             P: IsA<DataInputStream>,
@@ -347,6 +319,8 @@ impl<O: IsA<DataInputStream>> DataInputStreamExt for O {
         }
     }
 }
+
+impl<O: IsA<DataInputStream>> DataInputStreamExt for O {}
 
 impl fmt::Display for DataInputStream {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {

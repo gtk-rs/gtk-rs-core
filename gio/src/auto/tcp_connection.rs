@@ -23,19 +23,9 @@ impl TcpConnection {
     pub const NONE: Option<&'static TcpConnection> = None;
 }
 
-pub trait TcpConnectionExt: 'static {
+pub trait TcpConnectionExt: IsA<TcpConnection> + 'static {
     #[doc(alias = "g_tcp_connection_get_graceful_disconnect")]
     #[doc(alias = "get_graceful_disconnect")]
-    fn is_graceful_disconnect(&self) -> bool;
-
-    #[doc(alias = "g_tcp_connection_set_graceful_disconnect")]
-    fn set_graceful_disconnect(&self, graceful_disconnect: bool);
-
-    #[doc(alias = "graceful-disconnect")]
-    fn connect_graceful_disconnect_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
-}
-
-impl<O: IsA<TcpConnection>> TcpConnectionExt for O {
     fn is_graceful_disconnect(&self) -> bool {
         unsafe {
             from_glib(ffi::g_tcp_connection_get_graceful_disconnect(
@@ -44,6 +34,7 @@ impl<O: IsA<TcpConnection>> TcpConnectionExt for O {
         }
     }
 
+    #[doc(alias = "g_tcp_connection_set_graceful_disconnect")]
     fn set_graceful_disconnect(&self, graceful_disconnect: bool) {
         unsafe {
             ffi::g_tcp_connection_set_graceful_disconnect(
@@ -53,6 +44,7 @@ impl<O: IsA<TcpConnection>> TcpConnectionExt for O {
         }
     }
 
+    #[doc(alias = "graceful-disconnect")]
     fn connect_graceful_disconnect_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_graceful_disconnect_trampoline<
             P: IsA<TcpConnection>,
@@ -78,6 +70,8 @@ impl<O: IsA<TcpConnection>> TcpConnectionExt for O {
         }
     }
 }
+
+impl<O: IsA<TcpConnection>> TcpConnectionExt for O {}
 
 impl fmt::Display for TcpConnection {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {

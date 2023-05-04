@@ -95,13 +95,9 @@ impl ConverterInputStreamBuilder {
     }
 }
 
-pub trait ConverterInputStreamExt: 'static {
+pub trait ConverterInputStreamExt: IsA<ConverterInputStream> + 'static {
     #[doc(alias = "g_converter_input_stream_get_converter")]
     #[doc(alias = "get_converter")]
-    fn converter(&self) -> Converter;
-}
-
-impl<O: IsA<ConverterInputStream>> ConverterInputStreamExt for O {
     fn converter(&self) -> Converter {
         unsafe {
             from_glib_none(ffi::g_converter_input_stream_get_converter(
@@ -110,6 +106,8 @@ impl<O: IsA<ConverterInputStream>> ConverterInputStreamExt for O {
         }
     }
 }
+
+impl<O: IsA<ConverterInputStream>> ConverterInputStreamExt for O {}
 
 impl fmt::Display for ConverterInputStream {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {

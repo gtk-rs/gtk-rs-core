@@ -105,7 +105,7 @@ impl From<FontMask> for glib::Value {
     }
 }
 
-#[cfg(any(feature = "v1_50"))]
+#[cfg(feature = "v1_50")]
 bitflags! {
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     #[doc(alias = "PangoLayoutDeserializeFlags")]
@@ -117,7 +117,7 @@ bitflags! {
     }
 }
 
-#[cfg(any(feature = "v1_50"))]
+#[cfg(feature = "v1_50")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
 impl fmt::Display for LayoutDeserializeFlags {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
@@ -125,7 +125,7 @@ impl fmt::Display for LayoutDeserializeFlags {
     }
 }
 
-#[cfg(any(feature = "v1_50"))]
+#[cfg(feature = "v1_50")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
 #[doc(hidden)]
 impl IntoGlib for LayoutDeserializeFlags {
@@ -137,7 +137,7 @@ impl IntoGlib for LayoutDeserializeFlags {
     }
 }
 
-#[cfg(any(feature = "v1_50"))]
+#[cfg(feature = "v1_50")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
 #[doc(hidden)]
 impl FromGlib<ffi::PangoLayoutDeserializeFlags> for LayoutDeserializeFlags {
@@ -147,7 +147,7 @@ impl FromGlib<ffi::PangoLayoutDeserializeFlags> for LayoutDeserializeFlags {
     }
 }
 
-#[cfg(any(feature = "v1_50"))]
+#[cfg(feature = "v1_50")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
 impl StaticType for LayoutDeserializeFlags {
     #[inline]
@@ -156,7 +156,7 @@ impl StaticType for LayoutDeserializeFlags {
     }
 }
 
-#[cfg(any(feature = "v1_50"))]
+#[cfg(feature = "v1_50")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
 impl glib::HasParamSpec for LayoutDeserializeFlags {
     type ParamSpec = glib::ParamSpecFlags;
@@ -168,13 +168,13 @@ impl glib::HasParamSpec for LayoutDeserializeFlags {
     }
 }
 
-#[cfg(any(feature = "v1_50"))]
+#[cfg(feature = "v1_50")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
 impl glib::value::ValueType for LayoutDeserializeFlags {
     type Type = Self;
 }
 
-#[cfg(any(feature = "v1_50"))]
+#[cfg(feature = "v1_50")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
 unsafe impl<'a> FromValue<'a> for LayoutDeserializeFlags {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
@@ -185,7 +185,7 @@ unsafe impl<'a> FromValue<'a> for LayoutDeserializeFlags {
     }
 }
 
-#[cfg(any(feature = "v1_50"))]
+#[cfg(feature = "v1_50")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
 impl ToValue for LayoutDeserializeFlags {
     #[inline]
@@ -203,7 +203,7 @@ impl ToValue for LayoutDeserializeFlags {
     }
 }
 
-#[cfg(any(feature = "v1_50"))]
+#[cfg(feature = "v1_50")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
 impl From<LayoutDeserializeFlags> for glib::Value {
     #[inline]
@@ -212,7 +212,7 @@ impl From<LayoutDeserializeFlags> for glib::Value {
     }
 }
 
-#[cfg(any(feature = "v1_50"))]
+#[cfg(feature = "v1_50")]
 bitflags! {
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     #[doc(alias = "PangoLayoutSerializeFlags")]
@@ -226,7 +226,7 @@ bitflags! {
     }
 }
 
-#[cfg(any(feature = "v1_50"))]
+#[cfg(feature = "v1_50")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
 impl fmt::Display for LayoutSerializeFlags {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
@@ -234,7 +234,7 @@ impl fmt::Display for LayoutSerializeFlags {
     }
 }
 
-#[cfg(any(feature = "v1_50"))]
+#[cfg(feature = "v1_50")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
 #[doc(hidden)]
 impl IntoGlib for LayoutSerializeFlags {
@@ -246,7 +246,7 @@ impl IntoGlib for LayoutSerializeFlags {
     }
 }
 
-#[cfg(any(feature = "v1_50"))]
+#[cfg(feature = "v1_50")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
 #[doc(hidden)]
 impl FromGlib<ffi::PangoLayoutSerializeFlags> for LayoutSerializeFlags {
@@ -256,7 +256,7 @@ impl FromGlib<ffi::PangoLayoutSerializeFlags> for LayoutSerializeFlags {
     }
 }
 
-#[cfg(any(feature = "v1_50"))]
+#[cfg(feature = "v1_50")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
 impl StaticType for LayoutSerializeFlags {
     #[inline]
@@ -265,7 +265,7 @@ impl StaticType for LayoutSerializeFlags {
     }
 }
 
-#[cfg(any(feature = "v1_50"))]
+#[cfg(feature = "v1_50")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
 impl glib::HasParamSpec for LayoutSerializeFlags {
     type ParamSpec = glib::ParamSpecFlags;
@@ -277,13 +277,13 @@ impl glib::HasParamSpec for LayoutSerializeFlags {
     }
 }
 
-#[cfg(any(feature = "v1_50"))]
+#[cfg(feature = "v1_50")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
 impl glib::value::ValueType for LayoutSerializeFlags {
     type Type = Self;
 }
 
-#[cfg(any(feature = "v1_50"))]
+#[cfg(feature = "v1_50")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
 unsafe impl<'a> FromValue<'a> for LayoutSerializeFlags {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
@@ -294,7 +294,7 @@ unsafe impl<'a> FromValue<'a> for LayoutSerializeFlags {
     }
 }
 
-#[cfg(any(feature = "v1_50"))]
+#[cfg(feature = "v1_50")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
 impl ToValue for LayoutSerializeFlags {
     #[inline]
@@ -312,7 +312,7 @@ impl ToValue for LayoutSerializeFlags {
     }
 }
 
-#[cfg(any(feature = "v1_50"))]
+#[cfg(feature = "v1_50")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
 impl From<LayoutSerializeFlags> for glib::Value {
     #[inline]
@@ -321,7 +321,7 @@ impl From<LayoutSerializeFlags> for glib::Value {
     }
 }
 
-#[cfg(any(feature = "v1_44"))]
+#[cfg(feature = "v1_44")]
 bitflags! {
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
     #[doc(alias = "PangoShapeFlags")]
@@ -333,7 +333,7 @@ bitflags! {
     }
 }
 
-#[cfg(any(feature = "v1_44"))]
+#[cfg(feature = "v1_44")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
 impl fmt::Display for ShapeFlags {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
@@ -341,7 +341,7 @@ impl fmt::Display for ShapeFlags {
     }
 }
 
-#[cfg(any(feature = "v1_44"))]
+#[cfg(feature = "v1_44")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
 #[doc(hidden)]
 impl IntoGlib for ShapeFlags {
@@ -353,7 +353,7 @@ impl IntoGlib for ShapeFlags {
     }
 }
 
-#[cfg(any(feature = "v1_44"))]
+#[cfg(feature = "v1_44")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
 #[doc(hidden)]
 impl FromGlib<ffi::PangoShapeFlags> for ShapeFlags {
@@ -363,7 +363,7 @@ impl FromGlib<ffi::PangoShapeFlags> for ShapeFlags {
     }
 }
 
-#[cfg(any(feature = "v1_44"))]
+#[cfg(feature = "v1_44")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
 impl StaticType for ShapeFlags {
     #[inline]
@@ -372,7 +372,7 @@ impl StaticType for ShapeFlags {
     }
 }
 
-#[cfg(any(feature = "v1_44"))]
+#[cfg(feature = "v1_44")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
 impl glib::HasParamSpec for ShapeFlags {
     type ParamSpec = glib::ParamSpecFlags;
@@ -384,13 +384,13 @@ impl glib::HasParamSpec for ShapeFlags {
     }
 }
 
-#[cfg(any(feature = "v1_44"))]
+#[cfg(feature = "v1_44")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
 impl glib::value::ValueType for ShapeFlags {
     type Type = Self;
 }
 
-#[cfg(any(feature = "v1_44"))]
+#[cfg(feature = "v1_44")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
 unsafe impl<'a> FromValue<'a> for ShapeFlags {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
@@ -401,7 +401,7 @@ unsafe impl<'a> FromValue<'a> for ShapeFlags {
     }
 }
 
-#[cfg(any(feature = "v1_44"))]
+#[cfg(feature = "v1_44")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
 impl ToValue for ShapeFlags {
     #[inline]
@@ -419,7 +419,7 @@ impl ToValue for ShapeFlags {
     }
 }
 
-#[cfg(any(feature = "v1_44"))]
+#[cfg(feature = "v1_44")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
 impl From<ShapeFlags> for glib::Value {
     #[inline]
@@ -428,7 +428,7 @@ impl From<ShapeFlags> for glib::Value {
     }
 }
 
-#[cfg(any(feature = "v1_44"))]
+#[cfg(feature = "v1_44")]
 bitflags! {
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
     #[doc(alias = "PangoShowFlags")]
@@ -444,7 +444,7 @@ bitflags! {
     }
 }
 
-#[cfg(any(feature = "v1_44"))]
+#[cfg(feature = "v1_44")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
 impl fmt::Display for ShowFlags {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
@@ -452,7 +452,7 @@ impl fmt::Display for ShowFlags {
     }
 }
 
-#[cfg(any(feature = "v1_44"))]
+#[cfg(feature = "v1_44")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
 #[doc(hidden)]
 impl IntoGlib for ShowFlags {
@@ -464,7 +464,7 @@ impl IntoGlib for ShowFlags {
     }
 }
 
-#[cfg(any(feature = "v1_44"))]
+#[cfg(feature = "v1_44")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
 #[doc(hidden)]
 impl FromGlib<ffi::PangoShowFlags> for ShowFlags {
@@ -474,7 +474,7 @@ impl FromGlib<ffi::PangoShowFlags> for ShowFlags {
     }
 }
 
-#[cfg(any(feature = "v1_44"))]
+#[cfg(feature = "v1_44")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
 impl StaticType for ShowFlags {
     #[inline]
@@ -483,7 +483,7 @@ impl StaticType for ShowFlags {
     }
 }
 
-#[cfg(any(feature = "v1_44"))]
+#[cfg(feature = "v1_44")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
 impl glib::HasParamSpec for ShowFlags {
     type ParamSpec = glib::ParamSpecFlags;
@@ -495,13 +495,13 @@ impl glib::HasParamSpec for ShowFlags {
     }
 }
 
-#[cfg(any(feature = "v1_44"))]
+#[cfg(feature = "v1_44")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
 impl glib::value::ValueType for ShowFlags {
     type Type = Self;
 }
 
-#[cfg(any(feature = "v1_44"))]
+#[cfg(feature = "v1_44")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
 unsafe impl<'a> FromValue<'a> for ShowFlags {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
@@ -512,7 +512,7 @@ unsafe impl<'a> FromValue<'a> for ShowFlags {
     }
 }
 
-#[cfg(any(feature = "v1_44"))]
+#[cfg(feature = "v1_44")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
 impl ToValue for ShowFlags {
     #[inline]
@@ -530,7 +530,7 @@ impl ToValue for ShowFlags {
     }
 }
 
-#[cfg(any(feature = "v1_44"))]
+#[cfg(feature = "v1_44")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
 impl From<ShowFlags> for glib::Value {
     #[inline]

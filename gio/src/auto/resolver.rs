@@ -2,7 +2,7 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-#[cfg(any(feature = "v2_60"))]
+#[cfg(feature = "v2_60")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
 use crate::ResolverNameLookupFlags;
 use crate::{AsyncResult, Cancellable, InetAddress, ResolverRecordType, SrvTarget};
@@ -43,135 +43,8 @@ impl Resolver {
     }
 }
 
-pub trait ResolverExt: 'static {
+pub trait ResolverExt: IsA<Resolver> + 'static {
     #[doc(alias = "g_resolver_lookup_by_address")]
-    fn lookup_by_address(
-        &self,
-        address: &impl IsA<InetAddress>,
-        cancellable: Option<&impl IsA<Cancellable>>,
-    ) -> Result<glib::GString, glib::Error>;
-
-    #[doc(alias = "g_resolver_lookup_by_address_async")]
-    fn lookup_by_address_async<P: FnOnce(Result<glib::GString, glib::Error>) + 'static>(
-        &self,
-        address: &impl IsA<InetAddress>,
-        cancellable: Option<&impl IsA<Cancellable>>,
-        callback: P,
-    );
-
-    fn lookup_by_address_future(
-        &self,
-        address: &(impl IsA<InetAddress> + Clone + 'static),
-    ) -> Pin<Box_<dyn std::future::Future<Output = Result<glib::GString, glib::Error>> + 'static>>;
-
-    #[doc(alias = "g_resolver_lookup_by_name")]
-    fn lookup_by_name(
-        &self,
-        hostname: &str,
-        cancellable: Option<&impl IsA<Cancellable>>,
-    ) -> Result<Vec<InetAddress>, glib::Error>;
-
-    #[doc(alias = "g_resolver_lookup_by_name_async")]
-    fn lookup_by_name_async<P: FnOnce(Result<Vec<InetAddress>, glib::Error>) + 'static>(
-        &self,
-        hostname: &str,
-        cancellable: Option<&impl IsA<Cancellable>>,
-        callback: P,
-    );
-
-    fn lookup_by_name_future(
-        &self,
-        hostname: &str,
-    ) -> Pin<Box_<dyn std::future::Future<Output = Result<Vec<InetAddress>, glib::Error>> + 'static>>;
-
-    #[cfg(any(feature = "v2_60"))]
-    #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
-    #[doc(alias = "g_resolver_lookup_by_name_with_flags")]
-    fn lookup_by_name_with_flags(
-        &self,
-        hostname: &str,
-        flags: ResolverNameLookupFlags,
-        cancellable: Option<&impl IsA<Cancellable>>,
-    ) -> Result<Vec<InetAddress>, glib::Error>;
-
-    #[cfg(any(feature = "v2_60"))]
-    #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
-    #[doc(alias = "g_resolver_lookup_by_name_with_flags_async")]
-    fn lookup_by_name_with_flags_async<P: FnOnce(Result<Vec<InetAddress>, glib::Error>) + 'static>(
-        &self,
-        hostname: &str,
-        flags: ResolverNameLookupFlags,
-        cancellable: Option<&impl IsA<Cancellable>>,
-        callback: P,
-    );
-
-    #[cfg(any(feature = "v2_60"))]
-    #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
-    fn lookup_by_name_with_flags_future(
-        &self,
-        hostname: &str,
-        flags: ResolverNameLookupFlags,
-    ) -> Pin<Box_<dyn std::future::Future<Output = Result<Vec<InetAddress>, glib::Error>> + 'static>>;
-
-    #[doc(alias = "g_resolver_lookup_records")]
-    fn lookup_records(
-        &self,
-        rrname: &str,
-        record_type: ResolverRecordType,
-        cancellable: Option<&impl IsA<Cancellable>>,
-    ) -> Result<Vec<glib::Variant>, glib::Error>;
-
-    #[doc(alias = "g_resolver_lookup_records_async")]
-    fn lookup_records_async<P: FnOnce(Result<Vec<glib::Variant>, glib::Error>) + 'static>(
-        &self,
-        rrname: &str,
-        record_type: ResolverRecordType,
-        cancellable: Option<&impl IsA<Cancellable>>,
-        callback: P,
-    );
-
-    fn lookup_records_future(
-        &self,
-        rrname: &str,
-        record_type: ResolverRecordType,
-    ) -> Pin<
-        Box_<dyn std::future::Future<Output = Result<Vec<glib::Variant>, glib::Error>> + 'static>,
-    >;
-
-    #[doc(alias = "g_resolver_lookup_service")]
-    fn lookup_service(
-        &self,
-        service: &str,
-        protocol: &str,
-        domain: &str,
-        cancellable: Option<&impl IsA<Cancellable>>,
-    ) -> Result<Vec<SrvTarget>, glib::Error>;
-
-    #[doc(alias = "g_resolver_lookup_service_async")]
-    fn lookup_service_async<P: FnOnce(Result<Vec<SrvTarget>, glib::Error>) + 'static>(
-        &self,
-        service: &str,
-        protocol: &str,
-        domain: &str,
-        cancellable: Option<&impl IsA<Cancellable>>,
-        callback: P,
-    );
-
-    fn lookup_service_future(
-        &self,
-        service: &str,
-        protocol: &str,
-        domain: &str,
-    ) -> Pin<Box_<dyn std::future::Future<Output = Result<Vec<SrvTarget>, glib::Error>> + 'static>>;
-
-    #[doc(alias = "g_resolver_set_default")]
-    fn set_default(&self);
-
-    #[doc(alias = "reload")]
-    fn connect_reload<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
-}
-
-impl<O: IsA<Resolver>> ResolverExt for O {
     fn lookup_by_address(
         &self,
         address: &impl IsA<InetAddress>,
@@ -193,6 +66,7 @@ impl<O: IsA<Resolver>> ResolverExt for O {
         }
     }
 
+    #[doc(alias = "g_resolver_lookup_by_address_async")]
     fn lookup_by_address_async<P: FnOnce(Result<glib::GString, glib::Error>) + 'static>(
         &self,
         address: &impl IsA<InetAddress>,
@@ -259,6 +133,7 @@ impl<O: IsA<Resolver>> ResolverExt for O {
         ))
     }
 
+    #[doc(alias = "g_resolver_lookup_by_name")]
     fn lookup_by_name(
         &self,
         hostname: &str,
@@ -280,6 +155,7 @@ impl<O: IsA<Resolver>> ResolverExt for O {
         }
     }
 
+    #[doc(alias = "g_resolver_lookup_by_name_async")]
     fn lookup_by_name_async<P: FnOnce(Result<Vec<InetAddress>, glib::Error>) + 'static>(
         &self,
         hostname: &str,
@@ -346,8 +222,9 @@ impl<O: IsA<Resolver>> ResolverExt for O {
         ))
     }
 
-    #[cfg(any(feature = "v2_60"))]
+    #[cfg(feature = "v2_60")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
+    #[doc(alias = "g_resolver_lookup_by_name_with_flags")]
     fn lookup_by_name_with_flags(
         &self,
         hostname: &str,
@@ -371,8 +248,9 @@ impl<O: IsA<Resolver>> ResolverExt for O {
         }
     }
 
-    #[cfg(any(feature = "v2_60"))]
+    #[cfg(feature = "v2_60")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
+    #[doc(alias = "g_resolver_lookup_by_name_with_flags_async")]
     fn lookup_by_name_with_flags_async<
         P: FnOnce(Result<Vec<InetAddress>, glib::Error>) + 'static,
     >(
@@ -430,7 +308,7 @@ impl<O: IsA<Resolver>> ResolverExt for O {
         }
     }
 
-    #[cfg(any(feature = "v2_60"))]
+    #[cfg(feature = "v2_60")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     fn lookup_by_name_with_flags_future(
         &self,
@@ -454,6 +332,7 @@ impl<O: IsA<Resolver>> ResolverExt for O {
         ))
     }
 
+    #[doc(alias = "g_resolver_lookup_records")]
     fn lookup_records(
         &self,
         rrname: &str,
@@ -477,6 +356,7 @@ impl<O: IsA<Resolver>> ResolverExt for O {
         }
     }
 
+    #[doc(alias = "g_resolver_lookup_records_async")]
     fn lookup_records_async<P: FnOnce(Result<Vec<glib::Variant>, glib::Error>) + 'static>(
         &self,
         rrname: &str,
@@ -547,6 +427,7 @@ impl<O: IsA<Resolver>> ResolverExt for O {
         ))
     }
 
+    #[doc(alias = "g_resolver_lookup_service")]
     fn lookup_service(
         &self,
         service: &str,
@@ -572,6 +453,7 @@ impl<O: IsA<Resolver>> ResolverExt for O {
         }
     }
 
+    #[doc(alias = "g_resolver_lookup_service_async")]
     fn lookup_service_async<P: FnOnce(Result<Vec<SrvTarget>, glib::Error>) + 'static>(
         &self,
         service: &str,
@@ -652,12 +534,14 @@ impl<O: IsA<Resolver>> ResolverExt for O {
         ))
     }
 
+    #[doc(alias = "g_resolver_set_default")]
     fn set_default(&self) {
         unsafe {
             ffi::g_resolver_set_default(self.as_ref().to_glib_none().0);
         }
     }
 
+    #[doc(alias = "reload")]
     fn connect_reload<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn reload_trampoline<P: IsA<Resolver>, F: Fn(&P) + 'static>(
             this: *mut ffi::GResolver,
@@ -679,6 +563,8 @@ impl<O: IsA<Resolver>> ResolverExt for O {
         }
     }
 }
+
+impl<O: IsA<Resolver>> ResolverExt for O {}
 
 impl fmt::Display for Resolver {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {

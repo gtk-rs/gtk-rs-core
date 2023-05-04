@@ -1751,7 +1751,7 @@ extern "C" {
         instance_type: GType,
         interface_type: GType,
     ) -> *mut GTypePlugin;
-    #[cfg(any(feature = "v2_68"))]
+    #[cfg(feature = "v2_68")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_68")))]
     pub fn g_type_interface_instantiatable_prerequisite(interface_type: GType) -> GType;
     pub fn g_type_interface_peek(instance_class: gpointer, iface_type: GType) -> gpointer;
@@ -1813,7 +1813,7 @@ extern "C" {
     pub fn g_value_set_instance(value: *mut GValue, instance: gpointer);
     pub fn g_value_set_int(value: *mut GValue, v_int: c_int);
     pub fn g_value_set_int64(value: *mut GValue, v_int64: i64);
-    #[cfg(any(feature = "v2_66"))]
+    #[cfg(feature = "v2_66")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
     pub fn g_value_set_interned_string(value: *mut GValue, v_string: *const c_char);
     pub fn g_value_set_long(value: *mut GValue, v_long: c_long);
@@ -1891,10 +1891,10 @@ extern "C" {
     // GBinding
     //=========================================================================
     pub fn g_binding_get_type() -> GType;
-    #[cfg(any(feature = "v2_68"))]
+    #[cfg(feature = "v2_68")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_68")))]
     pub fn g_binding_dup_source(binding: *mut GBinding) -> *mut GObject;
-    #[cfg(any(feature = "v2_68"))]
+    #[cfg(feature = "v2_68")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_68")))]
     pub fn g_binding_dup_target(binding: *mut GBinding) -> *mut GObject;
     pub fn g_binding_get_flags(binding: *mut GBinding) -> GBindingFlags;
@@ -1907,13 +1907,13 @@ extern "C" {
     //=========================================================================
     // GBindingGroup
     //=========================================================================
-    #[cfg(any(feature = "v2_72"))]
+    #[cfg(feature = "v2_72")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
     pub fn g_binding_group_get_type() -> GType;
-    #[cfg(any(feature = "v2_72"))]
+    #[cfg(feature = "v2_72")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
     pub fn g_binding_group_new() -> *mut GBindingGroup;
-    #[cfg(any(feature = "v2_72"))]
+    #[cfg(feature = "v2_72")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
     pub fn g_binding_group_bind(
         self_: *mut GBindingGroup,
@@ -1922,7 +1922,7 @@ extern "C" {
         target_property: *const c_char,
         flags: GBindingFlags,
     );
-    #[cfg(any(feature = "v2_72"))]
+    #[cfg(feature = "v2_72")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
     pub fn g_binding_group_bind_full(
         self_: *mut GBindingGroup,
@@ -1935,7 +1935,7 @@ extern "C" {
         user_data: gpointer,
         user_data_destroy: glib::GDestroyNotify,
     );
-    #[cfg(any(feature = "v2_72"))]
+    #[cfg(feature = "v2_72")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
     pub fn g_binding_group_bind_with_closures(
         self_: *mut GBindingGroup,
@@ -1946,10 +1946,10 @@ extern "C" {
         transform_to: *mut GClosure,
         transform_from: *mut GClosure,
     );
-    #[cfg(any(feature = "v2_72"))]
+    #[cfg(feature = "v2_72")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
     pub fn g_binding_group_dup_source(self_: *mut GBindingGroup) -> *mut GObject;
-    #[cfg(any(feature = "v2_72"))]
+    #[cfg(feature = "v2_72")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
     pub fn g_binding_group_set_source(self_: *mut GBindingGroup, source: *mut GObject);
 
@@ -2102,7 +2102,7 @@ extern "C" {
     );
     pub fn g_object_steal_data(object: *mut GObject, key: *const c_char) -> gpointer;
     pub fn g_object_steal_qdata(object: *mut GObject, quark: glib::GQuark) -> gpointer;
-    #[cfg(any(feature = "v2_70"))]
+    #[cfg(feature = "v2_70")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
     pub fn g_object_take_ref(object: *mut GObject) -> *mut GObject;
     pub fn g_object_thaw_notify(object: *mut GObject);
@@ -2121,7 +2121,7 @@ extern "C" {
         blurb: *const c_char,
         flags: GParamFlags,
     ) -> *mut GParamSpec;
-    #[cfg(any(feature = "v2_66"))]
+    #[cfg(feature = "v2_66")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
     pub fn g_param_spec_is_valid_name(name: *const c_char) -> gboolean;
     pub fn g_param_spec_get_blurb(pspec: *mut GParamSpec) -> *const c_char;
@@ -2147,16 +2147,16 @@ extern "C" {
     //=========================================================================
     // GSignalGroup
     //=========================================================================
-    #[cfg(any(feature = "v2_72"))]
+    #[cfg(feature = "v2_72")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
     pub fn g_signal_group_get_type() -> GType;
-    #[cfg(any(feature = "v2_72"))]
+    #[cfg(feature = "v2_72")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
     pub fn g_signal_group_new(target_type: GType) -> *mut GSignalGroup;
-    #[cfg(any(feature = "v2_72"))]
+    #[cfg(feature = "v2_72")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
     pub fn g_signal_group_block(self_: *mut GSignalGroup);
-    #[cfg(any(feature = "v2_72"))]
+    #[cfg(feature = "v2_72")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
     pub fn g_signal_group_connect(
         self_: *mut GSignalGroup,
@@ -2164,7 +2164,7 @@ extern "C" {
         c_handler: GCallback,
         data: gpointer,
     );
-    #[cfg(any(feature = "v2_72"))]
+    #[cfg(feature = "v2_72")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
     pub fn g_signal_group_connect_after(
         self_: *mut GSignalGroup,
@@ -2172,7 +2172,7 @@ extern "C" {
         c_handler: GCallback,
         data: gpointer,
     );
-    #[cfg(any(feature = "v2_74"))]
+    #[cfg(feature = "v2_74")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
     pub fn g_signal_group_connect_closure(
         self_: *mut GSignalGroup,
@@ -2180,7 +2180,7 @@ extern "C" {
         closure: *mut GClosure,
         after: gboolean,
     );
-    #[cfg(any(feature = "v2_72"))]
+    #[cfg(feature = "v2_72")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
     pub fn g_signal_group_connect_data(
         self_: *mut GSignalGroup,
@@ -2190,7 +2190,7 @@ extern "C" {
         notify: GClosureNotify,
         flags: GConnectFlags,
     );
-    #[cfg(any(feature = "v2_72"))]
+    #[cfg(feature = "v2_72")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
     pub fn g_signal_group_connect_object(
         self_: *mut GSignalGroup,
@@ -2199,7 +2199,7 @@ extern "C" {
         object: gpointer,
         flags: GConnectFlags,
     );
-    #[cfg(any(feature = "v2_72"))]
+    #[cfg(feature = "v2_72")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
     pub fn g_signal_group_connect_swapped(
         self_: *mut GSignalGroup,
@@ -2207,13 +2207,13 @@ extern "C" {
         c_handler: GCallback,
         data: gpointer,
     );
-    #[cfg(any(feature = "v2_72"))]
+    #[cfg(feature = "v2_72")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
     pub fn g_signal_group_dup_target(self_: *mut GSignalGroup) -> *mut GObject;
-    #[cfg(any(feature = "v2_72"))]
+    #[cfg(feature = "v2_72")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
     pub fn g_signal_group_set_target(self_: *mut GSignalGroup, target: *mut GObject);
-    #[cfg(any(feature = "v2_72"))]
+    #[cfg(feature = "v2_72")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
     pub fn g_signal_group_unblock(self_: *mut GSignalGroup);
 
@@ -2278,7 +2278,7 @@ extern "C" {
         boxed_free: GBoxedFreeFunc,
     ) -> GType;
     pub fn g_clear_object(object_ptr: *mut *mut GObject);
-    #[cfg(any(feature = "v2_62"))]
+    #[cfg(feature = "v2_62")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_62")))]
     pub fn g_clear_signal_handler(handler_id_ptr: *mut c_ulong, instance: *mut GObject);
     pub fn g_enum_complete_type_info(
@@ -2514,7 +2514,7 @@ extern "C" {
         strict_validation: gboolean,
     ) -> gboolean;
     pub fn g_param_value_defaults(pspec: *mut GParamSpec, value: *const GValue) -> gboolean;
-    #[cfg(any(feature = "v2_74"))]
+    #[cfg(feature = "v2_74")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
     pub fn g_param_value_is_valid(pspec: *mut GParamSpec, value: *const GValue) -> gboolean;
     pub fn g_param_value_set_default(pspec: *mut GParamSpec, value: *mut GValue);
@@ -2634,7 +2634,7 @@ extern "C" {
         detail: glib::GQuark,
         may_be_blocked: gboolean,
     ) -> gboolean;
-    #[cfg(any(feature = "v2_66"))]
+    #[cfg(feature = "v2_66")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
     pub fn g_signal_is_valid_name(name: *const c_char) -> gboolean;
     pub fn g_signal_list_ids(itype: GType, n_ids: *mut c_uint) -> *mut c_uint;

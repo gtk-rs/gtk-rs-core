@@ -101,24 +101,24 @@ pub use self::data_output_stream::DataOutputStream;
 mod datagram_based;
 pub use self::datagram_based::DatagramBased;
 
-#[cfg(any(feature = "v2_72"))]
+#[cfg(feature = "v2_72")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
 mod debug_controller;
-#[cfg(any(feature = "v2_72"))]
+#[cfg(feature = "v2_72")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
 pub use self::debug_controller::DebugController;
 
-#[cfg(any(feature = "v2_72"))]
+#[cfg(feature = "v2_72")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
 mod debug_controller_dbus;
-#[cfg(any(feature = "v2_72"))]
+#[cfg(feature = "v2_72")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
 pub use self::debug_controller_dbus::DebugControllerDBus;
 
-#[cfg(any(all(not(windows), not(target_os = "macos"))))]
+#[cfg(all(not(windows), not(target_os = "macos")))]
 #[cfg_attr(docsrs, doc(cfg(all(not(windows), not(target_os = "macos")))))]
 mod desktop_app_info;
-#[cfg(any(all(not(windows), not(target_os = "macos"))))]
+#[cfg(all(not(windows), not(target_os = "macos")))]
 #[cfg_attr(docsrs, doc(cfg(all(not(windows), not(target_os = "macos")))))]
 pub use self::desktop_app_info::DesktopAppInfo;
 
@@ -197,10 +197,10 @@ pub use self::loadable_icon::LoadableIcon;
 mod memory_input_stream;
 pub use self::memory_input_stream::MemoryInputStream;
 
-#[cfg(any(feature = "v2_64"))]
+#[cfg(feature = "v2_64")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_64")))]
 mod memory_monitor;
-#[cfg(any(feature = "v2_64"))]
+#[cfg(feature = "v2_64")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_64")))]
 pub use self::memory_monitor::MemoryMonitor;
 
@@ -252,10 +252,10 @@ pub use self::pollable_input_stream::PollableInputStream;
 mod pollable_output_stream;
 pub use self::pollable_output_stream::PollableOutputStream;
 
-#[cfg(any(feature = "v2_70"))]
+#[cfg(feature = "v2_70")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
 mod power_profile_monitor;
-#[cfg(any(feature = "v2_70"))]
+#[cfg(feature = "v2_70")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
 pub use self::power_profile_monitor::PowerProfileMonitor;
 
@@ -370,45 +370,45 @@ pub use self::tls_password::TlsPassword;
 mod tls_server_connection;
 pub use self::tls_server_connection::TlsServerConnection;
 
-#[cfg(any(unix))]
+#[cfg(unix)]
 #[cfg_attr(docsrs, doc(cfg(unix)))]
 mod unix_credentials_message;
-#[cfg(any(unix))]
+#[cfg(unix)]
 #[cfg_attr(docsrs, doc(cfg(unix)))]
 pub use self::unix_credentials_message::UnixCredentialsMessage;
 
-#[cfg(any(unix))]
+#[cfg(unix)]
 #[cfg_attr(docsrs, doc(cfg(unix)))]
 mod unix_fd_list;
-#[cfg(any(unix))]
+#[cfg(unix)]
 #[cfg_attr(docsrs, doc(cfg(unix)))]
 pub use self::unix_fd_list::UnixFDList;
 
-#[cfg(any(unix))]
+#[cfg(unix)]
 #[cfg_attr(docsrs, doc(cfg(unix)))]
 mod unix_fd_message;
-#[cfg(any(unix))]
+#[cfg(unix)]
 #[cfg_attr(docsrs, doc(cfg(unix)))]
 pub use self::unix_fd_message::UnixFDMessage;
 
-#[cfg(any(unix))]
+#[cfg(unix)]
 #[cfg_attr(docsrs, doc(cfg(unix)))]
 mod unix_input_stream;
-#[cfg(any(unix))]
+#[cfg(unix)]
 #[cfg_attr(docsrs, doc(cfg(unix)))]
 pub use self::unix_input_stream::UnixInputStream;
 
-#[cfg(any(unix))]
+#[cfg(unix)]
 #[cfg_attr(docsrs, doc(cfg(unix)))]
 mod unix_output_stream;
-#[cfg(any(unix))]
+#[cfg(unix)]
 #[cfg_attr(docsrs, doc(cfg(unix)))]
 pub use self::unix_output_stream::UnixOutputStream;
 
-#[cfg(any(unix))]
+#[cfg(unix)]
 #[cfg_attr(docsrs, doc(cfg(unix)))]
 mod unix_socket_address;
-#[cfg(any(unix))]
+#[cfg(unix)]
 #[cfg_attr(docsrs, doc(cfg(unix)))]
 pub use self::unix_socket_address::UnixSocketAddress;
 
@@ -466,17 +466,17 @@ pub use self::settings_schema_source::SettingsSchemaSource;
 mod srv_target;
 pub use self::srv_target::SrvTarget;
 
-#[cfg(any(unix))]
+#[cfg(unix)]
 #[cfg_attr(docsrs, doc(cfg(unix)))]
 mod unix_mount_entry;
-#[cfg(any(unix))]
+#[cfg(unix)]
 #[cfg_attr(docsrs, doc(cfg(unix)))]
 pub use self::unix_mount_entry::UnixMountEntry;
 
-#[cfg(any(unix))]
+#[cfg(unix)]
 #[cfg_attr(docsrs, doc(cfg(unix)))]
 mod unix_mount_point;
-#[cfg(any(unix))]
+#[cfg(unix)]
 #[cfg_attr(docsrs, doc(cfg(unix)))]
 pub use self::unix_mount_point::UnixMountPoint;
 
@@ -496,14 +496,14 @@ pub use self::enums::FileAttributeType;
 pub use self::enums::FileMonitorEvent;
 pub use self::enums::FileType;
 pub use self::enums::IOErrorEnum;
-#[cfg(any(feature = "v2_64"))]
+#[cfg(feature = "v2_64")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_64")))]
 pub use self::enums::MemoryMonitorWarningLevel;
 pub use self::enums::MountOperationResult;
 pub use self::enums::NetworkConnectivity;
 pub use self::enums::NotificationPriority;
 pub use self::enums::PasswordSave;
-#[cfg(any(feature = "v2_60"))]
+#[cfg(feature = "v2_60")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
 pub use self::enums::PollableReturn;
 pub use self::enums::ResolverError;
@@ -516,18 +516,18 @@ pub use self::enums::SocketProtocol;
 pub use self::enums::SocketType;
 pub use self::enums::TlsAuthenticationMode;
 pub use self::enums::TlsCertificateRequestFlags;
-#[cfg(any(feature = "v2_66"))]
+#[cfg(feature = "v2_66")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
 pub use self::enums::TlsChannelBindingType;
 pub use self::enums::TlsDatabaseLookupFlags;
 pub use self::enums::TlsError;
 pub use self::enums::TlsInteractionResult;
-#[cfg(any(feature = "v2_70"))]
+#[cfg(feature = "v2_70")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
 pub use self::enums::TlsProtocolVersion;
 #[allow(deprecated)]
 pub use self::enums::TlsRehandshakeMode;
-#[cfg(any(unix))]
+#[cfg(unix)]
 #[cfg_attr(docsrs, doc(cfg(unix)))]
 pub use self::enums::UnixSocketAddressType;
 pub use self::enums::ZlibCompressorFormat;
@@ -559,7 +559,7 @@ pub use self::flags::IOStreamSpliceFlags;
 pub use self::flags::MountMountFlags;
 pub use self::flags::MountUnmountFlags;
 pub use self::flags::OutputStreamSpliceFlags;
-#[cfg(any(feature = "v2_60"))]
+#[cfg(feature = "v2_60")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
 pub use self::flags::ResolverNameLookupFlags;
 pub use self::flags::ResourceLookupFlags;
@@ -572,10 +572,10 @@ pub use self::flags::TlsPasswordFlags;
 pub mod functions;
 
 mod constants;
-#[cfg(any(feature = "v2_72"))]
+#[cfg(feature = "v2_72")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
 pub use self::constants::DEBUG_CONTROLLER_EXTENSION_POINT_NAME;
-#[cfg(any(feature = "v2_58"))]
+#[cfg(feature = "v2_58")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_58")))]
 pub use self::constants::DRIVE_IDENTIFIER_KIND_UNIX_DEVICE;
 pub use self::constants::FILE_ATTRIBUTE_ACCESS_CAN_DELETE;
@@ -585,11 +585,11 @@ pub use self::constants::FILE_ATTRIBUTE_ACCESS_CAN_RENAME;
 pub use self::constants::FILE_ATTRIBUTE_ACCESS_CAN_TRASH;
 pub use self::constants::FILE_ATTRIBUTE_ACCESS_CAN_WRITE;
 pub use self::constants::FILE_ATTRIBUTE_DOS_IS_ARCHIVE;
-#[cfg(any(feature = "v2_60"))]
+#[cfg(feature = "v2_60")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
 pub use self::constants::FILE_ATTRIBUTE_DOS_IS_MOUNTPOINT;
 pub use self::constants::FILE_ATTRIBUTE_DOS_IS_SYSTEM;
-#[cfg(any(feature = "v2_60"))]
+#[cfg(feature = "v2_60")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
 pub use self::constants::FILE_ATTRIBUTE_DOS_REPARSE_POINT_TAG;
 pub use self::constants::FILE_ATTRIBUTE_ETAG_VALUE;
@@ -642,61 +642,61 @@ pub use self::constants::FILE_ATTRIBUTE_STANDARD_SYMLINK_TARGET;
 pub use self::constants::FILE_ATTRIBUTE_STANDARD_TARGET_URI;
 pub use self::constants::FILE_ATTRIBUTE_STANDARD_TYPE;
 pub use self::constants::FILE_ATTRIBUTE_THUMBNAILING_FAILED;
-#[cfg(any(feature = "v2_76"))]
+#[cfg(feature = "v2_76")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_76")))]
 pub use self::constants::FILE_ATTRIBUTE_THUMBNAILING_FAILED_LARGE;
-#[cfg(any(feature = "v2_76"))]
+#[cfg(feature = "v2_76")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_76")))]
 pub use self::constants::FILE_ATTRIBUTE_THUMBNAILING_FAILED_NORMAL;
-#[cfg(any(feature = "v2_76"))]
+#[cfg(feature = "v2_76")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_76")))]
 pub use self::constants::FILE_ATTRIBUTE_THUMBNAILING_FAILED_XLARGE;
-#[cfg(any(feature = "v2_76"))]
+#[cfg(feature = "v2_76")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_76")))]
 pub use self::constants::FILE_ATTRIBUTE_THUMBNAILING_FAILED_XXLARGE;
 pub use self::constants::FILE_ATTRIBUTE_THUMBNAIL_IS_VALID;
-#[cfg(any(feature = "v2_76"))]
+#[cfg(feature = "v2_76")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_76")))]
 pub use self::constants::FILE_ATTRIBUTE_THUMBNAIL_IS_VALID_LARGE;
-#[cfg(any(feature = "v2_76"))]
+#[cfg(feature = "v2_76")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_76")))]
 pub use self::constants::FILE_ATTRIBUTE_THUMBNAIL_IS_VALID_NORMAL;
-#[cfg(any(feature = "v2_76"))]
+#[cfg(feature = "v2_76")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_76")))]
 pub use self::constants::FILE_ATTRIBUTE_THUMBNAIL_IS_VALID_XLARGE;
-#[cfg(any(feature = "v2_76"))]
+#[cfg(feature = "v2_76")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_76")))]
 pub use self::constants::FILE_ATTRIBUTE_THUMBNAIL_IS_VALID_XXLARGE;
 pub use self::constants::FILE_ATTRIBUTE_THUMBNAIL_PATH;
-#[cfg(any(feature = "v2_76"))]
+#[cfg(feature = "v2_76")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_76")))]
 pub use self::constants::FILE_ATTRIBUTE_THUMBNAIL_PATH_LARGE;
-#[cfg(any(feature = "v2_76"))]
+#[cfg(feature = "v2_76")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_76")))]
 pub use self::constants::FILE_ATTRIBUTE_THUMBNAIL_PATH_NORMAL;
-#[cfg(any(feature = "v2_76"))]
+#[cfg(feature = "v2_76")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_76")))]
 pub use self::constants::FILE_ATTRIBUTE_THUMBNAIL_PATH_XLARGE;
-#[cfg(any(feature = "v2_76"))]
+#[cfg(feature = "v2_76")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_76")))]
 pub use self::constants::FILE_ATTRIBUTE_THUMBNAIL_PATH_XXLARGE;
 pub use self::constants::FILE_ATTRIBUTE_TIME_ACCESS;
-#[cfg(any(feature = "v2_74"))]
+#[cfg(feature = "v2_74")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
 pub use self::constants::FILE_ATTRIBUTE_TIME_ACCESS_NSEC;
 pub use self::constants::FILE_ATTRIBUTE_TIME_ACCESS_USEC;
 pub use self::constants::FILE_ATTRIBUTE_TIME_CHANGED;
-#[cfg(any(feature = "v2_74"))]
+#[cfg(feature = "v2_74")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
 pub use self::constants::FILE_ATTRIBUTE_TIME_CHANGED_NSEC;
 pub use self::constants::FILE_ATTRIBUTE_TIME_CHANGED_USEC;
 pub use self::constants::FILE_ATTRIBUTE_TIME_CREATED;
-#[cfg(any(feature = "v2_74"))]
+#[cfg(feature = "v2_74")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
 pub use self::constants::FILE_ATTRIBUTE_TIME_CREATED_NSEC;
 pub use self::constants::FILE_ATTRIBUTE_TIME_CREATED_USEC;
 pub use self::constants::FILE_ATTRIBUTE_TIME_MODIFIED;
-#[cfg(any(feature = "v2_74"))]
+#[cfg(feature = "v2_74")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
 pub use self::constants::FILE_ATTRIBUTE_TIME_MODIFIED_NSEC;
 pub use self::constants::FILE_ATTRIBUTE_TIME_MODIFIED_USEC;
@@ -713,7 +713,7 @@ pub use self::constants::FILE_ATTRIBUTE_UNIX_MODE;
 pub use self::constants::FILE_ATTRIBUTE_UNIX_NLINK;
 pub use self::constants::FILE_ATTRIBUTE_UNIX_RDEV;
 pub use self::constants::FILE_ATTRIBUTE_UNIX_UID;
-#[cfg(any(feature = "v2_64"))]
+#[cfg(feature = "v2_64")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_64")))]
 pub use self::constants::MEMORY_MONITOR_EXTENSION_POINT_NAME;
 pub use self::constants::MENU_ATTRIBUTE_ACTION;
@@ -725,7 +725,7 @@ pub use self::constants::MENU_LINK_SECTION;
 pub use self::constants::MENU_LINK_SUBMENU;
 pub use self::constants::NATIVE_VOLUME_MONITOR_EXTENSION_POINT_NAME;
 pub use self::constants::NETWORK_MONITOR_EXTENSION_POINT_NAME;
-#[cfg(any(feature = "v2_70"))]
+#[cfg(feature = "v2_70")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
 pub use self::constants::POWER_PROFILE_MONITOR_EXTENSION_POINT_NAME;
 pub use self::constants::PROXY_EXTENSION_POINT_NAME;
@@ -768,10 +768,10 @@ pub mod traits {
     pub use super::dbus_interface_skeleton::DBusInterfaceSkeletonExt;
     pub use super::dbus_object::DBusObjectExt;
     pub use super::dbus_proxy::DBusProxyExt;
-    #[cfg(any(feature = "v2_72"))]
+    #[cfg(feature = "v2_72")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
     pub use super::debug_controller::DebugControllerExt;
-    #[cfg(any(feature = "v2_72"))]
+    #[cfg(feature = "v2_72")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
     pub use super::debug_controller_dbus::DebugControllerDBusExt;
     pub use super::drive::DriveExt;
@@ -794,7 +794,7 @@ pub mod traits {
     pub use super::list_model::ListModelExt;
     pub use super::loadable_icon::LoadableIconExt;
     pub use super::memory_input_stream::MemoryInputStreamExt;
-    #[cfg(any(feature = "v2_64"))]
+    #[cfg(feature = "v2_64")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_64")))]
     pub use super::memory_monitor::MemoryMonitorExt;
     pub use super::memory_output_stream::MemoryOutputStreamExt;
@@ -810,7 +810,7 @@ pub mod traits {
     pub use super::permission::PermissionExt;
     pub use super::pollable_input_stream::PollableInputStreamExt;
     pub use super::pollable_output_stream::PollableOutputStreamExt;
-    #[cfg(any(feature = "v2_70"))]
+    #[cfg(feature = "v2_70")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
     pub use super::power_profile_monitor::PowerProfileMonitorExt;
     pub use super::proxy::ProxyExt;
@@ -842,22 +842,22 @@ pub mod traits {
     pub use super::tls_interaction::TlsInteractionExt;
     pub use super::tls_password::TlsPasswordExt;
     pub use super::tls_server_connection::TlsServerConnectionExt;
-    #[cfg(any(unix))]
+    #[cfg(unix)]
     #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub use super::unix_credentials_message::UnixCredentialsMessageExt;
-    #[cfg(any(unix))]
+    #[cfg(unix)]
     #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub use super::unix_fd_list::UnixFDListExt;
-    #[cfg(any(unix))]
+    #[cfg(unix)]
     #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub use super::unix_fd_message::UnixFDMessageExt;
-    #[cfg(any(unix))]
+    #[cfg(unix)]
     #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub use super::unix_input_stream::UnixInputStreamExt;
-    #[cfg(any(unix))]
+    #[cfg(unix)]
     #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub use super::unix_output_stream::UnixOutputStreamExt;
-    #[cfg(any(unix))]
+    #[cfg(unix)]
     #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub use super::unix_socket_address::UnixSocketAddressExt;
     pub use super::vfs::VfsExt;

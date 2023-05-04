@@ -90,7 +90,7 @@ impl GlyphString {
         }
     }
 
-    //#[cfg(any(feature = "v1_50"))]
+    //#[cfg(feature = "v1_50")]
     //#[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     //#[doc(alias = "pango_glyph_string_index_to_x_full")]
     //pub fn index_to_x_full(&mut self, text: &str, analysis: &mut Analysis, attrs: /*Ignored*/Option<&mut LogAttr>, index_: i32, trailing: bool) -> i32 {

@@ -19,92 +19,22 @@ impl Renderer {
     pub const NONE: Option<&'static Renderer> = None;
 }
 
-pub trait RendererExt: 'static {
+pub trait RendererExt: IsA<Renderer> + 'static {
     #[doc(alias = "pango_renderer_activate")]
-    fn activate(&self);
-
-    #[doc(alias = "pango_renderer_deactivate")]
-    fn deactivate(&self);
-
-    #[doc(alias = "pango_renderer_draw_error_underline")]
-    fn draw_error_underline(&self, x: i32, y: i32, width: i32, height: i32);
-
-    #[doc(alias = "pango_renderer_draw_glyph")]
-    fn draw_glyph(&self, font: &impl IsA<Font>, glyph: Glyph, x: f64, y: f64);
-
-    #[doc(alias = "pango_renderer_draw_glyph_item")]
-    fn draw_glyph_item(&self, text: Option<&str>, glyph_item: &mut GlyphItem, x: i32, y: i32);
-
-    #[doc(alias = "pango_renderer_draw_glyphs")]
-    fn draw_glyphs(&self, font: &impl IsA<Font>, glyphs: &mut GlyphString, x: i32, y: i32);
-
-    #[doc(alias = "pango_renderer_draw_layout")]
-    fn draw_layout(&self, layout: &Layout, x: i32, y: i32);
-
-    #[doc(alias = "pango_renderer_draw_layout_line")]
-    fn draw_layout_line(&self, line: &LayoutLine, x: i32, y: i32);
-
-    #[doc(alias = "pango_renderer_draw_rectangle")]
-    fn draw_rectangle(&self, part: RenderPart, x: i32, y: i32, width: i32, height: i32);
-
-    #[doc(alias = "pango_renderer_draw_trapezoid")]
-    fn draw_trapezoid(
-        &self,
-        part: RenderPart,
-        y1_: f64,
-        x11: f64,
-        x21: f64,
-        y2: f64,
-        x12: f64,
-        x22: f64,
-    );
-
-    #[doc(alias = "pango_renderer_get_alpha")]
-    #[doc(alias = "get_alpha")]
-    fn alpha(&self, part: RenderPart) -> u16;
-
-    #[doc(alias = "pango_renderer_get_color")]
-    #[doc(alias = "get_color")]
-    fn color(&self, part: RenderPart) -> Option<Color>;
-
-    #[doc(alias = "pango_renderer_get_layout")]
-    #[doc(alias = "get_layout")]
-    fn layout(&self) -> Option<Layout>;
-
-    #[doc(alias = "pango_renderer_get_layout_line")]
-    #[doc(alias = "get_layout_line")]
-    fn layout_line(&self) -> Option<LayoutLine>;
-
-    #[doc(alias = "pango_renderer_get_matrix")]
-    #[doc(alias = "get_matrix")]
-    fn matrix(&self) -> Option<Matrix>;
-
-    #[doc(alias = "pango_renderer_part_changed")]
-    fn part_changed(&self, part: RenderPart);
-
-    #[doc(alias = "pango_renderer_set_alpha")]
-    fn set_alpha(&self, part: RenderPart, alpha: u16);
-
-    #[doc(alias = "pango_renderer_set_color")]
-    fn set_color(&self, part: RenderPart, color: Option<&Color>);
-
-    #[doc(alias = "pango_renderer_set_matrix")]
-    fn set_matrix(&self, matrix: Option<&Matrix>);
-}
-
-impl<O: IsA<Renderer>> RendererExt for O {
     fn activate(&self) {
         unsafe {
             ffi::pango_renderer_activate(self.as_ref().to_glib_none().0);
         }
     }
 
+    #[doc(alias = "pango_renderer_deactivate")]
     fn deactivate(&self) {
         unsafe {
             ffi::pango_renderer_deactivate(self.as_ref().to_glib_none().0);
         }
     }
 
+    #[doc(alias = "pango_renderer_draw_error_underline")]
     fn draw_error_underline(&self, x: i32, y: i32, width: i32, height: i32) {
         unsafe {
             ffi::pango_renderer_draw_error_underline(
@@ -117,6 +47,7 @@ impl<O: IsA<Renderer>> RendererExt for O {
         }
     }
 
+    #[doc(alias = "pango_renderer_draw_glyph")]
     fn draw_glyph(&self, font: &impl IsA<Font>, glyph: Glyph, x: f64, y: f64) {
         unsafe {
             ffi::pango_renderer_draw_glyph(
@@ -129,6 +60,7 @@ impl<O: IsA<Renderer>> RendererExt for O {
         }
     }
 
+    #[doc(alias = "pango_renderer_draw_glyph_item")]
     fn draw_glyph_item(&self, text: Option<&str>, glyph_item: &mut GlyphItem, x: i32, y: i32) {
         unsafe {
             ffi::pango_renderer_draw_glyph_item(
@@ -141,6 +73,7 @@ impl<O: IsA<Renderer>> RendererExt for O {
         }
     }
 
+    #[doc(alias = "pango_renderer_draw_glyphs")]
     fn draw_glyphs(&self, font: &impl IsA<Font>, glyphs: &mut GlyphString, x: i32, y: i32) {
         unsafe {
             ffi::pango_renderer_draw_glyphs(
@@ -153,6 +86,7 @@ impl<O: IsA<Renderer>> RendererExt for O {
         }
     }
 
+    #[doc(alias = "pango_renderer_draw_layout")]
     fn draw_layout(&self, layout: &Layout, x: i32, y: i32) {
         unsafe {
             ffi::pango_renderer_draw_layout(
@@ -164,6 +98,7 @@ impl<O: IsA<Renderer>> RendererExt for O {
         }
     }
 
+    #[doc(alias = "pango_renderer_draw_layout_line")]
     fn draw_layout_line(&self, line: &LayoutLine, x: i32, y: i32) {
         unsafe {
             ffi::pango_renderer_draw_layout_line(
@@ -175,6 +110,7 @@ impl<O: IsA<Renderer>> RendererExt for O {
         }
     }
 
+    #[doc(alias = "pango_renderer_draw_rectangle")]
     fn draw_rectangle(&self, part: RenderPart, x: i32, y: i32, width: i32, height: i32) {
         unsafe {
             ffi::pango_renderer_draw_rectangle(
@@ -188,6 +124,7 @@ impl<O: IsA<Renderer>> RendererExt for O {
         }
     }
 
+    #[doc(alias = "pango_renderer_draw_trapezoid")]
     fn draw_trapezoid(
         &self,
         part: RenderPart,
@@ -212,10 +149,14 @@ impl<O: IsA<Renderer>> RendererExt for O {
         }
     }
 
+    #[doc(alias = "pango_renderer_get_alpha")]
+    #[doc(alias = "get_alpha")]
     fn alpha(&self, part: RenderPart) -> u16 {
         unsafe { ffi::pango_renderer_get_alpha(self.as_ref().to_glib_none().0, part.into_glib()) }
     }
 
+    #[doc(alias = "pango_renderer_get_color")]
+    #[doc(alias = "get_color")]
     fn color(&self, part: RenderPart) -> Option<Color> {
         unsafe {
             from_glib_none(ffi::pango_renderer_get_color(
@@ -225,6 +166,8 @@ impl<O: IsA<Renderer>> RendererExt for O {
         }
     }
 
+    #[doc(alias = "pango_renderer_get_layout")]
+    #[doc(alias = "get_layout")]
     fn layout(&self) -> Option<Layout> {
         unsafe {
             from_glib_none(ffi::pango_renderer_get_layout(
@@ -233,6 +176,8 @@ impl<O: IsA<Renderer>> RendererExt for O {
         }
     }
 
+    #[doc(alias = "pango_renderer_get_layout_line")]
+    #[doc(alias = "get_layout_line")]
     fn layout_line(&self) -> Option<LayoutLine> {
         unsafe {
             from_glib_none(ffi::pango_renderer_get_layout_line(
@@ -241,6 +186,8 @@ impl<O: IsA<Renderer>> RendererExt for O {
         }
     }
 
+    #[doc(alias = "pango_renderer_get_matrix")]
+    #[doc(alias = "get_matrix")]
     fn matrix(&self) -> Option<Matrix> {
         unsafe {
             from_glib_none(ffi::pango_renderer_get_matrix(
@@ -249,18 +196,21 @@ impl<O: IsA<Renderer>> RendererExt for O {
         }
     }
 
+    #[doc(alias = "pango_renderer_part_changed")]
     fn part_changed(&self, part: RenderPart) {
         unsafe {
             ffi::pango_renderer_part_changed(self.as_ref().to_glib_none().0, part.into_glib());
         }
     }
 
+    #[doc(alias = "pango_renderer_set_alpha")]
     fn set_alpha(&self, part: RenderPart, alpha: u16) {
         unsafe {
             ffi::pango_renderer_set_alpha(self.as_ref().to_glib_none().0, part.into_glib(), alpha);
         }
     }
 
+    #[doc(alias = "pango_renderer_set_color")]
     fn set_color(&self, part: RenderPart, color: Option<&Color>) {
         unsafe {
             ffi::pango_renderer_set_color(
@@ -271,12 +221,15 @@ impl<O: IsA<Renderer>> RendererExt for O {
         }
     }
 
+    #[doc(alias = "pango_renderer_set_matrix")]
     fn set_matrix(&self, matrix: Option<&Matrix>) {
         unsafe {
             ffi::pango_renderer_set_matrix(self.as_ref().to_glib_none().0, matrix.to_glib_none().0);
         }
     }
 }
+
+impl<O: IsA<Renderer>> RendererExt for O {}
 
 impl fmt::Display for Renderer {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {

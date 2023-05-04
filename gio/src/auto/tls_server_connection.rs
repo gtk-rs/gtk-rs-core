@@ -43,26 +43,18 @@ impl TlsServerConnection {
     }
 }
 
-pub trait TlsServerConnectionExt: 'static {
+pub trait TlsServerConnectionExt: IsA<TlsServerConnection> + 'static {
     #[doc(alias = "authentication-mode")]
-    fn authentication_mode(&self) -> TlsAuthenticationMode;
-
-    #[doc(alias = "authentication-mode")]
-    fn set_authentication_mode(&self, authentication_mode: TlsAuthenticationMode);
-
-    #[doc(alias = "authentication-mode")]
-    fn connect_authentication_mode_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
-}
-
-impl<O: IsA<TlsServerConnection>> TlsServerConnectionExt for O {
     fn authentication_mode(&self) -> TlsAuthenticationMode {
         glib::ObjectExt::property(self.as_ref(), "authentication-mode")
     }
 
+    #[doc(alias = "authentication-mode")]
     fn set_authentication_mode(&self, authentication_mode: TlsAuthenticationMode) {
         glib::ObjectExt::set_property(self.as_ref(), "authentication-mode", authentication_mode)
     }
 
+    #[doc(alias = "authentication-mode")]
     fn connect_authentication_mode_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_authentication_mode_trampoline<
             P: IsA<TlsServerConnection>,
@@ -88,6 +80,8 @@ impl<O: IsA<TlsServerConnection>> TlsServerConnectionExt for O {
         }
     }
 }
+
+impl<O: IsA<TlsServerConnection>> TlsServerConnectionExt for O {}
 
 impl fmt::Display for TlsServerConnection {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {

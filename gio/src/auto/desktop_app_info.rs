@@ -4,7 +4,7 @@
 
 use crate::{AppInfo, AppLaunchContext};
 use glib::{prelude::*, translate::*};
-#[cfg(any(feature = "v2_60"))]
+#[cfg(feature = "v2_60")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
 use std::mem;
 use std::{boxed::Box as Box_, fmt, ptr};
@@ -157,7 +157,7 @@ impl DesktopAppInfo {
         }
     }
 
-    #[cfg(any(feature = "v2_60"))]
+    #[cfg(feature = "v2_60")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     #[doc(alias = "g_desktop_app_info_get_string_list")]
     #[doc(alias = "get_string_list")]

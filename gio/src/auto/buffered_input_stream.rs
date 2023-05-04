@@ -104,51 +104,8 @@ impl BufferedInputStreamBuilder {
     }
 }
 
-pub trait BufferedInputStreamExt: 'static {
+pub trait BufferedInputStreamExt: IsA<BufferedInputStream> + 'static {
     #[doc(alias = "g_buffered_input_stream_fill")]
-    fn fill(
-        &self,
-        count: isize,
-        cancellable: Option<&impl IsA<Cancellable>>,
-    ) -> Result<isize, glib::Error>;
-
-    #[doc(alias = "g_buffered_input_stream_fill_async")]
-    fn fill_async<P: FnOnce(Result<isize, glib::Error>) + 'static>(
-        &self,
-        count: isize,
-        io_priority: glib::Priority,
-        cancellable: Option<&impl IsA<Cancellable>>,
-        callback: P,
-    );
-
-    fn fill_future(
-        &self,
-        count: isize,
-        io_priority: glib::Priority,
-    ) -> Pin<Box_<dyn std::future::Future<Output = Result<isize, glib::Error>> + 'static>>;
-
-    #[doc(alias = "g_buffered_input_stream_get_available")]
-    #[doc(alias = "get_available")]
-    fn available(&self) -> usize;
-
-    #[doc(alias = "g_buffered_input_stream_get_buffer_size")]
-    #[doc(alias = "get_buffer_size")]
-    fn buffer_size(&self) -> usize;
-
-    #[doc(alias = "g_buffered_input_stream_peek_buffer")]
-    fn peek_buffer(&self) -> Vec<u8>;
-
-    #[doc(alias = "g_buffered_input_stream_read_byte")]
-    fn read_byte(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<i32, glib::Error>;
-
-    #[doc(alias = "g_buffered_input_stream_set_buffer_size")]
-    fn set_buffer_size(&self, size: usize);
-
-    #[doc(alias = "buffer-size")]
-    fn connect_buffer_size_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
-}
-
-impl<O: IsA<BufferedInputStream>> BufferedInputStreamExt for O {
     fn fill(
         &self,
         count: isize,
@@ -170,6 +127,7 @@ impl<O: IsA<BufferedInputStream>> BufferedInputStreamExt for O {
         }
     }
 
+    #[doc(alias = "g_buffered_input_stream_fill_async")]
     fn fill_async<P: FnOnce(Result<isize, glib::Error>) + 'static>(
         &self,
         count: isize,
@@ -237,14 +195,19 @@ impl<O: IsA<BufferedInputStream>> BufferedInputStreamExt for O {
         ))
     }
 
+    #[doc(alias = "g_buffered_input_stream_get_available")]
+    #[doc(alias = "get_available")]
     fn available(&self) -> usize {
         unsafe { ffi::g_buffered_input_stream_get_available(self.as_ref().to_glib_none().0) }
     }
 
+    #[doc(alias = "g_buffered_input_stream_get_buffer_size")]
+    #[doc(alias = "get_buffer_size")]
     fn buffer_size(&self) -> usize {
         unsafe { ffi::g_buffered_input_stream_get_buffer_size(self.as_ref().to_glib_none().0) }
     }
 
+    #[doc(alias = "g_buffered_input_stream_peek_buffer")]
     fn peek_buffer(&self) -> Vec<u8> {
         unsafe {
             let mut count = mem::MaybeUninit::uninit();
@@ -259,6 +222,7 @@ impl<O: IsA<BufferedInputStream>> BufferedInputStreamExt for O {
         }
     }
 
+    #[doc(alias = "g_buffered_input_stream_read_byte")]
     fn read_byte(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<i32, glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
@@ -275,12 +239,14 @@ impl<O: IsA<BufferedInputStream>> BufferedInputStreamExt for O {
         }
     }
 
+    #[doc(alias = "g_buffered_input_stream_set_buffer_size")]
     fn set_buffer_size(&self, size: usize) {
         unsafe {
             ffi::g_buffered_input_stream_set_buffer_size(self.as_ref().to_glib_none().0, size);
         }
     }
 
+    #[doc(alias = "buffer-size")]
     fn connect_buffer_size_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_buffer_size_trampoline<
             P: IsA<BufferedInputStream>,
@@ -306,6 +272,8 @@ impl<O: IsA<BufferedInputStream>> BufferedInputStreamExt for O {
         }
     }
 }
+
+impl<O: IsA<BufferedInputStream>> BufferedInputStreamExt for O {}
 
 impl fmt::Display for BufferedInputStream {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {

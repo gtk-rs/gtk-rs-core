@@ -44,44 +44,8 @@ impl TlsClientConnection {
     }
 }
 
-pub trait TlsClientConnectionExt: 'static {
+pub trait TlsClientConnectionExt: IsA<TlsClientConnection> + 'static {
     #[doc(alias = "g_tls_client_connection_copy_session_state")]
-    fn copy_session_state(&self, source: &impl IsA<TlsClientConnection>);
-
-    #[doc(alias = "g_tls_client_connection_get_accepted_cas")]
-    #[doc(alias = "get_accepted_cas")]
-    fn accepted_cas(&self) -> Vec<glib::ByteArray>;
-
-    #[doc(alias = "g_tls_client_connection_get_server_identity")]
-    #[doc(alias = "get_server_identity")]
-    fn server_identity(&self) -> Option<SocketConnectable>;
-
-    #[cfg_attr(feature = "v2_72", deprecated = "Since 2.72")]
-    #[allow(deprecated)]
-    #[doc(alias = "g_tls_client_connection_get_validation_flags")]
-    #[doc(alias = "get_validation_flags")]
-    fn validation_flags(&self) -> TlsCertificateFlags;
-
-    #[doc(alias = "g_tls_client_connection_set_server_identity")]
-    fn set_server_identity(&self, identity: &impl IsA<SocketConnectable>);
-
-    #[cfg_attr(feature = "v2_72", deprecated = "Since 2.72")]
-    #[allow(deprecated)]
-    #[doc(alias = "g_tls_client_connection_set_validation_flags")]
-    fn set_validation_flags(&self, flags: TlsCertificateFlags);
-
-    #[doc(alias = "accepted-cas")]
-    fn connect_accepted_cas_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
-
-    #[doc(alias = "server-identity")]
-    fn connect_server_identity_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
-
-    #[cfg_attr(feature = "v2_72", deprecated = "Since 2.72")]
-    #[doc(alias = "validation-flags")]
-    fn connect_validation_flags_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
-}
-
-impl<O: IsA<TlsClientConnection>> TlsClientConnectionExt for O {
     fn copy_session_state(&self, source: &impl IsA<TlsClientConnection>) {
         unsafe {
             ffi::g_tls_client_connection_copy_session_state(
@@ -91,6 +55,8 @@ impl<O: IsA<TlsClientConnection>> TlsClientConnectionExt for O {
         }
     }
 
+    #[doc(alias = "g_tls_client_connection_get_accepted_cas")]
+    #[doc(alias = "get_accepted_cas")]
     fn accepted_cas(&self) -> Vec<glib::ByteArray> {
         unsafe {
             FromGlibPtrContainer::from_glib_full(ffi::g_tls_client_connection_get_accepted_cas(
@@ -99,6 +65,8 @@ impl<O: IsA<TlsClientConnection>> TlsClientConnectionExt for O {
         }
     }
 
+    #[doc(alias = "g_tls_client_connection_get_server_identity")]
+    #[doc(alias = "get_server_identity")]
     fn server_identity(&self) -> Option<SocketConnectable> {
         unsafe {
             from_glib_none(ffi::g_tls_client_connection_get_server_identity(
@@ -107,7 +75,10 @@ impl<O: IsA<TlsClientConnection>> TlsClientConnectionExt for O {
         }
     }
 
+    #[cfg_attr(feature = "v2_72", deprecated = "Since 2.72")]
     #[allow(deprecated)]
+    #[doc(alias = "g_tls_client_connection_get_validation_flags")]
+    #[doc(alias = "get_validation_flags")]
     fn validation_flags(&self) -> TlsCertificateFlags {
         unsafe {
             from_glib(ffi::g_tls_client_connection_get_validation_flags(
@@ -116,6 +87,7 @@ impl<O: IsA<TlsClientConnection>> TlsClientConnectionExt for O {
         }
     }
 
+    #[doc(alias = "g_tls_client_connection_set_server_identity")]
     fn set_server_identity(&self, identity: &impl IsA<SocketConnectable>) {
         unsafe {
             ffi::g_tls_client_connection_set_server_identity(
@@ -125,7 +97,9 @@ impl<O: IsA<TlsClientConnection>> TlsClientConnectionExt for O {
         }
     }
 
+    #[cfg_attr(feature = "v2_72", deprecated = "Since 2.72")]
     #[allow(deprecated)]
+    #[doc(alias = "g_tls_client_connection_set_validation_flags")]
     fn set_validation_flags(&self, flags: TlsCertificateFlags) {
         unsafe {
             ffi::g_tls_client_connection_set_validation_flags(
@@ -135,6 +109,7 @@ impl<O: IsA<TlsClientConnection>> TlsClientConnectionExt for O {
         }
     }
 
+    #[doc(alias = "accepted-cas")]
     fn connect_accepted_cas_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_accepted_cas_trampoline<
             P: IsA<TlsClientConnection>,
@@ -160,6 +135,7 @@ impl<O: IsA<TlsClientConnection>> TlsClientConnectionExt for O {
         }
     }
 
+    #[doc(alias = "server-identity")]
     fn connect_server_identity_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_server_identity_trampoline<
             P: IsA<TlsClientConnection>,
@@ -185,6 +161,8 @@ impl<O: IsA<TlsClientConnection>> TlsClientConnectionExt for O {
         }
     }
 
+    #[cfg_attr(feature = "v2_72", deprecated = "Since 2.72")]
+    #[doc(alias = "validation-flags")]
     fn connect_validation_flags_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_validation_flags_trampoline<
             P: IsA<TlsClientConnection>,
@@ -210,6 +188,8 @@ impl<O: IsA<TlsClientConnection>> TlsClientConnectionExt for O {
         }
     }
 }
+
+impl<O: IsA<TlsClientConnection>> TlsClientConnectionExt for O {}
 
 impl fmt::Display for TlsClientConnection {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {

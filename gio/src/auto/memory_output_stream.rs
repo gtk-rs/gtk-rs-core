@@ -30,23 +30,14 @@ impl MemoryOutputStream {
     }
 }
 
-pub trait MemoryOutputStreamExt: 'static {
+pub trait MemoryOutputStreamExt: IsA<MemoryOutputStream> + 'static {
     #[doc(alias = "g_memory_output_stream_get_data_size")]
     #[doc(alias = "get_data_size")]
-    fn data_size(&self) -> usize;
-
-    #[doc(alias = "g_memory_output_stream_steal_as_bytes")]
-    fn steal_as_bytes(&self) -> glib::Bytes;
-
-    #[doc(alias = "data-size")]
-    fn connect_data_size_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
-}
-
-impl<O: IsA<MemoryOutputStream>> MemoryOutputStreamExt for O {
     fn data_size(&self) -> usize {
         unsafe { ffi::g_memory_output_stream_get_data_size(self.as_ref().to_glib_none().0) }
     }
 
+    #[doc(alias = "g_memory_output_stream_steal_as_bytes")]
     fn steal_as_bytes(&self) -> glib::Bytes {
         unsafe {
             from_glib_full(ffi::g_memory_output_stream_steal_as_bytes(
@@ -55,6 +46,7 @@ impl<O: IsA<MemoryOutputStream>> MemoryOutputStreamExt for O {
         }
     }
 
+    #[doc(alias = "data-size")]
     fn connect_data_size_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_data_size_trampoline<
             P: IsA<MemoryOutputStream>,
@@ -80,6 +72,8 @@ impl<O: IsA<MemoryOutputStream>> MemoryOutputStreamExt for O {
         }
     }
 }
+
+impl<O: IsA<MemoryOutputStream>> MemoryOutputStreamExt for O {}
 
 impl fmt::Display for MemoryOutputStream {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {

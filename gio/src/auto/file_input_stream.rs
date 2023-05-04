@@ -19,31 +19,8 @@ impl FileInputStream {
     pub const NONE: Option<&'static FileInputStream> = None;
 }
 
-pub trait FileInputStreamExt: 'static {
+pub trait FileInputStreamExt: IsA<FileInputStream> + 'static {
     #[doc(alias = "g_file_input_stream_query_info")]
-    fn query_info(
-        &self,
-        attributes: &str,
-        cancellable: Option<&impl IsA<Cancellable>>,
-    ) -> Result<FileInfo, glib::Error>;
-
-    #[doc(alias = "g_file_input_stream_query_info_async")]
-    fn query_info_async<P: FnOnce(Result<FileInfo, glib::Error>) + 'static>(
-        &self,
-        attributes: &str,
-        io_priority: glib::Priority,
-        cancellable: Option<&impl IsA<Cancellable>>,
-        callback: P,
-    );
-
-    fn query_info_future(
-        &self,
-        attributes: &str,
-        io_priority: glib::Priority,
-    ) -> Pin<Box_<dyn std::future::Future<Output = Result<FileInfo, glib::Error>> + 'static>>;
-}
-
-impl<O: IsA<FileInputStream>> FileInputStreamExt for O {
     fn query_info(
         &self,
         attributes: &str,
@@ -65,6 +42,7 @@ impl<O: IsA<FileInputStream>> FileInputStreamExt for O {
         }
     }
 
+    #[doc(alias = "g_file_input_stream_query_info_async")]
     fn query_info_async<P: FnOnce(Result<FileInfo, glib::Error>) + 'static>(
         &self,
         attributes: &str,
@@ -136,6 +114,8 @@ impl<O: IsA<FileInputStream>> FileInputStreamExt for O {
         ))
     }
 }
+
+impl<O: IsA<FileInputStream>> FileInputStreamExt for O {}
 
 impl fmt::Display for FileInputStream {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {

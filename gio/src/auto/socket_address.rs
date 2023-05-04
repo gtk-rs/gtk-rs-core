@@ -32,23 +32,9 @@ impl SocketAddress {
 unsafe impl Send for SocketAddress {}
 unsafe impl Sync for SocketAddress {}
 
-pub trait SocketAddressExt: 'static {
+pub trait SocketAddressExt: IsA<SocketAddress> + 'static {
     #[doc(alias = "g_socket_address_get_family")]
     #[doc(alias = "get_family")]
-    fn family(&self) -> SocketFamily;
-
-    #[doc(alias = "g_socket_address_get_native_size")]
-    #[doc(alias = "get_native_size")]
-    fn native_size(&self) -> isize;
-
-    //#[doc(alias = "g_socket_address_to_native")]
-    //fn to_native(&self, dest: /*Unimplemented*/Option<Basic: Pointer>, destlen: usize) -> Result<(), glib::Error>;
-
-    #[doc(alias = "family")]
-    fn connect_family_notify<F: Fn(&Self) + Send + Sync + 'static>(&self, f: F) -> SignalHandlerId;
-}
-
-impl<O: IsA<SocketAddress>> SocketAddressExt for O {
     fn family(&self) -> SocketFamily {
         unsafe {
             from_glib(ffi::g_socket_address_get_family(
@@ -57,14 +43,18 @@ impl<O: IsA<SocketAddress>> SocketAddressExt for O {
         }
     }
 
+    #[doc(alias = "g_socket_address_get_native_size")]
+    #[doc(alias = "get_native_size")]
     fn native_size(&self) -> isize {
         unsafe { ffi::g_socket_address_get_native_size(self.as_ref().to_glib_none().0) }
     }
 
+    //#[doc(alias = "g_socket_address_to_native")]
     //fn to_native(&self, dest: /*Unimplemented*/Option<Basic: Pointer>, destlen: usize) -> Result<(), glib::Error> {
     //    unsafe { TODO: call ffi:g_socket_address_to_native() }
     //}
 
+    #[doc(alias = "family")]
     fn connect_family_notify<F: Fn(&Self) + Send + Sync + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_family_trampoline<
             P: IsA<SocketAddress>,
@@ -90,6 +80,8 @@ impl<O: IsA<SocketAddress>> SocketAddressExt for O {
         }
     }
 }
+
+impl<O: IsA<SocketAddress>> SocketAddressExt for O {}
 
 impl fmt::Display for SocketAddress {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {

@@ -92,75 +92,9 @@ impl DataOutputStreamBuilder {
     }
 }
 
-pub trait DataOutputStreamExt: 'static {
+pub trait DataOutputStreamExt: IsA<DataOutputStream> + 'static {
     #[doc(alias = "g_data_output_stream_get_byte_order")]
     #[doc(alias = "get_byte_order")]
-    fn byte_order(&self) -> DataStreamByteOrder;
-
-    #[doc(alias = "g_data_output_stream_put_byte")]
-    fn put_byte(
-        &self,
-        data: u8,
-        cancellable: Option<&impl IsA<Cancellable>>,
-    ) -> Result<(), glib::Error>;
-
-    #[doc(alias = "g_data_output_stream_put_int16")]
-    fn put_int16(
-        &self,
-        data: i16,
-        cancellable: Option<&impl IsA<Cancellable>>,
-    ) -> Result<(), glib::Error>;
-
-    #[doc(alias = "g_data_output_stream_put_int32")]
-    fn put_int32(
-        &self,
-        data: i32,
-        cancellable: Option<&impl IsA<Cancellable>>,
-    ) -> Result<(), glib::Error>;
-
-    #[doc(alias = "g_data_output_stream_put_int64")]
-    fn put_int64(
-        &self,
-        data: i64,
-        cancellable: Option<&impl IsA<Cancellable>>,
-    ) -> Result<(), glib::Error>;
-
-    #[doc(alias = "g_data_output_stream_put_string")]
-    fn put_string(
-        &self,
-        str: &str,
-        cancellable: Option<&impl IsA<Cancellable>>,
-    ) -> Result<(), glib::Error>;
-
-    #[doc(alias = "g_data_output_stream_put_uint16")]
-    fn put_uint16(
-        &self,
-        data: u16,
-        cancellable: Option<&impl IsA<Cancellable>>,
-    ) -> Result<(), glib::Error>;
-
-    #[doc(alias = "g_data_output_stream_put_uint32")]
-    fn put_uint32(
-        &self,
-        data: u32,
-        cancellable: Option<&impl IsA<Cancellable>>,
-    ) -> Result<(), glib::Error>;
-
-    #[doc(alias = "g_data_output_stream_put_uint64")]
-    fn put_uint64(
-        &self,
-        data: u64,
-        cancellable: Option<&impl IsA<Cancellable>>,
-    ) -> Result<(), glib::Error>;
-
-    #[doc(alias = "g_data_output_stream_set_byte_order")]
-    fn set_byte_order(&self, order: DataStreamByteOrder);
-
-    #[doc(alias = "byte-order")]
-    fn connect_byte_order_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
-}
-
-impl<O: IsA<DataOutputStream>> DataOutputStreamExt for O {
     fn byte_order(&self) -> DataStreamByteOrder {
         unsafe {
             from_glib(ffi::g_data_output_stream_get_byte_order(
@@ -169,6 +103,7 @@ impl<O: IsA<DataOutputStream>> DataOutputStreamExt for O {
         }
     }
 
+    #[doc(alias = "g_data_output_stream_put_byte")]
     fn put_byte(
         &self,
         data: u8,
@@ -191,6 +126,7 @@ impl<O: IsA<DataOutputStream>> DataOutputStreamExt for O {
         }
     }
 
+    #[doc(alias = "g_data_output_stream_put_int16")]
     fn put_int16(
         &self,
         data: i16,
@@ -213,6 +149,7 @@ impl<O: IsA<DataOutputStream>> DataOutputStreamExt for O {
         }
     }
 
+    #[doc(alias = "g_data_output_stream_put_int32")]
     fn put_int32(
         &self,
         data: i32,
@@ -235,6 +172,7 @@ impl<O: IsA<DataOutputStream>> DataOutputStreamExt for O {
         }
     }
 
+    #[doc(alias = "g_data_output_stream_put_int64")]
     fn put_int64(
         &self,
         data: i64,
@@ -257,6 +195,7 @@ impl<O: IsA<DataOutputStream>> DataOutputStreamExt for O {
         }
     }
 
+    #[doc(alias = "g_data_output_stream_put_string")]
     fn put_string(
         &self,
         str: &str,
@@ -279,6 +218,7 @@ impl<O: IsA<DataOutputStream>> DataOutputStreamExt for O {
         }
     }
 
+    #[doc(alias = "g_data_output_stream_put_uint16")]
     fn put_uint16(
         &self,
         data: u16,
@@ -301,6 +241,7 @@ impl<O: IsA<DataOutputStream>> DataOutputStreamExt for O {
         }
     }
 
+    #[doc(alias = "g_data_output_stream_put_uint32")]
     fn put_uint32(
         &self,
         data: u32,
@@ -323,6 +264,7 @@ impl<O: IsA<DataOutputStream>> DataOutputStreamExt for O {
         }
     }
 
+    #[doc(alias = "g_data_output_stream_put_uint64")]
     fn put_uint64(
         &self,
         data: u64,
@@ -345,6 +287,7 @@ impl<O: IsA<DataOutputStream>> DataOutputStreamExt for O {
         }
     }
 
+    #[doc(alias = "g_data_output_stream_set_byte_order")]
     fn set_byte_order(&self, order: DataStreamByteOrder) {
         unsafe {
             ffi::g_data_output_stream_set_byte_order(
@@ -354,6 +297,7 @@ impl<O: IsA<DataOutputStream>> DataOutputStreamExt for O {
         }
     }
 
+    #[doc(alias = "byte-order")]
     fn connect_byte_order_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_byte_order_trampoline<
             P: IsA<DataOutputStream>,
@@ -379,6 +323,8 @@ impl<O: IsA<DataOutputStream>> DataOutputStreamExt for O {
         }
     }
 }
+
+impl<O: IsA<DataOutputStream>> DataOutputStreamExt for O {}
 
 impl fmt::Display for DataOutputStream {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {

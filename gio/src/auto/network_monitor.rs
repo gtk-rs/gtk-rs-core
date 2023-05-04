@@ -30,53 +30,8 @@ impl NetworkMonitor {
     }
 }
 
-pub trait NetworkMonitorExt: 'static {
+pub trait NetworkMonitorExt: IsA<NetworkMonitor> + 'static {
     #[doc(alias = "g_network_monitor_can_reach")]
-    fn can_reach(
-        &self,
-        connectable: &impl IsA<SocketConnectable>,
-        cancellable: Option<&impl IsA<Cancellable>>,
-    ) -> Result<(), glib::Error>;
-
-    #[doc(alias = "g_network_monitor_can_reach_async")]
-    fn can_reach_async<P: FnOnce(Result<(), glib::Error>) + 'static>(
-        &self,
-        connectable: &impl IsA<SocketConnectable>,
-        cancellable: Option<&impl IsA<Cancellable>>,
-        callback: P,
-    );
-
-    fn can_reach_future(
-        &self,
-        connectable: &(impl IsA<SocketConnectable> + Clone + 'static),
-    ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>>;
-
-    #[doc(alias = "g_network_monitor_get_connectivity")]
-    #[doc(alias = "get_connectivity")]
-    fn connectivity(&self) -> NetworkConnectivity;
-
-    #[doc(alias = "g_network_monitor_get_network_available")]
-    #[doc(alias = "get_network_available")]
-    fn is_network_available(&self) -> bool;
-
-    #[doc(alias = "g_network_monitor_get_network_metered")]
-    #[doc(alias = "get_network_metered")]
-    fn is_network_metered(&self) -> bool;
-
-    #[doc(alias = "network-changed")]
-    fn connect_network_changed<F: Fn(&Self, bool) + 'static>(&self, f: F) -> SignalHandlerId;
-
-    #[doc(alias = "connectivity")]
-    fn connect_connectivity_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
-
-    #[doc(alias = "network-available")]
-    fn connect_network_available_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
-
-    #[doc(alias = "network-metered")]
-    fn connect_network_metered_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
-}
-
-impl<O: IsA<NetworkMonitor>> NetworkMonitorExt for O {
     fn can_reach(
         &self,
         connectable: &impl IsA<SocketConnectable>,
@@ -99,6 +54,7 @@ impl<O: IsA<NetworkMonitor>> NetworkMonitorExt for O {
         }
     }
 
+    #[doc(alias = "g_network_monitor_can_reach_async")]
     fn can_reach_async<P: FnOnce(Result<(), glib::Error>) + 'static>(
         &self,
         connectable: &impl IsA<SocketConnectable>,
@@ -164,6 +120,8 @@ impl<O: IsA<NetworkMonitor>> NetworkMonitorExt for O {
         ))
     }
 
+    #[doc(alias = "g_network_monitor_get_connectivity")]
+    #[doc(alias = "get_connectivity")]
     fn connectivity(&self) -> NetworkConnectivity {
         unsafe {
             from_glib(ffi::g_network_monitor_get_connectivity(
@@ -172,6 +130,8 @@ impl<O: IsA<NetworkMonitor>> NetworkMonitorExt for O {
         }
     }
 
+    #[doc(alias = "g_network_monitor_get_network_available")]
+    #[doc(alias = "get_network_available")]
     fn is_network_available(&self) -> bool {
         unsafe {
             from_glib(ffi::g_network_monitor_get_network_available(
@@ -180,6 +140,8 @@ impl<O: IsA<NetworkMonitor>> NetworkMonitorExt for O {
         }
     }
 
+    #[doc(alias = "g_network_monitor_get_network_metered")]
+    #[doc(alias = "get_network_metered")]
     fn is_network_metered(&self) -> bool {
         unsafe {
             from_glib(ffi::g_network_monitor_get_network_metered(
@@ -188,6 +150,7 @@ impl<O: IsA<NetworkMonitor>> NetworkMonitorExt for O {
         }
     }
 
+    #[doc(alias = "network-changed")]
     fn connect_network_changed<F: Fn(&Self, bool) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn network_changed_trampoline<
             P: IsA<NetworkMonitor>,
@@ -216,6 +179,7 @@ impl<O: IsA<NetworkMonitor>> NetworkMonitorExt for O {
         }
     }
 
+    #[doc(alias = "connectivity")]
     fn connect_connectivity_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_connectivity_trampoline<
             P: IsA<NetworkMonitor>,
@@ -241,6 +205,7 @@ impl<O: IsA<NetworkMonitor>> NetworkMonitorExt for O {
         }
     }
 
+    #[doc(alias = "network-available")]
     fn connect_network_available_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_network_available_trampoline<
             P: IsA<NetworkMonitor>,
@@ -266,6 +231,7 @@ impl<O: IsA<NetworkMonitor>> NetworkMonitorExt for O {
         }
     }
 
+    #[doc(alias = "network-metered")]
     fn connect_network_metered_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_network_metered_trampoline<
             P: IsA<NetworkMonitor>,
@@ -291,6 +257,8 @@ impl<O: IsA<NetworkMonitor>> NetworkMonitorExt for O {
         }
     }
 }
+
+impl<O: IsA<NetworkMonitor>> NetworkMonitorExt for O {}
 
 impl fmt::Display for NetworkMonitor {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {

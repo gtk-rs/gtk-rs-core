@@ -23,21 +23,9 @@ impl DebugController {
     pub const NONE: Option<&'static DebugController> = None;
 }
 
-pub trait DebugControllerExt: 'static {
+pub trait DebugControllerExt: IsA<DebugController> + 'static {
     #[doc(alias = "g_debug_controller_get_debug_enabled")]
     #[doc(alias = "get_debug_enabled")]
-    fn is_debug_enabled(&self) -> bool;
-
-    #[doc(alias = "g_debug_controller_set_debug_enabled")]
-    fn set_debug_enabled(&self, debug_enabled: bool);
-
-    #[cfg(any(feature = "v2_72"))]
-    #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
-    #[doc(alias = "debug-enabled")]
-    fn connect_debug_enabled_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
-}
-
-impl<O: IsA<DebugController>> DebugControllerExt for O {
     fn is_debug_enabled(&self) -> bool {
         unsafe {
             from_glib(ffi::g_debug_controller_get_debug_enabled(
@@ -46,6 +34,7 @@ impl<O: IsA<DebugController>> DebugControllerExt for O {
         }
     }
 
+    #[doc(alias = "g_debug_controller_set_debug_enabled")]
     fn set_debug_enabled(&self, debug_enabled: bool) {
         unsafe {
             ffi::g_debug_controller_set_debug_enabled(
@@ -55,8 +44,9 @@ impl<O: IsA<DebugController>> DebugControllerExt for O {
         }
     }
 
-    #[cfg(any(feature = "v2_72"))]
+    #[cfg(feature = "v2_72")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
+    #[doc(alias = "debug-enabled")]
     fn connect_debug_enabled_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_debug_enabled_trampoline<
             P: IsA<DebugController>,
@@ -82,6 +72,8 @@ impl<O: IsA<DebugController>> DebugControllerExt for O {
         }
     }
 }
+
+impl<O: IsA<DebugController>> DebugControllerExt for O {}
 
 impl fmt::Display for DebugController {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {

@@ -61,7 +61,7 @@ impl Notification {
         }
     }
 
-    #[cfg(any(feature = "v2_70"))]
+    #[cfg(feature = "v2_70")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
     #[doc(alias = "g_notification_set_category")]
     pub fn set_category(&self, category: Option<&str>) {
