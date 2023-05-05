@@ -259,16 +259,11 @@ impl PropDesc {
             builder_fields,
         } = attrs;
 
-        let is_construct_only = if builder_fields.iter().any(|(k, _)| *k == "construct_only") {
-            // Insert a default setter automatically
-            if set.is_none() {
-                set = Some(MaybeCustomFn::Default);
-            }
-
-            true
-        } else {
-            false
-        };
+        let is_construct_only = builder_fields.iter().any(|(k, _)| *k == "construct_only");
+        if is_construct_only && set.is_none() {
+            // Insert a default internal setter automatically
+            set = Some(MaybeCustomFn::Default);
+        }
 
         if get.is_none() && set.is_none() {
             return Err(syn::Error::new(
