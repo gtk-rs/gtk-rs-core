@@ -6,7 +6,7 @@ use proc_macro_error::abort;
 use quote::{format_ident, quote};
 use syn::{Data, DeriveInput, Fields, FieldsNamed, FieldsUnnamed, Generics, Ident, Type};
 
-use crate::utils::{crate_ident_new, find_attribute_meta};
+use crate::utils::crate_ident_new;
 
 pub fn impl_variant(input: DeriveInput) -> TokenStream {
     match input.data {
@@ -627,31 +627,31 @@ fn derive_variant_for_c_enum(
 }
 
 fn get_enum_mode(attrs: &[syn::Attribute]) -> EnumMode {
-    let meta = find_attribute_meta(attrs, "variant_enum").unwrap();
+    let attr = attrs.iter().find(|a| a.path().is_ident("variant_enum"));
+
+    let attr = match attr {
+        Some(attr) => attr,
+        None => return EnumMode::String,
+    };
+
     let mut repr_attr = None;
     let mut mode = EnumMode::String;
-    if let Some(meta) = meta.as_ref() {
-        for nested in &meta.nested {
-            let meta = match nested {
-                syn::NestedMeta::Meta(m) => m,
-                syn::NestedMeta::Lit(s) => abort!(s, "wrong meta type"),
-            };
-            let meta = match meta {
-                syn::Meta::Path(p) => p,
-                _ => abort!(meta, "wrong meta type"),
-            };
-            let path = match meta.get_ident() {
-                Some(p) => p,
-                None => abort!(meta, "wrong meta type"),
-            };
-            match path.to_string().as_ref() {
-                "repr" => repr_attr = Some(path),
-                "enum" => mode = EnumMode::Enum { repr: false },
-                "flags" => mode = EnumMode::Flags { repr: false },
-                s => abort!(path, "Unknown variant_enum meta {}", s),
+    attr.parse_nested_meta(|meta| {
+        match meta.path.get_ident().map(|id| id.to_string()).as_deref() {
+            Some("repr") => {
+                repr_attr = Some(meta.path);
             }
+            Some("enum") => {
+                mode = EnumMode::Enum { repr: false };
+            }
+            Some("flags") => {
+                mode = EnumMode::Flags { repr: false };
+            }
+            _ => abort!(meta.path, "unknown type in #[variant_enum] attribute"),
         }
-    }
+        Ok(())
+    })
+    .unwrap();
     match mode {
         EnumMode::String if repr_attr.is_some() => {
             let repr_attr = repr_attr.unwrap();
@@ -674,18 +674,15 @@ fn get_enum_mode(attrs: &[syn::Attribute]) -> EnumMode {
 }
 
 fn get_repr(attrs: &[syn::Attribute]) -> Option<Ident> {
-    let list = find_attribute_meta(attrs, "repr").ok()??;
-    for nested in list.nested {
-        if let syn::NestedMeta::Meta(meta @ syn::Meta::Path(_)) = nested {
-            if let Some(ty) = meta.path().get_ident() {
-                match ty.to_string().as_str() {
-                    "i8" | "i16" | "i32" | "i64" | "u8" | "u16" | "u32" | "u64" => {
-                        return Some(ty.clone())
-                    }
-                    _ => (),
-                }
-            }
-        }
+    let attr = attrs.iter().find(|a| a.path().is_ident("repr"))?;
+    let mut repr_ty = None;
+    attr.parse_nested_meta(|meta| {
+        repr_ty = Some(meta.path.get_ident().unwrap().clone());
+        Ok(())
+    })
+    .unwrap();
+    match repr_ty.as_ref()?.to_string().as_str() {
+        "i8" | "i16" | "i32" | "i64" | "u8" | "u16" | "u32" | "u64" => Some(repr_ty?),
+        _ => None,
     }
-    None
 }

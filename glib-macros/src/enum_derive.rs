@@ -6,9 +6,7 @@ use proc_macro_error::abort_call_site;
 use quote::{quote, quote_spanned};
 use syn::{punctuated::Punctuated, spanned::Spanned, token::Comma, Data, Ident, Variant};
 
-use crate::utils::{
-    crate_ident_new, gen_enum_from_glib, parse_item_attributes, parse_name, ItemAttribute,
-};
+use crate::utils::{crate_ident_new, gen_enum_from_glib, parse_nested_meta_items, NestedMetaItem};
 
 // Generate glib::gobject_ffi::GEnumValue structs mapping the enum such as:
 //     glib::gobject_ffi::GEnumValue {
@@ -29,21 +27,17 @@ fn gen_enum_values(
         let mut value_name = name.to_string().to_upper_camel_case();
         let mut value_nick = name.to_string().to_kebab_case();
 
-        let attrs = parse_item_attributes("enum_value", &v.attrs);
-        let attrs = match attrs {
-            Ok(attrs) => attrs,
-            Err(e) => abort_call_site!(
-                "{}: derive(glib::Enum) enum supports only the following optional attributes: #[enum_value(name = \"The Cat\", nick = \"chat\")]",
-                e
-            ),
-        };
+        let mut name_attr = NestedMetaItem::<syn::LitStr>::new("name").value_required();
+        let mut nick = NestedMetaItem::<syn::LitStr>::new("nick").value_required();
 
-        attrs.into_iter().for_each(|attr|
-            match attr {
-                ItemAttribute::Name(n) => value_name = n,
-                ItemAttribute::Nick(n) => value_nick = n,
-            }
-        );
+        let found =
+            parse_nested_meta_items(&v.attrs, "enum_value", &mut [&mut name_attr, &mut nick]);
+        if let Err(e) = found {
+            return e.to_compile_error();
+        }
+
+        value_name = name_attr.value.map(|s| s.value()).unwrap_or(value_name);
+        value_nick = nick.value.map(|s| s.value()).unwrap_or(value_nick);
 
         let value_name = format!("{value_name}\0");
         let value_nick = format!("{value_nick}\0");
@@ -73,14 +67,19 @@ pub fn impl_enum(input: &syn::DeriveInput) -> TokenStream {
         _ => abort_call_site!("#[derive(glib::Enum)] only supports enums"),
     };
 
-    let gtype_name = match parse_name(input, "enum_type") {
-        Ok(name) => name,
-        Err(e) => abort_call_site!(
-            "{}: #[derive(glib::Enum)] requires #[enum_type(name = \"EnumTypeName\")]",
-            e
-        ),
-    };
+    let mut gtype_name = NestedMetaItem::<syn::LitStr>::new("name")
+        .required()
+        .value_required();
+    let found = parse_nested_meta_items(&input.attrs, "enum_type", &mut [&mut gtype_name]);
 
+    match found {
+        Ok(None) => {
+            abort_call_site!("#[derive(glib::Enum)] requires #[enum_type(name = \"EnumTypeName\")]")
+        }
+        Err(e) => return e.to_compile_error(),
+        Ok(attr) => attr,
+    };
+    let gtype_name = gtype_name.value.unwrap();
     let from_glib = gen_enum_from_glib(name, enum_variants);
     let (enum_values, nb_enum_values) = gen_enum_values(name, enum_variants);
 

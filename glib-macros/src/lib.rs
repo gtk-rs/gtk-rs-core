@@ -16,9 +16,11 @@ mod variant_derive;
 
 mod utils;
 
+use flags_attribute::AttrInput;
 use proc_macro::TokenStream;
 use proc_macro_error::proc_macro_error;
-use syn::{parse_macro_input, DeriveInput, NestedMeta};
+use syn::{parse_macro_input, DeriveInput};
+use utils::{parse_nested_meta_items_from_stream, NestedMetaItem};
 
 /// Macro for passing variables as strong or weak references into a closure.
 ///
@@ -498,9 +500,19 @@ pub fn enum_derive(input: TokenStream) -> TokenStream {
 #[proc_macro_attribute]
 #[proc_macro_error]
 pub fn flags(attr: TokenStream, item: TokenStream) -> TokenStream {
-    let attr_meta = parse_macro_input!(attr as NestedMeta);
+    let mut name = NestedMetaItem::<syn::LitStr>::new("name")
+        .required()
+        .value_required();
+
+    if let Err(e) = parse_nested_meta_items_from_stream(attr.into(), &mut [&mut name]) {
+        return e.to_compile_error().into();
+    }
+
+    let attr_meta = AttrInput {
+        enum_name: name.value.unwrap(),
+    };
     let input = parse_macro_input!(item as DeriveInput);
-    let gen = flags_attribute::impl_flags(&attr_meta, &input);
+    let gen = flags_attribute::impl_flags(attr_meta, &input);
     gen.into()
 }
 
