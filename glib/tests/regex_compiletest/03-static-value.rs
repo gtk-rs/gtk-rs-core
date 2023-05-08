@@ -1,6 +1,6 @@
 #![allow(unused)]
 
-use glib::ToValue;
+use glib::prelude::*;
 
 fn main() {
     let r = glib::Regex::new(

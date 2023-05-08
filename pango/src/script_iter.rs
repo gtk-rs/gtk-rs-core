@@ -41,7 +41,7 @@ impl<'text> Drop for ScriptIter<'text> {
 
 #[cfg(feature = "v1_44")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
-impl<'text> glib::StaticType for ScriptIter<'text> {
+impl<'text> glib::prelude::StaticType for ScriptIter<'text> {
     #[inline]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::pango_script_iter_get_type()) }

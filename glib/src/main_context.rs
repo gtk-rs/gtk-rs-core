@@ -2,7 +2,7 @@
 
 use std::mem;
 
-use ffi::{self, gboolean, gpointer};
+use ffi::{gboolean, gpointer};
 
 use crate::{source::Priority, translate::*, MainContext, Source, SourceId};
 

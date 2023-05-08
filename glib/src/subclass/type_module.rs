@@ -1,6 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::{subclass::prelude::*, translate::*, Cast, TypeModule};
+use crate::{prelude::*, subclass::prelude::*, translate::*, TypeModule};
 
 pub trait TypeModuleImpl: ObjectImpl + TypeModuleImplExt {
     // rustdoc-stripper-ignore-next
@@ -97,7 +97,7 @@ unsafe extern "C" fn unload<T: TypeModuleImpl>(type_module: *mut gobject_ffi::GT
 
 #[cfg(test)]
 mod tests {
-    use crate::{self as glib, prelude::TypeModuleExt};
+    use crate as glib;
 
     use super::*;
 
@@ -158,8 +158,8 @@ mod tests {
         assert!(!imp::SimpleModuleType::type_().is_valid());
         let simple_module = glib::Object::new::<SimpleModule>();
         // simulates the GLib type system to load the module.
-        assert!(simple_module.use_());
+        assert!(TypeModuleExt::use_(&simple_module));
         assert!(imp::SimpleModuleType::type_().is_valid());
-        simple_module.unuse();
+        TypeModuleExt::unuse(&simple_module);
     }
 }

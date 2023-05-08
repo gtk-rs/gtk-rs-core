@@ -1,6 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use glib::{prelude::*, translate::*, variant::FromVariant, BoolError, IntoStrV, StrV, Variant};
+use glib::{prelude::*, translate::*, BoolError, StrV, Variant};
 
 use crate::{prelude::*, Settings, SettingsBindFlags};
 

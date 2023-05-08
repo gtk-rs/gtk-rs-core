@@ -221,7 +221,7 @@ pub fn impl_flags(attrs: AttrInput, input: &mut syn::ItemEnum) -> TokenStream {
 
             #[inline]
             fn value_type(&self) -> #crate_ident::Type {
-                <Self as #crate_ident::StaticType>::static_type()
+                <Self as #crate_ident::prelude::StaticType>::static_type()
             }
         }
 
@@ -242,7 +242,7 @@ pub fn impl_flags(attrs: AttrInput, input: &mut syn::ItemEnum) -> TokenStream {
             }
         }
 
-        impl #crate_ident::StaticType for #name {
+        impl #crate_ident::prelude::StaticType for #name {
             #[inline]
             fn static_type() -> #crate_ident::Type {
                 Self::register_flags()

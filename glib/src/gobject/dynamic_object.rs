@@ -4,7 +4,7 @@ use crate::{
     enums::{EnumValues, FlagsValues},
     prelude::*,
     subclass::prelude::*,
-    InterfaceInfo, IsA, TypeFlags, TypeInfo, TypeModule, TypePlugin,
+    InterfaceInfo, TypeFlags, TypeInfo, TypeModule, TypePlugin,
 };
 
 mod sealed {

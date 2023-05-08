@@ -13,7 +13,7 @@ use std::{
     ptr, slice,
 };
 
-use crate::{prelude::*, translate::*, value::FromValue, Type, Value};
+use crate::{prelude::*, translate::*, Type, Value};
 
 // rustdoc-stripper-ignore-next
 /// Representation of a borrowed [`GString`].
@@ -592,7 +592,7 @@ impl FromGlibPtrNone<*mut i8> for &GStr {
     }
 }
 
-unsafe impl<'a> FromValue<'a> for &'a GStr {
+unsafe impl<'a> crate::value::FromValue<'a> for &'a GStr {
     type Checker = crate::value::GenericValueTypeOrNoneChecker<Self>;
 
     #[inline]
@@ -2249,7 +2249,7 @@ impl crate::value::ValueType for Vec<GString> {
     type Type = Vec<GString>;
 }
 
-unsafe impl<'a> FromValue<'a> for Vec<GString> {
+unsafe impl<'a> crate::value::FromValue<'a> for Vec<GString> {
     type Checker = crate::value::GenericValueTypeChecker<Self>;
 
     #[inline]

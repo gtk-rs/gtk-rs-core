@@ -2,7 +2,7 @@
 
 use std::{future::Future, io::Read, mem, path::Path, pin::Pin, ptr, slice};
 
-use glib::{object::IsA, translate::*, Error};
+use glib::{prelude::*, translate::*, Error};
 use libc::{c_uchar, c_void};
 
 use crate::{Colorspace, Pixbuf, PixbufFormat};

@@ -2,7 +2,7 @@
 
 use std::{ptr, sync::OnceLock};
 
-use glib::{prelude::*, subclass::prelude::*, translate::*, Cast, Error};
+use glib::{prelude::*, subclass::prelude::*, translate::*, Error};
 
 use crate::{Cancellable, IOStream, InputStream, OutputStream};
 

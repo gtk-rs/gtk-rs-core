@@ -11,7 +11,7 @@ mod sealed {
 
 pub trait DebugControllerDBusExtManual: sealed::Sealed + IsA<DebugControllerDBus> + Sized {
     fn connection(&self) -> DBusConnection {
-        glib::ObjectExt::property(self.as_ref(), "connection")
+        ObjectExt::property(self.as_ref(), "connection")
     }
 }
 

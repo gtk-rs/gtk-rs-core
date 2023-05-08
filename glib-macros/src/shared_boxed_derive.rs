@@ -154,7 +154,7 @@ pub fn impl_shared_boxed(input: &syn::DeriveInput) -> syn::Result<proc_macro2::T
             }
         }
 
-        impl #crate_ident::StaticType for #name {
+        impl #crate_ident::prelude::StaticType for #name {
             #[inline]
             fn static_type() -> #crate_ident::Type {
                 static TYPE: ::std::sync::OnceLock<#crate_ident::Type> = ::std::sync::OnceLock::new();
@@ -173,7 +173,7 @@ pub fn impl_shared_boxed(input: &syn::DeriveInput) -> syn::Result<proc_macro2::T
             fn to_value(&self) -> #crate_ident::Value {
                 unsafe {
                     let ptr = #refcounted_type_prefix::into_raw(self.0.clone());
-                    let mut value = #crate_ident::Value::from_type_unchecked(<#name as #crate_ident::StaticType>::static_type());
+                    let mut value = #crate_ident::Value::from_type_unchecked(<#name as #crate_ident::prelude::StaticType>::static_type());
                     #crate_ident::gobject_ffi::g_value_take_boxed(
                         #crate_ident::translate::ToGlibPtrMut::to_glib_none_mut(&mut value).0,
                         ptr as *mut _
@@ -184,7 +184,7 @@ pub fn impl_shared_boxed(input: &syn::DeriveInput) -> syn::Result<proc_macro2::T
 
             #[inline]
             fn value_type(&self) -> #crate_ident::Type {
-                <#name as #crate_ident::StaticType>::static_type()
+                <#name as #crate_ident::prelude::StaticType>::static_type()
             }
         }
 
@@ -192,7 +192,7 @@ pub fn impl_shared_boxed(input: &syn::DeriveInput) -> syn::Result<proc_macro2::T
             #[inline]
             fn from(v: #name) -> Self {
                 unsafe {
-                    let mut value = #crate_ident::Value::from_type_unchecked(<#name as #crate_ident::StaticType>::static_type());
+                    let mut value = #crate_ident::Value::from_type_unchecked(<#name as #crate_ident::prelude::StaticType>::static_type());
                     #crate_ident::gobject_ffi::g_value_take_boxed(
                         #crate_ident::translate::ToGlibPtrMut::to_glib_none_mut(&mut value).0,
                         #crate_ident::translate::IntoGlibPtr::<*mut #refcounted_type_prefix::InnerType>::into_glib_ptr(v) as *mut _,

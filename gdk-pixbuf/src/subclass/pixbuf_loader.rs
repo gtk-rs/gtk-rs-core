@@ -3,7 +3,7 @@
 // rustdoc-stripper-ignore-next
 //! Traits intended for subclassing [`PixbufLoader`](crate::PixbufLoader).
 
-use glib::{subclass::prelude::*, translate::*, Cast};
+use glib::{prelude::*, subclass::prelude::*, translate::*};
 
 use crate::PixbufLoader;
 

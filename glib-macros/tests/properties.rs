@@ -403,11 +403,9 @@ fn keyword_propnames() {
     mod kw_names {
         mod imp {
 
-            use glib::subclass::object::DerivedObjectProperties;
-            use glib::ObjectExt;
             use std::cell::Cell;
 
-            use glib::subclass::{prelude::ObjectImpl, types::ObjectSubclass};
+            use glib::{prelude::*, subclass::prelude::*};
             use glib_macros::Properties;
 
             #[derive(Properties, Default)]

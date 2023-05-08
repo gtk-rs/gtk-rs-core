@@ -1,6 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use glib::{bitflags, prelude::*, translate::*, value::FromValue, Type};
+use glib::{bitflags, prelude::*, translate::*, Type};
 
 bitflags::bitflags! {
     #[doc(alias = "GSocketMsgFlags")]
@@ -46,7 +46,7 @@ impl glib::value::ValueType for SocketMsgFlags {
     type Type = Self;
 }
 
-unsafe impl<'a> FromValue<'a> for SocketMsgFlags {
+unsafe impl<'a> glib::value::FromValue<'a> for SocketMsgFlags {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     unsafe fn from_value(value: &'a glib::Value) -> Self {

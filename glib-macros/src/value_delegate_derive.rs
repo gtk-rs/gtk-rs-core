@@ -153,9 +153,9 @@ pub fn impl_value_delegate(input: ValueDelegateInput) -> syn::Result<proc_macro:
     };
 
     let res = quote! {
-        impl #crate_ident::types::StaticType for #ident {
+        impl #crate_ident::prelude::StaticType for #ident {
             fn static_type() -> glib::types::Type {
-                <#delegated_ty as #crate_ident::types::StaticType>::static_type()
+                <#delegated_ty as #crate_ident::prelude::StaticType>::static_type()
             }
         }
 
@@ -192,7 +192,7 @@ pub fn impl_value_delegate(input: ValueDelegateInput) -> syn::Result<proc_macro:
             type BuilderFn = <#delegated_ty as #crate_ident::HasParamSpec>::BuilderFn;
 
             fn param_spec_builder() -> Self::BuilderFn {
-                <#delegated_ty as #crate_ident::HasParamSpec>::param_spec_builder()
+                <#delegated_ty as #crate_ident::prelude::HasParamSpec>::param_spec_builder()
             }
         }
     };

@@ -2,11 +2,7 @@
 
 use std::{cmp, ffi::CStr, fmt, ops::Deref, ptr};
 
-use crate::{
-    translate::*,
-    value::{FromValue, ValueTypeChecker},
-    HasParamSpec, ParamSpecEnum, ParamSpecFlags, StaticType, Type, TypeInfo, Value,
-};
+use crate::{prelude::*, translate::*, ParamSpecEnum, ParamSpecFlags, Type, TypeInfo, Value};
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Hash)]
 pub enum UserDirectory {
@@ -339,7 +335,7 @@ impl UnsafeFrom<gobject_ffi::GEnumValue> for EnumValue {
     }
 }
 
-unsafe impl<'a, 'b> FromValue<'a> for &'b EnumValue {
+unsafe impl<'a, 'b> crate::value::FromValue<'a> for &'b EnumValue {
     type Checker = EnumTypeChecker;
 
     unsafe fn from_value(value: &'a Value) -> Self {
@@ -371,7 +367,7 @@ pub type EnumValuesStorage<const N: usize> = EnumerationValuesStorage<EnumValue,
 pub type EnumValues = EnumerationValues<EnumValue>;
 
 pub struct EnumTypeChecker();
-unsafe impl ValueTypeChecker for EnumTypeChecker {
+unsafe impl crate::value::ValueTypeChecker for EnumTypeChecker {
     type Error = InvalidEnumError;
 
     fn check(value: &Value) -> Result<(), Self::Error> {
@@ -1044,7 +1040,7 @@ impl<'a> FlagsBuilder<'a> {
     }
 }
 
-unsafe impl<'a, 'b> FromValue<'a> for Vec<&'b FlagsValue> {
+unsafe impl<'a, 'b> crate::value::FromValue<'a> for Vec<&'b FlagsValue> {
     type Checker = FlagsTypeChecker;
 
     unsafe fn from_value(value: &'a Value) -> Self {
@@ -1055,7 +1051,7 @@ unsafe impl<'a, 'b> FromValue<'a> for Vec<&'b FlagsValue> {
 }
 
 pub struct FlagsTypeChecker();
-unsafe impl ValueTypeChecker for FlagsTypeChecker {
+unsafe impl crate::value::ValueTypeChecker for FlagsTypeChecker {
     type Error = InvalidFlagsError;
 
     fn check(value: &Value) -> Result<(), Self::Error> {

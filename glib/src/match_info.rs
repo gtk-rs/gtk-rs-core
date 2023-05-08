@@ -1,6 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::{translate::*, GStr, IntoGStr, Regex};
+use crate::{prelude::*, translate::*, GStr, Regex};
 use std::{marker::PhantomData, mem, ptr};
 
 #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
@@ -160,7 +160,7 @@ impl<'input> IntoGlibPtr<*const ffi::GMatchInfo> for MatchInfo<'input> {
         ToGlibPtr::<*const ffi::GMatchInfo>::to_glib_none(&*s).0 as *const _
     }
 }
-impl<'input> crate::types::StaticType for MatchInfo<'input> {
+impl<'input> StaticType for MatchInfo<'input> {
     #[inline]
     fn static_type() -> crate::types::Type {
         unsafe { from_glib(ffi::g_match_info_get_type()) }
@@ -168,7 +168,7 @@ impl<'input> crate::types::StaticType for MatchInfo<'input> {
 }
 
 #[doc(hidden)]
-impl crate::value::ValueType for MatchInfo<'static> {
+impl ValueType for MatchInfo<'static> {
     type Type = Self;
 }
 
@@ -206,12 +206,11 @@ unsafe impl<'a, 'input: 'a> crate::value::FromValue<'a> for &'a MatchInfo<'input
         )
     }
 }
-impl crate::value::ToValue for MatchInfo<'static> {
+impl ToValue for MatchInfo<'static> {
     #[inline]
     fn to_value(&self) -> crate::Value {
         unsafe {
-            let mut value =
-                crate::Value::from_type_unchecked(<Self as crate::StaticType>::static_type());
+            let mut value = crate::Value::from_type_unchecked(<Self as StaticType>::static_type());
             crate::gobject_ffi::g_value_take_boxed(
                 crate::translate::ToGlibPtrMut::to_glib_none_mut(&mut value).0,
                 crate::translate::ToGlibPtr::<*mut ffi::GMatchInfo>::to_glib_full(self) as *mut _,
@@ -222,7 +221,7 @@ impl crate::value::ToValue for MatchInfo<'static> {
 
     #[inline]
     fn value_type(&self) -> crate::Type {
-        <Self as crate::StaticType>::static_type()
+        <Self as StaticType>::static_type()
     }
 }
 
@@ -231,7 +230,7 @@ impl From<MatchInfo<'static>> for crate::Value {
     fn from(s: MatchInfo<'static>) -> Self {
         unsafe {
             let mut value = crate::Value::from_type_unchecked(
-                <MatchInfo<'static> as crate::StaticType>::static_type(),
+                <MatchInfo<'static> as StaticType>::static_type(),
             );
             crate::gobject_ffi::g_value_take_boxed(
                 crate::translate::ToGlibPtrMut::to_glib_none_mut(&mut value).0,
@@ -258,7 +257,7 @@ impl crate::value::ToValueOptional for MatchInfo<'static> {
     }
 }
 
-impl crate::HasParamSpec for MatchInfo<'static> {
+impl HasParamSpec for MatchInfo<'static> {
     type ParamSpec = crate::ParamSpecBoxed;
     type SetValue = Self;
     type BuilderFn = fn(&str) -> crate::ParamSpecBoxedBuilder<Self>;

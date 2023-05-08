@@ -2,7 +2,7 @@
 
 use std::ptr;
 
-use glib::{subclass::prelude::*, translate::*, Cast, Error};
+use glib::{prelude::*, subclass::prelude::*, translate::*, Error};
 
 use crate::{Cancellable, InputStream, OutputStream, OutputStreamSpliceFlags};
 

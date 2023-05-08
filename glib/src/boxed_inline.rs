@@ -546,7 +546,7 @@ macro_rules! glib_boxed_inline_wrapper {
     (@value_impl $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)?, $ffi_name:ty) => { };
 
     (@value_impl $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)?, $ffi_name:ty, @type_ $get_type_expr:expr) => {
-        impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::types::StaticType for $name $(<$($generic),+>)? {
+        impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::prelude::StaticType for $name $(<$($generic),+>)? {
             #[inline]
             fn static_type() -> $crate::types::Type {
                 #[allow(unused_unsafe)]
@@ -591,7 +591,7 @@ macro_rules! glib_boxed_inline_wrapper {
             #[inline]
             fn to_value(&self) -> $crate::Value {
                 unsafe {
-                    let mut value = $crate::Value::from_type_unchecked(<Self as $crate::StaticType>::static_type());
+                    let mut value = $crate::Value::from_type_unchecked(<Self as $crate::prelude::StaticType>::static_type());
                     $crate::gobject_ffi::g_value_set_boxed(
                         $crate::translate::ToGlibPtrMut::to_glib_none_mut(&mut value).0,
                         $crate::translate::ToGlibPtr::<*const $ffi_name>::to_glib_none(self).0 as *mut _,
@@ -602,7 +602,7 @@ macro_rules! glib_boxed_inline_wrapper {
 
             #[inline]
             fn value_type(&self) -> $crate::Type {
-                <Self as $crate::StaticType>::static_type()
+                <Self as $crate::prelude::StaticType>::static_type()
             }
         }
 
@@ -630,7 +630,7 @@ macro_rules! glib_boxed_inline_wrapper {
             }
         }
 
-        impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::HasParamSpec for $name $(<$($generic),+>)? {
+        impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::prelude::HasParamSpec for $name $(<$($generic),+>)? {
             type ParamSpec = $crate::ParamSpecBoxed;
             type SetValue = Self;
             type BuilderFn = fn(&str) -> $crate::ParamSpecBoxedBuilder<Self>;

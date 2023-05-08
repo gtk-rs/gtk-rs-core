@@ -12,7 +12,7 @@ use std::{
     ptr,
 };
 
-use crate::{translate::*, IntoGStr, ObjectType, Slice, TypeFlags, TypePlugin};
+use crate::{prelude::*, translate::*, Slice, TypeFlags, TypePlugin};
 
 // rustdoc-stripper-ignore-next
 /// A GLib or GLib-based library type

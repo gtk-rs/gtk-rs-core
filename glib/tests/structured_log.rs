@@ -5,13 +5,13 @@
 fn structured_log() {
     use std::sync::{Arc, Mutex};
 
-    use glib::*;
+    use glib::{gstr, prelude::*, GString, LogField, LogLevel};
 
     let log = Arc::new(Mutex::new(Vec::new()));
     {
         let log = log.clone();
         // can only be called once per test file
-        log_set_writer_func(move |level, fields| {
+        glib::log_set_writer_func(move |level, fields| {
             let fields = fields
                 .iter()
                 .map(|f| {
@@ -25,10 +25,10 @@ fn structured_log() {
                 })
                 .collect::<Vec<_>>();
             log.lock().unwrap().push((level, fields));
-            LogWriterOutput::Handled
+            glib::LogWriterOutput::Handled
         });
     }
-    log_structured!(
+    glib::log_structured!(
         "test",
         LogLevel::Message,
         {
@@ -38,7 +38,7 @@ fn structured_log() {
         }
     );
 
-    log_structured!(
+    glib::log_structured!(
         None,
         LogLevel::Message,
         {
@@ -49,7 +49,7 @@ fn structured_log() {
             GString::from("MY_META3") => b"bstring".to_owned();
         }
     );
-    log_structured_array(
+    glib::log_structured_array(
         LogLevel::Warning,
         &[
             LogField::new(
@@ -61,7 +61,7 @@ fn structured_log() {
             LogField::new_user_data(gstr!("SOMEDATA"), 12345),
         ],
     );
-    let dict = VariantDict::new(None);
+    let dict = glib::VariantDict::new(None);
     dict.insert_value(
         "MESSAGE_ID",
         &"9e093d0fac2f4d50838a649796ab154b".to_variant(),
@@ -69,7 +69,7 @@ fn structured_log() {
     dict.insert_value("RELEASE", &"true".to_variant());
     dict.insert_value("MY_BYTES", &"123".as_bytes().to_variant());
     dict.insert_value("MESSAGE", &"from variant".to_variant());
-    log_variant(Some("test"), LogLevel::Debug, &dict.end());
+    glib::log_variant(Some("test"), LogLevel::Debug, &dict.end());
 
     let log = std::mem::take(&mut *log.lock().unwrap());
     let log = log

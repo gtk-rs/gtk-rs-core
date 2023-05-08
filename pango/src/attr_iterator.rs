@@ -36,7 +36,7 @@ impl<'list> Drop for AttrIterator<'list> {
 
 #[cfg(feature = "v1_44")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
-impl<'list> glib::StaticType for AttrIterator<'list> {
+impl<'list> glib::prelude::StaticType for AttrIterator<'list> {
     #[inline]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::pango_attr_iterator_get_type()) }

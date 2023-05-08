@@ -1,6 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::translate::*;
+use crate::{prelude::*, translate::*};
 
 // rustdoc-stripper-ignore-next
 /// Continue calling the closure in the future iterations or drop it.
@@ -85,13 +85,13 @@ impl FromGlib<ffi::gboolean> for ControlFlow {
     }
 }
 
-impl crate::ToValue for ControlFlow {
+impl crate::value::ToValue for ControlFlow {
     fn to_value(&self) -> crate::Value {
         bool::from(*self).to_value()
     }
 
     fn value_type(&self) -> crate::Type {
-        <bool as crate::StaticType>::static_type()
+        <bool as StaticType>::static_type()
     }
 }
 
