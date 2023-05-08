@@ -166,7 +166,7 @@ impl DBusMessage {
         unsafe { from_glib(ffi::g_dbus_message_get_message_type(self.to_glib_none().0)) }
     }
 
-    #[cfg(any(unix))]
+    #[cfg(unix)]
     #[cfg_attr(docsrs, doc(cfg(unix)))]
     #[doc(alias = "g_dbus_message_get_num_unix_fds")]
     #[doc(alias = "get_num_unix_fds")]
@@ -204,7 +204,7 @@ impl DBusMessage {
         unsafe { from_glib_none(ffi::g_dbus_message_get_signature(self.to_glib_none().0)) }
     }
 
-    #[cfg(any(unix))]
+    #[cfg(unix)]
     #[cfg_attr(docsrs, doc(cfg(unix)))]
     #[doc(alias = "g_dbus_message_get_unix_fd_list")]
     #[doc(alias = "get_unix_fd_list")]
@@ -321,7 +321,7 @@ impl DBusMessage {
         }
     }
 
-    #[cfg(any(unix))]
+    #[cfg(unix)]
     #[cfg_attr(docsrs, doc(cfg(unix)))]
     #[doc(alias = "g_dbus_message_set_num_unix_fds")]
     pub fn set_num_unix_fds(&self, value: u32) {
@@ -365,7 +365,7 @@ impl DBusMessage {
         }
     }
 
-    #[cfg(any(unix))]
+    #[cfg(unix)]
     #[cfg_attr(docsrs, doc(cfg(unix)))]
     #[doc(alias = "g_dbus_message_set_unix_fd_list")]
     pub fn set_unix_fd_list(&self, fd_list: Option<&impl IsA<UnixFDList>>) {

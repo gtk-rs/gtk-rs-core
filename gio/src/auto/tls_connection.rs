@@ -3,7 +3,7 @@
 // DO NOT EDIT
 #![allow(deprecated)]
 
-#[cfg(any(feature = "v2_70"))]
+#[cfg(feature = "v2_70")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
 use crate::TlsProtocolVersion;
 use crate::{
@@ -30,158 +30,8 @@ impl TlsConnection {
     pub const NONE: Option<&'static TlsConnection> = None;
 }
 
-pub trait TlsConnectionExt: 'static {
+pub trait TlsConnectionExt: IsA<TlsConnection> + 'static {
     #[doc(alias = "g_tls_connection_emit_accept_certificate")]
-    fn emit_accept_certificate(
-        &self,
-        peer_cert: &impl IsA<TlsCertificate>,
-        errors: TlsCertificateFlags,
-    ) -> bool;
-
-    #[doc(alias = "g_tls_connection_get_certificate")]
-    #[doc(alias = "get_certificate")]
-    fn certificate(&self) -> Option<TlsCertificate>;
-
-    #[cfg(any(feature = "v2_70"))]
-    #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
-    #[doc(alias = "g_tls_connection_get_ciphersuite_name")]
-    #[doc(alias = "get_ciphersuite_name")]
-    fn ciphersuite_name(&self) -> Option<glib::GString>;
-
-    #[doc(alias = "g_tls_connection_get_database")]
-    #[doc(alias = "get_database")]
-    fn database(&self) -> Option<TlsDatabase>;
-
-    #[doc(alias = "g_tls_connection_get_interaction")]
-    #[doc(alias = "get_interaction")]
-    fn interaction(&self) -> Option<TlsInteraction>;
-
-    #[cfg(any(feature = "v2_60"))]
-    #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
-    #[doc(alias = "g_tls_connection_get_negotiated_protocol")]
-    #[doc(alias = "get_negotiated_protocol")]
-    fn negotiated_protocol(&self) -> Option<glib::GString>;
-
-    #[doc(alias = "g_tls_connection_get_peer_certificate")]
-    #[doc(alias = "get_peer_certificate")]
-    fn peer_certificate(&self) -> Option<TlsCertificate>;
-
-    #[doc(alias = "g_tls_connection_get_peer_certificate_errors")]
-    #[doc(alias = "get_peer_certificate_errors")]
-    fn peer_certificate_errors(&self) -> TlsCertificateFlags;
-
-    #[cfg(any(feature = "v2_70"))]
-    #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
-    #[doc(alias = "g_tls_connection_get_protocol_version")]
-    #[doc(alias = "get_protocol_version")]
-    fn protocol_version(&self) -> TlsProtocolVersion;
-
-    #[cfg_attr(feature = "v2_60", deprecated = "Since 2.60")]
-    #[allow(deprecated)]
-    #[doc(alias = "g_tls_connection_get_rehandshake_mode")]
-    #[doc(alias = "get_rehandshake_mode")]
-    fn rehandshake_mode(&self) -> TlsRehandshakeMode;
-
-    #[doc(alias = "g_tls_connection_get_require_close_notify")]
-    #[doc(alias = "get_require_close_notify")]
-    fn requires_close_notify(&self) -> bool;
-
-    #[doc(alias = "g_tls_connection_handshake")]
-    fn handshake(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<(), glib::Error>;
-
-    #[doc(alias = "g_tls_connection_handshake_async")]
-    fn handshake_async<P: FnOnce(Result<(), glib::Error>) + 'static>(
-        &self,
-        io_priority: glib::Priority,
-        cancellable: Option<&impl IsA<Cancellable>>,
-        callback: P,
-    );
-
-    fn handshake_future(
-        &self,
-        io_priority: glib::Priority,
-    ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>>;
-
-    #[doc(alias = "g_tls_connection_set_certificate")]
-    fn set_certificate(&self, certificate: &impl IsA<TlsCertificate>);
-
-    #[doc(alias = "g_tls_connection_set_database")]
-    fn set_database(&self, database: Option<&impl IsA<TlsDatabase>>);
-
-    #[doc(alias = "g_tls_connection_set_interaction")]
-    fn set_interaction(&self, interaction: Option<&impl IsA<TlsInteraction>>);
-
-    #[cfg_attr(feature = "v2_60", deprecated = "Since 2.60")]
-    #[allow(deprecated)]
-    #[doc(alias = "g_tls_connection_set_rehandshake_mode")]
-    fn set_rehandshake_mode(&self, mode: TlsRehandshakeMode);
-
-    #[doc(alias = "g_tls_connection_set_require_close_notify")]
-    fn set_require_close_notify(&self, require_close_notify: bool);
-
-    #[cfg(any(feature = "v2_60"))]
-    #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
-    #[doc(alias = "advertised-protocols")]
-    fn advertised_protocols(&self) -> Vec<glib::GString>;
-
-    #[doc(alias = "base-io-stream")]
-    fn base_io_stream(&self) -> Option<IOStream>;
-
-    #[doc(alias = "accept-certificate")]
-    fn connect_accept_certificate<
-        F: Fn(&Self, &TlsCertificate, TlsCertificateFlags) -> bool + 'static,
-    >(
-        &self,
-        f: F,
-    ) -> SignalHandlerId;
-
-    #[cfg(any(feature = "v2_60"))]
-    #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
-    #[doc(alias = "advertised-protocols")]
-    fn connect_advertised_protocols_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
-
-    #[doc(alias = "certificate")]
-    fn connect_certificate_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
-
-    #[cfg(any(feature = "v2_70"))]
-    #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
-    #[doc(alias = "ciphersuite-name")]
-    fn connect_ciphersuite_name_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
-
-    #[doc(alias = "database")]
-    fn connect_database_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
-
-    #[doc(alias = "interaction")]
-    fn connect_interaction_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
-
-    #[cfg(any(feature = "v2_60"))]
-    #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
-    #[doc(alias = "negotiated-protocol")]
-    fn connect_negotiated_protocol_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
-
-    #[doc(alias = "peer-certificate")]
-    fn connect_peer_certificate_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
-
-    #[doc(alias = "peer-certificate-errors")]
-    fn connect_peer_certificate_errors_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId;
-
-    #[cfg(any(feature = "v2_70"))]
-    #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
-    #[doc(alias = "protocol-version")]
-    fn connect_protocol_version_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
-
-    #[cfg_attr(feature = "v2_60", deprecated = "Since 2.60")]
-    #[doc(alias = "rehandshake-mode")]
-    fn connect_rehandshake_mode_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
-
-    #[doc(alias = "require-close-notify")]
-    fn connect_require_close_notify_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
-}
-
-impl<O: IsA<TlsConnection>> TlsConnectionExt for O {
     fn emit_accept_certificate(
         &self,
         peer_cert: &impl IsA<TlsCertificate>,
@@ -196,6 +46,8 @@ impl<O: IsA<TlsConnection>> TlsConnectionExt for O {
         }
     }
 
+    #[doc(alias = "g_tls_connection_get_certificate")]
+    #[doc(alias = "get_certificate")]
     fn certificate(&self) -> Option<TlsCertificate> {
         unsafe {
             from_glib_none(ffi::g_tls_connection_get_certificate(
@@ -204,8 +56,10 @@ impl<O: IsA<TlsConnection>> TlsConnectionExt for O {
         }
     }
 
-    #[cfg(any(feature = "v2_70"))]
+    #[cfg(feature = "v2_70")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
+    #[doc(alias = "g_tls_connection_get_ciphersuite_name")]
+    #[doc(alias = "get_ciphersuite_name")]
     fn ciphersuite_name(&self) -> Option<glib::GString> {
         unsafe {
             from_glib_full(ffi::g_tls_connection_get_ciphersuite_name(
@@ -214,6 +68,8 @@ impl<O: IsA<TlsConnection>> TlsConnectionExt for O {
         }
     }
 
+    #[doc(alias = "g_tls_connection_get_database")]
+    #[doc(alias = "get_database")]
     fn database(&self) -> Option<TlsDatabase> {
         unsafe {
             from_glib_none(ffi::g_tls_connection_get_database(
@@ -222,6 +78,8 @@ impl<O: IsA<TlsConnection>> TlsConnectionExt for O {
         }
     }
 
+    #[doc(alias = "g_tls_connection_get_interaction")]
+    #[doc(alias = "get_interaction")]
     fn interaction(&self) -> Option<TlsInteraction> {
         unsafe {
             from_glib_none(ffi::g_tls_connection_get_interaction(
@@ -230,8 +88,10 @@ impl<O: IsA<TlsConnection>> TlsConnectionExt for O {
         }
     }
 
-    #[cfg(any(feature = "v2_60"))]
+    #[cfg(feature = "v2_60")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
+    #[doc(alias = "g_tls_connection_get_negotiated_protocol")]
+    #[doc(alias = "get_negotiated_protocol")]
     fn negotiated_protocol(&self) -> Option<glib::GString> {
         unsafe {
             from_glib_none(ffi::g_tls_connection_get_negotiated_protocol(
@@ -240,6 +100,8 @@ impl<O: IsA<TlsConnection>> TlsConnectionExt for O {
         }
     }
 
+    #[doc(alias = "g_tls_connection_get_peer_certificate")]
+    #[doc(alias = "get_peer_certificate")]
     fn peer_certificate(&self) -> Option<TlsCertificate> {
         unsafe {
             from_glib_none(ffi::g_tls_connection_get_peer_certificate(
@@ -248,6 +110,8 @@ impl<O: IsA<TlsConnection>> TlsConnectionExt for O {
         }
     }
 
+    #[doc(alias = "g_tls_connection_get_peer_certificate_errors")]
+    #[doc(alias = "get_peer_certificate_errors")]
     fn peer_certificate_errors(&self) -> TlsCertificateFlags {
         unsafe {
             from_glib(ffi::g_tls_connection_get_peer_certificate_errors(
@@ -256,8 +120,10 @@ impl<O: IsA<TlsConnection>> TlsConnectionExt for O {
         }
     }
 
-    #[cfg(any(feature = "v2_70"))]
+    #[cfg(feature = "v2_70")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
+    #[doc(alias = "g_tls_connection_get_protocol_version")]
+    #[doc(alias = "get_protocol_version")]
     fn protocol_version(&self) -> TlsProtocolVersion {
         unsafe {
             from_glib(ffi::g_tls_connection_get_protocol_version(
@@ -266,7 +132,10 @@ impl<O: IsA<TlsConnection>> TlsConnectionExt for O {
         }
     }
 
+    #[cfg_attr(feature = "v2_60", deprecated = "Since 2.60")]
     #[allow(deprecated)]
+    #[doc(alias = "g_tls_connection_get_rehandshake_mode")]
+    #[doc(alias = "get_rehandshake_mode")]
     fn rehandshake_mode(&self) -> TlsRehandshakeMode {
         unsafe {
             from_glib(ffi::g_tls_connection_get_rehandshake_mode(
@@ -275,6 +144,8 @@ impl<O: IsA<TlsConnection>> TlsConnectionExt for O {
         }
     }
 
+    #[doc(alias = "g_tls_connection_get_require_close_notify")]
+    #[doc(alias = "get_require_close_notify")]
     fn requires_close_notify(&self) -> bool {
         unsafe {
             from_glib(ffi::g_tls_connection_get_require_close_notify(
@@ -283,6 +154,7 @@ impl<O: IsA<TlsConnection>> TlsConnectionExt for O {
         }
     }
 
+    #[doc(alias = "g_tls_connection_handshake")]
     fn handshake(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
@@ -300,6 +172,7 @@ impl<O: IsA<TlsConnection>> TlsConnectionExt for O {
         }
     }
 
+    #[doc(alias = "g_tls_connection_handshake_async")]
     fn handshake_async<P: FnOnce(Result<(), glib::Error>) + 'static>(
         &self,
         io_priority: glib::Priority,
@@ -364,6 +237,7 @@ impl<O: IsA<TlsConnection>> TlsConnectionExt for O {
         ))
     }
 
+    #[doc(alias = "g_tls_connection_set_certificate")]
     fn set_certificate(&self, certificate: &impl IsA<TlsCertificate>) {
         unsafe {
             ffi::g_tls_connection_set_certificate(
@@ -373,6 +247,7 @@ impl<O: IsA<TlsConnection>> TlsConnectionExt for O {
         }
     }
 
+    #[doc(alias = "g_tls_connection_set_database")]
     fn set_database(&self, database: Option<&impl IsA<TlsDatabase>>) {
         unsafe {
             ffi::g_tls_connection_set_database(
@@ -382,6 +257,7 @@ impl<O: IsA<TlsConnection>> TlsConnectionExt for O {
         }
     }
 
+    #[doc(alias = "g_tls_connection_set_interaction")]
     fn set_interaction(&self, interaction: Option<&impl IsA<TlsInteraction>>) {
         unsafe {
             ffi::g_tls_connection_set_interaction(
@@ -391,7 +267,9 @@ impl<O: IsA<TlsConnection>> TlsConnectionExt for O {
         }
     }
 
+    #[cfg_attr(feature = "v2_60", deprecated = "Since 2.60")]
     #[allow(deprecated)]
+    #[doc(alias = "g_tls_connection_set_rehandshake_mode")]
     fn set_rehandshake_mode(&self, mode: TlsRehandshakeMode) {
         unsafe {
             ffi::g_tls_connection_set_rehandshake_mode(
@@ -401,6 +279,7 @@ impl<O: IsA<TlsConnection>> TlsConnectionExt for O {
         }
     }
 
+    #[doc(alias = "g_tls_connection_set_require_close_notify")]
     fn set_require_close_notify(&self, require_close_notify: bool) {
         unsafe {
             ffi::g_tls_connection_set_require_close_notify(
@@ -410,16 +289,19 @@ impl<O: IsA<TlsConnection>> TlsConnectionExt for O {
         }
     }
 
-    #[cfg(any(feature = "v2_60"))]
+    #[cfg(feature = "v2_60")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
+    #[doc(alias = "advertised-protocols")]
     fn advertised_protocols(&self) -> Vec<glib::GString> {
         glib::ObjectExt::property(self.as_ref(), "advertised-protocols")
     }
 
+    #[doc(alias = "base-io-stream")]
     fn base_io_stream(&self) -> Option<IOStream> {
         glib::ObjectExt::property(self.as_ref(), "base-io-stream")
     }
 
+    #[doc(alias = "accept-certificate")]
     fn connect_accept_certificate<
         F: Fn(&Self, &TlsCertificate, TlsCertificateFlags) -> bool + 'static,
     >(
@@ -456,8 +338,9 @@ impl<O: IsA<TlsConnection>> TlsConnectionExt for O {
         }
     }
 
-    #[cfg(any(feature = "v2_60"))]
+    #[cfg(feature = "v2_60")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
+    #[doc(alias = "advertised-protocols")]
     fn connect_advertised_protocols_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_advertised_protocols_trampoline<
             P: IsA<TlsConnection>,
@@ -483,6 +366,7 @@ impl<O: IsA<TlsConnection>> TlsConnectionExt for O {
         }
     }
 
+    #[doc(alias = "certificate")]
     fn connect_certificate_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_certificate_trampoline<
             P: IsA<TlsConnection>,
@@ -508,8 +392,9 @@ impl<O: IsA<TlsConnection>> TlsConnectionExt for O {
         }
     }
 
-    #[cfg(any(feature = "v2_70"))]
+    #[cfg(feature = "v2_70")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
+    #[doc(alias = "ciphersuite-name")]
     fn connect_ciphersuite_name_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_ciphersuite_name_trampoline<
             P: IsA<TlsConnection>,
@@ -535,6 +420,7 @@ impl<O: IsA<TlsConnection>> TlsConnectionExt for O {
         }
     }
 
+    #[doc(alias = "database")]
     fn connect_database_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_database_trampoline<
             P: IsA<TlsConnection>,
@@ -560,6 +446,7 @@ impl<O: IsA<TlsConnection>> TlsConnectionExt for O {
         }
     }
 
+    #[doc(alias = "interaction")]
     fn connect_interaction_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_interaction_trampoline<
             P: IsA<TlsConnection>,
@@ -585,8 +472,9 @@ impl<O: IsA<TlsConnection>> TlsConnectionExt for O {
         }
     }
 
-    #[cfg(any(feature = "v2_60"))]
+    #[cfg(feature = "v2_60")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
+    #[doc(alias = "negotiated-protocol")]
     fn connect_negotiated_protocol_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_negotiated_protocol_trampoline<
             P: IsA<TlsConnection>,
@@ -612,6 +500,7 @@ impl<O: IsA<TlsConnection>> TlsConnectionExt for O {
         }
     }
 
+    #[doc(alias = "peer-certificate")]
     fn connect_peer_certificate_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_peer_certificate_trampoline<
             P: IsA<TlsConnection>,
@@ -637,6 +526,7 @@ impl<O: IsA<TlsConnection>> TlsConnectionExt for O {
         }
     }
 
+    #[doc(alias = "peer-certificate-errors")]
     fn connect_peer_certificate_errors_notify<F: Fn(&Self) + 'static>(
         &self,
         f: F,
@@ -665,8 +555,9 @@ impl<O: IsA<TlsConnection>> TlsConnectionExt for O {
         }
     }
 
-    #[cfg(any(feature = "v2_70"))]
+    #[cfg(feature = "v2_70")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
+    #[doc(alias = "protocol-version")]
     fn connect_protocol_version_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_protocol_version_trampoline<
             P: IsA<TlsConnection>,
@@ -692,6 +583,8 @@ impl<O: IsA<TlsConnection>> TlsConnectionExt for O {
         }
     }
 
+    #[cfg_attr(feature = "v2_60", deprecated = "Since 2.60")]
+    #[doc(alias = "rehandshake-mode")]
     fn connect_rehandshake_mode_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_rehandshake_mode_trampoline<
             P: IsA<TlsConnection>,
@@ -717,6 +610,7 @@ impl<O: IsA<TlsConnection>> TlsConnectionExt for O {
         }
     }
 
+    #[doc(alias = "require-close-notify")]
     fn connect_require_close_notify_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_require_close_notify_trampoline<
             P: IsA<TlsConnection>,
@@ -742,6 +636,8 @@ impl<O: IsA<TlsConnection>> TlsConnectionExt for O {
         }
     }
 }
+
+impl<O: IsA<TlsConnection>> TlsConnectionExt for O {}
 
 impl fmt::Display for TlsConnection {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {

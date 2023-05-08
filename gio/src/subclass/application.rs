@@ -111,23 +111,9 @@ pub trait ApplicationImpl: ObjectImpl + ApplicationImplExt {
 }
 
 pub trait ApplicationImplExt: ObjectSubclass {
-    fn parent_activate(&self);
-    fn parent_after_emit(&self, platform_data: &glib::Variant);
-    fn parent_before_emit(&self, platform_data: &glib::Variant);
-    fn parent_command_line(&self, command_line: &crate::ApplicationCommandLine) -> ExitCode;
-    fn parent_local_command_line(&self, arguments: &mut ArgumentList) -> Option<ExitCode>;
-    fn parent_open(&self, files: &[crate::File], hint: &str);
-    fn parent_quit_mainloop(&self);
-    fn parent_run_mainloop(&self);
-    fn parent_shutdown(&self);
-    fn parent_startup(&self);
-    fn parent_handle_local_options(&self, options: &VariantDict) -> ExitCode;
-}
-
-impl<T: ApplicationImpl> ApplicationImplExt for T {
     fn parent_activate(&self) {
         unsafe {
-            let data = T::type_data();
+            let data = Self::type_data();
             let parent_class = data.as_ref().parent_class() as *mut ffi::GApplicationClass;
             let f = (*parent_class)
                 .activate
@@ -138,7 +124,7 @@ impl<T: ApplicationImpl> ApplicationImplExt for T {
 
     fn parent_after_emit(&self, platform_data: &glib::Variant) {
         unsafe {
-            let data = T::type_data();
+            let data = Self::type_data();
             let parent_class = data.as_ref().parent_class() as *mut ffi::GApplicationClass;
             let f = (*parent_class)
                 .after_emit
@@ -152,7 +138,7 @@ impl<T: ApplicationImpl> ApplicationImplExt for T {
 
     fn parent_before_emit(&self, platform_data: &glib::Variant) {
         unsafe {
-            let data = T::type_data();
+            let data = Self::type_data();
             let parent_class = data.as_ref().parent_class() as *mut ffi::GApplicationClass;
             let f = (*parent_class)
                 .before_emit
@@ -166,7 +152,7 @@ impl<T: ApplicationImpl> ApplicationImplExt for T {
 
     fn parent_command_line(&self, command_line: &crate::ApplicationCommandLine) -> ExitCode {
         unsafe {
-            let data = T::type_data();
+            let data = Self::type_data();
             let parent_class = data.as_ref().parent_class() as *mut ffi::GApplicationClass;
             let f = (*parent_class)
                 .command_line
@@ -181,7 +167,7 @@ impl<T: ApplicationImpl> ApplicationImplExt for T {
 
     fn parent_local_command_line(&self, arguments: &mut ArgumentList) -> Option<ExitCode> {
         unsafe {
-            let data = T::type_data();
+            let data = Self::type_data();
             let parent_class = data.as_ref().parent_class() as *mut ffi::GApplicationClass;
             let f = (*parent_class)
                 .local_command_line
@@ -204,7 +190,7 @@ impl<T: ApplicationImpl> ApplicationImplExt for T {
 
     fn parent_open(&self, files: &[crate::File], hint: &str) {
         unsafe {
-            let data = T::type_data();
+            let data = Self::type_data();
             let parent_class = data.as_ref().parent_class() as *mut ffi::GApplicationClass;
             let f = (*parent_class)
                 .open
@@ -220,7 +206,7 @@ impl<T: ApplicationImpl> ApplicationImplExt for T {
 
     fn parent_quit_mainloop(&self) {
         unsafe {
-            let data = T::type_data();
+            let data = Self::type_data();
             let parent_class = data.as_ref().parent_class() as *mut ffi::GApplicationClass;
             let f = (*parent_class)
                 .quit_mainloop
@@ -231,7 +217,7 @@ impl<T: ApplicationImpl> ApplicationImplExt for T {
 
     fn parent_run_mainloop(&self) {
         unsafe {
-            let data = T::type_data();
+            let data = Self::type_data();
             let parent_class = data.as_ref().parent_class() as *mut ffi::GApplicationClass;
             let f = (*parent_class)
                 .run_mainloop
@@ -242,7 +228,7 @@ impl<T: ApplicationImpl> ApplicationImplExt for T {
 
     fn parent_shutdown(&self) {
         unsafe {
-            let data = T::type_data();
+            let data = Self::type_data();
             let parent_class = data.as_ref().parent_class() as *mut ffi::GApplicationClass;
             let f = (*parent_class)
                 .shutdown
@@ -253,7 +239,7 @@ impl<T: ApplicationImpl> ApplicationImplExt for T {
 
     fn parent_startup(&self) {
         unsafe {
-            let data = T::type_data();
+            let data = Self::type_data();
             let parent_class = data.as_ref().parent_class() as *mut ffi::GApplicationClass;
             let f = (*parent_class)
                 .startup
@@ -264,7 +250,7 @@ impl<T: ApplicationImpl> ApplicationImplExt for T {
 
     fn parent_handle_local_options(&self, options: &VariantDict) -> ExitCode {
         unsafe {
-            let data = T::type_data();
+            let data = Self::type_data();
             let parent_class = data.as_ref().parent_class() as *mut ffi::GApplicationClass;
             if let Some(f) = (*parent_class).handle_local_options {
                 f(
@@ -279,6 +265,8 @@ impl<T: ApplicationImpl> ApplicationImplExt for T {
         }
     }
 }
+
+impl<T: ApplicationImpl> ApplicationImplExt for T {}
 
 unsafe impl<T: ApplicationImpl> IsSubclassable<T> for Application {
     fn class_init(class: &mut ::glib::Class<Self>) {

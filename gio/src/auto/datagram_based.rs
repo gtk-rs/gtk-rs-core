@@ -18,12 +18,8 @@ impl DatagramBased {
     pub const NONE: Option<&'static DatagramBased> = None;
 }
 
-pub trait DatagramBasedExt: 'static {
+pub trait DatagramBasedExt: IsA<DatagramBased> + 'static {
     #[doc(alias = "g_datagram_based_condition_check")]
-    fn condition_check(&self, condition: glib::IOCondition) -> glib::IOCondition;
-}
-
-impl<O: IsA<DatagramBased>> DatagramBasedExt for O {
     fn condition_check(&self, condition: glib::IOCondition) -> glib::IOCondition {
         unsafe {
             from_glib(ffi::g_datagram_based_condition_check(
@@ -33,6 +29,8 @@ impl<O: IsA<DatagramBased>> DatagramBasedExt for O {
         }
     }
 }
+
+impl<O: IsA<DatagramBased>> DatagramBasedExt for O {}
 
 impl fmt::Display for DatagramBased {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {

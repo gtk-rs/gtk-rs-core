@@ -7,62 +7,8 @@ use glib::{prelude::*, translate::*};
 
 use crate::{Cancellable, DatagramBased, InputMessage, OutputMessage};
 
-pub trait DatagramBasedExtManual: Sized {
+pub trait DatagramBasedExtManual: IsA<DatagramBased> + Sized {
     #[doc(alias = "g_datagram_based_create_source")]
-    fn create_source<F, C>(
-        &self,
-        condition: glib::IOCondition,
-        cancellable: Option<&C>,
-        name: Option<&str>,
-        priority: glib::Priority,
-        func: F,
-    ) -> glib::Source
-    where
-        F: FnMut(&Self, glib::IOCondition) -> glib::Continue + 'static,
-        C: IsA<Cancellable>;
-
-    fn create_source_future<C: IsA<Cancellable>>(
-        &self,
-        condition: glib::IOCondition,
-        cancellable: Option<&C>,
-        priority: glib::Priority,
-    ) -> Pin<Box<dyn std::future::Future<Output = glib::IOCondition> + 'static>>;
-
-    fn create_source_stream<C: IsA<Cancellable>>(
-        &self,
-        condition: glib::IOCondition,
-        cancellable: Option<&C>,
-        priority: glib::Priority,
-    ) -> Pin<Box<dyn Stream<Item = glib::IOCondition> + 'static>>;
-
-    #[doc(alias = "g_datagram_based_condition_wait")]
-    fn condition_wait(
-        &self,
-        condition: glib::IOCondition,
-        timeout: Option<Duration>,
-        cancellable: Option<&impl IsA<Cancellable>>,
-    ) -> Result<(), glib::Error>;
-
-    #[doc(alias = "g_datagram_based_receive_messages")]
-    fn receive_messages<'v, V: IntoIterator<Item = &'v mut [&'v mut [u8]]>, C: IsA<Cancellable>>(
-        &self,
-        messages: &mut [InputMessage],
-        flags: i32,
-        timeout: Option<Duration>,
-        cancellable: Option<&C>,
-    ) -> Result<usize, glib::Error>;
-
-    #[doc(alias = "g_datagram_based_send_messages")]
-    fn send_messages<C: IsA<Cancellable>>(
-        &self,
-        messages: &mut [OutputMessage],
-        flags: i32,
-        timeout: Option<Duration>,
-        cancellable: Option<&C>,
-    ) -> Result<usize, glib::Error>;
-}
-
-impl<O: IsA<DatagramBased>> DatagramBasedExtManual for O {
     fn create_source<F, C>(
         &self,
         condition: glib::IOCondition,
@@ -102,7 +48,7 @@ impl<O: IsA<DatagramBased>> DatagramBasedExtManual for O {
                 condition.into_glib(),
                 gcancellable.0,
             );
-            let trampoline = trampoline::<O, F> as glib::ffi::gpointer;
+            let trampoline = trampoline::<Self, F> as glib::ffi::gpointer;
             glib::ffi::g_source_set_callback(
                 source,
                 Some(transmute::<
@@ -173,6 +119,7 @@ impl<O: IsA<DatagramBased>> DatagramBasedExtManual for O {
         }))
     }
 
+    #[doc(alias = "g_datagram_based_condition_wait")]
     fn condition_wait(
         &self,
         condition: glib::IOCondition,
@@ -199,6 +146,7 @@ impl<O: IsA<DatagramBased>> DatagramBasedExtManual for O {
         }
     }
 
+    #[doc(alias = "g_datagram_based_receive_messages")]
     fn receive_messages<'v, V: IntoIterator<Item = &'v mut [&'v mut [u8]]>, C: IsA<Cancellable>>(
         &self,
         messages: &mut [InputMessage],
@@ -229,6 +177,7 @@ impl<O: IsA<DatagramBased>> DatagramBasedExtManual for O {
         }
     }
 
+    #[doc(alias = "g_datagram_based_send_messages")]
     fn send_messages<C: IsA<Cancellable>>(
         &self,
         messages: &mut [OutputMessage],
@@ -258,3 +207,5 @@ impl<O: IsA<DatagramBased>> DatagramBasedExtManual for O {
         }
     }
 }
+
+impl<O: IsA<DatagramBased>> DatagramBasedExtManual for O {}

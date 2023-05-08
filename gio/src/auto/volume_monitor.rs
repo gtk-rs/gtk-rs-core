@@ -28,65 +28,9 @@ impl VolumeMonitor {
     }
 }
 
-pub trait VolumeMonitorExt: 'static {
+pub trait VolumeMonitorExt: IsA<VolumeMonitor> + 'static {
     #[doc(alias = "g_volume_monitor_get_connected_drives")]
     #[doc(alias = "get_connected_drives")]
-    fn connected_drives(&self) -> Vec<Drive>;
-
-    #[doc(alias = "g_volume_monitor_get_mount_for_uuid")]
-    #[doc(alias = "get_mount_for_uuid")]
-    fn mount_for_uuid(&self, uuid: &str) -> Option<Mount>;
-
-    #[doc(alias = "g_volume_monitor_get_mounts")]
-    #[doc(alias = "get_mounts")]
-    fn mounts(&self) -> Vec<Mount>;
-
-    #[doc(alias = "g_volume_monitor_get_volume_for_uuid")]
-    #[doc(alias = "get_volume_for_uuid")]
-    fn volume_for_uuid(&self, uuid: &str) -> Option<Volume>;
-
-    #[doc(alias = "g_volume_monitor_get_volumes")]
-    #[doc(alias = "get_volumes")]
-    fn volumes(&self) -> Vec<Volume>;
-
-    #[doc(alias = "drive-changed")]
-    fn connect_drive_changed<F: Fn(&Self, &Drive) + 'static>(&self, f: F) -> SignalHandlerId;
-
-    #[doc(alias = "drive-connected")]
-    fn connect_drive_connected<F: Fn(&Self, &Drive) + 'static>(&self, f: F) -> SignalHandlerId;
-
-    #[doc(alias = "drive-disconnected")]
-    fn connect_drive_disconnected<F: Fn(&Self, &Drive) + 'static>(&self, f: F) -> SignalHandlerId;
-
-    #[doc(alias = "drive-eject-button")]
-    fn connect_drive_eject_button<F: Fn(&Self, &Drive) + 'static>(&self, f: F) -> SignalHandlerId;
-
-    #[doc(alias = "drive-stop-button")]
-    fn connect_drive_stop_button<F: Fn(&Self, &Drive) + 'static>(&self, f: F) -> SignalHandlerId;
-
-    #[doc(alias = "mount-added")]
-    fn connect_mount_added<F: Fn(&Self, &Mount) + 'static>(&self, f: F) -> SignalHandlerId;
-
-    #[doc(alias = "mount-changed")]
-    fn connect_mount_changed<F: Fn(&Self, &Mount) + 'static>(&self, f: F) -> SignalHandlerId;
-
-    #[doc(alias = "mount-pre-unmount")]
-    fn connect_mount_pre_unmount<F: Fn(&Self, &Mount) + 'static>(&self, f: F) -> SignalHandlerId;
-
-    #[doc(alias = "mount-removed")]
-    fn connect_mount_removed<F: Fn(&Self, &Mount) + 'static>(&self, f: F) -> SignalHandlerId;
-
-    #[doc(alias = "volume-added")]
-    fn connect_volume_added<F: Fn(&Self, &Volume) + 'static>(&self, f: F) -> SignalHandlerId;
-
-    #[doc(alias = "volume-changed")]
-    fn connect_volume_changed<F: Fn(&Self, &Volume) + 'static>(&self, f: F) -> SignalHandlerId;
-
-    #[doc(alias = "volume-removed")]
-    fn connect_volume_removed<F: Fn(&Self, &Volume) + 'static>(&self, f: F) -> SignalHandlerId;
-}
-
-impl<O: IsA<VolumeMonitor>> VolumeMonitorExt for O {
     fn connected_drives(&self) -> Vec<Drive> {
         unsafe {
             FromGlibPtrContainer::from_glib_full(ffi::g_volume_monitor_get_connected_drives(
@@ -95,6 +39,8 @@ impl<O: IsA<VolumeMonitor>> VolumeMonitorExt for O {
         }
     }
 
+    #[doc(alias = "g_volume_monitor_get_mount_for_uuid")]
+    #[doc(alias = "get_mount_for_uuid")]
     fn mount_for_uuid(&self, uuid: &str) -> Option<Mount> {
         unsafe {
             from_glib_full(ffi::g_volume_monitor_get_mount_for_uuid(
@@ -104,6 +50,8 @@ impl<O: IsA<VolumeMonitor>> VolumeMonitorExt for O {
         }
     }
 
+    #[doc(alias = "g_volume_monitor_get_mounts")]
+    #[doc(alias = "get_mounts")]
     fn mounts(&self) -> Vec<Mount> {
         unsafe {
             FromGlibPtrContainer::from_glib_full(ffi::g_volume_monitor_get_mounts(
@@ -112,6 +60,8 @@ impl<O: IsA<VolumeMonitor>> VolumeMonitorExt for O {
         }
     }
 
+    #[doc(alias = "g_volume_monitor_get_volume_for_uuid")]
+    #[doc(alias = "get_volume_for_uuid")]
     fn volume_for_uuid(&self, uuid: &str) -> Option<Volume> {
         unsafe {
             from_glib_full(ffi::g_volume_monitor_get_volume_for_uuid(
@@ -121,6 +71,8 @@ impl<O: IsA<VolumeMonitor>> VolumeMonitorExt for O {
         }
     }
 
+    #[doc(alias = "g_volume_monitor_get_volumes")]
+    #[doc(alias = "get_volumes")]
     fn volumes(&self) -> Vec<Volume> {
         unsafe {
             FromGlibPtrContainer::from_glib_full(ffi::g_volume_monitor_get_volumes(
@@ -129,6 +81,7 @@ impl<O: IsA<VolumeMonitor>> VolumeMonitorExt for O {
         }
     }
 
+    #[doc(alias = "drive-changed")]
     fn connect_drive_changed<F: Fn(&Self, &Drive) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn drive_changed_trampoline<
             P: IsA<VolumeMonitor>,
@@ -157,6 +110,7 @@ impl<O: IsA<VolumeMonitor>> VolumeMonitorExt for O {
         }
     }
 
+    #[doc(alias = "drive-connected")]
     fn connect_drive_connected<F: Fn(&Self, &Drive) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn drive_connected_trampoline<
             P: IsA<VolumeMonitor>,
@@ -185,6 +139,7 @@ impl<O: IsA<VolumeMonitor>> VolumeMonitorExt for O {
         }
     }
 
+    #[doc(alias = "drive-disconnected")]
     fn connect_drive_disconnected<F: Fn(&Self, &Drive) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn drive_disconnected_trampoline<
             P: IsA<VolumeMonitor>,
@@ -213,6 +168,7 @@ impl<O: IsA<VolumeMonitor>> VolumeMonitorExt for O {
         }
     }
 
+    #[doc(alias = "drive-eject-button")]
     fn connect_drive_eject_button<F: Fn(&Self, &Drive) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn drive_eject_button_trampoline<
             P: IsA<VolumeMonitor>,
@@ -241,6 +197,7 @@ impl<O: IsA<VolumeMonitor>> VolumeMonitorExt for O {
         }
     }
 
+    #[doc(alias = "drive-stop-button")]
     fn connect_drive_stop_button<F: Fn(&Self, &Drive) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn drive_stop_button_trampoline<
             P: IsA<VolumeMonitor>,
@@ -269,6 +226,7 @@ impl<O: IsA<VolumeMonitor>> VolumeMonitorExt for O {
         }
     }
 
+    #[doc(alias = "mount-added")]
     fn connect_mount_added<F: Fn(&Self, &Mount) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn mount_added_trampoline<
             P: IsA<VolumeMonitor>,
@@ -297,6 +255,7 @@ impl<O: IsA<VolumeMonitor>> VolumeMonitorExt for O {
         }
     }
 
+    #[doc(alias = "mount-changed")]
     fn connect_mount_changed<F: Fn(&Self, &Mount) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn mount_changed_trampoline<
             P: IsA<VolumeMonitor>,
@@ -325,6 +284,7 @@ impl<O: IsA<VolumeMonitor>> VolumeMonitorExt for O {
         }
     }
 
+    #[doc(alias = "mount-pre-unmount")]
     fn connect_mount_pre_unmount<F: Fn(&Self, &Mount) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn mount_pre_unmount_trampoline<
             P: IsA<VolumeMonitor>,
@@ -353,6 +313,7 @@ impl<O: IsA<VolumeMonitor>> VolumeMonitorExt for O {
         }
     }
 
+    #[doc(alias = "mount-removed")]
     fn connect_mount_removed<F: Fn(&Self, &Mount) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn mount_removed_trampoline<
             P: IsA<VolumeMonitor>,
@@ -381,6 +342,7 @@ impl<O: IsA<VolumeMonitor>> VolumeMonitorExt for O {
         }
     }
 
+    #[doc(alias = "volume-added")]
     fn connect_volume_added<F: Fn(&Self, &Volume) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn volume_added_trampoline<
             P: IsA<VolumeMonitor>,
@@ -409,6 +371,7 @@ impl<O: IsA<VolumeMonitor>> VolumeMonitorExt for O {
         }
     }
 
+    #[doc(alias = "volume-changed")]
     fn connect_volume_changed<F: Fn(&Self, &Volume) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn volume_changed_trampoline<
             P: IsA<VolumeMonitor>,
@@ -437,6 +400,7 @@ impl<O: IsA<VolumeMonitor>> VolumeMonitorExt for O {
         }
     }
 
+    #[doc(alias = "volume-removed")]
     fn connect_volume_removed<F: Fn(&Self, &Volume) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn volume_removed_trampoline<
             P: IsA<VolumeMonitor>,
@@ -465,6 +429,8 @@ impl<O: IsA<VolumeMonitor>> VolumeMonitorExt for O {
         }
     }
 }
+
+impl<O: IsA<VolumeMonitor>> VolumeMonitorExt for O {}
 
 impl fmt::Display for VolumeMonitor {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {

@@ -11,25 +11,12 @@ use glib::{
 
 use crate::{Application, File};
 
-pub trait ApplicationExtManual {
+pub trait ApplicationExtManual: IsA<Application> {
     #[doc(alias = "g_application_run")]
-    fn run(&self) -> ExitCode;
-    #[doc(alias = "g_application_run")]
-    fn run_with_args<S: AsRef<str>>(&self, args: &[S]) -> ExitCode;
-    fn connect_open<F: Fn(&Self, &[File], &str) + 'static>(&self, f: F) -> SignalHandlerId;
-
-    #[doc(alias = "g_application_hold")]
-    fn hold(&self) -> ApplicationHoldGuard;
-
-    #[doc(alias = "g_application_mark_busy")]
-    fn mark_busy(&self) -> ApplicationBusyGuard;
-}
-
-impl<O: IsA<Application>> ApplicationExtManual for O {
     fn run(&self) -> ExitCode {
         self.run_with_args(&std::env::args().collect::<Vec<_>>())
     }
-
+    #[doc(alias = "g_application_run")]
     fn run_with_args<S: AsRef<str>>(&self, args: &[S]) -> ExitCode {
         let argv: Vec<&str> = args.iter().map(|a| a.as_ref()).collect();
         let argc = argv.len() as i32;
@@ -38,7 +25,6 @@ impl<O: IsA<Application>> ApplicationExtManual for O {
         };
         ExitCode::from(exit_code)
     }
-
     fn connect_open<F: Fn(&Self, &[File], &str) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn open_trampoline<P, F: Fn(&P, &[File], &str) + 'static>(
             this: *mut ffi::GApplication,
@@ -70,6 +56,7 @@ impl<O: IsA<Application>> ApplicationExtManual for O {
         }
     }
 
+    #[doc(alias = "g_application_hold")]
     fn hold(&self) -> ApplicationHoldGuard {
         unsafe {
             ffi::g_application_hold(self.as_ref().to_glib_none().0);
@@ -77,6 +64,7 @@ impl<O: IsA<Application>> ApplicationExtManual for O {
         ApplicationHoldGuard(self.as_ref().downgrade())
     }
 
+    #[doc(alias = "g_application_mark_busy")]
     fn mark_busy(&self) -> ApplicationBusyGuard {
         unsafe {
             ffi::g_application_mark_busy(self.as_ref().to_glib_none().0);
@@ -84,6 +72,8 @@ impl<O: IsA<Application>> ApplicationExtManual for O {
         ApplicationBusyGuard(self.as_ref().downgrade())
     }
 }
+
+impl<O: IsA<Application>> ApplicationExtManual for O {}
 
 #[derive(Debug)]
 #[must_use = "if unused the Application will immediately be released"]

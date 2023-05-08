@@ -28,19 +28,10 @@ impl MemoryMonitor {
     }
 }
 
-pub trait MemoryMonitorExt: 'static {
-    #[cfg(any(feature = "v2_64"))]
+pub trait MemoryMonitorExt: IsA<MemoryMonitor> + 'static {
+    #[cfg(feature = "v2_64")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_64")))]
     #[doc(alias = "low-memory-warning")]
-    fn connect_low_memory_warning<F: Fn(&Self, MemoryMonitorWarningLevel) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId;
-}
-
-impl<O: IsA<MemoryMonitor>> MemoryMonitorExt for O {
-    #[cfg(any(feature = "v2_64"))]
-    #[cfg_attr(docsrs, doc(cfg(feature = "v2_64")))]
     fn connect_low_memory_warning<F: Fn(&Self, MemoryMonitorWarningLevel) + 'static>(
         &self,
         f: F,
@@ -72,6 +63,8 @@ impl<O: IsA<MemoryMonitor>> MemoryMonitorExt for O {
         }
     }
 }
+
+impl<O: IsA<MemoryMonitor>> MemoryMonitorExt for O {}
 
 impl fmt::Display for MemoryMonitor {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {

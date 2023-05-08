@@ -110,29 +110,9 @@ impl BufferedOutputStreamBuilder {
     }
 }
 
-pub trait BufferedOutputStreamExt: 'static {
+pub trait BufferedOutputStreamExt: IsA<BufferedOutputStream> + 'static {
     #[doc(alias = "g_buffered_output_stream_get_auto_grow")]
     #[doc(alias = "get_auto_grow")]
-    fn auto_grows(&self) -> bool;
-
-    #[doc(alias = "g_buffered_output_stream_get_buffer_size")]
-    #[doc(alias = "get_buffer_size")]
-    fn buffer_size(&self) -> usize;
-
-    #[doc(alias = "g_buffered_output_stream_set_auto_grow")]
-    fn set_auto_grow(&self, auto_grow: bool);
-
-    #[doc(alias = "g_buffered_output_stream_set_buffer_size")]
-    fn set_buffer_size(&self, size: usize);
-
-    #[doc(alias = "auto-grow")]
-    fn connect_auto_grow_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
-
-    #[doc(alias = "buffer-size")]
-    fn connect_buffer_size_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
-}
-
-impl<O: IsA<BufferedOutputStream>> BufferedOutputStreamExt for O {
     fn auto_grows(&self) -> bool {
         unsafe {
             from_glib(ffi::g_buffered_output_stream_get_auto_grow(
@@ -141,10 +121,13 @@ impl<O: IsA<BufferedOutputStream>> BufferedOutputStreamExt for O {
         }
     }
 
+    #[doc(alias = "g_buffered_output_stream_get_buffer_size")]
+    #[doc(alias = "get_buffer_size")]
     fn buffer_size(&self) -> usize {
         unsafe { ffi::g_buffered_output_stream_get_buffer_size(self.as_ref().to_glib_none().0) }
     }
 
+    #[doc(alias = "g_buffered_output_stream_set_auto_grow")]
     fn set_auto_grow(&self, auto_grow: bool) {
         unsafe {
             ffi::g_buffered_output_stream_set_auto_grow(
@@ -154,12 +137,14 @@ impl<O: IsA<BufferedOutputStream>> BufferedOutputStreamExt for O {
         }
     }
 
+    #[doc(alias = "g_buffered_output_stream_set_buffer_size")]
     fn set_buffer_size(&self, size: usize) {
         unsafe {
             ffi::g_buffered_output_stream_set_buffer_size(self.as_ref().to_glib_none().0, size);
         }
     }
 
+    #[doc(alias = "auto-grow")]
     fn connect_auto_grow_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_auto_grow_trampoline<
             P: IsA<BufferedOutputStream>,
@@ -185,6 +170,7 @@ impl<O: IsA<BufferedOutputStream>> BufferedOutputStreamExt for O {
         }
     }
 
+    #[doc(alias = "buffer-size")]
     fn connect_buffer_size_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_buffer_size_trampoline<
             P: IsA<BufferedOutputStream>,
@@ -210,6 +196,8 @@ impl<O: IsA<BufferedOutputStream>> BufferedOutputStreamExt for O {
         }
     }
 }
+
+impl<O: IsA<BufferedOutputStream>> BufferedOutputStreamExt for O {}
 
 impl fmt::Display for BufferedOutputStream {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {

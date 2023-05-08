@@ -9307,7 +9307,7 @@ extern "C" {
     //=========================================================================
     // GMemoryMonitorWarningLevel
     //=========================================================================
-    #[cfg(any(feature = "v2_64"))]
+    #[cfg(feature = "v2_64")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_64")))]
     pub fn g_memory_monitor_warning_level_get_type() -> GType;
 
@@ -9334,7 +9334,7 @@ extern "C" {
     //=========================================================================
     // GPollableReturn
     //=========================================================================
-    #[cfg(any(feature = "v2_60"))]
+    #[cfg(feature = "v2_60")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     pub fn g_pollable_return_get_type() -> GType;
 
@@ -9393,17 +9393,17 @@ extern "C" {
     //=========================================================================
     // GTlsChannelBindingError
     //=========================================================================
-    #[cfg(any(feature = "v2_66"))]
+    #[cfg(feature = "v2_66")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
     pub fn g_tls_channel_binding_error_get_type() -> GType;
-    #[cfg(any(feature = "v2_66"))]
+    #[cfg(feature = "v2_66")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
     pub fn g_tls_channel_binding_error_quark() -> glib::GQuark;
 
     //=========================================================================
     // GTlsChannelBindingType
     //=========================================================================
-    #[cfg(any(feature = "v2_66"))]
+    #[cfg(feature = "v2_66")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
     pub fn g_tls_channel_binding_type_get_type() -> GType;
 
@@ -9426,7 +9426,7 @@ extern "C" {
     //=========================================================================
     // GTlsProtocolVersion
     //=========================================================================
-    #[cfg(any(feature = "v2_70"))]
+    #[cfg(feature = "v2_70")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
     pub fn g_tls_protocol_version_get_type() -> GType;
 
@@ -9593,7 +9593,7 @@ extern "C" {
     //=========================================================================
     // GResolverNameLookupFlags
     //=========================================================================
-    #[cfg(any(feature = "v2_60"))]
+    #[cfg(feature = "v2_60")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     pub fn g_resolver_name_lookup_flags_get_type() -> GType;
 
@@ -9993,7 +9993,7 @@ extern "C" {
     pub fn g_unix_mount_point_is_loopback(mount_point: *mut GUnixMountPoint) -> gboolean;
     pub fn g_unix_mount_point_is_readonly(mount_point: *mut GUnixMountPoint) -> gboolean;
     pub fn g_unix_mount_point_is_user_mountable(mount_point: *mut GUnixMountPoint) -> gboolean;
-    #[cfg(any(feature = "v2_66"))]
+    #[cfg(feature = "v2_66")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
     pub fn g_unix_mount_point_at(
         mount_path: *const c_char,
@@ -10572,7 +10572,7 @@ extern "C" {
         connection: *mut GDBusConnection,
     ) -> GDBusCapabilityFlags;
     pub fn g_dbus_connection_get_exit_on_close(connection: *mut GDBusConnection) -> gboolean;
-    #[cfg(any(feature = "v2_60"))]
+    #[cfg(feature = "v2_60")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     pub fn g_dbus_connection_get_flags(connection: *mut GDBusConnection) -> GDBusConnectionFlags;
     pub fn g_dbus_connection_get_guid(connection: *mut GDBusConnection) -> *const c_char;
@@ -11387,17 +11387,17 @@ extern "C" {
     //=========================================================================
     // GDebugControllerDBus
     //=========================================================================
-    #[cfg(any(feature = "v2_72"))]
+    #[cfg(feature = "v2_72")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
     pub fn g_debug_controller_dbus_get_type() -> GType;
-    #[cfg(any(feature = "v2_72"))]
+    #[cfg(feature = "v2_72")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
     pub fn g_debug_controller_dbus_new(
         connection: *mut GDBusConnection,
         cancellable: *mut GCancellable,
         error: *mut *mut glib::GError,
     ) -> *mut GDebugControllerDBus;
-    #[cfg(any(feature = "v2_72"))]
+    #[cfg(feature = "v2_72")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
     pub fn g_debug_controller_dbus_stop(self_: *mut GDebugControllerDBus);
 
@@ -11440,7 +11440,7 @@ extern "C" {
         info: *mut GDesktopAppInfo,
         key: *const c_char,
     ) -> *mut c_char;
-    #[cfg(any(feature = "v2_60"))]
+    #[cfg(feature = "v2_60")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     pub fn g_desktop_app_info_get_string_list(
         info: *mut GDesktopAppInfo,
@@ -11464,7 +11464,7 @@ extern "C" {
         pid_callback_data: gpointer,
         error: *mut *mut glib::GError,
     ) -> gboolean;
-    #[cfg(any(feature = "v2_58"))]
+    #[cfg(feature = "v2_58")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_58")))]
     pub fn g_desktop_app_info_launch_uris_as_manager_with_fds(
         appinfo: *mut GDesktopAppInfo,
@@ -11596,7 +11596,7 @@ extern "C" {
     pub fn g_file_info_clear_status(info: *mut GFileInfo);
     pub fn g_file_info_copy_into(src_info: *mut GFileInfo, dest_info: *mut GFileInfo);
     pub fn g_file_info_dup(other: *mut GFileInfo) -> *mut GFileInfo;
-    #[cfg(any(feature = "v2_70"))]
+    #[cfg(feature = "v2_70")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
     pub fn g_file_info_get_access_date_time(info: *mut GFileInfo) -> *mut glib::GDateTime;
     pub fn g_file_info_get_attribute_as_string(
@@ -11643,7 +11643,7 @@ extern "C" {
     pub fn g_file_info_get_attribute_uint32(info: *mut GFileInfo, attribute: *const c_char) -> u32;
     pub fn g_file_info_get_attribute_uint64(info: *mut GFileInfo, attribute: *const c_char) -> u64;
     pub fn g_file_info_get_content_type(info: *mut GFileInfo) -> *const c_char;
-    #[cfg(any(feature = "v2_70"))]
+    #[cfg(feature = "v2_70")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
     pub fn g_file_info_get_creation_date_time(info: *mut GFileInfo) -> *mut glib::GDateTime;
     pub fn g_file_info_get_deletion_date(info: *mut GFileInfo) -> *mut glib::GDateTime;
@@ -11655,7 +11655,7 @@ extern "C" {
     pub fn g_file_info_get_is_backup(info: *mut GFileInfo) -> gboolean;
     pub fn g_file_info_get_is_hidden(info: *mut GFileInfo) -> gboolean;
     pub fn g_file_info_get_is_symlink(info: *mut GFileInfo) -> gboolean;
-    #[cfg(any(feature = "v2_62"))]
+    #[cfg(feature = "v2_62")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_62")))]
     pub fn g_file_info_get_modification_date_time(info: *mut GFileInfo) -> *mut glib::GDateTime;
     pub fn g_file_info_get_modification_time(info: *mut GFileInfo, result: *mut glib::GTimeVal);
@@ -11671,7 +11671,7 @@ extern "C" {
         name_space: *const c_char,
     ) -> *mut *mut c_char;
     pub fn g_file_info_remove_attribute(info: *mut GFileInfo, attribute: *const c_char);
-    #[cfg(any(feature = "v2_70"))]
+    #[cfg(feature = "v2_70")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
     pub fn g_file_info_set_access_date_time(info: *mut GFileInfo, atime: *mut glib::GDateTime);
     pub fn g_file_info_set_attribute(
@@ -11732,7 +11732,7 @@ extern "C" {
         attr_value: u64,
     );
     pub fn g_file_info_set_content_type(info: *mut GFileInfo, content_type: *const c_char);
-    #[cfg(any(feature = "v2_70"))]
+    #[cfg(feature = "v2_70")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
     pub fn g_file_info_set_creation_date_time(
         info: *mut GFileInfo,
@@ -11744,7 +11744,7 @@ extern "C" {
     pub fn g_file_info_set_icon(info: *mut GFileInfo, icon: *mut GIcon);
     pub fn g_file_info_set_is_hidden(info: *mut GFileInfo, is_hidden: gboolean);
     pub fn g_file_info_set_is_symlink(info: *mut GFileInfo, is_symlink: gboolean);
-    #[cfg(any(feature = "v2_62"))]
+    #[cfg(feature = "v2_62")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_62")))]
     pub fn g_file_info_set_modification_date_time(
         info: *mut GFileInfo,
@@ -12109,14 +12109,14 @@ extern "C" {
     pub fn g_list_store_get_type() -> GType;
     pub fn g_list_store_new(item_type: GType) -> *mut GListStore;
     pub fn g_list_store_append(store: *mut GListStore, item: *mut gobject::GObject);
-    #[cfg(any(feature = "v2_64"))]
+    #[cfg(feature = "v2_64")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_64")))]
     pub fn g_list_store_find(
         store: *mut GListStore,
         item: *mut gobject::GObject,
         position: *mut c_uint,
     ) -> gboolean;
-    #[cfg(any(feature = "v2_64"))]
+    #[cfg(feature = "v2_64")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_64")))]
     pub fn g_list_store_find_with_equal_func(
         store: *mut GListStore,
@@ -12124,7 +12124,7 @@ extern "C" {
         equal_func: glib::GEqualFunc,
         position: *mut c_uint,
     ) -> gboolean;
-    #[cfg(any(feature = "v2_74"))]
+    #[cfg(feature = "v2_74")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
     pub fn g_list_store_find_with_equal_func_full(
         store: *mut GListStore,
@@ -12371,15 +12371,15 @@ extern "C" {
     pub fn g_mount_operation_get_anonymous(op: *mut GMountOperation) -> gboolean;
     pub fn g_mount_operation_get_choice(op: *mut GMountOperation) -> c_int;
     pub fn g_mount_operation_get_domain(op: *mut GMountOperation) -> *const c_char;
-    #[cfg(any(feature = "v2_58"))]
+    #[cfg(feature = "v2_58")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_58")))]
     pub fn g_mount_operation_get_is_tcrypt_hidden_volume(op: *mut GMountOperation) -> gboolean;
-    #[cfg(any(feature = "v2_58"))]
+    #[cfg(feature = "v2_58")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_58")))]
     pub fn g_mount_operation_get_is_tcrypt_system_volume(op: *mut GMountOperation) -> gboolean;
     pub fn g_mount_operation_get_password(op: *mut GMountOperation) -> *const c_char;
     pub fn g_mount_operation_get_password_save(op: *mut GMountOperation) -> GPasswordSave;
-    #[cfg(any(feature = "v2_58"))]
+    #[cfg(feature = "v2_58")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_58")))]
     pub fn g_mount_operation_get_pim(op: *mut GMountOperation) -> c_uint;
     pub fn g_mount_operation_get_username(op: *mut GMountOperation) -> *const c_char;
@@ -12387,13 +12387,13 @@ extern "C" {
     pub fn g_mount_operation_set_anonymous(op: *mut GMountOperation, anonymous: gboolean);
     pub fn g_mount_operation_set_choice(op: *mut GMountOperation, choice: c_int);
     pub fn g_mount_operation_set_domain(op: *mut GMountOperation, domain: *const c_char);
-    #[cfg(any(feature = "v2_58"))]
+    #[cfg(feature = "v2_58")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_58")))]
     pub fn g_mount_operation_set_is_tcrypt_hidden_volume(
         op: *mut GMountOperation,
         hidden_volume: gboolean,
     );
-    #[cfg(any(feature = "v2_58"))]
+    #[cfg(feature = "v2_58")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_58")))]
     pub fn g_mount_operation_set_is_tcrypt_system_volume(
         op: *mut GMountOperation,
@@ -12401,7 +12401,7 @@ extern "C" {
     );
     pub fn g_mount_operation_set_password(op: *mut GMountOperation, password: *const c_char);
     pub fn g_mount_operation_set_password_save(op: *mut GMountOperation, save: GPasswordSave);
-    #[cfg(any(feature = "v2_58"))]
+    #[cfg(feature = "v2_58")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_58")))]
     pub fn g_mount_operation_set_pim(op: *mut GMountOperation, pim: c_uint);
     pub fn g_mount_operation_set_username(op: *mut GMountOperation, username: *const c_char);
@@ -12476,7 +12476,7 @@ extern "C" {
         target: *mut glib::GVariant,
     );
     pub fn g_notification_set_body(notification: *mut GNotification, body: *const c_char);
-    #[cfg(any(feature = "v2_70"))]
+    #[cfg(feature = "v2_70")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
     pub fn g_notification_set_category(notification: *mut GNotification, category: *const c_char);
     pub fn g_notification_set_default_action(
@@ -12641,7 +12641,7 @@ extern "C" {
         result: *mut GAsyncResult,
         error: *mut *mut glib::GError,
     ) -> ssize_t;
-    #[cfg(any(feature = "v2_60"))]
+    #[cfg(feature = "v2_60")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     pub fn g_output_stream_writev(
         stream: *mut GOutputStream,
@@ -12651,7 +12651,7 @@ extern "C" {
         cancellable: *mut GCancellable,
         error: *mut *mut glib::GError,
     ) -> gboolean;
-    #[cfg(any(feature = "v2_60"))]
+    #[cfg(feature = "v2_60")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     pub fn g_output_stream_writev_all(
         stream: *mut GOutputStream,
@@ -12661,7 +12661,7 @@ extern "C" {
         cancellable: *mut GCancellable,
         error: *mut *mut glib::GError,
     ) -> gboolean;
-    #[cfg(any(feature = "v2_60"))]
+    #[cfg(feature = "v2_60")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     pub fn g_output_stream_writev_all_async(
         stream: *mut GOutputStream,
@@ -12672,7 +12672,7 @@ extern "C" {
         callback: GAsyncReadyCallback,
         user_data: gpointer,
     );
-    #[cfg(any(feature = "v2_60"))]
+    #[cfg(feature = "v2_60")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     pub fn g_output_stream_writev_all_finish(
         stream: *mut GOutputStream,
@@ -12680,7 +12680,7 @@ extern "C" {
         bytes_written: *mut size_t,
         error: *mut *mut glib::GError,
     ) -> gboolean;
-    #[cfg(any(feature = "v2_60"))]
+    #[cfg(feature = "v2_60")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     pub fn g_output_stream_writev_async(
         stream: *mut GOutputStream,
@@ -12691,7 +12691,7 @@ extern "C" {
         callback: GAsyncReadyCallback,
         user_data: gpointer,
     );
-    #[cfg(any(feature = "v2_60"))]
+    #[cfg(feature = "v2_60")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     pub fn g_output_stream_writev_finish(
         stream: *mut GOutputStream,
@@ -12825,7 +12825,7 @@ extern "C" {
         result: *mut GAsyncResult,
         error: *mut *mut glib::GError,
     ) -> *mut glib::GList;
-    #[cfg(any(feature = "v2_60"))]
+    #[cfg(feature = "v2_60")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     pub fn g_resolver_lookup_by_name_with_flags(
         resolver: *mut GResolver,
@@ -12834,7 +12834,7 @@ extern "C" {
         cancellable: *mut GCancellable,
         error: *mut *mut glib::GError,
     ) -> *mut glib::GList;
-    #[cfg(any(feature = "v2_60"))]
+    #[cfg(feature = "v2_60")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     pub fn g_resolver_lookup_by_name_with_flags_async(
         resolver: *mut GResolver,
@@ -12844,7 +12844,7 @@ extern "C" {
         callback: GAsyncReadyCallback,
         user_data: gpointer,
     );
-    #[cfg(any(feature = "v2_60"))]
+    #[cfg(feature = "v2_60")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     pub fn g_resolver_lookup_by_name_with_flags_finish(
         resolver: *mut GResolver,
@@ -13444,7 +13444,7 @@ extern "C" {
         cancellable: *mut GCancellable,
         error: *mut *mut glib::GError,
     ) -> ssize_t;
-    #[cfg(any(feature = "v2_60"))]
+    #[cfg(feature = "v2_60")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     pub fn g_socket_send_message_with_timeout(
         socket: *mut GSocket,
@@ -13905,16 +13905,16 @@ extern "C" {
     //=========================================================================
     pub fn g_subprocess_launcher_get_type() -> GType;
     pub fn g_subprocess_launcher_new(flags: GSubprocessFlags) -> *mut GSubprocessLauncher;
-    #[cfg(any(feature = "v2_68"))]
+    #[cfg(feature = "v2_68")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_68")))]
-    #[cfg(any(unix))]
+    #[cfg(unix)]
     #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_subprocess_launcher_close(self_: *mut GSubprocessLauncher);
     pub fn g_subprocess_launcher_getenv(
         self_: *mut GSubprocessLauncher,
         variable: *const c_char,
     ) -> *const c_char;
-    #[cfg(any(unix))]
+    #[cfg(unix)]
     #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_subprocess_launcher_set_child_setup(
         self_: *mut GSubprocessLauncher,
@@ -13931,19 +13931,19 @@ extern "C" {
         self_: *mut GSubprocessLauncher,
         flags: GSubprocessFlags,
     );
-    #[cfg(any(unix))]
+    #[cfg(unix)]
     #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_subprocess_launcher_set_stderr_file_path(
         self_: *mut GSubprocessLauncher,
         path: *const c_char,
     );
-    #[cfg(any(unix))]
+    #[cfg(unix)]
     #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_subprocess_launcher_set_stdin_file_path(
         self_: *mut GSubprocessLauncher,
         path: *const c_char,
     );
-    #[cfg(any(unix))]
+    #[cfg(unix)]
     #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_subprocess_launcher_set_stdout_file_path(
         self_: *mut GSubprocessLauncher,
@@ -13966,20 +13966,20 @@ extern "C" {
         argv: *const *const c_char,
         error: *mut *mut glib::GError,
     ) -> *mut GSubprocess;
-    #[cfg(any(unix))]
+    #[cfg(unix)]
     #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_subprocess_launcher_take_fd(
         self_: *mut GSubprocessLauncher,
         source_fd: c_int,
         target_fd: c_int,
     );
-    #[cfg(any(unix))]
+    #[cfg(unix)]
     #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_subprocess_launcher_take_stderr_fd(self_: *mut GSubprocessLauncher, fd: c_int);
-    #[cfg(any(unix))]
+    #[cfg(unix)]
     #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_subprocess_launcher_take_stdin_fd(self_: *mut GSubprocessLauncher, fd: c_int);
-    #[cfg(any(unix))]
+    #[cfg(unix)]
     #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_subprocess_launcher_take_stdout_fd(self_: *mut GSubprocessLauncher, fd: c_int);
     pub fn g_subprocess_launcher_unsetenv(self_: *mut GSubprocessLauncher, variable: *const c_char);
@@ -14024,7 +14024,7 @@ extern "C" {
     pub fn g_task_get_check_cancellable(task: *mut GTask) -> gboolean;
     pub fn g_task_get_completed(task: *mut GTask) -> gboolean;
     pub fn g_task_get_context(task: *mut GTask) -> *mut glib::GMainContext;
-    #[cfg(any(feature = "v2_60"))]
+    #[cfg(feature = "v2_60")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     pub fn g_task_get_name(task: *mut GTask) -> *const c_char;
     pub fn g_task_get_priority(task: *mut GTask) -> c_int;
@@ -14036,7 +14036,7 @@ extern "C" {
     pub fn g_task_propagate_boolean(task: *mut GTask, error: *mut *mut glib::GError) -> gboolean;
     pub fn g_task_propagate_int(task: *mut GTask, error: *mut *mut glib::GError) -> ssize_t;
     pub fn g_task_propagate_pointer(task: *mut GTask, error: *mut *mut glib::GError) -> gpointer;
-    #[cfg(any(feature = "v2_64"))]
+    #[cfg(feature = "v2_64")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_64")))]
     pub fn g_task_propagate_value(
         task: *mut GTask,
@@ -14059,19 +14059,19 @@ extern "C" {
         result: gpointer,
         result_destroy: glib::GDestroyNotify,
     );
-    #[cfg(any(feature = "v2_64"))]
+    #[cfg(feature = "v2_64")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_64")))]
     pub fn g_task_return_value(task: *mut GTask, result: *mut gobject::GValue);
     pub fn g_task_run_in_thread(task: *mut GTask, task_func: GTaskThreadFunc);
     pub fn g_task_run_in_thread_sync(task: *mut GTask, task_func: GTaskThreadFunc);
     pub fn g_task_set_check_cancellable(task: *mut GTask, check_cancellable: gboolean);
-    #[cfg(any(feature = "v2_60"))]
+    #[cfg(feature = "v2_60")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     pub fn g_task_set_name(task: *mut GTask, name: *const c_char);
     pub fn g_task_set_priority(task: *mut GTask, priority: c_int);
     pub fn g_task_set_return_on_cancel(task: *mut GTask, return_on_cancel: gboolean) -> gboolean;
     pub fn g_task_set_source_tag(task: *mut GTask, source_tag: gpointer);
-    #[cfg(any(feature = "v2_76"))]
+    #[cfg(feature = "v2_76")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_76")))]
     pub fn g_task_set_static_name(task: *mut GTask, name: *const c_char);
     pub fn g_task_set_task_data(
@@ -14143,7 +14143,7 @@ extern "C" {
         file: *const c_char,
         error: *mut *mut glib::GError,
     ) -> *mut GTlsCertificate;
-    #[cfg(any(feature = "v2_72"))]
+    #[cfg(feature = "v2_72")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
     pub fn g_tls_certificate_new_from_file_with_password(
         file: *const c_char,
@@ -14160,14 +14160,14 @@ extern "C" {
         length: ssize_t,
         error: *mut *mut glib::GError,
     ) -> *mut GTlsCertificate;
-    #[cfg(any(feature = "v2_68"))]
+    #[cfg(feature = "v2_68")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_68")))]
     pub fn g_tls_certificate_new_from_pkcs11_uris(
         pkcs11_uri: *const c_char,
         private_key_pkcs11_uri: *const c_char,
         error: *mut *mut glib::GError,
     ) -> *mut GTlsCertificate;
-    #[cfg(any(feature = "v2_72"))]
+    #[cfg(feature = "v2_72")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
     pub fn g_tls_certificate_new_from_pkcs12(
         data: *const u8,
@@ -14179,27 +14179,27 @@ extern "C" {
         file: *const c_char,
         error: *mut *mut glib::GError,
     ) -> *mut glib::GList;
-    #[cfg(any(feature = "v2_70"))]
+    #[cfg(feature = "v2_70")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
     pub fn g_tls_certificate_get_dns_names(cert: *mut GTlsCertificate) -> *mut glib::GPtrArray;
-    #[cfg(any(feature = "v2_70"))]
+    #[cfg(feature = "v2_70")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
     pub fn g_tls_certificate_get_ip_addresses(cert: *mut GTlsCertificate) -> *mut glib::GPtrArray;
     pub fn g_tls_certificate_get_issuer(cert: *mut GTlsCertificate) -> *mut GTlsCertificate;
-    #[cfg(any(feature = "v2_70"))]
+    #[cfg(feature = "v2_70")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
     pub fn g_tls_certificate_get_issuer_name(cert: *mut GTlsCertificate) -> *mut c_char;
-    #[cfg(any(feature = "v2_70"))]
+    #[cfg(feature = "v2_70")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
     pub fn g_tls_certificate_get_not_valid_after(
         cert: *mut GTlsCertificate,
     ) -> *mut glib::GDateTime;
-    #[cfg(any(feature = "v2_70"))]
+    #[cfg(feature = "v2_70")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
     pub fn g_tls_certificate_get_not_valid_before(
         cert: *mut GTlsCertificate,
     ) -> *mut glib::GDateTime;
-    #[cfg(any(feature = "v2_70"))]
+    #[cfg(feature = "v2_70")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
     pub fn g_tls_certificate_get_subject_name(cert: *mut GTlsCertificate) -> *mut c_char;
     pub fn g_tls_certificate_is_same(
@@ -14222,7 +14222,7 @@ extern "C" {
         errors: GTlsCertificateFlags,
     ) -> gboolean;
     pub fn g_tls_connection_get_certificate(conn: *mut GTlsConnection) -> *mut GTlsCertificate;
-    #[cfg(any(feature = "v2_66"))]
+    #[cfg(feature = "v2_66")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
     pub fn g_tls_connection_get_channel_binding_data(
         conn: *mut GTlsConnection,
@@ -14230,12 +14230,12 @@ extern "C" {
         data: *mut glib::GByteArray,
         error: *mut *mut glib::GError,
     ) -> gboolean;
-    #[cfg(any(feature = "v2_70"))]
+    #[cfg(feature = "v2_70")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
     pub fn g_tls_connection_get_ciphersuite_name(conn: *mut GTlsConnection) -> *mut c_char;
     pub fn g_tls_connection_get_database(conn: *mut GTlsConnection) -> *mut GTlsDatabase;
     pub fn g_tls_connection_get_interaction(conn: *mut GTlsConnection) -> *mut GTlsInteraction;
-    #[cfg(any(feature = "v2_60"))]
+    #[cfg(feature = "v2_60")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     pub fn g_tls_connection_get_negotiated_protocol(conn: *mut GTlsConnection) -> *const c_char;
     pub fn g_tls_connection_get_peer_certificate(conn: *mut GTlsConnection)
@@ -14243,7 +14243,7 @@ extern "C" {
     pub fn g_tls_connection_get_peer_certificate_errors(
         conn: *mut GTlsConnection,
     ) -> GTlsCertificateFlags;
-    #[cfg(any(feature = "v2_70"))]
+    #[cfg(feature = "v2_70")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
     pub fn g_tls_connection_get_protocol_version(conn: *mut GTlsConnection) -> GTlsProtocolVersion;
     pub fn g_tls_connection_get_rehandshake_mode(conn: *mut GTlsConnection) -> GTlsRehandshakeMode;
@@ -14266,7 +14266,7 @@ extern "C" {
         result: *mut GAsyncResult,
         error: *mut *mut glib::GError,
     ) -> gboolean;
-    #[cfg(any(feature = "v2_60"))]
+    #[cfg(feature = "v2_60")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     pub fn g_tls_connection_set_advertised_protocols(
         conn: *mut GTlsConnection,
@@ -14812,7 +14812,7 @@ extern "C" {
         content_type: *const c_char,
         must_support_uris: gboolean,
     ) -> *mut GAppInfo;
-    #[cfg(any(feature = "v2_74"))]
+    #[cfg(feature = "v2_74")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
     pub fn g_app_info_get_default_for_type_async(
         content_type: *const c_char,
@@ -14821,14 +14821,14 @@ extern "C" {
         callback: GAsyncReadyCallback,
         user_data: gpointer,
     );
-    #[cfg(any(feature = "v2_74"))]
+    #[cfg(feature = "v2_74")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
     pub fn g_app_info_get_default_for_type_finish(
         result: *mut GAsyncResult,
         error: *mut *mut glib::GError,
     ) -> *mut GAppInfo;
     pub fn g_app_info_get_default_for_uri_scheme(uri_scheme: *const c_char) -> *mut GAppInfo;
-    #[cfg(any(feature = "v2_74"))]
+    #[cfg(feature = "v2_74")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
     pub fn g_app_info_get_default_for_uri_scheme_async(
         uri_scheme: *const c_char,
@@ -14836,7 +14836,7 @@ extern "C" {
         callback: GAsyncReadyCallback,
         user_data: gpointer,
     );
-    #[cfg(any(feature = "v2_74"))]
+    #[cfg(feature = "v2_74")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
     pub fn g_app_info_get_default_for_uri_scheme_finish(
         result: *mut GAsyncResult,
@@ -14891,7 +14891,7 @@ extern "C" {
         context: *mut GAppLaunchContext,
         error: *mut *mut glib::GError,
     ) -> gboolean;
-    #[cfg(any(feature = "v2_60"))]
+    #[cfg(feature = "v2_60")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     pub fn g_app_info_launch_uris_async(
         appinfo: *mut GAppInfo,
@@ -14901,7 +14901,7 @@ extern "C" {
         callback: GAsyncReadyCallback,
         user_data: gpointer,
     );
-    #[cfg(any(feature = "v2_60"))]
+    #[cfg(feature = "v2_60")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     pub fn g_app_info_launch_uris_finish(
         appinfo: *mut GAppInfo,
@@ -15081,13 +15081,13 @@ extern "C" {
     //=========================================================================
     // GDebugController
     //=========================================================================
-    #[cfg(any(feature = "v2_72"))]
+    #[cfg(feature = "v2_72")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
     pub fn g_debug_controller_get_type() -> GType;
-    #[cfg(any(feature = "v2_72"))]
+    #[cfg(feature = "v2_72")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
     pub fn g_debug_controller_get_debug_enabled(self_: *mut GDebugController) -> gboolean;
-    #[cfg(any(feature = "v2_72"))]
+    #[cfg(feature = "v2_72")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
     pub fn g_debug_controller_set_debug_enabled(
         self_: *mut GDebugController,
@@ -15242,7 +15242,7 @@ extern "C" {
         errors: GTlsCertificateFlags,
     ) -> gboolean;
     pub fn g_dtls_connection_get_certificate(conn: *mut GDtlsConnection) -> *mut GTlsCertificate;
-    #[cfg(any(feature = "v2_66"))]
+    #[cfg(feature = "v2_66")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
     pub fn g_dtls_connection_get_channel_binding_data(
         conn: *mut GDtlsConnection,
@@ -15250,12 +15250,12 @@ extern "C" {
         data: *mut glib::GByteArray,
         error: *mut *mut glib::GError,
     ) -> gboolean;
-    #[cfg(any(feature = "v2_70"))]
+    #[cfg(feature = "v2_70")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
     pub fn g_dtls_connection_get_ciphersuite_name(conn: *mut GDtlsConnection) -> *mut c_char;
     pub fn g_dtls_connection_get_database(conn: *mut GDtlsConnection) -> *mut GTlsDatabase;
     pub fn g_dtls_connection_get_interaction(conn: *mut GDtlsConnection) -> *mut GTlsInteraction;
-    #[cfg(any(feature = "v2_60"))]
+    #[cfg(feature = "v2_60")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     pub fn g_dtls_connection_get_negotiated_protocol(conn: *mut GDtlsConnection) -> *const c_char;
     pub fn g_dtls_connection_get_peer_certificate(
@@ -15264,7 +15264,7 @@ extern "C" {
     pub fn g_dtls_connection_get_peer_certificate_errors(
         conn: *mut GDtlsConnection,
     ) -> GTlsCertificateFlags;
-    #[cfg(any(feature = "v2_70"))]
+    #[cfg(feature = "v2_70")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
     pub fn g_dtls_connection_get_protocol_version(
         conn: *mut GDtlsConnection,
@@ -15290,7 +15290,7 @@ extern "C" {
         result: *mut GAsyncResult,
         error: *mut *mut glib::GError,
     ) -> gboolean;
-    #[cfg(any(feature = "v2_60"))]
+    #[cfg(feature = "v2_60")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     pub fn g_dtls_connection_set_advertised_protocols(
         conn: *mut GDtlsConnection,
@@ -15362,7 +15362,7 @@ extern "C" {
         iostream: *mut *mut GFileIOStream,
         error: *mut *mut glib::GError,
     ) -> *mut GFile;
-    #[cfg(any(feature = "v2_74"))]
+    #[cfg(feature = "v2_74")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
     pub fn g_file_new_tmp_async(
         tmpl: *const c_char,
@@ -15371,7 +15371,7 @@ extern "C" {
         callback: GAsyncReadyCallback,
         user_data: gpointer,
     );
-    #[cfg(any(feature = "v2_74"))]
+    #[cfg(feature = "v2_74")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
     pub fn g_file_new_tmp_dir_async(
         tmpl: *const c_char,
@@ -15380,13 +15380,13 @@ extern "C" {
         callback: GAsyncReadyCallback,
         user_data: gpointer,
     );
-    #[cfg(any(feature = "v2_74"))]
+    #[cfg(feature = "v2_74")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
     pub fn g_file_new_tmp_dir_finish(
         result: *mut GAsyncResult,
         error: *mut *mut glib::GError,
     ) -> *mut GFile;
-    #[cfg(any(feature = "v2_74"))]
+    #[cfg(feature = "v2_74")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
     pub fn g_file_new_tmp_finish(
         result: *mut GAsyncResult,
@@ -15413,7 +15413,7 @@ extern "C" {
         res: *mut GAsyncResult,
         error: *mut *mut glib::GError,
     ) -> *mut GFileOutputStream;
-    #[cfg(any(feature = "v2_68"))]
+    #[cfg(feature = "v2_68")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_68")))]
     pub fn g_file_build_attribute_list_for_copy(
         file: *mut GFile,
@@ -15674,7 +15674,7 @@ extern "C" {
         cancellable: *mut GCancellable,
         error: *mut *mut glib::GError,
     ) -> gboolean;
-    #[cfg(any(feature = "v2_74"))]
+    #[cfg(feature = "v2_74")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
     pub fn g_file_make_symbolic_link_async(
         file: *mut GFile,
@@ -15684,7 +15684,7 @@ extern "C" {
         callback: GAsyncReadyCallback,
         user_data: gpointer,
     );
-    #[cfg(any(feature = "v2_74"))]
+    #[cfg(feature = "v2_74")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
     pub fn g_file_make_symbolic_link_finish(
         file: *mut GFile,
@@ -15773,7 +15773,7 @@ extern "C" {
         progress_callback_data: gpointer,
         error: *mut *mut glib::GError,
     ) -> gboolean;
-    #[cfg(any(feature = "v2_72"))]
+    #[cfg(feature = "v2_72")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
     pub fn g_file_move_async(
         source: *mut GFile,
@@ -15786,7 +15786,7 @@ extern "C" {
         callback: GAsyncReadyCallback,
         user_data: gpointer,
     );
-    #[cfg(any(feature = "v2_72"))]
+    #[cfg(feature = "v2_72")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
     pub fn g_file_move_finish(
         file: *mut GFile,
@@ -15827,7 +15827,7 @@ extern "C" {
         cancellable: *mut GCancellable,
         error: *mut *mut glib::GError,
     ) -> *mut GAppInfo;
-    #[cfg(any(feature = "v2_60"))]
+    #[cfg(feature = "v2_60")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     pub fn g_file_query_default_handler_async(
         file: *mut GFile,
@@ -15836,7 +15836,7 @@ extern "C" {
         callback: GAsyncReadyCallback,
         user_data: gpointer,
     );
-    #[cfg(any(feature = "v2_60"))]
+    #[cfg(feature = "v2_60")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     pub fn g_file_query_default_handler_finish(
         file: *mut GFile,
@@ -16260,10 +16260,10 @@ extern "C" {
     //=========================================================================
     // GMemoryMonitor
     //=========================================================================
-    #[cfg(any(feature = "v2_64"))]
+    #[cfg(feature = "v2_64")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_64")))]
     pub fn g_memory_monitor_get_type() -> GType;
-    #[cfg(any(feature = "v2_64"))]
+    #[cfg(feature = "v2_64")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_64")))]
     pub fn g_memory_monitor_dup_default() -> *mut GMemoryMonitor;
 
@@ -16431,7 +16431,7 @@ extern "C" {
         cancellable: *mut GCancellable,
         error: *mut *mut glib::GError,
     ) -> ssize_t;
-    #[cfg(any(feature = "v2_60"))]
+    #[cfg(feature = "v2_60")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     pub fn g_pollable_output_stream_writev_nonblocking(
         stream: *mut GPollableOutputStream,
@@ -16445,13 +16445,13 @@ extern "C" {
     //=========================================================================
     // GPowerProfileMonitor
     //=========================================================================
-    #[cfg(any(feature = "v2_70"))]
+    #[cfg(feature = "v2_70")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
     pub fn g_power_profile_monitor_get_type() -> GType;
-    #[cfg(any(feature = "v2_70"))]
+    #[cfg(feature = "v2_70")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
     pub fn g_power_profile_monitor_dup_default() -> *mut GPowerProfileMonitor;
-    #[cfg(any(feature = "v2_70"))]
+    #[cfg(feature = "v2_70")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
     pub fn g_power_profile_monitor_get_power_saver_enabled(
         monitor: *mut GPowerProfileMonitor,
@@ -16571,7 +16571,7 @@ extern "C" {
     pub fn g_tls_backend_get_dtls_server_connection_type(backend: *mut GTlsBackend) -> GType;
     pub fn g_tls_backend_get_file_database_type(backend: *mut GTlsBackend) -> GType;
     pub fn g_tls_backend_get_server_connection_type(backend: *mut GTlsBackend) -> GType;
-    #[cfg(any(feature = "v2_60"))]
+    #[cfg(feature = "v2_60")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     pub fn g_tls_backend_set_default_database(
         backend: *mut GTlsBackend,
@@ -16783,7 +16783,7 @@ extern "C" {
     pub fn g_content_type_get_description(type_: *const c_char) -> *mut c_char;
     pub fn g_content_type_get_generic_icon_name(type_: *const c_char) -> *mut c_char;
     pub fn g_content_type_get_icon(type_: *const c_char) -> *mut GIcon;
-    #[cfg(any(feature = "v2_60"))]
+    #[cfg(feature = "v2_60")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     pub fn g_content_type_get_mime_dirs() -> *const *const c_char;
     pub fn g_content_type_get_mime_type(type_: *const c_char) -> *mut c_char;
@@ -16798,7 +16798,7 @@ extern "C" {
     pub fn g_content_type_is_a(type_: *const c_char, supertype: *const c_char) -> gboolean;
     pub fn g_content_type_is_mime_type(type_: *const c_char, mime_type: *const c_char) -> gboolean;
     pub fn g_content_type_is_unknown(type_: *const c_char) -> gboolean;
-    #[cfg(any(feature = "v2_60"))]
+    #[cfg(feature = "v2_60")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     pub fn g_content_type_set_mime_dirs(dirs: *const *const c_char);
     pub fn g_content_types_get_registered() -> *mut glib::GList;
@@ -16825,10 +16825,10 @@ extern "C" {
         cancellable: *mut GCancellable,
         error: *mut *mut glib::GError,
     ) -> *mut GIOStream;
-    #[cfg(any(feature = "v2_68"))]
+    #[cfg(feature = "v2_68")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_68")))]
     pub fn g_dbus_escape_object_path(s: *const c_char) -> *mut c_char;
-    #[cfg(any(feature = "v2_68"))]
+    #[cfg(feature = "v2_68")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_68")))]
     pub fn g_dbus_escape_object_path_bytestring(bytes: *const u8) -> *mut c_char;
     pub fn g_dbus_generate_guid() -> *mut c_char;
@@ -16838,7 +16838,7 @@ extern "C" {
     ) -> *mut glib::GVariant;
     pub fn g_dbus_gvariant_to_gvalue(value: *mut glib::GVariant, out_gvalue: *mut gobject::GValue);
     pub fn g_dbus_is_address(string: *const c_char) -> gboolean;
-    #[cfg(any(feature = "v2_70"))]
+    #[cfg(feature = "v2_70")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
     pub fn g_dbus_is_error_name(string: *const c_char) -> gboolean;
     pub fn g_dbus_is_guid(string: *const c_char) -> gboolean;
@@ -16850,11 +16850,11 @@ extern "C" {
         error: *mut *mut glib::GError,
     ) -> gboolean;
     pub fn g_dbus_is_unique_name(string: *const c_char) -> gboolean;
-    #[cfg(any(feature = "v2_68"))]
+    #[cfg(feature = "v2_68")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_68")))]
     pub fn g_dbus_unescape_object_path(s: *const c_char) -> *mut u8;
     pub fn g_io_error_from_errno(err_no: c_int) -> GIOErrorEnum;
-    #[cfg(any(feature = "v2_74"))]
+    #[cfg(feature = "v2_74")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
     pub fn g_io_error_from_file_error(file_error: glib::GFileError) -> GIOErrorEnum;
     pub fn g_io_error_quark() -> glib::GQuark;
@@ -16974,10 +16974,10 @@ extern "C" {
     pub fn g_unix_mount_get_device_path(mount_entry: *mut GUnixMountEntry) -> *const c_char;
     pub fn g_unix_mount_get_fs_type(mount_entry: *mut GUnixMountEntry) -> *const c_char;
     pub fn g_unix_mount_get_mount_path(mount_entry: *mut GUnixMountEntry) -> *const c_char;
-    #[cfg(any(feature = "v2_58"))]
+    #[cfg(feature = "v2_58")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_58")))]
     pub fn g_unix_mount_get_options(mount_entry: *mut GUnixMountEntry) -> *const c_char;
-    #[cfg(any(feature = "v2_60"))]
+    #[cfg(feature = "v2_60")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     pub fn g_unix_mount_get_root_path(mount_entry: *mut GUnixMountEntry) -> *const c_char;
     pub fn g_unix_mount_guess_can_eject(mount_entry: *mut GUnixMountEntry) -> gboolean;

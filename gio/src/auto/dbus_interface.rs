@@ -19,20 +19,9 @@ impl DBusInterface {
     pub const NONE: Option<&'static DBusInterface> = None;
 }
 
-pub trait DBusInterfaceExt: 'static {
+pub trait DBusInterfaceExt: IsA<DBusInterface> + 'static {
     #[doc(alias = "g_dbus_interface_dup_object")]
     #[doc(alias = "dup_object")]
-    fn get(&self) -> Option<DBusObject>;
-
-    #[doc(alias = "g_dbus_interface_get_info")]
-    #[doc(alias = "get_info")]
-    fn info(&self) -> DBusInterfaceInfo;
-
-    #[doc(alias = "g_dbus_interface_set_object")]
-    fn set_object(&self, object: Option<&impl IsA<DBusObject>>);
-}
-
-impl<O: IsA<DBusInterface>> DBusInterfaceExt for O {
     fn get(&self) -> Option<DBusObject> {
         unsafe {
             from_glib_full(ffi::g_dbus_interface_dup_object(
@@ -41,6 +30,8 @@ impl<O: IsA<DBusInterface>> DBusInterfaceExt for O {
         }
     }
 
+    #[doc(alias = "g_dbus_interface_get_info")]
+    #[doc(alias = "get_info")]
     fn info(&self) -> DBusInterfaceInfo {
         unsafe {
             from_glib_none(ffi::g_dbus_interface_get_info(
@@ -49,6 +40,7 @@ impl<O: IsA<DBusInterface>> DBusInterfaceExt for O {
         }
     }
 
+    #[doc(alias = "g_dbus_interface_set_object")]
     fn set_object(&self, object: Option<&impl IsA<DBusObject>>) {
         unsafe {
             ffi::g_dbus_interface_set_object(
@@ -58,6 +50,8 @@ impl<O: IsA<DBusInterface>> DBusInterfaceExt for O {
         }
     }
 }
+
+impl<O: IsA<DBusInterface>> DBusInterfaceExt for O {}
 
 impl fmt::Display for DBusInterface {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {

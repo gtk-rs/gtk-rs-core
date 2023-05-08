@@ -64,13 +64,9 @@ impl UnixSocketAddress {
     }
 }
 
-pub trait UnixSocketAddressExtManual {
+pub trait UnixSocketAddressExtManual: IsA<UnixSocketAddress> + 'static {
     #[doc(alias = "g_unix_socket_address_get_path")]
     #[doc(alias = "get_path")]
-    fn path(&self) -> Option<UnixSocketAddressPath>;
-}
-
-impl<O: IsA<UnixSocketAddress>> UnixSocketAddressExtManual for O {
     fn path(&self) -> Option<UnixSocketAddressPath> {
         use self::UnixSocketAddressPath::*;
 
@@ -94,3 +90,5 @@ impl<O: IsA<UnixSocketAddress>> UnixSocketAddressExtManual for O {
         }
     }
 }
+
+impl<O: IsA<UnixSocketAddress>> UnixSocketAddressExtManual for O {}

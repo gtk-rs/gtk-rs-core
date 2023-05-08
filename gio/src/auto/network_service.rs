@@ -34,31 +34,9 @@ impl NetworkService {
     }
 }
 
-pub trait NetworkServiceExt: 'static {
+pub trait NetworkServiceExt: IsA<NetworkService> + 'static {
     #[doc(alias = "g_network_service_get_domain")]
     #[doc(alias = "get_domain")]
-    fn domain(&self) -> glib::GString;
-
-    #[doc(alias = "g_network_service_get_protocol")]
-    #[doc(alias = "get_protocol")]
-    fn protocol(&self) -> glib::GString;
-
-    #[doc(alias = "g_network_service_get_scheme")]
-    #[doc(alias = "get_scheme")]
-    fn scheme(&self) -> glib::GString;
-
-    #[doc(alias = "g_network_service_get_service")]
-    #[doc(alias = "get_service")]
-    fn service(&self) -> glib::GString;
-
-    #[doc(alias = "g_network_service_set_scheme")]
-    fn set_scheme(&self, scheme: &str);
-
-    #[doc(alias = "scheme")]
-    fn connect_scheme_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
-}
-
-impl<O: IsA<NetworkService>> NetworkServiceExt for O {
     fn domain(&self) -> glib::GString {
         unsafe {
             from_glib_none(ffi::g_network_service_get_domain(
@@ -67,6 +45,8 @@ impl<O: IsA<NetworkService>> NetworkServiceExt for O {
         }
     }
 
+    #[doc(alias = "g_network_service_get_protocol")]
+    #[doc(alias = "get_protocol")]
     fn protocol(&self) -> glib::GString {
         unsafe {
             from_glib_none(ffi::g_network_service_get_protocol(
@@ -75,6 +55,8 @@ impl<O: IsA<NetworkService>> NetworkServiceExt for O {
         }
     }
 
+    #[doc(alias = "g_network_service_get_scheme")]
+    #[doc(alias = "get_scheme")]
     fn scheme(&self) -> glib::GString {
         unsafe {
             from_glib_none(ffi::g_network_service_get_scheme(
@@ -83,6 +65,8 @@ impl<O: IsA<NetworkService>> NetworkServiceExt for O {
         }
     }
 
+    #[doc(alias = "g_network_service_get_service")]
+    #[doc(alias = "get_service")]
     fn service(&self) -> glib::GString {
         unsafe {
             from_glib_none(ffi::g_network_service_get_service(
@@ -91,6 +75,7 @@ impl<O: IsA<NetworkService>> NetworkServiceExt for O {
         }
     }
 
+    #[doc(alias = "g_network_service_set_scheme")]
     fn set_scheme(&self, scheme: &str) {
         unsafe {
             ffi::g_network_service_set_scheme(
@@ -100,6 +85,7 @@ impl<O: IsA<NetworkService>> NetworkServiceExt for O {
         }
     }
 
+    #[doc(alias = "scheme")]
     fn connect_scheme_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_scheme_trampoline<
             P: IsA<NetworkService>,
@@ -125,6 +111,8 @@ impl<O: IsA<NetworkService>> NetworkServiceExt for O {
         }
     }
 }
+
+impl<O: IsA<NetworkService>> NetworkServiceExt for O {}
 
 impl fmt::Display for NetworkService {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {

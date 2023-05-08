@@ -49,13 +49,9 @@ impl Default for UnixCredentialsMessage {
     }
 }
 
-pub trait UnixCredentialsMessageExt: 'static {
+pub trait UnixCredentialsMessageExt: IsA<UnixCredentialsMessage> + 'static {
     #[doc(alias = "g_unix_credentials_message_get_credentials")]
     #[doc(alias = "get_credentials")]
-    fn credentials(&self) -> Credentials;
-}
-
-impl<O: IsA<UnixCredentialsMessage>> UnixCredentialsMessageExt for O {
     fn credentials(&self) -> Credentials {
         unsafe {
             from_glib_none(ffi::g_unix_credentials_message_get_credentials(
@@ -64,6 +60,8 @@ impl<O: IsA<UnixCredentialsMessage>> UnixCredentialsMessageExt for O {
         }
     }
 }
+
+impl<O: IsA<UnixCredentialsMessage>> UnixCredentialsMessageExt for O {}
 
 impl fmt::Display for UnixCredentialsMessage {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {

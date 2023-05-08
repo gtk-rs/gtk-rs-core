@@ -29,17 +29,15 @@ impl Default for UnixFDList {
     }
 }
 
-pub trait UnixFDListExt: 'static {
+pub trait UnixFDListExt: IsA<UnixFDList> + 'static {
     #[doc(alias = "g_unix_fd_list_get_length")]
     #[doc(alias = "get_length")]
-    fn length(&self) -> i32;
-}
-
-impl<O: IsA<UnixFDList>> UnixFDListExt for O {
     fn length(&self) -> i32 {
         unsafe { ffi::g_unix_fd_list_get_length(self.as_ref().to_glib_none().0) }
     }
 }
+
+impl<O: IsA<UnixFDList>> UnixFDListExt for O {}
 
 impl fmt::Display for UnixFDList {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {

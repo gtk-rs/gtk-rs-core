@@ -18,13 +18,9 @@ impl Font {
     pub const NONE: Option<&'static Font> = None;
 }
 
-pub trait FontExt: 'static {
+pub trait FontExt: IsA<Font> + 'static {
     #[doc(alias = "pango_cairo_font_get_scaled_font")]
     #[doc(alias = "get_scaled_font")]
-    fn scaled_font(&self) -> Option<cairo::ScaledFont>;
-}
-
-impl<O: IsA<Font>> FontExt for O {
     fn scaled_font(&self) -> Option<cairo::ScaledFont> {
         unsafe {
             from_glib_none(ffi::pango_cairo_font_get_scaled_font(
@@ -33,6 +29,8 @@ impl<O: IsA<Font>> FontExt for O {
         }
     }
 }
+
+impl<O: IsA<Font>> FontExt for O {}
 
 impl fmt::Display for Font {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {

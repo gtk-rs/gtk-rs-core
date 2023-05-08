@@ -29,25 +29,8 @@ impl EmblemedIcon {
     }
 }
 
-pub trait EmblemedIconExt: 'static {
+pub trait EmblemedIconExt: IsA<EmblemedIcon> + 'static {
     #[doc(alias = "g_emblemed_icon_add_emblem")]
-    fn add_emblem(&self, emblem: &Emblem);
-
-    #[doc(alias = "g_emblemed_icon_clear_emblems")]
-    fn clear_emblems(&self);
-
-    #[doc(alias = "g_emblemed_icon_get_emblems")]
-    #[doc(alias = "get_emblems")]
-    fn emblems(&self) -> Vec<Emblem>;
-
-    #[doc(alias = "g_emblemed_icon_get_icon")]
-    #[doc(alias = "get_icon")]
-    fn icon(&self) -> Icon;
-
-    fn gicon(&self) -> Option<Icon>;
-}
-
-impl<O: IsA<EmblemedIcon>> EmblemedIconExt for O {
     fn add_emblem(&self, emblem: &Emblem) {
         unsafe {
             ffi::g_emblemed_icon_add_emblem(
@@ -57,12 +40,15 @@ impl<O: IsA<EmblemedIcon>> EmblemedIconExt for O {
         }
     }
 
+    #[doc(alias = "g_emblemed_icon_clear_emblems")]
     fn clear_emblems(&self) {
         unsafe {
             ffi::g_emblemed_icon_clear_emblems(self.as_ref().to_glib_none().0);
         }
     }
 
+    #[doc(alias = "g_emblemed_icon_get_emblems")]
+    #[doc(alias = "get_emblems")]
     fn emblems(&self) -> Vec<Emblem> {
         unsafe {
             FromGlibPtrContainer::from_glib_none(ffi::g_emblemed_icon_get_emblems(
@@ -71,6 +57,8 @@ impl<O: IsA<EmblemedIcon>> EmblemedIconExt for O {
         }
     }
 
+    #[doc(alias = "g_emblemed_icon_get_icon")]
+    #[doc(alias = "get_icon")]
     fn icon(&self) -> Icon {
         unsafe {
             from_glib_none(ffi::g_emblemed_icon_get_icon(
@@ -83,6 +71,8 @@ impl<O: IsA<EmblemedIcon>> EmblemedIconExt for O {
         glib::ObjectExt::property(self.as_ref(), "gicon")
     }
 }
+
+impl<O: IsA<EmblemedIcon>> EmblemedIconExt for O {}
 
 impl fmt::Display for EmblemedIcon {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {

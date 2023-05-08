@@ -41,12 +41,8 @@ impl Default for MemoryInputStream {
     }
 }
 
-pub trait MemoryInputStreamExt: 'static {
+pub trait MemoryInputStreamExt: IsA<MemoryInputStream> + 'static {
     #[doc(alias = "g_memory_input_stream_add_bytes")]
-    fn add_bytes(&self, bytes: &glib::Bytes);
-}
-
-impl<O: IsA<MemoryInputStream>> MemoryInputStreamExt for O {
     fn add_bytes(&self, bytes: &glib::Bytes) {
         unsafe {
             ffi::g_memory_input_stream_add_bytes(
@@ -56,6 +52,8 @@ impl<O: IsA<MemoryInputStream>> MemoryInputStreamExt for O {
         }
     }
 }
+
+impl<O: IsA<MemoryInputStream>> MemoryInputStreamExt for O {}
 
 impl fmt::Display for MemoryInputStream {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {

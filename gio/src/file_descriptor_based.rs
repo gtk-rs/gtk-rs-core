@@ -27,13 +27,9 @@ impl AsRawFd for FileDescriptorBased {
     }
 }
 
-pub trait FileDescriptorBasedExtManual: 'static {
+pub trait FileDescriptorBasedExtManual: IsA<FileDescriptorBased> + 'static {
     #[doc(alias = "g_file_descriptor_based_get_fd")]
     #[doc(alias = "get_fd")]
-    fn fd<T: FromRawFd>(&self) -> T;
-}
-
-impl<O: IsA<FileDescriptorBased>> FileDescriptorBasedExtManual for O {
     fn fd<T: FromRawFd>(&self) -> T {
         unsafe {
             T::from_raw_fd(ffi::g_file_descriptor_based_get_fd(
@@ -42,6 +38,8 @@ impl<O: IsA<FileDescriptorBased>> FileDescriptorBasedExtManual for O {
         }
     }
 }
+
+impl<O: IsA<FileDescriptorBased>> FileDescriptorBasedExtManual for O {}
 
 impl fmt::Display for FileDescriptorBased {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {

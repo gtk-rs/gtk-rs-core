@@ -2,7 +2,7 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-#[cfg(any(feature = "v1_50"))]
+#[cfg(feature = "v1_50")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
 use crate::Direction;
 use crate::Rectangle;
@@ -36,7 +36,7 @@ impl LayoutLine {
         }
     }
 
-    #[cfg(any(feature = "v1_44"))]
+    #[cfg(feature = "v1_44")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
     #[doc(alias = "pango_layout_line_get_height")]
     #[doc(alias = "get_height")]
@@ -48,7 +48,7 @@ impl LayoutLine {
         }
     }
 
-    #[cfg(any(feature = "v1_50"))]
+    #[cfg(feature = "v1_50")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     #[doc(alias = "pango_layout_line_get_length")]
     #[doc(alias = "get_length")]
@@ -71,7 +71,7 @@ impl LayoutLine {
         }
     }
 
-    #[cfg(any(feature = "v1_50"))]
+    #[cfg(feature = "v1_50")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     #[doc(alias = "pango_layout_line_get_resolved_direction")]
     #[doc(alias = "get_resolved_direction")]
@@ -83,7 +83,7 @@ impl LayoutLine {
         }
     }
 
-    #[cfg(any(feature = "v1_50"))]
+    #[cfg(feature = "v1_50")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     #[doc(alias = "pango_layout_line_get_start_index")]
     #[doc(alias = "get_start_index")]
@@ -122,7 +122,7 @@ impl LayoutLine {
         }
     }
 
-    #[cfg(any(feature = "v1_50"))]
+    #[cfg(feature = "v1_50")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     #[doc(alias = "pango_layout_line_is_paragraph_start")]
     pub fn is_paragraph_start(&self) -> bool {

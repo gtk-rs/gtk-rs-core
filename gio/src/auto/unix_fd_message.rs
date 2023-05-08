@@ -41,13 +41,9 @@ impl Default for UnixFDMessage {
     }
 }
 
-pub trait UnixFDMessageExt: 'static {
+pub trait UnixFDMessageExt: IsA<UnixFDMessage> + 'static {
     #[doc(alias = "g_unix_fd_message_get_fd_list")]
     #[doc(alias = "get_fd_list")]
-    fn fd_list(&self) -> UnixFDList;
-}
-
-impl<O: IsA<UnixFDMessage>> UnixFDMessageExt for O {
     fn fd_list(&self) -> UnixFDList {
         unsafe {
             from_glib_none(ffi::g_unix_fd_message_get_fd_list(
@@ -56,6 +52,8 @@ impl<O: IsA<UnixFDMessage>> UnixFDMessageExt for O {
         }
     }
 }
+
+impl<O: IsA<UnixFDMessage>> UnixFDMessageExt for O {}
 
 impl fmt::Display for UnixFDMessage {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {

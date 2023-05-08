@@ -217,7 +217,7 @@ impl DBusConnection {
         }
     }
 
-    #[cfg(any(unix))]
+    #[cfg(unix)]
     #[cfg_attr(docsrs, doc(cfg(unix)))]
     #[doc(alias = "g_dbus_connection_call_with_unix_fd_list")]
     pub fn call_with_unix_fd_list<
@@ -293,7 +293,7 @@ impl DBusConnection {
         }
     }
 
-    #[cfg(any(unix))]
+    #[cfg(unix)]
     #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn call_with_unix_fd_list_future(
         &self,
@@ -341,7 +341,7 @@ impl DBusConnection {
         ))
     }
 
-    #[cfg(any(unix))]
+    #[cfg(unix)]
     #[cfg_attr(docsrs, doc(cfg(unix)))]
     #[doc(alias = "g_dbus_connection_call_with_unix_fd_list_sync")]
     pub fn call_with_unix_fd_list_sync(
@@ -592,7 +592,7 @@ impl DBusConnection {
         }
     }
 
-    #[cfg(any(feature = "v2_60"))]
+    #[cfg(feature = "v2_60")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     #[doc(alias = "g_dbus_connection_get_flags")]
     #[doc(alias = "get_flags")]

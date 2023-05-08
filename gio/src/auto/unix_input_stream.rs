@@ -19,13 +19,9 @@ impl UnixInputStream {
     pub const NONE: Option<&'static UnixInputStream> = None;
 }
 
-pub trait UnixInputStreamExt: 'static {
+pub trait UnixInputStreamExt: IsA<UnixInputStream> + 'static {
     #[doc(alias = "g_unix_input_stream_get_close_fd")]
     #[doc(alias = "get_close_fd")]
-    fn closes_fd(&self) -> bool;
-}
-
-impl<O: IsA<UnixInputStream>> UnixInputStreamExt for O {
     fn closes_fd(&self) -> bool {
         unsafe {
             from_glib(ffi::g_unix_input_stream_get_close_fd(
@@ -34,6 +30,8 @@ impl<O: IsA<UnixInputStream>> UnixInputStreamExt for O {
         }
     }
 }
+
+impl<O: IsA<UnixInputStream>> UnixInputStreamExt for O {}
 
 impl fmt::Display for UnixInputStream {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {

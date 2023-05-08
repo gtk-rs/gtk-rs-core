@@ -19,18 +19,8 @@ impl ActionMap {
     pub const NONE: Option<&'static ActionMap> = None;
 }
 
-pub trait ActionMapExt: 'static {
+pub trait ActionMapExt: IsA<ActionMap> + 'static {
     #[doc(alias = "g_action_map_add_action")]
-    fn add_action(&self, action: &impl IsA<Action>);
-
-    #[doc(alias = "g_action_map_lookup_action")]
-    fn lookup_action(&self, action_name: &str) -> Option<Action>;
-
-    #[doc(alias = "g_action_map_remove_action")]
-    fn remove_action(&self, action_name: &str);
-}
-
-impl<O: IsA<ActionMap>> ActionMapExt for O {
     fn add_action(&self, action: &impl IsA<Action>) {
         unsafe {
             ffi::g_action_map_add_action(
@@ -40,6 +30,7 @@ impl<O: IsA<ActionMap>> ActionMapExt for O {
         }
     }
 
+    #[doc(alias = "g_action_map_lookup_action")]
     fn lookup_action(&self, action_name: &str) -> Option<Action> {
         unsafe {
             from_glib_none(ffi::g_action_map_lookup_action(
@@ -49,6 +40,7 @@ impl<O: IsA<ActionMap>> ActionMapExt for O {
         }
     }
 
+    #[doc(alias = "g_action_map_remove_action")]
     fn remove_action(&self, action_name: &str) {
         unsafe {
             ffi::g_action_map_remove_action(
@@ -58,6 +50,8 @@ impl<O: IsA<ActionMap>> ActionMapExt for O {
         }
     }
 }
+
+impl<O: IsA<ActionMap>> ActionMapExt for O {}
 
 impl fmt::Display for ActionMap {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {

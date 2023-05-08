@@ -15,53 +15,8 @@ use crate::{error::to_std_io_result, prelude::*, Cancellable, PollableOutputStre
 #[cfg(feature = "v2_60")]
 use crate::{OutputVector, PollableReturn};
 
-pub trait PollableOutputStreamExtManual {
+pub trait PollableOutputStreamExtManual: IsA<PollableOutputStream> {
     #[doc(alias = "g_pollable_output_stream_create_source")]
-    fn create_source<F, C>(
-        &self,
-        cancellable: Option<&C>,
-        name: Option<&str>,
-        priority: glib::Priority,
-        func: F,
-    ) -> glib::Source
-    where
-        F: FnMut(&Self) -> glib::Continue + 'static,
-        C: IsA<Cancellable>;
-
-    fn create_source_future<C: IsA<Cancellable>>(
-        &self,
-        cancellable: Option<&C>,
-        priority: glib::Priority,
-    ) -> Pin<Box<dyn std::future::Future<Output = ()> + 'static>>;
-
-    fn create_source_stream<C: IsA<Cancellable>>(
-        &self,
-        cancellable: Option<&C>,
-        priority: glib::Priority,
-    ) -> Pin<Box<dyn Stream<Item = ()> + 'static>>;
-
-    #[cfg(feature = "v2_60")]
-    #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
-    #[doc(alias = "g_pollable_output_stream_writev_nonblocking")]
-    fn writev_nonblocking(
-        &self,
-        vectors: &[OutputVector],
-        cancellable: Option<&impl IsA<Cancellable>>,
-    ) -> Result<(PollableReturn, usize), glib::Error>;
-
-    fn into_async_write(self) -> Result<OutputStreamAsyncWrite<Self>, Self>
-    where
-        Self: IsA<PollableOutputStream>,
-    {
-        if self.can_poll() {
-            Ok(OutputStreamAsyncWrite(self, None))
-        } else {
-            Err(self)
-        }
-    }
-}
-
-impl<O: IsA<PollableOutputStream>> PollableOutputStreamExtManual for O {
     fn create_source<F, C>(
         &self,
         cancellable: Option<&C>,
@@ -154,6 +109,7 @@ impl<O: IsA<PollableOutputStream>> PollableOutputStreamExtManual for O {
 
     #[cfg(feature = "v2_60")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
+    #[doc(alias = "g_pollable_output_stream_writev_nonblocking")]
     fn writev_nonblocking(
         &self,
         vectors: &[OutputVector],
@@ -178,7 +134,20 @@ impl<O: IsA<PollableOutputStream>> PollableOutputStreamExtManual for O {
             }
         }
     }
+
+    fn into_async_write(self) -> Result<OutputStreamAsyncWrite<Self>, Self>
+    where
+        Self: IsA<PollableOutputStream>,
+    {
+        if self.can_poll() {
+            Ok(OutputStreamAsyncWrite(self, None))
+        } else {
+            Err(self)
+        }
+    }
 }
+
+impl<O: IsA<PollableOutputStream>> PollableOutputStreamExtManual for O {}
 
 #[derive(Debug)]
 pub struct OutputStreamAsyncWrite<T: IsA<PollableOutputStream>>(

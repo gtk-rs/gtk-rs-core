@@ -45,7 +45,7 @@ impl BindingGroup {
         }
     }
 
-    #[cfg(any(feature = "v2_72"))]
+    #[cfg(feature = "v2_72")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
     #[doc(alias = "source")]
     pub fn connect_source_notify<F: Fn(&Self) + Send + Sync + 'static>(
@@ -76,7 +76,7 @@ impl BindingGroup {
     }
 }
 
-#[cfg(any(feature = "v2_72"))]
+#[cfg(feature = "v2_72")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
 impl Default for BindingGroup {
     fn default() -> Self {

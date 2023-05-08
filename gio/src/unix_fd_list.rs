@@ -23,21 +23,8 @@ impl UnixFDList {
     }
 }
 
-pub trait UnixFDListExtManual: Sized {
+pub trait UnixFDListExtManual: IsA<UnixFDList> + Sized {
     #[doc(alias = "g_unix_fd_list_append")]
-    fn append<T: AsRawFd>(&self, fd: T) -> Result<i32, glib::Error>;
-
-    #[doc(alias = "g_unix_fd_list_get")]
-    fn get(&self, index_: i32) -> Result<RawFd, glib::Error>;
-
-    #[doc(alias = "g_unix_fd_list_peek_fds")]
-    fn peek_fds(&self) -> Vec<RawFd>;
-
-    #[doc(alias = "g_unix_fd_list_steal_fds")]
-    fn steal_fds(&self) -> Vec<RawFd>;
-}
-
-impl<O: IsA<UnixFDList>> UnixFDListExtManual for O {
     fn append<T: AsRawFd>(&self, fd: T) -> Result<i32, glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
@@ -54,6 +41,7 @@ impl<O: IsA<UnixFDList>> UnixFDListExtManual for O {
         }
     }
 
+    #[doc(alias = "g_unix_fd_list_get")]
     fn get(&self, index_: i32) -> Result<RawFd, glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
@@ -66,6 +54,8 @@ impl<O: IsA<UnixFDList>> UnixFDListExtManual for O {
         }
     }
 
+    #[doc(alias = "g_unix_fd_list_peek_fds")]
+
     fn peek_fds(&self) -> Vec<RawFd> {
         unsafe {
             let mut length = mem::MaybeUninit::uninit();
@@ -76,7 +66,7 @@ impl<O: IsA<UnixFDList>> UnixFDListExtManual for O {
             ret
         }
     }
-
+    #[doc(alias = "g_unix_fd_list_steal_fds")]
     fn steal_fds(&self) -> Vec<RawFd> {
         unsafe {
             let mut length = mem::MaybeUninit::uninit();
@@ -88,3 +78,5 @@ impl<O: IsA<UnixFDList>> UnixFDListExtManual for O {
         }
     }
 }
+
+impl<O: IsA<UnixFDList>> UnixFDListExtManual for O {}

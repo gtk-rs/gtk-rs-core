@@ -26,32 +26,11 @@ impl fmt::Display for FontFamily {
     }
 }
 
-pub trait FontFamilyExt: 'static {
-    #[cfg(any(feature = "v1_46"))]
+pub trait FontFamilyExt: IsA<FontFamily> + 'static {
+    #[cfg(feature = "v1_46")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_46")))]
     #[doc(alias = "pango_font_family_get_face")]
     #[doc(alias = "get_face")]
-    fn face(&self, name: Option<&str>) -> Option<FontFace>;
-
-    #[doc(alias = "pango_font_family_get_name")]
-    #[doc(alias = "get_name")]
-    fn name(&self) -> glib::GString;
-
-    #[doc(alias = "pango_font_family_is_monospace")]
-    fn is_monospace(&self) -> bool;
-
-    #[cfg(any(feature = "v1_44"))]
-    #[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
-    #[doc(alias = "pango_font_family_is_variable")]
-    fn is_variable(&self) -> bool;
-
-    #[doc(alias = "pango_font_family_list_faces")]
-    fn list_faces(&self) -> Vec<FontFace>;
-}
-
-impl<O: IsA<FontFamily>> FontFamilyExt for O {
-    #[cfg(any(feature = "v1_46"))]
-    #[cfg_attr(docsrs, doc(cfg(feature = "v1_46")))]
     fn face(&self, name: Option<&str>) -> Option<FontFace> {
         unsafe {
             from_glib_none(ffi::pango_font_family_get_face(
@@ -61,6 +40,8 @@ impl<O: IsA<FontFamily>> FontFamilyExt for O {
         }
     }
 
+    #[doc(alias = "pango_font_family_get_name")]
+    #[doc(alias = "get_name")]
     fn name(&self) -> glib::GString {
         unsafe {
             from_glib_none(ffi::pango_font_family_get_name(
@@ -69,6 +50,7 @@ impl<O: IsA<FontFamily>> FontFamilyExt for O {
         }
     }
 
+    #[doc(alias = "pango_font_family_is_monospace")]
     fn is_monospace(&self) -> bool {
         unsafe {
             from_glib(ffi::pango_font_family_is_monospace(
@@ -77,8 +59,9 @@ impl<O: IsA<FontFamily>> FontFamilyExt for O {
         }
     }
 
-    #[cfg(any(feature = "v1_44"))]
+    #[cfg(feature = "v1_44")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
+    #[doc(alias = "pango_font_family_is_variable")]
     fn is_variable(&self) -> bool {
         unsafe {
             from_glib(ffi::pango_font_family_is_variable(
@@ -87,6 +70,7 @@ impl<O: IsA<FontFamily>> FontFamilyExt for O {
         }
     }
 
+    #[doc(alias = "pango_font_family_list_faces")]
     fn list_faces(&self) -> Vec<FontFace> {
         unsafe {
             let mut faces = ptr::null_mut();
@@ -100,3 +84,5 @@ impl<O: IsA<FontFamily>> FontFamilyExt for O {
         }
     }
 }
+
+impl<O: IsA<FontFamily>> FontFamilyExt for O {}

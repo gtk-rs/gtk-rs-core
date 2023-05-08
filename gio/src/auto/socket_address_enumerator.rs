@@ -19,30 +19,8 @@ impl SocketAddressEnumerator {
     pub const NONE: Option<&'static SocketAddressEnumerator> = None;
 }
 
-pub trait SocketAddressEnumeratorExt: 'static {
+pub trait SocketAddressEnumeratorExt: IsA<SocketAddressEnumerator> + 'static {
     #[doc(alias = "g_socket_address_enumerator_next")]
-    fn next(
-        &self,
-        cancellable: Option<&impl IsA<Cancellable>>,
-    ) -> Result<Option<SocketAddress>, glib::Error>;
-
-    #[doc(alias = "g_socket_address_enumerator_next_async")]
-    fn next_async<P: FnOnce(Result<Option<SocketAddress>, glib::Error>) + 'static>(
-        &self,
-        cancellable: Option<&impl IsA<Cancellable>>,
-        callback: P,
-    );
-
-    fn next_future(
-        &self,
-    ) -> Pin<
-        Box_<
-            dyn std::future::Future<Output = Result<Option<SocketAddress>, glib::Error>> + 'static,
-        >,
-    >;
-}
-
-impl<O: IsA<SocketAddressEnumerator>> SocketAddressEnumeratorExt for O {
     fn next(
         &self,
         cancellable: Option<&impl IsA<Cancellable>>,
@@ -62,6 +40,7 @@ impl<O: IsA<SocketAddressEnumerator>> SocketAddressEnumeratorExt for O {
         }
     }
 
+    #[doc(alias = "g_socket_address_enumerator_next_async")]
     fn next_async<P: FnOnce(Result<Option<SocketAddress>, glib::Error>) + 'static>(
         &self,
         cancellable: Option<&impl IsA<Cancellable>>,
@@ -130,6 +109,8 @@ impl<O: IsA<SocketAddressEnumerator>> SocketAddressEnumeratorExt for O {
         ))
     }
 }
+
+impl<O: IsA<SocketAddressEnumerator>> SocketAddressEnumeratorExt for O {}
 
 impl fmt::Display for SocketAddressEnumerator {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {

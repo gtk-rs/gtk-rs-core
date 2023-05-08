@@ -38,41 +38,21 @@ impl Default for Cancellable {
 unsafe impl Send for Cancellable {}
 unsafe impl Sync for Cancellable {}
 
-pub trait CancellableExt: 'static {
+pub trait CancellableExt: IsA<Cancellable> + 'static {
     #[doc(alias = "g_cancellable_cancel")]
-    fn cancel(&self);
-
-    #[doc(alias = "g_cancellable_get_fd")]
-    #[doc(alias = "get_fd")]
-    fn fd(&self) -> i32;
-
-    #[doc(alias = "g_cancellable_is_cancelled")]
-    fn is_cancelled(&self) -> bool;
-
-    //#[doc(alias = "g_cancellable_make_pollfd")]
-    //fn make_pollfd(&self, pollfd: /*Ignored*/&mut glib::PollFD) -> bool;
-
-    #[doc(alias = "g_cancellable_pop_current")]
-    fn pop_current(&self);
-
-    #[doc(alias = "g_cancellable_push_current")]
-    fn push_current(&self);
-
-    #[doc(alias = "g_cancellable_release_fd")]
-    fn release_fd(&self);
-}
-
-impl<O: IsA<Cancellable>> CancellableExt for O {
     fn cancel(&self) {
         unsafe {
             ffi::g_cancellable_cancel(self.as_ref().to_glib_none().0);
         }
     }
 
+    #[doc(alias = "g_cancellable_get_fd")]
+    #[doc(alias = "get_fd")]
     fn fd(&self) -> i32 {
         unsafe { ffi::g_cancellable_get_fd(self.as_ref().to_glib_none().0) }
     }
 
+    #[doc(alias = "g_cancellable_is_cancelled")]
     fn is_cancelled(&self) -> bool {
         unsafe {
             from_glib(ffi::g_cancellable_is_cancelled(
@@ -81,28 +61,34 @@ impl<O: IsA<Cancellable>> CancellableExt for O {
         }
     }
 
+    //#[doc(alias = "g_cancellable_make_pollfd")]
     //fn make_pollfd(&self, pollfd: /*Ignored*/&mut glib::PollFD) -> bool {
     //    unsafe { TODO: call ffi:g_cancellable_make_pollfd() }
     //}
 
+    #[doc(alias = "g_cancellable_pop_current")]
     fn pop_current(&self) {
         unsafe {
             ffi::g_cancellable_pop_current(self.as_ref().to_glib_none().0);
         }
     }
 
+    #[doc(alias = "g_cancellable_push_current")]
     fn push_current(&self) {
         unsafe {
             ffi::g_cancellable_push_current(self.as_ref().to_glib_none().0);
         }
     }
 
+    #[doc(alias = "g_cancellable_release_fd")]
     fn release_fd(&self) {
         unsafe {
             ffi::g_cancellable_release_fd(self.as_ref().to_glib_none().0);
         }
     }
 }
+
+impl<O: IsA<Cancellable>> CancellableExt for O {}
 
 impl fmt::Display for Cancellable {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {

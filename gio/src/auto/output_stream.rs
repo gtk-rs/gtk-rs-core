@@ -19,122 +19,15 @@ impl OutputStream {
     pub const NONE: Option<&'static OutputStream> = None;
 }
 
-pub trait OutputStreamExt: 'static {
+pub trait OutputStreamExt: IsA<OutputStream> + 'static {
     #[doc(alias = "g_output_stream_clear_pending")]
-    fn clear_pending(&self);
-
-    #[doc(alias = "g_output_stream_close")]
-    fn close(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<(), glib::Error>;
-
-    #[doc(alias = "g_output_stream_close_async")]
-    fn close_async<P: FnOnce(Result<(), glib::Error>) + 'static>(
-        &self,
-        io_priority: glib::Priority,
-        cancellable: Option<&impl IsA<Cancellable>>,
-        callback: P,
-    );
-
-    fn close_future(
-        &self,
-        io_priority: glib::Priority,
-    ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>>;
-
-    #[doc(alias = "g_output_stream_flush")]
-    fn flush(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<(), glib::Error>;
-
-    #[doc(alias = "g_output_stream_flush_async")]
-    fn flush_async<P: FnOnce(Result<(), glib::Error>) + 'static>(
-        &self,
-        io_priority: glib::Priority,
-        cancellable: Option<&impl IsA<Cancellable>>,
-        callback: P,
-    );
-
-    fn flush_future(
-        &self,
-        io_priority: glib::Priority,
-    ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>>;
-
-    #[doc(alias = "g_output_stream_has_pending")]
-    fn has_pending(&self) -> bool;
-
-    #[doc(alias = "g_output_stream_is_closed")]
-    fn is_closed(&self) -> bool;
-
-    #[doc(alias = "g_output_stream_is_closing")]
-    fn is_closing(&self) -> bool;
-
-    //#[doc(alias = "g_output_stream_printf")]
-    //fn printf(&self, cancellable: Option<&impl IsA<Cancellable>>, error: &mut glib::Error, format: &str, : /*Unknown conversion*//*Unimplemented*/Basic: VarArgs) -> Option<usize>;
-
-    #[doc(alias = "g_output_stream_set_pending")]
-    fn set_pending(&self) -> Result<(), glib::Error>;
-
-    #[doc(alias = "g_output_stream_splice")]
-    fn splice(
-        &self,
-        source: &impl IsA<InputStream>,
-        flags: OutputStreamSpliceFlags,
-        cancellable: Option<&impl IsA<Cancellable>>,
-    ) -> Result<isize, glib::Error>;
-
-    #[doc(alias = "g_output_stream_splice_async")]
-    fn splice_async<P: FnOnce(Result<isize, glib::Error>) + 'static>(
-        &self,
-        source: &impl IsA<InputStream>,
-        flags: OutputStreamSpliceFlags,
-        io_priority: glib::Priority,
-        cancellable: Option<&impl IsA<Cancellable>>,
-        callback: P,
-    );
-
-    fn splice_future(
-        &self,
-        source: &(impl IsA<InputStream> + Clone + 'static),
-        flags: OutputStreamSpliceFlags,
-        io_priority: glib::Priority,
-    ) -> Pin<Box_<dyn std::future::Future<Output = Result<isize, glib::Error>> + 'static>>;
-
-    //#[doc(alias = "g_output_stream_vprintf")]
-    //fn vprintf(&self, cancellable: Option<&impl IsA<Cancellable>>, error: &mut glib::Error, format: &str, args: /*Unknown conversion*//*Unimplemented*/Unsupported) -> Option<usize>;
-
-    #[doc(alias = "g_output_stream_write")]
-    fn write(
-        &self,
-        buffer: &[u8],
-        cancellable: Option<&impl IsA<Cancellable>>,
-    ) -> Result<isize, glib::Error>;
-
-    #[doc(alias = "g_output_stream_write_bytes")]
-    fn write_bytes(
-        &self,
-        bytes: &glib::Bytes,
-        cancellable: Option<&impl IsA<Cancellable>>,
-    ) -> Result<isize, glib::Error>;
-
-    #[doc(alias = "g_output_stream_write_bytes_async")]
-    fn write_bytes_async<P: FnOnce(Result<isize, glib::Error>) + 'static>(
-        &self,
-        bytes: &glib::Bytes,
-        io_priority: glib::Priority,
-        cancellable: Option<&impl IsA<Cancellable>>,
-        callback: P,
-    );
-
-    fn write_bytes_future(
-        &self,
-        bytes: &glib::Bytes,
-        io_priority: glib::Priority,
-    ) -> Pin<Box_<dyn std::future::Future<Output = Result<isize, glib::Error>> + 'static>>;
-}
-
-impl<O: IsA<OutputStream>> OutputStreamExt for O {
     fn clear_pending(&self) {
         unsafe {
             ffi::g_output_stream_clear_pending(self.as_ref().to_glib_none().0);
         }
     }
 
+    #[doc(alias = "g_output_stream_close")]
     fn close(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
@@ -152,6 +45,7 @@ impl<O: IsA<OutputStream>> OutputStreamExt for O {
         }
     }
 
+    #[doc(alias = "g_output_stream_close_async")]
     fn close_async<P: FnOnce(Result<(), glib::Error>) + 'static>(
         &self,
         io_priority: glib::Priority,
@@ -215,6 +109,7 @@ impl<O: IsA<OutputStream>> OutputStreamExt for O {
         ))
     }
 
+    #[doc(alias = "g_output_stream_flush")]
     fn flush(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
@@ -232,6 +127,7 @@ impl<O: IsA<OutputStream>> OutputStreamExt for O {
         }
     }
 
+    #[doc(alias = "g_output_stream_flush_async")]
     fn flush_async<P: FnOnce(Result<(), glib::Error>) + 'static>(
         &self,
         io_priority: glib::Priority,
@@ -295,6 +191,7 @@ impl<O: IsA<OutputStream>> OutputStreamExt for O {
         ))
     }
 
+    #[doc(alias = "g_output_stream_has_pending")]
     fn has_pending(&self) -> bool {
         unsafe {
             from_glib(ffi::g_output_stream_has_pending(
@@ -303,6 +200,7 @@ impl<O: IsA<OutputStream>> OutputStreamExt for O {
         }
     }
 
+    #[doc(alias = "g_output_stream_is_closed")]
     fn is_closed(&self) -> bool {
         unsafe {
             from_glib(ffi::g_output_stream_is_closed(
@@ -311,6 +209,7 @@ impl<O: IsA<OutputStream>> OutputStreamExt for O {
         }
     }
 
+    #[doc(alias = "g_output_stream_is_closing")]
     fn is_closing(&self) -> bool {
         unsafe {
             from_glib(ffi::g_output_stream_is_closing(
@@ -319,10 +218,12 @@ impl<O: IsA<OutputStream>> OutputStreamExt for O {
         }
     }
 
+    //#[doc(alias = "g_output_stream_printf")]
     //fn printf(&self, cancellable: Option<&impl IsA<Cancellable>>, error: &mut glib::Error, format: &str, : /*Unknown conversion*//*Unimplemented*/Basic: VarArgs) -> Option<usize> {
     //    unsafe { TODO: call ffi:g_output_stream_printf() }
     //}
 
+    #[doc(alias = "g_output_stream_set_pending")]
     fn set_pending(&self) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
@@ -337,6 +238,7 @@ impl<O: IsA<OutputStream>> OutputStreamExt for O {
         }
     }
 
+    #[doc(alias = "g_output_stream_splice")]
     fn splice(
         &self,
         source: &impl IsA<InputStream>,
@@ -360,6 +262,7 @@ impl<O: IsA<OutputStream>> OutputStreamExt for O {
         }
     }
 
+    #[doc(alias = "g_output_stream_splice_async")]
     fn splice_async<P: FnOnce(Result<isize, glib::Error>) + 'static>(
         &self,
         source: &impl IsA<InputStream>,
@@ -430,10 +333,12 @@ impl<O: IsA<OutputStream>> OutputStreamExt for O {
         ))
     }
 
+    //#[doc(alias = "g_output_stream_vprintf")]
     //fn vprintf(&self, cancellable: Option<&impl IsA<Cancellable>>, error: &mut glib::Error, format: &str, args: /*Unknown conversion*//*Unimplemented*/Unsupported) -> Option<usize> {
     //    unsafe { TODO: call ffi:g_output_stream_vprintf() }
     //}
 
+    #[doc(alias = "g_output_stream_write")]
     fn write(
         &self,
         buffer: &[u8],
@@ -457,6 +362,7 @@ impl<O: IsA<OutputStream>> OutputStreamExt for O {
         }
     }
 
+    #[doc(alias = "g_output_stream_write_bytes")]
     fn write_bytes(
         &self,
         bytes: &glib::Bytes,
@@ -478,6 +384,7 @@ impl<O: IsA<OutputStream>> OutputStreamExt for O {
         }
     }
 
+    #[doc(alias = "g_output_stream_write_bytes_async")]
     fn write_bytes_async<P: FnOnce(Result<isize, glib::Error>) + 'static>(
         &self,
         bytes: &glib::Bytes,
@@ -546,6 +453,8 @@ impl<O: IsA<OutputStream>> OutputStreamExt for O {
         ))
     }
 }
+
+impl<O: IsA<OutputStream>> OutputStreamExt for O {}
 
 impl fmt::Display for OutputStream {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {

@@ -23,23 +23,9 @@ impl FilterInputStream {
     pub const NONE: Option<&'static FilterInputStream> = None;
 }
 
-pub trait FilterInputStreamExt: 'static {
+pub trait FilterInputStreamExt: IsA<FilterInputStream> + 'static {
     #[doc(alias = "g_filter_input_stream_get_base_stream")]
     #[doc(alias = "get_base_stream")]
-    fn base_stream(&self) -> InputStream;
-
-    #[doc(alias = "g_filter_input_stream_get_close_base_stream")]
-    #[doc(alias = "get_close_base_stream")]
-    fn closes_base_stream(&self) -> bool;
-
-    #[doc(alias = "g_filter_input_stream_set_close_base_stream")]
-    fn set_close_base_stream(&self, close_base: bool);
-
-    #[doc(alias = "close-base-stream")]
-    fn connect_close_base_stream_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
-}
-
-impl<O: IsA<FilterInputStream>> FilterInputStreamExt for O {
     fn base_stream(&self) -> InputStream {
         unsafe {
             from_glib_none(ffi::g_filter_input_stream_get_base_stream(
@@ -48,6 +34,8 @@ impl<O: IsA<FilterInputStream>> FilterInputStreamExt for O {
         }
     }
 
+    #[doc(alias = "g_filter_input_stream_get_close_base_stream")]
+    #[doc(alias = "get_close_base_stream")]
     fn closes_base_stream(&self) -> bool {
         unsafe {
             from_glib(ffi::g_filter_input_stream_get_close_base_stream(
@@ -56,6 +44,7 @@ impl<O: IsA<FilterInputStream>> FilterInputStreamExt for O {
         }
     }
 
+    #[doc(alias = "g_filter_input_stream_set_close_base_stream")]
     fn set_close_base_stream(&self, close_base: bool) {
         unsafe {
             ffi::g_filter_input_stream_set_close_base_stream(
@@ -65,6 +54,7 @@ impl<O: IsA<FilterInputStream>> FilterInputStreamExt for O {
         }
     }
 
+    #[doc(alias = "close-base-stream")]
     fn connect_close_base_stream_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_close_base_stream_trampoline<
             P: IsA<FilterInputStream>,
@@ -90,6 +80,8 @@ impl<O: IsA<FilterInputStream>> FilterInputStreamExt for O {
         }
     }
 }
+
+impl<O: IsA<FilterInputStream>> FilterInputStreamExt for O {}
 
 impl fmt::Display for FilterInputStream {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {

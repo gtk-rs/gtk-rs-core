@@ -25,26 +25,22 @@ impl FontMap {
     }
 }
 
-pub trait FontMapExt: 'static {
+pub trait FontMapExt: IsA<FontMap> + 'static {
     #[doc(alias = "pango_cairo_font_map_get_resolution")]
     #[doc(alias = "get_resolution")]
-    fn resolution(&self) -> f64;
-
-    #[doc(alias = "pango_cairo_font_map_set_resolution")]
-    fn set_resolution(&self, dpi: f64);
-}
-
-impl<O: IsA<FontMap>> FontMapExt for O {
     fn resolution(&self) -> f64 {
         unsafe { ffi::pango_cairo_font_map_get_resolution(self.as_ref().to_glib_none().0) }
     }
 
+    #[doc(alias = "pango_cairo_font_map_set_resolution")]
     fn set_resolution(&self, dpi: f64) {
         unsafe {
             ffi::pango_cairo_font_map_set_resolution(self.as_ref().to_glib_none().0, dpi);
         }
     }
 }
+
+impl<O: IsA<FontMap>> FontMapExt for O {}
 
 impl fmt::Display for FontMap {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {

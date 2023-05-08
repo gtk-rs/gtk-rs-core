@@ -75,33 +75,6 @@ pub trait ActionGroupImpl: ObjectImpl {
 }
 
 pub trait ActionGroupImplExt: ObjectSubclass {
-    fn parent_action_added(&self, action_name: &str);
-    fn parent_action_enabled_changed(&self, action_name: &str, enabled: bool);
-    fn parent_action_removed(&self, action_name: &str);
-    fn parent_action_state_changed(&self, action_name: &str, state: &Variant);
-    fn parent_activate_action(&self, action_name: &str, parameter: Option<&Variant>);
-    fn parent_change_action_state(&self, action_name: &str, value: &Variant);
-    fn parent_action_is_enabled(&self, action_name: &str) -> bool;
-    fn parent_action_parameter_type(&self, action_name: &str) -> Option<VariantType>;
-    fn parent_action_state(&self, action_name: &str) -> Option<Variant>;
-    fn parent_action_state_hint(&self, action_name: &str) -> Option<Variant>;
-    fn parent_action_state_type(&self, action_name: &str) -> Option<VariantType>;
-    fn parent_has_action(&self, action_name: &str) -> bool;
-
-    fn parent_list_actions(&self) -> Vec<String>;
-    fn parent_query_action(
-        &self,
-        action_name: &str,
-    ) -> Option<(
-        bool,
-        Option<VariantType>,
-        Option<VariantType>,
-        Option<Variant>,
-        Option<Variant>,
-    )>;
-}
-
-impl<T: ActionGroupImpl> ActionGroupImplExt for T {
     fn parent_action_added(&self, action_name: &str) {
         unsafe {
             let type_data = Self::type_data();
@@ -363,6 +336,8 @@ impl<T: ActionGroupImpl> ActionGroupImplExt for T {
         }
     }
 }
+
+impl<T: ActionGroupImpl> ActionGroupImplExt for T {}
 
 unsafe impl<T: ActionGroupImpl> IsImplementable<T> for ActionGroup {
     fn interface_init(iface: &mut glib::Interface<Self>) {

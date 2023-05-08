@@ -5,7 +5,7 @@
 use crate::ListModel;
 use glib::{prelude::*, translate::*};
 use std::fmt;
-#[cfg(any(feature = "v2_64"))]
+#[cfg(feature = "v2_64")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_64")))]
 use std::mem;
 
@@ -34,7 +34,7 @@ impl ListStore {
         }
     }
 
-    #[cfg(any(feature = "v2_64"))]
+    #[cfg(feature = "v2_64")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_64")))]
     #[doc(alias = "g_list_store_find")]
     pub fn find(&self, item: &impl IsA<glib::Object>) -> Option<u32> {

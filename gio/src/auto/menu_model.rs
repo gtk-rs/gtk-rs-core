@@ -23,51 +23,15 @@ impl MenuModel {
     pub const NONE: Option<&'static MenuModel> = None;
 }
 
-pub trait MenuModelExt: 'static {
+pub trait MenuModelExt: IsA<MenuModel> + 'static {
     //#[doc(alias = "g_menu_model_get_item_attribute")]
     //#[doc(alias = "get_item_attribute")]
-    //fn is_item_attribute(&self, item_index: i32, attribute: &str, format_string: &str, : /*Unknown conversion*//*Unimplemented*/Basic: VarArgs) -> bool;
-
-    #[doc(alias = "g_menu_model_get_item_attribute_value")]
-    #[doc(alias = "get_item_attribute_value")]
-    fn item_attribute_value(
-        &self,
-        item_index: i32,
-        attribute: &str,
-        expected_type: Option<&glib::VariantTy>,
-    ) -> Option<glib::Variant>;
-
-    #[doc(alias = "g_menu_model_get_item_link")]
-    #[doc(alias = "get_item_link")]
-    #[must_use]
-    fn item_link(&self, item_index: i32, link: &str) -> Option<MenuModel>;
-
-    #[doc(alias = "g_menu_model_get_n_items")]
-    #[doc(alias = "get_n_items")]
-    fn n_items(&self) -> i32;
-
-    #[doc(alias = "g_menu_model_is_mutable")]
-    fn is_mutable(&self) -> bool;
-
-    #[doc(alias = "g_menu_model_items_changed")]
-    fn items_changed(&self, position: i32, removed: i32, added: i32);
-
-    #[doc(alias = "g_menu_model_iterate_item_attributes")]
-    fn iterate_item_attributes(&self, item_index: i32) -> MenuAttributeIter;
-
-    #[doc(alias = "g_menu_model_iterate_item_links")]
-    fn iterate_item_links(&self, item_index: i32) -> MenuLinkIter;
-
-    #[doc(alias = "items-changed")]
-    fn connect_items_changed<F: Fn(&Self, i32, i32, i32) + 'static>(&self, f: F)
-        -> SignalHandlerId;
-}
-
-impl<O: IsA<MenuModel>> MenuModelExt for O {
     //fn is_item_attribute(&self, item_index: i32, attribute: &str, format_string: &str, : /*Unknown conversion*//*Unimplemented*/Basic: VarArgs) -> bool {
     //    unsafe { TODO: call ffi:g_menu_model_get_item_attribute() }
     //}
 
+    #[doc(alias = "g_menu_model_get_item_attribute_value")]
+    #[doc(alias = "get_item_attribute_value")]
     fn item_attribute_value(
         &self,
         item_index: i32,
@@ -84,6 +48,9 @@ impl<O: IsA<MenuModel>> MenuModelExt for O {
         }
     }
 
+    #[doc(alias = "g_menu_model_get_item_link")]
+    #[doc(alias = "get_item_link")]
+    #[must_use]
     fn item_link(&self, item_index: i32, link: &str) -> Option<MenuModel> {
         unsafe {
             from_glib_full(ffi::g_menu_model_get_item_link(
@@ -94,14 +61,18 @@ impl<O: IsA<MenuModel>> MenuModelExt for O {
         }
     }
 
+    #[doc(alias = "g_menu_model_get_n_items")]
+    #[doc(alias = "get_n_items")]
     fn n_items(&self) -> i32 {
         unsafe { ffi::g_menu_model_get_n_items(self.as_ref().to_glib_none().0) }
     }
 
+    #[doc(alias = "g_menu_model_is_mutable")]
     fn is_mutable(&self) -> bool {
         unsafe { from_glib(ffi::g_menu_model_is_mutable(self.as_ref().to_glib_none().0)) }
     }
 
+    #[doc(alias = "g_menu_model_items_changed")]
     fn items_changed(&self, position: i32, removed: i32, added: i32) {
         unsafe {
             ffi::g_menu_model_items_changed(
@@ -113,6 +84,7 @@ impl<O: IsA<MenuModel>> MenuModelExt for O {
         }
     }
 
+    #[doc(alias = "g_menu_model_iterate_item_attributes")]
     fn iterate_item_attributes(&self, item_index: i32) -> MenuAttributeIter {
         unsafe {
             from_glib_full(ffi::g_menu_model_iterate_item_attributes(
@@ -122,6 +94,7 @@ impl<O: IsA<MenuModel>> MenuModelExt for O {
         }
     }
 
+    #[doc(alias = "g_menu_model_iterate_item_links")]
     fn iterate_item_links(&self, item_index: i32) -> MenuLinkIter {
         unsafe {
             from_glib_full(ffi::g_menu_model_iterate_item_links(
@@ -131,6 +104,7 @@ impl<O: IsA<MenuModel>> MenuModelExt for O {
         }
     }
 
+    #[doc(alias = "items-changed")]
     fn connect_items_changed<F: Fn(&Self, i32, i32, i32) + 'static>(
         &self,
         f: F,
@@ -166,6 +140,8 @@ impl<O: IsA<MenuModel>> MenuModelExt for O {
         }
     }
 }
+
+impl<O: IsA<MenuModel>> MenuModelExt for O {}
 
 impl fmt::Display for MenuModel {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {

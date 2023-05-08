@@ -40,7 +40,7 @@ impl FontMetrics {
         unsafe { ffi::pango_font_metrics_get_descent(self.to_glib_none().0) }
     }
 
-    #[cfg(any(feature = "v1_44"))]
+    #[cfg(feature = "v1_44")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
     #[doc(alias = "pango_font_metrics_get_height")]
     #[doc(alias = "get_height")]

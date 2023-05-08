@@ -4,7 +4,7 @@
 
 use glib::translate::*;
 
-#[cfg(any(feature = "v1_44"))]
+#[cfg(feature = "v1_44")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
 glib::wrapper! {
     #[derive(Debug, PartialOrd, Ord, Hash)]

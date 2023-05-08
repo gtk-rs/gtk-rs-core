@@ -32,7 +32,7 @@ impl TryFromGlib<libc::c_ulong> for CancelledHandlerId {
     }
 }
 
-pub trait CancellableExtManual {
+pub trait CancellableExtManual: IsA<Cancellable> {
     // rustdoc-stripper-ignore-next
     /// Convenience function to connect to the `signal::Cancellable::cancelled` signal. Also
     /// handles the race condition that may happen if the cancellable is cancelled right before
@@ -51,39 +51,6 @@ pub trait CancellableExtManual {
     /// # Returns
     ///
     /// The id of the signal handler or `None` if `self` has already been cancelled.
-    #[doc(alias = "g_cancellable_connect")]
-    fn connect_cancelled<F: FnOnce(&Self) + Send + 'static>(
-        &self,
-        callback: F,
-    ) -> Option<CancelledHandlerId>;
-    // rustdoc-stripper-ignore-next
-    /// Local variant of [`Self::connect_cancelled`].
-    #[doc(alias = "g_cancellable_connect")]
-    fn connect_cancelled_local<F: FnOnce(&Self) + 'static>(
-        &self,
-        callback: F,
-    ) -> Option<CancelledHandlerId>;
-    // rustdoc-stripper-ignore-next
-    /// Disconnects a handler from a cancellable instance. Additionally, in the event that a signal
-    /// handler is currently running, this call will block until the handler has finished. Calling
-    /// this function from a callback registered with [`Self::connect_cancelled`] will therefore
-    /// result in a deadlock.
-    ///
-    /// This avoids a race condition where a thread cancels at the same time as the cancellable
-    /// operation is finished and the signal handler is removed.
-    #[doc(alias = "g_cancellable_disconnect")]
-    fn disconnect_cancelled(&self, id: CancelledHandlerId);
-    // rustdoc-stripper-ignore-next
-    /// Returns a `Future` that completes when the cancellable becomes cancelled. Completes
-    /// immediately if the cancellable is already cancelled.
-    fn future(&self) -> std::pin::Pin<Box<dyn Future<Output = ()> + Send + Sync + 'static>>;
-    // rustdoc-stripper-ignore-next
-    /// Set an error if the cancellable is already cancelled.
-    #[doc(alias = "g_cancellable_set_error_if_cancelled")]
-    fn set_error_if_cancelled(&self) -> Result<(), glib::Error>;
-}
-
-impl<O: IsA<Cancellable>> CancellableExtManual for O {
     #[doc(alias = "g_cancellable_connect")]
     fn connect_cancelled<F: FnOnce(&Self) + Send + 'static>(
         &self,
@@ -116,6 +83,8 @@ impl<O: IsA<Cancellable>> CancellableExtManual for O {
             ))
         }
     }
+    // rustdoc-stripper-ignore-next
+    /// Local variant of [`Self::connect_cancelled`].
     #[doc(alias = "g_cancellable_connect")]
     fn connect_cancelled_local<F: FnOnce(&Self) + 'static>(
         &self,
@@ -125,10 +94,21 @@ impl<O: IsA<Cancellable>> CancellableExtManual for O {
 
         self.connect_cancelled(move |obj| (callback.into_inner())(obj))
     }
+    // rustdoc-stripper-ignore-next
+    /// Disconnects a handler from a cancellable instance. Additionally, in the event that a signal
+    /// handler is currently running, this call will block until the handler has finished. Calling
+    /// this function from a callback registered with [`Self::connect_cancelled`] will therefore
+    /// result in a deadlock.
+    ///
+    /// This avoids a race condition where a thread cancels at the same time as the cancellable
+    /// operation is finished and the signal handler is removed.
     #[doc(alias = "g_cancellable_disconnect")]
     fn disconnect_cancelled(&self, id: CancelledHandlerId) {
         unsafe { ffi::g_cancellable_disconnect(self.as_ptr() as *mut _, id.as_raw()) };
     }
+    // rustdoc-stripper-ignore-next
+    /// Returns a `Future` that completes when the cancellable becomes cancelled. Completes
+    /// immediately if the cancellable is already cancelled.
     fn future(&self) -> std::pin::Pin<Box<dyn Future<Output = ()> + Send + Sync + 'static>> {
         let cancellable = self.as_ref().clone();
         let (tx, rx) = oneshot::channel();
@@ -142,7 +122,9 @@ impl<O: IsA<Cancellable>> CancellableExtManual for O {
             }
         })
     }
-
+    // rustdoc-stripper-ignore-next
+    /// Set an error if the cancellable is already cancelled.
+    #[doc(alias = "g_cancellable_set_error_if_cancelled")]
     fn set_error_if_cancelled(&self) -> Result<(), glib::Error> {
         unsafe {
             let mut error = std::ptr::null_mut();
@@ -161,6 +143,8 @@ impl<O: IsA<Cancellable>> CancellableExtManual for O {
         }
     }
 }
+
+impl<O: IsA<Cancellable>> CancellableExtManual for O {}
 
 #[cfg(test)]
 mod tests {

@@ -19,18 +19,8 @@ impl SocketConnectable {
     pub const NONE: Option<&'static SocketConnectable> = None;
 }
 
-pub trait SocketConnectableExt: 'static {
+pub trait SocketConnectableExt: IsA<SocketConnectable> + 'static {
     #[doc(alias = "g_socket_connectable_enumerate")]
-    fn enumerate(&self) -> SocketAddressEnumerator;
-
-    #[doc(alias = "g_socket_connectable_proxy_enumerate")]
-    fn proxy_enumerate(&self) -> SocketAddressEnumerator;
-
-    #[doc(alias = "g_socket_connectable_to_string")]
-    fn to_string(&self) -> glib::GString;
-}
-
-impl<O: IsA<SocketConnectable>> SocketConnectableExt for O {
     fn enumerate(&self) -> SocketAddressEnumerator {
         unsafe {
             from_glib_full(ffi::g_socket_connectable_enumerate(
@@ -39,6 +29,7 @@ impl<O: IsA<SocketConnectable>> SocketConnectableExt for O {
         }
     }
 
+    #[doc(alias = "g_socket_connectable_proxy_enumerate")]
     fn proxy_enumerate(&self) -> SocketAddressEnumerator {
         unsafe {
             from_glib_full(ffi::g_socket_connectable_proxy_enumerate(
@@ -47,6 +38,7 @@ impl<O: IsA<SocketConnectable>> SocketConnectableExt for O {
         }
     }
 
+    #[doc(alias = "g_socket_connectable_to_string")]
     fn to_string(&self) -> glib::GString {
         unsafe {
             from_glib_full(ffi::g_socket_connectable_to_string(
@@ -55,6 +47,8 @@ impl<O: IsA<SocketConnectable>> SocketConnectableExt for O {
         }
     }
 }
+
+impl<O: IsA<SocketConnectable>> SocketConnectableExt for O {}
 
 impl fmt::Display for SocketConnectable {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {

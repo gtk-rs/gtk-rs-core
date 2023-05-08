@@ -2,10 +2,10 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-#[cfg(any(feature = "v1_46"))]
+#[cfg(feature = "v1_46")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_46")))]
 use crate::Direction;
-#[cfg(any(feature = "v1_50"))]
+#[cfg(feature = "v1_50")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
 use crate::LayoutSerializeFlags;
 use crate::{
@@ -13,7 +13,7 @@ use crate::{
     Rectangle, TabArray, WrapMode,
 };
 use glib::translate::*;
-#[cfg(any(feature = "v1_50"))]
+#[cfg(feature = "v1_50")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
 use std::ptr;
 use std::{fmt, mem};
@@ -70,7 +70,7 @@ impl Layout {
         unsafe { ffi::pango_layout_get_baseline(self.to_glib_none().0) }
     }
 
-    #[cfg(any(feature = "v1_50"))]
+    #[cfg(feature = "v1_50")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     #[doc(alias = "pango_layout_get_caret_pos")]
     #[doc(alias = "get_caret_pos")]
@@ -116,7 +116,7 @@ impl Layout {
         }
     }
 
-    #[cfg(any(feature = "v1_46"))]
+    #[cfg(feature = "v1_46")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_46")))]
     #[doc(alias = "pango_layout_get_direction")]
     #[doc(alias = "get_direction")]
@@ -184,7 +184,7 @@ impl Layout {
         unsafe { from_glib(ffi::pango_layout_get_justify(self.to_glib_none().0)) }
     }
 
-    #[cfg(any(feature = "v1_50"))]
+    #[cfg(feature = "v1_50")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     #[doc(alias = "pango_layout_get_justify_last_line")]
     #[doc(alias = "get_justify_last_line")]
@@ -219,7 +219,7 @@ impl Layout {
         }
     }
 
-    #[cfg(any(feature = "v1_44"))]
+    #[cfg(feature = "v1_44")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
     #[doc(alias = "pango_layout_get_line_spacing")]
     #[doc(alias = "get_line_spacing")]
@@ -413,7 +413,7 @@ impl Layout {
         }
     }
 
-    #[cfg(any(feature = "v1_50"))]
+    #[cfg(feature = "v1_50")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     #[doc(alias = "pango_layout_serialize")]
     pub fn serialize(&self, flags: LayoutSerializeFlags) -> glib::Bytes {
@@ -481,7 +481,7 @@ impl Layout {
         }
     }
 
-    #[cfg(any(feature = "v1_50"))]
+    #[cfg(feature = "v1_50")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     #[doc(alias = "pango_layout_set_justify_last_line")]
     pub fn set_justify_last_line(&self, justify: bool) {
@@ -490,7 +490,7 @@ impl Layout {
         }
     }
 
-    #[cfg(any(feature = "v1_44"))]
+    #[cfg(feature = "v1_44")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
     #[doc(alias = "pango_layout_set_line_spacing")]
     pub fn set_line_spacing(&self, factor: f32) {
@@ -567,7 +567,7 @@ impl Layout {
         }
     }
 
-    #[cfg(any(feature = "v1_50"))]
+    #[cfg(feature = "v1_50")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     #[doc(alias = "pango_layout_write_to_file")]
     pub fn write_to_file(

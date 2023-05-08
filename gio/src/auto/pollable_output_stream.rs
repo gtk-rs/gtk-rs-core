@@ -19,22 +19,8 @@ impl PollableOutputStream {
     pub const NONE: Option<&'static PollableOutputStream> = None;
 }
 
-pub trait PollableOutputStreamExt: 'static {
+pub trait PollableOutputStreamExt: IsA<PollableOutputStream> + 'static {
     #[doc(alias = "g_pollable_output_stream_can_poll")]
-    fn can_poll(&self) -> bool;
-
-    #[doc(alias = "g_pollable_output_stream_is_writable")]
-    fn is_writable(&self) -> bool;
-
-    #[doc(alias = "g_pollable_output_stream_write_nonblocking")]
-    fn write_nonblocking(
-        &self,
-        buffer: &[u8],
-        cancellable: Option<&impl IsA<Cancellable>>,
-    ) -> Result<isize, glib::Error>;
-}
-
-impl<O: IsA<PollableOutputStream>> PollableOutputStreamExt for O {
     fn can_poll(&self) -> bool {
         unsafe {
             from_glib(ffi::g_pollable_output_stream_can_poll(
@@ -43,6 +29,7 @@ impl<O: IsA<PollableOutputStream>> PollableOutputStreamExt for O {
         }
     }
 
+    #[doc(alias = "g_pollable_output_stream_is_writable")]
     fn is_writable(&self) -> bool {
         unsafe {
             from_glib(ffi::g_pollable_output_stream_is_writable(
@@ -51,6 +38,7 @@ impl<O: IsA<PollableOutputStream>> PollableOutputStreamExt for O {
         }
     }
 
+    #[doc(alias = "g_pollable_output_stream_write_nonblocking")]
     fn write_nonblocking(
         &self,
         buffer: &[u8],
@@ -74,6 +62,8 @@ impl<O: IsA<PollableOutputStream>> PollableOutputStreamExt for O {
         }
     }
 }
+
+impl<O: IsA<PollableOutputStream>> PollableOutputStreamExt for O {}
 
 impl fmt::Display for PollableOutputStream {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {

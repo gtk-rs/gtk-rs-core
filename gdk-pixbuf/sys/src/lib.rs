@@ -541,7 +541,7 @@ extern "C" {
         error: *mut *mut glib::GError,
     ) -> *mut GdkPixbufFormat;
     pub fn gdk_pixbuf_get_formats() -> *mut glib::GSList;
-    #[cfg(any(feature = "v2_40"))]
+    #[cfg(feature = "v2_40")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_40")))]
     pub fn gdk_pixbuf_init_modules(path: *const c_char, error: *mut *mut glib::GError) -> gboolean;
     pub fn gdk_pixbuf_new_from_stream_async(

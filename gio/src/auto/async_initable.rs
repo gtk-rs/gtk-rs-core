@@ -19,22 +19,8 @@ impl AsyncInitable {
     pub const NONE: Option<&'static AsyncInitable> = None;
 }
 
-pub trait AsyncInitableExt: 'static {
+pub trait AsyncInitableExt: IsA<AsyncInitable> + 'static {
     #[doc(alias = "g_async_initable_init_async")]
-    unsafe fn init_async<P: FnOnce(Result<(), glib::Error>) + 'static>(
-        &self,
-        io_priority: glib::Priority,
-        cancellable: Option<&impl IsA<Cancellable>>,
-        callback: P,
-    );
-
-    unsafe fn init_future(
-        &self,
-        io_priority: glib::Priority,
-    ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>>;
-}
-
-impl<O: IsA<AsyncInitable>> AsyncInitableExt for O {
     unsafe fn init_async<P: FnOnce(Result<(), glib::Error>) + 'static>(
         &self,
         io_priority: glib::Priority,
@@ -94,6 +80,8 @@ impl<O: IsA<AsyncInitable>> AsyncInitableExt for O {
         ))
     }
 }
+
+impl<O: IsA<AsyncInitable>> AsyncInitableExt for O {}
 
 impl fmt::Display for AsyncInitable {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {

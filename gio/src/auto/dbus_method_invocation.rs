@@ -149,7 +149,7 @@ impl DBusMethodInvocation {
         }
     }
 
-    #[cfg(any(unix))]
+    #[cfg(unix)]
     #[cfg_attr(docsrs, doc(cfg(unix)))]
     #[doc(alias = "g_dbus_method_invocation_return_value_with_unix_fd_list")]
     pub fn return_value_with_unix_fd_list(

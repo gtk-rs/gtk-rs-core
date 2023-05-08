@@ -17,14 +17,7 @@ pub trait AsyncInitableImpl: ObjectImpl {
     }
 }
 
-pub trait AsyncInitableImplExt: ObjectSubclass {
-    fn parent_init_future(
-        &self,
-        io_priority: glib::Priority,
-    ) -> Pin<Box<dyn Future<Output = Result<(), Error>> + 'static>>;
-}
-
-impl<T: AsyncInitableImpl> AsyncInitableImplExt for T {
+pub trait AsyncInitableImplExt: AsyncInitableImpl + ObjectSubclass {
     fn parent_init_future(
         &self,
         io_priority: glib::Priority,
@@ -76,7 +69,7 @@ impl<T: AsyncInitableImpl> AsyncInitableImplExt for T {
                         obj.unsafe_cast_ref::<AsyncInitable>().to_glib_none().0,
                         io_priority.into_glib(),
                         cancellable.to_glib_none().0,
-                        Some(parent_init_future_callback::<T>),
+                        Some(parent_init_future_callback::<Self>),
                         user_data as *mut _,
                     );
                 },
@@ -84,6 +77,8 @@ impl<T: AsyncInitableImpl> AsyncInitableImplExt for T {
         }
     }
 }
+
+impl<T: AsyncInitableImpl> AsyncInitableImplExt for T {}
 
 unsafe impl<T: AsyncInitableImpl> IsImplementable<T> for AsyncInitable {
     fn interface_init(iface: &mut glib::Interface<Self>) {

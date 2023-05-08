@@ -19,13 +19,9 @@ impl MenuLinkIter {
     pub const NONE: Option<&'static MenuLinkIter> = None;
 }
 
-pub trait MenuLinkIterExt: 'static {
+pub trait MenuLinkIterExt: IsA<MenuLinkIter> + 'static {
     #[doc(alias = "g_menu_link_iter_get_next")]
     #[doc(alias = "get_next")]
-    fn next(&self) -> Option<(glib::GString, MenuModel)>;
-}
-
-impl<O: IsA<MenuLinkIter>> MenuLinkIterExt for O {
     fn next(&self) -> Option<(glib::GString, MenuModel)> {
         unsafe {
             let mut out_link = ptr::null();
@@ -43,6 +39,8 @@ impl<O: IsA<MenuLinkIter>> MenuLinkIterExt for O {
         }
     }
 }
+
+impl<O: IsA<MenuLinkIter>> MenuLinkIterExt for O {}
 
 impl fmt::Display for MenuLinkIter {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {

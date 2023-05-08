@@ -18,18 +18,16 @@ impl Converter {
     pub const NONE: Option<&'static Converter> = None;
 }
 
-pub trait ConverterExt: 'static {
+pub trait ConverterExt: IsA<Converter> + 'static {
     #[doc(alias = "g_converter_reset")]
-    fn reset(&self);
-}
-
-impl<O: IsA<Converter>> ConverterExt for O {
     fn reset(&self) {
         unsafe {
             ffi::g_converter_reset(self.as_ref().to_glib_none().0);
         }
     }
 }
+
+impl<O: IsA<Converter>> ConverterExt for O {}
 
 impl fmt::Display for Converter {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {

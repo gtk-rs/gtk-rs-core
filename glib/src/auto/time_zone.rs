@@ -23,7 +23,7 @@ impl TimeZone {
         unsafe { from_glib_full(ffi::g_time_zone_new(identifier.to_glib_none().0)) }
     }
 
-    #[cfg(any(feature = "v2_68"))]
+    #[cfg(feature = "v2_68")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_68")))]
     #[doc(alias = "g_time_zone_new_identifier")]
     #[doc(alias = "new_identifier")]
@@ -37,7 +37,7 @@ impl TimeZone {
         unsafe { from_glib_full(ffi::g_time_zone_new_local()) }
     }
 
-    #[cfg(any(feature = "v2_58"))]
+    #[cfg(feature = "v2_58")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_58")))]
     #[doc(alias = "g_time_zone_new_offset")]
     #[doc(alias = "new_offset")]
@@ -67,7 +67,7 @@ impl TimeZone {
         }
     }
 
-    #[cfg(any(feature = "v2_58"))]
+    #[cfg(feature = "v2_58")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_58")))]
     #[doc(alias = "g_time_zone_get_identifier")]
     #[doc(alias = "get_identifier")]

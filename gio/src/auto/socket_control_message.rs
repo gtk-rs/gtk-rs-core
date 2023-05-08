@@ -31,33 +31,27 @@ impl SocketControlMessage {
     }
 }
 
-pub trait SocketControlMessageExt: 'static {
+pub trait SocketControlMessageExt: IsA<SocketControlMessage> + 'static {
     #[doc(alias = "g_socket_control_message_get_level")]
     #[doc(alias = "get_level")]
-    fn level(&self) -> i32;
-
-    #[doc(alias = "g_socket_control_message_get_msg_type")]
-    #[doc(alias = "get_msg_type")]
-    fn msg_type(&self) -> i32;
-
-    #[doc(alias = "g_socket_control_message_get_size")]
-    #[doc(alias = "get_size")]
-    fn size(&self) -> usize;
-}
-
-impl<O: IsA<SocketControlMessage>> SocketControlMessageExt for O {
     fn level(&self) -> i32 {
         unsafe { ffi::g_socket_control_message_get_level(self.as_ref().to_glib_none().0) }
     }
 
+    #[doc(alias = "g_socket_control_message_get_msg_type")]
+    #[doc(alias = "get_msg_type")]
     fn msg_type(&self) -> i32 {
         unsafe { ffi::g_socket_control_message_get_msg_type(self.as_ref().to_glib_none().0) }
     }
 
+    #[doc(alias = "g_socket_control_message_get_size")]
+    #[doc(alias = "get_size")]
     fn size(&self) -> usize {
         unsafe { ffi::g_socket_control_message_get_size(self.as_ref().to_glib_none().0) }
     }
 }
+
+impl<O: IsA<SocketControlMessage>> SocketControlMessageExt for O {}
 
 impl fmt::Display for SocketControlMessage {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {

@@ -3,7 +3,7 @@
 // DO NOT EDIT
 
 use crate::FontDescription;
-#[cfg(any(feature = "v1_46"))]
+#[cfg(feature = "v1_46")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_46")))]
 use crate::FontFamily;
 use glib::{prelude::*, translate::*};
@@ -22,28 +22,8 @@ impl FontFace {
     pub const NONE: Option<&'static FontFace> = None;
 }
 
-pub trait FontFaceExt: 'static {
+pub trait FontFaceExt: IsA<FontFace> + 'static {
     #[doc(alias = "pango_font_face_describe")]
-    fn describe(&self) -> FontDescription;
-
-    #[doc(alias = "pango_font_face_get_face_name")]
-    #[doc(alias = "get_face_name")]
-    fn face_name(&self) -> glib::GString;
-
-    #[cfg(any(feature = "v1_46"))]
-    #[cfg_attr(docsrs, doc(cfg(feature = "v1_46")))]
-    #[doc(alias = "pango_font_face_get_family")]
-    #[doc(alias = "get_family")]
-    fn family(&self) -> FontFamily;
-
-    #[doc(alias = "pango_font_face_is_synthesized")]
-    fn is_synthesized(&self) -> bool;
-
-    #[doc(alias = "pango_font_face_list_sizes")]
-    fn list_sizes(&self) -> Vec<i32>;
-}
-
-impl<O: IsA<FontFace>> FontFaceExt for O {
     fn describe(&self) -> FontDescription {
         unsafe {
             from_glib_full(ffi::pango_font_face_describe(
@@ -52,6 +32,8 @@ impl<O: IsA<FontFace>> FontFaceExt for O {
         }
     }
 
+    #[doc(alias = "pango_font_face_get_face_name")]
+    #[doc(alias = "get_face_name")]
     fn face_name(&self) -> glib::GString {
         unsafe {
             from_glib_none(ffi::pango_font_face_get_face_name(
@@ -60,8 +42,10 @@ impl<O: IsA<FontFace>> FontFaceExt for O {
         }
     }
 
-    #[cfg(any(feature = "v1_46"))]
+    #[cfg(feature = "v1_46")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_46")))]
+    #[doc(alias = "pango_font_face_get_family")]
+    #[doc(alias = "get_family")]
     fn family(&self) -> FontFamily {
         unsafe {
             from_glib_none(ffi::pango_font_face_get_family(
@@ -70,6 +54,7 @@ impl<O: IsA<FontFace>> FontFaceExt for O {
         }
     }
 
+    #[doc(alias = "pango_font_face_is_synthesized")]
     fn is_synthesized(&self) -> bool {
         unsafe {
             from_glib(ffi::pango_font_face_is_synthesized(
@@ -78,6 +63,7 @@ impl<O: IsA<FontFace>> FontFaceExt for O {
         }
     }
 
+    #[doc(alias = "pango_font_face_list_sizes")]
     fn list_sizes(&self) -> Vec<i32> {
         unsafe {
             let mut sizes = ptr::null_mut();
@@ -91,6 +77,8 @@ impl<O: IsA<FontFace>> FontFaceExt for O {
         }
     }
 }
+
+impl<O: IsA<FontFace>> FontFaceExt for O {}
 
 impl fmt::Display for FontFace {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {

@@ -43,28 +43,17 @@ impl DebugControllerDBus {
     }
 }
 
-pub trait DebugControllerDBusExt: 'static {
+pub trait DebugControllerDBusExt: IsA<DebugControllerDBus> + 'static {
     #[doc(alias = "g_debug_controller_dbus_stop")]
-    fn stop(&self);
-
-    #[cfg(any(feature = "v2_72"))]
-    #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
-    #[doc(alias = "authorize")]
-    fn connect_authorize<F: Fn(&Self, &DBusMethodInvocation) -> bool + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId;
-}
-
-impl<O: IsA<DebugControllerDBus>> DebugControllerDBusExt for O {
     fn stop(&self) {
         unsafe {
             ffi::g_debug_controller_dbus_stop(self.as_ref().to_glib_none().0);
         }
     }
 
-    #[cfg(any(feature = "v2_72"))]
+    #[cfg(feature = "v2_72")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
+    #[doc(alias = "authorize")]
     fn connect_authorize<F: Fn(&Self, &DBusMethodInvocation) -> bool + 'static>(
         &self,
         f: F,
@@ -97,6 +86,8 @@ impl<O: IsA<DebugControllerDBus>> DebugControllerDBusExt for O {
         }
     }
 }
+
+impl<O: IsA<DebugControllerDBus>> DebugControllerDBusExt for O {}
 
 impl fmt::Display for DebugControllerDBus {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {

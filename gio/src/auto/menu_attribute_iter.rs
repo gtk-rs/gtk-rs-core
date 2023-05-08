@@ -18,13 +18,9 @@ impl MenuAttributeIter {
     pub const NONE: Option<&'static MenuAttributeIter> = None;
 }
 
-pub trait MenuAttributeIterExt: 'static {
+pub trait MenuAttributeIterExt: IsA<MenuAttributeIter> + 'static {
     #[doc(alias = "g_menu_attribute_iter_get_next")]
     #[doc(alias = "get_next")]
-    fn next(&self) -> Option<(glib::GString, glib::Variant)>;
-}
-
-impl<O: IsA<MenuAttributeIter>> MenuAttributeIterExt for O {
     fn next(&self) -> Option<(glib::GString, glib::Variant)> {
         unsafe {
             let mut out_name = ptr::null();
@@ -42,6 +38,8 @@ impl<O: IsA<MenuAttributeIter>> MenuAttributeIterExt for O {
         }
     }
 }
+
+impl<O: IsA<MenuAttributeIter>> MenuAttributeIterExt for O {}
 
 impl fmt::Display for MenuAttributeIter {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {

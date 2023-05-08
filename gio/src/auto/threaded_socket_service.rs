@@ -23,22 +23,13 @@ impl ThreadedSocketService {
     pub const NONE: Option<&'static ThreadedSocketService> = None;
 }
 
-pub trait ThreadedSocketServiceExt: 'static {
+pub trait ThreadedSocketServiceExt: IsA<ThreadedSocketService> + 'static {
     #[doc(alias = "max-threads")]
-    fn max_threads(&self) -> i32;
-
-    #[doc(alias = "run")]
-    fn connect_run<F: Fn(&Self, &SocketConnection, Option<&glib::Object>) -> bool + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId;
-}
-
-impl<O: IsA<ThreadedSocketService>> ThreadedSocketServiceExt for O {
     fn max_threads(&self) -> i32 {
         glib::ObjectExt::property(self.as_ref(), "max-threads")
     }
 
+    #[doc(alias = "run")]
     fn connect_run<F: Fn(&Self, &SocketConnection, Option<&glib::Object>) -> bool + 'static>(
         &self,
         f: F,
@@ -75,6 +66,8 @@ impl<O: IsA<ThreadedSocketService>> ThreadedSocketServiceExt for O {
         }
     }
 }
+
+impl<O: IsA<ThreadedSocketService>> ThreadedSocketServiceExt for O {}
 
 impl fmt::Display for ThreadedSocketService {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {

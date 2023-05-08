@@ -29,18 +29,9 @@ impl PowerProfileMonitor {
     }
 }
 
-pub trait PowerProfileMonitorExt: 'static {
+pub trait PowerProfileMonitorExt: IsA<PowerProfileMonitor> + 'static {
     #[doc(alias = "g_power_profile_monitor_get_power_saver_enabled")]
     #[doc(alias = "get_power_saver_enabled")]
-    fn is_power_saver_enabled(&self) -> bool;
-
-    #[cfg(any(feature = "v2_70"))]
-    #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
-    #[doc(alias = "power-saver-enabled")]
-    fn connect_power_saver_enabled_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
-}
-
-impl<O: IsA<PowerProfileMonitor>> PowerProfileMonitorExt for O {
     fn is_power_saver_enabled(&self) -> bool {
         unsafe {
             from_glib(ffi::g_power_profile_monitor_get_power_saver_enabled(
@@ -49,8 +40,9 @@ impl<O: IsA<PowerProfileMonitor>> PowerProfileMonitorExt for O {
         }
     }
 
-    #[cfg(any(feature = "v2_70"))]
+    #[cfg(feature = "v2_70")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
+    #[doc(alias = "power-saver-enabled")]
     fn connect_power_saver_enabled_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_power_saver_enabled_trampoline<
             P: IsA<PowerProfileMonitor>,
@@ -76,6 +68,8 @@ impl<O: IsA<PowerProfileMonitor>> PowerProfileMonitorExt for O {
         }
     }
 }
+
+impl<O: IsA<PowerProfileMonitor>> PowerProfileMonitorExt for O {}
 
 impl fmt::Display for PowerProfileMonitor {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {

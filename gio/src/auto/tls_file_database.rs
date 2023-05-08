@@ -36,16 +36,7 @@ impl TlsFileDatabase {
     }
 }
 
-pub trait TlsFileDatabaseExt: 'static {
-    fn anchors(&self) -> Option<glib::GString>;
-
-    fn set_anchors(&self, anchors: Option<&str>);
-
-    #[doc(alias = "anchors")]
-    fn connect_anchors_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
-}
-
-impl<O: IsA<TlsFileDatabase>> TlsFileDatabaseExt for O {
+pub trait TlsFileDatabaseExt: IsA<TlsFileDatabase> + 'static {
     fn anchors(&self) -> Option<glib::GString> {
         glib::ObjectExt::property(self.as_ref(), "anchors")
     }
@@ -54,6 +45,7 @@ impl<O: IsA<TlsFileDatabase>> TlsFileDatabaseExt for O {
         glib::ObjectExt::set_property(self.as_ref(), "anchors", anchors)
     }
 
+    #[doc(alias = "anchors")]
     fn connect_anchors_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_anchors_trampoline<
             P: IsA<TlsFileDatabase>,
@@ -79,6 +71,8 @@ impl<O: IsA<TlsFileDatabase>> TlsFileDatabaseExt for O {
         }
     }
 }
+
+impl<O: IsA<TlsFileDatabase>> TlsFileDatabaseExt for O {}
 
 impl fmt::Display for TlsFileDatabase {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {

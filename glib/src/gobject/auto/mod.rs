@@ -5,17 +5,17 @@
 mod binding;
 pub use self::binding::Binding;
 
-#[cfg(any(feature = "v2_72"))]
+#[cfg(feature = "v2_72")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
 mod binding_group;
-#[cfg(any(feature = "v2_72"))]
+#[cfg(feature = "v2_72")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
 pub use self::binding_group::BindingGroup;
 
-#[cfg(any(feature = "v2_74"))]
+#[cfg(feature = "v2_74")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
 mod signal_group;
-#[cfg(any(feature = "v2_74"))]
+#[cfg(feature = "v2_74")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
 pub use self::signal_group::SignalGroup;
 

@@ -43,7 +43,7 @@ impl AsRawFd for UnixInputStream {
     }
 }
 
-pub trait UnixInputStreamExtManual: Sized {
+pub trait UnixInputStreamExtManual: IsA<UnixInputStream> + Sized {
     // rustdoc-stripper-ignore-next
     /// Sets whether the fd of this stream will be closed when the stream is closed.
     ///
@@ -51,11 +51,9 @@ pub trait UnixInputStreamExtManual: Sized {
     /// If you pass in `false` as the parameter, you may only close the fd if the all references
     /// to the stream have been dropped. If you pass in `true`, you must never call close.
     #[doc(alias = "g_unix_input_stream_set_close_fd")]
-    unsafe fn set_close_fd(&self, close_fd: bool);
-}
-
-impl<O: IsA<UnixInputStream>> UnixInputStreamExtManual for O {
     unsafe fn set_close_fd(&self, close_fd: bool) {
         ffi::g_unix_input_stream_set_close_fd(self.as_ref().to_glib_none().0, close_fd.into_glib());
     }
 }
+
+impl<O: IsA<UnixInputStream>> UnixInputStreamExtManual for O {}

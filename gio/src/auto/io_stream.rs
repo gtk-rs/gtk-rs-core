@@ -23,54 +23,15 @@ impl IOStream {
     pub const NONE: Option<&'static IOStream> = None;
 }
 
-pub trait IOStreamExt: 'static {
+pub trait IOStreamExt: IsA<IOStream> + 'static {
     #[doc(alias = "g_io_stream_clear_pending")]
-    fn clear_pending(&self);
-
-    #[doc(alias = "g_io_stream_close")]
-    fn close(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<(), glib::Error>;
-
-    #[doc(alias = "g_io_stream_close_async")]
-    fn close_async<P: FnOnce(Result<(), glib::Error>) + 'static>(
-        &self,
-        io_priority: glib::Priority,
-        cancellable: Option<&impl IsA<Cancellable>>,
-        callback: P,
-    );
-
-    fn close_future(
-        &self,
-        io_priority: glib::Priority,
-    ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>>;
-
-    #[doc(alias = "g_io_stream_get_input_stream")]
-    #[doc(alias = "get_input_stream")]
-    fn input_stream(&self) -> InputStream;
-
-    #[doc(alias = "g_io_stream_get_output_stream")]
-    #[doc(alias = "get_output_stream")]
-    fn output_stream(&self) -> OutputStream;
-
-    #[doc(alias = "g_io_stream_has_pending")]
-    fn has_pending(&self) -> bool;
-
-    #[doc(alias = "g_io_stream_is_closed")]
-    fn is_closed(&self) -> bool;
-
-    #[doc(alias = "g_io_stream_set_pending")]
-    fn set_pending(&self) -> Result<(), glib::Error>;
-
-    #[doc(alias = "closed")]
-    fn connect_closed_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
-}
-
-impl<O: IsA<IOStream>> IOStreamExt for O {
     fn clear_pending(&self) {
         unsafe {
             ffi::g_io_stream_clear_pending(self.as_ref().to_glib_none().0);
         }
     }
 
+    #[doc(alias = "g_io_stream_close")]
     fn close(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
@@ -88,6 +49,7 @@ impl<O: IsA<IOStream>> IOStreamExt for O {
         }
     }
 
+    #[doc(alias = "g_io_stream_close_async")]
     fn close_async<P: FnOnce(Result<(), glib::Error>) + 'static>(
         &self,
         io_priority: glib::Priority,
@@ -151,6 +113,8 @@ impl<O: IsA<IOStream>> IOStreamExt for O {
         ))
     }
 
+    #[doc(alias = "g_io_stream_get_input_stream")]
+    #[doc(alias = "get_input_stream")]
     fn input_stream(&self) -> InputStream {
         unsafe {
             from_glib_none(ffi::g_io_stream_get_input_stream(
@@ -159,6 +123,8 @@ impl<O: IsA<IOStream>> IOStreamExt for O {
         }
     }
 
+    #[doc(alias = "g_io_stream_get_output_stream")]
+    #[doc(alias = "get_output_stream")]
     fn output_stream(&self) -> OutputStream {
         unsafe {
             from_glib_none(ffi::g_io_stream_get_output_stream(
@@ -167,14 +133,17 @@ impl<O: IsA<IOStream>> IOStreamExt for O {
         }
     }
 
+    #[doc(alias = "g_io_stream_has_pending")]
     fn has_pending(&self) -> bool {
         unsafe { from_glib(ffi::g_io_stream_has_pending(self.as_ref().to_glib_none().0)) }
     }
 
+    #[doc(alias = "g_io_stream_is_closed")]
     fn is_closed(&self) -> bool {
         unsafe { from_glib(ffi::g_io_stream_is_closed(self.as_ref().to_glib_none().0)) }
     }
 
+    #[doc(alias = "g_io_stream_set_pending")]
     fn set_pending(&self) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
@@ -188,6 +157,7 @@ impl<O: IsA<IOStream>> IOStreamExt for O {
         }
     }
 
+    #[doc(alias = "closed")]
     fn connect_closed_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_closed_trampoline<P: IsA<IOStream>, F: Fn(&P) + 'static>(
             this: *mut ffi::GIOStream,
@@ -210,6 +180,8 @@ impl<O: IsA<IOStream>> IOStreamExt for O {
         }
     }
 }
+
+impl<O: IsA<IOStream>> IOStreamExt for O {}
 
 impl fmt::Display for IOStream {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {

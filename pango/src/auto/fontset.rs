@@ -19,20 +19,8 @@ impl Fontset {
     pub const NONE: Option<&'static Fontset> = None;
 }
 
-pub trait FontsetExt: 'static {
+pub trait FontsetExt: IsA<Fontset> + 'static {
     #[doc(alias = "pango_fontset_foreach")]
-    fn foreach<P: FnMut(&Fontset, &Font) -> bool>(&self, func: P);
-
-    #[doc(alias = "pango_fontset_get_font")]
-    #[doc(alias = "get_font")]
-    fn font(&self, wc: u32) -> Font;
-
-    #[doc(alias = "pango_fontset_get_metrics")]
-    #[doc(alias = "get_metrics")]
-    fn metrics(&self) -> FontMetrics;
-}
-
-impl<O: IsA<Fontset>> FontsetExt for O {
     fn foreach<P: FnMut(&Fontset, &Font) -> bool>(&self, func: P) {
         let func_data: P = func;
         unsafe extern "C" fn func_func<P: FnMut(&Fontset, &Font) -> bool>(
@@ -56,6 +44,8 @@ impl<O: IsA<Fontset>> FontsetExt for O {
         }
     }
 
+    #[doc(alias = "pango_fontset_get_font")]
+    #[doc(alias = "get_font")]
     fn font(&self, wc: u32) -> Font {
         unsafe {
             from_glib_full(ffi::pango_fontset_get_font(
@@ -65,6 +55,8 @@ impl<O: IsA<Fontset>> FontsetExt for O {
         }
     }
 
+    #[doc(alias = "pango_fontset_get_metrics")]
+    #[doc(alias = "get_metrics")]
     fn metrics(&self) -> FontMetrics {
         unsafe {
             from_glib_full(ffi::pango_fontset_get_metrics(
@@ -73,6 +65,8 @@ impl<O: IsA<Fontset>> FontsetExt for O {
         }
     }
 }
+
+impl<O: IsA<Fontset>> FontsetExt for O {}
 
 impl fmt::Display for Fontset {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
