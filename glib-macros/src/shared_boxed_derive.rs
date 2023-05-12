@@ -4,7 +4,7 @@ use proc_macro2::{Ident, TokenStream};
 use proc_macro_error::abort_call_site;
 use quote::quote;
 
-use crate::utils::{crate_ident_new, find_attribute_meta, find_nested_meta, parse_name};
+use crate::utils::{crate_ident_new, parse_nested_meta_items, NestedMetaItem};
 
 fn gen_impl_to_value_optional(name: &Ident, crate_ident: &TokenStream) -> TokenStream {
     let refcounted_type_prefix = refcounted_type_prefix(name, crate_ident);
@@ -103,18 +103,29 @@ pub fn impl_shared_boxed(input: &syn::DeriveInput) -> proc_macro2::TokenStream {
         }
     };
 
-    let gtype_name = match parse_name(input, "shared_boxed_type") {
-        Ok(name) => name,
-        Err(e) => abort_call_site!(
-            "{}: #[derive(glib::SharedBoxed)] requires #[shared_boxed_type(name = \"SharedBoxedTypeName\")]",
-            e
-        ),
+    let mut gtype_name = NestedMetaItem::<syn::LitStr>::new("name")
+        .required()
+        .value_required();
+    let mut nullable = NestedMetaItem::<syn::LitBool>::new("nullable").value_optional();
+
+    let found = parse_nested_meta_items(
+        &input.attrs,
+        "shared_boxed_type",
+        &mut [&mut gtype_name, &mut nullable],
+    );
+
+    match found {
+        Ok(None) => {
+            abort_call_site!(
+                "#[derive(glib::SharedBoxed)] requires #[shared_boxed_type(name = \"SharedBoxedTypeName\")]"
+            )
+        }
+        Err(e) => return e.to_compile_error(),
+        _ => (),
     };
 
-    let meta = find_attribute_meta(&input.attrs, "shared_boxed_type")
-        .unwrap()
-        .unwrap();
-    let nullable = find_nested_meta(&meta, "nullable").is_some();
+    let gtype_name = gtype_name.value.unwrap();
+    let nullable = nullable.found || nullable.value.map(|b| b.value()).unwrap_or(false);
 
     let crate_ident = crate_ident_new();
     let refcounted_type_prefix = refcounted_type_prefix(name, &crate_ident);

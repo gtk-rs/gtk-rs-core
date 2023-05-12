@@ -67,7 +67,7 @@ impl Parse for ValueDelegateInput {
         let args: Option<Args> = if let Some(attr) = derive_input
             .attrs
             .iter()
-            .find(|x| x.path.is_ident("value_delegate"))
+            .find(|x| x.path().is_ident("value_delegate"))
         {
             let args: Args = attr.parse_args()?;
             Some(args)

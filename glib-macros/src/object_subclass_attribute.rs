@@ -15,7 +15,7 @@ pub fn impl_object_subclass(input: &syn::ItemImpl) -> TokenStream {
     let mut has_class = false;
     for item in &input.items {
         match item {
-            syn::ImplItem::Method(method) => {
+            syn::ImplItem::Fn(method) => {
                 let name = &method.sig.ident;
                 if name == "new" || name == "with_class" {
                     has_new = true;

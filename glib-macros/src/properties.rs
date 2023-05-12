@@ -42,7 +42,7 @@ impl Parse for PropsMacroInput {
         let wrapper_ty = derive_input
             .attrs
             .iter()
-            .find(|x| x.path.is_ident("properties"))
+            .find(|x| x.path().is_ident("properties"))
             .ok_or_else(|| {
                 syn::Error::new(
                     derive_input.span(),
@@ -141,7 +141,7 @@ impl Parse for PropAttr {
                 "builder" => {
                     let content;
                     parenthesized!(content in input);
-                    let required = content.parse_terminated(syn::Expr::parse)?;
+                    let required = content.parse_terminated(syn::Expr::parse, Token![,])?;
                     let rest: TokenStream2 = input.parse()?;
                     PropAttr::Builder(required, rest)
                 }
@@ -502,7 +502,7 @@ fn parse_fields(fields: syn::Fields) -> syn::Result<Vec<PropDesc>> {
             } = field;
             attrs
                 .into_iter()
-                .filter(|a| a.path.is_ident("property"))
+                .filter(|a| a.path().is_ident("property"))
                 .map(move |prop_attrs| {
                     let span = prop_attrs.span();
                     PropDesc::new(
