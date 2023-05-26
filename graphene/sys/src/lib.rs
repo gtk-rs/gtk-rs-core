@@ -227,7 +227,9 @@ impl ::std::fmt::Debug for graphene_rect_t {
     }
 }
 
-#[repr(align(16))]
+#[cfg_attr(target_arch = "arm", repr(align(4)))]
+#[cfg_attr(target_arch = "s390x", repr(align(8)))]
+#[cfg_attr(not(any(target_arch = "arm", target_arch = "s390x")), repr(align(16)))]
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct graphene_simd4f_t {
