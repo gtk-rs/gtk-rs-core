@@ -12,6 +12,6 @@ pub mod functions;
 
 #[doc(hidden)]
 pub mod traits {
-    pub use super::font::FontExt;
-    pub use super::font_map::FontMapExt;
+    pub use super::font::PangoCairoFontExt;
+    pub use super::font_map::PangoCairoFontMapExt;
 }
