@@ -25,7 +25,7 @@ impl FontMap {
     }
 }
 
-pub trait FontMapExt: IsA<FontMap> + 'static {
+pub trait PangoCairoFontMapExt: IsA<FontMap> + 'static {
     #[doc(alias = "pango_cairo_font_map_get_resolution")]
     #[doc(alias = "get_resolution")]
     fn resolution(&self) -> f64 {
@@ -40,7 +40,7 @@ pub trait FontMapExt: IsA<FontMap> + 'static {
     }
 }
 
-impl<O: IsA<FontMap>> FontMapExt for O {}
+impl<O: IsA<FontMap>> PangoCairoFontMapExt for O {}
 
 impl fmt::Display for FontMap {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {

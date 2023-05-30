@@ -248,7 +248,7 @@ mod tests {
             .required()
             .value_required();
         let _ = parse_nested_meta_items(&input.attrs, "boxed_type", &mut [&mut gtype_name]);
-        assert_eq!(gtype_name.get_found(), true);
+        assert!(gtype_name.get_found());
         assert_eq!(
             gtype_name.value.map(|x| x.value()),
             Some("Author".to_string())
@@ -271,6 +271,6 @@ mod tests {
         assert!(gtype_name.value.is_none());
 
         // The argument key must be found though
-        assert_eq!(gtype_name.get_found(), true);
+        assert!(gtype_name.get_found());
     }
 }

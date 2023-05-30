@@ -958,7 +958,7 @@ macro_rules! impl_to_glib_container_from_slice_fundamental {
                 }
 
                 unsafe {
-                    let res = ffi::g_malloc(mem::size_of::<$name>() * t.len()) as *mut $name;
+                    let res = ffi::g_malloc(mem::size_of_val(t)) as *mut $name;
                     ptr::copy_nonoverlapping(t.as_ptr(), res, t.len());
                     res
                 }

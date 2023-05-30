@@ -4,7 +4,7 @@ use glib::{prelude::*, translate::*};
 
 use crate::FontMap;
 
-pub trait FontMapExtManual: IsA<FontMap> + 'static {
+pub trait PangoCairoFontMapExtManual: IsA<FontMap> + 'static {
     #[doc(alias = "pango_cairo_font_map_get_font_type")]
     #[doc(alias = "get_font_type")]
     fn font_type(&self) -> cairo::FontType {
@@ -12,7 +12,7 @@ pub trait FontMapExtManual: IsA<FontMap> + 'static {
     }
 }
 
-impl<O: IsA<FontMap>> FontMapExtManual for O {}
+impl<O: IsA<FontMap>> PangoCairoFontMapExtManual for O {}
 
 impl FontMap {
     #[doc(alias = "pango_cairo_font_map_new_for_font_type")]

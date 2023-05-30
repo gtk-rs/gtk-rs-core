@@ -10,9 +10,7 @@ single_version_file = true
 deprecate_by_min_version = true
 trust_return_value_nullability = true
 
-generate = [
-    "PangoCairo.Font",
-]
+generate = []
 
 manual = [
     "cairo.Context",
@@ -102,14 +100,20 @@ status = "generate"
     const = true
 
 [[object]]
+name = "PangoCairo.Font"
+status = "generate"
+trait_name = "PangoCairoFontExt"
+
+[[object]]
 name = "PangoCairo.FontMap"
 status = "generate"
-manual_traits = ["FontMapExtManual"]
+trait_name = "PangoCairoFontMapExt"
+manual_traits = ["PangoCairoFontMapExtManual"]
     [[object.function]]
     # Needed because cairo types don't implement `.into_glib()`.
     name = "get_font_type"
     manual = true
-    doc_trait_name = "FontMapExtManual"
+    doc_trait_name = "PangoCairoFontMapExtManual"
     [[object.function]]
     # Needed because cairo types don't implement `.into_glib()`.
     name = "new_for_font_type"
