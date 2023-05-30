@@ -446,8 +446,10 @@ impl StrV {
         if len == 0 {
             StrV::default()
         } else {
+            // Allocate space for len + 1 pointers, one pointer for each string and a trailing
+            // null pointer.
             let new_ptr =
-                ffi::g_malloc(mem::size_of::<*mut c_char>() * len + 1) as *mut *mut c_char;
+                ffi::g_malloc(mem::size_of::<*mut c_char>() * (len + 1)) as *mut *mut c_char;
 
             // Need to clone every item because we don't own it here
             for i in 0..len {
