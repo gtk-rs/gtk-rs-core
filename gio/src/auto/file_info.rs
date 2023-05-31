@@ -72,17 +72,6 @@ impl FileInfo {
         }
     }
 
-    #[doc(alias = "g_file_info_get_attribute_byte_string")]
-    #[doc(alias = "get_attribute_byte_string")]
-    pub fn attribute_byte_string(&self, attribute: &str) -> Option<glib::GString> {
-        unsafe {
-            from_glib_none(ffi::g_file_info_get_attribute_byte_string(
-                self.to_glib_none().0,
-                attribute.to_glib_none().0,
-            ))
-        }
-    }
-
     //#[doc(alias = "g_file_info_get_attribute_data")]
     //#[doc(alias = "get_attribute_data")]
     //pub fn attribute_data(&self, attribute: &str, value_pp: /*Unimplemented*/&mut Basic: Pointer) -> Option<(FileAttributeType, FileAttributeStatus)> {
@@ -337,17 +326,6 @@ impl FileInfo {
                 self.to_glib_none().0,
                 attribute.to_glib_none().0,
                 attr_value.into_glib(),
-            );
-        }
-    }
-
-    #[doc(alias = "g_file_info_set_attribute_byte_string")]
-    pub fn set_attribute_byte_string(&self, attribute: &str, attr_value: &str) {
-        unsafe {
-            ffi::g_file_info_set_attribute_byte_string(
-                self.to_glib_none().0,
-                attribute.to_glib_none().0,
-                attr_value.to_glib_none().0,
             );
         }
     }
