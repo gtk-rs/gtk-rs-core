@@ -380,7 +380,8 @@ impl<T: TransparentPtrType> SList<T> {
     /// Consumes the list and returns the underlying pointer.
     #[inline]
     pub fn into_raw(mut self) -> *mut ffi::GSList {
-        mem::replace(&mut self.ptr, None)
+        self.ptr
+            .take()
             .map(|p| p.as_ptr())
             .unwrap_or(ptr::null_mut())
     }
