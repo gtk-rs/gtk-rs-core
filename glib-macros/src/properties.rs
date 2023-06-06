@@ -236,6 +236,7 @@ struct PropDesc {
     member: Option<syn::Ident>,
     builder: Option<(Punctuated<syn::Expr, Token![,]>, TokenStream2)>,
     builder_fields: HashMap<syn::Ident, Option<syn::Expr>>,
+    is_construct_only: bool,
 }
 
 impl PropDesc {
@@ -248,7 +249,7 @@ impl PropDesc {
         let ReceivedAttrs {
             nullable,
             get,
-            set,
+            mut set,
             override_class,
             override_interface,
             ty,
@@ -257,6 +258,12 @@ impl PropDesc {
             builder,
             builder_fields,
         } = attrs;
+
+        let is_construct_only = builder_fields.iter().any(|(k, _)| *k == "construct_only");
+        if is_construct_only && set.is_none() {
+            // Insert a default internal setter automatically
+            set = Some(MaybeCustomFn::Default);
+        }
 
         if get.is_none() && set.is_none() {
             return Err(syn::Error::new(
@@ -295,6 +302,7 @@ impl PropDesc {
             member,
             builder,
             builder_fields,
+            is_construct_only,
         })
     }
 }
@@ -534,8 +542,8 @@ fn expand_wrapper_getset_properties(props: &[PropDesc]) -> TokenStream2 {
                  self.property::<<#ty as #crate_ident::Property>::Value>(#stripped_name)
             })
         });
-        let is_construct_only = p.builder_fields.iter().any(|(k, _)| *k == "construct_only");
-        let setter = (p.set.is_some() && !is_construct_only).then(|| {
+
+        let setter = (p.set.is_some() && !p.is_construct_only).then(|| {
             let ident = format_ident!("set_{}", ident);
             let target_ty = quote!(<<#ty as #crate_ident::Property>::Value as #crate_ident::HasParamSpec>::SetValue);
             let set_ty = if p.nullable {

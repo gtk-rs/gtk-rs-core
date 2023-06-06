@@ -146,10 +146,11 @@ mod test {
         *surface.finish_output_stream().unwrap().downcast().unwrap()
     }
 
+    #[track_caller]
     fn assert_len_close_enough(len_a: usize, len_b: usize) {
         // It seems cairo randomizes some element IDs which might make one svg slightly
         // larger than the other. Here we make sure the difference is within ~10%.
-        let len_diff = (len_a as isize - len_b as isize).abs() as usize;
+        let len_diff = usize::abs_diff(len_a, len_b);
         assert!(len_diff < len_b / 10);
     }
 

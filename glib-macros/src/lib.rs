@@ -851,7 +851,7 @@ pub fn cstr_bytes(item: TokenStream) -> TokenStream {
 
 /// This macro enables you to derive object properties in a quick way.
 ///
-/// # Supported #[property] attributes
+/// # Supported `#[property]` attributes
 /// | Attribute | Description | Default | Example |
 /// | --- | --- | --- | --- |
 /// | `name = "literal"` | The name of the property | field ident where `_` (leading and trailing `_` are trimmed) is replaced into `-` | `#[property(name = "prop-name")]` |
@@ -862,7 +862,8 @@ pub fn cstr_bytes(item: TokenStream) -> TokenStream {
 /// | `override_interface = expr` | The type of interface of which to override the property from | | `#[property(override_interface = SomeInterface)]` |
 /// | `nullable` | Whether to use `Option<T>` in the wrapper's generated setter |  | `#[property(nullable)]` |
 /// | `member = ident` | Field of the nested type where property is retrieved and set | | `#[property(member = author)]` |
-/// | `builder(<required-params>)[.ident]*` | Used to input required params or add optional Param Spec builder fields | | `#[property(builder(SomeEnum::default()))]`, `#[builder().default_value(1).construct_only()]`, etc.  |
+/// | `construct_only` | Specify that the property is construct only. This will not generate a public setter and only allow the property to be set during object construction. The use of a custom internal setter is supported. | | `#[property(get, construct_only)]` or `#[property(get, set = set_prop, construct_only)]` |
+/// | `builder(<required-params>)[.ident]*` | Used to input required params or add optional Param Spec builder fields | | `#[property(builder(SomeEnum::default()))]`, `#[builder().default_value(1).minimum(0).maximum(5)]`, etc.  |
 /// | `default` | Sets the `default_value` field of the Param Spec builder | | `#[property(default = 1)]` |
 /// | `<optional-pspec-builder-fields> = expr` | Used to add optional Param Spec builder fields | | `#[property(minimum = 0)` , `#[property(minimum = 0, maximum = 1)]`, etc. |
 /// | `<optional-pspec-builder-fields>` | Used to add optional Param Spec builder fields | | `#[property(explicit_notify)]` , `#[property(construct_only)]`, etc. |
@@ -883,7 +884,7 @@ pub fn cstr_bytes(item: TokenStream) -> TokenStream {
 ///
 /// # Internal getters and setters
 /// By default, they are generated for you. However, you can use a custom getter/setter
-/// by assigning an expression to `get`/`set` #[property] attributes: `#[property(get = |_| 2, set)]` or `#[property(get, set = custom_setter_func)]`.
+/// by assigning an expression to `get`/`set` `#[property]` attributes: `#[property(get = |_| 2, set)]` or `#[property(get, set = custom_setter_func)]`.
 ///
 /// # Supported types
 /// Every type implementing the trait `Property` is supported.

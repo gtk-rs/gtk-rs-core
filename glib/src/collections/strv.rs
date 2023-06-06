@@ -358,6 +358,21 @@ impl<'a, const N: usize> From<[&'a str; N]> for StrV {
     }
 }
 
+impl<'a, const N: usize> From<[&'a GStr; N]> for StrV {
+    #[inline]
+    fn from(value: [&'a GStr; N]) -> Self {
+        unsafe {
+            let mut s = Self::with_capacity(value.len());
+            for (i, item) in value.iter().enumerate() {
+                *s.ptr.as_ptr().add(i) = GString::from(*item).into_glib_ptr();
+            }
+            s.len = value.len();
+            *s.ptr.as_ptr().add(s.len) = ptr::null_mut();
+            s
+        }
+    }
+}
+
 impl<'a> From<&'a [&'a str]> for StrV {
     #[inline]
     fn from(value: &'a [&'a str]) -> Self {
@@ -446,8 +461,10 @@ impl StrV {
         if len == 0 {
             StrV::default()
         } else {
+            // Allocate space for len + 1 pointers, one pointer for each string and a trailing
+            // null pointer.
             let new_ptr =
-                ffi::g_malloc(mem::size_of::<*mut c_char>() * len + 1) as *mut *mut c_char;
+                ffi::g_malloc(mem::size_of::<*mut c_char>() * (len + 1)) as *mut *mut c_char;
 
             // Need to clone every item because we don't own it here
             for i in 0..len {
@@ -1394,6 +1411,20 @@ mod test {
         for (a, b) in Iterator::zip(items.iter(), slice.iter()) {
             assert_eq!(a, b);
         }
+    }
+
+    #[test]
+    fn test_from_slice() {
+        let items = [
+            crate::gstr!("str1"),
+            crate::gstr!("str2"),
+            crate::gstr!("str3"),
+        ];
+
+        let slice1 = StrV::from(&items[..]);
+        let slice2 = StrV::from(items);
+        assert_eq!(slice1.len(), 3);
+        assert_eq!(slice1, slice2);
     }
 
     #[test]
