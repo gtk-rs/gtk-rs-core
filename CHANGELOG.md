@@ -2,6 +2,30 @@
 
 ## [Unreleased]
 
+## [0.17.10]
+Ben Kimock:
+ - Fix heap buffer overflow due to operator precedence
+
+Benji Smith:
+- Upgrade plain-HTTP links to HTTPS in Cargo.toml files
+
+Bilal Elmoussaoui:
+- pango: Lower pkg-config version requirement for `v1_52`
+- gio: Add missing manual traits
+
+Fina Wilke:
+- glib-macros: Allow to omit set for `construct_only` properties
+- glib-macros: Update docs for the properties macro `construct_only` attribute
+
+Jan Alexander Steffens (heftig):
+- glib: Do not use `ptr::offset/offset_from` for private/impl offset
+
+Maximiliano Sandoval R:
+- glib: strv: Implement `From` for constant `GStr` slices
+
+Sebastian Dröge:
+- Fix a couple of trivial clippy warnings
+
 ## [0.17.9]
 
 Paskal Sitepu:
