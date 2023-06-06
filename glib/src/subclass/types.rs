@@ -88,16 +88,57 @@ pub unsafe trait InstanceStructExt: InstanceStruct {
     fn class(&self) -> &<Self::Type as ObjectSubclass>::Class;
 }
 
+// rustdoc-stripper-ignore-next
+/// Offset `ptr` by `offset` *bytes* and cast the result to `*const U`.
+///
+/// The result must be a correctly aligned pointer to a valid value of type `U`.
+///
+/// # Panics:
+///
+/// This function panics if debug assertions are enabled if adding `offset` causes `ptr` to
+/// overflow or if the resulting pointer is not correctly aligned.
+#[inline]
+fn offset_ptr_by_bytes<T, U>(ptr: *const T, offset: isize) -> *const U {
+    // FIXME: Use `ptr::expose_addr()` once stable
+    let ptr = ptr as usize;
+    let ptr = if offset < 0 {
+        ptr - (-offset) as usize
+    } else {
+        ptr + offset as usize
+    };
+    debug_assert_eq!(ptr & (mem::align_of::<U>() - 1), 0);
+    ptr as *const U
+}
+
+// rustdoc-stripper-ignore-next
+/// Offset `ptr` by `offset` *bytes* and cast the result to `*mut U`.
+///
+/// The result must be a correctly aligned pointer to a valid value of type `U`.
+///
+/// # Panics:
+///
+/// This function panics if debug assertions are enabled if adding `offset` causes `ptr` to
+/// overflow or if the resulting pointer is not correctly aligned.
+#[inline]
+fn offset_ptr_by_bytes_mut<T, U>(ptr: *mut T, offset: isize) -> *mut U {
+    // FIXME: Use `ptr::expose_addr()` once stable
+    let ptr = ptr as usize;
+    let ptr = if offset < 0 {
+        ptr - (-offset) as usize
+    } else {
+        ptr + offset as usize
+    };
+    debug_assert_eq!(ptr & (mem::align_of::<U>() - 1), 0);
+    ptr as *mut U
+}
+
 unsafe impl<T: InstanceStruct> InstanceStructExt for T {
     #[inline]
     fn imp(&self) -> &Self::Type {
         unsafe {
             let data = Self::Type::type_data();
             let private_offset = data.as_ref().impl_offset();
-            let ptr: *const u8 = self as *const _ as *const u8;
-            let imp_ptr = ptr.offset(private_offset);
-            let imp = imp_ptr as *const Self::Type;
-
+            let imp = offset_ptr_by_bytes::<T, Self::Type>(self, private_offset);
             &*imp
         }
     }
@@ -717,17 +758,15 @@ impl<T: ObjectSubclass> ObjectSubclassExt for T {
             debug_assert!(type_.is_valid());
 
             let offset = -data.as_ref().impl_offset();
-
-            let ptr = self as *const Self as *const u8;
-            let ptr = ptr.offset(offset);
-            let ptr = ptr as *mut u8 as *mut <Self::Type as ObjectType>::GlibType;
+            let ptr =
+                offset_ptr_by_bytes::<Self, <Self::Type as ObjectType>::GlibType>(self, offset);
 
             // The object might just be finalized, and in that case it's unsafe to access
             // it and use any API on it. This can only happen from inside the Drop impl
             // of Self.
-            debug_assert_ne!((*(ptr as *mut gobject_ffi::GObject)).ref_count, 0);
+            debug_assert_ne!((*(ptr as *const gobject_ffi::GObject)).ref_count, 0);
 
-            crate::BorrowedObject::new(ptr)
+            crate::BorrowedObject::new(mut_override(ptr))
         }
     }
 
@@ -752,10 +791,7 @@ impl<T: ObjectSubclass> ObjectSubclassExt for T {
             debug_assert!(self_type_.is_valid());
 
             let offset = -type_data.as_ref().private_imp_offset;
-
-            let ptr = self as *const Self as *const u8;
-            let ptr = ptr.offset(offset);
-            let ptr = ptr as *const PrivateStruct<Self>;
+            let ptr = offset_ptr_by_bytes::<Self, PrivateStruct<Self>>(self, offset);
             let priv_ = &*ptr;
 
             match priv_.instance_data {
@@ -821,9 +857,10 @@ impl<T: ObjectSubclass> InitializingObject<T> {
 
             let offset = type_data.as_ref().private_offset;
 
-            let ptr = self.0.as_ptr() as *mut u8;
-            let ptr = ptr.offset(offset);
-            let ptr = ptr as *mut PrivateStruct<T>;
+            let ptr = offset_ptr_by_bytes_mut::<
+                <<T as ObjectSubclass>::Type as ObjectType>::GlibType,
+                PrivateStruct<T>,
+            >(self.0.as_ptr(), offset);
             let priv_ = &mut *ptr;
 
             if priv_.instance_data.is_none() {
@@ -885,8 +922,10 @@ unsafe extern "C" fn instance_init<T: ObjectSubclass>(
     // and actually store it in that place.
     let mut data = T::type_data();
     let private_offset = data.as_mut().private_offset;
-    let ptr = obj as *mut u8;
-    let priv_ptr = ptr.offset(private_offset);
+    let priv_ptr = offset_ptr_by_bytes_mut::<gobject_ffi::GTypeInstance, PrivateStruct<T>>(
+        obj,
+        private_offset,
+    );
 
     assert!(
         priv_ptr as usize & (mem::align_of::<PrivateStruct<T>>() - 1) == 0,
@@ -897,13 +936,11 @@ unsafe extern "C" fn instance_init<T: ObjectSubclass>(
         2 * mem::size_of::<usize>(),
     );
 
-    let priv_storage = priv_ptr as *mut PrivateStruct<T>;
-
     let klass = &*(klass as *const T::Class);
 
     let imp = T::with_class(klass);
     ptr::write(
-        priv_storage,
+        priv_ptr,
         PrivateStruct {
             imp,
             instance_data: None,
@@ -925,11 +962,10 @@ unsafe extern "C" fn finalize<T: ObjectSubclass>(obj: *mut gobject_ffi::GObject)
     // Retrieve the private struct and drop it for freeing all associated memory.
     let mut data = T::type_data();
     let private_offset = data.as_mut().private_offset;
-    let ptr = obj as *mut u8;
-    let priv_ptr = ptr.offset(private_offset);
-    let priv_storage = &mut *(priv_ptr as *mut PrivateStruct<T>);
-    ptr::drop_in_place(&mut priv_storage.imp);
-    ptr::drop_in_place(&mut priv_storage.instance_data);
+    let priv_ptr =
+        offset_ptr_by_bytes_mut::<gobject_ffi::GObject, PrivateStruct<T>>(obj, private_offset);
+    ptr::drop_in_place(ptr::addr_of_mut!((*priv_ptr).imp));
+    ptr::drop_in_place(ptr::addr_of_mut!((*priv_ptr).instance_data));
 
     // Chain up to the parent class' finalize implementation, if any.
     let parent_class = &*(data.as_ref().parent_class() as *const gobject_ffi::GObjectClass);
@@ -996,11 +1032,10 @@ pub fn register_type<T: ObjectSubclass>() -> Type {
         // some hoops because Rust doesn't have an offsetof operator yet.
         data.as_mut().private_imp_offset = {
             // Must not be a dangling pointer so let's create some uninitialized memory
-            let priv_ = std::mem::MaybeUninit::<PrivateStruct<T>>::uninit();
+            let priv_ = mem::MaybeUninit::<PrivateStruct<T>>::uninit();
             let ptr = priv_.as_ptr();
-            let imp_ptr = std::ptr::addr_of!((*ptr).imp) as *const u8;
-            let ptr = ptr as *const u8;
-            imp_ptr.offset_from(ptr)
+            let imp_ptr = ptr::addr_of!((*ptr).imp);
+            (imp_ptr as isize) - (ptr as isize)
         };
 
         let iface_types = T::Interfaces::iface_infos();
