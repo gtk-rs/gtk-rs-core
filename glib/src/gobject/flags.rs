@@ -4,6 +4,7 @@ use crate::translate::*;
 
 bitflags::bitflags! {
     #[doc(alias = "GParamFlags")]
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     pub struct ParamFlags: u32 {
         #[doc(alias = "G_PARAM_READABLE")]
         const READABLE = gobject_ffi::G_PARAM_READABLE as _;

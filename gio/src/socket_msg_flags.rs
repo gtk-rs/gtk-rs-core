@@ -6,6 +6,7 @@ use glib::{prelude::*, translate::*, value::FromValue, Type};
 
 bitflags::bitflags! {
     #[doc(alias = "GSocketMsgFlags")]
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     pub struct SocketMsgFlags: ffi::GSocketMsgFlags {
         #[doc(alias = "G_SOCKET_MSG_NONE")]
         const NONE = ffi::G_SOCKET_MSG_NONE as _;

@@ -1659,6 +1659,7 @@ gvalue_impl!(
 );
 
 bitflags::bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     pub struct PdfOutline: i32 {
         #[doc(alias = "PDF_OUTLINE_FLAG_OPEN")]
         const OPEN = ffi::PDF_OUTLINE_FLAG_OPEN;

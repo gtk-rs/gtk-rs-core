@@ -106,6 +106,7 @@ fn gen_bitflags(
 
     quote! {
         #crate_ident::bitflags::bitflags! {
+            #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
             #visibility struct #enum_name: u32 {
                 #(#recurse)*
             }
