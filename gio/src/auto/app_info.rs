@@ -339,7 +339,12 @@ impl AppInfo {
     }
 }
 
-pub trait AppInfoExt: IsA<AppInfo> + 'static {
+mod sealed {
+    pub trait Sealed {}
+    impl<T: super::IsA<super::AppInfo>> Sealed for T {}
+}
+
+pub trait AppInfoExt: IsA<AppInfo> + sealed::Sealed + 'static {
     #[doc(alias = "g_app_info_add_supports_type")]
     fn add_supports_type(&self, content_type: &str) -> Result<(), glib::Error> {
         unsafe {

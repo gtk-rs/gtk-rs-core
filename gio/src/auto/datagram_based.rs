@@ -18,7 +18,12 @@ impl DatagramBased {
     pub const NONE: Option<&'static DatagramBased> = None;
 }
 
-pub trait DatagramBasedExt: IsA<DatagramBased> + 'static {
+mod sealed {
+    pub trait Sealed {}
+    impl<T: super::IsA<super::DatagramBased>> Sealed for T {}
+}
+
+pub trait DatagramBasedExt: IsA<DatagramBased> + sealed::Sealed + 'static {
     #[doc(alias = "g_datagram_based_condition_check")]
     fn condition_check(&self, condition: glib::IOCondition) -> glib::IOCondition {
         unsafe {

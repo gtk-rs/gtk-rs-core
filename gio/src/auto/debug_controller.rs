@@ -23,7 +23,12 @@ impl DebugController {
     pub const NONE: Option<&'static DebugController> = None;
 }
 
-pub trait DebugControllerExt: IsA<DebugController> + 'static {
+mod sealed {
+    pub trait Sealed {}
+    impl<T: super::IsA<super::DebugController>> Sealed for T {}
+}
+
+pub trait DebugControllerExt: IsA<DebugController> + sealed::Sealed + 'static {
     #[doc(alias = "g_debug_controller_get_debug_enabled")]
     #[doc(alias = "get_debug_enabled")]
     fn is_debug_enabled(&self) -> bool {

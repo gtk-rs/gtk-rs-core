@@ -7,6 +7,7 @@ use glib::translate::*;
 use std::fmt;
 
 bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GdkPixbufFormatFlags")]
     pub struct PixbufFormatFlags: u32 {
         #[doc(alias = "GDK_PIXBUF_FORMAT_WRITABLE")]

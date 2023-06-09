@@ -7,6 +7,7 @@ use bitflags::bitflags;
 use std::fmt;
 
 bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GBindingFlags")]
     pub struct BindingFlags: u32 {
         #[doc(alias = "G_BINDING_DEFAULT")]
@@ -100,6 +101,7 @@ impl From<BindingFlags> for crate::Value {
 }
 
 bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GSignalFlags")]
     pub struct SignalFlags: u32 {
         #[doc(alias = "G_SIGNAL_RUN_FIRST")]

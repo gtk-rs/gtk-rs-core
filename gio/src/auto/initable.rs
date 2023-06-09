@@ -19,7 +19,12 @@ impl Initable {
     pub const NONE: Option<&'static Initable> = None;
 }
 
-pub trait InitableExt: IsA<Initable> + 'static {
+mod sealed {
+    pub trait Sealed {}
+    impl<T: super::IsA<super::Initable>> Sealed for T {}
+}
+
+pub trait InitableExt: IsA<Initable> + sealed::Sealed + 'static {
     #[doc(alias = "g_initable_init")]
     unsafe fn init(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<(), glib::Error> {
         let mut error = ptr::null_mut();

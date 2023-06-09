@@ -41,7 +41,12 @@ impl Default for MemoryInputStream {
     }
 }
 
-pub trait MemoryInputStreamExt: IsA<MemoryInputStream> + 'static {
+mod sealed {
+    pub trait Sealed {}
+    impl<T: super::IsA<super::MemoryInputStream>> Sealed for T {}
+}
+
+pub trait MemoryInputStreamExt: IsA<MemoryInputStream> + sealed::Sealed + 'static {
     #[doc(alias = "g_memory_input_stream_add_bytes")]
     fn add_bytes(&self, bytes: &glib::Bytes) {
         unsafe {

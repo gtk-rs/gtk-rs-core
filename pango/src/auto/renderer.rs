@@ -19,7 +19,12 @@ impl Renderer {
     pub const NONE: Option<&'static Renderer> = None;
 }
 
-pub trait RendererExt: IsA<Renderer> + 'static {
+mod sealed {
+    pub trait Sealed {}
+    impl<T: super::IsA<super::Renderer>> Sealed for T {}
+}
+
+pub trait RendererExt: IsA<Renderer> + sealed::Sealed + 'static {
     #[doc(alias = "pango_renderer_activate")]
     fn activate(&self) {
         unsafe {

@@ -63,7 +63,12 @@ impl NetworkAddress {
 unsafe impl Send for NetworkAddress {}
 unsafe impl Sync for NetworkAddress {}
 
-pub trait NetworkAddressExt: IsA<NetworkAddress> + 'static {
+mod sealed {
+    pub trait Sealed {}
+    impl<T: super::IsA<super::NetworkAddress>> Sealed for T {}
+}
+
+pub trait NetworkAddressExt: IsA<NetworkAddress> + sealed::Sealed + 'static {
     #[doc(alias = "g_network_address_get_hostname")]
     #[doc(alias = "get_hostname")]
     fn hostname(&self) -> glib::GString {

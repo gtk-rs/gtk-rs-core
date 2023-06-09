@@ -7,6 +7,7 @@ use glib::{translate::*, value::FromValue, value::ToValue, StaticType, Type};
 use std::fmt;
 
 bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "PangoFontMask")]
     pub struct FontMask: u32 {
         #[doc(alias = "PANGO_FONT_MASK_FAMILY")]
@@ -108,6 +109,7 @@ impl From<FontMask> for glib::Value {
 #[cfg(feature = "v1_50")]
 bitflags! {
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "PangoLayoutDeserializeFlags")]
     pub struct LayoutDeserializeFlags: u32 {
         #[doc(alias = "PANGO_LAYOUT_DESERIALIZE_DEFAULT")]
@@ -215,6 +217,7 @@ impl From<LayoutDeserializeFlags> for glib::Value {
 #[cfg(feature = "v1_50")]
 bitflags! {
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "PangoLayoutSerializeFlags")]
     pub struct LayoutSerializeFlags: u32 {
         #[doc(alias = "PANGO_LAYOUT_SERIALIZE_DEFAULT")]
@@ -324,6 +327,7 @@ impl From<LayoutSerializeFlags> for glib::Value {
 #[cfg(feature = "v1_44")]
 bitflags! {
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "PangoShapeFlags")]
     pub struct ShapeFlags: u32 {
         #[doc(alias = "PANGO_SHAPE_NONE")]
@@ -431,6 +435,7 @@ impl From<ShapeFlags> for glib::Value {
 #[cfg(feature = "v1_44")]
 bitflags! {
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "PangoShowFlags")]
     pub struct ShowFlags: u32 {
         #[doc(alias = "PANGO_SHOW_NONE")]

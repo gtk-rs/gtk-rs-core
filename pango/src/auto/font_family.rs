@@ -26,7 +26,12 @@ impl fmt::Display for FontFamily {
     }
 }
 
-pub trait FontFamilyExt: IsA<FontFamily> + 'static {
+mod sealed {
+    pub trait Sealed {}
+    impl<T: super::IsA<super::FontFamily>> Sealed for T {}
+}
+
+pub trait FontFamilyExt: IsA<FontFamily> + sealed::Sealed + 'static {
     #[cfg(feature = "v1_46")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_46")))]
     #[doc(alias = "pango_font_family_get_face")]

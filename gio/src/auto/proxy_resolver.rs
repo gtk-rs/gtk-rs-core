@@ -26,7 +26,12 @@ impl ProxyResolver {
     }
 }
 
-pub trait ProxyResolverExt: IsA<ProxyResolver> + 'static {
+mod sealed {
+    pub trait Sealed {}
+    impl<T: super::IsA<super::ProxyResolver>> Sealed for T {}
+}
+
+pub trait ProxyResolverExt: IsA<ProxyResolver> + sealed::Sealed + 'static {
     #[doc(alias = "g_proxy_resolver_is_supported")]
     fn is_supported(&self) -> bool {
         unsafe {

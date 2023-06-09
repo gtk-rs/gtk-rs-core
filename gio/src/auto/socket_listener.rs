@@ -37,7 +37,12 @@ impl Default for SocketListener {
     }
 }
 
-pub trait SocketListenerExt: IsA<SocketListener> + 'static {
+mod sealed {
+    pub trait Sealed {}
+    impl<T: super::IsA<super::SocketListener>> Sealed for T {}
+}
+
+pub trait SocketListenerExt: IsA<SocketListener> + sealed::Sealed + 'static {
     #[doc(alias = "g_socket_listener_accept")]
     fn accept(
         &self,

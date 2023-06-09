@@ -7,6 +7,7 @@ use glib::{translate::*, value::FromValue, value::ToValue, StaticType, Type};
 use std::fmt;
 
 bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GAppInfoCreateFlags")]
     pub struct AppInfoCreateFlags: u32 {
         #[doc(alias = "G_APP_INFO_CREATE_NONE")]
@@ -98,6 +99,7 @@ impl From<AppInfoCreateFlags> for glib::Value {
 }
 
 bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GApplicationFlags")]
     pub struct ApplicationFlags: u32 {
         #[doc(alias = "G_APPLICATION_FLAGS_NONE")]
@@ -201,6 +203,7 @@ impl From<ApplicationFlags> for glib::Value {
 }
 
 bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GAskPasswordFlags")]
     pub struct AskPasswordFlags: u32 {
         #[doc(alias = "G_ASK_PASSWORD_NEED_PASSWORD")]
@@ -296,6 +299,7 @@ impl From<AskPasswordFlags> for glib::Value {
 }
 
 bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GBusNameOwnerFlags")]
     pub struct BusNameOwnerFlags: u32 {
         #[doc(alias = "G_BUS_NAME_OWNER_FLAGS_NONE")]
@@ -387,6 +391,7 @@ impl From<BusNameOwnerFlags> for glib::Value {
 }
 
 bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GBusNameWatcherFlags")]
     pub struct BusNameWatcherFlags: u32 {
         #[doc(alias = "G_BUS_NAME_WATCHER_FLAGS_NONE")]
@@ -474,6 +479,7 @@ impl From<BusNameWatcherFlags> for glib::Value {
 }
 
 bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GConverterFlags")]
     pub struct ConverterFlags: u32 {
         #[doc(alias = "G_CONVERTER_NO_FLAGS")]
@@ -563,6 +569,7 @@ impl From<ConverterFlags> for glib::Value {
 }
 
 bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GDBusCallFlags")]
     pub struct DBusCallFlags: u32 {
         #[doc(alias = "G_DBUS_CALL_FLAGS_NONE")]
@@ -652,6 +659,7 @@ impl From<DBusCallFlags> for glib::Value {
 }
 
 bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GDBusCapabilityFlags")]
     pub struct DBusCapabilityFlags: u32 {
         #[doc(alias = "G_DBUS_CAPABILITY_FLAGS_NONE")]
@@ -739,6 +747,7 @@ impl From<DBusCapabilityFlags> for glib::Value {
 }
 
 bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GDBusConnectionFlags")]
     pub struct DBusConnectionFlags: u32 {
         #[doc(alias = "G_DBUS_CONNECTION_FLAGS_NONE")]
@@ -840,6 +849,7 @@ impl From<DBusConnectionFlags> for glib::Value {
 }
 
 bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GDBusInterfaceSkeletonFlags")]
     pub struct DBusInterfaceSkeletonFlags: u32 {
         #[doc(alias = "G_DBUS_INTERFACE_SKELETON_FLAGS_NONE")]
@@ -927,6 +937,7 @@ impl From<DBusInterfaceSkeletonFlags> for glib::Value {
 }
 
 bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GDBusMessageFlags")]
     pub struct DBusMessageFlags: u32 {
         #[doc(alias = "G_DBUS_MESSAGE_FLAGS_NONE")]
@@ -1018,6 +1029,7 @@ impl From<DBusMessageFlags> for glib::Value {
 }
 
 bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GDBusProxyFlags")]
     pub struct DBusProxyFlags: u32 {
         #[doc(alias = "G_DBUS_PROXY_FLAGS_NONE")]
@@ -1117,6 +1129,7 @@ impl From<DBusProxyFlags> for glib::Value {
 }
 
 bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GDBusSendMessageFlags")]
     pub struct DBusSendMessageFlags: u32 {
         #[doc(alias = "G_DBUS_SEND_MESSAGE_FLAGS_NONE")]
@@ -1204,6 +1217,7 @@ impl From<DBusSendMessageFlags> for glib::Value {
 }
 
 bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GDBusServerFlags")]
     pub struct DBusServerFlags: u32 {
         #[doc(alias = "G_DBUS_SERVER_FLAGS_NONE")]
@@ -1295,6 +1309,7 @@ impl From<DBusServerFlags> for glib::Value {
 }
 
 bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GDBusSignalFlags")]
     pub struct DBusSignalFlags: u32 {
         #[doc(alias = "G_DBUS_SIGNAL_FLAGS_NONE")]
@@ -1386,6 +1401,7 @@ impl From<DBusSignalFlags> for glib::Value {
 }
 
 bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GDriveStartFlags")]
     pub struct DriveStartFlags: u32 {
         #[doc(alias = "G_DRIVE_START_NONE")]
@@ -1471,6 +1487,7 @@ impl From<DriveStartFlags> for glib::Value {
 }
 
 bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GFileAttributeInfoFlags")]
     pub struct FileAttributeInfoFlags: u32 {
         #[doc(alias = "G_FILE_ATTRIBUTE_INFO_NONE")]
@@ -1560,6 +1577,7 @@ impl From<FileAttributeInfoFlags> for glib::Value {
 }
 
 bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GFileCopyFlags")]
     pub struct FileCopyFlags: u32 {
         #[doc(alias = "G_FILE_COPY_NONE")]
@@ -1657,6 +1675,7 @@ impl From<FileCopyFlags> for glib::Value {
 }
 
 bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GFileCreateFlags")]
     pub struct FileCreateFlags: u32 {
         #[doc(alias = "G_FILE_CREATE_NONE")]
@@ -1746,6 +1765,7 @@ impl From<FileCreateFlags> for glib::Value {
 }
 
 bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GFileMeasureFlags")]
     pub struct FileMeasureFlags: u32 {
         #[doc(alias = "G_FILE_MEASURE_NONE")]
@@ -1837,6 +1857,7 @@ impl From<FileMeasureFlags> for glib::Value {
 }
 
 bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GFileMonitorFlags")]
     pub struct FileMonitorFlags: u32 {
         #[doc(alias = "G_FILE_MONITOR_NONE")]
@@ -1930,6 +1951,7 @@ impl From<FileMonitorFlags> for glib::Value {
 }
 
 bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GFileQueryInfoFlags")]
     pub struct FileQueryInfoFlags: u32 {
         #[doc(alias = "G_FILE_QUERY_INFO_NONE")]
@@ -2017,6 +2039,7 @@ impl From<FileQueryInfoFlags> for glib::Value {
 }
 
 bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GIOStreamSpliceFlags")]
     pub struct IOStreamSpliceFlags: u32 {
         #[doc(alias = "G_IO_STREAM_SPLICE_NONE")]
@@ -2108,6 +2131,7 @@ impl From<IOStreamSpliceFlags> for glib::Value {
 }
 
 bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GMountMountFlags")]
     pub struct MountMountFlags: u32 {
         #[doc(alias = "G_MOUNT_MOUNT_NONE")]
@@ -2193,6 +2217,7 @@ impl From<MountMountFlags> for glib::Value {
 }
 
 bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GMountUnmountFlags")]
     pub struct MountUnmountFlags: u32 {
         #[doc(alias = "G_MOUNT_UNMOUNT_NONE")]
@@ -2280,6 +2305,7 @@ impl From<MountUnmountFlags> for glib::Value {
 }
 
 bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GOutputStreamSpliceFlags")]
     pub struct OutputStreamSpliceFlags: u32 {
         #[doc(alias = "G_OUTPUT_STREAM_SPLICE_NONE")]
@@ -2371,6 +2397,7 @@ impl From<OutputStreamSpliceFlags> for glib::Value {
 #[cfg(feature = "v2_60")]
 bitflags! {
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GResolverNameLookupFlags")]
     pub struct ResolverNameLookupFlags: u32 {
         #[doc(alias = "G_RESOLVER_NAME_LOOKUP_FLAGS_DEFAULT")]
@@ -2478,6 +2505,7 @@ impl From<ResolverNameLookupFlags> for glib::Value {
 }
 
 bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GResourceLookupFlags")]
     pub struct ResourceLookupFlags: u32 {
         #[doc(alias = "G_RESOURCE_LOOKUP_FLAGS_NONE")]
@@ -2563,6 +2591,7 @@ impl From<ResourceLookupFlags> for glib::Value {
 }
 
 bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GSettingsBindFlags")]
     pub struct SettingsBindFlags: u32 {
         #[doc(alias = "G_SETTINGS_BIND_DEFAULT")]
@@ -2658,6 +2687,7 @@ impl From<SettingsBindFlags> for glib::Value {
 }
 
 bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GSubprocessFlags")]
     pub struct SubprocessFlags: u32 {
         #[doc(alias = "G_SUBPROCESS_FLAGS_NONE")]
@@ -2763,6 +2793,7 @@ impl From<SubprocessFlags> for glib::Value {
 }
 
 bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GTlsCertificateFlags")]
     pub struct TlsCertificateFlags: u32 {
         #[doc(alias = "G_TLS_CERTIFICATE_UNKNOWN_CA")]
@@ -2862,6 +2893,7 @@ impl From<TlsCertificateFlags> for glib::Value {
 }
 
 bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GTlsDatabaseVerifyFlags")]
     pub struct TlsDatabaseVerifyFlags: u32 {
         #[doc(alias = "G_TLS_DATABASE_VERIFY_NONE")]
@@ -2947,6 +2979,7 @@ impl From<TlsDatabaseVerifyFlags> for glib::Value {
 }
 
 bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GTlsPasswordFlags")]
     pub struct TlsPasswordFlags: u32 {
         #[doc(alias = "G_TLS_PASSWORD_NONE")]

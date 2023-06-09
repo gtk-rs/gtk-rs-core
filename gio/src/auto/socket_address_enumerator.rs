@@ -19,7 +19,14 @@ impl SocketAddressEnumerator {
     pub const NONE: Option<&'static SocketAddressEnumerator> = None;
 }
 
-pub trait SocketAddressEnumeratorExt: IsA<SocketAddressEnumerator> + 'static {
+mod sealed {
+    pub trait Sealed {}
+    impl<T: super::IsA<super::SocketAddressEnumerator>> Sealed for T {}
+}
+
+pub trait SocketAddressEnumeratorExt:
+    IsA<SocketAddressEnumerator> + sealed::Sealed + 'static
+{
     #[doc(alias = "g_socket_address_enumerator_next")]
     fn next(
         &self,

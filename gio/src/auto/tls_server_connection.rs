@@ -43,7 +43,12 @@ impl TlsServerConnection {
     }
 }
 
-pub trait TlsServerConnectionExt: IsA<TlsServerConnection> + 'static {
+mod sealed {
+    pub trait Sealed {}
+    impl<T: super::IsA<super::TlsServerConnection>> Sealed for T {}
+}
+
+pub trait TlsServerConnectionExt: IsA<TlsServerConnection> + sealed::Sealed + 'static {
     #[doc(alias = "authentication-mode")]
     fn authentication_mode(&self) -> TlsAuthenticationMode {
         glib::ObjectExt::property(self.as_ref(), "authentication-mode")

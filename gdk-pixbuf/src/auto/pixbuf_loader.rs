@@ -63,7 +63,12 @@ impl Default for PixbufLoader {
     }
 }
 
-pub trait PixbufLoaderExt: IsA<PixbufLoader> + 'static {
+mod sealed {
+    pub trait Sealed {}
+    impl<T: super::IsA<super::PixbufLoader>> Sealed for T {}
+}
+
+pub trait PixbufLoaderExt: IsA<PixbufLoader> + sealed::Sealed + 'static {
     #[doc(alias = "gdk_pixbuf_loader_close")]
     fn close(&self) -> Result<(), glib::Error> {
         unsafe {
