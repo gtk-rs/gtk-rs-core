@@ -47,6 +47,14 @@ impl<T: Property> Property for once_cell::sync::OnceCell<T> {
 impl<T: Property> Property for once_cell::unsync::OnceCell<T> {
     type Value = T::Value;
 }
+#[cfg(feature = "std_once_cell")]
+impl<T: Property> Property for std::cell::OnceCell<T> {
+    type Value = T::Value;
+}
+#[cfg(feature = "std_once_cell")]
+impl<T: Property> Property for std::sync::OnceLock<T> {
+    type Value = T::Value;
+}
 // Handle smart pointers trasparently
 impl<T: Property> Property for Rc<T> {
     type Value = T::Value;
@@ -170,6 +178,41 @@ impl<T> PropertySet for once_cell::sync::OnceCell<T> {
     }
 }
 impl<T> PropertySet for once_cell::unsync::OnceCell<T> {
+    type SetValue = T;
+    fn set(&self, v: Self::SetValue) {
+        // I can't use `unwrap` because I would have to add a `Debug` bound to _v
+        if let Err(_v) = self.set(v) {
+            panic!("can't set value of OnceCell multiple times")
+        };
+    }
+}
+
+#[cfg(feature = "std_once_cell")]
+impl<T> PropertyGet for std::cell::OnceCell<T> {
+    type Value = T;
+    fn get<R, F: Fn(&Self::Value) -> R>(&self, f: F) -> R {
+        f(self.get().unwrap())
+    }
+}
+#[cfg(feature = "std_once_cell")]
+impl<T> PropertyGet for std::sync::OnceLock<T> {
+    type Value = T;
+    fn get<R, F: Fn(&Self::Value) -> R>(&self, f: F) -> R {
+        f(self.get().unwrap())
+    }
+}
+#[cfg(feature = "std_once_cell")]
+impl<T> PropertySet for std::cell::OnceCell<T> {
+    type SetValue = T;
+    fn set(&self, v: Self::SetValue) {
+        // I can't use `unwrap` because I would have to add a `Debug` bound to _v
+        if let Err(_v) = self.set(v) {
+            panic!("can't set value of OnceCell multiple times")
+        };
+    }
+}
+#[cfg(feature = "std_once_cell")]
+impl<T> PropertySet for std::sync::OnceLock<T> {
     type SetValue = T;
     fn set(&self, v: Self::SetValue) {
         // I can't use `unwrap` because I would have to add a `Debug` bound to _v
