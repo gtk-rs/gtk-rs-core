@@ -12789,6 +12789,9 @@ extern "C" {
     pub fn g_resolver_free_addresses(addresses: *mut glib::GList);
     pub fn g_resolver_free_targets(targets: *mut glib::GList);
     pub fn g_resolver_get_default() -> *mut GResolver;
+    #[cfg(feature = "v2_78")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_78")))]
+    pub fn g_resolver_get_timeout(resolver: *mut GResolver) -> c_uint;
     pub fn g_resolver_lookup_by_address(
         resolver: *mut GResolver,
         address: *mut GInetAddress,
@@ -12894,6 +12897,9 @@ extern "C" {
         error: *mut *mut glib::GError,
     ) -> *mut glib::GList;
     pub fn g_resolver_set_default(resolver: *mut GResolver);
+    #[cfg(feature = "v2_78")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_78")))]
+    pub fn g_resolver_set_timeout(resolver: *mut GResolver, timeout_ms: c_uint);
 
     //=========================================================================
     // GSettings
@@ -14795,6 +14801,13 @@ extern "C" {
         action_name: *const c_char,
     ) -> *mut GAction;
     pub fn g_action_map_remove_action(action_map: *mut GActionMap, action_name: *const c_char);
+    #[cfg(feature = "v2_78")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_78")))]
+    pub fn g_action_map_remove_action_entries(
+        action_map: *mut GActionMap,
+        entries: *const GActionEntry,
+        n_entries: c_int,
+    );
 
     //=========================================================================
     // GAppInfo
@@ -15350,6 +15363,9 @@ extern "C" {
     //=========================================================================
     pub fn g_file_get_type() -> GType;
     pub fn g_file_new_build_filename(first_element: *const c_char, ...) -> *mut GFile;
+    #[cfg(feature = "v2_78")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_78")))]
+    pub fn g_file_new_build_filenamev(args: *const *const c_char) -> *mut GFile;
     pub fn g_file_new_for_commandline_arg(arg: *const c_char) -> *mut GFile;
     pub fn g_file_new_for_commandline_arg_and_cwd(
         arg: *const c_char,

@@ -4772,6 +4772,9 @@ extern "C" {
     pub fn g_gstring_get_type() -> GType;
     pub fn g_string_new(init: *const c_char) -> *mut GString;
     pub fn g_string_new_len(init: *const c_char, len: ssize_t) -> *mut GString;
+    #[cfg(feature = "v2_78")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_78")))]
+    pub fn g_string_new_take(init: *mut c_char) -> *mut GString;
     pub fn g_string_sized_new(dfl_size: size_t) -> *mut GString;
     pub fn g_string_append(string: *mut GString, val: *const c_char) -> *mut GString;
     pub fn g_string_append_c(string: *mut GString, c: c_char) -> *mut GString;
@@ -5714,6 +5717,17 @@ extern "C" {
         line: c_int,
         func: *const c_char,
         message: *const c_char,
+    );
+    pub fn g_assertion_message_cmpint(
+        domain: *const c_char,
+        file: *const c_char,
+        line: c_int,
+        func: *const c_char,
+        expr: *const c_char,
+        arg1: u64,
+        cmp: *const c_char,
+        arg2: u64,
+        numtype: c_char,
     );
     //pub fn g_assertion_message_cmpnum(domain: *const c_char, file: *const c_char, line: c_int, func: *const c_char, expr: *const c_char, arg1: /*Unimplemented*/long double, cmp: *const c_char, arg2: /*Unimplemented*/long double, numtype: c_char);
     pub fn g_assertion_message_cmpstr(
@@ -6809,6 +6823,13 @@ extern "C" {
         data: gpointer,
         notify: GDestroyNotify,
     ) -> c_uint;
+    #[cfg(feature = "v2_78")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_78")))]
+    pub fn g_timeout_add_seconds_once(
+        interval: c_uint,
+        function: GSourceOnceFunc,
+        data: gpointer,
+    ) -> c_uint;
     pub fn g_timeout_source_new(interval: c_uint) -> *mut GSource;
     pub fn g_timeout_source_new_seconds(interval: c_uint) -> *mut GSource;
     pub fn g_try_malloc(n_bytes: size_t) -> gpointer;
@@ -6972,6 +6993,9 @@ extern "C" {
         items_written: *mut c_long,
         error: *mut *mut GError,
     ) -> *mut u16;
+    #[cfg(feature = "v2_78")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_78")))]
+    pub fn g_utf8_truncate_middle(string: *const c_char, truncate_length: size_t) -> *mut c_char;
     pub fn g_utf8_validate(str: *const u8, max_len: ssize_t, end: *mut *const c_char) -> gboolean;
     #[cfg(feature = "v2_60")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]

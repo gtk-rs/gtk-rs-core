@@ -216,13 +216,13 @@ impl Pixbuf {
 
     #[doc(alias = "gdk_pixbuf_new_from_xpm_data")]
     #[doc(alias = "new_from_xpm_data")]
-    pub fn from_xpm_data(data: &[&str]) -> Pixbuf {
+    pub fn from_xpm_data(data: &[&str]) -> Option<Pixbuf> {
         unsafe { from_glib_full(ffi::gdk_pixbuf_new_from_xpm_data(data.to_glib_none().0)) }
     }
 
     #[doc(alias = "gdk_pixbuf_add_alpha")]
     #[must_use]
-    pub fn add_alpha(&self, substitute_color: bool, r: u8, g: u8, b: u8) -> Pixbuf {
+    pub fn add_alpha(&self, substitute_color: bool, r: u8, g: u8, b: u8) -> Option<Pixbuf> {
         unsafe {
             from_glib_full(ffi::gdk_pixbuf_add_alpha(
                 self.to_glib_none().0,

@@ -16,6 +16,33 @@ pub fn access(filename: impl AsRef<std::path::Path>, mode: i32) -> i32 {
     unsafe { ffi::g_access(filename.as_ref().to_glib_none().0, mode) }
 }
 
+#[doc(alias = "g_assertion_message_cmpint")]
+pub fn assertion_message_cmpint(
+    domain: &str,
+    file: &str,
+    line: i32,
+    func: &str,
+    expr: &str,
+    arg1: u64,
+    cmp: &str,
+    arg2: u64,
+    numtype: crate::Char,
+) {
+    unsafe {
+        ffi::g_assertion_message_cmpint(
+            domain.to_glib_none().0,
+            file.to_glib_none().0,
+            line,
+            func.to_glib_none().0,
+            expr.to_glib_none().0,
+            arg1,
+            cmp.to_glib_none().0,
+            arg2,
+            numtype.into_glib(),
+        );
+    }
+}
+
 #[doc(alias = "g_base64_decode")]
 pub fn base64_decode(text: &str) -> Vec<u8> {
     unsafe {
@@ -813,6 +840,29 @@ pub fn spawn_command_line_async(
 //pub fn spawn_sync(working_directory: Option<impl AsRef<std::path::Path>>, argv: &[&std::path::Path], envp: &[&std::path::Path], flags: SpawnFlags, child_setup: Option<Box_<dyn FnOnce() + 'static>>, standard_output: Vec<u8>, standard_error: Vec<u8>) -> Result<i32, crate::Error> {
 //    unsafe { TODO: call ffi:g_spawn_sync() }
 //}
+
+#[cfg(feature = "v2_78")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_78")))]
+#[doc(alias = "g_timeout_add_seconds_once")]
+pub fn timeout_add_seconds_once<P: Fn() + Send + Sync + 'static>(
+    interval: u32,
+    function: P,
+) -> u32 {
+    let function_data: Box_<P> = Box_::new(function);
+    unsafe extern "C" fn function_func<P: Fn() + Send + Sync + 'static>(user_data: ffi::gpointer) {
+        let callback: &P = &*(user_data as *mut _);
+        (*callback)()
+    }
+    let function = Some(function_func::<P> as _);
+    let super_callback0: Box_<P> = function_data;
+    unsafe {
+        ffi::g_timeout_add_seconds_once(
+            interval,
+            function,
+            Box_::into_raw(super_callback0) as *mut _,
+        )
+    }
+}
 
 #[doc(alias = "g_unicode_script_from_iso15924")]
 pub fn unicode_script_from_iso15924(iso15924: u32) -> UnicodeScript {

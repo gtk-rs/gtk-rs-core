@@ -93,7 +93,7 @@ pub trait FontExt: IsA<Font> + sealed::Sealed + 'static {
     //#[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
     //#[doc(alias = "pango_font_get_features")]
     //#[doc(alias = "get_features")]
-    //fn features(&self, features: /*Unimplemented*/&mut Basic: Pointer, num_features: &mut u32) -> u32 {
+    //fn features(&self, features: /*Unimplemented*/&mut Basic: Pointer, len: u32, num_features: &mut u32) {
     //    unsafe { TODO: call ffi:pango_font_get_features() }
     //}
 
