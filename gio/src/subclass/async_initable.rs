@@ -17,7 +17,12 @@ pub trait AsyncInitableImpl: ObjectImpl {
     }
 }
 
-pub trait AsyncInitableImplExt: AsyncInitableImpl + ObjectSubclass {
+mod sealed {
+    pub trait Sealed {}
+    impl<T: super::AsyncInitableImplExt> Sealed for T {}
+}
+
+pub trait AsyncInitableImplExt: sealed::Sealed + AsyncInitableImpl + ObjectSubclass {
     fn parent_init_future(
         &self,
         io_priority: glib::Priority,

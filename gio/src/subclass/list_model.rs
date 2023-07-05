@@ -14,7 +14,12 @@ pub trait ListModelImpl: ObjectImpl {
     fn item(&self, position: u32) -> Option<glib::Object>;
 }
 
-pub trait ListModelImplExt: ObjectSubclass {
+mod sealed {
+    pub trait Sealed {}
+    impl<T: super::ListModelImplExt> Sealed for T {}
+}
+
+pub trait ListModelImplExt: sealed::Sealed + ObjectSubclass {
     fn parent_item_type(&self) -> glib::Type {
         unsafe {
             let type_data = Self::type_data();

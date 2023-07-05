@@ -21,7 +21,12 @@ pub trait IOStreamImpl: ObjectImpl + IOStreamImplExt + Send {
     }
 }
 
-pub trait IOStreamImplExt: ObjectSubclass {
+mod sealed {
+    pub trait Sealed {}
+    impl<T: super::IOStreamImplExt> Sealed for T {}
+}
+
+pub trait IOStreamImplExt: sealed::Sealed + ObjectSubclass {
     fn parent_input_stream(&self) -> InputStream {
         unsafe {
             let data = Self::type_data();

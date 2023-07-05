@@ -26,7 +26,12 @@ pub trait SocketControlMessageImpl: ObjectImpl + SocketControlMessageImplExt {
     }
 }
 
-pub trait SocketControlMessageImplExt: ObjectSubclass {
+mod sealed {
+    pub trait Sealed {}
+    impl<T: super::SocketControlMessageImplExt> Sealed for T {}
+}
+
+pub trait SocketControlMessageImplExt: sealed::Sealed + ObjectSubclass {
     fn parent_level(&self) -> i32 {
         unsafe {
             let data = Self::type_data();

@@ -31,17 +31,15 @@ pub trait PixbufAnimationImpl: ObjectImpl {
     }
 }
 
-pub trait PixbufAnimationImplExt: ObjectSubclass {
-    fn parent_is_static_image(&self) -> bool;
-    fn parent_static_image(&self) -> Option<Pixbuf>;
-    fn parent_size(&self) -> (i32, i32);
-    fn parent_iter(&self, start_time: SystemTime) -> PixbufAnimationIter;
+mod sealed {
+    pub trait Sealed {}
+    impl<T: super::PixbufAnimationImplExt> Sealed for T {}
 }
 
-impl<T: PixbufAnimationImpl> PixbufAnimationImplExt for T {
+pub trait PixbufAnimationImplExt: sealed::Sealed + ObjectSubclass {
     fn parent_is_static_image(&self) -> bool {
         unsafe {
-            let data = T::type_data();
+            let data = Self::type_data();
             let parent_class = data.as_ref().parent_class() as *mut ffi::GdkPixbufAnimationClass;
             let f = (*parent_class)
                 .is_static_image
@@ -57,7 +55,7 @@ impl<T: PixbufAnimationImpl> PixbufAnimationImplExt for T {
 
     fn parent_static_image(&self) -> Option<Pixbuf> {
         unsafe {
-            let data = T::type_data();
+            let data = Self::type_data();
             let parent_class = data.as_ref().parent_class() as *mut ffi::GdkPixbufAnimationClass;
             let f = (*parent_class)
                 .get_static_image
@@ -73,7 +71,7 @@ impl<T: PixbufAnimationImpl> PixbufAnimationImplExt for T {
 
     fn parent_size(&self) -> (i32, i32) {
         unsafe {
-            let data = T::type_data();
+            let data = Self::type_data();
             let parent_class = data.as_ref().parent_class() as *mut ffi::GdkPixbufAnimationClass;
             let f = (*parent_class)
                 .get_size
@@ -94,7 +92,7 @@ impl<T: PixbufAnimationImpl> PixbufAnimationImplExt for T {
 
     fn parent_iter(&self, start_time: SystemTime) -> PixbufAnimationIter {
         unsafe {
-            let data = T::type_data();
+            let data = Self::type_data();
             let parent_class = data.as_ref().parent_class() as *mut ffi::GdkPixbufAnimationClass;
             let f = (*parent_class)
                 .get_iter
@@ -117,6 +115,8 @@ impl<T: PixbufAnimationImpl> PixbufAnimationImplExt for T {
         }
     }
 }
+
+impl<T: PixbufAnimationImpl> PixbufAnimationImplExt for T {}
 
 unsafe impl<T: PixbufAnimationImpl> IsSubclassable<T> for PixbufAnimation {
     fn class_init(class: &mut ::glib::Class<Self>) {

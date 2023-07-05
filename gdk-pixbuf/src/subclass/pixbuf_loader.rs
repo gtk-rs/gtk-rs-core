@@ -25,17 +25,15 @@ pub trait PixbufLoaderImpl: ObjectImpl {
     }
 }
 
-pub trait PixbufLoaderImplExt: ObjectSubclass {
-    fn parent_size_prepared(&self, width: i32, height: i32);
-    fn parent_area_prepared(&self);
-    fn parent_area_updated(&self, x: i32, y: i32, width: i32, height: i32);
-    fn parent_closed(&self);
+mod sealed {
+    pub trait Sealed {}
+    impl<T: super::PixbufLoaderImplExt> Sealed for T {}
 }
 
-impl<T: PixbufLoaderImpl> PixbufLoaderImplExt for T {
+pub trait PixbufLoaderImplExt: sealed::Sealed + ObjectSubclass {
     fn parent_size_prepared(&self, width: i32, height: i32) {
         unsafe {
-            let data = T::type_data();
+            let data = Self::type_data();
             let parent_class = data.as_ref().parent_class() as *mut ffi::GdkPixbufLoaderClass;
             if let Some(f) = (*parent_class).size_prepared {
                 f(
@@ -52,7 +50,7 @@ impl<T: PixbufLoaderImpl> PixbufLoaderImplExt for T {
 
     fn parent_area_prepared(&self) {
         unsafe {
-            let data = T::type_data();
+            let data = Self::type_data();
             let parent_class = data.as_ref().parent_class() as *mut ffi::GdkPixbufLoaderClass;
             if let Some(f) = (*parent_class).area_prepared {
                 f(self
@@ -66,7 +64,7 @@ impl<T: PixbufLoaderImpl> PixbufLoaderImplExt for T {
 
     fn parent_area_updated(&self, x: i32, y: i32, width: i32, height: i32) {
         unsafe {
-            let data = T::type_data();
+            let data = Self::type_data();
             let parent_class = data.as_ref().parent_class() as *mut ffi::GdkPixbufLoaderClass;
             if let Some(f) = (*parent_class).area_updated {
                 f(
@@ -85,7 +83,7 @@ impl<T: PixbufLoaderImpl> PixbufLoaderImplExt for T {
 
     fn parent_closed(&self) {
         unsafe {
-            let data = T::type_data();
+            let data = Self::type_data();
             let parent_class = data.as_ref().parent_class() as *mut ffi::GdkPixbufLoaderClass;
             if let Some(f) = (*parent_class).closed {
                 f(self
@@ -97,6 +95,8 @@ impl<T: PixbufLoaderImpl> PixbufLoaderImplExt for T {
         }
     }
 }
+
+impl<T: PixbufLoaderImpl> PixbufLoaderImplExt for T {}
 
 unsafe impl<T: PixbufLoaderImpl> IsSubclassable<T> for PixbufLoader {
     fn class_init(class: &mut ::glib::Class<Self>) {

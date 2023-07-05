@@ -27,7 +27,14 @@ impl AsRawFd for FileDescriptorBased {
     }
 }
 
-pub trait FileDescriptorBasedExtManual: IsA<FileDescriptorBased> + 'static {
+mod sealed {
+    pub trait Sealed {}
+    impl<T: super::IsA<super::FileDescriptorBased>> Sealed for T {}
+}
+
+pub trait FileDescriptorBasedExtManual:
+    sealed::Sealed + IsA<FileDescriptorBased> + 'static
+{
     #[doc(alias = "g_file_descriptor_based_get_fd")]
     #[doc(alias = "get_fd")]
     fn fd<T: FromRawFd>(&self) -> T {

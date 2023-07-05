@@ -29,7 +29,12 @@ pub trait OutputStreamImpl: ObjectImpl + OutputStreamImplExt + Send {
     }
 }
 
-pub trait OutputStreamImplExt: ObjectSubclass {
+mod sealed {
+    pub trait Sealed {}
+    impl<T: super::OutputStreamImplExt> Sealed for T {}
+}
+
+pub trait OutputStreamImplExt: sealed::Sealed + ObjectSubclass {
     fn parent_write(
         &self,
         buffer: &[u8],

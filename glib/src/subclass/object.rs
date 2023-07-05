@@ -248,33 +248,18 @@ unsafe impl<T: ObjectImpl> IsSubclassable<T> for Object {
     fn instance_init(_instance: &mut super::InitializingObject<T>) {}
 }
 
-pub trait ObjectImplExt: ObjectSubclass {
-    // rustdoc-stripper-ignore-next
-    /// Chain up to the parent class' implementation of `glib::Object::constructed()`.
-    fn parent_constructed(&self);
-
-    // rustdoc-stripper-ignore-next
-    /// Chain up to the parent class' implementation of `glib::Object::notify()`.
-    fn parent_notify(&self, pspec: &ParamSpec);
-
-    // rustdoc-stripper-ignore-next
-    /// Chain up to the parent class' implementation of `glib::Object::dispatch_properties_changed()`.
-    fn parent_dispatch_properties_changed(&self, pspecs: &[ParamSpec]);
-
-    // rustdoc-stripper-ignore-next
-    /// Chain up to parent class signal handler.
-    fn signal_chain_from_overridden(
-        &self,
-        token: &super::SignalClassHandlerToken,
-        values: &[Value],
-    ) -> Option<Value>;
+mod sealed {
+    pub trait Sealed {}
+    impl<T: super::ObjectImplExt> Sealed for T {}
 }
 
-impl<T: ObjectImpl> ObjectImplExt for T {
+pub trait ObjectImplExt: sealed::Sealed + ObjectSubclass {
+    // rustdoc-stripper-ignore-next
+    /// Chain up to the parent class' implementation of `glib::Object::constructed()`.
     #[inline]
     fn parent_constructed(&self) {
         unsafe {
-            let data = T::type_data();
+            let data = Self::type_data();
             let parent_class = data.as_ref().parent_class() as *mut gobject_ffi::GObjectClass;
 
             if let Some(ref func) = (*parent_class).constructed {
@@ -283,10 +268,12 @@ impl<T: ObjectImpl> ObjectImplExt for T {
         }
     }
 
+    // rustdoc-stripper-ignore-next
+    /// Chain up to the parent class' implementation of `glib::Object::notify()`.
     #[inline]
     fn parent_notify(&self, pspec: &ParamSpec) {
         unsafe {
-            let data = T::type_data();
+            let data = Self::type_data();
             let parent_class = data.as_ref().parent_class() as *mut gobject_ffi::GObjectClass;
 
             if let Some(ref func) = (*parent_class).notify {
@@ -298,10 +285,12 @@ impl<T: ObjectImpl> ObjectImplExt for T {
         }
     }
 
+    // rustdoc-stripper-ignore-next
+    /// Chain up to the parent class' implementation of `glib::Object::dispatch_properties_changed()`.
     #[inline]
     fn parent_dispatch_properties_changed(&self, pspecs: &[ParamSpec]) {
         unsafe {
-            let data = T::type_data();
+            let data = Self::type_data();
             let parent_class = data.as_ref().parent_class() as *mut gobject_ffi::GObjectClass;
 
             if let Some(ref func) = (*parent_class).dispatch_properties_changed {
@@ -314,6 +303,8 @@ impl<T: ObjectImpl> ObjectImplExt for T {
         }
     }
 
+    // rustdoc-stripper-ignore-next
+    /// Chain up to parent class signal handler.
     fn signal_chain_from_overridden(
         &self,
         token: &super::SignalClassHandlerToken,
@@ -324,6 +315,8 @@ impl<T: ObjectImpl> ObjectImplExt for T {
         }
     }
 }
+
+impl<T: ObjectImpl> ObjectImplExt for T {}
 
 #[cfg(test)]
 mod test {

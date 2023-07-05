@@ -77,7 +77,12 @@ impl AsRawHandle for Win32InputStream {
     }
 }
 
-pub trait Win32InputStreamExtManual: IsA<Win32InputStream> + Sized {
+mod sealed {
+    pub trait Sealed {}
+    impl<T: super::IsA<super::Win32InputStream>> Sealed for T {}
+}
+
+pub trait Win32InputStreamExtManual: sealed::Sealed + IsA<Win32InputStream> + Sized {
     #[doc(alias = "g_win32_input_stream_get_handle")]
     #[doc(alias = "get_handle")]
     fn handle<T: FromRawHandle>(&self) -> T {

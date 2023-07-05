@@ -13,7 +13,12 @@ pub trait ActionMapImpl: ObjectImpl {
     fn remove_action(&self, action_name: &str);
 }
 
-pub trait ActionMapImplExt: ObjectSubclass {
+mod sealed {
+    pub trait Sealed {}
+    impl<T: super::ActionMapImplExt> Sealed for T {}
+}
+
+pub trait ActionMapImplExt: sealed::Sealed + ObjectSubclass {
     fn parent_lookup_action(&self, name: &str) -> Option<Action> {
         unsafe {
             let type_data = Self::type_data();
