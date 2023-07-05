@@ -197,6 +197,22 @@ pub fn impl_boxed(input: &syn::DeriveInput) -> TokenStream {
 
         #impl_from_value
 
+        impl #crate_ident::translate::FromGlibPtrBorrow<*const #name> for #name {
+            #[inline]
+            unsafe fn from_glib_borrow(ptr: *const #name) -> #crate_ident::translate::Borrowed<Self> {
+                #crate_ident::translate::FromGlibPtrBorrow::from_glib_borrow(ptr as *mut _)
+            }
+        }
+
+        impl #crate_ident::translate::FromGlibPtrBorrow<*mut #name> for #name {
+            #[inline]
+            unsafe fn from_glib_borrow(ptr: *mut #name) -> #crate_ident::translate::Borrowed<Self> {
+                debug_assert!(!ptr.is_null());
+
+                #crate_ident::translate::Borrowed::new(std::ptr::read(ptr))
+            }
+        }
+
         impl #crate_ident::translate::FromGlibPtrNone<*const #name> for #name {
             #[inline]
             unsafe fn from_glib_none(ptr: *const #name) -> Self {

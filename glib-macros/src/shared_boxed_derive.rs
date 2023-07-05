@@ -218,6 +218,26 @@ pub fn impl_shared_boxed(input: &syn::DeriveInput) -> proc_macro2::TokenStream {
 
         #impl_from_value
 
+        impl #crate_ident::translate::FromGlibPtrBorrow<*const #refcounted_type_prefix::InnerType> for #name {
+            #[inline]
+            unsafe fn from_glib_borrow(ptr: *const #refcounted_type_prefix::InnerType) -> #crate_ident::translate::Borrowed<Self> {
+                debug_assert!(!ptr.is_null());
+
+                // from_raw is taking ownership of the raw pointer here, but wrapping its result
+                // in Borrowed::new ensures that it won't be deallocated when it will go out of
+                // scope, so the pointer will still be valid afterwards
+                #crate_ident::translate::Borrowed::new(#name(#refcounted_type_prefix::from_raw(ptr)))
+            }
+        }
+
+        impl #crate_ident::translate::FromGlibPtrBorrow<*mut #refcounted_type_prefix::InnerType> for #name {
+            #[inline]
+            unsafe fn from_glib_borrow(ptr: *mut #refcounted_type_prefix::InnerType) -> #crate_ident::translate::Borrowed<Self> {
+                #crate_ident::translate::FromGlibPtrBorrow::from_glib_borrow(ptr as *const _)
+            }
+        }
+
+
         impl #crate_ident::translate::FromGlibPtrNone<*const #refcounted_type_prefix::InnerType> for #name {
             #[inline]
             unsafe fn from_glib_none(ptr: *const #refcounted_type_prefix::InnerType) -> Self {
