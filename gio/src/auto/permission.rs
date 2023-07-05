@@ -23,7 +23,12 @@ impl Permission {
     pub const NONE: Option<&'static Permission> = None;
 }
 
-pub trait PermissionExt: IsA<Permission> + 'static {
+mod sealed {
+    pub trait Sealed {}
+    impl<T: super::IsA<super::Permission>> Sealed for T {}
+}
+
+pub trait PermissionExt: IsA<Permission> + sealed::Sealed + 'static {
     #[doc(alias = "g_permission_acquire")]
     fn acquire(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<(), glib::Error> {
         unsafe {

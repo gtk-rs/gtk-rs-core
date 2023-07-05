@@ -49,7 +49,14 @@ impl Default for UnixCredentialsMessage {
     }
 }
 
-pub trait UnixCredentialsMessageExt: IsA<UnixCredentialsMessage> + 'static {
+mod sealed {
+    pub trait Sealed {}
+    impl<T: super::IsA<super::UnixCredentialsMessage>> Sealed for T {}
+}
+
+pub trait UnixCredentialsMessageExt:
+    IsA<UnixCredentialsMessage> + sealed::Sealed + 'static
+{
     #[doc(alias = "g_unix_credentials_message_get_credentials")]
     #[doc(alias = "get_credentials")]
     fn credentials(&self) -> Credentials {

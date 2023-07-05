@@ -23,7 +23,12 @@ impl MenuModel {
     pub const NONE: Option<&'static MenuModel> = None;
 }
 
-pub trait MenuModelExt: IsA<MenuModel> + 'static {
+mod sealed {
+    pub trait Sealed {}
+    impl<T: super::IsA<super::MenuModel>> Sealed for T {}
+}
+
+pub trait MenuModelExt: IsA<MenuModel> + sealed::Sealed + 'static {
     //#[doc(alias = "g_menu_model_get_item_attribute")]
     //#[doc(alias = "get_item_attribute")]
     //fn is_item_attribute(&self, item_index: i32, attribute: &str, format_string: &str, : /*Unknown conversion*//*Unimplemented*/Basic: VarArgs) -> bool {

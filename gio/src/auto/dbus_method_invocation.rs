@@ -2,11 +2,11 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-#[cfg(any(unix))]
+#[cfg(unix)]
 #[cfg_attr(docsrs, doc(cfg(unix)))]
 use crate::UnixFDList;
 use crate::{DBusConnection, DBusMessage, DBusMethodInfo, DBusPropertyInfo};
-#[cfg(any(unix))]
+#[cfg(unix)]
 #[cfg_attr(docsrs, doc(cfg(unix)))]
 use glib::prelude::*;
 use glib::translate::*;

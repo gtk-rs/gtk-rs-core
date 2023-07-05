@@ -19,7 +19,12 @@ impl ActionMap {
     pub const NONE: Option<&'static ActionMap> = None;
 }
 
-pub trait ActionMapExt: IsA<ActionMap> + 'static {
+mod sealed {
+    pub trait Sealed {}
+    impl<T: super::IsA<super::ActionMap>> Sealed for T {}
+}
+
+pub trait ActionMapExt: IsA<ActionMap> + sealed::Sealed + 'static {
     #[doc(alias = "g_action_map_add_action")]
     fn add_action(&self, action: &impl IsA<Action>) {
         unsafe {

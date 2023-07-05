@@ -22,7 +22,12 @@ impl ListModel {
     pub const NONE: Option<&'static ListModel> = None;
 }
 
-pub trait ListModelExt: IsA<ListModel> + 'static {
+mod sealed {
+    pub trait Sealed {}
+    impl<T: super::IsA<super::ListModel>> Sealed for T {}
+}
+
+pub trait ListModelExt: IsA<ListModel> + sealed::Sealed + 'static {
     #[doc(alias = "g_list_model_get_item_type")]
     #[doc(alias = "get_item_type")]
     fn item_type(&self) -> glib::types::Type {

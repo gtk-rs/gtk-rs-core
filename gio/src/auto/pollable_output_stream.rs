@@ -19,7 +19,12 @@ impl PollableOutputStream {
     pub const NONE: Option<&'static PollableOutputStream> = None;
 }
 
-pub trait PollableOutputStreamExt: IsA<PollableOutputStream> + 'static {
+mod sealed {
+    pub trait Sealed {}
+    impl<T: super::IsA<super::PollableOutputStream>> Sealed for T {}
+}
+
+pub trait PollableOutputStreamExt: IsA<PollableOutputStream> + sealed::Sealed + 'static {
     #[doc(alias = "g_pollable_output_stream_can_poll")]
     fn can_poll(&self) -> bool {
         unsafe {

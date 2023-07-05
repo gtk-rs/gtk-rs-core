@@ -32,7 +32,12 @@ impl SocketAddress {
 unsafe impl Send for SocketAddress {}
 unsafe impl Sync for SocketAddress {}
 
-pub trait SocketAddressExt: IsA<SocketAddress> + 'static {
+mod sealed {
+    pub trait Sealed {}
+    impl<T: super::IsA<super::SocketAddress>> Sealed for T {}
+}
+
+pub trait SocketAddressExt: IsA<SocketAddress> + sealed::Sealed + 'static {
     #[doc(alias = "g_socket_address_get_family")]
     #[doc(alias = "get_family")]
     fn family(&self) -> SocketFamily {

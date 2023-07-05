@@ -23,7 +23,12 @@ impl FilterOutputStream {
     pub const NONE: Option<&'static FilterOutputStream> = None;
 }
 
-pub trait FilterOutputStreamExt: IsA<FilterOutputStream> + 'static {
+mod sealed {
+    pub trait Sealed {}
+    impl<T: super::IsA<super::FilterOutputStream>> Sealed for T {}
+}
+
+pub trait FilterOutputStreamExt: IsA<FilterOutputStream> + sealed::Sealed + 'static {
     #[doc(alias = "g_filter_output_stream_get_base_stream")]
     #[doc(alias = "get_base_stream")]
     fn base_stream(&self) -> OutputStream {

@@ -23,7 +23,12 @@ impl FileMonitor {
     pub const NONE: Option<&'static FileMonitor> = None;
 }
 
-pub trait FileMonitorExt: IsA<FileMonitor> + 'static {
+mod sealed {
+    pub trait Sealed {}
+    impl<T: super::IsA<super::FileMonitor>> Sealed for T {}
+}
+
+pub trait FileMonitorExt: IsA<FileMonitor> + sealed::Sealed + 'static {
     #[doc(alias = "g_file_monitor_cancel")]
     fn cancel(&self) -> bool {
         unsafe { from_glib(ffi::g_file_monitor_cancel(self.as_ref().to_glib_none().0)) }

@@ -4,7 +4,7 @@
 
 use crate::{Subprocess, SubprocessFlags};
 use glib::translate::*;
-#[cfg(any(unix))]
+#[cfg(unix)]
 #[cfg_attr(docsrs, doc(cfg(unix)))]
 use std::boxed::Box as Box_;
 use std::{fmt, ptr};

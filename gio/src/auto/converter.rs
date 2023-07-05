@@ -18,7 +18,12 @@ impl Converter {
     pub const NONE: Option<&'static Converter> = None;
 }
 
-pub trait ConverterExt: IsA<Converter> + 'static {
+mod sealed {
+    pub trait Sealed {}
+    impl<T: super::IsA<super::Converter>> Sealed for T {}
+}
+
+pub trait ConverterExt: IsA<Converter> + sealed::Sealed + 'static {
     #[doc(alias = "g_converter_reset")]
     fn reset(&self) {
         unsafe {

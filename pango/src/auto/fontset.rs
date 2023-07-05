@@ -19,7 +19,12 @@ impl Fontset {
     pub const NONE: Option<&'static Fontset> = None;
 }
 
-pub trait FontsetExt: IsA<Fontset> + 'static {
+mod sealed {
+    pub trait Sealed {}
+    impl<T: super::IsA<super::Fontset>> Sealed for T {}
+}
+
+pub trait FontsetExt: IsA<Fontset> + sealed::Sealed + 'static {
     #[doc(alias = "pango_fontset_foreach")]
     fn foreach<P: FnMut(&Fontset, &Font) -> bool>(&self, func: P) {
         let func_data: P = func;
