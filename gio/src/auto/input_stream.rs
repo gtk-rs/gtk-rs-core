@@ -19,7 +19,12 @@ impl InputStream {
     pub const NONE: Option<&'static InputStream> = None;
 }
 
-pub trait InputStreamExt: IsA<InputStream> + 'static {
+mod sealed {
+    pub trait Sealed {}
+    impl<T: super::IsA<super::InputStream>> Sealed for T {}
+}
+
+pub trait InputStreamExt: IsA<InputStream> + sealed::Sealed + 'static {
     #[doc(alias = "g_input_stream_clear_pending")]
     fn clear_pending(&self) {
         unsafe {

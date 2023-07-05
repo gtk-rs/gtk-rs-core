@@ -48,7 +48,12 @@ impl Socket {
     }
 }
 
-pub trait SocketExt: IsA<Socket> + 'static {
+mod sealed {
+    pub trait Sealed {}
+    impl<T: super::IsA<super::Socket>> Sealed for T {}
+}
+
+pub trait SocketExt: IsA<Socket> + sealed::Sealed + 'static {
     #[doc(alias = "g_socket_accept")]
     fn accept(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<Socket, glib::Error> {
         unsafe {

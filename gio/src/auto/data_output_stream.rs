@@ -92,7 +92,12 @@ impl DataOutputStreamBuilder {
     }
 }
 
-pub trait DataOutputStreamExt: IsA<DataOutputStream> + 'static {
+mod sealed {
+    pub trait Sealed {}
+    impl<T: super::IsA<super::DataOutputStream>> Sealed for T {}
+}
+
+pub trait DataOutputStreamExt: IsA<DataOutputStream> + sealed::Sealed + 'static {
     #[doc(alias = "g_data_output_stream_get_byte_order")]
     #[doc(alias = "get_byte_order")]
     fn byte_order(&self) -> DataStreamByteOrder {

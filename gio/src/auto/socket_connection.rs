@@ -51,7 +51,12 @@ impl SocketConnection {
     }
 }
 
-pub trait SocketConnectionExt: IsA<SocketConnection> + 'static {
+mod sealed {
+    pub trait Sealed {}
+    impl<T: super::IsA<super::SocketConnection>> Sealed for T {}
+}
+
+pub trait SocketConnectionExt: IsA<SocketConnection> + sealed::Sealed + 'static {
     #[doc(alias = "g_socket_connection_connect")]
     fn connect(
         &self,

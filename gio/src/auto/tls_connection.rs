@@ -30,7 +30,12 @@ impl TlsConnection {
     pub const NONE: Option<&'static TlsConnection> = None;
 }
 
-pub trait TlsConnectionExt: IsA<TlsConnection> + 'static {
+mod sealed {
+    pub trait Sealed {}
+    impl<T: super::IsA<super::TlsConnection>> Sealed for T {}
+}
+
+pub trait TlsConnectionExt: IsA<TlsConnection> + sealed::Sealed + 'static {
     #[doc(alias = "g_tls_connection_emit_accept_certificate")]
     fn emit_accept_certificate(
         &self,

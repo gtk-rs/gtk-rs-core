@@ -19,7 +19,12 @@ impl RemoteActionGroup {
     pub const NONE: Option<&'static RemoteActionGroup> = None;
 }
 
-pub trait RemoteActionGroupExt: IsA<RemoteActionGroup> + 'static {
+mod sealed {
+    pub trait Sealed {}
+    impl<T: super::IsA<super::RemoteActionGroup>> Sealed for T {}
+}
+
+pub trait RemoteActionGroupExt: IsA<RemoteActionGroup> + sealed::Sealed + 'static {
     #[doc(alias = "g_remote_action_group_activate_action_full")]
     fn activate_action_full(
         &self,

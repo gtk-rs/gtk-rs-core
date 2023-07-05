@@ -39,7 +39,12 @@ impl Default for SocketClient {
     }
 }
 
-pub trait SocketClientExt: IsA<SocketClient> + 'static {
+mod sealed {
+    pub trait Sealed {}
+    impl<T: super::IsA<super::SocketClient>> Sealed for T {}
+}
+
+pub trait SocketClientExt: IsA<SocketClient> + sealed::Sealed + 'static {
     #[doc(alias = "g_socket_client_add_application_proxy")]
     fn add_application_proxy(&self, protocol: &str) {
         unsafe {

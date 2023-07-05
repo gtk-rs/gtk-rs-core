@@ -28,7 +28,12 @@ impl VolumeMonitor {
     }
 }
 
-pub trait VolumeMonitorExt: IsA<VolumeMonitor> + 'static {
+mod sealed {
+    pub trait Sealed {}
+    impl<T: super::IsA<super::VolumeMonitor>> Sealed for T {}
+}
+
+pub trait VolumeMonitorExt: IsA<VolumeMonitor> + sealed::Sealed + 'static {
     #[doc(alias = "g_volume_monitor_get_connected_drives")]
     #[doc(alias = "get_connected_drives")]
     fn connected_drives(&self) -> Vec<Drive> {

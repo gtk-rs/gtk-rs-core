@@ -19,7 +19,12 @@ impl UnixOutputStream {
     pub const NONE: Option<&'static UnixOutputStream> = None;
 }
 
-pub trait UnixOutputStreamExt: IsA<UnixOutputStream> + 'static {
+mod sealed {
+    pub trait Sealed {}
+    impl<T: super::IsA<super::UnixOutputStream>> Sealed for T {}
+}
+
+pub trait UnixOutputStreamExt: IsA<UnixOutputStream> + sealed::Sealed + 'static {
     #[doc(alias = "g_unix_output_stream_get_close_fd")]
     #[doc(alias = "get_close_fd")]
     fn closes_fd(&self) -> bool {

@@ -18,7 +18,12 @@ impl MenuAttributeIter {
     pub const NONE: Option<&'static MenuAttributeIter> = None;
 }
 
-pub trait MenuAttributeIterExt: IsA<MenuAttributeIter> + 'static {
+mod sealed {
+    pub trait Sealed {}
+    impl<T: super::IsA<super::MenuAttributeIter>> Sealed for T {}
+}
+
+pub trait MenuAttributeIterExt: IsA<MenuAttributeIter> + sealed::Sealed + 'static {
     #[doc(alias = "g_menu_attribute_iter_get_next")]
     #[doc(alias = "get_next")]
     fn next(&self) -> Option<(glib::GString, glib::Variant)> {

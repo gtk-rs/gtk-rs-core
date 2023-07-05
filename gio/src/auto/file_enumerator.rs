@@ -19,7 +19,12 @@ impl FileEnumerator {
     pub const NONE: Option<&'static FileEnumerator> = None;
 }
 
-pub trait FileEnumeratorExt: IsA<FileEnumerator> + 'static {
+mod sealed {
+    pub trait Sealed {}
+    impl<T: super::IsA<super::FileEnumerator>> Sealed for T {}
+}
+
+pub trait FileEnumeratorExt: IsA<FileEnumerator> + sealed::Sealed + 'static {
     #[doc(alias = "g_file_enumerator_close")]
     fn close(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<(), glib::Error> {
         unsafe {

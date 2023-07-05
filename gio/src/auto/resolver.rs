@@ -43,7 +43,12 @@ impl Resolver {
     }
 }
 
-pub trait ResolverExt: IsA<Resolver> + 'static {
+mod sealed {
+    pub trait Sealed {}
+    impl<T: super::IsA<super::Resolver>> Sealed for T {}
+}
+
+pub trait ResolverExt: IsA<Resolver> + sealed::Sealed + 'static {
     #[doc(alias = "g_resolver_lookup_by_address")]
     fn lookup_by_address(
         &self,

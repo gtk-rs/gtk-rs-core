@@ -19,7 +19,12 @@ impl Seekable {
     pub const NONE: Option<&'static Seekable> = None;
 }
 
-pub trait SeekableExt: IsA<Seekable> + 'static {
+mod sealed {
+    pub trait Sealed {}
+    impl<T: super::IsA<super::Seekable>> Sealed for T {}
+}
+
+pub trait SeekableExt: IsA<Seekable> + sealed::Sealed + 'static {
     #[doc(alias = "g_seekable_can_seek")]
     fn can_seek(&self) -> bool {
         unsafe { from_glib(ffi::g_seekable_can_seek(self.as_ref().to_glib_none().0)) }

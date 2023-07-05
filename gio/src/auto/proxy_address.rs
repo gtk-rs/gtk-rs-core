@@ -46,7 +46,12 @@ impl ProxyAddress {
 unsafe impl Send for ProxyAddress {}
 unsafe impl Sync for ProxyAddress {}
 
-pub trait ProxyAddressExt: IsA<ProxyAddress> + 'static {
+mod sealed {
+    pub trait Sealed {}
+    impl<T: super::IsA<super::ProxyAddress>> Sealed for T {}
+}
+
+pub trait ProxyAddressExt: IsA<ProxyAddress> + sealed::Sealed + 'static {
     #[doc(alias = "g_proxy_address_get_destination_hostname")]
     #[doc(alias = "get_destination_hostname")]
     fn destination_hostname(&self) -> glib::GString {

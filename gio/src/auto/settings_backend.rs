@@ -30,7 +30,12 @@ impl SettingsBackend {
     }
 }
 
-pub trait SettingsBackendExt: IsA<SettingsBackend> + 'static {
+mod sealed {
+    pub trait Sealed {}
+    impl<T: super::IsA<super::SettingsBackend>> Sealed for T {}
+}
+
+pub trait SettingsBackendExt: IsA<SettingsBackend> + sealed::Sealed + 'static {
     //#[doc(alias = "g_settings_backend_changed")]
     //fn changed(&self, key: &str, origin_tag: /*Unimplemented*/Option<Basic: Pointer>) {
     //    unsafe { TODO: call ffi:g_settings_backend_changed() }

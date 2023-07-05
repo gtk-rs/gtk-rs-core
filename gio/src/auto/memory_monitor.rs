@@ -28,7 +28,12 @@ impl MemoryMonitor {
     }
 }
 
-pub trait MemoryMonitorExt: IsA<MemoryMonitor> + 'static {
+mod sealed {
+    pub trait Sealed {}
+    impl<T: super::IsA<super::MemoryMonitor>> Sealed for T {}
+}
+
+pub trait MemoryMonitorExt: IsA<MemoryMonitor> + sealed::Sealed + 'static {
     #[cfg(feature = "v2_64")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_64")))]
     #[doc(alias = "low-memory-warning")]

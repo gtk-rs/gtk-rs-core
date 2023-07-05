@@ -104,7 +104,12 @@ impl BufferedInputStreamBuilder {
     }
 }
 
-pub trait BufferedInputStreamExt: IsA<BufferedInputStream> + 'static {
+mod sealed {
+    pub trait Sealed {}
+    impl<T: super::IsA<super::BufferedInputStream>> Sealed for T {}
+}
+
+pub trait BufferedInputStreamExt: IsA<BufferedInputStream> + sealed::Sealed + 'static {
     #[doc(alias = "g_buffered_input_stream_fill")]
     fn fill(
         &self,

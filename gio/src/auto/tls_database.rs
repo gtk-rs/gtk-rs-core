@@ -22,7 +22,12 @@ impl TlsDatabase {
     pub const NONE: Option<&'static TlsDatabase> = None;
 }
 
-pub trait TlsDatabaseExt: IsA<TlsDatabase> + 'static {
+mod sealed {
+    pub trait Sealed {}
+    impl<T: super::IsA<super::TlsDatabase>> Sealed for T {}
+}
+
+pub trait TlsDatabaseExt: IsA<TlsDatabase> + sealed::Sealed + 'static {
     #[doc(alias = "g_tls_database_create_certificate_handle")]
     fn create_certificate_handle(
         &self,

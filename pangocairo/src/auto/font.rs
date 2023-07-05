@@ -18,7 +18,12 @@ impl Font {
     pub const NONE: Option<&'static Font> = None;
 }
 
-pub trait PangoCairoFontExt: IsA<Font> + 'static {
+mod sealed {
+    pub trait Sealed {}
+    impl<T: super::IsA<super::Font>> Sealed for T {}
+}
+
+pub trait PangoCairoFontExt: IsA<Font> + sealed::Sealed + 'static {
     #[doc(alias = "pango_cairo_font_get_scaled_font")]
     #[doc(alias = "get_scaled_font")]
     fn scaled_font(&self) -> Option<cairo::ScaledFont> {

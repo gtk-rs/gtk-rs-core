@@ -19,7 +19,12 @@ impl FontMap {
     pub const NONE: Option<&'static FontMap> = None;
 }
 
-pub trait FontMapExt: IsA<FontMap> + 'static {
+mod sealed {
+    pub trait Sealed {}
+    impl<T: super::IsA<super::FontMap>> Sealed for T {}
+}
+
+pub trait FontMapExt: IsA<FontMap> + sealed::Sealed + 'static {
     #[doc(alias = "pango_font_map_changed")]
     fn changed(&self) {
         unsafe {
