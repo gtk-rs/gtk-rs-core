@@ -5718,6 +5718,8 @@ extern "C" {
         func: *const c_char,
         message: *const c_char,
     );
+    #[cfg(feature = "v2_78")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_78")))]
     pub fn g_assertion_message_cmpint(
         domain: *const c_char,
         file: *const c_char,
