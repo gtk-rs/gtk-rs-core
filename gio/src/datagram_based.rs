@@ -7,7 +7,12 @@ use glib::{prelude::*, translate::*};
 
 use crate::{Cancellable, DatagramBased, InputMessage, OutputMessage};
 
-pub trait DatagramBasedExtManual: IsA<DatagramBased> + Sized {
+mod sealed {
+    pub trait Sealed {}
+    impl<T: super::IsA<super::DatagramBased>> Sealed for T {}
+}
+
+pub trait DatagramBasedExtManual: sealed::Sealed + IsA<DatagramBased> + Sized {
     #[doc(alias = "g_datagram_based_create_source")]
     fn create_source<F, C>(
         &self,

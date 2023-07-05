@@ -6,12 +6,23 @@ use glib::SignalHandlerId;
 
 use crate::{prelude::*, ListModel};
 
-pub trait ListModelExtManual: Sized {
+mod sealed {
+    pub trait Sealed {}
+    impl<T: super::IsA<super::ListModel>> Sealed for T {}
+}
+
+pub trait ListModelExtManual: sealed::Sealed + IsA<ListModel> + Sized {
     // rustdoc-stripper-ignore-next
     /// Get an immutable snapshot of the container inside the `ListModel`.
     /// Any modification done to the returned container `Vec` will not be
     /// reflected on the `ListModel`.
-    fn snapshot(&self) -> Vec<glib::Object>;
+    fn snapshot(&self) -> Vec<glib::Object> {
+        let mut res = Vec::with_capacity(self.n_items() as usize);
+        for i in 0..self.n_items() {
+            res.push(self.item(i).unwrap())
+        }
+        res
+    }
 
     // rustdoc-stripper-ignore-next
     /// If `T::static_type().is_a(self.item_type())` then it returns an iterator over the `ListModel` elements,
@@ -20,17 +31,6 @@ pub trait ListModelExtManual: Sized {
     /// # Panics
     ///
     /// Panics if `T::static_type().is_a(self.item_type())` is not true.
-    fn iter<T: IsA<glib::Object>>(&self) -> ListModelIter<T>;
-}
-
-impl<T: IsA<ListModel>> ListModelExtManual for T {
-    fn snapshot(&self) -> Vec<glib::Object> {
-        let mut res = Vec::with_capacity(self.n_items() as usize);
-        for i in 0..self.n_items() {
-            res.push(self.item(i).unwrap())
-        }
-        res
-    }
 
     fn iter<LT: IsA<glib::Object>>(&self) -> ListModelIter<LT> {
         assert!(self.item_type().is_a(LT::static_type()));
@@ -55,6 +55,8 @@ impl<T: IsA<ListModel>> ListModelExtManual for T {
         }
     }
 }
+
+impl<T: IsA<ListModel>> ListModelExtManual for T {}
 
 #[derive(thiserror::Error, Debug, PartialEq, Eq)]
 #[error("the list model was mutated during iteration")]

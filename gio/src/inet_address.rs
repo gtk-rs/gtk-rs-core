@@ -42,7 +42,12 @@ impl InetAddress {
     }
 }
 
-pub trait InetAddressExtManual: IsA<InetAddress> + 'static {
+mod sealed {
+    pub trait Sealed {}
+    impl<T: super::IsA<super::InetAddress>> Sealed for T {}
+}
+
+pub trait InetAddressExtManual: sealed::Sealed + IsA<InetAddress> + 'static {
     // rustdoc-stripper-ignore-next
     /// Returns `None` in case the address has a native size different than 4 and 16.
     #[doc(alias = "g_inet_address_to_bytes")]

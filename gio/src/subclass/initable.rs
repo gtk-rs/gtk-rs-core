@@ -12,7 +12,12 @@ pub trait InitableImpl: ObjectImpl {
     }
 }
 
-pub trait InitableImplExt: ObjectSubclass {
+mod sealed {
+    pub trait Sealed {}
+    impl<T: super::InitableImplExt> Sealed for T {}
+}
+
+pub trait InitableImplExt: sealed::Sealed + ObjectSubclass {
     fn parent_init(&self, cancellable: Option<&Cancellable>) -> Result<(), Error> {
         unsafe {
             let type_data = Self::type_data();

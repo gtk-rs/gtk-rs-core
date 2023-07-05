@@ -17,7 +17,12 @@ use crate::AppLaunchContext;
 #[cfg(feature = "v2_60")]
 use crate::Cancellable;
 
-pub trait AppInfoExtManual: IsA<AppInfo> + 'static {
+mod sealed {
+    pub trait Sealed {}
+    impl<T: super::IsA<super::AppInfo>> Sealed for T {}
+}
+
+pub trait AppInfoExtManual: sealed::Sealed + IsA<AppInfo> + 'static {
     #[cfg(feature = "v2_60")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     #[doc(alias = "g_app_info_launch_uris_async")]

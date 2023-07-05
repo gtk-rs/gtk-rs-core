@@ -20,7 +20,12 @@ pub trait InputStreamImpl: ObjectImpl + InputStreamImplExt + Send {
     }
 }
 
-pub trait InputStreamImplExt: ObjectSubclass {
+mod sealed {
+    pub trait Sealed {}
+    impl<T: super::InputStreamImplExt> Sealed for T {}
+}
+
+pub trait InputStreamImplExt: sealed::Sealed + ObjectSubclass {
     fn parent_read(
         &self,
         buffer: &mut [u8],

@@ -10,7 +10,12 @@ use socket::{AsRawFd, RawFd};
 
 use crate::UnixFDMessage;
 
-pub trait UnixFDMessageExtManual: IsA<UnixFDMessage> + Sized {
+mod sealed {
+    pub trait Sealed {}
+    impl<T: super::IsA<super::UnixFDMessage>> Sealed for T {}
+}
+
+pub trait UnixFDMessageExtManual: sealed::Sealed + IsA<UnixFDMessage> + Sized {
     #[doc(alias = "g_unix_fd_message_append_fd")]
     fn append_fd<T: AsRawFd>(&self, fd: T) -> Result<(), glib::Error> {
         unsafe {

@@ -32,7 +32,12 @@ impl TryFromGlib<libc::c_ulong> for CancelledHandlerId {
     }
 }
 
-pub trait CancellableExtManual: IsA<Cancellable> {
+mod sealed {
+    pub trait Sealed {}
+    impl<T: super::IsA<super::Cancellable>> Sealed for T {}
+}
+
+pub trait CancellableExtManual: sealed::Sealed + IsA<Cancellable> {
     // rustdoc-stripper-ignore-next
     /// Convenience function to connect to the `signal::Cancellable::cancelled` signal. Also
     /// handles the race condition that may happen if the cancellable is cancelled right before

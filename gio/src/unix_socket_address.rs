@@ -64,7 +64,12 @@ impl UnixSocketAddress {
     }
 }
 
-pub trait UnixSocketAddressExtManual: IsA<UnixSocketAddress> + 'static {
+mod sealed {
+    pub trait Sealed {}
+    impl<T: super::IsA<super::UnixSocketAddress>> Sealed for T {}
+}
+
+pub trait UnixSocketAddressExtManual: sealed::Sealed + IsA<UnixSocketAddress> + 'static {
     #[doc(alias = "g_unix_socket_address_get_path")]
     #[doc(alias = "get_path")]
     fn path(&self) -> Option<UnixSocketAddressPath> {

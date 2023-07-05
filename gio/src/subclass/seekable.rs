@@ -19,7 +19,12 @@ pub trait SeekableImpl: ObjectImpl + Send {
     fn truncate(&self, offset: i64, cancellable: Option<&Cancellable>) -> Result<(), Error>;
 }
 
-pub trait SeekableImplExt: ObjectSubclass {
+mod sealed {
+    pub trait Sealed {}
+    impl<T: super::SeekableImplExt> Sealed for T {}
+}
+
+pub trait SeekableImplExt: sealed::Sealed + ObjectSubclass {
     fn parent_tell(&self) -> i64 {
         unsafe {
             let type_data = Self::type_data();

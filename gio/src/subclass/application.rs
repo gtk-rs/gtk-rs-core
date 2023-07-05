@@ -110,7 +110,12 @@ pub trait ApplicationImpl: ObjectImpl + ApplicationImplExt {
     }
 }
 
-pub trait ApplicationImplExt: ObjectSubclass {
+mod sealed {
+    pub trait Sealed {}
+    impl<T: super::ApplicationImplExt> Sealed for T {}
+}
+
+pub trait ApplicationImplExt: sealed::Sealed + ObjectSubclass {
     fn parent_activate(&self) {
         unsafe {
             let data = Self::type_data();

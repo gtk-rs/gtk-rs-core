@@ -6,13 +6,14 @@ use glib::{object::IsA, translate::*};
 
 use crate::{PixbufAnimation, PixbufAnimationIter};
 
-pub trait PixbufAnimationExtManual {
-    #[doc(alias = "gdk_pixbuf_animation_get_iter")]
-    #[doc(alias = "get_iter")]
-    fn iter(&self, start_time: Option<SystemTime>) -> PixbufAnimationIter;
+mod sealed {
+    pub trait Sealed {}
+    impl<T: super::IsA<super::PixbufAnimation>> Sealed for T {}
 }
 
-impl<T: IsA<PixbufAnimation>> PixbufAnimationExtManual for T {
+pub trait PixbufAnimationExtManual: sealed::Sealed + IsA<PixbufAnimation> + 'static {
+    #[doc(alias = "gdk_pixbuf_animation_get_iter")]
+    #[doc(alias = "get_iter")]
     fn iter(&self, start_time: Option<SystemTime>) -> PixbufAnimationIter {
         let start_time = start_time.map(|s| {
             let diff = s
@@ -35,3 +36,5 @@ impl<T: IsA<PixbufAnimation>> PixbufAnimationExtManual for T {
         }
     }
 }
+
+impl<O: IsA<PixbufAnimation>> PixbufAnimationExtManual for O {}
