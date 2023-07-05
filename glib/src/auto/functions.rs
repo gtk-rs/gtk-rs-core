@@ -814,29 +814,6 @@ pub fn spawn_command_line_async(
 //    unsafe { TODO: call ffi:g_spawn_sync() }
 //}
 
-#[cfg(feature = "v2_78")]
-#[cfg_attr(docsrs, doc(cfg(feature = "v2_78")))]
-#[doc(alias = "g_timeout_add_seconds_once")]
-pub fn timeout_add_seconds_once<P: Fn() + Send + Sync + 'static>(
-    interval: u32,
-    function: P,
-) -> u32 {
-    let function_data: Box_<P> = Box_::new(function);
-    unsafe extern "C" fn function_func<P: Fn() + Send + Sync + 'static>(user_data: ffi::gpointer) {
-        let callback: &P = &*(user_data as *mut _);
-        (*callback)()
-    }
-    let function = Some(function_func::<P> as _);
-    let super_callback0: Box_<P> = function_data;
-    unsafe {
-        ffi::g_timeout_add_seconds_once(
-            interval,
-            function,
-            Box_::into_raw(super_callback0) as *mut _,
-        )
-    }
-}
-
 #[doc(alias = "g_unicode_script_from_iso15924")]
 pub fn unicode_script_from_iso15924(iso15924: u32) -> UnicodeScript {
     unsafe { from_glib(ffi::g_unicode_script_from_iso15924(iso15924)) }
