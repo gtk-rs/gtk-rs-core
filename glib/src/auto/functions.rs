@@ -16,33 +16,6 @@ pub fn access(filename: impl AsRef<std::path::Path>, mode: i32) -> i32 {
     unsafe { ffi::g_access(filename.as_ref().to_glib_none().0, mode) }
 }
 
-#[doc(alias = "g_assertion_message_cmpint")]
-pub fn assertion_message_cmpint(
-    domain: &str,
-    file: &str,
-    line: i32,
-    func: &str,
-    expr: &str,
-    arg1: u64,
-    cmp: &str,
-    arg2: u64,
-    numtype: crate::Char,
-) {
-    unsafe {
-        ffi::g_assertion_message_cmpint(
-            domain.to_glib_none().0,
-            file.to_glib_none().0,
-            line,
-            func.to_glib_none().0,
-            expr.to_glib_none().0,
-            arg1,
-            cmp.to_glib_none().0,
-            arg2,
-            numtype.into_glib(),
-        );
-    }
-}
-
 #[doc(alias = "g_base64_decode")]
 pub fn base64_decode(text: &str) -> Vec<u8> {
     unsafe {
