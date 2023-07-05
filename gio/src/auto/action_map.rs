@@ -3,9 +3,6 @@
 // DO NOT EDIT
 
 use crate::Action;
-#[cfg(feature = "v2_78")]
-#[cfg_attr(docsrs, doc(cfg(feature = "v2_78")))]
-use crate::ActionEntry;
 use glib::{prelude::*, translate::*};
 use std::fmt;
 
@@ -54,20 +51,6 @@ pub trait ActionMapExt: IsA<ActionMap> + sealed::Sealed + 'static {
             ffi::g_action_map_remove_action(
                 self.as_ref().to_glib_none().0,
                 action_name.to_glib_none().0,
-            );
-        }
-    }
-
-    #[cfg(feature = "v2_78")]
-    #[cfg_attr(docsrs, doc(cfg(feature = "v2_78")))]
-    #[doc(alias = "g_action_map_remove_action_entries")]
-    fn remove_action_entries(&self, entries: &[ActionEntry]) {
-        let n_entries = entries.len() as _;
-        unsafe {
-            ffi::g_action_map_remove_action_entries(
-                self.as_ref().to_glib_none().0,
-                entries.to_glib_none().0,
-                n_entries,
             );
         }
     }
