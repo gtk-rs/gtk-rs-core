@@ -228,6 +228,14 @@ pub type GTypePluginCompleteTypeInfo =
     Option<unsafe extern "C" fn(*mut GTypePlugin, GType, *mut GTypeInfo, *mut GTypeValueTable)>;
 pub type GTypePluginUnuse = Option<unsafe extern "C" fn(*mut GTypePlugin)>;
 pub type GTypePluginUse = Option<unsafe extern "C" fn(*mut GTypePlugin)>;
+pub type GTypeValueCollectFunc =
+    Option<unsafe extern "C" fn(*mut GValue, c_uint, *mut GTypeCValue, c_uint) -> *mut c_char>;
+pub type GTypeValueCopyFunc = Option<unsafe extern "C" fn(*const GValue, *mut GValue)>;
+pub type GTypeValueFreeFunc = Option<unsafe extern "C" fn(*mut GValue)>;
+pub type GTypeValueInitFunc = Option<unsafe extern "C" fn(*mut GValue)>;
+pub type GTypeValueLCopyFunc =
+    Option<unsafe extern "C" fn(*const GValue, c_uint, *mut GTypeCValue, c_uint) -> *mut c_char>;
+pub type GTypeValuePeekPointerFunc = Option<unsafe extern "C" fn(*const GValue) -> gpointer>;
 //pub type GVaClosureMarshal = Option<unsafe extern "C" fn(*mut GClosure, *mut GValue, gpointer, /*Unimplemented*/va_list, gpointer, c_int, *mut GType)>;
 pub type GValueTransform = Option<unsafe extern "C" fn(*const GValue, *mut GValue)>;
 pub type GWeakNotify = Option<unsafe extern "C" fn(gpointer, *mut GObject)>;
@@ -752,18 +760,14 @@ impl ::std::fmt::Debug for GTypeQuery {
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct GTypeValueTable {
-    pub value_init: Option<unsafe extern "C" fn(*mut GValue)>,
-    pub value_free: Option<unsafe extern "C" fn(*mut GValue)>,
-    pub value_copy: Option<unsafe extern "C" fn(*const GValue, *mut GValue)>,
-    pub value_peek_pointer: Option<unsafe extern "C" fn(*const GValue) -> gpointer>,
+    pub value_init: GTypeValueInitFunc,
+    pub value_free: GTypeValueFreeFunc,
+    pub value_copy: GTypeValueCopyFunc,
+    pub value_peek_pointer: GTypeValuePeekPointerFunc,
     pub collect_format: *const c_char,
-    pub collect_value: Option<
-        unsafe extern "C" fn(*const GValue, c_uint, *mut GTypeCValue, c_uint) -> *mut c_char,
-    >,
+    pub collect_value: GTypeValueCollectFunc,
     pub lcopy_format: *const c_char,
-    pub lcopy_value: Option<
-        unsafe extern "C" fn(*const GValue, c_uint, *mut GTypeCValue, c_uint) -> *mut c_char,
-    >,
+    pub lcopy_value: GTypeValueLCopyFunc,
 }
 
 impl ::std::fmt::Debug for GTypeValueTable {

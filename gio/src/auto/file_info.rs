@@ -275,7 +275,7 @@ impl FileInfo {
 
     #[doc(alias = "g_file_info_get_symlink_target")]
     #[doc(alias = "get_symlink_target")]
-    pub fn symlink_target(&self) -> Option<glib::GString> {
+    pub fn symlink_target(&self) -> Option<std::path::PathBuf> {
         unsafe { from_glib_none(ffi::g_file_info_get_symlink_target(self.to_glib_none().0)) }
     }
 
@@ -541,11 +541,11 @@ impl FileInfo {
     }
 
     #[doc(alias = "g_file_info_set_symlink_target")]
-    pub fn set_symlink_target(&self, symlink_target: &str) {
+    pub fn set_symlink_target(&self, symlink_target: impl AsRef<std::path::Path>) {
         unsafe {
             ffi::g_file_info_set_symlink_target(
                 self.to_glib_none().0,
-                symlink_target.to_glib_none().0,
+                symlink_target.as_ref().to_glib_none().0,
             );
         }
     }

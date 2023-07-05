@@ -28,6 +28,13 @@ impl File {
     //    unsafe { TODO: call ffi:g_file_new_build_filename() }
     //}
 
+    #[cfg(feature = "v2_78")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_78")))]
+    #[doc(alias = "g_file_new_build_filenamev")]
+    pub fn new_build_filenamev(args: &[&std::path::Path]) -> File {
+        unsafe { from_glib_full(ffi::g_file_new_build_filenamev(args.to_glib_none().0)) }
+    }
+
     #[doc(alias = "g_file_new_for_commandline_arg")]
     #[doc(alias = "new_for_commandline_arg")]
     pub fn for_commandline_arg(arg: impl AsRef<std::ffi::OsStr>) -> File {

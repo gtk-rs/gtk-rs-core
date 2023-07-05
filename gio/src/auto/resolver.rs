@@ -49,6 +49,14 @@ mod sealed {
 }
 
 pub trait ResolverExt: IsA<Resolver> + sealed::Sealed + 'static {
+    #[cfg(feature = "v2_78")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_78")))]
+    #[doc(alias = "g_resolver_get_timeout")]
+    #[doc(alias = "get_timeout")]
+    fn timeout(&self) -> u32 {
+        unsafe { ffi::g_resolver_get_timeout(self.as_ref().to_glib_none().0) }
+    }
+
     #[doc(alias = "g_resolver_lookup_by_address")]
     fn lookup_by_address(
         &self,
@@ -546,6 +554,15 @@ pub trait ResolverExt: IsA<Resolver> + sealed::Sealed + 'static {
         }
     }
 
+    #[cfg(feature = "v2_78")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_78")))]
+    #[doc(alias = "g_resolver_set_timeout")]
+    fn set_timeout(&self, timeout_ms: u32) {
+        unsafe {
+            ffi::g_resolver_set_timeout(self.as_ref().to_glib_none().0, timeout_ms);
+        }
+    }
+
     #[doc(alias = "reload")]
     fn connect_reload<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn reload_trampoline<P: IsA<Resolver>, F: Fn(&P) + 'static>(
@@ -562,6 +579,31 @@ pub trait ResolverExt: IsA<Resolver> + sealed::Sealed + 'static {
                 b"reload\0".as_ptr() as *const _,
                 Some(transmute::<_, unsafe extern "C" fn()>(
                     reload_trampoline::<Self, F> as *const (),
+                )),
+                Box_::into_raw(f),
+            )
+        }
+    }
+
+    #[cfg(feature = "v2_78")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_78")))]
+    #[doc(alias = "timeout")]
+    fn connect_timeout_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+        unsafe extern "C" fn notify_timeout_trampoline<P: IsA<Resolver>, F: Fn(&P) + 'static>(
+            this: *mut ffi::GResolver,
+            _param_spec: glib::ffi::gpointer,
+            f: glib::ffi::gpointer,
+        ) {
+            let f: &F = &*(f as *const F);
+            f(Resolver::from_glib_borrow(this).unsafe_cast_ref())
+        }
+        unsafe {
+            let f: Box_<F> = Box_::new(f);
+            connect_raw(
+                self.as_ptr() as *mut _,
+                b"notify::timeout\0".as_ptr() as *const _,
+                Some(transmute::<_, unsafe extern "C" fn()>(
+                    notify_timeout_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
             )
