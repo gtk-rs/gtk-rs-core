@@ -122,6 +122,8 @@ mod gobject;
 
 mod byte_array;
 mod bytes;
+mod control_flow;
+pub use self::control_flow::ControlFlow;
 pub mod char;
 pub use self::char::*;
 mod checksum;
