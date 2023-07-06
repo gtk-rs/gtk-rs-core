@@ -103,6 +103,7 @@ impl LogLevel {
 
 bitflags::bitflags! {
     #[doc(alias = "GLogLevelFlags")]
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     pub struct LogLevels: u32 {
         #[doc(alias = "G_LOG_LEVEL_ERROR")]
         const LEVEL_ERROR = ffi::G_LOG_LEVEL_ERROR;
