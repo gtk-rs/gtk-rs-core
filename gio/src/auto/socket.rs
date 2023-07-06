@@ -586,7 +586,7 @@ pub trait SocketExt: IsA<Socket> + sealed::Sealed + 'static {
 
     #[doc(alias = "type")]
     fn type_(&self) -> SocketType {
-        glib::ObjectExt::property(self.as_ref(), "type")
+        ObjectExt::property(self.as_ref(), "type")
     }
 
     #[doc(alias = "blocking")]

@@ -347,12 +347,12 @@ pub trait SocketListenerExt: IsA<SocketListener> + sealed::Sealed + 'static {
 
     #[doc(alias = "listen-backlog")]
     fn listen_backlog(&self) -> i32 {
-        glib::ObjectExt::property(self.as_ref(), "listen-backlog")
+        ObjectExt::property(self.as_ref(), "listen-backlog")
     }
 
     #[doc(alias = "listen-backlog")]
     fn set_listen_backlog(&self, listen_backlog: i32) {
-        glib::ObjectExt::set_property(self.as_ref(), "listen-backlog", listen_backlog)
+        ObjectExt::set_property(self.as_ref(), "listen-backlog", listen_backlog)
     }
 
     #[doc(alias = "event")]

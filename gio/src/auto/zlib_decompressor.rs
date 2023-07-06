@@ -36,7 +36,7 @@ impl ZlibDecompressor {
     }
 
     pub fn format(&self) -> ZlibCompressorFormat {
-        glib::ObjectExt::property(self, "format")
+        ObjectExt::property(self, "format")
     }
 
     #[doc(alias = "file-info")]

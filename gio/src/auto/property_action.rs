@@ -29,7 +29,7 @@ impl PropertyAction {
 
     #[doc(alias = "invert-boolean")]
     pub fn inverts_boolean(&self) -> bool {
-        glib::ObjectExt::property(self, "invert-boolean")
+        ObjectExt::property(self, "invert-boolean")
     }
 }
 

@@ -453,26 +453,26 @@ pub trait SettingsExt: IsA<Settings> + sealed::Sealed + 'static {
     }
 
     fn backend(&self) -> Option<SettingsBackend> {
-        glib::ObjectExt::property(self.as_ref(), "backend")
+        ObjectExt::property(self.as_ref(), "backend")
     }
 
     #[doc(alias = "delay-apply")]
     fn is_delay_apply(&self) -> bool {
-        glib::ObjectExt::property(self.as_ref(), "delay-apply")
+        ObjectExt::property(self.as_ref(), "delay-apply")
     }
 
     fn path(&self) -> Option<glib::GString> {
-        glib::ObjectExt::property(self.as_ref(), "path")
+        ObjectExt::property(self.as_ref(), "path")
     }
 
     #[doc(alias = "schema-id")]
     fn schema_id(&self) -> Option<glib::GString> {
-        glib::ObjectExt::property(self.as_ref(), "schema-id")
+        ObjectExt::property(self.as_ref(), "schema-id")
     }
 
     #[doc(alias = "settings-schema")]
     fn settings_schema(&self) -> Option<SettingsSchema> {
-        glib::ObjectExt::property(self.as_ref(), "settings-schema")
+        ObjectExt::property(self.as_ref(), "settings-schema")
     }
 
     //#[doc(alias = "change-event")]

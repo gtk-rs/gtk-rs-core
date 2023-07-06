@@ -281,36 +281,36 @@ pub trait TlsCertificateExt: IsA<TlsCertificate> + sealed::Sealed + 'static {
     }
 
     fn certificate(&self) -> Option<glib::ByteArray> {
-        glib::ObjectExt::property(self.as_ref(), "certificate")
+        ObjectExt::property(self.as_ref(), "certificate")
     }
 
     #[doc(alias = "certificate-pem")]
     fn certificate_pem(&self) -> Option<glib::GString> {
-        glib::ObjectExt::property(self.as_ref(), "certificate-pem")
+        ObjectExt::property(self.as_ref(), "certificate-pem")
     }
 
     #[cfg(feature = "v2_68")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_68")))]
     #[doc(alias = "pkcs11-uri")]
     fn pkcs11_uri(&self) -> Option<glib::GString> {
-        glib::ObjectExt::property(self.as_ref(), "pkcs11-uri")
+        ObjectExt::property(self.as_ref(), "pkcs11-uri")
     }
 
     #[doc(alias = "private-key")]
     fn private_key(&self) -> Option<glib::ByteArray> {
-        glib::ObjectExt::property(self.as_ref(), "private-key")
+        ObjectExt::property(self.as_ref(), "private-key")
     }
 
     #[doc(alias = "private-key-pem")]
     fn private_key_pem(&self) -> Option<glib::GString> {
-        glib::ObjectExt::property(self.as_ref(), "private-key-pem")
+        ObjectExt::property(self.as_ref(), "private-key-pem")
     }
 
     #[cfg(feature = "v2_68")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_68")))]
     #[doc(alias = "private-key-pkcs11-uri")]
     fn private_key_pkcs11_uri(&self) -> Option<glib::GString> {
-        glib::ObjectExt::property(self.as_ref(), "private-key-pkcs11-uri")
+        ObjectExt::property(self.as_ref(), "private-key-pkcs11-uri")
     }
 
     #[cfg(feature = "v2_70")]

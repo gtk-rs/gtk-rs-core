@@ -3,7 +3,7 @@
 // DO NOT EDIT
 
 use crate::{Language, Matrix};
-use glib::{translate::*, value::FromValue, value::ToValue, StaticType, Type};
+use glib::{prelude::*, translate::*};
 use std::fmt;
 
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
@@ -65,7 +65,7 @@ impl FromGlib<ffi::PangoAlignment> for Alignment {
 
 impl StaticType for Alignment {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::pango_alignment_get_type()) }
     }
 }
@@ -84,7 +84,7 @@ impl glib::value::ValueType for Alignment {
     type Type = Self;
 }
 
-unsafe impl<'a> FromValue<'a> for Alignment {
+unsafe impl<'a> glib::value::FromValue<'a> for Alignment {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -391,7 +391,7 @@ impl FromGlib<ffi::PangoAttrType> for AttrType {
 
 impl StaticType for AttrType {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::pango_attr_type_get_type()) }
     }
 }
@@ -410,7 +410,7 @@ impl glib::value::ValueType for AttrType {
     type Type = Self;
 }
 
-unsafe impl<'a> FromValue<'a> for AttrType {
+unsafe impl<'a> glib::value::FromValue<'a> for AttrType {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -511,7 +511,7 @@ impl FromGlib<ffi::PangoBaselineShift> for BaselineShift {
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
 impl StaticType for BaselineShift {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::pango_baseline_shift_get_type()) }
     }
 }
@@ -536,7 +536,7 @@ impl glib::value::ValueType for BaselineShift {
 
 #[cfg(feature = "v1_50")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
-unsafe impl<'a> FromValue<'a> for BaselineShift {
+unsafe impl<'a> glib::value::FromValue<'a> for BaselineShift {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -742,7 +742,7 @@ impl FromGlib<ffi::PangoBidiType> for BidiType {
 #[allow(deprecated)]
 impl StaticType for BidiType {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::pango_bidi_type_get_type()) }
     }
 }
@@ -764,7 +764,7 @@ impl glib::value::ValueType for BidiType {
 }
 
 #[allow(deprecated)]
-unsafe impl<'a> FromValue<'a> for BidiType {
+unsafe impl<'a> glib::value::FromValue<'a> for BidiType {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -862,7 +862,7 @@ impl FromGlib<ffi::PangoCoverageLevel> for CoverageLevel {
 
 impl StaticType for CoverageLevel {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::pango_coverage_level_get_type()) }
     }
 }
@@ -881,7 +881,7 @@ impl glib::value::ValueType for CoverageLevel {
     type Type = Self;
 }
 
-unsafe impl<'a> FromValue<'a> for CoverageLevel {
+unsafe impl<'a> glib::value::FromValue<'a> for CoverageLevel {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -992,7 +992,7 @@ impl FromGlib<ffi::PangoDirection> for Direction {
 
 impl StaticType for Direction {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::pango_direction_get_type()) }
     }
 }
@@ -1011,7 +1011,7 @@ impl glib::value::ValueType for Direction {
     type Type = Self;
 }
 
-unsafe impl<'a> FromValue<'a> for Direction {
+unsafe impl<'a> glib::value::FromValue<'a> for Direction {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -1107,7 +1107,7 @@ impl FromGlib<ffi::PangoEllipsizeMode> for EllipsizeMode {
 
 impl StaticType for EllipsizeMode {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::pango_ellipsize_mode_get_type()) }
     }
 }
@@ -1126,7 +1126,7 @@ impl glib::value::ValueType for EllipsizeMode {
     type Type = Self;
 }
 
-unsafe impl<'a> FromValue<'a> for EllipsizeMode {
+unsafe impl<'a> glib::value::FromValue<'a> for EllipsizeMode {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -1232,7 +1232,7 @@ impl FromGlib<ffi::PangoFontScale> for FontScale {
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
 impl StaticType for FontScale {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::pango_font_scale_get_type()) }
     }
 }
@@ -1257,7 +1257,7 @@ impl glib::value::ValueType for FontScale {
 
 #[cfg(feature = "v1_50")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
-unsafe impl<'a> FromValue<'a> for FontScale {
+unsafe impl<'a> glib::value::FromValue<'a> for FontScale {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -1405,7 +1405,7 @@ impl FromGlib<ffi::PangoGravity> for Gravity {
 
 impl StaticType for Gravity {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::pango_gravity_get_type()) }
     }
 }
@@ -1424,7 +1424,7 @@ impl glib::value::ValueType for Gravity {
     type Type = Self;
 }
 
-unsafe impl<'a> FromValue<'a> for Gravity {
+unsafe impl<'a> glib::value::FromValue<'a> for Gravity {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -1515,7 +1515,7 @@ impl FromGlib<ffi::PangoGravityHint> for GravityHint {
 
 impl StaticType for GravityHint {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::pango_gravity_hint_get_type()) }
     }
 }
@@ -1534,7 +1534,7 @@ impl glib::value::ValueType for GravityHint {
     type Type = Self;
 }
 
-unsafe impl<'a> FromValue<'a> for GravityHint {
+unsafe impl<'a> glib::value::FromValue<'a> for GravityHint {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -1630,7 +1630,7 @@ impl FromGlib<ffi::PangoOverline> for Overline {
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_46")))]
 impl StaticType for Overline {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::pango_overline_get_type()) }
     }
 }
@@ -1655,7 +1655,7 @@ impl glib::value::ValueType for Overline {
 
 #[cfg(feature = "v1_46")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_46")))]
-unsafe impl<'a> FromValue<'a> for Overline {
+unsafe impl<'a> glib::value::FromValue<'a> for Overline {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -1760,7 +1760,7 @@ impl FromGlib<ffi::PangoRenderPart> for RenderPart {
 
 impl StaticType for RenderPart {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::pango_render_part_get_type()) }
     }
 }
@@ -1779,7 +1779,7 @@ impl glib::value::ValueType for RenderPart {
     type Type = Self;
 }
 
-unsafe impl<'a> FromValue<'a> for RenderPart {
+unsafe impl<'a> glib::value::FromValue<'a> for RenderPart {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -2458,7 +2458,7 @@ impl FromGlib<ffi::PangoScript> for Script {
 
 impl StaticType for Script {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::pango_script_get_type()) }
     }
 }
@@ -2477,7 +2477,7 @@ impl glib::value::ValueType for Script {
     type Type = Self;
 }
 
-unsafe impl<'a> FromValue<'a> for Script {
+unsafe impl<'a> glib::value::FromValue<'a> for Script {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -2598,7 +2598,7 @@ impl FromGlib<ffi::PangoStretch> for Stretch {
 
 impl StaticType for Stretch {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::pango_stretch_get_type()) }
     }
 }
@@ -2617,7 +2617,7 @@ impl glib::value::ValueType for Stretch {
     type Type = Self;
 }
 
-unsafe impl<'a> FromValue<'a> for Stretch {
+unsafe impl<'a> glib::value::FromValue<'a> for Stretch {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -2708,7 +2708,7 @@ impl FromGlib<ffi::PangoStyle> for Style {
 
 impl StaticType for Style {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::pango_style_get_type()) }
     }
 }
@@ -2727,7 +2727,7 @@ impl glib::value::ValueType for Style {
     type Type = Self;
 }
 
-unsafe impl<'a> FromValue<'a> for Style {
+unsafe impl<'a> glib::value::FromValue<'a> for Style {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -2838,7 +2838,7 @@ impl FromGlib<ffi::PangoTabAlign> for TabAlign {
 
 impl StaticType for TabAlign {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::pango_tab_align_get_type()) }
     }
 }
@@ -2857,7 +2857,7 @@ impl glib::value::ValueType for TabAlign {
     type Type = Self;
 }
 
-unsafe impl<'a> FromValue<'a> for TabAlign {
+unsafe impl<'a> glib::value::FromValue<'a> for TabAlign {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -2963,7 +2963,7 @@ impl FromGlib<ffi::PangoTextTransform> for TextTransform {
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
 impl StaticType for TextTransform {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::pango_text_transform_get_type()) }
     }
 }
@@ -2988,7 +2988,7 @@ impl glib::value::ValueType for TextTransform {
 
 #[cfg(feature = "v1_50")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
-unsafe impl<'a> FromValue<'a> for TextTransform {
+unsafe impl<'a> glib::value::FromValue<'a> for TextTransform {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -3108,7 +3108,7 @@ impl FromGlib<ffi::PangoUnderline> for Underline {
 
 impl StaticType for Underline {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::pango_underline_get_type()) }
     }
 }
@@ -3127,7 +3127,7 @@ impl glib::value::ValueType for Underline {
     type Type = Self;
 }
 
-unsafe impl<'a> FromValue<'a> for Underline {
+unsafe impl<'a> glib::value::FromValue<'a> for Underline {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -3263,7 +3263,7 @@ impl FromGlib<ffi::PangoVariant> for Variant {
 
 impl StaticType for Variant {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::pango_variant_get_type()) }
     }
 }
@@ -3282,7 +3282,7 @@ impl glib::value::ValueType for Variant {
     type Type = Self;
 }
 
-unsafe impl<'a> FromValue<'a> for Variant {
+unsafe impl<'a> glib::value::FromValue<'a> for Variant {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -3418,7 +3418,7 @@ impl FromGlib<ffi::PangoWeight> for Weight {
 
 impl StaticType for Weight {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::pango_weight_get_type()) }
     }
 }
@@ -3437,7 +3437,7 @@ impl glib::value::ValueType for Weight {
     type Type = Self;
 }
 
-unsafe impl<'a> FromValue<'a> for Weight {
+unsafe impl<'a> glib::value::FromValue<'a> for Weight {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -3528,7 +3528,7 @@ impl FromGlib<ffi::PangoWrapMode> for WrapMode {
 
 impl StaticType for WrapMode {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::pango_wrap_mode_get_type()) }
     }
 }
@@ -3547,7 +3547,7 @@ impl glib::value::ValueType for WrapMode {
     type Type = Self;
 }
 
-unsafe impl<'a> FromValue<'a> for WrapMode {
+unsafe impl<'a> glib::value::FromValue<'a> for WrapMode {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]

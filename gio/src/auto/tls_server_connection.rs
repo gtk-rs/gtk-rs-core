@@ -51,12 +51,12 @@ mod sealed {
 pub trait TlsServerConnectionExt: IsA<TlsServerConnection> + sealed::Sealed + 'static {
     #[doc(alias = "authentication-mode")]
     fn authentication_mode(&self) -> TlsAuthenticationMode {
-        glib::ObjectExt::property(self.as_ref(), "authentication-mode")
+        ObjectExt::property(self.as_ref(), "authentication-mode")
     }
 
     #[doc(alias = "authentication-mode")]
     fn set_authentication_mode(&self, authentication_mode: TlsAuthenticationMode) {
-        glib::ObjectExt::set_property(self.as_ref(), "authentication-mode", authentication_mode)
+        ObjectExt::set_property(self.as_ref(), "authentication-mode", authentication_mode)
     }
 
     #[doc(alias = "authentication-mode")]

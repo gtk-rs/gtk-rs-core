@@ -645,52 +645,52 @@ pub trait DBusProxyExt: IsA<DBusProxy> + sealed::Sealed + 'static {
 
     #[doc(alias = "g-connection")]
     fn g_connection(&self) -> Option<DBusConnection> {
-        glib::ObjectExt::property(self.as_ref(), "g-connection")
+        ObjectExt::property(self.as_ref(), "g-connection")
     }
 
     #[doc(alias = "g-default-timeout")]
     fn g_default_timeout(&self) -> i32 {
-        glib::ObjectExt::property(self.as_ref(), "g-default-timeout")
+        ObjectExt::property(self.as_ref(), "g-default-timeout")
     }
 
     #[doc(alias = "g-default-timeout")]
     fn set_g_default_timeout(&self, g_default_timeout: i32) {
-        glib::ObjectExt::set_property(self.as_ref(), "g-default-timeout", g_default_timeout)
+        ObjectExt::set_property(self.as_ref(), "g-default-timeout", g_default_timeout)
     }
 
     #[doc(alias = "g-flags")]
     fn g_flags(&self) -> DBusProxyFlags {
-        glib::ObjectExt::property(self.as_ref(), "g-flags")
+        ObjectExt::property(self.as_ref(), "g-flags")
     }
 
     #[doc(alias = "g-interface-info")]
     fn g_interface_info(&self) -> Option<DBusInterfaceInfo> {
-        glib::ObjectExt::property(self.as_ref(), "g-interface-info")
+        ObjectExt::property(self.as_ref(), "g-interface-info")
     }
 
     #[doc(alias = "g-interface-info")]
     fn set_g_interface_info(&self, g_interface_info: Option<&DBusInterfaceInfo>) {
-        glib::ObjectExt::set_property(self.as_ref(), "g-interface-info", g_interface_info)
+        ObjectExt::set_property(self.as_ref(), "g-interface-info", g_interface_info)
     }
 
     #[doc(alias = "g-interface-name")]
     fn g_interface_name(&self) -> Option<glib::GString> {
-        glib::ObjectExt::property(self.as_ref(), "g-interface-name")
+        ObjectExt::property(self.as_ref(), "g-interface-name")
     }
 
     #[doc(alias = "g-name")]
     fn g_name(&self) -> Option<glib::GString> {
-        glib::ObjectExt::property(self.as_ref(), "g-name")
+        ObjectExt::property(self.as_ref(), "g-name")
     }
 
     #[doc(alias = "g-name-owner")]
     fn g_name_owner(&self) -> Option<glib::GString> {
-        glib::ObjectExt::property(self.as_ref(), "g-name-owner")
+        ObjectExt::property(self.as_ref(), "g-name-owner")
     }
 
     #[doc(alias = "g-object-path")]
     fn g_object_path(&self) -> Option<glib::GString> {
-        glib::ObjectExt::property(self.as_ref(), "g-object-path")
+        ObjectExt::property(self.as_ref(), "g-object-path")
     }
 
     #[doc(alias = "g-default-timeout")]

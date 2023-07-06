@@ -43,11 +43,11 @@ mod sealed {
 
 pub trait TlsFileDatabaseExt: IsA<TlsFileDatabase> + sealed::Sealed + 'static {
     fn anchors(&self) -> Option<glib::GString> {
-        glib::ObjectExt::property(self.as_ref(), "anchors")
+        ObjectExt::property(self.as_ref(), "anchors")
     }
 
     fn set_anchors(&self, anchors: Option<&str>) {
-        glib::ObjectExt::set_property(self.as_ref(), "anchors", anchors)
+        ObjectExt::set_property(self.as_ref(), "anchors", anchors)
     }
 
     #[doc(alias = "anchors")]

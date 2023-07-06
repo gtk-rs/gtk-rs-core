@@ -73,7 +73,7 @@ impl ThemedIcon {
 
     #[doc(alias = "use-default-fallbacks")]
     pub fn uses_default_fallbacks(&self) -> bool {
-        glib::ObjectExt::property(self, "use-default-fallbacks")
+        ObjectExt::property(self, "use-default-fallbacks")
     }
 
     #[doc(alias = "names")]

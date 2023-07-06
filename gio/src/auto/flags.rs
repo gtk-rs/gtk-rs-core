@@ -2,11 +2,11 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use bitflags::bitflags;
-use glib::{translate::*, value::FromValue, value::ToValue, StaticType, Type};
+use glib::{bitflags::bitflags, prelude::*, translate::*};
 use std::fmt;
 
 bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GAppInfoCreateFlags")]
     pub struct AppInfoCreateFlags: u32 {
         #[doc(alias = "G_APP_INFO_CREATE_NONE")]
@@ -46,7 +46,7 @@ impl FromGlib<ffi::GAppInfoCreateFlags> for AppInfoCreateFlags {
 
 impl StaticType for AppInfoCreateFlags {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_app_info_create_flags_get_type()) }
     }
 }
@@ -65,7 +65,7 @@ impl glib::value::ValueType for AppInfoCreateFlags {
     type Type = Self;
 }
 
-unsafe impl<'a> FromValue<'a> for AppInfoCreateFlags {
+unsafe impl<'a> glib::value::FromValue<'a> for AppInfoCreateFlags {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -98,6 +98,7 @@ impl From<AppInfoCreateFlags> for glib::Value {
 }
 
 bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GApplicationFlags")]
     pub struct ApplicationFlags: u32 {
         #[doc(alias = "G_APPLICATION_FLAGS_NONE")]
@@ -149,7 +150,7 @@ impl FromGlib<ffi::GApplicationFlags> for ApplicationFlags {
 
 impl StaticType for ApplicationFlags {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_application_flags_get_type()) }
     }
 }
@@ -168,7 +169,7 @@ impl glib::value::ValueType for ApplicationFlags {
     type Type = Self;
 }
 
-unsafe impl<'a> FromValue<'a> for ApplicationFlags {
+unsafe impl<'a> glib::value::FromValue<'a> for ApplicationFlags {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -201,6 +202,7 @@ impl From<ApplicationFlags> for glib::Value {
 }
 
 bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GAskPasswordFlags")]
     pub struct AskPasswordFlags: u32 {
         #[doc(alias = "G_ASK_PASSWORD_NEED_PASSWORD")]
@@ -244,7 +246,7 @@ impl FromGlib<ffi::GAskPasswordFlags> for AskPasswordFlags {
 
 impl StaticType for AskPasswordFlags {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_ask_password_flags_get_type()) }
     }
 }
@@ -263,7 +265,7 @@ impl glib::value::ValueType for AskPasswordFlags {
     type Type = Self;
 }
 
-unsafe impl<'a> FromValue<'a> for AskPasswordFlags {
+unsafe impl<'a> glib::value::FromValue<'a> for AskPasswordFlags {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -296,6 +298,7 @@ impl From<AskPasswordFlags> for glib::Value {
 }
 
 bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GBusNameOwnerFlags")]
     pub struct BusNameOwnerFlags: u32 {
         #[doc(alias = "G_BUS_NAME_OWNER_FLAGS_NONE")]
@@ -335,7 +338,7 @@ impl FromGlib<ffi::GBusNameOwnerFlags> for BusNameOwnerFlags {
 
 impl StaticType for BusNameOwnerFlags {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_bus_name_owner_flags_get_type()) }
     }
 }
@@ -354,7 +357,7 @@ impl glib::value::ValueType for BusNameOwnerFlags {
     type Type = Self;
 }
 
-unsafe impl<'a> FromValue<'a> for BusNameOwnerFlags {
+unsafe impl<'a> glib::value::FromValue<'a> for BusNameOwnerFlags {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -387,6 +390,7 @@ impl From<BusNameOwnerFlags> for glib::Value {
 }
 
 bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GBusNameWatcherFlags")]
     pub struct BusNameWatcherFlags: u32 {
         #[doc(alias = "G_BUS_NAME_WATCHER_FLAGS_NONE")]
@@ -422,7 +426,7 @@ impl FromGlib<ffi::GBusNameWatcherFlags> for BusNameWatcherFlags {
 
 impl StaticType for BusNameWatcherFlags {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_bus_name_watcher_flags_get_type()) }
     }
 }
@@ -441,7 +445,7 @@ impl glib::value::ValueType for BusNameWatcherFlags {
     type Type = Self;
 }
 
-unsafe impl<'a> FromValue<'a> for BusNameWatcherFlags {
+unsafe impl<'a> glib::value::FromValue<'a> for BusNameWatcherFlags {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -474,6 +478,7 @@ impl From<BusNameWatcherFlags> for glib::Value {
 }
 
 bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GConverterFlags")]
     pub struct ConverterFlags: u32 {
         #[doc(alias = "G_CONVERTER_NO_FLAGS")]
@@ -511,7 +516,7 @@ impl FromGlib<ffi::GConverterFlags> for ConverterFlags {
 
 impl StaticType for ConverterFlags {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_converter_flags_get_type()) }
     }
 }
@@ -530,7 +535,7 @@ impl glib::value::ValueType for ConverterFlags {
     type Type = Self;
 }
 
-unsafe impl<'a> FromValue<'a> for ConverterFlags {
+unsafe impl<'a> glib::value::FromValue<'a> for ConverterFlags {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -563,6 +568,7 @@ impl From<ConverterFlags> for glib::Value {
 }
 
 bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GDBusCallFlags")]
     pub struct DBusCallFlags: u32 {
         #[doc(alias = "G_DBUS_CALL_FLAGS_NONE")]
@@ -600,7 +606,7 @@ impl FromGlib<ffi::GDBusCallFlags> for DBusCallFlags {
 
 impl StaticType for DBusCallFlags {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_dbus_call_flags_get_type()) }
     }
 }
@@ -619,7 +625,7 @@ impl glib::value::ValueType for DBusCallFlags {
     type Type = Self;
 }
 
-unsafe impl<'a> FromValue<'a> for DBusCallFlags {
+unsafe impl<'a> glib::value::FromValue<'a> for DBusCallFlags {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -652,6 +658,7 @@ impl From<DBusCallFlags> for glib::Value {
 }
 
 bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GDBusCapabilityFlags")]
     pub struct DBusCapabilityFlags: u32 {
         #[doc(alias = "G_DBUS_CAPABILITY_FLAGS_NONE")]
@@ -687,7 +694,7 @@ impl FromGlib<ffi::GDBusCapabilityFlags> for DBusCapabilityFlags {
 
 impl StaticType for DBusCapabilityFlags {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_dbus_capability_flags_get_type()) }
     }
 }
@@ -706,7 +713,7 @@ impl glib::value::ValueType for DBusCapabilityFlags {
     type Type = Self;
 }
 
-unsafe impl<'a> FromValue<'a> for DBusCapabilityFlags {
+unsafe impl<'a> glib::value::FromValue<'a> for DBusCapabilityFlags {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -739,6 +746,7 @@ impl From<DBusCapabilityFlags> for glib::Value {
 }
 
 bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GDBusConnectionFlags")]
     pub struct DBusConnectionFlags: u32 {
         #[doc(alias = "G_DBUS_CONNECTION_FLAGS_NONE")]
@@ -788,7 +796,7 @@ impl FromGlib<ffi::GDBusConnectionFlags> for DBusConnectionFlags {
 
 impl StaticType for DBusConnectionFlags {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_dbus_connection_flags_get_type()) }
     }
 }
@@ -807,7 +815,7 @@ impl glib::value::ValueType for DBusConnectionFlags {
     type Type = Self;
 }
 
-unsafe impl<'a> FromValue<'a> for DBusConnectionFlags {
+unsafe impl<'a> glib::value::FromValue<'a> for DBusConnectionFlags {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -840,6 +848,7 @@ impl From<DBusConnectionFlags> for glib::Value {
 }
 
 bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GDBusInterfaceSkeletonFlags")]
     pub struct DBusInterfaceSkeletonFlags: u32 {
         #[doc(alias = "G_DBUS_INTERFACE_SKELETON_FLAGS_NONE")]
@@ -875,7 +884,7 @@ impl FromGlib<ffi::GDBusInterfaceSkeletonFlags> for DBusInterfaceSkeletonFlags {
 
 impl StaticType for DBusInterfaceSkeletonFlags {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_dbus_interface_skeleton_flags_get_type()) }
     }
 }
@@ -894,7 +903,7 @@ impl glib::value::ValueType for DBusInterfaceSkeletonFlags {
     type Type = Self;
 }
 
-unsafe impl<'a> FromValue<'a> for DBusInterfaceSkeletonFlags {
+unsafe impl<'a> glib::value::FromValue<'a> for DBusInterfaceSkeletonFlags {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -927,6 +936,7 @@ impl From<DBusInterfaceSkeletonFlags> for glib::Value {
 }
 
 bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GDBusMessageFlags")]
     pub struct DBusMessageFlags: u32 {
         #[doc(alias = "G_DBUS_MESSAGE_FLAGS_NONE")]
@@ -966,7 +976,7 @@ impl FromGlib<ffi::GDBusMessageFlags> for DBusMessageFlags {
 
 impl StaticType for DBusMessageFlags {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_dbus_message_flags_get_type()) }
     }
 }
@@ -985,7 +995,7 @@ impl glib::value::ValueType for DBusMessageFlags {
     type Type = Self;
 }
 
-unsafe impl<'a> FromValue<'a> for DBusMessageFlags {
+unsafe impl<'a> glib::value::FromValue<'a> for DBusMessageFlags {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -1018,6 +1028,7 @@ impl From<DBusMessageFlags> for glib::Value {
 }
 
 bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GDBusProxyFlags")]
     pub struct DBusProxyFlags: u32 {
         #[doc(alias = "G_DBUS_PROXY_FLAGS_NONE")]
@@ -1065,7 +1076,7 @@ impl FromGlib<ffi::GDBusProxyFlags> for DBusProxyFlags {
 
 impl StaticType for DBusProxyFlags {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_dbus_proxy_flags_get_type()) }
     }
 }
@@ -1084,7 +1095,7 @@ impl glib::value::ValueType for DBusProxyFlags {
     type Type = Self;
 }
 
-unsafe impl<'a> FromValue<'a> for DBusProxyFlags {
+unsafe impl<'a> glib::value::FromValue<'a> for DBusProxyFlags {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -1117,6 +1128,7 @@ impl From<DBusProxyFlags> for glib::Value {
 }
 
 bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GDBusSendMessageFlags")]
     pub struct DBusSendMessageFlags: u32 {
         #[doc(alias = "G_DBUS_SEND_MESSAGE_FLAGS_NONE")]
@@ -1152,7 +1164,7 @@ impl FromGlib<ffi::GDBusSendMessageFlags> for DBusSendMessageFlags {
 
 impl StaticType for DBusSendMessageFlags {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_dbus_send_message_flags_get_type()) }
     }
 }
@@ -1171,7 +1183,7 @@ impl glib::value::ValueType for DBusSendMessageFlags {
     type Type = Self;
 }
 
-unsafe impl<'a> FromValue<'a> for DBusSendMessageFlags {
+unsafe impl<'a> glib::value::FromValue<'a> for DBusSendMessageFlags {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -1204,6 +1216,7 @@ impl From<DBusSendMessageFlags> for glib::Value {
 }
 
 bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GDBusServerFlags")]
     pub struct DBusServerFlags: u32 {
         #[doc(alias = "G_DBUS_SERVER_FLAGS_NONE")]
@@ -1243,7 +1256,7 @@ impl FromGlib<ffi::GDBusServerFlags> for DBusServerFlags {
 
 impl StaticType for DBusServerFlags {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_dbus_server_flags_get_type()) }
     }
 }
@@ -1262,7 +1275,7 @@ impl glib::value::ValueType for DBusServerFlags {
     type Type = Self;
 }
 
-unsafe impl<'a> FromValue<'a> for DBusServerFlags {
+unsafe impl<'a> glib::value::FromValue<'a> for DBusServerFlags {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -1295,6 +1308,7 @@ impl From<DBusServerFlags> for glib::Value {
 }
 
 bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GDBusSignalFlags")]
     pub struct DBusSignalFlags: u32 {
         #[doc(alias = "G_DBUS_SIGNAL_FLAGS_NONE")]
@@ -1334,7 +1348,7 @@ impl FromGlib<ffi::GDBusSignalFlags> for DBusSignalFlags {
 
 impl StaticType for DBusSignalFlags {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_dbus_signal_flags_get_type()) }
     }
 }
@@ -1353,7 +1367,7 @@ impl glib::value::ValueType for DBusSignalFlags {
     type Type = Self;
 }
 
-unsafe impl<'a> FromValue<'a> for DBusSignalFlags {
+unsafe impl<'a> glib::value::FromValue<'a> for DBusSignalFlags {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -1386,6 +1400,7 @@ impl From<DBusSignalFlags> for glib::Value {
 }
 
 bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GDriveStartFlags")]
     pub struct DriveStartFlags: u32 {
         #[doc(alias = "G_DRIVE_START_NONE")]
@@ -1419,7 +1434,7 @@ impl FromGlib<ffi::GDriveStartFlags> for DriveStartFlags {
 
 impl StaticType for DriveStartFlags {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_drive_start_flags_get_type()) }
     }
 }
@@ -1438,7 +1453,7 @@ impl glib::value::ValueType for DriveStartFlags {
     type Type = Self;
 }
 
-unsafe impl<'a> FromValue<'a> for DriveStartFlags {
+unsafe impl<'a> glib::value::FromValue<'a> for DriveStartFlags {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -1471,6 +1486,7 @@ impl From<DriveStartFlags> for glib::Value {
 }
 
 bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GFileAttributeInfoFlags")]
     pub struct FileAttributeInfoFlags: u32 {
         #[doc(alias = "G_FILE_ATTRIBUTE_INFO_NONE")]
@@ -1508,7 +1524,7 @@ impl FromGlib<ffi::GFileAttributeInfoFlags> for FileAttributeInfoFlags {
 
 impl StaticType for FileAttributeInfoFlags {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_file_attribute_info_flags_get_type()) }
     }
 }
@@ -1527,7 +1543,7 @@ impl glib::value::ValueType for FileAttributeInfoFlags {
     type Type = Self;
 }
 
-unsafe impl<'a> FromValue<'a> for FileAttributeInfoFlags {
+unsafe impl<'a> glib::value::FromValue<'a> for FileAttributeInfoFlags {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -1560,6 +1576,7 @@ impl From<FileAttributeInfoFlags> for glib::Value {
 }
 
 bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GFileCopyFlags")]
     pub struct FileCopyFlags: u32 {
         #[doc(alias = "G_FILE_COPY_NONE")]
@@ -1605,7 +1622,7 @@ impl FromGlib<ffi::GFileCopyFlags> for FileCopyFlags {
 
 impl StaticType for FileCopyFlags {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_file_copy_flags_get_type()) }
     }
 }
@@ -1624,7 +1641,7 @@ impl glib::value::ValueType for FileCopyFlags {
     type Type = Self;
 }
 
-unsafe impl<'a> FromValue<'a> for FileCopyFlags {
+unsafe impl<'a> glib::value::FromValue<'a> for FileCopyFlags {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -1657,6 +1674,7 @@ impl From<FileCopyFlags> for glib::Value {
 }
 
 bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GFileCreateFlags")]
     pub struct FileCreateFlags: u32 {
         #[doc(alias = "G_FILE_CREATE_NONE")]
@@ -1694,7 +1712,7 @@ impl FromGlib<ffi::GFileCreateFlags> for FileCreateFlags {
 
 impl StaticType for FileCreateFlags {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_file_create_flags_get_type()) }
     }
 }
@@ -1713,7 +1731,7 @@ impl glib::value::ValueType for FileCreateFlags {
     type Type = Self;
 }
 
-unsafe impl<'a> FromValue<'a> for FileCreateFlags {
+unsafe impl<'a> glib::value::FromValue<'a> for FileCreateFlags {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -1746,6 +1764,7 @@ impl From<FileCreateFlags> for glib::Value {
 }
 
 bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GFileMeasureFlags")]
     pub struct FileMeasureFlags: u32 {
         #[doc(alias = "G_FILE_MEASURE_NONE")]
@@ -1785,7 +1804,7 @@ impl FromGlib<ffi::GFileMeasureFlags> for FileMeasureFlags {
 
 impl StaticType for FileMeasureFlags {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_file_measure_flags_get_type()) }
     }
 }
@@ -1804,7 +1823,7 @@ impl glib::value::ValueType for FileMeasureFlags {
     type Type = Self;
 }
 
-unsafe impl<'a> FromValue<'a> for FileMeasureFlags {
+unsafe impl<'a> glib::value::FromValue<'a> for FileMeasureFlags {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -1837,6 +1856,7 @@ impl From<FileMeasureFlags> for glib::Value {
 }
 
 bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GFileMonitorFlags")]
     pub struct FileMonitorFlags: u32 {
         #[doc(alias = "G_FILE_MONITOR_NONE")]
@@ -1878,7 +1898,7 @@ impl FromGlib<ffi::GFileMonitorFlags> for FileMonitorFlags {
 
 impl StaticType for FileMonitorFlags {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_file_monitor_flags_get_type()) }
     }
 }
@@ -1897,7 +1917,7 @@ impl glib::value::ValueType for FileMonitorFlags {
     type Type = Self;
 }
 
-unsafe impl<'a> FromValue<'a> for FileMonitorFlags {
+unsafe impl<'a> glib::value::FromValue<'a> for FileMonitorFlags {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -1930,6 +1950,7 @@ impl From<FileMonitorFlags> for glib::Value {
 }
 
 bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GFileQueryInfoFlags")]
     pub struct FileQueryInfoFlags: u32 {
         #[doc(alias = "G_FILE_QUERY_INFO_NONE")]
@@ -1965,7 +1986,7 @@ impl FromGlib<ffi::GFileQueryInfoFlags> for FileQueryInfoFlags {
 
 impl StaticType for FileQueryInfoFlags {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_file_query_info_flags_get_type()) }
     }
 }
@@ -1984,7 +2005,7 @@ impl glib::value::ValueType for FileQueryInfoFlags {
     type Type = Self;
 }
 
-unsafe impl<'a> FromValue<'a> for FileQueryInfoFlags {
+unsafe impl<'a> glib::value::FromValue<'a> for FileQueryInfoFlags {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -2017,6 +2038,7 @@ impl From<FileQueryInfoFlags> for glib::Value {
 }
 
 bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GIOStreamSpliceFlags")]
     pub struct IOStreamSpliceFlags: u32 {
         #[doc(alias = "G_IO_STREAM_SPLICE_NONE")]
@@ -2056,7 +2078,7 @@ impl FromGlib<ffi::GIOStreamSpliceFlags> for IOStreamSpliceFlags {
 
 impl StaticType for IOStreamSpliceFlags {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_io_stream_splice_flags_get_type()) }
     }
 }
@@ -2075,7 +2097,7 @@ impl glib::value::ValueType for IOStreamSpliceFlags {
     type Type = Self;
 }
 
-unsafe impl<'a> FromValue<'a> for IOStreamSpliceFlags {
+unsafe impl<'a> glib::value::FromValue<'a> for IOStreamSpliceFlags {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -2108,6 +2130,7 @@ impl From<IOStreamSpliceFlags> for glib::Value {
 }
 
 bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GMountMountFlags")]
     pub struct MountMountFlags: u32 {
         #[doc(alias = "G_MOUNT_MOUNT_NONE")]
@@ -2141,7 +2164,7 @@ impl FromGlib<ffi::GMountMountFlags> for MountMountFlags {
 
 impl StaticType for MountMountFlags {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_mount_mount_flags_get_type()) }
     }
 }
@@ -2160,7 +2183,7 @@ impl glib::value::ValueType for MountMountFlags {
     type Type = Self;
 }
 
-unsafe impl<'a> FromValue<'a> for MountMountFlags {
+unsafe impl<'a> glib::value::FromValue<'a> for MountMountFlags {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -2193,6 +2216,7 @@ impl From<MountMountFlags> for glib::Value {
 }
 
 bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GMountUnmountFlags")]
     pub struct MountUnmountFlags: u32 {
         #[doc(alias = "G_MOUNT_UNMOUNT_NONE")]
@@ -2228,7 +2252,7 @@ impl FromGlib<ffi::GMountUnmountFlags> for MountUnmountFlags {
 
 impl StaticType for MountUnmountFlags {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_mount_unmount_flags_get_type()) }
     }
 }
@@ -2247,7 +2271,7 @@ impl glib::value::ValueType for MountUnmountFlags {
     type Type = Self;
 }
 
-unsafe impl<'a> FromValue<'a> for MountUnmountFlags {
+unsafe impl<'a> glib::value::FromValue<'a> for MountUnmountFlags {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -2280,6 +2304,7 @@ impl From<MountUnmountFlags> for glib::Value {
 }
 
 bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GOutputStreamSpliceFlags")]
     pub struct OutputStreamSpliceFlags: u32 {
         #[doc(alias = "G_OUTPUT_STREAM_SPLICE_NONE")]
@@ -2317,7 +2342,7 @@ impl FromGlib<ffi::GOutputStreamSpliceFlags> for OutputStreamSpliceFlags {
 
 impl StaticType for OutputStreamSpliceFlags {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_output_stream_splice_flags_get_type()) }
     }
 }
@@ -2336,7 +2361,7 @@ impl glib::value::ValueType for OutputStreamSpliceFlags {
     type Type = Self;
 }
 
-unsafe impl<'a> FromValue<'a> for OutputStreamSpliceFlags {
+unsafe impl<'a> glib::value::FromValue<'a> for OutputStreamSpliceFlags {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -2371,6 +2396,7 @@ impl From<OutputStreamSpliceFlags> for glib::Value {
 #[cfg(feature = "v2_60")]
 bitflags! {
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GResolverNameLookupFlags")]
     pub struct ResolverNameLookupFlags: u32 {
         #[doc(alias = "G_RESOLVER_NAME_LOOKUP_FLAGS_DEFAULT")]
@@ -2416,7 +2442,7 @@ impl FromGlib<ffi::GResolverNameLookupFlags> for ResolverNameLookupFlags {
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
 impl StaticType for ResolverNameLookupFlags {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_resolver_name_lookup_flags_get_type()) }
     }
 }
@@ -2441,7 +2467,7 @@ impl glib::value::ValueType for ResolverNameLookupFlags {
 
 #[cfg(feature = "v2_60")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
-unsafe impl<'a> FromValue<'a> for ResolverNameLookupFlags {
+unsafe impl<'a> glib::value::FromValue<'a> for ResolverNameLookupFlags {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -2478,6 +2504,7 @@ impl From<ResolverNameLookupFlags> for glib::Value {
 }
 
 bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GResourceLookupFlags")]
     pub struct ResourceLookupFlags: u32 {
         #[doc(alias = "G_RESOURCE_LOOKUP_FLAGS_NONE")]
@@ -2511,7 +2538,7 @@ impl FromGlib<ffi::GResourceLookupFlags> for ResourceLookupFlags {
 
 impl StaticType for ResourceLookupFlags {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_resource_lookup_flags_get_type()) }
     }
 }
@@ -2530,7 +2557,7 @@ impl glib::value::ValueType for ResourceLookupFlags {
     type Type = Self;
 }
 
-unsafe impl<'a> FromValue<'a> for ResourceLookupFlags {
+unsafe impl<'a> glib::value::FromValue<'a> for ResourceLookupFlags {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -2563,6 +2590,7 @@ impl From<ResourceLookupFlags> for glib::Value {
 }
 
 bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GSettingsBindFlags")]
     pub struct SettingsBindFlags: u32 {
         #[doc(alias = "G_SETTINGS_BIND_DEFAULT")]
@@ -2606,7 +2634,7 @@ impl FromGlib<ffi::GSettingsBindFlags> for SettingsBindFlags {
 
 impl StaticType for SettingsBindFlags {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_settings_bind_flags_get_type()) }
     }
 }
@@ -2625,7 +2653,7 @@ impl glib::value::ValueType for SettingsBindFlags {
     type Type = Self;
 }
 
-unsafe impl<'a> FromValue<'a> for SettingsBindFlags {
+unsafe impl<'a> glib::value::FromValue<'a> for SettingsBindFlags {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -2658,6 +2686,7 @@ impl From<SettingsBindFlags> for glib::Value {
 }
 
 bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GSubprocessFlags")]
     pub struct SubprocessFlags: u32 {
         #[doc(alias = "G_SUBPROCESS_FLAGS_NONE")]
@@ -2711,7 +2740,7 @@ impl FromGlib<ffi::GSubprocessFlags> for SubprocessFlags {
 
 impl StaticType for SubprocessFlags {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_subprocess_flags_get_type()) }
     }
 }
@@ -2730,7 +2759,7 @@ impl glib::value::ValueType for SubprocessFlags {
     type Type = Self;
 }
 
-unsafe impl<'a> FromValue<'a> for SubprocessFlags {
+unsafe impl<'a> glib::value::FromValue<'a> for SubprocessFlags {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -2763,6 +2792,7 @@ impl From<SubprocessFlags> for glib::Value {
 }
 
 bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GTlsCertificateFlags")]
     pub struct TlsCertificateFlags: u32 {
         #[doc(alias = "G_TLS_CERTIFICATE_UNKNOWN_CA")]
@@ -2810,7 +2840,7 @@ impl FromGlib<ffi::GTlsCertificateFlags> for TlsCertificateFlags {
 
 impl StaticType for TlsCertificateFlags {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_tls_certificate_flags_get_type()) }
     }
 }
@@ -2829,7 +2859,7 @@ impl glib::value::ValueType for TlsCertificateFlags {
     type Type = Self;
 }
 
-unsafe impl<'a> FromValue<'a> for TlsCertificateFlags {
+unsafe impl<'a> glib::value::FromValue<'a> for TlsCertificateFlags {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -2862,6 +2892,7 @@ impl From<TlsCertificateFlags> for glib::Value {
 }
 
 bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GTlsDatabaseVerifyFlags")]
     pub struct TlsDatabaseVerifyFlags: u32 {
         #[doc(alias = "G_TLS_DATABASE_VERIFY_NONE")]
@@ -2895,7 +2926,7 @@ impl FromGlib<ffi::GTlsDatabaseVerifyFlags> for TlsDatabaseVerifyFlags {
 
 impl StaticType for TlsDatabaseVerifyFlags {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_tls_database_verify_flags_get_type()) }
     }
 }
@@ -2914,7 +2945,7 @@ impl glib::value::ValueType for TlsDatabaseVerifyFlags {
     type Type = Self;
 }
 
-unsafe impl<'a> FromValue<'a> for TlsDatabaseVerifyFlags {
+unsafe impl<'a> glib::value::FromValue<'a> for TlsDatabaseVerifyFlags {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -2947,6 +2978,7 @@ impl From<TlsDatabaseVerifyFlags> for glib::Value {
 }
 
 bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GTlsPasswordFlags")]
     pub struct TlsPasswordFlags: u32 {
         #[doc(alias = "G_TLS_PASSWORD_NONE")]
@@ -2992,7 +3024,7 @@ impl FromGlib<ffi::GTlsPasswordFlags> for TlsPasswordFlags {
 
 impl StaticType for TlsPasswordFlags {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_tls_password_flags_get_type()) }
     }
 }
@@ -3011,7 +3043,7 @@ impl glib::value::ValueType for TlsPasswordFlags {
     type Type = Self;
 }
 
-unsafe impl<'a> FromValue<'a> for TlsPasswordFlags {
+unsafe impl<'a> glib::value::FromValue<'a> for TlsPasswordFlags {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]

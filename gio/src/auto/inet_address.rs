@@ -192,7 +192,7 @@ pub trait InetAddressExt: IsA<InetAddress> + sealed::Sealed + 'static {
     }
 
     //fn bytes(&self) -> /*Unimplemented*/Basic: Pointer {
-    //    glib::ObjectExt::property(self.as_ref(), "bytes")
+    //    ObjectExt::property(self.as_ref(), "bytes")
     //}
 
     #[doc(alias = "is-any")]

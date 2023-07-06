@@ -804,7 +804,7 @@ impl DBusConnection {
     }
 
     pub fn get_property_flags(&self) -> DBusConnectionFlags {
-        glib::ObjectExt::property(self, "flags")
+        ObjectExt::property(self, "flags")
     }
 
     #[doc(alias = "g_dbus_connection_new")]
