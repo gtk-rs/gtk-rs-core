@@ -77,6 +77,14 @@ impl IntoGlib for ControlFlow {
     }
 }
 
+#[doc(hidden)]
+impl FromGlib<ffi::gboolean> for ControlFlow {
+    #[inline]
+    unsafe fn from_glib(value: ffi::gboolean) -> Self {
+        bool::from_glib(value).into()
+    }
+}
+
 impl crate::ToValue for ControlFlow {
     fn to_value(&self) -> crate::Value {
         bool::from(*self).to_value()
