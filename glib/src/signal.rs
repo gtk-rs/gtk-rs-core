@@ -5,7 +5,7 @@
 
 use std::{mem, num::NonZeroU64};
 
-use ffi::{gboolean, gpointer};
+use ffi::gpointer;
 use gobject_ffi::{self, GCallback};
 use libc::{c_char, c_ulong, c_void};
 
@@ -62,40 +62,6 @@ impl FromGlib<c_ulong> for SignalHandlerId {
     unsafe fn from_glib(val: c_ulong) -> Self {
         debug_assert_ne!(val, 0);
         Self(NonZeroU64::new_unchecked(val as _))
-    }
-}
-
-// rustdoc-stripper-ignore-next
-/// Whether to propagate the signal to the default handler.
-///
-/// Don't inhibit default handlers without a reason, they're usually helpful.
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
-pub struct Inhibit(pub bool);
-
-#[doc(hidden)]
-impl IntoGlib for Inhibit {
-    type GlibType = gboolean;
-
-    #[inline]
-    fn into_glib(self) -> gboolean {
-        self.0.into_glib()
-    }
-}
-
-impl crate::ToValue for Inhibit {
-    fn to_value(&self) -> crate::Value {
-        self.0.to_value()
-    }
-
-    fn value_type(&self) -> crate::Type {
-        <bool as crate::StaticType>::static_type()
-    }
-}
-
-impl From<Inhibit> for crate::Value {
-    #[inline]
-    fn from(v: Inhibit) -> Self {
-        v.0.into()
     }
 }
 
