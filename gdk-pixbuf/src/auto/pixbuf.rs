@@ -216,21 +216,30 @@ impl Pixbuf {
 
     #[doc(alias = "gdk_pixbuf_new_from_xpm_data")]
     #[doc(alias = "new_from_xpm_data")]
-    pub fn from_xpm_data(data: &[&str]) -> Option<Pixbuf> {
-        unsafe { from_glib_full(ffi::gdk_pixbuf_new_from_xpm_data(data.to_glib_none().0)) }
+    pub fn from_xpm_data(data: &[&str]) -> Result<Pixbuf, glib::BoolError> {
+        unsafe {
+            Option::<_>::from_glib_full(ffi::gdk_pixbuf_new_from_xpm_data(data.to_glib_none().0))
+                .ok_or_else(|| glib::bool_error!("Invalid XPM data"))
+        }
     }
 
     #[doc(alias = "gdk_pixbuf_add_alpha")]
-    #[must_use]
-    pub fn add_alpha(&self, substitute_color: bool, r: u8, g: u8, b: u8) -> Option<Pixbuf> {
+    pub fn add_alpha(
+        &self,
+        substitute_color: bool,
+        r: u8,
+        g: u8,
+        b: u8,
+    ) -> Result<Pixbuf, glib::BoolError> {
         unsafe {
-            from_glib_full(ffi::gdk_pixbuf_add_alpha(
+            Option::<_>::from_glib_full(ffi::gdk_pixbuf_add_alpha(
                 self.to_glib_none().0,
                 substitute_color.into_glib(),
                 r,
                 g,
                 b,
             ))
+            .ok_or_else(|| glib::bool_error!("Failed to add alpha channel"))
         }
     }
 
