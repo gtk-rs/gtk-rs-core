@@ -2,7 +2,7 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{error::ErrorDomain, translate::*, Quark};
+use crate::{prelude::*, translate::*};
 use std::fmt;
 
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
@@ -154,9 +154,9 @@ impl FromGlib<ffi::GConvertError> for ConvertError {
     }
 }
 
-impl ErrorDomain for ConvertError {
+impl crate::error::ErrorDomain for ConvertError {
     #[inline]
-    fn domain() -> Quark {
+    fn domain() -> crate::Quark {
         unsafe { from_glib(ffi::g_convert_error_quark()) }
     }
 
@@ -527,9 +527,9 @@ impl FromGlib<ffi::GFileError> for FileError {
     }
 }
 
-impl ErrorDomain for FileError {
+impl crate::error::ErrorDomain for FileError {
     #[inline]
-    fn domain() -> Quark {
+    fn domain() -> crate::Quark {
         unsafe { from_glib(ffi::g_file_error_quark()) }
     }
 
@@ -620,9 +620,9 @@ impl FromGlib<ffi::GKeyFileError> for KeyFileError {
     }
 }
 
-impl ErrorDomain for KeyFileError {
+impl crate::error::ErrorDomain for KeyFileError {
     #[inline]
-    fn domain() -> Quark {
+    fn domain() -> crate::Quark {
         unsafe { from_glib(ffi::g_key_file_error_quark()) }
     }
 
@@ -769,9 +769,9 @@ impl FromGlib<ffi::GMarkupError> for MarkupError {
     }
 }
 
-impl ErrorDomain for MarkupError {
+impl crate::error::ErrorDomain for MarkupError {
     #[inline]
-    fn domain() -> Quark {
+    fn domain() -> crate::Quark {
         unsafe { from_glib(ffi::g_markup_error_quark()) }
     }
 
@@ -2064,9 +2064,9 @@ impl FromGlib<ffi::GUriError> for UriError {
 
 #[cfg(feature = "v2_66")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
-impl ErrorDomain for UriError {
+impl crate::error::ErrorDomain for UriError {
     #[inline]
-    fn domain() -> Quark {
+    fn domain() -> crate::Quark {
         unsafe { from_glib(ffi::g_uri_error_quark()) }
     }
 

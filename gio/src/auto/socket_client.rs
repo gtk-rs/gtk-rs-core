@@ -604,12 +604,12 @@ pub trait SocketClientExt: IsA<SocketClient> + sealed::Sealed + 'static {
 
     #[doc(alias = "type")]
     fn type_(&self) -> SocketType {
-        glib::ObjectExt::property(self.as_ref(), "type")
+        ObjectExt::property(self.as_ref(), "type")
     }
 
     #[doc(alias = "type")]
     fn set_type(&self, type_: SocketType) {
-        glib::ObjectExt::set_property(self.as_ref(), "type", type_)
+        ObjectExt::set_property(self.as_ref(), "type", type_)
     }
 
     #[doc(alias = "event")]

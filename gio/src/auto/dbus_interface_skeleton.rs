@@ -163,12 +163,12 @@ pub trait DBusInterfaceSkeletonExt: IsA<DBusInterfaceSkeleton> + sealed::Sealed 
 
     #[doc(alias = "g-flags")]
     fn g_flags(&self) -> DBusInterfaceSkeletonFlags {
-        glib::ObjectExt::property(self.as_ref(), "g-flags")
+        ObjectExt::property(self.as_ref(), "g-flags")
     }
 
     #[doc(alias = "g-flags")]
     fn set_g_flags(&self, g_flags: DBusInterfaceSkeletonFlags) {
-        glib::ObjectExt::set_property(self.as_ref(), "g-flags", g_flags)
+        ObjectExt::set_property(self.as_ref(), "g-flags", g_flags)
     }
 
     #[doc(alias = "g-authorize-method")]

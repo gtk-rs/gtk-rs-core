@@ -31,7 +31,7 @@ mod sealed {
 pub trait ThreadedSocketServiceExt: IsA<ThreadedSocketService> + sealed::Sealed + 'static {
     #[doc(alias = "max-threads")]
     fn max_threads(&self) -> i32 {
-        glib::ObjectExt::property(self.as_ref(), "max-threads")
+        ObjectExt::property(self.as_ref(), "max-threads")
     }
 
     #[doc(alias = "run")]

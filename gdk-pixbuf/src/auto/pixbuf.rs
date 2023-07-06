@@ -641,7 +641,7 @@ impl Pixbuf {
 
     #[doc(alias = "pixel-bytes")]
     pub fn pixel_bytes(&self) -> Option<glib::Bytes> {
-        glib::ObjectExt::property(self, "pixel-bytes")
+        ObjectExt::property(self, "pixel-bytes")
     }
 
     #[doc(alias = "gdk_pixbuf_calculate_rowstride")]

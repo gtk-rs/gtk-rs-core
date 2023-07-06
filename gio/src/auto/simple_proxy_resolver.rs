@@ -52,12 +52,12 @@ pub trait SimpleProxyResolverExt: IsA<SimpleProxyResolver> + sealed::Sealed + 's
 
     #[doc(alias = "default-proxy")]
     fn default_proxy(&self) -> Option<glib::GString> {
-        glib::ObjectExt::property(self.as_ref(), "default-proxy")
+        ObjectExt::property(self.as_ref(), "default-proxy")
     }
 
     #[doc(alias = "ignore-hosts")]
     fn ignore_hosts(&self) -> Vec<glib::GString> {
-        glib::ObjectExt::property(self.as_ref(), "ignore-hosts")
+        ObjectExt::property(self.as_ref(), "ignore-hosts")
     }
 
     #[doc(alias = "default-proxy")]

@@ -2,11 +2,11 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use bitflags::bitflags;
-use glib::{translate::*, value::FromValue, value::ToValue, StaticType, Type};
+use glib::{bitflags::bitflags, prelude::*, translate::*};
 use std::fmt;
 
 bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "PangoFontMask")]
     pub struct FontMask: u32 {
         #[doc(alias = "PANGO_FONT_MASK_FAMILY")]
@@ -54,7 +54,7 @@ impl FromGlib<ffi::PangoFontMask> for FontMask {
 
 impl StaticType for FontMask {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::pango_font_mask_get_type()) }
     }
 }
@@ -73,7 +73,7 @@ impl glib::value::ValueType for FontMask {
     type Type = Self;
 }
 
-unsafe impl<'a> FromValue<'a> for FontMask {
+unsafe impl<'a> glib::value::FromValue<'a> for FontMask {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -108,6 +108,7 @@ impl From<FontMask> for glib::Value {
 #[cfg(feature = "v1_50")]
 bitflags! {
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "PangoLayoutDeserializeFlags")]
     pub struct LayoutDeserializeFlags: u32 {
         #[doc(alias = "PANGO_LAYOUT_DESERIALIZE_DEFAULT")]
@@ -151,7 +152,7 @@ impl FromGlib<ffi::PangoLayoutDeserializeFlags> for LayoutDeserializeFlags {
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
 impl StaticType for LayoutDeserializeFlags {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::pango_layout_deserialize_flags_get_type()) }
     }
 }
@@ -176,7 +177,7 @@ impl glib::value::ValueType for LayoutDeserializeFlags {
 
 #[cfg(feature = "v1_50")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
-unsafe impl<'a> FromValue<'a> for LayoutDeserializeFlags {
+unsafe impl<'a> glib::value::FromValue<'a> for LayoutDeserializeFlags {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -215,6 +216,7 @@ impl From<LayoutDeserializeFlags> for glib::Value {
 #[cfg(feature = "v1_50")]
 bitflags! {
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "PangoLayoutSerializeFlags")]
     pub struct LayoutSerializeFlags: u32 {
         #[doc(alias = "PANGO_LAYOUT_SERIALIZE_DEFAULT")]
@@ -260,7 +262,7 @@ impl FromGlib<ffi::PangoLayoutSerializeFlags> for LayoutSerializeFlags {
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
 impl StaticType for LayoutSerializeFlags {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::pango_layout_serialize_flags_get_type()) }
     }
 }
@@ -285,7 +287,7 @@ impl glib::value::ValueType for LayoutSerializeFlags {
 
 #[cfg(feature = "v1_50")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
-unsafe impl<'a> FromValue<'a> for LayoutSerializeFlags {
+unsafe impl<'a> glib::value::FromValue<'a> for LayoutSerializeFlags {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -324,6 +326,7 @@ impl From<LayoutSerializeFlags> for glib::Value {
 #[cfg(feature = "v1_44")]
 bitflags! {
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "PangoShapeFlags")]
     pub struct ShapeFlags: u32 {
         #[doc(alias = "PANGO_SHAPE_NONE")]
@@ -367,7 +370,7 @@ impl FromGlib<ffi::PangoShapeFlags> for ShapeFlags {
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
 impl StaticType for ShapeFlags {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::pango_shape_flags_get_type()) }
     }
 }
@@ -392,7 +395,7 @@ impl glib::value::ValueType for ShapeFlags {
 
 #[cfg(feature = "v1_44")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
-unsafe impl<'a> FromValue<'a> for ShapeFlags {
+unsafe impl<'a> glib::value::FromValue<'a> for ShapeFlags {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -431,6 +434,7 @@ impl From<ShapeFlags> for glib::Value {
 #[cfg(feature = "v1_44")]
 bitflags! {
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "PangoShowFlags")]
     pub struct ShowFlags: u32 {
         #[doc(alias = "PANGO_SHOW_NONE")]
@@ -478,7 +482,7 @@ impl FromGlib<ffi::PangoShowFlags> for ShowFlags {
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
 impl StaticType for ShowFlags {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::pango_show_flags_get_type()) }
     }
 }
@@ -503,7 +507,7 @@ impl glib::value::ValueType for ShowFlags {
 
 #[cfg(feature = "v1_44")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
-unsafe impl<'a> FromValue<'a> for ShowFlags {
+unsafe impl<'a> glib::value::FromValue<'a> for ShowFlags {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]

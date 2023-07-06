@@ -2,11 +2,11 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{translate::*, value::FromValue, value::ToValue, StaticType, Type};
-use bitflags::bitflags;
+use crate::{bitflags::bitflags, prelude::*, translate::*};
 use std::fmt;
 
 bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GBindingFlags")]
     pub struct BindingFlags: u32 {
         #[doc(alias = "G_BINDING_DEFAULT")]
@@ -46,7 +46,7 @@ impl FromGlib<gobject_ffi::GBindingFlags> for BindingFlags {
 
 impl StaticType for BindingFlags {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> crate::Type {
         unsafe { from_glib(gobject_ffi::g_binding_flags_get_type()) }
     }
 }
@@ -65,7 +65,7 @@ impl crate::value::ValueType for BindingFlags {
     type Type = Self;
 }
 
-unsafe impl<'a> FromValue<'a> for BindingFlags {
+unsafe impl<'a> crate::value::FromValue<'a> for BindingFlags {
     type Checker = crate::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -100,6 +100,7 @@ impl From<BindingFlags> for crate::Value {
 }
 
 bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GSignalFlags")]
     pub struct SignalFlags: u32 {
         #[doc(alias = "G_SIGNAL_RUN_FIRST")]

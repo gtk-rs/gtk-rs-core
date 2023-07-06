@@ -84,12 +84,12 @@ impl DBusServer {
     }
 
     pub fn address(&self) -> Option<glib::GString> {
-        glib::ObjectExt::property(self, "address")
+        ObjectExt::property(self, "address")
     }
 
     #[doc(alias = "authentication-observer")]
     pub fn authentication_observer(&self) -> Option<DBusAuthObserver> {
-        glib::ObjectExt::property(self, "authentication-observer")
+        ObjectExt::property(self, "authentication-observer")
     }
 
     #[doc(alias = "new-connection")]

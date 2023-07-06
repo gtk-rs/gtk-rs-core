@@ -73,12 +73,12 @@ impl CharsetConverter {
 
     #[doc(alias = "from-charset")]
     pub fn from_charset(&self) -> Option<glib::GString> {
-        glib::ObjectExt::property(self, "from-charset")
+        ObjectExt::property(self, "from-charset")
     }
 
     #[doc(alias = "to-charset")]
     pub fn to_charset(&self) -> Option<glib::GString> {
-        glib::ObjectExt::property(self, "to-charset")
+        ObjectExt::property(self, "to-charset")
     }
 
     #[doc(alias = "use-fallback")]

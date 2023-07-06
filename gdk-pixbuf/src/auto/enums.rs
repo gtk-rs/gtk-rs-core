@@ -2,9 +2,7 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use glib::{
-    error::ErrorDomain, translate::*, value::FromValue, value::ToValue, Quark, StaticType, Type,
-};
+use glib::{prelude::*, translate::*};
 use std::fmt;
 
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
@@ -56,7 +54,7 @@ impl FromGlib<ffi::GdkColorspace> for Colorspace {
 
 impl StaticType for Colorspace {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::gdk_colorspace_get_type()) }
     }
 }
@@ -75,7 +73,7 @@ impl glib::value::ValueType for Colorspace {
     type Type = Self;
 }
 
-unsafe impl<'a> FromValue<'a> for Colorspace {
+unsafe impl<'a> glib::value::FromValue<'a> for Colorspace {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -171,7 +169,7 @@ impl FromGlib<ffi::GdkInterpType> for InterpType {
 
 impl StaticType for InterpType {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::gdk_interp_type_get_type()) }
     }
 }
@@ -190,7 +188,7 @@ impl glib::value::ValueType for InterpType {
     type Type = Self;
 }
 
-unsafe impl<'a> FromValue<'a> for InterpType {
+unsafe impl<'a> glib::value::FromValue<'a> for InterpType {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -281,7 +279,7 @@ impl FromGlib<ffi::GdkPixbufAlphaMode> for PixbufAlphaMode {
 #[allow(deprecated)]
 impl StaticType for PixbufAlphaMode {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::gdk_pixbuf_alpha_mode_get_type()) }
     }
 }
@@ -303,7 +301,7 @@ impl glib::value::ValueType for PixbufAlphaMode {
 }
 
 #[allow(deprecated)]
-unsafe impl<'a> FromValue<'a> for PixbufAlphaMode {
+unsafe impl<'a> glib::value::FromValue<'a> for PixbufAlphaMode {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -414,9 +412,9 @@ impl FromGlib<ffi::GdkPixbufError> for PixbufError {
     }
 }
 
-impl ErrorDomain for PixbufError {
+impl glib::error::ErrorDomain for PixbufError {
     #[inline]
-    fn domain() -> Quark {
+    fn domain() -> glib::Quark {
         unsafe { from_glib(ffi::gdk_pixbuf_error_quark()) }
     }
 
@@ -437,7 +435,7 @@ impl ErrorDomain for PixbufError {
 
 impl StaticType for PixbufError {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::gdk_pixbuf_error_get_type()) }
     }
 }
@@ -456,7 +454,7 @@ impl glib::value::ValueType for PixbufError {
     type Type = Self;
 }
 
-unsafe impl<'a> FromValue<'a> for PixbufError {
+unsafe impl<'a> glib::value::FromValue<'a> for PixbufError {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -552,7 +550,7 @@ impl FromGlib<ffi::GdkPixbufRotation> for PixbufRotation {
 
 impl StaticType for PixbufRotation {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::gdk_pixbuf_rotation_get_type()) }
     }
 }
@@ -571,7 +569,7 @@ impl glib::value::ValueType for PixbufRotation {
     type Type = Self;
 }
 
-unsafe impl<'a> FromValue<'a> for PixbufRotation {
+unsafe impl<'a> glib::value::FromValue<'a> for PixbufRotation {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]

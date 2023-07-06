@@ -59,7 +59,7 @@ impl SignalGroup {
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
     #[doc(alias = "target-type")]
     pub fn target_type(&self) -> crate::types::Type {
-        crate::ObjectExt::property(self, "target-type")
+        ObjectExt::property(self, "target-type")
     }
 }
 

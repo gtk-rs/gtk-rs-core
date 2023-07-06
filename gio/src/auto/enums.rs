@@ -2,9 +2,7 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use glib::{
-    error::ErrorDomain, translate::*, value::FromValue, value::ToValue, Quark, StaticType, Type,
-};
+use glib::{prelude::*, translate::*};
 use std::fmt;
 
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
@@ -71,7 +69,7 @@ impl FromGlib<ffi::GBusType> for BusType {
 
 impl StaticType for BusType {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_bus_type_get_type()) }
     }
 }
@@ -90,7 +88,7 @@ impl glib::value::ValueType for BusType {
     type Type = Self;
 }
 
-unsafe impl<'a> FromValue<'a> for BusType {
+unsafe impl<'a> glib::value::FromValue<'a> for BusType {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -186,7 +184,7 @@ impl FromGlib<ffi::GConverterResult> for ConverterResult {
 
 impl StaticType for ConverterResult {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_converter_result_get_type()) }
     }
 }
@@ -205,7 +203,7 @@ impl glib::value::ValueType for ConverterResult {
     type Type = Self;
 }
 
-unsafe impl<'a> FromValue<'a> for ConverterResult {
+unsafe impl<'a> glib::value::FromValue<'a> for ConverterResult {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -326,7 +324,7 @@ impl FromGlib<ffi::GCredentialsType> for CredentialsType {
 
 impl StaticType for CredentialsType {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_credentials_type_get_type()) }
     }
 }
@@ -345,7 +343,7 @@ impl glib::value::ValueType for CredentialsType {
     type Type = Self;
 }
 
-unsafe impl<'a> FromValue<'a> for CredentialsType {
+unsafe impl<'a> glib::value::FromValue<'a> for CredentialsType {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -431,7 +429,7 @@ impl FromGlib<ffi::GDBusMessageByteOrder> for DBusMessageByteOrder {
 
 impl StaticType for DBusMessageByteOrder {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_dbus_message_byte_order_get_type()) }
     }
 }
@@ -450,7 +448,7 @@ impl glib::value::ValueType for DBusMessageByteOrder {
     type Type = Self;
 }
 
-unsafe impl<'a> FromValue<'a> for DBusMessageByteOrder {
+unsafe impl<'a> glib::value::FromValue<'a> for DBusMessageByteOrder {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -576,7 +574,7 @@ impl FromGlib<ffi::GDBusMessageHeaderField> for DBusMessageHeaderField {
 
 impl StaticType for DBusMessageHeaderField {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_dbus_message_header_field_get_type()) }
     }
 }
@@ -595,7 +593,7 @@ impl glib::value::ValueType for DBusMessageHeaderField {
     type Type = Self;
 }
 
-unsafe impl<'a> FromValue<'a> for DBusMessageHeaderField {
+unsafe impl<'a> glib::value::FromValue<'a> for DBusMessageHeaderField {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -696,7 +694,7 @@ impl FromGlib<ffi::GDBusMessageType> for DBusMessageType {
 
 impl StaticType for DBusMessageType {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_dbus_message_type_get_type()) }
     }
 }
@@ -715,7 +713,7 @@ impl glib::value::ValueType for DBusMessageType {
     type Type = Self;
 }
 
-unsafe impl<'a> FromValue<'a> for DBusMessageType {
+unsafe impl<'a> glib::value::FromValue<'a> for DBusMessageType {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -806,7 +804,7 @@ impl FromGlib<ffi::GDataStreamByteOrder> for DataStreamByteOrder {
 
 impl StaticType for DataStreamByteOrder {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_data_stream_byte_order_get_type()) }
     }
 }
@@ -825,7 +823,7 @@ impl glib::value::ValueType for DataStreamByteOrder {
     type Type = Self;
 }
 
-unsafe impl<'a> FromValue<'a> for DataStreamByteOrder {
+unsafe impl<'a> glib::value::FromValue<'a> for DataStreamByteOrder {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -921,7 +919,7 @@ impl FromGlib<ffi::GDataStreamNewlineType> for DataStreamNewlineType {
 
 impl StaticType for DataStreamNewlineType {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_data_stream_newline_type_get_type()) }
     }
 }
@@ -940,7 +938,7 @@ impl glib::value::ValueType for DataStreamNewlineType {
     type Type = Self;
 }
 
-unsafe impl<'a> FromValue<'a> for DataStreamNewlineType {
+unsafe impl<'a> glib::value::FromValue<'a> for DataStreamNewlineType {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -1041,7 +1039,7 @@ impl FromGlib<ffi::GDriveStartStopType> for DriveStartStopType {
 
 impl StaticType for DriveStartStopType {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_drive_start_stop_type_get_type()) }
     }
 }
@@ -1060,7 +1058,7 @@ impl glib::value::ValueType for DriveStartStopType {
     type Type = Self;
 }
 
-unsafe impl<'a> FromValue<'a> for DriveStartStopType {
+unsafe impl<'a> glib::value::FromValue<'a> for DriveStartStopType {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -1156,7 +1154,7 @@ impl FromGlib<ffi::GEmblemOrigin> for EmblemOrigin {
 
 impl StaticType for EmblemOrigin {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_emblem_origin_get_type()) }
     }
 }
@@ -1175,7 +1173,7 @@ impl glib::value::ValueType for EmblemOrigin {
     type Type = Self;
 }
 
-unsafe impl<'a> FromValue<'a> for EmblemOrigin {
+unsafe impl<'a> glib::value::FromValue<'a> for EmblemOrigin {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -1266,7 +1264,7 @@ impl FromGlib<ffi::GFileAttributeStatus> for FileAttributeStatus {
 
 impl StaticType for FileAttributeStatus {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_file_attribute_status_get_type()) }
     }
 }
@@ -1285,7 +1283,7 @@ impl glib::value::ValueType for FileAttributeStatus {
     type Type = Self;
 }
 
-unsafe impl<'a> FromValue<'a> for FileAttributeStatus {
+unsafe impl<'a> glib::value::FromValue<'a> for FileAttributeStatus {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -1411,7 +1409,7 @@ impl FromGlib<ffi::GFileAttributeType> for FileAttributeType {
 
 impl StaticType for FileAttributeType {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_file_attribute_type_get_type()) }
     }
 }
@@ -1430,7 +1428,7 @@ impl glib::value::ValueType for FileAttributeType {
     type Type = Self;
 }
 
-unsafe impl<'a> FromValue<'a> for FileAttributeType {
+unsafe impl<'a> glib::value::FromValue<'a> for FileAttributeType {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -1561,7 +1559,7 @@ impl FromGlib<ffi::GFileMonitorEvent> for FileMonitorEvent {
 
 impl StaticType for FileMonitorEvent {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_file_monitor_event_get_type()) }
     }
 }
@@ -1580,7 +1578,7 @@ impl glib::value::ValueType for FileMonitorEvent {
     type Type = Self;
 }
 
-unsafe impl<'a> FromValue<'a> for FileMonitorEvent {
+unsafe impl<'a> glib::value::FromValue<'a> for FileMonitorEvent {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -1691,7 +1689,7 @@ impl FromGlib<ffi::GFileType> for FileType {
 
 impl StaticType for FileType {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_file_type_get_type()) }
     }
 }
@@ -1710,7 +1708,7 @@ impl glib::value::ValueType for FileType {
     type Type = Self;
 }
 
-unsafe impl<'a> FromValue<'a> for FileType {
+unsafe impl<'a> glib::value::FromValue<'a> for FileType {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -2027,9 +2025,9 @@ impl FromGlib<ffi::GIOErrorEnum> for IOErrorEnum {
     }
 }
 
-impl ErrorDomain for IOErrorEnum {
+impl glib::error::ErrorDomain for IOErrorEnum {
     #[inline]
-    fn domain() -> Quark {
+    fn domain() -> glib::Quark {
         unsafe { from_glib(ffi::g_io_error_quark()) }
     }
 
@@ -2050,7 +2048,7 @@ impl ErrorDomain for IOErrorEnum {
 
 impl StaticType for IOErrorEnum {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_io_error_enum_get_type()) }
     }
 }
@@ -2069,7 +2067,7 @@ impl glib::value::ValueType for IOErrorEnum {
     type Type = Self;
 }
 
-unsafe impl<'a> FromValue<'a> for IOErrorEnum {
+unsafe impl<'a> glib::value::FromValue<'a> for IOErrorEnum {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -2170,7 +2168,7 @@ impl FromGlib<ffi::GMemoryMonitorWarningLevel> for MemoryMonitorWarningLevel {
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_64")))]
 impl StaticType for MemoryMonitorWarningLevel {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_memory_monitor_warning_level_get_type()) }
     }
 }
@@ -2195,7 +2193,7 @@ impl glib::value::ValueType for MemoryMonitorWarningLevel {
 
 #[cfg(feature = "v2_64")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_64")))]
-unsafe impl<'a> FromValue<'a> for MemoryMonitorWarningLevel {
+unsafe impl<'a> glib::value::FromValue<'a> for MemoryMonitorWarningLevel {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -2290,7 +2288,7 @@ impl FromGlib<ffi::GMountOperationResult> for MountOperationResult {
 
 impl StaticType for MountOperationResult {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_mount_operation_result_get_type()) }
     }
 }
@@ -2309,7 +2307,7 @@ impl glib::value::ValueType for MountOperationResult {
     type Type = Self;
 }
 
-unsafe impl<'a> FromValue<'a> for MountOperationResult {
+unsafe impl<'a> glib::value::FromValue<'a> for MountOperationResult {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -2405,7 +2403,7 @@ impl FromGlib<ffi::GNetworkConnectivity> for NetworkConnectivity {
 
 impl StaticType for NetworkConnectivity {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_network_connectivity_get_type()) }
     }
 }
@@ -2424,7 +2422,7 @@ impl glib::value::ValueType for NetworkConnectivity {
     type Type = Self;
 }
 
-unsafe impl<'a> FromValue<'a> for NetworkConnectivity {
+unsafe impl<'a> glib::value::FromValue<'a> for NetworkConnectivity {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -2520,7 +2518,7 @@ impl FromGlib<ffi::GNotificationPriority> for NotificationPriority {
 
 impl StaticType for NotificationPriority {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_notification_priority_get_type()) }
     }
 }
@@ -2539,7 +2537,7 @@ impl glib::value::ValueType for NotificationPriority {
     type Type = Self;
 }
 
-unsafe impl<'a> FromValue<'a> for NotificationPriority {
+unsafe impl<'a> glib::value::FromValue<'a> for NotificationPriority {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -2630,7 +2628,7 @@ impl FromGlib<ffi::GPasswordSave> for PasswordSave {
 
 impl StaticType for PasswordSave {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_password_save_get_type()) }
     }
 }
@@ -2649,7 +2647,7 @@ impl glib::value::ValueType for PasswordSave {
     type Type = Self;
 }
 
-unsafe impl<'a> FromValue<'a> for PasswordSave {
+unsafe impl<'a> glib::value::FromValue<'a> for PasswordSave {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -2750,7 +2748,7 @@ impl FromGlib<ffi::GPollableReturn> for PollableReturn {
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
 impl StaticType for PollableReturn {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_pollable_return_get_type()) }
     }
 }
@@ -2775,7 +2773,7 @@ impl glib::value::ValueType for PollableReturn {
 
 #[cfg(feature = "v2_60")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
-unsafe impl<'a> FromValue<'a> for PollableReturn {
+unsafe impl<'a> glib::value::FromValue<'a> for PollableReturn {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -2868,9 +2866,9 @@ impl FromGlib<ffi::GResolverError> for ResolverError {
     }
 }
 
-impl ErrorDomain for ResolverError {
+impl glib::error::ErrorDomain for ResolverError {
     #[inline]
-    fn domain() -> Quark {
+    fn domain() -> glib::Quark {
         unsafe { from_glib(ffi::g_resolver_error_quark()) }
     }
 
@@ -2890,7 +2888,7 @@ impl ErrorDomain for ResolverError {
 
 impl StaticType for ResolverError {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_resolver_error_get_type()) }
     }
 }
@@ -2909,7 +2907,7 @@ impl glib::value::ValueType for ResolverError {
     type Type = Self;
 }
 
-unsafe impl<'a> FromValue<'a> for ResolverError {
+unsafe impl<'a> glib::value::FromValue<'a> for ResolverError {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -3010,7 +3008,7 @@ impl FromGlib<ffi::GResolverRecordType> for ResolverRecordType {
 
 impl StaticType for ResolverRecordType {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_resolver_record_type_get_type()) }
     }
 }
@@ -3029,7 +3027,7 @@ impl glib::value::ValueType for ResolverRecordType {
     type Type = Self;
 }
 
-unsafe impl<'a> FromValue<'a> for ResolverRecordType {
+unsafe impl<'a> glib::value::FromValue<'a> for ResolverRecordType {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -3113,9 +3111,9 @@ impl FromGlib<ffi::GResourceError> for ResourceError {
     }
 }
 
-impl ErrorDomain for ResourceError {
+impl glib::error::ErrorDomain for ResourceError {
     #[inline]
-    fn domain() -> Quark {
+    fn domain() -> glib::Quark {
         unsafe { from_glib(ffi::g_resource_error_quark()) }
     }
 
@@ -3135,7 +3133,7 @@ impl ErrorDomain for ResourceError {
 
 impl StaticType for ResourceError {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_resource_error_get_type()) }
     }
 }
@@ -3154,7 +3152,7 @@ impl glib::value::ValueType for ResourceError {
     type Type = Self;
 }
 
-unsafe impl<'a> FromValue<'a> for ResourceError {
+unsafe impl<'a> glib::value::FromValue<'a> for ResourceError {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -3275,7 +3273,7 @@ impl FromGlib<ffi::GSocketClientEvent> for SocketClientEvent {
 
 impl StaticType for SocketClientEvent {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_socket_client_event_get_type()) }
     }
 }
@@ -3294,7 +3292,7 @@ impl glib::value::ValueType for SocketClientEvent {
     type Type = Self;
 }
 
-unsafe impl<'a> FromValue<'a> for SocketClientEvent {
+unsafe impl<'a> glib::value::FromValue<'a> for SocketClientEvent {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -3390,7 +3388,7 @@ impl FromGlib<ffi::GSocketFamily> for SocketFamily {
 
 impl StaticType for SocketFamily {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_socket_family_get_type()) }
     }
 }
@@ -3409,7 +3407,7 @@ impl glib::value::ValueType for SocketFamily {
     type Type = Self;
 }
 
-unsafe impl<'a> FromValue<'a> for SocketFamily {
+unsafe impl<'a> glib::value::FromValue<'a> for SocketFamily {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -3505,7 +3503,7 @@ impl FromGlib<ffi::GSocketListenerEvent> for SocketListenerEvent {
 
 impl StaticType for SocketListenerEvent {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_socket_listener_event_get_type()) }
     }
 }
@@ -3524,7 +3522,7 @@ impl glib::value::ValueType for SocketListenerEvent {
     type Type = Self;
 }
 
-unsafe impl<'a> FromValue<'a> for SocketListenerEvent {
+unsafe impl<'a> glib::value::FromValue<'a> for SocketListenerEvent {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -3625,7 +3623,7 @@ impl FromGlib<ffi::GSocketProtocol> for SocketProtocol {
 
 impl StaticType for SocketProtocol {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_socket_protocol_get_type()) }
     }
 }
@@ -3644,7 +3642,7 @@ impl glib::value::ValueType for SocketProtocol {
     type Type = Self;
 }
 
-unsafe impl<'a> FromValue<'a> for SocketProtocol {
+unsafe impl<'a> glib::value::FromValue<'a> for SocketProtocol {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -3740,7 +3738,7 @@ impl FromGlib<ffi::GSocketType> for SocketType {
 
 impl StaticType for SocketType {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_socket_type_get_type()) }
     }
 }
@@ -3759,7 +3757,7 @@ impl glib::value::ValueType for SocketType {
     type Type = Self;
 }
 
-unsafe impl<'a> FromValue<'a> for SocketType {
+unsafe impl<'a> glib::value::FromValue<'a> for SocketType {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -3850,7 +3848,7 @@ impl FromGlib<ffi::GTlsAuthenticationMode> for TlsAuthenticationMode {
 
 impl StaticType for TlsAuthenticationMode {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_tls_authentication_mode_get_type()) }
     }
 }
@@ -3869,7 +3867,7 @@ impl glib::value::ValueType for TlsAuthenticationMode {
     type Type = Self;
 }
 
-unsafe impl<'a> FromValue<'a> for TlsAuthenticationMode {
+unsafe impl<'a> glib::value::FromValue<'a> for TlsAuthenticationMode {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -3950,7 +3948,7 @@ impl FromGlib<ffi::GTlsCertificateRequestFlags> for TlsCertificateRequestFlags {
 
 impl StaticType for TlsCertificateRequestFlags {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_tls_certificate_request_flags_get_type()) }
     }
 }
@@ -3969,7 +3967,7 @@ impl glib::value::ValueType for TlsCertificateRequestFlags {
     type Type = Self;
 }
 
-unsafe impl<'a> FromValue<'a> for TlsCertificateRequestFlags {
+unsafe impl<'a> glib::value::FromValue<'a> for TlsCertificateRequestFlags {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -4075,7 +4073,7 @@ impl FromGlib<ffi::GTlsChannelBindingType> for TlsChannelBindingType {
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
 impl StaticType for TlsChannelBindingType {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_tls_channel_binding_type_get_type()) }
     }
 }
@@ -4100,7 +4098,7 @@ impl glib::value::ValueType for TlsChannelBindingType {
 
 #[cfg(feature = "v2_66")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
-unsafe impl<'a> FromValue<'a> for TlsChannelBindingType {
+unsafe impl<'a> glib::value::FromValue<'a> for TlsChannelBindingType {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -4190,7 +4188,7 @@ impl FromGlib<ffi::GTlsDatabaseLookupFlags> for TlsDatabaseLookupFlags {
 
 impl StaticType for TlsDatabaseLookupFlags {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_tls_database_lookup_flags_get_type()) }
     }
 }
@@ -4209,7 +4207,7 @@ impl glib::value::ValueType for TlsDatabaseLookupFlags {
     type Type = Self;
 }
 
-unsafe impl<'a> FromValue<'a> for TlsDatabaseLookupFlags {
+unsafe impl<'a> glib::value::FromValue<'a> for TlsDatabaseLookupFlags {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -4333,9 +4331,9 @@ impl FromGlib<ffi::GTlsError> for TlsError {
     }
 }
 
-impl ErrorDomain for TlsError {
+impl glib::error::ErrorDomain for TlsError {
     #[inline]
-    fn domain() -> Quark {
+    fn domain() -> glib::Quark {
         unsafe { from_glib(ffi::g_tls_error_quark()) }
     }
 
@@ -4355,7 +4353,7 @@ impl ErrorDomain for TlsError {
 
 impl StaticType for TlsError {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_tls_error_get_type()) }
     }
 }
@@ -4374,7 +4372,7 @@ impl glib::value::ValueType for TlsError {
     type Type = Self;
 }
 
-unsafe impl<'a> FromValue<'a> for TlsError {
+unsafe impl<'a> glib::value::FromValue<'a> for TlsError {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -4465,7 +4463,7 @@ impl FromGlib<ffi::GTlsInteractionResult> for TlsInteractionResult {
 
 impl StaticType for TlsInteractionResult {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_tls_interaction_result_get_type()) }
     }
 }
@@ -4484,7 +4482,7 @@ impl glib::value::ValueType for TlsInteractionResult {
     type Type = Self;
 }
 
-unsafe impl<'a> FromValue<'a> for TlsInteractionResult {
+unsafe impl<'a> glib::value::FromValue<'a> for TlsInteractionResult {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -4610,7 +4608,7 @@ impl FromGlib<ffi::GTlsProtocolVersion> for TlsProtocolVersion {
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
 impl StaticType for TlsProtocolVersion {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_tls_protocol_version_get_type()) }
     }
 }
@@ -4635,7 +4633,7 @@ impl glib::value::ValueType for TlsProtocolVersion {
 
 #[cfg(feature = "v2_70")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
-unsafe impl<'a> FromValue<'a> for TlsProtocolVersion {
+unsafe impl<'a> glib::value::FromValue<'a> for TlsProtocolVersion {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -4735,7 +4733,7 @@ impl FromGlib<ffi::GTlsRehandshakeMode> for TlsRehandshakeMode {
 #[allow(deprecated)]
 impl StaticType for TlsRehandshakeMode {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_tls_rehandshake_mode_get_type()) }
     }
 }
@@ -4757,7 +4755,7 @@ impl glib::value::ValueType for TlsRehandshakeMode {
 }
 
 #[allow(deprecated)]
-unsafe impl<'a> FromValue<'a> for TlsRehandshakeMode {
+unsafe impl<'a> glib::value::FromValue<'a> for TlsRehandshakeMode {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -4866,7 +4864,7 @@ impl FromGlib<ffi::GUnixSocketAddressType> for UnixSocketAddressType {
 #[cfg(unix)]
 impl StaticType for UnixSocketAddressType {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_unix_socket_address_type_get_type()) }
     }
 }
@@ -4888,7 +4886,7 @@ impl glib::value::ValueType for UnixSocketAddressType {
 }
 
 #[cfg(unix)]
-unsafe impl<'a> FromValue<'a> for UnixSocketAddressType {
+unsafe impl<'a> glib::value::FromValue<'a> for UnixSocketAddressType {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -4981,7 +4979,7 @@ impl FromGlib<ffi::GZlibCompressorFormat> for ZlibCompressorFormat {
 
 impl StaticType for ZlibCompressorFormat {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_zlib_compressor_format_get_type()) }
     }
 }
@@ -5000,7 +4998,7 @@ impl glib::value::ValueType for ZlibCompressorFormat {
     type Type = Self;
 }
 
-unsafe impl<'a> FromValue<'a> for ZlibCompressorFormat {
+unsafe impl<'a> glib::value::FromValue<'a> for ZlibCompressorFormat {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     #[inline]

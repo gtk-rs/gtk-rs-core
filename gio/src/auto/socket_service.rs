@@ -64,7 +64,7 @@ pub trait SocketServiceExt: IsA<SocketService> + sealed::Sealed + 'static {
     }
 
     fn set_active(&self, active: bool) {
-        glib::ObjectExt::set_property(self.as_ref(), "active", active)
+        ObjectExt::set_property(self.as_ref(), "active", active)
     }
 
     #[doc(alias = "incoming")]

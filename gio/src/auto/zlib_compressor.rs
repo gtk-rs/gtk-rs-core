@@ -39,11 +39,11 @@ impl ZlibCompressor {
     }
 
     pub fn format(&self) -> ZlibCompressorFormat {
-        glib::ObjectExt::property(self, "format")
+        ObjectExt::property(self, "format")
     }
 
     pub fn level(&self) -> i32 {
-        glib::ObjectExt::property(self, "level")
+        ObjectExt::property(self, "level")
     }
 
     #[doc(alias = "file-info")]

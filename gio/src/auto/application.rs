@@ -413,7 +413,7 @@ pub trait ApplicationExt: IsA<Application> + sealed::Sealed + 'static {
 
     #[doc(alias = "action-group")]
     fn set_action_group<P: IsA<ActionGroup>>(&self, action_group: Option<&P>) {
-        glib::ObjectExt::set_property(self.as_ref(), "action-group", action_group)
+        ObjectExt::set_property(self.as_ref(), "action-group", action_group)
     }
 
     #[doc(alias = "activate")]

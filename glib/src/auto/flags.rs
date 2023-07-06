@@ -2,13 +2,13 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{translate::*, value::FromValue, value::ToValue, StaticType, Type};
-use bitflags::bitflags;
+use crate::{bitflags::bitflags, prelude::*, translate::*};
 use std::fmt;
 
 #[cfg(feature = "v2_66")]
 bitflags! {
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GFileSetContentsFlags")]
     pub struct FileSetContentsFlags: u32 {
         #[doc(alias = "G_FILE_SET_CONTENTS_NONE")]
@@ -53,6 +53,7 @@ impl FromGlib<ffi::GFileSetContentsFlags> for FileSetContentsFlags {
 }
 
 bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GFileTest")]
     pub(crate) struct FileTest: u32 {
         #[doc(alias = "G_FILE_TEST_IS_REGULAR")]
@@ -93,6 +94,7 @@ impl FromGlib<ffi::GFileTest> for FileTest {
 }
 
 bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GFormatSizeFlags")]
     pub struct FormatSizeFlags: u32 {
         #[doc(alias = "G_FORMAT_SIZE_DEFAULT")]
@@ -139,6 +141,7 @@ impl FromGlib<ffi::GFormatSizeFlags> for FormatSizeFlags {
 }
 
 bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GIOCondition")]
     pub struct IOCondition: u32 {
         #[doc(alias = "G_IO_IN")]
@@ -182,7 +185,7 @@ impl FromGlib<ffi::GIOCondition> for IOCondition {
 
 impl StaticType for IOCondition {
     #[inline]
-    fn static_type() -> Type {
+    fn static_type() -> crate::Type {
         unsafe { from_glib(ffi::g_io_condition_get_type()) }
     }
 }
@@ -201,7 +204,7 @@ impl crate::value::ValueType for IOCondition {
     type Type = Self;
 }
 
-unsafe impl<'a> FromValue<'a> for IOCondition {
+unsafe impl<'a> crate::value::FromValue<'a> for IOCondition {
     type Checker = crate::value::GenericValueTypeChecker<Self>;
 
     #[inline]
@@ -236,6 +239,7 @@ impl From<IOCondition> for crate::Value {
 }
 
 bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GKeyFileFlags")]
     pub struct KeyFileFlags: u32 {
         #[doc(alias = "G_KEY_FILE_NONE")]
@@ -272,6 +276,7 @@ impl FromGlib<ffi::GKeyFileFlags> for KeyFileFlags {
 }
 
 bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GLogLevelFlags")]
     pub struct LogLevelFlags: u32 {
         #[doc(alias = "G_LOG_FLAG_RECURSION")]
@@ -322,6 +327,7 @@ impl FromGlib<ffi::GLogLevelFlags> for LogLevelFlags {
 #[cfg(feature = "v2_72")]
 bitflags! {
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GMainContextFlags")]
     pub struct MainContextFlags: u32 {
         #[doc(alias = "G_MAIN_CONTEXT_FLAGS_NONE")]
@@ -362,6 +368,7 @@ impl FromGlib<ffi::GMainContextFlags> for MainContextFlags {
 }
 
 bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GOptionFlags")]
     pub struct OptionFlags: u32 {
         #[doc(alias = "G_OPTION_FLAG_NONE")]
@@ -408,6 +415,7 @@ impl FromGlib<ffi::GOptionFlags> for OptionFlags {
 }
 
 bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GSpawnFlags")]
     pub struct SpawnFlags: u32 {
         #[doc(alias = "G_SPAWN_DEFAULT")]
@@ -472,6 +480,7 @@ impl FromGlib<ffi::GSpawnFlags> for SpawnFlags {
 #[cfg(feature = "v2_66")]
 bitflags! {
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GUriFlags")]
     pub struct UriFlags: u32 {
         #[doc(alias = "G_URI_FLAGS_NONE")]
@@ -530,6 +539,7 @@ impl FromGlib<ffi::GUriFlags> for UriFlags {
 #[cfg(feature = "v2_66")]
 bitflags! {
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GUriHideFlags")]
     pub struct UriHideFlags: u32 {
         #[doc(alias = "G_URI_HIDE_NONE")]
@@ -580,6 +590,7 @@ impl FromGlib<ffi::GUriHideFlags> for UriHideFlags {
 #[cfg(feature = "v2_66")]
 bitflags! {
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GUriParamsFlags")]
     pub struct UriParamsFlags: u32 {
         #[doc(alias = "G_URI_PARAMS_NONE")]
