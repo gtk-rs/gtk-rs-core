@@ -7,7 +7,7 @@ use quote::quote;
 pub const WRONG_PLACE_MSG: &str =
     "This macro should be used on `impl` block for `glib::ObjectImpl` trait";
 
-pub fn impl_use_derived_properties(input: &syn::ItemImpl) -> TokenStream {
+pub fn impl_derived_properties(input: &syn::ItemImpl) -> TokenStream {
     let syn::ItemImpl {
         attrs,
         generics,

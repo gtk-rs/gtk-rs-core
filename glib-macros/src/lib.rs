@@ -3,6 +3,7 @@
 mod boxed_derive;
 mod clone;
 mod closure;
+mod derived_properties_attribute;
 mod downgrade_derive;
 mod enum_derive;
 mod error_domain_derive;
@@ -11,7 +12,6 @@ mod object_interface_attribute;
 mod object_subclass_attribute;
 mod properties;
 mod shared_boxed_derive;
-mod use_derived_properties_attribute;
 mod value_delegate_derive;
 mod variant_derive;
 
@@ -967,7 +967,7 @@ pub fn cstr_bytes(item: TokenStream) -> TokenStream {
 ///         smart_pointer: Rc<RefCell<String>>,
 ///     }
 ///     
-///     #[glib::use_derived_properties]
+///     #[glib::derived_properties]
 ///     impl ObjectImpl for Foo {}
 ///
 ///     #[glib::object_subclass]
@@ -1018,11 +1018,11 @@ pub fn derive_props(input: TokenStream) -> TokenStream {
 /// for ObjectImpl trait implementation
 #[proc_macro_attribute]
 #[proc_macro_error]
-pub fn use_derived_properties(_attr: TokenStream, item: TokenStream) -> TokenStream {
+pub fn derived_properties(_attr: TokenStream, item: TokenStream) -> TokenStream {
     use proc_macro_error::abort_call_site;
     match syn::parse::<syn::ItemImpl>(item) {
-        Ok(input) => use_derived_properties_attribute::impl_use_derived_properties(&input).into(),
-        Err(_) => abort_call_site!(use_derived_properties_attribute::WRONG_PLACE_MSG),
+        Ok(input) => derived_properties_attribute::impl_derived_properties(&input).into(),
+        Err(_) => abort_call_site!(derived_properties_attribute::WRONG_PLACE_MSG),
     }
 }
 

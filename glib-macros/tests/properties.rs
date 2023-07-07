@@ -22,7 +22,7 @@ mod base {
             not_overridden: PhantomData<u32>,
         }
 
-        #[glib::use_derived_properties]
+        #[glib::derived_properties]
         impl ObjectImpl for Base {}
 
         #[glib::object_subclass]
@@ -161,7 +161,7 @@ mod foo {
             type ParentType = Base;
         }
 
-        #[glib::use_derived_properties]
+        #[glib::derived_properties]
         impl ObjectImpl for Foo {}
 
         impl Foo {
@@ -437,7 +437,7 @@ mod kw_names {
             type Type = super::KwNames;
         }
 
-        #[glib::use_derived_properties]
+        #[glib::derived_properties]
         impl ObjectImpl for KwNames {}
     }
 
