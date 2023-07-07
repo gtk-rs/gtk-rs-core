@@ -60,14 +60,11 @@ pub fn impl_derived_properties(input: &syn::ItemImpl) -> TokenStream {
         }
     );
 
-    let generated: Vec<_> = vec![
-        (has_properties, properties),
-        (has_set_property, set_property),
-        (has_property, property),
-    ]
-    .into_iter()
-    .filter_map(|(has_method, method)| (!has_method).then_some(method))
-    .collect();
+    let generated = [
+        (!has_properties).then_some(properties),
+        (!has_set_property).then_some(set_property),
+        (!has_property).then_some(property),
+    ];
 
     quote!(
         #(#attrs)*
