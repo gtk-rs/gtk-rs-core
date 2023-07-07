@@ -11,8 +11,6 @@ mod base {
     use std::marker::PhantomData;
 
     pub mod imp {
-        use glib::{ParamSpec, Value};
-
         use super::*;
 
         #[derive(Properties, Default)]
@@ -24,17 +22,8 @@ mod base {
             not_overridden: PhantomData<u32>,
         }
 
-        impl ObjectImpl for Base {
-            fn properties() -> &'static [ParamSpec] {
-                Self::derived_properties()
-            }
-            fn set_property(&self, _id: usize, _value: &Value, _pspec: &ParamSpec) {
-                Self::derived_set_property(self, _id, _value, _pspec)
-            }
-            fn property(&self, id: usize, _pspec: &ParamSpec) -> Value {
-                Self::derived_property(self, id, _pspec)
-            }
-        }
+        #[glib::use_derived_properties]
+        impl ObjectImpl for Base {}
 
         #[glib::object_subclass]
         impl ObjectSubclass for Base {
@@ -90,7 +79,6 @@ mod foo {
     }
 
     pub mod imp {
-        use glib::{ParamSpec, Value};
         use std::rc::Rc;
 
         use super::*;
@@ -166,24 +154,15 @@ mod foo {
             construct_only_custom_setter: OnceCell<Option<String>>,
         }
 
-        impl ObjectImpl for Foo {
-            fn properties() -> &'static [ParamSpec] {
-                Self::derived_properties()
-            }
-            fn set_property(&self, _id: usize, _value: &Value, _pspec: &ParamSpec) {
-                Self::derived_set_property(self, _id, _value, _pspec)
-            }
-            fn property(&self, id: usize, _pspec: &ParamSpec) -> Value {
-                Self::derived_property(self, id, _pspec)
-            }
-        }
-
         #[glib::object_subclass]
         impl ObjectSubclass for Foo {
             const NAME: &'static str = "MyFoo";
             type Type = super::Foo;
             type ParentType = Base;
         }
+
+        #[glib::use_derived_properties]
+        impl ObjectImpl for Foo {}
 
         impl Foo {
             fn set_author_name(&self, value: String) {
@@ -417,10 +396,7 @@ mod kw_names {
         use glib::ObjectExt;
         use std::cell::Cell;
 
-        use glib::{
-            subclass::{prelude::ObjectImpl, types::ObjectSubclass},
-            ParamSpec, Value,
-        };
+        use glib::subclass::{prelude::ObjectImpl, types::ObjectSubclass};
         use glib_macros::Properties;
 
         #[derive(Properties, Default)]
@@ -461,17 +437,8 @@ mod kw_names {
             type Type = super::KwNames;
         }
 
-        impl ObjectImpl for KwNames {
-            fn properties() -> &'static [ParamSpec] {
-                Self::derived_properties()
-            }
-            fn set_property(&self, _id: usize, _value: &Value, _pspec: &ParamSpec) {
-                Self::derived_set_property(self, _id, _value, _pspec)
-            }
-            fn property(&self, id: usize, _pspec: &ParamSpec) -> Value {
-                Self::derived_property(self, id, _pspec)
-            }
-        }
+        #[glib::use_derived_properties]
+        impl ObjectImpl for KwNames {}
     }
 
     glib::wrapper! {
