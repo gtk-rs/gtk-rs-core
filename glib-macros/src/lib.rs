@@ -3,6 +3,7 @@
 mod boxed_derive;
 mod clone;
 mod closure;
+mod derived_properties_attribute;
 mod downgrade_derive;
 mod enum_derive;
 mod error_domain_derive;
@@ -942,7 +943,6 @@ pub fn cstr_bytes(item: TokenStream) -> TokenStream {
 /// }
 ///
 /// pub mod imp {
-///     use glib::{ParamSpec, Value};
 ///     use std::rc::Rc;
 ///
 ///     use super::*;
@@ -966,18 +966,9 @@ pub fn cstr_bytes(item: TokenStream) -> TokenStream {
 ///         #[property(get, set)]
 ///         smart_pointer: Rc<RefCell<String>>,
 ///     }
-///
-///     impl ObjectImpl for Foo {
-///         fn properties() -> &'static [ParamSpec] {
-///             Self::derived_properties()
-///         }
-///         fn set_property(&self, id: usize, value: &Value, pspec: &ParamSpec) {
-///             self.derived_set_property(id, value, pspec)
-///         }
-///         fn property(&self, id: usize, pspec: &ParamSpec) -> Value {
-///             self.derived_property(id, pspec)
-///         }
-///     }
+///     
+///     #[glib::derived_properties]
+///     impl ObjectImpl for Foo {}
 ///
 ///     #[glib::object_subclass]
 ///     impl ObjectSubclass for Foo {
@@ -1008,6 +999,31 @@ pub fn cstr_bytes(item: TokenStream) -> TokenStream {
 pub fn derive_props(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as properties::PropsMacroInput);
     properties::impl_derive_props(input)
+}
+
+/// This macro is shorteng for:
+///
+/// ```ignore
+///     fn properties() -> &'static [glib::ParamSpec] {
+///         Self::derived_properties()
+///     }
+///     fn set_property(&self, id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
+///         self.derived_set_property(id, value, pspec)
+///     }
+///     fn property(&self, id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+///         self.derived_property(id, pspec)
+///     }
+/// ```
+///
+/// for ObjectImpl trait implementation
+#[proc_macro_attribute]
+#[proc_macro_error]
+pub fn derived_properties(_attr: TokenStream, item: TokenStream) -> TokenStream {
+    use proc_macro_error::abort_call_site;
+    match syn::parse::<syn::ItemImpl>(item) {
+        Ok(input) => derived_properties_attribute::impl_derived_properties(&input).into(),
+        Err(_) => abort_call_site!(derived_properties_attribute::WRONG_PLACE_MSG),
+    }
 }
 
 /// # Example

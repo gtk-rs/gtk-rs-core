@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+Yuri Izmer:
+- glib-macros: Add `derived_properties` macro 
 
 ## [0.17.10]
 Ben Kimock:
