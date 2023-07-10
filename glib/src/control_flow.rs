@@ -98,6 +98,6 @@ impl crate::ToValue for ControlFlow {
 impl From<ControlFlow> for crate::Value {
     #[inline]
     fn from(v: ControlFlow) -> Self {
-        v.into()
+        bool::from(v).into()
     }
 }
