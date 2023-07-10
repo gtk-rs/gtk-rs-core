@@ -252,4 +252,44 @@ mod test {
             unsafe { <MySharedRc as SharedType>::RefCountedType::from_raw(inner_raw_ptr_clone) };
         assert_eq!(std::rc::Rc::strong_count(&b.0), 1);
     }
+
+    #[test]
+    fn from_glib_borrow_arc() {
+        assert_ne!(crate::Type::INVALID, MySharedRc::static_type());
+
+        let b = MySharedArc::from_refcounted(std::sync::Arc::new(MySharedInner {
+            foo: String::from("abc"),
+        }));
+
+        let inner_raw_ptr = std::sync::Arc::into_raw(b.clone().0);
+
+        assert_eq!(std::sync::Arc::strong_count(&b.0), 2);
+
+        unsafe {
+            let _ = MySharedArc::from_glib_borrow(inner_raw_ptr);
+            assert_eq!(std::sync::Arc::strong_count(&b.0), 2);
+        }
+
+        assert_eq!(std::sync::Arc::strong_count(&b.0), 2);
+    }
+
+    #[test]
+    fn from_glib_borrow_rc() {
+        assert_ne!(crate::Type::INVALID, MySharedRc::static_type());
+
+        let b = MySharedRc::from_refcounted(std::rc::Rc::new(MySharedInner {
+            foo: String::from("abc"),
+        }));
+
+        let inner_raw_ptr = std::rc::Rc::into_raw(b.clone().0);
+
+        assert_eq!(std::rc::Rc::strong_count(&b.0), 2);
+
+        unsafe {
+            let _ = MySharedRc::from_glib_borrow(inner_raw_ptr);
+            assert_eq!(std::rc::Rc::strong_count(&b.0), 2);
+        }
+
+        assert_eq!(std::rc::Rc::strong_count(&b.0), 2);
+    }
 }
