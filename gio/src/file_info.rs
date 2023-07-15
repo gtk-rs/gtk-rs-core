@@ -71,4 +71,30 @@ impl FileInfo {
             });
         }
     }
+
+    #[doc(alias = "g_file_info_get_attribute_byte_string")]
+    #[doc(alias = "get_attribute_byte_string")]
+    pub fn attribute_byte_string(&self, attribute: &str) -> Option<std::ffi::CString> {
+        unsafe {
+            from_glib_none(ffi::g_file_info_get_attribute_byte_string(
+                self.to_glib_none().0,
+                attribute.to_glib_none().0,
+            ))
+        }
+    }
+
+    #[doc(alias = "g_file_info_set_attribute_byte_string")]
+    pub fn set_attribute_byte_string(
+        &self,
+        attribute: &str,
+        attr_value: impl AsRef<std::ffi::CStr>,
+    ) {
+        unsafe {
+            ffi::g_file_info_set_attribute_byte_string(
+                self.to_glib_none().0,
+                attribute.to_glib_none().0,
+                attr_value.as_ref().to_glib_none().0,
+            );
+        }
+    }
 }

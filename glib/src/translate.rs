@@ -732,6 +732,14 @@ impl GlibPtrDefault for String {
     type GlibType = *mut c_char;
 }
 
+impl GlibPtrDefault for CStr {
+    type GlibType = *mut c_char;
+}
+
+impl GlibPtrDefault for CString {
+    type GlibType = *mut c_char;
+}
+
 #[cfg(not(windows))]
 pub(crate) fn path_to_c(path: &Path) -> CString {
     // GLib paths on UNIX are always in the local encoding, just like in Rust
@@ -1703,6 +1711,40 @@ impl FromGlibPtrNone<*mut c_char> for String {
 
 // TODO: Deprecate this
 impl FromGlibPtrFull<*mut c_char> for String {
+    #[inline]
+    unsafe fn from_glib_full(ptr: *mut c_char) -> Self {
+        let res = from_glib_none(ptr);
+        ffi::g_free(ptr as *mut _);
+        res
+    }
+}
+
+impl FromGlibPtrNone<*const c_char> for CString {
+    #[inline]
+    unsafe fn from_glib_none(ptr: *const c_char) -> Self {
+        debug_assert!(!ptr.is_null());
+        CStr::from_ptr(ptr).to_owned()
+    }
+}
+
+impl FromGlibPtrFull<*const c_char> for CString {
+    #[inline]
+    unsafe fn from_glib_full(ptr: *const c_char) -> Self {
+        let res = from_glib_none(ptr);
+        ffi::g_free(ptr as *mut _);
+        res
+    }
+}
+
+impl FromGlibPtrNone<*mut c_char> for CString {
+    #[inline]
+    unsafe fn from_glib_none(ptr: *mut c_char) -> Self {
+        debug_assert!(!ptr.is_null());
+        CStr::from_ptr(ptr).to_owned()
+    }
+}
+
+impl FromGlibPtrFull<*mut c_char> for CString {
     #[inline]
     unsafe fn from_glib_full(ptr: *mut c_char) -> Self {
         let res = from_glib_none(ptr);
