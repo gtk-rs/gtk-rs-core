@@ -12,7 +12,7 @@ pub use glib;
 mod auto;
 pub use crate::{
     auto::{functions::*, *},
-    functions::*,
+    manual_functions::*,
 };
 
 #[doc(alias = "PANGO_SCALE")]
@@ -97,8 +97,8 @@ mod color;
 mod coverage;
 pub use coverage::Coverage;
 mod enums;
-mod functions;
 mod glyph_geometry;
+mod manual_functions;
 pub use glyph_geometry::GlyphGeometry;
 mod glyph_info;
 pub use glyph_info::GlyphInfo;
