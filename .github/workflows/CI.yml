@@ -69,11 +69,7 @@ jobs:
       # not nightly
       # clippy
       - run: rustup component add clippy
-        if: matrix.rust == 'beta' || matrix.rust == 'stable'
-      - working-directory: ${{ matrix.conf.name }}
-        name: clippy ${{ matrix.conf.name }}
-        run: cargo clippy --all-targets
-        if: matrix.rust == 'beta'
+        if: matrix.rust == 'stable'
       - working-directory: ${{ matrix.conf.name }}
         name: clippy ${{ matrix.conf.name }}
         run: cargo clippy --all-targets -- -D warnings
