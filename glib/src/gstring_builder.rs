@@ -116,7 +116,7 @@ impl GStringBuilder {
     }
 
     // rustdoc-stripper-ignore-next
-    /// Returns <code>&[str]</code> slice.
+    /// Returns `&[str]` slice.
     #[inline]
     pub fn as_str(&self) -> &str {
         unsafe {
