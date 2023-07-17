@@ -1064,7 +1064,7 @@ impl From<StrV> for crate::Value {
 }
 
 // rustdoc-stripper-ignore-next
-/// A trait to accept both <code>&[T]</code> or <code>StrV</code> as an argument.
+/// A trait to accept both `&[T]` or `StrV` as an argument.
 pub trait IntoStrV {
     // rustdoc-stripper-ignore-next
     /// Runs the given closure with a `NULL`-terminated array.
