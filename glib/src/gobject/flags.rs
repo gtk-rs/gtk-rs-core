@@ -18,7 +18,8 @@ bitflags::bitflags! {
         const CONSTRUCT_ONLY = gobject_ffi::G_PARAM_CONSTRUCT_ONLY as _;
         #[doc(alias = "G_PARAM_LAX_VALIDATION")]
         const LAX_VALIDATION = gobject_ffi::G_PARAM_LAX_VALIDATION as _;
-        const USER_1 = 256;
+        const USER_0 = 256;
+        const USER_1 = 512;
         const USER_2 = 1024;
         const USER_3 = 2048;
         const USER_4 = 4096;
