@@ -4,6 +4,7 @@ use std::{
     char::CharTryFromError,
     convert::TryFrom,
     ffi::CStr,
+    num::{NonZeroI32, NonZeroI64, NonZeroI8, NonZeroU32, NonZeroU64, NonZeroU8},
     path::{Path, PathBuf},
 };
 
@@ -2174,87 +2175,36 @@ impl HasParamSpec for char {
         Self::ParamSpec::builder
     }
 }
-impl HasParamSpec for f64 {
-    type ParamSpec = ParamSpecDouble;
-    type SetValue = Self;
-    type BuilderFn = fn(&str) -> ParamSpecDoubleBuilder;
+// Simple types which have `type SetValue = Self`
+// and a builder function that doesn't require any parameter except the name
+macro_rules! has_simple_spec {
+    ($t:ty, $s:ty, $b:ty) => {
+        impl HasParamSpec for $t {
+            type ParamSpec = $s;
+            type SetValue = Self;
+            type BuilderFn = fn(&str) -> $b;
 
-    fn param_spec_builder() -> Self::BuilderFn {
-        Self::ParamSpec::builder
-    }
+            fn param_spec_builder() -> Self::BuilderFn {
+                Self::ParamSpec::builder
+            }
+        }
+    };
 }
-impl HasParamSpec for f32 {
-    type ParamSpec = ParamSpecFloat;
-    type SetValue = Self;
-    type BuilderFn = fn(&str) -> ParamSpecFloatBuilder;
-
-    fn param_spec_builder() -> Self::BuilderFn {
-        Self::ParamSpec::builder
-    }
-}
-impl HasParamSpec for i64 {
-    type ParamSpec = ParamSpecInt64;
-    type SetValue = Self;
-    type BuilderFn = fn(&str) -> ParamSpecInt64Builder;
-
-    fn param_spec_builder() -> Self::BuilderFn {
-        Self::ParamSpec::builder
-    }
-}
-impl HasParamSpec for i32 {
-    type ParamSpec = ParamSpecInt;
-    type SetValue = Self;
-    type BuilderFn = fn(&str) -> ParamSpecIntBuilder;
-
-    fn param_spec_builder() -> Self::BuilderFn {
-        Self::ParamSpec::builder
-    }
-}
-impl HasParamSpec for i8 {
-    type ParamSpec = ParamSpecChar;
-    type SetValue = Self;
-    type BuilderFn = fn(&str) -> ParamSpecCharBuilder;
-
-    fn param_spec_builder() -> Self::BuilderFn {
-        Self::ParamSpec::builder
-    }
-}
-impl HasParamSpec for u64 {
-    type ParamSpec = ParamSpecUInt64;
-    type SetValue = Self;
-    type BuilderFn = fn(&str) -> ParamSpecUInt64Builder;
-
-    fn param_spec_builder() -> Self::BuilderFn {
-        Self::ParamSpec::builder
-    }
-}
-impl HasParamSpec for u32 {
-    type ParamSpec = ParamSpecUInt;
-    type SetValue = Self;
-    type BuilderFn = fn(&str) -> ParamSpecUIntBuilder;
-
-    fn param_spec_builder() -> Self::BuilderFn {
-        Self::ParamSpec::builder
-    }
-}
-impl HasParamSpec for u8 {
-    type ParamSpec = ParamSpecUChar;
-    type SetValue = Self;
-    type BuilderFn = fn(&str) -> ParamSpecUCharBuilder;
-
-    fn param_spec_builder() -> Self::BuilderFn {
-        Self::ParamSpec::builder
-    }
-}
-impl HasParamSpec for bool {
-    type ParamSpec = ParamSpecBoolean;
-    type SetValue = Self;
-    type BuilderFn = fn(&str) -> ParamSpecBooleanBuilder;
-
-    fn param_spec_builder() -> Self::BuilderFn {
-        Self::ParamSpec::builder
-    }
-}
+has_simple_spec!(f64, ParamSpecDouble, ParamSpecDoubleBuilder);
+has_simple_spec!(f32, ParamSpecFloat, ParamSpecFloatBuilder);
+has_simple_spec!(i64, ParamSpecInt64, ParamSpecInt64Builder);
+has_simple_spec!(NonZeroI64, ParamSpecInt64, ParamSpecInt64Builder);
+has_simple_spec!(i32, ParamSpecInt, ParamSpecIntBuilder);
+has_simple_spec!(NonZeroI32, ParamSpecInt, ParamSpecIntBuilder);
+has_simple_spec!(i8, ParamSpecChar, ParamSpecCharBuilder);
+has_simple_spec!(NonZeroI8, ParamSpecChar, ParamSpecCharBuilder);
+has_simple_spec!(u64, ParamSpecUInt64, ParamSpecUInt64Builder);
+has_simple_spec!(NonZeroU64, ParamSpecUInt64, ParamSpecUInt64Builder);
+has_simple_spec!(u32, ParamSpecUInt, ParamSpecUIntBuilder);
+has_simple_spec!(NonZeroU32, ParamSpecUInt, ParamSpecUIntBuilder);
+has_simple_spec!(u8, ParamSpecUChar, ParamSpecUCharBuilder);
+has_simple_spec!(NonZeroU8, ParamSpecUChar, ParamSpecUCharBuilder);
+has_simple_spec!(bool, ParamSpecBoolean, ParamSpecBooleanBuilder);
 
 impl HasParamSpec for crate::Variant {
     type ParamSpec = ParamSpecVariant;

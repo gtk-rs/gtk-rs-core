@@ -7,6 +7,7 @@ use std::{
     fmt,
     marker::PhantomData,
     mem,
+    num::{NonZeroI32, NonZeroI64, NonZeroI8, NonZeroU32, NonZeroU64, NonZeroU8},
     path::{Path, PathBuf},
     ptr,
 };
@@ -491,11 +492,17 @@ impl PartialOrd<ULong> for libc::c_ulong {
 
 builtin!(bool, BOOL);
 builtin!(i8, I8);
+builtin!(NonZeroI8, I8);
 builtin!(u8, U8);
+builtin!(NonZeroU8, U8);
 builtin!(i32, I32);
+builtin!(NonZeroI32, I32);
 builtin!(u32, U32);
+builtin!(NonZeroU32, U32);
 builtin!(i64, I64);
+builtin!(NonZeroI64, I64);
 builtin!(u64, U64);
+builtin!(NonZeroU64, U64);
 builtin!(ILong, I_LONG);
 builtin!(ULong, U_LONG);
 builtin!(f32, F32);
