@@ -45,6 +45,7 @@ use std::{
     error,
     ffi::CStr,
     fmt, mem,
+    num::{NonZeroI32, NonZeroI64, NonZeroI8, NonZeroU32, NonZeroU64, NonZeroU8},
     ops::Deref,
     path::{Path, PathBuf},
     ptr,
@@ -1244,37 +1245,90 @@ macro_rules! numeric {
         }
     };
 }
+macro_rules! not_zero {
+    ($name:ty, $num:ty) => {
+        impl ValueType for $name {
+            type Type = $name;
+        }
+
+        unsafe impl<'a> FromValue<'a> for $name {
+            // Works because it returns `UnexpectedNone` if the value is NULL
+            // by checking it against `0`.
+            type Checker = GenericValueTypeOrNoneChecker<Self>;
+
+            #[inline]
+            unsafe fn from_value(value: &'a Value) -> Self {
+                let res = <$num>::from_value(value);
+                Self::try_from(res).unwrap()
+            }
+        }
+
+        impl ToValue for $name {
+            #[inline]
+            fn to_value(&self) -> Value {
+                <$num>::to_value(&<$num>::from(*self))
+            }
+
+            #[inline]
+            fn value_type(&self) -> Type {
+                Self::static_type()
+            }
+        }
+
+        impl From<$name> for Value {
+            #[inline]
+            fn from(v: $name) -> Self {
+                v.to_value()
+            }
+        }
+
+        impl ToValueOptional for $name {
+            fn to_value_optional(s: Option<&Self>) -> Value {
+                match s {
+                    Some(x) => x.to_value(),
+                    None => <$num>::to_value(&0),
+                }
+            }
+        }
+    };
+}
 
 numeric!(
     i8,
     gobject_ffi::g_value_get_schar,
     gobject_ffi::g_value_set_schar
 );
+not_zero!(NonZeroI8, i8);
 numeric!(
     u8,
     gobject_ffi::g_value_get_uchar,
     gobject_ffi::g_value_set_uchar
 );
+not_zero!(NonZeroU8, u8);
 numeric!(
     i32,
     gobject_ffi::g_value_get_int,
     gobject_ffi::g_value_set_int
 );
+not_zero!(NonZeroI32, i32);
 numeric!(
     u32,
     gobject_ffi::g_value_get_uint,
     gobject_ffi::g_value_set_uint
 );
+not_zero!(NonZeroU32, u32);
 numeric!(
     i64,
     gobject_ffi::g_value_get_int64,
     gobject_ffi::g_value_set_int64
 );
+not_zero!(NonZeroI64, i64);
 numeric!(
     u64,
     gobject_ffi::g_value_get_uint64,
     gobject_ffi::g_value_set_uint64
 );
+not_zero!(NonZeroU64, u64);
 numeric!(
     crate::ILong,
     |v| gobject_ffi::g_value_get_long(v).into(),
@@ -1417,6 +1471,8 @@ impl ToValueOptional for BoxedValue {
 
 #[cfg(test)]
 mod tests {
+    use std::num::NonZeroI32;
+
     use super::*;
 
     #[test]
@@ -1557,6 +1613,21 @@ mod tests {
             none_v.get::<i32>(),
             Err(ValueTypeMismatchError::new(Type::STRING, Type::I32))
         );
+
+        // Check handling of NonZeroT
+        let v = NonZeroI32::new(123).unwrap().to_value();
+        assert_eq!(v.get::<NonZeroI32>(), Ok(NonZeroI32::new(123).unwrap()));
+
+        let v = 123i32.to_value();
+        assert_eq!(v.get::<NonZeroI32>(), Ok(NonZeroI32::new(123).unwrap()));
+
+        let v = 0i32.to_value();
+        assert_eq!(
+            v.get::<NonZeroI32>(),
+            Err(ValueTypeMismatchOrNoneError::UnexpectedNone)
+        );
+
+        assert_eq!(v.get::<Option<NonZeroI32>>(), Ok(None));
     }
 
     #[test]
