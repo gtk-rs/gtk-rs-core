@@ -1,6 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use std::cmp::Ordering;
+use std::{cell::Cell, cmp::Ordering, rc::Rc};
 
 use glib::{prelude::*, translate::*, Object};
 
@@ -74,6 +74,60 @@ impl ListStore {
     /// Appends all elements in a slice to the `ListStore`.
     pub fn extend_from_slice(&self, additions: &[impl IsA<glib::Object>]) {
         self.splice(self.n_items(), 0, additions)
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Retains only the elements specified by the predicate.
+    /// This method operates in place, visiting each element exactly once in the original order,
+    /// and preserves the order of the retained elements.
+    /// Because the elements are visited exactly once in the original order,
+    /// external state may be used to decide which elements to keep.
+    ///
+    /// # Panics
+    /// Panics if the predicate closure mutates the list by removing or adding items.
+    pub fn retain(&self, mut f: impl FnMut(&glib::Object) -> bool) {
+        let mut consec_removed = 0;
+        let mut i = 0;
+        const ADDITIONS: &[glib::Object] = &[]; // To satisfy the type checker
+
+        let changed = Rc::new(Cell::new(false));
+        let changed_clone = changed.clone();
+        let signal_id = self.connect_items_changed(move |_list, _, _, _| changed_clone.set(true));
+
+        let _signal_guard = {
+            struct Guard<'a> {
+                list_store: &'a ListStore,
+                signal_id: Option<glib::SignalHandlerId>,
+            }
+            impl Drop for Guard<'_> {
+                fn drop(&mut self) {
+                    self.list_store.disconnect(self.signal_id.take().unwrap());
+                }
+            }
+            Guard {
+                list_store: self,
+                signal_id: Some(signal_id),
+            }
+        };
+
+        while i < self.n_items() {
+            let keep = f(self.item(i).unwrap().as_ref());
+            if changed.get() {
+                panic!("The closure passed to ListStore::retain() must not mutate the list store");
+            }
+            if !keep {
+                consec_removed += 1;
+            } else if consec_removed > 0 {
+                self.splice(i - consec_removed, consec_removed, ADDITIONS);
+                changed.set(false);
+                i -= consec_removed;
+                consec_removed = 0;
+            }
+            i += 1;
+        }
+        if consec_removed > 0 {
+            self.splice(i - consec_removed, consec_removed, ADDITIONS);
+        }
     }
 
     #[cfg(feature = "v2_74")]
@@ -222,5 +276,47 @@ mod tests {
 
         let res = list.find_with_equal_func(|item| item == &item1);
         assert_eq!(res, Some(1));
+    }
+
+    #[test]
+    fn retain() {
+        let list = {
+            let list = ListStore::new::<ListStore>();
+            for _ in 0..10 {
+                list.append(&ListStore::new::<ListStore>());
+            }
+            list
+        };
+
+        use std::cell::Cell;
+        use std::rc::Rc;
+
+        let signal_count = Rc::new(Cell::new(0));
+        let signal_count_clone = signal_count.clone();
+        list.connect_items_changed(move |_, _, _, _| {
+            signal_count_clone.set(signal_count_clone.get() + 1);
+        });
+
+        let to_keep = [
+            // list.item(0).unwrap(),
+            list.item(1).unwrap(),
+            // list.item(2).unwrap(),
+            list.item(3).unwrap(),
+            // list.item(4).unwrap(),
+            // list.item(5).unwrap(),
+            // list.item(6).unwrap(),
+            list.item(7).unwrap(),
+            // list.item(8).unwrap(),
+            // list.item(9).unwrap(),
+        ];
+        list.retain(|item| to_keep.contains(item));
+
+        // Check that we removed the correct items
+        assert_eq!(list.n_items(), 3);
+        assert_eq!(list.item(0).as_ref(), Some(&to_keep[0]));
+        assert_eq!(list.item(1).as_ref(), Some(&to_keep[1]));
+        assert_eq!(list.item(2).as_ref(), Some(&to_keep[2]));
+
+        assert_eq!(signal_count.get(), 4);
     }
 }
