@@ -47,11 +47,9 @@ impl<T: Property> Property for once_cell::sync::OnceCell<T> {
 impl<T: Property> Property for once_cell::unsync::OnceCell<T> {
     type Value = T::Value;
 }
-#[cfg(feature = "std_once_cell")]
 impl<T: Property> Property for std::cell::OnceCell<T> {
     type Value = T::Value;
 }
-#[cfg(feature = "std_once_cell")]
 impl<T: Property> Property for std::sync::OnceLock<T> {
     type Value = T::Value;
 }
@@ -187,21 +185,18 @@ impl<T> PropertySet for once_cell::unsync::OnceCell<T> {
     }
 }
 
-#[cfg(feature = "std_once_cell")]
 impl<T> PropertyGet for std::cell::OnceCell<T> {
     type Value = T;
     fn get<R, F: Fn(&Self::Value) -> R>(&self, f: F) -> R {
         f(self.get().unwrap())
     }
 }
-#[cfg(feature = "std_once_cell")]
 impl<T> PropertyGet for std::sync::OnceLock<T> {
     type Value = T;
     fn get<R, F: Fn(&Self::Value) -> R>(&self, f: F) -> R {
         f(self.get().unwrap())
     }
 }
-#[cfg(feature = "std_once_cell")]
 impl<T> PropertySet for std::cell::OnceCell<T> {
     type SetValue = T;
     fn set(&self, v: Self::SetValue) {
@@ -211,7 +206,6 @@ impl<T> PropertySet for std::cell::OnceCell<T> {
         };
     }
 }
-#[cfg(feature = "std_once_cell")]
 impl<T> PropertySet for std::sync::OnceLock<T> {
     type SetValue = T;
     fn set(&self, v: Self::SetValue) {
