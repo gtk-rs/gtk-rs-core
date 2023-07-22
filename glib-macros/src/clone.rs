@@ -195,6 +195,7 @@ let {0} = match {1}::clone::Upgrade::upgrade(&{0}) {{
                 )
             }
             (BorrowKind::Weak, Some(WrapperKind::DefaultReturn(ref r))) => {
+                let not_unit_ret = r.chars().any(|c| c != '(' && c != ')' && c != ' ');
                 format!(
                     "\
 let {0} = match {1}::clone::Upgrade::upgrade(&{0}) {{
@@ -210,7 +211,7 @@ let {0} = match {1}::clone::Upgrade::upgrade(&{0}) {{
 }};",
                     name,
                     crate_ident_new(),
-                    r,
+                    if not_unit_ret { r } else { "" },
                 )
             }
             (BorrowKind::Weak, None) => {

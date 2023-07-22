@@ -267,3 +267,24 @@ fn clone_failures() {
         t.compile_fail_inline_check_sub(&format!("test_{index}"), &output, err);
     }
 }
+
+const NO_WARNING: &[&str] = &[
+    "clone!(@weak v => @default-return (), move || println!(\"{}\", v);)",
+    "clone!(@weak v => @default-return (()), move || println!(\"{}\", v);)",
+    "clone!(@weak v => @default-return ( () ), move || println!(\"{}\", v);)",
+    "clone!(@weak v => @default-return (  ), move || println!(\"{}\", v);)",
+];
+
+// Ensures that no warning are emitted if the default-return is a unit tuple.
+#[test]
+fn clone_unit_tuple_return() {
+    let t = trybuild2::TestCases::new();
+
+    for (index, expr) in NO_WARNING.iter().enumerate() {
+        let prefix = "fn main() { use glib::clone; let v = std::rc::Rc::new(1); ";
+        let suffix = "; }";
+        let output = format!("{prefix}{expr}{suffix}");
+
+        t.pass_inline(&format!("test_{index}"), &output);
+    }
+}
