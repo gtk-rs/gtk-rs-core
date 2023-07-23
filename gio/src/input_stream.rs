@@ -450,7 +450,9 @@ impl<T: IsA<InputStream>> InputStreamAsyncBufRead<T> {
                         }
                     }
                     Poll::Ready(Err((_, err))) => {
-                        let kind = err.kind::<crate::IOErrorEnum>().unwrap();
+                        let kind = err
+                            .kind::<crate::IOErrorEnum>()
+                            .unwrap_or(crate::IOErrorEnum::Failed);
                         self.state = State::Failed(kind);
                         Poll::Ready(Err(io::Error::new(io::ErrorKind::from(kind), err)))
                     }
