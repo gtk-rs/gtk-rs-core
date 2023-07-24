@@ -1001,9 +1001,14 @@ pub fn derive_props(input: TokenStream) -> TokenStream {
     properties::impl_derive_props(input)
 }
 
-/// This macro is shorteng for:
-///
+/// When applied to `ObjectImpl`
 /// ```ignore
+/// #[glib::derived_properties]
+/// impl ObjectImpl for CustomObject
+/// ```
+/// this macro generates
+/// ```ignore
+/// impl ObjectImpl for CustomObject {
 ///     fn properties() -> &'static [glib::ParamSpec] {
 ///         Self::derived_properties()
 ///     }
@@ -1013,9 +1018,8 @@ pub fn derive_props(input: TokenStream) -> TokenStream {
 ///     fn property(&self, id: usize, pspec: &glib::ParamSpec) -> glib::Value {
 ///         self.derived_property(id, pspec)
 ///     }
+/// }
 /// ```
-///
-/// for ObjectImpl trait implementation
 #[proc_macro_attribute]
 #[proc_macro_error]
 pub fn derived_properties(_attr: TokenStream, item: TokenStream) -> TokenStream {
