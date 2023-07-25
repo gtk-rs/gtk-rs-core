@@ -1054,6 +1054,261 @@ impl FromGlib<ffi::GTimeType> for TimeType {
 
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
+#[doc(alias = "GUnicodeBreakType")]
+pub enum UnicodeBreakType {
+    #[doc(alias = "G_UNICODE_BREAK_MANDATORY")]
+    Mandatory,
+    #[doc(alias = "G_UNICODE_BREAK_CARRIAGE_RETURN")]
+    CarriageReturn,
+    #[doc(alias = "G_UNICODE_BREAK_LINE_FEED")]
+    LineFeed,
+    #[doc(alias = "G_UNICODE_BREAK_COMBINING_MARK")]
+    CombiningMark,
+    #[doc(alias = "G_UNICODE_BREAK_SURROGATE")]
+    Surrogate,
+    #[doc(alias = "G_UNICODE_BREAK_ZERO_WIDTH_SPACE")]
+    ZeroWidthSpace,
+    #[doc(alias = "G_UNICODE_BREAK_INSEPARABLE")]
+    Inseparable,
+    #[doc(alias = "G_UNICODE_BREAK_NON_BREAKING_GLUE")]
+    NonBreakingGlue,
+    #[doc(alias = "G_UNICODE_BREAK_CONTINGENT")]
+    Contingent,
+    #[doc(alias = "G_UNICODE_BREAK_SPACE")]
+    Space,
+    #[doc(alias = "G_UNICODE_BREAK_AFTER")]
+    After,
+    #[doc(alias = "G_UNICODE_BREAK_BEFORE")]
+    Before,
+    #[doc(alias = "G_UNICODE_BREAK_BEFORE_AND_AFTER")]
+    BeforeAndAfter,
+    #[doc(alias = "G_UNICODE_BREAK_HYPHEN")]
+    Hyphen,
+    #[doc(alias = "G_UNICODE_BREAK_NON_STARTER")]
+    NonStarter,
+    #[doc(alias = "G_UNICODE_BREAK_OPEN_PUNCTUATION")]
+    OpenPunctuation,
+    #[doc(alias = "G_UNICODE_BREAK_CLOSE_PUNCTUATION")]
+    ClosePunctuation,
+    #[doc(alias = "G_UNICODE_BREAK_QUOTATION")]
+    Quotation,
+    #[doc(alias = "G_UNICODE_BREAK_EXCLAMATION")]
+    Exclamation,
+    #[doc(alias = "G_UNICODE_BREAK_IDEOGRAPHIC")]
+    Ideographic,
+    #[doc(alias = "G_UNICODE_BREAK_NUMERIC")]
+    Numeric,
+    #[doc(alias = "G_UNICODE_BREAK_INFIX_SEPARATOR")]
+    InfixSeparator,
+    #[doc(alias = "G_UNICODE_BREAK_SYMBOL")]
+    Symbol,
+    #[doc(alias = "G_UNICODE_BREAK_ALPHABETIC")]
+    Alphabetic,
+    #[doc(alias = "G_UNICODE_BREAK_PREFIX")]
+    Prefix,
+    #[doc(alias = "G_UNICODE_BREAK_POSTFIX")]
+    Postfix,
+    #[doc(alias = "G_UNICODE_BREAK_COMPLEX_CONTEXT")]
+    ComplexContext,
+    #[doc(alias = "G_UNICODE_BREAK_AMBIGUOUS")]
+    Ambiguous,
+    #[doc(alias = "G_UNICODE_BREAK_UNKNOWN")]
+    Unknown,
+    #[doc(alias = "G_UNICODE_BREAK_NEXT_LINE")]
+    NextLine,
+    #[doc(alias = "G_UNICODE_BREAK_WORD_JOINER")]
+    WordJoiner,
+    #[doc(alias = "G_UNICODE_BREAK_HANGUL_L_JAMO")]
+    HangulLJamo,
+    #[doc(alias = "G_UNICODE_BREAK_HANGUL_V_JAMO")]
+    HangulVJamo,
+    #[doc(alias = "G_UNICODE_BREAK_HANGUL_T_JAMO")]
+    HangulTJamo,
+    #[doc(alias = "G_UNICODE_BREAK_HANGUL_LV_SYLLABLE")]
+    HangulLvSyllable,
+    #[doc(alias = "G_UNICODE_BREAK_HANGUL_LVT_SYLLABLE")]
+    HangulLvtSyllable,
+    #[doc(alias = "G_UNICODE_BREAK_CLOSE_PARENTHESIS")]
+    CloseParenthesis,
+    #[doc(alias = "G_UNICODE_BREAK_CONDITIONAL_JAPANESE_STARTER")]
+    ConditionalJapaneseStarter,
+    #[doc(alias = "G_UNICODE_BREAK_HEBREW_LETTER")]
+    HebrewLetter,
+    #[doc(alias = "G_UNICODE_BREAK_REGIONAL_INDICATOR")]
+    RegionalIndicator,
+    #[doc(alias = "G_UNICODE_BREAK_EMOJI_BASE")]
+    EmojiBase,
+    #[doc(alias = "G_UNICODE_BREAK_EMOJI_MODIFIER")]
+    EmojiModifier,
+    #[doc(alias = "G_UNICODE_BREAK_ZERO_WIDTH_JOINER")]
+    ZeroWidthJoiner,
+    #[doc(hidden)]
+    __Unknown(i32),
+}
+
+impl fmt::Display for UnicodeBreakType {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(
+            f,
+            "UnicodeBreakType::{}",
+            match *self {
+                Self::Mandatory => "Mandatory",
+                Self::CarriageReturn => "CarriageReturn",
+                Self::LineFeed => "LineFeed",
+                Self::CombiningMark => "CombiningMark",
+                Self::Surrogate => "Surrogate",
+                Self::ZeroWidthSpace => "ZeroWidthSpace",
+                Self::Inseparable => "Inseparable",
+                Self::NonBreakingGlue => "NonBreakingGlue",
+                Self::Contingent => "Contingent",
+                Self::Space => "Space",
+                Self::After => "After",
+                Self::Before => "Before",
+                Self::BeforeAndAfter => "BeforeAndAfter",
+                Self::Hyphen => "Hyphen",
+                Self::NonStarter => "NonStarter",
+                Self::OpenPunctuation => "OpenPunctuation",
+                Self::ClosePunctuation => "ClosePunctuation",
+                Self::Quotation => "Quotation",
+                Self::Exclamation => "Exclamation",
+                Self::Ideographic => "Ideographic",
+                Self::Numeric => "Numeric",
+                Self::InfixSeparator => "InfixSeparator",
+                Self::Symbol => "Symbol",
+                Self::Alphabetic => "Alphabetic",
+                Self::Prefix => "Prefix",
+                Self::Postfix => "Postfix",
+                Self::ComplexContext => "ComplexContext",
+                Self::Ambiguous => "Ambiguous",
+                Self::Unknown => "Unknown",
+                Self::NextLine => "NextLine",
+                Self::WordJoiner => "WordJoiner",
+                Self::HangulLJamo => "HangulLJamo",
+                Self::HangulVJamo => "HangulVJamo",
+                Self::HangulTJamo => "HangulTJamo",
+                Self::HangulLvSyllable => "HangulLvSyllable",
+                Self::HangulLvtSyllable => "HangulLvtSyllable",
+                Self::CloseParenthesis => "CloseParenthesis",
+                Self::ConditionalJapaneseStarter => "ConditionalJapaneseStarter",
+                Self::HebrewLetter => "HebrewLetter",
+                Self::RegionalIndicator => "RegionalIndicator",
+                Self::EmojiBase => "EmojiBase",
+                Self::EmojiModifier => "EmojiModifier",
+                Self::ZeroWidthJoiner => "ZeroWidthJoiner",
+                _ => "Unknown",
+            }
+        )
+    }
+}
+
+#[doc(hidden)]
+impl IntoGlib for UnicodeBreakType {
+    type GlibType = ffi::GUnicodeBreakType;
+
+    fn into_glib(self) -> ffi::GUnicodeBreakType {
+        match self {
+            Self::Mandatory => ffi::G_UNICODE_BREAK_MANDATORY,
+            Self::CarriageReturn => ffi::G_UNICODE_BREAK_CARRIAGE_RETURN,
+            Self::LineFeed => ffi::G_UNICODE_BREAK_LINE_FEED,
+            Self::CombiningMark => ffi::G_UNICODE_BREAK_COMBINING_MARK,
+            Self::Surrogate => ffi::G_UNICODE_BREAK_SURROGATE,
+            Self::ZeroWidthSpace => ffi::G_UNICODE_BREAK_ZERO_WIDTH_SPACE,
+            Self::Inseparable => ffi::G_UNICODE_BREAK_INSEPARABLE,
+            Self::NonBreakingGlue => ffi::G_UNICODE_BREAK_NON_BREAKING_GLUE,
+            Self::Contingent => ffi::G_UNICODE_BREAK_CONTINGENT,
+            Self::Space => ffi::G_UNICODE_BREAK_SPACE,
+            Self::After => ffi::G_UNICODE_BREAK_AFTER,
+            Self::Before => ffi::G_UNICODE_BREAK_BEFORE,
+            Self::BeforeAndAfter => ffi::G_UNICODE_BREAK_BEFORE_AND_AFTER,
+            Self::Hyphen => ffi::G_UNICODE_BREAK_HYPHEN,
+            Self::NonStarter => ffi::G_UNICODE_BREAK_NON_STARTER,
+            Self::OpenPunctuation => ffi::G_UNICODE_BREAK_OPEN_PUNCTUATION,
+            Self::ClosePunctuation => ffi::G_UNICODE_BREAK_CLOSE_PUNCTUATION,
+            Self::Quotation => ffi::G_UNICODE_BREAK_QUOTATION,
+            Self::Exclamation => ffi::G_UNICODE_BREAK_EXCLAMATION,
+            Self::Ideographic => ffi::G_UNICODE_BREAK_IDEOGRAPHIC,
+            Self::Numeric => ffi::G_UNICODE_BREAK_NUMERIC,
+            Self::InfixSeparator => ffi::G_UNICODE_BREAK_INFIX_SEPARATOR,
+            Self::Symbol => ffi::G_UNICODE_BREAK_SYMBOL,
+            Self::Alphabetic => ffi::G_UNICODE_BREAK_ALPHABETIC,
+            Self::Prefix => ffi::G_UNICODE_BREAK_PREFIX,
+            Self::Postfix => ffi::G_UNICODE_BREAK_POSTFIX,
+            Self::ComplexContext => ffi::G_UNICODE_BREAK_COMPLEX_CONTEXT,
+            Self::Ambiguous => ffi::G_UNICODE_BREAK_AMBIGUOUS,
+            Self::Unknown => ffi::G_UNICODE_BREAK_UNKNOWN,
+            Self::NextLine => ffi::G_UNICODE_BREAK_NEXT_LINE,
+            Self::WordJoiner => ffi::G_UNICODE_BREAK_WORD_JOINER,
+            Self::HangulLJamo => ffi::G_UNICODE_BREAK_HANGUL_L_JAMO,
+            Self::HangulVJamo => ffi::G_UNICODE_BREAK_HANGUL_V_JAMO,
+            Self::HangulTJamo => ffi::G_UNICODE_BREAK_HANGUL_T_JAMO,
+            Self::HangulLvSyllable => ffi::G_UNICODE_BREAK_HANGUL_LV_SYLLABLE,
+            Self::HangulLvtSyllable => ffi::G_UNICODE_BREAK_HANGUL_LVT_SYLLABLE,
+            Self::CloseParenthesis => ffi::G_UNICODE_BREAK_CLOSE_PARENTHESIS,
+            Self::ConditionalJapaneseStarter => ffi::G_UNICODE_BREAK_CONDITIONAL_JAPANESE_STARTER,
+            Self::HebrewLetter => ffi::G_UNICODE_BREAK_HEBREW_LETTER,
+            Self::RegionalIndicator => ffi::G_UNICODE_BREAK_REGIONAL_INDICATOR,
+            Self::EmojiBase => ffi::G_UNICODE_BREAK_EMOJI_BASE,
+            Self::EmojiModifier => ffi::G_UNICODE_BREAK_EMOJI_MODIFIER,
+            Self::ZeroWidthJoiner => ffi::G_UNICODE_BREAK_ZERO_WIDTH_JOINER,
+            Self::__Unknown(value) => value,
+        }
+    }
+}
+
+#[doc(hidden)]
+impl FromGlib<ffi::GUnicodeBreakType> for UnicodeBreakType {
+    unsafe fn from_glib(value: ffi::GUnicodeBreakType) -> Self {
+        match value {
+            ffi::G_UNICODE_BREAK_MANDATORY => Self::Mandatory,
+            ffi::G_UNICODE_BREAK_CARRIAGE_RETURN => Self::CarriageReturn,
+            ffi::G_UNICODE_BREAK_LINE_FEED => Self::LineFeed,
+            ffi::G_UNICODE_BREAK_COMBINING_MARK => Self::CombiningMark,
+            ffi::G_UNICODE_BREAK_SURROGATE => Self::Surrogate,
+            ffi::G_UNICODE_BREAK_ZERO_WIDTH_SPACE => Self::ZeroWidthSpace,
+            ffi::G_UNICODE_BREAK_INSEPARABLE => Self::Inseparable,
+            ffi::G_UNICODE_BREAK_NON_BREAKING_GLUE => Self::NonBreakingGlue,
+            ffi::G_UNICODE_BREAK_CONTINGENT => Self::Contingent,
+            ffi::G_UNICODE_BREAK_SPACE => Self::Space,
+            ffi::G_UNICODE_BREAK_AFTER => Self::After,
+            ffi::G_UNICODE_BREAK_BEFORE => Self::Before,
+            ffi::G_UNICODE_BREAK_BEFORE_AND_AFTER => Self::BeforeAndAfter,
+            ffi::G_UNICODE_BREAK_HYPHEN => Self::Hyphen,
+            ffi::G_UNICODE_BREAK_NON_STARTER => Self::NonStarter,
+            ffi::G_UNICODE_BREAK_OPEN_PUNCTUATION => Self::OpenPunctuation,
+            ffi::G_UNICODE_BREAK_CLOSE_PUNCTUATION => Self::ClosePunctuation,
+            ffi::G_UNICODE_BREAK_QUOTATION => Self::Quotation,
+            ffi::G_UNICODE_BREAK_EXCLAMATION => Self::Exclamation,
+            ffi::G_UNICODE_BREAK_IDEOGRAPHIC => Self::Ideographic,
+            ffi::G_UNICODE_BREAK_NUMERIC => Self::Numeric,
+            ffi::G_UNICODE_BREAK_INFIX_SEPARATOR => Self::InfixSeparator,
+            ffi::G_UNICODE_BREAK_SYMBOL => Self::Symbol,
+            ffi::G_UNICODE_BREAK_ALPHABETIC => Self::Alphabetic,
+            ffi::G_UNICODE_BREAK_PREFIX => Self::Prefix,
+            ffi::G_UNICODE_BREAK_POSTFIX => Self::Postfix,
+            ffi::G_UNICODE_BREAK_COMPLEX_CONTEXT => Self::ComplexContext,
+            ffi::G_UNICODE_BREAK_AMBIGUOUS => Self::Ambiguous,
+            ffi::G_UNICODE_BREAK_UNKNOWN => Self::Unknown,
+            ffi::G_UNICODE_BREAK_NEXT_LINE => Self::NextLine,
+            ffi::G_UNICODE_BREAK_WORD_JOINER => Self::WordJoiner,
+            ffi::G_UNICODE_BREAK_HANGUL_L_JAMO => Self::HangulLJamo,
+            ffi::G_UNICODE_BREAK_HANGUL_V_JAMO => Self::HangulVJamo,
+            ffi::G_UNICODE_BREAK_HANGUL_T_JAMO => Self::HangulTJamo,
+            ffi::G_UNICODE_BREAK_HANGUL_LV_SYLLABLE => Self::HangulLvSyllable,
+            ffi::G_UNICODE_BREAK_HANGUL_LVT_SYLLABLE => Self::HangulLvtSyllable,
+            ffi::G_UNICODE_BREAK_CLOSE_PARENTHESIS => Self::CloseParenthesis,
+            ffi::G_UNICODE_BREAK_CONDITIONAL_JAPANESE_STARTER => Self::ConditionalJapaneseStarter,
+            ffi::G_UNICODE_BREAK_HEBREW_LETTER => Self::HebrewLetter,
+            ffi::G_UNICODE_BREAK_REGIONAL_INDICATOR => Self::RegionalIndicator,
+            ffi::G_UNICODE_BREAK_EMOJI_BASE => Self::EmojiBase,
+            ffi::G_UNICODE_BREAK_EMOJI_MODIFIER => Self::EmojiModifier,
+            ffi::G_UNICODE_BREAK_ZERO_WIDTH_JOINER => Self::ZeroWidthJoiner,
+            value => Self::__Unknown(value),
+        }
+    }
+}
+
+#[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
+#[non_exhaustive]
 #[doc(alias = "GUnicodeScript")]
 pub enum UnicodeScript {
     #[doc(alias = "G_UNICODE_SCRIPT_INVALID_CODE")]
@@ -1957,6 +2212,196 @@ impl FromGlib<ffi::GUnicodeScript> for UnicodeScript {
             ffi::G_UNICODE_SCRIPT_KAWI => Self::Kawi,
             #[cfg(feature = "v2_74")]
             ffi::G_UNICODE_SCRIPT_NAG_MUNDARI => Self::NagMundari,
+            value => Self::__Unknown(value),
+        }
+    }
+}
+
+#[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
+#[non_exhaustive]
+#[doc(alias = "GUnicodeType")]
+pub enum UnicodeType {
+    #[doc(alias = "G_UNICODE_CONTROL")]
+    Control,
+    #[doc(alias = "G_UNICODE_FORMAT")]
+    Format,
+    #[doc(alias = "G_UNICODE_UNASSIGNED")]
+    Unassigned,
+    #[doc(alias = "G_UNICODE_PRIVATE_USE")]
+    PrivateUse,
+    #[doc(alias = "G_UNICODE_SURROGATE")]
+    Surrogate,
+    #[doc(alias = "G_UNICODE_LOWERCASE_LETTER")]
+    LowercaseLetter,
+    #[doc(alias = "G_UNICODE_MODIFIER_LETTER")]
+    ModifierLetter,
+    #[doc(alias = "G_UNICODE_OTHER_LETTER")]
+    OtherLetter,
+    #[doc(alias = "G_UNICODE_TITLECASE_LETTER")]
+    TitlecaseLetter,
+    #[doc(alias = "G_UNICODE_UPPERCASE_LETTER")]
+    UppercaseLetter,
+    #[doc(alias = "G_UNICODE_SPACING_MARK")]
+    SpacingMark,
+    #[doc(alias = "G_UNICODE_ENCLOSING_MARK")]
+    EnclosingMark,
+    #[doc(alias = "G_UNICODE_NON_SPACING_MARK")]
+    NonSpacingMark,
+    #[doc(alias = "G_UNICODE_DECIMAL_NUMBER")]
+    DecimalNumber,
+    #[doc(alias = "G_UNICODE_LETTER_NUMBER")]
+    LetterNumber,
+    #[doc(alias = "G_UNICODE_OTHER_NUMBER")]
+    OtherNumber,
+    #[doc(alias = "G_UNICODE_CONNECT_PUNCTUATION")]
+    ConnectPunctuation,
+    #[doc(alias = "G_UNICODE_DASH_PUNCTUATION")]
+    DashPunctuation,
+    #[doc(alias = "G_UNICODE_CLOSE_PUNCTUATION")]
+    ClosePunctuation,
+    #[doc(alias = "G_UNICODE_FINAL_PUNCTUATION")]
+    FinalPunctuation,
+    #[doc(alias = "G_UNICODE_INITIAL_PUNCTUATION")]
+    InitialPunctuation,
+    #[doc(alias = "G_UNICODE_OTHER_PUNCTUATION")]
+    OtherPunctuation,
+    #[doc(alias = "G_UNICODE_OPEN_PUNCTUATION")]
+    OpenPunctuation,
+    #[doc(alias = "G_UNICODE_CURRENCY_SYMBOL")]
+    CurrencySymbol,
+    #[doc(alias = "G_UNICODE_MODIFIER_SYMBOL")]
+    ModifierSymbol,
+    #[doc(alias = "G_UNICODE_MATH_SYMBOL")]
+    MathSymbol,
+    #[doc(alias = "G_UNICODE_OTHER_SYMBOL")]
+    OtherSymbol,
+    #[doc(alias = "G_UNICODE_LINE_SEPARATOR")]
+    LineSeparator,
+    #[doc(alias = "G_UNICODE_PARAGRAPH_SEPARATOR")]
+    ParagraphSeparator,
+    #[doc(alias = "G_UNICODE_SPACE_SEPARATOR")]
+    SpaceSeparator,
+    #[doc(hidden)]
+    __Unknown(i32),
+}
+
+impl fmt::Display for UnicodeType {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(
+            f,
+            "UnicodeType::{}",
+            match *self {
+                Self::Control => "Control",
+                Self::Format => "Format",
+                Self::Unassigned => "Unassigned",
+                Self::PrivateUse => "PrivateUse",
+                Self::Surrogate => "Surrogate",
+                Self::LowercaseLetter => "LowercaseLetter",
+                Self::ModifierLetter => "ModifierLetter",
+                Self::OtherLetter => "OtherLetter",
+                Self::TitlecaseLetter => "TitlecaseLetter",
+                Self::UppercaseLetter => "UppercaseLetter",
+                Self::SpacingMark => "SpacingMark",
+                Self::EnclosingMark => "EnclosingMark",
+                Self::NonSpacingMark => "NonSpacingMark",
+                Self::DecimalNumber => "DecimalNumber",
+                Self::LetterNumber => "LetterNumber",
+                Self::OtherNumber => "OtherNumber",
+                Self::ConnectPunctuation => "ConnectPunctuation",
+                Self::DashPunctuation => "DashPunctuation",
+                Self::ClosePunctuation => "ClosePunctuation",
+                Self::FinalPunctuation => "FinalPunctuation",
+                Self::InitialPunctuation => "InitialPunctuation",
+                Self::OtherPunctuation => "OtherPunctuation",
+                Self::OpenPunctuation => "OpenPunctuation",
+                Self::CurrencySymbol => "CurrencySymbol",
+                Self::ModifierSymbol => "ModifierSymbol",
+                Self::MathSymbol => "MathSymbol",
+                Self::OtherSymbol => "OtherSymbol",
+                Self::LineSeparator => "LineSeparator",
+                Self::ParagraphSeparator => "ParagraphSeparator",
+                Self::SpaceSeparator => "SpaceSeparator",
+                _ => "Unknown",
+            }
+        )
+    }
+}
+
+#[doc(hidden)]
+impl IntoGlib for UnicodeType {
+    type GlibType = ffi::GUnicodeType;
+
+    fn into_glib(self) -> ffi::GUnicodeType {
+        match self {
+            Self::Control => ffi::G_UNICODE_CONTROL,
+            Self::Format => ffi::G_UNICODE_FORMAT,
+            Self::Unassigned => ffi::G_UNICODE_UNASSIGNED,
+            Self::PrivateUse => ffi::G_UNICODE_PRIVATE_USE,
+            Self::Surrogate => ffi::G_UNICODE_SURROGATE,
+            Self::LowercaseLetter => ffi::G_UNICODE_LOWERCASE_LETTER,
+            Self::ModifierLetter => ffi::G_UNICODE_MODIFIER_LETTER,
+            Self::OtherLetter => ffi::G_UNICODE_OTHER_LETTER,
+            Self::TitlecaseLetter => ffi::G_UNICODE_TITLECASE_LETTER,
+            Self::UppercaseLetter => ffi::G_UNICODE_UPPERCASE_LETTER,
+            Self::SpacingMark => ffi::G_UNICODE_SPACING_MARK,
+            Self::EnclosingMark => ffi::G_UNICODE_ENCLOSING_MARK,
+            Self::NonSpacingMark => ffi::G_UNICODE_NON_SPACING_MARK,
+            Self::DecimalNumber => ffi::G_UNICODE_DECIMAL_NUMBER,
+            Self::LetterNumber => ffi::G_UNICODE_LETTER_NUMBER,
+            Self::OtherNumber => ffi::G_UNICODE_OTHER_NUMBER,
+            Self::ConnectPunctuation => ffi::G_UNICODE_CONNECT_PUNCTUATION,
+            Self::DashPunctuation => ffi::G_UNICODE_DASH_PUNCTUATION,
+            Self::ClosePunctuation => ffi::G_UNICODE_CLOSE_PUNCTUATION,
+            Self::FinalPunctuation => ffi::G_UNICODE_FINAL_PUNCTUATION,
+            Self::InitialPunctuation => ffi::G_UNICODE_INITIAL_PUNCTUATION,
+            Self::OtherPunctuation => ffi::G_UNICODE_OTHER_PUNCTUATION,
+            Self::OpenPunctuation => ffi::G_UNICODE_OPEN_PUNCTUATION,
+            Self::CurrencySymbol => ffi::G_UNICODE_CURRENCY_SYMBOL,
+            Self::ModifierSymbol => ffi::G_UNICODE_MODIFIER_SYMBOL,
+            Self::MathSymbol => ffi::G_UNICODE_MATH_SYMBOL,
+            Self::OtherSymbol => ffi::G_UNICODE_OTHER_SYMBOL,
+            Self::LineSeparator => ffi::G_UNICODE_LINE_SEPARATOR,
+            Self::ParagraphSeparator => ffi::G_UNICODE_PARAGRAPH_SEPARATOR,
+            Self::SpaceSeparator => ffi::G_UNICODE_SPACE_SEPARATOR,
+            Self::__Unknown(value) => value,
+        }
+    }
+}
+
+#[doc(hidden)]
+impl FromGlib<ffi::GUnicodeType> for UnicodeType {
+    unsafe fn from_glib(value: ffi::GUnicodeType) -> Self {
+        match value {
+            ffi::G_UNICODE_CONTROL => Self::Control,
+            ffi::G_UNICODE_FORMAT => Self::Format,
+            ffi::G_UNICODE_UNASSIGNED => Self::Unassigned,
+            ffi::G_UNICODE_PRIVATE_USE => Self::PrivateUse,
+            ffi::G_UNICODE_SURROGATE => Self::Surrogate,
+            ffi::G_UNICODE_LOWERCASE_LETTER => Self::LowercaseLetter,
+            ffi::G_UNICODE_MODIFIER_LETTER => Self::ModifierLetter,
+            ffi::G_UNICODE_OTHER_LETTER => Self::OtherLetter,
+            ffi::G_UNICODE_TITLECASE_LETTER => Self::TitlecaseLetter,
+            ffi::G_UNICODE_UPPERCASE_LETTER => Self::UppercaseLetter,
+            ffi::G_UNICODE_SPACING_MARK => Self::SpacingMark,
+            ffi::G_UNICODE_ENCLOSING_MARK => Self::EnclosingMark,
+            ffi::G_UNICODE_NON_SPACING_MARK => Self::NonSpacingMark,
+            ffi::G_UNICODE_DECIMAL_NUMBER => Self::DecimalNumber,
+            ffi::G_UNICODE_LETTER_NUMBER => Self::LetterNumber,
+            ffi::G_UNICODE_OTHER_NUMBER => Self::OtherNumber,
+            ffi::G_UNICODE_CONNECT_PUNCTUATION => Self::ConnectPunctuation,
+            ffi::G_UNICODE_DASH_PUNCTUATION => Self::DashPunctuation,
+            ffi::G_UNICODE_CLOSE_PUNCTUATION => Self::ClosePunctuation,
+            ffi::G_UNICODE_FINAL_PUNCTUATION => Self::FinalPunctuation,
+            ffi::G_UNICODE_INITIAL_PUNCTUATION => Self::InitialPunctuation,
+            ffi::G_UNICODE_OTHER_PUNCTUATION => Self::OtherPunctuation,
+            ffi::G_UNICODE_OPEN_PUNCTUATION => Self::OpenPunctuation,
+            ffi::G_UNICODE_CURRENCY_SYMBOL => Self::CurrencySymbol,
+            ffi::G_UNICODE_MODIFIER_SYMBOL => Self::ModifierSymbol,
+            ffi::G_UNICODE_MATH_SYMBOL => Self::MathSymbol,
+            ffi::G_UNICODE_OTHER_SYMBOL => Self::OtherSymbol,
+            ffi::G_UNICODE_LINE_SEPARATOR => Self::LineSeparator,
+            ffi::G_UNICODE_PARAGRAPH_SEPARATOR => Self::ParagraphSeparator,
+            ffi::G_UNICODE_SPACE_SEPARATOR => Self::SpaceSeparator,
             value => Self::__Unknown(value),
         }
     }
