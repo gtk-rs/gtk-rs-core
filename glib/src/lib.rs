@@ -29,7 +29,7 @@ pub use self::{
     },
     signal::{
         signal_handler_block, signal_handler_disconnect, signal_handler_unblock,
-        signal_stop_emission_by_name, SignalHandlerId,
+        signal_stop_emission_by_name, Propagation, SignalHandlerId,
     },
     types::{ILong, Pointer, StaticType, StaticTypeExt, Type, ULong},
     value::{BoxedValue, SendValue, ToSendValue, ToValue, Value},

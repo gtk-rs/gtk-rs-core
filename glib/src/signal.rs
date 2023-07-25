@@ -146,3 +146,81 @@ pub fn signal_has_handler_pending<T: ObjectType>(
         ))
     }
 }
+
+// rustdoc-stripper-ignore-next
+/// Whether to invoke the other event handlers.
+#[derive(Copy, Clone, Debug, PartialEq, Eq)]
+pub enum Propagation {
+    // Stop other handlers from being invoked for the event.
+    Stop,
+    // Propagate the event further.
+    Proceed,
+}
+
+impl Propagation {
+    // rustdoc-stripper-ignore-next
+    /// Returns `true` if this is a `Stop` variant.
+    pub fn is_stop(&self) -> bool {
+        matches!(self, Self::Stop)
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Returns `true` if this is a `Proceed` variant.
+    pub fn is_proceed(&self) -> bool {
+        matches!(self, Self::Proceed)
+    }
+}
+
+impl From<bool> for Propagation {
+    fn from(value: bool) -> Self {
+        if value {
+            Self::Stop
+        } else {
+            Self::Proceed
+        }
+    }
+}
+
+impl From<Propagation> for bool {
+    fn from(c: Propagation) -> Self {
+        match c {
+            Propagation::Stop => true,
+            Propagation::Proceed => false,
+        }
+    }
+}
+
+#[doc(hidden)]
+impl IntoGlib for Propagation {
+    type GlibType = ffi::gboolean;
+
+    #[inline]
+    fn into_glib(self) -> ffi::gboolean {
+        bool::from(self).into_glib()
+    }
+}
+
+#[doc(hidden)]
+impl FromGlib<ffi::gboolean> for Propagation {
+    #[inline]
+    unsafe fn from_glib(value: ffi::gboolean) -> Self {
+        bool::from_glib(value).into()
+    }
+}
+
+impl crate::ToValue for Propagation {
+    fn to_value(&self) -> crate::Value {
+        bool::from(*self).to_value()
+    }
+
+    fn value_type(&self) -> crate::Type {
+        <bool as crate::StaticType>::static_type()
+    }
+}
+
+impl From<Propagation> for crate::Value {
+    #[inline]
+    fn from(v: Propagation) -> Self {
+        bool::from(v).into()
+    }
+}
