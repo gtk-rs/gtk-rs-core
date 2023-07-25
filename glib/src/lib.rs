@@ -149,6 +149,8 @@ mod unicollate;
 pub use self::unicollate::{CollationKey, FilenameCollationKey};
 mod utils;
 pub use self::utils::*;
+mod unichar;
+pub use self::unichar::*;
 mod main_context;
 mod main_context_channel;
 pub use self::{
