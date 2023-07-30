@@ -388,6 +388,56 @@ fn props() {
     );
 }
 
+mod ext_trait {
+    use glib::subclass::object::DerivedObjectProperties;
+    use glib::ObjectExt;
+
+    use glib::subclass::{prelude::ObjectImpl, types::ObjectSubclass};
+    use glib_macros::Properties;
+    use std::cell::RefCell;
+
+    pub mod imp {
+        use super::*;
+
+        #[derive(Properties, Default)]
+        #[properties(wrapper_type = super::Author, ext_trait)]
+        pub struct Author {
+            #[property(get, set)]
+            firstname: RefCell<String>,
+            #[property(get, set)]
+            lastname: RefCell<String>,
+        }
+
+        #[glib::derived_properties]
+        impl ObjectImpl for Author {}
+
+        #[glib::object_subclass]
+        impl ObjectSubclass for Author {
+            const NAME: &'static str = "Author";
+            type Type = super::Author;
+        }
+    }
+
+    glib::wrapper! {
+        pub struct Author(ObjectSubclass<imp::Author>);
+    }
+    impl Author {
+        pub fn new() -> Self {
+            glib::Object::builder().build()
+        }
+    }
+}
+
+#[test]
+fn ext_trait() {
+    use ext_trait::imp::AuthorPropertiesExt;
+    let author = ext_trait::Author::new();
+    AuthorPropertiesExt::set_firstname(&author, "John");
+    AuthorPropertiesExt::set_lastname(&author, "Doe");
+    assert_eq!(AuthorPropertiesExt::firstname(&author), "John");
+    assert_eq!(AuthorPropertiesExt::lastname(&author), "Doe");
+}
+
 #[cfg(test)]
 mod kw_names {
     mod imp {
