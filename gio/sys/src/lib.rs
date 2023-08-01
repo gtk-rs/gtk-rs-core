@@ -11618,6 +11618,8 @@ extern "C" {
         value_pp: *mut gpointer,
         status: *mut GFileAttributeStatus,
     ) -> gboolean;
+    #[cfg(feature = "v2_78")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_78")))]
     pub fn g_file_info_get_attribute_file_path(
         info: *mut GFileInfo,
         attribute: *const c_char,
@@ -11694,6 +11696,8 @@ extern "C" {
         attribute: *const c_char,
         attr_value: *const c_char,
     );
+    #[cfg(feature = "v2_78")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_78")))]
     pub fn g_file_info_set_attribute_file_path(
         info: *mut GFileInfo,
         attribute: *const c_char,
