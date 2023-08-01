@@ -11618,6 +11618,10 @@ extern "C" {
         value_pp: *mut gpointer,
         status: *mut GFileAttributeStatus,
     ) -> gboolean;
+    pub fn g_file_info_get_attribute_file_path(
+        info: *mut GFileInfo,
+        attribute: *const c_char,
+    ) -> *const c_char;
     pub fn g_file_info_get_attribute_int32(info: *mut GFileInfo, attribute: *const c_char) -> i32;
     pub fn g_file_info_get_attribute_int64(info: *mut GFileInfo, attribute: *const c_char) -> i64;
     pub fn g_file_info_get_attribute_object(
@@ -11686,6 +11690,11 @@ extern "C" {
         attr_value: gboolean,
     );
     pub fn g_file_info_set_attribute_byte_string(
+        info: *mut GFileInfo,
+        attribute: *const c_char,
+        attr_value: *const c_char,
+    );
+    pub fn g_file_info_set_attribute_file_path(
         info: *mut GFileInfo,
         attribute: *const c_char,
         attr_value: *const c_char,
