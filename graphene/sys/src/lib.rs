@@ -922,6 +922,12 @@ extern "C" {
         d_x: *mut c_float,
         d_y: *mut c_float,
     ) -> c_float;
+    #[cfg(feature = "v1_12")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v1_12")))]
+    pub fn graphene_point_distance_squared(
+        a: *const graphene_point_t,
+        b: *const graphene_point_t,
+    ) -> c_float;
     pub fn graphene_point_equal(a: *const graphene_point_t, b: *const graphene_point_t) -> bool;
     pub fn graphene_point_free(p: *mut graphene_point_t);
     pub fn graphene_point_init(

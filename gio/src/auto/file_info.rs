@@ -89,6 +89,17 @@ impl FileInfo {
     //    unsafe { TODO: call ffi:g_file_info_get_attribute_data() }
     //}
 
+    #[doc(alias = "g_file_info_get_attribute_file_path")]
+    #[doc(alias = "get_attribute_file_path")]
+    pub fn attribute_file_path(&self, attribute: &str) -> glib::GString {
+        unsafe {
+            from_glib_none(ffi::g_file_info_get_attribute_file_path(
+                self.to_glib_none().0,
+                attribute.to_glib_none().0,
+            ))
+        }
+    }
+
     #[doc(alias = "g_file_info_get_attribute_int32")]
     #[doc(alias = "get_attribute_int32")]
     pub fn attribute_int32(&self, attribute: &str) -> i32 {
@@ -345,6 +356,17 @@ impl FileInfo {
     pub fn set_attribute_byte_string(&self, attribute: &str, attr_value: &str) {
         unsafe {
             ffi::g_file_info_set_attribute_byte_string(
+                self.to_glib_none().0,
+                attribute.to_glib_none().0,
+                attr_value.to_glib_none().0,
+            );
+        }
+    }
+
+    #[doc(alias = "g_file_info_set_attribute_file_path")]
+    pub fn set_attribute_file_path(&self, attribute: &str, attr_value: &str) {
+        unsafe {
+            ffi::g_file_info_set_attribute_file_path(
                 self.to_glib_none().0,
                 attribute.to_glib_none().0,
                 attr_value.to_glib_none().0,

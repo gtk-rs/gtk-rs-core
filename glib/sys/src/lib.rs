@@ -6735,6 +6735,7 @@ extern "C" {
         data_teardown: GTestFixtureFunc,
     ) -> *mut GTestCase;
     pub fn g_test_create_suite(suite_name: *const c_char) -> *mut GTestSuite;
+    pub fn g_test_disable_crash_reporting();
     pub fn g_test_expect_message(
         log_domain: *const c_char,
         log_level: GLogLevelFlags,
