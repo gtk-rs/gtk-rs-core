@@ -89,6 +89,8 @@ impl FileInfo {
     //    unsafe { TODO: call ffi:g_file_info_get_attribute_data() }
     //}
 
+    #[cfg(feature = "v2_78")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_78")))]
     #[doc(alias = "g_file_info_get_attribute_file_path")]
     #[doc(alias = "get_attribute_file_path")]
     pub fn attribute_file_path(&self, attribute: &str) -> glib::GString {
@@ -363,6 +365,8 @@ impl FileInfo {
         }
     }
 
+    #[cfg(feature = "v2_78")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_78")))]
     #[doc(alias = "g_file_info_set_attribute_file_path")]
     pub fn set_attribute_file_path(&self, attribute: &str, attr_value: &str) {
         unsafe {
