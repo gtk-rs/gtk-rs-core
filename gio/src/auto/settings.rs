@@ -515,13 +515,13 @@ pub trait SettingsExt: IsA<Settings> + sealed::Sealed + 'static {
     }
 
     #[doc(alias = "writable-change-event")]
-    fn connect_writable_change_event<F: Fn(&Self, u32) -> glib::ControlFlow + 'static>(
+    fn connect_writable_change_event<F: Fn(&Self, u32) -> glib::Propagation + 'static>(
         &self,
         f: F,
     ) -> SignalHandlerId {
         unsafe extern "C" fn writable_change_event_trampoline<
             P: IsA<Settings>,
-            F: Fn(&P, u32) -> glib::ControlFlow + 'static,
+            F: Fn(&P, u32) -> glib::Propagation + 'static,
         >(
             this: *mut ffi::GSettings,
             key: libc::c_uint,
