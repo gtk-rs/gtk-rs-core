@@ -93,7 +93,7 @@ impl FileInfo {
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_78")))]
     #[doc(alias = "g_file_info_get_attribute_file_path")]
     #[doc(alias = "get_attribute_file_path")]
-    pub fn attribute_file_path(&self, attribute: &str) -> glib::GString {
+    pub fn attribute_file_path(&self, attribute: &str) -> Option<std::path::PathBuf> {
         unsafe {
             from_glib_none(ffi::g_file_info_get_attribute_file_path(
                 self.to_glib_none().0,
@@ -368,12 +368,16 @@ impl FileInfo {
     #[cfg(feature = "v2_78")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_78")))]
     #[doc(alias = "g_file_info_set_attribute_file_path")]
-    pub fn set_attribute_file_path(&self, attribute: &str, attr_value: &str) {
+    pub fn set_attribute_file_path(
+        &self,
+        attribute: &str,
+        attr_value: impl AsRef<std::path::Path>,
+    ) {
         unsafe {
             ffi::g_file_info_set_attribute_file_path(
                 self.to_glib_none().0,
                 attribute.to_glib_none().0,
-                attr_value.to_glib_none().0,
+                attr_value.as_ref().to_glib_none().0,
             );
         }
     }
