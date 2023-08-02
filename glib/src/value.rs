@@ -372,7 +372,7 @@ pub trait ToValue {
     fn to_value(&self) -> Value;
 
     // rustdoc-stripper-ignore-next
-    /// Returns the type identifer of `self`.
+    /// Returns the type identifier of `self`.
     ///
     /// This is the type of the value to be returned by `to_value`.
     fn value_type(&self) -> Type;

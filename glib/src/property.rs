@@ -53,7 +53,7 @@ impl<T: Property> Property for std::cell::OnceCell<T> {
 impl<T: Property> Property for std::sync::OnceLock<T> {
     type Value = T::Value;
 }
-// Handle smart pointers trasparently
+// Handle smart pointers transparently
 impl<T: Property> Property for Rc<T> {
     type Value = T::Value;
 }

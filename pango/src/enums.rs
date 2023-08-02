@@ -73,7 +73,7 @@ impl FromGlib<ffi::PangoLayoutDeserializeError> for LayoutDeserializeError {
 #[cfg(feature = "v1_50")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
 impl ErrorDomain for LayoutDeserializeError {
-    // TODO: figure out why gir picks a non-existant quark function
+    // TODO: figure out why gir picks a non-existent quark function
     #[doc(alias = "pango_layout_deserialize_error_quark")]
     fn domain() -> Quark {
         unsafe { from_glib(ffi::pango_layout_deserialize_error_quark()) }

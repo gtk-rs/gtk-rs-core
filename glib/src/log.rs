@@ -378,7 +378,7 @@ impl<'a> LogField<'a> {
     // rustdoc-stripper-ignore-next
     /// Creates a field with an empty value and `data` as a user data key. Fields created with this
     /// function are ignored by the default log writer. These fields are used to pass custom data
-    /// into a writer function set with [`log_set_writer_func`], where it can be retreived using
+    /// into a writer function set with [`log_set_writer_func`], where it can be retrieved using
     /// [`Self::user_data`].
     ///
     /// The passed `usize` can be used by the log writer as a key into a static data structure.
@@ -395,7 +395,7 @@ impl<'a> LogField<'a> {
         )
     }
     // rustdoc-stripper-ignore-next
-    /// Retreives the field key.
+    /// Retrieves the field key.
     pub fn key(&self) -> &str {
         unsafe { std::ffi::CStr::from_ptr(self.0.key as *const _) }
             .to_str()

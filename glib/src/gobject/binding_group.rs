@@ -188,7 +188,7 @@ impl<'a> BindingGroupBuilder<'a> {
             let _ = Box::from_raw(data as *mut (TransformFn, TransformFn, String, ParamSpec));
         }
 
-        let mut _source_propery_name_cstr = None;
+        let mut _source_property_name_cstr = None;
         let source_property_name = if let Some(source) = self.group.source() {
             let source_property = source.find_property(self.source_property).ok_or_else(|| {
                 bool_error!(
@@ -198,13 +198,13 @@ impl<'a> BindingGroupBuilder<'a> {
                 )
             })?;
 
-            // This is NUL-termianted from the C side
+            // This is NUL-terminated from the C side
             source_property.name().as_ptr()
         } else {
             // This is a Rust &str and needs to be NUL-terminated first
-            let source_propery_name = std::ffi::CString::new(self.source_property).unwrap();
-            let source_property_name_ptr = source_propery_name.as_ptr() as *const u8;
-            _source_propery_name_cstr = Some(source_propery_name);
+            let source_property_name = std::ffi::CString::new(self.source_property).unwrap();
+            let source_property_name_ptr = source_property_name.as_ptr() as *const u8;
+            _source_property_name_cstr = Some(source_property_name);
 
             source_property_name_ptr
         };

@@ -288,7 +288,7 @@ impl PropDesc {
         });
         let ty = ty.unwrap_or_else(|| field_ty.clone());
 
-        // Now that everything is set and safe, return the final proprety description
+        // Now that everything is set and safe, return the final property description
         Ok(Self {
             attrs_span,
             field_ident,
