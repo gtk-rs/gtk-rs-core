@@ -66,8 +66,8 @@ pub struct DowngradeStructParts {
 /// let Named { ref x, ref y } = <expression>;
 ///
 /// match <expression> {
-///     Choise::This (ref _0, ref _1) => ... ,
-///     Choise::That { ref x, ref y } => ... ,
+///     Choice::This (ref _0, ref _1) => ... ,
+///     Choice::That { ref x, ref y } => ... ,
 /// }
 /// ```
 ///

@@ -701,7 +701,7 @@ mod test {
         assert!(name_changed_triggered.load(Ordering::Relaxed));
     }
 
-    // Note: can't test type mismatch in signals since panics accross FFI boundaries
+    // Note: can't test type mismatch in signals since panics across FFI boundaries
     // are UB. See https://github.com/gtk-rs/glib/issues/518
 
     #[test]

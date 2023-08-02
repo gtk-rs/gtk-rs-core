@@ -545,7 +545,7 @@ pub fn error_domain_derive(input: TokenStream) -> TokenStream {
 
 /// Derive macro for defining a [`BoxedType`]`::type_` function and
 /// the [`glib::Value`] traits. Optionally, the type can be marked as
-/// `nullable` to get an implemention of `glib::value::ToValueOptional`.
+/// `nullable` to get an implementation of `glib::value::ToValueOptional`.
 ///
 /// # Example
 ///
@@ -574,7 +574,7 @@ pub fn boxed_derive(input: TokenStream) -> TokenStream {
 
 /// Derive macro for defining a [`SharedType`]`::get_type` function and
 /// the [`glib::Value`] traits. Optionally, the type can be marked as
-/// `nullable` to get an implemention of `glib::value::ToValueOptional`.
+/// `nullable` to get an implementation of `glib::value::ToValueOptional`.
 ///
 /// # Example
 ///

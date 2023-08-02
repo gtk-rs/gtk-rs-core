@@ -198,7 +198,7 @@ impl<'a> BindingGroupBuilder<'a> {
                 )
             })?;
 
-            // This is NUL-termianted from the C side
+            // This is NUL-terminated from the C side
             source_property.name().as_ptr()
         } else {
             // This is a Rust &str and needs to be NUL-terminated first

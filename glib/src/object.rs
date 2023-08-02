@@ -285,7 +285,7 @@ impl<T: ObjectType> Cast for T {}
 /// Convenience trait mirroring `Cast`, implemented on `Option<Object>` types.
 ///
 /// # Warning
-/// Inveitably this trait will discard informations about a downcast failure:
+/// Inevitably this trait will discard information about a downcast failure:
 /// you don't know if the object was not of the expected type, or if it was `None`.
 /// If you need to handle the downcast error, use `Cast` over a `glib::Object`.
 ///

@@ -31,7 +31,7 @@ fn main() {
     main_loop.run();
 }
 
-// This function mimicks what the C code using the exported async/finish API would do. It first defines a
+// This function mimics what the C code using the exported async/finish API would do. It first defines a
 // callback of type GAsyncResult that internally calls get_file_size_finish to retrieve the Task
 // result, and simply prints it out. Then it invokes the my_file_size_get_file_size_async method, passing the
 // callback to it as parameter.
