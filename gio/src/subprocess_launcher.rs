@@ -3,8 +3,7 @@
 #[cfg(any(unix, all(docsrs, unix)))]
 use std::os::unix::io::IntoRawFd;
 
-#[cfg(any(unix, docsrs))]
-#[cfg(any(unix, docsrs))]
+#[cfg(unix)]
 use glib::translate::*;
 
 use crate::SubprocessLauncher;
@@ -17,7 +16,7 @@ pub trait IntoRawFd: Sized {
 }
 
 impl SubprocessLauncher {
-    #[cfg(any(unix, docsrs))]
+    #[cfg(unix)]
     #[cfg_attr(docsrs, doc(cfg(unix)))]
     #[doc(alias = "g_subprocess_launcher_take_fd")]
     pub fn take_fd(&self, source_fd: impl IntoRawFd, target_fd: impl IntoRawFd) {
@@ -30,7 +29,7 @@ impl SubprocessLauncher {
         }
     }
 
-    #[cfg(any(unix, docsrs))]
+    #[cfg(unix)]
     #[cfg_attr(docsrs, doc(cfg(unix)))]
     #[doc(alias = "g_subprocess_launcher_take_stderr_fd")]
     pub fn take_stderr_fd(&self, fd: impl IntoRawFd) {
@@ -39,7 +38,7 @@ impl SubprocessLauncher {
         }
     }
 
-    #[cfg(any(unix, docsrs))]
+    #[cfg(unix)]
     #[cfg_attr(docsrs, doc(cfg(unix)))]
     #[doc(alias = "g_subprocess_launcher_take_stdin_fd")]
     pub fn take_stdin_fd(&self, fd: impl IntoRawFd) {
@@ -48,7 +47,7 @@ impl SubprocessLauncher {
         }
     }
 
-    #[cfg(any(unix, docsrs))]
+    #[cfg(unix)]
     #[cfg_attr(docsrs, doc(cfg(unix)))]
     #[doc(alias = "g_subprocess_launcher_take_stdout_fd")]
     pub fn take_stdout_fd(&self, fd: impl IntoRawFd) {

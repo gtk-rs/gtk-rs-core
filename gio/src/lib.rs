@@ -34,7 +34,7 @@ mod dbus_node_info;
 #[cfg(feature = "v2_72")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
 mod debug_controller_dbus;
-#[cfg(any(all(not(windows), not(target_os = "macos")), docsrs))]
+#[cfg(all(not(windows), not(target_os = "macos")))]
 mod desktop_app_info;
 mod error;
 mod file;
@@ -43,9 +43,9 @@ pub use crate::file_attribute_info::FileAttributeInfo;
 mod file_attribute_info_list;
 mod file_attribute_matcher;
 pub use crate::file_attribute_matcher::FileAttributematcherIter;
-#[cfg(any(unix, docsrs))]
+#[cfg(unix)]
 mod file_descriptor_based;
-#[cfg(any(unix, docsrs))]
+#[cfg(unix)]
 pub use file_descriptor_based::FileDescriptorBased;
 mod file_enumerator;
 pub use crate::file_enumerator::FileEnumeratorStream;
@@ -84,19 +84,19 @@ pub use socket_msg_flags::SocketMsgFlags;
 mod subprocess;
 mod subprocess_launcher;
 mod threaded_socket_service;
-#[cfg(any(unix, docsrs))]
+#[cfg(unix)]
 mod unix_fd_list;
-#[cfg(any(unix, docsrs))]
+#[cfg(unix)]
 mod unix_fd_message;
-#[cfg(any(unix, docsrs))]
+#[cfg(unix)]
 mod unix_input_stream;
-#[cfg(any(unix, docsrs))]
+#[cfg(unix)]
 mod unix_mount_entry;
-#[cfg(any(unix, docsrs))]
+#[cfg(unix)]
 mod unix_mount_point;
-#[cfg(any(unix, docsrs))]
+#[cfg(unix)]
 mod unix_output_stream;
-#[cfg(any(unix, docsrs))]
+#[cfg(unix)]
 mod unix_socket_address;
 
 #[cfg(test)]
