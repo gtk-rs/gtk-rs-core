@@ -194,7 +194,7 @@ pub fn child_watch_future_with_priority(
     }))
 }
 
-#[cfg(any(unix, docsrs))]
+#[cfg(unix)]
 #[cfg_attr(docsrs, doc(cfg(unix)))]
 // rustdoc-stripper-ignore-next
 /// Create a `Future` that will resolve once the given UNIX signal is raised
@@ -204,7 +204,7 @@ pub fn unix_signal_future(signum: i32) -> Pin<Box<dyn Future<Output = ()> + Send
     unix_signal_future_with_priority(crate::Priority::default(), signum)
 }
 
-#[cfg(any(unix, docsrs))]
+#[cfg(unix)]
 #[cfg_attr(docsrs, doc(cfg(unix)))]
 // rustdoc-stripper-ignore-next
 /// Create a `Future` that will resolve once the given UNIX signal is raised
@@ -380,7 +380,7 @@ pub fn interval_stream_seconds_with_priority(
     }))
 }
 
-#[cfg(any(unix, docsrs))]
+#[cfg(unix)]
 #[cfg_attr(docsrs, doc(cfg(unix)))]
 // rustdoc-stripper-ignore-next
 /// Create a `Stream` that will provide a value whenever the given UNIX signal is raised
@@ -390,7 +390,7 @@ pub fn unix_signal_stream(signum: i32) -> Pin<Box<dyn Stream<Item = ()> + Send +
     unix_signal_stream_with_priority(crate::Priority::default(), signum)
 }
 
-#[cfg(any(unix, docsrs))]
+#[cfg(unix)]
 #[cfg_attr(docsrs, doc(cfg(unix)))]
 // rustdoc-stripper-ignore-next
 /// Create a `Stream` that will provide a value whenever the given UNIX signal is raised

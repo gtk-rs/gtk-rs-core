@@ -7,7 +7,7 @@ use glib::translate::*;
 use crate::UnixMountPoint;
 
 impl UnixMountPoint {
-    #[cfg(any(unix, docsrs))]
+    #[cfg(unix)]
     #[doc(alias = "g_unix_mount_points_get")]
     #[doc(alias = "get_mount_points")]
     pub fn mount_points() -> (Vec<UnixMountPoint>, u64) {

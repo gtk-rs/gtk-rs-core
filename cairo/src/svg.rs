@@ -14,7 +14,7 @@ use std::{
 #[cfg(feature = "use_glib")]
 use glib::translate::*;
 
-#[cfg(any(all(feature = "svg", feature = "v1_16"), docsrs))]
+#[cfg(all(feature = "svg", feature = "v1_16"))]
 use crate::SvgUnit;
 use crate::{Error, Surface, SurfaceType, SvgVersion};
 
@@ -95,7 +95,7 @@ impl SvgSurface {
         }
     }
 
-    #[cfg(any(all(feature = "svg", feature = "v1_16"), docsrs))]
+    #[cfg(all(feature = "svg", feature = "v1_16"))]
     #[doc(alias = "cairo_svg_surface_set_document_unit")]
     pub fn set_document_unit(&mut self, unit: SvgUnit) {
         unsafe {
@@ -103,7 +103,7 @@ impl SvgSurface {
         }
     }
 
-    #[cfg(any(all(feature = "svg", feature = "v1_16"), docsrs))]
+    #[cfg(all(feature = "svg", feature = "v1_16"))]
     #[doc(alias = "cairo_svg_surface_get_document_unit")]
     #[doc(alias = "get_document_unit")]
     pub fn document_unit(&self) -> SvgUnit {

@@ -46,7 +46,7 @@ impl Socket {
     }
 }
 
-#[cfg(any(unix, docsrs))]
+#[cfg(unix)]
 #[cfg_attr(docsrs, doc(cfg(unix)))]
 impl AsRawFd for Socket {
     fn as_raw_fd(&self) -> RawFd {
@@ -54,7 +54,7 @@ impl AsRawFd for Socket {
     }
 }
 
-#[cfg(any(windows, docsrs))]
+#[cfg(windows)]
 #[cfg_attr(docsrs, doc(cfg(windows)))]
 impl AsRawSocket for Socket {
     fn as_raw_socket(&self) -> RawSocket {
