@@ -701,25 +701,22 @@ pub fn spaced_primes_closest(num: u32) -> u32 {
 }
 
 #[doc(alias = "g_spawn_async")]
-pub fn spawn_async(
+pub fn spawn_async<P: FnOnce() + Send + Sync + 'static>(
     working_directory: Option<impl AsRef<std::path::Path>>,
     argv: &[&std::path::Path],
     envp: &[&std::path::Path],
     flags: SpawnFlags,
-    child_setup: Option<Box_<dyn FnOnce() + 'static>>,
+    child_setup: P,
 ) -> Result<Pid, crate::Error> {
-    let child_setup_data: Box_<Option<Box_<dyn FnOnce() + 'static>>> = Box_::new(child_setup);
-    unsafe extern "C" fn child_setup_func(data: ffi::gpointer) {
-        let callback: Box_<Option<Box_<dyn FnOnce() + 'static>>> = Box_::from_raw(data as *mut _);
-        let callback = (*callback).expect("cannot get closure...");
-        callback()
+    let child_setup_data: Box_<P> = Box_::new(child_setup);
+    unsafe extern "C" fn child_setup_func<P: FnOnce() + Send + Sync + 'static>(
+        data: ffi::gpointer,
+    ) {
+        let callback: Box_<P> = Box_::from_raw(data as *mut _);
+        (*callback)()
     }
-    let child_setup = if child_setup_data.is_some() {
-        Some(child_setup_func as _)
-    } else {
-        None
-    };
-    let super_callback0: Box_<Option<Box_<dyn FnOnce() + 'static>>> = child_setup_data;
+    let child_setup = Some(child_setup_func::<P> as _);
+    let super_callback0: Box_<P> = child_setup_data;
     unsafe {
         let mut child_pid = mem::MaybeUninit::uninit();
         let mut error = ptr::null_mut();
@@ -749,7 +746,7 @@ pub fn spawn_async(
 //#[cfg(feature = "v2_68")]
 //#[cfg_attr(docsrs, doc(cfg(feature = "v2_68")))]
 //#[doc(alias = "g_spawn_async_with_pipes_and_fds")]
-//pub fn spawn_async_with_pipes_and_fds(working_directory: Option<impl AsRef<std::path::Path>>, argv: &[&std::path::Path], envp: &[&std::path::Path], flags: SpawnFlags, child_setup: Option<Box_<dyn FnOnce() + 'static>>, stdin_fd: i32, stdout_fd: i32, stderr_fd: i32, source_fds: &[i32], target_fds: &[i32], n_fds: usize) -> Result<(Pid, i32, i32, i32), crate::Error> {
+//pub fn spawn_async_with_pipes_and_fds<P: FnOnce() + Send + Sync + 'static>(working_directory: Option<impl AsRef<std::path::Path>>, argv: &[&std::path::Path], envp: &[&std::path::Path], flags: SpawnFlags, child_setup: P, stdin_fd: i32, stdout_fd: i32, stderr_fd: i32, source_fds: &[i32], target_fds: &[i32], n_fds: usize) -> Result<(Pid, i32, i32, i32), crate::Error> {
 //    unsafe { TODO: call ffi:g_spawn_async_with_pipes_and_fds() }
 //}
 
@@ -810,7 +807,7 @@ pub fn spawn_command_line_async(
 //}
 
 //#[doc(alias = "g_spawn_sync")]
-//pub fn spawn_sync(working_directory: Option<impl AsRef<std::path::Path>>, argv: &[&std::path::Path], envp: &[&std::path::Path], flags: SpawnFlags, child_setup: Option<Box_<dyn FnOnce() + 'static>>, standard_output: Vec<u8>, standard_error: Vec<u8>) -> Result<i32, crate::Error> {
+//pub fn spawn_sync<P: FnOnce() + Send + Sync + 'static>(working_directory: Option<impl AsRef<std::path::Path>>, argv: &[&std::path::Path], envp: &[&std::path::Path], flags: SpawnFlags, child_setup: P, standard_output: Vec<u8>, standard_error: Vec<u8>) -> Result<i32, crate::Error> {
 //    unsafe { TODO: call ffi:g_spawn_sync() }
 //}
 
