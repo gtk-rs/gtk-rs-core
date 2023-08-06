@@ -86,6 +86,9 @@ pub use self::dbus_method_invocation::DBusMethodInvocation;
 mod dbus_object;
 pub use self::dbus_object::DBusObject;
 
+mod dbus_object_manager;
+pub use self::dbus_object_manager::DBusObjectManager;
+
 mod dbus_proxy;
 pub use self::dbus_proxy::DBusProxy;
 
@@ -544,6 +547,7 @@ pub use self::flags::DBusCapabilityFlags;
 pub use self::flags::DBusConnectionFlags;
 pub use self::flags::DBusInterfaceSkeletonFlags;
 pub use self::flags::DBusMessageFlags;
+pub use self::flags::DBusObjectManagerClientFlags;
 pub use self::flags::DBusProxyFlags;
 pub use self::flags::DBusSendMessageFlags;
 pub use self::flags::DBusServerFlags;
@@ -767,6 +771,7 @@ pub mod traits {
     pub use super::dbus_interface::DBusInterfaceExt;
     pub use super::dbus_interface_skeleton::DBusInterfaceSkeletonExt;
     pub use super::dbus_object::DBusObjectExt;
+    pub use super::dbus_object_manager::DBusObjectManagerExt;
     pub use super::dbus_proxy::DBusProxyExt;
     #[cfg(feature = "v2_72")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
