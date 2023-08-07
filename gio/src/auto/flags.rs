@@ -1029,6 +1029,94 @@ impl From<DBusMessageFlags> for glib::Value {
 
 bitflags! {
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
+    #[doc(alias = "GDBusObjectManagerClientFlags")]
+    pub struct DBusObjectManagerClientFlags: u32 {
+        #[doc(alias = "G_DBUS_OBJECT_MANAGER_CLIENT_FLAGS_NONE")]
+        const NONE = ffi::G_DBUS_OBJECT_MANAGER_CLIENT_FLAGS_NONE as _;
+        #[doc(alias = "G_DBUS_OBJECT_MANAGER_CLIENT_FLAGS_DO_NOT_AUTO_START")]
+        const DO_NOT_AUTO_START = ffi::G_DBUS_OBJECT_MANAGER_CLIENT_FLAGS_DO_NOT_AUTO_START as _;
+    }
+}
+
+impl fmt::Display for DBusObjectManagerClientFlags {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        <Self as fmt::Debug>::fmt(self, f)
+    }
+}
+
+#[doc(hidden)]
+impl IntoGlib for DBusObjectManagerClientFlags {
+    type GlibType = ffi::GDBusObjectManagerClientFlags;
+
+    #[inline]
+    fn into_glib(self) -> ffi::GDBusObjectManagerClientFlags {
+        self.bits()
+    }
+}
+
+#[doc(hidden)]
+impl FromGlib<ffi::GDBusObjectManagerClientFlags> for DBusObjectManagerClientFlags {
+    #[inline]
+    unsafe fn from_glib(value: ffi::GDBusObjectManagerClientFlags) -> Self {
+        Self::from_bits_truncate(value)
+    }
+}
+
+impl StaticType for DBusObjectManagerClientFlags {
+    #[inline]
+    fn static_type() -> glib::Type {
+        unsafe { from_glib(ffi::g_dbus_object_manager_client_flags_get_type()) }
+    }
+}
+
+impl glib::HasParamSpec for DBusObjectManagerClientFlags {
+    type ParamSpec = glib::ParamSpecFlags;
+    type SetValue = Self;
+    type BuilderFn = fn(&str) -> glib::ParamSpecFlagsBuilder<Self>;
+
+    fn param_spec_builder() -> Self::BuilderFn {
+        |name| Self::ParamSpec::builder(name)
+    }
+}
+
+impl glib::value::ValueType for DBusObjectManagerClientFlags {
+    type Type = Self;
+}
+
+unsafe impl<'a> glib::value::FromValue<'a> for DBusObjectManagerClientFlags {
+    type Checker = glib::value::GenericValueTypeChecker<Self>;
+
+    #[inline]
+    unsafe fn from_value(value: &'a glib::Value) -> Self {
+        from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0))
+    }
+}
+
+impl ToValue for DBusObjectManagerClientFlags {
+    #[inline]
+    fn to_value(&self) -> glib::Value {
+        let mut value = glib::Value::for_value_type::<Self>();
+        unsafe {
+            glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, self.into_glib());
+        }
+        value
+    }
+
+    #[inline]
+    fn value_type(&self) -> glib::Type {
+        Self::static_type()
+    }
+}
+
+impl From<DBusObjectManagerClientFlags> for glib::Value {
+    #[inline]
+    fn from(v: DBusObjectManagerClientFlags) -> Self {
+        ToValue::to_value(&v)
+    }
+}
+
+bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GDBusProxyFlags")]
     pub struct DBusProxyFlags: u32 {
         #[doc(alias = "G_DBUS_PROXY_FLAGS_NONE")]
