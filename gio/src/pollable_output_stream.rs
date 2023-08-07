@@ -181,7 +181,9 @@ impl<T: IsA<PollableOutputStream>> AsyncWrite for OutputStreamAsyncWrite<T> {
         match gio_result {
             Ok(size) => Poll::Ready(Ok(size as usize)),
             Err(err) => {
-                let kind = err.kind::<crate::IOErrorEnum>().unwrap();
+                let kind = err
+                    .kind::<crate::IOErrorEnum>()
+                    .unwrap_or(crate::IOErrorEnum::Failed);
                 if kind == crate::IOErrorEnum::WouldBlock {
                     let mut waker = Some(cx.waker().clone());
                     let source = stream.0.as_ref().create_source(
@@ -245,7 +247,10 @@ impl<T: IsA<PollableOutputStream>> AsyncWrite for OutputStreamAsyncWrite<T> {
             }
             Ok((_, _)) => unreachable!(),
             Err(err) => Poll::Ready(Err(io::Error::new(
-                io::ErrorKind::from(err.kind::<crate::IOErrorEnum>().unwrap()),
+                io::ErrorKind::from(
+                    err.kind::<crate::IOErrorEnum>()
+                        .unwrap_or(crate::IOErrorEnum::Failed),
+                ),
                 err,
             ))),
         }
