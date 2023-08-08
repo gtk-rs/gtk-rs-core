@@ -175,7 +175,9 @@ impl<T: IsA<PollableInputStream>> AsyncRead for InputStreamAsyncRead<T> {
         match gio_result {
             Ok(size) => Poll::Ready(Ok(size as usize)),
             Err(err) => {
-                let kind = err.kind::<crate::IOErrorEnum>().unwrap();
+                let kind = err
+                    .kind::<crate::IOErrorEnum>()
+                    .unwrap_or(crate::IOErrorEnum::Failed);
                 if kind == crate::IOErrorEnum::WouldBlock {
                     let mut waker = Some(cx.waker().clone());
                     let source = stream.0.as_ref().create_source(
