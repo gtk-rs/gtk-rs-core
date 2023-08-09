@@ -1,4 +1,4 @@
-FROM fedora:rawhide
+FROM fedora:latest
 
 RUN dnf update -y && \
     dnf install wget git meson cmake gcc gcc-c++ \
