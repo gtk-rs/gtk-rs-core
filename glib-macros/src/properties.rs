@@ -11,27 +11,53 @@ use syn::parenthesized;
 use syn::parse::Parse;
 use syn::punctuated::Punctuated;
 use syn::spanned::Spanned;
-use syn::LitStr;
 use syn::Token;
+use syn::{parse_quote_spanned, LitStr};
 
 pub struct PropsMacroInput {
     wrapper_ty: syn::Path,
+    ext_trait: Option<Option<syn::Ident>>,
     ident: syn::Ident,
     props: Vec<PropDesc>,
 }
 
-pub struct PropertiesAttr {
-    _wrapper_ty_token: syn::Ident,
-    _eq: Token![=],
+pub struct PropertiesAttrs {
     wrapper_ty: syn::Path,
+    // None => no ext trait,
+    // Some(None) => derive the ext trait from the wrapper type,
+    // Some(Some(ident)) => use the given ext trait Ident
+    ext_trait: Option<Option<syn::Ident>>,
 }
 
-impl Parse for PropertiesAttr {
+impl Parse for PropertiesAttrs {
     fn parse(input: syn::parse::ParseStream) -> syn::Result<Self> {
+        let mut wrapper_ty = None;
+        let mut ext_trait = None;
+
+        while !input.is_empty() {
+            let ident = input.parse::<syn::Ident>()?;
+            if ident == "wrapper_type" {
+                let _eq = input.parse::<Token![=]>()?;
+                wrapper_ty = Some(input.parse::<syn::Path>()?);
+            } else if ident == "ext_trait" {
+                if input.peek(Token![=]) {
+                    let _eq = input.parse::<Token![=]>()?;
+                    let ident = input.parse::<syn::Ident>()?;
+                    ext_trait = Some(Some(ident));
+                } else {
+                    ext_trait = Some(None);
+                }
+            }
+            if input.peek(Token![,]) {
+                input.parse::<Token![,]>()?;
+            }
+        }
+
         Ok(Self {
-            _wrapper_ty_token: input.parse()?,
-            _eq: input.parse()?,
-            wrapper_ty: input.parse()?,
+            wrapper_ty: wrapper_ty.ok_or_else(|| {
+                syn::Error::new(input.span(), "missing #[properties(wrapper_type = ...)]")
+            })?,
+            ext_trait,
         })
     }
 }
@@ -39,7 +65,7 @@ impl Parse for PropertiesAttr {
 impl Parse for PropsMacroInput {
     fn parse(input: syn::parse::ParseStream) -> syn::Result<Self> {
         let derive_input: syn::DeriveInput = input.parse()?;
-        let wrapper_ty = derive_input
+        let attrs = derive_input
             .attrs
             .iter()
             .find(|x| x.path().is_ident("properties"))
@@ -49,7 +75,7 @@ impl Parse for PropsMacroInput {
                     "missing #[properties(wrapper_type = ...)]",
                 )
             })?;
-        let wrapper_ty: PropertiesAttr = wrapper_ty.parse_args()?;
+        let attrs: PropertiesAttrs = attrs.parse_args()?;
         let props: Vec<_> = match derive_input.data {
             syn::Data::Struct(struct_data) => parse_fields(struct_data.fields)?,
             _ => {
@@ -60,7 +86,8 @@ impl Parse for PropsMacroInput {
             }
         };
         Ok(Self {
-            wrapper_ty: wrapper_ty.wrapper_ty,
+            wrapper_ty: attrs.wrapper_ty,
+            ext_trait: attrs.ext_trait,
             ident: derive_input.ident,
             props,
         })
@@ -529,7 +556,7 @@ fn strip_raw_prefix_from_name(name: &LitStr) -> LitStr {
     )
 }
 
-fn expand_wrapper_getset_properties(props: &[PropDesc]) -> TokenStream2 {
+fn expand_impl_getset_properties(props: &[PropDesc]) -> Vec<syn::ImplItemFn> {
     let crate_ident = crate_ident_new();
     let defs = props.iter().map(|p| {
         let name = &p.name;
@@ -538,7 +565,8 @@ fn expand_wrapper_getset_properties(props: &[PropDesc]) -> TokenStream2 {
         let ty = &p.ty;
 
         let getter = p.get.is_some().then(|| {
-            quote!(pub fn #ident(&self) -> <#ty as #crate_ident::Property>::Value {
+            let span = p.attrs_span;
+            parse_quote_spanned!(span=> pub fn #ident(&self) -> <#ty as #crate_ident::Property>::Value {
                  self.property::<<#ty as #crate_ident::Property>::Value>(#stripped_name)
             })
         });
@@ -560,43 +588,42 @@ fn expand_wrapper_getset_properties(props: &[PropDesc]) -> TokenStream2 {
                     std::borrow::Borrow::borrow(&value)
                 )
             };
-            quote!(pub fn #ident<'a>(&self, value: #set_ty) {
+            let span = p.attrs_span;
+            parse_quote_spanned!(span=> pub fn #ident<'a>(&self, value: #set_ty) {
                 self.set_property_from_value(#stripped_name, &::std::convert::From::from(#upcasted_borrowed_value))
             })
         });
-        let span = p.attrs_span;
-        quote_spanned!(span=>
-            #getter
-            #setter
-        )
+        [getter, setter]
     });
-    quote!(#(#defs)*)
+    defs.flatten() // flattens []
+        .flatten() // removes None
+        .collect::<Vec<_>>()
 }
 
-fn expand_wrapper_connect_prop_notify(props: &[PropDesc]) -> TokenStream2 {
+fn expand_impl_connect_prop_notify(props: &[PropDesc]) -> Vec<syn::ImplItemFn> {
     let crate_ident = crate_ident_new();
-    let connection_fns = props.iter().map(|p| {
+    let connection_fns = props.iter().map(|p| -> syn::ImplItemFn {
         let name = &p.name;
         let stripped_name = strip_raw_prefix_from_name(name);
         let fn_ident = format_ident!("connect_{}_notify", name_to_ident(name));
         let span = p.attrs_span;
-        quote_spanned!(span=> pub fn #fn_ident<F: Fn(&Self) + 'static>(&self, f: F) -> #crate_ident::SignalHandlerId {
+        parse_quote_spanned!(span=> pub fn #fn_ident<F: Fn(&Self) + 'static>(&self, f: F) -> #crate_ident::SignalHandlerId {
             self.connect_notify_local(::core::option::Option::Some(#stripped_name), move |this, _| {
                 f(this)
             })
         })
     });
-    quote!(#(#connection_fns)*)
+    connection_fns.collect::<Vec<_>>()
 }
 
-fn expand_wrapper_notify_prop(props: &[PropDesc]) -> TokenStream2 {
+fn expand_impl_notify_prop(props: &[PropDesc]) -> Vec<syn::ImplItemFn> {
     let crate_ident = crate_ident_new();
-    let emit_fns = props.iter().map(|p| {
+    let emit_fns = props.iter().map(|p| -> syn::ImplItemFn {
         let name = strip_raw_prefix_from_name(&p.name);
         let fn_ident = format_ident!("notify_{}", name_to_ident(&name));
         let span = p.attrs_span;
         let enum_ident = name_to_enum_ident(name.value());
-        quote_spanned!(span=> pub fn #fn_ident(&self) {
+        parse_quote_spanned!(span=> pub fn #fn_ident(&self) {
             self.notify_by_pspec(
                 &<<Self as #crate_ident::object::ObjectSubclassIs>::Subclass
                     as #crate_ident::subclass::object::DerivedObjectProperties>::derived_properties()
@@ -604,7 +631,7 @@ fn expand_wrapper_notify_prop(props: &[PropDesc]) -> TokenStream2 {
             );
         })
     });
-    quote!(#(#emit_fns)*)
+    emit_fns.collect::<Vec<_>>()
 }
 
 fn name_to_enum_ident(name: String) -> syn::Ident {
@@ -661,10 +688,54 @@ pub fn impl_derive_props(input: PropsMacroInput) -> TokenStream {
     let fn_properties = expand_properties_fn(&input.props);
     let fn_property = expand_property_fn(&input.props);
     let fn_set_property = expand_set_property_fn(&input.props);
-    let getset_properties = expand_wrapper_getset_properties(&input.props);
-    let connect_prop_notify = expand_wrapper_connect_prop_notify(&input.props);
-    let notify_prop = expand_wrapper_notify_prop(&input.props);
+    let getset_properties = expand_impl_getset_properties(&input.props);
+    let connect_prop_notify = expand_impl_connect_prop_notify(&input.props);
+    let notify_prop = expand_impl_notify_prop(&input.props);
     let properties_enum = expand_properties_enum(&input.props);
+
+    let rust_interface = if let Some(ext_trait) = input.ext_trait {
+        let trait_ident = if let Some(ext_trait) = ext_trait {
+            ext_trait
+        } else {
+            format_ident!(
+                "{}PropertiesExt",
+                wrapper_type.segments.last().unwrap().ident
+            )
+        };
+        let signatures = getset_properties
+            .iter()
+            .chain(connect_prop_notify.iter())
+            .chain(notify_prop.iter())
+            .map(|item| &item.sig);
+        let trait_def = quote! {
+            pub trait #trait_ident {
+                #(#signatures;)*
+            }
+        };
+        let impls = getset_properties
+            .into_iter()
+            .chain(connect_prop_notify)
+            .chain(notify_prop)
+            .map(|mut item| {
+                item.vis = syn::Visibility::Inherited;
+                item
+            });
+        quote! {
+            #trait_def
+            impl #trait_ident for #wrapper_type {
+                #(#impls)*
+            }
+        }
+    } else {
+        quote! {
+            #[allow(dead_code)]
+            impl #wrapper_type {
+                #(#getset_properties)*
+                #(#connect_prop_notify)*
+                #(#notify_prop)*
+            }
+        }
+    };
 
     let expanded = quote! {
         use #crate_ident::{PropertyGet, PropertySet, ToValue};
@@ -677,13 +748,7 @@ pub fn impl_derive_props(input: PropsMacroInput) -> TokenStream {
             #fn_set_property
         }
 
-        #[allow(dead_code)]
-        impl #wrapper_type {
-            #getset_properties
-            #connect_prop_notify
-            #notify_prop
-        }
-
+        #rust_interface
     };
     proc_macro::TokenStream::from(expanded)
 }
