@@ -1,4 +1,4 @@
-FROM fedora:latest
+FROM fedora:38
 
 RUN dnf update -y && \
     dnf install wget git meson cmake gcc gcc-c++ \
