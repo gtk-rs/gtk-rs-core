@@ -420,15 +420,17 @@ macro_rules! glib_boxed_wrapper {
 
     (@memory_manager_impl $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)?, $ffi_name:ty, @copy $copy_arg:ident $copy_expr:expr, @free $free_arg:ident $free_expr:expr) => {
         #[doc(hidden)]
-        impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::boxed::BoxedMemoryManager<$ffi_name> for $name $(<$($generic),+>)? {
+        impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::boxed::BoxedMemoryManager for $name $(<$($generic),+>)? {
+            type Target = $ffi_name;
+
             #[inline]
-            unsafe fn copy($copy_arg: *const $ffi_name) -> *mut $ffi_name {
+            unsafe fn copy($copy_arg: *const Self::Target) -> *mut Self::Target {
                 $copy_expr
             }
 
             #[inline]
             #[allow(clippy::no_effect)]
-            unsafe fn free($free_arg: *mut $ffi_name) {
+            unsafe fn free($free_arg: *mut Self::Target) {
                 $free_expr;
             }
         }
@@ -437,21 +439,23 @@ macro_rules! glib_boxed_wrapper {
 
 // The safety docs really belong in the wrapper!() macro for Boxed<T>
 /// Memory management functions for a boxed type.
-pub trait BoxedMemoryManager<T>: 'static {
+pub trait BoxedMemoryManager: 'static {
+    type Target;
+
     /// Makes a copy.
-    unsafe fn copy(ptr: *const T) -> *mut T;
+    unsafe fn copy(ptr: *const Self::Target) -> *mut Self::Target;
     /// Frees the object.
-    unsafe fn free(ptr: *mut T);
+    unsafe fn free(ptr: *mut Self::Target);
 }
 
 /// Encapsulates memory management logic for boxed types.
 #[repr(transparent)]
-pub struct Boxed<T: 'static, MM: BoxedMemoryManager<T>> {
+pub struct Boxed<T: 'static, MM: BoxedMemoryManager<Target = T>> {
     inner: ptr::NonNull<T>,
     _dummy: PhantomData<*mut MM>,
 }
 
-impl<'a, T: 'static, MM: BoxedMemoryManager<T>> ToGlibPtr<'a, *const T> for Boxed<T, MM> {
+impl<'a, T: 'static, MM: BoxedMemoryManager<Target = T>> ToGlibPtr<'a, *const T> for Boxed<T, MM> {
     type Storage = PhantomData<&'a Self>;
 
     #[inline]
@@ -467,7 +471,7 @@ impl<'a, T: 'static, MM: BoxedMemoryManager<T>> ToGlibPtr<'a, *const T> for Boxe
     }
 }
 
-impl<'a, T: 'static, MM: BoxedMemoryManager<T>> ToGlibPtrMut<'a, *mut T> for Boxed<T, MM> {
+impl<'a, T: 'static, MM: BoxedMemoryManager<Target = T>> ToGlibPtrMut<'a, *mut T> for Boxed<T, MM> {
     type Storage = PhantomData<&'a mut Self>;
 
     #[inline]
@@ -477,7 +481,7 @@ impl<'a, T: 'static, MM: BoxedMemoryManager<T>> ToGlibPtrMut<'a, *mut T> for Box
     }
 }
 
-impl<T: 'static, MM: BoxedMemoryManager<T>> FromGlibPtrNone<*mut T> for Boxed<T, MM> {
+impl<T: 'static, MM: BoxedMemoryManager<Target = T>> FromGlibPtrNone<*mut T> for Boxed<T, MM> {
     #[inline]
     unsafe fn from_glib_none(ptr: *mut T) -> Self {
         debug_assert!(!ptr.is_null());
@@ -486,7 +490,7 @@ impl<T: 'static, MM: BoxedMemoryManager<T>> FromGlibPtrNone<*mut T> for Boxed<T,
     }
 }
 
-impl<T: 'static, MM: BoxedMemoryManager<T>> FromGlibPtrNone<*const T> for Boxed<T, MM> {
+impl<T: 'static, MM: BoxedMemoryManager<Target = T>> FromGlibPtrNone<*const T> for Boxed<T, MM> {
     #[inline]
     unsafe fn from_glib_none(ptr: *const T) -> Self {
         debug_assert!(!ptr.is_null());
@@ -495,7 +499,7 @@ impl<T: 'static, MM: BoxedMemoryManager<T>> FromGlibPtrNone<*const T> for Boxed<
     }
 }
 
-impl<T: 'static, MM: BoxedMemoryManager<T>> FromGlibPtrFull<*mut T> for Boxed<T, MM> {
+impl<T: 'static, MM: BoxedMemoryManager<Target = T>> FromGlibPtrFull<*mut T> for Boxed<T, MM> {
     #[inline]
     unsafe fn from_glib_full(ptr: *mut T) -> Self {
         debug_assert!(!ptr.is_null());
@@ -506,7 +510,7 @@ impl<T: 'static, MM: BoxedMemoryManager<T>> FromGlibPtrFull<*mut T> for Boxed<T,
     }
 }
 
-impl<T: 'static, MM: BoxedMemoryManager<T>> FromGlibPtrFull<*const T> for Boxed<T, MM> {
+impl<T: 'static, MM: BoxedMemoryManager<Target = T>> FromGlibPtrFull<*const T> for Boxed<T, MM> {
     #[inline]
     unsafe fn from_glib_full(ptr: *const T) -> Self {
         debug_assert!(!ptr.is_null());
@@ -517,7 +521,7 @@ impl<T: 'static, MM: BoxedMemoryManager<T>> FromGlibPtrFull<*const T> for Boxed<
     }
 }
 
-impl<T: 'static, MM: BoxedMemoryManager<T>> FromGlibPtrBorrow<*mut T> for Boxed<T, MM> {
+impl<T: 'static, MM: BoxedMemoryManager<Target = T>> FromGlibPtrBorrow<*mut T> for Boxed<T, MM> {
     #[inline]
     unsafe fn from_glib_borrow(ptr: *mut T) -> Borrowed<Self> {
         debug_assert!(!ptr.is_null());
@@ -528,7 +532,7 @@ impl<T: 'static, MM: BoxedMemoryManager<T>> FromGlibPtrBorrow<*mut T> for Boxed<
     }
 }
 
-impl<T: 'static, MM: BoxedMemoryManager<T>> Drop for Boxed<T, MM> {
+impl<T: 'static, MM: BoxedMemoryManager<Target = T>> Drop for Boxed<T, MM> {
     #[inline]
     fn drop(&mut self) {
         unsafe {
@@ -537,36 +541,36 @@ impl<T: 'static, MM: BoxedMemoryManager<T>> Drop for Boxed<T, MM> {
     }
 }
 
-impl<T: 'static, MM: BoxedMemoryManager<T>> fmt::Debug for Boxed<T, MM> {
+impl<T: 'static, MM: BoxedMemoryManager<Target = T>> fmt::Debug for Boxed<T, MM> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         f.debug_struct("Boxed").field("inner", &self.inner).finish()
     }
 }
 
-impl<T, MM: BoxedMemoryManager<T>> PartialOrd for Boxed<T, MM> {
+impl<T, MM: BoxedMemoryManager<Target = T>> PartialOrd for Boxed<T, MM> {
     #[inline]
     fn partial_cmp(&self, other: &Self) -> Option<cmp::Ordering> {
         self.to_glib_none().0.partial_cmp(&other.to_glib_none().0)
     }
 }
 
-impl<T, MM: BoxedMemoryManager<T>> Ord for Boxed<T, MM> {
+impl<T, MM: BoxedMemoryManager<Target = T>> Ord for Boxed<T, MM> {
     #[inline]
     fn cmp(&self, other: &Self) -> cmp::Ordering {
         self.to_glib_none().0.cmp(&other.to_glib_none().0)
     }
 }
 
-impl<T, MM: BoxedMemoryManager<T>> PartialEq for Boxed<T, MM> {
+impl<T, MM: BoxedMemoryManager<Target = T>> PartialEq for Boxed<T, MM> {
     #[inline]
     fn eq(&self, other: &Self) -> bool {
         self.to_glib_none().0 == other.to_glib_none().0
     }
 }
 
-impl<T, MM: BoxedMemoryManager<T>> Eq for Boxed<T, MM> {}
+impl<T, MM: BoxedMemoryManager<Target = T>> Eq for Boxed<T, MM> {}
 
-impl<T, MM: BoxedMemoryManager<T>> Hash for Boxed<T, MM> {
+impl<T, MM: BoxedMemoryManager<Target = T>> Hash for Boxed<T, MM> {
     #[inline]
     fn hash<H>(&self, state: &mut H)
     where
@@ -576,14 +580,14 @@ impl<T, MM: BoxedMemoryManager<T>> Hash for Boxed<T, MM> {
     }
 }
 
-impl<T: 'static, MM: BoxedMemoryManager<T>> Clone for Boxed<T, MM> {
+impl<T: 'static, MM: BoxedMemoryManager<Target = T>> Clone for Boxed<T, MM> {
     #[inline]
     fn clone(&self) -> Self {
         unsafe { from_glib_none(self.to_glib_none().0 as *mut T) }
     }
 }
 
-impl<T: 'static, MM: BoxedMemoryManager<T>> Deref for Boxed<T, MM> {
+impl<T: 'static, MM: BoxedMemoryManager<Target = T>> Deref for Boxed<T, MM> {
     type Target = T;
 
     #[inline]
@@ -595,7 +599,7 @@ impl<T: 'static, MM: BoxedMemoryManager<T>> Deref for Boxed<T, MM> {
     }
 }
 
-impl<T: 'static, MM: BoxedMemoryManager<T>> DerefMut for Boxed<T, MM> {
+impl<T: 'static, MM: BoxedMemoryManager<Target = T>> DerefMut for Boxed<T, MM> {
     #[inline]
     fn deref_mut(&mut self) -> &mut T {
         unsafe {
