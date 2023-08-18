@@ -59,15 +59,17 @@ macro_rules! glib_shared_wrapper {
         }
 
         #[doc(hidden)]
-        impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::shared::SharedMemoryManager<$ffi_name> for $name $(<$($generic),+>)? {
+        impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::shared::SharedMemoryManager for $name $(<$($generic),+>)? {
+            type Target = $ffi_name;
+
             #[inline]
-            unsafe fn ref_($ref_arg: *mut $ffi_name) {
+            unsafe fn ref_($ref_arg: *mut Self::Target) {
                 $ref_expr;
             }
 
             #[inline]
             #[allow(clippy::no_effect)]
-            unsafe fn unref($unref_arg: *mut $ffi_name) {
+            unsafe fn unref($unref_arg: *mut Self::Target) {
                 $unref_expr;
             }
         }
@@ -436,29 +438,31 @@ macro_rules! glib_shared_wrapper {
     };
 }
 
-pub trait SharedMemoryManager<T> {
+pub trait SharedMemoryManager {
+    type Target;
+
     /// # Safety
     ///
     /// Callers are responsible for ensuring that a matching call to `unref`
     /// is made at an appropriate time.
-    unsafe fn ref_(ptr: *mut T);
+    unsafe fn ref_(ptr: *mut Self::Target);
 
     /// # Safety
     ///
     /// Callers are responsible for ensuring that a matching call to `ref` was
     /// made before this is called, and that the pointer is not used after the
     /// `unref` call.
-    unsafe fn unref(ptr: *mut T);
+    unsafe fn unref(ptr: *mut Self::Target);
 }
 
 /// Encapsulates memory management logic for shared types.
 #[repr(transparent)]
-pub struct Shared<T, MM: SharedMemoryManager<T>> {
+pub struct Shared<T, MM: SharedMemoryManager<Target = T>> {
     inner: ptr::NonNull<T>,
     mm: PhantomData<*const MM>,
 }
 
-impl<T, MM: SharedMemoryManager<T>> Drop for Shared<T, MM> {
+impl<T, MM: SharedMemoryManager<Target = T>> Drop for Shared<T, MM> {
     #[inline]
     fn drop(&mut self) {
         unsafe {
@@ -467,7 +471,7 @@ impl<T, MM: SharedMemoryManager<T>> Drop for Shared<T, MM> {
     }
 }
 
-impl<T, MM: SharedMemoryManager<T>> Clone for Shared<T, MM> {
+impl<T, MM: SharedMemoryManager<Target = T>> Clone for Shared<T, MM> {
     #[inline]
     fn clone(&self) -> Self {
         unsafe {
@@ -480,7 +484,7 @@ impl<T, MM: SharedMemoryManager<T>> Clone for Shared<T, MM> {
     }
 }
 
-impl<T, MM: SharedMemoryManager<T>> fmt::Debug for Shared<T, MM> {
+impl<T, MM: SharedMemoryManager<Target = T>> fmt::Debug for Shared<T, MM> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         f.debug_struct("Shared")
             .field("inner", &self.inner)
@@ -488,30 +492,30 @@ impl<T, MM: SharedMemoryManager<T>> fmt::Debug for Shared<T, MM> {
     }
 }
 
-impl<T, MM: SharedMemoryManager<T>> PartialOrd for Shared<T, MM> {
+impl<T, MM: SharedMemoryManager<Target = T>> PartialOrd for Shared<T, MM> {
     #[inline]
     fn partial_cmp(&self, other: &Self) -> Option<cmp::Ordering> {
         self.inner.partial_cmp(&other.inner)
     }
 }
 
-impl<T, MM: SharedMemoryManager<T>> Ord for Shared<T, MM> {
+impl<T, MM: SharedMemoryManager<Target = T>> Ord for Shared<T, MM> {
     #[inline]
     fn cmp(&self, other: &Self) -> cmp::Ordering {
         self.inner.cmp(&other.inner)
     }
 }
 
-impl<T, MM: SharedMemoryManager<T>> PartialEq for Shared<T, MM> {
+impl<T, MM: SharedMemoryManager<Target = T>> PartialEq for Shared<T, MM> {
     #[inline]
     fn eq(&self, other: &Self) -> bool {
         self.inner == other.inner
     }
 }
 
-impl<T, MM: SharedMemoryManager<T>> Eq for Shared<T, MM> {}
+impl<T, MM: SharedMemoryManager<Target = T>> Eq for Shared<T, MM> {}
 
-impl<T, MM: SharedMemoryManager<T>> Hash for Shared<T, MM> {
+impl<T, MM: SharedMemoryManager<Target = T>> Hash for Shared<T, MM> {
     #[inline]
     fn hash<H>(&self, state: &mut H)
     where
@@ -523,7 +527,7 @@ impl<T, MM: SharedMemoryManager<T>> Hash for Shared<T, MM> {
 
 impl<'a, T: 'static, MM> ToGlibPtr<'a, *mut T> for Shared<T, MM>
 where
-    MM: SharedMemoryManager<T> + 'static,
+    MM: SharedMemoryManager<Target = T> + 'static,
 {
     type Storage = PhantomData<&'a Self>;
 
@@ -541,7 +545,7 @@ where
     }
 }
 
-impl<T: 'static, MM: SharedMemoryManager<T>> FromGlibPtrNone<*mut T> for Shared<T, MM> {
+impl<T: 'static, MM: SharedMemoryManager<Target = T>> FromGlibPtrNone<*mut T> for Shared<T, MM> {
     #[inline]
     unsafe fn from_glib_none(ptr: *mut T) -> Self {
         debug_assert!(!ptr.is_null());
@@ -553,7 +557,7 @@ impl<T: 'static, MM: SharedMemoryManager<T>> FromGlibPtrNone<*mut T> for Shared<
     }
 }
 
-impl<T: 'static, MM: SharedMemoryManager<T>> FromGlibPtrNone<*const T> for Shared<T, MM> {
+impl<T: 'static, MM: SharedMemoryManager<Target = T>> FromGlibPtrNone<*const T> for Shared<T, MM> {
     #[inline]
     unsafe fn from_glib_none(ptr: *const T) -> Self {
         debug_assert!(!ptr.is_null());
@@ -565,7 +569,7 @@ impl<T: 'static, MM: SharedMemoryManager<T>> FromGlibPtrNone<*const T> for Share
     }
 }
 
-impl<T: 'static, MM: SharedMemoryManager<T>> FromGlibPtrFull<*mut T> for Shared<T, MM> {
+impl<T: 'static, MM: SharedMemoryManager<Target = T>> FromGlibPtrFull<*mut T> for Shared<T, MM> {
     #[inline]
     unsafe fn from_glib_full(ptr: *mut T) -> Self {
         debug_assert!(!ptr.is_null());
@@ -576,7 +580,7 @@ impl<T: 'static, MM: SharedMemoryManager<T>> FromGlibPtrFull<*mut T> for Shared<
     }
 }
 
-impl<T: 'static, MM: SharedMemoryManager<T>> FromGlibPtrBorrow<*mut T> for Shared<T, MM> {
+impl<T: 'static, MM: SharedMemoryManager<Target = T>> FromGlibPtrBorrow<*mut T> for Shared<T, MM> {
     #[inline]
     unsafe fn from_glib_borrow(ptr: *mut T) -> Borrowed<Self> {
         debug_assert!(!ptr.is_null());
