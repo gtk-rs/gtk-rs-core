@@ -16,6 +16,7 @@ macro_rules! glib_boxed_inline_wrapper {
             $(pub(crate) phantom: std::marker::PhantomData<$($generic),+>,)?
         }
 
+        #[allow(clippy::incorrect_clone_impl_on_copy_type)]
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? std::clone::Clone for $name $(<$($generic),+>)? {
             #[inline]
             fn clone(&self) -> Self {
@@ -48,6 +49,7 @@ macro_rules! glib_boxed_inline_wrapper {
             $(pub(crate) phantom: std::marker::PhantomData<$($generic),+>,)?
         }
 
+        #[allow(clippy::incorrect_clone_impl_on_copy_type)]
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? std::clone::Clone for $name $(<$($generic),+>)? {
             #[inline]
             fn clone(&self) -> Self {

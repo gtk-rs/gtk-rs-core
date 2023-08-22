@@ -426,6 +426,11 @@ mod ext_trait {
             glib::Object::builder().build()
         }
     }
+    impl Default for Author {
+        fn default() -> Self {
+            Self::new()
+        }
+    }
 }
 
 #[test]
@@ -438,66 +443,65 @@ fn ext_trait() {
     assert_eq!(AuthorPropertiesExt::lastname(&author), "Doe");
 }
 
-#[cfg(test)]
-mod kw_names {
-    mod imp {
-
-        use glib::subclass::object::DerivedObjectProperties;
-        use glib::ObjectExt;
-        use std::cell::Cell;
-
-        use glib::subclass::{prelude::ObjectImpl, types::ObjectSubclass};
-        use glib_macros::Properties;
-
-        #[derive(Properties, Default)]
-        #[properties(wrapper_type = super::KwNames)]
-        pub struct KwNames {
-            // Some of the strict keywords
-            #[property(get, set)]
-            r#loop: Cell<u8>,
-            #[property(get, set)]
-            r#move: Cell<u8>,
-            #[property(get, set)]
-            r#type: Cell<u8>,
-
-            // Lexer 2018+ strict keywords
-            #[property(get, set)]
-            r#async: Cell<u8>,
-            #[property(get, set)]
-            r#await: Cell<u8>,
-            #[property(get, set)]
-            r#dyn: Cell<u8>,
-
-            // Some of the reserved keywords
-            #[property(get, set)]
-            r#become: Cell<u8>,
-            #[property(get, set)]
-            r#macro: Cell<u8>,
-            #[property(get, set)]
-            r#unsized: Cell<u8>,
-
-            // Lexer 2018+ reserved keywords
-            #[property(get, set)]
-            r#try: Cell<u8>,
-        }
-
-        #[glib::object_subclass]
-        impl ObjectSubclass for KwNames {
-            const NAME: &'static str = "MyKwNames";
-            type Type = super::KwNames;
-        }
-
-        #[glib::derived_properties]
-        impl ObjectImpl for KwNames {}
-    }
-
-    glib::wrapper! {
-        pub struct KwNames(ObjectSubclass<imp::KwNames>);
-    }
-}
-
 #[test]
 fn keyword_propnames() {
+    mod kw_names {
+        mod imp {
+
+            use glib::subclass::object::DerivedObjectProperties;
+            use glib::ObjectExt;
+            use std::cell::Cell;
+
+            use glib::subclass::{prelude::ObjectImpl, types::ObjectSubclass};
+            use glib_macros::Properties;
+
+            #[derive(Properties, Default)]
+            #[properties(wrapper_type = super::KwNames)]
+            pub struct KwNames {
+                // Some of the strict keywords
+                #[property(get, set)]
+                r#loop: Cell<u8>,
+                #[property(get, set)]
+                r#move: Cell<u8>,
+                #[property(get, set)]
+                r#type: Cell<u8>,
+
+                // Lexer 2018+ strict keywords
+                #[property(get, set)]
+                r#async: Cell<u8>,
+                #[property(get, set)]
+                r#await: Cell<u8>,
+                #[property(get, set)]
+                r#dyn: Cell<u8>,
+
+                // Some of the reserved keywords
+                #[property(get, set)]
+                r#become: Cell<u8>,
+                #[property(get, set)]
+                r#macro: Cell<u8>,
+                #[property(get, set)]
+                r#unsized: Cell<u8>,
+
+                // Lexer 2018+ reserved keywords
+                #[property(get, set)]
+                r#try: Cell<u8>,
+            }
+
+            #[glib::object_subclass]
+            impl ObjectSubclass for KwNames {
+                const NAME: &'static str = "MyKwNames";
+                type Type = super::KwNames;
+            }
+
+            #[glib::derived_properties]
+            impl ObjectImpl for KwNames {}
+        }
+
+        glib::wrapper! {
+            pub struct KwNames(ObjectSubclass<imp::KwNames>);
+        }
+    }
+
     let mykwnames: kw_names::KwNames = glib::Object::new();
 
     // make sure all 10 properties are registered

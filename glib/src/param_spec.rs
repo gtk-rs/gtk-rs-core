@@ -49,7 +49,7 @@ unsafe impl<'a> crate::value::FromValue<'a> for ParamSpec {
     unsafe fn from_value(value: &'a crate::Value) -> Self {
         let ptr = gobject_ffi::g_value_dup_param(value.to_glib_none().0);
         debug_assert!(!ptr.is_null());
-        from_glib_full(ptr as *mut gobject_ffi::GParamSpec)
+        from_glib_full(ptr)
     }
 }
 
@@ -530,6 +530,7 @@ macro_rules! define_param_spec_default {
     ($rust_type:ident, $ffi_type:path, $value_type:ty, $from_glib:expr) => {
         impl $rust_type {
             #[inline]
+            #[allow(clippy::redundant_closure_call)]
             pub fn default_value(&self) -> $value_type {
                 unsafe {
                     let ptr =

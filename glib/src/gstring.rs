@@ -1204,7 +1204,7 @@ impl GString {
     pub fn as_str(&self) -> &str {
         unsafe {
             let (ptr, len) = match self.0 {
-                Inner::Native(ref s) => (s.as_ptr() as *const u8, s.len() - 1),
+                Inner::Native(ref s) => (s.as_ptr(), s.len() - 1),
                 Inner::Foreign { ptr, len } => (ptr.as_ptr() as *const u8, len),
                 Inner::Inline { len, ref data } => (data.as_ptr(), len as usize),
             };
@@ -2006,6 +2006,7 @@ impl FromGlibPtrBorrow<*mut i8> for GString {
     }
 }
 
+#[allow(clippy::unnecessary_cast)]
 #[doc(hidden)]
 impl<'a> ToGlibPtr<'a, *const u8> for GString {
     type Storage = PhantomData<&'a Self>;
@@ -2021,6 +2022,7 @@ impl<'a> ToGlibPtr<'a, *const u8> for GString {
     }
 }
 
+#[allow(clippy::unnecessary_cast)]
 #[doc(hidden)]
 impl<'a> ToGlibPtr<'a, *const i8> for GString {
     type Storage = PhantomData<&'a Self>;
@@ -2036,6 +2038,7 @@ impl<'a> ToGlibPtr<'a, *const i8> for GString {
     }
 }
 
+#[allow(clippy::unnecessary_cast)]
 #[doc(hidden)]
 impl<'a> ToGlibPtr<'a, *mut u8> for GString {
     type Storage = PhantomData<&'a Self>;
@@ -2051,6 +2054,7 @@ impl<'a> ToGlibPtr<'a, *mut u8> for GString {
     }
 }
 
+#[allow(clippy::unnecessary_cast)]
 #[doc(hidden)]
 impl<'a> ToGlibPtr<'a, *mut i8> for GString {
     type Storage = PhantomData<&'a Self>;
