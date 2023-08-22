@@ -1216,6 +1216,7 @@ macro_rules! numeric {
             type Checker = GenericValueTypeChecker<Self>;
 
             #[inline]
+            #[allow(clippy::redundant_closure_call)]
             unsafe fn from_value(value: &'a Value) -> Self {
                 $get(value.to_glib_none().0)
             }
@@ -1223,6 +1224,7 @@ macro_rules! numeric {
 
         impl ToValue for $name {
             #[inline]
+            #[allow(clippy::redundant_closure_call)]
             fn to_value(&self) -> Value {
                 let mut value = Value::for_value_type::<Self>();
                 unsafe {
@@ -1487,7 +1489,7 @@ mod tests {
 
     #[test]
     fn test_strv() {
-        let v = vec!["123", "456"].to_value();
+        let v = ["123", "456"].to_value();
         assert_eq!(
             v.get::<Vec<GString>>(),
             Ok(vec![GString::from("123"), GString::from("456")])
