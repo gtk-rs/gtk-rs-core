@@ -499,7 +499,7 @@ impl StrV {
         } else {
             // Need to clone every item because we don't own it here
             for i in 0..len {
-                let p = ptr.add(i) as *mut *const c_char;
+                let p = ptr.add(i);
                 *p = ffi::g_strdup(*p);
             }
 
