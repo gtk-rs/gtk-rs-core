@@ -412,7 +412,7 @@ impl fmt::Debug for ObjectRef {
 impl PartialOrd for ObjectRef {
     #[inline]
     fn partial_cmp(&self, other: &Self) -> Option<cmp::Ordering> {
-        self.inner.partial_cmp(&other.inner)
+        Some(self.cmp(other))
     }
 }
 
@@ -579,7 +579,7 @@ impl<T, P> fmt::Debug for TypedObjectRef<T, P> {
 impl<T, P> PartialOrd for TypedObjectRef<T, P> {
     #[inline]
     fn partial_cmp(&self, other: &Self) -> Option<cmp::Ordering> {
-        self.inner.partial_cmp(&other.inner)
+        Some(self.cmp(other))
     }
 }
 

@@ -6,7 +6,6 @@ use std::os::unix::io::{AsRawFd, FromRawFd, RawFd};
 use glib::{prelude::*, translate::*};
 #[cfg(all(not(unix), docsrs))]
 use socket::{AsRawFd, FromRawFd, IntoRawFd, RawFd};
-use std::fmt;
 
 glib::wrapper! {
     #[doc(alias = "GFileDescriptorBased")]

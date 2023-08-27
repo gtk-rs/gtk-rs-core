@@ -46,7 +46,7 @@ impl Eq for StrV {}
 impl PartialOrd for StrV {
     #[inline]
     fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
-        self.as_slice().partial_cmp(other.as_slice())
+        Some(self.cmp(other))
     }
 }
 

@@ -147,13 +147,7 @@ impl Eq for Bytes {}
 impl PartialOrd for Bytes {
     #[inline]
     fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
-        unsafe {
-            let ret = ffi::g_bytes_compare(
-                ToGlibPtr::<*const _>::to_glib_none(self).0 as *const _,
-                ToGlibPtr::<*const _>::to_glib_none(other).0 as *const _,
-            );
-            ret.partial_cmp(&0)
-        }
+        Some(self.cmp(other))
     }
 }
 

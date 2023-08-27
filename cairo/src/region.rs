@@ -163,7 +163,7 @@ impl Region {
 
     #[doc(alias = "get_extents")]
     #[doc(alias = "cairo_region_get_extents")]
-    pub fn extents(&self, rectangle: &mut RectangleInt) {
+    pub fn extents(&self, rectangle: &RectangleInt) {
         unsafe { ffi::cairo_region_get_extents(self.0.as_ptr(), rectangle.to_raw_none()) }
     }
 

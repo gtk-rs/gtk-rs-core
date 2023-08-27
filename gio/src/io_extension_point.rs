@@ -1,6 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use std::{fmt, marker::PhantomData, ptr};
+use std::{marker::PhantomData, ptr};
 
 use glib::{translate::*, GString, IntoGStr, Type};
 
