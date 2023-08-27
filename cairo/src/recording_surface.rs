@@ -1,6 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use std::{convert::TryFrom, fmt, ops::Deref};
+use std::{convert::TryFrom, ops::Deref};
 
 #[cfg(feature = "use_glib")]
 use glib::translate::*;

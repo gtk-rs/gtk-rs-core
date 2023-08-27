@@ -1,6 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use std::{convert::TryFrom, fmt, ops::Deref, ptr};
+use std::{convert::TryFrom, ops::Deref, ptr};
 
 use libc::{c_double, c_int, c_uint};
 
@@ -14,12 +14,6 @@ use crate::{
 #[derive(Debug)]
 pub struct Pattern {
     pointer: *mut cairo_pattern_t,
-}
-
-impl fmt::Display for Pattern {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "Pattern")
-    }
 }
 
 impl Pattern {
@@ -166,12 +160,6 @@ macro_rules! pattern_type(
             }
         }
 
-        impl fmt::Display for $pattern_type {
-            fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-                write!(f, stringify!($pattern_type))
-            }
-        }
-
         $(
             convert!(Pattern => $pattern_type = $variant);
         )*
@@ -300,12 +288,6 @@ macro_rules! gradient_type {
             #[inline]
             fn as_ref(&self) -> &Pattern {
                 &self.0
-            }
-        }
-
-        impl fmt::Display for $gradient_type {
-            fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-                write!(f, stringify!($gradient_type))
             }
         }
 

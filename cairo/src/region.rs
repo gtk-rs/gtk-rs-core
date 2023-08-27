@@ -2,7 +2,7 @@
 
 #[cfg(feature = "use_glib")]
 use std::marker::PhantomData;
-use std::{fmt, ptr};
+use std::ptr;
 
 #[cfg(feature = "use_glib")]
 use glib::translate::*;
@@ -278,11 +278,5 @@ impl Region {
     pub fn status(&self) -> Result<(), Error> {
         let status = unsafe { ffi::cairo_region_status(self.0.as_ptr()) };
         status_to_result(status)
-    }
-}
-
-impl fmt::Display for Region {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "Region")
     }
 }

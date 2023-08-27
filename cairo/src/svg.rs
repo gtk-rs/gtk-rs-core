@@ -5,7 +5,7 @@ use std::os::unix::prelude::*;
 use std::{
     convert::TryFrom,
     ffi::{CStr, CString},
-    fmt, io, mem,
+    io, mem,
     ops::Deref,
     path::Path,
     ptr,
