@@ -280,7 +280,7 @@ impl Eq for EnumValue {}
 
 impl PartialOrd for EnumValue {
     fn partial_cmp(&self, other: &Self) -> Option<cmp::Ordering> {
-        self.value().partial_cmp(&other.value())
+        Some(self.cmp(other))
     }
 }
 
