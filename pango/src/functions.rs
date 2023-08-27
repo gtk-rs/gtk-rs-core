@@ -2,6 +2,7 @@
 
 use glib::translate::*;
 
+pub use crate::auto::functions::*;
 #[cfg(feature = "v1_44")]
 use crate::ShapeFlags;
 use crate::{Analysis, GlyphString, Item};

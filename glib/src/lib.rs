@@ -108,7 +108,7 @@ pub use collections::{
     ptr_slice::IntoPtrSlice, strv::IntoStrV, List, PtrSlice, SList, Slice, StrV,
 };
 
-pub use self::auto::{functions::*, *};
+pub use self::auto::*;
 #[allow(clippy::too_many_arguments)]
 #[allow(clippy::type_complexity)]
 #[allow(unused_imports)]
@@ -129,8 +129,8 @@ pub mod closure;
 mod convert;
 pub use self::convert::*;
 mod enums;
-mod manual_functions;
-pub use self::manual_functions::*;
+mod functions;
+pub use self::functions::*;
 mod key_file;
 pub mod prelude;
 pub mod signal;

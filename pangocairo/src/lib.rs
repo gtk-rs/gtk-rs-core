@@ -10,7 +10,10 @@ pub use pango;
 
 mod auto;
 
-pub use crate::auto::{functions::*, *};
+pub use crate::auto::*;
 pub mod prelude;
+pub mod functions {
+    pub use super::auto::functions::*;
+}
 
 mod font_map;

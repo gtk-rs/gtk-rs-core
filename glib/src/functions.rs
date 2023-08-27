@@ -1,5 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
+pub use crate::auto::functions::*;
 #[cfg(not(windows))]
 use std::boxed::Box as Box_;
 #[cfg(not(windows))]
