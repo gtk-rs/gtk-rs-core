@@ -331,16 +331,6 @@ impl std::fmt::Debug for SignalType {
     }
 }
 
-impl std::fmt::Display for SignalType {
-    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        let type_: Type = (*self).into();
-        f.debug_struct("SignalType")
-            .field("name", &type_.name())
-            .field("static_scope", &self.static_scope())
-            .finish()
-    }
-}
-
 #[doc(hidden)]
 impl FromGlib<ffi::GType> for SignalType {
     #[inline]
