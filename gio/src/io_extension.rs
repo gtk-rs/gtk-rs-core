@@ -20,12 +20,6 @@ impl fmt::Debug for IOExtension {
     }
 }
 
-impl fmt::Display for IOExtension {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "IOExtension")
-    }
-}
-
 impl FromGlibPtrNone<*mut ffi::GIOExtension> for IOExtension {
     #[inline]
     unsafe fn from_glib_none(ptr: *mut ffi::GIOExtension) -> Self {

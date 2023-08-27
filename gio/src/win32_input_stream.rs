@@ -33,12 +33,6 @@ impl<O: IsA<Win32InputStream>> Win32InputStreamExt for O {
     }
 }
 
-impl fmt::Display for Win32InputStream {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("Win32InputStream")
-    }
-}
-
 impl Win32InputStream {
     pub const NONE: Option<&'static Win32InputStream> = None;
 

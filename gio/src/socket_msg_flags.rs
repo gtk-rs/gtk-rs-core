@@ -19,12 +19,6 @@ bitflags::bitflags! {
     }
 }
 
-impl fmt::Display for SocketMsgFlags {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        <Self as fmt::Debug>::fmt(self, f)
-    }
-}
-
 #[doc(hidden)]
 impl IntoGlib for SocketMsgFlags {
     type GlibType = ffi::GSocketMsgFlags;

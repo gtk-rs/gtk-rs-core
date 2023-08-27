@@ -53,12 +53,6 @@ impl IOExtensionPointBuilder {
 #[derive(Debug, Copy, Clone, Eq, PartialEq)]
 pub struct IOExtensionPoint(ptr::NonNull<ffi::GIOExtensionPoint>);
 
-impl fmt::Display for IOExtensionPoint {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "IOExtensionPoint")
-    }
-}
-
 impl FromGlibPtrNone<*mut ffi::GIOExtensionPoint> for IOExtensionPoint {
     #[inline]
     unsafe fn from_glib_none(ptr: *mut ffi::GIOExtensionPoint) -> Self {

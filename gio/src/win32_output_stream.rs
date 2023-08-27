@@ -31,12 +31,6 @@ pub trait Win32OutputStreamExt: IsA<Win32OutputStream> + 'static {
 
 impl<O: IsA<Win32OutputStream>> Win32OutputStreamExt for O {}
 
-impl fmt::Display for Win32OutputStream {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("Win32OutputStream")
-    }
-}
-
 impl Win32OutputStream {
     pub const NONE: Option<&'static Win32OutputStream> = None;
 
