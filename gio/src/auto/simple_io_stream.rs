@@ -4,7 +4,6 @@
 
 use crate::{IOStream, InputStream, OutputStream};
 use glib::{prelude::*, translate::*};
-use std::fmt;
 
 glib::wrapper! {
     #[doc(alias = "GSimpleIOStream")]
@@ -28,11 +27,5 @@ impl SimpleIOStream {
             ))
             .unsafe_cast()
         }
-    }
-}
-
-impl fmt::Display for SimpleIOStream {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("SimpleIOStream")
     }
 }

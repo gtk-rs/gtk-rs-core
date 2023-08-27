@@ -4,7 +4,6 @@
 
 use crate::Vec2;
 use glib::translate::*;
-use std::mem;
 
 glib::wrapper! {
     pub struct Point(BoxedInline<ffi::graphene_point_t>);
@@ -20,8 +19,8 @@ impl Point {
     #[doc(alias = "graphene_point_distance")]
     pub fn distance(&self, b: &Point) -> (f32, f32, f32) {
         unsafe {
-            let mut d_x = mem::MaybeUninit::uninit();
-            let mut d_y = mem::MaybeUninit::uninit();
+            let mut d_x = std::mem::MaybeUninit::uninit();
+            let mut d_y = std::mem::MaybeUninit::uninit();
             let ret = ffi::graphene_point_distance(
                 self.to_glib_none().0,
                 b.to_glib_none().0,

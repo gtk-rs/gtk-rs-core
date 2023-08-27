@@ -8,7 +8,7 @@ use glib::{
     signal::{connect_raw, SignalHandlerId},
     translate::*,
 };
-use std::{boxed::Box as Box_, fmt, mem::transmute, pin::Pin, ptr};
+use std::{boxed::Box as Box_, pin::Pin};
 
 glib::wrapper! {
     #[doc(alias = "GIOStream")]
@@ -39,7 +39,7 @@ pub trait IOStreamExt: IsA<IOStream> + sealed::Sealed + 'static {
     #[doc(alias = "g_io_stream_close")]
     fn close(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<(), glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_io_stream_close(
                 self.as_ref().to_glib_none().0,
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
@@ -80,7 +80,7 @@ pub trait IOStreamExt: IsA<IOStream> + sealed::Sealed + 'static {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let _ = ffi::g_io_stream_close_finish(_source_object as *mut _, res, &mut error);
             let result = if error.is_null() {
                 Ok(())
@@ -151,7 +151,7 @@ pub trait IOStreamExt: IsA<IOStream> + sealed::Sealed + 'static {
     #[doc(alias = "g_io_stream_set_pending")]
     fn set_pending(&self) -> Result<(), glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_io_stream_set_pending(self.as_ref().to_glib_none().0, &mut error);
             debug_assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
             if error.is_null() {
@@ -177,7 +177,7 @@ pub trait IOStreamExt: IsA<IOStream> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::closed\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
                     notify_closed_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -187,9 +187,3 @@ pub trait IOStreamExt: IsA<IOStream> + sealed::Sealed + 'static {
 }
 
 impl<O: IsA<IOStream>> IOStreamExt for O {}
-
-impl fmt::Display for IOStream {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("IOStream")
-    }
-}

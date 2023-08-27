@@ -4,7 +4,6 @@
 
 use crate::MenuModel;
 use glib::{prelude::*, translate::*};
-use std::{fmt, ptr};
 
 glib::wrapper! {
     #[doc(alias = "GMenuLinkIter")]
@@ -29,8 +28,8 @@ pub trait MenuLinkIterExt: IsA<MenuLinkIter> + sealed::Sealed + 'static {
     #[doc(alias = "get_next")]
     fn next(&self) -> Option<(glib::GString, MenuModel)> {
         unsafe {
-            let mut out_link = ptr::null();
-            let mut value = ptr::null_mut();
+            let mut out_link = std::ptr::null();
+            let mut value = std::ptr::null_mut();
             let ret = from_glib(ffi::g_menu_link_iter_get_next(
                 self.as_ref().to_glib_none().0,
                 &mut out_link,
@@ -46,9 +45,3 @@ pub trait MenuLinkIterExt: IsA<MenuLinkIter> + sealed::Sealed + 'static {
 }
 
 impl<O: IsA<MenuLinkIter>> MenuLinkIterExt for O {}
-
-impl fmt::Display for MenuLinkIter {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("MenuLinkIter")
-    }
-}

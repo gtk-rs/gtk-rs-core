@@ -8,7 +8,7 @@ use glib::{
     signal::{connect_raw, SignalHandlerId},
     translate::*,
 };
-use std::{boxed::Box as Box_, fmt, mem::transmute, ptr};
+use std::boxed::Box as Box_;
 
 glib::wrapper! {
     #[doc(alias = "GCharsetConverter")]
@@ -23,7 +23,7 @@ impl CharsetConverter {
     #[doc(alias = "g_charset_converter_new")]
     pub fn new(to_charset: &str, from_charset: &str) -> Result<CharsetConverter, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_charset_converter_new(
                 to_charset.to_glib_none().0,
                 from_charset.to_glib_none().0,
@@ -96,7 +96,7 @@ impl CharsetConverter {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::use-fallback\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
                     notify_use_fallback_trampoline::<F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -150,11 +150,5 @@ impl CharsetConverterBuilder {
     #[must_use = "Building the object from the builder is usually expensive and is not expected to have side effects"]
     pub fn build(self) -> CharsetConverter {
         self.builder.build()
-    }
-}
-
-impl fmt::Display for CharsetConverter {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("CharsetConverter")
     }
 }

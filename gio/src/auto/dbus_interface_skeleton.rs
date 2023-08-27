@@ -11,7 +11,7 @@ use glib::{
     signal::{connect_raw, SignalHandlerId},
     translate::*,
 };
-use std::{boxed::Box as Box_, fmt, mem::transmute, ptr};
+use std::boxed::Box as Box_;
 
 glib::wrapper! {
     #[doc(alias = "GDBusInterfaceSkeleton")]
@@ -35,7 +35,7 @@ pub trait DBusInterfaceSkeletonExt: IsA<DBusInterfaceSkeleton> + sealed::Sealed 
     #[doc(alias = "g_dbus_interface_skeleton_export")]
     fn export(&self, connection: &DBusConnection, object_path: &str) -> Result<(), glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_dbus_interface_skeleton_export(
                 self.as_ref().to_glib_none().0,
                 connection.to_glib_none().0,
@@ -196,7 +196,7 @@ pub trait DBusInterfaceSkeletonExt: IsA<DBusInterfaceSkeleton> + sealed::Sealed 
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"g-authorize-method\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
                     g_authorize_method_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -222,7 +222,7 @@ pub trait DBusInterfaceSkeletonExt: IsA<DBusInterfaceSkeleton> + sealed::Sealed 
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::g-flags\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
                     notify_g_flags_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -232,9 +232,3 @@ pub trait DBusInterfaceSkeletonExt: IsA<DBusInterfaceSkeleton> + sealed::Sealed 
 }
 
 impl<O: IsA<DBusInterfaceSkeleton>> DBusInterfaceSkeletonExt for O {}
-
-impl fmt::Display for DBusInterfaceSkeleton {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("DBusInterfaceSkeleton")
-    }
-}

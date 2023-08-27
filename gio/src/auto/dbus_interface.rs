@@ -4,7 +4,6 @@
 
 use crate::{DBusInterfaceInfo, DBusObject};
 use glib::{prelude::*, translate::*};
-use std::fmt;
 
 glib::wrapper! {
     #[doc(alias = "GDBusInterface")]
@@ -57,9 +56,3 @@ pub trait DBusInterfaceExt: IsA<DBusInterface> + sealed::Sealed + 'static {
 }
 
 impl<O: IsA<DBusInterface>> DBusInterfaceExt for O {}
-
-impl fmt::Display for DBusInterface {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("DBusInterface")
-    }
-}

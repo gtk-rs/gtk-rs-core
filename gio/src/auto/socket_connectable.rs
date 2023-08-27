@@ -4,7 +4,6 @@
 
 use crate::SocketAddressEnumerator;
 use glib::{prelude::*, translate::*};
-use std::fmt;
 
 glib::wrapper! {
     #[doc(alias = "GSocketConnectable")]
@@ -54,9 +53,3 @@ pub trait SocketConnectableExt: IsA<SocketConnectable> + sealed::Sealed + 'stati
 }
 
 impl<O: IsA<SocketConnectable>> SocketConnectableExt for O {}
-
-impl fmt::Display for SocketConnectable {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("SocketConnectable")
-    }
-}

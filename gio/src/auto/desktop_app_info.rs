@@ -4,10 +4,7 @@
 
 use crate::{AppInfo, AppLaunchContext};
 use glib::{prelude::*, translate::*};
-#[cfg(feature = "v2_60")]
-#[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
-use std::mem;
-use std::{boxed::Box as Box_, fmt, ptr};
+use std::boxed::Box as Box_;
 
 glib::wrapper! {
     #[doc(alias = "GDesktopAppInfo")]
@@ -163,7 +160,7 @@ impl DesktopAppInfo {
     #[doc(alias = "get_string_list")]
     pub fn string_list(&self, key: &str) -> Vec<glib::GString> {
         unsafe {
-            let mut length = mem::MaybeUninit::uninit();
+            let mut length = std::mem::MaybeUninit::uninit();
             let ret = FromGlibContainer::from_glib_full_num(
                 ffi::g_desktop_app_info_get_string_list(
                     self.to_glib_none().0,
@@ -248,7 +245,7 @@ impl DesktopAppInfo {
         let super_callback1: &Option<&mut dyn (FnMut(&DesktopAppInfo, glib::Pid))> =
             &pid_callback_data;
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_desktop_app_info_launch_uris_as_manager(
                 self.to_glib_none().0,
                 uris.to_glib_none().0,
@@ -286,11 +283,5 @@ impl DesktopAppInfo {
                 interface.to_glib_none().0,
             ))
         }
-    }
-}
-
-impl fmt::Display for DesktopAppInfo {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("DesktopAppInfo")
     }
 }

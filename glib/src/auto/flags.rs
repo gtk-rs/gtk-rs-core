@@ -3,7 +3,6 @@
 // DO NOT EDIT
 
 use crate::{bitflags::bitflags, prelude::*, translate::*};
-use std::fmt;
 
 #[cfg(feature = "v2_66")]
 bitflags! {
@@ -19,14 +18,6 @@ bitflags! {
         const DURABLE = ffi::G_FILE_SET_CONTENTS_DURABLE as _;
         #[doc(alias = "G_FILE_SET_CONTENTS_ONLY_EXISTING")]
         const ONLY_EXISTING = ffi::G_FILE_SET_CONTENTS_ONLY_EXISTING as _;
-    }
-}
-
-#[cfg(feature = "v2_66")]
-#[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
-impl fmt::Display for FileSetContentsFlags {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        <Self as fmt::Debug>::fmt(self, f)
     }
 }
 
@@ -66,12 +57,6 @@ bitflags! {
         const IS_EXECUTABLE = ffi::G_FILE_TEST_IS_EXECUTABLE as _;
         #[doc(alias = "G_FILE_TEST_EXISTS")]
         const EXISTS = ffi::G_FILE_TEST_EXISTS as _;
-    }
-}
-
-impl fmt::Display for FileTest {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        <Self as fmt::Debug>::fmt(self, f)
     }
 }
 
@@ -116,12 +101,6 @@ bitflags! {
     }
 }
 
-impl fmt::Display for FormatSizeFlags {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        <Self as fmt::Debug>::fmt(self, f)
-    }
-}
-
 #[doc(hidden)]
 impl IntoGlib for FormatSizeFlags {
     type GlibType = ffi::GFormatSizeFlags;
@@ -159,12 +138,6 @@ bitflags! {
     }
 }
 
-impl fmt::Display for IOCondition {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        <Self as fmt::Debug>::fmt(self, f)
-    }
-}
-
 #[doc(hidden)]
 impl IntoGlib for IOCondition {
     type GlibType = ffi::GIOCondition;
@@ -185,6 +158,7 @@ impl FromGlib<ffi::GIOCondition> for IOCondition {
 
 impl StaticType for IOCondition {
     #[inline]
+    #[doc(alias = "g_io_condition_get_type")]
     fn static_type() -> crate::Type {
         unsafe { from_glib(ffi::g_io_condition_get_type()) }
     }
@@ -196,7 +170,7 @@ impl crate::HasParamSpec for IOCondition {
     type BuilderFn = fn(&str) -> crate::ParamSpecFlagsBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name| Self::ParamSpec::builder(name)
+        Self::ParamSpec::builder
     }
 }
 
@@ -251,12 +225,6 @@ bitflags! {
     }
 }
 
-impl fmt::Display for KeyFileFlags {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        <Self as fmt::Debug>::fmt(self, f)
-    }
-}
-
 #[doc(hidden)]
 impl IntoGlib for KeyFileFlags {
     type GlibType = ffi::GKeyFileFlags;
@@ -300,12 +268,6 @@ bitflags! {
     }
 }
 
-impl fmt::Display for LogLevelFlags {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        <Self as fmt::Debug>::fmt(self, f)
-    }
-}
-
 #[doc(hidden)]
 impl IntoGlib for LogLevelFlags {
     type GlibType = ffi::GLogLevelFlags;
@@ -334,14 +296,6 @@ bitflags! {
         const NONE = ffi::G_MAIN_CONTEXT_FLAGS_NONE as _;
         #[doc(alias = "G_MAIN_CONTEXT_FLAGS_OWNERLESS_POLLING")]
         const OWNERLESS_POLLING = ffi::G_MAIN_CONTEXT_FLAGS_OWNERLESS_POLLING as _;
-    }
-}
-
-#[cfg(feature = "v2_72")]
-#[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
-impl fmt::Display for MainContextFlags {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        <Self as fmt::Debug>::fmt(self, f)
     }
 }
 
@@ -387,12 +341,6 @@ bitflags! {
         const OPTIONAL_ARG = ffi::G_OPTION_FLAG_OPTIONAL_ARG as _;
         #[doc(alias = "G_OPTION_FLAG_NOALIAS")]
         const NOALIAS = ffi::G_OPTION_FLAG_NOALIAS as _;
-    }
-}
-
-impl fmt::Display for OptionFlags {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        <Self as fmt::Debug>::fmt(self, f)
     }
 }
 
@@ -453,12 +401,6 @@ bitflags! {
     }
 }
 
-impl fmt::Display for SpawnFlags {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        <Self as fmt::Debug>::fmt(self, f)
-    }
-}
-
 #[doc(hidden)]
 impl IntoGlib for SpawnFlags {
     type GlibType = ffi::GSpawnFlags;
@@ -508,14 +450,6 @@ bitflags! {
 
 #[cfg(feature = "v2_66")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
-impl fmt::Display for UriFlags {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        <Self as fmt::Debug>::fmt(self, f)
-    }
-}
-
-#[cfg(feature = "v2_66")]
-#[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
 #[doc(hidden)]
 impl IntoGlib for UriFlags {
     type GlibType = ffi::GUriFlags;
@@ -559,14 +493,6 @@ bitflags! {
 
 #[cfg(feature = "v2_66")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
-impl fmt::Display for UriHideFlags {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        <Self as fmt::Debug>::fmt(self, f)
-    }
-}
-
-#[cfg(feature = "v2_66")]
-#[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
 #[doc(hidden)]
 impl IntoGlib for UriHideFlags {
     type GlibType = ffi::GUriHideFlags;
@@ -601,14 +527,6 @@ bitflags! {
         const WWW_FORM = ffi::G_URI_PARAMS_WWW_FORM as _;
         #[doc(alias = "G_URI_PARAMS_PARSE_RELAXED")]
         const PARSE_RELAXED = ffi::G_URI_PARAMS_PARSE_RELAXED as _;
-    }
-}
-
-#[cfg(feature = "v2_66")]
-#[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
-impl fmt::Display for UriParamsFlags {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        <Self as fmt::Debug>::fmt(self, f)
     }
 }
 

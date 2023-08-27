@@ -9,7 +9,7 @@ use glib::{
     signal::{connect_raw, SignalHandlerId},
     translate::*,
 };
-use std::{boxed::Box as Box_, fmt, mem::transmute, ptr};
+use std::boxed::Box as Box_;
 
 glib::wrapper! {
     #[doc(alias = "GTlsClientConnection")]
@@ -29,7 +29,7 @@ impl TlsClientConnection {
         server_identity: Option<&impl IsA<SocketConnectable>>,
     ) -> Result<TlsClientConnection, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_tls_client_connection_new(
                 base_io_stream.as_ref().to_glib_none().0,
                 server_identity.map(|p| p.as_ref()).to_glib_none().0,
@@ -132,7 +132,7 @@ pub trait TlsClientConnectionExt: IsA<TlsClientConnection> + sealed::Sealed + 's
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::accepted-cas\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
                     notify_accepted_cas_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -158,7 +158,7 @@ pub trait TlsClientConnectionExt: IsA<TlsClientConnection> + sealed::Sealed + 's
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::server-identity\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
                     notify_server_identity_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -185,7 +185,7 @@ pub trait TlsClientConnectionExt: IsA<TlsClientConnection> + sealed::Sealed + 's
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::validation-flags\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
                     notify_validation_flags_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -195,9 +195,3 @@ pub trait TlsClientConnectionExt: IsA<TlsClientConnection> + sealed::Sealed + 's
 }
 
 impl<O: IsA<TlsClientConnection>> TlsClientConnectionExt for O {}
-
-impl fmt::Display for TlsClientConnection {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("TlsClientConnection")
-    }
-}

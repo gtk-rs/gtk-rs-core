@@ -4,7 +4,6 @@
 
 use crate::{SocketAddress, SocketConnectable, UnixSocketAddressType};
 use glib::{prelude::*, translate::*};
-use std::fmt;
 
 glib::wrapper! {
     #[doc(alias = "GUnixSocketAddress")]
@@ -77,9 +76,3 @@ pub trait UnixSocketAddressExt: IsA<UnixSocketAddress> + sealed::Sealed + 'stati
 }
 
 impl<O: IsA<UnixSocketAddress>> UnixSocketAddressExt for O {}
-
-impl fmt::Display for UnixSocketAddress {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("UnixSocketAddress")
-    }
-}

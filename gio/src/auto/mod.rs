@@ -573,7 +573,7 @@ pub use self::flags::TlsCertificateFlags;
 pub use self::flags::TlsDatabaseVerifyFlags;
 pub use self::flags::TlsPasswordFlags;
 
-pub mod functions;
+pub(crate) mod functions;
 
 mod constants;
 #[cfg(feature = "v2_72")]
@@ -748,8 +748,7 @@ pub use self::constants::VOLUME_IDENTIFIER_KIND_UNIX_DEVICE;
 pub use self::constants::VOLUME_IDENTIFIER_KIND_UUID;
 pub use self::constants::VOLUME_MONITOR_EXTENSION_POINT_NAME;
 
-#[doc(hidden)]
-pub mod traits {
+pub(crate) mod traits {
     pub use super::action::ActionExt;
     pub use super::action_group::ActionGroupExt;
     pub use super::action_map::ActionMapExt;
@@ -869,8 +868,7 @@ pub mod traits {
     pub use super::volume::VolumeExt;
     pub use super::volume_monitor::VolumeMonitorExt;
 }
-#[doc(hidden)]
-pub mod builders {
+pub(crate) mod builders {
     pub use super::application::ApplicationBuilder;
     pub use super::buffered_input_stream::BufferedInputStreamBuilder;
     pub use super::buffered_output_stream::BufferedOutputStreamBuilder;

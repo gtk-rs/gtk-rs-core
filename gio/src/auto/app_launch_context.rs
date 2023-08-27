@@ -8,7 +8,7 @@ use glib::{
     signal::{connect_raw, SignalHandlerId},
     translate::*,
 };
-use std::{boxed::Box as Box_, fmt, mem::transmute};
+use std::boxed::Box as Box_;
 
 glib::wrapper! {
     #[doc(alias = "GAppLaunchContext")]
@@ -126,7 +126,7 @@ pub trait AppLaunchContextExt: IsA<AppLaunchContext> + sealed::Sealed + 'static 
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"launch-failed\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
                     launch_failed_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -164,7 +164,7 @@ pub trait AppLaunchContextExt: IsA<AppLaunchContext> + sealed::Sealed + 'static 
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"launch-started\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
                     launch_started_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -198,7 +198,7 @@ pub trait AppLaunchContextExt: IsA<AppLaunchContext> + sealed::Sealed + 'static 
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"launched\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
                     launched_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -208,9 +208,3 @@ pub trait AppLaunchContextExt: IsA<AppLaunchContext> + sealed::Sealed + 'static 
 }
 
 impl<O: IsA<AppLaunchContext>> AppLaunchContextExt for O {}
-
-impl fmt::Display for AppLaunchContext {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("AppLaunchContext")
-    }
-}

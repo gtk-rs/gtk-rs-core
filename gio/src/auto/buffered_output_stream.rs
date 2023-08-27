@@ -8,7 +8,7 @@ use glib::{
     signal::{connect_raw, SignalHandlerId},
     translate::*,
 };
-use std::{boxed::Box as Box_, fmt, mem::transmute};
+use std::boxed::Box as Box_;
 
 glib::wrapper! {
     #[doc(alias = "GBufferedOutputStream")]
@@ -167,7 +167,7 @@ pub trait BufferedOutputStreamExt: IsA<BufferedOutputStream> + sealed::Sealed + 
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::auto-grow\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
                     notify_auto_grow_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -193,7 +193,7 @@ pub trait BufferedOutputStreamExt: IsA<BufferedOutputStream> + sealed::Sealed + 
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::buffer-size\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
                     notify_buffer_size_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -203,9 +203,3 @@ pub trait BufferedOutputStreamExt: IsA<BufferedOutputStream> + sealed::Sealed + 
 }
 
 impl<O: IsA<BufferedOutputStream>> BufferedOutputStreamExt for O {}
-
-impl fmt::Display for BufferedOutputStream {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("BufferedOutputStream")
-    }
-}

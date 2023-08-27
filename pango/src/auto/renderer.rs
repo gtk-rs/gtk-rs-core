@@ -4,7 +4,6 @@
 
 use crate::{Color, Font, Glyph, GlyphItem, GlyphString, Layout, LayoutLine, Matrix, RenderPart};
 use glib::{prelude::*, translate::*};
-use std::fmt;
 
 glib::wrapper! {
     #[doc(alias = "PangoRenderer")]
@@ -235,9 +234,3 @@ pub trait RendererExt: IsA<Renderer> + sealed::Sealed + 'static {
 }
 
 impl<O: IsA<Renderer>> RendererExt for O {}
-
-impl fmt::Display for Renderer {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("Renderer")
-    }
-}

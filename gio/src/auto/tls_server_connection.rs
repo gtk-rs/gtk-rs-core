@@ -8,7 +8,7 @@ use glib::{
     signal::{connect_raw, SignalHandlerId},
     translate::*,
 };
-use std::{boxed::Box as Box_, fmt, mem::transmute, ptr};
+use std::boxed::Box as Box_;
 
 glib::wrapper! {
     #[doc(alias = "GTlsServerConnection")]
@@ -28,7 +28,7 @@ impl TlsServerConnection {
         certificate: Option<&impl IsA<TlsCertificate>>,
     ) -> Result<TlsServerConnection, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_tls_server_connection_new(
                 base_io_stream.as_ref().to_glib_none().0,
                 certificate.map(|p| p.as_ref()).to_glib_none().0,
@@ -77,7 +77,7 @@ pub trait TlsServerConnectionExt: IsA<TlsServerConnection> + sealed::Sealed + 's
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::authentication-mode\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
                     notify_authentication_mode_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -87,9 +87,3 @@ pub trait TlsServerConnectionExt: IsA<TlsServerConnection> + sealed::Sealed + 's
 }
 
 impl<O: IsA<TlsServerConnection>> TlsServerConnectionExt for O {}
-
-impl fmt::Display for TlsServerConnection {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("TlsServerConnection")
-    }
-}

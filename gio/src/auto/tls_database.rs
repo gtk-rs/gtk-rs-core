@@ -7,7 +7,7 @@ use crate::{
     TlsDatabaseLookupFlags, TlsDatabaseVerifyFlags, TlsInteraction,
 };
 use glib::{prelude::*, translate::*};
-use std::{boxed::Box as Box_, fmt, pin::Pin, ptr};
+use std::{boxed::Box as Box_, pin::Pin};
 
 glib::wrapper! {
     #[doc(alias = "GTlsDatabase")]
@@ -50,7 +50,7 @@ pub trait TlsDatabaseExt: IsA<TlsDatabase> + sealed::Sealed + 'static {
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<Option<TlsCertificate>, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_tls_database_lookup_certificate_for_handle(
                 self.as_ref().to_glib_none().0,
                 handle.to_glib_none().0,
@@ -97,7 +97,7 @@ pub trait TlsDatabaseExt: IsA<TlsDatabase> + sealed::Sealed + 'static {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_tls_database_lookup_certificate_for_handle_finish(
                 _source_object as *mut _,
                 res,
@@ -161,7 +161,7 @@ pub trait TlsDatabaseExt: IsA<TlsDatabase> + sealed::Sealed + 'static {
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<TlsCertificate, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_tls_database_lookup_certificate_issuer(
                 self.as_ref().to_glib_none().0,
                 certificate.as_ref().to_glib_none().0,
@@ -206,7 +206,7 @@ pub trait TlsDatabaseExt: IsA<TlsDatabase> + sealed::Sealed + 'static {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_tls_database_lookup_certificate_issuer_finish(
                 _source_object as *mut _,
                 res,
@@ -270,7 +270,7 @@ pub trait TlsDatabaseExt: IsA<TlsDatabase> + sealed::Sealed + 'static {
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<Vec<TlsCertificate>, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_tls_database_lookup_certificates_issued_by(
                 self.as_ref().to_glib_none().0,
                 issuer_raw_dn.to_glib_none().0,
@@ -317,7 +317,7 @@ pub trait TlsDatabaseExt: IsA<TlsDatabase> + sealed::Sealed + 'static {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_tls_database_lookup_certificates_issued_by_finish(
                 _source_object as *mut _,
                 res,
@@ -384,7 +384,7 @@ pub trait TlsDatabaseExt: IsA<TlsDatabase> + sealed::Sealed + 'static {
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<TlsCertificateFlags, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_tls_database_verify_chain(
                 self.as_ref().to_glib_none().0,
                 chain.as_ref().to_glib_none().0,
@@ -433,7 +433,7 @@ pub trait TlsDatabaseExt: IsA<TlsDatabase> + sealed::Sealed + 'static {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret =
                 ffi::g_tls_database_verify_chain_finish(_source_object as *mut _, res, &mut error);
             let result = if error.is_null() {
@@ -496,9 +496,3 @@ pub trait TlsDatabaseExt: IsA<TlsDatabase> + sealed::Sealed + 'static {
 }
 
 impl<O: IsA<TlsDatabase>> TlsDatabaseExt for O {}
-
-impl fmt::Display for TlsDatabase {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("TlsDatabase")
-    }
-}

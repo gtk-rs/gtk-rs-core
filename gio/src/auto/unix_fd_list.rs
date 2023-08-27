@@ -3,7 +3,6 @@
 // DO NOT EDIT
 
 use glib::{prelude::*, translate::*};
-use std::fmt;
 
 glib::wrapper! {
     #[doc(alias = "GUnixFDList")]
@@ -43,9 +42,3 @@ pub trait UnixFDListExt: IsA<UnixFDList> + sealed::Sealed + 'static {
 }
 
 impl<O: IsA<UnixFDList>> UnixFDListExt for O {}
-
-impl fmt::Display for UnixFDList {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("UnixFDList")
-    }
-}

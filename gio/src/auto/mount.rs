@@ -11,7 +11,7 @@ use glib::{
     signal::{connect_raw, SignalHandlerId},
     translate::*,
 };
-use std::{boxed::Box as Box_, fmt, mem::transmute, pin::Pin, ptr};
+use std::{boxed::Box as Box_, pin::Pin};
 
 glib::wrapper! {
     #[doc(alias = "GMount")]
@@ -69,7 +69,7 @@ pub trait MountExt: IsA<Mount> + sealed::Sealed + 'static {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let _ =
                 ffi::g_mount_eject_with_operation_finish(_source_object as *mut _, res, &mut error);
             let result = if error.is_null() {
@@ -204,7 +204,7 @@ pub trait MountExt: IsA<Mount> + sealed::Sealed + 'static {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret =
                 ffi::g_mount_guess_content_type_finish(_source_object as *mut _, res, &mut error);
             let result = if error.is_null() {
@@ -252,7 +252,7 @@ pub trait MountExt: IsA<Mount> + sealed::Sealed + 'static {
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<Vec<glib::GString>, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_mount_guess_content_type_sync(
                 self.as_ref().to_glib_none().0,
                 force_rescan.into_glib(),
@@ -297,7 +297,7 @@ pub trait MountExt: IsA<Mount> + sealed::Sealed + 'static {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let _ = ffi::g_mount_remount_finish(_source_object as *mut _, res, &mut error);
             let result = if error.is_null() {
                 Ok(())
@@ -377,7 +377,7 @@ pub trait MountExt: IsA<Mount> + sealed::Sealed + 'static {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let _ = ffi::g_mount_unmount_with_operation_finish(
                 _source_object as *mut _,
                 res,
@@ -448,7 +448,7 @@ pub trait MountExt: IsA<Mount> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"changed\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
                     changed_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -470,7 +470,7 @@ pub trait MountExt: IsA<Mount> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"pre-unmount\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
                     pre_unmount_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -492,7 +492,7 @@ pub trait MountExt: IsA<Mount> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"unmounted\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
                     unmounted_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -502,9 +502,3 @@ pub trait MountExt: IsA<Mount> + sealed::Sealed + 'static {
 }
 
 impl<O: IsA<Mount>> MountExt for O {}
-
-impl fmt::Display for Mount {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("Mount")
-    }
-}

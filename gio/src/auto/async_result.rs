@@ -3,7 +3,6 @@
 // DO NOT EDIT
 
 use glib::{prelude::*, translate::*};
-use std::{fmt, ptr};
 
 glib::wrapper! {
     #[doc(alias = "GAsyncResult")]
@@ -48,7 +47,7 @@ pub trait AsyncResultExt: IsA<AsyncResult> + sealed::Sealed + 'static {
     #[doc(alias = "g_async_result_legacy_propagate_error")]
     fn legacy_propagate_error(&self) -> Result<(), glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_async_result_legacy_propagate_error(
                 self.as_ref().to_glib_none().0,
                 &mut error,
@@ -64,9 +63,3 @@ pub trait AsyncResultExt: IsA<AsyncResult> + sealed::Sealed + 'static {
 }
 
 impl<O: IsA<AsyncResult>> AsyncResultExt for O {}
-
-impl fmt::Display for AsyncResult {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("AsyncResult")
-    }
-}

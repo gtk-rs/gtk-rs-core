@@ -8,7 +8,7 @@ use crate::{
     translate::*,
     Object,
 };
-use std::{boxed::Box as Box_, fmt, mem::transmute};
+use std::boxed::Box as Box_;
 
 crate::wrapper! {
     #[doc(alias = "GBindingGroup")]
@@ -67,7 +67,7 @@ impl BindingGroup {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::source\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
                     notify_source_trampoline::<F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -86,9 +86,3 @@ impl Default for BindingGroup {
 
 unsafe impl Send for BindingGroup {}
 unsafe impl Sync for BindingGroup {}
-
-impl fmt::Display for BindingGroup {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("BindingGroup")
-    }
-}

@@ -11,7 +11,7 @@ use glib::{
     signal::{connect_raw, SignalHandlerId},
     translate::*,
 };
-use std::{boxed::Box as Box_, fmt, mem, mem::transmute, ptr};
+use std::boxed::Box as Box_;
 
 glib::wrapper! {
     #[doc(alias = "GDataInputStream")]
@@ -136,7 +136,7 @@ pub trait DataInputStreamExt: IsA<DataInputStream> + sealed::Sealed + 'static {
     #[doc(alias = "g_data_input_stream_read_byte")]
     fn read_byte(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<u8, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_data_input_stream_read_byte(
                 self.as_ref().to_glib_none().0,
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
@@ -153,7 +153,7 @@ pub trait DataInputStreamExt: IsA<DataInputStream> + sealed::Sealed + 'static {
     #[doc(alias = "g_data_input_stream_read_int16")]
     fn read_int16(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<i16, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_data_input_stream_read_int16(
                 self.as_ref().to_glib_none().0,
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
@@ -170,7 +170,7 @@ pub trait DataInputStreamExt: IsA<DataInputStream> + sealed::Sealed + 'static {
     #[doc(alias = "g_data_input_stream_read_int32")]
     fn read_int32(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<i32, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_data_input_stream_read_int32(
                 self.as_ref().to_glib_none().0,
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
@@ -187,7 +187,7 @@ pub trait DataInputStreamExt: IsA<DataInputStream> + sealed::Sealed + 'static {
     #[doc(alias = "g_data_input_stream_read_int64")]
     fn read_int64(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<i64, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_data_input_stream_read_int64(
                 self.as_ref().to_glib_none().0,
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
@@ -204,7 +204,7 @@ pub trait DataInputStreamExt: IsA<DataInputStream> + sealed::Sealed + 'static {
     #[doc(alias = "g_data_input_stream_read_uint16")]
     fn read_uint16(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<u16, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_data_input_stream_read_uint16(
                 self.as_ref().to_glib_none().0,
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
@@ -221,7 +221,7 @@ pub trait DataInputStreamExt: IsA<DataInputStream> + sealed::Sealed + 'static {
     #[doc(alias = "g_data_input_stream_read_uint32")]
     fn read_uint32(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<u32, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_data_input_stream_read_uint32(
                 self.as_ref().to_glib_none().0,
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
@@ -238,7 +238,7 @@ pub trait DataInputStreamExt: IsA<DataInputStream> + sealed::Sealed + 'static {
     #[doc(alias = "g_data_input_stream_read_uint64")]
     fn read_uint64(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<u64, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_data_input_stream_read_uint64(
                 self.as_ref().to_glib_none().0,
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
@@ -290,7 +290,7 @@ pub trait DataInputStreamExt: IsA<DataInputStream> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::byte-order\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
                     notify_byte_order_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -316,7 +316,7 @@ pub trait DataInputStreamExt: IsA<DataInputStream> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::newline-type\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
                     notify_newline_type_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -326,9 +326,3 @@ pub trait DataInputStreamExt: IsA<DataInputStream> + sealed::Sealed + 'static {
 }
 
 impl<O: IsA<DataInputStream>> DataInputStreamExt for O {}
-
-impl fmt::Display for DataInputStream {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("DataInputStream")
-    }
-}

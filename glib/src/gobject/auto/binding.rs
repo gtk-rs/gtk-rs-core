@@ -3,7 +3,6 @@
 // DO NOT EDIT
 
 use crate::{translate::*, BindingFlags};
-use std::fmt;
 
 crate::wrapper! {
     #[doc(alias = "GBinding")]
@@ -51,9 +50,3 @@ impl Binding {
 
 unsafe impl Send for Binding {}
 unsafe impl Sync for Binding {}
-
-impl fmt::Display for Binding {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("Binding")
-    }
-}

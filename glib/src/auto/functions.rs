@@ -9,7 +9,7 @@ use crate::{
     translate::*, Bytes, ChecksumType, Error, FileTest, FormatSizeFlags, Pid, Source, SpawnFlags,
     UnicodeScript, UserDirectory,
 };
-use std::{boxed::Box as Box_, mem, ptr};
+use std::boxed::Box as Box_;
 
 #[doc(alias = "g_access")]
 pub fn access(filename: impl AsRef<std::path::Path>, mode: i32) -> i32 {
@@ -19,7 +19,7 @@ pub fn access(filename: impl AsRef<std::path::Path>, mode: i32) -> i32 {
 #[doc(alias = "g_base64_decode")]
 pub fn base64_decode(text: &str) -> Vec<u8> {
     unsafe {
-        let mut out_len = mem::MaybeUninit::uninit();
+        let mut out_len = std::mem::MaybeUninit::uninit();
         let ret = FromGlibContainer::from_glib_full_num(
             ffi::g_base64_decode(text.to_glib_none().0, out_len.as_mut_ptr()),
             out_len.assume_init() as _,
@@ -194,7 +194,7 @@ pub fn file_set_contents(
 ) -> Result<(), crate::Error> {
     let length = contents.len() as _;
     unsafe {
-        let mut error = ptr::null_mut();
+        let mut error = std::ptr::null_mut();
         let is_ok = ffi::g_file_set_contents(
             filename.as_ref().to_glib_none().0,
             contents.to_glib_none().0,
@@ -221,7 +221,7 @@ pub fn file_set_contents_full(
 ) -> Result<(), crate::Error> {
     let length = contents.len() as _;
     unsafe {
-        let mut error = ptr::null_mut();
+        let mut error = std::ptr::null_mut();
         let is_ok = ffi::g_file_set_contents_full(
             filename.as_ref().to_glib_none().0,
             contents.to_glib_none().0,
@@ -273,8 +273,8 @@ pub fn filename_from_uri(
     uri: &str,
 ) -> Result<(std::path::PathBuf, Option<crate::GString>), crate::Error> {
     unsafe {
-        let mut hostname = ptr::null_mut();
-        let mut error = ptr::null_mut();
+        let mut hostname = std::ptr::null_mut();
+        let mut error = std::ptr::null_mut();
         let ret = ffi::g_filename_from_uri(uri.to_glib_none().0, &mut hostname, &mut error);
         if error.is_null() {
             Ok((from_glib_full(ret), from_glib_full(hostname)))
@@ -290,7 +290,7 @@ pub fn filename_to_uri(
     hostname: Option<&str>,
 ) -> Result<crate::GString, crate::Error> {
     unsafe {
-        let mut error = ptr::null_mut();
+        let mut error = std::ptr::null_mut();
         let ret = ffi::g_filename_to_uri(
             filename.as_ref().to_glib_none().0,
             hostname.to_glib_none().0,
@@ -341,7 +341,7 @@ pub fn codeset() -> crate::GString {
 #[doc(alias = "get_console_charset")]
 pub fn console_charset() -> Option<crate::GString> {
     unsafe {
-        let mut charset = ptr::null();
+        let mut charset = std::ptr::null();
         let ret = from_glib(ffi::g_get_console_charset(&mut charset));
         if ret {
             Some(from_glib_none(charset))
@@ -650,9 +650,9 @@ pub fn shell_parse_argv(
     command_line: impl AsRef<std::ffi::OsStr>,
 ) -> Result<Vec<std::ffi::OsString>, crate::Error> {
     unsafe {
-        let mut argcp = mem::MaybeUninit::uninit();
-        let mut argvp = ptr::null_mut();
-        let mut error = ptr::null_mut();
+        let mut argcp = std::mem::MaybeUninit::uninit();
+        let mut argvp = std::ptr::null_mut();
+        let mut error = std::ptr::null_mut();
         let is_ok = ffi::g_shell_parse_argv(
             command_line.as_ref().to_glib_none().0,
             argcp.as_mut_ptr(),
@@ -685,7 +685,7 @@ pub fn shell_unquote(
     quoted_string: impl AsRef<std::ffi::OsStr>,
 ) -> Result<std::ffi::OsString, crate::Error> {
     unsafe {
-        let mut error = ptr::null_mut();
+        let mut error = std::ptr::null_mut();
         let ret = ffi::g_shell_unquote(quoted_string.as_ref().to_glib_none().0, &mut error);
         if error.is_null() {
             Ok(from_glib_full(ret))
@@ -718,8 +718,8 @@ pub fn spawn_async<P: FnOnce() + Send + Sync + 'static>(
     let child_setup = Some(child_setup_func::<P> as _);
     let super_callback0: Box_<P> = child_setup_data;
     unsafe {
-        let mut child_pid = mem::MaybeUninit::uninit();
-        let mut error = ptr::null_mut();
+        let mut child_pid = std::mem::MaybeUninit::uninit();
+        let mut error = std::ptr::null_mut();
         let is_ok = ffi::g_spawn_async(
             working_directory
                 .as_ref()
@@ -755,7 +755,7 @@ pub fn spawn_async<P: FnOnce() + Send + Sync + 'static>(
 #[doc(alias = "g_spawn_check_exit_status")]
 pub fn spawn_check_exit_status(wait_status: i32) -> Result<(), crate::Error> {
     unsafe {
-        let mut error = ptr::null_mut();
+        let mut error = std::ptr::null_mut();
         let is_ok = ffi::g_spawn_check_exit_status(wait_status, &mut error);
         debug_assert_eq!(is_ok == crate::ffi::GFALSE, !error.is_null());
         if error.is_null() {
@@ -771,7 +771,7 @@ pub fn spawn_check_exit_status(wait_status: i32) -> Result<(), crate::Error> {
 #[doc(alias = "g_spawn_check_wait_status")]
 pub fn spawn_check_wait_status(wait_status: i32) -> Result<(), crate::Error> {
     unsafe {
-        let mut error = ptr::null_mut();
+        let mut error = std::ptr::null_mut();
         let is_ok = ffi::g_spawn_check_wait_status(wait_status, &mut error);
         debug_assert_eq!(is_ok == crate::ffi::GFALSE, !error.is_null());
         if error.is_null() {
@@ -789,7 +789,7 @@ pub fn spawn_command_line_async(
     command_line: impl AsRef<std::ffi::OsStr>,
 ) -> Result<(), crate::Error> {
     unsafe {
-        let mut error = ptr::null_mut();
+        let mut error = std::ptr::null_mut();
         let is_ok =
             ffi::g_spawn_command_line_async(command_line.as_ref().to_glib_none().0, &mut error);
         debug_assert_eq!(is_ok == crate::ffi::GFALSE, !error.is_null());

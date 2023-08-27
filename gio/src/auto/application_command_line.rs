@@ -8,7 +8,7 @@ use glib::{
     signal::{connect_raw, SignalHandlerId},
     translate::*,
 };
-use std::{boxed::Box as Box_, fmt, mem, mem::transmute};
+use std::boxed::Box as Box_;
 
 glib::wrapper! {
     #[doc(alias = "GApplicationCommandLine")]
@@ -45,7 +45,7 @@ pub trait ApplicationCommandLineExt:
     #[doc(alias = "get_arguments")]
     fn arguments(&self) -> Vec<std::ffi::OsString> {
         unsafe {
-            let mut argc = mem::MaybeUninit::uninit();
+            let mut argc = std::mem::MaybeUninit::uninit();
             let ret = FromGlibContainer::from_glib_full_num(
                 ffi::g_application_command_line_get_arguments(
                     self.as_ref().to_glib_none().0,
@@ -171,7 +171,7 @@ pub trait ApplicationCommandLineExt:
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::is-remote\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
                     notify_is_remote_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -181,9 +181,3 @@ pub trait ApplicationCommandLineExt:
 }
 
 impl<O: IsA<ApplicationCommandLine>> ApplicationCommandLineExt for O {}
-
-impl fmt::Display for ApplicationCommandLine {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("ApplicationCommandLine")
-    }
-}

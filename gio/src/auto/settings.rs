@@ -8,7 +8,7 @@ use glib::{
     signal::{connect_raw, SignalHandlerId},
     translate::*,
 };
-use std::{boxed::Box as Box_, fmt, mem::transmute};
+use std::boxed::Box as Box_;
 
 glib::wrapper! {
     #[doc(alias = "GSettings")]
@@ -506,7 +506,7 @@ pub trait SettingsExt: IsA<Settings> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 signal_name.as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
                     changed_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -535,7 +535,7 @@ pub trait SettingsExt: IsA<Settings> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"writable-change-event\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
                     writable_change_event_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -572,7 +572,7 @@ pub trait SettingsExt: IsA<Settings> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 signal_name.as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
                     writable_changed_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -598,7 +598,7 @@ pub trait SettingsExt: IsA<Settings> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::delay-apply\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
                     notify_delay_apply_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -624,7 +624,7 @@ pub trait SettingsExt: IsA<Settings> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::has-unapplied\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
                     notify_has_unapplied_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -634,9 +634,3 @@ pub trait SettingsExt: IsA<Settings> + sealed::Sealed + 'static {
 }
 
 impl<O: IsA<Settings>> SettingsExt for O {}
-
-impl fmt::Display for Settings {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("Settings")
-    }
-}

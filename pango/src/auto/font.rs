@@ -10,10 +10,6 @@ use crate::Context;
 use crate::FontFace;
 use crate::{Coverage, FontDescription, FontMap, FontMetrics, Glyph, Language, Rectangle};
 use glib::{prelude::*, translate::*};
-use std::fmt;
-#[cfg(feature = "v1_50")]
-#[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
-use std::ptr;
 
 glib::wrapper! {
     #[doc(alias = "PangoFont")]
@@ -35,7 +31,7 @@ impl Font {
         bytes: &glib::Bytes,
     ) -> Result<Option<Font>, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::pango_font_deserialize(
                 context.to_glib_none().0,
                 bytes.to_glib_none().0,
@@ -159,9 +155,3 @@ pub trait FontExt: IsA<Font> + sealed::Sealed + 'static {
 }
 
 impl<O: IsA<Font>> FontExt for O {}
-
-impl fmt::Display for Font {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("Font")
-    }
-}

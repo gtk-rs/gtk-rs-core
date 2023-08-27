@@ -4,7 +4,7 @@
 
 use crate::Pixbuf;
 use glib::{prelude::*, translate::*};
-use std::{boxed::Box as Box_, fmt, pin::Pin, ptr};
+use std::{boxed::Box as Box_, pin::Pin};
 
 glib::wrapper! {
     #[doc(alias = "GdkPixbufAnimation")]
@@ -24,7 +24,7 @@ impl PixbufAnimation {
         filename: impl AsRef<std::path::Path>,
     ) -> Result<PixbufAnimation, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::gdk_pixbuf_animation_new_from_file(
                 filename.as_ref().to_glib_none().0,
                 &mut error,
@@ -41,7 +41,7 @@ impl PixbufAnimation {
     #[doc(alias = "new_from_resource")]
     pub fn from_resource(resource_path: &str) -> Result<PixbufAnimation, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::gdk_pixbuf_animation_new_from_resource(
                 resource_path.to_glib_none().0,
                 &mut error,
@@ -61,7 +61,7 @@ impl PixbufAnimation {
         cancellable: Option<&impl IsA<gio::Cancellable>>,
     ) -> Result<PixbufAnimation, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::gdk_pixbuf_animation_new_from_stream(
                 stream.as_ref().to_glib_none().0,
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
@@ -101,7 +101,7 @@ impl PixbufAnimation {
             res: *mut gio::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::gdk_pixbuf_animation_new_from_stream_finish(res, &mut error);
             let result = if error.is_null() {
                 Ok(from_glib_full(ret))
@@ -176,9 +176,3 @@ pub trait PixbufAnimationExt: IsA<PixbufAnimation> + sealed::Sealed + 'static {
 }
 
 impl<O: IsA<PixbufAnimation>> PixbufAnimationExt for O {}
-
-impl fmt::Display for PixbufAnimation {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("PixbufAnimation")
-    }
-}

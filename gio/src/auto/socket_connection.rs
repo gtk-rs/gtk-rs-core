@@ -4,7 +4,7 @@
 
 use crate::{AsyncResult, Cancellable, IOStream, Socket, SocketAddress, SocketFamily, SocketType};
 use glib::{prelude::*, translate::*};
-use std::{boxed::Box as Box_, fmt, pin::Pin, ptr};
+use std::{boxed::Box as Box_, pin::Pin};
 
 glib::wrapper! {
     #[doc(alias = "GSocketConnection")]
@@ -64,7 +64,7 @@ pub trait SocketConnectionExt: IsA<SocketConnection> + sealed::Sealed + 'static 
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<(), glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_socket_connection_connect(
                 self.as_ref().to_glib_none().0,
                 address.as_ref().to_glib_none().0,
@@ -106,7 +106,7 @@ pub trait SocketConnectionExt: IsA<SocketConnection> + sealed::Sealed + 'static 
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let _ =
                 ffi::g_socket_connection_connect_finish(_source_object as *mut _, res, &mut error);
             let result = if error.is_null() {
@@ -150,7 +150,7 @@ pub trait SocketConnectionExt: IsA<SocketConnection> + sealed::Sealed + 'static 
     #[doc(alias = "get_local_address")]
     fn local_address(&self) -> Result<SocketAddress, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_socket_connection_get_local_address(
                 self.as_ref().to_glib_none().0,
                 &mut error,
@@ -167,7 +167,7 @@ pub trait SocketConnectionExt: IsA<SocketConnection> + sealed::Sealed + 'static 
     #[doc(alias = "get_remote_address")]
     fn remote_address(&self) -> Result<SocketAddress, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_socket_connection_get_remote_address(
                 self.as_ref().to_glib_none().0,
                 &mut error,
@@ -201,9 +201,3 @@ pub trait SocketConnectionExt: IsA<SocketConnection> + sealed::Sealed + 'static 
 }
 
 impl<O: IsA<SocketConnection>> SocketConnectionExt for O {}
-
-impl fmt::Display for SocketConnection {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("SocketConnection")
-    }
-}

@@ -4,7 +4,6 @@
 
 use crate::{Analysis, Font, Rectangle};
 use glib::{prelude::*, translate::*};
-use std::mem;
 
 glib::wrapper! {
     #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
@@ -76,7 +75,7 @@ impl GlyphString {
     ) -> i32 {
         let length = text.len() as _;
         unsafe {
-            let mut x_pos = mem::MaybeUninit::uninit();
+            let mut x_pos = std::mem::MaybeUninit::uninit();
             ffi::pango_glyph_string_index_to_x(
                 mut_override(self.to_glib_none().0),
                 text.to_glib_none().0,
@@ -108,8 +107,8 @@ impl GlyphString {
     pub fn x_to_index(&self, text: &str, analysis: &mut Analysis, x_pos: i32) -> (i32, i32) {
         let length = text.len() as _;
         unsafe {
-            let mut index_ = mem::MaybeUninit::uninit();
-            let mut trailing = mem::MaybeUninit::uninit();
+            let mut index_ = std::mem::MaybeUninit::uninit();
+            let mut trailing = std::mem::MaybeUninit::uninit();
             ffi::pango_glyph_string_x_to_index(
                 mut_override(self.to_glib_none().0),
                 text.to_glib_none().0,

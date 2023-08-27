@@ -4,7 +4,6 @@
 
 use crate::{Converter, FilterInputStream, InputStream, PollableInputStream};
 use glib::{prelude::*, translate::*};
-use std::fmt;
 
 glib::wrapper! {
     #[doc(alias = "GConverterInputStream")]
@@ -113,9 +112,3 @@ pub trait ConverterInputStreamExt: IsA<ConverterInputStream> + sealed::Sealed + 
 }
 
 impl<O: IsA<ConverterInputStream>> ConverterInputStreamExt for O {}
-
-impl fmt::Display for ConverterInputStream {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("ConverterInputStream")
-    }
-}

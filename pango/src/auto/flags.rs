@@ -3,7 +3,6 @@
 // DO NOT EDIT
 
 use glib::{bitflags::bitflags, prelude::*, translate::*};
-use std::fmt;
 
 bitflags! {
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
@@ -28,12 +27,6 @@ bitflags! {
     }
 }
 
-impl fmt::Display for FontMask {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        <Self as fmt::Debug>::fmt(self, f)
-    }
-}
-
 #[doc(hidden)]
 impl IntoGlib for FontMask {
     type GlibType = ffi::PangoFontMask;
@@ -54,6 +47,7 @@ impl FromGlib<ffi::PangoFontMask> for FontMask {
 
 impl StaticType for FontMask {
     #[inline]
+    #[doc(alias = "pango_font_mask_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::pango_font_mask_get_type()) }
     }
@@ -65,7 +59,7 @@ impl glib::HasParamSpec for FontMask {
     type BuilderFn = fn(&str) -> glib::ParamSpecFlagsBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name| Self::ParamSpec::builder(name)
+        Self::ParamSpec::builder
     }
 }
 
@@ -120,14 +114,6 @@ bitflags! {
 
 #[cfg(feature = "v1_50")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
-impl fmt::Display for LayoutDeserializeFlags {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        <Self as fmt::Debug>::fmt(self, f)
-    }
-}
-
-#[cfg(feature = "v1_50")]
-#[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
 #[doc(hidden)]
 impl IntoGlib for LayoutDeserializeFlags {
     type GlibType = ffi::PangoLayoutDeserializeFlags;
@@ -152,6 +138,7 @@ impl FromGlib<ffi::PangoLayoutDeserializeFlags> for LayoutDeserializeFlags {
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
 impl StaticType for LayoutDeserializeFlags {
     #[inline]
+    #[doc(alias = "pango_layout_deserialize_flags_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::pango_layout_deserialize_flags_get_type()) }
     }
@@ -165,7 +152,7 @@ impl glib::HasParamSpec for LayoutDeserializeFlags {
     type BuilderFn = fn(&str) -> glib::ParamSpecFlagsBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name| Self::ParamSpec::builder(name)
+        Self::ParamSpec::builder
     }
 }
 
@@ -230,14 +217,6 @@ bitflags! {
 
 #[cfg(feature = "v1_50")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
-impl fmt::Display for LayoutSerializeFlags {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        <Self as fmt::Debug>::fmt(self, f)
-    }
-}
-
-#[cfg(feature = "v1_50")]
-#[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
 #[doc(hidden)]
 impl IntoGlib for LayoutSerializeFlags {
     type GlibType = ffi::PangoLayoutSerializeFlags;
@@ -262,6 +241,7 @@ impl FromGlib<ffi::PangoLayoutSerializeFlags> for LayoutSerializeFlags {
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
 impl StaticType for LayoutSerializeFlags {
     #[inline]
+    #[doc(alias = "pango_layout_serialize_flags_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::pango_layout_serialize_flags_get_type()) }
     }
@@ -275,7 +255,7 @@ impl glib::HasParamSpec for LayoutSerializeFlags {
     type BuilderFn = fn(&str) -> glib::ParamSpecFlagsBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name| Self::ParamSpec::builder(name)
+        Self::ParamSpec::builder
     }
 }
 
@@ -338,14 +318,6 @@ bitflags! {
 
 #[cfg(feature = "v1_44")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
-impl fmt::Display for ShapeFlags {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        <Self as fmt::Debug>::fmt(self, f)
-    }
-}
-
-#[cfg(feature = "v1_44")]
-#[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
 #[doc(hidden)]
 impl IntoGlib for ShapeFlags {
     type GlibType = ffi::PangoShapeFlags;
@@ -370,6 +342,7 @@ impl FromGlib<ffi::PangoShapeFlags> for ShapeFlags {
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
 impl StaticType for ShapeFlags {
     #[inline]
+    #[doc(alias = "pango_shape_flags_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::pango_shape_flags_get_type()) }
     }
@@ -383,7 +356,7 @@ impl glib::HasParamSpec for ShapeFlags {
     type BuilderFn = fn(&str) -> glib::ParamSpecFlagsBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name| Self::ParamSpec::builder(name)
+        Self::ParamSpec::builder
     }
 }
 
@@ -450,14 +423,6 @@ bitflags! {
 
 #[cfg(feature = "v1_44")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
-impl fmt::Display for ShowFlags {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        <Self as fmt::Debug>::fmt(self, f)
-    }
-}
-
-#[cfg(feature = "v1_44")]
-#[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
 #[doc(hidden)]
 impl IntoGlib for ShowFlags {
     type GlibType = ffi::PangoShowFlags;
@@ -482,6 +447,7 @@ impl FromGlib<ffi::PangoShowFlags> for ShowFlags {
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
 impl StaticType for ShowFlags {
     #[inline]
+    #[doc(alias = "pango_show_flags_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::pango_show_flags_get_type()) }
     }
@@ -495,7 +461,7 @@ impl glib::HasParamSpec for ShowFlags {
     type BuilderFn = fn(&str) -> glib::ParamSpecFlagsBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name| Self::ParamSpec::builder(name)
+        Self::ParamSpec::builder
     }
 }
 

@@ -8,7 +8,7 @@ use glib::{
     signal::{connect_raw, SignalHandlerId},
     translate::*,
 };
-use std::{boxed::Box as Box_, fmt, mem::transmute, ptr};
+use std::boxed::Box as Box_;
 
 glib::wrapper! {
     #[doc(alias = "GDataOutputStream")]
@@ -115,7 +115,7 @@ pub trait DataOutputStreamExt: IsA<DataOutputStream> + sealed::Sealed + 'static 
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<(), glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_data_output_stream_put_byte(
                 self.as_ref().to_glib_none().0,
                 data,
@@ -138,7 +138,7 @@ pub trait DataOutputStreamExt: IsA<DataOutputStream> + sealed::Sealed + 'static 
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<(), glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_data_output_stream_put_int16(
                 self.as_ref().to_glib_none().0,
                 data,
@@ -161,7 +161,7 @@ pub trait DataOutputStreamExt: IsA<DataOutputStream> + sealed::Sealed + 'static 
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<(), glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_data_output_stream_put_int32(
                 self.as_ref().to_glib_none().0,
                 data,
@@ -184,7 +184,7 @@ pub trait DataOutputStreamExt: IsA<DataOutputStream> + sealed::Sealed + 'static 
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<(), glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_data_output_stream_put_int64(
                 self.as_ref().to_glib_none().0,
                 data,
@@ -207,7 +207,7 @@ pub trait DataOutputStreamExt: IsA<DataOutputStream> + sealed::Sealed + 'static 
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<(), glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_data_output_stream_put_string(
                 self.as_ref().to_glib_none().0,
                 str.to_glib_none().0,
@@ -230,7 +230,7 @@ pub trait DataOutputStreamExt: IsA<DataOutputStream> + sealed::Sealed + 'static 
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<(), glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_data_output_stream_put_uint16(
                 self.as_ref().to_glib_none().0,
                 data,
@@ -253,7 +253,7 @@ pub trait DataOutputStreamExt: IsA<DataOutputStream> + sealed::Sealed + 'static 
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<(), glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_data_output_stream_put_uint32(
                 self.as_ref().to_glib_none().0,
                 data,
@@ -276,7 +276,7 @@ pub trait DataOutputStreamExt: IsA<DataOutputStream> + sealed::Sealed + 'static 
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<(), glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_data_output_stream_put_uint64(
                 self.as_ref().to_glib_none().0,
                 data,
@@ -320,7 +320,7 @@ pub trait DataOutputStreamExt: IsA<DataOutputStream> + sealed::Sealed + 'static 
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::byte-order\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
                     notify_byte_order_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -330,9 +330,3 @@ pub trait DataOutputStreamExt: IsA<DataOutputStream> + sealed::Sealed + 'static 
 }
 
 impl<O: IsA<DataOutputStream>> DataOutputStreamExt for O {}
-
-impl fmt::Display for DataOutputStream {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("DataOutputStream")
-    }
-}

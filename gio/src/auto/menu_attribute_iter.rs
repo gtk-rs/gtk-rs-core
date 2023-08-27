@@ -3,7 +3,6 @@
 // DO NOT EDIT
 
 use glib::{prelude::*, translate::*};
-use std::{fmt, ptr};
 
 glib::wrapper! {
     #[doc(alias = "GMenuAttributeIter")]
@@ -28,8 +27,8 @@ pub trait MenuAttributeIterExt: IsA<MenuAttributeIter> + sealed::Sealed + 'stati
     #[doc(alias = "get_next")]
     fn next(&self) -> Option<(glib::GString, glib::Variant)> {
         unsafe {
-            let mut out_name = ptr::null();
-            let mut value = ptr::null_mut();
+            let mut out_name = std::ptr::null();
+            let mut value = std::ptr::null_mut();
             let ret = from_glib(ffi::g_menu_attribute_iter_get_next(
                 self.as_ref().to_glib_none().0,
                 &mut out_name,
@@ -45,9 +44,3 @@ pub trait MenuAttributeIterExt: IsA<MenuAttributeIter> + sealed::Sealed + 'stati
 }
 
 impl<O: IsA<MenuAttributeIter>> MenuAttributeIterExt for O {}
-
-impl fmt::Display for MenuAttributeIter {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("MenuAttributeIter")
-    }
-}

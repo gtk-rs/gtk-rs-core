@@ -3,7 +3,6 @@
 // DO NOT EDIT
 
 use crate::{bitflags::bitflags, prelude::*, translate::*};
-use std::fmt;
 
 bitflags! {
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
@@ -17,12 +16,6 @@ bitflags! {
         const SYNC_CREATE = gobject_ffi::G_BINDING_SYNC_CREATE as _;
         #[doc(alias = "G_BINDING_INVERT_BOOLEAN")]
         const INVERT_BOOLEAN = gobject_ffi::G_BINDING_INVERT_BOOLEAN as _;
-    }
-}
-
-impl fmt::Display for BindingFlags {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        <Self as fmt::Debug>::fmt(self, f)
     }
 }
 
@@ -46,6 +39,7 @@ impl FromGlib<gobject_ffi::GBindingFlags> for BindingFlags {
 
 impl StaticType for BindingFlags {
     #[inline]
+    #[doc(alias = "g_binding_flags_get_type")]
     fn static_type() -> crate::Type {
         unsafe { from_glib(gobject_ffi::g_binding_flags_get_type()) }
     }
@@ -57,7 +51,7 @@ impl crate::HasParamSpec for BindingFlags {
     type BuilderFn = fn(&str) -> crate::ParamSpecFlagsBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name| Self::ParamSpec::builder(name)
+        Self::ParamSpec::builder
     }
 }
 
@@ -123,12 +117,6 @@ bitflags! {
         const DEPRECATED = gobject_ffi::G_SIGNAL_DEPRECATED as _;
         #[doc(alias = "G_SIGNAL_ACCUMULATOR_FIRST_RUN")]
         const ACCUMULATOR_FIRST_RUN = gobject_ffi::G_SIGNAL_ACCUMULATOR_FIRST_RUN as _;
-    }
-}
-
-impl fmt::Display for SignalFlags {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        <Self as fmt::Debug>::fmt(self, f)
     }
 }
 

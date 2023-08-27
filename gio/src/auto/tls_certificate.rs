@@ -12,8 +12,7 @@ use glib::signal::{connect_raw, SignalHandlerId};
 use glib::{prelude::*, translate::*};
 #[cfg(feature = "v2_70")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
-use std::{boxed::Box as Box_, mem::transmute};
-use std::{fmt, ptr};
+use std::boxed::Box as Box_;
 
 glib::wrapper! {
     #[doc(alias = "GTlsCertificate")]
@@ -31,7 +30,7 @@ impl TlsCertificate {
     #[doc(alias = "new_from_file")]
     pub fn from_file(file: impl AsRef<std::path::Path>) -> Result<TlsCertificate, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret =
                 ffi::g_tls_certificate_new_from_file(file.as_ref().to_glib_none().0, &mut error);
             if error.is_null() {
@@ -51,7 +50,7 @@ impl TlsCertificate {
         password: &str,
     ) -> Result<TlsCertificate, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_tls_certificate_new_from_file_with_password(
                 file.as_ref().to_glib_none().0,
                 password.to_glib_none().0,
@@ -72,7 +71,7 @@ impl TlsCertificate {
         key_file: impl AsRef<std::path::Path>,
     ) -> Result<TlsCertificate, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_tls_certificate_new_from_files(
                 cert_file.as_ref().to_glib_none().0,
                 key_file.as_ref().to_glib_none().0,
@@ -91,7 +90,7 @@ impl TlsCertificate {
     pub fn from_pem(data: &str) -> Result<TlsCertificate, glib::Error> {
         let length = data.len() as _;
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret =
                 ffi::g_tls_certificate_new_from_pem(data.to_glib_none().0, length, &mut error);
             if error.is_null() {
@@ -111,7 +110,7 @@ impl TlsCertificate {
         private_key_pkcs11_uri: Option<&str>,
     ) -> Result<TlsCertificate, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_tls_certificate_new_from_pkcs11_uris(
                 pkcs11_uri.to_glib_none().0,
                 private_key_pkcs11_uri.to_glib_none().0,
@@ -132,7 +131,7 @@ impl TlsCertificate {
     pub fn from_pkcs12(data: &[u8], password: Option<&str>) -> Result<TlsCertificate, glib::Error> {
         let length = data.len() as _;
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_tls_certificate_new_from_pkcs12(
                 data.to_glib_none().0,
                 length,
@@ -152,7 +151,7 @@ impl TlsCertificate {
         file: impl AsRef<std::path::Path>,
     ) -> Result<Vec<TlsCertificate>, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_tls_certificate_list_new_from_file(
                 file.as_ref().to_glib_none().0,
                 &mut error,
@@ -333,7 +332,7 @@ pub trait TlsCertificateExt: IsA<TlsCertificate> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::dns-names\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
                     notify_dns_names_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -361,7 +360,7 @@ pub trait TlsCertificateExt: IsA<TlsCertificate> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::ip-addresses\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
                     notify_ip_addresses_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -389,7 +388,7 @@ pub trait TlsCertificateExt: IsA<TlsCertificate> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::issuer-name\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
                     notify_issuer_name_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -417,7 +416,7 @@ pub trait TlsCertificateExt: IsA<TlsCertificate> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::not-valid-after\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
                     notify_not_valid_after_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -445,7 +444,7 @@ pub trait TlsCertificateExt: IsA<TlsCertificate> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::not-valid-before\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
                     notify_not_valid_before_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -473,7 +472,7 @@ pub trait TlsCertificateExt: IsA<TlsCertificate> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::subject-name\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
                     notify_subject_name_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -483,9 +482,3 @@ pub trait TlsCertificateExt: IsA<TlsCertificate> + sealed::Sealed + 'static {
 }
 
 impl<O: IsA<TlsCertificate>> TlsCertificateExt for O {}
-
-impl fmt::Display for TlsCertificate {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("TlsCertificate")
-    }
-}

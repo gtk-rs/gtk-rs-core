@@ -4,7 +4,7 @@
 
 use crate::File;
 use glib::{prelude::*, translate::*};
-use std::{boxed::Box as Box_, fmt};
+use std::boxed::Box as Box_;
 
 glib::wrapper! {
     #[doc(alias = "GVfs")]
@@ -181,9 +181,3 @@ pub trait VfsExt: IsA<Vfs> + sealed::Sealed + 'static {
 }
 
 impl<O: IsA<Vfs>> VfsExt for O {}
-
-impl fmt::Display for Vfs {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("Vfs")
-    }
-}
