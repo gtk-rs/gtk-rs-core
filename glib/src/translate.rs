@@ -2739,6 +2739,21 @@ mod tests {
     }
 
     #[test]
+    unsafe fn c_string_to_gchar() {
+        let strings: &[&CString; 5] = &["12", "hello", "q", ",,,,,,", "d!2e1edDA"];
+        impl IntoGlib for CString {
+            type GlibType = char;
+            fn into_glib(self) -> Self::char {
+                self as char
+            }
+        }
+        for string in strings() {
+            assert_eq!(into_glib(string), string)
+        }
+        
+    }
+
+    #[test]
     fn ptr_array() {
         let strings = &["A", "B", "C"];
         let (ptr, _stash) =
