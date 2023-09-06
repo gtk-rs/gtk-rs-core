@@ -4,7 +4,6 @@
 #![allow(clippy::missing_safety_doc)]
 #![doc = include_str!("../README.md")]
 
-#[doc(hidden)]
 pub use bitflags;
 pub use ffi;
 #[doc(hidden)]
@@ -14,7 +13,6 @@ pub use glib_macros::{
     Boxed, Downgrade, Enum, ErrorDomain, Properties, SharedBoxed, ValueDelegate, Variant,
 };
 pub use gobject_ffi;
-#[doc(hidden)]
 pub use once_cell;
 
 pub use self::{
