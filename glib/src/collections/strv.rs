@@ -409,7 +409,7 @@ impl Clone for StrV {
         unsafe {
             let mut s = Self::with_capacity(self.len());
             for (i, item) in self.iter().enumerate() {
-                *s.ptr.as_ptr().add(i) = GString::from(item.to_str()).into_glib_ptr();
+                *s.ptr.as_ptr().add(i) = GString::from(item.as_str()).into_glib_ptr();
             }
             s.len = self.len();
             *s.ptr.as_ptr().add(s.len) = ptr::null_mut();
