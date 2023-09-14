@@ -46,7 +46,9 @@ pub use self::enums::NormalizeMode;
 pub use self::enums::OptionArg;
 pub use self::enums::SeekType;
 pub use self::enums::TimeType;
+pub use self::enums::UnicodeBreakType;
 pub use self::enums::UnicodeScript;
+pub use self::enums::UnicodeType;
 #[cfg(feature = "v2_66")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
 pub use self::enums::UriError;

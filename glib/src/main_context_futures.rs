@@ -95,7 +95,7 @@ impl TaskSource {
                 ptr::drop_in_place(&mut (*source).future);
             }
             FutureWrapper::NonSend(ref mut future) => {
-                let context = ffi::g_source_get_context(source as *mut Self as *mut ffi::GSource);
+                let context = ffi::g_source_get_context(source as *mut ffi::GSource);
                 if !context.is_null() {
                     let future = ptr::read(future);
                     let context = MainContext::from_glib_none(context);

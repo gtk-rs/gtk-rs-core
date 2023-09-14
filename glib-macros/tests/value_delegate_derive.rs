@@ -129,6 +129,7 @@ fn into_value() {
         .is_none());
 }
 
+#[allow(clippy::unnecessary_literal_unwrap)]
 #[test]
 fn higher_level_types() {
     #[derive(Debug, ValueDelegate)]

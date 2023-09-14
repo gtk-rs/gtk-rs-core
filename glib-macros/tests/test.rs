@@ -149,6 +149,7 @@ fn derive_boxed() {
     assert_eq!(b, v.get::<MyBoxed>().unwrap());
 }
 
+#[allow(clippy::unnecessary_literal_unwrap)]
 #[test]
 fn derive_boxed_nullable() {
     #[derive(Clone, Debug, PartialEq, Eq, glib::Boxed)]

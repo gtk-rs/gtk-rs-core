@@ -267,7 +267,7 @@ mod tests {
             .value_required();
         let found = parse_nested_meta_items(&input.attrs, "boxed_type", &mut [&mut gtype_name]);
         // The argument value was specified as required, so an error is returned
-        matches!(found, Err(_));
+        assert!(found.is_err());
         assert!(gtype_name.value.is_none());
 
         // The argument key must be found though

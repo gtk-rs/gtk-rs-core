@@ -873,7 +873,7 @@ pub fn cstr_bytes(item: TokenStream) -> TokenStream {
 /// | `set [= expr]` | Specify that the property is writable and use `PropertySet::set` [or optionally set a custom internal setter] | | `#[property(set)]`, `#[property(set = set_prop)]`, or `[property(set = \|_, val\| {})]` |
 /// | `override_class = expr` | The type of class of which to override the property from | | `#[property(override_class = SomeClass)]` |
 /// | `override_interface = expr` | The type of interface of which to override the property from | | `#[property(override_interface = SomeInterface)]` |
-/// | `nullable` | Whether to use `Option<T>` in the wrapper's generated setter |  | `#[property(nullable)]` |
+/// | `nullable` | Whether to use `Option<T>` in the generated setter method |  | `#[property(nullable)]` |
 /// | `member = ident` | Field of the nested type where property is retrieved and set | | `#[property(member = author)]` |
 /// | `construct_only` | Specify that the property is construct only. This will not generate a public setter and only allow the property to be set during object construction. The use of a custom internal setter is supported. | | `#[property(get, construct_only)]` or `#[property(get, set = set_prop, construct_only)]` |
 /// | `builder(<required-params>)[.ident]*` | Used to input required params or add optional Param Spec builder fields | | `#[property(builder(SomeEnum::default()))]`, `#[builder().default_value(1).minimum(0).maximum(5)]`, etc.  |
@@ -885,15 +885,20 @@ pub fn cstr_bytes(item: TokenStream) -> TokenStream {
 /// You might hit a roadblock when declaring properties with this macro because you want to use a name that happens to be a Rust keyword. This may happen with names like `loop`, which is a pretty common name when creating things like animation handlers.
 /// To use those names, you can make use of the raw identifier feature of Rust. Simply prefix the identifier name with `r#` in the struct declaration. Internally, those `r#`s are stripped so you can use its expected name in [`ObjectExt::property`] or within GtkBuilder template files.
 ///
-/// # Generated wrapper methods
+/// # Generated methods
 /// The following methods are generated on the wrapper type specified on `#[properties(wrapper_type = ...)]`:
 /// * `$property()`, when the property is readable
 /// * `set_$property()`, when the property is writable and not construct-only
 /// * `connect_$property_notify()`
 /// * `notify_$property()`
 ///
-/// Notice: You can't reimplement the generated methods on the wrapper type,
-/// but you can change their behavior using a custom internal getter/setter.
+/// ## Extension trait
+/// You can choose to move the method definitions to a trait by using `#[properties(wrapper_type = super::MyType, ext_trait = MyTypePropertiesExt)]`.
+/// The trait name is optional, and defaults to `MyTypePropertiesExt`, where `MyType` is extracted from the wrapper type.
+/// Note: The trait is defined in the same module where the `#[derive(Properties)]` call happens, and is implemented on the wrapper type.
+///
+/// Notice: You can't reimplement the generated methods on the wrapper type, unless you move them to a trait.
+/// You can change the behavior of the generated getter/setter methods by using a custom internal getter/setter.
 ///
 /// # Internal getters and setters
 /// By default, they are generated for you. However, you can use a custom getter/setter
