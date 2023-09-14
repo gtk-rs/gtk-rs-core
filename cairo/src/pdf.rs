@@ -74,6 +74,7 @@ impl PdfSurface {
     }
 
     #[cfg(all(feature = "pdf", feature = "v1_16"))]
+    #[cfg_attr(docsrs, doc(cfg(all(feature = "pdf", feature = "v1_16"))))]
     #[doc(alias = "cairo_pdf_surface_set_metadata")]
     pub fn set_metadata(&self, metadata: PdfMetadata, value: &str) -> Result<(), Error> {
         let value = CString::new(value).unwrap();
@@ -88,6 +89,7 @@ impl PdfSurface {
     }
 
     #[cfg(all(feature = "pdf", feature = "v1_18"))]
+    #[cfg_attr(docsrs, doc(cfg(all(feature = "pdf", feature = "v1_18"))))]
     #[doc(alias = "cairo_pdf_surface_set_custom_metadata")]
     pub fn set_custom_metadata(&self, name: &str, value: &str) -> Result<(), Error> {
         let name = CString::new(name).unwrap();
@@ -103,6 +105,7 @@ impl PdfSurface {
     }
 
     #[cfg(all(feature = "pdf", feature = "v1_16"))]
+    #[cfg_attr(docsrs, doc(cfg(all(feature = "pdf", feature = "v1_16"))))]
     #[doc(alias = "cairo_pdf_surface_set_page_label")]
     pub fn set_page_label(&self, label: &str) -> Result<(), Error> {
         let label = CString::new(label).unwrap();
@@ -113,6 +116,7 @@ impl PdfSurface {
     }
 
     #[cfg(all(feature = "pdf", feature = "v1_16"))]
+    #[cfg_attr(docsrs, doc(cfg(all(feature = "pdf", feature = "v1_16"))))]
     #[doc(alias = "cairo_pdf_surface_set_thumbnail_size")]
     pub fn set_thumbnail_size(&self, width: i32, height: i32) -> Result<(), Error> {
         unsafe {
@@ -126,6 +130,7 @@ impl PdfSurface {
     }
 
     #[cfg(all(feature = "pdf", feature = "v1_16"))]
+    #[cfg_attr(docsrs, doc(cfg(all(feature = "pdf", feature = "v1_16"))))]
     #[doc(alias = "cairo_pdf_surface_add_outline")]
     pub fn add_outline(
         &self,
