@@ -96,6 +96,7 @@ impl SvgSurface {
     }
 
     #[cfg(all(feature = "svg", feature = "v1_16"))]
+    #[cfg_attr(docsrs, doc(cfg(all(feature = "svg", feature = "v1_16"))))]
     #[doc(alias = "cairo_svg_surface_set_document_unit")]
     pub fn set_document_unit(&mut self, unit: SvgUnit) {
         unsafe {
@@ -104,6 +105,7 @@ impl SvgSurface {
     }
 
     #[cfg(all(feature = "svg", feature = "v1_16"))]
+    #[cfg_attr(docsrs, doc(cfg(all(feature = "svg", feature = "v1_16"))))]
     #[doc(alias = "cairo_svg_surface_get_document_unit")]
     #[doc(alias = "get_document_unit")]
     pub fn document_unit(&self) -> SvgUnit {
