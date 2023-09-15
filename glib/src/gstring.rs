@@ -1299,9 +1299,9 @@ macro_rules! gformat {
 /// `T` is the type of the value the conversion was attempted from.
 #[derive(thiserror::Error, Clone, PartialEq, Eq, Debug)]
 #[error("data provided is not nul terminated")]
-pub struct GStringNoTrailingNulError<T>(T);
+pub struct GStringNoTrailingNulError<T: fmt::Debug>(T);
 
-impl<T> GStringNoTrailingNulError<T> {
+impl<T: fmt::Debug> GStringNoTrailingNulError<T> {
     // rustdoc-stripper-ignore-next
     /// Returns the original value that was attempted to convert to [`GString`].
     #[inline]
@@ -1316,9 +1316,9 @@ impl<T> GStringNoTrailingNulError<T> {
 /// `T` is the type of the value the conversion was attempted from.
 #[derive(thiserror::Error, Clone, PartialEq, Eq, Debug)]
 #[error("{1}")]
-pub struct GStringInteriorNulError<T>(T, GStrInteriorNulError);
+pub struct GStringInteriorNulError<T: std::fmt::Debug>(T, GStrInteriorNulError);
 
-impl<T> GStringInteriorNulError<T> {
+impl<T: std::fmt::Debug> GStringInteriorNulError<T> {
     // rustdoc-stripper-ignore-next
     /// Returns the original value that was attempted to convert to [`GString`].
     #[inline]
@@ -1339,9 +1339,9 @@ impl<T> GStringInteriorNulError<T> {
 /// `T` is the type of the value the conversion was attempted from.
 #[derive(thiserror::Error, Clone, PartialEq, Eq, Debug)]
 #[error("{1}")]
-pub struct GStringUtf8Error<T>(T, std::str::Utf8Error);
+pub struct GStringUtf8Error<T: fmt::Debug>(T, std::str::Utf8Error);
 
-impl<T> GStringUtf8Error<T> {
+impl<T: fmt::Debug> GStringUtf8Error<T> {
     // rustdoc-stripper-ignore-next
     /// Returns the original value that was attempted to convert to [`GString`].
     #[inline]
@@ -1360,7 +1360,7 @@ impl<T> GStringUtf8Error<T> {
 // rustdoc-stripper-ignore-next
 /// Error type holding all possible failures when creating a [`GString`].
 #[derive(thiserror::Error, Debug)]
-pub enum GStringFromError<T> {
+pub enum GStringFromError<T: fmt::Debug> {
     #[error(transparent)]
     NoTrailingNul(#[from] GStringNoTrailingNulError<T>),
     #[error(transparent)]
@@ -1371,7 +1371,7 @@ pub enum GStringFromError<T> {
     Unspecified(T),
 }
 
-impl<T> GStringFromError<T> {
+impl<T: fmt::Debug> GStringFromError<T> {
     pub fn into_inner(self) -> T {
         match self {
             Self::NoTrailingNul(GStringNoTrailingNulError(t)) => t,
@@ -1381,7 +1381,7 @@ impl<T> GStringFromError<T> {
         }
     }
     #[inline]
-    fn convert<R>(self, func: impl FnOnce(T) -> R) -> GStringFromError<R> {
+    fn convert<R: fmt::Debug>(self, func: impl FnOnce(T) -> R) -> GStringFromError<R> {
         match self {
             Self::NoTrailingNul(GStringNoTrailingNulError(t)) => {
                 GStringFromError::NoTrailingNul(GStringNoTrailingNulError(func(t)))
