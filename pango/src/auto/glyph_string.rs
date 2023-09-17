@@ -67,13 +67,7 @@ impl GlyphString {
     }
 
     #[doc(alias = "pango_glyph_string_index_to_x")]
-    pub fn index_to_x(
-        &self,
-        text: &str,
-        analysis: &mut Analysis,
-        index_: i32,
-        trailing: bool,
-    ) -> i32 {
+    pub fn index_to_x(&self, text: &str, analysis: &Analysis, index_: i32, trailing: bool) -> i32 {
         let length = text.len() as _;
         unsafe {
             let mut x_pos = mem::MaybeUninit::uninit();
@@ -81,7 +75,7 @@ impl GlyphString {
                 mut_override(self.to_glib_none().0),
                 text.to_glib_none().0,
                 length,
-                analysis.to_glib_none_mut().0,
+                mut_override(analysis.to_glib_none().0),
                 index_,
                 trailing.into_glib(),
                 x_pos.as_mut_ptr(),
@@ -105,7 +99,7 @@ impl GlyphString {
     }
 
     #[doc(alias = "pango_glyph_string_x_to_index")]
-    pub fn x_to_index(&self, text: &str, analysis: &mut Analysis, x_pos: i32) -> (i32, i32) {
+    pub fn x_to_index(&self, text: &str, analysis: &Analysis, x_pos: i32) -> (i32, i32) {
         let length = text.len() as _;
         unsafe {
             let mut index_ = mem::MaybeUninit::uninit();
@@ -114,7 +108,7 @@ impl GlyphString {
                 mut_override(self.to_glib_none().0),
                 text.to_glib_none().0,
                 length,
-                analysis.to_glib_none_mut().0,
+                mut_override(analysis.to_glib_none().0),
                 x_pos,
                 index_.as_mut_ptr(),
                 trailing.as_mut_ptr(),
