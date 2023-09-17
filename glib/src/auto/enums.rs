@@ -908,61 +908,6 @@ pub enum UnicodeBreakType {
     __Unknown(i32),
 }
 
-impl fmt::Display for UnicodeBreakType {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(
-            f,
-            "UnicodeBreakType::{}",
-            match *self {
-                Self::Mandatory => "Mandatory",
-                Self::CarriageReturn => "CarriageReturn",
-                Self::LineFeed => "LineFeed",
-                Self::CombiningMark => "CombiningMark",
-                Self::Surrogate => "Surrogate",
-                Self::ZeroWidthSpace => "ZeroWidthSpace",
-                Self::Inseparable => "Inseparable",
-                Self::NonBreakingGlue => "NonBreakingGlue",
-                Self::Contingent => "Contingent",
-                Self::Space => "Space",
-                Self::After => "After",
-                Self::Before => "Before",
-                Self::BeforeAndAfter => "BeforeAndAfter",
-                Self::Hyphen => "Hyphen",
-                Self::NonStarter => "NonStarter",
-                Self::OpenPunctuation => "OpenPunctuation",
-                Self::ClosePunctuation => "ClosePunctuation",
-                Self::Quotation => "Quotation",
-                Self::Exclamation => "Exclamation",
-                Self::Ideographic => "Ideographic",
-                Self::Numeric => "Numeric",
-                Self::InfixSeparator => "InfixSeparator",
-                Self::Symbol => "Symbol",
-                Self::Alphabetic => "Alphabetic",
-                Self::Prefix => "Prefix",
-                Self::Postfix => "Postfix",
-                Self::ComplexContext => "ComplexContext",
-                Self::Ambiguous => "Ambiguous",
-                Self::Unknown => "Unknown",
-                Self::NextLine => "NextLine",
-                Self::WordJoiner => "WordJoiner",
-                Self::HangulLJamo => "HangulLJamo",
-                Self::HangulVJamo => "HangulVJamo",
-                Self::HangulTJamo => "HangulTJamo",
-                Self::HangulLvSyllable => "HangulLvSyllable",
-                Self::HangulLvtSyllable => "HangulLvtSyllable",
-                Self::CloseParenthesis => "CloseParenthesis",
-                Self::ConditionalJapaneseStarter => "ConditionalJapaneseStarter",
-                Self::HebrewLetter => "HebrewLetter",
-                Self::RegionalIndicator => "RegionalIndicator",
-                Self::EmojiBase => "EmojiBase",
-                Self::EmojiModifier => "EmojiModifier",
-                Self::ZeroWidthJoiner => "ZeroWidthJoiner",
-                _ => "Unknown",
-            }
-        )
-    }
-}
-
 #[doc(hidden)]
 impl IntoGlib for UnicodeBreakType {
     type GlibType = ffi::GUnicodeBreakType;
@@ -1859,48 +1804,6 @@ pub enum UnicodeType {
     SpaceSeparator,
     #[doc(hidden)]
     __Unknown(i32),
-}
-
-impl fmt::Display for UnicodeType {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(
-            f,
-            "UnicodeType::{}",
-            match *self {
-                Self::Control => "Control",
-                Self::Format => "Format",
-                Self::Unassigned => "Unassigned",
-                Self::PrivateUse => "PrivateUse",
-                Self::Surrogate => "Surrogate",
-                Self::LowercaseLetter => "LowercaseLetter",
-                Self::ModifierLetter => "ModifierLetter",
-                Self::OtherLetter => "OtherLetter",
-                Self::TitlecaseLetter => "TitlecaseLetter",
-                Self::UppercaseLetter => "UppercaseLetter",
-                Self::SpacingMark => "SpacingMark",
-                Self::EnclosingMark => "EnclosingMark",
-                Self::NonSpacingMark => "NonSpacingMark",
-                Self::DecimalNumber => "DecimalNumber",
-                Self::LetterNumber => "LetterNumber",
-                Self::OtherNumber => "OtherNumber",
-                Self::ConnectPunctuation => "ConnectPunctuation",
-                Self::DashPunctuation => "DashPunctuation",
-                Self::ClosePunctuation => "ClosePunctuation",
-                Self::FinalPunctuation => "FinalPunctuation",
-                Self::InitialPunctuation => "InitialPunctuation",
-                Self::OtherPunctuation => "OtherPunctuation",
-                Self::OpenPunctuation => "OpenPunctuation",
-                Self::CurrencySymbol => "CurrencySymbol",
-                Self::ModifierSymbol => "ModifierSymbol",
-                Self::MathSymbol => "MathSymbol",
-                Self::OtherSymbol => "OtherSymbol",
-                Self::LineSeparator => "LineSeparator",
-                Self::ParagraphSeparator => "ParagraphSeparator",
-                Self::SpaceSeparator => "SpaceSeparator",
-                _ => "Unknown",
-            }
-        )
-    }
 }
 
 #[doc(hidden)]
