@@ -566,9 +566,11 @@ fn expand_impl_getset_properties(props: &[PropDesc]) -> Vec<syn::ImplItemFn> {
 
         let getter = p.get.is_some().then(|| {
             let span = p.attrs_span;
-            parse_quote_spanned!(span=> pub fn #ident(&self) -> <#ty as #crate_ident::Property>::Value {
-                 self.property::<<#ty as #crate_ident::Property>::Value>(#stripped_name)
-            })
+            parse_quote_spanned!(span=>
+                #[must_use]
+                pub fn #ident(&self) -> <#ty as #crate_ident::Property>::Value {
+                    self.property::<<#ty as #crate_ident::Property>::Value>(#stripped_name)
+                })
         });
 
         let setter = (p.set.is_some() && !p.is_construct_only).then(|| {
