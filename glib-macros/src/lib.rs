@@ -935,8 +935,6 @@ pub fn cstr_bytes(item: TokenStream) -> TokenStream {
 /// # Example
 /// ```
 /// use std::cell::RefCell;
-/// use std::marker::PhantomData;
-/// use std::sync::Mutex;
 /// use glib::prelude::*;
 /// use glib::subclass::prelude::*;
 /// use glib_macros::Properties;
