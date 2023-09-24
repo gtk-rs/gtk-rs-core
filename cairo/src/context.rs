@@ -448,6 +448,7 @@ impl Context {
     /// ctx.paint()?;
     /// # Ok(())
     /// # }
+    /// ```
     #[doc(alias = "cairo_set_source")]
     pub fn set_source(&self, source: impl AsRef<Pattern>) -> Result<(), Error> {
         let source = source.as_ref();
@@ -458,6 +459,7 @@ impl Context {
         self.status()
     }
 
+    /// Returns the current source pattern for this [`Context`].
     #[doc(alias = "get_source")]
     #[doc(alias = "cairo_get_source")]
     pub fn source(&self) -> Pattern {
