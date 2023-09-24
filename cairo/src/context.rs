@@ -59,6 +59,27 @@ impl fmt::Display for RectangleList {
     }
 }
 
+/// A drawing context, used to draw on [`Surface`]s.
+///
+/// [`Context`] is the main entry point for all drawing operations. To acquire a [`Context`], you
+/// can create any kind of [`Surface`] (such as [`ImageSurface`] or [`PdfSurface`]), and call
+/// [`Context::new`] with the target surface:
+///
+/// ```
+/// use cairo::{Context, Format, ImageSurface};
+///
+/// let surface = ImageSurface::create(Format::ARgb32, 100, 100).unwrap();
+/// let ctx = Context::new(&surface).unwrap();
+///
+/// // paint the background black
+/// ctx.set_source_rgb(0.0, 0.0, 0.0);
+/// ctx.paint();
+///
+/// // etc.
+/// ```
+///
+/// [`ImageSurface`]: crate::ImageSurface
+/// [`PdfSurface`]: crate::PdfSurface
 #[derive(Debug)]
 #[repr(transparent)]
 pub struct Context(ptr::NonNull<cairo_t>);
@@ -163,6 +184,9 @@ impl Context {
         self.0.as_ptr()
     }
 
+    /// Checks whether an error has previously occurred for this context.
+    ///
+    /// Refer to [`Error`] for an exhaustive list of error codes.
     #[doc(alias = "cairo_status")]
     #[inline]
     pub fn status(&self) -> Result<(), Error> {
@@ -170,67 +194,260 @@ impl Context {
         status_to_result(status)
     }
 
+    /// Creates a new [`Context`] with default graphics state parameters, for drawing to a target
+    /// [`Surface`].
     pub fn new(target: impl AsRef<Surface>) -> Result<Context, Error> {
         let ctx = unsafe { Self::from_raw_full(ffi::cairo_create(target.as_ref().to_raw_none())) };
         ctx.status().map(|_| ctx)
     }
 
+    /// Makes a copy of the current state of the [`Context`], saving it in an internal stack of
+    /// saved states for the [`Context`]. When [`Context::restore`] is called, this context will be
+    /// restored to the saved state.
+    ///
+    /// Multiple calls to [`Context::save`] and [`Context::restore`] can be nested; each call to
+    /// [`Context::restore`] restores the state from the matching paired [`Context::save`].
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # fn main() -> Result<(), cairo::Error> {
+    /// use cairo::{Context, Format, ImageSurface};
+    ///
+    /// let surface = ImageSurface::create(Format::ARgb32, 100, 100).unwrap();
+    /// let ctx = Context::new(&surface).unwrap();
+    ///
+    /// // set source to red
+    /// ctx.set_source_rgb(1.0, 0.0, 0.0);
+    ///
+    /// // this block scope is not necessary, but can help with visualizing what happens
+    /// {
+    ///     // save current state
+    ///     ctx.save()?;
+    ///
+    ///     // set source to white
+    ///     ctx.set_source_rgb(1.0, 1.0, 1.0);
+    ///
+    ///     // shift origin in canvas space, to (50, 50)
+    ///     ctx.translate(50.0, 50.0);
+    ///
+    ///     // draw a white square with its upper-left corner at (0, 0) in canvas space
+    ///     // (i.e. at (50, 50) in device space)
+    ///     ctx.rectangle(0.0, 0.0, 20.0, 20.0);
+    ///     ctx.fill()?;
+    ///
+    ///     // restore state, origin back at (0, 0) in canvas space
+    ///     ctx.restore()?;
+    /// }
+    ///
+    /// // draw a red square at (0, 0) in canvas and device space
+    /// ctx.rectangle(0.0, 0.0, 20.0, 20.0);
+    /// ctx.fill()?;
+    /// # Ok(())
+    /// # }
+    /// ```
     #[doc(alias = "cairo_save")]
     pub fn save(&self) -> Result<(), Error> {
         unsafe { ffi::cairo_save(self.0.as_ptr()) }
         self.status()
     }
 
+    /// Restores the [`Context`] to the state saved by a preceding call to [`Context::save`],
+    /// removing that state from the stack of saved states.
+    ///
+    /// See [`Context::save`] for example usage.
     #[doc(alias = "cairo_restore")]
     pub fn restore(&self) -> Result<(), Error> {
         unsafe { ffi::cairo_restore(self.0.as_ptr()) }
         self.status()
     }
 
+    /// Returns the target [`Surface`] for this [`Context`].
     #[doc(alias = "get_target")]
     #[doc(alias = "cairo_get_target")]
     pub fn target(&self) -> Surface {
         unsafe { Surface::from_raw_none(ffi::cairo_get_target(self.0.as_ptr())) }
     }
 
+    /// Temporarily redirects drawing to an intermediate surface, known as a group, with a default
+    /// content type of [`Content::ColorAlpha`]. The redirection lasts until the group is completed
+    /// by a call to [`Context::pop_group`] / [`Context::pop_group_to_source`].
+    ///
+    /// This can be convenient for performing intermediate compositing. A common use of a group is
+    /// to render objects as opaque within the group (so that they occlude each other), and then
+    /// blend the result with translucence onto the destination.
+    ///
+    /// Groups can be nested arbitrarily deep by making balanced calls to [`Context::push_group`] /
+    /// [`Context::pop_group`]. Each call pushes / pops the new target group onto / from a stack.
+    ///
+    /// This function calls [`Context::save`] so that any changes to the graphics state will not be
+    /// visible outside the group. ([`Context::pop_group`] functions call [`Context::restore`])
+    ///
+    /// # Examples
+    ///
+    /// TODO: make a nice example here
     #[doc(alias = "cairo_push_group")]
     pub fn push_group(&self) {
         unsafe { ffi::cairo_push_group(self.0.as_ptr()) }
     }
 
+    /// Temporarily redirects drawing to an intermediate surface, known as a group, with the given
+    /// content type. The redirection lasts until the group is completed by a call to
+    /// [`Context::pop_group`] / [`Context::pop_group_to_source`].
+    ///
+    /// See [`Context::push_group`] for more details.
     #[doc(alias = "cairo_push_group_with_content")]
     pub fn push_group_with_content(&self, content: Content) {
         unsafe { ffi::cairo_push_group_with_content(self.0.as_ptr(), content.into()) }
     }
 
+    /// Terminates the redirection begun by a call to [`Context::push_group`] or
+    /// [`Context::push_group_with_content`] and returns a new [`Pattern`] containing the results
+    /// of all drawing operations performed on the group.
+    ///
+    /// This function calls [`Context::restore`] so that any changes to the graphics state will not
+    /// be visible outside the group.
+    ///
+    /// # Examples
+    ///
+    /// TODO: make a nice example here
     #[doc(alias = "cairo_pop_group")]
     pub fn pop_group(&self) -> Result<Pattern, Error> {
         let pattern = unsafe { Pattern::from_raw_full(ffi::cairo_pop_group(self.0.as_ptr())) };
         self.status().map(|_| pattern)
     }
 
+    /// Terminates the redirection begun by a call to [`Context::push_group`] or
+    /// [`Context::push_group_with_content`]. The results of the drawing operations are then used
+    /// as the source pattern for this [`Context`].
+    ///
+    /// This function calls [`Context::restore`] so that any changes to the graphics state will not
+    /// be visible outside the group.
+    ///
+    /// # Examples
+    ///
+    /// TODO: make a nice example here
     #[doc(alias = "cairo_pop_group_to_source")]
     pub fn pop_group_to_source(&self) -> Result<(), Error> {
         unsafe { ffi::cairo_pop_group_to_source(self.0.as_ptr()) };
         self.status()
     }
 
+    /// Gets the current destination surface for the [`Context`].
+    ///
+    /// This is either the original target surface as passed to [`Context::new`], or the target
+    /// surface for the current group as started by the most recent call to [`Context::push_group`]
+    /// / [`Context::push_group_with_content`].
     #[doc(alias = "get_group_target")]
     #[doc(alias = "cairo_get_group_target")]
     pub fn group_target(&self) -> Surface {
         unsafe { Surface::from_raw_none(ffi::cairo_get_group_target(self.0.as_ptr())) }
     }
 
+    /// Sets this [`Context`]'s source pattern to an opaque color. This opaque color will be used
+    /// for any subsequent drawing operation.
+    ///
+    /// The color components are floating point numbers in the range `0.0..=1.0`. If the given
+    /// values are outside that range, they will be clamped.
+    ///
+    /// The default source pattern is an opaque black `(0.0, 0.0, 0.0)`.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # fn main() -> Result<(), cairo::Error> {
+    /// use cairo::{Context, Format, ImageSurface};
+    ///
+    /// let surface = ImageSurface::create(Format::ARgb32, 100, 100).unwrap();
+    /// let ctx = Context::new(&surface).unwrap();
+    ///
+    /// // paint the background black
+    /// ctx.paint()?;
+    ///
+    /// // draw a red circle centered at (50, 50)
+    /// ctx.set_source_rgb(1.0, 0.0, 0.0);
+    /// ctx.arc(50.0, 50.0, 20.0, 0.0, std::f64::consts::TAU);
+    /// ctx.fill()?;
+    /// # Ok(())
+    /// # }
+    /// ```
     #[doc(alias = "cairo_set_source_rgb")]
     pub fn set_source_rgb(&self, red: f64, green: f64, blue: f64) {
         unsafe { ffi::cairo_set_source_rgb(self.0.as_ptr(), red, green, blue) }
     }
 
+    /// Sets this [`Context`]'s source pattern to a translucent color. This translucent color will
+    /// be used for any subsequent drawing operation.
+    ///
+    /// The color and alpha components are floating point numbers in the range `0.0..=1.0`. If the
+    /// given values are outside that range, they will be clamped.
+    ///
+    /// The default source pattern is an opaque black `(0.0, 0.0, 0.0, 1.0)`.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # fn main() -> Result<(), cairo::Error> {
+    /// use cairo::{Context, Format, ImageSurface};
+    ///
+    /// let surface = ImageSurface::create(Format::ARgb32, 100, 100).unwrap();
+    /// let ctx = Context::new(&surface).unwrap();
+    ///
+    /// // paint the background black
+    /// ctx.paint()?;
+    ///
+    /// // draw a red circle centered at (50, 50)
+    /// ctx.set_source_rgb(1.0, 0.0, 0.0);
+    /// ctx.arc(50.0, 50.0, 20.0, 0.0, std::f64::consts::TAU);
+    /// ctx.fill()?;
+    ///
+    /// // draw a translucent blue square on top of the circle
+    /// ctx.set_source_rgba(0.0, 0.0, 1.0, 0.5);
+    /// ctx.rectangle(30.0, 30.0, 40.0, 40.0);
+    /// ctx.fill()?;
+    /// # Ok(())
+    /// # }
+    /// ```
     #[doc(alias = "cairo_set_source_rgba")]
     pub fn set_source_rgba(&self, red: f64, green: f64, blue: f64, alpha: f64) {
         unsafe { ffi::cairo_set_source_rgba(self.0.as_ptr(), red, green, blue, alpha) }
     }
 
+    /// Sets this [`Context`]'s source pattern. This source pattern will be used for any subsequent
+    /// drawing operation.
+    ///
+    /// **Note**: The pattern's transformation matrix will be locked to the user space when
+    /// [`Context::set_source`] is called. Any subsequent modification of the current transformation
+    /// matrix **will not** affect the source pattern.
+    ///
+    /// The default source pattern is an opaque black `(0.0, 0.0, 0.0, 1.0)`.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # fn main() -> Result<(), cairo::Error> {
+    /// use cairo::{Context, Format, ImageSurface, RadialGradient};
+    ///
+    /// let surface = ImageSurface::create(Format::ARgb32, 100, 100).unwrap();
+    /// let ctx = Context::new(&surface).unwrap();
+    ///
+    /// // creates a radial gradient from red to blue
+    ///
+    /// // gradient will begin at (50, 50) with radius 0
+    /// // ends at (50, 50) with radius 50
+    /// let pattern = RadialGradient::new(50.0, 50.0, 0.0, 50.0, 50.0, 50.0);
+    ///
+    /// // first color stop: at offset=0, draw with red=(1, 0, 0)
+    /// pattern.add_color_stop_rgb(0.0, 1.0, 0.0, 0.0);
+    ///
+    /// // second color stop: at offset=1, draw with blue=(0, 0, 1)
+    /// pattern.add_color_stop_rgb(1.0, 0.0, 0.0, 1.0);
+    ///
+    /// // paints the canvas with the gradient
+    /// ctx.set_source(&pattern)?;
+    /// ctx.paint()?;
+    /// # Ok(())
+    /// # }
     #[doc(alias = "cairo_set_source")]
     pub fn set_source(&self, source: impl AsRef<Pattern>) -> Result<(), Error> {
         let source = source.as_ref();
@@ -509,6 +726,7 @@ impl Context {
         self.status()
     }
 
+    /// Paints the current source color everywhere within the current clip region.
     #[doc(alias = "cairo_paint")]
     pub fn paint(&self) -> Result<(), Error> {
         unsafe { ffi::cairo_paint(self.0.as_ptr()) };
