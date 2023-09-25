@@ -53,28 +53,59 @@ macro_rules! gvalue_impl {
     };
 }
 
+/// Specifies the type of antialiasing to do when rendering text or shapes.
+///
+/// `cairo 1.12` added a set of antialiasing hints, rather than specifying a specific antialias
+/// method. These hints are:
+///
+/// - [`Antialias::Fast`]: Allow the backend to degrade raster quality for speed.
+/// - [`Antialias::Good`]: Balance between speed and quality.
+/// - [`Antialias::Best`]: High-fidelity, but potentially slow, raster mode.
+///
+/// These make no guarantee on how the backend will perform its rasterisation (if it even
+/// rasterises!), nor that they have any differing effect other than to enable some form of
+/// antialiasing. In the case of glyph rendering, [`Antialias::Fast`] and [`Antialias::Good`] will
+/// be mapped to [`Antialias::Gray`], with [`Antialias::Best`] being equivalent to
+/// [`Antialias::Subpixel`].
+///
+/// The interpretation of [`Antialias::Default`] is left entirely up to the backend. Typically,
+/// this will be similar to [`Antialias::Good`].
 #[derive(Clone, PartialEq, Eq, PartialOrd, Debug, Copy)]
 #[non_exhaustive]
 #[doc(alias = "cairo_antialias_t")]
 pub enum Antialias {
+    /// Use the default antialiasing for the subsystem and target device.
     #[doc(alias = "ANTIALIAS_DEFAULT")]
     Default,
 
     /* method */
+    /// Use a bilevel alpha mask.
     #[doc(alias = "ANTIALIAS_NONE")]
     None,
+
+    /// Perform single-color antialiasing (using shades of gray for black text on a white
+    /// background, for example).
     #[doc(alias = "ANTIALIAS_GRAY")]
     Gray,
+
+    /// Perform antialiasing by taking advantage of the order of subpixel elements on devices such
+    /// as LCD panels.
     #[doc(alias = "ANTIALIAS_SUBPIXEL")]
     Subpixel,
 
     /* hints */
+    /// Hint that the backend should perform some antialiasing, but prefer speed over quality.
     #[doc(alias = "ANTIALIAS_FAST")]
     Fast,
+
+    /// Hint that the backend should balance quality against performance.
     #[doc(alias = "ANTIALIAS_GOOD")]
     Good,
+
+    /// Hint that the backend should render at the highest quality, sacrificing speed if necessary.
     #[doc(alias = "ANTIALIAS_BEST")]
     Best,
+
     #[doc(hidden)]
     __Unknown(i32),
 }
@@ -133,14 +164,32 @@ impl fmt::Display for Antialias {
 #[cfg(feature = "use_glib")]
 gvalue_impl!(Antialias, ffi::gobject::cairo_gobject_antialias_get_type);
 
+/// Select how paths are filled.
+///
+/// For both fill rules, whether or not a point is included in the fill is determined by taking a
+/// ray from that point to infinity, and looking at intersections with the path. The ray can be in
+/// any direction, as long as it doesn't pass through the end point of a segment, or have a tricky
+/// intersection, such as intersecting tangent to the path.
+///
+/// The default fill rule is [`FillRule::Winding`].
 #[derive(Clone, PartialEq, Eq, PartialOrd, Debug, Copy)]
 #[non_exhaustive]
 #[doc(alias = "cairo_fill_rule_t")]
 pub enum FillRule {
+    /// Count the number of times the ray crosses the path from left to right.
+    ///
+    /// When crossing a path from left to right, increment the count by 1. When crossing from right
+    /// to left, decrement the count by 1. If the result is non-zero, the point will be filled.
     #[doc(alias = "FILL_RULE_WINDING")]
     Winding,
+
+    /// Count the number of intersections of the ray with the path, with no regard to the
+    /// orientation of the crossing.
+    ///
+    /// If the total number of intersections is odd, the point will be filled.
     #[doc(alias = "FILL_RULE_EVEN_ODD")]
     EvenOdd,
+
     #[doc(hidden)]
     __Unknown(i32),
 }
@@ -184,16 +233,25 @@ impl fmt::Display for FillRule {
 #[cfg(feature = "use_glib")]
 gvalue_impl!(FillRule, ffi::gobject::cairo_gobject_fill_rule_get_type);
 
+/// Specifies how to render endpoints of paths when stroking.
+///
+/// The default line cap style is [`LineCap::Butt`].
 #[derive(Clone, PartialEq, Eq, PartialOrd, Debug, Copy)]
 #[non_exhaustive]
 #[doc(alias = "cairo_line_cap_t")]
 pub enum LineCap {
+    /// Begin and end the line exactly at the start and end points.
     #[doc(alias = "LINE_CAP_BUTT")]
     Butt,
+
+    /// Use a round ending, with the center of the circle at the end point.
     #[doc(alias = "LINE_CAP_ROUND")]
     Round,
+
+    /// Use squared-off ending, with the center at the end point.
     #[doc(alias = "LINE_CAP_SQUARE")]
     Square,
+
     #[doc(hidden)]
     __Unknown(i32),
 }
@@ -240,16 +298,29 @@ impl fmt::Display for LineCap {
 #[cfg(feature = "use_glib")]
 gvalue_impl!(LineCap, ffi::gobject::cairo_gobject_line_cap_get_type);
 
+/// Specifies how to render the junction of two lines when stroking.
+///
+/// The default line join style is [`LineJoin::Miter`].
 #[derive(Clone, PartialEq, Eq, PartialOrd, Debug, Copy)]
 #[non_exhaustive]
 #[doc(alias = "cairo_line_join_t")]
 pub enum LineJoin {
+    /// Use a sharp (angled) corner.
+    ///
+    /// See [`Context::set_miter_limit`] for more details.
+    ///
+    /// [`Context::set_miter_limit`]: crate::Context::set_miter_limit
     #[doc(alias = "LINE_JOIN_MITER")]
     Miter,
+
+    /// Use a rounded join, with the center of the circle at the join point.
     #[doc(alias = "LINE_JOIN_ROUND")]
     Round,
+
+    /// Use a cut-off join, with the join cut off at half the line width from the join point.
     #[doc(alias = "LINE_JOIN_BEVEL")]
     Bevel,
+
     #[doc(hidden)]
     __Unknown(i32),
 }
@@ -296,72 +367,144 @@ impl fmt::Display for LineJoin {
 #[cfg(feature = "use_glib")]
 gvalue_impl!(LineJoin, ffi::gobject::cairo_gobject_line_join_get_type);
 
+/// Set the compositing operator to be used for all drawing operations.
+///
+/// Operators marked as **unbounded** will modify their destination, even outside of the mask
+/// layer. Their effect can still be limited by clipping.
+///
+/// For a detailed discussion of the effects of each operator, see the [Cairo operator
+/// documentation](https://www.cairographics.org/operators/).
+///
+/// The default operator is [`Operator::Over`].
 #[derive(Clone, PartialEq, Eq, PartialOrd, Debug, Copy)]
 #[non_exhaustive]
 #[doc(alias = "cairo_operator_t")]
 pub enum Operator {
+    /// Clear the destination layer.
     #[doc(alias = "OPERATOR_CLEAR")]
     Clear,
 
+    /// Replace the destination layer.
     #[doc(alias = "OPERATOR_SOURCE")]
     Source,
+
+    /// Draw the source layer on top of the destination layer.
     #[doc(alias = "OPERATOR_OVER")]
     Over,
+
+    /// **Unbounded**: Draw the source where there was destination content.
     #[doc(alias = "OPERATOR_IN")]
     In,
+
+    /// **Unbounded**: Draw the source where there was no destination content.
     #[doc(alias = "OPERATOR_OUT")]
     Out,
+
+    /// Draw the source on top of the destination and only there.
     #[doc(alias = "OPERATOR_ATOP")]
     Atop,
 
+    /// Ignore the source, drawing only destination content.
     #[doc(alias = "OPERATOR_DEST")]
     Dest,
+
+    /// Ignore the destination, drawing only source content.
     #[doc(alias = "OPERATOR_DEST_OVER")]
     DestOver,
+
+    /// Leave destination content only where there was source content.
     #[doc(alias = "OPERATOR_DEST_IN")]
     DestIn,
+
+    /// Leave destination content only where there was no source content.
     #[doc(alias = "OPERATOR_DEST_OUT")]
     DestOut,
+
+    /// Leave destination content on top of the source and only there.
     #[doc(alias = "OPERATOR_DEST_ATOP")]
     DestAtop,
 
+    /// Source and destination are shown only where there is no overlap.
     #[doc(alias = "OPERATOR_XOR")]
     Xor,
+
+    /// Source and destination layers are accumulated.
     #[doc(alias = "OPERATOR_ADD")]
     Add,
+
+    /// Like [`Operator::Over`], but assumes the source and destination are disjoint geometries.
     #[doc(alias = "OPERATOR_SATURATE")]
     Saturate,
 
+    /// The source and destination layers are multiplied. This causes the result to be at least as
+    /// dark as the darker inputs.
     #[doc(alias = "OPERATOR_MULTIPLY")]
     Multiply,
+
+    /// The source and destination layers are complemented and multiplied. This causes the result
+    /// to be at least as light as the lighter inputs.
     #[doc(alias = "OPERATOR_SCREEN")]
     Screen,
+
+    /// Chooses [`Operator::Multiply`] or [`Operator::Screen`], depending on the lightness of the
+    /// destination color.
     #[doc(alias = "OPERATOR_OVERLAY")]
     Overlay,
+
+    /// Replaces the destination layer with the source layer if the source layer is darker;
+    /// otherwise, keeps the source layer.
     #[doc(alias = "OPERATOR_DARKEN")]
     Darken,
+
+    /// Replaces the destination layer with the source layer if the source layer is lighter;
+    /// otherwise, keeps the source layer.
     #[doc(alias = "OPERATOR_LIGHTEN")]
     Lighten,
+
+    /// Brightens the destination color to reflect the source color.
     #[doc(alias = "OPERATOR_COLOR_DODGE")]
     ColorDodge,
+
+    /// Darkens the destination color to reflect the source color.
     #[doc(alias = "OPERATOR_COLOR_BURN")]
     ColorBurn,
+
+    /// Chooses [`Operator::Multiply`] or [`Operator::Screen`], depending on the source color.
     #[doc(alias = "OPERATOR_HARD_LIGHT")]
     HardLight,
+
+    /// Chooses [`Operator::ColorDodge`] or [`Operator::ColorBurn`], depending on the source color.
     #[doc(alias = "OPERATOR_SOFT_LIGHT")]
     SoftLight,
+
+    /// Takes the difference of the source and destination color.
     #[doc(alias = "OPERATOR_DIFFERENCE")]
     Difference,
+
+    /// Like [`Operator::Difference`], but with lower contrast.
     #[doc(alias = "OPERATOR_EXCLUSION")]
     Exclusion,
+
+    /// Creates a color with the hue of the source, and the saturation and luminosity of the
+    /// destination.
     #[doc(alias = "OPERATOR_HSL_HUE")]
     HslHue,
+
+    /// Creates a color with the saturation of the source, and the hue and luminosity of the
+    /// destination.
     #[doc(alias = "OPERATOR_HSL_SATURATION")]
     HslSaturation,
+
+    /// Creates a color with the hue and saturation of the source, and the luminosity of the
+    /// destination.
     #[doc(alias = "OPERATOR_HSL_COLOR")]
     HslColor,
+
+    /// Creates a color with the luminosity of the source, and the hue and saturation of the
+    /// destination.
     #[doc(alias = "OPERATOR_HSL_LUMINOSITY")]
     HslLuminosity,
+
     #[doc(hidden)]
     __Unknown(i32),
 }
@@ -486,6 +629,9 @@ impl fmt::Display for Operator {
 #[cfg(feature = "use_glib")]
 gvalue_impl!(Operator, ffi::gobject::cairo_gobject_operator_get_type);
 
+/// Describes the type of a portion of a [`Path`].
+///
+/// [`Path`]: crate::Path
 #[derive(Clone, PartialEq, Eq, PartialOrd, Debug, Copy)]
 #[non_exhaustive]
 #[doc(alias = "cairo_path_data_type_t")]
@@ -550,16 +696,31 @@ gvalue_impl!(
     ffi::gobject::cairo_gobject_path_data_type_get_type
 );
 
+/// Describes the content a [`Surface`] will contain.
+///
+/// [`Surface`]: crate::Surface
 #[derive(Clone, PartialEq, Eq, PartialOrd, Debug, Copy)]
 #[non_exhaustive]
 #[doc(alias = "cairo_content_t")]
 pub enum Content {
+    /// The [`Surface`] will hold color content only.
+    ///
+    /// [`Surface`]: crate::Surface
     #[doc(alias = "CONTENT_COLOR")]
     Color,
+
+    /// The [`Surface`] will hold alpha content only.
+    ///
+    /// [`Surface`]: crate::Surface
     #[doc(alias = "CONTENT_ALPHA")]
     Alpha,
+
+    /// The [`Surface`] will hold both color and alpha content.
+    ///
+    /// [`Surface`]: crate::Surface
     #[doc(alias = "CONTENT_COLOR_ALPHA")]
     ColorAlpha,
+
     #[doc(hidden)]
     __Unknown(i32),
 }
@@ -606,18 +767,33 @@ impl fmt::Display for Content {
 #[cfg(feature = "use_glib")]
 gvalue_impl!(Content, ffi::gobject::cairo_gobject_content_get_type);
 
+/// Describes how pattern color / alpha is determined for areas "outside" the pattern's natural
+/// area, (for example, outside the surface bounds or outside the gradient geometry).
+///
+/// Mesh patterns are not affected by this setting.
+///
+/// The default extend mode is [`Extend::None`] for surface patterns and [`Extend::Pad`] for
+/// gradient patterns.
 #[derive(Clone, PartialEq, Eq, PartialOrd, Debug, Copy)]
 #[non_exhaustive]
 #[doc(alias = "cairo_extend_t")]
 pub enum Extend {
+    /// Pixels outside of the source pattern are fully transparent.
     #[doc(alias = "EXTEND_NONE")]
     None,
+
+    /// The pattern is tiled by repeating.
     #[doc(alias = "EXTEND_REPEAT")]
     Repeat,
+
+    /// The pattern is tiled by reflecting at the edges.
     #[doc(alias = "EXTEND_REFLECT")]
     Reflect,
+
+    /// Pixels outside of the pattern copy the closest pixel from the source.
     #[doc(alias = "EXTEND_PAD")]
     Pad,
+
     #[doc(hidden)]
     __Unknown(i32),
 }
@@ -667,22 +843,37 @@ impl fmt::Display for Extend {
 #[cfg(feature = "use_glib")]
 gvalue_impl!(Extend, ffi::gobject::cairo_gobject_extend_get_type);
 
+/// Indicates the filtering to apply when reading pixel values from [`Pattern`]s.
+///
+/// [`Pattern`]: crate::Pattern
 #[derive(Clone, PartialEq, Eq, PartialOrd, Debug, Copy)]
 #[non_exhaustive]
 #[doc(alias = "cairo_filter_t")]
 pub enum Filter {
+    /// High-performance filter with quality similar to [`Filter::Nearest`].
     #[doc(alias = "FILTER_FAST")]
     Fast,
+
+    /// Reasonable-performance filter with quality similar to [`Filter::Bilinear`].
     #[doc(alias = "FILTER_GOOD")]
     Good,
+
+    /// Highest-quality filter; performance may not be suitable for interactive use.
     #[doc(alias = "FILTER_BEST")]
     Best,
+
+    /// Nearest-neighbor filtering.
     #[doc(alias = "FILTER_NEAREST")]
     Nearest,
+
+    /// Linear interpolation in two dimensions.
     #[doc(alias = "FILTER_BILINEAR")]
     Bilinear,
+
+    /// Gaussian interpolation in two dimensions.
     #[doc(alias = "FILTER_GAUSSIAN")]
     Gaussian,
+
     #[doc(hidden)]
     __Unknown(i32),
 }
@@ -738,20 +929,50 @@ impl fmt::Display for Filter {
 #[cfg(feature = "use_glib")]
 gvalue_impl!(Filter, ffi::gobject::cairo_gobject_filter_get_type);
 
+/// Describes the type of a [`Pattern`].
+///
+/// If you are looking to create a specific type of pattern, you should use the appropriate
+/// constructor method with one of the `struct`s below:
+///
+/// - [`SolidPattern`]
+/// - [`SurfacePattern`]
+/// - [`LinearGradient`]
+/// - [`RadialGradient`]
+/// - [`Mesh`]
+///
+/// [`Pattern`]: crate::Pattern
+/// [`SolidPattern`]: crate::SolidPattern
+/// [`SurfacePattern`]: crate::SurfacePattern
+/// [`LinearGradient`]: crate::LinearGradient
+/// [`RadialGradient`]: crate::RadialGradient
+/// [`Mesh`]: crate::Mesh
 #[derive(Clone, PartialEq, Eq, PartialOrd, Debug, Copy)]
 #[non_exhaustive]
 #[doc(alias = "cairo_pattern_type_t")]
 pub enum PatternType {
+    /// The pattern is a solid opaque / translucent color.
     #[doc(alias = "PATTERN_TYPE_SOLID")]
     Solid,
+
+    /// The pattern is based on a [`Surface`].
+    ///
+    /// [`Surface`]: crate::Surface
     #[doc(alias = "PATTERN_TYPE_SURFACE")]
     Surface,
+
+    /// The pattern is a linear gradient.
     #[doc(alias = "PATTERN_TYPE_LINEAR_GRADIENT")]
     LinearGradient,
+
+    /// The pattern is a radial gradient.
     #[doc(alias = "PATTERN_TYPE_RADIAL_GRADIENT")]
     RadialGradient,
+
+    /// The pattern is a mesh.
     #[doc(alias = "PATTERN_TYPE_MESH")]
     Mesh,
+
+    /// The pattern is a user providing raster data.
     #[doc(alias = "PATTERN_TYPE_RASTER_SOURCE")]
     RasterSource,
     #[doc(hidden)]
