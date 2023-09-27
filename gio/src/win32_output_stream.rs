@@ -1,9 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use std::{
-    fmt,
-    os::windows::io::{AsRawHandle, FromRawHandle, IntoRawHandle, RawHandle},
-};
+use std::os::windows::io::{AsRawHandle, FromRawHandle, IntoRawHandle, RawHandle};
 
 use glib::{prelude::*, translate::*};
 
