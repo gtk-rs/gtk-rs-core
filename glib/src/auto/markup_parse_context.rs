@@ -3,7 +3,6 @@
 // DO NOT EDIT
 
 use crate::{translate::*, Error};
-use std::{mem, ptr};
 
 crate::wrapper! {
     #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
@@ -25,7 +24,7 @@ impl MarkupParseContext {
     #[doc(alias = "g_markup_parse_context_end_parse")]
     pub fn end_parse(&self) -> Result<(), crate::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_markup_parse_context_end_parse(self.to_glib_none().0, &mut error);
             debug_assert_eq!(is_ok == crate::ffi::GFALSE, !error.is_null());
             if error.is_null() {
@@ -56,8 +55,8 @@ impl MarkupParseContext {
     #[doc(alias = "get_position")]
     pub fn position(&self) -> (i32, i32) {
         unsafe {
-            let mut line_number = mem::MaybeUninit::uninit();
-            let mut char_number = mem::MaybeUninit::uninit();
+            let mut line_number = std::mem::MaybeUninit::uninit();
+            let mut char_number = std::mem::MaybeUninit::uninit();
             ffi::g_markup_parse_context_get_position(
                 self.to_glib_none().0,
                 line_number.as_mut_ptr(),
@@ -71,7 +70,7 @@ impl MarkupParseContext {
     pub fn parse(&self, text: &str) -> Result<(), crate::Error> {
         let text_len = text.len() as _;
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_markup_parse_context_parse(
                 self.to_glib_none().0,
                 text.to_glib_none().0,

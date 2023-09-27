@@ -4,9 +4,6 @@
 
 use crate::{AttrIterator, Attribute};
 use glib::translate::*;
-#[cfg(feature = "v1_50")]
-#[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
-use std::fmt;
 
 glib::wrapper! {
     #[derive(Debug)]
@@ -115,9 +112,9 @@ impl Default for AttrList {
 
 #[cfg(feature = "v1_50")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
-impl fmt::Display for AttrList {
+impl std::fmt::Display for AttrList {
     #[inline]
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         f.write_str(&self.to_str())
     }
 }

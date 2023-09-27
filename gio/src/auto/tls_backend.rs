@@ -4,7 +4,6 @@
 
 use crate::TlsDatabase;
 use glib::{prelude::*, translate::*};
-use std::fmt;
 
 glib::wrapper! {
     #[doc(alias = "GTlsBackend")]
@@ -134,9 +133,3 @@ pub trait TlsBackendExt: IsA<TlsBackend> + sealed::Sealed + 'static {
 }
 
 impl<O: IsA<TlsBackend>> TlsBackendExt for O {}
-
-impl fmt::Display for TlsBackend {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("TlsBackend")
-    }
-}

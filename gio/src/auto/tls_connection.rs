@@ -15,7 +15,7 @@ use glib::{
     signal::{connect_raw, SignalHandlerId},
     translate::*,
 };
-use std::{boxed::Box as Box_, fmt, mem::transmute, pin::Pin, ptr};
+use std::{boxed::Box as Box_, pin::Pin};
 
 glib::wrapper! {
     #[doc(alias = "GTlsConnection")]
@@ -162,7 +162,7 @@ pub trait TlsConnectionExt: IsA<TlsConnection> + sealed::Sealed + 'static {
     #[doc(alias = "g_tls_connection_handshake")]
     fn handshake(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<(), glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_tls_connection_handshake(
                 self.as_ref().to_glib_none().0,
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
@@ -203,7 +203,7 @@ pub trait TlsConnectionExt: IsA<TlsConnection> + sealed::Sealed + 'static {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let _ =
                 ffi::g_tls_connection_handshake_finish(_source_object as *mut _, res, &mut error);
             let result = if error.is_null() {
@@ -335,7 +335,7 @@ pub trait TlsConnectionExt: IsA<TlsConnection> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"accept-certificate\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
                     accept_certificate_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -363,7 +363,7 @@ pub trait TlsConnectionExt: IsA<TlsConnection> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::advertised-protocols\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
                     notify_advertised_protocols_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -389,7 +389,7 @@ pub trait TlsConnectionExt: IsA<TlsConnection> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::certificate\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
                     notify_certificate_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -417,7 +417,7 @@ pub trait TlsConnectionExt: IsA<TlsConnection> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::ciphersuite-name\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
                     notify_ciphersuite_name_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -443,7 +443,7 @@ pub trait TlsConnectionExt: IsA<TlsConnection> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::database\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
                     notify_database_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -469,7 +469,7 @@ pub trait TlsConnectionExt: IsA<TlsConnection> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::interaction\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
                     notify_interaction_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -497,7 +497,7 @@ pub trait TlsConnectionExt: IsA<TlsConnection> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::negotiated-protocol\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
                     notify_negotiated_protocol_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -523,7 +523,7 @@ pub trait TlsConnectionExt: IsA<TlsConnection> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::peer-certificate\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
                     notify_peer_certificate_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -552,7 +552,7 @@ pub trait TlsConnectionExt: IsA<TlsConnection> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::peer-certificate-errors\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
                     notify_peer_certificate_errors_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -580,7 +580,7 @@ pub trait TlsConnectionExt: IsA<TlsConnection> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::protocol-version\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
                     notify_protocol_version_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -607,7 +607,7 @@ pub trait TlsConnectionExt: IsA<TlsConnection> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::rehandshake-mode\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
                     notify_rehandshake_mode_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -633,7 +633,7 @@ pub trait TlsConnectionExt: IsA<TlsConnection> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::require-close-notify\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
                     notify_require_close_notify_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -643,9 +643,3 @@ pub trait TlsConnectionExt: IsA<TlsConnection> + sealed::Sealed + 'static {
 }
 
 impl<O: IsA<TlsConnection>> TlsConnectionExt for O {}
-
-impl fmt::Display for TlsConnection {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("TlsConnection")
-    }
-}

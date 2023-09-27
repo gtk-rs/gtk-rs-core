@@ -53,12 +53,6 @@ impl fmt::Debug for RectangleList {
     }
 }
 
-impl fmt::Display for RectangleList {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "RectangleList")
-    }
-}
-
 #[derive(Debug)]
 #[repr(transparent)]
 pub struct Context(ptr::NonNull<cairo_t>);
@@ -955,12 +949,6 @@ impl Context {
     }
 }
 
-impl fmt::Display for Context {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "Context")
-    }
-}
-
 #[cfg(test)]
 mod tests {
     use float_eq::float_eq;
@@ -1014,6 +1002,5 @@ mod tests {
         assert!(float_eq!(first_rect.y(), 0.0, abs <= 0.000_1));
         assert!(float_eq!(first_rect.width(), 10.0, abs <= 0.000_1));
         assert!(float_eq!(first_rect.height(), 10.0, abs <= 0.000_1));
-        assert_eq!(rect.to_string(), "RectangleList");
     }
 }

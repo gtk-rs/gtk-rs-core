@@ -2,7 +2,6 @@
 
 use std::{
     convert::TryFrom,
-    fmt,
     ops::{Deref, DerefMut},
     rc::Rc,
     slice,
@@ -280,12 +279,6 @@ impl<'a> DerefMut for ImageSurfaceData<'a> {
     fn deref_mut(&mut self) -> &mut [u8] {
         self.dirty = true;
         self.slice
-    }
-}
-
-impl<'a> fmt::Display for ImageSurfaceData<'a> {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "ImageSurfaceData")
     }
 }
 

@@ -1,6 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use std::{convert::TryFrom, fmt, ops::Deref};
+use std::{convert::TryFrom, ops::Deref};
 
 pub use ffi::winapi;
 #[cfg(feature = "use_glib")]

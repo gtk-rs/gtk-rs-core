@@ -3,7 +3,6 @@
 // DO NOT EDIT
 
 use crate::{prelude::*, translate::*, Object};
-use std::fmt;
 
 crate::wrapper! {
     #[doc(alias = "GSignalGroup")]
@@ -65,9 +64,3 @@ impl SignalGroup {
 
 unsafe impl Send for SignalGroup {}
 unsafe impl Sync for SignalGroup {}
-
-impl fmt::Display for SignalGroup {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("SignalGroup")
-    }
-}

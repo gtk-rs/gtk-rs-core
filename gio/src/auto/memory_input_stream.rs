@@ -4,7 +4,6 @@
 
 use crate::{InputStream, PollableInputStream, Seekable};
 use glib::{prelude::*, translate::*};
-use std::fmt;
 
 glib::wrapper! {
     #[doc(alias = "GMemoryInputStream")]
@@ -59,9 +58,3 @@ pub trait MemoryInputStreamExt: IsA<MemoryInputStream> + sealed::Sealed + 'stati
 }
 
 impl<O: IsA<MemoryInputStream>> MemoryInputStreamExt for O {}
-
-impl fmt::Display for MemoryInputStream {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("MemoryInputStream")
-    }
-}

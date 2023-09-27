@@ -2,7 +2,7 @@
 
 #[cfg(feature = "use_glib")]
 use std::marker::PhantomData;
-use std::{convert::TryFrom, fmt, ops::Deref, ptr};
+use std::{convert::TryFrom, ops::Deref, ptr};
 
 #[cfg(feature = "use_glib")]
 use glib::translate::*;
@@ -19,12 +19,6 @@ impl XCBDrawable {
     }
 }
 
-impl fmt::Display for XCBDrawable {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "XCBDrawable")
-    }
-}
-
 #[derive(Debug)]
 pub struct XCBPixmap(pub u32);
 
@@ -32,12 +26,6 @@ impl XCBPixmap {
     #[inline]
     fn to_raw_none(&self) -> u32 {
         self.0
-    }
-}
-
-impl fmt::Display for XCBPixmap {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "XCBPixmap")
     }
 }
 
@@ -108,12 +96,6 @@ impl Clone for XCBConnection {
     #[inline]
     fn clone(&self) -> XCBConnection {
         unsafe { Self::from_raw_none(self.to_raw_none()) }
-    }
-}
-
-impl fmt::Display for XCBConnection {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "XCBConnection")
     }
 }
 
@@ -193,12 +175,6 @@ impl Clone for XCBRenderPictFormInfo {
     }
 }
 
-impl fmt::Display for XCBRenderPictFormInfo {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "XCBRenderPictFormInfo")
-    }
-}
-
 #[derive(Debug)]
 #[doc(alias = "xcb_screen_t")]
 pub struct XCBScreen(pub ptr::NonNull<ffi::xcb_screen_t>);
@@ -266,12 +242,6 @@ impl Clone for XCBScreen {
     #[inline]
     fn clone(&self) -> XCBScreen {
         unsafe { Self::from_raw_none(self.to_raw_none()) }
-    }
-}
-
-impl fmt::Display for XCBScreen {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "XCBScreen")
     }
 }
 
@@ -433,12 +403,6 @@ impl Clone for XCBVisualType {
     #[inline]
     fn clone(&self) -> XCBVisualType {
         unsafe { Self::from_raw_none(self.to_raw_none()) }
-    }
-}
-
-impl fmt::Display for XCBVisualType {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "XCBVisualType")
     }
 }
 

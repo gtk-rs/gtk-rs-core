@@ -4,7 +4,6 @@
 
 use crate::FontFace;
 use glib::{prelude::*, translate::*};
-use std::{fmt, mem, ptr};
 
 glib::wrapper! {
     #[doc(alias = "PangoFontFamily")]
@@ -19,9 +18,9 @@ impl FontFamily {
     pub const NONE: Option<&'static FontFamily> = None;
 }
 
-impl fmt::Display for FontFamily {
+impl std::fmt::Display for FontFamily {
     #[inline]
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         f.write_str(&FontFamilyExt::name(self))
     }
 }
@@ -78,8 +77,8 @@ pub trait FontFamilyExt: IsA<FontFamily> + sealed::Sealed + 'static {
     #[doc(alias = "pango_font_family_list_faces")]
     fn list_faces(&self) -> Vec<FontFace> {
         unsafe {
-            let mut faces = ptr::null_mut();
-            let mut n_faces = mem::MaybeUninit::uninit();
+            let mut faces = std::ptr::null_mut();
+            let mut n_faces = std::mem::MaybeUninit::uninit();
             ffi::pango_font_family_list_faces(
                 self.as_ref().to_glib_none().0,
                 &mut faces,

@@ -4,7 +4,6 @@
 
 use crate::Cancellable;
 use glib::{prelude::*, translate::*};
-use std::{fmt, ptr};
 
 glib::wrapper! {
     #[doc(alias = "GInitable")]
@@ -27,7 +26,7 @@ mod sealed {
 pub trait InitableExt: IsA<Initable> + sealed::Sealed + 'static {
     #[doc(alias = "g_initable_init")]
     unsafe fn init(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<(), glib::Error> {
-        let mut error = ptr::null_mut();
+        let mut error = std::ptr::null_mut();
         let is_ok = ffi::g_initable_init(
             self.as_ref().to_glib_none().0,
             cancellable.map(|p| p.as_ref()).to_glib_none().0,
@@ -43,9 +42,3 @@ pub trait InitableExt: IsA<Initable> + sealed::Sealed + 'static {
 }
 
 impl<O: IsA<Initable>> InitableExt for O {}
-
-impl fmt::Display for Initable {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("Initable")
-    }
-}

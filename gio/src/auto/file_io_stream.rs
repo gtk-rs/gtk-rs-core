@@ -4,7 +4,7 @@
 
 use crate::{AsyncResult, Cancellable, FileInfo, IOStream, Seekable};
 use glib::{prelude::*, translate::*};
-use std::{boxed::Box as Box_, fmt, pin::Pin, ptr};
+use std::{boxed::Box as Box_, pin::Pin};
 
 glib::wrapper! {
     #[doc(alias = "GFileIOStream")]
@@ -42,7 +42,7 @@ pub trait FileIOStreamExt: IsA<FileIOStream> + sealed::Sealed + 'static {
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<FileInfo, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_file_io_stream_query_info(
                 self.as_ref().to_glib_none().0,
                 attributes.to_glib_none().0,
@@ -84,7 +84,7 @@ pub trait FileIOStreamExt: IsA<FileIOStream> + sealed::Sealed + 'static {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret =
                 ffi::g_file_io_stream_query_info_finish(_source_object as *mut _, res, &mut error);
             let result = if error.is_null() {
@@ -128,9 +128,3 @@ pub trait FileIOStreamExt: IsA<FileIOStream> + sealed::Sealed + 'static {
 }
 
 impl<O: IsA<FileIOStream>> FileIOStreamExt for O {}
-
-impl fmt::Display for FileIOStream {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("FileIOStream")
-    }
-}

@@ -4,7 +4,6 @@
 
 use crate::{SocketControlMessage, UnixFDList};
 use glib::{prelude::*, translate::*};
-use std::fmt;
 
 glib::wrapper! {
     #[doc(alias = "GUnixFDMessage")]
@@ -59,9 +58,3 @@ pub trait UnixFDMessageExt: IsA<UnixFDMessage> + sealed::Sealed + 'static {
 }
 
 impl<O: IsA<UnixFDMessage>> UnixFDMessageExt for O {}
-
-impl fmt::Display for UnixFDMessage {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("UnixFDMessage")
-    }
-}

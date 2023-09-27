@@ -121,11 +121,5 @@ macro_rules! declare_surface {
                 $surf_name(self.0.clone())
             }
         }
-
-        impl fmt::Display for $surf_name {
-            fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-                f.write_str(stringify!($surf_name))
-            }
-        }
     };
 }

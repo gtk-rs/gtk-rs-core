@@ -4,7 +4,6 @@
 
 use crate::Script;
 use glib::translate::*;
-use std::fmt;
 
 glib::wrapper! {
     #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
@@ -79,9 +78,9 @@ impl Language {
     }
 }
 
-impl fmt::Display for Language {
+impl std::fmt::Display for Language {
     #[inline]
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         f.write_str(&self.to_str())
     }
 }

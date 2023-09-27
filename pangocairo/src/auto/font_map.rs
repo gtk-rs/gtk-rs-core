@@ -3,7 +3,6 @@
 // DO NOT EDIT
 
 use glib::{prelude::*, translate::*};
-use std::fmt;
 
 glib::wrapper! {
     #[doc(alias = "PangoCairoFontMap")]
@@ -46,9 +45,3 @@ pub trait PangoCairoFontMapExt: IsA<FontMap> + sealed::Sealed + 'static {
 }
 
 impl<O: IsA<FontMap>> PangoCairoFontMapExt for O {}
-
-impl fmt::Display for FontMap {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("FontMap")
-    }
-}

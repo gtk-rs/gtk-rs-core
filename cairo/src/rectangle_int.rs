@@ -145,9 +145,3 @@ impl RectangleInt {
         ptr as *mut ffi::cairo_rectangle_int_t
     }
 }
-
-impl fmt::Display for RectangleInt {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "RectangleInt")
-    }
-}

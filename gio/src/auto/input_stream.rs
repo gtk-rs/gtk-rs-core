@@ -4,7 +4,7 @@
 
 use crate::{AsyncResult, Cancellable};
 use glib::{prelude::*, translate::*};
-use std::{boxed::Box as Box_, fmt, mem, pin::Pin, ptr};
+use std::{boxed::Box as Box_, pin::Pin};
 
 glib::wrapper! {
     #[doc(alias = "GInputStream")]
@@ -35,7 +35,7 @@ pub trait InputStreamExt: IsA<InputStream> + sealed::Sealed + 'static {
     #[doc(alias = "g_input_stream_close")]
     fn close(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<(), glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_input_stream_close(
                 self.as_ref().to_glib_none().0,
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
@@ -76,7 +76,7 @@ pub trait InputStreamExt: IsA<InputStream> + sealed::Sealed + 'static {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let _ = ffi::g_input_stream_close_finish(_source_object as *mut _, res, &mut error);
             let result = if error.is_null() {
                 Ok(())
@@ -139,7 +139,7 @@ pub trait InputStreamExt: IsA<InputStream> + sealed::Sealed + 'static {
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<glib::Bytes, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_input_stream_read_bytes(
                 self.as_ref().to_glib_none().0,
                 count,
@@ -181,7 +181,7 @@ pub trait InputStreamExt: IsA<InputStream> + sealed::Sealed + 'static {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret =
                 ffi::g_input_stream_read_bytes_finish(_source_object as *mut _, res, &mut error);
             let result = if error.is_null() {
@@ -226,7 +226,7 @@ pub trait InputStreamExt: IsA<InputStream> + sealed::Sealed + 'static {
     #[doc(alias = "g_input_stream_set_pending")]
     fn set_pending(&self) -> Result<(), glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_input_stream_set_pending(self.as_ref().to_glib_none().0, &mut error);
             debug_assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
             if error.is_null() {
@@ -244,7 +244,7 @@ pub trait InputStreamExt: IsA<InputStream> + sealed::Sealed + 'static {
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<isize, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_input_stream_skip(
                 self.as_ref().to_glib_none().0,
                 count,
@@ -286,7 +286,7 @@ pub trait InputStreamExt: IsA<InputStream> + sealed::Sealed + 'static {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_input_stream_skip_finish(_source_object as *mut _, res, &mut error);
             let result = if error.is_null() {
                 Ok(ret)
@@ -328,9 +328,3 @@ pub trait InputStreamExt: IsA<InputStream> + sealed::Sealed + 'static {
 }
 
 impl<O: IsA<InputStream>> InputStreamExt for O {}
-
-impl fmt::Display for InputStream {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("InputStream")
-    }
-}

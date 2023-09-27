@@ -4,7 +4,6 @@
 
 use crate::{Emblem, Icon};
 use glib::{prelude::*, translate::*};
-use std::fmt;
 
 glib::wrapper! {
     #[doc(alias = "GEmblemedIcon")]
@@ -78,9 +77,3 @@ pub trait EmblemedIconExt: IsA<EmblemedIcon> + sealed::Sealed + 'static {
 }
 
 impl<O: IsA<EmblemedIcon>> EmblemedIconExt for O {}
-
-impl fmt::Display for EmblemedIcon {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("EmblemedIcon")
-    }
-}

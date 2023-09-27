@@ -4,7 +4,6 @@
 
 use crate::{Cancellable, OutputStream};
 use glib::{prelude::*, translate::*};
-use std::{fmt, ptr};
 
 glib::wrapper! {
     #[doc(alias = "GPollableOutputStream")]
@@ -51,7 +50,7 @@ pub trait PollableOutputStreamExt: IsA<PollableOutputStream> + sealed::Sealed + 
     ) -> Result<isize, glib::Error> {
         let count = buffer.len() as _;
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_pollable_output_stream_write_nonblocking(
                 self.as_ref().to_glib_none().0,
                 buffer.to_glib_none().0,
@@ -69,9 +68,3 @@ pub trait PollableOutputStreamExt: IsA<PollableOutputStream> + sealed::Sealed + 
 }
 
 impl<O: IsA<PollableOutputStream>> PollableOutputStreamExt for O {}
-
-impl fmt::Display for PollableOutputStream {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("PollableOutputStream")
-    }
-}

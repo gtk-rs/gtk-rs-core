@@ -83,7 +83,7 @@ pub use self::alias::DateDay;
 pub use self::alias::DateYear;
 pub use self::alias::Time;
 
-pub mod functions;
+pub(crate) mod functions;
 
 mod constants;
 pub use self::constants::CSET_a_2_z;

@@ -7,7 +7,6 @@ use glib::translate::*;
 #[cfg(unix)]
 #[cfg_attr(docsrs, doc(cfg(unix)))]
 use std::boxed::Box as Box_;
-use std::{fmt, ptr};
 
 glib::wrapper! {
     #[doc(alias = "GSubprocessLauncher")]
@@ -156,7 +155,7 @@ impl SubprocessLauncher {
     #[doc(alias = "spawnv")]
     pub fn spawn(&self, argv: &[&std::ffi::OsStr]) -> Result<Subprocess, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_subprocess_launcher_spawnv(
                 self.to_glib_none().0,
                 argv.to_glib_none().0,
@@ -178,11 +177,5 @@ impl SubprocessLauncher {
                 variable.as_ref().to_glib_none().0,
             );
         }
-    }
-}
-
-impl fmt::Display for SubprocessLauncher {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("SubprocessLauncher")
     }
 }

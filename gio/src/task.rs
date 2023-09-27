@@ -315,12 +315,6 @@ macro_rules! task_impl {
                 }
             }
         }
-
-        impl <V: ValueType $(+ $bound)?> std::fmt::Display for $name<V> {
-            fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-                f.write_str(stringify!($name))
-            }
-        }
     }
 }
 

@@ -4,7 +4,6 @@
 
 use crate::InputStream;
 use glib::{prelude::*, translate::*};
-use std::fmt;
 
 glib::wrapper! {
     #[doc(alias = "GPollableInputStream")]
@@ -45,9 +44,3 @@ pub trait PollableInputStreamExt: IsA<PollableInputStream> + sealed::Sealed + 's
 }
 
 impl<O: IsA<PollableInputStream>> PollableInputStreamExt for O {}
-
-impl fmt::Display for PollableInputStream {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("PollableInputStream")
-    }
-}

@@ -4,7 +4,7 @@
 
 use crate::{AsyncResult, Cancellable, SocketAddress};
 use glib::{prelude::*, translate::*};
-use std::{boxed::Box as Box_, fmt, pin::Pin, ptr};
+use std::{boxed::Box as Box_, pin::Pin};
 
 glib::wrapper! {
     #[doc(alias = "GSocketAddressEnumerator")]
@@ -33,7 +33,7 @@ pub trait SocketAddressEnumeratorExt:
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<Option<SocketAddress>, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_socket_address_enumerator_next(
                 self.as_ref().to_glib_none().0,
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
@@ -72,7 +72,7 @@ pub trait SocketAddressEnumeratorExt:
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_socket_address_enumerator_next_finish(
                 _source_object as *mut _,
                 res,
@@ -118,9 +118,3 @@ pub trait SocketAddressEnumeratorExt:
 }
 
 impl<O: IsA<SocketAddressEnumerator>> SocketAddressEnumeratorExt for O {}
-
-impl fmt::Display for SocketAddressEnumerator {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("SocketAddressEnumerator")
-    }
-}

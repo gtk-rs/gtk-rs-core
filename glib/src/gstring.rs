@@ -364,7 +364,7 @@ impl Eq for GStr {}
 impl PartialOrd for GStr {
     #[inline]
     fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
-        self.as_str().partial_cmp(other.as_str())
+        Some(self.cmp(other))
     }
 }
 
@@ -866,7 +866,7 @@ impl PartialEq<GStringPtr> for GStr {
 impl PartialOrd<GStringPtr> for GStringPtr {
     #[inline]
     fn partial_cmp(&self, other: &GStringPtr) -> Option<std::cmp::Ordering> {
-        Some(unsafe { GStringPtr::strcmp(self.as_ptr(), other.as_ptr()) })
+        Some(self.cmp(other))
     }
 }
 
@@ -1240,7 +1240,7 @@ impl GString {
     pub fn as_gstr(&self) -> &GStr {
         let bytes = match self.0 {
             Inner::Native(ref s) => s.as_bytes(),
-            Inner::Foreign { len, .. } if len == 0 => &[0],
+            Inner::Foreign { len: 0, .. } => &[0],
             Inner::Foreign { ptr, len } => unsafe {
                 slice::from_raw_parts(ptr.as_ptr() as *const _, len + 1)
             },

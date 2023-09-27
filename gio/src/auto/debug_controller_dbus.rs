@@ -8,7 +8,7 @@ use glib::{
     signal::{connect_raw, SignalHandlerId},
     translate::*,
 };
-use std::{boxed::Box as Box_, fmt, mem::transmute, ptr};
+use std::boxed::Box as Box_;
 
 glib::wrapper! {
     #[doc(alias = "GDebugControllerDBus")]
@@ -28,7 +28,7 @@ impl DebugControllerDBus {
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<Option<DebugControllerDBus>, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_debug_controller_dbus_new(
                 connection.to_glib_none().0,
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
@@ -83,7 +83,7 @@ pub trait DebugControllerDBusExt: IsA<DebugControllerDBus> + sealed::Sealed + 's
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"authorize\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
                     authorize_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -93,9 +93,3 @@ pub trait DebugControllerDBusExt: IsA<DebugControllerDBus> + sealed::Sealed + 's
 }
 
 impl<O: IsA<DebugControllerDBus>> DebugControllerDBusExt for O {}
-
-impl fmt::Display for DebugControllerDBus {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("DebugControllerDBus")
-    }
-}

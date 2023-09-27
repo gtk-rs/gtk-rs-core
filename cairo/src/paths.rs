@@ -1,6 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use std::{fmt, iter::FusedIterator, ptr};
+use std::{iter::FusedIterator, ptr};
 
 use crate::{ffi::cairo_path_t, PathDataType};
 
@@ -50,33 +50,12 @@ impl Drop for Path {
     }
 }
 
-impl fmt::Display for Path {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "Path")
-    }
-}
-
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub enum PathSegment {
     MoveTo((f64, f64)),
     LineTo((f64, f64)),
     CurveTo((f64, f64), (f64, f64), (f64, f64)),
     ClosePath,
-}
-
-impl fmt::Display for PathSegment {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(
-            f,
-            "Self::{}",
-            match *self {
-                Self::MoveTo(_) => "MoveTo",
-                Self::LineTo(_) => "LineTo",
-                Self::CurveTo(_, _, _) => "CurveTo",
-                Self::ClosePath => "ClosePath",
-            }
-        )
-    }
 }
 
 pub struct PathSegments<'a> {
@@ -114,12 +93,6 @@ impl<'a> Iterator for PathSegments<'a> {
 }
 
 impl<'a> FusedIterator for PathSegments<'a> {}
-
-impl<'a> fmt::Display for PathSegments<'a> {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "PathSegments")
-    }
-}
 
 fn to_tuple(pair: &[f64; 2]) -> (f64, f64) {
     (pair[0], pair[1])

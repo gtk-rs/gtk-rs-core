@@ -15,7 +15,7 @@ use glib::{
     signal::{connect_raw, SignalHandlerId},
     translate::*,
 };
-use std::{boxed::Box as Box_, fmt, mem, mem::transmute, pin::Pin, ptr};
+use std::{boxed::Box as Box_, pin::Pin};
 
 glib::wrapper! {
     #[doc(alias = "GDBusConnection")]
@@ -36,7 +36,7 @@ impl DBusConnection {
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<DBusConnection, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_dbus_connection_new_for_address_sync(
                 address.to_glib_none().0,
                 flags.into_glib(),
@@ -61,7 +61,7 @@ impl DBusConnection {
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<DBusConnection, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_dbus_connection_new_sync(
                 stream.as_ref().to_glib_none().0,
                 guid.to_glib_none().0,
@@ -111,7 +111,7 @@ impl DBusConnection {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_dbus_connection_call_finish(_source_object as *mut _, res, &mut error);
             let result = if error.is_null() {
                 Ok(from_glib_full(ret))
@@ -195,7 +195,7 @@ impl DBusConnection {
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<glib::Variant, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_dbus_connection_call_sync(
                 self.to_glib_none().0,
                 bus_name.to_glib_none().0,
@@ -255,8 +255,8 @@ impl DBusConnection {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
-            let mut out_fd_list = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
+            let mut out_fd_list = std::ptr::null_mut();
             let ret = ffi::g_dbus_connection_call_with_unix_fd_list_finish(
                 _source_object as *mut _,
                 &mut out_fd_list,
@@ -358,8 +358,8 @@ impl DBusConnection {
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<(glib::Variant, UnixFDList), glib::Error> {
         unsafe {
-            let mut out_fd_list = ptr::null_mut();
-            let mut error = ptr::null_mut();
+            let mut out_fd_list = std::ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_dbus_connection_call_with_unix_fd_list_sync(
                 self.to_glib_none().0,
                 bus_name.to_glib_none().0,
@@ -406,7 +406,7 @@ impl DBusConnection {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let _ = ffi::g_dbus_connection_close_finish(_source_object as *mut _, res, &mut error);
             let result = if error.is_null() {
                 Ok(())
@@ -448,7 +448,7 @@ impl DBusConnection {
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<(), glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_dbus_connection_close_sync(
                 self.to_glib_none().0,
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
@@ -473,7 +473,7 @@ impl DBusConnection {
         parameters: Option<&glib::Variant>,
     ) -> Result<(), glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_dbus_connection_emit_signal(
                 self.to_glib_none().0,
                 destination_bus_name.to_glib_none().0,
@@ -515,7 +515,7 @@ impl DBusConnection {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let _ = ffi::g_dbus_connection_flush_finish(_source_object as *mut _, res, &mut error);
             let result = if error.is_null() {
                 Ok(())
@@ -557,7 +557,7 @@ impl DBusConnection {
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<(), glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_dbus_connection_flush_sync(
                 self.to_glib_none().0,
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
@@ -655,8 +655,8 @@ impl DBusConnection {
         flags: DBusSendMessageFlags,
     ) -> Result<u32, glib::Error> {
         unsafe {
-            let mut out_serial = mem::MaybeUninit::uninit();
-            let mut error = ptr::null_mut();
+            let mut out_serial = std::mem::MaybeUninit::uninit();
+            let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_dbus_connection_send_message(
                 self.to_glib_none().0,
                 message.to_glib_none().0,
@@ -701,7 +701,7 @@ impl DBusConnection {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_dbus_connection_send_message_with_reply_finish(
                 _source_object as *mut _,
                 res,
@@ -719,7 +719,7 @@ impl DBusConnection {
         }
         let callback = send_message_with_reply_trampoline::<P>;
         unsafe {
-            let mut out_serial = mem::MaybeUninit::uninit();
+            let mut out_serial = std::mem::MaybeUninit::uninit();
             ffi::g_dbus_connection_send_message_with_reply(
                 self.to_glib_none().0,
                 message.to_glib_none().0,
@@ -767,8 +767,8 @@ impl DBusConnection {
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<(DBusMessage, u32), glib::Error> {
         unsafe {
-            let mut out_serial = mem::MaybeUninit::uninit();
-            let mut error = ptr::null_mut();
+            let mut out_serial = std::mem::MaybeUninit::uninit();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_dbus_connection_send_message_with_reply_sync(
                 self.to_glib_none().0,
                 message.to_glib_none().0,
@@ -835,7 +835,7 @@ impl DBusConnection {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_dbus_connection_new_finish(res, &mut error);
             let result = if error.is_null() {
                 Ok(from_glib_full(ret))
@@ -916,7 +916,7 @@ impl DBusConnection {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_dbus_connection_new_for_address_finish(res, &mut error);
             let result = if error.is_null() {
                 Ok(from_glib_full(ret))
@@ -992,7 +992,7 @@ impl DBusConnection {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"closed\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
                     closed_trampoline::<F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -1020,7 +1020,7 @@ impl DBusConnection {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::capabilities\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
                     notify_capabilities_trampoline::<F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -1048,7 +1048,7 @@ impl DBusConnection {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::closed\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
                     notify_closed_trampoline::<F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -1076,7 +1076,7 @@ impl DBusConnection {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::exit-on-close\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
                     notify_exit_on_close_trampoline::<F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -1104,7 +1104,7 @@ impl DBusConnection {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::unique-name\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
                     notify_unique_name_trampoline::<F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -1115,9 +1115,3 @@ impl DBusConnection {
 
 unsafe impl Send for DBusConnection {}
 unsafe impl Sync for DBusConnection {}
-
-impl fmt::Display for DBusConnection {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("DBusConnection")
-    }
-}

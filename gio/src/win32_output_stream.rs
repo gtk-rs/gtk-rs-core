@@ -1,9 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use std::{
-    fmt,
-    os::windows::io::{AsRawHandle, FromRawHandle, IntoRawHandle, RawHandle},
-};
+use std::os::windows::io::{AsRawHandle, FromRawHandle, IntoRawHandle, RawHandle};
 
 use glib::{prelude::*, translate::*};
 
@@ -30,12 +27,6 @@ pub trait Win32OutputStreamExt: IsA<Win32OutputStream> + 'static {
 }
 
 impl<O: IsA<Win32OutputStream>> Win32OutputStreamExt for O {}
-
-impl fmt::Display for Win32OutputStream {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("Win32OutputStream")
-    }
-}
 
 impl Win32OutputStream {
     pub const NONE: Option<&'static Win32OutputStream> = None;

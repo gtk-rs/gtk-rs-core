@@ -11,7 +11,7 @@ use glib::{
     signal::{connect_raw, SignalHandlerId},
     translate::*,
 };
-use std::{boxed::Box as Box_, fmt, mem::transmute, pin::Pin, ptr};
+use std::{boxed::Box as Box_, pin::Pin};
 
 glib::wrapper! {
     #[doc(alias = "GSocketListener")]
@@ -49,8 +49,8 @@ pub trait SocketListenerExt: IsA<SocketListener> + sealed::Sealed + 'static {
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<(SocketConnection, Option<glib::Object>), glib::Error> {
         unsafe {
-            let mut source_object = ptr::null_mut();
-            let mut error = ptr::null_mut();
+            let mut source_object = std::ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_socket_listener_accept(
                 self.as_ref().to_glib_none().0,
                 &mut source_object,
@@ -92,8 +92,8 @@ pub trait SocketListenerExt: IsA<SocketListener> + sealed::Sealed + 'static {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
-            let mut source_object = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
+            let mut source_object = std::ptr::null_mut();
             let ret = ffi::g_socket_listener_accept_finish(
                 _source_object as *mut _,
                 res,
@@ -146,8 +146,8 @@ pub trait SocketListenerExt: IsA<SocketListener> + sealed::Sealed + 'static {
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<(Socket, Option<glib::Object>), glib::Error> {
         unsafe {
-            let mut source_object = ptr::null_mut();
-            let mut error = ptr::null_mut();
+            let mut source_object = std::ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_socket_listener_accept_socket(
                 self.as_ref().to_glib_none().0,
                 &mut source_object,
@@ -189,8 +189,8 @@ pub trait SocketListenerExt: IsA<SocketListener> + sealed::Sealed + 'static {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
-            let mut source_object = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
+            let mut source_object = std::ptr::null_mut();
             let ret = ffi::g_socket_listener_accept_socket_finish(
                 _source_object as *mut _,
                 res,
@@ -245,8 +245,8 @@ pub trait SocketListenerExt: IsA<SocketListener> + sealed::Sealed + 'static {
         source_object: Option<&impl IsA<glib::Object>>,
     ) -> Result<SocketAddress, glib::Error> {
         unsafe {
-            let mut effective_address = ptr::null_mut();
-            let mut error = ptr::null_mut();
+            let mut effective_address = std::ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_socket_listener_add_address(
                 self.as_ref().to_glib_none().0,
                 address.as_ref().to_glib_none().0,
@@ -271,7 +271,7 @@ pub trait SocketListenerExt: IsA<SocketListener> + sealed::Sealed + 'static {
         source_object: Option<&impl IsA<glib::Object>>,
     ) -> Result<u16, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_socket_listener_add_any_inet_port(
                 self.as_ref().to_glib_none().0,
                 source_object.map(|p| p.as_ref()).to_glib_none().0,
@@ -292,7 +292,7 @@ pub trait SocketListenerExt: IsA<SocketListener> + sealed::Sealed + 'static {
         source_object: Option<&impl IsA<glib::Object>>,
     ) -> Result<(), glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_socket_listener_add_inet_port(
                 self.as_ref().to_glib_none().0,
                 port,
@@ -315,7 +315,7 @@ pub trait SocketListenerExt: IsA<SocketListener> + sealed::Sealed + 'static {
         source_object: Option<&impl IsA<glib::Object>>,
     ) -> Result<(), glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_socket_listener_add_socket(
                 self.as_ref().to_glib_none().0,
                 socket.as_ref().to_glib_none().0,
@@ -381,7 +381,7 @@ pub trait SocketListenerExt: IsA<SocketListener> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"event\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
                     event_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -407,7 +407,7 @@ pub trait SocketListenerExt: IsA<SocketListener> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::listen-backlog\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
                     notify_listen_backlog_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -417,9 +417,3 @@ pub trait SocketListenerExt: IsA<SocketListener> + sealed::Sealed + 'static {
 }
 
 impl<O: IsA<SocketListener>> SocketListenerExt for O {}
-
-impl fmt::Display for SocketListener {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("SocketListener")
-    }
-}

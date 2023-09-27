@@ -1,9 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use std::{
-    fmt,
-    os::windows::io::{AsRawHandle, FromRawHandle, IntoRawHandle, RawHandle},
-};
+use std::os::windows::io::{AsRawHandle, FromRawHandle, IntoRawHandle, RawHandle};
 
 use glib::{prelude::*, translate::*};
 
@@ -30,12 +27,6 @@ impl<O: IsA<Win32InputStream>> Win32InputStreamExt for O {
                 self.as_ref().to_glib_none().0,
             ))
         }
-    }
-}
-
-impl fmt::Display for Win32InputStream {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("Win32InputStream")
     }
 }
 

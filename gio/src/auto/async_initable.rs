@@ -4,7 +4,7 @@
 
 use crate::{AsyncResult, Cancellable};
 use glib::{prelude::*, translate::*};
-use std::{boxed::Box as Box_, fmt, pin::Pin, ptr};
+use std::{boxed::Box as Box_, pin::Pin};
 
 glib::wrapper! {
     #[doc(alias = "GAsyncInitable")]
@@ -49,7 +49,7 @@ pub trait AsyncInitableExt: IsA<AsyncInitable> + sealed::Sealed + 'static {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let _ = ffi::g_async_initable_init_finish(_source_object as *mut _, res, &mut error);
             let result = if error.is_null() {
                 Ok(())
@@ -87,9 +87,3 @@ pub trait AsyncInitableExt: IsA<AsyncInitable> + sealed::Sealed + 'static {
 }
 
 impl<O: IsA<AsyncInitable>> AsyncInitableExt for O {}
-
-impl fmt::Display for AsyncInitable {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("AsyncInitable")
-    }
-}

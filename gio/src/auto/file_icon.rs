@@ -4,7 +4,6 @@
 
 use crate::{File, Icon, LoadableIcon};
 use glib::{prelude::*, translate::*};
-use std::fmt;
 
 glib::wrapper! {
     #[doc(alias = "GFileIcon")]
@@ -25,11 +24,5 @@ impl FileIcon {
     #[doc(alias = "get_file")]
     pub fn file(&self) -> File {
         unsafe { from_glib_none(ffi::g_file_icon_get_file(self.to_glib_none().0)) }
-    }
-}
-
-impl fmt::Display for FileIcon {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("FileIcon")
     }
 }

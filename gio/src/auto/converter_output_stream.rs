@@ -4,7 +4,6 @@
 
 use crate::{Converter, FilterOutputStream, OutputStream, PollableOutputStream};
 use glib::{prelude::*, translate::*};
-use std::fmt;
 
 glib::wrapper! {
     #[doc(alias = "GConverterOutputStream")]
@@ -113,9 +112,3 @@ pub trait ConverterOutputStreamExt: IsA<ConverterOutputStream> + sealed::Sealed 
 }
 
 impl<O: IsA<ConverterOutputStream>> ConverterOutputStreamExt for O {}
-
-impl fmt::Display for ConverterOutputStream {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("ConverterOutputStream")
-    }
-}

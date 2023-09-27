@@ -4,7 +4,6 @@
 
 use crate::Action;
 use glib::{prelude::*, translate::*};
-use std::fmt;
 
 glib::wrapper! {
     #[doc(alias = "GActionMap")]
@@ -57,9 +56,3 @@ pub trait ActionMapExt: IsA<ActionMap> + sealed::Sealed + 'static {
 }
 
 impl<O: IsA<ActionMap>> ActionMapExt for O {}
-
-impl fmt::Display for ActionMap {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("ActionMap")
-    }
-}

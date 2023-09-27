@@ -6,7 +6,7 @@ use std::ffi::CString;
 use std::marker::PhantomData;
 #[cfg(feature = "script")]
 use std::path::Path;
-use std::{fmt, ptr};
+use std::ptr;
 
 #[cfg(feature = "use_glib")]
 use glib::translate::*;
@@ -236,7 +236,7 @@ impl Device {
                     panic!("you need to enable \"xcb\" feature")
                 }
             }
-            d => panic!("invalid device type: {}", d),
+            d => panic!("invalid device type: {:#?}", d),
         }
     }
 
@@ -266,7 +266,7 @@ impl Device {
                     panic!("you need to enable \"xcb\" feature")
                 }
             }
-            d => panic!("invalid device type: {}", d),
+            d => panic!("invalid device type: {:#?}", d),
         }
     }
 
@@ -296,7 +296,7 @@ impl Device {
                     panic!("you need to enable \"xcb\" feature")
                 }
             }
-            d => panic!("invalid device type: {}", d),
+            d => panic!("invalid device type: {:#?}", d),
         }
     }
 
@@ -385,11 +385,5 @@ impl Drop for Device {
         unsafe {
             ffi::cairo_device_destroy(self.0.as_ptr());
         }
-    }
-}
-
-impl fmt::Display for Device {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "Device")
     }
 }

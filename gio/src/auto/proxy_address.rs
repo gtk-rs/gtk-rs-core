@@ -4,7 +4,6 @@
 
 use crate::{InetAddress, InetSocketAddress, SocketAddress, SocketConnectable};
 use glib::{prelude::*, translate::*};
-use std::fmt;
 
 glib::wrapper! {
     #[doc(alias = "GProxyAddress")]
@@ -116,9 +115,3 @@ pub trait ProxyAddressExt: IsA<ProxyAddress> + sealed::Sealed + 'static {
 }
 
 impl<O: IsA<ProxyAddress>> ProxyAddressExt for O {}
-
-impl fmt::Display for ProxyAddress {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("ProxyAddress")
-    }
-}

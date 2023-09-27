@@ -146,12 +146,6 @@ impl Rectangle {
     }
 }
 
-impl fmt::Display for Rectangle {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "Rectangle")
-    }
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;

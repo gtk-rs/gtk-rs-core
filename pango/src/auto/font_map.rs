@@ -4,7 +4,6 @@
 
 use crate::{Context, Font, FontDescription, FontFamily, Fontset, Language};
 use glib::{prelude::*, translate::*};
-use std::{fmt, mem, ptr};
 
 glib::wrapper! {
     #[doc(alias = "PangoFontMap")]
@@ -63,8 +62,8 @@ pub trait FontMapExt: IsA<FontMap> + sealed::Sealed + 'static {
     #[doc(alias = "pango_font_map_list_families")]
     fn list_families(&self) -> Vec<FontFamily> {
         unsafe {
-            let mut families = ptr::null_mut();
-            let mut n_families = mem::MaybeUninit::uninit();
+            let mut families = std::ptr::null_mut();
+            let mut n_families = std::mem::MaybeUninit::uninit();
             ffi::pango_font_map_list_families(
                 self.as_ref().to_glib_none().0,
                 &mut families,
@@ -104,9 +103,3 @@ pub trait FontMapExt: IsA<FontMap> + sealed::Sealed + 'static {
 }
 
 impl<O: IsA<FontMap>> FontMapExt for O {}
-
-impl fmt::Display for FontMap {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("FontMap")
-    }
-}

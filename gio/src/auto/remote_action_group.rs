@@ -4,7 +4,6 @@
 
 use crate::ActionGroup;
 use glib::{prelude::*, translate::*};
-use std::fmt;
 
 glib::wrapper! {
     #[doc(alias = "GRemoteActionGroup")]
@@ -61,9 +60,3 @@ pub trait RemoteActionGroupExt: IsA<RemoteActionGroup> + sealed::Sealed + 'stati
 }
 
 impl<O: IsA<RemoteActionGroup>> RemoteActionGroupExt for O {}
-
-impl fmt::Display for RemoteActionGroup {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("RemoteActionGroup")
-    }
-}

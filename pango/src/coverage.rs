@@ -1,6 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use std::{fmt, mem, ptr};
+use std::{mem, ptr};
 
 use glib::translate::*;
 
@@ -87,11 +87,5 @@ impl Coverage {
 impl Default for Coverage {
     fn default() -> Self {
         Self::new()
-    }
-}
-
-impl fmt::Display for Coverage {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "Coverage")
     }
 }

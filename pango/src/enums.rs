@@ -1,9 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
 #[cfg(feature = "v1_50")]
-use std::fmt;
-
-#[cfg(feature = "v1_50")]
 use glib::{error::ErrorDomain, prelude::*, translate::*, value::FromValue, Quark};
 
 #[cfg(feature = "v1_50")]
@@ -19,23 +16,6 @@ pub enum LayoutDeserializeError {
     MissingValue,
     #[doc(hidden)]
     __Unknown(i32),
-}
-
-#[cfg(feature = "v1_50")]
-#[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
-impl fmt::Display for LayoutDeserializeError {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(
-            f,
-            "LayoutDeserializeError::{}",
-            match *self {
-                Self::Invalid => "Invalid",
-                Self::InvalidValue => "InvalidValue",
-                Self::MissingValue => "MissingValue",
-                _ => "Unknown",
-            }
-        )
-    }
 }
 
 #[cfg(feature = "v1_50")]

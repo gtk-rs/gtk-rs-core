@@ -4,7 +4,6 @@
 
 use crate::{Font, FontMetrics};
 use glib::{prelude::*, translate::*};
-use std::fmt;
 
 glib::wrapper! {
     #[doc(alias = "PangoFontset")]
@@ -72,9 +71,3 @@ pub trait FontsetExt: IsA<Fontset> + sealed::Sealed + 'static {
 }
 
 impl<O: IsA<Fontset>> FontsetExt for O {}
-
-impl fmt::Display for Fontset {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("Fontset")
-    }
-}

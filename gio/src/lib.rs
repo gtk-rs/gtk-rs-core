@@ -108,7 +108,12 @@ pub mod builders {
     pub use super::initable::InitableBuilder;
 }
 
-pub use crate::auto::{functions::*, *};
+pub mod functions {
+    pub use super::auto::functions::*;
+}
+
+pub use crate::auto::*;
+pub use crate::functions::*;
 pub mod prelude;
 
 #[allow(clippy::missing_safety_doc)]

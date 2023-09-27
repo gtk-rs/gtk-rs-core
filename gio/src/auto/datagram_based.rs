@@ -3,7 +3,6 @@
 // DO NOT EDIT
 
 use glib::{prelude::*, translate::*};
-use std::fmt;
 
 glib::wrapper! {
     #[doc(alias = "GDatagramBased")]
@@ -36,9 +35,3 @@ pub trait DatagramBasedExt: IsA<DatagramBased> + sealed::Sealed + 'static {
 }
 
 impl<O: IsA<DatagramBased>> DatagramBasedExt for O {}
-
-impl fmt::Display for DatagramBased {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("DatagramBased")
-    }
-}

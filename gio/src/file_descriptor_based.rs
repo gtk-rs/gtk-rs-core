@@ -6,7 +6,6 @@ use std::os::unix::io::{AsRawFd, FromRawFd, RawFd};
 use glib::{prelude::*, translate::*};
 #[cfg(all(not(unix), docsrs))]
 use socket::{AsRawFd, FromRawFd, IntoRawFd, RawFd};
-use std::fmt;
 
 glib::wrapper! {
     #[doc(alias = "GFileDescriptorBased")]
@@ -47,9 +46,3 @@ pub trait FileDescriptorBasedExtManual:
 }
 
 impl<O: IsA<FileDescriptorBased>> FileDescriptorBasedExtManual for O {}
-
-impl fmt::Display for FileDescriptorBased {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("FileDescriptorBased")
-    }
-}

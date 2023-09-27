@@ -4,7 +4,6 @@
 
 use crate::Cancellable;
 use glib::{prelude::*, translate::*};
-use std::{fmt, ptr};
 
 glib::wrapper! {
     #[doc(alias = "GSeekable")]
@@ -43,7 +42,7 @@ pub trait SeekableExt: IsA<Seekable> + sealed::Sealed + 'static {
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<(), glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_seekable_seek(
                 self.as_ref().to_glib_none().0,
                 offset,
@@ -72,7 +71,7 @@ pub trait SeekableExt: IsA<Seekable> + sealed::Sealed + 'static {
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<(), glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_seekable_truncate(
                 self.as_ref().to_glib_none().0,
                 offset,
@@ -90,9 +89,3 @@ pub trait SeekableExt: IsA<Seekable> + sealed::Sealed + 'static {
 }
 
 impl<O: IsA<Seekable>> SeekableExt for O {}
-
-impl fmt::Display for Seekable {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("Seekable")
-    }
-}

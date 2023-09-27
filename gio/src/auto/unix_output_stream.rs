@@ -4,7 +4,6 @@
 
 use crate::{FileDescriptorBased, OutputStream, PollableOutputStream};
 use glib::{prelude::*, translate::*};
-use std::fmt;
 
 glib::wrapper! {
     #[doc(alias = "GUnixOutputStream")]
@@ -37,9 +36,3 @@ pub trait UnixOutputStreamExt: IsA<UnixOutputStream> + sealed::Sealed + 'static 
 }
 
 impl<O: IsA<UnixOutputStream>> UnixOutputStreamExt for O {}
-
-impl fmt::Display for UnixOutputStream {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("UnixOutputStream")
-    }
-}

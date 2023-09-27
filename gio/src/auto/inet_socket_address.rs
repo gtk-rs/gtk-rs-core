@@ -4,7 +4,6 @@
 
 use crate::{InetAddress, SocketAddress, SocketConnectable};
 use glib::{prelude::*, translate::*};
-use std::fmt;
 
 glib::wrapper! {
     #[doc(alias = "GInetSocketAddress")]
@@ -81,9 +80,3 @@ pub trait InetSocketAddressExt: IsA<InetSocketAddress> + sealed::Sealed + 'stati
 }
 
 impl<O: IsA<InetSocketAddress>> InetSocketAddressExt for O {}
-
-impl fmt::Display for InetSocketAddress {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("InetSocketAddress")
-    }
-}

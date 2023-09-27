@@ -4,7 +4,6 @@
 
 use crate::{Credentials, SocketControlMessage};
 use glib::{prelude::*, translate::*};
-use std::fmt;
 
 glib::wrapper! {
     #[doc(alias = "GUnixCredentialsMessage")]
@@ -69,9 +68,3 @@ pub trait UnixCredentialsMessageExt:
 }
 
 impl<O: IsA<UnixCredentialsMessage>> UnixCredentialsMessageExt for O {}
-
-impl fmt::Display for UnixCredentialsMessage {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("UnixCredentialsMessage")
-    }
-}
