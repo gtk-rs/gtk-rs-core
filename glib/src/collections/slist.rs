@@ -652,7 +652,7 @@ pub struct IterMut<'a, T: TransparentPtrType> {
 
 impl<'a, T: TransparentPtrType> IterMut<'a, T> {
     #[inline]
-    fn new(list: &'a SList<T>) -> IterMut<'a, T> {
+    fn new(list: &'a mut SList<T>) -> IterMut<'a, T> {
         debug_assert_eq!(
             mem::size_of::<T>(),
             mem::size_of::<<T as GlibPtrDefault>::GlibType>()
