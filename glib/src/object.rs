@@ -3232,12 +3232,13 @@ fn validate_signal_arguments(type_: Type, signal_query: &SignalQuery, args: &mut
     }
 }
 
-impl ObjectClass {
+/// Trait for class methods on `Object` and subclasses of it.
+pub unsafe trait ObjectClassExt {
     // rustdoc-stripper-ignore-next
     /// Check if the object class has a property `property_name` of the given `type_`.
     ///
     /// If no type is provided then only the existence of the property is checked.
-    pub fn has_property(&self, property_name: &str, type_: Option<Type>) -> bool {
+    fn has_property(&self, property_name: &str, type_: Option<Type>) -> bool {
         let ptype = self.property_type(property_name);
 
         match (ptype, type_) {
@@ -3252,7 +3253,7 @@ impl ObjectClass {
     ///
     /// This returns `None` if the property does not exist.
     #[doc(alias = "get_property_type")]
-    pub fn property_type(&self, property_name: &str) -> Option<Type> {
+    fn property_type(&self, property_name: &str) -> Option<Type> {
         self.find_property(property_name)
             .map(|pspec| pspec.value_type())
     }
@@ -3260,7 +3261,7 @@ impl ObjectClass {
     // rustdoc-stripper-ignore-next
     /// Get the [`ParamSpec`](crate::ParamSpec) of the property `property_name` of this object class.
     #[doc(alias = "g_object_class_find_property")]
-    pub fn find_property(&self, property_name: &str) -> Option<crate::ParamSpec> {
+    fn find_property(&self, property_name: &str) -> Option<crate::ParamSpec> {
         unsafe {
             let klass = self as *const _ as *const gobject_ffi::GObjectClass;
 
@@ -3276,7 +3277,7 @@ impl ObjectClass {
     // rustdoc-stripper-ignore-next
     /// Return all [`ParamSpec`](crate::ParamSpec) of the properties of this object class.
     #[doc(alias = "g_object_class_list_properties")]
-    pub fn list_properties(&self) -> PtrSlice<crate::ParamSpec> {
+    fn list_properties(&self) -> PtrSlice<crate::ParamSpec> {
         unsafe {
             let klass = self as *const _ as *const gobject_ffi::GObjectClass;
 
@@ -3288,6 +3289,8 @@ impl ObjectClass {
         }
     }
 }
+
+unsafe impl<T: ObjectType + IsClass> ObjectClassExt for Class<T> {}
 
 wrapper! {
     #[doc(alias = "GInitiallyUnowned")]

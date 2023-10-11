@@ -22,8 +22,8 @@ pub use self::{
     enums::{EnumClass, EnumValue, FlagsBuilder, FlagsClass, FlagsValue, UserDirectory},
     error::{BoolError, Error},
     object::{
-        BorrowedObject, Cast, CastNone, Class, InitiallyUnowned, Interface, IsA, Object, ObjectExt,
-        ObjectType, SendWeakRef, WeakRef,
+        BorrowedObject, Cast, CastNone, Class, InitiallyUnowned, Interface, IsA, Object,
+        ObjectClassExt, ObjectExt, ObjectType, SendWeakRef, WeakRef,
     },
     signal::{
         signal_handler_block, signal_handler_disconnect, signal_handler_unblock,
