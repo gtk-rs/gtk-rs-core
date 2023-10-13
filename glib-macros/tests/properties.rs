@@ -14,7 +14,7 @@ mod base {
         use super::*;
 
         #[derive(Properties, Default)]
-        #[properties(wrapper_type = super::Base)]
+        #[properties(wrapper_type = super::Base, ext_trait)]
         pub struct Base {
             #[property(get = Self::not_overridden)]
             overridden: PhantomData<u32>,
@@ -388,59 +388,15 @@ fn props() {
     );
 }
 
-mod ext_trait {
-    use glib::subclass::object::DerivedObjectProperties;
-    use glib::ObjectExt;
-
-    use glib::subclass::{prelude::ObjectImpl, types::ObjectSubclass};
-    use glib_macros::Properties;
-    use std::cell::RefCell;
-
-    pub mod imp {
-        use super::*;
-
-        #[derive(Properties, Default)]
-        #[properties(wrapper_type = super::Author, ext_trait)]
-        pub struct Author {
-            #[property(get, set)]
-            firstname: RefCell<String>,
-            #[property(get, set)]
-            lastname: RefCell<String>,
-        }
-
-        #[glib::derived_properties]
-        impl ObjectImpl for Author {}
-
-        #[glib::object_subclass]
-        impl ObjectSubclass for Author {
-            const NAME: &'static str = "Author";
-            type Type = super::Author;
-        }
-    }
-
-    glib::wrapper! {
-        pub struct Author(ObjectSubclass<imp::Author>);
-    }
-    impl Author {
-        pub fn new() -> Self {
-            glib::Object::builder().build()
-        }
-    }
-    impl Default for Author {
-        fn default() -> Self {
-            Self::new()
-        }
-    }
-}
-
 #[test]
 fn ext_trait() {
-    use ext_trait::imp::AuthorPropertiesExt;
-    let author = ext_trait::Author::new();
-    AuthorPropertiesExt::set_firstname(&author, "John");
-    AuthorPropertiesExt::set_lastname(&author, "Doe");
-    assert_eq!(AuthorPropertiesExt::firstname(&author), "John");
-    assert_eq!(AuthorPropertiesExt::lastname(&author), "Doe");
+    use base::imp::BasePropertiesExt;
+    let base: base::Base = glib::object::Object::builder().build();
+    assert_eq!(BasePropertiesExt::overridden(&base), 42);
+
+    let foo: foo::Foo = glib::object::Object::builder().build();
+    assert_eq!(BasePropertiesExt::overridden(&foo), 43);
+    assert_eq!(foo.overridden(), 43);
 }
 
 #[test]
