@@ -1033,14 +1033,20 @@ gvalue_impl!(
     ffi::gobject::cairo_gobject_pattern_type_get_type
 );
 
+/// Variants of a font face based on their slant.
 #[derive(Clone, PartialEq, Eq, PartialOrd, Debug, Copy)]
 #[non_exhaustive]
 #[doc(alias = "cairo_font_slant_t")]
 pub enum FontSlant {
+    /// Text is rendered upright.
     #[doc(alias = "FONT_SLANT_NORMAL")]
     Normal,
+
+    /// Text is rendered with an italic slant.
     #[doc(alias = "FONT_SLANT_ITALIC")]
     Italic,
+
+    /// Text is rendered with an oblique slant.
     #[doc(alias = "FONT_SLANT_OBLIQUE")]
     Oblique,
     #[doc(hidden)]
@@ -1089,12 +1095,16 @@ impl fmt::Display for FontSlant {
 #[cfg(feature = "use_glib")]
 gvalue_impl!(FontSlant, ffi::gobject::cairo_gobject_font_slant_get_type);
 
+/// Variants of a font face based on their weight.
 #[derive(Clone, PartialEq, Eq, PartialOrd, Debug, Copy)]
 #[non_exhaustive]
 #[doc(alias = "cairo_font_weight_t")]
 pub enum FontWeight {
+    /// Normal font weight.
     #[doc(alias = "FONT_WEIGHT_NORMAL")]
     Normal,
+
+    /// Bolded font weight.
     #[doc(alias = "FONT_WEIGHT_BOLD")]
     Bold,
     #[doc(hidden)]
@@ -1140,12 +1150,16 @@ impl fmt::Display for FontWeight {
 #[cfg(feature = "use_glib")]
 gvalue_impl!(FontWeight, ffi::gobject::cairo_gobject_font_weight_get_type);
 
+/// Specifies properties of a text cluster mapping.
 #[derive(Clone, PartialEq, Eq, PartialOrd, Debug, Copy)]
 #[non_exhaustive]
 #[doc(alias = "cairo_text_cluster_flags_t")]
 pub enum TextClusterFlags {
+    /// The clusters in the cluster array map to glyphs in the glyph array from start to end.
     #[doc(alias = "TEXT_CLUSTER_FLAGS_NONE")]
     None,
+
+    /// The clusters in the cluster array map to glyphs in the glyph array from end to start.
     #[doc(alias = "TEXT_CLUSTER_FLAGS_BACKWARD")]
     Backward,
     #[doc(hidden)]
@@ -1194,20 +1208,40 @@ gvalue_impl!(
     ffi::gobject::cairo_gobject_text_cluster_flags_get_type
 );
 
+/// Describes the type of a [`FontFace`] or [`ScaledFont`], also known as "font backends" within
+/// Cairo.
+///
+/// [`FontFace`]: crate::FontFace
+/// [`ScaledFont`]: crate::ScaledFont
 #[derive(Clone, PartialEq, Eq, PartialOrd, Debug, Copy)]
 #[non_exhaustive]
 #[doc(alias = "cairo_font_type_t")]
 pub enum FontType {
+    /// The font was created using [`FontFace::toy_create`].
+    ///
+    /// [`FontFace::toy_create`]: crate::FontFace::toy_create
     #[doc(alias = "FONT_TYPE_FONT_TYPE_TOY")]
     FontTypeToy,
+
+    /// The font is of type FreeType.
     #[doc(alias = "FONT_TYPE_FONT_TYPE_FT")]
     FontTypeFt,
+
+    /// The font is of type Win32.
     #[doc(alias = "FONT_TYPE_FONT_TYPE_WIN32")]
     FontTypeWin32,
+
+    /// The font is of type Quartz.
     #[doc(alias = "FONT_TYPE_FONT_TYPE_QUARTZ")]
     FontTypeQuartz,
+
+    /// The font is a [`UserFontFace`].
+    ///
+    /// [`UserFontFace`]: crate::UserFontFace
     #[doc(alias = "FONT_TYPE_FONT_TYPE_USER")]
     FontTypeUser,
+
+    /// The font is of type Win32 DWrite.
     #[cfg(feature = "v1_18")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_18")))]
     #[doc(alias = "FONT_TYPE_FONT_TYPE_DWRITE")]
@@ -1270,18 +1304,29 @@ impl fmt::Display for FontType {
 #[cfg(feature = "use_glib")]
 gvalue_impl!(FontType, ffi::gobject::cairo_gobject_font_type_get_type);
 
+/// Specifies the order of color elements within each pixel on the display
+/// device, when rendering with [`Antialias::Subpixel`].
 #[derive(Clone, PartialEq, Eq, PartialOrd, Debug, Copy)]
 #[non_exhaustive]
 #[doc(alias = "cairo_subpixel_order_t")]
 pub enum SubpixelOrder {
+    /// Use the default subpixel order for for the target device.
     #[doc(alias = "SUBPIXEL_ORDER_DEFAULT")]
     Default,
+
+    /// Subpixel elements are arranged horizontally with red at the left.
     #[doc(alias = "SUBPIXEL_ORDER_RGB")]
     Rgb,
+
+    /// Subpixel elements are arranged horizontally with blue at the left.
     #[doc(alias = "SUBPIXEL_ORDER_BGR")]
     Bgr,
+
+    /// Subpixel elements are arranged vertically with red at the top.
     #[doc(alias = "SUBPIXEL_ORDER_VRGB")]
     Vrgb,
+
+    /// Subpixel elements are arranged vertically with blue at the top.
     #[doc(alias = "SUBPIXEL_ORDER_VBGR")]
     Vbgr,
     #[doc(hidden)]
@@ -1339,18 +1384,35 @@ gvalue_impl!(
     ffi::gobject::cairo_gobject_subpixel_order_get_type
 );
 
+/// Specify the type of hinting to do on font outlines.
+///
+/// Hinting is the process of fitting outlines to the pixel grid in order to improve the appearance
+/// of the result. Since hinting outlines involves distorting them, it also reduces the
+/// faithfulness to the original outline shapes.
+///
+/// Not all of the outline hinting styles are supported by all font backends.
 #[derive(Clone, PartialEq, Eq, PartialOrd, Debug, Copy)]
 #[non_exhaustive]
 #[doc(alias = "cairo_hint_style_t")]
 pub enum HintStyle {
+    /// Use the default hint style for the font backend and target device.
     #[doc(alias = "HINT_STYLE_DEFAULT")]
     Default,
+
+    /// Do not hint outlines.
     #[doc(alias = "HINT_STYLE_NONE")]
     None,
+
+    /// Hint outlines slightly to improve contrast while retaining good fidelity to the original.
     #[doc(alias = "HINT_STYLE_SLIGHT")]
     Slight,
+
+    /// Hint outlines with medium strength giving a compromise between fidelity to the original and
+    /// contrast.
     #[doc(alias = "HINT_STYLE_MEDIUM")]
     Medium,
+
+    /// Hint outlines to maximize contrast.
     #[doc(alias = "HINT_STYLE_FULL")]
     Full,
     #[doc(hidden)]
@@ -1405,14 +1467,24 @@ impl fmt::Display for HintStyle {
 #[cfg(feature = "use_glib")]
 gvalue_impl!(HintStyle, ffi::gobject::cairo_gobject_hint_style_get_type);
 
+/// Whether to hint font metrics.
+///
+/// Hinting font metrics means quantizing them so that they are integer values in device space.
+/// Doing this improves the consistency of letter and line spacing, however it also means that text
+/// will be laid out differently at different zoom factors.
 #[derive(Clone, PartialEq, Eq, PartialOrd, Debug, Copy)]
 #[non_exhaustive]
 #[doc(alias = "cairo_hint_metrics_t")]
 pub enum HintMetrics {
+    /// Hint metrics in the default manner for the font backend and target device.
     #[doc(alias = "HINT_METRICS_DEFAULT")]
     Default,
+
+    /// Do not hint font metrics.
     #[doc(alias = "HINT_METRICS_OFF")]
     Off,
+
+    /// Do hint font metrics.
     #[doc(alias = "HINT_METRICS_ON")]
     On,
     #[doc(hidden)]
@@ -1464,58 +1536,146 @@ gvalue_impl!(
     ffi::gobject::cairo_gobject_hint_metrics_get_type
 );
 
+
+/// Describes the type of a [`Surface`], also known as "surface backends" within Cairo.
+///
+/// If you are looking to create a specific type of surface, you should use the appropriate
+/// constructor method with one of the `struct`s below:
+///
+/// - [`ImageSurface`]
+/// - [`PdfSurface`]
+/// - [`PsSurface`]
+/// - [`SvgSurface`]
+/// - [`XCBSurface`]
+///
+/// Note that each surface, with the exception of [`ImageSurface`], has a corresponding feature
+/// flag that must be enabled in order to use it.
+///
+/// [`Surface`]: crate::Surface
+/// [`ImageSurface`]: crate::ImageSurface
+/// [`PdfSurface`]: crate::PdfSurface
+/// [`PsSurface`]: crate::PsSurface
+/// [`SvgSurface`]: crate::SvgSurface
+/// [`XCBSurface`]: crate::XCBSurface
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 #[non_exhaustive]
 #[doc(alias = "cairo_surface_type_t")]
 pub enum SurfaceType {
+    /// Type image.
     #[doc(alias = "SURFACE_TYPE_IMAGE")]
     Image,
+
+    /// Type `pdf`.
     #[doc(alias = "SURFACE_TYPE_PDF")]
     Pdf,
+
+    /// Type `ps`.
     #[doc(alias = "SURFACE_TYPE_PS")]
     Ps,
+
+    /// Type `xlib`.
     #[doc(alias = "SURFACE_TYPE_XLIB")]
     Xlib,
+
+    /// Type `xcb`.
     #[doc(alias = "SURFACE_TYPE_XCB")]
     Xcb,
+
+    /// Type `glitz`.
+    ///
+    /// This surface type is deprecated and will never be set by Cairo.
     #[doc(alias = "SURFACE_TYPE_GLITZ")]
     Glitz,
+
+    /// Type `quartz`.
     #[doc(alias = "SURFACE_TYPE_QUARTZ")]
     Quartz,
+
+    /// Type `win32`.
     #[doc(alias = "SURFACE_TYPE_WIN32")]
     Win32,
+
+    /// Type `beos`.
+    ///
+    /// This surface type is deprecated and will never be set by Cairo.
     #[doc(alias = "SURFACE_TYPE_BE_OS")]
     BeOs,
+
+    /// Type `directfb`.
     #[doc(alias = "SURFACE_TYPE_DIRECT_FB")]
     DirectFb,
+
+    /// Type `svg`.
     #[doc(alias = "SURFACE_TYPE_SVG")]
     Svg,
+
+    /// Type `os2`.
     #[doc(alias = "SURFACE_TYPE_OS2")]
     Os2,
+
+    /// Win32 printing surface.
     #[doc(alias = "SURFACE_TYPE_WIN32_PRINTING")]
     Win32Printing,
+
+    /// Type `quartz_image`.
     #[doc(alias = "SURFACE_TYPE_QUARTZ_IMAGE")]
     QuartzImage,
+
+    /// Type `script`.
     #[doc(alias = "SURFACE_TYPE_SCRIPT")]
     Script,
+
+    /// Type `qt`.
+    ///
+    /// This surface type is deprecated and will never be set by Cairo.
     #[doc(alias = "SURFACE_TYPE_QT")]
     Qt,
+
+    /// Type `recording`.
     #[doc(alias = "SURFACE_TYPE_RECORDING")]
     Recording,
+
+    /// OpenVG drawing surface.
+    ///
+    /// This surface type is deprecated and will never be set by Cairo.
     #[doc(alias = "SURFACE_TYPE_VG")]
     Vg,
+
+    /// OpenGL surface.
+    ///
+    /// This surface type is deprecated and will never be set by Cairo.
     #[doc(alias = "SURFACE_TYPE_GL")]
     Gl,
+
+    /// Direct Render Manager surface.
+    ///
+    /// This surface type is deprecated and will never be set by Cairo.
     #[doc(alias = "SURFACE_TYPE_DRM")]
     Drm,
+
+    /// Type `tee`.
     #[doc(alias = "SURFACE_TYPE_TEE")]
     Tee,
+
+    /// Type `xml`.
     #[doc(alias = "SURFACE_TYPE_XML")]
     Xml,
+
+    /// Type `skia`.
+    ///
+    /// This surface type is deprecated and will never be set by Cairo.
     #[doc(alias = "SURFACE_TYPE_SKIA")]
     Skia,
+
+    /// Subsurface created with [`Surface::create_for_rectangle`].
+    ///
+    /// [`Surface::create_for_rectangle`]: crate::Surface::create_for_rectangle
     #[doc(alias = "SURFACE_TYPE_SUBSURFACE")]
     Subsurface,
+
+    /// Type `cogl`.
+    ///
+    /// This surface type is deprecated and will never be set by Cairo.
     #[doc(alias = "SURFACE_TYPE_COGL")]
     Cogl,
     #[doc(hidden)]
@@ -1633,30 +1793,56 @@ gvalue_impl!(
     ffi::gobject::cairo_gobject_surface_type_get_type
 );
 
+/// Units of measurement that can be used for various coordinates and lengths in the SVG
+/// specification, and when drawing to an [`SvgSurface`].
+///
+/// [`SvgSurface`]: crate::SvgSurface
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 #[cfg(all(feature = "svg", feature = "v1_16"))]
 #[cfg_attr(docsrs, doc(cfg(all(feature = "svg", feature = "v1_16"))))]
 #[non_exhaustive]
 #[doc(alias = "cairo_svg_unit_t")]
 pub enum SvgUnit {
+    /// User-specified unit; a value in the current coordinate system.
+    ///
+    /// If used in the root element for the initial coordinate system, it corresponds to
+    /// [`SvgUnit::Px`].
     #[doc(alias = "SVG_UNIT_USER")]
     User,
+
+    /// The size of the element's font.
     #[doc(alias = "SVG_UNIT_EM")]
     Em,
+
+    /// The x-height of the element's font.
     #[doc(alias = "SVG_UNIT_EX")]
     Ex,
+
+    /// Pixels. `1px` is equal to `1/96th` of an inch.
     #[doc(alias = "SVG_UNIT_PX")]
     Px,
+
+    /// Inches. `1in` is equal to `2.54cm`.
     #[doc(alias = "SVG_UNIT_IN")]
     In,
+
+    /// Centimeters. `1cm` is equal to `96px/2.54`.
     #[doc(alias = "SVG_UNIT_CM")]
     Cm,
+
+    /// Millimeters. `1mm` is equal to `1/10th of 1cm`.
     #[doc(alias = "SVG_UNIT_MM")]
     Mm,
+
+    /// Points. `1pt` is equal to `1/72nd of 1in`.
     #[doc(alias = "SVG_UNIT_PT")]
     Pt,
+
+    /// Picas. `1pc` is equal to `12pt`.
     #[doc(alias = "SVG_UNIT_PC")]
     Pc,
+
+    /// Some fraction of another reference value.
     #[doc(alias = "SVG_UNIT_PERCENT")]
     Percent,
     #[doc(hidden)]
@@ -1729,22 +1915,64 @@ impl fmt::Display for SvgUnit {
     }
 }
 
+/// Identifies the memory format of image data.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 #[non_exhaustive]
 #[doc(alias = "cairo_format_t")]
 pub enum Format {
+    /// No such format exists or is supported.
     #[doc(alias = "FORMAT_INVALID")]
     Invalid,
+    /*
+CAIRO_FORMAT_ARGB32
+each pixel is a 32-bit quantity, with alpha in the upper 8 bits, then red, then green, then blue. The 32-bit quantities are stored native-endian. Pre-multiplied alpha is used. (That is, 50% transparent red is 0x80800000, not 0x80ff0000.) (Since 1.0)
+CAIRO_FORMAT_RGB24
+each pixel is a 32-bit quantity, with the upper 8 bits unused. Red, Green, and Blue are stored in the remaining 24 bits in that order. (Since 1.0)
+CAIRO_FORMAT_A8
+each pixel is a 8-bit quantity holding an alpha value. (Since 1.0)
+CAIRO_FORMAT_A1
+each pixel is a 1-bit quantity holding an alpha value. Pixels are packed together into 32-bit quantities. The ordering of the bits matches the endianness of the platform. On a big-endian machine, the first pixel is in the uppermost bit, on a little-endian machine the first pixel is in the least-significant bit. (Since 1.0)
+CAIRO_FORMAT_RGB16_565
+each pixel is a 16-bit quantity with red in the upper 5 bits, then green in the middle 6 bits, and blue in the lower 5 bits. (Since 1.2)
+CAIRO_FORMAT_RGB30
+like RGB24 but with 10bpc. (Since 1.12)
+CAIRO_FORMAT_RGB96F
+3 floats, R, G, B. (Since 1.17.2)
+CAIRO_FORMAT_RGBA128F
+4 floats, R, G, B, A. (Since 1.17.2)
+     */
+
+    /// Each pixel is a 32-bit quantity stored native-endian, with alpha in the upper 8 bits, then
+    /// red, then green, then blue.
+    ///
+    /// Pre-multiplied alpha is used (i.e. 50% transparent red is `0x80800000`, not `0x80ff0000`).
     #[doc(alias = "FORMAT_A_RGB32")]
     ARgb32,
+
+    /// Each pixel is a 32-bit quantity stored native-endian, with the upper 8 bits unused, and the
+    /// remaining 24 bits containing red, green, and blue, in that order.
     #[doc(alias = "FORMAT_RGB24")]
     Rgb24,
+
+    /// Each pixel is a 8-bit quantity holding an alpha value.
     #[doc(alias = "FORMAT_A8")]
     A8,
+
+    /// Each pixel is a 1-bit quantity holding an alpha value.
+    ///
+    /// Pixels are packed together into 32-bit quantities. The ordering of the bits matches the
+    /// endianness of the platform. On a big-endian machine, the first pixel is in the uppermost
+    /// bit, and on a little-endian machine, the first pixel is in the least-significant bit.
     #[doc(alias = "FORMAT_A1")]
     A1,
+
+    /// Each pixel is a 16-bit quantity with red in the upper 5 bits, green in the middle 6
+    /// bits, and blue in the lower 5 bits.
     #[doc(alias = "FORMAT_RGB16_565")]
     Rgb16_565,
+
+    /// Each pixel is a 30-bit quantity stored native-endian, with the 30 bits split evenly between
+    /// red, green, and blue, in that order.
     #[doc(alias = "FORMAT_RGB30")]
     Rgb30,
     #[doc(hidden)]
@@ -1806,6 +2034,8 @@ impl fmt::Display for Format {
 gvalue_impl!(Format, ffi::gobject::cairo_gobject_format_get_type);
 
 impl Format {
+    /// Provides a stride value that will respect all alignment requirements of the accelerated
+    /// image-rendering code within Cairo.
     #[doc(alias = "cairo_format_stride_for_width")]
     pub fn stride_for_width(self, width: u32) -> Result<i32, Error> {
         assert!(width <= i32::MAX as u32);
@@ -1820,14 +2050,22 @@ impl Format {
     }
 }
 
+/// The result of [`Region::contains_rectangle`].
+///
+/// [`Region::contains_rectangle`]: crate::Region::contains_rectangle
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 #[non_exhaustive]
 #[doc(alias = "cairo_region_overlap_t")]
 pub enum RegionOverlap {
+    /// The contents are entirely inside the region.
     #[doc(alias = "REGION_OVERLAP_IN")]
     In,
+
+    /// The contents are entirely outside the region.
     #[doc(alias = "REGION_OVERLAP_OUT")]
     Out,
+
+    /// Some contents are inside and some are outside the region.
     #[doc(alias = "REGION_OVERLAP_PART")]
     Part,
     #[doc(hidden)]
@@ -1880,35 +2118,55 @@ gvalue_impl!(
 );
 
 bitflags::bitflags! {
+    /// Attributes of an outline item.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     pub struct PdfOutline: i32 {
+        /// The outline item defaults to being open in the PDF viewer.
         #[doc(alias = "PDF_OUTLINE_FLAG_OPEN")]
         const OPEN = ffi::PDF_OUTLINE_FLAG_OPEN;
+
+        /// The outline item is displayed in bold text.
         #[doc(alias = "PDF_OUTLINE_FLAG_BOLD")]
         const BOLD = ffi::PDF_OUTLINE_FLAG_BOLD;
+
+        /// The outline item is displayed in italic text.
         #[doc(alias = "PDF_OUTLINE_FLAG_ITALIC")]
         const ITALIC = ffi::PDF_OUTLINE_FLAG_ITALIC;
     }
 }
 
+/// Specify which part of a PDF document's metadata to set.
 #[cfg(feature = "pdf")]
 #[cfg_attr(docsrs, doc(cfg(feature = "pdf")))]
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 #[non_exhaustive]
 #[doc(alias = "cairo_pdf_metadata_t")]
 pub enum PdfMetadata {
+    /// The document's title.
     #[doc(alias = "PDF_METADATA_TITLE")]
     Title,
+
+    /// The document's author.
     #[doc(alias = "PDF_METADATA_AUTHOR")]
     Author,
+
+    /// The document's subject.
     #[doc(alias = "PDF_METADATA_SUBJECT")]
     Subject,
+
+    /// The document's keywords.
     #[doc(alias = "PDF_METADATA_KEYWORDS")]
     Keywords,
+
+    /// The document's creator.
     #[doc(alias = "PDF_METADATA_CREATOR")]
     Creator,
+
+    /// The document's creation date.
     #[doc(alias = "PDF_METADATA_CREATE_DATE")]
     CreateDate,
+
+    /// The document's modification date.
     #[doc(alias = "PDF_METADATA_MOD_DATE")]
     ModDate,
     #[doc(hidden)]
@@ -1972,20 +2230,28 @@ impl fmt::Display for PdfMetadata {
     }
 }
 
+/// Specify the version of the PDF specification to use when generating a PDF document.
 #[cfg(feature = "pdf")]
 #[cfg_attr(docsrs, doc(cfg(feature = "pdf")))]
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 #[non_exhaustive]
 #[doc(alias = "cairo_pdf_version_t")]
 pub enum PdfVersion {
+    /// Version 1.4 of the PDF specification.
     #[doc(alias = "PDF_VERSION__1_4")]
     _1_4,
+
+    /// Version 1.5 of the PDF specification.
     #[doc(alias = "PDF_VERSION__1_5")]
     _1_5,
+
+    /// Version 1.6 of the PDF specification.
     #[cfg(feature = "v1_18")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_18")))]
     #[doc(alias = "PDF_VERSION__1_6")]
     _1_6,
+
+    /// Version 1.7 of the PDF specification.
     #[cfg(feature = "v1_18")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_18")))]
     #[doc(alias = "PDF_VERSION__1_7")]
@@ -2048,14 +2314,18 @@ impl fmt::Display for PdfVersion {
     }
 }
 
+/// Specify the version of the SVG specification to use when generating an SVG document.
 #[cfg(feature = "svg")]
 #[cfg_attr(docsrs, doc(cfg(feature = "svg")))]
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 #[non_exhaustive]
 #[doc(alias = "cairo_svg_version_t")]
 pub enum SvgVersion {
+    /// Version 1.1 of the SVG specification.
     #[doc(alias = "SVG_VERSION__1_1")]
     _1_1,
+
+    /// Version 1.2 of the SVG specification.
     #[doc(alias = "SVG_VERSION__1_2")]
     _1_2,
     #[doc(hidden)]
@@ -2104,14 +2374,19 @@ impl fmt::Display for SvgVersion {
     }
 }
 
+/// Specify the language level of the PostScript Language Reference to use when generating a
+/// PostScript document.
 #[cfg(feature = "ps")]
 #[cfg_attr(docsrs, doc(cfg(feature = "ps")))]
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 #[non_exhaustive]
 #[doc(alias = "cairo_ps_level_t")]
 pub enum PsLevel {
+    /// Language level 2 of the PostScript specification.
     #[doc(alias = "PS_LEVEL__2")]
     _2,
+
+    /// Language level 3 of the PostScript specification.
     #[doc(alias = "PS_LEVEL__3")]
     _3,
     #[doc(hidden)]
@@ -2160,16 +2435,26 @@ impl fmt::Display for PsLevel {
     }
 }
 
+/// Specify which control point of a [`Mesh`] to set or get.
+///
+/// [`Mesh`]: crate::Mesh
 #[derive(Clone, PartialEq, Eq, PartialOrd, Copy, Debug)]
 #[non_exhaustive]
 #[doc(alias = "cairo_mesh_corner_t")]
 pub enum MeshCorner {
+    /// Mesh corner 0 (the first control point).
     #[doc(alias = "MESH_CORNER_MESH_CORNER0")]
     MeshCorner0,
+
+    /// Mesh corner 1.
     #[doc(alias = "MESH_CORNER_MESH_CORNER1")]
     MeshCorner1,
+
+    /// Mesh corner 2.
     #[doc(alias = "MESH_CORNER_MESH_CORNER2")]
     MeshCorner2,
+
+    /// Mesh corner 3 (the last control point).
     #[doc(alias = "MESH_CORNER_MESH_CORNER3")]
     MeshCorner3,
     #[doc(hidden)]
@@ -2218,14 +2503,26 @@ impl fmt::Display for MeshCorner {
     }
 }
 
+/// Flags to control how FreeType renders the glyphs for a particular [`FontFace`].
+///
+/// FreeType provides the ability to synthesize different glyphs from a base font, which is useful
+/// if you lack those glyphs from a true bold or oblique font.
+///
+/// Note that when synthesizing glyphs, any generated [`FontExtents`] will only be estimates.
+///
+/// [`FontFace`]: crate::FontFace
+/// [`FontExtents`]: crate::FontExtents
 #[cfg(feature = "freetype")]
 #[cfg_attr(docsrs, doc(cfg(feature = "freetype")))]
 #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]
 #[non_exhaustive]
 #[doc(alias = "cairo_ft_synthesize_t")]
 pub enum FtSynthesize {
+    /// Embolden the glyphs (redraw them with a pixel offset).
     #[doc(alias = "CAIRO_FT_SYNTHESIZE_BOLD")]
     Bold,
+
+    /// Slant the glyphs 12 degrees to the right.
     #[doc(alias = "CAIRO_FT_SYNTHESIZE_OBLIQUE")]
     Oblique,
     #[doc(hidden)]
@@ -2274,14 +2571,18 @@ impl fmt::Display for FtSynthesize {
     }
 }
 
+/// Possible output variants when drawing to a script surface.
 #[cfg(feature = "script")]
 #[cfg_attr(docsrs, doc(cfg(feature = "script")))]
 #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]
 #[non_exhaustive]
 #[doc(alias = "cairo_script_mode_t")]
 pub enum ScriptMode {
+    /// The output will be in readable text.
     #[doc(alias = "CAIRO_SCRIPT_MODE_ASCII")]
     Ascii,
+
+    /// The output will use byte codes.
     #[doc(alias = "CAIRO_SCRIPT_MODE_BINARY")]
     Binary,
     #[doc(hidden)]
@@ -2330,26 +2631,44 @@ impl fmt::Display for ScriptMode {
     }
 }
 
+/// Specifies the type of a given [`Device`], also known as "backends" within Cairo.
 #[derive(Clone, PartialEq, Eq, PartialOrd, Debug, Copy)]
 #[non_exhaustive]
 #[doc(alias = "cairo_device_type_t")]
 pub enum DeviceType {
+    /// Type Direct Render Manager.
     #[doc(alias = "CAIRO_DEVICE_TYPE_DRM")]
-    Ascii,
+    Drm,
+
+    /// Type OpenGL.
     #[doc(alias = "CAIRO_DEVICE_TYPE_GL")]
-    Binary,
+    Gl,
+
+    /// Type script.
     #[doc(alias = "CAIRO_DEVICE_TYPE_SCRIPT")]
     Script,
+
+    /// Type XCB.
     #[doc(alias = "CAIRO_DEVICE_TYPE_XCB")]
     Xcb,
+
+    /// Type Xlib.
     #[doc(alias = "CAIRO_DEVICE_TYPE_XLIB")]
     Xlib,
+
+    /// Type XML.
     #[doc(alias = "CAIRO_DEVICE_TYPE_XML")]
     Xml,
+
+    /// Type Cogl.
     #[doc(alias = "CAIRO_DEVICE_TYPE_COGL")]
     Cogl,
+
+    /// Type Win32.
     #[doc(alias = "CAIRO_DEVICE_TYPE_WIN32")]
     Win32,
+
+    /// Invalid type.
     #[doc(alias = "CAIRO_DEVICE_TYPE_INVALID")]
     Invalid,
     #[doc(hidden)]
