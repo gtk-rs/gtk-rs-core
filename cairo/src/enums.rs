@@ -2632,6 +2632,8 @@ impl fmt::Display for ScriptMode {
 }
 
 /// Specifies the type of a given [`Device`], also known as "backends" within Cairo.
+///
+/// [`Device`]: crate::Device
 #[derive(Clone, PartialEq, Eq, PartialOrd, Debug, Copy)]
 #[non_exhaustive]
 #[doc(alias = "cairo_device_type_t")]
