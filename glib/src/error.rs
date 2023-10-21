@@ -152,49 +152,55 @@ pub trait ErrorDomain: Copy {
 /// Generic error used for functions that fail without any further information
 #[macro_export]
 macro_rules! bool_error(
-// Plain strings
-    ($msg:expr) => {{
-        $crate::BoolError::new(
-            $msg,
-            file!(),
-            $crate::function_name!(),
-            line!(),
-        )
-    }};
-
-// Format strings
     ($($msg:tt)*) =>  {{
-        $crate::BoolError::new(
-            format!($($msg)*),
-            file!(),
-            $crate::function_name!(),
-            line!(),
-        )
+        match ::std::format_args!($($msg)*) {
+            formatted => {
+                if let Some(s) = formatted.as_str() {
+                    $crate::BoolError::new(
+                        s,
+                        file!(),
+                        $crate::function_name!(),
+                        line!()
+                    )
+                } else {
+                    $crate::BoolError::new(
+                        formatted.to_string(),
+                        file!(),
+                        $crate::function_name!(),
+                        line!(),
+                    )
+                }
+            }
+        }
     }};
 );
 
 #[macro_export]
 macro_rules! result_from_gboolean(
-// Plain strings
-    ($ffi_bool:expr, $msg:expr) => {{
-        $crate::BoolError::from_glib(
-            $ffi_bool,
-            $msg,
-            file!(),
-            $crate::function_name!(),
-            line!(),
-        )
-    }};
-
-// Format strings
     ($ffi_bool:expr, $($msg:tt)*) =>  {{
-        $crate::BoolError::from_glib(
-            $ffi_bool,
-            format!($($msg)*),
-            file!(),
-            $crate::function_name!(),
-            line!(),
-        )
+        match ::std::format_args!($($msg)*) {
+            formatted => {
+                if let Some(s) = formatted.as_str() {
+                    $crate::BoolError::from_glib(
+                        $ffi_bool,
+                        s,
+                        file!(),
+                        $crate::function_name!(),
+                        line!(),
+                    )
+                } else {
+                    $crate::BoolError::from_glib(
+                        $ffi_bool,
+                        formatted.to_string(),
+                        file!(),
+                        $crate::function_name!(),
+                        line!(),
+                    )
+                }
+            }
+        }
+
+
     }};
 );
 
