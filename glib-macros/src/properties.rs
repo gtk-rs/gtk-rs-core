@@ -332,6 +332,9 @@ impl PropDesc {
             is_construct_only,
         })
     }
+    fn is_overriding(&self) -> bool {
+        self.override_class.is_some() || self.override_interface.is_some()
+    }
 }
 
 fn expand_param_spec(prop: &PropDesc) -> TokenStream2 {
@@ -558,7 +561,7 @@ fn strip_raw_prefix_from_name(name: &LitStr) -> LitStr {
 
 fn expand_impl_getset_properties(props: &[PropDesc]) -> Vec<syn::ImplItemFn> {
     let crate_ident = crate_ident_new();
-    let defs = props.iter().map(|p| {
+    let defs = props.iter().filter(|p| !p.is_overriding()).map(|p| {
         let name = &p.name;
         let stripped_name = strip_raw_prefix_from_name(name);
         let ident = name_to_ident(name);
@@ -604,7 +607,7 @@ fn expand_impl_getset_properties(props: &[PropDesc]) -> Vec<syn::ImplItemFn> {
 
 fn expand_impl_connect_prop_notify(props: &[PropDesc]) -> Vec<syn::ImplItemFn> {
     let crate_ident = crate_ident_new();
-    let connection_fns = props.iter().map(|p| -> syn::ImplItemFn {
+    let connection_fns = props.iter().filter(|p| !p.is_overriding()).map(|p| -> syn::ImplItemFn {
         let name = &p.name;
         let stripped_name = strip_raw_prefix_from_name(name);
         let fn_ident = format_ident!("connect_{}_notify", name_to_ident(name));
@@ -618,16 +621,16 @@ fn expand_impl_connect_prop_notify(props: &[PropDesc]) -> Vec<syn::ImplItemFn> {
     connection_fns.collect::<Vec<_>>()
 }
 
-fn expand_impl_notify_prop(props: &[PropDesc]) -> Vec<syn::ImplItemFn> {
+fn expand_impl_notify_prop(wrapper_type: &syn::Path, props: &[PropDesc]) -> Vec<syn::ImplItemFn> {
     let crate_ident = crate_ident_new();
-    let emit_fns = props.iter().map(|p| -> syn::ImplItemFn {
+    let emit_fns = props.iter().filter(|p| !p.is_overriding()).map(|p| -> syn::ImplItemFn {
         let name = strip_raw_prefix_from_name(&p.name);
         let fn_ident = format_ident!("notify_{}", name_to_ident(&name));
         let span = p.attrs_span;
         let enum_ident = name_to_enum_ident(name.value());
         parse_quote_spanned!(span=> pub fn #fn_ident(&self) {
             self.notify_by_pspec(
-                &<<Self as #crate_ident::object::ObjectSubclassIs>::Subclass
+                &<<#wrapper_type as #crate_ident::object::ObjectSubclassIs>::Subclass
                     as #crate_ident::subclass::object::DerivedObjectProperties>::derived_properties()
                 [DerivedPropertiesEnum::#enum_ident as usize]
             );
@@ -692,7 +695,7 @@ pub fn impl_derive_props(input: PropsMacroInput) -> TokenStream {
     let fn_set_property = expand_set_property_fn(&input.props);
     let getset_properties = expand_impl_getset_properties(&input.props);
     let connect_prop_notify = expand_impl_connect_prop_notify(&input.props);
-    let notify_prop = expand_impl_notify_prop(&input.props);
+    let notify_prop = expand_impl_notify_prop(&wrapper_type, &input.props);
     let properties_enum = expand_properties_enum(&input.props);
 
     let rust_interface = if let Some(ext_trait) = input.ext_trait {
@@ -704,17 +707,7 @@ pub fn impl_derive_props(input: PropsMacroInput) -> TokenStream {
                 wrapper_type.segments.last().unwrap().ident
             )
         };
-        let signatures = getset_properties
-            .iter()
-            .chain(connect_prop_notify.iter())
-            .chain(notify_prop.iter())
-            .map(|item| &item.sig);
-        let trait_def = quote! {
-            pub trait #trait_ident {
-                #(#signatures;)*
-            }
-        };
-        let impls = getset_properties
+        let fns_without_visibility_modifier = getset_properties
             .into_iter()
             .chain(connect_prop_notify)
             .chain(notify_prop)
@@ -723,10 +716,10 @@ pub fn impl_derive_props(input: PropsMacroInput) -> TokenStream {
                 item
             });
         quote! {
-            #trait_def
-            impl #trait_ident for #wrapper_type {
-                #(#impls)*
+            pub trait #trait_ident: #crate_ident::IsA<#wrapper_type> {
+                #(#fns_without_visibility_modifier)*
             }
+            impl<T: #crate_ident::IsA<#wrapper_type>> #trait_ident for T {}
         }
     } else {
         quote! {
