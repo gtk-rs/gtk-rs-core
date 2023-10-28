@@ -7,10 +7,11 @@ use std::{any::Any, collections::BTreeMap, marker, mem, ptr};
 
 use super::SignalId;
 use crate::{
+    gobject::traits::DynamicObjectRegisterExt,
     object::{IsClass, IsInterface, ObjectSubclassIs, ParentClassIs},
     prelude::*,
     translate::*,
-    Closure, Object, Type, Value,
+    Closure, InterfaceInfo, Object, Type, TypeFlags, TypeInfo, Value,
 };
 
 // rustdoc-stripper-ignore-next
@@ -328,7 +329,7 @@ unsafe extern "C" fn interface_init<T: ObjectSubclass, A: IsImplementable<T>>(
 pub trait InterfaceList<T: ObjectSubclass> {
     // rustdoc-stripper-ignore-next
     /// Returns the list of types and corresponding interface infos for this list.
-    fn iface_infos() -> Vec<(ffi::GType, gobject_ffi::GInterfaceInfo)>;
+    fn iface_infos() -> Vec<(Type, InterfaceInfo)>;
 
     // rustdoc-stripper-ignore-next
     /// Runs `instance_init` on each of the `IsImplementable` items.
@@ -336,7 +337,7 @@ pub trait InterfaceList<T: ObjectSubclass> {
 }
 
 impl<T: ObjectSubclass> InterfaceList<T> for () {
-    fn iface_infos() -> Vec<(ffi::GType, gobject_ffi::GInterfaceInfo)> {
+    fn iface_infos() -> Vec<(Type, InterfaceInfo)> {
         vec![]
     }
 
@@ -348,14 +349,13 @@ impl<T: ObjectSubclass, A: IsImplementable<T>> InterfaceList<T> for (A,)
 where
     <A as ObjectType>::GlibClassType: Copy,
 {
-    fn iface_infos() -> Vec<(ffi::GType, gobject_ffi::GInterfaceInfo)> {
+    fn iface_infos() -> Vec<(Type, InterfaceInfo)> {
         vec![(
-            A::static_type().into_glib(),
-            gobject_ffi::GInterfaceInfo {
+            A::static_type(),
+            InterfaceInfo(gobject_ffi::GInterfaceInfo {
                 interface_init: Some(interface_init::<T, A>),
-                interface_finalize: None,
-                interface_data: ptr::null_mut(),
-            },
+                ..InterfaceInfo::default().0
+            }),
         )]
     }
 
@@ -390,16 +390,16 @@ macro_rules! interface_list_trait_impl(
         where
             $(<$name as ObjectType>::GlibClassType: Copy),+
         {
-            fn iface_infos() -> Vec<(ffi::GType, gobject_ffi::GInterfaceInfo)> {
+            fn iface_infos() -> Vec<(Type, InterfaceInfo)> {
                 vec![
                     $(
                         (
-                            $name::static_type().into_glib(),
-                            gobject_ffi::GInterfaceInfo {
+                            $name::static_type(),
+                            InterfaceInfo(gobject_ffi::GInterfaceInfo {
                                 interface_init: Some(interface_init::<T, $name>),
                                 interface_finalize: None,
                                 interface_data: ptr::null_mut(),
-                            },
+                            }),
                         )
                     ),+
                 ]
@@ -1040,7 +1040,111 @@ pub fn register_type<T: ObjectSubclass>() -> Type {
 
         let iface_types = T::Interfaces::iface_infos();
         for (iface_type, iface_info) in iface_types {
-            gobject_ffi::g_type_add_interface_static(type_.into_glib(), iface_type, &iface_info);
+            gobject_ffi::g_type_add_interface_static(
+                type_.into_glib(),
+                iface_type.into_glib(),
+                iface_info.as_ptr(),
+            );
+        }
+
+        T::type_init(&mut InitializingType::<T>(type_, marker::PhantomData));
+
+        type_
+    }
+}
+
+// rustdoc-stripper-ignore-next
+/// Registers a `glib::Type` ID for `T` as a dynamic type.
+///
+/// An object subclass must be explicitly registered as a  ynamic type when the
+/// system loads the implementation by calling [`TypePluginImpl::use_`] or more
+/// specifically [`TypeModuleImpl::load`]. Therefore, unlike for object
+/// subclasses registered as static types, object subclasses registered as
+/// dynamic types can be registered several times.
+///
+/// The [`dynamic_object_subclass!`] macro will create `register_type()` and
+/// `on_implementation_load()` functions around this, which will ensure that
+/// the function is called when necessary.
+///
+/// [`dynamic_object_subclass!`]: ../../../glib_macros/attr.dynamic_object_subclass.html
+/// [`TypePluginImpl::use_`]: ../type_plugin/trait.TypePluginImpl.html#method.use_
+/// [`TypeModuleImpl::load`]: ../type_module/trait.TypeModuleImpl.html#method.load
+pub fn register_dynamic_type<P: DynamicObjectRegisterExt, T: ObjectSubclass>(
+    type_plugin: &P,
+) -> Type {
+    // GLib aligns the type private data to two gsizes, so we can't safely store any type there that
+    // requires a bigger alignment.
+    assert!(
+        mem::align_of::<T>() <= 2 * mem::size_of::<usize>(),
+        "Alignment {} of type not supported, bigger than {}",
+        mem::align_of::<T>(),
+        2 * mem::size_of::<usize>(),
+    );
+
+    unsafe {
+        use std::ffi::CString;
+
+        let type_name = CString::new(T::NAME).unwrap();
+
+        let already_registered =
+            gobject_ffi::g_type_from_name(type_name.as_ptr()) != gobject_ffi::G_TYPE_INVALID;
+
+        let type_info = TypeInfo(gobject_ffi::GTypeInfo {
+            class_size: mem::size_of::<T::Class>() as u16,
+            class_init: Some(class_init::<T>),
+            instance_size: mem::size_of::<T::Instance>() as u16,
+            instance_init: Some(instance_init::<T>),
+            ..TypeInfo::default().0
+        });
+
+        // registers the type within the `type_plugin`
+        let type_ = type_plugin.register_dynamic_type(
+            <T::ParentType as StaticType>::static_type(),
+            type_name.to_str().unwrap(),
+            &type_info,
+            if T::ABSTRACT {
+                TypeFlags::ABSTRACT
+            } else {
+                TypeFlags::NONE
+            },
+        );
+        assert!(type_.is_valid());
+
+        let mut data = T::type_data();
+        data.as_mut().type_ = type_;
+
+        let private_offset = mem::size_of::<PrivateStruct<T>>();
+        data.as_mut().private_offset = private_offset as isize;
+
+        // gets the offset from PrivateStruct<T> to the imp field in it. This has to go through
+        // some hoops because Rust doesn't have an offsetof operator yet.
+        data.as_mut().private_imp_offset = {
+            // Must not be a dangling pointer so let's create some uninitialized memory
+            let priv_ = mem::MaybeUninit::<PrivateStruct<T>>::uninit();
+            let ptr = priv_.as_ptr();
+            let imp_ptr = ptr::addr_of!((*ptr).imp);
+            (imp_ptr as isize) - (ptr as isize)
+        };
+
+        let plugin_ptr = type_plugin.as_ref().to_glib_none().0;
+        let iface_types = T::Interfaces::iface_infos();
+        for (iface_type, iface_info) in iface_types {
+            match gobject_ffi::g_type_get_plugin(iface_type.into_glib()) {
+                // if interface type's plugin is null or is different to the `type_plugin`,
+                // then interface can only be added as if the type was static
+                iface_plugin if iface_plugin != plugin_ptr => {
+                    // but adding interface to a static type can be done only once
+                    if !already_registered {
+                        gobject_ffi::g_type_add_interface_static(
+                            type_.into_glib(),
+                            iface_type.into_glib(),
+                            iface_info.as_ptr(),
+                        );
+                    }
+                }
+                // else interface can be added and registered to live in the `type_plugin`
+                _ => type_plugin.add_dynamic_interface(type_, iface_type, &iface_info),
+            }
         }
 
         T::type_init(&mut InitializingType::<T>(type_, marker::PhantomData));

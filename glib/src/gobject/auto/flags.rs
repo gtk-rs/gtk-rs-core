@@ -137,3 +137,38 @@ impl FromGlib<gobject_ffi::GSignalFlags> for SignalFlags {
         Self::from_bits_truncate(value)
     }
 }
+
+bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
+    #[doc(alias = "GTypeFlags")]
+    pub struct TypeFlags: u32 {
+        #[doc(alias = "G_TYPE_FLAG_NONE")]
+        const NONE = gobject_ffi::G_TYPE_FLAG_NONE as _;
+        #[doc(alias = "G_TYPE_FLAG_ABSTRACT")]
+        const ABSTRACT = gobject_ffi::G_TYPE_FLAG_ABSTRACT as _;
+        #[doc(alias = "G_TYPE_FLAG_VALUE_ABSTRACT")]
+        const VALUE_ABSTRACT = gobject_ffi::G_TYPE_FLAG_VALUE_ABSTRACT as _;
+        #[doc(alias = "G_TYPE_FLAG_FINAL")]
+        const FINAL = gobject_ffi::G_TYPE_FLAG_FINAL as _;
+        #[doc(alias = "G_TYPE_FLAG_DEPRECATED")]
+        const DEPRECATED = gobject_ffi::G_TYPE_FLAG_DEPRECATED as _;
+    }
+}
+
+#[doc(hidden)]
+impl IntoGlib for TypeFlags {
+    type GlibType = gobject_ffi::GTypeFlags;
+
+    #[inline]
+    fn into_glib(self) -> gobject_ffi::GTypeFlags {
+        self.bits()
+    }
+}
+
+#[doc(hidden)]
+impl FromGlib<gobject_ffi::GTypeFlags> for TypeFlags {
+    #[inline]
+    unsafe fn from_glib(value: gobject_ffi::GTypeFlags) -> Self {
+        Self::from_bits_truncate(value)
+    }
+}

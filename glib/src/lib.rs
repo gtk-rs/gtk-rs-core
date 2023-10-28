@@ -9,8 +9,9 @@ pub use ffi;
 #[doc(hidden)]
 pub use glib_macros::cstr_bytes;
 pub use glib_macros::{
-    clone, closure, closure_local, derived_properties, flags, object_interface, object_subclass,
-    Boxed, Downgrade, Enum, ErrorDomain, Properties, SharedBoxed, ValueDelegate, Variant,
+    clone, closure, closure_local, derived_properties, dynamic_object_interface,
+    dynamic_object_subclass, flags, object_interface, object_subclass, Boxed, Downgrade, Enum,
+    ErrorDomain, Properties, SharedBoxed, ValueDelegate, Variant,
 };
 pub use gobject_ffi;
 pub use once_cell;
@@ -115,7 +116,17 @@ pub use self::auto::*;
 #[allow(non_upper_case_globals)]
 mod auto;
 
-pub use self::gobject::*;
+#[cfg(feature = "v2_74")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
+pub use self::gobject::SignalGroup;
+pub use self::gobject::{
+    Binding, BindingFlags, InterfaceInfo, ParamFlags, SignalFlags, TypeFlags, TypeInfo, TypeModule,
+    TypePlugin, TypeValueTable,
+};
+#[cfg(feature = "v2_72")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
+pub use self::gobject::{BindingGroup, BindingGroupBuilder};
+
 mod gobject;
 
 mod byte_array;

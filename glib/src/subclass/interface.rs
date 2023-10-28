@@ -3,25 +3,25 @@
 use std::{marker, mem};
 
 use super::{InitializingType, Signal};
-use crate::{prelude::*, translate::*, Object, ParamSpec, Type};
+use crate::{prelude::*, translate::*, Object, ParamSpec, Type, TypeFlags, TypeInfo};
 
 // rustdoc-stripper-ignore-next
 /// Trait for a type list of prerequisite object types.
 pub trait PrerequisiteList {
     // rustdoc-stripper-ignore-next
     /// Returns the list of types for this list.
-    fn types() -> Vec<ffi::GType>;
+    fn types() -> Vec<Type>;
 }
 
 impl PrerequisiteList for () {
-    fn types() -> Vec<ffi::GType> {
+    fn types() -> Vec<Type> {
         vec![]
     }
 }
 
 impl<T: crate::ObjectType> PrerequisiteList for (T,) {
-    fn types() -> Vec<ffi::GType> {
-        vec![T::static_type().into_glib()]
+    fn types() -> Vec<Type> {
+        vec![T::static_type()]
     }
 }
 
@@ -47,8 +47,8 @@ macro_rules! prerequisite_list_trait(
 macro_rules! prerequisite_list_trait_impl(
     ($($name:ident),+) => (
         impl<$($name: crate::ObjectType),+> PrerequisiteList for ( $($name),+ ) {
-            fn types() -> Vec<ffi::GType> {
-                vec![$($name::static_type().into_glib()),+]
+            fn types() -> Vec<Type> {
+                vec![$($name::static_type()),+]
             }
         }
     );
@@ -204,10 +204,69 @@ pub fn register_interface<T: ObjectInterface>() -> Type {
 
         let prerequisites = T::Prerequisites::types();
         for prerequisite in prerequisites {
-            gobject_ffi::g_type_interface_add_prerequisite(type_, prerequisite);
+            gobject_ffi::g_type_interface_add_prerequisite(type_, prerequisite.into_glib());
         }
 
         let type_ = Type::from_glib(type_);
+        assert!(type_.is_valid());
+
+        T::type_init(&mut InitializingType::<T>(type_, marker::PhantomData));
+
+        type_
+    }
+}
+
+/// Registers a `glib::Type` ID for `T` as a dynamic type.
+///
+/// An object interface must be explicitly registered as a dynamic type when
+/// the system loads the implementation by calling [`TypePluginImpl::use_`] or
+/// more specifically [`TypeModuleImpl::load`]. Therefore, unlike for object
+/// interfaces registered as static types, object interfaces registered as
+/// dynamic types can be registered several times.
+///
+/// The [`dynamic_object_interface!`] macro will create `register_interface()`
+/// and `on_implementation_load()` functions around this, which will ensure
+/// that the function is called when necessary.
+///
+/// [`dynamic_object_interface!`]: ../../../glib_macros/attr.dynamic_object_interface.html
+/// [`TypePluginImpl::use_`]: ../type_plugin/trait.TypePluginImpl.html#method.use_
+/// [`TypeModuleImpl::load`]: ../type_module/trait.TypeModuleImpl.html#method.load
+pub fn register_dynamic_interface<P: DynamicObjectRegisterExt, T: ObjectInterface>(
+    type_plugin: &P,
+) -> Type {
+    unsafe {
+        use std::ffi::CString;
+
+        let type_name = CString::new(T::NAME).unwrap();
+
+        let already_registered =
+            gobject_ffi::g_type_from_name(type_name.as_ptr()) != gobject_ffi::G_TYPE_INVALID;
+
+        let type_info = TypeInfo(gobject_ffi::GTypeInfo {
+            class_size: mem::size_of::<T>() as u16,
+            class_init: Some(interface_init::<T>),
+            ..TypeInfo::default().0
+        });
+
+        // registers the interface within the `type_plugin`
+        let type_ = type_plugin.register_dynamic_type(
+            Type::INTERFACE,
+            type_name.to_str().unwrap(),
+            &type_info,
+            TypeFlags::ABSTRACT,
+        );
+
+        let prerequisites = T::Prerequisites::types();
+        for prerequisite in prerequisites {
+            // adding prerequisite interface can be done only once
+            if !already_registered {
+                gobject_ffi::g_type_interface_add_prerequisite(
+                    type_.into_glib(),
+                    prerequisite.into_glib(),
+                );
+            }
+        }
+
         assert!(type_.is_valid());
 
         T::type_init(&mut InitializingType::<T>(type_, marker::PhantomData));
