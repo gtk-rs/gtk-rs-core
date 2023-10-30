@@ -150,11 +150,7 @@ pub use self::utils::*;
 mod unichar;
 pub use self::unichar::*;
 mod main_context;
-mod main_context_channel;
-pub use self::{
-    main_context::MainContextAcquireGuard,
-    main_context_channel::{Receiver, Sender, SyncSender},
-};
+pub use self::main_context::MainContextAcquireGuard;
 mod date;
 mod date_time;
 mod time_span;
