@@ -69,6 +69,7 @@ impl FromGlib<ffi::GBusType> for BusType {
 
 impl StaticType for BusType {
     #[inline]
+    #[doc(alias = "g_bus_type_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_bus_type_get_type()) }
     }
@@ -80,7 +81,7 @@ impl glib::HasParamSpec for BusType {
     type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+        Self::ParamSpec::builder_with_default
     }
 }
 
@@ -184,6 +185,7 @@ impl FromGlib<ffi::GConverterResult> for ConverterResult {
 
 impl StaticType for ConverterResult {
     #[inline]
+    #[doc(alias = "g_converter_result_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_converter_result_get_type()) }
     }
@@ -195,7 +197,7 @@ impl glib::HasParamSpec for ConverterResult {
     type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+        Self::ParamSpec::builder_with_default
     }
 }
 
@@ -324,6 +326,7 @@ impl FromGlib<ffi::GCredentialsType> for CredentialsType {
 
 impl StaticType for CredentialsType {
     #[inline]
+    #[doc(alias = "g_credentials_type_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_credentials_type_get_type()) }
     }
@@ -335,7 +338,7 @@ impl glib::HasParamSpec for CredentialsType {
     type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+        Self::ParamSpec::builder_with_default
     }
 }
 
@@ -429,6 +432,7 @@ impl FromGlib<ffi::GDBusMessageByteOrder> for DBusMessageByteOrder {
 
 impl StaticType for DBusMessageByteOrder {
     #[inline]
+    #[doc(alias = "g_dbus_message_byte_order_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_dbus_message_byte_order_get_type()) }
     }
@@ -440,7 +444,7 @@ impl glib::HasParamSpec for DBusMessageByteOrder {
     type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+        Self::ParamSpec::builder_with_default
     }
 }
 
@@ -574,6 +578,7 @@ impl FromGlib<ffi::GDBusMessageHeaderField> for DBusMessageHeaderField {
 
 impl StaticType for DBusMessageHeaderField {
     #[inline]
+    #[doc(alias = "g_dbus_message_header_field_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_dbus_message_header_field_get_type()) }
     }
@@ -585,7 +590,7 @@ impl glib::HasParamSpec for DBusMessageHeaderField {
     type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+        Self::ParamSpec::builder_with_default
     }
 }
 
@@ -694,6 +699,7 @@ impl FromGlib<ffi::GDBusMessageType> for DBusMessageType {
 
 impl StaticType for DBusMessageType {
     #[inline]
+    #[doc(alias = "g_dbus_message_type_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_dbus_message_type_get_type()) }
     }
@@ -705,7 +711,7 @@ impl glib::HasParamSpec for DBusMessageType {
     type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+        Self::ParamSpec::builder_with_default
     }
 }
 
@@ -804,6 +810,7 @@ impl FromGlib<ffi::GDataStreamByteOrder> for DataStreamByteOrder {
 
 impl StaticType for DataStreamByteOrder {
     #[inline]
+    #[doc(alias = "g_data_stream_byte_order_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_data_stream_byte_order_get_type()) }
     }
@@ -815,7 +822,7 @@ impl glib::HasParamSpec for DataStreamByteOrder {
     type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+        Self::ParamSpec::builder_with_default
     }
 }
 
@@ -919,6 +926,7 @@ impl FromGlib<ffi::GDataStreamNewlineType> for DataStreamNewlineType {
 
 impl StaticType for DataStreamNewlineType {
     #[inline]
+    #[doc(alias = "g_data_stream_newline_type_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_data_stream_newline_type_get_type()) }
     }
@@ -930,7 +938,7 @@ impl glib::HasParamSpec for DataStreamNewlineType {
     type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+        Self::ParamSpec::builder_with_default
     }
 }
 
@@ -1039,6 +1047,7 @@ impl FromGlib<ffi::GDriveStartStopType> for DriveStartStopType {
 
 impl StaticType for DriveStartStopType {
     #[inline]
+    #[doc(alias = "g_drive_start_stop_type_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_drive_start_stop_type_get_type()) }
     }
@@ -1050,7 +1059,7 @@ impl glib::HasParamSpec for DriveStartStopType {
     type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+        Self::ParamSpec::builder_with_default
     }
 }
 
@@ -1154,6 +1163,7 @@ impl FromGlib<ffi::GEmblemOrigin> for EmblemOrigin {
 
 impl StaticType for EmblemOrigin {
     #[inline]
+    #[doc(alias = "g_emblem_origin_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_emblem_origin_get_type()) }
     }
@@ -1165,7 +1175,7 @@ impl glib::HasParamSpec for EmblemOrigin {
     type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+        Self::ParamSpec::builder_with_default
     }
 }
 
@@ -1264,6 +1274,7 @@ impl FromGlib<ffi::GFileAttributeStatus> for FileAttributeStatus {
 
 impl StaticType for FileAttributeStatus {
     #[inline]
+    #[doc(alias = "g_file_attribute_status_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_file_attribute_status_get_type()) }
     }
@@ -1275,7 +1286,7 @@ impl glib::HasParamSpec for FileAttributeStatus {
     type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+        Self::ParamSpec::builder_with_default
     }
 }
 
@@ -1409,6 +1420,7 @@ impl FromGlib<ffi::GFileAttributeType> for FileAttributeType {
 
 impl StaticType for FileAttributeType {
     #[inline]
+    #[doc(alias = "g_file_attribute_type_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_file_attribute_type_get_type()) }
     }
@@ -1420,7 +1432,7 @@ impl glib::HasParamSpec for FileAttributeType {
     type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+        Self::ParamSpec::builder_with_default
     }
 }
 
@@ -1559,6 +1571,7 @@ impl FromGlib<ffi::GFileMonitorEvent> for FileMonitorEvent {
 
 impl StaticType for FileMonitorEvent {
     #[inline]
+    #[doc(alias = "g_file_monitor_event_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_file_monitor_event_get_type()) }
     }
@@ -1570,7 +1583,7 @@ impl glib::HasParamSpec for FileMonitorEvent {
     type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+        Self::ParamSpec::builder_with_default
     }
 }
 
@@ -1689,6 +1702,7 @@ impl FromGlib<ffi::GFileType> for FileType {
 
 impl StaticType for FileType {
     #[inline]
+    #[doc(alias = "g_file_type_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_file_type_get_type()) }
     }
@@ -1700,7 +1714,7 @@ impl glib::HasParamSpec for FileType {
     type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+        Self::ParamSpec::builder_with_default
     }
 }
 
@@ -2048,6 +2062,7 @@ impl glib::error::ErrorDomain for IOErrorEnum {
 
 impl StaticType for IOErrorEnum {
     #[inline]
+    #[doc(alias = "g_io_error_enum_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_io_error_enum_get_type()) }
     }
@@ -2059,7 +2074,7 @@ impl glib::HasParamSpec for IOErrorEnum {
     type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+        Self::ParamSpec::builder_with_default
     }
 }
 
@@ -2168,6 +2183,7 @@ impl FromGlib<ffi::GMemoryMonitorWarningLevel> for MemoryMonitorWarningLevel {
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_64")))]
 impl StaticType for MemoryMonitorWarningLevel {
     #[inline]
+    #[doc(alias = "g_memory_monitor_warning_level_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_memory_monitor_warning_level_get_type()) }
     }
@@ -2181,7 +2197,7 @@ impl glib::HasParamSpec for MemoryMonitorWarningLevel {
     type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+        Self::ParamSpec::builder_with_default
     }
 }
 
@@ -2288,6 +2304,7 @@ impl FromGlib<ffi::GMountOperationResult> for MountOperationResult {
 
 impl StaticType for MountOperationResult {
     #[inline]
+    #[doc(alias = "g_mount_operation_result_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_mount_operation_result_get_type()) }
     }
@@ -2299,7 +2316,7 @@ impl glib::HasParamSpec for MountOperationResult {
     type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+        Self::ParamSpec::builder_with_default
     }
 }
 
@@ -2403,6 +2420,7 @@ impl FromGlib<ffi::GNetworkConnectivity> for NetworkConnectivity {
 
 impl StaticType for NetworkConnectivity {
     #[inline]
+    #[doc(alias = "g_network_connectivity_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_network_connectivity_get_type()) }
     }
@@ -2414,7 +2432,7 @@ impl glib::HasParamSpec for NetworkConnectivity {
     type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+        Self::ParamSpec::builder_with_default
     }
 }
 
@@ -2518,6 +2536,7 @@ impl FromGlib<ffi::GNotificationPriority> for NotificationPriority {
 
 impl StaticType for NotificationPriority {
     #[inline]
+    #[doc(alias = "g_notification_priority_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_notification_priority_get_type()) }
     }
@@ -2529,7 +2548,7 @@ impl glib::HasParamSpec for NotificationPriority {
     type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+        Self::ParamSpec::builder_with_default
     }
 }
 
@@ -2628,6 +2647,7 @@ impl FromGlib<ffi::GPasswordSave> for PasswordSave {
 
 impl StaticType for PasswordSave {
     #[inline]
+    #[doc(alias = "g_password_save_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_password_save_get_type()) }
     }
@@ -2639,7 +2659,7 @@ impl glib::HasParamSpec for PasswordSave {
     type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+        Self::ParamSpec::builder_with_default
     }
 }
 
@@ -2748,6 +2768,7 @@ impl FromGlib<ffi::GPollableReturn> for PollableReturn {
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
 impl StaticType for PollableReturn {
     #[inline]
+    #[doc(alias = "g_pollable_return_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_pollable_return_get_type()) }
     }
@@ -2761,7 +2782,7 @@ impl glib::HasParamSpec for PollableReturn {
     type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+        Self::ParamSpec::builder_with_default
     }
 }
 
@@ -2888,6 +2909,7 @@ impl glib::error::ErrorDomain for ResolverError {
 
 impl StaticType for ResolverError {
     #[inline]
+    #[doc(alias = "g_resolver_error_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_resolver_error_get_type()) }
     }
@@ -2899,7 +2921,7 @@ impl glib::HasParamSpec for ResolverError {
     type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+        Self::ParamSpec::builder_with_default
     }
 }
 
@@ -3008,6 +3030,7 @@ impl FromGlib<ffi::GResolverRecordType> for ResolverRecordType {
 
 impl StaticType for ResolverRecordType {
     #[inline]
+    #[doc(alias = "g_resolver_record_type_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_resolver_record_type_get_type()) }
     }
@@ -3019,7 +3042,7 @@ impl glib::HasParamSpec for ResolverRecordType {
     type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+        Self::ParamSpec::builder_with_default
     }
 }
 
@@ -3133,6 +3156,7 @@ impl glib::error::ErrorDomain for ResourceError {
 
 impl StaticType for ResourceError {
     #[inline]
+    #[doc(alias = "g_resource_error_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_resource_error_get_type()) }
     }
@@ -3144,7 +3168,7 @@ impl glib::HasParamSpec for ResourceError {
     type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+        Self::ParamSpec::builder_with_default
     }
 }
 
@@ -3273,6 +3297,7 @@ impl FromGlib<ffi::GSocketClientEvent> for SocketClientEvent {
 
 impl StaticType for SocketClientEvent {
     #[inline]
+    #[doc(alias = "g_socket_client_event_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_socket_client_event_get_type()) }
     }
@@ -3284,7 +3309,7 @@ impl glib::HasParamSpec for SocketClientEvent {
     type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+        Self::ParamSpec::builder_with_default
     }
 }
 
@@ -3388,6 +3413,7 @@ impl FromGlib<ffi::GSocketFamily> for SocketFamily {
 
 impl StaticType for SocketFamily {
     #[inline]
+    #[doc(alias = "g_socket_family_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_socket_family_get_type()) }
     }
@@ -3399,7 +3425,7 @@ impl glib::HasParamSpec for SocketFamily {
     type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+        Self::ParamSpec::builder_with_default
     }
 }
 
@@ -3503,6 +3529,7 @@ impl FromGlib<ffi::GSocketListenerEvent> for SocketListenerEvent {
 
 impl StaticType for SocketListenerEvent {
     #[inline]
+    #[doc(alias = "g_socket_listener_event_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_socket_listener_event_get_type()) }
     }
@@ -3514,7 +3541,7 @@ impl glib::HasParamSpec for SocketListenerEvent {
     type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+        Self::ParamSpec::builder_with_default
     }
 }
 
@@ -3623,6 +3650,7 @@ impl FromGlib<ffi::GSocketProtocol> for SocketProtocol {
 
 impl StaticType for SocketProtocol {
     #[inline]
+    #[doc(alias = "g_socket_protocol_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_socket_protocol_get_type()) }
     }
@@ -3634,7 +3662,7 @@ impl glib::HasParamSpec for SocketProtocol {
     type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+        Self::ParamSpec::builder_with_default
     }
 }
 
@@ -3738,6 +3766,7 @@ impl FromGlib<ffi::GSocketType> for SocketType {
 
 impl StaticType for SocketType {
     #[inline]
+    #[doc(alias = "g_socket_type_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_socket_type_get_type()) }
     }
@@ -3749,7 +3778,7 @@ impl glib::HasParamSpec for SocketType {
     type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+        Self::ParamSpec::builder_with_default
     }
 }
 
@@ -3848,6 +3877,7 @@ impl FromGlib<ffi::GTlsAuthenticationMode> for TlsAuthenticationMode {
 
 impl StaticType for TlsAuthenticationMode {
     #[inline]
+    #[doc(alias = "g_tls_authentication_mode_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_tls_authentication_mode_get_type()) }
     }
@@ -3859,7 +3889,7 @@ impl glib::HasParamSpec for TlsAuthenticationMode {
     type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+        Self::ParamSpec::builder_with_default
     }
 }
 
@@ -3948,6 +3978,7 @@ impl FromGlib<ffi::GTlsCertificateRequestFlags> for TlsCertificateRequestFlags {
 
 impl StaticType for TlsCertificateRequestFlags {
     #[inline]
+    #[doc(alias = "g_tls_certificate_request_flags_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_tls_certificate_request_flags_get_type()) }
     }
@@ -3959,7 +3990,7 @@ impl glib::HasParamSpec for TlsCertificateRequestFlags {
     type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+        Self::ParamSpec::builder_with_default
     }
 }
 
@@ -4073,6 +4104,7 @@ impl FromGlib<ffi::GTlsChannelBindingType> for TlsChannelBindingType {
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
 impl StaticType for TlsChannelBindingType {
     #[inline]
+    #[doc(alias = "g_tls_channel_binding_type_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_tls_channel_binding_type_get_type()) }
     }
@@ -4086,7 +4118,7 @@ impl glib::HasParamSpec for TlsChannelBindingType {
     type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+        Self::ParamSpec::builder_with_default
     }
 }
 
@@ -4188,6 +4220,7 @@ impl FromGlib<ffi::GTlsDatabaseLookupFlags> for TlsDatabaseLookupFlags {
 
 impl StaticType for TlsDatabaseLookupFlags {
     #[inline]
+    #[doc(alias = "g_tls_database_lookup_flags_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_tls_database_lookup_flags_get_type()) }
     }
@@ -4199,7 +4232,7 @@ impl glib::HasParamSpec for TlsDatabaseLookupFlags {
     type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+        Self::ParamSpec::builder_with_default
     }
 }
 
@@ -4353,6 +4386,7 @@ impl glib::error::ErrorDomain for TlsError {
 
 impl StaticType for TlsError {
     #[inline]
+    #[doc(alias = "g_tls_error_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_tls_error_get_type()) }
     }
@@ -4364,7 +4398,7 @@ impl glib::HasParamSpec for TlsError {
     type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+        Self::ParamSpec::builder_with_default
     }
 }
 
@@ -4463,6 +4497,7 @@ impl FromGlib<ffi::GTlsInteractionResult> for TlsInteractionResult {
 
 impl StaticType for TlsInteractionResult {
     #[inline]
+    #[doc(alias = "g_tls_interaction_result_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_tls_interaction_result_get_type()) }
     }
@@ -4474,7 +4509,7 @@ impl glib::HasParamSpec for TlsInteractionResult {
     type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+        Self::ParamSpec::builder_with_default
     }
 }
 
@@ -4608,6 +4643,7 @@ impl FromGlib<ffi::GTlsProtocolVersion> for TlsProtocolVersion {
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
 impl StaticType for TlsProtocolVersion {
     #[inline]
+    #[doc(alias = "g_tls_protocol_version_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_tls_protocol_version_get_type()) }
     }
@@ -4621,7 +4657,7 @@ impl glib::HasParamSpec for TlsProtocolVersion {
     type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+        Self::ParamSpec::builder_with_default
     }
 }
 
@@ -4733,6 +4769,7 @@ impl FromGlib<ffi::GTlsRehandshakeMode> for TlsRehandshakeMode {
 #[allow(deprecated)]
 impl StaticType for TlsRehandshakeMode {
     #[inline]
+    #[doc(alias = "g_tls_rehandshake_mode_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_tls_rehandshake_mode_get_type()) }
     }
@@ -4745,7 +4782,7 @@ impl glib::HasParamSpec for TlsRehandshakeMode {
     type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+        Self::ParamSpec::builder_with_default
     }
 }
 
@@ -4864,6 +4901,7 @@ impl FromGlib<ffi::GUnixSocketAddressType> for UnixSocketAddressType {
 #[cfg(unix)]
 impl StaticType for UnixSocketAddressType {
     #[inline]
+    #[doc(alias = "g_unix_socket_address_type_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_unix_socket_address_type_get_type()) }
     }
@@ -4876,7 +4914,7 @@ impl glib::HasParamSpec for UnixSocketAddressType {
     type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+        Self::ParamSpec::builder_with_default
     }
 }
 
@@ -4979,6 +5017,7 @@ impl FromGlib<ffi::GZlibCompressorFormat> for ZlibCompressorFormat {
 
 impl StaticType for ZlibCompressorFormat {
     #[inline]
+    #[doc(alias = "g_zlib_compressor_format_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_zlib_compressor_format_get_type()) }
     }
@@ -4990,7 +5029,7 @@ impl glib::HasParamSpec for ZlibCompressorFormat {
     type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+        Self::ParamSpec::builder_with_default
     }
 }
 

@@ -54,6 +54,7 @@ impl FromGlib<ffi::GdkColorspace> for Colorspace {
 
 impl StaticType for Colorspace {
     #[inline]
+    #[doc(alias = "gdk_colorspace_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::gdk_colorspace_get_type()) }
     }
@@ -65,7 +66,7 @@ impl glib::HasParamSpec for Colorspace {
     type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+        Self::ParamSpec::builder_with_default
     }
 }
 
@@ -169,6 +170,7 @@ impl FromGlib<ffi::GdkInterpType> for InterpType {
 
 impl StaticType for InterpType {
     #[inline]
+    #[doc(alias = "gdk_interp_type_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::gdk_interp_type_get_type()) }
     }
@@ -180,7 +182,7 @@ impl glib::HasParamSpec for InterpType {
     type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+        Self::ParamSpec::builder_with_default
     }
 }
 
@@ -279,6 +281,7 @@ impl FromGlib<ffi::GdkPixbufAlphaMode> for PixbufAlphaMode {
 #[allow(deprecated)]
 impl StaticType for PixbufAlphaMode {
     #[inline]
+    #[doc(alias = "gdk_pixbuf_alpha_mode_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::gdk_pixbuf_alpha_mode_get_type()) }
     }
@@ -291,7 +294,7 @@ impl glib::HasParamSpec for PixbufAlphaMode {
     type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+        Self::ParamSpec::builder_with_default
     }
 }
 
@@ -435,6 +438,7 @@ impl glib::error::ErrorDomain for PixbufError {
 
 impl StaticType for PixbufError {
     #[inline]
+    #[doc(alias = "gdk_pixbuf_error_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::gdk_pixbuf_error_get_type()) }
     }
@@ -446,7 +450,7 @@ impl glib::HasParamSpec for PixbufError {
     type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+        Self::ParamSpec::builder_with_default
     }
 }
 
@@ -550,6 +554,7 @@ impl FromGlib<ffi::GdkPixbufRotation> for PixbufRotation {
 
 impl StaticType for PixbufRotation {
     #[inline]
+    #[doc(alias = "gdk_pixbuf_rotation_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::gdk_pixbuf_rotation_get_type()) }
     }
@@ -561,7 +566,7 @@ impl glib::HasParamSpec for PixbufRotation {
     type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+        Self::ParamSpec::builder_with_default
     }
 }
 

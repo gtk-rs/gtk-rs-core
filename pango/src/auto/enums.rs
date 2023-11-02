@@ -65,6 +65,7 @@ impl FromGlib<ffi::PangoAlignment> for Alignment {
 
 impl StaticType for Alignment {
     #[inline]
+    #[doc(alias = "pango_alignment_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::pango_alignment_get_type()) }
     }
@@ -76,7 +77,7 @@ impl glib::HasParamSpec for Alignment {
     type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+        Self::ParamSpec::builder_with_default
     }
 }
 
@@ -391,6 +392,7 @@ impl FromGlib<ffi::PangoAttrType> for AttrType {
 
 impl StaticType for AttrType {
     #[inline]
+    #[doc(alias = "pango_attr_type_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::pango_attr_type_get_type()) }
     }
@@ -402,7 +404,7 @@ impl glib::HasParamSpec for AttrType {
     type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+        Self::ParamSpec::builder_with_default
     }
 }
 
@@ -511,6 +513,7 @@ impl FromGlib<ffi::PangoBaselineShift> for BaselineShift {
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
 impl StaticType for BaselineShift {
     #[inline]
+    #[doc(alias = "pango_baseline_shift_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::pango_baseline_shift_get_type()) }
     }
@@ -524,7 +527,7 @@ impl glib::HasParamSpec for BaselineShift {
     type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+        Self::ParamSpec::builder_with_default
     }
 }
 
@@ -742,6 +745,7 @@ impl FromGlib<ffi::PangoBidiType> for BidiType {
 #[allow(deprecated)]
 impl StaticType for BidiType {
     #[inline]
+    #[doc(alias = "pango_bidi_type_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::pango_bidi_type_get_type()) }
     }
@@ -754,7 +758,7 @@ impl glib::HasParamSpec for BidiType {
     type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+        Self::ParamSpec::builder_with_default
     }
 }
 
@@ -862,6 +866,7 @@ impl FromGlib<ffi::PangoCoverageLevel> for CoverageLevel {
 
 impl StaticType for CoverageLevel {
     #[inline]
+    #[doc(alias = "pango_coverage_level_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::pango_coverage_level_get_type()) }
     }
@@ -873,7 +878,7 @@ impl glib::HasParamSpec for CoverageLevel {
     type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+        Self::ParamSpec::builder_with_default
     }
 }
 
@@ -992,6 +997,7 @@ impl FromGlib<ffi::PangoDirection> for Direction {
 
 impl StaticType for Direction {
     #[inline]
+    #[doc(alias = "pango_direction_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::pango_direction_get_type()) }
     }
@@ -1003,7 +1009,7 @@ impl glib::HasParamSpec for Direction {
     type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+        Self::ParamSpec::builder_with_default
     }
 }
 
@@ -1107,6 +1113,7 @@ impl FromGlib<ffi::PangoEllipsizeMode> for EllipsizeMode {
 
 impl StaticType for EllipsizeMode {
     #[inline]
+    #[doc(alias = "pango_ellipsize_mode_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::pango_ellipsize_mode_get_type()) }
     }
@@ -1118,7 +1125,7 @@ impl glib::HasParamSpec for EllipsizeMode {
     type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+        Self::ParamSpec::builder_with_default
     }
 }
 
@@ -1232,6 +1239,7 @@ impl FromGlib<ffi::PangoFontScale> for FontScale {
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
 impl StaticType for FontScale {
     #[inline]
+    #[doc(alias = "pango_font_scale_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::pango_font_scale_get_type()) }
     }
@@ -1245,7 +1253,7 @@ impl glib::HasParamSpec for FontScale {
     type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+        Self::ParamSpec::builder_with_default
     }
 }
 
@@ -1405,6 +1413,7 @@ impl FromGlib<ffi::PangoGravity> for Gravity {
 
 impl StaticType for Gravity {
     #[inline]
+    #[doc(alias = "pango_gravity_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::pango_gravity_get_type()) }
     }
@@ -1416,7 +1425,7 @@ impl glib::HasParamSpec for Gravity {
     type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+        Self::ParamSpec::builder_with_default
     }
 }
 
@@ -1515,6 +1524,7 @@ impl FromGlib<ffi::PangoGravityHint> for GravityHint {
 
 impl StaticType for GravityHint {
     #[inline]
+    #[doc(alias = "pango_gravity_hint_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::pango_gravity_hint_get_type()) }
     }
@@ -1526,7 +1536,7 @@ impl glib::HasParamSpec for GravityHint {
     type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+        Self::ParamSpec::builder_with_default
     }
 }
 
@@ -1630,6 +1640,7 @@ impl FromGlib<ffi::PangoOverline> for Overline {
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_46")))]
 impl StaticType for Overline {
     #[inline]
+    #[doc(alias = "pango_overline_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::pango_overline_get_type()) }
     }
@@ -1643,7 +1654,7 @@ impl glib::HasParamSpec for Overline {
     type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+        Self::ParamSpec::builder_with_default
     }
 }
 
@@ -1760,6 +1771,7 @@ impl FromGlib<ffi::PangoRenderPart> for RenderPart {
 
 impl StaticType for RenderPart {
     #[inline]
+    #[doc(alias = "pango_render_part_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::pango_render_part_get_type()) }
     }
@@ -1771,7 +1783,7 @@ impl glib::HasParamSpec for RenderPart {
     type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+        Self::ParamSpec::builder_with_default
     }
 }
 
@@ -2458,6 +2470,7 @@ impl FromGlib<ffi::PangoScript> for Script {
 
 impl StaticType for Script {
     #[inline]
+    #[doc(alias = "pango_script_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::pango_script_get_type()) }
     }
@@ -2469,7 +2482,7 @@ impl glib::HasParamSpec for Script {
     type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+        Self::ParamSpec::builder_with_default
     }
 }
 
@@ -2598,6 +2611,7 @@ impl FromGlib<ffi::PangoStretch> for Stretch {
 
 impl StaticType for Stretch {
     #[inline]
+    #[doc(alias = "pango_stretch_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::pango_stretch_get_type()) }
     }
@@ -2609,7 +2623,7 @@ impl glib::HasParamSpec for Stretch {
     type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+        Self::ParamSpec::builder_with_default
     }
 }
 
@@ -2708,6 +2722,7 @@ impl FromGlib<ffi::PangoStyle> for Style {
 
 impl StaticType for Style {
     #[inline]
+    #[doc(alias = "pango_style_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::pango_style_get_type()) }
     }
@@ -2719,7 +2734,7 @@ impl glib::HasParamSpec for Style {
     type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+        Self::ParamSpec::builder_with_default
     }
 }
 
@@ -2838,6 +2853,7 @@ impl FromGlib<ffi::PangoTabAlign> for TabAlign {
 
 impl StaticType for TabAlign {
     #[inline]
+    #[doc(alias = "pango_tab_align_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::pango_tab_align_get_type()) }
     }
@@ -2849,7 +2865,7 @@ impl glib::HasParamSpec for TabAlign {
     type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+        Self::ParamSpec::builder_with_default
     }
 }
 
@@ -2963,6 +2979,7 @@ impl FromGlib<ffi::PangoTextTransform> for TextTransform {
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
 impl StaticType for TextTransform {
     #[inline]
+    #[doc(alias = "pango_text_transform_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::pango_text_transform_get_type()) }
     }
@@ -2976,7 +2993,7 @@ impl glib::HasParamSpec for TextTransform {
     type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+        Self::ParamSpec::builder_with_default
     }
 }
 
@@ -3108,6 +3125,7 @@ impl FromGlib<ffi::PangoUnderline> for Underline {
 
 impl StaticType for Underline {
     #[inline]
+    #[doc(alias = "pango_underline_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::pango_underline_get_type()) }
     }
@@ -3119,7 +3137,7 @@ impl glib::HasParamSpec for Underline {
     type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+        Self::ParamSpec::builder_with_default
     }
 }
 
@@ -3263,6 +3281,7 @@ impl FromGlib<ffi::PangoVariant> for Variant {
 
 impl StaticType for Variant {
     #[inline]
+    #[doc(alias = "pango_variant_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::pango_variant_get_type()) }
     }
@@ -3274,7 +3293,7 @@ impl glib::HasParamSpec for Variant {
     type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+        Self::ParamSpec::builder_with_default
     }
 }
 
@@ -3418,6 +3437,7 @@ impl FromGlib<ffi::PangoWeight> for Weight {
 
 impl StaticType for Weight {
     #[inline]
+    #[doc(alias = "pango_weight_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::pango_weight_get_type()) }
     }
@@ -3429,7 +3449,7 @@ impl glib::HasParamSpec for Weight {
     type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+        Self::ParamSpec::builder_with_default
     }
 }
 
@@ -3528,6 +3548,7 @@ impl FromGlib<ffi::PangoWrapMode> for WrapMode {
 
 impl StaticType for WrapMode {
     #[inline]
+    #[doc(alias = "pango_wrap_mode_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::pango_wrap_mode_get_type()) }
     }
@@ -3539,7 +3560,7 @@ impl glib::HasParamSpec for WrapMode {
     type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+        Self::ParamSpec::builder_with_default
     }
 }
 
