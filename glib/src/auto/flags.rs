@@ -185,6 +185,7 @@ impl FromGlib<ffi::GIOCondition> for IOCondition {
 
 impl StaticType for IOCondition {
     #[inline]
+    #[doc(alias = "g_io_condition_get_type")]
     fn static_type() -> crate::Type {
         unsafe { from_glib(ffi::g_io_condition_get_type()) }
     }
@@ -196,7 +197,7 @@ impl crate::HasParamSpec for IOCondition {
     type BuilderFn = fn(&str) -> crate::ParamSpecFlagsBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name| Self::ParamSpec::builder(name)
+        Self::ParamSpec::builder
     }
 }
 

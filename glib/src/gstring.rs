@@ -364,7 +364,7 @@ impl Eq for GStr {}
 impl PartialOrd for GStr {
     #[inline]
     fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
-        self.as_str().partial_cmp(other.as_str())
+        Some(self.cmp(other))
     }
 }
 
@@ -694,8 +694,16 @@ impl GStringPtr {
     // rustdoc-stripper-ignore-next
     /// Returns the corresponding [`&str`].
     #[inline]
-    pub fn to_str(&self) -> &str {
+    pub fn as_str(&self) -> &str {
         self.to_gstr().as_str()
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// This is just an alias for [`as_str`].
+    #[inline]
+    #[deprecated = "Use as_str instead"]
+    pub fn to_str(&self) -> &str {
+        self
     }
 
     // rustdoc-stripper-ignore-next
@@ -724,6 +732,15 @@ impl Clone for GStringPtr {
     }
 }
 
+impl Deref for GStringPtr {
+    type Target = str;
+
+    #[inline]
+    fn deref(&self) -> &str {
+        self.as_str()
+    }
+}
+
 impl IntoGlibPtr<*mut c_char> for GStringPtr {
     #[inline]
     unsafe fn into_glib_ptr(self) -> *mut c_char {
@@ -749,7 +766,7 @@ impl fmt::Debug for GStringPtr {
 impl fmt::Display for GStringPtr {
     #[inline]
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str(self.to_str())
+        f.write_str(self.as_str())
     }
 }
 
@@ -849,7 +866,7 @@ impl PartialEq<GStringPtr> for GStr {
 impl PartialOrd<GStringPtr> for GStringPtr {
     #[inline]
     fn partial_cmp(&self, other: &GStringPtr) -> Option<std::cmp::Ordering> {
-        Some(unsafe { GStringPtr::strcmp(self.as_ptr(), other.as_ptr()) })
+        Some(self.cmp(other))
     }
 }
 
@@ -863,7 +880,7 @@ impl Ord for GStringPtr {
 impl PartialOrd<GStringPtr> for String {
     #[inline]
     fn partial_cmp(&self, other: &GStringPtr) -> Option<std::cmp::Ordering> {
-        Some(self.as_str().cmp(other.to_str()))
+        Some(self.as_str().cmp(other))
     }
 }
 
@@ -877,7 +894,7 @@ impl PartialOrd<GStringPtr> for GString {
 impl PartialOrd<String> for GStringPtr {
     #[inline]
     fn partial_cmp(&self, other: &String) -> Option<std::cmp::Ordering> {
-        Some(self.to_str().cmp(other))
+        Some(self.as_str().cmp(other))
     }
 }
 
@@ -891,7 +908,7 @@ impl PartialOrd<GString> for GStringPtr {
 impl PartialOrd<GStringPtr> for str {
     #[inline]
     fn partial_cmp(&self, other: &GStringPtr) -> Option<std::cmp::Ordering> {
-        Some(self.cmp(other.to_str()))
+        Some(self.cmp(other.as_str()))
     }
 }
 
@@ -905,14 +922,14 @@ impl PartialOrd<GStringPtr> for GStr {
 impl PartialOrd<str> for GStringPtr {
     #[inline]
     fn partial_cmp(&self, other: &str) -> Option<std::cmp::Ordering> {
-        Some(self.to_str().cmp(other))
+        Some(self.as_str().cmp(other))
     }
 }
 
 impl PartialOrd<&str> for GStringPtr {
     #[inline]
     fn partial_cmp(&self, other: &&str) -> Option<std::cmp::Ordering> {
-        Some(self.to_str().cmp(other))
+        Some(self.as_str().cmp(other))
     }
 }
 
@@ -933,7 +950,7 @@ impl PartialOrd<&GStr> for GStringPtr {
 impl PartialOrd<GStringPtr> for &str {
     #[inline]
     fn partial_cmp(&self, other: &GStringPtr) -> Option<std::cmp::Ordering> {
-        Some(self.cmp(&other.to_str()))
+        Some(self.cmp(&other.as_str()))
     }
 }
 
@@ -954,7 +971,7 @@ impl AsRef<GStringPtr> for GStringPtr {
 impl std::hash::Hash for GStringPtr {
     #[inline]
     fn hash<H: std::hash::Hasher>(&self, state: &mut H) {
-        self.to_str().hash(state);
+        self.as_str().hash(state);
     }
 }
 
@@ -1223,7 +1240,7 @@ impl GString {
     pub fn as_gstr(&self) -> &GStr {
         let bytes = match self.0 {
             Inner::Native(ref s) => s.as_bytes(),
-            Inner::Foreign { len, .. } if len == 0 => &[0],
+            Inner::Foreign { len: 0, .. } => &[0],
             Inner::Foreign { ptr, len } => unsafe {
                 slice::from_raw_parts(ptr.as_ptr() as *const _, len + 1)
             },

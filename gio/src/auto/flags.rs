@@ -46,6 +46,7 @@ impl FromGlib<ffi::GAppInfoCreateFlags> for AppInfoCreateFlags {
 
 impl StaticType for AppInfoCreateFlags {
     #[inline]
+    #[doc(alias = "g_app_info_create_flags_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_app_info_create_flags_get_type()) }
     }
@@ -57,7 +58,7 @@ impl glib::HasParamSpec for AppInfoCreateFlags {
     type BuilderFn = fn(&str) -> glib::ParamSpecFlagsBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name| Self::ParamSpec::builder(name)
+        Self::ParamSpec::builder
     }
 }
 
@@ -150,6 +151,7 @@ impl FromGlib<ffi::GApplicationFlags> for ApplicationFlags {
 
 impl StaticType for ApplicationFlags {
     #[inline]
+    #[doc(alias = "g_application_flags_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_application_flags_get_type()) }
     }
@@ -161,7 +163,7 @@ impl glib::HasParamSpec for ApplicationFlags {
     type BuilderFn = fn(&str) -> glib::ParamSpecFlagsBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name| Self::ParamSpec::builder(name)
+        Self::ParamSpec::builder
     }
 }
 
@@ -246,6 +248,7 @@ impl FromGlib<ffi::GAskPasswordFlags> for AskPasswordFlags {
 
 impl StaticType for AskPasswordFlags {
     #[inline]
+    #[doc(alias = "g_ask_password_flags_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_ask_password_flags_get_type()) }
     }
@@ -257,7 +260,7 @@ impl glib::HasParamSpec for AskPasswordFlags {
     type BuilderFn = fn(&str) -> glib::ParamSpecFlagsBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name| Self::ParamSpec::builder(name)
+        Self::ParamSpec::builder
     }
 }
 
@@ -338,6 +341,7 @@ impl FromGlib<ffi::GBusNameOwnerFlags> for BusNameOwnerFlags {
 
 impl StaticType for BusNameOwnerFlags {
     #[inline]
+    #[doc(alias = "g_bus_name_owner_flags_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_bus_name_owner_flags_get_type()) }
     }
@@ -349,7 +353,7 @@ impl glib::HasParamSpec for BusNameOwnerFlags {
     type BuilderFn = fn(&str) -> glib::ParamSpecFlagsBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name| Self::ParamSpec::builder(name)
+        Self::ParamSpec::builder
     }
 }
 
@@ -426,6 +430,7 @@ impl FromGlib<ffi::GBusNameWatcherFlags> for BusNameWatcherFlags {
 
 impl StaticType for BusNameWatcherFlags {
     #[inline]
+    #[doc(alias = "g_bus_name_watcher_flags_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_bus_name_watcher_flags_get_type()) }
     }
@@ -437,7 +442,7 @@ impl glib::HasParamSpec for BusNameWatcherFlags {
     type BuilderFn = fn(&str) -> glib::ParamSpecFlagsBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name| Self::ParamSpec::builder(name)
+        Self::ParamSpec::builder
     }
 }
 
@@ -516,6 +521,7 @@ impl FromGlib<ffi::GConverterFlags> for ConverterFlags {
 
 impl StaticType for ConverterFlags {
     #[inline]
+    #[doc(alias = "g_converter_flags_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_converter_flags_get_type()) }
     }
@@ -527,7 +533,7 @@ impl glib::HasParamSpec for ConverterFlags {
     type BuilderFn = fn(&str) -> glib::ParamSpecFlagsBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name| Self::ParamSpec::builder(name)
+        Self::ParamSpec::builder
     }
 }
 
@@ -606,6 +612,7 @@ impl FromGlib<ffi::GDBusCallFlags> for DBusCallFlags {
 
 impl StaticType for DBusCallFlags {
     #[inline]
+    #[doc(alias = "g_dbus_call_flags_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_dbus_call_flags_get_type()) }
     }
@@ -617,7 +624,7 @@ impl glib::HasParamSpec for DBusCallFlags {
     type BuilderFn = fn(&str) -> glib::ParamSpecFlagsBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name| Self::ParamSpec::builder(name)
+        Self::ParamSpec::builder
     }
 }
 
@@ -694,6 +701,7 @@ impl FromGlib<ffi::GDBusCapabilityFlags> for DBusCapabilityFlags {
 
 impl StaticType for DBusCapabilityFlags {
     #[inline]
+    #[doc(alias = "g_dbus_capability_flags_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_dbus_capability_flags_get_type()) }
     }
@@ -705,7 +713,7 @@ impl glib::HasParamSpec for DBusCapabilityFlags {
     type BuilderFn = fn(&str) -> glib::ParamSpecFlagsBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name| Self::ParamSpec::builder(name)
+        Self::ParamSpec::builder
     }
 }
 
@@ -796,6 +804,7 @@ impl FromGlib<ffi::GDBusConnectionFlags> for DBusConnectionFlags {
 
 impl StaticType for DBusConnectionFlags {
     #[inline]
+    #[doc(alias = "g_dbus_connection_flags_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_dbus_connection_flags_get_type()) }
     }
@@ -807,7 +816,7 @@ impl glib::HasParamSpec for DBusConnectionFlags {
     type BuilderFn = fn(&str) -> glib::ParamSpecFlagsBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name| Self::ParamSpec::builder(name)
+        Self::ParamSpec::builder
     }
 }
 
@@ -884,6 +893,7 @@ impl FromGlib<ffi::GDBusInterfaceSkeletonFlags> for DBusInterfaceSkeletonFlags {
 
 impl StaticType for DBusInterfaceSkeletonFlags {
     #[inline]
+    #[doc(alias = "g_dbus_interface_skeleton_flags_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_dbus_interface_skeleton_flags_get_type()) }
     }
@@ -895,7 +905,7 @@ impl glib::HasParamSpec for DBusInterfaceSkeletonFlags {
     type BuilderFn = fn(&str) -> glib::ParamSpecFlagsBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name| Self::ParamSpec::builder(name)
+        Self::ParamSpec::builder
     }
 }
 
@@ -976,6 +986,7 @@ impl FromGlib<ffi::GDBusMessageFlags> for DBusMessageFlags {
 
 impl StaticType for DBusMessageFlags {
     #[inline]
+    #[doc(alias = "g_dbus_message_flags_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_dbus_message_flags_get_type()) }
     }
@@ -987,7 +998,7 @@ impl glib::HasParamSpec for DBusMessageFlags {
     type BuilderFn = fn(&str) -> glib::ParamSpecFlagsBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name| Self::ParamSpec::builder(name)
+        Self::ParamSpec::builder
     }
 }
 
@@ -1064,6 +1075,7 @@ impl FromGlib<ffi::GDBusObjectManagerClientFlags> for DBusObjectManagerClientFla
 
 impl StaticType for DBusObjectManagerClientFlags {
     #[inline]
+    #[doc(alias = "g_dbus_object_manager_client_flags_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_dbus_object_manager_client_flags_get_type()) }
     }
@@ -1075,7 +1087,7 @@ impl glib::HasParamSpec for DBusObjectManagerClientFlags {
     type BuilderFn = fn(&str) -> glib::ParamSpecFlagsBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name| Self::ParamSpec::builder(name)
+        Self::ParamSpec::builder
     }
 }
 
@@ -1164,6 +1176,7 @@ impl FromGlib<ffi::GDBusProxyFlags> for DBusProxyFlags {
 
 impl StaticType for DBusProxyFlags {
     #[inline]
+    #[doc(alias = "g_dbus_proxy_flags_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_dbus_proxy_flags_get_type()) }
     }
@@ -1175,7 +1188,7 @@ impl glib::HasParamSpec for DBusProxyFlags {
     type BuilderFn = fn(&str) -> glib::ParamSpecFlagsBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name| Self::ParamSpec::builder(name)
+        Self::ParamSpec::builder
     }
 }
 
@@ -1252,6 +1265,7 @@ impl FromGlib<ffi::GDBusSendMessageFlags> for DBusSendMessageFlags {
 
 impl StaticType for DBusSendMessageFlags {
     #[inline]
+    #[doc(alias = "g_dbus_send_message_flags_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_dbus_send_message_flags_get_type()) }
     }
@@ -1263,7 +1277,7 @@ impl glib::HasParamSpec for DBusSendMessageFlags {
     type BuilderFn = fn(&str) -> glib::ParamSpecFlagsBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name| Self::ParamSpec::builder(name)
+        Self::ParamSpec::builder
     }
 }
 
@@ -1344,6 +1358,7 @@ impl FromGlib<ffi::GDBusServerFlags> for DBusServerFlags {
 
 impl StaticType for DBusServerFlags {
     #[inline]
+    #[doc(alias = "g_dbus_server_flags_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_dbus_server_flags_get_type()) }
     }
@@ -1355,7 +1370,7 @@ impl glib::HasParamSpec for DBusServerFlags {
     type BuilderFn = fn(&str) -> glib::ParamSpecFlagsBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name| Self::ParamSpec::builder(name)
+        Self::ParamSpec::builder
     }
 }
 
@@ -1436,6 +1451,7 @@ impl FromGlib<ffi::GDBusSignalFlags> for DBusSignalFlags {
 
 impl StaticType for DBusSignalFlags {
     #[inline]
+    #[doc(alias = "g_dbus_signal_flags_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_dbus_signal_flags_get_type()) }
     }
@@ -1447,7 +1463,7 @@ impl glib::HasParamSpec for DBusSignalFlags {
     type BuilderFn = fn(&str) -> glib::ParamSpecFlagsBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name| Self::ParamSpec::builder(name)
+        Self::ParamSpec::builder
     }
 }
 
@@ -1522,6 +1538,7 @@ impl FromGlib<ffi::GDriveStartFlags> for DriveStartFlags {
 
 impl StaticType for DriveStartFlags {
     #[inline]
+    #[doc(alias = "g_drive_start_flags_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_drive_start_flags_get_type()) }
     }
@@ -1533,7 +1550,7 @@ impl glib::HasParamSpec for DriveStartFlags {
     type BuilderFn = fn(&str) -> glib::ParamSpecFlagsBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name| Self::ParamSpec::builder(name)
+        Self::ParamSpec::builder
     }
 }
 
@@ -1612,6 +1629,7 @@ impl FromGlib<ffi::GFileAttributeInfoFlags> for FileAttributeInfoFlags {
 
 impl StaticType for FileAttributeInfoFlags {
     #[inline]
+    #[doc(alias = "g_file_attribute_info_flags_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_file_attribute_info_flags_get_type()) }
     }
@@ -1623,7 +1641,7 @@ impl glib::HasParamSpec for FileAttributeInfoFlags {
     type BuilderFn = fn(&str) -> glib::ParamSpecFlagsBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name| Self::ParamSpec::builder(name)
+        Self::ParamSpec::builder
     }
 }
 
@@ -1710,6 +1728,7 @@ impl FromGlib<ffi::GFileCopyFlags> for FileCopyFlags {
 
 impl StaticType for FileCopyFlags {
     #[inline]
+    #[doc(alias = "g_file_copy_flags_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_file_copy_flags_get_type()) }
     }
@@ -1721,7 +1740,7 @@ impl glib::HasParamSpec for FileCopyFlags {
     type BuilderFn = fn(&str) -> glib::ParamSpecFlagsBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name| Self::ParamSpec::builder(name)
+        Self::ParamSpec::builder
     }
 }
 
@@ -1800,6 +1819,7 @@ impl FromGlib<ffi::GFileCreateFlags> for FileCreateFlags {
 
 impl StaticType for FileCreateFlags {
     #[inline]
+    #[doc(alias = "g_file_create_flags_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_file_create_flags_get_type()) }
     }
@@ -1811,7 +1831,7 @@ impl glib::HasParamSpec for FileCreateFlags {
     type BuilderFn = fn(&str) -> glib::ParamSpecFlagsBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name| Self::ParamSpec::builder(name)
+        Self::ParamSpec::builder
     }
 }
 
@@ -1892,6 +1912,7 @@ impl FromGlib<ffi::GFileMeasureFlags> for FileMeasureFlags {
 
 impl StaticType for FileMeasureFlags {
     #[inline]
+    #[doc(alias = "g_file_measure_flags_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_file_measure_flags_get_type()) }
     }
@@ -1903,7 +1924,7 @@ impl glib::HasParamSpec for FileMeasureFlags {
     type BuilderFn = fn(&str) -> glib::ParamSpecFlagsBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name| Self::ParamSpec::builder(name)
+        Self::ParamSpec::builder
     }
 }
 
@@ -1986,6 +2007,7 @@ impl FromGlib<ffi::GFileMonitorFlags> for FileMonitorFlags {
 
 impl StaticType for FileMonitorFlags {
     #[inline]
+    #[doc(alias = "g_file_monitor_flags_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_file_monitor_flags_get_type()) }
     }
@@ -1997,7 +2019,7 @@ impl glib::HasParamSpec for FileMonitorFlags {
     type BuilderFn = fn(&str) -> glib::ParamSpecFlagsBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name| Self::ParamSpec::builder(name)
+        Self::ParamSpec::builder
     }
 }
 
@@ -2074,6 +2096,7 @@ impl FromGlib<ffi::GFileQueryInfoFlags> for FileQueryInfoFlags {
 
 impl StaticType for FileQueryInfoFlags {
     #[inline]
+    #[doc(alias = "g_file_query_info_flags_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_file_query_info_flags_get_type()) }
     }
@@ -2085,7 +2108,7 @@ impl glib::HasParamSpec for FileQueryInfoFlags {
     type BuilderFn = fn(&str) -> glib::ParamSpecFlagsBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name| Self::ParamSpec::builder(name)
+        Self::ParamSpec::builder
     }
 }
 
@@ -2166,6 +2189,7 @@ impl FromGlib<ffi::GIOStreamSpliceFlags> for IOStreamSpliceFlags {
 
 impl StaticType for IOStreamSpliceFlags {
     #[inline]
+    #[doc(alias = "g_io_stream_splice_flags_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_io_stream_splice_flags_get_type()) }
     }
@@ -2177,7 +2201,7 @@ impl glib::HasParamSpec for IOStreamSpliceFlags {
     type BuilderFn = fn(&str) -> glib::ParamSpecFlagsBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name| Self::ParamSpec::builder(name)
+        Self::ParamSpec::builder
     }
 }
 
@@ -2252,6 +2276,7 @@ impl FromGlib<ffi::GMountMountFlags> for MountMountFlags {
 
 impl StaticType for MountMountFlags {
     #[inline]
+    #[doc(alias = "g_mount_mount_flags_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_mount_mount_flags_get_type()) }
     }
@@ -2263,7 +2288,7 @@ impl glib::HasParamSpec for MountMountFlags {
     type BuilderFn = fn(&str) -> glib::ParamSpecFlagsBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name| Self::ParamSpec::builder(name)
+        Self::ParamSpec::builder
     }
 }
 
@@ -2340,6 +2365,7 @@ impl FromGlib<ffi::GMountUnmountFlags> for MountUnmountFlags {
 
 impl StaticType for MountUnmountFlags {
     #[inline]
+    #[doc(alias = "g_mount_unmount_flags_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_mount_unmount_flags_get_type()) }
     }
@@ -2351,7 +2377,7 @@ impl glib::HasParamSpec for MountUnmountFlags {
     type BuilderFn = fn(&str) -> glib::ParamSpecFlagsBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name| Self::ParamSpec::builder(name)
+        Self::ParamSpec::builder
     }
 }
 
@@ -2430,6 +2456,7 @@ impl FromGlib<ffi::GOutputStreamSpliceFlags> for OutputStreamSpliceFlags {
 
 impl StaticType for OutputStreamSpliceFlags {
     #[inline]
+    #[doc(alias = "g_output_stream_splice_flags_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_output_stream_splice_flags_get_type()) }
     }
@@ -2441,7 +2468,7 @@ impl glib::HasParamSpec for OutputStreamSpliceFlags {
     type BuilderFn = fn(&str) -> glib::ParamSpecFlagsBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name| Self::ParamSpec::builder(name)
+        Self::ParamSpec::builder
     }
 }
 
@@ -2530,6 +2557,7 @@ impl FromGlib<ffi::GResolverNameLookupFlags> for ResolverNameLookupFlags {
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
 impl StaticType for ResolverNameLookupFlags {
     #[inline]
+    #[doc(alias = "g_resolver_name_lookup_flags_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_resolver_name_lookup_flags_get_type()) }
     }
@@ -2543,7 +2571,7 @@ impl glib::HasParamSpec for ResolverNameLookupFlags {
     type BuilderFn = fn(&str) -> glib::ParamSpecFlagsBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name| Self::ParamSpec::builder(name)
+        Self::ParamSpec::builder
     }
 }
 
@@ -2626,6 +2654,7 @@ impl FromGlib<ffi::GResourceLookupFlags> for ResourceLookupFlags {
 
 impl StaticType for ResourceLookupFlags {
     #[inline]
+    #[doc(alias = "g_resource_lookup_flags_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_resource_lookup_flags_get_type()) }
     }
@@ -2637,7 +2666,7 @@ impl glib::HasParamSpec for ResourceLookupFlags {
     type BuilderFn = fn(&str) -> glib::ParamSpecFlagsBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name| Self::ParamSpec::builder(name)
+        Self::ParamSpec::builder
     }
 }
 
@@ -2722,6 +2751,7 @@ impl FromGlib<ffi::GSettingsBindFlags> for SettingsBindFlags {
 
 impl StaticType for SettingsBindFlags {
     #[inline]
+    #[doc(alias = "g_settings_bind_flags_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_settings_bind_flags_get_type()) }
     }
@@ -2733,7 +2763,7 @@ impl glib::HasParamSpec for SettingsBindFlags {
     type BuilderFn = fn(&str) -> glib::ParamSpecFlagsBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name| Self::ParamSpec::builder(name)
+        Self::ParamSpec::builder
     }
 }
 
@@ -2828,6 +2858,7 @@ impl FromGlib<ffi::GSubprocessFlags> for SubprocessFlags {
 
 impl StaticType for SubprocessFlags {
     #[inline]
+    #[doc(alias = "g_subprocess_flags_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_subprocess_flags_get_type()) }
     }
@@ -2839,7 +2870,7 @@ impl glib::HasParamSpec for SubprocessFlags {
     type BuilderFn = fn(&str) -> glib::ParamSpecFlagsBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name| Self::ParamSpec::builder(name)
+        Self::ParamSpec::builder
     }
 }
 
@@ -2928,6 +2959,7 @@ impl FromGlib<ffi::GTlsCertificateFlags> for TlsCertificateFlags {
 
 impl StaticType for TlsCertificateFlags {
     #[inline]
+    #[doc(alias = "g_tls_certificate_flags_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_tls_certificate_flags_get_type()) }
     }
@@ -2939,7 +2971,7 @@ impl glib::HasParamSpec for TlsCertificateFlags {
     type BuilderFn = fn(&str) -> glib::ParamSpecFlagsBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name| Self::ParamSpec::builder(name)
+        Self::ParamSpec::builder
     }
 }
 
@@ -3014,6 +3046,7 @@ impl FromGlib<ffi::GTlsDatabaseVerifyFlags> for TlsDatabaseVerifyFlags {
 
 impl StaticType for TlsDatabaseVerifyFlags {
     #[inline]
+    #[doc(alias = "g_tls_database_verify_flags_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_tls_database_verify_flags_get_type()) }
     }
@@ -3025,7 +3058,7 @@ impl glib::HasParamSpec for TlsDatabaseVerifyFlags {
     type BuilderFn = fn(&str) -> glib::ParamSpecFlagsBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name| Self::ParamSpec::builder(name)
+        Self::ParamSpec::builder
     }
 }
 
@@ -3112,6 +3145,7 @@ impl FromGlib<ffi::GTlsPasswordFlags> for TlsPasswordFlags {
 
 impl StaticType for TlsPasswordFlags {
     #[inline]
+    #[doc(alias = "g_tls_password_flags_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::g_tls_password_flags_get_type()) }
     }
@@ -3123,7 +3157,7 @@ impl glib::HasParamSpec for TlsPasswordFlags {
     type BuilderFn = fn(&str) -> glib::ParamSpecFlagsBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name| Self::ParamSpec::builder(name)
+        Self::ParamSpec::builder
     }
 }
 

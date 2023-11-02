@@ -546,7 +546,7 @@ impl<T: 'static, MM: BoxedMemoryManager<T>> fmt::Debug for Boxed<T, MM> {
 impl<T, MM: BoxedMemoryManager<T>> PartialOrd for Boxed<T, MM> {
     #[inline]
     fn partial_cmp(&self, other: &Self) -> Option<cmp::Ordering> {
-        self.to_glib_none().0.partial_cmp(&other.to_glib_none().0)
+        Some(self.cmp(other))
     }
 }
 

@@ -46,7 +46,7 @@ impl Eq for StrV {}
 impl PartialOrd for StrV {
     #[inline]
     fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
-        self.as_slice().partial_cmp(other.as_slice())
+        Some(self.cmp(other))
     }
 }
 
@@ -409,7 +409,7 @@ impl Clone for StrV {
         unsafe {
             let mut s = Self::with_capacity(self.len());
             for (i, item) in self.iter().enumerate() {
-                *s.ptr.as_ptr().add(i) = GString::from(item.to_str()).into_glib_ptr();
+                *s.ptr.as_ptr().add(i) = GString::from(item.as_str()).into_glib_ptr();
             }
             s.len = self.len();
             *s.ptr.as_ptr().add(s.len) = ptr::null_mut();

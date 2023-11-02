@@ -54,6 +54,7 @@ impl FromGlib<ffi::PangoFontMask> for FontMask {
 
 impl StaticType for FontMask {
     #[inline]
+    #[doc(alias = "pango_font_mask_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::pango_font_mask_get_type()) }
     }
@@ -65,7 +66,7 @@ impl glib::HasParamSpec for FontMask {
     type BuilderFn = fn(&str) -> glib::ParamSpecFlagsBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name| Self::ParamSpec::builder(name)
+        Self::ParamSpec::builder
     }
 }
 
@@ -152,6 +153,7 @@ impl FromGlib<ffi::PangoLayoutDeserializeFlags> for LayoutDeserializeFlags {
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
 impl StaticType for LayoutDeserializeFlags {
     #[inline]
+    #[doc(alias = "pango_layout_deserialize_flags_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::pango_layout_deserialize_flags_get_type()) }
     }
@@ -165,7 +167,7 @@ impl glib::HasParamSpec for LayoutDeserializeFlags {
     type BuilderFn = fn(&str) -> glib::ParamSpecFlagsBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name| Self::ParamSpec::builder(name)
+        Self::ParamSpec::builder
     }
 }
 
@@ -262,6 +264,7 @@ impl FromGlib<ffi::PangoLayoutSerializeFlags> for LayoutSerializeFlags {
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
 impl StaticType for LayoutSerializeFlags {
     #[inline]
+    #[doc(alias = "pango_layout_serialize_flags_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::pango_layout_serialize_flags_get_type()) }
     }
@@ -275,7 +278,7 @@ impl glib::HasParamSpec for LayoutSerializeFlags {
     type BuilderFn = fn(&str) -> glib::ParamSpecFlagsBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name| Self::ParamSpec::builder(name)
+        Self::ParamSpec::builder
     }
 }
 
@@ -370,6 +373,7 @@ impl FromGlib<ffi::PangoShapeFlags> for ShapeFlags {
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
 impl StaticType for ShapeFlags {
     #[inline]
+    #[doc(alias = "pango_shape_flags_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::pango_shape_flags_get_type()) }
     }
@@ -383,7 +387,7 @@ impl glib::HasParamSpec for ShapeFlags {
     type BuilderFn = fn(&str) -> glib::ParamSpecFlagsBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name| Self::ParamSpec::builder(name)
+        Self::ParamSpec::builder
     }
 }
 
@@ -482,6 +486,7 @@ impl FromGlib<ffi::PangoShowFlags> for ShowFlags {
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
 impl StaticType for ShowFlags {
     #[inline]
+    #[doc(alias = "pango_show_flags_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::pango_show_flags_get_type()) }
     }
@@ -495,7 +500,7 @@ impl glib::HasParamSpec for ShowFlags {
     type BuilderFn = fn(&str) -> glib::ParamSpecFlagsBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name| Self::ParamSpec::builder(name)
+        Self::ParamSpec::builder
     }
 }
 

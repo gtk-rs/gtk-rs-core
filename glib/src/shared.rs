@@ -491,7 +491,7 @@ impl<T, MM: SharedMemoryManager<T>> fmt::Debug for Shared<T, MM> {
 impl<T, MM: SharedMemoryManager<T>> PartialOrd for Shared<T, MM> {
     #[inline]
     fn partial_cmp(&self, other: &Self) -> Option<cmp::Ordering> {
-        self.inner.partial_cmp(&other.inner)
+        Some(self.cmp(other))
     }
 }
 
