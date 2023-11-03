@@ -81,8 +81,8 @@ pub fn impl_dynamic_object_subclass(
         ),
     };
 
-    // The following implementations follows the lifecycle of plugins and of dynamic types (see [`TypePluginExt::unuse`]).
-    // An object subclass can be reregistered as a dynamic type (see [`TypePluginExt::register_type`]).
+    // The following implementations follows the lifecycle of plugins and of dynamic types (see [`TypePluginExt`] and [`TypeModuleExt`]).
+    // An object subclass can be reregistered as a dynamic type.
     let register_type = if lazy_registration {
         // registers the object subclass as a dynamic type on the first use (lazy registration).
         // a weak reference on the plugin is stored and will be used later on the first use of the object subclass.

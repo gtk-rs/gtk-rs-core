@@ -1,11 +1,11 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use std::{cmp, ffi::CStr, fmt, ptr};
+use std::{cmp, ffi::CStr, fmt, marker::PhantomData, ptr};
 
 use crate::{
     translate::*,
     value::{FromValue, ValueTypeChecker},
-    HasParamSpec, ParamSpecEnum, ParamSpecFlags, StaticType, Type, Value,
+    HasParamSpec, ParamSpecEnum, ParamSpecFlags, StaticType, Type, TypeInfo, Value,
 };
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Hash)]
@@ -187,6 +187,33 @@ impl EnumClass {
     pub fn to_value_by_nick(&self, nick: &str) -> Option<Value> {
         self.value_by_nick(nick).map(|v| v.to_value(self))
     }
+
+    // rustdoc-stripper-ignore-next
+    /// Complete `TypeInfo` for an enum with values.
+    /// This is an associated function. A method would result in a stack overflow due to a recurvice call:
+    /// callers should first create an `EnumClass` instance by calling `EnumClass::with_type()` which indirectly
+    /// calls `TypePluginRegisterImpl::register_dynamic_enum()` and `TypePluginImpl::complete_type_info()`
+    /// and one of them should call `EnumClass::with_type()` before calling this method.
+    #[doc(alias = "g_enum_complete_type_info")]
+    pub fn type_info(type_: Type, const_static_values: &'static [EnumValue]) -> Option<TypeInfo> {
+        unsafe {
+            let is_enum: bool = from_glib(gobject_ffi::g_type_is_a(
+                type_.into_glib(),
+                gobject_ffi::G_TYPE_ENUM,
+            ));
+            if !is_enum {
+                return None;
+            }
+
+            let info = TypeInfo::default();
+            gobject_ffi::g_enum_complete_type_info(
+                type_.into_glib(),
+                info.as_ptr(),
+                const_static_values.to_glib_none().0,
+            );
+            Some(info)
+        }
+    }
 }
 
 impl Drop for EnumClass {
@@ -227,6 +254,12 @@ impl fmt::Debug for EnumValue {
 }
 
 impl EnumValue {
+    // rustdoc-stripper-ignore-next
+    /// Creates a new `EnumValue` containing `value`.
+    pub const fn new(value: gobject_ffi::GEnumValue) -> Self {
+        Self(value)
+    }
+
     // rustdoc-stripper-ignore-next
     /// Get integer value corresponding to the value.
     #[doc(alias = "get_value")]
@@ -297,6 +330,37 @@ unsafe impl<'a, 'b> FromValue<'a> for &'b EnumValue {
         let (_, v) = EnumValue::from_value(value).unwrap();
         // SAFETY: The enum class and its values live forever
         std::mem::transmute(v)
+    }
+}
+
+#[doc(hidden)]
+impl<'a> ToGlibPtr<'a, *const gobject_ffi::GEnumValue> for EnumValue {
+    type Storage = PhantomData<&'a Self>;
+
+    #[inline]
+    fn to_glib_none(&'a self) -> Stash<'a, *const gobject_ffi::GEnumValue, Self> {
+        Stash(&self.0 as *const gobject_ffi::GEnumValue, PhantomData)
+    }
+}
+
+impl<'a> ToGlibContainerFromSlice<'a, *const gobject_ffi::GEnumValue> for EnumValue {
+    type Storage = PhantomData<&'a Self>;
+
+    fn to_glib_none_from_slice(t: &'a [Self]) -> (*const gobject_ffi::GEnumValue, Self::Storage) {
+        (
+            t.as_ptr() as *const gobject_ffi::GEnumValue,
+            std::marker::PhantomData,
+        )
+    }
+
+    fn to_glib_container_from_slice(
+        _: &'a [Self],
+    ) -> (*const gobject_ffi::GEnumValue, Self::Storage) {
+        unimplemented!();
+    }
+
+    fn to_glib_full_from_slice(_: &[Self]) -> *const gobject_ffi::GEnumValue {
+        unimplemented!();
     }
 }
 

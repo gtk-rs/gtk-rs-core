@@ -2,11 +2,11 @@
 
 use crate::translate::IntoGlib;
 use crate::translate::{FromGlib, ToGlibPtr};
-use crate::TypeFlags;
 use crate::{
     subclass::prelude::*, Cast, Interface, InterfaceInfo, Type, TypeInfo, TypePlugin,
     TypeValueTable,
 };
+use crate::{EnumValue, TypeFlags};
 
 pub trait TypePluginImpl: ObjectImpl + TypePluginImplExt {
     fn use_plugin(&self) {
@@ -184,7 +184,11 @@ pub trait TypePluginRegisterImpl: ObjectImpl + TypePluginImpl {
         _interface_type: Type,
         _interface_info: &InterfaceInfo,
     );
-
+    fn register_dynamic_enum(
+        &self,
+        _name: &str,
+        _const_static_values: &'static [EnumValue],
+    ) -> Type;
     fn register_dynamic_type(
         &self,
         _parent_type: Type,
@@ -242,6 +246,14 @@ mod tests {
                 _interface_type: Type,
                 _interface_info: &InterfaceInfo,
             ) {
+                unimplemented!()
+            }
+
+            fn register_dynamic_enum(
+                &self,
+                _name: &str,
+                _const_static_values: &'static [EnumValue],
+            ) -> Type {
                 unimplemented!()
             }
 

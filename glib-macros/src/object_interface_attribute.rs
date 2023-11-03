@@ -86,8 +86,8 @@ pub fn impl_dynamic_object_interface(
         ),
     };
 
-    // The following implementations follows the lifecycle of plugins and of dynamic types (see [`TypePluginExt::unuse`]).
-    // An object interface can be reregistered as a dynamic type (see [`TypePluginExt::register_type`]).
+    // The following implementations follows the lifecycle of plugins and of dynamic types (see [`TypePluginExt`] and [`TypeModuleExt`]).
+    // An object interface can be reregistered as a dynamic type.
     let register_interface = if lazy_registration {
         // registers the object interface as a dynamic type on the first use (lazy registration).
         // a weak reference on the plugin is stored and will be used later on the first use of the object interface.
