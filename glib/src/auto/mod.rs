@@ -20,9 +20,6 @@ pub use self::main_loop::MainLoop;
 mod markup_parse_context;
 pub use self::markup_parse_context::MarkupParseContext;
 
-mod match_info;
-pub use self::match_info::MatchInfo;
-
 mod regex;
 pub use self::regex::Regex;
 

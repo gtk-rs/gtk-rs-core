@@ -182,6 +182,7 @@ pub use self::property::*;
 mod quark;
 pub use self::quark::Quark;
 pub mod match_info;
+pub use self::match_info::MatchInfo;
 pub mod regex;
 #[macro_use]
 mod log;

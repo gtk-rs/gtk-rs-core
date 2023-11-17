@@ -5,7 +5,7 @@
 //! compatibility with GLib.Regex based APIs.
 
 use crate::{
-    translate::*, GStringPtr, IntoGStr, MatchInfo, PtrSlice, Regex, RegexCompileFlags,
+    translate::*, GStr, GStringPtr, IntoGStr, MatchInfo, PtrSlice, Regex, RegexCompileFlags,
     RegexMatchFlags,
 };
 use std::{mem, ptr};
@@ -113,80 +113,76 @@ impl Regex {
     }
 
     #[doc(alias = "g_regex_match_all")]
-    pub fn match_all(
+    pub fn match_all<'input>(
         &self,
-        string: impl IntoGStr,
+        string: &'input GStr,
         match_options: RegexMatchFlags,
-    ) -> Option<MatchInfo> {
+    ) -> Option<MatchInfo<'input>> {
         self.match_all_full(string, 0, match_options).ok()
     }
 
     #[doc(alias = "g_regex_match_all_full")]
-    pub fn match_all_full(
+    pub fn match_all_full<'input>(
         &self,
-        string: impl IntoGStr,
+        string: &'input GStr,
         start_position: i32,
         match_options: RegexMatchFlags,
-    ) -> Result<MatchInfo, crate::Error> {
+    ) -> Result<MatchInfo<'input>, crate::Error> {
         unsafe {
-            string.run_with_gstr(|string| {
-                let mut match_info = ptr::null_mut();
-                let mut error = ptr::null_mut();
-                let is_ok = ffi::g_regex_match_all_full(
-                    self.to_glib_none().0,
-                    string.to_glib_none().0,
-                    string.len() as _,
-                    start_position,
-                    match_options.into_glib(),
-                    &mut match_info,
-                    &mut error,
-                );
-                debug_assert_eq!(is_ok == crate::ffi::GFALSE, !error.is_null());
-                if error.is_null() {
-                    Ok(from_glib_full(match_info))
-                } else {
-                    Err(from_glib_full(error))
-                }
-            })
+            let mut match_info = ptr::null_mut();
+            let mut error = ptr::null_mut();
+            let is_ok = ffi::g_regex_match_all_full(
+                self.to_glib_none().0,
+                string.to_glib_none().0,
+                string.len() as _,
+                start_position,
+                match_options.into_glib(),
+                &mut match_info,
+                &mut error,
+            );
+            debug_assert_eq!(is_ok == crate::ffi::GFALSE, !error.is_null());
+            if error.is_null() {
+                Ok(from_glib_full(match_info))
+            } else {
+                Err(from_glib_full(error))
+            }
         }
     }
 
     #[doc(alias = "g_regex_match")]
-    pub fn match_(
+    pub fn match_<'input>(
         &self,
-        string: impl IntoGStr,
+        string: &'input GStr,
         match_options: RegexMatchFlags,
-    ) -> Option<MatchInfo> {
+    ) -> Option<MatchInfo<'input>> {
         self.match_full(string, 0, match_options).ok()
     }
 
     #[doc(alias = "g_regex_match_full")]
-    pub fn match_full(
+    pub fn match_full<'input>(
         &self,
-        string: impl IntoGStr,
+        string: &'input GStr,
         start_position: i32,
         match_options: RegexMatchFlags,
-    ) -> Result<MatchInfo, crate::Error> {
+    ) -> Result<MatchInfo<'input>, crate::Error> {
         unsafe {
-            string.run_with_gstr(|string| {
-                let mut match_info = ptr::null_mut();
-                let mut error = ptr::null_mut();
-                let is_ok = ffi::g_regex_match_full(
-                    self.to_glib_none().0,
-                    string.to_glib_none().0,
-                    string.len() as _,
-                    start_position,
-                    match_options.into_glib(),
-                    &mut match_info,
-                    &mut error,
-                );
-                debug_assert_eq!(is_ok == crate::ffi::GFALSE, !error.is_null());
-                if error.is_null() {
-                    Ok(from_glib_full(match_info))
-                } else {
-                    Err(from_glib_full(error))
-                }
-            })
+            let mut match_info = ptr::null_mut();
+            let mut error = ptr::null_mut();
+            let is_ok = ffi::g_regex_match_full(
+                self.to_glib_none().0,
+                string.to_glib_none().0,
+                string.len() as _,
+                start_position,
+                match_options.into_glib(),
+                &mut match_info,
+                &mut error,
+            );
+            debug_assert_eq!(is_ok == crate::ffi::GFALSE, !error.is_null());
+            if error.is_null() {
+                Ok(from_glib_full(match_info))
+            } else {
+                Err(from_glib_full(error))
+            }
         }
     }
 
