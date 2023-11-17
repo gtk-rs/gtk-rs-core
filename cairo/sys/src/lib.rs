@@ -6,18 +6,10 @@
 #![allow(clippy::upper_case_acronyms)]
 #![cfg_attr(docsrs, feature(doc_cfg))]
 
-extern crate libc;
-
-#[cfg(feature = "xlib")]
-extern crate x11;
-
-#[cfg(all(windows, feature = "win32-surface"))]
-extern crate winapi as winapi_orig;
-
 #[cfg(all(windows, feature = "win32-surface"))]
 #[cfg_attr(docsrs, doc(cfg(all(windows, feature = "win32-surface"))))]
-pub mod winapi {
-    pub use winapi_orig::shared::windef::HDC;
+pub mod windows {
+    pub use windows_sys::Win32::Graphics::Gdi::HDC;
 }
 
 #[cfg(all(docsrs, not(all(windows, feature = "win32-surface"))))]
@@ -25,7 +17,7 @@ pub mod winapi {
     docsrs,
     doc(cfg(all(docsrs, not(all(windows, feature = "win32-surface")))))
 )]
-pub mod winapi {
+pub mod windows {
     use libc::c_void;
 
     #[repr(C)]
@@ -1472,11 +1464,11 @@ extern "C" {
     // CAIRO WINDOWS SURFACE
     #[cfg(all(windows, feature = "win32-surface"))]
     #[cfg_attr(docsrs, doc(cfg(all(windows, feature = "win32-surface"))))]
-    pub fn cairo_win32_surface_create(hdc: winapi::HDC) -> *mut cairo_surface_t;
+    pub fn cairo_win32_surface_create(hdc: windows::HDC) -> *mut cairo_surface_t;
     #[cfg(all(windows, feature = "win32-surface"))]
     #[cfg_attr(docsrs, doc(cfg(all(windows, feature = "win32-surface"))))]
     pub fn cairo_win32_surface_create_with_format(
-        hdc: winapi::HDC,
+        hdc: windows::HDC,
         format: cairo_format_t,
     ) -> *mut cairo_surface_t;
     #[cfg(all(windows, feature = "win32-surface"))]
@@ -1489,17 +1481,17 @@ extern "C" {
     #[cfg(all(windows, feature = "win32-surface"))]
     #[cfg_attr(docsrs, doc(cfg(all(windows, feature = "win32-surface"))))]
     pub fn cairo_win32_surface_create_with_ddb(
-        hdc: winapi::HDC,
+        hdc: windows::HDC,
         format: cairo_format_t,
         width: c_int,
         height: c_int,
     ) -> *mut cairo_surface_t;
     #[cfg(all(windows, feature = "win32-surface"))]
     #[cfg_attr(docsrs, doc(cfg(all(windows, feature = "win32-surface"))))]
-    pub fn cairo_win32_printing_surface_create(hdc: winapi::HDC) -> *mut cairo_surface_t;
+    pub fn cairo_win32_printing_surface_create(hdc: windows::HDC) -> *mut cairo_surface_t;
     #[cfg(all(windows, feature = "win32-surface"))]
     #[cfg_attr(docsrs, doc(cfg(all(windows, feature = "win32-surface"))))]
-    pub fn cairo_win32_surface_get_dc(surface: *mut cairo_surface_t) -> winapi::HDC;
+    pub fn cairo_win32_surface_get_dc(surface: *mut cairo_surface_t) -> windows::HDC;
     #[cfg(all(windows, feature = "win32-surface"))]
     #[cfg_attr(docsrs, doc(cfg(all(windows, feature = "win32-surface"))))]
     pub fn cairo_win32_surface_get_image(surface: *mut cairo_surface_t) -> *mut cairo_surface_t;
