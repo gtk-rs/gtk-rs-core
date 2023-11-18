@@ -3,6 +3,7 @@
 #![cfg_attr(docsrs, feature(doc_cfg))]
 #![allow(clippy::type_complexity)]
 #![allow(clippy::too_many_arguments)]
+#![allow(clippy::missing_safety_doc)]
 #![doc = include_str!("../README.md")]
 
 pub use ffi;
