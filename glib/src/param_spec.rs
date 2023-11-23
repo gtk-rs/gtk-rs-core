@@ -567,30 +567,12 @@ macro_rules! define_param_spec_min_max {
 }
 
 macro_rules! define_param_spec_numeric {
-    ($rust_type:ident, $ffi_type:path, $value_type:ty, $rust_type_offset:expr, $ffi_fun:ident, $alias:literal) => {
+    ($rust_type:ident, $ffi_type:path, $value_type:ty, $rust_type_offset:expr, $ffi_fun:ident) => {
         define_param_spec!($rust_type, $ffi_type, $rust_type_offset);
         define_param_spec_default!($rust_type, $ffi_type, $value_type, |x| x);
         define_param_spec_min_max!($rust_type, $ffi_type, $value_type);
 
         impl $rust_type {
-            #[allow(clippy::new_ret_no_self)]
-            #[doc(alias = $alias)]
-            #[deprecated = "Use builder() instead"]
-            pub fn new<'a>(
-                name: &str,
-                nick: impl Into<Option<&'a str>>,
-                blurb: impl Into<Option<&'a str>>,
-                minimum: $value_type,
-                maximum: $value_type,
-                default_value: $value_type,
-                flags: ParamFlags,
-            ) -> ParamSpec {
-                assert_param_name(name);
-                unsafe {
-                    Self::new_unchecked(name, nick, blurb, minimum, maximum, default_value, flags)
-                }
-            }
-
             unsafe fn new_unchecked<'a>(
                 name: &str,
                 nick: impl Into<Option<&'a str>>,
@@ -701,7 +683,7 @@ pub trait ParamSpecBuilderExt<'a>: Sized {
 }
 
 macro_rules! define_builder {
-    (@constructors $rust_type:ident, $builder_type:ident $(($($req_ident:ident: $req_ty:ty,)*))?) => {
+    (@constructors $rust_type:ident, $alias:literal, $builder_type:ident $(($($req_ident:ident: $req_ty:ty,)*))?) => {
         impl<'a> $builder_type<'a> {
             fn new(name: &'a str, $($($req_ident: $req_ty)*)?) -> Self {
                 assert_param_name(name);
@@ -714,6 +696,7 @@ macro_rules! define_builder {
         }
 
         impl $rust_type {
+            #[doc(alias = $alias)]
             pub fn builder(name: &str, $($($req_ident: $req_ty),*)?) -> $builder_type<'_> {
                 $builder_type::new(name, $($($req_ident),*)?)
             }
@@ -735,7 +718,7 @@ macro_rules! define_builder {
         }
     };
     (
-        $rust_type:ident, $builder_type:ident {
+        $rust_type:ident, $alias:literal, $builder_type:ident {
             $($field_id:ident: $field_ty:ty $(= $field_expr:expr)?,)*
         }
         $(requires $required_tt:tt)?
@@ -775,13 +758,14 @@ macro_rules! define_builder {
                 }
             }
         }
-        define_builder!(@constructors $rust_type, $builder_type $($required_tt)?);
+        define_builder!(@constructors $rust_type, $alias, $builder_type $($required_tt)?);
     }
 }
 macro_rules! define_builder_numeric {
-    ($rust_type:ident, $builder_type:ident, $n_ty:ty) => {
+    ($rust_type:ident, $alias:literal, $builder_type:ident, $n_ty:ty) => {
         define_builder!(
             $rust_type,
+            $alias,
             $builder_type {
                 minimum: $n_ty = <$n_ty>::MIN,
                 maximum: $n_ty = <$n_ty>::MAX,
@@ -804,22 +788,25 @@ define_param_spec_numeric!(
     gobject_ffi::GParamSpecChar,
     i8,
     0,
-    g_param_spec_char,
-    "g_param_spec_char"
+    g_param_spec_char
 );
 
-define_builder_numeric!(ParamSpecChar, ParamSpecCharBuilder, i8);
+define_builder_numeric!(ParamSpecChar, "g_param_spec_char", ParamSpecCharBuilder, i8);
 
 define_param_spec_numeric!(
     ParamSpecUChar,
     gobject_ffi::GParamSpecUChar,
     u8,
     1,
-    g_param_spec_uchar,
-    "g_param_spec_uchar"
+    g_param_spec_uchar
 );
 
-define_builder_numeric!(ParamSpecUChar, ParamSpecUCharBuilder, u8);
+define_builder_numeric!(
+    ParamSpecUChar,
+    "g_param_spec_uchar",
+    ParamSpecUCharBuilder,
+    u8
+);
 
 define_param_spec!(ParamSpecBoolean, gobject_ffi::GParamSpecBoolean, 2);
 
@@ -831,20 +818,6 @@ define_param_spec_default!(
 );
 
 impl ParamSpecBoolean {
-    #[allow(clippy::new_ret_no_self)]
-    #[doc(alias = "g_param_spec_boolean")]
-    #[deprecated = "Use builder() instead"]
-    pub fn new<'a>(
-        name: &str,
-        nick: impl Into<Option<&'a str>>,
-        blurb: impl Into<Option<&'a str>>,
-        default_value: bool,
-        flags: ParamFlags,
-    ) -> ParamSpec {
-        assert_param_name(name);
-        unsafe { Self::new_unchecked(name, nick, blurb, default_value, flags) }
-    }
-
     unsafe fn new_unchecked<'a>(
         name: &str,
         nick: impl Into<Option<&'a str>>,
@@ -866,6 +839,7 @@ impl ParamSpecBoolean {
 
 define_builder!(
     ParamSpecBoolean,
+    "g_param_spec_builder",
     ParamSpecBooleanBuilder {
         default_value: bool = false,
     }
@@ -876,85 +850,90 @@ define_param_spec_numeric!(
     gobject_ffi::GParamSpecInt,
     i32,
     3,
-    g_param_spec_int,
-    "g_param_spec_int"
+    g_param_spec_int
 );
 
-define_builder_numeric!(ParamSpecInt, ParamSpecIntBuilder, i32);
+define_builder_numeric!(ParamSpecInt, "g_param_spec_int", ParamSpecIntBuilder, i32);
 
 define_param_spec_numeric!(
     ParamSpecUInt,
     gobject_ffi::GParamSpecUInt,
     u32,
     4,
-    g_param_spec_uint,
-    "g_param_spec_uint"
+    g_param_spec_uint
 );
 
-define_builder_numeric!(ParamSpecUInt, ParamSpecUIntBuilder, u32);
+define_builder_numeric!(
+    ParamSpecUInt,
+    "g_param_spec_uint",
+    ParamSpecUIntBuilder,
+    u32
+);
 
 define_param_spec_numeric!(
     ParamSpecLong,
     gobject_ffi::GParamSpecLong,
     libc::c_long,
     5,
-    g_param_spec_long,
-    "g_param_spec_long"
+    g_param_spec_long
 );
 
-define_builder_numeric!(ParamSpecLong, ParamSpecLongBuilder, libc::c_long);
+define_builder_numeric!(
+    ParamSpecLong,
+    "g_param_spec_long",
+    ParamSpecLongBuilder,
+    libc::c_long
+);
 
 define_param_spec_numeric!(
     ParamSpecULong,
     gobject_ffi::GParamSpecULong,
     libc::c_ulong,
     6,
-    g_param_spec_ulong,
-    "g_param_spec_ulong"
+    g_param_spec_ulong
 );
 
-define_builder_numeric!(ParamSpecULong, ParamSpecULongBuilder, libc::c_ulong);
+define_builder_numeric!(
+    ParamSpecULong,
+    "g_param_spec_ulong",
+    ParamSpecULongBuilder,
+    libc::c_ulong
+);
 
 define_param_spec_numeric!(
     ParamSpecInt64,
     gobject_ffi::GParamSpecInt64,
     i64,
     7,
-    g_param_spec_int64,
-    "g_param_spec_int64"
+    g_param_spec_int64
 );
 
-define_builder_numeric!(ParamSpecInt64, ParamSpecInt64Builder, i64);
+define_builder_numeric!(
+    ParamSpecInt64,
+    "g_param_spec_int64",
+    ParamSpecInt64Builder,
+    i64
+);
 
 define_param_spec_numeric!(
     ParamSpecUInt64,
     gobject_ffi::GParamSpecUInt64,
     u64,
     8,
-    g_param_spec_uint64,
-    "g_param_spec_uint64"
+    g_param_spec_uint64
 );
 
-define_builder_numeric!(ParamSpecUInt64, ParamSpecUInt64Builder, u64);
+define_builder_numeric!(
+    ParamSpecUInt64,
+    "g_param_spec_uint64",
+    ParamSpecUInt64Builder,
+    u64
+);
 
 define_param_spec!(ParamSpecUnichar, gobject_ffi::GParamSpecUnichar, 9);
 define_param_spec_default!(ParamSpecUnichar, gobject_ffi::GParamSpecUnichar, Result<char, CharTryFromError>, TryFrom::try_from);
 
 impl ParamSpecUnichar {
-    #[allow(clippy::new_ret_no_self)]
-    #[doc(alias = "g_param_spec_unichar")]
-    #[deprecated = "Use builder() instead"]
-    pub fn new<'a>(
-        name: &str,
-        nick: impl Into<Option<&'a str>>,
-        blurb: impl Into<Option<&'a str>>,
-        default_value: char,
-        flags: ParamFlags,
-    ) -> ParamSpec {
-        assert_param_name(name);
-        unsafe { Self::new_unchecked(name, nick, blurb, default_value, flags) }
-    }
-
     unsafe fn new_unchecked<'a>(
         name: &str,
         nick: impl Into<Option<&'a str>>,
@@ -976,6 +955,7 @@ impl ParamSpecUnichar {
 
 define_builder!(
     ParamSpecUnichar,
+    "g_param_spec_unichar",
     ParamSpecUnicharBuilder {
         default_value: char,
     }
@@ -985,22 +965,6 @@ define_builder!(
 define_param_spec!(ParamSpecEnum, gobject_ffi::GParamSpecEnum, 10);
 
 impl ParamSpecEnum {
-    #[allow(clippy::new_ret_no_self)]
-    #[doc(alias = "g_param_spec_enum")]
-    #[deprecated = "Use builder() instead"]
-    pub fn new<'a>(
-        name: &str,
-        nick: impl Into<Option<&'a str>>,
-        blurb: impl Into<Option<&'a str>>,
-        enum_type: crate::Type,
-        default_value: i32,
-        flags: ParamFlags,
-    ) -> ParamSpec {
-        assert_param_name(name);
-        assert!(enum_type.is_a(Type::ENUM));
-        unsafe { Self::new_unchecked(name, nick, blurb, enum_type, default_value, flags) }
-    }
-
     unsafe fn new_unchecked<'a>(
         name: &str,
         nick: impl Into<Option<&'a str>>,
@@ -1056,6 +1020,7 @@ impl ParamSpecEnum {
         }
     }
 
+    #[doc(alias = "g_param_spec_enum")]
     pub fn builder_with_default<T: StaticType + FromGlib<i32> + IntoGlib<GlibType = i32>>(
         name: &str,
         default_value: T,
@@ -1063,6 +1028,7 @@ impl ParamSpecEnum {
         ParamSpecEnumBuilder::new(name, default_value)
     }
 
+    #[doc(alias = "g_param_spec_enum")]
     pub fn builder<T: StaticType + FromGlib<i32> + IntoGlib<GlibType = i32> + Default>(
         name: &str,
     ) -> ParamSpecEnumBuilder<T> {
@@ -1133,22 +1099,6 @@ impl<'a, T: StaticType + FromGlib<i32> + IntoGlib<GlibType = i32>>
 define_param_spec!(ParamSpecFlags, gobject_ffi::GParamSpecFlags, 11);
 
 impl ParamSpecFlags {
-    #[allow(clippy::new_ret_no_self)]
-    #[doc(alias = "g_param_spec_flags")]
-    #[deprecated = "Use builder() instead"]
-    pub fn new<'a>(
-        name: &str,
-        nick: impl Into<Option<&'a str>>,
-        blurb: impl Into<Option<&'a str>>,
-        flags_type: crate::Type,
-        default_value: u32,
-        flags: ParamFlags,
-    ) -> ParamSpec {
-        assert_param_name(name);
-        assert!(flags_type.is_a(Type::FLAGS));
-        unsafe { Self::new_unchecked(name, nick, blurb, flags_type, default_value, flags) }
-    }
-
     unsafe fn new_unchecked<'a>(
         name: &str,
         nick: impl Into<Option<&'a str>>,
@@ -1204,6 +1154,7 @@ impl ParamSpecFlags {
         }
     }
 
+    #[doc(alias = "g_param_spec_flags")]
     pub fn builder<T: StaticType + FromGlib<u32> + IntoGlib<GlibType = u32>>(
         name: &str,
     ) -> ParamSpecFlagsBuilder<T> {
@@ -1279,22 +1230,30 @@ define_param_spec_numeric!(
     gobject_ffi::GParamSpecFloat,
     f32,
     12,
-    g_param_spec_float,
-    "g_param_spec_float"
+    g_param_spec_float
 );
 
-define_builder_numeric!(ParamSpecFloat, ParamSpecFloatBuilder, f32);
+define_builder_numeric!(
+    ParamSpecFloat,
+    "g_param_spec_float",
+    ParamSpecFloatBuilder,
+    f32
+);
 
 define_param_spec_numeric!(
     ParamSpecDouble,
     gobject_ffi::GParamSpecDouble,
     f64,
     13,
-    g_param_spec_double,
-    "g_param_spec_double"
+    g_param_spec_double
 );
 
-define_builder_numeric!(ParamSpecDouble, ParamSpecDoubleBuilder, f64);
+define_builder_numeric!(
+    ParamSpecDouble,
+    "g_param_spec_double",
+    ParamSpecDoubleBuilder,
+    f64
+);
 
 define_param_spec!(ParamSpecString, gobject_ffi::GParamSpecString, 14);
 
@@ -1314,20 +1273,6 @@ define_param_spec_default!(
 );
 
 impl ParamSpecString {
-    #[allow(clippy::new_ret_no_self)]
-    #[doc(alias = "g_param_spec_string")]
-    #[deprecated = "Use builder() instead"]
-    pub fn new<'a>(
-        name: &str,
-        nick: impl Into<Option<&'a str>>,
-        blurb: impl Into<Option<&'a str>>,
-        default_value: Option<&str>,
-        flags: ParamFlags,
-    ) -> ParamSpec {
-        assert_param_name(name);
-        unsafe { Self::new_unchecked(name, nick, blurb, default_value, flags) }
-    }
-
     unsafe fn new_unchecked<'a>(
         name: &str,
         nick: impl Into<Option<&'a str>>,
@@ -1347,6 +1292,7 @@ impl ParamSpecString {
         }
     }
 
+    #[doc(alias = "g_param_spec_string")]
     pub fn builder(name: &str) -> ParamSpecStringBuilder {
         ParamSpecStringBuilder::new(name)
     }
@@ -1411,20 +1357,6 @@ impl<'a> crate::prelude::ParamSpecBuilderExt<'a> for ParamSpecStringBuilder<'a> 
 define_param_spec!(ParamSpecParam, gobject_ffi::GParamSpecParam, 15);
 
 impl ParamSpecParam {
-    #[allow(clippy::new_ret_no_self)]
-    #[doc(alias = "g_param_spec_param")]
-    #[deprecated = "Use builder() instead"]
-    pub fn new<'a>(
-        name: &str,
-        nick: impl Into<Option<&'a str>>,
-        blurb: impl Into<Option<&'a str>>,
-        param_type: crate::Type,
-        flags: ParamFlags,
-    ) -> ParamSpec {
-        assert_param_name(name);
-        unsafe { Self::new_unchecked(name, nick, blurb, param_type, flags) }
-    }
-
     unsafe fn new_unchecked<'a>(
         name: &str,
         nick: impl Into<Option<&'a str>>,
@@ -1447,6 +1379,7 @@ impl ParamSpecParam {
 
 define_builder!(
     ParamSpecParam,
+    "g_param_spec_param",
     ParamSpecParamBuilder {
         param_type: crate::Type,
     }
@@ -1456,21 +1389,6 @@ define_builder!(
 define_param_spec!(ParamSpecBoxed, gobject_ffi::GParamSpecBoxed, 16);
 
 impl ParamSpecBoxed {
-    #[allow(clippy::new_ret_no_self)]
-    #[doc(alias = "g_param_spec_boxed")]
-    #[deprecated = "Use builder() instead"]
-    pub fn new<'a>(
-        name: &str,
-        nick: impl Into<Option<&'a str>>,
-        blurb: impl Into<Option<&'a str>>,
-        boxed_type: crate::Type,
-        flags: ParamFlags,
-    ) -> ParamSpec {
-        assert_param_name(name);
-        assert!(boxed_type.is_a(Type::BOXED));
-        unsafe { Self::new_unchecked(name, nick, blurb, boxed_type, flags) }
-    }
-
     unsafe fn new_unchecked<'a>(
         name: &str,
         nick: impl Into<Option<&'a str>>,
@@ -1489,6 +1407,7 @@ impl ParamSpecBoxed {
         }
     }
 
+    #[doc(alias = "g_param_spec_boxed")]
     pub fn builder<T: StaticType>(name: &str) -> ParamSpecBoxedBuilder<T> {
         ParamSpecBoxedBuilder::new(name)
     }
@@ -1548,19 +1467,6 @@ impl<'a, T: StaticType> crate::prelude::ParamSpecBuilderExt<'a> for ParamSpecBox
 define_param_spec!(ParamSpecPointer, gobject_ffi::GParamSpecPointer, 17);
 
 impl ParamSpecPointer {
-    #[allow(clippy::new_ret_no_self)]
-    #[doc(alias = "g_param_spec_pointer")]
-    #[deprecated = "Use builder() instead"]
-    pub fn new<'a>(
-        name: &str,
-        nick: impl Into<Option<&'a str>>,
-        blurb: impl Into<Option<&'a str>>,
-        flags: ParamFlags,
-    ) -> ParamSpec {
-        assert_param_name(name);
-        unsafe { Self::new_unchecked(name, nick, blurb, flags) }
-    }
-
     unsafe fn new_unchecked<'a>(
         name: &str,
         nick: impl Into<Option<&'a str>>,
@@ -1578,25 +1484,15 @@ impl ParamSpecPointer {
     }
 }
 
-define_builder!(ParamSpecPointer, ParamSpecPointerBuilder {});
+define_builder!(
+    ParamSpecPointer,
+    "g_param_spec_pointer",
+    ParamSpecPointerBuilder {}
+);
 
 define_param_spec!(ParamSpecValueArray, gobject_ffi::GParamSpecValueArray, 18);
 
 impl ParamSpecValueArray {
-    #[allow(clippy::new_ret_no_self)]
-    #[doc(alias = "g_param_spec_value_array")]
-    #[deprecated = "Use builder() instead"]
-    pub fn new<'a>(
-        name: &str,
-        nick: impl Into<Option<&'a str>>,
-        blurb: impl Into<Option<&'a str>>,
-        element_spec: Option<impl AsRef<ParamSpec>>,
-        flags: ParamFlags,
-    ) -> ParamSpec {
-        assert_param_name(name);
-        unsafe { Self::new_unchecked(name, nick, blurb, element_spec, flags) }
-    }
-
     unsafe fn new_unchecked<'a>(
         name: &str,
         nick: impl Into<Option<&'a str>>,
@@ -1642,6 +1538,7 @@ impl ParamSpecValueArray {
         }
     }
 
+    #[doc(alias = "g_param_spec_value_array")]
     pub fn builder(name: &str) -> ParamSpecValueArrayBuilder {
         ParamSpecValueArrayBuilder::new(name)
     }
@@ -1706,22 +1603,6 @@ impl<'a> crate::prelude::ParamSpecBuilderExt<'a> for ParamSpecValueArrayBuilder<
 define_param_spec!(ParamSpecObject, gobject_ffi::GParamSpecObject, 19);
 
 impl ParamSpecObject {
-    #[allow(clippy::new_ret_no_self)]
-    #[doc(alias = "g_param_spec_object")]
-    #[deprecated = "Use builder() instead"]
-    pub fn new<'a>(
-        name: &str,
-        nick: impl Into<Option<&'a str>>,
-        blurb: impl Into<Option<&'a str>>,
-        object_type: crate::Type,
-        flags: ParamFlags,
-    ) -> ParamSpec {
-        assert_param_name(name);
-        assert!(object_type.is_a(Type::OBJECT));
-
-        unsafe { Self::new_unchecked(name, nick, blurb, object_type, flags) }
-    }
-
     unsafe fn new_unchecked<'a>(
         name: &str,
         nick: impl Into<Option<&'a str>>,
@@ -1740,6 +1621,7 @@ impl ParamSpecObject {
         }
     }
 
+    #[doc(alias = "g_param_spec_object")]
     pub fn builder<T: StaticType + IsA<Object>>(name: &str) -> ParamSpecObjectBuilder<T> {
         ParamSpecObjectBuilder::new(name)
     }
@@ -1799,14 +1681,6 @@ impl<'a, T: StaticType> crate::prelude::ParamSpecBuilderExt<'a> for ParamSpecObj
 define_param_spec!(ParamSpecOverride, gobject_ffi::GParamSpecOverride, 20);
 
 impl ParamSpecOverride {
-    #[allow(clippy::new_ret_no_self)]
-    #[doc(alias = "g_param_spec_override")]
-    #[deprecated = "Use builder() instead"]
-    pub fn new(name: &str, overridden: impl AsRef<ParamSpec>) -> ParamSpec {
-        assert_param_name(name);
-        unsafe { Self::new_unchecked(name, overridden) }
-    }
-
     unsafe fn new_unchecked(name: &str, overridden: impl AsRef<ParamSpec>) -> ParamSpec {
         from_glib_none(gobject_ffi::g_param_spec_override(
             name.to_glib_none().0,
@@ -1873,6 +1747,7 @@ impl ParamSpecOverride {
         }
     }
 
+    #[doc(alias = "g_param_spec_override")]
     pub fn builder<'a>(name: &'a str, overridden: &'a ParamSpec) -> ParamSpecOverrideBuilder<'a> {
         ParamSpecOverrideBuilder::new(name, overridden)
     }
@@ -1904,20 +1779,6 @@ impl<'a> ParamSpecOverrideBuilder<'a> {
 define_param_spec!(ParamSpecGType, gobject_ffi::GParamSpecGType, 21);
 
 impl ParamSpecGType {
-    #[allow(clippy::new_ret_no_self)]
-    #[doc(alias = "g_param_spec_gtype")]
-    #[deprecated = "Use builder() instead"]
-    pub fn new<'a>(
-        name: &str,
-        nick: impl Into<Option<&'a str>>,
-        blurb: impl Into<Option<&'a str>>,
-        is_a_type: crate::Type,
-        flags: ParamFlags,
-    ) -> ParamSpec {
-        assert_param_name(name);
-        unsafe { Self::new_unchecked(name, nick, blurb, is_a_type, flags) }
-    }
-
     unsafe fn new_unchecked<'a>(
         name: &str,
         nick: impl Into<Option<&'a str>>,
@@ -1939,6 +1800,7 @@ impl ParamSpecGType {
 
 define_builder!(
     ParamSpecGType,
+    "g_param_spec_gtype",
     ParamSpecGTypeBuilder {
         is_a_type: crate::Type = crate::Type::UNIT,
     }
@@ -1954,21 +1816,6 @@ define_param_spec_default!(
 );
 
 impl ParamSpecVariant {
-    #[allow(clippy::new_ret_no_self)]
-    #[doc(alias = "g_param_spec_variant")]
-    #[deprecated = "Use builder() instead"]
-    pub fn new<'a>(
-        name: &str,
-        nick: impl Into<Option<&'a str>>,
-        blurb: impl Into<Option<&'a str>>,
-        type_: &crate::VariantTy,
-        default_value: Option<&crate::Variant>,
-        flags: ParamFlags,
-    ) -> ParamSpec {
-        assert_param_name(name);
-        unsafe { Self::new_unchecked(name, nick, blurb, type_, default_value, flags) }
-    }
-
     unsafe fn new_unchecked<'a>(
         name: &str,
         nick: impl Into<Option<&'a str>>,
@@ -2003,6 +1850,7 @@ impl ParamSpecVariant {
         }
     }
 
+    #[doc(alias = "g_param_spec_variant")]
     pub fn builder<'a>(name: &'a str, type_: &'a crate::VariantTy) -> ParamSpecVariantBuilder<'a> {
         ParamSpecVariantBuilder::new(name, type_)
     }
@@ -2223,10 +2071,10 @@ mod tests {
     use super::*;
 
     #[test]
-    #[allow(deprecated)]
     fn test_param_spec_string() {
-        let pspec =
-            ParamSpecString::new("name", None, None, Some("default"), ParamFlags::READWRITE);
+        let pspec = ParamSpecString::builder("name")
+            .default_value(Some("default"))
+            .build();
 
         assert_eq!(pspec.name(), "name");
         assert_eq!(pspec.nick(), "name");
