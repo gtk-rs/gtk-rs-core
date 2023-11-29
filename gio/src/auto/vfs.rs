@@ -104,8 +104,7 @@ pub trait VfsExt: IsA<Vfs> + sealed::Sealed + 'static {
         ) -> *mut ffi::GFile {
             let vfs = from_glib_borrow(vfs);
             let identifier: Borrowed<glib::GString> = from_glib_borrow(identifier);
-            let callback: &Option<Box_<dyn Fn(&Vfs, &str) -> File + 'static>> =
-                &*(user_data as *mut _);
+            let callback = &*(user_data as *mut Option<Box_<dyn Fn(&Vfs, &str) -> File + 'static>>);
             if let Some(ref callback) = *callback {
                 callback(&vfs, identifier.as_str())
             } else {
@@ -127,8 +126,7 @@ pub trait VfsExt: IsA<Vfs> + sealed::Sealed + 'static {
         ) -> *mut ffi::GFile {
             let vfs = from_glib_borrow(vfs);
             let identifier: Borrowed<glib::GString> = from_glib_borrow(identifier);
-            let callback: &Option<Box_<dyn Fn(&Vfs, &str) -> File + 'static>> =
-                &*(user_data as *mut _);
+            let callback = &*(user_data as *mut Option<Box_<dyn Fn(&Vfs, &str) -> File + 'static>>);
             if let Some(ref callback) = *callback {
                 callback(&vfs, identifier.as_str())
             } else {
@@ -142,13 +140,13 @@ pub trait VfsExt: IsA<Vfs> + sealed::Sealed + 'static {
             None
         };
         unsafe extern "C" fn uri_destroy_func(data: glib::ffi::gpointer) {
-            let _callback: Box_<Option<Box_<dyn Fn(&Vfs, &str) -> File + 'static>>> =
-                Box_::from_raw(data as *mut _);
+            let _callback =
+                Box_::from_raw(data as *mut Option<Box_<dyn Fn(&Vfs, &str) -> File + 'static>>);
         }
         let destroy_call4 = Some(uri_destroy_func as _);
         unsafe extern "C" fn parse_name_destroy_func(data: glib::ffi::gpointer) {
-            let _callback: Box_<Option<Box_<dyn Fn(&Vfs, &str) -> File + 'static>>> =
-                Box_::from_raw(data as *mut _);
+            let _callback =
+                Box_::from_raw(data as *mut Option<Box_<dyn Fn(&Vfs, &str) -> File + 'static>>);
         }
         let destroy_call7 = Some(parse_name_destroy_func as _);
         let super_callback0: Box_<Option<Box_<dyn Fn(&Vfs, &str) -> File + 'static>>> =

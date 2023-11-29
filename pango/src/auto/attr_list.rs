@@ -37,7 +37,7 @@ impl AttrList {
             user_data: glib::ffi::gpointer,
         ) -> glib::ffi::gboolean {
             let attribute = from_glib_borrow(attribute);
-            let callback: *mut P = user_data as *const _ as usize as *mut P;
+            let callback = user_data as *mut P;
             (*callback)(&attribute).into_glib()
         }
         let func = Some(func_func::<P> as _);
@@ -46,7 +46,7 @@ impl AttrList {
             from_glib_full(ffi::pango_attr_list_filter(
                 self.to_glib_none().0,
                 func,
-                super_callback0 as *const _ as usize as *mut _,
+                super_callback0 as *const _ as *mut _,
             ))
         }
     }
