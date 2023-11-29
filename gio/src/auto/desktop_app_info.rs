@@ -209,8 +209,7 @@ impl DesktopAppInfo {
     ) -> Result<(), glib::Error> {
         let user_setup_data: Box_<Option<Box_<dyn FnOnce() + 'static>>> = Box_::new(user_setup);
         unsafe extern "C" fn user_setup_func(data: glib::ffi::gpointer) {
-            let callback: Box_<Option<Box_<dyn FnOnce() + 'static>>> =
-                Box_::from_raw(data as *mut _);
+            let callback = Box_::from_raw(data as *mut Option<Box_<dyn FnOnce() + 'static>>);
             let callback = (*callback).expect("cannot get closure...");
             callback()
         }
@@ -227,9 +226,7 @@ impl DesktopAppInfo {
         ) {
             let appinfo = from_glib_borrow(appinfo);
             let pid = from_glib(pid);
-            let callback: *mut Option<&mut dyn (FnMut(&DesktopAppInfo, glib::Pid))> =
-                user_data as *const _ as usize
-                    as *mut Option<&mut dyn (FnMut(&DesktopAppInfo, glib::Pid))>;
+            let callback = user_data as *mut Option<&mut dyn (FnMut(&DesktopAppInfo, glib::Pid))>;
             if let Some(ref mut callback) = *callback {
                 callback(&appinfo, pid)
             } else {
@@ -254,7 +251,7 @@ impl DesktopAppInfo {
                 user_setup,
                 Box_::into_raw(super_callback0) as *mut _,
                 pid_callback,
-                super_callback1 as *const _ as usize as *mut _,
+                super_callback1 as *const _ as *mut _,
                 &mut error,
             );
             debug_assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());

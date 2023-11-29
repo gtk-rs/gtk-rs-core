@@ -141,7 +141,6 @@ gvalue_impl_inline!(
 impl RectangleInt {
     #[inline]
     pub fn to_raw_none(&self) -> *mut ffi::cairo_rectangle_int_t {
-        let ptr = self as *const RectangleInt as usize;
-        ptr as *mut ffi::cairo_rectangle_int_t
+        &self.0 as *const ffi::cairo_rectangle_int_t as *mut ffi::cairo_rectangle_int_t
     }
 }

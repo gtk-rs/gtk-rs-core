@@ -34,7 +34,7 @@ pub trait FontsetExt: IsA<Fontset> + sealed::Sealed + 'static {
         ) -> glib::ffi::gboolean {
             let fontset = from_glib_borrow(fontset);
             let font = from_glib_borrow(font);
-            let callback: *mut P = user_data as *const _ as usize as *mut P;
+            let callback = user_data as *mut P;
             (*callback)(&fontset, &font).into_glib()
         }
         let func = Some(func_func::<P> as _);
@@ -43,7 +43,7 @@ pub trait FontsetExt: IsA<Fontset> + sealed::Sealed + 'static {
             ffi::pango_fontset_foreach(
                 self.as_ref().to_glib_none().0,
                 func,
-                super_callback0 as *const _ as usize as *mut _,
+                super_callback0 as *const _ as *mut _,
             );
         }
     }

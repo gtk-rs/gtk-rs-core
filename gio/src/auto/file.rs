@@ -235,8 +235,7 @@ pub trait FileExt: IsA<File> + sealed::Sealed + 'static {
             total_num_bytes: i64,
             data: glib::ffi::gpointer,
         ) {
-            let callback: *mut Option<&mut dyn (FnMut(i64, i64))> =
-                data as *const _ as usize as *mut Option<&mut dyn (FnMut(i64, i64))>;
+            let callback = data as *mut Option<&mut dyn (FnMut(i64, i64))>;
             if let Some(ref mut callback) = *callback {
                 callback(current_num_bytes, total_num_bytes)
             } else {
@@ -257,7 +256,7 @@ pub trait FileExt: IsA<File> + sealed::Sealed + 'static {
                 flags.into_glib(),
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
                 progress_callback,
-                super_callback0 as *const _ as usize as *mut _,
+                super_callback0 as *const _ as *mut _,
                 &mut error,
             );
             debug_assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
@@ -1375,8 +1374,7 @@ pub trait FileExt: IsA<File> + sealed::Sealed + 'static {
             total_num_bytes: i64,
             data: glib::ffi::gpointer,
         ) {
-            let callback: *mut Option<&mut dyn (FnMut(i64, i64))> =
-                data as *const _ as usize as *mut Option<&mut dyn (FnMut(i64, i64))>;
+            let callback = data as *mut Option<&mut dyn (FnMut(i64, i64))>;
             if let Some(ref mut callback) = *callback {
                 callback(current_num_bytes, total_num_bytes)
             } else {
@@ -1397,7 +1395,7 @@ pub trait FileExt: IsA<File> + sealed::Sealed + 'static {
                 flags.into_glib(),
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
                 progress_callback,
-                super_callback0 as *const _ as usize as *mut _,
+                super_callback0 as *const _ as *mut _,
                 &mut error,
             );
             debug_assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
