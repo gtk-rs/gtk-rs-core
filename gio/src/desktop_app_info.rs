@@ -89,9 +89,7 @@ pub trait DesktopAppInfoExtManual: sealed::Sealed + IsA<DesktopAppInfo> {
         ) {
             let appinfo = from_glib_borrow(appinfo);
             let pid = from_glib(pid);
-            let callback: *mut Option<&mut dyn (FnMut(&DesktopAppInfo, glib::Pid))> =
-                user_data as *const _ as usize
-                    as *mut Option<&mut dyn (FnMut(&DesktopAppInfo, glib::Pid))>;
+            let callback = user_data as *mut Option<&mut dyn (FnMut(&DesktopAppInfo, glib::Pid))>;
             if let Some(ref mut callback) = *callback {
                 callback(&appinfo, pid)
             } else {
@@ -116,7 +114,7 @@ pub trait DesktopAppInfoExtManual: sealed::Sealed + IsA<DesktopAppInfo> {
                 user_setup,
                 Box_::into_raw(super_callback0) as *mut _,
                 pid_callback,
-                super_callback1 as *const _ as usize as *mut _,
+                super_callback1 as *const _ as *mut _,
                 stdin_fd.as_raw_fd(),
                 stdout_fd.as_raw_fd(),
                 stderr_fd.as_raw_fd(),
