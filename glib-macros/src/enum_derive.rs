@@ -4,24 +4,20 @@ use heck::{ToKebabCase, ToUpperCamelCase};
 use proc_macro2::TokenStream;
 use proc_macro_error::abort_call_site;
 use quote::{quote, quote_spanned, ToTokens};
-use syn::{punctuated::Punctuated, spanned::Spanned, token::Comma, Data, Ident, Variant};
+use syn::{
+    parse_quote, punctuated::Punctuated, spanned::Spanned, token::Comma, Data, ExprArray, Ident,
+    Variant,
+};
 
 use crate::utils::{crate_ident_new, gen_enum_from_glib, parse_nested_meta_items, NestedMetaItem};
 
-// If `wrap` is `false`, generates glib::gobject_ffi::GEnumValue structs mapping the enum such as:
+// generates glib::gobject_ffi::GEnumValue structs mapping the enum such as:
 //     glib::gobject_ffi::GEnumValue {
 //         value: Animal::Goat as i32,
 //         value_name: "Goat\0" as *const _ as *const _,
 //         value_nick: "goat\0" as *const _ as *const _,
 //     },
-// If `wrap` is `true`, generates glib::EnumValue structs mapping the enum such as:
-//     glib::EnumValue::new(glib::gobject_ffi::GEnumValue {
-//         value: Animal::Goat as i32,
-//         value_name: "Goat\0" as *const _ as *const _,
-//         value_nick: "goat\0" as *const _ as *const _,
-//     }),
 fn gen_enum_values(
-    wrap: bool,
     enum_name: &Ident,
     enum_variants: &Punctuated<Variant, Comma>,
 ) -> (TokenStream, usize) {
@@ -50,24 +46,13 @@ fn gen_enum_values(
         let value_nick = format!("{value_nick}\0");
 
         n += 1;
-        if wrap {
-            // generates a glib::EnumValue.
-            quote_spanned! {v.span()=>
-                #crate_ident::EnumValue::new(#crate_ident::gobject_ffi::GEnumValue {
-                    value: #enum_name::#name as i32,
-                    value_name: #value_name as *const _ as *const _,
-                    value_nick: #value_nick as *const _ as *const _,
-                }),
-            }
-        } else {
-            // generates a glib::gobject_ffi::GEnumValue.
-            quote_spanned! {v.span()=>
-                #crate_ident::gobject_ffi::GEnumValue {
-                    value: #enum_name::#name as i32,
-                    value_name: #value_name as *const _ as *const _,
-                    value_nick: #value_nick as *const _ as *const _,
-                },
-            }
+        // generates a glib::gobject_ffi::GEnumValue.
+        quote_spanned! {v.span()=>
+            #crate_ident::gobject_ffi::GEnumValue {
+                value: #enum_name::#name as i32,
+                value_name: #value_name as *const _ as *const _,
+                value_nick: #value_nick as *const _ as *const _,
+            },
         }
     });
     (
@@ -100,7 +85,7 @@ pub fn impl_enum(input: &syn::DeriveInput) -> TokenStream {
     };
     let gtype_name = gtype_name.value.unwrap();
     let from_glib = gen_enum_from_glib(name, enum_variants);
-    let (enum_values, nb_enum_values) = gen_enum_values(false, name, enum_variants);
+    let (enum_values, nb_enum_values) = gen_enum_values(name, enum_variants);
 
     let crate_ident = crate_ident_new();
 
@@ -179,11 +164,19 @@ pub fn impl_dynamic_enum(input: &syn::DeriveInput) -> TokenStream {
     let lazy_registration = lazy_registration.value.map(|b| b.value).unwrap_or_default();
 
     let from_glib = gen_enum_from_glib(name, enum_variants);
-    let (enum_values, nb_enum_values) = gen_enum_values(true, name, enum_variants);
+    let (g_enum_values, nb_enum_values) = gen_enum_values(name, enum_variants);
 
-    let enum_values_expr = quote! {
+    // Wrap each GEnumValue to EnumValue
+    let g_enum_values_expr: ExprArray = parse_quote! { [#g_enum_values] };
+    let enum_values_iter = g_enum_values_expr.elems.iter().map(|v| {
+        quote_spanned! {v.span()=>
+            #crate_ident::EnumValue::new(#v),
+        }
+    });
+
+    let enum_values = quote! {
         [#crate_ident::EnumValue; #nb_enum_values] = [
-            #enum_values
+            #(#enum_values_iter)*
             #crate_ident::EnumValue::new(#crate_ident::gobject_ffi::GEnumValue {
                 value: 0,
                 value_name: ::std::ptr::null(),
@@ -219,7 +212,7 @@ pub fn impl_dynamic_enum(input: &syn::DeriveInput) -> TokenStream {
                         None => #crate_ident::Type::INVALID,
                         // plugin has been used and the enum has not been registered yet, so registers it as a dynamic type.
                         Some((type_plugin, type_)) if !type_.is_valid() => {
-                            static mut VALUES: #enum_values_expr;
+                            static mut VALUES: #enum_values;
                             *type_ = <#plugin_ty as glib::prelude::DynamicObjectRegisterExt>::register_dynamic_enum(type_plugin.upgrade().unwrap().as_ref(), #gtype_name, unsafe { &VALUES } );
                             *type_
                         },
@@ -244,7 +237,7 @@ pub fn impl_dynamic_enum(input: &syn::DeriveInput) -> TokenStream {
                         },
                         // plugin has been used at least one time and the enum has been registered as a dynamic type at least one time, so re-registers it.
                         Some((_, type_)) if type_.is_valid() => {
-                            static mut VALUES: #enum_values_expr;
+                            static mut VALUES: #enum_values;
                             *type_ = <#plugin_ty as glib::prelude::DynamicObjectRegisterExt>::register_dynamic_enum(type_plugin, #gtype_name, unsafe { &VALUES } );
                             type_.is_valid()
                         },
@@ -298,7 +291,7 @@ pub fn impl_dynamic_enum(input: &syn::DeriveInput) -> TokenStream {
                 #[inline]
                 pub fn on_implementation_load(type_plugin: &#plugin_ty) -> bool {
                     let type_mut = Self::get_type_mut();
-                    static mut VALUES: #enum_values_expr;
+                    static mut VALUES: #enum_values;
                     *type_mut = #crate_ident::translate::IntoGlib::into_glib(<#plugin_ty as glib::prelude::DynamicObjectRegisterExt>::register_dynamic_enum(type_plugin, #gtype_name, unsafe { &VALUES } ));
                     *type_mut != #crate_ident::gobject_ffi::G_TYPE_INVALID
                 }
