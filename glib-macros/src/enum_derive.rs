@@ -192,13 +192,16 @@ pub fn impl_dynamic_enum(input: &syn::DeriveInput) -> TokenStream {
         // a weak reference on the plugin is stored and will be used later on the first use of the enum.
         // this implementation relies on a static storage of a weak reference on the plugin and of the glib type to know if the enum has been registered.
         quote! {
+            struct RegistrationStatus(<#plugin_ty as #crate_ident::clone::Downgrade>::Weak, #crate_ident::Type);
+            unsafe impl Send for RegistrationStatus {}
+
             impl #name {
                 /// Returns a mutable reference to the registration status: a tuple of the weak reference on the plugin and of the glib type.
                 /// This is safe because the mutable reference guarantees that no other threads are concurrently accessing the data.
                 #[inline]
-                fn get_registration_status_ref_mut() -> &'static mut Option<(<#plugin_ty as #crate_ident::clone::Downgrade>::Weak, #crate_ident::Type)> {
-                    static mut REGISTRATION_STATUS: ::std::sync::Mutex<Option<(<#plugin_ty as #crate_ident::clone::Downgrade>::Weak, #crate_ident::Type)>> = ::std::sync::Mutex::new(None);
-                    unsafe { REGISTRATION_STATUS.get_mut().unwrap() }
+                fn get_registration_status_ref() -> &'static ::std::sync::Mutex<Option<RegistrationStatus>> {
+                    static REGISTRATION_STATUS: ::std::sync::Mutex<Option<RegistrationStatus>> = ::std::sync::Mutex::new(None);
+                    &REGISTRATION_STATUS
                 }
 
                 /// Registers the enum as a dynamic type within the plugin only once.
@@ -206,18 +209,19 @@ pub fn impl_dynamic_enum(input: &syn::DeriveInput) -> TokenStream {
                 /// Do nothing if plugin has never been used or if the enum is already registered as a dynamic type.
                 #[inline]
                 fn register_enum() -> #crate_ident::Type {
-                    let registration_status_ref_mut = Self::get_registration_status_ref_mut();
-                    match registration_status_ref_mut {
+                    let registration_status_ref = Self::get_registration_status_ref();
+                    let mut registration_status = registration_status_ref.lock().unwrap();
+                    match ::std::ops::DerefMut::deref_mut(&mut registration_status) {
                         // plugin has never been used, so the enum cannot be registered as a dynamic type.
                         None => #crate_ident::Type::INVALID,
                         // plugin has been used and the enum has not been registered yet, so registers it as a dynamic type.
-                        Some((type_plugin, type_)) if !type_.is_valid() => {
+                        Some(RegistrationStatus(type_plugin, type_)) if !type_.is_valid() => {
                             static mut VALUES: #enum_values;
                             *type_ = <#plugin_ty as glib::prelude::DynamicObjectRegisterExt>::register_dynamic_enum(type_plugin.upgrade().unwrap().as_ref(), #gtype_name, unsafe { &VALUES } );
                             *type_
                         },
                         // plugin has been used and the enum has already been registered as a dynamic type.
-                        Some((_, type_)) => *type_
+                        Some(RegistrationStatus(_, type_)) => *type_
                     }
                 }
 
@@ -228,15 +232,16 @@ pub fn impl_dynamic_enum(input: &syn::DeriveInput) -> TokenStream {
                 /// If plugin is reused (and has reloaded the implementation) and the enum has not been registered yet as a dynamic type, do nothing.
                 #[inline]
                 pub fn on_implementation_load(type_plugin: &#plugin_ty) -> bool {
-                    let registration_status_ref_mut = Self::get_registration_status_ref_mut();
-                    match registration_status_ref_mut {
+                    let registration_status_ref = Self::get_registration_status_ref();
+                    let mut registration_status = registration_status_ref.lock().unwrap();
+                    match ::std::ops::DerefMut::deref_mut(&mut registration_status) {
                         // plugin has never been used (this is the first time), so postpones registration of the enum as a dynamic type on the first use.
                         None => {
-                            *registration_status_ref_mut = Some((#crate_ident::clone::Downgrade::downgrade(type_plugin), #crate_ident::Type::INVALID));
+                            *registration_status = Some(RegistrationStatus(#crate_ident::clone::Downgrade::downgrade(type_plugin), #crate_ident::Type::INVALID));
                             true
                         },
                         // plugin has been used at least one time and the enum has been registered as a dynamic type at least one time, so re-registers it.
-                        Some((_, type_)) if type_.is_valid() => {
+                        Some(RegistrationStatus(_, type_)) if type_.is_valid() => {
                             static mut VALUES: #enum_values;
                             *type_ = <#plugin_ty as glib::prelude::DynamicObjectRegisterExt>::register_dynamic_enum(type_plugin, #gtype_name, unsafe { &VALUES } );
                             type_.is_valid()
@@ -253,15 +258,16 @@ pub fn impl_dynamic_enum(input: &syn::DeriveInput) -> TokenStream {
                 /// Else do nothing.
                 #[inline]
                 pub fn on_implementation_unload(type_plugin_: &#plugin_ty) -> bool {
-                    let registration_status_ref_mut = Self::get_registration_status_ref_mut();
-                    match registration_status_ref_mut {
+                    let registration_status_ref = Self::get_registration_status_ref();
+                    let mut registration_status = registration_status_ref.lock().unwrap();
+                    match ::std::ops::DerefMut::deref_mut(&mut registration_status) {
                         // plugin has never been used, so unload implementation is unexpected.
                         None => false,
                         // plugin has been used at least one time and the enum has been registered as a dynamic type at least one time.
-                        Some((_, type_)) if type_.is_valid() => true,
+                        Some(RegistrationStatus(_, type_)) if type_.is_valid() => true,
                         // plugin has been used at least one time but the enum has not been registered yet as a dynamic type, so cancels the postponed registration.
                         Some(_) => {
-                            *registration_status_ref_mut = None;
+                            *registration_status = None;
                             true
                         }
                     }
@@ -272,28 +278,29 @@ pub fn impl_dynamic_enum(input: &syn::DeriveInput) -> TokenStream {
         // registers immediately the enum as a dynamic type.
         quote! {
             impl #name {
-                /// Returns a mutable reference to the glib type.
-                /// This is safe because the mutable reference guarantees that no other threads are concurrently accessing the atomic data.
+                /// Returns a reference to the glib type which can be safely shared between threads.
                 #[inline]
-                fn get_type_mut() -> &'static mut #crate_ident::ffi::GType {
-                    static mut TYPE: ::std::sync::atomic::AtomicUsize = ::std::sync::atomic::AtomicUsize::new(#crate_ident::gobject_ffi::G_TYPE_INVALID);
-                    unsafe { TYPE.get_mut() }
+                fn get_gtype_ref() -> &'static ::std::sync::atomic::AtomicUsize {
+                    static TYPE: ::std::sync::atomic::AtomicUsize = ::std::sync::atomic::AtomicUsize::new(#crate_ident::gobject_ffi::G_TYPE_INVALID);
+                    &TYPE
                 }
 
                 /// Do nothing as the enum has been registered on implementation load.
                 #[inline]
                 fn register_enum() -> #crate_ident::Type {
-                    unsafe { <#crate_ident::Type as #crate_ident::translate::FromGlib<#crate_ident::ffi::GType>>::from_glib(*Self::get_type_mut()) }
+                    let gtype = Self::get_gtype_ref().load(::std::sync::atomic::Ordering::Relaxed);
+                    unsafe { <#crate_ident::Type as #crate_ident::translate::FromGlib<#crate_ident::ffi::GType>>::from_glib(gtype) }
                 }
 
                 /// Registers the enum as a dynamic type within the plugin.
                 /// The enum can be registered several times as a dynamic type.
                 #[inline]
                 pub fn on_implementation_load(type_plugin: &#plugin_ty) -> bool {
-                    let type_mut = Self::get_type_mut();
+                    let gtype_ref = Self::get_gtype_ref();
                     static mut VALUES: #enum_values;
-                    *type_mut = #crate_ident::translate::IntoGlib::into_glib(<#plugin_ty as glib::prelude::DynamicObjectRegisterExt>::register_dynamic_enum(type_plugin, #gtype_name, unsafe { &VALUES } ));
-                    *type_mut != #crate_ident::gobject_ffi::G_TYPE_INVALID
+                    let gtype = #crate_ident::translate::IntoGlib::into_glib(<#plugin_ty as glib::prelude::DynamicObjectRegisterExt>::register_dynamic_enum(type_plugin, #gtype_name, unsafe { &VALUES } ));
+                    gtype_ref.store(gtype, ::std::sync::atomic::Ordering::Relaxed);
+                    gtype != #crate_ident::gobject_ffi::G_TYPE_INVALID
                 }
 
                 /// Do nothing as enums registered as dynamic types are never unregistered.
