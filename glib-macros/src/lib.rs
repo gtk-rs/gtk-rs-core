@@ -439,7 +439,7 @@ pub fn closure_local(item: TokenStream) -> TokenStream {
     closure::closure_inner(item, "new_local")
 }
 
-/// Derive macro for register a rust enum in the glib type system and derive the
+/// Derive macro for register a Rust enum in the GLib type system and derive the
 /// the [`glib::Value`] traits.
 ///
 /// # Example
@@ -468,7 +468,7 @@ pub fn enum_derive(input: TokenStream) -> TokenStream {
     gen.into()
 }
 
-/// Derive macro for register a rust enum in the glib type system as a dynamic
+/// Derive macro for register a Rust enum in the GLib type system as a dynamic
 /// type and derive the [`glib::Value`] traits.
 ///
 /// An enum must be explicitly registered as a dynamic type when the system

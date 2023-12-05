@@ -275,7 +275,7 @@
 //!     let simple_module_object_type = imp::SimpleModuleObject::type_();
 //!     assert!(!simple_module_object_type.is_valid());
 //!
-//!     // simulates the glib type system to load the module.
+//!     // simulates the GLib type system to load the module.
 //!     TypeModuleExt::use_(&simple_type_module);
 //!
 //!     // at this step, SimpleModuleObject must have been registered.
@@ -389,7 +389,7 @@
 //!     let simple_plugin_object_type = imp::SimplePluginObject::type_();
 //!     assert!(!simple_plugin_object_type.is_valid());
 //!
-//!     // simulates the glib type system to use the plugin.
+//!     // simulates the GLib type system to use the plugin.
 //!     TypePluginExt::use_(&simple_type_plugin);
 //!
 //!     // at this step, SimplePluginObject must have been registered.

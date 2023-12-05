@@ -305,7 +305,7 @@ mod tests {
     fn test_plugin() {
         assert!(!imp::SimplePluginType::type_().is_valid());
         let simple_plugin = crate::Object::new::<SimplePlugin>();
-        // simulates the glib type system to use the plugin.
+        // simulates the GLib type system to use the plugin.
         TypePluginExt::use_(&simple_plugin);
         assert!(imp::SimplePluginType::type_().is_valid());
         TypePluginExt::unuse(&simple_plugin);

@@ -85,7 +85,7 @@ mod module {
         assert!(!MyModuleEnum::static_type().is_valid());
         assert!(!MyModuleEnumLazy::static_type().is_valid());
 
-        // simulates the glib type system to load/unload the module.
+        // simulates the GLib type system to load/unload the module.
         TypeModuleExt::use_(module);
         TypeModuleExt::unuse(module);
 
@@ -94,7 +94,7 @@ mod module {
         // checks types of enums that are lazy registered as dynamic types are valid (module is unloaded).
         assert!(!MyModuleEnumLazy::static_type().is_valid());
 
-        // simulates the glib type system to load the module.
+        // simulates the GLib type system to load the module.
         TypeModuleExt::use_(module);
 
         // checks types of enums registered as dynamic types are valid (module is loaded).
@@ -113,21 +113,21 @@ mod module {
             Some(module.upcast_ref::<glib::TypePlugin>())
         );
 
-        // simulates the glib type system to unload the module.
+        // simulates the GLib type system to unload the module.
         TypeModuleExt::unuse(module);
 
-        // checks types of enums registered as dynamic types are still valid (should have been marked as unloaded by the glib type system but this cannot be checked).
+        // checks types of enums registered as dynamic types are still valid (should have been marked as unloaded by the GLib type system but this cannot be checked).
         assert!(MyModuleEnum::static_type().is_valid());
         assert!(MyModuleEnumLazy::static_type().is_valid());
 
-        // simulates the glib type system to reload the module.
+        // simulates the GLib type system to reload the module.
         TypeModuleExt::use_(module);
 
-        // checks types of enums registered as dynamic types are still valid (should have been marked as loaded by the glib type system but this cannot be checked).
+        // checks types of enums registered as dynamic types are still valid (should have been marked as loaded by the GLib type system but this cannot be checked).
         assert!(MyModuleEnum::static_type().is_valid());
         assert!(MyModuleEnumLazy::static_type().is_valid());
 
-        // simulates the glib type system to unload the module.
+        // simulates the GLib type system to unload the module.
         TypeModuleExt::unuse(module);
     }
 
@@ -136,7 +136,7 @@ mod module {
         use glib::prelude::*;
         use glib::translate::{FromGlib, IntoGlib};
 
-        // simulates the glib type system to load the module.
+        // simulates the GLib type system to load the module.
         TypeModuleExt::use_(module);
 
         assert_eq!(MyModuleEnum::Foo.into_glib(), 0);
@@ -205,7 +205,7 @@ mod module {
             Ok(MyModuleEnumLazy::Bar)
         );
 
-        // simulates the glib type system to unload the module.
+        // simulates the GLib type system to unload the module.
         TypeModuleExt::unuse(module);
     }
 }
@@ -368,7 +368,7 @@ pub mod plugin {
         assert!(!MyPluginEnum::static_type().is_valid());
         assert!(!MyPluginEnumLazy::static_type().is_valid());
 
-        // simulates the glib type system to use/unuse the plugin.
+        // simulates the GLib type system to use/unuse the plugin.
         TypePluginExt::use_(plugin);
         TypePluginExt::unuse(plugin);
 
@@ -377,7 +377,7 @@ pub mod plugin {
         // checks types of enums that are lazy registered as dynamic types are still invalid (plugin is unused).
         assert!(!MyPluginEnumLazy::static_type().is_valid());
 
-        // simulates the glib type system to use the plugin.
+        // simulates the GLib type system to use the plugin.
         TypePluginExt::use_(plugin);
 
         // checks types of enums registered as dynamic types are valid (plugin is used).
@@ -396,21 +396,21 @@ pub mod plugin {
             Some(plugin.upcast_ref::<glib::TypePlugin>())
         );
 
-        // simulates the glib type system to unuse the plugin.
+        // simulates the GLib type system to unuse the plugin.
         TypePluginExt::unuse(plugin);
 
         // checks types of enums registered as dynamic types are still valid.
         assert!(MyPluginEnum::static_type().is_valid());
         assert!(MyPluginEnumLazy::static_type().is_valid());
 
-        // simulates the glib type system to reuse the plugin.
+        // simulates the GLib type system to reuse the plugin.
         TypePluginExt::use_(plugin);
 
         // checks types of enums registered as dynamic types are still valid.
         assert!(MyPluginEnum::static_type().is_valid());
         assert!(MyPluginEnumLazy::static_type().is_valid());
 
-        // simulates the glib type system to unuse the plugin.
+        // simulates the GLib type system to unuse the plugin.
         TypePluginExt::unuse(plugin);
     }
 
@@ -419,7 +419,7 @@ pub mod plugin {
         use glib::prelude::*;
         use glib::translate::{FromGlib, IntoGlib};
 
-        // simulates the glib type system to use the plugin.
+        // simulates the GLib type system to use the plugin.
         TypePluginExt::use_(plugin);
 
         assert_eq!(MyPluginEnum::Foo.into_glib(), 0);
@@ -488,7 +488,7 @@ pub mod plugin {
             Ok(MyPluginEnumLazy::Bar)
         );
 
-        // simulates the glib type system to unuse the plugin.
+        // simulates the GLib type system to unuse the plugin.
         TypePluginExt::unuse(plugin);
     }
 }

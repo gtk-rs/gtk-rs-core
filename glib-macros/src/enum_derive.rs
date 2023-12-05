@@ -190,13 +190,13 @@ pub fn impl_dynamic_enum(input: &syn::DeriveInput) -> TokenStream {
     let register_enum_impl = if lazy_registration {
         // registers the enum as a dynamic type on the first use (lazy registration).
         // a weak reference on the plugin is stored and will be used later on the first use of the enum.
-        // this implementation relies on a static storage of a weak reference on the plugin and of the glib type to know if the enum has been registered.
+        // this implementation relies on a static storage of a weak reference on the plugin and of the GLib type to know if the enum has been registered.
         quote! {
             struct RegistrationStatus(<#plugin_ty as #crate_ident::clone::Downgrade>::Weak, #crate_ident::Type);
             unsafe impl Send for RegistrationStatus {}
 
             impl #name {
-                /// Returns a mutable reference to the registration status: a tuple of the weak reference on the plugin and of the glib type.
+                /// Returns a mutable reference to the registration status: a tuple of the weak reference on the plugin and of the GLib type.
                 /// This is safe because the mutable reference guarantees that no other threads are concurrently accessing the data.
                 #[inline]
                 fn get_registration_status_ref() -> &'static ::std::sync::Mutex<Option<RegistrationStatus>> {
@@ -278,7 +278,7 @@ pub fn impl_dynamic_enum(input: &syn::DeriveInput) -> TokenStream {
         // registers immediately the enum as a dynamic type.
         quote! {
             impl #name {
-                /// Returns a reference to the glib type which can be safely shared between threads.
+                /// Returns a reference to the GLib type which can be safely shared between threads.
                 #[inline]
                 fn get_gtype_ref() -> &'static ::std::sync::atomic::AtomicUsize {
                     static TYPE: ::std::sync::atomic::AtomicUsize = ::std::sync::atomic::AtomicUsize::new(#crate_ident::gobject_ffi::G_TYPE_INVALID);
