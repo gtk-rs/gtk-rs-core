@@ -513,14 +513,47 @@ pub fn enum_derive(input: TokenStream) -> TokenStream {
 /// }
 /// ```
 ///
-/// By default an enum is considered to be registered as a dynamic type within
-/// a [`TypeModule`] subclass. Optionally setting the macro attribute
-/// `plugin_type` allows to register an enum as a dynamic type within a given
-/// [`TypePlugin`] subclass:
+/// An enum is usually registered as a dynamic type within a [`TypeModule`]
+/// subclass:
 /// ```ignore
 /// #[derive(Debug, Copy, Clone, PartialEq, Eq, glib::DynamicEnum)]
-/// #[enum_type(name = "MyEnum", plugin_type = MyPlugin)]
-/// enum MyEnum {
+/// #[enum_type(name = "MyModuleEnum")]
+/// enum MyModuleEnum {
+///     ...
+/// }
+/// ...
+/// #[derive(Default)]
+/// pub struct MyModule;
+/// ...
+/// impl TypeModuleImpl for MyModule {
+///     fn load(&self) -> bool {
+///         // registers enums as dynamic types.
+///         let my_module = self.obj();
+///         let type_module: &glib::TypeModule = my_module.upcast_ref();
+///         MyModuleEnum::on_implementation_load(type_module)
+///     }
+///     ...
+/// }
+/// ```
+///
+/// Optionally setting the macro attribute `plugin_type` allows to register an
+/// enum as a dynamic type within a given [`TypePlugin`] subclass:
+/// ```ignore
+/// #[derive(Debug, Copy, Clone, PartialEq, Eq, glib::DynamicEnum)]
+/// #[enum_type(name = "MyPluginEnum", plugin_type = MyPlugin)]
+/// enum MyPluginEnum {
+///     ...
+/// }
+/// ...
+/// #[derive(Default)]
+/// pub struct MyPlugin;
+/// ...
+/// impl TypePluginImpl for MyPlugin {
+///     fn use_plugin(&self) {
+///         // register enums as dynamic types.
+///         let my_plugin = self.obj();
+///         MyPluginEnum::on_implementation_load(my_plugin.as_ref());
+///     }
 ///     ...
 /// }
 /// ```
