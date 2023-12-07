@@ -328,6 +328,7 @@ pub fn impl_enum_(
 
             #[inline]
             fn into_glib(self) -> i32 {
+                assert!(#name::static_type().is_valid());
                 self as i32
             }
         }
@@ -337,6 +338,7 @@ pub fn impl_enum_(
 
             #[inline]
             unsafe fn try_from_glib(value: i32) -> ::core::result::Result<Self, i32> {
+                assert!(#name::static_type().is_valid());
                 let from_glib = || {
                     #from_glib
                 };
