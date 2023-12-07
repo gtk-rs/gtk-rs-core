@@ -195,7 +195,10 @@ impl EnumClass {
     /// calls `TypePluginRegisterImpl::register_dynamic_enum()` and `TypePluginImpl::complete_type_info()`
     /// and one of them should call `EnumClass::with_type()` before calling this method.
     #[doc(alias = "g_enum_complete_type_info")]
-    pub fn type_info(type_: Type, const_static_values: &'static [EnumValue]) -> Option<TypeInfo> {
+    pub fn complete_type_info(
+        type_: Type,
+        const_static_values: &'static [EnumValue],
+    ) -> Option<TypeInfo> {
         unsafe {
             let is_enum: bool = from_glib(gobject_ffi::g_type_is_a(
                 type_.into_glib(),

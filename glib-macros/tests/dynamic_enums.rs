@@ -264,8 +264,8 @@ pub mod plugin {
                     _ => panic!("unexpected type"),
                 }
                 .expect("enum type values");
-                let type_info = EnumClass::type_info(type_, enum_type_values)
-                    .expect("EnumClass::type_info failed");
+                let type_info = EnumClass::complete_type_info(type_, enum_type_values)
+                    .expect("EnumClass::complete_type_info failed");
                 (type_info, glib::TypeValueTable::default())
             }
 
