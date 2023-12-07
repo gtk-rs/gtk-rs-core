@@ -258,9 +258,12 @@ impl fmt::Debug for EnumValue {
 
 impl EnumValue {
     // rustdoc-stripper-ignore-next
-    /// Creates a new `EnumValue` containing `value`.
-    pub const fn new(value: gobject_ffi::GEnumValue) -> Self {
-        Self(value)
+    /// # Safety
+    ///
+    /// It is the responsibility of the caller to ensure `GEnumValue` is
+    /// valid.
+    pub const unsafe fn unsafe_from(g_value: gobject_ffi::GEnumValue) -> Self {
+        Self(g_value)
     }
 
     // rustdoc-stripper-ignore-next
@@ -323,6 +326,12 @@ impl PartialOrd for EnumValue {
 impl Ord for EnumValue {
     fn cmp(&self, other: &Self) -> cmp::Ordering {
         self.value().cmp(&other.value())
+    }
+}
+
+impl UnsafeFrom<gobject_ffi::GEnumValue> for EnumValue {
+    unsafe fn unsafe_from(g_value: gobject_ffi::GEnumValue) -> Self {
+        Self::unsafe_from(g_value)
     }
 }
 

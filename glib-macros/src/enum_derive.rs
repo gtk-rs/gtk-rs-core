@@ -170,19 +170,19 @@ pub fn impl_dynamic_enum(input: &syn::DeriveInput) -> TokenStream {
     let g_enum_values_expr: ExprArray = parse_quote! { [#g_enum_values] };
     let enum_values_iter = g_enum_values_expr.elems.iter().map(|v| {
         quote_spanned! {v.span()=>
-            #crate_ident::EnumValue::new(#v),
+            #crate_ident::EnumValue::unsafe_from(#v),
         }
     });
 
     let enum_values = quote! {
-        [#crate_ident::EnumValue; #nb_enum_values] = [
+        [#crate_ident::EnumValue; #nb_enum_values] = unsafe {[
             #(#enum_values_iter)*
-            #crate_ident::EnumValue::new(#crate_ident::gobject_ffi::GEnumValue {
+            #crate_ident::EnumValue::unsafe_from(#crate_ident::gobject_ffi::GEnumValue {
                 value: 0,
                 value_name: ::std::ptr::null(),
                 value_nick: ::std::ptr::null(),
             }),
-        ]
+        ]}
     };
 
     // The following implementations follows the lifecycle of plugins and of dynamic types (see [`TypePluginExt`] and [`TypeModuleExt`]).
