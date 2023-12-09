@@ -220,7 +220,7 @@ pub trait DataInputStreamExtManual: sealed::Sealed + IsA<DataInputStream> + 'sta
             if error.is_null() {
                 let length = length.assume_init();
                 Ok(FromGlibContainer::from_glib_full_num(
-                    ret as *const _,
+                    ret as *mut u8,
                     length,
                 ))
             } else {
@@ -268,7 +268,7 @@ pub trait DataInputStreamExtManual: sealed::Sealed + IsA<DataInputStream> + 'sta
             let result = if error.is_null() {
                 let length = length.assume_init();
                 Ok(FromGlibContainer::from_glib_full_num(
-                    ret as *const _,
+                    ret as *mut u8,
                     length,
                 ))
             } else {

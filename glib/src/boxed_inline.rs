@@ -50,6 +50,7 @@ macro_rules! glib_boxed_inline_wrapper {
         }
 
         #[allow(clippy::incorrect_clone_impl_on_copy_type)]
+        #[allow(clippy::non_canonical_clone_impl)]
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? std::clone::Clone for $name $(<$($generic),+>)? {
             #[inline]
             fn clone(&self) -> Self {
