@@ -150,6 +150,14 @@ mod module {
         assert_eq!(t.name(), "MyModuleEnum");
 
         let e = glib::EnumClass::with_type(t).expect("EnumClass::new failed");
+
+        let values = e.values();
+        assert_eq!(values.len(), 2);
+        assert_eq!(values[0].name(), "Foo");
+        assert_eq!(values[0].nick(), "foo");
+        assert_eq!(values[1].name(), "Bar");
+        assert_eq!(values[1].nick(), "bar");
+
         let v = e.value(0).expect("EnumClass::get_value(0) failed");
         assert_eq!(v.name(), "Foo");
         assert_eq!(v.nick(), "foo");
@@ -186,6 +194,14 @@ mod module {
         assert_eq!(t.name(), "MyModuleEnumLazy");
 
         let e = glib::EnumClass::with_type(t).expect("EnumClass::new failed");
+
+        let values = e.values();
+        assert_eq!(values.len(), 2);
+        assert_eq!(values[0].name(), "Foo");
+        assert_eq!(values[0].nick(), "foo");
+        assert_eq!(values[1].name(), "Bar");
+        assert_eq!(values[1].nick(), "bar");
+
         let v = e.value(0).expect("EnumClass::get_value(0) failed");
         assert_eq!(v.name(), "Foo");
         assert_eq!(v.nick(), "foo");
@@ -406,6 +422,14 @@ pub mod plugin {
         assert_eq!(t.name(), "MyPluginEnum");
 
         let e = glib::EnumClass::with_type(t).expect("EnumClass::new failed");
+
+        let values = e.values();
+        assert_eq!(values.len(), 2);
+        assert_eq!(values[0].name(), "Foo");
+        assert_eq!(values[0].nick(), "foo");
+        assert_eq!(values[1].name(), "Bar");
+        assert_eq!(values[1].nick(), "bar");
+
         let v = e.value(0).expect("EnumClass::get_value(0) failed");
         assert_eq!(v.name(), "Foo");
         assert_eq!(v.nick(), "foo");
@@ -442,6 +466,14 @@ pub mod plugin {
         assert_eq!(t.name(), "MyPluginEnumLazy");
 
         let e = glib::EnumClass::with_type(t).expect("EnumClass::new failed");
+
+        let values = e.values();
+        assert_eq!(values.len(), 2);
+        assert_eq!(values[0].name(), "Foo");
+        assert_eq!(values[0].nick(), "foo");
+        assert_eq!(values[1].name(), "Bar");
+        assert_eq!(values[1].nick(), "bar");
+
         let v = e.value(0).expect("EnumClass::get_value(0) failed");
         assert_eq!(v.name(), "Foo");
         assert_eq!(v.nick(), "foo");
