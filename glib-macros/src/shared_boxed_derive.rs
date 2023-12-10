@@ -218,6 +218,10 @@ pub fn impl_shared_boxed(input: &syn::DeriveInput) -> proc_macro2::TokenStream {
 
         #impl_from_value
 
+        impl #crate_ident::translate::GlibPtrDefault for #name {
+            type GlibType = *mut #refcounted_type_prefix::InnerType;
+        }
+
         impl #crate_ident::translate::FromGlibPtrBorrow<*const #refcounted_type_prefix::InnerType> for #name {
             #[inline]
             unsafe fn from_glib_borrow(ptr: *const #refcounted_type_prefix::InnerType) -> #crate_ident::translate::Borrowed<Self> {
