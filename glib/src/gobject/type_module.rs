@@ -44,6 +44,17 @@ pub trait TypeModuleExt: IsA<TypeModule> + sealed::Sealed + 'static {
         name: &str,
         const_static_values: &'static [EnumValue],
     ) -> crate::types::Type {
+        assert!(
+            !const_static_values.is_empty()
+                && const_static_values[const_static_values.len() - 1]
+                    == unsafe {
+                        EnumValue::unsafe_from(gobject_ffi::GEnumValue {
+                            value: 0,
+                            value_name: ::std::ptr::null(),
+                            value_nick: ::std::ptr::null(),
+                        })
+                    }
+        );
         unsafe {
             from_glib(gobject_ffi::g_type_module_register_enum(
                 self.as_ref().to_glib_none().0,

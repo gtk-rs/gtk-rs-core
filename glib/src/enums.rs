@@ -194,11 +194,25 @@ impl EnumClass {
     /// callers should first create an `EnumClass` instance by calling `EnumClass::with_type()` which indirectly
     /// calls `TypePluginRegisterImpl::register_dynamic_enum()` and `TypePluginImpl::complete_type_info()`
     /// and one of them should call `EnumClass::with_type()` before calling this method.
+    /// `const_static_values` is an array of `EnumValue` for the possible enumeration values. The array must be
+    /// static to ensure enumeration values are never dropped, and must be terminated by an `EnumValue` with
+    /// all members being 0, as expected by GLib.
     #[doc(alias = "g_enum_complete_type_info")]
     pub fn complete_type_info(
         type_: Type,
         const_static_values: &'static [EnumValue],
     ) -> Option<TypeInfo> {
+        assert!(
+            !const_static_values.is_empty()
+                && const_static_values[const_static_values.len() - 1]
+                    == unsafe {
+                        EnumValue::unsafe_from(gobject_ffi::GEnumValue {
+                            value: 0,
+                            value_name: ::std::ptr::null(),
+                            value_nick: ::std::ptr::null(),
+                        })
+                    }
+        );
         unsafe {
             let is_enum: bool = from_glib(gobject_ffi::g_type_is_a(
                 type_.into_glib(),
