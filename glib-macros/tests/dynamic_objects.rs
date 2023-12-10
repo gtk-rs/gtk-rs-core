@@ -465,14 +465,6 @@ pub mod plugin {
                 };
             }
 
-            fn register_dynamic_enum(
-                &self,
-                _name: &str,
-                _const_static_values: &'static [glib::EnumValue],
-            ) -> glib::Type {
-                unimplemented!()
-            }
-
             fn register_dynamic_type(
                 &self,
                 parent_type: glib::Type,

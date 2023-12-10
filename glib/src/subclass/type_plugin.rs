@@ -183,19 +183,25 @@ pub trait TypePluginRegisterImpl: ObjectImpl + TypePluginImpl {
         _instance_type: Type,
         _interface_type: Type,
         _interface_info: &InterfaceInfo,
-    );
+    ) {
+        unimplemented!()
+    }
     fn register_dynamic_enum(
         &self,
         _name: &str,
         _const_static_values: &'static [EnumValue],
-    ) -> Type;
+    ) -> Type {
+        unimplemented!()
+    }
     fn register_dynamic_type(
         &self,
         _parent_type: Type,
         _type_name: &str,
         _type_info: &TypeInfo,
         _flags: TypeFlags,
-    ) -> Type;
+    ) -> Type {
+        unimplemented!()
+    }
 }
 
 #[cfg(test)]
@@ -240,23 +246,6 @@ mod tests {
         }
 
         impl TypePluginRegisterImpl for SimplePlugin {
-            fn add_dynamic_interface(
-                &self,
-                _instance_type: Type,
-                _interface_type: Type,
-                _interface_info: &InterfaceInfo,
-            ) {
-                unimplemented!()
-            }
-
-            fn register_dynamic_enum(
-                &self,
-                _name: &str,
-                _const_static_values: &'static [EnumValue],
-            ) -> Type {
-                unimplemented!()
-            }
-
             fn register_dynamic_type(
                 &self,
                 parent_type: Type,

@@ -268,26 +268,9 @@ pub mod plugin {
                     .expect("EnumClass::complete_type_info failed");
                 (type_info, glib::TypeValueTable::default())
             }
-
-            fn complete_interface_info(
-                &self,
-                _instance_type: glib::Type,
-                _interface_type: glib::Type,
-            ) -> glib::InterfaceInfo {
-                unimplemented!()
-            }
         }
 
         impl TypePluginRegisterImpl for MyPlugin {
-            fn add_dynamic_interface(
-                &self,
-                _instance_type: glib::Type,
-                _interface_type: glib::Type,
-                _interface_info: &glib::InterfaceInfo,
-            ) {
-                unimplemented!()
-            }
-
             fn register_dynamic_enum(
                 &self,
                 type_name: &str,
@@ -311,16 +294,6 @@ pub mod plugin {
                     };
                 }
                 type_
-            }
-
-            fn register_dynamic_type(
-                &self,
-                _parent_type: glib::Type,
-                _type_name: &str,
-                _type_info: &glib::TypeInfo,
-                _flags: glib::TypeFlags,
-            ) -> glib::Type {
-                unimplemented!()
             }
         }
     }

@@ -343,14 +343,6 @@
 //!     }
 //!
 //!     impl TypePluginRegisterImpl for SimpleTypePlugin {
-//!         fn add_dynamic_interface(&self, _: glib::Type, _: glib::Type, _: &glib::InterfaceInfo) {
-//!             unimplemented!()
-//!         }
-//!
-//!         fn register_dynamic_enum(&self, _: &str, _: &'static [glib::EnumValue]) -> glib::Type {
-//!             unimplemented!()
-//!         }
-//!
 //!         fn register_dynamic_type(&self, parent_type: glib::Type, type_name: &str, type_info: &glib::TypeInfo, flags: glib::TypeFlags) -> glib::Type {
 //!             let type_ = glib::Type::from_name(type_name).unwrap_or_else(|| {
 //!                 glib::Type::register_dynamic(parent_type, type_name, self.obj().upcast_ref::<glib::TypePlugin>(), flags)
