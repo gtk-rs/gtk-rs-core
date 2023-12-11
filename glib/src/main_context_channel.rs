@@ -539,7 +539,7 @@ impl MainContext {
     /// will fail.
     ///
     /// The returned `Sender` behaves the same as `std::sync::mpsc::Sender`.
-    #[deprecated = "Use an async channel on the main context instead"]
+    #[deprecated = "Use an async channel, from async-channel for example, on the main context using spawn_future_local() instead"]
     pub fn channel<T>(priority: Priority) -> (Sender<T>, Receiver<T>) {
         let channel = Channel::new(None);
         let receiver = Receiver(Some(channel.clone()), priority);
@@ -563,7 +563,7 @@ impl MainContext {
     /// will fail.
     ///
     /// The returned `SyncSender` behaves the same as `std::sync::mpsc::SyncSender`.
-    #[deprecated = "Use an async channel on the main context instead"]
+    #[deprecated = "Use an async channel, from async-channel for example, on the main context using spawn_future_local() instead"]
     pub fn sync_channel<T>(priority: Priority, bound: usize) -> (SyncSender<T>, Receiver<T>) {
         let channel = Channel::new(Some(bound));
         let receiver = Receiver(Some(channel.clone()), priority);
