@@ -1,12 +1,12 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
+use crate::enums::EnumValues;
 use crate::translate::IntoGlib;
 use crate::translate::{FromGlib, ToGlibPtr};
 use crate::{
-    subclass::prelude::*, Cast, Interface, InterfaceInfo, Type, TypeInfo, TypePlugin,
+    subclass::prelude::*, Cast, Interface, InterfaceInfo, Type, TypeFlags, TypeInfo, TypePlugin,
     TypeValueTable,
 };
-use crate::{EnumValue, TypeFlags};
 
 pub trait TypePluginImpl: ObjectImpl + TypePluginImplExt {
     fn use_plugin(&self) {
@@ -189,7 +189,7 @@ pub trait TypePluginRegisterImpl: ObjectImpl + TypePluginImpl {
     fn register_dynamic_enum(
         &self,
         _name: &str,
-        _const_static_values: &'static [EnumValue],
+        _const_static_values: &'static EnumValues,
     ) -> Type {
         unimplemented!()
     }

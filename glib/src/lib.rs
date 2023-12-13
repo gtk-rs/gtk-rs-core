@@ -20,7 +20,10 @@ pub use self::{
     byte_array::ByteArray,
     bytes::Bytes,
     closure::{Closure, RustClosure},
-    enums::{EnumClass, EnumValue, FlagsBuilder, FlagsClass, FlagsValue, UserDirectory},
+    enums::{
+        EnumClass, EnumValue, EnumValues, EnumValuesStorage, FlagsBuilder, FlagsClass, FlagsValue,
+        UserDirectory,
+    },
     error::{BoolError, Error},
     object::{
         BorrowedObject, Cast, CastNone, Class, InitiallyUnowned, Interface, IsA, Object,

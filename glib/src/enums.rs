@@ -1,6 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use std::{cmp, ffi::CStr, fmt, marker::PhantomData, ptr};
+use std::{cmp, ffi::CStr, fmt, ptr};
 
 use crate::{
     translate::*,
@@ -194,25 +194,14 @@ impl EnumClass {
     /// callers should first create an `EnumClass` instance by calling `EnumClass::with_type()` which indirectly
     /// calls `TypePluginRegisterImpl::register_dynamic_enum()` and `TypePluginImpl::complete_type_info()`
     /// and one of them should call `EnumClass::with_type()` before calling this method.
-    /// `const_static_values` is an array of `EnumValue` for the possible enumeration values. The array must be
-    /// static to ensure enumeration values are never dropped, and must be terminated by an `EnumValue` with
-    /// all members being 0, as expected by GLib.
+    /// `const_static_values` is a reference on a wrapper of a slice of `EnumValue`.
+    /// It must be static to ensure enumeration values are never dropped, and ensures that slice is terminated
+    ///  by an `EnumValue` with all members being 0, as expected by GLib.
     #[doc(alias = "g_enum_complete_type_info")]
     pub fn complete_type_info(
         type_: Type,
-        const_static_values: &'static [EnumValue],
+        const_static_values: &'static EnumValues,
     ) -> Option<TypeInfo> {
-        assert!(
-            !const_static_values.is_empty()
-                && const_static_values[const_static_values.len() - 1]
-                    == unsafe {
-                        EnumValue::unsafe_from(gobject_ffi::GEnumValue {
-                            value: 0,
-                            value_name: ::std::ptr::null(),
-                            value_nick: ::std::ptr::null(),
-                        })
-                    }
-        );
         unsafe {
             let is_enum: bool = from_glib(gobject_ffi::g_type_is_a(
                 type_.into_glib(),
@@ -359,34 +348,59 @@ unsafe impl<'a, 'b> FromValue<'a> for &'b EnumValue {
     }
 }
 
-#[doc(hidden)]
-impl<'a> ToGlibPtr<'a, *const gobject_ffi::GEnumValue> for EnumValue {
-    type Storage = PhantomData<&'a Self>;
+// rustdoc-stripper-ignore-next
+/// Storage of enumeration values terminated by an `EnumValue` with all members
+/// being 0. Should be used only as a storage location for enumeration values
+/// when registering an enumeration as a dynamic type.
+/// see `TypePluginRegisterImpl::register_dynamic_enum()` and `TypePluginImpl::complete_type_info()`.
+/// Inner is intentionally private to ensure other modules will not access the
+/// enumeration values by this way.
+/// Use `EnumClass::values()` or `EnumClass::value()` to get enumeration values.
+#[repr(transparent)]
+pub struct EnumValuesStorage<const S: usize>([EnumValue; S]);
 
-    #[inline]
-    fn to_glib_none(&'a self) -> Stash<'a, *const gobject_ffi::GEnumValue, Self> {
-        Stash(&self.0 as *const gobject_ffi::GEnumValue, PhantomData)
+impl<const S: usize> EnumValuesStorage<S> {
+    pub const fn new<const N: usize>(values: [EnumValue; N]) -> Self {
+        const ZERO: EnumValue = unsafe {
+            EnumValue::unsafe_from(gobject_ffi::GEnumValue {
+                value: 0,
+                value_name: ptr::null(),
+                value_nick: ptr::null(),
+            })
+        };
+        unsafe {
+            let v: [EnumValue; S] = [ZERO; S];
+            ptr::copy_nonoverlapping(values.as_ptr(), v.as_ptr() as _, N);
+            Self(v)
+        }
     }
 }
 
-impl<'a> ToGlibContainerFromSlice<'a, *const gobject_ffi::GEnumValue> for EnumValue {
-    type Storage = PhantomData<&'a Self>;
+// rustdoc-stripper-ignore-next
+/// Representation of enumeration values wrapped by `EnumValuesStorage`. Easier
+/// to use because don't have a size parameter to be specify. Should be used
+/// only to register an enumeration as a dynamic type.
+/// see `TypePluginRegisterImpl::register_dynamic_enum()` and `TypePluginImpl::complete_type_info()`.
+/// Field is intentionally private to ensure other modules will not access the
+/// enumeration values by this way.
+/// Use `EnumClass::values()` or `EnumClass::value()` to get the enumeration values.
+#[repr(transparent)]
+pub struct EnumValues([EnumValue]);
 
-    fn to_glib_none_from_slice(t: &'a [Self]) -> (*const gobject_ffi::GEnumValue, Self::Storage) {
-        (
-            t.as_ptr() as *const gobject_ffi::GEnumValue,
-            std::marker::PhantomData,
-        )
+impl<const S: usize> AsRef<EnumValues> for EnumValuesStorage<S> {
+    fn as_ref(&self) -> &EnumValues {
+        // SAFETY: EnumValues is repr(transparent) over [EnumValue] so the cast is safe.
+        unsafe { &*(&self.0 as *const [EnumValue] as *const EnumValues) }
     }
+}
 
-    fn to_glib_container_from_slice(
-        _: &'a [Self],
-    ) -> (*const gobject_ffi::GEnumValue, Self::Storage) {
-        unimplemented!();
-    }
+#[doc(hidden)]
+impl<'a> ToGlibPtr<'a, *const gobject_ffi::GEnumValue> for EnumValues {
+    type Storage = &'a Self;
 
-    fn to_glib_full_from_slice(_: &[Self]) -> *const gobject_ffi::GEnumValue {
-        unimplemented!();
+    #[inline]
+    fn to_glib_none(&'a self) -> Stash<'a, *const gobject_ffi::GEnumValue, Self> {
+        Stash(self.0.as_ptr() as *const gobject_ffi::GEnumValue, self)
     }
 }
 

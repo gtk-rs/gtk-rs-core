@@ -1,7 +1,7 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
 use crate::{
-    prelude::*, subclass::prelude::*, EnumValue, InterfaceInfo, IsA, TypeFlags, TypeInfo,
+    enums::EnumValues, prelude::*, subclass::prelude::*, InterfaceInfo, IsA, TypeFlags, TypeInfo,
     TypeModule, TypePlugin,
 };
 
@@ -21,7 +21,7 @@ pub trait DynamicObjectRegisterExt: AsRef<TypePlugin> + sealed::Sealed + 'static
     fn register_dynamic_enum(
         &self,
         name: &str,
-        const_static_values: &'static [EnumValue],
+        const_static_values: &'static EnumValues,
     ) -> crate::types::Type;
 
     fn register_dynamic_type(
@@ -50,7 +50,7 @@ where
     fn register_dynamic_enum(
         &self,
         name: &str,
-        const_static_values: &'static [EnumValue],
+        const_static_values: &'static EnumValues,
     ) -> crate::types::Type {
         self.imp().register_dynamic_enum(name, const_static_values)
     }
@@ -80,7 +80,7 @@ impl DynamicObjectRegisterExt for TypeModule {
     fn register_dynamic_enum(
         &self,
         name: &str,
-        const_static_values: &'static [EnumValue],
+        const_static_values: &'static EnumValues,
     ) -> crate::types::Type {
         <Self as TypeModuleExt>::register_enum(self, name, const_static_values)
     }

@@ -238,8 +238,8 @@ pub mod plugin {
         // impl for a type plugin (must implement `glib::TypePlugin`).
         #[derive(Default)]
         pub struct MyPlugin {
-            my_enum_type_values: Cell<Option<&'static [glib::EnumValue]>>,
-            my_enum_lazy_type_values: Cell<Option<&'static [glib::EnumValue]>>,
+            my_enum_type_values: Cell<Option<&'static glib::EnumValues>>,
+            my_enum_lazy_type_values: Cell<Option<&'static glib::EnumValues>>,
         }
 
         #[glib::object_subclass]
@@ -290,7 +290,7 @@ pub mod plugin {
             fn register_dynamic_enum(
                 &self,
                 type_name: &str,
-                const_static_values: &'static [glib::EnumValue],
+                const_static_values: &'static glib::EnumValues,
             ) -> glib::Type {
                 let type_ = glib::Type::from_name(type_name).unwrap_or_else(|| {
                     glib::Type::register_dynamic(
