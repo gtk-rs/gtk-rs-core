@@ -20,10 +20,7 @@ pub use self::{
     byte_array::ByteArray,
     bytes::Bytes,
     closure::{Closure, RustClosure},
-    enums::{
-        EnumClass, EnumValue, EnumValues, EnumValuesStorage, FlagsBuilder, FlagsClass, FlagsValue,
-        UserDirectory,
-    },
+    enums::{EnumClass, EnumValue, FlagsBuilder, FlagsClass, FlagsValue, UserDirectory},
     error::{BoolError, Error},
     object::{
         BorrowedObject, Cast, CastNone, Class, InitiallyUnowned, Interface, IsA, Object,
@@ -142,7 +139,7 @@ mod checksum;
 pub mod closure;
 mod convert;
 pub use self::convert::*;
-mod enums;
+pub mod enums;
 mod functions;
 pub use self::functions::*;
 mod key_file;

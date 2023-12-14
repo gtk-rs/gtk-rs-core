@@ -175,8 +175,8 @@ pub fn impl_dynamic_enum(input: &syn::DeriveInput) -> TokenStream {
     });
 
     let enum_values = quote! {
-        #crate_ident::EnumValuesStorage<#nb_enum_values> = unsafe {
-            #crate_ident::EnumValuesStorage::<#nb_enum_values>::new::<{#nb_enum_values - 1}>([
+        #crate_ident::enums::EnumValuesStorage<#nb_enum_values> = unsafe {
+            #crate_ident::enums::EnumValuesStorage::<#nb_enum_values>::new::<{#nb_enum_values - 1}>([
                 #(#enum_values_iter)*
             ])
         }

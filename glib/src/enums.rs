@@ -1,6 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use std::{cmp, ffi::CStr, fmt, ptr};
+use std::{cmp, ffi::CStr, fmt, ops::Deref, ptr};
 
 use crate::{
     translate::*,
@@ -348,6 +348,22 @@ unsafe impl<'a, 'b> FromValue<'a> for &'b EnumValue {
     }
 }
 
+#[doc(hidden)]
+impl<'a> ToGlibContainerFromSlice<'a, *const gobject_ffi::GEnumValue> for EnumValue {
+    type Storage = &'a [Self];
+    fn to_glib_none_from_slice(t: &'a [Self]) -> (*const gobject_ffi::GEnumValue, Self::Storage) {
+        (t.as_ptr() as *const gobject_ffi::GEnumValue, t)
+    }
+    fn to_glib_container_from_slice(
+        _: &'a [Self],
+    ) -> (*const gobject_ffi::GEnumValue, Self::Storage) {
+        unimplemented!();
+    }
+    fn to_glib_full_from_slice(_: &[Self]) -> *const gobject_ffi::GEnumValue {
+        unimplemented!();
+    }
+}
+
 // rustdoc-stripper-ignore-next
 /// Storage of enumeration values terminated by an `EnumValue` with all members
 /// being 0. Should be used only as a storage location for enumeration values
@@ -360,6 +376,7 @@ unsafe impl<'a, 'b> FromValue<'a> for &'b EnumValue {
 pub struct EnumValuesStorage<const S: usize>([EnumValue; S]);
 
 impl<const S: usize> EnumValuesStorage<S> {
+    // rustdoc-stripper-ignore-next
     pub const fn new<const N: usize>(values: [EnumValue; N]) -> Self {
         const ZERO: EnumValue = unsafe {
             EnumValue::unsafe_from(gobject_ffi::GEnumValue {
@@ -376,6 +393,13 @@ impl<const S: usize> EnumValuesStorage<S> {
     }
 }
 
+impl<const S: usize> AsRef<EnumValues> for EnumValuesStorage<S> {
+    fn as_ref(&self) -> &EnumValues {
+        // SAFETY: EnumValues is repr(transparent) over [EnumValue] so the cast is safe.
+        unsafe { &*(&self.0 as *const [EnumValue] as *const EnumValues) }
+    }
+}
+
 // rustdoc-stripper-ignore-next
 /// Representation of enumeration values wrapped by `EnumValuesStorage`. Easier
 /// to use because don't have a size parameter to be specify. Should be used
@@ -387,20 +411,12 @@ impl<const S: usize> EnumValuesStorage<S> {
 #[repr(transparent)]
 pub struct EnumValues([EnumValue]);
 
-impl<const S: usize> AsRef<EnumValues> for EnumValuesStorage<S> {
-    fn as_ref(&self) -> &EnumValues {
-        // SAFETY: EnumValues is repr(transparent) over [EnumValue] so the cast is safe.
-        unsafe { &*(&self.0 as *const [EnumValue] as *const EnumValues) }
-    }
-}
+impl Deref for EnumValues {
+    type Target = [EnumValue];
 
-#[doc(hidden)]
-impl<'a> ToGlibPtr<'a, *const gobject_ffi::GEnumValue> for EnumValues {
-    type Storage = &'a Self;
-
-    #[inline]
-    fn to_glib_none(&'a self) -> Stash<'a, *const gobject_ffi::GEnumValue, Self> {
-        Stash(self.0.as_ptr() as *const gobject_ffi::GEnumValue, self)
+    fn deref(&self) -> &Self::Target {
+        // SAFETY: EnumValues contains at least the zero `EnumValue` which terminates the enumeration values.
+        unsafe { std::slice::from_raw_parts(self.0.as_ptr(), self.0.len() - 1) }
     }
 }
 
