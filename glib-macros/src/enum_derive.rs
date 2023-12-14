@@ -1,9 +1,9 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use heck::{ToKebabCase, ToUpperCamelCase};
+use heck::{ToKebabCase, ToShoutySnakeCase, ToUpperCamelCase};
 use proc_macro2::TokenStream;
 use proc_macro_error::abort_call_site;
-use quote::{quote, quote_spanned, ToTokens};
+use quote::{format_ident, quote, quote_spanned, ToTokens};
 use syn::{
     parse_quote, punctuated::Punctuated, spanned::Spanned, token::Comma, Data, ExprArray, Ident,
     Variant,
@@ -188,37 +188,44 @@ pub fn impl_dynamic_enum(input: &syn::DeriveInput) -> TokenStream {
         // registers the enum as a dynamic type on the first use (lazy registration).
         // a weak reference on the plugin is stored and will be used later on the first use of the enum.
         // this implementation relies on a static storage of a weak reference on the plugin and of the GLib type to know if the enum has been registered.
+
+        // the registration status type.
+        let registration_status_type = format_ident!("{}RegistrationStatus", name);
+        // name of the static variable to store the registration status.
+        let registration_status = format_ident!(
+            "{}",
+            registration_status_type.to_string().to_shouty_snake_case()
+        );
+        // name of the static array to store the enumeration values.
+        let enum_values_array = format_ident!("{}_VALUES", name.to_string().to_shouty_snake_case());
         quote! {
-            struct RegistrationStatus(<#plugin_ty as #crate_ident::clone::Downgrade>::Weak, #crate_ident::Type);
-            unsafe impl Send for RegistrationStatus {}
+            /// The registration status type: a tuple of the weak reference on the plugin and of the GLib type.
+            struct #registration_status_type(<#plugin_ty as #crate_ident::clone::Downgrade>::Weak, #crate_ident::Type);
+            unsafe impl Send for #registration_status_type {}
+
+            /// The registration status protected by a mutex guarantees so that no other threads are concurrently accessing the data.
+            static #registration_status: ::std::sync::Mutex<Option<#registration_status_type>> = ::std::sync::Mutex::new(None);
+
+            /// Array of `EnumValue` for the possible enumeration values.
+            static #enum_values_array: #enum_values;
 
             impl #name {
-                /// Returns a mutable reference to the registration status: a tuple of the weak reference on the plugin and of the GLib type.
-                /// This is safe because the mutable reference guarantees that no other threads are concurrently accessing the data.
-                #[inline]
-                fn get_registration_status_ref() -> &'static ::std::sync::Mutex<Option<RegistrationStatus>> {
-                    static REGISTRATION_STATUS: ::std::sync::Mutex<Option<RegistrationStatus>> = ::std::sync::Mutex::new(None);
-                    &REGISTRATION_STATUS
-                }
-
                 /// Registers the enum as a dynamic type within the plugin only once.
                 /// Plugin must have been used at least once.
                 /// Do nothing if plugin has never been used or if the enum is already registered as a dynamic type.
                 #[inline]
                 fn register_enum() -> #crate_ident::Type {
-                    let registration_status_ref = Self::get_registration_status_ref();
-                    let mut registration_status = registration_status_ref.lock().unwrap();
+                    let mut registration_status = #registration_status.lock().unwrap();
                     match ::std::ops::DerefMut::deref_mut(&mut registration_status) {
                         // plugin has never been used, so the enum cannot be registered as a dynamic type.
                         None => #crate_ident::Type::INVALID,
                         // plugin has been used and the enum has not been registered yet, so registers it as a dynamic type.
-                        Some(RegistrationStatus(type_plugin, type_)) if !type_.is_valid() => {
-                            static VALUES: #enum_values;
-                            *type_ = <#plugin_ty as glib::prelude::DynamicObjectRegisterExt>::register_dynamic_enum(type_plugin.upgrade().unwrap().as_ref(), #gtype_name, VALUES.as_ref());
+                        Some(#registration_status_type(type_plugin, type_)) if !type_.is_valid() => {
+                            *type_ = <#plugin_ty as glib::prelude::DynamicObjectRegisterExt>::register_dynamic_enum(type_plugin.upgrade().unwrap().as_ref(), #gtype_name, #enum_values_array.as_ref());
                             *type_
                         },
                         // plugin has been used and the enum has already been registered as a dynamic type.
-                        Some(RegistrationStatus(_, type_)) => *type_
+                        Some(#registration_status_type(_, type_)) => *type_
                     }
                 }
 
@@ -229,18 +236,16 @@ pub fn impl_dynamic_enum(input: &syn::DeriveInput) -> TokenStream {
                 /// If plugin is reused (and has reloaded the implementation) and the enum has not been registered yet as a dynamic type, do nothing.
                 #[inline]
                 pub fn on_implementation_load(type_plugin: &#plugin_ty) -> bool {
-                    let registration_status_ref = Self::get_registration_status_ref();
-                    let mut registration_status = registration_status_ref.lock().unwrap();
+                    let mut registration_status = #registration_status.lock().unwrap();
                     match ::std::ops::DerefMut::deref_mut(&mut registration_status) {
                         // plugin has never been used (this is the first time), so postpones registration of the enum as a dynamic type on the first use.
                         None => {
-                            *registration_status = Some(RegistrationStatus(#crate_ident::clone::Downgrade::downgrade(type_plugin), #crate_ident::Type::INVALID));
+                            *registration_status = Some(#registration_status_type(#crate_ident::clone::Downgrade::downgrade(type_plugin), #crate_ident::Type::INVALID));
                             true
                         },
                         // plugin has been used at least one time and the enum has been registered as a dynamic type at least one time, so re-registers it.
-                        Some(RegistrationStatus(_, type_)) if type_.is_valid() => {
-                            static VALUES: #enum_values;
-                            *type_ = <#plugin_ty as glib::prelude::DynamicObjectRegisterExt>::register_dynamic_enum(type_plugin, #gtype_name, VALUES.as_ref());
+                        Some(#registration_status_type(_, type_)) if type_.is_valid() => {
+                            *type_ = <#plugin_ty as glib::prelude::DynamicObjectRegisterExt>::register_dynamic_enum(type_plugin, #gtype_name, #enum_values_array.as_ref());
                             type_.is_valid()
                         },
                         // plugin has been used at least one time but the enum has not been registered yet as a dynamic type, so keeps postponed registration.
@@ -255,13 +260,12 @@ pub fn impl_dynamic_enum(input: &syn::DeriveInput) -> TokenStream {
                 /// Else do nothing.
                 #[inline]
                 pub fn on_implementation_unload(type_plugin_: &#plugin_ty) -> bool {
-                    let registration_status_ref = Self::get_registration_status_ref();
-                    let mut registration_status = registration_status_ref.lock().unwrap();
+                    let mut registration_status = #registration_status.lock().unwrap();
                     match ::std::ops::DerefMut::deref_mut(&mut registration_status) {
                         // plugin has never been used, so unload implementation is unexpected.
                         None => false,
                         // plugin has been used at least one time and the enum has been registered as a dynamic type at least one time.
-                        Some(RegistrationStatus(_, type_)) if type_.is_valid() => true,
+                        Some(#registration_status_type(_, type_)) if type_.is_valid() => true,
                         // plugin has been used at least one time but the enum has not been registered yet as a dynamic type, so cancels the postponed registration.
                         Some(_) => {
                             *registration_status = None;
@@ -273,19 +277,18 @@ pub fn impl_dynamic_enum(input: &syn::DeriveInput) -> TokenStream {
         }
     } else {
         // registers immediately the enum as a dynamic type.
-        quote! {
-            impl #name {
-                /// Returns a reference to the GLib type which can be safely shared between threads.
-                #[inline]
-                fn get_gtype_ref() -> &'static ::std::sync::atomic::AtomicUsize {
-                    static TYPE: ::std::sync::atomic::AtomicUsize = ::std::sync::atomic::AtomicUsize::new(#crate_ident::gobject_ffi::G_TYPE_INVALID);
-                    &TYPE
-                }
 
+        // name of the static variable to store the GLib type.
+        let gtype_status = format_ident!("{}_G_TYPE", name.to_string().to_shouty_snake_case());
+        quote! {
+            /// The GLib type which can be safely shared between threads.
+            static #gtype_status: ::std::sync::atomic::AtomicUsize = ::std::sync::atomic::AtomicUsize::new(#crate_ident::gobject_ffi::G_TYPE_INVALID);
+
+            impl #name {
                 /// Do nothing as the enum has been registered on implementation load.
                 #[inline]
                 fn register_enum() -> #crate_ident::Type {
-                    let gtype = Self::get_gtype_ref().load(::std::sync::atomic::Ordering::Relaxed);
+                    let gtype = #gtype_status.load(::std::sync::atomic::Ordering::Relaxed);
                     unsafe { <#crate_ident::Type as #crate_ident::translate::FromGlib<#crate_ident::ffi::GType>>::from_glib(gtype) }
                 }
 
@@ -293,10 +296,9 @@ pub fn impl_dynamic_enum(input: &syn::DeriveInput) -> TokenStream {
                 /// The enum can be registered several times as a dynamic type.
                 #[inline]
                 pub fn on_implementation_load(type_plugin: &#plugin_ty) -> bool {
-                    let gtype_ref = Self::get_gtype_ref();
                     static VALUES: #enum_values;
                     let gtype = #crate_ident::translate::IntoGlib::into_glib(<#plugin_ty as glib::prelude::DynamicObjectRegisterExt>::register_dynamic_enum(type_plugin, #gtype_name, VALUES.as_ref()));
-                    gtype_ref.store(gtype, ::std::sync::atomic::Ordering::Relaxed);
+                    #gtype_status.store(gtype, ::std::sync::atomic::Ordering::Relaxed);
                     gtype != #crate_ident::gobject_ffi::G_TYPE_INVALID
                 }
 
