@@ -1,6 +1,8 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::{prelude::*, translate::*, InterfaceInfo, TypeFlags, TypeInfo, TypePlugin};
+use crate::{
+    enums::EnumValues, prelude::*, translate::*, InterfaceInfo, TypeFlags, TypeInfo, TypePlugin,
+};
 
 crate::wrapper! {
     #[doc(alias = "GTypeModule")]
@@ -35,6 +37,21 @@ pub trait TypeModuleExt: IsA<TypeModule> + sealed::Sealed + 'static {
                 interface_type.into_glib(),
                 interface_info.as_ptr(),
             );
+        }
+    }
+
+    #[doc(alias = "g_type_module_register_enum")]
+    fn register_enum(
+        &self,
+        name: &str,
+        const_static_values: &'static EnumValues,
+    ) -> crate::types::Type {
+        unsafe {
+            from_glib(gobject_ffi::g_type_module_register_enum(
+                self.as_ref().to_glib_none().0,
+                name.to_glib_none().0,
+                const_static_values.to_glib_none().0,
+            ))
         }
     }
 

@@ -215,7 +215,7 @@ mod module {
         assert!(!imp::MyModuleInterfaceLazy::type_().is_valid());
         assert!(!imp::MyModuleTypeLazy::type_().is_valid());
 
-        // simulates the glib type system to load/unload the module.
+        // simulates the GLib type system to load/unload the module.
         let module = glib::Object::new::<MyModule>();
         TypeModuleExt::use_(&module);
         TypeModuleExt::unuse(&module);
@@ -227,7 +227,7 @@ mod module {
         assert!(!imp::MyModuleInterfaceLazy::type_().is_valid());
         assert!(!imp::MyModuleTypeLazy::type_().is_valid());
 
-        // simulates the glib type system to load the module.
+        // simulates the GLib type system to load the module.
         TypeModuleExt::use_(&module);
 
         // checks types of object subclasses and of object interfaces registered as dynamic types are valid (module is loaded).
@@ -258,25 +258,25 @@ mod module {
             Some(module.upcast_ref::<glib::TypePlugin>())
         );
 
-        // simulates the glib type system to unload the module.
+        // simulates the GLib type system to unload the module.
         TypeModuleExt::unuse(&module);
 
-        // checks types of object subclasses and of object interfaces registered as dynamic types are still valid (should have been marked as unloaded by the glib type system but this cannot be checked).
+        // checks types of object subclasses and of object interfaces registered as dynamic types are still valid (should have been marked as unloaded by the GLib type system but this cannot be checked).
         assert!(imp::MyModuleInterface::type_().is_valid());
         assert!(imp::MyModuleType::type_().is_valid());
         assert!(imp::MyModuleInterfaceLazy::type_().is_valid());
         assert!(imp::MyModuleTypeLazy::type_().is_valid());
 
-        // simulates the glib type system to reload the module.
+        // simulates the GLib type system to reload the module.
         TypeModuleExt::use_(&module);
 
-        // checks types of object subclasses and of object interfaces registered as dynamic types are still valid (should have been marked as unloaded by the glib type system but this cannot be checked).
+        // checks types of object subclasses and of object interfaces registered as dynamic types are still valid (should have been marked as unloaded by the GLib type system but this cannot be checked).
         assert!(imp::MyModuleInterface::type_().is_valid());
         assert!(imp::MyModuleType::type_().is_valid());
         assert!(imp::MyModuleInterfaceLazy::type_().is_valid());
         assert!(imp::MyModuleTypeLazy::type_().is_valid());
 
-        // simulates the glib type system to unload the module.
+        // simulates the GLib type system to unload the module.
         TypeModuleExt::unuse(&module);
     }
 }
@@ -539,7 +539,7 @@ pub mod plugin {
         assert!(!imp::MyPluginInterfaceLazy::type_().is_valid());
         assert!(!imp::MyPluginTypeLazy::type_().is_valid());
 
-        // simulates the glib type system to use/unuse the plugin.
+        // simulates the GLib type system to use/unuse the plugin.
         let plugin = glib::Object::new::<MyPlugin>();
         TypePluginExt::use_(&plugin);
         TypePluginExt::unuse(&plugin);
@@ -551,7 +551,7 @@ pub mod plugin {
         assert!(!imp::MyPluginInterfaceLazy::type_().is_valid());
         assert!(!imp::MyPluginTypeLazy::type_().is_valid());
 
-        // simulates the glib type system to use the plugin.
+        // simulates the GLib type system to use the plugin.
         TypePluginExt::use_(&plugin);
 
         // checks types of object subclasses and of object interfaces registered as dynamic types are valid (plugin is used).
@@ -582,7 +582,7 @@ pub mod plugin {
             Some(plugin.upcast_ref::<glib::TypePlugin>())
         );
 
-        // simulates the glib type system to unuse the plugin.
+        // simulates the GLib type system to unuse the plugin.
         TypePluginExt::unuse(&plugin);
 
         // checks types of object subclasses and of object interfaces registered as dynamic types are still valid.
@@ -591,7 +591,7 @@ pub mod plugin {
         assert!(imp::MyPluginInterfaceLazy::type_().is_valid());
         assert!(imp::MyPluginTypeLazy::type_().is_valid());
 
-        // simulates the glib type system to reuse the plugin.
+        // simulates the GLib type system to reuse the plugin.
         TypePluginExt::use_(&plugin);
 
         // checks types of object subclasses and of object interfaces registered as dynamic types are still valid.
@@ -600,7 +600,7 @@ pub mod plugin {
         assert!(imp::MyPluginInterfaceLazy::type_().is_valid());
         assert!(imp::MyPluginTypeLazy::type_().is_valid());
 
-        // simulates the glib type system to unuse the plugin.
+        // simulates the GLib type system to unuse the plugin.
         TypePluginExt::unuse(&plugin);
     }
 }

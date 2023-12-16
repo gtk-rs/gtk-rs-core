@@ -275,7 +275,7 @@
 //!     let simple_module_object_type = imp::SimpleModuleObject::type_();
 //!     assert!(!simple_module_object_type.is_valid());
 //!
-//!     // simulates the glib type system to load the module.
+//!     // simulates the GLib type system to load the module.
 //!     TypeModuleExt::use_(&simple_type_module);
 //!
 //!     // at this step, SimpleModuleObject must have been registered.
@@ -343,10 +343,6 @@
 //!     }
 //!
 //!     impl TypePluginRegisterImpl for SimpleTypePlugin {
-//!         fn add_dynamic_interface(&self, _: glib::Type, _: glib::Type, _: &glib::InterfaceInfo) {
-//!             unimplemented!()
-//!         }
-//!
 //!         fn register_dynamic_type(&self, parent_type: glib::Type, type_name: &str, type_info: &glib::TypeInfo, flags: glib::TypeFlags) -> glib::Type {
 //!             let type_ = glib::Type::from_name(type_name).unwrap_or_else(|| {
 //!                 glib::Type::register_dynamic(parent_type, type_name, self.obj().upcast_ref::<glib::TypePlugin>(), flags)
@@ -385,7 +381,7 @@
 //!     let simple_plugin_object_type = imp::SimplePluginObject::type_();
 //!     assert!(!simple_plugin_object_type.is_valid());
 //!
-//!     // simulates the glib type system to use the plugin.
+//!     // simulates the GLib type system to use the plugin.
 //!     TypePluginExt::use_(&simple_type_plugin);
 //!
 //!     // at this step, SimplePluginObject must have been registered.

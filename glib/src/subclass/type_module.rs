@@ -156,7 +156,7 @@ mod tests {
     fn test_module() {
         assert!(!imp::SimpleModuleType::type_().is_valid());
         let simple_module = glib::Object::new::<SimpleModule>();
-        // simulates the glib type system to load the module.
+        // simulates the GLib type system to load the module.
         assert!(simple_module.use_());
         assert!(imp::SimpleModuleType::type_().is_valid());
         simple_module.unuse();

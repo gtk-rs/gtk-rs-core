@@ -1,10 +1,10 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
+use crate::enums::EnumValues;
 use crate::translate::IntoGlib;
 use crate::translate::{FromGlib, ToGlibPtr};
-use crate::TypeFlags;
 use crate::{
-    subclass::prelude::*, Cast, Interface, InterfaceInfo, Type, TypeInfo, TypePlugin,
+    subclass::prelude::*, Cast, Interface, InterfaceInfo, Type, TypeFlags, TypeInfo, TypePlugin,
     TypeValueTable,
 };
 
@@ -183,15 +183,25 @@ pub trait TypePluginRegisterImpl: ObjectImpl + TypePluginImpl {
         _instance_type: Type,
         _interface_type: Type,
         _interface_info: &InterfaceInfo,
-    );
-
+    ) {
+        unimplemented!()
+    }
+    fn register_dynamic_enum(
+        &self,
+        _name: &str,
+        _const_static_values: &'static EnumValues,
+    ) -> Type {
+        unimplemented!()
+    }
     fn register_dynamic_type(
         &self,
         _parent_type: Type,
         _type_name: &str,
         _type_info: &TypeInfo,
         _flags: TypeFlags,
-    ) -> Type;
+    ) -> Type {
+        unimplemented!()
+    }
 }
 
 #[cfg(test)]
@@ -236,15 +246,6 @@ mod tests {
         }
 
         impl TypePluginRegisterImpl for SimplePlugin {
-            fn add_dynamic_interface(
-                &self,
-                _instance_type: Type,
-                _interface_type: Type,
-                _interface_info: &InterfaceInfo,
-            ) {
-                unimplemented!()
-            }
-
             fn register_dynamic_type(
                 &self,
                 parent_type: Type,
@@ -293,7 +294,7 @@ mod tests {
     fn test_plugin() {
         assert!(!imp::SimplePluginType::type_().is_valid());
         let simple_plugin = crate::Object::new::<SimplePlugin>();
-        // simulates the glib type system to use the plugin.
+        // simulates the GLib type system to use the plugin.
         TypePluginExt::use_(&simple_plugin);
         assert!(imp::SimplePluginType::type_().is_valid());
         TypePluginExt::unuse(&simple_plugin);

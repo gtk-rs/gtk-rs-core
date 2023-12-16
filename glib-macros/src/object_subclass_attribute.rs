@@ -81,15 +81,15 @@ pub fn impl_dynamic_object_subclass(
         ),
     };
 
-    // The following implementations follows the lifecycle of plugins and of dynamic types (see [`TypePluginExt::unuse`]).
-    // An object subclass can be reregistered as a dynamic type (see [`TypePluginExt::register_type`]).
+    // The following implementations follows the lifecycle of plugins and of dynamic types (see [`TypePluginExt`] and [`TypeModuleExt`]).
+    // An object subclass can be reregistered as a dynamic type.
     let register_type = if lazy_registration {
         // registers the object subclass as a dynamic type on the first use (lazy registration).
         // a weak reference on the plugin is stored and will be used later on the first use of the object subclass.
-        // this implementation relies on a static storage of a weak reference on the plugin and of the glib type to know if the object subclass has been registered.
+        // this implementation relies on a static storage of a weak reference on the plugin and of the GLib type to know if the object subclass has been registered.
         quote! {
             impl #self_ty {
-                /// Returns a mutable reference to the registration status: a tuple of the weak reference on the plugin and of the glib type.
+                /// Returns a mutable reference to the registration status: a tuple of the weak reference on the plugin and of the GLib type.
                 /// This is safe because the mutable reference guarantees that no other threads are concurrently accessing the data.
                 #[inline]
                 fn get_registration_status_ref_mut() -> &'static mut Option<(<#plugin_ty as #crate_ident::clone::Downgrade>::Weak, #crate_ident::Type)> {

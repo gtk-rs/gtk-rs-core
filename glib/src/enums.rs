@@ -1,11 +1,11 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use std::{cmp, ffi::CStr, fmt, ptr};
+use std::{cmp, ffi::CStr, fmt, ops::Deref, ptr};
 
 use crate::{
     translate::*,
     value::{FromValue, ValueTypeChecker},
-    HasParamSpec, ParamSpecEnum, ParamSpecFlags, StaticType, Type, Value,
+    HasParamSpec, ParamSpecEnum, ParamSpecFlags, StaticType, Type, TypeInfo, Value,
 };
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Hash)]
@@ -187,6 +187,39 @@ impl EnumClass {
     pub fn to_value_by_nick(&self, nick: &str) -> Option<Value> {
         self.value_by_nick(nick).map(|v| v.to_value(self))
     }
+
+    // rustdoc-stripper-ignore-next
+    /// Complete `TypeInfo` for an enum with values.
+    /// This is an associated function. A method would result in a stack overflow due to a recurvice call:
+    /// callers should first create an `EnumClass` instance by calling `EnumClass::with_type()` which indirectly
+    /// calls `TypePluginRegisterImpl::register_dynamic_enum()` and `TypePluginImpl::complete_type_info()`
+    /// and one of them should call `EnumClass::with_type()` before calling this method.
+    /// `const_static_values` is a reference on a wrapper of a slice of `EnumValue`.
+    /// It must be static to ensure enumeration values are never dropped, and ensures that slice is terminated
+    ///  by an `EnumValue` with all members being 0, as expected by GLib.
+    #[doc(alias = "g_enum_complete_type_info")]
+    pub fn complete_type_info(
+        type_: Type,
+        const_static_values: &'static EnumValues,
+    ) -> Option<TypeInfo> {
+        unsafe {
+            let is_enum: bool = from_glib(gobject_ffi::g_type_is_a(
+                type_.into_glib(),
+                gobject_ffi::G_TYPE_ENUM,
+            ));
+            if !is_enum {
+                return None;
+            }
+
+            let info = TypeInfo::default();
+            gobject_ffi::g_enum_complete_type_info(
+                type_.into_glib(),
+                info.as_ptr(),
+                const_static_values.to_glib_none().0,
+            );
+            Some(info)
+        }
+    }
 }
 
 impl Drop for EnumClass {
@@ -227,6 +260,15 @@ impl fmt::Debug for EnumValue {
 }
 
 impl EnumValue {
+    // rustdoc-stripper-ignore-next
+    /// # Safety
+    ///
+    /// It is the responsibility of the caller to ensure `GEnumValue` is
+    /// valid.
+    pub const unsafe fn unsafe_from(g_value: gobject_ffi::GEnumValue) -> Self {
+        Self(g_value)
+    }
+
     // rustdoc-stripper-ignore-next
     /// Get integer value corresponding to the value.
     #[doc(alias = "get_value")]
@@ -290,6 +332,12 @@ impl Ord for EnumValue {
     }
 }
 
+impl UnsafeFrom<gobject_ffi::GEnumValue> for EnumValue {
+    unsafe fn unsafe_from(g_value: gobject_ffi::GEnumValue) -> Self {
+        Self::unsafe_from(g_value)
+    }
+}
+
 unsafe impl<'a, 'b> FromValue<'a> for &'b EnumValue {
     type Checker = EnumTypeChecker;
 
@@ -297,6 +345,78 @@ unsafe impl<'a, 'b> FromValue<'a> for &'b EnumValue {
         let (_, v) = EnumValue::from_value(value).unwrap();
         // SAFETY: The enum class and its values live forever
         std::mem::transmute(v)
+    }
+}
+
+#[doc(hidden)]
+impl<'a> ToGlibContainerFromSlice<'a, *const gobject_ffi::GEnumValue> for EnumValue {
+    type Storage = &'a [Self];
+    fn to_glib_none_from_slice(t: &'a [Self]) -> (*const gobject_ffi::GEnumValue, Self::Storage) {
+        (t.as_ptr() as *const gobject_ffi::GEnumValue, t)
+    }
+    fn to_glib_container_from_slice(
+        _: &'a [Self],
+    ) -> (*const gobject_ffi::GEnumValue, Self::Storage) {
+        unimplemented!();
+    }
+    fn to_glib_full_from_slice(_: &[Self]) -> *const gobject_ffi::GEnumValue {
+        unimplemented!();
+    }
+}
+
+// rustdoc-stripper-ignore-next
+/// Storage of enumeration values terminated by an `EnumValue` with all members
+/// being 0. Should be used only as a storage location for enumeration values
+/// when registering an enumeration as a dynamic type.
+/// see `TypePluginRegisterImpl::register_dynamic_enum()` and `TypePluginImpl::complete_type_info()`.
+/// Inner is intentionally private to ensure other modules will not access the
+/// enumeration values by this way.
+/// Use `EnumClass::values()` or `EnumClass::value()` to get enumeration values.
+#[repr(transparent)]
+pub struct EnumValuesStorage<const S: usize>([EnumValue; S]);
+
+impl<const S: usize> EnumValuesStorage<S> {
+    // rustdoc-stripper-ignore-next
+    pub const fn new<const N: usize>(values: [EnumValue; N]) -> Self {
+        const ZERO: EnumValue = unsafe {
+            EnumValue::unsafe_from(gobject_ffi::GEnumValue {
+                value: 0,
+                value_name: ptr::null(),
+                value_nick: ptr::null(),
+            })
+        };
+        unsafe {
+            let v: [EnumValue; S] = [ZERO; S];
+            ptr::copy_nonoverlapping(values.as_ptr(), v.as_ptr() as _, N);
+            Self(v)
+        }
+    }
+}
+
+impl<const S: usize> AsRef<EnumValues> for EnumValuesStorage<S> {
+    fn as_ref(&self) -> &EnumValues {
+        // SAFETY: EnumValues is repr(transparent) over [EnumValue] so the cast is safe.
+        unsafe { &*(&self.0 as *const [EnumValue] as *const EnumValues) }
+    }
+}
+
+// rustdoc-stripper-ignore-next
+/// Representation of enumeration values wrapped by `EnumValuesStorage`. Easier
+/// to use because don't have a size parameter to be specify. Should be used
+/// only to register an enumeration as a dynamic type.
+/// see `TypePluginRegisterImpl::register_dynamic_enum()` and `TypePluginImpl::complete_type_info()`.
+/// Field is intentionally private to ensure other modules will not access the
+/// enumeration values by this way.
+/// Use `EnumClass::values()` or `EnumClass::value()` to get the enumeration values.
+#[repr(transparent)]
+pub struct EnumValues([EnumValue]);
+
+impl Deref for EnumValues {
+    type Target = [EnumValue];
+
+    fn deref(&self) -> &Self::Target {
+        // SAFETY: EnumValues contains at least the zero `EnumValue` which terminates the enumeration values.
+        unsafe { std::slice::from_raw_parts(self.0.as_ptr(), self.0.len() - 1) }
     }
 }
 
