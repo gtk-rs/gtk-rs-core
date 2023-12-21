@@ -726,56 +726,91 @@ pub fn shared_boxed_derive(input: TokenStream) -> TokenStream {
 /// }
 /// ```
 ///
-/// [`ObjectSubclass`]: ../glib/subclass/types/trait.ObjectSubclass.html
-#[proc_macro_attribute]
-#[proc_macro_error]
-pub fn object_subclass(_attr: TokenStream, item: TokenStream) -> TokenStream {
-    use proc_macro_error::abort_call_site;
-    match syn::parse::<syn::ItemImpl>(item) {
-        Ok(input) => object_subclass_attribute::impl_object_subclass(&input).into(),
-        Err(_) => abort_call_site!(object_subclass_attribute::WRONG_PLACE_MSG),
-    }
-}
-
-/// Macro for boilerplate of [`ObjectSubclass`] implementations that are
-/// registered as dynamic types.
+/// An object subclass can be registered as a dynamic type by setting the macro
+/// helper attribute `object_class_dynamic`:
+/// ```ignore
+/// #[derive(Default)]
+/// pub struct MyType;
 ///
-/// An object subclass must be explicitly registered as a dynamic type when the
-/// system loads its implementation (see [`TypePlugin`] and [`TypeModule`].
+/// #[glib::object_subclass]
+/// #[object_subclass_dynamic]
+/// impl ObjectSubclass for MyType { ... }
+/// ```
+///
+/// As a dynamic type, an object subclass must be explicitly registered when
+/// the system loads the implementation (see [`TypePlugin`] and [`TypeModule`].
 /// Therefore, whereas an object subclass can be registered only once as a
 /// static type, it can be registered several times as a dynamic type.
 ///
 /// An object subclass registered as a dynamic type is never unregistered. The
-/// system calls [`TypePluginExt::unuse`] to unload its implementation. If the
+/// system calls [`TypePluginExt::unuse`] to unload the implementation. If the
 /// [`TypePlugin`] subclass is a [`TypeModule`], the object subclass registered
 /// as a dynamic type is marked as unloaded and must be registered again when
 /// the module is reloaded.
 ///
-/// This macro provides two behaviors when registering an object subclass as a
-/// dynamic type:
+/// The macro helper attribute `object_class_dynamic` provides two behaviors
+/// when registering an object subclass as a dynamic type:
 ///
-/// By default an object subclass is registered as a dynamic type when the
-/// system loads its implementation (e.g. when the module is loaded):
+/// - lazy registration: by default an object subclass is registered as a
+/// dynamic type when the system loads the implementation (e.g. when the module
+/// is loaded). Optionally setting `lazy_registration` to `true` postpones
+/// registration on the first use (when `static_type()` is called for the first
+/// time):
 /// ```ignore
-/// #[glib::dynamic_object_subclass]
+/// #[derive(Default)]
+/// pub struct MyType;
+///
+/// #[glib::object_subclass]
+/// #[object_subclass_dynamic(lazy_registration = true)]
 /// impl ObjectSubclass for MyType { ... }
 /// ```
 ///
-/// Optionally setting the macro attribute `lazy_registration` to `true`
-/// postpones registration on the first use (when `type_()` is called for the
-/// first time), similarly to the [`macro@object_subclass`] macro:
+/// - registration within [`TypeModule`] subclass or within [`TypePlugin`]
+/// subclass: an object subclass is usually registered as a dynamic type within
+/// a [`TypeModule`] subclass:
 /// ```ignore
-/// #[glib::dynamic_object_subclass(lazy_registration = true)]
-/// impl ObjectSubclass for MyType { ... }
+/// #[derive(Default)]
+/// pub struct MyModuleType;
+///
+/// #[glib::object_subclass]
+/// #[object_subclass_dynamic]
+/// impl ObjectSubclass for MyModuleType { ... }
+/// ...
+/// #[derive(Default)]
+/// pub struct MyModule;
+/// ...
+/// impl TypeModuleImpl for MyModule {
+///     fn load(&self) -> bool {
+///         // registers object subclasses as dynamic types.
+///         let my_module = self.obj();
+///         let type_module: &glib::TypeModule = my_module.upcast_ref();
+///         MyModuleType::on_implementation_load(type_module)
+///     }
+///     ...
+/// }
 /// ```
 ///
-/// By default an object subclass is considered to be registered as a dynamic
-/// type within a [`TypeModule`] subclass. Optionally setting the macro
-/// attribute `plugin_type` allows to register an object subclass as a dynamic
-/// type within a given [`TypePlugin`] subclass:
+/// Optionally setting `plugin_type` allows to register an object subclass as a
+/// dynamic type within a [`TypePlugin`] subclass that is not a [`TypeModule`]:
 /// ```ignore
-/// #[glib::dynamic_object_subclass(plugin_type = MyPlugin)]
-/// impl ObjectSubclass for MyType { ... }
+/// #[derive(Default)]
+/// pub struct MyPluginType;
+///
+/// #[glib::object_subclass]
+/// #[object_subclass_dynamic(plugin_type = MyPlugin)]
+/// impl ObjectSubclass for MyPluginType { ... }
+/// ...
+/// #[derive(Default)]
+/// pub struct MyPlugin;
+/// ...
+/// impl TypePluginImpl for MyPlugin {
+///     fn use_plugin(&self) {
+///         // register object subclasses as dynamic types.
+///         let my_plugin = self.obj();
+///         MyPluginType::on_implementation_load(my_plugin.as_ref());
+///     }
+///     ...
+/// }
 /// ```
 ///
 /// [`ObjectSubclass`]: ../glib/subclass/types/trait.ObjectSubclass.html
@@ -784,23 +819,10 @@ pub fn object_subclass(_attr: TokenStream, item: TokenStream) -> TokenStream {
 /// [`TypePluginExt::unuse`]: ../glib/gobject/type_plugin/trait.TypePluginExt.html#method.unuse
 #[proc_macro_attribute]
 #[proc_macro_error]
-pub fn dynamic_object_subclass(attr: TokenStream, item: TokenStream) -> TokenStream {
+pub fn object_subclass(_attr: TokenStream, item: TokenStream) -> TokenStream {
     use proc_macro_error::abort_call_site;
-    let attrs = match syn::parse::Parser::parse(
-        syn::punctuated::Punctuated::<syn::Expr, syn::Token![,]>::parse_terminated,
-        attr,
-    ) {
-        Ok(attrs)
-            if attrs
-                .iter()
-                .all(|attr| matches!(attr, syn::Expr::Assign(_))) =>
-        {
-            attrs
-        }
-        _ => abort_call_site!(object_subclass_attribute::WRONG_EXPRESSION_MSG),
-    };
     match syn::parse::<syn::ItemImpl>(item) {
-        Ok(input) => object_subclass_attribute::impl_dynamic_object_subclass(&attrs, &input).into(),
+        Ok(mut input) => object_subclass_attribute::impl_object_subclass(&mut input).into(),
         Err(_) => abort_call_site!(object_subclass_attribute::WRONG_PLACE_MSG),
     }
 }

@@ -4,21 +4,196 @@ use proc_macro2::TokenStream;
 use proc_macro_error::abort_call_site;
 use quote::{quote, ToTokens};
 
-pub const WRONG_EXPRESSION_MSG: &str =
-    "This macro's attributes should be a sequence of assign expressions punctuated by comma";
-
-pub const UNSUPPORTED_EXPRESSION_MSG: &str =
-    "This macro's supported attributes are: `plugin_type = <subclass_of_glib::TypePlugin>, lazy_registration = true|false`";
+use crate::utils::{parse_optional_nested_meta_items, NestedMetaItem};
 
 pub const WRONG_PLACE_MSG: &str =
     "This macro should be used on `impl` block for `glib::ObjectSubclass` trait";
 
-pub fn impl_object_subclass(input: &syn::ItemImpl) -> TokenStream {
+pub fn impl_object_subclass(input: &mut syn::ItemImpl) -> TokenStream {
     let crate_ident = crate::utils::crate_ident_new();
-    let syn::ItemImpl { self_ty, .. } = &input;
+    let syn::ItemImpl {
+        attrs,
+        generics,
+        trait_,
+        self_ty,
+        items,
+        ..
+    } = input;
 
-    // registers the type on first use (lazy registration).
-    let register_type = quote! {
+    let mut plugin_type = NestedMetaItem::<syn::Path>::new("plugin_type").value_required();
+    let mut lazy_registration =
+        NestedMetaItem::<syn::LitBool>::new("lazy_registration").value_required();
+
+    let found = parse_optional_nested_meta_items(
+        &*attrs,
+        "object_subclass_dynamic",
+        &mut [&mut plugin_type, &mut lazy_registration],
+    );
+
+    let register_object_subclass = match found {
+        Err(e) => return e.to_compile_error(),
+        Ok(None) => register_object_subclass_as_static(&crate_ident, self_ty),
+        Ok(Some(_)) => {
+            // remove attribute 'object_subclass_dynamic' from the attribute list because it is not a real proc_macro_attribute
+            attrs.retain(|attr| !attr.path().is_ident("object_subclass_dynamic"));
+            let plugin_ty = plugin_type
+                .value
+                .map(|p| p.into_token_stream())
+                .unwrap_or(quote!(#crate_ident::TypeModule));
+            let lazy_registration = lazy_registration.value.map(|b| b.value).unwrap_or_default();
+            register_object_subclass_as_dynamic(&crate_ident, self_ty, plugin_ty, lazy_registration)
+        }
+    };
+
+    let mut has_new = false;
+    let mut has_parent_type = false;
+    let mut has_interfaces = false;
+    let mut has_instance = false;
+    let mut has_class = false;
+    for item in items.iter() {
+        match item {
+            syn::ImplItem::Fn(method) => {
+                let name = &method.sig.ident;
+                if name == "new" || name == "with_class" {
+                    has_new = true;
+                }
+            }
+            syn::ImplItem::Type(type_) => {
+                let name = &type_.ident;
+                if name == "ParentType" {
+                    has_parent_type = true;
+                } else if name == "Interfaces" {
+                    has_interfaces = true;
+                } else if name == "Instance" {
+                    has_instance = true;
+                } else if name == "Class" {
+                    has_class = true;
+                }
+            }
+            _ => {}
+        }
+    }
+
+    let parent_type_opt = (!has_parent_type).then(|| {
+        quote!(
+            type ParentType = #crate_ident::Object;
+        )
+    });
+
+    let interfaces_opt = (!has_interfaces).then(|| {
+        quote!(
+            type Interfaces = ();
+        )
+    });
+
+    let new_opt = (!has_new).then(|| {
+        quote! {
+            #[inline]
+            fn new() -> Self {
+                ::std::default::Default::default()
+            }
+        }
+    });
+
+    let class_opt = (!has_class)
+        .then(|| quote!(type Class = #crate_ident::subclass::basic::ClassStruct<Self>;));
+
+    let instance_opt = (!has_instance)
+        .then(|| quote!(type Instance = #crate_ident::subclass::basic::InstanceStruct<Self>;));
+
+    let trait_path = match &trait_ {
+        Some(path) => &path.1,
+        None => abort_call_site!(WRONG_PLACE_MSG),
+    };
+
+    quote! {
+        #(#attrs)*
+        impl #generics #trait_path for #self_ty {
+            #parent_type_opt
+            #interfaces_opt
+            #class_opt
+            #instance_opt
+            #new_opt
+            #(#items)*
+        }
+
+        unsafe impl #crate_ident::subclass::types::ObjectSubclassType for #self_ty {
+            #[inline]
+            fn type_data() -> ::std::ptr::NonNull<#crate_ident::subclass::TypeData> {
+                static mut DATA: #crate_ident::subclass::TypeData =
+                    #crate_ident::subclass::types::INIT_TYPE_DATA;
+                unsafe { ::std::ptr::NonNull::from(&mut DATA) }
+            }
+
+            #[inline]
+            fn type_() -> #crate_ident::Type {
+                Self::register_type();
+
+                unsafe {
+                    let data = Self::type_data();
+                    let type_ = data.as_ref().type_();
+
+                    type_
+                }
+            }
+        }
+
+        #register_object_subclass
+
+        #[doc(hidden)]
+        impl #crate_ident::subclass::types::FromObject for #self_ty {
+            type FromObjectType = <Self as #crate_ident::subclass::types::ObjectSubclass>::Type;
+            #[inline]
+            fn from_object(obj: &Self::FromObjectType) -> &Self {
+                <Self as #crate_ident::subclass::types::ObjectSubclassExt>::from_obj(obj)
+            }
+        }
+
+        #[doc(hidden)]
+        impl #crate_ident::clone::Downgrade for #self_ty {
+            type Weak = #crate_ident::subclass::ObjectImplWeakRef<#self_ty>;
+
+            #[inline]
+            fn downgrade(&self) -> Self::Weak {
+                let ref_counted = #crate_ident::subclass::prelude::ObjectSubclassExt::ref_counted(self);
+                #crate_ident::clone::Downgrade::downgrade(&ref_counted)
+            }
+        }
+
+        impl #self_ty {
+            #[inline]
+            pub fn downgrade(&self) -> <Self as #crate_ident::clone::Downgrade>::Weak {
+                #crate_ident::clone::Downgrade::downgrade(self)
+            }
+        }
+
+        #[doc(hidden)]
+        impl ::std::borrow::ToOwned for #self_ty {
+            type Owned = #crate_ident::subclass::ObjectImplRef<#self_ty>;
+
+            #[inline]
+            fn to_owned(&self) -> Self::Owned {
+                #crate_ident::subclass::prelude::ObjectSubclassExt::ref_counted(self)
+            }
+        }
+
+        #[doc(hidden)]
+        impl ::std::borrow::Borrow<#self_ty> for #crate_ident::subclass::ObjectImplRef<#self_ty> {
+            #[inline]
+            fn borrow(&self) -> &#self_ty {
+                self
+            }
+        }
+    }
+}
+
+// Registers the object subclass as a static type.
+fn register_object_subclass_as_static(
+    crate_ident: &TokenStream,
+    self_ty: &syn::Type,
+) -> TokenStream {
+    // registers the object subclass on first use (lazy registration).
+    quote! {
         impl #self_ty {
             /// Registers the type only once.
             #[inline]
@@ -30,60 +205,20 @@ pub fn impl_object_subclass(input: &syn::ItemImpl) -> TokenStream {
                 })
             }
         }
-    };
-
-    impl_object_subclass_(register_type, input)
+    }
 }
 
-pub fn impl_dynamic_object_subclass(
-    attrs: &syn::punctuated::Punctuated<syn::Expr, syn::Token![,]>,
-    input: &syn::ItemImpl,
+// The following implementations follows the lifecycle of plugins and of dynamic types (see [`TypePluginExt`] and [`TypeModuleExt`]).
+// An object subclass can be reregistered as a dynamic type.
+fn register_object_subclass_as_dynamic(
+    crate_ident: &TokenStream,
+    self_ty: &syn::Type,
+    plugin_ty: TokenStream,
+    lazy_registration: bool,
 ) -> TokenStream {
-    let crate_ident = crate::utils::crate_ident_new();
-    let syn::ItemImpl { self_ty, .. } = &input;
-
-    let mut plugin_type_opt: Option<syn::Path> = None;
-    let mut lazy_registration_opt: Option<bool> = None;
-
-    for attr in attrs {
-        match attr {
-            // attribute must be one of supported assign expressions.
-            syn::Expr::Assign(syn::ExprAssign { left, right, .. }) => {
-                match (*left.to_owned(), *right.to_owned()) {
-                    // `plugin_type = <subclass_of_TypePlugin>`
-                    (
-                        syn::Expr::Path(syn::ExprPath { path: path1, .. }),
-                        syn::Expr::Path(syn::ExprPath { path: path2, .. }),
-                    ) if path1.is_ident(&"plugin_type") => plugin_type_opt = Some(path2),
-                    // `lazy_registration = true|false`
-                    (
-                        syn::Expr::Path(syn::ExprPath { path, .. }),
-                        syn::Expr::Lit(syn::ExprLit {
-                            lit: syn::Lit::Bool(syn::LitBool { value, .. }),
-                            ..
-                        }),
-                    ) if path.is_ident(&"lazy_registration") => lazy_registration_opt = Some(value),
-                    _ => abort_call_site!(UNSUPPORTED_EXPRESSION_MSG),
-                };
-            }
-            _ => abort_call_site!(WRONG_EXPRESSION_MSG),
-        };
-    }
-
-    let (plugin_ty, lazy_registration) = match (plugin_type_opt, lazy_registration_opt) {
-        (Some(type_plugin), lazy_registration_opt) => (
-            type_plugin.into_token_stream(),
-            lazy_registration_opt.unwrap_or_default(),
-        ),
-        (None, lazy_registration_opt) => (
-            quote!(#crate_ident::TypeModule),
-            lazy_registration_opt.unwrap_or_default(),
-        ),
-    };
-
     // The following implementations follows the lifecycle of plugins and of dynamic types (see [`TypePluginExt`] and [`TypeModuleExt`]).
     // An object subclass can be reregistered as a dynamic type.
-    let register_type = if lazy_registration {
+    if lazy_registration {
         // registers the object subclass as a dynamic type on the first use (lazy registration).
         // a weak reference on the plugin is stored and will be used later on the first use of the object subclass.
         // this implementation relies on a static storage of a weak reference on the plugin and of the GLib type to know if the object subclass has been registered.
@@ -182,162 +317,6 @@ pub fn impl_dynamic_object_subclass(
                 pub fn on_implementation_unload(type_plugin_: &#plugin_ty) -> bool {
                     true
                 }
-            }
-        }
-    };
-
-    impl_object_subclass_(register_type, input)
-}
-
-fn impl_object_subclass_(register_type: TokenStream, input: &syn::ItemImpl) -> TokenStream {
-    let mut has_new = false;
-    let mut has_parent_type = false;
-    let mut has_interfaces = false;
-    let mut has_instance = false;
-    let mut has_class = false;
-    for item in &input.items {
-        match item {
-            syn::ImplItem::Fn(method) => {
-                let name = &method.sig.ident;
-                if name == "new" || name == "with_class" {
-                    has_new = true;
-                }
-            }
-            syn::ImplItem::Type(type_) => {
-                let name = &type_.ident;
-                if name == "ParentType" {
-                    has_parent_type = true;
-                } else if name == "Interfaces" {
-                    has_interfaces = true;
-                } else if name == "Instance" {
-                    has_instance = true;
-                } else if name == "Class" {
-                    has_class = true;
-                }
-            }
-            _ => {}
-        }
-    }
-
-    let syn::ItemImpl {
-        attrs,
-        generics,
-        trait_,
-        self_ty,
-        items,
-        ..
-    } = &input;
-
-    let crate_ident = crate::utils::crate_ident_new();
-
-    let parent_type_opt = (!has_parent_type).then(|| {
-        quote!(
-            type ParentType = #crate_ident::Object;
-        )
-    });
-
-    let interfaces_opt = (!has_interfaces).then(|| {
-        quote!(
-            type Interfaces = ();
-        )
-    });
-
-    let new_opt = (!has_new).then(|| {
-        quote! {
-            #[inline]
-            fn new() -> Self {
-                ::std::default::Default::default()
-            }
-        }
-    });
-
-    let class_opt = (!has_class)
-        .then(|| quote!(type Class = #crate_ident::subclass::basic::ClassStruct<Self>;));
-
-    let instance_opt = (!has_instance)
-        .then(|| quote!(type Instance = #crate_ident::subclass::basic::InstanceStruct<Self>;));
-
-    let trait_path = match &trait_ {
-        Some(path) => &path.1,
-        None => abort_call_site!(WRONG_PLACE_MSG),
-    };
-
-    quote! {
-        #(#attrs)*
-        impl #generics #trait_path for #self_ty {
-            #parent_type_opt
-            #interfaces_opt
-            #class_opt
-            #instance_opt
-            #new_opt
-            #(#items)*
-        }
-
-        unsafe impl #crate_ident::subclass::types::ObjectSubclassType for #self_ty {
-            #[inline]
-            fn type_data() -> ::std::ptr::NonNull<#crate_ident::subclass::TypeData> {
-                static mut DATA: #crate_ident::subclass::TypeData =
-                    #crate_ident::subclass::types::INIT_TYPE_DATA;
-                unsafe { ::std::ptr::NonNull::from(&mut DATA) }
-            }
-
-            #[inline]
-            fn type_() -> #crate_ident::Type {
-                Self::register_type();
-
-                unsafe {
-                    let data = Self::type_data();
-                    let type_ = data.as_ref().type_();
-
-                    type_
-                }
-            }
-        }
-
-        #register_type
-
-        #[doc(hidden)]
-        impl #crate_ident::subclass::types::FromObject for #self_ty {
-            type FromObjectType = <Self as #crate_ident::subclass::types::ObjectSubclass>::Type;
-            #[inline]
-            fn from_object(obj: &Self::FromObjectType) -> &Self {
-                <Self as #crate_ident::subclass::types::ObjectSubclassExt>::from_obj(obj)
-            }
-        }
-
-        #[doc(hidden)]
-        impl #crate_ident::clone::Downgrade for #self_ty {
-            type Weak = #crate_ident::subclass::ObjectImplWeakRef<#self_ty>;
-
-            #[inline]
-            fn downgrade(&self) -> Self::Weak {
-                let ref_counted = #crate_ident::subclass::prelude::ObjectSubclassExt::ref_counted(self);
-                #crate_ident::clone::Downgrade::downgrade(&ref_counted)
-            }
-        }
-
-        impl #self_ty {
-            #[inline]
-            pub fn downgrade(&self) -> <Self as #crate_ident::clone::Downgrade>::Weak {
-                #crate_ident::clone::Downgrade::downgrade(self)
-            }
-        }
-
-        #[doc(hidden)]
-        impl ::std::borrow::ToOwned for #self_ty {
-            type Owned = #crate_ident::subclass::ObjectImplRef<#self_ty>;
-
-            #[inline]
-            fn to_owned(&self) -> Self::Owned {
-                #crate_ident::subclass::prelude::ObjectSubclassExt::ref_counted(self)
-            }
-        }
-
-        #[doc(hidden)]
-        impl ::std::borrow::Borrow<#self_ty> for #crate_ident::subclass::ObjectImplRef<#self_ty> {
-            #[inline]
-            fn borrow(&self) -> &#self_ty {
-                self
             }
         }
     }

@@ -134,7 +134,8 @@ mod tests {
         #[derive(Default)]
         pub struct SimpleModuleType;
 
-        #[crate::dynamic_object_subclass]
+        #[crate::object_subclass]
+        #[object_subclass_dynamic]
         impl ObjectSubclass for SimpleModuleType {
             const NAME: &'static str = "SimpleModuleType";
             type Type = super::SimpleModuleType;

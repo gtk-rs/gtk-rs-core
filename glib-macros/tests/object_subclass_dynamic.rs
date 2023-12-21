@@ -85,7 +85,8 @@ mod module {
         #[derive(Default)]
         pub struct MyModuleType;
 
-        #[glib::dynamic_object_subclass]
+        #[glib::object_subclass]
+        #[object_subclass_dynamic]
         impl ObjectSubclass for MyModuleType {
             const NAME: &'static str = "MyModuleType";
             type Type = super::MyModuleType;
@@ -120,7 +121,8 @@ mod module {
         #[derive(Default)]
         pub struct MyModuleTypeLazy;
 
-        #[glib::dynamic_object_subclass(lazy_registration = true)]
+        #[glib::object_subclass]
+        #[object_subclass_dynamic(lazy_registration = true)]
         impl ObjectSubclass for MyModuleTypeLazy {
             const NAME: &'static str = "MyModuleTypeLazy";
             type Type = super::MyModuleTypeLazy;
@@ -206,7 +208,7 @@ mod module {
     }
 
     #[test]
-    fn dynamic_types() {
+    fn dynamic_object_subclasses() {
         use glib::prelude::TypeModuleExt;
 
         // checks types of object subclasses and of object interfaces to register as dynamic types are invalid (module is not loaded yet).
@@ -307,7 +309,8 @@ pub mod plugin {
         #[derive(Default)]
         pub struct MyPluginType;
 
-        #[glib::dynamic_object_subclass(plugin_type = super::MyPlugin)]
+        #[glib::object_subclass]
+        #[object_subclass_dynamic(plugin_type = super::MyPlugin)]
         impl ObjectSubclass for MyPluginType {
             const NAME: &'static str = "MyPluginType";
             type Type = super::MyPluginType;
@@ -342,7 +345,8 @@ pub mod plugin {
         #[derive(Default)]
         pub struct MyPluginTypeLazy;
 
-        #[glib::dynamic_object_subclass(plugin_type = super::MyPlugin, lazy_registration = true)]
+        #[glib::object_subclass]
+        #[object_subclass_dynamic(plugin_type = super::MyPlugin, lazy_registration = true)]
         impl ObjectSubclass for MyPluginTypeLazy {
             const NAME: &'static str = "MyPluginTypeLazy";
             type Type = super::MyPluginTypeLazy;
@@ -530,7 +534,7 @@ pub mod plugin {
     }
 
     #[test]
-    fn dynamic_types() {
+    fn dynamic_object_subclasses() {
         use glib::prelude::TypePluginExt;
 
         // checks types of object subclasses and of object interfaces to register as dynamic types are invalid (plugin is not used yet).

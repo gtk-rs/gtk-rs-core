@@ -213,7 +213,8 @@
 //!     #[derive(Default)]
 //!     pub struct SimpleModuleObject;
 //!
-//!     #[glib::dynamic_object_subclass]
+//!     #[glib::object_subclass]
+//!     #[object_subclass_dynamic]
 //!     impl ObjectSubclass for SimpleModuleObject {
 //!         const NAME: &'static str = "SimpleModuleObject";
 //!         type Type = super::SimpleModuleObject;
@@ -300,7 +301,8 @@
 //!     #[derive(Default)]
 //!     pub struct SimplePluginObject;
 //!
-//!     #[glib::dynamic_object_subclass(plugin_type = super::SimpleTypePlugin)]
+//!     #[glib::object_subclass]
+//!     #[object_subclass_dynamic(plugin_type = super::SimpleTypePlugin)]
 //!     impl ObjectSubclass for SimplePluginObject {
 //!         const NAME: &'static str = "SimplePluginObject";
 //!         type Type = super::SimplePluginObject;

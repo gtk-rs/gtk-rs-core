@@ -1056,17 +1056,17 @@ pub fn register_type<T: ObjectSubclass>() -> Type {
 // rustdoc-stripper-ignore-next
 /// Registers a `glib::Type` ID for `T` as a dynamic type.
 ///
-/// An object subclass must be explicitly registered as a  ynamic type when the
+/// An object subclass must be explicitly registered as a dynamic type when the
 /// system loads the implementation by calling [`TypePluginImpl::use_`] or more
 /// specifically [`TypeModuleImpl::load`]. Therefore, unlike for object
 /// subclasses registered as static types, object subclasses registered as
 /// dynamic types can be registered several times.
 ///
-/// The [`dynamic_object_subclass!`] macro will create `register_type()` and
-/// `on_implementation_load()` functions around this, which will ensure that
-/// the function is called when necessary.
+/// The [`object_subclass_dynamic!`] macro helper attribute will create
+/// `register_type()` and `on_implementation_load()` functions around this,
+/// which will ensure that the function is called when necessary.
 ///
-/// [`dynamic_object_subclass!`]: ../../../glib_macros/attr.dynamic_object_subclass.html
+/// [`object_subclass_dynamic!`]: ../../../glib_macros/attr.object_subclass.html
 /// [`TypePluginImpl::use_`]: ../type_plugin/trait.TypePluginImpl.html#method.use_
 /// [`TypeModuleImpl::load`]: ../type_module/trait.TypeModuleImpl.html#method.load
 pub fn register_dynamic_type<P: DynamicObjectRegisterExt, T: ObjectSubclass>(
