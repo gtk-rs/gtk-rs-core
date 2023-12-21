@@ -164,6 +164,27 @@ pub fn parse_nested_meta_items<'a>(
     }
 }
 
+pub fn parse_optional_nested_meta_items<'a>(
+    attrs: impl IntoIterator<Item = &'a syn::Attribute>,
+    attr_name: &str,
+    items: &mut [&mut dyn ParseNestedMetaItem],
+) -> syn::Result<Option<&'a syn::Attribute>> {
+    let attr = attrs
+        .into_iter()
+        .find(|attr| attr.path().is_ident(attr_name));
+    if let Some(attr) = attr {
+        if let syn::Meta::Path(_) = attr.meta {
+            Ok(Some(attr))
+        } else {
+            parse_nested_meta_items_from_fn(|x| attr.parse_nested_meta(x), items)?;
+            check_meta_items(attr.span(), items)?;
+            Ok(Some(attr))
+        }
+    } else {
+        Ok(None)
+    }
+}
+
 pub fn crate_ident_new() -> TokenStream {
     use proc_macro_crate::FoundCrate;
 

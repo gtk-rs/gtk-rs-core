@@ -459,65 +459,54 @@ pub fn closure_local(item: TokenStream) -> TokenStream {
 /// }
 /// ```
 ///
-/// [`glib::Value`]: ../glib/value/struct.Value.html
-#[proc_macro_derive(Enum, attributes(enum_type, enum_value))]
-#[proc_macro_error]
-pub fn enum_derive(input: TokenStream) -> TokenStream {
-    let input = parse_macro_input!(input as DeriveInput);
-    let gen = enum_derive::impl_enum(&input);
-    gen.into()
-}
-
-/// Derive macro for register a Rust enum in the GLib type system as a dynamic
-/// type and derive the [`glib::Value`] traits.
-///
-/// An enum must be explicitly registered as a dynamic type when the system
-/// loads its implementation (see [`TypePlugin`] and [`TypeModule`].
-/// Therefore, whereas an enum can be registered only once as a static type,
-/// it can be registered several times as a dynamic type.
-///
-/// An enum registered as a dynamic type is never unregistered. The system
-/// calls [`TypePluginExt::unuse`] to unload its implementation. If the
-/// [`TypePlugin`] subclass is a [`TypeModule`], the enum registered as a
-/// dynamic type is marked as unloaded and must be registered again when the
-/// module is reloaded.
-///
-/// This macro provides two behaviors when registering an enum as a dynamic
-/// type:
-///
-/// By default an enum is registered as a dynamic type when the system loads
-/// its implementation (e.g. when the module is loaded):
+/// An enum can be registered as a dynamic type by setting the derive macro
+/// helper attribute `enum_dynamic`:
 /// ```ignore
 /// use glib::prelude::*;
 /// use glib::subclass::prelude::*;
 ///
-/// #[derive(Debug, Copy, Clone, PartialEq, Eq, glib::DynamicEnum)]
+/// #[derive(Debug, Copy, Clone, PartialEq, Eq, glib::Enum)]
 /// #[enum_type(name = "MyEnum")]
-/// enum MyEnum {
-///     Val,
-///     #[enum_value(name = "My Val")]
-///     ValWithCustomName,
-///     #[enum_value(name = "My Other Val", nick = "other")]
-///     ValWithCustomNameAndNick,
-/// }
-/// ```
-///
-/// Optionally setting the macro attribute `lazy_registration` to `true`
-/// postpones registration on the first use (when `static_type()` is called for
-/// the first time), similarly to the [`macro@enum_derive`] macro:
-/// ```ignore
-/// #[derive(Debug, Copy, Clone, PartialEq, Eq, glib::DynamicEnum)]
-/// #[enum_type(name = "MyEnum", lazy_registration = true)]
+/// #[enum_dynamic]
 /// enum MyEnum {
 ///     ...
 /// }
 /// ```
 ///
-/// An enum is usually registered as a dynamic type within a [`TypeModule`]
-/// subclass:
+/// As a dynamic type, an enum must be explicitly registered when the system
+/// loads the implementation (see [`TypePlugin`] and [`TypeModule`].
+/// Therefore, whereas an enum can be registered only once as a static type,
+/// it can be registered several times as a dynamic type.
+///
+/// An enum registered as a dynamic type is never unregistered. The system
+/// calls [`TypePluginExt::unuse`] to unload the implementation. If the
+/// [`TypePlugin`] subclass is a [`TypeModule`], the enum registered as a
+/// dynamic type is marked as unloaded and must be registered again when the
+/// module is reloaded.
+///
+/// The derive macro helper attribute `enum_dynamic` provides two behaviors
+/// when registering an enum as a dynamic type:
+///
+/// - lazy registration: by default an enum is registered as a dynamic type
+/// when the system loads the implementation (e.g. when the module is loaded).
+/// Optionally setting `lazy_registration` to `true` postpones registration on
+/// the first use (when `static_type()` is called for the first time):
 /// ```ignore
-/// #[derive(Debug, Copy, Clone, PartialEq, Eq, glib::DynamicEnum)]
+/// #[derive(Debug, Copy, Clone, PartialEq, Eq, glib::Enum)]
+/// #[enum_type(name = "MyEnum")]
+/// #[enum_dynamic(lazy_registration = true)]
+/// enum MyEnum {
+///     ...
+/// }
+/// ```
+///
+/// - registration within [`TypeModule`] subclass or within [`TypePlugin`]
+/// subclass: an enum is usually registered as a dynamic type within a
+/// [`TypeModule`] subclass:
+/// ```ignore
+/// #[derive(Debug, Copy, Clone, PartialEq, Eq, glib::Enum)]
 /// #[enum_type(name = "MyModuleEnum")]
+/// #[enum_dynamic]
 /// enum MyModuleEnum {
 ///     ...
 /// }
@@ -536,11 +525,12 @@ pub fn enum_derive(input: TokenStream) -> TokenStream {
 /// }
 /// ```
 ///
-/// Optionally setting the macro attribute `plugin_type` allows to register an
-/// enum as a dynamic type within a given [`TypePlugin`] subclass:
+/// Optionally setting `plugin_type` allows to register an enum as a dynamic
+/// type within a [`TypePlugin`] subclass that is not a [`TypeModule`]:
 /// ```ignore
-/// #[derive(Debug, Copy, Clone, PartialEq, Eq, glib::DynamicEnum)]
-/// #[enum_type(name = "MyPluginEnum", plugin_type = MyPlugin)]
+/// #[derive(Debug, Copy, Clone, PartialEq, Eq, glib::Enum)]
+/// #[enum_type(name = "MyPluginEnum")]
+/// #[enum_dynamic(plugin_type = MyPlugin)]
 /// enum MyPluginEnum {
 ///     ...
 /// }
@@ -561,12 +551,12 @@ pub fn enum_derive(input: TokenStream) -> TokenStream {
 /// [`glib::Value`]: ../glib/value/struct.Value.html
 /// [`TypePlugin`]: ../glib/gobject/type_plugin/struct.TypePlugin.html
 /// [`TypeModule`]: ../glib/gobject/type_module/struct.TypeModule.html
-/// [`TypePluginExt::unuse`]: ../glib/gobject/type_plugin/trait.TypePluginExt.html#method.unuse
-#[proc_macro_derive(DynamicEnum, attributes(enum_type, enum_value))]
+/// [`TypePluginExt::unuse`]: ../glib/gobject/type_plugin/trait.TypePluginExt.
+#[proc_macro_derive(Enum, attributes(enum_type, enum_dynamic, enum_value))]
 #[proc_macro_error]
-pub fn dynamic_enum_derive(input: TokenStream) -> TokenStream {
+pub fn enum_derive(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as DeriveInput);
-    let gen = enum_derive::impl_dynamic_enum(&input);
+    let gen = enum_derive::impl_enum(&input);
     gen.into()
 }
 

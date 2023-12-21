@@ -11,8 +11,8 @@ pub use ffi;
 pub use glib_macros::cstr_bytes;
 pub use glib_macros::{
     clone, closure, closure_local, derived_properties, dynamic_object_interface,
-    dynamic_object_subclass, flags, object_interface, object_subclass, Boxed, Downgrade,
-    DynamicEnum, Enum, ErrorDomain, Properties, SharedBoxed, ValueDelegate, Variant,
+    dynamic_object_subclass, flags, object_interface, object_subclass, Boxed, Downgrade, Enum,
+    ErrorDomain, Properties, SharedBoxed, ValueDelegate, Variant,
 };
 pub use gobject_ffi;
 pub use once_cell;

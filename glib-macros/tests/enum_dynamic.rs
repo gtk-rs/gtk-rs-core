@@ -44,9 +44,10 @@ mod module {
     }
 
     // an enum to register as a dynamic type.
-    #[derive(Debug, Eq, PartialEq, Clone, Copy, glib::DynamicEnum)]
+    #[derive(Debug, Eq, PartialEq, Clone, Copy, glib::Enum)]
     #[repr(u32)]
     #[enum_type(name = "MyModuleEnum")]
+    #[enum_dynamic]
     pub enum MyModuleEnum {
         #[enum_value(name = "Foo")]
         Foo,
@@ -54,9 +55,10 @@ mod module {
     }
 
     // an enum to lazy register as a dynamic type.
-    #[derive(Debug, Eq, PartialEq, Clone, Copy, glib::DynamicEnum)]
+    #[derive(Debug, Eq, PartialEq, Clone, Copy, glib::Enum)]
     #[repr(u32)]
-    #[enum_type(name = "MyModuleEnumLazy", lazy_registration = true)]
+    #[enum_type(name = "MyModuleEnumLazy")]
+    #[enum_dynamic(lazy_registration = true)]
     pub enum MyModuleEnumLazy {
         #[enum_value(name = "Foo")]
         Foo,
@@ -70,17 +72,17 @@ mod module {
     }
 
     #[test]
-    fn dynamic_types() {
+    fn dynamic_enums() {
         // 1st: creates a single module to test with.
         let module = glib::Object::new::<MyModule>();
         // 1st: uses it to test lifecycle of enums registered as dynamic types.
-        enum_lifecycle(&module);
+        dynamic_enums_lifecycle(&module);
         // 2nd: uses it to test behavior of enums registered as dynamic types.
-        enum_behavior(&module);
+        dynamic_enums_behavior(&module);
     }
 
     // tests lifecycle of enums registered as dynamic types within a module.
-    fn enum_lifecycle(module: &MyModule) {
+    fn dynamic_enums_lifecycle(module: &MyModule) {
         // checks types of enums to register as dynamic types are invalid (module is not loaded yet).
         assert!(!MyModuleEnum::static_type().is_valid());
         assert!(!MyModuleEnumLazy::static_type().is_valid());
@@ -132,7 +134,7 @@ mod module {
     }
 
     // tests behavior of enums registered as dynamic types within a module.
-    fn enum_behavior(module: &MyModule) {
+    fn dynamic_enums_behavior(module: &MyModule) {
         use glib::prelude::*;
         use glib::translate::{FromGlib, IntoGlib};
 
@@ -315,9 +317,10 @@ pub mod plugin {
     }
 
     // an enum to register as a dynamic type.
-    #[derive(Debug, Eq, PartialEq, Clone, Copy, glib::DynamicEnum)]
+    #[derive(Debug, Eq, PartialEq, Clone, Copy, glib::Enum)]
     #[repr(u32)]
-    #[enum_type(name = "MyPluginEnum", plugin_type = MyPlugin)]
+    #[enum_type(name = "MyPluginEnum")]
+    #[enum_dynamic(plugin_type = MyPlugin)]
     pub enum MyPluginEnum {
         #[enum_value(name = "Foo")]
         Foo,
@@ -325,9 +328,10 @@ pub mod plugin {
     }
 
     // an enum to lazy register as a dynamic type.
-    #[derive(Debug, Eq, PartialEq, Clone, Copy, glib::DynamicEnum)]
+    #[derive(Debug, Eq, PartialEq, Clone, Copy, glib::Enum)]
     #[repr(u32)]
-    #[enum_type(name = "MyPluginEnumLazy", plugin_type = MyPlugin, lazy_registration = true)]
+    #[enum_type(name = "MyPluginEnumLazy")]
+    #[enum_dynamic(plugin_type = MyPlugin, lazy_registration = true)]
     pub enum MyPluginEnumLazy {
         #[enum_value(name = "Foo")]
         Foo,
@@ -340,17 +344,17 @@ pub mod plugin {
     }
 
     #[test]
-    fn dynamic_types() {
+    fn dynamic_enums() {
         // 1st: creates a single plugin to test with.
         let plugin = glib::Object::new::<MyPlugin>();
         // 1st: uses it to test lifecycle of enums registered as dynamic types.
-        enum_lifecycle(&plugin);
+        dynamic_enums_lifecycle(&plugin);
         // 2nd: uses it to test behavior of enums registered as dynamic types.
-        enum_behavior(&plugin);
+        dynamic_enums_behavior(&plugin);
     }
 
     // tests lifecycle of enums registered as dynamic types within a plugin.
-    fn enum_lifecycle(plugin: &MyPlugin) {
+    fn dynamic_enums_lifecycle(plugin: &MyPlugin) {
         use glib::prelude::*;
 
         // checks types of enums to register as dynamic types are invalid (plugin is not used yet).
@@ -404,7 +408,7 @@ pub mod plugin {
     }
 
     // tests behavior of enums registered as dynamic types within a plugin.
-    fn enum_behavior(plugin: &MyPlugin) {
+    fn dynamic_enums_behavior(plugin: &MyPlugin) {
         use glib::prelude::*;
         use glib::translate::{FromGlib, IntoGlib};
 
