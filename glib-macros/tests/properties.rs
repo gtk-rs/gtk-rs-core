@@ -394,9 +394,9 @@ fn ext_trait() {
     let base: base::Base = glib::object::Object::builder().build();
     assert_eq!(BasePropertiesExt::overridden(&base), 42);
 
-    let foo: foo::Foo = glib::object::Object::builder().build();
-    assert_eq!(BasePropertiesExt::overridden(&foo), 43);
-    assert_eq!(foo.overridden(), 43);
+    let foo_obj: foo::Foo = glib::object::Object::builder().build();
+    assert_eq!(BasePropertiesExt::overridden(&foo_obj), 43);
+    assert_eq!(foo_obj.overridden(), 43);
 }
 
 #[test]
