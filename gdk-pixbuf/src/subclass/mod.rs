@@ -8,8 +8,9 @@ pub mod pixbuf_animation_iter;
 pub mod pixbuf_loader;
 
 pub mod prelude {
-    pub use gio::subclass::prelude::*;
     pub use glib::subclass::prelude::*;
+
+    pub use gio::subclass::prelude::*;
 
     pub use super::{
         pixbuf_animation::{PixbufAnimationImpl, PixbufAnimationImplExt},

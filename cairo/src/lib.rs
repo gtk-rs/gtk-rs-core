@@ -228,8 +228,8 @@ pub use crate::{
     enums::*,
     error::{BorrowError, Error, IoError, Result},
     font::{
-        FontExtents, FontFace, FontOptions, FontSlant, FontType, FontWeight, Glyph, ScaledFont,
-        TextCluster, TextExtents, UserFontFace,
+        Antialias, FontExtents, FontFace, FontOptions, FontSlant, FontType, FontWeight, Glyph,
+        HintMetrics, HintStyle, ScaledFont, SubpixelOrder, TextCluster, TextExtents, UserFontFace,
     },
     image_surface::{ImageSurface, ImageSurfaceData, ImageSurfaceDataOwned},
     matrices::Matrix,
