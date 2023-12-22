@@ -224,11 +224,11 @@ pub fn register_interface<T: ObjectInterface>() -> Type {
 /// interfaces registered as static types, object interfaces registered as
 /// dynamic types can be registered several times.
 ///
-/// The [`dynamic_object_interface!`] macro will create `register_interface()`
-/// and `on_implementation_load()` functions around this, which will ensure
-/// that the function is called when necessary.
+/// The [`object_interface_dynamic!`] macro helper attribute will create
+/// `register_interface()` and `on_implementation_load()` functions around this,
+/// which will ensure that the function is called when necessary.
 ///
-/// [`dynamic_object_interface!`]: ../../../glib_macros/attr.dynamic_object_interface.html
+/// [`object_interface_dynamic!`]: ../../../glib_macros/attr.object_interface.html
 /// [`TypePluginImpl::use_`]: ../type_plugin/trait.TypePluginImpl.html#method.use_
 /// [`TypeModuleImpl::load`]: ../type_module/trait.TypeModuleImpl.html#method.load
 pub fn register_dynamic_interface<P: DynamicObjectRegisterExt, T: ObjectInterface>(

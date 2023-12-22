@@ -841,84 +841,102 @@ pub fn object_subclass(_attr: TokenStream, item: TokenStream) -> TokenStream {
 /// type Prerequisites = ();
 /// ```
 ///
-/// [`ObjectInterface`]: ../glib/subclass/interface/trait.ObjectInterface.html
-#[proc_macro_attribute]
-#[proc_macro_error]
-pub fn object_interface(_attr: TokenStream, item: TokenStream) -> TokenStream {
-    use proc_macro_error::abort_call_site;
-    match syn::parse::<syn::ItemImpl>(item) {
-        Ok(input) => object_interface_attribute::impl_object_interface(&input).into(),
-        Err(_) => abort_call_site!(object_interface_attribute::WRONG_PLACE_MSG),
-    }
-}
-
-/// Macro for boilerplate of [`ObjectInterface`] implementations that are
-/// registered as dynamic types.
+/// An object interface can be registered as a dynamic type by setting the
+/// macro helper attribute `object_interface_dynamic`:
+/// ```ignore
+/// pub struct MyInterface {
+///     parent: glib::gobject_ffi::GTypeInterface,
+/// }
+/// #[glib::object_interface]
+/// #[object_interface_dynamic]
+/// unsafe impl ObjectInterface for MyInterface { ... }
+/// ```
 ///
-/// An object interface must be explicitly registeredas a dynamic type when the
-/// system loads its implementation (see [`TypePlugin`] and [`TypeModule`].
+/// As a dynamic type, an object interface must be explicitly registered when
+/// the system loads the implementation (see [`TypePlugin`] and [`TypeModule`].
 /// Therefore, whereas an object interface can be registered only once as a
 /// static type, it can be registered several times as a dynamic type.
 ///
 /// An object interface registered as a dynamic type is never unregistered. The
-/// system calls [`TypePluginExt::unuse`] to unload its implementation. If the
+/// system calls [`TypePluginExt::unuse`] to unload the implementation. If the
 /// [`TypePlugin`] subclass is a [`TypeModule`], the object interface
 /// registered as a dynamic type is marked as unloaded and must be registered
 /// again when the module is reloaded.
 ///
-/// This macro provides two behaviors when registering an object interface as a
-/// dynamic type:
+/// The macro helper attribute `object_interface_dynamic` provides two
+/// behaviors when registering an object interface as a dynamic type:
 ///
-/// By default an object interface is registered as a dynamic type when the
-/// system loads its implementation (e.g. when the module is loaded):
+/// - lazy registration: by default an object interface is registered as a
+/// dynamic type when the system loads the implementation (e.g. when the module
+/// is loaded). Optionally setting `lazy_registration` to `true` postpones
+/// registration on the first use (when `type_()` is called for the first time):
 /// ```ignore
-/// #[glib::dynamic_object_interface]
+/// pub struct MyInterface {
+///     parent: glib::gobject_ffi::GTypeInterface,
+/// }
+/// #[glib::object_interface]
+/// #[object_interface_dynamic(lazy_registration = true)]
 /// unsafe impl ObjectInterface for MyInterface { ... }
 /// ```
 ///
-/// Optionally setting the macro attribute `lazy_registration` to `true`
-/// postpones registration on the first use (when `type_()` is called for the
-/// first time), similarly to the [`macro@object_subclass`]
-/// [`macro@object_interface`] macro.
+/// - registration within [`TypeModule`] subclass or within [`TypePlugin`]
+/// subclass: an object interface is usually registered as a dynamic type
+/// within a [`TypeModule`] subclass:
 /// ```ignore
-/// #[glib::dynamic_object_interface(lazy_registration = true)]
-/// unsafe impl ObjectInterface for MyInterface { ... }
+/// pub struct MyModuleInterface {
+///     parent: glib::gobject_ffi::GTypeInterface,
+/// }
+/// #[glib::object_interface]
+/// #[object_interface_dynamic]
+/// unsafe impl ObjectInterface for MyModuleInterface { ... }
+/// ...
+/// #[derive(Default)]
+/// pub struct MyModule;
+/// ...
+/// impl TypeModuleImpl for MyModule {
+///     fn load(&self) -> bool {
+///         // registers object interfaces as dynamic types.
+///         let my_module = self.obj();
+///         let type_module: &glib::TypeModule = my_module.upcast_ref();
+///         MyModuleInterface::on_implementation_load(type_module)
+///     }
+///     ...
+/// }
 /// ```
 ///
-/// By default an object interface is considered to be registered as a dynamic
-/// type within a [`TypeModule`] subclass. Optionally setting the macro
-/// attribute `plugin_type` allows to register an object interface as a dynamic
-/// type within a given [`TypePlugin`] subclass:
+/// Optionally setting `plugin_type` allows to register an object interface as
+/// a dynamic type within a [`TypePlugin`] subclass that is not a [`TypeModule`]:
 /// ```ignore
-/// #[glib::dynamic_object_interface(plugin_type = MyPlugin)]
-/// unsafe impl ObjectInterface for MyInterface { ... }
+/// pub struct MyPluginInterface {
+///     parent: glib::gobject_ffi::GTypeInterface,
+/// }
+/// #[glib::object_interface]
+/// #[object_interface_dynamic(plugin_type = MyPlugin)]
+/// unsafe impl ObjectInterface for MyPluginInterface { ... }
+/// ...
+/// #[derive(Default)]
+/// pub struct MyPlugin;
+/// ...
+/// impl TypePluginImpl for MyPlugin {
+///     fn use_plugin(&self) {
+///         // register object interfaces as dynamic types.
+///         let my_plugin = self.obj();
+///         MyPluginInterface::on_implementation_load(my_plugin.as_ref());
+///     }
+///     ...
+/// }
 /// ```
 ///
 /// [`ObjectInterface`]: ../glib/subclass/interface/trait.ObjectInterface.html
 /// [`TypePlugin`]: ../glib/gobject/type_plugin/struct.TypePlugin.html
 /// [`TypeModule`]: ../glib/gobject/type_module/struct.TypeModule.html
-/// [`TypePluginExt::unuse`]: ../glib/gobject/type_plugin/trait.TypePluginExt.html#method.unuse
+/// [`TypePluginExt::unuse`]: ../glib/gobject/type_plugin/trait.TypePluginExt.html#method.unuse///
 #[proc_macro_attribute]
 #[proc_macro_error]
-pub fn dynamic_object_interface(attr: TokenStream, item: TokenStream) -> TokenStream {
+pub fn object_interface(_attr: TokenStream, item: TokenStream) -> TokenStream {
     use proc_macro_error::abort_call_site;
-    let attrs = match syn::parse::Parser::parse(
-        syn::punctuated::Punctuated::<syn::Expr, syn::Token![,]>::parse_terminated,
-        attr,
-    ) {
-        Ok(attrs)
-            if attrs
-                .iter()
-                .all(|attr| matches!(attr, syn::Expr::Assign(_))) =>
-        {
-            attrs
-        }
-        _ => abort_call_site!(object_interface_attribute::WRONG_EXPRESSION_MSG),
-    };
     match syn::parse::<syn::ItemImpl>(item) {
-        Ok(input) => {
-            object_interface_attribute::impl_dynamic_object_interface(&attrs, &input).into()
-        }
+        Ok(mut input) => object_interface_attribute::impl_object_interface(&mut input).into(),
         Err(_) => abort_call_site!(object_interface_attribute::WRONG_PLACE_MSG),
     }
 }

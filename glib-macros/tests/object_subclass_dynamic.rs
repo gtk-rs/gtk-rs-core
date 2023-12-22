@@ -73,7 +73,8 @@ mod module {
             parent: glib::gobject_ffi::GTypeInterface,
         }
 
-        #[glib::dynamic_object_interface]
+        #[glib::object_interface]
+        #[object_interface_dynamic]
         unsafe impl ObjectInterface for MyModuleInterface {
             const NAME: &'static str = "MyModuleInterface";
             type Prerequisites = (MyStaticInterface,);
@@ -109,7 +110,8 @@ mod module {
             parent: glib::gobject_ffi::GTypeInterface,
         }
 
-        #[glib::dynamic_object_interface(lazy_registration = true)]
+        #[glib::object_interface]
+        #[object_interface_dynamic(lazy_registration = true)]
         unsafe impl ObjectInterface for MyModuleInterfaceLazy {
             const NAME: &'static str = "MyModuleInterfaceLazy";
             type Prerequisites = (MyStaticInterface,);
@@ -297,7 +299,8 @@ pub mod plugin {
             parent: glib::gobject_ffi::GTypeInterface,
         }
 
-        #[glib::dynamic_object_interface(plugin_type = super::MyPlugin)]
+        #[glib::object_interface]
+        #[object_interface_dynamic(plugin_type = super::MyPlugin)]
         unsafe impl ObjectInterface for MyPluginInterface {
             const NAME: &'static str = "MyPluginInterface";
             type Prerequisites = (MyStaticInterface,);
@@ -333,7 +336,8 @@ pub mod plugin {
             parent: glib::gobject_ffi::GTypeInterface,
         }
 
-        #[glib::dynamic_object_interface(plugin_type = super::MyPlugin, lazy_registration = true)]
+        #[glib::object_interface]
+        #[object_interface_dynamic(plugin_type = super::MyPlugin, lazy_registration = true)]
         unsafe impl ObjectInterface for MyPluginInterfaceLazy {
             const NAME: &'static str = "MyPluginInterfaceLazy";
             type Prerequisites = (MyStaticInterface,);
