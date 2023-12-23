@@ -459,65 +459,54 @@ pub fn closure_local(item: TokenStream) -> TokenStream {
 /// }
 /// ```
 ///
-/// [`glib::Value`]: ../glib/value/struct.Value.html
-#[proc_macro_derive(Enum, attributes(enum_type, enum_value))]
-#[proc_macro_error]
-pub fn enum_derive(input: TokenStream) -> TokenStream {
-    let input = parse_macro_input!(input as DeriveInput);
-    let gen = enum_derive::impl_enum(&input);
-    gen.into()
-}
-
-/// Derive macro for register a Rust enum in the GLib type system as a dynamic
-/// type and derive the [`glib::Value`] traits.
-///
-/// An enum must be explicitly registered as a dynamic type when the system
-/// loads its implementation (see [`TypePlugin`] and [`TypeModule`].
-/// Therefore, whereas an enum can be registered only once as a static type,
-/// it can be registered several times as a dynamic type.
-///
-/// An enum registered as a dynamic type is never unregistered. The system
-/// calls [`TypePluginExt::unuse`] to unload its implementation. If the
-/// [`TypePlugin`] subclass is a [`TypeModule`], the enum registered as a
-/// dynamic type is marked as unloaded and must be registered again when the
-/// module is reloaded.
-///
-/// This macro provides two behaviors when registering an enum as a dynamic
-/// type:
-///
-/// By default an enum is registered as a dynamic type when the system loads
-/// its implementation (e.g. when the module is loaded):
+/// An enum can be registered as a dynamic type by setting the derive macro
+/// helper attribute `enum_dynamic`:
 /// ```ignore
 /// use glib::prelude::*;
 /// use glib::subclass::prelude::*;
 ///
-/// #[derive(Debug, Copy, Clone, PartialEq, Eq, glib::DynamicEnum)]
+/// #[derive(Debug, Copy, Clone, PartialEq, Eq, glib::Enum)]
 /// #[enum_type(name = "MyEnum")]
-/// enum MyEnum {
-///     Val,
-///     #[enum_value(name = "My Val")]
-///     ValWithCustomName,
-///     #[enum_value(name = "My Other Val", nick = "other")]
-///     ValWithCustomNameAndNick,
-/// }
-/// ```
-///
-/// Optionally setting the macro attribute `lazy_registration` to `true`
-/// postpones registration on the first use (when `static_type()` is called for
-/// the first time), similarly to the [`macro@enum_derive`] macro:
-/// ```ignore
-/// #[derive(Debug, Copy, Clone, PartialEq, Eq, glib::DynamicEnum)]
-/// #[enum_type(name = "MyEnum", lazy_registration = true)]
+/// #[enum_dynamic]
 /// enum MyEnum {
 ///     ...
 /// }
 /// ```
 ///
-/// An enum is usually registered as a dynamic type within a [`TypeModule`]
-/// subclass:
+/// As a dynamic type, an enum must be explicitly registered when the system
+/// loads the implementation (see [`TypePlugin`] and [`TypeModule`].
+/// Therefore, whereas an enum can be registered only once as a static type,
+/// it can be registered several times as a dynamic type.
+///
+/// An enum registered as a dynamic type is never unregistered. The system
+/// calls [`TypePluginExt::unuse`] to unload the implementation. If the
+/// [`TypePlugin`] subclass is a [`TypeModule`], the enum registered as a
+/// dynamic type is marked as unloaded and must be registered again when the
+/// module is reloaded.
+///
+/// The derive macro helper attribute `enum_dynamic` provides two behaviors
+/// when registering an enum as a dynamic type:
+///
+/// - lazy registration: by default an enum is registered as a dynamic type
+/// when the system loads the implementation (e.g. when the module is loaded).
+/// Optionally setting `lazy_registration` to `true` postpones registration on
+/// the first use (when `static_type()` is called for the first time):
 /// ```ignore
-/// #[derive(Debug, Copy, Clone, PartialEq, Eq, glib::DynamicEnum)]
+/// #[derive(Debug, Copy, Clone, PartialEq, Eq, glib::Enum)]
+/// #[enum_type(name = "MyEnum")]
+/// #[enum_dynamic(lazy_registration = true)]
+/// enum MyEnum {
+///     ...
+/// }
+/// ```
+///
+/// - registration within [`TypeModule`] subclass or within [`TypePlugin`]
+/// subclass: an enum is usually registered as a dynamic type within a
+/// [`TypeModule`] subclass:
+/// ```ignore
+/// #[derive(Debug, Copy, Clone, PartialEq, Eq, glib::Enum)]
 /// #[enum_type(name = "MyModuleEnum")]
+/// #[enum_dynamic]
 /// enum MyModuleEnum {
 ///     ...
 /// }
@@ -536,11 +525,12 @@ pub fn enum_derive(input: TokenStream) -> TokenStream {
 /// }
 /// ```
 ///
-/// Optionally setting the macro attribute `plugin_type` allows to register an
-/// enum as a dynamic type within a given [`TypePlugin`] subclass:
+/// Optionally setting `plugin_type` allows to register an enum as a dynamic
+/// type within a [`TypePlugin`] subclass that is not a [`TypeModule`]:
 /// ```ignore
-/// #[derive(Debug, Copy, Clone, PartialEq, Eq, glib::DynamicEnum)]
-/// #[enum_type(name = "MyPluginEnum", plugin_type = MyPlugin)]
+/// #[derive(Debug, Copy, Clone, PartialEq, Eq, glib::Enum)]
+/// #[enum_type(name = "MyPluginEnum")]
+/// #[enum_dynamic(plugin_type = MyPlugin)]
 /// enum MyPluginEnum {
 ///     ...
 /// }
@@ -561,12 +551,12 @@ pub fn enum_derive(input: TokenStream) -> TokenStream {
 /// [`glib::Value`]: ../glib/value/struct.Value.html
 /// [`TypePlugin`]: ../glib/gobject/type_plugin/struct.TypePlugin.html
 /// [`TypeModule`]: ../glib/gobject/type_module/struct.TypeModule.html
-/// [`TypePluginExt::unuse`]: ../glib/gobject/type_plugin/trait.TypePluginExt.html#method.unuse
-#[proc_macro_derive(DynamicEnum, attributes(enum_type, enum_value))]
+/// [`TypePluginExt::unuse`]: ../glib/gobject/type_plugin/trait.TypePluginExt.
+#[proc_macro_derive(Enum, attributes(enum_type, enum_dynamic, enum_value))]
 #[proc_macro_error]
-pub fn dynamic_enum_derive(input: TokenStream) -> TokenStream {
+pub fn enum_derive(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as DeriveInput);
-    let gen = enum_derive::impl_dynamic_enum(&input);
+    let gen = enum_derive::impl_enum(&input);
     gen.into()
 }
 
@@ -736,56 +726,91 @@ pub fn shared_boxed_derive(input: TokenStream) -> TokenStream {
 /// }
 /// ```
 ///
-/// [`ObjectSubclass`]: ../glib/subclass/types/trait.ObjectSubclass.html
-#[proc_macro_attribute]
-#[proc_macro_error]
-pub fn object_subclass(_attr: TokenStream, item: TokenStream) -> TokenStream {
-    use proc_macro_error::abort_call_site;
-    match syn::parse::<syn::ItemImpl>(item) {
-        Ok(input) => object_subclass_attribute::impl_object_subclass(&input).into(),
-        Err(_) => abort_call_site!(object_subclass_attribute::WRONG_PLACE_MSG),
-    }
-}
-
-/// Macro for boilerplate of [`ObjectSubclass`] implementations that are
-/// registered as dynamic types.
+/// An object subclass can be registered as a dynamic type by setting the macro
+/// helper attribute `object_class_dynamic`:
+/// ```ignore
+/// #[derive(Default)]
+/// pub struct MyType;
 ///
-/// An object subclass must be explicitly registered as a dynamic type when the
-/// system loads its implementation (see [`TypePlugin`] and [`TypeModule`].
+/// #[glib::object_subclass]
+/// #[object_subclass_dynamic]
+/// impl ObjectSubclass for MyType { ... }
+/// ```
+///
+/// As a dynamic type, an object subclass must be explicitly registered when
+/// the system loads the implementation (see [`TypePlugin`] and [`TypeModule`].
 /// Therefore, whereas an object subclass can be registered only once as a
 /// static type, it can be registered several times as a dynamic type.
 ///
 /// An object subclass registered as a dynamic type is never unregistered. The
-/// system calls [`TypePluginExt::unuse`] to unload its implementation. If the
+/// system calls [`TypePluginExt::unuse`] to unload the implementation. If the
 /// [`TypePlugin`] subclass is a [`TypeModule`], the object subclass registered
 /// as a dynamic type is marked as unloaded and must be registered again when
 /// the module is reloaded.
 ///
-/// This macro provides two behaviors when registering an object subclass as a
-/// dynamic type:
+/// The macro helper attribute `object_class_dynamic` provides two behaviors
+/// when registering an object subclass as a dynamic type:
 ///
-/// By default an object subclass is registered as a dynamic type when the
-/// system loads its implementation (e.g. when the module is loaded):
+/// - lazy registration: by default an object subclass is registered as a
+/// dynamic type when the system loads the implementation (e.g. when the module
+/// is loaded). Optionally setting `lazy_registration` to `true` postpones
+/// registration on the first use (when `static_type()` is called for the first
+/// time):
 /// ```ignore
-/// #[glib::dynamic_object_subclass]
+/// #[derive(Default)]
+/// pub struct MyType;
+///
+/// #[glib::object_subclass]
+/// #[object_subclass_dynamic(lazy_registration = true)]
 /// impl ObjectSubclass for MyType { ... }
 /// ```
 ///
-/// Optionally setting the macro attribute `lazy_registration` to `true`
-/// postpones registration on the first use (when `type_()` is called for the
-/// first time), similarly to the [`macro@object_subclass`] macro:
+/// - registration within [`TypeModule`] subclass or within [`TypePlugin`]
+/// subclass: an object subclass is usually registered as a dynamic type within
+/// a [`TypeModule`] subclass:
 /// ```ignore
-/// #[glib::dynamic_object_subclass(lazy_registration = true)]
-/// impl ObjectSubclass for MyType { ... }
+/// #[derive(Default)]
+/// pub struct MyModuleType;
+///
+/// #[glib::object_subclass]
+/// #[object_subclass_dynamic]
+/// impl ObjectSubclass for MyModuleType { ... }
+/// ...
+/// #[derive(Default)]
+/// pub struct MyModule;
+/// ...
+/// impl TypeModuleImpl for MyModule {
+///     fn load(&self) -> bool {
+///         // registers object subclasses as dynamic types.
+///         let my_module = self.obj();
+///         let type_module: &glib::TypeModule = my_module.upcast_ref();
+///         MyModuleType::on_implementation_load(type_module)
+///     }
+///     ...
+/// }
 /// ```
 ///
-/// By default an object subclass is considered to be registered as a dynamic
-/// type within a [`TypeModule`] subclass. Optionally setting the macro
-/// attribute `plugin_type` allows to register an object subclass as a dynamic
-/// type within a given [`TypePlugin`] subclass:
+/// Optionally setting `plugin_type` allows to register an object subclass as a
+/// dynamic type within a [`TypePlugin`] subclass that is not a [`TypeModule`]:
 /// ```ignore
-/// #[glib::dynamic_object_subclass(plugin_type = MyPlugin)]
-/// impl ObjectSubclass for MyType { ... }
+/// #[derive(Default)]
+/// pub struct MyPluginType;
+///
+/// #[glib::object_subclass]
+/// #[object_subclass_dynamic(plugin_type = MyPlugin)]
+/// impl ObjectSubclass for MyPluginType { ... }
+/// ...
+/// #[derive(Default)]
+/// pub struct MyPlugin;
+/// ...
+/// impl TypePluginImpl for MyPlugin {
+///     fn use_plugin(&self) {
+///         // register object subclasses as dynamic types.
+///         let my_plugin = self.obj();
+///         MyPluginType::on_implementation_load(my_plugin.as_ref());
+///     }
+///     ...
+/// }
 /// ```
 ///
 /// [`ObjectSubclass`]: ../glib/subclass/types/trait.ObjectSubclass.html
@@ -794,23 +819,10 @@ pub fn object_subclass(_attr: TokenStream, item: TokenStream) -> TokenStream {
 /// [`TypePluginExt::unuse`]: ../glib/gobject/type_plugin/trait.TypePluginExt.html#method.unuse
 #[proc_macro_attribute]
 #[proc_macro_error]
-pub fn dynamic_object_subclass(attr: TokenStream, item: TokenStream) -> TokenStream {
+pub fn object_subclass(_attr: TokenStream, item: TokenStream) -> TokenStream {
     use proc_macro_error::abort_call_site;
-    let attrs = match syn::parse::Parser::parse(
-        syn::punctuated::Punctuated::<syn::Expr, syn::Token![,]>::parse_terminated,
-        attr,
-    ) {
-        Ok(attrs)
-            if attrs
-                .iter()
-                .all(|attr| matches!(attr, syn::Expr::Assign(_))) =>
-        {
-            attrs
-        }
-        _ => abort_call_site!(object_subclass_attribute::WRONG_EXPRESSION_MSG),
-    };
     match syn::parse::<syn::ItemImpl>(item) {
-        Ok(input) => object_subclass_attribute::impl_dynamic_object_subclass(&attrs, &input).into(),
+        Ok(mut input) => object_subclass_attribute::impl_object_subclass(&mut input).into(),
         Err(_) => abort_call_site!(object_subclass_attribute::WRONG_PLACE_MSG),
     }
 }
@@ -829,84 +841,102 @@ pub fn dynamic_object_subclass(attr: TokenStream, item: TokenStream) -> TokenStr
 /// type Prerequisites = ();
 /// ```
 ///
-/// [`ObjectInterface`]: ../glib/subclass/interface/trait.ObjectInterface.html
-#[proc_macro_attribute]
-#[proc_macro_error]
-pub fn object_interface(_attr: TokenStream, item: TokenStream) -> TokenStream {
-    use proc_macro_error::abort_call_site;
-    match syn::parse::<syn::ItemImpl>(item) {
-        Ok(input) => object_interface_attribute::impl_object_interface(&input).into(),
-        Err(_) => abort_call_site!(object_interface_attribute::WRONG_PLACE_MSG),
-    }
-}
-
-/// Macro for boilerplate of [`ObjectInterface`] implementations that are
-/// registered as dynamic types.
+/// An object interface can be registered as a dynamic type by setting the
+/// macro helper attribute `object_interface_dynamic`:
+/// ```ignore
+/// pub struct MyInterface {
+///     parent: glib::gobject_ffi::GTypeInterface,
+/// }
+/// #[glib::object_interface]
+/// #[object_interface_dynamic]
+/// unsafe impl ObjectInterface for MyInterface { ... }
+/// ```
 ///
-/// An object interface must be explicitly registeredas a dynamic type when the
-/// system loads its implementation (see [`TypePlugin`] and [`TypeModule`].
+/// As a dynamic type, an object interface must be explicitly registered when
+/// the system loads the implementation (see [`TypePlugin`] and [`TypeModule`].
 /// Therefore, whereas an object interface can be registered only once as a
 /// static type, it can be registered several times as a dynamic type.
 ///
 /// An object interface registered as a dynamic type is never unregistered. The
-/// system calls [`TypePluginExt::unuse`] to unload its implementation. If the
+/// system calls [`TypePluginExt::unuse`] to unload the implementation. If the
 /// [`TypePlugin`] subclass is a [`TypeModule`], the object interface
 /// registered as a dynamic type is marked as unloaded and must be registered
 /// again when the module is reloaded.
 ///
-/// This macro provides two behaviors when registering an object interface as a
-/// dynamic type:
+/// The macro helper attribute `object_interface_dynamic` provides two
+/// behaviors when registering an object interface as a dynamic type:
 ///
-/// By default an object interface is registered as a dynamic type when the
-/// system loads its implementation (e.g. when the module is loaded):
+/// - lazy registration: by default an object interface is registered as a
+/// dynamic type when the system loads the implementation (e.g. when the module
+/// is loaded). Optionally setting `lazy_registration` to `true` postpones
+/// registration on the first use (when `type_()` is called for the first time):
 /// ```ignore
-/// #[glib::dynamic_object_interface]
+/// pub struct MyInterface {
+///     parent: glib::gobject_ffi::GTypeInterface,
+/// }
+/// #[glib::object_interface]
+/// #[object_interface_dynamic(lazy_registration = true)]
 /// unsafe impl ObjectInterface for MyInterface { ... }
 /// ```
 ///
-/// Optionally setting the macro attribute `lazy_registration` to `true`
-/// postpones registration on the first use (when `type_()` is called for the
-/// first time), similarly to the [`macro@object_subclass`]
-/// [`macro@object_interface`] macro.
+/// - registration within [`TypeModule`] subclass or within [`TypePlugin`]
+/// subclass: an object interface is usually registered as a dynamic type
+/// within a [`TypeModule`] subclass:
 /// ```ignore
-/// #[glib::dynamic_object_interface(lazy_registration = true)]
-/// unsafe impl ObjectInterface for MyInterface { ... }
+/// pub struct MyModuleInterface {
+///     parent: glib::gobject_ffi::GTypeInterface,
+/// }
+/// #[glib::object_interface]
+/// #[object_interface_dynamic]
+/// unsafe impl ObjectInterface for MyModuleInterface { ... }
+/// ...
+/// #[derive(Default)]
+/// pub struct MyModule;
+/// ...
+/// impl TypeModuleImpl for MyModule {
+///     fn load(&self) -> bool {
+///         // registers object interfaces as dynamic types.
+///         let my_module = self.obj();
+///         let type_module: &glib::TypeModule = my_module.upcast_ref();
+///         MyModuleInterface::on_implementation_load(type_module)
+///     }
+///     ...
+/// }
 /// ```
 ///
-/// By default an object interface is considered to be registered as a dynamic
-/// type within a [`TypeModule`] subclass. Optionally setting the macro
-/// attribute `plugin_type` allows to register an object interface as a dynamic
-/// type within a given [`TypePlugin`] subclass:
+/// Optionally setting `plugin_type` allows to register an object interface as
+/// a dynamic type within a [`TypePlugin`] subclass that is not a [`TypeModule`]:
 /// ```ignore
-/// #[glib::dynamic_object_interface(plugin_type = MyPlugin)]
-/// unsafe impl ObjectInterface for MyInterface { ... }
+/// pub struct MyPluginInterface {
+///     parent: glib::gobject_ffi::GTypeInterface,
+/// }
+/// #[glib::object_interface]
+/// #[object_interface_dynamic(plugin_type = MyPlugin)]
+/// unsafe impl ObjectInterface for MyPluginInterface { ... }
+/// ...
+/// #[derive(Default)]
+/// pub struct MyPlugin;
+/// ...
+/// impl TypePluginImpl for MyPlugin {
+///     fn use_plugin(&self) {
+///         // register object interfaces as dynamic types.
+///         let my_plugin = self.obj();
+///         MyPluginInterface::on_implementation_load(my_plugin.as_ref());
+///     }
+///     ...
+/// }
 /// ```
 ///
 /// [`ObjectInterface`]: ../glib/subclass/interface/trait.ObjectInterface.html
 /// [`TypePlugin`]: ../glib/gobject/type_plugin/struct.TypePlugin.html
 /// [`TypeModule`]: ../glib/gobject/type_module/struct.TypeModule.html
-/// [`TypePluginExt::unuse`]: ../glib/gobject/type_plugin/trait.TypePluginExt.html#method.unuse
+/// [`TypePluginExt::unuse`]: ../glib/gobject/type_plugin/trait.TypePluginExt.html#method.unuse///
 #[proc_macro_attribute]
 #[proc_macro_error]
-pub fn dynamic_object_interface(attr: TokenStream, item: TokenStream) -> TokenStream {
+pub fn object_interface(_attr: TokenStream, item: TokenStream) -> TokenStream {
     use proc_macro_error::abort_call_site;
-    let attrs = match syn::parse::Parser::parse(
-        syn::punctuated::Punctuated::<syn::Expr, syn::Token![,]>::parse_terminated,
-        attr,
-    ) {
-        Ok(attrs)
-            if attrs
-                .iter()
-                .all(|attr| matches!(attr, syn::Expr::Assign(_))) =>
-        {
-            attrs
-        }
-        _ => abort_call_site!(object_interface_attribute::WRONG_EXPRESSION_MSG),
-    };
     match syn::parse::<syn::ItemImpl>(item) {
-        Ok(input) => {
-            object_interface_attribute::impl_dynamic_object_interface(&attrs, &input).into()
-        }
+        Ok(mut input) => object_interface_attribute::impl_object_interface(&mut input).into(),
         Err(_) => abort_call_site!(object_interface_attribute::WRONG_PLACE_MSG),
     }
 }

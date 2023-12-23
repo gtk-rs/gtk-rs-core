@@ -272,7 +272,8 @@ mod tests {
         #[derive(Default)]
         pub struct SimplePluginType;
 
-        #[crate::dynamic_object_subclass(plugin_type = super::SimplePlugin)]
+        #[crate::object_subclass]
+        #[object_subclass_dynamic(plugin_type = super::SimplePlugin)]
         impl ObjectSubclass for SimplePluginType {
             const NAME: &'static str = "SimplePluginType";
             type Type = super::SimplePluginType;

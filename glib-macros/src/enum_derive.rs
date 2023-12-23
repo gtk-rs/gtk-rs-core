@@ -9,7 +9,10 @@ use syn::{
     Variant,
 };
 
-use crate::utils::{crate_ident_new, gen_enum_from_glib, parse_nested_meta_items, NestedMetaItem};
+use crate::utils::{
+    crate_ident_new, gen_enum_from_glib, parse_nested_meta_items, parse_optional_nested_meta_items,
+    NestedMetaItem,
+};
 
 // generates glib::gobject_ffi::GEnumValue structs mapping the enum such as:
 //     glib::gobject_ffi::GEnumValue {
@@ -70,6 +73,7 @@ pub fn impl_enum(input: &syn::DeriveInput) -> TokenStream {
         Data::Enum(ref e) => &e.variants,
         _ => abort_call_site!("#[derive(glib::Enum)] only supports enums"),
     };
+    let (g_enum_values, nb_enum_values) = gen_enum_values(name, enum_variants);
 
     let mut gtype_name = NestedMetaItem::<syn::LitStr>::new("name")
         .required()
@@ -84,13 +88,152 @@ pub fn impl_enum(input: &syn::DeriveInput) -> TokenStream {
         Ok(attr) => attr,
     };
     let gtype_name = gtype_name.value.unwrap();
-    let from_glib = gen_enum_from_glib(name, enum_variants);
-    let (enum_values, nb_enum_values) = gen_enum_values(name, enum_variants);
+
+    let mut plugin_type = NestedMetaItem::<syn::Path>::new("plugin_type").value_required();
+    let mut lazy_registration =
+        NestedMetaItem::<syn::LitBool>::new("lazy_registration").value_required();
+
+    let found = parse_optional_nested_meta_items(
+        &input.attrs,
+        "enum_dynamic",
+        &mut [&mut plugin_type, &mut lazy_registration],
+    );
 
     let crate_ident = crate_ident_new();
 
+    let register_enum = match found {
+        Err(e) => return e.to_compile_error(),
+        Ok(None) => register_enum_as_static(
+            &crate_ident,
+            name,
+            gtype_name,
+            g_enum_values,
+            nb_enum_values,
+        ),
+        Ok(Some(_)) => {
+            let plugin_ty = plugin_type
+                .value
+                .map(|p| p.into_token_stream())
+                .unwrap_or(quote!(#crate_ident::TypeModule));
+            let lazy_registration = lazy_registration.value.map(|b| b.value).unwrap_or_default();
+            register_enum_as_dynamic(
+                &crate_ident,
+                plugin_ty,
+                lazy_registration,
+                name,
+                gtype_name,
+                g_enum_values,
+                nb_enum_values,
+            )
+        }
+    };
+
+    let from_glib = gen_enum_from_glib(name, enum_variants);
+
+    quote! {
+        impl #crate_ident::translate::IntoGlib for #name {
+            type GlibType = i32;
+
+            #[inline]
+            fn into_glib(self) -> i32 {
+                self as i32
+            }
+        }
+
+        impl #crate_ident::translate::TryFromGlib<i32> for #name {
+            type Error = i32;
+
+            #[inline]
+            unsafe fn try_from_glib(value: i32) -> ::core::result::Result<Self, i32> {
+                let from_glib = || {
+                    #from_glib
+                };
+
+                from_glib().ok_or(value)
+            }
+        }
+
+        impl #crate_ident::translate::FromGlib<i32> for #name {
+            #[inline]
+            unsafe fn from_glib(value: i32) -> Self {
+                use #crate_ident::translate::TryFromGlib;
+
+                Self::try_from_glib(value).unwrap()
+            }
+        }
+
+        impl #crate_ident::value::ValueType for #name {
+            type Type = Self;
+        }
+
+        unsafe impl<'a> #crate_ident::value::FromValue<'a> for #name {
+            type Checker = #crate_ident::value::GenericValueTypeChecker<Self>;
+
+            #[inline]
+            unsafe fn from_value(value: &'a #crate_ident::value::Value) -> Self {
+                #crate_ident::translate::from_glib(#crate_ident::gobject_ffi::g_value_get_enum(
+                    #crate_ident::translate::ToGlibPtr::to_glib_none(value).0
+                ))
+            }
+        }
+
+        impl #crate_ident::value::ToValue for #name {
+            #[inline]
+            fn to_value(&self) -> #crate_ident::value::Value {
+                let mut value = #crate_ident::value::Value::for_value_type::<Self>();
+                unsafe {
+                    #crate_ident::gobject_ffi::g_value_set_enum(
+                        #crate_ident::translate::ToGlibPtrMut::to_glib_none_mut(&mut value).0,
+                        #crate_ident::translate::IntoGlib::into_glib(*self)
+                    )
+                }
+                value
+            }
+
+            #[inline]
+            fn value_type(&self) -> #crate_ident::Type {
+                <Self as #crate_ident::StaticType>::static_type()
+            }
+        }
+
+        impl ::std::convert::From<#name> for #crate_ident::Value {
+            #[inline]
+            fn from(v: #name) -> Self {
+                #crate_ident::value::ToValue::to_value(&v)
+            }
+        }
+
+        impl #crate_ident::StaticType for #name {
+            #[inline]
+            fn static_type() -> #crate_ident::Type {
+                Self::register_enum()
+            }
+        }
+
+        #register_enum
+
+        impl #crate_ident::HasParamSpec for #name {
+            type ParamSpec = #crate_ident::ParamSpecEnum;
+            type SetValue = Self;
+            type BuilderFn = fn(&::core::primitive::str, Self) -> #crate_ident::ParamSpecEnumBuilder<Self>;
+
+            fn param_spec_builder() -> Self::BuilderFn {
+                |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+            }
+        }
+    }
+}
+
+// Registers the enum as a static type.
+fn register_enum_as_static(
+    crate_ident: &TokenStream,
+    name: &Ident,
+    gtype_name: syn::LitStr,
+    g_enum_values: TokenStream,
+    nb_enum_values: usize,
+) -> TokenStream {
     // registers the enum on first use (lazy registration).
-    let register_enum = quote! {
+    quote! {
         impl #name {
             /// Registers the enum only once.
             #[inline]
@@ -100,7 +243,7 @@ pub fn impl_enum(input: &syn::DeriveInput) -> TokenStream {
 
                 ONCE.call_once(|| {
                     static mut VALUES: [#crate_ident::gobject_ffi::GEnumValue; #nb_enum_values] = [
-                        #enum_values
+                        #g_enum_values
                         #crate_ident::gobject_ffi::GEnumValue {
                             value: 0,
                             value_name: ::std::ptr::null(),
@@ -121,51 +264,20 @@ pub fn impl_enum(input: &syn::DeriveInput) -> TokenStream {
                 }
             }
         }
-    };
-
-    impl_enum_(name, from_glib, register_enum)
+    }
 }
 
-pub fn impl_dynamic_enum(input: &syn::DeriveInput) -> TokenStream {
-    let name = &input.ident;
-
-    let enum_variants = match input.data {
-        Data::Enum(ref e) => &e.variants,
-        _ => abort_call_site!("#[derive(glib::Enum)] only supports enums"),
-    };
-
-    let mut gtype_name = NestedMetaItem::<syn::LitStr>::new("name")
-        .required()
-        .value_required();
-    let mut plugin_type = NestedMetaItem::<syn::Path>::new("plugin_type").value_required();
-    let mut lazy_registration =
-        NestedMetaItem::<syn::LitBool>::new("lazy_registration").value_required();
-    let found = parse_nested_meta_items(
-        &input.attrs,
-        "enum_type",
-        &mut [&mut gtype_name, &mut plugin_type, &mut lazy_registration],
-    );
-
-    match found {
-        Ok(None) => {
-            abort_call_site!("#[derive(glib::DynamicEnum)] requires #[enum_type(name = \"EnumTypeName\"[, plugin_type =  <subclass_of_glib::TypePlugin>][, lazy_registration = true|false])]")
-        }
-        Err(e) => return e.to_compile_error(),
-        Ok(attr) => attr,
-    };
-
-    let crate_ident = crate_ident_new();
-
-    let gtype_name = gtype_name.value.unwrap();
-    let plugin_ty = plugin_type
-        .value
-        .map(|p| p.into_token_stream())
-        .unwrap_or(quote!(#crate_ident::TypeModule));
-    let lazy_registration = lazy_registration.value.map(|b| b.value).unwrap_or_default();
-
-    let from_glib = gen_enum_from_glib(name, enum_variants);
-    let (g_enum_values, nb_enum_values) = gen_enum_values(name, enum_variants);
-
+// The following implementations follows the lifecycle of plugins and of dynamic types (see [`TypePluginExt`] and [`TypeModuleExt`]).
+// An enum can be reregistered as a dynamic type.
+fn register_enum_as_dynamic(
+    crate_ident: &TokenStream,
+    plugin_ty: TokenStream,
+    lazy_registration: bool,
+    name: &Ident,
+    gtype_name: syn::LitStr,
+    g_enum_values: TokenStream,
+    nb_enum_values: usize,
+) -> TokenStream {
     // Wrap each GEnumValue to EnumValue
     let g_enum_values_expr: ExprArray = parse_quote! { [#g_enum_values] };
     let enum_values_iter = g_enum_values_expr.elems.iter().map(|v| {
@@ -184,7 +296,7 @@ pub fn impl_dynamic_enum(input: &syn::DeriveInput) -> TokenStream {
 
     // The following implementations follows the lifecycle of plugins and of dynamic types (see [`TypePluginExt`] and [`TypeModuleExt`]).
     // An enum can be reregistered as a dynamic type.
-    let register_enum_impl = if lazy_registration {
+    if lazy_registration {
         // registers the enum as a dynamic type on the first use (lazy registration).
         // a weak reference on the plugin is stored and will be used later on the first use of the enum.
         // this implementation relies on a static storage of a weak reference on the plugin and of the GLib type to know if the enum has been registered.
@@ -307,109 +419,6 @@ pub fn impl_dynamic_enum(input: &syn::DeriveInput) -> TokenStream {
                 pub fn on_implementation_unload(type_plugin_: &#plugin_ty) -> bool {
                     true
                 }
-            }
-        }
-    };
-
-    impl_enum_(name, from_glib, register_enum_impl)
-}
-
-pub fn impl_enum_(
-    name: &syn::Ident,
-    from_glib: TokenStream,
-    register_enum: TokenStream,
-) -> TokenStream {
-    let crate_ident = crate_ident_new();
-
-    quote! {
-        impl #crate_ident::translate::IntoGlib for #name {
-            type GlibType = i32;
-
-            #[inline]
-            fn into_glib(self) -> i32 {
-                self as i32
-            }
-        }
-
-        impl #crate_ident::translate::TryFromGlib<i32> for #name {
-            type Error = i32;
-
-            #[inline]
-            unsafe fn try_from_glib(value: i32) -> ::core::result::Result<Self, i32> {
-                let from_glib = || {
-                    #from_glib
-                };
-
-                from_glib().ok_or(value)
-            }
-        }
-
-        impl #crate_ident::translate::FromGlib<i32> for #name {
-            #[inline]
-            unsafe fn from_glib(value: i32) -> Self {
-                use #crate_ident::translate::TryFromGlib;
-
-                Self::try_from_glib(value).unwrap()
-            }
-        }
-
-        impl #crate_ident::value::ValueType for #name {
-            type Type = Self;
-        }
-
-        unsafe impl<'a> #crate_ident::value::FromValue<'a> for #name {
-            type Checker = #crate_ident::value::GenericValueTypeChecker<Self>;
-
-            #[inline]
-            unsafe fn from_value(value: &'a #crate_ident::value::Value) -> Self {
-                #crate_ident::translate::from_glib(#crate_ident::gobject_ffi::g_value_get_enum(
-                    #crate_ident::translate::ToGlibPtr::to_glib_none(value).0
-                ))
-            }
-        }
-
-        impl #crate_ident::value::ToValue for #name {
-            #[inline]
-            fn to_value(&self) -> #crate_ident::value::Value {
-                let mut value = #crate_ident::value::Value::for_value_type::<Self>();
-                unsafe {
-                    #crate_ident::gobject_ffi::g_value_set_enum(
-                        #crate_ident::translate::ToGlibPtrMut::to_glib_none_mut(&mut value).0,
-                        #crate_ident::translate::IntoGlib::into_glib(*self)
-                    )
-                }
-                value
-            }
-
-            #[inline]
-            fn value_type(&self) -> #crate_ident::Type {
-                <Self as #crate_ident::StaticType>::static_type()
-            }
-        }
-
-        impl ::std::convert::From<#name> for #crate_ident::Value {
-            #[inline]
-            fn from(v: #name) -> Self {
-                #crate_ident::value::ToValue::to_value(&v)
-            }
-        }
-
-        impl #crate_ident::StaticType for #name {
-            #[inline]
-            fn static_type() -> #crate_ident::Type {
-                Self::register_enum()
-            }
-        }
-
-        #register_enum
-
-        impl #crate_ident::HasParamSpec for #name {
-            type ParamSpec = #crate_ident::ParamSpecEnum;
-            type SetValue = Self;
-            type BuilderFn = fn(&::core::primitive::str, Self) -> #crate_ident::ParamSpecEnumBuilder<Self>;
-
-            fn param_spec_builder() -> Self::BuilderFn {
-                |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
             }
         }
     }
