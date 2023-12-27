@@ -1,8 +1,9 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
+use heck::ToShoutySnakeCase;
 use proc_macro2::TokenStream;
 use proc_macro_error::abort_call_site;
-use quote::{quote, ToTokens};
+use quote::{format_ident, quote, ToTokens};
 
 use crate::utils::{parse_optional_nested_meta_items, NestedMetaItem};
 
@@ -19,6 +20,18 @@ pub fn impl_object_subclass(input: &mut syn::ItemImpl) -> TokenStream {
         items,
         ..
     } = input;
+
+    let self_ty_as_ident = match &**self_ty {
+        syn::Type::Path(syn::TypePath { path, .. }) => path.require_ident(),
+        _ => Err(syn::Error::new(
+            syn::spanned::Spanned::span(self_ty),
+            "expected this path to be an identifier",
+        )),
+    };
+    let self_ty = match self_ty_as_ident {
+        Ok(ident) => ident,
+        Err(e) => return e.to_compile_error(),
+    };
 
     let mut plugin_type = NestedMetaItem::<syn::Path>::new("plugin_type").value_required();
     let mut lazy_registration =
@@ -190,7 +203,7 @@ pub fn impl_object_subclass(input: &mut syn::ItemImpl) -> TokenStream {
 // Registers the object subclass as a static type.
 fn register_object_subclass_as_static(
     crate_ident: &TokenStream,
-    self_ty: &syn::Type,
+    self_ty: &syn::Ident,
 ) -> TokenStream {
     // registers the object subclass on first use (lazy registration).
     quote! {
@@ -212,7 +225,7 @@ fn register_object_subclass_as_static(
 // An object subclass can be reregistered as a dynamic type.
 fn register_object_subclass_as_dynamic(
     crate_ident: &TokenStream,
-    self_ty: &syn::Type,
+    self_ty: &syn::Ident,
     plugin_ty: TokenStream,
     lazy_registration: bool,
 ) -> TokenStream {
@@ -222,27 +235,35 @@ fn register_object_subclass_as_dynamic(
         // registers the object subclass as a dynamic type on the first use (lazy registration).
         // a weak reference on the plugin is stored and will be used later on the first use of the object subclass.
         // this implementation relies on a static storage of a weak reference on the plugin and of the GLib type to know if the object subclass has been registered.
-        quote! {
-            impl #self_ty {
-                /// Returns a mutable reference to the registration status: a tuple of the weak reference on the plugin and of the GLib type.
-                /// This is safe because the mutable reference guarantees that no other threads are concurrently accessing the data.
-                #[inline]
-                fn get_registration_status_ref_mut() -> &'static mut Option<(<#plugin_ty as #crate_ident::clone::Downgrade>::Weak, #crate_ident::Type)> {
-                    static mut REGISTRATION_STATUS: ::std::sync::Mutex<Option<(<#plugin_ty as #crate_ident::clone::Downgrade>::Weak, #crate_ident::Type)>> = ::std::sync::Mutex::new(None);
-                    unsafe { REGISTRATION_STATUS.get_mut().unwrap() }
-                }
 
+        // the registration status type.
+        let registration_status_type = format_ident!("{}RegistrationStatus", self_ty);
+        // name of the static variable to store the registration status.
+        let registration_status = format_ident!(
+            "{}",
+            registration_status_type.to_string().to_shouty_snake_case()
+        );
+
+        quote! {
+            /// The registration status type: a tuple of the weak reference on the plugin and of the GLib type.
+            struct #registration_status_type(<#plugin_ty as #crate_ident::clone::Downgrade>::Weak, #crate_ident::Type);
+            unsafe impl Send for #registration_status_type {}
+
+            /// The registration status protected by a mutex guarantees so that no other threads are concurrently accessing the data.
+            static #registration_status: ::std::sync::Mutex<Option<#registration_status_type>> = ::std::sync::Mutex::new(None);
+
+            impl #self_ty {
                 /// Registers the object subclass as a dynamic type within the plugin only once.
                 /// Plugin must have been used at least once.
                 /// Do nothing if plugin has never been used or if the object subclass is already registered as a dynamic type.
                 #[inline]
                 fn register_type() {
-                    let registration_status_ref_mut = Self::get_registration_status_ref_mut();
-                    match registration_status_ref_mut {
+                    let mut registration_status = #registration_status.lock().unwrap();
+                    match ::std::ops::DerefMut::deref_mut(&mut registration_status) {
                         // plugin has never been used, so the object subclass cannot be registered as a dynamic type.
                         None => (),
                         // plugin has been used and the object subclass has not been registered yet, so registers it as a dynamic type.
-                        Some((type_plugin, type_)) if !type_.is_valid() => {
+                        Some(#registration_status_type(type_plugin, type_)) if !type_.is_valid() => {
                             *type_ = #crate_ident::subclass::register_dynamic_type::<#plugin_ty, Self>(&(type_plugin.upgrade().unwrap()));
                         },
                         // plugin has been used and the object subclass has already been registered as a dynamic type.
@@ -257,15 +278,15 @@ fn register_object_subclass_as_dynamic(
                 /// If plugin is reused (and has reloaded the implementation) and the object subclass has not been registered yet as a dynamic type, do nothing.
                 #[inline]
                 pub fn on_implementation_load(type_plugin: &#plugin_ty) -> bool {
-                    let registration_status_ref_mut = Self::get_registration_status_ref_mut();
-                    match registration_status_ref_mut {
+                    let mut registration_status = #registration_status.lock().unwrap();
+                    match ::std::ops::DerefMut::deref_mut(&mut registration_status) {
                         // plugin has never been used (this is the first time), so postpones registration of the object subclass as a dynamic type on the first use.
                         None => {
-                            *registration_status_ref_mut = Some((#crate_ident::clone::Downgrade::downgrade(type_plugin), #crate_ident::Type::INVALID));
+                            *registration_status = Some(#registration_status_type(#crate_ident::clone::Downgrade::downgrade(type_plugin), #crate_ident::Type::INVALID));
                             true
                         },
                         // plugin has been used at least one time and the object subclass has been registered as a dynamic type at least one time, so re-registers it.
-                        Some((_, type_)) if type_.is_valid() => {
+                        Some(#registration_status_type(_, type_)) if type_.is_valid() => {
                             *type_ = #crate_ident::subclass::register_dynamic_type::<#plugin_ty, Self>(type_plugin);
                             type_.is_valid()
                         },
@@ -281,15 +302,15 @@ fn register_object_subclass_as_dynamic(
                 /// Else do nothing.
                 #[inline]
                 pub fn on_implementation_unload(type_plugin_: &#plugin_ty) -> bool {
-                    let registration_status_ref_mut = Self::get_registration_status_ref_mut();
-                    match registration_status_ref_mut {
+                    let mut registration_status = #registration_status.lock().unwrap();
+                    match ::std::ops::DerefMut::deref_mut(&mut registration_status) {
                         // plugin has never been used, so unload implementation is unexpected.
                         None => false,
                         // plugin has been used at least one time and the object subclass has been registered as a dynamic type at least one time.
-                        Some((_, type_)) if type_.is_valid() => true,
+                        Some(#registration_status_type(_, type_)) if type_.is_valid() => true,
                         // plugin has been used at least one time but the object subclass has not been registered yet as a dynamic type, so cancels the postponed registration.
                         Some(_) => {
-                            *registration_status_ref_mut = None;
+                            *registration_status = None;
                             true
                         }
                     }
@@ -298,6 +319,7 @@ fn register_object_subclass_as_dynamic(
         }
     } else {
         // registers immediately the object subclass as a dynamic type.
+
         quote! {
             impl #self_ty {
                 /// Do nothing as the object subclass has been registered on implementation load.

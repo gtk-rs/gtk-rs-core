@@ -4,10 +4,6 @@ use heck::{ToKebabCase, ToShoutySnakeCase, ToUpperCamelCase};
 use proc_macro2::TokenStream;
 use proc_macro_error::abort_call_site;
 use quote::{format_ident, quote, quote_spanned, ToTokens};
-use syn::{
-    parse_quote, punctuated::Punctuated, spanned::Spanned, token::Comma, Data, ExprArray, Ident,
-    Variant,
-};
 
 use crate::utils::{
     crate_ident_new, gen_enum_from_glib, parse_nested_meta_items, parse_optional_nested_meta_items,
@@ -21,8 +17,8 @@ use crate::utils::{
 //         value_nick: "goat\0" as *const _ as *const _,
 //     },
 fn gen_enum_values(
-    enum_name: &Ident,
-    enum_variants: &Punctuated<Variant, Comma>,
+    enum_name: &syn::Ident,
+    enum_variants: &syn::punctuated::Punctuated<syn::Variant, syn::token::Comma>,
 ) -> (TokenStream, usize) {
     let crate_ident = crate_ident_new();
 
@@ -50,7 +46,7 @@ fn gen_enum_values(
 
         n += 1;
         // generates a glib::gobject_ffi::GEnumValue.
-        quote_spanned! {v.span()=>
+        quote_spanned! {syn::spanned::Spanned::span(&v)=>
             #crate_ident::gobject_ffi::GEnumValue {
                 value: #enum_name::#name as i32,
                 value_name: #value_name as *const _ as *const _,
@@ -70,7 +66,7 @@ pub fn impl_enum(input: &syn::DeriveInput) -> TokenStream {
     let name = &input.ident;
 
     let enum_variants = match input.data {
-        Data::Enum(ref e) => &e.variants,
+        syn::Data::Enum(ref e) => &e.variants,
         _ => abort_call_site!("#[derive(glib::Enum)] only supports enums"),
     };
     let (g_enum_values, nb_enum_values) = gen_enum_values(name, enum_variants);
@@ -227,7 +223,7 @@ pub fn impl_enum(input: &syn::DeriveInput) -> TokenStream {
 // Registers the enum as a static type.
 fn register_enum_as_static(
     crate_ident: &TokenStream,
-    name: &Ident,
+    name: &syn::Ident,
     gtype_name: syn::LitStr,
     g_enum_values: TokenStream,
     nb_enum_values: usize,
@@ -273,15 +269,15 @@ fn register_enum_as_dynamic(
     crate_ident: &TokenStream,
     plugin_ty: TokenStream,
     lazy_registration: bool,
-    name: &Ident,
+    name: &syn::Ident,
     gtype_name: syn::LitStr,
     g_enum_values: TokenStream,
     nb_enum_values: usize,
 ) -> TokenStream {
     // Wrap each GEnumValue to EnumValue
-    let g_enum_values_expr: ExprArray = parse_quote! { [#g_enum_values] };
+    let g_enum_values_expr: syn::ExprArray = syn::parse_quote! { [#g_enum_values] };
     let enum_values_iter = g_enum_values_expr.elems.iter().map(|v| {
-        quote_spanned! {v.span()=>
+        quote_spanned! {syn::spanned::Spanned::span(&v)=>
             #crate_ident::EnumValue::unsafe_from(#v),
         }
     });
@@ -310,6 +306,7 @@ fn register_enum_as_dynamic(
         );
         // name of the static array to store the enumeration values.
         let enum_values_array = format_ident!("{}_VALUES", name.to_string().to_shouty_snake_case());
+
         quote! {
             /// The registration status type: a tuple of the weak reference on the plugin and of the GLib type.
             struct #registration_status_type(<#plugin_ty as #crate_ident::clone::Downgrade>::Weak, #crate_ident::Type);
@@ -392,6 +389,7 @@ fn register_enum_as_dynamic(
 
         // name of the static variable to store the GLib type.
         let gtype_status = format_ident!("{}_G_TYPE", name.to_string().to_shouty_snake_case());
+
         quote! {
             /// The GLib type which can be safely shared between threads.
             static #gtype_status: ::std::sync::atomic::AtomicUsize = ::std::sync::atomic::AtomicUsize::new(#crate_ident::gobject_ffi::G_TYPE_INVALID);
@@ -400,7 +398,7 @@ fn register_enum_as_dynamic(
                 /// Do nothing as the enum has been registered on implementation load.
                 #[inline]
                 fn register_enum() -> #crate_ident::Type {
-                    let gtype = #gtype_status.load(::std::sync::atomic::Ordering::Relaxed);
+                    let gtype = #gtype_status.load(::std::sync::atomic::Ordering::Acquire);
                     unsafe { <#crate_ident::Type as #crate_ident::translate::FromGlib<#crate_ident::ffi::GType>>::from_glib(gtype) }
                 }
 
@@ -410,7 +408,7 @@ fn register_enum_as_dynamic(
                 pub fn on_implementation_load(type_plugin: &#plugin_ty) -> bool {
                     static VALUES: #enum_values;
                     let gtype = #crate_ident::translate::IntoGlib::into_glib(<#plugin_ty as glib::prelude::DynamicObjectRegisterExt>::register_dynamic_enum(type_plugin, #gtype_name, VALUES.as_ref()));
-                    #gtype_status.store(gtype, ::std::sync::atomic::Ordering::Relaxed);
+                    #gtype_status.store(gtype, ::std::sync::atomic::Ordering::Release);
                     gtype != #crate_ident::gobject_ffi::G_TYPE_INVALID
                 }
 
