@@ -398,7 +398,7 @@ fn register_enum_as_dynamic(
                 /// Do nothing as the enum has been registered on implementation load.
                 #[inline]
                 fn register_enum() -> #crate_ident::Type {
-                    let gtype = #gtype_status.load(::std::sync::atomic::Ordering::Relaxed);
+                    let gtype = #gtype_status.load(::std::sync::atomic::Ordering::Acquire);
                     unsafe { <#crate_ident::Type as #crate_ident::translate::FromGlib<#crate_ident::ffi::GType>>::from_glib(gtype) }
                 }
 
@@ -408,7 +408,7 @@ fn register_enum_as_dynamic(
                 pub fn on_implementation_load(type_plugin: &#plugin_ty) -> bool {
                     static VALUES: #enum_values;
                     let gtype = #crate_ident::translate::IntoGlib::into_glib(<#plugin_ty as glib::prelude::DynamicObjectRegisterExt>::register_dynamic_enum(type_plugin, #gtype_name, VALUES.as_ref()));
-                    #gtype_status.store(gtype, ::std::sync::atomic::Ordering::Relaxed);
+                    #gtype_status.store(gtype, ::std::sync::atomic::Ordering::Release);
                     gtype != #crate_ident::gobject_ffi::G_TYPE_INVALID
                 }
 
