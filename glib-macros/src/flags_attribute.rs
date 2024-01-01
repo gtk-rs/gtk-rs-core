@@ -2,14 +2,15 @@
 
 use heck::{ToKebabCase, ToUpperCamelCase};
 use proc_macro2::TokenStream;
-use proc_macro_error::abort_call_site;
 use quote::{quote, quote_spanned};
 use syn::{
-    punctuated::Punctuated, spanned::Spanned, token::Comma, Attribute, Data, DeriveInput, Ident,
-    Variant, Visibility,
+    punctuated::Punctuated, spanned::Spanned, token::Comma, Attribute, Ident, ItemEnum, Variant,
+    Visibility,
 };
 
 use crate::utils::{crate_ident_new, parse_nested_meta_items, NestedMetaItem};
+
+pub const WRONG_PLACE_MSG: &str = "#[glib::flags] only supports enums";
 
 pub struct AttrInput {
     pub enum_name: syn::LitStr,
@@ -114,15 +115,12 @@ fn gen_bitflags(
     }
 }
 
-pub fn impl_flags(attrs: AttrInput, input: &DeriveInput) -> TokenStream {
+pub fn impl_flags(attrs: AttrInput, input: &mut ItemEnum) -> TokenStream {
     let gtype_name = attrs.enum_name.value();
     let name = &input.ident;
     let visibility = &input.vis;
 
-    let enum_variants = match input.data {
-        Data::Enum(ref e) => &e.variants,
-        _ => abort_call_site!("#[glib::flags] only supports enums"),
-    };
+    let enum_variants = &input.variants;
 
     let crate_ident = crate_ident_new();
 

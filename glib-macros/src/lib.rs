@@ -604,9 +604,11 @@ pub fn flags(attr: TokenStream, item: TokenStream) -> TokenStream {
     let attr_meta = AttrInput {
         enum_name: name.value.unwrap(),
     };
-    let input = parse_macro_input!(item as DeriveInput);
-    let gen = flags_attribute::impl_flags(attr_meta, &input);
-    gen.into()
+    use proc_macro_error::abort_call_site;
+    match syn::parse::<syn::ItemEnum>(item) {
+        Ok(mut input) => flags_attribute::impl_flags(attr_meta, &mut input).into(),
+        Err(_) => abort_call_site!(flags_attribute::WRONG_PLACE_MSG),
+    }
 }
 
 /// Derive macro for defining a GLib error domain and its associated
