@@ -243,6 +243,7 @@ impl Clone for EnumClass {
 // rustdoc-stripper-ignore-next
 /// Representation of a single enum value of an `EnumClass`.
 #[doc(alias = "GEnumValue")]
+#[derive(Copy, Clone)]
 #[repr(transparent)]
 pub struct EnumValue(gobject_ffi::GEnumValue);
 
@@ -348,77 +349,26 @@ unsafe impl<'a, 'b> FromValue<'a> for &'b EnumValue {
     }
 }
 
-#[doc(hidden)]
-impl<'a> ToGlibContainerFromSlice<'a, *const gobject_ffi::GEnumValue> for EnumValue {
-    type Storage = &'a [Self];
-    fn to_glib_none_from_slice(t: &'a [Self]) -> (*const gobject_ffi::GEnumValue, Self::Storage) {
-        (t.as_ptr() as *const gobject_ffi::GEnumValue, t)
-    }
-    fn to_glib_container_from_slice(
-        _: &'a [Self],
-    ) -> (*const gobject_ffi::GEnumValue, Self::Storage) {
-        unimplemented!();
-    }
-    fn to_glib_full_from_slice(_: &[Self]) -> *const gobject_ffi::GEnumValue {
-        unimplemented!();
-    }
+// rustdoc-stripper-ignore-next
+/// Define the zero value and the associated GLib type.
+impl EnumerationValue<EnumValue> for EnumValue {
+    type GlibType = gobject_ffi::GEnumValue;
+    const ZERO: EnumValue = unsafe {
+        EnumValue::unsafe_from(gobject_ffi::GEnumValue {
+            value: 0,
+            value_name: ptr::null(),
+            value_nick: ptr::null(),
+        })
+    };
 }
 
 // rustdoc-stripper-ignore-next
-/// Storage of enumeration values terminated by an `EnumValue` with all members
-/// being 0. Should be used only as a storage location for enumeration values
-/// when registering an enumeration as a dynamic type.
-/// see `TypePluginRegisterImpl::register_dynamic_enum()` and `TypePluginImpl::complete_type_info()`.
-/// Inner is intentionally private to ensure other modules will not access the
-/// enumeration values by this way.
-/// Use `EnumClass::values()` or `EnumClass::value()` to get enumeration values.
-#[repr(transparent)]
-pub struct EnumValuesStorage<const S: usize>([EnumValue; S]);
-
-impl<const S: usize> EnumValuesStorage<S> {
-    // rustdoc-stripper-ignore-next
-    pub const fn new<const N: usize>(values: [EnumValue; N]) -> Self {
-        const ZERO: EnumValue = unsafe {
-            EnumValue::unsafe_from(gobject_ffi::GEnumValue {
-                value: 0,
-                value_name: ptr::null(),
-                value_nick: ptr::null(),
-            })
-        };
-        unsafe {
-            let v: [EnumValue; S] = [ZERO; S];
-            ptr::copy_nonoverlapping(values.as_ptr(), v.as_ptr() as _, N);
-            Self(v)
-        }
-    }
-}
-
-impl<const S: usize> AsRef<EnumValues> for EnumValuesStorage<S> {
-    fn as_ref(&self) -> &EnumValues {
-        // SAFETY: EnumValues is repr(transparent) over [EnumValue] so the cast is safe.
-        unsafe { &*(&self.0 as *const [EnumValue] as *const EnumValues) }
-    }
-}
+/// Storage of enum values.
+pub type EnumValuesStorage<const N: usize> = EnumerationValuesStorage<EnumValue, N>;
 
 // rustdoc-stripper-ignore-next
-/// Representation of enumeration values wrapped by `EnumValuesStorage`. Easier
-/// to use because don't have a size parameter to be specify. Should be used
-/// only to register an enumeration as a dynamic type.
-/// see `TypePluginRegisterImpl::register_dynamic_enum()` and `TypePluginImpl::complete_type_info()`.
-/// Field is intentionally private to ensure other modules will not access the
-/// enumeration values by this way.
-/// Use `EnumClass::values()` or `EnumClass::value()` to get the enumeration values.
-#[repr(transparent)]
-pub struct EnumValues([EnumValue]);
-
-impl Deref for EnumValues {
-    type Target = [EnumValue];
-
-    fn deref(&self) -> &Self::Target {
-        // SAFETY: EnumValues contains at least the zero `EnumValue` which terminates the enumeration values.
-        unsafe { std::slice::from_raw_parts(self.0.as_ptr(), self.0.len() - 1) }
-    }
-}
+/// Representation of enum values wrapped by `EnumValuesStorage`
+pub type EnumValues = EnumerationValues<EnumValue>;
 
 pub struct EnumTypeChecker();
 unsafe impl ValueTypeChecker for EnumTypeChecker {
@@ -886,6 +836,7 @@ impl ParseFlagsError {
 // rustdoc-stripper-ignore-next
 /// Representation of a single flags value of a `FlagsClass`.
 #[doc(alias = "GFlagsValue")]
+#[derive(Copy, Clone)]
 #[repr(transparent)]
 pub struct FlagsValue(gobject_ffi::GFlagsValue);
 
@@ -974,77 +925,26 @@ impl UnsafeFrom<gobject_ffi::GFlagsValue> for FlagsValue {
     }
 }
 
-#[doc(hidden)]
-impl<'a> ToGlibContainerFromSlice<'a, *const gobject_ffi::GFlagsValue> for FlagsValue {
-    type Storage = &'a [Self];
-    fn to_glib_none_from_slice(t: &'a [Self]) -> (*const gobject_ffi::GFlagsValue, Self::Storage) {
-        (t.as_ptr() as *const gobject_ffi::GFlagsValue, t)
-    }
-    fn to_glib_container_from_slice(
-        _: &'a [Self],
-    ) -> (*const gobject_ffi::GFlagsValue, Self::Storage) {
-        unimplemented!();
-    }
-    fn to_glib_full_from_slice(_: &[Self]) -> *const gobject_ffi::GFlagsValue {
-        unimplemented!();
-    }
+// rustdoc-stripper-ignore-next
+/// Define the zero value and the associated GLib type.
+impl EnumerationValue<FlagsValue> for FlagsValue {
+    type GlibType = gobject_ffi::GFlagsValue;
+    const ZERO: FlagsValue = unsafe {
+        FlagsValue::unsafe_from(gobject_ffi::GFlagsValue {
+            value: 0,
+            value_name: ptr::null(),
+            value_nick: ptr::null(),
+        })
+    };
 }
 
 // rustdoc-stripper-ignore-next
-/// Storage of flags values terminated by a `FlagsValue` with all members
-/// being 0. Should be used only as a storage location for flags values
-/// when registering flags as a dynamic type.
-/// see `TypePluginRegisterImpl::register_dynamic_flags()` and `TypePluginImpl::complete_type_info()`.
-/// Inner is intentionally private to ensure other modules will not access the
-/// flags values by this way.
-/// Use `FlagsClass::values()` or `FlagsClass::value()` to get flags values.
-#[repr(transparent)]
-pub struct FlagsValuesStorage<const S: usize>([FlagsValue; S]);
-
-impl<const S: usize> FlagsValuesStorage<S> {
-    // rustdoc-stripper-ignore-next
-    pub const fn new<const N: usize>(values: [FlagsValue; N]) -> Self {
-        const ZERO: FlagsValue = unsafe {
-            FlagsValue::unsafe_from(gobject_ffi::GFlagsValue {
-                value: 0,
-                value_name: ptr::null(),
-                value_nick: ptr::null(),
-            })
-        };
-        unsafe {
-            let v: [FlagsValue; S] = [ZERO; S];
-            ptr::copy_nonoverlapping(values.as_ptr(), v.as_ptr() as _, N);
-            Self(v)
-        }
-    }
-}
-
-impl<const S: usize> AsRef<FlagsValues> for FlagsValuesStorage<S> {
-    fn as_ref(&self) -> &FlagsValues {
-        // SAFETY: FlagsValues is repr(transparent) over [FlagsValue] so the cast is safe.
-        unsafe { &*(&self.0 as *const [FlagsValue] as *const FlagsValues) }
-    }
-}
+/// Storage of flags values.
+pub type FlagsValuesStorage<const N: usize> = EnumerationValuesStorage<FlagsValue, N>;
 
 // rustdoc-stripper-ignore-next
-/// Representation of flags values wrapped by `FlagsValuesStorage`. Easier
-/// to use because don't have a size parameter to be specify. Should be used
-/// only to register flags as a dynamic type.
-/// see `TypePluginRegisterImpl::register_dynamic_flags()` and `TypePluginImpl::complete_type_info()`.
-/// Field is intentionally private to ensure other modules will not access the
-/// flags values by this way.
-/// Use `FlagsClass::values()` or `FlagsClass::value()` to get the flags values.
-#[repr(transparent)]
-pub struct FlagsValues([FlagsValue]);
-
-impl Deref for FlagsValues {
-    type Target = [FlagsValue];
-
-    fn deref(&self) -> &Self::Target {
-        // SAFETY: FlagsValues contains at least the zero `FlagsValue` which terminates the flags values.
-        unsafe { std::slice::from_raw_parts(self.0.as_ptr(), self.0.len() - 1) }
-    }
-}
+/// Representation of flags values wrapped by `FlagsValuesStorage`
+pub type FlagsValues = EnumerationValues<FlagsValue>;
 
 // rustdoc-stripper-ignore-next
 /// Builder for conveniently setting/unsetting flags and returning a `Value`.
@@ -1181,6 +1081,94 @@ impl fmt::Display for InvalidFlagsError {
 }
 
 impl std::error::Error for InvalidFlagsError {}
+
+// rustdoc-stripper-ignore-next
+/// helper trait to define the zero value and the associated GLib type.
+pub trait EnumerationValue<E>: Copy {
+    type GlibType;
+    const ZERO: E;
+}
+
+// rustdoc-stripper-ignore-next
+/// Storage of enumeration values terminated by a zero value. Should be used
+/// only as a storage location for `EnumValue` or `FlagsValue` when registering
+/// an enum or flags as a dynamic type.
+/// see `TypePluginRegisterImpl::register_dynamic_enum()`, `TypePluginRegisterImpl::register_dynamic_flags()`
+/// and `TypePluginImpl::complete_type_info()`.
+/// Inner is intentionally private to ensure other modules will not access the
+/// enum (or flags) values by this way.
+/// Use `EnumClass::values()` or `EnumClass::value()` to get the enum values.
+/// Use `FlagsClass::values()` or `FlagsClass::value()` to get the flags values.
+#[repr(C)]
+pub struct EnumerationValuesStorage<E: EnumerationValue<E>, const S: usize>([E; S]);
+
+impl<E: EnumerationValue<E>, const S: usize> EnumerationValuesStorage<E, S> {
+    // rustdoc-stripper-ignore-next
+    /// creates a new `EnumerationValuesStorage` with the given values and a final zero value.
+    pub const fn new<const N: usize>(values: [E; N]) -> Self {
+        #[repr(C)]
+        #[derive(Copy, Clone)]
+        struct Both<E: Copy, const N: usize>([E; N], [E; 1]);
+
+        #[repr(C)]
+        union Transmute<E: Copy, const N: usize, const S: usize> {
+            from: Both<E, N>,
+            to: [E; S],
+        }
+
+        // SAFETY: Transmute is repr(C) and union fields are compatible in terms of size and alignment, so the access to union fields is safe.
+        unsafe {
+            // create an array with the values and terminated by a zero value.
+            let all = Transmute {
+                from: Both(values, [E::ZERO; 1]),
+            }
+            .to;
+            Self(all)
+        }
+    }
+}
+
+impl<E: EnumerationValue<E>, const S: usize> AsRef<EnumerationValues<E>>
+    for EnumerationValuesStorage<E, S>
+{
+    fn as_ref(&self) -> &EnumerationValues<E> {
+        // SAFETY: EnumerationStorage and EnumerationValues are repr(C) and their unique field are compatible (array and slice of the same type), so the cast is safe.
+        unsafe { &*(&self.0 as *const [E] as *const EnumerationValues<E>) }
+    }
+}
+
+// rustdoc-stripper-ignore-next
+/// Representation of enumeration values wrapped by `EnumerationValuesStorage`.
+/// Easier to use because don't have a size parameter to be specify. Should be
+/// used only to register an enum or flags as a dynamic type.
+/// see `TypePluginRegisterImpl::register_dynamic_enum()`, `TypePluginRegisterImpl::register_dynamic_flags()`
+/// and `TypePluginImpl::complete_type_info()`.
+/// Field is intentionally private to ensure other modules will not access the
+/// enum (or flags) values by this way.
+/// Use `EnumClass::values()` or `EnumClass::value()` to get the enum values.
+/// Use `FlagsClass::values()` or `FlagsClass::value()` to get the flags values.
+#[repr(C)]
+pub struct EnumerationValues<E: EnumerationValue<E>>([E]);
+
+impl<E: EnumerationValue<E>> Deref for EnumerationValues<E> {
+    type Target = [E];
+
+    // rustdoc-stripper-ignore-next
+    /// Dereferences the enumeration values as a slice, but excluding the last value which is zero.
+    fn deref(&self) -> &Self::Target {
+        // SAFETY: EnumerationValues contains at least the zero value which terminates the array.
+        unsafe { std::slice::from_raw_parts(self.0.as_ptr(), self.0.len() - 1) }
+    }
+}
+
+#[doc(hidden)]
+impl<'a, E: 'a + EnumerationValue<E>> ToGlibPtr<'a, *const E::GlibType> for EnumerationValues<E> {
+    type Storage = &'a Self;
+
+    fn to_glib_none(&'a self) -> Stash<'a, *const E::GlibType, Self> {
+        Stash(self.0.as_ptr() as *const E::GlibType, self)
+    }
+}
 
 #[cfg(test)]
 mod tests {
