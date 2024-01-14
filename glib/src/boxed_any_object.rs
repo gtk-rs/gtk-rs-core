@@ -98,6 +98,7 @@ impl BoxedAnyObject {
     // rustdoc-stripper-ignore-next
     /// Replaces the wrapped value with a new one, returning the old value, without deinitializing either one.
     /// The returned value is inside a `Box` and must be manually downcasted if needed.
+    #[track_caller]
     pub fn replace<T: 'static>(&self, t: T) -> Box<dyn Any> {
         self.imp().value.replace(Box::new(t) as Box<dyn Any>)
     }
@@ -158,6 +159,7 @@ impl BoxedAnyObject {
     ///
     /// For a non-panicking variant, use
     /// [`try_borrow`](#method.try_borrow).
+    #[track_caller]
     pub fn borrow<T: 'static>(&self) -> Ref<'_, T> {
         Ref::map(self.imp().value.borrow(), |value| {
             value
@@ -180,6 +182,7 @@ impl BoxedAnyObject {
     ///
     /// For a non-panicking variant, use
     /// [`try_borrow_mut`](#method.try_borrow_mut).
+    #[track_caller]
     pub fn borrow_mut<T: 'static>(&self) -> RefMut<'_, T> {
         RefMut::map(self.imp().value.borrow_mut(), |value| {
             value
