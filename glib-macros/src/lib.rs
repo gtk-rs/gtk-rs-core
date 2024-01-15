@@ -589,7 +589,95 @@ pub fn enum_derive(input: TokenStream) -> TokenStream {
 /// }
 /// ```
 ///
+/// The flags can be registered as a dynamic type by setting the macro helper
+/// attribute `flags_dynamic`:
+/// ```ignore
+/// use glib::prelude::*;
+/// use glib::subclass::prelude::*;
+///
+/// #[glib::flags(name = "MyFlags")]
+/// #[flags_dynamic]
+/// enum MyFlags {
+///     ...
+/// }
+/// ```
+///
+/// As a dynamic type, the flags must be explicitly registered when the system
+/// loads the implementation (see [`TypePlugin`] and [`TypeModule`].
+/// Therefore, whereas the flags can be registered only once as a static type,
+/// they can be registered several times as a dynamic type.
+///
+/// The flags registered as a dynamic type are never unregistered. The system
+/// calls [`TypePluginExt::unuse`] to unload the implementation. If the
+/// [`TypePlugin`] subclass is a [`TypeModule`], the flags registered as a
+/// dynamic type are marked as unloaded and must be registered again when the
+/// module is reloaded.
+///
+/// The macro helper attribute `flags_dynamic` provides two behaviors when
+/// registering the flags as a dynamic type:
+///
+/// - lazy registration: by default the flags are registered as a dynamic type
+/// when the system loads the implementation (e.g. when the module is loaded).
+/// Optionally setting `lazy_registration` to `true` postpones registration on
+/// the first use (when `static_type()` is called for the first time):
+/// ```ignore
+/// #[glib::flags(name = "MyFlags")]
+/// #[flags_dynamic(lazy_registration = true)]
+/// enum MyFlags {
+///     ...
+/// }
+/// ```
+///
+/// - registration within [`TypeModule`] subclass or within [`TypePlugin`]
+/// subclass: the flags are usually registered as a dynamic type within a
+/// [`TypeModule`] subclass:
+/// ```ignore
+/// #[glib::flags(name = "MyModuleFlags")]
+/// #[flags_dynamic]
+/// enum MyModuleFlags {
+///     ...
+/// }
+/// ...
+/// #[derive(Default)]
+/// pub struct MyModule;
+/// ...
+/// impl TypeModuleImpl for MyModule {
+///     fn load(&self) -> bool {
+///         // registers flags as dynamic types.
+///         let my_module = self.obj();
+///         let type_module: &glib::TypeModule = my_module.upcast_ref();
+///         MyModuleFlags::on_implementation_load(type_module)
+///     }
+///     ...
+/// }
+/// ```
+///
+/// Optionally setting `plugin_type` allows to register the flags as a dynamic
+/// type within a [`TypePlugin`] subclass that is not a [`TypeModule`]:
+/// ```ignore
+/// #[glib::flags(name = "MyModuleFlags")]
+/// #[flags_dynamic(plugin_type = MyPlugin)]
+/// enum MyModuleFlags {
+///     ...
+/// }
+/// ...
+/// #[derive(Default)]
+/// pub struct MyPlugin;
+/// ...
+/// impl TypePluginImpl for MyPlugin {
+///     fn use_plugin(&self) {
+///         // register flags as dynamic types.
+///         let my_plugin = self.obj();
+///         MyPluginFlags::on_implementation_load(my_plugin.as_ref());
+///     }
+///     ...
+/// }
+/// ```
+///
 /// [`glib::Value`]: ../glib/value/struct.Value.html
+/// [`TypePlugin`]: ../glib/gobject/type_plugin/struct.TypePlugin.html
+/// [`TypeModule`]: ../glib/gobject/type_module/struct.TypeModule.html
+/// [`TypePluginExt::unuse`]: ../glib/gobject/type_plugin/trait.TypePluginExt.
 #[proc_macro_attribute]
 #[proc_macro_error]
 pub fn flags(attr: TokenStream, item: TokenStream) -> TokenStream {
@@ -604,9 +692,11 @@ pub fn flags(attr: TokenStream, item: TokenStream) -> TokenStream {
     let attr_meta = AttrInput {
         enum_name: name.value.unwrap(),
     };
-    let input = parse_macro_input!(item as DeriveInput);
-    let gen = flags_attribute::impl_flags(attr_meta, &input);
-    gen.into()
+    use proc_macro_error::abort_call_site;
+    match syn::parse::<syn::ItemEnum>(item) {
+        Ok(mut input) => flags_attribute::impl_flags(attr_meta, &mut input).into(),
+        Err(_) => abort_call_site!(flags_attribute::WRONG_PLACE_MSG),
+    }
 }
 
 /// Derive macro for defining a GLib error domain and its associated

@@ -284,7 +284,7 @@ fn register_enum_as_dynamic(
 
     let enum_values = quote! {
         #crate_ident::enums::EnumValuesStorage<#nb_enum_values> = unsafe {
-            #crate_ident::enums::EnumValuesStorage::<#nb_enum_values>::new::<{#nb_enum_values - 1}>([
+            #crate_ident::enums::EnumValuesStorage::<#nb_enum_values>::new([
                 #(#enum_values_iter)*
             ])
         }

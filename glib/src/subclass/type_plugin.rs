@@ -1,6 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::enums::EnumValues;
+use crate::enums::{EnumValues, FlagsValues};
 use crate::translate::IntoGlib;
 use crate::translate::{FromGlib, ToGlibPtr};
 use crate::{
@@ -190,6 +190,13 @@ pub trait TypePluginRegisterImpl: ObjectImpl + TypePluginImpl {
         &self,
         _name: &str,
         _const_static_values: &'static EnumValues,
+    ) -> Type {
+        unimplemented!()
+    }
+    fn register_dynamic_flags(
+        &self,
+        _name: &str,
+        _const_static_values: &'static FlagsValues,
     ) -> Type {
         unimplemented!()
     }
