@@ -9,9 +9,7 @@ version = "0.19.0"
 keywords = ["glib", "gtk-rs", "gnome", "GUI"]
 repository = "https://github.com/gtk-rs/gtk-rs-core"
 license = "MIT"
-exclude = [
-    "gir-files/*",
-]
+exclude = ["gir-files/*"]
 edition = "2021"
 rust-version = "1.70"
 
@@ -31,16 +29,22 @@ ffi = { package = "glib-sys", path = "sys" }
 gobject_ffi = { package = "gobject-sys", path = "gobject-sys" }
 glib-macros = { path = "../glib-macros" }
 rs-log = { package = "log", version = "0.4", optional = true }
-smallvec = { version = "1.11", features = ["union", "const_generics", "const_new"] }
+smallvec = { version = "1.11", features = [
+    "union",
+    "const_generics",
+    "const_new",
+] }
 thiserror = "1"
 gio_ffi = { package = "gio-sys", path = "../gio/sys", optional = true }
 memchr = "2.7.1"
+serde = { version = "1.0", optional = true }
 
 [dev-dependencies]
 tempfile = "3"
 gir-format-check = "^0.1"
 trybuild2 = "1"
 criterion = "0.5.1"
+serde_json = "1.0"
 
 [features]
 default = ["gio"]
@@ -59,6 +63,7 @@ log = ["rs-log"]
 log_macros = ["log"]
 compiletests = []
 gio = ["gio_ffi"]
+serde = ["dep:serde"]
 
 [package.metadata.docs.rs]
 all-features = true

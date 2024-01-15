@@ -227,6 +227,9 @@ pub use self::thread_pool::{ThreadHandle, ThreadPool};
 
 pub mod thread_guard;
 
+#[cfg(feature = "serde")]
+mod serde;
+
 // rustdoc-stripper-ignore-next
 /// This is the log domain used by the [`clone!`][crate::clone!] macro. If you want to use a custom
 /// logger (it prints to stdout by default), you can set your own logger using the corresponding
