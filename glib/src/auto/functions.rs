@@ -5,6 +5,9 @@
 #[cfg(feature = "v2_66")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
 use crate::FileSetContentsFlags;
+#[cfg(windows)]
+#[cfg_attr(docsrs, doc(cfg(windows)))]
+use crate::Win32OSType;
 use crate::{
     translate::*, Bytes, ChecksumType, Error, FileTest, FormatSizeFlags, Pid, Source, SpawnFlags,
     UserDirectory,
@@ -969,71 +972,49 @@ pub fn uuid_string_random() -> crate::GString {
     unsafe { from_glib_full(ffi::g_uuid_string_random()) }
 }
 
-//#[doc(alias = "g_win32_check_windows_version")]
-//pub fn win32_check_windows_version(major: i32, minor: i32, spver: i32, os_type: /*Ignored*/Win32OSType) -> bool {
-//    unsafe { TODO: call ffi:g_win32_check_windows_version() }
-//}
+#[cfg(windows)]
+#[cfg_attr(docsrs, doc(cfg(windows)))]
+#[doc(alias = "g_win32_check_windows_version")]
+pub fn win32_check_windows_version(
+    major: i32,
+    minor: i32,
+    spver: i32,
+    os_type: Win32OSType,
+) -> bool {
+    unsafe {
+        from_glib(ffi::g_win32_check_windows_version(
+            major,
+            minor,
+            spver,
+            os_type.into_glib(),
+        ))
+    }
+}
 
+#[cfg(windows)]
+#[cfg_attr(docsrs, doc(cfg(windows)))]
 #[doc(alias = "g_win32_error_message")]
 pub fn win32_error_message(error: i32) -> crate::GString {
     unsafe { from_glib_full(ffi::g_win32_error_message(error)) }
 }
 
-#[doc(alias = "g_win32_ftruncate")]
-pub fn win32_ftruncate(f: i32, size: u32) -> i32 {
-    unsafe { ffi::g_win32_ftruncate(f, size) }
-}
-
+#[cfg(windows)]
+#[cfg_attr(docsrs, doc(cfg(windows)))]
 #[doc(alias = "g_win32_get_command_line")]
 pub fn win32_get_command_line() -> Vec<crate::GString> {
     unsafe { FromGlibPtrContainer::from_glib_none(ffi::g_win32_get_command_line()) }
 }
 
-#[doc(alias = "g_win32_get_package_installation_directory")]
-pub fn win32_get_package_installation_directory(package: &str, dll_name: &str) -> crate::GString {
-    unsafe {
-        from_glib_full(ffi::g_win32_get_package_installation_directory(
-            package.to_glib_none().0,
-            dll_name.to_glib_none().0,
-        ))
-    }
-}
-
-//#[doc(alias = "g_win32_get_package_installation_directory_of_module")]
-//pub fn win32_get_package_installation_directory_of_module(hmodule: /*Unimplemented*/Option<Basic: Pointer>) -> crate::GString {
-//    unsafe { TODO: call ffi:g_win32_get_package_installation_directory_of_module() }
-//}
-
-#[doc(alias = "g_win32_get_package_installation_subdirectory")]
-pub fn win32_get_package_installation_subdirectory(
-    package: &str,
-    dll_name: &str,
-    subdir: &str,
-) -> crate::GString {
-    unsafe {
-        from_glib_full(ffi::g_win32_get_package_installation_subdirectory(
-            package.to_glib_none().0,
-            dll_name.to_glib_none().0,
-            subdir.to_glib_none().0,
-        ))
-    }
-}
-
+#[cfg(windows)]
+#[cfg_attr(docsrs, doc(cfg(windows)))]
 #[doc(alias = "g_win32_get_windows_version")]
 pub fn win32_get_windows_version() -> u32 {
     unsafe { ffi::g_win32_get_windows_version() }
 }
 
+#[cfg(windows)]
+#[cfg_attr(docsrs, doc(cfg(windows)))]
 #[doc(alias = "g_win32_getlocale")]
 pub fn win32_getlocale() -> crate::GString {
     unsafe { from_glib_full(ffi::g_win32_getlocale()) }
-}
-
-#[doc(alias = "g_win32_locale_filename_from_utf8")]
-pub fn win32_locale_filename_from_utf8(utf8filename: &str) -> crate::GString {
-    unsafe {
-        from_glib_full(ffi::g_win32_locale_filename_from_utf8(
-            utf8filename.to_glib_none().0,
-        ))
-    }
 }
