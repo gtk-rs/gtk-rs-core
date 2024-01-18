@@ -636,8 +636,14 @@ pub const G_UNICODE_LINE_SEPARATOR: GUnicodeType = 27;
 pub const G_UNICODE_PARAGRAPH_SEPARATOR: GUnicodeType = 28;
 pub const G_UNICODE_SPACE_SEPARATOR: GUnicodeType = 29;
 
+#[cfg(unix)]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
 pub type GUnixPipeEnd = c_int;
+#[cfg(unix)]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
 pub const G_UNIX_PIPE_END_READ: GUnixPipeEnd = 0;
+#[cfg(unix)]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
 pub const G_UNIX_PIPE_END_WRITE: GUnixPipeEnd = 1;
 
 pub type GUriError = c_int;
@@ -704,9 +710,17 @@ pub const G_VARIANT_PARSE_ERROR_UNTERMINATED_STRING_CONSTANT: GVariantParseError
 pub const G_VARIANT_PARSE_ERROR_VALUE_EXPECTED: GVariantParseError = 17;
 pub const G_VARIANT_PARSE_ERROR_RECURSION: GVariantParseError = 18;
 
+#[cfg(window)]
+#[cfg_attr(docsrs, doc(cfg(window)))]
 pub type GWin32OSType = c_int;
+#[cfg(window)]
+#[cfg_attr(docsrs, doc(cfg(window)))]
 pub const G_WIN32_OS_ANY: GWin32OSType = 0;
+#[cfg(window)]
+#[cfg_attr(docsrs, doc(cfg(window)))]
 pub const G_WIN32_OS_WORKSTATION: GWin32OSType = 1;
+#[cfg(window)]
+#[cfg_attr(docsrs, doc(cfg(window)))]
 pub const G_WIN32_OS_SERVER: GWin32OSType = 2;
 
 // Constants
@@ -2527,12 +2541,16 @@ impl ::std::fmt::Debug for GTuples {
     }
 }
 
+#[cfg(unix)]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct GUnixPipe {
     pub fds: [c_int; 2],
 }
 
+#[cfg(unix)]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
 impl ::std::fmt::Debug for GUnixPipe {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("GUnixPipe @ {self:p}"))
@@ -7572,27 +7590,47 @@ extern "C" {
         func: *const c_char,
         warnexpr: *const c_char,
     );
+    #[cfg(window)]
+    #[cfg_attr(docsrs, doc(cfg(window)))]
     pub fn g_win32_check_windows_version(
         major: c_int,
         minor: c_int,
         spver: c_int,
         os_type: GWin32OSType,
     ) -> gboolean;
+    #[cfg(window)]
+    #[cfg_attr(docsrs, doc(cfg(window)))]
     pub fn g_win32_error_message(error: c_int) -> *mut c_char;
+    #[cfg(window)]
+    #[cfg_attr(docsrs, doc(cfg(window)))]
     pub fn g_win32_ftruncate(f: c_int, size: c_uint) -> c_int;
+    #[cfg(window)]
+    #[cfg_attr(docsrs, doc(cfg(window)))]
     pub fn g_win32_get_command_line() -> *mut *mut c_char;
+    #[cfg(window)]
+    #[cfg_attr(docsrs, doc(cfg(window)))]
     pub fn g_win32_get_package_installation_directory(
         package: *const c_char,
         dll_name: *const c_char,
     ) -> *mut c_char;
+    #[cfg(window)]
+    #[cfg_attr(docsrs, doc(cfg(window)))]
     pub fn g_win32_get_package_installation_directory_of_module(hmodule: gpointer) -> *mut c_char;
+    #[cfg(window)]
+    #[cfg_attr(docsrs, doc(cfg(window)))]
     pub fn g_win32_get_package_installation_subdirectory(
         package: *const c_char,
         dll_name: *const c_char,
         subdir: *const c_char,
     ) -> *mut c_char;
+    #[cfg(window)]
+    #[cfg_attr(docsrs, doc(cfg(window)))]
     pub fn g_win32_get_windows_version() -> c_uint;
+    #[cfg(window)]
+    #[cfg_attr(docsrs, doc(cfg(window)))]
     pub fn g_win32_getlocale() -> *mut c_char;
+    #[cfg(window)]
+    #[cfg_attr(docsrs, doc(cfg(window)))]
     pub fn g_win32_locale_filename_from_utf8(utf8filename: *const c_char) -> *mut c_char;
 
 }

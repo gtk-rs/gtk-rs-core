@@ -68,35 +68,41 @@ ignore = [
 name = "GLib.*"
 status = "generate"
     [[object.function]]
+    name = "win32_locale_filename_from_utf8"
+    cfg_condition = "window"
+    [[object.function]]
+    name = "win32_get_windows_version"
+    cfg_condition = "window"
+    [[object.function]]
+    name = "win32_getlocale"
+    cfg_condition = "window"
+    [[object.function]]
+    name = "win32_check_windows_version"
+    cfg_condition = "window"
+    [[object.function]]
+    name = "win32_error_message"
+    cfg_condition = "window"
+    [[object.function]]
+    name = "win32_ftruncate"
+    cfg_condition = "window"
+    [[object.function]]
+    name = "win32_get_command_line"
+    cfg_condition = "window"
+    [[object.function]]
+    name = "win32_get_package_installation_directory"
+    cfg_condition = "window"
+    [[object.function]]
+    name = "win32_get_package_installation_directory_of_module"
+    cfg_condition = "window"
+    [[object.function]]
+    name = "win32_get_package_installation_subdirectory"
+    cfg_condition = "window"
+    [[object.function]]
     name = "unix_get_passwd_entry"
     cfg_condition = "unix"
     [[object.function]]
     name = "get_user_state_dir"
     version = "2.72"
-    [[object.function]]
-    name = "check_windows_version"
-    manual = true
-    cfg_condition = "windows"
-    [[object.function]]
-    name = "get_command_line"
-    manual = true
-    cfg_condition = "windows"
-    [[object.function]]
-    name = "error_message"
-    manual = true
-    cfg_condition = "windows"
-    [[object.function]]
-    name = "getlocale"
-    manual = true
-    cfg_condition = "windows"
-    [[object.function]]
-    name = "get_package_installation_directory_of_module"
-    manual = true
-    cfg_condition = "windows"
-    [[object.function]]
-    name = "locale_filename_from_utf8"
-    manual = true
-    cfg_condition = "windows"
     [[object.function]]
     name = "assertion_message_cmpint"
     version = "2.78"
@@ -115,9 +121,24 @@ name = "GLib.PollFD"
 status = "manual"
 
 [[object]]
+name = "GLib.UnixPipe"
+status = "generate"
+cfg_condition = "unix"
+
+[[object]]
+name = "GLib.UnixPipeEnd"
+status = "generate"
+cfg_condition = "unix"
+
+[[object]]
 name = "GLib.TestLogMsg"
 # layout is broken due to rust having no long double
 status = "ignore"
+
+[[object]]
+name = "GLib.Win32OSType"
+status = "generate"
+cfg_condition = "window"
 
 [[object]]
 name = "GLib.macro__has_attribute___noreturn__"
