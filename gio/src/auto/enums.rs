@@ -1606,6 +1606,8 @@ pub enum IOErrorEnum {
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
     #[doc(alias = "G_IO_ERROR_NO_SUCH_DEVICE")]
     NoSuchDevice,
+    #[cfg(feature = "v2_80")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_80")))]
     #[doc(alias = "G_IO_ERROR_DESTINATION_UNSET")]
     DestinationUnset,
     #[doc(hidden)]
@@ -1667,6 +1669,7 @@ impl IntoGlib for IOErrorEnum {
             Self::MessageTooLarge => ffi::G_IO_ERROR_MESSAGE_TOO_LARGE,
             #[cfg(feature = "v2_72")]
             Self::NoSuchDevice => ffi::G_IO_ERROR_NO_SUCH_DEVICE,
+            #[cfg(feature = "v2_80")]
             Self::DestinationUnset => ffi::G_IO_ERROR_DESTINATION_UNSET,
             Self::__Unknown(value) => value,
         }
@@ -1726,6 +1729,7 @@ impl FromGlib<ffi::GIOErrorEnum> for IOErrorEnum {
             ffi::G_IO_ERROR_MESSAGE_TOO_LARGE => Self::MessageTooLarge,
             #[cfg(feature = "v2_72")]
             ffi::G_IO_ERROR_NO_SUCH_DEVICE => Self::NoSuchDevice,
+            #[cfg(feature = "v2_80")]
             ffi::G_IO_ERROR_DESTINATION_UNSET => Self::DestinationUnset,
             value => Self::__Unknown(value),
         }

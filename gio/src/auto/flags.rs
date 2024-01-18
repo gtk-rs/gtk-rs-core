@@ -1590,6 +1590,8 @@ bitflags! {
         const NO_FALLBACK_FOR_MOVE = ffi::G_FILE_COPY_NO_FALLBACK_FOR_MOVE as _;
         #[doc(alias = "G_FILE_COPY_TARGET_DEFAULT_PERMS")]
         const TARGET_DEFAULT_PERMS = ffi::G_FILE_COPY_TARGET_DEFAULT_PERMS as _;
+        #[cfg(feature = "v2_80")]
+        #[cfg_attr(docsrs, doc(cfg(feature = "v2_80")))]
         #[doc(alias = "G_FILE_COPY_TARGET_DEFAULT_MODIFIED_TIME")]
         const TARGET_DEFAULT_MODIFIED_TIME = ffi::G_FILE_COPY_TARGET_DEFAULT_MODIFIED_TIME as _;
     }

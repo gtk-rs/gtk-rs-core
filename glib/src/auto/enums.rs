@@ -958,14 +958,24 @@ pub enum UnicodeBreakType {
     EmojiModifier,
     #[doc(alias = "G_UNICODE_BREAK_ZERO_WIDTH_JOINER")]
     ZeroWidthJoiner,
+    #[cfg(feature = "v2_80")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_80")))]
     #[doc(alias = "G_UNICODE_BREAK_AKSARA")]
     Aksara,
+    #[cfg(feature = "v2_80")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_80")))]
     #[doc(alias = "G_UNICODE_BREAK_AKSARA_PRE_BASE")]
     AksaraPreBase,
+    #[cfg(feature = "v2_80")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_80")))]
     #[doc(alias = "G_UNICODE_BREAK_AKSARA_START")]
     AksaraStart,
+    #[cfg(feature = "v2_80")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_80")))]
     #[doc(alias = "G_UNICODE_BREAK_VIRAMA_FINAL")]
     ViramaFinal,
+    #[cfg(feature = "v2_80")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_80")))]
     #[doc(alias = "G_UNICODE_BREAK_VIRAMA")]
     Virama,
     #[doc(hidden)]
@@ -1021,10 +1031,15 @@ impl IntoGlib for UnicodeBreakType {
             Self::EmojiBase => ffi::G_UNICODE_BREAK_EMOJI_BASE,
             Self::EmojiModifier => ffi::G_UNICODE_BREAK_EMOJI_MODIFIER,
             Self::ZeroWidthJoiner => ffi::G_UNICODE_BREAK_ZERO_WIDTH_JOINER,
+            #[cfg(feature = "v2_80")]
             Self::Aksara => ffi::G_UNICODE_BREAK_AKSARA,
+            #[cfg(feature = "v2_80")]
             Self::AksaraPreBase => ffi::G_UNICODE_BREAK_AKSARA_PRE_BASE,
+            #[cfg(feature = "v2_80")]
             Self::AksaraStart => ffi::G_UNICODE_BREAK_AKSARA_START,
+            #[cfg(feature = "v2_80")]
             Self::ViramaFinal => ffi::G_UNICODE_BREAK_VIRAMA_FINAL,
+            #[cfg(feature = "v2_80")]
             Self::Virama => ffi::G_UNICODE_BREAK_VIRAMA,
             Self::__Unknown(value) => value,
         }
@@ -1078,10 +1093,15 @@ impl FromGlib<ffi::GUnicodeBreakType> for UnicodeBreakType {
             ffi::G_UNICODE_BREAK_EMOJI_BASE => Self::EmojiBase,
             ffi::G_UNICODE_BREAK_EMOJI_MODIFIER => Self::EmojiModifier,
             ffi::G_UNICODE_BREAK_ZERO_WIDTH_JOINER => Self::ZeroWidthJoiner,
+            #[cfg(feature = "v2_80")]
             ffi::G_UNICODE_BREAK_AKSARA => Self::Aksara,
+            #[cfg(feature = "v2_80")]
             ffi::G_UNICODE_BREAK_AKSARA_PRE_BASE => Self::AksaraPreBase,
+            #[cfg(feature = "v2_80")]
             ffi::G_UNICODE_BREAK_AKSARA_START => Self::AksaraStart,
+            #[cfg(feature = "v2_80")]
             ffi::G_UNICODE_BREAK_VIRAMA_FINAL => Self::ViramaFinal,
+            #[cfg(feature = "v2_80")]
             ffi::G_UNICODE_BREAK_VIRAMA => Self::Virama,
             value => Self::__Unknown(value),
         }
