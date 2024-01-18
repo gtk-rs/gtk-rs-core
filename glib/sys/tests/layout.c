@@ -12,6 +12,7 @@ int main() {
     printf("%s;%zu;%zu\n", "GBookmarkFileError", sizeof(GBookmarkFileError), alignof(GBookmarkFileError));
     printf("%s;%zu;%zu\n", "GByteArray", sizeof(GByteArray), alignof(GByteArray));
     printf("%s;%zu;%zu\n", "GChecksumType", sizeof(GChecksumType), alignof(GChecksumType));
+    printf("%s;%zu;%zu\n", "GCompletion", sizeof(GCompletion), alignof(GCompletion));
     printf("%s;%zu;%zu\n", "GCond", sizeof(GCond), alignof(GCond));
     printf("%s;%zu;%zu\n", "GConvertError", sizeof(GConvertError), alignof(GConvertError));
     printf("%s;%zu;%zu\n", "GDate", sizeof(GDate), alignof(GDate));
@@ -82,6 +83,10 @@ int main() {
     printf("%s;%zu;%zu\n", "GSourceFuncs", sizeof(GSourceFuncs), alignof(GSourceFuncs));
     printf("%s;%zu;%zu\n", "GSpawnError", sizeof(GSpawnError), alignof(GSpawnError));
     printf("%s;%zu;%zu\n", "GSpawnFlags", sizeof(GSpawnFlags), alignof(GSpawnFlags));
+    printf("%s;%zu;%zu\n", "GStaticMutex", sizeof(GStaticMutex), alignof(GStaticMutex));
+    printf("%s;%zu;%zu\n", "GStaticPrivate", sizeof(GStaticPrivate), alignof(GStaticPrivate));
+    printf("%s;%zu;%zu\n", "GStaticRWLock", sizeof(GStaticRWLock), alignof(GStaticRWLock));
+    printf("%s;%zu;%zu\n", "GStaticRecMutex", sizeof(GStaticRecMutex), alignof(GStaticRecMutex));
     printf("%s;%zu;%zu\n", "GString", sizeof(GString), alignof(GString));
     printf("%s;%zu;%zu\n", "GStrv", sizeof(GStrv), alignof(GStrv));
     printf("%s;%zu;%zu\n", "GTestConfig", sizeof(GTestConfig), alignof(GTestConfig));
@@ -91,8 +96,11 @@ int main() {
     printf("%s;%zu;%zu\n", "GTestResult", sizeof(GTestResult), alignof(GTestResult));
     printf("%s;%zu;%zu\n", "GTestSubprocessFlags", sizeof(GTestSubprocessFlags), alignof(GTestSubprocessFlags));
     printf("%s;%zu;%zu\n", "GTestTrapFlags", sizeof(GTestTrapFlags), alignof(GTestTrapFlags));
+    printf("%s;%zu;%zu\n", "GThread", sizeof(GThread), alignof(GThread));
     printf("%s;%zu;%zu\n", "GThreadError", sizeof(GThreadError), alignof(GThreadError));
+    printf("%s;%zu;%zu\n", "GThreadFunctions", sizeof(GThreadFunctions), alignof(GThreadFunctions));
     printf("%s;%zu;%zu\n", "GThreadPool", sizeof(GThreadPool), alignof(GThreadPool));
+    printf("%s;%zu;%zu\n", "GThreadPriority", sizeof(GThreadPriority), alignof(GThreadPriority));
     printf("%s;%zu;%zu\n", "GTime", sizeof(GTime), alignof(GTime));
     printf("%s;%zu;%zu\n", "GTimeSpan", sizeof(GTimeSpan), alignof(GTimeSpan));
     printf("%s;%zu;%zu\n", "GTimeType", sizeof(GTimeType), alignof(GTimeType));
@@ -102,10 +110,12 @@ int main() {
     printf("%s;%zu;%zu\n", "GTrashStack", sizeof(GTrashStack), alignof(GTrashStack));
     printf("%s;%zu;%zu\n", "GTraverseFlags", sizeof(GTraverseFlags), alignof(GTraverseFlags));
     printf("%s;%zu;%zu\n", "GTraverseType", sizeof(GTraverseType), alignof(GTraverseType));
-    printf("%s;%zu;%zu\n", "GType", sizeof(GType), alignof(GType));
+    printf("%s;%zu;%zu\n", "GTuples", sizeof(GTuples), alignof(GTuples));
     printf("%s;%zu;%zu\n", "GUnicodeBreakType", sizeof(GUnicodeBreakType), alignof(GUnicodeBreakType));
     printf("%s;%zu;%zu\n", "GUnicodeScript", sizeof(GUnicodeScript), alignof(GUnicodeScript));
     printf("%s;%zu;%zu\n", "GUnicodeType", sizeof(GUnicodeType), alignof(GUnicodeType));
+    printf("%s;%zu;%zu\n", "GUnixPipe", sizeof(GUnixPipe), alignof(GUnixPipe));
+    printf("%s;%zu;%zu\n", "GUnixPipeEnd", sizeof(GUnixPipeEnd), alignof(GUnixPipeEnd));
     printf("%s;%zu;%zu\n", "GUriError", sizeof(GUriError), alignof(GUriError));
     printf("%s;%zu;%zu\n", "GUriFlags", sizeof(GUriFlags), alignof(GUriFlags));
     printf("%s;%zu;%zu\n", "GUriHideFlags", sizeof(GUriHideFlags), alignof(GUriHideFlags));
@@ -117,5 +127,6 @@ int main() {
     printf("%s;%zu;%zu\n", "GVariantDict", sizeof(GVariantDict), alignof(GVariantDict));
     printf("%s;%zu;%zu\n", "GVariantIter", sizeof(GVariantIter), alignof(GVariantIter));
     printf("%s;%zu;%zu\n", "GVariantParseError", sizeof(GVariantParseError), alignof(GVariantParseError));
+    printf("%s;%zu;%zu\n", "GWin32OSType", sizeof(GWin32OSType), alignof(GWin32OSType));
     return 0;
 }

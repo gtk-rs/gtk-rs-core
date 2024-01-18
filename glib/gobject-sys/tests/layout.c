@@ -14,6 +14,7 @@ int main() {
     printf("%s;%zu;%zu\n", "GEnumValue", sizeof(GEnumValue), alignof(GEnumValue));
     printf("%s;%zu;%zu\n", "GFlagsClass", sizeof(GFlagsClass), alignof(GFlagsClass));
     printf("%s;%zu;%zu\n", "GFlagsValue", sizeof(GFlagsValue), alignof(GFlagsValue));
+    printf("%s;%zu;%zu\n", "GIOCondition", sizeof(GIOCondition), alignof(GIOCondition));
     printf("%s;%zu;%zu\n", "GInitiallyUnowned", sizeof(GInitiallyUnowned), alignof(GInitiallyUnowned));
     printf("%s;%zu;%zu\n", "GInitiallyUnownedClass", sizeof(GInitiallyUnownedClass), alignof(GInitiallyUnownedClass));
     printf("%s;%zu;%zu\n", "GInterfaceInfo", sizeof(GInterfaceInfo), alignof(GInterfaceInfo));
@@ -52,6 +53,7 @@ int main() {
     printf("%s;%zu;%zu\n", "GSignalInvocationHint", sizeof(GSignalInvocationHint), alignof(GSignalInvocationHint));
     printf("%s;%zu;%zu\n", "GSignalMatchType", sizeof(GSignalMatchType), alignof(GSignalMatchType));
     printf("%s;%zu;%zu\n", "GSignalQuery", sizeof(GSignalQuery), alignof(GSignalQuery));
+    printf("%s;%zu;%zu\n", "GTypeCValue", sizeof(GTypeCValue), alignof(GTypeCValue));
     printf("%s;%zu;%zu\n", "GTypeClass", sizeof(GTypeClass), alignof(GTypeClass));
     printf("%s;%zu;%zu\n", "GTypeDebugFlags", sizeof(GTypeDebugFlags), alignof(GTypeDebugFlags));
     printf("%s;%zu;%zu\n", "GTypeFlags", sizeof(GTypeFlags), alignof(GTypeFlags));

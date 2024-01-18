@@ -288,7 +288,7 @@ pub struct _GdkPixbufSimpleAnimClass {
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GdkPixbufSimpleAnimClass = *mut _GdkPixbufSimpleAnimClass;
+pub type GdkPixbufSimpleAnimClass = _GdkPixbufSimpleAnimClass;
 
 // Classes
 #[repr(C)]

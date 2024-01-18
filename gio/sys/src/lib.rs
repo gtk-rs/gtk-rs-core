@@ -235,6 +235,7 @@ pub const G_IO_ERROR_CONNECTION_CLOSED: GIOErrorEnum = 44;
 pub const G_IO_ERROR_NOT_CONNECTED: GIOErrorEnum = 45;
 pub const G_IO_ERROR_MESSAGE_TOO_LARGE: GIOErrorEnum = 46;
 pub const G_IO_ERROR_NO_SUCH_DEVICE: GIOErrorEnum = 47;
+pub const G_IO_ERROR_DESTINATION_UNSET: GIOErrorEnum = 48;
 
 pub type GIOModuleScopeFlags = c_int;
 pub const G_IO_MODULE_SCOPE_NONE: GIOModuleScopeFlags = 0;
@@ -645,6 +646,7 @@ pub const G_FILE_COPY_NOFOLLOW_SYMLINKS: GFileCopyFlags = 4;
 pub const G_FILE_COPY_ALL_METADATA: GFileCopyFlags = 8;
 pub const G_FILE_COPY_NO_FALLBACK_FOR_MOVE: GFileCopyFlags = 16;
 pub const G_FILE_COPY_TARGET_DEFAULT_PERMS: GFileCopyFlags = 32;
+pub const G_FILE_COPY_TARGET_DEFAULT_MODIFIED_TIME: GFileCopyFlags = 64;
 
 pub type GFileCreateFlags = c_uint;
 pub const G_FILE_CREATE_NONE: GFileCreateFlags = 0;
@@ -1171,7 +1173,7 @@ pub struct _GAppLaunchContextPrivate {
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GAppLaunchContextPrivate = *mut _GAppLaunchContextPrivate;
+pub type GAppLaunchContextPrivate = _GAppLaunchContextPrivate;
 
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -1238,7 +1240,8 @@ pub struct GApplicationCommandLineClass {
     pub print_literal: Option<unsafe extern "C" fn(*mut GApplicationCommandLine, *const c_char)>,
     pub printerr_literal: Option<unsafe extern "C" fn(*mut GApplicationCommandLine, *const c_char)>,
     pub get_stdin: Option<unsafe extern "C" fn(*mut GApplicationCommandLine) -> *mut GInputStream>,
-    pub padding: [gpointer; 11],
+    pub done: Option<unsafe extern "C" fn(*mut GApplicationCommandLine)>,
+    pub padding: [gpointer; 10],
 }
 
 impl ::std::fmt::Debug for GApplicationCommandLineClass {
@@ -1247,6 +1250,7 @@ impl ::std::fmt::Debug for GApplicationCommandLineClass {
             .field("print_literal", &self.print_literal)
             .field("printerr_literal", &self.printerr_literal)
             .field("get_stdin", &self.get_stdin)
+            .field("done", &self.done)
             .finish()
     }
 }
@@ -1257,7 +1261,7 @@ pub struct _GApplicationCommandLinePrivate {
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GApplicationCommandLinePrivate = *mut _GApplicationCommandLinePrivate;
+pub type GApplicationCommandLinePrivate = _GApplicationCommandLinePrivate;
 
 #[repr(C)]
 pub struct _GApplicationPrivate {
@@ -1265,7 +1269,7 @@ pub struct _GApplicationPrivate {
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GApplicationPrivate = *mut _GApplicationPrivate;
+pub type GApplicationPrivate = _GApplicationPrivate;
 
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -1377,7 +1381,7 @@ pub struct _GBufferedInputStreamPrivate {
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GBufferedInputStreamPrivate = *mut _GBufferedInputStreamPrivate;
+pub type GBufferedInputStreamPrivate = _GBufferedInputStreamPrivate;
 
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -1403,7 +1407,7 @@ pub struct _GBufferedOutputStreamPrivate {
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GBufferedOutputStreamPrivate = *mut _GBufferedOutputStreamPrivate;
+pub type GBufferedOutputStreamPrivate = _GBufferedOutputStreamPrivate;
 
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -1437,7 +1441,7 @@ pub struct _GCancellablePrivate {
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GCancellablePrivate = *mut _GCancellablePrivate;
+pub type GCancellablePrivate = _GCancellablePrivate;
 
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -1513,7 +1517,7 @@ pub struct _GConverterInputStreamPrivate {
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GConverterInputStreamPrivate = *mut _GConverterInputStreamPrivate;
+pub type GConverterInputStreamPrivate = _GConverterInputStreamPrivate;
 
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -1545,7 +1549,7 @@ pub struct _GConverterOutputStreamPrivate {
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GConverterOutputStreamPrivate = *mut _GConverterOutputStreamPrivate;
+pub type GConverterOutputStreamPrivate = _GConverterOutputStreamPrivate;
 
 #[repr(C)]
 pub struct _GCredentialsClass {
@@ -1553,7 +1557,7 @@ pub struct _GCredentialsClass {
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GCredentialsClass = *mut _GCredentialsClass;
+pub type GCredentialsClass = _GCredentialsClass;
 
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -1694,7 +1698,7 @@ pub struct _GDBusInterfaceSkeletonPrivate {
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GDBusInterfaceSkeletonPrivate = *mut _GDBusInterfaceSkeletonPrivate;
+pub type GDBusInterfaceSkeletonPrivate = _GDBusInterfaceSkeletonPrivate;
 
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -1829,7 +1833,7 @@ pub struct _GDBusObjectManagerClientPrivate {
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GDBusObjectManagerClientPrivate = *mut _GDBusObjectManagerClientPrivate;
+pub type GDBusObjectManagerClientPrivate = _GDBusObjectManagerClientPrivate;
 
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -1893,7 +1897,7 @@ pub struct _GDBusObjectManagerServerPrivate {
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GDBusObjectManagerServerPrivate = *mut _GDBusObjectManagerServerPrivate;
+pub type GDBusObjectManagerServerPrivate = _GDBusObjectManagerServerPrivate;
 
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -1916,7 +1920,7 @@ pub struct _GDBusObjectProxyPrivate {
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GDBusObjectProxyPrivate = *mut _GDBusObjectProxyPrivate;
+pub type GDBusObjectProxyPrivate = _GDBusObjectProxyPrivate;
 
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -1947,7 +1951,7 @@ pub struct _GDBusObjectSkeletonPrivate {
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GDBusObjectSkeletonPrivate = *mut _GDBusObjectSkeletonPrivate;
+pub type GDBusObjectSkeletonPrivate = _GDBusObjectSkeletonPrivate;
 
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -1998,7 +2002,7 @@ pub struct _GDBusProxyPrivate {
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GDBusProxyPrivate = *mut _GDBusProxyPrivate;
+pub type GDBusProxyPrivate = _GDBusProxyPrivate;
 
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -2069,7 +2073,7 @@ pub struct _GDataInputStreamPrivate {
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GDataInputStreamPrivate = *mut _GDataInputStreamPrivate;
+pub type GDataInputStreamPrivate = _GDataInputStreamPrivate;
 
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -2101,7 +2105,7 @@ pub struct _GDataOutputStreamPrivate {
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GDataOutputStreamPrivate = *mut _GDataOutputStreamPrivate;
+pub type GDataOutputStreamPrivate = _GDataOutputStreamPrivate;
 
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -2483,7 +2487,7 @@ pub struct _GEmblemClass {
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GEmblemClass = *mut _GEmblemClass;
+pub type GEmblemClass = _GEmblemClass;
 
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -2505,7 +2509,7 @@ pub struct _GEmblemedIconPrivate {
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GEmblemedIconPrivate = *mut _GEmblemedIconPrivate;
+pub type GEmblemedIconPrivate = _GEmblemedIconPrivate;
 
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -2657,7 +2661,7 @@ pub struct _GFileEnumeratorPrivate {
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GFileEnumeratorPrivate = *mut _GFileEnumeratorPrivate;
+pub type GFileEnumeratorPrivate = _GFileEnumeratorPrivate;
 
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -2744,7 +2748,7 @@ pub struct _GFileIOStreamPrivate {
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GFileIOStreamPrivate = *mut _GFileIOStreamPrivate;
+pub type GFileIOStreamPrivate = _GFileIOStreamPrivate;
 
 #[repr(C)]
 pub struct _GFileIconClass {
@@ -2752,7 +2756,7 @@ pub struct _GFileIconClass {
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GFileIconClass = *mut _GFileIconClass;
+pub type GFileIconClass = _GFileIconClass;
 
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -3531,7 +3535,7 @@ pub struct _GFileInfoClass {
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GFileInfoClass = *mut _GFileInfoClass;
+pub type GFileInfoClass = _GFileInfoClass;
 
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -3605,7 +3609,7 @@ pub struct _GFileInputStreamPrivate {
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GFileInputStreamPrivate = *mut _GFileInputStreamPrivate;
+pub type GFileInputStreamPrivate = _GFileInputStreamPrivate;
 
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -3642,7 +3646,7 @@ pub struct _GFileMonitorPrivate {
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GFileMonitorPrivate = *mut _GFileMonitorPrivate;
+pub type GFileMonitorPrivate = _GFileMonitorPrivate;
 
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -3729,7 +3733,7 @@ pub struct _GFileOutputStreamPrivate {
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GFileOutputStreamPrivate = *mut _GFileOutputStreamPrivate;
+pub type GFileOutputStreamPrivate = _GFileOutputStreamPrivate;
 
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -3799,7 +3803,7 @@ pub struct _GIOExtension {
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GIOExtension = *mut _GIOExtension;
+pub type GIOExtension = _GIOExtension;
 
 #[repr(C)]
 pub struct _GIOExtensionPoint {
@@ -3807,7 +3811,7 @@ pub struct _GIOExtensionPoint {
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GIOExtensionPoint = *mut _GIOExtensionPoint;
+pub type GIOExtensionPoint = _GIOExtensionPoint;
 
 #[repr(C)]
 pub struct _GIOModuleClass {
@@ -3815,7 +3819,7 @@ pub struct _GIOModuleClass {
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GIOModuleClass = *mut _GIOModuleClass;
+pub type GIOModuleClass = _GIOModuleClass;
 
 #[repr(C)]
 pub struct _GIOModuleScope {
@@ -3823,7 +3827,7 @@ pub struct _GIOModuleScope {
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GIOModuleScope = *mut _GIOModuleScope;
+pub type GIOModuleScope = _GIOModuleScope;
 
 #[repr(C)]
 pub struct _GIOSchedulerJob {
@@ -3831,7 +3835,7 @@ pub struct _GIOSchedulerJob {
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GIOSchedulerJob = *mut _GIOSchedulerJob;
+pub type GIOSchedulerJob = _GIOSchedulerJob;
 
 #[repr(C)]
 pub struct _GIOStreamAdapter {
@@ -3839,7 +3843,7 @@ pub struct _GIOStreamAdapter {
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GIOStreamAdapter = *mut _GIOStreamAdapter;
+pub type GIOStreamAdapter = _GIOStreamAdapter;
 
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -3903,7 +3907,7 @@ pub struct _GIOStreamPrivate {
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GIOStreamPrivate = *mut _GIOStreamPrivate;
+pub type GIOStreamPrivate = _GIOStreamPrivate;
 
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -3970,7 +3974,7 @@ pub struct _GInetAddressMaskPrivate {
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GInetAddressMaskPrivate = *mut _GInetAddressMaskPrivate;
+pub type GInetAddressMaskPrivate = _GInetAddressMaskPrivate;
 
 #[repr(C)]
 pub struct _GInetAddressPrivate {
@@ -3978,7 +3982,7 @@ pub struct _GInetAddressPrivate {
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GInetAddressPrivate = *mut _GInetAddressPrivate;
+pub type GInetAddressPrivate = _GInetAddressPrivate;
 
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -4000,7 +4004,7 @@ pub struct _GInetSocketAddressPrivate {
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GInetSocketAddressPrivate = *mut _GInetSocketAddressPrivate;
+pub type GInetSocketAddressPrivate = _GInetSocketAddressPrivate;
 
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -4160,7 +4164,7 @@ pub struct _GInputStreamPrivate {
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GInputStreamPrivate = *mut _GInputStreamPrivate;
+pub type GInputStreamPrivate = _GInputStreamPrivate;
 
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -4285,7 +4289,7 @@ pub struct _GMemoryInputStreamPrivate {
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GMemoryInputStreamPrivate = *mut _GMemoryInputStreamPrivate;
+pub type GMemoryInputStreamPrivate = _GMemoryInputStreamPrivate;
 
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -4333,7 +4337,7 @@ pub struct _GMemoryOutputStreamPrivate {
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GMemoryOutputStreamPrivate = *mut _GMemoryOutputStreamPrivate;
+pub type GMemoryOutputStreamPrivate = _GMemoryOutputStreamPrivate;
 
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -4363,7 +4367,7 @@ pub struct _GMenuAttributeIterPrivate {
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GMenuAttributeIterPrivate = *mut _GMenuAttributeIterPrivate;
+pub type GMenuAttributeIterPrivate = _GMenuAttributeIterPrivate;
 
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -4393,7 +4397,7 @@ pub struct _GMenuLinkIterPrivate {
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GMenuLinkIterPrivate = *mut _GMenuLinkIterPrivate;
+pub type GMenuLinkIterPrivate = _GMenuLinkIterPrivate;
 
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -4443,7 +4447,7 @@ pub struct _GMenuModelPrivate {
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GMenuModelPrivate = *mut _GMenuModelPrivate;
+pub type GMenuModelPrivate = _GMenuModelPrivate;
 
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -4660,7 +4664,7 @@ pub struct _GMountOperationPrivate {
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GMountOperationPrivate = *mut _GMountOperationPrivate;
+pub type GMountOperationPrivate = _GMountOperationPrivate;
 
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -4682,7 +4686,7 @@ pub struct _GNativeSocketAddressPrivate {
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GNativeSocketAddressPrivate = *mut _GNativeSocketAddressPrivate;
+pub type GNativeSocketAddressPrivate = _GNativeSocketAddressPrivate;
 
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -4721,7 +4725,7 @@ pub struct _GNetworkAddressPrivate {
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GNetworkAddressPrivate = *mut _GNetworkAddressPrivate;
+pub type GNetworkAddressPrivate = _GNetworkAddressPrivate;
 
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -4786,7 +4790,7 @@ pub struct _GNetworkServicePrivate {
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GNetworkServicePrivate = *mut _GNetworkServicePrivate;
+pub type GNetworkServicePrivate = _GNetworkServicePrivate;
 
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -4986,7 +4990,7 @@ pub struct _GOutputStreamPrivate {
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GOutputStreamPrivate = *mut _GOutputStreamPrivate;
+pub type GOutputStreamPrivate = _GOutputStreamPrivate;
 
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -5066,7 +5070,7 @@ pub struct _GPermissionPrivate {
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GPermissionPrivate = *mut _GPermissionPrivate;
+pub type GPermissionPrivate = _GPermissionPrivate;
 
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -5200,7 +5204,7 @@ pub struct _GProxyAddressEnumeratorPrivate {
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GProxyAddressEnumeratorPrivate = *mut _GProxyAddressEnumeratorPrivate;
+pub type GProxyAddressEnumeratorPrivate = _GProxyAddressEnumeratorPrivate;
 
 #[repr(C)]
 pub struct _GProxyAddressPrivate {
@@ -5208,7 +5212,7 @@ pub struct _GProxyAddressPrivate {
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GProxyAddressPrivate = *mut _GProxyAddressPrivate;
+pub type GProxyAddressPrivate = _GProxyAddressPrivate;
 
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -5497,7 +5501,7 @@ pub struct _GResolverPrivate {
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GResolverPrivate = *mut _GResolverPrivate;
+pub type GResolverPrivate = _GResolverPrivate;
 
 #[repr(C)]
 pub struct GResource {
@@ -5614,7 +5618,7 @@ pub struct _GSettingsBackendPrivate {
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GSettingsBackendPrivate = *mut _GSettingsBackendPrivate;
+pub type GSettingsBackendPrivate = _GSettingsBackendPrivate;
 
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -5648,7 +5652,7 @@ pub struct _GSettingsPrivate {
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GSettingsPrivate = *mut _GSettingsPrivate;
+pub type GSettingsPrivate = _GSettingsPrivate;
 
 #[repr(C)]
 pub struct GSettingsSchema {
@@ -5709,7 +5713,7 @@ pub struct _GSimpleActionGroupPrivate {
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GSimpleActionGroupPrivate = *mut _GSimpleActionGroupPrivate;
+pub type GSimpleActionGroupPrivate = _GSimpleActionGroupPrivate;
 
 #[repr(C)]
 pub struct _GSimpleAsyncResultClass {
@@ -5717,7 +5721,7 @@ pub struct _GSimpleAsyncResultClass {
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GSimpleAsyncResultClass = *mut _GSimpleAsyncResultClass;
+pub type GSimpleAsyncResultClass = _GSimpleAsyncResultClass;
 
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -5749,7 +5753,7 @@ pub struct _GSimpleProxyResolverPrivate {
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GSimpleProxyResolverPrivate = *mut _GSimpleProxyResolverPrivate;
+pub type GSimpleProxyResolverPrivate = _GSimpleProxyResolverPrivate;
 
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -5887,7 +5891,7 @@ pub struct _GSocketClientPrivate {
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GSocketClientPrivate = *mut _GSocketClientPrivate;
+pub type GSocketClientPrivate = _GSocketClientPrivate;
 
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -5943,7 +5947,7 @@ pub struct _GSocketConnectionPrivate {
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GSocketConnectionPrivate = *mut _GSocketConnectionPrivate;
+pub type GSocketConnectionPrivate = _GSocketConnectionPrivate;
 
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -5986,7 +5990,7 @@ pub struct _GSocketControlMessagePrivate {
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GSocketControlMessagePrivate = *mut _GSocketControlMessagePrivate;
+pub type GSocketControlMessagePrivate = _GSocketControlMessagePrivate;
 
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -6023,7 +6027,7 @@ pub struct _GSocketListenerPrivate {
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GSocketListenerPrivate = *mut _GSocketListenerPrivate;
+pub type GSocketListenerPrivate = _GSocketListenerPrivate;
 
 #[repr(C)]
 pub struct _GSocketPrivate {
@@ -6031,7 +6035,7 @@ pub struct _GSocketPrivate {
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GSocketPrivate = *mut _GSocketPrivate;
+pub type GSocketPrivate = _GSocketPrivate;
 
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -6073,7 +6077,7 @@ pub struct _GSocketServicePrivate {
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GSocketServicePrivate = *mut _GSocketServicePrivate;
+pub type GSocketServicePrivate = _GSocketServicePrivate;
 
 #[repr(C)]
 pub struct GSrvTarget {
@@ -6110,7 +6114,7 @@ pub struct _GTaskClass {
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GTaskClass = *mut _GTaskClass;
+pub type GTaskClass = _GTaskClass;
 
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -6132,7 +6136,7 @@ pub struct _GTcpConnectionPrivate {
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GTcpConnectionPrivate = *mut _GTcpConnectionPrivate;
+pub type GTcpConnectionPrivate = _GTcpConnectionPrivate;
 
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -6154,7 +6158,7 @@ pub struct _GTcpWrapperConnectionPrivate {
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GTcpWrapperConnectionPrivate = *mut _GTcpWrapperConnectionPrivate;
+pub type GTcpWrapperConnectionPrivate = _GTcpWrapperConnectionPrivate;
 
 #[repr(C)]
 pub struct _GThemedIconClass {
@@ -6162,7 +6166,21 @@ pub struct _GThemedIconClass {
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GThemedIconClass = *mut _GThemedIconClass;
+pub type GThemedIconClass = _GThemedIconClass;
+
+#[derive(Copy, Clone)]
+#[repr(C)]
+pub struct GThreadedResolverClass {
+    pub parent_class: GResolverClass,
+}
+
+impl ::std::fmt::Debug for GThreadedResolverClass {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+        f.debug_struct(&format!("GThreadedResolverClass @ {self:p}"))
+            .field("parent_class", &self.parent_class)
+            .finish()
+    }
+}
 
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -6202,7 +6220,7 @@ pub struct _GThreadedSocketServicePrivate {
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GThreadedSocketServicePrivate = *mut _GThreadedSocketServicePrivate;
+pub type GThreadedSocketServicePrivate = _GThreadedSocketServicePrivate;
 
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -6277,7 +6295,7 @@ pub struct _GTlsCertificatePrivate {
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GTlsCertificatePrivate = *mut _GTlsCertificatePrivate;
+pub type GTlsCertificatePrivate = _GTlsCertificatePrivate;
 
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -6362,7 +6380,7 @@ pub struct _GTlsConnectionPrivate {
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GTlsConnectionPrivate = *mut _GTlsConnectionPrivate;
+pub type GTlsConnectionPrivate = _GTlsConnectionPrivate;
 
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -6540,7 +6558,7 @@ pub struct _GTlsDatabasePrivate {
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GTlsDatabasePrivate = *mut _GTlsDatabasePrivate;
+pub type GTlsDatabasePrivate = _GTlsDatabasePrivate;
 
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -6636,7 +6654,7 @@ pub struct _GTlsInteractionPrivate {
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GTlsInteractionPrivate = *mut _GTlsInteractionPrivate;
+pub type GTlsInteractionPrivate = _GTlsInteractionPrivate;
 
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -6666,7 +6684,7 @@ pub struct _GTlsPasswordPrivate {
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GTlsPasswordPrivate = *mut _GTlsPasswordPrivate;
+pub type GTlsPasswordPrivate = _GTlsPasswordPrivate;
 
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -6702,7 +6720,7 @@ pub struct _GUnixConnectionPrivate {
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GUnixConnectionPrivate = *mut _GUnixConnectionPrivate;
+pub type GUnixConnectionPrivate = _GUnixConnectionPrivate;
 
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -6728,7 +6746,7 @@ pub struct _GUnixCredentialsMessagePrivate {
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GUnixCredentialsMessagePrivate = *mut _GUnixCredentialsMessagePrivate;
+pub type GUnixCredentialsMessagePrivate = _GUnixCredentialsMessagePrivate;
 
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -6760,7 +6778,7 @@ pub struct _GUnixFDListPrivate {
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GUnixFDListPrivate = *mut _GUnixFDListPrivate;
+pub type GUnixFDListPrivate = _GUnixFDListPrivate;
 
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -6786,7 +6804,7 @@ pub struct _GUnixFDMessagePrivate {
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GUnixFDMessagePrivate = *mut _GUnixFDMessagePrivate;
+pub type GUnixFDMessagePrivate = _GUnixFDMessagePrivate;
 
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -6818,7 +6836,7 @@ pub struct _GUnixInputStreamPrivate {
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GUnixInputStreamPrivate = *mut _GUnixInputStreamPrivate;
+pub type GUnixInputStreamPrivate = _GUnixInputStreamPrivate;
 
 #[repr(C)]
 pub struct GUnixMountEntry {
@@ -6839,7 +6857,7 @@ pub struct _GUnixMountMonitorClass {
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GUnixMountMonitorClass = *mut _GUnixMountMonitorClass;
+pub type GUnixMountMonitorClass = _GUnixMountMonitorClass;
 
 #[repr(C)]
 pub struct GUnixMountPoint {
@@ -6884,7 +6902,7 @@ pub struct _GUnixOutputStreamPrivate {
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GUnixOutputStreamPrivate = *mut _GUnixOutputStreamPrivate;
+pub type GUnixOutputStreamPrivate = _GUnixOutputStreamPrivate;
 
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -6906,7 +6924,7 @@ pub struct _GUnixSocketAddressPrivate {
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GUnixSocketAddressPrivate = *mut _GUnixSocketAddressPrivate;
+pub type GUnixSocketAddressPrivate = _GUnixSocketAddressPrivate;
 
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -8438,6 +8456,19 @@ impl ::std::fmt::Debug for GThemedIcon {
     }
 }
 
+#[repr(C)]
+pub struct GThreadedResolver {
+    _data: [u8; 0],
+    _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
+}
+
+impl ::std::fmt::Debug for GThreadedResolver {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+        f.debug_struct(&format!("GThreadedResolver @ {self:p}"))
+            .finish()
+    }
+}
+
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct GThreadedSocketService {
@@ -9348,6 +9379,7 @@ extern "C" {
     // GResolverRecordType
     //=========================================================================
     pub fn g_resolver_record_type_get_type() -> GType;
+    pub fn g_resolver_record_type_to_rrtype(type_: GResolverRecordType) -> c_int;
 
     //=========================================================================
     // GResourceError
@@ -10150,6 +10182,9 @@ extern "C" {
         cmdline: *mut GApplicationCommandLine,
         arg: *const c_char,
     ) -> *mut GFile;
+    #[cfg(feature = "v2_80")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_80")))]
+    pub fn g_application_command_line_done(cmdline: *mut GApplicationCommandLine);
     pub fn g_application_command_line_get_arguments(
         cmdline: *mut GApplicationCommandLine,
         argc: *mut c_int,
@@ -10184,10 +10219,22 @@ extern "C" {
         format: *const c_char,
         ...
     );
+    #[cfg(feature = "v2_80")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_80")))]
+    pub fn g_application_command_line_print_literal(
+        cmdline: *mut GApplicationCommandLine,
+        message: *const c_char,
+    );
     pub fn g_application_command_line_printerr(
         cmdline: *mut GApplicationCommandLine,
         format: *const c_char,
         ...
+    );
+    #[cfg(feature = "v2_80")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_80")))]
+    pub fn g_application_command_line_printerr_literal(
+        cmdline: *mut GApplicationCommandLine,
+        message: *const c_char,
     );
     pub fn g_application_command_line_set_exit_status(
         cmdline: *mut GApplicationCommandLine,
@@ -10768,6 +10815,9 @@ extern "C" {
         error: *mut *mut glib::GError,
     ) -> *mut GDBusMessage;
     pub fn g_dbus_message_get_arg0(message: *mut GDBusMessage) -> *const c_char;
+    #[cfg(feature = "v2_80")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_80")))]
+    pub fn g_dbus_message_get_arg0_path(message: *mut GDBusMessage) -> *const c_char;
     pub fn g_dbus_message_get_body(message: *mut GDBusMessage) -> *mut glib::GVariant;
     pub fn g_dbus_message_get_byte_order(message: *mut GDBusMessage) -> GDBusMessageByteOrder;
     pub fn g_dbus_message_get_destination(message: *mut GDBusMessage) -> *const c_char;
@@ -12802,6 +12852,14 @@ extern "C" {
     pub fn g_resolver_free_addresses(addresses: *mut glib::GList);
     pub fn g_resolver_free_targets(targets: *mut glib::GList);
     pub fn g_resolver_get_default() -> *mut GResolver;
+    pub fn g_resolver_records_from_res_query(
+        rrname: *const c_char,
+        rrtype: c_int,
+        answer: *const u8,
+        len: ssize_t,
+        herr: c_int,
+        error: *mut *mut glib::GError,
+    ) -> *mut glib::GList;
     #[cfg(feature = "v2_78")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_78")))]
     pub fn g_resolver_get_timeout(resolver: *mut GResolver) -> c_uint;
@@ -13410,6 +13468,25 @@ extern "C" {
         cancellable: *mut GCancellable,
         error: *mut *mut glib::GError,
     ) -> ssize_t;
+    #[cfg(feature = "v2_80")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_80")))]
+    pub fn g_socket_receive_bytes(
+        socket: *mut GSocket,
+        size: size_t,
+        timeout_us: i64,
+        cancellable: *mut GCancellable,
+        error: *mut *mut glib::GError,
+    ) -> *mut glib::GBytes;
+    #[cfg(feature = "v2_80")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_80")))]
+    pub fn g_socket_receive_bytes_from(
+        socket: *mut GSocket,
+        address: *mut *mut GSocketAddress,
+        size: size_t,
+        timeout_us: i64,
+        cancellable: *mut GCancellable,
+        error: *mut *mut glib::GError,
+    ) -> *mut glib::GBytes;
     pub fn g_socket_receive_from(
         socket: *mut GSocket,
         address: *mut *mut GSocketAddress,
@@ -14073,10 +14150,26 @@ extern "C" {
         format: *const c_char,
         ...
     );
+    #[cfg(feature = "v2_80")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_80")))]
+    pub fn g_task_return_new_error_literal(
+        task: *mut GTask,
+        domain: glib::GQuark,
+        code: c_int,
+        message: *const c_char,
+    );
     pub fn g_task_return_pointer(
         task: *mut GTask,
         result: gpointer,
         result_destroy: glib::GDestroyNotify,
+    );
+    #[cfg(feature = "v2_80")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_80")))]
+    pub fn g_task_return_prefixed_error(
+        task: *mut GTask,
+        error: *mut glib::GError,
+        format: *const c_char,
+        ...
     );
     #[cfg(feature = "v2_64")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_64")))]
@@ -14147,6 +14240,11 @@ extern "C" {
     pub fn g_themed_icon_append_name(icon: *mut GThemedIcon, iconname: *const c_char);
     pub fn g_themed_icon_get_names(icon: *mut GThemedIcon) -> *const *const c_char;
     pub fn g_themed_icon_prepend_name(icon: *mut GThemedIcon, iconname: *const c_char);
+
+    //=========================================================================
+    // GThreadedResolver
+    //=========================================================================
+    pub fn g_threaded_resolver_get_type() -> GType;
 
     //=========================================================================
     // GThreadedSocketService

@@ -1606,6 +1606,8 @@ pub enum IOErrorEnum {
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
     #[doc(alias = "G_IO_ERROR_NO_SUCH_DEVICE")]
     NoSuchDevice,
+    #[doc(alias = "G_IO_ERROR_DESTINATION_UNSET")]
+    DestinationUnset,
     #[doc(hidden)]
     __Unknown(i32),
 }
@@ -1665,6 +1667,7 @@ impl IntoGlib for IOErrorEnum {
             Self::MessageTooLarge => ffi::G_IO_ERROR_MESSAGE_TOO_LARGE,
             #[cfg(feature = "v2_72")]
             Self::NoSuchDevice => ffi::G_IO_ERROR_NO_SUCH_DEVICE,
+            Self::DestinationUnset => ffi::G_IO_ERROR_DESTINATION_UNSET,
             Self::__Unknown(value) => value,
         }
     }
@@ -1723,6 +1726,7 @@ impl FromGlib<ffi::GIOErrorEnum> for IOErrorEnum {
             ffi::G_IO_ERROR_MESSAGE_TOO_LARGE => Self::MessageTooLarge,
             #[cfg(feature = "v2_72")]
             ffi::G_IO_ERROR_NO_SUCH_DEVICE => Self::NoSuchDevice,
+            ffi::G_IO_ERROR_DESTINATION_UNSET => Self::DestinationUnset,
             value => Self::__Unknown(value),
         }
     }
@@ -2555,6 +2559,13 @@ pub enum ResolverRecordType {
     Ns,
     #[doc(hidden)]
     __Unknown(i32),
+}
+
+impl ResolverRecordType {
+    #[doc(alias = "g_resolver_record_type_to_rrtype")]
+    pub fn to_rrtype(self) -> i32 {
+        unsafe { ffi::g_resolver_record_type_to_rrtype(self.into_glib()) }
+    }
 }
 
 #[doc(hidden)]

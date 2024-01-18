@@ -237,6 +237,13 @@ const RUST_LAYOUTS: &[(&str, Layout)] = &[
         },
     ),
     (
+        "GCompletion",
+        Layout {
+            size: size_of::<GCompletion>(),
+            alignment: align_of::<GCompletion>(),
+        },
+    ),
+    (
         "GCond",
         Layout {
             size: size_of::<GCond>(),
@@ -727,6 +734,34 @@ const RUST_LAYOUTS: &[(&str, Layout)] = &[
         },
     ),
     (
+        "GStaticMutex",
+        Layout {
+            size: size_of::<GStaticMutex>(),
+            alignment: align_of::<GStaticMutex>(),
+        },
+    ),
+    (
+        "GStaticPrivate",
+        Layout {
+            size: size_of::<GStaticPrivate>(),
+            alignment: align_of::<GStaticPrivate>(),
+        },
+    ),
+    (
+        "GStaticRWLock",
+        Layout {
+            size: size_of::<GStaticRWLock>(),
+            alignment: align_of::<GStaticRWLock>(),
+        },
+    ),
+    (
+        "GStaticRecMutex",
+        Layout {
+            size: size_of::<GStaticRecMutex>(),
+            alignment: align_of::<GStaticRecMutex>(),
+        },
+    ),
+    (
         "GString",
         Layout {
             size: size_of::<GString>(),
@@ -790,6 +825,13 @@ const RUST_LAYOUTS: &[(&str, Layout)] = &[
         },
     ),
     (
+        "GThread",
+        Layout {
+            size: size_of::<GThread>(),
+            alignment: align_of::<GThread>(),
+        },
+    ),
+    (
         "GThreadError",
         Layout {
             size: size_of::<GThreadError>(),
@@ -797,10 +839,24 @@ const RUST_LAYOUTS: &[(&str, Layout)] = &[
         },
     ),
     (
+        "GThreadFunctions",
+        Layout {
+            size: size_of::<GThreadFunctions>(),
+            alignment: align_of::<GThreadFunctions>(),
+        },
+    ),
+    (
         "GThreadPool",
         Layout {
             size: size_of::<GThreadPool>(),
             alignment: align_of::<GThreadPool>(),
+        },
+    ),
+    (
+        "GThreadPriority",
+        Layout {
+            size: size_of::<GThreadPriority>(),
+            alignment: align_of::<GThreadPriority>(),
         },
     ),
     (
@@ -867,10 +923,10 @@ const RUST_LAYOUTS: &[(&str, Layout)] = &[
         },
     ),
     (
-        "GType",
+        "GTuples",
         Layout {
-            size: size_of::<GType>(),
-            alignment: align_of::<GType>(),
+            size: size_of::<GTuples>(),
+            alignment: align_of::<GTuples>(),
         },
     ),
     (
@@ -892,6 +948,20 @@ const RUST_LAYOUTS: &[(&str, Layout)] = &[
         Layout {
             size: size_of::<GUnicodeType>(),
             alignment: align_of::<GUnicodeType>(),
+        },
+    ),
+    (
+        "GUnixPipe",
+        Layout {
+            size: size_of::<GUnixPipe>(),
+            alignment: align_of::<GUnixPipe>(),
+        },
+    ),
+    (
+        "GUnixPipeEnd",
+        Layout {
+            size: size_of::<GUnixPipeEnd>(),
+            alignment: align_of::<GUnixPipeEnd>(),
         },
     ),
     (
@@ -971,6 +1041,13 @@ const RUST_LAYOUTS: &[(&str, Layout)] = &[
             alignment: align_of::<GVariantParseError>(),
         },
     ),
+    (
+        "GWin32OSType",
+        Layout {
+            size: size_of::<GWin32OSType>(),
+            alignment: align_of::<GWin32OSType>(),
+        },
+    ),
 ];
 
 const RUST_CONSTANTS: &[(&str, &str)] = &[
@@ -980,6 +1057,11 @@ const RUST_CONSTANTS: &[(&str, &str)] = &[
     ("GLIB_SYSDEF_MSG_DONTROUTE", "4"),
     ("GLIB_SYSDEF_MSG_OOB", "1"),
     ("GLIB_SYSDEF_MSG_PEEK", "2"),
+    ("G_ALLOCATOR_LIST", "1"),
+    ("G_ALLOCATOR_NODE", "3"),
+    ("G_ALLOCATOR_SLIST", "2"),
+    ("G_ALLOC_AND_FREE", "2"),
+    ("G_ALLOC_ONLY", "1"),
     ("(guint) G_ASCII_ALNUM", "1"),
     ("(guint) G_ASCII_ALPHA", "2"),
     ("(guint) G_ASCII_CNTRL", "4"),
@@ -1450,6 +1532,10 @@ const RUST_CONSTANTS: &[(&str, &str)] = &[
     ("(guint) G_TEST_TRAP_SILENCE_STDERR", "256"),
     ("(guint) G_TEST_TRAP_SILENCE_STDOUT", "128"),
     ("(gint) G_THREAD_ERROR_AGAIN", "0"),
+    ("(gint) G_THREAD_PRIORITY_HIGH", "2"),
+    ("(gint) G_THREAD_PRIORITY_LOW", "0"),
+    ("(gint) G_THREAD_PRIORITY_NORMAL", "1"),
+    ("(gint) G_THREAD_PRIORITY_URGENT", "3"),
     ("G_TIME_SPAN_DAY", "86400000000"),
     ("G_TIME_SPAN_HOUR", "3600000000"),
     ("G_TIME_SPAN_MILLISECOND", "1000"),
@@ -1481,6 +1567,7 @@ const RUST_CONSTANTS: &[(&str, &str)] = &[
     ("(gint) G_TOKEN_RIGHT_PAREN", "41"),
     ("(gint) G_TOKEN_STRING", "264"),
     ("(gint) G_TOKEN_SYMBOL", "265"),
+    ("G_TRACE_CURRENT_TIME", "0"),
     ("(guint) G_TRAVERSE_ALL", "3"),
     ("(guint) G_TRAVERSE_LEAFS", "1"),
     ("(guint) G_TRAVERSE_LEAVES", "1"),
@@ -1489,6 +1576,9 @@ const RUST_CONSTANTS: &[(&str, &str)] = &[
     ("(guint) G_TRAVERSE_NON_LEAVES", "2"),
     ("G_UNICHAR_MAX_DECOMPOSITION_LENGTH", "18"),
     ("(gint) G_UNICODE_BREAK_AFTER", "10"),
+    ("(gint) G_UNICODE_BREAK_AKSARA", "43"),
+    ("(gint) G_UNICODE_BREAK_AKSARA_PRE_BASE", "44"),
+    ("(gint) G_UNICODE_BREAK_AKSARA_START", "45"),
     ("(gint) G_UNICODE_BREAK_ALPHABETIC", "23"),
     ("(gint) G_UNICODE_BREAK_AMBIGUOUS", "27"),
     ("(gint) G_UNICODE_BREAK_BEFORE", "11"),
@@ -1529,6 +1619,8 @@ const RUST_CONSTANTS: &[(&str, &str)] = &[
     ("(gint) G_UNICODE_BREAK_SURROGATE", "4"),
     ("(gint) G_UNICODE_BREAK_SYMBOL", "22"),
     ("(gint) G_UNICODE_BREAK_UNKNOWN", "28"),
+    ("(gint) G_UNICODE_BREAK_VIRAMA", "47"),
+    ("(gint) G_UNICODE_BREAK_VIRAMA_FINAL", "46"),
     ("(gint) G_UNICODE_BREAK_WORD_JOINER", "30"),
     ("(gint) G_UNICODE_BREAK_ZERO_WIDTH_JOINER", "42"),
     ("(gint) G_UNICODE_BREAK_ZERO_WIDTH_SPACE", "5"),
@@ -1728,6 +1820,8 @@ const RUST_CONSTANTS: &[(&str, &str)] = &[
     ("(gint) G_UNICODE_TITLECASE_LETTER", "8"),
     ("(gint) G_UNICODE_UNASSIGNED", "2"),
     ("(gint) G_UNICODE_UPPERCASE_LETTER", "9"),
+    ("(gint) G_UNIX_PIPE_END_READ", "0"),
+    ("(gint) G_UNIX_PIPE_END_WRITE", "1"),
     ("(gint) G_URI_ERROR_BAD_AUTH_PARAMS", "4"),
     ("(gint) G_URI_ERROR_BAD_FRAGMENT", "9"),
     ("(gint) G_URI_ERROR_BAD_HOST", "5"),
@@ -1814,4 +1908,7 @@ const RUST_CONSTANTS: &[(&str, &str)] = &[
     ),
     ("(gint) G_VARIANT_PARSE_ERROR_VALUE_EXPECTED", "17"),
     ("G_WIN32_MSG_HANDLE", "19981206"),
+    ("(gint) G_WIN32_OS_ANY", "0"),
+    ("(gint) G_WIN32_OS_SERVER", "2"),
+    ("(gint) G_WIN32_OS_WORKSTATION", "1"),
 ];

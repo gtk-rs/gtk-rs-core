@@ -1896,6 +1896,13 @@ const RUST_LAYOUTS: &[(&str, Layout)] = &[
         },
     ),
     (
+        "GThreadedResolverClass",
+        Layout {
+            size: size_of::<GThreadedResolverClass>(),
+            alignment: align_of::<GThreadedResolverClass>(),
+        },
+    ),
+    (
         "GThreadedSocketService",
         Layout {
             size: size_of::<GThreadedSocketService>(),
@@ -2708,6 +2715,7 @@ const RUST_CONSTANTS: &[(&str, &str)] = &[
     ("(guint) G_FILE_COPY_NONE", "0"),
     ("(guint) G_FILE_COPY_NO_FALLBACK_FOR_MOVE", "16"),
     ("(guint) G_FILE_COPY_OVERWRITE", "1"),
+    ("(guint) G_FILE_COPY_TARGET_DEFAULT_MODIFIED_TIME", "64"),
     ("(guint) G_FILE_COPY_TARGET_DEFAULT_PERMS", "32"),
     ("(guint) G_FILE_CREATE_NONE", "0"),
     ("(guint) G_FILE_CREATE_PRIVATE", "1"),
@@ -2751,6 +2759,7 @@ const RUST_CONSTANTS: &[(&str, &str)] = &[
     ("(gint) G_IO_ERROR_CONNECTION_CLOSED", "44"),
     ("(gint) G_IO_ERROR_CONNECTION_REFUSED", "39"),
     ("(gint) G_IO_ERROR_DBUS_ERROR", "36"),
+    ("(gint) G_IO_ERROR_DESTINATION_UNSET", "48"),
     ("(gint) G_IO_ERROR_EXISTS", "2"),
     ("(gint) G_IO_ERROR_FAILED", "0"),
     ("(gint) G_IO_ERROR_FAILED_HANDLED", "30"),

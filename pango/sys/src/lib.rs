@@ -664,7 +664,7 @@ pub struct _PangoContextClass {
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type PangoContextClass = *mut _PangoContextClass;
+pub type PangoContextClass = _PangoContextClass;
 
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -876,7 +876,7 @@ pub struct _PangoFontsetSimpleClass {
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type PangoFontsetSimpleClass = *mut _PangoFontsetSimpleClass;
+pub type PangoFontsetSimpleClass = _PangoFontsetSimpleClass;
 
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -1036,7 +1036,7 @@ pub struct _PangoLayoutClass {
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type PangoLayoutClass = *mut _PangoLayoutClass;
+pub type PangoLayoutClass = _PangoLayoutClass;
 
 #[repr(C)]
 pub struct PangoLayoutIter {
@@ -1207,7 +1207,7 @@ pub struct _PangoRendererPrivate {
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type PangoRendererPrivate = *mut _PangoRendererPrivate;
+pub type PangoRendererPrivate = _PangoRendererPrivate;
 
 #[repr(C)]
 pub struct PangoScriptIter {

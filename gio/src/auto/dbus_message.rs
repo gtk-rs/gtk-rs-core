@@ -101,6 +101,14 @@ impl DBusMessage {
         unsafe { from_glib_none(ffi::g_dbus_message_get_arg0(self.to_glib_none().0)) }
     }
 
+    #[cfg(feature = "v2_80")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_80")))]
+    #[doc(alias = "g_dbus_message_get_arg0_path")]
+    #[doc(alias = "get_arg0_path")]
+    pub fn arg0_path(&self) -> Option<glib::GString> {
+        unsafe { from_glib_none(ffi::g_dbus_message_get_arg0_path(self.to_glib_none().0)) }
+    }
+
     #[doc(alias = "g_dbus_message_get_body")]
     #[doc(alias = "get_body")]
     pub fn body(&self) -> Option<glib::Variant> {

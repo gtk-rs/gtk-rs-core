@@ -7,7 +7,7 @@
 use crate::FileSetContentsFlags;
 use crate::{
     translate::*, Bytes, ChecksumType, Error, FileTest, FormatSizeFlags, Pid, Source, SpawnFlags,
-    UnicodeScript, UserDirectory,
+    UserDirectory,
 };
 use std::boxed::Box as Box_;
 
@@ -54,6 +54,13 @@ pub fn base64_encode(data: &[u8]) -> crate::GString {
 //    unsafe { TODO: call ffi:g_base64_encode_step() }
 //}
 
+#[doc(alias = "g_blow_chunks")]
+pub fn blow_chunks() {
+    unsafe {
+        ffi::g_blow_chunks();
+    }
+}
+
 #[doc(alias = "glib_check_version")]
 pub fn check_version(
     required_major: u32,
@@ -67,6 +74,11 @@ pub fn check_version(
             required_micro,
         ))
     }
+}
+
+#[doc(alias = "g_chmod")]
+pub fn chmod(filename: impl AsRef<std::path::Path>, mode: i32) -> i32 {
+    unsafe { ffi::g_chmod(filename.as_ref().to_glib_none().0, mode) }
 }
 
 #[doc(alias = "g_compute_checksum_for_bytes")]
@@ -125,6 +137,11 @@ pub fn compute_hmac_for_data(digest_type: ChecksumType, key: &[u8], data: &[u8])
             length,
         ))
     }
+}
+
+#[doc(alias = "g_creat")]
+pub fn creat(filename: impl AsRef<std::path::Path>, mode: i32) -> i32 {
+    unsafe { ffi::g_creat(filename.as_ref().to_glib_none().0, mode) }
 }
 
 #[doc(alias = "g_dcgettext")]
@@ -313,6 +330,11 @@ pub fn find_program_in_path(program: impl AsRef<std::path::Path>) -> Option<std:
     }
 }
 
+//#[doc(alias = "g_fopen")]
+//pub fn fopen(filename: impl AsRef<std::path::Path>, mode: &str) -> /*Unimplemented*/Option<Basic: Pointer> {
+//    unsafe { TODO: call ffi:g_fopen() }
+//}
+
 #[doc(alias = "g_format_size")]
 pub fn format_size(size: u64) -> crate::GString {
     unsafe { from_glib_full(ffi::g_format_size(size)) }
@@ -321,6 +343,18 @@ pub fn format_size(size: u64) -> crate::GString {
 #[doc(alias = "g_format_size_full")]
 pub fn format_size_full(size: u64, flags: FormatSizeFlags) -> crate::GString {
     unsafe { from_glib_full(ffi::g_format_size_full(size, flags.into_glib())) }
+}
+
+//#[doc(alias = "g_freopen")]
+//pub fn freopen(filename: impl AsRef<std::path::Path>, mode: &str, stream: /*Unimplemented*/Option<Basic: Pointer>) -> /*Unimplemented*/Option<Basic: Pointer> {
+//    unsafe { TODO: call ffi:g_freopen() }
+//}
+
+#[cfg(feature = "v2_64")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_64")))]
+#[doc(alias = "g_fsync")]
+pub fn fsync(fd: i32) -> i32 {
+    unsafe { ffi::g_fsync(fd) }
 }
 
 #[doc(alias = "g_get_application_name")]
@@ -530,6 +564,11 @@ pub fn listenv() -> Vec<std::ffi::OsString> {
     unsafe { FromGlibPtrContainer::from_glib_full(ffi::g_listenv()) }
 }
 
+//#[doc(alias = "g_lstat")]
+//pub fn lstat(filename: impl AsRef<std::path::Path>, buf: /*Ignored*/&mut StatBuf) -> i32 {
+//    unsafe { TODO: call ffi:g_lstat() }
+//}
+
 #[doc(alias = "g_main_current_source")]
 pub fn main_current_source() -> Option<Source> {
     unsafe { from_glib_none(ffi::g_main_current_source()) }
@@ -544,6 +583,11 @@ pub fn main_depth() -> i32 {
 pub fn markup_escape_text(text: &str) -> crate::GString {
     let length = text.len() as _;
     unsafe { from_glib_full(ffi::g_markup_escape_text(text.to_glib_none().0, length)) }
+}
+
+#[doc(alias = "g_mkdir")]
+pub fn mkdir(filename: impl AsRef<std::path::Path>, mode: i32) -> i32 {
+    unsafe { ffi::g_mkdir(filename.as_ref().to_glib_none().0, mode) }
 }
 
 #[doc(alias = "g_mkdir_with_parents")]
@@ -563,6 +607,11 @@ pub fn on_error_stack_trace(prg_name: &str) {
     unsafe {
         ffi::g_on_error_stack_trace(prg_name.to_glib_none().0);
     }
+}
+
+#[doc(alias = "g_open")]
+pub fn open(filename: impl AsRef<std::path::Path>, flags: i32, mode: i32) -> i32 {
+    unsafe { ffi::g_open(filename.as_ref().to_glib_none().0, flags, mode) }
 }
 
 #[doc(alias = "g_path_get_basename")]
@@ -620,12 +669,40 @@ pub fn reload_user_special_dirs_cache() {
     }
 }
 
+#[doc(alias = "g_remove")]
+pub fn remove(filename: impl AsRef<std::path::Path>) -> i32 {
+    unsafe { ffi::g_remove(filename.as_ref().to_glib_none().0) }
+}
+
+#[doc(alias = "g_rename")]
+pub fn rename(
+    oldfilename: impl AsRef<std::path::Path>,
+    newfilename: impl AsRef<std::path::Path>,
+) -> i32 {
+    unsafe {
+        ffi::g_rename(
+            oldfilename.as_ref().to_glib_none().0,
+            newfilename.as_ref().to_glib_none().0,
+        )
+    }
+}
+
 #[doc(alias = "g_set_application_name")]
 pub fn set_application_name(application_name: &str) {
     unsafe {
         ffi::g_set_application_name(application_name.to_glib_none().0);
     }
 }
+
+#[doc(alias = "g_set_prgname_once")]
+pub fn set_prgname_once(prgname: &str) -> bool {
+    unsafe { from_glib(ffi::g_set_prgname_once(prgname.to_glib_none().0)) }
+}
+
+//#[doc(alias = "g_set_user_dirs")]
+//pub fn set_user_dirs(first_dir_type: &str, : /*Unknown conversion*//*Unimplemented*/Basic: VarArgs) {
+//    unsafe { TODO: call ffi:g_set_user_dirs() }
+//}
 
 #[doc(alias = "g_setenv")]
 pub fn setenv(
@@ -692,6 +769,13 @@ pub fn shell_unquote(
         } else {
             Err(from_glib_full(error))
         }
+    }
+}
+
+#[doc(alias = "g_slice_debug_tree_statistics")]
+pub fn slice_debug_tree_statistics() {
+    unsafe {
+        ffi::g_slice_debug_tree_statistics();
     }
 }
 
@@ -814,14 +898,32 @@ pub fn spawn_command_line_async(
 //    unsafe { TODO: call ffi:g_spawn_sync() }
 //}
 
-#[doc(alias = "g_unicode_script_from_iso15924")]
-pub fn unicode_script_from_iso15924(iso15924: u32) -> UnicodeScript {
-    unsafe { from_glib(ffi::g_unicode_script_from_iso15924(iso15924)) }
+//#[doc(alias = "g_stat")]
+//pub fn stat(filename: impl AsRef<std::path::Path>, buf: /*Ignored*/&mut StatBuf) -> i32 {
+//    unsafe { TODO: call ffi:g_stat() }
+//}
+
+#[doc(alias = "g_trace_define_int64_counter")]
+pub fn trace_define_int64_counter(group: &str, name: &str, description: &str) -> u32 {
+    unsafe {
+        ffi::g_trace_define_int64_counter(
+            group.to_glib_none().0,
+            name.to_glib_none().0,
+            description.to_glib_none().0,
+        )
+    }
 }
 
-#[doc(alias = "g_unicode_script_to_iso15924")]
-pub fn unicode_script_to_iso15924(script: UnicodeScript) -> u32 {
-    unsafe { ffi::g_unicode_script_to_iso15924(script.into_glib()) }
+//#[doc(alias = "g_trace_mark")]
+//pub fn trace_mark(begin_time_nsec: i64, duration_nsec: i64, group: &str, name: &str, message_format: &str, : /*Unknown conversion*//*Unimplemented*/Basic: VarArgs) {
+//    unsafe { TODO: call ffi:g_trace_mark() }
+//}
+
+#[doc(alias = "g_trace_set_int64_counter")]
+pub fn trace_set_int64_counter(id: u32, value: i64) {
+    unsafe {
+        ffi::g_trace_set_int64_counter(id, value);
+    }
 }
 
 //#[cfg(unix)]
@@ -852,6 +954,11 @@ pub fn usleep(microseconds: libc::c_ulong) {
     }
 }
 
+//#[doc(alias = "g_utime")]
+//pub fn utime(filename: impl AsRef<std::path::Path>, utb: /*Unimplemented*/Option<Basic: Pointer>) -> i32 {
+//    unsafe { TODO: call ffi:g_utime() }
+//}
+
 #[doc(alias = "g_uuid_string_is_valid")]
 pub fn uuid_string_is_valid(str: &str) -> bool {
     unsafe { from_glib(ffi::g_uuid_string_is_valid(str.to_glib_none().0)) }
@@ -860,4 +967,73 @@ pub fn uuid_string_is_valid(str: &str) -> bool {
 #[doc(alias = "g_uuid_string_random")]
 pub fn uuid_string_random() -> crate::GString {
     unsafe { from_glib_full(ffi::g_uuid_string_random()) }
+}
+
+//#[doc(alias = "g_win32_check_windows_version")]
+//pub fn win32_check_windows_version(major: i32, minor: i32, spver: i32, os_type: /*Ignored*/Win32OSType) -> bool {
+//    unsafe { TODO: call ffi:g_win32_check_windows_version() }
+//}
+
+#[doc(alias = "g_win32_error_message")]
+pub fn win32_error_message(error: i32) -> crate::GString {
+    unsafe { from_glib_full(ffi::g_win32_error_message(error)) }
+}
+
+#[doc(alias = "g_win32_ftruncate")]
+pub fn win32_ftruncate(f: i32, size: u32) -> i32 {
+    unsafe { ffi::g_win32_ftruncate(f, size) }
+}
+
+#[doc(alias = "g_win32_get_command_line")]
+pub fn win32_get_command_line() -> Vec<crate::GString> {
+    unsafe { FromGlibPtrContainer::from_glib_none(ffi::g_win32_get_command_line()) }
+}
+
+#[doc(alias = "g_win32_get_package_installation_directory")]
+pub fn win32_get_package_installation_directory(package: &str, dll_name: &str) -> crate::GString {
+    unsafe {
+        from_glib_full(ffi::g_win32_get_package_installation_directory(
+            package.to_glib_none().0,
+            dll_name.to_glib_none().0,
+        ))
+    }
+}
+
+//#[doc(alias = "g_win32_get_package_installation_directory_of_module")]
+//pub fn win32_get_package_installation_directory_of_module(hmodule: /*Unimplemented*/Option<Basic: Pointer>) -> crate::GString {
+//    unsafe { TODO: call ffi:g_win32_get_package_installation_directory_of_module() }
+//}
+
+#[doc(alias = "g_win32_get_package_installation_subdirectory")]
+pub fn win32_get_package_installation_subdirectory(
+    package: &str,
+    dll_name: &str,
+    subdir: &str,
+) -> crate::GString {
+    unsafe {
+        from_glib_full(ffi::g_win32_get_package_installation_subdirectory(
+            package.to_glib_none().0,
+            dll_name.to_glib_none().0,
+            subdir.to_glib_none().0,
+        ))
+    }
+}
+
+#[doc(alias = "g_win32_get_windows_version")]
+pub fn win32_get_windows_version() -> u32 {
+    unsafe { ffi::g_win32_get_windows_version() }
+}
+
+#[doc(alias = "g_win32_getlocale")]
+pub fn win32_getlocale() -> crate::GString {
+    unsafe { from_glib_full(ffi::g_win32_getlocale()) }
+}
+
+#[doc(alias = "g_win32_locale_filename_from_utf8")]
+pub fn win32_locale_filename_from_utf8(utf8filename: &str) -> crate::GString {
+    unsafe {
+        from_glib_full(ffi::g_win32_locale_filename_from_utf8(
+            utf8filename.to_glib_none().0,
+        ))
+    }
 }
