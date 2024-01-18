@@ -5,6 +5,8 @@ pub use libc::passwd;
 #[allow(unused_imports)]
 use libc::{c_char, c_int, c_ushort, c_void};
 
+pub type GType = libc::size_t;
+
 #[cfg(all(not(unix), docsrs))]
 #[repr(C)]
 pub struct passwd {
