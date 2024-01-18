@@ -664,6 +664,60 @@ impl FromGlib<ffi::GNormalizeMode> for NormalizeMode {
     }
 }
 
+impl StaticType for NormalizeMode {
+    #[inline]
+    #[doc(alias = "g_normalize_mode_get_type")]
+    fn static_type() -> crate::Type {
+        unsafe { from_glib(ffi::g_normalize_mode_get_type()) }
+    }
+}
+
+impl crate::HasParamSpec for NormalizeMode {
+    type ParamSpec = crate::ParamSpecEnum;
+    type SetValue = Self;
+    type BuilderFn = fn(&str, Self) -> crate::ParamSpecEnumBuilder<Self>;
+
+    fn param_spec_builder() -> Self::BuilderFn {
+        Self::ParamSpec::builder_with_default
+    }
+}
+
+impl crate::value::ValueType for NormalizeMode {
+    type Type = Self;
+}
+
+unsafe impl<'a> crate::value::FromValue<'a> for NormalizeMode {
+    type Checker = crate::value::GenericValueTypeChecker<Self>;
+
+    #[inline]
+    unsafe fn from_value(value: &'a crate::Value) -> Self {
+        from_glib(crate::gobject_ffi::g_value_get_enum(value.to_glib_none().0))
+    }
+}
+
+impl ToValue for NormalizeMode {
+    #[inline]
+    fn to_value(&self) -> crate::Value {
+        let mut value = crate::Value::for_value_type::<Self>();
+        unsafe {
+            crate::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, self.into_glib());
+        }
+        value
+    }
+
+    #[inline]
+    fn value_type(&self) -> crate::Type {
+        Self::static_type()
+    }
+}
+
+impl From<NormalizeMode> for crate::Value {
+    #[inline]
+    fn from(v: NormalizeMode) -> Self {
+        ToValue::to_value(&v)
+    }
+}
+
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GOptionArg")]
@@ -904,6 +958,16 @@ pub enum UnicodeBreakType {
     EmojiModifier,
     #[doc(alias = "G_UNICODE_BREAK_ZERO_WIDTH_JOINER")]
     ZeroWidthJoiner,
+    #[doc(alias = "G_UNICODE_BREAK_AKSARA")]
+    Aksara,
+    #[doc(alias = "G_UNICODE_BREAK_AKSARA_PRE_BASE")]
+    AksaraPreBase,
+    #[doc(alias = "G_UNICODE_BREAK_AKSARA_START")]
+    AksaraStart,
+    #[doc(alias = "G_UNICODE_BREAK_VIRAMA_FINAL")]
+    ViramaFinal,
+    #[doc(alias = "G_UNICODE_BREAK_VIRAMA")]
+    Virama,
     #[doc(hidden)]
     __Unknown(i32),
 }
@@ -957,6 +1021,11 @@ impl IntoGlib for UnicodeBreakType {
             Self::EmojiBase => ffi::G_UNICODE_BREAK_EMOJI_BASE,
             Self::EmojiModifier => ffi::G_UNICODE_BREAK_EMOJI_MODIFIER,
             Self::ZeroWidthJoiner => ffi::G_UNICODE_BREAK_ZERO_WIDTH_JOINER,
+            Self::Aksara => ffi::G_UNICODE_BREAK_AKSARA,
+            Self::AksaraPreBase => ffi::G_UNICODE_BREAK_AKSARA_PRE_BASE,
+            Self::AksaraStart => ffi::G_UNICODE_BREAK_AKSARA_START,
+            Self::ViramaFinal => ffi::G_UNICODE_BREAK_VIRAMA_FINAL,
+            Self::Virama => ffi::G_UNICODE_BREAK_VIRAMA,
             Self::__Unknown(value) => value,
         }
     }
@@ -1009,8 +1078,67 @@ impl FromGlib<ffi::GUnicodeBreakType> for UnicodeBreakType {
             ffi::G_UNICODE_BREAK_EMOJI_BASE => Self::EmojiBase,
             ffi::G_UNICODE_BREAK_EMOJI_MODIFIER => Self::EmojiModifier,
             ffi::G_UNICODE_BREAK_ZERO_WIDTH_JOINER => Self::ZeroWidthJoiner,
+            ffi::G_UNICODE_BREAK_AKSARA => Self::Aksara,
+            ffi::G_UNICODE_BREAK_AKSARA_PRE_BASE => Self::AksaraPreBase,
+            ffi::G_UNICODE_BREAK_AKSARA_START => Self::AksaraStart,
+            ffi::G_UNICODE_BREAK_VIRAMA_FINAL => Self::ViramaFinal,
+            ffi::G_UNICODE_BREAK_VIRAMA => Self::Virama,
             value => Self::__Unknown(value),
         }
+    }
+}
+
+impl StaticType for UnicodeBreakType {
+    #[inline]
+    #[doc(alias = "g_unicode_break_type_get_type")]
+    fn static_type() -> crate::Type {
+        unsafe { from_glib(ffi::g_unicode_break_type_get_type()) }
+    }
+}
+
+impl crate::HasParamSpec for UnicodeBreakType {
+    type ParamSpec = crate::ParamSpecEnum;
+    type SetValue = Self;
+    type BuilderFn = fn(&str, Self) -> crate::ParamSpecEnumBuilder<Self>;
+
+    fn param_spec_builder() -> Self::BuilderFn {
+        Self::ParamSpec::builder_with_default
+    }
+}
+
+impl crate::value::ValueType for UnicodeBreakType {
+    type Type = Self;
+}
+
+unsafe impl<'a> crate::value::FromValue<'a> for UnicodeBreakType {
+    type Checker = crate::value::GenericValueTypeChecker<Self>;
+
+    #[inline]
+    unsafe fn from_value(value: &'a crate::Value) -> Self {
+        from_glib(crate::gobject_ffi::g_value_get_enum(value.to_glib_none().0))
+    }
+}
+
+impl ToValue for UnicodeBreakType {
+    #[inline]
+    fn to_value(&self) -> crate::Value {
+        let mut value = crate::Value::for_value_type::<Self>();
+        unsafe {
+            crate::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, self.into_glib());
+        }
+        value
+    }
+
+    #[inline]
+    fn value_type(&self) -> crate::Type {
+        Self::static_type()
+    }
+}
+
+impl From<UnicodeBreakType> for crate::Value {
+    #[inline]
+    fn from(v: UnicodeBreakType) -> Self {
+        ToValue::to_value(&v)
     }
 }
 
@@ -1368,6 +1496,18 @@ pub enum UnicodeScript {
     NagMundari,
     #[doc(hidden)]
     __Unknown(i32),
+}
+
+impl UnicodeScript {
+    #[doc(alias = "g_unicode_script_from_iso15924")]
+    pub fn from_iso15924(iso15924: u32) -> UnicodeScript {
+        unsafe { from_glib(ffi::g_unicode_script_from_iso15924(iso15924)) }
+    }
+
+    #[doc(alias = "g_unicode_script_to_iso15924")]
+    pub fn to_iso15924(self) -> u32 {
+        unsafe { ffi::g_unicode_script_to_iso15924(self.into_glib()) }
+    }
 }
 
 #[doc(hidden)]
@@ -1738,6 +1878,60 @@ impl FromGlib<ffi::GUnicodeScript> for UnicodeScript {
     }
 }
 
+impl StaticType for UnicodeScript {
+    #[inline]
+    #[doc(alias = "g_unicode_script_get_type")]
+    fn static_type() -> crate::Type {
+        unsafe { from_glib(ffi::g_unicode_script_get_type()) }
+    }
+}
+
+impl crate::HasParamSpec for UnicodeScript {
+    type ParamSpec = crate::ParamSpecEnum;
+    type SetValue = Self;
+    type BuilderFn = fn(&str, Self) -> crate::ParamSpecEnumBuilder<Self>;
+
+    fn param_spec_builder() -> Self::BuilderFn {
+        Self::ParamSpec::builder_with_default
+    }
+}
+
+impl crate::value::ValueType for UnicodeScript {
+    type Type = Self;
+}
+
+unsafe impl<'a> crate::value::FromValue<'a> for UnicodeScript {
+    type Checker = crate::value::GenericValueTypeChecker<Self>;
+
+    #[inline]
+    unsafe fn from_value(value: &'a crate::Value) -> Self {
+        from_glib(crate::gobject_ffi::g_value_get_enum(value.to_glib_none().0))
+    }
+}
+
+impl ToValue for UnicodeScript {
+    #[inline]
+    fn to_value(&self) -> crate::Value {
+        let mut value = crate::Value::for_value_type::<Self>();
+        unsafe {
+            crate::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, self.into_glib());
+        }
+        value
+    }
+
+    #[inline]
+    fn value_type(&self) -> crate::Type {
+        Self::static_type()
+    }
+}
+
+impl From<UnicodeScript> for crate::Value {
+    #[inline]
+    fn from(v: UnicodeScript) -> Self {
+        ToValue::to_value(&v)
+    }
+}
+
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GUnicodeType")]
@@ -1883,6 +2077,60 @@ impl FromGlib<ffi::GUnicodeType> for UnicodeType {
             ffi::G_UNICODE_SPACE_SEPARATOR => Self::SpaceSeparator,
             value => Self::__Unknown(value),
         }
+    }
+}
+
+impl StaticType for UnicodeType {
+    #[inline]
+    #[doc(alias = "g_unicode_type_get_type")]
+    fn static_type() -> crate::Type {
+        unsafe { from_glib(ffi::g_unicode_type_get_type()) }
+    }
+}
+
+impl crate::HasParamSpec for UnicodeType {
+    type ParamSpec = crate::ParamSpecEnum;
+    type SetValue = Self;
+    type BuilderFn = fn(&str, Self) -> crate::ParamSpecEnumBuilder<Self>;
+
+    fn param_spec_builder() -> Self::BuilderFn {
+        Self::ParamSpec::builder_with_default
+    }
+}
+
+impl crate::value::ValueType for UnicodeType {
+    type Type = Self;
+}
+
+unsafe impl<'a> crate::value::FromValue<'a> for UnicodeType {
+    type Checker = crate::value::GenericValueTypeChecker<Self>;
+
+    #[inline]
+    unsafe fn from_value(value: &'a crate::Value) -> Self {
+        from_glib(crate::gobject_ffi::g_value_get_enum(value.to_glib_none().0))
+    }
+}
+
+impl ToValue for UnicodeType {
+    #[inline]
+    fn to_value(&self) -> crate::Value {
+        let mut value = crate::Value::for_value_type::<Self>();
+        unsafe {
+            crate::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, self.into_glib());
+        }
+        value
+    }
+
+    #[inline]
+    fn value_type(&self) -> crate::Type {
+        Self::static_type()
+    }
+}
+
+impl From<UnicodeType> for crate::Value {
+    #[inline]
+    fn from(v: UnicodeType) -> Self {
+        ToValue::to_value(&v)
     }
 }
 

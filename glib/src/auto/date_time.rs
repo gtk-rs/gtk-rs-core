@@ -77,11 +77,33 @@ impl DateTime {
         }
     }
 
+    #[cfg(feature = "v2_80")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_80")))]
+    #[doc(alias = "g_date_time_new_from_unix_local_usec")]
+    #[doc(alias = "new_from_unix_local_usec")]
+    pub fn from_unix_local_usec(usecs: i64) -> Result<DateTime, BoolError> {
+        unsafe {
+            Option::<_>::from_glib_full(ffi::g_date_time_new_from_unix_local_usec(usecs))
+                .ok_or_else(|| crate::bool_error!("Invalid date"))
+        }
+    }
+
     #[doc(alias = "g_date_time_new_from_unix_utc")]
     #[doc(alias = "new_from_unix_utc")]
     pub fn from_unix_utc(t: i64) -> Result<DateTime, BoolError> {
         unsafe {
             Option::<_>::from_glib_full(ffi::g_date_time_new_from_unix_utc(t))
+                .ok_or_else(|| crate::bool_error!("Invalid date"))
+        }
+    }
+
+    #[cfg(feature = "v2_80")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_80")))]
+    #[doc(alias = "g_date_time_new_from_unix_utc_usec")]
+    #[doc(alias = "new_from_unix_utc_usec")]
+    pub fn from_unix_utc_usec(usecs: i64) -> Result<DateTime, BoolError> {
+        unsafe {
+            Option::<_>::from_glib_full(ffi::g_date_time_new_from_unix_utc_usec(usecs))
                 .ok_or_else(|| crate::bool_error!("Invalid date"))
         }
     }
@@ -453,6 +475,13 @@ impl DateTime {
     #[doc(alias = "g_date_time_to_unix")]
     pub fn to_unix(&self) -> i64 {
         unsafe { ffi::g_date_time_to_unix(self.to_glib_none().0) }
+    }
+
+    #[cfg(feature = "v2_80")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_80")))]
+    #[doc(alias = "g_date_time_to_unix_usec")]
+    pub fn to_unix_usec(&self) -> i64 {
+        unsafe { ffi::g_date_time_to_unix_usec(self.to_glib_none().0) }
     }
 
     #[doc(alias = "g_date_time_to_utc")]

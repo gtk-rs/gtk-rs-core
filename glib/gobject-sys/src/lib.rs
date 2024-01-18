@@ -53,13 +53,14 @@ pub const G_PARAM_USER_SHIFT: c_int = 8;
 pub const G_SIGNAL_FLAGS_MASK: c_int = 511;
 pub const G_SIGNAL_MATCH_MASK: c_int = 63;
 pub const G_TYPE_FLAG_RESERVED_ID_BIT: GType = 1;
-pub const G_TYPE_FUNDAMENTAL_MAX: c_int = 255;
+pub const G_TYPE_FUNDAMENTAL_MAX: c_int = 1020;
 pub const G_TYPE_FUNDAMENTAL_SHIFT: c_int = 2;
 pub const G_TYPE_RESERVED_BSE_FIRST: c_int = 32;
 pub const G_TYPE_RESERVED_BSE_LAST: c_int = 48;
 pub const G_TYPE_RESERVED_GLIB_FIRST: c_int = 22;
 pub const G_TYPE_RESERVED_GLIB_LAST: c_int = 31;
 pub const G_TYPE_RESERVED_USER_FIRST: c_int = 49;
+pub const G_VALUE_COLLECT_FORMAT_MAX_LENGTH: c_int = 8;
 pub const G_VALUE_INTERNED_STRING: c_int = 268435456;
 pub const G_VALUE_NOCOPY_CONTENTS: c_int = 134217728;
 
@@ -74,6 +75,14 @@ pub type GConnectFlags = c_uint;
 pub const G_CONNECT_DEFAULT: GConnectFlags = 0;
 pub const G_CONNECT_AFTER: GConnectFlags = 1;
 pub const G_CONNECT_SWAPPED: GConnectFlags = 2;
+
+pub type GIOCondition = c_uint;
+pub const G_IO_IN: GIOCondition = 1;
+pub const G_IO_OUT: GIOCondition = 4;
+pub const G_IO_PRI: GIOCondition = 2;
+pub const G_IO_ERR: GIOCondition = 8;
+pub const G_IO_HUP: GIOCondition = 16;
+pub const G_IO_NVAL: GIOCondition = 32;
 
 pub type GParamFlags = c_uint;
 pub const G_PARAM_READABLE: GParamFlags = 1;
@@ -130,15 +139,25 @@ pub const G_TYPE_FLAG_DERIVABLE: GTypeFundamentalFlags = 4;
 pub const G_TYPE_FLAG_DEEP_DERIVABLE: GTypeFundamentalFlags = 8;
 
 // Unions
+#[derive(Copy, Clone)]
 #[repr(C)]
-pub struct GTypeCValue {
-    _data: [u8; 0],
-    _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
+pub union GTypeCValue {
+    pub v_int: c_int,
+    pub v_long: c_long,
+    pub v_int64: i64,
+    pub v_double: c_double,
+    pub v_pointer: gpointer,
 }
 
 impl ::std::fmt::Debug for GTypeCValue {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GTypeCValue @ {self:p}")).finish()
+        f.debug_struct(&format!("GTypeCValue @ {self:p}"))
+            .field("v_int", unsafe { &self.v_int })
+            .field("v_long", unsafe { &self.v_long })
+            .field("v_int64", unsafe { &self.v_int64 })
+            .field("v_double", unsafe { &self.v_double })
+            .field("v_pointer", unsafe { &self.v_pointer })
+            .finish()
     }
 }
 
@@ -514,7 +533,7 @@ pub struct _GParamSpecPool {
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GParamSpecPool = *mut _GParamSpecPool;
+pub type GParamSpecPool = _GParamSpecPool;
 
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -1392,6 +1411,11 @@ extern "C" {
     pub fn g_binding_flags_get_type() -> GType;
 
     //=========================================================================
+    // GIOCondition
+    //=========================================================================
+    pub fn g_io_condition_get_type() -> GType;
+
+    //=========================================================================
     // GCClosure
     //=========================================================================
     pub fn g_cclosure_marshal_BOOLEAN__BOXED_BOXED(
@@ -1698,6 +1722,9 @@ extern "C" {
     //=========================================================================
     // GParamSpecPool
     //=========================================================================
+    #[cfg(feature = "v2_80")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_80")))]
+    pub fn g_param_spec_pool_free(pool: *mut GParamSpecPool);
     pub fn g_param_spec_pool_insert(
         pool: *mut GParamSpecPool,
         pspec: *mut GParamSpec,
@@ -1836,6 +1863,9 @@ extern "C" {
     pub fn g_value_set_uint64(value: *mut GValue, v_uint64: u64);
     pub fn g_value_set_ulong(value: *mut GValue, v_ulong: c_ulong);
     pub fn g_value_set_variant(value: *mut GValue, variant: *mut glib::GVariant);
+    #[cfg(feature = "v2_80")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_80")))]
+    pub fn g_value_steal_string(value: *mut GValue) -> *mut c_char;
     pub fn g_value_take_boxed(value: *mut GValue, v_boxed: gconstpointer);
     pub fn g_value_take_object(value: *mut GValue, v_object: gpointer);
     pub fn g_value_take_param(value: *mut GValue, param: *mut GParamSpec);
@@ -2704,8 +2734,6 @@ extern "C" {
     pub fn g_signal_stop_emission(instance: *mut GObject, signal_id: c_uint, detail: glib::GQuark);
     pub fn g_signal_stop_emission_by_name(instance: *mut GObject, detailed_signal: *const c_char);
     pub fn g_signal_type_cclosure_new(itype: GType, struct_offset: c_uint) -> *mut GClosure;
-    pub fn g_source_set_closure(source: *mut glib::GSource, closure: *mut GClosure);
-    pub fn g_source_set_dummy_callback(source: *mut glib::GSource);
     pub fn g_strdup_value_contents(value: *const GValue) -> *mut c_char;
     pub fn g_type_add_class_cache_func(cache_data: gpointer, cache_func: GTypeClassCacheFunc);
     pub fn g_type_add_class_private(class_type: GType, private_size: size_t);
@@ -2794,5 +2822,6 @@ extern "C" {
     pub fn g_type_remove_interface_check(check_data: gpointer, check_func: GTypeInterfaceCheckFunc);
     pub fn g_type_set_qdata(type_: GType, quark: glib::GQuark, data: gpointer);
     pub fn g_type_test_flags(type_: GType, flags: c_uint) -> gboolean;
+    pub fn g_variant_get_gtype() -> GType;
 
 }

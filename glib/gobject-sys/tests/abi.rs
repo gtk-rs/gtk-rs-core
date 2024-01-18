@@ -251,6 +251,13 @@ const RUST_LAYOUTS: &[(&str, Layout)] = &[
         },
     ),
     (
+        "GIOCondition",
+        Layout {
+            size: size_of::<GIOCondition>(),
+            alignment: align_of::<GIOCondition>(),
+        },
+    ),
+    (
         "GInitiallyUnowned",
         Layout {
             size: size_of::<GInitiallyUnowned>(),
@@ -517,6 +524,13 @@ const RUST_LAYOUTS: &[(&str, Layout)] = &[
         },
     ),
     (
+        "GTypeCValue",
+        Layout {
+            size: size_of::<GTypeCValue>(),
+            alignment: align_of::<GTypeCValue>(),
+        },
+    ),
+    (
         "GTypeClass",
         Layout {
             size: size_of::<GTypeClass>(),
@@ -638,6 +652,12 @@ const RUST_CONSTANTS: &[(&str, &str)] = &[
     ("(guint) G_CONNECT_AFTER", "1"),
     ("(guint) G_CONNECT_DEFAULT", "0"),
     ("(guint) G_CONNECT_SWAPPED", "2"),
+    ("(guint) G_IO_ERR", "8"),
+    ("(guint) G_IO_HUP", "16"),
+    ("(guint) G_IO_IN", "1"),
+    ("(guint) G_IO_NVAL", "32"),
+    ("(guint) G_IO_OUT", "4"),
+    ("(guint) G_IO_PRI", "2"),
     ("(guint) G_PARAM_CONSTRUCT", "4"),
     ("(guint) G_PARAM_CONSTRUCT_ONLY", "8"),
     ("(guint) G_PARAM_DEPRECATED", "2147483648"),
@@ -686,13 +706,14 @@ const RUST_CONSTANTS: &[(&str, &str)] = &[
     ("(guint) G_TYPE_FLAG_NONE", "0"),
     ("G_TYPE_FLAG_RESERVED_ID_BIT", "1"),
     ("(guint) G_TYPE_FLAG_VALUE_ABSTRACT", "32"),
-    ("G_TYPE_FUNDAMENTAL_MAX", "255"),
+    ("G_TYPE_FUNDAMENTAL_MAX", "1020"),
     ("G_TYPE_FUNDAMENTAL_SHIFT", "2"),
     ("G_TYPE_RESERVED_BSE_FIRST", "32"),
     ("G_TYPE_RESERVED_BSE_LAST", "48"),
     ("G_TYPE_RESERVED_GLIB_FIRST", "22"),
     ("G_TYPE_RESERVED_GLIB_LAST", "31"),
     ("G_TYPE_RESERVED_USER_FIRST", "49"),
+    ("G_VALUE_COLLECT_FORMAT_MAX_LENGTH", "8"),
     ("G_VALUE_INTERNED_STRING", "268435456"),
     ("G_VALUE_NOCOPY_CONTENTS", "134217728"),
 ];

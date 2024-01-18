@@ -45,11 +45,15 @@ impl MarkupParseContext {
         }
     }
 
-    //#[doc(alias = "g_markup_parse_context_get_element_stack")]
-    //#[doc(alias = "get_element_stack")]
-    //pub fn element_stack(&self) -> /*Unimplemented*/Vec<Basic: Pointer> {
-    //    unsafe { TODO: call ffi:g_markup_parse_context_get_element_stack() }
-    //}
+    #[doc(alias = "g_markup_parse_context_get_element_stack")]
+    #[doc(alias = "get_element_stack")]
+    pub fn element_stack(&self) -> Vec<crate::GString> {
+        unsafe {
+            FromGlibPtrContainer::from_glib_none(ffi::g_markup_parse_context_get_element_stack(
+                self.to_glib_none().0,
+            ))
+        }
+    }
 
     #[doc(alias = "g_markup_parse_context_get_position")]
     #[doc(alias = "get_position")]

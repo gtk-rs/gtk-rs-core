@@ -41,6 +41,15 @@ pub trait ApplicationCommandLineExt:
         }
     }
 
+    #[cfg(feature = "v2_80")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_80")))]
+    #[doc(alias = "g_application_command_line_done")]
+    fn done(&self) {
+        unsafe {
+            ffi::g_application_command_line_done(self.as_ref().to_glib_none().0);
+        }
+    }
+
     #[doc(alias = "g_application_command_line_get_arguments")]
     #[doc(alias = "get_arguments")]
     fn arguments(&self) -> Vec<std::ffi::OsString> {
@@ -138,10 +147,34 @@ pub trait ApplicationCommandLineExt:
     //    unsafe { TODO: call ffi:g_application_command_line_print() }
     //}
 
+    #[cfg(feature = "v2_80")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_80")))]
+    #[doc(alias = "g_application_command_line_print_literal")]
+    fn print_literal(&self, message: &str) {
+        unsafe {
+            ffi::g_application_command_line_print_literal(
+                self.as_ref().to_glib_none().0,
+                message.to_glib_none().0,
+            );
+        }
+    }
+
     //#[doc(alias = "g_application_command_line_printerr")]
     //fn printerr(&self, format: &str, : /*Unknown conversion*//*Unimplemented*/Basic: VarArgs) {
     //    unsafe { TODO: call ffi:g_application_command_line_printerr() }
     //}
+
+    #[cfg(feature = "v2_80")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_80")))]
+    #[doc(alias = "g_application_command_line_printerr_literal")]
+    fn printerr_literal(&self, message: &str) {
+        unsafe {
+            ffi::g_application_command_line_printerr_literal(
+                self.as_ref().to_glib_none().0,
+                message.to_glib_none().0,
+            );
+        }
+    }
 
     #[doc(alias = "g_application_command_line_set_exit_status")]
     fn set_exit_status(&self, exit_status: i32) {

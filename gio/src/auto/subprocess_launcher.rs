@@ -108,11 +108,11 @@ impl SubprocessLauncher {
     #[cfg(unix)]
     #[cfg_attr(docsrs, doc(cfg(unix)))]
     #[doc(alias = "g_subprocess_launcher_set_stdin_file_path")]
-    pub fn set_stdin_file_path(&self, path: &str) {
+    pub fn set_stdin_file_path(&self, path: Option<impl AsRef<std::path::Path>>) {
         unsafe {
             ffi::g_subprocess_launcher_set_stdin_file_path(
                 self.to_glib_none().0,
-                path.to_glib_none().0,
+                path.as_ref().map(|p| p.as_ref()).to_glib_none().0,
             );
         }
     }
