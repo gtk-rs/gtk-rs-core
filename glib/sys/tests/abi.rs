@@ -1045,8 +1045,8 @@ const RUST_LAYOUTS: &[(&str, Layout)] = &[
             alignment: align_of::<GVariantParseError>(),
         },
     ),
-    #[cfg(window)]
-    #[cfg_attr(docsrs, doc(cfg(window)))]
+    #[cfg(windows)]
+    #[cfg_attr(docsrs, doc(cfg(windows)))]
     (
         "GWin32OSType",
         Layout {
