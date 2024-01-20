@@ -249,7 +249,6 @@ int main() {
     printf("%s;%zu;%zu\n", "GTcpWrapperConnection", sizeof(GTcpWrapperConnection), alignof(GTcpWrapperConnection));
     printf("%s;%zu;%zu\n", "GTcpWrapperConnectionClass", sizeof(GTcpWrapperConnectionClass), alignof(GTcpWrapperConnectionClass));
     printf("%s;%zu;%zu\n", "GTestDBusFlags", sizeof(GTestDBusFlags), alignof(GTestDBusFlags));
-    printf("%s;%zu;%zu\n", "GThreadedResolverClass", sizeof(GThreadedResolverClass), alignof(GThreadedResolverClass));
     printf("%s;%zu;%zu\n", "GThreadedSocketService", sizeof(GThreadedSocketService), alignof(GThreadedSocketService));
     printf("%s;%zu;%zu\n", "GThreadedSocketServiceClass", sizeof(GThreadedSocketServiceClass), alignof(GThreadedSocketServiceClass));
     printf("%s;%zu;%zu\n", "GTlsAuthenticationMode", sizeof(GTlsAuthenticationMode), alignof(GTlsAuthenticationMode));
