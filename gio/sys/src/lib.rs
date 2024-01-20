@@ -9379,7 +9379,6 @@ extern "C" {
     // GResolverRecordType
     //=========================================================================
     pub fn g_resolver_record_type_get_type() -> GType;
-    pub fn g_resolver_record_type_to_rrtype(type_: GResolverRecordType) -> c_int;
 
     //=========================================================================
     // GResourceError
@@ -12852,14 +12851,6 @@ extern "C" {
     pub fn g_resolver_free_addresses(addresses: *mut glib::GList);
     pub fn g_resolver_free_targets(targets: *mut glib::GList);
     pub fn g_resolver_get_default() -> *mut GResolver;
-    pub fn g_resolver_records_from_res_query(
-        rrname: *const c_char,
-        rrtype: c_int,
-        answer: *const u8,
-        len: ssize_t,
-        herr: c_int,
-        error: *mut *mut glib::GError,
-    ) -> *mut glib::GList;
     #[cfg(feature = "v2_78")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_78")))]
     pub fn g_resolver_get_timeout(resolver: *mut GResolver) -> c_uint;

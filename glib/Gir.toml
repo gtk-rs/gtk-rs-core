@@ -134,6 +134,12 @@ status = "generate"
     pattern = "(idle_remove_by_data|qsort_with_data)"
     ignore = true # Unsafe functions
     [[object.function]]
+    pattern = "trace_(define_int64_counter|set_int64_counter|mark)"
+    ignore = true # not useful
+    [[object.function]]
+    pattern = "(fopen|creat|chmod|blow_chunks|utime|slice_debug_tree_statistics|rename|remove|open|mkdir|lstat|fsync|freopen|set_prgname_once)"
+    ignore = true # see https://gitlab.gnome.org/GNOME/glib/-/issues/3231
+    [[object.function]]
     pattern = "iconv"
     doc_struct_name = "IConv"
     manual = true

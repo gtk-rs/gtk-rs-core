@@ -41,11 +41,6 @@ impl Resolver {
     pub fn default() -> Resolver {
         unsafe { from_glib_full(ffi::g_resolver_get_default()) }
     }
-
-    //#[doc(alias = "g_resolver_records_from_res_query")]
-    //pub fn records_from_res_query(rrname: &str, rrtype: i32, answer: u8, len: isize, herr: i32) -> Result</*Unimplemented*/Vec<Basic: Pointer>, glib::Error> {
-    //    unsafe { TODO: call ffi:g_resolver_records_from_res_query() }
-    //}
 }
 
 mod sealed {
