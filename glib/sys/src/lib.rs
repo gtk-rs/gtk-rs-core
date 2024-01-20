@@ -6378,7 +6378,6 @@ extern "C" {
     pub fn g_bit_storage(number: c_ulong) -> c_uint;
     pub fn g_bit_trylock(address: *mut c_int, lock_bit: c_int) -> gboolean;
     pub fn g_bit_unlock(address: *mut c_int, lock_bit: c_int);
-    pub fn g_blow_chunks();
     pub fn g_build_filename(first_element: *const c_char, ...) -> *mut c_char;
     //pub fn g_build_filename_valist(first_element: *const c_char, args: /*Unimplemented*/*mut va_list) -> *mut c_char;
     pub fn g_build_filenamev(args: *mut *mut c_char) -> *mut c_char;
@@ -6406,7 +6405,6 @@ extern "C" {
         notify: GDestroyNotify,
     ) -> c_uint;
     pub fn g_child_watch_source_new(pid: GPid) -> *mut GSource;
-    pub fn g_chmod(filename: *const c_char, mode: c_int) -> c_int;
     pub fn g_clear_error(error: *mut *mut GError);
     pub fn g_clear_handle_id(tag_ptr: *mut c_uint, clear_func: GClearHandleFunc);
     #[cfg(feature = "v2_64")]
@@ -6478,7 +6476,6 @@ extern "C" {
         bytes_written: *mut size_t,
         error: *mut *mut GError,
     ) -> *mut u8;
-    pub fn g_creat(filename: *const c_char, mode: c_int) -> c_int;
     pub fn g_datalist_clear(datalist: *mut *mut GData);
     pub fn g_datalist_foreach(
         datalist: *mut *mut GData,
@@ -6628,7 +6625,6 @@ extern "C" {
         error: *mut *mut GError,
     ) -> *mut c_char;
     pub fn g_find_program_in_path(program: *const c_char) -> *mut c_char;
-    pub fn g_fopen(filename: *const c_char, mode: *const c_char) -> *mut FILE;
     pub fn g_format_size(size: u64) -> *mut c_char;
     pub fn g_format_size_for_display(size: i64) -> *mut c_char;
     pub fn g_format_size_full(size: u64, flags: GFormatSizeFlags) -> *mut c_char;
@@ -6637,10 +6633,6 @@ extern "C" {
     #[cfg(feature = "v2_76")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_76")))]
     pub fn g_free_sized(mem: gpointer, size: size_t);
-    pub fn g_freopen(filename: *const c_char, mode: *const c_char, stream: *mut FILE) -> *mut FILE;
-    #[cfg(feature = "v2_64")]
-    #[cfg_attr(docsrs, doc(cfg(feature = "v2_64")))]
-    pub fn g_fsync(fd: c_int) -> c_int;
     pub fn g_get_application_name() -> *const c_char;
     pub fn g_get_charset(charset: *mut *const c_char) -> gboolean;
     pub fn g_get_codeset() -> *mut c_char;
@@ -6845,7 +6837,6 @@ extern "C" {
         user_data: gpointer,
     ) -> GLogWriterOutput;
     //pub fn g_logv(log_domain: *const c_char, log_level: GLogLevelFlags, format: *const c_char, args: /*Unimplemented*/va_list);
-    pub fn g_lstat(filename: *const c_char, buf: *mut GStatBuf) -> c_int;
     pub fn g_main_current_source() -> *mut GSource;
     pub fn g_main_depth() -> c_int;
     pub fn g_malloc(n_bytes: size_t) -> gpointer;
@@ -6872,7 +6863,6 @@ extern "C" {
     #[cfg(feature = "v2_68")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_68")))]
     pub fn g_memdup2(mem: gconstpointer, byte_size: size_t) -> gpointer;
-    pub fn g_mkdir(filename: *const c_char, mode: c_int) -> c_int;
     pub fn g_mkdir_with_parents(pathname: *const c_char, mode: c_int) -> c_int;
     pub fn g_mkdtemp(tmpl: *mut c_char) -> *mut c_char;
     pub fn g_mkdtemp_full(tmpl: *mut c_char, mode: c_int) -> *mut c_char;
@@ -6882,7 +6872,6 @@ extern "C" {
     pub fn g_number_parser_error_quark() -> GQuark;
     pub fn g_on_error_query(prg_name: *const c_char);
     pub fn g_on_error_stack_trace(prg_name: *const c_char);
-    pub fn g_open(filename: *const c_char, flags: c_int, mode: c_int) -> c_int;
     pub fn g_option_error_quark() -> GQuark;
     pub fn g_parse_debug_string(
         string: *const c_char,
@@ -7010,8 +6999,6 @@ extern "C" {
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_58")))]
     pub fn g_ref_string_release(str: *mut c_char);
     pub fn g_reload_user_special_dirs_cache();
-    pub fn g_remove(filename: *const c_char) -> c_int;
-    pub fn g_rename(oldfilename: *const c_char, newfilename: *const c_char) -> c_int;
     pub fn g_return_if_fail_warning(
         log_domain: *const c_char,
         pretty_function: *const c_char,
@@ -7033,7 +7020,6 @@ extern "C" {
         message: *const c_char,
     );
     pub fn g_set_prgname(prgname: *const c_char);
-    pub fn g_set_prgname_once(prgname: *const c_char) -> gboolean;
     pub fn g_set_print_handler(func: GPrintFunc) -> GPrintFunc;
     pub fn g_set_printerr_handler(func: GPrintFunc) -> GPrintFunc;
     pub fn g_set_user_dirs(first_dir_type: *const c_char, ...);
@@ -7051,7 +7037,6 @@ extern "C" {
     pub fn g_slice_alloc(block_size: size_t) -> gpointer;
     pub fn g_slice_alloc0(block_size: size_t) -> gpointer;
     pub fn g_slice_copy(block_size: size_t, mem_block: gconstpointer) -> gpointer;
-    pub fn g_slice_debug_tree_statistics();
     pub fn g_slice_free1(block_size: size_t, mem_block: gpointer);
     pub fn g_slice_free_chain_with_offset(
         block_size: size_t,
@@ -7390,20 +7375,6 @@ extern "C" {
     ) -> c_uint;
     pub fn g_timeout_source_new(interval: c_uint) -> *mut GSource;
     pub fn g_timeout_source_new_seconds(interval: c_uint) -> *mut GSource;
-    pub fn g_trace_define_int64_counter(
-        group: *const c_char,
-        name: *const c_char,
-        description: *const c_char,
-    ) -> c_uint;
-    pub fn g_trace_mark(
-        begin_time_nsec: i64,
-        duration_nsec: i64,
-        group: *const c_char,
-        name: *const c_char,
-        message_format: *const c_char,
-        ...
-    );
-    pub fn g_trace_set_int64_counter(id: c_uint, value: i64);
     pub fn g_try_malloc(n_bytes: size_t) -> gpointer;
     pub fn g_try_malloc0(n_bytes: size_t) -> gpointer;
     pub fn g_try_malloc0_n(n_blocks: size_t, n_block_bytes: size_t) -> gpointer;
@@ -7574,7 +7545,6 @@ extern "C" {
         max_len: size_t,
         end: *mut *const c_char,
     ) -> gboolean;
-    pub fn g_utime(filename: *const c_char, utb: *mut utimbuf) -> c_int;
     pub fn g_uuid_string_is_valid(str: *const c_char) -> gboolean;
     pub fn g_uuid_string_random() -> *mut c_char;
     pub fn g_variant_get_gtype() -> GType;

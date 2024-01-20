@@ -68,6 +68,14 @@ ignore = [
 name = "GLib.*"
 status = "generate"
     [[object.function]]
+    pattern = "trace_(define_int64_counter|set_int64_counter|mark)"
+    # see https://gitlab.gnome.org/GNOME/glib/-/issues/3231
+    ignore = true
+    [[object.function]]
+    pattern = "(fopen|creat|chmod|blow_chunks|utime|slice_debug_tree_statistics|rename|remove|open|mkdir|lstat|fsync|freopen|set_prgname_once)"
+    # see https://gitlab.gnome.org/GNOME/glib/-/issues/3231 + majority of those are available through std
+    ignore = true
+    [[object.function]]
     name = "win32_locale_filename_from_utf8"
     cfg_condition = "windows"
     [[object.function]]

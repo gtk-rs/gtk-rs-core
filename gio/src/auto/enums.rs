@@ -2565,13 +2565,6 @@ pub enum ResolverRecordType {
     __Unknown(i32),
 }
 
-impl ResolverRecordType {
-    #[doc(alias = "g_resolver_record_type_to_rrtype")]
-    pub fn to_rrtype(self) -> i32 {
-        unsafe { ffi::g_resolver_record_type_to_rrtype(self.into_glib()) }
-    }
-}
-
 #[doc(hidden)]
 impl IntoGlib for ResolverRecordType {
     type GlibType = ffi::GResolverRecordType;
