@@ -1896,13 +1896,6 @@ const RUST_LAYOUTS: &[(&str, Layout)] = &[
         },
     ),
     (
-        "GThreadedResolverClass",
-        Layout {
-            size: size_of::<GThreadedResolverClass>(),
-            alignment: align_of::<GThreadedResolverClass>(),
-        },
-    ),
-    (
         "GThreadedSocketService",
         Layout {
             size: size_of::<GThreadedSocketService>(),

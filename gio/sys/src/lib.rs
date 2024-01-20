@@ -6170,20 +6170,6 @@ pub type GThemedIconClass = _GThemedIconClass;
 
 #[derive(Copy, Clone)]
 #[repr(C)]
-pub struct GThreadedResolverClass {
-    pub parent_class: GResolverClass,
-}
-
-impl ::std::fmt::Debug for GThreadedResolverClass {
-    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GThreadedResolverClass @ {self:p}"))
-            .field("parent_class", &self.parent_class)
-            .finish()
-    }
-}
-
-#[derive(Copy, Clone)]
-#[repr(C)]
 pub struct GThreadedSocketServiceClass {
     pub parent_class: GSocketServiceClass,
     pub run: Option<
