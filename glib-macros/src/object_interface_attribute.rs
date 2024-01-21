@@ -1,8 +1,7 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
 use heck::ToShoutySnakeCase;
-use proc_macro2::TokenStream;
-use proc_macro_error::abort_call_site;
+use proc_macro2::{Span, TokenStream};
 use quote::{format_ident, quote, ToTokens};
 
 use crate::utils::{parse_optional_nested_meta_items, NestedMetaItem};
@@ -10,7 +9,7 @@ use crate::utils::{parse_optional_nested_meta_items, NestedMetaItem};
 pub const WRONG_PLACE_MSG: &str =
     "This macro should be used on `impl` block for `glib::ObjectInterface` trait";
 
-pub fn impl_object_interface(input: &mut syn::ItemImpl) -> TokenStream {
+pub fn impl_object_interface(input: &mut syn::ItemImpl) -> syn::Result<TokenStream> {
     let crate_ident = crate::utils::crate_ident_new();
     let syn::ItemImpl {
         attrs,
@@ -24,15 +23,11 @@ pub fn impl_object_interface(input: &mut syn::ItemImpl) -> TokenStream {
 
     let self_ty_as_ident = match &**self_ty {
         syn::Type::Path(syn::TypePath { path, .. }) => path.require_ident(),
-        _ => Err(syn::Error::new(
-            syn::spanned::Spanned::span(self_ty),
+        _ => Err(syn::Error::new_spanned(
+            &self_ty,
             "expected this path to be an identifier",
         )),
-    };
-    let self_ty = match self_ty_as_ident {
-        Ok(ident) => ident,
-        Err(e) => return e.to_compile_error(),
-    };
+    }?;
 
     let mut plugin_type = NestedMetaItem::<syn::Path>::new("plugin_type").value_required();
     let mut lazy_registration =
@@ -42,12 +37,11 @@ pub fn impl_object_interface(input: &mut syn::ItemImpl) -> TokenStream {
         &*attrs,
         "object_interface_dynamic",
         &mut [&mut plugin_type, &mut lazy_registration],
-    );
+    )?;
 
     let register_object_interface = match found {
-        Err(e) => return e.to_compile_error(),
-        Ok(None) => register_object_interface_as_static(&crate_ident, self_ty),
-        Ok(Some(_)) => {
+        None => register_object_interface_as_static(&crate_ident, self_ty_as_ident),
+        Some(_) => {
             // remove attribute 'object_interface_dynamic' from the attribute list because it is not a real proc_macro_attribute
             attrs.retain(|attr| !attr.path().is_ident("object_interface_dynamic"));
             let plugin_ty = plugin_type
@@ -57,7 +51,7 @@ pub fn impl_object_interface(input: &mut syn::ItemImpl) -> TokenStream {
             let lazy_registration = lazy_registration.value.map(|b| b.value).unwrap_or_default();
             register_object_interface_as_dynamic(
                 &crate_ident,
-                self_ty,
+                self_ty_as_ident,
                 plugin_ty,
                 lazy_registration,
             )
@@ -82,12 +76,12 @@ pub fn impl_object_interface(input: &mut syn::ItemImpl) -> TokenStream {
         ))
     };
 
-    let trait_path = match &trait_ {
-        Some(path) => &path.1,
-        None => abort_call_site!(WRONG_PLACE_MSG),
-    };
+    let trait_path = &trait_
+        .as_ref()
+        .ok_or_else(|| syn::Error::new(Span::call_site(), WRONG_PLACE_MSG))?
+        .1;
 
-    quote! {
+    Ok(quote! {
         #(#attrs)*
         #unsafety impl #generics #trait_path for #self_ty {
             #prerequisites_opt
@@ -102,7 +96,7 @@ pub fn impl_object_interface(input: &mut syn::ItemImpl) -> TokenStream {
         }
 
         #register_object_interface
-    }
+    })
 }
 
 // Registers the object interface as a static type.

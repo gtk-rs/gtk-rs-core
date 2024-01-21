@@ -1,7 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
 use proc_macro2::{Ident, TokenStream};
-use proc_macro_error::abort_call_site;
 use quote::quote;
 
 use crate::utils::{crate_ident_new, parse_nested_meta_items, NestedMetaItem};
@@ -93,14 +92,14 @@ fn refcounted_type_prefix(name: &Ident, crate_ident: &TokenStream) -> proc_macro
     }
 }
 
-pub fn impl_shared_boxed(input: &syn::DeriveInput) -> proc_macro2::TokenStream {
+pub fn impl_shared_boxed(input: &syn::DeriveInput) -> syn::Result<proc_macro2::TokenStream> {
     let name = &input.ident;
 
-    let refcounted_type = match refcounted_type(input) {
-        Some(p) => p,
-        _ => {
-            abort_call_site!("#[derive(glib::SharedBoxed)] requires struct MyStruct(T: RefCounted)")
-        }
+    let Some(refcounted_type) = refcounted_type(input) else {
+        return Err(syn::Error::new_spanned(
+            input,
+            "#[derive(glib::SharedBoxed)] requires struct MyStruct(T: RefCounted)",
+        ));
     };
 
     let mut gtype_name = NestedMetaItem::<syn::LitStr>::new("name")
@@ -112,17 +111,13 @@ pub fn impl_shared_boxed(input: &syn::DeriveInput) -> proc_macro2::TokenStream {
         &input.attrs,
         "shared_boxed_type",
         &mut [&mut gtype_name, &mut nullable],
-    );
+    )?;
 
-    match found {
-        Ok(None) => {
-            abort_call_site!(
-                "#[derive(glib::SharedBoxed)] requires #[shared_boxed_type(name = \"SharedBoxedTypeName\")]"
-            )
-        }
-        Err(e) => return e.to_compile_error(),
-        _ => (),
-    };
+    if found.is_none() {
+        return Err(syn::Error::new_spanned(input,
+            "#[derive(glib::SharedBoxed)] requires #[shared_boxed_type(name = \"SharedBoxedTypeName\")]"
+        ));
+    }
 
     let gtype_name = gtype_name.value.unwrap();
     let nullable = nullable.found || nullable.value.map(|b| b.value()).unwrap_or(false);
@@ -142,7 +137,7 @@ pub fn impl_shared_boxed(input: &syn::DeriveInput) -> proc_macro2::TokenStream {
         quote! {}
     };
 
-    quote! {
+    Ok(quote! {
         impl #crate_ident::subclass::shared::SharedType for #name {
             const NAME: &'static ::core::primitive::str = #gtype_name;
 
@@ -319,5 +314,5 @@ pub fn impl_shared_boxed(input: &syn::DeriveInput) -> proc_macro2::TokenStream {
                 |name| Self::ParamSpec::builder(name)
             }
         }
-    }
+    })
 }

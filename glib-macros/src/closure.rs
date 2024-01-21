@@ -1,7 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
 use proc_macro2::{Ident, Span, TokenStream};
-use proc_macro_error::abort;
 use quote::{quote, ToTokens, TokenStreamExt};
 use syn::{ext::IdentExt, spanned::Spanned, Token};
 
@@ -91,17 +90,17 @@ impl syn::parse::Parse for CaptureKind {
             .map(|i| i.to_string())
             .collect::<Vec<_>>()
             .join("-");
-        Ok(match keyword.as_str() {
-            "strong" => CaptureKind::Strong,
-            "watch" => CaptureKind::Watch,
-            "weak-allow-none" => CaptureKind::WeakAllowNone,
-            "to-owned" => CaptureKind::ToOwned,
-            k => abort!(
-                idents,
-                "Unknown keyword `{}`, only `watch`, `weak-allow-none`, `to-owned` and `strong` are allowed",
-                k,
-            ),
-        })
+        match keyword.as_str() {
+            "strong" => Ok(CaptureKind::Strong),
+            "watch" => Ok(CaptureKind::Watch),
+            "weak-allow-none" => Ok(CaptureKind::WeakAllowNone),
+            "to-owned" => Ok(CaptureKind::ToOwned),
+            k => Err(syn::Error::new(
+                idents.span(),
+                format!("Unknown keyword `{}`, only `watch`, `weak-allow-none`, `to-owned` and `strong` are allowed",
+                k),
+            )),
+        }
     }
 }
 
@@ -124,18 +123,20 @@ impl syn::parse::Parse for Capture {
         };
         if alias.is_none() {
             if name.to_string() == "self" {
-                abort!(
+                return Err(syn::Error::new_spanned(
                     name,
                     "Can't use `self` as variable name. Try storing it in a temporary variable or \
-                    rename it using `as`."
-                );
+                    rename it using `as`.",
+                ));
             }
             if name.to_string().contains('.') {
-                abort!(
+                return Err(syn::Error::new(
                     name.span(),
-                    "`{}`: Field accesses are not allowed as is, you must rename it!",
-                    name
-                );
+                    format!(
+                        "`{}`: Field accesses are not allowed as is, you must rename it!",
+                        name
+                    ),
+                ));
             }
         }
         Ok(Capture {
@@ -162,11 +163,10 @@ impl syn::parse::Parse for Closure {
                 let capture = input.parse::<Capture>()?;
                 if capture.kind == CaptureKind::Watch {
                     if let Some(existing) = captures.iter().find(|c| c.kind == CaptureKind::Watch) {
-                        abort!(
-                            capture.start,
-                            "Only one `@watch` capture is allowed per closure";
-                            note = existing.start => "Previous `@watch` found here"
-                        );
+                        return Err(syn::Error::new(
+                            existing.start,
+                            "Only one `@watch` capture is allowed per closure",
+                        ));
                     }
                 }
                 captures.push(capture);
@@ -185,13 +185,16 @@ impl syn::parse::Parse for Closure {
         }
         let mut closure = input.parse::<syn::ExprClosure>()?;
         if closure.asyncness.is_some() {
-            abort!(closure, "Async closure not allowed");
+            return Err(syn::Error::new_spanned(
+                closure,
+                "Async closure not allowed",
+            ));
         }
         if !captures.is_empty() && closure.capture.is_none() {
-            abort!(
+            return Err(syn::Error::new_spanned(
                 closure,
-                "Closure with captures needs to be \"moved\" so please add `move` before closure"
-            )
+                "Closure with captures needs to be \"moved\" so please add `move` before closure",
+            ));
         }
         let args = closure
             .inputs

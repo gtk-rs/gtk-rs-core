@@ -1,7 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
 use proc_macro2::{Ident, TokenStream};
-use proc_macro_error::abort_call_site;
 use quote::quote;
 
 use crate::utils::{crate_ident_new, parse_nested_meta_items, NestedMetaItem};
@@ -91,7 +90,7 @@ fn gen_impl_to_value_optional(name: &Ident, crate_ident: &TokenStream) -> TokenS
     }
 }
 
-pub fn impl_boxed(input: &syn::DeriveInput) -> TokenStream {
+pub fn impl_boxed(input: &syn::DeriveInput) -> syn::Result<TokenStream> {
     let name = &input.ident;
 
     let mut gtype_name = NestedMetaItem::<syn::LitStr>::new("name")
@@ -103,17 +102,14 @@ pub fn impl_boxed(input: &syn::DeriveInput) -> TokenStream {
         &input.attrs,
         "boxed_type",
         &mut [&mut gtype_name, &mut nullable],
-    );
+    )?;
 
-    match found {
-        Ok(None) => {
-            abort_call_site!(
-                "#[derive(glib::Boxed)] requires #[boxed_type(name = \"BoxedTypeName\")]"
-            )
-        }
-        Err(e) => return e.to_compile_error(),
-        Ok(_) => {}
-    };
+    if found.is_none() {
+        return Err(syn::Error::new_spanned(
+            input,
+            "#[derive(glib::Boxed)] requires #[boxed_type(name = \"BoxedTypeName\")]",
+        ));
+    }
 
     let gtype_name = gtype_name.value.unwrap();
     let nullable = nullable.found || nullable.value.map(|b| b.value()).unwrap_or(false);
@@ -131,7 +127,7 @@ pub fn impl_boxed(input: &syn::DeriveInput) -> TokenStream {
         quote! {}
     };
 
-    quote! {
+    Ok(quote! {
         impl #crate_ident::subclass::boxed::BoxedType for #name {
             const NAME: &'static ::core::primitive::str = #gtype_name;
         }
@@ -284,5 +280,5 @@ pub fn impl_boxed(input: &syn::DeriveInput) -> TokenStream {
                 |name| Self::ParamSpec::builder(name)
             }
         }
-    }
+    })
 }

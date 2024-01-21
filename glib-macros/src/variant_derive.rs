@@ -1,20 +1,21 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
 use heck::ToKebabCase;
-use proc_macro::TokenStream;
-use proc_macro_error::abort;
+use proc_macro2::TokenStream;
 use quote::{format_ident, quote};
 use syn::{Data, DeriveInput, Fields, FieldsNamed, FieldsUnnamed, Generics, Ident, Type};
 
 use crate::utils::crate_ident_new;
 
-pub fn impl_variant(input: DeriveInput) -> TokenStream {
+pub fn impl_variant(input: DeriveInput) -> syn::Result<TokenStream> {
     match input.data {
-        Data::Struct(data_struct) => {
-            derive_variant_for_struct(input.ident, input.generics, data_struct)
-        }
+        Data::Struct(data_struct) => Ok(derive_variant_for_struct(
+            input.ident,
+            input.generics,
+            data_struct,
+        )),
         Data::Enum(data_enum) => {
-            let mode = get_enum_mode(&input.attrs);
+            let mode = get_enum_mode(&input.attrs)?;
             let has_data = data_enum
                 .variants
                 .iter()
@@ -22,12 +23,18 @@ pub fn impl_variant(input: DeriveInput) -> TokenStream {
             if has_data {
                 derive_variant_for_enum(input.ident, input.generics, data_enum, mode)
             } else {
-                derive_variant_for_c_enum(input.ident, input.generics, data_enum, mode)
+                Ok(derive_variant_for_c_enum(
+                    input.ident,
+                    input.generics,
+                    data_enum,
+                    mode,
+                ))
             }
         }
-        Data::Union(..) => {
-            panic!("#[derive(glib::Variant)] is not available for unions.");
-        }
+        Data::Union(..) => Err(syn::Error::new_spanned(
+            input,
+            "#[derive(glib::Variant)] is not available for unions.",
+        )),
     }
 }
 
@@ -236,15 +243,13 @@ fn derive_variant_for_struct(
         }
     };
 
-    let derived = quote! {
+    quote! {
         #static_variant_type
 
         #to_variant
 
         #from_variant
-    };
-
-    derived.into()
+    }
 }
 
 enum EnumMode {
@@ -291,7 +296,7 @@ fn derive_variant_for_enum(
     generics: Generics,
     data_enum: syn::DataEnum,
     mode: EnumMode,
-) -> TokenStream {
+) -> syn::Result<TokenStream> {
     let glib = crate_ident_new();
     let static_variant_type = format!("({}v)", mode.tag_type());
     let (impl_generics, type_generics, where_clause) = generics.split_for_impl();
@@ -309,13 +314,13 @@ fn derive_variant_for_enum(
         if !matches!(v.fields, syn::Fields::Unit) {
             match &mode {
                 EnumMode::Enum { .. } =>
-                    abort!(v, "#[variant_enum(enum) only allowed with C-style enums using #[derive(glib::Enum)]"),
+                    return Err(syn::Error::new_spanned(v, "#[variant_enum(enum) only allowed with C-style enums using #[derive(glib::Enum)]")),
                 EnumMode::Flags { .. } =>
-                    abort!(v, "#[variant_enum(flags) only allowed with bitflags using #[glib::flags]"),
+                    return Err(syn::Error::new_spanned(v, "#[variant_enum(flags) only allowed with bitflags using #[glib::flags]")),
                 _ => (),
             }
         }
-        match &v.fields {
+        Ok(match &v.fields {
             syn::Fields::Named(FieldsNamed { named, .. }) => {
                 let field_names = named.iter().map(|f| f.ident.as_ref().unwrap());
                 let field_names2 = field_names.clone();
@@ -350,8 +355,8 @@ fn derive_variant_for_enum(
                     ))
                 }
             },
-        }
-    });
+        })
+    }).collect::<Result<Vec<_>, _>>()?;
     let into = data_enum.variants.iter().enumerate().map(|(index, v)| {
         let field_ident = &v.ident;
         let tag = match &mode {
@@ -448,7 +453,7 @@ fn derive_variant_for_enum(
         _ => unimplemented!(),
     };
 
-    let derived = quote! {
+    Ok(quote! {
         impl #impl_generics #glib::StaticVariantType for #ident #type_generics #where_clause {
             #[inline]
             fn static_variant_type() -> ::std::borrow::Cow<'static, #glib::VariantTy> {
@@ -488,8 +493,7 @@ fn derive_variant_for_enum(
                 }
             }
         }
-    };
-    derived.into()
+    })
 }
 
 fn derive_variant_for_c_enum(
@@ -592,7 +596,7 @@ fn derive_variant_for_c_enum(
         ),
     };
 
-    let derived = quote! {
+    quote! {
         impl #impl_generics #glib::StaticVariantType for #ident #type_generics #where_clause {
             #[inline]
             fn static_variant_type() -> ::std::borrow::Cow<'static, #glib::VariantTy> {
@@ -622,16 +626,14 @@ fn derive_variant_for_c_enum(
                 #from_variant
             }
         }
-    };
-    derived.into()
+    }
 }
 
-fn get_enum_mode(attrs: &[syn::Attribute]) -> EnumMode {
+fn get_enum_mode(attrs: &[syn::Attribute]) -> syn::Result<EnumMode> {
     let attr = attrs.iter().find(|a| a.path().is_ident("variant_enum"));
 
-    let attr = match attr {
-        Some(attr) => attr,
-        None => return EnumMode::String,
+    let Some(attr) = attr else {
+        return Ok(EnumMode::String);
     };
 
     let mut repr_attr = None;
@@ -640,27 +642,31 @@ fn get_enum_mode(attrs: &[syn::Attribute]) -> EnumMode {
         match meta.path.get_ident().map(|id| id.to_string()).as_deref() {
             Some("repr") => {
                 repr_attr = Some(meta.path);
+                Ok(())
             }
             Some("enum") => {
                 mode = EnumMode::Enum { repr: false };
+                Ok(())
             }
             Some("flags") => {
                 mode = EnumMode::Flags { repr: false };
+                Ok(())
             }
-            _ => abort!(meta.path, "unknown type in #[variant_enum] attribute"),
+            _ => Err(syn::Error::new_spanned(
+                meta.path,
+                "unknown type in #[variant_enum] attribute",
+            )),
         }
-        Ok(())
-    })
-    .unwrap();
-    match mode {
+    })?;
+    Ok(match mode {
         EnumMode::String if repr_attr.is_some() => {
             let repr_attr = repr_attr.unwrap();
-            let repr = get_repr(attrs).unwrap_or_else(|| {
-                abort!(
+            let repr = get_repr(attrs).ok_or_else(|| {
+                syn::Error::new_spanned(
                     repr_attr,
-                    "Must have #[repr] attribute with one of i8, i16, i32, i64, u8, u16, u32, u64"
+                    "Must have #[repr] attribute with one of i8, i16, i32, i64, u8, u16, u32, u64",
                 )
-            });
+            })?;
             EnumMode::Repr(repr)
         }
         EnumMode::Enum { .. } => EnumMode::Enum {
@@ -670,7 +676,7 @@ fn get_enum_mode(attrs: &[syn::Attribute]) -> EnumMode {
             repr: repr_attr.is_some(),
         },
         e => e,
-    }
+    })
 }
 
 fn get_repr(attrs: &[syn::Attribute]) -> Option<Ident> {
