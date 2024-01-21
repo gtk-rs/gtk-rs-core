@@ -21,16 +21,15 @@ pub fn impl_object_subclass(input: &mut syn::ItemImpl) -> TokenStream {
         ..
     } = input;
 
-    let self_ty_as_ident = match &**self_ty {
-        syn::Type::Path(syn::TypePath { path, .. }) => path.require_ident(),
-        _ => Err(syn::Error::new(
+    let Some(self_ty_ident) = (match &**self_ty {
+        syn::Type::Path(syn::TypePath { path, .. }) => path.segments.last().map(|s| &s.ident),
+        _ => None,
+    }) else {
+        return syn::Error::new(
             syn::spanned::Spanned::span(self_ty),
-            "expected this path to be an identifier",
-        )),
-    };
-    let self_ty = match self_ty_as_ident {
-        Ok(ident) => ident,
-        Err(e) => return e.to_compile_error(),
+            "expected this path to have an identifier",
+        )
+        .to_compile_error();
     };
 
     let mut plugin_type = NestedMetaItem::<syn::Path>::new("plugin_type").value_required();
@@ -45,7 +44,7 @@ pub fn impl_object_subclass(input: &mut syn::ItemImpl) -> TokenStream {
 
     let register_object_subclass = match found {
         Err(e) => return e.to_compile_error(),
-        Ok(None) => register_object_subclass_as_static(&crate_ident, self_ty),
+        Ok(None) => register_object_subclass_as_static(&crate_ident, generics, self_ty),
         Ok(Some(_)) => {
             // remove attribute 'object_subclass_dynamic' from the attribute list because it is not a real proc_macro_attribute
             attrs.retain(|attr| !attr.path().is_ident("object_subclass_dynamic"));
@@ -54,7 +53,14 @@ pub fn impl_object_subclass(input: &mut syn::ItemImpl) -> TokenStream {
                 .map(|p| p.into_token_stream())
                 .unwrap_or(quote!(#crate_ident::TypeModule));
             let lazy_registration = lazy_registration.value.map(|b| b.value).unwrap_or_default();
-            register_object_subclass_as_dynamic(&crate_ident, self_ty, plugin_ty, lazy_registration)
+            register_object_subclass_as_dynamic(
+                &crate_ident,
+                generics,
+                self_ty,
+                self_ty_ident,
+                plugin_ty,
+                lazy_registration,
+            )
         }
     };
 
@@ -130,7 +136,7 @@ pub fn impl_object_subclass(input: &mut syn::ItemImpl) -> TokenStream {
             #(#items)*
         }
 
-        unsafe impl #crate_ident::subclass::types::ObjectSubclassType for #self_ty {
+        unsafe impl #generics #crate_ident::subclass::types::ObjectSubclassType for #self_ty {
             #[inline]
             fn type_data() -> ::std::ptr::NonNull<#crate_ident::subclass::TypeData> {
                 static mut DATA: #crate_ident::subclass::TypeData =
@@ -154,7 +160,7 @@ pub fn impl_object_subclass(input: &mut syn::ItemImpl) -> TokenStream {
         #register_object_subclass
 
         #[doc(hidden)]
-        impl #crate_ident::subclass::types::FromObject for #self_ty {
+        impl #generics #crate_ident::subclass::types::FromObject for #self_ty {
             type FromObjectType = <Self as #crate_ident::subclass::types::ObjectSubclass>::Type;
             #[inline]
             fn from_object(obj: &Self::FromObjectType) -> &Self {
@@ -163,7 +169,7 @@ pub fn impl_object_subclass(input: &mut syn::ItemImpl) -> TokenStream {
         }
 
         #[doc(hidden)]
-        impl #crate_ident::clone::Downgrade for #self_ty {
+        impl #generics #crate_ident::clone::Downgrade for #self_ty {
             type Weak = #crate_ident::subclass::ObjectImplWeakRef<#self_ty>;
 
             #[inline]
@@ -173,7 +179,7 @@ pub fn impl_object_subclass(input: &mut syn::ItemImpl) -> TokenStream {
             }
         }
 
-        impl #self_ty {
+        impl #generics #self_ty {
             #[inline]
             pub fn downgrade(&self) -> <Self as #crate_ident::clone::Downgrade>::Weak {
                 #crate_ident::clone::Downgrade::downgrade(self)
@@ -181,7 +187,7 @@ pub fn impl_object_subclass(input: &mut syn::ItemImpl) -> TokenStream {
         }
 
         #[doc(hidden)]
-        impl ::std::borrow::ToOwned for #self_ty {
+        impl #generics ::std::borrow::ToOwned for #self_ty {
             type Owned = #crate_ident::subclass::ObjectImplRef<#self_ty>;
 
             #[inline]
@@ -191,7 +197,7 @@ pub fn impl_object_subclass(input: &mut syn::ItemImpl) -> TokenStream {
         }
 
         #[doc(hidden)]
-        impl ::std::borrow::Borrow<#self_ty> for #crate_ident::subclass::ObjectImplRef<#self_ty> {
+        impl #generics ::std::borrow::Borrow<#self_ty> for #crate_ident::subclass::ObjectImplRef<#self_ty> {
             #[inline]
             fn borrow(&self) -> &#self_ty {
                 self
@@ -203,11 +209,12 @@ pub fn impl_object_subclass(input: &mut syn::ItemImpl) -> TokenStream {
 // Registers the object subclass as a static type.
 fn register_object_subclass_as_static(
     crate_ident: &TokenStream,
-    self_ty: &syn::Ident,
+    generics: &syn::Generics,
+    self_ty: &syn::Type,
 ) -> TokenStream {
     // registers the object subclass on first use (lazy registration).
     quote! {
-        impl #self_ty {
+        impl #generics #self_ty {
             /// Registers the type only once.
             #[inline]
             fn register_type() {
@@ -225,7 +232,9 @@ fn register_object_subclass_as_static(
 // An object subclass can be reregistered as a dynamic type.
 fn register_object_subclass_as_dynamic(
     crate_ident: &TokenStream,
-    self_ty: &syn::Ident,
+    generics: &syn::Generics,
+    self_ty: &syn::Type,
+    self_ty_ident: &syn::Ident,
     plugin_ty: TokenStream,
     lazy_registration: bool,
 ) -> TokenStream {
@@ -237,7 +246,7 @@ fn register_object_subclass_as_dynamic(
         // this implementation relies on a static storage of a weak reference on the plugin and of the GLib type to know if the object subclass has been registered.
 
         // the registration status type.
-        let registration_status_type = format_ident!("{}RegistrationStatus", self_ty);
+        let registration_status_type = format_ident!("{}RegistrationStatus", self_ty_ident);
         // name of the static variable to store the registration status.
         let registration_status = format_ident!(
             "{}",
@@ -252,7 +261,7 @@ fn register_object_subclass_as_dynamic(
             /// The registration status protected by a mutex guarantees so that no other threads are concurrently accessing the data.
             static #registration_status: ::std::sync::Mutex<Option<#registration_status_type>> = ::std::sync::Mutex::new(None);
 
-            impl #self_ty {
+            impl #generics #self_ty {
                 /// Registers the object subclass as a dynamic type within the plugin only once.
                 /// Plugin must have been used at least once.
                 /// Do nothing if plugin has never been used or if the object subclass is already registered as a dynamic type.
@@ -321,7 +330,7 @@ fn register_object_subclass_as_dynamic(
         // registers immediately the object subclass as a dynamic type.
 
         quote! {
-            impl #self_ty {
+            impl #generics #self_ty {
                 /// Do nothing as the object subclass has been registered on implementation load.
                 #[inline]
                 fn register_type() { }

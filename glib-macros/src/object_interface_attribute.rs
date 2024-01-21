@@ -22,16 +22,15 @@ pub fn impl_object_interface(input: &mut syn::ItemImpl) -> TokenStream {
         ..
     } = input;
 
-    let self_ty_as_ident = match &**self_ty {
-        syn::Type::Path(syn::TypePath { path, .. }) => path.require_ident(),
-        _ => Err(syn::Error::new(
+    let Some(self_ty_ident) = (match &**self_ty {
+        syn::Type::Path(syn::TypePath { path, .. }) => path.segments.last().map(|s| &s.ident),
+        _ => None,
+    }) else {
+        return syn::Error::new(
             syn::spanned::Spanned::span(self_ty),
-            "expected this path to be an identifier",
-        )),
-    };
-    let self_ty = match self_ty_as_ident {
-        Ok(ident) => ident,
-        Err(e) => return e.to_compile_error(),
+            "expected this path to have an identifier",
+        )
+        .to_compile_error();
     };
 
     let mut plugin_type = NestedMetaItem::<syn::Path>::new("plugin_type").value_required();
@@ -46,7 +45,7 @@ pub fn impl_object_interface(input: &mut syn::ItemImpl) -> TokenStream {
 
     let register_object_interface = match found {
         Err(e) => return e.to_compile_error(),
-        Ok(None) => register_object_interface_as_static(&crate_ident, self_ty),
+        Ok(None) => register_object_interface_as_static(&crate_ident, generics, self_ty),
         Ok(Some(_)) => {
             // remove attribute 'object_interface_dynamic' from the attribute list because it is not a real proc_macro_attribute
             attrs.retain(|attr| !attr.path().is_ident("object_interface_dynamic"));
@@ -57,7 +56,9 @@ pub fn impl_object_interface(input: &mut syn::ItemImpl) -> TokenStream {
             let lazy_registration = lazy_registration.value.map(|b| b.value).unwrap_or_default();
             register_object_interface_as_dynamic(
                 &crate_ident,
+                generics,
                 self_ty,
+                self_ty_ident,
                 plugin_ty,
                 lazy_registration,
             )
@@ -94,7 +95,7 @@ pub fn impl_object_interface(input: &mut syn::ItemImpl) -> TokenStream {
             #(#items)*
         }
 
-        unsafe impl #crate_ident::subclass::interface::ObjectInterfaceType for #self_ty {
+        unsafe impl #generics #crate_ident::subclass::interface::ObjectInterfaceType for #self_ty {
             #[inline]
             fn type_() -> #crate_ident::Type {
                 Self::register_interface()
@@ -108,11 +109,12 @@ pub fn impl_object_interface(input: &mut syn::ItemImpl) -> TokenStream {
 // Registers the object interface as a static type.
 fn register_object_interface_as_static(
     crate_ident: &TokenStream,
-    self_ty: &syn::Ident,
+    generics: &syn::Generics,
+    self_ty: &syn::Type,
 ) -> TokenStream {
     // registers the interface on first use (lazy registration).
     quote! {
-        impl #self_ty {
+        impl #generics #self_ty {
             /// Registers the interface only once.
             #[inline]
             fn register_interface() -> #crate_ident::Type {
@@ -135,7 +137,9 @@ fn register_object_interface_as_static(
 // An object interface can be reregistered as a dynamic type.
 fn register_object_interface_as_dynamic(
     crate_ident: &TokenStream,
-    self_ty: &syn::Ident,
+    generics: &syn::Generics,
+    self_ty: &syn::Type,
+    self_ty_ident: &syn::Ident,
     plugin_ty: TokenStream,
     lazy_registration: bool,
 ) -> TokenStream {
@@ -147,7 +151,7 @@ fn register_object_interface_as_dynamic(
         // this implementation relies on a static storage of a weak reference on the plugin and of the GLib type to know if the object interface has been registered.
 
         // the registration status type.
-        let registration_status_type = format_ident!("{}RegistrationStatus", self_ty);
+        let registration_status_type = format_ident!("{}RegistrationStatus", self_ty_ident);
         // name of the static variable to store the registration status.
         let registration_status = format_ident!(
             "{}",
@@ -162,7 +166,7 @@ fn register_object_interface_as_dynamic(
             /// The registration status protected by a mutex guarantees so that no other threads are concurrently accessing the data.
             static #registration_status: ::std::sync::Mutex<Option<#registration_status_type>> = ::std::sync::Mutex::new(None);
 
-            impl #self_ty {
+            impl #generics #self_ty {
                 /// Registers the object interface as a dynamic type within the plugin only once.
                 /// Plugin must have been used at least once.
                 /// Do nothing if plugin has never been used or if the object interface is already registered as a dynamic type.
@@ -232,13 +236,16 @@ fn register_object_interface_as_dynamic(
         // registers immediately the object interface as a dynamic type.
 
         // name of the static variable to store the GLib type.
-        let gtype_status = format_ident!("{}_G_TYPE", self_ty.to_string().to_shouty_snake_case());
+        let gtype_status = format_ident!(
+            "{}_G_TYPE",
+            self_ty_ident.to_string().to_shouty_snake_case()
+        );
 
         quote! {
             /// The GLib type which can be safely shared between threads.
             static #gtype_status: ::std::sync::atomic::AtomicUsize = ::std::sync::atomic::AtomicUsize::new(#crate_ident::gobject_ffi::G_TYPE_INVALID);
 
-            impl #self_ty {
+            impl #generics #self_ty {
                 /// Do nothing as the object interface has been registered on implementation load.
                 #[inline]
                 fn register_interface() -> #crate_ident::Type {
