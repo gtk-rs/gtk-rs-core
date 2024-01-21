@@ -398,11 +398,10 @@ fn expand_properties_fn(props: &[PropDesc]) -> TokenStream2 {
     quote!(
         fn derived_properties() -> &'static [#crate_ident::ParamSpec] {
             use #crate_ident::ParamSpecBuilderExt;
-            use #crate_ident::once_cell::sync::Lazy;
-            static PROPERTIES: Lazy<[#crate_ident::ParamSpec; #n_props]> = Lazy::new(|| [
+            static PROPERTIES: ::std::sync::OnceLock<[#crate_ident::ParamSpec; #n_props]> = ::std::sync::OnceLock::new();
+            PROPERTIES.get_or_init(|| [
                 #(#param_specs,)*
-            ]);
-            PROPERTIES.as_ref()
+            ])
         }
     )
 }

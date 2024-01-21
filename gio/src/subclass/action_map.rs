@@ -1,9 +1,8 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use std::collections::HashMap;
+use std::{collections::HashMap, sync::OnceLock};
 
 use glib::{prelude::*, subclass::prelude::*, translate::*, GString, Quark};
-use once_cell::sync::Lazy;
 
 use crate::{Action, ActionMap};
 
@@ -84,9 +83,6 @@ where
     }
 }
 
-static ACTION_MAP_LOOKUP_ACTION_QUARK: Lazy<Quark> =
-    Lazy::new(|| Quark::from_str("gtk-rs-subclass-action-map-lookup-action"));
-
 unsafe extern "C" fn action_map_lookup_action<T: ActionMapImpl>(
     action_map: *mut ffi::GActionMap,
     action_nameptr: *const libc::c_char,
@@ -100,11 +96,16 @@ unsafe extern "C" fn action_map_lookup_action<T: ActionMapImpl>(
         let instance = imp.obj();
         let actionptr = action.to_glib_none().0;
 
+        let action_map_quark = {
+            static QUARK: OnceLock<Quark> = OnceLock::new();
+            *QUARK.get_or_init(|| Quark::from_str("gtk-rs-subclass-action-map-lookup-action"))
+        };
+
         let mut map = instance
-            .steal_qdata::<HashMap<String, Action>>(*ACTION_MAP_LOOKUP_ACTION_QUARK)
+            .steal_qdata::<HashMap<String, Action>>(action_map_quark)
             .unwrap_or_default();
         map.insert(action_name.to_string(), action);
-        instance.set_qdata(*ACTION_MAP_LOOKUP_ACTION_QUARK, map);
+        instance.set_qdata(action_map_quark, map);
 
         actionptr
     } else {

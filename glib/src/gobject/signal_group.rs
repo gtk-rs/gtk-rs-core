@@ -173,7 +173,7 @@ impl SignalGroup {
 
 #[cfg(test)]
 mod tests {
-    use std::{cell::RefCell, rc::Rc};
+    use std::{cell::RefCell, rc::Rc, sync::OnceLock};
 
     use super::*;
     use crate as glib;
@@ -194,8 +194,8 @@ mod tests {
 
         impl ObjectImpl for SignalObject {
             fn signals() -> &'static [Signal] {
-                use once_cell::sync::Lazy;
-                static SIGNALS: Lazy<Vec<Signal>> = Lazy::new(|| {
+                static SIGNALS: OnceLock<Vec<Signal>> = OnceLock::new();
+                SIGNALS.get_or_init(|| {
                     vec![
                         Signal::builder("sig-with-args")
                             .param_types([u32::static_type(), String::static_type()])
@@ -204,8 +204,7 @@ mod tests {
                             .return_type::<String>()
                             .build(),
                     ]
-                });
-                SIGNALS.as_ref()
+                })
             }
         }
     }

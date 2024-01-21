@@ -60,7 +60,8 @@ fn derive_variant_for_struct(
                 impl #impl_generics #glib::StaticVariantType for #ident #type_generics #where_clause {
                     #[inline]
                     fn static_variant_type() -> ::std::borrow::Cow<'static, #glib::VariantTy> {
-                        static TYP: #glib::once_cell::sync::Lazy<#glib::VariantType> = #glib::once_cell::sync::Lazy::new(|| {
+                        static TYP: ::std::sync::OnceLock<#glib::VariantType> = ::std::sync::OnceLock::new();
+                        ::std::borrow::Cow::Borrowed(TYP.get_or_init(|| {
 
                             let mut builder = #glib::GStringBuilder::new("(");
 
@@ -73,9 +74,7 @@ fn derive_variant_for_struct(
                             builder.append_c(')');
 
                             #glib::VariantType::from_string(builder.into_string()).unwrap()
-                        });
-
-                        ::std::borrow::Cow::Borrowed(&*TYP)
+                        }))
                     }
                 }
             };
@@ -137,7 +136,8 @@ fn derive_variant_for_struct(
                 impl #impl_generics #glib::StaticVariantType for #ident #type_generics #where_clause {
                     #[inline]
                     fn static_variant_type() -> ::std::borrow::Cow<'static, #glib::VariantTy> {
-                        static TYP: #glib::once_cell::sync::Lazy<#glib::VariantType> = #glib::once_cell::sync::Lazy::new(|| unsafe {
+                        static TYP: ::std::sync::OnceLock<#glib::VariantType> = ::std::sync::OnceLock::new();
+                        ::std::borrow::Cow::Borrowed(TYP.get_or_init(|| unsafe {
                             let ptr = #glib::ffi::g_string_sized_new(16);
                             #glib::ffi::g_string_append_c(ptr, b'(' as _);
 
@@ -156,9 +156,7 @@ fn derive_variant_for_struct(
                             #glib::translate::from_glib_full(
                                 #glib::ffi::g_string_free(ptr, #glib::ffi::GFALSE) as *mut #glib::ffi::GVariantType
                             )
-                        });
-
-                        ::std::borrow::Cow::Borrowed(&*TYP)
+                        }))
                     }
                 }
             };

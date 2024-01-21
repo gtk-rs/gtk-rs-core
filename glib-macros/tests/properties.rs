@@ -50,7 +50,6 @@ mod foo {
     use glib::prelude::*;
     use glib::subclass::prelude::*;
     use glib_macros::{Properties, ValueDelegate};
-    use once_cell::sync::OnceCell;
     use std::cell::Cell;
     use std::cell::RefCell;
     use std::marker::PhantomData;
@@ -79,7 +78,7 @@ mod foo {
     }
 
     pub mod imp {
-        use std::rc::Rc;
+        use std::{cell::OnceCell, rc::Rc};
 
         use super::*;
 

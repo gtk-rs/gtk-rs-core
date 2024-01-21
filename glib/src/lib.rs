@@ -14,7 +14,6 @@ pub use glib_macros::{
     Boxed, Downgrade, Enum, ErrorDomain, Properties, SharedBoxed, ValueDelegate, Variant,
 };
 pub use gobject_ffi;
-pub use once_cell;
 
 pub use self::{
     byte_array::ByteArray,

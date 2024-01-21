@@ -1,12 +1,12 @@
 // You can copy/paste this file every time you need a simple GObject
 // to hold some data
 
-use glib::once_cell::sync::Lazy;
 use glib::prelude::*;
 use glib::subclass::prelude::*;
 use glib::subclass::Signal;
 use glib::Properties;
 use std::cell::RefCell;
+use std::sync::OnceLock;
 
 mod imp {
     use super::*;
@@ -23,9 +23,8 @@ mod imp {
     #[glib::derived_properties]
     impl ObjectImpl for Author {
         fn signals() -> &'static [Signal] {
-            static SIGNALS: Lazy<Vec<Signal>> =
-                Lazy::new(|| vec![Signal::builder("awarded").build()]);
-            SIGNALS.as_ref()
+            static SIGNALS: OnceLock<Vec<Signal>> = OnceLock::new();
+            SIGNALS.get_or_init(|| vec![Signal::builder("awarded").build()])
         }
     }
 

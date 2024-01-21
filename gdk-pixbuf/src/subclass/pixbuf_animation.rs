@@ -5,11 +5,11 @@
 
 use std::{
     mem::MaybeUninit,
+    sync::OnceLock,
     time::{Duration, SystemTime},
 };
 
 use glib::{prelude::*, subclass::prelude::*, translate::*};
-use once_cell::sync::Lazy;
 
 use crate::{Pixbuf, PixbufAnimation, PixbufAnimationIter};
 
@@ -160,9 +160,6 @@ unsafe extern "C" fn animation_get_size<T: PixbufAnimationImpl>(
     }
 }
 
-static STATIC_IMAGE_QUARK: Lazy<glib::Quark> =
-    Lazy::new(|| glib::Quark::from_str("gtk-rs-subclass-static-image"));
-
 unsafe extern "C" fn animation_get_static_image<T: PixbufAnimationImpl>(
     ptr: *mut ffi::GdkPixbufAnimation,
 ) -> *mut ffi::GdkPixbuf {
@@ -173,7 +170,11 @@ unsafe extern "C" fn animation_get_static_image<T: PixbufAnimationImpl>(
     let static_image = imp.static_image();
     // Ensure that a) the static image stays alive as long as the animation instance and b) that
     // the same static image is returned every time. This is a requirement by the gdk-pixbuf API.
-    if let Some(old_image) = instance.qdata::<Option<Pixbuf>>(*STATIC_IMAGE_QUARK) {
+    let static_image_quark = {
+        static QUARK: OnceLock<glib::Quark> = OnceLock::new();
+        *QUARK.get_or_init(|| glib::Quark::from_str("gtk-rs-subclass-static-image"))
+    };
+    if let Some(old_image) = instance.qdata::<Option<Pixbuf>>(static_image_quark) {
         let old_image = old_image.as_ref();
 
         if let Some(old_image) = old_image {
@@ -184,7 +185,7 @@ unsafe extern "C" fn animation_get_static_image<T: PixbufAnimationImpl>(
             );
         }
     }
-    instance.set_qdata(*STATIC_IMAGE_QUARK, static_image.clone());
+    instance.set_qdata(static_image_quark, static_image.clone());
     static_image.to_glib_none().0
 }
 

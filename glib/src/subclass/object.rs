@@ -329,6 +329,8 @@ mod test {
     use crate as glib;
 
     mod imp {
+        use std::sync::OnceLock;
+
         use super::*;
 
         // A dummy `Object` to test setting an `Object` property and returning an `Object` in signals
@@ -359,8 +361,8 @@ mod test {
 
         impl ObjectImpl for SimpleObject {
             fn properties() -> &'static [ParamSpec] {
-                use once_cell::sync::Lazy;
-                static PROPERTIES: Lazy<Vec<ParamSpec>> = Lazy::new(|| {
+                static PROPERTIES: OnceLock<Vec<ParamSpec>> = OnceLock::new();
+                PROPERTIES.get_or_init(|| {
                     vec![
                         crate::ParamSpecString::builder("name").build(),
                         crate::ParamSpecString::builder("construct-name")
@@ -371,14 +373,12 @@ mod test {
                             .build(),
                         crate::ParamSpecObject::builder::<super::ChildObject>("child").build(),
                     ]
-                });
-
-                PROPERTIES.as_ref()
+                })
             }
 
             fn signals() -> &'static [super::Signal] {
-                use once_cell::sync::Lazy;
-                static SIGNALS: Lazy<Vec<super::Signal>> = Lazy::new(|| {
+                static SIGNALS: OnceLock<Vec<super::Signal>> = OnceLock::new();
+                SIGNALS.get_or_init(|| {
                     vec![
                         super::Signal::builder("name-changed")
                             .param_types([String::static_type()])
@@ -410,9 +410,7 @@ mod test {
                             .return_type::<super::ChildObject>()
                             .build(),
                     ]
-                });
-
-                SIGNALS.as_ref()
+                })
             }
 
             fn set_property(&self, _id: usize, value: &Value, pspec: &crate::ParamSpec) {

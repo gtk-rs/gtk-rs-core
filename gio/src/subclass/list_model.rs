@@ -1,7 +1,8 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
+use std::sync::OnceLock;
+
 use glib::{prelude::*, subclass::prelude::*, translate::*};
-use once_cell::sync::Lazy;
 
 use crate::ListModel;
 
@@ -80,9 +81,6 @@ where
     }
 }
 
-static LIST_ITEM_TYPE_QUARK: Lazy<glib::Quark> =
-    Lazy::new(|| glib::Quark::from_str("gtk-rs-subclass-list-model-item-type"));
-
 unsafe extern "C" fn list_model_get_item_type<T: ListModelImpl>(
     list_model: *mut ffi::GListModel,
 ) -> glib::ffi::GType
@@ -96,7 +94,11 @@ where
 
     // Store the type so we can enforce that it doesn't change.
     let instance = imp.obj();
-    match instance.qdata(*LIST_ITEM_TYPE_QUARK) {
+    let type_quark = {
+        static QUARK: OnceLock<glib::Quark> = OnceLock::new();
+        *QUARK.get_or_init(|| glib::Quark::from_str("gtk-rs-subclass-list-model-item-type"))
+    };
+    match instance.qdata(type_quark) {
         Some(old_type) => {
             assert_eq!(
                 type_,
@@ -105,7 +107,7 @@ where
             );
         }
         None => {
-            instance.set_qdata(*LIST_ITEM_TYPE_QUARK, type_);
+            instance.set_qdata(type_quark, type_);
         }
     }
     type_

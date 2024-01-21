@@ -41,12 +41,6 @@ impl<T: Property> Property for Mutex<T> {
 impl<T: Property> Property for RwLock<T> {
     type Value = T::Value;
 }
-impl<T: Property> Property for once_cell::sync::OnceCell<T> {
-    type Value = T::Value;
-}
-impl<T: Property> Property for once_cell::unsync::OnceCell<T> {
-    type Value = T::Value;
-}
 impl<T: Property> Property for std::cell::OnceCell<T> {
     type Value = T::Value;
 }
@@ -151,37 +145,6 @@ impl<T> PropertySetNested for RwLock<T> {
     type SetNestedValue = T;
     fn set_nested<F: FnOnce(&mut Self::SetNestedValue)>(&self, f: F) {
         f(&mut self.write().unwrap());
-    }
-}
-
-impl<T> PropertyGet for once_cell::sync::OnceCell<T> {
-    type Value = T;
-    fn get<R, F: Fn(&Self::Value) -> R>(&self, f: F) -> R {
-        f(self.get().unwrap())
-    }
-}
-impl<T> PropertyGet for once_cell::unsync::OnceCell<T> {
-    type Value = T;
-    fn get<R, F: Fn(&Self::Value) -> R>(&self, f: F) -> R {
-        f(self.get().unwrap())
-    }
-}
-impl<T> PropertySet for once_cell::sync::OnceCell<T> {
-    type SetValue = T;
-    fn set(&self, v: Self::SetValue) {
-        // I can't use `unwrap` because I would have to add a `Debug` bound to _v
-        if let Err(_v) = self.set(v) {
-            panic!("can't set value of OnceCell multiple times")
-        };
-    }
-}
-impl<T> PropertySet for once_cell::unsync::OnceCell<T> {
-    type SetValue = T;
-    fn set(&self, v: Self::SetValue) {
-        // I can't use `unwrap` because I would have to add a `Debug` bound to _v
-        if let Err(_v) = self.set(v) {
-            panic!("can't set value of OnceCell multiple times")
-        };
     }
 }
 
