@@ -2,7 +2,6 @@
 
 use heck::{ToKebabCase, ToShoutySnakeCase, ToUpperCamelCase};
 use proc_macro2::TokenStream;
-use proc_macro_error::abort_call_site;
 use quote::{format_ident, quote, quote_spanned, ToTokens};
 
 use crate::utils::{
@@ -62,27 +61,31 @@ fn gen_enum_values(
     )
 }
 
-pub fn impl_enum(input: &syn::DeriveInput) -> TokenStream {
+pub fn impl_enum(input: &syn::DeriveInput) -> syn::Result<TokenStream> {
     let name = &input.ident;
 
     let enum_variants = match input.data {
         syn::Data::Enum(ref e) => &e.variants,
-        _ => abort_call_site!("#[derive(glib::Enum)] only supports enums"),
+        _ => {
+            return Err(syn::Error::new_spanned(
+                input,
+                "#[derive(glib::Enum)] only supports enums",
+            ))
+        }
     };
     let (g_enum_values, nb_enum_values) = gen_enum_values(name, enum_variants);
 
     let mut gtype_name = NestedMetaItem::<syn::LitStr>::new("name")
         .required()
         .value_required();
-    let found = parse_nested_meta_items(&input.attrs, "enum_type", &mut [&mut gtype_name]);
+    let found = parse_nested_meta_items(&input.attrs, "enum_type", &mut [&mut gtype_name])?;
 
-    match found {
-        Ok(None) => {
-            abort_call_site!("#[derive(glib::Enum)] requires #[enum_type(name = \"EnumTypeName\")]")
-        }
-        Err(e) => return e.to_compile_error(),
-        Ok(attr) => attr,
-    };
+    if found.is_none() {
+        return Err(syn::Error::new_spanned(
+            input,
+            "#[derive(glib::Enum)] requires #[enum_type(name = \"EnumTypeName\")]",
+        ));
+    }
     let gtype_name = gtype_name.value.unwrap();
 
     let mut plugin_type = NestedMetaItem::<syn::Path>::new("plugin_type").value_required();
@@ -93,20 +96,19 @@ pub fn impl_enum(input: &syn::DeriveInput) -> TokenStream {
         &input.attrs,
         "enum_dynamic",
         &mut [&mut plugin_type, &mut lazy_registration],
-    );
+    )?;
 
     let crate_ident = crate_ident_new();
 
     let register_enum = match found {
-        Err(e) => return e.to_compile_error(),
-        Ok(None) => register_enum_as_static(
+        None => register_enum_as_static(
             &crate_ident,
             name,
             gtype_name,
             g_enum_values,
             nb_enum_values,
         ),
-        Ok(Some(_)) => {
+        Some(_) => {
             let plugin_ty = plugin_type
                 .value
                 .map(|p| p.into_token_stream())
@@ -126,7 +128,7 @@ pub fn impl_enum(input: &syn::DeriveInput) -> TokenStream {
 
     let from_glib = gen_enum_from_glib(name, enum_variants);
 
-    quote! {
+    Ok(quote! {
         impl #crate_ident::translate::IntoGlib for #name {
             type GlibType = i32;
 
@@ -217,7 +219,7 @@ pub fn impl_enum(input: &syn::DeriveInput) -> TokenStream {
                 |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
             }
         }
-    }
+    })
 }
 
 // Registers the enum as a static type.
