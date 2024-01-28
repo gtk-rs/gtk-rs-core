@@ -140,6 +140,8 @@ generate = [
     "Gio.TlsProtocolVersion",
     "Gio.TlsRehandshakeMode",
     "Gio.TlsServerConnection",
+    "Gio.UnixCredentialsMessage",
+    "Gio.UnixSocketAddressType",
     "Gio.VolumeMonitor",
     "Gio.ZlibCompressor",
     "Gio.ZlibCompressorFormat",
@@ -192,9 +194,6 @@ status = "generate"
     [[object.function]]
     name = "io_error_from_file_error" # manually implemented against IOErrorEnum
     manual = true
-    [[object.function]]
-    pattern = "unix_.+"
-    cfg_condition = "unix"
     [[object.function]]
     pattern = "pollable_stream_.+"
     #belong to Stream, works only with PollableStream, need mutable buffer reference
@@ -601,7 +600,6 @@ status = "generate"
 [[object]]
 name = "Gio.DBusMessage"
 status = "generate"
-generate_display_trait = false
     [[object.function]]
     name = "get_header_fields"
     #return vec of u8
@@ -1443,14 +1441,8 @@ status = "generate"
     ignore = true
 
 [[object]]
-name = "Gio.UnixCredentialsMessage"
-status = "generate"
-cfg_condition = "unix"
-
-[[object]]
 name = "Gio.UnixFDList"
 status = "generate"
-cfg_condition = "unix"
 manual_traits = ["UnixFDListExtManual"]
     [[object.function]]
     name = "new_from_array"
@@ -1484,7 +1476,6 @@ manual_traits = ["UnixFDListExtManual"]
 [[object]]
 name = "Gio.UnixFDMessage"
 status = "generate"
-cfg_condition = "unix"
 manual_traits = ["UnixFDMessageExtManual"]
     [[object.function]]
     name = "append_fd"
@@ -1500,7 +1491,6 @@ manual_traits = ["UnixFDMessageExtManual"]
 [[object]]
 name = "Gio.UnixInputStream"
 status = "generate"
-cfg_condition = "unix"
 manual_traits = ["UnixInputStreamExtManual"]
     [[object.function]]
     name = "new"
@@ -1533,7 +1523,6 @@ manual_traits = ["UnixInputStreamExtManual"]
 name = "Gio.UnixMountEntry"
 status = "generate"
 concurrency = "send+sync"
-cfg_condition = "unix"
     [[object.derive]]
     name = "Debug"
 
@@ -1541,7 +1530,6 @@ cfg_condition = "unix"
 name = "Gio.UnixMountPoint"
 status = "generate"
 concurrency = "send+sync"
-cfg_condition = "unix"
     [[object.derive]]
     name = "Debug"
     [[object.function]]
@@ -1568,7 +1556,6 @@ cfg_condition = "unix"
 [[object]]
 name = "Gio.UnixOutputStream"
 status = "generate"
-cfg_condition = "unix"
 manual_traits = ["UnixOutputStreamExtManual"]
     [[object.function]]
     name = "new"
@@ -1601,7 +1588,6 @@ manual_traits = ["UnixOutputStreamExtManual"]
 name = "Gio.UnixSocketAddress"
 status = "generate"
 concurrency = "send+sync"
-cfg_condition = "unix"
 manual_traits = ["UnixSocketAddressExtManual"]
     [[object.function]]
     name = "new"
@@ -1613,11 +1599,6 @@ manual_traits = ["UnixSocketAddressExtManual"]
     [[object.property]]
     name = "path"
     ignore = true
-
-[[object]]
-name = "Gio.UnixSocketAddressType"
-status = "generate"
-cfg_condition = "unix"
 
 [[object]]
 name = "Gio.Vfs"
@@ -1635,11 +1616,9 @@ status = "generate"
 [[object]]
 name = "Gio.Win32InputStream"
 status = "manual"
-cfg_condition = "windows"
 manual_traits = ["Win32InputStreamExtManual"]
 
 [[object]]
 name = "Gio.Win32OutputStream"
 status = "manual"
-cfg_condition = "windows"
 manual_traits = ["Win32OutputStreamExtManual"]
