@@ -95,8 +95,9 @@
 //!     impl ObjectImpl for SimpleObject {
 //!         // Called once in the very beginning to list all properties of this class.
 //!         fn properties() -> &'static [glib::ParamSpec] {
-//!             use once_cell::sync::Lazy;
-//!             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
+//!             use std::sync::OnceLock;
+//!             static PROPERTIES: OnceLock<Vec<glib::ParamSpec>> = OnceLock::new();
+//!             PROPERTIES.get_or_init(|| {
 //!                 vec![
 //!                     glib::ParamSpecString::builder("name")
 //!                         .build(),
@@ -107,9 +108,7 @@
 //!                     glib::ParamSpecVariant::builder("variant", glib::VariantTy::ANY)
 //!                         .build(),
 //!                 ]
-//!             });
-//!
-//!             PROPERTIES.as_ref()
+//!             })
 //!         }
 //!
 //!         // Called whenever a property is set on this instance. The id

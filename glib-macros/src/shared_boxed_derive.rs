@@ -157,17 +157,10 @@ pub fn impl_shared_boxed(input: &syn::DeriveInput) -> syn::Result<proc_macro2::T
         impl #crate_ident::StaticType for #name {
             #[inline]
             fn static_type() -> #crate_ident::Type {
-                static ONCE: ::std::sync::Once = ::std::sync::Once::new();
-                static mut TYPE_: #crate_ident::Type = #crate_ident::Type::INVALID;
-
-                ONCE.call_once(|| {
-                    let type_ = #crate_ident::subclass::shared::register_shared_type::<#name>();
-                    unsafe {
-                        TYPE_ = type_;
-                    }
-                });
-
-                unsafe { TYPE_ }
+                static TYPE: ::std::sync::OnceLock<#crate_ident::Type> = ::std::sync::OnceLock::new();
+                *TYPE.get_or_init(|| {
+                    #crate_ident::subclass::shared::register_shared_type::<#name>()
+                })
             }
         }
 

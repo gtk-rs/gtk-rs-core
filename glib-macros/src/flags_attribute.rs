@@ -267,10 +267,8 @@ fn register_flags_as_static(
             /// Registers the flags only once.
             #[inline]
             fn register_flags() -> #crate_ident::Type {
-                static ONCE: ::std::sync::Once = ::std::sync::Once::new();
-                static mut TYPE: #crate_ident::Type = #crate_ident::Type::INVALID;
-
-                ONCE.call_once(|| {
+                static TYPE: ::std::sync::OnceLock<#crate_ident::Type> = ::std::sync::OnceLock::new();
+                *TYPE.get_or_init(|| {
                     static mut VALUES: [#crate_ident::gobject_ffi::GFlagsValue; #nb_flags_values] = [
                         #g_flags_values
                         #crate_ident::gobject_ffi::GFlagsValue {
@@ -285,13 +283,9 @@ fn register_flags_as_static(
                         let type_ = #crate_ident::gobject_ffi::g_flags_register_static(name.as_ptr(), VALUES.as_ptr());
                         let type_: #crate_ident::Type = #crate_ident::translate::from_glib(type_);
                         assert!(type_.is_valid());
-                        TYPE = type_;
+                        type_
                     }
-                });
-
-                unsafe {
-                    TYPE
-                }
+                })
             }
         }
     }

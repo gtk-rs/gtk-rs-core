@@ -41,11 +41,10 @@ pub fn impl_error_domain(input: &syn::DeriveInput) -> syn::Result<TokenStream> {
             fn domain() -> #crate_ident::Quark {
                 use #crate_ident::translate::from_glib;
 
-                static QUARK: #crate_ident::once_cell::sync::Lazy<#crate_ident::Quark> =
-                    #crate_ident::once_cell::sync::Lazy::new(|| unsafe {
-                        from_glib(#crate_ident::ffi::g_quark_from_static_string(concat!(#domain_name, "\0") as *const ::core::primitive::str as *const _))
-                    });
-                *QUARK
+                static QUARK: ::std::sync::OnceLock<#crate_ident::Quark> = ::std::sync::OnceLock::new();
+                *QUARK.get_or_init(|| unsafe {
+                    from_glib(#crate_ident::ffi::g_quark_from_static_string(concat!(#domain_name, "\0") as *const ::core::primitive::str as *const _))
+                })
             }
 
             #[inline]

@@ -110,16 +110,10 @@ fn register_object_interface_as_static(
             /// Registers the interface only once.
             #[inline]
             fn register_interface() -> #crate_ident::Type {
-                static ONCE: ::std::sync::Once = ::std::sync::Once::new();
-                static mut TYPE: #crate_ident::Type = #crate_ident::Type::INVALID;
-
-                ONCE.call_once(|| unsafe {
-                    TYPE = #crate_ident::subclass::register_interface::<Self>();
-                });
-
-                unsafe {
-                    TYPE
-                }
+                static TYPE: ::std::sync::OnceLock<#crate_ident::Type> = ::std::sync::OnceLock::new();
+                *TYPE.get_or_init(|| unsafe {
+                    #crate_ident::subclass::register_interface::<Self>()
+                })
             }
         }
     }
