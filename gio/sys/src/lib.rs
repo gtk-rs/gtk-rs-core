@@ -11,6 +11,9 @@
 )]
 #![cfg_attr(docsrs, feature(doc_cfg))]
 
+use glib_sys as glib;
+use gobject_sys as gobject;
+
 mod manual;
 
 pub use manual::*;
