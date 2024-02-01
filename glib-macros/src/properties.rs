@@ -383,7 +383,7 @@ fn expand_param_spec(prop: &PropDesc) -> TokenStream2 {
 
     let span = prop.attrs_span;
     quote_spanned! {span=>
-        <<#ty as #crate_ident::Property>::Value as #crate_ident::HasParamSpec>
+        <<#ty as #crate_ident::property::Property>::Value as #crate_ident::prelude::HasParamSpec>
             ::param_spec_builder() #builder_call
             #rw_flags
             #(#builder_fields)*
@@ -397,7 +397,7 @@ fn expand_properties_fn(props: &[PropDesc]) -> TokenStream2 {
     let param_specs = props.iter().map(expand_param_spec);
     quote!(
         fn derived_properties() -> &'static [#crate_ident::ParamSpec] {
-            use #crate_ident::ParamSpecBuilderExt;
+            use #crate_ident::prelude::ParamSpecBuilderExt;
             static PROPERTIES: ::std::sync::OnceLock<[#crate_ident::ParamSpec; #n_props]> = ::std::sync::OnceLock::new();
             PROPERTIES.get_or_init(|| [
                 #(#param_specs,)*
@@ -424,18 +424,18 @@ fn expand_property_fn(props: &[PropDesc]) -> TokenStream2 {
             let body = match (member, get) {
                 (_, MaybeCustomFn::Custom(expr)) => quote!(
                     DerivedPropertiesEnum::#enum_ident => {
-                        let value: <#ty as #crate_ident::Property>::Value = (#expr)(&self);
+                        let value: <#ty as #crate_ident::property::Property>::Value = (#expr)(&self);
                         ::std::convert::From::from(value)
                     }
                 ),
                 (None, MaybeCustomFn::Default) => quote!(
                     DerivedPropertiesEnum::#enum_ident =>
-                        #crate_ident::PropertyGet::get(&self.#field_ident, |v| ::std::convert::From::from(v))
+                        #crate_ident::property::PropertyGet::get(&self.#field_ident, |v| ::std::convert::From::from(v))
 
                 ),
                 (Some(member), MaybeCustomFn::Default) => quote!(
                     DerivedPropertiesEnum::#enum_ident =>
-                        #crate_ident::PropertyGet::get(&self.#field_ident, |v| ::std::convert::From::from(&v.#member))
+                        #crate_ident::property::PropertyGet::get(&self.#field_ident, |v| ::std::convert::From::from(&v.#member))
 
                 ),
             };
@@ -476,7 +476,7 @@ fn expand_set_property_fn(props: &[PropDesc]) -> TokenStream2 {
         let expect = quote!(.unwrap_or_else(
             |err| panic!(
                 "Invalid conversion from `glib::value::Value` to `{}` inside setter for property `{}`: {:?}",
-                ::std::any::type_name::<<#ty as #crate_ident::Property>::Value>(), #stripped_name, err
+                ::std::any::type_name::<<#ty as #crate_ident::property::Property>::Value>(), #stripped_name, err
             )
         ));
         set.as_ref().map(|set| {
@@ -488,7 +488,7 @@ fn expand_set_property_fn(props: &[PropDesc]) -> TokenStream2 {
                 ),
                 (None, MaybeCustomFn::Default) => quote!(
                     DerivedPropertiesEnum::#enum_ident => {
-                        #crate_ident::PropertySet::set(
+                        #crate_ident::property::PropertySet::set(
                             &self.#field_ident,
                             #crate_ident::Value::get(value)#expect
                         );
@@ -496,7 +496,7 @@ fn expand_set_property_fn(props: &[PropDesc]) -> TokenStream2 {
                 ),
                 (Some(member), MaybeCustomFn::Default) => quote!(
                     DerivedPropertiesEnum::#enum_ident => {
-                        #crate_ident::PropertySetNested::set_nested(
+                        #crate_ident::property::PropertySetNested::set_nested(
                             &self.#field_ident,
                             move |v| v.#member = #crate_ident::Value::get(value)#expect
                         );
@@ -570,14 +570,14 @@ fn expand_impl_getset_properties(props: &[PropDesc]) -> Vec<syn::ImplItemFn> {
             let span = p.attrs_span;
             parse_quote_spanned!(span=>
                 #[must_use]
-                pub fn #ident(&self) -> <#ty as #crate_ident::Property>::Value {
-                    self.property::<<#ty as #crate_ident::Property>::Value>(#stripped_name)
+                pub fn #ident(&self) -> <#ty as #crate_ident::property::Property>::Value {
+                    self.property::<<#ty as #crate_ident::property::Property>::Value>(#stripped_name)
                 })
         });
 
         let setter = (p.set.is_some() && !p.is_construct_only).then(|| {
             let ident = format_ident!("set_{}", ident);
-            let target_ty = quote!(<<#ty as #crate_ident::Property>::Value as #crate_ident::HasParamSpec>::SetValue);
+            let target_ty = quote!(<<#ty as #crate_ident::property::Property>::Value as #crate_ident::prelude::HasParamSpec>::SetValue);
             let set_ty = if p.nullable {
                quote!(::core::option::Option<impl std::borrow::Borrow<#target_ty>>)
             } else {
@@ -715,10 +715,10 @@ pub fn impl_derive_props(input: PropsMacroInput) -> TokenStream {
                 item
             });
         quote! {
-            pub trait #trait_ident: #crate_ident::IsA<#wrapper_type> {
+            pub trait #trait_ident: #crate_ident::prelude::IsA<#wrapper_type> {
                 #(#fns_without_visibility_modifier)*
             }
-            impl<T: #crate_ident::IsA<#wrapper_type>> #trait_ident for T {}
+            impl<T: #crate_ident::prelude::IsA<#wrapper_type>> #trait_ident for T {}
         }
     } else {
         quote! {
@@ -732,7 +732,7 @@ pub fn impl_derive_props(input: PropsMacroInput) -> TokenStream {
     };
 
     let expanded = quote! {
-        use #crate_ident::{PropertyGet, PropertySet, ToValue};
+        use #crate_ident::property::{PropertyGet, PropertySet};
 
         #properties_enum
 

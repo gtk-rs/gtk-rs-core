@@ -146,6 +146,9 @@ use std::{
     ptr,
 };
 
+pub use crate::collections::{ptr_slice::IntoPtrSlice, strv::IntoStrV};
+pub use crate::gstring::{IntoGStr, IntoOptionalGStr};
+
 use libc::{c_char, size_t};
 
 // rustdoc-stripper-ignore-next

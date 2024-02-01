@@ -57,7 +57,7 @@ fn derive_variant_for_struct(
             let idents_len = idents.len();
 
             let static_variant_type = quote! {
-                impl #impl_generics #glib::StaticVariantType for #ident #type_generics #where_clause {
+                impl #impl_generics #glib::variant::StaticVariantType for #ident #type_generics #where_clause {
                     #[inline]
                     fn static_variant_type() -> ::std::borrow::Cow<'static, #glib::VariantTy> {
                         static TYP: ::std::sync::OnceLock<#glib::VariantType> = ::std::sync::OnceLock::new();
@@ -67,7 +67,7 @@ fn derive_variant_for_struct(
 
                             #(
                                 {
-                                    let typ = <#types as #glib::StaticVariantType>::static_variant_type();
+                                    let typ = <#types as #glib::variant::StaticVariantType>::static_variant_type();
                                     builder.append(typ.as_str());
                                 }
                             )*
@@ -80,11 +80,11 @@ fn derive_variant_for_struct(
             };
 
             let to_variant = quote! {
-                impl #impl_generics #glib::ToVariant for #ident #type_generics #where_clause {
+                impl #impl_generics #glib::variant::ToVariant for #ident #type_generics #where_clause {
                     fn to_variant(&self) -> #glib::Variant {
                         #glib::Variant::tuple_from_iter(::std::array::IntoIter::<#glib::Variant, #idents_len>::new([
                             #(
-                                #glib::ToVariant::to_variant(&self.#idents)
+                                #glib::variant::ToVariant::to_variant(&self.#idents)
                             ),*
                         ]))
                     }
@@ -102,7 +102,7 @@ fn derive_variant_for_struct(
             };
 
             let from_variant = quote! {
-                impl #impl_generics #glib::FromVariant for #ident #type_generics #where_clause {
+                impl #impl_generics #glib::variant::FromVariant for #ident #type_generics #where_clause {
                     fn from_variant(variant: &#glib::Variant) -> ::core::option::Option<Self> {
                         if !variant.is_container() {
                             return ::core::option::Option::None;
@@ -133,7 +133,7 @@ fn derive_variant_for_struct(
             let counts = (0..types.len()).map(syn::Index::from).collect::<Vec<_>>();
 
             let static_variant_type = quote! {
-                impl #impl_generics #glib::StaticVariantType for #ident #type_generics #where_clause {
+                impl #impl_generics #glib::variant::StaticVariantType for #ident #type_generics #where_clause {
                     #[inline]
                     fn static_variant_type() -> ::std::borrow::Cow<'static, #glib::VariantTy> {
                         static TYP: ::std::sync::OnceLock<#glib::VariantType> = ::std::sync::OnceLock::new();
@@ -143,7 +143,7 @@ fn derive_variant_for_struct(
 
                             #(
                                 {
-                                    let typ = <#types as #glib::StaticVariantType>::static_variant_type();
+                                    let typ = <#types as #glib::variant::StaticVariantType>::static_variant_type();
                                     #glib::ffi::g_string_append_len(
                                         ptr,
                                         typ.as_str().as_ptr() as *const _,
@@ -162,11 +162,11 @@ fn derive_variant_for_struct(
             };
 
             let to_variant = quote! {
-                impl #impl_generics #glib::ToVariant for #ident #type_generics #where_clause {
+                impl #impl_generics #glib::variant::ToVariant for #ident #type_generics #where_clause {
                     fn to_variant(&self) -> #glib::Variant {
                         #glib::Variant::tuple_from_iter(::std::iter::IntoIterator::into_iter([
                             #(
-                                #glib::ToVariant::to_variant(&self.#idents)
+                                #glib::variant::ToVariant::to_variant(&self.#idents)
                             ),*
                         ]))
                     }
@@ -184,7 +184,7 @@ fn derive_variant_for_struct(
             };
 
             let from_variant = quote! {
-                impl #impl_generics #glib::FromVariant for #ident #type_generics #where_clause {
+                impl #impl_generics #glib::variant::FromVariant for #ident #type_generics #where_clause {
                     fn from_variant(variant: &#glib::Variant) -> ::core::option::Option<Self> {
                         if !variant.is_container() {
                             return ::core::option::Option::None;
@@ -205,7 +205,7 @@ fn derive_variant_for_struct(
         }
         Fields::Unit => {
             let static_variant_type = quote! {
-                impl #impl_generics #glib::StaticVariantType for #ident #type_generics #where_clause {
+                impl #impl_generics #glib::variant::StaticVariantType for #ident #type_generics #where_clause {
                     #[inline]
                     fn static_variant_type() -> ::std::borrow::Cow<'static, #glib::VariantTy> {
                         ::std::borrow::Cow::Borrowed(#glib::VariantTy::UNIT)
@@ -214,23 +214,23 @@ fn derive_variant_for_struct(
             };
 
             let to_variant = quote! {
-                impl #impl_generics #glib::ToVariant for #ident #type_generics #where_clause {
+                impl #impl_generics #glib::variant::ToVariant for #ident #type_generics #where_clause {
                     #[inline]
                     fn to_variant(&self) -> #glib::Variant {
-                        #glib::ToVariant::to_variant(&())
+                        #glib::variant::ToVariant::to_variant(&())
                     }
                 }
 
                 impl #impl_generics ::std::convert::From<#ident #type_generics> for #glib::Variant #where_clause {
                     #[inline]
                     fn from(v: #ident #type_generics) -> #glib::Variant {
-                        #glib::ToVariant::to_variant(&())
+                        #glib::variant::ToVariant::to_variant(&())
                     }
                 }
             };
 
             let from_variant = quote! {
-                impl #impl_generics #glib::FromVariant for #ident #type_generics #where_clause {
+                impl #impl_generics #glib::variant::FromVariant for #ident #type_generics #where_clause {
                     fn from_variant(variant: &#glib::Variant) -> ::core::option::Option<Self> {
                         ::core::option::Option::Some(Self)
                     }
@@ -323,10 +323,10 @@ fn derive_variant_for_enum(
                 let field_names = named.iter().map(|f| f.ident.as_ref().unwrap());
                 let field_names2 = field_names.clone();
                 quote! {
-                    Self::#ident { #(#field_names),* } => #glib::ToVariant::to_variant(&(
+                    Self::#ident { #(#field_names),* } => #glib::variant::ToVariant::to_variant(&(
                         #tag,
                         #glib::Variant::tuple_from_iter(::std::iter::IntoIterator::into_iter([
-                            #(#glib::ToVariant::to_variant(&#field_names2)),*
+                            #(#glib::variant::ToVariant::to_variant(&#field_names2)),*
                         ]))
                     ))
                 }
@@ -337,19 +337,19 @@ fn derive_variant_for_enum(
                 });
                 let field_names2 = field_names.clone();
                 quote! {
-                    Self::#ident(#(#field_names),*) => #glib::ToVariant::to_variant(&(
+                    Self::#ident(#(#field_names),*) => #glib::variant::ToVariant::to_variant(&(
                         #tag,
                         #glib::Variant::tuple_from_iter(::std::iter::IntoIterator::into_iter([
-                            #(#glib::ToVariant::to_variant(&#field_names2)),*
+                            #(#glib::variant::ToVariant::to_variant(&#field_names2)),*
                         ]))
                     ))
                 }
             },
             syn::Fields::Unit => {
                 quote! {
-                    Self::#ident => #glib::ToVariant::to_variant(&(
+                    Self::#ident => #glib::variant::ToVariant::to_variant(&(
                         #tag,
-                        #glib::ToVariant::to_variant(&())
+                        #glib::variant::ToVariant::to_variant(&())
                     ))
                 }
             },
@@ -370,7 +370,7 @@ fn derive_variant_for_enum(
                 let field_names = named.iter().map(|f| f.ident.as_ref().unwrap());
                 let field_names2 = field_names.clone();
                 quote! {
-                    #ident::#field_ident { #(#field_names),* } => #glib::ToVariant::to_variant(&(
+                    #ident::#field_ident { #(#field_names),* } => #glib::variant::ToVariant::to_variant(&(
                         #tag,
                         #glib::Variant::tuple_from_iter(::std::iter::IntoIterator::into_iter([
                             #(<#glib::Variant as ::std::convert::From<_>>::from(#field_names2)),*
@@ -385,7 +385,7 @@ fn derive_variant_for_enum(
                     .map(|(i, _)| format_ident!("field{}", i));
                 let field_names2 = field_names.clone();
                 quote! {
-                    #ident::#field_ident(#(#field_names),*) => #glib::ToVariant::to_variant(&(
+                    #ident::#field_ident(#(#field_names),*) => #glib::variant::ToVariant::to_variant(&(
                         #tag,
                         #glib::Variant::tuple_from_iter(::std::iter::IntoIterator::into_iter([
                             #(<#glib::Variant as ::std::convert::From<_>>::from(#field_names2)),*
@@ -395,9 +395,9 @@ fn derive_variant_for_enum(
             }
             syn::Fields::Unit => {
                 quote! {
-                    #ident::#field_ident => #glib::ToVariant::to_variant(&(
+                    #ident::#field_ident => #glib::variant::ToVariant::to_variant(&(
                         #tag,
-                        #glib::ToVariant::to_variant(&())
+                        #glib::variant::ToVariant::to_variant(&())
                     ))
                 }
             }
@@ -419,7 +419,7 @@ fn derive_variant_for_enum(
                     let name = f.ident.as_ref().unwrap();
                     let repr = &f.ty;
                     quote! {
-                        #name: <#repr as #glib::FromVariant>::from_variant(
+                        #name: <#repr as #glib::variant::FromVariant>::from_variant(
                             &#glib::Variant::try_child_value(&value, #index)?
                         )?
                     }
@@ -432,7 +432,7 @@ fn derive_variant_for_enum(
                 quote! {
                     #tag => ::core::option::Option::Some(Self::#ident(
                         #(
-                            <#repr as #glib::FromVariant>::from_variant(
+                            <#repr as #glib::variant::FromVariant>::from_variant(
                                 &#glib::Variant::try_child_value(&value, #indices)?
                             )?
                         ),*
@@ -452,7 +452,7 @@ fn derive_variant_for_enum(
     };
 
     Ok(quote! {
-        impl #impl_generics #glib::StaticVariantType for #ident #type_generics #where_clause {
+        impl #impl_generics #glib::variant::StaticVariantType for #ident #type_generics #where_clause {
             #[inline]
             fn static_variant_type() -> ::std::borrow::Cow<'static, #glib::VariantTy> {
                 ::std::borrow::Cow::Borrowed(
@@ -463,7 +463,7 @@ fn derive_variant_for_enum(
             }
         }
 
-        impl #impl_generics #glib::ToVariant for #ident #type_generics #where_clause {
+        impl #impl_generics #glib::variant::ToVariant for #ident #type_generics #where_clause {
             fn to_variant(&self) -> #glib::Variant {
                 match self {
                     #(#to),*
@@ -479,9 +479,9 @@ fn derive_variant_for_enum(
             }
         }
 
-        impl #impl_generics #glib::FromVariant for #ident #type_generics #where_clause {
+        impl #impl_generics #glib::variant::FromVariant for #ident #type_generics #where_clause {
             fn from_variant(variant: &#glib::Variant) -> ::core::option::Option<Self> {
-                let (tag, value) = <(#repr, #glib::Variant) as #glib::FromVariant>::from_variant(&variant)?;
+                let (tag, value) = <(#repr, #glib::Variant) as #glib::variant::FromVariant>::from_variant(&variant)?;
                 if !#glib::VariantTy::is_tuple(#glib::Variant::type_(&value)) {
                     return ::core::option::Option::None;
                 }
@@ -515,7 +515,7 @@ fn derive_variant_for_c_enum(
             let nicks2 = nicks.clone();
             (
                 quote! {
-                    #glib::ToVariant::to_variant(match self {
+                    #glib::variant::ToVariant::to_variant(match self {
                         #(Self::#idents => #nicks),*
                     })
                 },
@@ -532,10 +532,10 @@ fn derive_variant_for_c_enum(
             let idents = data_enum.variants.iter().map(|v| &v.ident);
             (
                 quote! {
-                    #glib::ToVariant::to_variant(&(*self as #repr))
+                    #glib::variant::ToVariant::to_variant(&(*self as #repr))
                 },
                 quote! {
-                    let value = <#repr as #glib::FromVariant>::from_variant(&variant)?;
+                    let value = <#repr as #glib::variant::FromVariant>::from_variant(&variant)?;
                     #(if value == Self::#idents as #repr {
                         return ::core::option::Option::Some(Self::#idents);
                     })*
@@ -545,10 +545,10 @@ fn derive_variant_for_c_enum(
         }
         EnumMode::Enum { repr: true } => (
             quote! {
-                #glib::ToVariant::to_variant(&(*self as i32))
+                #glib::variant::ToVariant::to_variant(&(*self as i32))
             },
             quote! {
-                let value = <i32 as #glib::FromVariant>::from_variant(&variant)?;
+                let value = <i32 as #glib::variant::FromVariant>::from_variant(&variant)?;
                 unsafe { #glib::translate::try_from_glib(value) }.ok()
             },
         ),
@@ -559,7 +559,7 @@ fn derive_variant_for_c_enum(
                 let value = #glib::EnumClass::value(&enum_class, value);
                 let value = ::core::option::Option::unwrap(value);
                 let nick = #glib::EnumValue::nick(&value);
-                #glib::ToVariant::to_variant(nick)
+                #glib::variant::ToVariant::to_variant(nick)
             },
             quote! {
                 let enum_class = #glib::EnumClass::new::<Self>();
@@ -571,10 +571,10 @@ fn derive_variant_for_c_enum(
         ),
         EnumMode::Flags { repr: true } => (
             quote! {
-                #glib::ToVariant::to_variant(&self.bits())
+                #glib::variant::ToVariant::to_variant(&self.bits())
             },
             quote! {
-                let value = <u32 as #glib::FromVariant>::from_variant(&variant)?;
+                let value = <u32 as #glib::variant::FromVariant>::from_variant(&variant)?;
                 Self::from_bits(value)
             },
         ),
@@ -583,7 +583,7 @@ fn derive_variant_for_c_enum(
                 let flags_class = #glib::FlagsClass::new::<Self>();
                 let value = <Self as #glib::translate::IntoGlib>::into_glib(*self);
                 let s = #glib::FlagsClass::to_nick_string(&flags_class, value);
-                #glib::ToVariant::to_variant(&s)
+                #glib::variant::ToVariant::to_variant(&s)
             },
             quote! {
                 let flags_class = #glib::FlagsClass::new::<Self>();
@@ -595,7 +595,7 @@ fn derive_variant_for_c_enum(
     };
 
     quote! {
-        impl #impl_generics #glib::StaticVariantType for #ident #type_generics #where_clause {
+        impl #impl_generics #glib::variant::StaticVariantType for #ident #type_generics #where_clause {
             #[inline]
             fn static_variant_type() -> ::std::borrow::Cow<'static, #glib::VariantTy> {
                 ::std::borrow::Cow::Borrowed(
@@ -606,7 +606,7 @@ fn derive_variant_for_c_enum(
             }
         }
 
-        impl #impl_generics #glib::ToVariant for #ident #type_generics #where_clause {
+        impl #impl_generics #glib::variant::ToVariant for #ident #type_generics #where_clause {
             fn to_variant(&self) -> #glib::Variant {
                 #to_variant
             }
@@ -615,11 +615,11 @@ fn derive_variant_for_c_enum(
         impl #impl_generics ::std::convert::From<#ident #type_generics> for #glib::Variant #where_clause {
             #[inline]
             fn from(v: #ident #type_generics) -> #glib::Variant {
-                <#ident #type_generics as #glib::ToVariant>::to_variant(&v)
+                <#ident #type_generics as #glib::variant::ToVariant>::to_variant(&v)
             }
         }
 
-        impl #impl_generics #glib::FromVariant for #ident #type_generics #where_clause {
+        impl #impl_generics #glib::variant::FromVariant for #ident #type_generics #where_clause {
             fn from_variant(variant: &#glib::Variant) -> ::core::option::Option<Self> {
                 #from_variant
             }

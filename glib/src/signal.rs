@@ -208,13 +208,13 @@ impl FromGlib<ffi::gboolean> for Propagation {
     }
 }
 
-impl crate::ToValue for Propagation {
+impl crate::value::ToValue for Propagation {
     fn to_value(&self) -> crate::Value {
         bool::from(*self).to_value()
     }
 
     fn value_type(&self) -> crate::Type {
-        <bool as crate::StaticType>::static_type()
+        <bool as StaticType>::static_type()
     }
 }
 

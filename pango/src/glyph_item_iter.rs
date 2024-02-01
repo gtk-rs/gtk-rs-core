@@ -2,7 +2,7 @@
 
 use std::{marker::PhantomData, mem};
 
-use glib::{translate::*, GStr, GString};
+use glib::{prelude::*, translate::*, GStr, GString};
 
 use crate::GlyphItem;
 
@@ -13,7 +13,7 @@ pub struct GlyphItemIter<'item> {
     item: PhantomData<&'item GlyphItem>,
 }
 
-impl<'item> glib::StaticType for GlyphItemIter<'item> {
+impl<'item> StaticType for GlyphItemIter<'item> {
     #[inline]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::pango_glyph_item_iter_get_type()) }

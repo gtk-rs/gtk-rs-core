@@ -2,7 +2,7 @@
 
 use std::{ptr, time::SystemTime};
 
-use glib::{object::IsA, translate::*};
+use glib::{prelude::*, translate::*};
 
 use crate::{PixbufAnimation, PixbufAnimationIter};
 

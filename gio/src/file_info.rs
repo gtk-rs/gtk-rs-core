@@ -5,7 +5,7 @@ use std::{
     time::{Duration, SystemTime},
 };
 
-use glib::{translate::*, IntoStrV, StrV};
+use glib::{translate::*, StrV};
 
 use crate::FileInfo;
 

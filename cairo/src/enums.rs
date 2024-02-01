@@ -11,7 +11,7 @@ use crate::Error;
 #[cfg(feature = "use_glib")]
 macro_rules! gvalue_impl {
     ($name:ty, $get_type:expr) => {
-        impl glib::types::StaticType for $name {
+        impl glib::prelude::StaticType for $name {
             #[inline]
             fn static_type() -> glib::Type {
                 unsafe { from_glib($get_type()) }
@@ -40,7 +40,7 @@ macro_rules! gvalue_impl {
             }
 
             fn value_type(&self) -> glib::Type {
-                <Self as glib::StaticType>::static_type()
+                <Self as glib::prelude::StaticType>::static_type()
             }
         }
 

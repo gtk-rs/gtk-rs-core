@@ -18,7 +18,7 @@
 //!
 //! ```
 //! use glib::prelude::*; // or `use gtk::prelude::*;`
-//! use glib::{Variant, FromVariant, ToVariant};
+//! use glib::variant::{Variant, FromVariant};
 //! use std::collections::HashMap;
 //!
 //! // Using the `ToVariant` trait.
@@ -1602,8 +1602,7 @@ where
 ///
 /// ```
 ///# use glib::prelude::*; // or `use gtk::prelude::*;`
-/// use glib::{Variant, FromVariant, ToVariant};
-/// use glib::variant::DictEntry;
+/// use glib::variant::{Variant, FromVariant, DictEntry};
 ///
 /// let entries = [
 ///     DictEntry::new("uuid", 1000u32),

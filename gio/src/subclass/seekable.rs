@@ -2,7 +2,7 @@
 
 use std::ptr;
 
-use glib::{subclass::prelude::*, translate::*, Cast, Error, SeekType};
+use glib::{prelude::*, subclass::prelude::*, translate::*, Error, SeekType};
 
 use crate::{Cancellable, Seekable};
 

@@ -9,8 +9,7 @@ use std::sync::Arc;
 use std::sync::Mutex;
 use std::sync::RwLock;
 
-use crate::HasParamSpec;
-use crate::IsA;
+use crate::prelude::*;
 use crate::Object;
 use crate::SendWeakRef;
 use crate::WeakRef;

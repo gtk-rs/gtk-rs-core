@@ -21,20 +21,14 @@ pub use self::{
     closure::{Closure, RustClosure},
     enums::{EnumClass, EnumValue, FlagsBuilder, FlagsClass, FlagsValue, UserDirectory},
     error::{BoolError, Error},
-    object::{
-        BorrowedObject, Cast, CastNone, Class, InitiallyUnowned, Interface, IsA, Object,
-        ObjectClassExt, ObjectExt, ObjectType, SendWeakRef, WeakRef,
-    },
+    object::{BorrowedObject, Class, InitiallyUnowned, Interface, Object, SendWeakRef, WeakRef},
     signal::{
         signal_handler_block, signal_handler_disconnect, signal_handler_unblock,
         signal_stop_emission_by_name, Propagation, SignalHandlerId,
     },
-    types::{ILong, Pointer, StaticType, StaticTypeExt, Type, ULong},
-    value::{BoxedValue, SendValue, ToSendValue, ToValue, Value},
-    variant::{
-        FixedSizeVariantArray, FixedSizeVariantType, FromVariant, StaticVariantType, ToVariant,
-        Variant,
-    },
+    types::{ILong, Pointer, Type, ULong},
+    value::{BoxedValue, SendValue, Value},
+    variant::{FixedSizeVariantArray, Variant},
     variant_dict::VariantDict,
     variant_iter::{VariantIter, VariantStrIter},
     variant_type::{VariantTy, VariantTyIterator, VariantType},
@@ -104,9 +98,7 @@ mod exit_code;
 pub use exit_code::ExitCode;
 
 pub mod collections;
-pub use collections::{
-    ptr_slice::IntoPtrSlice, strv::IntoStrV, List, PtrSlice, SList, Slice, StrV,
-};
+pub use collections::{List, PtrSlice, SList, Slice, StrV};
 
 pub use self::auto::*;
 #[allow(clippy::too_many_arguments)]
@@ -133,7 +125,7 @@ mod bytes;
 mod control_flow;
 pub use self::control_flow::ControlFlow;
 pub mod char;
-pub use self::char::*;
+pub use self::char::{Char, UChar};
 mod checksum;
 pub mod closure;
 mod convert;
@@ -165,7 +157,7 @@ mod date;
 mod date_time;
 mod time_span;
 mod time_zone;
-pub use self::time_span::*;
+pub use self::time_span::TimeSpan;
 pub mod value;
 pub mod variant;
 mod variant_dict;
@@ -176,8 +168,7 @@ mod value_array;
 pub use self::value_array::ValueArray;
 mod param_spec;
 pub use self::param_spec::*;
-mod property;
-pub use self::property::*;
+pub mod property;
 mod quark;
 pub use self::quark::Quark;
 pub mod match_info;

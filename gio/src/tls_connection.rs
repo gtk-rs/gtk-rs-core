@@ -5,7 +5,7 @@ use std::ptr;
 
 use glib::prelude::*;
 #[cfg(feature = "v2_60")]
-use glib::{translate::*, IntoStrV};
+use glib::translate::*;
 
 #[cfg(feature = "v2_66")]
 use crate::TlsChannelBindingType;

@@ -2,7 +2,7 @@
 
 use std::{ffi::OsString, fmt, ops::Deref, ptr};
 
-use glib::{subclass::prelude::*, translate::*, Cast, ExitCode, VariantDict};
+use glib::{prelude::*, subclass::prelude::*, translate::*, ExitCode, VariantDict};
 use libc::{c_char, c_int, c_void};
 
 use crate::Application;

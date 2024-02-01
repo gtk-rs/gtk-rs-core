@@ -4,8 +4,11 @@
 //! Traits and essential types intended for blanket imports.
 
 pub use crate::{
+    error::ErrorDomain,
     gobject::traits::{DynamicObjectRegisterExt, TypeModuleExt, TypePluginExt},
-    param_spec::ParamSpecBuilderExt,
-    Cast, CastNone, IsA, ObjectClassExt, ObjectExt, ObjectType, ParamSpecType, StaticType,
-    StaticTypeExt, StaticVariantType, ToSendValue, ToValue, ToVariant,
+    object::{Cast, CastNone, IsA, ObjectClassExt, ObjectExt, ObjectType},
+    param_spec::{HasParamSpec, ParamSpecBuilderExt, ParamSpecType},
+    types::{StaticType, StaticTypeExt},
+    value::{ToSendValue, ToValue, ValueType},
+    variant::{FixedSizeVariantType, FromVariant, StaticVariantType, ToVariant},
 };

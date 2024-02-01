@@ -3,12 +3,7 @@
 use std::{cmp::Ordering, ops, slice};
 
 use crate::{
-    prelude::*,
-    translate::*,
-    value::{
-        FromValue, GenericValueTypeOrNoneChecker, ToValueOptional, ValueType, ValueTypeOptional,
-    },
-    HasParamSpec, ParamSpecValueArray, ParamSpecValueArrayBuilder, Type, Value,
+    prelude::*, translate::*, ParamSpecValueArray, ParamSpecValueArrayBuilder, Type, Value,
 };
 
 wrapper! {
@@ -157,11 +152,11 @@ impl ValueType for ValueArray {
 }
 
 #[doc(hidden)]
-impl ValueTypeOptional for ValueArray {}
+impl crate::value::ValueTypeOptional for ValueArray {}
 
 #[doc(hidden)]
-unsafe impl<'a> FromValue<'a> for ValueArray {
-    type Checker = GenericValueTypeOrNoneChecker<Self>;
+unsafe impl<'a> crate::value::FromValue<'a> for ValueArray {
+    type Checker = crate::value::GenericValueTypeOrNoneChecker<Self>;
 
     #[inline]
     unsafe fn from_value(value: &'a Value) -> Self {
@@ -172,8 +167,8 @@ unsafe impl<'a> FromValue<'a> for ValueArray {
 }
 
 #[doc(hidden)]
-unsafe impl<'a> FromValue<'a> for &'a ValueArray {
-    type Checker = GenericValueTypeOrNoneChecker<Self>;
+unsafe impl<'a> crate::value::FromValue<'a> for &'a ValueArray {
+    type Checker = crate::value::GenericValueTypeOrNoneChecker<Self>;
 
     #[inline]
     unsafe fn from_value(value: &'a Value) -> Self {
@@ -225,7 +220,7 @@ impl std::convert::From<ValueArray> for Value {
 }
 
 #[doc(hidden)]
-impl ToValueOptional for ValueArray {
+impl crate::value::ToValueOptional for ValueArray {
     #[inline]
     fn to_value_optional(s: Option<&Self>) -> Value {
         let mut value = Value::for_value_type::<Self>();

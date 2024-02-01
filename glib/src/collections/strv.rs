@@ -2,7 +2,7 @@
 
 use std::{ffi::c_char, fmt, marker::PhantomData, mem, ptr};
 
-use crate::{translate::*, GStr, GString, GStringPtr, IntoGStr, IntoOptionalGStr};
+use crate::{prelude::*, translate::*, GStr, GString, GStringPtr};
 
 // rustdoc-stripper-ignore-next
 /// Minimum size of the `StrV` allocation.
@@ -996,14 +996,14 @@ impl IntoGlibPtr<*mut *mut c_char> for StrV {
     }
 }
 
-impl crate::StaticType for StrV {
+impl StaticType for StrV {
     #[inline]
     fn static_type() -> crate::Type {
         <Vec<String>>::static_type()
     }
 }
 
-impl<'a> crate::StaticType for &'a [GStringPtr] {
+impl<'a> StaticType for &'a [GStringPtr] {
     #[inline]
     fn static_type() -> crate::Type {
         <Vec<String>>::static_type()
@@ -1045,7 +1045,7 @@ impl crate::value::ToValue for StrV {
     }
 
     fn value_type(&self) -> crate::Type {
-        <StrV as crate::StaticType>::static_type()
+        <StrV as StaticType>::static_type()
     }
 }
 

@@ -175,7 +175,7 @@ pub fn impl_enum(input: &syn::DeriveInput) -> syn::Result<TokenStream> {
             }
         }
 
-        impl #crate_ident::value::ToValue for #name {
+        impl #crate_ident::prelude::ToValue for #name {
             #[inline]
             fn to_value(&self) -> #crate_ident::value::Value {
                 let mut value = #crate_ident::value::Value::for_value_type::<Self>();
@@ -190,7 +190,7 @@ pub fn impl_enum(input: &syn::DeriveInput) -> syn::Result<TokenStream> {
 
             #[inline]
             fn value_type(&self) -> #crate_ident::Type {
-                <Self as #crate_ident::StaticType>::static_type()
+                <Self as #crate_ident::prelude::StaticType>::static_type()
             }
         }
 
@@ -201,7 +201,7 @@ pub fn impl_enum(input: &syn::DeriveInput) -> syn::Result<TokenStream> {
             }
         }
 
-        impl #crate_ident::StaticType for #name {
+        impl #crate_ident::prelude::StaticType for #name {
             #[inline]
             fn static_type() -> #crate_ident::Type {
                 Self::register_enum()

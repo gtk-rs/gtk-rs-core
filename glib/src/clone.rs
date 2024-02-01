@@ -1,5 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
+use crate::prelude::*;
 use std::{
     marker::PhantomData,
     rc::{self, Rc},
@@ -36,7 +37,7 @@ where
     fn upgrade(&self) -> Option<Self::Strong>;
 }
 
-impl<T: Downgrade + crate::ObjectType> Upgrade for crate::WeakRef<T> {
+impl<T: Downgrade + ObjectType> Upgrade for crate::WeakRef<T> {
     type Strong = T;
 
     fn upgrade(&self) -> Option<Self::Strong> {
