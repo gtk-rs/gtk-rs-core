@@ -178,7 +178,6 @@ mod tests {
 
     use super::*;
     use crate as glib;
-    use crate::prelude::*;
 
     mod imp {
         use super::*;
