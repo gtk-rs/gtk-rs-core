@@ -449,7 +449,7 @@ mod test {
 
     #[test]
     fn test_int_async_result() {
-        match run_async_local(|tx, l| {
+        let fut = run_async_local(|tx, l| {
             let cancellable = crate::Cancellable::new();
             let task = unsafe {
                 crate::LocalTask::new(
@@ -462,7 +462,9 @@ mod test {
                 )
             };
             task.return_result(Ok(100_i32));
-        }) {
+        });
+
+        match fut {
             Err(_) => panic!(),
             Ok(i) => assert_eq!(i, 100),
         }
@@ -514,7 +516,7 @@ mod test {
             }
         }
 
-        match run_async_local(|tx, l| {
+        let fut = run_async_local(|tx, l| {
             let cancellable = crate::Cancellable::new();
             let task = unsafe {
                 crate::LocalTask::new(
@@ -529,7 +531,9 @@ mod test {
             let my_object = MySimpleObject::new();
             my_object.set_size(100);
             task.return_result(Ok(my_object.upcast::<glib::Object>()));
-        }) {
+        });
+
+        match fut {
             Err(_) => panic!(),
             Ok(o) => {
                 let o = o.downcast::<MySimpleObject>().unwrap();
@@ -540,7 +544,7 @@ mod test {
 
     #[test]
     fn test_error() {
-        match run_async_local(|tx, l| {
+        let fut = run_async_local(|tx, l| {
             let cancellable = crate::Cancellable::new();
             let task = unsafe {
                 crate::LocalTask::new(
@@ -556,7 +560,9 @@ mod test {
                 crate::IOErrorEnum::WouldBlock,
                 "WouldBlock",
             )));
-        }) {
+        });
+
+        match fut {
             Err(e) => match e.kind().unwrap() {
                 crate::IOErrorEnum::WouldBlock => {}
                 _ => panic!(),
@@ -567,7 +573,7 @@ mod test {
 
     #[test]
     fn test_cancelled() {
-        match run_async_local(|tx, l| {
+        let fut = run_async_local(|tx, l| {
             let cancellable = crate::Cancellable::new();
             let task = unsafe {
                 crate::LocalTask::new(
@@ -581,7 +587,9 @@ mod test {
             };
             cancellable.cancel();
             task.return_error_if_cancelled();
-        }) {
+        });
+
+        match fut {
             Err(e) => match e.kind().unwrap() {
                 crate::IOErrorEnum::Cancelled => {}
                 _ => panic!(),
