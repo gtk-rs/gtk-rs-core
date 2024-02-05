@@ -1216,6 +1216,14 @@
 <a href="#1141" id="1141">1141</a>
 <a href="#1142" id="1142">1142</a>
 <a href="#1143" id="1143">1143</a>
+<a href="#1144" id="1144">1144</a>
+<a href="#1145" id="1145">1145</a>
+<a href="#1146" id="1146">1146</a>
+<a href="#1147" id="1147">1147</a>
+<a href="#1148" id="1148">1148</a>
+<a href="#1149" id="1149">1149</a>
+<a href="#1150" id="1150">1150</a>
+<a href="#1151" id="1151">1151</a>
 </pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
 </span><span class="kw">use </span>std::{<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">boxed::Box</a> <span class="kw">as </span>Box_, <a href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html">future::Future</a>, <a href="https://doc.rust-lang.org/nightly/core/intrinsics/fn.transmute.html">mem::transmute</a>, <a href="https://doc.rust-lang.org/nightly/std/macro.panic.html">panic</a>, <a href="https://doc.rust-lang.org/nightly/core/ptr/index.html">ptr</a>};
@@ -2218,7 +2226,7 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_int_async_result() {
-        <span class="kw">match </span>run_async_local(|tx, l| {
+        <span class="kw">let </span>fut = run_async_local(|tx, l| {
             <span class="kw">let </span>cancellable = <span class="kw">crate</span>::Cancellable::new();
             <span class="kw">let </span>task = <span class="kw">unsafe </span>{
                 <span class="kw">crate</span>::LocalTask::new(
@@ -2231,7 +2239,9 @@
                 )
             };
             task.return_result(<span class="prelude-val">Ok</span>(<span class="number">100_i32</span>));
-        }) {
+        });
+
+        <span class="kw">match </span>fut {
             <span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; <span class="macro">panic!</span>(),
             <span class="prelude-val">Ok</span>(i) =&gt; <span class="macro">assert_eq!</span>(i, <span class="number">100</span>),
         }
@@ -2283,7 +2293,7 @@
             }
         }
 
-        <span class="kw">match </span>run_async_local(|tx, l| {
+        <span class="kw">let </span>fut = run_async_local(|tx, l| {
             <span class="kw">let </span>cancellable = <span class="kw">crate</span>::Cancellable::new();
             <span class="kw">let </span>task = <span class="kw">unsafe </span>{
                 <span class="kw">crate</span>::LocalTask::new(
@@ -2298,7 +2308,9 @@
             <span class="kw">let </span>my_object = MySimpleObject::new();
             my_object.set_size(<span class="number">100</span>);
             task.return_result(<span class="prelude-val">Ok</span>(my_object.upcast::&lt;glib::Object&gt;()));
-        }) {
+        });
+
+        <span class="kw">match </span>fut {
             <span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; <span class="macro">panic!</span>(),
             <span class="prelude-val">Ok</span>(o) =&gt; {
                 <span class="kw">let </span>o = o.downcast::&lt;MySimpleObject&gt;().unwrap();
@@ -2309,7 +2321,7 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_error() {
-        <span class="kw">match </span>run_async_local(|tx, l| {
+        <span class="kw">let </span>fut = run_async_local(|tx, l| {
             <span class="kw">let </span>cancellable = <span class="kw">crate</span>::Cancellable::new();
             <span class="kw">let </span>task = <span class="kw">unsafe </span>{
                 <span class="kw">crate</span>::LocalTask::new(
@@ -2325,7 +2337,9 @@
                 <span class="kw">crate</span>::IOErrorEnum::WouldBlock,
                 <span class="string">"WouldBlock"</span>,
             )));
-        }) {
+        });
+
+        <span class="kw">match </span>fut {
             <span class="prelude-val">Err</span>(e) =&gt; <span class="kw">match </span>e.kind().unwrap() {
                 <span class="kw">crate</span>::IOErrorEnum::WouldBlock =&gt; {}
                 <span class="kw">_ </span>=&gt; <span class="macro">panic!</span>(),
@@ -2336,7 +2350,7 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_cancelled() {
-        <span class="kw">match </span>run_async_local(|tx, l| {
+        <span class="kw">let </span>fut = run_async_local(|tx, l| {
             <span class="kw">let </span>cancellable = <span class="kw">crate</span>::Cancellable::new();
             <span class="kw">let </span>task = <span class="kw">unsafe </span>{
                 <span class="kw">crate</span>::LocalTask::new(
@@ -2350,7 +2364,9 @@
             };
             cancellable.cancel();
             task.return_error_if_cancelled();
-        }) {
+        });
+
+        <span class="kw">match </span>fut {
             <span class="prelude-val">Err</span>(e) =&gt; <span class="kw">match </span>e.kind().unwrap() {
                 <span class="kw">crate</span>::IOErrorEnum::Cancelled =&gt; {}
                 <span class="kw">_ </span>=&gt; <span class="macro">panic!</span>(),
