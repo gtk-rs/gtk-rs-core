@@ -377,11 +377,23 @@ pub const G_TLS_REHANDSHAKE_NEVER: GTlsRehandshakeMode = 0;
 pub const G_TLS_REHANDSHAKE_SAFELY: GTlsRehandshakeMode = 1;
 pub const G_TLS_REHANDSHAKE_UNSAFELY: GTlsRehandshakeMode = 2;
 
+#[cfg(unix)]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
 pub type GUnixSocketAddressType = c_int;
+#[cfg(unix)]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
 pub const G_UNIX_SOCKET_ADDRESS_INVALID: GUnixSocketAddressType = 0;
+#[cfg(unix)]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
 pub const G_UNIX_SOCKET_ADDRESS_ANONYMOUS: GUnixSocketAddressType = 1;
+#[cfg(unix)]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
 pub const G_UNIX_SOCKET_ADDRESS_PATH: GUnixSocketAddressType = 2;
+#[cfg(unix)]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
 pub const G_UNIX_SOCKET_ADDRESS_ABSTRACT: GUnixSocketAddressType = 3;
+#[cfg(unix)]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
 pub const G_UNIX_SOCKET_ADDRESS_ABSTRACT_PADDED: GUnixSocketAddressType = 4;
 
 pub type GZlibCompressorFormat = c_int;
@@ -6689,12 +6701,16 @@ impl ::std::fmt::Debug for GTlsServerConnectionInterface {
     }
 }
 
+#[cfg(unix)]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct GUnixConnectionClass {
     pub parent_class: GSocketConnectionClass,
 }
 
+#[cfg(unix)]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
 impl ::std::fmt::Debug for GUnixConnectionClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("GUnixConnectionClass @ {self:p}"))
@@ -6703,14 +6719,20 @@ impl ::std::fmt::Debug for GUnixConnectionClass {
     }
 }
 
+#[cfg(unix)]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
 #[repr(C)]
 pub struct _GUnixConnectionPrivate {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
+#[cfg(unix)]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
 pub type GUnixConnectionPrivate = _GUnixConnectionPrivate;
 
+#[cfg(unix)]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct GUnixCredentialsMessageClass {
@@ -6719,6 +6741,8 @@ pub struct GUnixCredentialsMessageClass {
     pub _g_reserved2: Option<unsafe extern "C" fn()>,
 }
 
+#[cfg(unix)]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
 impl ::std::fmt::Debug for GUnixCredentialsMessageClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("GUnixCredentialsMessageClass @ {self:p}"))
@@ -6729,14 +6753,20 @@ impl ::std::fmt::Debug for GUnixCredentialsMessageClass {
     }
 }
 
+#[cfg(unix)]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
 #[repr(C)]
 pub struct _GUnixCredentialsMessagePrivate {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
+#[cfg(unix)]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
 pub type GUnixCredentialsMessagePrivate = _GUnixCredentialsMessagePrivate;
 
+#[cfg(unix)]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct GUnixFDListClass {
@@ -6748,6 +6778,8 @@ pub struct GUnixFDListClass {
     pub _g_reserved5: Option<unsafe extern "C" fn()>,
 }
 
+#[cfg(unix)]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
 impl ::std::fmt::Debug for GUnixFDListClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("GUnixFDListClass @ {self:p}"))
@@ -6761,14 +6793,20 @@ impl ::std::fmt::Debug for GUnixFDListClass {
     }
 }
 
+#[cfg(unix)]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
 #[repr(C)]
 pub struct _GUnixFDListPrivate {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
+#[cfg(unix)]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
 pub type GUnixFDListPrivate = _GUnixFDListPrivate;
 
+#[cfg(unix)]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct GUnixFDMessageClass {
@@ -6777,6 +6815,8 @@ pub struct GUnixFDMessageClass {
     pub _g_reserved2: Option<unsafe extern "C" fn()>,
 }
 
+#[cfg(unix)]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
 impl ::std::fmt::Debug for GUnixFDMessageClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("GUnixFDMessageClass @ {self:p}"))
@@ -6787,14 +6827,20 @@ impl ::std::fmt::Debug for GUnixFDMessageClass {
     }
 }
 
+#[cfg(unix)]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
 #[repr(C)]
 pub struct _GUnixFDMessagePrivate {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
+#[cfg(unix)]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
 pub type GUnixFDMessagePrivate = _GUnixFDMessagePrivate;
 
+#[cfg(unix)]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct GUnixInputStreamClass {
@@ -6806,6 +6852,8 @@ pub struct GUnixInputStreamClass {
     pub _g_reserved5: Option<unsafe extern "C" fn()>,
 }
 
+#[cfg(unix)]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
 impl ::std::fmt::Debug for GUnixInputStreamClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("GUnixInputStreamClass @ {self:p}"))
@@ -6819,20 +6867,28 @@ impl ::std::fmt::Debug for GUnixInputStreamClass {
     }
 }
 
+#[cfg(unix)]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
 #[repr(C)]
 pub struct _GUnixInputStreamPrivate {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
+#[cfg(unix)]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
 pub type GUnixInputStreamPrivate = _GUnixInputStreamPrivate;
 
+#[cfg(unix)]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
 #[repr(C)]
 pub struct GUnixMountEntry {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
+#[cfg(unix)]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
 impl ::std::fmt::Debug for GUnixMountEntry {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("GUnixMountEntry @ {self:p}"))
@@ -6840,20 +6896,28 @@ impl ::std::fmt::Debug for GUnixMountEntry {
     }
 }
 
+#[cfg(unix)]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
 #[repr(C)]
 pub struct _GUnixMountMonitorClass {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
+#[cfg(unix)]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
 pub type GUnixMountMonitorClass = _GUnixMountMonitorClass;
 
+#[cfg(unix)]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
 #[repr(C)]
 pub struct GUnixMountPoint {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
+#[cfg(unix)]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
 impl ::std::fmt::Debug for GUnixMountPoint {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("GUnixMountPoint @ {self:p}"))
@@ -6861,6 +6925,8 @@ impl ::std::fmt::Debug for GUnixMountPoint {
     }
 }
 
+#[cfg(unix)]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct GUnixOutputStreamClass {
@@ -6872,6 +6938,8 @@ pub struct GUnixOutputStreamClass {
     pub _g_reserved5: Option<unsafe extern "C" fn()>,
 }
 
+#[cfg(unix)]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
 impl ::std::fmt::Debug for GUnixOutputStreamClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("GUnixOutputStreamClass @ {self:p}"))
@@ -6885,20 +6953,28 @@ impl ::std::fmt::Debug for GUnixOutputStreamClass {
     }
 }
 
+#[cfg(unix)]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
 #[repr(C)]
 pub struct _GUnixOutputStreamPrivate {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
+#[cfg(unix)]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
 pub type GUnixOutputStreamPrivate = _GUnixOutputStreamPrivate;
 
+#[cfg(unix)]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct GUnixSocketAddressClass {
     pub parent_class: GSocketAddressClass,
 }
 
+#[cfg(unix)]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
 impl ::std::fmt::Debug for GUnixSocketAddressClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("GUnixSocketAddressClass @ {self:p}"))
@@ -6907,12 +6983,16 @@ impl ::std::fmt::Debug for GUnixSocketAddressClass {
     }
 }
 
+#[cfg(unix)]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
 #[repr(C)]
 pub struct _GUnixSocketAddressPrivate {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
+#[cfg(unix)]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
 pub type GUnixSocketAddressPrivate = _GUnixSocketAddressPrivate;
 
 #[derive(Copy, Clone)]
@@ -8552,6 +8632,8 @@ impl ::std::fmt::Debug for GTlsPassword {
     }
 }
 
+#[cfg(unix)]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct GUnixConnection {
@@ -8559,6 +8641,8 @@ pub struct GUnixConnection {
     pub priv_: *mut GUnixConnectionPrivate,
 }
 
+#[cfg(unix)]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
 impl ::std::fmt::Debug for GUnixConnection {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("GUnixConnection @ {self:p}"))
@@ -8568,6 +8652,8 @@ impl ::std::fmt::Debug for GUnixConnection {
     }
 }
 
+#[cfg(unix)]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct GUnixCredentialsMessage {
@@ -8575,6 +8661,8 @@ pub struct GUnixCredentialsMessage {
     pub priv_: *mut GUnixCredentialsMessagePrivate,
 }
 
+#[cfg(unix)]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
 impl ::std::fmt::Debug for GUnixCredentialsMessage {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("GUnixCredentialsMessage @ {self:p}"))
@@ -8584,6 +8672,8 @@ impl ::std::fmt::Debug for GUnixCredentialsMessage {
     }
 }
 
+#[cfg(unix)]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct GUnixFDList {
@@ -8591,6 +8681,8 @@ pub struct GUnixFDList {
     pub priv_: *mut GUnixFDListPrivate,
 }
 
+#[cfg(unix)]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
 impl ::std::fmt::Debug for GUnixFDList {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("GUnixFDList @ {self:p}"))
@@ -8600,6 +8692,8 @@ impl ::std::fmt::Debug for GUnixFDList {
     }
 }
 
+#[cfg(unix)]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct GUnixFDMessage {
@@ -8607,6 +8701,8 @@ pub struct GUnixFDMessage {
     pub priv_: *mut GUnixFDMessagePrivate,
 }
 
+#[cfg(unix)]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
 impl ::std::fmt::Debug for GUnixFDMessage {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("GUnixFDMessage @ {self:p}"))
@@ -8616,6 +8712,8 @@ impl ::std::fmt::Debug for GUnixFDMessage {
     }
 }
 
+#[cfg(unix)]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct GUnixInputStream {
@@ -8623,6 +8721,8 @@ pub struct GUnixInputStream {
     pub priv_: *mut GUnixInputStreamPrivate,
 }
 
+#[cfg(unix)]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
 impl ::std::fmt::Debug for GUnixInputStream {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("GUnixInputStream @ {self:p}"))
@@ -8631,12 +8731,16 @@ impl ::std::fmt::Debug for GUnixInputStream {
     }
 }
 
+#[cfg(unix)]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
 #[repr(C)]
 pub struct GUnixMountMonitor {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
+#[cfg(unix)]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
 impl ::std::fmt::Debug for GUnixMountMonitor {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("GUnixMountMonitor @ {self:p}"))
@@ -8644,6 +8748,8 @@ impl ::std::fmt::Debug for GUnixMountMonitor {
     }
 }
 
+#[cfg(unix)]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct GUnixOutputStream {
@@ -8651,6 +8757,8 @@ pub struct GUnixOutputStream {
     pub priv_: *mut GUnixOutputStreamPrivate,
 }
 
+#[cfg(unix)]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
 impl ::std::fmt::Debug for GUnixOutputStream {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("GUnixOutputStream @ {self:p}"))
@@ -8659,6 +8767,8 @@ impl ::std::fmt::Debug for GUnixOutputStream {
     }
 }
 
+#[cfg(unix)]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct GUnixSocketAddress {
@@ -8666,6 +8776,8 @@ pub struct GUnixSocketAddress {
     pub priv_: *mut GUnixSocketAddressPrivate,
 }
 
+#[cfg(unix)]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
 impl ::std::fmt::Debug for GUnixSocketAddress {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("GUnixSocketAddress @ {self:p}"))
@@ -9458,6 +9570,8 @@ extern "C" {
     //=========================================================================
     // GUnixSocketAddressType
     //=========================================================================
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_socket_address_type_get_type() -> GType;
 
     //=========================================================================
@@ -9990,31 +10104,65 @@ extern "C" {
     //=========================================================================
     // GUnixMountEntry
     //=========================================================================
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_mount_entry_get_type() -> GType;
 
     //=========================================================================
     // GUnixMountPoint
     //=========================================================================
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_mount_point_get_type() -> GType;
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_mount_point_compare(
         mount1: *mut GUnixMountPoint,
         mount2: *mut GUnixMountPoint,
     ) -> c_int;
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_mount_point_copy(mount_point: *mut GUnixMountPoint) -> *mut GUnixMountPoint;
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_mount_point_free(mount_point: *mut GUnixMountPoint);
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_mount_point_get_device_path(mount_point: *mut GUnixMountPoint) -> *const c_char;
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_mount_point_get_fs_type(mount_point: *mut GUnixMountPoint) -> *const c_char;
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_mount_point_get_mount_path(mount_point: *mut GUnixMountPoint) -> *const c_char;
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_mount_point_get_options(mount_point: *mut GUnixMountPoint) -> *const c_char;
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_mount_point_guess_can_eject(mount_point: *mut GUnixMountPoint) -> gboolean;
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_mount_point_guess_icon(mount_point: *mut GUnixMountPoint) -> *mut GIcon;
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_mount_point_guess_name(mount_point: *mut GUnixMountPoint) -> *mut c_char;
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_mount_point_guess_symbolic_icon(mount_point: *mut GUnixMountPoint) -> *mut GIcon;
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_mount_point_is_loopback(mount_point: *mut GUnixMountPoint) -> gboolean;
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_mount_point_is_readonly(mount_point: *mut GUnixMountPoint) -> gboolean;
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_mount_point_is_user_mountable(mount_point: *mut GUnixMountPoint) -> gboolean;
     #[cfg(feature = "v2_66")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_mount_point_at(
         mount_path: *const c_char,
         time_read: *mut u64,
@@ -14574,44 +14722,62 @@ extern "C" {
     //=========================================================================
     // GUnixConnection
     //=========================================================================
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_connection_get_type() -> GType;
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_connection_receive_credentials(
         connection: *mut GUnixConnection,
         cancellable: *mut GCancellable,
         error: *mut *mut glib::GError,
     ) -> *mut GCredentials;
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_connection_receive_credentials_async(
         connection: *mut GUnixConnection,
         cancellable: *mut GCancellable,
         callback: GAsyncReadyCallback,
         user_data: gpointer,
     );
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_connection_receive_credentials_finish(
         connection: *mut GUnixConnection,
         result: *mut GAsyncResult,
         error: *mut *mut glib::GError,
     ) -> *mut GCredentials;
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_connection_receive_fd(
         connection: *mut GUnixConnection,
         cancellable: *mut GCancellable,
         error: *mut *mut glib::GError,
     ) -> c_int;
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_connection_send_credentials(
         connection: *mut GUnixConnection,
         cancellable: *mut GCancellable,
         error: *mut *mut glib::GError,
     ) -> gboolean;
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_connection_send_credentials_async(
         connection: *mut GUnixConnection,
         cancellable: *mut GCancellable,
         callback: GAsyncReadyCallback,
         user_data: gpointer,
     );
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_connection_send_credentials_finish(
         connection: *mut GUnixConnection,
         result: *mut GAsyncResult,
         error: *mut *mut glib::GError,
     ) -> gboolean;
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_connection_send_fd(
         connection: *mut GUnixConnection,
         fd: c_int,
@@ -14622,12 +14788,22 @@ extern "C" {
     //=========================================================================
     // GUnixCredentialsMessage
     //=========================================================================
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_credentials_message_get_type() -> GType;
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_credentials_message_new() -> *mut GSocketControlMessage;
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_credentials_message_new_with_credentials(
         credentials: *mut GCredentials,
     ) -> *mut GSocketControlMessage;
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_credentials_message_is_supported() -> gboolean;
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_credentials_message_get_credentials(
         message: *mut GUnixCredentialsMessage,
     ) -> *mut GCredentials;
@@ -14635,37 +14811,65 @@ extern "C" {
     //=========================================================================
     // GUnixFDList
     //=========================================================================
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_fd_list_get_type() -> GType;
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_fd_list_new() -> *mut GUnixFDList;
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_fd_list_new_from_array(fds: *const c_int, n_fds: c_int) -> *mut GUnixFDList;
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_fd_list_append(
         list: *mut GUnixFDList,
         fd: c_int,
         error: *mut *mut glib::GError,
     ) -> c_int;
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_fd_list_get(
         list: *mut GUnixFDList,
         index_: c_int,
         error: *mut *mut glib::GError,
     ) -> c_int;
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_fd_list_get_length(list: *mut GUnixFDList) -> c_int;
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_fd_list_peek_fds(list: *mut GUnixFDList, length: *mut c_int) -> *const c_int;
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_fd_list_steal_fds(list: *mut GUnixFDList, length: *mut c_int) -> *mut c_int;
 
     //=========================================================================
     // GUnixFDMessage
     //=========================================================================
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_fd_message_get_type() -> GType;
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_fd_message_new() -> *mut GSocketControlMessage;
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_fd_message_new_with_fd_list(
         fd_list: *mut GUnixFDList,
     ) -> *mut GSocketControlMessage;
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_fd_message_append_fd(
         message: *mut GUnixFDMessage,
         fd: c_int,
         error: *mut *mut glib::GError,
     ) -> gboolean;
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_fd_message_get_fd_list(message: *mut GUnixFDMessage) -> *mut GUnixFDList;
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_fd_message_steal_fds(
         message: *mut GUnixFDMessage,
         length: *mut c_int,
@@ -14674,18 +14878,36 @@ extern "C" {
     //=========================================================================
     // GUnixInputStream
     //=========================================================================
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_input_stream_get_type() -> GType;
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_input_stream_new(fd: c_int, close_fd: gboolean) -> *mut GInputStream;
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_input_stream_get_close_fd(stream: *mut GUnixInputStream) -> gboolean;
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_input_stream_get_fd(stream: *mut GUnixInputStream) -> c_int;
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_input_stream_set_close_fd(stream: *mut GUnixInputStream, close_fd: gboolean);
 
     //=========================================================================
     // GUnixMountMonitor
     //=========================================================================
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_mount_monitor_get_type() -> GType;
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_mount_monitor_new() -> *mut GUnixMountMonitor;
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_mount_monitor_get() -> *mut GUnixMountMonitor;
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_mount_monitor_set_rate_limit(
         mount_monitor: *mut GUnixMountMonitor,
         limit_msec: c_int,
@@ -14694,32 +14916,60 @@ extern "C" {
     //=========================================================================
     // GUnixOutputStream
     //=========================================================================
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_output_stream_get_type() -> GType;
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_output_stream_new(fd: c_int, close_fd: gboolean) -> *mut GOutputStream;
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_output_stream_get_close_fd(stream: *mut GUnixOutputStream) -> gboolean;
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_output_stream_get_fd(stream: *mut GUnixOutputStream) -> c_int;
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_output_stream_set_close_fd(stream: *mut GUnixOutputStream, close_fd: gboolean);
 
     //=========================================================================
     // GUnixSocketAddress
     //=========================================================================
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_socket_address_get_type() -> GType;
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_socket_address_new(path: *const c_char) -> *mut GSocketAddress;
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_socket_address_new_abstract(
         path: *const c_char,
         path_len: c_int,
     ) -> *mut GSocketAddress;
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_socket_address_new_with_type(
         path: *const c_char,
         path_len: c_int,
         type_: GUnixSocketAddressType,
     ) -> *mut GSocketAddress;
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_socket_address_abstract_names_supported() -> gboolean;
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_socket_address_get_address_type(
         address: *mut GUnixSocketAddress,
     ) -> GUnixSocketAddressType;
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_socket_address_get_is_abstract(address: *mut GUnixSocketAddress) -> gboolean;
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_socket_address_get_path(address: *mut GUnixSocketAddress) -> *const c_char;
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_socket_address_get_path_len(address: *mut GUnixSocketAddress) -> size_t;
 
     //=========================================================================
@@ -17067,36 +17317,84 @@ extern "C" {
         user_data: gpointer,
         error: *mut glib::GError,
     );
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_is_mount_path_system_internal(mount_path: *const c_char) -> gboolean;
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_is_system_device_path(device_path: *const c_char) -> gboolean;
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_is_system_fs_type(fs_type: *const c_char) -> gboolean;
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_mount_at(mount_path: *const c_char, time_read: *mut u64) -> *mut GUnixMountEntry;
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_mount_compare(
         mount1: *mut GUnixMountEntry,
         mount2: *mut GUnixMountEntry,
     ) -> c_int;
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_mount_copy(mount_entry: *mut GUnixMountEntry) -> *mut GUnixMountEntry;
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_mount_for(file_path: *const c_char, time_read: *mut u64) -> *mut GUnixMountEntry;
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_mount_free(mount_entry: *mut GUnixMountEntry);
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_mount_get_device_path(mount_entry: *mut GUnixMountEntry) -> *const c_char;
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_mount_get_fs_type(mount_entry: *mut GUnixMountEntry) -> *const c_char;
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_mount_get_mount_path(mount_entry: *mut GUnixMountEntry) -> *const c_char;
     #[cfg(feature = "v2_58")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_58")))]
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_mount_get_options(mount_entry: *mut GUnixMountEntry) -> *const c_char;
     #[cfg(feature = "v2_60")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_mount_get_root_path(mount_entry: *mut GUnixMountEntry) -> *const c_char;
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_mount_guess_can_eject(mount_entry: *mut GUnixMountEntry) -> gboolean;
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_mount_guess_icon(mount_entry: *mut GUnixMountEntry) -> *mut GIcon;
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_mount_guess_name(mount_entry: *mut GUnixMountEntry) -> *mut c_char;
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_mount_guess_should_display(mount_entry: *mut GUnixMountEntry) -> gboolean;
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_mount_guess_symbolic_icon(mount_entry: *mut GUnixMountEntry) -> *mut GIcon;
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_mount_is_readonly(mount_entry: *mut GUnixMountEntry) -> gboolean;
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_mount_is_system_internal(mount_entry: *mut GUnixMountEntry) -> gboolean;
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_mount_points_changed_since(time: u64) -> gboolean;
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_mount_points_get(time_read: *mut u64) -> *mut glib::GList;
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_mounts_changed_since(time: u64) -> gboolean;
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_mounts_get(time_read: *mut u64) -> *mut glib::GList;
 
 }

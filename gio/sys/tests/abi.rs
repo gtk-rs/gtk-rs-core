@@ -2091,6 +2091,8 @@ const RUST_LAYOUTS: &[(&str, Layout)] = &[
             alignment: align_of::<GTlsServerConnectionInterface>(),
         },
     ),
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     (
         "GUnixConnection",
         Layout {
@@ -2098,6 +2100,8 @@ const RUST_LAYOUTS: &[(&str, Layout)] = &[
             alignment: align_of::<GUnixConnection>(),
         },
     ),
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     (
         "GUnixConnectionClass",
         Layout {
@@ -2105,6 +2109,8 @@ const RUST_LAYOUTS: &[(&str, Layout)] = &[
             alignment: align_of::<GUnixConnectionClass>(),
         },
     ),
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     (
         "GUnixCredentialsMessage",
         Layout {
@@ -2112,6 +2118,8 @@ const RUST_LAYOUTS: &[(&str, Layout)] = &[
             alignment: align_of::<GUnixCredentialsMessage>(),
         },
     ),
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     (
         "GUnixCredentialsMessageClass",
         Layout {
@@ -2119,6 +2127,8 @@ const RUST_LAYOUTS: &[(&str, Layout)] = &[
             alignment: align_of::<GUnixCredentialsMessageClass>(),
         },
     ),
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     (
         "GUnixFDList",
         Layout {
@@ -2126,6 +2136,8 @@ const RUST_LAYOUTS: &[(&str, Layout)] = &[
             alignment: align_of::<GUnixFDList>(),
         },
     ),
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     (
         "GUnixFDListClass",
         Layout {
@@ -2133,6 +2145,8 @@ const RUST_LAYOUTS: &[(&str, Layout)] = &[
             alignment: align_of::<GUnixFDListClass>(),
         },
     ),
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     (
         "GUnixFDMessage",
         Layout {
@@ -2140,6 +2154,8 @@ const RUST_LAYOUTS: &[(&str, Layout)] = &[
             alignment: align_of::<GUnixFDMessage>(),
         },
     ),
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     (
         "GUnixFDMessageClass",
         Layout {
@@ -2147,6 +2163,8 @@ const RUST_LAYOUTS: &[(&str, Layout)] = &[
             alignment: align_of::<GUnixFDMessageClass>(),
         },
     ),
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     (
         "GUnixInputStream",
         Layout {
@@ -2154,6 +2172,8 @@ const RUST_LAYOUTS: &[(&str, Layout)] = &[
             alignment: align_of::<GUnixInputStream>(),
         },
     ),
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     (
         "GUnixInputStreamClass",
         Layout {
@@ -2161,6 +2181,8 @@ const RUST_LAYOUTS: &[(&str, Layout)] = &[
             alignment: align_of::<GUnixInputStreamClass>(),
         },
     ),
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     (
         "GUnixOutputStream",
         Layout {
@@ -2168,6 +2190,8 @@ const RUST_LAYOUTS: &[(&str, Layout)] = &[
             alignment: align_of::<GUnixOutputStream>(),
         },
     ),
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     (
         "GUnixOutputStreamClass",
         Layout {
@@ -2175,6 +2199,8 @@ const RUST_LAYOUTS: &[(&str, Layout)] = &[
             alignment: align_of::<GUnixOutputStreamClass>(),
         },
     ),
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     (
         "GUnixSocketAddress",
         Layout {
@@ -2182,6 +2208,8 @@ const RUST_LAYOUTS: &[(&str, Layout)] = &[
             alignment: align_of::<GUnixSocketAddress>(),
         },
     ),
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     (
         "GUnixSocketAddressClass",
         Layout {
@@ -2189,6 +2217,8 @@ const RUST_LAYOUTS: &[(&str, Layout)] = &[
             alignment: align_of::<GUnixSocketAddressClass>(),
         },
     ),
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     (
         "GUnixSocketAddressType",
         Layout {

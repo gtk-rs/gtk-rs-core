@@ -7434,13 +7434,19 @@ extern "C" {
     pub fn g_unichar_xdigit_value(c: u32) -> c_int;
     pub fn g_unicode_canonical_decomposition(ch: u32, result_len: *mut size_t) -> *mut u32;
     pub fn g_unicode_canonical_ordering(string: *mut u32, len: size_t);
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_error_quark() -> GQuark;
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_fd_add(
         fd: c_int,
         condition: GIOCondition,
         function: GUnixFDSourceFunc,
         user_data: gpointer,
     ) -> c_uint;
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_fd_add_full(
         priority: c_int,
         fd: c_int,
@@ -7449,6 +7455,8 @@ extern "C" {
         user_data: gpointer,
         notify: GDestroyNotify,
     ) -> c_uint;
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_fd_source_new(fd: c_int, condition: GIOCondition) -> *mut GSource;
     #[cfg(feature = "v2_64")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_64")))]
@@ -7458,17 +7466,25 @@ extern "C" {
         user_name: *const c_char,
         error: *mut *mut GError,
     ) -> *mut passwd;
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_open_pipe(
         fds: *mut [c_int; 2],
         flags: c_int,
         error: *mut *mut GError,
     ) -> gboolean;
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_set_fd_nonblocking(
         fd: c_int,
         nonblock: gboolean,
         error: *mut *mut GError,
     ) -> gboolean;
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_signal_add(signum: c_int, handler: GSourceFunc, user_data: gpointer) -> c_uint;
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_signal_add_full(
         priority: c_int,
         signum: c_int,
@@ -7476,6 +7492,8 @@ extern "C" {
         user_data: gpointer,
         notify: GDestroyNotify,
     ) -> c_uint;
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_signal_source_new(signum: c_int) -> *mut GSource;
     pub fn g_unlink(filename: *const c_char) -> c_int;
     pub fn g_unsetenv(variable: *const c_char);
