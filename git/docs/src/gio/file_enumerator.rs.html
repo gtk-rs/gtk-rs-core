@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/file_enumerator.rs`."><title>file_enumerator.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-5bc39a1768837dd0.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.78.0-nightly (f067fd608 2024-02-05)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-48f368f3872407c8.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/file_enumerator.rs`."><title>file_enumerator.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-5bc39a1768837dd0.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.78.0-nightly (1a648b397 2024-02-11)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-48f368f3872407c8.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -229,7 +229,7 @@
     <span class="kw">fn </span>next(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="prelude-ty">Result</span>&lt;<a href="auto/file_info.rs.html#9-56">FileInfo</a>, <a href="../../glib/error/struct.Error.html">glib::Error</a>&gt;&gt; {
         <span class="kw">match </span><a class="self" href="#11">self</a>.<a href="auto/file_enumerator.rs.html#276-293">next_file</a>(<span class="kw">crate</span>::Cancellable::NONE) {
             <span class="prelude-val">Err</span>(err) =&gt; <span class="prelude-val">Some</span>(<span class="prelude-val">Err</span>(<a href="#13">err</a>)),
-            <span class="prelude-val">Ok</span>(file_info) =&gt; <a href="#14">file_info</a>.map(<span class="prelude-val">Ok</span>),
+            <span class="prelude-val">Ok</span>(file_info) =&gt; <a href="#14">file_info</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(<span class="prelude-val">Ok</span>),
         }
     }
 }
@@ -247,7 +247,7 @@
     </span><span class="kw">fn </span>into_stream(<span class="self">self</span>, num_files: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>, priority: <a href="../../glib/source/struct.Priority.html">glib::Priority</a>) -&gt; <a href="#44-49">FileEnumeratorStream</a> {
         <span class="kw">let </span>future = <span class="prelude-val">Some</span>(<a class="self" href="#29">self</a>.<a href="auto/file_enumerator.rs.html#422-436">next_files_future</a>(<a href="#29">num_files</a>, <a href="#29">priority</a>));
         <a href="#44-49">FileEnumeratorStream</a> {
-            enumerator: <a class="self" href="#29">self</a>.<a href="../../glib/object/trait.Cast.html">upcast</a>(),
+            enumerator: <a class="self" href="#29">self</a>.<a href="../../glib/object/trait.Cast.html#tymethod.upcast">upcast</a>(),
             <a href="#30">future</a>,
             <a href="#29">num_files</a>,
             <a href="#29">priority</a>,
@@ -269,11 +269,11 @@
 <span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html">std::fmt::Debug</a> <span class="kw">for </span><a href="#44-49">FileEnumeratorStream</a> {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>std::fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; <a href="https://doc.rust-lang.org/nightly/core/fmt/type.Result.html">std::fmt::Result</a> {
-        <a href="#53">f</a>.debug_struct(<span class="string">"FileEnumeratorStream"</span>)
-            .field(<span class="string">"enumerator"</span>, <span class="kw-2">&amp;</span><a class="self" href="#53">self</a>.enumerator)
-            .field(<span class="string">"num_files"</span>, <span class="kw-2">&amp;</span><a class="self" href="#53">self</a>.num_files)
-            .field(<span class="string">"priority"</span>, <span class="kw-2">&amp;</span><a class="self" href="#53">self</a>.priority)
-            .finish()
+        <a href="#53">f</a>.<a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html#method.debug_struct">debug_struct</a>(<span class="string">"FileEnumeratorStream"</span>)
+            .<a href="https://doc.rust-lang.org/nightly/core/fmt/builders/struct.DebugStruct.html#method.field">field</a>(<span class="string">"enumerator"</span>, <span class="kw-2">&amp;</span><a class="self" href="#53">self</a>.enumerator)
+            .<a href="https://doc.rust-lang.org/nightly/core/fmt/builders/struct.DebugStruct.html#method.field">field</a>(<span class="string">"num_files"</span>, <span class="kw-2">&amp;</span><a class="self" href="#53">self</a>.num_files)
+            .<a href="https://doc.rust-lang.org/nightly/core/fmt/builders/struct.DebugStruct.html#method.field">field</a>(<span class="string">"priority"</span>, <span class="kw-2">&amp;</span><a class="self" href="#53">self</a>.priority)
+            .<a href="https://doc.rust-lang.org/nightly/core/fmt/builders/struct.DebugStruct.html#method.finish">finish</a>()
     }
 }
 
@@ -285,23 +285,23 @@
         <span class="kw-2">mut </span><span class="self">self</span>: std::pin::Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;,
         cx: <span class="kw-2">&amp;mut </span>std::task::Context&lt;<span class="lifetime">'_</span>&gt;,
     ) -&gt; Poll&lt;<span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>::Item&gt;&gt; {
-        <span class="kw">match </span><a class="self" href="#67">self</a>.future.take() {
+        <span class="kw">match </span><a class="self" href="#67">self</a>.future.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.take">take</a>() {
             <span class="prelude-val">Some</span>(<span class="kw-2">mut </span>f) =&gt; <span class="kw">match </span><a href="#71">f</a>.poll_unpin(<a href="#68">cx</a>) {
-                Poll::Ready(<span class="prelude-val">Ok</span>(fs)) <span class="kw">if </span><a href="#72">fs</a>.is_empty() =&gt; Poll::Ready(<span class="prelude-val">None</span>),
-                Poll::Ready(<span class="prelude-val">Ok</span>(fs)) =&gt; {
+                <a href="https://doc.rust-lang.org/nightly/core/task/poll/enum.Poll.html#variant.Ready">Poll::Ready</a>(<span class="prelude-val">Ok</span>(fs)) <span class="kw">if </span><a href="#72">fs</a>.<a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.is_empty">is_empty</a>() =&gt; <a href="https://doc.rust-lang.org/nightly/core/task/poll/enum.Poll.html#variant.Ready">Poll::Ready</a>(<span class="prelude-val">None</span>),
+                <a href="https://doc.rust-lang.org/nightly/core/task/poll/enum.Poll.html#variant.Ready">Poll::Ready</a>(<span class="prelude-val">Ok</span>(fs)) =&gt; {
                     <a class="self" href="#67">self</a>.future = <span class="prelude-val">Some</span>(
                         <a class="self" href="#67">self</a>.enumerator
                             .<a href="auto/file_enumerator.rs.html#422-436">next_files_future</a>(<a class="self" href="#67">self</a>.num_files, <a class="self" href="#67">self</a>.priority),
                     );
-                    Poll::Ready(<span class="prelude-val">Some</span>(<span class="prelude-val">Ok</span>(<a href="#73">fs</a>)))
+                    <a href="https://doc.rust-lang.org/nightly/core/task/poll/enum.Poll.html#variant.Ready">Poll::Ready</a>(<span class="prelude-val">Some</span>(<span class="prelude-val">Ok</span>(<a href="#73">fs</a>)))
                 }
-                Poll::Ready(<span class="prelude-val">Err</span>(e)) =&gt; Poll::Ready(<span class="prelude-val">Some</span>(<span class="prelude-val">Err</span>(<a href="#80">e</a>))),
-                Poll::Pending =&gt; {
+                <a href="https://doc.rust-lang.org/nightly/core/task/poll/enum.Poll.html#variant.Ready">Poll::Ready</a>(<span class="prelude-val">Err</span>(e)) =&gt; <a href="https://doc.rust-lang.org/nightly/core/task/poll/enum.Poll.html#variant.Ready">Poll::Ready</a>(<span class="prelude-val">Some</span>(<span class="prelude-val">Err</span>(<a href="#80">e</a>))),
+                <a href="https://doc.rust-lang.org/nightly/core/task/poll/enum.Poll.html#variant.Pending">Poll::Pending</a> =&gt; {
                     <a class="self" href="#67">self</a>.future = <span class="prelude-val">Some</span>(<a href="#71">f</a>);
-                    Poll::Pending
+                    <a href="https://doc.rust-lang.org/nightly/core/task/poll/enum.Poll.html#variant.Pending">Poll::Pending</a>
                 }
             },
-            <span class="prelude-val">None </span>=&gt; Poll::Ready(<span class="prelude-val">None</span>),
+            <span class="prelude-val">None </span>=&gt; <a href="https://doc.rust-lang.org/nightly/core/task/poll/enum.Poll.html#variant.Ready">Poll::Ready</a>(<span class="prelude-val">None</span>),
         }
     }
 }
@@ -309,7 +309,7 @@
 <span class="kw">impl </span>futures_core::FusedStream <span class="kw">for </span><a href="#44-49">FileEnumeratorStream</a> {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>is_terminated(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
-        <a class="self" href="#93">self</a>.future.is_none()
+        <a class="self" href="#93">self</a>.future.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.is_none">is_none</a>()
     }
 }
 

@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `cairo/src/stream.rs`."><title>stream.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-5bc39a1768837dd0.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="cairo" data-themes="" data-resource-suffix="" data-rustdoc-version="1.78.0-nightly (f067fd608 2024-02-05)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-48f368f3872407c8.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `cairo/src/stream.rs`."><title>stream.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-5bc39a1768837dd0.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="cairo" data-themes="" data-resource-suffix="" data-rustdoc-version="1.78.0-nightly (1a648b397 2024-02-11)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-48f368f3872407c8.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -355,7 +355,7 @@
     <a href="https://doc.rust-lang.org/nightly/core/any/trait.Any.html">any::Any</a>,
     cell::{<a href="https://doc.rust-lang.org/nightly/core/cell/struct.Cell.html">Cell</a>, <a href="https://doc.rust-lang.org/nightly/core/cell/struct.RefCell.html">RefCell</a>},
     <a href="https://doc.rust-lang.org/nightly/std/io/index.html">io</a>,
-    panic::AssertUnwindSafe,
+    <a href="https://doc.rust-lang.org/nightly/core/panic/unwind_safe/struct.AssertUnwindSafe.html">panic::AssertUnwindSafe</a>,
     <a href="https://doc.rust-lang.org/nightly/core/ptr/index.html">ptr</a>,
     <a href="https://doc.rust-lang.org/nightly/alloc/rc/struct.Rc.html">rc::Rc</a>,
 };
@@ -420,12 +420,12 @@
         height: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>,
         stream: W,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, <a href="error.rs.html#10-150">Error</a>&gt; {
-        <span class="kw">let </span>env_rc = Rc::new(<a href="#189-192">CallbackEnvironment</a> {
-            mutable: RefCell::new(<a href="#194-197">MutableCallbackEnvironment</a> {
-                stream: <span class="prelude-val">Some</span>((Box::new(<a href="#70">stream</a>), <span class="prelude-val">None</span>)),
+        <span class="kw">let </span>env_rc = <a href="https://doc.rust-lang.org/nightly/alloc/rc/struct.Rc.html#method.new">Rc::new</a>(<a href="#189-192">CallbackEnvironment</a> {
+            mutable: <a href="https://doc.rust-lang.org/nightly/core/cell/struct.RefCell.html#method.new">RefCell::new</a>(<a href="#194-197">MutableCallbackEnvironment</a> {
+                stream: <span class="prelude-val">Some</span>((<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">Box::new</a>(<a href="#70">stream</a>), <span class="prelude-val">None</span>)),
                 unwind_payload: <span class="prelude-val">None</span>,
             }),
-            saw_already_borrowed: Cell::new(<span class="bool-val">false</span>),
+            saw_already_borrowed: <a href="https://doc.rust-lang.org/nightly/core/cell/struct.Cell.html#method.new">Cell::new</a>(<span class="bool-val">false</span>),
         });
         <span class="kw">let </span>env: <span class="kw-2">*const </span><a href="#189-192">CallbackEnvironment</a> = <span class="kw-2">&amp;*</span><a href="#72">env_rc</a>;
         <span class="kw">unsafe </span>{
@@ -446,7 +446,7 @@
             <a href="#89">constructor</a>,
             <a href="#90">width</a>,
             <a href="#91">height</a>,
-            <a href="#255">RawStream</a>(ptr::NonNull::new(<a href="#92">stream</a>).expect(<span class="string">"NULL stream passed"</span>)),
+            <a href="#255">RawStream</a>(<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.new">ptr::NonNull::new</a>(<a href="#92">stream</a>).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.expect">expect</a>(<span class="string">"NULL stream passed"</span>)),
         )
     }
 
@@ -475,28 +475,28 @@
 
         <span class="kw">let </span>env = <span class="self"><a href="#122">self</a>
             </span>.<a href="surface.rs.html#286-289">user_data_ptr</a>(<span class="kw-2">&amp;</span><a href="#187">STREAM_CALLBACK_ENVIRONMENT</a>)
-            .expect(<span class="string">"surface without an output stream"</span>);
+            .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.expect">expect</a>(<span class="string">"surface without an output stream"</span>);
 
         <span class="comment">// Safety: since `STREAM_CALLBACK_ENVIRONMENT` is private and we never
         // call `set_user_data` again or `remove_user_data` with it,
         // the contract of `get_user_data_ptr` says that the user data entry
         // lives as long as the underlying `cairo_surface_t`
         // which is at least as long as `self`.
-        </span><span class="kw">let </span>env = <span class="kw">unsafe </span>{ <span class="kw-2">&amp;*</span><a href="#125">env</a>.as_ptr() };
+        </span><span class="kw">let </span>env = <span class="kw">unsafe </span>{ <span class="kw-2">&amp;*</span><a href="#125">env</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>() };
 
         <span class="kw">if </span>env.saw_already_borrowed.get() {
             <a class="macro" href="https://doc.rust-lang.org/nightly/std/macro.panic.html">panic!</a>(<span class="string">"The output stream’s RefCell was already borrowed when cairo attempted a write"</span>)
         }
 
-        <span class="kw">let </span><span class="kw-2">mut </span>mutable = <a href="#134">env</a>.mutable.borrow_mut();
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(payload) = <a href="#140">mutable</a>.unwind_payload.take() {
-            std::panic::resume_unwind(<a href="#141">payload</a>)
+        <span class="kw">let </span><span class="kw-2">mut </span>mutable = <a href="#134">env</a>.mutable.<a href="https://doc.rust-lang.org/nightly/core/cell/struct.RefCell.html#method.borrow_mut">borrow_mut</a>();
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(payload) = <a href="#140">mutable</a>.unwind_payload.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.take">take</a>() {
+            <a href="https://doc.rust-lang.org/nightly/std/panic/fn.resume_unwind.html">std::panic::resume_unwind</a>(<a href="#141">payload</a>)
         }
 
         <span class="kw">let </span>(stream, io_error) = <a href="#140">mutable</a>
             .stream
-            .take()
-            .expect(<span class="string">"output stream was already taken"</span>);
+            .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.take">take</a>()
+            .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.expect">expect</a>(<span class="string">"output stream was already taken"</span>);
         <span class="kw">if let </span><span class="prelude-val">Some</span>(error) = <a href="#145">io_error</a> {
             <span class="prelude-val">Err</span>(<a href="#157-160">StreamWithError</a> { <a href="#145">stream</a>, <a href="#149">error</a> })
         } <span class="kw">else </span>{
@@ -512,13 +512,13 @@
 
 <span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html">std::fmt::Debug</a> <span class="kw">for </span><a href="#157-160">StreamWithError</a> {
     <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span><a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html">std::fmt::Formatter</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/core/fmt/type.Result.html">std::fmt::Result</a> {
-        <a class="self" href="#163">self</a>.error.<a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html">fmt</a>(<a href="#163">f</a>)
+        <a class="self" href="#163">self</a>.error.<a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html#tymethod.fmt">fmt</a>(<a href="#163">f</a>)
     }
 }
 
 <span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Display.html">std::fmt::Display</a> <span class="kw">for </span><a href="#157-160">StreamWithError</a> {
     <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span><a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html">std::fmt::Formatter</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/core/fmt/type.Result.html">std::fmt::Result</a> {
-        <a class="self" href="#169">self</a>.error.<a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Display.html">fmt</a>(<a href="#169">f</a>)
+        <a class="self" href="#169">self</a>.error.<a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Display.html#tymethod.fmt">fmt</a>(<a href="#169">f</a>)
     }
 }
 
@@ -562,7 +562,7 @@
     // If this is called by cairo, the surface is still alive.
     </span><span class="kw">let </span>env: <span class="kw-2">&amp;</span><a href="#189-192">CallbackEnvironment</a> = <span class="kw">unsafe </span>{ <span class="kw-2">&amp;*</span><a href="#207">env</a> };
 
-    <span class="kw">if let </span><span class="prelude-val">Ok</span>(<span class="kw-2">mut </span>mutable) = <a href="#212">env</a>.mutable.try_borrow_mut() {
+    <span class="kw">if let </span><span class="prelude-val">Ok</span>(<span class="kw-2">mut </span>mutable) = <a href="#212">env</a>.mutable.<a href="https://doc.rust-lang.org/nightly/core/cell/struct.RefCell.html#method.try_borrow_mut">try_borrow_mut</a>() {
         <span class="kw">if let </span><a href="#194-197">MutableCallbackEnvironment</a> {
             stream:
                 <span class="prelude-val">Some</span>((
@@ -586,9 +586,9 @@
             };
             <span class="comment">// Because `&lt;W as Write&gt;::write_all` is a generic,
             // we must conservatively assume that it can panic.
-            </span><span class="kw">let </span>result = std::panic::catch_unwind(AssertUnwindSafe(|| <a href="#227">stream</a>.<a href="https://doc.rust-lang.org/nightly/std/io/trait.Write.html">write_all</a>(<a href="#229">data</a>)));
+            </span><span class="kw">let </span>result = <a href="https://doc.rust-lang.org/nightly/std/panic/fn.catch_unwind.html">std::panic::catch_unwind</a>(<a href="https://doc.rust-lang.org/nightly/core/panic/unwind_safe/struct.AssertUnwindSafe.html">AssertUnwindSafe</a>(|| <a href="#227">stream</a>.<a href="https://doc.rust-lang.org/nightly/std/io/trait.Write.html#tymethod.write_all">write_all</a>(<a href="#229">data</a>)));
             <span class="kw">match </span><a href="#238">result</a> {
-                <span class="prelude-val">Ok</span>(<span class="prelude-val">Ok</span>(())) =&gt; <span class="kw">return </span>ffi::STATUS_SUCCESS,
+                <span class="prelude-val">Ok</span>(<span class="prelude-val">Ok</span>(())) =&gt; <span class="kw">return </span><a href="../../cairo_sys/constant.STATUS_SUCCESS.html">ffi::STATUS_SUCCESS</a>,
                 <span class="prelude-val">Ok</span>(<span class="prelude-val">Err</span>(error)) =&gt; {
                     <span class="kw-2">*</span><a href="#220">io_error</a> = <span class="prelude-val">Some</span>(<a href="#241">error</a>);
                 }
@@ -598,22 +598,22 @@
             }
         }
     } <span class="kw">else </span>{
-        <a href="#212">env</a>.saw_already_borrowed.set(<span class="bool-val">true</span>)
+        <a href="#212">env</a>.saw_already_borrowed.<a href="https://doc.rust-lang.org/nightly/core/cell/struct.Cell.html#method.set">set</a>(<span class="bool-val">true</span>)
     }
-    <a href="error.rs.html#43">Error::WriteError</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html">into</a>()
+    <a href="error.rs.html#43">Error::WriteError</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>()
 }
 
 <span class="kw">struct </span>RawStream&lt;W&gt;(ptr::NonNull&lt;W&gt;);
 
 <span class="kw">impl</span>&lt;W: <a href="https://doc.rust-lang.org/nightly/std/io/trait.Write.html">io::Write</a>&gt; <a href="https://doc.rust-lang.org/nightly/std/io/trait.Write.html">io::Write</a> <span class="kw">for </span>RawStream&lt;W&gt; {
     <span class="kw">fn </span>write(<span class="kw-2">&amp;mut </span><span class="self">self</span>, buf: <span class="kw-2">&amp;</span>[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]) -&gt; io::Result&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>&gt; {
-        <span class="kw">unsafe </span>{ (<span class="kw-2">*</span><a class="self" href="#258">self</a>.<span class="number">0</span>.as_ptr()).<a href="https://doc.rust-lang.org/nightly/std/io/trait.Write.html">write</a>(<a href="#258">buf</a>) }
+        <span class="kw">unsafe </span>{ (<span class="kw-2">*</span><a class="self" href="#258">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>()).<a href="https://doc.rust-lang.org/nightly/std/io/trait.Write.html#tymethod.write">write</a>(<a href="#258">buf</a>) }
     }
     <span class="kw">fn </span>flush(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; io::Result&lt;()&gt; {
-        <span class="kw">unsafe </span>{ (<span class="kw-2">*</span><a class="self" href="#261">self</a>.<span class="number">0</span>.as_ptr()).<a href="https://doc.rust-lang.org/nightly/std/io/trait.Write.html">flush</a>() }
+        <span class="kw">unsafe </span>{ (<span class="kw-2">*</span><a class="self" href="#261">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>()).<a href="https://doc.rust-lang.org/nightly/std/io/trait.Write.html#tymethod.flush">flush</a>() }
     }
     <span class="kw">fn </span>write_all(<span class="kw-2">&amp;mut </span><span class="self">self</span>, buf: <span class="kw-2">&amp;</span>[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]) -&gt; io::Result&lt;()&gt; {
-        <span class="kw">unsafe </span>{ (<span class="kw-2">*</span><a class="self" href="#264">self</a>.<span class="number">0</span>.as_ptr()).<a href="https://doc.rust-lang.org/nightly/std/io/trait.Write.html">write_all</a>(<a href="#264">buf</a>) }
+        <span class="kw">unsafe </span>{ (<span class="kw-2">*</span><a class="self" href="#264">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>()).<a href="https://doc.rust-lang.org/nightly/std/io/trait.Write.html#tymethod.write_all">write_all</a>(<a href="#264">buf</a>) }
     }
 }
 

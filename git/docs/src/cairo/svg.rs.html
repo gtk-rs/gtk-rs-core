@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `cairo/src/svg.rs`."><title>svg.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-5bc39a1768837dd0.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="cairo" data-themes="" data-resource-suffix="" data-rustdoc-version="1.78.0-nightly (f067fd608 2024-02-05)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-48f368f3872407c8.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `cairo/src/svg.rs`."><title>svg.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-5bc39a1768837dd0.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="cairo" data-themes="" data-resource-suffix="" data-rustdoc-version="1.78.0-nightly (1a648b397 2024-02-11)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-48f368f3872407c8.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -367,9 +367,9 @@
 <span class="kw">impl </span><a href="enums.rs.html#1401-1408">SvgVersion</a> {
     <span class="kw">pub fn </span>as_str(<span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'static </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt; {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>res = ffi::cairo_svg_version_to_string(<a class="self" href="#22">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html">into</a>());
-            <a href="#24">res</a>.as_ref()
-                .and_then(|cstr| CStr::from_ptr(<a href="#26">cstr</a> <span class="kw">as _</span>).to_str().ok())
+            <span class="kw">let </span>res = <a href="../../cairo_sys/fn.cairo_svg_version_to_string.html">ffi::cairo_svg_version_to_string</a>(<a class="self" href="#22">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>());
+            <a href="#24">res</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/foreigntype.const_ptr.html#method.as_ref">as_ref</a>()
+                .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.and_then">and_then</a>(|cstr| <a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.from_ptr">CStr::from_ptr</a>(<a href="#26">cstr</a> <span class="kw">as _</span>).<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.to_str">to_str</a>().<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.ok">ok</a>())
         }
     }
 }
@@ -384,8 +384,8 @@
         path: <span class="prelude-ty">Option</span>&lt;P&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#31">SvgSurface</a>, <a href="error.rs.html#10-150">Error</a>&gt; {
         <span class="attr">#[cfg(not(windows))]
-        </span><span class="kw">let </span>path = <a href="#38">path</a>.map(|p| {
-            CString::new(<a href="#41">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().as_os_str().<a href="https://doc.rust-lang.org/nightly/std/os/unix/ffi/os_str/trait.OsStrExt.html">as_bytes</a>()).expect(<span class="string">"Invalid path with NULL bytes"</span>)
+        </span><span class="kw">let </span>path = <a href="#38">path</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|p| {
+            <a href="https://doc.rust-lang.org/nightly/alloc/ffi/c_str/struct.CString.html#method.new">CString::new</a>(<a href="#41">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="https://doc.rust-lang.org/nightly/std/path/struct.Path.html#method.as_os_str">as_os_str</a>().<a href="https://doc.rust-lang.org/nightly/std/os/unix/ffi/os_str/trait.OsStrExt.html#tymethod.as_bytes">as_bytes</a>()).<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.expect">expect</a>(<span class="string">"Invalid path with NULL bytes"</span>)
         });
         <span class="attr">#[cfg(windows)]
         </span><span class="kw">let </span>path = path.map(|p| {
@@ -404,8 +404,8 @@
 
         <span class="kw">unsafe </span>{
             <span class="prelude-val">Ok</span>(<span class="self">Self</span>(<a href="surface.rs.html#36-41">Surface::from_raw_full</a>(
-                ffi::cairo_svg_surface_create(
-                    <a href="#41">path</a>.as_ref().map(|p| <a href="#62">p</a>.as_ptr()).unwrap_or(ptr::null()),
+                <a href="../../cairo_sys/fn.cairo_svg_surface_create.html">ffi::cairo_svg_surface_create</a>(
+                    <a href="#41">path</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_ref">as_ref</a>().<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|p| <a href="#62">p</a>.<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.as_ptr">as_ptr</a>()).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap_or">unwrap_or</a>(<a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null.html">ptr::null</a>()),
                     <a href="#36">width</a>,
                     <a href="#37">height</a>,
                 ),
@@ -419,11 +419,11 @@
     #[doc(alias = <span class="string">"get_versions"</span>)]
     </span><span class="kw">pub fn </span>versions() -&gt; <span class="kw">impl </span>Iterator&lt;Item = <a href="enums.rs.html#1401-1408">SvgVersion</a>&gt; {
         <span class="kw">let </span>vers_slice = <span class="kw">unsafe </span>{
-            <span class="kw">let </span><span class="kw-2">mut </span>vers_ptr = ptr::null_mut();
-            <span class="kw">let </span><span class="kw-2">mut </span>num_vers = mem::MaybeUninit::uninit();
-            ffi::cairo_svg_get_versions(<span class="kw-2">&amp;mut </span><a href="#76">vers_ptr</a>, <a href="#77">num_vers</a>.as_mut_ptr());
+            <span class="kw">let </span><span class="kw-2">mut </span>vers_ptr = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
+            <span class="kw">let </span><span class="kw-2">mut </span>num_vers = <a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.uninit">mem::MaybeUninit::uninit</a>();
+            <a href="../../cairo_sys/fn.cairo_svg_get_versions.html">ffi::cairo_svg_get_versions</a>(<span class="kw-2">&amp;mut </span><a href="#76">vers_ptr</a>, <a href="#77">num_vers</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.as_mut_ptr">as_mut_ptr</a>());
 
-            <span class="kw">let </span>num_vers = <a href="#77">num_vers</a>.assume_init();
+            <span class="kw">let </span>num_vers = <a href="#77">num_vers</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.assume_init">assume_init</a>();
             <span class="kw">if </span>num_vers == <span class="number">0 </span>{
                 <span class="kw-2">&amp;</span>[]
             } <span class="kw">else </span>{
@@ -431,13 +431,13 @@
             }
         };
 
-        <a href="#75">vers_slice</a>.iter().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html">map</a>(|v| <a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html">SvgVersion::from</a>(<span class="kw-2">*</span><a href="#88">v</a>))
+        <a href="#75">vers_slice</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|v| <a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html#tymethod.from">SvgVersion::from</a>(<span class="kw-2">*</span><a href="#88">v</a>))
     }
 
     <span class="attr">#[doc(alias = <span class="string">"cairo_svg_surface_restrict_to_version"</span>)]
     </span><span class="kw">pub fn </span>restrict(<span class="kw-2">&amp;</span><span class="self">self</span>, version: <a href="enums.rs.html#1401-1408">SvgVersion</a>) {
         <span class="kw">unsafe </span>{
-            ffi::cairo_svg_surface_restrict_to_version(<a class="self" href="#92">self</a>.<span class="number">0</span>.<a href="surface.rs.html#44-46">to_raw_none</a>(), <a href="#92">version</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html">into</a>());
+            <a href="../../cairo_sys/fn.cairo_svg_surface_restrict_to_version.html">ffi::cairo_svg_surface_restrict_to_version</a>(<a class="self" href="#92">self</a>.<span class="number">0</span>.<a href="surface.rs.html#44-46">to_raw_none</a>(), <a href="#92">version</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>());
         }
     }
 
@@ -446,7 +446,7 @@
     #[doc(alias = <span class="string">"cairo_svg_surface_set_document_unit"</span>)]
     </span><span class="kw">pub fn </span>set_document_unit(<span class="kw-2">&amp;mut </span><span class="self">self</span>, unit: <a href="enums.rs.html#1085-1108">SvgUnit</a>) {
         <span class="kw">unsafe </span>{
-            ffi::cairo_svg_surface_set_document_unit(<a class="self" href="#101">self</a>.<span class="number">0</span>.<a href="surface.rs.html#44-46">to_raw_none</a>(), <a href="#101">unit</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html">into</a>());
+            <a href="../../cairo_sys/fn.cairo_svg_surface_set_document_unit.html">ffi::cairo_svg_surface_set_document_unit</a>(<a class="self" href="#101">self</a>.<span class="number">0</span>.<a href="surface.rs.html#44-46">to_raw_none</a>(), <a href="#101">unit</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>());
         }
     }
 
@@ -456,7 +456,7 @@
     #[doc(alias = <span class="string">"get_document_unit"</span>)]
     </span><span class="kw">pub fn </span>document_unit(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="enums.rs.html#1085-1108">SvgUnit</a> {
         <span class="kw">unsafe </span>{
-            <a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html">SvgUnit::from</a>(ffi::cairo_svg_surface_get_document_unit(
+            <a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html#tymethod.from">SvgUnit::from</a>(<a href="../../cairo_sys/fn.cairo_svg_surface_get_document_unit.html">ffi::cairo_svg_surface_get_document_unit</a>(
                 <a class="self" href="#111">self</a>.<span class="number">0</span>.<a href="surface.rs.html#44-46">to_raw_none</a>(),
             ))
         }

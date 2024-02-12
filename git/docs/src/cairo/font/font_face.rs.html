@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `cairo/src/font/font_face.rs`."><title>font_face.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-5bc39a1768837dd0.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="cairo" data-themes="" data-resource-suffix="" data-rustdoc-version="1.78.0-nightly (f067fd608 2024-02-05)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-48f368f3872407c8.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `cairo/src/font/font_face.rs`."><title>font_face.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-5bc39a1768837dd0.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="cairo" data-themes="" data-resource-suffix="" data-rustdoc-version="1.78.0-nightly (1a648b397 2024-02-11)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-48f368f3872407c8.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -349,14 +349,14 @@
         weight: <a href="../enums.rs.html#672-679">FontWeight</a>,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#20-30">FontFace</a>, <a href="../error.rs.html#10-150">Error</a>&gt; {
         <span class="kw">let </span>font_face: <a href="#20-30">FontFace</a> = <span class="kw">unsafe </span>{
-            <span class="kw">let </span>family = CString::new(<a href="#41">family</a>).unwrap();
-            <a href="#113-115">FontFace::from_raw_full</a>(ffi::cairo_toy_font_face_create(
-                <a href="#46">family</a>.as_ptr(),
-                <a href="#42">slant</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html">into</a>(),
-                <a href="#43">weight</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html">into</a>(),
+            <span class="kw">let </span>family = <a href="https://doc.rust-lang.org/nightly/alloc/ffi/c_str/struct.CString.html#method.new">CString::new</a>(<a href="#41">family</a>).<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>();
+            <a href="#113-115">FontFace::from_raw_full</a>(<a href="../../../cairo_sys/fn.cairo_toy_font_face_create.html">ffi::cairo_toy_font_face_create</a>(
+                <a href="#46">family</a>.<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.as_ptr">as_ptr</a>(),
+                <a href="#42">slant</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>(),
+                <a href="#43">weight</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>(),
             ))
         };
-        <span class="kw">let </span>status = <span class="kw">unsafe </span>{ ffi::cairo_font_face_status(<a href="#45">font_face</a>.<a href="#139-141">to_raw_none</a>()) };
+        <span class="kw">let </span>status = <span class="kw">unsafe </span>{ <a href="../../../cairo_sys/fn.cairo_font_face_status.html">ffi::cairo_font_face_status</a>(<a href="#45">font_face</a>.<a href="#139-141">to_raw_none</a>()) };
         <a href="../utils.rs.html#21-26">status_to_result</a>(<a href="#53">status</a>)<span class="question-mark">?</span>;
 
         <span class="prelude-val">Ok</span>(<a href="#45">font_face</a>)
@@ -369,18 +369,18 @@
     #[doc(alias = <span class="string">"cairo_ft_font_face_create_for_ft_face"</span>)]
     </span><span class="kw">pub fn </span>create_from_ft(face: <span class="kw-2">&amp;</span>freetype::face::Face) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#20-30">FontFace</a>, <a href="../error.rs.html#10-150">Error</a>&gt; {
         <span class="comment">// Increase reference count of `FT_Face`.
-        </span><span class="kw">let </span><span class="kw-2">mut </span>face = <a href="#64">face</a>.<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">clone</a>();
+        </span><span class="kw">let </span><span class="kw-2">mut </span>face = <a href="#64">face</a>.<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">clone</a>();
 
         <span class="comment">// SAFETY: The user data entry keeps `freetype::face::Face` alive
         // until the FontFace is dropped.
         </span><span class="kw">let </span>font_face = <span class="kw">unsafe </span>{
-            <a href="#113-115">FontFace::from_raw_full</a>(ffi::cairo_ft_font_face_create_for_ft_face(
+            <a href="#113-115">FontFace::from_raw_full</a>(<a href="../../../cairo_sys/fn.cairo_ft_font_face_create_for_ft_face.html">ffi::cairo_ft_font_face_create_for_ft_face</a>(
                 <a href="#66">face</a>.raw_mut() <span class="kw">as </span>freetype::ffi::FT_Face <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
                 <span class="number">0</span>,
             ))
         };
-        <a href="#70">font_face</a>.<a href="#201-204">set_user_data</a>(<span class="kw-2">&amp;</span><a href="#17">FT_FACE_KEY</a>, Rc::new(<a href="#66">face</a>))<span class="question-mark">?</span>;
-        <span class="kw">let </span>status = <span class="kw">unsafe </span>{ ffi::cairo_font_face_status(<a href="#70">font_face</a>.<a href="#139-141">to_raw_none</a>()) };
+        <a href="#70">font_face</a>.<a href="#201-204">set_user_data</a>(<span class="kw-2">&amp;</span><a href="#17">FT_FACE_KEY</a>, <a href="https://doc.rust-lang.org/nightly/alloc/rc/struct.Rc.html#method.new">Rc::new</a>(<a href="#66">face</a>))<span class="question-mark">?</span>;
+        <span class="kw">let </span>status = <span class="kw">unsafe </span>{ <a href="../../../cairo_sys/fn.cairo_font_face_status.html">ffi::cairo_font_face_status</a>(<a href="#70">font_face</a>.<a href="#139-141">to_raw_none</a>()) };
         <a href="../utils.rs.html#21-26">status_to_result</a>(<a href="#77">status</a>)<span class="question-mark">?</span>;
 
         <span class="prelude-val">Ok</span>(<a href="#70">font_face</a>)
@@ -397,18 +397,18 @@
         load_flags: libc::c_int,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#20-30">FontFace</a>, <a href="../error.rs.html#10-150">Error</a>&gt; {
         <span class="comment">// Increase reference count of `FT_Face`.
-        </span><span class="kw">let </span><span class="kw-2">mut </span>face = <a href="#90">face</a>.<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">clone</a>();
+        </span><span class="kw">let </span><span class="kw-2">mut </span>face = <a href="#90">face</a>.<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">clone</a>();
 
         <span class="comment">// SAFETY: The user data entry keeps `freetype::face::Face` alive
         // until the FontFace is dropped.
         </span><span class="kw">let </span>font_face = <span class="kw">unsafe </span>{
-            <a href="#113-115">FontFace::from_raw_full</a>(ffi::cairo_ft_font_face_create_for_ft_face(
+            <a href="#113-115">FontFace::from_raw_full</a>(<a href="../../../cairo_sys/fn.cairo_ft_font_face_create_for_ft_face.html">ffi::cairo_ft_font_face_create_for_ft_face</a>(
                 <a href="#94">face</a>.raw_mut() <span class="kw">as </span>freetype::ffi::FT_Face <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
                 <a href="#91">load_flags</a>,
             ))
         };
-        <a href="#98">font_face</a>.<a href="#201-204">set_user_data</a>(<span class="kw-2">&amp;</span><a href="#17">FT_FACE_KEY</a>, Rc::new(<a href="#94">face</a>))<span class="question-mark">?</span>;
-        <span class="kw">let </span>status = <span class="kw">unsafe </span>{ ffi::cairo_font_face_status(<a href="#98">font_face</a>.<a href="#139-141">to_raw_none</a>()) };
+        <a href="#98">font_face</a>.<a href="#201-204">set_user_data</a>(<span class="kw-2">&amp;</span><a href="#17">FT_FACE_KEY</a>, <a href="https://doc.rust-lang.org/nightly/alloc/rc/struct.Rc.html#method.new">Rc::new</a>(<a href="#94">face</a>))<span class="question-mark">?</span>;
+        <span class="kw">let </span>status = <span class="kw">unsafe </span>{ <a href="../../../cairo_sys/fn.cairo_font_face_status.html">ffi::cairo_font_face_status</a>(<a href="#98">font_face</a>.<a href="#139-141">to_raw_none</a>()) };
         <a href="../utils.rs.html#21-26">status_to_result</a>(<a href="#105">status</a>)<span class="question-mark">?</span>;
 
         <span class="prelude-val">Ok</span>(<a href="#98">font_face</a>)
@@ -417,7 +417,7 @@
     <span class="attr">#[cfg(feature = <span class="string">"use_glib"</span>)]
     #[inline]
     </span><span class="kw">pub unsafe fn </span>from_raw_full(ptr: <span class="kw-2">*mut </span><a href="../../../cairo_sys/struct.cairo_font_face_t.html">ffi::cairo_font_face_t</a>) -&gt; <a href="#20-30">FontFace</a> {
-        from_glib_full(<a href="#113">ptr</a>)
+        <a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#113">ptr</a>)
     }
 
     <span class="attr">#[cfg(not(feature = <span class="string">"use_glib"</span>))]
@@ -430,7 +430,7 @@
     <span class="attr">#[cfg(feature = <span class="string">"use_glib"</span>)]
     #[inline]
     </span><span class="kw">pub unsafe fn </span>from_raw_none(ptr: <span class="kw-2">*mut </span><a href="../../../cairo_sys/struct.cairo_font_face_t.html">ffi::cairo_font_face_t</a>) -&gt; <a href="#20-30">FontFace</a> {
-        from_glib_none(<a href="#126">ptr</a>)
+        <a href="../../../glib/translate/fn.from_glib_none.html">from_glib_none</a>(<a href="#126">ptr</a>)
     }
 
     <span class="attr">#[cfg(not(feature = <span class="string">"use_glib"</span>))]
@@ -443,7 +443,7 @@
     <span class="attr">#[cfg(feature = <span class="string">"use_glib"</span>)]
     #[inline]
     </span><span class="kw">pub fn </span>to_raw_none(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">*mut </span><a href="../../../cairo_sys/struct.cairo_font_face_t.html">ffi::cairo_font_face_t</a> {
-        <a class="self" href="#139">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0
+        <a class="self" href="#139">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0
     </span>}
 
     <span class="attr">#[cfg(not(feature = <span class="string">"use_glib"</span>))]
@@ -454,53 +454,53 @@
 
     <span class="attr">#[doc(alias = <span class="string">"cairo_toy_font_face_get_family"</span>)]
     </span><span class="kw">pub fn </span>toy_get_family(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>&gt; {
-        <span class="kw">unsafe </span>{ <a href="#225-231">to_optional_string</a>(ffi::cairo_toy_font_face_get_family(<a class="self" href="#150">self</a>.<a href="#139-141">to_raw_none</a>())) }
+        <span class="kw">unsafe </span>{ <a href="#225-231">to_optional_string</a>(<a href="../../../cairo_sys/fn.cairo_toy_font_face_get_family.html">ffi::cairo_toy_font_face_get_family</a>(<a class="self" href="#150">self</a>.<a href="#139-141">to_raw_none</a>())) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">"cairo_toy_font_face_get_slant"</span>)]
     </span><span class="kw">pub fn </span>toy_get_slant(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="../enums.rs.html#631-640">FontSlant</a> {
-        <span class="kw">unsafe </span>{ <a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html">FontSlant::from</a>(ffi::cairo_toy_font_face_get_slant(<a class="self" href="#155">self</a>.<a href="#139-141">to_raw_none</a>())) }
+        <span class="kw">unsafe </span>{ <a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html#tymethod.from">FontSlant::from</a>(<a href="../../../cairo_sys/fn.cairo_toy_font_face_get_slant.html">ffi::cairo_toy_font_face_get_slant</a>(<a class="self" href="#155">self</a>.<a href="#139-141">to_raw_none</a>())) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">"cairo_toy_font_face_get_weight"</span>)]
     </span><span class="kw">pub fn </span>toy_get_weight(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="../enums.rs.html#672-679">FontWeight</a> {
-        <span class="kw">unsafe </span>{ <a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html">FontWeight::from</a>(ffi::cairo_toy_font_face_get_weight(<a class="self" href="#160">self</a>.<a href="#139-141">to_raw_none</a>())) }
+        <span class="kw">unsafe </span>{ <a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html#tymethod.from">FontWeight::from</a>(<a href="../../../cairo_sys/fn.cairo_toy_font_face_get_weight.html">ffi::cairo_toy_font_face_get_weight</a>(<a class="self" href="#160">self</a>.<a href="#139-141">to_raw_none</a>())) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">"cairo_font_face_get_type"</span>)]
     #[doc(alias = <span class="string">"get_type"</span>)]
     </span><span class="kw">pub fn </span>type_(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="../enums.rs.html#749-766">FontType</a> {
-        <span class="kw">unsafe </span>{ <a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html">FontType::from</a>(ffi::cairo_font_face_get_type(<a class="self" href="#166">self</a>.<a href="#139-141">to_raw_none</a>())) }
+        <span class="kw">unsafe </span>{ <a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html#tymethod.from">FontType::from</a>(<a href="../../../cairo_sys/fn.cairo_font_face_get_type.html">ffi::cairo_font_face_get_type</a>(<a class="self" href="#166">self</a>.<a href="#139-141">to_raw_none</a>())) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">"cairo_font_face_get_reference_count"</span>)]
     #[doc(alias = <span class="string">"get_reference_count"</span>)]
     </span><span class="kw">pub fn </span>reference_count(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a> {
-        <span class="kw">unsafe </span>{ ffi::cairo_font_face_get_reference_count(<a class="self" href="#172">self</a>.<a href="#139-141">to_raw_none</a>()) <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a> }
+        <span class="kw">unsafe </span>{ <a href="../../../cairo_sys/fn.cairo_font_face_get_reference_count.html">ffi::cairo_font_face_get_reference_count</a>(<a class="self" href="#172">self</a>.<a href="#139-141">to_raw_none</a>()) <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a> }
     }
 
     <span class="attr">#[cfg(feature = <span class="string">"freetype"</span>)]
     #[doc(alias = <span class="string">"cairo_ft_font_face_get_synthesize"</span>)]
     #[doc(alias = <span class="string">"get_synthesize"</span>)]
     </span><span class="kw">pub fn </span>synthesize(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="../enums.rs.html#1523-1530">FtSynthesize</a> {
-        <span class="kw">unsafe </span>{ <a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html">FtSynthesize::from</a>(ffi::cairo_ft_font_face_get_synthesize(<a class="self" href="#179">self</a>.<a href="#139-141">to_raw_none</a>())) }
+        <span class="kw">unsafe </span>{ <a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html#tymethod.from">FtSynthesize::from</a>(<a href="../../../cairo_sys/fn.cairo_ft_font_face_get_synthesize.html">ffi::cairo_ft_font_face_get_synthesize</a>(<a class="self" href="#179">self</a>.<a href="#139-141">to_raw_none</a>())) }
     }
 
     <span class="attr">#[cfg(feature = <span class="string">"freetype"</span>)]
     #[doc(alias = <span class="string">"cairo_ft_font_face_set_synthesize"</span>)]
     </span><span class="kw">pub fn </span>set_synthesize(<span class="kw-2">&amp;</span><span class="self">self</span>, synth_flags: <a href="../enums.rs.html#1523-1530">FtSynthesize</a>) {
-        <span class="kw">unsafe </span>{ ffi::cairo_ft_font_face_set_synthesize(<a class="self" href="#185">self</a>.<a href="#139-141">to_raw_none</a>(), <a href="#185">synth_flags</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html">into</a>()) }
+        <span class="kw">unsafe </span>{ <a href="../../../cairo_sys/fn.cairo_ft_font_face_set_synthesize.html">ffi::cairo_ft_font_face_set_synthesize</a>(<a class="self" href="#185">self</a>.<a href="#139-141">to_raw_none</a>(), <a href="#185">synth_flags</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>()) }
     }
 
     <span class="attr">#[cfg(feature = <span class="string">"freetype"</span>)]
     #[doc(alias = <span class="string">"cairo_ft_font_face_unset_synthesize"</span>)]
     </span><span class="kw">pub fn </span>unset_synthesize(<span class="kw-2">&amp;</span><span class="self">self</span>, synth_flags: <a href="../enums.rs.html#1523-1530">FtSynthesize</a>) {
-        <span class="kw">unsafe </span>{ ffi::cairo_ft_font_face_unset_synthesize(<a class="self" href="#191">self</a>.<a href="#139-141">to_raw_none</a>(), <a href="#191">synth_flags</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html">into</a>()) }
+        <span class="kw">unsafe </span>{ <a href="../../../cairo_sys/fn.cairo_ft_font_face_unset_synthesize.html">ffi::cairo_ft_font_face_unset_synthesize</a>(<a class="self" href="#191">self</a>.<a href="#139-141">to_raw_none</a>(), <a href="#191">synth_flags</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>()) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">"cairo_font_face_status"</span>)]
     </span><span class="kw">pub fn </span>status(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="../error.rs.html#10-150">Error</a>&gt; {
-        <span class="kw">let </span>status = <span class="kw">unsafe </span>{ ffi::cairo_font_face_status(<a class="self" href="#196">self</a>.<a href="#139-141">to_raw_none</a>()) };
+        <span class="kw">let </span>status = <span class="kw">unsafe </span>{ <a href="../../../cairo_sys/fn.cairo_font_face_status.html">ffi::cairo_font_face_status</a>(<a class="self" href="#196">self</a>.<a href="#139-141">to_raw_none</a>()) };
         <a href="../utils.rs.html#21-26">status_to_result</a>(<a href="#197">status</a>)
     }
 
@@ -532,7 +532,7 @@
     <span class="kw">if </span>str.is_null() {
         <span class="prelude-val">None
     </span>} <span class="kw">else </span>{
-        <span class="prelude-val">Some</span>(String::from_utf8_lossy(CStr::from_ptr(<a href="#225">str</a>).to_bytes()).into_owned())
+        <span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html#method.from_utf8_lossy">String::from_utf8_lossy</a>(<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.from_ptr">CStr::from_ptr</a>(<a href="#225">str</a>).<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.to_bytes">to_bytes</a>()).<a href="https://doc.rust-lang.org/nightly/alloc/borrow/enum.Cow.html#method.into_owned">into_owned</a>())
     }
 }
 </code></pre></div></section></main></body></html>

@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/io_extension_point.rs`."><title>io_extension_point.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-5bc39a1768837dd0.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.78.0-nightly (f067fd608 2024-02-05)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-48f368f3872407c8.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/io_extension_point.rs`."><title>io_extension_point.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-5bc39a1768837dd0.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.78.0-nightly (1a648b397 2024-02-11)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-48f368f3872407c8.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -365,7 +365,7 @@
 <a href="#290" id="290">290</a>
 </pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
-</span><span class="kw">use </span>std::{marker::PhantomData, <a href="https://doc.rust-lang.org/nightly/core/ptr/index.html">ptr</a>};
+</span><span class="kw">use </span>std::{<a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">marker::PhantomData</a>, <a href="https://doc.rust-lang.org/nightly/core/ptr/index.html">ptr</a>};
 
 <span class="kw">use </span>glib::{<a href="../../glib/translate/index.html">translate</a>::<span class="kw-2">*</span>, <a href="../../glib/gstring/struct.GString.html">GString</a>, <a href="../../glib/gstring/trait.IntoGStr.html">IntoGStr</a>, <a href="../../glib/types/struct.Type.html">Type</a>};
 
@@ -399,11 +399,11 @@
     <span class="attr">#[must_use = <span class="string">"Building the object from the builder is usually expensive and is not expected to have side effects"</span>]
     </span><span class="kw">pub fn </span>build(<span class="self">self</span>) -&gt; <a href="#110">IOExtensionPoint</a> {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>ep = <a href="../../glib/translate/trait.FromGlibPtrNone.html">IOExtensionPoint::from_glib_none</a>(ffi::g_io_extension_point_register(
-                <a class="self" href="#35">self</a>.name.<a href="../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+            <span class="kw">let </span>ep = <a href="../../glib/translate/trait.FromGlibPtrNone.html#tymethod.from_glib_none">IOExtensionPoint::from_glib_none</a>(<a href="../../gio_sys/fn.g_io_extension_point_register.html">ffi::g_io_extension_point_register</a>(
+                <a class="self" href="#35">self</a>.name.<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
             ));
             <span class="kw">if let </span><span class="prelude-val">Some</span>(t) = <a class="self" href="#35">self</a>.required_type {
-                ffi::g_io_extension_point_set_required_type(<a href="#37">ep</a>.<span class="number">0</span>.as_ptr(), <a href="#40">t</a>.<a href="../../glib/translate/trait.IntoGlib.html">into_glib</a>());
+                <a href="../../gio_sys/fn.g_io_extension_point_set_required_type.html">ffi::g_io_extension_point_set_required_type</a>(<a href="#37">ep</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>(), <a href="#40">t</a>.<a href="../../glib/translate/trait.IntoGlib.html#tymethod.into_glib">into_glib</a>());
             }
             <a href="#37">ep</a>
         }
@@ -478,7 +478,7 @@
     <span class="attr">#[inline]
     </span><span class="kw">unsafe fn </span>from_glib_none(ptr: <span class="kw-2">*mut </span><a href="../../gio_sys/type.GIOExtensionPoint.html">ffi::GIOExtensionPoint</a>) -&gt; <span class="self">Self </span>{
         <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert.html">debug_assert!</a>(!ptr.is_null());
-        <a href="#110">IOExtensionPoint</a>(ptr::NonNull::new_unchecked(<a href="#114">ptr</a>))
+        <a href="#110">IOExtensionPoint</a>(<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.new_unchecked">ptr::NonNull::new_unchecked</a>(<a href="#114">ptr</a>))
     }
 }
 
@@ -487,7 +487,7 @@
 
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>to_glib_none(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Stash&lt;<span class="lifetime">'a</span>, <span class="kw-2">*mut </span><a href="../../gio_sys/type.GIOExtensionPoint.html">ffi::GIOExtensionPoint</a>, <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#110">IOExtensionPoint</a>&gt; {
-        Stash(<a class="self" href="#124">self</a>.<span class="number">0</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><a href="../../gio_sys/type.GIOExtensionPoint.html">ffi::GIOExtensionPoint</a>, PhantomData)
+        <a href="../../glib/translate/struct.Stash.html">Stash</a>(<a class="self" href="#124">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><a href="../../gio_sys/type.GIOExtensionPoint.html">ffi::GIOExtensionPoint</a>, <a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">PhantomData</a>)
     }
 }
 
@@ -496,7 +496,7 @@
     </span><span class="doccomment">/// Create a new builder for an extension point.
     </span><span class="attr">#[doc(alias = <span class="string">"g_io_extension_point_register"</span>)]
     </span><span class="kw">pub fn </span>builder(name: <span class="kw">impl </span>Into&lt;<a href="../../glib/gstring/struct.GString.html">GString</a>&gt;) -&gt; <a href="#13-16">IOExtensionPointBuilder</a> {
-        <a href="#19-24">IOExtensionPointBuilder::new</a>(<a href="#133">name</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html">into</a>())
+        <a href="#19-24">IOExtensionPointBuilder::new</a>(<a href="#133">name</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>())
     }
 
     <span class="doccomment">/// Looks up an existing extension point.
@@ -509,9 +509,9 @@
     ///    is no registered extension point with the given name.
     </span><span class="attr">#[doc(alias = <span class="string">"g_io_extension_point_lookup"</span>)]
     </span><span class="kw">pub fn </span>lookup(name: <span class="kw">impl </span><a href="../../glib/gstring/trait.IntoGStr.html">IntoGStr</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt; {
-        <a href="#146">name</a>.<a href="../../glib/gstring/trait.IntoGStr.html">run_with_gstr</a>(|name| <span class="kw">unsafe </span>{
-            <span class="kw">let </span>ep = ffi::g_io_extension_point_lookup(<a href="#147">name</a>.<a href="../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>);
-            from_glib_none(<a href="#148">ep</a>)
+        <a href="#146">name</a>.<a href="../../glib/gstring/trait.IntoGStr.html#tymethod.run_with_gstr">run_with_gstr</a>(|name| <span class="kw">unsafe </span>{
+            <span class="kw">let </span>ep = <a href="../../gio_sys/fn.g_io_extension_point_lookup.html">ffi::g_io_extension_point_lookup</a>(<a href="#147">name</a>.<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>);
+            <a href="../../glib/translate/fn.from_glib_none.html">from_glib_none</a>(<a href="#148">ep</a>)
         })
     }
 
@@ -525,9 +525,9 @@
     ///     modified.
     </span><span class="attr">#[doc(alias = <span class="string">"g_io_extension_point_get_extensions"</span>)]
     </span><span class="kw">pub fn </span>extensions(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec&lt;<a href="io_extension.rs.html#14">IOExtension</a>&gt; {
-        <span class="kw">let </span><span class="kw-2">mut </span>res = Vec::new();
+        <span class="kw">let </span><span class="kw-2">mut </span>res = <a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.new">Vec::new</a>();
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span><span class="kw-2">mut </span>l = ffi::g_io_extension_point_get_extensions(<a class="self" href="#162">self</a>.<span class="number">0</span>.as_ptr());
+            <span class="kw">let </span><span class="kw-2">mut </span>l = <a href="../../gio_sys/fn.g_io_extension_point_get_extensions.html">ffi::g_io_extension_point_get_extensions</a>(<a class="self" href="#162">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>());
             <span class="kw">while </span>!l.is_null() {
                 <span class="kw">let </span>e: <span class="kw-2">*mut </span>ffi::GIOExtension = Ptr::from((<span class="kw-2">*</span>l).data);
                 res.push(from_glib_none(e));
@@ -547,12 +547,12 @@
     ///    given name, or [`None`] if there is no extension with that name
     </span><span class="attr">#[doc(alias = <span class="string">"g_io_extension_point_get_extension_by_name"</span>)]
     </span><span class="kw">pub fn </span>extension_by_name(<span class="kw-2">&amp;</span><span class="self">self</span>, name: <span class="kw">impl </span><a href="../../glib/gstring/trait.IntoGStr.html">IntoGStr</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="io_extension.rs.html#14">IOExtension</a>&gt; {
-        <a href="#184">name</a>.<a href="../../glib/gstring/trait.IntoGStr.html">run_with_gstr</a>(|name| <span class="kw">unsafe </span>{
-            <span class="kw">let </span>e = ffi::g_io_extension_point_get_extension_by_name(
-                <a class="self" href="#184">self</a>.<span class="number">0</span>.as_ptr(),
-                <a href="#185">name</a>.<a href="../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+        <a href="#184">name</a>.<a href="../../glib/gstring/trait.IntoGStr.html#tymethod.run_with_gstr">run_with_gstr</a>(|name| <span class="kw">unsafe </span>{
+            <span class="kw">let </span>e = <a href="../../gio_sys/fn.g_io_extension_point_get_extension_by_name.html">ffi::g_io_extension_point_get_extension_by_name</a>(
+                <a class="self" href="#184">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>(),
+                <a href="#185">name</a>.<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
             );
-            from_glib_none(<a href="#186">e</a>)
+            <a href="../../glib/translate/fn.from_glib_none.html">from_glib_none</a>(<a href="#186">e</a>)
         })
     }
 
@@ -564,7 +564,7 @@
     ///   or `G_TYPE_INVALID` if the extension point has no required type
     </span><span class="attr">#[doc(alias = <span class="string">"g_io_extension_point_get_required_type"</span>)]
     </span><span class="kw">pub fn </span>required_type(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="../../glib/types/struct.Type.html">Type</a> {
-        <span class="kw">unsafe </span>{ from_glib(ffi::g_io_extension_point_get_required_type(<a class="self" href="#201">self</a>.<span class="number">0</span>.as_ptr())) }
+        <span class="kw">unsafe </span>{ <a href="../../glib/translate/fn.from_glib.html">from_glib</a>(<a href="../../gio_sys/fn.g_io_extension_point_get_required_type.html">ffi::g_io_extension_point_get_required_type</a>(<a class="self" href="#201">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>())) }
     }
 
     <span class="doccomment">/// Registers @type_ as extension for the extension point with name
@@ -591,15 +591,15 @@
         extension_name: <span class="kw">impl </span><a href="../../glib/gstring/trait.IntoGStr.html">IntoGStr</a>,
         priority: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
     ) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="io_extension.rs.html#14">IOExtension</a>&gt; {
-        <a href="#224">extension_point_name</a>.<a href="../../glib/gstring/trait.IntoGStr.html">run_with_gstr</a>(|extension_point_name| {
-            <a href="#226">extension_name</a>.<a href="../../glib/gstring/trait.IntoGStr.html">run_with_gstr</a>(|extension_name| <span class="kw">unsafe </span>{
-                <span class="kw">let </span>e = ffi::g_io_extension_point_implement(
-                    <a href="#229">extension_point_name</a>.<a href="../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
-                    <a href="#225">type_</a>.<a href="../../glib/translate/trait.IntoGlib.html">into_glib</a>(),
-                    <a href="#230">extension_name</a>.<a href="../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+        <a href="#224">extension_point_name</a>.<a href="../../glib/gstring/trait.IntoGStr.html#tymethod.run_with_gstr">run_with_gstr</a>(|extension_point_name| {
+            <a href="#226">extension_name</a>.<a href="../../glib/gstring/trait.IntoGStr.html#tymethod.run_with_gstr">run_with_gstr</a>(|extension_name| <span class="kw">unsafe </span>{
+                <span class="kw">let </span>e = <a href="../../gio_sys/fn.g_io_extension_point_implement.html">ffi::g_io_extension_point_implement</a>(
+                    <a href="#229">extension_point_name</a>.<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+                    <a href="#225">type_</a>.<a href="../../glib/translate/trait.IntoGlib.html#tymethod.into_glib">into_glib</a>(),
+                    <a href="#230">extension_name</a>.<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
                     <a href="#227">priority</a>,
                 );
-                from_glib_none(<a href="#231">e</a>)
+                <a href="../../glib/translate/fn.from_glib_none.html">from_glib_none</a>(<a href="#231">e</a>)
             })
         })
     }

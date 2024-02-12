@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/list_store.rs`."><title>list_store.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-5bc39a1768837dd0.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.78.0-nightly (f067fd608 2024-02-05)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-48f368f3872407c8.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/list_store.rs`."><title>list_store.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-5bc39a1768837dd0.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.78.0-nightly (1a648b397 2024-02-11)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-48f368f3872407c8.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -480,12 +480,12 @@
     /// a new #GListStore
     </span><span class="attr">#[doc(alias = <span class="string">"g_list_store_new"</span>)]
     </span><span class="kw">pub fn </span>new&lt;T: IsA&lt;<a href="../../glib/object/struct.Object.html">Object</a>&gt;&gt;() -&gt; <span class="self">Self </span>{
-        <a href="#24-26"><span class="self">Self</span>::with_type</a>(<a href="../../glib/types/trait.StaticType.html">T::static_type</a>())
+        <a href="#24-26"><span class="self">Self</span>::with_type</a>(<a href="../../glib/types/trait.StaticType.html#tymethod.static_type">T::static_type</a>())
     }
 
     <span class="attr">#[doc(alias = <span class="string">"g_list_store_new"</span>)]
     </span><span class="kw">pub fn </span>with_type(type_: <a href="../../glib/types/struct.Type.html">glib::types::Type</a>) -&gt; <span class="self">Self </span>{
-        <span class="kw">unsafe </span>{ from_glib_full(ffi::g_list_store_new(<a href="#24">type_</a>.<a href="../../glib/translate/trait.IntoGlib.html">into_glib</a>())) }
+        <span class="kw">unsafe </span>{ <a href="../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="../../gio_sys/fn.g_list_store_new.html">ffi::g_list_store_new</a>(<a href="#24">type_</a>.<a href="../../glib/translate/trait.IntoGlib.html#tymethod.into_glib">into_glib</a>())) }
     }
 
     <span class="doccomment">/// Inserts @item into @self at a position to be determined by the
@@ -516,9 +516,9 @@
             <span class="kw">let </span>func_ptr = <span class="kw-2">&amp;</span><a href="#52">func_obj</a> <span class="kw">as </span><span class="kw-2">*const &amp;mut </span>(<span class="kw">dyn </span>FnMut(<span class="kw-2">&amp;</span><a href="../../glib/object/struct.Object.html">Object</a>, <span class="kw-2">&amp;</span><a href="../../glib/object/struct.Object.html">Object</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/core/cmp/enum.Ordering.html">Ordering</a>)
                 <span class="kw">as </span><a href="../../glib_sys/type.gpointer.html">glib::ffi::gpointer</a>;
 
-            ffi::g_list_store_insert_sorted(
-                <a class="self" href="#46">self</a>.<a href="../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#47">item</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+            <a href="../../gio_sys/fn.g_list_store_insert_sorted.html">ffi::g_list_store_insert_sorted</a>(
+                <a class="self" href="#46">self</a>.<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#47">item</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
                 <span class="prelude-val">Some</span>(<a href="#269-280">compare_func_trampoline</a>),
                 <a href="#53">func_ptr</a>,
             )
@@ -536,8 +536,8 @@
             <span class="kw">let </span>func_ptr = <span class="kw-2">&amp;</span><a href="#72">func_obj</a> <span class="kw">as </span><span class="kw-2">*const &amp;mut </span>(<span class="kw">dyn </span>FnMut(<span class="kw-2">&amp;</span><a href="../../glib/object/struct.Object.html">Object</a>, <span class="kw-2">&amp;</span><a href="../../glib/object/struct.Object.html">Object</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/core/cmp/enum.Ordering.html">Ordering</a>)
                 <span class="kw">as </span><a href="../../glib_sys/type.gpointer.html">glib::ffi::gpointer</a>;
 
-            ffi::g_list_store_sort(
-                <a class="self" href="#69">self</a>.<a href="../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+            <a href="../../gio_sys/fn.g_list_store_sort.html">ffi::g_list_store_sort</a>(
+                <a class="self" href="#69">self</a>.<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
                 <span class="prelude-val">Some</span>(<a href="#269-280">compare_func_trampoline</a>),
                 <a href="#73">func_ptr</a>,
             )
@@ -565,12 +565,12 @@
     /// the items to add
     </span><span class="attr">#[doc(alias = <span class="string">"g_list_store_splice"</span>)]
     </span><span class="kw">pub fn </span>splice(<span class="kw-2">&amp;</span><span class="self">self</span>, position: <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>, n_removals: <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>, additions: <span class="kw-2">&amp;</span>[<span class="kw">impl </span>IsA&lt;<a href="../../glib/object/struct.Object.html">glib::Object</a>&gt;]) {
-        <span class="kw">let </span>n_additions = <a href="#104">additions</a>.len() <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>;
+        <span class="kw">let </span>n_additions = <a href="#104">additions</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.len">len</a>() <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>;
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>additions = <a href="#104">additions</a>.as_ptr() <span class="kw">as </span><span class="kw-2">*mut *mut </span><a href="../../gobject_sys/struct.GObject.html">glib::gobject_ffi::GObject</a>;
+            <span class="kw">let </span>additions = <a href="#104">additions</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut *mut </span><a href="../../gobject_sys/struct.GObject.html">glib::gobject_ffi::GObject</a>;
 
-            ffi::g_list_store_splice(
-                <a class="self" href="#104">self</a>.<a href="../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+            <a href="../../gio_sys/fn.g_list_store_splice.html">ffi::g_list_store_splice</a>(
+                <a class="self" href="#104">self</a>.<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
                 <a href="#104">position</a>,
                 <a href="#104">n_removals</a>,
                 <a href="#107">additions</a>,
@@ -599,9 +599,9 @@
         <span class="kw">let </span><span class="kw-2">mut </span>i = <span class="number">0</span>;
         <span class="kw">const </span>ADDITIONS: <span class="kw-2">&amp;</span>[<a href="../../glib/object/struct.Object.html">glib::Object</a>] = <span class="kw-2">&amp;</span>[]; <span class="comment">// To satisfy the type checker
 
-        </span><span class="kw">let </span>changed = Rc::new(Cell::new(<span class="bool-val">false</span>));
-        <span class="kw">let </span>changed_clone = <a href="#139">changed</a>.<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">clone</a>();
-        <span class="kw">let </span>signal_id = <a class="self" href="#134">self</a>.<a href="auto/list_model.rs.html#236-269">connect_items_changed</a>(<span class="kw">move </span>|_list, <span class="kw">_</span>, <span class="kw">_</span>, <span class="kw">_</span>| <a href="#140">changed_clone</a>.set(<span class="bool-val">true</span>));
+        </span><span class="kw">let </span>changed = <a href="https://doc.rust-lang.org/nightly/alloc/rc/struct.Rc.html#method.new">Rc::new</a>(<a href="https://doc.rust-lang.org/nightly/core/cell/struct.Cell.html#method.new">Cell::new</a>(<span class="bool-val">false</span>));
+        <span class="kw">let </span>changed_clone = <a href="#139">changed</a>.<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">clone</a>();
+        <span class="kw">let </span>signal_id = <a class="self" href="#134">self</a>.<a href="auto/list_model.rs.html#236-269">connect_items_changed</a>(<span class="kw">move </span>|_list, <span class="kw">_</span>, <span class="kw">_</span>, <span class="kw">_</span>| <a href="#140">changed_clone</a>.<a href="https://doc.rust-lang.org/nightly/core/cell/struct.Cell.html#method.set">set</a>(<span class="bool-val">true</span>));
 
         <span class="kw">let </span>_signal_guard = {
             <span class="kw">struct </span>Guard&lt;<span class="lifetime">'a</span>&gt; {
@@ -610,7 +610,7 @@
             }
             <span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/ops/drop/trait.Drop.html">Drop</a> <span class="kw">for </span>Guard&lt;<span class="lifetime">'_</span>&gt; {
                 <span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
-                    <a class="self" href="#149">self</a>.list_store.<a href="../../glib/object/trait.ObjectExt.html">disconnect</a>(<a class="self" href="#149">self</a>.signal_id.take().unwrap());
+                    <a class="self" href="#149">self</a>.list_store.<a href="../../glib/object/trait.ObjectExt.html#tymethod.disconnect">disconnect</a>(<a class="self" href="#149">self</a>.signal_id.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.take">take</a>().<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap">unwrap</a>());
                 }
             }
             <a href="#144-147">Guard</a> {
@@ -674,9 +674,9 @@
         ) -&gt; <a href="../../glib_sys/type.gboolean.html">glib::ffi::gboolean</a> {
             <span class="kw">let </span>func = <a href="#210">func</a> <span class="kw">as </span><span class="kw-2">*mut &amp;mut </span>(<span class="kw">dyn </span>FnMut(<span class="kw-2">&amp;</span><a href="../../glib/object/struct.Object.html">Object</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>);
 
-            <span class="kw">let </span>a = from_glib_borrow(<a href="#208">a</a> <span class="kw">as </span><span class="kw-2">*mut </span><a href="../../gobject_sys/struct.GObject.html">glib::gobject_ffi::GObject</a>);
+            <span class="kw">let </span>a = <a href="../../glib/translate/fn.from_glib_borrow.html">from_glib_borrow</a>(<a href="#208">a</a> <span class="kw">as </span><span class="kw-2">*mut </span><a href="../../gobject_sys/struct.GObject.html">glib::gobject_ffi::GObject</a>);
 
-            (<span class="kw-2">*</span><a href="#212">func</a>)(<span class="kw-2">&amp;</span><a href="#214">a</a>).<a href="../../glib/translate/trait.IntoGlib.html">into_glib</a>()
+            (<span class="kw-2">*</span><a href="#212">func</a>)(<span class="kw-2">&amp;</span><a href="#214">a</a>).<a href="../../glib/translate/trait.IntoGlib.html#tymethod.into_glib">into_glib</a>()
         }
 
         <span class="kw">unsafe </span>{
@@ -684,28 +684,28 @@
             // See https://gitlab.gnome.org/GNOME/glib/-/merge_requests/3284
             </span><span class="kw">let </span>item = <a href="../../gobject_sys/struct.GObject.html">glib::gobject_ffi::GObject</a> {
                 g_type_instance: <a href="../../gobject_sys/struct.GTypeInstance.html">glib::gobject_ffi::GTypeInstance</a> {
-                    g_class: glib::gobject_ffi::g_type_class_peek(<a class="self" href="#204">self</a>.<a href="auto/list_model.rs.html#133-139">item_type</a>().<a href="../../glib/translate/trait.IntoGlib.html">into_glib</a>())
+                    g_class: <a href="../../gobject_sys/fn.g_type_class_peek.html">glib::gobject_ffi::g_type_class_peek</a>(<a class="self" href="#204">self</a>.<a href="auto/list_model.rs.html#133-139">item_type</a>().<a href="../../glib/translate/trait.IntoGlib.html#tymethod.into_glib">into_glib</a>())
                         <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
                 },
                 ref_count: <span class="number">1</span>,
-                qdata: std::ptr::null_mut(),
+                qdata: <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">std::ptr::null_mut</a>(),
             };
             <span class="kw">let </span><span class="kw-2">mut </span>func = <a href="#205">equal_func</a>;
             <span class="kw">let </span>func_obj: <span class="kw-2">&amp;mut </span>(<span class="kw">dyn </span>FnMut(<span class="kw-2">&amp;</span><a href="../../glib/object/struct.Object.html">Object</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>) = <span class="kw-2">&amp;mut </span><a href="#230">func</a>;
             <span class="kw">let </span>func_ptr =
                 <span class="kw-2">&amp;</span><a href="#231">func_obj</a> <span class="kw">as </span><span class="kw-2">*const &amp;mut </span>(<span class="kw">dyn </span>FnMut(<span class="kw-2">&amp;</span><a href="../../glib/object/struct.Object.html">Object</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>) <span class="kw">as </span><a href="../../glib_sys/type.gpointer.html">glib::ffi::gpointer</a>;
 
-            <span class="kw">let </span><span class="kw-2">mut </span>position = std::mem::MaybeUninit::uninit();
+            <span class="kw">let </span><span class="kw-2">mut </span>position = <a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.uninit">std::mem::MaybeUninit::uninit</a>();
 
-            <span class="kw">let </span>found = <a href="../../glib/translate/trait.FromGlib.html">bool::from_glib</a>(ffi::g_list_store_find_with_equal_func_full(
-                <a class="self" href="#204">self</a>.<a href="../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
-                mut_override(<span class="kw-2">&amp;</span><a href="#222">item</a> <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>),
+            <span class="kw">let </span>found = <a href="../../glib/translate/trait.FromGlib.html#tymethod.from_glib">bool::from_glib</a>(<a href="../../gio_sys/fn.g_list_store_find_with_equal_func_full.html">ffi::g_list_store_find_with_equal_func_full</a>(
+                <a class="self" href="#204">self</a>.<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+                <a href="../../glib/translate/fn.mut_override.html">mut_override</a>(<span class="kw-2">&amp;</span><a href="#222">item</a> <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>),
                 <span class="prelude-val">Some</span>(<a href="#207-217">equal_func_trampoline</a>),
                 <a href="#232">func_ptr</a>,
-                <a href="#235">position</a>.as_mut_ptr(),
+                <a href="#235">position</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.as_mut_ptr">as_mut_ptr</a>(),
             ));
 
-            <a href="#237">found</a>.then(|| <a href="#235">position</a>.assume_init())
+            <a href="#237">found</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.bool.html#method.then">then</a>(|| <a href="#235">position</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.assume_init">assume_init</a>())
         }
     }
 }
@@ -725,7 +725,7 @@
     <span class="kw">type </span>IntoIter = &lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="auto/list_model.rs.html#12-102">ListModel</a> <span class="kw">as </span>IntoIterator&gt;::IntoIter;
 
     <span class="kw">fn </span>into_iter(<span class="self">self</span>) -&gt; <span class="self">Self</span>::IntoIter {
-        <a class="self" href="#264">self</a>.<a href="../../glib/object/trait.Cast.html">upcast_ref</a>::&lt;<a href="auto/list_model.rs.html#12-102">ListModel</a>&gt;().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.IntoIterator.html">into_iter</a>()
+        <a class="self" href="#264">self</a>.<a href="../../glib/object/trait.Cast.html#tymethod.upcast_ref">upcast_ref</a>::&lt;<a href="auto/list_model.rs.html#12-102">ListModel</a>&gt;().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.IntoIterator.html#tymethod.into_iter">into_iter</a>()
     }
 }
 
@@ -736,18 +736,18 @@
 ) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a> {
     <span class="kw">let </span>func = <a href="#272">func</a> <span class="kw">as </span><span class="kw-2">*mut &amp;mut </span>(<span class="kw">dyn </span>FnMut(<span class="kw-2">&amp;</span><a href="../../glib/object/struct.Object.html">Object</a>, <span class="kw-2">&amp;</span><a href="../../glib/object/struct.Object.html">Object</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/core/cmp/enum.Ordering.html">Ordering</a>);
 
-    <span class="kw">let </span>a = from_glib_borrow(<a href="#270">a</a> <span class="kw">as </span><span class="kw-2">*mut </span><a href="../../gobject_sys/struct.GObject.html">glib::gobject_ffi::GObject</a>);
-    <span class="kw">let </span>b = from_glib_borrow(<a href="#271">b</a> <span class="kw">as </span><span class="kw-2">*mut </span><a href="../../gobject_sys/struct.GObject.html">glib::gobject_ffi::GObject</a>);
+    <span class="kw">let </span>a = <a href="../../glib/translate/fn.from_glib_borrow.html">from_glib_borrow</a>(<a href="#270">a</a> <span class="kw">as </span><span class="kw-2">*mut </span><a href="../../gobject_sys/struct.GObject.html">glib::gobject_ffi::GObject</a>);
+    <span class="kw">let </span>b = <a href="../../glib/translate/fn.from_glib_borrow.html">from_glib_borrow</a>(<a href="#271">b</a> <span class="kw">as </span><span class="kw-2">*mut </span><a href="../../gobject_sys/struct.GObject.html">glib::gobject_ffi::GObject</a>);
 
-    (<span class="kw-2">*</span><a href="#274">func</a>)(<span class="kw-2">&amp;</span><a href="#276">a</a>, <span class="kw-2">&amp;</span><a href="#277">b</a>).<a href="../../glib/translate/trait.IntoGlib.html">into_glib</a>()
+    (<span class="kw-2">*</span><a href="#274">func</a>)(<span class="kw-2">&amp;</span><a href="#276">a</a>, <span class="kw-2">&amp;</span><a href="#277">b</a>).<a href="../../glib/translate/trait.IntoGlib.html#tymethod.into_glib">into_glib</a>()
 }
 
 <span class="kw">impl</span>&lt;A: AsRef&lt;<a href="../../glib/object/struct.Object.html">glib::Object</a>&gt;&gt; std::iter::Extend&lt;A&gt; <span class="kw">for </span><a href="auto/list_store.rs.html#8-39">ListStore</a> {
     <span class="kw">fn </span>extend&lt;T: IntoIterator&lt;Item = A&gt;&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, iter: T) {
         <span class="kw">let </span>additions = <a href="#283">iter</a>
-            .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.IntoIterator.html">into_iter</a>()
-            .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html">map</a>(|o| <a href="#286">o</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">clone</a>())
-            .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html">collect</a>::&lt;Vec&lt;<span class="kw">_</span>&gt;&gt;();
+            .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.IntoIterator.html#tymethod.into_iter">into_iter</a>()
+            .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|o| <a href="#286">o</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">clone</a>())
+            .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.collect">collect</a>::&lt;Vec&lt;<span class="kw">_</span>&gt;&gt;();
         <a class="self" href="#283">self</a>.<a href="#104-117">splice</a>(<a class="self" href="#283">self</a>.<a href="auto/list_model.rs.html#152-154">n_items</a>(), <span class="number">0</span>, <span class="kw-2">&amp;</span><a href="#284">additions</a>)
     }
 }

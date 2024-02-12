@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/source.rs`."><title>source.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-5bc39a1768837dd0.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.78.0-nightly (f067fd608 2024-02-05)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-48f368f3872407c8.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/source.rs`."><title>source.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-5bc39a1768837dd0.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.78.0-nightly (1a648b397 2024-02-11)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-48f368f3872407c8.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -1296,7 +1296,7 @@
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Returns the internal source ID.
     </span><span class="kw">pub fn </span>as_raw(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a> {
-        <a class="self" href="#26">self</a>.<span class="number">0</span>.get()
+        <a class="self" href="#26">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/num/nonzero/struct.NonZero.html#method.get">get</a>()
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
@@ -1310,7 +1310,7 @@
                 ffi::g_source_remove(<span class="self">self</span>.as_raw()),
                 <span class="string">"Failed to remove source"
             </span>)
-            .unwrap()
+            .<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>()
         }
     }
 }
@@ -1320,7 +1320,7 @@
     <span class="attr">#[inline]
     </span><span class="kw">unsafe fn </span>from_glib(val: <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>) -&gt; <span class="self">Self </span>{
         <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert_ne.html">debug_assert_ne!</a>(val, <span class="number">0</span>);
-        <span class="self">Self</span>(NonZeroU32::new_unchecked(<a href="#49">val</a>))
+        <span class="self">Self</span>(<a href="https://doc.rust-lang.org/nightly/core/num/nonzero/struct.NonZero.html#method.new_unchecked">NonZeroU32::new_unchecked</a>(<a href="#49">val</a>))
     }
 }
 
@@ -1355,14 +1355,14 @@
     func: gpointer,
 ) -&gt; gboolean {
     <span class="kw">let </span>func: <span class="kw-2">&amp;</span>RefCell&lt;F&gt; = <span class="kw-2">&amp;*</span>(<a href="#83">func</a> <span class="kw">as </span><span class="kw-2">*const </span>RefCell&lt;F&gt;);
-    (<span class="kw-2">*</span><a href="#85">func</a>.borrow_mut())().<a href="translate.rs.html#333">into_glib</a>()
+    (<span class="kw-2">*</span><a href="#85">func</a>.<a href="https://doc.rust-lang.org/nightly/core/cell/struct.RefCell.html#method.borrow_mut">borrow_mut</a>())().<a href="translate.rs.html#333">into_glib</a>()
 }
 
 <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>trampoline_local&lt;F: FnMut() -&gt; <a href="control_flow.rs.html#14-17">ControlFlow</a> + <span class="lifetime">'static</span>&gt;(
     func: gpointer,
 ) -&gt; gboolean {
     <span class="kw">let </span>func: <span class="kw-2">&amp;</span>ThreadGuard&lt;RefCell&lt;F&gt;&gt; = <span class="kw-2">&amp;*</span>(<a href="#90">func</a> <span class="kw">as </span><span class="kw-2">*const </span>ThreadGuard&lt;RefCell&lt;F&gt;&gt;);
-    (<span class="kw-2">*</span><a href="#92">func</a>.<a href="thread_guard.rs.html#53-60">get_ref</a>().borrow_mut())().<a href="translate.rs.html#333">into_glib</a>()
+    (<span class="kw-2">*</span><a href="#92">func</a>.<a href="thread_guard.rs.html#53-60">get_ref</a>().<a href="https://doc.rust-lang.org/nightly/core/cell/struct.RefCell.html#method.borrow_mut">borrow_mut</a>())().<a href="translate.rs.html#333">into_glib</a>()
 }
 
 <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>destroy_closure&lt;F: FnMut() -&gt; <a href="control_flow.rs.html#14-17">ControlFlow</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static</span>&gt;(ptr: gpointer) {
@@ -1374,13 +1374,13 @@
 }
 
 <span class="kw">fn </span>into_raw&lt;F: FnMut() -&gt; <a href="control_flow.rs.html#14-17">ControlFlow</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static</span>&gt;(func: F) -&gt; gpointer {
-    <span class="kw">let </span>func: Box&lt;RefCell&lt;F&gt;&gt; = Box::new(RefCell::new(<a href="#104">func</a>));
-    Box::into_raw(<a href="#105">func</a>) <span class="kw">as </span>gpointer
+    <span class="kw">let </span>func: Box&lt;RefCell&lt;F&gt;&gt; = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">Box::new</a>(<a href="https://doc.rust-lang.org/nightly/core/cell/struct.RefCell.html#method.new">RefCell::new</a>(<a href="#104">func</a>));
+    <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.into_raw">Box::into_raw</a>(<a href="#105">func</a>) <span class="kw">as </span>gpointer
 }
 
 <span class="kw">fn </span>into_raw_local&lt;F: FnMut() -&gt; <a href="control_flow.rs.html#14-17">ControlFlow</a> + <span class="lifetime">'static</span>&gt;(func: F) -&gt; gpointer {
-    <span class="kw">let </span>func: Box&lt;ThreadGuard&lt;RefCell&lt;F&gt;&gt;&gt; = Box::new(<a href="thread_guard.rs.html#38-43">ThreadGuard::new</a>(RefCell::new(<a href="#109">func</a>)));
-    Box::into_raw(<a href="#110">func</a>) <span class="kw">as </span>gpointer
+    <span class="kw">let </span>func: Box&lt;ThreadGuard&lt;RefCell&lt;F&gt;&gt;&gt; = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">Box::new</a>(<a href="thread_guard.rs.html#38-43">ThreadGuard::new</a>(<a href="https://doc.rust-lang.org/nightly/core/cell/struct.RefCell.html#method.new">RefCell::new</a>(<a href="#109">func</a>)));
+    <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.into_raw">Box::into_raw</a>(<a href="#110">func</a>) <span class="kw">as </span>gpointer
 }
 
 <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>trampoline_child_watch&lt;F: FnMut(<a href="#59">Pid</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>) + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static</span>&gt;(
@@ -1389,7 +1389,7 @@
     func: gpointer,
 ) {
     <span class="kw">let </span>func: <span class="kw-2">&amp;</span>RefCell&lt;F&gt; = <span class="kw-2">&amp;*</span>(<a href="#117">func</a> <span class="kw">as </span><span class="kw-2">*const </span>RefCell&lt;F&gt;);
-    (<span class="kw-2">*</span><a href="#119">func</a>.borrow_mut())(<a href="#59">Pid</a>(<a href="#115">pid</a>), <a href="#116">status</a>)
+    (<span class="kw-2">*</span><a href="#119">func</a>.<a href="https://doc.rust-lang.org/nightly/core/cell/struct.RefCell.html#method.borrow_mut">borrow_mut</a>())(<a href="#59">Pid</a>(<a href="#115">pid</a>), <a href="#116">status</a>)
 }
 
 <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>trampoline_child_watch_local&lt;F: FnMut(<a href="#59">Pid</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>) + <span class="lifetime">'static</span>&gt;(
@@ -1398,7 +1398,7 @@
     func: gpointer,
 ) {
     <span class="kw">let </span>func: <span class="kw-2">&amp;</span>ThreadGuard&lt;RefCell&lt;F&gt;&gt; = <span class="kw-2">&amp;*</span>(<a href="#126">func</a> <span class="kw">as </span><span class="kw-2">*const </span>ThreadGuard&lt;RefCell&lt;F&gt;&gt;);
-    (<span class="kw-2">*</span><a href="#128">func</a>.<a href="thread_guard.rs.html#53-60">get_ref</a>().borrow_mut())(<a href="#59">Pid</a>(<a href="#124">pid</a>), <a href="#125">status</a>)
+    (<span class="kw-2">*</span><a href="#128">func</a>.<a href="thread_guard.rs.html#53-60">get_ref</a>().<a href="https://doc.rust-lang.org/nightly/core/cell/struct.RefCell.html#method.borrow_mut">borrow_mut</a>())(<a href="#59">Pid</a>(<a href="#124">pid</a>), <a href="#125">status</a>)
 }
 
 <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>destroy_closure_child_watch&lt;F: FnMut(<a href="#59">Pid</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>) + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static</span>&gt;(
@@ -1414,13 +1414,13 @@
 }
 
 <span class="kw">fn </span>into_raw_child_watch&lt;F: FnMut(<a href="#59">Pid</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>) + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static</span>&gt;(func: F) -&gt; gpointer {
-    <span class="kw">let </span>func: Box&lt;RefCell&lt;F&gt;&gt; = Box::new(RefCell::new(<a href="#144">func</a>));
-    Box::into_raw(<a href="#145">func</a>) <span class="kw">as </span>gpointer
+    <span class="kw">let </span>func: Box&lt;RefCell&lt;F&gt;&gt; = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">Box::new</a>(<a href="https://doc.rust-lang.org/nightly/core/cell/struct.RefCell.html#method.new">RefCell::new</a>(<a href="#144">func</a>));
+    <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.into_raw">Box::into_raw</a>(<a href="#145">func</a>) <span class="kw">as </span>gpointer
 }
 
 <span class="kw">fn </span>into_raw_child_watch_local&lt;F: FnMut(<a href="#59">Pid</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>) + <span class="lifetime">'static</span>&gt;(func: F) -&gt; gpointer {
-    <span class="kw">let </span>func: Box&lt;ThreadGuard&lt;RefCell&lt;F&gt;&gt;&gt; = Box::new(<a href="thread_guard.rs.html#38-43">ThreadGuard::new</a>(RefCell::new(<a href="#149">func</a>)));
-    Box::into_raw(<a href="#150">func</a>) <span class="kw">as </span>gpointer
+    <span class="kw">let </span>func: Box&lt;ThreadGuard&lt;RefCell&lt;F&gt;&gt;&gt; = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">Box::new</a>(<a href="thread_guard.rs.html#38-43">ThreadGuard::new</a>(<a href="https://doc.rust-lang.org/nightly/core/cell/struct.RefCell.html#method.new">RefCell::new</a>(<a href="#149">func</a>)));
+    <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.into_raw">Box::into_raw</a>(<a href="#150">func</a>) <span class="kw">as </span>gpointer
 }
 
 <span class="attr">#[cfg(unix)]
@@ -1433,7 +1433,7 @@
     func: gpointer,
 ) -&gt; gboolean {
     <span class="kw">let </span>func: <span class="kw-2">&amp;</span>RefCell&lt;F&gt; = <span class="kw-2">&amp;*</span>(<a href="#161">func</a> <span class="kw">as </span><span class="kw-2">*const </span>RefCell&lt;F&gt;);
-    (<span class="kw-2">*</span><a href="#163">func</a>.borrow_mut())(<a href="#159">fd</a>, <a href="translate.rs.html#1416-1418">from_glib</a>(<a href="#160">condition</a>)).<a href="translate.rs.html#333">into_glib</a>()
+    (<span class="kw-2">*</span><a href="#163">func</a>.<a href="https://doc.rust-lang.org/nightly/core/cell/struct.RefCell.html#method.borrow_mut">borrow_mut</a>())(<a href="#159">fd</a>, <a href="translate.rs.html#1416-1418">from_glib</a>(<a href="#160">condition</a>)).<a href="translate.rs.html#333">into_glib</a>()
 }
 
 <span class="attr">#[cfg(unix)]
@@ -1446,7 +1446,7 @@
     func: gpointer,
 ) -&gt; gboolean {
     <span class="kw">let </span>func: <span class="kw-2">&amp;</span>ThreadGuard&lt;RefCell&lt;F&gt;&gt; = <span class="kw-2">&amp;*</span>(<a href="#174">func</a> <span class="kw">as </span><span class="kw-2">*const </span>ThreadGuard&lt;RefCell&lt;F&gt;&gt;);
-    (<span class="kw-2">*</span><a href="#176">func</a>.<a href="thread_guard.rs.html#53-60">get_ref</a>().borrow_mut())(<a href="#172">fd</a>, <a href="translate.rs.html#1416-1418">from_glib</a>(<a href="#173">condition</a>)).<a href="translate.rs.html#333">into_glib</a>()
+    (<span class="kw-2">*</span><a href="#176">func</a>.<a href="thread_guard.rs.html#53-60">get_ref</a>().<a href="https://doc.rust-lang.org/nightly/core/cell/struct.RefCell.html#method.borrow_mut">borrow_mut</a>())(<a href="#172">fd</a>, <a href="translate.rs.html#1416-1418">from_glib</a>(<a href="#173">condition</a>)).<a href="translate.rs.html#333">into_glib</a>()
 }
 
 <span class="attr">#[cfg(unix)]
@@ -1474,8 +1474,8 @@
 </span><span class="kw">fn </span>into_raw_unix_fd&lt;F: FnMut(<a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/type.RawFd.html">RawFd</a>, <a href="auto/flags.rs.html#165-191">IOCondition</a>) -&gt; <a href="control_flow.rs.html#14-17">ControlFlow</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static</span>&gt;(
     func: F,
 ) -&gt; gpointer {
-    <span class="kw">let </span>func: Box&lt;RefCell&lt;F&gt;&gt; = Box::new(RefCell::new(<a href="#203">func</a>));
-    Box::into_raw(<a href="#205">func</a>) <span class="kw">as </span>gpointer
+    <span class="kw">let </span>func: Box&lt;RefCell&lt;F&gt;&gt; = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">Box::new</a>(<a href="https://doc.rust-lang.org/nightly/core/cell/struct.RefCell.html#method.new">RefCell::new</a>(<a href="#203">func</a>));
+    <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.into_raw">Box::into_raw</a>(<a href="#205">func</a>) <span class="kw">as </span>gpointer
 }
 
 <span class="attr">#[cfg(unix)]
@@ -1483,8 +1483,8 @@
 </span><span class="kw">fn </span>into_raw_unix_fd_local&lt;F: FnMut(<a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/type.RawFd.html">RawFd</a>, <a href="auto/flags.rs.html#165-191">IOCondition</a>) -&gt; <a href="control_flow.rs.html#14-17">ControlFlow</a> + <span class="lifetime">'static</span>&gt;(
     func: F,
 ) -&gt; gpointer {
-    <span class="kw">let </span>func: Box&lt;ThreadGuard&lt;RefCell&lt;F&gt;&gt;&gt; = Box::new(<a href="thread_guard.rs.html#38-43">ThreadGuard::new</a>(RefCell::new(<a href="#212">func</a>)));
-    Box::into_raw(<a href="#214">func</a>) <span class="kw">as </span>gpointer
+    <span class="kw">let </span>func: Box&lt;ThreadGuard&lt;RefCell&lt;F&gt;&gt;&gt; = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">Box::new</a>(<a href="thread_guard.rs.html#38-43">ThreadGuard::new</a>(<a href="https://doc.rust-lang.org/nightly/core/cell/struct.RefCell.html#method.new">RefCell::new</a>(<a href="#212">func</a>)));
+    <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.into_raw">Box::into_raw</a>(<a href="#214">func</a>) <span class="kw">as </span>gpointer
 }
 
 <span class="comment">// rustdoc-stripper-ignore-next
@@ -1499,8 +1499,8 @@
     <span class="kw">let </span><span class="kw-2">mut </span>func = <span class="prelude-val">Some</span>(<a href="#225">func</a>);
     <span class="kw">move </span>|| {
         <span class="kw">let </span>func = <a href="#227">func</a>
-            .take()
-            .expect(<span class="string">"GSource closure called after returning ControlFlow::Break"</span>);
+            .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.take">take</a>()
+            .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.expect">expect</a>(<span class="string">"GSource closure called after returning ControlFlow::Break"</span>);
         <a href="#229">func</a>();
         <a href="control_flow.rs.html#16">ControlFlow::Break</a>
     }
@@ -1521,8 +1521,8 @@
     <span class="kw">let </span><span class="kw-2">mut </span>func = <span class="prelude-val">Some</span>(<a href="#247">func</a>);
     <span class="kw">move </span>|| {
         <span class="kw">let </span>func = <a href="#249">func</a>
-            .take()
-            .expect(<span class="string">"GSource closure called after returning glib::ControlFlow::Break"</span>);
+            .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.take">take</a>()
+            .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.expect">expect</a>(<span class="string">"GSource closure called after returning glib::ControlFlow::Break"</span>);
         <a href="#251">func</a>();
         <a href="control_flow.rs.html#16">ControlFlow::Break</a>
     }
@@ -1614,7 +1614,7 @@
         <span class="kw">let </span>context = <a href="auto/main_context.rs.html#216-218">MainContext::default</a>();
         <span class="kw">let </span>_acquire = <a href="#342">context</a>
             .<a href="main_context.rs.html#239-248">acquire</a>()
-            .expect(<span class="string">"default main context already acquired by another thread"</span>);
+            .<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.expect">expect</a>(<span class="string">"default main context already acquired by another thread"</span>);
         <a href="translate.rs.html#1416-1418">from_glib</a>(ffi::g_idle_add_full(
             ffi::G_PRIORITY_DEFAULT_IDLE,
             <span class="prelude-val">Some</span>(trampoline_local::&lt;F&gt;),
@@ -1647,7 +1647,7 @@
         <span class="kw">let </span>context = <a href="auto/main_context.rs.html#216-218">MainContext::default</a>();
         <span class="kw">let </span>_acquire = <a href="#375">context</a>
             .<a href="main_context.rs.html#239-248">acquire</a>()
-            .expect(<span class="string">"default main context already acquired by another thread"</span>);
+            .<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.expect">expect</a>(<span class="string">"default main context already acquired by another thread"</span>);
         <a href="translate.rs.html#1416-1418">from_glib</a>(ffi::g_idle_add_full(
             <a href="#370">priority</a>.<a href="translate.rs.html#333">into_glib</a>(),
             <span class="prelude-val">Some</span>(trampoline_local::&lt;F&gt;),
@@ -1700,7 +1700,7 @@
     <span class="kw">unsafe </span>{
         <a href="translate.rs.html#1416-1418">from_glib</a>(ffi::g_timeout_add_full(
             ffi::G_PRIORITY_DEFAULT,
-            <a href="#424">interval</a>.as_millis() <span class="kw">as _</span>,
+            <a href="#424">interval</a>.<a href="https://doc.rust-lang.org/nightly/core/time/struct.Duration.html#method.as_millis">as_millis</a>() <span class="kw">as _</span>,
             <span class="prelude-val">Some</span>(trampoline::&lt;F&gt;),
             <a href="#104-107">into_raw</a>(<a href="#424">func</a>),
             <span class="prelude-val">Some</span>(destroy_closure::&lt;F&gt;),
@@ -1727,7 +1727,7 @@
     <span class="kw">unsafe </span>{
         <a href="translate.rs.html#1416-1418">from_glib</a>(ffi::g_timeout_add_full(
             <a href="#451">priority</a>.<a href="translate.rs.html#333">into_glib</a>(),
-            <a href="#451">interval</a>.as_millis() <span class="kw">as _</span>,
+            <a href="#451">interval</a>.<a href="https://doc.rust-lang.org/nightly/core/time/struct.Duration.html#method.as_millis">as_millis</a>() <span class="kw">as _</span>,
             <span class="prelude-val">Some</span>(trampoline::&lt;F&gt;),
             <a href="#104-107">into_raw</a>(<a href="#451">func</a>),
             <span class="prelude-val">Some</span>(destroy_closure::&lt;F&gt;),
@@ -1784,10 +1784,10 @@
         <span class="kw">let </span>context = <a href="auto/main_context.rs.html#216-218">MainContext::default</a>();
         <span class="kw">let </span>_acquire = <a href="#512">context</a>
             .<a href="main_context.rs.html#239-248">acquire</a>()
-            .expect(<span class="string">"default main context already acquired by another thread"</span>);
+            .<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.expect">expect</a>(<span class="string">"default main context already acquired by another thread"</span>);
         <a href="translate.rs.html#1416-1418">from_glib</a>(ffi::g_timeout_add_full(
             ffi::G_PRIORITY_DEFAULT,
-            <a href="#507">interval</a>.as_millis() <span class="kw">as _</span>,
+            <a href="#507">interval</a>.<a href="https://doc.rust-lang.org/nightly/core/time/struct.Duration.html#method.as_millis">as_millis</a>() <span class="kw">as _</span>,
             <span class="prelude-val">Some</span>(trampoline_local::&lt;F&gt;),
             <a href="#109-112">into_raw_local</a>(<a href="#507">func</a>),
             <span class="prelude-val">Some</span>(destroy_closure_local::&lt;F&gt;),
@@ -1821,10 +1821,10 @@
         <span class="kw">let </span>context = <a href="auto/main_context.rs.html#216-218">MainContext::default</a>();
         <span class="kw">let </span>_acquire = <a href="#549">context</a>
             .<a href="main_context.rs.html#239-248">acquire</a>()
-            .expect(<span class="string">"default main context already acquired by another thread"</span>);
+            .<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.expect">expect</a>(<span class="string">"default main context already acquired by another thread"</span>);
         <a href="translate.rs.html#1416-1418">from_glib</a>(ffi::g_timeout_add_full(
             <a href="#544">priority</a>.<a href="translate.rs.html#333">into_glib</a>(),
-            <a href="#544">interval</a>.as_millis() <span class="kw">as _</span>,
+            <a href="#544">interval</a>.<a href="https://doc.rust-lang.org/nightly/core/time/struct.Duration.html#method.as_millis">as_millis</a>() <span class="kw">as _</span>,
             <span class="prelude-val">Some</span>(trampoline_local::&lt;F&gt;),
             <a href="#109-112">into_raw_local</a>(<a href="#544">func</a>),
             <span class="prelude-val">Some</span>(destroy_closure_local::&lt;F&gt;),
@@ -1932,7 +1932,7 @@
         <span class="kw">let </span>context = <a href="auto/main_context.rs.html#216-218">MainContext::default</a>();
         <span class="kw">let </span>_acquire = <a href="#660">context</a>
             .<a href="main_context.rs.html#239-248">acquire</a>()
-            .expect(<span class="string">"default main context already acquired by another thread"</span>);
+            .<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.expect">expect</a>(<span class="string">"default main context already acquired by another thread"</span>);
         <a href="translate.rs.html#1416-1418">from_glib</a>(ffi::g_timeout_add_seconds_full(
             ffi::G_PRIORITY_DEFAULT,
             <a href="#655">interval</a>,
@@ -2011,7 +2011,7 @@
         <span class="kw">let </span>context = <a href="auto/main_context.rs.html#216-218">MainContext::default</a>();
         <span class="kw">let </span>_acquire = <a href="#739">context</a>
             .<a href="main_context.rs.html#239-248">acquire</a>()
-            .expect(<span class="string">"default main context already acquired by another thread"</span>);
+            .<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.expect">expect</a>(<span class="string">"default main context already acquired by another thread"</span>);
         <a href="translate.rs.html#1416-1418">from_glib</a>(ffi::g_child_watch_add_full(
             ffi::G_PRIORITY_DEFAULT,
             <a href="#734">pid</a>.<span class="number">0</span>,
@@ -2094,7 +2094,7 @@
         <span class="kw">let </span>context = <a href="auto/main_context.rs.html#216-218">MainContext::default</a>();
         <span class="kw">let </span>_acquire = <a href="#822">context</a>
             .<a href="main_context.rs.html#239-248">acquire</a>()
-            .expect(<span class="string">"default main context already acquired by another thread"</span>);
+            .<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.expect">expect</a>(<span class="string">"default main context already acquired by another thread"</span>);
         <a href="translate.rs.html#1416-1418">from_glib</a>(ffi::g_unix_signal_add_full(
             ffi::G_PRIORITY_DEFAULT,
             <a href="#817">signum</a>,
@@ -2186,7 +2186,7 @@
         <span class="kw">let </span>context = <a href="auto/main_context.rs.html#216-218">MainContext::default</a>();
         <span class="kw">let </span>_acquire = <a href="#914">context</a>
             .<a href="main_context.rs.html#239-248">acquire</a>()
-            .expect(<span class="string">"default main context already acquired by another thread"</span>);
+            .<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.expect">expect</a>(<span class="string">"default main context already acquired by another thread"</span>);
         <a href="translate.rs.html#1416-1418">from_glib</a>(ffi::g_unix_fd_add_full(
             ffi::G_PRIORITY_DEFAULT,
             <a href="#909">fd</a>,
@@ -2236,7 +2236,7 @@
 </span><span class="kw">impl </span>FromGlib&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>&gt; <span class="kw">for </span><a href="#932">Priority</a> {
     <span class="attr">#[inline]
     </span><span class="kw">unsafe fn </span>from_glib(val: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>) -&gt; <span class="self">Self </span>{
-        <a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html"><span class="self">Self</span>::from</a>(<a href="#966">val</a>)
+        <a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html#tymethod.from"><span class="self">Self</span>::from</a>(<a href="#966">val</a>)
     }
 }
 
@@ -2292,7 +2292,7 @@
     </span>F: FnMut() -&gt; <a href="control_flow.rs.html#14-17">ControlFlow</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static</span>,
 {
     <span class="kw">unsafe </span>{
-        <span class="kw">let </span>source = ffi::g_timeout_source_new(<a href="#1014">interval</a>.as_millis() <span class="kw">as _</span>);
+        <span class="kw">let </span>source = ffi::g_timeout_source_new(<a href="#1014">interval</a>.<a href="https://doc.rust-lang.org/nightly/core/time/struct.Duration.html#method.as_millis">as_millis</a>() <span class="kw">as _</span>);
         ffi::g_source_set_callback(
             <a href="#1023">source</a>,
             <span class="prelude-val">Some</span>(trampoline::&lt;F&gt;),

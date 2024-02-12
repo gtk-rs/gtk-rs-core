@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gdk-pixbuf/src/subclass/pixbuf_animation_iter.rs`."><title>pixbuf_animation_iter.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-5bc39a1768837dd0.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gdk_pixbuf" data-themes="" data-resource-suffix="" data-rustdoc-version="1.78.0-nightly (f067fd608 2024-02-05)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-48f368f3872407c8.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gdk-pixbuf/src/subclass/pixbuf_animation_iter.rs`."><title>pixbuf_animation_iter.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-5bc39a1768837dd0.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gdk_pixbuf" data-themes="" data-resource-suffix="" data-rustdoc-version="1.78.0-nightly (1a648b397 2024-02-11)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-48f368f3872407c8.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -441,20 +441,20 @@
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>data = <a href="../../../gdk_pixbuf/subclass/prelude/trait.ObjectSubclassType.html"><span class="self">Self</span>::type_data</a>();
             <span class="kw">let </span>parent_class =
-                <a href="#113">data</a>.as_ref().parent_class() <span class="kw">as </span><span class="kw-2">*mut </span><a href="../../../gdk_pixbuf_sys/struct.GdkPixbufAnimationIterClass.html">ffi::GdkPixbufAnimationIterClass</a>;
+                <a href="#113">data</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().<a href="../../../glib/subclass/types/struct.TypeData.html#method.parent_class">parent_class</a>() <span class="kw">as </span><span class="kw-2">*mut </span><a href="../../../gdk_pixbuf_sys/struct.GdkPixbufAnimationIterClass.html">ffi::GdkPixbufAnimationIterClass</a>;
             <span class="kw">let </span>f = (<span class="kw-2">*</span><a href="#114">parent_class</a>)
                 .get_delay_time
-                .expect(<span class="string">"No parent class implementation for \"get_delay_time\""</span>);
+                .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.expect">expect</a>(<span class="string">"No parent class implementation for \"get_delay_time\""</span>);
 
             <span class="kw">let </span>time = <a href="#116">f</a>(<span class="self"><a href="#111">self</a>
                 </span>.<a href="../../../gdk_pixbuf/subclass/prelude/trait.ObjectSubclassExt.html">obj</a>()
-                .<a href="../../../glib/object/trait.Cast.html">unsafe_cast_ref</a>::&lt;<a href="../pixbuf_animation_iter.rs.html#9-18">PixbufAnimationIter</a>&gt;()
-                .<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>()
+                .<a href="../../../glib/object/trait.Cast.html#tymethod.unsafe_cast_ref">unsafe_cast_ref</a>::&lt;<a href="../pixbuf_animation_iter.rs.html#9-18">PixbufAnimationIter</a>&gt;()
+                .<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>()
                 .<span class="number">0</span>);
             <span class="kw">if </span>time &lt; <span class="number">0 </span>{
                 <span class="prelude-val">None
             </span>} <span class="kw">else </span>{
-                <span class="prelude-val">Some</span>(Duration::from_millis(<a href="#120">time</a> <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a>))
+                <span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/core/time/struct.Duration.html#method.from_millis">Duration::from_millis</a>(<a href="#120">time</a> <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a>))
             }
         }
     }
@@ -463,15 +463,15 @@
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>data = <a href="../../../gdk_pixbuf/subclass/prelude/trait.ObjectSubclassType.html"><span class="self">Self</span>::type_data</a>();
             <span class="kw">let </span>parent_class =
-                <a href="#135">data</a>.as_ref().parent_class() <span class="kw">as </span><span class="kw-2">*mut </span><a href="../../../gdk_pixbuf_sys/struct.GdkPixbufAnimationIterClass.html">ffi::GdkPixbufAnimationIterClass</a>;
+                <a href="#135">data</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().<a href="../../../glib/subclass/types/struct.TypeData.html#method.parent_class">parent_class</a>() <span class="kw">as </span><span class="kw-2">*mut </span><a href="../../../gdk_pixbuf_sys/struct.GdkPixbufAnimationIterClass.html">ffi::GdkPixbufAnimationIterClass</a>;
             <span class="kw">let </span>f = (<span class="kw-2">*</span><a href="#136">parent_class</a>)
                 .get_pixbuf
-                .expect(<span class="string">"No parent class implementation for \"get_pixbuf\""</span>);
+                .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.expect">expect</a>(<span class="string">"No parent class implementation for \"get_pixbuf\""</span>);
 
-            from_glib_none(<a href="#138">f</a>(<span class="self"><a href="#133">self</a>
+            <a href="../../../glib/translate/fn.from_glib_none.html">from_glib_none</a>(<a href="#138">f</a>(<span class="self"><a href="#133">self</a>
                 </span>.<a href="../../../gdk_pixbuf/subclass/prelude/trait.ObjectSubclassExt.html">obj</a>()
-                .<a href="../../../glib/object/trait.Cast.html">unsafe_cast_ref</a>::&lt;<a href="../pixbuf_animation_iter.rs.html#9-18">PixbufAnimationIter</a>&gt;()
-                .<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>()
+                .<a href="../../../glib/object/trait.Cast.html#tymethod.unsafe_cast_ref">unsafe_cast_ref</a>::&lt;<a href="../pixbuf_animation_iter.rs.html#9-18">PixbufAnimationIter</a>&gt;()
+                .<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>()
                 .<span class="number">0</span>))
         }
     }
@@ -480,15 +480,15 @@
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>data = <a href="../../../gdk_pixbuf/subclass/prelude/trait.ObjectSubclassType.html"><span class="self">Self</span>::type_data</a>();
             <span class="kw">let </span>parent_class =
-                <a href="#152">data</a>.as_ref().parent_class() <span class="kw">as </span><span class="kw-2">*mut </span><a href="../../../gdk_pixbuf_sys/struct.GdkPixbufAnimationIterClass.html">ffi::GdkPixbufAnimationIterClass</a>;
+                <a href="#152">data</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().<a href="../../../glib/subclass/types/struct.TypeData.html#method.parent_class">parent_class</a>() <span class="kw">as </span><span class="kw-2">*mut </span><a href="../../../gdk_pixbuf_sys/struct.GdkPixbufAnimationIterClass.html">ffi::GdkPixbufAnimationIterClass</a>;
             <span class="kw">let </span>f = (<span class="kw-2">*</span><a href="#153">parent_class</a>)
                 .on_currently_loading_frame
-                .expect(<span class="string">"No parent class implementation for \"on_currently_loading_frame\""</span>);
+                .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.expect">expect</a>(<span class="string">"No parent class implementation for \"on_currently_loading_frame\""</span>);
 
-            from_glib(<a href="#155">f</a>(<span class="self"><a href="#150">self</a>
+            <a href="../../../glib/translate/fn.from_glib.html">from_glib</a>(<a href="#155">f</a>(<span class="self"><a href="#150">self</a>
                 </span>.<a href="../../../gdk_pixbuf/subclass/prelude/trait.ObjectSubclassExt.html">obj</a>()
-                .<a href="../../../glib/object/trait.Cast.html">unsafe_cast_ref</a>::&lt;<a href="../pixbuf_animation_iter.rs.html#9-18">PixbufAnimationIter</a>&gt;()
-                .<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>()
+                .<a href="../../../glib/object/trait.Cast.html#tymethod.unsafe_cast_ref">unsafe_cast_ref</a>::&lt;<a href="../pixbuf_animation_iter.rs.html#9-18">PixbufAnimationIter</a>&gt;()
+                .<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>()
                 .<span class="number">0</span>))
         }
     }
@@ -497,22 +497,22 @@
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>data = <a href="../../../gdk_pixbuf/subclass/prelude/trait.ObjectSubclassType.html"><span class="self">Self</span>::type_data</a>();
             <span class="kw">let </span>parent_class =
-                <a href="#169">data</a>.as_ref().parent_class() <span class="kw">as </span><span class="kw-2">*mut </span><a href="../../../gdk_pixbuf_sys/struct.GdkPixbufAnimationIterClass.html">ffi::GdkPixbufAnimationIterClass</a>;
+                <a href="#169">data</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().<a href="../../../glib/subclass/types/struct.TypeData.html#method.parent_class">parent_class</a>() <span class="kw">as </span><span class="kw-2">*mut </span><a href="../../../gdk_pixbuf_sys/struct.GdkPixbufAnimationIterClass.html">ffi::GdkPixbufAnimationIterClass</a>;
             <span class="kw">let </span>f = (<span class="kw-2">*</span><a href="#170">parent_class</a>)
                 .advance
-                .expect(<span class="string">"No parent class implementation for \"advance\""</span>);
+                .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.expect">expect</a>(<span class="string">"No parent class implementation for \"advance\""</span>);
 
             <span class="kw">let </span>diff = <a href="#167">current_time</a>
-                .duration_since(SystemTime::UNIX_EPOCH)
-                .expect(<span class="string">"failed to convert time"</span>);
+                .<a href="https://doc.rust-lang.org/nightly/std/time/struct.SystemTime.html#method.duration_since">duration_since</a>(SystemTime::UNIX_EPOCH)
+                .<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.expect">expect</a>(<span class="string">"failed to convert time"</span>);
             <span class="kw">let </span>time = <a href="../../../glib_sys/struct.GTimeVal.html">glib::ffi::GTimeVal</a> {
-                tv_sec: <a href="#176">diff</a>.as_secs() <span class="kw">as _</span>,
-                tv_usec: <a href="#176">diff</a>.subsec_micros() <span class="kw">as _</span>,
+                tv_sec: <a href="#176">diff</a>.<a href="https://doc.rust-lang.org/nightly/core/time/struct.Duration.html#method.as_secs">as_secs</a>() <span class="kw">as _</span>,
+                tv_usec: <a href="#176">diff</a>.<a href="https://doc.rust-lang.org/nightly/core/time/struct.Duration.html#method.subsec_micros">subsec_micros</a>() <span class="kw">as _</span>,
             };
-            from_glib(<a href="#172">f</a>(
+            <a href="../../../glib/translate/fn.from_glib.html">from_glib</a>(<a href="#172">f</a>(
                 <a class="self" href="#167">self</a>.<a href="../../../gdk_pixbuf/subclass/prelude/trait.ObjectSubclassExt.html">obj</a>()
-                    .<a href="../../../glib/object/trait.Cast.html">unsafe_cast_ref</a>::&lt;<a href="../pixbuf_animation_iter.rs.html#9-18">PixbufAnimationIter</a>&gt;()
-                    .<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>()
+                    .<a href="../../../glib/object/trait.Cast.html#tymethod.unsafe_cast_ref">unsafe_cast_ref</a>::&lt;<a href="../pixbuf_animation_iter.rs.html#9-18">PixbufAnimationIter</a>&gt;()
+                    .<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>()
                     .<span class="number">0</span>,
                 <span class="kw-2">&amp;</span><a href="#179">time</a>,
             ))
@@ -526,7 +526,7 @@
     <span class="kw">fn </span>class_init(class: <span class="kw-2">&amp;mut </span>::glib::Class&lt;<span class="self">Self</span>&gt;) {
         <span class="self">Self</span>::parent_class_init::&lt;T&gt;(<a href="#197">class</a>);
 
-        <span class="kw">let </span>klass = <a href="#197">class</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsMut.html">as_mut</a>();
+        <span class="kw">let </span>klass = <a href="#197">class</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsMut.html#tymethod.as_mut">as_mut</a>();
         <a href="#200">klass</a>.get_delay_time = <span class="prelude-val">Some</span>(animation_iter_get_delay_time::&lt;T&gt;);
         <a href="#200">klass</a>.get_pixbuf = <span class="prelude-val">Some</span>(animation_iter_get_pixbuf::&lt;T&gt;);
         <a href="#200">klass</a>.on_currently_loading_frame = <span class="prelude-val">Some</span>(animation_iter_on_currently_loading_frame::&lt;T&gt;);
@@ -540,7 +540,7 @@
     <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(<a href="#209">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
     <span class="kw">let </span>imp = <a href="#211">instance</a>.<a href="../../../gdk_pixbuf/subclass/prelude/trait.InstanceStructExt.html">imp</a>();
 
-    <a href="#212">imp</a>.<a href="#32-34">delay_time</a>().map(|t| <a href="#214">t</a>.as_millis() <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>).unwrap_or(-<span class="number">1</span>)
+    <a href="#212">imp</a>.<a href="#32-34">delay_time</a>().<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|t| <a href="#214">t</a>.<a href="https://doc.rust-lang.org/nightly/core/time/struct.Duration.html#method.as_millis">as_millis</a>() <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap_or">unwrap_or</a>(-<span class="number">1</span>)
 }
 
 <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>animation_iter_get_pixbuf&lt;T: <a href="#15-103">PixbufAnimationIterImpl</a>&gt;(
@@ -552,11 +552,11 @@
     <span class="kw">let </span>pixbuf = <a href="#221">imp</a>.<a href="#55-57">pixbuf</a>();
     <span class="comment">// Ensure that the pixbuf stays alive until the next call
     </span><span class="kw">let </span>pixbuf_quark = {
-        <span class="kw">static </span>QUARK: OnceLock&lt;<a href="../../../glib/quark/struct.Quark.html">glib::Quark</a>&gt; = OnceLock::new();
-        <span class="kw-2">*</span><a href="#226">QUARK</a>.get_or_init(|| glib::Quark::from_str(<span class="string">"gtk-rs-subclass-pixbuf"</span>))
+        <span class="kw">static </span>QUARK: OnceLock&lt;<a href="../../../glib/quark/struct.Quark.html">glib::Quark</a>&gt; = <a href="https://doc.rust-lang.org/nightly/std/sync/once_lock/struct.OnceLock.html#method.new">OnceLock::new</a>();
+        <span class="kw-2">*</span><a href="#226">QUARK</a>.<a href="https://doc.rust-lang.org/nightly/std/sync/once_lock/struct.OnceLock.html#method.get_or_init">get_or_init</a>(|| <a href="../../../glib/quark/struct.Quark.html#method.from_str">glib::Quark::from_str</a>(<span class="string">"gtk-rs-subclass-pixbuf"</span>))
     };
-    <a href="#221">imp</a>.<a href="../../../gdk_pixbuf/subclass/prelude/trait.ObjectSubclassExt.html">obj</a>().<a href="../../../glib/object/trait.ObjectExt.html">set_qdata</a>(<a href="#225">pixbuf_quark</a>, <a href="#223">pixbuf</a>.<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">clone</a>());
-    <a href="#223">pixbuf</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0
+    <a href="#221">imp</a>.<a href="../../../gdk_pixbuf/subclass/prelude/trait.ObjectSubclassExt.html">obj</a>().<a href="../../../glib/object/trait.ObjectExt.html#tymethod.set_qdata">set_qdata</a>(<a href="#225">pixbuf_quark</a>, <a href="#223">pixbuf</a>.<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">clone</a>());
+    <a href="#223">pixbuf</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0
 </span>}
 
 <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>animation_iter_on_currently_loading_frame&lt;T: <a href="#15-103">PixbufAnimationIterImpl</a>&gt;(
@@ -565,7 +565,7 @@
     <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(<a href="#234">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
     <span class="kw">let </span>imp = <a href="#236">instance</a>.<a href="../../../gdk_pixbuf/subclass/prelude/trait.InstanceStructExt.html">imp</a>();
 
-    <a href="#237">imp</a>.<a href="#69-71">on_currently_loading_frame</a>().<a href="../../../glib/translate/trait.IntoGlib.html">into_glib</a>()
+    <a href="#237">imp</a>.<a href="#69-71">on_currently_loading_frame</a>().<a href="../../../glib/translate/trait.IntoGlib.html#tymethod.into_glib">into_glib</a>()
 }
 
 <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>animation_iter_advance&lt;T: <a href="#15-103">PixbufAnimationIterImpl</a>&gt;(
@@ -576,9 +576,9 @@
     <span class="kw">let </span>imp = <a href="#246">instance</a>.<a href="../../../gdk_pixbuf/subclass/prelude/trait.InstanceStructExt.html">imp</a>();
 
     <span class="kw">let </span>current_time = SystemTime::UNIX_EPOCH
-        + Duration::from_secs((<span class="kw-2">*</span><a href="#244">current_time_ptr</a>).tv_sec.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.TryInto.html">try_into</a>().unwrap())
-        + Duration::from_micros((<span class="kw-2">*</span><a href="#244">current_time_ptr</a>).tv_usec.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.TryInto.html">try_into</a>().unwrap());
+        + <a href="https://doc.rust-lang.org/nightly/core/time/struct.Duration.html#method.from_secs">Duration::from_secs</a>((<span class="kw-2">*</span><a href="#244">current_time_ptr</a>).tv_sec.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.TryInto.html#tymethod.try_into">try_into</a>().<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>())
+        + <a href="https://doc.rust-lang.org/nightly/core/time/struct.Duration.html#method.from_micros">Duration::from_micros</a>((<span class="kw-2">*</span><a href="#244">current_time_ptr</a>).tv_usec.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.TryInto.html#tymethod.try_into">try_into</a>().<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>());
 
-    <a href="#247">imp</a>.<a href="#100-102">advance</a>(<a href="#249">current_time</a>).<a href="../../../glib/translate/trait.IntoGlib.html">into_glib</a>()
+    <a href="#247">imp</a>.<a href="#100-102">advance</a>(<a href="#249">current_time</a>).<a href="../../../glib/translate/trait.IntoGlib.html#tymethod.into_glib">into_glib</a>()
 }
 </code></pre></div></section></main></body></html>

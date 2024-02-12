@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `cairo/src/paths.rs`."><title>paths.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-5bc39a1768837dd0.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="cairo" data-themes="" data-resource-suffix="" data-rustdoc-version="1.78.0-nightly (f067fd608 2024-02-05)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-48f368f3872407c8.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `cairo/src/paths.rs`."><title>paths.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-5bc39a1768837dd0.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="cairo" data-themes="" data-resource-suffix="" data-rustdoc-version="1.78.0-nightly (1a648b397 2024-02-11)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-48f368f3872407c8.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -299,13 +299,13 @@
 <span class="kw">impl </span><a href="#8">Path</a> {
     <span class="attr">#[inline]
     </span><span class="kw">pub fn </span>as_ptr(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.cairo_path_t.html">cairo_path_t</a> {
-        <a class="self" href="#12">self</a>.<span class="number">0</span>.as_ptr()
+        <a class="self" href="#12">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>()
     }
 
     <span class="attr">#[inline]
     </span><span class="kw">pub unsafe fn </span>from_raw_full(pointer: <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.cairo_path_t.html">cairo_path_t</a>) -&gt; <a href="#8">Path</a> {
         <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert.html">debug_assert!</a>(!pointer.is_null());
-        <a href="#8">Path</a>(ptr::NonNull::new_unchecked(<a href="#17">pointer</a>))
+        <a href="#8">Path</a>(<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.new_unchecked">ptr::NonNull::new_unchecked</a>(<a href="#17">pointer</a>))
     }
 
     <span class="kw">pub fn </span>iter(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="#61-65">PathSegments</a> {
@@ -334,7 +334,7 @@
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
         <span class="kw">unsafe </span>{
-            ffi::cairo_path_destroy(<a class="self" href="#46">self</a>.<a href="#12-14">as_ptr</a>());
+            <a href="../../cairo_sys/fn.cairo_path_destroy.html">ffi::cairo_path_destroy</a>(<a class="self" href="#46">self</a>.<a href="#12-14">as_ptr</a>());
         }
     }
 }
@@ -362,7 +362,7 @@
         }
 
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>res = <span class="kw">match </span><a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html">PathDataType::from</a>(<a class="self" href="#70">self</a>.data[<a class="self" href="#70">self</a>.i].header.data_type) {
+            <span class="kw">let </span>res = <span class="kw">match </span><a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html#tymethod.from">PathDataType::from</a>(<a class="self" href="#70">self</a>.data[<a class="self" href="#70">self</a>.i].header.data_type) {
                 <a href="enums.rs.html#390">PathDataType::MoveTo</a> =&gt; <a href="#55">PathSegment::MoveTo</a>(<a href="#97-99">to_tuple</a>(<span class="kw-2">&amp;</span><a class="self" href="#70">self</a>.data[<a class="self" href="#70">self</a>.i + <span class="number">1</span>].point)),
                 <a href="enums.rs.html#392">PathDataType::LineTo</a> =&gt; <a href="#56">PathSegment::LineTo</a>(<a href="#97-99">to_tuple</a>(<span class="kw-2">&amp;</span><a class="self" href="#70">self</a>.data[<a class="self" href="#70">self</a>.i + <span class="number">1</span>].point)),
                 <a href="enums.rs.html#394">PathDataType::CurveTo</a> =&gt; <a href="#57">PathSegment::CurveTo</a>(

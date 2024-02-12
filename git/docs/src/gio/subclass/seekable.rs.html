@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/subclass/seekable.rs`."><title>seekable.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-5bc39a1768837dd0.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.78.0-nightly (f067fd608 2024-02-05)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-48f368f3872407c8.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/subclass/seekable.rs`."><title>seekable.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-5bc39a1768837dd0.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.78.0-nightly (1a648b397 2024-02-11)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-48f368f3872407c8.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -319,28 +319,28 @@
 <span class="kw">pub trait </span><a href="../../../gio/subclass/prelude/trait.SeekableImplExt.html">SeekableImplExt</a>: <a href="#23">sealed::Sealed</a> + <a href="../../../glib/subclass/types/trait.ObjectSubclass.html">ObjectSubclass</a> {
     <span class="kw">fn </span>parent_tell(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.i64.html">i64</a> {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>type_data = <a href="../../../glib/subclass/types/trait.ObjectSubclassType.html"><span class="self">Self</span>::type_data</a>();
+            <span class="kw">let </span>type_data = <a href="../../../glib/subclass/types/trait.ObjectSubclassType.html#tymethod.type_data"><span class="self">Self</span>::type_data</a>();
             <span class="kw">let </span>parent_iface =
-                <a href="#30">type_data</a>.as_ref().parent_interface::&lt;<a href="../auto/seekable.rs.html#8-33">Seekable</a>&gt;() <span class="kw">as </span><span class="kw-2">*const </span><a href="../../../gio_sys/struct.GSeekableIface.html">ffi::GSeekableIface</a>;
+                <a href="#30">type_data</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().<a href="../../../glib/subclass/types/struct.TypeData.html#method.parent_interface">parent_interface</a>::&lt;<a href="../auto/seekable.rs.html#8-33">Seekable</a>&gt;() <span class="kw">as </span><span class="kw-2">*const </span><a href="../../../gio_sys/struct.GSeekableIface.html">ffi::GSeekableIface</a>;
 
             <span class="kw">let </span>func = (<span class="kw-2">*</span><a href="#31">parent_iface</a>)
                 .tell
-                .expect(<span class="string">"no parent \"tell\" implementation"</span>);
-            <a href="#34">func</a>(<a class="self" href="#28">self</a>.<a href="../../../glib/subclass/types/trait.ObjectSubclassExt.html">obj</a>().<a href="../../../glib/object/trait.Cast.html">unsafe_cast_ref</a>::&lt;<a href="../auto/seekable.rs.html#8-33">Seekable</a>&gt;().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>)
+                .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.expect">expect</a>(<span class="string">"no parent \"tell\" implementation"</span>);
+            <a href="#34">func</a>(<a class="self" href="#28">self</a>.<a href="../../../glib/subclass/types/trait.ObjectSubclassExt.html#tymethod.obj">obj</a>().<a href="../../../glib/object/trait.Cast.html#tymethod.unsafe_cast_ref">unsafe_cast_ref</a>::&lt;<a href="../auto/seekable.rs.html#8-33">Seekable</a>&gt;().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>)
         }
     }
 
     <span class="kw">fn </span>parent_can_seek(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>type_data = <a href="../../../glib/subclass/types/trait.ObjectSubclassType.html"><span class="self">Self</span>::type_data</a>();
+            <span class="kw">let </span>type_data = <a href="../../../glib/subclass/types/trait.ObjectSubclassType.html#tymethod.type_data"><span class="self">Self</span>::type_data</a>();
             <span class="kw">let </span>parent_iface =
-                <a href="#43">type_data</a>.as_ref().parent_interface::&lt;<a href="../auto/seekable.rs.html#8-33">Seekable</a>&gt;() <span class="kw">as </span><span class="kw-2">*const </span><a href="../../../gio_sys/struct.GSeekableIface.html">ffi::GSeekableIface</a>;
+                <a href="#43">type_data</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().<a href="../../../glib/subclass/types/struct.TypeData.html#method.parent_interface">parent_interface</a>::&lt;<a href="../auto/seekable.rs.html#8-33">Seekable</a>&gt;() <span class="kw">as </span><span class="kw-2">*const </span><a href="../../../gio_sys/struct.GSeekableIface.html">ffi::GSeekableIface</a>;
 
             <span class="kw">let </span>func = (<span class="kw-2">*</span><a href="#44">parent_iface</a>)
                 .can_seek
-                .expect(<span class="string">"no parent \"can_seek\" implementation"</span>);
-            <span class="kw">let </span>ret = <a href="#47">func</a>(<a class="self" href="#41">self</a>.<a href="../../../glib/subclass/types/trait.ObjectSubclassExt.html">obj</a>().<a href="../../../glib/object/trait.Cast.html">unsafe_cast_ref</a>::&lt;<a href="../auto/seekable.rs.html#8-33">Seekable</a>&gt;().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>);
-            from_glib(<a href="#50">ret</a>)
+                .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.expect">expect</a>(<span class="string">"no parent \"can_seek\" implementation"</span>);
+            <span class="kw">let </span>ret = <a href="#47">func</a>(<a class="self" href="#41">self</a>.<a href="../../../glib/subclass/types/trait.ObjectSubclassExt.html#tymethod.obj">obj</a>().<a href="../../../glib/object/trait.Cast.html#tymethod.unsafe_cast_ref">unsafe_cast_ref</a>::&lt;<a href="../auto/seekable.rs.html#8-33">Seekable</a>&gt;().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>);
+            <a href="../../../glib/translate/fn.from_glib.html">from_glib</a>(<a href="#50">ret</a>)
         }
     }
 
@@ -351,67 +351,67 @@
         cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="../auto/cancellable.rs.html#7-85">Cancellable</a>&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="../../../glib/error/struct.Error.html">Error</a>&gt; {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>type_data = <a href="../../../glib/subclass/types/trait.ObjectSubclassType.html"><span class="self">Self</span>::type_data</a>();
+            <span class="kw">let </span>type_data = <a href="../../../glib/subclass/types/trait.ObjectSubclassType.html#tymethod.type_data"><span class="self">Self</span>::type_data</a>();
             <span class="kw">let </span>parent_iface =
-                <a href="#62">type_data</a>.as_ref().parent_interface::&lt;<a href="../auto/seekable.rs.html#8-33">Seekable</a>&gt;() <span class="kw">as </span><span class="kw-2">*const </span><a href="../../../gio_sys/struct.GSeekableIface.html">ffi::GSeekableIface</a>;
+                <a href="#62">type_data</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().<a href="../../../glib/subclass/types/struct.TypeData.html#method.parent_interface">parent_interface</a>::&lt;<a href="../auto/seekable.rs.html#8-33">Seekable</a>&gt;() <span class="kw">as </span><span class="kw-2">*const </span><a href="../../../gio_sys/struct.GSeekableIface.html">ffi::GSeekableIface</a>;
 
             <span class="kw">let </span>func = (<span class="kw-2">*</span><a href="#63">parent_iface</a>)
                 .seek
-                .expect(<span class="string">"no parent \"seek\" implementation"</span>);
+                .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.expect">expect</a>(<span class="string">"no parent \"seek\" implementation"</span>);
 
-            <span class="kw">let </span><span class="kw-2">mut </span>err = ptr::null_mut();
+            <span class="kw">let </span><span class="kw-2">mut </span>err = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
             <a href="#66">func</a>(
-                <a class="self" href="#56">self</a>.<a href="../../../glib/subclass/types/trait.ObjectSubclassExt.html">obj</a>().<a href="../../../glib/object/trait.Cast.html">unsafe_cast_ref</a>::&lt;<a href="../auto/seekable.rs.html#8-33">Seekable</a>&gt;().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a class="self" href="#56">self</a>.<a href="../../../glib/subclass/types/trait.ObjectSubclassExt.html#tymethod.obj">obj</a>().<a href="../../../glib/object/trait.Cast.html#tymethod.unsafe_cast_ref">unsafe_cast_ref</a>::&lt;<a href="../auto/seekable.rs.html#8-33">Seekable</a>&gt;().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
                 <a href="#57">offset</a>,
-                <a href="#58">type_</a>.<a href="../../../glib/translate/trait.IntoGlib.html">into_glib</a>(),
-                <a href="#59">cancellable</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#58">type_</a>.<a href="../../../glib/translate/trait.IntoGlib.html#tymethod.into_glib">into_glib</a>(),
+                <a href="#59">cancellable</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
                 <span class="kw-2">&amp;mut </span><a href="#70">err</a>,
             );
 
             <span class="kw">if </span>err.is_null() {
                 <span class="prelude-val">Ok</span>(())
             } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(from_glib_full(<a href="#70">err</a>))
+                <span class="prelude-val">Err</span>(<a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#70">err</a>))
             }
         }
     }
 
     <span class="kw">fn </span>parent_can_truncate(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>type_data = <a href="../../../glib/subclass/types/trait.ObjectSubclassType.html"><span class="self">Self</span>::type_data</a>();
+            <span class="kw">let </span>type_data = <a href="../../../glib/subclass/types/trait.ObjectSubclassType.html#tymethod.type_data"><span class="self">Self</span>::type_data</a>();
             <span class="kw">let </span>parent_iface =
-                <a href="#89">type_data</a>.as_ref().parent_interface::&lt;<a href="../auto/seekable.rs.html#8-33">Seekable</a>&gt;() <span class="kw">as </span><span class="kw-2">*const </span><a href="../../../gio_sys/struct.GSeekableIface.html">ffi::GSeekableIface</a>;
+                <a href="#89">type_data</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().<a href="../../../glib/subclass/types/struct.TypeData.html#method.parent_interface">parent_interface</a>::&lt;<a href="../auto/seekable.rs.html#8-33">Seekable</a>&gt;() <span class="kw">as </span><span class="kw-2">*const </span><a href="../../../gio_sys/struct.GSeekableIface.html">ffi::GSeekableIface</a>;
 
             <span class="kw">let </span>func = (<span class="kw-2">*</span><a href="#90">parent_iface</a>)
                 .can_truncate
-                .expect(<span class="string">"no parent \"can_truncate\" implementation"</span>);
-            <span class="kw">let </span>ret = <a href="#93">func</a>(<a class="self" href="#87">self</a>.<a href="../../../glib/subclass/types/trait.ObjectSubclassExt.html">obj</a>().<a href="../../../glib/object/trait.Cast.html">unsafe_cast_ref</a>::&lt;<a href="../auto/seekable.rs.html#8-33">Seekable</a>&gt;().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>);
-            from_glib(<a href="#96">ret</a>)
+                .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.expect">expect</a>(<span class="string">"no parent \"can_truncate\" implementation"</span>);
+            <span class="kw">let </span>ret = <a href="#93">func</a>(<a class="self" href="#87">self</a>.<a href="../../../glib/subclass/types/trait.ObjectSubclassExt.html#tymethod.obj">obj</a>().<a href="../../../glib/object/trait.Cast.html#tymethod.unsafe_cast_ref">unsafe_cast_ref</a>::&lt;<a href="../auto/seekable.rs.html#8-33">Seekable</a>&gt;().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>);
+            <a href="../../../glib/translate/fn.from_glib.html">from_glib</a>(<a href="#96">ret</a>)
         }
     }
 
     <span class="kw">fn </span>parent_truncate(<span class="kw-2">&amp;</span><span class="self">self</span>, offset: <a href="https://doc.rust-lang.org/nightly/std/primitive.i64.html">i64</a>, cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="../auto/cancellable.rs.html#7-85">Cancellable</a>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="../../../glib/error/struct.Error.html">Error</a>&gt; {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>type_data = <a href="../../../glib/subclass/types/trait.ObjectSubclassType.html"><span class="self">Self</span>::type_data</a>();
+            <span class="kw">let </span>type_data = <a href="../../../glib/subclass/types/trait.ObjectSubclassType.html#tymethod.type_data"><span class="self">Self</span>::type_data</a>();
             <span class="kw">let </span>parent_iface =
-                <a href="#103">type_data</a>.as_ref().parent_interface::&lt;<a href="../auto/seekable.rs.html#8-33">Seekable</a>&gt;() <span class="kw">as </span><span class="kw-2">*const </span><a href="../../../gio_sys/struct.GSeekableIface.html">ffi::GSeekableIface</a>;
+                <a href="#103">type_data</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().<a href="../../../glib/subclass/types/struct.TypeData.html#method.parent_interface">parent_interface</a>::&lt;<a href="../auto/seekable.rs.html#8-33">Seekable</a>&gt;() <span class="kw">as </span><span class="kw-2">*const </span><a href="../../../gio_sys/struct.GSeekableIface.html">ffi::GSeekableIface</a>;
 
             <span class="kw">let </span>func = (<span class="kw-2">*</span><a href="#104">parent_iface</a>)
                 .truncate_fn
-                .expect(<span class="string">"no parent \"truncate\" implementation"</span>);
+                .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.expect">expect</a>(<span class="string">"no parent \"truncate\" implementation"</span>);
 
-            <span class="kw">let </span><span class="kw-2">mut </span>err = ptr::null_mut();
+            <span class="kw">let </span><span class="kw-2">mut </span>err = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
             <a href="#107">func</a>(
-                <a class="self" href="#101">self</a>.<a href="../../../glib/subclass/types/trait.ObjectSubclassExt.html">obj</a>().<a href="../../../glib/object/trait.Cast.html">unsafe_cast_ref</a>::&lt;<a href="../auto/seekable.rs.html#8-33">Seekable</a>&gt;().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a class="self" href="#101">self</a>.<a href="../../../glib/subclass/types/trait.ObjectSubclassExt.html#tymethod.obj">obj</a>().<a href="../../../glib/object/trait.Cast.html#tymethod.unsafe_cast_ref">unsafe_cast_ref</a>::&lt;<a href="../auto/seekable.rs.html#8-33">Seekable</a>&gt;().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
                 <a href="#101">offset</a>,
-                <a href="#101">cancellable</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#101">cancellable</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
                 <span class="kw-2">&amp;mut </span><a href="#111">err</a>,
             );
 
             <span class="kw">if </span>err.is_null() {
                 <span class="prelude-val">Ok</span>(())
             } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(from_glib_full(<a href="#111">err</a>))
+                <span class="prelude-val">Err</span>(<a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#111">err</a>))
             }
         }
     }
@@ -421,7 +421,7 @@
 
 <span class="kw">unsafe impl</span>&lt;T: <a href="#9-20">SeekableImpl</a>&gt; IsImplementable&lt;T&gt; <span class="kw">for </span><a href="../auto/seekable.rs.html#8-33">Seekable</a> {
     <span class="kw">fn </span>interface_init(iface: <span class="kw-2">&amp;mut </span>glib::Interface&lt;<span class="self">Self</span>&gt;) {
-        <span class="kw">let </span>iface = <a href="#131">iface</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsMut.html">as_mut</a>();
+        <span class="kw">let </span>iface = <a href="#131">iface</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsMut.html#tymethod.as_mut">as_mut</a>();
 
         <a href="#132">iface</a>.tell = <span class="prelude-val">Some</span>(seekable_tell::&lt;T&gt;);
         <a href="#132">iface</a>.can_seek = <span class="prelude-val">Some</span>(seekable_can_seek::&lt;T&gt;);
@@ -433,7 +433,7 @@
 
 <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>seekable_tell&lt;T: <a href="#9-20">SeekableImpl</a>&gt;(seekable: <span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GSeekable.html">ffi::GSeekable</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.i64.html">i64</a> {
     <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(<a href="#142">seekable</a> <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
-    <span class="kw">let </span>imp = <a href="#143">instance</a>.<a href="../../../glib/subclass/types/trait.InstanceStructExt.html">imp</a>();
+    <span class="kw">let </span>imp = <a href="#143">instance</a>.<a href="../../../glib/subclass/types/trait.InstanceStructExt.html#tymethod.imp">imp</a>();
 
     <a href="#144">imp</a>.<a href="#10">tell</a>()
 }
@@ -442,9 +442,9 @@
     seekable: <span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GSeekable.html">ffi::GSeekable</a>,
 ) -&gt; <a href="../../../glib_sys/type.gboolean.html">glib::ffi::gboolean</a> {
     <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(<a href="#150">seekable</a> <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
-    <span class="kw">let </span>imp = <a href="#152">instance</a>.<a href="../../../glib/subclass/types/trait.InstanceStructExt.html">imp</a>();
+    <span class="kw">let </span>imp = <a href="#152">instance</a>.<a href="../../../glib/subclass/types/trait.InstanceStructExt.html#tymethod.imp">imp</a>();
 
-    <a href="#153">imp</a>.<a href="#11">can_seek</a>().<a href="../../../glib/translate/trait.IntoGlib.html">into_glib</a>()
+    <a href="#153">imp</a>.<a href="#11">can_seek</a>().<a href="../../../glib/translate/trait.IntoGlib.html#tymethod.into_glib">into_glib</a>()
 }
 
 <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>seekable_seek&lt;T: <a href="#9-20">SeekableImpl</a>&gt;(
@@ -455,21 +455,21 @@
     err: <span class="kw-2">*mut *mut </span><a href="../../../glib_sys/struct.GError.html">glib::ffi::GError</a>,
 ) -&gt; <a href="../../../glib_sys/type.gboolean.html">glib::ffi::gboolean</a> {
     <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(<a href="#159">seekable</a> <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
-    <span class="kw">let </span>imp = <a href="#165">instance</a>.<a href="../../../glib/subclass/types/trait.InstanceStructExt.html">imp</a>();
+    <span class="kw">let </span>imp = <a href="#165">instance</a>.<a href="../../../glib/subclass/types/trait.InstanceStructExt.html#tymethod.imp">imp</a>();
 
     <span class="kw">match </span><a href="#166">imp</a>.<a href="#12-17">seek</a>(
         <a href="#160">offset</a>,
-        from_glib(<a href="#161">type_</a>),
+        <a href="../../../glib/translate/fn.from_glib.html">from_glib</a>(<a href="#161">type_</a>),
         <span class="prelude-ty">Option</span>::&lt;<a href="../auto/cancellable.rs.html#7-85">Cancellable</a>&gt;::from_glib_borrow(<a href="#162">cancellable</a>)
-            .<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>()
-            .as_ref(),
+            .<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>()
+            .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_ref">as_ref</a>(),
     ) {
-        <span class="prelude-val">Ok</span>(()) =&gt; glib::ffi::GTRUE,
+        <span class="prelude-val">Ok</span>(()) =&gt; <a href="../../../glib_sys/constant.GTRUE.html">glib::ffi::GTRUE</a>,
         <span class="prelude-val">Err</span>(e) =&gt; {
             <span class="kw">if </span>!err.is_null() {
-                <span class="kw-2">*</span><a href="#163">err</a> = <a href="#176">e</a>.<a href="../../../glib/translate/trait.IntoGlibPtr.html">into_glib_ptr</a>();
+                <span class="kw-2">*</span><a href="#163">err</a> = <a href="#176">e</a>.<a href="../../../glib/translate/trait.IntoGlibPtr.html#tymethod.into_glib_ptr">into_glib_ptr</a>();
             }
-            glib::ffi::GFALSE
+            <a href="../../../glib_sys/constant.GFALSE.html">glib::ffi::GFALSE</a>
         }
     }
 }
@@ -478,9 +478,9 @@
     seekable: <span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GSeekable.html">ffi::GSeekable</a>,
 ) -&gt; <a href="../../../glib_sys/type.gboolean.html">glib::ffi::gboolean</a> {
     <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(<a href="#186">seekable</a> <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
-    <span class="kw">let </span>imp = <a href="#188">instance</a>.<a href="../../../glib/subclass/types/trait.InstanceStructExt.html">imp</a>();
+    <span class="kw">let </span>imp = <a href="#188">instance</a>.<a href="../../../glib/subclass/types/trait.InstanceStructExt.html#tymethod.imp">imp</a>();
 
-    <a href="#189">imp</a>.<a href="#18">can_truncate</a>().<a href="../../../glib/translate/trait.IntoGlib.html">into_glib</a>()
+    <a href="#189">imp</a>.<a href="#18">can_truncate</a>().<a href="../../../glib/translate/trait.IntoGlib.html#tymethod.into_glib">into_glib</a>()
 }
 
 <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>seekable_truncate&lt;T: <a href="#9-20">SeekableImpl</a>&gt;(
@@ -490,20 +490,20 @@
     err: <span class="kw-2">*mut *mut </span><a href="../../../glib_sys/struct.GError.html">glib::ffi::GError</a>,
 ) -&gt; <a href="../../../glib_sys/type.gboolean.html">glib::ffi::gboolean</a> {
     <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(<a href="#195">seekable</a> <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
-    <span class="kw">let </span>imp = <a href="#200">instance</a>.<a href="../../../glib/subclass/types/trait.InstanceStructExt.html">imp</a>();
+    <span class="kw">let </span>imp = <a href="#200">instance</a>.<a href="../../../glib/subclass/types/trait.InstanceStructExt.html#tymethod.imp">imp</a>();
 
     <span class="kw">match </span><a href="#201">imp</a>.<a href="#19">truncate</a>(
         <a href="#196">offset</a>,
         <span class="prelude-ty">Option</span>::&lt;<a href="../auto/cancellable.rs.html#7-85">Cancellable</a>&gt;::from_glib_borrow(<a href="#197">cancellable</a>)
-            .<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>()
-            .as_ref(),
+            .<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>()
+            .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_ref">as_ref</a>(),
     ) {
-        <span class="prelude-val">Ok</span>(()) =&gt; glib::ffi::GTRUE,
+        <span class="prelude-val">Ok</span>(()) =&gt; <a href="../../../glib_sys/constant.GTRUE.html">glib::ffi::GTRUE</a>,
         <span class="prelude-val">Err</span>(e) =&gt; {
             <span class="kw">if </span>!err.is_null() {
-                <span class="kw-2">*</span><a href="#198">err</a> = <a href="#210">e</a>.<a href="../../../glib/translate/trait.IntoGlibPtr.html">into_glib_ptr</a>();
+                <span class="kw-2">*</span><a href="#198">err</a> = <a href="#210">e</a>.<a href="../../../glib/translate/trait.IntoGlibPtr.html#tymethod.into_glib_ptr">into_glib_ptr</a>();
             }
-            glib::ffi::GFALSE
+            <a href="../../../glib_sys/constant.GFALSE.html">glib::ffi::GFALSE</a>
         }
     }
 }
