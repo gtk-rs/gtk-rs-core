@@ -72,7 +72,7 @@
 
 
 <nav class="mobile-topbar"><button class="sidebar-menu-toggle" title="show sidebar"></button></nav><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../glib/index.html">glib</a><span class="version">0.20.0</span></h2></div><div class="sidebar-elems"></div></nav><div class="sidebar-resizer"></div>
-    <main><div class="width-limiter"><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../glib/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="main-heading"><h1>Function <a href="index.html">glib</a>::<wbr><a class="fn" href="#">unsetenv</a><button id="copy-path" title="Copy item path to clipboard"><img src="../static.files/clipboard-7571035ce49a181d.svg" width="19" height="18" alt="Copy item path"></button></h1><span class="out-of-band"><a class="src" href="../src/glib/auto/functions.rs.html#2015-2019">source</a> · <button id="toggle-all-docs" title="collapse all docs">[<span>&#x2212;</span>]</button></span></div><pre class="rust item-decl"><code>pub fn unsetenv(variable: impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html" title="trait core::convert::AsRef">AsRef</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/std/ffi/os_str/struct.OsStr.html" title="struct std::ffi::os_str::OsStr">OsStr</a>&gt;)</code></pre><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>Removes an environment variable from the environment.</p>
+    <main><div class="width-limiter"><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../glib/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="main-heading"><h1>Function <a href="index.html">glib</a>::<wbr><a class="fn" href="#">unsetenv</a><button id="copy-path" title="Copy item path to clipboard"><img src="../static.files/clipboard-7571035ce49a181d.svg" width="19" height="18" alt="Copy item path"></button></h1><span class="out-of-band"><a class="src" href="../src/glib/auto/functions.rs.html#2507-2511">source</a> · <button id="toggle-all-docs" title="collapse all docs">[<span>&#x2212;</span>]</button></span></div><pre class="rust item-decl"><code>pub fn unsetenv(variable: impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html" title="trait core::convert::AsRef">AsRef</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/std/ffi/os_str/struct.OsStr.html" title="struct std::ffi::os_str::OsStr">OsStr</a>&gt;)</code></pre><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>Removes an environment variable from the environment.</p>
 <p>Note that on some systems, when variables are overwritten, the
 memory used for the previous variables and its value isn’t reclaimed.</p>
 <p>You should be mindful of the fact that environment variable handling
@@ -87,23 +87,6 @@ use g_get_environ() to get an environment array, modify that with
 g_environ_setenv() and g_environ_unsetenv(), and then pass that
 array directly to execvpe(), g_spawn_async(), or the like.</p>
 <h3 id="variable"><a class="doc-anchor" href="#variable">§</a><code>variable</code></h3>
-<p>the environment variable to remove, must
-not contain ‘=’
-Removes an environment variable from the environment.</p>
-<p>Note that on some systems, when variables are overwritten, the
-memory used for the previous variables and its value isn’t reclaimed.</p>
-<p>You should be mindful of the fact that environment variable handling
-in UNIX is not thread-safe, and your program may crash if one thread
-calls g_unsetenv() while another thread is calling getenv(). (And note
-that many functions, such as gettext(), call getenv() internally.) This
-function is only safe to use at the very start of your program, before
-creating any other threads (or creating objects that create worker
-threads of their own).</p>
-<p>If you need to set up the environment for a child process, you can
-use g_get_environ() to get an environment array, modify that with
-g_environ_setenv() and g_environ_unsetenv(), and then pass that
-array directly to execvpe(), g_spawn_async(), or the like.</p>
-<h3 id="variable-1"><a class="doc-anchor" href="#variable-1">§</a><code>variable</code></h3>
 <p>the environment variable to remove, must
 not contain ‘=’</p>
 </div></details></section></div></main></body></html>
