@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/initable.rs`."><title>initable.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-5bc39a1768837dd0.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.78.0-nightly (b11fbfbf3 2024-02-03)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-48f368f3872407c8.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/initable.rs`."><title>initable.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-5bc39a1768837dd0.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.78.0-nightly (b381d3ab2 2024-02-12)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-48f368f3872407c8.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -233,7 +233,7 @@
 <a href="#158" id="158">158</a>
 </pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
-</span><span class="kw">use </span>std::marker::PhantomData;
+</span><span class="kw">use </span><a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">std::marker::PhantomData</a>;
 
 <span class="kw">use </span>glib::{<a href="../../glib/object/trait.IsClass.html">object::IsClass</a>, <a href="../../glib/prelude/index.html">prelude</a>::<span class="kw-2">*</span>, <a href="../../glib/object/struct.Object.html">Object</a>, <a href="../../glib/types/struct.Type.html">Type</a>};
 
@@ -266,8 +266,8 @@
     </span><span class="kw">pub fn </span>new&lt;T: IsA&lt;<a href="../../glib/object/struct.Object.html">Object</a>&gt; + <a href="../../glib/object/trait.IsClass.html">IsClass</a> + IsA&lt;<a href="auto/initable.rs.html#8-43">Initable</a>&gt;&gt;(
         cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="auto/cancellable.rs.html#7-85">Cancellable</a>&gt;&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;T, <a href="../../glib/error/struct.Error.html">glib::Error</a>&gt; {
-        <span class="kw">let </span>object = <a href="#46-59"><span class="self">Self</span>::with_type</a>(<a href="../../glib/types/trait.StaticType.html">T::static_type</a>(), <a href="#34">cancellable</a>)<span class="question-mark">?</span>;
-        <span class="prelude-val">Ok</span>(<span class="kw">unsafe </span>{ <a href="#36">object</a>.<a href="../../glib/object/trait.Cast.html">unsafe_cast</a>() })
+        <span class="kw">let </span>object = <a href="#46-59"><span class="self">Self</span>::with_type</a>(<a href="../../glib/types/trait.StaticType.html#tymethod.static_type">T::static_type</a>(), <a href="#34">cancellable</a>)<span class="question-mark">?</span>;
+        <span class="prelude-val">Ok</span>(<span class="kw">unsafe </span>{ <a href="#36">object</a>.<a href="../../glib/object/trait.Cast.html#tymethod.unsafe_cast">unsafe_cast</a>() })
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
@@ -285,8 +285,8 @@
         }
 
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>object = Object::new_internal(<a href="#47">type_</a>, <span class="kw-2">&amp;mut </span>[]);
-            <a href="#55">object</a>.<a href="../../glib/object/trait.Cast.html">unsafe_cast_ref</a>::&lt;<span class="self">Self</span>&gt;().<a href="auto/initable.rs.html#106-119">init</a>(<a href="#48">cancellable</a>)<span class="question-mark">?</span>;
+            <span class="kw">let </span>object = <a href="../../glib/object/struct.Object.html#method.new_internal">Object::new_internal</a>(<a href="#47">type_</a>, <span class="kw-2">&amp;mut </span>[]);
+            <a href="#55">object</a>.<a href="../../glib/object/trait.Cast.html#tymethod.unsafe_cast_ref">unsafe_cast_ref</a>::&lt;<span class="self">Self</span>&gt;().<a href="auto/initable.rs.html#106-119">init</a>(<a href="#48">cancellable</a>)<span class="question-mark">?</span>;
             <span class="prelude-val">Ok</span>(<a href="#55">object</a>)
         }
     }
@@ -310,8 +310,8 @@
         }
 
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>object = Object::new_internal(<a href="#71">type_</a>, <a href="#72">properties</a>);
-            <a href="#80">object</a>.<a href="../../glib/object/trait.Cast.html">unsafe_cast_ref</a>::&lt;<span class="self">Self</span>&gt;().<a href="auto/initable.rs.html#106-119">init</a>(<a href="#73">cancellable</a>)<span class="question-mark">?</span>;
+            <span class="kw">let </span>object = <a href="../../glib/object/struct.Object.html#method.new_internal">Object::new_internal</a>(<a href="#71">type_</a>, <a href="#72">properties</a>);
+            <a href="#80">object</a>.<a href="../../glib/object/trait.Cast.html#tymethod.unsafe_cast_ref">unsafe_cast_ref</a>::&lt;<span class="self">Self</span>&gt;().<a href="auto/initable.rs.html#106-119">init</a>(<a href="#73">cancellable</a>)<span class="question-mark">?</span>;
             <span class="prelude-val">Ok</span>(<a href="#80">object</a>)
         }
     }
@@ -319,7 +319,7 @@
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Create a new object builder for a specific type.
     </span><span class="kw">pub fn </span>builder&lt;<span class="lifetime">'a</span>, O: IsA&lt;<a href="../../glib/object/struct.Object.html">Object</a>&gt; + <a href="../../glib/object/trait.IsClass.html">IsClass</a> + IsA&lt;<a href="auto/initable.rs.html#8-43">Initable</a>&gt;&gt;() -&gt; InitableBuilder&lt;<span class="lifetime">'a</span>, O&gt; {
-        <a href="#112-118">InitableBuilder::new</a>(<a href="../../glib/types/trait.StaticType.html">O::static_type</a>())
+        <a href="#112-118">InitableBuilder::new</a>(<a href="../../glib/types/trait.StaticType.html#tymethod.static_type">O::static_type</a>())
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
@@ -346,7 +346,7 @@
         <a href="#104-108">InitableBuilder</a> {
             <a href="#112">type_</a>,
             properties: smallvec::SmallVec::new(),
-            phantom: PhantomData,
+            phantom: <a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">PhantomData</a>,
         }
     }
 
@@ -366,12 +366,12 @@
             <span class="kw-2">mut </span>properties,
             ..
         } = <a class="self" href="#130">self</a>;
-        <a href="#133">properties</a>.push((<a href="#130">name</a>, <a href="#130">value</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html">into</a>()));
+        <a href="#133">properties</a>.push((<a href="#130">name</a>, <a href="#130">value</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>()));
 
         <a href="#104-108">InitableBuilder</a> {
             <a href="#132">type_</a>,
             <a href="#133">properties</a>,
-            phantom: PhantomData,
+            phantom: <a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">PhantomData</a>,
         }
     }
 
@@ -386,7 +386,7 @@
     #[inline]
     </span><span class="kw">pub fn </span>build(<span class="kw-2">mut </span><span class="self">self</span>, cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="auto/cancellable.rs.html#7-85">Cancellable</a>&gt;&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;O, <a href="../../glib/error/struct.Error.html">glib::Error</a>&gt; {
         <span class="kw">let </span>object = <a href="#70-84">Initable::with_mut_values</a>(<a class="self" href="#154">self</a>.type_, <span class="kw-2">&amp;mut </span><a class="self" href="#154">self</a>.properties, <a href="#154">cancellable</a>)<span class="question-mark">?</span>;
-        <span class="prelude-val">Ok</span>(<span class="kw">unsafe </span>{ <a href="#155">object</a>.<a href="../../glib/object/trait.Cast.html">unsafe_cast</a>::&lt;O&gt;() })
+        <span class="prelude-val">Ok</span>(<span class="kw">unsafe </span>{ <a href="#155">object</a>.<a href="../../glib/object/trait.Cast.html#tymethod.unsafe_cast">unsafe_cast</a>::&lt;O&gt;() })
     }
 }
 </code></pre></div></section></main></body></html>

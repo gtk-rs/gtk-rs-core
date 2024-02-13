@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/subclass/action_map.rs`."><title>action_map.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-5bc39a1768837dd0.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.78.0-nightly (b11fbfbf3 2024-02-03)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-48f368f3872407c8.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/subclass/action_map.rs`."><title>action_map.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-5bc39a1768837dd0.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.78.0-nightly (b381d3ab2 2024-02-12)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-48f368f3872407c8.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -231,49 +231,49 @@
 <span class="kw">pub trait </span><a href="../../../gio/subclass/prelude/trait.ActionMapImplExt.html">ActionMapImplExt</a>: <a href="#16">sealed::Sealed</a> + <a href="../../../glib/subclass/types/trait.ObjectSubclass.html">ObjectSubclass</a> {
     <span class="kw">fn </span>parent_lookup_action(<span class="kw-2">&amp;</span><span class="self">self</span>, name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="../auto/action.rs.html#12-91">Action</a>&gt; {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>type_data = <a href="../../../glib/subclass/types/trait.ObjectSubclassType.html"><span class="self">Self</span>::type_data</a>();
-            <span class="kw">let </span>parent_iface = <a href="#23">type_data</a>.as_ref().parent_interface::&lt;<a href="../auto/action_map.rs.html#8-30">ActionMap</a>&gt;()
+            <span class="kw">let </span>type_data = <a href="../../../glib/subclass/types/trait.ObjectSubclassType.html#tymethod.type_data"><span class="self">Self</span>::type_data</a>();
+            <span class="kw">let </span>parent_iface = <a href="#23">type_data</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().<a href="../../../glib/subclass/types/struct.TypeData.html#method.parent_interface">parent_interface</a>::&lt;<a href="../auto/action_map.rs.html#8-30">ActionMap</a>&gt;()
                 <span class="kw">as </span><span class="kw-2">*const </span><a href="../../../gio_sys/struct.GActionMapInterface.html">ffi::GActionMapInterface</a>;
 
             <span class="kw">let </span>func = (<span class="kw-2">*</span><a href="#24">parent_iface</a>)
                 .lookup_action
-                .expect(<span class="string">"no parent \"lookup_action\" implementation"</span>);
+                .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.expect">expect</a>(<span class="string">"no parent \"lookup_action\" implementation"</span>);
             <span class="kw">let </span>ret = <a href="#27">func</a>(
-                <a class="self" href="#21">self</a>.<a href="../../../glib/subclass/types/trait.ObjectSubclassExt.html">obj</a>().<a href="../../../glib/object/trait.Cast.html">unsafe_cast_ref</a>::&lt;<a href="../auto/action_map.rs.html#8-30">ActionMap</a>&gt;().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#21">name</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a class="self" href="#21">self</a>.<a href="../../../glib/subclass/types/trait.ObjectSubclassExt.html#tymethod.obj">obj</a>().<a href="../../../glib/object/trait.Cast.html#tymethod.unsafe_cast_ref">unsafe_cast_ref</a>::&lt;<a href="../auto/action_map.rs.html#8-30">ActionMap</a>&gt;().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#21">name</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
             );
-            from_glib_none(<a href="#30">ret</a>)
+            <a href="../../../glib/translate/fn.from_glib_none.html">from_glib_none</a>(<a href="#30">ret</a>)
         }
     }
 
     <span class="kw">fn </span>parent_add_action(<span class="kw-2">&amp;</span><span class="self">self</span>, action: <span class="kw-2">&amp;</span><a href="../auto/action.rs.html#12-91">Action</a>) {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>type_data = <a href="../../../glib/subclass/types/trait.ObjectSubclassType.html"><span class="self">Self</span>::type_data</a>();
-            <span class="kw">let </span>parent_iface = <a href="#40">type_data</a>.as_ref().parent_interface::&lt;<a href="../auto/action_map.rs.html#8-30">ActionMap</a>&gt;()
+            <span class="kw">let </span>type_data = <a href="../../../glib/subclass/types/trait.ObjectSubclassType.html#tymethod.type_data"><span class="self">Self</span>::type_data</a>();
+            <span class="kw">let </span>parent_iface = <a href="#40">type_data</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().<a href="../../../glib/subclass/types/struct.TypeData.html#method.parent_interface">parent_interface</a>::&lt;<a href="../auto/action_map.rs.html#8-30">ActionMap</a>&gt;()
                 <span class="kw">as </span><span class="kw-2">*const </span><a href="../../../gio_sys/struct.GActionMapInterface.html">ffi::GActionMapInterface</a>;
 
             <span class="kw">let </span>func = (<span class="kw-2">*</span><a href="#41">parent_iface</a>)
                 .add_action
-                .expect(<span class="string">"no parent \"add_action\" implementation"</span>);
+                .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.expect">expect</a>(<span class="string">"no parent \"add_action\" implementation"</span>);
             <a href="#44">func</a>(
-                <a class="self" href="#38">self</a>.<a href="../../../glib/subclass/types/trait.ObjectSubclassExt.html">obj</a>().<a href="../../../glib/object/trait.Cast.html">unsafe_cast_ref</a>::&lt;<a href="../auto/action_map.rs.html#8-30">ActionMap</a>&gt;().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#38">action</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a class="self" href="#38">self</a>.<a href="../../../glib/subclass/types/trait.ObjectSubclassExt.html#tymethod.obj">obj</a>().<a href="../../../glib/object/trait.Cast.html#tymethod.unsafe_cast_ref">unsafe_cast_ref</a>::&lt;<a href="../auto/action_map.rs.html#8-30">ActionMap</a>&gt;().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#38">action</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
             );
         }
     }
 
     <span class="kw">fn </span>parent_remove_action(<span class="kw-2">&amp;</span><span class="self">self</span>, action_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>type_data = <a href="../../../glib/subclass/types/trait.ObjectSubclassType.html"><span class="self">Self</span>::type_data</a>();
-            <span class="kw">let </span>parent_iface = <a href="#56">type_data</a>.as_ref().parent_interface::&lt;<a href="../auto/action_map.rs.html#8-30">ActionMap</a>&gt;()
+            <span class="kw">let </span>type_data = <a href="../../../glib/subclass/types/trait.ObjectSubclassType.html#tymethod.type_data"><span class="self">Self</span>::type_data</a>();
+            <span class="kw">let </span>parent_iface = <a href="#56">type_data</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().<a href="../../../glib/subclass/types/struct.TypeData.html#method.parent_interface">parent_interface</a>::&lt;<a href="../auto/action_map.rs.html#8-30">ActionMap</a>&gt;()
                 <span class="kw">as </span><span class="kw-2">*const </span><a href="../../../gio_sys/struct.GActionMapInterface.html">ffi::GActionMapInterface</a>;
 
             <span class="kw">let </span>func = (<span class="kw-2">*</span><a href="#57">parent_iface</a>)
                 .remove_action
-                .expect(<span class="string">"no parent \"remove_action\" implementation"</span>);
+                .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.expect">expect</a>(<span class="string">"no parent \"remove_action\" implementation"</span>);
             <a href="#60">func</a>(
-                <a class="self" href="#54">self</a>.<a href="../../../glib/subclass/types/trait.ObjectSubclassExt.html">obj</a>().<a href="../../../glib/object/trait.Cast.html">unsafe_cast_ref</a>::&lt;<a href="../auto/action_map.rs.html#8-30">ActionMap</a>&gt;().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#54">action_name</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a class="self" href="#54">self</a>.<a href="../../../glib/subclass/types/trait.ObjectSubclassExt.html#tymethod.obj">obj</a>().<a href="../../../glib/object/trait.Cast.html#tymethod.unsafe_cast_ref">unsafe_cast_ref</a>::&lt;<a href="../auto/action_map.rs.html#8-30">ActionMap</a>&gt;().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#54">action_name</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
             );
         }
     }
@@ -286,7 +286,7 @@
     </span>&lt;T <span class="kw">as </span>ObjectSubclass&gt;::Type: IsA&lt;<a href="../../../glib/object/struct.Object.html">glib::Object</a>&gt;,
 {
     <span class="kw">fn </span>interface_init(iface: <span class="kw-2">&amp;mut </span>glib::Interface&lt;<span class="self">Self</span>&gt;) {
-        <span class="kw">let </span>iface = <a href="#77">iface</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsMut.html">as_mut</a>();
+        <span class="kw">let </span>iface = <a href="#77">iface</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsMut.html#tymethod.as_mut">as_mut</a>();
 
         <a href="#78">iface</a>.lookup_action = <span class="prelude-val">Some</span>(action_map_lookup_action::&lt;T&gt;);
         <a href="#78">iface</a>.add_action = <span class="prelude-val">Some</span>(action_map_add_action::&lt;T&gt;);
@@ -299,28 +299,28 @@
     action_nameptr: <span class="kw-2">*const </span>libc::c_char,
 ) -&gt; <span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GAction.html">ffi::GAction</a> {
     <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(<a href="#87">action_map</a> <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
-    <span class="kw">let </span>action_name = <a href="../../../glib/translate/trait.FromGlibPtrBorrow.html">GString::from_glib_borrow</a>(<a href="#88">action_nameptr</a>);
-    <span class="kw">let </span>imp = <a href="#90">instance</a>.<a href="../../../glib/subclass/types/trait.InstanceStructExt.html">imp</a>();
+    <span class="kw">let </span>action_name = <a href="../../../glib/translate/trait.FromGlibPtrBorrow.html#tymethod.from_glib_borrow">GString::from_glib_borrow</a>(<a href="#88">action_nameptr</a>);
+    <span class="kw">let </span>imp = <a href="#90">instance</a>.<a href="../../../glib/subclass/types/trait.InstanceStructExt.html#tymethod.imp">imp</a>();
 
     <span class="kw">let </span>ret = <a href="#92">imp</a>.<a href="#10">lookup_action</a>(<span class="kw-2">&amp;</span><a href="#91">action_name</a>);
     <span class="kw">if let </span><span class="prelude-val">Some</span>(action) = <a href="#94">ret</a> {
-        <span class="kw">let </span>instance = <a href="#92">imp</a>.<a href="../../../glib/subclass/types/trait.ObjectSubclassExt.html">obj</a>();
-        <span class="kw">let </span>actionptr = <a href="#95">action</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>;
+        <span class="kw">let </span>instance = <a href="#92">imp</a>.<a href="../../../glib/subclass/types/trait.ObjectSubclassExt.html#tymethod.obj">obj</a>();
+        <span class="kw">let </span>actionptr = <a href="#95">action</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>;
 
         <span class="kw">let </span>action_map_quark = {
-            <span class="kw">static </span>QUARK: OnceLock&lt;<a href="../../../glib/quark/struct.Quark.html">Quark</a>&gt; = OnceLock::new();
-            <span class="kw-2">*</span><a href="#100">QUARK</a>.get_or_init(|| Quark::from_str(<span class="string">"gtk-rs-subclass-action-map-lookup-action"</span>))
+            <span class="kw">static </span>QUARK: OnceLock&lt;<a href="../../../glib/quark/struct.Quark.html">Quark</a>&gt; = <a href="https://doc.rust-lang.org/nightly/std/sync/once_lock/struct.OnceLock.html#method.new">OnceLock::new</a>();
+            <span class="kw-2">*</span><a href="#100">QUARK</a>.<a href="https://doc.rust-lang.org/nightly/std/sync/once_lock/struct.OnceLock.html#method.get_or_init">get_or_init</a>(|| <a href="../../../glib/quark/struct.Quark.html#method.from_str">Quark::from_str</a>(<span class="string">"gtk-rs-subclass-action-map-lookup-action"</span>))
         };
 
         <span class="kw">let </span><span class="kw-2">mut </span>map = <a href="#96">instance</a>
-            .<a href="../../../glib/object/trait.ObjectExt.html">steal_qdata</a>::&lt;HashMap&lt;<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>, <a href="../auto/action.rs.html#12-91">Action</a>&gt;&gt;(<a href="#99">action_map_quark</a>)
-            .unwrap_or_default();
-        <a href="#104">map</a>.insert(<a href="#91">action_name</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html">to_string</a>(), <a href="#95">action</a>);
-        <a href="#96">instance</a>.<a href="../../../glib/object/trait.ObjectExt.html">set_qdata</a>(<a href="#99">action_map_quark</a>, <a href="#104">map</a>);
+            .<a href="../../../glib/object/trait.ObjectExt.html#tymethod.steal_qdata">steal_qdata</a>::&lt;HashMap&lt;<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>, <a href="../auto/action.rs.html#12-91">Action</a>&gt;&gt;(<a href="#99">action_map_quark</a>)
+            .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap_or_default">unwrap_or_default</a>();
+        <a href="#104">map</a>.<a href="https://doc.rust-lang.org/nightly/std/collections/hash/map/struct.HashMap.html#method.insert">insert</a>(<a href="#91">action_name</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html#tymethod.to_string">to_string</a>(), <a href="#95">action</a>);
+        <a href="#96">instance</a>.<a href="../../../glib/object/trait.ObjectExt.html#tymethod.set_qdata">set_qdata</a>(<a href="#99">action_map_quark</a>, <a href="#104">map</a>);
 
         <a href="#97">actionptr</a>
     } <span class="kw">else </span>{
-        std::ptr::null_mut()
+        <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">std::ptr::null_mut</a>()
     }
 }
 
@@ -329,8 +329,8 @@
     actionptr: <span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GAction.html">ffi::GAction</a>,
 ) {
     <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(<a href="#117">action_map</a> <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
-    <span class="kw">let </span>imp = <a href="#120">instance</a>.<a href="../../../glib/subclass/types/trait.InstanceStructExt.html">imp</a>();
-    <span class="kw">let </span>action: Borrowed&lt;<a href="../auto/action.rs.html#12-91">Action</a>&gt; = from_glib_borrow(<a href="#118">actionptr</a>);
+    <span class="kw">let </span>imp = <a href="#120">instance</a>.<a href="../../../glib/subclass/types/trait.InstanceStructExt.html#tymethod.imp">imp</a>();
+    <span class="kw">let </span>action: Borrowed&lt;<a href="../auto/action.rs.html#12-91">Action</a>&gt; = <a href="../../../glib/translate/fn.from_glib_borrow.html">from_glib_borrow</a>(<a href="#118">actionptr</a>);
 
     <a href="#121">imp</a>.<a href="#11">add_action</a>(<span class="kw-2">&amp;</span><a href="#122">action</a>);
 }
@@ -340,8 +340,8 @@
     action_nameptr: <span class="kw-2">*const </span>libc::c_char,
 ) {
     <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(<a href="#128">action_map</a> <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
-    <span class="kw">let </span>imp = <a href="#131">instance</a>.<a href="../../../glib/subclass/types/trait.InstanceStructExt.html">imp</a>();
-    <span class="kw">let </span>action_name = <a href="../../../glib/translate/trait.FromGlibPtrBorrow.html">GString::from_glib_borrow</a>(<a href="#129">action_nameptr</a>);
+    <span class="kw">let </span>imp = <a href="#131">instance</a>.<a href="../../../glib/subclass/types/trait.InstanceStructExt.html#tymethod.imp">imp</a>();
+    <span class="kw">let </span>action_name = <a href="../../../glib/translate/trait.FromGlibPtrBorrow.html#tymethod.from_glib_borrow">GString::from_glib_borrow</a>(<a href="#129">action_nameptr</a>);
 
     <a href="#132">imp</a>.<a href="#12">remove_action</a>(<span class="kw-2">&amp;</span><a href="#133">action_name</a>);
 }

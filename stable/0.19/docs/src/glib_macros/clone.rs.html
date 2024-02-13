@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib-macros/src/clone.rs`."><title>clone.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-5bc39a1768837dd0.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib_macros" data-themes="" data-resource-suffix="" data-rustdoc-version="1.78.0-nightly (b11fbfbf3 2024-02-03)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-48f368f3872407c8.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib-macros/src/clone.rs`."><title>clone.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-5bc39a1768837dd0.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib_macros" data-themes="" data-resource-suffix="" data-rustdoc-version="1.78.0-nightly (b381d3ab2 2024-02-12)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-48f368f3872407c8.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -1044,9 +1044,9 @@
 
 <span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; From&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://doc.rust-lang.org/nightly/proc_macro/struct.Group.html">Group</a>&gt; <span class="kw">for </span><a href="#12-16">PeekableProcIter</a> {
     <span class="kw">fn </span>from(f: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://doc.rust-lang.org/nightly/proc_macro/struct.Group.html">Group</a>) -&gt; <span class="self">Self </span>{
-        <span class="kw">let </span>current_span = <span class="prelude-val">Some</span>(<a href="#19">f</a>.span());
-        <span class="kw">let </span><span class="kw-2">mut </span>inner = <a href="#19">f</a>.stream().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.IntoIterator.html">into_iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html">peekable</a>();
-        <span class="kw">let </span>next_span = <a href="#21">inner</a>.peek().map(|n| <a href="#22">n</a>.span());
+        <span class="kw">let </span>current_span = <span class="prelude-val">Some</span>(<a href="#19">f</a>.<a href="https://doc.rust-lang.org/nightly/proc_macro/struct.Group.html#method.span">span</a>());
+        <span class="kw">let </span><span class="kw-2">mut </span>inner = <a href="#19">f</a>.<a href="https://doc.rust-lang.org/nightly/proc_macro/struct.Group.html#method.stream">stream</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.IntoIterator.html#tymethod.into_iter">into_iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.peekable">peekable</a>();
+        <span class="kw">let </span>next_span = <a href="#21">inner</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/adapters/peekable/struct.Peekable.html#method.peek">peek</a>().<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|n| <a href="#22">n</a>.<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#method.span">span</a>());
         <span class="self">Self </span>{
             <a href="#21">inner</a>,
             <a href="#20">current_span</a>,
@@ -1057,8 +1057,8 @@
 
 <span class="kw">impl </span>From&lt;<a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a>&gt; <span class="kw">for </span><a href="#12-16">PeekableProcIter</a> {
     <span class="kw">fn </span>from(f: <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a>) -&gt; <span class="self">Self </span>{
-        <span class="kw">let </span><span class="kw-2">mut </span>inner = <a href="#32">f</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.IntoIterator.html">into_iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html">peekable</a>();
-        <span class="kw">let </span>next_span = <a href="#33">inner</a>.peek().map(|n| <a href="#34">n</a>.span());
+        <span class="kw">let </span><span class="kw-2">mut </span>inner = <a href="#32">f</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.IntoIterator.html#tymethod.into_iter">into_iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.peekable">peekable</a>();
+        <span class="kw">let </span>next_span = <a href="#33">inner</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/adapters/peekable/struct.Peekable.html#method.peek">peek</a>().<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|n| <a href="#34">n</a>.<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#method.span">span</a>());
         <span class="self">Self </span>{
             <a href="#33">inner</a>,
             current_span: <span class="prelude-val">None</span>,
@@ -1071,16 +1071,16 @@
     <span class="kw">type </span>Item = <a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html">TokenTree</a>;
 
     <span class="kw">fn </span>next(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>::Item&gt; {
-        <span class="kw">let </span>next = <a class="self" href="#46">self</a>.inner.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html">next</a>()<span class="question-mark">?</span>;
-        <a class="self" href="#46">self</a>.current_span = <span class="prelude-val">Some</span>(<a href="#47">next</a>.span());
-        <a class="self" href="#46">self</a>.next_span = <a class="self" href="#46">self</a>.inner.peek().map(|n| <a href="#49">n</a>.span());
+        <span class="kw">let </span>next = <a class="self" href="#46">self</a>.inner.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.next">next</a>()<span class="question-mark">?</span>;
+        <a class="self" href="#46">self</a>.current_span = <span class="prelude-val">Some</span>(<a href="#47">next</a>.<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#method.span">span</a>());
+        <a class="self" href="#46">self</a>.next_span = <a class="self" href="#46">self</a>.inner.<a href="https://doc.rust-lang.org/nightly/core/iter/adapters/peekable/struct.Peekable.html#method.peek">peek</a>().<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|n| <a href="#49">n</a>.<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#method.span">span</a>());
         <span class="prelude-val">Some</span>(<a href="#47">next</a>)
     }
 }
 
 <span class="kw">impl </span><a href="#12-16">PeekableProcIter</a> {
     <span class="kw">fn </span>peek(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html">TokenTree</a>&gt; {
-        <a class="self" href="#55">self</a>.inner.peek()
+        <a class="self" href="#55">self</a>.inner.<a href="https://doc.rust-lang.org/nightly/core/iter/adapters/peekable/struct.Peekable.html#method.peek">peek</a>()
     }
 
     <span class="kw">fn </span>generate_error(<span class="kw-2">&amp;</span><span class="self">self</span>, message: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a> {
@@ -1092,11 +1092,11 @@
     }
 
     <span class="kw">fn </span>generate_error_with_span(<span class="kw-2">&amp;</span><span class="self">self</span>, message: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, span: <span class="prelude-ty">Option</span>&lt;<a href="https://doc.rust-lang.org/nightly/proc_macro/struct.Span.html">Span</a>&gt;) -&gt; <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a> {
-        <span class="kw">let </span>span = <a href="#67">span</a>.unwrap_or_else(Span::call_site);
+        <span class="kw">let </span>span = <a href="#67">span</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap_or_else">unwrap_or_else</a>(Span::call_site);
         <span class="comment">// We generate a `compile_error` macro and assign it to the current span so the error
         // displayed by rustc points to the right location.
-        </span><span class="kw">let </span><span class="kw-2">mut </span>stream = TokenStream::new();
-        <a href="#71">stream</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.Extend.html">extend</a>(<a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.vec.html">vec!</a>[TokenTree::Literal(Literal::string(message))]);
+        </span><span class="kw">let </span><span class="kw-2">mut </span>stream = <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html#method.new">TokenStream::new</a>();
+        <a href="#71">stream</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.Extend.html#tymethod.extend">extend</a>(<a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.vec.html">vec!</a>[TokenTree::Literal(Literal::string(message))]);
 
         <span class="kw">let </span><span class="kw-2">mut </span>tokens = <a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.vec.html">vec!</a>[
             TokenTree::Ident(Ident::new(<span class="string">"compile_error"</span>, span)),
@@ -1109,13 +1109,13 @@
             tok.set_span(span);
         }
 
-        <span class="kw">let </span><span class="kw-2">mut </span>stream = TokenStream::new();
-        <a href="#85">stream</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.Extend.html">extend</a>(<a href="#74">tokens</a>);
-        <span class="kw">let </span><span class="kw-2">mut </span>t = TokenTree::Group(Group::new(Delimiter::Brace, <a href="#85">stream</a>));
-        <a href="#87">t</a>.set_span(<a href="#68">span</a>);
+        <span class="kw">let </span><span class="kw-2">mut </span>stream = <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html#method.new">TokenStream::new</a>();
+        <a href="#85">stream</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.Extend.html#tymethod.extend">extend</a>(<a href="#74">tokens</a>);
+        <span class="kw">let </span><span class="kw-2">mut </span>t = <a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#variant.Group">TokenTree::Group</a>(<a href="https://doc.rust-lang.org/nightly/proc_macro/struct.Group.html#method.new">Group::new</a>(<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.Delimiter.html#variant.Brace">Delimiter::Brace</a>, <a href="#85">stream</a>));
+        <a href="#87">t</a>.<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#method.set_span">set_span</a>(<a href="#68">span</a>);
 
-        <span class="kw">let </span><span class="kw-2">mut </span>stream = TokenStream::new();
-        <a href="#90">stream</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.Extend.html">extend</a>(<a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.vec.html">vec!</a>[t]);
+        <span class="kw">let </span><span class="kw-2">mut </span>stream = <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html#method.new">TokenStream::new</a>();
+        <a href="#90">stream</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.Extend.html#tymethod.extend">extend</a>(<a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.vec.html">vec!</a>[t]);
         <a href="#90">stream</a>
     }
 }
@@ -1147,7 +1147,7 @@
 <span class="kw">impl </span><a href="#115-118">WrapperKind</a> {
     <span class="kw">fn </span>to_str(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a> {
         <span class="kw">match </span><span class="kw-2">*</span><span class="self"><a href="#121">self</a> </span>{
-            <span class="self">Self</span>::DefaultPanic =&gt; <span class="string">"@default-panic"</span>.<a href="https://doc.rust-lang.org/nightly/alloc/borrow/trait.ToOwned.html">to_owned</a>(),
+            <span class="self">Self</span>::DefaultPanic =&gt; <span class="string">"@default-panic"</span>.<a href="https://doc.rust-lang.org/nightly/alloc/borrow/trait.ToOwned.html#tymethod.to_owned">to_owned</a>(),
             <span class="self">Self</span>::DefaultReturn(<span class="kw-2">ref </span>r) =&gt; <a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.format.html">format!</a>(<span class="string">"@default-return {r}"</span>),
         }
     }
@@ -1222,7 +1222,7 @@ let {0} = match {1}::clone::Upgrade::upgrade(&amp;{0}) {{
                 )
             }
             (<a href="#98">BorrowKind::Weak</a>, <span class="prelude-val">Some</span>(<a href="#117">WrapperKind::DefaultReturn</a>(<span class="kw-2">ref </span>r))) =&gt; {
-                <span class="kw">let </span>not_unit_ret = <a href="#197">r</a>.chars().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html">any</a>(|c| <a href="#198">c</a> != <span class="string">'(' </span>&amp;&amp; <a href="#198">c</a> != <span class="string">')' </span>&amp;&amp; <a href="#198">c</a> != <span class="string">' '</span>);
+                <span class="kw">let </span>not_unit_ret = <a href="#197">r</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.str.html#method.chars">chars</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.any">any</a>(|c| <a href="#198">c</a> != <span class="string">'(' </span>&amp;&amp; <a href="#198">c</a> != <span class="string">')' </span>&amp;&amp; <a href="#198">c</a> != <span class="string">' '</span>);
                 <a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.format.html">format!</a>(
                     <span class="string">"\
 let {0} = match {1}::clone::Upgrade::upgrade(&amp;{0}) {{
@@ -1263,7 +1263,7 @@ let {0} = match {1}::clone::Upgrade::upgrade(&amp;{0}) {{
                 name,
                 crate_ident_new(),
             ),
-            <span class="kw">_ </span>=&gt; String::new(),
+            <span class="kw">_ </span>=&gt; <a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html#method.new">String::new</a>(),
         }
     }
 }
@@ -1285,8 +1285,8 @@ let {0} = match {1}::clone::Upgrade::upgrade(&amp;{0}) {{
 <span class="kw">impl </span>PartialEq&lt;<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html">TokenTree</a>&gt; <span class="kw">for </span><a href="#244-247">SimpleToken</a> {
     <span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html">TokenTree</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
         <span class="kw">match </span>(<a class="self" href="#259">self</a>, <a href="#259">other</a>) {
-            (<a href="#245">SimpleToken::Punct</a>(p1), TokenTree::Punct(<span class="kw-2">ref </span>p2)) =&gt; <span class="kw-2">*</span><a href="#261">p1</a> == <a href="#261">p2</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html">to_string</a>(),
-            (<a href="#246">SimpleToken::Ident</a>(i1), TokenTree::Ident(<span class="kw-2">ref </span>i2)) =&gt; <span class="kw-2">*</span><a href="#262">i1</a> == <a href="#262">i2</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html">to_string</a>(),
+            (<a href="#245">SimpleToken::Punct</a>(p1), <a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#variant.Punct">TokenTree::Punct</a>(<span class="kw-2">ref </span>p2)) =&gt; <span class="kw-2">*</span><a href="#261">p1</a> == <a href="#261">p2</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html#tymethod.to_string">to_string</a>(),
+            (<a href="#246">SimpleToken::Ident</a>(i1), <a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#variant.Ident">TokenTree::Ident</a>(<span class="kw-2">ref </span>i2)) =&gt; <span class="kw-2">*</span><a href="#262">i1</a> == <a href="#262">i2</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html#tymethod.to_string">to_string</a>(),
             <span class="kw">_ </span>=&gt; <span class="bool-val">false</span>,
         }
     }
@@ -1294,7 +1294,7 @@ let {0} = match {1}::clone::Upgrade::upgrade(&amp;{0}) {{
 
 <span class="kw">fn </span>is_punct(elem: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html">TokenTree</a>, punct: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
     <span class="kw">match </span><a href="#268">elem</a> {
-        TokenTree::Punct(<span class="kw-2">ref </span>p) =&gt; <a href="#270">p</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html">to_string</a>() == <a href="#268">punct</a>,
+        <a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#variant.Punct">TokenTree::Punct</a>(<span class="kw-2">ref </span>p) =&gt; <a href="#270">p</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html#tymethod.to_string">to_string</a>() == <a href="#268">punct</a>,
         <span class="kw">_ </span>=&gt; <span class="bool-val">false</span>,
     }
 }
@@ -1308,7 +1308,7 @@ let {0} = match {1}::clone::Upgrade::upgrade(&amp;{0}) {{
     tokens_to_check: <span class="kw-2">&amp;</span>[<a href="#244-247">SimpleToken</a>],
     parts: <span class="kw-2">&amp;mut </span><a href="#12-16">PeekableProcIter</a>,
 ) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="#275-278">TokenCheck</a>&gt; {
-    <span class="kw">let </span><span class="kw-2">mut </span>tokens = String::new();
+    <span class="kw">let </span><span class="kw-2">mut </span>tokens = <a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html#method.new">String::new</a>();
 
     <span class="kw">for </span>token <span class="kw">in </span>tokens_to_check {
         <span class="kw">if let </span><span class="prelude-val">Some</span>(next) = parts.peek() {
@@ -1329,13 +1329,13 @@ let {0} = match {1}::clone::Upgrade::upgrade(&amp;{0}) {{
     parts: <span class="kw-2">&amp;mut </span><a href="#12-16">PeekableProcIter</a>,
     borrow_kind: <a href="#97-102">BorrowKind</a>,
 ) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>, <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a>&gt; {
-    <span class="kw">let </span><span class="kw-2">mut </span>name = String::new();
+    <span class="kw">let </span><span class="kw-2">mut </span>name = <a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html#method.new">String::new</a>();
     <span class="kw">let </span><span class="kw-2">mut </span>prev_is_ident = <span class="bool-val">false</span>;
 
     <span class="kw">loop </span>{
         <span class="kw">match </span><a href="#302">parts</a>.<a href="#55-57">peek</a>() {
-            <span class="prelude-val">Some</span>(TokenTree::Punct(p)) =&gt; {
-                <span class="kw">let </span>p_s = <a href="#310">p</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html">to_string</a>();
+            <span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#variant.Punct">TokenTree::Punct</a>(p)) =&gt; {
+                <span class="kw">let </span>p_s = <a href="#310">p</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html#tymethod.to_string">to_string</a>();
                 <span class="kw">if </span>p_s == <span class="string">"," </span>|| p_s == <span class="string">"=" </span>{
                     <span class="kw">break</span>;
                 } <span class="kw">else if </span>p_s == <span class="string">"." </span>{
@@ -1346,8 +1346,8 @@ let {0} = match {1}::clone::Upgrade::upgrade(&amp;{0}) {{
                         )));
                     }
                     <a href="#306">prev_is_ident</a> = <span class="bool-val">false</span>;
-                    <a href="#305">name</a>.push(<span class="string">'.'</span>);
-                    <a href="#302">parts</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html">next</a>();
+                    <a href="#305">name</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html#method.push">push</a>(<span class="string">'.'</span>);
+                    <a href="#302">parts</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.next">next</a>();
                 } <span class="kw">else if </span>name.is_empty() {
                     <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="#302">parts</a>
                         .<a href="#63-65">generate_error_with_next_span</a>(<span class="kw-2">&amp;</span><a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.format.html">format!</a>(<span class="string">"Expected ident, found `{p_s}`"</span>)));
@@ -1357,15 +1357,15 @@ let {0} = match {1}::clone::Upgrade::upgrade(&amp;{0}) {{
                     </span>)));
                 }
             }
-            <span class="prelude-val">Some</span>(TokenTree::Ident(i)) =&gt; {
+            <span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#variant.Ident">TokenTree::Ident</a>(i)) =&gt; {
                 <span class="kw">if </span>prev_is_ident {
                     <span class="kw">break</span>;
                 }
                 <a href="#306">prev_is_ident</a> = <span class="bool-val">true</span>;
-                <a href="#305">name</a>.push_str(<span class="kw-2">&amp;</span><a href="#333">i</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html">to_string</a>());
-                <a href="#302">parts</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html">next</a>();
+                <a href="#305">name</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html#method.push_str">push_str</a>(<span class="kw-2">&amp;</span><a href="#333">i</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html#tymethod.to_string">to_string</a>());
+                <a href="#302">parts</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.next">next</a>();
             }
-            <span class="prelude-val">Some</span>(x) <span class="kw">if </span><a href="#305">name</a>.is_empty() =&gt; {
+            <span class="prelude-val">Some</span>(x) <span class="kw">if </span><a href="#305">name</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html#method.is_empty">is_empty</a>() =&gt; {
                 <span class="kw">let </span>err = <a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.format.html">format!</a>(<span class="string">"Expected ident, found `{x}`"</span>);
                 <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="#302">parts</a>.<a href="#63-65">generate_error_with_next_span</a>(<span class="kw-2">&amp;</span><a href="#342">err</a>));
             }
@@ -1379,7 +1379,7 @@ let {0} = match {1}::clone::Upgrade::upgrade(&amp;{0}) {{
         }
     }
     <span class="kw">if </span>name.is_empty() {
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(next) = <a href="#302">parts</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html">next</a>() {
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(next) = <a href="#302">parts</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.next">next</a>() {
             <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="#302">parts</a>.<a href="#59-61">generate_error</a>(<span class="kw-2">&amp;</span><a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.format.html">format!</a>(<span class="string">"Expected ident, found `{next}`"</span>)));
         }
         <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="#302">parts</a>.<a href="#59-61">generate_error</a>(<span class="string">"Expected something after, found nothing"</span>));
@@ -1389,7 +1389,7 @@ let {0} = match {1}::clone::Upgrade::upgrade(&amp;{0}) {{
 
 <span class="attr">#[doc(alias = <span class="string">"get_keyword"</span>)]
 </span><span class="kw">fn </span>keyword(parts: <span class="kw-2">&amp;mut </span><a href="#12-16">PeekableProcIter</a>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#97-102">BorrowKind</a>, <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a>&gt; {
-    <span class="kw">let </span><span class="kw-2">mut </span>ret = String::new();
+    <span class="kw">let </span><span class="kw-2">mut </span>ret = <a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html#method.new">String::new</a>();
     <span class="kw">let </span><span class="kw-2">mut </span>prev_is_ident = <span class="bool-val">false</span>;
     <span class="kw">let </span><span class="kw-2">mut </span>stored = <span class="bool-val">false</span>;
     <span class="comment">// We unfortunately can't join spans since the `Span::join` method is nightly-only. Well, we'll
@@ -1398,18 +1398,18 @@ let {0} = match {1}::clone::Upgrade::upgrade(&amp;{0}) {{
 
     <span class="kw">loop </span>{
         <span class="kw">match </span><a href="#364">parts</a>.<a href="#55-57">peek</a>() {
-            <span class="prelude-val">Some</span>(TokenTree::Ident(i)) =&gt; {
+            <span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#variant.Ident">TokenTree::Ident</a>(i)) =&gt; {
                 <span class="kw">if </span>prev_is_ident {
                     <span class="kw">break</span>;
                 }
                 <a href="#366">prev_is_ident</a> = <span class="bool-val">true</span>;
                 <span class="kw">if </span>stored {
-                    <a href="#365">ret</a>.push(<span class="string">'-'</span>);
+                    <a href="#365">ret</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html#method.push">push</a>(<span class="string">'-'</span>);
                     <a href="#367">stored</a> = <span class="bool-val">false</span>;
                 }
-                <a href="#365">ret</a>.push_str(<span class="kw-2">&amp;</span><a href="#374">i</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html">to_string</a>());
+                <a href="#365">ret</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html#method.push_str">push_str</a>(<span class="kw-2">&amp;</span><a href="#374">i</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html#tymethod.to_string">to_string</a>());
             }
-            <span class="prelude-val">Some</span>(TokenTree::Punct(p)) <span class="kw">if </span><a href="#385">p</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html">to_string</a>() == <span class="string">"-" </span>=&gt; {
+            <span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#variant.Punct">TokenTree::Punct</a>(p)) <span class="kw">if </span><a href="#385">p</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html#tymethod.to_string">to_string</a>() == <span class="string">"-" </span>=&gt; {
                 <span class="kw">if </span>!prev_is_ident {
                     <span class="kw">break</span>;
                 }
@@ -1419,9 +1419,9 @@ let {0} = match {1}::clone::Upgrade::upgrade(&amp;{0}) {{
             }
             <span class="kw">_ </span>=&gt; <span class="kw">break</span>,
         }
-        <a href="#364">parts</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html">next</a>();
+        <a href="#364">parts</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.next">next</a>();
     }
-    <span class="kw">let </span>ret = <span class="kw">match </span><a href="#365">ret</a>.as_str() {
+    <span class="kw">let </span>ret = <span class="kw">match </span><a href="#365">ret</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html#method.as_str">as_str</a>() {
         <span class="string">"strong" </span>=&gt; <a href="#100">BorrowKind::Strong</a>,
         <span class="string">"weak" </span>=&gt; <a href="#98">BorrowKind::Weak</a>,
         <span class="string">"weak-allow-none" </span>=&gt; <a href="#99">BorrowKind::WeakAllowNone</a>,
@@ -1461,11 +1461,11 @@ let {0} = match {1}::clone::Upgrade::upgrade(&amp;{0}) {{
         );
     }
     <span class="kw">let </span>alias = <span class="kw">match </span><a href="#425">parts</a>.<a href="#55-57">peek</a>() {
-        <span class="prelude-val">Some</span>(TokenTree::Ident(p)) <span class="kw">if </span><a href="#437">p</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html">to_string</a>() == <span class="string">"as" </span>=&gt; {
-            <a href="#425">parts</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html">next</a>();
+        <span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#variant.Ident">TokenTree::Ident</a>(p)) <span class="kw">if </span><a href="#437">p</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html#tymethod.to_string">to_string</a>() == <span class="string">"as" </span>=&gt; {
+            <a href="#425">parts</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.next">next</a>();
             <span class="kw">let </span>current_span = <a href="#425">parts</a>.current_span;
-            <span class="kw">match </span><a href="#425">parts</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html">next</a>() {
-                <span class="prelude-val">Some</span>(TokenTree::Ident(i)) =&gt; <span class="prelude-val">Some</span>(<a href="#441">i</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html">to_string</a>()),
+            <span class="kw">match </span><a href="#425">parts</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.next">next</a>() {
+                <span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#variant.Ident">TokenTree::Ident</a>(i)) =&gt; <span class="prelude-val">Some</span>(<a href="#441">i</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html#tymethod.to_string">to_string</a>()),
                 <span class="prelude-val">Some</span>(x) =&gt; {
                     <span class="kw">let </span>err = <a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.format.html">format!</a>(<span class="string">"Expected ident after `as` keyword, found `{x}`"</span>);
                     <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="#425">parts</a>.<a href="#59-61">generate_error</a>(<span class="kw-2">&amp;</span><a href="#443">err</a>));
@@ -1478,7 +1478,7 @@ let {0} = match {1}::clone::Upgrade::upgrade(&amp;{0}) {{
                 }
             }
         }
-        <span class="prelude-val">Some</span>(TokenTree::Ident(p)) =&gt; {
+        <span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#variant.Ident">TokenTree::Ident</a>(p)) =&gt; {
             <span class="kw">let </span>err = <a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.format.html">format!</a>(<span class="string">"Unexpected `{p}`"</span>);
             <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="#425">parts</a>.<a href="#59-61">generate_error</a>(<span class="kw-2">&amp;</span><a href="#455">err</a>));
         }
@@ -1495,7 +1495,7 @@ let {0} = match {1}::clone::Upgrade::upgrade(&amp;{0}) {{
         <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="#425">parts</a>.<a href="#67-93">generate_error_with_span</a>(<span class="kw-2">&amp;</span><a href="#467">err</a>, <a href="#430">name_span</a>));
     }
 
-    <a href="#426">elements</a>.push(<a href="#137-141">ElemToClone</a> {
+    <a href="#426">elements</a>.<a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.push">push</a>(<a href="#137-141">ElemToClone</a> {
         <a href="#429">name</a>,
         <a href="#436">alias</a>,
         <a href="#428">borrow_kind</a>,
@@ -1505,28 +1505,28 @@ let {0} = match {1}::clone::Upgrade::upgrade(&amp;{0}) {{
 
 <span class="kw">fn </span>delimiter_to_string(delimiter: <a href="https://doc.rust-lang.org/nightly/proc_macro/enum.Delimiter.html">Delimiter</a>, open: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'static </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a> {
     <span class="kw">match </span><a href="#479">delimiter</a> {
-        Delimiter::Parenthesis =&gt; {
+        <a href="https://doc.rust-lang.org/nightly/proc_macro/enum.Delimiter.html#variant.Parenthesis">Delimiter::Parenthesis</a> =&gt; {
             <span class="kw">if </span>open {
                 <span class="string">"("
             </span>} <span class="kw">else </span>{
                 <span class="string">")"
             </span>}
         }
-        Delimiter::Brace =&gt; {
+        <a href="https://doc.rust-lang.org/nightly/proc_macro/enum.Delimiter.html#variant.Brace">Delimiter::Brace</a> =&gt; {
             <span class="kw">if </span>open {
                 <span class="string">"{"
             </span>} <span class="kw">else </span>{
                 <span class="string">"}"
             </span>}
         }
-        Delimiter::Bracket =&gt; {
+        <a href="https://doc.rust-lang.org/nightly/proc_macro/enum.Delimiter.html#variant.Bracket">Delimiter::Bracket</a> =&gt; {
             <span class="kw">if </span>open {
                 <span class="string">"["
             </span>} <span class="kw">else </span>{
                 <span class="string">"]"
             </span>}
         }
-        Delimiter::None =&gt; <span class="string">""</span>,
+        <a href="https://doc.rust-lang.org/nightly/proc_macro/enum.Delimiter.html#variant.None">Delimiter::None</a> =&gt; <span class="string">""</span>,
     }
 }
 
@@ -1541,13 +1541,13 @@ let {0} = match {1}::clone::Upgrade::upgrade(&amp;{0}) {{
 
 <span class="attr">#[doc(alias = <span class="string">"get_expr"</span>)]
 </span><span class="kw">fn </span>expr(parts: <span class="kw-2">&amp;mut </span><a href="#12-16">PeekableProcIter</a>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>, <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a>&gt; {
-    <span class="kw">let </span><span class="kw-2">mut </span>ret = String::new();
+    <span class="kw">let </span><span class="kw-2">mut </span>ret = <a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html#method.new">String::new</a>();
     <span class="kw">let </span><span class="kw-2">mut </span>total = <span class="number">0</span>;
     <span class="kw">let </span>span = <a href="#516">parts</a>.current_span;
-    <span class="kw">match </span><a href="#516">parts</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html">next</a>() {
-        <span class="prelude-val">Some</span>(TokenTree::Literal(l)) =&gt; <a href="#517">ret</a>.push_str(<span class="kw-2">&amp;</span><a href="#521">l</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html">to_string</a>()),
-        <span class="prelude-val">Some</span>(TokenTree::Ident(i)) =&gt; <a href="#517">ret</a>.push_str(<span class="kw-2">&amp;</span><a href="#522">i</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html">to_string</a>()),
-        <span class="prelude-val">Some</span>(TokenTree::Punct(p)) =&gt; <span class="kw">match </span><a href="#523">p</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html">to_string</a>().as_str() {
+    <span class="kw">match </span><a href="#516">parts</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.next">next</a>() {
+        <span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#variant.Literal">TokenTree::Literal</a>(l)) =&gt; <a href="#517">ret</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html#method.push_str">push_str</a>(<span class="kw-2">&amp;</span><a href="#521">l</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html#tymethod.to_string">to_string</a>()),
+        <span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#variant.Ident">TokenTree::Ident</a>(i)) =&gt; <a href="#517">ret</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html#method.push_str">push_str</a>(<span class="kw-2">&amp;</span><a href="#522">i</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html#tymethod.to_string">to_string</a>()),
+        <span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#variant.Punct">TokenTree::Punct</a>(p)) =&gt; <span class="kw">match </span><a href="#523">p</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html#tymethod.to_string">to_string</a>().<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html#method.as_str">as_str</a>() {
             <span class="string">"[" </span>| <span class="string">"{" </span>| <span class="string">"(" </span>=&gt; {
                 <a href="#518">total</a> += <span class="number">1</span>;
             }
@@ -1556,7 +1556,7 @@ let {0} = match {1}::clone::Upgrade::upgrade(&amp;{0}) {{
                     .<a href="#59-61">generate_error</a>(<span class="kw-2">&amp;</span><a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.format.html">format!</a>(<span class="string">"Unexpected token `{x}` after `@default-return`"</span>)))
             }
         },
-        <span class="prelude-val">Some</span>(TokenTree::Group(g)) =&gt; <span class="kw">return </span><span class="prelude-val">Ok</span>(<a href="#506-513">group_to_string</a>(<span class="kw-2">&amp;</span><a href="#532">g</a>)),
+        <span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#variant.Group">TokenTree::Group</a>(g)) =&gt; <span class="kw">return </span><span class="prelude-val">Ok</span>(<a href="#506-513">group_to_string</a>(<span class="kw-2">&amp;</span><a href="#532">g</a>)),
         <span class="prelude-val">None </span>=&gt; {
             <span class="kw">return </span><span class="prelude-val">Err</span>(
                 <a href="#516">parts</a>.<a href="#67-93">generate_error_with_span</a>(<span class="string">"Unexpected end after `@default-return`"</span>, <a href="#519">span</a>)
@@ -1565,8 +1565,8 @@ let {0} = match {1}::clone::Upgrade::upgrade(&amp;{0}) {{
     };
     <span class="kw">loop </span>{
         <span class="kw">match </span><a href="#516">parts</a>.<a href="#55-57">peek</a>() {
-            <span class="prelude-val">Some</span>(TokenTree::Punct(p)) =&gt; {
-                <span class="kw">let </span>p_s = <a href="#541">p</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html">to_string</a>();
+            <span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#variant.Punct">TokenTree::Punct</a>(p)) =&gt; {
+                <span class="kw">let </span>p_s = <a href="#541">p</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html#tymethod.to_string">to_string</a>();
                 <span class="kw">if </span>p_s == <span class="string">"{" </span>|| p_s == <span class="string">"(" </span>|| p_s == <span class="string">"[" </span>|| p_s == <span class="string">"&lt;" </span>{
                     <a href="#518">total</a> += <span class="number">1</span>;
                 } <span class="kw">else if </span>p_s == <span class="string">"}" </span>|| p_s == <span class="string">")" </span>|| p_s == <span class="string">"]" </span>|| p_s == <span class="string">"&gt;" </span>{
@@ -1574,22 +1574,22 @@ let {0} = match {1}::clone::Upgrade::upgrade(&amp;{0}) {{
                 } <span class="kw">else if </span>p_s == <span class="string">"," </span>&amp;&amp; total == <span class="number">0 </span>{
                     <span class="kw">return </span><span class="prelude-val">Ok</span>(<a href="#517">ret</a>);
                 }
-                <a href="#517">ret</a>.push_str(<span class="kw-2">&amp;</span><a href="#542">p_s</a>);
+                <a href="#517">ret</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html#method.push_str">push_str</a>(<span class="kw-2">&amp;</span><a href="#542">p_s</a>);
             }
-            <span class="prelude-val">Some</span>(TokenTree::Group(g)) =&gt; {
-                <a href="#517">ret</a>.push_str(<span class="kw-2">&amp;</span><a href="#506-513">group_to_string</a>(<a href="#552">g</a>));
+            <span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#variant.Group">TokenTree::Group</a>(g)) =&gt; {
+                <a href="#517">ret</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html#method.push_str">push_str</a>(<span class="kw-2">&amp;</span><a href="#506-513">group_to_string</a>(<a href="#552">g</a>));
             }
             <span class="prelude-val">Some</span>(x) =&gt; {
                 <span class="kw">if </span>total == <span class="number">0 </span>&amp;&amp; !ret.ends_with(<span class="string">':'</span>) {
                     <span class="kw">return </span><span class="prelude-val">Ok</span>(<a href="#517">ret</a>);
                 }
-                <a href="#517">ret</a>.push_str(<span class="kw-2">&amp;</span><a href="#555">x</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html">to_string</a>())
+                <a href="#517">ret</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html#method.push_str">push_str</a>(<span class="kw-2">&amp;</span><a href="#555">x</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html#tymethod.to_string">to_string</a>())
             }
             <span class="prelude-val">None </span>=&gt; <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="#516">parts</a>.<a href="#59-61">generate_error</a>(
                 <span class="string">"Unexpected end after `{ret}`. Did you forget a `,` after the @default-return value?"</span>,
             )),
         }
-        <a href="#516">parts</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html">next</a>();
+        <a href="#516">parts</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.next">next</a>();
     }
 }
 
@@ -1610,9 +1610,9 @@ let {0} = match {1}::clone::Upgrade::upgrade(&amp;{0}) {{
         <span class="prelude-val">Ok</span>(()) =&gt; {}
     }
     <span class="kw">let </span>prev = <a href="#570">parts</a>.current_span;
-    <span class="kw">match </span><a href="#570">parts</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html">next</a>() {
-        <span class="prelude-val">Some</span>(TokenTree::Ident(i)) =&gt; {
-            <span class="kw">let </span>i_s = <a href="#587">i</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html">to_string</a>();
+    <span class="kw">match </span><a href="#570">parts</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.next">next</a>() {
+        <span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#variant.Ident">TokenTree::Ident</a>(i)) =&gt; {
+            <span class="kw">let </span>i_s = <a href="#587">i</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html#tymethod.to_string">to_string</a>();
             <span class="kw">if </span>i_s == <span class="string">"panic" </span>{
                 <span class="kw">return </span><span class="prelude-val">Ok</span>(<a href="#116">WrapperKind::DefaultPanic</a>);
             }
@@ -1631,11 +1631,11 @@ let {0} = match {1}::clone::Upgrade::upgrade(&amp;{0}) {{
 
 <span class="kw">fn </span>parse_return_kind(parts: <span class="kw-2">&amp;mut </span><a href="#12-16">PeekableProcIter</a>) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;<a href="#115-118">WrapperKind</a>&gt;, <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a>&gt; {
     <span class="kw">match </span><a href="#605">parts</a>.<a href="#55-57">peek</a>() {
-        <span class="prelude-val">Some</span>(TokenTree::Punct(p)) <span class="kw">if </span><a href="#607">p</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html">to_string</a>() == <span class="string">"@" </span>=&gt; {}
+        <span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#variant.Punct">TokenTree::Punct</a>(p)) <span class="kw">if </span><a href="#607">p</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html#tymethod.to_string">to_string</a>() == <span class="string">"@" </span>=&gt; {}
         <span class="prelude-val">None </span>=&gt; <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="#605">parts</a>.<a href="#59-61">generate_error</a>(<span class="string">"Unexpected end 2"</span>)),
         <span class="kw">_ </span>=&gt; <span class="kw">return </span><span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>),
     }
-    <a href="#605">parts</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html">next</a>();
+    <a href="#605">parts</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.next">next</a>();
     <span class="kw">let </span>ret = <a href="#570-603">return_kind</a>(<a href="#605">parts</a>)<span class="question-mark">?</span>;
     <span class="kw">match </span><a href="#280-298">check_tokens</a>(<span class="kw-2">&amp;</span>[<a href="#245">SimpleToken::Punct</a>(<span class="string">","</span>)], <a href="#605">parts</a>) {
         <span class="prelude-val">Err</span>(<a href="#276">TokenCheck::UnexpectedToken</a>(<span class="kw">_</span>, unexpected_token)) =&gt; {
@@ -1673,18 +1673,18 @@ let {0} = match {1}::clone::Upgrade::upgrade(&amp;{0}) {{
 
 <span class="kw">fn </span>check_move_after_async(parts: <span class="kw-2">&amp;mut </span><a href="#12-16">PeekableProcIter</a>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a>&gt; {
     <span class="kw">let </span>span = <a href="#647">parts</a>.current_span;
-    <span class="kw">match </span><a href="#647">parts</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html">next</a>() {
-        <span class="prelude-val">Some</span>(TokenTree::Ident(i)) <span class="kw">if </span><a href="#650">i</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html">to_string</a>() == <span class="string">"move" </span>=&gt; <span class="prelude-val">Ok</span>(()),
+    <span class="kw">match </span><a href="#647">parts</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.next">next</a>() {
+        <span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#variant.Ident">TokenTree::Ident</a>(i)) <span class="kw">if </span><a href="#650">i</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html#tymethod.to_string">to_string</a>() == <span class="string">"move" </span>=&gt; <span class="prelude-val">Ok</span>(()),
         <span class="comment">// The next checks are just for better error messages.
-        </span><span class="prelude-val">Some</span>(TokenTree::Ident(i)) =&gt; {
+        </span><span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#variant.Ident">TokenTree::Ident</a>(i)) =&gt; {
             <span class="kw">let </span>err = <a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.format.html">format!</a>(<span class="string">"Expected `move` after `async`, found `{i}`"</span>);
             <span class="prelude-val">Err</span>(<a href="#647">parts</a>.<a href="#59-61">generate_error</a>(<span class="kw-2">&amp;</span><a href="#653">err</a>))
         }
-        <span class="prelude-val">Some</span>(TokenTree::Punct(p)) =&gt; {
+        <span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#variant.Punct">TokenTree::Punct</a>(p)) =&gt; {
             <span class="kw">let </span>err = <a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.format.html">format!</a>(<span class="string">"Expected `move` after `async`, found `{p}`"</span>);
             <span class="prelude-val">Err</span>(<a href="#647">parts</a>.<a href="#59-61">generate_error</a>(<span class="kw-2">&amp;</span><a href="#657">err</a>))
         }
-        <span class="prelude-val">Some</span>(TokenTree::Group(g)) =&gt; {
+        <span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#variant.Group">TokenTree::Group</a>(g)) =&gt; {
             <span class="kw">let </span>err = <a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.format.html">format!</a>(
                 <span class="string">"Expected `move` after `async`, found `{}`"</span>,
                 delimiter_to_string(g.delimiter(), <span class="bool-val">true</span>),
@@ -1698,16 +1698,16 @@ let {0} = match {1}::clone::Upgrade::upgrade(&amp;{0}) {{
 <span class="kw">fn </span>check_async_syntax(parts: <span class="kw-2">&amp;mut </span><a href="#12-16">PeekableProcIter</a>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#630-635">BlockKind</a>, <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a>&gt; {
     <a href="#647-669">check_move_after_async</a>(<a href="#671">parts</a>)<span class="question-mark">?</span>;
     <span class="kw">match </span><a href="#671">parts</a>.<a href="#55-57">peek</a>() {
-        <span class="prelude-val">Some</span>(TokenTree::Punct(p)) <span class="kw">if </span><a href="#674">p</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html">to_string</a>() == <span class="string">"|" </span>=&gt; {
-            <a href="#671">parts</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html">next</a>();
+        <span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#variant.Punct">TokenTree::Punct</a>(p)) <span class="kw">if </span><a href="#674">p</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html#tymethod.to_string">to_string</a>() == <span class="string">"|" </span>=&gt; {
+            <a href="#671">parts</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.next">next</a>();
             <span class="prelude-val">Ok</span>(<a href="#633">BlockKind::AsyncClosure</a>(<a href="#761-773">closure</a>(<a href="#671">parts</a>)<span class="question-mark">?</span>))
         }
-        <span class="prelude-val">Some</span>(TokenTree::Punct(p)) =&gt; {
+        <span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#variant.Punct">TokenTree::Punct</a>(p)) =&gt; {
             <span class="kw">let </span>err = <a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.format.html">format!</a>(<span class="string">"Expected closure or block after `async move`, found `{p}`"</span>);
             <span class="prelude-val">Err</span>(<a href="#671">parts</a>.<a href="#63-65">generate_error_with_next_span</a>(<span class="kw-2">&amp;</span><a href="#679">err</a>))
         }
-        <span class="prelude-val">Some</span>(TokenTree::Group(g)) <span class="kw">if </span><a href="#682">g</a>.delimiter() == Delimiter::Brace =&gt; <span class="prelude-val">Ok</span>(<a href="#634">BlockKind::AsyncBlock</a>),
-        <span class="prelude-val">Some</span>(TokenTree::Group(g)) =&gt; {
+        <span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#variant.Group">TokenTree::Group</a>(g)) <span class="kw">if </span><a href="#682">g</a>.<a href="https://doc.rust-lang.org/nightly/proc_macro/struct.Group.html#method.delimiter">delimiter</a>() == <a href="https://doc.rust-lang.org/nightly/proc_macro/enum.Delimiter.html#variant.Brace">Delimiter::Brace</a> =&gt; <span class="prelude-val">Ok</span>(<a href="#634">BlockKind::AsyncBlock</a>),
+        <span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#variant.Group">TokenTree::Group</a>(g)) =&gt; {
             <span class="kw">let </span>err = <a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.format.html">format!</a>(
                 <span class="string">"Expected closure or block after `async move`, found `{}`"</span>,
                 delimiter_to_string(g.delimiter(), <span class="bool-val">true</span>),
@@ -1721,15 +1721,15 @@ let {0} = match {1}::clone::Upgrade::upgrade(&amp;{0}) {{
 <span class="comment">// Returns `true` if this is an async context.
 </span><span class="kw">fn </span>check_before_closure(parts: <span class="kw-2">&amp;mut </span><a href="#12-16">PeekableProcIter</a>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#630-635">BlockKind</a>, <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a>&gt; {
     <span class="kw">let </span>is_async = <span class="kw">match </span><a href="#695">parts</a>.<a href="#55-57">peek</a>() {
-        <span class="prelude-val">Some</span>(TokenTree::Ident(i)) <span class="kw">if </span><a href="#697">i</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html">to_string</a>() == <span class="string">"move" </span>=&gt; <span class="bool-val">false</span>,
-        <span class="prelude-val">Some</span>(TokenTree::Ident(i)) <span class="kw">if </span><a href="#698">i</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html">to_string</a>() == <span class="string">"async" </span>=&gt; <span class="bool-val">true</span>,
-        <span class="prelude-val">Some</span>(TokenTree::Ident(i)) <span class="kw">if </span><a href="#699">i</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html">to_string</a>() == <span class="string">"default" </span>=&gt; {
+        <span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#variant.Ident">TokenTree::Ident</a>(i)) <span class="kw">if </span><a href="#697">i</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html#tymethod.to_string">to_string</a>() == <span class="string">"move" </span>=&gt; <span class="bool-val">false</span>,
+        <span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#variant.Ident">TokenTree::Ident</a>(i)) <span class="kw">if </span><a href="#698">i</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html#tymethod.to_string">to_string</a>() == <span class="string">"async" </span>=&gt; <span class="bool-val">true</span>,
+        <span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#variant.Ident">TokenTree::Ident</a>(i)) <span class="kw">if </span><a href="#699">i</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html#tymethod.to_string">to_string</a>() == <span class="string">"default" </span>=&gt; {
             <span class="kw">let </span>span = <a href="#695">parts</a>.next_span;
             <span class="kw">let </span>ret = <a href="#570-603">return_kind</a>(<a href="#695">parts</a>)<span class="question-mark">?</span>;
             <span class="kw">let </span>err = <a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.format.html">format!</a>(<span class="string">"Missing `@` before `{}`"</span>, ret.keyword());
             <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="#695">parts</a>.<a href="#67-93">generate_error_with_span</a>(<span class="kw-2">&amp;</span><a href="#702">err</a>, <a href="#700">span</a>));
         }
-        <span class="prelude-val">Some</span>(TokenTree::Punct(p)) <span class="kw">if </span><a href="#705">p</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html">to_string</a>() == <span class="string">"|" </span>=&gt; {
+        <span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#variant.Punct">TokenTree::Punct</a>(p)) <span class="kw">if </span><a href="#705">p</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html#tymethod.to_string">to_string</a>() == <span class="string">"|" </span>=&gt; {
             <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="#695">parts</a>.<a href="#63-65">generate_error_with_next_span</a>(
                 <span class="string">"Closure needs to be \"moved\" so please add `move` before closure"</span>,
             ));
@@ -1740,35 +1740,35 @@ let {0} = match {1}::clone::Upgrade::upgrade(&amp;{0}) {{
             )
         }
     };
-    <a href="#695">parts</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html">next</a>();
+    <a href="#695">parts</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.next">next</a>();
     <span class="kw">if </span>is_async {
         <span class="kw">return </span><a href="#671-692">check_async_syntax</a>(<a href="#695">parts</a>);
     }
     <span class="kw">match </span><a href="#695">parts</a>.<a href="#55-57">peek</a>() {
-        <span class="prelude-val">Some</span>(TokenTree::Punct(p)) <span class="kw">if </span><a href="#721">p</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html">to_string</a>() == <span class="string">"|" </span>=&gt; {}
+        <span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#variant.Punct">TokenTree::Punct</a>(p)) <span class="kw">if </span><a href="#721">p</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html#tymethod.to_string">to_string</a>() == <span class="string">"|" </span>=&gt; {}
         <span class="prelude-val">Some</span>(x) =&gt; {
             <span class="kw">let </span>err = <a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.format.html">format!</a>(<span class="string">"Expected closure, found `{x}`"</span>);
             <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="#695">parts</a>.<a href="#63-65">generate_error_with_next_span</a>(<span class="kw-2">&amp;</span><a href="#723">err</a>));
         }
         <span class="prelude-val">None </span>=&gt; <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="#695">parts</a>.<a href="#59-61">generate_error</a>(<span class="string">"Expected closure"</span>)),
     }
-    <a href="#695">parts</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html">next</a>();
+    <a href="#695">parts</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.next">next</a>();
 
     <span class="kw">let </span>closure = <a href="#761-773">closure</a>(<a href="#695">parts</a>)<span class="question-mark">?</span>;
     <span class="kw">match </span><a href="#695">parts</a>.<a href="#55-57">peek</a>() {
-        <span class="prelude-val">Some</span>(TokenTree::Ident(i)) <span class="kw">if </span><a href="#732">i</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html">to_string</a>() == <span class="string">"async" </span>=&gt; {
-            <a href="#695">parts</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html">next</a>();
+        <span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#variant.Ident">TokenTree::Ident</a>(i)) <span class="kw">if </span><a href="#732">i</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html#tymethod.to_string">to_string</a>() == <span class="string">"async" </span>=&gt; {
+            <a href="#695">parts</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.next">next</a>();
             <a href="#647-669">check_move_after_async</a>(<a href="#695">parts</a>)<span class="question-mark">?</span>;
             <span class="kw">match </span><a href="#695">parts</a>.<a href="#55-57">peek</a>() {
-                <span class="prelude-val">Some</span>(TokenTree::Group(g)) <span class="kw">if </span><a href="#736">g</a>.delimiter() == Delimiter::Brace =&gt; {
+                <span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#variant.Group">TokenTree::Group</a>(g)) <span class="kw">if </span><a href="#736">g</a>.<a href="https://doc.rust-lang.org/nightly/proc_macro/struct.Group.html#method.delimiter">delimiter</a>() == <a href="https://doc.rust-lang.org/nightly/proc_macro/enum.Delimiter.html#variant.Brace">Delimiter::Brace</a> =&gt; {
                     <span class="prelude-val">Ok</span>(<a href="#632">BlockKind::ClosureWrappingAsync</a>(<a href="#730">closure</a>))
                 }
                 <span class="comment">// The next matchings are for better error messages.
-                </span><span class="prelude-val">Some</span>(TokenTree::Punct(p)) =&gt; {
+                </span><span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#variant.Punct">TokenTree::Punct</a>(p)) =&gt; {
                     <span class="kw">let </span>err = <a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.format.html">format!</a>(<span class="string">"Expected block after `| async move`, found `{p}`"</span>);
                     <span class="prelude-val">Err</span>(<a href="#695">parts</a>.<a href="#63-65">generate_error_with_next_span</a>(<span class="kw-2">&amp;</span><a href="#741">err</a>))
                 }
-                <span class="prelude-val">Some</span>(TokenTree::Group(g)) =&gt; {
+                <span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#variant.Group">TokenTree::Group</a>(g)) =&gt; {
                     <span class="kw">let </span>err = <a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.format.html">format!</a>(
                         <span class="string">"Expected block after `| async move`, found `{}`"</span>,
                         delimiter_to_string(g.delimiter(), <span class="bool-val">true</span>),
@@ -1786,13 +1786,13 @@ let {0} = match {1}::clone::Upgrade::upgrade(&amp;{0}) {{
 
 <span class="attr">#[doc(alias = <span class="string">"get_closure"</span>)]
 </span><span class="kw">fn </span>closure(parts: <span class="kw-2">&amp;mut </span><a href="#12-16">PeekableProcIter</a>) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html">TokenTree</a>&gt;, <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a>&gt; {
-    <span class="kw">let </span><span class="kw-2">mut </span>ret = Vec::new();
+    <span class="kw">let </span><span class="kw-2">mut </span>ret = <a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.new">Vec::new</a>();
 
     <span class="kw">loop </span>{
         <span class="kw">let </span>span = <a href="#761">parts</a>.current_span;
-        <span class="kw">match </span><a href="#761">parts</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html">next</a>() {
-            <span class="prelude-val">Some</span>(TokenTree::Punct(p)) <span class="kw">if </span><a href="#767">p</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html">to_string</a>() == <span class="string">"|" </span>=&gt; <span class="kw">break</span>,
-            <span class="prelude-val">Some</span>(x) =&gt; <a href="#762">ret</a>.push(<a href="#768">x</a>),
+        <span class="kw">match </span><a href="#761">parts</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.next">next</a>() {
+            <span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#variant.Punct">TokenTree::Punct</a>(p)) <span class="kw">if </span><a href="#767">p</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html#tymethod.to_string">to_string</a>() == <span class="string">"|" </span>=&gt; <span class="kw">break</span>,
+            <span class="prelude-val">Some</span>(x) =&gt; <a href="#762">ret</a>.<a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.push">push</a>(<a href="#768">x</a>),
             <span class="prelude-val">None </span>=&gt; <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="#761">parts</a>.<a href="#67-93">generate_error_with_span</a>(<span class="string">"Unexpected end 3"</span>, <a href="#765">span</a>)),
         }
     }
@@ -1800,14 +1800,14 @@ let {0} = match {1}::clone::Upgrade::upgrade(&amp;{0}) {{
 }
 
 <span class="kw">pub fn </span>tokens_to_string(parts: <span class="kw">impl </span>Iterator&lt;Item = <a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html">TokenTree</a>&gt;) -&gt; <a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a> {
-    <span class="kw">let </span><span class="kw-2">mut </span>ret = String::new();
+    <span class="kw">let </span><span class="kw-2">mut </span>ret = <a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html#method.new">String::new</a>();
     <span class="comment">// This is used in case of "if ident" or other similar cases.
     </span><span class="kw">let </span><span class="kw-2">mut </span>prev_is_ident = <span class="bool-val">false</span>;
     <span class="kw">let </span>handle_ident_like = |i: <a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>, ret: <span class="kw-2">&amp;mut </span><a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>, prev_is_ident: <span class="kw-2">&amp;mut </span><a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>| {
         <span class="kw">if </span><span class="kw-2">*</span>prev_is_ident {
-            <a href="#779">ret</a>.push(<span class="string">' '</span>);
+            <a href="#779">ret</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html#method.push">push</a>(<span class="string">' '</span>);
         }
-        <a href="#779">ret</a>.push_str(<span class="kw-2">&amp;</span><a href="#779">i</a>);
+        <a href="#779">ret</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html#method.push_str">push_str</a>(<span class="kw-2">&amp;</span><a href="#779">i</a>);
         <span class="kw-2">*</span><a href="#779">prev_is_ident</a> = <span class="bool-val">true</span>;
     };
 
@@ -1834,7 +1834,7 @@ let {0} = match {1}::clone::Upgrade::upgrade(&amp;{0}) {{
     return_kind: <span class="prelude-ty">Option</span>&lt;<a href="#115-118">WrapperKind</a>&gt;,
     kind: <a href="#630-635">BlockKind</a>,
 ) -&gt; <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a> {
-    <span class="kw">let </span><span class="kw-2">mut </span>body = TokenStream::new();
+    <span class="kw">let </span><span class="kw-2">mut </span>body = <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html#method.new">TokenStream::new</a>();
 
     <span class="kw">for </span>el <span class="kw">in </span><span class="kw-2">&amp;</span>elements {
         <span class="kw">let </span>stream: TokenStream = el
@@ -1843,7 +1843,7 @@ let {0} = match {1}::clone::Upgrade::upgrade(&amp;{0}) {{
             .expect(<span class="string">"failed to convert element after"</span>);
         body.extend(stream.into_iter().collect::&lt;Vec&lt;<span class="kw">_</span>&gt;&gt;());
     }
-    <a href="#810">body</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.Extend.html">extend</a>(<a href="#805">parts</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html">collect</a>::&lt;Vec&lt;<span class="kw">_</span>&gt;&gt;());
+    <a href="#810">body</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.Extend.html#tymethod.extend">extend</a>(<a href="#805">parts</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.collect">collect</a>::&lt;Vec&lt;<span class="kw">_</span>&gt;&gt;());
 
     <span class="comment">// To prevent to lose the spans in case some errors occur in the code, we need to keep `body`!
     //
@@ -1875,9 +1875,9 @@ let {0} = match {1}::clone::Upgrade::upgrade(&amp;{0}) {{
 
     <span class="comment">// This part is creating the TokenStream using the variables that needs to be cloned (from the
     // @weak and @strong annotations).
-    </span><span class="kw">let </span><span class="kw-2">mut </span>inner: Vec&lt;<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html">TokenTree</a>&gt; = Vec::new();
+    </span><span class="kw">let </span><span class="kw-2">mut </span>inner: Vec&lt;<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html">TokenTree</a>&gt; = <a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.new">Vec::new</a>();
     <span class="kw">if </span><a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.matches.html">matches!</a>(kind, BlockKind::ClosureWrappingAsync(<span class="kw">_</span>)) {
-        <a href="#851">inner</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.Extend.html">extend</a>(<a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.vec.html">vec!</a>[
+        <a href="#851">inner</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.Extend.html#tymethod.extend">extend</a>(<a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.vec.html">vec!</a>[
             TokenTree::Ident(Ident::new(<span class="string">"async"</span>, Span::call_site())),
             TokenTree::Ident(Ident::new(<span class="string">"move"</span>, Span::call_site())),
         ]);
@@ -1886,23 +1886,23 @@ let {0} = match {1}::clone::Upgrade::upgrade(&amp;{0}) {{
     <span class="kw">let </span>is_async_closure_kind = <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.matches.html">matches!</a>(kind, BlockKind::AsyncClosure(<span class="kw">_</span>));
     <span class="kw">if let </span><span class="prelude-val">Some</span>(closure) = <a href="#808">kind</a>.<a href="#639-644">closure</a>() {
         <span class="kw">if </span>is_async_closure_kind {
-            <a href="#840">ret</a>.push(TokenTree::Ident(Ident::new(<span class="string">"async"</span>, Span::call_site())));
+            <a href="#840">ret</a>.<a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.push">push</a>(<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#variant.Ident">TokenTree::Ident</a>(<a href="https://doc.rust-lang.org/nightly/proc_macro/struct.Ident.html#method.new">Ident::new</a>(<span class="string">"async"</span>, <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.Span.html#method.call_site">Span::call_site</a>())));
         }
-        <a href="#840">ret</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.Extend.html">extend</a>(<a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.vec.html">vec!</a>[
+        <a href="#840">ret</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.Extend.html#tymethod.extend">extend</a>(<a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.vec.html">vec!</a>[
             TokenTree::Ident(Ident::new(<span class="string">"move"</span>, Span::call_site())),
             TokenTree::Punct(Punct::new(<span class="string">'|'</span>, Spacing::Alone)),
         ]);
-        <a href="#840">ret</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.Extend.html">extend</a>(<a href="#860">closure</a>);
-        <a href="#840">ret</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.Extend.html">extend</a>(<a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.vec.html">vec!</a>[TokenTree::Punct(Punct::new(<span class="string">'|'</span>, Spacing::Alone))]);
+        <a href="#840">ret</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.Extend.html#tymethod.extend">extend</a>(<a href="#860">closure</a>);
+        <a href="#840">ret</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.Extend.html#tymethod.extend">extend</a>(<a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.vec.html">vec!</a>[TokenTree::Punct(Punct::new(<span class="string">'|'</span>, Spacing::Alone))]);
     } <span class="kw">else </span>{
-        <a href="#840">ret</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.Extend.html">extend</a>(<a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.vec.html">vec!</a>[
+        <a href="#840">ret</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.Extend.html#tymethod.extend">extend</a>(<a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.vec.html">vec!</a>[
             TokenTree::Ident(Ident::new(<span class="string">"async"</span>, Span::call_site())),
             TokenTree::Ident(Ident::new(<span class="string">"move"</span>, Span::call_site())),
         ]);
     }
     <span class="comment">// The commented lines that follow *might* be useful, don't know. Just in case, I'm keeping
     // them around. You're welcome future me!
-    </span><a href="#851">inner</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.Extend.html">extend</a>(<a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.vec.html">vec!</a>[
+    </span><a href="#851">inner</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.Extend.html#tymethod.extend">extend</a>(<a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.vec.html">vec!</a>[
         <span class="comment">// TokenTree::Ident(Ident::new("let", Span::call_site())),
         // TokenTree::Ident(Ident::new("____ret", Span::call_site())),
         // TokenTree::Punct(Punct::new('=', Spacing::Alone)),
@@ -1910,28 +1910,28 @@ let {0} = match {1}::clone::Upgrade::upgrade(&amp;{0}) {{
         <span class="comment">// TokenTree::Punct(Punct::new(';', Spacing::Alone)),
         // TokenTree::Ident(Ident::new("____ret", Span::call_site())),
     </span>]);
-    <span class="kw">let </span><span class="kw-2">mut </span>inners = TokenStream::new();
-    <a href="#886">inners</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.Extend.html">extend</a>(<a href="#851">inner</a>);
-    <a href="#840">ret</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.Extend.html">extend</a>(<a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.vec.html">vec!</a>[TokenTree::Group(Group::new(Delimiter::Brace, inners))]);
+    <span class="kw">let </span><span class="kw-2">mut </span>inners = <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html#method.new">TokenStream::new</a>();
+    <a href="#886">inners</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.Extend.html#tymethod.extend">extend</a>(<a href="#851">inner</a>);
+    <a href="#840">ret</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.Extend.html#tymethod.extend">extend</a>(<a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.vec.html">vec!</a>[TokenTree::Group(Group::new(Delimiter::Brace, inners))]);
 
-    <span class="kw">let </span><span class="kw-2">mut </span>rets = TokenStream::new();
-    <a href="#890">rets</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.Extend.html">extend</a>(<a href="#840">ret</a>);
+    <span class="kw">let </span><span class="kw-2">mut </span>rets = <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html#method.new">TokenStream::new</a>();
+    <a href="#890">rets</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.Extend.html#tymethod.extend">extend</a>(<a href="#840">ret</a>);
 
-    TokenTree::Group(Group::new(Delimiter::Brace, <a href="#890">rets</a>)).<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html">into</a>()
+    <a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#variant.Group">TokenTree::Group</a>(<a href="https://doc.rust-lang.org/nightly/proc_macro/struct.Group.html#method.new">Group::new</a>(<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.Delimiter.html#variant.Brace">Delimiter::Brace</a>, <a href="#890">rets</a>)).<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>()
 }
 
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>clone_inner(item: <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a> {
-    <span class="kw">let </span><span class="kw-2">mut </span>parts: <a href="#12-16">PeekableProcIter</a> = <a href="#896">item</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html">into</a>();
-    <span class="kw">let </span><span class="kw-2">mut </span>elements = Vec::new();
+    <span class="kw">let </span><span class="kw-2">mut </span>parts: <a href="#12-16">PeekableProcIter</a> = <a href="#896">item</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>();
+    <span class="kw">let </span><span class="kw-2">mut </span>elements = <a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.new">Vec::new</a>();
     <span class="kw">let </span><span class="kw-2">mut </span>prev_is_ident = <span class="bool-val">false</span>;
 
     <span class="kw">loop </span>{
         <span class="kw">let </span>prev = <a href="#897">parts</a>.current_span;
-        <span class="kw">match </span><a href="#897">parts</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html">next</a>() {
-            <span class="prelude-val">Some</span>(TokenTree::Punct(<span class="kw-2">ref </span>p)) =&gt; {
-                <span class="kw">let </span>p_s = <a href="#904">p</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html">to_string</a>();
+        <span class="kw">match </span><a href="#897">parts</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.next">next</a>() {
+            <span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#variant.Punct">TokenTree::Punct</a>(<span class="kw-2">ref </span>p)) =&gt; {
+                <span class="kw">let </span>p_s = <a href="#904">p</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html#tymethod.to_string">to_string</a>();
                 <span class="kw">if </span>p_s == <span class="string">"=" </span>&amp;&amp; parts.peek().map_or_else(|| <span class="bool-val">false</span>, |n| is_punct(n, <span class="string">"&gt;"</span>)) {
-                    <a href="#897">parts</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html">next</a>();
+                    <a href="#897">parts</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.next">next</a>();
                     <span class="kw">break</span>;
                 } <span class="kw">else if </span>p_s == <span class="string">"@" </span>{
                     <span class="kw">if let </span><span class="prelude-val">Err</span>(e) = <a href="#424-477">parse_ident</a>(<span class="kw-2">&amp;mut </span><a href="#897">parts</a>, <span class="kw-2">&amp;mut </span><a href="#898">elements</a>) {
@@ -1949,7 +1949,7 @@ let {0} = match {1}::clone::Upgrade::upgrade(&amp;{0}) {{
                     <span class="kw">return </span><a href="#897">parts</a>.<a href="#59-61">generate_error</a>(<span class="string">"Expected `=&gt;` before closure"</span>);
                 }
             }
-            <span class="prelude-val">Some</span>(TokenTree::Ident(i)) =&gt; {
+            <span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#variant.Ident">TokenTree::Ident</a>(i)) =&gt; {
                 <span class="kw">let </span>err = <a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.format.html">format!</a>(
                     <span class="string">"Unexpected ident `{i}`: you need to specify if this is a weak or a strong \
                      clone."</span>,

@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/auto/functions.rs`."><title>functions.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-5bc39a1768837dd0.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.78.0-nightly (b11fbfbf3 2024-02-03)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-48f368f3872407c8.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/auto/functions.rs`."><title>functions.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-5bc39a1768837dd0.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.78.0-nightly (b381d3ab2 2024-02-12)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-48f368f3872407c8.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -1417,18 +1417,18 @@
     cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="cancellable.rs.html#7-85">Cancellable</a>&gt;&gt;,
     callback: P,
 ) {
-    <span class="kw">let </span>main_context = glib::MainContext::ref_thread_default();
-    <span class="kw">let </span>is_main_context_owner = <a href="#31">main_context</a>.is_owner();
+    <span class="kw">let </span>main_context = <a href="../../../glib/auto/main_context/struct.MainContext.html#method.ref_thread_default">glib::MainContext::ref_thread_default</a>();
+    <span class="kw">let </span>is_main_context_owner = <a href="#31">main_context</a>.<a href="../../../glib/auto/main_context/struct.MainContext.html#method.is_owner">is_owner</a>();
     <span class="kw">let </span>has_acquired_main_context = (!<a href="#32">is_main_context_owner</a>)
-        .then(|| <a href="#31">main_context</a>.acquire().ok())
-        .flatten();
+        .<a href="https://doc.rust-lang.org/nightly/core/foreigntype.bool.html#method.then">then</a>(|| <a href="#31">main_context</a>.<a href="../../../glib/auto/main_context/struct.MainContext.html#method.acquire">acquire</a>().<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.ok">ok</a>())
+        .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.flatten">flatten</a>();
     <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.assert.html">assert!</a>(
         is_main_context_owner || has_acquired_main_context.is_some(),
         <span class="string">"Async operations only allowed if the thread is owning the MainContext"
     </span>);
 
     <span class="kw">let </span>user_data: Box_&lt;glib::thread_guard::ThreadGuard&lt;P&gt;&gt; =
-        Box_::new(glib::thread_guard::ThreadGuard::new(<a href="#29">callback</a>));
+        <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">Box_::new</a>(<a href="../../../glib/thread_guard/struct.ThreadGuard.html#method.new">glib::thread_guard::ThreadGuard::new</a>(<a href="#29">callback</a>));
     <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>bus_get_trampoline&lt;
         P: FnOnce(<span class="prelude-ty">Result</span>&lt;<a href="dbus_connection.rs.html#20-198">DBusConnection</a>, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt;) + <span class="lifetime">'static</span>,
     &gt;(
@@ -1436,25 +1436,25 @@
         res: <span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GAsyncResult.html"><span class="kw">crate</span>::ffi::GAsyncResult</a>,
         user_data: <a href="../../../glib_sys/type.gpointer.html">glib::ffi::gpointer</a>,
     ) {
-        <span class="kw">let </span><span class="kw-2">mut </span>error = std::ptr::null_mut();
-        <span class="kw">let </span>ret = ffi::g_bus_get_finish(<a href="#47">res</a>, <span class="kw-2">&amp;mut </span><a href="#50">error</a>);
+        <span class="kw">let </span><span class="kw-2">mut </span>error = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">std::ptr::null_mut</a>();
+        <span class="kw">let </span>ret = <a href="../../../gio_sys/fn.g_bus_get_finish.html">ffi::g_bus_get_finish</a>(<a href="#47">res</a>, <span class="kw-2">&amp;mut </span><a href="#50">error</a>);
         <span class="kw">let </span>result = <span class="kw">if </span>error.is_null() {
-            <span class="prelude-val">Ok</span>(from_glib_full(<a href="#51">ret</a>))
+            <span class="prelude-val">Ok</span>(<a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#51">ret</a>))
         } <span class="kw">else </span>{
-            <span class="prelude-val">Err</span>(from_glib_full(<a href="#50">error</a>))
+            <span class="prelude-val">Err</span>(<a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#50">error</a>))
         };
         <span class="kw">let </span>callback: Box_&lt;glib::thread_guard::ThreadGuard&lt;P&gt;&gt; =
-            Box_::from_raw(<a href="#48">user_data</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
-        <span class="kw">let </span>callback: P = <a href="#57">callback</a>.into_inner();
+            <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.from_raw">Box_::from_raw</a>(<a href="#48">user_data</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
+        <span class="kw">let </span>callback: P = <a href="#57">callback</a>.<a href="../../../glib/thread_guard/struct.ThreadGuard.html#method.into_inner">into_inner</a>();
         <a href="#59">callback</a>(<a href="#52">result</a>);
     }
     <span class="kw">let </span>callback = bus_get_trampoline::&lt;P&gt;;
     <span class="kw">unsafe </span>{
-        ffi::g_bus_get(
-            <a href="#27">bus_type</a>.<a href="../../../glib/translate/trait.IntoGlib.html">into_glib</a>(),
-            <a href="#28">cancellable</a>.map(|p| <a href="#66">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>()).<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+        <a href="../../../gio_sys/fn.g_bus_get.html">ffi::g_bus_get</a>(
+            <a href="#27">bus_type</a>.<a href="../../../glib/translate/trait.IntoGlib.html#tymethod.into_glib">into_glib</a>(),
+            <a href="#28">cancellable</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|p| <a href="#66">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>()).<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
             <span class="prelude-val">Some</span>(<a href="#62">callback</a>),
-            Box_::into_raw(<a href="#41">user_data</a>) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+            <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.into_raw">Box_::into_raw</a>(<a href="#41">user_data</a>) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
         );
     }
 }
@@ -1462,7 +1462,7 @@
 <span class="kw">pub fn </span><a href="../../../gio/functions/fn.bus_get_future.html">bus_get_future</a>(
     bus_type: <a href="enums.rs.html#11-26">BusType</a>,
 ) -&gt; Pin&lt;Box_&lt;<span class="kw">dyn </span>std::future::Future&lt;Output = <span class="prelude-ty">Result</span>&lt;<a href="dbus_connection.rs.html#20-198">DBusConnection</a>, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt;&gt; + <span class="lifetime">'static</span>&gt;&gt; {
-    Box_::pin(<a href="../gio_future.rs.html#38-45"><span class="kw">crate</span>::GioFuture::new</a>(
+    <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.pin">Box_::pin</a>(<a href="../gio_future.rs.html#38-45"><span class="kw">crate</span>::GioFuture::new</a>(
         <span class="kw-2">&amp;</span>(),
         <span class="kw">move </span>|_obj, cancellable, send| {
             <a href="#26-71">bus_get</a>(<a href="#74">bus_type</a>, <span class="prelude-val">Some</span>(<a href="#78">cancellable</a>), <span class="kw">move </span>|res| {
@@ -1505,16 +1505,16 @@
     cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="cancellable.rs.html#7-85">Cancellable</a>&gt;&gt;,
 ) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="dbus_connection.rs.html#20-198">DBusConnection</a>, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt; {
     <span class="kw">unsafe </span>{
-        <span class="kw">let </span><span class="kw-2">mut </span>error = std::ptr::null_mut();
-        <span class="kw">let </span>ret = ffi::g_bus_get_sync(
-            <a href="#115">bus_type</a>.<a href="../../../glib/translate/trait.IntoGlib.html">into_glib</a>(),
-            <a href="#116">cancellable</a>.map(|p| <a href="#122">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>()).<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+        <span class="kw">let </span><span class="kw-2">mut </span>error = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">std::ptr::null_mut</a>();
+        <span class="kw">let </span>ret = <a href="../../../gio_sys/fn.g_bus_get_sync.html">ffi::g_bus_get_sync</a>(
+            <a href="#115">bus_type</a>.<a href="../../../glib/translate/trait.IntoGlib.html#tymethod.into_glib">into_glib</a>(),
+            <a href="#116">cancellable</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|p| <a href="#122">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>()).<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
             <span class="kw-2">&amp;mut </span><a href="#119">error</a>,
         );
         <span class="kw">if </span>error.is_null() {
-            <span class="prelude-val">Ok</span>(from_glib_full(<a href="#120">ret</a>))
+            <span class="prelude-val">Ok</span>(<a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#120">ret</a>))
         } <span class="kw">else </span>{
-            <span class="prelude-val">Err</span>(from_glib_full(<a href="#119">error</a>))
+            <span class="prelude-val">Err</span>(<a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#119">error</a>))
         }
     }
 }
@@ -1551,8 +1551,8 @@
 </span><span class="attr">#[doc(alias = <span class="string">"g_content_type_can_be_executable"</span>)]
 </span><span class="kw">pub fn </span><a href="../../../gio/functions/fn.content_type_can_be_executable.html">content_type_can_be_executable</a>(type_: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
     <span class="kw">unsafe </span>{
-        from_glib(ffi::g_content_type_can_be_executable(
-            <a href="#163">type_</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+        <a href="../../../glib/translate/fn.from_glib.html">from_glib</a>(<a href="../../../gio_sys/fn.g_content_type_can_be_executable.html">ffi::g_content_type_can_be_executable</a>(
+            <a href="#163">type_</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
         ))
     }
 }
@@ -1570,9 +1570,9 @@
 </span><span class="attr">#[doc(alias = <span class="string">"g_content_type_equals"</span>)]
 </span><span class="kw">pub fn </span><a href="../../../gio/functions/fn.content_type_equals.html">content_type_equals</a>(type1: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, type2: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
     <span class="kw">unsafe </span>{
-        from_glib(ffi::g_content_type_equals(
-            <a href="#182">type1</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
-            <a href="#182">type2</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+        <a href="../../../glib/translate/fn.from_glib.html">from_glib</a>(<a href="../../../gio_sys/fn.g_content_type_equals.html">ffi::g_content_type_equals</a>(
+            <a href="#182">type1</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+            <a href="#182">type2</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
         ))
     }
 }
@@ -1588,8 +1588,8 @@
 </span><span class="attr">#[doc(alias = <span class="string">"g_content_type_from_mime_type"</span>)]
 </span><span class="kw">pub fn </span><a href="../../../gio/functions/fn.content_type_from_mime_type.html">content_type_from_mime_type</a>(mime_type: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="../../../glib/gstring/struct.GString.html">glib::GString</a>&gt; {
     <span class="kw">unsafe </span>{
-        from_glib_full(ffi::g_content_type_from_mime_type(
-            <a href="#200">mime_type</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+        <a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="../../../gio_sys/fn.g_content_type_from_mime_type.html">ffi::g_content_type_from_mime_type</a>(
+            <a href="#200">mime_type</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
         ))
     }
 }
@@ -1604,7 +1604,7 @@
 ///     returned string with g_free()
 </span><span class="attr">#[doc(alias = <span class="string">"g_content_type_get_description"</span>)]
 </span><span class="kw">pub fn </span><a href="../../../gio/functions/fn.content_type_get_description.html">content_type_get_description</a>(type_: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a href="../../../glib/gstring/struct.GString.html">glib::GString</a> {
-    <span class="kw">unsafe </span>{ from_glib_full(ffi::g_content_type_get_description(<a href="#217">type_</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>)) }
+    <span class="kw">unsafe </span>{ <a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="../../../gio_sys/fn.g_content_type_get_description.html">ffi::g_content_type_get_description</a>(<a href="#217">type_</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>)) }
 }
 
 <span class="doccomment">/// Gets the generic icon name for a content type.
@@ -1622,8 +1622,8 @@
 </span><span class="attr">#[doc(alias = <span class="string">"g_content_type_get_generic_icon_name"</span>)]
 </span><span class="kw">pub fn </span><a href="../../../gio/functions/fn.content_type_get_generic_icon_name.html">content_type_get_generic_icon_name</a>(type_: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="../../../glib/gstring/struct.GString.html">glib::GString</a>&gt; {
     <span class="kw">unsafe </span>{
-        from_glib_full(ffi::g_content_type_get_generic_icon_name(
-            <a href="#234">type_</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+        <a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="../../../gio_sys/fn.g_content_type_get_generic_icon_name.html">ffi::g_content_type_get_generic_icon_name</a>(
+            <a href="#234">type_</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
         ))
     }
 }
@@ -1638,7 +1638,7 @@
 ///     object with g_object_unref()
 </span><span class="attr">#[doc(alias = <span class="string">"g_content_type_get_icon"</span>)]
 </span><span class="kw">pub fn </span><a href="../../../gio/functions/fn.content_type_get_icon.html">content_type_get_icon</a>(type_: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a href="icon.rs.html#7-48">Icon</a> {
-    <span class="kw">unsafe </span>{ from_glib_full(ffi::g_content_type_get_icon(<a href="#251">type_</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>)) }
+    <span class="kw">unsafe </span>{ <a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="../../../gio_sys/fn.g_content_type_get_icon.html">ffi::g_content_type_get_icon</a>(<a href="#251">type_</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>)) }
 }
 
 <span class="doccomment">/// Get the list of directories which MIME data is loaded from. See
@@ -1653,7 +1653,7 @@
 #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"v2_60"</span>)))]
 #[doc(alias = <span class="string">"g_content_type_get_mime_dirs"</span>)]
 </span><span class="kw">pub fn </span><a href="../../../gio/functions/fn.content_type_get_mime_dirs.html">content_type_get_mime_dirs</a>() -&gt; Vec&lt;<a href="../../../glib/gstring/struct.GString.html">glib::GString</a>&gt; {
-    <span class="kw">unsafe </span>{ <a href="../../../glib/translate/trait.FromGlibPtrContainer.html">FromGlibPtrContainer::from_glib_none</a>(ffi::g_content_type_get_mime_dirs()) }
+    <span class="kw">unsafe </span>{ <a href="../../../glib/translate/trait.FromGlibPtrContainer.html#tymethod.from_glib_none">FromGlibPtrContainer::from_glib_none</a>(<a href="../../../gio_sys/fn.g_content_type_get_mime_dirs.html">ffi::g_content_type_get_mime_dirs</a>()) }
 }
 
 <span class="doccomment">/// Gets the mime type for the content type, if one is registered.
@@ -1666,7 +1666,7 @@
 ///     given @type_, or [`None`] if unknown; free with g_free().
 </span><span class="attr">#[doc(alias = <span class="string">"g_content_type_get_mime_type"</span>)]
 </span><span class="kw">pub fn </span><a href="../../../gio/functions/fn.content_type_get_mime_type.html">content_type_get_mime_type</a>(type_: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="../../../glib/gstring/struct.GString.html">glib::GString</a>&gt; {
-    <span class="kw">unsafe </span>{ from_glib_full(ffi::g_content_type_get_mime_type(<a href="#279">type_</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>)) }
+    <span class="kw">unsafe </span>{ <a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="../../../gio_sys/fn.g_content_type_get_mime_type.html">ffi::g_content_type_get_mime_type</a>(<a href="#279">type_</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>)) }
 }
 
 <span class="doccomment">/// Gets the symbolic icon for a content type.
@@ -1680,8 +1680,8 @@
 </span><span class="attr">#[doc(alias = <span class="string">"g_content_type_get_symbolic_icon"</span>)]
 </span><span class="kw">pub fn </span><a href="../../../gio/functions/fn.content_type_get_symbolic_icon.html">content_type_get_symbolic_icon</a>(type_: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a href="icon.rs.html#7-48">Icon</a> {
     <span class="kw">unsafe </span>{
-        from_glib_full(ffi::g_content_type_get_symbolic_icon(
-            <a href="#292">type_</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+        <a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="../../../gio_sys/fn.g_content_type_get_symbolic_icon.html">ffi::g_content_type_get_symbolic_icon</a>(
+            <a href="#292">type_</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
         ))
     }
 }
@@ -1708,16 +1708,16 @@
     filename: <span class="prelude-ty">Option</span>&lt;<span class="kw">impl </span>AsRef&lt;<a href="https://doc.rust-lang.org/nightly/std/path/struct.Path.html">std::path::Path</a>&gt;&gt;,
     data: <span class="kw-2">&amp;</span>[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>],
 ) -&gt; (<a href="../../../glib/gstring/struct.GString.html">glib::GString</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>) {
-    <span class="kw">let </span>data_size = <a href="#320">data</a>.len() <span class="kw">as _</span>;
+    <span class="kw">let </span>data_size = <a href="#320">data</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.len">len</a>() <span class="kw">as _</span>;
     <span class="kw">unsafe </span>{
-        <span class="kw">let </span><span class="kw-2">mut </span>result_uncertain = std::mem::MaybeUninit::uninit();
-        <span class="kw">let </span>ret = from_glib_full(ffi::g_content_type_guess(
-            <a href="#319">filename</a>.as_ref().map(|p| <a href="#326">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>()).<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
-            <a href="#320">data</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+        <span class="kw">let </span><span class="kw-2">mut </span>result_uncertain = <a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.uninit">std::mem::MaybeUninit::uninit</a>();
+        <span class="kw">let </span>ret = <a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="../../../gio_sys/fn.g_content_type_guess.html">ffi::g_content_type_guess</a>(
+            <a href="#319">filename</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_ref">as_ref</a>().<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|p| <a href="#326">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>()).<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+            <a href="#320">data</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
             <a href="#322">data_size</a>,
-            <a href="#324">result_uncertain</a>.as_mut_ptr(),
+            <a href="#324">result_uncertain</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.as_mut_ptr">as_mut_ptr</a>(),
         ));
-        (<a href="#325">ret</a>, from_glib(<a href="#324">result_uncertain</a>.assume_init()))
+        (<a href="#325">ret</a>, <a href="../../../glib/translate/fn.from_glib.html">from_glib</a>(<a href="#324">result_uncertain</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.assume_init">assume_init</a>()))
     }
 }
 
@@ -1743,8 +1743,8 @@
 </span><span class="attr">#[doc(alias = <span class="string">"g_content_type_guess_for_tree"</span>)]
 </span><span class="kw">pub fn </span><a href="../../../gio/functions/fn.content_type_guess_for_tree.html">content_type_guess_for_tree</a>(root: <span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="file.rs.html#14-116">File</a>&gt;) -&gt; Vec&lt;<a href="../../../glib/gstring/struct.GString.html">glib::GString</a>&gt; {
     <span class="kw">unsafe </span>{
-        <a href="../../../glib/translate/trait.FromGlibPtrContainer.html">FromGlibPtrContainer::from_glib_full</a>(ffi::g_content_type_guess_for_tree(
-            <a href="#355">root</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+        <a href="../../../glib/translate/trait.FromGlibPtrContainer.html#tymethod.from_glib_full">FromGlibPtrContainer::from_glib_full</a>(<a href="../../../gio_sys/fn.g_content_type_guess_for_tree.html">ffi::g_content_type_guess_for_tree</a>(
+            <a href="#355">root</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
         ))
     }
 }
@@ -1762,9 +1762,9 @@
 </span><span class="attr">#[doc(alias = <span class="string">"g_content_type_is_a"</span>)]
 </span><span class="kw">pub fn </span><a href="../../../gio/functions/fn.content_type_is_a.html">content_type_is_a</a>(type_: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, supertype: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
     <span class="kw">unsafe </span>{
-        from_glib(ffi::g_content_type_is_a(
-            <a href="#374">type_</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
-            <a href="#374">supertype</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+        <a href="../../../glib/translate/fn.from_glib.html">from_glib</a>(<a href="../../../gio_sys/fn.g_content_type_is_a.html">ffi::g_content_type_is_a</a>(
+            <a href="#374">type_</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+            <a href="#374">supertype</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
         ))
     }
 }
@@ -1783,9 +1783,9 @@
 </span><span class="attr">#[doc(alias = <span class="string">"g_content_type_is_mime_type"</span>)]
 </span><span class="kw">pub fn </span><a href="../../../gio/functions/fn.content_type_is_mime_type.html">content_type_is_mime_type</a>(type_: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, mime_type: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
     <span class="kw">unsafe </span>{
-        from_glib(ffi::g_content_type_is_mime_type(
-            <a href="#395">type_</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
-            <a href="#395">mime_type</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+        <a href="../../../glib/translate/fn.from_glib.html">from_glib</a>(<a href="../../../gio_sys/fn.g_content_type_is_mime_type.html">ffi::g_content_type_is_mime_type</a>(
+            <a href="#395">type_</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+            <a href="#395">mime_type</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
         ))
     }
 }
@@ -1802,7 +1802,7 @@
 /// [`true`] if the type is the unknown type.
 </span><span class="attr">#[doc(alias = <span class="string">"g_content_type_is_unknown"</span>)]
 </span><span class="kw">pub fn </span><a href="../../../gio/functions/fn.content_type_is_unknown.html">content_type_is_unknown</a>(type_: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
-    <span class="kw">unsafe </span>{ from_glib(ffi::g_content_type_is_unknown(<a href="#415">type_</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>)) }
+    <span class="kw">unsafe </span>{ <a href="../../../glib/translate/fn.from_glib.html">from_glib</a>(<a href="../../../gio_sys/fn.g_content_type_is_unknown.html">ffi::g_content_type_is_unknown</a>(<a href="#415">type_</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>)) }
 }
 
 <span class="doccomment">/// Set the list of directories used by GIO to load the MIME database.
@@ -1841,7 +1841,7 @@
 #[doc(alias = <span class="string">"g_content_type_set_mime_dirs"</span>)]
 </span><span class="kw">pub fn </span><a href="../../../gio/functions/fn.content_type_set_mime_dirs.html">content_type_set_mime_dirs</a>(dirs: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>]) {
     <span class="kw">unsafe </span>{
-        ffi::g_content_type_set_mime_dirs(<a href="#453">dirs</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>);
+        <a href="../../../gio_sys/fn.g_content_type_set_mime_dirs.html">ffi::g_content_type_set_mime_dirs</a>(<a href="#453">dirs</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>);
     }
 }
 
@@ -1855,7 +1855,7 @@
 ///     content types
 </span><span class="attr">#[doc(alias = <span class="string">"g_content_types_get_registered"</span>)]
 </span><span class="kw">pub fn </span><a href="../../../gio/functions/fn.content_types_get_registered.html">content_types_get_registered</a>() -&gt; Vec&lt;<a href="../../../glib/gstring/struct.GString.html">glib::GString</a>&gt; {
-    <span class="kw">unsafe </span>{ <a href="../../../glib/translate/trait.FromGlibPtrContainer.html">FromGlibPtrContainer::from_glib_full</a>(ffi::g_content_types_get_registered()) }
+    <span class="kw">unsafe </span>{ <a href="../../../glib/translate/trait.FromGlibPtrContainer.html#tymethod.from_glib_full">FromGlibPtrContainer::from_glib_full</a>(<a href="../../../gio_sys/fn.g_content_types_get_registered.html">ffi::g_content_types_get_registered</a>()) }
 }
 
 <span class="doccomment">/// Escape @string so it can appear in a D-Bus address as the value
@@ -1875,7 +1875,7 @@
 ///     non-optionally-escaped bytes escaped
 </span><span class="attr">#[doc(alias = <span class="string">"g_dbus_address_escape_value"</span>)]
 </span><span class="kw">pub fn </span><a href="../../../gio/functions/fn.dbus_address_escape_value.html">dbus_address_escape_value</a>(string: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a href="../../../glib/gstring/struct.GString.html">glib::GString</a> {
-    <span class="kw">unsafe </span>{ from_glib_full(ffi::g_dbus_address_escape_value(<a href="#488">string</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>)) }
+    <span class="kw">unsafe </span>{ <a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="../../../gio_sys/fn.g_dbus_address_escape_value.html">ffi::g_dbus_address_escape_value</a>(<a href="#488">string</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>)) }
 }
 
 <span class="doccomment">/// Synchronously looks up the D-Bus address for the well-known message
@@ -1899,16 +1899,16 @@
     cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="cancellable.rs.html#7-85">Cancellable</a>&gt;&gt;,
 ) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="../../../glib/gstring/struct.GString.html">glib::GString</a>, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt; {
     <span class="kw">unsafe </span>{
-        <span class="kw">let </span><span class="kw-2">mut </span>error = std::ptr::null_mut();
-        <span class="kw">let </span>ret = ffi::g_dbus_address_get_for_bus_sync(
-            <a href="#509">bus_type</a>.<a href="../../../glib/translate/trait.IntoGlib.html">into_glib</a>(),
-            <a href="#510">cancellable</a>.map(|p| <a href="#516">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>()).<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+        <span class="kw">let </span><span class="kw-2">mut </span>error = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">std::ptr::null_mut</a>();
+        <span class="kw">let </span>ret = <a href="../../../gio_sys/fn.g_dbus_address_get_for_bus_sync.html">ffi::g_dbus_address_get_for_bus_sync</a>(
+            <a href="#509">bus_type</a>.<a href="../../../glib/translate/trait.IntoGlib.html#tymethod.into_glib">into_glib</a>(),
+            <a href="#510">cancellable</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|p| <a href="#516">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>()).<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
             <span class="kw-2">&amp;mut </span><a href="#513">error</a>,
         );
         <span class="kw">if </span>error.is_null() {
-            <span class="prelude-val">Ok</span>(from_glib_full(<a href="#514">ret</a>))
+            <span class="prelude-val">Ok</span>(<a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#514">ret</a>))
         } <span class="kw">else </span>{
-            <span class="prelude-val">Err</span>(from_glib_full(<a href="#513">error</a>))
+            <span class="prelude-val">Err</span>(<a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#513">error</a>))
         }
     }
 }
@@ -1938,18 +1938,18 @@
     cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="cancellable.rs.html#7-85">Cancellable</a>&gt;&gt;,
     callback: P,
 ) {
-    <span class="kw">let </span>main_context = glib::MainContext::ref_thread_default();
-    <span class="kw">let </span>is_main_context_owner = <a href="#552">main_context</a>.is_owner();
+    <span class="kw">let </span>main_context = <a href="../../../glib/auto/main_context/struct.MainContext.html#method.ref_thread_default">glib::MainContext::ref_thread_default</a>();
+    <span class="kw">let </span>is_main_context_owner = <a href="#552">main_context</a>.<a href="../../../glib/auto/main_context/struct.MainContext.html#method.is_owner">is_owner</a>();
     <span class="kw">let </span>has_acquired_main_context = (!<a href="#553">is_main_context_owner</a>)
-        .then(|| <a href="#552">main_context</a>.acquire().ok())
-        .flatten();
+        .<a href="https://doc.rust-lang.org/nightly/core/foreigntype.bool.html#method.then">then</a>(|| <a href="#552">main_context</a>.<a href="../../../glib/auto/main_context/struct.MainContext.html#method.acquire">acquire</a>().<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.ok">ok</a>())
+        .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.flatten">flatten</a>();
     <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.assert.html">assert!</a>(
         is_main_context_owner || has_acquired_main_context.is_some(),
         <span class="string">"Async operations only allowed if the thread is owning the MainContext"
     </span>);
 
     <span class="kw">let </span>user_data: Box_&lt;glib::thread_guard::ThreadGuard&lt;P&gt;&gt; =
-        Box_::new(glib::thread_guard::ThreadGuard::new(<a href="#550">callback</a>));
+        <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">Box_::new</a>(<a href="../../../glib/thread_guard/struct.ThreadGuard.html#method.new">glib::thread_guard::ThreadGuard::new</a>(<a href="#550">callback</a>));
     <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>dbus_address_get_stream_trampoline&lt;
         P: FnOnce(<span class="prelude-ty">Result</span>&lt;(<a href="io_stream.rs.html#13-94">IOStream</a>, <span class="prelude-ty">Option</span>&lt;<a href="../../../glib/gstring/struct.GString.html">glib::GString</a>&gt;), <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt;) + <span class="lifetime">'static</span>,
     &gt;(
@@ -1957,26 +1957,26 @@
         res: <span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GAsyncResult.html"><span class="kw">crate</span>::ffi::GAsyncResult</a>,
         user_data: <a href="../../../glib_sys/type.gpointer.html">glib::ffi::gpointer</a>,
     ) {
-        <span class="kw">let </span><span class="kw-2">mut </span>error = std::ptr::null_mut();
-        <span class="kw">let </span><span class="kw-2">mut </span>out_guid = std::ptr::null_mut();
-        <span class="kw">let </span>ret = ffi::g_dbus_address_get_stream_finish(<a href="#568">res</a>, <span class="kw-2">&amp;mut </span><a href="#572">out_guid</a>, <span class="kw-2">&amp;mut </span><a href="#571">error</a>);
+        <span class="kw">let </span><span class="kw-2">mut </span>error = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">std::ptr::null_mut</a>();
+        <span class="kw">let </span><span class="kw-2">mut </span>out_guid = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">std::ptr::null_mut</a>();
+        <span class="kw">let </span>ret = <a href="../../../gio_sys/fn.g_dbus_address_get_stream_finish.html">ffi::g_dbus_address_get_stream_finish</a>(<a href="#568">res</a>, <span class="kw-2">&amp;mut </span><a href="#572">out_guid</a>, <span class="kw-2">&amp;mut </span><a href="#571">error</a>);
         <span class="kw">let </span>result = <span class="kw">if </span>error.is_null() {
-            <span class="prelude-val">Ok</span>((from_glib_full(<a href="#573">ret</a>), from_glib_full(<a href="#572">out_guid</a>)))
+            <span class="prelude-val">Ok</span>((<a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#573">ret</a>), <a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#572">out_guid</a>)))
         } <span class="kw">else </span>{
-            <span class="prelude-val">Err</span>(from_glib_full(<a href="#571">error</a>))
+            <span class="prelude-val">Err</span>(<a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#571">error</a>))
         };
         <span class="kw">let </span>callback: Box_&lt;glib::thread_guard::ThreadGuard&lt;P&gt;&gt; =
-            Box_::from_raw(<a href="#569">user_data</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
-        <span class="kw">let </span>callback: P = <a href="#579">callback</a>.into_inner();
+            <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.from_raw">Box_::from_raw</a>(<a href="#569">user_data</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
+        <span class="kw">let </span>callback: P = <a href="#579">callback</a>.<a href="../../../glib/thread_guard/struct.ThreadGuard.html#method.into_inner">into_inner</a>();
         <a href="#581">callback</a>(<a href="#574">result</a>);
     }
     <span class="kw">let </span>callback = dbus_address_get_stream_trampoline::&lt;P&gt;;
     <span class="kw">unsafe </span>{
-        ffi::g_dbus_address_get_stream(
-            <a href="#548">address</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
-            <a href="#549">cancellable</a>.map(|p| <a href="#588">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>()).<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+        <a href="../../../gio_sys/fn.g_dbus_address_get_stream.html">ffi::g_dbus_address_get_stream</a>(
+            <a href="#548">address</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+            <a href="#549">cancellable</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|p| <a href="#588">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>()).<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
             <span class="prelude-val">Some</span>(<a href="#584">callback</a>),
-            Box_::into_raw(<a href="#562">user_data</a>) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+            <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.into_raw">Box_::into_raw</a>(<a href="#562">user_data</a>) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
         );
     }
 }
@@ -1989,8 +1989,8 @@
             + <span class="lifetime">'static</span>,
     &gt;,
 &gt; {
-    <span class="kw">let </span>address = <a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html">String::from</a>(<a href="#596">address</a>);
-    Box_::pin(<a href="../gio_future.rs.html#38-45"><span class="kw">crate</span>::GioFuture::new</a>(
+    <span class="kw">let </span>address = <a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html#tymethod.from">String::from</a>(<a href="#596">address</a>);
+    <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.pin">Box_::pin</a>(<a href="../gio_future.rs.html#38-45"><span class="kw">crate</span>::GioFuture::new</a>(
         <span class="kw-2">&amp;</span>(),
         <span class="kw">move </span>|_obj, cancellable, send| {
             <a href="#545-593">dbus_address_get_stream</a>(<span class="kw-2">&amp;</span><a href="#603">address</a>, <span class="prelude-val">Some</span>(<a href="#606">cancellable</a>), <span class="kw">move </span>|res| {
@@ -2027,18 +2027,18 @@
     cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="cancellable.rs.html#7-85">Cancellable</a>&gt;&gt;,
 ) -&gt; <span class="prelude-ty">Result</span>&lt;(<a href="io_stream.rs.html#13-94">IOStream</a>, <span class="prelude-ty">Option</span>&lt;<a href="../../../glib/gstring/struct.GString.html">glib::GString</a>&gt;), <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt; {
     <span class="kw">unsafe </span>{
-        <span class="kw">let </span><span class="kw-2">mut </span>out_guid = std::ptr::null_mut();
-        <span class="kw">let </span><span class="kw-2">mut </span>error = std::ptr::null_mut();
-        <span class="kw">let </span>ret = ffi::g_dbus_address_get_stream_sync(
-            <a href="#637">address</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+        <span class="kw">let </span><span class="kw-2">mut </span>out_guid = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">std::ptr::null_mut</a>();
+        <span class="kw">let </span><span class="kw-2">mut </span>error = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">std::ptr::null_mut</a>();
+        <span class="kw">let </span>ret = <a href="../../../gio_sys/fn.g_dbus_address_get_stream_sync.html">ffi::g_dbus_address_get_stream_sync</a>(
+            <a href="#637">address</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
             <span class="kw-2">&amp;mut </span><a href="#641">out_guid</a>,
-            <a href="#638">cancellable</a>.map(|p| <a href="#646">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>()).<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+            <a href="#638">cancellable</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|p| <a href="#646">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>()).<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
             <span class="kw-2">&amp;mut </span><a href="#642">error</a>,
         );
         <span class="kw">if </span>error.is_null() {
-            <span class="prelude-val">Ok</span>((from_glib_full(<a href="#643">ret</a>), from_glib_full(<a href="#641">out_guid</a>)))
+            <span class="prelude-val">Ok</span>((<a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#643">ret</a>), <a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#641">out_guid</a>)))
         } <span class="kw">else </span>{
-            <span class="prelude-val">Err</span>(from_glib_full(<a href="#642">error</a>))
+            <span class="prelude-val">Err</span>(<a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#642">error</a>))
         }
     }
 }
@@ -2054,7 +2054,7 @@
 #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"v2_68"</span>)))]
 #[doc(alias = <span class="string">"g_dbus_escape_object_path"</span>)]
 </span><span class="kw">pub fn </span><a href="../../../gio/functions/fn.dbus_escape_object_path.html">dbus_escape_object_path</a>(s: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a href="../../../glib/gstring/struct.GString.html">glib::GString</a> {
-    <span class="kw">unsafe </span>{ from_glib_full(ffi::g_dbus_escape_object_path(<a href="#667">s</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>)) }
+    <span class="kw">unsafe </span>{ <a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="../../../gio_sys/fn.g_dbus_escape_object_path.html">ffi::g_dbus_escape_object_path</a>(<a href="#667">s</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>)) }
 }
 
 <span class="comment">//#[cfg(feature = "v2_68")]
@@ -2081,7 +2081,7 @@
 /// A valid D-Bus GUID. Free with g_free().
 </span><span class="attr">#[doc(alias = <span class="string">"g_dbus_generate_guid"</span>)]
 </span><span class="kw">pub fn </span><a href="../../../gio/functions/fn.dbus_generate_guid.html">dbus_generate_guid</a>() -&gt; <a href="../../../glib/gstring/struct.GString.html">glib::GString</a> {
-    <span class="kw">unsafe </span>{ from_glib_full(ffi::g_dbus_generate_guid()) }
+    <span class="kw">unsafe </span>{ <a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="../../../gio_sys/fn.g_dbus_generate_guid.html">ffi::g_dbus_generate_guid</a>()) }
 }
 
 <span class="doccomment">/// Converts a #GValue to a #GVariant of the type indicated by the @type_
@@ -2125,9 +2125,9 @@
 </span><span class="attr">#[doc(alias = <span class="string">"g_dbus_gvalue_to_gvariant"</span>)]
 </span><span class="kw">pub fn </span><a href="../../../gio/functions/fn.dbus_gvalue_to_gvariant.html">dbus_gvalue_to_gvariant</a>(gvalue: <span class="kw-2">&amp;</span><a href="../../../glib/value/struct.Value.html">glib::Value</a>, type_: <span class="kw-2">&amp;</span><a href="../../../glib/variant_type/struct.VariantTy.html">glib::VariantTy</a>) -&gt; <a href="../../../glib/variant/struct.Variant.html">glib::Variant</a> {
     <span class="kw">unsafe </span>{
-        from_glib_full(ffi::g_dbus_gvalue_to_gvariant(
-            <a href="#737">gvalue</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
-            <a href="#737">type_</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+        <a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="../../../gio_sys/fn.g_dbus_gvalue_to_gvariant.html">ffi::g_dbus_gvalue_to_gvariant</a>(
+            <a href="#737">gvalue</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+            <a href="#737">type_</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
         ))
     }
 }
@@ -2154,8 +2154,8 @@
 </span><span class="attr">#[doc(alias = <span class="string">"g_dbus_gvariant_to_gvalue"</span>)]
 </span><span class="kw">pub fn </span><a href="../../../gio/functions/fn.dbus_gvariant_to_gvalue.html">dbus_gvariant_to_gvalue</a>(value: <span class="kw-2">&amp;</span><a href="../../../glib/variant/struct.Variant.html">glib::Variant</a>) -&gt; <a href="../../../glib/value/struct.Value.html">glib::Value</a> {
     <span class="kw">unsafe </span>{
-        <span class="kw">let </span><span class="kw-2">mut </span>out_gvalue = <a href="../../../glib/translate/trait.Uninitialized.html">glib::Value::uninitialized</a>();
-        ffi::g_dbus_gvariant_to_gvalue(<a href="#766">value</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>, <a href="#768">out_gvalue</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html">to_glib_none_mut</a>().<span class="number">0</span>);
+        <span class="kw">let </span><span class="kw-2">mut </span>out_gvalue = <a href="../../../glib/translate/trait.Uninitialized.html#tymethod.uninitialized">glib::Value::uninitialized</a>();
+        <a href="../../../gio_sys/fn.g_dbus_gvariant_to_gvalue.html">ffi::g_dbus_gvariant_to_gvalue</a>(<a href="#766">value</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#768">out_gvalue</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html#tymethod.to_glib_none_mut">to_glib_none_mut</a>().<span class="number">0</span>);
         <a href="#768">out_gvalue</a>
     }
 }
@@ -2174,7 +2174,7 @@
 /// [`true`] if @string is a valid D-Bus address, [`false`] otherwise.
 </span><span class="attr">#[doc(alias = <span class="string">"g_dbus_is_address"</span>)]
 </span><span class="kw">pub fn </span><a href="../../../gio/functions/fn.dbus_is_address.html">dbus_is_address</a>(string: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
-    <span class="kw">unsafe </span>{ from_glib(ffi::g_dbus_is_address(<a href="#787">string</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>)) }
+    <span class="kw">unsafe </span>{ <a href="../../../glib/translate/fn.from_glib.html">from_glib</a>(<a href="../../../gio_sys/fn.g_dbus_is_address.html">ffi::g_dbus_is_address</a>(<a href="#787">string</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>)) }
 }
 
 <span class="doccomment">/// Check whether @string is a valid D-Bus error name.
@@ -2192,7 +2192,7 @@
 #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"v2_70"</span>)))]
 #[doc(alias = <span class="string">"g_dbus_is_error_name"</span>)]
 </span><span class="kw">pub fn </span><a href="../../../gio/functions/fn.dbus_is_error_name.html">dbus_is_error_name</a>(string: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
-    <span class="kw">unsafe </span>{ from_glib(ffi::g_dbus_is_error_name(<a href="#805">string</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>)) }
+    <span class="kw">unsafe </span>{ <a href="../../../glib/translate/fn.from_glib.html">from_glib</a>(<a href="../../../gio_sys/fn.g_dbus_is_error_name.html">ffi::g_dbus_is_error_name</a>(<a href="#805">string</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>)) }
 }
 
 <span class="doccomment">/// Checks if @string is a D-Bus GUID.
@@ -2207,7 +2207,7 @@
 /// [`true`] if @string is a GUID, [`false`] otherwise.
 </span><span class="attr">#[doc(alias = <span class="string">"g_dbus_is_guid"</span>)]
 </span><span class="kw">pub fn </span><a href="../../../gio/functions/fn.dbus_is_guid.html">dbus_is_guid</a>(string: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
-    <span class="kw">unsafe </span>{ from_glib(ffi::g_dbus_is_guid(<a href="#820">string</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>)) }
+    <span class="kw">unsafe </span>{ <a href="../../../glib/translate/fn.from_glib.html">from_glib</a>(<a href="../../../gio_sys/fn.g_dbus_is_guid.html">ffi::g_dbus_is_guid</a>(<a href="#820">string</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>)) }
 }
 
 <span class="doccomment">/// Checks if @string is a valid D-Bus interface name.
@@ -2219,7 +2219,7 @@
 /// [`true`] if valid, [`false`] otherwise.
 </span><span class="attr">#[doc(alias = <span class="string">"g_dbus_is_interface_name"</span>)]
 </span><span class="kw">pub fn </span><a href="../../../gio/functions/fn.dbus_is_interface_name.html">dbus_is_interface_name</a>(string: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
-    <span class="kw">unsafe </span>{ from_glib(ffi::g_dbus_is_interface_name(<a href="#832">string</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>)) }
+    <span class="kw">unsafe </span>{ <a href="../../../glib/translate/fn.from_glib.html">from_glib</a>(<a href="../../../gio_sys/fn.g_dbus_is_interface_name.html">ffi::g_dbus_is_interface_name</a>(<a href="#832">string</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>)) }
 }
 
 <span class="doccomment">/// Checks if @string is a valid D-Bus member (e.g. signal or method) name.
@@ -2231,7 +2231,7 @@
 /// [`true`] if valid, [`false`] otherwise.
 </span><span class="attr">#[doc(alias = <span class="string">"g_dbus_is_member_name"</span>)]
 </span><span class="kw">pub fn </span><a href="../../../gio/functions/fn.dbus_is_member_name.html">dbus_is_member_name</a>(string: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
-    <span class="kw">unsafe </span>{ from_glib(ffi::g_dbus_is_member_name(<a href="#844">string</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>)) }
+    <span class="kw">unsafe </span>{ <a href="../../../glib/translate/fn.from_glib.html">from_glib</a>(<a href="../../../gio_sys/fn.g_dbus_is_member_name.html">ffi::g_dbus_is_member_name</a>(<a href="#844">string</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>)) }
 }
 
 <span class="doccomment">/// Checks if @string is a valid D-Bus bus name (either unique or well-known).
@@ -2243,7 +2243,7 @@
 /// [`true`] if valid, [`false`] otherwise.
 </span><span class="attr">#[doc(alias = <span class="string">"g_dbus_is_name"</span>)]
 </span><span class="kw">pub fn </span><a href="../../../gio/functions/fn.dbus_is_name.html">dbus_is_name</a>(string: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
-    <span class="kw">unsafe </span>{ from_glib(ffi::g_dbus_is_name(<a href="#856">string</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>)) }
+    <span class="kw">unsafe </span>{ <a href="../../../glib/translate/fn.from_glib.html">from_glib</a>(<a href="../../../gio_sys/fn.g_dbus_is_name.html">ffi::g_dbus_is_name</a>(<a href="#856">string</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>)) }
 }
 
 <span class="doccomment">/// Like g_dbus_is_address() but also checks if the library supports the
@@ -2260,13 +2260,13 @@
 </span><span class="attr">#[doc(alias = <span class="string">"g_dbus_is_supported_address"</span>)]
 </span><span class="kw">pub fn </span><a href="../../../gio/functions/fn.dbus_is_supported_address.html">dbus_is_supported_address</a>(string: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt; {
     <span class="kw">unsafe </span>{
-        <span class="kw">let </span><span class="kw-2">mut </span>error = std::ptr::null_mut();
-        <span class="kw">let </span>is_ok = ffi::g_dbus_is_supported_address(<a href="#872">string</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>, <span class="kw-2">&amp;mut </span><a href="#874">error</a>);
+        <span class="kw">let </span><span class="kw-2">mut </span>error = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">std::ptr::null_mut</a>();
+        <span class="kw">let </span>is_ok = <a href="../../../gio_sys/fn.g_dbus_is_supported_address.html">ffi::g_dbus_is_supported_address</a>(<a href="#872">string</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <span class="kw-2">&amp;mut </span><a href="#874">error</a>);
         <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert_eq.html">debug_assert_eq!</a>(is_ok == glib::ffi::GFALSE, !error.is_null());
         <span class="kw">if </span>error.is_null() {
             <span class="prelude-val">Ok</span>(())
         } <span class="kw">else </span>{
-            <span class="prelude-val">Err</span>(from_glib_full(<a href="#874">error</a>))
+            <span class="prelude-val">Err</span>(<a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#874">error</a>))
         }
     }
 }
@@ -2280,7 +2280,7 @@
 /// [`true`] if valid, [`false`] otherwise.
 </span><span class="attr">#[doc(alias = <span class="string">"g_dbus_is_unique_name"</span>)]
 </span><span class="kw">pub fn </span><a href="../../../gio/functions/fn.dbus_is_unique_name.html">dbus_is_unique_name</a>(string: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
-    <span class="kw">unsafe </span>{ from_glib(ffi::g_dbus_is_unique_name(<a href="#893">string</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>)) }
+    <span class="kw">unsafe </span>{ <a href="../../../glib/translate/fn.from_glib.html">from_glib</a>(<a href="../../../gio_sys/fn.g_dbus_is_unique_name.html">ffi::g_dbus_is_unique_name</a>(<a href="#893">string</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>)) }
 }
 
 <span class="doccomment">/// Converts `errno.h` error codes into GIO error codes.
@@ -2314,7 +2314,7 @@
 /// #GIOErrorEnum value for the given `errno.h` error number
 </span><span class="attr">#[doc(alias = <span class="string">"g_io_error_from_errno"</span>)]
 </span><span class="kw">pub fn </span><a href="../../../gio/functions/fn.io_error_from_errno.html">io_error_from_errno</a>(err_no: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>) -&gt; <a href="enums.rs.html#1654-1817">IOErrorEnum</a> {
-    <span class="kw">unsafe </span>{ from_glib(ffi::g_io_error_from_errno(<a href="#927">err_no</a>)) }
+    <span class="kw">unsafe </span>{ <a href="../../../glib/translate/fn.from_glib.html">from_glib</a>(<a href="../../../gio_sys/fn.g_io_error_from_errno.html">ffi::g_io_error_from_errno</a>(<a href="#927">err_no</a>)) }
 }
 
 <span class="comment">//#[doc(alias = "g_io_modules_load_all_in_directory")]
@@ -2344,7 +2344,7 @@
 </span><span class="attr">#[doc(alias = <span class="string">"g_io_modules_scan_all_in_directory"</span>)]
 </span><span class="kw">pub fn </span><a href="../../../gio/functions/fn.io_modules_scan_all_in_directory.html">io_modules_scan_all_in_directory</a>(dirname: <span class="kw">impl </span>AsRef&lt;<a href="https://doc.rust-lang.org/nightly/std/path/struct.Path.html">std::path::Path</a>&gt;) {
     <span class="kw">unsafe </span>{
-        ffi::g_io_modules_scan_all_in_directory(<a href="#956">dirname</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>);
+        <a href="../../../gio_sys/fn.g_io_modules_scan_all_in_directory.html">ffi::g_io_modules_scan_all_in_directory</a>(<a href="#956">dirname</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>);
     }
 }
 
@@ -2422,10 +2422,10 @@
     root_group: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;,
 ) -&gt; <a href="settings_backend.rs.html#7-43">SettingsBackend</a> {
     <span class="kw">unsafe </span>{
-        from_glib_full(ffi::g_keyfile_settings_backend_new(
-            <a href="#1031">filename</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
-            <a href="#1032">root_path</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
-            <a href="#1033">root_group</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+        <a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="../../../gio_sys/fn.g_keyfile_settings_backend_new.html">ffi::g_keyfile_settings_backend_new</a>(
+            <a href="#1031">filename</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+            <a href="#1032">root_path</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+            <a href="#1033">root_group</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
         ))
     }
 }
@@ -2441,7 +2441,7 @@
 /// a newly created #GSettingsBackend
 </span><span class="attr">#[doc(alias = <span class="string">"g_memory_settings_backend_new"</span>)]
 </span><span class="kw">pub fn </span><a href="../../../gio/functions/fn.memory_settings_backend_new.html">memory_settings_backend_new</a>() -&gt; <a href="settings_backend.rs.html#7-43">SettingsBackend</a> {
-    <span class="kw">unsafe </span>{ from_glib_full(ffi::g_memory_settings_backend_new()) }
+    <span class="kw">unsafe </span>{ <a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="../../../gio_sys/fn.g_memory_settings_backend_new.html">ffi::g_memory_settings_backend_new</a>()) }
 }
 
 <span class="doccomment">/// Creates a readonly #GSettingsBackend.
@@ -2454,7 +2454,7 @@
 /// a newly created #GSettingsBackend
 </span><span class="attr">#[doc(alias = <span class="string">"g_null_settings_backend_new"</span>)]
 </span><span class="kw">pub fn </span><a href="../../../gio/functions/fn.null_settings_backend_new.html">null_settings_backend_new</a>() -&gt; <a href="settings_backend.rs.html#7-43">SettingsBackend</a> {
-    <span class="kw">unsafe </span>{ from_glib_full(ffi::g_null_settings_backend_new()) }
+    <span class="kw">unsafe </span>{ <a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="../../../gio_sys/fn.g_null_settings_backend_new.html">ffi::g_null_settings_backend_new</a>()) }
 }
 
 <span class="doccomment">/// Returns all the names of children at the specified @path in the set of
@@ -2477,16 +2477,16 @@
     lookup_flags: <a href="flags.rs.html#2699-2708">ResourceLookupFlags</a>,
 ) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;<a href="../../../glib/gstring/struct.GString.html">glib::GString</a>&gt;, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt; {
     <span class="kw">unsafe </span>{
-        <span class="kw">let </span><span class="kw-2">mut </span>error = std::ptr::null_mut();
-        <span class="kw">let </span>ret = ffi::g_resources_enumerate_children(
-            <a href="#1087">path</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
-            <a href="#1088">lookup_flags</a>.<a href="../../../glib/translate/trait.IntoGlib.html">into_glib</a>(),
+        <span class="kw">let </span><span class="kw-2">mut </span>error = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">std::ptr::null_mut</a>();
+        <span class="kw">let </span>ret = <a href="../../../gio_sys/fn.g_resources_enumerate_children.html">ffi::g_resources_enumerate_children</a>(
+            <a href="#1087">path</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+            <a href="#1088">lookup_flags</a>.<a href="../../../glib/translate/trait.IntoGlib.html#tymethod.into_glib">into_glib</a>(),
             <span class="kw-2">&amp;mut </span><a href="#1091">error</a>,
         );
         <span class="kw">if </span>error.is_null() {
-            <span class="prelude-val">Ok</span>(<a href="../../../glib/translate/trait.FromGlibPtrContainer.html">FromGlibPtrContainer::from_glib_full</a>(<a href="#1092">ret</a>))
+            <span class="prelude-val">Ok</span>(<a href="../../../glib/translate/trait.FromGlibPtrContainer.html#tymethod.from_glib_full">FromGlibPtrContainer::from_glib_full</a>(<a href="#1092">ret</a>))
         } <span class="kw">else </span>{
-            <span class="prelude-val">Err</span>(from_glib_full(<a href="#1091">error</a>))
+            <span class="prelude-val">Err</span>(<a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#1091">error</a>))
         }
     }
 }
@@ -2517,21 +2517,21 @@
     lookup_flags: <a href="flags.rs.html#2699-2708">ResourceLookupFlags</a>,
 ) -&gt; <span class="prelude-ty">Result</span>&lt;(<a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>), <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt; {
     <span class="kw">unsafe </span>{
-        <span class="kw">let </span><span class="kw-2">mut </span>size = std::mem::MaybeUninit::uninit();
-        <span class="kw">let </span><span class="kw-2">mut </span>flags = std::mem::MaybeUninit::uninit();
-        <span class="kw">let </span><span class="kw-2">mut </span>error = std::ptr::null_mut();
-        <span class="kw">let </span>is_ok = ffi::g_resources_get_info(
-            <a href="#1127">path</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
-            <a href="#1128">lookup_flags</a>.<a href="../../../glib/translate/trait.IntoGlib.html">into_glib</a>(),
-            <a href="#1131">size</a>.as_mut_ptr(),
-            <a href="#1132">flags</a>.as_mut_ptr(),
+        <span class="kw">let </span><span class="kw-2">mut </span>size = <a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.uninit">std::mem::MaybeUninit::uninit</a>();
+        <span class="kw">let </span><span class="kw-2">mut </span>flags = <a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.uninit">std::mem::MaybeUninit::uninit</a>();
+        <span class="kw">let </span><span class="kw-2">mut </span>error = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">std::ptr::null_mut</a>();
+        <span class="kw">let </span>is_ok = <a href="../../../gio_sys/fn.g_resources_get_info.html">ffi::g_resources_get_info</a>(
+            <a href="#1127">path</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+            <a href="#1128">lookup_flags</a>.<a href="../../../glib/translate/trait.IntoGlib.html#tymethod.into_glib">into_glib</a>(),
+            <a href="#1131">size</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.as_mut_ptr">as_mut_ptr</a>(),
+            <a href="#1132">flags</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.as_mut_ptr">as_mut_ptr</a>(),
             <span class="kw-2">&amp;mut </span><a href="#1133">error</a>,
         );
         <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert_eq.html">debug_assert_eq!</a>(is_ok == glib::ffi::GFALSE, !error.is_null());
         <span class="kw">if </span>error.is_null() {
-            <span class="prelude-val">Ok</span>((<a href="#1131">size</a>.assume_init(), <a href="#1132">flags</a>.assume_init()))
+            <span class="prelude-val">Ok</span>((<a href="#1131">size</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.assume_init">assume_init</a>(), <a href="#1132">flags</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.assume_init">assume_init</a>()))
         } <span class="kw">else </span>{
-            <span class="prelude-val">Err</span>(from_glib_full(<a href="#1133">error</a>))
+            <span class="prelude-val">Err</span>(<a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#1133">error</a>))
         }
     }
 }
@@ -2565,16 +2565,16 @@
     lookup_flags: <a href="flags.rs.html#2699-2708">ResourceLookupFlags</a>,
 ) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="../../../glib/bytes/struct.Bytes.html">glib::Bytes</a>, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt; {
     <span class="kw">unsafe </span>{
-        <span class="kw">let </span><span class="kw-2">mut </span>error = std::ptr::null_mut();
-        <span class="kw">let </span>ret = ffi::g_resources_lookup_data(
-            <a href="#1175">path</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
-            <a href="#1176">lookup_flags</a>.<a href="../../../glib/translate/trait.IntoGlib.html">into_glib</a>(),
+        <span class="kw">let </span><span class="kw-2">mut </span>error = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">std::ptr::null_mut</a>();
+        <span class="kw">let </span>ret = <a href="../../../gio_sys/fn.g_resources_lookup_data.html">ffi::g_resources_lookup_data</a>(
+            <a href="#1175">path</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+            <a href="#1176">lookup_flags</a>.<a href="../../../glib/translate/trait.IntoGlib.html#tymethod.into_glib">into_glib</a>(),
             <span class="kw-2">&amp;mut </span><a href="#1179">error</a>,
         );
         <span class="kw">if </span>error.is_null() {
-            <span class="prelude-val">Ok</span>(from_glib_full(<a href="#1180">ret</a>))
+            <span class="prelude-val">Ok</span>(<a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#1180">ret</a>))
         } <span class="kw">else </span>{
-            <span class="prelude-val">Err</span>(from_glib_full(<a href="#1179">error</a>))
+            <span class="prelude-val">Err</span>(<a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#1179">error</a>))
         }
     }
 }
@@ -2599,16 +2599,16 @@
     lookup_flags: <a href="flags.rs.html#2699-2708">ResourceLookupFlags</a>,
 ) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="input_stream.rs.html#9-35">InputStream</a>, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt; {
     <span class="kw">unsafe </span>{
-        <span class="kw">let </span><span class="kw-2">mut </span>error = std::ptr::null_mut();
-        <span class="kw">let </span>ret = ffi::g_resources_open_stream(
-            <a href="#1209">path</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
-            <a href="#1210">lookup_flags</a>.<a href="../../../glib/translate/trait.IntoGlib.html">into_glib</a>(),
+        <span class="kw">let </span><span class="kw-2">mut </span>error = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">std::ptr::null_mut</a>();
+        <span class="kw">let </span>ret = <a href="../../../gio_sys/fn.g_resources_open_stream.html">ffi::g_resources_open_stream</a>(
+            <a href="#1209">path</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+            <a href="#1210">lookup_flags</a>.<a href="../../../glib/translate/trait.IntoGlib.html#tymethod.into_glib">into_glib</a>(),
             <span class="kw-2">&amp;mut </span><a href="#1213">error</a>,
         );
         <span class="kw">if </span>error.is_null() {
-            <span class="prelude-val">Ok</span>(from_glib_full(<a href="#1214">ret</a>))
+            <span class="prelude-val">Ok</span>(<a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#1214">ret</a>))
         } <span class="kw">else </span>{
-            <span class="prelude-val">Err</span>(from_glib_full(<a href="#1213">error</a>))
+            <span class="prelude-val">Err</span>(<a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#1213">error</a>))
         }
     }
 }
@@ -2621,7 +2621,7 @@
 </span><span class="attr">#[doc(alias = <span class="string">"g_resources_register"</span>)]
 </span><span class="kw">pub fn </span><a href="../../../gio/functions/fn.resources_register.html">resources_register</a>(resource: <span class="kw-2">&amp;</span><a href="resource.rs.html#8-178">Resource</a>) {
     <span class="kw">unsafe </span>{
-        ffi::g_resources_register(<a href="#1233">resource</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>);
+        <a href="../../../gio_sys/fn.g_resources_register.html">ffi::g_resources_register</a>(<a href="#1233">resource</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>);
     }
 }
 
@@ -2631,7 +2631,7 @@
 </span><span class="attr">#[doc(alias = <span class="string">"g_resources_unregister"</span>)]
 </span><span class="kw">pub fn </span><a href="../../../gio/functions/fn.resources_unregister.html">resources_unregister</a>(resource: <span class="kw-2">&amp;</span><a href="resource.rs.html#8-178">Resource</a>) {
     <span class="kw">unsafe </span>{
-        ffi::g_resources_unregister(<a href="#1243">resource</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>);
+        <a href="../../../gio_sys/fn.g_resources_unregister.html">ffi::g_resources_unregister</a>(<a href="#1243">resource</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>);
     }
 }
 
@@ -2651,8 +2651,8 @@
 #[doc(alias = <span class="string">"g_unix_is_mount_path_system_internal"</span>)]
 </span><span class="kw">pub fn </span><a href="../../../gio/functions/fn.unix_is_mount_path_system_internal.html">unix_is_mount_path_system_internal</a>(mount_path: <span class="kw">impl </span>AsRef&lt;<a href="https://doc.rust-lang.org/nightly/std/path/struct.Path.html">std::path::Path</a>&gt;) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
     <span class="kw">unsafe </span>{
-        from_glib(ffi::g_unix_is_mount_path_system_internal(
-            <a href="#1263">mount_path</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+        <a href="../../../glib/translate/fn.from_glib.html">from_glib</a>(<a href="../../../gio_sys/fn.g_unix_is_mount_path_system_internal.html">ffi::g_unix_is_mount_path_system_internal</a>(
+            <a href="#1263">mount_path</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
         ))
     }
 }
@@ -2676,8 +2676,8 @@
 #[doc(alias = <span class="string">"g_unix_is_system_device_path"</span>)]
 </span><span class="kw">pub fn </span><a href="../../../gio/functions/fn.unix_is_system_device_path.html">unix_is_system_device_path</a>(device_path: <span class="kw">impl </span>AsRef&lt;<a href="https://doc.rust-lang.org/nightly/std/path/struct.Path.html">std::path::Path</a>&gt;) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
     <span class="kw">unsafe </span>{
-        from_glib(ffi::g_unix_is_system_device_path(
-            <a href="#1288">device_path</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+        <a href="../../../glib/translate/fn.from_glib.html">from_glib</a>(<a href="../../../gio_sys/fn.g_unix_is_system_device_path.html">ffi::g_unix_is_system_device_path</a>(
+            <a href="#1288">device_path</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
         ))
     }
 }
@@ -2699,6 +2699,6 @@
 #[cfg_attr(docsrs, doc(cfg(unix)))]
 #[doc(alias = <span class="string">"g_unix_is_system_fs_type"</span>)]
 </span><span class="kw">pub fn </span><a href="../../../gio/functions/fn.unix_is_system_fs_type.html">unix_is_system_fs_type</a>(fs_type: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
-    <span class="kw">unsafe </span>{ from_glib(ffi::g_unix_is_system_fs_type(<a href="#1312">fs_type</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>)) }
+    <span class="kw">unsafe </span>{ <a href="../../../glib/translate/fn.from_glib.html">from_glib</a>(<a href="../../../gio_sys/fn.g_unix_is_system_fs_type.html">ffi::g_unix_is_system_fs_type</a>(<a href="#1312">fs_type</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>)) }
 }
 </code></pre></div></section></main></body></html>

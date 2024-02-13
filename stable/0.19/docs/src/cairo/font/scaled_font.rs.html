@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `cairo/src/font/scaled_font.rs`."><title>scaled_font.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-5bc39a1768837dd0.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="cairo" data-themes="" data-resource-suffix="" data-rustdoc-version="1.78.0-nightly (b11fbfbf3 2024-02-03)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-48f368f3872407c8.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `cairo/src/font/scaled_font.rs`."><title>scaled_font.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-5bc39a1768837dd0.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="cairo" data-themes="" data-resource-suffix="" data-rustdoc-version="1.78.0-nightly (b381d3ab2 2024-02-12)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-48f368f3872407c8.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -395,14 +395,14 @@
         options: <span class="kw-2">&amp;</span><a href="font_options.rs.html#17-32">FontOptions</a>,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#14-24">ScaledFont</a>, <a href="../error.rs.html#10-150">Error</a>&gt; {
         <span class="kw">let </span>scaled_font: <a href="#14-24">ScaledFont</a> = <span class="kw">unsafe </span>{
-            <a href="#74-76">ScaledFont::from_raw_full</a>(ffi::cairo_scaled_font_create(
+            <a href="#74-76">ScaledFont::from_raw_full</a>(<a href="../../../cairo_sys/fn.cairo_scaled_font_create.html">ffi::cairo_scaled_font_create</a>(
                 <a href="#34">font_face</a>.<a href="font_face.rs.html#139-141">to_raw_none</a>(),
                 <a href="#35">font_matrix</a>.<a href="../matrices.rs.html#22-24">ptr</a>(),
                 <a href="#36">ctm</a>.<a href="../matrices.rs.html#22-24">ptr</a>(),
                 <a href="#37">options</a>.<a href="font_options.rs.html#73-75">to_raw_none</a>(),
             ))
         };
-        <span class="kw">let </span>status = <span class="kw">unsafe </span>{ ffi::cairo_scaled_font_status(<a href="#39">scaled_font</a>.<a href="#55-57">to_raw_none</a>()) };
+        <span class="kw">let </span>status = <span class="kw">unsafe </span>{ <a href="../../../cairo_sys/fn.cairo_scaled_font_status.html">ffi::cairo_scaled_font_status</a>(<a href="#39">scaled_font</a>.<a href="#55-57">to_raw_none</a>()) };
         <a href="../utils.rs.html#21-26">status_to_result</a>(<a href="#47">status</a>)<span class="question-mark">?</span>;
 
         <span class="prelude-val">Ok</span>(<a href="#39">scaled_font</a>)
@@ -411,7 +411,7 @@
     <span class="attr">#[cfg(feature = <span class="string">"use_glib"</span>)]
     #[inline]
     </span><span class="kw">pub fn </span>to_raw_none(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">*mut </span><a href="../../../cairo_sys/struct.cairo_scaled_font_t.html">ffi::cairo_scaled_font_t</a> {
-        <a class="self" href="#55">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0
+        <a class="self" href="#55">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0
     </span>}
 
     <span class="attr">#[cfg(not(feature = <span class="string">"use_glib"</span>))]
@@ -430,13 +430,13 @@
     <span class="attr">#[cfg(feature = <span class="string">"use_glib"</span>)]
     #[inline]
     </span><span class="kw">pub unsafe fn </span>from_raw_full(ptr: <span class="kw-2">*mut </span><a href="../../../cairo_sys/struct.cairo_scaled_font_t.html">ffi::cairo_scaled_font_t</a>) -&gt; <a href="#14-24">ScaledFont</a> {
-        from_glib_full(<a href="#74">ptr</a>)
+        <a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#74">ptr</a>)
     }
 
     <span class="attr">#[cfg(feature = <span class="string">"use_glib"</span>)]
     #[inline]
     </span><span class="kw">pub unsafe fn </span>from_raw_none(ptr: <span class="kw-2">*mut </span><a href="../../../cairo_sys/struct.cairo_scaled_font_t.html">ffi::cairo_scaled_font_t</a>) -&gt; <a href="#14-24">ScaledFont</a> {
-        from_glib_none(<a href="#80">ptr</a>)
+        <a href="../../../glib/translate/fn.from_glib_none.html">from_glib_none</a>(<a href="#80">ptr</a>)
     }
 
     <span class="attr">#[cfg(not(feature = <span class="string">"use_glib"</span>))]
@@ -450,13 +450,13 @@
     <span class="attr">#[doc(alias = <span class="string">"cairo_scaled_font_get_type"</span>)]
     #[doc(alias = <span class="string">"get_type"</span>)]
     </span><span class="kw">pub fn </span>type_(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="../enums.rs.html#749-766">FontType</a> {
-        <span class="kw">unsafe </span>{ <a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html">FontType::from</a>(ffi::cairo_scaled_font_get_type(<a class="self" href="#94">self</a>.<a href="#55-57">to_raw_none</a>())) }
+        <span class="kw">unsafe </span>{ <a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html#tymethod.from">FontType::from</a>(<a href="../../../cairo_sys/fn.cairo_scaled_font_get_type.html">ffi::cairo_scaled_font_get_type</a>(<a class="self" href="#94">self</a>.<a href="#55-57">to_raw_none</a>())) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">"cairo_scaled_font_get_reference_count"</span>)]
     #[doc(alias = <span class="string">"get_reference_count"</span>)]
     </span><span class="kw">pub fn </span>reference_count(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a> {
-        <span class="kw">unsafe </span>{ ffi::cairo_scaled_font_get_reference_count(<a class="self" href="#100">self</a>.<a href="#55-57">to_raw_none</a>()) <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a> }
+        <span class="kw">unsafe </span>{ <a href="../../../cairo_sys/fn.cairo_scaled_font_get_reference_count.html">ffi::cairo_scaled_font_get_reference_count</a>(<a class="self" href="#100">self</a>.<a href="#55-57">to_raw_none</a>()) <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a> }
     }
 
     <span class="attr">#[doc(alias = <span class="string">"cairo_scaled_font_extents"</span>)]
@@ -464,8 +464,8 @@
         <span class="kw">let </span><span class="kw-2">mut </span>extents = MaybeUninit::&lt;<a href="font_extents.rs.html#8">FontExtents</a>&gt;::uninit();
 
         <span class="kw">unsafe </span>{
-            ffi::cairo_scaled_font_extents(<a class="self" href="#105">self</a>.<a href="#55-57">to_raw_none</a>(), <a href="#106">extents</a>.as_mut_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
-            <a href="#106">extents</a>.assume_init()
+            <a href="../../../cairo_sys/fn.cairo_scaled_font_extents.html">ffi::cairo_scaled_font_extents</a>(<a class="self" href="#105">self</a>.<a href="#55-57">to_raw_none</a>(), <a href="#106">extents</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.as_mut_ptr">as_mut_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
+            <a href="#106">extents</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.assume_init">assume_init</a>()
         }
     }
 
@@ -473,14 +473,14 @@
     </span><span class="kw">pub fn </span>text_extents(<span class="kw-2">&amp;</span><span class="self">self</span>, text: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a href="text_extents.rs.html#8">TextExtents</a> {
         <span class="kw">let </span><span class="kw-2">mut </span>extents = MaybeUninit::&lt;<a href="text_extents.rs.html#8">TextExtents</a>&gt;::uninit();
 
-        <span class="kw">let </span>text = CString::new(<a href="#115">text</a>).unwrap();
+        <span class="kw">let </span>text = <a href="https://doc.rust-lang.org/nightly/alloc/ffi/c_str/struct.CString.html#method.new">CString::new</a>(<a href="#115">text</a>).<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>();
         <span class="kw">unsafe </span>{
-            ffi::cairo_scaled_font_text_extents(
+            <a href="../../../cairo_sys/fn.cairo_scaled_font_text_extents.html">ffi::cairo_scaled_font_text_extents</a>(
                 <a class="self" href="#115">self</a>.<a href="#55-57">to_raw_none</a>(),
-                <a href="#118">text</a>.as_ptr(),
-                <a href="#116">extents</a>.as_mut_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <a href="#118">text</a>.<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.as_ptr">as_ptr</a>(),
+                <a href="#116">extents</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.as_mut_ptr">as_mut_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
             );
-            <a href="#116">extents</a>.assume_init()
+            <a href="#116">extents</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.assume_init">assume_init</a>()
         }
     }
 
@@ -489,13 +489,13 @@
         <span class="kw">let </span><span class="kw-2">mut </span>extents = MaybeUninit::&lt;<a href="text_extents.rs.html#8">TextExtents</a>&gt;::uninit();
 
         <span class="kw">unsafe </span>{
-            ffi::cairo_scaled_font_glyph_extents(
+            <a href="../../../cairo_sys/fn.cairo_scaled_font_glyph_extents.html">ffi::cairo_scaled_font_glyph_extents</a>(
                 <a class="self" href="#130">self</a>.<a href="#55-57">to_raw_none</a>(),
-                <a href="#130">glyphs</a>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
-                <a href="#130">glyphs</a>.len() <span class="kw">as _</span>,
-                <a href="#131">extents</a>.as_mut_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <a href="#130">glyphs</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+                <a href="#130">glyphs</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.len">len</a>() <span class="kw">as _</span>,
+                <a href="#131">extents</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.as_mut_ptr">as_mut_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
             );
-            <a href="#131">extents</a>.assume_init()
+            <a href="#131">extents</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.assume_init">assume_init</a>()
         }
     }
 
@@ -511,19 +511,19 @@
         // types before they're of any use to Rust code.
 
         </span><span class="kw">unsafe </span>{
-            <span class="kw">let </span><span class="kw-2">mut </span>glyphs_ptr: <span class="kw-2">*mut </span><a href="glyph.rs.html#8">Glyph</a> = ptr::null_mut();
+            <span class="kw">let </span><span class="kw-2">mut </span>glyphs_ptr: <span class="kw-2">*mut </span><a href="glyph.rs.html#8">Glyph</a> = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
             <span class="kw">let </span><span class="kw-2">mut </span>glyph_count = <span class="number">0i32</span>;
-            <span class="kw">let </span><span class="kw-2">mut </span>clusters_ptr: <span class="kw-2">*mut </span><a href="text_cluster.rs.html#8">TextCluster</a> = ptr::null_mut();
+            <span class="kw">let </span><span class="kw-2">mut </span>clusters_ptr: <span class="kw-2">*mut </span><a href="text_cluster.rs.html#8">TextCluster</a> = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
             <span class="kw">let </span><span class="kw-2">mut </span>cluster_count = <span class="number">0i32</span>;
             <span class="kw">let </span><span class="kw-2">mut </span>cluster_flags = <span class="number">0i32</span>;
-            <span class="kw">let </span>text_length = <a href="#149">text</a>.len() <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>;
-            <span class="kw">let </span>text = CString::new(<a href="#149">text</a>).unwrap();
+            <span class="kw">let </span>text_length = <a href="#149">text</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.str.html#method.len">len</a>() <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>;
+            <span class="kw">let </span>text = <a href="https://doc.rust-lang.org/nightly/alloc/ffi/c_str/struct.CString.html#method.new">CString::new</a>(<a href="#149">text</a>).<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>();
 
-            <span class="kw">let </span>status = ffi::cairo_scaled_font_text_to_glyphs(
+            <span class="kw">let </span>status = <a href="../../../cairo_sys/fn.cairo_scaled_font_text_to_glyphs.html">ffi::cairo_scaled_font_text_to_glyphs</a>(
                 <a class="self" href="#146">self</a>.<a href="#55-57">to_raw_none</a>(),
                 <a href="#147">x</a>,
                 <a href="#148">y</a>,
-                <a href="#162">text</a>.as_ptr(),
+                <a href="#162">text</a>.<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.as_ptr">as_ptr</a>(),
                 <a href="#161">text_length</a>,
                 <span class="kw-2">&amp;mut </span><a href="#156">glyphs_ptr</a> <span class="kw">as </span><span class="kw-2">*mut *mut </span><a href="glyph.rs.html#8">Glyph</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
                 <span class="kw-2">&amp;mut </span><a href="#157">glyph_count</a>,
@@ -535,28 +535,28 @@
 
             <span class="kw">let </span>glyph_count = <a href="#157">glyph_count</a> <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>;
             <span class="kw">let </span>glyphs: Vec&lt;<a href="glyph.rs.html#8">Glyph</a>&gt; = {
-                <span class="kw">let </span><span class="kw-2">mut </span>glyphs: Vec&lt;<a href="glyph.rs.html#8">Glyph</a>&gt; = Vec::with_capacity(<a href="#178">glyph_count</a>);
+                <span class="kw">let </span><span class="kw-2">mut </span>glyphs: Vec&lt;<a href="glyph.rs.html#8">Glyph</a>&gt; = <a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.with_capacity">Vec::with_capacity</a>(<a href="#178">glyph_count</a>);
 
-                ptr::copy(<a href="#156">glyphs_ptr</a>, <a href="#180">glyphs</a>.as_mut_ptr(), <a href="#178">glyph_count</a>);
+                <a href="https://doc.rust-lang.org/nightly/core/intrinsics/fn.copy.html">ptr::copy</a>(<a href="#156">glyphs_ptr</a>, <a href="#180">glyphs</a>.<a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.as_mut_ptr">as_mut_ptr</a>(), <a href="#178">glyph_count</a>);
 
-                <a href="#180">glyphs</a>.set_len(<a href="#178">glyph_count</a>);
+                <a href="#180">glyphs</a>.<a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.set_len">set_len</a>(<a href="#178">glyph_count</a>);
 
                 <a href="#180">glyphs</a>
             };
 
             <span class="kw">let </span>cluster_count = <a href="#159">cluster_count</a> <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>;
             <span class="kw">let </span>clusters: Vec&lt;<a href="text_cluster.rs.html#8">TextCluster</a>&gt; = {
-                <span class="kw">let </span><span class="kw-2">mut </span>clusters = Vec::with_capacity(<a href="#189">cluster_count</a>);
+                <span class="kw">let </span><span class="kw-2">mut </span>clusters = <a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.with_capacity">Vec::with_capacity</a>(<a href="#189">cluster_count</a>);
 
-                ptr::copy(<a href="#158">clusters_ptr</a>, <a href="#191">clusters</a>.as_mut_ptr(), <a href="#189">cluster_count</a>);
+                <a href="https://doc.rust-lang.org/nightly/core/intrinsics/fn.copy.html">ptr::copy</a>(<a href="#158">clusters_ptr</a>, <a href="#191">clusters</a>.<a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.as_mut_ptr">as_mut_ptr</a>(), <a href="#189">cluster_count</a>);
 
-                <a href="#191">clusters</a>.set_len(<a href="#189">cluster_count</a>);
+                <a href="#191">clusters</a>.<a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.set_len">set_len</a>(<a href="#189">cluster_count</a>);
 
                 <a href="#191">clusters</a>
             };
 
-            ffi::cairo_glyph_free(<a href="#156">glyphs_ptr</a> <span class="kw">as _</span>);
-            ffi::cairo_text_cluster_free(<a href="#158">clusters_ptr</a> <span class="kw">as _</span>);
+            <a href="../../../cairo_sys/fn.cairo_glyph_free.html">ffi::cairo_glyph_free</a>(<a href="#156">glyphs_ptr</a> <span class="kw">as _</span>);
+            <a href="../../../cairo_sys/fn.cairo_text_cluster_free.html">ffi::cairo_text_cluster_free</a>(<a href="#158">clusters_ptr</a> <span class="kw">as _</span>);
 
             <span class="prelude-val">Ok</span>((<a href="#179">glyphs</a>, <a href="#190">clusters</a>))
         }
@@ -565,7 +565,7 @@
     <span class="attr">#[doc(alias = <span class="string">"cairo_scaled_font_get_font_face"</span>)]
     #[doc(alias = <span class="string">"get_font_face"</span>)]
     </span><span class="kw">pub fn </span>font_face(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="font_face.rs.html#20-30">FontFace</a> {
-        <span class="kw">unsafe </span>{ <a href="font_face.rs.html#126-128">FontFace::from_raw_none</a>(ffi::cairo_scaled_font_get_font_face(<a class="self" href="#209">self</a>.<a href="#55-57">to_raw_none</a>())) }
+        <span class="kw">unsafe </span>{ <a href="font_face.rs.html#126-128">FontFace::from_raw_none</a>(<a href="../../../cairo_sys/fn.cairo_scaled_font_get_font_face.html">ffi::cairo_scaled_font_get_font_face</a>(<a class="self" href="#209">self</a>.<a href="#55-57">to_raw_none</a>())) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">"cairo_scaled_font_get_font_options"</span>)]
@@ -574,7 +574,7 @@
         <span class="kw">let </span>options = <a href="font_options.rs.html#45-53">FontOptions::new</a>()<span class="question-mark">?</span>;
 
         <span class="kw">unsafe </span>{
-            ffi::cairo_scaled_font_get_font_options(<a class="self" href="#215">self</a>.<a href="#55-57">to_raw_none</a>(), <a href="#216">options</a>.<a href="font_options.rs.html#73-75">to_raw_none</a>())
+            <a href="../../../cairo_sys/fn.cairo_scaled_font_get_font_options.html">ffi::cairo_scaled_font_get_font_options</a>(<a class="self" href="#215">self</a>.<a href="#55-57">to_raw_none</a>(), <a href="#216">options</a>.<a href="font_options.rs.html#73-75">to_raw_none</a>())
         }
 
         <span class="prelude-val">Ok</span>(<a href="#216">options</a>)
@@ -585,7 +585,7 @@
     </span><span class="kw">pub fn </span>font_matrix(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="../matrices.rs.html#12">Matrix</a> {
         <span class="kw">let </span><span class="kw-2">mut </span>matrix = <a href="../matrices.rs.html#32-41">Matrix::null</a>();
 
-        <span class="kw">unsafe </span>{ ffi::cairo_scaled_font_get_font_matrix(<a class="self" href="#227">self</a>.<a href="#55-57">to_raw_none</a>(), <a href="#228">matrix</a>.<a href="../matrices.rs.html#27-29">mut_ptr</a>()) }
+        <span class="kw">unsafe </span>{ <a href="../../../cairo_sys/fn.cairo_scaled_font_get_font_matrix.html">ffi::cairo_scaled_font_get_font_matrix</a>(<a class="self" href="#227">self</a>.<a href="#55-57">to_raw_none</a>(), <a href="#228">matrix</a>.<a href="../matrices.rs.html#27-29">mut_ptr</a>()) }
 
         <a href="#228">matrix</a>
     }
@@ -595,7 +595,7 @@
     </span><span class="kw">pub fn </span>ctm(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="../matrices.rs.html#12">Matrix</a> {
         <span class="kw">let </span><span class="kw-2">mut </span>matrix = <a href="../matrices.rs.html#32-41">Matrix::null</a>();
 
-        <span class="kw">unsafe </span>{ ffi::cairo_scaled_font_get_ctm(<a class="self" href="#237">self</a>.<a href="#55-57">to_raw_none</a>(), <a href="#238">matrix</a>.<a href="../matrices.rs.html#27-29">mut_ptr</a>()) }
+        <span class="kw">unsafe </span>{ <a href="../../../cairo_sys/fn.cairo_scaled_font_get_ctm.html">ffi::cairo_scaled_font_get_ctm</a>(<a class="self" href="#237">self</a>.<a href="#55-57">to_raw_none</a>(), <a href="#238">matrix</a>.<a href="../matrices.rs.html#27-29">mut_ptr</a>()) }
 
         <a href="#238">matrix</a>
     }
@@ -605,14 +605,14 @@
     </span><span class="kw">pub fn </span>scale_matrix(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="../matrices.rs.html#12">Matrix</a> {
         <span class="kw">let </span><span class="kw-2">mut </span>matrix = <a href="../matrices.rs.html#32-41">Matrix::null</a>();
 
-        <span class="kw">unsafe </span>{ ffi::cairo_scaled_font_get_scale_matrix(<a class="self" href="#247">self</a>.<a href="#55-57">to_raw_none</a>(), <a href="#248">matrix</a>.<a href="../matrices.rs.html#27-29">mut_ptr</a>()) }
+        <span class="kw">unsafe </span>{ <a href="../../../cairo_sys/fn.cairo_scaled_font_get_scale_matrix.html">ffi::cairo_scaled_font_get_scale_matrix</a>(<a class="self" href="#247">self</a>.<a href="#55-57">to_raw_none</a>(), <a href="#248">matrix</a>.<a href="../matrices.rs.html#27-29">mut_ptr</a>()) }
 
         <a href="#248">matrix</a>
     }
 
     <span class="attr">#[doc(alias = <span class="string">"cairo_scaled_font_status"</span>)]
     </span><span class="kw">pub fn </span>status(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="../error.rs.html#10-150">Error</a>&gt; {
-        <span class="kw">let </span>status = <span class="kw">unsafe </span>{ ffi::cairo_scaled_font_status(<a class="self" href="#256">self</a>.<a href="#55-57">to_raw_none</a>()) };
+        <span class="kw">let </span>status = <span class="kw">unsafe </span>{ <a href="../../../cairo_sys/fn.cairo_scaled_font_status.html">ffi::cairo_scaled_font_status</a>(<a class="self" href="#256">self</a>.<a href="#55-57">to_raw_none</a>()) };
         <a href="../utils.rs.html#21-26">status_to_result</a>(<a href="#257">status</a>)
     }
 

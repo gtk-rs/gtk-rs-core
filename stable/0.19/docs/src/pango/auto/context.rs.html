@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `pango/src/auto/context.rs`."><title>context.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-5bc39a1768837dd0.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="pango" data-themes="" data-resource-suffix="" data-rustdoc-version="1.78.0-nightly (b11fbfbf3 2024-02-03)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-48f368f3872407c8.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `pango/src/auto/context.rs`."><title>context.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-5bc39a1768837dd0.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="pango" data-themes="" data-resource-suffix="" data-rustdoc-version="1.78.0-nightly (b381d3ab2 2024-02-12)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-48f368f3872407c8.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -570,7 +570,7 @@
     ///   be freed with g_object_unref().
     </span><span class="attr">#[doc(alias = <span class="string">"pango_context_new"</span>)]
     </span><span class="kw">pub fn </span>new() -&gt; <a href="#11-26">Context</a> {
-        <span class="kw">unsafe </span>{ from_glib_full(ffi::pango_context_new()) }
+        <span class="kw">unsafe </span>{ <a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="../../../pango_sys/fn.pango_context_new.html">ffi::pango_context_new</a>()) }
     }
 
     <span class="doccomment">/// Forces a change in the context, which will cause any [`Layout`][crate::Layout]
@@ -583,7 +583,7 @@
     </span><span class="attr">#[doc(alias = <span class="string">"pango_context_changed"</span>)]
     </span><span class="kw">pub fn </span>changed(<span class="kw-2">&amp;</span><span class="self">self</span>) {
         <span class="kw">unsafe </span>{
-            ffi::pango_context_changed(<a class="self" href="#58">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>);
+            <a href="../../../pango_sys/fn.pango_context_changed.html">ffi::pango_context_changed</a>(<a class="self" href="#58">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>);
         }
     }
 
@@ -597,7 +597,7 @@
     </span><span class="attr">#[doc(alias = <span class="string">"pango_context_get_base_dir"</span>)]
     #[doc(alias = <span class="string">"get_base_dir"</span>)]
     </span><span class="kw">pub fn </span>base_dir(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="enums.rs.html#909-935">Direction</a> {
-        <span class="kw">unsafe </span>{ from_glib(ffi::pango_context_get_base_dir(<a class="self" href="#73">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>)) }
+        <span class="kw">unsafe </span>{ <a href="../../../glib/translate/fn.from_glib.html">from_glib</a>(<a href="../../../pango_sys/fn.pango_context_get_base_dir.html">ffi::pango_context_get_base_dir</a>(<a class="self" href="#73">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>)) }
     }
 
     <span class="doccomment">/// Retrieves the base gravity for the context.
@@ -610,7 +610,7 @@
     </span><span class="attr">#[doc(alias = <span class="string">"pango_context_get_base_gravity"</span>)]
     #[doc(alias = <span class="string">"get_base_gravity"</span>)]
     </span><span class="kw">pub fn </span>base_gravity(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="enums.rs.html#1277-1295">Gravity</a> {
-        <span class="kw">unsafe </span>{ from_glib(ffi::pango_context_get_base_gravity(<a class="self" href="#86">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>)) }
+        <span class="kw">unsafe </span>{ <a href="../../../glib/translate/fn.from_glib.html">from_glib</a>(<a href="../../../pango_sys/fn.pango_context_get_base_gravity.html">ffi::pango_context_get_base_gravity</a>(<a class="self" href="#86">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>)) }
     }
 
     <span class="doccomment">/// Retrieve the default font description for the context.
@@ -623,8 +623,8 @@
     #[doc(alias = <span class="string">"get_font_description"</span>)]
     </span><span class="kw">pub fn </span>font_description(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="font_description.rs.html#8-23">FontDescription</a>&gt; {
         <span class="kw">unsafe </span>{
-            from_glib_none(ffi::pango_context_get_font_description(
-                <a class="self" href="#98">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+            <a href="../../../glib/translate/fn.from_glib_none.html">from_glib_none</a>(<a href="../../../pango_sys/fn.pango_context_get_font_description.html">ffi::pango_context_get_font_description</a>(
+                <a class="self" href="#98">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
             ))
         }
     }
@@ -639,7 +639,7 @@
     </span><span class="attr">#[doc(alias = <span class="string">"pango_context_get_font_map"</span>)]
     #[doc(alias = <span class="string">"get_font_map"</span>)]
     </span><span class="kw">pub fn </span>font_map(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="font_map.rs.html#8-40">FontMap</a>&gt; {
-        <span class="kw">unsafe </span>{ from_glib_none(ffi::pango_context_get_font_map(<a class="self" href="#115">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>)) }
+        <span class="kw">unsafe </span>{ <a href="../../../glib/translate/fn.from_glib_none.html">from_glib_none</a>(<a href="../../../pango_sys/fn.pango_context_get_font_map.html">ffi::pango_context_get_font_map</a>(<a class="self" href="#115">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>)) }
     }
 
     <span class="doccomment">/// Retrieves the gravity for the context.
@@ -655,7 +655,7 @@
     </span><span class="attr">#[doc(alias = <span class="string">"pango_context_get_gravity"</span>)]
     #[doc(alias = <span class="string">"get_gravity"</span>)]
     </span><span class="kw">pub fn </span>gravity(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="enums.rs.html#1277-1295">Gravity</a> {
-        <span class="kw">unsafe </span>{ from_glib(ffi::pango_context_get_gravity(<a class="self" href="#131">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>)) }
+        <span class="kw">unsafe </span>{ <a href="../../../glib/translate/fn.from_glib.html">from_glib</a>(<a href="../../../pango_sys/fn.pango_context_get_gravity.html">ffi::pango_context_get_gravity</a>(<a class="self" href="#131">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>)) }
     }
 
     <span class="doccomment">/// Retrieves the gravity hint for the context.
@@ -668,7 +668,7 @@
     </span><span class="attr">#[doc(alias = <span class="string">"pango_context_get_gravity_hint"</span>)]
     #[doc(alias = <span class="string">"get_gravity_hint"</span>)]
     </span><span class="kw">pub fn </span>gravity_hint(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="enums.rs.html#1435-1452">GravityHint</a> {
-        <span class="kw">unsafe </span>{ from_glib(ffi::pango_context_get_gravity_hint(<a class="self" href="#144">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>)) }
+        <span class="kw">unsafe </span>{ <a href="../../../glib/translate/fn.from_glib.html">from_glib</a>(<a href="../../../pango_sys/fn.pango_context_get_gravity_hint.html">ffi::pango_context_get_gravity_hint</a>(<a class="self" href="#144">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>)) }
     }
 
     <span class="doccomment">/// Retrieves the global language tag for the context.
@@ -679,7 +679,7 @@
     </span><span class="attr">#[doc(alias = <span class="string">"pango_context_get_language"</span>)]
     #[doc(alias = <span class="string">"get_language"</span>)]
     </span><span class="kw">pub fn </span>language(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="language.rs.html#8-22">Language</a>&gt; {
-        <span class="kw">unsafe </span>{ from_glib_none(ffi::pango_context_get_language(<a class="self" href="#155">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>)) }
+        <span class="kw">unsafe </span>{ <a href="../../../glib/translate/fn.from_glib_none.html">from_glib_none</a>(<a href="../../../pango_sys/fn.pango_context_get_language.html">ffi::pango_context_get_language</a>(<a class="self" href="#155">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>)) }
     }
 
     <span class="doccomment">/// Gets the transformation matrix that will be applied when
@@ -696,7 +696,7 @@
     </span><span class="attr">#[doc(alias = <span class="string">"pango_context_get_matrix"</span>)]
     #[doc(alias = <span class="string">"get_matrix"</span>)]
     </span><span class="kw">pub fn </span>matrix(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="matrix.rs.html#7-24">Matrix</a>&gt; {
-        <span class="kw">unsafe </span>{ from_glib_none(ffi::pango_context_get_matrix(<a class="self" href="#172">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>)) }
+        <span class="kw">unsafe </span>{ <a href="../../../glib/translate/fn.from_glib_none.html">from_glib_none</a>(<a href="../../../pango_sys/fn.pango_context_get_matrix.html">ffi::pango_context_get_matrix</a>(<a class="self" href="#172">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>)) }
     }
 
     <span class="doccomment">/// Get overall metric information for a particular font description.
@@ -732,10 +732,10 @@
         language: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="language.rs.html#8-22">Language</a>&gt;,
     ) -&gt; <a href="font_metrics.rs.html#7-30">FontMetrics</a> {
         <span class="kw">unsafe </span>{
-            from_glib_full(ffi::pango_context_get_metrics(
-                <a class="self" href="#204">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#205">desc</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
-                mut_override(<a href="#206">language</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>),
+            <a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="../../../pango_sys/fn.pango_context_get_metrics.html">ffi::pango_context_get_metrics</a>(
+                <a class="self" href="#204">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#205">desc</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+                <a href="../../../glib/translate/fn.mut_override.html">mut_override</a>(<a href="#206">language</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>),
             ))
         }
     }
@@ -748,8 +748,8 @@
     #[doc(alias = <span class="string">"get_round_glyph_positions"</span>)]
     </span><span class="kw">pub fn </span>is_round_glyph_positions(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
         <span class="kw">unsafe </span>{
-            from_glib(ffi::pango_context_get_round_glyph_positions(
-                <a class="self" href="#223">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+            <a href="../../../glib/translate/fn.from_glib.html">from_glib</a>(<a href="../../../pango_sys/fn.pango_context_get_round_glyph_positions.html">ffi::pango_context_get_round_glyph_positions</a>(
+                <a class="self" href="#223">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
             ))
         }
     }
@@ -773,7 +773,7 @@
     </span><span class="attr">#[doc(alias = <span class="string">"pango_context_get_serial"</span>)]
     #[doc(alias = <span class="string">"get_serial"</span>)]
     </span><span class="kw">pub fn </span>serial(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a> {
-        <span class="kw">unsafe </span>{ ffi::pango_context_get_serial(<a class="self" href="#249">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>) }
+        <span class="kw">unsafe </span>{ <a href="../../../pango_sys/fn.pango_context_get_serial.html">ffi::pango_context_get_serial</a>(<a class="self" href="#249">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>) }
     }
 
     <span class="doccomment">/// List all families for a context.
@@ -788,14 +788,14 @@
     </span><span class="attr">#[doc(alias = <span class="string">"pango_context_list_families"</span>)]
     </span><span class="kw">pub fn </span>list_families(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec&lt;<a href="font_family.rs.html#8-40">FontFamily</a>&gt; {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span><span class="kw-2">mut </span>families = std::ptr::null_mut();
-            <span class="kw">let </span><span class="kw-2">mut </span>n_families = std::mem::MaybeUninit::uninit();
-            ffi::pango_context_list_families(
-                <a class="self" href="#263">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+            <span class="kw">let </span><span class="kw-2">mut </span>families = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">std::ptr::null_mut</a>();
+            <span class="kw">let </span><span class="kw-2">mut </span>n_families = <a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.uninit">std::mem::MaybeUninit::uninit</a>();
+            <a href="../../../pango_sys/fn.pango_context_list_families.html">ffi::pango_context_list_families</a>(
+                <a class="self" href="#263">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
                 <span class="kw-2">&amp;mut </span><a href="#265">families</a>,
-                <a href="#266">n_families</a>.as_mut_ptr(),
+                <a href="#266">n_families</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.as_mut_ptr">as_mut_ptr</a>(),
             );
-            <a href="../../../glib/translate/trait.FromGlibContainer.html">FromGlibContainer::from_glib_container_num</a>(<a href="#265">families</a>, <a href="#266">n_families</a>.assume_init() <span class="kw">as _</span>)
+            <a href="../../../glib/translate/trait.FromGlibContainer.html#tymethod.from_glib_container_num">FromGlibContainer::from_glib_container_num</a>(<a href="#265">families</a>, <a href="#266">n_families</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.assume_init">assume_init</a>() <span class="kw">as _</span>)
         }
     }
 
@@ -811,9 +811,9 @@
     </span><span class="attr">#[doc(alias = <span class="string">"pango_context_load_font"</span>)]
     </span><span class="kw">pub fn </span>load_font(<span class="kw-2">&amp;</span><span class="self">self</span>, desc: <span class="kw-2">&amp;</span><a href="font_description.rs.html#8-23">FontDescription</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="font.rs.html#14-29">Font</a>&gt; {
         <span class="kw">unsafe </span>{
-            from_glib_full(ffi::pango_context_load_font(
-                <a class="self" href="#286">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#286">desc</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+            <a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="../../../pango_sys/fn.pango_context_load_font.html">ffi::pango_context_load_font</a>(
+                <a class="self" href="#286">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#286">desc</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
             ))
         }
     }
@@ -832,10 +832,10 @@
     </span><span class="attr">#[doc(alias = <span class="string">"pango_context_load_fontset"</span>)]
     </span><span class="kw">pub fn </span>load_fontset(<span class="kw-2">&amp;</span><span class="self">self</span>, desc: <span class="kw-2">&amp;</span><a href="font_description.rs.html#8-23">FontDescription</a>, language: <span class="kw-2">&amp;</span><a href="language.rs.html#8-22">Language</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="fontset.rs.html#8-27">Fontset</a>&gt; {
         <span class="kw">unsafe </span>{
-            from_glib_full(ffi::pango_context_load_fontset(
-                <a class="self" href="#307">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#307">desc</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
-                mut_override(<a href="#307">language</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>),
+            <a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="../../../pango_sys/fn.pango_context_load_fontset.html">ffi::pango_context_load_fontset</a>(
+                <a class="self" href="#307">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#307">desc</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+                <a href="../../../glib/translate/fn.mut_override.html">mut_override</a>(<a href="#307">language</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>),
             ))
         }
     }
@@ -853,7 +853,7 @@
     </span><span class="attr">#[doc(alias = <span class="string">"pango_context_set_base_dir"</span>)]
     </span><span class="kw">pub fn </span>set_base_dir(<span class="kw-2">&amp;</span><span class="self">self</span>, direction: <a href="enums.rs.html#909-935">Direction</a>) {
         <span class="kw">unsafe </span>{
-            ffi::pango_context_set_base_dir(<a class="self" href="#328">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>, <a href="#328">direction</a>.<a href="../../../glib/translate/trait.IntoGlib.html">into_glib</a>());
+            <a href="../../../pango_sys/fn.pango_context_set_base_dir.html">ffi::pango_context_set_base_dir</a>(<a class="self" href="#328">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#328">direction</a>.<a href="../../../glib/translate/trait.IntoGlib.html#tymethod.into_glib">into_glib</a>());
         }
     }
 
@@ -865,7 +865,7 @@
     </span><span class="attr">#[doc(alias = <span class="string">"pango_context_set_base_gravity"</span>)]
     </span><span class="kw">pub fn </span>set_base_gravity(<span class="kw-2">&amp;</span><span class="self">self</span>, gravity: <a href="enums.rs.html#1277-1295">Gravity</a>) {
         <span class="kw">unsafe </span>{
-            ffi::pango_context_set_base_gravity(<a class="self" href="#340">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>, <a href="#340">gravity</a>.<a href="../../../glib/translate/trait.IntoGlib.html">into_glib</a>());
+            <a href="../../../pango_sys/fn.pango_context_set_base_gravity.html">ffi::pango_context_set_base_gravity</a>(<a class="self" href="#340">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#340">gravity</a>.<a href="../../../glib/translate/trait.IntoGlib.html#tymethod.into_glib">into_glib</a>());
         }
     }
 
@@ -875,7 +875,7 @@
     </span><span class="attr">#[doc(alias = <span class="string">"pango_context_set_font_description"</span>)]
     </span><span class="kw">pub fn </span>set_font_description(<span class="kw-2">&amp;</span><span class="self">self</span>, desc: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="font_description.rs.html#8-23">FontDescription</a>&gt;) {
         <span class="kw">unsafe </span>{
-            ffi::pango_context_set_font_description(<a class="self" href="#350">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>, <a href="#350">desc</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>);
+            <a href="../../../pango_sys/fn.pango_context_set_font_description.html">ffi::pango_context_set_font_description</a>(<a class="self" href="#350">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#350">desc</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>);
         }
     }
 
@@ -890,9 +890,9 @@
     </span><span class="attr">#[doc(alias = <span class="string">"pango_context_set_font_map"</span>)]
     </span><span class="kw">pub fn </span>set_font_map(<span class="kw-2">&amp;</span><span class="self">self</span>, font_map: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="font_map.rs.html#8-40">FontMap</a>&gt;&gt;) {
         <span class="kw">unsafe </span>{
-            ffi::pango_context_set_font_map(
-                <a class="self" href="#365">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#365">font_map</a>.map(|p| <a href="#369">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>()).<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+            <a href="../../../pango_sys/fn.pango_context_set_font_map.html">ffi::pango_context_set_font_map</a>(
+                <a class="self" href="#365">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#365">font_map</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|p| <a href="#369">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>()).<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
             );
         }
     }
@@ -908,7 +908,7 @@
     </span><span class="attr">#[doc(alias = <span class="string">"pango_context_set_gravity_hint"</span>)]
     </span><span class="kw">pub fn </span>set_gravity_hint(<span class="kw-2">&amp;</span><span class="self">self</span>, hint: <a href="enums.rs.html#1435-1452">GravityHint</a>) {
         <span class="kw">unsafe </span>{
-            ffi::pango_context_set_gravity_hint(<a class="self" href="#383">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>, <a href="#383">hint</a>.<a href="../../../glib/translate/trait.IntoGlib.html">into_glib</a>());
+            <a href="../../../pango_sys/fn.pango_context_set_gravity_hint.html">ffi::pango_context_set_gravity_hint</a>(<a class="self" href="#383">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#383">hint</a>.<a href="../../../glib/translate/trait.IntoGlib.html#tymethod.into_glib">into_glib</a>());
         }
     }
 
@@ -921,9 +921,9 @@
     </span><span class="attr">#[doc(alias = <span class="string">"pango_context_set_language"</span>)]
     </span><span class="kw">pub fn </span>set_language(<span class="kw-2">&amp;</span><span class="self">self</span>, language: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="language.rs.html#8-22">Language</a>&gt;) {
         <span class="kw">unsafe </span>{
-            ffi::pango_context_set_language(
-                <a class="self" href="#396">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
-                mut_override(<a href="#396">language</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>),
+            <a href="../../../pango_sys/fn.pango_context_set_language.html">ffi::pango_context_set_language</a>(
+                <a class="self" href="#396">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+                <a href="../../../glib/translate/fn.mut_override.html">mut_override</a>(<a href="#396">language</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>),
             );
         }
     }
@@ -942,7 +942,7 @@
     </span><span class="attr">#[doc(alias = <span class="string">"pango_context_set_matrix"</span>)]
     </span><span class="kw">pub fn </span>set_matrix(<span class="kw-2">&amp;</span><span class="self">self</span>, matrix: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="matrix.rs.html#7-24">Matrix</a>&gt;) {
         <span class="kw">unsafe </span>{
-            ffi::pango_context_set_matrix(<a class="self" href="#417">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>, <a href="#417">matrix</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>);
+            <a href="../../../pango_sys/fn.pango_context_set_matrix.html">ffi::pango_context_set_matrix</a>(<a class="self" href="#417">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#417">matrix</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>);
         }
     }
 
@@ -962,9 +962,9 @@
     #[doc(alias = <span class="string">"pango_context_set_round_glyph_positions"</span>)]
     </span><span class="kw">pub fn </span>set_round_glyph_positions(<span class="kw-2">&amp;</span><span class="self">self</span>, round_positions: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>) {
         <span class="kw">unsafe </span>{
-            ffi::pango_context_set_round_glyph_positions(
-                <a class="self" href="#437">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#437">round_positions</a>.<a href="../../../glib/translate/trait.IntoGlib.html">into_glib</a>(),
+            <a href="../../../pango_sys/fn.pango_context_set_round_glyph_positions.html">ffi::pango_context_set_round_glyph_positions</a>(
+                <a class="self" href="#437">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#437">round_positions</a>.<a href="../../../glib/translate/trait.IntoGlib.html#tymethod.into_glib">into_glib</a>(),
             );
         }
     }
