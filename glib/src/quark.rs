@@ -16,6 +16,12 @@ impl Quark {
         unsafe { s.run_with_gstr(|s| from_glib(ffi::g_quark_from_string(s.as_ptr()))) }
     }
 
+    #[doc(alias = "g_quark_from_static_string")]
+    #[allow(clippy::should_implement_trait)]
+    pub fn from_static_str(s: &'static GStr) -> Quark {
+        unsafe { from_glib(ffi::g_quark_from_static_string(s.as_ptr())) }
+    }
+
     #[allow(clippy::trivially_copy_pass_by_ref)]
     #[doc(alias = "g_quark_to_string")]
     pub fn as_str<'a>(&self) -> &'a GStr {
