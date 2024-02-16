@@ -259,7 +259,7 @@ is the global-default context, this will return that #GMainContext
 <h5 id="returns-15"><a class="doc-anchor" href="#returns-15">§</a>Returns</h5>
 <p>the thread-default #GMainContext. Unref
 with g_main_context_unref() when you are done with it.</p>
-</div></details></div></details><details class="toggle implementors-toggle" open><summary><section id="impl-MainContext-2" class="impl"><a class="src rightside" href="../src/glib/main_context.rs.html#9-326">source</a><a href="#impl-MainContext-2" class="anchor">§</a><h3 class="code-header">impl <a class="struct" href="struct.MainContext.html" title="struct glib::MainContext">MainContext</a></h3></section></summary><div class="impl-items"><details class="toggle method-toggle" open><summary><section id="method.prepare" class="method"><a class="src rightside" href="../src/glib/main_context.rs.html#40-51">source</a><h4 class="code-header">pub fn <a href="#method.prepare" class="fn">prepare</a>(&amp;self) -&gt; (<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>, <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>)</h4></section></summary><div class="docblock"><p>Prepares to poll sources within a main loop. The resulting information
+</div></details></div></details><details class="toggle implementors-toggle" open><summary><section id="impl-MainContext-2" class="impl"><a class="src rightside" href="../src/glib/main_context.rs.html#9-249">source</a><a href="#impl-MainContext-2" class="anchor">§</a><h3 class="code-header">impl <a class="struct" href="struct.MainContext.html" title="struct glib::MainContext">MainContext</a></h3></section></summary><div class="impl-items"><details class="toggle method-toggle" open><summary><section id="method.prepare" class="method"><a class="src rightside" href="../src/glib/main_context.rs.html#25-36">source</a><h4 class="code-header">pub fn <a href="#method.prepare" class="fn">prepare</a>(&amp;self) -&gt; (<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>, <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>)</h4></section></summary><div class="docblock"><p>Prepares to poll sources within a main loop. The resulting information
 for polling is determined by calling g_main_context_query ().</p>
 <p>You must have successfully acquired the context with
 g_main_context_acquire() before you may call this function.</p>
@@ -268,18 +268,8 @@ g_main_context_acquire() before you may call this function.</p>
 prior to polling.</p>
 <h6 id="priority"><a class="doc-anchor" href="#priority">§</a><code>priority</code></h6>
 <p>location to store priority of highest priority
-source already ready.
-Prepares to poll sources within a main loop. The resulting information
-for polling is determined by calling g_main_context_query ().</p>
-<p>You must have successfully acquired the context with
-g_main_context_acquire() before you may call this function.</p>
-<h5 id="returns-17"><a class="doc-anchor" href="#returns-17">§</a>Returns</h5>
-<p><a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>true</code></a> if some source is ready to be dispatched
-prior to polling.</p>
-<h6 id="priority-1"><a class="doc-anchor" href="#priority-1">§</a><code>priority</code></h6>
-<p>location to store priority of highest priority
 source already ready.</p>
-</div></details><details class="toggle method-toggle" open><summary><section id="method.find_source_by_id" class="method"><a class="src rightside" href="../src/glib/main_context.rs.html#91-98">source</a><h4 class="code-header">pub fn <a href="#method.find_source_by_id" class="fn">find_source_by_id</a>(&amp;self, source_id: &amp;<a class="struct" href="source/struct.SourceId.html" title="struct glib::source::SourceId">SourceId</a>) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="struct.Source.html" title="struct glib::Source">Source</a>&gt;</h4></section></summary><div class="docblock"><p>Finds a #GSource given a pair of context and ID.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.find_source_by_id" class="method"><a class="src rightside" href="../src/glib/main_context.rs.html#57-64">source</a><h4 class="code-header">pub fn <a href="#method.find_source_by_id" class="fn">find_source_by_id</a>(&amp;self, source_id: &amp;<a class="struct" href="source/struct.SourceId.html" title="struct glib::source::SourceId">SourceId</a>) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="struct.Source.html" title="struct glib::Source">Source</a>&gt;</h4></section></summary><div class="docblock"><p>Finds a #GSource given a pair of context and ID.</p>
 <p>It is a programmer error to attempt to look up a non-existent source.</p>
 <p>More specifically: source IDs can be reissued after a source has been
 destroyed and therefore it is never valid to use this function with a
@@ -291,23 +281,9 @@ been reissued, leading to the operation being performed against the
 wrong source.</p>
 <h6 id="source_id"><a class="doc-anchor" href="#source_id">§</a><code>source_id</code></h6>
 <p>the source ID, as returned by g_source_get_id().</p>
-<h5 id="returns-18"><a class="doc-anchor" href="#returns-18">§</a>Returns</h5>
-<p>the #GSource
-Finds a #GSource given a pair of context and ID.</p>
-<p>It is a programmer error to attempt to look up a non-existent source.</p>
-<p>More specifically: source IDs can be reissued after a source has been
-destroyed and therefore it is never valid to use this function with a
-source ID which may have already been removed.  An example is when
-scheduling an idle to run in another thread with g_idle_add(): the
-idle may already have run and been removed by the time this function
-is called on its (now invalid) source ID.  This source ID may have
-been reissued, leading to the operation being performed against the
-wrong source.</p>
-<h6 id="source_id-1"><a class="doc-anchor" href="#source_id-1">§</a><code>source_id</code></h6>
-<p>the source ID, as returned by g_source_get_id().</p>
-<h5 id="returns-19"><a class="doc-anchor" href="#returns-19">§</a>Returns</h5>
+<h5 id="returns-17"><a class="doc-anchor" href="#returns-17">§</a>Returns</h5>
 <p>the #GSource</p>
-</div></details><details class="toggle method-toggle" open><summary><section id="method.invoke" class="method"><a class="src rightside" href="../src/glib/main_context.rs.html#156-161">source</a><h4 class="code-header">pub fn <a href="#method.invoke" class="fn">invoke</a>&lt;F&gt;(&amp;self, func: F)<div class="where">where
+</div></details><details class="toggle method-toggle" open><summary><section id="method.invoke" class="method"><a class="src rightside" href="../src/glib/main_context.rs.html#98-103">source</a><h4 class="code-header">pub fn <a href="#method.invoke" class="fn">invoke</a>&lt;F&gt;(&amp;self, func: F)<div class="where">where
     F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html" title="trait core::ops::function::FnOnce">FnOnce</a>() + <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html" title="trait core::marker::Send">Send</a> + 'static,</div></h4></section></summary><div class="docblock"><p>Invokes <code>func</code> on the main context.</p>
 <p>If the current thread is the owner of the main context or the main context currently has no
 owner then <code>func</code> will be called directly from inside this function. If this behaviour is
@@ -331,33 +307,14 @@ g_main_context_invoke_full().</p>
 return <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>false</code></a>.  If it returns <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>true</code></a>, it will be continuously run in a
 loop (and may prevent this call from returning).</p>
 <h6 id="function"><a class="doc-anchor" href="#function">§</a><code>function</code></h6>
-<p>function to call
-Invokes a function in such a way that @self is owned during the
-invocation of @function.</p>
-<p>If @self is <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a> then the global-default main context — as
-returned by g_main_context_default() — is used.</p>
-<p>If @self is owned by the current thread, @function is called
-directly.  Otherwise, if @self is the thread-default main context
-of the current thread and g_main_context_acquire() succeeds, then
-@function is called and g_main_context_release() is called
-afterwards.</p>
-<p>In any other case, an idle source is created to call @function and
-that source is attached to @self (presumably to be run in another
-thread).  The idle source is attached with <code>G_PRIORITY_DEFAULT</code>
-priority.  If you want a different priority, use
-g_main_context_invoke_full().</p>
-<p>Note that, as with normal idle functions, @function should probably
-return <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>false</code></a>.  If it returns <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>true</code></a>, it will be continuously run in a
-loop (and may prevent this call from returning).</p>
-<h6 id="function-1"><a class="doc-anchor" href="#function-1">§</a><code>function</code></h6>
 <p>function to call</p>
-</div></details><details class="toggle method-toggle" open><summary><section id="method.invoke_with_priority" class="method"><a class="src rightside" href="../src/glib/main_context.rs.html#171-178">source</a><h4 class="code-header">pub fn <a href="#method.invoke_with_priority" class="fn">invoke_with_priority</a>&lt;F&gt;(&amp;self, priority: <a class="struct" href="source/struct.Priority.html" title="struct glib::source::Priority">Priority</a>, func: F)<div class="where">where
+</div></details><details class="toggle method-toggle" open><summary><section id="method.invoke_with_priority" class="method"><a class="src rightside" href="../src/glib/main_context.rs.html#113-120">source</a><h4 class="code-header">pub fn <a href="#method.invoke_with_priority" class="fn">invoke_with_priority</a>&lt;F&gt;(&amp;self, priority: <a class="struct" href="source/struct.Priority.html" title="struct glib::source::Priority">Priority</a>, func: F)<div class="where">where
     F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html" title="trait core::ops::function::FnOnce">FnOnce</a>() + <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html" title="trait core::marker::Send">Send</a> + 'static,</div></h4></section></summary><div class="docblock"><p>Invokes <code>func</code> on the main context with the given priority.</p>
 <p>If the current thread is the owner of the main context or the main context currently has no
 owner then <code>func</code> will be called directly from inside this function. If this behaviour is
 not desired and <code>func</code> should always be called asynchronously then use <a href="struct.MainContext.html#method.spawn" title="method glib::MainContext::spawn"><code>MainContext::spawn</code></a>
 <a href="source/fn.idle_add.html" title="fn glib::source::idle_add"><code>glib::idle_add</code></a> instead.</p>
-</div></details><details class="toggle method-toggle" open><summary><section id="method.invoke_local" class="method"><a class="src rightside" href="../src/glib/main_context.rs.html#193-198">source</a><h4 class="code-header">pub fn <a href="#method.invoke_local" class="fn">invoke_local</a>&lt;F&gt;(&amp;self, func: F)<div class="where">where
+</div></details><details class="toggle method-toggle" open><summary><section id="method.invoke_local" class="method"><a class="src rightside" href="../src/glib/main_context.rs.html#135-140">source</a><h4 class="code-header">pub fn <a href="#method.invoke_local" class="fn">invoke_local</a>&lt;F&gt;(&amp;self, func: F)<div class="where">where
     F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html" title="trait core::ops::function::FnOnce">FnOnce</a>() + 'static,</div></h4></section></summary><div class="docblock"><p>Invokes <code>func</code> on the main context.</p>
 <p>Different to <code>invoke()</code>, this does not require <code>func</code> to be
 <code>Send</code> but can only be called from the thread that owns the main context.</p>
@@ -367,7 +324,7 @@ owns the main context.</p>
 or otherwise panics immediately. If this behaviour is not desired and <code>func</code> should always
 be called asynchronously then use <a href="struct.MainContext.html#method.spawn_local" title="method glib::MainContext::spawn_local"><code>MainContext::spawn_local</code></a>
 <a href="source/fn.idle_add_local.html" title="fn glib::source::idle_add_local"><code>glib::idle_add_local</code></a> instead.</p>
-</div></details><details class="toggle method-toggle" open><summary><section id="method.invoke_local_with_priority" class="method"><a class="src rightside" href="../src/glib/main_context.rs.html#214-227">source</a><h4 class="code-header">pub fn <a href="#method.invoke_local_with_priority" class="fn">invoke_local_with_priority</a>&lt;F&gt;(&amp;self, _priority: <a class="struct" href="source/struct.Priority.html" title="struct glib::source::Priority">Priority</a>, func: F)<div class="where">where
+</div></details><details class="toggle method-toggle" open><summary><section id="method.invoke_local_with_priority" class="method"><a class="src rightside" href="../src/glib/main_context.rs.html#156-169">source</a><h4 class="code-header">pub fn <a href="#method.invoke_local_with_priority" class="fn">invoke_local_with_priority</a>&lt;F&gt;(&amp;self, _priority: <a class="struct" href="source/struct.Priority.html" title="struct glib::source::Priority">Priority</a>, func: F)<div class="where">where
     F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html" title="trait core::ops::function::FnOnce">FnOnce</a>() + 'static,</div></h4></section></summary><div class="docblock"><p>Invokes <code>func</code> on the main context with the given priority.</p>
 <p>Different to <code>invoke_with_priority()</code>, this does not require <code>func</code> to be
 <code>Send</code> but can only be called from the thread that owns the main context.</p>
@@ -377,12 +334,12 @@ owns the main context.</p>
 or otherwise panics immediately. If this behaviour is not desired and <code>func</code> should always
 be called asynchronously then use <a href="struct.MainContext.html#method.spawn_local" title="method glib::MainContext::spawn_local"><code>MainContext::spawn_local</code></a>
 <a href="source/fn.idle_add_local.html" title="fn glib::source::idle_add_local"><code>glib::idle_add_local</code></a> instead.</p>
-</div></details><details class="toggle method-toggle" open><summary><section id="method.with_thread_default" class="method"><a class="src rightside" href="../src/glib/main_context.rs.html#262-269">source</a><h4 class="code-header">pub fn <a href="#method.with_thread_default" class="fn">with_thread_default</a>&lt;R, F&gt;(&amp;self, func: F) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;R, <a class="struct" href="error/struct.BoolError.html" title="struct glib::error::BoolError">BoolError</a>&gt;<div class="where">where
+</div></details><details class="toggle method-toggle" open><summary><section id="method.with_thread_default" class="method"><a class="src rightside" href="../src/glib/main_context.rs.html#204-211">source</a><h4 class="code-header">pub fn <a href="#method.with_thread_default" class="fn">with_thread_default</a>&lt;R, F&gt;(&amp;self, func: F) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;R, <a class="struct" href="error/struct.BoolError.html" title="struct glib::error::BoolError">BoolError</a>&gt;<div class="where">where
     F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html" title="trait core::ops::function::FnOnce">FnOnce</a>() -&gt; R + <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Sized.html" title="trait core::marker::Sized">Sized</a>,</div></h4></section></summary><div class="docblock"><p>Call closure with the main context configured as the thread default one.</p>
 <p>The thread default main context is changed in a panic-safe manner before calling <code>func</code> and
 released again afterwards regardless of whether closure panicked or not.</p>
 <p>This will fail if the main context is owned already by another thread.</p>
-</div></details><details class="toggle method-toggle" open><summary><section id="method.acquire" class="method"><a class="src rightside" href="../src/glib/main_context.rs.html#316-325">source</a><h4 class="code-header">pub fn <a href="#method.acquire" class="fn">acquire</a>(&amp;self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="struct.MainContextAcquireGuard.html" title="struct glib::MainContextAcquireGuard">MainContextAcquireGuard</a>&lt;'_&gt;, <a class="struct" href="error/struct.BoolError.html" title="struct glib::error::BoolError">BoolError</a>&gt;</h4></section></summary><div class="docblock"><p>Acquire ownership of the main context.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.acquire" class="method"><a class="src rightside" href="../src/glib/main_context.rs.html#239-248">source</a><h4 class="code-header">pub fn <a href="#method.acquire" class="fn">acquire</a>(&amp;self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="struct.MainContextAcquireGuard.html" title="struct glib::MainContextAcquireGuard">MainContextAcquireGuard</a>&lt;'_&gt;, <a class="struct" href="error/struct.BoolError.html" title="struct glib::error::BoolError">BoolError</a>&gt;</h4></section></summary><div class="docblock"><p>Acquire ownership of the main context.</p>
 <p>Ownership will automatically be released again once the returned acquire guard is dropped.</p>
 <p>This will fail if the main context is owned already by another thread.
 Tries to become the owner of the specified context.
@@ -396,21 +353,7 @@ can call g_main_context_prepare(), g_main_context_query(),
 g_main_context_check(), g_main_context_dispatch(), g_main_context_release().</p>
 <p>Since 2.76 @self can be <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a> to use the global-default
 main context.</p>
-<h5 id="returns-20"><a class="doc-anchor" href="#returns-20">§</a>Returns</h5>
-<p><a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>true</code></a> if the operation succeeded, and
-this thread is now the owner of @self.
-Tries to become the owner of the specified context.
-If some other thread is the owner of the context,
-returns <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>false</code></a> immediately. Ownership is properly
-recursive: the owner can require ownership again
-and will release ownership when g_main_context_release()
-is called as many times as g_main_context_acquire().</p>
-<p>You must be the owner of a context before you
-can call g_main_context_prepare(), g_main_context_query(),
-g_main_context_check(), g_main_context_dispatch(), g_main_context_release().</p>
-<p>Since 2.76 @self can be <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a> to use the global-default
-main context.</p>
-<h5 id="returns-21"><a class="doc-anchor" href="#returns-21">§</a>Returns</h5>
+<h5 id="returns-18"><a class="doc-anchor" href="#returns-18">§</a>Returns</h5>
 <p><a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>true</code></a> if the operation succeeded, and
 this thread is now the owner of @self.</p>
 </div></details></div></details><details class="toggle implementors-toggle" open><summary><section id="impl-MainContext-3" class="impl"><a class="src rightside" href="../src/glib/main_context_futures.rs.html#504-653">source</a><a href="#impl-MainContext-3" class="anchor">§</a><h3 class="code-header">impl <a class="struct" href="struct.MainContext.html" title="struct glib::MainContext">MainContext</a></h3></section></summary><div class="impl-items"><details class="toggle method-toggle" open><summary><section id="method.spawn" class="method"><a class="src rightside" href="../src/glib/main_context_futures.rs.html#510-515">source</a><h4 class="code-header">pub fn <a href="#method.spawn" class="fn">spawn</a>&lt;R: <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html" title="trait core::marker::Send">Send</a> + 'static, F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html" title="trait core::future::future::Future">Future</a>&lt;Output = R&gt; + <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html" title="trait core::marker::Send">Send</a> + 'static&gt;(
@@ -504,8 +447,8 @@ operator. <a href="https://doc.rust-lang.org/nightly/core/cmp/trait.PartialOrd.h
     Sp: LocalSpawn + ?<a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Sized.html" title="trait core::marker::Sized">Sized</a>,</div></h3></section></summary><div class="impl-items"><details class="toggle method-toggle" open><summary><section id="method.spawn_local-1" class="method trait-impl"><a href="#method.spawn_local-1" class="anchor">§</a><h4 class="code-header">fn <a class="fn">spawn_local</a>&lt;Fut&gt;(&amp;self, future: Fut) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, SpawnError&gt;<div class="where">where
     Fut: <a class="trait" href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html" title="trait core::future::future::Future">Future</a>&lt;Output = <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>&gt; + 'static,</div></h4></section></summary><div class='docblock'>Spawns a task that polls the given future with output <code>()</code> to
 completion. <a>Read more</a></div></details></div></details><details class="toggle implementors-toggle"><summary><section id="impl-Property-for-T" class="impl"><a class="src rightside" href="../src/glib/property.rs.html#25-27">source</a><a href="#impl-Property-for-T" class="anchor">§</a><h3 class="code-header">impl&lt;T&gt; <a class="trait" href="property/trait.Property.html" title="trait glib::property::Property">Property</a> for T<div class="where">where
-    T: <a class="trait" href="prelude/trait.HasParamSpec.html" title="trait glib::prelude::HasParamSpec">HasParamSpec</a>,</div></h3></section></summary><div class="impl-items"><section id="associatedtype.Value-1" class="associatedtype trait-impl"><a href="#associatedtype.Value-1" class="anchor">§</a><h4 class="code-header">type <a href="property/trait.Property.html#associatedtype.Value" class="associatedtype">Value</a> = T</h4></section></div></details><details class="toggle implementors-toggle"><summary><section id="impl-PropertyGet-for-T" class="impl"><a class="src rightside" href="../src/glib/property.rs.html#92-97">source</a><a href="#impl-PropertyGet-for-T" class="anchor">§</a><h3 class="code-header">impl&lt;T&gt; <a class="trait" href="property/trait.PropertyGet.html" title="trait glib::property::PropertyGet">PropertyGet</a> for T<div class="where">where
-    T: <a class="trait" href="prelude/trait.HasParamSpec.html" title="trait glib::prelude::HasParamSpec">HasParamSpec</a>,</div></h3></section></summary><div class="impl-items"><section id="associatedtype.Value" class="associatedtype trait-impl"><a href="#associatedtype.Value" class="anchor">§</a><h4 class="code-header">type <a href="property/trait.PropertyGet.html#associatedtype.Value" class="associatedtype">Value</a> = T</h4></section><section id="method.get" class="method trait-impl"><a class="src rightside" href="../src/glib/property.rs.html#94-96">source</a><a href="#method.get" class="anchor">§</a><h4 class="code-header">fn <a href="property/trait.PropertyGet.html#tymethod.get" class="fn">get</a>&lt;R, F&gt;(&amp;self, f: F) -&gt; R<div class="where">where
+    T: <a class="trait" href="prelude/trait.HasParamSpec.html" title="trait glib::prelude::HasParamSpec">HasParamSpec</a>,</div></h3></section></summary><div class="impl-items"><section id="associatedtype.Value" class="associatedtype trait-impl"><a href="#associatedtype.Value" class="anchor">§</a><h4 class="code-header">type <a href="property/trait.Property.html#associatedtype.Value" class="associatedtype">Value</a> = T</h4></section></div></details><details class="toggle implementors-toggle"><summary><section id="impl-PropertyGet-for-T" class="impl"><a class="src rightside" href="../src/glib/property.rs.html#92-97">source</a><a href="#impl-PropertyGet-for-T" class="anchor">§</a><h3 class="code-header">impl&lt;T&gt; <a class="trait" href="property/trait.PropertyGet.html" title="trait glib::property::PropertyGet">PropertyGet</a> for T<div class="where">where
+    T: <a class="trait" href="prelude/trait.HasParamSpec.html" title="trait glib::prelude::HasParamSpec">HasParamSpec</a>,</div></h3></section></summary><div class="impl-items"><section id="associatedtype.Value-1" class="associatedtype trait-impl"><a href="#associatedtype.Value-1" class="anchor">§</a><h4 class="code-header">type <a href="property/trait.PropertyGet.html#associatedtype.Value" class="associatedtype">Value</a> = T</h4></section><section id="method.get" class="method trait-impl"><a class="src rightside" href="../src/glib/property.rs.html#94-96">source</a><a href="#method.get" class="anchor">§</a><h4 class="code-header">fn <a href="property/trait.PropertyGet.html#tymethod.get" class="fn">get</a>&lt;R, F&gt;(&amp;self, f: F) -&gt; R<div class="where">where
     F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;&lt;T as <a class="trait" href="property/trait.PropertyGet.html" title="trait glib::property::PropertyGet">PropertyGet</a>&gt;::<a class="associatedtype" href="property/trait.PropertyGet.html#associatedtype.Value" title="type glib::property::PropertyGet::Value">Value</a>) -&gt; R,</div></h4></section></div></details><details class="toggle implementors-toggle"><summary><section id="impl-SpawnExt-for-Sp" class="impl"><a href="#impl-SpawnExt-for-Sp" class="anchor">§</a><h3 class="code-header">impl&lt;Sp&gt; SpawnExt for Sp<div class="where">where
     Sp: Spawn + ?<a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Sized.html" title="trait core::marker::Sized">Sized</a>,</div></h3></section></summary><div class="impl-items"><details class="toggle method-toggle" open><summary><section id="method.spawn-1" class="method trait-impl"><a href="#method.spawn-1" class="anchor">§</a><h4 class="code-header">fn <a class="fn">spawn</a>&lt;Fut&gt;(&amp;self, future: Fut) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, SpawnError&gt;<div class="where">where
     Fut: <a class="trait" href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html" title="trait core::future::future::Future">Future</a>&lt;Output = <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>&gt; + <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html" title="trait core::marker::Send">Send</a> + 'static,</div></h4></section></summary><div class='docblock'>Spawns a task that polls the given future with output <code>()</code> to

@@ -984,7 +984,7 @@
                 <span class="kw">if </span>!context.is_null() {
                     <span class="kw">let </span>future = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.read.html">ptr::read</a>(<a href="#97">future</a>);
                     <span class="kw">let </span>context = <a href="translate.rs.html#1557">MainContext::from_glib_none</a>(<a href="#98">context</a>);
-                    <a href="#101">context</a>.<a href="main_context.rs.html#156-161">invoke</a>(<span class="kw">move </span>|| {
+                    <a href="#101">context</a>.<a href="main_context.rs.html#98-103">invoke</a>(<span class="kw">move </span>|| {
                         <a href="https://doc.rust-lang.org/nightly/core/mem/fn.drop.html">drop</a>(<a href="#100">future</a>);
                     });
                 } <span class="kw">else </span>{
@@ -1119,7 +1119,7 @@
         </span>);
 
         <a href="#228">executor</a>
-            .<a href="main_context.rs.html#262-269">with_thread_default</a>(|| {
+            .<a href="main_context.rs.html#204-211">with_thread_default</a>(|| {
                 <span class="kw">let </span>_enter = futures_executor::enter().<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>();
                 <span class="kw">let </span><span class="kw-2">mut </span>context = <a href="https://doc.rust-lang.org/nightly/core/task/wake/struct.Context.html#method.from_waker">Context::from_waker</a>(<span class="kw-2">&amp;</span><a class="self" href="#226">self</a>.waker);
 
@@ -1443,7 +1443,7 @@
         f: F,
     ) -&gt; JoinHandle&lt;R&gt; {
         <span class="kw">let </span>_acquire = <span class="self"><a href="#556">self</a>
-            </span>.<a href="main_context.rs.html#316-325">acquire</a>()
+            </span>.<a href="main_context.rs.html#239-248">acquire</a>()
             .<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.expect">expect</a>(<span class="string">"Spawning local futures only allowed on the thread owning the MainContext"</span>);
         <span class="kw">let </span>f = LocalFutureObj::new(<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">Box::new</a>(<span class="kw">async move </span>{
             <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">Box::new</a>(<a href="#558">f</a>.<span class="kw">await</span>) <span class="kw">as </span>Box&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/any/trait.Any.html">Any</a> + <span class="lifetime">'static</span>&gt;
@@ -1483,7 +1483,7 @@
     ) -&gt; SpawnWithinJoinHandle&lt;R&gt; {
         <span class="kw">let </span>ctx = <a class="self" href="#595">self</a>.<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">clone</a>();
         <span class="kw">let </span>(tx, rx) = oneshot::channel();
-        <a class="self" href="#595">self</a>.<a href="main_context.rs.html#171-178">invoke_with_priority</a>(<a href="#596">priority</a>, <span class="kw">move </span>|| {
+        <a class="self" href="#595">self</a>.<a href="main_context.rs.html#113-120">invoke_with_priority</a>(<a href="#596">priority</a>, <span class="kw">move </span>|| {
             <span class="kw">let _ </span>= <a href="#600">tx</a>.send(<a href="#599">ctx</a>.<a href="#525-527">spawn_local</a>(<a href="#597">func</a>()));
         });
 
