@@ -245,6 +245,23 @@ fn attr_flags() {
 }
 
 #[test]
+fn attr_flags_with_default() {
+    #[glib::flags(name = "MyFlags")]
+    enum MyFlags {
+        #[flags_value(name = "Flag A", nick = "nick-a")]
+        A = 0b00000001,
+        #[default]
+        #[flags_value(name = "Flag B")]
+        B = 0b00000010,
+    }
+
+    assert_eq!(MyFlags::A.bits(), 1);
+    assert_eq!(MyFlags::B.bits(), 2);
+    assert_eq!(MyFlags::default(), MyFlags::B);
+    assert_eq!(MyFlags::default().into_glib(), 2);
+}
+
+#[test]
 fn subclassable() {
     mod foo {
         use glib::subclass::prelude::*;
