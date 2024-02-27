@@ -42,8 +42,8 @@ pub fn base64_decode(text: &str) -> Vec<u8> {
 //}
 
 #[doc(alias = "g_base64_encode")]
-pub fn base64_encode(data: &[u8]) -> crate::GString {
-    let len = data.len() as _;
+pub fn base64_encode(data: Option<&[u8]>) -> crate::GString {
+    let len = data.map(|arr| arr.len()).unwrap_or(0) as _;
     unsafe { from_glib_full(ffi::g_base64_encode(data.to_glib_none().0, len)) }
 }
 
@@ -757,7 +757,7 @@ pub fn spawn_async(
 //#[cfg(feature = "v2_68")]
 //#[cfg_attr(docsrs, doc(cfg(feature = "v2_68")))]
 //#[doc(alias = "g_spawn_async_with_pipes_and_fds")]
-//pub fn spawn_async_with_pipes_and_fds(working_directory: Option<impl AsRef<std::path::Path>>, argv: &[&std::path::Path], envp: &[&std::path::Path], flags: SpawnFlags, child_setup: Option<Box_<dyn FnOnce() + 'static>>, stdin_fd: i32, stdout_fd: i32, stderr_fd: i32, source_fds: &[i32], target_fds: &[i32], n_fds: usize) -> Result<(Pid, i32, i32, i32), crate::Error> {
+//pub fn spawn_async_with_pipes_and_fds(working_directory: Option<impl AsRef<std::path::Path>>, argv: &[&std::path::Path], envp: &[&std::path::Path], flags: SpawnFlags, child_setup: Option<Box_<dyn FnOnce() + 'static>>, stdin_fd: i32, stdout_fd: i32, stderr_fd: i32, source_fds: Option<&[i32]>, target_fds: Option<&[i32]>, n_fds: usize) -> Result<(Pid, i32, i32, i32), crate::Error> {
 //    unsafe { TODO: call ffi:g_spawn_async_with_pipes_and_fds() }
 //}
 
