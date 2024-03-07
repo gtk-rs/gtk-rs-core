@@ -120,6 +120,14 @@ impl ApplicationBuilder {
         }
     }
 
+    #[cfg(feature = "v2_80")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_80")))]
+    pub fn version(self, version: impl Into<glib::GString>) -> Self {
+        Self {
+            builder: self.builder.property("version", version.into()),
+        }
+    }
+
     // rustdoc-stripper-ignore-next
     /// Build the [`Application`].
     #[must_use = "Building the object from the builder is usually expensive and is not expected to have side effects"]
@@ -267,6 +275,18 @@ pub trait ApplicationExt: IsA<Application> + sealed::Sealed + 'static {
         }
     }
 
+    #[cfg(feature = "v2_80")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_80")))]
+    #[doc(alias = "g_application_get_version")]
+    #[doc(alias = "get_version")]
+    fn version(&self) -> Option<glib::GString> {
+        unsafe {
+            from_glib_none(ffi::g_application_get_version(
+                self.as_ref().to_glib_none().0,
+            ))
+        }
+    }
+
     #[doc(alias = "g_application_open")]
     fn open(&self, files: &[File], hint: &str) {
         let n_files = files.len() as _;
@@ -386,6 +406,18 @@ pub trait ApplicationExt: IsA<Application> + sealed::Sealed + 'static {
             ffi::g_application_set_resource_base_path(
                 self.as_ref().to_glib_none().0,
                 resource_path.to_glib_none().0,
+            );
+        }
+    }
+
+    #[cfg(feature = "v2_80")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_80")))]
+    #[doc(alias = "g_application_set_version")]
+    fn set_version(&self, version: &str) {
+        unsafe {
+            ffi::g_application_set_version(
+                self.as_ref().to_glib_none().0,
+                version.to_glib_none().0,
             );
         }
     }
@@ -769,6 +801,31 @@ pub trait ApplicationExt: IsA<Application> + sealed::Sealed + 'static {
                 b"notify::resource-base-path\0".as_ptr() as *const _,
                 Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
                     notify_resource_base_path_trampoline::<Self, F> as *const (),
+                )),
+                Box_::into_raw(f),
+            )
+        }
+    }
+
+    #[cfg(feature = "v2_80")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_80")))]
+    #[doc(alias = "version")]
+    fn connect_version_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+        unsafe extern "C" fn notify_version_trampoline<P: IsA<Application>, F: Fn(&P) + 'static>(
+            this: *mut ffi::GApplication,
+            _param_spec: glib::ffi::gpointer,
+            f: glib::ffi::gpointer,
+        ) {
+            let f: &F = &*(f as *const F);
+            f(Application::from_glib_borrow(this).unsafe_cast_ref())
+        }
+        unsafe {
+            let f: Box_<F> = Box_::new(f);
+            connect_raw(
+                self.as_ptr() as *mut _,
+                b"notify::version\0".as_ptr() as *const _,
+                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
+                    notify_version_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
             )

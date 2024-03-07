@@ -127,6 +127,5 @@ int main() {
     printf("%s;%zu;%zu\n", "GVariantDict", sizeof(GVariantDict), alignof(GVariantDict));
     printf("%s;%zu;%zu\n", "GVariantIter", sizeof(GVariantIter), alignof(GVariantIter));
     printf("%s;%zu;%zu\n", "GVariantParseError", sizeof(GVariantParseError), alignof(GVariantParseError));
-    printf("%s;%zu;%zu\n", "GWin32OSType", sizeof(GWin32OSType), alignof(GWin32OSType));
     return 0;
 }
