@@ -304,16 +304,6 @@ extern "C" {
 macro_rules! define_param_spec {
     ($rust_type:ident, $ffi_type:path, $rust_type_offset:expr) => {
         // Can't use get_type here as this is not a boxed type but another fundamental type
-        wrapper! {
-            #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
-            pub struct $rust_type(Shared<$ffi_type>);
-
-            match fn {
-                ref => |ptr| gobject_ffi::g_param_spec_ref_sink(ptr as *mut gobject_ffi::GParamSpec) as *mut $ffi_type,
-                unref => |ptr| gobject_ffi::g_param_spec_unref(ptr as *mut gobject_ffi::GParamSpec),
-            }
-        }
-
         impl StaticType for $rust_type {
             #[inline]
             fn static_type() -> Type {
@@ -783,6 +773,17 @@ fn assert_param_name(name: &str) {
         "{name} is not a valid canonical parameter name",
     );
 }
+
+wrapper! {
+    #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    #[doc(alias = "GParamSpecChar")]
+    pub struct ParamSpecChar(Shared<gobject_ffi::GParamSpecChar>);
+
+    match fn {
+        ref => |ptr| gobject_ffi::g_param_spec_ref_sink(ptr as *mut gobject_ffi::GParamSpec) as *mut gobject_ffi::GParamSpecChar,
+        unref => |ptr| gobject_ffi::g_param_spec_unref(ptr as *mut gobject_ffi::GParamSpec),
+    }
+}
 define_param_spec_numeric!(
     ParamSpecChar,
     gobject_ffi::GParamSpecChar,
@@ -793,6 +794,16 @@ define_param_spec_numeric!(
 
 define_builder_numeric!(ParamSpecChar, "g_param_spec_char", ParamSpecCharBuilder, i8);
 
+wrapper! {
+    #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    #[doc(alias = "GParamSpecUChar")]
+    pub struct ParamSpecUChar(Shared<gobject_ffi::GParamSpecUChar>);
+
+    match fn {
+        ref => |ptr| gobject_ffi::g_param_spec_ref_sink(ptr as *mut gobject_ffi::GParamSpec) as *mut gobject_ffi::GParamSpecUChar,
+        unref => |ptr| gobject_ffi::g_param_spec_unref(ptr as *mut gobject_ffi::GParamSpec),
+    }
+}
 define_param_spec_numeric!(
     ParamSpecUChar,
     gobject_ffi::GParamSpecUChar,
@@ -808,6 +819,16 @@ define_builder_numeric!(
     u8
 );
 
+wrapper! {
+    #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    #[doc(alias = "GParamSpecBoolean")]
+    pub struct ParamSpecBoolean(Shared<gobject_ffi::GParamSpecBoolean>);
+
+    match fn {
+        ref => |ptr| gobject_ffi::g_param_spec_ref_sink(ptr as *mut gobject_ffi::GParamSpec) as *mut gobject_ffi::GParamSpecBoolean,
+        unref => |ptr| gobject_ffi::g_param_spec_unref(ptr as *mut gobject_ffi::GParamSpec),
+    }
+}
 define_param_spec!(ParamSpecBoolean, gobject_ffi::GParamSpecBoolean, 2);
 
 define_param_spec_default!(
@@ -845,6 +866,16 @@ define_builder!(
     }
 );
 
+wrapper! {
+    #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    #[doc(alias = "GParamSpecInt")]
+    pub struct ParamSpecInt(Shared<gobject_ffi::GParamSpecInt>);
+
+    match fn {
+        ref => |ptr| gobject_ffi::g_param_spec_ref_sink(ptr as *mut gobject_ffi::GParamSpec) as *mut gobject_ffi::GParamSpecInt,
+        unref => |ptr| gobject_ffi::g_param_spec_unref(ptr as *mut gobject_ffi::GParamSpec),
+    }
+}
 define_param_spec_numeric!(
     ParamSpecInt,
     gobject_ffi::GParamSpecInt,
@@ -855,6 +886,16 @@ define_param_spec_numeric!(
 
 define_builder_numeric!(ParamSpecInt, "g_param_spec_int", ParamSpecIntBuilder, i32);
 
+wrapper! {
+    #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    #[doc(alias = "GParamSpecUInt")]
+    pub struct ParamSpecUInt(Shared<gobject_ffi::GParamSpecUInt>);
+
+    match fn {
+        ref => |ptr| gobject_ffi::g_param_spec_ref_sink(ptr as *mut gobject_ffi::GParamSpec) as *mut gobject_ffi::GParamSpecUInt,
+        unref => |ptr| gobject_ffi::g_param_spec_unref(ptr as *mut gobject_ffi::GParamSpec),
+    }
+}
 define_param_spec_numeric!(
     ParamSpecUInt,
     gobject_ffi::GParamSpecUInt,
@@ -870,6 +911,16 @@ define_builder_numeric!(
     u32
 );
 
+wrapper! {
+    #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    #[doc(alias = "GParamSpecLong")]
+    pub struct ParamSpecLong(Shared<gobject_ffi::GParamSpecLong>);
+
+    match fn {
+        ref => |ptr| gobject_ffi::g_param_spec_ref_sink(ptr as *mut gobject_ffi::GParamSpec) as *mut gobject_ffi::GParamSpecLong,
+        unref => |ptr| gobject_ffi::g_param_spec_unref(ptr as *mut gobject_ffi::GParamSpec),
+    }
+}
 define_param_spec_numeric!(
     ParamSpecLong,
     gobject_ffi::GParamSpecLong,
@@ -885,6 +936,16 @@ define_builder_numeric!(
     libc::c_long
 );
 
+wrapper! {
+    #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    #[doc(alias = "GParamSpecULong")]
+    pub struct ParamSpecULong(Shared<gobject_ffi::GParamSpecULong>);
+
+    match fn {
+        ref => |ptr| gobject_ffi::g_param_spec_ref_sink(ptr as *mut gobject_ffi::GParamSpec) as *mut gobject_ffi::GParamSpecULong,
+        unref => |ptr| gobject_ffi::g_param_spec_unref(ptr as *mut gobject_ffi::GParamSpec),
+    }
+}
 define_param_spec_numeric!(
     ParamSpecULong,
     gobject_ffi::GParamSpecULong,
@@ -900,6 +961,16 @@ define_builder_numeric!(
     libc::c_ulong
 );
 
+wrapper! {
+    #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    #[doc(alias = "GParamSpecInt64")]
+    pub struct ParamSpecInt64(Shared<gobject_ffi::GParamSpecInt64>);
+
+    match fn {
+        ref => |ptr| gobject_ffi::g_param_spec_ref_sink(ptr as *mut gobject_ffi::GParamSpec) as *mut gobject_ffi::GParamSpecInt64,
+        unref => |ptr| gobject_ffi::g_param_spec_unref(ptr as *mut gobject_ffi::GParamSpec),
+    }
+}
 define_param_spec_numeric!(
     ParamSpecInt64,
     gobject_ffi::GParamSpecInt64,
@@ -915,6 +986,16 @@ define_builder_numeric!(
     i64
 );
 
+wrapper! {
+    #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    #[doc(alias = "GParamSpecUInt64")]
+    pub struct ParamSpecUInt64(Shared<gobject_ffi::GParamSpecUInt64>);
+
+    match fn {
+        ref => |ptr| gobject_ffi::g_param_spec_ref_sink(ptr as *mut gobject_ffi::GParamSpec) as *mut gobject_ffi::GParamSpecUInt64,
+        unref => |ptr| gobject_ffi::g_param_spec_unref(ptr as *mut gobject_ffi::GParamSpec),
+    }
+}
 define_param_spec_numeric!(
     ParamSpecUInt64,
     gobject_ffi::GParamSpecUInt64,
@@ -930,6 +1011,16 @@ define_builder_numeric!(
     u64
 );
 
+wrapper! {
+    #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    #[doc(alias = "GParamSpecUnichar")]
+    pub struct ParamSpecUnichar(Shared<gobject_ffi::GParamSpecUnichar>);
+
+    match fn {
+        ref => |ptr| gobject_ffi::g_param_spec_ref_sink(ptr as *mut gobject_ffi::GParamSpec) as *mut gobject_ffi::GParamSpecUnichar,
+        unref => |ptr| gobject_ffi::g_param_spec_unref(ptr as *mut gobject_ffi::GParamSpec),
+    }
+}
 define_param_spec!(ParamSpecUnichar, gobject_ffi::GParamSpecUnichar, 9);
 define_param_spec_default!(ParamSpecUnichar, gobject_ffi::GParamSpecUnichar, Result<char, CharTryFromError>, TryFrom::try_from);
 
@@ -962,6 +1053,16 @@ define_builder!(
     requires (default_value: char,)
 );
 
+wrapper! {
+    #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    #[doc(alias = "GParamSpecEnum")]
+    pub struct ParamSpecEnum(Shared<gobject_ffi::GParamSpecEnum>);
+
+    match fn {
+        ref => |ptr| gobject_ffi::g_param_spec_ref_sink(ptr as *mut gobject_ffi::GParamSpec) as *mut gobject_ffi::GParamSpecEnum,
+        unref => |ptr| gobject_ffi::g_param_spec_unref(ptr as *mut gobject_ffi::GParamSpec),
+    }
+}
 define_param_spec!(ParamSpecEnum, gobject_ffi::GParamSpecEnum, 10);
 
 impl ParamSpecEnum {
@@ -1096,6 +1197,16 @@ impl<'a, T: StaticType + FromGlib<i32> + IntoGlib<GlibType = i32>>
     }
 }
 
+wrapper! {
+    #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    #[doc(alias = "GParamSpecFlags")]
+    pub struct ParamSpecFlags(Shared<gobject_ffi::GParamSpecFlags>);
+
+    match fn {
+        ref => |ptr| gobject_ffi::g_param_spec_ref_sink(ptr as *mut gobject_ffi::GParamSpec) as *mut gobject_ffi::GParamSpecFlags,
+        unref => |ptr| gobject_ffi::g_param_spec_unref(ptr as *mut gobject_ffi::GParamSpec),
+    }
+}
 define_param_spec!(ParamSpecFlags, gobject_ffi::GParamSpecFlags, 11);
 
 impl ParamSpecFlags {
@@ -1225,6 +1336,16 @@ impl<'a, T: StaticType + FromGlib<u32> + IntoGlib<GlibType = u32>>
     }
 }
 
+wrapper! {
+    #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    #[doc(alias = "GParamSpecFloat")]
+    pub struct ParamSpecFloat(Shared<gobject_ffi::GParamSpecFloat>);
+
+    match fn {
+        ref => |ptr| gobject_ffi::g_param_spec_ref_sink(ptr as *mut gobject_ffi::GParamSpec) as *mut gobject_ffi::GParamSpecFloat,
+        unref => |ptr| gobject_ffi::g_param_spec_unref(ptr as *mut gobject_ffi::GParamSpec),
+    }
+}
 define_param_spec_numeric!(
     ParamSpecFloat,
     gobject_ffi::GParamSpecFloat,
@@ -1240,6 +1361,16 @@ define_builder_numeric!(
     f32
 );
 
+wrapper! {
+    #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    #[doc(alias = "GParamSpecDouble")]
+    pub struct ParamSpecDouble(Shared<gobject_ffi::GParamSpecDouble>);
+
+    match fn {
+        ref => |ptr| gobject_ffi::g_param_spec_ref_sink(ptr as *mut gobject_ffi::GParamSpec) as *mut gobject_ffi::GParamSpecDouble,
+        unref => |ptr| gobject_ffi::g_param_spec_unref(ptr as *mut gobject_ffi::GParamSpec),
+    }
+}
 define_param_spec_numeric!(
     ParamSpecDouble,
     gobject_ffi::GParamSpecDouble,
@@ -1255,6 +1386,16 @@ define_builder_numeric!(
     f64
 );
 
+wrapper! {
+    #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    #[doc(alias = "GParamSpecString")]
+    pub struct ParamSpecString(Shared<gobject_ffi::GParamSpecString>);
+
+    match fn {
+        ref => |ptr| gobject_ffi::g_param_spec_ref_sink(ptr as *mut gobject_ffi::GParamSpec) as *mut gobject_ffi::GParamSpecString,
+        unref => |ptr| gobject_ffi::g_param_spec_unref(ptr as *mut gobject_ffi::GParamSpec),
+    }
+}
 define_param_spec!(ParamSpecString, gobject_ffi::GParamSpecString, 14);
 
 define_param_spec_default!(
@@ -1354,6 +1495,16 @@ impl<'a> crate::prelude::ParamSpecBuilderExt<'a> for ParamSpecStringBuilder<'a> 
     }
 }
 
+wrapper! {
+    #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    #[doc(alias = "GParamSpecParam")]
+    pub struct ParamSpecParam(Shared<gobject_ffi::GParamSpecParam>);
+
+    match fn {
+        ref => |ptr| gobject_ffi::g_param_spec_ref_sink(ptr as *mut gobject_ffi::GParamSpec) as *mut gobject_ffi::GParamSpecParam,
+        unref => |ptr| gobject_ffi::g_param_spec_unref(ptr as *mut gobject_ffi::GParamSpec),
+    }
+}
 define_param_spec!(ParamSpecParam, gobject_ffi::GParamSpecParam, 15);
 
 impl ParamSpecParam {
@@ -1386,6 +1537,16 @@ define_builder!(
     requires (param_type: crate::Type,)
 );
 
+wrapper! {
+    #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    #[doc(alias = "GParamSpecBoxed")]
+    pub struct ParamSpecBoxed(Shared<gobject_ffi::GParamSpecBoxed>);
+
+    match fn {
+        ref => |ptr| gobject_ffi::g_param_spec_ref_sink(ptr as *mut gobject_ffi::GParamSpec) as *mut gobject_ffi::GParamSpecBoxed,
+        unref => |ptr| gobject_ffi::g_param_spec_unref(ptr as *mut gobject_ffi::GParamSpec),
+    }
+}
 define_param_spec!(ParamSpecBoxed, gobject_ffi::GParamSpecBoxed, 16);
 
 impl ParamSpecBoxed {
@@ -1464,6 +1625,16 @@ impl<'a, T: StaticType> crate::prelude::ParamSpecBuilderExt<'a> for ParamSpecBox
     }
 }
 
+wrapper! {
+    #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    #[doc(alias = "GParamSpecPointer")]
+    pub struct ParamSpecPointer(Shared<gobject_ffi::GParamSpecPointer>);
+
+    match fn {
+        ref => |ptr| gobject_ffi::g_param_spec_ref_sink(ptr as *mut gobject_ffi::GParamSpec) as *mut gobject_ffi::GParamSpecPointer,
+        unref => |ptr| gobject_ffi::g_param_spec_unref(ptr as *mut gobject_ffi::GParamSpec),
+    }
+}
 define_param_spec!(ParamSpecPointer, gobject_ffi::GParamSpecPointer, 17);
 
 impl ParamSpecPointer {
@@ -1490,6 +1661,16 @@ define_builder!(
     ParamSpecPointerBuilder {}
 );
 
+wrapper! {
+    #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    #[doc(alias = "GParamSpecValueArray")]
+    pub struct ParamSpecValueArray(Shared<gobject_ffi::GParamSpecValueArray>);
+
+    match fn {
+        ref => |ptr| gobject_ffi::g_param_spec_ref_sink(ptr as *mut gobject_ffi::GParamSpec) as *mut gobject_ffi::GParamSpecValueArray,
+        unref => |ptr| gobject_ffi::g_param_spec_unref(ptr as *mut gobject_ffi::GParamSpec),
+    }
+}
 define_param_spec!(ParamSpecValueArray, gobject_ffi::GParamSpecValueArray, 18);
 
 impl ParamSpecValueArray {
@@ -1600,6 +1781,16 @@ impl<'a> crate::prelude::ParamSpecBuilderExt<'a> for ParamSpecValueArrayBuilder<
     }
 }
 
+wrapper! {
+    #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    #[doc(alias = "GParamSpecObject")]
+    pub struct ParamSpecObject(Shared<gobject_ffi::GParamSpecObject>);
+
+    match fn {
+        ref => |ptr| gobject_ffi::g_param_spec_ref_sink(ptr as *mut gobject_ffi::GParamSpec) as *mut gobject_ffi::GParamSpecObject,
+        unref => |ptr| gobject_ffi::g_param_spec_unref(ptr as *mut gobject_ffi::GParamSpec),
+    }
+}
 define_param_spec!(ParamSpecObject, gobject_ffi::GParamSpecObject, 19);
 
 impl ParamSpecObject {
@@ -1678,6 +1869,16 @@ impl<'a, T: StaticType> crate::prelude::ParamSpecBuilderExt<'a> for ParamSpecObj
     }
 }
 
+wrapper! {
+    #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    #[doc(alias = "GParamSpecOverride")]
+    pub struct ParamSpecOverride(Shared<gobject_ffi::GParamSpecOverride>);
+
+    match fn {
+        ref => |ptr| gobject_ffi::g_param_spec_ref_sink(ptr as *mut gobject_ffi::GParamSpec) as *mut gobject_ffi::GParamSpecOverride,
+        unref => |ptr| gobject_ffi::g_param_spec_unref(ptr as *mut gobject_ffi::GParamSpec),
+    }
+}
 define_param_spec!(ParamSpecOverride, gobject_ffi::GParamSpecOverride, 20);
 
 impl ParamSpecOverride {
@@ -1776,6 +1977,16 @@ impl<'a> ParamSpecOverrideBuilder<'a> {
     }
 }
 
+wrapper! {
+    #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    #[doc(alias = "GParamSpecGType")]
+    pub struct ParamSpecGType(Shared<gobject_ffi::GParamSpecGType>);
+
+    match fn {
+        ref => |ptr| gobject_ffi::g_param_spec_ref_sink(ptr as *mut gobject_ffi::GParamSpec) as *mut gobject_ffi::GParamSpecGType,
+        unref => |ptr| gobject_ffi::g_param_spec_unref(ptr as *mut gobject_ffi::GParamSpec),
+    }
+}
 define_param_spec!(ParamSpecGType, gobject_ffi::GParamSpecGType, 21);
 
 impl ParamSpecGType {
@@ -1806,6 +2017,16 @@ define_builder!(
     }
 );
 
+wrapper! {
+    #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    #[doc(alias = "GParamSpecVariant")]
+    pub struct ParamSpecVariant(Shared<gobject_ffi::GParamSpecVariant>);
+
+    match fn {
+        ref => |ptr| gobject_ffi::g_param_spec_ref_sink(ptr as *mut gobject_ffi::GParamSpec) as *mut gobject_ffi::GParamSpecVariant,
+        unref => |ptr| gobject_ffi::g_param_spec_unref(ptr as *mut gobject_ffi::GParamSpec),
+    }
+}
 define_param_spec!(ParamSpecVariant, gobject_ffi::GParamSpecVariant, 22);
 
 define_param_spec_default!(
