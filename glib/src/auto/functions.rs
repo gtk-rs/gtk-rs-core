@@ -69,13 +69,6 @@ pub fn check_version(
     }
 }
 
-#[cfg(feature = "v2_80")]
-#[cfg_attr(docsrs, doc(cfg(feature = "v2_80")))]
-#[doc(alias = "g_closefrom")]
-pub fn closefrom(lowfd: i32) -> i32 {
-    unsafe { ffi::g_closefrom(lowfd) }
-}
-
 #[doc(alias = "g_compute_checksum_for_bytes")]
 pub fn compute_checksum_for_bytes(
     checksum_type: ChecksumType,
@@ -192,13 +185,6 @@ pub fn dpgettext2(domain: Option<&str>, context: &str, msgid: &str) -> crate::GS
             msgid.to_glib_none().0,
         ))
     }
-}
-
-#[cfg(feature = "v2_80")]
-#[cfg_attr(docsrs, doc(cfg(feature = "v2_80")))]
-#[doc(alias = "g_fdwalk_set_cloexec")]
-pub fn fdwalk_set_cloexec(lowfd: i32) -> i32 {
-    unsafe { ffi::g_fdwalk_set_cloexec(lowfd) }
 }
 
 #[doc(alias = "g_file_set_contents")]
