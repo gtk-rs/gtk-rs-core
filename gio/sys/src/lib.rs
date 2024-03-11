@@ -10099,6 +10099,9 @@ extern "C" {
     pub fn g_application_get_is_registered(application: *mut GApplication) -> gboolean;
     pub fn g_application_get_is_remote(application: *mut GApplication) -> gboolean;
     pub fn g_application_get_resource_base_path(application: *mut GApplication) -> *const c_char;
+    #[cfg(feature = "v2_80")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_80")))]
+    pub fn g_application_get_version(application: *mut GApplication) -> *const c_char;
     pub fn g_application_hold(application: *mut GApplication);
     pub fn g_application_mark_busy(application: *mut GApplication);
     pub fn g_application_open(
@@ -10154,6 +10157,9 @@ extern "C" {
         application: *mut GApplication,
         resource_path: *const c_char,
     );
+    #[cfg(feature = "v2_80")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_80")))]
+    pub fn g_application_set_version(application: *mut GApplication, version: *const c_char);
     pub fn g_application_unbind_busy_property(
         application: *mut GApplication,
         object: *mut gobject::GObject,

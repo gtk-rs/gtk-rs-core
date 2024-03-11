@@ -2401,6 +2401,15 @@ extern "C" {
         desc: *const PangoFontDescription,
         language: *mut PangoLanguage,
     ) -> *mut PangoFontset;
+    #[cfg(feature = "v1_52")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v1_52")))]
+    pub fn pango_font_map_reload_font(
+        fontmap: *mut PangoFontMap,
+        font: *mut PangoFont,
+        scale: c_double,
+        context: *mut PangoContext,
+        variations: *const c_char,
+    ) -> *mut PangoFont;
 
     //=========================================================================
     // PangoFontset

@@ -100,6 +100,27 @@ pub trait FontMapExt: IsA<FontMap> + sealed::Sealed + 'static {
             ))
         }
     }
+
+    #[cfg(feature = "v1_52")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v1_52")))]
+    #[doc(alias = "pango_font_map_reload_font")]
+    fn reload_font(
+        &self,
+        font: &impl IsA<Font>,
+        scale: f64,
+        context: Option<&Context>,
+        variations: Option<&str>,
+    ) -> Font {
+        unsafe {
+            from_glib_full(ffi::pango_font_map_reload_font(
+                self.as_ref().to_glib_none().0,
+                font.as_ref().to_glib_none().0,
+                scale,
+                context.to_glib_none().0,
+                variations.to_glib_none().0,
+            ))
+        }
+    }
 }
 
 impl<O: IsA<FontMap>> FontMapExt for O {}

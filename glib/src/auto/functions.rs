@@ -5,9 +5,6 @@
 #[cfg(feature = "v2_66")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
 use crate::FileSetContentsFlags;
-#[cfg(windows)]
-#[cfg_attr(docsrs, doc(cfg(windows)))]
-use crate::Win32OSType;
 use crate::{
     translate::*, Bytes, ChecksumType, Error, FileTest, FormatSizeFlags, Pid, Source, SpawnFlags,
     UserDirectory,
@@ -630,11 +627,6 @@ pub fn set_application_name(application_name: &str) {
     }
 }
 
-//#[doc(alias = "g_set_user_dirs")]
-//pub fn set_user_dirs(first_dir_type: &str, : /*Unknown conversion*//*Unimplemented*/Basic: VarArgs) {
-//    unsafe { TODO: call ffi:g_set_user_dirs() }
-//}
-
 #[doc(alias = "g_setenv")]
 pub fn setenv(
     variable: impl AsRef<std::ffi::OsStr>,
@@ -863,51 +855,4 @@ pub fn uuid_string_is_valid(str: &str) -> bool {
 #[doc(alias = "g_uuid_string_random")]
 pub fn uuid_string_random() -> crate::GString {
     unsafe { from_glib_full(ffi::g_uuid_string_random()) }
-}
-
-#[cfg(windows)]
-#[cfg_attr(docsrs, doc(cfg(windows)))]
-#[doc(alias = "g_win32_check_windows_version")]
-pub fn win32_check_windows_version(
-    major: i32,
-    minor: i32,
-    spver: i32,
-    os_type: Win32OSType,
-) -> bool {
-    unsafe {
-        from_glib(ffi::g_win32_check_windows_version(
-            major,
-            minor,
-            spver,
-            os_type.into_glib(),
-        ))
-    }
-}
-
-#[cfg(windows)]
-#[cfg_attr(docsrs, doc(cfg(windows)))]
-#[doc(alias = "g_win32_error_message")]
-pub fn win32_error_message(error: i32) -> crate::GString {
-    unsafe { from_glib_full(ffi::g_win32_error_message(error)) }
-}
-
-#[cfg(windows)]
-#[cfg_attr(docsrs, doc(cfg(windows)))]
-#[doc(alias = "g_win32_get_command_line")]
-pub fn win32_get_command_line() -> Vec<crate::GString> {
-    unsafe { FromGlibPtrContainer::from_glib_none(ffi::g_win32_get_command_line()) }
-}
-
-#[cfg(windows)]
-#[cfg_attr(docsrs, doc(cfg(windows)))]
-#[doc(alias = "g_win32_get_windows_version")]
-pub fn win32_get_windows_version() -> u32 {
-    unsafe { ffi::g_win32_get_windows_version() }
-}
-
-#[cfg(windows)]
-#[cfg_attr(docsrs, doc(cfg(windows)))]
-#[doc(alias = "g_win32_getlocale")]
-pub fn win32_getlocale() -> crate::GString {
-    unsafe { from_glib_full(ffi::g_win32_getlocale()) }
 }
