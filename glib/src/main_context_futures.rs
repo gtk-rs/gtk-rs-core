@@ -280,6 +280,23 @@ pub struct JoinHandle<T> {
     phantom: PhantomData<oneshot::Receiver<std::thread::Result<T>>>,
 }
 
+impl<T> Drop for JoinHandle<T> {
+    fn drop(&mut self) {
+        // We store a Source, but it is actually a TaskSource.
+        // The TaskSource stores a sender in the memory of the
+        // Source, but Rust doesn't know about that and therefore
+        // doesn't drop the receiver.
+        // If the source was destroyed, but the sender exists,
+        // we need to drop the sender manually.
+        if self.source.is_destroyed() && self.rx.try_recv().is_ok() {
+            unsafe {
+                let source = self.source.as_ptr() as *mut TaskSource;
+                ptr::drop_in_place(&mut (*source).return_tx);
+            }
+        }
+    }
+}
+
 impl<T> JoinHandle<T> {
     #[inline]
     fn new(
