@@ -5,7 +5,7 @@ use crate::translate::*;
 // rustdoc-stripper-ignore-next
 /// A `CollationKey` allows ordering strings using the linguistically correct rules for the current locale.
 #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord)]
-pub struct CollationKey(String);
+pub struct CollationKey(crate::GString);
 
 impl<T: AsRef<str>> From<T> for CollationKey {
     // rustdoc-stripper-ignore-next
@@ -24,7 +24,7 @@ impl<T: AsRef<str>> From<T> for CollationKey {
 /// Compared to `CollationKey`, filename collation keys take into consideration dots and other characters
 /// commonly found in file names.
 #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord)]
-pub struct FilenameCollationKey(String);
+pub struct FilenameCollationKey(crate::GString);
 
 impl<T: AsRef<str>> From<T> for FilenameCollationKey {
     // rustdoc-stripper-ignore-next
