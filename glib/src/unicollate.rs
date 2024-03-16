@@ -13,8 +13,13 @@ impl<T: AsRef<str>> From<T> for CollationKey {
     /// collation keys produced by the same function using `std::cmp::Ordering::cmp()`.
     #[doc(alias = "g_utf8_collate_key")]
     fn from(s: T) -> Self {
-        let key =
-            unsafe { from_glib_full(ffi::g_utf8_collate_key(s.as_ref().to_glib_none().0, -1)) };
+        let s = s.as_ref();
+        let key = unsafe {
+            from_glib_full(ffi::g_utf8_collate_key(
+                s.as_ptr() as *const _,
+                s.len() as isize,
+            ))
+        };
         Self(key)
     }
 }
@@ -32,10 +37,11 @@ impl<T: AsRef<str>> From<T> for FilenameCollationKey {
     /// collation keys produced by the same function using `std::cmp::Ordering::cmp()`.
     #[doc(alias = "g_utf8_collate_key_for_filename")]
     fn from(s: T) -> Self {
+        let s = s.as_ref();
         let key = unsafe {
             from_glib_full(ffi::g_utf8_collate_key_for_filename(
-                s.as_ref().to_glib_none().0,
-                -1,
+                s.as_ptr() as *const _,
+                s.len() as isize,
             ))
         };
         Self(key)
