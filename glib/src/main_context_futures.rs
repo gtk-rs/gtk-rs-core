@@ -109,6 +109,8 @@ impl TaskSource {
             }
         }
 
+        ptr::drop_in_place(&mut (*source).return_tx);
+
         // Drop the waker to unref the underlying GSource
         ptr::drop_in_place(&mut (*source).waker);
     }
@@ -806,5 +808,27 @@ mod tests {
                 "failed"
             );
         });
+    }
+
+    #[test]
+    fn test_spawn_abort() {
+        let c = MainContext::new();
+        let v = std::sync::Arc::new(1);
+        let v_clone = v.clone();
+        let c_ref = &c;
+        c.block_on(async move {
+            let handle = c_ref.spawn(async move {
+                let _v = v_clone;
+                let test: u128 = std::future::pending().await;
+                println!("{test}");
+                unreachable!();
+            });
+
+            handle.abort();
+        });
+        drop(c);
+
+        // Make sure the inner future is actually freed.
+        assert_eq!(std::sync::Arc::strong_count(&v), 1);
     }
 }
