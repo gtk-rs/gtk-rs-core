@@ -271,6 +271,10 @@ mod test {
         }
 
         assert_eq!(std::sync::Arc::strong_count(&b.0), 2);
+        unsafe {
+            let _ = std::sync::Arc::from_raw(inner_raw_ptr);
+        }
+        assert_eq!(std::sync::Arc::strong_count(&b.0), 1);
     }
 
     #[test]
@@ -291,5 +295,9 @@ mod test {
         }
 
         assert_eq!(std::rc::Rc::strong_count(&b.0), 2);
+        unsafe {
+            let _ = std::rc::Rc::from_raw(inner_raw_ptr);
+        }
+        assert_eq!(std::rc::Rc::strong_count(&b.0), 1);
     }
 }
