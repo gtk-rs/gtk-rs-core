@@ -419,6 +419,11 @@ mod tests {
             fn command_line(&self, cmd_line: &crate::ApplicationCommandLine) -> ExitCode {
                 let arguments = cmd_line.arguments();
 
+                // NOTE: on windows argc and argv are ignored, even if the arguments
+                // were passed explicitly.
+                //
+                // Source: https://gitlab.gnome.org/GNOME/glib/-/blob/e64a93269d09302d7a4facbc164b7fe9c2ad0836/gio/gapplication.c#L2513-2515
+                #[cfg(not(target_os = "windows"))]
                 assert_eq!(arguments.to_vec(), &["--global-1", "--global-2"]);
 
                 EXIT_STATUS.into()
