@@ -35,8 +35,8 @@ pub fn set_program_name(name: Option<impl IntoGStr>) {
 
 #[doc(alias = "g_set_prgname")]
 #[inline]
-pub fn set_prgname(name: Option<impl IntoGStr>) {
-    name.run_with_gstr(|name| unsafe { ffi::g_set_prgname(name.to_glib_none().0) })
+pub fn set_prgname(name: impl IntoOptionalGStr) {
+    name.run_with_optional_gstr(|name| unsafe { ffi::g_set_prgname(name.to_glib_none().0) })
 }
 
 #[doc(alias = "g_environ_getenv")]
@@ -135,11 +135,11 @@ pub fn is_canonical_pspec_name(name: &str) -> bool {
 #[doc(alias = "g_uri_escape_string")]
 pub fn uri_escape_string(
     unescaped: impl IntoGStr,
-    reserved_chars_allowed: Option<impl IntoGStr>,
+    reserved_chars_allowed: impl IntoOptionalGStr,
     allow_utf8: bool,
 ) -> crate::GString {
     unescaped.run_with_gstr(|unescaped| {
-        reserved_chars_allowed.run_with_gstr(|reserved_chars_allowed| unsafe {
+        reserved_chars_allowed.run_with_optional_gstr(|reserved_chars_allowed| unsafe {
             from_glib_full(ffi::g_uri_escape_string(
                 unescaped.to_glib_none().0,
                 reserved_chars_allowed.to_glib_none().0,
@@ -152,10 +152,10 @@ pub fn uri_escape_string(
 #[doc(alias = "g_uri_unescape_string")]
 pub fn uri_unescape_string(
     escaped_string: impl IntoGStr,
-    illegal_characters: Option<impl IntoGStr>,
+    illegal_characters: impl IntoOptionalGStr,
 ) -> Option<crate::GString> {
     escaped_string.run_with_gstr(|escaped_string| {
-        illegal_characters.run_with_gstr(|illegal_characters| unsafe {
+        illegal_characters.run_with_optional_gstr(|illegal_characters| unsafe {
             from_glib_full(ffi::g_uri_unescape_string(
                 escaped_string.to_glib_none().0,
                 illegal_characters.to_glib_none().0,
@@ -173,13 +173,13 @@ pub fn uri_parse_scheme(uri: impl IntoGStr) -> Option<crate::GString> {
 
 #[doc(alias = "g_uri_unescape_segment")]
 pub fn uri_unescape_segment(
-    escaped_string: Option<impl IntoGStr>,
-    escaped_string_end: Option<impl IntoGStr>,
-    illegal_characters: Option<impl IntoGStr>,
+    escaped_string: impl IntoOptionalGStr,
+    escaped_string_end: impl IntoOptionalGStr,
+    illegal_characters: impl IntoOptionalGStr,
 ) -> Option<crate::GString> {
-    escaped_string.run_with_gstr(|escaped_string| {
-        escaped_string_end.run_with_gstr(|escaped_string_end| {
-            illegal_characters.run_with_gstr(|illegal_characters| unsafe {
+    escaped_string.run_with_optional_gstr(|escaped_string| {
+        escaped_string_end.run_with_optional_gstr(|escaped_string_end| {
+            illegal_characters.run_with_optional_gstr(|illegal_characters| unsafe {
                 from_glib_full(ffi::g_uri_unescape_segment(
                     escaped_string.to_glib_none().0,
                     escaped_string_end.to_glib_none().0,
