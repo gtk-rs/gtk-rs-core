@@ -204,12 +204,89 @@
 <a href="#129" id="129">129</a>
 <a href="#130" id="130">130</a>
 <a href="#131" id="131">131</a>
+<a href="#132" id="132">132</a>
+<a href="#133" id="133">133</a>
+<a href="#134" id="134">134</a>
+<a href="#135" id="135">135</a>
+<a href="#136" id="136">136</a>
+<a href="#137" id="137">137</a>
+<a href="#138" id="138">138</a>
+<a href="#139" id="139">139</a>
+<a href="#140" id="140">140</a>
+<a href="#141" id="141">141</a>
+<a href="#142" id="142">142</a>
+<a href="#143" id="143">143</a>
+<a href="#144" id="144">144</a>
+<a href="#145" id="145">145</a>
+<a href="#146" id="146">146</a>
+<a href="#147" id="147">147</a>
+<a href="#148" id="148">148</a>
+<a href="#149" id="149">149</a>
+<a href="#150" id="150">150</a>
+<a href="#151" id="151">151</a>
+<a href="#152" id="152">152</a>
+<a href="#153" id="153">153</a>
+<a href="#154" id="154">154</a>
 </pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
-</span><span class="kw">use crate</span>::{<a href="../lib.rs.html#137">prelude</a>::<span class="kw-2">*</span>, <a href="../lib.rs.html#142">translate</a>::<span class="kw-2">*</span>, <a href="interface_info.rs.html#6">InterfaceInfo</a>, <a href="type_info.rs.html#6">TypeInfo</a>, <a href="type_value_table.rs.html#11">TypeValueTable</a>};
+</span><span class="kw">use crate</span>::{<a href="../lib.rs.html#137">prelude</a>::<span class="kw-2">*</span>, <a href="../lib.rs.html#142">translate</a>::<span class="kw-2">*</span>, <a href="interface_info.rs.html#8">InterfaceInfo</a>, <a href="type_info.rs.html#15">TypeInfo</a>, <a href="type_value_table.rs.html#8">TypeValueTable</a>};
 
 <a class="macro" href="../wrapper.rs.html#277-445">crate::wrapper!</a> {
-    <span class="attr">#[doc(alias = <span class="string">"GTypePlugin"</span>)]
+    <span class="doccomment">/// An interface that handles the lifecycle of dynamically loaded types.
+    ///
+    /// The GObject type system supports dynamic loading of types.
+    /// It goes as follows:
+    ///
+    /// 1. The type is initially introduced (usually upon loading the module
+    ///  the first time, or by your main application that knows what modules
+    ///  introduces what types), like this:
+    ///  **⚠️ The following code is in c ⚠️**
+    ///
+    /// ```c
+    ///    new_type_id = g_type_register_dynamic (parent_type_id,
+    ///                                           "TypeName",
+    ///                                           new_type_plugin,
+    ///                                           type_flags);
+    ///    ```
+    ///  where `new_type_plugin` is an implementation of the
+    ///  `GTypePlugin` interface.
+    ///
+    /// 2. The type's implementation is referenced, e.g. through
+    ///  [func[`Object`][crate::Object].ref] or through [func[`Object`][crate::Object]]
+    ///  (this is being called by [ctor[`Object`][crate::Object].new]) or through one of the above
+    ///  done on a type derived from `new_type_id`.
+    ///
+    /// 3. This causes the type system to load the type's implementation by calling
+    ///  [method[`Object`][crate::Object].use] and [method[`Object`][crate::Object].complete_type_info]
+    ///  on `new_type_plugin`.
+    ///
+    /// 4. At some point the type's implementation isn't required anymore, e.g. after
+    ///  [method[`Object`][crate::Object].unref] or [func[`Object`][crate::Object]]
+    ///  (called when the reference count of an instance drops to zero).
+    ///
+    /// 5. This causes the type system to throw away the information retrieved
+    ///  from [method[`Object`][crate::Object].complete_type_info] and then it calls
+    ///  [method[`Object`][crate::Object].unuse] on `new_type_plugin`.
+    ///
+    /// 6. Things may repeat from the second step.
+    ///
+    /// So basically, you need to implement a `GTypePlugin` type that
+    /// carries a use_count, once use_count goes from zero to one, you need
+    /// to load the implementation to successfully handle the upcoming
+    /// [method[`Object`][crate::Object].complete_type_info] call. Later, maybe after
+    /// succeeding use/unuse calls, once use_count drops to zero, you can
+    /// unload the implementation again. The type system makes sure to call
+    /// [method[`Object`][crate::Object].use] and [method[`Object`][crate::Object].complete_type_info]
+    /// again when the type is needed again.
+    ///
+    /// [class[`Object`][crate::Object]] is an implementation of `GTypePlugin` that
+    /// already implements most of this except for the actual module loading and
+    /// unloading. It even handles multiple registered types per module.
+    ///
+    /// # Implements
+    ///
+    /// [`TypePluginExt`][trait@crate::prelude::TypePluginExt]
+    </span><span class="attr">#[doc(alias = <span class="string">"GTypePlugin"</span>)]
     </span><span class="kw">pub struct </span><a href="../../../glib/struct.TypePlugin.html">TypePlugin</a>(Interface&lt;gobject_ffi::GTypePlugin, gobject_ffi::GTypePluginClass&gt;);
 
     <span class="kw">match fn </span>{
@@ -217,13 +294,13 @@
     }
 }
 
-<span class="kw">impl </span><a href="#5-12">TypePlugin</a> {
-    <span class="kw">pub const </span>NONE: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'static </span><a href="#5-12">TypePlugin</a>&gt; = <span class="prelude-val">None</span>;
+<span class="kw">impl </span><a href="#5-66">TypePlugin</a> {
+    <span class="kw">pub const </span>NONE: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'static </span><a href="#5-66">TypePlugin</a>&gt; = <span class="prelude-val">None</span>;
 }
 
 <span class="kw">mod </span>sealed {
     <span class="kw">pub trait </span>Sealed {}
-    <span class="kw">impl</span>&lt;T: <span class="kw">super</span>::IsA&lt;<a href="#5-12"><span class="kw">super</span>::TypePlugin</a>&gt;&gt; <a href="#19">Sealed</a> <span class="kw">for </span>T {}
+    <span class="kw">impl</span>&lt;T: <span class="kw">super</span>::IsA&lt;<a href="#5-66"><span class="kw">super</span>::TypePlugin</a>&gt;&gt; <a href="#73">Sealed</a> <span class="kw">for </span>T {}
 }
 
 <span class="doccomment">/// Trait containing all [`struct@TypePlugin`] methods.
@@ -231,25 +308,8 @@
 /// # Implementors
 ///
 /// [`TypeModule`][struct@crate::TypeModule], [`TypePlugin`][struct@crate::TypePlugin]
-</span><span class="comment">// rustdoc-stripper-ignore-next-stop
-</span><span class="doccomment">/// Trait containing all [`struct@TypePlugin`] methods.
-///
-/// # Implementors
-///
-/// [`TypeModule`][struct@crate::TypeModule], [`TypePlugin`][struct@crate::TypePlugin]
-</span><span class="kw">pub trait </span><a href="../../../glib/prelude/trait.TypePluginExt.html">TypePluginExt</a>: IsA&lt;<a href="#5-12">TypePlugin</a>&gt; + <a href="#19">sealed::Sealed</a> + <span class="lifetime">'static </span>{
+</span><span class="kw">pub trait </span><a href="../../../glib/prelude/trait.TypePluginExt.html">TypePluginExt</a>: IsA&lt;<a href="#5-66">TypePlugin</a>&gt; + <a href="#73">sealed::Sealed</a> + <span class="lifetime">'static </span>{
     <span class="doccomment">/// Calls the `complete_interface_info` function from the
-    /// `GTypePluginClass` of `self`. There should be no need to use this
-    /// function outside of the GObject type system itself.
-    /// ## `instance_type`
-    /// the `GType` of an instantiatable type to which the interface
-    ///  is added
-    /// ## `interface_type`
-    /// the `GType` of the interface whose info is completed
-    /// ## `info`
-    /// the [`InterfaceInfo`][crate::InterfaceInfo] to fill in
-    </span><span class="comment">// rustdoc-stripper-ignore-next-stop
-    </span><span class="doccomment">/// Calls the `complete_interface_info` function from the
     /// `GTypePluginClass` of `self`. There should be no need to use this
     /// function outside of the GObject type system itself.
     /// ## `instance_type`
@@ -264,17 +324,17 @@
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         instance_type: <a href="../types.rs.html#22"><span class="kw">crate</span>::types::Type</a>,
         interface_type: <a href="../types.rs.html#22"><span class="kw">crate</span>::types::Type</a>,
-    ) -&gt; <a href="interface_info.rs.html#6">InterfaceInfo</a> {
+    ) -&gt; <a href="interface_info.rs.html#8">InterfaceInfo</a> {
         <span class="kw">let </span>info = <a href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html#tymethod.default">InterfaceInfo::default</a>();
         <span class="kw">unsafe </span>{
             gobject_ffi::g_type_plugin_complete_interface_info(
-                <a class="self" href="#58">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#59">instance_type</a>.<a href="../translate.rs.html#333">into_glib</a>(),
-                <a href="#60">interface_type</a>.<a href="../translate.rs.html#333">into_glib</a>(),
-                <a href="#62">info</a>.<a href="interface_info.rs.html#13-15">as_ptr</a>(),
+                <a class="self" href="#95">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#96">instance_type</a>.<a href="../translate.rs.html#333">into_glib</a>(),
+                <a href="#97">interface_type</a>.<a href="../translate.rs.html#333">into_glib</a>(),
+                <a href="#99">info</a>.<a href="interface_info.rs.html#15-17">as_ptr</a>(),
             );
         }
-        <a href="#62">info</a>
+        <a href="#99">info</a>
     }
 
     <span class="doccomment">/// Calls the `complete_type_info` function from the `GTypePluginClass` of `self`.
@@ -286,42 +346,28 @@
     /// the [`TypeInfo`][crate::TypeInfo] struct to fill in
     /// ## `value_table`
     /// the [`TypeValueTable`][crate::TypeValueTable] to fill in
-    </span><span class="comment">// rustdoc-stripper-ignore-next-stop
-    </span><span class="doccomment">/// Calls the `complete_type_info` function from the `GTypePluginClass` of `self`.
-    /// There should be no need to use this function outside of the GObject
-    /// type system itself.
-    /// ## `g_type`
-    /// the `GType` whose info is completed
-    /// ## `info`
-    /// the [`TypeInfo`][crate::TypeInfo] struct to fill in
-    /// ## `value_table`
-    /// the [`TypeValueTable`][crate::TypeValueTable] to fill in
     </span><span class="attr">#[doc(alias = <span class="string">"g_type_plugin_complete_type_info"</span>)]
-    </span><span class="kw">fn </span>complete_type_info(<span class="kw-2">&amp;</span><span class="self">self</span>, g_type: <a href="../types.rs.html#22"><span class="kw">crate</span>::types::Type</a>) -&gt; (<a href="type_info.rs.html#6">TypeInfo</a>, <a href="type_value_table.rs.html#11">TypeValueTable</a>) {
+    </span><span class="kw">fn </span>complete_type_info(<span class="kw-2">&amp;</span><span class="self">self</span>, g_type: <a href="../types.rs.html#22"><span class="kw">crate</span>::types::Type</a>) -&gt; (<a href="type_info.rs.html#15">TypeInfo</a>, <a href="type_value_table.rs.html#8">TypeValueTable</a>) {
         <span class="kw">let </span>info = <a href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html#tymethod.default">TypeInfo::default</a>();
         <span class="kw">let </span>value_table = <a href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html#tymethod.default">TypeValueTable::default</a>();
         <span class="kw">unsafe </span>{
             gobject_ffi::g_type_plugin_complete_type_info(
-                <a class="self" href="#94">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#94">g_type</a>.<a href="../translate.rs.html#333">into_glib</a>(),
-                <a href="#95">info</a>.<a href="type_info.rs.html#13-15">as_ptr</a>(),
-                <a href="#96">value_table</a>.<a href="type_value_table.rs.html#18-20">as_ptr</a>(),
+                <a class="self" href="#121">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#121">g_type</a>.<a href="../translate.rs.html#333">into_glib</a>(),
+                <a href="#122">info</a>.<a href="type_info.rs.html#22-24">as_ptr</a>(),
+                <a href="#123">value_table</a>.<a href="type_value_table.rs.html#15-17">as_ptr</a>(),
             );
         }
-        (<a href="#95">info</a>, <a href="#96">value_table</a>)
+        (<a href="#122">info</a>, <a href="#123">value_table</a>)
     }
 
     <span class="doccomment">/// Calls the `unuse_plugin` function from the `GTypePluginClass` of
     /// `self`. There should be no need to use this function outside of
     /// the GObject type system itself.
-    </span><span class="comment">// rustdoc-stripper-ignore-next-stop
-    </span><span class="doccomment">/// Calls the `unuse_plugin` function from the `GTypePluginClass` of
-    /// `self`. There should be no need to use this function outside of
-    /// the GObject type system itself.
     </span><span class="attr">#[doc(alias = <span class="string">"g_type_plugin_unuse"</span>)]
     </span><span class="kw">fn </span>unuse(<span class="kw-2">&amp;</span><span class="self">self</span>) {
         <span class="kw">unsafe </span>{
-            gobject_ffi::g_type_plugin_unuse(<a class="self" href="#116">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>);
+            gobject_ffi::g_type_plugin_unuse(<a class="self" href="#139">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>);
         }
     }
 
@@ -329,10 +375,10 @@
     #[doc(alias = <span class="string">"use"</span>)]
     </span><span class="kw">fn </span>use_(<span class="kw-2">&amp;</span><span class="self">self</span>) {
         <span class="kw">unsafe </span>{
-            gobject_ffi::g_type_plugin_use(<a class="self" href="#124">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>);
+            gobject_ffi::g_type_plugin_use(<a class="self" href="#147">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>);
         }
     }
 }
 
-<span class="kw">impl</span>&lt;O: IsA&lt;<a href="#5-12">TypePlugin</a>&gt;&gt; <a href="#34-129">TypePluginExt</a> <span class="kw">for </span>O {}
+<span class="kw">impl</span>&lt;O: IsA&lt;<a href="#5-66">TypePlugin</a>&gt;&gt; <a href="#82-152">TypePluginExt</a> <span class="kw">for </span>O {}
 </code></pre></div></section></main></body></html>

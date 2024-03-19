@@ -630,7 +630,7 @@
     ///
     /// This will fail if the main context is owned already by another thread.
     </span><span class="attr">#[doc(alias = <span class="string">"g_main_context_push_thread_default"</span>)]
-    </span><span class="kw">pub fn </span>with_thread_default&lt;R, F: <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sized.html">Sized</a>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, func: F) -&gt; <span class="prelude-ty">Result</span>&lt;R, <a href="error.rs.html#278-286"><span class="kw">crate</span>::BoolError</a>&gt;
+    </span><span class="kw">pub fn </span>with_thread_default&lt;R, F: <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sized.html">Sized</a>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, func: F) -&gt; <span class="prelude-ty">Result</span>&lt;R, <a href="error.rs.html#243-251"><span class="kw">crate</span>::BoolError</a>&gt;
     <span class="kw">where
         </span>F: FnOnce() -&gt; R,
     {
@@ -665,13 +665,13 @@
     /// [`true`] if the operation succeeded, and
     ///   this thread is now the owner of @self.
     </span><span class="attr">#[doc(alias = <span class="string">"g_main_context_acquire"</span>)]
-    </span><span class="kw">pub fn </span>acquire(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#252">MainContextAcquireGuard</a>, <a href="error.rs.html#278-286"><span class="kw">crate</span>::BoolError</a>&gt; {
+    </span><span class="kw">pub fn </span>acquire(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#252">MainContextAcquireGuard</a>, <a href="error.rs.html#243-251"><span class="kw">crate</span>::BoolError</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>ret: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> = <a href="translate.rs.html#1416-1418">from_glib</a>(ffi::g_main_context_acquire(<a class="self" href="#239">self</a>.<a href="translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>));
             <span class="kw">if </span>ret {
                 <span class="prelude-val">Ok</span>(<a href="#252">MainContextAcquireGuard</a>(<a class="self" href="#239">self</a>))
             } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(<a class="macro" href="error.rs.html#224-246">bool_error!</a>(<span class="string">"Failed to acquire ownership of main context, already acquired by another thread"</span>))
+                <span class="prelude-val">Err</span>(<a class="macro" href="error.rs.html#189-211">bool_error!</a>(<span class="string">"Failed to acquire ownership of main context, already acquired by another thread"</span>))
             }
         }
     }
