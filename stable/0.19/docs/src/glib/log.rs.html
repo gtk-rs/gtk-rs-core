@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/log.rs`."><title>log.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-5bc39a1768837dd0.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.78.0-nightly (b381d3ab2 2024-02-12)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-48f368f3872407c8.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/log.rs`."><title>log.rs - source</title><script> if (window.location.protocol !== "file:") document.write(`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2">`)</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-e935ef01ae1c1829.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.79.0-nightly (3c85e5624 2024-03-18)" data-channel="nightly" data-search-js="search-42d8da7a6b9792c2.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-12cf3b4f4f9dc36d.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -1157,7 +1157,7 @@
     sync::{<a href="https://doc.rust-lang.org/nightly/alloc/sync/struct.Arc.html">Arc</a>, <a href="https://doc.rust-lang.org/nightly/std/sync/mutex/struct.Mutex.html">Mutex</a>, <a href="https://doc.rust-lang.org/nightly/std/sync/once_lock/struct.OnceLock.html">OnceLock</a>},
 };
 
-<span class="kw">use crate</span>::{<a href="lib.rs.html#142">translate</a>::<span class="kw-2">*</span>, <a href="gstring.rs.html#24">GStr</a>, <a href="gstring.rs.html#996">GString</a>, <a href="auto/enums.rs.html#508-515">LogWriterOutput</a>};
+<span class="kw">use crate</span>::{<a href="lib.rs.html#142">translate</a>::<span class="kw-2">*</span>, <a href="gstring.rs.html#24">GStr</a>, <a href="gstring.rs.html#996">GString</a>, <a href="auto/enums.rs.html#650-659">LogWriterOutput</a>};
 
 <span class="attr">#[derive(Debug)]
 </span><span class="kw">pub struct </span><a href="../../glib/struct.LogHandlerId.html">LogHandlerId</a>(<a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>);
@@ -1249,7 +1249,7 @@
     }
 }
 
-<span class="macro">bitflags::bitflags! </span>{
+<span class="macro">bitflags::bitflags!</span> {
     <span class="attr">#[doc(alias = <span class="string">"GLogLevelFlags"</span>)]
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     </span><span class="kw">pub struct </span><a href="../../glib/struct.LogLevels.html">LogLevels</a>: <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a> {
@@ -1586,13 +1586,13 @@
     }
 }
 
-<span class="kw">type </span>WriterCallback = <span class="kw">dyn </span>Fn(<a href="#34-47">LogLevel</a>, <span class="kw-2">&amp;</span>[LogField&lt;<span class="lifetime">'_</span>&gt;]) -&gt; <a href="auto/enums.rs.html#508-515">LogWriterOutput</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>;
+<span class="kw">type </span>WriterCallback = <span class="kw">dyn </span>Fn(<a href="#34-47">LogLevel</a>, <span class="kw-2">&amp;</span>[LogField&lt;<span class="lifetime">'_</span>&gt;]) -&gt; <a href="auto/enums.rs.html#650-659">LogWriterOutput</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>;
 
 <span class="kw">static </span>WRITER_FUNC: OnceLock&lt;Box&lt;<a href="#439">WriterCallback</a>&gt;&gt; = <a href="https://doc.rust-lang.org/nightly/std/sync/once_lock/struct.OnceLock.html#method.new">OnceLock::new</a>();
 
 <span class="attr">#[doc(alias = <span class="string">"g_log_set_writer_func"</span>)]
 </span><span class="kw">pub fn </span><a href="../../glib/fn.log_set_writer_func.html">log_set_writer_func</a>&lt;
-    P: Fn(<a href="#34-47">LogLevel</a>, <span class="kw-2">&amp;</span>[LogField&lt;<span class="lifetime">'_</span>&gt;]) -&gt; <a href="auto/enums.rs.html#508-515">LogWriterOutput</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>,
+    P: Fn(<a href="#34-47">LogLevel</a>, <span class="kw-2">&amp;</span>[LogField&lt;<span class="lifetime">'_</span>&gt;]) -&gt; <a href="auto/enums.rs.html#650-659">LogWriterOutput</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>,
 &gt;(
     writer_func: P,
 ) {
@@ -1616,7 +1616,7 @@
 
 <span class="attr">#[macro_export]
 #[doc(hidden)]
-</span><span class="macro">macro_rules! </span>g_log_inner {
+</span><span class="macro">macro_rules!</span> g_log_inner {
     (<span class="macro-nonterminal">$log_domain</span>:expr, <span class="macro-nonterminal">$log_level</span>:expr, <span class="macro-nonterminal">$format</span>:literal $(,<span class="macro-nonterminal">$arg</span>:expr)* $(,)<span class="question-mark">?</span>) =&gt; {{
         <span class="kw">let </span><span class="kw-2">mut </span>w = <span class="macro-nonterminal">$crate::GStringBuilder::default</span>();
 
@@ -1679,7 +1679,7 @@
 /// g_log!(LogLevel::Warning, "test: {} {}", x, "a",);
 /// ```
 </span><span class="attr">#[macro_export]
-</span><span class="macro">macro_rules! </span><a href="../../glib/macro.g_log.html">g_log</a> {
+</span><span class="macro">macro_rules!</span> <a href="../../glib/macro.g_log.html">g_log</a> {
     (<span class="macro-nonterminal">$log_level</span>:expr, <span class="macro-nonterminal">$format</span>:literal $(,<span class="macro-nonterminal">$arg</span>:expr)* $(,)<span class="question-mark">?</span>) =&gt; {{
         <span class="macro-nonterminal">$</span><span class="macro">crate::g_log_inner!</span>(<span class="prelude-val">None</span>::&lt;<span class="kw-2">&amp;</span><span class="macro-nonterminal">str</span>&gt;, <span class="macro-nonterminal">$log_level</span>, <span class="macro-nonterminal">$format</span>, $(<span class="macro-nonterminal">$arg</span>),<span class="kw-2">*</span>);
     }};
@@ -1717,7 +1717,7 @@
 /// g_error!("test", "test: {} {}", x, "a",);
 /// ```
 </span><span class="attr">#[macro_export]
-</span><span class="macro">macro_rules! </span><a href="../../glib/macro.g_error.html">g_error</a> {
+</span><span class="macro">macro_rules!</span> <a href="../../glib/macro.g_error.html">g_error</a> {
     (<span class="macro-nonterminal">$log_domain</span>:expr, <span class="macro-nonterminal">$format</span>:literal, $(<span class="macro-nonterminal">$arg</span>:expr),* $(,)<span class="question-mark">?</span>) =&gt; {{
         <span class="macro-nonterminal">$</span><span class="macro">crate::g_log!</span>(<span class="macro-nonterminal">$log_domain</span>, <span class="macro-nonterminal">$crate::LogLevel::Error</span>, <span class="macro-nonterminal">$format</span>, $(<span class="macro-nonterminal">$arg</span>),<span class="kw-2">*</span>);
     }};
@@ -1754,7 +1754,7 @@
 /// g_critical!("test", "test: {} {}", x, "a",);
 /// ```
 </span><span class="attr">#[macro_export]
-</span><span class="macro">macro_rules! </span><a href="../../glib/macro.g_critical.html">g_critical</a> {
+</span><span class="macro">macro_rules!</span> <a href="../../glib/macro.g_critical.html">g_critical</a> {
     (<span class="macro-nonterminal">$log_domain</span>:expr, <span class="macro-nonterminal">$format</span>:literal, $(<span class="macro-nonterminal">$arg</span>:expr),* $(,)<span class="question-mark">?</span>) =&gt; {{
         <span class="macro-nonterminal">$</span><span class="macro">crate::g_log!</span>(<span class="macro-nonterminal">$log_domain</span>, <span class="macro-nonterminal">$crate::LogLevel::Critical</span>, <span class="macro-nonterminal">$format</span>, $(<span class="macro-nonterminal">$arg</span>),<span class="kw-2">*</span>);
     }};
@@ -1791,7 +1791,7 @@
 /// g_warning!("test", "test: {} {}", x, "a",);
 /// ```
 </span><span class="attr">#[macro_export]
-</span><span class="macro">macro_rules! </span><a href="../../glib/macro.g_warning.html">g_warning</a> {
+</span><span class="macro">macro_rules!</span> <a href="../../glib/macro.g_warning.html">g_warning</a> {
     (<span class="macro-nonterminal">$log_domain</span>:expr, <span class="macro-nonterminal">$format</span>:literal, $(<span class="macro-nonterminal">$arg</span>:expr),* $(,)<span class="question-mark">?</span>) =&gt; {{
         <span class="macro-nonterminal">$</span><span class="macro">crate::g_log!</span>(<span class="macro-nonterminal">$log_domain</span>, <span class="macro-nonterminal">$crate::LogLevel::Warning</span>, <span class="macro-nonterminal">$format</span>, $(<span class="macro-nonterminal">$arg</span>),<span class="kw-2">*</span>);
     }};
@@ -1828,7 +1828,7 @@
 /// g_message!("test", "test: {} {}", x, "a",);
 /// ```
 </span><span class="attr">#[macro_export]
-</span><span class="macro">macro_rules! </span><a href="../../glib/macro.g_message.html">g_message</a> {
+</span><span class="macro">macro_rules!</span> <a href="../../glib/macro.g_message.html">g_message</a> {
     (<span class="macro-nonterminal">$log_domain</span>:expr, <span class="macro-nonterminal">$format</span>:literal, $(<span class="macro-nonterminal">$arg</span>:expr),* $(,)<span class="question-mark">?</span>) =&gt; {{
         <span class="macro-nonterminal">$</span><span class="macro">crate::g_log!</span>(<span class="macro-nonterminal">$log_domain</span>, <span class="macro-nonterminal">$crate::LogLevel::Message</span>, <span class="macro-nonterminal">$format</span>, $(<span class="macro-nonterminal">$arg</span>),<span class="kw-2">*</span>);
     }};
@@ -1865,7 +1865,7 @@
 /// g_info!("test", "test: {} {}", x, "a",);
 /// ```
 </span><span class="attr">#[macro_export]
-</span><span class="macro">macro_rules! </span><a href="../../glib/macro.g_info.html">g_info</a> {
+</span><span class="macro">macro_rules!</span> <a href="../../glib/macro.g_info.html">g_info</a> {
     (<span class="macro-nonterminal">$log_domain</span>:expr, <span class="macro-nonterminal">$format</span>:literal, $(<span class="macro-nonterminal">$arg</span>:expr),* $(,)<span class="question-mark">?</span>) =&gt; {{
         <span class="macro-nonterminal">$</span><span class="macro">crate::g_log!</span>(<span class="macro-nonterminal">$log_domain</span>, <span class="macro-nonterminal">$crate::LogLevel::Info</span>, <span class="macro-nonterminal">$format</span>, $(<span class="macro-nonterminal">$arg</span>),<span class="kw-2">*</span>);
     }};
@@ -1902,7 +1902,7 @@
 /// g_debug!("test", "test: {} {}", x, "a",);
 /// ```
 </span><span class="attr">#[macro_export]
-</span><span class="macro">macro_rules! </span><a href="../../glib/macro.g_debug.html">g_debug</a> {
+</span><span class="macro">macro_rules!</span> <a href="../../glib/macro.g_debug.html">g_debug</a> {
     (<span class="macro-nonterminal">$log_domain</span>:expr, <span class="macro-nonterminal">$format</span>:literal, $(<span class="macro-nonterminal">$arg</span>:expr),* $(,)<span class="question-mark">?</span>) =&gt; {{
         <span class="macro-nonterminal">$</span><span class="macro">crate::g_log!</span>(<span class="macro-nonterminal">$log_domain</span>, <span class="macro-nonterminal">$crate::LogLevel::Debug</span>, <span class="macro-nonterminal">$format</span>, $(<span class="macro-nonterminal">$arg</span>),<span class="kw-2">*</span>);
     }};
@@ -1913,7 +1913,7 @@
 
 <span class="attr">#[doc(hidden)]
 #[macro_export]
-</span><span class="macro">macro_rules! </span>g_print_inner {
+</span><span class="macro">macro_rules!</span> g_print_inner {
     (<span class="macro-nonterminal">$func</span>:ident, <span class="macro-nonterminal">$format</span>:expr $(, <span class="macro-nonterminal">$arg</span>:expr)* $(,)<span class="question-mark">?</span>) =&gt; {{
         <span class="kw">let </span><span class="kw-2">mut </span>w = <span class="macro-nonterminal">$crate::GStringBuilder::default</span>();
 
@@ -1952,7 +1952,7 @@
 /// g_print!("test: {} {}", x, "a",);
 /// ```
 </span><span class="attr">#[macro_export]
-</span><span class="macro">macro_rules! </span><a href="../../glib/macro.g_print.html">g_print</a> {
+</span><span class="macro">macro_rules!</span> <a href="../../glib/macro.g_print.html">g_print</a> {
     (<span class="macro-nonterminal">$format</span>:expr $(,<span class="macro-nonterminal">$arg</span>:expr)* $(,)<span class="question-mark">?</span>) =&gt; {{
         <span class="macro-nonterminal">$</span><span class="macro">crate::g_print_inner!</span>(<span class="macro-nonterminal">g_print</span>, <span class="macro-nonterminal">$format</span>, $(<span class="macro-nonterminal">$arg</span>),<span class="kw-2">*</span>);
     }};
@@ -1979,7 +1979,7 @@
 /// g_printerr!("test: {} {}", x, "a",);
 /// ```
 </span><span class="attr">#[macro_export]
-</span><span class="macro">macro_rules! </span><a href="../../glib/macro.g_printerr.html">g_printerr</a> {
+</span><span class="macro">macro_rules!</span> <a href="../../glib/macro.g_printerr.html">g_printerr</a> {
     (<span class="macro-nonterminal">$format</span>:expr $(, <span class="macro-nonterminal">$arg</span>:expr)* $(,)<span class="question-mark">?</span>) =&gt; {{
         <span class="macro-nonterminal">$</span><span class="macro">crate::g_print_inner!</span>(<span class="macro-nonterminal">g_printerr</span>, <span class="macro-nonterminal">$format</span>, $(<span class="macro-nonterminal">$arg</span>),<span class="kw-2">*</span>);
     }};
@@ -2022,7 +2022,7 @@
 /// );
 /// ```
 </span><span class="attr">#[macro_export]
-</span><span class="macro">macro_rules! </span><a href="../../glib/macro.log_structured.html">log_structured</a> {
+</span><span class="macro">macro_rules!</span> <a href="../../glib/macro.log_structured.html">log_structured</a> {
     (<span class="macro-nonterminal">$log_domain</span>:expr, <span class="macro-nonterminal">$log_level</span>:expr, {$(<span class="macro-nonterminal">$key</span>:expr =&gt; <span class="macro-nonterminal">$format</span>:expr $(,<span class="macro-nonterminal">$arg</span>:expr)* $(,)<span class="question-mark">?</span>);+ $(;)<span class="question-mark">?</span>} $(,)<span class="question-mark">?</span>) =&gt; {{
         <span class="kw">let </span>log_domain = &lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt; <span class="kw">as </span>std::convert::From&lt;<span class="kw">_</span>&gt;&gt;::from(<span class="macro-nonterminal">$log_domain</span>);
         <span class="kw">let </span>log_domain_str = log_domain.unwrap_or_default();
@@ -2078,7 +2078,7 @@
 
 <span class="attr">#[doc(hidden)]
 #[macro_export]
-</span><span class="macro">macro_rules! </span>log_structured_inner {
+</span><span class="macro">macro_rules!</span> log_structured_inner {
     (@clear $(<span class="macro-nonterminal">$</span><span class="kw">_</span>:<span class="macro-nonterminal">tt</span>)<span class="kw-2">*</span>) =&gt; { () };
     (@key <span class="macro-nonterminal">$key</span>:literal) =&gt; { <span class="macro-nonterminal">$</span><span class="macro">crate::gstr!</span>(<span class="macro-nonterminal">$key</span>) };
     (@key <span class="macro-nonterminal">$key</span>:expr) =&gt; { std::convert::AsRef::&lt;<span class="macro-nonterminal">$crate::GStr</span>&gt;::as_ref(<span class="kw-2">&amp;</span><span class="macro-nonterminal">$key</span>) };
@@ -2108,7 +2108,7 @@
 
 <span class="attr">#[doc(alias = <span class="string">"g_log_variant"</span>)]
 #[inline]
-</span><span class="kw">pub fn </span><a href="../../glib/fn.log_variant.html">log_variant</a>(log_domain: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;, log_level: <a href="#34-47">LogLevel</a>, fields: <span class="kw-2">&amp;</span><a href="variant.rs.html#117-129"><span class="kw">crate</span>::Variant</a>) {
+</span><span class="kw">pub fn </span><a href="../../glib/fn.log_variant.html">log_variant</a>(log_domain: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;, log_level: <a href="#34-47">LogLevel</a>, fields: <span class="kw-2">&amp;</span><a href="variant.rs.html#117-376"><span class="kw">crate</span>::Variant</a>) {
     <span class="kw">unsafe </span>{
         ffi::g_log_variant(
             <a href="#961">log_domain</a>.<a href="translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>,
@@ -2153,7 +2153,7 @@
 
 <span class="attr">#[doc(alias = <span class="string">"g_log_writer_journald"</span>)]
 #[inline]
-</span><span class="kw">pub fn </span><a href="../../glib/fn.log_writer_journald.html">log_writer_journald</a>(log_level: <a href="#34-47">LogLevel</a>, fields: <span class="kw-2">&amp;</span>[LogField&lt;<span class="lifetime">'_</span>&gt;]) -&gt; <a href="auto/enums.rs.html#508-515">LogWriterOutput</a> {
+</span><span class="kw">pub fn </span><a href="../../glib/fn.log_writer_journald.html">log_writer_journald</a>(log_level: <a href="#34-47">LogLevel</a>, fields: <span class="kw-2">&amp;</span>[LogField&lt;<span class="lifetime">'_</span>&gt;]) -&gt; <a href="auto/enums.rs.html#650-659">LogWriterOutput</a> {
     <span class="kw">unsafe </span>{
         <a href="translate.rs.html#1416-1418">from_glib</a>(ffi::g_log_writer_journald(
             <a href="#1006">log_level</a>.<a href="translate.rs.html#333">into_glib</a>(),
@@ -2169,7 +2169,7 @@
 </span><span class="kw">pub fn </span><a href="../../glib/fn.log_writer_standard_streams.html">log_writer_standard_streams</a>(
     log_level: <a href="#34-47">LogLevel</a>,
     fields: <span class="kw-2">&amp;</span>[LogField&lt;<span class="lifetime">'_</span>&gt;],
-) -&gt; <a href="auto/enums.rs.html#508-515">LogWriterOutput</a> {
+) -&gt; <a href="auto/enums.rs.html#650-659">LogWriterOutput</a> {
     <span class="kw">unsafe </span>{
         <a href="translate.rs.html#1416-1418">from_glib</a>(ffi::g_log_writer_standard_streams(
             <a href="#1020">log_level</a>.<a href="translate.rs.html#333">into_glib</a>(),
@@ -2182,7 +2182,7 @@
 
 <span class="attr">#[doc(alias = <span class="string">"g_log_writer_default"</span>)]
 #[inline]
-</span><span class="kw">pub fn </span><a href="../../glib/fn.log_writer_default.html">log_writer_default</a>(log_level: <a href="#34-47">LogLevel</a>, fields: <span class="kw-2">&amp;</span>[LogField&lt;<span class="lifetime">'_</span>&gt;]) -&gt; <a href="auto/enums.rs.html#508-515">LogWriterOutput</a> {
+</span><span class="kw">pub fn </span><a href="../../glib/fn.log_writer_default.html">log_writer_default</a>(log_level: <a href="#34-47">LogLevel</a>, fields: <span class="kw-2">&amp;</span>[LogField&lt;<span class="lifetime">'_</span>&gt;]) -&gt; <a href="auto/enums.rs.html#650-659">LogWriterOutput</a> {
     <span class="kw">unsafe </span>{
         <a href="translate.rs.html#1416-1418">from_glib</a>(ffi::g_log_writer_default(
             <a href="#1035">log_level</a>.<a href="translate.rs.html#333">into_glib</a>(),
