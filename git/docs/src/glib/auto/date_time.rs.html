@@ -1331,7 +1331,7 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-</span><span class="kw">use crate</span>::{<a href="../lib.rs.html#142">translate</a>::<span class="kw-2">*</span>, <a href="../error.rs.html#243-251">BoolError</a>, <a href="../time_span.rs.html#9">TimeSpan</a>, <a href="time_zone.rs.html#7-42">TimeZone</a>};
+</span><span class="kw">use crate</span>::{<a href="../lib.rs.html#142">translate</a>::<span class="kw-2">*</span>, <a href="../error.rs.html#243-251">BoolError</a>, <a href="../time_span.rs.html#9">TimeSpan</a>, <a href="time_zone.rs.html#7-69">TimeZone</a>};
 
 <a class="macro" href="../wrapper.rs.html#277-445">crate::wrapper!</a> {
     <span class="doccomment">/// `GDateTime` is a structure that combines a Gregorian date and time
@@ -1418,7 +1418,7 @@
     /// a new #GDateTime, or [`None`]
     </span><span class="attr">#[doc(alias = <span class="string">"g_date_time_new"</span>)]
     </span><span class="kw">pub fn </span>new(
-        tz: <span class="kw-2">&amp;</span><a href="time_zone.rs.html#7-42">TimeZone</a>,
+        tz: <span class="kw-2">&amp;</span><a href="time_zone.rs.html#7-69">TimeZone</a>,
         year: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
         month: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
         day: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
@@ -1494,7 +1494,7 @@
     /// a new #GDateTime, or [`None`]
     </span><span class="attr">#[doc(alias = <span class="string">"g_date_time_new_from_iso8601"</span>)]
     #[doc(alias = <span class="string">"new_from_iso8601"</span>)]
-    </span><span class="kw">pub fn </span>from_iso8601(text: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, default_tz: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="time_zone.rs.html#7-42">TimeZone</a>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#7-41">DateTime</a>, <a href="../error.rs.html#243-251">BoolError</a>&gt; {
+    </span><span class="kw">pub fn </span>from_iso8601(text: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, default_tz: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="time_zone.rs.html#7-69">TimeZone</a>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#7-41">DateTime</a>, <a href="../error.rs.html#243-251">BoolError</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="prelude-ty">Option</span>::&lt;<span class="kw">_</span>&gt;::from_glib_full(ffi::g_date_time_new_from_iso8601(
                 <a href="#168">text</a>.<a href="../translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>,
@@ -1682,7 +1682,7 @@
     /// a new #GDateTime, or [`None`]
     </span><span class="attr">#[doc(alias = <span class="string">"g_date_time_new_now"</span>)]
     #[doc(alias = <span class="string">"new_now"</span>)]
-    </span><span class="kw">pub fn </span>now(tz: <span class="kw-2">&amp;</span><a href="time_zone.rs.html#7-42">TimeZone</a>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#7-41">DateTime</a>, <a href="../error.rs.html#243-251">BoolError</a>&gt; {
+    </span><span class="kw">pub fn </span>now(tz: <span class="kw-2">&amp;</span><a href="time_zone.rs.html#7-69">TimeZone</a>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#7-41">DateTime</a>, <a href="../error.rs.html#243-251">BoolError</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="prelude-ty">Option</span>::&lt;<span class="kw">_</span>&gt;::from_glib_full(ffi::g_date_time_new_now(<a href="#356">tz</a>.<a href="../translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>))
                 .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.ok_or_else">ok_or_else</a>(|| <a class="macro" href="../error.rs.html#189-211">crate::bool_error!</a>(<span class="string">"Invalid date"</span>))
@@ -2277,7 +2277,7 @@
     #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"v2_58"</span>)))]
     #[doc(alias = <span class="string">"g_date_time_get_timezone"</span>)]
     #[doc(alias = <span class="string">"get_timezone"</span>)]
-    </span><span class="kw">pub fn </span>timezone(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="time_zone.rs.html#7-42">TimeZone</a> {
+    </span><span class="kw">pub fn </span>timezone(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="time_zone.rs.html#7-69">TimeZone</a> {
         <span class="kw">unsafe </span>{ <a href="../translate.rs.html#1624-1626">from_glib_none</a>(ffi::g_date_time_get_timezone(<a class="self" href="#951">self</a>.<a href="../translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>)) }
     }
 
@@ -2488,7 +2488,7 @@
     /// the newly created #GDateTime which
     ///   should be freed with g_date_time_unref(), or [`None`]
     </span><span class="attr">#[doc(alias = <span class="string">"g_date_time_to_timezone"</span>)]
-    </span><span class="kw">pub fn </span>to_timezone(<span class="kw-2">&amp;</span><span class="self">self</span>, tz: <span class="kw-2">&amp;</span><a href="time_zone.rs.html#7-42">TimeZone</a>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#7-41">DateTime</a>, <a href="../error.rs.html#243-251">BoolError</a>&gt; {
+    </span><span class="kw">pub fn </span>to_timezone(<span class="kw-2">&amp;</span><span class="self">self</span>, tz: <span class="kw-2">&amp;</span><a href="time_zone.rs.html#7-69">TimeZone</a>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#7-41">DateTime</a>, <a href="../error.rs.html#243-251">BoolError</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="prelude-ty">Option</span>::&lt;<span class="kw">_</span>&gt;::from_glib_full(ffi::g_date_time_to_timezone(
                 <a class="self" href="#1162">self</a>.<a href="../translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>,
