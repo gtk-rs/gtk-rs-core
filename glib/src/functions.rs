@@ -7,9 +7,9 @@ use std::boxed::Box as Box_;
 use std::mem;
 #[cfg(not(windows))]
 #[cfg(feature = "v2_58")]
-use std::os::unix::io::AsRawFd;
+use std::os::unix::io::{AsFd, AsRawFd};
 #[cfg(not(windows))]
-use std::os::unix::io::{FromRawFd, IntoRawFd, RawFd};
+use std::os::unix::io::{FromRawFd, OwnedFd, RawFd};
 use std::ptr;
 
 // #[cfg(windows)]
@@ -24,15 +24,15 @@ use crate::{Error, Pid, SpawnFlags};
 #[cfg_attr(docsrs, doc(cfg(all(feature = "v2_58", not(windows)))))]
 #[allow(clippy::too_many_arguments)]
 #[doc(alias = "g_spawn_async_with_fds")]
-pub fn spawn_async_with_fds<P: AsRef<std::path::Path>, T: AsRawFd, U: AsRawFd, V: AsRawFd>(
+pub fn spawn_async_with_fds<P: AsRef<std::path::Path>>(
     working_directory: P,
     argv: &[&str],
     envp: &[&str],
     flags: SpawnFlags,
     child_setup: Option<Box_<dyn FnOnce() + 'static>>,
-    stdin_fd: T,
-    stdout_fd: U,
-    stderr_fd: V,
+    stdin_fd: Option<impl AsFd>,
+    stdout_fd: Option<impl AsFd>,
+    stderr_fd: Option<impl AsFd>,
 ) -> Result<Pid, Error> {
     let child_setup_data: Box_<Option<Box_<dyn FnOnce() + 'static>>> = Box_::new(child_setup);
     unsafe extern "C" fn child_setup_func(user_data: ffi::gpointer) {
@@ -47,6 +47,9 @@ pub fn spawn_async_with_fds<P: AsRef<std::path::Path>, T: AsRawFd, U: AsRawFd, V
         None
     };
     let super_callback0: Box_<Option<Box_<dyn FnOnce() + 'static>>> = child_setup_data;
+    let stdin_raw_fd = stdin_fd.map(|fd| fd.as_fd().as_raw_fd()).unwrap_or(-1);
+    let stdout_raw_fd = stdout_fd.map(|fd| fd.as_fd().as_raw_fd()).unwrap_or(-1);
+    let stderr_raw_fd = stderr_fd.map(|fd| fd.as_fd().as_raw_fd()).unwrap_or(-1);
     unsafe {
         let mut child_pid = mem::MaybeUninit::uninit();
         let mut error = ptr::null_mut();
@@ -58,9 +61,9 @@ pub fn spawn_async_with_fds<P: AsRef<std::path::Path>, T: AsRawFd, U: AsRawFd, V
             child_setup,
             Box_::into_raw(super_callback0) as *mut _,
             child_pid.as_mut_ptr(),
-            stdin_fd.as_raw_fd(),
-            stdout_fd.as_raw_fd(),
-            stderr_fd.as_raw_fd(),
+            stdin_raw_fd,
+            stdout_raw_fd,
+            stderr_raw_fd,
             &mut error,
         );
         let child_pid = from_glib(child_pid.assume_init());
@@ -132,7 +135,7 @@ pub fn spawn_async_with_fds<P: AsRef<std::path::Path>, T: AsRawFd, U: AsRawFd, V
 #[cfg(not(windows))]
 #[cfg_attr(docsrs, doc(cfg(not(windows))))]
 #[doc(alias = "g_spawn_async_with_pipes")]
-pub fn spawn_async_with_pipes<
+pub unsafe fn spawn_async_with_pipes<
     P: AsRef<std::path::Path>,
     T: FromRawFd,
     U: FromRawFd,
@@ -224,7 +227,7 @@ pub fn charset() -> (bool, Option<&'static GStr>) {
 
 #[cfg(unix)]
 #[doc(alias = "g_unix_open_pipe")]
-pub fn unix_open_pipe(flags: i32) -> Result<(RawFd, RawFd), Error> {
+pub unsafe fn unix_open_pipe(flags: i32) -> Result<(RawFd, RawFd), Error> {
     unsafe {
         let mut fds = [0, 2];
         let mut error = ptr::null_mut();
@@ -244,7 +247,7 @@ pub fn unix_open_pipe(flags: i32) -> Result<(RawFd, RawFd), Error> {
 #[doc(alias = "g_file_open_tmp")]
 pub fn file_open_tmp(
     tmpl: Option<impl AsRef<std::path::Path>>,
-) -> Result<(RawFd, std::path::PathBuf), crate::Error> {
+) -> Result<(OwnedFd, std::path::PathBuf), crate::Error> {
     unsafe {
         let mut name_used = ptr::null_mut();
         let mut error = ptr::null_mut();
@@ -254,7 +257,7 @@ pub fn file_open_tmp(
             &mut error,
         );
         if error.is_null() {
-            Ok((ret.into_raw_fd(), from_glib_full(name_used)))
+            Ok((OwnedFd::from_raw_fd(ret), from_glib_full(name_used)))
         } else {
             Err(from_glib_full(error))
         }

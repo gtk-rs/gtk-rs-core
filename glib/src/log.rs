@@ -1,7 +1,7 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
 #[cfg(unix)]
-use std::os::unix::io::AsRawFd;
+use std::os::unix::io::{AsFd, AsRawFd};
 use std::{
     boxed::Box as Box_,
     sync::{Arc, Mutex, OnceLock},
@@ -972,16 +972,20 @@ pub fn log_variant(log_domain: Option<&str>, log_level: LogLevel, fields: &crate
 #[cfg_attr(docsrs, doc(cfg(unix)))]
 #[doc(alias = "g_log_writer_supports_color")]
 #[inline]
-pub fn log_writer_supports_color<T: AsRawFd>(output_fd: T) -> bool {
-    unsafe { from_glib(ffi::g_log_writer_supports_color(output_fd.as_raw_fd())) }
+pub fn log_writer_supports_color(output_fd: impl AsFd) -> bool {
+    unsafe {
+        from_glib(ffi::g_log_writer_supports_color(
+            output_fd.as_fd().as_raw_fd(),
+        ))
+    }
 }
 
 #[cfg(unix)]
 #[cfg_attr(docsrs, doc(cfg(unix)))]
 #[doc(alias = "g_log_writer_is_journald")]
 #[inline]
-pub fn log_writer_is_journald<T: AsRawFd>(output_fd: T) -> bool {
-    unsafe { from_glib(ffi::g_log_writer_is_journald(output_fd.as_raw_fd())) }
+pub fn log_writer_is_journald(output_fd: impl AsFd) -> bool {
+    unsafe { from_glib(ffi::g_log_writer_is_journald(output_fd.as_fd().as_raw_fd())) }
 }
 
 #[doc(alias = "g_log_writer_format_fields")]

@@ -1,12 +1,12 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
 #[cfg(unix)]
-use std::os::unix::io::{AsRawFd, IntoRawFd, RawFd};
+use std::os::unix::io::{AsFd, AsRawFd, BorrowedFd, FromRawFd, IntoRawFd, OwnedFd, RawFd};
 use std::{mem, ptr};
 
 use glib::{prelude::*, translate::*};
 #[cfg(all(not(unix), docsrs))]
-use socket::{AsRawFd, IntoRawFd, RawFd};
+use socket::{AsFd, AsRawFd, BorrowedFd, FromRawFd, IntoRawFd, OwnedFd, RawFd};
 
 use crate::UnixFDList;
 
@@ -30,12 +30,12 @@ mod sealed {
 
 pub trait UnixFDListExtManual: sealed::Sealed + IsA<UnixFDList> + Sized {
     #[doc(alias = "g_unix_fd_list_append")]
-    fn append<T: AsRawFd>(&self, fd: T) -> Result<i32, glib::Error> {
+    fn append(&self, fd: impl AsFd) -> Result<i32, glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
             let ret = ffi::g_unix_fd_list_append(
                 self.as_ref().to_glib_none().0,
-                fd.as_raw_fd(),
+                fd.as_fd().as_raw_fd(),
                 &mut error,
             );
             if error.is_null() {
@@ -47,12 +47,14 @@ pub trait UnixFDListExtManual: sealed::Sealed + IsA<UnixFDList> + Sized {
     }
 
     #[doc(alias = "g_unix_fd_list_get")]
-    fn get(&self, index_: i32) -> Result<RawFd, glib::Error> {
+    fn get(&self, index_: i32) -> Result<OwnedFd, glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
-            let ret = ffi::g_unix_fd_list_get(self.as_ref().to_glib_none().0, index_, &mut error);
+            let raw_fd =
+                ffi::g_unix_fd_list_get(self.as_ref().to_glib_none().0, index_, &mut error);
+            let fd = OwnedFd::from_raw_fd(raw_fd);
             if error.is_null() {
-                Ok(ret)
+                Ok(fd)
             } else {
                 Err(from_glib_full(error))
             }
@@ -60,26 +62,28 @@ pub trait UnixFDListExtManual: sealed::Sealed + IsA<UnixFDList> + Sized {
     }
 
     #[doc(alias = "g_unix_fd_list_peek_fds")]
-
-    fn peek_fds(&self) -> Vec<RawFd> {
+    fn peek_fds(&self) -> Vec<BorrowedFd<'_>> {
         unsafe {
             let mut length = mem::MaybeUninit::uninit();
-            let ret = FromGlibContainer::from_glib_none_num(
+            let ret: glib::Slice<RawFd> = FromGlibContainer::from_glib_none_num(
                 ffi::g_unix_fd_list_peek_fds(self.as_ref().to_glib_none().0, length.as_mut_ptr()),
                 length.assume_init() as usize,
             );
-            ret
+            ret.into_iter()
+                .map(|fd| BorrowedFd::borrow_raw(fd))
+                .collect()
         }
     }
+
     #[doc(alias = "g_unix_fd_list_steal_fds")]
-    fn steal_fds(&self) -> Vec<RawFd> {
+    fn steal_fds(&self) -> Vec<OwnedFd> {
         unsafe {
             let mut length = mem::MaybeUninit::uninit();
-            let ret = FromGlibContainer::from_glib_full_num(
+            let ret: Vec<RawFd> = FromGlibContainer::from_glib_full_num(
                 ffi::g_unix_fd_list_steal_fds(self.as_ref().to_glib_none().0, length.as_mut_ptr()),
                 length.assume_init() as usize,
             );
-            ret
+            ret.into_iter().map(|fd| OwnedFd::from_raw_fd(fd)).collect()
         }
     }
 }
