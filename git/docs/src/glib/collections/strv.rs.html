@@ -3098,21 +3098,21 @@
         <span class="kw">let </span>items = [<span class="string">"str1"</span>, <span class="string">"str2"</span>, <span class="string">"str3"</span>, <span class="string">"str4"</span>];
 
         items[..].run_with_strv(|s| <span class="kw">unsafe </span>{
-            <span class="macro">assert!</span>(s.get_unchecked(<span class="number">4</span>).is_null());
+            <span class="macro">assert!</span>((<span class="kw-2">*</span>s.as_ptr().add(<span class="number">4</span>)).is_null());
             <span class="macro">assert_eq!</span>(s.len(), items.len());
             <span class="kw">let </span>s = StrV::from_glib_borrow(s.as_ptr() <span class="kw">as </span><span class="kw-2">*const *const </span>c_char);
             <span class="macro">assert_eq!</span>(s, items);
         });
 
         Vec::from(<span class="kw-2">&amp;</span>items[..]).run_with_strv(|s| <span class="kw">unsafe </span>{
-            <span class="macro">assert!</span>(s.get_unchecked(<span class="number">4</span>).is_null());
+            <span class="macro">assert!</span>((<span class="kw-2">*</span>s.as_ptr().add(<span class="number">4</span>)).is_null());
             <span class="macro">assert_eq!</span>(s.len(), items.len());
             <span class="kw">let </span>s = StrV::from_glib_borrow(s.as_ptr() <span class="kw">as </span><span class="kw-2">*const *const </span>c_char);
             <span class="macro">assert_eq!</span>(s, items);
         });
 
         StrV::from(<span class="kw-2">&amp;</span>items[..]).run_with_strv(|s| <span class="kw">unsafe </span>{
-            <span class="macro">assert!</span>(s.get_unchecked(<span class="number">4</span>).is_null());
+            <span class="macro">assert!</span>((<span class="kw-2">*</span>s.as_ptr().add(<span class="number">4</span>)).is_null());
             <span class="macro">assert_eq!</span>(s.len(), items.len());
             <span class="kw">let </span>s = StrV::from_glib_borrow(s.as_ptr() <span class="kw">as </span><span class="kw-2">*const *const </span>c_char);
             <span class="macro">assert_eq!</span>(s, items);
@@ -3120,7 +3120,7 @@
 
         <span class="kw">let </span>v = items.iter().copied().map(String::from).collect::&lt;Vec&lt;<span class="kw">_</span>&gt;&gt;();
         items.run_with_strv(|s| <span class="kw">unsafe </span>{
-            <span class="macro">assert!</span>(s.get_unchecked(<span class="number">4</span>).is_null());
+            <span class="macro">assert!</span>((<span class="kw-2">*</span>s.as_ptr().add(<span class="number">4</span>)).is_null());
             <span class="macro">assert_eq!</span>(s.len(), v.len());
             <span class="kw">let </span>s = StrV::from_glib_borrow(s.as_ptr() <span class="kw">as </span><span class="kw-2">*const *const </span>c_char);
             <span class="macro">assert_eq!</span>(s, items);
@@ -3128,7 +3128,7 @@
 
         <span class="kw">let </span>v = items.iter().copied().map(GString::from).collect::&lt;Vec&lt;<span class="kw">_</span>&gt;&gt;();
         items.run_with_strv(|s| <span class="kw">unsafe </span>{
-            <span class="macro">assert!</span>(s.get_unchecked(<span class="number">4</span>).is_null());
+            <span class="macro">assert!</span>((<span class="kw-2">*</span>s.as_ptr().add(<span class="number">4</span>)).is_null());
             <span class="macro">assert_eq!</span>(s.len(), v.len());
             <span class="kw">let </span>s = StrV::from_glib_borrow(s.as_ptr() <span class="kw">as </span><span class="kw-2">*const *const </span>c_char);
             <span class="macro">assert_eq!</span>(s, items);

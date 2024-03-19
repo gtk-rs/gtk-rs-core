@@ -497,7 +497,7 @@
 // use std::os::windows::io::AsRawHandle;
 </span><span class="kw">use crate</span>::{<a href="lib.rs.html#142">translate</a>::<span class="kw-2">*</span>, <a href="gstring.rs.html#24">GStr</a>};
 <span class="attr">#[cfg(not(windows))]
-</span><span class="kw">use crate</span>::{<a href="error.rs.html#10-28">Error</a>, <a href="source.rs.html#59">Pid</a>, <a href="auto/flags.rs.html#731-795">SpawnFlags</a>};
+</span><span class="kw">use crate</span>::{<a href="error.rs.html#10-28">Error</a>, <a href="source.rs.html#59">Pid</a>, <a href="auto/flags.rs.html#808-872">SpawnFlags</a>};
 
 <span class="attr">#[cfg(feature = <span class="string">"v2_58"</span>)]
 #[cfg(not(windows))]
@@ -508,7 +508,7 @@
     working_directory: P,
     argv: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>],
     envp: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>],
-    flags: <a href="auto/flags.rs.html#731-795">SpawnFlags</a>,
+    flags: <a href="auto/flags.rs.html#808-872">SpawnFlags</a>,
     child_setup: <span class="prelude-ty">Option</span>&lt;Box_&lt;<span class="kw">dyn </span>FnOnce() + <span class="lifetime">'static</span>&gt;&gt;,
     stdin_fd: T,
     stdout_fd: U,
@@ -621,7 +621,7 @@
     working_directory: P,
     argv: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/path/struct.Path.html">std::path::Path</a>],
     envp: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/path/struct.Path.html">std::path::Path</a>],
-    flags: <a href="auto/flags.rs.html#731-795">SpawnFlags</a>,
+    flags: <a href="auto/flags.rs.html#808-872">SpawnFlags</a>,
     child_setup: <span class="prelude-ty">Option</span>&lt;Box_&lt;<span class="kw">dyn </span>FnOnce() + <span class="lifetime">'static</span>&gt;&gt;,
 ) -&gt; <span class="prelude-ty">Result</span>&lt;(<a href="source.rs.html#59">Pid</a>, T, U, V), <a href="error.rs.html#10-28">Error</a>&gt; {
     <span class="kw">let </span>child_setup_data: Box_&lt;<span class="prelude-ty">Option</span>&lt;Box_&lt;<span class="kw">dyn </span>FnOnce() + <span class="lifetime">'static</span>&gt;&gt;&gt; = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">Box_::new</a>(<a href="#145">child_setup</a>);
@@ -865,7 +865,7 @@
 </span><span class="kw">pub fn </span><a href="../../glib/fn.spawn_future.html">spawn_future</a>&lt;R: <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static</span>, F: std::future::Future&lt;Output = R&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static</span>&gt;(
     f: F,
 ) -&gt; <span class="kw">crate</span>::JoinHandle&lt;R&gt; {
-    <span class="kw">let </span>ctx = <a href="auto/main_context.rs.html#389-391"><span class="kw">crate</span>::MainContext::ref_thread_default</a>();
+    <span class="kw">let </span>ctx = <a href="auto/main_context.rs.html#254-256"><span class="kw">crate</span>::MainContext::ref_thread_default</a>();
     <a href="#388">ctx</a>.<a href="main_context_futures.rs.html#512-517">spawn</a>(<a href="#386">f</a>)
 }
 
@@ -880,7 +880,7 @@
 </span><span class="kw">pub fn </span><a href="../../glib/fn.spawn_future_local.html">spawn_future_local</a>&lt;R: <span class="lifetime">'static</span>, F: std::future::Future&lt;Output = R&gt; + <span class="lifetime">'static</span>&gt;(
     f: F,
 ) -&gt; <span class="kw">crate</span>::JoinHandle&lt;R&gt; {
-    <span class="kw">let </span>ctx = <a href="auto/main_context.rs.html#389-391"><span class="kw">crate</span>::MainContext::ref_thread_default</a>();
+    <span class="kw">let </span>ctx = <a href="auto/main_context.rs.html#254-256"><span class="kw">crate</span>::MainContext::ref_thread_default</a>();
     <a href="#403">ctx</a>.<a href="main_context_futures.rs.html#527-529">spawn_local</a>(<a href="#401">f</a>)
 }
 </code></pre></div></section></main></body></html>
