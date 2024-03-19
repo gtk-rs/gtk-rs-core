@@ -116,6 +116,26 @@ fn gen_bitflags(
     }
 }
 
+fn gen_default(
+    enum_name: &Ident,
+    enum_variants: &Punctuated<Variant, Comma>,
+) -> Option<TokenStream> {
+    enum_variants
+        .iter()
+        .find(|v| v.attrs.iter().any(|attr| attr.path().is_ident("default")))
+        .map(|v| {
+            let default_value = &v.ident;
+
+            quote! {
+                impl Default for #enum_name {
+                    fn default() -> Self {
+                        Self::from_bits_retain(#enum_name::#default_value.bits())
+                    }
+                }
+            }
+        })
+}
+
 pub fn impl_flags(attrs: AttrInput, input: &mut syn::ItemEnum) -> TokenStream {
     let gtype_name = attrs.enum_name;
 
@@ -171,9 +191,12 @@ pub fn impl_flags(attrs: AttrInput, input: &mut syn::ItemEnum) -> TokenStream {
     };
 
     let bitflags = gen_bitflags(name, visibility, enum_variants, &crate_ident);
+    let default_impl = gen_default(name, enum_variants);
 
     quote! {
         #bitflags
+
+        #default_impl
 
         impl #crate_ident::translate::IntoGlib for #name {
             type GlibType = u32;
