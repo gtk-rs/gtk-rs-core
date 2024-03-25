@@ -338,9 +338,9 @@
 <span class="kw">pub const </span>WRONG_PLACE_MSG: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a> =
     <span class="string">"This macro should be used on `impl` block for `glib::ObjectInterface` trait"</span>;
 
-<span class="kw">pub fn </span>impl_object_interface(input: <span class="kw-2">&amp;mut </span><a href="https://docs.rs/syn/2.0.53/syn/item/struct.ItemImpl.html">syn::ItemImpl</a>) -&gt; syn::Result&lt;<a href="https://docs.rs/proc-macro2/1.0.79/proc_macro2/struct.TokenStream.html">TokenStream</a>&gt; {
+<span class="kw">pub fn </span>impl_object_interface(input: <span class="kw-2">&amp;mut </span><a href="https://docs.rs/syn/2.0.55/syn/item/struct.ItemImpl.html">syn::ItemImpl</a>) -&gt; syn::Result&lt;<a href="https://docs.rs/proc-macro2/1.0.79/proc_macro2/struct.TokenStream.html">TokenStream</a>&gt; {
     <span class="kw">let </span>crate_ident = <a href="utils.rs.html#188-215"><span class="kw">crate</span>::utils::crate_ident_new</a>();
-    <span class="kw">let </span><a href="https://docs.rs/syn/2.0.53/syn/item/struct.ItemImpl.html">syn::ItemImpl</a> {
+    <span class="kw">let </span><a href="https://docs.rs/syn/2.0.55/syn/item/struct.ItemImpl.html">syn::ItemImpl</a> {
         attrs,
         generics,
         trait_,
@@ -351,16 +351,16 @@
     } = <a href="#12">input</a>;
 
     <span class="kw">let </span>self_ty_as_ident = <span class="kw">match </span><span class="kw-2">&amp;**</span><a href="#18">self_ty</a> {
-        <a href="https://docs.rs/syn/2.0.53/syn/ty/enum.Type.html#variant.Path">syn::Type::Path</a>(<a href="https://docs.rs/syn/2.0.53/syn/ty/struct.TypePath.html">syn::TypePath</a> { path, .. }) =&gt; <a href="#25">path</a>.<a href="https://docs.rs/syn/2.0.53/syn/path/struct.Path.html#method.require_ident">require_ident</a>(),
-        <span class="kw">_ </span>=&gt; <span class="prelude-val">Err</span>(<a href="https://docs.rs/syn/2.0.53/syn/error/struct.Error.html#method.new_spanned">syn::Error::new_spanned</a>(
+        <a href="https://docs.rs/syn/2.0.55/syn/ty/enum.Type.html#variant.Path">syn::Type::Path</a>(<a href="https://docs.rs/syn/2.0.55/syn/ty/struct.TypePath.html">syn::TypePath</a> { path, .. }) =&gt; <a href="#25">path</a>.<a href="https://docs.rs/syn/2.0.55/syn/path/struct.Path.html#method.require_ident">require_ident</a>(),
+        <span class="kw">_ </span>=&gt; <span class="prelude-val">Err</span>(<a href="https://docs.rs/syn/2.0.55/syn/error/struct.Error.html#method.new_spanned">syn::Error::new_spanned</a>(
             <span class="kw-2">&amp;</span><a href="#18">self_ty</a>,
             <span class="string">"expected this path to be an identifier"</span>,
         )),
     }<span class="question-mark">?</span>;
 
-    <span class="kw">let </span><span class="kw-2">mut </span>plugin_type = NestedMetaItem::&lt;<a href="https://docs.rs/syn/2.0.53/syn/path/struct.Path.html">syn::Path</a>&gt;::new(<span class="string">"plugin_type"</span>).<a href="utils.rs.html#55-58">value_required</a>();
+    <span class="kw">let </span><span class="kw-2">mut </span>plugin_type = NestedMetaItem::&lt;<a href="https://docs.rs/syn/2.0.55/syn/path/struct.Path.html">syn::Path</a>&gt;::new(<span class="string">"plugin_type"</span>).<a href="utils.rs.html#55-58">value_required</a>();
     <span class="kw">let </span><span class="kw-2">mut </span>lazy_registration =
-        NestedMetaItem::&lt;<a href="https://docs.rs/syn/2.0.53/syn/lit/struct.LitBool.html">syn::LitBool</a>&gt;::new(<span class="string">"lazy_registration"</span>).<a href="utils.rs.html#55-58">value_required</a>();
+        NestedMetaItem::&lt;<a href="https://docs.rs/syn/2.0.55/syn/lit/struct.LitBool.html">syn::LitBool</a>&gt;::new(<span class="string">"lazy_registration"</span>).<a href="utils.rs.html#55-58">value_required</a>();
 
     <span class="kw">let </span>found = <a href="utils.rs.html#167-186">parse_optional_nested_meta_items</a>(
         <span class="kw-2">&amp;*</span><a href="#15">attrs</a>,
@@ -372,7 +372,7 @@
         <span class="prelude-val">None </span>=&gt; <a href="#103-120">register_object_interface_as_static</a>(<span class="kw-2">&amp;</span><a href="#13">crate_ident</a>, <a href="#24">self_ty_as_ident</a>),
         <span class="prelude-val">Some</span>(<span class="kw">_</span>) =&gt; {
             <span class="comment">// remove attribute 'object_interface_dynamic' from the attribute list because it is not a real proc_macro_attribute
-            </span><a href="#15">attrs</a>.<a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.retain">retain</a>(|attr| !<a href="#46">attr</a>.<a href="https://docs.rs/syn/2.0.53/syn/attr/struct.Attribute.html#method.path">path</a>().<a href="https://docs.rs/syn/2.0.53/syn/path/struct.Path.html#method.is_ident">is_ident</a>(<span class="string">"object_interface_dynamic"</span>));
+            </span><a href="#15">attrs</a>.<a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.retain">retain</a>(|attr| !<a href="#46">attr</a>.<a href="https://docs.rs/syn/2.0.55/syn/attr/struct.Attribute.html#method.path">path</a>().<a href="https://docs.rs/syn/2.0.55/syn/path/struct.Path.html#method.is_ident">is_ident</a>(<span class="string">"object_interface_dynamic"</span>));
             <span class="kw">let </span>plugin_ty = <a href="#32">plugin_type</a>
                 .value
                 .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|p| <a href="#49">p</a>.<a href="https://docs.rs/quote/1.0.35/quote/to_tokens/trait.ToTokens.html#tymethod.into_token_stream">into_token_stream</a>())
@@ -407,7 +407,7 @@
 
     <span class="kw">let </span>trait_path = <span class="kw-2">&amp;</span><a href="#17">trait_</a>
         .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_ref">as_ref</a>()
-        .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.ok_or_else">ok_or_else</a>(|| <a href="https://docs.rs/syn/2.0.53/syn/error/struct.Error.html#method.new">syn::Error::new</a>(<a href="https://docs.rs/proc-macro2/1.0.79/proc_macro2/struct.Span.html#method.call_site">Span::call_site</a>(), <a href="#9-10">WRONG_PLACE_MSG</a>))<span class="question-mark">?
+        .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.ok_or_else">ok_or_else</a>(|| <a href="https://docs.rs/syn/2.0.55/syn/error/struct.Error.html#method.new">syn::Error::new</a>(<a href="https://docs.rs/proc-macro2/1.0.79/proc_macro2/struct.Span.html#method.call_site">Span::call_site</a>(), <a href="#9-10">WRONG_PLACE_MSG</a>))<span class="question-mark">?
         </span>.<span class="number">1</span>;
 
     <span class="prelude-val">Ok</span>(<a class="macro" href="https://docs.rs/quote/1.0.35/quote/macro.quote.html">quote!</a> {
