@@ -1,6 +1,7 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use glib::{prelude::*, Variant, VariantTy, VariantType};
+use glib::{prelude::*, MainContext, Variant, VariantTy, VariantType};
+use std::future::Future;
 
 use crate::{ActionMap, SimpleAction};
 
@@ -86,6 +87,30 @@ where
         callback: F,
     ) -> Self {
         self.0.activate = Some(Box::new(callback));
+        self
+    }
+
+    pub fn activate_async<Fut, F>(mut self, callback: F) -> Self
+    where
+        F: Fn(&O, &SimpleAction, Option<&Variant>) -> Fut + 'static + Clone,
+        Fut: Future<Output = ()>,
+    {
+        let future_cb = move |map: &O, action: &SimpleAction, variant: Option<&Variant>| {
+            let ctx = MainContext::thread_default().unwrap_or_else(|| {
+                let ctx = glib::MainContext::default();
+                assert!(ctx.is_owner(), "Current thread does not own the default main context and has no thread-default main context");
+                ctx
+            });
+
+            let variant = variant.map(ToOwned::to_owned);
+            ctx.spawn_local(
+                glib::clone!(@strong callback, @strong map, @strong action => async move {
+                    callback(&map, &action, variant.as_ref()).await;
+                }),
+            );
+        };
+
+        self.0.activate = Some(Box::new(future_cb));
         self
     }
 
