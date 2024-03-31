@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib-macros/src/lib.rs`."><title>lib.rs - source</title><script> if (window.location.protocol !== "file:") document.write(`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2">`)</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-e935ef01ae1c1829.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib_macros" data-themes="" data-resource-suffix="" data-rustdoc-version="1.79.0-nightly (c9f8f3438 2024-03-27)" data-channel="nightly" data-search-js="search-42d8da7a6b9792c2.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-12cf3b4f4f9dc36d.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib-macros/src/lib.rs`."><title>lib.rs - source</title><script> if (window.location.protocol !== "file:") document.write(`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2">`)</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-e935ef01ae1c1829.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib_macros" data-themes="" data-resource-suffix="" data-rustdoc-version="1.79.0-nightly (8df7e723e 2024-03-30)" data-channel="nightly" data-search-js="search-42d8da7a6b9792c2.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-12cf3b4f4f9dc36d.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -1546,6 +1546,7 @@
 <a href="#1471" id="1471">1471</a>
 <a href="#1472" id="1472">1472</a>
 <a href="#1473" id="1473">1473</a>
+<a href="#1474" id="1474">1474</a>
 </pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
 </span><span class="kw">mod </span><a href="boxed_derive.rs.html#3-275">boxed_derive</a>;
@@ -2790,6 +2791,7 @@
 /// | `override_interface = expr` | The type of interface of which to override the property from | | `#[property(override_interface = SomeInterface)]` |
 /// | `nullable` | Whether to use `Option&lt;T&gt;` in the generated setter method |  | `#[property(nullable)]` |
 /// | `member = ident` | Field of the nested type where property is retrieved and set | | `#[property(member = author)]` |
+/// | `construct` | Specify that the property is construct property. Ensures that the property is always set during construction (if not explicitly then the default value is used). The use of a custom internal setter is supported. | | `#[property(get, construct)]` or `#[property(get, set = set_prop, construct)]` |
 /// | `construct_only` | Specify that the property is construct only. This will not generate a public setter and only allow the property to be set during object construction. The use of a custom internal setter is supported. | | `#[property(get, construct_only)]` or `#[property(get, set = set_prop, construct_only)]` |
 /// | `builder(&lt;required-params&gt;)[.ident]*` | Used to input required params or add optional Param Spec builder fields | | `#[property(builder(SomeEnum::default()))]`, `#[builder().default_value(1).minimum(0).maximum(5)]`, etc.  |
 /// | `default` | Sets the `default_value` field of the Param Spec builder | | `#[property(default = 1)]` |
@@ -2916,7 +2918,7 @@
 #[proc_macro_derive(Properties, attributes(properties, property))]
 </span><span class="kw">pub fn </span><a href="../../glib_macros/derive.Properties.html">derive_props</a>(input: <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a> {
     <span class="kw">let </span>input = <a class="macro" href="https://docs.rs/syn/2.0.55/syn/macro.parse_macro_input.html">parse_macro_input!</a>(input <span class="kw">as </span>properties::PropsMacroInput);
-    <a href="properties.rs.html#688-748">properties::impl_derive_props</a>(<a href="#1370">input</a>)
+    <a href="properties.rs.html#688-748">properties::impl_derive_props</a>(<a href="#1371">input</a>)
 }
 
 <span class="doccomment">/// When applied to `ObjectImpl`
@@ -2940,14 +2942,14 @@
 /// ```
 </span><span class="attr">#[proc_macro_attribute]
 </span><span class="kw">pub fn </span><a href="../../glib_macros/attr.derived_properties.html">derived_properties</a>(_attr: <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a>, item: <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a> {
-    syn::parse::&lt;<a href="https://docs.rs/syn/2.0.55/syn/item/struct.ItemImpl.html">syn::ItemImpl</a>&gt;(<a href="#1394">item</a>)
+    syn::parse::&lt;<a href="https://docs.rs/syn/2.0.55/syn/item/struct.ItemImpl.html">syn::ItemImpl</a>&gt;(<a href="#1395">item</a>)
         .<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.map_err">map_err</a>(|<span class="kw">_</span>| {
             <a href="https://docs.rs/syn/2.0.55/syn/error/struct.Error.html#method.new">syn::Error::new</a>(
                 <a href="https://docs.rs/proc-macro2/1.0.79/proc_macro2/struct.Span.html#method.call_site">Span::call_site</a>(),
                 <a href="derived_properties_attribute.rs.html#6-7">derived_properties_attribute::WRONG_PLACE_MSG</a>,
             )
         })
-        .<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.and_then">and_then</a>(|input| <a href="derived_properties_attribute.rs.html#9-75">derived_properties_attribute::impl_derived_properties</a>(<span class="kw-2">&amp;</span><a href="#1402">input</a>))
+        .<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.and_then">and_then</a>(|input| <a href="derived_properties_attribute.rs.html#9-75">derived_properties_attribute::impl_derived_properties</a>(<span class="kw-2">&amp;</span><a href="#1403">input</a>))
         .<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap_or_else">unwrap_or_else</a>(syn::Error::into_compile_error)
         .<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>()
 }
@@ -3017,6 +3019,6 @@
 </span><span class="attr">#[proc_macro_derive(ValueDelegate, attributes(value_delegate))]
 </span><span class="kw">pub fn </span><a href="../../glib_macros/derive.ValueDelegate.html">derive_value_delegate</a>(input: <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a> {
     <span class="kw">let </span>input = <a class="macro" href="https://docs.rs/syn/2.0.55/syn/macro.parse_macro_input.html">parse_macro_input!</a>(input <span class="kw">as </span>value_delegate_derive::ValueDelegateInput);
-    <a href="value_delegate_derive.rs.html#114-200">value_delegate_derive::impl_value_delegate</a>(<a href="#1471">input</a>).<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>()
+    <a href="value_delegate_derive.rs.html#114-200">value_delegate_derive::impl_value_delegate</a>(<a href="#1472">input</a>).<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>()
 }
 </code></pre></div></section></main></body></html>

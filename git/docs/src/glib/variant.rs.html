@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/variant.rs`."><title>variant.rs - source</title><script> if (window.location.protocol !== "file:") document.write(`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2">`)</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-e935ef01ae1c1829.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.79.0-nightly (c9f8f3438 2024-03-27)" data-channel="nightly" data-search-js="search-42d8da7a6b9792c2.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-12cf3b4f4f9dc36d.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/variant.rs`."><title>variant.rs - source</title><script> if (window.location.protocol !== "file:") document.write(`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2">`)</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-e935ef01ae1c1829.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.79.0-nightly (8df7e723e 2024-03-30)" data-channel="nightly" data-search-js="search-42d8da7a6b9792c2.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-12cf3b4f4f9dc36d.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -3314,7 +3314,7 @@
 };
 
 <span class="kw">use crate</span>::{
-    <a href="lib.rs.html#137">prelude</a>::<span class="kw-2">*</span>, <a href="lib.rs.html#142">translate</a>::<span class="kw-2">*</span>, <a href="bytes.rs.html#14-65">Bytes</a>, <a href="types.rs.html#22">Type</a>, <a href="variant_iter.rs.html#14-18">VariantIter</a>, <a href="variant_iter.rs.html#102-106">VariantStrIter</a>, <a href="variant_type.rs.html#494-496">VariantTy</a>, <a href="variant_type.rs.html#177-184">VariantType</a>,
+    <a href="lib.rs.html#137">prelude</a>::<span class="kw-2">*</span>, <a href="lib.rs.html#142">translate</a>::<span class="kw-2">*</span>, <a href="bytes.rs.html#14-65">Bytes</a>, <a href="types.rs.html#22">Type</a>, <a href="variant_iter.rs.html#14-18">VariantIter</a>, <a href="variant_iter.rs.html#102-106">VariantStrIter</a>, <a href="variant_type.rs.html#279-281">VariantTy</a>, <a href="variant_type.rs.html#31-38">VariantType</a>,
 };
 
 <a class="macro" href="wrapper.rs.html#277-445">wrapper!</a> {
@@ -3648,12 +3648,12 @@
 /// on a [`Variant`](struct.Variant.html) when the expected type does not match the actual type.
 </span><span class="attr">#[derive(Clone, PartialEq, Eq, Debug)]
 </span><span class="kw">pub struct </span><a href="../../glib/variant/struct.VariantTypeMismatchError.html">VariantTypeMismatchError</a> {
-    <span class="kw">pub </span>actual: <a href="variant_type.rs.html#177-184">VariantType</a>,
-    <span class="kw">pub </span>expected: <a href="variant_type.rs.html#177-184">VariantType</a>,
+    <span class="kw">pub </span>actual: <a href="variant_type.rs.html#31-38">VariantType</a>,
+    <span class="kw">pub </span>expected: <a href="variant_type.rs.html#31-38">VariantType</a>,
 }
 
 <span class="kw">impl </span><a href="#447-450">VariantTypeMismatchError</a> {
-    <span class="kw">pub fn </span>new(actual: <a href="variant_type.rs.html#177-184">VariantType</a>, expected: <a href="variant_type.rs.html#177-184">VariantType</a>) -&gt; <span class="self">Self </span>{
+    <span class="kw">pub fn </span>new(actual: <a href="variant_type.rs.html#31-38">VariantType</a>, expected: <a href="variant_type.rs.html#31-38">VariantType</a>) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{ <a href="#453">actual</a>, <a href="#453">expected</a> }
     }
 }
@@ -3683,8 +3683,8 @@
     ///
     /// a #GVariantType
     </span><span class="attr">#[doc(alias = <span class="string">"g_variant_get_type"</span>)]
-    </span><span class="kw">pub fn </span>type_(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><a href="variant_type.rs.html#494-496">VariantTy</a> {
-        <span class="kw">unsafe </span>{ <a href="variant_type.rs.html#701-706">VariantTy::from_ptr</a>(ffi::g_variant_get_type(<a class="self" href="#483">self</a>.<a href="translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>)) }
+    </span><span class="kw">pub fn </span>type_(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><a href="variant_type.rs.html#279-281">VariantTy</a> {
+        <span class="kw">unsafe </span>{ <a href="variant_type.rs.html#486-491">VariantTy::from_ptr</a>(ffi::g_variant_get_type(<a class="self" href="#483">self</a>.<a href="translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>)) }
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
@@ -3701,7 +3701,7 @@
     /// This is equivalent to [`self.type_().is_subtype_of(type_)`](VariantTy::is_subtype_of).
     </span><span class="attr">#[inline]
     #[doc(alias = <span class="string">"g_variant_is_of_type"</span>)]
-    </span><span class="kw">pub fn </span>is_type(<span class="kw-2">&amp;</span><span class="self">self</span>, type_: <span class="kw-2">&amp;</span><a href="variant_type.rs.html#494-496">VariantTy</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
+    </span><span class="kw">pub fn </span>is_type(<span class="kw-2">&amp;</span><span class="self">self</span>, type_: <span class="kw-2">&amp;</span><a href="variant_type.rs.html#279-281">VariantTy</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
         <span class="kw">unsafe </span>{
             <a href="translate.rs.html#1416-1418">from_glib</a>(ffi::g_variant_is_of_type(
                 <a class="self" href="#501">self</a>.<a href="translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>,
@@ -3879,7 +3879,7 @@
     #[doc(alias = <span class="string">"g_variant_get_string"</span>)]
     </span><span class="kw">pub fn </span>str(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt; {
         <span class="kw">unsafe </span>{
-            <span class="kw">match </span><a class="self" href="#677">self</a>.<a href="#483-485">type_</a>().<a href="variant_type.rs.html#719-721">as_str</a>() {
+            <span class="kw">match </span><a class="self" href="#677">self</a>.<a href="#483-485">type_</a>().<a href="variant_type.rs.html#504-506">as_str</a>() {
                 <span class="string">"s" </span>| <span class="string">"o" </span>| <span class="string">"g" </span>=&gt; {
                     <span class="kw">let </span><span class="kw-2">mut </span>len = <span class="number">0</span>;
                     <span class="kw">let </span>ptr = ffi::g_variant_get_string(<a class="self" href="#677">self</a>.<a href="translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>, <span class="kw-2">&amp;mut </span><a href="#681">len</a>);
@@ -3939,7 +3939,7 @@
     </span><span class="attr">#[doc(alias = <span class="string">"g_variant_get_fixed_array"</span>)]
     </span><span class="kw">pub fn </span>fixed_array&lt;T: <a href="#2457">FixedSizeVariantType</a>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="kw-2">&amp;</span>[T], <a href="#447-450">VariantTypeMismatchError</a>&gt; {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>expected_ty = <a href="#1600">T::static_variant_type</a>().<a href="variant_type.rs.html#892-906">as_array</a>();
+            <span class="kw">let </span>expected_ty = <a href="#1600">T::static_variant_type</a>().<a href="variant_type.rs.html#677-691">as_array</a>();
             <span class="kw">if </span><span class="self">self</span>.type_() != expected_ty {
                 <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="#447-450">VariantTypeMismatchError</a> {
                     actual: <a class="self" href="#737">self</a>.<a href="#483-485">type_</a>().<a href="https://doc.rust-lang.org/nightly/alloc/borrow/trait.ToOwned.html#tymethod.to_owned">to_owned</a>(),
@@ -3985,12 +3985,12 @@
     /// This function panics if not all variants are of type `type_`.
     </span><span class="attr">#[doc(alias = <span class="string">"g_variant_new_array"</span>)]
     </span><span class="kw">pub fn </span>array_from_iter_with_type(
-        type_: <span class="kw-2">&amp;</span><a href="variant_type.rs.html#494-496">VariantTy</a>,
+        type_: <span class="kw-2">&amp;</span><a href="variant_type.rs.html#279-281">VariantTy</a>,
         children: <span class="kw">impl </span>IntoIterator&lt;Item = <span class="kw">impl </span>AsRef&lt;<a href="#117-376">Variant</a>&gt;&gt;,
     ) -&gt; <span class="self">Self </span>{
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>builder = <a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.uninit">mem::MaybeUninit::uninit</a>();
-            ffi::g_variant_builder_init(<a href="#789">builder</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.as_mut_ptr">as_mut_ptr</a>(), <a href="#785">type_</a>.<a href="variant_type.rs.html#892-906">as_array</a>().<a href="translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>);
+            ffi::g_variant_builder_init(<a href="#789">builder</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.as_mut_ptr">as_mut_ptr</a>(), <a href="#785">type_</a>.<a href="variant_type.rs.html#677-691">as_array</a>().<a href="translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>);
             <span class="kw">let </span><span class="kw-2">mut </span>builder = <a href="#789">builder</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.assume_init">assume_init</a>();
             <span class="kw">for </span>value <span class="kw">in </span>children.into_iter() {
                 <span class="kw">let </span>value = value.as_ref();
@@ -4015,7 +4015,7 @@
 
         <span class="kw">unsafe </span>{
             <a href="translate.rs.html#1624-1626">from_glib_none</a>(ffi::g_variant_new_fixed_array(
-                <a href="#811">type_</a>.<a href="variant_type.rs.html#712-714">as_ptr</a>(),
+                <a href="#811">type_</a>.<a href="variant_type.rs.html#497-499">as_ptr</a>(),
                 <a href="#810">array</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span>ffi::gconstpointer,
                 <a href="#810">array</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.len">len</a>(),
                 mem::size_of::&lt;T&gt;(),
@@ -4082,7 +4082,7 @@
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Creates a new maybe Variant with Nothing.
     </span><span class="attr">#[doc(alias = <span class="string">"g_variant_new_maybe"</span>)]
-    </span><span class="kw">pub fn </span>from_none(type_: <span class="kw-2">&amp;</span><a href="variant_type.rs.html#494-496">VariantTy</a>) -&gt; <span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>from_none(type_: <span class="kw-2">&amp;</span><a href="variant_type.rs.html#279-281">VariantTy</a>) -&gt; <span class="self">Self </span>{
         <span class="kw">unsafe </span>{
             <a href="translate.rs.html#1624-1626">from_glib_none</a>(ffi::g_variant_new_maybe(
                 <a href="#882">type_</a>.<a href="translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>,
@@ -4137,7 +4137,7 @@
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Parses a GVariant from the text representation produced by [`print()`](Self::print).
     </span><span class="attr">#[doc(alias = <span class="string">"g_variant_parse"</span>)]
-    </span><span class="kw">pub fn </span>parse(type_: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="variant_type.rs.html#494-496">VariantTy</a>&gt;, text: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, <a href="error.rs.html#10-25"><span class="kw">crate</span>::Error</a>&gt; {
+    </span><span class="kw">pub fn </span>parse(type_: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="variant_type.rs.html#279-281">VariantTy</a>&gt;, text: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, <a href="error.rs.html#10-25"><span class="kw">crate</span>::Error</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>error = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
             <span class="kw">let </span>text = <a href="#937">text</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.str.html#method.as_bytes">as_bytes</a>().<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.as_ptr_range">as_ptr_range</a>();
@@ -4271,10 +4271,10 @@
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Constructs a new serialized-mode GVariant instance with a given type.
     </span><span class="attr">#[doc(alias = <span class="string">"g_variant_new_from_bytes"</span>)]
-    </span><span class="kw">pub fn </span>from_bytes_with_type(bytes: <span class="kw-2">&amp;</span><a href="bytes.rs.html#14-65">Bytes</a>, type_: <span class="kw-2">&amp;</span><a href="variant_type.rs.html#494-496">VariantTy</a>) -&gt; <span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>from_bytes_with_type(bytes: <span class="kw-2">&amp;</span><a href="bytes.rs.html#14-65">Bytes</a>, type_: <span class="kw-2">&amp;</span><a href="variant_type.rs.html#279-281">VariantTy</a>) -&gt; <span class="self">Self </span>{
         <span class="kw">unsafe </span>{
             <a href="translate.rs.html#1624-1626">from_glib_none</a>(ffi::g_variant_new_from_bytes(
-                <a href="#1071">type_</a>.<a href="variant_type.rs.html#712-714">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+                <a href="#1071">type_</a>.<a href="variant_type.rs.html#497-499">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
                 <a href="#1071">bytes</a>.<a href="translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>,
                 <span class="bool-val">false</span>.<a href="translate.rs.html#333">into_glib</a>(),
             ))
@@ -4294,9 +4294,9 @@
     /// Since the data is not validated, this is potentially dangerous if called
     /// on bytes which are not guaranteed to have come from serialising another
     /// Variant.  The caller is responsible for ensuring bad data is not passed in.
-    </span><span class="kw">pub unsafe fn </span>from_bytes_with_type_trusted(bytes: <span class="kw-2">&amp;</span><a href="bytes.rs.html#14-65">Bytes</a>, type_: <span class="kw-2">&amp;</span><a href="variant_type.rs.html#494-496">VariantTy</a>) -&gt; <span class="self">Self </span>{
+    </span><span class="kw">pub unsafe fn </span>from_bytes_with_type_trusted(bytes: <span class="kw-2">&amp;</span><a href="bytes.rs.html#14-65">Bytes</a>, type_: <span class="kw-2">&amp;</span><a href="variant_type.rs.html#279-281">VariantTy</a>) -&gt; <span class="self">Self </span>{
         <a href="translate.rs.html#1624-1626">from_glib_none</a>(ffi::g_variant_new_from_bytes(
-            <a href="#1094">type_</a>.<a href="variant_type.rs.html#712-714">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+            <a href="#1094">type_</a>.<a href="variant_type.rs.html#497-499">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
             <a href="#1094">bytes</a>.<a href="translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>,
             <span class="bool-val">true</span>.<a href="translate.rs.html#333">into_glib</a>(),
         ))
@@ -4305,7 +4305,7 @@
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Constructs a new serialized-mode GVariant instance with a given type.
     </span><span class="attr">#[doc(alias = <span class="string">"g_variant_new_from_data"</span>)]
-    </span><span class="kw">pub fn </span>from_data_with_type&lt;A: AsRef&lt;[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]&gt;&gt;(data: A, type_: <span class="kw-2">&amp;</span><a href="variant_type.rs.html#494-496">VariantTy</a>) -&gt; <span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>from_data_with_type&lt;A: AsRef&lt;[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]&gt;&gt;(data: A, type_: <span class="kw-2">&amp;</span><a href="variant_type.rs.html#279-281">VariantTy</a>) -&gt; <span class="self">Self </span>{
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>data = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">Box::new</a>(<a href="#1105">data</a>);
             <span class="kw">let </span>(data_ptr, len) = {
@@ -4318,7 +4318,7 @@
             }
 
             <a href="translate.rs.html#1624-1626">from_glib_none</a>(ffi::g_variant_new_from_data(
-                <a href="#1105">type_</a>.<a href="variant_type.rs.html#712-714">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+                <a href="#1105">type_</a>.<a href="variant_type.rs.html#497-499">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
                 <a href="#1108">data_ptr</a> <span class="kw">as </span>ffi::gconstpointer,
                 <a href="#1108">len</a>,
                 <span class="bool-val">false</span>.<a href="translate.rs.html#333">into_glib</a>(),
@@ -4341,7 +4341,7 @@
     /// Since the data is not validated, this is potentially dangerous if called
     /// on bytes which are not guaranteed to have come from serialising another
     /// Variant.  The caller is responsible for ensuring bad data is not passed in.
-    </span><span class="kw">pub unsafe fn </span>from_data_with_type_trusted&lt;A: AsRef&lt;[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]&gt;&gt;(data: A, type_: <span class="kw-2">&amp;</span><a href="variant_type.rs.html#494-496">VariantTy</a>) -&gt; <span class="self">Self </span>{
+    </span><span class="kw">pub unsafe fn </span>from_data_with_type_trusted&lt;A: AsRef&lt;[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]&gt;&gt;(data: A, type_: <span class="kw-2">&amp;</span><a href="variant_type.rs.html#279-281">VariantTy</a>) -&gt; <span class="self">Self </span>{
         <span class="kw">let </span>data = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">Box::new</a>(<a href="#1141">data</a>);
         <span class="kw">let </span>(data_ptr, len) = {
             <span class="kw">let </span>data = (<span class="kw-2">*</span><a href="#1142">data</a>).<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>();
@@ -4353,7 +4353,7 @@
         }
 
         <a href="translate.rs.html#1624-1626">from_glib_none</a>(ffi::g_variant_new_from_data(
-            <a href="#1141">type_</a>.<a href="variant_type.rs.html#712-714">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+            <a href="#1141">type_</a>.<a href="variant_type.rs.html#497-499">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
             <a href="#1143">data_ptr</a> <span class="kw">as </span>ffi::gconstpointer,
             <a href="#1143">len</a>,
             <span class="bool-val">true</span>.<a href="translate.rs.html#333">into_glib</a>(),
@@ -4603,7 +4603,7 @@
     </span><span class="kw">pub fn </span>array_iter_str(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="variant_iter.rs.html#102-106">VariantStrIter</a>, <a href="#447-450">VariantTypeMismatchError</a>&gt; {
         <span class="kw">let </span>child_ty = <a href="#1600">String::static_variant_type</a>();
         <span class="kw">let </span>actual_ty = <a class="self" href="#1400">self</a>.<a href="#483-485">type_</a>();
-        <span class="kw">let </span>expected_ty = <a href="#1401">child_ty</a>.<a href="variant_type.rs.html#892-906">as_array</a>();
+        <span class="kw">let </span>expected_ty = <a href="#1401">child_ty</a>.<a href="variant_type.rs.html#677-691">as_array</a>();
         <span class="kw">if </span>actual_ty != expected_ty {
             <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="#447-450">VariantTypeMismatchError</a> {
                 actual: <a href="#1402">actual_ty</a>.<a href="https://doc.rust-lang.org/nightly/alloc/borrow/trait.ToOwned.html#tymethod.to_owned">to_owned</a>(),
@@ -4800,11 +4800,11 @@
 </span><span class="kw">pub trait </span><a href="../../glib/variant/trait.StaticVariantType.html">StaticVariantType</a> {
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Returns the `VariantType` corresponding to `Self`.
-    </span><span class="kw">fn </span>static_variant_type() -&gt; Cow&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#494-496">VariantTy</a>&gt;;
+    </span><span class="kw">fn </span>static_variant_type() -&gt; Cow&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#279-281">VariantTy</a>&gt;;
 }
 
 <span class="kw">impl </span><a href="#1597-1601">StaticVariantType</a> <span class="kw">for </span><a href="#117-376">Variant</a> {
-    <span class="kw">fn </span>static_variant_type() -&gt; Cow&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#494-496">VariantTy</a>&gt; {
+    <span class="kw">fn </span>static_variant_type() -&gt; Cow&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#279-281">VariantTy</a>&gt; {
         <a href="https://doc.rust-lang.org/nightly/alloc/borrow/enum.Cow.html#variant.Borrowed">Cow::Borrowed</a>(VariantTy::VARIANT)
     }
 }
@@ -4823,7 +4823,7 @@
 }
 
 <span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T: <span class="question-mark">?</span><a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sized.html">Sized</a> + <a href="#1597-1601">StaticVariantType</a>&gt; <a href="#1597-1601">StaticVariantType</a> <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span>T {
-    <span class="kw">fn </span>static_variant_type() -&gt; Cow&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#494-496">VariantTy</a>&gt; {
+    <span class="kw">fn </span>static_variant_type() -&gt; Cow&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#279-281">VariantTy</a>&gt; {
         &lt;T <span class="kw">as </span>StaticVariantType&gt;::static_variant_type()
     }
 }
@@ -4908,7 +4908,7 @@
 );
 
 <span class="kw">impl </span><a href="#1597-1601">StaticVariantType</a> <span class="kw">for </span>() {
-    <span class="kw">fn </span>static_variant_type() -&gt; Cow&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#494-496">VariantTy</a>&gt; {
+    <span class="kw">fn </span>static_variant_type() -&gt; Cow&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#279-281">VariantTy</a>&gt; {
         <a href="https://doc.rust-lang.org/nightly/alloc/borrow/enum.Cow.html#variant.Borrowed">Cow::Borrowed</a>(VariantTy::UNIT)
     }
 }
@@ -4937,7 +4937,7 @@
 }
 
 <span class="kw">impl </span><a href="#1597-1601">StaticVariantType</a> <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
-    <span class="kw">fn </span>static_variant_type() -&gt; Cow&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#494-496">VariantTy</a>&gt; {
+    <span class="kw">fn </span>static_variant_type() -&gt; Cow&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#279-281">VariantTy</a>&gt; {
         <a href="https://doc.rust-lang.org/nightly/alloc/borrow/enum.Cow.html#variant.Borrowed">Cow::Borrowed</a>(VariantTy::BOOLEAN)
     }
 }
@@ -4970,7 +4970,7 @@
 }
 
 <span class="kw">impl </span><a href="#1597-1601">StaticVariantType</a> <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a> {
-    <span class="kw">fn </span>static_variant_type() -&gt; Cow&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#494-496">VariantTy</a>&gt; {
+    <span class="kw">fn </span>static_variant_type() -&gt; Cow&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#279-281">VariantTy</a>&gt; {
         <a href="https://doc.rust-lang.org/nightly/alloc/borrow/enum.Cow.html#variant.Borrowed">Cow::Borrowed</a>(VariantTy::STRING)
     }
 }
@@ -4995,7 +4995,7 @@
 }
 
 <span class="kw">impl </span><a href="#1597-1601">StaticVariantType</a> <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a> {
-    <span class="kw">fn </span>static_variant_type() -&gt; Cow&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#494-496">VariantTy</a>&gt; {
+    <span class="kw">fn </span>static_variant_type() -&gt; Cow&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#279-281">VariantTy</a>&gt; {
         <a href="#1600">String::static_variant_type</a>()
     }
 }
@@ -5014,7 +5014,7 @@
 }
 
 <span class="kw">impl </span><a href="#1597-1601">StaticVariantType</a> <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/std/path/struct.PathBuf.html">std::path::PathBuf</a> {
-    <span class="kw">fn </span>static_variant_type() -&gt; Cow&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#494-496">VariantTy</a>&gt; {
+    <span class="kw">fn </span>static_variant_type() -&gt; Cow&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#279-281">VariantTy</a>&gt; {
         <a href="#1600">std::path::Path::static_variant_type</a>()
     }
 }
@@ -5042,7 +5042,7 @@
 }
 
 <span class="kw">impl </span><a href="#1597-1601">StaticVariantType</a> <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/std/path/struct.Path.html">std::path::Path</a> {
-    <span class="kw">fn </span>static_variant_type() -&gt; Cow&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#494-496">VariantTy</a>&gt; {
+    <span class="kw">fn </span>static_variant_type() -&gt; Cow&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#279-281">VariantTy</a>&gt; {
         &lt;<span class="kw-2">&amp;</span>[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]&gt;::static_variant_type()
     }
 }
@@ -5062,7 +5062,7 @@
 }
 
 <span class="kw">impl </span><a href="#1597-1601">StaticVariantType</a> <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/std/ffi/os_str/struct.OsString.html">std::ffi::OsString</a> {
-    <span class="kw">fn </span>static_variant_type() -&gt; Cow&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#494-496">VariantTy</a>&gt; {
+    <span class="kw">fn </span>static_variant_type() -&gt; Cow&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#279-281">VariantTy</a>&gt; {
         <a href="#1600">std::ffi::OsStr::static_variant_type</a>()
     }
 }
@@ -5090,7 +5090,7 @@
 }
 
 <span class="kw">impl </span><a href="#1597-1601">StaticVariantType</a> <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/std/ffi/os_str/struct.OsStr.html">std::ffi::OsStr</a> {
-    <span class="kw">fn </span>static_variant_type() -&gt; Cow&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#494-496">VariantTy</a>&gt; {
+    <span class="kw">fn </span>static_variant_type() -&gt; Cow&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#279-281">VariantTy</a>&gt; {
         &lt;<span class="kw-2">&amp;</span>[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]&gt;::static_variant_type()
     }
 }
@@ -5110,8 +5110,8 @@
 }
 
 <span class="kw">impl</span>&lt;T: <a href="#1597-1601">StaticVariantType</a>&gt; <a href="#1597-1601">StaticVariantType</a> <span class="kw">for </span><span class="prelude-ty">Option</span>&lt;T&gt; {
-    <span class="kw">fn </span>static_variant_type() -&gt; Cow&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#494-496">VariantTy</a>&gt; {
-        <a href="https://doc.rust-lang.org/nightly/alloc/borrow/enum.Cow.html#variant.Owned">Cow::Owned</a>(<a href="variant_type.rs.html#271-273">VariantType::new_maybe</a>(<span class="kw-2">&amp;</span><a href="#1600">T::static_variant_type</a>()))
+    <span class="kw">fn </span>static_variant_type() -&gt; Cow&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#279-281">VariantTy</a>&gt; {
+        <a href="https://doc.rust-lang.org/nightly/alloc/borrow/enum.Cow.html#variant.Owned">Cow::Owned</a>(<a href="variant_type.rs.html#71-73">VariantType::new_maybe</a>(<span class="kw-2">&amp;</span><a href="#1600">T::static_variant_type</a>()))
     }
 }
 
@@ -5148,8 +5148,8 @@
 }
 
 <span class="kw">impl</span>&lt;T: <a href="#1597-1601">StaticVariantType</a>&gt; <a href="#1597-1601">StaticVariantType</a> <span class="kw">for </span>[T] {
-    <span class="kw">fn </span>static_variant_type() -&gt; Cow&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#494-496">VariantTy</a>&gt; {
-        <a href="#1600">T::static_variant_type</a>().<a href="variant_type.rs.html#892-906">as_array</a>()
+    <span class="kw">fn </span>static_variant_type() -&gt; Cow&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#279-281">VariantTy</a>&gt; {
+        <a href="#1600">T::static_variant_type</a>().<a href="variant_type.rs.html#677-691">as_array</a>()
     }
 }
 
@@ -5232,7 +5232,7 @@
 }
 
 <span class="kw">impl</span>&lt;T: <a href="#1597-1601">StaticVariantType</a>&gt; <a href="#1597-1601">StaticVariantType</a> <span class="kw">for </span>Vec&lt;T&gt; {
-    <span class="kw">fn </span>static_variant_type() -&gt; Cow&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#494-496">VariantTy</a>&gt; {
+    <span class="kw">fn </span>static_variant_type() -&gt; Cow&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#279-281">VariantTy</a>&gt; {
         &lt;[T]&gt;::static_variant_type()
     }
 }
@@ -5503,15 +5503,15 @@
 }
 
 <span class="kw">impl</span>&lt;K: <a href="#1597-1601">StaticVariantType</a>, V: <a href="#1597-1601">StaticVariantType</a>&gt; <a href="#1597-1601">StaticVariantType</a> <span class="kw">for </span>DictEntry&lt;K, V&gt; {
-    <span class="kw">fn </span>static_variant_type() -&gt; Cow&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#494-496">VariantTy</a>&gt; {
-        <a href="https://doc.rust-lang.org/nightly/alloc/borrow/enum.Cow.html#variant.Owned">Cow::Owned</a>(<a href="variant_type.rs.html#226-233">VariantType::new_dict_entry</a>(
+    <span class="kw">fn </span>static_variant_type() -&gt; Cow&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#279-281">VariantTy</a>&gt; {
+        <a href="https://doc.rust-lang.org/nightly/alloc/borrow/enum.Cow.html#variant.Owned">Cow::Owned</a>(<a href="variant_type.rs.html#52-59">VariantType::new_dict_entry</a>(
             <span class="kw-2">&amp;</span><a href="#1600">K::static_variant_type</a>(),
             <span class="kw-2">&amp;</span><a href="#1600">V::static_variant_type</a>(),
         ))
     }
 }
 
-<span class="kw">fn </span>static_variant_mapping&lt;K, V&gt;() -&gt; Cow&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#494-496">VariantTy</a>&gt;
+<span class="kw">fn </span>static_variant_mapping&lt;K, V&gt;() -&gt; Cow&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#279-281">VariantTy</a>&gt;
 <span class="kw">where
     </span>K: <a href="#1597-1601">StaticVariantType</a>,
     V: <a href="#1597-1601">StaticVariantType</a>,
@@ -5528,7 +5528,7 @@
     <span class="kw">let </span><span class="kw-2">mut </span>builder = <a href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html#tymethod.default"><span class="kw">crate</span>::GStringBuilder::default</a>();
     <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.write.html">write!</a>(<a href="#2325">builder</a>, <span class="string">"a{{{}{}}}"</span>, key_type.as_str(), value_type.as_str()).<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>();
 
-    <a href="https://doc.rust-lang.org/nightly/alloc/borrow/enum.Cow.html#variant.Owned">Cow::Owned</a>(<a href="variant_type.rs.html#309-322">VariantType::from_string</a>(<a href="#2325">builder</a>.<a href="gstring_builder.rs.html#152-157">into_string</a>()).<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>())
+    <a href="https://doc.rust-lang.org/nightly/alloc/borrow/enum.Cow.html#variant.Owned">Cow::Owned</a>(<a href="variant_type.rs.html#94-107">VariantType::from_string</a>(<a href="#2325">builder</a>.<a href="gstring_builder.rs.html#152-157">into_string</a>()).<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>())
 }
 
 <span class="kw">impl</span>&lt;K, V, H&gt; <a href="#1597-1601">StaticVariantType</a> <span class="kw">for </span>HashMap&lt;K, V, H&gt;
@@ -5537,7 +5537,7 @@
     V: <a href="#1597-1601">StaticVariantType</a>,
     H: <a href="https://doc.rust-lang.org/nightly/core/hash/trait.BuildHasher.html">BuildHasher</a> + <a href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html">Default</a>,
 {
-    <span class="kw">fn </span>static_variant_type() -&gt; Cow&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#494-496">VariantTy</a>&gt; {
+    <span class="kw">fn </span>static_variant_type() -&gt; Cow&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#279-281">VariantTy</a>&gt; {
         static_variant_mapping::&lt;K, V&gt;()
     }
 }
@@ -5547,7 +5547,7 @@
     </span>K: <a href="#1597-1601">StaticVariantType</a>,
     V: <a href="#1597-1601">StaticVariantType</a>,
 {
-    <span class="kw">fn </span>static_variant_type() -&gt; Cow&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#494-496">VariantTy</a>&gt; {
+    <span class="kw">fn </span>static_variant_type() -&gt; Cow&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#279-281">VariantTy</a>&gt; {
         static_variant_mapping::&lt;K, V&gt;()
     }
 }
@@ -5740,7 +5740,7 @@
 }
 
 <span class="kw">impl</span>&lt;A: AsRef&lt;[T]&gt;, T: <a href="#2457">FixedSizeVariantType</a>&gt; <a href="#1597-1601">StaticVariantType</a> <span class="kw">for </span>FixedSizeVariantArray&lt;A, T&gt; {
-    <span class="kw">fn </span>static_variant_type() -&gt; Cow&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#494-496">VariantTy</a>&gt; {
+    <span class="kw">fn </span>static_variant_type() -&gt; Cow&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#279-281">VariantTy</a>&gt; {
         &lt;[T]&gt;::static_variant_type()
     }
 }
@@ -5807,7 +5807,7 @@
 }
 
 <span class="kw">impl </span><a href="#1597-1601">StaticVariantType</a> <span class="kw">for </span><a href="#2592">Handle</a> {
-    <span class="kw">fn </span>static_variant_type() -&gt; Cow&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#494-496">VariantTy</a>&gt; {
+    <span class="kw">fn </span>static_variant_type() -&gt; Cow&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#279-281">VariantTy</a>&gt; {
         <a href="https://doc.rust-lang.org/nightly/alloc/borrow/enum.Cow.html#variant.Borrowed">Cow::Borrowed</a>(VariantTy::HANDLE)
     }
 }
@@ -5885,7 +5885,7 @@
 }
 
 <span class="kw">impl </span><a href="#1597-1601">StaticVariantType</a> <span class="kw">for </span><a href="#2641">ObjectPath</a> {
-    <span class="kw">fn </span>static_variant_type() -&gt; Cow&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#494-496">VariantTy</a>&gt; {
+    <span class="kw">fn </span>static_variant_type() -&gt; Cow&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#279-281">VariantTy</a>&gt; {
         <a href="https://doc.rust-lang.org/nightly/alloc/borrow/enum.Cow.html#variant.Borrowed">Cow::Borrowed</a>(VariantTy::OBJECT_PATH)
     }
 }
@@ -5966,7 +5966,7 @@
 }
 
 <span class="kw">impl </span><a href="#1597-1601">StaticVariantType</a> <span class="kw">for </span><a href="#2722">Signature</a> {
-    <span class="kw">fn </span>static_variant_type() -&gt; Cow&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#494-496">VariantTy</a>&gt; {
+    <span class="kw">fn </span>static_variant_type() -&gt; Cow&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#279-281">VariantTy</a>&gt; {
         <a href="https://doc.rust-lang.org/nightly/alloc/borrow/enum.Cow.html#variant.Borrowed">Cow::Borrowed</a>(VariantTy::SIGNATURE)
     }
 }
