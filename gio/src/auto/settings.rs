@@ -2,6 +2,9 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
+#[cfg(feature = "v2_82")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_82")))]
+use crate::SettingsBindFlags;
 use crate::{Action, SettingsBackend, SettingsSchema};
 use glib::{
     prelude::*,
@@ -105,6 +108,31 @@ pub trait SettingsExt: IsA<Settings> + sealed::Sealed + 'static {
     fn apply(&self) {
         unsafe {
             ffi::g_settings_apply(self.as_ref().to_glib_none().0);
+        }
+    }
+
+    #[cfg(feature = "v2_82")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_82")))]
+    #[doc(alias = "g_settings_bind_with_mapping_closures")]
+    fn bind_with_mapping_closures(
+        &self,
+        key: &str,
+        object: &impl IsA<glib::Object>,
+        property: &str,
+        flags: SettingsBindFlags,
+        get_mapping: Option<&glib::Closure>,
+        set_mapping: Option<&glib::Closure>,
+    ) {
+        unsafe {
+            ffi::g_settings_bind_with_mapping_closures(
+                self.as_ref().to_glib_none().0,
+                key.to_glib_none().0,
+                object.as_ref().to_glib_none().0,
+                property.to_glib_none().0,
+                flags.into_glib(),
+                get_mapping.to_glib_none().0,
+                set_mapping.to_glib_none().0,
+            );
         }
     }
 
