@@ -11,6 +11,7 @@ pub use glib;
 
 mod action_entry;
 mod action_map;
+#[cfg(feature = "v2_60")]
 mod app_info;
 mod application;
 pub use action_entry::{ActionEntry, ActionEntryBuilder};
