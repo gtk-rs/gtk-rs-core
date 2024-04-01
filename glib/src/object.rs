@@ -3900,10 +3900,7 @@ impl<T: IsClass> Class<T> {
     /// Casts this class to a reference to a child type's class or
     /// fails if this class is not implementing the child class.
     #[inline]
-    pub fn downcast_ref<U: IsClass>(&self) -> Option<&Class<U>>
-    where
-        U: IsA<T>,
-    {
+    pub fn downcast_ref<U: IsClass + IsA<T>>(&self) -> Option<&Class<U>> {
         if !self.type_().is_a(U::static_type()) {
             return None;
         }
@@ -3918,10 +3915,7 @@ impl<T: IsClass> Class<T> {
     /// Casts this class to a mutable reference to a child type's class or
     /// fails if this class is not implementing the child class.
     #[inline]
-    pub fn downcast_ref_mut<U: IsClass>(&mut self) -> Option<&mut Class<U>>
-    where
-        U: IsA<T>,
-    {
+    pub fn downcast_ref_mut<U: IsClass + IsA<T>>(&mut self) -> Option<&mut Class<U>> {
         if !self.type_().is_a(U::static_type()) {
             return None;
         }

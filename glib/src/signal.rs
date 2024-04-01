@@ -6,7 +6,7 @@
 use std::{mem, num::NonZeroU64};
 
 use ffi::gpointer;
-use gobject_ffi::{self, GCallback};
+use gobject_ffi::GCallback;
 use libc::{c_char, c_ulong, c_void};
 
 use crate::{prelude::*, translate::*};

@@ -6,7 +6,6 @@ use glib::{
     prelude::*,
     signal::{connect_raw, SignalHandlerId},
     translate::*,
-    value::ValueType,
 };
 
 use futures_channel::oneshot;

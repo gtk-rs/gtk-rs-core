@@ -1,8 +1,7 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
 use std::{
-    borrow::{Borrow, Cow, ToOwned},
-    cmp::{Eq, PartialEq},
+    borrow::{Borrow, Cow},
     fmt,
     hash::{Hash, Hasher},
     iter,

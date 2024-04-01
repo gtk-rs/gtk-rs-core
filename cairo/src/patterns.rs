@@ -1,6 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use std::{convert::TryFrom, ops::Deref, ptr};
+use std::{ops::Deref, ptr};
 
 use libc::{c_double, c_int, c_uint};
 

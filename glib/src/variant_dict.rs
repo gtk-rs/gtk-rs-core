@@ -1,6 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use std::{borrow::Cow, default::Default};
+use std::borrow::Cow;
 
 use crate::{translate::*, variant::*, variant_type::*};
 

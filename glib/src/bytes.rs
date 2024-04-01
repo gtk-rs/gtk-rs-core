@@ -2,7 +2,7 @@
 
 use std::{
     borrow::Borrow,
-    cmp::{Eq, Ord, Ordering, PartialEq, PartialOrd},
+    cmp::Ordering,
     fmt,
     hash::{Hash, Hasher},
     ops::Deref,
