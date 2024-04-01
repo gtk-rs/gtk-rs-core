@@ -1,7 +1,5 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-#[cfg(not(unix))]
-use std::os::raw::c_int;
 #[cfg(unix)]
 use std::os::unix::io::{AsRawFd, FromRawFd, IntoRawFd, RawFd};
 #[cfg(windows)]
@@ -769,12 +767,12 @@ impl<O: IsA<Socket>> SocketExtManual for O {}
 
 #[cfg(all(docsrs, not(unix)))]
 pub trait IntoRawFd {
-    fn into_raw_fd(self) -> c_int;
+    fn into_raw_fd(self) -> libc::c_int;
 }
 
 #[cfg(all(docsrs, not(unix)))]
 pub trait FromRawFd {
-    unsafe fn from_raw_fd(fd: c_int) -> Self;
+    unsafe fn from_raw_fd(fd: libc::c_int) -> Self;
 }
 
 #[cfg(all(docsrs, not(unix)))]
@@ -783,7 +781,7 @@ pub trait AsRawFd {
 }
 
 #[cfg(all(docsrs, not(unix)))]
-pub type RawFd = c_int;
+pub type RawFd = libc::c_int;
 
 #[cfg(all(docsrs, not(windows)))]
 pub trait IntoRawSocket {
