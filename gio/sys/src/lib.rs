@@ -21,8 +21,11 @@ pub use manual::*;
 #[allow(unused_imports)]
 use libc::{
     c_char, c_double, c_float, c_int, c_long, c_short, c_uchar, c_uint, c_ulong, c_ushort, c_void,
-    intptr_t, size_t, ssize_t, uintptr_t, FILE,
+    intptr_t, off_t, size_t, ssize_t, time_t, uintptr_t, FILE,
 };
+#[cfg(unix)]
+#[allow(unused_imports)]
+use libc::{dev_t, gid_t, pid_t, socklen_t, uid_t};
 
 #[allow(unused_imports)]
 use glib::{gboolean, gconstpointer, gpointer, GType};
@@ -10391,11 +10394,11 @@ extern "C" {
     pub fn g_credentials_get_unix_pid(
         credentials: *mut GCredentials,
         error: *mut *mut glib::GError,
-    ) -> c_int;
+    ) -> pid_t;
     pub fn g_credentials_get_unix_user(
         credentials: *mut GCredentials,
         error: *mut *mut glib::GError,
-    ) -> c_uint;
+    ) -> uid_t;
     pub fn g_credentials_is_same_user(
         credentials: *mut GCredentials,
         other_credentials: *mut GCredentials,
@@ -10408,7 +10411,7 @@ extern "C" {
     );
     pub fn g_credentials_set_unix_user(
         credentials: *mut GCredentials,
-        uid: c_uint,
+        uid: uid_t,
         error: *mut *mut glib::GError,
     ) -> gboolean;
     pub fn g_credentials_to_string(credentials: *mut GCredentials) -> *mut c_char;
@@ -13004,6 +13007,17 @@ extern "C" {
         user_data: gpointer,
         destroy: glib::GDestroyNotify,
     );
+    #[cfg(feature = "v2_82")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_82")))]
+    pub fn g_settings_bind_with_mapping_closures(
+        settings: *mut GSettings,
+        key: *const c_char,
+        object: *mut gobject::GObject,
+        property: *const c_char,
+        flags: GSettingsBindFlags,
+        get_mapping: *mut gobject::GClosure,
+        set_mapping: *mut gobject::GClosure,
+    );
     pub fn g_settings_bind_writable(
         settings: *mut GSettings,
         key: *const c_char,
@@ -15554,6 +15568,17 @@ extern "C" {
         callback: GAsyncReadyCallback,
         user_data: gpointer,
     );
+    #[cfg(feature = "v2_82")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_82")))]
+    pub fn g_file_copy_async_with_closures(
+        source: *mut GFile,
+        destination: *mut GFile,
+        flags: GFileCopyFlags,
+        io_priority: c_int,
+        cancellable: *mut GCancellable,
+        progress_callback_closure: *mut gobject::GClosure,
+        ready_callback_closure: *mut gobject::GClosure,
+    );
     pub fn g_file_copy_attributes(
         source: *mut GFile,
         destination: *mut GFile,
@@ -15898,6 +15923,17 @@ extern "C" {
         progress_callback_data: gpointer,
         callback: GAsyncReadyCallback,
         user_data: gpointer,
+    );
+    #[cfg(feature = "v2_82")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_82")))]
+    pub fn g_file_move_async_with_closures(
+        source: *mut GFile,
+        destination: *mut GFile,
+        flags: GFileCopyFlags,
+        io_priority: c_int,
+        cancellable: *mut GCancellable,
+        progress_callback_closure: *mut gobject::GClosure,
+        ready_callback_closure: *mut gobject::GClosure,
     );
     #[cfg(feature = "v2_72")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]

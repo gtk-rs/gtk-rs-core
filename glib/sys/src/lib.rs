@@ -18,8 +18,11 @@ pub use manual::*;
 #[allow(unused_imports)]
 use libc::{
     c_char, c_double, c_float, c_int, c_long, c_short, c_uchar, c_uint, c_ulong, c_ushort, c_void,
-    intptr_t, size_t, ssize_t, uintptr_t, FILE,
+    intptr_t, off_t, size_t, ssize_t, time_t, uintptr_t, FILE,
 };
+#[cfg(unix)]
+#[allow(unused_imports)]
+use libc::{dev_t, gid_t, pid_t, socklen_t, uid_t};
 
 pub type gboolean = c_int;
 pub const GFALSE: c_int = 0;
@@ -2867,7 +2870,7 @@ extern "C" {
         bookmark: *mut GBookmarkFile,
         uri: *const c_char,
         error: *mut *mut GError,
-    ) -> c_long;
+    ) -> time_t;
     #[cfg(feature = "v2_66")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
     pub fn g_bookmark_file_get_added_date_time(
@@ -2881,7 +2884,7 @@ extern "C" {
         name: *const c_char,
         exec: *mut *mut c_char,
         count: *mut c_uint,
-        stamp: *mut c_long,
+        stamp: *mut time_t,
         error: *mut *mut GError,
     ) -> gboolean;
     #[cfg(feature = "v2_66")]
@@ -2933,7 +2936,7 @@ extern "C" {
         bookmark: *mut GBookmarkFile,
         uri: *const c_char,
         error: *mut *mut GError,
-    ) -> c_long;
+    ) -> time_t;
     #[cfg(feature = "v2_66")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
     pub fn g_bookmark_file_get_modified_date_time(
@@ -2955,7 +2958,7 @@ extern "C" {
         bookmark: *mut GBookmarkFile,
         uri: *const c_char,
         error: *mut *mut GError,
-    ) -> c_long;
+    ) -> time_t;
     #[cfg(feature = "v2_66")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
     pub fn g_bookmark_file_get_visited_date_time(
@@ -3019,7 +3022,7 @@ extern "C" {
     pub fn g_bookmark_file_set_added(
         bookmark: *mut GBookmarkFile,
         uri: *const c_char,
-        added: c_long,
+        added: time_t,
     );
     #[cfg(feature = "v2_66")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
@@ -3034,7 +3037,7 @@ extern "C" {
         name: *const c_char,
         exec: *const c_char,
         count: c_int,
-        stamp: c_long,
+        stamp: time_t,
         error: *mut *mut GError,
     ) -> gboolean;
     #[cfg(feature = "v2_66")]
@@ -3078,7 +3081,7 @@ extern "C" {
     pub fn g_bookmark_file_set_modified(
         bookmark: *mut GBookmarkFile,
         uri: *const c_char,
-        modified: c_long,
+        modified: time_t,
     );
     #[cfg(feature = "v2_66")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
@@ -3095,7 +3098,7 @@ extern "C" {
     pub fn g_bookmark_file_set_visited(
         bookmark: *mut GBookmarkFile,
         uri: *const c_char,
-        visited: c_long,
+        visited: time_t,
     );
     #[cfg(feature = "v2_66")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
@@ -3300,7 +3303,7 @@ extern "C" {
     pub fn g_date_set_month(date: *mut GDate, month: GDateMonth);
     pub fn g_date_set_parse(date: *mut GDate, str: *const c_char);
     pub fn g_date_set_time(date: *mut GDate, time_: GTime);
-    pub fn g_date_set_time_t(date: *mut GDate, timet: c_long);
+    pub fn g_date_set_time_t(date: *mut GDate, timet: time_t);
     pub fn g_date_set_time_val(date: *mut GDate, timeval: *mut GTimeVal);
     pub fn g_date_set_year(date: *mut GDate, year: GDateYear);
     pub fn g_date_subtract_days(date: *mut GDate, n_days: c_uint);
@@ -5344,6 +5347,9 @@ extern "C" {
     #[cfg(feature = "v2_68")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_68")))]
     pub fn g_strv_builder_unref(builder: *mut GStrvBuilder);
+    #[cfg(feature = "v2_82")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_82")))]
+    pub fn g_strv_builder_unref_to_strv(builder: *mut GStrvBuilder) -> c_char;
 
     //=========================================================================
     // GTestCase
