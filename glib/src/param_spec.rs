@@ -2,7 +2,6 @@
 
 use std::{
     char::CharTryFromError,
-    convert::TryFrom,
     ffi::CStr,
     num::{NonZeroI32, NonZeroI64, NonZeroI8, NonZeroU32, NonZeroU64, NonZeroU8},
     path::{Path, PathBuf},

@@ -2,7 +2,7 @@
 
 #[cfg(feature = "use_glib")]
 use std::marker::PhantomData;
-use std::{convert::TryFrom, ops::Deref, ptr};
+use std::{ops::Deref, ptr};
 
 #[cfg(feature = "use_glib")]
 use glib::translate::*;

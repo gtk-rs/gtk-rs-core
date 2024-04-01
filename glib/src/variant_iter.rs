@@ -4,7 +4,7 @@
 // introduce a heap allocation and doesn't provide a way to determine how
 // many items are left in the iterator.
 
-use std::iter::{DoubleEndedIterator, ExactSizeIterator, FusedIterator};
+use std::iter::FusedIterator;
 
 use crate::{translate::*, Variant};
 

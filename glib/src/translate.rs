@@ -135,7 +135,7 @@ use std::os::unix::prelude::*;
 use std::{
     borrow::Cow,
     char,
-    cmp::{Eq, Ordering, PartialEq},
+    cmp::Ordering,
     collections::HashMap,
     error::Error,
     ffi::{CStr, CString, OsStr, OsString},
@@ -2891,7 +2891,7 @@ mod tests {
 
     #[test]
     fn invalid_value() {
-        use std::{convert::TryFrom, num::TryFromIntError};
+        use std::num::TryFromIntError;
 
         #[derive(Debug, PartialEq, Eq)]
         struct U32(u32);
@@ -2911,7 +2911,7 @@ mod tests {
 
     #[test]
     fn none_or_invalid_value() {
-        use std::{convert::TryFrom, num::TryFromIntError};
+        use std::num::TryFromIntError;
 
         #[derive(Debug, PartialEq, Eq)]
         struct SpecialU32(u32);

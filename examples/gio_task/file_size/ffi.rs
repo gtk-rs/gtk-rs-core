@@ -1,5 +1,5 @@
-use gio::{self, prelude::*};
-use glib::{self, subclass::prelude::*, translate::*};
+use gio::prelude::*;
+use glib::{subclass::prelude::*, translate::*};
 
 pub type FileSize = <super::imp::FileSize as ObjectSubclass>::Instance;
 

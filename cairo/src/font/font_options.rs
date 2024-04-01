@@ -2,9 +2,9 @@
 
 #[cfg(feature = "v1_16")]
 use std::ffi::CString;
+use std::hash;
 #[cfg(not(feature = "use_glib"))]
 use std::ptr;
-use std::{cmp::PartialEq, hash};
 
 #[cfg(feature = "use_glib")]
 use glib::translate::*;

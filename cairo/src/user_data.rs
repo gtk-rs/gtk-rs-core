@@ -20,6 +20,12 @@ impl<T> UserDataKey<T> {
     }
 }
 
+impl<T> Default for UserDataKey<T> {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 // In a safe API for user data we can’t make `get_user_data`
 // transfer full ownership of the value to the caller (e.g. by returning `Box<T>`)
 // because `self` still has a pointer to that value
