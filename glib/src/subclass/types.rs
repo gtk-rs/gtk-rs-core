@@ -7,7 +7,6 @@ use std::{any::Any, collections::BTreeMap, marker, mem, ptr};
 
 use super::SignalId;
 use crate::{
-    gobject::traits::DynamicObjectRegisterExt,
     object::{IsClass, IsInterface, ObjectSubclassIs, ParentClassIs},
     prelude::*,
     translate::*,

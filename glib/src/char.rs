@@ -1,6 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use std::{convert::TryFrom, num::TryFromIntError};
+use std::num::TryFromIntError;
 
 use libc::{c_char, c_uchar};
 

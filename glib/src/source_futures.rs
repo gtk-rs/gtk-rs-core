@@ -1,6 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use std::{marker::Unpin, pin, pin::Pin, time::Duration};
+use std::{pin, pin::Pin, time::Duration};
 
 use futures_channel::{mpsc, oneshot};
 use futures_core::{

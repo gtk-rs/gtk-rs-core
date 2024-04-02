@@ -2,7 +2,7 @@ mod file_size;
 
 use file_size::FileSize;
 use futures_channel::oneshot;
-use glib::{self, clone, translate::*};
+use glib::{clone, translate::*};
 
 fn main() {
     let main_context = glib::MainContext::default();
