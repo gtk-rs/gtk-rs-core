@@ -23,7 +23,7 @@ pub struct passwd {
 pub type GPid = *mut c_void;
 
 #[cfg(not(windows))]
-pub type GPid = c_int;
+pub type GPid = libc::pid_t;
 
 #[repr(C)]
 #[derive(Copy, Clone)]
