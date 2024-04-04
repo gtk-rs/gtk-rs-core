@@ -10391,10 +10391,14 @@ extern "C" {
         credentials: *mut GCredentials,
         native_type: GCredentialsType,
     ) -> gpointer;
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_credentials_get_unix_pid(
         credentials: *mut GCredentials,
         error: *mut *mut glib::GError,
     ) -> pid_t;
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_credentials_get_unix_user(
         credentials: *mut GCredentials,
         error: *mut *mut glib::GError,
@@ -10409,6 +10413,8 @@ extern "C" {
         native_type: GCredentialsType,
         native: gpointer,
     );
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_credentials_set_unix_user(
         credentials: *mut GCredentials,
         uid: uid_t,
