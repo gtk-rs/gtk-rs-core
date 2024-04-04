@@ -21,6 +21,7 @@ mod cancellable;
 mod cancellable_future;
 pub use crate::cancellable_future::{CancellableFuture, Cancelled};
 mod converter;
+mod credentials;
 mod data_input_stream;
 mod datagram_based;
 mod dbus;
