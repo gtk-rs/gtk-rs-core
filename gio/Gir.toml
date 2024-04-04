@@ -438,14 +438,27 @@ status = "generate"
     [[object.function]]
     name = "get_unix_pid"
     cfg_condition = "unix"
+    # Use correct libc type
+    # https://gitlab.gnome.org/GNOME/glib/-/issues/3311
+    manual = true
     [[object.function]]
     name = "get_unix_user"
     cfg_condition = "unix"
+    # Use correct libc type
+    # https://gitlab.gnome.org/GNOME/glib/-/issues/3311
+    manual = true
         [object.function.return]
         use_return_for_result = true
     [[object.function]]
     name = "set_unix_user"
     cfg_condition = "unix"
+    # Use correct libc type
+    # https://gitlab.gnome.org/GNOME/glib/-/issues/3311
+    manual = true
+    [[object.function]]
+    pattern = "[gs]et_native"
+    # Unsafe and using raw pointers
+    manual = true
 
 [[object]]
 name = "Gio.CredentialsType"
