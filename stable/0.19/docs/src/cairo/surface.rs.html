@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `cairo/src/surface.rs`."><title>surface.rs - source</title><script> if (window.location.protocol !== "file:") document.write(`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2">`)</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-e935ef01ae1c1829.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="cairo" data-themes="" data-resource-suffix="" data-rustdoc-version="1.79.0-nightly (3c85e5624 2024-03-18)" data-channel="nightly" data-search-js="search-42d8da7a6b9792c2.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-12cf3b4f4f9dc36d.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `cairo/src/surface.rs`."><title>surface.rs - source</title><script> if (window.location.protocol !== "file:") document.write(`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2">`)</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-9e1300b5663a8a03.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="cairo" data-themes="" data-resource-suffix="" data-rustdoc-version="1.79.0-nightly (9d5cdf75a 2024-04-07)" data-channel="nightly" data-search-js="search-ffac13a0df2b1870.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-e32f0c247825364d.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-c97aec732c613ca4.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-09095024cf37855e.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -524,7 +524,7 @@
 <span class="kw">use </span>libc::{c_ulong, <a href="https://doc.rust-lang.org/nightly/core/ffi/enum.c_void.html">c_void</a>};
 
 <span class="kw">use crate</span>::{
-    <a href="utils.rs.html#21-26">utils::status_to_result</a>, <a href="enums.rs.html#436-445">Content</a>, <a href="device.rs.html#32">Device</a>, <a href="error.rs.html#10-150">Error</a>, <a href="enums.rs.html#1155-1172">Format</a>, <a href="image_surface.rs.html#15">ImageSurface</a>, <a href="rectangle.rs.html#13">Rectangle</a>, <a href="rectangle_int.rs.html#13">RectangleInt</a>,
+    <a href="utils.rs.html#21-26">utils::status_to_result</a>, <a href="enums.rs.html#436-445">Content</a>, <a href="device.rs.html#32">Device</a>, <a href="error.rs.html#10-150">Error</a>, <a href="enums.rs.html#1155-1172">Format</a>, <a href="image_surface.rs.html#14">ImageSurface</a>, <a href="rectangle.rs.html#13">Rectangle</a>, <a href="rectangle_int.rs.html#13">RectangleInt</a>,
     <a href="enums.rs.html#951-1004">SurfaceType</a>,
 };
 
@@ -756,9 +756,9 @@
         format: <a href="enums.rs.html#1155-1172">Format</a>,
         width: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
         height: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="image_surface.rs.html#15">ImageSurface</a>, <a href="error.rs.html#10-150">Error</a>&gt; {
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="image_surface.rs.html#14">ImageSurface</a>, <a href="error.rs.html#10-150">Error</a>&gt; {
         <span class="kw">unsafe </span>{
-            <a href="image_surface.rs.html#15">ImageSurface::from_raw_full</a>(<a href="../../cairo_sys/fn.cairo_surface_create_similar_image.html">ffi::cairo_surface_create_similar_image</a>(
+            <a href="image_surface.rs.html#14">ImageSurface::from_raw_full</a>(<a href="../../cairo_sys/fn.cairo_surface_create_similar_image.html">ffi::cairo_surface_create_similar_image</a>(
                 <a class="self" href="#240">self</a>.<a href="#44-46">to_raw_none</a>(),
                 <a href="#241">format</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>(),
                 <a href="#242">width</a>,
@@ -770,7 +770,7 @@
     <span class="attr">#[doc(alias = <span class="string">"cairo_surface_map_to_image"</span>)]
     </span><span class="kw">pub fn </span>map_to_image(<span class="kw-2">&amp;</span><span class="self">self</span>, extents: <span class="prelude-ty">Option</span>&lt;<a href="rectangle_int.rs.html#13">RectangleInt</a>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#392-395">MappedImageSurface</a>, <a href="error.rs.html#10-150">Error</a>&gt; {
         <span class="kw">unsafe </span>{
-            <a href="image_surface.rs.html#15">ImageSurface::from_raw_none</a>(<span class="kw">match </span><a href="#256">extents</a> {
+            <a href="image_surface.rs.html#14">ImageSurface::from_raw_none</a>(<span class="kw">match </span><a href="#256">extents</a> {
                 <span class="prelude-val">Some</span>(<span class="kw-2">ref </span>e) =&gt; <a href="../../cairo_sys/fn.cairo_surface_map_to_image.html">ffi::cairo_surface_map_to_image</a>(<a class="self" href="#256">self</a>.<a href="#44-46">to_raw_none</a>(), <a href="#259">e</a>.<a href="rectangle_int.rs.html#143-145">to_raw_none</a>()),
                 <span class="prelude-val">None </span>=&gt; <a href="../../cairo_sys/fn.cairo_surface_map_to_image.html">ffi::cairo_surface_map_to_image</a>(<a class="self" href="#256">self</a>.<a href="#44-46">to_raw_none</a>(), <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null.html">std::ptr::null</a>()),
             })
@@ -798,7 +798,7 @@
         <a href="utils.rs.html#21-26">status_to_result</a>(<a href="#282">status</a>)
     }
 
-    <a class="macro" href="user_data.rs.html#38-142">user_data_methods!</a> {
+    <a class="macro" href="user_data.rs.html#44-148">user_data_methods!</a> {
         ffi::cairo_surface_get_user_data,
         ffi::cairo_surface_set_user_data,
     }
@@ -906,21 +906,21 @@
 <span class="attr">#[derive(Debug)]
 </span><span class="kw">pub struct </span><a href="../../cairo/struct.MappedImageSurface.html">MappedImageSurface</a> {
     original_surface: <a href="#19">Surface</a>,
-    image_surface: <a href="image_surface.rs.html#15">ImageSurface</a>,
+    image_surface: <a href="image_surface.rs.html#14">ImageSurface</a>,
 }
 
 <span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/ops/deref/trait.Deref.html">Deref</a> <span class="kw">for </span><a href="#392-395">MappedImageSurface</a> {
-    <span class="kw">type </span>Target = <a href="image_surface.rs.html#15">ImageSurface</a>;
+    <span class="kw">type </span>Target = <a href="image_surface.rs.html#14">ImageSurface</a>;
 
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>deref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><a href="image_surface.rs.html#15">ImageSurface</a> {
+    </span><span class="kw">fn </span>deref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><a href="image_surface.rs.html#14">ImageSurface</a> {
         <span class="kw-2">&amp;</span><a class="self" href="#401">self</a>.image_surface
     }
 }
 
-<span class="kw">impl </span>AsRef&lt;<a href="image_surface.rs.html#15">ImageSurface</a>&gt; <span class="kw">for </span><a href="#392-395">MappedImageSurface</a> {
+<span class="kw">impl </span>AsRef&lt;<a href="image_surface.rs.html#14">ImageSurface</a>&gt; <span class="kw">for </span><a href="#392-395">MappedImageSurface</a> {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>as_ref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><a href="image_surface.rs.html#15">ImageSurface</a> {
+    </span><span class="kw">fn </span>as_ref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><a href="image_surface.rs.html#14">ImageSurface</a> {
         <span class="kw-2">&amp;</span><a class="self" href="#408">self</a>.image_surface
     }
 }
