@@ -12,10 +12,12 @@ pub trait TypeModuleImpl: ObjectImpl + TypeModuleImplExt {
     /// [`register_dynamic_interface`]: ../interface/fn.register_dynamic_interface.html
     /// [`TypeModule`]: ../../gobject/auto/type_module/struct.TypeModule.html
     fn load(&self) -> bool;
+
     // rustdoc-stripper-ignore-next
     /// Unloads the module (see [`TypeModuleExt::unuse`]).
     ///
     /// [`TypeModuleExt::unuse`]: ../../gobject/auto/type_module/trait.TypeModuleExt.html#method.unuse
+    // rustdoc-stripper-ignore-next-stop
     fn unload(&self);
 }
 

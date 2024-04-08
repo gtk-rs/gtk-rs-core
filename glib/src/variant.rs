@@ -103,7 +103,7 @@
 
 use std::{
     borrow::Cow,
-    cmp::{Eq, Ordering, PartialEq, PartialOrd},
+    cmp::Ordering,
     collections::{BTreeMap, HashMap},
     fmt,
     hash::{BuildHasher, Hash, Hasher},

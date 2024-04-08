@@ -6,7 +6,7 @@
 use std::{mem, num::NonZeroU64};
 
 use ffi::gpointer;
-use gobject_ffi::{self, GCallback};
+use gobject_ffi::GCallback;
 use libc::{c_char, c_ulong, c_void};
 
 use crate::{prelude::*, translate::*};
@@ -149,11 +149,16 @@ pub fn signal_has_handler_pending<T: ObjectType>(
 
 // rustdoc-stripper-ignore-next
 /// Whether to invoke the other event handlers.
+///
+/// `Stop` and `Proceed` map to `GDK_EVENT_STOP` (`true`) and
+/// `GDK_EVENT_PROPAGATE` (`false`), respectively.
 #[derive(Copy, Clone, Debug, PartialEq, Eq)]
 pub enum Propagation {
     // Stop other handlers from being invoked for the event.
+    #[doc(alias = "GDK_EVENT_STOP")]
     Stop,
     // Propagate the event further.
+    #[doc(alias = "GDK_EVENT_PROPAGATE")]
     Proceed,
 }
 

@@ -10,9 +10,14 @@ use crate::{prelude::*, translate::*};
 /// `ControlFlow::Continue` keeps the closure assigned, to be rerun when appropriate.
 ///
 /// `ControlFlow::Break` disconnects and drops it.
+///
+/// `Continue` and `Break` map to `G_SOURCE_CONTINUE` (`true`) and
+/// `G_SOURCE_REMOVE` (`false`), respectively.
 #[derive(Copy, Clone, Debug, PartialEq, Eq)]
 pub enum ControlFlow {
+    #[doc(alias = "G_SOURCE_CONTINUE")]
     Continue,
+    #[doc(alias = "G_SOURCE_REMOVE")]
     Break,
 }
 

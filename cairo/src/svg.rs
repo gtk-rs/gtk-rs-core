@@ -3,7 +3,6 @@
 #[cfg(not(windows))]
 use std::os::unix::prelude::*;
 use std::{
-    convert::TryFrom,
     ffi::{CStr, CString},
     io, mem,
     ops::Deref,

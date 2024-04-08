@@ -1242,6 +1242,7 @@ pub fn cstr_bytes(item: TokenStream) -> TokenStream {
 /// | `override_interface = expr` | The type of interface of which to override the property from | | `#[property(override_interface = SomeInterface)]` |
 /// | `nullable` | Whether to use `Option<T>` in the generated setter method |  | `#[property(nullable)]` |
 /// | `member = ident` | Field of the nested type where property is retrieved and set | | `#[property(member = author)]` |
+/// | `construct` | Specify that the property is construct property. Ensures that the property is always set during construction (if not explicitly then the default value is used). The use of a custom internal setter is supported. | | `#[property(get, construct)]` or `#[property(get, set = set_prop, construct)]` |
 /// | `construct_only` | Specify that the property is construct only. This will not generate a public setter and only allow the property to be set during object construction. The use of a custom internal setter is supported. | | `#[property(get, construct_only)]` or `#[property(get, set = set_prop, construct_only)]` |
 /// | `builder(<required-params>)[.ident]*` | Used to input required params or add optional Param Spec builder fields | | `#[property(builder(SomeEnum::default()))]`, `#[builder().default_value(1).minimum(0).maximum(5)]`, etc.  |
 /// | `default` | Sets the `default_value` field of the Param Spec builder | | `#[property(default = 1)]` |

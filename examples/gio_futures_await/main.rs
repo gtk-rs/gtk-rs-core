@@ -2,7 +2,7 @@ use std::str;
 
 use futures::prelude::*;
 use gio::prelude::*;
-use glib::{self, clone};
+use glib::clone;
 
 fn main() {
     let c = glib::MainContext::default();
