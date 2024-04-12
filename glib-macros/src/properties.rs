@@ -85,6 +85,12 @@ impl Parse for PropsMacroInput {
                 ))
             }
         };
+        if props.is_empty() {
+            return Err(syn::Error::new(
+                proc_macro2::Span::call_site(),
+                "Struct must have at least one field with the #[property(…)] attribute",
+            ));
+        }
         Ok(Self {
             wrapper_ty: attrs.wrapper_ty,
             ext_trait: attrs.ext_trait,
