@@ -2287,6 +2287,7 @@ impl<T: ObjectType> ObjectExt for T {
             })
             .collect::<smallvec::SmallVec<[_; 10]>>();
 
+        let _guard = self.freeze_notify();
         for (name, value) in params {
             unsafe {
                 gobject_ffi::g_object_set_property(
@@ -2318,6 +2319,7 @@ impl<T: ObjectType> ObjectExt for T {
             })
             .collect::<smallvec::SmallVec<[_; 10]>>();
 
+        let _guard = self.freeze_notify();
         for (name, value) in params {
             unsafe {
                 gobject_ffi::g_object_set_property(
