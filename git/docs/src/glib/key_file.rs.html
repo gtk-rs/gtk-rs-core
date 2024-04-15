@@ -357,11 +357,11 @@
 
 </span><span class="kw">use </span>std::{<a href="https://doc.rust-lang.org/nightly/core/mem/index.html">mem</a>, <a href="https://doc.rust-lang.org/nightly/std/path/index.html">path</a>, <a href="https://doc.rust-lang.org/nightly/core/ptr/index.html">ptr</a>};
 
-<span class="kw">use crate</span>::{<a href="lib.rs.html#142">translate</a>::<span class="kw-2">*</span>, <a href="error.rs.html#10-25">Error</a>, <a href="gstring.rs.html#996">GString</a>, <a href="gstring.rs.html#676">GStringPtr</a>, <a href="auto/key_file.rs.html#7-16">KeyFile</a>, <a href="auto/flags.rs.html#226-237">KeyFileFlags</a>, <a href="collections/ptr_slice.rs.html#18-26">PtrSlice</a>};
+<span class="kw">use crate</span>::{<a href="lib.rs.html#142">translate</a>::<span class="kw-2">*</span>, <a href="error.rs.html#10-22">Error</a>, <a href="gstring.rs.html#996">GString</a>, <a href="gstring.rs.html#676">GStringPtr</a>, <a href="auto/key_file.rs.html#7-16">KeyFile</a>, <a href="auto/flags.rs.html#215-226">KeyFileFlags</a>, <a href="collections/ptr_slice.rs.html#18-26">PtrSlice</a>};
 
 <span class="kw">impl </span><a href="auto/key_file.rs.html#7-16">KeyFile</a> {
     <span class="attr">#[doc(alias = <span class="string">"g_key_file_save_to_file"</span>)]
-    </span><span class="kw">pub fn </span>save_to_file&lt;T: AsRef&lt;<a href="https://doc.rust-lang.org/nightly/std/path/struct.Path.html">std::path::Path</a>&gt;&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, filename: T) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="error.rs.html#10-25">Error</a>&gt; {
+    </span><span class="kw">pub fn </span>save_to_file&lt;T: AsRef&lt;<a href="https://doc.rust-lang.org/nightly/std/path/struct.Path.html">std::path::Path</a>&gt;&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, filename: T) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="error.rs.html#10-22">Error</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>error = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
             <span class="kw">let _ </span>= ffi::g_key_file_save_to_file(
@@ -381,8 +381,8 @@
     </span><span class="kw">pub fn </span>load_from_data_dirs&lt;T: AsRef&lt;<a href="https://doc.rust-lang.org/nightly/std/path/struct.Path.html">std::path::Path</a>&gt;&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         file: T,
-        flags: <a href="auto/flags.rs.html#226-237">KeyFileFlags</a>,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="https://doc.rust-lang.org/nightly/std/path/struct.PathBuf.html">path::PathBuf</a>, <a href="error.rs.html#10-25">Error</a>&gt; {
+        flags: <a href="auto/flags.rs.html#215-226">KeyFileFlags</a>,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="https://doc.rust-lang.org/nightly/std/path/struct.PathBuf.html">path::PathBuf</a>, <a href="error.rs.html#10-22">Error</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>error = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
             <span class="kw">let </span><span class="kw-2">mut </span>full_path: <span class="kw-2">*mut </span>libc::c_char = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
@@ -407,8 +407,8 @@
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         file: T,
         search_dirs: <span class="kw-2">&amp;</span>[U],
-        flags: <a href="auto/flags.rs.html#226-237">KeyFileFlags</a>,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="https://doc.rust-lang.org/nightly/std/path/struct.PathBuf.html">path::PathBuf</a>, <a href="error.rs.html#10-25">Error</a>&gt; {
+        flags: <a href="auto/flags.rs.html#215-226">KeyFileFlags</a>,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="https://doc.rust-lang.org/nightly/std/path/struct.PathBuf.html">path::PathBuf</a>, <a href="error.rs.html#10-22">Error</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>search_dirs: Vec&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/path/struct.Path.html">std::path::Path</a>&gt; =
                 <a href="#54">search_dirs</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">AsRef::as_ref</a>).<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.collect">collect</a>();
@@ -452,7 +452,7 @@
 
     <span class="attr">#[doc(alias = <span class="string">"g_key_file_get_keys"</span>)]
     #[doc(alias = <span class="string">"get_keys"</span>)]
-    </span><span class="kw">pub fn </span>keys(<span class="kw-2">&amp;</span><span class="self">self</span>, group_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Result</span>&lt;PtrSlice&lt;<a href="gstring.rs.html#676">GStringPtr</a>&gt;, <a href="error.rs.html#10-25"><span class="kw">crate</span>::Error</a>&gt; {
+    </span><span class="kw">pub fn </span>keys(<span class="kw-2">&amp;</span><span class="self">self</span>, group_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Result</span>&lt;PtrSlice&lt;<a href="gstring.rs.html#676">GStringPtr</a>&gt;, <a href="error.rs.html#10-22"><span class="kw">crate</span>::Error</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>length = <a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.uninit">mem::MaybeUninit::uninit</a>();
             <span class="kw">let </span><span class="kw-2">mut </span>error = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
@@ -475,7 +475,7 @@
 
     <span class="attr">#[doc(alias = <span class="string">"g_key_file_get_boolean"</span>)]
     #[doc(alias = <span class="string">"get_boolean"</span>)]
-    </span><span class="kw">pub fn </span>boolean(<span class="kw-2">&amp;</span><span class="self">self</span>, group_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, key: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>, <a href="error.rs.html#10-25">Error</a>&gt; {
+    </span><span class="kw">pub fn </span>boolean(<span class="kw-2">&amp;</span><span class="self">self</span>, group_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, key: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>, <a href="error.rs.html#10-22">Error</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>error = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
             <span class="kw">let </span>ret = ffi::g_key_file_get_boolean(
@@ -493,7 +493,7 @@
     }
 
     <span class="attr">#[doc(alias = <span class="string">"g_key_file_has_key"</span>)]
-    </span><span class="kw">pub fn </span>has_key(<span class="kw-2">&amp;</span><span class="self">self</span>, group_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, key: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>, <a href="error.rs.html#10-25">Error</a>&gt; {
+    </span><span class="kw">pub fn </span>has_key(<span class="kw-2">&amp;</span><span class="self">self</span>, group_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, key: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>, <a href="error.rs.html#10-22">Error</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>error = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
             <span class="kw">let </span>ret = ffi::g_key_file_has_key(
@@ -512,7 +512,7 @@
 
     <span class="attr">#[doc(alias = <span class="string">"g_key_file_get_boolean_list"</span>)]
     #[doc(alias = <span class="string">"get_boolean_list"</span>)]
-    </span><span class="kw">pub fn </span>boolean_list(<span class="kw-2">&amp;</span><span class="self">self</span>, group_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, key: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>&gt;, <a href="error.rs.html#10-25">Error</a>&gt; {
+    </span><span class="kw">pub fn </span>boolean_list(<span class="kw-2">&amp;</span><span class="self">self</span>, group_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, key: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>&gt;, <a href="error.rs.html#10-22">Error</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>length = <a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.uninit">mem::MaybeUninit::uninit</a>();
             <span class="kw">let </span><span class="kw-2">mut </span>error = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
@@ -535,7 +535,7 @@
 
     <span class="attr">#[doc(alias = <span class="string">"g_key_file_get_string"</span>)]
     #[doc(alias = <span class="string">"get_string"</span>)]
-    </span><span class="kw">pub fn </span>string(<span class="kw-2">&amp;</span><span class="self">self</span>, group_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, key: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="gstring.rs.html#996">GString</a>, <a href="error.rs.html#10-25">Error</a>&gt; {
+    </span><span class="kw">pub fn </span>string(<span class="kw-2">&amp;</span><span class="self">self</span>, group_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, key: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="gstring.rs.html#996">GString</a>, <a href="error.rs.html#10-22">Error</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>error = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
             <span class="kw">let </span>ret = ffi::g_key_file_get_string(
@@ -555,7 +555,7 @@
 
     <span class="attr">#[doc(alias = <span class="string">"g_key_file_get_string_list"</span>)]
     #[doc(alias = <span class="string">"get_string_list"</span>)]
-    </span><span class="kw">pub fn </span>string_list(<span class="kw-2">&amp;</span><span class="self">self</span>, group_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, key: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Result</span>&lt;PtrSlice&lt;<a href="gstring.rs.html#676">GStringPtr</a>&gt;, <a href="error.rs.html#10-25">Error</a>&gt; {
+    </span><span class="kw">pub fn </span>string_list(<span class="kw-2">&amp;</span><span class="self">self</span>, group_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, key: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Result</span>&lt;PtrSlice&lt;<a href="gstring.rs.html#676">GStringPtr</a>&gt;, <a href="error.rs.html#10-22">Error</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>length = <a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.uninit">mem::MaybeUninit::uninit</a>();
             <span class="kw">let </span><span class="kw-2">mut </span>error = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
@@ -585,7 +585,7 @@
         group_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
         key: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
         locale: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="gstring.rs.html#996">GString</a>, <a href="error.rs.html#10-25">Error</a>&gt; {
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="gstring.rs.html#996">GString</a>, <a href="error.rs.html#10-22">Error</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>error = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
             <span class="kw">let </span>ret = ffi::g_key_file_get_locale_string(
@@ -611,7 +611,7 @@
         group_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
         key: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
         locale: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;PtrSlice&lt;<a href="gstring.rs.html#676">GStringPtr</a>&gt;, <a href="error.rs.html#10-25">Error</a>&gt; {
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;PtrSlice&lt;<a href="gstring.rs.html#676">GStringPtr</a>&gt;, <a href="error.rs.html#10-22">Error</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>length = <a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.uninit">mem::MaybeUninit::uninit</a>();
             <span class="kw">let </span><span class="kw-2">mut </span>error = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
