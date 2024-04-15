@@ -74,7 +74,7 @@ jobs:
 
       - name: deploy
         if: ${{ (github.event_name == 'push' && github.ref == 'refs/heads/master') || github.event_name == 'release' }}
-        uses: peaceiris/actions-gh-pages@v3
+        uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./target/doc/
@@ -83,7 +83,7 @@ jobs:
 
       - run: python3 ./gir-rustdoc/gir-rustdoc.py --project-title 'GTK Core Rust bindings' html-index
       - name: deploy index page
-        uses: peaceiris/actions-gh-pages@v3
+        uses: peaceiris/actions-gh-pages@v4
         if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
