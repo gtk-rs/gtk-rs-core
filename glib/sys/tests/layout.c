@@ -83,10 +83,6 @@ int main() {
     printf("%s;%zu;%zu\n", "GSourceFuncs", sizeof(GSourceFuncs), alignof(GSourceFuncs));
     printf("%s;%zu;%zu\n", "GSpawnError", sizeof(GSpawnError), alignof(GSpawnError));
     printf("%s;%zu;%zu\n", "GSpawnFlags", sizeof(GSpawnFlags), alignof(GSpawnFlags));
-    printf("%s;%zu;%zu\n", "GStaticMutex", sizeof(GStaticMutex), alignof(GStaticMutex));
-    printf("%s;%zu;%zu\n", "GStaticPrivate", sizeof(GStaticPrivate), alignof(GStaticPrivate));
-    printf("%s;%zu;%zu\n", "GStaticRWLock", sizeof(GStaticRWLock), alignof(GStaticRWLock));
-    printf("%s;%zu;%zu\n", "GStaticRecMutex", sizeof(GStaticRecMutex), alignof(GStaticRecMutex));
     printf("%s;%zu;%zu\n", "GString", sizeof(GString), alignof(GString));
     printf("%s;%zu;%zu\n", "GStrv", sizeof(GStrv), alignof(GStrv));
     printf("%s;%zu;%zu\n", "GTestConfig", sizeof(GTestConfig), alignof(GTestConfig));

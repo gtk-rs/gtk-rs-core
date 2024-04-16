@@ -734,34 +734,6 @@ const RUST_LAYOUTS: &[(&str, Layout)] = &[
         },
     ),
     (
-        "GStaticMutex",
-        Layout {
-            size: size_of::<GStaticMutex>(),
-            alignment: align_of::<GStaticMutex>(),
-        },
-    ),
-    (
-        "GStaticPrivate",
-        Layout {
-            size: size_of::<GStaticPrivate>(),
-            alignment: align_of::<GStaticPrivate>(),
-        },
-    ),
-    (
-        "GStaticRWLock",
-        Layout {
-            size: size_of::<GStaticRWLock>(),
-            alignment: align_of::<GStaticRWLock>(),
-        },
-    ),
-    (
-        "GStaticRecMutex",
-        Layout {
-            size: size_of::<GStaticRecMutex>(),
-            alignment: align_of::<GStaticRecMutex>(),
-        },
-    ),
-    (
         "GString",
         Layout {
             size: size_of::<GString>(),
