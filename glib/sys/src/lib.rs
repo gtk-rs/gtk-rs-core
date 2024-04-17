@@ -2197,66 +2197,6 @@ pub type GStatBuf = _GStatBuf;
 
 #[derive(Copy, Clone)]
 #[repr(C)]
-pub struct GStaticMutex {
-    pub mutex: *mut GMutex,
-}
-
-impl ::std::fmt::Debug for GStaticMutex {
-    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GStaticMutex @ {self:p}"))
-            .field("mutex", &self.mutex)
-            .finish()
-    }
-}
-
-#[derive(Copy, Clone)]
-#[repr(C)]
-pub struct GStaticPrivate {
-    pub index: c_uint,
-}
-
-impl ::std::fmt::Debug for GStaticPrivate {
-    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GStaticPrivate @ {self:p}"))
-            .finish()
-    }
-}
-
-#[derive(Copy, Clone)]
-#[repr(C)]
-pub struct GStaticRWLock {
-    pub mutex: GStaticMutex,
-    pub read_cond: *mut GCond,
-    pub write_cond: *mut GCond,
-    pub read_counter: c_uint,
-    pub have_writer: gboolean,
-    pub want_to_read: c_uint,
-    pub want_to_write: c_uint,
-}
-
-impl ::std::fmt::Debug for GStaticRWLock {
-    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GStaticRWLock @ {self:p}"))
-            .finish()
-    }
-}
-
-#[derive(Copy, Clone)]
-#[repr(C)]
-pub struct GStaticRecMutex {
-    pub mutex: GStaticMutex,
-    pub depth: c_uint,
-}
-
-impl ::std::fmt::Debug for GStaticRecMutex {
-    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GStaticRecMutex @ {self:p}"))
-            .finish()
-    }
-}
-
-#[derive(Copy, Clone)]
-#[repr(C)]
 pub struct GString {
     pub str: *mut c_char,
     pub len: size_t,
@@ -5181,44 +5121,18 @@ extern "C" {
     //=========================================================================
     // GStaticMutex
     //=========================================================================
-    pub fn g_static_mutex_free(mutex: *mut GStaticMutex);
-    pub fn g_static_mutex_get_mutex_impl(mutex: *mut GStaticMutex) -> *mut GMutex;
-    pub fn g_static_mutex_init(mutex: *mut GStaticMutex);
 
     //=========================================================================
     // GStaticPrivate
     //=========================================================================
-    pub fn g_static_private_free(private_key: *mut GStaticPrivate);
-    pub fn g_static_private_get(private_key: *mut GStaticPrivate) -> gpointer;
-    pub fn g_static_private_init(private_key: *mut GStaticPrivate);
-    pub fn g_static_private_set(
-        private_key: *mut GStaticPrivate,
-        data: gpointer,
-        notify: GDestroyNotify,
-    );
 
     //=========================================================================
     // GStaticRWLock
     //=========================================================================
-    pub fn g_static_rw_lock_free(lock: *mut GStaticRWLock);
-    pub fn g_static_rw_lock_init(lock: *mut GStaticRWLock);
-    pub fn g_static_rw_lock_reader_lock(lock: *mut GStaticRWLock);
-    pub fn g_static_rw_lock_reader_trylock(lock: *mut GStaticRWLock) -> gboolean;
-    pub fn g_static_rw_lock_reader_unlock(lock: *mut GStaticRWLock);
-    pub fn g_static_rw_lock_writer_lock(lock: *mut GStaticRWLock);
-    pub fn g_static_rw_lock_writer_trylock(lock: *mut GStaticRWLock) -> gboolean;
-    pub fn g_static_rw_lock_writer_unlock(lock: *mut GStaticRWLock);
 
     //=========================================================================
     // GStaticRecMutex
     //=========================================================================
-    pub fn g_static_rec_mutex_free(mutex: *mut GStaticRecMutex);
-    pub fn g_static_rec_mutex_init(mutex: *mut GStaticRecMutex);
-    pub fn g_static_rec_mutex_lock(mutex: *mut GStaticRecMutex);
-    pub fn g_static_rec_mutex_lock_full(mutex: *mut GStaticRecMutex, depth: c_uint);
-    pub fn g_static_rec_mutex_trylock(mutex: *mut GStaticRecMutex) -> gboolean;
-    pub fn g_static_rec_mutex_unlock(mutex: *mut GStaticRecMutex);
-    pub fn g_static_rec_mutex_unlock_full(mutex: *mut GStaticRecMutex) -> c_uint;
 
     //=========================================================================
     // GString
