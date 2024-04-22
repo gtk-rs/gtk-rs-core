@@ -418,7 +418,7 @@
 </pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
 </span><span class="kw">use </span>heck::ToShoutySnakeCase;
-<span class="kw">use </span>proc_macro2::{<a href="https://docs.rs/proc-macro2/1.0.80/proc_macro2/struct.Span.html">Span</a>, <a href="https://docs.rs/proc-macro2/1.0.80/proc_macro2/struct.TokenStream.html">TokenStream</a>};
+<span class="kw">use </span>proc_macro2::{<a href="https://docs.rs/proc-macro2/1.0.81/proc_macro2/struct.Span.html">Span</a>, <a href="https://docs.rs/proc-macro2/1.0.81/proc_macro2/struct.TokenStream.html">TokenStream</a>};
 <span class="kw">use </span>quote::{<a href="https://docs.rs/quote/1.0.36/quote/macro.format_ident.html">format_ident</a>, <a href="https://docs.rs/quote/1.0.36/quote/macro.quote.html">quote</a>, <a href="https://docs.rs/quote/1.0.36/quote/to_tokens/trait.ToTokens.html">ToTokens</a>};
 
 <span class="kw">use </span><span class="kw">crate</span>::utils::{<a href="utils.rs.html#167-186">parse_optional_nested_meta_items</a>, <a href="utils.rs.html#19-25">NestedMetaItem</a>};
@@ -426,7 +426,7 @@
 <span class="kw">pub const </span>WRONG_PLACE_MSG: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a> =
     <span class="string">"This macro should be used on `impl` block for `glib::ObjectSubclass` trait"</span>;
 
-<span class="kw">pub fn </span>impl_object_subclass(input: <span class="kw-2">&amp;mut </span><a href="https://docs.rs/syn/2.0.60/syn/item/struct.ItemImpl.html">syn::ItemImpl</a>) -&gt; syn::Result&lt;<a href="https://docs.rs/proc-macro2/1.0.80/proc_macro2/struct.TokenStream.html">TokenStream</a>&gt; {
+<span class="kw">pub fn </span>impl_object_subclass(input: <span class="kw-2">&amp;mut </span><a href="https://docs.rs/syn/2.0.60/syn/item/struct.ItemImpl.html">syn::ItemImpl</a>) -&gt; syn::Result&lt;<a href="https://docs.rs/proc-macro2/1.0.81/proc_macro2/struct.TokenStream.html">TokenStream</a>&gt; {
     <span class="kw">let </span>crate_ident = <a href="utils.rs.html#188-215"><span class="kw">crate</span>::utils::crate_ident_new</a>();
     <span class="kw">let </span><a href="https://docs.rs/syn/2.0.60/syn/item/struct.ItemImpl.html">syn::ItemImpl</a> {
         attrs,
@@ -532,7 +532,7 @@
 
     <span class="kw">let </span>trait_path = <span class="kw-2">&amp;</span><a href="#17">trait_</a>
         .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_ref">as_ref</a>()
-        .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.ok_or_else">ok_or_else</a>(|| <a href="https://docs.rs/syn/2.0.60/syn/error/struct.Error.html#method.new">syn::Error::new</a>(<a href="https://docs.rs/proc-macro2/1.0.80/proc_macro2/struct.Span.html#method.call_site">Span::call_site</a>(), <a href="#9-10">WRONG_PLACE_MSG</a>))<span class="question-mark">?
+        .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.ok_or_else">ok_or_else</a>(|| <a href="https://docs.rs/syn/2.0.60/syn/error/struct.Error.html#method.new">syn::Error::new</a>(<a href="https://docs.rs/proc-macro2/1.0.81/proc_macro2/struct.Span.html#method.call_site">Span::call_site</a>(), <a href="#9-10">WRONG_PLACE_MSG</a>))<span class="question-mark">?
         </span>.<span class="number">1</span>;
 
     <span class="prelude-val">Ok</span>(<a class="macro" href="https://docs.rs/quote/1.0.36/quote/macro.quote.html">quote!</a> {
@@ -618,9 +618,9 @@
 
 <span class="comment">// Registers the object subclass as a static type.
 </span><span class="kw">fn </span>register_object_subclass_as_static(
-    crate_ident: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.80/proc_macro2/struct.TokenStream.html">TokenStream</a>,
-    self_ty: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.80/proc_macro2/struct.Ident.html">syn::Ident</a>,
-) -&gt; <a href="https://docs.rs/proc-macro2/1.0.80/proc_macro2/struct.TokenStream.html">TokenStream</a> {
+    crate_ident: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.81/proc_macro2/struct.TokenStream.html">TokenStream</a>,
+    self_ty: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.81/proc_macro2/struct.Ident.html">syn::Ident</a>,
+) -&gt; <a href="https://docs.rs/proc-macro2/1.0.81/proc_macro2/struct.TokenStream.html">TokenStream</a> {
     <span class="comment">// registers the object subclass on first use (lazy registration).
     </span><a class="macro" href="https://docs.rs/quote/1.0.36/quote/macro.quote.html">quote!</a> {
         <span class="kw">impl </span>#self_ty {
@@ -640,11 +640,11 @@
 <span class="comment">// The following implementations follows the lifecycle of plugins and of dynamic types (see [`TypePluginExt`] and [`TypeModuleExt`]).
 // An object subclass can be reregistered as a dynamic type.
 </span><span class="kw">fn </span>register_object_subclass_as_dynamic(
-    crate_ident: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.80/proc_macro2/struct.TokenStream.html">TokenStream</a>,
-    self_ty: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.80/proc_macro2/struct.Ident.html">syn::Ident</a>,
-    plugin_ty: <a href="https://docs.rs/proc-macro2/1.0.80/proc_macro2/struct.TokenStream.html">TokenStream</a>,
+    crate_ident: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.81/proc_macro2/struct.TokenStream.html">TokenStream</a>,
+    self_ty: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.81/proc_macro2/struct.Ident.html">syn::Ident</a>,
+    plugin_ty: <a href="https://docs.rs/proc-macro2/1.0.81/proc_macro2/struct.TokenStream.html">TokenStream</a>,
     lazy_registration: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>,
-) -&gt; <a href="https://docs.rs/proc-macro2/1.0.80/proc_macro2/struct.TokenStream.html">TokenStream</a> {
+) -&gt; <a href="https://docs.rs/proc-macro2/1.0.81/proc_macro2/struct.TokenStream.html">TokenStream</a> {
     <span class="comment">// The following implementations follows the lifecycle of plugins and of dynamic types (see [`TypePluginExt`] and [`TypeModuleExt`]).
     // An object subclass can be reregistered as a dynamic type.
     </span><span class="kw">if </span>lazy_registration {
