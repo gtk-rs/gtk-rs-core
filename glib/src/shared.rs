@@ -30,6 +30,7 @@ macro_rules! glib_shared_wrapper {
     (@generic_impl [$($attr:meta)*] $visibility:vis $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)?, $ffi_name:ty,
      @ref $ref_arg:ident $ref_expr:expr, @unref $unref_arg:ident $unref_expr:expr) => {
         $(#[$attr])*
+        #[doc = "\n\nGLib type: Shared boxed type with reference counted clone semantics."]
         #[repr(transparent)]
         $visibility struct $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? {
             inner: $crate::shared::Shared<$ffi_name, Self>,
@@ -50,6 +51,7 @@ macro_rules! glib_shared_wrapper {
         }
 
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? std::clone::Clone for $name $(<$($generic),+>)? {
+            #[doc = "Makes a clone of this shared reference.\n\nThis increments the strong reference count of the reference. Dropping the reference will decrement it again."]
             #[inline]
             fn clone(&self) -> Self {
                 Self {
