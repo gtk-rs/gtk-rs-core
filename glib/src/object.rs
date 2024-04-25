@@ -618,6 +618,7 @@ unsafe impl<T: Send + Sync, P: Send + Sync> Sync for TypedObjectRef<T, P> {}
 macro_rules! glib_object_wrapper {
     (@generic_impl [$($attr:meta)*] $visibility:vis $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)?, $impl_type:ty, $parent_type:ty, $ffi_name:ty, $ffi_class_name:ty, @type_ $get_type_expr:expr) => {
         $(#[$attr])*
+        #[doc = "\n\nGLib type: GObject with reference counted clone semantics."]
         #[repr(transparent)]
         $visibility struct $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? {
             inner: $crate::object::TypedObjectRef<$impl_type, $parent_type>,
@@ -632,6 +633,7 @@ macro_rules! glib_object_wrapper {
         // are specified, these traits are not required.
 
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? std::clone::Clone for $name $(<$($generic),+>)? {
+            #[doc = "Makes a clone of this shared reference.\n\nThis increments the strong reference count of the object. Dropping the object will decrement it again."]
             #[inline]
             fn clone(&self) -> Self {
                 Self {
@@ -642,6 +644,7 @@ macro_rules! glib_object_wrapper {
         }
 
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? std::hash::Hash for $name $(<$($generic),+>)? {
+            #[doc = "Hashes the memory address of this object."]
             #[inline]
             fn hash<H>(&self, state: &mut H)
             where
@@ -652,6 +655,7 @@ macro_rules! glib_object_wrapper {
         }
 
         impl<OT: $crate::object::ObjectType $(, $($generic $(: $bound $(+ $bound2)*)?),+)?> std::cmp::PartialEq<OT> for $name $(<$($generic),+>)? {
+            #[doc = "Equality for two GObjects.\n\nTwo GObjects are equal if their memory addresses are equal."]
             #[inline]
             fn eq(&self, other: &OT) -> bool {
                 std::cmp::PartialEq::eq(&*self.inner, $crate::object::ObjectType::as_object_ref(other))
@@ -661,6 +665,7 @@ macro_rules! glib_object_wrapper {
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? std::cmp::Eq for $name $(<$($generic),+>)? {}
 
         impl<OT: $crate::object::ObjectType $(, $($generic $(: $bound $(+ $bound2)*)?),+)?> std::cmp::PartialOrd<OT> for $name $(<$($generic),+>)? {
+            #[doc = "Partial comparison for two GObjects.\n\nCompares the memory addresses of the provided objects."]
             #[inline]
             fn partial_cmp(&self, other: &OT) -> Option<std::cmp::Ordering> {
                 std::cmp::PartialOrd::partial_cmp(&*self.inner, $crate::object::ObjectType::as_object_ref(other))
@@ -668,6 +673,7 @@ macro_rules! glib_object_wrapper {
         }
 
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? std::cmp::Ord for $name $(<$($generic),+>)? {
+            #[doc = "Comparison for two GObjects.\n\nCompares the memory addresses of the provided objects."]
             #[inline]
             fn cmp(&self, other: &Self) -> std::cmp::Ordering {
                 std::cmp::Ord::cmp(&*self.inner, $crate::object::ObjectType::as_object_ref(other))
