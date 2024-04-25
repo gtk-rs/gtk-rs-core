@@ -23,7 +23,7 @@ jobs:
           - { name: "cairo", features: "png,pdf,svg,ps,use_glib,v1_18,freetype,script,xcb,xlib,win32-surface", nightly: "--features 'png,pdf,svg,ps,use_glib,v1_18,freetype,script,xcb,xlib,win32-surface'", test_sys: true }
           - { name: "gdk-pixbuf", features: "v2_42", nightly: "--all-features", test_sys: true }
           - { name: "gio", features: "v2_80", nightly: "--all-features", test_sys: true }
-          - { name: "glib", features: "v2_80", nightly: "--all-features", test_sys: false }
+          - { name: "glib", features: "v2_80", nightly: "--all-features", test_sys: true }
           - { name: "graphene", features: "v1_12", nightly: "", test_sys: true }
           - { name: "pango", features: "v1_50", nightly: "--all-features", test_sys: true }
           - { name: "pangocairo", features: "", nightly: "--all-features", test_sys: true }
@@ -85,6 +85,10 @@ jobs:
         run: cargo test
         working-directory: ${{ matrix.conf.name }}/sys
         if: matrix.conf.test_sys
+      - name: Test ${{ matrix.conf.name }}/gobject-sys
+        run: cargo test
+        working-directory: ${{ matrix.conf.name }}/gobject-sys
+        if: matrix.conf.test_sys && matrix.conf.name == 'glib'
       # GLib compile tests only on stable
       - name: Compile tests
         run: cargo test --manifest-path glib/Cargo.toml --features "compiletests,v2_78"
