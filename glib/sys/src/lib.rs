@@ -18,8 +18,11 @@ pub use manual::*;
 #[allow(unused_imports)]
 use libc::{
     c_char, c_double, c_float, c_int, c_long, c_short, c_uchar, c_uint, c_ulong, c_ushort, c_void,
-    intptr_t, size_t, ssize_t, uintptr_t, FILE,
+    intptr_t, off_t, size_t, ssize_t, time_t, uintptr_t, FILE,
 };
+#[cfg(unix)]
+#[allow(unused_imports)]
+use libc::{dev_t, gid_t, pid_t, socklen_t, uid_t};
 
 pub type gboolean = c_int;
 pub const GFALSE: c_int = 0;
@@ -710,19 +713,6 @@ pub const G_VARIANT_PARSE_ERROR_UNTERMINATED_STRING_CONSTANT: GVariantParseError
 pub const G_VARIANT_PARSE_ERROR_VALUE_EXPECTED: GVariantParseError = 17;
 pub const G_VARIANT_PARSE_ERROR_RECURSION: GVariantParseError = 18;
 
-#[cfg(windows)]
-#[cfg_attr(docsrs, doc(cfg(windows)))]
-pub type GWin32OSType = c_int;
-#[cfg(windows)]
-#[cfg_attr(docsrs, doc(cfg(windows)))]
-pub const G_WIN32_OS_ANY: GWin32OSType = 0;
-#[cfg(windows)]
-#[cfg_attr(docsrs, doc(cfg(windows)))]
-pub const G_WIN32_OS_WORKSTATION: GWin32OSType = 1;
-#[cfg(windows)]
-#[cfg_attr(docsrs, doc(cfg(windows)))]
-pub const G_WIN32_OS_SERVER: GWin32OSType = 2;
-
 // Constants
 pub const G_ALLOCATOR_LIST: c_int = 1;
 pub const G_ALLOCATOR_NODE: c_int = 3;
@@ -801,7 +791,6 @@ pub const G_TIME_SPAN_HOUR: i64 = 3600000000;
 pub const G_TIME_SPAN_MILLISECOND: i64 = 1000;
 pub const G_TIME_SPAN_MINUTE: i64 = 60000000;
 pub const G_TIME_SPAN_SECOND: i64 = 1000000;
-pub const G_TRACE_CURRENT_TIME: c_int = 0;
 pub const G_UNICHAR_MAX_DECOMPOSITION_LENGTH: c_int = 18;
 pub const G_URI_RESERVED_CHARS_GENERIC_DELIMITERS: &[u8] = b":/?#[]@\0";
 pub const G_URI_RESERVED_CHARS_SUBCOMPONENT_DELIMITERS: &[u8] = b"!$&'()*+,;=\0";
@@ -2881,7 +2870,7 @@ extern "C" {
         bookmark: *mut GBookmarkFile,
         uri: *const c_char,
         error: *mut *mut GError,
-    ) -> c_long;
+    ) -> time_t;
     #[cfg(feature = "v2_66")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
     pub fn g_bookmark_file_get_added_date_time(
@@ -2947,7 +2936,7 @@ extern "C" {
         bookmark: *mut GBookmarkFile,
         uri: *const c_char,
         error: *mut *mut GError,
-    ) -> c_long;
+    ) -> time_t;
     #[cfg(feature = "v2_66")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
     pub fn g_bookmark_file_get_modified_date_time(
@@ -2969,7 +2958,7 @@ extern "C" {
         bookmark: *mut GBookmarkFile,
         uri: *const c_char,
         error: *mut *mut GError,
-    ) -> c_long;
+    ) -> time_t;
     #[cfg(feature = "v2_66")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
     pub fn g_bookmark_file_get_visited_date_time(
@@ -3033,7 +3022,7 @@ extern "C" {
     pub fn g_bookmark_file_set_added(
         bookmark: *mut GBookmarkFile,
         uri: *const c_char,
-        added: c_long,
+        added: time_t,
     );
     #[cfg(feature = "v2_66")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
@@ -3048,7 +3037,7 @@ extern "C" {
         name: *const c_char,
         exec: *const c_char,
         count: c_int,
-        stamp: c_long,
+        stamp: time_t,
         error: *mut *mut GError,
     ) -> gboolean;
     #[cfg(feature = "v2_66")]
@@ -3092,7 +3081,7 @@ extern "C" {
     pub fn g_bookmark_file_set_modified(
         bookmark: *mut GBookmarkFile,
         uri: *const c_char,
-        modified: c_long,
+        modified: time_t,
     );
     #[cfg(feature = "v2_66")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
@@ -3109,7 +3098,7 @@ extern "C" {
     pub fn g_bookmark_file_set_visited(
         bookmark: *mut GBookmarkFile,
         uri: *const c_char,
-        visited: c_long,
+        visited: time_t,
     );
     #[cfg(feature = "v2_66")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
@@ -3314,7 +3303,7 @@ extern "C" {
     pub fn g_date_set_month(date: *mut GDate, month: GDateMonth);
     pub fn g_date_set_parse(date: *mut GDate, str: *const c_char);
     pub fn g_date_set_time(date: *mut GDate, time_: GTime);
-    pub fn g_date_set_time_t(date: *mut GDate, timet: c_long);
+    pub fn g_date_set_time_t(date: *mut GDate, timet: time_t);
     pub fn g_date_set_time_val(date: *mut GDate, timeval: *mut GTimeVal);
     pub fn g_date_set_year(date: *mut GDate, year: GDateYear);
     pub fn g_date_subtract_days(date: *mut GDate, n_days: c_uint);
@@ -6415,6 +6404,9 @@ extern "C" {
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_64")))]
     pub fn g_clear_slist(slist_ptr: *mut *mut GSList, destroy: GDestroyNotify);
     pub fn g_close(fd: c_int, error: *mut *mut GError) -> gboolean;
+    #[cfg(feature = "v2_80")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_80")))]
+    pub fn g_closefrom(lowfd: c_int) -> c_int;
     pub fn g_compute_checksum_for_bytes(
         checksum_type: GChecksumType,
         data: *mut GBytes,
@@ -6567,6 +6559,9 @@ extern "C" {
         overwrite: gboolean,
     ) -> *mut *mut c_char;
     pub fn g_environ_unsetenv(envp: *mut *mut c_char, variable: *const c_char) -> *mut *mut c_char;
+    #[cfg(feature = "v2_80")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_80")))]
+    pub fn g_fdwalk_set_cloexec(lowfd: c_int) -> c_int;
     pub fn g_file_error_from_errno(err_no: c_int) -> GFileError;
     pub fn g_file_error_quark() -> GQuark;
     pub fn g_file_get_contents(
@@ -7022,7 +7017,6 @@ extern "C" {
     pub fn g_set_prgname(prgname: *const c_char);
     pub fn g_set_print_handler(func: GPrintFunc) -> GPrintFunc;
     pub fn g_set_printerr_handler(func: GPrintFunc) -> GPrintFunc;
-    pub fn g_set_user_dirs(first_dir_type: *const c_char, ...);
     pub fn g_setenv(variable: *const c_char, value: *const c_char, overwrite: gboolean)
         -> gboolean;
     pub fn g_shell_error_quark() -> GQuark;
@@ -7560,47 +7554,5 @@ extern "C" {
         func: *const c_char,
         warnexpr: *const c_char,
     );
-    #[cfg(windows)]
-    #[cfg_attr(docsrs, doc(cfg(windows)))]
-    pub fn g_win32_check_windows_version(
-        major: c_int,
-        minor: c_int,
-        spver: c_int,
-        os_type: GWin32OSType,
-    ) -> gboolean;
-    #[cfg(windows)]
-    #[cfg_attr(docsrs, doc(cfg(windows)))]
-    pub fn g_win32_error_message(error: c_int) -> *mut c_char;
-    #[cfg(windows)]
-    #[cfg_attr(docsrs, doc(cfg(windows)))]
-    pub fn g_win32_ftruncate(f: c_int, size: c_uint) -> c_int;
-    #[cfg(windows)]
-    #[cfg_attr(docsrs, doc(cfg(windows)))]
-    pub fn g_win32_get_command_line() -> *mut *mut c_char;
-    #[cfg(windows)]
-    #[cfg_attr(docsrs, doc(cfg(windows)))]
-    pub fn g_win32_get_package_installation_directory(
-        package: *const c_char,
-        dll_name: *const c_char,
-    ) -> *mut c_char;
-    #[cfg(windows)]
-    #[cfg_attr(docsrs, doc(cfg(windows)))]
-    pub fn g_win32_get_package_installation_directory_of_module(hmodule: gpointer) -> *mut c_char;
-    #[cfg(windows)]
-    #[cfg_attr(docsrs, doc(cfg(windows)))]
-    pub fn g_win32_get_package_installation_subdirectory(
-        package: *const c_char,
-        dll_name: *const c_char,
-        subdir: *const c_char,
-    ) -> *mut c_char;
-    #[cfg(windows)]
-    #[cfg_attr(docsrs, doc(cfg(windows)))]
-    pub fn g_win32_get_windows_version() -> c_uint;
-    #[cfg(windows)]
-    #[cfg_attr(docsrs, doc(cfg(windows)))]
-    pub fn g_win32_getlocale() -> *mut c_char;
-    #[cfg(windows)]
-    #[cfg_attr(docsrs, doc(cfg(windows)))]
-    pub fn g_win32_locale_filename_from_utf8(utf8filename: *const c_char) -> *mut c_char;
 
 }

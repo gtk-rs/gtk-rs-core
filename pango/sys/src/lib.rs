@@ -17,8 +17,11 @@ use gobject_sys as gobject;
 #[allow(unused_imports)]
 use libc::{
     c_char, c_double, c_float, c_int, c_long, c_short, c_uchar, c_uint, c_ulong, c_ushort, c_void,
-    intptr_t, size_t, ssize_t, uintptr_t, FILE,
+    intptr_t, off_t, size_t, ssize_t, time_t, uintptr_t, FILE,
 };
+#[cfg(unix)]
+#[allow(unused_imports)]
+use libc::{dev_t, gid_t, pid_t, socklen_t, uid_t};
 
 #[allow(unused_imports)]
 use glib::{gboolean, gconstpointer, gpointer, GType};
@@ -2401,6 +2404,15 @@ extern "C" {
         desc: *const PangoFontDescription,
         language: *mut PangoLanguage,
     ) -> *mut PangoFontset;
+    #[cfg(feature = "v1_52")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v1_52")))]
+    pub fn pango_font_map_reload_font(
+        fontmap: *mut PangoFontMap,
+        font: *mut PangoFont,
+        scale: c_double,
+        context: *mut PangoContext,
+        variations: *const c_char,
+    ) -> *mut PangoFont;
 
     //=========================================================================
     // PangoFontset

@@ -21,8 +21,11 @@ pub use manual::*;
 #[allow(unused_imports)]
 use libc::{
     c_char, c_double, c_float, c_int, c_long, c_short, c_uchar, c_uint, c_ulong, c_ushort, c_void,
-    intptr_t, size_t, ssize_t, uintptr_t, FILE,
+    intptr_t, off_t, size_t, ssize_t, time_t, uintptr_t, FILE,
 };
+#[cfg(unix)]
+#[allow(unused_imports)]
+use libc::{dev_t, gid_t, pid_t, socklen_t, uid_t};
 
 #[allow(unused_imports)]
 use glib::{gboolean, gconstpointer, gpointer, GType};
@@ -10099,6 +10102,9 @@ extern "C" {
     pub fn g_application_get_is_registered(application: *mut GApplication) -> gboolean;
     pub fn g_application_get_is_remote(application: *mut GApplication) -> gboolean;
     pub fn g_application_get_resource_base_path(application: *mut GApplication) -> *const c_char;
+    #[cfg(feature = "v2_80")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_80")))]
+    pub fn g_application_get_version(application: *mut GApplication) -> *const c_char;
     pub fn g_application_hold(application: *mut GApplication);
     pub fn g_application_mark_busy(application: *mut GApplication);
     pub fn g_application_open(
@@ -10154,6 +10160,9 @@ extern "C" {
         application: *mut GApplication,
         resource_path: *const c_char,
     );
+    #[cfg(feature = "v2_80")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_80")))]
+    pub fn g_application_set_version(application: *mut GApplication, version: *const c_char);
     pub fn g_application_unbind_busy_property(
         application: *mut GApplication,
         object: *mut gobject::GObject,
@@ -10385,11 +10394,11 @@ extern "C" {
     pub fn g_credentials_get_unix_pid(
         credentials: *mut GCredentials,
         error: *mut *mut glib::GError,
-    ) -> c_int;
+    ) -> pid_t;
     pub fn g_credentials_get_unix_user(
         credentials: *mut GCredentials,
         error: *mut *mut glib::GError,
-    ) -> c_uint;
+    ) -> uid_t;
     pub fn g_credentials_is_same_user(
         credentials: *mut GCredentials,
         other_credentials: *mut GCredentials,
@@ -10402,7 +10411,7 @@ extern "C" {
     );
     pub fn g_credentials_set_unix_user(
         credentials: *mut GCredentials,
-        uid: c_uint,
+        uid: uid_t,
         error: *mut *mut glib::GError,
     ) -> gboolean;
     pub fn g_credentials_to_string(credentials: *mut GCredentials) -> *mut c_char;
