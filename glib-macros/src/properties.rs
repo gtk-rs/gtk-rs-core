@@ -85,12 +85,6 @@ impl Parse for PropsMacroInput {
                 ))
             }
         };
-        if props.is_empty() {
-            return Err(syn::Error::new(
-                proc_macro2::Span::call_site(),
-                "Struct must have at least one field with the #[property(…)] attribute",
-            ));
-        }
         Ok(Self {
             wrapper_ty: attrs.wrapper_ty,
             ext_trait: attrs.ext_trait,
@@ -513,6 +507,7 @@ fn expand_set_property_fn(props: &[PropDesc]) -> TokenStream2 {
         })
     });
     quote!(
+        #[allow(unreachable_code)]
         fn derived_set_property(&self,
             id: usize,
             value: &#crate_ident::Value,
@@ -662,29 +657,43 @@ fn name_to_enum_ident(name: String) -> syn::Ident {
 }
 
 fn expand_properties_enum(props: &[PropDesc]) -> TokenStream2 {
-    let properties: Vec<syn::Ident> = props
-        .iter()
-        .map(|p| {
-            let name: String = p.name.value();
+    if props.is_empty() {
+        quote! {
+            #[derive(Debug, Copy, Clone)]
+            enum DerivedPropertiesEnum {}
+            impl std::convert::TryFrom<usize> for DerivedPropertiesEnum {
+                type Error = usize;
 
-            name_to_enum_ident(name)
-        })
-        .collect();
-    let props = properties.iter();
-    let indices = 0..properties.len();
-    quote! {
-        #[repr(usize)]
-        #[derive(Debug, Copy, Clone)]
-        enum DerivedPropertiesEnum {
-            #(#props,)*
+                fn try_from(item: usize) -> ::core::result::Result<Self, <Self as std::convert::TryFrom<usize>>::Error> {
+                    ::core::result::Result::Err(item)
+                }
+            }
         }
-        impl std::convert::TryFrom<usize> for DerivedPropertiesEnum {
-            type Error = usize;
+    } else {
+        let properties: Vec<syn::Ident> = props
+            .iter()
+            .map(|p| {
+                let name: String = p.name.value();
 
-            fn try_from(item: usize) -> ::core::result::Result<Self, <Self as std::convert::TryFrom<usize>>::Error> {
-                match item {
-                    #(#indices => ::core::result::Result::Ok(Self::#properties),)*
-                    _ => ::core::result::Result::Err(item)
+                name_to_enum_ident(name)
+            })
+            .collect();
+        let props = properties.iter();
+        let indices = 0..properties.len();
+        quote! {
+            #[repr(usize)]
+            #[derive(Debug, Copy, Clone)]
+            enum DerivedPropertiesEnum {
+                #(#props,)*
+            }
+            impl std::convert::TryFrom<usize> for DerivedPropertiesEnum {
+                type Error = usize;
+
+                fn try_from(item: usize) -> ::core::result::Result<Self, <Self as std::convert::TryFrom<usize>>::Error> {
+                    match item {
+                        #(#indices => ::core::result::Result::Ok(Self::#properties),)*
+                        _ => ::core::result::Result::Err(item)
+                    }
                 }
             }
         }
