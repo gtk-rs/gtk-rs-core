@@ -32,6 +32,7 @@ macro_rules! glib_boxed_wrapper {
 
     (@generic_impl [$($attr:meta)*] $visibility:vis $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)?, $ffi_name:ty) => {
         $(#[$attr])*
+        #[doc = "\n\nGLib type: Boxed type with copy-on-clone semantics."]
         #[repr(transparent)]
         $visibility struct $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? {
             inner: $crate::boxed::Boxed<$ffi_name, Self>,
@@ -58,6 +59,7 @@ macro_rules! glib_boxed_wrapper {
         }
 
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? std::clone::Clone for $name $(<$($generic),+>)? {
+            #[doc = "Copies the boxed type with the type-specific copy function."]
             #[inline]
             fn clone(&self) -> Self {
                 Self {
