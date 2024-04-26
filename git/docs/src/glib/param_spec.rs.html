@@ -2563,11 +2563,11 @@
 };
 
 <span class="kw">use crate</span>::{
-    object::{<a href="object.rs.html#4062">Interface</a>, <a href="object.rs.html#4262">InterfaceRef</a>, <a href="object.rs.html#4057">IsClass</a>, <a href="object.rs.html#4289">IsInterface</a>, <a href="object.rs.html#1355">ObjectClass</a>},
+    object::{<a href="object.rs.html#4068">Interface</a>, <a href="object.rs.html#4268">InterfaceRef</a>, <a href="object.rs.html#4063">IsClass</a>, <a href="object.rs.html#4295">IsInterface</a>, <a href="object.rs.html#1361">ObjectClass</a>},
     <a href="lib.rs.html#137">prelude</a>::<span class="kw-2">*</span>,
     <a href="lib.rs.html#142">translate</a>::<span class="kw-2">*</span>,
     <a href="utils.rs.html#240-246">utils::is_canonical_pspec_name</a>,
-    <a href="object.rs.html#1351-1354">Object</a>, <a href="gobject/flags.rs.html#5-54">ParamFlags</a>, <a href="types.rs.html#22">Type</a>, <a href="value.rs.html#476-510">Value</a>,
+    <a href="object.rs.html#1357-1360">Object</a>, <a href="gobject/flags.rs.html#5-54">ParamFlags</a>, <a href="types.rs.html#22">Type</a>, <a href="value.rs.html#476-510">Value</a>,
 };
 <span class="comment">// Can't use get_type here as this is not a boxed type but another fundamental type
 </span><a class="macro" href="wrapper.rs.html#277-445">wrapper!</a> {
@@ -4446,7 +4446,7 @@
     }
 
     <span class="attr">#[doc(alias = <span class="string">"g_param_spec_object"</span>)]
-    </span><span class="kw">pub fn </span>builder&lt;T: <a href="types.rs.html#290-294">StaticType</a> + IsA&lt;<a href="object.rs.html#1351-1354">Object</a>&gt;&gt;(name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; ParamSpecObjectBuilder&lt;T&gt; {
+    </span><span class="kw">pub fn </span>builder&lt;T: <a href="types.rs.html#290-294">StaticType</a> + IsA&lt;<a href="object.rs.html#1357-1360">Object</a>&gt;&gt;(name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; ParamSpecObjectBuilder&lt;T&gt; {
         <a href="#1909-1919">ParamSpecObjectBuilder::new</a>(<a href="#1894">name</a>)
     }
 }
@@ -4547,12 +4547,12 @@
     /// If the property `name` doesn't exist in the interface.
     </span><span class="attr">#[allow(clippy::new_ret_no_self)]
     #[doc(alias = <span class="string">"g_param_spec_override"</span>)]
-    </span><span class="kw">pub fn </span>for_interface&lt;T: IsA&lt;<a href="object.rs.html#1351-1354">Object</a>&gt; + <a href="object.rs.html#4289">IsInterface</a>&gt;(name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a href="#18-41">ParamSpec</a> {
+    </span><span class="kw">pub fn </span>for_interface&lt;T: IsA&lt;<a href="object.rs.html#1357-1360">Object</a>&gt; + <a href="object.rs.html#4295">IsInterface</a>&gt;(name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a href="#18-41">ParamSpec</a> {
         <a href="#838-843">assert_param_name</a>(<a href="#1995">name</a>);
         <span class="comment">// in case it's an interface
-        </span><span class="kw">let </span>interface_ref: InterfaceRef&lt;T&gt; = <a href="object.rs.html#4126-4143">Interface::from_type</a>(<a href="types.rs.html#293">T::static_type</a>()).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap">unwrap</a>();
+        </span><span class="kw">let </span>interface_ref: InterfaceRef&lt;T&gt; = <a href="object.rs.html#4132-4149">Interface::from_type</a>(<a href="types.rs.html#293">T::static_type</a>()).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap">unwrap</a>();
         <span class="kw">let </span>pspec = <a href="#1998">interface_ref</a>
-            .<a href="object.rs.html#4213-4222">find_property</a>(<a href="#1995">name</a>)
+            .<a href="object.rs.html#4219-4228">find_property</a>(<a href="#1995">name</a>)
             .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap_or_else">unwrap_or_else</a>(|| <a class="macro" href="https://doc.rust-lang.org/nightly/std/macro.panic.html">panic!</a>(<span class="string">"Couldn't find a property named `{name}` to override"</span>));
 
         <span class="kw">unsafe </span>{ <a href="#1974-1979"><span class="self">Self</span>::new_unchecked</a>(<a href="#1995">name</a>, <span class="kw-2">&amp;</span><a href="#1999">pspec</a>) }
@@ -4572,11 +4572,11 @@
     /// If the property `name` doesn't exist in the class.
     </span><span class="attr">#[allow(clippy::new_ret_no_self)]
     #[doc(alias = <span class="string">"g_param_spec_override"</span>)]
-    </span><span class="kw">pub fn </span>for_class&lt;T: IsA&lt;<a href="object.rs.html#1351-1354">Object</a>&gt; + <a href="object.rs.html#4057">IsClass</a>&gt;(name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a href="#18-41">ParamSpec</a> {
+    </span><span class="kw">pub fn </span>for_class&lt;T: IsA&lt;<a href="object.rs.html#1357-1360">Object</a>&gt; + <a href="object.rs.html#4063">IsClass</a>&gt;(name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a href="#18-41">ParamSpec</a> {
         <a href="#838-843">assert_param_name</a>(<a href="#2020">name</a>);
-        <span class="kw">let </span>pspec = <a href="object.rs.html#3937-3954">ObjectClass::from_type</a>(<a href="types.rs.html#293">T::static_type</a>())
+        <span class="kw">let </span>pspec = <a href="object.rs.html#3943-3960">ObjectClass::from_type</a>(<a href="types.rs.html#293">T::static_type</a>())
             .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap">unwrap</a>()
-            .<a href="object.rs.html#3266-3277">find_property</a>(<a href="#2020">name</a>)
+            .<a href="object.rs.html#3272-3283">find_property</a>(<a href="#2020">name</a>)
             .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap_or_else">unwrap_or_else</a>(|| <a class="macro" href="https://doc.rust-lang.org/nightly/std/macro.panic.html">panic!</a>(<span class="string">"Couldn't find a property named `{name}` to override"</span>));
 
         <span class="kw">unsafe </span>{ <a href="#1974-1979"><span class="self">Self</span>::new_unchecked</a>(<a href="#2020">name</a>, <span class="kw-2">&amp;</span><a href="#2022">pspec</a>) }
