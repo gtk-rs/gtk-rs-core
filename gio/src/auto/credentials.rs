@@ -19,44 +19,6 @@ impl Credentials {
         unsafe { from_glib_full(ffi::g_credentials_new()) }
     }
 
-    //#[doc(alias = "g_credentials_get_native")]
-    //#[doc(alias = "get_native")]
-    //pub fn native(&self, native_type: CredentialsType) -> /*Unimplemented*/Option<Basic: Pointer> {
-    //    unsafe { TODO: call ffi:g_credentials_get_native() }
-    //}
-
-    #[cfg(unix)]
-    #[cfg_attr(docsrs, doc(cfg(unix)))]
-    #[doc(alias = "g_credentials_get_unix_pid")]
-    #[doc(alias = "get_unix_pid")]
-    pub fn unix_pid(&self) -> Result<i32, glib::Error> {
-        unsafe {
-            let mut error = std::ptr::null_mut();
-            let ret = ffi::g_credentials_get_unix_pid(self.to_glib_none().0, &mut error);
-            if error.is_null() {
-                Ok(ret)
-            } else {
-                Err(from_glib_full(error))
-            }
-        }
-    }
-
-    #[cfg(unix)]
-    #[cfg_attr(docsrs, doc(cfg(unix)))]
-    #[doc(alias = "g_credentials_get_unix_user")]
-    #[doc(alias = "get_unix_user")]
-    pub fn unix_user(&self) -> Result<u32, glib::Error> {
-        unsafe {
-            let mut error = std::ptr::null_mut();
-            let ret = ffi::g_credentials_get_unix_user(self.to_glib_none().0, &mut error);
-            if error.is_null() {
-                Ok(ret)
-            } else {
-                Err(from_glib_full(error))
-            }
-        }
-    }
-
     #[doc(alias = "g_credentials_is_same_user")]
     pub fn is_same_user(&self, other_credentials: &Credentials) -> Result<(), glib::Error> {
         unsafe {
@@ -66,27 +28,6 @@ impl Credentials {
                 other_credentials.to_glib_none().0,
                 &mut error,
             );
-            debug_assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
-            if error.is_null() {
-                Ok(())
-            } else {
-                Err(from_glib_full(error))
-            }
-        }
-    }
-
-    //#[doc(alias = "g_credentials_set_native")]
-    //pub fn set_native(&self, native_type: CredentialsType, native: /*Unimplemented*/Basic: Pointer) {
-    //    unsafe { TODO: call ffi:g_credentials_set_native() }
-    //}
-
-    #[cfg(unix)]
-    #[cfg_attr(docsrs, doc(cfg(unix)))]
-    #[doc(alias = "g_credentials_set_unix_user")]
-    pub fn set_unix_user(&self, uid: u32) -> Result<(), glib::Error> {
-        unsafe {
-            let mut error = std::ptr::null_mut();
-            let is_ok = ffi::g_credentials_set_unix_user(self.to_glib_none().0, uid, &mut error);
             debug_assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
             if error.is_null() {
                 Ok(())

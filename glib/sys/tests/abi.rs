@@ -734,34 +734,6 @@ const RUST_LAYOUTS: &[(&str, Layout)] = &[
         },
     ),
     (
-        "GStaticMutex",
-        Layout {
-            size: size_of::<GStaticMutex>(),
-            alignment: align_of::<GStaticMutex>(),
-        },
-    ),
-    (
-        "GStaticPrivate",
-        Layout {
-            size: size_of::<GStaticPrivate>(),
-            alignment: align_of::<GStaticPrivate>(),
-        },
-    ),
-    (
-        "GStaticRWLock",
-        Layout {
-            size: size_of::<GStaticRWLock>(),
-            alignment: align_of::<GStaticRWLock>(),
-        },
-    ),
-    (
-        "GStaticRecMutex",
-        Layout {
-            size: size_of::<GStaticRecMutex>(),
-            alignment: align_of::<GStaticRecMutex>(),
-        },
-    ),
-    (
         "GString",
         Layout {
             size: size_of::<GString>(),
@@ -1043,15 +1015,6 @@ const RUST_LAYOUTS: &[(&str, Layout)] = &[
         Layout {
             size: size_of::<GVariantParseError>(),
             alignment: align_of::<GVariantParseError>(),
-        },
-    ),
-    #[cfg(windows)]
-    #[cfg_attr(docsrs, doc(cfg(windows)))]
-    (
-        "GWin32OSType",
-        Layout {
-            size: size_of::<GWin32OSType>(),
-            alignment: align_of::<GWin32OSType>(),
         },
     ),
 ];
@@ -1573,7 +1536,6 @@ const RUST_CONSTANTS: &[(&str, &str)] = &[
     ("(gint) G_TOKEN_RIGHT_PAREN", "41"),
     ("(gint) G_TOKEN_STRING", "264"),
     ("(gint) G_TOKEN_SYMBOL", "265"),
-    ("G_TRACE_CURRENT_TIME", "0"),
     ("(guint) G_TRAVERSE_ALL", "3"),
     ("(guint) G_TRAVERSE_LEAFS", "1"),
     ("(guint) G_TRAVERSE_LEAVES", "1"),
@@ -1914,7 +1876,4 @@ const RUST_CONSTANTS: &[(&str, &str)] = &[
     ),
     ("(gint) G_VARIANT_PARSE_ERROR_VALUE_EXPECTED", "17"),
     ("G_WIN32_MSG_HANDLE", "19981206"),
-    ("(gint) G_WIN32_OS_ANY", "0"),
-    ("(gint) G_WIN32_OS_SERVER", "2"),
-    ("(gint) G_WIN32_OS_WORKSTATION", "1"),
 ];

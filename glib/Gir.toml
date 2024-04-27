@@ -57,41 +57,6 @@ manual = [
 name = "GLib.*"
 status = "generate"
     [[object.function]]
-    name = "win32_locale_filename_from_utf8"
-    cfg_condition = "windows"
-    ignore = true # TODO: implement me
-    [[object.function]]
-    name = "win32_get_windows_version"
-    cfg_condition = "windows"
-    [[object.function]]
-    name = "win32_getlocale"
-    cfg_condition = "windows"
-    [[object.function]]
-    name = "win32_check_windows_version"
-    cfg_condition = "windows"
-    [[object.function]]
-    name = "win32_error_message"
-    cfg_condition = "windows"
-    [[object.function]]
-    name = "win32_ftruncate"
-    cfg_condition = "windows"
-    ignore = true # TODO: implement me
-    [[object.function]]
-    name = "win32_get_command_line"
-    cfg_condition = "windows"
-    [[object.function]]
-    name = "win32_get_package_installation_directory"
-    cfg_condition = "windows"
-    ignore = true # TODO: implement me
-    [[object.function]]
-    name = "win32_get_package_installation_directory_of_module"
-    cfg_condition = "windows"
-    manual = true
-    [[object.function]]
-    name = "win32_get_package_installation_subdirectory"
-    cfg_condition = "windows"
-    ignore = true # TODO: implement me
-    [[object.function]]
     pattern = "(assertion_message_cmpint|assert_warning|assertion_message|assertion_message_cmpnum|assertion_message_cmpstr|warn_message|return_if_fail_warning)"
     ignore = true # Not useful assertions functions
     [[object.function]]
@@ -113,6 +78,9 @@ status = "generate"
     pattern = "(clear_handle_id|clear_list|clear_pointer|clear_slist|clear_error|nullify_pointer)"
     ignore = true # Not useful freeing functions
     [[object.function]]
+    pattern = "(fdwalk_set_cloexec|closefrom)"
+    ignore = true # unsafe
+    [[object.function]]
     pattern = "(datalist_.*|dataset_.*)"
     ignore = true # Not useful GData related functions
     [[object.function]]
@@ -133,9 +101,6 @@ status = "generate"
     [[object.function]]
     pattern = "(idle_remove_by_data|qsort_with_data)"
     ignore = true # Unsafe functions
-    [[object.function]]
-    pattern = "trace_(define_int64_counter|set_int64_counter|mark)"
-    ignore = true # not useful
     [[object.function]]
     pattern = "(fopen|creat|chmod|blow_chunks|utime|slice_debug_tree_statistics|rename|remove|open|mkdir|lstat|fsync|freopen|set_prgname_once)"
     ignore = true # see https://gitlab.gnome.org/GNOME/glib/-/issues/3231
@@ -928,8 +893,3 @@ status = "generate"
 name = "GLib.Uri"
 status = "generate"
 concurrency = "send+sync"
-
-[[object]]
-name = "GLib.Win32OSType"
-status = "generate"
-cfg_condition = "windows"

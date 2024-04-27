@@ -56,9 +56,6 @@ pub use self::enums::UnicodeType;
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
 pub use self::enums::UriError;
 pub use self::enums::VariantClass;
-#[cfg(windows)]
-#[cfg_attr(docsrs, doc(cfg(windows)))]
-pub use self::enums::Win32OSType;
 
 mod flags;
 #[cfg(feature = "v2_66")]
