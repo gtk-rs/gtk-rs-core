@@ -77,7 +77,7 @@ pub use self::win32::*;
 
 #[cfg(target_family = "windows")]
 mod win32 {
-    use libc::{c_char, c_int};
+    use libc::{c_char, c_int, c_uint};
 
     pub type GWin32OSType = c_int;
     pub const G_WIN32_OS_ANY: GWin32OSType = 0;
@@ -104,5 +104,17 @@ mod win32 {
         ) -> *mut c_char;
 
         pub fn g_win32_locale_filename_from_utf8(utf8filename: *const c_char) -> *mut c_char;
+
+        pub fn g_win32_ftruncate(f: c_int, size: c_uint) -> c_int;
+        pub fn g_win32_get_package_installation_directory(
+            package: *const c_char,
+            dll_name: *const c_char,
+        ) -> *mut c_char;
+        pub fn g_win32_get_package_installation_subdirectory(
+            package: *const c_char,
+            dll_name: *const c_char,
+            subdir: *const c_char,
+        ) -> *mut c_char;
+        pub fn g_win32_get_windows_version() -> c_uint;
     }
 }
