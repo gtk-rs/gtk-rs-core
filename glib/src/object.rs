@@ -47,7 +47,7 @@ pub unsafe trait ObjectType:
     fn as_object_ref(&self) -> &ObjectRef;
     fn as_ptr(&self) -> *mut Self::GlibType;
 
-    unsafe fn from_glib_ptr_borrow<'a>(ptr: *const *const Self::GlibType) -> &'a Self;
+    unsafe fn from_glib_ptr_borrow(ptr: &*mut Self::GlibType) -> &Self;
 }
 
 // rustdoc-stripper-ignore-next
@@ -730,8 +730,8 @@ macro_rules! glib_object_wrapper {
             }
 
             #[inline]
-            unsafe fn from_glib_ptr_borrow<'a>(ptr: *const *const Self::GlibType) -> &'a Self {
-                &*(ptr as *const Self)
+            unsafe fn from_glib_ptr_borrow(ptr: &*mut Self::GlibType) -> &Self {
+                &*(ptr as *const *mut $ffi_name as *const Self)
             }
         }
 
@@ -1071,7 +1071,7 @@ macro_rules! glib_object_wrapper {
                 let value = &*(value as *const $crate::Value as *const $crate::gobject_ffi::GValue);
                 debug_assert!(!value.data[0].v_pointer.is_null());
                 debug_assert_ne!((*(value.data[0].v_pointer as *const $crate::gobject_ffi::GObject)).ref_count, 0);
-                <$name $(<$($generic),+>)? as $crate::object::ObjectType>::from_glib_ptr_borrow(&value.data[0].v_pointer as *const $crate::ffi::gpointer as *const *const $ffi_name)
+                <$name $(<$($generic),+>)? as $crate::object::ObjectType>::from_glib_ptr_borrow(&*(&value.data[0].v_pointer as *const $crate::ffi::gpointer as *const *mut $ffi_name))
             }
         }
 

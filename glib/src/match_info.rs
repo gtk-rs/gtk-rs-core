@@ -34,12 +34,12 @@ impl MatchInfo<'_> {
     #[doc = "Return the inner pointer to the underlying C value."]
     #[inline]
     pub fn as_ptr(&self) -> *mut ffi::GMatchInfo {
-        unsafe { *(self as *const Self as *const *const ffi::GMatchInfo) as *mut ffi::GMatchInfo }
+        self.inner.as_ptr()
     }
     #[doc = "Borrows the underlying C value."]
     #[inline]
-    pub unsafe fn from_glib_ptr_borrow<'a>(ptr: *const *const ffi::GMatchInfo) -> &'a Self {
-        &*(ptr as *const Self)
+    pub unsafe fn from_glib_ptr_borrow(ptr: &*mut ffi::GMatchInfo) -> &Self {
+        &*(ptr as *const *mut ffi::GMatchInfo as *const Self)
     }
 }
 
@@ -201,8 +201,8 @@ unsafe impl<'a, 'input: 'a> crate::value::FromValue<'a> for &'a MatchInfo<'input
         let value = &*(value as *const crate::Value as *const crate::gobject_ffi::GValue);
         debug_assert!(!value.data[0].v_pointer.is_null());
         <MatchInfo<'input>>::from_glib_ptr_borrow(
-            &value.data[0].v_pointer as *const crate::ffi::gpointer
-                as *const *const ffi::GMatchInfo,
+            &*(&value.data[0].v_pointer as *const crate::ffi::gpointer
+                as *const *mut ffi::GMatchInfo),
         )
     }
 }

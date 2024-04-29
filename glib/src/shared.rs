@@ -45,8 +45,8 @@ macro_rules! glib_shared_wrapper {
 
             #[doc = "Borrows the underlying C value."]
             #[inline]
-            pub unsafe fn from_glib_ptr_borrow<'a>(ptr: *const *const $ffi_name) -> &'a Self {
-                &*(ptr as *const Self)
+            pub unsafe fn from_glib_ptr_borrow(ptr: &*mut $ffi_name) -> &Self {
+                &*(ptr as *const *mut $ffi_name as *const Self)
             }
         }
 
@@ -374,7 +374,7 @@ macro_rules! glib_shared_wrapper {
                 debug_assert_eq!(std::mem::size_of::<Self>(), std::mem::size_of::<$crate::ffi::gpointer>());
                 let value = &*(value as *const $crate::Value as *const $crate::gobject_ffi::GValue);
                 debug_assert!(!value.data[0].v_pointer.is_null());
-                <$name $(<$($generic),+>)?>::from_glib_ptr_borrow(&value.data[0].v_pointer as *const $crate::ffi::gpointer as *const *const $ffi_name)
+                <$name $(<$($generic),+>)?>::from_glib_ptr_borrow(&*(&value.data[0].v_pointer as *const $crate::ffi::gpointer as *const *mut $ffi_name))
             }
         }
 
