@@ -1449,12 +1449,10 @@ impl Object {
         if !properties.is_empty() {
             let klass = ObjectClass::from_type(type_)
                 .unwrap_or_else(|| panic!("Can't retrieve class for type '{type_}'"));
-            let pspecs = klass.list_properties();
 
             for (idx, (name, value)) in properties.iter_mut().enumerate() {
-                let pspec = pspecs
-                    .iter()
-                    .find(|p| p.name() == *name)
+                let pspec = klass
+                    .find_property(name)
                     .unwrap_or_else(|| panic!("Can't find property '{name}' for type '{type_}'"));
 
                 if (pspec.flags().contains(crate::ParamFlags::CONSTRUCT)
@@ -1469,7 +1467,7 @@ impl Object {
                 // FIXME: With GLib 2.74 and GParamSpecClass::value_is_valid() it is possible to
                 // not require mutable values here except for when LAX_VALIDATION is provided and a
                 // change is needed, or a GObject value needs it's GType changed.
-                validate_property_type(type_, true, pspec, value);
+                validate_property_type(type_, true, &pspec, value);
 
                 property_names.push(pspec.name().as_ptr());
                 property_values.push(*value.to_glib_none().0);
@@ -2278,17 +2276,15 @@ impl<T: ObjectType> ObjectExt for T {
 
     #[track_caller]
     fn set_properties(&self, property_values: &[(&str, &dyn ToValue)]) {
-        let pspecs = self.list_properties();
-
         let params = property_values
             .iter()
             .map(|&(name, value)| {
-                let pspec = pspecs.iter().find(|p| p.name() == name).unwrap_or_else(|| {
+                let pspec = self.find_property(name).unwrap_or_else(|| {
                     panic!("Can't find property '{name}' for type '{}'", self.type_());
                 });
 
                 let mut value = value.to_value();
-                validate_property_type(self.type_(), false, pspec, &mut value);
+                validate_property_type(self.type_(), false, &pspec, &mut value);
                 (pspec.name().as_ptr(), value)
             })
             .collect::<smallvec::SmallVec<[_; 10]>>();
@@ -2307,20 +2303,15 @@ impl<T: ObjectType> ObjectExt for T {
 
     #[track_caller]
     fn set_properties_from_value(&self, property_values: &[(&str, Value)]) {
-        let pspecs = self.list_properties();
-
         let params = property_values
             .iter()
             .map(|(name, value)| {
-                let pspec = pspecs
-                    .iter()
-                    .find(|p| p.name() == *name)
-                    .unwrap_or_else(|| {
-                        panic!("Can't find property '{name}' for type '{}'", self.type_());
-                    });
+                let pspec = self.find_property(name).unwrap_or_else(|| {
+                    panic!("Can't find property '{name}' for type '{}'", self.type_());
+                });
 
                 let mut value = value.clone();
-                validate_property_type(self.type_(), false, pspec, &mut value);
+                validate_property_type(self.type_(), false, &pspec, &mut value);
                 (pspec.name().as_ptr(), value)
             })
             .collect::<smallvec::SmallVec<[_; 10]>>();
