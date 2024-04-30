@@ -731,6 +731,12 @@ macro_rules! glib_object_wrapper {
 
             #[inline]
             unsafe fn from_glib_ptr_borrow(ptr: &*mut Self::GlibType) -> &Self {
+                debug_assert_eq!(
+                    std::mem::size_of::<Self>(),
+                    std::mem::size_of::<$crate::ffi::gpointer>()
+                );
+                debug_assert!(!ptr.is_null());
+                debug_assert_ne!((*(*ptr as *const $crate::gobject_ffi::GObject)).ref_count, 0);
                 &*(ptr as *const *mut $ffi_name as *const Self)
             }
         }
@@ -1067,10 +1073,7 @@ macro_rules! glib_object_wrapper {
 
             #[inline]
             unsafe fn from_value(value: &'a $crate::Value) -> Self {
-                debug_assert_eq!(std::mem::size_of::<Self>(), std::mem::size_of::<$crate::ffi::gpointer>());
                 let value = &*(value as *const $crate::Value as *const $crate::gobject_ffi::GValue);
-                debug_assert!(!value.data[0].v_pointer.is_null());
-                debug_assert_ne!((*(value.data[0].v_pointer as *const $crate::gobject_ffi::GObject)).ref_count, 0);
                 <$name $(<$($generic),+>)? as $crate::object::ObjectType>::from_glib_ptr_borrow(&*(&value.data[0].v_pointer as *const $crate::ffi::gpointer as *const *mut $ffi_name))
             }
         }

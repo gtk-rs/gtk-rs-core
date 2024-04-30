@@ -172,12 +172,14 @@ macro_rules! glib_boxed_inline_wrapper {
             #[doc = "Borrows the underlying C value."]
             #[inline]
             pub unsafe fn from_glib_ptr_borrow<'a>(ptr: *const $ffi_name) -> &'a Self {
+                debug_assert!(!ptr.is_null());
                 &*(ptr as *const Self)
             }
 
             #[doc = "Borrows the underlying C value mutably."]
             #[inline]
             pub unsafe fn from_glib_ptr_borrow_mut<'a>(ptr: *mut $ffi_name) -> &'a mut Self {
+                debug_assert!(!ptr.is_null());
                 &mut *(ptr as *mut Self)
             }
         }
