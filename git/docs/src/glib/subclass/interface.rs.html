@@ -352,7 +352,7 @@
 </span><span class="kw">use </span>std::{<a href="https://doc.rust-lang.org/nightly/core/marker/index.html">marker</a>, <a href="https://doc.rust-lang.org/nightly/core/mem/index.html">mem</a>};
 
 <span class="kw">use super</span>::{<a href="types.rs.html#21">InitializingType</a>, <a href="signal.rs.html#28-34">Signal</a>};
-<span class="kw">use crate</span>::{<a href="../lib.rs.html#137">prelude</a>::<span class="kw-2">*</span>, <a href="../lib.rs.html#142">translate</a>::<span class="kw-2">*</span>, <a href="../object.rs.html#1357-1360">Object</a>, <a href="../param_spec.rs.html#18-27">ParamSpec</a>, <a href="../types.rs.html#22">Type</a>, <a href="../gobject/auto/flags.rs.html#182-209">TypeFlags</a>, <a href="../gobject/type_info.rs.html#15">TypeInfo</a>};
+<span class="kw">use crate</span>::{<a href="../lib.rs.html#137">prelude</a>::<span class="kw-2">*</span>, <a href="../lib.rs.html#142">translate</a>::<span class="kw-2">*</span>, <a href="../object.rs.html#1360-1363">Object</a>, <a href="../param_spec.rs.html#18-41">ParamSpec</a>, <a href="../types.rs.html#22">Type</a>, <a href="../gobject/auto/flags.rs.html#182-209">TypeFlags</a>, <a href="../gobject/type_info.rs.html#15">TypeInfo</a>};
 
 <span class="comment">// rustdoc-stripper-ignore-next
 </span><span class="doccomment">/// Trait for a type list of prerequisite object types.
@@ -461,7 +461,7 @@
     <span class="doccomment">/// Properties installed for this interface.
     ///
     /// All implementors of the interface must provide these properties.
-    </span><span class="kw">fn </span>properties() -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'static </span>[<a href="../param_spec.rs.html#18-27">ParamSpec</a>] {
+    </span><span class="kw">fn </span>properties() -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'static </span>[<a href="../param_spec.rs.html#18-41">ParamSpec</a>] {
         <span class="kw-2">&amp;</span>[]
     }
 
@@ -477,7 +477,7 @@
     /// This will panic if `obj` does not implement the interface.
     </span><span class="attr">#[inline]
     #[deprecated = <span class="string">"Use from_obj() instead"</span>]
-    </span><span class="kw">fn </span>from_instance&lt;T: IsA&lt;<a href="../object.rs.html#1357-1360">Object</a>&gt;&gt;(obj: <span class="kw-2">&amp;</span>T) -&gt; <span class="kw-2">&amp;</span><span class="self">Self </span>{
+    </span><span class="kw">fn </span>from_instance&lt;T: IsA&lt;<a href="../object.rs.html#1360-1363">Object</a>&gt;&gt;(obj: <span class="kw-2">&amp;</span>T) -&gt; <span class="kw-2">&amp;</span><span class="self">Self </span>{
         <a href="#139-149"><span class="self">Self</span>::from_obj</a>(<a href="#131">obj</a>)
     }
 
@@ -485,7 +485,7 @@
     ///
     /// This will panic if `obj` does not implement the interface.
     </span><span class="attr">#[inline]
-    </span><span class="kw">fn </span>from_obj&lt;T: IsA&lt;<a href="../object.rs.html#1357-1360">Object</a>&gt;&gt;(obj: <span class="kw-2">&amp;</span>T) -&gt; <span class="kw-2">&amp;</span><span class="self">Self </span>{
+    </span><span class="kw">fn </span>from_obj&lt;T: IsA&lt;<a href="../object.rs.html#1360-1363">Object</a>&gt;&gt;(obj: <span class="kw-2">&amp;</span>T) -&gt; <span class="kw-2">&amp;</span><span class="self">Self </span>{
         <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.assert.html">assert!</a>(obj.as_ref().type_().is_a(<span class="self">Self</span>::type_()));
 
         <span class="kw">unsafe </span>{

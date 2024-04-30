@@ -683,6 +683,14 @@
 <a href="#610" id="610">610</a>
 <a href="#611" id="611">611</a>
 <a href="#612" id="612">612</a>
+<a href="#613" id="613">613</a>
+<a href="#614" id="614">614</a>
+<a href="#615" id="615">615</a>
+<a href="#616" id="616">616</a>
+<a href="#617" id="617">617</a>
+<a href="#618" id="618">618</a>
+<a href="#619" id="619">619</a>
+<a href="#620" id="620">620</a>
 </pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
 // rustdoc-stripper-ignore-next
@@ -733,12 +741,22 @@
             <span class="attr">#[doc = <span class="string">"Borrows the underlying C value."</span>]
             #[inline]
             </span><span class="kw">pub unsafe fn </span>from_glib_ptr_borrow(ptr: <span class="kw-2">&amp;*mut </span><span class="macro-nonterminal">$ffi_name</span>) -&gt; <span class="kw-2">&amp;</span><span class="self">Self </span>{
+                <span class="macro">debug_assert_eq!</span>(
+                    std::mem::size_of::&lt;<span class="self">Self</span>&gt;(),
+                    std::mem::size_of::&lt;<span class="macro-nonterminal">$crate::ffi::gpointer</span>&gt;()
+                );
+                <span class="macro">debug_assert!</span>(!ptr.is_null());
                 <span class="kw-2">&amp;*</span>(ptr <span class="kw">as </span><span class="kw-2">*const *mut </span><span class="macro-nonterminal">$ffi_name </span><span class="kw">as </span><span class="kw-2">*const </span><span class="self">Self</span>)
             }
 
             <span class="attr">#[doc = <span class="string">"Borrows the underlying C value mutably."</span>]
             #[inline]
             </span><span class="kw">pub unsafe fn </span>from_glib_ptr_borrow_mut(ptr: <span class="kw-2">&amp;mut *mut </span><span class="macro-nonterminal">$ffi_name</span>) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+                <span class="macro">debug_assert_eq!</span>(
+                    std::mem::size_of::&lt;<span class="self">Self</span>&gt;(),
+                    std::mem::size_of::&lt;<span class="macro-nonterminal">$crate::ffi::gpointer</span>&gt;()
+                );
+                <span class="macro">debug_assert!</span>(!ptr.is_null());
                 <span class="kw-2">&amp;mut *</span>(ptr <span class="kw">as </span><span class="kw-2">*mut *mut </span><span class="macro-nonterminal">$ffi_name </span><span class="kw">as </span><span class="kw-2">*mut </span><span class="self">Self</span>)
             }
         }
@@ -1036,9 +1054,7 @@
 
             <span class="attr">#[inline]
             </span><span class="kw">unsafe fn </span>from_value(value: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="macro-nonterminal">$crate::Value</span>) -&gt; <span class="self">Self </span>{
-                <span class="macro">debug_assert_eq!</span>(std::mem::size_of::&lt;<span class="self">Self</span>&gt;(), std::mem::size_of::&lt;<span class="macro-nonterminal">$crate::ffi::gpointer</span>&gt;());
                 <span class="kw">let </span>value = <span class="kw-2">&amp;*</span>(value <span class="kw">as </span><span class="kw-2">*const </span><span class="macro-nonterminal">$crate::Value </span><span class="kw">as </span><span class="kw-2">*const </span><span class="macro-nonterminal">$crate::gobject_ffi::GValue</span>);
-                <span class="macro">debug_assert!</span>(!value.data[<span class="number">0</span>].v_pointer.is_null());
                 &lt;<span class="macro-nonterminal">$name </span>$(&lt;$(<span class="macro-nonterminal">$generic</span>),+&gt;)<span class="question-mark">?</span>&gt;::from_glib_ptr_borrow(<span class="kw-2">&amp;*</span>(<span class="kw-2">&amp;</span>value.data[<span class="number">0</span>].v_pointer <span class="kw">as </span><span class="kw-2">*const </span><span class="macro-nonterminal">$crate::ffi::gpointer </span><span class="kw">as </span><span class="kw-2">*const *mut </span><span class="macro-nonterminal">$ffi_name</span>))
             }
         }
@@ -1147,14 +1163,14 @@
 
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>to_glib_none(<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="self">self</span>) -&gt; Stash&lt;<span class="lifetime">'a</span>, <span class="kw-2">*const </span>T, <span class="self">Self</span>&gt; {
-        <span class="kw">let </span>ptr = <a class="self" href="#464">self</a>.inner.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>();
-        <a href="translate.rs.html#258-261">Stash</a>(<a href="#465">ptr</a>, <a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">PhantomData</a>)
+        <span class="kw">let </span>ptr = <a class="self" href="#472">self</a>.inner.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>();
+        <a href="translate.rs.html#258-261">Stash</a>(<a href="#473">ptr</a>, <a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">PhantomData</a>)
     }
 
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>to_glib_full(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">*const </span>T {
-        <span class="kw">let </span>ptr = <a class="self" href="#470">self</a>.inner.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>();
-        <span class="kw">unsafe </span>{ <a href="#448">MM::copy</a>(<a href="#471">ptr</a>) }
+        <span class="kw">let </span>ptr = <a class="self" href="#478">self</a>.inner.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>();
+        <span class="kw">unsafe </span>{ <a href="#456">MM::copy</a>(<a href="#479">ptr</a>) }
     }
 }
 
@@ -1163,8 +1179,8 @@
 
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>to_glib_none_mut(<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span><span class="self">self</span>) -&gt; StashMut&lt;<span class="lifetime">'a</span>, <span class="kw-2">*mut </span>T, <span class="self">Self</span>&gt; {
-        <span class="kw">let </span>ptr = <a class="self" href="#480">self</a>.inner.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>();
-        <a href="translate.rs.html#263-265">StashMut</a>(<a href="#481">ptr</a>, <a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">PhantomData</a>)
+        <span class="kw">let </span>ptr = <a class="self" href="#488">self</a>.inner.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>();
+        <a href="translate.rs.html#263-265">StashMut</a>(<a href="#489">ptr</a>, <a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">PhantomData</a>)
     }
 }
 
@@ -1172,8 +1188,8 @@
     <span class="attr">#[inline]
     </span><span class="kw">unsafe fn </span>from_glib_none(ptr: <span class="kw-2">*mut </span>T) -&gt; <span class="self">Self </span>{
         <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert.html">debug_assert!</a>(!ptr.is_null());
-        <span class="kw">let </span>ptr = <a href="#448">MM::copy</a>(<a href="#488">ptr</a>);
-        <a href="translate.rs.html#1633-1635">from_glib_full</a>(<a href="#490">ptr</a>)
+        <span class="kw">let </span>ptr = <a href="#456">MM::copy</a>(<a href="#496">ptr</a>);
+        <a href="translate.rs.html#1633-1635">from_glib_full</a>(<a href="#498">ptr</a>)
     }
 }
 
@@ -1181,8 +1197,8 @@
     <span class="attr">#[inline]
     </span><span class="kw">unsafe fn </span>from_glib_none(ptr: <span class="kw-2">*const </span>T) -&gt; <span class="self">Self </span>{
         <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert.html">debug_assert!</a>(!ptr.is_null());
-        <span class="kw">let </span>ptr = <a href="#448">MM::copy</a>(<a href="#497">ptr</a>);
-        <a href="translate.rs.html#1633-1635">from_glib_full</a>(<a href="#499">ptr</a>)
+        <span class="kw">let </span>ptr = <a href="#456">MM::copy</a>(<a href="#505">ptr</a>);
+        <a href="translate.rs.html#1633-1635">from_glib_full</a>(<a href="#507">ptr</a>)
     }
 }
 
@@ -1191,7 +1207,7 @@
     </span><span class="kw">unsafe fn </span>from_glib_full(ptr: <span class="kw-2">*mut </span>T) -&gt; <span class="self">Self </span>{
         <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert.html">debug_assert!</a>(!ptr.is_null());
         <span class="self">Self </span>{
-            inner: <a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.new_unchecked">ptr::NonNull::new_unchecked</a>(<a href="#506">ptr</a>),
+            inner: <a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.new_unchecked">ptr::NonNull::new_unchecked</a>(<a href="#514">ptr</a>),
             _dummy: <a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">PhantomData</a>,
         }
     }
@@ -1202,7 +1218,7 @@
     </span><span class="kw">unsafe fn </span>from_glib_full(ptr: <span class="kw-2">*const </span>T) -&gt; <span class="self">Self </span>{
         <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert.html">debug_assert!</a>(!ptr.is_null());
         <span class="self">Self </span>{
-            inner: <a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.new_unchecked">ptr::NonNull::new_unchecked</a>(<a href="#517">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span>T),
+            inner: <a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.new_unchecked">ptr::NonNull::new_unchecked</a>(<a href="#525">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span>T),
             _dummy: <a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">PhantomData</a>,
         }
     }
@@ -1213,7 +1229,7 @@
     </span><span class="kw">unsafe fn </span>from_glib_borrow(ptr: <span class="kw-2">*mut </span>T) -&gt; Borrowed&lt;<span class="self">Self</span>&gt; {
         <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert.html">debug_assert!</a>(!ptr.is_null());
         <a href="translate.rs.html#282-284">Borrowed::new</a>(<span class="self">Self </span>{
-            inner: <a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.new_unchecked">ptr::NonNull::new_unchecked</a>(<a href="#528">ptr</a>),
+            inner: <a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.new_unchecked">ptr::NonNull::new_unchecked</a>(<a href="#536">ptr</a>),
             _dummy: <a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">PhantomData</a>,
         })
     }
@@ -1223,35 +1239,35 @@
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
         <span class="kw">unsafe </span>{
-            <a href="#450">MM::free</a>(<a class="self" href="#539">self</a>.inner.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>());
+            <a href="#458">MM::free</a>(<a class="self" href="#547">self</a>.inner.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>());
         }
     }
 }
 
 <span class="kw">impl</span>&lt;T: <span class="lifetime">'static</span>, MM: BoxedMemoryManager&lt;Target = T&gt;&gt; <a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html">fmt::Debug</a> <span class="kw">for </span>Boxed&lt;T, MM&gt; {
     <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span><a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html">fmt::Formatter</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/core/fmt/type.Result.html">fmt::Result</a> {
-        <a href="#547">f</a>.<a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html#method.debug_struct">debug_struct</a>(<span class="string">"Boxed"</span>).<a href="https://doc.rust-lang.org/nightly/core/fmt/builders/struct.DebugStruct.html#method.field">field</a>(<span class="string">"inner"</span>, <span class="kw-2">&amp;</span><a class="self" href="#547">self</a>.inner).<a href="https://doc.rust-lang.org/nightly/core/fmt/builders/struct.DebugStruct.html#method.finish">finish</a>()
+        <a href="#555">f</a>.<a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html#method.debug_struct">debug_struct</a>(<span class="string">"Boxed"</span>).<a href="https://doc.rust-lang.org/nightly/core/fmt/builders/struct.DebugStruct.html#method.field">field</a>(<span class="string">"inner"</span>, <span class="kw-2">&amp;</span><a class="self" href="#555">self</a>.inner).<a href="https://doc.rust-lang.org/nightly/core/fmt/builders/struct.DebugStruct.html#method.finish">finish</a>()
     }
 }
 
 <span class="kw">impl</span>&lt;T, MM: BoxedMemoryManager&lt;Target = T&gt;&gt; <a href="https://doc.rust-lang.org/nightly/core/cmp/trait.PartialOrd.html">PartialOrd</a> <span class="kw">for </span>Boxed&lt;T, MM&gt; {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>partial_cmp(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="https://doc.rust-lang.org/nightly/core/cmp/enum.Ordering.html">cmp::Ordering</a>&gt; {
-        <span class="prelude-val">Some</span>(<a class="self" href="#554">self</a>.<a href="https://doc.rust-lang.org/nightly/core/cmp/trait.Ord.html#tymethod.cmp">cmp</a>(<a href="#554">other</a>))
+        <span class="prelude-val">Some</span>(<a class="self" href="#562">self</a>.<a href="https://doc.rust-lang.org/nightly/core/cmp/trait.Ord.html#tymethod.cmp">cmp</a>(<a href="#562">other</a>))
     }
 }
 
 <span class="kw">impl</span>&lt;T, MM: BoxedMemoryManager&lt;Target = T&gt;&gt; <a href="https://doc.rust-lang.org/nightly/core/cmp/trait.Ord.html">Ord</a> <span class="kw">for </span>Boxed&lt;T, MM&gt; {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>cmp(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/core/cmp/enum.Ordering.html">cmp::Ordering</a> {
-        <a class="self" href="#561">self</a>.<a href="translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/cmp/trait.Ord.html#tymethod.cmp">cmp</a>(<span class="kw-2">&amp;</span><a href="#561">other</a>.<a href="translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>)
+        <a class="self" href="#569">self</a>.<a href="translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/cmp/trait.Ord.html#tymethod.cmp">cmp</a>(<span class="kw-2">&amp;</span><a href="#569">other</a>.<a href="translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>)
     }
 }
 
 <span class="kw">impl</span>&lt;T, MM: BoxedMemoryManager&lt;Target = T&gt;&gt; <a href="https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html">PartialEq</a> <span class="kw">for </span>Boxed&lt;T, MM&gt; {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
-        <a class="self" href="#568">self</a>.<a href="translate.rs.html#440">to_glib_none</a>().<span class="number">0 </span>== <a href="#568">other</a>.<a href="translate.rs.html#440">to_glib_none</a>().<span class="number">0
+        <a class="self" href="#576">self</a>.<a href="translate.rs.html#440">to_glib_none</a>().<span class="number">0 </span>== <a href="#576">other</a>.<a href="translate.rs.html#440">to_glib_none</a>().<span class="number">0
     </span>}
 }
 
@@ -1263,14 +1279,14 @@
     <span class="kw">where
         </span>H: <a href="https://doc.rust-lang.org/nightly/core/hash/trait.Hasher.html">Hasher</a>,
     {
-        <a class="self" href="#577">self</a>.<a href="translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/hash/trait.Hash.html#tymethod.hash">hash</a>(<a href="#577">state</a>)
+        <a class="self" href="#585">self</a>.<a href="translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/hash/trait.Hash.html#tymethod.hash">hash</a>(<a href="#585">state</a>)
     }
 }
 
 <span class="kw">impl</span>&lt;T: <span class="lifetime">'static</span>, MM: BoxedMemoryManager&lt;Target = T&gt;&gt; <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">Clone</a> <span class="kw">for </span>Boxed&lt;T, MM&gt; {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>clone(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self </span>{
-        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1624-1626">from_glib_none</a>(<a class="self" href="#587">self</a>.<a href="translate.rs.html#440">to_glib_none</a>().<span class="number">0 </span><span class="kw">as </span><span class="kw-2">*mut </span>T) }
+        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1624-1626">from_glib_none</a>(<a class="self" href="#595">self</a>.<a href="translate.rs.html#440">to_glib_none</a>().<span class="number">0 </span><span class="kw">as </span><span class="kw-2">*mut </span>T) }
     }
 }
 
@@ -1281,7 +1297,7 @@
     </span><span class="kw">fn </span>deref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>T {
         <span class="kw">unsafe </span>{
             <span class="comment">// This is safe because the pointer will remain valid while self is borrowed
-            </span><span class="kw-2">&amp;*</span><a class="self" href="#596">self</a>.<a href="translate.rs.html#440">to_glib_none</a>().<span class="number">0
+            </span><span class="kw-2">&amp;*</span><a class="self" href="#604">self</a>.<a href="translate.rs.html#440">to_glib_none</a>().<span class="number">0
         </span>}
     }
 }
@@ -1291,7 +1307,7 @@
     </span><span class="kw">fn </span>deref_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span>T {
         <span class="kw">unsafe </span>{
             <span class="comment">// This is safe because the pointer will remain valid while self is borrowed
-            </span><span class="kw-2">&amp;mut *</span><a class="self" href="#606">self</a>.<a href="translate.rs.html#470">to_glib_none_mut</a>().<span class="number">0
+            </span><span class="kw-2">&amp;mut *</span><a class="self" href="#614">self</a>.<a href="translate.rs.html#470">to_glib_none_mut</a>().<span class="number">0
         </span>}
     }
 }

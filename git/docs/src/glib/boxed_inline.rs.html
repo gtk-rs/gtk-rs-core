@@ -722,6 +722,8 @@
 <a href="#649" id="649">649</a>
 <a href="#650" id="650">650</a>
 <a href="#651" id="651">651</a>
+<a href="#652" id="652">652</a>
+<a href="#653" id="653">653</a>
 </pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
 // rustdoc-stripper-ignore-next
@@ -896,12 +898,14 @@
             <span class="attr">#[doc = <span class="string">"Borrows the underlying C value."</span>]
             #[inline]
             </span><span class="kw">pub unsafe fn </span>from_glib_ptr_borrow&lt;<span class="lifetime">'a</span>&gt;(ptr: <span class="kw-2">*const </span><span class="macro-nonterminal">$ffi_name</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="self">Self </span>{
+                <span class="macro">debug_assert!</span>(!ptr.is_null());
                 <span class="kw-2">&amp;*</span>(ptr <span class="kw">as </span><span class="kw-2">*const </span><span class="self">Self</span>)
             }
 
             <span class="attr">#[doc = <span class="string">"Borrows the underlying C value mutably."</span>]
             #[inline]
             </span><span class="kw">pub unsafe fn </span>from_glib_ptr_borrow_mut&lt;<span class="lifetime">'a</span>&gt;(ptr: <span class="kw-2">*mut </span><span class="macro-nonterminal">$ffi_name</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span><span class="self">Self </span>{
+                <span class="macro">debug_assert!</span>(!ptr.is_null());
                 <span class="kw-2">&amp;mut *</span>(ptr <span class="kw">as </span><span class="kw-2">*mut </span><span class="self">Self</span>)
             }
         }
