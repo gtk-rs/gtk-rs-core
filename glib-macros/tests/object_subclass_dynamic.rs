@@ -11,13 +11,21 @@ mod static_ {
         // impl for an object interface to register as a static type.
         #[derive(Clone, Copy)]
         #[repr(C)]
-        pub struct MyStaticInterface {
+        pub struct MyStaticInterfaceClass {
             parent: glib::gobject_ffi::GTypeInterface,
         }
 
+        unsafe impl InterfaceStruct for MyStaticInterfaceClass {
+            type Type = MyStaticInterface;
+        }
+
+        pub enum MyStaticInterface {}
+
         #[glib::object_interface]
-        unsafe impl ObjectInterface for MyStaticInterface {
+        impl ObjectInterface for MyStaticInterface {
             const NAME: &'static str = "MyStaticInterface";
+
+            type Interface = MyStaticInterfaceClass;
         }
 
         pub trait MyStaticInterfaceImpl: ObjectImpl + ObjectSubclass {}
@@ -69,15 +77,22 @@ mod module {
         // impl for a object interface to register as a dynamic type and that extends `MyStaticInterface`.
         #[derive(Clone, Copy)]
         #[repr(C)]
-        pub struct MyModuleInterface {
+        pub struct MyModuleInterfaceClass {
             parent: glib::gobject_ffi::GTypeInterface,
         }
 
+        unsafe impl InterfaceStruct for MyModuleInterfaceClass {
+            type Type = MyModuleInterface;
+        }
+
+        pub enum MyModuleInterface {}
+
         #[glib::object_interface]
         #[object_interface_dynamic]
-        unsafe impl ObjectInterface for MyModuleInterface {
+        impl ObjectInterface for MyModuleInterface {
             const NAME: &'static str = "MyModuleInterface";
             type Prerequisites = (MyStaticInterface,);
+            type Interface = MyModuleInterfaceClass;
         }
 
         pub trait MyModuleInterfaceImpl: ObjectImpl + ObjectSubclass {}
@@ -106,15 +121,22 @@ mod module {
         // impl for an object interface to lazy register as a dynamic type and that extends `MyStaticInterface`.
         #[derive(Clone, Copy)]
         #[repr(C)]
-        pub struct MyModuleInterfaceLazy {
+        pub struct MyModuleInterfaceLazyClass {
             parent: glib::gobject_ffi::GTypeInterface,
         }
 
+        unsafe impl InterfaceStruct for MyModuleInterfaceLazyClass {
+            type Type = MyModuleInterfaceLazy;
+        }
+
+        pub enum MyModuleInterfaceLazy {}
+
         #[glib::object_interface]
         #[object_interface_dynamic(lazy_registration = true)]
-        unsafe impl ObjectInterface for MyModuleInterfaceLazy {
+        impl ObjectInterface for MyModuleInterfaceLazy {
             const NAME: &'static str = "MyModuleInterfaceLazy";
             type Prerequisites = (MyStaticInterface,);
+            type Interface = MyModuleInterfaceLazyClass;
         }
 
         pub trait MyModuleInterfaceLazyImpl: ObjectImpl + ObjectSubclass {}
@@ -295,15 +317,22 @@ pub mod plugin {
         // impl for a object interface to register as a dynamic type and that extends `MyStaticInterface`.
         #[derive(Clone, Copy)]
         #[repr(C)]
-        pub struct MyPluginInterface {
+        pub struct MyPluginInterfaceClass {
             parent: glib::gobject_ffi::GTypeInterface,
         }
 
+        unsafe impl InterfaceStruct for MyPluginInterfaceClass {
+            type Type = MyPluginInterface;
+        }
+
+        pub enum MyPluginInterface {}
+
         #[glib::object_interface]
         #[object_interface_dynamic(plugin_type = super::MyPlugin)]
-        unsafe impl ObjectInterface for MyPluginInterface {
+        impl ObjectInterface for MyPluginInterface {
             const NAME: &'static str = "MyPluginInterface";
             type Prerequisites = (MyStaticInterface,);
+            type Interface = MyPluginInterfaceClass;
         }
 
         pub trait MyPluginInterfaceImpl: ObjectImpl + ObjectSubclass {}
@@ -332,15 +361,22 @@ pub mod plugin {
         // impl for an object interface to lazy register as a dynamic type and that extends `MyStaticInterface`.
         #[derive(Clone, Copy)]
         #[repr(C)]
-        pub struct MyPluginInterfaceLazy {
+        pub struct MyPluginInterfaceLazyClass {
             parent: glib::gobject_ffi::GTypeInterface,
         }
 
+        unsafe impl InterfaceStruct for MyPluginInterfaceLazyClass {
+            type Type = MyPluginInterfaceLazy;
+        }
+
+        pub enum MyPluginInterfaceLazy {}
+
         #[glib::object_interface]
         #[object_interface_dynamic(plugin_type = super::MyPlugin, lazy_registration = true)]
-        unsafe impl ObjectInterface for MyPluginInterfaceLazy {
+        impl ObjectInterface for MyPluginInterfaceLazy {
             const NAME: &'static str = "MyPluginInterfaceLazy";
             type Prerequisites = (MyStaticInterface,);
+            type Interface = MyPluginInterfaceLazyClass;
         }
 
         pub trait MyPluginInterfaceLazyImpl: ObjectImpl + ObjectSubclass {}

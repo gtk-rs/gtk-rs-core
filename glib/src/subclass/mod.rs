@@ -450,9 +450,9 @@ pub mod prelude {
         type_module::{TypeModuleImpl, TypeModuleImplExt},
         type_plugin::{TypePluginImpl, TypePluginImplExt, TypePluginRegisterImpl},
         types::{
-            ClassStruct, InstanceStruct, InstanceStructExt, IsImplementable, IsSubclassable,
-            IsSubclassableExt, ObjectSubclass, ObjectSubclassExt, ObjectSubclassIsExt,
-            ObjectSubclassType,
+            ClassStruct, InstanceStruct, InstanceStructExt, InterfaceStruct, IsImplementable,
+            IsSubclassable, IsSubclassableExt, ObjectSubclass, ObjectSubclassExt,
+            ObjectSubclassIsExt, ObjectSubclassType,
         },
     };
 }

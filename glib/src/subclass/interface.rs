@@ -2,7 +2,7 @@
 
 use std::{marker, mem};
 
-use super::{InitializingType, Signal};
+use super::{types::InterfaceStruct, InitializingType, Signal};
 use crate::{prelude::*, translate::*, Object, ParamSpec, Type, TypeFlags, TypeInfo};
 
 // rustdoc-stripper-ignore-next
@@ -69,17 +69,15 @@ pub unsafe trait ObjectInterfaceType {
 
 /// The central trait for defining a `GObject` interface.
 ///
-/// Links together the type name, and the interface struct for type registration and allows hooking
-/// into various steps of the type registration and initialization.
-///
-/// This must only be implemented on `#[repr(C)]` structs and have `gobject_ffi::GTypeInterface` as
-/// the first field.
+/// Links together the type name, the empty instance and class structs for type
+/// registration and allows hooking into various steps of the type registration
+/// and initialization.
 ///
 /// See [`register_interface`] for registering an implementation of this trait
 /// with the type system.
 ///
 /// [`register_interface`]: fn.register_interface.html
-pub unsafe trait ObjectInterface: ObjectInterfaceType + Sized + 'static {
+pub trait ObjectInterface: ObjectInterfaceType + Sized + 'static {
     /// `GObject` type name.
     ///
     /// This must be unique in the whole process.
@@ -90,6 +88,10 @@ pub unsafe trait ObjectInterface: ObjectInterfaceType + Sized + 'static {
     /// Any implementer of the interface must be a subclass of the prerequisites or implement them
     /// in case of interfaces.
     type Prerequisites: PrerequisiteList;
+
+    // rustdoc-stripper-ignore-next
+    /// The C class struct.
+    type Interface: InterfaceStruct<Type = Self>;
 
     /// Additional type initialization.
     ///
@@ -107,7 +109,7 @@ pub unsafe trait ObjectInterface: ObjectInterfaceType + Sized + 'static {
     /// and for setting default implementations of interface functions.
     ///
     /// Optional
-    fn interface_init(&mut self) {}
+    fn interface_init(_klass: &mut Self::Interface) {}
 
     /// Properties installed for this interface.
     ///
@@ -155,12 +157,12 @@ unsafe extern "C" fn interface_init<T: ObjectInterface>(
     klass: ffi::gpointer,
     _klass_data: ffi::gpointer,
 ) {
-    let iface = &mut *(klass as *mut T);
+    let iface = &mut *(klass as *mut T::Interface);
 
     let pspecs = <T as ObjectInterface>::properties();
     for pspec in pspecs {
         gobject_ffi::g_object_interface_install_property(
-            iface as *mut T as *mut _,
+            iface as *mut T::Interface as *mut _,
             pspec.to_glib_none().0,
         );
     }
@@ -171,10 +173,10 @@ unsafe extern "C" fn interface_init<T: ObjectInterface>(
         signal.register(type_);
     }
 
-    iface.interface_init();
+    T::interface_init(iface);
 }
 
-/// Register a `glib::Type` ID for `T`.
+/// Register a `glib::Type` ID for `T::Class`.
 ///
 /// This must be called only once and will panic on a second call.
 ///
@@ -195,7 +197,7 @@ pub fn register_interface<T: ObjectInterface>() -> Type {
         let type_ = gobject_ffi::g_type_register_static_simple(
             Type::INTERFACE.into_glib(),
             type_name.as_ptr(),
-            mem::size_of::<T>() as u32,
+            mem::size_of::<T::Interface>() as u32,
             Some(interface_init::<T>),
             0,
             None,
@@ -216,7 +218,7 @@ pub fn register_interface<T: ObjectInterface>() -> Type {
     }
 }
 
-/// Registers a `glib::Type` ID for `T` as a dynamic type.
+/// Registers a `glib::Type` ID for `T::Class` as a dynamic type.
 ///
 /// An object interface must be explicitly registered as a dynamic type when
 /// the system loads the implementation by calling [`TypePluginImpl::use_`] or
@@ -243,7 +245,7 @@ pub fn register_dynamic_interface<P: DynamicObjectRegisterExt, T: ObjectInterfac
             gobject_ffi::g_type_from_name(type_name.as_ptr()) != gobject_ffi::G_TYPE_INVALID;
 
         let type_info = TypeInfo(gobject_ffi::GTypeInfo {
-            class_size: mem::size_of::<T>() as u16,
+            class_size: mem::size_of::<T::Interface>() as u16,
             class_init: Some(interface_init::<T>),
             ..TypeInfo::default().0
         });

@@ -1317,6 +1317,15 @@ macro_rules! glib_object_wrapper {
         );
     };
 
+    (@object_interface [$($attr:meta)*] $visibility:vis $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)?, $iface:ty,
+    @type_ $get_type_expr:expr, @requires [$($requires:tt)*]) => {
+       $crate::glib_object_wrapper!(
+           @interface [$($attr)*] $visibility $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?, $iface, std::os::raw::c_void,
+           @ffi_class  <$iface as $crate::subclass::interface::ObjectInterface>::Interface,
+           @type_ $get_type_expr, @requires [$($requires)*]
+       );
+   };
+
     (@interface [$($attr:meta)*] $visibility:vis $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)?, $impl_type:ty, $ffi_name:ty, @ffi_class $ffi_class_name:ty,
      @type_ $get_type_expr:expr, @requires [$($requires:tt)*]) => {
         $crate::glib_object_wrapper!(
