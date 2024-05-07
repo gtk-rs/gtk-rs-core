@@ -112,3 +112,4 @@ impl<T> Drop for ThreadGuard<T> {
 }
 
 unsafe impl<T> Send for ThreadGuard<T> {}
+unsafe impl<T> Sync for ThreadGuard<T> {}
