@@ -5,7 +5,7 @@
 
 use std::{any::Any, collections::BTreeMap, marker, mem, ptr};
 
-use super::SignalId;
+use super::{interface::ObjectInterface, SignalId};
 use crate::{
     object::{IsClass, IsInterface, ObjectSubclassIs, ParentClassIs},
     prelude::*,
@@ -280,11 +280,29 @@ impl<U: IsClass + ParentClassIs> IsSubclassableExt for U {
 }
 
 // rustdoc-stripper-ignore-next
-/// Trait for implementable interfaces.
-pub unsafe trait IsImplementable<T: ObjectSubclass>: IsInterface
+/// Trait implemented by structs that implement a `GTypeInterface` C class struct.
+///
+/// This must only be implemented on `#[repr(C)]` structs and have an interface
+/// that inherits from `gobject_ffi::GTypeInterface` as the first field.
+pub unsafe trait InterfaceStruct: Sized + 'static
 where
-    <Self as ObjectType>::GlibClassType: Copy,
+    Self: Copy,
 {
+    // rustdoc-stripper-ignore-next
+    /// Corresponding object interface type for this class struct.
+    type Type: ObjectInterface;
+
+    // rustdoc-stripper-ignore-next
+    /// Set up default implementations for interface vfuncs.
+    ///
+    /// This is automatically called during type initialization.
+    #[inline]
+    fn interface_init(&mut self) {}
+}
+
+// rustdoc-stripper-ignore-next
+/// Trait for implementable interfaces.
+pub unsafe trait IsImplementable<T: ObjectSubclass>: IsInterface {
     // rustdoc-stripper-ignore-next
     /// Override the virtual methods of this interface for the given subclass and do other
     /// interface initialization.
@@ -631,7 +649,7 @@ pub trait ObjectSubclass: ObjectSubclassType + Sized + 'static {
     // rustdoc-stripper-ignore-next
     /// The C class struct.
     ///
-    /// See [`basic::ClassStruct`] for an basic instance struct that should be
+    /// See [`basic::ClassStruct`] for an basic class struct that should be
     /// used in most cases.
     ///
     /// [`basic::ClassStruct`]: ../basic/struct.ClassStruct.html

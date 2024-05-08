@@ -460,9 +460,16 @@ mod test {
             parent: gobject_ffi::GTypeInterface,
         }
 
+        unsafe impl InterfaceStruct for DummyInterface {
+            type Type = Dummy;
+        }
+
+        pub enum Dummy {}
+
         #[glib::object_interface]
-        unsafe impl ObjectInterface for DummyInterface {
+        impl ObjectInterface for Dummy {
             const NAME: &'static str = "Dummy";
+            type Interface = DummyInterface;
         }
     }
 
@@ -475,7 +482,7 @@ mod test {
     }
 
     wrapper! {
-        pub struct Dummy(ObjectInterface<imp::DummyInterface>);
+        pub struct Dummy(ObjectInterface<imp::Dummy>);
     }
 
     unsafe impl<T: ObjectSubclass> IsImplementable<T> for Dummy {}
