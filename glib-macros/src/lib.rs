@@ -8,8 +8,7 @@ mod downgrade_derive;
 mod enum_derive;
 mod error_domain_derive;
 mod flags_attribute;
-mod object_interface_attribute;
-mod object_subclass_attribute;
+mod object_impl_attributes;
 mod properties;
 mod shared_boxed_derive;
 mod value_delegate_derive;
@@ -906,16 +905,8 @@ pub fn shared_boxed_derive(input: TokenStream) -> TokenStream {
 /// [`TypePluginExt::unuse`]: ../glib/gobject/type_plugin/trait.TypePluginExt.html#method.unuse
 #[proc_macro_attribute]
 pub fn object_subclass(_attr: TokenStream, item: TokenStream) -> TokenStream {
-    syn::parse::<syn::ItemImpl>(item)
-        .map_err(|_| {
-            syn::Error::new(
-                Span::call_site(),
-                object_subclass_attribute::WRONG_PLACE_MSG,
-            )
-        })
-        .and_then(|mut input| object_subclass_attribute::impl_object_subclass(&mut input))
-        .unwrap_or_else(syn::Error::into_compile_error)
-        .into()
+    let input = parse_macro_input!(item with object_impl_attributes::Input::parse_subclass);
+    object_impl_attributes::subclass::impl_object_subclass(input).into()
 }
 
 /// Macro for boilerplate of [`ObjectInterface`] implementations.
@@ -1024,16 +1015,8 @@ pub fn object_subclass(_attr: TokenStream, item: TokenStream) -> TokenStream {
 /// [`TypePluginExt::unuse`]: ../glib/gobject/type_plugin/trait.TypePluginExt.html#method.unuse///
 #[proc_macro_attribute]
 pub fn object_interface(_attr: TokenStream, item: TokenStream) -> TokenStream {
-    syn::parse::<syn::ItemImpl>(item)
-        .map_err(|_| {
-            syn::Error::new(
-                Span::call_site(),
-                object_interface_attribute::WRONG_PLACE_MSG,
-            )
-        })
-        .and_then(|mut input| object_interface_attribute::impl_object_interface(&mut input))
-        .unwrap_or_else(syn::Error::into_compile_error)
-        .into()
+    let input = parse_macro_input!(item with object_impl_attributes::Input::parse_interface);
+    object_impl_attributes::interface::impl_object_interface(input).into()
 }
 
 /// Macro for deriving implementations of [`glib::clone::Downgrade`] and
