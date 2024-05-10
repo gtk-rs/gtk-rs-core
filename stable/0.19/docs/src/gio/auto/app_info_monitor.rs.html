@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/auto/app_info_monitor.rs`."><title>app_info_monitor.rs - source</title><script> if (window.location.protocol !== "file:") document.write(`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2">`)</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-9e1300b5663a8a03.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.79.0-nightly (9d5cdf75a 2024-04-07)" data-channel="nightly" data-search-js="search-ffac13a0df2b1870.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-e32f0c247825364d.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-c97aec732c613ca4.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-09095024cf37855e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/auto/app_info_monitor.rs`."><title>app_info_monitor.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.80.0-nightly (8f9080db4 2024-05-09)" data-channel="nightly" data-search-js="search-d52510db62a78183.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -71,9 +71,7 @@
 </script>
 
 
-<nav class="sidebar"><div class="src-sidebar-title">
-            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
-    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../gio/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -188,6 +186,10 @@
 <a href="#113" id="113">113</a>
 <a href="#114" id="114">114</a>
 <a href="#115" id="115">115</a>
+<a href="#116" id="116">116</a>
+<a href="#117" id="117">117</a>
+<a href="#118" id="118">118</a>
+<a href="#119" id="119">119</a>
 </pre></div><pre class="rust"><code><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
@@ -219,11 +221,15 @@
     ///  - [`AppInfo::default_for_type()`][crate::AppInfo::default_for_type()]
     ///  - [`AppInfo::fallback_for_type()`][crate::AppInfo::fallback_for_type()]
     ///  - [`AppInfo::recommended_for_type()`][crate::AppInfo::recommended_for_type()]
-    ///  - [`DesktopAppInfo::implementations()`][crate::DesktopAppInfo::implementations()]
-    ///  - [`DesktopAppInfo::new()`][crate::DesktopAppInfo::new()]
-    ///  - [`DesktopAppInfo::from_filename()`][crate::DesktopAppInfo::from_filename()]
-    ///  - [`DesktopAppInfo::from_keyfile()`][crate::DesktopAppInfo::from_keyfile()]
-    ///  - [`DesktopAppInfo::search()`][crate::DesktopAppInfo::search()]
+    ///  - [`g_desktop_app_info_get_implementations()`](../gio-unix/type_func.DesktopAppInfo.get_implementation.html)
+    ///  - [`g_desktop_app_info_new()`](../gio-unix/ctor.DesktopAppInfo.new.html)
+    ///  - [`g_desktop_app_info_new_from_filename()`](../gio-unix/ctor.DesktopAppInfo.new_from_filename.html)
+    ///  - [`g_desktop_app_info_new_from_keyfile()`](../gio-unix/ctor.DesktopAppInfo.new_from_keyfile.html)
+    ///  - [`g_desktop_app_info_search()`](../gio-unix/type_func.DesktopAppInfo.search.html)
+    ///
+    /// The latter functions are available if using
+    /// [`GDesktopAppInfo`](../gio-unix/class.DesktopAppInfo.html) from
+    /// `gio-unix-2.0.pc` (GIR namespace `GioUnix-2.0`).
     ///
     /// In the usual case, applications should try to make note of the change
     /// (doing things like invalidating caches) but not act on it. In
@@ -256,7 +262,7 @@
     }
 }
 
-<span class="kw">impl </span><a href="#12-67">AppInfoMonitor</a> {
+<span class="kw">impl </span><a href="#12-71">AppInfoMonitor</a> {
     <span class="doccomment">/// Gets the #GAppInfoMonitor for the current thread-default main
     /// context.
     ///
@@ -275,7 +281,7 @@
     ///
     /// a reference to a #GAppInfoMonitor
     </span><span class="attr">#[doc(alias = <span class="string">"g_app_info_monitor_get"</span>)]
-    </span><span class="kw">pub fn </span>get() -&gt; <a href="#12-67">AppInfoMonitor</a> {
+    </span><span class="kw">pub fn </span>get() -&gt; <a href="#12-71">AppInfoMonitor</a> {
         <span class="kw">unsafe </span>{ <a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="../../../gio_sys/fn.g_app_info_monitor_get.html">ffi::g_app_info_monitor_get</a>()) }
     }
 
@@ -283,22 +289,22 @@
     /// installed or removed.
     </span><span class="attr">#[doc(alias = <span class="string">"changed"</span>)]
     </span><span class="kw">pub fn </span>connect_changed&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">'static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; <a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a> {
-        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>changed_trampoline&lt;F: Fn(<span class="kw-2">&amp;</span><a href="#12-67">AppInfoMonitor</a>) + <span class="lifetime">'static</span>&gt;(
+        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>changed_trampoline&lt;F: Fn(<span class="kw-2">&amp;</span><a href="#12-71">AppInfoMonitor</a>) + <span class="lifetime">'static</span>&gt;(
             this: <span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GAppInfoMonitor.html">ffi::GAppInfoMonitor</a>,
             f: <a href="../../../glib_sys/type.gpointer.html">glib::ffi::gpointer</a>,
         ) {
-            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#98">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
-            <a href="#100">f</a>(<span class="kw-2">&amp;</span><a href="../../../glib/translate/fn.from_glib_borrow.html">from_glib_borrow</a>(<a href="#97">this</a>))
+            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#102">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
+            <a href="#104">f</a>(<span class="kw-2">&amp;</span><a href="../../../glib/translate/fn.from_glib_borrow.html">from_glib_borrow</a>(<a href="#101">this</a>))
         }
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>f: Box_&lt;F&gt; = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">Box_::new</a>(<a href="#95">f</a>);
+            <span class="kw">let </span>f: Box_&lt;F&gt; = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">Box_::new</a>(<a href="#99">f</a>);
             <a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>(
-                <a class="self" href="#95">self</a>.<a href="../../../glib/object/trait.ObjectType.html#tymethod.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <a class="self" href="#99">self</a>.<a href="../../../glib/object/trait.ObjectType.html#tymethod.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
                 <span class="string">b"changed\0"</span>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
                 <span class="prelude-val">Some</span>(std::mem::transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>()&gt;(
                     changed_trampoline::&lt;F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
                 )),
-                <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.into_raw">Box_::into_raw</a>(<a href="#104">f</a>),
+                <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.into_raw">Box_::into_raw</a>(<a href="#108">f</a>),
             )
         }
     }
