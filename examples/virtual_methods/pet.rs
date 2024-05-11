@@ -13,7 +13,7 @@ pub mod ffi {
     /// The class struct is used to implement the vtable for method dispatch. The first field
     /// *must* be a pointer to the parent type. In our case, this is
     /// [`GObjectClass`](glib::gobject_ffi::GObjectClass)
-    #[derive(Copy, Clone, Debug)]
+    #[derive(Copy, Clone)]
     #[repr(C)]
     pub struct Class {
         /// The first field in a class struct must always be the parent class struct
