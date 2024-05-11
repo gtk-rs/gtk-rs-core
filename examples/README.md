@@ -7,6 +7,8 @@ Consists of various examples of how to use the `gtk-rs-core` libraries. Note tha
 - [GIO Futures Await](./gio_futures_await/)
 - [GIO Task](./gio_task/)
 - [GIO Resources](./resources)
+- [Object Subclassing](./object_subclass)
+- [Interfaces and Virtual Methods](./virtual_methods)
 
 ## License
 
