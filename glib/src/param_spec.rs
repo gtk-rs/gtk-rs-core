@@ -1889,7 +1889,7 @@ impl ParamSpecOverride {
     }
 
     // rustdoc-stripper-ignore-next
-    /// Similar to [`ParamSpecOverride::new`] but specific for an interface.
+    /// Create a [`ParamSpecOverride`] to override an interface property.
     ///
     /// # Examples
     ///
@@ -1914,7 +1914,7 @@ impl ParamSpecOverride {
     }
 
     // rustdoc-stripper-ignore-next
-    /// Similar to [`ParamSpecOverride::new`] but specific for a class.
+    /// Create a [`ParamSpecOverride`] to override a class property.
     ///
     /// # Examples
     ///

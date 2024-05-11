@@ -544,7 +544,7 @@ macro_rules! g_log {
 ///
 /// [g_log]: https://docs.gtk.org/glib/func.log.html
 ///
-/// It is the same as calling the [`g_log!`] macro with [`LogLevel::Error`].
+/// It is the same as calling the [`g_log!`](crate::g_log!) macro with [`LogLevel::Error`].
 ///
 /// Example:
 ///
@@ -581,7 +581,7 @@ macro_rules! g_error {
 ///
 /// [g_log]: https://docs.gtk.org/glib/func.log.html
 ///
-/// It is the same as calling the [`g_log!`] macro with [`LogLevel::Critical`].
+/// It is the same as calling the [`g_log!`](crate::g_log!) macro with [`LogLevel::Critical`].
 ///
 /// Example:
 ///
@@ -618,7 +618,7 @@ macro_rules! g_critical {
 ///
 /// [g_log]: https://docs.gtk.org/glib/func.log.html
 ///
-/// It is the same as calling the [`g_log!`] macro with [`LogLevel::Warning`].
+/// It is the same as calling the [`g_log!`](crate::g_log!) macro with [`LogLevel::Warning`].
 ///
 /// Example:
 ///
@@ -655,7 +655,7 @@ macro_rules! g_warning {
 ///
 /// [g_log]: https://docs.gtk.org/glib/func.log.html
 ///
-/// It is the same as calling the [`g_log!`] macro with [`LogLevel::Message`].
+/// It is the same as calling the [`g_log!`](crate::g_log!) macro with [`LogLevel::Message`].
 ///
 /// Example:
 ///
@@ -692,7 +692,7 @@ macro_rules! g_message {
 ///
 /// [g_log]: https://docs.gtk.org/glib/func.log.html
 ///
-/// It is the same as calling the [`g_log!`] macro with [`LogLevel::Info`].
+/// It is the same as calling the [`g_log!`](crate::g_log!) macro with [`LogLevel::Info`].
 ///
 /// Example:
 ///
@@ -729,7 +729,7 @@ macro_rules! g_info {
 ///
 /// [g_log]: https://docs.gtk.org/glib/func.log.html
 ///
-/// It is the same as calling the [`g_log!`] macro with [`LogLevel::Debug`].
+/// It is the same as calling the [`g_log!`](crate::g_log!) macro with [`LogLevel::Debug`].
 ///
 /// Example:
 ///
