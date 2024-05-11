@@ -3,6 +3,26 @@
 #![cfg_attr(docsrs, feature(doc_cfg))]
 #![allow(clippy::missing_safety_doc)]
 #![allow(renamed_and_removed_lints)]
+// Override docs references to point to locally generated docs
+// rustdoc-stripper-ignore-next
+//! [`Type`]: struct@Type
+//! [`StaticType`]: trait@types::StaticType
+//! [`Value`]: struct@Value
+//! [`Variant``]: struct@Variant
+//! [`StaticVariantType`]: trait@variant::StaticVariantType
+//! [`Error`]: struct@Error
+//! [`FileError`]: enum@FileError
+//! [`Object`]: struct@Object
+//! [`Rc<RefCell<T>>`]: mod@std::cell#introducing-mutability-inside-of-something-immutable
+//! [`IsA`]: trait@object::IsA
+//! [`Cast`]: trait@object::Cast
+//! [`ObjectExt`]: trait@object::ObjectExt
+//! [`wrapper!`]: macro@wrapper
+//! [`wrapper`]: mod@wrapper
+//! [`boxed`]: mod@boxed
+//! [`shared`]: mod@shared
+//! [mod@object]: mod@object
+//! [`translate`]: mod@translate
 #![doc = include_str!("../README.md")]
 
 pub use bitflags;
