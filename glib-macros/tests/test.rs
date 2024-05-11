@@ -281,12 +281,16 @@ fn subclassable() {
             }
 
             impl ObjectImpl for Foo {}
+
+            impl Foo {
+                pub(super) fn test(&self) {}
+            }
         }
 
         pub trait FooExt: IsA<Foo> + 'static {
             fn test(&self) {
-                let _self = self.as_ref().downcast_ref::<Foo>().unwrap().imp();
-                unimplemented!()
+                let imp = self.as_ref().upcast_ref::<Foo>().imp();
+                imp.test();
             }
         }
 
@@ -296,6 +300,11 @@ fn subclassable() {
             pub struct Foo(ObjectSubclass<imp::Foo>);
         }
     }
+
+    use foo::FooExt;
+
+    let obj = glib::Object::new::<foo::Foo>();
+    obj.test();
 }
 
 #[test]
