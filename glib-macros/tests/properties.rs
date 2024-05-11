@@ -10,6 +10,7 @@ mod base {
     use glib_macros::Properties;
     use std::marker::PhantomData;
 
+    #[allow(dead_code)]
     pub mod imp {
         use super::*;
 
@@ -510,9 +511,9 @@ fn keyword_propnames() {
 /// Ensure the code compiles even when no properties are specified at all.
 /// This is useful for refactoring.
 #[test]
-#[allow(unreachable_code)]
-fn empty() {
+fn empty_subclass() {
     mod empty {
+        #[allow(unreachable_code)]
         mod imp {
             use glib::subclass::prelude::*;
             use glib_macros::Properties;
