@@ -511,7 +511,7 @@ fn keyword_propnames() {
 /// This is useful for refactoring.
 #[test]
 #[allow(unreachable_code)]
-fn empty() {
+fn empty_struct() {
     mod empty {
         mod imp {
             use glib::subclass::prelude::*;
