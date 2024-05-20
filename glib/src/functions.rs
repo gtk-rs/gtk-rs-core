@@ -15,7 +15,7 @@ use std::ptr;
 // #[cfg(windows)]
 // #[cfg(feature = "v2_58")]
 // use std::os::windows::io::AsRawHandle;
-use crate::{translate::*, GStr};
+use crate::{translate::*, ChecksumType, GStr};
 #[cfg(not(windows))]
 use crate::{Error, Pid, SpawnFlags};
 
@@ -220,6 +220,20 @@ pub fn charset() -> (bool, Option<&'static GStr>) {
         let charset = from_glib_none(out_charset);
         (is_utf8, charset)
     }
+}
+
+#[doc(alias = "g_compute_checksum_for_string")]
+pub fn compute_checksum_for_string(
+    checksum_type: ChecksumType,
+    str: impl IntoGStr,
+) -> Option<crate::GString> {
+    str.run_with_gstr(|str| unsafe {
+        from_glib_full(ffi::g_compute_checksum_for_string(
+            checksum_type.into_glib(),
+            str.as_ptr(),
+            str.len() as _,
+        ))
+    })
 }
 
 #[cfg(unix)]
