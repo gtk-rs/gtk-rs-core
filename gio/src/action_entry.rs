@@ -82,7 +82,7 @@ where
     }
 
     pub fn name(mut self, name: &str) -> Self {
-        self.0.name = name.to_owned();
+        name.clone_into(&mut self.0.name);
         self
     }
 
