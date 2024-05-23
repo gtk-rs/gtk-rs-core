@@ -355,9 +355,9 @@ impl<T: 'static> futures_core::FusedFuture for JoinHandle<T> {
     }
 }
 
-/// Safety: We can't rely on the auto implementation because we are retrieving
-/// the result as a `Box<dyn Any + 'static>` from the [`Source`]. We need to
-/// rely on type erasure here, so we have to manually assert the Send bound too.
+// Safety: We can't rely on the auto implementation because we are retrieving
+// the result as a `Box<dyn Any + 'static>` from the [`Source`]. We need to
+// rely on type erasure here, so we have to manually assert the Send bound too.
 unsafe impl<T: Send> Send for JoinHandle<T> {}
 
 // rustdoc-stripper-ignore-next

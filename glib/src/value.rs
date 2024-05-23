@@ -58,6 +58,7 @@ use crate::{
     prelude::*,
     translate::*,
     types::{Pointee, Pointer, Type},
+    GStr,
 };
 
 // rustdoc-stripper-ignore-next
@@ -535,6 +536,33 @@ impl Value {
     #[inline]
     pub fn for_value_type<T: ValueType>() -> Self {
         unsafe { Value::from_type_unchecked(T::Type::static_type()) }
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Creates a new `String`-typed `Value` from a `'static` string.
+    #[inline]
+    #[doc(alias = "g_value_set_static_string")]
+    pub fn from_static_str(s: &'static GStr) -> Self {
+        unsafe {
+            let mut v = Self::from_type_unchecked(Type::STRING);
+            gobject_ffi::g_value_set_static_string(v.to_glib_none_mut().0, s.as_ptr());
+            v
+        }
+    }
+
+    #[cfg(feature = "v2_66")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
+    // rustdoc-stripper-ignore-next
+    /// Creates a new `String`-typed `Value` from a `'static` string that is also assumed to be
+    /// interned.
+    #[inline]
+    #[doc(alias = "g_value_set_interned_string")]
+    pub fn from_interned_str(s: &'static GStr) -> Self {
+        unsafe {
+            let mut v = Self::from_type_unchecked(Type::STRING);
+            gobject_ffi::g_value_set_interned_string(v.to_glib_none_mut().0, s.as_ptr());
+            v
+        }
     }
 
     // rustdoc-stripper-ignore-next
