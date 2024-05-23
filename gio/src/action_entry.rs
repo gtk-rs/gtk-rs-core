@@ -22,6 +22,16 @@ impl<O> ActionEntry<O>
 where
     O: IsA<ActionMap>,
 {
+    pub fn new(name: &str) -> Self {
+        Self {
+            name: name.to_owned(),
+            parameter_type: Default::default(),
+            state: Default::default(),
+            activate: Default::default(),
+            change_state: Default::default(),
+        }
+    }
+
     pub fn name(&self) -> &str {
         &self.name
     }
@@ -34,8 +44,8 @@ where
         self.state.as_ref()
     }
 
-    pub fn builder(name: &str) -> ActionEntryBuilder<O> {
-        ActionEntryBuilder::new(name)
+    pub fn builder() -> ActionEntryBuilder<O> {
+        ActionEntryBuilder::new()
     }
 }
 
@@ -61,14 +71,19 @@ impl<O> ActionEntryBuilder<O>
 where
     O: IsA<ActionMap>,
 {
-    pub fn new(name: &str) -> Self {
+    pub fn new() -> Self {
         Self(ActionEntry {
-            name: name.to_owned(),
+            name: Default::default(),
             parameter_type: Default::default(),
             state: Default::default(),
             activate: Default::default(),
             change_state: Default::default(),
         })
+    }
+
+    pub fn name(mut self, name: &str) -> Self {
+        self.0.name = name.to_owned();
+        self
     }
 
     pub fn parameter_type(mut self, parameter_type: Option<&VariantTy>) -> Self {
@@ -102,6 +117,15 @@ where
     }
 }
 
+impl<O> Default for ActionEntryBuilder<O>
+where
+    O: IsA<ActionMap>,
+{
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -112,12 +136,14 @@ mod tests {
         let app = crate::Application::new(None, Default::default());
 
         app.add_action_entries(vec![
-            ActionEntry::builder("close")
+            ActionEntry::builder()
+                .name("close")
                 .activate(move |_app, _, _| {
                     //Do something
                 })
                 .build(),
-            ActionEntry::builder("enable")
+            ActionEntry::builder()
+                .name("enable")
                 .state(true.to_variant())
                 .change_state(move |_app, _, _| {
                     //Do something
