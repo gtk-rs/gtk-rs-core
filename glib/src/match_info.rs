@@ -328,15 +328,14 @@ impl<'input> MatchInfo<'input> {
     }
 
     #[doc(alias = "g_match_info_next")]
-    pub fn next(&self) -> Result<(), crate::Error> {
+    pub fn next(&self) -> Result<bool, crate::Error> {
         unsafe {
             let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_match_info_next(self.to_glib_none().0, &mut error);
-            debug_assert_eq!(is_ok == crate::ffi::GFALSE, !error.is_null());
-            if error.is_null() {
-                Ok(())
-            } else {
+            if !error.is_null() {
                 Err(from_glib_full(error))
+            } else {
+                Ok(from_glib(is_ok))
             }
         }
     }
