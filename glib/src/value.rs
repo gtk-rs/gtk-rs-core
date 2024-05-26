@@ -666,6 +666,9 @@ impl Value {
         }
     }
 
+    // rustdoc-stripper-ignore-next
+    /// Converts a `Value` into a `SendValue`. This fails if `self` does not store a value of type
+    /// `T`. It is required for `T` to be `Send` to call this function.
     #[inline]
     pub fn try_into_send_value<T: Send + StaticType>(self) -> Result<SendValue, Self> {
         if self.type_().is_a(T::static_type()) {
@@ -673,6 +676,17 @@ impl Value {
         } else {
             Err(self)
         }
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Converts a `Value` into a `SendValue`.
+    ///
+    /// # Safety
+    ///
+    /// The type of the value contained in `self` must be `Send`.
+    #[inline]
+    pub unsafe fn into_send_value(self) -> SendValue {
+        SendValue::unsafe_from(self.into_raw())
     }
 
     fn content_debug_string(&self) -> GString {
