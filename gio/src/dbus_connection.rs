@@ -34,15 +34,9 @@ impl DBusConnection {
     ) -> Result<RegistrationId, glib::Error>
     where
         MethodCall: Fn(DBusConnection, &str, &str, &str, &str, glib::Variant, DBusMethodInvocation)
-            + Send
-            + Sync
             + 'static,
-        GetProperty:
-            Fn(DBusConnection, &str, &str, &str, &str) -> glib::Variant + Send + Sync + 'static,
-        SetProperty: Fn(DBusConnection, &str, &str, &str, &str, glib::Variant) -> bool
-            + Send
-            + Sync
-            + 'static,
+        GetProperty: Fn(DBusConnection, &str, &str, &str, &str) -> glib::Variant + 'static,
+        SetProperty: Fn(DBusConnection, &str, &str, &str, &str, glib::Variant) -> bool + 'static,
     {
         unsafe {
             let mut error = std::ptr::null_mut();
@@ -50,7 +44,7 @@ impl DBusConnection {
                 self.to_glib_none().0,
                 object_path.to_glib_none().0,
                 interface_info.to_glib_none().0,
-                glib::Closure::new(move |args| {
+                glib::Closure::new_local(move |args| {
                     let conn = args[0].get::<DBusConnection>().unwrap();
                     let sender = args[1].get::<&str>().unwrap();
                     let object_path = args[2].get::<&str>().unwrap();
@@ -71,7 +65,7 @@ impl DBusConnection {
                 })
                 .to_glib_none()
                 .0,
-                glib::Closure::new(move |args| {
+                glib::Closure::new_local(move |args| {
                     let conn = args[0].get::<DBusConnection>().unwrap();
                     let sender = args[1].get::<&str>().unwrap();
                     let object_path = args[2].get::<&str>().unwrap();
@@ -83,7 +77,7 @@ impl DBusConnection {
                 })
                 .to_glib_none()
                 .0,
-                glib::Closure::new(move |args| {
+                glib::Closure::new_local(move |args| {
                     let conn = args[0].get::<DBusConnection>().unwrap();
                     let sender = args[1].get::<&str>().unwrap();
                     let object_path = args[2].get::<&str>().unwrap();
