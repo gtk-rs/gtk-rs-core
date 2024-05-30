@@ -991,7 +991,7 @@ const INLINE_LEN: usize =
 /// that contain interior nul-bytes will simply end at first nul-byte when converting to a C
 /// string.
 ///
-/// The constructors beginning with `from_utf8` `and `from_string` can also be used to further
+/// The constructors beginning with `from_utf8` and `from_string` can also be used to further
 /// control how interior nul-bytes are handled.
 pub struct GString(Inner);
 
