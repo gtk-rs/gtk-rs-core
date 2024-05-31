@@ -37,8 +37,8 @@ impl Item {
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_54")))]
     #[doc(alias = "pango_item_get_char_offset")]
     #[doc(alias = "get_char_offset")]
-    pub fn char_offset(&mut self) -> i32 {
-        unsafe { ffi::pango_item_get_char_offset(self.to_glib_none_mut().0) }
+    pub fn char_offset(&self) -> i32 {
+        unsafe { ffi::pango_item_get_char_offset(mut_override(self.to_glib_none().0)) }
     }
 
     #[doc(alias = "pango_item_split")]
