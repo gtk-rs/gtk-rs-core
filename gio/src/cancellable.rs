@@ -80,7 +80,7 @@ pub trait CancellableExtManual: sealed::Sealed + IsA<Cancellable> {
         unsafe {
             from_glib(ffi::g_cancellable_connect(
                 self.as_ptr() as *mut _,
-                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     connect_trampoline::<Self, F> as *const (),
                 )),
                 Box::into_raw(callback) as *mut _,

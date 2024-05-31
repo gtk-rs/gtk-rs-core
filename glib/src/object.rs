@@ -2996,7 +2996,7 @@ impl<T: ObjectType> ObjectExt for T {
         crate::signal::connect_raw(
             self.as_object_ref().to_glib_none().0,
             signal_name.as_ptr() as *const _,
-            Some(mem::transmute::<_, unsafe extern "C" fn()>(
+            Some(mem::transmute::<*const (), unsafe extern "C" fn()>(
                 notify_trampoline::<Self, F> as *const (),
             )),
             Box::into_raw(f),

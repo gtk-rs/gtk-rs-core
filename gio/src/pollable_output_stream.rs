@@ -59,7 +59,7 @@ pub trait PollableOutputStreamExtManual: sealed::Sealed + IsA<PollableOutputStre
             glib::ffi::g_source_set_callback(
                 source,
                 Some(transmute::<
-                    _,
+                    glib::ffi::gpointer,
                     unsafe extern "C" fn(glib::ffi::gpointer) -> glib::ffi::gboolean,
                 >(trampoline)),
                 Box::into_raw(Box::new(RefCell::new(func))) as glib::ffi::gpointer,

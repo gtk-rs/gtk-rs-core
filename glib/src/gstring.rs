@@ -33,7 +33,7 @@ impl GStr {
     pub fn from_utf8_with_nul(bytes: &[u8]) -> Result<&Self, GStrError> {
         Self::check_trailing_nul(bytes)?;
         std::str::from_utf8(bytes)?;
-        Ok(unsafe { mem::transmute(bytes) })
+        Ok(unsafe { mem::transmute::<&[u8], &GStr>(bytes) })
     }
     // rustdoc-stripper-ignore-next
     /// Creates a GLib string wrapper from a byte slice, checking for interior nul-bytes.
@@ -44,7 +44,7 @@ impl GStr {
     pub fn from_utf8_with_nul_checked(bytes: &[u8]) -> Result<&Self, GStrError> {
         Self::check_nuls(bytes)?;
         std::str::from_utf8(bytes)?;
-        Ok(unsafe { mem::transmute(bytes) })
+        Ok(unsafe { mem::transmute::<&[u8], &GStr>(bytes) })
     }
     // rustdoc-stripper-ignore-next
     /// Unsafely creates a GLib string wrapper from a byte slice.
@@ -60,7 +60,7 @@ impl GStr {
     pub const unsafe fn from_utf8_with_nul_unchecked(bytes: &[u8]) -> &Self {
         debug_assert!(!bytes.is_empty() && bytes[bytes.len() - 1] == 0);
         debug_assert!(std::str::from_utf8(bytes).is_ok());
-        mem::transmute(bytes)
+        mem::transmute::<&[u8], &GStr>(bytes)
     }
     // rustdoc-stripper-ignore-next
     /// Creates a GLib string wrapper from a byte slice, truncating it at the first nul-byte.
@@ -72,7 +72,7 @@ impl GStr {
         let nul_pos = memchr::memchr(0, bytes).ok_or(GStrError::NoTrailingNul)?;
         let bytes = unsafe { bytes.get_unchecked(..nul_pos + 1) };
         std::str::from_utf8(bytes)?;
-        Ok(unsafe { mem::transmute(bytes) })
+        Ok(unsafe { mem::transmute::<&[u8], &GStr>(bytes) })
     }
     // rustdoc-stripper-ignore-next
     /// Creates a GLib string wrapper from a string slice.
@@ -84,7 +84,7 @@ impl GStr {
     #[inline]
     pub fn from_str_with_nul(s: &str) -> Result<&Self, GStrError> {
         Self::check_trailing_nul(s)?;
-        Ok(unsafe { mem::transmute(s) })
+        Ok(unsafe { mem::transmute::<&str, &GStr>(s) })
     }
     // rustdoc-stripper-ignore-next
     /// Creates a GLib string wrapper from a string slice, checking for interior nul-bytes.
@@ -96,7 +96,7 @@ impl GStr {
     #[inline]
     pub fn from_str_with_nul_checked(s: &str) -> Result<&Self, GStrError> {
         Self::check_nuls(s)?;
-        Ok(unsafe { mem::transmute(s) })
+        Ok(unsafe { mem::transmute::<&str, &GStr>(s) })
     }
     // rustdoc-stripper-ignore-next
     /// Unsafely creates a GLib string wrapper from a string slice. The string slice must be
@@ -112,7 +112,7 @@ impl GStr {
     #[inline]
     pub const unsafe fn from_str_with_nul_unchecked(s: &str) -> &Self {
         debug_assert!(!s.is_empty() && s.as_bytes()[s.len() - 1] == 0);
-        mem::transmute(s)
+        mem::transmute::<&str, &GStr>(s)
     }
     // rustdoc-stripper-ignore-next
     /// Creates a GLib string wrapper from a string slice, truncating it at the first nul-byte.
@@ -126,7 +126,7 @@ impl GStr {
         let b = s.as_bytes();
         let nul_pos = memchr::memchr(0, b).ok_or(GStrError::NoTrailingNul)?;
         let s = unsafe { std::str::from_utf8_unchecked(b.get_unchecked(..nul_pos + 1)) };
-        Ok(unsafe { mem::transmute(s) })
+        Ok(unsafe { mem::transmute::<&str, &GStr>(s) })
     }
     // rustdoc-stripper-ignore-next
     /// Wraps a raw C string with a safe GLib string wrapper. The provided C string **must** be
