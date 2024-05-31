@@ -213,7 +213,7 @@ pub trait InetAddressExt: IsA<InetAddress> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::is-any\0".as_ptr() as *const _,
-                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_is_any_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -242,7 +242,7 @@ pub trait InetAddressExt: IsA<InetAddress> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::is-link-local\0".as_ptr() as *const _,
-                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_is_link_local_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -271,7 +271,7 @@ pub trait InetAddressExt: IsA<InetAddress> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::is-loopback\0".as_ptr() as *const _,
-                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_is_loopback_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -300,7 +300,7 @@ pub trait InetAddressExt: IsA<InetAddress> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::is-mc-global\0".as_ptr() as *const _,
-                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_is_mc_global_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -329,7 +329,7 @@ pub trait InetAddressExt: IsA<InetAddress> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::is-mc-link-local\0".as_ptr() as *const _,
-                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_is_mc_link_local_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -358,7 +358,7 @@ pub trait InetAddressExt: IsA<InetAddress> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::is-mc-node-local\0".as_ptr() as *const _,
-                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_is_mc_node_local_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -387,7 +387,7 @@ pub trait InetAddressExt: IsA<InetAddress> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::is-mc-org-local\0".as_ptr() as *const _,
-                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_is_mc_org_local_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -416,7 +416,7 @@ pub trait InetAddressExt: IsA<InetAddress> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::is-mc-site-local\0".as_ptr() as *const _,
-                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_is_mc_site_local_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -445,7 +445,7 @@ pub trait InetAddressExt: IsA<InetAddress> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::is-multicast\0".as_ptr() as *const _,
-                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_is_multicast_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -474,7 +474,7 @@ pub trait InetAddressExt: IsA<InetAddress> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::is-site-local\0".as_ptr() as *const _,
-                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_is_site_local_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),

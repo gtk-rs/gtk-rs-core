@@ -332,7 +332,7 @@ pub trait TlsCertificateExt: IsA<TlsCertificate> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::dns-names\0".as_ptr() as *const _,
-                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_dns_names_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -360,7 +360,7 @@ pub trait TlsCertificateExt: IsA<TlsCertificate> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::ip-addresses\0".as_ptr() as *const _,
-                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_ip_addresses_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -388,7 +388,7 @@ pub trait TlsCertificateExt: IsA<TlsCertificate> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::issuer-name\0".as_ptr() as *const _,
-                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_issuer_name_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -416,7 +416,7 @@ pub trait TlsCertificateExt: IsA<TlsCertificate> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::not-valid-after\0".as_ptr() as *const _,
-                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_not_valid_after_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -444,7 +444,7 @@ pub trait TlsCertificateExt: IsA<TlsCertificate> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::not-valid-before\0".as_ptr() as *const _,
-                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_not_valid_before_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -472,7 +472,7 @@ pub trait TlsCertificateExt: IsA<TlsCertificate> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::subject-name\0".as_ptr() as *const _,
-                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_subject_name_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),

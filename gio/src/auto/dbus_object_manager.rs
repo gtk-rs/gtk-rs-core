@@ -98,7 +98,7 @@ pub trait DBusObjectManagerExt: IsA<DBusObjectManager> + sealed::Sealed + 'stati
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"interface-added\0".as_ptr() as *const _,
-                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     interface_added_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -132,7 +132,7 @@ pub trait DBusObjectManagerExt: IsA<DBusObjectManager> + sealed::Sealed + 'stati
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"interface-removed\0".as_ptr() as *const _,
-                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     interface_removed_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -161,7 +161,7 @@ pub trait DBusObjectManagerExt: IsA<DBusObjectManager> + sealed::Sealed + 'stati
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"object-added\0".as_ptr() as *const _,
-                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     object_added_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -190,7 +190,7 @@ pub trait DBusObjectManagerExt: IsA<DBusObjectManager> + sealed::Sealed + 'stati
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"object-removed\0".as_ptr() as *const _,
-                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     object_removed_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
