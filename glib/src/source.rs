@@ -1092,7 +1092,7 @@ where
         ffi::g_source_set_callback(
             source,
             Some(transmute::<
-                _,
+                *const (),
                 unsafe extern "C" fn(ffi::gpointer) -> ffi::gboolean,
             >(trampoline_child_watch::<F> as *const ())),
             into_raw_child_watch(func),
@@ -1168,7 +1168,7 @@ where
         ffi::g_source_set_callback(
             source,
             Some(transmute::<
-                _,
+                *const (),
                 unsafe extern "C" fn(ffi::gpointer) -> ffi::gboolean,
             >(trampoline_unix_fd::<F> as *const ())),
             into_raw_unix_fd(func),

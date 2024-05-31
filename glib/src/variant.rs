@@ -2197,7 +2197,7 @@ mod tests {
         ($name:ident, $ty:ident) => {
             #[test]
             fn $name() {
-                let mut n = $ty::max_value();
+                let mut n = $ty::MAX;
                 while n > 0 {
                     let v = n.to_variant();
                     assert_eq!(v.get(), Some(n));
@@ -2211,7 +2211,7 @@ mod tests {
         ($name:ident, $ty:ident) => {
             #[test]
             fn $name() {
-                let mut n = $ty::max_value();
+                let mut n = $ty::MAX;
                 while n > 0 {
                     let v = n.to_variant();
                     assert_eq!(v.get(), Some(n));

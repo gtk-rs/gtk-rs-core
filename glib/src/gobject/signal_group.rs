@@ -104,7 +104,7 @@ impl SignalGroup {
         connect_raw(
             self.as_ptr() as *mut _,
             b"bind\0".as_ptr() as *const _,
-            Some(transmute::<_, unsafe extern "C" fn()>(
+            Some(transmute::<*const (), unsafe extern "C" fn()>(
                 bind_trampoline::<F> as *const (),
             )),
             Box::into_raw(f),
@@ -123,7 +123,7 @@ impl SignalGroup {
         connect_raw(
             self.as_ptr() as *mut _,
             b"unbind\0".as_ptr() as *const _,
-            Some(transmute::<_, unsafe extern "C" fn()>(
+            Some(transmute::<*const (), unsafe extern "C" fn()>(
                 unbind_trampoline::<F> as *const (),
             )),
             Box::into_raw(f),
