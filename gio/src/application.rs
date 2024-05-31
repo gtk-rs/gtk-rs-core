@@ -53,7 +53,7 @@ pub trait ApplicationExtManual: sealed::Sealed + IsA<Application> {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"open\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(transmute::<*const (), unsafe extern "C" fn()>(
                     open_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),

@@ -31,10 +31,10 @@ fn into_value() {
         }
     }
 
-    test_func(&Test(123));
+    test_func(Test(123));
     test_func(Test(123));
 
-    test_func(&TestManualFrom(123));
+    test_func(TestManualFrom(123));
     test_func(TestManualFrom(123));
 
     test_func(TestNullable("foo".to_string()));

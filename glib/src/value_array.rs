@@ -23,7 +23,7 @@ impl ValueArray {
         let iter = values.into_iter();
         let mut array = Self::with_capacity(iter.size_hint().0);
         for v in iter {
-            array.append(&v.to_value());
+            array.append(v.to_value());
         }
 
         array

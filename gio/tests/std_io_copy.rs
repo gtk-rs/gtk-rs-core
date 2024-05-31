@@ -1,5 +1,3 @@
-#![cfg(feature = "v2_36")]
-
 use std::io;
 
 use gio::prelude::*;
