@@ -126,7 +126,7 @@ pub trait AppLaunchContextExt: IsA<AppLaunchContext> + sealed::Sealed + 'static 
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"launch-failed\0".as_ptr() as *const _,
-                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     launch_failed_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -164,7 +164,7 @@ pub trait AppLaunchContextExt: IsA<AppLaunchContext> + sealed::Sealed + 'static 
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"launch-started\0".as_ptr() as *const _,
-                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     launch_started_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -198,7 +198,7 @@ pub trait AppLaunchContextExt: IsA<AppLaunchContext> + sealed::Sealed + 'static 
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"launched\0".as_ptr() as *const _,
-                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     launched_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),

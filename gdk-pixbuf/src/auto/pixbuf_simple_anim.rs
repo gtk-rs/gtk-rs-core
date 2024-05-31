@@ -60,7 +60,7 @@ impl PixbufSimpleAnim {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::loop\0".as_ptr() as *const _,
-                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_loop_trampoline::<F> as *const (),
                 )),
                 Box_::into_raw(f),

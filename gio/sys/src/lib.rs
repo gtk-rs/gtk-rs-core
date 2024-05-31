@@ -15130,6 +15130,13 @@ extern "C" {
         bytes_written: *mut size_t,
         error: *mut *mut glib::GError,
     ) -> GConverterResult;
+    #[cfg(feature = "v2_82")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_82")))]
+    pub fn g_converter_convert_bytes(
+        converter: *mut GConverter,
+        bytes: *mut glib::GBytes,
+        error: *mut *mut glib::GError,
+    ) -> *mut glib::GBytes;
     pub fn g_converter_reset(converter: *mut GConverter);
 
     //=========================================================================

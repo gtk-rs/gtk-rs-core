@@ -1954,6 +1954,9 @@ extern "C" {
     pub fn pango_item_apply_attrs(item: *mut PangoItem, iter: *mut PangoAttrIterator);
     pub fn pango_item_copy(item: *mut PangoItem) -> *mut PangoItem;
     pub fn pango_item_free(item: *mut PangoItem);
+    #[cfg(feature = "v1_54")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v1_54")))]
+    pub fn pango_item_get_char_offset(item: *mut PangoItem) -> c_int;
     pub fn pango_item_split(
         orig: *mut PangoItem,
         split_index: c_int,
