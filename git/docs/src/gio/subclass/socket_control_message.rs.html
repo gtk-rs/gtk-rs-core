@@ -568,11 +568,11 @@
 
         <span class="kw">impl </span>SocketControlMessageImpl <span class="kw">for </span>TestSocketControlMessage {
             <span class="kw">fn </span>level(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; i32 {
-                std::i32::MAX
+                i32::MAX
             }
 
             <span class="kw">fn </span>msg_type(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; i32 {
-                std::i32::MAX
+                i32::MAX
             }
 
             <span class="kw">fn </span>size(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; usize {
@@ -584,7 +584,7 @@
             }
 
             <span class="kw">fn </span>deserialize(level: i32, type_: i32, data: <span class="kw-2">&amp;</span>[u8]) -&gt; <span class="prelude-ty">Option</span>&lt;SocketControlMessage&gt; {
-                <span class="kw">if </span>level == std::i32::MAX &amp;&amp; type_ == std::i32::MAX {
+                <span class="kw">if </span>level == i32::MAX &amp;&amp; type_ == i32::MAX {
                     <span class="kw">let </span>obj = glib::Object::new::&lt;<span class="kw">super</span>::TestSocketControlMessage&gt;();
                     obj.imp().<span class="number">0</span>.set(u64::from_ne_bytes(data.try_into().ok()<span class="question-mark">?</span>));
                     <span class="prelude-val">Some</span>(obj.into())
@@ -604,8 +604,8 @@
     </span><span class="kw">fn </span>test_socket_control_message_subclassing() {
         <span class="kw">let </span>obj = glib::Object::new::&lt;TestSocketControlMessage&gt;();
 
-        <span class="macro">assert_eq!</span>(obj.level(), std::i32::MAX);
-        <span class="macro">assert_eq!</span>(obj.msg_type(), std::i32::MAX);
+        <span class="macro">assert_eq!</span>(obj.level(), i32::MAX);
+        <span class="macro">assert_eq!</span>(obj.msg_type(), i32::MAX);
         <span class="macro">assert_eq!</span>(obj.size(), size_of::&lt;u64&gt;());
 
         obj.imp().<span class="number">0</span>.set(<span class="number">0x12345678abcdefu64</span>);
@@ -613,7 +613,7 @@
         <span class="kw">let </span><span class="kw-2">mut </span>data = [<span class="number">0</span>; size_of::&lt;u64&gt;()];
         obj.serialize(<span class="kw-2">&amp;mut </span>data);
 
-        <span class="kw">let </span>de = SocketControlMessage::deserialize(std::i32::MAX, std::i32::MAX, <span class="kw-2">&amp;</span>data)
+        <span class="kw">let </span>de = SocketControlMessage::deserialize(i32::MAX, i32::MAX, <span class="kw-2">&amp;</span>data)
             .expect(<span class="string">"deserialize failed"</span>);
         <span class="kw">let </span>de = de
             .downcast::&lt;TestSocketControlMessage&gt;()
