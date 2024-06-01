@@ -21,12 +21,16 @@ fn main() {
         run_in_thread(send_threaded);
     });
 
-    main_context.spawn_local(clone!(@strong main_loop => async move {
-        recv_safe.await.unwrap();
-        recv_unsafe.await.unwrap();
-        recv_threaded.await.unwrap();
-        main_loop.quit();
-    }));
+    main_context.spawn_local(clone!(
+        #[strong]
+        main_loop,
+        async move {
+            recv_safe.await.unwrap();
+            recv_unsafe.await.unwrap();
+            recv_threaded.await.unwrap();
+            main_loop.quit();
+        }
+    ));
 
     main_loop.run();
 }
