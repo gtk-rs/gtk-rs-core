@@ -2,7 +2,7 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{InputStream, ResourceLookupFlags};
+use crate::{ffi, InputStream, ResourceLookupFlags};
 use glib::translate::*;
 
 glib::wrapper! {

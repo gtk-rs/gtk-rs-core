@@ -2,7 +2,7 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{MenuItem, MenuModel};
+use crate::{ffi, MenuItem, MenuModel};
 use glib::{prelude::*, translate::*};
 
 glib::wrapper! {

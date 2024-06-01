@@ -3,7 +3,7 @@
 // DO NOT EDIT
 #![allow(deprecated)]
 
-use crate::{FileAttributeMatcher, FileAttributeStatus, FileAttributeType, FileType, Icon};
+use crate::{ffi, FileAttributeMatcher, FileAttributeStatus, FileAttributeType, FileType, Icon};
 use glib::{prelude::*, translate::*};
 
 glib::wrapper! {

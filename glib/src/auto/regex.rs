@@ -2,7 +2,7 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{translate::*, Error, RegexCompileFlags, RegexMatchFlags};
+use crate::{ffi, translate::*, Error, RegexCompileFlags, RegexMatchFlags};
 
 crate::wrapper! {
     #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]

@@ -2,7 +2,7 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{MenuAttributeIter, MenuLinkIter};
+use crate::{ffi, MenuAttributeIter, MenuLinkIter};
 use glib::{
     prelude::*,
     signal::{connect_raw, SignalHandlerId},

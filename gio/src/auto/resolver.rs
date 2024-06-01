@@ -5,7 +5,7 @@
 #[cfg(feature = "v2_60")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
 use crate::ResolverNameLookupFlags;
-use crate::{AsyncResult, Cancellable, InetAddress, ResolverRecordType, SrvTarget};
+use crate::{ffi, AsyncResult, Cancellable, InetAddress, ResolverRecordType, SrvTarget};
 use glib::{
     prelude::*,
     signal::{connect_raw, SignalHandlerId},

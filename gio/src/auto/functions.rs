@@ -3,7 +3,7 @@
 // DO NOT EDIT
 
 use crate::{
-    AsyncResult, BusType, Cancellable, DBusConnection, File, IOErrorEnum, IOStream, Icon,
+    ffi, AsyncResult, BusType, Cancellable, DBusConnection, File, IOErrorEnum, IOStream, Icon,
     InputStream, Resource, ResourceLookupFlags, SettingsBackend,
 };
 use glib::{prelude::*, translate::*};

@@ -2,7 +2,7 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::File;
+use crate::{ffi, File};
 use glib::{prelude::*, translate::*};
 use std::boxed::Box as Box_;
 

@@ -2,7 +2,7 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{AsyncResult, Cancellable, Initable, InputStream, OutputStream, SubprocessFlags};
+use crate::{ffi, AsyncResult, Cancellable, Initable, InputStream, OutputStream, SubprocessFlags};
 use glib::{prelude::*, translate::*};
 use std::{boxed::Box as Box_, pin::Pin};
 

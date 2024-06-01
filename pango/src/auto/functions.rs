@@ -3,7 +3,7 @@
 // DO NOT EDIT
 
 use crate::{
-    Analysis, AttrIterator, AttrList, Context, Direction, GlyphString, Item, Stretch, Style,
+    ffi, Analysis, AttrIterator, AttrList, Context, Direction, GlyphString, Item, Stretch, Style,
     Variant, Weight,
 };
 use glib::translate::*;

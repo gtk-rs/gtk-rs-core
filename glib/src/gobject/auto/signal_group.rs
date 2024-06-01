@@ -2,14 +2,14 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{prelude::*, translate::*, Object};
+use crate::{ffi, prelude::*, translate::*, Object};
 
 crate::wrapper! {
     #[doc(alias = "GSignalGroup")]
-    pub struct SignalGroup(Object<gobject_ffi::GSignalGroup>);
+    pub struct SignalGroup(Object<crate::gobject_ffi::GSignalGroup>);
 
     match fn {
-        type_ => || gobject_ffi::g_signal_group_get_type(),
+        type_ => || crate::gobject_ffi::g_signal_group_get_type(),
     }
 }
 
@@ -17,13 +17,17 @@ impl SignalGroup {
     #[doc(alias = "g_signal_group_new")]
     #[doc(alias = "new")]
     pub fn with_type(target_type: crate::types::Type) -> SignalGroup {
-        unsafe { from_glib_full(gobject_ffi::g_signal_group_new(target_type.into_glib())) }
+        unsafe {
+            from_glib_full(crate::gobject_ffi::g_signal_group_new(
+                target_type.into_glib(),
+            ))
+        }
     }
 
     #[doc(alias = "g_signal_group_block")]
     pub fn block(&self) {
         unsafe {
-            gobject_ffi::g_signal_group_block(self.to_glib_none().0);
+            crate::gobject_ffi::g_signal_group_block(self.to_glib_none().0);
         }
     }
 
@@ -31,7 +35,7 @@ impl SignalGroup {
     #[doc(alias = "dup_target")]
     pub fn target(&self) -> Option<Object> {
         unsafe {
-            from_glib_full(gobject_ffi::g_signal_group_dup_target(
+            from_glib_full(crate::gobject_ffi::g_signal_group_dup_target(
                 self.to_glib_none().0,
             ))
         }
@@ -40,7 +44,7 @@ impl SignalGroup {
     #[doc(alias = "g_signal_group_set_target")]
     pub fn set_target(&self, target: Option<&impl IsA<Object>>) {
         unsafe {
-            gobject_ffi::g_signal_group_set_target(
+            crate::gobject_ffi::g_signal_group_set_target(
                 self.to_glib_none().0,
                 target.map(|p| p.as_ref()).to_glib_none().0,
             );
@@ -50,7 +54,7 @@ impl SignalGroup {
     #[doc(alias = "g_signal_group_unblock")]
     pub fn unblock(&self) {
         unsafe {
-            gobject_ffi::g_signal_group_unblock(self.to_glib_none().0);
+            crate::gobject_ffi::g_signal_group_unblock(self.to_glib_none().0);
         }
     }
 

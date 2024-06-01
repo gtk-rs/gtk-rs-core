@@ -3,7 +3,7 @@
 // DO NOT EDIT
 
 use crate::{
-    AsyncResult, Cancellable, DriveStartFlags, DriveStartStopType, Icon, MountOperation,
+    ffi, AsyncResult, Cancellable, DriveStartFlags, DriveStartStopType, Icon, MountOperation,
     MountUnmountFlags, Volume,
 };
 use glib::{

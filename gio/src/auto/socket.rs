@@ -3,7 +3,7 @@
 // DO NOT EDIT
 
 use crate::{
-    Cancellable, Credentials, DatagramBased, InetAddress, Initable, SocketAddress,
+    ffi, Cancellable, Credentials, DatagramBased, InetAddress, Initable, SocketAddress,
     SocketConnection, SocketFamily, SocketProtocol, SocketType,
 };
 use glib::{

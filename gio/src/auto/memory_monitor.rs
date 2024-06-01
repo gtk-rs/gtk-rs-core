@@ -2,7 +2,7 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{Initable, MemoryMonitorWarningLevel};
+use crate::{ffi, Initable, MemoryMonitorWarningLevel};
 use glib::{
     prelude::*,
     signal::{connect_raw, SignalHandlerId},

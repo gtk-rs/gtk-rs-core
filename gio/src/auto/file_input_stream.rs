@@ -2,7 +2,7 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{AsyncResult, Cancellable, FileInfo, InputStream, Seekable};
+use crate::{ffi, AsyncResult, Cancellable, FileInfo, InputStream, Seekable};
 use glib::{prelude::*, translate::*};
 use std::{boxed::Box as Box_, pin::Pin};
 

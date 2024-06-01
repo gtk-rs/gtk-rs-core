@@ -2,7 +2,7 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{bitflags::bitflags, prelude::*, translate::*};
+use crate::{bitflags::bitflags, ffi, prelude::*, translate::*};
 
 #[cfg(feature = "v2_66")]
 bitflags! {

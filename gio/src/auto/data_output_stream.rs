@@ -2,7 +2,7 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{Cancellable, DataStreamByteOrder, FilterOutputStream, OutputStream, Seekable};
+use crate::{ffi, Cancellable, DataStreamByteOrder, FilterOutputStream, OutputStream, Seekable};
 use glib::{
     prelude::*,
     signal::{connect_raw, SignalHandlerId},

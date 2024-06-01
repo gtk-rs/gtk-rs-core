@@ -5,7 +5,7 @@
 #[cfg(feature = "v2_82")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_82")))]
 use crate::SettingsBindFlags;
-use crate::{Action, SettingsBackend, SettingsSchema};
+use crate::{ffi, Action, SettingsBackend, SettingsSchema};
 use glib::{
     prelude::*,
     signal::{connect_raw, SignalHandlerId},

@@ -2,10 +2,10 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::FontDescription;
 #[cfg(feature = "v1_46")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_46")))]
 use crate::FontFamily;
+use crate::{ffi, FontDescription};
 use glib::{prelude::*, translate::*};
 
 glib::wrapper! {

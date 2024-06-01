@@ -3,7 +3,7 @@
 // DO NOT EDIT
 #![allow(deprecated)]
 
-use crate::{IOStream, SocketConnectable, TlsCertificateFlags, TlsConnection};
+use crate::{ffi, IOStream, SocketConnectable, TlsCertificateFlags, TlsConnection};
 use glib::{
     prelude::*,
     signal::{connect_raw, SignalHandlerId},

@@ -2,7 +2,7 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{Converter, FilterInputStream, InputStream, PollableInputStream};
+use crate::{ffi, Converter, FilterInputStream, InputStream, PollableInputStream};
 use glib::{prelude::*, translate::*};
 
 glib::wrapper! {

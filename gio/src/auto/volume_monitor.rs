@@ -2,7 +2,7 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{Drive, Mount, Volume};
+use crate::{ffi, Drive, Mount, Volume};
 use glib::{
     prelude::*,
     signal::{connect_raw, SignalHandlerId},

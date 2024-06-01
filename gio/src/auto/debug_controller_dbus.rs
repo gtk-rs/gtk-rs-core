@@ -2,7 +2,7 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{Cancellable, DBusConnection, DBusMethodInvocation, DebugController, Initable};
+use crate::{ffi, Cancellable, DBusConnection, DBusMethodInvocation, DebugController, Initable};
 use glib::{
     prelude::*,
     signal::{connect_raw, SignalHandlerId},

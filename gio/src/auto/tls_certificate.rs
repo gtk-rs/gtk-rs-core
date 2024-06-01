@@ -5,7 +5,7 @@
 #[cfg(feature = "v2_70")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
 use crate::InetAddress;
-use crate::{SocketConnectable, TlsCertificateFlags};
+use crate::{ffi, SocketConnectable, TlsCertificateFlags};
 #[cfg(feature = "v2_70")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
 use glib::signal::{connect_raw, SignalHandlerId};
