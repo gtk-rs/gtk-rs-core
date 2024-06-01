@@ -11,6 +11,7 @@ use crate::{ffi, utils::status_to_result, Error, RectangleInt, RegionOverlap};
 
 #[derive(Debug)]
 #[repr(transparent)]
+#[doc(alias = "cairo_region_t")]
 pub struct Region(ptr::NonNull<ffi::cairo_region_t>);
 
 #[cfg(feature = "use_glib")]

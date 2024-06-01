@@ -53,6 +53,7 @@ impl fmt::Debug for RectangleList {
 
 #[derive(Debug)]
 #[repr(transparent)]
+#[doc(alias = "cairo_t")]
 pub struct Context(ptr::NonNull<ffi::cairo_t>);
 
 #[cfg(feature = "use_glib")]

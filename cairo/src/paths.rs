@@ -5,6 +5,7 @@ use std::{iter::FusedIterator, ptr};
 use crate::{ffi, PathDataType};
 
 #[derive(Debug)]
+#[doc(alias = "cairo_path_t")]
 pub struct Path(ptr::NonNull<ffi::cairo_path_t>);
 
 impl Path {
