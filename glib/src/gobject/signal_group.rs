@@ -3,6 +3,7 @@
 use std::mem::transmute;
 
 use crate::{
+    ffi, gobject_ffi,
     prelude::*,
     signal::{connect_raw, SignalHandlerId},
     translate::*,

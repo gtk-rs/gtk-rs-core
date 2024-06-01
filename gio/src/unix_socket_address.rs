@@ -9,7 +9,7 @@ use std::{path, ptr, slice};
 
 use glib::translate::*;
 
-use crate::{prelude::*, SocketAddress, UnixSocketAddress, UnixSocketAddressType};
+use crate::{ffi, prelude::*, SocketAddress, UnixSocketAddress, UnixSocketAddressType};
 
 #[derive(Debug)]
 pub enum UnixSocketAddressPath<'a> {

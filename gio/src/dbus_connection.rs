@@ -5,7 +5,7 @@ use std::{boxed::Box as Box_, num::NonZeroU32};
 use glib::{prelude::*, translate::*};
 
 use crate::{
-    ActionGroup, DBusConnection, DBusInterfaceInfo, DBusMessage, DBusMethodInvocation,
+    ffi, ActionGroup, DBusConnection, DBusInterfaceInfo, DBusMessage, DBusMethodInvocation,
     DBusSignalFlags, MenuModel,
 };
 

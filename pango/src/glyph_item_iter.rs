@@ -4,7 +4,7 @@ use std::{marker::PhantomData, mem};
 
 use glib::{prelude::*, translate::*, GStr, GString};
 
-use crate::GlyphItem;
+use crate::{ffi, GlyphItem};
 
 #[derive(Clone, Debug)]
 pub struct GlyphItemIter<'item> {

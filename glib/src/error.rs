@@ -5,7 +5,7 @@
 
 use std::{borrow::Cow, convert::Infallible, error, ffi::CStr, fmt, str};
 
-use crate::{translate::*, Quark};
+use crate::{ffi, translate::*, Quark};
 
 wrapper! {
     // rustdoc-stripper-ignore-next
@@ -321,8 +321,9 @@ mod tests {
         // This creates a copy ...
         let v = e1.to_value();
         // ... so we have to get the raw pointer from inside the value to check for equality.
-        let ptr =
-            unsafe { gobject_ffi::g_value_get_boxed(v.to_glib_none().0) as *const ffi::GError };
+        let ptr = unsafe {
+            crate::gobject_ffi::g_value_get_boxed(v.to_glib_none().0) as *const ffi::GError
+        };
 
         let e2 = v.get::<&Error>().unwrap();
 

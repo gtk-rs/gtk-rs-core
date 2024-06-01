@@ -6,7 +6,7 @@ use futures_core::task::{Context, Poll};
 use futures_io::{AsyncBufRead, AsyncRead};
 use glib::{prelude::*, translate::*, Priority};
 
-use crate::{error::to_std_io_result, prelude::*, Cancellable, InputStream, Seekable};
+use crate::{error::to_std_io_result, ffi, prelude::*, Cancellable, InputStream, Seekable};
 
 mod sealed {
     pub trait Sealed {}

@@ -2,7 +2,7 @@
 
 use std::{fmt, num::NonZeroU32};
 
-use crate::{translate::*, GStr};
+use crate::{ffi, translate::*, GStr};
 
 #[derive(Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[repr(transparent)]

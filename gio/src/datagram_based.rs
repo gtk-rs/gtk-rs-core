@@ -5,7 +5,7 @@ use std::{cell::RefCell, mem::transmute, pin::Pin, ptr, time::Duration};
 use futures_core::stream::Stream;
 use glib::{prelude::*, translate::*};
 
-use crate::{Cancellable, DatagramBased, InputMessage, OutputMessage};
+use crate::{ffi, Cancellable, DatagramBased, InputMessage, OutputMessage};
 
 mod sealed {
     pub trait Sealed {}

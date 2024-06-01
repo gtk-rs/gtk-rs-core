@@ -4,7 +4,7 @@ use std::num::NonZeroU32;
 
 use glib::translate::*;
 
-use crate::{BusNameOwnerFlags, BusNameWatcherFlags, BusType, DBusConnection};
+use crate::{ffi, BusNameOwnerFlags, BusNameWatcherFlags, BusType, DBusConnection};
 
 #[derive(Debug, Eq, PartialEq)]
 pub struct OwnerId(NonZeroU32);

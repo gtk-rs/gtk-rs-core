@@ -9,7 +9,7 @@ use std::{
     slice,
 };
 
-use crate::translate::*;
+use crate::{ffi, translate::*};
 
 wrapper! {
     // rustdoc-stripper-ignore-next

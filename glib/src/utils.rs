@@ -5,7 +5,7 @@ use std::{
     mem, ptr,
 };
 
-use crate::{translate::*, GString};
+use crate::{ffi, translate::*, GString};
 
 // rustdoc-stripper-ignore-next
 /// Same as [`get_prgname()`].

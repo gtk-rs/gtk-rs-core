@@ -3,7 +3,7 @@
 // rustdoc-stripper-ignore-next
 //! Module for registering boxed types for Rust types.
 
-use crate::{prelude::*, translate::*};
+use crate::{ffi, gobject_ffi, prelude::*, translate::*};
 
 // rustdoc-stripper-ignore-next
 /// Trait for defining boxed types.

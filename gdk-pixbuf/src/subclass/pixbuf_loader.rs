@@ -5,7 +5,7 @@
 
 use glib::{prelude::*, subclass::prelude::*, translate::*};
 
-use crate::PixbufLoader;
+use crate::{ffi, PixbufLoader};
 
 pub trait PixbufLoaderImpl: ObjectImpl {
     fn size_prepared(&self, width: i32, height: i32) {

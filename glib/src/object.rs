@@ -7,6 +7,7 @@ use std::{cmp, fmt, hash, marker::PhantomData, mem, mem::ManuallyDrop, ops, pin:
 
 use crate::{
     closure::TryFromClosureReturnValue,
+    ffi, gobject_ffi,
     prelude::*,
     quark::Quark,
     subclass::{prelude::*, SignalId, SignalQuery},
@@ -1411,11 +1412,11 @@ impl Object {
     pub fn with_mut_values(type_: Type, properties: &mut [(&str, Value)]) -> Object {
         #[cfg(feature = "gio")]
         unsafe {
-            let iface_type = from_glib(gio_ffi::g_initable_get_type());
+            let iface_type = from_glib(gio_sys::g_initable_get_type());
             if type_.is_a(iface_type) {
                 panic!("Can't instantiate type '{type_}' implementing `gio::Initable`. Use `gio::Initable::new()`");
             }
-            let iface_type = from_glib(gio_ffi::g_async_initable_get_type());
+            let iface_type = from_glib(gio_sys::g_async_initable_get_type());
             if type_.is_a(iface_type) {
                 panic!("Can't instantiate type '{type_}' implementing `gio::AsyncInitable`. Use `gio::AsyncInitable::new()`");
             }

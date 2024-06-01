@@ -20,7 +20,7 @@ use std::{
     slice,
 };
 
-use crate::translate::*;
+use crate::{ffi, translate::*};
 
 wrapper! {
     #[doc(alias = "GByteArray")]

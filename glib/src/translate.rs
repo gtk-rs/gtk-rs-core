@@ -147,6 +147,7 @@ use std::{
 };
 
 pub use crate::collections::{ptr_slice::IntoPtrSlice, strv::IntoStrV};
+use crate::ffi;
 pub use crate::gstring::{IntoGStr, IntoOptionalGStr};
 
 use libc::{c_char, size_t};

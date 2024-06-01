@@ -20,7 +20,7 @@ impl Resource {
                 data = glib::Bytes::from(&*data);
             }
 
-            let ret = ffi::g_resource_new_from_data(data.to_glib_none().0, &mut error);
+            let ret = crate::ffi::g_resource_new_from_data(data.to_glib_none().0, &mut error);
             if error.is_null() {
                 Ok(from_glib_full(ret))
             } else {

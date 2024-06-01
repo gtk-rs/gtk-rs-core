@@ -24,13 +24,13 @@ futures-task = { version = "0.3", default-features = false }
 futures-executor = "0.3"
 futures-channel = "0.3"
 futures-util = "0.3"
-ffi = { package = "glib-sys", path = "sys", version = "0.20"}
-gobject_ffi = { package = "gobject-sys", path = "gobject-sys", version = "0.20" }
+glib-sys.workspace = true
+gobject-sys.workspace = true
 glib-macros.workspace = true
 rs-log = { package = "log", version = "0.4", optional = true }
 smallvec = { version = "1.13", features = ["union", "const_generics", "const_new"] }
 thiserror.workspace = true
-gio_ffi = { package = "gio-sys", path = "../gio/sys", optional = true, version = "0.20" }
+gio-sys = { workspace = true, optional = true }
 memchr = "2.7.2"
 
 [dev-dependencies]
@@ -41,23 +41,23 @@ criterion = "0.5.1"
 
 [features]
 default = ["gio"]
-v2_58 = ["ffi/v2_58", "gobject_ffi/v2_58"]
-v2_60 = ["v2_58", "ffi/v2_60"]
-v2_62 = ["v2_60", "ffi/v2_62", "gobject_ffi/v2_62"]
-v2_64 = ["v2_62", "ffi/v2_64"]
-v2_66 = ["v2_64", "ffi/v2_66", "gobject_ffi/v2_66"]
-v2_68 = ["v2_66", "ffi/v2_68", "gobject_ffi/v2_68"]
-v2_70 = ["v2_68", "ffi/v2_70", "gobject_ffi/v2_70"]
-v2_72 = ["v2_70", "ffi/v2_72", "gobject_ffi/v2_72"]
-v2_74 = ["v2_72", "ffi/v2_74", "gobject_ffi/v2_74"]
-v2_76 = ["v2_74", "ffi/v2_76", "gobject_ffi/v2_76"]
-v2_78 = ["v2_76", "ffi/v2_78", "gobject_ffi/v2_78"]
-v2_80 = ["v2_78", "ffi/v2_80", "gobject_ffi/v2_80"]
-v2_82 = ["v2_80", "ffi/v2_82", "gobject_ffi/v2_82"]
+v2_58 = ["glib-sys/v2_58", "gobject-sys/v2_58"]
+v2_60 = ["v2_58", "glib-sys/v2_60"]
+v2_62 = ["v2_60", "glib-sys/v2_62", "gobject-sys/v2_62"]
+v2_64 = ["v2_62", "glib-sys/v2_64"]
+v2_66 = ["v2_64", "glib-sys/v2_66", "gobject-sys/v2_66"]
+v2_68 = ["v2_66", "glib-sys/v2_68", "gobject-sys/v2_68"]
+v2_70 = ["v2_68", "glib-sys/v2_70", "gobject-sys/v2_70"]
+v2_72 = ["v2_70", "glib-sys/v2_72", "gobject-sys/v2_72"]
+v2_74 = ["v2_72", "glib-sys/v2_74", "gobject-sys/v2_74"]
+v2_76 = ["v2_74", "glib-sys/v2_76", "gobject-sys/v2_76"]
+v2_78 = ["v2_76", "glib-sys/v2_78", "gobject-sys/v2_78"]
+v2_80 = ["v2_78", "glib-sys/v2_80", "gobject-sys/v2_80"]
+v2_82 = ["v2_80", "glib-sys/v2_82", "gobject-sys/v2_82"]
 log = ["rs-log"]
 log_macros = ["log"]
 compiletests = []
-gio = ["gio_ffi"]
+gio = ["gio-sys"]
 
 [[test]]
 name = "subclass_compiletest"

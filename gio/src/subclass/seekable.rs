@@ -4,7 +4,7 @@ use std::ptr;
 
 use glib::{prelude::*, subclass::prelude::*, translate::*, Error, SeekType};
 
-use crate::{Cancellable, Seekable};
+use crate::{ffi, Cancellable, Seekable};
 
 pub trait SeekableImpl: ObjectImpl + Send {
     fn tell(&self) -> i64;

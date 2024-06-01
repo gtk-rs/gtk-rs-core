@@ -1,5 +1,7 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
+use crate::gobject_ffi;
+
 #[derive(Debug, Copy, Clone)]
 #[doc(alias = "GTypeInfo")]
 #[repr(transparent)]

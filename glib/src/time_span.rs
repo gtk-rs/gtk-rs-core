@@ -1,6 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::translate::*;
+use crate::{ffi, translate::*};
 
 // rustdoc-stripper-ignore-next
 /// A value representing an interval of time, in microseconds.

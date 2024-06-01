@@ -4,7 +4,7 @@ use std::{marker::PhantomData, mem, ptr};
 
 use glib::{translate::*, GStr};
 
-use crate::Script;
+use crate::{ffi, Script};
 
 #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct ScriptIter<'text> {

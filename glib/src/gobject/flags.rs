@@ -1,6 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::translate::*;
+use crate::{gobject_ffi, translate::*};
 
 bitflags::bitflags! {
     #[doc(alias = "GParamFlags")]

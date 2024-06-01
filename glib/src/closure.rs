@@ -6,7 +6,7 @@ use std::{mem, ptr, slice};
 
 use libc::{c_uint, c_void};
 
-use crate::{prelude::*, translate::*, Type, Value};
+use crate::{gobject_ffi, prelude::*, translate::*, Type, Value};
 
 wrapper! {
     #[derive(PartialEq, Eq, PartialOrd, Ord, Debug, Hash)]

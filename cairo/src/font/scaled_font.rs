@@ -6,8 +6,8 @@ use std::{ffi::CString, mem::MaybeUninit, ptr};
 use glib::translate::*;
 
 use crate::{
-    utils::status_to_result, Error, FontExtents, FontFace, FontOptions, FontType, Glyph, Matrix,
-    TextCluster, TextExtents,
+    ffi, utils::status_to_result, Error, FontExtents, FontFace, FontOptions, FontType, Glyph,
+    Matrix, TextCluster, TextExtents,
 };
 
 #[cfg(feature = "use_glib")]

@@ -2,7 +2,7 @@
 
 use glib::translate::*;
 
-use crate::{AttrType, Rectangle};
+use crate::{ffi, AttrType, Rectangle};
 
 define_attribute_struct!(AttrShape, ffi::PangoAttrShape, &[AttrType::Shape]);
 

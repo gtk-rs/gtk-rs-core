@@ -4,7 +4,7 @@ use std::{boxed::Box as Box_, mem, pin::Pin, ptr};
 
 use glib::{prelude::*, translate::*, GString};
 
-use crate::{Cancellable, DataInputStream};
+use crate::{ffi, Cancellable, DataInputStream};
 
 mod sealed {
     pub trait Sealed {}

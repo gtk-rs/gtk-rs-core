@@ -7,11 +7,11 @@ use std::ptr;
 #[cfg(feature = "use_glib")]
 use glib::translate::*;
 
-use crate::{ffi::cairo_region_t, utils::status_to_result, Error, RectangleInt, RegionOverlap};
+use crate::{ffi, utils::status_to_result, Error, RectangleInt, RegionOverlap};
 
 #[derive(Debug)]
 #[repr(transparent)]
-pub struct Region(ptr::NonNull<cairo_region_t>);
+pub struct Region(ptr::NonNull<ffi::cairo_region_t>);
 
 #[cfg(feature = "use_glib")]
 impl IntoGlibPtr<*mut ffi::cairo_region_t> for Region {

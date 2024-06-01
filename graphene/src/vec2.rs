@@ -4,7 +4,7 @@ use std::fmt;
 
 use glib::translate::*;
 
-use crate::Vec2;
+use crate::{ffi, Vec2};
 
 impl Vec2 {
     #[doc(alias = "graphene_vec2_init")]

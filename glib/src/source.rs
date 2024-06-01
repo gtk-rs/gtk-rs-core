@@ -4,7 +4,7 @@
 use std::os::unix::io::RawFd;
 use std::{cell::RefCell, mem::transmute, num::NonZeroU32, time::Duration};
 
-use ffi::{gboolean, gpointer};
+use crate::ffi::{self, gboolean, gpointer};
 #[cfg(all(not(unix), docsrs))]
 use libc::c_int as RawFd;
 

@@ -4,7 +4,7 @@ use std::fmt;
 
 use glib::translate::*;
 
-use crate::{Point3D, Sphere, Vec3};
+use crate::{ffi, Point3D, Sphere, Vec3};
 
 impl Sphere {
     #[doc(alias = "graphene_sphere_init")]

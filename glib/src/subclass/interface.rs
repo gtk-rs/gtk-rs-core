@@ -3,7 +3,9 @@
 use std::{marker, mem};
 
 use super::{types::InterfaceStruct, InitializingType, Signal};
-use crate::{prelude::*, translate::*, Object, ParamSpec, Type, TypeFlags, TypeInfo};
+use crate::{
+    ffi, gobject_ffi, prelude::*, translate::*, Object, ParamSpec, Type, TypeFlags, TypeInfo,
+};
 
 // rustdoc-stripper-ignore-next
 /// Trait for a type list of prerequisite object types.

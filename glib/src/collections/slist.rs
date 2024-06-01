@@ -2,7 +2,7 @@
 
 use std::{iter::FusedIterator, marker::PhantomData, mem, ptr};
 
-use crate::translate::*;
+use crate::{ffi, translate::*};
 
 // rustdoc-stripper-ignore-next
 /// A list of items of type `T`.

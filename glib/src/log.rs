@@ -7,7 +7,7 @@ use std::{
     sync::{Arc, Mutex, OnceLock},
 };
 
-use crate::{translate::*, GStr, GString, LogWriterOutput};
+use crate::{ffi, translate::*, GStr, GString, LogWriterOutput};
 
 #[derive(Debug)]
 pub struct LogHandlerId(u32);

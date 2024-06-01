@@ -40,6 +40,6 @@ pub(crate) fn to_std_io_result<T>(result: Result<T, glib::Error>) -> io::Result<
 impl From<FileError> for IOErrorEnum {
     #[doc(alias = "g_io_error_from_file_error")]
     fn from(e: FileError) -> Self {
-        unsafe { from_glib(ffi::g_io_error_from_file_error(e.into_glib())) }
+        unsafe { from_glib(crate::ffi::g_io_error_from_file_error(e.into_glib())) }
     }
 }

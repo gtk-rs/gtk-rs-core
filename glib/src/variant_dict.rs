@@ -2,7 +2,7 @@
 
 use std::borrow::Cow;
 
-use crate::{translate::*, variant::*, variant_type::*};
+use crate::{ffi, translate::*, variant::*, variant_type::*};
 
 wrapper! {
     // rustdoc-stripper-ignore-next

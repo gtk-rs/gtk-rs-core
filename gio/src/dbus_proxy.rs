@@ -4,7 +4,7 @@ use std::{boxed::Box as Box_, mem::transmute};
 
 use glib::{prelude::*, signal::connect_raw, translate::*, SignalHandlerId};
 
-use crate::DBusProxy;
+use crate::{ffi, DBusProxy};
 
 mod sealed {
     pub trait Sealed {}

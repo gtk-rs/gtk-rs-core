@@ -2,7 +2,7 @@
 
 use glib::{prelude::*, translate::*};
 
-use crate::{ProxyResolver, SimpleProxyResolver};
+use crate::{ffi, ProxyResolver, SimpleProxyResolver};
 
 impl SimpleProxyResolver {
     #[doc(alias = "g_simple_proxy_resolver_new")]

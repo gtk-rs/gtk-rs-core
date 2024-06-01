@@ -54,6 +54,7 @@ use std::{
 use libc::{c_char, c_void};
 
 use crate::{
+    ffi, gobject_ffi,
     gstring::GString,
     prelude::*,
     translate::*,

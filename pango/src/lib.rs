@@ -3,8 +3,8 @@
 #![cfg_attr(docsrs, feature(doc_cfg))]
 #![doc = include_str!("../README.md")]
 
-pub use ffi;
 pub use glib;
+pub use pango_sys as ffi;
 
 #[allow(clippy::too_many_arguments)]
 #[allow(clippy::derived_hash_with_manual_eq)]

@@ -2,10 +2,10 @@
 
 use std::marker::PhantomData;
 
-use crate::ffi::cairo_user_data_key_t;
+use crate::ffi;
 
 pub struct UserDataKey<T> {
-    pub(crate) ffi: cairo_user_data_key_t,
+    pub(crate) ffi: ffi::cairo_user_data_key_t,
     marker: PhantomData<*const T>,
 }
 
@@ -14,7 +14,7 @@ unsafe impl<T> Sync for UserDataKey<T> {}
 impl<T> UserDataKey<T> {
     pub const fn new() -> Self {
         Self {
-            ffi: cairo_user_data_key_t { unused: 0 },
+            ffi: ffi::cairo_user_data_key_t { unused: 0 },
             marker: PhantomData,
         }
     }

@@ -1,6 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::{prelude::*, subclass::prelude::*, translate::*, TypeModule};
+use crate::{ffi, gobject_ffi, prelude::*, subclass::prelude::*, translate::*, TypeModule};
 
 pub trait TypeModuleImpl: ObjectImpl + TypeModuleImplExt {
     // rustdoc-stripper-ignore-next

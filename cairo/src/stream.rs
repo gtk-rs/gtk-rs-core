@@ -9,7 +9,7 @@ use std::{
     rc::Rc,
 };
 
-use ffi::cairo_status_t;
+use crate::ffi;
 use libc::{c_double, c_uchar, c_uint, c_void};
 
 use crate::{Error, Surface, UserDataKey};
@@ -202,7 +202,7 @@ extern "C" fn write_callback<W: io::Write + 'static>(
     env: *mut c_void,
     data: *mut c_uchar,
     length: c_uint,
-) -> cairo_status_t {
+) -> ffi::cairo_status_t {
     // This is consistent with the type of `env` in `Surface::_for_stream`.
     let env: *const CallbackEnvironment = env as _;
 

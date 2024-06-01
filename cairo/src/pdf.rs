@@ -11,7 +11,7 @@ use std::{
 #[cfg(feature = "use_glib")]
 use glib::translate::*;
 
-use crate::{Error, PdfVersion, Surface, SurfaceType};
+use crate::{ffi, Error, PdfVersion, Surface, SurfaceType};
 #[cfg(all(feature = "pdf", feature = "v1_16"))]
 use crate::{PdfMetadata, PdfOutline};
 

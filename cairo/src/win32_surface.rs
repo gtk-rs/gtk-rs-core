@@ -6,7 +6,7 @@ pub use ffi::windows;
 #[cfg(feature = "use_glib")]
 use glib::translate::*;
 
-use crate::{Error, Format, Surface, SurfaceType};
+use crate::{ffi, Error, Format, Surface, SurfaceType};
 
 declare_surface!(Win32Surface, SurfaceType::Win32);
 

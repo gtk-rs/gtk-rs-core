@@ -4,7 +4,7 @@ use std::{cell::Cell, cmp::Ordering, rc::Rc};
 
 use glib::{prelude::*, translate::*, Object};
 
-use crate::{prelude::*, ListModel, ListStore};
+use crate::{ffi, prelude::*, ListModel, ListStore};
 
 impl ListStore {
     #[doc(alias = "g_list_store_new")]

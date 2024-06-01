@@ -4,7 +4,7 @@ use std::{marker::PhantomData, mem, ptr};
 
 use glib::{translate::*, SList};
 
-use crate::{AttrType, Attribute, FontDescription, Language};
+use crate::{ffi, AttrType, Attribute, FontDescription, Language};
 
 #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct AttrIterator<'list> {

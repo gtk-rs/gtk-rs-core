@@ -6,7 +6,7 @@ use futures_channel::oneshot;
 use futures_core::Future;
 use glib::{prelude::*, translate::*};
 
-use crate::Cancellable;
+use crate::{ffi, Cancellable};
 
 // rustdoc-stripper-ignore-next
 /// The id of a cancelled handler that is returned by `CancellableExtManual::connect`. This type is

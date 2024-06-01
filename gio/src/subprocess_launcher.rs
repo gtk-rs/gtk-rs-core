@@ -6,7 +6,7 @@ use std::os::unix::io::IntoRawFd;
 #[cfg(unix)]
 use glib::translate::*;
 
-use crate::SubprocessLauncher;
+use crate::{ffi, SubprocessLauncher};
 
 #[cfg(all(docsrs, not(unix)))]
 pub trait IntoRawFd: Sized {

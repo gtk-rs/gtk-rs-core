@@ -4,7 +4,7 @@ use std::os::windows::io::{AsRawHandle, FromRawHandle, IntoRawHandle, RawHandle}
 
 use glib::{prelude::*, translate::*};
 
-use crate::InputStream;
+use crate::{ffi, InputStream};
 
 glib::wrapper! {
     pub struct Win32InputStream(Object<ffi::GWin32InputStream, ffi::GWin32InputStreamClass>) @extends InputStream;

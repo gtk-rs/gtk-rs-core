@@ -2,7 +2,7 @@
 
 use std::{cmp, fmt, hash};
 
-use crate::{translate::*, BoolError, DateDay, DateMonth, DateWeekday, DateYear};
+use crate::{ffi, gobject_ffi, translate::*, BoolError, DateDay, DateMonth, DateWeekday, DateYear};
 
 wrapper! {
     #[doc(alias = "GDate")]

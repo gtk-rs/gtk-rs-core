@@ -3,7 +3,7 @@
 // rustdoc-stripper-ignore-next
 //! Module for registering shared types for Rust types.
 
-use crate::{prelude::*, translate::*};
+use crate::{ffi, gobject_ffi, prelude::*, translate::*};
 
 pub unsafe trait RefCounted: Clone + Sized + 'static {
     // rustdoc-stripper-ignore-next

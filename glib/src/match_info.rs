@@ -1,6 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::{prelude::*, translate::*, GStr, Regex};
+use crate::{ffi, prelude::*, translate::*, GStr, Regex};
 use std::{marker::PhantomData, mem, ptr};
 
 #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]

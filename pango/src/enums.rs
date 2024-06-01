@@ -1,6 +1,8 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
 #[cfg(feature = "v1_50")]
+use crate::ffi;
+#[cfg(feature = "v1_50")]
 use glib::{prelude::*, translate::*, Quark};
 
 #[cfg(feature = "v1_50")]

@@ -28,7 +28,7 @@ pub trait TlsConnectionExtManual: sealed::Sealed + IsA<TlsConnection> {
         unsafe {
             let data = ptr::null_mut();
             let mut error = ptr::null_mut();
-            let _ = ffi::g_tls_connection_get_channel_binding_data(
+            let _ = crate::ffi::g_tls_connection_get_channel_binding_data(
                 self.as_ptr() as *mut _,
                 type_.into_glib(),
                 data,
@@ -48,7 +48,7 @@ pub trait TlsConnectionExtManual: sealed::Sealed + IsA<TlsConnection> {
     fn set_advertised_protocols(&self, protocols: impl IntoStrV) {
         unsafe {
             protocols.run_with_strv(|protocols| {
-                ffi::g_tls_connection_set_advertised_protocols(
+                crate::ffi::g_tls_connection_set_advertised_protocols(
                     self.as_ref().to_glib_none().0,
                     protocols.as_ptr() as *mut _,
                 );

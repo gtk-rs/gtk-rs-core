@@ -5,7 +5,7 @@ use std::{ffi::OsString, fmt, ops::Deref, ptr};
 use glib::{prelude::*, subclass::prelude::*, translate::*, ExitCode, VariantDict};
 use libc::{c_char, c_int, c_void};
 
-use crate::Application;
+use crate::{ffi, Application};
 
 pub struct ArgumentList {
     pub(crate) ptr: *mut *mut *mut c_char,

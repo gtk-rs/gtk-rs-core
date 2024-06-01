@@ -3,7 +3,7 @@
 #![cfg_attr(docsrs, feature(doc_cfg))]
 #![doc = include_str!("../README.md")]
 
-pub use ffi;
+pub use gdk_pixbuf_sys as ffi;
 pub use gio;
 pub use glib;
 

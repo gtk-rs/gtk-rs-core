@@ -6,7 +6,7 @@
 #![allow(clippy::missing_safety_doc)]
 #![doc = include_str!("../README.md")]
 
-pub use ffi;
+pub use gio_sys as ffi;
 pub use glib;
 
 mod action_entry;

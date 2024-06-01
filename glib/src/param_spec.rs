@@ -8,6 +8,7 @@ use std::{
 };
 
 use crate::{
+    ffi, gobject_ffi,
     object::{Interface, InterfaceRef, IsClass, IsInterface, ObjectClass},
     prelude::*,
     translate::*,

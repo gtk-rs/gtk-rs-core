@@ -2,6 +2,7 @@
 
 use std::{fmt::Debug, io};
 
+use crate::ffi;
 use thiserror::Error;
 
 #[derive(Error, Debug, Clone, PartialEq, Copy, Eq)]

@@ -4,7 +4,7 @@ use std::ptr;
 
 use glib::{prelude::*, subclass::prelude::*, translate::*, Error};
 
-use crate::{Cancellable, InputStream, OutputStream, OutputStreamSpliceFlags};
+use crate::{ffi, Cancellable, InputStream, OutputStream, OutputStreamSpliceFlags};
 
 pub trait OutputStreamImpl: ObjectImpl + OutputStreamImplExt + Send {
     fn write(&self, buffer: &[u8], cancellable: Option<&Cancellable>) -> Result<usize, Error> {

@@ -2,7 +2,7 @@
 
 use glib::translate::*;
 
-use crate::{LayoutLine, LayoutRun};
+use crate::{ffi, LayoutLine, LayoutRun};
 
 // rustdoc-stripper-ignore-next
 /// The result of [`LayoutLine::x_to_index`].

@@ -5,7 +5,7 @@ use std::fmt::Debug;
 #[cfg(feature = "use_glib")]
 use glib::translate::*;
 
-use crate::Error;
+use crate::{ffi, Error};
 
 // Helper macro for our GValue related trait impls
 #[cfg(feature = "use_glib")]

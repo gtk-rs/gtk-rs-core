@@ -6,7 +6,7 @@ use glib::{prelude::*, translate::*, Priority};
 
 #[cfg(feature = "v2_60")]
 use crate::OutputVector;
-use crate::{error::to_std_io_result, prelude::*, Cancellable, OutputStream, Seekable};
+use crate::{error::to_std_io_result, ffi, prelude::*, Cancellable, OutputStream, Seekable};
 
 mod sealed {
     pub trait Sealed {}

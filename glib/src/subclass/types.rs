@@ -7,6 +7,7 @@ use std::{any::Any, collections::BTreeMap, marker, mem, ptr};
 
 use super::{interface::ObjectInterface, SignalId};
 use crate::{
+    ffi, gobject_ffi,
     object::{IsClass, IsInterface, ObjectSubclassIs, ParentClassIs},
     prelude::*,
     translate::*,

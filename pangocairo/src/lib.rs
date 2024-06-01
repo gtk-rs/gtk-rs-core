@@ -4,9 +4,9 @@
 #![doc = include_str!("../README.md")]
 
 pub use cairo;
-pub use ffi;
 pub use glib;
 pub use pango;
+pub use pango_cairo_sys as ffi;
 
 mod auto;
 

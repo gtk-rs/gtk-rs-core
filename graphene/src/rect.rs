@@ -4,7 +4,7 @@ use std::fmt;
 
 use glib::translate::*;
 
-use crate::{Rect, Vec2};
+use crate::{ffi, Rect, Vec2};
 
 impl Rect {
     #[doc(alias = "graphene_rect_get_vertices")]

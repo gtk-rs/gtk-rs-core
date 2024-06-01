@@ -7,7 +7,7 @@ use glib::{prelude::*, translate::*};
 #[cfg(all(not(unix), docsrs))]
 use socket::{AsRawFd, IntoRawFd, RawFd};
 
-use crate::{InputStream, UnixInputStream};
+use crate::{ffi, InputStream, UnixInputStream};
 
 impl UnixInputStream {
     // rustdoc-stripper-ignore-next

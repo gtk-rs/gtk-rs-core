@@ -2,6 +2,7 @@
 
 use crate::{
     enums::{EnumValues, FlagsValues},
+    gobject_ffi,
     prelude::*,
     translate::*,
     InterfaceInfo, TypeFlags, TypeInfo, TypePlugin,

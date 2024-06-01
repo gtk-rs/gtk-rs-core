@@ -2,7 +2,7 @@
 
 use std::path::PathBuf;
 
-use crate::{translate::*, GString, StrV};
+use crate::{ffi, translate::*, GString, StrV};
 
 #[doc(alias = "GWin32OSType")]
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]

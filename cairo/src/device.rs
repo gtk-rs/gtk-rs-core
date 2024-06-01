@@ -11,7 +11,7 @@ use std::ptr;
 #[cfg(feature = "use_glib")]
 use glib::translate::*;
 
-use crate::{utils::status_to_result, DeviceType, Error};
+use crate::{ffi, utils::status_to_result, DeviceType, Error};
 #[cfg(feature = "script")]
 use crate::{Content, RecordingSurface, ScriptMode, Surface};
 

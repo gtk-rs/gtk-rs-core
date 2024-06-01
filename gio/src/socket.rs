@@ -13,7 +13,7 @@ use glib::{prelude::*, translate::*, Slice};
 
 #[cfg(feature = "v2_60")]
 use crate::PollableReturn;
-use crate::{Cancellable, Socket, SocketAddress, SocketControlMessage};
+use crate::{ffi, Cancellable, Socket, SocketAddress, SocketControlMessage};
 
 impl Socket {
     #[cfg(unix)]
