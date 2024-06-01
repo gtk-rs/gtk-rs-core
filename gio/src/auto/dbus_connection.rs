@@ -643,11 +643,6 @@ impl DBusConnection {
         unsafe { from_glib(ffi::g_dbus_connection_is_closed(self.to_glib_none().0)) }
     }
 
-    //#[doc(alias = "g_dbus_connection_register_object")]
-    //pub fn register_object(&self, object_path: &str, interface_info: &DBusInterfaceInfo, vtable: /*Ignored*/Option<&DBusInterfaceVTable>, user_data: /*Unimplemented*/Option<Basic: Pointer>) -> Result<(), glib::Error> {
-    //    unsafe { TODO: call ffi:g_dbus_connection_register_object() }
-    //}
-
     #[doc(alias = "g_dbus_connection_send_message")]
     pub fn send_message(
         &self,
