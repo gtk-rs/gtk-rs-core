@@ -11,10 +11,14 @@ fn check_print_handler() {
     // g_print check part
     //
     let count = Arc::new(Mutex::new(0));
-    set_print_handler(clone!(@weak count => move |_| {
-        // we don't care about the message in here!
-        *count.lock().expect("failed to lock 1") += 1;
-    }));
+    set_print_handler(clone!(
+        #[weak]
+        count,
+        move |_| {
+            // we don't care about the message in here!
+            *count.lock().expect("failed to lock 1") += 1;
+        }
+    ));
     g_print!("test");
     assert_eq!(*count.lock().expect("failed to lock 2"), 1);
     g_printerr!("one");
@@ -31,10 +35,14 @@ fn check_print_handler() {
     // g_printerr check part
     //
     let count = Arc::new(Mutex::new(0));
-    set_printerr_handler(clone!(@weak count => move |_| {
-        // we don't care about the message in here!
-        *count.lock().expect("failed to lock a") += 1;
-    }));
+    set_printerr_handler(clone!(
+        #[weak]
+        count,
+        move |_| {
+            // we don't care about the message in here!
+            *count.lock().expect("failed to lock a") += 1;
+        }
+    ));
     g_printerr!("test");
     assert_eq!(*count.lock().expect("failed to lock b"), 1);
     g_print!("one");

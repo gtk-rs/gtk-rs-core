@@ -2,7 +2,9 @@
 
 mod boxed_derive;
 mod clone;
+mod clone_old;
 mod closure;
+mod closure_old;
 mod derived_properties_attribute;
 mod downgrade_derive;
 mod enum_derive;
@@ -17,7 +19,7 @@ mod variant_derive;
 mod utils;
 
 use flags_attribute::AttrInput;
-use proc_macro::TokenStream;
+use proc_macro::{TokenStream, TokenTree};
 use proc_macro2::Span;
 use syn::{parse_macro_input, DeriveInput};
 use utils::{parse_nested_meta_items_from_stream, NestedMetaItem};
@@ -72,9 +74,12 @@ use utils::{parse_nested_meta_items_from_stream, NestedMetaItem};
 /// use std::rc::Rc;
 ///
 /// let v = Rc::new(1);
-/// let closure = clone!(@strong v => move |x| {
-///     println!("v: {}, x: {}", v, x);
-/// });
+/// let closure = clone!(
+///     #[strong] v,
+///     move |x| {
+///         println!("v: {}, x: {}", v, x);
+///     },
+/// );
 ///
 /// closure(2);
 /// ```
@@ -87,9 +92,13 @@ use utils::{parse_nested_meta_items_from_stream, NestedMetaItem};
 /// use std::rc::Rc;
 ///
 /// let u = Rc::new(2);
-/// let closure = clone!(@weak u => move |x| {
-///     println!("u: {}, x: {}", u, x);
-/// });
+/// let closure = clone!(
+///     #[weak]
+///     u,
+///     move |x| {
+///         println!("u: {}, x: {}", u, x);
+///     },
+/// );
 ///
 /// closure(3);
 /// ```
@@ -97,7 +106,7 @@ use utils::{parse_nested_meta_items_from_stream, NestedMetaItem};
 /// #### Allowing a nullable weak reference
 ///
 /// In some cases, even if the weak references can't be retrieved, you might want to still have
-/// your closure called. In this case, you need to use `@weak-allow-none`:
+/// your closure called. In this case, you need to use `#[weak_allow_none]` instead of `#[weak]`:
 ///
 /// ```
 /// use glib;
@@ -108,11 +117,15 @@ use utils::{parse_nested_meta_items_from_stream, NestedMetaItem};
 ///     // This `Rc` won't be available in the closure because it's dropped at the end of the
 ///     // current block
 ///     let u = Rc::new(2);
-///     clone!(@weak-allow-none u => @default-return false, move |x| {
-///         // We need to use a Debug print for `u` because it'll be an `Option`.
-///         println!("u: {:?}, x: {}", u, x);
-///         true
-///     })
+///     clone!(
+///         #[weak_allow_none]
+///         u,
+///         move |x| {
+///             // We need to use a Debug print for `u` because it'll be an `Option`.
+///             println!("u: {:?}, x: {}", u, x);
+///             true
+///         },
+///     )
 /// };
 ///
 /// assert_eq!(closure(3), true);
@@ -125,10 +138,13 @@ use utils::{parse_nested_meta_items_from_stream, NestedMetaItem};
 /// use glib_macros::clone;
 ///
 /// let v = "123";
-/// let closure = clone!(@to-owned v => move |x| {
-///     // v is passed as `String` here
-///     println!("v: {}, x: {}", v, x);
-/// });
+/// let closure = clone!(
+///     #[to_owned] v,
+///     move |x| {
+///         // v is passed as `String` here
+///         println!("v: {}, x: {}", v, x);
+///     },
+/// );
 ///
 /// closure(2);
 /// ```
@@ -142,18 +158,28 @@ use utils::{parse_nested_meta_items_from_stream, NestedMetaItem};
 ///
 /// let v = Rc::new(1);
 /// let u = Rc::new(2);
-/// let closure = clone!(@strong v as y, @weak u => move |x| {
-///     println!("v as y: {}, u: {}, x: {}", y, u, x);
-/// });
+/// let closure = clone!(
+///     #[strong(rename_to = y)]
+///     v,
+///     #[weak] u,
+///     move |x| {
+///         println!("v as y: {}, u: {}, x: {}", y, u, x);
+///     },
+/// );
 ///
 /// closure(3);
 /// ```
 ///
-/// ### Providing a default return value if upgrading a weak reference fails
+/// ### Providing a return value if upgrading a weak reference fails
 ///
-/// You can do it in two different ways:
+/// By default, `()` is returned if upgrading a weak reference fails. This behaviour can be
+/// adjusted in two different ways:
 ///
-/// Either by providing the value yourself using `@default-return`:
+/// Either by providing the value yourself using one of
+///
+///   * `#[upgrade_or]`: Requires an expression that returns a `Copy` value of the expected return type,
+///   * `#[upgrade_or_else]`: Requires a closure that returns a value of the expected return type,
+///   * `#[upgrade_or_default]`: Requires that the return type implements `Default` and returns that.
 ///
 /// ```
 /// use glib;
@@ -161,10 +187,15 @@ use utils::{parse_nested_meta_items_from_stream, NestedMetaItem};
 /// use std::rc::Rc;
 ///
 /// let v = Rc::new(1);
-/// let closure = clone!(@weak v => @default-return false, move |x| {
-///     println!("v: {}, x: {}", v, x);
-///     true
-/// });
+/// let closure = clone!(
+///     #[weak] v,
+///     #[upgrade_or]
+///     false,
+///     move |x| {
+///         println!("v: {}, x: {}", v, x);
+///         true
+///     },
+/// );
 ///
 /// // Drop value so that the weak reference can't be upgraded.
 /// drop(v);
@@ -172,17 +203,21 @@ use utils::{parse_nested_meta_items_from_stream, NestedMetaItem};
 /// assert_eq!(closure(2), false);
 /// ```
 ///
-/// Or by using `@default-panic` (if the value fails to get upgraded, it'll panic):
+/// Or by using `#[upgrade_or_panic]`: If the value fails to get upgraded, it'll panic.
 ///
 /// ```should_panic
 /// # use glib;
 /// # use glib_macros::clone;
 /// # use std::rc::Rc;
 /// # let v = Rc::new(1);
-/// let closure = clone!(@weak v => @default-panic, move |x| {
-///     println!("v: {}, x: {}", v, x);
-///     true
-/// });
+/// let closure = clone!(
+///     #[weak] v,
+///     #[upgrade_or_panic]
+///     move |x| {
+///         println!("v: {}, x: {}", v, x);
+///         true
+///     },
+/// );
 /// # drop(v);
 /// # assert_eq!(closure(2), false);
 /// ```
@@ -191,7 +226,7 @@ use utils::{parse_nested_meta_items_from_stream, NestedMetaItem};
 ///
 /// Here is a list of errors you might encounter:
 ///
-/// **Missing `@weak` or `@strong`**:
+/// **Missing `#[weak]` or `#[strong]`**:
 ///
 /// ```compile_fail
 /// # use glib;
@@ -199,7 +234,10 @@ use utils::{parse_nested_meta_items_from_stream, NestedMetaItem};
 /// # use std::rc::Rc;
 /// let v = Rc::new(1);
 ///
-/// let closure = clone!(v => move |x| println!("v: {}, x: {}", v, x));
+/// let closure = clone!(
+///     v,
+///     move |x| println!("v: {}, x: {}", v, x),
+/// );
 /// # drop(v);
 /// # closure(2);
 /// ```
@@ -215,9 +253,12 @@ use utils::{parse_nested_meta_items_from_stream, NestedMetaItem};
 ///
 /// impl Foo {
 ///     fn foo(&self) {
-///         let closure = clone!(@strong self => move |x| {
-///             println!("self: {:?}", self);
-///         });
+///         let closure = clone!(
+///             #[strong] self,
+///             move |x| {
+///                 println!("self: {:?}", self);
+///             },
+///         );
 ///         # closure(2);
 ///     }
 /// }
@@ -234,9 +275,13 @@ use utils::{parse_nested_meta_items_from_stream, NestedMetaItem};
 ///
 /// impl Foo {
 ///     fn foo(&self) {
-///         let closure = clone!(@strong self as this => move |x| {
-///             println!("self: {:?}", this);
-///         });
+///         let closure = clone!(
+///             #[strong(rename_to = this)]
+///             self,
+///             move |x| {
+///                 println!("self: {:?}", this);
+///             },
+///         );
 ///         # closure(2);
 ///     }
 /// }
@@ -255,9 +300,12 @@ use utils::{parse_nested_meta_items_from_stream, NestedMetaItem};
 ///
 /// impl Foo {
 ///     fn foo(&self) {
-///         let closure = clone!(@strong self.v => move |x| {
-///             println!("self.v: {:?}", v);
-///         });
+///         let closure = clone!(
+///             #[strong] self.v,
+///             move |x| {
+///                 println!("self.v: {:?}", v);
+///             },
+///         );
 ///         # closure(2);
 ///     }
 /// }
@@ -274,16 +322,31 @@ use utils::{parse_nested_meta_items_from_stream, NestedMetaItem};
 /// # }
 /// impl Foo {
 ///     fn foo(&self) {
-///         let closure = clone!(@strong self.v as v => move |x| {
-///             println!("self.v: {}", v);
-///         });
+///         let closure = clone!(
+///             #[strong(rename_to = v)]
+///             self.v,
+///             move |x| {
+///                 println!("self.v: {}", v);
+///             },
+///         );
 ///         # closure(2);
 ///     }
 /// }
 /// ```
 #[proc_macro]
 pub fn clone(item: TokenStream) -> TokenStream {
-    clone::clone_inner(item)
+    // Check if this is an old-style clone macro invocation.
+    // These always start with an '@' punctuation.
+    let Some(first) = item.clone().into_iter().next() else {
+        return syn::Error::new(Span::call_site(), "expected a closure or async block")
+            .to_compile_error()
+            .into();
+    };
+
+    match first {
+        TokenTree::Punct(ref p) if p.to_string() == "@" => clone_old::clone_inner(item),
+        _ => clone::clone_inner(item),
+    }
 }
 
 /// Macro for creating a [`Closure`] object. This is a wrapper around [`Closure::new`] that
@@ -299,16 +362,20 @@ pub fn clone(item: TokenStream) -> TokenStream {
 ///
 /// Similarly to [`clone!`](crate::clone!), this macro can be useful in combination with signal
 /// handlers to reduce boilerplate when passing references. Unique to `Closure` objects is the
-/// ability to watch an object using a the `@watch` directive. Only an [`Object`] value can be
-/// passed to `@watch`, and only one object can be watched per closure. When an object is watched,
+/// ability to watch an object using a the `#[watch]` attribute. Only an [`Object`] value can be
+/// passed to `#[watch]`, and only one object can be watched per closure. When an object is watched,
 /// a weak reference to the object is held in the closure. When the object is destroyed, the
 /// closure will become invalidated: all signal handlers connected to the closure will become
 /// disconnected, and any calls to [`Closure::invoke`] on the closure will be silently ignored.
 /// Internally, this is accomplished using [`Object::watch_closure`] on the watched object.
 ///
-/// The `@weak-allow-none` and `@strong` captures are also supported and behave the same as in
-/// [`clone!`](crate::clone!), as is aliasing captures with the `as` keyword. Notably, these
-/// captures are able to reference `Rc` and `Arc` values in addition to `Object` values.
+/// The `#[weak]`, `#[weak_allow_none]`, `#[strong]`, `#[to_owned]` captures are also supported and
+/// behave the same as in [`clone!`](crate::clone!), as is aliasing captures via `rename_to`.
+/// Similarly, upgrade failure of weak references can be adjusted via `#[upgrade_or]`,
+/// `#[upgrade_or_else]`, `#[upgrade_or_default]` and `#[upgrade_or_panic]`.
+///
+/// Notably, these captures are able to reference `Rc` and `Arc` values in addition to `Object`
+/// values.
 ///
 /// [`Closure`]: ../glib/closure/struct.Closure.html
 /// [`Closure::new`]: ../glib/closure/struct.Closure.html#method.new
@@ -367,9 +434,12 @@ pub fn clone(item: TokenStream) -> TokenStream {
 ///
 /// let closure = {
 ///     let obj = glib::Object::new::<glib::Object>();
-///     let closure = closure_local!(@watch obj => move || {
-///         obj.type_().name()
-///     });
+///     let closure = closure_local!(
+///         #[watch] obj,
+///         move || {
+///             obj.type_().name()
+///         },
+///     );
 ///     assert_eq!(closure.invoke::<String>(&[]), "GObject");
 ///     closure
 /// };
@@ -377,7 +447,7 @@ pub fn clone(item: TokenStream) -> TokenStream {
 /// closure.invoke::<()>(&[]);
 /// ```
 ///
-/// `@watch` has special behavior when connected to a signal:
+/// `#[watch]` has special behavior when connected to a signal:
 ///
 /// ```
 /// use glib;
@@ -389,10 +459,15 @@ pub fn clone(item: TokenStream) -> TokenStream {
 ///     let other = glib::Object::new::<glib::Object>();
 ///     obj.connect_closure(
 ///         "notify", false,
-///         closure_local!(@watch other as b => move |a: glib::Object, pspec: glib::ParamSpec| {
-///             let value = a.property_value(pspec.name());
-///             b.set_property(pspec.name(), &value);
-///         }));
+///         closure_local!(
+///             #[watch(rename_to = b)]
+///             other,
+///             move |a: glib::Object, pspec: glib::ParamSpec| {
+///                 let value = a.property_value(pspec.name());
+///                 b.set_property(pspec.name(), &value);
+///             },
+///         ),
+///     );
 ///     // The signal handler will disconnect automatically at the end of this
 ///     // block when `other` is dropped.
 /// }
@@ -410,10 +485,17 @@ pub fn clone(item: TokenStream) -> TokenStream {
 ///     let a = Arc::new(String::from("Hello"));
 ///     let b = Arc::new(String::from("World"));
 ///     let c = "!";
-///     let closure = closure!(@strong a, @weak-allow-none b, @to-owned c => move || {
-///         // `a` is Arc<String>, `b` is Option<Arc<String>>, `c` is a `String`
-///         format!("{} {}{}", a, b.as_ref().map(|b| b.as_str()).unwrap_or_else(|| "Moon"), c)
-///     });
+///     let closure = closure!(
+///         #[strong] a,
+///         #[weak_allow_none]
+///         b,
+///         #[to_owned]
+///         c,
+///         move || {
+///             // `a` is Arc<String>, `b` is Option<Arc<String>>, `c` is a `String`
+///             format!("{} {}{}", a, b.as_ref().map(|b| b.as_str()).unwrap_or_else(|| "Moon"), c)
+///         },
+///     );
 ///     assert_eq!(closure.invoke::<String>(&[]), "Hello World!");
 ///     closure
 /// };
@@ -422,7 +504,18 @@ pub fn clone(item: TokenStream) -> TokenStream {
 /// ```
 #[proc_macro]
 pub fn closure(item: TokenStream) -> TokenStream {
-    closure::closure_inner(item, "new")
+    // Check if this is an old-style closure macro invocation.
+    // These always start with an '@' punctuation.
+    let Some(first) = item.clone().into_iter().next() else {
+        return syn::Error::new(Span::call_site(), "expected a closure")
+            .to_compile_error()
+            .into();
+    };
+
+    match first {
+        TokenTree::Punct(ref p) if p.to_string() == "@" => closure_old::closure_inner(item, "new"),
+        _ => closure::closure_inner(item, "new"),
+    }
 }
 
 /// The same as [`closure!`](crate::closure!) but uses [`Closure::new_local`] as a constructor.
@@ -432,7 +525,20 @@ pub fn closure(item: TokenStream) -> TokenStream {
 /// [`Closure::new_local`]: ../glib/closure/struct.Closure.html#method.new_local
 #[proc_macro]
 pub fn closure_local(item: TokenStream) -> TokenStream {
-    closure::closure_inner(item, "new_local")
+    // Check if this is an old-style closure macro invocation.
+    // These always start with an '@' punctuation.
+    let Some(first) = item.clone().into_iter().next() else {
+        return syn::Error::new(Span::call_site(), "expected a closure")
+            .to_compile_error()
+            .into();
+    };
+
+    match first {
+        TokenTree::Punct(ref p) if p.to_string() == "@" => {
+            closure_old::closure_inner(item, "new_local")
+        }
+        _ => closure::closure_inner(item, "new_local"),
+    }
 }
 
 /// Derive macro for register a Rust enum in the GLib type system and derive the
@@ -1042,7 +1148,13 @@ pub fn object_interface(_attr: TokenStream, item: TokenStream) -> TokenStream {
 ///
 /// let fancy_label = FancyLabel::new("Look at me!");
 /// let button = gtk::ButtonBuilder::new().label("Click me!").build();
-/// button.connect_clicked(clone!(@weak fancy_label => move || fancy_label.flip()));
+/// button.connect_clicked(
+///     clone!(
+///         #[weak]
+///         fancy_label,
+///         move || fancy_label.flip(),
+///     ),
+/// );
 /// ```
 ///
 /// ## Generic New Type
