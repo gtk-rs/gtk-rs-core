@@ -13,7 +13,7 @@ use std::{
     ptr, slice,
 };
 
-use crate::{prelude::*, translate::*, Type, Value};
+use crate::{ffi, gobject_ffi, prelude::*, translate::*, Type, Value};
 
 // rustdoc-stripper-ignore-next
 /// Representation of a borrowed [`GString`].

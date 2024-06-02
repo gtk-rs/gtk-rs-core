@@ -2,7 +2,7 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::Icon;
+use crate::{ffi, Icon};
 use glib::translate::*;
 
 glib::wrapper! {

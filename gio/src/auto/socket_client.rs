@@ -4,7 +4,7 @@
 #![allow(deprecated)]
 
 use crate::{
-    AsyncResult, Cancellable, IOStream, ProxyResolver, SocketAddress, SocketClientEvent,
+    ffi, AsyncResult, Cancellable, IOStream, ProxyResolver, SocketAddress, SocketClientEvent,
     SocketConnectable, SocketConnection, SocketFamily, SocketProtocol, SocketType,
     TlsCertificateFlags,
 };

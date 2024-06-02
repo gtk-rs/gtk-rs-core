@@ -2,7 +2,7 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{AppInfoCreateFlags, AppLaunchContext, AsyncResult, Cancellable, File, Icon};
+use crate::{ffi, AppInfoCreateFlags, AppLaunchContext, AsyncResult, Cancellable, File, Icon};
 use glib::{prelude::*, translate::*};
 use std::{boxed::Box as Box_, pin::Pin};
 

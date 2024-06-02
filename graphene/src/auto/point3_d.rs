@@ -2,7 +2,7 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{Rect, Vec3};
+use crate::{ffi, Rect, Vec3};
 use glib::translate::*;
 
 glib::wrapper! {

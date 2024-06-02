@@ -10,7 +10,7 @@ use glib::{
 
 use futures_channel::oneshot;
 
-use crate::{AsyncResult, Cancellable};
+use crate::{ffi, AsyncResult, Cancellable};
 
 glib::wrapper! {
     // rustdoc-stripper-ignore-next

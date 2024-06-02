@@ -3,7 +3,7 @@
 // DO NOT EDIT
 
 use crate::{
-    AsyncResult, Cancellable, SocketConnectable, TlsCertificate, TlsCertificateFlags,
+    ffi, AsyncResult, Cancellable, SocketConnectable, TlsCertificate, TlsCertificateFlags,
     TlsDatabaseLookupFlags, TlsDatabaseVerifyFlags, TlsInteraction,
 };
 use glib::{prelude::*, translate::*};

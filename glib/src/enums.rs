@@ -2,7 +2,10 @@
 
 use std::{cmp, ffi::CStr, fmt, ops::Deref, ptr};
 
-use crate::{prelude::*, translate::*, ParamSpecEnum, ParamSpecFlags, Type, TypeInfo, Value};
+use crate::{
+    ffi, gobject_ffi, prelude::*, translate::*, ParamSpecEnum, ParamSpecFlags, Type, TypeInfo,
+    Value,
+};
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Hash)]
 pub enum UserDirectory {

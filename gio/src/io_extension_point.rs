@@ -4,7 +4,7 @@ use std::{marker::PhantomData, ptr};
 
 use glib::{translate::*, GString, Type};
 
-use crate::IOExtension;
+use crate::{ffi, IOExtension};
 
 // rustdoc-stripper-ignore-next
 /// Builder for extension points.

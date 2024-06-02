@@ -4,7 +4,7 @@ use std::{mem, ptr};
 
 use glib::{prelude::*, translate::*};
 
-use crate::{Converter, ConverterFlags, ConverterResult};
+use crate::{ffi, Converter, ConverterFlags, ConverterResult};
 
 mod sealed {
     pub trait Sealed {}

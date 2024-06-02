@@ -2,7 +2,7 @@
 
 use glib::{prelude::*, translate::*, BoolError, StrV, Variant};
 
-use crate::{prelude::*, Settings, SettingsBindFlags};
+use crate::{ffi, prelude::*, Settings, SettingsBindFlags};
 
 #[must_use = "The builder must be built to be used"]
 pub struct BindingBuilder<'a> {

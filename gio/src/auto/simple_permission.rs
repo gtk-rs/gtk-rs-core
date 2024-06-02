@@ -2,7 +2,7 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::Permission;
+use crate::{ffi, Permission};
 use glib::{prelude::*, translate::*};
 
 glib::wrapper! {

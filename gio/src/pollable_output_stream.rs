@@ -11,7 +11,7 @@ use futures_core::{
 use futures_io::AsyncWrite;
 use glib::{prelude::*, translate::*};
 
-use crate::{error::to_std_io_result, prelude::*, Cancellable, PollableOutputStream};
+use crate::{error::to_std_io_result, ffi, prelude::*, Cancellable, PollableOutputStream};
 #[cfg(feature = "v2_60")]
 use crate::{OutputVector, PollableReturn};
 

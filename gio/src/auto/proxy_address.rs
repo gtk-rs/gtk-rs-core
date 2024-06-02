@@ -2,7 +2,7 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{InetAddress, InetSocketAddress, SocketAddress, SocketConnectable};
+use crate::{ffi, InetAddress, InetSocketAddress, SocketAddress, SocketConnectable};
 use glib::{prelude::*, translate::*};
 
 glib::wrapper! {

@@ -3,6 +3,7 @@
 // DO NOT EDIT
 
 use crate::{
+    ffi,
     prelude::*,
     signal::{connect_raw, SignalHandlerId},
     translate::*,
@@ -12,24 +13,24 @@ use std::boxed::Box as Box_;
 
 crate::wrapper! {
     #[doc(alias = "GBindingGroup")]
-    pub struct BindingGroup(Object<gobject_ffi::GBindingGroup>);
+    pub struct BindingGroup(Object<crate::gobject_ffi::GBindingGroup>);
 
     match fn {
-        type_ => || gobject_ffi::g_binding_group_get_type(),
+        type_ => || crate::gobject_ffi::g_binding_group_get_type(),
     }
 }
 
 impl BindingGroup {
     #[doc(alias = "g_binding_group_new")]
     pub fn new() -> BindingGroup {
-        unsafe { from_glib_full(gobject_ffi::g_binding_group_new()) }
+        unsafe { from_glib_full(crate::gobject_ffi::g_binding_group_new()) }
     }
 
     #[doc(alias = "g_binding_group_dup_source")]
     #[doc(alias = "dup_source")]
     pub fn source(&self) -> Option<Object> {
         unsafe {
-            from_glib_none(gobject_ffi::g_binding_group_dup_source(
+            from_glib_none(crate::gobject_ffi::g_binding_group_dup_source(
                 self.to_glib_none().0,
             ))
         }
@@ -38,7 +39,7 @@ impl BindingGroup {
     #[doc(alias = "g_binding_group_set_source")]
     pub fn set_source(&self, source: Option<&impl IsA<Object>>) {
         unsafe {
-            gobject_ffi::g_binding_group_set_source(
+            crate::gobject_ffi::g_binding_group_set_source(
                 self.to_glib_none().0,
                 source.map(|p| p.as_ref()).to_glib_none().0,
             );

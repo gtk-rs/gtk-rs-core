@@ -6,8 +6,8 @@
 #[cfg_attr(docsrs, doc(cfg(unix)))]
 use crate::UnixFDList;
 use crate::{
-    AsyncInitable, AsyncResult, BusType, Cancellable, DBusCallFlags, DBusConnection, DBusInterface,
-    DBusInterfaceInfo, DBusProxyFlags, Initable,
+    ffi, AsyncInitable, AsyncResult, BusType, Cancellable, DBusCallFlags, DBusConnection,
+    DBusInterface, DBusInterfaceInfo, DBusProxyFlags, Initable,
 };
 use glib::{
     prelude::*,

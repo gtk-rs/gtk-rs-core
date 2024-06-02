@@ -11,7 +11,7 @@ use std::{
 #[cfg(feature = "use_glib")]
 use glib::translate::*;
 
-use crate::{Error, PsLevel, Surface, SurfaceType};
+use crate::{ffi, Error, PsLevel, Surface, SurfaceType};
 
 impl PsLevel {
     pub fn as_str(self) -> Option<&'static str> {

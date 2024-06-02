@@ -4,7 +4,7 @@ use std::{cmp, mem};
 
 use glib::{translate::*, GString};
 
-use crate::{Icon, UnixMountEntry};
+use crate::{ffi, Icon, UnixMountEntry};
 
 impl UnixMountEntry {
     #[doc(alias = "g_unix_mount_at")]

@@ -3,7 +3,7 @@
 use std::sync::OnceLock;
 
 use super::{FontExtents, FontFace, ScaledFont, TextCluster, TextClusterFlags, TextExtents};
-use crate::{utils::status_to_result, Context, Error, Glyph};
+use crate::{ffi, utils::status_to_result, Context, Error, Glyph};
 
 type BoxInitFunc =
     Box<dyn Fn(&ScaledFont, &Context, &mut FontExtents) -> Result<(), Error> + Send + Sync>;

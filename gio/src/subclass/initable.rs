@@ -4,7 +4,7 @@ use std::ptr;
 
 use glib::{prelude::*, subclass::prelude::*, translate::*, Error};
 
-use crate::{Cancellable, Initable};
+use crate::{ffi, Cancellable, Initable};
 
 pub trait InitableImpl: ObjectImpl {
     fn init(&self, cancellable: Option<&Cancellable>) -> Result<(), Error> {

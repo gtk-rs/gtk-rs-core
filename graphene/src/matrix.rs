@@ -4,7 +4,7 @@ use std::fmt;
 
 use glib::translate::*;
 
-use crate::{Matrix, Point3D, Vec3, Vec4};
+use crate::{ffi, Matrix, Point3D, Vec3, Vec4};
 
 impl Matrix {
     #[doc(alias = "graphene_matrix_init_from_2d")]

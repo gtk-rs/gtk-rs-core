@@ -2,7 +2,7 @@
 
 use std::{fmt, marker::PhantomData, mem, ptr};
 
-use crate::translate::*;
+use crate::{ffi, translate::*};
 
 // rustdoc-stripper-ignore-next
 /// Minimum size of the `Slice` allocation in bytes.

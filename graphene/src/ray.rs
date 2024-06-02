@@ -4,7 +4,7 @@ use std::fmt;
 
 use glib::translate::*;
 
-use crate::{Point3D, Ray, Vec3};
+use crate::{ffi, Point3D, Ray, Vec3};
 
 impl Ray {
     #[doc(alias = "graphene_ray_init")]

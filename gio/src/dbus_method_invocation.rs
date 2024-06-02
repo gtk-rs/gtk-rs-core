@@ -2,7 +2,7 @@
 
 use glib::{prelude::*, translate::*};
 
-use crate::DBusMethodInvocation;
+use crate::{ffi, DBusMethodInvocation};
 
 impl DBusMethodInvocation {
     #[doc(alias = "g_dbus_method_invocation_return_error_literal")]

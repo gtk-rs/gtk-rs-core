@@ -6,8 +6,13 @@
 
 use std::{mem, ptr};
 
-use super::{prelude::*, Signal};
-use crate::{prelude::*, translate::*, Object, ParamSpec, Slice, Value};
+use crate::{
+    ffi, gobject_ffi,
+    prelude::*,
+    subclass::{prelude::*, Signal},
+    translate::*,
+    Object, ParamSpec, Slice, Value,
+};
 
 // rustdoc-stripper-ignore-next
 /// Trait for implementors of `glib::Object` subclasses.

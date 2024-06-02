@@ -2,7 +2,7 @@
 
 use std::{cmp, fmt, hash, mem, ops, ptr, slice, str};
 
-use crate::{translate::*, GStr};
+use crate::{ffi, translate::*, GStr};
 
 wrapper! {
     // rustdoc-stripper-ignore-next

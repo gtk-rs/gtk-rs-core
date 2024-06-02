@@ -23,7 +23,7 @@ macro_rules! declare_surface {
         impl $surf_name {
             #[inline]
             pub unsafe fn from_raw_full(
-                ptr: *mut ffi::cairo_surface_t,
+                ptr: *mut crate::ffi::cairo_surface_t,
             ) -> Result<$surf_name, crate::error::Error> {
                 let surface = Surface::from_raw_full(ptr)?;
                 Self::try_from(surface).map_err(|_| crate::error::Error::SurfaceTypeMismatch)
@@ -31,7 +31,7 @@ macro_rules! declare_surface {
 
             #[inline]
             pub unsafe fn from_raw_none(
-                ptr: *mut ffi::cairo_surface_t,
+                ptr: *mut crate::ffi::cairo_surface_t,
             ) -> Result<$surf_name, crate::error::Error> {
                 let surface = Surface::from_raw_none(ptr);
                 Self::try_from(surface).map_err(|_| crate::error::Error::SurfaceTypeMismatch)
@@ -39,42 +39,42 @@ macro_rules! declare_surface {
         }
 
         #[cfg(feature = "use_glib")]
-        impl IntoGlibPtr<*mut ffi::cairo_surface_t> for $surf_name {
+        impl IntoGlibPtr<*mut crate::ffi::cairo_surface_t> for $surf_name {
             #[inline]
-            unsafe fn into_glib_ptr(self) -> *mut ffi::cairo_surface_t {
+            unsafe fn into_glib_ptr(self) -> *mut crate::ffi::cairo_surface_t {
                 std::mem::ManuallyDrop::new(self).to_glib_none().0
             }
         }
 
         #[cfg(feature = "use_glib")]
-        impl<'a> ToGlibPtr<'a, *mut ffi::cairo_surface_t> for $surf_name {
+        impl<'a> ToGlibPtr<'a, *mut crate::ffi::cairo_surface_t> for $surf_name {
             type Storage = std::marker::PhantomData<&'a Surface>;
 
             #[inline]
-            fn to_glib_none(&'a self) -> Stash<'a, *mut ffi::cairo_surface_t, Self> {
+            fn to_glib_none(&'a self) -> Stash<'a, *mut crate::ffi::cairo_surface_t, Self> {
                 let stash = self.0.to_glib_none();
                 Stash(stash.0, stash.1)
             }
 
             #[inline]
-            fn to_glib_full(&self) -> *mut ffi::cairo_surface_t {
-                unsafe { ffi::cairo_surface_reference(self.to_glib_none().0) }
+            fn to_glib_full(&self) -> *mut crate::ffi::cairo_surface_t {
+                unsafe { crate::ffi::cairo_surface_reference(self.to_glib_none().0) }
             }
         }
 
         #[cfg(feature = "use_glib")]
-        impl FromGlibPtrNone<*mut ffi::cairo_surface_t> for $surf_name {
+        impl FromGlibPtrNone<*mut crate::ffi::cairo_surface_t> for $surf_name {
             #[inline]
-            unsafe fn from_glib_none(ptr: *mut ffi::cairo_surface_t) -> $surf_name {
+            unsafe fn from_glib_none(ptr: *mut crate::ffi::cairo_surface_t) -> $surf_name {
                 Self::try_from(from_glib_none::<_, Surface>(ptr)).unwrap()
             }
         }
 
         #[cfg(feature = "use_glib")]
-        impl FromGlibPtrBorrow<*mut ffi::cairo_surface_t> for $surf_name {
+        impl FromGlibPtrBorrow<*mut crate::ffi::cairo_surface_t> for $surf_name {
             #[inline]
             unsafe fn from_glib_borrow(
-                ptr: *mut ffi::cairo_surface_t,
+                ptr: *mut crate::ffi::cairo_surface_t,
             ) -> crate::Borrowed<$surf_name> {
                 let surface = from_glib_borrow::<_, Surface>(ptr);
                 let surface = Self::try_from(surface.into_inner())
@@ -85,9 +85,9 @@ macro_rules! declare_surface {
         }
 
         #[cfg(feature = "use_glib")]
-        impl FromGlibPtrFull<*mut ffi::cairo_surface_t> for $surf_name {
+        impl FromGlibPtrFull<*mut crate::ffi::cairo_surface_t> for $surf_name {
             #[inline]
-            unsafe fn from_glib_full(ptr: *mut ffi::cairo_surface_t) -> $surf_name {
+            unsafe fn from_glib_full(ptr: *mut crate::ffi::cairo_surface_t) -> $surf_name {
                 Self::from_raw_full(ptr).unwrap()
             }
         }
@@ -95,8 +95,8 @@ macro_rules! declare_surface {
         #[cfg(feature = "use_glib")]
         gvalue_impl!(
             $surf_name,
-            ffi::cairo_surface_t,
-            ffi::gobject::cairo_gobject_surface_get_type
+            crate::ffi::cairo_surface_t,
+            crate::ffi::gobject::cairo_gobject_surface_get_type
         );
 
         impl Deref for $surf_name {

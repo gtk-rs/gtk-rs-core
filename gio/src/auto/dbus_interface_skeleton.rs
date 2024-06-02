@@ -3,7 +3,7 @@
 // DO NOT EDIT
 
 use crate::{
-    DBusConnection, DBusInterface, DBusInterfaceInfo, DBusInterfaceSkeletonFlags,
+    ffi, DBusConnection, DBusInterface, DBusInterfaceInfo, DBusInterfaceSkeletonFlags,
     DBusMethodInvocation,
 };
 use glib::{

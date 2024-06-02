@@ -2,7 +2,7 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{AppInfo, AppLaunchContext};
+use crate::{ffi, AppInfo, AppLaunchContext};
 use glib::{prelude::*, translate::*};
 use std::boxed::Box as Box_;
 

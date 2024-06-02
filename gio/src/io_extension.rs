@@ -2,6 +2,7 @@
 
 use std::{fmt, marker::PhantomData, ptr};
 
+use crate::ffi;
 use glib::{translate::*, Type};
 
 // rustdoc-stripper-ignore-next

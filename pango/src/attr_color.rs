@@ -2,7 +2,7 @@
 
 use glib::translate::*;
 
-use crate::{AttrType, Color};
+use crate::{ffi, AttrType, Color};
 
 define_attribute_struct!(
     AttrColor,

@@ -2,7 +2,7 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{Box, Euler, Point, Point3D, Quad, Quaternion, Ray, Rect, Sphere, Vec3, Vec4};
+use crate::{ffi, Box, Euler, Point, Point3D, Quad, Quaternion, Ray, Rect, Sphere, Vec3, Vec4};
 use glib::translate::*;
 
 glib::wrapper! {

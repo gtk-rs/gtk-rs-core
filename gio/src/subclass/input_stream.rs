@@ -4,7 +4,7 @@ use std::ptr;
 
 use glib::{prelude::*, subclass::prelude::*, translate::*, Error};
 
-use crate::{Cancellable, InputStream};
+use crate::{ffi, Cancellable, InputStream};
 
 pub trait InputStreamImpl: ObjectImpl + InputStreamImplExt + Send {
     fn read(&self, buffer: &mut [u8], cancellable: Option<&Cancellable>) -> Result<usize, Error> {

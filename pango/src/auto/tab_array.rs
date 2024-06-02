@@ -2,7 +2,7 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::TabAlign;
+use crate::{ffi, TabAlign};
 use glib::translate::*;
 
 glib::wrapper! {

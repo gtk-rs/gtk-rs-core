@@ -8,7 +8,7 @@ use crate::{Attribute, Font, Gravity, Language, Script};
 
 glib::wrapper! {
     #[doc(alias = "PangoAnalysis")]
-    pub struct Analysis(BoxedInline<ffi::PangoAnalysis>);
+    pub struct Analysis(BoxedInline<crate::ffi::PangoAnalysis>);
 }
 
 impl Analysis {

@@ -5,7 +5,7 @@ use std::{future::Future, pin::Pin, ptr};
 use glib::{prelude::*, subclass::prelude::*, thread_guard::ThreadGuard, translate::*, Error};
 
 use crate::{
-    AsyncInitable, AsyncResult, Cancellable, CancellableFuture, GioFutureResult, LocalTask,
+    ffi, AsyncInitable, AsyncResult, Cancellable, CancellableFuture, GioFutureResult, LocalTask,
 };
 
 pub trait AsyncInitableImpl: ObjectImpl {

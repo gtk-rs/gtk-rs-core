@@ -15,7 +15,7 @@ use std::ptr;
 // #[cfg(windows)]
 // #[cfg(feature = "v2_58")]
 // use std::os::windows::io::AsRawHandle;
-use crate::{translate::*, ChecksumType, GStr};
+use crate::{ffi, translate::*, ChecksumType, GStr};
 #[cfg(not(windows))]
 use crate::{Error, Pid, SpawnFlags};
 

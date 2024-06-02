@@ -5,7 +5,7 @@ use std::ops::Deref;
 #[cfg(feature = "use_glib")]
 use glib::translate::*;
 
-use crate::{Content, Error, Rectangle, Surface, SurfaceType};
+use crate::{ffi, Content, Error, Rectangle, Surface, SurfaceType};
 
 declare_surface!(RecordingSurface, SurfaceType::Recording);
 impl RecordingSurface {

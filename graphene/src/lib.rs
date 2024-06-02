@@ -3,8 +3,8 @@
 #![cfg_attr(docsrs, feature(doc_cfg))]
 #![doc = include_str!("../README.md")]
 
-pub use ffi;
 pub use glib;
+pub use graphene_sys as ffi;
 
 // Graphene has no runtime to initialize
 macro_rules! assert_initialized_main_thread {

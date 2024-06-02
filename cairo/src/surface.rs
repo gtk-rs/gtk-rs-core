@@ -9,8 +9,8 @@ use glib::translate::*;
 use libc::{c_ulong, c_void};
 
 use crate::{
-    utils::status_to_result, Content, Device, Error, Format, ImageSurface, Rectangle, RectangleInt,
-    SurfaceType,
+    ffi, utils::status_to_result, Content, Device, Error, Format, ImageSurface, Rectangle,
+    RectangleInt, SurfaceType,
 };
 
 #[derive(Debug)]

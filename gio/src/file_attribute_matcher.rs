@@ -2,6 +2,7 @@
 
 use std::iter::FusedIterator;
 
+use crate::ffi;
 use glib::{translate::*, GString};
 
 pub struct FileAttributematcherIter(crate::FileAttributeMatcher);

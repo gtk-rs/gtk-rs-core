@@ -2,7 +2,7 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{Context, Font, FontDescription, FontFamily, Fontset, Language};
+use crate::{ffi, Context, Font, FontDescription, FontFamily, Fontset, Language};
 use glib::{prelude::*, translate::*};
 
 glib::wrapper! {

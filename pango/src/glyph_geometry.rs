@@ -4,7 +4,7 @@ use std::fmt;
 
 glib::wrapper! {
     #[doc(alias = "PangoGlyphGeometry")]
-    pub struct GlyphGeometry(BoxedInline<ffi::PangoGlyphGeometry>);
+    pub struct GlyphGeometry(BoxedInline<crate::ffi::PangoGlyphGeometry>);
 }
 
 impl GlyphGeometry {

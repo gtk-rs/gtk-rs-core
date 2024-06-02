@@ -111,7 +111,8 @@ use std::{
 };
 
 use crate::{
-    prelude::*, translate::*, Bytes, Type, VariantIter, VariantStrIter, VariantTy, VariantType,
+    ffi, gobject_ffi, prelude::*, translate::*, Bytes, Type, VariantIter, VariantStrIter,
+    VariantTy, VariantType,
 };
 
 wrapper! {

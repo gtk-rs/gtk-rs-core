@@ -11,7 +11,7 @@ use std::{
     str::FromStr,
 };
 
-use crate::{prelude::*, translate::*, BoolError, Type};
+use crate::{ffi, gobject_ffi, prelude::*, translate::*, BoolError, Type};
 
 // rustdoc-stripper-ignore-next
 /// Describes `Variant` types.

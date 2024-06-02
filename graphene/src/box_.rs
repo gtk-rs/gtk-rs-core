@@ -4,7 +4,7 @@ use std::fmt;
 
 use glib::translate::*;
 
-use crate::{Box, Point3D, Vec3};
+use crate::{ffi, Box, Point3D, Vec3};
 
 impl Box {
     #[doc(alias = "graphene_box_get_vertices")]

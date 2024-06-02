@@ -4,7 +4,7 @@ use std::sync::OnceLock;
 
 use glib::{prelude::*, subclass::prelude::*, translate::*};
 
-use crate::ListModel;
+use crate::{ffi, ListModel};
 
 pub trait ListModelImpl: ObjectImpl {
     #[doc(alias = "get_item_type")]

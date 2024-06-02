@@ -2,7 +2,7 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{Credentials, SocketControlMessage};
+use crate::{ffi, Credentials, SocketControlMessage};
 use glib::{prelude::*, translate::*};
 
 glib::wrapper! {

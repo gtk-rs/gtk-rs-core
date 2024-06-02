@@ -6,7 +6,7 @@ use glib::{prelude::*, translate::*};
 
 #[cfg(feature = "v2_74")]
 use crate::FileIOStream;
-use crate::{Cancellable, File, FileCreateFlags, FileEnumerator, FileQueryInfoFlags};
+use crate::{ffi, Cancellable, File, FileCreateFlags, FileEnumerator, FileQueryInfoFlags};
 
 impl File {
     #[cfg(feature = "v2_74")]

@@ -2,7 +2,7 @@
 
 use glib::{translate::*, Slice};
 
-use crate::{GlyphInfo, GlyphString};
+use crate::{ffi, GlyphInfo, GlyphString};
 
 impl GlyphString {
     #[inline]

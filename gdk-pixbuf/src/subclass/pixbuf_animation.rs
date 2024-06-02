@@ -11,7 +11,7 @@ use std::{
 
 use glib::{prelude::*, subclass::prelude::*, translate::*};
 
-use crate::{Pixbuf, PixbufAnimation, PixbufAnimationIter};
+use crate::{ffi, Pixbuf, PixbufAnimation, PixbufAnimationIter};
 
 pub trait PixbufAnimationImpl: ObjectImpl {
     fn is_static_image(&self) -> bool {

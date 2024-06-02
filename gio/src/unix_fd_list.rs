@@ -8,7 +8,7 @@ use glib::{prelude::*, translate::*};
 #[cfg(all(not(unix), docsrs))]
 use socket::{AsRawFd, IntoRawFd, RawFd};
 
-use crate::UnixFDList;
+use crate::{ffi, UnixFDList};
 
 impl UnixFDList {
     #[doc(alias = "g_unix_fd_list_new_from_array")]

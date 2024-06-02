@@ -2,7 +2,7 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{DBusConnection, MenuModel};
+use crate::{ffi, DBusConnection, MenuModel};
 use glib::translate::*;
 
 glib::wrapper! {

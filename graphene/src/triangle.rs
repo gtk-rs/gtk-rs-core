@@ -4,7 +4,7 @@ use std::fmt;
 
 use glib::translate::*;
 
-use crate::{Point3D, Triangle, Vec3};
+use crate::{ffi, Point3D, Triangle, Vec3};
 
 impl Triangle {
     #[doc(alias = "graphene_triangle_init_from_float")]

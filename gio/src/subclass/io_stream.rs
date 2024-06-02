@@ -4,7 +4,7 @@ use std::{ptr, sync::OnceLock};
 
 use glib::{prelude::*, subclass::prelude::*, translate::*, Error};
 
-use crate::{Cancellable, IOStream, InputStream, OutputStream};
+use crate::{ffi, Cancellable, IOStream, InputStream, OutputStream};
 
 pub trait IOStreamImpl: ObjectImpl + IOStreamImplExt + Send {
     fn input_stream(&self) -> InputStream {

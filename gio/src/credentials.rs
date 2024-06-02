@@ -2,7 +2,7 @@
 
 use glib::translate::*;
 
-use crate::{Credentials, CredentialsType};
+use crate::{ffi, Credentials, CredentialsType};
 
 impl Credentials {
     #[doc(alias = "g_credentials_get_native")]

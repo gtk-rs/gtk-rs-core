@@ -3,7 +3,7 @@
 // DO NOT EDIT
 
 use crate::{
-    AsyncResult, Cancellable, TlsCertificateRequestFlags, TlsConnection, TlsInteractionResult,
+    ffi, AsyncResult, Cancellable, TlsCertificateRequestFlags, TlsConnection, TlsInteractionResult,
     TlsPassword,
 };
 use glib::{prelude::*, translate::*};

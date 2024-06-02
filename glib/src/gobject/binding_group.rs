@@ -3,8 +3,8 @@
 use std::{fmt, ptr};
 
 use crate::{
-    object::ObjectRef, prelude::*, translate::*, Binding, BindingFlags, BindingGroup, BoolError,
-    Object, ParamSpec, Value,
+    ffi, gobject_ffi, object::ObjectRef, prelude::*, translate::*, Binding, BindingFlags,
+    BindingGroup, BoolError, Object, ParamSpec, Value,
 };
 
 impl BindingGroup {

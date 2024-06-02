@@ -12,7 +12,7 @@ impl TabArray {
         unsafe {
             let mut alignments = std::mem::MaybeUninit::uninit();
             let mut locations = std::mem::MaybeUninit::uninit();
-            ffi::pango_tab_array_get_tabs(
+            crate::ffi::pango_tab_array_get_tabs(
                 mut_override(self.to_glib_none().0),
                 alignments.as_mut_ptr(),
                 locations.as_mut_ptr(),

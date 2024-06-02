@@ -13,7 +13,7 @@ use futures_task::{FutureObj, LocalFutureObj, LocalSpawn, Spawn, SpawnError};
 use futures_util::FutureExt;
 
 use crate::{
-    thread_guard::ThreadGuard, translate::*, MainContext, MainLoop, Priority, Source, SourceId,
+    ffi, thread_guard::ThreadGuard, translate::*, MainContext, MainLoop, Priority, Source, SourceId,
 };
 
 // Wrapper around Send Futures and non-Send Futures that will panic

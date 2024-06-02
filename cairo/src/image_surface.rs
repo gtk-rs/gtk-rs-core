@@ -9,7 +9,7 @@ use std::{
 #[cfg(feature = "use_glib")]
 use glib::translate::*;
 
-use crate::{utils::status_to_result, BorrowError, Error, Format, Surface, SurfaceType};
+use crate::{ffi, utils::status_to_result, BorrowError, Error, Format, Surface, SurfaceType};
 
 declare_surface!(ImageSurface, SurfaceType::Image);
 

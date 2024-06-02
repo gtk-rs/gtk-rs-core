@@ -4,7 +4,7 @@ use std::fmt;
 
 use glib::translate::*;
 
-use crate::Size;
+use crate::{ffi, Size};
 
 impl Size {
     #[doc(alias = "graphene_size_init")]

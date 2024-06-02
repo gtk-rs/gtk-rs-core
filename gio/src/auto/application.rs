@@ -3,8 +3,8 @@
 // DO NOT EDIT
 
 use crate::{
-    ActionGroup, ActionMap, ApplicationCommandLine, ApplicationFlags, Cancellable, DBusConnection,
-    File, Notification,
+    ffi, ActionGroup, ActionMap, ApplicationCommandLine, ApplicationFlags, Cancellable,
+    DBusConnection, File, Notification,
 };
 use glib::{
     prelude::*,

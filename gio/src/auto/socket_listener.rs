@@ -3,7 +3,7 @@
 // DO NOT EDIT
 
 use crate::{
-    AsyncResult, Cancellable, Socket, SocketAddress, SocketConnection, SocketListenerEvent,
+    ffi, AsyncResult, Cancellable, Socket, SocketAddress, SocketConnection, SocketListenerEvent,
     SocketProtocol, SocketType,
 };
 use glib::{

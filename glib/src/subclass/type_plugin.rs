@@ -2,8 +2,8 @@
 
 use crate::enums::{EnumValues, FlagsValues};
 use crate::{
-    prelude::*, subclass::prelude::*, translate::*, Interface, InterfaceInfo, Type, TypeFlags,
-    TypeInfo, TypePlugin, TypeValueTable,
+    ffi, gobject_ffi, prelude::*, subclass::prelude::*, translate::*, Interface, InterfaceInfo,
+    Type, TypeFlags, TypeInfo, TypePlugin, TypeValueTable,
 };
 
 pub trait TypePluginImpl: ObjectImpl + TypePluginImplExt {

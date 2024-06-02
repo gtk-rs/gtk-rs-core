@@ -9,7 +9,7 @@ use futures_core::{
 use futures_io::AsyncRead;
 use glib::{prelude::*, translate::*};
 
-use crate::{prelude::*, Cancellable, PollableInputStream};
+use crate::{ffi, prelude::*, Cancellable, PollableInputStream};
 
 mod sealed {
     pub trait Sealed {}

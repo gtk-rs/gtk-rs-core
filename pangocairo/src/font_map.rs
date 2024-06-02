@@ -2,7 +2,7 @@
 
 use glib::{prelude::*, translate::*};
 
-use crate::FontMap;
+use crate::{ffi, FontMap};
 
 mod sealed {
     pub trait Sealed {}
