@@ -252,7 +252,7 @@
 
 <span class="kw">use </span>glib::{<a href="../../../glib/prelude/index.html">prelude</a>::<span class="kw-2">*</span>, <a href="../../../glib/subclass/prelude/index.html">subclass::prelude</a>::<span class="kw-2">*</span>, <a href="../../../glib/translate/index.html">translate</a>::<span class="kw-2">*</span>, <a href="../../../glib/error/struct.Error.html">Error</a>};
 
-<span class="kw">use crate</span>::{<a href="../auto/cancellable.rs.html#7-85">Cancellable</a>, <a href="../auto/io_stream.rs.html#13-94">IOStream</a>, <a href="../auto/input_stream.rs.html#9-35">InputStream</a>, <a href="../auto/output_stream.rs.html#9-39">OutputStream</a>};
+<span class="kw">use crate</span>::{<a href="../../../gio_sys/index.html">ffi</a>, <a href="../auto/cancellable.rs.html#8-86">Cancellable</a>, <a href="../auto/io_stream.rs.html#13-94">IOStream</a>, <a href="../auto/input_stream.rs.html#9-35">InputStream</a>, <a href="../auto/output_stream.rs.html#9-39">OutputStream</a>};
 
 <span class="kw">pub trait </span><a href="../../../gio/subclass/prelude/trait.IOStreamImpl.html">IOStreamImpl</a>: <a href="../../../glib/subclass/object/trait.ObjectImpl.html">ObjectImpl</a> + <a href="#42-85">IOStreamImplExt</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> {
     <span class="doccomment">/// Gets the input stream for this object. This is used
@@ -277,7 +277,7 @@
         <a class="self" href="#28">self</a>.<a href="#54-63">parent_output_stream</a>()
     }
 
-    <span class="kw">fn </span>close(<span class="kw-2">&amp;</span><span class="self">self</span>, cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="../auto/cancellable.rs.html#7-85">Cancellable</a>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="../../../glib/error/struct.Error.html">Error</a>&gt; {
+    <span class="kw">fn </span>close(<span class="kw-2">&amp;</span><span class="self">self</span>, cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="../auto/cancellable.rs.html#8-86">Cancellable</a>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="../../../glib/error/struct.Error.html">Error</a>&gt; {
         <a class="self" href="#32">self</a>.<a href="#65-84">parent_close</a>(<a href="#32">cancellable</a>)
     }
 }
@@ -310,7 +310,7 @@
         }
     }
 
-    <span class="kw">fn </span>parent_close(<span class="kw-2">&amp;</span><span class="self">self</span>, cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="../auto/cancellable.rs.html#7-85">Cancellable</a>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="../../../glib/error/struct.Error.html">Error</a>&gt; {
+    <span class="kw">fn </span>parent_close(<span class="kw-2">&amp;</span><span class="self">self</span>, cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="../auto/cancellable.rs.html#8-86">Cancellable</a>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="../../../glib/error/struct.Error.html">Error</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>data = <a href="../../../glib/subclass/types/trait.ObjectSubclassType.html#tymethod.type_data"><span class="self">Self</span>::type_data</a>();
             <span class="kw">let </span>parent_class = <a href="#67">data</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().<a href="../../../glib/subclass/types/struct.TypeData.html#method.parent_class">parent_class</a>() <span class="kw">as </span><span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GIOStreamClass.html">ffi::GIOStreamClass</a>;
@@ -408,7 +408,7 @@
     <span class="kw">let </span>imp = <a href="#159">instance</a>.<a href="../../../glib/subclass/types/trait.InstanceStructExt.html#tymethod.imp">imp</a>();
 
     <span class="kw">match </span><a href="#160">imp</a>.<a href="#32-34">close</a>(
-        <span class="prelude-ty">Option</span>::&lt;<a href="../auto/cancellable.rs.html#7-85">Cancellable</a>&gt;::from_glib_borrow(<a href="#156">cancellable</a>)
+        <span class="prelude-ty">Option</span>::&lt;<a href="../auto/cancellable.rs.html#8-86">Cancellable</a>&gt;::from_glib_borrow(<a href="#156">cancellable</a>)
             .<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>()
             .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_ref">as_ref</a>(),
     ) {

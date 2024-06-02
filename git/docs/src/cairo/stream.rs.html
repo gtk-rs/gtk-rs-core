@@ -358,10 +358,10 @@
     <a href="https://doc.rust-lang.org/nightly/alloc/rc/struct.Rc.html">rc::Rc</a>,
 };
 
-<span class="kw">use </span><a href="../../cairo_sys/type.cairo_status_t.html">ffi::cairo_status_t</a>;
+<span class="kw">use </span><a href="../../cairo_sys/index.html"><span class="kw">crate</span>::ffi</a>;
 <span class="kw">use </span>libc::{c_double, c_uchar, c_uint, <a href="https://doc.rust-lang.org/nightly/core/ffi/enum.c_void.html">c_void</a>};
 
-<span class="kw">use crate</span>::{<a href="error.rs.html#10-150">Error</a>, <a href="surface.rs.html#19">Surface</a>, <a href="user_data.rs.html#7-10">UserDataKey</a>};
+<span class="kw">use crate</span>::{<a href="error.rs.html#11-151">Error</a>, <a href="surface.rs.html#19">Surface</a>, <a href="user_data.rs.html#7-10">UserDataKey</a>};
 
 <span class="macro">macro_rules!</span> for_stream_constructors {
     (<span class="macro-nonterminal">$constructor_ffi</span>: ident) =&gt; {
@@ -417,7 +417,7 @@
         width: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>,
         height: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>,
         stream: W,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, <a href="error.rs.html#10-150">Error</a>&gt; {
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, <a href="error.rs.html#11-151">Error</a>&gt; {
         <span class="kw">let </span>env_rc = <a href="https://doc.rust-lang.org/nightly/alloc/rc/struct.Rc.html#method.new">Rc::new</a>(<a href="#189-192">CallbackEnvironment</a> {
             mutable: <a href="https://doc.rust-lang.org/nightly/core/cell/struct.RefCell.html#method.new">RefCell::new</a>(<a href="#194-197">MutableCallbackEnvironment</a> {
                 stream: <span class="prelude-val">Some</span>((<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">Box::new</a>(<a href="#70">stream</a>), <span class="prelude-val">None</span>)),
@@ -439,7 +439,7 @@
         width: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>,
         height: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>,
         stream: <span class="kw-2">*mut </span>W,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, <a href="error.rs.html#10-150">Error</a>&gt; {
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, <a href="error.rs.html#11-151">Error</a>&gt; {
         <a href="#66-86"><span class="self">Self</span>::_for_stream</a>(
             <a href="#89">constructor</a>,
             <a href="#90">width</a>,
@@ -551,7 +551,7 @@
     env: <span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/enum.c_void.html">c_void</a>,
     data: <span class="kw-2">*mut </span>c_uchar,
     length: c_uint,
-) -&gt; <a href="../../cairo_sys/type.cairo_status_t.html">cairo_status_t</a> {
+) -&gt; <a href="../../cairo_sys/type.cairo_status_t.html">ffi::cairo_status_t</a> {
     <span class="comment">// This is consistent with the type of `env` in `Surface::_for_stream`.
     </span><span class="kw">let </span>env: <span class="kw-2">*const </span><a href="#189-192">CallbackEnvironment</a> = <a href="#202">env</a> <span class="kw">as _</span>;
 
@@ -598,7 +598,7 @@
     } <span class="kw">else </span>{
         <a href="#212">env</a>.saw_already_borrowed.<a href="https://doc.rust-lang.org/nightly/core/cell/struct.Cell.html#method.set">set</a>(<span class="bool-val">true</span>)
     }
-    <a href="error.rs.html#43">Error::WriteError</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>()
+    <a href="error.rs.html#44">Error::WriteError</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>()
 }
 
 <span class="kw">struct </span>RawStream&lt;W&gt;(ptr::NonNull&lt;W&gt;);

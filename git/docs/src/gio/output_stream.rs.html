@@ -1088,7 +1088,7 @@
 
 <span class="attr">#[cfg(feature = <span class="string">"v2_60"</span>)]
 </span><span class="kw">use </span><a href="socket.rs.html#254-257"><span class="kw">crate</span>::OutputVector</a>;
-<span class="kw">use crate</span>::{<a href="error.rs.html#31-36">error::to_std_io_result</a>, <a href="lib.rs.html#120">prelude</a>::<span class="kw-2">*</span>, <a href="auto/cancellable.rs.html#7-85">Cancellable</a>, <a href="auto/output_stream.rs.html#9-39">OutputStream</a>, <a href="auto/seekable.rs.html#8-33">Seekable</a>};
+<span class="kw">use crate</span>::{<a href="error.rs.html#31-36">error::to_std_io_result</a>, <a href="../../gio_sys/index.html">ffi</a>, <a href="lib.rs.html#120">prelude</a>::<span class="kw-2">*</span>, <a href="auto/cancellable.rs.html#8-86">Cancellable</a>, <a href="auto/output_stream.rs.html#9-39">OutputStream</a>, <a href="auto/seekable.rs.html#8-33">Seekable</a>};
 
 <span class="kw">mod </span>sealed {
     <span class="kw">pub trait </span>Sealed {}
@@ -1144,7 +1144,7 @@
     </span><span class="kw">fn </span>write_async&lt;
         B: AsRef&lt;[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static</span>,
         Q: FnOnce(<span class="prelude-ty">Result</span>&lt;(B, <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>), (B, <a href="../../glib/error/struct.Error.html">glib::Error</a>)&gt;) + <span class="lifetime">'static</span>,
-        C: IsA&lt;<a href="auto/cancellable.rs.html#7-85">Cancellable</a>&gt;,
+        C: IsA&lt;<a href="auto/cancellable.rs.html#8-86">Cancellable</a>&gt;,
     &gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         buffer: B,
@@ -1240,7 +1240,7 @@
     /// location to store the number of bytes that was
     ///     written to the stream
     </span><span class="attr">#[doc(alias = <span class="string">"g_output_stream_write_all"</span>)]
-    </span><span class="kw">fn </span>write_all&lt;C: IsA&lt;<a href="auto/cancellable.rs.html#7-85">Cancellable</a>&gt;&gt;(
+    </span><span class="kw">fn </span>write_all&lt;C: IsA&lt;<a href="auto/cancellable.rs.html#8-86">Cancellable</a>&gt;&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         buffer: <span class="kw-2">&amp;</span>[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>],
         cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>C&gt;,
@@ -1299,7 +1299,7 @@
     </span><span class="kw">fn </span>write_all_async&lt;
         B: AsRef&lt;[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static</span>,
         Q: FnOnce(<span class="prelude-ty">Result</span>&lt;(B, <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>, <span class="prelude-ty">Option</span>&lt;<a href="../../glib/error/struct.Error.html">glib::Error</a>&gt;), (B, <a href="../../glib/error/struct.Error.html">glib::Error</a>)&gt;) + <span class="lifetime">'static</span>,
-        C: IsA&lt;<a href="auto/cancellable.rs.html#7-85">Cancellable</a>&gt;,
+        C: IsA&lt;<a href="auto/cancellable.rs.html#8-86">Cancellable</a>&gt;,
     &gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         buffer: B,
@@ -1450,7 +1450,7 @@
     </span><span class="kw">fn </span>writev(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         vectors: <span class="kw-2">&amp;</span>[<a href="socket.rs.html#254-257">OutputVector</a>],
-        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="auto/cancellable.rs.html#7-85">Cancellable</a>&gt;&gt;,
+        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="auto/cancellable.rs.html#8-86">Cancellable</a>&gt;&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>, <a href="../../glib/error/struct.Error.html">glib::Error</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>error = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
@@ -1521,7 +1521,7 @@
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         vectors: <span class="kw">impl </span>IntoIterator&lt;Item = B&gt; + <span class="lifetime">'static</span>,
         io_priority: <a href="../../glib/source/struct.Priority.html">glib::Priority</a>,
-        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="auto/cancellable.rs.html#7-85">Cancellable</a>&gt;&gt;,
+        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="auto/cancellable.rs.html#8-86">Cancellable</a>&gt;&gt;,
         callback: P,
     ) {
         <span class="kw">let </span>main_context = <a href="../../glib/auto/main_context/struct.MainContext.html#method.ref_thread_default">glib::MainContext::ref_thread_default</a>();
@@ -1664,7 +1664,7 @@
     </span><span class="kw">fn </span>writev_all(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         vectors: <span class="kw-2">&amp;</span>[<a href="socket.rs.html#254-257">OutputVector</a>],
-        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="auto/cancellable.rs.html#7-85">Cancellable</a>&gt;&gt;,
+        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="auto/cancellable.rs.html#8-86">Cancellable</a>&gt;&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;(<a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>, <span class="prelude-ty">Option</span>&lt;<a href="../../glib/error/struct.Error.html">glib::Error</a>&gt;), <a href="../../glib/error/struct.Error.html">glib::Error</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>error = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
@@ -1724,7 +1724,7 @@
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         vectors: <span class="kw">impl </span>IntoIterator&lt;Item = B&gt; + <span class="lifetime">'static</span>,
         io_priority: <a href="../../glib/source/struct.Priority.html">glib::Priority</a>,
-        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="auto/cancellable.rs.html#7-85">Cancellable</a>&gt;&gt;,
+        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="auto/cancellable.rs.html#8-86">Cancellable</a>&gt;&gt;,
         callback: P,
     ) {
         <span class="kw">let </span>main_context = <a href="../../glib/auto/main_context/struct.MainContext.html#method.ref_thread_default">glib::MainContext::ref_thread_default</a>();

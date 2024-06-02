@@ -112,7 +112,7 @@
 
 </span><span class="kw">use </span><a href="../../glib/translate/index.html">glib::translate</a>::<span class="kw-2">*</span>;
 
-<span class="kw">use crate</span>::{<a href="file_attribute_info.rs.html#7-33">FileAttributeInfo</a>, <a href="auto/file_attribute_info_list.rs.html#8-19">FileAttributeInfoList</a>};
+<span class="kw">use crate</span>::{<a href="../../gio_sys/index.html">ffi</a>, <a href="file_attribute_info.rs.html#8-34">FileAttributeInfo</a>, <a href="auto/file_attribute_info_list.rs.html#8-19">FileAttributeInfoList</a>};
 
 <span class="kw">impl </span><a href="auto/file_attribute_info_list.rs.html#8-19">FileAttributeInfoList</a> {
     <span class="doccomment">/// Gets the file attribute with the name @name from @self.
@@ -124,7 +124,7 @@
     /// a #GFileAttributeInfo for the @name, or [`None`] if an
     /// attribute isn't found.
     </span><span class="attr">#[doc(alias = <span class="string">"g_file_attribute_info_list_lookup"</span>)]
-    </span><span class="kw">pub fn </span>lookup(<span class="kw-2">&amp;</span><span class="self">self</span>, name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="file_attribute_info.rs.html#7-33">FileAttributeInfo</a>&gt; {
+    </span><span class="kw">pub fn </span>lookup(<span class="kw-2">&amp;</span><span class="self">self</span>, name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="file_attribute_info.rs.html#8-34">FileAttributeInfo</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>res = <a href="../../gio_sys/fn.g_file_attribute_info_list_lookup.html">ffi::g_file_attribute_info_list_lookup</a>(
                 <a class="self" href="#17">self</a>.<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
@@ -138,7 +138,7 @@
         }
     }
 
-    <span class="kw">pub fn </span>attributes(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec&lt;<a href="file_attribute_info.rs.html#7-33">FileAttributeInfo</a>&gt; {
+    <span class="kw">pub fn </span>attributes(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec&lt;<a href="file_attribute_info.rs.html#8-34">FileAttributeInfo</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>ptr: <span class="kw-2">*const </span><span class="kw">_ </span>= <a class="self" href="#31">self</a>.<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>;
             <a href="../../glib/translate/trait.FromGlibContainer.html#tymethod.from_glib_none_num">FromGlibContainer::from_glib_none_num</a>((<span class="kw-2">*</span><a href="#33">ptr</a>).infos, (<span class="kw-2">*</span><a href="#33">ptr</a>).n_infos <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>)

@@ -1530,9 +1530,9 @@
 </span><span class="attr">#![allow(deprecated)]
 
 </span><span class="kw">use crate</span>::{
-    <a href="async_result.rs.html#7-105">AsyncResult</a>, <a href="cancellable.rs.html#7-85">Cancellable</a>, <a href="io_stream.rs.html#13-94">IOStream</a>, <a href="proxy_resolver.rs.html#9-28">ProxyResolver</a>, <a href="socket_address.rs.html#13-38">SocketAddress</a>, <a href="enums.rs.html#3093-3130">SocketClientEvent</a>,
-    <a href="socket_connectable.rs.html#8-78">SocketConnectable</a>, <a href="socket_connection.rs.html#9-64">SocketConnection</a>, <a href="enums.rs.html#3232-3247">SocketFamily</a>, <a href="enums.rs.html#3453-3471">SocketProtocol</a>, <a href="enums.rs.html#3564-3581">SocketType</a>,
-    <a href="flags.rs.html#3023-3070">TlsCertificateFlags</a>,
+    <a href="../../../gio_sys/index.html">ffi</a>, <a href="async_result.rs.html#8-106">AsyncResult</a>, <a href="cancellable.rs.html#8-86">Cancellable</a>, <a href="io_stream.rs.html#13-94">IOStream</a>, <a href="proxy_resolver.rs.html#9-28">ProxyResolver</a>, <a href="socket_address.rs.html#13-38">SocketAddress</a>, <a href="enums.rs.html#3094-3131">SocketClientEvent</a>,
+    <a href="socket_connectable.rs.html#8-78">SocketConnectable</a>, <a href="socket_connection.rs.html#11-66">SocketConnection</a>, <a href="enums.rs.html#3233-3248">SocketFamily</a>, <a href="enums.rs.html#3454-3472">SocketProtocol</a>, <a href="enums.rs.html#3565-3582">SocketType</a>,
+    <a href="flags.rs.html#3024-3071">TlsCertificateFlags</a>,
 };
 <span class="kw">use </span>glib::{
     <a href="../../../glib/prelude/index.html">prelude</a>::<span class="kw-2">*</span>,
@@ -1787,8 +1787,8 @@
     </span><span class="kw">fn </span>connect(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         connectable: <span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="socket_connectable.rs.html#8-78">SocketConnectable</a>&gt;,
-        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="cancellable.rs.html#7-85">Cancellable</a>&gt;&gt;,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="socket_connection.rs.html#9-64">SocketConnection</a>, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt; {
+        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="cancellable.rs.html#8-86">Cancellable</a>&gt;&gt;,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="socket_connection.rs.html#11-66">SocketConnection</a>, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>error = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">std::ptr::null_mut</a>();
             <span class="kw">let </span>ret = <a href="../../../gio_sys/fn.g_socket_client_connect.html">ffi::g_socket_client_connect</a>(
@@ -1826,10 +1826,10 @@
     /// ## `callback`
     /// a #GAsyncReadyCallback
     </span><span class="attr">#[doc(alias = <span class="string">"g_socket_client_connect_async"</span>)]
-    </span><span class="kw">fn </span>connect_async&lt;P: FnOnce(<span class="prelude-ty">Result</span>&lt;<a href="socket_connection.rs.html#9-64">SocketConnection</a>, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt;) + <span class="lifetime">'static</span>&gt;(
+    </span><span class="kw">fn </span>connect_async&lt;P: FnOnce(<span class="prelude-ty">Result</span>&lt;<a href="socket_connection.rs.html#11-66">SocketConnection</a>, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt;) + <span class="lifetime">'static</span>&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         connectable: <span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="socket_connectable.rs.html#8-78">SocketConnectable</a>&gt;,
-        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="cancellable.rs.html#7-85">Cancellable</a>&gt;&gt;,
+        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="cancellable.rs.html#8-86">Cancellable</a>&gt;&gt;,
         callback: P,
     ) {
         <span class="kw">let </span>main_context = <a href="../../../glib/auto/main_context/struct.MainContext.html#method.ref_thread_default">glib::MainContext::ref_thread_default</a>();
@@ -1845,7 +1845,7 @@
         <span class="kw">let </span>user_data: Box_&lt;glib::thread_guard::ThreadGuard&lt;P&gt;&gt; =
             <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">Box_::new</a>(<a href="../../../glib/thread_guard/struct.ThreadGuard.html#method.new">glib::thread_guard::ThreadGuard::new</a>(<a href="#307">callback</a>));
         <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>connect_async_trampoline&lt;
-            P: FnOnce(<span class="prelude-ty">Result</span>&lt;<a href="socket_connection.rs.html#9-64">SocketConnection</a>, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt;) + <span class="lifetime">'static</span>,
+            P: FnOnce(<span class="prelude-ty">Result</span>&lt;<a href="socket_connection.rs.html#11-66">SocketConnection</a>, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt;) + <span class="lifetime">'static</span>,
         &gt;(
             _source_object: <span class="kw-2">*mut </span><a href="../../../gobject_sys/struct.GObject.html">glib::gobject_ffi::GObject</a>,
             res: <span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GAsyncResult.html"><span class="kw">crate</span>::ffi::GAsyncResult</a>,
@@ -1879,7 +1879,7 @@
     <span class="kw">fn </span>connect_future(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         connectable: <span class="kw-2">&amp;</span>(<span class="kw">impl </span>IsA&lt;<a href="socket_connectable.rs.html#8-78">SocketConnectable</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">Clone</a> + <span class="lifetime">'static</span>),
-    ) -&gt; Pin&lt;Box_&lt;<span class="kw">dyn </span>std::future::Future&lt;Output = <span class="prelude-ty">Result</span>&lt;<a href="socket_connection.rs.html#9-64">SocketConnection</a>, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt;&gt; + <span class="lifetime">'static</span>&gt;&gt;
+    ) -&gt; Pin&lt;Box_&lt;<span class="kw">dyn </span>std::future::Future&lt;Output = <span class="prelude-ty">Result</span>&lt;<a href="socket_connection.rs.html#11-66">SocketConnection</a>, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt;&gt; + <span class="lifetime">'static</span>&gt;&gt;
     {
         <span class="kw">let </span>connectable = <a href="#355">connectable</a>.<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">clone</a>();
         <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.pin">Box_::pin</a>(<a href="../gio_future.rs.html#38-45"><span class="kw">crate</span>::GioFuture::new</a>(
@@ -1937,8 +1937,8 @@
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         host_and_port: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
         default_port: <a href="https://doc.rust-lang.org/nightly/std/primitive.u16.html">u16</a>,
-        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="cancellable.rs.html#7-85">Cancellable</a>&gt;&gt;,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="socket_connection.rs.html#9-64">SocketConnection</a>, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt; {
+        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="cancellable.rs.html#8-86">Cancellable</a>&gt;&gt;,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="socket_connection.rs.html#11-66">SocketConnection</a>, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>error = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">std::ptr::null_mut</a>();
             <span class="kw">let </span>ret = <a href="../../../gio_sys/fn.g_socket_client_connect_to_host.html">ffi::g_socket_client_connect_to_host</a>(
@@ -1970,11 +1970,11 @@
     /// ## `callback`
     /// a #GAsyncReadyCallback
     </span><span class="attr">#[doc(alias = <span class="string">"g_socket_client_connect_to_host_async"</span>)]
-    </span><span class="kw">fn </span>connect_to_host_async&lt;P: FnOnce(<span class="prelude-ty">Result</span>&lt;<a href="socket_connection.rs.html#9-64">SocketConnection</a>, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt;) + <span class="lifetime">'static</span>&gt;(
+    </span><span class="kw">fn </span>connect_to_host_async&lt;P: FnOnce(<span class="prelude-ty">Result</span>&lt;<a href="socket_connection.rs.html#11-66">SocketConnection</a>, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt;) + <span class="lifetime">'static</span>&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         host_and_port: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
         default_port: <a href="https://doc.rust-lang.org/nightly/std/primitive.u16.html">u16</a>,
-        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="cancellable.rs.html#7-85">Cancellable</a>&gt;&gt;,
+        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="cancellable.rs.html#8-86">Cancellable</a>&gt;&gt;,
         callback: P,
     ) {
         <span class="kw">let </span>main_context = <a href="../../../glib/auto/main_context/struct.MainContext.html#method.ref_thread_default">glib::MainContext::ref_thread_default</a>();
@@ -1990,7 +1990,7 @@
         <span class="kw">let </span>user_data: Box_&lt;glib::thread_guard::ThreadGuard&lt;P&gt;&gt; =
             <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">Box_::new</a>(<a href="../../../glib/thread_guard/struct.ThreadGuard.html#method.new">glib::thread_guard::ThreadGuard::new</a>(<a href="#452">callback</a>));
         <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>connect_to_host_async_trampoline&lt;
-            P: FnOnce(<span class="prelude-ty">Result</span>&lt;<a href="socket_connection.rs.html#9-64">SocketConnection</a>, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt;) + <span class="lifetime">'static</span>,
+            P: FnOnce(<span class="prelude-ty">Result</span>&lt;<a href="socket_connection.rs.html#11-66">SocketConnection</a>, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt;) + <span class="lifetime">'static</span>,
         &gt;(
             _source_object: <span class="kw-2">*mut </span><a href="../../../gobject_sys/struct.GObject.html">glib::gobject_ffi::GObject</a>,
             res: <span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GAsyncResult.html"><span class="kw">crate</span>::ffi::GAsyncResult</a>,
@@ -2029,7 +2029,7 @@
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         host_and_port: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
         default_port: <a href="https://doc.rust-lang.org/nightly/std/primitive.u16.html">u16</a>,
-    ) -&gt; Pin&lt;Box_&lt;<span class="kw">dyn </span>std::future::Future&lt;Output = <span class="prelude-ty">Result</span>&lt;<a href="socket_connection.rs.html#9-64">SocketConnection</a>, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt;&gt; + <span class="lifetime">'static</span>&gt;&gt;
+    ) -&gt; Pin&lt;Box_&lt;<span class="kw">dyn </span>std::future::Future&lt;Output = <span class="prelude-ty">Result</span>&lt;<a href="socket_connection.rs.html#11-66">SocketConnection</a>, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt;&gt; + <span class="lifetime">'static</span>&gt;&gt;
     {
         <span class="kw">let </span>host_and_port = <a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html#tymethod.from">String::from</a>(<a href="#504">host_and_port</a>);
         <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.pin">Box_::pin</a>(<a href="../gio_future.rs.html#38-45"><span class="kw">crate</span>::GioFuture::new</a>(
@@ -2076,8 +2076,8 @@
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         domain: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
         service: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
-        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="cancellable.rs.html#7-85">Cancellable</a>&gt;&gt;,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="socket_connection.rs.html#9-64">SocketConnection</a>, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt; {
+        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="cancellable.rs.html#8-86">Cancellable</a>&gt;&gt;,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="socket_connection.rs.html#11-66">SocketConnection</a>, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>error = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">std::ptr::null_mut</a>();
             <span class="kw">let </span>ret = <a href="../../../gio_sys/fn.g_socket_client_connect_to_service.html">ffi::g_socket_client_connect_to_service</a>(
@@ -2106,11 +2106,11 @@
     /// ## `callback`
     /// a #GAsyncReadyCallback
     </span><span class="attr">#[doc(alias = <span class="string">"g_socket_client_connect_to_service_async"</span>)]
-    </span><span class="kw">fn </span>connect_to_service_async&lt;P: FnOnce(<span class="prelude-ty">Result</span>&lt;<a href="socket_connection.rs.html#9-64">SocketConnection</a>, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt;) + <span class="lifetime">'static</span>&gt;(
+    </span><span class="kw">fn </span>connect_to_service_async&lt;P: FnOnce(<span class="prelude-ty">Result</span>&lt;<a href="socket_connection.rs.html#11-66">SocketConnection</a>, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt;) + <span class="lifetime">'static</span>&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         domain: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
         service: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
-        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="cancellable.rs.html#7-85">Cancellable</a>&gt;&gt;,
+        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="cancellable.rs.html#8-86">Cancellable</a>&gt;&gt;,
         callback: P,
     ) {
         <span class="kw">let </span>main_context = <a href="../../../glib/auto/main_context/struct.MainContext.html#method.ref_thread_default">glib::MainContext::ref_thread_default</a>();
@@ -2126,7 +2126,7 @@
         <span class="kw">let </span>user_data: Box_&lt;glib::thread_guard::ThreadGuard&lt;P&gt;&gt; =
             <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">Box_::new</a>(<a href="../../../glib/thread_guard/struct.ThreadGuard.html#method.new">glib::thread_guard::ThreadGuard::new</a>(<a href="#588">callback</a>));
         <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>connect_to_service_async_trampoline&lt;
-            P: FnOnce(<span class="prelude-ty">Result</span>&lt;<a href="socket_connection.rs.html#9-64">SocketConnection</a>, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt;) + <span class="lifetime">'static</span>,
+            P: FnOnce(<span class="prelude-ty">Result</span>&lt;<a href="socket_connection.rs.html#11-66">SocketConnection</a>, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt;) + <span class="lifetime">'static</span>,
         &gt;(
             _source_object: <span class="kw-2">*mut </span><a href="../../../gobject_sys/struct.GObject.html">glib::gobject_ffi::GObject</a>,
             res: <span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GAsyncResult.html"><span class="kw">crate</span>::ffi::GAsyncResult</a>,
@@ -2165,7 +2165,7 @@
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         domain: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
         service: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
-    ) -&gt; Pin&lt;Box_&lt;<span class="kw">dyn </span>std::future::Future&lt;Output = <span class="prelude-ty">Result</span>&lt;<a href="socket_connection.rs.html#9-64">SocketConnection</a>, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt;&gt; + <span class="lifetime">'static</span>&gt;&gt;
+    ) -&gt; Pin&lt;Box_&lt;<span class="kw">dyn </span>std::future::Future&lt;Output = <span class="prelude-ty">Result</span>&lt;<a href="socket_connection.rs.html#11-66">SocketConnection</a>, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt;&gt; + <span class="lifetime">'static</span>&gt;&gt;
     {
         <span class="kw">let </span>domain = <a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html#tymethod.from">String::from</a>(<a href="#640">domain</a>);
         <span class="kw">let </span>service = <a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html#tymethod.from">String::from</a>(<a href="#641">service</a>);
@@ -2215,8 +2215,8 @@
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         uri: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
         default_port: <a href="https://doc.rust-lang.org/nightly/std/primitive.u16.html">u16</a>,
-        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="cancellable.rs.html#7-85">Cancellable</a>&gt;&gt;,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="socket_connection.rs.html#9-64">SocketConnection</a>, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt; {
+        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="cancellable.rs.html#8-86">Cancellable</a>&gt;&gt;,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="socket_connection.rs.html#11-66">SocketConnection</a>, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>error = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">std::ptr::null_mut</a>();
             <span class="kw">let </span>ret = <a href="../../../gio_sys/fn.g_socket_client_connect_to_uri.html">ffi::g_socket_client_connect_to_uri</a>(
@@ -2248,11 +2248,11 @@
     /// ## `callback`
     /// a #GAsyncReadyCallback
     </span><span class="attr">#[doc(alias = <span class="string">"g_socket_client_connect_to_uri_async"</span>)]
-    </span><span class="kw">fn </span>connect_to_uri_async&lt;P: FnOnce(<span class="prelude-ty">Result</span>&lt;<a href="socket_connection.rs.html#9-64">SocketConnection</a>, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt;) + <span class="lifetime">'static</span>&gt;(
+    </span><span class="kw">fn </span>connect_to_uri_async&lt;P: FnOnce(<span class="prelude-ty">Result</span>&lt;<a href="socket_connection.rs.html#11-66">SocketConnection</a>, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt;) + <span class="lifetime">'static</span>&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         uri: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
         default_port: <a href="https://doc.rust-lang.org/nightly/std/primitive.u16.html">u16</a>,
-        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="cancellable.rs.html#7-85">Cancellable</a>&gt;&gt;,
+        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="cancellable.rs.html#8-86">Cancellable</a>&gt;&gt;,
         callback: P,
     ) {
         <span class="kw">let </span>main_context = <a href="../../../glib/auto/main_context/struct.MainContext.html#method.ref_thread_default">glib::MainContext::ref_thread_default</a>();
@@ -2268,7 +2268,7 @@
         <span class="kw">let </span>user_data: Box_&lt;glib::thread_guard::ThreadGuard&lt;P&gt;&gt; =
             <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">Box_::new</a>(<a href="../../../glib/thread_guard/struct.ThreadGuard.html#method.new">glib::thread_guard::ThreadGuard::new</a>(<a href="#730">callback</a>));
         <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>connect_to_uri_async_trampoline&lt;
-            P: FnOnce(<span class="prelude-ty">Result</span>&lt;<a href="socket_connection.rs.html#9-64">SocketConnection</a>, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt;) + <span class="lifetime">'static</span>,
+            P: FnOnce(<span class="prelude-ty">Result</span>&lt;<a href="socket_connection.rs.html#11-66">SocketConnection</a>, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt;) + <span class="lifetime">'static</span>,
         &gt;(
             _source_object: <span class="kw-2">*mut </span><a href="../../../gobject_sys/struct.GObject.html">glib::gobject_ffi::GObject</a>,
             res: <span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GAsyncResult.html"><span class="kw">crate</span>::ffi::GAsyncResult</a>,
@@ -2307,7 +2307,7 @@
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         uri: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
         default_port: <a href="https://doc.rust-lang.org/nightly/std/primitive.u16.html">u16</a>,
-    ) -&gt; Pin&lt;Box_&lt;<span class="kw">dyn </span>std::future::Future&lt;Output = <span class="prelude-ty">Result</span>&lt;<a href="socket_connection.rs.html#9-64">SocketConnection</a>, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt;&gt; + <span class="lifetime">'static</span>&gt;&gt;
+    ) -&gt; Pin&lt;Box_&lt;<span class="kw">dyn </span>std::future::Future&lt;Output = <span class="prelude-ty">Result</span>&lt;<a href="socket_connection.rs.html#11-66">SocketConnection</a>, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt;&gt; + <span class="lifetime">'static</span>&gt;&gt;
     {
         <span class="kw">let </span>uri = <a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html#tymethod.from">String::from</a>(<a href="#782">uri</a>);
         <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.pin">Box_::pin</a>(<a href="../gio_future.rs.html#38-45"><span class="kw">crate</span>::GioFuture::new</a>(
@@ -2344,7 +2344,7 @@
     /// a #GSocketFamily
     </span><span class="attr">#[doc(alias = <span class="string">"g_socket_client_get_family"</span>)]
     #[doc(alias = <span class="string">"get_family"</span>)]
-    </span><span class="kw">fn </span>family(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="enums.rs.html#3232-3247">SocketFamily</a> {
+    </span><span class="kw">fn </span>family(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="enums.rs.html#3233-3248">SocketFamily</a> {
         <span class="kw">unsafe </span>{
             <a href="../../../glib/translate/fn.from_glib.html">from_glib</a>(<a href="../../../gio_sys/fn.g_socket_client_get_family.html">ffi::g_socket_client_get_family</a>(
                 <a class="self" href="#821">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
@@ -2378,7 +2378,7 @@
     /// a #GSocketProtocol
     </span><span class="attr">#[doc(alias = <span class="string">"g_socket_client_get_protocol"</span>)]
     #[doc(alias = <span class="string">"get_protocol"</span>)]
-    </span><span class="kw">fn </span>protocol(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="enums.rs.html#3453-3471">SocketProtocol</a> {
+    </span><span class="kw">fn </span>protocol(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="enums.rs.html#3454-3472">SocketProtocol</a> {
         <span class="kw">unsafe </span>{
             <a href="../../../glib/translate/fn.from_glib.html">from_glib</a>(<a href="../../../gio_sys/fn.g_socket_client_get_protocol.html">ffi::g_socket_client_get_protocol</a>(
                 <a class="self" href="#855">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
@@ -2413,7 +2413,7 @@
     /// a #GSocketFamily
     </span><span class="attr">#[doc(alias = <span class="string">"g_socket_client_get_socket_type"</span>)]
     #[doc(alias = <span class="string">"get_socket_type"</span>)]
-    </span><span class="kw">fn </span>socket_type(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="enums.rs.html#3564-3581">SocketType</a> {
+    </span><span class="kw">fn </span>socket_type(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="enums.rs.html#3565-3582">SocketType</a> {
         <span class="kw">unsafe </span>{
             <a href="../../../glib/translate/fn.from_glib.html">from_glib</a>(<a href="../../../gio_sys/fn.g_socket_client_get_socket_type.html">ffi::g_socket_client_get_socket_type</a>(
                 <a class="self" href="#890">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
@@ -2464,7 +2464,7 @@
     #[allow(deprecated)]
     #[doc(alias = <span class="string">"g_socket_client_get_tls_validation_flags"</span>)]
     #[doc(alias = <span class="string">"get_tls_validation_flags"</span>)]
-    </span><span class="kw">fn </span>tls_validation_flags(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="flags.rs.html#3023-3070">TlsCertificateFlags</a> {
+    </span><span class="kw">fn </span>tls_validation_flags(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="flags.rs.html#3024-3071">TlsCertificateFlags</a> {
         <span class="kw">unsafe </span>{
             <a href="../../../glib/translate/fn.from_glib.html">from_glib</a>(<a href="../../../gio_sys/fn.g_socket_client_get_tls_validation_flags.html">ffi::g_socket_client_get_tls_validation_flags</a>(
                 <a class="self" href="#941">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
@@ -2501,7 +2501,7 @@
     /// ## `family`
     /// a #GSocketFamily
     </span><span class="attr">#[doc(alias = <span class="string">"g_socket_client_set_family"</span>)]
-    </span><span class="kw">fn </span>set_family(<span class="kw-2">&amp;</span><span class="self">self</span>, family: <a href="enums.rs.html#3232-3247">SocketFamily</a>) {
+    </span><span class="kw">fn </span>set_family(<span class="kw-2">&amp;</span><span class="self">self</span>, family: <a href="enums.rs.html#3233-3248">SocketFamily</a>) {
         <span class="kw">unsafe </span>{
             <a href="../../../gio_sys/fn.g_socket_client_set_family.html">ffi::g_socket_client_set_family</a>(<a class="self" href="#978">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#978">family</a>.<a href="../../../glib/translate/trait.IntoGlib.html#tymethod.into_glib">into_glib</a>());
         }
@@ -2535,7 +2535,7 @@
     /// ## `protocol`
     /// a #GSocketProtocol
     </span><span class="attr">#[doc(alias = <span class="string">"g_socket_client_set_protocol"</span>)]
-    </span><span class="kw">fn </span>set_protocol(<span class="kw-2">&amp;</span><span class="self">self</span>, protocol: <a href="enums.rs.html#3453-3471">SocketProtocol</a>) {
+    </span><span class="kw">fn </span>set_protocol(<span class="kw-2">&amp;</span><span class="self">self</span>, protocol: <a href="enums.rs.html#3454-3472">SocketProtocol</a>) {
         <span class="kw">unsafe </span>{
             <a href="../../../gio_sys/fn.g_socket_client_set_protocol.html">ffi::g_socket_client_set_protocol</a>(<a class="self" href="#1012">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#1012">protocol</a>.<a href="../../../glib/translate/trait.IntoGlib.html#tymethod.into_glib">into_glib</a>());
         }
@@ -2570,7 +2570,7 @@
     /// ## `type_`
     /// a #GSocketType
     </span><span class="attr">#[doc(alias = <span class="string">"g_socket_client_set_socket_type"</span>)]
-    </span><span class="kw">fn </span>set_socket_type(<span class="kw-2">&amp;</span><span class="self">self</span>, type_: <a href="enums.rs.html#3564-3581">SocketType</a>) {
+    </span><span class="kw">fn </span>set_socket_type(<span class="kw-2">&amp;</span><span class="self">self</span>, type_: <a href="enums.rs.html#3565-3582">SocketType</a>) {
         <span class="kw">unsafe </span>{
             <a href="../../../gio_sys/fn.g_socket_client_set_socket_type.html">ffi::g_socket_client_set_socket_type</a>(<a class="self" href="#1047">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#1047">type_</a>.<a href="../../../glib/translate/trait.IntoGlib.html#tymethod.into_glib">into_glib</a>());
         }
@@ -2633,7 +2633,7 @@
     </span><span class="attr">#[cfg_attr(feature = <span class="string">"v2_72"</span>, deprecated = <span class="string">"Since 2.72"</span>)]
     #[allow(deprecated)]
     #[doc(alias = <span class="string">"g_socket_client_set_tls_validation_flags"</span>)]
-    </span><span class="kw">fn </span>set_tls_validation_flags(<span class="kw-2">&amp;</span><span class="self">self</span>, flags: <a href="flags.rs.html#3023-3070">TlsCertificateFlags</a>) {
+    </span><span class="kw">fn </span>set_tls_validation_flags(<span class="kw-2">&amp;</span><span class="self">self</span>, flags: <a href="flags.rs.html#3024-3071">TlsCertificateFlags</a>) {
         <span class="kw">unsafe </span>{
             <a href="../../../gio_sys/fn.g_socket_client_set_tls_validation_flags.html">ffi::g_socket_client_set_tls_validation_flags</a>(
                 <a class="self" href="#1110">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
@@ -2644,13 +2644,13 @@
 
     <span class="doccomment">/// The type to use for socket construction.
     </span><span class="attr">#[doc(alias = <span class="string">"type"</span>)]
-    </span><span class="kw">fn </span>type_(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="enums.rs.html#3564-3581">SocketType</a> {
+    </span><span class="kw">fn </span>type_(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="enums.rs.html#3565-3582">SocketType</a> {
         <a href="../../../glib/object/trait.ObjectExt.html#tymethod.property">ObjectExt::property</a>(<a class="self" href="#1121">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>(), <span class="string">"type"</span>)
     }
 
     <span class="doccomment">/// The type to use for socket construction.
     </span><span class="attr">#[doc(alias = <span class="string">"type"</span>)]
-    </span><span class="kw">fn </span>set_type(<span class="kw-2">&amp;</span><span class="self">self</span>, type_: <a href="enums.rs.html#3564-3581">SocketType</a>) {
+    </span><span class="kw">fn </span>set_type(<span class="kw-2">&amp;</span><span class="self">self</span>, type_: <a href="enums.rs.html#3565-3582">SocketType</a>) {
         <a href="../../../glib/object/trait.ObjectExt.html#tymethod.set_property">ObjectExt::set_property</a>(<a class="self" href="#1127">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>(), <span class="string">"type"</span>, <a href="#1127">type_</a>)
     }
 
@@ -2711,14 +2711,14 @@
     /// the current representation of the connection
     </span><span class="attr">#[doc(alias = <span class="string">"event"</span>)]
     </span><span class="kw">fn </span>connect_event&lt;
-        F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>, <a href="enums.rs.html#3093-3130">SocketClientEvent</a>, <span class="kw-2">&amp;</span><a href="socket_connectable.rs.html#8-78">SocketConnectable</a>, <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="io_stream.rs.html#13-94">IOStream</a>&gt;) + <span class="lifetime">'static</span>,
+        F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>, <a href="enums.rs.html#3094-3131">SocketClientEvent</a>, <span class="kw-2">&amp;</span><a href="socket_connectable.rs.html#8-78">SocketConnectable</a>, <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="io_stream.rs.html#13-94">IOStream</a>&gt;) + <span class="lifetime">'static</span>,
     &gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         f: F,
     ) -&gt; <a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a> {
         <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>event_trampoline&lt;
             P: IsA&lt;<a href="#18-169">SocketClient</a>&gt;,
-            F: Fn(<span class="kw-2">&amp;</span>P, <a href="enums.rs.html#3093-3130">SocketClientEvent</a>, <span class="kw-2">&amp;</span><a href="socket_connectable.rs.html#8-78">SocketConnectable</a>, <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="io_stream.rs.html#13-94">IOStream</a>&gt;) + <span class="lifetime">'static</span>,
+            F: Fn(<span class="kw-2">&amp;</span>P, <a href="enums.rs.html#3094-3131">SocketClientEvent</a>, <span class="kw-2">&amp;</span><a href="socket_connectable.rs.html#8-78">SocketConnectable</a>, <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="io_stream.rs.html#13-94">IOStream</a>&gt;) + <span class="lifetime">'static</span>,
         &gt;(
             this: <span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GSocketClient.html">ffi::GSocketClient</a>,
             event: <a href="../../../gio_sys/type.GSocketClientEvent.html">ffi::GSocketClientEvent</a>,

@@ -294,7 +294,7 @@
 
 <span class="kw">use </span>glib::{<a href="../../../glib/prelude/index.html">prelude</a>::<span class="kw-2">*</span>, <a href="../../../glib/subclass/prelude/index.html">subclass::prelude</a>::<span class="kw-2">*</span>, <a href="../../../glib/translate/index.html">translate</a>::<span class="kw-2">*</span>, <a href="../../../glib/error/struct.Error.html">Error</a>, <a href="../../../glib/auto/enums/enum.SeekType.html">SeekType</a>};
 
-<span class="kw">use crate</span>::{<a href="../auto/cancellable.rs.html#7-85">Cancellable</a>, <a href="../auto/seekable.rs.html#8-33">Seekable</a>};
+<span class="kw">use crate</span>::{<a href="../../../gio_sys/index.html">ffi</a>, <a href="../auto/cancellable.rs.html#8-86">Cancellable</a>, <a href="../auto/seekable.rs.html#8-33">Seekable</a>};
 
 <span class="kw">pub trait </span><a href="../../../gio/subclass/prelude/trait.SeekableImpl.html">SeekableImpl</a>: <a href="../../../glib/subclass/object/trait.ObjectImpl.html">ObjectImpl</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> {
     <span class="kw">fn </span>tell(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.i64.html">i64</a>;
@@ -303,10 +303,10 @@
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         offset: <a href="https://doc.rust-lang.org/nightly/std/primitive.i64.html">i64</a>,
         type_: <a href="../../../glib/auto/enums/enum.SeekType.html">SeekType</a>,
-        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="../auto/cancellable.rs.html#7-85">Cancellable</a>&gt;,
+        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="../auto/cancellable.rs.html#8-86">Cancellable</a>&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="../../../glib/error/struct.Error.html">Error</a>&gt;;
     <span class="kw">fn </span>can_truncate(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>;
-    <span class="kw">fn </span>truncate(<span class="kw-2">&amp;</span><span class="self">self</span>, offset: <a href="https://doc.rust-lang.org/nightly/std/primitive.i64.html">i64</a>, cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="../auto/cancellable.rs.html#7-85">Cancellable</a>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="../../../glib/error/struct.Error.html">Error</a>&gt;;
+    <span class="kw">fn </span>truncate(<span class="kw-2">&amp;</span><span class="self">self</span>, offset: <a href="https://doc.rust-lang.org/nightly/std/primitive.i64.html">i64</a>, cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="../auto/cancellable.rs.html#8-86">Cancellable</a>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="../../../glib/error/struct.Error.html">Error</a>&gt;;
 }
 
 <span class="kw">mod </span>sealed {
@@ -346,7 +346,7 @@
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         offset: <a href="https://doc.rust-lang.org/nightly/std/primitive.i64.html">i64</a>,
         type_: <a href="../../../glib/auto/enums/enum.SeekType.html">SeekType</a>,
-        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="../auto/cancellable.rs.html#7-85">Cancellable</a>&gt;,
+        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="../auto/cancellable.rs.html#8-86">Cancellable</a>&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="../../../glib/error/struct.Error.html">Error</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>type_data = <a href="../../../glib/subclass/types/trait.ObjectSubclassType.html#tymethod.type_data"><span class="self">Self</span>::type_data</a>();
@@ -388,7 +388,7 @@
         }
     }
 
-    <span class="kw">fn </span>parent_truncate(<span class="kw-2">&amp;</span><span class="self">self</span>, offset: <a href="https://doc.rust-lang.org/nightly/std/primitive.i64.html">i64</a>, cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="../auto/cancellable.rs.html#7-85">Cancellable</a>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="../../../glib/error/struct.Error.html">Error</a>&gt; {
+    <span class="kw">fn </span>parent_truncate(<span class="kw-2">&amp;</span><span class="self">self</span>, offset: <a href="https://doc.rust-lang.org/nightly/std/primitive.i64.html">i64</a>, cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="../auto/cancellable.rs.html#8-86">Cancellable</a>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="../../../glib/error/struct.Error.html">Error</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>type_data = <a href="../../../glib/subclass/types/trait.ObjectSubclassType.html#tymethod.type_data"><span class="self">Self</span>::type_data</a>();
             <span class="kw">let </span>parent_iface =
@@ -458,7 +458,7 @@
     <span class="kw">match </span><a href="#166">imp</a>.<a href="#12-17">seek</a>(
         <a href="#160">offset</a>,
         <a href="../../../glib/translate/fn.from_glib.html">from_glib</a>(<a href="#161">type_</a>),
-        <span class="prelude-ty">Option</span>::&lt;<a href="../auto/cancellable.rs.html#7-85">Cancellable</a>&gt;::from_glib_borrow(<a href="#162">cancellable</a>)
+        <span class="prelude-ty">Option</span>::&lt;<a href="../auto/cancellable.rs.html#8-86">Cancellable</a>&gt;::from_glib_borrow(<a href="#162">cancellable</a>)
             .<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>()
             .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_ref">as_ref</a>(),
     ) {
@@ -492,7 +492,7 @@
 
     <span class="kw">match </span><a href="#201">imp</a>.<a href="#19">truncate</a>(
         <a href="#196">offset</a>,
-        <span class="prelude-ty">Option</span>::&lt;<a href="../auto/cancellable.rs.html#7-85">Cancellable</a>&gt;::from_glib_borrow(<a href="#197">cancellable</a>)
+        <span class="prelude-ty">Option</span>::&lt;<a href="../auto/cancellable.rs.html#8-86">Cancellable</a>&gt;::from_glib_borrow(<a href="#197">cancellable</a>)
             .<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>()
             .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_ref">as_ref</a>(),
     ) {

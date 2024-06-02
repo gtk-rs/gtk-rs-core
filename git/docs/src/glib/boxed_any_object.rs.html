@@ -273,7 +273,7 @@
 };
 
 <span class="kw">use crate as </span>glib;
-<span class="kw">use crate</span>::{<a href="subclass/mod.rs.html#442-458">subclass::prelude</a>::<span class="kw-2">*</span>, <a href="object.rs.html#1369-1372">Object</a>};
+<span class="kw">use crate</span>::{<a href="subclass/mod.rs.html#442-458">subclass::prelude</a>::<span class="kw-2">*</span>, <a href="object.rs.html#1370-1373">Object</a>};
 
 <span class="attr">#[derive(thiserror::Error, Debug)]
 </span><span class="kw">pub enum </span><a href="#12-17">BorrowError</a> {
@@ -302,7 +302,7 @@
     }
 
     <span class="attr">#[glib::object_subclass]
-    </span><span class="kw">impl </span><a href="subclass/types.rs.html#601-718">ObjectSubclass</a> <span class="kw">for </span><a href="#33-35">BoxedAnyObject</a> {
+    </span><span class="kw">impl </span><a href="subclass/types.rs.html#602-719">ObjectSubclass</a> <span class="kw">for </span><a href="#33-35">BoxedAnyObject</a> {
         <span class="kw">const </span>NAME: <span class="kw-2">&amp;</span><span class="lifetime">'static </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a> = <span class="string">"BoxedAnyObject"</span>;
         <span class="kw">type </span>Type = <a href="#52-87"><span class="kw">super</span>::BoxedAnyObject</a>;
     }
@@ -313,7 +313,7 @@
             }
         }
     }
-    <span class="kw">impl </span><a href="subclass/object.rs.html#17-119">ObjectImpl</a> <span class="kw">for </span><a href="#33-35">BoxedAnyObject</a> {}
+    <span class="kw">impl </span><a href="subclass/object.rs.html#22-124">ObjectImpl</a> <span class="kw">for </span><a href="#33-35">BoxedAnyObject</a> {}
 }
 
 <a class="macro" href="wrapper.rs.html#277-444">glib::wrapper!</a> {
@@ -357,7 +357,7 @@
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Creates a new `BoxedAnyObject` containing `value`
     </span><span class="kw">pub fn </span>new&lt;T: <span class="lifetime">'static</span>&gt;(value: T) -&gt; <span class="self">Self </span>{
-        <span class="kw">let </span>obj: <span class="self">Self </span>= <a href="object.rs.html#1386-1389">Object::new</a>();
+        <span class="kw">let </span>obj: <span class="self">Self </span>= <a href="object.rs.html#1387-1390">Object::new</a>();
         <a href="#93">obj</a>.<a href="#102-104">replace</a>(<a href="#92">value</a>);
         <a href="#93">obj</a>
     }
@@ -367,7 +367,7 @@
     /// The returned value is inside a `Box` and must be manually downcasted if needed.
     </span><span class="attr">#[track_caller]
     </span><span class="kw">pub fn </span>replace&lt;T: <span class="lifetime">'static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, t: T) -&gt; Box&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/any/trait.Any.html">Any</a>&gt; {
-        <a class="self" href="#102">self</a>.<a href="subclass/types.rs.html#157">imp</a>().value.<a href="https://doc.rust-lang.org/nightly/core/cell/struct.RefCell.html#method.replace">replace</a>(<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">Box::new</a>(<a href="#102">t</a>) <span class="kw">as </span>Box&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/any/trait.Any.html">Any</a>&gt;)
+        <a class="self" href="#102">self</a>.<a href="subclass/types.rs.html#158">imp</a>().value.<a href="https://doc.rust-lang.org/nightly/core/cell/struct.RefCell.html#method.replace">replace</a>(<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">Box::new</a>(<a href="#102">t</a>) <span class="kw">as </span>Box&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/any/trait.Any.html">Any</a>&gt;)
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
@@ -383,7 +383,7 @@
         // https://doc.rust-lang.org/std/cell/struct.Ref.html#method.filter_map.
         // As a workaround, I check if everything is safe, then I unwrap
 
-        </span><span class="kw">let </span>borrowed = <a class="self" href="#114">self</a>.<a href="subclass/types.rs.html#157">imp</a>().value.<a href="https://doc.rust-lang.org/nightly/core/cell/struct.RefCell.html#method.try_borrow">try_borrow</a>()<span class="question-mark">?</span>;
+        </span><span class="kw">let </span>borrowed = <a class="self" href="#114">self</a>.<a href="subclass/types.rs.html#158">imp</a>().value.<a href="https://doc.rust-lang.org/nightly/core/cell/struct.RefCell.html#method.try_borrow">try_borrow</a>()<span class="question-mark">?</span>;
         <a href="#119">borrowed</a>
             .<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>()
             .<a href="https://doc.rust-lang.org/nightly/core/foreigntype.any.html#method.downcast_ref">downcast_ref</a>::&lt;T&gt;()
@@ -405,7 +405,7 @@
         // https://doc.rust-lang.org/std/cell/struct.Ref.html#method.filter_map
         // As a workaround, I check if everything is safe, then I unwrap.
 
-        </span><span class="kw">let </span><span class="kw-2">mut </span>borrowed_mut = <a class="self" href="#136">self</a>.<a href="subclass/types.rs.html#157">imp</a>().value.<a href="https://doc.rust-lang.org/nightly/core/cell/struct.RefCell.html#method.try_borrow_mut">try_borrow_mut</a>()<span class="question-mark">?</span>;
+        </span><span class="kw">let </span><span class="kw-2">mut </span>borrowed_mut = <a class="self" href="#136">self</a>.<a href="subclass/types.rs.html#158">imp</a>().value.<a href="https://doc.rust-lang.org/nightly/core/cell/struct.RefCell.html#method.try_borrow_mut">try_borrow_mut</a>()<span class="question-mark">?</span>;
         <a href="#141">borrowed_mut</a>
             .<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsMut.html#tymethod.as_mut">as_mut</a>()
             .<a href="https://doc.rust-lang.org/nightly/core/foreigntype.any.html#method.downcast_mut">downcast_mut</a>::&lt;T&gt;()
@@ -428,7 +428,7 @@
     /// [`try_borrow`](#method.try_borrow).
     </span><span class="attr">#[track_caller]
     </span><span class="kw">pub fn </span>borrow&lt;T: <span class="lifetime">'static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Ref&lt;<span class="lifetime">'_</span>, T&gt; {
-        <a href="https://doc.rust-lang.org/nightly/core/cell/struct.Ref.html#method.map">Ref::map</a>(<a class="self" href="#163">self</a>.<a href="subclass/types.rs.html#157">imp</a>().value.<a href="https://doc.rust-lang.org/nightly/core/cell/struct.RefCell.html#method.borrow">borrow</a>(), |value| {
+        <a href="https://doc.rust-lang.org/nightly/core/cell/struct.Ref.html#method.map">Ref::map</a>(<a class="self" href="#163">self</a>.<a href="subclass/types.rs.html#158">imp</a>().value.<a href="https://doc.rust-lang.org/nightly/core/cell/struct.RefCell.html#method.borrow">borrow</a>(), |value| {
             <a href="#164">value</a>
                 .<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>()
                 .<a href="https://doc.rust-lang.org/nightly/core/foreigntype.any.html#method.downcast_ref">downcast_ref</a>::&lt;T&gt;()
@@ -451,7 +451,7 @@
     /// [`try_borrow_mut`](#method.try_borrow_mut).
     </span><span class="attr">#[track_caller]
     </span><span class="kw">pub fn </span>borrow_mut&lt;T: <span class="lifetime">'static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; RefMut&lt;<span class="lifetime">'_</span>, T&gt; {
-        <a href="https://doc.rust-lang.org/nightly/core/cell/struct.RefMut.html#method.map">RefMut::map</a>(<a class="self" href="#186">self</a>.<a href="subclass/types.rs.html#157">imp</a>().value.<a href="https://doc.rust-lang.org/nightly/core/cell/struct.RefCell.html#method.borrow_mut">borrow_mut</a>(), |value| {
+        <a href="https://doc.rust-lang.org/nightly/core/cell/struct.RefMut.html#method.map">RefMut::map</a>(<a class="self" href="#186">self</a>.<a href="subclass/types.rs.html#158">imp</a>().value.<a href="https://doc.rust-lang.org/nightly/core/cell/struct.RefCell.html#method.borrow_mut">borrow_mut</a>(), |value| {
             <a href="#187">value</a>
                 .<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsMut.html#tymethod.as_mut">as_mut</a>()
                 .<a href="https://doc.rust-lang.org/nightly/core/foreigntype.any.html#method.downcast_mut">downcast_mut</a>::&lt;T&gt;()

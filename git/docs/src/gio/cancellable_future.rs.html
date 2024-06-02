@@ -274,7 +274,7 @@
 
 <span class="kw">use </span>pin_project_lite::pin_project;
 
-<span class="kw">use crate</span>::{<a href="cancellable.rs.html#16">cancellable::CancelledHandlerId</a>, <a href="lib.rs.html#120">prelude</a>::<span class="kw-2">*</span>, <a href="auto/cancellable.rs.html#7-85">Cancellable</a>, <a href="auto/enums.rs.html#1654-1817">IOErrorEnum</a>};
+<span class="kw">use crate</span>::{<a href="cancellable.rs.html#16">cancellable::CancelledHandlerId</a>, <a href="lib.rs.html#120">prelude</a>::<span class="kw-2">*</span>, <a href="auto/cancellable.rs.html#8-86">Cancellable</a>, <a href="auto/enums.rs.html#1655-1818">IOErrorEnum</a>};
 
 <span class="comment">// rustdoc-stripper-ignore-next
 </span><span class="doccomment">/// Indicator that the [`CancellableFuture`] was cancelled.
@@ -304,7 +304,7 @@
         <span class="attr">#[pin]
         </span>waker_handler_cb: <span class="prelude-ty">Option</span>&lt;<a href="cancellable.rs.html#16">CancelledHandlerId</a>&gt;,
 
-        cancellable: <a href="auto/cancellable.rs.html#7-85">Cancellable</a>,
+        cancellable: <a href="auto/cancellable.rs.html#8-86">Cancellable</a>,
     }
 }
 
@@ -315,7 +315,7 @@
     /// When [`cancel`](CancellableExt::cancel) is called, the future will complete
     /// immediately without making any further progress. In such a case, an error
     /// will be returned by this future (i.e., [`Cancelled`]).
-    </span><span class="kw">pub fn </span>new(future: F, cancellable: <a href="auto/cancellable.rs.html#7-85">Cancellable</a>) -&gt; <span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>new(future: F, cancellable: <a href="auto/cancellable.rs.html#8-86">Cancellable</a>) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
             <a href="#53">future</a>,
             waker_handler_cb: <span class="prelude-val">None</span>,
@@ -334,13 +334,13 @@
     ///   * `cancel` was called while the future was being polled.
     </span><span class="attr">#[inline]
     </span><span class="kw">pub fn </span>is_cancelled(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
-        <a class="self" href="#71">self</a>.cancellable.<a href="auto/cancellable.rs.html#194-200">is_cancelled</a>()
+        <a class="self" href="#71">self</a>.cancellable.<a href="auto/cancellable.rs.html#195-201">is_cancelled</a>()
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Returns the inner [`Cancellable`] associated during creation.
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>cancellable(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><a href="auto/cancellable.rs.html#7-85">Cancellable</a> {
+    </span><span class="kw">pub fn </span>cancellable(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><a href="auto/cancellable.rs.html#8-86">Cancellable</a> {
         <span class="kw-2">&amp;</span><a class="self" href="#78">self</a>.cancellable
     }
 }
@@ -386,7 +386,7 @@
 
 <span class="kw">impl </span>From&lt;<a href="#16">Cancelled</a>&gt; <span class="kw">for </span><a href="../../glib/error/struct.Error.html">glib::Error</a> {
     <span class="kw">fn </span>from(<span class="kw">_</span>: <a href="#16">Cancelled</a>) -&gt; <span class="self">Self </span>{
-        <a href="../../glib/error/struct.Error.html#method.new">glib::Error::new</a>(<a href="auto/enums.rs.html#1715">IOErrorEnum::Cancelled</a>, <span class="string">"Task cancelled"</span>)
+        <a href="../../glib/error/struct.Error.html#method.new">glib::Error::new</a>(<a href="auto/enums.rs.html#1716">IOErrorEnum::Cancelled</a>, <span class="string">"Task cancelled"</span>)
     }
 }
 

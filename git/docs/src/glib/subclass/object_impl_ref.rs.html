@@ -242,7 +242,7 @@
 <span class="kw">use crate</span>::{
     clone::{<a href="../clone.rs.html#12-23">Downgrade</a>, <a href="../clone.rs.html#27-38">Upgrade</a>},
     <a href="../lib.rs.html#137">prelude</a>::<span class="kw-2">*</span>,
-    <a href="../object.rs.html#3392">WeakRef</a>,
+    <a href="../object.rs.html#3393">WeakRef</a>,
 };
 
 <span class="comment">// rustdoc-stripper-ignore-next
@@ -250,17 +250,17 @@
 ///
 /// This can be used for passing into closures as strong or weak reference without manually going
 /// from the implementation type to the instance type and back.
-</span><span class="kw">pub struct </span><a href="../../../glib/subclass/struct.ObjectImplRef.html">ObjectImplRef</a>&lt;T: <a href="types.rs.html#601-718">ObjectSubclass</a>&gt;(T::Type);
+</span><span class="kw">pub struct </span><a href="../../../glib/subclass/struct.ObjectImplRef.html">ObjectImplRef</a>&lt;T: <a href="types.rs.html#602-719">ObjectSubclass</a>&gt;(T::Type);
 
-<span class="kw">unsafe impl</span>&lt;T: <a href="types.rs.html#601-718">ObjectSubclass</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> <span class="kw">for </span>ObjectImplRef&lt;T&gt; {}
-<span class="kw">unsafe impl</span>&lt;T: <a href="types.rs.html#601-718">ObjectSubclass</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> <span class="kw">for </span>ObjectImplRef&lt;T&gt; {}
+<span class="kw">unsafe impl</span>&lt;T: <a href="types.rs.html#602-719">ObjectSubclass</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> <span class="kw">for </span>ObjectImplRef&lt;T&gt; {}
+<span class="kw">unsafe impl</span>&lt;T: <a href="types.rs.html#602-719">ObjectSubclass</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> <span class="kw">for </span>ObjectImplRef&lt;T&gt; {}
 
-<span class="kw">impl</span>&lt;T: <a href="types.rs.html#601-718">ObjectSubclass</a>&gt; ObjectImplRef&lt;T&gt; {
+<span class="kw">impl</span>&lt;T: <a href="types.rs.html#602-719">ObjectSubclass</a>&gt; ObjectImplRef&lt;T&gt; {
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Create a new reference-counting wrapper around `imp`.
     </span><span class="attr">#[inline]
     </span><span class="kw">pub fn </span>new(imp: <span class="kw-2">&amp;</span>T) -&gt; <span class="self">Self </span>{
-        <span class="self">Self</span>(<a href="#26">imp</a>.<a href="types.rs.html#739">obj</a>().<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">clone</a>())
+        <span class="self">Self</span>(<a href="#26">imp</a>.<a href="types.rs.html#740">obj</a>().<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">clone</a>())
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
@@ -269,33 +269,33 @@
     /// This can be upgraded to a strong reference again via [`ObjectImplWeakRef::upgrade`].
     </span><span class="attr">#[inline]
     </span><span class="kw">pub fn </span>downgrade(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; ObjectImplWeakRef&lt;T&gt; {
-        <a href="#126">ObjectImplWeakRef</a>(<a class="self" href="#35">self</a>.<span class="number">0</span>.<a href="../object.rs.html#2143">downgrade</a>())
+        <a href="#126">ObjectImplWeakRef</a>(<a class="self" href="#35">self</a>.<span class="number">0</span>.<a href="../object.rs.html#2144">downgrade</a>())
     }
 }
 
-<span class="kw">impl</span>&lt;T: <a href="types.rs.html#601-718">ObjectSubclass</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">Clone</a> <span class="kw">for </span>ObjectImplRef&lt;T&gt; {
+<span class="kw">impl</span>&lt;T: <a href="types.rs.html#602-719">ObjectSubclass</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">Clone</a> <span class="kw">for </span>ObjectImplRef&lt;T&gt; {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>clone(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self </span>{
         <span class="self">Self</span>(<a class="self" href="#42">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">clone</a>())
     }
 }
 
-<span class="kw">impl</span>&lt;T: <a href="types.rs.html#601-718">ObjectSubclass</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html">fmt::Debug</a> <span class="kw">for </span>ObjectImplRef&lt;T&gt; {
+<span class="kw">impl</span>&lt;T: <a href="types.rs.html#602-719">ObjectSubclass</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html">fmt::Debug</a> <span class="kw">for </span>ObjectImplRef&lt;T&gt; {
     <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; <a href="https://doc.rust-lang.org/nightly/core/fmt/type.Result.html">fmt::Result</a> {
         &lt;T::Type <span class="kw">as </span>fmt::Debug&gt;::fmt(<span class="kw-2">&amp;</span><a class="self" href="#48">self</a>.<span class="number">0</span>, <a href="#48">f</a>)
     }
 }
 
-<span class="kw">impl</span>&lt;T: <a href="types.rs.html#601-718">ObjectSubclass</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/ops/deref/trait.Deref.html">std::ops::Deref</a> <span class="kw">for </span>ObjectImplRef&lt;T&gt; {
+<span class="kw">impl</span>&lt;T: <a href="types.rs.html#602-719">ObjectSubclass</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/ops/deref/trait.Deref.html">std::ops::Deref</a> <span class="kw">for </span>ObjectImplRef&lt;T&gt; {
     <span class="kw">type </span>Target = T;
 
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>deref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="self">Self</span>::Target {
-        <a href="types.rs.html#745">T::from_obj</a>(<span class="kw-2">&amp;</span><a class="self" href="#57">self</a>.<span class="number">0</span>)
+        <a href="types.rs.html#746">T::from_obj</a>(<span class="kw-2">&amp;</span><a class="self" href="#57">self</a>.<span class="number">0</span>)
     }
 }
 
-<span class="kw">impl</span>&lt;T: <a href="types.rs.html#601-718">ObjectSubclass</a>&gt; <a href="../clone.rs.html#12-23">Downgrade</a> <span class="kw">for </span>ObjectImplRef&lt;T&gt; {
+<span class="kw">impl</span>&lt;T: <a href="types.rs.html#602-719">ObjectSubclass</a>&gt; <a href="../clone.rs.html#12-23">Downgrade</a> <span class="kw">for </span>ObjectImplRef&lt;T&gt; {
     <span class="kw">type </span>Weak = ObjectImplWeakRef&lt;T&gt;;
 
     <span class="attr">#[inline]
@@ -304,14 +304,14 @@
     }
 }
 
-<span class="kw">impl</span>&lt;T: <a href="types.rs.html#601-718">ObjectSubclass</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/cmp/trait.PartialOrd.html">PartialOrd</a> <span class="kw">for </span>ObjectImplRef&lt;T&gt; {
+<span class="kw">impl</span>&lt;T: <a href="types.rs.html#602-719">ObjectSubclass</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/cmp/trait.PartialOrd.html">PartialOrd</a> <span class="kw">for </span>ObjectImplRef&lt;T&gt; {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>partial_cmp(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="https://doc.rust-lang.org/nightly/core/cmp/enum.Ordering.html">cmp::Ordering</a>&gt; {
         <span class="prelude-val">Some</span>(<a class="self" href="#73">self</a>.<a href="https://doc.rust-lang.org/nightly/core/cmp/trait.Ord.html#tymethod.cmp">cmp</a>(<a href="#73">other</a>))
     }
 }
 
-<span class="kw">impl</span>&lt;T: <a href="types.rs.html#601-718">ObjectSubclass</a>, OT: <a href="../object.rs.html#21-51"><span class="kw">crate</span>::object::ObjectType</a>&gt; PartialOrd&lt;OT&gt; <span class="kw">for </span>ObjectImplRef&lt;T&gt;
+<span class="kw">impl</span>&lt;T: <a href="types.rs.html#602-719">ObjectSubclass</a>, OT: <a href="../object.rs.html#22-52"><span class="kw">crate</span>::object::ObjectType</a>&gt; PartialOrd&lt;OT&gt; <span class="kw">for </span>ObjectImplRef&lt;T&gt;
 <span class="kw">where
     </span>T::Type: PartialOrd&lt;OT&gt;,
 {
@@ -321,21 +321,21 @@
     }
 }
 
-<span class="kw">impl</span>&lt;T: <a href="types.rs.html#601-718">ObjectSubclass</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/cmp/trait.Ord.html">Ord</a> <span class="kw">for </span>ObjectImplRef&lt;T&gt; {
+<span class="kw">impl</span>&lt;T: <a href="types.rs.html#602-719">ObjectSubclass</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/cmp/trait.Ord.html">Ord</a> <span class="kw">for </span>ObjectImplRef&lt;T&gt; {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>cmp(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/core/cmp/enum.Ordering.html">cmp::Ordering</a> {
         <a class="self" href="#90">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/cmp/trait.Ord.html#tymethod.cmp">cmp</a>(<span class="kw-2">&amp;</span><a href="#90">other</a>.<span class="number">0</span>)
     }
 }
 
-<span class="kw">impl</span>&lt;T: <a href="types.rs.html#601-718">ObjectSubclass</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html">PartialEq</a> <span class="kw">for </span>ObjectImplRef&lt;T&gt; {
+<span class="kw">impl</span>&lt;T: <a href="types.rs.html#602-719">ObjectSubclass</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html">PartialEq</a> <span class="kw">for </span>ObjectImplRef&lt;T&gt; {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
         <a class="self" href="#97">self</a>.<span class="number">0 </span>== <a href="#97">other</a>.<span class="number">0
     </span>}
 }
 
-<span class="kw">impl</span>&lt;T: <a href="types.rs.html#601-718">ObjectSubclass</a>, OT: <a href="../object.rs.html#21-51"><span class="kw">crate</span>::object::ObjectType</a>&gt; PartialEq&lt;OT&gt; <span class="kw">for </span>ObjectImplRef&lt;T&gt;
+<span class="kw">impl</span>&lt;T: <a href="types.rs.html#602-719">ObjectSubclass</a>, OT: <a href="../object.rs.html#22-52"><span class="kw">crate</span>::object::ObjectType</a>&gt; PartialEq&lt;OT&gt; <span class="kw">for </span>ObjectImplRef&lt;T&gt;
 <span class="kw">where
     </span>T::Type: PartialEq&lt;OT&gt;,
 {
@@ -345,9 +345,9 @@
     }
 }
 
-<span class="kw">impl</span>&lt;T: <a href="types.rs.html#601-718">ObjectSubclass</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/cmp/trait.Eq.html">Eq</a> <span class="kw">for </span>ObjectImplRef&lt;T&gt; {}
+<span class="kw">impl</span>&lt;T: <a href="types.rs.html#602-719">ObjectSubclass</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/cmp/trait.Eq.html">Eq</a> <span class="kw">for </span>ObjectImplRef&lt;T&gt; {}
 
-<span class="kw">impl</span>&lt;T: <a href="types.rs.html#601-718">ObjectSubclass</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/hash/trait.Hash.html">hash::Hash</a> <span class="kw">for </span>ObjectImplRef&lt;T&gt; {
+<span class="kw">impl</span>&lt;T: <a href="types.rs.html#602-719">ObjectSubclass</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/hash/trait.Hash.html">hash::Hash</a> <span class="kw">for </span>ObjectImplRef&lt;T&gt; {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>hash&lt;H&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, state: <span class="kw-2">&amp;mut </span>H)
     <span class="kw">where
@@ -359,37 +359,37 @@
 
 <span class="comment">// rustdoc-stripper-ignore-next
 </span><span class="doccomment">/// Weak reference to an [`ObjectSubclass`] reference.
-</span><span class="kw">pub struct </span><a href="../../../glib/subclass/struct.ObjectImplWeakRef.html">ObjectImplWeakRef</a>&lt;T: <a href="types.rs.html#601-718">ObjectSubclass</a>&gt;(WeakRef&lt;T::Type&gt;);
+</span><span class="kw">pub struct </span><a href="../../../glib/subclass/struct.ObjectImplWeakRef.html">ObjectImplWeakRef</a>&lt;T: <a href="types.rs.html#602-719">ObjectSubclass</a>&gt;(WeakRef&lt;T::Type&gt;);
 
-<span class="kw">unsafe impl</span>&lt;T: <a href="types.rs.html#601-718">ObjectSubclass</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> <span class="kw">for </span>ObjectImplWeakRef&lt;T&gt; {}
-<span class="kw">unsafe impl</span>&lt;T: <a href="types.rs.html#601-718">ObjectSubclass</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> <span class="kw">for </span>ObjectImplWeakRef&lt;T&gt; {}
+<span class="kw">unsafe impl</span>&lt;T: <a href="types.rs.html#602-719">ObjectSubclass</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> <span class="kw">for </span>ObjectImplWeakRef&lt;T&gt; {}
+<span class="kw">unsafe impl</span>&lt;T: <a href="types.rs.html#602-719">ObjectSubclass</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> <span class="kw">for </span>ObjectImplWeakRef&lt;T&gt; {}
 
-<span class="kw">impl</span>&lt;T: <a href="types.rs.html#601-718">ObjectSubclass</a>&gt; ObjectImplWeakRef&lt;T&gt; {
+<span class="kw">impl</span>&lt;T: <a href="types.rs.html#602-719">ObjectSubclass</a>&gt; ObjectImplWeakRef&lt;T&gt; {
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Upgrade to a strong reference, if possible.
     ///
     /// This will return `None` if the underlying object was freed in the meantime.
     </span><span class="attr">#[inline]
     </span><span class="kw">pub fn </span>upgrade(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;ObjectImplRef&lt;T&gt;&gt; {
-        <span class="kw">let </span>obj = <a class="self" href="#137">self</a>.<span class="number">0</span>.<a href="../object.rs.html#3432-3442">upgrade</a>()<span class="question-mark">?</span>;
+        <span class="kw">let </span>obj = <a class="self" href="#137">self</a>.<span class="number">0</span>.<a href="../object.rs.html#3433-3443">upgrade</a>()<span class="question-mark">?</span>;
         <span class="prelude-val">Some</span>(<a href="#17">ObjectImplRef</a>(<a href="#138">obj</a>))
     }
 }
 
-<span class="kw">impl</span>&lt;T: <a href="types.rs.html#601-718">ObjectSubclass</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">Clone</a> <span class="kw">for </span>ObjectImplWeakRef&lt;T&gt; {
+<span class="kw">impl</span>&lt;T: <a href="types.rs.html#602-719">ObjectSubclass</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">Clone</a> <span class="kw">for </span>ObjectImplWeakRef&lt;T&gt; {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>clone(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self </span>{
         <span class="self">Self</span>(<a class="self" href="#145">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">clone</a>())
     }
 }
 
-<span class="kw">impl</span>&lt;T: <a href="types.rs.html#601-718">ObjectSubclass</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html">fmt::Debug</a> <span class="kw">for </span>ObjectImplWeakRef&lt;T&gt; {
+<span class="kw">impl</span>&lt;T: <a href="types.rs.html#602-719">ObjectSubclass</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html">fmt::Debug</a> <span class="kw">for </span>ObjectImplWeakRef&lt;T&gt; {
     <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; <a href="https://doc.rust-lang.org/nightly/core/fmt/type.Result.html">fmt::Result</a> {
         &lt;<span class="kw">crate</span>::WeakRef&lt;T::Type&gt; <span class="kw">as </span>fmt::Debug&gt;::fmt(<span class="kw-2">&amp;</span><a class="self" href="#151">self</a>.<span class="number">0</span>, <a href="#151">f</a>)
     }
 }
 
-<span class="kw">impl</span>&lt;T: <a href="types.rs.html#601-718">ObjectSubclass</a>&gt; <a href="../clone.rs.html#27-38">Upgrade</a> <span class="kw">for </span>ObjectImplWeakRef&lt;T&gt; {
+<span class="kw">impl</span>&lt;T: <a href="types.rs.html#602-719">ObjectSubclass</a>&gt; <a href="../clone.rs.html#27-38">Upgrade</a> <span class="kw">for </span>ObjectImplWeakRef&lt;T&gt; {
     <span class="kw">type </span>Strong = ObjectImplRef&lt;T&gt;;
 
     <span class="attr">#[inline]

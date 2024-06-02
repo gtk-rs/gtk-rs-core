@@ -226,7 +226,7 @@
 
 <span class="kw">use </span>glib::{<a href="../../../glib/prelude/index.html">prelude</a>::<span class="kw-2">*</span>, <a href="../../../glib/subclass/prelude/index.html">subclass::prelude</a>::<span class="kw-2">*</span>, <a href="../../../glib/translate/index.html">translate</a>::<span class="kw-2">*</span>};
 
-<span class="kw">use </span><a href="../auto/list_model.rs.html#12-102"><span class="kw">crate</span>::ListModel</a>;
+<span class="kw">use crate</span>::{<a href="../../../gio_sys/index.html">ffi</a>, <a href="../auto/list_model.rs.html#13-103">ListModel</a>};
 
 <span class="kw">pub trait </span><a href="../../../gio/subclass/prelude/trait.ListModelImpl.html">ListModelImpl</a>: <a href="../../../glib/subclass/object/trait.ObjectImpl.html">ObjectImpl</a> {
     <span class="attr">#[doc(alias = <span class="string">"get_item_type"</span>)]
@@ -246,13 +246,13 @@
     <span class="kw">fn </span>parent_item_type(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="../../../glib/types/struct.Type.html">glib::Type</a> {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>type_data = <a href="../../../glib/subclass/types/trait.ObjectSubclassType.html#tymethod.type_data"><span class="self">Self</span>::type_data</a>();
-            <span class="kw">let </span>parent_iface = <a href="#26">type_data</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().<a href="../../../glib/subclass/types/struct.TypeData.html#method.parent_interface">parent_interface</a>::&lt;<a href="../auto/list_model.rs.html#12-102">ListModel</a>&gt;()
+            <span class="kw">let </span>parent_iface = <a href="#26">type_data</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().<a href="../../../glib/subclass/types/struct.TypeData.html#method.parent_interface">parent_interface</a>::&lt;<a href="../auto/list_model.rs.html#13-103">ListModel</a>&gt;()
                 <span class="kw">as </span><span class="kw-2">*const </span><a href="../../../gio_sys/struct.GListModelInterface.html">ffi::GListModelInterface</a>;
 
             <span class="kw">let </span>func = (<span class="kw-2">*</span><a href="#27">parent_iface</a>)
                 .get_item_type
                 .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.expect">expect</a>(<span class="string">"no parent \"item_type\" implementation"</span>);
-            <span class="kw">let </span>ret = <a href="#30">func</a>(<a class="self" href="#24">self</a>.<a href="../../../glib/subclass/types/trait.ObjectSubclassExt.html#tymethod.obj">obj</a>().<a href="../../../glib/object/trait.Cast.html#tymethod.unsafe_cast_ref">unsafe_cast_ref</a>::&lt;<a href="../auto/list_model.rs.html#12-102">ListModel</a>&gt;().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>);
+            <span class="kw">let </span>ret = <a href="#30">func</a>(<a class="self" href="#24">self</a>.<a href="../../../glib/subclass/types/trait.ObjectSubclassExt.html#tymethod.obj">obj</a>().<a href="../../../glib/object/trait.Cast.html#tymethod.unsafe_cast_ref">unsafe_cast_ref</a>::&lt;<a href="../auto/list_model.rs.html#13-103">ListModel</a>&gt;().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>);
             <a href="../../../glib/translate/fn.from_glib.html">from_glib</a>(<a href="#33">ret</a>)
         }
     }
@@ -260,27 +260,27 @@
     <span class="kw">fn </span>parent_n_items(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a> {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>type_data = <a href="../../../glib/subclass/types/trait.ObjectSubclassType.html#tymethod.type_data"><span class="self">Self</span>::type_data</a>();
-            <span class="kw">let </span>parent_iface = <a href="#40">type_data</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().<a href="../../../glib/subclass/types/struct.TypeData.html#method.parent_interface">parent_interface</a>::&lt;<a href="../auto/list_model.rs.html#12-102">ListModel</a>&gt;()
+            <span class="kw">let </span>parent_iface = <a href="#40">type_data</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().<a href="../../../glib/subclass/types/struct.TypeData.html#method.parent_interface">parent_interface</a>::&lt;<a href="../auto/list_model.rs.html#13-103">ListModel</a>&gt;()
                 <span class="kw">as </span><span class="kw-2">*const </span><a href="../../../gio_sys/struct.GListModelInterface.html">ffi::GListModelInterface</a>;
 
             <span class="kw">let </span>func = (<span class="kw-2">*</span><a href="#41">parent_iface</a>)
                 .get_n_items
                 .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.expect">expect</a>(<span class="string">"no parent \"n_items\" implementation"</span>);
-            <a href="#44">func</a>(<a class="self" href="#38">self</a>.<a href="../../../glib/subclass/types/trait.ObjectSubclassExt.html#tymethod.obj">obj</a>().<a href="../../../glib/object/trait.Cast.html#tymethod.unsafe_cast_ref">unsafe_cast_ref</a>::&lt;<a href="../auto/list_model.rs.html#12-102">ListModel</a>&gt;().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>)
+            <a href="#44">func</a>(<a class="self" href="#38">self</a>.<a href="../../../glib/subclass/types/trait.ObjectSubclassExt.html#tymethod.obj">obj</a>().<a href="../../../glib/object/trait.Cast.html#tymethod.unsafe_cast_ref">unsafe_cast_ref</a>::&lt;<a href="../auto/list_model.rs.html#13-103">ListModel</a>&gt;().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>)
         }
     }
 
     <span class="kw">fn </span>parent_item(<span class="kw-2">&amp;</span><span class="self">self</span>, position: <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="../../../glib/object/struct.Object.html">glib::Object</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>type_data = <a href="../../../glib/subclass/types/trait.ObjectSubclassType.html#tymethod.type_data"><span class="self">Self</span>::type_data</a>();
-            <span class="kw">let </span>parent_iface = <a href="#53">type_data</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().<a href="../../../glib/subclass/types/struct.TypeData.html#method.parent_interface">parent_interface</a>::&lt;<a href="../auto/list_model.rs.html#12-102">ListModel</a>&gt;()
+            <span class="kw">let </span>parent_iface = <a href="#53">type_data</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().<a href="../../../glib/subclass/types/struct.TypeData.html#method.parent_interface">parent_interface</a>::&lt;<a href="../auto/list_model.rs.html#13-103">ListModel</a>&gt;()
                 <span class="kw">as </span><span class="kw-2">*const </span><a href="../../../gio_sys/struct.GListModelInterface.html">ffi::GListModelInterface</a>;
 
             <span class="kw">let </span>func = (<span class="kw-2">*</span><a href="#54">parent_iface</a>)
                 .get_item
                 .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.expect">expect</a>(<span class="string">"no parent \"get_item\" implementation"</span>);
             <span class="kw">let </span>ret = <a href="#57">func</a>(
-                <a class="self" href="#51">self</a>.<a href="../../../glib/subclass/types/trait.ObjectSubclassExt.html#tymethod.obj">obj</a>().<a href="../../../glib/object/trait.Cast.html#tymethod.unsafe_cast_ref">unsafe_cast_ref</a>::&lt;<a href="../auto/list_model.rs.html#12-102">ListModel</a>&gt;().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+                <a class="self" href="#51">self</a>.<a href="../../../glib/subclass/types/trait.ObjectSubclassExt.html#tymethod.obj">obj</a>().<a href="../../../glib/object/trait.Cast.html#tymethod.unsafe_cast_ref">unsafe_cast_ref</a>::&lt;<a href="../auto/list_model.rs.html#13-103">ListModel</a>&gt;().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
                 <a href="#51">position</a>,
             );
             <a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#60">ret</a>)
@@ -290,7 +290,7 @@
 
 <span class="kw">impl</span>&lt;T: <a href="#9-16">ListModelImpl</a>&gt; <a href="#23-67">ListModelImplExt</a> <span class="kw">for </span>T {}
 
-<span class="kw">unsafe impl</span>&lt;T: <a href="#9-16">ListModelImpl</a>&gt; IsImplementable&lt;T&gt; <span class="kw">for </span><a href="../auto/list_model.rs.html#12-102">ListModel</a>
+<span class="kw">unsafe impl</span>&lt;T: <a href="#9-16">ListModelImpl</a>&gt; IsImplementable&lt;T&gt; <span class="kw">for </span><a href="../auto/list_model.rs.html#13-103">ListModel</a>
 <span class="kw">where
     </span>&lt;T <span class="kw">as </span>ObjectSubclass&gt;::Type: IsA&lt;<a href="../../../glib/object/struct.Object.html">glib::Object</a>&gt;,
 {

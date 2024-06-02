@@ -123,9 +123,13 @@
 <a href="#50" id="50">50</a>
 <a href="#51" id="51">51</a>
 <a href="#52" id="52">52</a>
+<a href="#53" id="53">53</a>
+<a href="#54" id="54">54</a>
 </pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
-</span><span class="doccomment">/// This structure is used to provide the type system with the information
+</span><span class="kw">use </span><span class="kw">crate</span>::gobject_ffi;
+
+<span class="doccomment">/// This structure is used to provide the type system with the information
 /// required to initialize and destruct (finalize) a type's class and
 /// its instances.
 ///
@@ -139,13 +143,13 @@
 #[repr(transparent)]
 </span><span class="kw">pub struct </span><a href="../../../glib/struct.TypeInfo.html">TypeInfo</a>(<span class="kw">pub</span>(<span class="kw">crate</span>) gobject_ffi::GTypeInfo);
 
-<span class="kw">impl </span><a href="#15">TypeInfo</a> {
+<span class="kw">impl </span><a href="#17">TypeInfo</a> {
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Returns a `GTypeInfo` pointer.
     </span><span class="attr">#[doc(hidden)]
     #[inline]
     </span><span class="kw">pub fn </span>as_ptr(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">*mut </span>gobject_ffi::GTypeInfo {
-        <span class="kw-2">&amp;</span><a class="self" href="#22">self</a>.<span class="number">0 </span><span class="kw">as </span><span class="kw-2">*const </span>gobject_ffi::GTypeInfo <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_
+        <span class="kw-2">&amp;</span><a class="self" href="#24">self</a>.<span class="number">0 </span><span class="kw">as </span><span class="kw-2">*const </span>gobject_ffi::GTypeInfo <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_
     </span>}
 
     <span class="comment">// rustdoc-stripper-ignore-next
@@ -153,11 +157,11 @@
     </span><span class="attr">#[doc(hidden)]
     #[inline]
     </span><span class="kw">pub unsafe fn </span>from_glib_ptr_borrow_mut&lt;<span class="lifetime">'a</span>&gt;(ptr: <span class="kw-2">*mut </span>gobject_ffi::GTypeInfo) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span><span class="self">Self </span>{
-        <span class="kw-2">&amp;mut *</span>(<a href="#30">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="self">Self</span>)
+        <span class="kw-2">&amp;mut *</span>(<a href="#32">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="self">Self</span>)
     }
 }
 
-<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html">Default</a> <span class="kw">for </span><a href="#15">TypeInfo</a> {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html">Default</a> <span class="kw">for </span><a href="#17">TypeInfo</a> {
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Creates a new TypeInfo with default value.
     </span><span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{

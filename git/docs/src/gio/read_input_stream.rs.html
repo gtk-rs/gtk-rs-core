@@ -482,13 +482,13 @@
         <span class="kw">fn </span>read(
             <span class="kw-2">&amp;</span><span class="self">self</span>,
             buffer: <span class="kw-2">&amp;mut </span>[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>],
-            _cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="auto/cancellable.rs.html#7-85"><span class="kw">crate</span>::Cancellable</a>&gt;,
+            _cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="auto/cancellable.rs.html#8-86"><span class="kw">crate</span>::Cancellable</a>&gt;,
         ) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>, <a href="../../glib/error/struct.Error.html">glib::Error</a>&gt; {
             <span class="kw">let </span><span class="kw-2">mut </span>read = <a class="self" href="#37">self</a>.read.<a href="https://doc.rust-lang.org/nightly/core/cell/struct.RefCell.html#method.borrow_mut">borrow_mut</a>();
             <span class="kw">let </span>read = <span class="kw">match </span><span class="kw-2">*</span><a href="#41">read</a> {
                 <span class="prelude-val">None </span>=&gt; {
                     <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="../../glib/error/struct.Error.html#method.new">glib::Error::new</a>(
-                        <a href="auto/enums.rs.html#1712"><span class="kw">crate</span>::IOErrorEnum::Closed</a>,
+                        <a href="auto/enums.rs.html#1713"><span class="kw">crate</span>::IOErrorEnum::Closed</a>,
                         <span class="string">"Already closed"</span>,
                     ));
                 }
@@ -504,7 +504,7 @@
             }
         }
 
-        <span class="kw">fn </span>close(<span class="kw-2">&amp;</span><span class="self">self</span>, _cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="auto/cancellable.rs.html#7-85"><span class="kw">crate</span>::Cancellable</a>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="../../glib/error/struct.Error.html">glib::Error</a>&gt; {
+        <span class="kw">fn </span>close(<span class="kw-2">&amp;</span><span class="self">self</span>, _cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="auto/cancellable.rs.html#8-86"><span class="kw">crate</span>::Cancellable</a>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="../../glib/error/struct.Error.html">glib::Error</a>&gt; {
             <span class="kw">let _ </span>= <a class="self" href="#61">self</a>.read.<a href="https://doc.rust-lang.org/nightly/core/cell/struct.RefCell.html#method.take">take</a>();
             <span class="prelude-val">Ok</span>(())
         }
@@ -532,7 +532,7 @@
             <span class="kw-2">&amp;</span><span class="self">self</span>,
             offset: <a href="https://doc.rust-lang.org/nightly/std/primitive.i64.html">i64</a>,
             type_: <a href="../../glib/auto/enums/enum.SeekType.html">glib::SeekType</a>,
-            _cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="auto/cancellable.rs.html#7-85"><span class="kw">crate</span>::Cancellable</a>&gt;,
+            _cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="auto/cancellable.rs.html#8-86"><span class="kw">crate</span>::Cancellable</a>&gt;,
         ) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="../../glib/error/struct.Error.html">glib::Error</a>&gt; {
             <span class="kw">use </span><a href="https://doc.rust-lang.org/nightly/std/io/enum.SeekFrom.html">std::io::SeekFrom</a>;
 
@@ -544,7 +544,7 @@
                         <a href="../../glib/auto/enums/enum.SeekType.html#variant.Set">glib::SeekType::Set</a> =&gt; {
                             <span class="kw">if </span>offset &lt; <span class="number">0 </span>{
                                 <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="../../glib/error/struct.Error.html#method.new">glib::Error::new</a>(
-                                    <a href="auto/enums.rs.html#1697"><span class="kw">crate</span>::IOErrorEnum::InvalidArgument</a>,
+                                    <a href="auto/enums.rs.html#1698"><span class="kw">crate</span>::IOErrorEnum::InvalidArgument</a>,
                                     <span class="string">"Invalid Argument"</span>,
                                 ));
                             } <span class="kw">else </span>{
@@ -563,7 +563,7 @@
                     }
                 }
                 <span class="kw">_ </span>=&gt; <span class="prelude-val">Err</span>(<a href="../../glib/error/struct.Error.html#method.new">glib::Error::new</a>(
-                    <a href="auto/enums.rs.html#1703"><span class="kw">crate</span>::IOErrorEnum::NotSupported</a>,
+                    <a href="auto/enums.rs.html#1704"><span class="kw">crate</span>::IOErrorEnum::NotSupported</a>,
                     <span class="string">"Truncating not supported"</span>,
                 )),
             }
@@ -576,10 +576,10 @@
         <span class="kw">fn </span>truncate(
             <span class="kw-2">&amp;</span><span class="self">self</span>,
             _offset: <a href="https://doc.rust-lang.org/nightly/std/primitive.i64.html">i64</a>,
-            _cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="auto/cancellable.rs.html#7-85"><span class="kw">crate</span>::Cancellable</a>&gt;,
+            _cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="auto/cancellable.rs.html#8-86"><span class="kw">crate</span>::Cancellable</a>&gt;,
         ) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="../../glib/error/struct.Error.html">glib::Error</a>&gt; {
             <span class="prelude-val">Err</span>(<a href="../../glib/error/struct.Error.html#method.new">glib::Error::new</a>(
-                <a href="auto/enums.rs.html#1703"><span class="kw">crate</span>::IOErrorEnum::NotSupported</a>,
+                <a href="auto/enums.rs.html#1704"><span class="kw">crate</span>::IOErrorEnum::NotSupported</a>,
                 <span class="string">"Truncating not supported"</span>,
             ))
         }
@@ -714,54 +714,54 @@
             <span class="attr">#[allow(clippy::wildcard_in_or_patterns)]
             </span><span class="kw">match </span><a href="#265">err</a>.<a href="https://doc.rust-lang.org/nightly/std/io/error/struct.Error.html#method.kind">kind</a>() {
                 <a href="https://doc.rust-lang.org/nightly/std/io/error/enum.ErrorKind.html#variant.NotFound">ErrorKind::NotFound</a> =&gt; <span class="prelude-val">Some</span>(<span class="prelude-val">Err</span>(<a href="../../glib/error/struct.Error.html#method.new">glib::Error::new</a>(
-                    <a href="auto/enums.rs.html#1661"><span class="kw">crate</span>::IOErrorEnum::NotFound</a>,
+                    <a href="auto/enums.rs.html#1662"><span class="kw">crate</span>::IOErrorEnum::NotFound</a>,
                     <span class="string">"Not Found"</span>,
                 ))),
                 <a href="https://doc.rust-lang.org/nightly/std/io/error/enum.ErrorKind.html#variant.PermissionDenied">ErrorKind::PermissionDenied</a> =&gt; <span class="prelude-val">Some</span>(<span class="prelude-val">Err</span>(<a href="../../glib/error/struct.Error.html#method.new">glib::Error::new</a>(
-                    <a href="auto/enums.rs.html#1700"><span class="kw">crate</span>::IOErrorEnum::PermissionDenied</a>,
+                    <a href="auto/enums.rs.html#1701"><span class="kw">crate</span>::IOErrorEnum::PermissionDenied</a>,
                     <span class="string">"Permission Denied"</span>,
                 ))),
                 <a href="https://doc.rust-lang.org/nightly/std/io/error/enum.ErrorKind.html#variant.ConnectionRefused">ErrorKind::ConnectionRefused</a> =&gt; <span class="prelude-val">Some</span>(<span class="prelude-val">Err</span>(<a href="../../glib/error/struct.Error.html#method.new">glib::Error::new</a>(
-                    <a href="auto/enums.rs.html#1782"><span class="kw">crate</span>::IOErrorEnum::ConnectionRefused</a>,
+                    <a href="auto/enums.rs.html#1783"><span class="kw">crate</span>::IOErrorEnum::ConnectionRefused</a>,
                     <span class="string">"Connection Refused"</span>,
                 ))),
                 <a href="https://doc.rust-lang.org/nightly/std/io/error/enum.ErrorKind.html#variant.ConnectionReset">ErrorKind::ConnectionReset</a>
                 | <a href="https://doc.rust-lang.org/nightly/std/io/error/enum.ErrorKind.html#variant.ConnectionAborted">ErrorKind::ConnectionAborted</a>
                 | <a href="https://doc.rust-lang.org/nightly/std/io/error/enum.ErrorKind.html#variant.NotConnected">ErrorKind::NotConnected</a> =&gt; <span class="prelude-val">Some</span>(<span class="prelude-val">Err</span>(<a href="../../glib/error/struct.Error.html#method.new">glib::Error::new</a>(
-                    <a href="auto/enums.rs.html#1801"><span class="kw">crate</span>::IOErrorEnum::NotConnected</a>,
+                    <a href="auto/enums.rs.html#1802"><span class="kw">crate</span>::IOErrorEnum::NotConnected</a>,
                     <span class="string">"Connection Reset"</span>,
                 ))),
                 <a href="https://doc.rust-lang.org/nightly/std/io/error/enum.ErrorKind.html#variant.AddrInUse">ErrorKind::AddrInUse</a> | <a href="https://doc.rust-lang.org/nightly/std/io/error/enum.ErrorKind.html#variant.AddrNotAvailable">ErrorKind::AddrNotAvailable</a> =&gt; <span class="prelude-val">Some</span>(<span class="prelude-val">Err</span>(<a href="../../glib/error/struct.Error.html#method.new">glib::Error::new</a>(
-                    <a href="auto/enums.rs.html#1760"><span class="kw">crate</span>::IOErrorEnum::AddressInUse</a>,
+                    <a href="auto/enums.rs.html#1761"><span class="kw">crate</span>::IOErrorEnum::AddressInUse</a>,
                     <span class="string">"Address In Use"</span>,
                 ))),
                 <a href="https://doc.rust-lang.org/nightly/std/io/error/enum.ErrorKind.html#variant.BrokenPipe">ErrorKind::BrokenPipe</a> =&gt; <span class="prelude-val">Some</span>(<span class="prelude-val">Err</span>(<a href="../../glib/error/struct.Error.html#method.new">glib::Error::new</a>(
-                    <a href="auto/enums.rs.html#1798"><span class="kw">crate</span>::IOErrorEnum::BrokenPipe</a>,
+                    <a href="auto/enums.rs.html#1799"><span class="kw">crate</span>::IOErrorEnum::BrokenPipe</a>,
                     <span class="string">"Broken Pipe"</span>,
                 ))),
                 <a href="https://doc.rust-lang.org/nightly/std/io/error/enum.ErrorKind.html#variant.AlreadyExists">ErrorKind::AlreadyExists</a> =&gt; <span class="prelude-val">Some</span>(<span class="prelude-val">Err</span>(<a href="../../glib/error/struct.Error.html#method.new">glib::Error::new</a>(
-                    <a href="auto/enums.rs.html#1664"><span class="kw">crate</span>::IOErrorEnum::Exists</a>,
+                    <a href="auto/enums.rs.html#1665"><span class="kw">crate</span>::IOErrorEnum::Exists</a>,
                     <span class="string">"Already Exists"</span>,
                 ))),
                 <a href="https://doc.rust-lang.org/nightly/std/io/error/enum.ErrorKind.html#variant.WouldBlock">ErrorKind::WouldBlock</a> =&gt; <span class="prelude-val">Some</span>(<span class="prelude-val">Err</span>(<a href="../../glib/error/struct.Error.html#method.new">glib::Error::new</a>(
-                    <a href="auto/enums.rs.html#1739"><span class="kw">crate</span>::IOErrorEnum::WouldBlock</a>,
+                    <a href="auto/enums.rs.html#1740"><span class="kw">crate</span>::IOErrorEnum::WouldBlock</a>,
                     <span class="string">"Would Block"</span>,
                 ))),
                 <a href="https://doc.rust-lang.org/nightly/std/io/error/enum.ErrorKind.html#variant.InvalidInput">ErrorKind::InvalidInput</a> | <a href="https://doc.rust-lang.org/nightly/std/io/error/enum.ErrorKind.html#variant.InvalidData">ErrorKind::InvalidData</a> =&gt; <span class="prelude-val">Some</span>(<span class="prelude-val">Err</span>(<a href="../../glib/error/struct.Error.html#method.new">glib::Error::new</a>(
-                    <a href="auto/enums.rs.html#1766"><span class="kw">crate</span>::IOErrorEnum::InvalidData</a>,
+                    <a href="auto/enums.rs.html#1767"><span class="kw">crate</span>::IOErrorEnum::InvalidData</a>,
                     <span class="string">"Invalid Input"</span>,
                 ))),
                 <a href="https://doc.rust-lang.org/nightly/std/io/error/enum.ErrorKind.html#variant.TimedOut">ErrorKind::TimedOut</a> =&gt; <span class="prelude-val">Some</span>(<span class="prelude-val">Err</span>(<a href="../../glib/error/struct.Error.html#method.new">glib::Error::new</a>(
-                    <a href="auto/enums.rs.html#1730"><span class="kw">crate</span>::IOErrorEnum::TimedOut</a>,
+                    <a href="auto/enums.rs.html#1731"><span class="kw">crate</span>::IOErrorEnum::TimedOut</a>,
                     <span class="string">"Timed Out"</span>,
                 ))),
                 <a href="https://doc.rust-lang.org/nightly/std/io/error/enum.ErrorKind.html#variant.Interrupted">ErrorKind::Interrupted</a> =&gt; <span class="prelude-val">None</span>,
                 <a href="https://doc.rust-lang.org/nightly/std/io/error/enum.ErrorKind.html#variant.UnexpectedEof">ErrorKind::UnexpectedEof</a> =&gt; <span class="prelude-val">Some</span>(<span class="prelude-val">Err</span>(<a href="../../glib/error/struct.Error.html#method.new">glib::Error::new</a>(
-                    <a href="auto/enums.rs.html#1712"><span class="kw">crate</span>::IOErrorEnum::Closed</a>,
+                    <a href="auto/enums.rs.html#1713"><span class="kw">crate</span>::IOErrorEnum::Closed</a>,
                     <span class="string">"Unexpected Eof"</span>,
                 ))),
                 <a href="https://doc.rust-lang.org/nightly/std/io/error/enum.ErrorKind.html#variant.WriteZero">ErrorKind::WriteZero</a> | <span class="kw">_ </span>=&gt; <span class="prelude-val">Some</span>(<span class="prelude-val">Err</span>(<a href="../../glib/error/struct.Error.html#method.new">glib::Error::new</a>(
-                    <a href="auto/enums.rs.html#1658"><span class="kw">crate</span>::IOErrorEnum::Failed</a>,
+                    <a href="auto/enums.rs.html#1659"><span class="kw">crate</span>::IOErrorEnum::Failed</a>,
                     <a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.format.html">format!</a>(<span class="string">"Unknown error: {err:?}"</span>).<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html#method.as_str">as_str</a>(),
                 ))),
             }

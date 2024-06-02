@@ -184,7 +184,7 @@
 
 </span><span class="kw">use </span>std::{<a href="https://doc.rust-lang.org/nightly/alloc/fmt/index.html">fmt</a>, <a href="https://doc.rust-lang.org/nightly/core/num/nonzero/type.NonZeroU32.html">num::NonZeroU32</a>};
 
-<span class="kw">use crate</span>::{<a href="lib.rs.html#142">translate</a>::<span class="kw-2">*</span>, <a href="gstring.rs.html#24">GStr</a>};
+<span class="kw">use crate</span>::{ffi, <a href="lib.rs.html#142">translate</a>::<span class="kw-2">*</span>, <a href="gstring.rs.html#24">GStr</a>};
 
 <span class="attr">#[derive(Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[repr(transparent)]
@@ -195,24 +195,24 @@
     <span class="attr">#[doc(alias = <span class="string">"g_quark_from_string"</span>)]
     #[allow(clippy::should_implement_trait)]
     </span><span class="kw">pub fn </span>from_str(s: <span class="kw">impl </span><a href="gstring.rs.html#2301-2303">IntoGStr</a>) -&gt; <span class="self">Self </span>{
-        <span class="kw">unsafe </span>{ <a href="#15">s</a>.<a href="gstring.rs.html#2302">run_with_gstr</a>(|s| <a href="translate.rs.html#1416-1418">from_glib</a>(ffi::g_quark_from_string(<a href="#16">s</a>.<a href="gstring.rs.html#207-209">as_ptr</a>()))) }
+        <span class="kw">unsafe </span>{ <a href="#15">s</a>.<a href="gstring.rs.html#2302">run_with_gstr</a>(|s| <a href="translate.rs.html#1417-1419">from_glib</a>(ffi::g_quark_from_string(<a href="#16">s</a>.<a href="gstring.rs.html#207-209">as_ptr</a>()))) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">"g_quark_from_static_string"</span>)]
     #[allow(clippy::should_implement_trait)]
     </span><span class="kw">pub fn </span>from_static_str(s: <span class="kw-2">&amp;</span><span class="lifetime">'static </span><a href="gstring.rs.html#24">GStr</a>) -&gt; <span class="self">Self </span>{
-        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1416-1418">from_glib</a>(ffi::g_quark_from_static_string(<a href="#21">s</a>.<a href="gstring.rs.html#207-209">as_ptr</a>())) }
+        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1417-1419">from_glib</a>(ffi::g_quark_from_static_string(<a href="#21">s</a>.<a href="gstring.rs.html#207-209">as_ptr</a>())) }
     }
 
     <span class="attr">#[allow(clippy::trivially_copy_pass_by_ref)]
     #[doc(alias = <span class="string">"g_quark_to_string"</span>)]
     </span><span class="kw">pub fn </span>as_str&lt;<span class="lifetime">'a</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="gstring.rs.html#24">GStr</a> {
-        <span class="kw">unsafe </span>{ <a href="gstring.rs.html#139-142">GStr::from_ptr</a>(ffi::g_quark_to_string(<a class="self" href="#27">self</a>.<a href="translate.rs.html#333">into_glib</a>())) }
+        <span class="kw">unsafe </span>{ <a href="gstring.rs.html#139-142">GStr::from_ptr</a>(ffi::g_quark_to_string(<a class="self" href="#27">self</a>.<a href="translate.rs.html#334">into_glib</a>())) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">"g_quark_try_string"</span>)]
     </span><span class="kw">pub fn </span>try_from_str(s: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt; {
-        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1438"><span class="self">Self</span>::try_from_glib</a>(ffi::g_quark_try_string(<a href="#32">s</a>.<a href="translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>)).<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.ok">ok</a>() }
+        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1439"><span class="self">Self</span>::try_from_glib</a>(ffi::g_quark_try_string(<a href="#32">s</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>)).<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.ok">ok</a>() }
     }
 }
 
@@ -247,10 +247,10 @@
 
 <span class="attr">#[doc(hidden)]
 </span><span class="kw">impl </span>TryFromGlib&lt;ffi::GQuark&gt; <span class="kw">for </span><a href="#10">Quark</a> {
-    <span class="kw">type </span>Error = <a href="translate.rs.html#1453">GlibNoneError</a>;
+    <span class="kw">type </span>Error = <a href="translate.rs.html#1454">GlibNoneError</a>;
     <span class="kw">unsafe fn </span>try_from_glib(value: ffi::GQuark) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, <span class="self">Self</span>::Error&gt; {
         <span class="kw">if </span>value == <span class="number">0 </span>{
-            <span class="prelude-val">Err</span>(<a href="translate.rs.html#1453">GlibNoneError</a>)
+            <span class="prelude-val">Err</span>(<a href="translate.rs.html#1454">GlibNoneError</a>)
         } <span class="kw">else </span>{
             <span class="prelude-val">Ok</span>(<span class="self">Self</span>(<a href="https://doc.rust-lang.org/nightly/core/num/nonzero/struct.NonZero.html#method.new_unchecked">NonZeroU32::new_unchecked</a>(<a href="#69">value</a>)))
         }
@@ -258,7 +258,7 @@
 }
 
 <span class="attr">#[doc(hidden)]
-</span><span class="kw">impl </span><a href="translate.rs.html#330-334">IntoGlib</a> <span class="kw">for </span><a href="#10">Quark</a> {
+</span><span class="kw">impl </span><a href="translate.rs.html#331-335">IntoGlib</a> <span class="kw">for </span><a href="#10">Quark</a> {
     <span class="kw">type </span>GlibType = ffi::GQuark;
 
     <span class="attr">#[inline]
@@ -268,7 +268,7 @@
 }
 
 <span class="attr">#[doc(hidden)]
-</span><span class="kw">impl </span><a href="translate.rs.html#330-334">IntoGlib</a> <span class="kw">for </span><span class="prelude-ty">Option</span>&lt;<a href="#10">Quark</a>&gt; {
+</span><span class="kw">impl </span><a href="translate.rs.html#331-335">IntoGlib</a> <span class="kw">for </span><span class="prelude-ty">Option</span>&lt;<a href="#10">Quark</a>&gt; {
     <span class="kw">type </span>GlibType = ffi::GQuark;
 
     <span class="attr">#[inline]

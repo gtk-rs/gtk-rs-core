@@ -215,12 +215,12 @@
     FusedFuture,
 };
 
-<span class="kw">use crate</span>::{<a href="lib.rs.html#120">prelude</a>::<span class="kw-2">*</span>, <a href="auto/cancellable.rs.html#7-85">Cancellable</a>};
+<span class="kw">use crate</span>::{<a href="lib.rs.html#120">prelude</a>::<span class="kw-2">*</span>, <a href="auto/cancellable.rs.html#8-86">Cancellable</a>};
 
 <span class="kw">pub struct </span><a href="../../gio/struct.GioFuture.html">GioFuture</a>&lt;F, O, T&gt; {
     obj: O,
     schedule_operation: <span class="prelude-ty">Option</span>&lt;F&gt;,
-    cancellable: <span class="prelude-ty">Option</span>&lt;<a href="auto/cancellable.rs.html#7-85">Cancellable</a>&gt;,
+    cancellable: <span class="prelude-ty">Option</span>&lt;<a href="auto/cancellable.rs.html#8-86">Cancellable</a>&gt;,
     receiver: <span class="prelude-ty">Option</span>&lt;oneshot::Receiver&lt;T&gt;&gt;,
 }
 
@@ -237,13 +237,13 @@
 <span class="kw">impl</span>&lt;F, O, T: <span class="lifetime">'static</span>&gt; GioFuture&lt;F, O, T&gt;
 <span class="kw">where
     </span>O: <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">Clone</a> + <span class="lifetime">'static</span>,
-    F: FnOnce(<span class="kw-2">&amp;</span>O, <span class="kw-2">&amp;</span><a href="auto/cancellable.rs.html#7-85">Cancellable</a>, GioFutureResult&lt;T&gt;) + <span class="lifetime">'static</span>,
+    F: FnOnce(<span class="kw-2">&amp;</span>O, <span class="kw-2">&amp;</span><a href="auto/cancellable.rs.html#8-86">Cancellable</a>, GioFutureResult&lt;T&gt;) + <span class="lifetime">'static</span>,
 {
     <span class="kw">pub fn </span>new(obj: <span class="kw-2">&amp;</span>O, schedule_operation: F) -&gt; GioFuture&lt;F, O, T&gt; {
         <a href="#16-21">GioFuture</a> {
             obj: <a href="#38">obj</a>.<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">clone</a>(),
             schedule_operation: <span class="prelude-val">Some</span>(<a href="#38">schedule_operation</a>),
-            cancellable: <span class="prelude-val">Some</span>(<a href="auto/cancellable.rs.html#103-105">Cancellable::new</a>()),
+            cancellable: <span class="prelude-val">Some</span>(<a href="auto/cancellable.rs.html#104-106">Cancellable::new</a>()),
             receiver: <span class="prelude-val">None</span>,
         }
     }
@@ -252,7 +252,7 @@
 <span class="kw">impl</span>&lt;F, O, T&gt; <a href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html">Future</a> <span class="kw">for </span>GioFuture&lt;F, O, T&gt;
 <span class="kw">where
     </span>O: <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">Clone</a> + <span class="lifetime">'static</span>,
-    F: FnOnce(<span class="kw-2">&amp;</span>O, <span class="kw-2">&amp;</span><a href="auto/cancellable.rs.html#7-85">Cancellable</a>, GioFutureResult&lt;T&gt;) + <span class="lifetime">'static</span>,
+    F: FnOnce(<span class="kw-2">&amp;</span>O, <span class="kw-2">&amp;</span><a href="auto/cancellable.rs.html#8-86">Cancellable</a>, GioFutureResult&lt;T&gt;) + <span class="lifetime">'static</span>,
 {
     <span class="kw">type </span>Output = T;
 
@@ -312,7 +312,7 @@
 <span class="kw">impl</span>&lt;F, O, T&gt; FusedFuture <span class="kw">for </span>GioFuture&lt;F, O, T&gt;
 <span class="kw">where
     </span>O: <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">Clone</a> + <span class="lifetime">'static</span>,
-    F: FnOnce(<span class="kw-2">&amp;</span>O, <span class="kw-2">&amp;</span><a href="auto/cancellable.rs.html#7-85">Cancellable</a>, GioFutureResult&lt;T&gt;) + <span class="lifetime">'static</span>,
+    F: FnOnce(<span class="kw-2">&amp;</span>O, <span class="kw-2">&amp;</span><a href="auto/cancellable.rs.html#8-86">Cancellable</a>, GioFutureResult&lt;T&gt;) + <span class="lifetime">'static</span>,
 {
     <span class="kw">fn </span>is_terminated(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
         <a class="self" href="#113">self</a>.schedule_operation.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.is_none">is_none</a>()
@@ -326,7 +326,7 @@
 <span class="kw">impl</span>&lt;F, O, T&gt; <a href="https://doc.rust-lang.org/nightly/core/ops/drop/trait.Drop.html">Drop</a> <span class="kw">for </span>GioFuture&lt;F, O, T&gt; {
     <span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
         <span class="kw">if let </span><span class="prelude-val">Some</span>(cancellable) = <a class="self" href="#123">self</a>.cancellable.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.take">take</a>() {
-            <a href="#124">cancellable</a>.<a href="auto/cancellable.rs.html#157-161">cancel</a>();
+            <a href="#124">cancellable</a>.<a href="auto/cancellable.rs.html#158-162">cancel</a>();
         }
         <span class="kw">let _ </span>= <a class="self" href="#123">self</a>.receiver.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.take">take</a>();
     }

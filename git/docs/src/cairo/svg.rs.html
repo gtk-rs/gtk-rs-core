@@ -358,7 +358,7 @@
 
 <span class="attr">#[cfg(all(feature = <span class="string">"svg"</span>, feature = <span class="string">"v1_16"</span>))]
 </span><span class="kw">use </span><a href="enums.rs.html#1085-1108"><span class="kw">crate</span>::SvgUnit</a>;
-<span class="kw">use crate</span>::{<a href="error.rs.html#10-150">Error</a>, <a href="surface.rs.html#19">Surface</a>, <a href="enums.rs.html#951-1004">SurfaceType</a>, <a href="enums.rs.html#1401-1408">SvgVersion</a>};
+<span class="kw">use crate</span>::{<a href="../../cairo_sys/index.html">ffi</a>, <a href="error.rs.html#11-151">Error</a>, <a href="surface.rs.html#19">Surface</a>, <a href="enums.rs.html#951-1004">SurfaceType</a>, <a href="enums.rs.html#1401-1408">SvgVersion</a>};
 
 <span class="kw">impl </span><a href="enums.rs.html#1401-1408">SvgVersion</a> {
     <span class="kw">pub fn </span>as_str(<span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'static </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt; {
@@ -378,7 +378,7 @@
         width: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>,
         height: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>,
         path: <span class="prelude-ty">Option</span>&lt;P&gt;,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#30">SvgSurface</a>, <a href="error.rs.html#10-150">Error</a>&gt; {
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#30">SvgSurface</a>, <a href="error.rs.html#11-151">Error</a>&gt; {
         <span class="attr">#[cfg(not(windows))]
         </span><span class="kw">let </span>path = <a href="#37">path</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|p| {
             <a href="https://doc.rust-lang.org/nightly/alloc/ffi/c_str/struct.CString.html#method.new">CString::new</a>(<a href="#40">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="https://doc.rust-lang.org/nightly/std/path/struct.Path.html#method.as_os_str">as_os_str</a>().<a href="https://doc.rust-lang.org/nightly/std/os/unix/ffi/os_str/trait.OsStrExt.html#tymethod.as_bytes">as_bytes</a>()).<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.expect">expect</a>(<span class="string">"Invalid path with NULL bytes"</span>)

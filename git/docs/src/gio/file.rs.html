@@ -1443,7 +1443,7 @@
 
 <span class="attr">#[cfg(feature = <span class="string">"v2_74"</span>)]
 </span><span class="kw">use </span><a href="auto/file_io_stream.rs.html#9-39"><span class="kw">crate</span>::FileIOStream</a>;
-<span class="kw">use crate</span>::{<a href="auto/cancellable.rs.html#7-85">Cancellable</a>, <a href="auto/file.rs.html#14-116">File</a>, <a href="auto/flags.rs.html#1846-1871">FileCreateFlags</a>, <a href="auto/file_enumerator.rs.html#9-54">FileEnumerator</a>, <a href="auto/flags.rs.html#2150-2162">FileQueryInfoFlags</a>};
+<span class="kw">use crate</span>::{<a href="../../gio_sys/index.html">ffi</a>, <a href="auto/cancellable.rs.html#8-86">Cancellable</a>, <a href="auto/file.rs.html#14-116">File</a>, <a href="auto/flags.rs.html#1847-1872">FileCreateFlags</a>, <a href="auto/file_enumerator.rs.html#9-54">FileEnumerator</a>, <a href="auto/flags.rs.html#2151-2163">FileQueryInfoFlags</a>};
 
 <span class="kw">impl </span><a href="auto/file.rs.html#14-116">File</a> {
     <span class="doccomment">/// Asynchronously opens a file in the preferred directory for temporary files
@@ -1467,7 +1467,7 @@
     </span><span class="kw">pub fn </span>new_tmp_async&lt;P: FnOnce(<span class="prelude-ty">Result</span>&lt;(<a href="auto/file.rs.html#14-116">File</a>, <a href="auto/file_io_stream.rs.html#9-39">FileIOStream</a>), <a href="../../glib/error/struct.Error.html">glib::Error</a>&gt;) + <span class="lifetime">'static</span>&gt;(
         tmpl: <span class="prelude-ty">Option</span>&lt;<span class="kw">impl </span>AsRef&lt;<a href="https://doc.rust-lang.org/nightly/std/path/struct.Path.html">std::path::Path</a>&gt;&gt;,
         io_priority: <a href="../../glib/source/struct.Priority.html">glib::Priority</a>,
-        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="auto/cancellable.rs.html#7-85">Cancellable</a>&gt;&gt;,
+        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="auto/cancellable.rs.html#8-86">Cancellable</a>&gt;&gt;,
         callback: P,
     ) {
         <span class="kw">let </span>main_context = <a href="../../glib/auto/main_context/struct.MainContext.html#method.ref_thread_default">glib::MainContext::ref_thread_default</a>();
@@ -1560,7 +1560,7 @@
     </span><span class="kw">pub fn </span>new_tmp_dir_async&lt;P: FnOnce(<span class="prelude-ty">Result</span>&lt;<a href="auto/file.rs.html#14-116">File</a>, <a href="../../glib/error/struct.Error.html">glib::Error</a>&gt;) + <span class="lifetime">'static</span>&gt;(
         tmpl: <span class="prelude-ty">Option</span>&lt;<span class="kw">impl </span>AsRef&lt;<a href="https://doc.rust-lang.org/nightly/std/path/struct.Path.html">std::path::Path</a>&gt;&gt;,
         io_priority: <a href="../../glib/source/struct.Priority.html">glib::Priority</a>,
-        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="auto/cancellable.rs.html#7-85">Cancellable</a>&gt;&gt;,
+        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="auto/cancellable.rs.html#8-86">Cancellable</a>&gt;&gt;,
         callback: P,
     ) {
         <span class="kw">let </span>main_context = <a href="../../glib/auto/main_context/struct.MainContext.html#method.ref_thread_default">glib::MainContext::ref_thread_default</a>();
@@ -1671,13 +1671,13 @@
     </span><span class="kw">fn </span>replace_contents_async&lt;
         B: AsRef&lt;[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static</span>,
         R: FnOnce(<span class="prelude-ty">Result</span>&lt;(B, <a href="../../glib/gstring/struct.GString.html">glib::GString</a>), (B, <a href="../../glib/error/struct.Error.html">glib::Error</a>)&gt;) + <span class="lifetime">'static</span>,
-        C: IsA&lt;<a href="auto/cancellable.rs.html#7-85">Cancellable</a>&gt;,
+        C: IsA&lt;<a href="auto/cancellable.rs.html#8-86">Cancellable</a>&gt;,
     &gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         contents: B,
         etag: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;,
         make_backup: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>,
-        flags: <a href="auto/flags.rs.html#1846-1871">FileCreateFlags</a>,
+        flags: <a href="auto/flags.rs.html#1847-1872">FileCreateFlags</a>,
         cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>C&gt;,
         callback: R,
     ) {
@@ -1751,7 +1751,7 @@
         contents: B,
         etag: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;,
         make_backup: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>,
-        flags: <a href="auto/flags.rs.html#1846-1871">FileCreateFlags</a>,
+        flags: <a href="auto/flags.rs.html#1847-1872">FileCreateFlags</a>,
     ) -&gt; Pin&lt;
         Box&lt;
             <span class="kw">dyn </span>std::future::Future&lt;Output = <span class="prelude-ty">Result</span>&lt;(B, <a href="../../glib/gstring/struct.GString.html">glib::GString</a>), (B, <a href="../../glib/error/struct.Error.html">glib::Error</a>)&gt;&gt;
@@ -1778,12 +1778,12 @@
 
     <span class="attr">#[doc(alias = <span class="string">"g_file_enumerate_children_async"</span>)]
     </span><span class="kw">fn </span>enumerate_children_async&lt;
-        P: IsA&lt;<a href="auto/cancellable.rs.html#7-85">Cancellable</a>&gt;,
+        P: IsA&lt;<a href="auto/cancellable.rs.html#8-86">Cancellable</a>&gt;,
         Q: FnOnce(<span class="prelude-ty">Result</span>&lt;<a href="auto/file_enumerator.rs.html#9-54">FileEnumerator</a>, <a href="../../glib/error/struct.Error.html">glib::Error</a>&gt;) + <span class="lifetime">'static</span>,
     &gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         attributes: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
-        flags: <a href="auto/flags.rs.html#2150-2162">FileQueryInfoFlags</a>,
+        flags: <a href="auto/flags.rs.html#2151-2163">FileQueryInfoFlags</a>,
         io_priority: <a href="../../glib/source/struct.Priority.html">glib::Priority</a>,
         cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>P&gt;,
         callback: Q,
@@ -1837,7 +1837,7 @@
     <span class="kw">fn </span>enumerate_children_future(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         attributes: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
-        flags: <a href="auto/flags.rs.html#2150-2162">FileQueryInfoFlags</a>,
+        flags: <a href="auto/flags.rs.html#2151-2163">FileQueryInfoFlags</a>,
         io_priority: <a href="../../glib/source/struct.Priority.html">glib::Priority</a>,
     ) -&gt; Pin&lt;Box&lt;<span class="kw">dyn </span>std::future::Future&lt;Output = <span class="prelude-ty">Result</span>&lt;<a href="auto/file_enumerator.rs.html#9-54">FileEnumerator</a>, <a href="../../glib/error/struct.Error.html">glib::Error</a>&gt;&gt; + <span class="lifetime">'static</span>&gt;&gt;
     {
@@ -1890,9 +1890,9 @@
     </span><span class="kw">fn </span>copy_async&lt;Q: FnOnce(<span class="prelude-ty">Result</span>&lt;(), <a href="../../glib/error/struct.Error.html">glib::Error</a>&gt;) + <span class="lifetime">'static</span>&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         destination: <span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="auto/file.rs.html#14-116">File</a>&gt;,
-        flags: <a href="auto/flags.rs.html#1739-1772"><span class="kw">crate</span>::FileCopyFlags</a>,
+        flags: <a href="auto/flags.rs.html#1740-1773"><span class="kw">crate</span>::FileCopyFlags</a>,
         io_priority: <a href="../../glib/source/struct.Priority.html">glib::Priority</a>,
-        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="auto/cancellable.rs.html#7-85">Cancellable</a>&gt;&gt;,
+        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="auto/cancellable.rs.html#8-86">Cancellable</a>&gt;&gt;,
         progress_callback: <span class="prelude-ty">Option</span>&lt;Box&lt;<span class="kw">dyn </span>FnMut(<a href="https://doc.rust-lang.org/nightly/std/primitive.i64.html">i64</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.i64.html">i64</a>)&gt;&gt;,
         callback: Q,
     ) {
@@ -1977,7 +1977,7 @@
     <span class="kw">fn </span>copy_future(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         destination: <span class="kw-2">&amp;</span>(<span class="kw">impl </span>IsA&lt;<a href="auto/file.rs.html#14-116">File</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">Clone</a> + <span class="lifetime">'static</span>),
-        flags: <a href="auto/flags.rs.html#1739-1772"><span class="kw">crate</span>::FileCopyFlags</a>,
+        flags: <a href="auto/flags.rs.html#1740-1773"><span class="kw">crate</span>::FileCopyFlags</a>,
         io_priority: <a href="../../glib/source/struct.Priority.html">glib::Priority</a>,
     ) -&gt; (
         Pin&lt;Box&lt;<span class="kw">dyn </span>std::future::Future&lt;Output = <span class="prelude-ty">Result</span>&lt;(), <a href="../../glib/error/struct.Error.html">glib::Error</a>&gt;&gt; + <span class="lifetime">'static</span>&gt;&gt;,
@@ -2033,7 +2033,7 @@
     </span><span class="attr">#[doc(alias = <span class="string">"g_file_load_contents"</span>)]
     </span><span class="kw">fn </span>load_contents(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="auto/cancellable.rs.html#7-85">Cancellable</a>&gt;&gt;,
+        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="auto/cancellable.rs.html#8-86">Cancellable</a>&gt;&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;(glib::collections::Slice&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>&gt;, <span class="prelude-ty">Option</span>&lt;<a href="../../glib/gstring/struct.GString.html">glib::GString</a>&gt;), <a href="../../glib/error/struct.Error.html">glib::Error</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>contents = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">std::ptr::null_mut</a>();
@@ -2083,7 +2083,7 @@
             + <span class="lifetime">'static</span>,
     &gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="auto/cancellable.rs.html#7-85">Cancellable</a>&gt;&gt;,
+        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="auto/cancellable.rs.html#8-86">Cancellable</a>&gt;&gt;,
         callback: P,
     ) {
         <span class="kw">let </span>main_context = <a href="../../glib/auto/main_context/struct.MainContext.html#method.ref_thread_default">glib::MainContext::ref_thread_default</a>();
@@ -2191,7 +2191,7 @@
             + <span class="lifetime">'static</span>,
     &gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="auto/cancellable.rs.html#7-85">Cancellable</a>&gt;&gt;,
+        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="auto/cancellable.rs.html#8-86">Cancellable</a>&gt;&gt;,
         read_more_callback: P,
         callback: Q,
     ) {
@@ -2328,8 +2328,8 @@
     </span><span class="attr">#[doc(alias = <span class="string">"g_file_measure_disk_usage"</span>)]
     </span><span class="kw">fn </span>measure_disk_usage(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        flags: <a href="auto/flags.rs.html#1945-1972"><span class="kw">crate</span>::FileMeasureFlags</a>,
-        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="auto/cancellable.rs.html#7-85">Cancellable</a>&gt;&gt;,
+        flags: <a href="auto/flags.rs.html#1946-1973"><span class="kw">crate</span>::FileMeasureFlags</a>,
+        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="auto/cancellable.rs.html#8-86">Cancellable</a>&gt;&gt;,
         progress_callback: <span class="prelude-ty">Option</span>&lt;Box&lt;<span class="kw">dyn </span>FnMut(<a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a>) + <span class="lifetime">'static</span>&gt;&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;(<a href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a>), <a href="../../glib/error/struct.Error.html">glib::Error</a>&gt; {
         <span class="kw">let </span>progress_callback_data: Box&lt;
@@ -2404,9 +2404,9 @@
     </span><span class="attr">#[doc(alias = <span class="string">"g_file_measure_disk_usage_async"</span>)]
     </span><span class="kw">fn </span>measure_disk_usage_async&lt;P: FnOnce(<span class="prelude-ty">Result</span>&lt;(<a href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a>), <a href="../../glib/error/struct.Error.html">glib::Error</a>&gt;) + <span class="lifetime">'static</span>&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        flags: <a href="auto/flags.rs.html#1945-1972"><span class="kw">crate</span>::FileMeasureFlags</a>,
+        flags: <a href="auto/flags.rs.html#1946-1973"><span class="kw">crate</span>::FileMeasureFlags</a>,
         io_priority: <a href="../../glib/source/struct.Priority.html">glib::Priority</a>,
-        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="auto/cancellable.rs.html#7-85">Cancellable</a>&gt;&gt;,
+        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="auto/cancellable.rs.html#8-86">Cancellable</a>&gt;&gt;,
         progress_callback: <span class="prelude-ty">Option</span>&lt;Box&lt;<span class="kw">dyn </span>FnMut(<a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a>) + <span class="lifetime">'static</span>&gt;&gt;,
         callback: P,
     ) {
@@ -2523,7 +2523,7 @@
 
     <span class="kw">fn </span>measure_disk_usage_future(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        flags: <a href="auto/flags.rs.html#1945-1972"><span class="kw">crate</span>::FileMeasureFlags</a>,
+        flags: <a href="auto/flags.rs.html#1946-1973"><span class="kw">crate</span>::FileMeasureFlags</a>,
         io_priority: <a href="../../glib/source/struct.Priority.html">glib::Priority</a>,
     ) -&gt; (
         Pin&lt;Box&lt;<span class="kw">dyn </span>std::future::Future&lt;Output = <span class="prelude-ty">Result</span>&lt;(<a href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a>), <a href="../../glib/error/struct.Error.html">glib::Error</a>&gt;&gt; + <span class="lifetime">'static</span>&gt;&gt;,
@@ -2586,9 +2586,9 @@
     </span><span class="kw">fn </span>move_async&lt;Q: FnOnce(<span class="prelude-ty">Result</span>&lt;(), <a href="../../glib/error/struct.Error.html">glib::Error</a>&gt;) + <span class="lifetime">'static</span>&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         destination: <span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="auto/file.rs.html#14-116">File</a>&gt;,
-        flags: <a href="auto/flags.rs.html#1739-1772"><span class="kw">crate</span>::FileCopyFlags</a>,
+        flags: <a href="auto/flags.rs.html#1740-1773"><span class="kw">crate</span>::FileCopyFlags</a>,
         io_priority: <a href="../../glib/source/struct.Priority.html">glib::Priority</a>,
-        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="auto/cancellable.rs.html#7-85">Cancellable</a>&gt;&gt;,
+        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="auto/cancellable.rs.html#8-86">Cancellable</a>&gt;&gt;,
         progress_callback: <span class="prelude-ty">Option</span>&lt;Box&lt;<span class="kw">dyn </span>FnMut(<a href="https://doc.rust-lang.org/nightly/std/primitive.i64.html">i64</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.i64.html">i64</a>)&gt;&gt;,
         callback: Q,
     ) {
@@ -2690,7 +2690,7 @@
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         symlink_value: <span class="kw">impl </span>AsRef&lt;<a href="https://doc.rust-lang.org/nightly/std/path/struct.Path.html">std::path::Path</a>&gt;,
         io_priority: <a href="../../glib/source/struct.Priority.html">glib::Priority</a>,
-        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="auto/cancellable.rs.html#7-85">Cancellable</a>&gt;&gt;,
+        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="auto/cancellable.rs.html#8-86">Cancellable</a>&gt;&gt;,
         callback: P,
     ) {
         <span class="kw">let </span>main_context = <a href="../../glib/auto/main_context/struct.MainContext.html#method.ref_thread_default">glib::MainContext::ref_thread_default</a>();
@@ -2766,7 +2766,7 @@
     </span><span class="kw">fn </span>move_future(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         destination: <span class="kw-2">&amp;</span>(<span class="kw">impl </span>IsA&lt;<a href="auto/file.rs.html#14-116">File</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">Clone</a> + <span class="lifetime">'static</span>),
-        flags: <a href="auto/flags.rs.html#1739-1772"><span class="kw">crate</span>::FileCopyFlags</a>,
+        flags: <a href="auto/flags.rs.html#1740-1773"><span class="kw">crate</span>::FileCopyFlags</a>,
         io_priority: <a href="../../glib/source/struct.Priority.html">glib::Priority</a>,
     ) -&gt; (
         Pin&lt;Box&lt;<span class="kw">dyn </span>std::future::Future&lt;Output = <span class="prelude-ty">Result</span>&lt;(), <a href="../../glib/error/struct.Error.html">glib::Error</a>&gt;&gt; + <span class="lifetime">'static</span>&gt;&gt;,

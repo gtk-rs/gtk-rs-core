@@ -185,9 +185,9 @@
 
 <span class="kw">use </span><a href="../../glib/translate/index.html">glib::translate</a>::<span class="kw-2">*</span>;
 
-<span class="kw">use crate</span>::{<a href="auto/matrix.rs.html#7-24">Matrix</a>, <a href="rectangle.rs.html#7-15">Rectangle</a>};
+<span class="kw">use crate</span>::{<a href="../../pango_sys/index.html">ffi</a>, <a href="auto/matrix.rs.html#8-25">Matrix</a>, <a href="rectangle.rs.html#8-16">Rectangle</a>};
 
-<span class="kw">impl </span><a href="auto/matrix.rs.html#7-24">Matrix</a> {
+<span class="kw">impl </span><a href="auto/matrix.rs.html#8-25">Matrix</a> {
     <span class="kw">pub fn </span>new(xx: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>, xy: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>, yx: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>, yy: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>, x0: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>, y0: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>) -&gt; <span class="self">Self </span>{
         <span class="kw">unsafe </span>{
             <a href="../../glib/translate/trait.UnsafeFrom.html#tymethod.unsafe_from"><span class="self">Self</span>::unsafe_from</a>(<a href="../../pango_sys/struct.PangoMatrix.html">ffi::PangoMatrix</a> {
@@ -214,7 +214,7 @@
     /// ## `rect`
     /// in/out bounding box in device units
     </span><span class="attr">#[doc(alias = <span class="string">"pango_matrix_transform_pixel_rectangle"</span>)]
-    </span><span class="kw">pub fn </span>transform_pixel_rectangle(<span class="kw-2">&amp;</span><span class="self">self</span>, rect: <span class="kw-2">&amp;mut </span><a href="rectangle.rs.html#7-15">Rectangle</a>) {
+    </span><span class="kw">pub fn </span>transform_pixel_rectangle(<span class="kw-2">&amp;</span><span class="self">self</span>, rect: <span class="kw-2">&amp;mut </span><a href="rectangle.rs.html#8-16">Rectangle</a>) {
         <span class="kw">unsafe </span>{
             <a href="../../pango_sys/fn.pango_matrix_transform_pixel_rectangle.html">ffi::pango_matrix_transform_pixel_rectangle</a>(
                 <a class="self" href="#36">self</a>.<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
@@ -244,7 +244,7 @@
     /// ## `rect`
     /// in/out bounding box in Pango units
     </span><span class="attr">#[doc(alias = <span class="string">"pango_matrix_transform_rectangle"</span>)]
-    </span><span class="kw">pub fn </span>transform_rectangle(<span class="kw-2">&amp;</span><span class="self">self</span>, rect: <span class="kw-2">&amp;mut </span><a href="rectangle.rs.html#7-15">Rectangle</a>) {
+    </span><span class="kw">pub fn </span>transform_rectangle(<span class="kw-2">&amp;</span><span class="self">self</span>, rect: <span class="kw-2">&amp;mut </span><a href="rectangle.rs.html#8-16">Rectangle</a>) {
         <span class="kw">unsafe </span>{
             <a href="../../pango_sys/fn.pango_matrix_transform_rectangle.html">ffi::pango_matrix_transform_rectangle</a>(<a class="self" href="#66">self</a>.<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#66">rect</a>.<a href="../../glib/translate/trait.ToGlibPtrMut.html#tymethod.to_glib_none_mut">to_glib_none_mut</a>().<span class="number">0</span>)
         }
@@ -275,7 +275,7 @@
     }
 }
 
-<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html">fmt::Debug</a> <span class="kw">for </span><a href="auto/matrix.rs.html#7-24">Matrix</a> {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html">fmt::Debug</a> <span class="kw">for </span><a href="auto/matrix.rs.html#8-25">Matrix</a> {
     <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span><a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html">fmt::Formatter</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/core/fmt/type.Result.html">fmt::Result</a> {
         <a href="#98">f</a>.<a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html#method.debug_struct">debug_struct</a>(<span class="string">"Matrix"</span>)
             .<a href="https://doc.rust-lang.org/nightly/core/fmt/builders/struct.DebugStruct.html#method.field">field</a>(<span class="string">"xx"</span>, <span class="kw-2">&amp;</span><a class="self" href="#98">self</a>.<a href="#72-74">xx</a>())

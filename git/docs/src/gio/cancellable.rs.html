@@ -299,7 +299,7 @@
 <span class="kw">use </span><a href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html">futures_core::Future</a>;
 <span class="kw">use </span>glib::{<a href="../../glib/prelude/index.html">prelude</a>::<span class="kw-2">*</span>, <a href="../../glib/translate/index.html">translate</a>::<span class="kw-2">*</span>};
 
-<span class="kw">use </span><a href="auto/cancellable.rs.html#7-85"><span class="kw">crate</span>::Cancellable</a>;
+<span class="kw">use crate</span>::{<a href="../../gio_sys/index.html">ffi</a>, <a href="auto/cancellable.rs.html#8-86">Cancellable</a>};
 
 <span class="comment">// rustdoc-stripper-ignore-next
 </span><span class="doccomment">/// The id of a cancelled handler that is returned by `CancellableExtManual::connect`. This type is
@@ -327,10 +327,10 @@
 
 <span class="kw">mod </span>sealed {
     <span class="kw">pub trait </span>Sealed {}
-    <span class="kw">impl</span>&lt;T: <span class="kw">super</span>::IsA&lt;<a href="auto/cancellable.rs.html#7-85"><span class="kw">super</span>::Cancellable</a>&gt;&gt; <a href="#36">Sealed</a> <span class="kw">for </span>T {}
+    <span class="kw">impl</span>&lt;T: <span class="kw">super</span>::IsA&lt;<a href="auto/cancellable.rs.html#8-86"><span class="kw">super</span>::Cancellable</a>&gt;&gt; <a href="#36">Sealed</a> <span class="kw">for </span>T {}
 }
 
-<span class="kw">pub trait </span><a href="../../gio/prelude/trait.CancellableExtManual.html">CancellableExtManual</a>: <a href="#36">sealed::Sealed</a> + IsA&lt;<a href="auto/cancellable.rs.html#7-85">Cancellable</a>&gt; {
+<span class="kw">pub trait </span><a href="../../gio/prelude/trait.CancellableExtManual.html">CancellableExtManual</a>: <a href="#36">sealed::Sealed</a> + IsA&lt;<a href="auto/cancellable.rs.html#8-86">Cancellable</a>&gt; {
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Convenience function to connect to the `signal::Cancellable::cancelled` signal. Also
     /// handles the race condition that may happen if the cancellable is cancelled right before
@@ -354,7 +354,7 @@
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         callback: F,
     ) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="#16">CancelledHandlerId</a>&gt; {
-        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>connect_trampoline&lt;P: IsA&lt;<a href="auto/cancellable.rs.html#7-85">Cancellable</a>&gt;, F: FnOnce(<span class="kw-2">&amp;</span>P)&gt;(
+        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>connect_trampoline&lt;P: IsA&lt;<a href="auto/cancellable.rs.html#8-86">Cancellable</a>&gt;, F: FnOnce(<span class="kw-2">&amp;</span>P)&gt;(
             this: <span class="kw-2">*mut </span><a href="../../gio_sys/struct.GCancellable.html">ffi::GCancellable</a>,
             callback: <a href="../../glib_sys/type.gpointer.html">glib::ffi::gpointer</a>,
         ) {
@@ -449,7 +449,7 @@
     }
 }
 
-<span class="kw">impl</span>&lt;O: IsA&lt;<a href="auto/cancellable.rs.html#7-85">Cancellable</a>&gt;&gt; <a href="#40-157">CancellableExtManual</a> <span class="kw">for </span>O {}
+<span class="kw">impl</span>&lt;O: IsA&lt;<a href="auto/cancellable.rs.html#8-86">Cancellable</a>&gt;&gt; <a href="#40-157">CancellableExtManual</a> <span class="kw">for </span>O {}
 
 <span class="attr">#[cfg(test)]
 </span><span class="kw">mod </span>tests {

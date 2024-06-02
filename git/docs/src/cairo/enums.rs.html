@@ -1760,7 +1760,7 @@
 <span class="attr">#[cfg(feature = <span class="string">"use_glib"</span>)]
 </span><span class="kw">use </span><a href="../../glib/translate/index.html">glib::translate</a>::<span class="kw-2">*</span>;
 
-<span class="kw">use </span><a href="error.rs.html#10-150"><span class="kw">crate</span>::Error</a>;
+<span class="kw">use crate</span>::{<a href="../../cairo_sys/index.html">ffi</a>, <a href="error.rs.html#11-151">Error</a>};
 
 <span class="comment">// Helper macro for our GValue related trait impls
 </span><span class="attr">#[cfg(feature = <span class="string">"use_glib"</span>)]
@@ -2963,13 +2963,13 @@
 
 <span class="kw">impl </span><a href="#1155-1172">Format</a> {
     <span class="attr">#[doc(alias = <span class="string">"cairo_format_stride_for_width"</span>)]
-    </span><span class="kw">pub fn </span>stride_for_width(<span class="self">self</span>, width: <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>, <a href="error.rs.html#10-150">Error</a>&gt; {
+    </span><span class="kw">pub fn </span>stride_for_width(<span class="self">self</span>, width: <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>, <a href="error.rs.html#11-151">Error</a>&gt; {
         <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.assert.html">assert!</a>(width &lt;= i32::MAX <span class="kw">as </span>u32);
         <span class="kw">let </span>width = <a href="#1211">width</a> <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>;
 
         <span class="kw">let </span>stride = <span class="kw">unsafe </span>{ <a href="../../cairo_sys/fn.cairo_format_stride_for_width.html">ffi::cairo_format_stride_for_width</a>(<a class="self" href="#1211">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>(), <a href="#1213">width</a>) };
         <span class="kw">if </span>stride == -<span class="number">1 </span>{
-            <span class="prelude-val">Err</span>(<a href="error.rs.html#58">Error::InvalidFormat</a>)
+            <span class="prelude-val">Err</span>(<a href="error.rs.html#59">Error::InvalidFormat</a>)
         } <span class="kw">else </span>{
             <span class="prelude-val">Ok</span>(<a href="#1215">stride</a>)
         }

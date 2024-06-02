@@ -894,7 +894,7 @@
 <span class="kw">use </span>futures_io::{AsyncBufRead, AsyncRead};
 <span class="kw">use </span>glib::{<a href="../../glib/prelude/index.html">prelude</a>::<span class="kw-2">*</span>, <a href="../../glib/translate/index.html">translate</a>::<span class="kw-2">*</span>, <a href="../../glib/source/struct.Priority.html">Priority</a>};
 
-<span class="kw">use crate</span>::{<a href="error.rs.html#31-36">error::to_std_io_result</a>, <a href="lib.rs.html#120">prelude</a>::<span class="kw-2">*</span>, <a href="auto/cancellable.rs.html#7-85">Cancellable</a>, <a href="auto/input_stream.rs.html#9-35">InputStream</a>, <a href="auto/seekable.rs.html#8-33">Seekable</a>};
+<span class="kw">use crate</span>::{<a href="error.rs.html#31-36">error::to_std_io_result</a>, <a href="../../gio_sys/index.html">ffi</a>, <a href="lib.rs.html#120">prelude</a>::<span class="kw-2">*</span>, <a href="auto/cancellable.rs.html#8-86">Cancellable</a>, <a href="auto/input_stream.rs.html#9-35">InputStream</a>, <a href="auto/seekable.rs.html#8-33">Seekable</a>};
 
 <span class="kw">mod </span>sealed {
     <span class="kw">pub trait </span>Sealed {}
@@ -934,7 +934,7 @@
     ///
     ///     a buffer to read data into (which should be at least count bytes long).
     </span><span class="attr">#[doc(alias = <span class="string">"g_input_stream_read"</span>)]
-    </span><span class="kw">fn </span>read&lt;B: AsMut&lt;[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]&gt;, C: IsA&lt;<a href="auto/cancellable.rs.html#7-85">Cancellable</a>&gt;&gt;(
+    </span><span class="kw">fn </span>read&lt;B: AsMut&lt;[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]&gt;, C: IsA&lt;<a href="auto/cancellable.rs.html#8-86">Cancellable</a>&gt;&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         <span class="kw-2">mut </span>buffer: B,
         cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>C&gt;,
@@ -994,7 +994,7 @@
     /// ## `bytes_read`
     /// location to store the number of bytes that was read from the stream
     </span><span class="attr">#[doc(alias = <span class="string">"g_input_stream_read_all"</span>)]
-    </span><span class="kw">fn </span>read_all&lt;B: AsMut&lt;[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]&gt;, C: IsA&lt;<a href="auto/cancellable.rs.html#7-85">Cancellable</a>&gt;&gt;(
+    </span><span class="kw">fn </span>read_all&lt;B: AsMut&lt;[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]&gt;, C: IsA&lt;<a href="auto/cancellable.rs.html#8-86">Cancellable</a>&gt;&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         <span class="kw-2">mut </span>buffer: B,
         cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>C&gt;,
@@ -1055,7 +1055,7 @@
     </span><span class="kw">fn </span>read_all_async&lt;
         B: AsMut&lt;[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static</span>,
         Q: FnOnce(<span class="prelude-ty">Result</span>&lt;(B, <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>, <span class="prelude-ty">Option</span>&lt;<a href="../../glib/error/struct.Error.html">glib::Error</a>&gt;), (B, <a href="../../glib/error/struct.Error.html">glib::Error</a>)&gt;) + <span class="lifetime">'static</span>,
-        C: IsA&lt;<a href="auto/cancellable.rs.html#7-85">Cancellable</a>&gt;,
+        C: IsA&lt;<a href="auto/cancellable.rs.html#8-86">Cancellable</a>&gt;,
     &gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         buffer: B,
@@ -1172,7 +1172,7 @@
     </span><span class="kw">fn </span>read_async&lt;
         B: AsMut&lt;[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static</span>,
         Q: FnOnce(<span class="prelude-ty">Result</span>&lt;(B, <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>), (B, <a href="../../glib/error/struct.Error.html">glib::Error</a>)&gt;) + <span class="lifetime">'static</span>,
-        C: IsA&lt;<a href="auto/cancellable.rs.html#7-85">Cancellable</a>&gt;,
+        C: IsA&lt;<a href="auto/cancellable.rs.html#8-86">Cancellable</a>&gt;,
     &gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         buffer: B,
@@ -1344,7 +1344,7 @@
         buffer: Vec&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>&gt;,
         valid: (<a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>), <span class="comment">// first index is inclusive, second is exclusive
     </span>},
-    Failed(<a href="auto/enums.rs.html#1654-1817"><span class="kw">crate</span>::IOErrorEnum</a>),
+    Failed(<a href="auto/enums.rs.html#1655-1818"><span class="kw">crate</span>::IOErrorEnum</a>),
 }
 
 <span class="kw">impl </span><a href="#442-460">State</a> {
@@ -1464,8 +1464,8 @@
                     }
                     <a href="https://doc.rust-lang.org/nightly/core/task/poll/enum.Poll.html#variant.Ready">Poll::Ready</a>(<span class="prelude-val">Err</span>((<span class="kw">_</span>, err))) =&gt; {
                         <span class="kw">let </span>kind = <a href="#577">err</a>
-                            .<a href="../../glib/error/struct.Error.html#method.kind">kind</a>::&lt;<a href="auto/enums.rs.html#1654-1817"><span class="kw">crate</span>::IOErrorEnum</a>&gt;()
-                            .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap_or">unwrap_or</a>(<a href="auto/enums.rs.html#1658"><span class="kw">crate</span>::IOErrorEnum::Failed</a>);
+                            .<a href="../../glib/error/struct.Error.html#method.kind">kind</a>::&lt;<a href="auto/enums.rs.html#1655-1818"><span class="kw">crate</span>::IOErrorEnum</a>&gt;()
+                            .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap_or">unwrap_or</a>(<a href="auto/enums.rs.html#1659"><span class="kw">crate</span>::IOErrorEnum::Failed</a>);
                         <a class="self" href="#557">self</a>.state = <a href="#459">State::Failed</a>(<a href="#578">kind</a>);
                         <a href="https://doc.rust-lang.org/nightly/core/task/poll/enum.Poll.html#variant.Ready">Poll::Ready</a>(<span class="prelude-val">Err</span>(<a href="https://doc.rust-lang.org/nightly/std/io/error/struct.Error.html#method.new">io::Error::new</a>(<a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html#tymethod.from">io::ErrorKind::from</a>(<a href="#578">kind</a>), <a href="#577">err</a>)))
                     }

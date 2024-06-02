@@ -453,7 +453,7 @@
 <span class="kw">use </span>glib::{<a href="../../../glib/prelude/index.html">prelude</a>::<span class="kw-2">*</span>, <a href="../../../glib/subclass/prelude/index.html">subclass::prelude</a>::<span class="kw-2">*</span>, <a href="../../../glib/thread_guard/struct.ThreadGuard.html">thread_guard::ThreadGuard</a>, <a href="../../../glib/translate/index.html">translate</a>::<span class="kw-2">*</span>, <a href="../../../glib/error/struct.Error.html">Error</a>};
 
 <span class="kw">use crate</span>::{
-    <a href="../auto/async_initable.rs.html#9-123">AsyncInitable</a>, <a href="../auto/async_result.rs.html#7-105">AsyncResult</a>, <a href="../auto/cancellable.rs.html#7-85">Cancellable</a>, <a href="../cancellable_future.rs.html#18-44">CancellableFuture</a>, <a href="../gio_future.rs.html#23-25">GioFutureResult</a>, <a href="../task.rs.html#15-33">LocalTask</a>,
+    <a href="../../../gio_sys/index.html">ffi</a>, <a href="../auto/async_initable.rs.html#9-123">AsyncInitable</a>, <a href="../auto/async_result.rs.html#8-106">AsyncResult</a>, <a href="../auto/cancellable.rs.html#8-86">Cancellable</a>, <a href="../cancellable_future.rs.html#18-44">CancellableFuture</a>, <a href="../gio_future.rs.html#23-25">GioFutureResult</a>, <a href="../task.rs.html#15-33">LocalTask</a>,
 };
 
 <span class="kw">pub trait </span><a href="../../../gio/subclass/prelude/trait.AsyncInitableImpl.html">AsyncInitableImpl</a>: <a href="../../../glib/subclass/object/trait.ObjectImpl.html">ObjectImpl</a> {
@@ -550,7 +550,7 @@
 ) {
     <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(<a href="#97">initable</a> <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
     <span class="kw">let </span>imp = <a href="#103">instance</a>.<a href="../../../glib/subclass/types/trait.InstanceStructExt.html#tymethod.imp">imp</a>();
-    <span class="kw">let </span>cancellable = <span class="prelude-ty">Option</span>::&lt;<a href="../auto/cancellable.rs.html#7-85">Cancellable</a>&gt;::from_glib_none(<a href="#99">cancellable</a>);
+    <span class="kw">let </span>cancellable = <span class="prelude-ty">Option</span>::&lt;<a href="../auto/cancellable.rs.html#8-86">Cancellable</a>&gt;::from_glib_none(<a href="#99">cancellable</a>);
 
     <span class="kw">let </span>task = <a href="#100">callback</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|callback| {
         <span class="kw">let </span>task = <a href="../task.rs.html#880">LocalTask::new</a>(
@@ -558,7 +558,7 @@
             <a href="#105">cancellable</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_ref">as_ref</a>(),
             <span class="kw">move </span>|task, obj| {
                 <span class="kw">let </span>result: <span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GAsyncResult.html"><span class="kw">crate</span>::ffi::GAsyncResult</a> =
-                    <a href="#111">task</a>.<a href="../../../glib/object/trait.Cast.html#tymethod.upcast_ref">upcast_ref</a>::&lt;<a href="../auto/async_result.rs.html#7-105">AsyncResult</a>&gt;().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>;
+                    <a href="#111">task</a>.<a href="../../../glib/object/trait.Cast.html#tymethod.upcast_ref">upcast_ref</a>::&lt;<a href="../auto/async_result.rs.html#8-106">AsyncResult</a>&gt;().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>;
                 <span class="kw">let </span>obj: <span class="kw-2">*mut </span><a href="../../../gobject_sys/struct.GObject.html">glib::gobject_ffi::GObject</a> = <a href="#111">obj</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>;
                 <a href="#107">callback</a>(<a href="#114">obj</a>, <a href="#112">result</a>, <a href="#101">user_data</a>);
             },
@@ -589,7 +589,7 @@
     res: <span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GAsyncResult.html">ffi::GAsyncResult</a>,
     error: <span class="kw-2">*mut *mut </span><a href="../../../glib_sys/struct.GError.html">glib::ffi::GError</a>,
 ) -&gt; <a href="../../../glib_sys/type.gboolean.html">glib::ffi::gboolean</a> {
-    <span class="kw">let </span>res = from_glib_none::&lt;<span class="kw">_</span>, <a href="../auto/async_result.rs.html#7-105">AsyncResult</a>&gt;(<a href="#141">res</a>);
+    <span class="kw">let </span>res = from_glib_none::&lt;<span class="kw">_</span>, <a href="../auto/async_result.rs.html#8-106">AsyncResult</a>&gt;(<a href="#141">res</a>);
 
     <span class="kw">let </span>task = <a href="#144">res</a>
         .<a href="../../../glib/object/trait.Cast.html#tymethod.downcast">downcast</a>::&lt;LocalTask&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>&gt;&gt;()

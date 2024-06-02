@@ -437,6 +437,7 @@
 <a href="#364" id="364">364</a>
 <a href="#365" id="365">365</a>
 <a href="#366" id="366">366</a>
+<a href="#367" id="367">367</a>
 </pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
 // rustdoc-stripper-ignore-next
@@ -444,7 +445,7 @@
 
 </span><span class="kw">use </span>std::{<a href="https://doc.rust-lang.org/nightly/alloc/borrow/enum.Cow.html">borrow::Cow</a>, <a href="https://doc.rust-lang.org/nightly/core/convert/enum.Infallible.html">convert::Infallible</a>, <a href="https://doc.rust-lang.org/nightly/std/error/index.html">error</a>, <a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html">ffi::CStr</a>, <a href="https://doc.rust-lang.org/nightly/alloc/fmt/index.html">fmt</a>, <a href="https://doc.rust-lang.org/nightly/alloc/str/index.html">str</a>};
 
-<span class="kw">use crate</span>::{<a href="lib.rs.html#142">translate</a>::<span class="kw-2">*</span>, <a href="quark.rs.html#10">Quark</a>};
+<span class="kw">use crate</span>::{ffi, <a href="lib.rs.html#142">translate</a>::<span class="kw-2">*</span>, <a href="quark.rs.html#10">Quark</a>};
 
 <a class="macro" href="wrapper.rs.html#277-444">wrapper!</a> {
     <span class="comment">// rustdoc-stripper-ignore-next
@@ -486,10 +487,10 @@
     #[doc(alias = <span class="string">"g_error_new"</span>)]
     </span><span class="kw">pub fn </span>new&lt;T: <a href="#165-184">ErrorDomain</a>&gt;(error: T, message: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a href="#10-25">Error</a> {
         <span class="kw">unsafe </span>{
-            <a href="translate.rs.html#1633-1635">from_glib_full</a>(ffi::g_error_new_literal(
-                <a href="#170">T::domain</a>().<a href="translate.rs.html#333">into_glib</a>(),
+            <a href="translate.rs.html#1634-1636">from_glib_full</a>(ffi::g_error_new_literal(
+                <a href="#170">T::domain</a>().<a href="translate.rs.html#334">into_glib</a>(),
                 <a href="#48">error</a>.<a href="#174">code</a>(),
-                <a href="#48">message</a>.<a href="translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#48">message</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
             ))
         }
     }
@@ -497,13 +498,13 @@
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Checks if the error domain matches `T`.
     </span><span class="kw">pub fn </span>is&lt;T: <a href="#165-184">ErrorDomain</a>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
-        <a class="self" href="#60">self</a>.inner.domain == <a href="#170">T::domain</a>().<a href="translate.rs.html#333">into_glib</a>()
+        <a class="self" href="#60">self</a>.inner.domain == <a href="#170">T::domain</a>().<a href="translate.rs.html#334">into_glib</a>()
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Returns the error domain quark
     </span><span class="kw">pub fn </span>domain(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="quark.rs.html#10">Quark</a> {
-        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1416-1418">from_glib</a>(<a class="self" href="#66">self</a>.inner.domain) }
+        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1417-1419">from_glib</a>(<a class="self" href="#66">self</a>.inner.domain) }
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
@@ -581,7 +582,7 @@
     <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span><a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html">fmt::Formatter</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/core/fmt/type.Result.html">fmt::Result</a> {
         <a href="#142">f</a>.<a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html#method.debug_struct">debug_struct</a>(<span class="string">"Error"</span>)
             .<a href="https://doc.rust-lang.org/nightly/core/fmt/builders/struct.DebugStruct.html#method.field">field</a>(<span class="string">"domain"</span>, <span class="kw">unsafe </span>{
-                <span class="kw-2">&amp;</span><a href="translate.rs.html#1410"><span class="kw">crate</span>::Quark::from_glib</a>(<a class="self" href="#142">self</a>.inner.domain)
+                <span class="kw-2">&amp;</span><a href="translate.rs.html#1411"><span class="kw">crate</span>::Quark::from_glib</a>(<a class="self" href="#142">self</a>.inner.domain)
             })
             .<a href="https://doc.rust-lang.org/nightly/core/fmt/builders/struct.DebugStruct.html#method.field">field</a>(<span class="string">"code"</span>, <span class="kw-2">&amp;</span><a class="self" href="#142">self</a>.inner.code)
             .<a href="https://doc.rust-lang.org/nightly/core/fmt/builders/struct.DebugStruct.html#method.field">field</a>(<span class="string">"message"</span>, <span class="kw-2">&amp;</span><a class="self" href="#142">self</a>.<a href="#126-132">message</a>())
@@ -795,8 +796,9 @@
         <span class="comment">// This creates a copy ...
         </span><span class="kw">let </span>v = e1.to_value();
         <span class="comment">// ... so we have to get the raw pointer from inside the value to check for equality.
-        </span><span class="kw">let </span>ptr =
-            <span class="kw">unsafe </span>{ gobject_ffi::g_value_get_boxed(v.to_glib_none().<span class="number">0</span>) <span class="kw">as </span><span class="kw-2">*const </span>ffi::GError };
+        </span><span class="kw">let </span>ptr = <span class="kw">unsafe </span>{
+            <span class="kw">crate</span>::gobject_ffi::g_value_get_boxed(v.to_glib_none().<span class="number">0</span>) <span class="kw">as </span><span class="kw-2">*const </span>ffi::GError
+        };
 
         <span class="kw">let </span>e2 = v.get::&lt;<span class="kw-2">&amp;</span>Error&gt;().unwrap();
 

@@ -262,7 +262,7 @@
 
 <span class="kw">use </span><a href="../../glib/translate/index.html">glib::translate</a>::<span class="kw-2">*</span>;
 
-<span class="kw">use crate</span>::{<a href="lib.rs.html#120">prelude</a>::<span class="kw-2">*</span>, <a href="auto/socket_address.rs.html#13-38">SocketAddress</a>, <a href="auto/unix_socket_address.rs.html#8-72">UnixSocketAddress</a>, <a href="auto/enums.rs.html#4639-4658">UnixSocketAddressType</a>};
+<span class="kw">use crate</span>::{<a href="../../gio_sys/index.html">ffi</a>, <a href="lib.rs.html#120">prelude</a>::<span class="kw-2">*</span>, <a href="auto/socket_address.rs.html#13-38">SocketAddress</a>, <a href="auto/unix_socket_address.rs.html#8-72">UnixSocketAddress</a>, <a href="auto/enums.rs.html#4640-4659">UnixSocketAddressType</a>};
 
 <span class="attr">#[derive(Debug)]
 </span><span class="kw">pub enum </span><a href="../../gio/prelude/enum.UnixSocketAddressPath.html">UnixSocketAddressPath</a>&lt;<span class="lifetime">'a</span>&gt; {
@@ -273,14 +273,14 @@
 }
 
 <span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; UnixSocketAddressPath&lt;<span class="lifetime">'a</span>&gt; {
-    <span class="kw">fn </span>to_type(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="auto/enums.rs.html#4639-4658">UnixSocketAddressType</a> {
+    <span class="kw">fn </span>to_type(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="auto/enums.rs.html#4640-4659">UnixSocketAddressType</a> {
         <span class="kw">use </span><a href="#15-20"><span class="self">self</span>::UnixSocketAddressPath</a>::<span class="kw-2">*</span>;
 
         <span class="kw">match </span><span class="kw-2">*</span><span class="self"><a href="#23">self</a> </span>{
-            <a href="#16">Path</a>(<span class="kw">_</span>) =&gt; <a href="auto/enums.rs.html#4648">UnixSocketAddressType::Path</a>,
-            <a href="#17">Anonymous</a> =&gt; <a href="auto/enums.rs.html#4645">UnixSocketAddressType::Anonymous</a>,
-            <a href="#18">Abstract</a>(<span class="kw">_</span>) =&gt; <a href="auto/enums.rs.html#4651">UnixSocketAddressType::Abstract</a>,
-            <a href="#19">AbstractPadded</a>(<span class="kw">_</span>) =&gt; <a href="auto/enums.rs.html#4655">UnixSocketAddressType::AbstractPadded</a>,
+            <a href="#16">Path</a>(<span class="kw">_</span>) =&gt; <a href="auto/enums.rs.html#4649">UnixSocketAddressType::Path</a>,
+            <a href="#17">Anonymous</a> =&gt; <a href="auto/enums.rs.html#4646">UnixSocketAddressType::Anonymous</a>,
+            <a href="#18">Abstract</a>(<span class="kw">_</span>) =&gt; <a href="auto/enums.rs.html#4652">UnixSocketAddressType::Abstract</a>,
+            <a href="#19">AbstractPadded</a>(<span class="kw">_</span>) =&gt; <a href="auto/enums.rs.html#4656">UnixSocketAddressType::AbstractPadded</a>,
         }
     }
 }
@@ -397,14 +397,14 @@
             }
         };
         <span class="kw">match </span><a class="self" href="#135">self</a>.<a href="auto/unix_socket_address.rs.html#120-126">address_type</a>() {
-            <a href="auto/enums.rs.html#4645">UnixSocketAddressType::Anonymous</a> =&gt; <span class="prelude-val">Some</span>(<a href="#17">Anonymous</a>),
+            <a href="auto/enums.rs.html#4646">UnixSocketAddressType::Anonymous</a> =&gt; <span class="prelude-val">Some</span>(<a href="#17">Anonymous</a>),
             <span class="attr">#[cfg(not(docsrs))]
             </span>UnixSocketAddressType::Path =&gt; <span class="prelude-val">Some</span>(Path(path::Path::new(OsStr::from_bytes(path)))),
             <span class="attr">#[cfg(docsrs)]
-            </span><a href="auto/enums.rs.html#4648">UnixSocketAddressType::Path</a> =&gt; <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.unreachable.html">unreachable!</a>(),
-            <a href="auto/enums.rs.html#4651">UnixSocketAddressType::Abstract</a> =&gt; <span class="prelude-val">Some</span>(<a href="#18">Abstract</a>(<a href="#138">path</a>)),
-            <a href="auto/enums.rs.html#4655">UnixSocketAddressType::AbstractPadded</a> =&gt; <span class="prelude-val">Some</span>(<a href="#19">AbstractPadded</a>(<a href="#138">path</a>)),
-            <a href="auto/enums.rs.html#4642">UnixSocketAddressType::Invalid</a> | <a href="auto/enums.rs.html#4657">UnixSocketAddressType::__Unknown</a>(<span class="kw">_</span>) =&gt; <span class="prelude-val">None</span>,
+            </span><a href="auto/enums.rs.html#4649">UnixSocketAddressType::Path</a> =&gt; <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.unreachable.html">unreachable!</a>(),
+            <a href="auto/enums.rs.html#4652">UnixSocketAddressType::Abstract</a> =&gt; <span class="prelude-val">Some</span>(<a href="#18">Abstract</a>(<a href="#138">path</a>)),
+            <a href="auto/enums.rs.html#4656">UnixSocketAddressType::AbstractPadded</a> =&gt; <span class="prelude-val">Some</span>(<a href="#19">AbstractPadded</a>(<a href="#138">path</a>)),
+            <a href="auto/enums.rs.html#4643">UnixSocketAddressType::Invalid</a> | <a href="auto/enums.rs.html#4658">UnixSocketAddressType::__Unknown</a>(<span class="kw">_</span>) =&gt; <span class="prelude-val">None</span>,
         }
     }
 }

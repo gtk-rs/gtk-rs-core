@@ -102,35 +102,37 @@
 <a href="#29" id="29">29</a>
 <a href="#30" id="30">30</a>
 <a href="#31" id="31">31</a>
+<a href="#32" id="32">32</a>
 </pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
 </span><span class="kw">use </span><a href="https://doc.rust-lang.org/nightly/core/iter/traits/marker/trait.FusedIterator.html">std::iter::FusedIterator</a>;
 
+<span class="kw">use </span><a href="../../gio_sys/index.html"><span class="kw">crate</span>::ffi</a>;
 <span class="kw">use </span>glib::{<a href="../../glib/translate/index.html">translate</a>::<span class="kw-2">*</span>, <a href="../../glib/gstring/struct.GString.html">GString</a>};
 
-<span class="kw">pub struct </span><a href="../../gio/struct.FileAttributematcherIter.html">FileAttributematcherIter</a>(<a href="auto/file_attribute_matcher.rs.html#7-17"><span class="kw">crate</span>::FileAttributeMatcher</a>);
+<span class="kw">pub struct </span><a href="../../gio/struct.FileAttributematcherIter.html">FileAttributematcherIter</a>(<a href="auto/file_attribute_matcher.rs.html#8-18"><span class="kw">crate</span>::FileAttributeMatcher</a>);
 
-<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html">Iterator</a> <span class="kw">for </span><a href="#7">FileAttributematcherIter</a> {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html">Iterator</a> <span class="kw">for </span><a href="#8">FileAttributematcherIter</a> {
     <span class="kw">type </span>Item = <a href="../../glib/gstring/struct.GString.html">GString</a>;
 
     <span class="attr">#[doc(alias = <span class="string">"g_file_attribute_matcher_enumerate_next"</span>)]
     </span><span class="kw">fn </span>next(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="../../glib/gstring/struct.GString.html">GString</a>&gt; {
         <span class="kw">unsafe </span>{
             <a href="../../glib/translate/fn.from_glib_none.html">from_glib_none</a>(<a href="../../gio_sys/fn.g_file_attribute_matcher_enumerate_next.html">ffi::g_file_attribute_matcher_enumerate_next</a>(
-                <a class="self" href="#13">self</a>.<span class="number">0</span>.<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+                <a class="self" href="#14">self</a>.<span class="number">0</span>.<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
             ))
         }
     }
 }
 
-<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/iter/traits/marker/trait.FusedIterator.html">FusedIterator</a> <span class="kw">for </span><a href="#7">FileAttributematcherIter</a> {}
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/iter/traits/marker/trait.FusedIterator.html">FusedIterator</a> <span class="kw">for </span><a href="#8">FileAttributematcherIter</a> {}
 
-<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.IntoIterator.html">IntoIterator</a> <span class="kw">for </span><a href="auto/file_attribute_matcher.rs.html#7-17"><span class="kw">crate</span>::FileAttributeMatcher</a> {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.IntoIterator.html">IntoIterator</a> <span class="kw">for </span><a href="auto/file_attribute_matcher.rs.html#8-18"><span class="kw">crate</span>::FileAttributeMatcher</a> {
     <span class="kw">type </span>Item = <a href="../../glib/gstring/struct.GString.html">GString</a>;
-    <span class="kw">type </span>IntoIter = <a href="#7">FileAttributematcherIter</a>;
+    <span class="kw">type </span>IntoIter = <a href="#8">FileAttributematcherIter</a>;
 
     <span class="kw">fn </span>into_iter(<span class="self">self</span>) -&gt; <span class="self">Self</span>::IntoIter {
-        <a href="#7">FileAttributematcherIter</a>(<a class="self" href="#28">self</a>)
+        <a href="#8">FileAttributematcherIter</a>(<a class="self" href="#29">self</a>)
     }
 }
 </code></pre></div></section></main></body></html>

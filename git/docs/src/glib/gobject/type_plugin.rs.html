@@ -227,7 +227,7 @@
 <a href="#154" id="154">154</a>
 </pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
-</span><span class="kw">use crate</span>::{<a href="../lib.rs.html#137">prelude</a>::<span class="kw-2">*</span>, <a href="../lib.rs.html#142">translate</a>::<span class="kw-2">*</span>, <a href="interface_info.rs.html#8">InterfaceInfo</a>, <a href="type_info.rs.html#15">TypeInfo</a>, <a href="type_value_table.rs.html#8">TypeValueTable</a>};
+</span><span class="kw">use crate</span>::{gobject_ffi, <a href="../lib.rs.html#137">prelude</a>::<span class="kw-2">*</span>, <a href="../lib.rs.html#142">translate</a>::<span class="kw-2">*</span>, <a href="interface_info.rs.html#10">InterfaceInfo</a>, <a href="type_info.rs.html#17">TypeInfo</a>, <a href="type_value_table.rs.html#10">TypeValueTable</a>};
 
 <a class="macro" href="../wrapper.rs.html#277-444">crate::wrapper!</a> {
     <span class="doccomment">/// An interface that handles the lifecycle of dynamically loaded types.
@@ -322,14 +322,14 @@
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         instance_type: <a href="../types.rs.html#22"><span class="kw">crate</span>::types::Type</a>,
         interface_type: <a href="../types.rs.html#22"><span class="kw">crate</span>::types::Type</a>,
-    ) -&gt; <a href="interface_info.rs.html#8">InterfaceInfo</a> {
+    ) -&gt; <a href="interface_info.rs.html#10">InterfaceInfo</a> {
         <span class="kw">let </span>info = <a href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html#tymethod.default">InterfaceInfo::default</a>();
         <span class="kw">unsafe </span>{
             gobject_ffi::g_type_plugin_complete_interface_info(
-                <a class="self" href="#95">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#96">instance_type</a>.<a href="../translate.rs.html#333">into_glib</a>(),
-                <a href="#97">interface_type</a>.<a href="../translate.rs.html#333">into_glib</a>(),
-                <a href="#99">info</a>.<a href="interface_info.rs.html#15-17">as_ptr</a>(),
+                <a class="self" href="#95">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#96">instance_type</a>.<a href="../translate.rs.html#334">into_glib</a>(),
+                <a href="#97">interface_type</a>.<a href="../translate.rs.html#334">into_glib</a>(),
+                <a href="#99">info</a>.<a href="interface_info.rs.html#17-19">as_ptr</a>(),
             );
         }
         <a href="#99">info</a>
@@ -345,15 +345,15 @@
     /// ## `value_table`
     /// the [`TypeValueTable`][crate::TypeValueTable] to fill in
     </span><span class="attr">#[doc(alias = <span class="string">"g_type_plugin_complete_type_info"</span>)]
-    </span><span class="kw">fn </span>complete_type_info(<span class="kw-2">&amp;</span><span class="self">self</span>, g_type: <a href="../types.rs.html#22"><span class="kw">crate</span>::types::Type</a>) -&gt; (<a href="type_info.rs.html#15">TypeInfo</a>, <a href="type_value_table.rs.html#8">TypeValueTable</a>) {
+    </span><span class="kw">fn </span>complete_type_info(<span class="kw-2">&amp;</span><span class="self">self</span>, g_type: <a href="../types.rs.html#22"><span class="kw">crate</span>::types::Type</a>) -&gt; (<a href="type_info.rs.html#17">TypeInfo</a>, <a href="type_value_table.rs.html#10">TypeValueTable</a>) {
         <span class="kw">let </span>info = <a href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html#tymethod.default">TypeInfo::default</a>();
         <span class="kw">let </span>value_table = <a href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html#tymethod.default">TypeValueTable::default</a>();
         <span class="kw">unsafe </span>{
             gobject_ffi::g_type_plugin_complete_type_info(
-                <a class="self" href="#121">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#121">g_type</a>.<a href="../translate.rs.html#333">into_glib</a>(),
-                <a href="#122">info</a>.<a href="type_info.rs.html#22-24">as_ptr</a>(),
-                <a href="#123">value_table</a>.<a href="type_value_table.rs.html#15-17">as_ptr</a>(),
+                <a class="self" href="#121">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#121">g_type</a>.<a href="../translate.rs.html#334">into_glib</a>(),
+                <a href="#122">info</a>.<a href="type_info.rs.html#24-26">as_ptr</a>(),
+                <a href="#123">value_table</a>.<a href="type_value_table.rs.html#17-19">as_ptr</a>(),
             );
         }
         (<a href="#122">info</a>, <a href="#123">value_table</a>)
@@ -365,7 +365,7 @@
     </span><span class="attr">#[doc(alias = <span class="string">"g_type_plugin_unuse"</span>)]
     </span><span class="kw">fn </span>unuse(<span class="kw-2">&amp;</span><span class="self">self</span>) {
         <span class="kw">unsafe </span>{
-            gobject_ffi::g_type_plugin_unuse(<a class="self" href="#139">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>);
+            gobject_ffi::g_type_plugin_unuse(<a class="self" href="#139">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>);
         }
     }
 
@@ -373,7 +373,7 @@
     #[doc(alias = <span class="string">"use"</span>)]
     </span><span class="kw">fn </span>use_(<span class="kw-2">&amp;</span><span class="self">self</span>) {
         <span class="kw">unsafe </span>{
-            gobject_ffi::g_type_plugin_use(<a class="self" href="#147">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>);
+            gobject_ffi::g_type_plugin_use(<a class="self" href="#147">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>);
         }
     }
 }

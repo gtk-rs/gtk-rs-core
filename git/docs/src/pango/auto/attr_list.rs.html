@@ -337,7 +337,7 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-</span><span class="kw">use crate</span>::{<a href="../attr_iterator.rs.html#17-20">AttrIterator</a>, <a href="attribute.rs.html#9-26">Attribute</a>};
+</span><span class="kw">use crate</span>::{<a href="../../../pango_sys/index.html">ffi</a>, <a href="../attr_iterator.rs.html#17-20">AttrIterator</a>, <a href="attribute.rs.html#10-27">Attribute</a>};
 <span class="kw">use </span><a href="../../../glib/translate/index.html">glib::translate</a>::<span class="kw-2">*</span>;
 
 <a class="macro" href="../../../glib/macro.wrapper.html">glib::wrapper!</a> {
@@ -396,9 +396,9 @@
     ///   given types were found
     </span><span class="attr">#[doc(alias = <span class="string">"pango_attr_list_filter"</span>)]
     #[must_use]
-    </span><span class="kw">pub fn </span>filter&lt;P: FnMut(<span class="kw-2">&amp;</span><a href="attribute.rs.html#9-26">Attribute</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, func: P) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="#8-28">AttrList</a>&gt; {
+    </span><span class="kw">pub fn </span>filter&lt;P: FnMut(<span class="kw-2">&amp;</span><a href="attribute.rs.html#10-27">Attribute</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, func: P) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="#8-28">AttrList</a>&gt; {
         <span class="kw">let </span>func_data: P = <a href="#64">func</a>;
-        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>func_func&lt;P: FnMut(<span class="kw-2">&amp;</span><a href="attribute.rs.html#9-26">Attribute</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>&gt;(
+        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>func_func&lt;P: FnMut(<span class="kw-2">&amp;</span><a href="attribute.rs.html#10-27">Attribute</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>&gt;(
             attribute: <span class="kw-2">*mut </span><a href="../../../pango_sys/struct.PangoAttribute.html">ffi::PangoAttribute</a>,
             user_data: <a href="../../../glib_sys/type.gpointer.html">glib::ffi::gpointer</a>,
         ) -&gt; <a href="../../../glib_sys/type.gboolean.html">glib::ffi::gboolean</a> {
@@ -429,7 +429,7 @@
     #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"v1_44"</span>)))]
     #[doc(alias = <span class="string">"pango_attr_list_get_attributes"</span>)]
     #[doc(alias = <span class="string">"get_attributes"</span>)]
-    </span><span class="kw">pub fn </span>attributes(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec&lt;<a href="attribute.rs.html#9-26">Attribute</a>&gt; {
+    </span><span class="kw">pub fn </span>attributes(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec&lt;<a href="attribute.rs.html#10-27">Attribute</a>&gt; {
         <span class="kw">unsafe </span>{
             <a href="../../../glib/translate/trait.FromGlibPtrContainer.html#tymethod.from_glib_full">FromGlibPtrContainer::from_glib_full</a>(<a href="../../../pango_sys/fn.pango_attr_list_get_attributes.html">ffi::pango_attr_list_get_attributes</a>(
                 <a class="self" href="#97">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,

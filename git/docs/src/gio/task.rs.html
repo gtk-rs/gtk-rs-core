@@ -1242,7 +1242,7 @@
 
 <span class="kw">use </span>futures_channel::oneshot;
 
-<span class="kw">use crate</span>::{<a href="auto/async_result.rs.html#7-105">AsyncResult</a>, <a href="auto/cancellable.rs.html#7-85">Cancellable</a>};
+<span class="kw">use crate</span>::{<a href="../../gio_sys/index.html">ffi</a>, <a href="auto/async_result.rs.html#8-106">AsyncResult</a>, <a href="auto/cancellable.rs.html#8-86">Cancellable</a>};
 
 <a class="macro" href="../../glib/macro.wrapper.html">glib::wrapper!</a> {
     <span class="comment">// rustdoc-stripper-ignore-next
@@ -1257,7 +1257,7 @@
     /// not allow to automatically enforce all the invariants required to be a completely
     /// safe abstraction. See the `Task` type for more details.
     </span><span class="attr">#[doc(alias = <span class="string">"GTask"</span>)]
-    </span><span class="kw">pub struct </span><a href="../../gio/struct.LocalTask.html">LocalTask</a>&lt;V: <a href="../../glib/value/trait.ValueType.html">ValueType</a>&gt;(Object&lt;<a href="../../gio_sys/struct.GTask.html">ffi::GTask</a>, <a href="../../gio_sys/type.GTaskClass.html">ffi::GTaskClass</a>&gt;) @implements <a href="auto/async_result.rs.html#7-105">AsyncResult</a>;
+    </span><span class="kw">pub struct </span><a href="../../gio/struct.LocalTask.html">LocalTask</a>&lt;V: <a href="../../glib/value/trait.ValueType.html">ValueType</a>&gt;(Object&lt;<a href="../../gio_sys/struct.GTask.html">ffi::GTask</a>, <a href="../../gio_sys/type.GTaskClass.html">ffi::GTaskClass</a>&gt;) @implements <a href="auto/async_result.rs.html#8-106">AsyncResult</a>;
 
     <span class="kw">match fn </span>{
         type_ =&gt; || ffi::g_task_get_type(),
@@ -1843,7 +1843,7 @@
     ///
     /// [`trait@glib::ObjectExt`], [`AsyncResultExt`][trait@crate::prelude::AsyncResultExt]
     </span><span class="attr">#[doc(alias = <span class="string">"GTask"</span>)]
-    </span><span class="kw">pub struct </span><a href="../../gio/struct.Task.html">Task</a>&lt;V: <a href="../../glib/value/trait.ValueType.html">ValueType</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a>&gt;(Object&lt;<a href="../../gio_sys/struct.GTask.html">ffi::GTask</a>, <a href="../../gio_sys/type.GTaskClass.html">ffi::GTaskClass</a>&gt;) @implements <a href="auto/async_result.rs.html#7-105">AsyncResult</a>;
+    </span><span class="kw">pub struct </span><a href="../../gio/struct.Task.html">Task</a>&lt;V: <a href="../../glib/value/trait.ValueType.html">ValueType</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a>&gt;(Object&lt;<a href="../../gio_sys/struct.GTask.html">ffi::GTask</a>, <a href="../../gio_sys/type.GTaskClass.html">ffi::GTaskClass</a>&gt;) @implements <a href="auto/async_result.rs.html#8-106">AsyncResult</a>;
 
     <span class="kw">match fn </span>{
         type_ =&gt; || ffi::g_task_get_type(),
@@ -2117,7 +2117,7 @@
     </span><span class="kw">pub fn </span>run_in_thread&lt;S, Q&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, task_func: Q)
     <span class="kw">where
         </span>S: IsA&lt;<a href="../../glib/object/struct.Object.html">glib::Object</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a>,
-        Q: FnOnce(<span class="self">Self</span>, <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>S&gt;, <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="auto/cancellable.rs.html#7-85">Cancellable</a>&gt;) + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static</span>,
+        Q: FnOnce(<span class="self">Self</span>, <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>S&gt;, <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="auto/cancellable.rs.html#8-86">Cancellable</a>&gt;) + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static</span>,
     {
         <span class="kw">let </span>task_func_data = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">Box_::new</a>(<a href="#885">task_func</a>);
 
@@ -2145,11 +2145,11 @@
         ) <span class="kw">where
             </span>V: <a href="../../glib/value/trait.ValueType.html">ValueType</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a>,
             S: IsA&lt;<a href="../../glib/object/struct.Object.html">glib::Object</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a>,
-            Q: FnOnce(Task&lt;V&gt;, <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>S&gt;, <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="auto/cancellable.rs.html#7-85">Cancellable</a>&gt;) + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static</span>,
+            Q: FnOnce(Task&lt;V&gt;, <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>S&gt;, <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="auto/cancellable.rs.html#8-86">Cancellable</a>&gt;) + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static</span>,
         {
             <span class="kw">let </span>task = <a href="../../glib/translate/trait.FromGlibPtrNone.html#tymethod.from_glib_none">Task::from_glib_none</a>(<a href="#909">task</a>);
             <span class="kw">let </span>source_object = <span class="prelude-ty">Option</span>::&lt;<a href="../../glib/object/struct.Object.html">glib::Object</a>&gt;::from_glib_borrow(<a href="#910">source_object</a>);
-            <span class="kw">let </span>cancellable = <span class="prelude-ty">Option</span>::&lt;<a href="auto/cancellable.rs.html#7-85">Cancellable</a>&gt;::from_glib_borrow(<a href="#912">cancellable</a>);
+            <span class="kw">let </span>cancellable = <span class="prelude-ty">Option</span>::&lt;<a href="auto/cancellable.rs.html#8-86">Cancellable</a>&gt;::from_glib_borrow(<a href="#912">cancellable</a>);
             <span class="kw">let </span>task_func: Box_&lt;Q&gt; = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.from_raw">Box::from_raw</a>(<a href="#911">user_data</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
             <a href="#921">task_func</a>(
                 <a href="#918">task</a>,
@@ -2224,7 +2224,7 @@
     <span class="comment">// use Cancellable::NONE as source obj to fulfill `Send` requirement
     </span><span class="kw">let </span>task = <span class="kw">unsafe </span>{ Task::&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>&gt;::new(Cancellable::NONE, Cancellable::NONE, |<span class="kw">_</span>, <span class="kw">_</span>| {}) };
     <span class="kw">let </span>(join, tx) = <a href="#952-955">JoinHandle::new</a>();
-    <a href="#993">task</a>.<a href="#885-933">run_in_thread</a>(<span class="kw">move </span>|task, <span class="kw">_</span>: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="auto/cancellable.rs.html#7-85">Cancellable</a>&gt;, <span class="kw">_</span>| {
+    <a href="#993">task</a>.<a href="#885-933">run_in_thread</a>(<span class="kw">move </span>|task, <span class="kw">_</span>: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="auto/cancellable.rs.html#8-86">Cancellable</a>&gt;, <span class="kw">_</span>| {
         <span class="kw">let </span>res = <a href="https://doc.rust-lang.org/nightly/std/panic/fn.catch_unwind.html">panic::catch_unwind</a>(<a href="https://doc.rust-lang.org/nightly/core/panic/unwind_safe/struct.AssertUnwindSafe.html">panic::AssertUnwindSafe</a>(<a href="#987">func</a>));
         <span class="kw">let _ </span>= <a href="#994">tx</a>.send(<a href="#996">res</a>);
         <span class="kw">unsafe </span>{ <a href="../../gio_sys/fn.g_task_return_pointer.html">ffi::g_task_return_pointer</a>(<a href="#995">task</a>.<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>(), <span class="prelude-val">None</span>) }

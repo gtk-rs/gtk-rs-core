@@ -213,11 +213,11 @@
 
 <span class="kw">use </span>glib::{<a href="../../../glib/prelude/index.html">prelude</a>::<span class="kw-2">*</span>, <a href="../../../glib/subclass/prelude/index.html">subclass::prelude</a>::<span class="kw-2">*</span>, <a href="../../../glib/translate/index.html">translate</a>::<span class="kw-2">*</span>, <a href="../../../glib/gstring/struct.GString.html">GString</a>, <a href="../../../glib/quark/struct.Quark.html">Quark</a>};
 
-<span class="kw">use crate</span>::{<a href="../auto/action.rs.html#12-91">Action</a>, <a href="../auto/action_map.rs.html#8-30">ActionMap</a>};
+<span class="kw">use crate</span>::{<a href="../../../gio_sys/index.html">ffi</a>, <a href="../auto/action.rs.html#13-92">Action</a>, <a href="../auto/action_map.rs.html#8-30">ActionMap</a>};
 
 <span class="kw">pub trait </span><a href="../../../gio/subclass/prelude/trait.ActionMapImpl.html">ActionMapImpl</a>: <a href="../../../glib/subclass/object/trait.ObjectImpl.html">ObjectImpl</a> {
-    <span class="kw">fn </span>lookup_action(<span class="kw-2">&amp;</span><span class="self">self</span>, action_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="../auto/action.rs.html#12-91">Action</a>&gt;;
-    <span class="kw">fn </span>add_action(<span class="kw-2">&amp;</span><span class="self">self</span>, action: <span class="kw-2">&amp;</span><a href="../auto/action.rs.html#12-91">Action</a>);
+    <span class="kw">fn </span>lookup_action(<span class="kw-2">&amp;</span><span class="self">self</span>, action_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="../auto/action.rs.html#13-92">Action</a>&gt;;
+    <span class="kw">fn </span>add_action(<span class="kw-2">&amp;</span><span class="self">self</span>, action: <span class="kw-2">&amp;</span><a href="../auto/action.rs.html#13-92">Action</a>);
     <span class="kw">fn </span>remove_action(<span class="kw-2">&amp;</span><span class="self">self</span>, action_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>);
 }
 
@@ -227,7 +227,7 @@
 }
 
 <span class="kw">pub trait </span><a href="../../../gio/subclass/prelude/trait.ActionMapImplExt.html">ActionMapImplExt</a>: <a href="#16">sealed::Sealed</a> + <a href="../../../glib/subclass/types/trait.ObjectSubclass.html">ObjectSubclass</a> {
-    <span class="kw">fn </span>parent_lookup_action(<span class="kw-2">&amp;</span><span class="self">self</span>, name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="../auto/action.rs.html#12-91">Action</a>&gt; {
+    <span class="kw">fn </span>parent_lookup_action(<span class="kw-2">&amp;</span><span class="self">self</span>, name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="../auto/action.rs.html#13-92">Action</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>type_data = <a href="../../../glib/subclass/types/trait.ObjectSubclassType.html#tymethod.type_data"><span class="self">Self</span>::type_data</a>();
             <span class="kw">let </span>parent_iface = <a href="#23">type_data</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().<a href="../../../glib/subclass/types/struct.TypeData.html#method.parent_interface">parent_interface</a>::&lt;<a href="../auto/action_map.rs.html#8-30">ActionMap</a>&gt;()
@@ -244,7 +244,7 @@
         }
     }
 
-    <span class="kw">fn </span>parent_add_action(<span class="kw-2">&amp;</span><span class="self">self</span>, action: <span class="kw-2">&amp;</span><a href="../auto/action.rs.html#12-91">Action</a>) {
+    <span class="kw">fn </span>parent_add_action(<span class="kw-2">&amp;</span><span class="self">self</span>, action: <span class="kw-2">&amp;</span><a href="../auto/action.rs.html#13-92">Action</a>) {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>type_data = <a href="../../../glib/subclass/types/trait.ObjectSubclassType.html#tymethod.type_data"><span class="self">Self</span>::type_data</a>();
             <span class="kw">let </span>parent_iface = <a href="#40">type_data</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().<a href="../../../glib/subclass/types/struct.TypeData.html#method.parent_interface">parent_interface</a>::&lt;<a href="../auto/action_map.rs.html#8-30">ActionMap</a>&gt;()
@@ -311,7 +311,7 @@
         };
 
         <span class="kw">let </span><span class="kw-2">mut </span>map = <a href="#96">instance</a>
-            .<a href="../../../glib/object/trait.ObjectExt.html#tymethod.steal_qdata">steal_qdata</a>::&lt;HashMap&lt;<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>, <a href="../auto/action.rs.html#12-91">Action</a>&gt;&gt;(<a href="#99">action_map_quark</a>)
+            .<a href="../../../glib/object/trait.ObjectExt.html#tymethod.steal_qdata">steal_qdata</a>::&lt;HashMap&lt;<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>, <a href="../auto/action.rs.html#13-92">Action</a>&gt;&gt;(<a href="#99">action_map_quark</a>)
             .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap_or_default">unwrap_or_default</a>();
         <a href="#104">map</a>.<a href="https://doc.rust-lang.org/nightly/std/collections/hash/map/struct.HashMap.html#method.insert">insert</a>(<a href="#91">action_name</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html#tymethod.to_string">to_string</a>(), <a href="#95">action</a>);
         <a href="#96">instance</a>.<a href="../../../glib/object/trait.ObjectExt.html#tymethod.set_qdata">set_qdata</a>(<a href="#99">action_map_quark</a>, <a href="#104">map</a>);
@@ -328,7 +328,7 @@
 ) {
     <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(<a href="#117">action_map</a> <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
     <span class="kw">let </span>imp = <a href="#120">instance</a>.<a href="../../../glib/subclass/types/trait.InstanceStructExt.html#tymethod.imp">imp</a>();
-    <span class="kw">let </span>action: Borrowed&lt;<a href="../auto/action.rs.html#12-91">Action</a>&gt; = <a href="../../../glib/translate/fn.from_glib_borrow.html">from_glib_borrow</a>(<a href="#118">actionptr</a>);
+    <span class="kw">let </span>action: Borrowed&lt;<a href="../auto/action.rs.html#13-92">Action</a>&gt; = <a href="../../../glib/translate/fn.from_glib_borrow.html">from_glib_borrow</a>(<a href="#118">actionptr</a>);
 
     <a href="#121">imp</a>.<a href="#11">add_action</a>(<span class="kw-2">&amp;</span><a href="#122">action</a>);
 }

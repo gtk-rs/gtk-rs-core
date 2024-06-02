@@ -926,7 +926,7 @@
 <span class="kw">use </span>futures_util::FutureExt;
 
 <span class="kw">use crate</span>::{
-    <a href="thread_guard.rs.html#24-27">thread_guard::ThreadGuard</a>, <a href="lib.rs.html#142">translate</a>::<span class="kw-2">*</span>, <a href="auto/main_context.rs.html#10-21">MainContext</a>, <a href="auto/main_loop.rs.html#7-18">MainLoop</a>, <a href="source.rs.html#932">Priority</a>, <a href="auto/source.rs.html#7-18">Source</a>, <a href="source.rs.html#21">SourceId</a>,
+    ffi, <a href="thread_guard.rs.html#24-27">thread_guard::ThreadGuard</a>, <a href="lib.rs.html#142">translate</a>::<span class="kw-2">*</span>, <a href="auto/main_context.rs.html#10-21">MainContext</a>, <a href="auto/main_loop.rs.html#7-18">MainLoop</a>, <a href="source.rs.html#932">Priority</a>, <a href="auto/source.rs.html#7-18">Source</a>, <a href="source.rs.html#21">SourceId</a>,
 };
 
 <span class="comment">// Wrapper around Send Futures and non-Send Futures that will panic
@@ -1011,7 +1011,7 @@
                 <span class="kw">let </span>context = ffi::g_source_get_context(<a href="#82">source</a> <span class="kw">as </span><span class="kw-2">*mut </span>ffi::GSource);
                 <span class="kw">if </span>!context.is_null() {
                     <span class="kw">let </span>future = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.read.html">ptr::read</a>(<a href="#97">future</a>);
-                    <span class="kw">let </span>context = <a href="translate.rs.html#1557">MainContext::from_glib_none</a>(<a href="#98">context</a>);
+                    <span class="kw">let </span>context = <a href="translate.rs.html#1558">MainContext::from_glib_none</a>(<a href="#98">context</a>);
                     <a href="#101">context</a>.<a href="main_context.rs.html#98-103">invoke</a>(<span class="kw">move </span>|| {
                         <a href="https://doc.rust-lang.org/nightly/core/mem/fn.drop.html">drop</a>(<a href="#100">future</a>);
                     });
@@ -1039,7 +1039,7 @@
         );
 
         <span class="kw">let </span>waker = <a href="#120">waker</a> <span class="kw">as </span><span class="kw-2">*const </span>ffi::GSource;
-        ffi::g_source_ref(<a href="translate.rs.html#201-203">mut_override</a>(<a href="#128">waker</a>));
+        ffi::g_source_ref(<a href="translate.rs.html#202-204">mut_override</a>(<a href="#128">waker</a>));
         <a href="https://doc.rust-lang.org/nightly/core/task/wake/struct.RawWaker.html#method.new">RawWaker::new</a>(<a href="#128">waker</a> <span class="kw">as </span><span class="kw-2">*const </span>(), <span class="kw-2">&amp;</span><a href="#121-126">VTABLE</a>)
     }
 
@@ -1050,12 +1050,12 @@
 
     <span class="kw">unsafe fn </span>wake_by_ref_raw(waker: <span class="kw-2">*const </span>()) {
         <span class="kw">let </span>waker = <a href="#138">waker</a> <span class="kw">as </span><span class="kw-2">*const </span>ffi::GSource;
-        ffi::g_source_set_ready_time(<a href="translate.rs.html#201-203">mut_override</a>(<a href="#139">waker</a>), <span class="number">0</span>);
+        ffi::g_source_set_ready_time(<a href="translate.rs.html#202-204">mut_override</a>(<a href="#139">waker</a>), <span class="number">0</span>);
     }
 
     <span class="kw">unsafe fn </span>drop_raw(waker: <span class="kw-2">*const </span>()) {
         <span class="kw">let </span>waker = <a href="#143">waker</a> <span class="kw">as </span><span class="kw-2">*const </span>ffi::GSource;
-        ffi::g_source_unref(<a href="translate.rs.html#201-203">mut_override</a>(<a href="#144">waker</a>));
+        ffi::g_source_unref(<a href="translate.rs.html#202-204">mut_override</a>(<a href="#144">waker</a>));
     }
 
     <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>dispatch(
@@ -1065,7 +1065,7 @@
     ) -&gt; ffi::gboolean {
         <span class="comment">// Set ready-time to -1 so that we're not called again before
         // being woken up another time.
-        </span>ffi::g_source_set_ready_time(<a href="translate.rs.html#201-203">mut_override</a>(<a href="#149">source</a>), -<span class="number">1</span>);
+        </span>ffi::g_source_set_ready_time(<a href="translate.rs.html#202-204">mut_override</a>(<a href="#149">source</a>), -<span class="number">1</span>);
         ffi::G_SOURCE_CONTINUE
     }
 }
@@ -1103,16 +1103,16 @@
             };
 
             <span class="kw">let </span>source = ffi::g_source_new(
-                <a href="translate.rs.html#201-203">mut_override</a>(<span class="kw-2">&amp;</span><a href="#175-182">TASK_SOURCE_FUNCS</a>),
+                <a href="translate.rs.html#202-204">mut_override</a>(<span class="kw-2">&amp;</span><a href="#175-182">TASK_SOURCE_FUNCS</a>),
                 mem::size_of::&lt;<span class="self">Self</span>&gt;() <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>,
             );
 
             <span class="kw">let </span>waker_source = ffi::g_source_new(
-                <a href="translate.rs.html#201-203">mut_override</a>(<span class="kw-2">&amp;</span><a href="#183-190">WAKER_SOURCE_FUNCS</a>),
+                <a href="translate.rs.html#202-204">mut_override</a>(<span class="kw-2">&amp;</span><a href="#183-190">WAKER_SOURCE_FUNCS</a>),
                 mem::size_of::&lt;<a href="#59-61">WakerSource</a>&gt;() <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>,
             );
 
-            ffi::g_source_set_priority(<a href="#192">source</a>, <a href="#170">priority</a>.<a href="translate.rs.html#333">into_glib</a>());
+            ffi::g_source_set_priority(<a href="#192">source</a>, <a href="#170">priority</a>.<a href="translate.rs.html#334">into_glib</a>());
             ffi::g_source_add_child_source(<a href="#192">source</a>, <a href="#197">waker_source</a>);
 
             {
@@ -1134,14 +1134,14 @@
             // the task source directly and inside the task source as child source.
             </span>ffi::g_source_unref(<a href="#197">waker_source</a>);
 
-            <a href="translate.rs.html#1633-1635">from_glib_full</a>(<a href="#192">source</a>)
+            <a href="translate.rs.html#1634-1636">from_glib_full</a>(<a href="#192">source</a>)
         }
     }
 
     <span class="kw">fn </span>poll(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; Poll&lt;()&gt; {
         <span class="kw">let </span>source = <span class="kw-2">&amp;</span><a class="self" href="#228">self</a>.source <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>;
         <span class="kw">let </span>executor: Borrowed&lt;<a href="auto/main_context.rs.html#10-21">MainContext</a>&gt; =
-            <span class="kw">unsafe </span>{ <a href="translate.rs.html#1642-1644">from_glib_borrow</a>(ffi::g_source_get_context(<a href="translate.rs.html#201-203">mut_override</a>(<a href="#229">source</a>))) };
+            <span class="kw">unsafe </span>{ <a href="translate.rs.html#1643-1645">from_glib_borrow</a>(ffi::g_source_get_context(<a href="translate.rs.html#202-204">mut_override</a>(<a href="#229">source</a>))) };
 
         <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.assert.html">assert!</a>(
             executor.is_owner(),
@@ -1239,7 +1239,7 @@
     /// underlying task. Returns `Err(self)` if the handle was aborted already.
     </span><span class="kw">pub fn </span>into_source_id(<span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="source.rs.html#21">SourceId</a>, <span class="self">Self</span>&gt; {
         <span class="kw">if let </span><span class="prelude-val">Some</span>(id) = <a class="self" href="#327">self</a>.id.<a href="https://doc.rust-lang.org/nightly/core/cell/struct.Cell.html#method.take">take</a>() {
-            <span class="prelude-val">Ok</span>(<span class="kw">unsafe </span>{ <a href="translate.rs.html#1410">SourceId::from_glib</a>(<a href="#328">id</a>.<a href="https://doc.rust-lang.org/nightly/core/num/nonzero/struct.NonZero.html#method.get">get</a>()) })
+            <span class="prelude-val">Ok</span>(<span class="kw">unsafe </span>{ <a href="translate.rs.html#1411">SourceId::from_glib</a>(<a href="#328">id</a>.<a href="https://doc.rust-lang.org/nightly/core/num/nonzero/struct.NonZero.html#method.get">get</a>()) })
         } <span class="kw">else </span>{
             <span class="prelude-val">Err</span>(<a class="self" href="#327">self</a>)
         }

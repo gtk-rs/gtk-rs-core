@@ -314,18 +314,20 @@
 <a href="#241" id="241">241</a>
 <a href="#242" id="242">242</a>
 <a href="#243" id="243">243</a>
+<a href="#244" id="244">244</a>
 </pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
 </span><span class="kw">use </span><a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html">std::mem::MaybeUninit</a>;
 
 <span class="kw">use crate</span>::{
-    translate::{<a href="translate.rs.html#1416-1418">from_glib</a>, <a href="translate.rs.html#330-334">IntoGlib</a>, <a href="translate.rs.html#317-326">UnsafeFrom</a>},
+    ffi,
+    translate::{<a href="translate.rs.html#1417-1419">from_glib</a>, <a href="translate.rs.html#331-335">IntoGlib</a>, <a href="translate.rs.html#318-327">UnsafeFrom</a>},
     <a href="auto/enums.rs.html#1090-1247">UnicodeBreakType</a>, <a href="auto/enums.rs.html#1440-1958">UnicodeScript</a>, <a href="auto/enums.rs.html#2400-2493">UnicodeType</a>,
 };
 
 <span class="kw">mod </span>sealed {
     <span class="kw">pub trait </span>Sealed {}
-    <span class="kw">impl </span><a href="#11">Sealed</a> <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/std/primitive.char.html">char</a> {}
+    <span class="kw">impl </span><a href="#12">Sealed</a> <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/std/primitive.char.html">char</a> {}
 }
 
 <span class="kw">impl </span>UnsafeFrom&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>&gt; <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/std/primitive.char.html">char</a> {
@@ -335,7 +337,7 @@
             char::try_from(t).is_ok(),
             <span class="string">"glib returned an invalid Unicode codepoint"
         </span>);
-        <span class="kw">unsafe </span>{ <a href="https://doc.rust-lang.org/nightly/core/char/foreigntype.methods.html#method.from_u32_unchecked">char::from_u32_unchecked</a>(<a href="#17">t</a>) }
+        <span class="kw">unsafe </span>{ <a href="https://doc.rust-lang.org/nightly/core/char/foreigntype.methods.html#method.from_u32_unchecked">char::from_u32_unchecked</a>(<a href="#18">t</a>) }
     }
 }
 
@@ -371,26 +373,26 @@
 </span><span class="doccomment">/// This trait provides access to Unicode character classification and manipulations functions
 /// provided by GLib that do not exist in the standard library
 </span><span class="attr">#[doc(alias = <span class="string">"g_unichar"</span>)]
-</span><span class="kw">pub trait </span><a href="../../glib/trait.Unichar.html">Unichar</a>: <a href="#11">sealed::Sealed</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Copy.html">Copy</a> + Into&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>&gt; + UnsafeFrom&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>&gt; {
+</span><span class="kw">pub trait </span><a href="../../glib/trait.Unichar.html">Unichar</a>: <a href="#12">sealed::Sealed</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Copy.html">Copy</a> + Into&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>&gt; + UnsafeFrom&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>&gt; {
     <span class="attr">#[doc(alias = <span class="string">"g_unichar_type"</span>)]
     #[doc(alias = <span class="string">"unichar_type"</span>)]
     #[inline]
     </span><span class="kw">fn </span>unicode_type(<span class="self">self</span>) -&gt; <a href="auto/enums.rs.html#2400-2493">UnicodeType</a> {
-        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1416-1418">from_glib</a>(ffi::g_unichar_type(<a class="self" href="#62">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>())) }
+        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1417-1419">from_glib</a>(ffi::g_unichar_type(<a class="self" href="#63">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>())) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">"g_unichar_break_type"</span>)]
     #[doc(alias = <span class="string">"unichar_break_type"</span>)]
     #[inline]
     </span><span class="kw">fn </span>break_type(<span class="self">self</span>) -&gt; <a href="auto/enums.rs.html#1090-1247">UnicodeBreakType</a> {
-        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1416-1418">from_glib</a>(ffi::g_unichar_break_type(<a class="self" href="#69">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>())) }
+        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1417-1419">from_glib</a>(ffi::g_unichar_break_type(<a class="self" href="#70">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>())) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">"g_unichar_get_script"</span>)]
     #[doc(alias = <span class="string">"unichar_get_script"</span>)]
     #[inline]
     </span><span class="kw">fn </span>script(<span class="self">self</span>) -&gt; <a href="auto/enums.rs.html#1440-1958">UnicodeScript</a> {
-        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1416-1418">from_glib</a>(ffi::g_unichar_get_script(<a class="self" href="#76">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>())) }
+        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1417-1419">from_glib</a>(ffi::g_unichar_get_script(<a class="self" href="#77">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>())) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">"g_unichar_combining_class"</span>)]
@@ -400,70 +402,70 @@
         <span class="comment">// UAX #44 § 5.7.4: The character property invariants regarding Canonical_Combining_Class
         //                  guarantee that [...] all values used will be in the range 0..254.
         // So this cast is fine
-        </span><span class="kw">unsafe </span>{ ffi::g_unichar_combining_class(<a class="self" href="#83">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>()) <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a> }
+        </span><span class="kw">unsafe </span>{ ffi::g_unichar_combining_class(<a class="self" href="#84">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>()) <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a> }
     }
 
     <span class="attr">#[doc(alias = <span class="string">"g_unichar_ismark"</span>)]
     #[doc(alias = <span class="string">"unichar_ismark"</span>)]
     #[inline]
     </span><span class="kw">fn </span>is_mark(<span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
-        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1416-1418">from_glib</a>(ffi::g_unichar_ismark(<a class="self" href="#93">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>())) }
+        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1417-1419">from_glib</a>(ffi::g_unichar_ismark(<a class="self" href="#94">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>())) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">"g_unichar_isgraph"</span>)]
     #[doc(alias = <span class="string">"unichar_isgraph"</span>)]
     #[inline]
     </span><span class="kw">fn </span>is_graphical(<span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
-        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1416-1418">from_glib</a>(ffi::g_unichar_isgraph(<a class="self" href="#100">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>())) }
+        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1417-1419">from_glib</a>(ffi::g_unichar_isgraph(<a class="self" href="#101">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>())) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">"g_unichar_ispunct"</span>)]
     #[doc(alias = <span class="string">"unichar_ispunct"</span>)]
     #[inline]
     </span><span class="kw">fn </span>is_punctuation(<span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
-        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1416-1418">from_glib</a>(ffi::g_unichar_ispunct(<a class="self" href="#107">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>())) }
+        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1417-1419">from_glib</a>(ffi::g_unichar_ispunct(<a class="self" href="#108">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>())) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">"g_unichar_istitle"</span>)]
     #[doc(alias = <span class="string">"unichar_istitle"</span>)]
     #[inline]
     </span><span class="kw">fn </span>is_titlecase(<span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
-        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1416-1418">from_glib</a>(ffi::g_unichar_istitle(<a class="self" href="#114">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>())) }
+        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1417-1419">from_glib</a>(ffi::g_unichar_istitle(<a class="self" href="#115">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>())) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">"g_unichar_isdefined"</span>)]
     #[doc(alias = <span class="string">"unichar_isdefined"</span>)]
     #[inline]
     </span><span class="kw">fn </span>is_defined(<span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
-        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1416-1418">from_glib</a>(ffi::g_unichar_isdefined(<a class="self" href="#121">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>())) }
+        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1417-1419">from_glib</a>(ffi::g_unichar_isdefined(<a class="self" href="#122">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>())) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">"g_unichar_iswide"</span>)]
     #[doc(alias = <span class="string">"unichar_iswide"</span>)]
     #[inline]
     </span><span class="kw">fn </span>is_wide(<span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
-        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1416-1418">from_glib</a>(ffi::g_unichar_iswide(<a class="self" href="#128">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>())) }
+        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1417-1419">from_glib</a>(ffi::g_unichar_iswide(<a class="self" href="#129">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>())) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">"g_unichar_iswide_cjk"</span>)]
     #[doc(alias = <span class="string">"unichar_iswide_cjk"</span>)]
     #[inline]
     </span><span class="kw">fn </span>is_wide_cjk(<span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
-        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1416-1418">from_glib</a>(ffi::g_unichar_iswide_cjk(<a class="self" href="#135">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>())) }
+        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1417-1419">from_glib</a>(ffi::g_unichar_iswide_cjk(<a class="self" href="#136">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>())) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">"g_unichar_iszerowidth"</span>)]
     #[doc(alias = <span class="string">"unichar_iszerowidth"</span>)]
     #[inline]
     </span><span class="kw">fn </span>is_zero_width(<span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
-        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1416-1418">from_glib</a>(ffi::g_unichar_iszerowidth(<a class="self" href="#142">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>())) }
+        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1417-1419">from_glib</a>(ffi::g_unichar_iszerowidth(<a class="self" href="#143">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>())) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">"g_unichar_totitle"</span>)]
     #[doc(alias = <span class="string">"unichar_totitle"</span>)]
     #[inline]
     </span><span class="kw">fn </span>to_titlecase(<span class="self">self</span>) -&gt; <span class="self">Self </span>{
-        <span class="kw">unsafe </span>{ <a href="translate.rs.html#325"><span class="self">Self</span>::unsafe_from</a>(ffi::g_unichar_totitle(<a class="self" href="#149">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>())) }
+        <span class="kw">unsafe </span>{ <a href="translate.rs.html#326"><span class="self">Self</span>::unsafe_from</a>(ffi::g_unichar_totitle(<a class="self" href="#150">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>())) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">"g_unichar_get_mirror_char"</span>)]
@@ -473,12 +475,12 @@
         <span class="comment">// SAFETY: If g_unichar_get_mirror_char returns true, it will initialize `mirrored`
         </span><span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>mirrored = <a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.uninit">MaybeUninit::uninit</a>();
-            <span class="kw">let </span>res = <a href="translate.rs.html#1416-1418">from_glib</a>(ffi::g_unichar_get_mirror_char(
-                <a class="self" href="#156">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>(),
-                <a href="#159">mirrored</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.as_mut_ptr">as_mut_ptr</a>(),
+            <span class="kw">let </span>res = <a href="translate.rs.html#1417-1419">from_glib</a>(ffi::g_unichar_get_mirror_char(
+                <a class="self" href="#157">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>(),
+                <a href="#160">mirrored</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.as_mut_ptr">as_mut_ptr</a>(),
             ));
             <span class="kw">if </span>res {
-                <span class="prelude-val">Some</span>(<a href="translate.rs.html#325"><span class="self">Self</span>::unsafe_from</a>(<a href="#159">mirrored</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.assume_init">assume_init</a>()))
+                <span class="prelude-val">Some</span>(<a href="translate.rs.html#326"><span class="self">Self</span>::unsafe_from</a>(<a href="#160">mirrored</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.assume_init">assume_init</a>()))
             } <span class="kw">else </span>{
                 <span class="prelude-val">None
             </span>}
@@ -488,52 +490,52 @@
     <span class="attr">#[doc(alias = <span class="string">"g_unichar_fully_decompose"</span>)]
     #[doc(alias = <span class="string">"unichar_fully_decompose"</span>)]
     #[inline]
-    </span><span class="kw">fn </span>fully_decompose(<span class="self">self</span>, decomposition_kind: <a href="#29-37">DecompositionKind</a>) -&gt; Vec&lt;<span class="self">Self</span>&gt; {
-        <span class="kw">let </span>compat = <span class="kw">match </span><a href="#175">decomposition_kind</a> {
-            <a href="#32">DecompositionKind::Compatibility</a> =&gt; <span class="bool-val">true</span>,
-            <a href="#36">DecompositionKind::Canonical</a> =&gt; <span class="bool-val">false</span>,
+    </span><span class="kw">fn </span>fully_decompose(<span class="self">self</span>, decomposition_kind: <a href="#30-38">DecompositionKind</a>) -&gt; Vec&lt;<span class="self">Self</span>&gt; {
+        <span class="kw">let </span>compat = <span class="kw">match </span><a href="#176">decomposition_kind</a> {
+            <a href="#33">DecompositionKind::Compatibility</a> =&gt; <span class="bool-val">true</span>,
+            <a href="#37">DecompositionKind::Canonical</a> =&gt; <span class="bool-val">false</span>,
         };
         <span class="kw">let </span>buffer_len = ffi::G_UNICHAR_MAX_DECOMPOSITION_LENGTH <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>;
 
         <span class="comment">// SAFETY: We assume glib only ever writes valid Unicode codepoints in the provided buffer
         //         and that it does not lie about the
         </span><span class="kw">unsafe </span>{
-            <span class="kw">let </span><span class="kw-2">mut </span>buffer = Vec::&lt;<span class="self">Self</span>&gt;::with_capacity(<a href="#180">buffer_len</a>);
+            <span class="kw">let </span><span class="kw-2">mut </span>buffer = Vec::&lt;<span class="self">Self</span>&gt;::with_capacity(<a href="#181">buffer_len</a>);
             <span class="kw">let </span>decomposition_length = ffi::g_unichar_fully_decompose(
-                <a class="self" href="#175">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>(),
-                <a href="#176">compat</a>.<a href="translate.rs.html#333">into_glib</a>(),
-                <a href="#185">buffer</a>.<a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.as_mut_ptr">as_mut_ptr</a>().<a href="https://doc.rust-lang.org/nightly/core/ptr/foreigntype.mut_ptr.html#method.cast">cast</a>(),
-                <a href="#180">buffer_len</a>,
+                <a class="self" href="#176">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>(),
+                <a href="#177">compat</a>.<a href="translate.rs.html#334">into_glib</a>(),
+                <a href="#186">buffer</a>.<a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.as_mut_ptr">as_mut_ptr</a>().<a href="https://doc.rust-lang.org/nightly/core/ptr/foreigntype.mut_ptr.html#method.cast">cast</a>(),
+                <a href="#181">buffer_len</a>,
             );
             <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert.html">debug_assert!</a>(decomposition_length &lt;= buffer_len);
-            <a href="#185">buffer</a>.<a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.set_len">set_len</a>(<a href="#186">decomposition_length</a>);
-            <a href="#185">buffer</a>
+            <a href="#186">buffer</a>.<a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.set_len">set_len</a>(<a href="#187">decomposition_length</a>);
+            <a href="#186">buffer</a>
         }
     }
 
     <span class="attr">#[doc(alias = <span class="string">"g_unichar_decompose"</span>)]
     #[doc(alias = <span class="string">"unichar_decompose"</span>)]
     #[inline]
-    </span><span class="kw">fn </span>decompose(<span class="self">self</span>) -&gt; <a href="#42-52">CharacterDecomposition</a> {
+    </span><span class="kw">fn </span>decompose(<span class="self">self</span>) -&gt; <a href="#43-53">CharacterDecomposition</a> {
         <span class="comment">// SAFETY: `a` and `b` will always be init after the g_unichar_decompose call returns
         </span><span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>a = <a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.uninit">MaybeUninit::uninit</a>();
             <span class="kw">let </span><span class="kw-2">mut </span>b = <a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.uninit">MaybeUninit::uninit</a>();
-            <span class="kw">let </span>res = <a href="translate.rs.html#1416-1418">from_glib</a>(ffi::g_unichar_decompose(
-                <a class="self" href="#201">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>(),
-                <a href="#204">a</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.as_mut_ptr">as_mut_ptr</a>(),
-                <a href="#205">b</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.as_mut_ptr">as_mut_ptr</a>(),
+            <span class="kw">let </span>res = <a href="translate.rs.html#1417-1419">from_glib</a>(ffi::g_unichar_decompose(
+                <a class="self" href="#202">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>(),
+                <a href="#205">a</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.as_mut_ptr">as_mut_ptr</a>(),
+                <a href="#206">b</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.as_mut_ptr">as_mut_ptr</a>(),
             ));
 
             <span class="kw">if </span>res {
-                <span class="kw">let </span>(a, b) = (<a href="#204">a</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.assume_init">assume_init</a>(), <a href="#205">b</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.assume_init">assume_init</a>());
+                <span class="kw">let </span>(a, b) = (<a href="#205">a</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.assume_init">assume_init</a>(), <a href="#206">b</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.assume_init">assume_init</a>());
                 <span class="kw">if </span>b == <span class="number">0 </span>{
-                    <a href="#48">CharacterDecomposition::Singleton</a>(<a href="translate.rs.html#325">char::unsafe_from</a>(<a href="#213">a</a>))
+                    <a href="#49">CharacterDecomposition::Singleton</a>(<a href="translate.rs.html#326">char::unsafe_from</a>(<a href="#214">a</a>))
                 } <span class="kw">else </span>{
-                    <a href="#51">CharacterDecomposition::Pair</a>(<a href="translate.rs.html#325">char::unsafe_from</a>(<a href="#213">a</a>), <a href="translate.rs.html#325">char::unsafe_from</a>(<a href="#213">b</a>))
+                    <a href="#52">CharacterDecomposition::Pair</a>(<a href="translate.rs.html#326">char::unsafe_from</a>(<a href="#214">a</a>), <a href="translate.rs.html#326">char::unsafe_from</a>(<a href="#214">b</a>))
                 }
             } <span class="kw">else </span>{
-                <a href="#45">CharacterDecomposition::NoDecomposition</a>
+                <a href="#46">CharacterDecomposition::NoDecomposition</a>
             }
         }
     }
@@ -545,10 +547,10 @@
         <span class="comment">// SAFETY: If g_unichar_compose returns true, it will initialize `out`
         </span><span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>out = <a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.uninit">MaybeUninit::uninit</a>();
-            <span class="kw">let </span>res = <a href="translate.rs.html#1416-1418">from_glib</a>(ffi::g_unichar_compose(<a href="#228">a</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>(), <a href="#228">b</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>(), <a href="#231">out</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.as_mut_ptr">as_mut_ptr</a>()));
+            <span class="kw">let </span>res = <a href="translate.rs.html#1417-1419">from_glib</a>(ffi::g_unichar_compose(<a href="#229">a</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>(), <a href="#229">b</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>(), <a href="#232">out</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.as_mut_ptr">as_mut_ptr</a>()));
 
             <span class="kw">if </span>res {
-                <span class="prelude-val">Some</span>(<a href="translate.rs.html#325"><span class="self">Self</span>::unsafe_from</a>(<a href="#231">out</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.assume_init">assume_init</a>()))
+                <span class="prelude-val">Some</span>(<a href="translate.rs.html#326"><span class="self">Self</span>::unsafe_from</a>(<a href="#232">out</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.assume_init">assume_init</a>()))
             } <span class="kw">else </span>{
                 <span class="prelude-val">None
             </span>}
@@ -556,5 +558,5 @@
     }
 }
 
-<span class="kw">impl </span><a href="#58-241">Unichar</a> <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/std/primitive.char.html">char</a> {}
+<span class="kw">impl </span><a href="#59-242">Unichar</a> <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/std/primitive.char.html">char</a> {}
 </code></pre></div></section></main></body></html>

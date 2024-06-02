@@ -448,7 +448,7 @@
 <span class="comment">// #[cfg(windows)]
 // #[cfg(feature = "v2_58")]
 // use std::os::windows::io::AsRawHandle;
-</span><span class="kw">use crate</span>::{<a href="lib.rs.html#142">translate</a>::<span class="kw-2">*</span>, <a href="auto/enums.rs.html#15-33">ChecksumType</a>, <a href="gstring.rs.html#24">GStr</a>};
+</span><span class="kw">use crate</span>::{ffi, <a href="lib.rs.html#142">translate</a>::<span class="kw-2">*</span>, <a href="auto/enums.rs.html#15-33">ChecksumType</a>, <a href="gstring.rs.html#24">GStr</a>};
 <span class="attr">#[cfg(not(windows))]
 </span><span class="kw">use crate</span>::{<a href="error.rs.html#10-25">Error</a>, <a href="source.rs.html#59">Pid</a>, <a href="auto/flags.rs.html#731-795">SpawnFlags</a>};
 
@@ -484,10 +484,10 @@
         <span class="kw">let </span><span class="kw-2">mut </span>child_pid = <a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.uninit">mem::MaybeUninit::uninit</a>();
         <span class="kw">let </span><span class="kw-2">mut </span>error = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
         <span class="kw">let _ </span>= ffi::g_spawn_async_with_fds(
-            <a href="#28">working_directory</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>,
-            <a href="#29">argv</a>.<a href="translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>,
-            <a href="#30">envp</a>.<a href="translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>,
-            <a href="#31">flags</a>.<a href="translate.rs.html#333">into_glib</a>(),
+            <a href="#28">working_directory</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+            <a href="#29">argv</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+            <a href="#30">envp</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+            <a href="#31">flags</a>.<a href="translate.rs.html#334">into_glib</a>(),
             <a href="#44">child_setup</a>,
             <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.into_raw">Box_::into_raw</a>(<a href="#49">super_callback0</a>) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
             <a href="#51">child_pid</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.as_mut_ptr">as_mut_ptr</a>(),
@@ -496,11 +496,11 @@
             <a href="#35">stderr_fd</a>.<a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/trait.AsRawFd.html#tymethod.as_raw_fd">as_raw_fd</a>(),
             <span class="kw-2">&amp;mut </span><a href="#52">error</a>,
         );
-        <span class="kw">let </span>child_pid = <a href="translate.rs.html#1416-1418">from_glib</a>(<a href="#51">child_pid</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.assume_init">assume_init</a>());
+        <span class="kw">let </span>child_pid = <a href="translate.rs.html#1417-1419">from_glib</a>(<a href="#51">child_pid</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.assume_init">assume_init</a>());
         <span class="kw">if </span>error.is_null() {
             <span class="prelude-val">Ok</span>(<a href="#66">child_pid</a>)
         } <span class="kw">else </span>{
-            <span class="prelude-val">Err</span>(<a href="translate.rs.html#1633-1635">from_glib_full</a>(<a href="#52">error</a>))
+            <span class="prelude-val">Err</span>(<a href="translate.rs.html#1634-1636">from_glib_full</a>(<a href="#52">error</a>))
         }
     }
 }
@@ -597,10 +597,10 @@
         <span class="kw">let </span><span class="kw-2">mut </span>standard_error = <a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.uninit">mem::MaybeUninit::uninit</a>();
         <span class="kw">let </span><span class="kw-2">mut </span>error = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
         <span class="kw">let _ </span>= ffi::g_spawn_async_with_pipes(
-            <a href="#141">working_directory</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>,
-            <a href="#142">argv</a>.<a href="translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>,
-            <a href="#143">envp</a>.<a href="translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>,
-            <a href="#144">flags</a>.<a href="translate.rs.html#333">into_glib</a>(),
+            <a href="#141">working_directory</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+            <a href="#142">argv</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+            <a href="#143">envp</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+            <a href="#144">flags</a>.<a href="translate.rs.html#334">into_glib</a>(),
             <a href="#154">child_setup</a>,
             <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.into_raw">Box_::into_raw</a>(<a href="#159">super_callback0</a>) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
             <a href="#161">child_pid</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.as_mut_ptr">as_mut_ptr</a>(),
@@ -609,7 +609,7 @@
             <a href="#164">standard_error</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.as_mut_ptr">as_mut_ptr</a>(),
             <span class="kw-2">&amp;mut </span><a href="#165">error</a>,
         );
-        <span class="kw">let </span>child_pid = <a href="translate.rs.html#1416-1418">from_glib</a>(<a href="#161">child_pid</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.assume_init">assume_init</a>());
+        <span class="kw">let </span>child_pid = <a href="translate.rs.html#1417-1419">from_glib</a>(<a href="#161">child_pid</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.assume_init">assume_init</a>());
         <span class="kw">let </span>standard_input = <a href="#162">standard_input</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.assume_init">assume_init</a>();
         <span class="kw">let </span>standard_output = <a href="#163">standard_output</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.assume_init">assume_init</a>();
         <span class="kw">let </span>standard_error = <a href="#164">standard_error</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.assume_init">assume_init</a>();
@@ -634,7 +634,7 @@
         //     ))
         // }
         </span>} <span class="kw">else </span>{
-            <span class="prelude-val">Err</span>(<a href="translate.rs.html#1633-1635">from_glib_full</a>(<a href="#165">error</a>))
+            <span class="prelude-val">Err</span>(<a href="translate.rs.html#1634-1636">from_glib_full</a>(<a href="#165">error</a>))
         }
     }
 }
@@ -649,8 +649,8 @@
 </span><span class="kw">pub fn </span><a href="../../glib/fn.charset.html">charset</a>() -&gt; (<a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>, <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'static </span><a href="gstring.rs.html#24">GStr</a>&gt;) {
     <span class="kw">unsafe </span>{
         <span class="kw">let </span><span class="kw-2">mut </span>out_charset = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null.html">ptr::null</a>();
-        <span class="kw">let </span>is_utf8 = <a href="translate.rs.html#1416-1418">from_glib</a>(ffi::g_get_charset(<span class="kw-2">&amp;mut </span><a href="#218">out_charset</a>));
-        <span class="kw">let </span>charset = <a href="translate.rs.html#1624-1626">from_glib_none</a>(<a href="#218">out_charset</a>);
+        <span class="kw">let </span>is_utf8 = <a href="translate.rs.html#1417-1419">from_glib</a>(ffi::g_get_charset(<span class="kw-2">&amp;mut </span><a href="#218">out_charset</a>));
+        <span class="kw">let </span>charset = <a href="translate.rs.html#1625-1627">from_glib_none</a>(<a href="#218">out_charset</a>);
         (<a href="#219">is_utf8</a>, <a href="#220">charset</a>)
     }
 }
@@ -661,8 +661,8 @@
     str: <span class="kw">impl </span><a href="gstring.rs.html#2301-2303">IntoGStr</a>,
 ) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="gstring.rs.html#996"><span class="kw">crate</span>::GString</a>&gt; {
     <a href="#228">str</a>.<a href="gstring.rs.html#2302">run_with_gstr</a>(|str| <span class="kw">unsafe </span>{
-        <a href="translate.rs.html#1633-1635">from_glib_full</a>(ffi::g_compute_checksum_for_string(
-            <a href="#227">checksum_type</a>.<a href="translate.rs.html#333">into_glib</a>(),
+        <a href="translate.rs.html#1634-1636">from_glib_full</a>(ffi::g_compute_checksum_for_string(
+            <a href="#227">checksum_type</a>.<a href="translate.rs.html#334">into_glib</a>(),
             <a href="#230">str</a>.<a href="gstring.rs.html#207-209">as_ptr</a>(),
             <a href="#230">str</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.str.html#method.len">len</a>() <span class="kw">as _</span>,
         ))
@@ -709,7 +709,7 @@
                 <a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/trait.FromRawFd.html#tymethod.from_raw_fd">FromRawFd::from_raw_fd</a>(<a href="#270">fds</a>[<span class="number">1</span>]),
             ))
         } <span class="kw">else </span>{
-            <span class="prelude-val">Err</span>(<a href="translate.rs.html#1633-1635">from_glib_full</a>(<a href="#271">error</a>))
+            <span class="prelude-val">Err</span>(<a href="translate.rs.html#1634-1636">from_glib_full</a>(<a href="#271">error</a>))
         }
     }
 }
@@ -753,14 +753,14 @@
         <span class="kw">let </span><span class="kw-2">mut </span>name_used = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
         <span class="kw">let </span><span class="kw-2">mut </span>error = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
         <span class="kw">let </span>ret = ffi::g_file_open_tmp(
-            <a href="#317">tmpl</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_ref">as_ref</a>().<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|p| <a href="#323">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>()).<a href="translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>,
+            <a href="#317">tmpl</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_ref">as_ref</a>().<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|p| <a href="#323">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>()).<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
             <span class="kw-2">&amp;mut </span><a href="#320">name_used</a>,
             <span class="kw-2">&amp;mut </span><a href="#321">error</a>,
         );
         <span class="kw">if </span>error.is_null() {
-            <span class="prelude-val">Ok</span>((<a href="#322">ret</a>.<a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/trait.IntoRawFd.html#tymethod.into_raw_fd">into_raw_fd</a>(), <a href="translate.rs.html#1633-1635">from_glib_full</a>(<a href="#320">name_used</a>)))
+            <span class="prelude-val">Ok</span>((<a href="#322">ret</a>.<a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/trait.IntoRawFd.html#tymethod.into_raw_fd">into_raw_fd</a>(), <a href="translate.rs.html#1634-1636">from_glib_full</a>(<a href="#320">name_used</a>)))
         } <span class="kw">else </span>{
-            <span class="prelude-val">Err</span>(<a href="translate.rs.html#1633-1635">from_glib_full</a>(<a href="#321">error</a>))
+            <span class="prelude-val">Err</span>(<a href="translate.rs.html#1634-1636">from_glib_full</a>(<a href="#321">error</a>))
         }
     }
 }

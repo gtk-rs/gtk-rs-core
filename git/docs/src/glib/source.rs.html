@@ -1274,7 +1274,7 @@
 </span><span class="kw">use </span><a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/type.RawFd.html">std::os::unix::io::RawFd</a>;
 <span class="kw">use </span>std::{<a href="https://doc.rust-lang.org/nightly/core/cell/struct.RefCell.html">cell::RefCell</a>, <a href="https://doc.rust-lang.org/nightly/core/intrinsics/fn.transmute.html">mem::transmute</a>, <a href="https://doc.rust-lang.org/nightly/core/num/nonzero/type.NonZeroU32.html">num::NonZeroU32</a>, <a href="https://doc.rust-lang.org/nightly/core/time/struct.Duration.html">time::Duration</a>};
 
-<span class="kw">use </span>ffi::{gboolean, gpointer};
+<span class="kw">use </span><span class="kw">crate</span>::ffi::{<span class="self">self</span>, gboolean, gpointer};
 <span class="attr">#[cfg(all(not(unix), docsrs))]
 </span><span class="kw">use </span>libc::c_int <span class="kw">as </span>RawFd;
 
@@ -1332,7 +1332,7 @@
 <span class="kw">unsafe impl </span><a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> <span class="kw">for </span><a href="#59">Pid</a> {}
 
 <span class="attr">#[doc(hidden)]
-</span><span class="kw">impl </span><a href="translate.rs.html#330-334">IntoGlib</a> <span class="kw">for </span><a href="#59">Pid</a> {
+</span><span class="kw">impl </span><a href="translate.rs.html#331-335">IntoGlib</a> <span class="kw">for </span><a href="#59">Pid</a> {
     <span class="kw">type </span>GlibType = ffi::GPid;
 
     <span class="attr">#[inline]
@@ -1353,14 +1353,14 @@
     func: gpointer,
 ) -&gt; gboolean {
     <span class="kw">let </span>func: <span class="kw-2">&amp;</span>RefCell&lt;F&gt; = <span class="kw-2">&amp;*</span>(<a href="#83">func</a> <span class="kw">as </span><span class="kw-2">*const </span>RefCell&lt;F&gt;);
-    (<span class="kw-2">*</span><a href="#85">func</a>.<a href="https://doc.rust-lang.org/nightly/core/cell/struct.RefCell.html#method.borrow_mut">borrow_mut</a>())().<a href="translate.rs.html#333">into_glib</a>()
+    (<span class="kw-2">*</span><a href="#85">func</a>.<a href="https://doc.rust-lang.org/nightly/core/cell/struct.RefCell.html#method.borrow_mut">borrow_mut</a>())().<a href="translate.rs.html#334">into_glib</a>()
 }
 
 <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>trampoline_local&lt;F: FnMut() -&gt; <a href="control_flow.rs.html#17-22">ControlFlow</a> + <span class="lifetime">'static</span>&gt;(
     func: gpointer,
 ) -&gt; gboolean {
     <span class="kw">let </span>func: <span class="kw-2">&amp;</span>ThreadGuard&lt;RefCell&lt;F&gt;&gt; = <span class="kw-2">&amp;*</span>(<a href="#90">func</a> <span class="kw">as </span><span class="kw-2">*const </span>ThreadGuard&lt;RefCell&lt;F&gt;&gt;);
-    (<span class="kw-2">*</span><a href="#92">func</a>.<a href="thread_guard.rs.html#53-60">get_ref</a>().<a href="https://doc.rust-lang.org/nightly/core/cell/struct.RefCell.html#method.borrow_mut">borrow_mut</a>())().<a href="translate.rs.html#333">into_glib</a>()
+    (<span class="kw-2">*</span><a href="#92">func</a>.<a href="thread_guard.rs.html#53-60">get_ref</a>().<a href="https://doc.rust-lang.org/nightly/core/cell/struct.RefCell.html#method.borrow_mut">borrow_mut</a>())().<a href="translate.rs.html#334">into_glib</a>()
 }
 
 <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>destroy_closure&lt;F: FnMut() -&gt; <a href="control_flow.rs.html#17-22">ControlFlow</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static</span>&gt;(ptr: gpointer) {
@@ -1431,7 +1431,7 @@
     func: gpointer,
 ) -&gt; gboolean {
     <span class="kw">let </span>func: <span class="kw-2">&amp;</span>RefCell&lt;F&gt; = <span class="kw-2">&amp;*</span>(<a href="#161">func</a> <span class="kw">as </span><span class="kw-2">*const </span>RefCell&lt;F&gt;);
-    (<span class="kw-2">*</span><a href="#163">func</a>.<a href="https://doc.rust-lang.org/nightly/core/cell/struct.RefCell.html#method.borrow_mut">borrow_mut</a>())(<a href="#159">fd</a>, <a href="translate.rs.html#1416-1418">from_glib</a>(<a href="#160">condition</a>)).<a href="translate.rs.html#333">into_glib</a>()
+    (<span class="kw-2">*</span><a href="#163">func</a>.<a href="https://doc.rust-lang.org/nightly/core/cell/struct.RefCell.html#method.borrow_mut">borrow_mut</a>())(<a href="#159">fd</a>, <a href="translate.rs.html#1417-1419">from_glib</a>(<a href="#160">condition</a>)).<a href="translate.rs.html#334">into_glib</a>()
 }
 
 <span class="attr">#[cfg(unix)]
@@ -1444,7 +1444,7 @@
     func: gpointer,
 ) -&gt; gboolean {
     <span class="kw">let </span>func: <span class="kw-2">&amp;</span>ThreadGuard&lt;RefCell&lt;F&gt;&gt; = <span class="kw-2">&amp;*</span>(<a href="#174">func</a> <span class="kw">as </span><span class="kw-2">*const </span>ThreadGuard&lt;RefCell&lt;F&gt;&gt;);
-    (<span class="kw-2">*</span><a href="#176">func</a>.<a href="thread_guard.rs.html#53-60">get_ref</a>().<a href="https://doc.rust-lang.org/nightly/core/cell/struct.RefCell.html#method.borrow_mut">borrow_mut</a>())(<a href="#172">fd</a>, <a href="translate.rs.html#1416-1418">from_glib</a>(<a href="#173">condition</a>)).<a href="translate.rs.html#333">into_glib</a>()
+    (<span class="kw-2">*</span><a href="#176">func</a>.<a href="thread_guard.rs.html#53-60">get_ref</a>().<a href="https://doc.rust-lang.org/nightly/core/cell/struct.RefCell.html#method.borrow_mut">borrow_mut</a>())(<a href="#172">fd</a>, <a href="translate.rs.html#1417-1419">from_glib</a>(<a href="#173">condition</a>)).<a href="translate.rs.html#334">into_glib</a>()
 }
 
 <span class="attr">#[cfg(unix)]
@@ -1539,7 +1539,7 @@
     </span>F: FnMut() -&gt; <a href="control_flow.rs.html#17-22">ControlFlow</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static</span>,
 {
     <span class="kw">unsafe </span>{
-        <a href="translate.rs.html#1416-1418">from_glib</a>(ffi::g_idle_add_full(
+        <a href="translate.rs.html#1417-1419">from_glib</a>(ffi::g_idle_add_full(
             ffi::G_PRIORITY_DEFAULT_IDLE,
             <span class="prelude-val">Some</span>(trampoline::&lt;F&gt;),
             <a href="#104-107">into_raw</a>(<a href="#267">func</a>),
@@ -1562,8 +1562,8 @@
     </span>F: FnMut() -&gt; <a href="control_flow.rs.html#17-22">ControlFlow</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static</span>,
 {
     <span class="kw">unsafe </span>{
-        <a href="translate.rs.html#1416-1418">from_glib</a>(ffi::g_idle_add_full(
-            <a href="#290">priority</a>.<a href="translate.rs.html#333">into_glib</a>(),
+        <a href="translate.rs.html#1417-1419">from_glib</a>(ffi::g_idle_add_full(
+            <a href="#290">priority</a>.<a href="translate.rs.html#334">into_glib</a>(),
             <span class="prelude-val">Some</span>(trampoline::&lt;F&gt;),
             <a href="#104-107">into_raw</a>(<a href="#290">func</a>),
             <span class="prelude-val">Some</span>(destroy_closure::&lt;F&gt;),
@@ -1613,7 +1613,7 @@
         <span class="kw">let </span>_acquire = <a href="#342">context</a>
             .<a href="main_context.rs.html#239-248">acquire</a>()
             .<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.expect">expect</a>(<span class="string">"default main context already acquired by another thread"</span>);
-        <a href="translate.rs.html#1416-1418">from_glib</a>(ffi::g_idle_add_full(
+        <a href="translate.rs.html#1417-1419">from_glib</a>(ffi::g_idle_add_full(
             ffi::G_PRIORITY_DEFAULT_IDLE,
             <span class="prelude-val">Some</span>(trampoline_local::&lt;F&gt;),
             <a href="#109-112">into_raw_local</a>(<a href="#337">func</a>),
@@ -1646,8 +1646,8 @@
         <span class="kw">let </span>_acquire = <a href="#375">context</a>
             .<a href="main_context.rs.html#239-248">acquire</a>()
             .<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.expect">expect</a>(<span class="string">"default main context already acquired by another thread"</span>);
-        <a href="translate.rs.html#1416-1418">from_glib</a>(ffi::g_idle_add_full(
-            <a href="#370">priority</a>.<a href="translate.rs.html#333">into_glib</a>(),
+        <a href="translate.rs.html#1417-1419">from_glib</a>(ffi::g_idle_add_full(
+            <a href="#370">priority</a>.<a href="translate.rs.html#334">into_glib</a>(),
             <span class="prelude-val">Some</span>(trampoline_local::&lt;F&gt;),
             <a href="#109-112">into_raw_local</a>(<a href="#370">func</a>),
             <span class="prelude-val">Some</span>(destroy_closure_local::&lt;F&gt;),
@@ -1696,7 +1696,7 @@
     </span>F: FnMut() -&gt; <a href="control_flow.rs.html#17-22">ControlFlow</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static</span>,
 {
     <span class="kw">unsafe </span>{
-        <a href="translate.rs.html#1416-1418">from_glib</a>(ffi::g_timeout_add_full(
+        <a href="translate.rs.html#1417-1419">from_glib</a>(ffi::g_timeout_add_full(
             ffi::G_PRIORITY_DEFAULT,
             <a href="#424">interval</a>.<a href="https://doc.rust-lang.org/nightly/core/time/struct.Duration.html#method.as_millis">as_millis</a>() <span class="kw">as _</span>,
             <span class="prelude-val">Some</span>(trampoline::&lt;F&gt;),
@@ -1723,8 +1723,8 @@
     </span>F: FnMut() -&gt; <a href="control_flow.rs.html#17-22">ControlFlow</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static</span>,
 {
     <span class="kw">unsafe </span>{
-        <a href="translate.rs.html#1416-1418">from_glib</a>(ffi::g_timeout_add_full(
-            <a href="#451">priority</a>.<a href="translate.rs.html#333">into_glib</a>(),
+        <a href="translate.rs.html#1417-1419">from_glib</a>(ffi::g_timeout_add_full(
+            <a href="#451">priority</a>.<a href="translate.rs.html#334">into_glib</a>(),
             <a href="#451">interval</a>.<a href="https://doc.rust-lang.org/nightly/core/time/struct.Duration.html#method.as_millis">as_millis</a>() <span class="kw">as _</span>,
             <span class="prelude-val">Some</span>(trampoline::&lt;F&gt;),
             <a href="#104-107">into_raw</a>(<a href="#451">func</a>),
@@ -1783,7 +1783,7 @@
         <span class="kw">let </span>_acquire = <a href="#512">context</a>
             .<a href="main_context.rs.html#239-248">acquire</a>()
             .<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.expect">expect</a>(<span class="string">"default main context already acquired by another thread"</span>);
-        <a href="translate.rs.html#1416-1418">from_glib</a>(ffi::g_timeout_add_full(
+        <a href="translate.rs.html#1417-1419">from_glib</a>(ffi::g_timeout_add_full(
             ffi::G_PRIORITY_DEFAULT,
             <a href="#507">interval</a>.<a href="https://doc.rust-lang.org/nightly/core/time/struct.Duration.html#method.as_millis">as_millis</a>() <span class="kw">as _</span>,
             <span class="prelude-val">Some</span>(trampoline_local::&lt;F&gt;),
@@ -1820,8 +1820,8 @@
         <span class="kw">let </span>_acquire = <a href="#549">context</a>
             .<a href="main_context.rs.html#239-248">acquire</a>()
             .<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.expect">expect</a>(<span class="string">"default main context already acquired by another thread"</span>);
-        <a href="translate.rs.html#1416-1418">from_glib</a>(ffi::g_timeout_add_full(
-            <a href="#544">priority</a>.<a href="translate.rs.html#333">into_glib</a>(),
+        <a href="translate.rs.html#1417-1419">from_glib</a>(ffi::g_timeout_add_full(
+            <a href="#544">priority</a>.<a href="translate.rs.html#334">into_glib</a>(),
             <a href="#544">interval</a>.<a href="https://doc.rust-lang.org/nightly/core/time/struct.Duration.html#method.as_millis">as_millis</a>() <span class="kw">as _</span>,
             <span class="prelude-val">Some</span>(trampoline_local::&lt;F&gt;),
             <a href="#109-112">into_raw_local</a>(<a href="#544">func</a>),
@@ -1874,7 +1874,7 @@
     </span>F: FnMut() -&gt; <a href="control_flow.rs.html#17-22">ControlFlow</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static</span>,
 {
     <span class="kw">unsafe </span>{
-        <a href="translate.rs.html#1416-1418">from_glib</a>(ffi::g_timeout_add_seconds_full(
+        <a href="translate.rs.html#1417-1419">from_glib</a>(ffi::g_timeout_add_seconds_full(
             ffi::G_PRIORITY_DEFAULT,
             <a href="#602">interval</a>,
             <span class="prelude-val">Some</span>(trampoline::&lt;F&gt;),
@@ -1931,7 +1931,7 @@
         <span class="kw">let </span>_acquire = <a href="#660">context</a>
             .<a href="main_context.rs.html#239-248">acquire</a>()
             .<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.expect">expect</a>(<span class="string">"default main context already acquired by another thread"</span>);
-        <a href="translate.rs.html#1416-1418">from_glib</a>(ffi::g_timeout_add_seconds_full(
+        <a href="translate.rs.html#1417-1419">from_glib</a>(ffi::g_timeout_add_seconds_full(
             ffi::G_PRIORITY_DEFAULT,
             <a href="#655">interval</a>,
             <span class="prelude-val">Some</span>(trampoline_local::&lt;F&gt;),
@@ -1979,7 +1979,7 @@
     </span>F: FnMut(<a href="#59">Pid</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>) + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static</span>,
 {
     <span class="kw">unsafe </span>{
-        <a href="translate.rs.html#1416-1418">from_glib</a>(ffi::g_child_watch_add_full(
+        <a href="translate.rs.html#1417-1419">from_glib</a>(ffi::g_child_watch_add_full(
             ffi::G_PRIORITY_DEFAULT,
             <a href="#707">pid</a>.<span class="number">0</span>,
             <span class="prelude-val">Some</span>(trampoline_child_watch::&lt;F&gt;),
@@ -2010,7 +2010,7 @@
         <span class="kw">let </span>_acquire = <a href="#739">context</a>
             .<a href="main_context.rs.html#239-248">acquire</a>()
             .<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.expect">expect</a>(<span class="string">"default main context already acquired by another thread"</span>);
-        <a href="translate.rs.html#1416-1418">from_glib</a>(ffi::g_child_watch_add_full(
+        <a href="translate.rs.html#1417-1419">from_glib</a>(ffi::g_child_watch_add_full(
             ffi::G_PRIORITY_DEFAULT,
             <a href="#734">pid</a>.<span class="number">0</span>,
             <span class="prelude-val">Some</span>(trampoline_child_watch_local::&lt;F&gt;),
@@ -2036,7 +2036,7 @@
     </span>F: FnMut() -&gt; <a href="control_flow.rs.html#17-22">ControlFlow</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static</span>,
 {
     <span class="kw">unsafe </span>{
-        <a href="translate.rs.html#1416-1418">from_glib</a>(ffi::g_unix_signal_add_full(
+        <a href="translate.rs.html#1417-1419">from_glib</a>(ffi::g_unix_signal_add_full(
             ffi::G_PRIORITY_DEFAULT,
             <a href="#764">signum</a>,
             <span class="prelude-val">Some</span>(trampoline::&lt;F&gt;),
@@ -2093,7 +2093,7 @@
         <span class="kw">let </span>_acquire = <a href="#822">context</a>
             .<a href="main_context.rs.html#239-248">acquire</a>()
             .<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.expect">expect</a>(<span class="string">"default main context already acquired by another thread"</span>);
-        <a href="translate.rs.html#1416-1418">from_glib</a>(ffi::g_unix_signal_add_full(
+        <a href="translate.rs.html#1417-1419">from_glib</a>(ffi::g_unix_signal_add_full(
             ffi::G_PRIORITY_DEFAULT,
             <a href="#817">signum</a>,
             <span class="prelude-val">Some</span>(trampoline_local::&lt;F&gt;),
@@ -2147,10 +2147,10 @@
     </span>F: FnMut(<a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/type.RawFd.html">RawFd</a>, <a href="auto/flags.rs.html#165-191">IOCondition</a>) -&gt; <a href="control_flow.rs.html#17-22">ControlFlow</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static</span>,
 {
     <span class="kw">unsafe </span>{
-        <a href="translate.rs.html#1416-1418">from_glib</a>(ffi::g_unix_fd_add_full(
+        <a href="translate.rs.html#1417-1419">from_glib</a>(ffi::g_unix_fd_add_full(
             ffi::G_PRIORITY_DEFAULT,
             <a href="#875">fd</a>,
-            <a href="#875">condition</a>.<a href="translate.rs.html#333">into_glib</a>(),
+            <a href="#875">condition</a>.<a href="translate.rs.html#334">into_glib</a>(),
             <span class="prelude-val">Some</span>(trampoline_unix_fd::&lt;F&gt;),
             <a href="#202-207">into_raw_unix_fd</a>(<a href="#875">func</a>),
             <span class="prelude-val">Some</span>(destroy_closure_unix_fd::&lt;F&gt;),
@@ -2185,10 +2185,10 @@
         <span class="kw">let </span>_acquire = <a href="#914">context</a>
             .<a href="main_context.rs.html#239-248">acquire</a>()
             .<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.expect">expect</a>(<span class="string">"default main context already acquired by another thread"</span>);
-        <a href="translate.rs.html#1416-1418">from_glib</a>(ffi::g_unix_fd_add_full(
+        <a href="translate.rs.html#1417-1419">from_glib</a>(ffi::g_unix_fd_add_full(
             ffi::G_PRIORITY_DEFAULT,
             <a href="#909">fd</a>,
-            <a href="#909">condition</a>.<a href="translate.rs.html#333">into_glib</a>(),
+            <a href="#909">condition</a>.<a href="translate.rs.html#334">into_glib</a>(),
             <span class="prelude-val">Some</span>(trampoline_unix_fd_local::&lt;F&gt;),
             <a href="#211-216">into_raw_unix_fd_local</a>(<a href="#909">func</a>),
             <span class="prelude-val">Some</span>(destroy_closure_unix_fd_local::&lt;F&gt;),
@@ -2221,7 +2221,7 @@
 }
 
 <span class="attr">#[doc(hidden)]
-</span><span class="kw">impl </span><a href="translate.rs.html#330-334">IntoGlib</a> <span class="kw">for </span><a href="#932">Priority</a> {
+</span><span class="kw">impl </span><a href="translate.rs.html#331-335">IntoGlib</a> <span class="kw">for </span><a href="#932">Priority</a> {
     <span class="kw">type </span>GlibType = <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>;
 
     <span class="attr">#[inline]
@@ -2261,13 +2261,13 @@
             <a href="#104-107">into_raw</a>(<a href="#982">func</a>),
             <span class="prelude-val">Some</span>(destroy_closure::&lt;F&gt;),
         );
-        ffi::g_source_set_priority(<a href="#987">source</a>, <a href="#982">priority</a>.<a href="translate.rs.html#333">into_glib</a>());
+        ffi::g_source_set_priority(<a href="#987">source</a>, <a href="#982">priority</a>.<a href="translate.rs.html#334">into_glib</a>());
 
         <span class="kw">if let </span><span class="prelude-val">Some</span>(name) = <a href="#982">name</a> {
-            ffi::g_source_set_name(<a href="#987">source</a>, <a href="#996">name</a>.<a href="translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>);
+            ffi::g_source_set_name(<a href="#987">source</a>, <a href="#996">name</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>);
         }
 
-        <a href="translate.rs.html#1633-1635">from_glib_full</a>(<a href="#987">source</a>)
+        <a href="translate.rs.html#1634-1636">from_glib_full</a>(<a href="#987">source</a>)
     }
 }
 
@@ -2297,13 +2297,13 @@
             <a href="#104-107">into_raw</a>(<a href="#1017">func</a>),
             <span class="prelude-val">Some</span>(destroy_closure::&lt;F&gt;),
         );
-        ffi::g_source_set_priority(<a href="#1023">source</a>, <a href="#1016">priority</a>.<a href="translate.rs.html#333">into_glib</a>());
+        ffi::g_source_set_priority(<a href="#1023">source</a>, <a href="#1016">priority</a>.<a href="translate.rs.html#334">into_glib</a>());
 
         <span class="kw">if let </span><span class="prelude-val">Some</span>(name) = <a href="#1015">name</a> {
-            ffi::g_source_set_name(<a href="#1023">source</a>, <a href="#1032">name</a>.<a href="translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>);
+            ffi::g_source_set_name(<a href="#1023">source</a>, <a href="#1032">name</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>);
         }
 
-        <a href="translate.rs.html#1633-1635">from_glib_full</a>(<a href="#1023">source</a>)
+        <a href="translate.rs.html#1634-1636">from_glib_full</a>(<a href="#1023">source</a>)
     }
 }
 
@@ -2332,13 +2332,13 @@
             <a href="#104-107">into_raw</a>(<a href="#1052">func</a>),
             <span class="prelude-val">Some</span>(destroy_closure::&lt;F&gt;),
         );
-        ffi::g_source_set_priority(<a href="#1058">source</a>, <a href="#1051">priority</a>.<a href="translate.rs.html#333">into_glib</a>());
+        ffi::g_source_set_priority(<a href="#1058">source</a>, <a href="#1051">priority</a>.<a href="translate.rs.html#334">into_glib</a>());
 
         <span class="kw">if let </span><span class="prelude-val">Some</span>(name) = <a href="#1050">name</a> {
-            ffi::g_source_set_name(<a href="#1058">source</a>, <a href="#1067">name</a>.<a href="translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>);
+            ffi::g_source_set_name(<a href="#1058">source</a>, <a href="#1067">name</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>);
         }
 
-        <a href="translate.rs.html#1633-1635">from_glib_full</a>(<a href="#1058">source</a>)
+        <a href="translate.rs.html#1634-1636">from_glib_full</a>(<a href="#1058">source</a>)
     }
 }
 
@@ -2368,13 +2368,13 @@
             <a href="#144-147">into_raw_child_watch</a>(<a href="#1085">func</a>),
             <span class="prelude-val">Some</span>(destroy_closure_child_watch::&lt;F&gt;),
         );
-        ffi::g_source_set_priority(<a href="#1091">source</a>, <a href="#1084">priority</a>.<a href="translate.rs.html#333">into_glib</a>());
+        ffi::g_source_set_priority(<a href="#1091">source</a>, <a href="#1084">priority</a>.<a href="translate.rs.html#334">into_glib</a>());
 
         <span class="kw">if let </span><span class="prelude-val">Some</span>(name) = <a href="#1083">name</a> {
-            ffi::g_source_set_name(<a href="#1091">source</a>, <a href="#1103">name</a>.<a href="translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>);
+            ffi::g_source_set_name(<a href="#1091">source</a>, <a href="#1103">name</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>);
         }
 
-        <a href="translate.rs.html#1633-1635">from_glib_full</a>(<a href="#1091">source</a>)
+        <a href="translate.rs.html#1634-1636">from_glib_full</a>(<a href="#1091">source</a>)
     }
 }
 
@@ -2404,13 +2404,13 @@
             <a href="#104-107">into_raw</a>(<a href="#1124">func</a>),
             <span class="prelude-val">Some</span>(destroy_closure::&lt;F&gt;),
         );
-        ffi::g_source_set_priority(<a href="#1130">source</a>, <a href="#1123">priority</a>.<a href="translate.rs.html#333">into_glib</a>());
+        ffi::g_source_set_priority(<a href="#1130">source</a>, <a href="#1123">priority</a>.<a href="translate.rs.html#334">into_glib</a>());
 
         <span class="kw">if let </span><span class="prelude-val">Some</span>(name) = <a href="#1122">name</a> {
-            ffi::g_source_set_name(<a href="#1130">source</a>, <a href="#1139">name</a>.<a href="translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>);
+            ffi::g_source_set_name(<a href="#1130">source</a>, <a href="#1139">name</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>);
         }
 
-        <a href="translate.rs.html#1633-1635">from_glib_full</a>(<a href="#1130">source</a>)
+        <a href="translate.rs.html#1634-1636">from_glib_full</a>(<a href="#1130">source</a>)
     }
 }
 
@@ -2434,7 +2434,7 @@
     </span>F: FnMut(<a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/type.RawFd.html">RawFd</a>, <a href="auto/flags.rs.html#165-191">IOCondition</a>) -&gt; <a href="control_flow.rs.html#17-22">ControlFlow</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static</span>,
 {
     <span class="kw">unsafe </span>{
-        <span class="kw">let </span>source = ffi::g_unix_fd_source_new(<a href="#1157">fd</a>, <a href="#1158">condition</a>.<a href="translate.rs.html#333">into_glib</a>());
+        <span class="kw">let </span>source = ffi::g_unix_fd_source_new(<a href="#1157">fd</a>, <a href="#1158">condition</a>.<a href="translate.rs.html#334">into_glib</a>());
         ffi::g_source_set_callback(
             <a href="#1167">source</a>,
             <span class="prelude-val">Some</span>(transmute::&lt;
@@ -2444,13 +2444,13 @@
             <a href="#202-207">into_raw_unix_fd</a>(<a href="#1161">func</a>),
             <span class="prelude-val">Some</span>(destroy_closure_unix_fd::&lt;F&gt;),
         );
-        ffi::g_source_set_priority(<a href="#1167">source</a>, <a href="#1160">priority</a>.<a href="translate.rs.html#333">into_glib</a>());
+        ffi::g_source_set_priority(<a href="#1167">source</a>, <a href="#1160">priority</a>.<a href="translate.rs.html#334">into_glib</a>());
 
         <span class="kw">if let </span><span class="prelude-val">Some</span>(name) = <a href="#1159">name</a> {
-            ffi::g_source_set_name(<a href="#1167">source</a>, <a href="#1179">name</a>.<a href="translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>);
+            ffi::g_source_set_name(<a href="#1167">source</a>, <a href="#1179">name</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>);
         }
 
-        <a href="translate.rs.html#1633-1635">from_glib_full</a>(<a href="#1167">source</a>)
+        <a href="translate.rs.html#1634-1636">from_glib_full</a>(<a href="#1167">source</a>)
     }
 }
 
@@ -2458,9 +2458,9 @@
     <span class="attr">#[doc(alias = <span class="string">"g_source_attach"</span>)]
     </span><span class="kw">pub fn </span>attach(<span class="kw-2">&amp;</span><span class="self">self</span>, context: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="auto/main_context.rs.html#10-21">MainContext</a>&gt;) -&gt; <a href="#21">SourceId</a> {
         <span class="kw">unsafe </span>{
-            <a href="translate.rs.html#1416-1418">from_glib</a>(ffi::g_source_attach(
-                <a class="self" href="#1189">self</a>.<a href="translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#1189">context</a>.<a href="translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>,
+            <a href="translate.rs.html#1417-1419">from_glib</a>(ffi::g_source_attach(
+                <a class="self" href="#1189">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#1189">context</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
             ))
         }
     }

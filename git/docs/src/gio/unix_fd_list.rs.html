@@ -260,9 +260,9 @@
 <span class="attr">#[cfg(all(not(unix), docsrs))]
 </span><span class="kw">use </span>socket::{AsRawFd, IntoRawFd, RawFd};
 
-<span class="kw">use </span><a href="auto/unix_fd_list.rs.html#7-32"><span class="kw">crate</span>::UnixFDList</a>;
+<span class="kw">use crate</span>::{<a href="../../gio_sys/index.html">ffi</a>, <a href="auto/unix_fd_list.rs.html#8-33">UnixFDList</a>};
 
-<span class="kw">impl </span><a href="auto/unix_fd_list.rs.html#7-32">UnixFDList</a> {
+<span class="kw">impl </span><a href="auto/unix_fd_list.rs.html#8-33">UnixFDList</a> {
     <span class="doccomment">/// Creates a new #GUnixFDList containing the file descriptors given in
     /// @fds.  The file descriptors become the property of the new list and
     /// may no longer be used by the caller.  The array itself is owned by
@@ -278,7 +278,7 @@
     ///
     /// a new #GUnixFDList
     </span><span class="attr">#[doc(alias = <span class="string">"g_unix_fd_list_new_from_array"</span>)]
-    </span><span class="kw">pub fn </span>from_array(fds: <span class="kw">impl </span>IntoIterator&lt;Item = <span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/trait.IntoRawFd.html">IntoRawFd</a>&gt;) -&gt; <a href="auto/unix_fd_list.rs.html#7-32">UnixFDList</a> {
+    </span><span class="kw">pub fn </span>from_array(fds: <span class="kw">impl </span>IntoIterator&lt;Item = <span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/trait.IntoRawFd.html">IntoRawFd</a>&gt;) -&gt; <a href="auto/unix_fd_list.rs.html#8-33">UnixFDList</a> {
         <span class="kw">let </span>fds = <a href="#29">fds</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.IntoIterator.html#tymethod.into_iter">into_iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|t| <a href="#30">t</a>.<a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/trait.IntoRawFd.html#tymethod.into_raw_fd">into_raw_fd</a>()).<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.collect">collect</a>::&lt;Vec&lt;<span class="kw">_</span>&gt;&gt;();
         <span class="kw">unsafe </span>{
             <a href="../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="../../gio_sys/fn.g_unix_fd_list_new_from_array.html">ffi::g_unix_fd_list_new_from_array</a>(
@@ -291,10 +291,10 @@
 
 <span class="kw">mod </span>sealed {
     <span class="kw">pub trait </span>Sealed {}
-    <span class="kw">impl</span>&lt;T: <span class="kw">super</span>::IsA&lt;<a href="auto/unix_fd_list.rs.html#7-32"><span class="kw">super</span>::UnixFDList</a>&gt;&gt; <a href="#41">Sealed</a> <span class="kw">for </span>T {}
+    <span class="kw">impl</span>&lt;T: <span class="kw">super</span>::IsA&lt;<a href="auto/unix_fd_list.rs.html#8-33"><span class="kw">super</span>::UnixFDList</a>&gt;&gt; <a href="#41">Sealed</a> <span class="kw">for </span>T {}
 }
 
-<span class="kw">pub trait </span><a href="../../gio/prelude/trait.UnixFDListExtManual.html">UnixFDListExtManual</a>: <a href="#41">sealed::Sealed</a> + IsA&lt;<a href="auto/unix_fd_list.rs.html#7-32">UnixFDList</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sized.html">Sized</a> {
+<span class="kw">pub trait </span><a href="../../gio/prelude/trait.UnixFDListExtManual.html">UnixFDListExtManual</a>: <a href="#41">sealed::Sealed</a> + IsA&lt;<a href="auto/unix_fd_list.rs.html#8-33">UnixFDList</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sized.html">Sized</a> {
     <span class="doccomment">/// Adds a file descriptor to @self.
     ///
     /// The file descriptor is duplicated using dup(). You keep your copy
@@ -428,5 +428,5 @@
     }
 }
 
-<span class="kw">impl</span>&lt;O: IsA&lt;<a href="auto/unix_fd_list.rs.html#7-32">UnixFDList</a>&gt;&gt; <a href="#45-177">UnixFDListExtManual</a> <span class="kw">for </span>O {}
+<span class="kw">impl</span>&lt;O: IsA&lt;<a href="auto/unix_fd_list.rs.html#8-33">UnixFDList</a>&gt;&gt; <a href="#45-177">UnixFDListExtManual</a> <span class="kw">for </span>O {}
 </code></pre></div></section></main></body></html>

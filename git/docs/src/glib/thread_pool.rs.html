@@ -461,7 +461,7 @@
 
 <span class="kw">use </span>futures_channel::oneshot;
 
-<span class="kw">use </span><a href="lib.rs.html#142"><span class="kw">crate</span>::translate</a>::<span class="kw-2">*</span>;
+<span class="kw">use crate</span>::{ffi, <a href="lib.rs.html#142">translate</a>::<span class="kw-2">*</span>};
 
 <span class="doccomment">/// The `GThreadPool` struct represents a thread pool.
 ///
@@ -533,7 +533,7 @@
                 <span class="kw-2">&amp;mut </span><a href="#70">err</a>,
             );
             <span class="kw">if </span>pool.is_null() {
-                <span class="prelude-val">Err</span>(<a href="translate.rs.html#1633-1635">from_glib_full</a>(<a href="#70">err</a>))
+                <span class="prelude-val">Err</span>(<a href="translate.rs.html#1634-1636">from_glib_full</a>(<a href="#70">err</a>))
             } <span class="kw">else </span>{
                 <span class="prelude-val">Ok</span>(<a href="#37">ThreadPool</a>(<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.new_unchecked">ptr::NonNull::new_unchecked</a>(<a href="#71">pool</a>)))
             }
@@ -552,7 +552,7 @@
                 <span class="kw-2">&amp;mut </span><a href="#89">err</a>,
             );
             <span class="kw">if </span>pool.is_null() {
-                <span class="prelude-val">Err</span>(<a href="translate.rs.html#1633-1635">from_glib_full</a>(<a href="#89">err</a>))
+                <span class="prelude-val">Err</span>(<a href="translate.rs.html#1634-1636">from_glib_full</a>(<a href="#89">err</a>))
             } <span class="kw">else </span>{
                 <span class="prelude-val">Ok</span>(<a href="#37">ThreadPool</a>(<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.new_unchecked">ptr::NonNull::new_unchecked</a>(<a href="#90">pool</a>)))
             }
@@ -591,7 +591,7 @@
             <span class="kw">let </span><span class="kw-2">mut </span>err = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
 
             <span class="kw">let </span>func = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.into_raw">Box::into_raw</a>(<a href="#133">func</a>);
-            <span class="kw">let </span>ret: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> = <a href="translate.rs.html#1416-1418">from_glib</a>(ffi::g_thread_pool_push(
+            <span class="kw">let </span>ret: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> = <a href="translate.rs.html#1417-1419">from_glib</a>(ffi::g_thread_pool_push(
                 <a class="self" href="#125">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>(),
                 <a href="#136">func</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
                 <span class="kw-2">&amp;mut </span><a href="#134">err</a>,
@@ -600,7 +600,7 @@
                 <span class="prelude-val">Ok</span>(<a href="#49-51">ThreadHandle</a> { <a href="#128">rx</a> })
             } <span class="kw">else </span>{
                 <span class="kw">let _ </span>= <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.from_raw">Box::from_raw</a>(<a href="#136">func</a>);
-                <span class="prelude-val">Err</span>(<a href="translate.rs.html#1633-1635">from_glib_full</a>(<a href="#134">err</a>))
+                <span class="prelude-val">Err</span>(<a href="translate.rs.html#1634-1636">from_glib_full</a>(<a href="#134">err</a>))
             }
         }
     }
@@ -650,7 +650,7 @@
     </span><span class="kw">pub fn </span>set_max_threads(<span class="kw-2">&amp;</span><span class="self">self</span>, max_threads: <span class="prelude-ty">Option</span>&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="error.rs.html#10-25"><span class="kw">crate</span>::Error</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>err = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
-            <span class="kw">let </span>ret: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> = <a href="translate.rs.html#1416-1418">from_glib</a>(ffi::g_thread_pool_set_max_threads(
+            <span class="kw">let </span>ret: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> = <a href="translate.rs.html#1417-1419">from_glib</a>(ffi::g_thread_pool_set_max_threads(
                 <a class="self" href="#193">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>(),
                 <a href="#193">max_threads</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|v| <a href="#198">v</a> <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap_or">unwrap_or</a>(-<span class="number">1</span>),
                 <span class="kw-2">&amp;mut </span><a href="#195">err</a>,
@@ -658,7 +658,7 @@
             <span class="kw">if </span>ret {
                 <span class="prelude-val">Ok</span>(())
             } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(<a href="translate.rs.html#1633-1635">from_glib_full</a>(<a href="#195">err</a>))
+                <span class="prelude-val">Err</span>(<a href="translate.rs.html#1634-1636">from_glib_full</a>(<a href="#195">err</a>))
             }
         }
     }

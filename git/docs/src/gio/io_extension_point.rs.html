@@ -367,7 +367,7 @@
 
 <span class="kw">use </span>glib::{<a href="../../glib/translate/index.html">translate</a>::<span class="kw-2">*</span>, <a href="../../glib/gstring/struct.GString.html">GString</a>, <a href="../../glib/types/struct.Type.html">Type</a>};
 
-<span class="kw">use </span><a href="io_extension.rs.html#14"><span class="kw">crate</span>::IOExtension</a>;
+<span class="kw">use crate</span>::{<a href="../../gio_sys/index.html">ffi</a>, <a href="io_extension.rs.html#15">IOExtension</a>};
 
 <span class="comment">// rustdoc-stripper-ignore-next
 </span><span class="doccomment">/// Builder for extension points.
@@ -522,7 +522,7 @@
     ///     #GIOExtensions. The list is owned by GIO and should not be
     ///     modified.
     </span><span class="attr">#[doc(alias = <span class="string">"g_io_extension_point_get_extensions"</span>)]
-    </span><span class="kw">pub fn </span>extensions(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec&lt;<a href="io_extension.rs.html#14">IOExtension</a>&gt; {
+    </span><span class="kw">pub fn </span>extensions(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec&lt;<a href="io_extension.rs.html#15">IOExtension</a>&gt; {
         <span class="kw">let </span><span class="kw-2">mut </span>res = <a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.new">Vec::new</a>();
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>l = <a href="../../gio_sys/fn.g_io_extension_point_get_extensions.html">ffi::g_io_extension_point_get_extensions</a>(<a class="self" href="#162">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>());
@@ -544,7 +544,7 @@
     /// the #GIOExtension for @self that has the
     ///    given name, or [`None`] if there is no extension with that name
     </span><span class="attr">#[doc(alias = <span class="string">"g_io_extension_point_get_extension_by_name"</span>)]
-    </span><span class="kw">pub fn </span>extension_by_name(<span class="kw-2">&amp;</span><span class="self">self</span>, name: <span class="kw">impl </span><a href="../../glib/gstring/trait.IntoGStr.html">IntoGStr</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="io_extension.rs.html#14">IOExtension</a>&gt; {
+    </span><span class="kw">pub fn </span>extension_by_name(<span class="kw-2">&amp;</span><span class="self">self</span>, name: <span class="kw">impl </span><a href="../../glib/gstring/trait.IntoGStr.html">IntoGStr</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="io_extension.rs.html#15">IOExtension</a>&gt; {
         <a href="#184">name</a>.<a href="../../glib/gstring/trait.IntoGStr.html#tymethod.run_with_gstr">run_with_gstr</a>(|name| <span class="kw">unsafe </span>{
             <span class="kw">let </span>e = <a href="../../gio_sys/fn.g_io_extension_point_get_extension_by_name.html">ffi::g_io_extension_point_get_extension_by_name</a>(
                 <a class="self" href="#184">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>(),
@@ -588,7 +588,7 @@
         type_: <a href="../../glib/types/struct.Type.html">Type</a>,
         extension_name: <span class="kw">impl </span><a href="../../glib/gstring/trait.IntoGStr.html">IntoGStr</a>,
         priority: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
-    ) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="io_extension.rs.html#14">IOExtension</a>&gt; {
+    ) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="io_extension.rs.html#15">IOExtension</a>&gt; {
         <a href="#224">extension_point_name</a>.<a href="../../glib/gstring/trait.IntoGStr.html#tymethod.run_with_gstr">run_with_gstr</a>(|extension_point_name| {
             <a href="#226">extension_name</a>.<a href="../../glib/gstring/trait.IntoGStr.html#tymethod.run_with_gstr">run_with_gstr</a>(|extension_name| <span class="kw">unsafe </span>{
                 <span class="kw">let </span>e = <a href="../../gio_sys/fn.g_io_extension_point_implement.html">ffi::g_io_extension_point_implement</a>(

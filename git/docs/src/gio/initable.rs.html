@@ -235,7 +235,7 @@
 
 <span class="kw">use </span>glib::{<a href="../../glib/object/trait.IsClass.html">object::IsClass</a>, <a href="../../glib/prelude/index.html">prelude</a>::<span class="kw-2">*</span>, <a href="../../glib/object/struct.Object.html">Object</a>, <a href="../../glib/types/struct.Type.html">Type</a>};
 
-<span class="kw">use crate</span>::{<a href="lib.rs.html#120">prelude</a>::<span class="kw-2">*</span>, <a href="auto/cancellable.rs.html#7-85">Cancellable</a>, <a href="auto/initable.rs.html#8-43">Initable</a>};
+<span class="kw">use crate</span>::{<a href="lib.rs.html#120">prelude</a>::<span class="kw-2">*</span>, <a href="auto/cancellable.rs.html#8-86">Cancellable</a>, <a href="auto/initable.rs.html#8-43">Initable</a>};
 
 <span class="kw">impl </span><a href="auto/initable.rs.html#8-43">Initable</a> {
     <span class="comment">// rustdoc-stripper-ignore-next
@@ -262,7 +262,7 @@
     </span><span class="attr">#[track_caller]
     #[allow(clippy::new_ret_no_self)]
     </span><span class="kw">pub fn </span>new&lt;T: IsA&lt;<a href="../../glib/object/struct.Object.html">Object</a>&gt; + <a href="../../glib/object/trait.IsClass.html">IsClass</a> + IsA&lt;<a href="auto/initable.rs.html#8-43">Initable</a>&gt;&gt;(
-        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="auto/cancellable.rs.html#7-85">Cancellable</a>&gt;&gt;,
+        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="auto/cancellable.rs.html#8-86">Cancellable</a>&gt;&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;T, <a href="../../glib/error/struct.Error.html">glib::Error</a>&gt; {
         <span class="kw">let </span>object = <a href="#46-59"><span class="self">Self</span>::with_type</a>(<a href="../../glib/types/trait.StaticType.html#tymethod.static_type">T::static_type</a>(), <a href="#34">cancellable</a>)<span class="question-mark">?</span>;
         <span class="prelude-val">Ok</span>(<span class="kw">unsafe </span>{ <a href="#36">object</a>.<a href="../../glib/object/trait.Cast.html#tymethod.unsafe_cast">unsafe_cast</a>() })
@@ -276,7 +276,7 @@
     </span><span class="attr">#[track_caller]
     </span><span class="kw">pub fn </span>with_type(
         type_: <a href="../../glib/types/struct.Type.html">Type</a>,
-        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="auto/cancellable.rs.html#7-85">Cancellable</a>&gt;&gt;,
+        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="auto/cancellable.rs.html#8-86">Cancellable</a>&gt;&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="../../glib/object/struct.Object.html">Object</a>, <a href="../../glib/error/struct.Error.html">glib::Error</a>&gt; {
         <span class="kw">if </span>!type_.is_a(Initable::static_type()) {
             <a class="macro" href="https://doc.rust-lang.org/nightly/std/macro.panic.html">panic!</a>(<span class="string">"Type '{type_}' is not initable"</span>);
@@ -301,7 +301,7 @@
     </span><span class="kw">pub fn </span>with_mut_values(
         type_: <a href="../../glib/types/struct.Type.html">Type</a>,
         properties: <span class="kw-2">&amp;mut </span>[(<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, <a href="../../glib/value/struct.Value.html">glib::Value</a>)],
-        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="auto/cancellable.rs.html#7-85">Cancellable</a>&gt;&gt;,
+        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="auto/cancellable.rs.html#8-86">Cancellable</a>&gt;&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="../../glib/object/struct.Object.html">Object</a>, <a href="../../glib/error/struct.Error.html">glib::Error</a>&gt; {
         <span class="kw">if </span>!type_.is_a(Initable::static_type()) {
             <a class="macro" href="https://doc.rust-lang.org/nightly/std/macro.panic.html">panic!</a>(<span class="string">"Type '{type_}' is not initable"</span>);
@@ -382,7 +382,7 @@
     /// property values of the wrong type are provided.
     </span><span class="attr">#[track_caller]
     #[inline]
-    </span><span class="kw">pub fn </span>build(<span class="kw-2">mut </span><span class="self">self</span>, cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="auto/cancellable.rs.html#7-85">Cancellable</a>&gt;&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;O, <a href="../../glib/error/struct.Error.html">glib::Error</a>&gt; {
+    </span><span class="kw">pub fn </span>build(<span class="kw-2">mut </span><span class="self">self</span>, cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="auto/cancellable.rs.html#8-86">Cancellable</a>&gt;&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;O, <a href="../../glib/error/struct.Error.html">glib::Error</a>&gt; {
         <span class="kw">let </span>object = <a href="#70-84">Initable::with_mut_values</a>(<a class="self" href="#154">self</a>.type_, <span class="kw-2">&amp;mut </span><a class="self" href="#154">self</a>.properties, <a href="#154">cancellable</a>)<span class="question-mark">?</span>;
         <span class="prelude-val">Ok</span>(<span class="kw">unsafe </span>{ <a href="#155">object</a>.<a href="../../glib/object/trait.Cast.html#tymethod.unsafe_cast">unsafe_cast</a>::&lt;O&gt;() })
     }

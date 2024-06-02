@@ -353,6 +353,7 @@
 <a href="#280" id="280">280</a>
 <a href="#281" id="281">281</a>
 <a href="#282" id="282">282</a>
+<a href="#283" id="283">283</a>
 </pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
 </span><span class="attr">#[cfg(feature = <span class="string">"use_glib"</span>)]
@@ -362,277 +363,278 @@
 <span class="attr">#[cfg(feature = <span class="string">"use_glib"</span>)]
 </span><span class="kw">use </span><a href="../../glib/translate/index.html">glib::translate</a>::<span class="kw-2">*</span>;
 
-<span class="kw">use crate</span>::{<a href="../../cairo_sys/struct.cairo_region_t.html">ffi::cairo_region_t</a>, <a href="utils.rs.html#21-26">utils::status_to_result</a>, <a href="error.rs.html#10-150">Error</a>, <a href="rectangle_int.rs.html#13">RectangleInt</a>, <a href="enums.rs.html#1227-1236">RegionOverlap</a>};
+<span class="kw">use crate</span>::{<a href="../../cairo_sys/index.html">ffi</a>, <a href="utils.rs.html#21-26">utils::status_to_result</a>, <a href="error.rs.html#11-151">Error</a>, <a href="rectangle_int.rs.html#15">RectangleInt</a>, <a href="enums.rs.html#1227-1236">RegionOverlap</a>};
 
 <span class="attr">#[derive(Debug)]
 #[repr(transparent)]
-</span><span class="kw">pub struct </span><a href="../../cairo/struct.Region.html">Region</a>(ptr::NonNull&lt;<a href="../../cairo_sys/struct.cairo_region_t.html">cairo_region_t</a>&gt;);
+#[doc(alias = <span class="string">"cairo_region_t"</span>)]
+</span><span class="kw">pub struct </span><a href="../../cairo/struct.Region.html">Region</a>(ptr::NonNull&lt;<a href="../../cairo_sys/struct.cairo_region_t.html">ffi::cairo_region_t</a>&gt;);
 
 <span class="attr">#[cfg(feature = <span class="string">"use_glib"</span>)]
-</span><span class="kw">impl </span>IntoGlibPtr&lt;<span class="kw-2">*mut </span><a href="../../cairo_sys/struct.cairo_region_t.html">ffi::cairo_region_t</a>&gt; <span class="kw">for </span><a href="#14">Region</a> {
+</span><span class="kw">impl </span>IntoGlibPtr&lt;<span class="kw-2">*mut </span><a href="../../cairo_sys/struct.cairo_region_t.html">ffi::cairo_region_t</a>&gt; <span class="kw">for </span><a href="#15">Region</a> {
     <span class="attr">#[inline]
     </span><span class="kw">unsafe fn </span>into_glib_ptr(<span class="self">self</span>) -&gt; <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.cairo_region_t.html">ffi::cairo_region_t</a> {
-        (<span class="kw-2">&amp;*</span><a href="https://doc.rust-lang.org/nightly/core/mem/manually_drop/struct.ManuallyDrop.html#method.new">std::mem::ManuallyDrop::new</a>(<a class="self" href="#19">self</a>)).<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0
+        (<span class="kw-2">&amp;*</span><a href="https://doc.rust-lang.org/nightly/core/mem/manually_drop/struct.ManuallyDrop.html#method.new">std::mem::ManuallyDrop::new</a>(<a class="self" href="#20">self</a>)).<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0
     </span>}
 }
 
 <span class="attr">#[cfg(feature = <span class="string">"use_glib"</span>)]
 #[doc(hidden)]
-</span><span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; ToGlibPtr&lt;<span class="lifetime">'a</span>, <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.cairo_region_t.html">ffi::cairo_region_t</a>&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#14">Region</a> {
-    <span class="kw">type </span>Storage = PhantomData&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#14">Region</a>&gt;;
+</span><span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; ToGlibPtr&lt;<span class="lifetime">'a</span>, <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.cairo_region_t.html">ffi::cairo_region_t</a>&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#15">Region</a> {
+    <span class="kw">type </span>Storage = PhantomData&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#15">Region</a>&gt;;
 
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>to_glib_none(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Stash&lt;<span class="lifetime">'a</span>, <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.cairo_region_t.html">ffi::cairo_region_t</a>, <span class="self">Self</span>&gt; {
-        <a href="../../glib/translate/struct.Stash.html">Stash</a>(<a class="self" href="#30">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>(), <a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">PhantomData</a>)
+        <a href="../../glib/translate/struct.Stash.html">Stash</a>(<a class="self" href="#31">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>(), <a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">PhantomData</a>)
     }
 
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>to_glib_full(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.cairo_region_t.html">ffi::cairo_region_t</a> {
-        <span class="kw">unsafe </span>{ <a href="../../cairo_sys/fn.cairo_region_reference.html">ffi::cairo_region_reference</a>(<a class="self" href="#35">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>()) }
+        <span class="kw">unsafe </span>{ <a href="../../cairo_sys/fn.cairo_region_reference.html">ffi::cairo_region_reference</a>(<a class="self" href="#36">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>()) }
     }
 }
 
 <span class="attr">#[cfg(feature = <span class="string">"use_glib"</span>)]
 #[doc(hidden)]
-</span><span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; ToGlibPtrMut&lt;<span class="lifetime">'a</span>, <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.cairo_region_t.html">ffi::cairo_region_t</a>&gt; <span class="kw">for </span><a href="#14">Region</a> {
+</span><span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; ToGlibPtrMut&lt;<span class="lifetime">'a</span>, <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.cairo_region_t.html">ffi::cairo_region_t</a>&gt; <span class="kw">for </span><a href="#15">Region</a> {
     <span class="kw">type </span>Storage = PhantomData&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span><span class="self">Self</span>&gt;;
 
     <span class="comment">// FIXME: This is unsafe: regions are reference counted, so we could get multiple mutable
     // references here
     </span><span class="attr">#[inline]
     </span><span class="kw">fn </span>to_glib_none_mut(<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span><span class="self">self</span>) -&gt; StashMut&lt;<span class="lifetime">'a</span>, <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.cairo_region_t.html">ffi::cairo_region_t</a>, <span class="self">Self</span>&gt; {
-        <a href="../../glib/translate/struct.StashMut.html">StashMut</a>(<a class="self" href="#48">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>(), <a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">PhantomData</a>)
+        <a href="../../glib/translate/struct.StashMut.html">StashMut</a>(<a class="self" href="#49">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>(), <a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">PhantomData</a>)
     }
 }
 
 <span class="attr">#[cfg(feature = <span class="string">"use_glib"</span>)]
 #[doc(hidden)]
-</span><span class="kw">impl </span>FromGlibPtrNone&lt;<span class="kw-2">*mut </span><a href="../../cairo_sys/struct.cairo_region_t.html">ffi::cairo_region_t</a>&gt; <span class="kw">for </span><a href="#14">Region</a> {
+</span><span class="kw">impl </span>FromGlibPtrNone&lt;<span class="kw-2">*mut </span><a href="../../cairo_sys/struct.cairo_region_t.html">ffi::cairo_region_t</a>&gt; <span class="kw">for </span><a href="#15">Region</a> {
     <span class="attr">#[inline]
-    </span><span class="kw">unsafe fn </span>from_glib_none(ptr: <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.cairo_region_t.html">ffi::cairo_region_t</a>) -&gt; <a href="#14">Region</a> {
-        <a href="#115-119"><span class="self">Self</span>::from_raw_none</a>(<a href="#57">ptr</a>)
+    </span><span class="kw">unsafe fn </span>from_glib_none(ptr: <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.cairo_region_t.html">ffi::cairo_region_t</a>) -&gt; <a href="#15">Region</a> {
+        <a href="#116-120"><span class="self">Self</span>::from_raw_none</a>(<a href="#58">ptr</a>)
     }
 }
 
 <span class="attr">#[cfg(feature = <span class="string">"use_glib"</span>)]
 #[doc(hidden)]
-</span><span class="kw">impl </span>FromGlibPtrBorrow&lt;<span class="kw-2">*mut </span><a href="../../cairo_sys/struct.cairo_region_t.html">ffi::cairo_region_t</a>&gt; <span class="kw">for </span><a href="#14">Region</a> {
+</span><span class="kw">impl </span>FromGlibPtrBorrow&lt;<span class="kw-2">*mut </span><a href="../../cairo_sys/struct.cairo_region_t.html">ffi::cairo_region_t</a>&gt; <span class="kw">for </span><a href="#15">Region</a> {
     <span class="attr">#[inline]
-    </span><span class="kw">unsafe fn </span>from_glib_borrow(ptr: <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.cairo_region_t.html">ffi::cairo_region_t</a>) -&gt; <span class="kw">crate</span>::Borrowed&lt;<a href="#14">Region</a>&gt; {
-        <a href="#122-125"><span class="self">Self</span>::from_raw_borrow</a>(<a href="#66">ptr</a>)
+    </span><span class="kw">unsafe fn </span>from_glib_borrow(ptr: <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.cairo_region_t.html">ffi::cairo_region_t</a>) -&gt; <span class="kw">crate</span>::Borrowed&lt;<a href="#15">Region</a>&gt; {
+        <a href="#123-126"><span class="self">Self</span>::from_raw_borrow</a>(<a href="#67">ptr</a>)
     }
 }
 
 <span class="attr">#[cfg(feature = <span class="string">"use_glib"</span>)]
 #[doc(hidden)]
-</span><span class="kw">impl </span>FromGlibPtrFull&lt;<span class="kw-2">*mut </span><a href="../../cairo_sys/struct.cairo_region_t.html">ffi::cairo_region_t</a>&gt; <span class="kw">for </span><a href="#14">Region</a> {
+</span><span class="kw">impl </span>FromGlibPtrFull&lt;<span class="kw-2">*mut </span><a href="../../cairo_sys/struct.cairo_region_t.html">ffi::cairo_region_t</a>&gt; <span class="kw">for </span><a href="#15">Region</a> {
     <span class="attr">#[inline]
-    </span><span class="kw">unsafe fn </span>from_glib_full(ptr: <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.cairo_region_t.html">ffi::cairo_region_t</a>) -&gt; <a href="#14">Region</a> {
-        <a href="#128-131"><span class="self">Self</span>::from_raw_full</a>(<a href="#75">ptr</a>)
+    </span><span class="kw">unsafe fn </span>from_glib_full(ptr: <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.cairo_region_t.html">ffi::cairo_region_t</a>) -&gt; <a href="#15">Region</a> {
+        <a href="#129-132"><span class="self">Self</span>::from_raw_full</a>(<a href="#76">ptr</a>)
     }
 }
 
 <span class="attr">#[cfg(feature = <span class="string">"use_glib"</span>)]
 </span><a class="macro" href="lib.rs.html#40-122">gvalue_impl!</a>(
-    <a href="#14">Region</a>,
+    <a href="#15">Region</a>,
     ffi::cairo_region_t,
     ffi::gobject::cairo_gobject_region_get_type
 );
 
-<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">Clone</a> <span class="kw">for </span><a href="#14">Region</a> {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">Clone</a> <span class="kw">for </span><a href="#15">Region</a> {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>clone(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="#14">Region</a> {
-        <span class="kw">unsafe </span>{ <a href="#115-119"><span class="self">Self</span>::from_raw_none</a>(<a class="self" href="#89">self</a>.<a href="#134-136">to_raw_none</a>()) }
+    </span><span class="kw">fn </span>clone(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="#15">Region</a> {
+        <span class="kw">unsafe </span>{ <a href="#116-120"><span class="self">Self</span>::from_raw_none</a>(<a class="self" href="#90">self</a>.<a href="#135-137">to_raw_none</a>()) }
     }
 }
 
-<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/ops/drop/trait.Drop.html">Drop</a> <span class="kw">for </span><a href="#14">Region</a> {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/ops/drop/trait.Drop.html">Drop</a> <span class="kw">for </span><a href="#15">Region</a> {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
         <span class="kw">unsafe </span>{
-            <a href="../../cairo_sys/fn.cairo_region_destroy.html">ffi::cairo_region_destroy</a>(<a class="self" href="#96">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>());
+            <a href="../../cairo_sys/fn.cairo_region_destroy.html">ffi::cairo_region_destroy</a>(<a class="self" href="#97">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>());
         }
     }
 }
 
-<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html">PartialEq</a> <span class="kw">for </span><a href="#14">Region</a> {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html">PartialEq</a> <span class="kw">for </span><a href="#15">Region</a> {
     <span class="attr">#[doc(alias = <span class="string">"cairo_region_equal"</span>)]
     #[inline]
-    </span><span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><a href="#14">Region</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
-        <span class="kw">unsafe </span>{ <a href="../../cairo_sys/fn.cairo_region_equal.html">ffi::cairo_region_equal</a>(<a class="self" href="#106">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>(), <a href="#106">other</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>()).<a href="../../cairo_sys/struct.cairo_bool_t.html#method.as_bool">as_bool</a>() }
+    </span><span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><a href="#15">Region</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
+        <span class="kw">unsafe </span>{ <a href="../../cairo_sys/fn.cairo_region_equal.html">ffi::cairo_region_equal</a>(<a class="self" href="#107">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>(), <a href="#107">other</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>()).<a href="../../cairo_sys/struct.cairo_bool_t.html#method.as_bool">as_bool</a>() }
     }
 }
 
-<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/cmp/trait.Eq.html">Eq</a> <span class="kw">for </span><a href="#14">Region</a> {}
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/cmp/trait.Eq.html">Eq</a> <span class="kw">for </span><a href="#15">Region</a> {}
 
-<span class="kw">impl </span><a href="#14">Region</a> {
+<span class="kw">impl </span><a href="#15">Region</a> {
     <span class="attr">#[inline]
-    </span><span class="kw">pub unsafe fn </span>from_raw_none(ptr: <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.cairo_region_t.html">ffi::cairo_region_t</a>) -&gt; <a href="#14">Region</a> {
+    </span><span class="kw">pub unsafe fn </span>from_raw_none(ptr: <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.cairo_region_t.html">ffi::cairo_region_t</a>) -&gt; <a href="#15">Region</a> {
         <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert.html">debug_assert!</a>(!ptr.is_null());
-        <a href="../../cairo_sys/fn.cairo_region_reference.html">ffi::cairo_region_reference</a>(<a href="#115">ptr</a>);
-        <a href="#14">Region</a>(<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.new_unchecked">ptr::NonNull::new_unchecked</a>(<a href="#115">ptr</a>))
+        <a href="../../cairo_sys/fn.cairo_region_reference.html">ffi::cairo_region_reference</a>(<a href="#116">ptr</a>);
+        <a href="#15">Region</a>(<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.new_unchecked">ptr::NonNull::new_unchecked</a>(<a href="#116">ptr</a>))
     }
 
     <span class="attr">#[inline]
-    </span><span class="kw">pub unsafe fn </span>from_raw_borrow(ptr: <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.cairo_region_t.html">ffi::cairo_region_t</a>) -&gt; <span class="kw">crate</span>::Borrowed&lt;<a href="#14">Region</a>&gt; {
+    </span><span class="kw">pub unsafe fn </span>from_raw_borrow(ptr: <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.cairo_region_t.html">ffi::cairo_region_t</a>) -&gt; <span class="kw">crate</span>::Borrowed&lt;<a href="#15">Region</a>&gt; {
         <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert.html">debug_assert!</a>(!ptr.is_null());
-        <a href="../../glib/translate/struct.Borrowed.html#method.new"><span class="kw">crate</span>::Borrowed::new</a>(<a href="#14">Region</a>(<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.new_unchecked">ptr::NonNull::new_unchecked</a>(<a href="#122">ptr</a>)))
+        <a href="../../glib/translate/struct.Borrowed.html#method.new"><span class="kw">crate</span>::Borrowed::new</a>(<a href="#15">Region</a>(<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.new_unchecked">ptr::NonNull::new_unchecked</a>(<a href="#123">ptr</a>)))
     }
 
     <span class="attr">#[inline]
-    </span><span class="kw">pub unsafe fn </span>from_raw_full(ptr: <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.cairo_region_t.html">ffi::cairo_region_t</a>) -&gt; <a href="#14">Region</a> {
+    </span><span class="kw">pub unsafe fn </span>from_raw_full(ptr: <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.cairo_region_t.html">ffi::cairo_region_t</a>) -&gt; <a href="#15">Region</a> {
         <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert.html">debug_assert!</a>(!ptr.is_null());
-        <a href="#14">Region</a>(<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.new_unchecked">ptr::NonNull::new_unchecked</a>(<a href="#128">ptr</a>))
+        <a href="#15">Region</a>(<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.new_unchecked">ptr::NonNull::new_unchecked</a>(<a href="#129">ptr</a>))
     }
 
     <span class="attr">#[inline]
     </span><span class="kw">pub fn </span>to_raw_none(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.cairo_region_t.html">ffi::cairo_region_t</a> {
-        <a class="self" href="#134">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>()
+        <a class="self" href="#135">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>()
     }
 
     <span class="attr">#[doc(alias = <span class="string">"cairo_region_create"</span>)]
-    </span><span class="kw">pub fn </span>create() -&gt; <a href="#14">Region</a> {
-        <span class="kw">unsafe </span>{ <a href="#128-131"><span class="self">Self</span>::from_raw_full</a>(<a href="../../cairo_sys/fn.cairo_region_create.html">ffi::cairo_region_create</a>()) }
+    </span><span class="kw">pub fn </span>create() -&gt; <a href="#15">Region</a> {
+        <span class="kw">unsafe </span>{ <a href="#129-132"><span class="self">Self</span>::from_raw_full</a>(<a href="../../cairo_sys/fn.cairo_region_create.html">ffi::cairo_region_create</a>()) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">"cairo_region_create_rectangle"</span>)]
-    </span><span class="kw">pub fn </span>create_rectangle(rectangle: <span class="kw-2">&amp;</span><a href="rectangle_int.rs.html#13">RectangleInt</a>) -&gt; <a href="#14">Region</a> {
-        <span class="kw">unsafe </span>{ <a href="#128-131"><span class="self">Self</span>::from_raw_full</a>(<a href="../../cairo_sys/fn.cairo_region_create_rectangle.html">ffi::cairo_region_create_rectangle</a>(<a href="#144">rectangle</a>.<a href="rectangle_int.rs.html#143-145">to_raw_none</a>())) }
+    </span><span class="kw">pub fn </span>create_rectangle(rectangle: <span class="kw-2">&amp;</span><a href="rectangle_int.rs.html#15">RectangleInt</a>) -&gt; <a href="#15">Region</a> {
+        <span class="kw">unsafe </span>{ <a href="#129-132"><span class="self">Self</span>::from_raw_full</a>(<a href="../../cairo_sys/fn.cairo_region_create_rectangle.html">ffi::cairo_region_create_rectangle</a>(<a href="#145">rectangle</a>.<a href="rectangle_int.rs.html#145-147">to_raw_none</a>())) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">"cairo_region_create_rectangles"</span>)]
-    </span><span class="kw">pub fn </span>create_rectangles(rectangles: <span class="kw-2">&amp;</span>[<a href="rectangle_int.rs.html#13">RectangleInt</a>]) -&gt; <a href="#14">Region</a> {
+    </span><span class="kw">pub fn </span>create_rectangles(rectangles: <span class="kw-2">&amp;</span>[<a href="rectangle_int.rs.html#15">RectangleInt</a>]) -&gt; <a href="#15">Region</a> {
         <span class="kw">unsafe </span>{
-            <a href="#128-131"><span class="self">Self</span>::from_raw_full</a>(<a href="../../cairo_sys/fn.cairo_region_create_rectangles.html">ffi::cairo_region_create_rectangles</a>(
-                <a href="#149">rectangles</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><a href="../../cairo_sys/struct.cairo_rectangle_int_t.html">ffi::cairo_rectangle_int_t</a>,
-                <a href="#149">rectangles</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.len">len</a>() <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
+            <a href="#129-132"><span class="self">Self</span>::from_raw_full</a>(<a href="../../cairo_sys/fn.cairo_region_create_rectangles.html">ffi::cairo_region_create_rectangles</a>(
+                <a href="#150">rectangles</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><a href="../../cairo_sys/struct.cairo_rectangle_int_t.html">ffi::cairo_rectangle_int_t</a>,
+                <a href="#150">rectangles</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.len">len</a>() <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
             ))
         }
     }
 
     <span class="attr">#[doc(alias = <span class="string">"cairo_region_copy"</span>)]
     #[must_use]
-    </span><span class="kw">pub fn </span>copy(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="#14">Region</a> {
-        <span class="kw">unsafe </span>{ <a href="#128-131"><span class="self">Self</span>::from_raw_full</a>(<a href="../../cairo_sys/fn.cairo_region_copy.html">ffi::cairo_region_copy</a>(<a class="self" href="#160">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>())) }
+    </span><span class="kw">pub fn </span>copy(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="#15">Region</a> {
+        <span class="kw">unsafe </span>{ <a href="#129-132"><span class="self">Self</span>::from_raw_full</a>(<a href="../../cairo_sys/fn.cairo_region_copy.html">ffi::cairo_region_copy</a>(<a class="self" href="#161">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>())) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">"get_extents"</span>)]
     #[doc(alias = <span class="string">"cairo_region_get_extents"</span>)]
-    </span><span class="kw">pub fn </span>extents(<span class="kw-2">&amp;</span><span class="self">self</span>, rectangle: <span class="kw-2">&amp;</span><a href="rectangle_int.rs.html#13">RectangleInt</a>) {
-        <span class="kw">unsafe </span>{ <a href="../../cairo_sys/fn.cairo_region_get_extents.html">ffi::cairo_region_get_extents</a>(<a class="self" href="#166">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>(), <a href="#166">rectangle</a>.<a href="rectangle_int.rs.html#143-145">to_raw_none</a>()) }
+    </span><span class="kw">pub fn </span>extents(<span class="kw-2">&amp;</span><span class="self">self</span>, rectangle: <span class="kw-2">&amp;</span><a href="rectangle_int.rs.html#15">RectangleInt</a>) {
+        <span class="kw">unsafe </span>{ <a href="../../cairo_sys/fn.cairo_region_get_extents.html">ffi::cairo_region_get_extents</a>(<a class="self" href="#167">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>(), <a href="#167">rectangle</a>.<a href="rectangle_int.rs.html#145-147">to_raw_none</a>()) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">"cairo_region_num_rectangles"</span>)]
     </span><span class="kw">pub fn </span>num_rectangles(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a> {
-        <span class="kw">unsafe </span>{ <a href="../../cairo_sys/fn.cairo_region_num_rectangles.html">ffi::cairo_region_num_rectangles</a>(<a class="self" href="#171">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>()) }
+        <span class="kw">unsafe </span>{ <a href="../../cairo_sys/fn.cairo_region_num_rectangles.html">ffi::cairo_region_num_rectangles</a>(<a class="self" href="#172">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>()) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">"get_rectangle"</span>)]
     #[doc(alias = <span class="string">"cairo_region_get_rectangle"</span>)]
-    </span><span class="kw">pub fn </span>rectangle(<span class="kw-2">&amp;</span><span class="self">self</span>, nth: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>) -&gt; <a href="rectangle_int.rs.html#13">RectangleInt</a> {
+    </span><span class="kw">pub fn </span>rectangle(<span class="kw-2">&amp;</span><span class="self">self</span>, nth: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>) -&gt; <a href="rectangle_int.rs.html#15">RectangleInt</a> {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>rectangle: <a href="rectangle_int.rs.html#13">RectangleInt</a> = <a href="https://doc.rust-lang.org/nightly/core/mem/fn.zeroed.html">::std::mem::zeroed</a>();
-            <a href="../../cairo_sys/fn.cairo_region_get_rectangle.html">ffi::cairo_region_get_rectangle</a>(<a class="self" href="#177">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>(), <a href="#177">nth</a>, <a href="#179">rectangle</a>.<a href="rectangle_int.rs.html#143-145">to_raw_none</a>());
-            <a href="#179">rectangle</a>
+            <span class="kw">let </span>rectangle: <a href="rectangle_int.rs.html#15">RectangleInt</a> = <a href="https://doc.rust-lang.org/nightly/core/mem/fn.zeroed.html">::std::mem::zeroed</a>();
+            <a href="../../cairo_sys/fn.cairo_region_get_rectangle.html">ffi::cairo_region_get_rectangle</a>(<a class="self" href="#178">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>(), <a href="#178">nth</a>, <a href="#180">rectangle</a>.<a href="rectangle_int.rs.html#145-147">to_raw_none</a>());
+            <a href="#180">rectangle</a>
         }
     }
 
     <span class="attr">#[doc(alias = <span class="string">"cairo_region_is_empty"</span>)]
     </span><span class="kw">pub fn </span>is_empty(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
-        <span class="kw">unsafe </span>{ <a href="../../cairo_sys/fn.cairo_region_is_empty.html">ffi::cairo_region_is_empty</a>(<a class="self" href="#186">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>()).<a href="../../cairo_sys/struct.cairo_bool_t.html#method.as_bool">as_bool</a>() }
+        <span class="kw">unsafe </span>{ <a href="../../cairo_sys/fn.cairo_region_is_empty.html">ffi::cairo_region_is_empty</a>(<a class="self" href="#187">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>()).<a href="../../cairo_sys/struct.cairo_bool_t.html#method.as_bool">as_bool</a>() }
     }
 
     <span class="attr">#[doc(alias = <span class="string">"cairo_region_contains_point"</span>)]
     </span><span class="kw">pub fn </span>contains_point(<span class="kw-2">&amp;</span><span class="self">self</span>, x: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>, y: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
-        <span class="kw">unsafe </span>{ <a href="../../cairo_sys/fn.cairo_region_contains_point.html">ffi::cairo_region_contains_point</a>(<a class="self" href="#191">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>(), <a href="#191">x</a>, <a href="#191">y</a>).<a href="../../cairo_sys/struct.cairo_bool_t.html#method.as_bool">as_bool</a>() }
+        <span class="kw">unsafe </span>{ <a href="../../cairo_sys/fn.cairo_region_contains_point.html">ffi::cairo_region_contains_point</a>(<a class="self" href="#192">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>(), <a href="#192">x</a>, <a href="#192">y</a>).<a href="../../cairo_sys/struct.cairo_bool_t.html#method.as_bool">as_bool</a>() }
     }
 
     <span class="attr">#[doc(alias = <span class="string">"cairo_region_contains_rectangle"</span>)]
-    </span><span class="kw">pub fn </span>contains_rectangle(<span class="kw-2">&amp;</span><span class="self">self</span>, rectangle: <span class="kw-2">&amp;</span><a href="rectangle_int.rs.html#13">RectangleInt</a>) -&gt; <a href="enums.rs.html#1227-1236">RegionOverlap</a> {
+    </span><span class="kw">pub fn </span>contains_rectangle(<span class="kw-2">&amp;</span><span class="self">self</span>, rectangle: <span class="kw-2">&amp;</span><a href="rectangle_int.rs.html#15">RectangleInt</a>) -&gt; <a href="enums.rs.html#1227-1236">RegionOverlap</a> {
         <span class="kw">unsafe </span>{
             <a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html#tymethod.from">RegionOverlap::from</a>(<a href="../../cairo_sys/fn.cairo_region_contains_rectangle.html">ffi::cairo_region_contains_rectangle</a>(
-                <a class="self" href="#196">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>(),
-                <a href="#196">rectangle</a>.<a href="rectangle_int.rs.html#143-145">to_raw_none</a>(),
+                <a class="self" href="#197">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>(),
+                <a href="#197">rectangle</a>.<a href="rectangle_int.rs.html#145-147">to_raw_none</a>(),
             ))
         }
     }
 
     <span class="attr">#[doc(alias = <span class="string">"cairo_region_translate"</span>)]
     </span><span class="kw">pub fn </span>translate(<span class="kw-2">&amp;</span><span class="self">self</span>, dx: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>, dy: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>) {
-        <span class="kw">unsafe </span>{ <a href="../../cairo_sys/fn.cairo_region_translate.html">ffi::cairo_region_translate</a>(<a class="self" href="#206">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>(), <a href="#206">dx</a>, <a href="#206">dy</a>) }
+        <span class="kw">unsafe </span>{ <a href="../../cairo_sys/fn.cairo_region_translate.html">ffi::cairo_region_translate</a>(<a class="self" href="#207">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>(), <a href="#207">dx</a>, <a href="#207">dy</a>) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">"cairo_region_intersect"</span>)]
-    </span><span class="kw">pub fn </span>intersect(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><a href="#14">Region</a>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="error.rs.html#10-150">Error</a>&gt; {
+    </span><span class="kw">pub fn </span>intersect(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><a href="#15">Region</a>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="error.rs.html#11-151">Error</a>&gt; {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>status = <a href="../../cairo_sys/fn.cairo_region_intersect.html">ffi::cairo_region_intersect</a>(<a class="self" href="#211">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>(), <a href="#211">other</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>());
-            <a href="utils.rs.html#21-26">status_to_result</a>(<a href="#213">status</a>)
+            <span class="kw">let </span>status = <a href="../../cairo_sys/fn.cairo_region_intersect.html">ffi::cairo_region_intersect</a>(<a class="self" href="#212">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>(), <a href="#212">other</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>());
+            <a href="utils.rs.html#21-26">status_to_result</a>(<a href="#214">status</a>)
         }
     }
 
     <span class="attr">#[doc(alias = <span class="string">"cairo_region_intersect_rectangle"</span>)]
-    </span><span class="kw">pub fn </span>intersect_rectangle(<span class="kw-2">&amp;</span><span class="self">self</span>, rectangle: <span class="kw-2">&amp;</span><a href="rectangle_int.rs.html#13">RectangleInt</a>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="error.rs.html#10-150">Error</a>&gt; {
+    </span><span class="kw">pub fn </span>intersect_rectangle(<span class="kw-2">&amp;</span><span class="self">self</span>, rectangle: <span class="kw-2">&amp;</span><a href="rectangle_int.rs.html#15">RectangleInt</a>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="error.rs.html#11-151">Error</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>status =
-                <a href="../../cairo_sys/fn.cairo_region_intersect_rectangle.html">ffi::cairo_region_intersect_rectangle</a>(<a class="self" href="#219">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>(), <a href="#219">rectangle</a>.<a href="rectangle_int.rs.html#143-145">to_raw_none</a>());
-            <a href="utils.rs.html#21-26">status_to_result</a>(<a href="#221">status</a>)
+                <a href="../../cairo_sys/fn.cairo_region_intersect_rectangle.html">ffi::cairo_region_intersect_rectangle</a>(<a class="self" href="#220">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>(), <a href="#220">rectangle</a>.<a href="rectangle_int.rs.html#145-147">to_raw_none</a>());
+            <a href="utils.rs.html#21-26">status_to_result</a>(<a href="#222">status</a>)
         }
     }
 
     <span class="attr">#[doc(alias = <span class="string">"cairo_region_subtract"</span>)]
-    </span><span class="kw">pub fn </span>subtract(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><a href="#14">Region</a>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="error.rs.html#10-150">Error</a>&gt; {
+    </span><span class="kw">pub fn </span>subtract(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><a href="#15">Region</a>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="error.rs.html#11-151">Error</a>&gt; {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>status = <a href="../../cairo_sys/fn.cairo_region_subtract.html">ffi::cairo_region_subtract</a>(<a class="self" href="#228">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>(), <a href="#228">other</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>());
-            <a href="utils.rs.html#21-26">status_to_result</a>(<a href="#230">status</a>)
+            <span class="kw">let </span>status = <a href="../../cairo_sys/fn.cairo_region_subtract.html">ffi::cairo_region_subtract</a>(<a class="self" href="#229">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>(), <a href="#229">other</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>());
+            <a href="utils.rs.html#21-26">status_to_result</a>(<a href="#231">status</a>)
         }
     }
 
     <span class="attr">#[doc(alias = <span class="string">"cairo_region_subtract_rectangle"</span>)]
-    </span><span class="kw">pub fn </span>subtract_rectangle(<span class="kw-2">&amp;</span><span class="self">self</span>, rectangle: <span class="kw-2">&amp;</span><a href="rectangle_int.rs.html#13">RectangleInt</a>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="error.rs.html#10-150">Error</a>&gt; {
+    </span><span class="kw">pub fn </span>subtract_rectangle(<span class="kw-2">&amp;</span><span class="self">self</span>, rectangle: <span class="kw-2">&amp;</span><a href="rectangle_int.rs.html#15">RectangleInt</a>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="error.rs.html#11-151">Error</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>status =
-                <a href="../../cairo_sys/fn.cairo_region_subtract_rectangle.html">ffi::cairo_region_subtract_rectangle</a>(<a class="self" href="#236">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>(), <a href="#236">rectangle</a>.<a href="rectangle_int.rs.html#143-145">to_raw_none</a>());
-            <a href="utils.rs.html#21-26">status_to_result</a>(<a href="#238">status</a>)
+                <a href="../../cairo_sys/fn.cairo_region_subtract_rectangle.html">ffi::cairo_region_subtract_rectangle</a>(<a class="self" href="#237">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>(), <a href="#237">rectangle</a>.<a href="rectangle_int.rs.html#145-147">to_raw_none</a>());
+            <a href="utils.rs.html#21-26">status_to_result</a>(<a href="#239">status</a>)
         }
     }
 
     <span class="attr">#[doc(alias = <span class="string">"cairo_region_union"</span>)]
-    </span><span class="kw">pub fn </span>union(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><a href="#14">Region</a>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="error.rs.html#10-150">Error</a>&gt; {
+    </span><span class="kw">pub fn </span>union(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><a href="#15">Region</a>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="error.rs.html#11-151">Error</a>&gt; {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>status = <a href="../../cairo_sys/fn.cairo_region_union.html">ffi::cairo_region_union</a>(<a class="self" href="#245">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>(), <a href="#245">other</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>());
-            <a href="utils.rs.html#21-26">status_to_result</a>(<a href="#247">status</a>)
+            <span class="kw">let </span>status = <a href="../../cairo_sys/fn.cairo_region_union.html">ffi::cairo_region_union</a>(<a class="self" href="#246">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>(), <a href="#246">other</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>());
+            <a href="utils.rs.html#21-26">status_to_result</a>(<a href="#248">status</a>)
         }
     }
 
     <span class="attr">#[doc(alias = <span class="string">"cairo_region_union_rectangle"</span>)]
-    </span><span class="kw">pub fn </span>union_rectangle(<span class="kw-2">&amp;</span><span class="self">self</span>, rectangle: <span class="kw-2">&amp;</span><a href="rectangle_int.rs.html#13">RectangleInt</a>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="error.rs.html#10-150">Error</a>&gt; {
+    </span><span class="kw">pub fn </span>union_rectangle(<span class="kw-2">&amp;</span><span class="self">self</span>, rectangle: <span class="kw-2">&amp;</span><a href="rectangle_int.rs.html#15">RectangleInt</a>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="error.rs.html#11-151">Error</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>status =
-                <a href="../../cairo_sys/fn.cairo_region_union_rectangle.html">ffi::cairo_region_union_rectangle</a>(<a class="self" href="#253">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>(), <a href="#253">rectangle</a>.<a href="rectangle_int.rs.html#143-145">to_raw_none</a>());
-            <a href="utils.rs.html#21-26">status_to_result</a>(<a href="#255">status</a>)
+                <a href="../../cairo_sys/fn.cairo_region_union_rectangle.html">ffi::cairo_region_union_rectangle</a>(<a class="self" href="#254">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>(), <a href="#254">rectangle</a>.<a href="rectangle_int.rs.html#145-147">to_raw_none</a>());
+            <a href="utils.rs.html#21-26">status_to_result</a>(<a href="#256">status</a>)
         }
     }
 
     <span class="attr">#[doc(alias = <span class="string">"cairo_region_xor"</span>)]
-    </span><span class="kw">pub fn </span>xor(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><a href="#14">Region</a>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="error.rs.html#10-150">Error</a>&gt; {
+    </span><span class="kw">pub fn </span>xor(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><a href="#15">Region</a>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="error.rs.html#11-151">Error</a>&gt; {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>status = <a href="../../cairo_sys/fn.cairo_region_xor.html">ffi::cairo_region_xor</a>(<a class="self" href="#262">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>(), <a href="#262">other</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>());
-            <a href="utils.rs.html#21-26">status_to_result</a>(<a href="#264">status</a>)
+            <span class="kw">let </span>status = <a href="../../cairo_sys/fn.cairo_region_xor.html">ffi::cairo_region_xor</a>(<a class="self" href="#263">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>(), <a href="#263">other</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>());
+            <a href="utils.rs.html#21-26">status_to_result</a>(<a href="#265">status</a>)
         }
     }
 
     <span class="attr">#[doc(alias = <span class="string">"cairo_region_xor_rectangle"</span>)]
-    </span><span class="kw">pub fn </span>xor_rectangle(<span class="kw-2">&amp;</span><span class="self">self</span>, rectangle: <span class="kw-2">&amp;</span><a href="rectangle_int.rs.html#13">RectangleInt</a>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="error.rs.html#10-150">Error</a>&gt; {
+    </span><span class="kw">pub fn </span>xor_rectangle(<span class="kw-2">&amp;</span><span class="self">self</span>, rectangle: <span class="kw-2">&amp;</span><a href="rectangle_int.rs.html#15">RectangleInt</a>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="error.rs.html#11-151">Error</a>&gt; {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>status = <a href="../../cairo_sys/fn.cairo_region_xor_rectangle.html">ffi::cairo_region_xor_rectangle</a>(<a class="self" href="#270">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>(), <a href="#270">rectangle</a>.<a href="rectangle_int.rs.html#143-145">to_raw_none</a>());
-            <a href="utils.rs.html#21-26">status_to_result</a>(<a href="#272">status</a>)
+            <span class="kw">let </span>status = <a href="../../cairo_sys/fn.cairo_region_xor_rectangle.html">ffi::cairo_region_xor_rectangle</a>(<a class="self" href="#271">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>(), <a href="#271">rectangle</a>.<a href="rectangle_int.rs.html#145-147">to_raw_none</a>());
+            <a href="utils.rs.html#21-26">status_to_result</a>(<a href="#273">status</a>)
         }
     }
 
     <span class="attr">#[doc(alias = <span class="string">"cairo_region_status"</span>)]
-    </span><span class="kw">pub fn </span>status(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="error.rs.html#10-150">Error</a>&gt; {
-        <span class="kw">let </span>status = <span class="kw">unsafe </span>{ <a href="../../cairo_sys/fn.cairo_region_status.html">ffi::cairo_region_status</a>(<a class="self" href="#278">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>()) };
-        <a href="utils.rs.html#21-26">status_to_result</a>(<a href="#279">status</a>)
+    </span><span class="kw">pub fn </span>status(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="error.rs.html#11-151">Error</a>&gt; {
+        <span class="kw">let </span>status = <span class="kw">unsafe </span>{ <a href="../../cairo_sys/fn.cairo_region_status.html">ffi::cairo_region_status</a>(<a class="self" href="#279">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>()) };
+        <a href="utils.rs.html#21-26">status_to_result</a>(<a href="#280">status</a>)
     }
 }
 </code></pre></div></section></main></body></html>

@@ -147,10 +147,12 @@
 <a href="#74" id="74">74</a>
 <a href="#75" id="75">75</a>
 <a href="#76" id="76">76</a>
+<a href="#77" id="77">77</a>
 </pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
 </span><span class="kw">use </span>std::{<a href="https://doc.rust-lang.org/nightly/alloc/fmt/index.html">fmt</a>, <a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">marker::PhantomData</a>, <a href="https://doc.rust-lang.org/nightly/core/ptr/index.html">ptr</a>};
 
+<span class="kw">use </span><a href="../../gio_sys/index.html"><span class="kw">crate</span>::ffi</a>;
 <span class="kw">use </span>glib::{<a href="../../glib/translate/index.html">translate</a>::<span class="kw-2">*</span>, <a href="../../glib/types/struct.Type.html">Type</a>};
 
 <span class="comment">// rustdoc-stripper-ignore-next
@@ -162,34 +164,34 @@
 #[derive(Copy, Clone, Eq, PartialEq)]
 </span><span class="kw">pub struct </span><a href="../../gio/struct.IOExtension.html">IOExtension</a>(ptr::NonNull&lt;<a href="../../gio_sys/type.GIOExtension.html">ffi::GIOExtension</a>&gt;);
 
-<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html">fmt::Debug</a> <span class="kw">for </span><a href="#14">IOExtension</a> {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html">fmt::Debug</a> <span class="kw">for </span><a href="#15">IOExtension</a> {
     <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span><a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html">fmt::Formatter</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/core/fmt/type.Result.html">fmt::Result</a> {
-        <a href="#17">f</a>.<a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html#method.debug_struct">debug_struct</a>(<span class="string">"IOExtension"</span>)
-            .<a href="https://doc.rust-lang.org/nightly/core/fmt/builders/struct.DebugStruct.html#method.field">field</a>(<span class="string">"name"</span>, <span class="kw-2">&amp;</span><a class="self" href="#17">self</a>.<a href="#53-55">name</a>())
-            .<a href="https://doc.rust-lang.org/nightly/core/fmt/builders/struct.DebugStruct.html#method.field">field</a>(<span class="string">"priority"</span>, <span class="kw-2">&amp;</span><a class="self" href="#17">self</a>.<a href="#63-65">priority</a>())
-            .<a href="https://doc.rust-lang.org/nightly/core/fmt/builders/struct.DebugStruct.html#method.field">field</a>(<span class="string">"type"</span>, <span class="kw-2">&amp;</span><a class="self" href="#17">self</a>.<a href="#73-75">type_</a>())
+        <a href="#18">f</a>.<a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html#method.debug_struct">debug_struct</a>(<span class="string">"IOExtension"</span>)
+            .<a href="https://doc.rust-lang.org/nightly/core/fmt/builders/struct.DebugStruct.html#method.field">field</a>(<span class="string">"name"</span>, <span class="kw-2">&amp;</span><a class="self" href="#18">self</a>.<a href="#54-56">name</a>())
+            .<a href="https://doc.rust-lang.org/nightly/core/fmt/builders/struct.DebugStruct.html#method.field">field</a>(<span class="string">"priority"</span>, <span class="kw-2">&amp;</span><a class="self" href="#18">self</a>.<a href="#64-66">priority</a>())
+            .<a href="https://doc.rust-lang.org/nightly/core/fmt/builders/struct.DebugStruct.html#method.field">field</a>(<span class="string">"type"</span>, <span class="kw-2">&amp;</span><a class="self" href="#18">self</a>.<a href="#74-76">type_</a>())
             .<a href="https://doc.rust-lang.org/nightly/core/fmt/builders/struct.DebugStruct.html#method.finish">finish</a>()
     }
 }
 
-<span class="kw">impl </span>FromGlibPtrNone&lt;<span class="kw-2">*mut </span><a href="../../gio_sys/type.GIOExtension.html">ffi::GIOExtension</a>&gt; <span class="kw">for </span><a href="#14">IOExtension</a> {
+<span class="kw">impl </span>FromGlibPtrNone&lt;<span class="kw-2">*mut </span><a href="../../gio_sys/type.GIOExtension.html">ffi::GIOExtension</a>&gt; <span class="kw">for </span><a href="#15">IOExtension</a> {
     <span class="attr">#[inline]
     </span><span class="kw">unsafe fn </span>from_glib_none(ptr: <span class="kw-2">*mut </span><a href="../../gio_sys/type.GIOExtension.html">ffi::GIOExtension</a>) -&gt; <span class="self">Self </span>{
         <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert.html">debug_assert!</a>(!ptr.is_null());
-        <a href="#14">IOExtension</a>(<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.new_unchecked">ptr::NonNull::new_unchecked</a>(<a href="#28">ptr</a>))
+        <a href="#15">IOExtension</a>(<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.new_unchecked">ptr::NonNull::new_unchecked</a>(<a href="#29">ptr</a>))
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; ToGlibPtr&lt;<span class="lifetime">'a</span>, <span class="kw-2">*mut </span><a href="../../gio_sys/type.GIOExtension.html">ffi::GIOExtension</a>&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#14">IOExtension</a> {
-    <span class="kw">type </span>Storage = PhantomData&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#14">IOExtension</a>&gt;;
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; ToGlibPtr&lt;<span class="lifetime">'a</span>, <span class="kw-2">*mut </span><a href="../../gio_sys/type.GIOExtension.html">ffi::GIOExtension</a>&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#15">IOExtension</a> {
+    <span class="kw">type </span>Storage = PhantomData&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#15">IOExtension</a>&gt;;
 
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>to_glib_none(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Stash&lt;<span class="lifetime">'a</span>, <span class="kw-2">*mut </span><a href="../../gio_sys/type.GIOExtension.html">ffi::GIOExtension</a>, <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#14">IOExtension</a>&gt; {
-        <a href="../../glib/translate/struct.Stash.html">Stash</a>(<a class="self" href="#38">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><a href="../../gio_sys/type.GIOExtension.html">ffi::GIOExtension</a>, <a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">PhantomData</a>)
+    </span><span class="kw">fn </span>to_glib_none(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Stash&lt;<span class="lifetime">'a</span>, <span class="kw-2">*mut </span><a href="../../gio_sys/type.GIOExtension.html">ffi::GIOExtension</a>, <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#15">IOExtension</a>&gt; {
+        <a href="../../glib/translate/struct.Stash.html">Stash</a>(<a class="self" href="#39">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><a href="../../gio_sys/type.GIOExtension.html">ffi::GIOExtension</a>, <a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">PhantomData</a>)
     }
 }
 
-<span class="kw">impl </span><a href="#14">IOExtension</a> {
+<span class="kw">impl </span><a href="#15">IOExtension</a> {
     <span class="doccomment">/// Gets the name under which @self was registered.
     ///
     /// Note that the same type may be registered as extension
@@ -200,7 +202,7 @@
     /// the name of @self.
     </span><span class="attr">#[doc(alias = <span class="string">"g_io_extension_get_name"</span>)]
     </span><span class="kw">pub fn </span>name(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="../../glib/gstring/struct.GString.html">glib::GString</a> {
-        <span class="kw">unsafe </span>{ <a href="../../glib/translate/fn.from_glib_none.html">from_glib_none</a>(<a href="../../gio_sys/fn.g_io_extension_get_name.html">ffi::g_io_extension_get_name</a>(<a class="self" href="#53">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>())) }
+        <span class="kw">unsafe </span>{ <a href="../../glib/translate/fn.from_glib_none.html">from_glib_none</a>(<a href="../../gio_sys/fn.g_io_extension_get_name.html">ffi::g_io_extension_get_name</a>(<a class="self" href="#54">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>())) }
     }
 
     <span class="doccomment">/// Gets the priority with which @self was registered.
@@ -210,7 +212,7 @@
     /// the priority of @self
     </span><span class="attr">#[doc(alias = <span class="string">"g_io_extension_get_priority"</span>)]
     </span><span class="kw">pub fn </span>priority(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a> {
-        <span class="kw">unsafe </span>{ <a href="../../gio_sys/fn.g_io_extension_get_priority.html">ffi::g_io_extension_get_priority</a>(<a class="self" href="#63">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>()) }
+        <span class="kw">unsafe </span>{ <a href="../../gio_sys/fn.g_io_extension_get_priority.html">ffi::g_io_extension_get_priority</a>(<a class="self" href="#64">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>()) }
     }
 
     <span class="doccomment">/// Gets the type associated with @self.
@@ -220,7 +222,7 @@
     /// the type of @self
     </span><span class="attr">#[doc(alias = <span class="string">"g_io_extension_get_type"</span>)]
     </span><span class="kw">pub fn </span>type_(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="../../glib/types/struct.Type.html">Type</a> {
-        <span class="kw">unsafe </span>{ <a href="../../glib/translate/fn.from_glib.html">from_glib</a>(<a href="../../gio_sys/fn.g_io_extension_get_type.html">ffi::g_io_extension_get_type</a>(<a class="self" href="#73">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>())) }
+        <span class="kw">unsafe </span>{ <a href="../../glib/translate/fn.from_glib.html">from_glib</a>(<a href="../../gio_sys/fn.g_io_extension_get_type.html">ffi::g_io_extension_get_type</a>(<a class="self" href="#74">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>())) }
     }
 }
 </code></pre></div></section></main></body></html>

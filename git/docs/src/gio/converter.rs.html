@@ -239,14 +239,14 @@
 
 <span class="kw">use </span>glib::{<a href="../../glib/prelude/index.html">prelude</a>::<span class="kw-2">*</span>, <a href="../../glib/translate/index.html">translate</a>::<span class="kw-2">*</span>};
 
-<span class="kw">use crate</span>::{<a href="auto/converter.rs.html#7-27">Converter</a>, <a href="auto/flags.rs.html#519-534">ConverterFlags</a>, <a href="auto/enums.rs.html#116-131">ConverterResult</a>};
+<span class="kw">use crate</span>::{<a href="../../gio_sys/index.html">ffi</a>, <a href="auto/converter.rs.html#8-28">Converter</a>, <a href="auto/flags.rs.html#520-535">ConverterFlags</a>, <a href="auto/enums.rs.html#117-132">ConverterResult</a>};
 
 <span class="kw">mod </span>sealed {
     <span class="kw">pub trait </span>Sealed {}
-    <span class="kw">impl</span>&lt;T: <span class="kw">super</span>::IsA&lt;<a href="auto/converter.rs.html#7-27"><span class="kw">super</span>::Converter</a>&gt;&gt; <a href="#10">Sealed</a> <span class="kw">for </span>T {}
+    <span class="kw">impl</span>&lt;T: <span class="kw">super</span>::IsA&lt;<a href="auto/converter.rs.html#8-28"><span class="kw">super</span>::Converter</a>&gt;&gt; <a href="#10">Sealed</a> <span class="kw">for </span>T {}
 }
 
-<span class="kw">pub trait </span><a href="../../gio/prelude/trait.ConverterExtManual.html">ConverterExtManual</a>: <a href="#10">sealed::Sealed</a> + IsA&lt;<a href="auto/converter.rs.html#7-27">Converter</a>&gt; + <span class="lifetime">'static </span>{
+<span class="kw">pub trait </span><a href="../../gio/prelude/trait.ConverterExtManual.html">ConverterExtManual</a>: <a href="#10">sealed::Sealed</a> + IsA&lt;<a href="auto/converter.rs.html#8-28">Converter</a>&gt; + <span class="lifetime">'static </span>{
     <span class="doccomment">/// This is the main operation used when converting data. It is to be called
     /// multiple times in a loop, and each time it will do some work, i.e.
     /// producing some output (in @outbuf) or consuming some input (from @inbuf) or
@@ -354,8 +354,8 @@
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         inbuf: IN,
         outbuf: OUT,
-        flags: <a href="auto/flags.rs.html#519-534">ConverterFlags</a>,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;(<a href="auto/enums.rs.html#116-131">ConverterResult</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>), <a href="../../glib/error/struct.Error.html">glib::Error</a>&gt; {
+        flags: <a href="auto/flags.rs.html#520-535">ConverterFlags</a>,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;(<a href="auto/enums.rs.html#117-132">ConverterResult</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>), <a href="../../glib/error/struct.Error.html">glib::Error</a>&gt; {
         <span class="kw">let </span>inbuf: Box&lt;IN&gt; = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">Box::new</a>(<a href="#120">inbuf</a>);
         <span class="kw">let </span>(inbuf_size, inbuf) = {
             <span class="kw">let </span>slice = (<span class="kw-2">*</span><a href="#124">inbuf</a>).<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>();
@@ -394,5 +394,5 @@
     }
 }
 
-<span class="kw">impl</span>&lt;O: IsA&lt;<a href="auto/converter.rs.html#7-27">Converter</a>&gt;&gt; <a href="#14-160">ConverterExtManual</a> <span class="kw">for </span>O {}
+<span class="kw">impl</span>&lt;O: IsA&lt;<a href="auto/converter.rs.html#8-28">Converter</a>&gt;&gt; <a href="#14-160">ConverterExtManual</a> <span class="kw">for </span>O {}
 </code></pre></div></section></main></body></html>

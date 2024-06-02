@@ -312,7 +312,7 @@
 
 <span class="kw">use </span>glib::{<a href="../../glib/translate/index.html">translate</a>::<span class="kw-2">*</span>, <a href="../../glib/collections/slist/struct.SList.html">SList</a>};
 
-<span class="kw">use crate</span>::{<a href="auto/enums.rs.html#124-254">AttrType</a>, <a href="auto/attribute.rs.html#9-26">Attribute</a>, <a href="auto/font_description.rs.html#8-23">FontDescription</a>, <a href="auto/language.rs.html#8-22">Language</a>};
+<span class="kw">use crate</span>::{<a href="../../pango_sys/index.html">ffi</a>, <a href="auto/enums.rs.html#124-254">AttrType</a>, <a href="auto/attribute.rs.html#10-27">Attribute</a>, <a href="auto/font_description.rs.html#8-23">FontDescription</a>, <a href="auto/language.rs.html#8-22">Language</a>};
 
 <span class="doccomment">/// A [`AttrIterator`][crate::AttrIterator] is used to iterate through a [`AttrList`][crate::AttrList].
 ///
@@ -360,7 +360,7 @@
 
 <span class="kw">impl</span>&lt;<span class="lifetime">'list</span>&gt; AttrIterator&lt;<span class="lifetime">'list</span>&gt; {
     <span class="attr">#[doc(alias = <span class="string">"pango_attr_iterator_get"</span>)]
-    </span><span class="kw">pub fn </span>get(<span class="kw-2">&amp;</span><span class="self">self</span>, type_: <a href="auto/enums.rs.html#124-254">AttrType</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="auto/attribute.rs.html#9-26">Attribute</a>&gt; {
+    </span><span class="kw">pub fn </span>get(<span class="kw-2">&amp;</span><span class="self">self</span>, type_: <a href="auto/enums.rs.html#124-254">AttrType</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="auto/attribute.rs.html#10-27">Attribute</a>&gt; {
         <span class="kw">unsafe </span>{
             <a href="../../glib/translate/fn.from_glib_none.html">from_glib_none</a>(<a href="../../pango_sys/fn.pango_attr_iterator_get.html">ffi::pango_attr_iterator_get</a>(
                 <a href="../../glib/translate/fn.mut_override.html">mut_override</a>(<a class="self" href="#55">self</a>.<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>),
@@ -371,7 +371,7 @@
 
     <span class="attr">#[doc(alias = <span class="string">"pango_attr_iterator_get_attrs"</span>)]
     #[doc(alias = <span class="string">"get_attrs"</span>)]
-    </span><span class="kw">pub fn </span>attrs(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; SList&lt;<a href="auto/attribute.rs.html#9-26">Attribute</a>&gt; {
+    </span><span class="kw">pub fn </span>attrs(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; SList&lt;<a href="auto/attribute.rs.html#10-27">Attribute</a>&gt; {
         <span class="kw">unsafe </span>{
             <a href="../../glib/translate/trait.FromGlibPtrContainer.html#tymethod.from_glib_full">FromGlibPtrContainer::from_glib_full</a>(<a href="../../pango_sys/fn.pango_attr_iterator_get_attrs.html">ffi::pango_attr_iterator_get_attrs</a>(<a href="../../glib/translate/fn.mut_override.html">mut_override</a>(
                 <a class="self" href="#66">self</a>.<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
@@ -401,7 +401,7 @@
     }
     <span class="attr">#[doc(alias = <span class="string">"pango_attr_iterator_get_font"</span>)]
     #[doc(alias = <span class="string">"get_font"</span>)]
-    </span><span class="kw">pub fn </span>font(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; (<a href="auto/font_description.rs.html#8-23">FontDescription</a>, <span class="prelude-ty">Option</span>&lt;<a href="auto/language.rs.html#8-22">Language</a>&gt;, SList&lt;<a href="auto/attribute.rs.html#9-26">Attribute</a>&gt;) {
+    </span><span class="kw">pub fn </span>font(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; (<a href="auto/font_description.rs.html#8-23">FontDescription</a>, <span class="prelude-ty">Option</span>&lt;<a href="auto/language.rs.html#8-22">Language</a>&gt;, SList&lt;<a href="auto/attribute.rs.html#10-27">Attribute</a>&gt;) {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>desc = <a href="auto/font_description.rs.html#33-35">FontDescription::new</a>();
             <span class="kw">let </span><span class="kw-2">mut </span>language = <a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.uninit">mem::MaybeUninit::uninit</a>();
@@ -424,7 +424,7 @@
 }
 
 <span class="kw">impl</span>&lt;<span class="lifetime">'list</span>&gt; <a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.IntoIterator.html">IntoIterator</a> <span class="kw">for </span>AttrIterator&lt;<span class="lifetime">'list</span>&gt; {
-    <span class="kw">type </span>Item = SList&lt;<a href="auto/attribute.rs.html#9-26">Attribute</a>&gt;;
+    <span class="kw">type </span>Item = SList&lt;<a href="auto/attribute.rs.html#10-27">Attribute</a>&gt;;
     <span class="kw">type </span>IntoIter = AttrIntoIter&lt;<span class="lifetime">'list</span>&gt;;
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>into_iter(<span class="self">self</span>) -&gt; <span class="self">Self</span>::IntoIter {
@@ -437,7 +437,7 @@
 </span><span class="kw">pub struct </span><a href="../../pango/struct.AttrIntoIter.html">AttrIntoIter</a>&lt;<span class="lifetime">'list</span>&gt;(<span class="prelude-ty">Option</span>&lt;AttrIterator&lt;<span class="lifetime">'list</span>&gt;&gt;);
 
 <span class="kw">impl</span>&lt;<span class="lifetime">'list</span>&gt; <a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html">Iterator</a> <span class="kw">for </span>AttrIntoIter&lt;<span class="lifetime">'list</span>&gt; {
-    <span class="kw">type </span>Item = SList&lt;<a href="auto/attribute.rs.html#9-26">Attribute</a>&gt;;
+    <span class="kw">type </span>Item = SList&lt;<a href="auto/attribute.rs.html#10-27">Attribute</a>&gt;;
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>next(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>::Item&gt; {
         <span class="kw">if let </span><span class="prelude-val">Some</span>(iter) = <span class="kw-2">&amp;mut </span><a class="self" href="#134">self</a>.<span class="number">0 </span>{

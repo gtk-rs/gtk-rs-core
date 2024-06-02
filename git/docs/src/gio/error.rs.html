@@ -124,30 +124,30 @@
 </span><span class="kw">use </span><a href="../../glib/translate/index.html"><span class="kw">crate</span>::glib::translate</a>::<span class="kw-2">*</span>;
 <span class="attr">#[cfg(feature = <span class="string">"v2_74"</span>)]
 </span><span class="kw">use </span><a href="../../glib/auto/enums/enum.FileError.html"><span class="kw">crate</span>::glib::FileError</a>;
-<span class="kw">use </span><a href="auto/enums.rs.html#1654-1817"><span class="kw">crate</span>::IOErrorEnum</a>;
+<span class="kw">use </span><a href="auto/enums.rs.html#1655-1818"><span class="kw">crate</span>::IOErrorEnum</a>;
 
-<span class="kw">impl </span>From&lt;<a href="auto/enums.rs.html#1654-1817">IOErrorEnum</a>&gt; <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/std/io/error/enum.ErrorKind.html">io::ErrorKind</a> {
-    <span class="kw">fn </span>from(kind: <a href="auto/enums.rs.html#1654-1817">IOErrorEnum</a>) -&gt; <span class="self">Self </span>{
+<span class="kw">impl </span>From&lt;<a href="auto/enums.rs.html#1655-1818">IOErrorEnum</a>&gt; <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/std/io/error/enum.ErrorKind.html">io::ErrorKind</a> {
+    <span class="kw">fn </span>from(kind: <a href="auto/enums.rs.html#1655-1818">IOErrorEnum</a>) -&gt; <span class="self">Self </span>{
         <span class="kw">match </span><a href="#12">kind</a> {
-            <a href="auto/enums.rs.html#1661">IOErrorEnum::NotFound</a> =&gt; <span class="self">Self</span>::NotFound,
-            <a href="auto/enums.rs.html#1664">IOErrorEnum::Exists</a> =&gt; <span class="self">Self</span>::AlreadyExists,
-            <a href="auto/enums.rs.html#1688">IOErrorEnum::InvalidFilename</a> =&gt; <span class="self">Self</span>::InvalidInput,
-            <a href="auto/enums.rs.html#1697">IOErrorEnum::InvalidArgument</a> =&gt; <span class="self">Self</span>::InvalidInput,
-            <a href="auto/enums.rs.html#1700">IOErrorEnum::PermissionDenied</a> =&gt; <span class="self">Self</span>::PermissionDenied,
-            <a href="auto/enums.rs.html#1760">IOErrorEnum::AddressInUse</a> =&gt; <span class="self">Self</span>::AddrInUse,
-            <a href="auto/enums.rs.html#1730">IOErrorEnum::TimedOut</a> =&gt; <span class="self">Self</span>::TimedOut,
-            <a href="auto/enums.rs.html#1739">IOErrorEnum::WouldBlock</a> =&gt; <span class="self">Self</span>::WouldBlock,
-            <a href="auto/enums.rs.html#1766">IOErrorEnum::InvalidData</a> =&gt; <span class="self">Self</span>::InvalidData,
-            <a href="auto/enums.rs.html#1782">IOErrorEnum::ConnectionRefused</a> =&gt; <span class="self">Self</span>::ConnectionRefused,
-            <a href="auto/enums.rs.html#1798">IOErrorEnum::BrokenPipe</a> =&gt; <span class="self">Self</span>::BrokenPipe,
-            <a href="auto/enums.rs.html#1801">IOErrorEnum::NotConnected</a> =&gt; <span class="self">Self</span>::NotConnected,
+            <a href="auto/enums.rs.html#1662">IOErrorEnum::NotFound</a> =&gt; <span class="self">Self</span>::NotFound,
+            <a href="auto/enums.rs.html#1665">IOErrorEnum::Exists</a> =&gt; <span class="self">Self</span>::AlreadyExists,
+            <a href="auto/enums.rs.html#1689">IOErrorEnum::InvalidFilename</a> =&gt; <span class="self">Self</span>::InvalidInput,
+            <a href="auto/enums.rs.html#1698">IOErrorEnum::InvalidArgument</a> =&gt; <span class="self">Self</span>::InvalidInput,
+            <a href="auto/enums.rs.html#1701">IOErrorEnum::PermissionDenied</a> =&gt; <span class="self">Self</span>::PermissionDenied,
+            <a href="auto/enums.rs.html#1761">IOErrorEnum::AddressInUse</a> =&gt; <span class="self">Self</span>::AddrInUse,
+            <a href="auto/enums.rs.html#1731">IOErrorEnum::TimedOut</a> =&gt; <span class="self">Self</span>::TimedOut,
+            <a href="auto/enums.rs.html#1740">IOErrorEnum::WouldBlock</a> =&gt; <span class="self">Self</span>::WouldBlock,
+            <a href="auto/enums.rs.html#1767">IOErrorEnum::InvalidData</a> =&gt; <span class="self">Self</span>::InvalidData,
+            <a href="auto/enums.rs.html#1783">IOErrorEnum::ConnectionRefused</a> =&gt; <span class="self">Self</span>::ConnectionRefused,
+            <a href="auto/enums.rs.html#1799">IOErrorEnum::BrokenPipe</a> =&gt; <span class="self">Self</span>::BrokenPipe,
+            <a href="auto/enums.rs.html#1802">IOErrorEnum::NotConnected</a> =&gt; <span class="self">Self</span>::NotConnected,
             <span class="kw">_ </span>=&gt; <span class="self">Self</span>::Other,
         }
     }
 }
 
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>to_std_io_result&lt;T&gt;(result: <span class="prelude-ty">Result</span>&lt;T, <a href="../../glib/error/struct.Error.html">glib::Error</a>&gt;) -&gt; io::Result&lt;T&gt; {
-    <a href="#31">result</a>.<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.map_err">map_err</a>(|g_error| <span class="kw">match </span><a href="#32">g_error</a>.<a href="../../glib/error/struct.Error.html#method.kind">kind</a>::&lt;<a href="auto/enums.rs.html#1654-1817">IOErrorEnum</a>&gt;() {
+    <a href="#31">result</a>.<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.map_err">map_err</a>(|g_error| <span class="kw">match </span><a href="#32">g_error</a>.<a href="../../glib/error/struct.Error.html#method.kind">kind</a>::&lt;<a href="auto/enums.rs.html#1655-1818">IOErrorEnum</a>&gt;() {
         <span class="prelude-val">Some</span>(io_error_enum) =&gt; <a href="https://doc.rust-lang.org/nightly/std/io/error/struct.Error.html#method.new">io::Error::new</a>(<a href="#33">io_error_enum</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>(), <a href="#32">g_error</a>),
         <span class="prelude-val">None </span>=&gt; <a href="https://doc.rust-lang.org/nightly/std/io/error/struct.Error.html#method.new">io::Error::new</a>(<a href="https://doc.rust-lang.org/nightly/std/io/error/enum.ErrorKind.html#variant.Other">io::ErrorKind::Other</a>, <a href="#32">g_error</a>),
     })
@@ -155,10 +155,10 @@
 
 <span class="attr">#[cfg(feature = <span class="string">"v2_74"</span>)]
 #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"v2_74"</span>)))]
-</span><span class="kw">impl </span>From&lt;<a href="../../glib/auto/enums/enum.FileError.html">FileError</a>&gt; <span class="kw">for </span><a href="auto/enums.rs.html#1654-1817">IOErrorEnum</a> {
+</span><span class="kw">impl </span>From&lt;<a href="../../glib/auto/enums/enum.FileError.html">FileError</a>&gt; <span class="kw">for </span><a href="auto/enums.rs.html#1655-1818">IOErrorEnum</a> {
     <span class="attr">#[doc(alias = <span class="string">"g_io_error_from_file_error"</span>)]
     </span><span class="kw">fn </span>from(e: <a href="../../glib/auto/enums/enum.FileError.html">FileError</a>) -&gt; <span class="self">Self </span>{
-        <span class="kw">unsafe </span>{ <a href="../../glib/translate/fn.from_glib.html">from_glib</a>(<a href="../../gio_sys/fn.g_io_error_from_file_error.html">ffi::g_io_error_from_file_error</a>(<a href="#42">e</a>.<a href="../../glib/translate/trait.IntoGlib.html#tymethod.into_glib">into_glib</a>())) }
+        <span class="kw">unsafe </span>{ <a href="../../glib/translate/fn.from_glib.html">from_glib</a>(<a href="../../gio_sys/fn.g_io_error_from_file_error.html"><span class="kw">crate</span>::ffi::g_io_error_from_file_error</a>(<a href="#42">e</a>.<a href="../../glib/translate/trait.IntoGlib.html#tymethod.into_glib">into_glib</a>())) }
     }
 }
 </code></pre></div></section></main></body></html>

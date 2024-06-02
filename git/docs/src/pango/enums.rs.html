@@ -201,9 +201,13 @@
 <a href="#128" id="128">128</a>
 <a href="#129" id="129">129</a>
 <a href="#130" id="130">130</a>
+<a href="#131" id="131">131</a>
+<a href="#132" id="132">132</a>
 </pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
 </span><span class="attr">#[cfg(feature = <span class="string">"v1_50"</span>)]
+</span><span class="kw">use </span><a href="../../pango_sys/index.html"><span class="kw">crate</span>::ffi</a>;
+<span class="attr">#[cfg(feature = <span class="string">"v1_50"</span>)]
 </span><span class="kw">use </span>glib::{<a href="../../glib/prelude/index.html">prelude</a>::<span class="kw-2">*</span>, <a href="../../glib/translate/index.html">translate</a>::<span class="kw-2">*</span>, <a href="../../glib/quark/struct.Quark.html">Quark</a>};
 
 <span class="doccomment">/// Errors that can be returned by `Pango::Layout::deserialize()`.
@@ -230,16 +234,16 @@
 <span class="attr">#[cfg(feature = <span class="string">"v1_50"</span>)]
 #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"v1_50"</span>)))]
 #[doc(hidden)]
-</span><span class="kw">impl </span><a href="../../glib/translate/trait.IntoGlib.html">IntoGlib</a> <span class="kw">for </span><a href="#11-25">LayoutDeserializeError</a> {
+</span><span class="kw">impl </span><a href="../../glib/translate/trait.IntoGlib.html">IntoGlib</a> <span class="kw">for </span><a href="#13-27">LayoutDeserializeError</a> {
     <span class="kw">type </span>GlibType = <a href="../../pango_sys/type.PangoLayoutDeserializeError.html">ffi::PangoLayoutDeserializeError</a>;
 
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>into_glib(<span class="self">self</span>) -&gt; <a href="../../pango_sys/type.PangoLayoutDeserializeError.html">ffi::PangoLayoutDeserializeError</a> {
-        <span class="kw">match </span><span class="self"><a href="#34">self</a> </span>{
+        <span class="kw">match </span><span class="self"><a href="#36">self</a> </span>{
             <span class="self">Self</span>::Invalid =&gt; <a href="../../pango_sys/constant.PANGO_LAYOUT_DESERIALIZE_INVALID.html">ffi::PANGO_LAYOUT_DESERIALIZE_INVALID</a>,
             <span class="self">Self</span>::InvalidValue =&gt; <a href="../../pango_sys/constant.PANGO_LAYOUT_DESERIALIZE_INVALID_VALUE.html">ffi::PANGO_LAYOUT_DESERIALIZE_INVALID_VALUE</a>,
             <span class="self">Self</span>::MissingValue =&gt; <a href="../../pango_sys/constant.PANGO_LAYOUT_DESERIALIZE_MISSING_VALUE.html">ffi::PANGO_LAYOUT_DESERIALIZE_MISSING_VALUE</a>,
-            <span class="self">Self</span>::__Unknown(value) =&gt; <a href="#39">value</a>,
+            <span class="self">Self</span>::__Unknown(value) =&gt; <a href="#41">value</a>,
         }
     }
 }
@@ -247,21 +251,21 @@
 <span class="attr">#[cfg(feature = <span class="string">"v1_50"</span>)]
 #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"v1_50"</span>)))]
 #[doc(hidden)]
-</span><span class="kw">impl </span>FromGlib&lt;<a href="../../pango_sys/type.PangoLayoutDeserializeError.html">ffi::PangoLayoutDeserializeError</a>&gt; <span class="kw">for </span><a href="#11-25">LayoutDeserializeError</a> {
+</span><span class="kw">impl </span>FromGlib&lt;<a href="../../pango_sys/type.PangoLayoutDeserializeError.html">ffi::PangoLayoutDeserializeError</a>&gt; <span class="kw">for </span><a href="#13-27">LayoutDeserializeError</a> {
     <span class="attr">#[inline]
     </span><span class="kw">unsafe fn </span>from_glib(value: <a href="../../pango_sys/type.PangoLayoutDeserializeError.html">ffi::PangoLayoutDeserializeError</a>) -&gt; <span class="self">Self </span>{
-        <span class="kw">match </span><a href="#49">value</a> {
+        <span class="kw">match </span><a href="#51">value</a> {
             <a href="../../pango_sys/constant.PANGO_LAYOUT_DESERIALIZE_INVALID.html">ffi::PANGO_LAYOUT_DESERIALIZE_INVALID</a> =&gt; <span class="self">Self</span>::Invalid,
             <a href="../../pango_sys/constant.PANGO_LAYOUT_DESERIALIZE_INVALID_VALUE.html">ffi::PANGO_LAYOUT_DESERIALIZE_INVALID_VALUE</a> =&gt; <span class="self">Self</span>::InvalidValue,
             <a href="../../pango_sys/constant.PANGO_LAYOUT_DESERIALIZE_MISSING_VALUE.html">ffi::PANGO_LAYOUT_DESERIALIZE_MISSING_VALUE</a> =&gt; <span class="self">Self</span>::MissingValue,
-            value =&gt; <a href="#24"><span class="self">Self</span>::__Unknown</a>(<a href="#54">value</a>),
+            value =&gt; <a href="#26"><span class="self">Self</span>::__Unknown</a>(<a href="#56">value</a>),
         }
     }
 }
 
 <span class="attr">#[cfg(feature = <span class="string">"v1_50"</span>)]
 #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"v1_50"</span>)))]
-</span><span class="kw">impl </span><a href="../../glib/error/trait.ErrorDomain.html">ErrorDomain</a> <span class="kw">for </span><a href="#11-25">LayoutDeserializeError</a> {
+</span><span class="kw">impl </span><a href="../../glib/error/trait.ErrorDomain.html">ErrorDomain</a> <span class="kw">for </span><a href="#13-27">LayoutDeserializeError</a> {
     <span class="comment">// TODO: figure out why gir picks a non-existent quark function
     </span><span class="attr">#[doc(alias = <span class="string">"pango_layout_deserialize_error_quark"</span>)]
     </span><span class="kw">fn </span>domain() -&gt; <a href="../../glib/quark/struct.Quark.html">Quark</a> {
@@ -269,22 +273,22 @@
     }
 
     <span class="kw">fn </span>code(<span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a> {
-        <a class="self" href="#68">self</a>.<a href="../../glib/translate/trait.IntoGlib.html#tymethod.into_glib">into_glib</a>()
+        <a class="self" href="#70">self</a>.<a href="../../glib/translate/trait.IntoGlib.html#tymethod.into_glib">into_glib</a>()
     }
 
     <span class="kw">fn </span>from(code: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt; {
-        <span class="kw">match </span><a href="#72">code</a> {
+        <span class="kw">match </span><a href="#74">code</a> {
             <a href="../../pango_sys/constant.PANGO_LAYOUT_DESERIALIZE_INVALID.html">ffi::PANGO_LAYOUT_DESERIALIZE_INVALID</a> =&gt; <span class="prelude-val">Some</span>(<span class="self">Self</span>::Invalid),
             <a href="../../pango_sys/constant.PANGO_LAYOUT_DESERIALIZE_INVALID_VALUE.html">ffi::PANGO_LAYOUT_DESERIALIZE_INVALID_VALUE</a> =&gt; <span class="prelude-val">Some</span>(<span class="self">Self</span>::InvalidValue),
             <a href="../../pango_sys/constant.PANGO_LAYOUT_DESERIALIZE_MISSING_VALUE.html">ffi::PANGO_LAYOUT_DESERIALIZE_MISSING_VALUE</a> =&gt; <span class="prelude-val">Some</span>(<span class="self">Self</span>::MissingValue),
-            value =&gt; <span class="prelude-val">Some</span>(<a href="#24"><span class="self">Self</span>::__Unknown</a>(<a href="#77">value</a>)),
+            value =&gt; <span class="prelude-val">Some</span>(<a href="#26"><span class="self">Self</span>::__Unknown</a>(<a href="#79">value</a>)),
         }
     }
 }
 
 <span class="attr">#[cfg(feature = <span class="string">"v1_50"</span>)]
 #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"v1_50"</span>)))]
-</span><span class="kw">impl </span><a href="../../glib/types/trait.StaticType.html">StaticType</a> <span class="kw">for </span><a href="#11-25">LayoutDeserializeError</a> {
+</span><span class="kw">impl </span><a href="../../glib/types/trait.StaticType.html">StaticType</a> <span class="kw">for </span><a href="#13-27">LayoutDeserializeError</a> {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>static_type() -&gt; <a href="../../glib/types/struct.Type.html">glib::Type</a> {
         <span class="kw">unsafe </span>{ <a href="../../glib/translate/fn.from_glib.html">from_glib</a>(<a href="../../pango_sys/fn.pango_layout_deserialize_error_get_type.html">ffi::pango_layout_deserialize_error_get_type</a>()) }
@@ -293,29 +297,29 @@
 
 <span class="attr">#[cfg(feature = <span class="string">"v1_50"</span>)]
 #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"v1_50"</span>)))]
-</span><span class="kw">impl </span><a href="../../glib/value/trait.ValueType.html">glib::value::ValueType</a> <span class="kw">for </span><a href="#11-25">LayoutDeserializeError</a> {
+</span><span class="kw">impl </span><a href="../../glib/value/trait.ValueType.html">glib::value::ValueType</a> <span class="kw">for </span><a href="#13-27">LayoutDeserializeError</a> {
     <span class="kw">type </span>Type = <span class="self">Self</span>;
 }
 
 <span class="attr">#[cfg(feature = <span class="string">"v1_50"</span>)]
 #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"v1_50"</span>)))]
-</span><span class="kw">unsafe impl</span>&lt;<span class="lifetime">'a</span>&gt; glib::value::FromValue&lt;<span class="lifetime">'a</span>&gt; <span class="kw">for </span><a href="#11-25">LayoutDeserializeError</a> {
+</span><span class="kw">unsafe impl</span>&lt;<span class="lifetime">'a</span>&gt; glib::value::FromValue&lt;<span class="lifetime">'a</span>&gt; <span class="kw">for </span><a href="#13-27">LayoutDeserializeError</a> {
     <span class="kw">type </span>Checker = glib::value::GenericValueTypeChecker&lt;<span class="self">Self</span>&gt;;
 
     <span class="kw">unsafe fn </span>from_value(value: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="../../glib/value/struct.Value.html">glib::Value</a>) -&gt; <span class="self">Self </span>{
-        <a href="../../glib/translate/fn.from_glib.html">from_glib</a>(<a href="../../gobject_sys/fn.g_value_get_enum.html">glib::gobject_ffi::g_value_get_enum</a>(<a href="#102">value</a>.<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>))
+        <a href="../../glib/translate/fn.from_glib.html">from_glib</a>(<a href="../../gobject_sys/fn.g_value_get_enum.html">glib::gobject_ffi::g_value_get_enum</a>(<a href="#104">value</a>.<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>))
     }
 }
 
 <span class="attr">#[cfg(feature = <span class="string">"v1_50"</span>)]
 #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"v1_50"</span>)))]
-</span><span class="kw">impl </span><a href="../../glib/value/trait.ToValue.html">ToValue</a> <span class="kw">for </span><a href="#11-25">LayoutDeserializeError</a> {
+</span><span class="kw">impl </span><a href="../../glib/value/trait.ToValue.html">ToValue</a> <span class="kw">for </span><a href="#13-27">LayoutDeserializeError</a> {
     <span class="kw">fn </span>to_value(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="../../glib/value/struct.Value.html">glib::Value</a> {
         <span class="kw">let </span><span class="kw-2">mut </span>value = glib::Value::for_value_type::&lt;<span class="self">Self</span>&gt;();
         <span class="kw">unsafe </span>{
-            <a href="../../gobject_sys/fn.g_value_set_enum.html">glib::gobject_ffi::g_value_set_enum</a>(<a href="#111">value</a>.<a href="../../glib/translate/trait.ToGlibPtrMut.html#tymethod.to_glib_none_mut">to_glib_none_mut</a>().<span class="number">0</span>, <a class="self" href="#110">self</a>.<a href="../../glib/translate/trait.IntoGlib.html#tymethod.into_glib">into_glib</a>());
+            <a href="../../gobject_sys/fn.g_value_set_enum.html">glib::gobject_ffi::g_value_set_enum</a>(<a href="#113">value</a>.<a href="../../glib/translate/trait.ToGlibPtrMut.html#tymethod.to_glib_none_mut">to_glib_none_mut</a>().<span class="number">0</span>, <a class="self" href="#112">self</a>.<a href="../../glib/translate/trait.IntoGlib.html#tymethod.into_glib">into_glib</a>());
         }
-        <a href="#111">value</a>
+        <a href="#113">value</a>
     }
 
     <span class="kw">fn </span>value_type(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="../../glib/types/struct.Type.html">glib::Type</a> {
@@ -325,10 +329,10 @@
 
 <span class="attr">#[cfg(feature = <span class="string">"v1_50"</span>)]
 #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"v1_50"</span>)))]
-</span><span class="kw">impl </span>From&lt;<a href="#11-25">LayoutDeserializeError</a>&gt; <span class="kw">for </span><a href="../../glib/value/struct.Value.html">glib::Value</a> {
+</span><span class="kw">impl </span>From&lt;<a href="#13-27">LayoutDeserializeError</a>&gt; <span class="kw">for </span><a href="../../glib/value/struct.Value.html">glib::Value</a> {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>from(v: <a href="#11-25">LayoutDeserializeError</a>) -&gt; <span class="self">Self </span>{
-        <a href="#127">v</a>.<a href="../../glib/value/trait.ToValue.html#tymethod.to_value">to_value</a>()
+    </span><span class="kw">fn </span>from(v: <a href="#13-27">LayoutDeserializeError</a>) -&gt; <span class="self">Self </span>{
+        <a href="#129">v</a>.<a href="../../glib/value/trait.ToValue.html#tymethod.to_value">to_value</a>()
     }
 }
 </code></pre></div></section></main></body></html>
