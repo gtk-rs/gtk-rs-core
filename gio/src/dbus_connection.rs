@@ -22,87 +22,147 @@ pub struct FilterId(NonZeroU32);
 #[derive(Debug, Eq, PartialEq)]
 pub struct SignalSubscriptionId(NonZeroU32);
 
-impl DBusConnection {
-    #[doc(alias = "g_dbus_connection_register_object_with_closures")]
-    pub fn register_object<MethodCall, SetProperty, GetProperty>(
-        &self,
-        object_path: &str,
-        interface_info: &DBusInterfaceInfo,
-        method_call: MethodCall,
-        get_property: GetProperty,
-        set_property: SetProperty,
-    ) -> Result<RegistrationId, glib::Error>
-    where
-        MethodCall: Fn(DBusConnection, &str, &str, &str, &str, glib::Variant, DBusMethodInvocation)
-            + 'static,
-        GetProperty: Fn(DBusConnection, &str, &str, &str, &str) -> glib::Variant + 'static,
-        SetProperty: Fn(DBusConnection, &str, &str, &str, &str, glib::Variant) -> bool + 'static,
-    {
+#[must_use = "The builder must be built to be used"]
+pub struct RegistrationBuilder<'a> {
+    connection: &'a DBusConnection,
+    object_path: &'a str,
+    interface_info: &'a DBusInterfaceInfo,
+    #[allow(clippy::type_complexity)]
+    method_call: Option<
+        Box_<dyn Fn(DBusConnection, &str, &str, &str, &str, glib::Variant, DBusMethodInvocation)>,
+    >,
+    #[allow(clippy::type_complexity)]
+    get_property: Option<Box_<dyn Fn(DBusConnection, &str, &str, &str, &str) -> glib::Variant>>,
+    #[allow(clippy::type_complexity)]
+    set_property:
+        Option<Box_<dyn Fn(DBusConnection, &str, &str, &str, &str, glib::Variant) -> bool>>,
+}
+
+impl<'a> RegistrationBuilder<'a> {
+    pub fn method_call<
+        F: Fn(DBusConnection, &str, &str, &str, &str, glib::Variant, DBusMethodInvocation) + 'static,
+    >(
+        mut self,
+        f: F,
+    ) -> Self {
+        self.method_call = Some(Box_::new(f));
+        self
+    }
+
+    #[doc(alias = "get_property")]
+    pub fn property<F: Fn(DBusConnection, &str, &str, &str, &str) -> glib::Variant + 'static>(
+        mut self,
+        f: F,
+    ) -> Self {
+        self.get_property = Some(Box_::new(f));
+        self
+    }
+
+    pub fn set_property<
+        F: Fn(DBusConnection, &str, &str, &str, &str, glib::Variant) -> bool + 'static,
+    >(
+        mut self,
+        f: F,
+    ) -> Self {
+        self.set_property = Some(Box_::new(f));
+        self
+    }
+
+    pub fn build(self) -> Result<RegistrationId, glib::Error> {
         unsafe {
             let mut error = std::ptr::null_mut();
             let id = ffi::g_dbus_connection_register_object_with_closures(
-                self.to_glib_none().0,
-                object_path.to_glib_none().0,
-                interface_info.to_glib_none().0,
-                glib::Closure::new_local(move |args| {
-                    let conn = args[0].get::<DBusConnection>().unwrap();
-                    let sender = args[1].get::<&str>().unwrap();
-                    let object_path = args[2].get::<&str>().unwrap();
-                    let interface_name = args[3].get::<&str>().unwrap();
-                    let method_name = args[4].get::<&str>().unwrap();
-                    let parameters = args[5].get::<glib::Variant>().unwrap();
-                    let invocation = args[6].get::<DBusMethodInvocation>().unwrap();
-                    method_call(
-                        conn,
-                        sender,
-                        object_path,
-                        interface_name,
-                        method_name,
-                        parameters,
-                        invocation,
-                    );
-                    None
-                })
-                .to_glib_none()
-                .0,
-                glib::Closure::new_local(move |args| {
-                    let conn = args[0].get::<DBusConnection>().unwrap();
-                    let sender = args[1].get::<&str>().unwrap();
-                    let object_path = args[2].get::<&str>().unwrap();
-                    let interface_name = args[3].get::<&str>().unwrap();
-                    let property_name = args[4].get::<&str>().unwrap();
-                    let result =
-                        get_property(conn, sender, object_path, interface_name, property_name);
-                    Some(result.to_value())
-                })
-                .to_glib_none()
-                .0,
-                glib::Closure::new_local(move |args| {
-                    let conn = args[0].get::<DBusConnection>().unwrap();
-                    let sender = args[1].get::<&str>().unwrap();
-                    let object_path = args[2].get::<&str>().unwrap();
-                    let interface_name = args[3].get::<&str>().unwrap();
-                    let property_name = args[4].get::<&str>().unwrap();
-                    let value = args[5].get::<glib::Variant>().unwrap();
-                    let result = set_property(
-                        conn,
-                        sender,
-                        object_path,
-                        interface_name,
-                        property_name,
-                        value,
-                    );
-                    Some(result.to_value())
-                })
-                .to_glib_none()
-                .0,
+                self.connection.to_glib_none().0,
+                self.object_path.to_glib_none().0,
+                self.interface_info.to_glib_none().0,
+                self.method_call
+                    .map(|f| {
+                        glib::Closure::new_local(move |args| {
+                            let conn = args[0].get::<DBusConnection>().unwrap();
+                            let sender = args[1].get::<&str>().unwrap();
+                            let object_path = args[2].get::<&str>().unwrap();
+                            let interface_name = args[3].get::<&str>().unwrap();
+                            let method_name = args[4].get::<&str>().unwrap();
+                            let parameters = args[5].get::<glib::Variant>().unwrap();
+                            let invocation = args[6].get::<DBusMethodInvocation>().unwrap();
+                            f(
+                                conn,
+                                sender,
+                                object_path,
+                                interface_name,
+                                method_name,
+                                parameters,
+                                invocation,
+                            );
+                            None
+                        })
+                    })
+                    .to_glib_none()
+                    .0,
+                self.set_property
+                    .map(|f| {
+                        glib::Closure::new_local(move |args| {
+                            let conn = args[0].get::<DBusConnection>().unwrap();
+                            let sender = args[1].get::<&str>().unwrap();
+                            let object_path = args[2].get::<&str>().unwrap();
+                            let interface_name = args[3].get::<&str>().unwrap();
+                            let property_name = args[4].get::<&str>().unwrap();
+                            let value = args[5].get::<glib::Variant>().unwrap();
+                            let result = f(
+                                conn,
+                                sender,
+                                object_path,
+                                interface_name,
+                                property_name,
+                                value,
+                            );
+                            Some(result.to_value())
+                        })
+                    })
+                    .to_glib_none()
+                    .0,
+                self.get_property
+                    .map(|f| {
+                        glib::Closure::new_local(move |args| {
+                            let conn = args[0].get::<DBusConnection>().unwrap();
+                            let sender = args[1].get::<&str>().unwrap();
+                            let object_path = args[2].get::<&str>().unwrap();
+                            let interface_name = args[3].get::<&str>().unwrap();
+                            let property_name = args[4].get::<&str>().unwrap();
+                            let result =
+                                f(conn, sender, object_path, interface_name, property_name);
+                            Some(result.to_value())
+                        })
+                    })
+                    .to_glib_none()
+                    .0,
                 &mut error,
             );
+
             if error.is_null() {
                 Ok(RegistrationId(NonZeroU32::new_unchecked(id)))
             } else {
                 Err(from_glib_full(error))
             }
+        }
+    }
+}
+
+impl DBusConnection {
+    #[doc(alias = "g_dbus_connection_register_object")]
+    #[doc(alias = "g_dbus_connection_register_object_with_closures")]
+    pub fn register_object<'a>(
+        &'a self,
+        object_path: &'a str,
+        interface_info: &'a DBusInterfaceInfo,
+    ) -> RegistrationBuilder<'a> {
+        RegistrationBuilder {
+            connection: self,
+            object_path,
+            interface_info,
+            method_call: None,
+            get_property: None,
+            set_property: None,
         }
     }
 

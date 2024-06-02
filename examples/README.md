@@ -5,6 +5,7 @@ Consists of various examples of how to use the `gtk-rs-core` libraries. Note tha
 - [GIO Async TLS](./gio_async_tls/)
 - [GIO Futures](./gio_futures/)
 - [GIO Futures Await](./gio_futures_await/)
+- [GIO DBus Register Object](./gio_dbus_register_object/)
 - [GIO Task](./gio_task/)
 - [GIO Resources](./resources)
 - [Object Subclassing](./object_subclass)
