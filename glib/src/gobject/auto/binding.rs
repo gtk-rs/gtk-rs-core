@@ -26,6 +26,7 @@ impl Binding {
 
     #[doc(alias = "g_binding_get_source_property")]
     #[doc(alias = "get_source_property")]
+    #[doc(alias = "source-property")]
     pub fn source_property(&self) -> crate::GString {
         unsafe {
             from_glib_none(crate::gobject_ffi::g_binding_get_source_property(
@@ -36,6 +37,7 @@ impl Binding {
 
     #[doc(alias = "g_binding_get_target_property")]
     #[doc(alias = "get_target_property")]
+    #[doc(alias = "target-property")]
     pub fn target_property(&self) -> crate::GString {
         unsafe {
             from_glib_none(crate::gobject_ffi::g_binding_get_target_property(

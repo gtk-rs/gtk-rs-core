@@ -65,6 +65,7 @@ pub trait TlsConnectionExt: IsA<TlsConnection> + sealed::Sealed + 'static {
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
     #[doc(alias = "g_tls_connection_get_ciphersuite_name")]
     #[doc(alias = "get_ciphersuite_name")]
+    #[doc(alias = "ciphersuite-name")]
     fn ciphersuite_name(&self) -> Option<glib::GString> {
         unsafe {
             from_glib_full(ffi::g_tls_connection_get_ciphersuite_name(
@@ -97,6 +98,7 @@ pub trait TlsConnectionExt: IsA<TlsConnection> + sealed::Sealed + 'static {
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     #[doc(alias = "g_tls_connection_get_negotiated_protocol")]
     #[doc(alias = "get_negotiated_protocol")]
+    #[doc(alias = "negotiated-protocol")]
     fn negotiated_protocol(&self) -> Option<glib::GString> {
         unsafe {
             from_glib_none(ffi::g_tls_connection_get_negotiated_protocol(
@@ -107,6 +109,7 @@ pub trait TlsConnectionExt: IsA<TlsConnection> + sealed::Sealed + 'static {
 
     #[doc(alias = "g_tls_connection_get_peer_certificate")]
     #[doc(alias = "get_peer_certificate")]
+    #[doc(alias = "peer-certificate")]
     fn peer_certificate(&self) -> Option<TlsCertificate> {
         unsafe {
             from_glib_none(ffi::g_tls_connection_get_peer_certificate(
@@ -117,6 +120,7 @@ pub trait TlsConnectionExt: IsA<TlsConnection> + sealed::Sealed + 'static {
 
     #[doc(alias = "g_tls_connection_get_peer_certificate_errors")]
     #[doc(alias = "get_peer_certificate_errors")]
+    #[doc(alias = "peer-certificate-errors")]
     fn peer_certificate_errors(&self) -> TlsCertificateFlags {
         unsafe {
             from_glib(ffi::g_tls_connection_get_peer_certificate_errors(
@@ -129,6 +133,7 @@ pub trait TlsConnectionExt: IsA<TlsConnection> + sealed::Sealed + 'static {
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
     #[doc(alias = "g_tls_connection_get_protocol_version")]
     #[doc(alias = "get_protocol_version")]
+    #[doc(alias = "protocol-version")]
     fn protocol_version(&self) -> TlsProtocolVersion {
         unsafe {
             from_glib(ffi::g_tls_connection_get_protocol_version(
@@ -141,6 +146,7 @@ pub trait TlsConnectionExt: IsA<TlsConnection> + sealed::Sealed + 'static {
     #[allow(deprecated)]
     #[doc(alias = "g_tls_connection_get_rehandshake_mode")]
     #[doc(alias = "get_rehandshake_mode")]
+    #[doc(alias = "rehandshake-mode")]
     fn rehandshake_mode(&self) -> TlsRehandshakeMode {
         unsafe {
             from_glib(ffi::g_tls_connection_get_rehandshake_mode(
@@ -151,6 +157,7 @@ pub trait TlsConnectionExt: IsA<TlsConnection> + sealed::Sealed + 'static {
 
     #[doc(alias = "g_tls_connection_get_require_close_notify")]
     #[doc(alias = "get_require_close_notify")]
+    #[doc(alias = "require-close-notify")]
     fn requires_close_notify(&self) -> bool {
         unsafe {
             from_glib(ffi::g_tls_connection_get_require_close_notify(
@@ -243,6 +250,7 @@ pub trait TlsConnectionExt: IsA<TlsConnection> + sealed::Sealed + 'static {
     }
 
     #[doc(alias = "g_tls_connection_set_certificate")]
+    #[doc(alias = "certificate")]
     fn set_certificate(&self, certificate: &impl IsA<TlsCertificate>) {
         unsafe {
             ffi::g_tls_connection_set_certificate(
@@ -253,6 +261,7 @@ pub trait TlsConnectionExt: IsA<TlsConnection> + sealed::Sealed + 'static {
     }
 
     #[doc(alias = "g_tls_connection_set_database")]
+    #[doc(alias = "database")]
     fn set_database(&self, database: Option<&impl IsA<TlsDatabase>>) {
         unsafe {
             ffi::g_tls_connection_set_database(
@@ -263,6 +272,7 @@ pub trait TlsConnectionExt: IsA<TlsConnection> + sealed::Sealed + 'static {
     }
 
     #[doc(alias = "g_tls_connection_set_interaction")]
+    #[doc(alias = "interaction")]
     fn set_interaction(&self, interaction: Option<&impl IsA<TlsInteraction>>) {
         unsafe {
             ffi::g_tls_connection_set_interaction(
@@ -275,6 +285,7 @@ pub trait TlsConnectionExt: IsA<TlsConnection> + sealed::Sealed + 'static {
     #[cfg_attr(feature = "v2_60", deprecated = "Since 2.60")]
     #[allow(deprecated)]
     #[doc(alias = "g_tls_connection_set_rehandshake_mode")]
+    #[doc(alias = "rehandshake-mode")]
     fn set_rehandshake_mode(&self, mode: TlsRehandshakeMode) {
         unsafe {
             ffi::g_tls_connection_set_rehandshake_mode(
@@ -285,6 +296,7 @@ pub trait TlsConnectionExt: IsA<TlsConnection> + sealed::Sealed + 'static {
     }
 
     #[doc(alias = "g_tls_connection_set_require_close_notify")]
+    #[doc(alias = "require-close-notify")]
     fn set_require_close_notify(&self, require_close_notify: bool) {
         unsafe {
             ffi::g_tls_connection_set_require_close_notify(

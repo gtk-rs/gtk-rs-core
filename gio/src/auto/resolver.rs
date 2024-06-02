@@ -557,6 +557,7 @@ pub trait ResolverExt: IsA<Resolver> + sealed::Sealed + 'static {
     #[cfg(feature = "v2_78")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_78")))]
     #[doc(alias = "g_resolver_set_timeout")]
+    #[doc(alias = "timeout")]
     fn set_timeout(&self, timeout_ms: u32) {
         unsafe {
             ffi::g_resolver_set_timeout(self.as_ref().to_glib_none().0, timeout_ms);

@@ -48,6 +48,7 @@ mod sealed {
 pub trait UnixFDMessageExt: IsA<UnixFDMessage> + sealed::Sealed + 'static {
     #[doc(alias = "g_unix_fd_message_get_fd_list")]
     #[doc(alias = "get_fd_list")]
+    #[doc(alias = "fd-list")]
     fn fd_list(&self) -> UnixFDList {
         unsafe {
             from_glib_none(ffi::g_unix_fd_message_get_fd_list(

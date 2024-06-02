@@ -110,6 +110,7 @@ pub trait PermissionExt: IsA<Permission> + sealed::Sealed + 'static {
 
     #[doc(alias = "g_permission_get_allowed")]
     #[doc(alias = "get_allowed")]
+    #[doc(alias = "allowed")]
     fn is_allowed(&self) -> bool {
         unsafe {
             from_glib(ffi::g_permission_get_allowed(
@@ -120,6 +121,7 @@ pub trait PermissionExt: IsA<Permission> + sealed::Sealed + 'static {
 
     #[doc(alias = "g_permission_get_can_acquire")]
     #[doc(alias = "get_can_acquire")]
+    #[doc(alias = "can-acquire")]
     fn can_acquire(&self) -> bool {
         unsafe {
             from_glib(ffi::g_permission_get_can_acquire(
@@ -130,6 +132,7 @@ pub trait PermissionExt: IsA<Permission> + sealed::Sealed + 'static {
 
     #[doc(alias = "g_permission_get_can_release")]
     #[doc(alias = "get_can_release")]
+    #[doc(alias = "can-release")]
     fn can_release(&self) -> bool {
         unsafe {
             from_glib(ffi::g_permission_get_can_release(

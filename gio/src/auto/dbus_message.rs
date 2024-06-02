@@ -158,6 +158,7 @@ impl DBusMessage {
 
     #[doc(alias = "g_dbus_message_get_locked")]
     #[doc(alias = "get_locked")]
+    #[doc(alias = "locked")]
     pub fn is_locked(&self) -> bool {
         unsafe { from_glib(ffi::g_dbus_message_get_locked(self.to_glib_none().0)) }
     }

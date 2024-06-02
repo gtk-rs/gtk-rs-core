@@ -31,6 +31,7 @@ mod sealed {
 pub trait FilterInputStreamExt: IsA<FilterInputStream> + sealed::Sealed + 'static {
     #[doc(alias = "g_filter_input_stream_get_base_stream")]
     #[doc(alias = "get_base_stream")]
+    #[doc(alias = "base-stream")]
     fn base_stream(&self) -> InputStream {
         unsafe {
             from_glib_none(ffi::g_filter_input_stream_get_base_stream(
@@ -41,6 +42,7 @@ pub trait FilterInputStreamExt: IsA<FilterInputStream> + sealed::Sealed + 'stati
 
     #[doc(alias = "g_filter_input_stream_get_close_base_stream")]
     #[doc(alias = "get_close_base_stream")]
+    #[doc(alias = "close-base-stream")]
     fn closes_base_stream(&self) -> bool {
         unsafe {
             from_glib(ffi::g_filter_input_stream_get_close_base_stream(
@@ -50,6 +52,7 @@ pub trait FilterInputStreamExt: IsA<FilterInputStream> + sealed::Sealed + 'stati
     }
 
     #[doc(alias = "g_filter_input_stream_set_close_base_stream")]
+    #[doc(alias = "close-base-stream")]
     fn set_close_base_stream(&self, close_base: bool) {
         unsafe {
             ffi::g_filter_input_stream_set_close_base_stream(

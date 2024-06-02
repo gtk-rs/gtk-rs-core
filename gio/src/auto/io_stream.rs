@@ -120,6 +120,7 @@ pub trait IOStreamExt: IsA<IOStream> + sealed::Sealed + 'static {
 
     #[doc(alias = "g_io_stream_get_input_stream")]
     #[doc(alias = "get_input_stream")]
+    #[doc(alias = "input-stream")]
     fn input_stream(&self) -> InputStream {
         unsafe {
             from_glib_none(ffi::g_io_stream_get_input_stream(
@@ -130,6 +131,7 @@ pub trait IOStreamExt: IsA<IOStream> + sealed::Sealed + 'static {
 
     #[doc(alias = "g_io_stream_get_output_stream")]
     #[doc(alias = "get_output_stream")]
+    #[doc(alias = "output-stream")]
     fn output_stream(&self) -> OutputStream {
         unsafe {
             from_glib_none(ffi::g_io_stream_get_output_stream(

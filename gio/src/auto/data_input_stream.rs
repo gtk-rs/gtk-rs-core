@@ -115,6 +115,7 @@ mod sealed {
 pub trait DataInputStreamExt: IsA<DataInputStream> + sealed::Sealed + 'static {
     #[doc(alias = "g_data_input_stream_get_byte_order")]
     #[doc(alias = "get_byte_order")]
+    #[doc(alias = "byte-order")]
     fn byte_order(&self) -> DataStreamByteOrder {
         unsafe {
             from_glib(ffi::g_data_input_stream_get_byte_order(
@@ -125,6 +126,7 @@ pub trait DataInputStreamExt: IsA<DataInputStream> + sealed::Sealed + 'static {
 
     #[doc(alias = "g_data_input_stream_get_newline_type")]
     #[doc(alias = "get_newline_type")]
+    #[doc(alias = "newline-type")]
     fn newline_type(&self) -> DataStreamNewlineType {
         unsafe {
             from_glib(ffi::g_data_input_stream_get_newline_type(
@@ -253,6 +255,7 @@ pub trait DataInputStreamExt: IsA<DataInputStream> + sealed::Sealed + 'static {
     }
 
     #[doc(alias = "g_data_input_stream_set_byte_order")]
+    #[doc(alias = "byte-order")]
     fn set_byte_order(&self, order: DataStreamByteOrder) {
         unsafe {
             ffi::g_data_input_stream_set_byte_order(
@@ -263,6 +266,7 @@ pub trait DataInputStreamExt: IsA<DataInputStream> + sealed::Sealed + 'static {
     }
 
     #[doc(alias = "g_data_input_stream_set_newline_type")]
+    #[doc(alias = "newline-type")]
     fn set_newline_type(&self, type_: DataStreamNewlineType) {
         unsafe {
             ffi::g_data_input_stream_set_newline_type(

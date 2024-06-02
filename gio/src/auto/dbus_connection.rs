@@ -584,6 +584,7 @@ impl DBusConnection {
 
     #[doc(alias = "g_dbus_connection_get_exit_on_close")]
     #[doc(alias = "get_exit_on_close")]
+    #[doc(alias = "exit-on-close")]
     pub fn exits_on_close(&self) -> bool {
         unsafe {
             from_glib(ffi::g_dbus_connection_get_exit_on_close(
@@ -630,6 +631,7 @@ impl DBusConnection {
 
     #[doc(alias = "g_dbus_connection_get_unique_name")]
     #[doc(alias = "get_unique_name")]
+    #[doc(alias = "unique-name")]
     pub fn unique_name(&self) -> Option<glib::GString> {
         unsafe {
             from_glib_none(ffi::g_dbus_connection_get_unique_name(
@@ -782,6 +784,7 @@ impl DBusConnection {
     }
 
     #[doc(alias = "g_dbus_connection_set_exit_on_close")]
+    #[doc(alias = "exit-on-close")]
     pub fn set_exit_on_close(&self, exit_on_close: bool) {
         unsafe {
             ffi::g_dbus_connection_set_exit_on_close(
@@ -798,7 +801,9 @@ impl DBusConnection {
         }
     }
 
-    pub fn get_property_flags(&self) -> DBusConnectionFlags {
+    #[cfg(not(feature = "v2_60"))]
+    #[cfg_attr(docsrs, doc(cfg(not(feature = "v2_60"))))]
+    pub fn flags(&self) -> DBusConnectionFlags {
         ObjectExt::property(self, "flags")
     }
 

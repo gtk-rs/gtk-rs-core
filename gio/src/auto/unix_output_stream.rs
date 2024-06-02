@@ -26,6 +26,7 @@ mod sealed {
 pub trait UnixOutputStreamExt: IsA<UnixOutputStream> + sealed::Sealed + 'static {
     #[doc(alias = "g_unix_output_stream_get_close_fd")]
     #[doc(alias = "get_close_fd")]
+    #[doc(alias = "close-fd")]
     fn closes_fd(&self) -> bool {
         unsafe {
             from_glib(ffi::g_unix_output_stream_get_close_fd(

@@ -443,6 +443,7 @@ pub trait SocketClientExt: IsA<SocketClient> + sealed::Sealed + 'static {
 
     #[doc(alias = "g_socket_client_get_enable_proxy")]
     #[doc(alias = "get_enable_proxy")]
+    #[doc(alias = "enable-proxy")]
     fn enables_proxy(&self) -> bool {
         unsafe {
             from_glib(ffi::g_socket_client_get_enable_proxy(
@@ -463,6 +464,7 @@ pub trait SocketClientExt: IsA<SocketClient> + sealed::Sealed + 'static {
 
     #[doc(alias = "g_socket_client_get_local_address")]
     #[doc(alias = "get_local_address")]
+    #[doc(alias = "local-address")]
     fn local_address(&self) -> Option<SocketAddress> {
         unsafe {
             from_glib_none(ffi::g_socket_client_get_local_address(
@@ -483,6 +485,7 @@ pub trait SocketClientExt: IsA<SocketClient> + sealed::Sealed + 'static {
 
     #[doc(alias = "g_socket_client_get_proxy_resolver")]
     #[doc(alias = "get_proxy_resolver")]
+    #[doc(alias = "proxy-resolver")]
     fn proxy_resolver(&self) -> ProxyResolver {
         unsafe {
             from_glib_none(ffi::g_socket_client_get_proxy_resolver(
@@ -509,6 +512,7 @@ pub trait SocketClientExt: IsA<SocketClient> + sealed::Sealed + 'static {
 
     #[doc(alias = "g_socket_client_get_tls")]
     #[doc(alias = "get_tls")]
+    #[doc(alias = "tls")]
     fn is_tls(&self) -> bool {
         unsafe { from_glib(ffi::g_socket_client_get_tls(self.as_ref().to_glib_none().0)) }
     }
@@ -517,6 +521,7 @@ pub trait SocketClientExt: IsA<SocketClient> + sealed::Sealed + 'static {
     #[allow(deprecated)]
     #[doc(alias = "g_socket_client_get_tls_validation_flags")]
     #[doc(alias = "get_tls_validation_flags")]
+    #[doc(alias = "tls-validation-flags")]
     fn tls_validation_flags(&self) -> TlsCertificateFlags {
         unsafe {
             from_glib(ffi::g_socket_client_get_tls_validation_flags(
@@ -526,6 +531,7 @@ pub trait SocketClientExt: IsA<SocketClient> + sealed::Sealed + 'static {
     }
 
     #[doc(alias = "g_socket_client_set_enable_proxy")]
+    #[doc(alias = "enable-proxy")]
     fn set_enable_proxy(&self, enable: bool) {
         unsafe {
             ffi::g_socket_client_set_enable_proxy(
@@ -536,6 +542,7 @@ pub trait SocketClientExt: IsA<SocketClient> + sealed::Sealed + 'static {
     }
 
     #[doc(alias = "g_socket_client_set_family")]
+    #[doc(alias = "family")]
     fn set_family(&self, family: SocketFamily) {
         unsafe {
             ffi::g_socket_client_set_family(self.as_ref().to_glib_none().0, family.into_glib());
@@ -543,6 +550,7 @@ pub trait SocketClientExt: IsA<SocketClient> + sealed::Sealed + 'static {
     }
 
     #[doc(alias = "g_socket_client_set_local_address")]
+    #[doc(alias = "local-address")]
     fn set_local_address(&self, address: Option<&impl IsA<SocketAddress>>) {
         unsafe {
             ffi::g_socket_client_set_local_address(
@@ -553,6 +561,7 @@ pub trait SocketClientExt: IsA<SocketClient> + sealed::Sealed + 'static {
     }
 
     #[doc(alias = "g_socket_client_set_protocol")]
+    #[doc(alias = "protocol")]
     fn set_protocol(&self, protocol: SocketProtocol) {
         unsafe {
             ffi::g_socket_client_set_protocol(self.as_ref().to_glib_none().0, protocol.into_glib());
@@ -560,6 +569,7 @@ pub trait SocketClientExt: IsA<SocketClient> + sealed::Sealed + 'static {
     }
 
     #[doc(alias = "g_socket_client_set_proxy_resolver")]
+    #[doc(alias = "proxy-resolver")]
     fn set_proxy_resolver(&self, proxy_resolver: Option<&impl IsA<ProxyResolver>>) {
         unsafe {
             ffi::g_socket_client_set_proxy_resolver(
@@ -577,6 +587,7 @@ pub trait SocketClientExt: IsA<SocketClient> + sealed::Sealed + 'static {
     }
 
     #[doc(alias = "g_socket_client_set_timeout")]
+    #[doc(alias = "timeout")]
     fn set_timeout(&self, timeout: u32) {
         unsafe {
             ffi::g_socket_client_set_timeout(self.as_ref().to_glib_none().0, timeout);
@@ -584,6 +595,7 @@ pub trait SocketClientExt: IsA<SocketClient> + sealed::Sealed + 'static {
     }
 
     #[doc(alias = "g_socket_client_set_tls")]
+    #[doc(alias = "tls")]
     fn set_tls(&self, tls: bool) {
         unsafe {
             ffi::g_socket_client_set_tls(self.as_ref().to_glib_none().0, tls.into_glib());
@@ -593,6 +605,7 @@ pub trait SocketClientExt: IsA<SocketClient> + sealed::Sealed + 'static {
     #[cfg_attr(feature = "v2_72", deprecated = "Since 2.72")]
     #[allow(deprecated)]
     #[doc(alias = "g_socket_client_set_tls_validation_flags")]
+    #[doc(alias = "tls-validation-flags")]
     fn set_tls_validation_flags(&self, flags: TlsCertificateFlags) {
         unsafe {
             ffi::g_socket_client_set_tls_validation_flags(

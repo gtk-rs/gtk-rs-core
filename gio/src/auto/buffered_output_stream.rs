@@ -118,6 +118,7 @@ mod sealed {
 pub trait BufferedOutputStreamExt: IsA<BufferedOutputStream> + sealed::Sealed + 'static {
     #[doc(alias = "g_buffered_output_stream_get_auto_grow")]
     #[doc(alias = "get_auto_grow")]
+    #[doc(alias = "auto-grow")]
     fn auto_grows(&self) -> bool {
         unsafe {
             from_glib(ffi::g_buffered_output_stream_get_auto_grow(
@@ -128,11 +129,13 @@ pub trait BufferedOutputStreamExt: IsA<BufferedOutputStream> + sealed::Sealed + 
 
     #[doc(alias = "g_buffered_output_stream_get_buffer_size")]
     #[doc(alias = "get_buffer_size")]
+    #[doc(alias = "buffer-size")]
     fn buffer_size(&self) -> usize {
         unsafe { ffi::g_buffered_output_stream_get_buffer_size(self.as_ref().to_glib_none().0) }
     }
 
     #[doc(alias = "g_buffered_output_stream_set_auto_grow")]
+    #[doc(alias = "auto-grow")]
     fn set_auto_grow(&self, auto_grow: bool) {
         unsafe {
             ffi::g_buffered_output_stream_set_auto_grow(
@@ -143,6 +146,7 @@ pub trait BufferedOutputStreamExt: IsA<BufferedOutputStream> + sealed::Sealed + 
     }
 
     #[doc(alias = "g_buffered_output_stream_set_buffer_size")]
+    #[doc(alias = "buffer-size")]
     fn set_buffer_size(&self, size: usize) {
         unsafe {
             ffi::g_buffered_output_stream_set_buffer_size(self.as_ref().to_glib_none().0, size);

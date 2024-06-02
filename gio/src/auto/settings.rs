@@ -231,6 +231,7 @@ pub trait SettingsExt: IsA<Settings> + sealed::Sealed + 'static {
 
     #[doc(alias = "g_settings_get_has_unapplied")]
     #[doc(alias = "get_has_unapplied")]
+    #[doc(alias = "has-unapplied")]
     fn has_unapplied(&self) -> bool {
         unsafe {
             from_glib(ffi::g_settings_get_has_unapplied(
