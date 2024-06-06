@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/object.rs`."><title>object.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.80.0-nightly (032af18af 2024-06-02)" data-channel="nightly" data-search-js="search-d52510db62a78183.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/object.rs`."><title>object.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.80.0-nightly (72fdf913c 2024-06-05)" data-channel="nightly" data-search-js="search-d52510db62a78183.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -4632,13 +4632,13 @@
 <span class="kw">use crate</span>::{
     <a href="closure.rs.html#356-358">closure::TryFromClosureReturnValue</a>,
     ffi, gobject_ffi,
-    <a href="lib.rs.html#137">prelude</a>::<span class="kw-2">*</span>,
+    <a href="lib.rs.html#157">prelude</a>::<span class="kw-2">*</span>,
     <a href="quark.rs.html#10">quark::Quark</a>,
     subclass::{<a href="subclass/mod.rs.html#442-458">prelude</a>::<span class="kw-2">*</span>, <a href="subclass/signal.rs.html#172">SignalId</a>, <a href="subclass/signal.rs.html#89">SignalQuery</a>},
     <a href="thread_guard.rs.html#17-20">thread_guard::thread_id</a>,
-    <a href="lib.rs.html#142">translate</a>::<span class="kw-2">*</span>,
+    <a href="lib.rs.html#162">translate</a>::<span class="kw-2">*</span>,
     <a href="value.rs.html#272-283">value::FromValue</a>,
-    <a href="closure.rs.html#11-24">Closure</a>, <a href="collections/ptr_slice.rs.html#18-26">PtrSlice</a>, <a href="closure.rs.html#27">RustClosure</a>, <a href="signal.rs.html#49">SignalHandlerId</a>, <a href="types.rs.html#22">Type</a>, <a href="value.rs.html#478-512">Value</a>,
+    <a href="closure.rs.html#11-24">Closure</a>, <a href="collections/ptr_slice.rs.html#18-26">PtrSlice</a>, <a href="closure.rs.html#27">RustClosure</a>, <a href="signal.rs.html#49">SignalHandlerId</a>, <a href="types.rs.html#22">Type</a>, <a href="value.rs.html#478-523">Value</a>,
 };
 
 <span class="comment">// rustdoc-stripper-ignore-next
@@ -6033,7 +6033,7 @@
     /// This panics if the object is not instantiable, doesn't have all the given properties or
     /// property values of the wrong type are provided.
     </span><span class="attr">#[track_caller]
-    </span><span class="kw">pub fn </span>with_mut_values(type_: <a href="types.rs.html#22">Type</a>, properties: <span class="kw-2">&amp;mut </span>[(<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, <a href="value.rs.html#478-512">Value</a>)]) -&gt; <a href="#1370-1373">Object</a> {
+    </span><span class="kw">pub fn </span>with_mut_values(type_: <a href="types.rs.html#22">Type</a>, properties: <span class="kw-2">&amp;mut </span>[(<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, <a href="value.rs.html#478-523">Value</a>)]) -&gt; <a href="#1370-1373">Object</a> {
         <span class="attr">#[cfg(feature = <span class="string">"gio"</span>)]
         </span><span class="kw">unsafe </span>{
             <span class="kw">let </span>iface_type = <a href="translate.rs.html#1417-1419">from_glib</a>(gio_sys::g_initable_get_type());
@@ -6061,7 +6061,7 @@
     /// `gio::Initable` or `gio::AsyncInitable` and it might be unsafe to use the returned object
     /// without using the API of those interfaces first.
     </span><span class="attr">#[track_caller]
-    </span><span class="kw">pub unsafe fn </span>new_internal(type_: <a href="types.rs.html#22">Type</a>, properties: <span class="kw-2">&amp;mut </span>[(<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, <a href="value.rs.html#478-512">Value</a>)]) -&gt; <a href="#1370-1373">Object</a> {
+    </span><span class="kw">pub unsafe fn </span>new_internal(type_: <a href="types.rs.html#22">Type</a>, properties: <span class="kw-2">&amp;mut </span>[(<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, <a href="value.rs.html#478-523">Value</a>)]) -&gt; <a href="#1370-1373">Object</a> {
         <span class="kw">if </span>!type_.is_a(Object::static_type()) {
             <a class="macro" href="https://doc.rust-lang.org/nightly/std/macro.panic.html">panic!</a>(<span class="string">"Can't instantiate non-GObject type '{type_}'"</span>);
         }
@@ -6144,7 +6144,7 @@
 <span class="attr">#[must_use = <span class="string">"builder doesn't do anything unless built"</span>]
 </span><span class="kw">pub struct </span><a href="../../glib/object/struct.ObjectBuilder.html">ObjectBuilder</a>&lt;<span class="lifetime">'a</span>, O&gt; {
     type_: <a href="types.rs.html#22">Type</a>,
-    properties: smallvec::SmallVec&lt;[(<span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, <a href="value.rs.html#478-512">Value</a>); <span class="number">16</span>]&gt;,
+    properties: smallvec::SmallVec&lt;[(<span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, <a href="value.rs.html#478-523">Value</a>); <span class="number">16</span>]&gt;,
     phantom: PhantomData&lt;O&gt;,
 }
 
@@ -6168,7 +6168,7 @@
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Set property `name` to the given value `value`.
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>property(<span class="self">self</span>, name: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, value: <span class="kw">impl </span>Into&lt;<a href="value.rs.html#478-512">Value</a>&gt;) -&gt; <span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>property(<span class="self">self</span>, name: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, value: <span class="kw">impl </span>Into&lt;<a href="value.rs.html#478-523">Value</a>&gt;) -&gt; <span class="self">Self </span>{
         <span class="kw">let </span><a href="#1521-1525">ObjectBuilder</a> {
             type_,
             <span class="kw-2">mut </span>properties,
@@ -6254,7 +6254,7 @@
     /// If the property does not exist, if the type of the property is different than
     /// the provided value, or if the property is not writable.
     </span><span class="attr">#[doc(alias = <span class="string">"g_object_set_property"</span>)]
-    </span><span class="kw">fn </span>set_property(<span class="kw-2">&amp;</span><span class="self">self</span>, property_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, value: <span class="kw">impl </span>Into&lt;<a href="value.rs.html#478-512">Value</a>&gt;);
+    </span><span class="kw">fn </span>set_property(<span class="kw-2">&amp;</span><span class="self">self</span>, property_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, value: <span class="kw">impl </span>Into&lt;<a href="value.rs.html#478-523">Value</a>&gt;);
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Sets the property `property_name` of the object to value `value`.
@@ -6264,7 +6264,7 @@
     /// If the property does not exist, the type of the property is different than the
     /// provided value, or if the property is not writable.
     </span><span class="attr">#[doc(alias = <span class="string">"g_object_set_property"</span>)]
-    </span><span class="kw">fn </span>set_property_from_value(<span class="kw-2">&amp;</span><span class="self">self</span>, property_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, value: <span class="kw-2">&amp;</span><a href="value.rs.html#478-512">Value</a>);
+    </span><span class="kw">fn </span>set_property_from_value(<span class="kw-2">&amp;</span><span class="self">self</span>, property_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, value: <span class="kw-2">&amp;</span><a href="value.rs.html#478-523">Value</a>);
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Sets multiple properties of the object at once.
@@ -6284,7 +6284,7 @@
     /// This does not set any properties if one or more properties don't exist, values of the wrong
     /// type are provided, or if any of the properties is not writable.
     </span><span class="attr">#[doc(alias = <span class="string">"g_object_set"</span>)]
-    </span><span class="kw">fn </span>set_properties_from_value(<span class="kw-2">&amp;</span><span class="self">self</span>, property_values: <span class="kw-2">&amp;</span>[(<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, <a href="value.rs.html#478-512">Value</a>)]);
+    </span><span class="kw">fn </span>set_properties_from_value(<span class="kw-2">&amp;</span><span class="self">self</span>, property_values: <span class="kw-2">&amp;</span>[(<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, <a href="value.rs.html#478-523">Value</a>)]);
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Gets the property `property_name` of the object and cast it to the type V.
@@ -6304,7 +6304,7 @@
     /// If the property does not exist or is not writable.
     </span><span class="attr">#[doc(alias = <span class="string">"get_property"</span>)]
     #[doc(alias = <span class="string">"g_object_get_property"</span>)]
-    </span><span class="kw">fn </span>property_value(<span class="kw-2">&amp;</span><span class="self">self</span>, property_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a href="value.rs.html#478-512">Value</a>;
+    </span><span class="kw">fn </span>property_value(<span class="kw-2">&amp;</span><span class="self">self</span>, property_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a href="value.rs.html#478-523">Value</a>;
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Check if the object has a property `property_name` of the given `type_`.
@@ -6321,11 +6321,11 @@
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Get the [`ParamSpec`](crate::ParamSpec) of the property `property_name` of this object.
-    </span><span class="kw">fn </span>find_property(<span class="kw-2">&amp;</span><span class="self">self</span>, property_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="param_spec.rs.html#19-42"><span class="kw">crate</span>::ParamSpec</a>&gt;;
+    </span><span class="kw">fn </span>find_property(<span class="kw-2">&amp;</span><span class="self">self</span>, property_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="param_spec.rs.html#19-57"><span class="kw">crate</span>::ParamSpec</a>&gt;;
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Return all [`ParamSpec`](crate::ParamSpec) of the properties of this object.
-    </span><span class="kw">fn </span>list_properties(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; PtrSlice&lt;<a href="param_spec.rs.html#19-42"><span class="kw">crate</span>::ParamSpec</a>&gt;;
+    </span><span class="kw">fn </span>list_properties(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; PtrSlice&lt;<a href="param_spec.rs.html#19-57"><span class="kw">crate</span>::ParamSpec</a>&gt;;
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Freeze all property notifications until the return guard object is dropped.
@@ -6427,7 +6427,7 @@
     /// If the signal does not exist.
     </span><span class="kw">fn </span>connect&lt;F&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, signal_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, after: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>, callback: F) -&gt; <a href="signal.rs.html#49">SignalHandlerId</a>
     <span class="kw">where
-        </span>F: Fn(<span class="kw-2">&amp;</span>[<a href="value.rs.html#478-512">Value</a>]) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="value.rs.html#478-512">Value</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>;
+        </span>F: Fn(<span class="kw-2">&amp;</span>[<a href="value.rs.html#478-523">Value</a>]) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="value.rs.html#478-523">Value</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>;
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Connect to the signal `signal_id` on this object.
@@ -6448,7 +6448,7 @@
         callback: F,
     ) -&gt; <a href="signal.rs.html#49">SignalHandlerId</a>
     <span class="kw">where
-        </span>F: Fn(<span class="kw-2">&amp;</span>[<a href="value.rs.html#478-512">Value</a>]) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="value.rs.html#478-512">Value</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>;
+        </span>F: Fn(<span class="kw-2">&amp;</span>[<a href="value.rs.html#478-523">Value</a>]) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="value.rs.html#478-523">Value</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>;
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Connect to the signal `signal_name` on this object.
@@ -6464,7 +6464,7 @@
     /// If the signal does not exist.
     </span><span class="kw">fn </span>connect_local&lt;F&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, signal_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, after: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>, callback: F) -&gt; <a href="signal.rs.html#49">SignalHandlerId</a>
     <span class="kw">where
-        </span>F: Fn(<span class="kw-2">&amp;</span>[<a href="value.rs.html#478-512">Value</a>]) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="value.rs.html#478-512">Value</a>&gt; + <span class="lifetime">'static</span>;
+        </span>F: Fn(<span class="kw-2">&amp;</span>[<a href="value.rs.html#478-523">Value</a>]) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="value.rs.html#478-523">Value</a>&gt; + <span class="lifetime">'static</span>;
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Connect to the signal `signal_id` on this object.
@@ -6486,7 +6486,7 @@
         callback: F,
     ) -&gt; <a href="signal.rs.html#49">SignalHandlerId</a>
     <span class="kw">where
-        </span>F: Fn(<span class="kw-2">&amp;</span>[<a href="value.rs.html#478-512">Value</a>]) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="value.rs.html#478-512">Value</a>&gt; + <span class="lifetime">'static</span>;
+        </span>F: Fn(<span class="kw-2">&amp;</span>[<a href="value.rs.html#478-523">Value</a>]) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="value.rs.html#478-523">Value</a>&gt; + <span class="lifetime">'static</span>;
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Connect to the signal `signal_name` on this object.
@@ -6512,7 +6512,7 @@
         callback: F,
     ) -&gt; <a href="signal.rs.html#49">SignalHandlerId</a>
     <span class="kw">where
-        </span>F: Fn(<span class="kw-2">&amp;</span>[<a href="value.rs.html#478-512">Value</a>]) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="value.rs.html#478-512">Value</a>&gt;;
+        </span>F: Fn(<span class="kw-2">&amp;</span>[<a href="value.rs.html#478-523">Value</a>]) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="value.rs.html#478-523">Value</a>&gt;;
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Connect to the signal `signal_id` on this object.
@@ -6540,7 +6540,7 @@
         callback: F,
     ) -&gt; <a href="signal.rs.html#49">SignalHandlerId</a>
     <span class="kw">where
-        </span>F: Fn(<span class="kw-2">&amp;</span>[<a href="value.rs.html#478-512">Value</a>]) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="value.rs.html#478-512">Value</a>&gt;;
+        </span>F: Fn(<span class="kw-2">&amp;</span>[<a href="value.rs.html#478-523">Value</a>]) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="value.rs.html#478-523">Value</a>&gt;;
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Connect a closure to the signal `signal_name` on this object.
@@ -6555,7 +6555,7 @@
     /// in C. This can be achieved with a closure that watches an object: see the documentation
     /// of the [`closure!`](crate::closure!) macro for more details.
     ///
-    /// Same as [`Self::connect`] but takes a [`Closure`](crate::Closure) instead of a `Fn`.
+    /// Same as [`Self::connect`] but takes a [`Closure`] instead of a `Fn`.
     </span><span class="attr">#[doc(alias = <span class="string">"g_signal_connect_closure"</span>)]
     #[doc(alias = <span class="string">"g_signal_connect_object"</span>)]
     </span><span class="kw">fn </span>connect_closure(
@@ -6574,7 +6574,7 @@
     /// This panics if the signal does not exist.
     ///
     /// Same as [`Self::connect_closure`] but takes a
-    /// [`SignalId`](crate::subclass::signal::SignalId) instead of a signal name.
+    /// [`SignalId`] instead of a signal name.
     </span><span class="attr">#[doc(alias = <span class="string">"g_signal_connect_closure_by_id"</span>)]
     </span><span class="kw">fn </span>connect_closure_id(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
@@ -6607,7 +6607,7 @@
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Same as [`Self::emit`] but takes `Value` for the arguments.
-    </span><span class="kw">fn </span>emit_with_values(<span class="kw-2">&amp;</span><span class="self">self</span>, signal_id: <a href="subclass/signal.rs.html#172">SignalId</a>, args: <span class="kw-2">&amp;</span>[<a href="value.rs.html#478-512">Value</a>]) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="value.rs.html#478-512">Value</a>&gt;;
+    </span><span class="kw">fn </span>emit_with_values(<span class="kw-2">&amp;</span><span class="self">self</span>, signal_id: <a href="subclass/signal.rs.html#172">SignalId</a>, args: <span class="kw-2">&amp;</span>[<a href="value.rs.html#478-523">Value</a>]) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="value.rs.html#478-523">Value</a>&gt;;
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Emit signal by its name.
@@ -6634,7 +6634,7 @@
     ///
     /// If the signal does not exist, the wrong number of arguments is provided, or
     /// arguments of the wrong types were provided.
-    </span><span class="kw">fn </span>emit_by_name_with_values(<span class="kw-2">&amp;</span><span class="self">self</span>, signal_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, args: <span class="kw-2">&amp;</span>[<a href="value.rs.html#478-512">Value</a>]) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="value.rs.html#478-512">Value</a>&gt;;
+    </span><span class="kw">fn </span>emit_by_name_with_values(<span class="kw-2">&amp;</span><span class="self">self</span>, signal_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, args: <span class="kw-2">&amp;</span>[<a href="value.rs.html#478-523">Value</a>]) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="value.rs.html#478-523">Value</a>&gt;;
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Emit signal by its name with details.
@@ -6665,8 +6665,8 @@
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         signal_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
         details: <a href="quark.rs.html#10">Quark</a>,
-        args: <span class="kw-2">&amp;</span>[<a href="value.rs.html#478-512">Value</a>],
-    ) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="value.rs.html#478-512">Value</a>&gt;;
+        args: <span class="kw-2">&amp;</span>[<a href="value.rs.html#478-523">Value</a>],
+    ) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="value.rs.html#478-523">Value</a>&gt;;
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Emit signal by signal id with details.
@@ -6697,8 +6697,8 @@
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         signal_id: <a href="subclass/signal.rs.html#172">SignalId</a>,
         details: <a href="quark.rs.html#10">Quark</a>,
-        args: <span class="kw-2">&amp;</span>[<a href="value.rs.html#478-512">Value</a>],
-    ) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="value.rs.html#478-512">Value</a>&gt;;
+        args: <span class="kw-2">&amp;</span>[<a href="value.rs.html#478-523">Value</a>],
+    ) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="value.rs.html#478-523">Value</a>&gt;;
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Disconnect a previously connected signal handler.
@@ -6710,7 +6710,7 @@
     ///
     /// This is emitted whenever a property is changed. If `name` is provided then the signal
     /// handler is only called for this specific property.
-    </span><span class="kw">fn </span>connect_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>, <span class="kw-2">&amp;</span><a href="param_spec.rs.html#19-42"><span class="kw">crate</span>::ParamSpec</a>) + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>&gt;(
+    </span><span class="kw">fn </span>connect_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>, <span class="kw-2">&amp;</span><a href="param_spec.rs.html#19-57"><span class="kw">crate</span>::ParamSpec</a>) + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         name: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;,
         f: F,
@@ -6724,7 +6724,7 @@
     ///
     /// This is like `connect_notify` but doesn't require a `Send+Sync` closure. Signal emission
     /// will panic if the signal is emitted from the wrong thread.
-    </span><span class="kw">fn </span>connect_notify_local&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>, <span class="kw-2">&amp;</span><a href="param_spec.rs.html#19-42"><span class="kw">crate</span>::ParamSpec</a>) + <span class="lifetime">'static</span>&gt;(
+    </span><span class="kw">fn </span>connect_notify_local&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>, <span class="kw-2">&amp;</span><a href="param_spec.rs.html#19-57"><span class="kw">crate</span>::ParamSpec</a>) + <span class="lifetime">'static</span>&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         name: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;,
         f: F,
@@ -6743,7 +6743,7 @@
     ///
     /// The provided closure must be valid until the signal handler is disconnected, and it must
     /// be allowed to call the closure from the threads the signal is emitted from.
-    </span><span class="kw">unsafe fn </span>connect_notify_unsafe&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>, <span class="kw-2">&amp;</span><a href="param_spec.rs.html#19-42"><span class="kw">crate</span>::ParamSpec</a>)&gt;(
+    </span><span class="kw">unsafe fn </span>connect_notify_unsafe&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>, <span class="kw-2">&amp;</span><a href="param_spec.rs.html#19-57"><span class="kw">crate</span>::ParamSpec</a>)&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         name: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;,
         f: F,
@@ -6761,7 +6761,7 @@
     ///
     /// This emits the `notify` signal.
     </span><span class="attr">#[doc(alias = <span class="string">"g_object_notify_by_pspec"</span>)]
-    </span><span class="kw">fn </span>notify_by_pspec(<span class="kw-2">&amp;</span><span class="self">self</span>, pspec: <span class="kw-2">&amp;</span><a href="param_spec.rs.html#19-42"><span class="kw">crate</span>::ParamSpec</a>);
+    </span><span class="kw">fn </span>notify_by_pspec(<span class="kw-2">&amp;</span><span class="self">self</span>, pspec: <span class="kw-2">&amp;</span><a href="param_spec.rs.html#19-57"><span class="kw">crate</span>::ParamSpec</a>);
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Downgrade this object to a weak reference.
@@ -6866,7 +6866,7 @@
     }
 
     <span class="attr">#[track_caller]
-    </span><span class="kw">fn </span>set_property(<span class="kw-2">&amp;</span><span class="self">self</span>, property_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, value: <span class="kw">impl </span>Into&lt;<a href="value.rs.html#478-512">Value</a>&gt;) {
+    </span><span class="kw">fn </span>set_property(<span class="kw-2">&amp;</span><span class="self">self</span>, property_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, value: <span class="kw">impl </span>Into&lt;<a href="value.rs.html#478-523">Value</a>&gt;) {
         <span class="kw">let </span>pspec = <a class="self" href="#2245">self</a>.<a href="#1700">find_property</a>(<a href="#2245">property_name</a>).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap_or_else">unwrap_or_else</a>(|| {
             <a class="macro" href="https://doc.rust-lang.org/nightly/std/macro.panic.html">panic!</a>(
                 <span class="string">"property '{property_name}' of type '{}' not found"</span>,
@@ -6879,14 +6879,14 @@
         <span class="kw">unsafe </span>{
             gobject_ffi::g_object_set_property(
                 <a class="self" href="#2245">self</a>.<a href="#48">as_object_ref</a>().<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#2246">pspec</a>.<a href="param_spec.rs.html#253-259">name</a>().<a href="https://doc.rust-lang.org/nightly/core/foreigntype.str.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+                <a href="#2246">pspec</a>.<a href="param_spec.rs.html#291-297">name</a>().<a href="https://doc.rust-lang.org/nightly/core/foreigntype.str.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
                 <a href="#2253">property_value</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
             );
         }
     }
 
     <span class="attr">#[track_caller]
-    </span><span class="kw">fn </span>set_property_from_value(<span class="kw-2">&amp;</span><span class="self">self</span>, property_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, value: <span class="kw-2">&amp;</span><a href="value.rs.html#478-512">Value</a>) {
+    </span><span class="kw">fn </span>set_property_from_value(<span class="kw-2">&amp;</span><span class="self">self</span>, property_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, value: <span class="kw-2">&amp;</span><a href="value.rs.html#478-523">Value</a>) {
         <span class="kw">let </span>pspec = <span class="kw">match </span><a class="self" href="#2265">self</a>.<a href="#1700">find_property</a>(<a href="#2265">property_name</a>) {
             <span class="prelude-val">Some</span>(pspec) =&gt; <a href="#2267">pspec</a>,
             <span class="prelude-val">None </span>=&gt; {
@@ -6905,7 +6905,7 @@
         <span class="kw">unsafe </span>{
             gobject_ffi::g_object_set_property(
                 <a class="self" href="#2265">self</a>.<a href="#48">as_object_ref</a>().<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#2266">pspec</a>.<a href="param_spec.rs.html#253-259">name</a>().<a href="https://doc.rust-lang.org/nightly/core/foreigntype.str.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+                <a href="#2266">pspec</a>.<a href="param_spec.rs.html#291-297">name</a>().<a href="https://doc.rust-lang.org/nightly/core/foreigntype.str.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
                 <a href="#2279">property_value</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
             );
         }
@@ -6922,7 +6922,7 @@
 
                 <span class="kw">let </span><span class="kw-2">mut </span>value = <a href="#2294">value</a>.<a href="value.rs.html#374">to_value</a>();
                 <a href="#3155-3202">validate_property_type</a>(<a class="self" href="#2291">self</a>.<a href="#1596">type_</a>(), <span class="bool-val">false</span>, <span class="kw-2">&amp;</span><a href="#2295">pspec</a>, <span class="kw-2">&amp;mut </span><a href="#2299">value</a>);
-                (<a href="#2295">pspec</a>.<a href="param_spec.rs.html#253-259">name</a>().<a href="https://doc.rust-lang.org/nightly/core/foreigntype.str.html#method.as_ptr">as_ptr</a>(), <a href="#2299">value</a>)
+                (<a href="#2295">pspec</a>.<a href="param_spec.rs.html#291-297">name</a>().<a href="https://doc.rust-lang.org/nightly/core/foreigntype.str.html#method.as_ptr">as_ptr</a>(), <a href="#2299">value</a>)
             })
             .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.collect">collect</a>::&lt;smallvec::SmallVec&lt;[<span class="kw">_</span>; <span class="number">10</span>]&gt;&gt;();
 
@@ -6939,7 +6939,7 @@
     }
 
     <span class="attr">#[track_caller]
-    </span><span class="kw">fn </span>set_properties_from_value(<span class="kw-2">&amp;</span><span class="self">self</span>, property_values: <span class="kw-2">&amp;</span>[(<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, <a href="value.rs.html#478-512">Value</a>)]) {
+    </span><span class="kw">fn </span>set_properties_from_value(<span class="kw-2">&amp;</span><span class="self">self</span>, property_values: <span class="kw-2">&amp;</span>[(<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, <a href="value.rs.html#478-523">Value</a>)]) {
         <span class="kw">let </span>params = <a href="#2318">property_values</a>
             .<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.iter">iter</a>()
             .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|(name, value)| {
@@ -6949,7 +6949,7 @@
 
                 <span class="kw">let </span><span class="kw-2">mut </span>value = <a href="#2321">value</a>.<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">clone</a>();
                 <a href="#3155-3202">validate_property_type</a>(<a class="self" href="#2318">self</a>.<a href="#1596">type_</a>(), <span class="bool-val">false</span>, <span class="kw-2">&amp;</span><a href="#2322">pspec</a>, <span class="kw-2">&amp;mut </span><a href="#2326">value</a>);
-                (<a href="#2322">pspec</a>.<a href="param_spec.rs.html#253-259">name</a>().<a href="https://doc.rust-lang.org/nightly/core/foreigntype.str.html#method.as_ptr">as_ptr</a>(), <a href="#2326">value</a>)
+                (<a href="#2322">pspec</a>.<a href="param_spec.rs.html#291-297">name</a>().<a href="https://doc.rust-lang.org/nightly/core/foreigntype.str.html#method.as_ptr">as_ptr</a>(), <a href="#2326">value</a>)
             })
             .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.collect">collect</a>::&lt;smallvec::SmallVec&lt;[<span class="kw">_</span>; <span class="number">10</span>]&gt;&gt;();
 
@@ -6969,14 +6969,14 @@
     </span><span class="kw">fn </span>property&lt;V: <span class="kw">for</span>&lt;<span class="lifetime">'b</span>&gt; FromValue&lt;<span class="lifetime">'b</span>&gt; + <span class="lifetime">'static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, property_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; V {
         <span class="kw">let </span>prop = <a class="self" href="#2345">self</a>.<a href="#1683">property_value</a>(<a href="#2345">property_name</a>);
         <span class="kw">let </span>v = <a href="#2346">prop</a>
-            .<a href="value.rs.html#598-606">get_owned</a>::&lt;V&gt;()
+            .<a href="value.rs.html#609-617">get_owned</a>::&lt;V&gt;()
             .<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap_or_else">unwrap_or_else</a>(|e| <a class="macro" href="https://doc.rust-lang.org/nightly/std/macro.panic.html">panic!</a>(<span class="string">"Failed to get cast value to a different type {e}"</span>));
 
         <a href="#2347">v</a>
     }
 
     <span class="attr">#[track_caller]
-    </span><span class="kw">fn </span>property_value(<span class="kw-2">&amp;</span><span class="self">self</span>, property_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a href="value.rs.html#478-512">Value</a> {
+    </span><span class="kw">fn </span>property_value(<span class="kw-2">&amp;</span><span class="self">self</span>, property_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a href="value.rs.html#478-523">Value</a> {
         <span class="kw">let </span>pspec = <a class="self" href="#2355">self</a>.<a href="#1700">find_property</a>(<a href="#2355">property_name</a>).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap_or_else">unwrap_or_else</a>(|| {
             <a class="macro" href="https://doc.rust-lang.org/nightly/std/macro.panic.html">panic!</a>(
                 <span class="string">"property '{property_name}' of type '{}' not found"</span>,
@@ -6992,10 +6992,10 @@
         }
 
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span><span class="kw-2">mut </span>value = <a href="value.rs.html#538-544">Value::from_type_unchecked</a>(<a href="#2356">pspec</a>.<a href="param_spec.rs.html#177-179">value_type</a>());
+            <span class="kw">let </span><span class="kw-2">mut </span>value = <a href="value.rs.html#549-555">Value::from_type_unchecked</a>(<a href="#2356">pspec</a>.<a href="param_spec.rs.html#192-194">value_type</a>());
             gobject_ffi::g_object_get_property(
                 <a class="self" href="#2355">self</a>.<a href="#48">as_object_ref</a>().<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#2356">pspec</a>.<a href="param_spec.rs.html#253-259">name</a>().<a href="https://doc.rust-lang.org/nightly/core/foreigntype.str.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+                <a href="#2356">pspec</a>.<a href="param_spec.rs.html#291-297">name</a>().<a href="https://doc.rust-lang.org/nightly/core/foreigntype.str.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
                 <a href="#2371">value</a>.<a href="translate.rs.html#471">to_glib_none_mut</a>().<span class="number">0</span>,
             );
 
@@ -7019,11 +7019,11 @@
         <a class="self" href="#2394">self</a>.<a href="#1603">object_class</a>().<a href="#3268-3271">property_type</a>(<a href="#2394">property_name</a>)
     }
 
-    <span class="kw">fn </span>find_property(<span class="kw-2">&amp;</span><span class="self">self</span>, property_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="param_spec.rs.html#19-42"><span class="kw">crate</span>::ParamSpec</a>&gt; {
+    <span class="kw">fn </span>find_property(<span class="kw-2">&amp;</span><span class="self">self</span>, property_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="param_spec.rs.html#19-57"><span class="kw">crate</span>::ParamSpec</a>&gt; {
         <a class="self" href="#2398">self</a>.<a href="#1603">object_class</a>().<a href="#3276-3287">find_property</a>(<a href="#2398">property_name</a>)
     }
 
-    <span class="kw">fn </span>list_properties(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; PtrSlice&lt;<a href="param_spec.rs.html#19-42"><span class="kw">crate</span>::ParamSpec</a>&gt; {
+    <span class="kw">fn </span>list_properties(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; PtrSlice&lt;<a href="param_spec.rs.html#19-57"><span class="kw">crate</span>::ParamSpec</a>&gt; {
         <a class="self" href="#2402">self</a>.<a href="#1603">object_class</a>().<a href="#3292-3302">list_properties</a>()
     }
 
@@ -7123,7 +7123,7 @@
     <span class="attr">#[track_caller]
     </span><span class="kw">fn </span>connect&lt;F&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, signal_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, after: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>, callback: F) -&gt; <a href="signal.rs.html#49">SignalHandlerId</a>
     <span class="kw">where
-        </span>F: Fn(<span class="kw-2">&amp;</span>[<a href="value.rs.html#478-512">Value</a>]) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="value.rs.html#478-512">Value</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>,
+        </span>F: Fn(<span class="kw-2">&amp;</span>[<a href="value.rs.html#478-523">Value</a>]) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="value.rs.html#478-523">Value</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>,
     {
         <span class="kw">unsafe </span>{ <a class="self" href="#2500">self</a>.<a href="#1884-1891">connect_unsafe</a>(<a href="#2500">signal_name</a>, <a href="#2500">after</a>, <a href="#2500">callback</a>) }
     }
@@ -7137,7 +7137,7 @@
         callback: F,
     ) -&gt; <a href="signal.rs.html#49">SignalHandlerId</a>
     <span class="kw">where
-        </span>F: Fn(<span class="kw-2">&amp;</span>[<a href="value.rs.html#478-512">Value</a>]) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="value.rs.html#478-512">Value</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>,
+        </span>F: Fn(<span class="kw-2">&amp;</span>[<a href="value.rs.html#478-523">Value</a>]) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="value.rs.html#478-523">Value</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>,
     {
         <span class="kw">unsafe </span>{ <a class="self" href="#2509">self</a>.<a href="#1911-1919">connect_unsafe_id</a>(<a href="#2510">signal_id</a>, <a href="#2511">details</a>, <a href="#2512">after</a>, <a href="#2513">callback</a>) }
     }
@@ -7145,7 +7145,7 @@
     <span class="attr">#[track_caller]
     </span><span class="kw">fn </span>connect_local&lt;F&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, signal_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, after: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>, callback: F) -&gt; <a href="signal.rs.html#49">SignalHandlerId</a>
     <span class="kw">where
-        </span>F: Fn(<span class="kw-2">&amp;</span>[<a href="value.rs.html#478-512">Value</a>]) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="value.rs.html#478-512">Value</a>&gt; + <span class="lifetime">'static</span>,
+        </span>F: Fn(<span class="kw-2">&amp;</span>[<a href="value.rs.html#478-523">Value</a>]) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="value.rs.html#478-523">Value</a>&gt; + <span class="lifetime">'static</span>,
     {
         <span class="kw">let </span>callback = <a href="thread_guard.rs.html#38-43"><span class="kw">crate</span>::thread_guard::ThreadGuard::new</a>(<a href="#2522">callback</a>);
 
@@ -7165,7 +7165,7 @@
         callback: F,
     ) -&gt; <a href="signal.rs.html#49">SignalHandlerId</a>
     <span class="kw">where
-        </span>F: Fn(<span class="kw-2">&amp;</span>[<a href="value.rs.html#478-512">Value</a>]) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="value.rs.html#478-512">Value</a>&gt; + <span class="lifetime">'static</span>,
+        </span>F: Fn(<span class="kw-2">&amp;</span>[<a href="value.rs.html#478-523">Value</a>]) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="value.rs.html#478-523">Value</a>&gt; + <span class="lifetime">'static</span>,
     {
         <span class="kw">let </span>callback = <a href="thread_guard.rs.html#38-43"><span class="kw">crate</span>::thread_guard::ThreadGuard::new</a>(<a href="#2541">callback</a>);
 
@@ -7184,7 +7184,7 @@
         callback: F,
     ) -&gt; <a href="signal.rs.html#49">SignalHandlerId</a>
     <span class="kw">where
-        </span>F: Fn(<span class="kw-2">&amp;</span>[<a href="value.rs.html#478-512">Value</a>]) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="value.rs.html#478-512">Value</a>&gt;,
+        </span>F: Fn(<span class="kw-2">&amp;</span>[<a href="value.rs.html#478-523">Value</a>]) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="value.rs.html#478-523">Value</a>&gt;,
     {
         <span class="kw">let </span>type_ = <a class="self" href="#2557">self</a>.<a href="#1596">type_</a>();
         <span class="kw">let </span>(signal_id, details) = <a href="subclass/signal.rs.html#188-215">SignalId::parse_name</a>(<a href="#2558">signal_name</a>, <a href="#2565">type_</a>, <span class="bool-val">true</span>)
@@ -7201,7 +7201,7 @@
         callback: F,
     ) -&gt; <a href="signal.rs.html#49">SignalHandlerId</a>
     <span class="kw">where
-        </span>F: Fn(<span class="kw-2">&amp;</span>[<a href="value.rs.html#478-512">Value</a>]) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="value.rs.html#478-512">Value</a>&gt;,
+        </span>F: Fn(<span class="kw-2">&amp;</span>[<a href="value.rs.html#478-523">Value</a>]) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="value.rs.html#478-523">Value</a>&gt;,
     {
         <span class="kw">let </span>signal_query = <a href="#2574">signal_id</a>.<a href="subclass/signal.rs.html#238-246">query</a>();
         <span class="kw">let </span>type_ = <a class="self" href="#2573">self</a>.<a href="#1596">type_</a>();
@@ -7350,7 +7350,7 @@
             <a href="#3222-3245">validate_signal_arguments</a>(<a href="#2708">type_</a>, <span class="kw-2">&amp;</span><a href="#2706">signal_query</a>, <span class="kw-2">&amp;mut </span><a href="#2720">args</a>[<span class="number">1</span>..]);
 
             <span class="kw">let </span><span class="kw-2">mut </span>return_value = <span class="kw">if </span>signal_query.return_type() != Type::UNIT {
-                <a href="value.rs.html#538-544">Value::from_type_unchecked</a>(<a href="#2706">signal_query</a>.<a href="subclass/signal.rs.html#129-131">return_type</a>().<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>())
+                <a href="value.rs.html#549-555">Value::from_type_unchecked</a>(<a href="#2706">signal_query</a>.<a href="subclass/signal.rs.html#129-131">return_type</a>().<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>())
             } <span class="kw">else </span>{
                 <a href="translate.rs.html#220">Value::uninitialized</a>()
             };
@@ -7368,14 +7368,14 @@
             );
 
             <a href="closure.rs.html#357">R::try_from_closure_return_value</a>(
-                <span class="prelude-val">Some</span>(<a href="#2728">return_value</a>).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.filter">filter</a>(|r| <a href="#2747">r</a>.<a href="value.rs.html#627-629">type_</a>().<a href="types.rs.html#271-273">is_valid</a>() &amp;&amp; <a href="#2747">r</a>.<a href="value.rs.html#627-629">type_</a>() != Type::UNIT),
+                <span class="prelude-val">Some</span>(<a href="#2728">return_value</a>).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.filter">filter</a>(|r| <a href="#2747">r</a>.<a href="value.rs.html#638-640">type_</a>().<a href="types.rs.html#271-273">is_valid</a>() &amp;&amp; <a href="#2747">r</a>.<a href="value.rs.html#638-640">type_</a>() != Type::UNIT),
             )
             .<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>()
         }
     }
 
     <span class="attr">#[track_caller]
-    </span><span class="kw">fn </span>emit_with_values(<span class="kw-2">&amp;</span><span class="self">self</span>, signal_id: <a href="subclass/signal.rs.html#172">SignalId</a>, args: <span class="kw-2">&amp;</span>[<a href="value.rs.html#478-512">Value</a>]) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="value.rs.html#478-512">Value</a>&gt; {
+    </span><span class="kw">fn </span>emit_with_values(<span class="kw-2">&amp;</span><span class="self">self</span>, signal_id: <a href="subclass/signal.rs.html#172">SignalId</a>, args: <span class="kw-2">&amp;</span>[<a href="value.rs.html#478-523">Value</a>]) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="value.rs.html#478-523">Value</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>type_ = <a class="self" href="#2754">self</a>.<a href="#1596">type_</a>();
 
@@ -7397,7 +7397,7 @@
             <a href="#3222-3245">validate_signal_arguments</a>(<a href="#2756">type_</a>, <span class="kw-2">&amp;</span><a href="#2758">signal_query</a>, <span class="kw-2">&amp;mut </span><a href="#2770">args</a>[<span class="number">1</span>..]);
 
             <span class="kw">let </span><span class="kw-2">mut </span>return_value = <span class="kw">if </span>signal_query.return_type() != Type::UNIT {
-                <a href="value.rs.html#538-544">Value::from_type_unchecked</a>(<a href="#2758">signal_query</a>.<a href="subclass/signal.rs.html#129-131">return_type</a>().<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>())
+                <a href="value.rs.html#549-555">Value::from_type_unchecked</a>(<a href="#2758">signal_query</a>.<a href="subclass/signal.rs.html#129-131">return_type</a>().<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>())
             } <span class="kw">else </span>{
                 <a href="translate.rs.html#220">Value::uninitialized</a>()
             };
@@ -7414,7 +7414,7 @@
                 <a href="#2780">return_value_ptr</a>,
             );
 
-            <span class="prelude-val">Some</span>(<a href="#2775">return_value</a>).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.filter">filter</a>(|r| <a href="#2793">r</a>.<a href="value.rs.html#627-629">type_</a>().<a href="types.rs.html#271-273">is_valid</a>() &amp;&amp; <a href="#2793">r</a>.<a href="value.rs.html#627-629">type_</a>() != Type::UNIT)
+            <span class="prelude-val">Some</span>(<a href="#2775">return_value</a>).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.filter">filter</a>(|r| <a href="#2793">r</a>.<a href="value.rs.html#638-640">type_</a>().<a href="types.rs.html#271-273">is_valid</a>() &amp;&amp; <a href="#2793">r</a>.<a href="value.rs.html#638-640">type_</a>() != Type::UNIT)
         }
     }
 
@@ -7432,7 +7432,7 @@
     }
 
     <span class="attr">#[track_caller]
-    </span><span class="kw">fn </span>emit_by_name_with_values(<span class="kw-2">&amp;</span><span class="self">self</span>, signal_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, args: <span class="kw-2">&amp;</span>[<a href="value.rs.html#478-512">Value</a>]) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="value.rs.html#478-512">Value</a>&gt; {
+    </span><span class="kw">fn </span>emit_by_name_with_values(<span class="kw-2">&amp;</span><span class="self">self</span>, signal_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, args: <span class="kw-2">&amp;</span>[<a href="value.rs.html#478-523">Value</a>]) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="value.rs.html#478-523">Value</a>&gt; {
         <span class="kw">let </span>type_ = <a class="self" href="#2811">self</a>.<a href="#1596">type_</a>();
         <span class="kw">let </span>signal_id = <a href="subclass/signal.rs.html#221-232">SignalId::lookup</a>(<a href="#2811">signal_name</a>, <a href="#2812">type_</a>).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap_or_else">unwrap_or_else</a>(|| {
             <a class="macro" href="https://doc.rust-lang.org/nightly/std/macro.panic.html">panic!</a>(<span class="string">"Signal '{signal_name}' of type '{type_}' not found"</span>);
@@ -7458,8 +7458,8 @@
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         signal_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
         details: <a href="quark.rs.html#10">Quark</a>,
-        args: <span class="kw-2">&amp;</span>[<a href="value.rs.html#478-512">Value</a>],
-    ) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="value.rs.html#478-512">Value</a>&gt; {
+        args: <span class="kw-2">&amp;</span>[<a href="value.rs.html#478-523">Value</a>],
+    ) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="value.rs.html#478-523">Value</a>&gt; {
         <span class="kw">let </span>type_ = <a class="self" href="#2834">self</a>.<a href="#1596">type_</a>();
         <span class="kw">let </span>signal_id = <a href="subclass/signal.rs.html#221-232">SignalId::lookup</a>(<a href="#2835">signal_name</a>, <a href="#2839">type_</a>)
             .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap_or_else">unwrap_or_else</a>(|| <a class="macro" href="https://doc.rust-lang.org/nightly/std/macro.panic.html">panic!</a>(<span class="string">"Signal '{signal_name}' of type '{type_}' not found"</span>));
@@ -7498,7 +7498,7 @@
             <a href="#3222-3245">validate_signal_arguments</a>(<a href="#2856">type_</a>, <span class="kw-2">&amp;</span><a href="#2852">signal_query</a>, <span class="kw-2">&amp;mut </span><a href="#2868">args</a>[<span class="number">1</span>..]);
 
             <span class="kw">let </span><span class="kw-2">mut </span>return_value = <span class="kw">if </span>signal_query.return_type() != Type::UNIT {
-                <a href="value.rs.html#538-544">Value::from_type_unchecked</a>(<a href="#2852">signal_query</a>.<a href="subclass/signal.rs.html#129-131">return_type</a>().<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>())
+                <a href="value.rs.html#549-555">Value::from_type_unchecked</a>(<a href="#2852">signal_query</a>.<a href="subclass/signal.rs.html#129-131">return_type</a>().<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>())
             } <span class="kw">else </span>{
                 <a href="translate.rs.html#220">Value::uninitialized</a>()
             };
@@ -7516,7 +7516,7 @@
             );
 
             <a href="closure.rs.html#357">R::try_from_closure_return_value</a>(
-                <span class="prelude-val">Some</span>(<a href="#2876">return_value</a>).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.filter">filter</a>(|r| <a href="#2895">r</a>.<a href="value.rs.html#627-629">type_</a>().<a href="types.rs.html#271-273">is_valid</a>() &amp;&amp; <a href="#2895">r</a>.<a href="value.rs.html#627-629">type_</a>() != Type::UNIT),
+                <span class="prelude-val">Some</span>(<a href="#2876">return_value</a>).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.filter">filter</a>(|r| <a href="#2895">r</a>.<a href="value.rs.html#638-640">type_</a>().<a href="types.rs.html#271-273">is_valid</a>() &amp;&amp; <a href="#2895">r</a>.<a href="value.rs.html#638-640">type_</a>() != Type::UNIT),
             )
             .<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>()
         }
@@ -7527,8 +7527,8 @@
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         signal_id: <a href="subclass/signal.rs.html#172">SignalId</a>,
         details: <a href="quark.rs.html#10">Quark</a>,
-        args: <span class="kw-2">&amp;</span>[<a href="value.rs.html#478-512">Value</a>],
-    ) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="value.rs.html#478-512">Value</a>&gt; {
+        args: <span class="kw-2">&amp;</span>[<a href="value.rs.html#478-523">Value</a>],
+    ) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="value.rs.html#478-523">Value</a>&gt; {
         <span class="kw">let </span>signal_query = <a href="#2904">signal_id</a>.<a href="subclass/signal.rs.html#238-246">query</a>();
         <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.assert.html">assert!</a>(signal_query.flags().contains(<span class="kw">crate</span>::SignalFlags::DETAILED));
 
@@ -7551,7 +7551,7 @@
             <a href="#3222-3245">validate_signal_arguments</a>(<a href="#2912">type_</a>, <span class="kw-2">&amp;</span><a href="#2908">signal_query</a>, <span class="kw-2">&amp;mut </span><a href="#2924">args</a>[<span class="number">1</span>..]);
 
             <span class="kw">let </span><span class="kw-2">mut </span>return_value = <span class="kw">if </span>signal_query.return_type() != Type::UNIT {
-                <a href="value.rs.html#538-544">Value::from_type_unchecked</a>(<a href="#2908">signal_query</a>.<a href="subclass/signal.rs.html#129-131">return_type</a>().<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>())
+                <a href="value.rs.html#549-555">Value::from_type_unchecked</a>(<a href="#2908">signal_query</a>.<a href="subclass/signal.rs.html#129-131">return_type</a>().<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>())
             } <span class="kw">else </span>{
                 <a href="translate.rs.html#220">Value::uninitialized</a>()
             };
@@ -7568,7 +7568,7 @@
                 <a href="#2934">return_value_ptr</a>,
             );
 
-            <span class="prelude-val">Some</span>(<a href="#2929">return_value</a>).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.filter">filter</a>(|r| <a href="#2947">r</a>.<a href="value.rs.html#627-629">type_</a>().<a href="types.rs.html#271-273">is_valid</a>() &amp;&amp; <a href="#2947">r</a>.<a href="value.rs.html#627-629">type_</a>() != Type::UNIT)
+            <span class="prelude-val">Some</span>(<a href="#2929">return_value</a>).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.filter">filter</a>(|r| <a href="#2947">r</a>.<a href="value.rs.html#638-640">type_</a>().<a href="types.rs.html#271-273">is_valid</a>() &amp;&amp; <a href="#2947">r</a>.<a href="value.rs.html#638-640">type_</a>() != Type::UNIT)
         }
     }
 
@@ -7582,7 +7582,7 @@
         }
     }
 
-    <span class="kw">fn </span>connect_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>, <span class="kw-2">&amp;</span><a href="param_spec.rs.html#19-42"><span class="kw">crate</span>::ParamSpec</a>) + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>&gt;(
+    <span class="kw">fn </span>connect_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>, <span class="kw-2">&amp;</span><a href="param_spec.rs.html#19-57"><span class="kw">crate</span>::ParamSpec</a>) + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         name: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;,
         f: F,
@@ -7590,7 +7590,7 @@
         <span class="kw">unsafe </span>{ <a class="self" href="#2962">self</a>.<a href="#2122-2126">connect_notify_unsafe</a>(<a href="#2963">name</a>, <a href="#2964">f</a>) }
     }
 
-    <span class="kw">fn </span>connect_notify_local&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>, <span class="kw-2">&amp;</span><a href="param_spec.rs.html#19-42"><span class="kw">crate</span>::ParamSpec</a>) + <span class="lifetime">'static</span>&gt;(
+    <span class="kw">fn </span>connect_notify_local&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>, <span class="kw-2">&amp;</span><a href="param_spec.rs.html#19-57"><span class="kw">crate</span>::ParamSpec</a>) + <span class="lifetime">'static</span>&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         name: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;,
         f: F,
@@ -7604,12 +7604,12 @@
         }
     }
 
-    <span class="kw">unsafe fn </span>connect_notify_unsafe&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>, <span class="kw-2">&amp;</span><a href="param_spec.rs.html#19-42"><span class="kw">crate</span>::ParamSpec</a>)&gt;(
+    <span class="kw">unsafe fn </span>connect_notify_unsafe&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>, <span class="kw-2">&amp;</span><a href="param_spec.rs.html#19-57"><span class="kw">crate</span>::ParamSpec</a>)&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         name: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;,
         f: F,
     ) -&gt; <a href="signal.rs.html#49">SignalHandlerId</a> {
-        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>notify_trampoline&lt;P, F: Fn(<span class="kw-2">&amp;</span>P, <span class="kw-2">&amp;</span><a href="param_spec.rs.html#19-42"><span class="kw">crate</span>::ParamSpec</a>)&gt;(
+        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>notify_trampoline&lt;P, F: Fn(<span class="kw-2">&amp;</span>P, <span class="kw-2">&amp;</span><a href="param_spec.rs.html#19-57"><span class="kw">crate</span>::ParamSpec</a>)&gt;(
             this: <span class="kw-2">*mut </span>gobject_ffi::GObject,
             param_spec: <span class="kw-2">*mut </span>gobject_ffi::GParamSpec,
             f: ffi::gpointer,
@@ -7653,7 +7653,7 @@
     }
 
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>notify_by_pspec(<span class="kw-2">&amp;</span><span class="self">self</span>, pspec: <span class="kw-2">&amp;</span><a href="param_spec.rs.html#19-42"><span class="kw">crate</span>::ParamSpec</a>) {
+    </span><span class="kw">fn </span>notify_by_pspec(<span class="kw-2">&amp;</span><span class="self">self</span>, pspec: <span class="kw-2">&amp;</span><a href="param_spec.rs.html#19-57"><span class="kw">crate</span>::ParamSpec</a>) {
         <span class="kw">unsafe </span>{
             gobject_ffi::g_object_notify_by_pspec(
                 <a class="self" href="#3032">self</a>.<a href="#48">as_object_ref</a>().<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
@@ -7779,8 +7779,8 @@
 </span><span class="kw">fn </span>validate_property_type(
     type_: <a href="types.rs.html#22">Type</a>,
     allow_construct_only: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>,
-    pspec: <span class="kw-2">&amp;</span><a href="param_spec.rs.html#19-42"><span class="kw">crate</span>::ParamSpec</a>,
-    property_value: <span class="kw-2">&amp;mut </span><a href="value.rs.html#478-512">Value</a>,
+    pspec: <span class="kw-2">&amp;</span><a href="param_spec.rs.html#19-57"><span class="kw">crate</span>::ParamSpec</a>,
+    property_value: <span class="kw-2">&amp;mut </span><a href="value.rs.html#478-523">Value</a>,
 ) {
     <span class="kw">if </span>!pspec.flags().contains(<span class="kw">crate</span>::ParamFlags::WRITABLE)
         || (!allow_construct_only &amp;&amp; pspec.flags().contains(<span class="kw">crate</span>::ParamFlags::CONSTRUCT_ONLY))
@@ -7798,11 +7798,11 @@
         // value type is a subtype of the property type
         </span><span class="kw">let </span>valid_type: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> = <a href="translate.rs.html#1417-1419">from_glib</a>(gobject_ffi::g_type_check_value_holds(
             <a href="translate.rs.html#202-204">mut_override</a>(<a href="#3159">property_value</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>),
-            <a href="#3158">pspec</a>.<a href="param_spec.rs.html#177-179">value_type</a>().<a href="translate.rs.html#334">into_glib</a>(),
+            <a href="#3158">pspec</a>.<a href="param_spec.rs.html#192-194">value_type</a>().<a href="translate.rs.html#334">into_glib</a>(),
         ));
 
         <span class="kw">if </span>!valid_type {
-            <span class="kw">if let </span><span class="prelude-val">Err</span>(got) = <a href="#3209-3219">coerce_object_type</a>(<a href="#3159">property_value</a>, <a href="#3158">pspec</a>.<a href="param_spec.rs.html#177-179">value_type</a>()) {
+            <span class="kw">if let </span><span class="prelude-val">Err</span>(got) = <a href="#3209-3219">coerce_object_type</a>(<a href="#3159">property_value</a>, <a href="#3158">pspec</a>.<a href="param_spec.rs.html#192-194">value_type</a>()) {
                 <a class="macro" href="https://doc.rust-lang.org/nightly/std/macro.panic.html">panic!</a>(
                         <span class="string">"property '{}' of type '{type_}' can't be set from the given type (expected: '{}', got: '{got}')"</span>,
                         pspec.name(),
@@ -7815,7 +7815,7 @@
             <a href="#3158">pspec</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
             <a href="#3159">property_value</a>.<a href="translate.rs.html#471">to_glib_none_mut</a>().<span class="number">0</span>,
         ));
-        <span class="kw">let </span>change_allowed = <a href="#3158">pspec</a>.<a href="param_spec.rs.html#202-204">flags</a>().<a href="gobject/flags.rs.html#5-54">contains</a>(<span class="kw">crate</span>::ParamFlags::LAX_VALIDATION);
+        <span class="kw">let </span>change_allowed = <a href="#3158">pspec</a>.<a href="param_spec.rs.html#217-219">flags</a>().<a href="gobject/flags.rs.html#5-82">contains</a>(<span class="kw">crate</span>::ParamFlags::LAX_VALIDATION);
         <span class="kw">if </span>changed &amp;&amp; !change_allowed {
             <a class="macro" href="https://doc.rust-lang.org/nightly/std/macro.panic.html">panic!</a>(
                 <span class="string">"property '{}' of type '{type_}' can't be set from given value, it is invalid or out of range"</span>,
@@ -7830,20 +7830,20 @@
 // a properly typed Value (by mutating the existing Value).
 // This can happen if the type field in the Value is set to a more
 // generic type than the contained value.
-</span><span class="kw">fn </span>coerce_object_type(property_value: <span class="kw-2">&amp;mut </span><a href="value.rs.html#478-512">Value</a>, type_: <a href="types.rs.html#22">Type</a>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="types.rs.html#22">Type</a>&gt; {
+</span><span class="kw">fn </span>coerce_object_type(property_value: <span class="kw-2">&amp;mut </span><a href="value.rs.html#478-523">Value</a>, type_: <a href="types.rs.html#22">Type</a>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="types.rs.html#22">Type</a>&gt; {
     <span class="comment">// return early if type coercion is not possible
-    </span><span class="kw">match </span><a href="#3209">property_value</a>.<a href="value.rs.html#585-593">get</a>::&lt;<span class="prelude-ty">Option</span>&lt;<a href="#1370-1373">Object</a>&gt;&gt;() {
+    </span><span class="kw">match </span><a href="#3209">property_value</a>.<a href="value.rs.html#596-604">get</a>::&lt;<span class="prelude-ty">Option</span>&lt;<a href="#1370-1373">Object</a>&gt;&gt;() {
         <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(obj)) <span class="kw">if </span>!(<a href="#3212">obj</a>.<a href="#1596">type_</a>().<a href="types.rs.html#160-167">is_a</a>(<a href="#3209">type_</a>)) =&gt; <span class="prelude-val">Err</span>(<a href="#3212">obj</a>.<a href="#1596">type_</a>()),
         <span class="prelude-val">Ok</span>(<span class="kw">_</span>) =&gt; {
             <a href="#3209">property_value</a>.inner.g_type = <a href="#3209">type_</a>.<a href="translate.rs.html#334">into_glib</a>();
             <span class="prelude-val">Ok</span>(())
         }
-        <span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; <span class="prelude-val">Err</span>(<a href="#3209">property_value</a>.<a href="value.rs.html#627-629">type_</a>()),
+        <span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; <span class="prelude-val">Err</span>(<a href="#3209">property_value</a>.<a href="value.rs.html#638-640">type_</a>()),
     }
 }
 
 <span class="attr">#[track_caller]
-</span><span class="kw">fn </span>validate_signal_arguments(type_: <a href="types.rs.html#22">Type</a>, signal_query: <span class="kw-2">&amp;</span><a href="subclass/signal.rs.html#89">SignalQuery</a>, args: <span class="kw-2">&amp;mut </span>[<a href="value.rs.html#478-512">Value</a>]) {
+</span><span class="kw">fn </span>validate_signal_arguments(type_: <a href="types.rs.html#22">Type</a>, signal_query: <span class="kw-2">&amp;</span><a href="subclass/signal.rs.html#89">SignalQuery</a>, args: <span class="kw-2">&amp;mut </span>[<a href="value.rs.html#478-523">Value</a>]) {
     <span class="kw">let </span>signal_name = <a href="#3222">signal_query</a>.<a href="subclass/signal.rs.html#98-103">signal_name</a>();
 
     <span class="kw">if </span>signal_query.n_params() != args.len() <span class="kw">as </span>u32 {
@@ -7891,13 +7891,13 @@
     </span><span class="attr">#[doc(alias = <span class="string">"get_property_type"</span>)]
     </span><span class="kw">fn </span>property_type(<span class="kw-2">&amp;</span><span class="self">self</span>, property_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="types.rs.html#22">Type</a>&gt; {
         <a class="self" href="#3268">self</a>.<a href="#3276-3287">find_property</a>(<a href="#3268">property_name</a>)
-            .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|pspec| <a href="#3270">pspec</a>.<a href="param_spec.rs.html#177-179">value_type</a>())
+            .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|pspec| <a href="#3270">pspec</a>.<a href="param_spec.rs.html#192-194">value_type</a>())
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Get the [`ParamSpec`](crate::ParamSpec) of the property `property_name` of this object class.
     </span><span class="attr">#[doc(alias = <span class="string">"g_object_class_find_property"</span>)]
-    </span><span class="kw">fn </span>find_property(<span class="kw-2">&amp;</span><span class="self">self</span>, property_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="param_spec.rs.html#19-42"><span class="kw">crate</span>::ParamSpec</a>&gt; {
+    </span><span class="kw">fn </span>find_property(<span class="kw-2">&amp;</span><span class="self">self</span>, property_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="param_spec.rs.html#19-57"><span class="kw">crate</span>::ParamSpec</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>klass = <span class="self"><a href="#3276">self</a> </span><span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_ as </span><span class="kw-2">*const </span>gobject_ffi::GObjectClass;
 
@@ -7913,7 +7913,7 @@
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Return all [`ParamSpec`](crate::ParamSpec) of the properties of this object class.
     </span><span class="attr">#[doc(alias = <span class="string">"g_object_class_list_properties"</span>)]
-    </span><span class="kw">fn </span>list_properties(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; PtrSlice&lt;<a href="param_spec.rs.html#19-42"><span class="kw">crate</span>::ParamSpec</a>&gt; {
+    </span><span class="kw">fn </span>list_properties(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; PtrSlice&lt;<a href="param_spec.rs.html#19-57"><span class="kw">crate</span>::ParamSpec</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>klass = <span class="self"><a href="#3292">self</a> </span><span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_ as </span><span class="kw-2">*const </span>gobject_ffi::GObjectClass;
 
@@ -8191,7 +8191,7 @@
 <span class="kw">unsafe impl</span>&lt;T: <a href="#22-52">ObjectType</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> <span class="kw">for </span>SendWeakRef&lt;T&gt; {}
 
 <span class="kw">type </span>TransformFn&lt;<span class="lifetime">'b</span>&gt; =
-    <span class="prelude-ty">Option</span>&lt;Box&lt;<span class="kw">dyn </span>Fn(<span class="kw-2">&amp;</span><span class="lifetime">'b </span><a href="gobject/auto/binding.rs.html#7-139"><span class="kw">crate</span>::Binding</a>, <span class="kw-2">&amp;</span><span class="lifetime">'b </span><a href="value.rs.html#478-512">Value</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="value.rs.html#478-512">Value</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>&gt;&gt;;
+    <span class="prelude-ty">Option</span>&lt;Box&lt;<span class="kw">dyn </span>Fn(<span class="kw-2">&amp;</span><span class="lifetime">'b </span><a href="gobject/auto/binding.rs.html#7-265"><span class="kw">crate</span>::Binding</a>, <span class="kw-2">&amp;</span><span class="lifetime">'b </span><a href="value.rs.html#478-523">Value</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="value.rs.html#478-523">Value</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>&gt;&gt;;
 
 <span class="comment">// rustdoc-stripper-ignore-next
 </span><span class="doccomment">/// Builder for object property bindings.
@@ -8242,7 +8242,7 @@
     /// This function operates on `glib::Value`s.
     /// See [`Self::transform_from`] for a version which operates on concrete argument and return types.
     </span><span class="kw">pub fn </span>transform_from_with_values&lt;
-        F: Fn(<span class="kw-2">&amp;</span><a href="gobject/auto/binding.rs.html#7-139"><span class="kw">crate</span>::Binding</a>, <span class="kw-2">&amp;</span><a href="value.rs.html#478-512">Value</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="value.rs.html#478-512">Value</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>,
+        F: Fn(<span class="kw-2">&amp;</span><a href="gobject/auto/binding.rs.html#7-265"><span class="kw">crate</span>::Binding</a>, <span class="kw-2">&amp;</span><a href="value.rs.html#478-523">Value</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="value.rs.html#478-523">Value</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>,
     &gt;(
         <span class="self">self</span>,
         func: F,
@@ -8260,15 +8260,15 @@
     /// See [`Self::transform_from_with_values`] for a version which operates on `glib::Value`s.
     </span><span class="kw">pub fn </span>transform_from&lt;
         S: FromValue&lt;<span class="lifetime">'f</span>&gt;,
-        T: Into&lt;<a href="value.rs.html#478-512">Value</a>&gt;,
-        F: Fn(<span class="kw-2">&amp;</span><span class="lifetime">'f </span><a href="gobject/auto/binding.rs.html#7-139"><span class="kw">crate</span>::Binding</a>, S) -&gt; <span class="prelude-ty">Option</span>&lt;T&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>,
+        T: Into&lt;<a href="value.rs.html#478-523">Value</a>&gt;,
+        F: Fn(<span class="kw-2">&amp;</span><span class="lifetime">'f </span><a href="gobject/auto/binding.rs.html#7-265"><span class="kw">crate</span>::Binding</a>, S) -&gt; <span class="prelude-ty">Option</span>&lt;T&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>,
     &gt;(
         <span class="self">self</span>,
         func: F,
     ) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
             transform_from: <span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">Box::new</a>(<span class="kw">move </span>|binding, from_value| {
-                <span class="kw">let </span>from_value = <a href="#3646">from_value</a>.<a href="value.rs.html#585-593">get</a>().<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.expect">expect</a>(<span class="string">"Wrong value type"</span>);
+                <span class="kw">let </span>from_value = <a href="#3646">from_value</a>.<a href="value.rs.html#596-604">get</a>().<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.expect">expect</a>(<span class="string">"Wrong value type"</span>);
                 <a href="#3643">func</a>(<a href="#3646">binding</a>, <a href="#3647">from_value</a>).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|r| <a href="#3648">r</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>())
             })),
             ..<span class="self"><a href="#3642">self</a>
@@ -8281,7 +8281,7 @@
     /// This function operates on `glib::Value`s.
     /// See [`Self::transform_to`] for a version which operates on concrete argument and return types.
     </span><span class="kw">pub fn </span>transform_to_with_values&lt;
-        F: Fn(<span class="kw-2">&amp;</span><a href="gobject/auto/binding.rs.html#7-139"><span class="kw">crate</span>::Binding</a>, <span class="kw-2">&amp;</span><a href="value.rs.html#478-512">Value</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="value.rs.html#478-512">Value</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>,
+        F: Fn(<span class="kw-2">&amp;</span><a href="gobject/auto/binding.rs.html#7-265"><span class="kw">crate</span>::Binding</a>, <span class="kw-2">&amp;</span><a href="value.rs.html#478-523">Value</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="value.rs.html#478-523">Value</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>,
     &gt;(
         <span class="self">self</span>,
         func: F,
@@ -8299,15 +8299,15 @@
     /// See [`Self::transform_to_with_values`] for a version which operates on `glib::Value`s.
     </span><span class="kw">pub fn </span>transform_to&lt;
         S: FromValue&lt;<span class="lifetime">'t</span>&gt;,
-        T: Into&lt;<a href="value.rs.html#478-512">Value</a>&gt;,
-        F: Fn(<span class="kw-2">&amp;</span><span class="lifetime">'t </span><a href="gobject/auto/binding.rs.html#7-139"><span class="kw">crate</span>::Binding</a>, S) -&gt; <span class="prelude-ty">Option</span>&lt;T&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>,
+        T: Into&lt;<a href="value.rs.html#478-523">Value</a>&gt;,
+        F: Fn(<span class="kw-2">&amp;</span><span class="lifetime">'t </span><a href="gobject/auto/binding.rs.html#7-265"><span class="kw">crate</span>::Binding</a>, S) -&gt; <span class="prelude-ty">Option</span>&lt;T&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>,
     &gt;(
         <span class="self">self</span>,
         func: F,
     ) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
             transform_to: <span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">Box::new</a>(<span class="kw">move </span>|binding, from_value| {
-                <span class="kw">let </span>from_value = <a href="#3685">from_value</a>.<a href="value.rs.html#585-593">get</a>().<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.expect">expect</a>(<span class="string">"Wrong value type"</span>);
+                <span class="kw">let </span>from_value = <a href="#3685">from_value</a>.<a href="value.rs.html#596-604">get</a>().<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.expect">expect</a>(<span class="string">"Wrong value type"</span>);
                 <a href="#3682">func</a>(<a href="#3685">binding</a>, <a href="#3686">from_value</a>).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|r| <a href="#3687">r</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>())
             })),
             ..<span class="self"><a href="#3681">self</a>
@@ -8347,7 +8347,7 @@
     /// # Panics
     /// This panics if the provided properties do not exist.
     </span><span class="attr">#[track_caller]
-    </span><span class="kw">pub fn </span>build(<span class="self">self</span>) -&gt; <a href="gobject/auto/binding.rs.html#7-139"><span class="kw">crate</span>::Binding</a> {
+    </span><span class="kw">pub fn </span>build(<span class="self">self</span>) -&gt; <a href="gobject/auto/binding.rs.html#7-265"><span class="kw">crate</span>::Binding</a> {
         <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>transform_to_trampoline(
             binding: <span class="kw-2">*mut </span>gobject_ffi::GBinding,
             from_value: <span class="kw-2">*const </span>gobject_ffi::GValue,
@@ -8355,11 +8355,11 @@
             user_data: ffi::gpointer,
         ) -&gt; ffi::gboolean {
             <span class="kw">let </span>transform_data = <span class="kw-2">&amp;*</span>(<a href="#3731">user_data</a>
-                <span class="kw">as </span><span class="kw-2">*const </span>(<a href="#3569-3570">TransformFn</a>, <a href="#3569-3570">TransformFn</a>, <a href="param_spec.rs.html#19-42"><span class="kw">crate</span>::ParamSpec</a>, <a href="param_spec.rs.html#19-42"><span class="kw">crate</span>::ParamSpec</a>));
+                <span class="kw">as </span><span class="kw-2">*const </span>(<a href="#3569-3570">TransformFn</a>, <a href="#3569-3570">TransformFn</a>, <a href="param_spec.rs.html#19-57"><span class="kw">crate</span>::ParamSpec</a>, <a href="param_spec.rs.html#19-57"><span class="kw">crate</span>::ParamSpec</a>));
 
             <span class="kw">match </span>(<a href="#3733">transform_data</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_ref">as_ref</a>().<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap">unwrap</a>())(
                 <span class="kw-2">&amp;</span><a href="translate.rs.html#1643-1645">from_glib_borrow</a>(<a href="#3728">binding</a>),
-                <span class="kw-2">&amp;*</span>(<a href="#3729">from_value</a> <span class="kw">as </span><span class="kw-2">*const </span><a href="value.rs.html#478-512">Value</a>),
+                <span class="kw-2">&amp;*</span>(<a href="#3729">from_value</a> <span class="kw">as </span><span class="kw-2">*const </span><a href="value.rs.html#478-523">Value</a>),
             ) {
                 <span class="prelude-val">None </span>=&gt; <span class="bool-val">false</span>,
                 <span class="prelude-val">Some</span>(res) =&gt; {
@@ -8370,7 +8370,7 @@
                         transform_data.<span class="number">3</span>.value_type(),
                         res.type_()
                     );
-                    <span class="kw-2">*</span><a href="#3730">to_value</a> = <a href="#3741">res</a>.<a href="value.rs.html#702-707">into_raw</a>();
+                    <span class="kw-2">*</span><a href="#3730">to_value</a> = <a href="#3741">res</a>.<a href="value.rs.html#744-749">into_raw</a>();
                     <span class="bool-val">true
                 </span>}
             }
@@ -8384,11 +8384,11 @@
             user_data: ffi::gpointer,
         ) -&gt; ffi::gboolean {
             <span class="kw">let </span>transform_data = <span class="kw-2">&amp;*</span>(<a href="#3760">user_data</a>
-                <span class="kw">as </span><span class="kw-2">*const </span>(<a href="#3569-3570">TransformFn</a>, <a href="#3569-3570">TransformFn</a>, <a href="param_spec.rs.html#19-42"><span class="kw">crate</span>::ParamSpec</a>, <a href="param_spec.rs.html#19-42"><span class="kw">crate</span>::ParamSpec</a>));
+                <span class="kw">as </span><span class="kw-2">*const </span>(<a href="#3569-3570">TransformFn</a>, <a href="#3569-3570">TransformFn</a>, <a href="param_spec.rs.html#19-57"><span class="kw">crate</span>::ParamSpec</a>, <a href="param_spec.rs.html#19-57"><span class="kw">crate</span>::ParamSpec</a>));
 
             <span class="kw">match </span>(<a href="#3762">transform_data</a>.<span class="number">1</span>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_ref">as_ref</a>().<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap">unwrap</a>())(
                 <span class="kw-2">&amp;</span><a href="translate.rs.html#1643-1645">from_glib_borrow</a>(<a href="#3757">binding</a>),
-                <span class="kw-2">&amp;*</span>(<a href="#3758">from_value</a> <span class="kw">as </span><span class="kw-2">*const </span><a href="value.rs.html#478-512">Value</a>),
+                <span class="kw-2">&amp;*</span>(<a href="#3758">from_value</a> <span class="kw">as </span><span class="kw-2">*const </span><a href="value.rs.html#478-523">Value</a>),
             ) {
                 <span class="prelude-val">None </span>=&gt; <span class="bool-val">false</span>,
                 <span class="prelude-val">Some</span>(res) =&gt; {
@@ -8399,7 +8399,7 @@
                         transform_data.<span class="number">2</span>.value_type(),
                         res.type_()
                     );
-                    <span class="kw-2">*</span><a href="#3759">to_value</a> = <a href="#3770">res</a>.<a href="value.rs.html#702-707">into_raw</a>();
+                    <span class="kw-2">*</span><a href="#3759">to_value</a> = <a href="#3770">res</a>.<a href="value.rs.html#744-749">into_raw</a>();
                     <span class="bool-val">true
                 </span>}
             }
@@ -8408,7 +8408,7 @@
 
         <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>free_transform_data(data: ffi::gpointer) {
             <span class="kw">let _ </span>= <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.from_raw">Box::from_raw</a>(
-                <a href="#3785">data</a> <span class="kw">as </span><span class="kw-2">*mut </span>(<a href="#3569-3570">TransformFn</a>, <a href="#3569-3570">TransformFn</a>, <a href="param_spec.rs.html#19-42"><span class="kw">crate</span>::ParamSpec</a>, <a href="param_spec.rs.html#19-42"><span class="kw">crate</span>::ParamSpec</a>),
+                <a href="#3785">data</a> <span class="kw">as </span><span class="kw-2">*mut </span>(<a href="#3569-3570">TransformFn</a>, <a href="#3569-3570">TransformFn</a>, <a href="param_spec.rs.html#19-57"><span class="kw">crate</span>::ParamSpec</a>, <a href="param_spec.rs.html#19-57"><span class="kw">crate</span>::ParamSpec</a>),
             );
         }
 
@@ -8441,8 +8441,8 @@
                     );
                 });
 
-            <span class="kw">let </span>source_property_name = <a href="#3801">source_property</a>.<a href="param_spec.rs.html#253-259">name</a>().<a href="https://doc.rust-lang.org/nightly/core/foreigntype.str.html#method.as_ptr">as_ptr</a>();
-            <span class="kw">let </span>target_property_name = <a href="#3810">target_property</a>.<a href="param_spec.rs.html#253-259">name</a>().<a href="https://doc.rust-lang.org/nightly/core/foreigntype.str.html#method.as_ptr">as_ptr</a>();
+            <span class="kw">let </span>source_property_name = <a href="#3801">source_property</a>.<a href="param_spec.rs.html#291-297">name</a>().<a href="https://doc.rust-lang.org/nightly/core/foreigntype.str.html#method.as_ptr">as_ptr</a>();
+            <span class="kw">let </span>target_property_name = <a href="#3810">target_property</a>.<a href="param_spec.rs.html#291-297">name</a>().<a href="https://doc.rust-lang.org/nightly/core/foreigntype.str.html#method.as_ptr">as_ptr</a>();
 
             <span class="kw">let </span>have_transform_to = <a class="self" href="#3726">self</a>.transform_to.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.is_some">is_some</a>();
             <span class="kw">let </span>have_transform_from = <a class="self" href="#3726">self</a>.transform_from.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.is_some">is_some</a>();
@@ -8838,13 +8838,13 @@
     </span><span class="attr">#[doc(alias = <span class="string">"get_property_type"</span>)]
     </span><span class="kw">pub fn </span>property_type(<span class="kw-2">&amp;</span><span class="self">self</span>, property_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="types.rs.html#22">Type</a>&gt; {
         <a class="self" href="#4215">self</a>.<a href="#4223-4232">find_property</a>(<a href="#4215">property_name</a>)
-            .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|pspec| <a href="#4217">pspec</a>.<a href="param_spec.rs.html#177-179">value_type</a>())
+            .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|pspec| <a href="#4217">pspec</a>.<a href="param_spec.rs.html#192-194">value_type</a>())
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Get the [`ParamSpec`](crate::ParamSpec) of the property `property_name` of this interface.
     </span><span class="attr">#[doc(alias = <span class="string">"g_object_interface_find_property"</span>)]
-    </span><span class="kw">pub fn </span>find_property(<span class="kw-2">&amp;</span><span class="self">self</span>, property_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="param_spec.rs.html#19-42"><span class="kw">crate</span>::ParamSpec</a>&gt; {
+    </span><span class="kw">pub fn </span>find_property(<span class="kw-2">&amp;</span><span class="self">self</span>, property_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="param_spec.rs.html#19-57"><span class="kw">crate</span>::ParamSpec</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>interface = <span class="self"><a href="#4223">self</a> </span><span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_ as </span><span class="kw-2">*const </span>gobject_ffi::GTypeInterface;
 
@@ -8858,7 +8858,7 @@
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Return all [`ParamSpec`](crate::ParamSpec) of the properties of this interface.
     </span><span class="attr">#[doc(alias = <span class="string">"g_object_interface_list_properties"</span>)]
-    </span><span class="kw">pub fn </span>list_properties(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; PtrSlice&lt;<a href="param_spec.rs.html#19-42"><span class="kw">crate</span>::ParamSpec</a>&gt; {
+    </span><span class="kw">pub fn </span>list_properties(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; PtrSlice&lt;<a href="param_spec.rs.html#19-57"><span class="kw">crate</span>::ParamSpec</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>interface = <span class="self"><a href="#4237">self</a> </span><span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_ as </span><span class="kw-2">*const </span>gobject_ffi::GTypeInterface;
 
@@ -8929,7 +8929,7 @@
 <span class="kw">unsafe impl</span>&lt;T: <a href="types.rs.html#290-294">StaticType</a>&gt; <a href="value.rs.html#97-101"><span class="kw">crate</span>::value::ValueTypeChecker</a> <span class="kw">for </span>ObjectValueTypeChecker&lt;T&gt; {
     <span class="kw">type </span>Error = <span class="kw">crate</span>::value::ValueTypeMismatchOrNoneError&lt;<a href="value.rs.html#107-110"><span class="kw">crate</span>::value::ValueTypeMismatchError</a>&gt;;
 
-    <span class="kw">fn </span>check(value: <span class="kw-2">&amp;</span><a href="value.rs.html#478-512">Value</a>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <span class="self">Self</span>::Error&gt; {
+    <span class="kw">fn </span>check(value: <span class="kw-2">&amp;</span><a href="value.rs.html#478-523">Value</a>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <span class="self">Self</span>::Error&gt; {
         <span class="comment">// g_type_check_value_holds() only checks for the GType of the GValue. This might be
         // initialized to a parent type of the expected type and would then fail while it's
         // still valid to retrieve the value.

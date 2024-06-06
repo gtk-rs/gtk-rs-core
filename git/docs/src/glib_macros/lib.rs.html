@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib-macros/src/lib.rs`."><title>lib.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib_macros" data-themes="" data-resource-suffix="" data-rustdoc-version="1.80.0-nightly (032af18af 2024-06-02)" data-channel="nightly" data-search-js="search-d52510db62a78183.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib-macros/src/lib.rs`."><title>lib.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib_macros" data-themes="" data-resource-suffix="" data-rustdoc-version="1.80.0-nightly (72fdf913c 2024-06-05)" data-channel="nightly" data-search-js="search-d52510db62a78183.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -1528,6 +1528,18 @@
 <a href="#1455" id="1455">1455</a>
 <a href="#1456" id="1456">1456</a>
 <a href="#1457" id="1457">1457</a>
+<a href="#1458" id="1458">1458</a>
+<a href="#1459" id="1459">1459</a>
+<a href="#1460" id="1460">1460</a>
+<a href="#1461" id="1461">1461</a>
+<a href="#1462" id="1462">1462</a>
+<a href="#1463" id="1463">1463</a>
+<a href="#1464" id="1464">1464</a>
+<a href="#1465" id="1465">1465</a>
+<a href="#1466" id="1466">1466</a>
+<a href="#1467" id="1467">1467</a>
+<a href="#1468" id="1468">1468</a>
+<a href="#1469" id="1469">1469</a>
 </pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
 </span><span class="kw">mod </span><a href="boxed_derive.rs.html#3-275">boxed_derive</a>;
@@ -2749,8 +2761,8 @@
 /// | --- | --- | --- | --- |
 /// | `name = "literal"` | The name of the property | field ident where `_` (leading and trailing `_` are trimmed) is replaced into `-` | `#[property(name = "prop-name")]` |
 /// | `type = expr` | The type of the property | inferred | `#[property(type = i32)]` |
-/// | `get [= expr]` | Specify that the property is readable and use `PropertyGet::get` [or optionally set a custom internal getter] | | `#[property(get)]`, `#[property(get = get_prop)]`, or `[property(get = \|_\| 2)]` |
-/// | `set [= expr]` | Specify that the property is writable and use `PropertySet::set` [or optionally set a custom internal setter] | | `#[property(set)]`, `#[property(set = set_prop)]`, or `[property(set = \|_, val\| {})]` |
+/// | `get [= expr]` | Specify that the property is readable and use [`PropertyGet::get`] [or optionally set a custom internal getter] | | `#[property(get)]`, `#[property(get = get_prop)]`, or `[property(get = \|_\| 2)]` |
+/// | `set [= expr]` | Specify that the property is writable and use [`PropertySet::set`] [or optionally set a custom internal setter] | | `#[property(set)]`, `#[property(set = set_prop)]`, or `[property(set = \|_, val\| {})]` |
 /// | `override_class = expr` | The type of class of which to override the property from | | `#[property(override_class = SomeClass)]` |
 /// | `override_interface = expr` | The type of interface of which to override the property from | | `#[property(override_interface = SomeInterface)]` |
 /// | `nullable` | Whether to use `Option&lt;T&gt;` in the generated setter method |  | `#[property(nullable)]` |
@@ -2786,32 +2798,32 @@
 /// by assigning an expression to `get`/`set` `#[property]` attributes: `#[property(get = |_| 2, set)]` or `#[property(get, set = custom_setter_func)]`.
 ///
 /// # Supported types
-/// Every type implementing the trait `Property` is supported.
-/// The type `Option&lt;T&gt;` is supported as a property only if `Option&lt;T&gt;` implements `ToValueOptional`.
+/// Every type implementing the trait [`Property`] is supported.
+/// The type `Option&lt;T&gt;` is supported as a property only if `Option&lt;T&gt;` implements [`ToValueOptional`].
 /// Optional types also require the `nullable` attribute: without it, the generated setter on the wrapper type
 /// will take `T` instead of `Option&lt;T&gt;`, preventing the user from ever calling the setter with a `None` value.
 ///
 /// ## Adding support for custom types
-/// ### Types wrapping an existing `T: glib::value::ToValue + glib::HasParamSpec`
+/// ### Types wrapping an existing &lt;code&gt;T: [ToValue] + [HasParamSpec]&lt;/code&gt;
 /// If you have declared a newtype as
 /// ```rust
 /// struct MyInt(i32);
 /// ```
-/// you can use it as a property by deriving `glib::ValueDelegate`.
+/// you can use it as a property by deriving [`ValueDelegate`].
 ///
 /// ### Types with inner mutability
-/// The trait `glib::Property` must be implemented.
-/// The traits `PropertyGet` and `PropertySet` should be implemented to enable the Properties macro
+/// The trait [`Property`] must be implemented.
+/// The traits [`PropertyGet`] and [`PropertySet`] should be implemented to enable the Properties macro
 /// to generate a default internal getter/setter.
-/// If possible, implementing `PropertySetNested` is preferred over `PropertySet`, because it
+/// If possible, implementing [`PropertySetNested`] is preferred over `PropertySet`, because it
 /// enables this macro to access the contained type and provide access to its fields,
 /// using the `member = $structfield` syntax.
 ///
-/// ### Types without `glib::HasParamSpec`
-/// If you have encountered a type `T: glib::value::ToValue`, inside the `gtk-rs` crate, which doesn't implement `HasParamSpec`,
+/// ### Types without [`HasParamSpec`][HasParamSpec]
+/// If you have encountered a type &lt;code&gt;T: [ToValue]&lt;/code&gt;, inside the gtk-rs crate, which doesn't implement [`HasParamSpec`][HasParamSpec],
 /// then it's a bug and you should report it.
-/// If you need to support a `ToValue` type with a `ParamSpec` not provided by `gtk-rs`, then you need to
-/// implement `glib::HasParamSpec` on that type.
+/// If you need to support a `ToValue` type with a [`ParamSpec`] not provided by gtk-rs, then you need to
+/// implement `HasParamSpec` on that type.
 ///
 /// # Example
 /// ```
@@ -2878,11 +2890,23 @@
 ///   assert_eq!(myfoo.fizz(), "custom set: test value".to_string());
 /// }
 /// ```
+///
+/// [`Property`]: ../glib/property/trait.Property.html
+/// [`PropertyGet`]: ../glib/property/trait.PropertyGet.html
+/// [`PropertyGet::get`]: ../glib/property/trait.PropertyGet.html#tymethod.get
+/// [`PropertySet`]: ../glib/property/trait.PropertySet.html
+/// [`PropertySet::set`]: ../glib/property/trait.PropertySet.html#tymethod.set
+/// [`PropertySetNested`]: ../glib/property/trait.PropertySetNested.html
+/// [`ObjectExt::property`]: ../glib/object/trait.ObjectExt.html#tymethod.property
+/// [HasParamSpec]: ../glib/trait.HasParamSpec.html
+/// [`ParamSpec`]: ../glib/struct.ParamSpec.html
+/// [`ToValueOptional`]: ../glib/value/trait.ToValueOptional.html
+/// [ToValue]: ../glib/value/trait.ToValue.html
 </span><span class="attr">#[allow(clippy::needless_doctest_main)]
 #[proc_macro_derive(Properties, attributes(properties, property))]
 </span><span class="kw">pub fn </span><a href="../../glib_macros/derive.Properties.html">derive_props</a>(input: <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a> {
     <span class="kw">let </span>input = <a class="macro" href="https://docs.rs/syn/2.0.66/syn/macro.parse_macro_input.html">parse_macro_input!</a>(input <span class="kw">as </span>properties::PropsMacroInput);
-    <a href="properties.rs.html#714-774">properties::impl_derive_props</a>(<a href="#1354">input</a>)
+    <a href="properties.rs.html#714-774">properties::impl_derive_props</a>(<a href="#1366">input</a>)
 }
 
 <span class="doccomment">/// When applied to `ObjectImpl`
@@ -2906,14 +2930,14 @@
 /// ```
 </span><span class="attr">#[proc_macro_attribute]
 </span><span class="kw">pub fn </span><a href="../../glib_macros/attr.derived_properties.html">derived_properties</a>(_attr: <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a>, item: <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a> {
-    syn::parse::&lt;<a href="https://docs.rs/syn/2.0.66/syn/item/struct.ItemImpl.html">syn::ItemImpl</a>&gt;(<a href="#1378">item</a>)
+    syn::parse::&lt;<a href="https://docs.rs/syn/2.0.66/syn/item/struct.ItemImpl.html">syn::ItemImpl</a>&gt;(<a href="#1390">item</a>)
         .<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.map_err">map_err</a>(|<span class="kw">_</span>| {
             <a href="https://docs.rs/syn/2.0.66/syn/error/struct.Error.html#method.new">syn::Error::new</a>(
                 <a href="https://docs.rs/proc-macro2/1.0.85/proc_macro2/struct.Span.html#method.call_site">Span::call_site</a>(),
                 <a href="derived_properties_attribute.rs.html#6-7">derived_properties_attribute::WRONG_PLACE_MSG</a>,
             )
         })
-        .<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.and_then">and_then</a>(|input| <a href="derived_properties_attribute.rs.html#9-75">derived_properties_attribute::impl_derived_properties</a>(<span class="kw-2">&amp;</span><a href="#1386">input</a>))
+        .<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.and_then">and_then</a>(|input| <a href="derived_properties_attribute.rs.html#9-75">derived_properties_attribute::impl_derived_properties</a>(<span class="kw-2">&amp;</span><a href="#1398">input</a>))
         .<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap_or_else">unwrap_or_else</a>(syn::Error::into_compile_error)
         .<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>()
 }
@@ -2983,6 +3007,6 @@
 </span><span class="attr">#[proc_macro_derive(ValueDelegate, attributes(value_delegate))]
 </span><span class="kw">pub fn </span><a href="../../glib_macros/derive.ValueDelegate.html">derive_value_delegate</a>(input: <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a> {
     <span class="kw">let </span>input = <a class="macro" href="https://docs.rs/syn/2.0.66/syn/macro.parse_macro_input.html">parse_macro_input!</a>(input <span class="kw">as </span>value_delegate_derive::ValueDelegateInput);
-    <a href="value_delegate_derive.rs.html#114-200">value_delegate_derive::impl_value_delegate</a>(<a href="#1455">input</a>).<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>()
+    <a href="value_delegate_derive.rs.html#114-200">value_delegate_derive::impl_value_delegate</a>(<a href="#1467">input</a>).<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>()
 }
 </code></pre></div></section></main></body></html>
