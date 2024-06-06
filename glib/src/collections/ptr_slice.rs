@@ -11,7 +11,7 @@ const MIN_SIZE: usize = 16;
 // rustdoc-stripper-ignore-next
 /// Slice of elements of type `T` allocated by the GLib allocator.
 ///
-/// The underlying memory is always `NULL`-terminated. [`Slice<T>`]
+/// The underlying memory is always `NULL`-terminated. [`Slice<T>`](crate::collections::slice::Slice)
 /// can be used for a non-`NULL`-terminated slice.
 ///
 /// This can be used like a `&[T]`, `&mut [T]` and `Vec<T>`.
