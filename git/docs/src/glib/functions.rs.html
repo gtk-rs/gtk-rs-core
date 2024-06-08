@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/functions.rs`."><title>functions.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.80.0-nightly (72fdf913c 2024-06-05)" data-channel="nightly" data-search-js="search-d52510db62a78183.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/functions.rs`."><title>functions.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.80.0-nightly (804421dff 2024-06-07)" data-channel="nightly" data-search-js="search-d52510db62a78183.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -429,6 +429,8 @@
 <a href="#356" id="356">356</a>
 <a href="#357" id="357">357</a>
 <a href="#358" id="358">358</a>
+<a href="#359" id="359">359</a>
+<a href="#360" id="360">360</a>
 </pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
 </span><span class="kw">pub use </span><a href="auto/mod.rs.html#91"><span class="kw">crate</span>::auto::functions</a>::<span class="kw-2">*</span>;
@@ -448,7 +450,7 @@
 // use std::os::windows::io::AsRawHandle;
 </span><span class="kw">use crate</span>::{ffi, <a href="lib.rs.html#162">translate</a>::<span class="kw-2">*</span>, <a href="auto/enums.rs.html#15-33">ChecksumType</a>, <a href="gstring.rs.html#24">GStr</a>};
 <span class="attr">#[cfg(not(windows))]
-</span><span class="kw">use crate</span>::{<a href="error.rs.html#10-28">Error</a>, <a href="source.rs.html#59">Pid</a>, <a href="auto/flags.rs.html#731-795">SpawnFlags</a>};
+</span><span class="kw">use crate</span>::{<a href="error.rs.html#10-25">Error</a>, <a href="source.rs.html#59">Pid</a>, <a href="auto/flags.rs.html#731-795">SpawnFlags</a>};
 
 <span class="attr">#[cfg(feature = <span class="string">"v2_58"</span>)]
 #[cfg(not(windows))]
@@ -464,7 +466,7 @@
     stdin_fd: T,
     stdout_fd: U,
     stderr_fd: V,
-) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="source.rs.html#59">Pid</a>, <a href="error.rs.html#10-28">Error</a>&gt; {
+) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="source.rs.html#59">Pid</a>, <a href="error.rs.html#10-25">Error</a>&gt; {
     <span class="kw">let </span>child_setup_data: Box_&lt;<span class="prelude-ty">Option</span>&lt;Box_&lt;<span class="kw">dyn </span>FnOnce() + <span class="lifetime">'static</span>&gt;&gt;&gt; = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">Box_::new</a>(<a href="#32">child_setup</a>);
     <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>child_setup_func(user_data: ffi::gpointer) {
         <span class="kw">let </span>callback: Box_&lt;<span class="prelude-ty">Option</span>&lt;Box_&lt;<span class="kw">dyn </span>FnOnce() + <span class="lifetime">'static</span>&gt;&gt;&gt; =
@@ -574,7 +576,7 @@
     envp: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/path/struct.Path.html">std::path::Path</a>],
     flags: <a href="auto/flags.rs.html#731-795">SpawnFlags</a>,
     child_setup: <span class="prelude-ty">Option</span>&lt;Box_&lt;<span class="kw">dyn </span>FnOnce() + <span class="lifetime">'static</span>&gt;&gt;,
-) -&gt; <span class="prelude-ty">Result</span>&lt;(<a href="source.rs.html#59">Pid</a>, T, U, V), <a href="error.rs.html#10-28">Error</a>&gt; {
+) -&gt; <span class="prelude-ty">Result</span>&lt;(<a href="source.rs.html#59">Pid</a>, T, U, V), <a href="error.rs.html#10-25">Error</a>&gt; {
     <span class="kw">let </span>child_setup_data: Box_&lt;<span class="prelude-ty">Option</span>&lt;Box_&lt;<span class="kw">dyn </span>FnOnce() + <span class="lifetime">'static</span>&gt;&gt;&gt; = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">Box_::new</a>(<a href="#145">child_setup</a>);
     <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>child_setup_func(user_data: ffi::gpointer) {
         <span class="kw">let </span>callback: Box_&lt;<span class="prelude-ty">Option</span>&lt;Box_&lt;<span class="kw">dyn </span>FnOnce() + <span class="lifetime">'static</span>&gt;&gt;&gt; =
@@ -694,69 +696,71 @@
 /// # Returns
 ///
 /// [`true`] on success, [`false`] if not (and errno will be set).
-</span><span class="comment">// rustdoc-stripper-ignore-next-stop
-</span><span class="doccomment">/// Similar to the UNIX pipe() call, but on modern systems like Linux
-/// uses the pipe2() system call, which atomically creates a pipe with
-/// the configured flags.
-///
-/// As of GLib 2.78, the supported flags are `O_CLOEXEC`/`FD_CLOEXEC` (see below)
-/// and `O_NONBLOCK`. Prior to GLib 2.78, only `FD_CLOEXEC` was supported — if
-/// you wanted to configure `O_NONBLOCK` then that had to be done separately with
-/// `fcntl()`.
-///
-/// Since GLib 2.80, the constants `G_UNIX_PIPE_END_READ` and
-/// `G_UNIX_PIPE_END_WRITE` can be used as mnemonic indexes in @fds.
-///
-/// It is a programmer error to call this function with unsupported flags, and a
-/// critical warning will be raised.
-///
-/// As of GLib 2.78, it is preferred to pass `O_CLOEXEC` in, rather than
-/// `FD_CLOEXEC`, as that matches the underlying `pipe()` API more closely. Prior
-/// to 2.78, only `FD_CLOEXEC` was supported. Support for `FD_CLOEXEC` may be
-/// deprecated and removed in future.
-/// ## `fds`
-/// Array of two integers
-/// ## `flags`
-/// Bitfield of file descriptor flags, as for fcntl()
-///
-/// # Returns
-///
-/// [`true`] on success, [`false`] if not (and errno will be set).
 </span><span class="attr">#[cfg(unix)]
 #[doc(alias = <span class="string">"g_unix_open_pipe"</span>)]
-</span><span class="kw">pub fn </span><a href="../../glib/fn.unix_open_pipe.html">unix_open_pipe</a>(flags: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>) -&gt; <span class="prelude-ty">Result</span>&lt;(<a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/type.RawFd.html">RawFd</a>, <a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/type.RawFd.html">RawFd</a>), <a href="error.rs.html#10-28">Error</a>&gt; {
+</span><span class="kw">pub fn </span><a href="../../glib/fn.unix_open_pipe.html">unix_open_pipe</a>(flags: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>) -&gt; <span class="prelude-ty">Result</span>&lt;(<a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/type.RawFd.html">RawFd</a>, <a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/type.RawFd.html">RawFd</a>), <a href="error.rs.html#10-25">Error</a>&gt; {
     <span class="kw">unsafe </span>{
         <span class="kw">let </span><span class="kw-2">mut </span>fds = [<span class="number">0</span>, <span class="number">2</span>];
         <span class="kw">let </span><span class="kw-2">mut </span>error = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
-        <span class="kw">let _ </span>= ffi::g_unix_open_pipe(<span class="kw-2">&amp;mut </span><a href="#298">fds</a>, <a href="#296">flags</a>, <span class="kw-2">&amp;mut </span><a href="#299">error</a>);
+        <span class="kw">let _ </span>= ffi::g_unix_open_pipe(<span class="kw-2">&amp;mut </span><a href="#270">fds</a>, <a href="#268">flags</a>, <span class="kw-2">&amp;mut </span><a href="#271">error</a>);
         <span class="kw">if </span>error.is_null() {
             <span class="prelude-val">Ok</span>((
-                <a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/trait.FromRawFd.html#tymethod.from_raw_fd">FromRawFd::from_raw_fd</a>(<a href="#298">fds</a>[<span class="number">0</span>]),
-                <a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/trait.FromRawFd.html#tymethod.from_raw_fd">FromRawFd::from_raw_fd</a>(<a href="#298">fds</a>[<span class="number">1</span>]),
+                <a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/trait.FromRawFd.html#tymethod.from_raw_fd">FromRawFd::from_raw_fd</a>(<a href="#270">fds</a>[<span class="number">0</span>]),
+                <a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/trait.FromRawFd.html#tymethod.from_raw_fd">FromRawFd::from_raw_fd</a>(<a href="#270">fds</a>[<span class="number">1</span>]),
             ))
         } <span class="kw">else </span>{
-            <span class="prelude-val">Err</span>(<a href="translate.rs.html#1634-1636">from_glib_full</a>(<a href="#299">error</a>))
+            <span class="prelude-val">Err</span>(<a href="translate.rs.html#1634-1636">from_glib_full</a>(<a href="#271">error</a>))
         }
     }
 }
 
-<span class="attr">#[cfg(unix)]
+<span class="doccomment">/// Opens a file for writing in the preferred directory for temporary
+/// files (as returned by g_get_tmp_dir()).
+///
+/// @tmpl should be a string in the GLib file name encoding containing
+/// a sequence of six 'X' characters, as the parameter to g_mkstemp().
+/// However, unlike these functions, the template should only be a
+/// basename, no directory components are allowed. If template is
+/// [`None`], a default template is used.
+///
+/// Note that in contrast to g_mkstemp() (and mkstemp()) @tmpl is not
+/// modified, and might thus be a read-only literal string.
+///
+/// Upon success, and if @name_used is non-[`None`], the actual name used
+/// is returned in @name_used. This string should be freed with g_free()
+/// when not needed any longer. The returned name is in the GLib file
+/// name encoding.
+/// ## `tmpl`
+/// Template for file name, as in
+///   g_mkstemp(), basename only, or [`None`] for a default template
+///
+/// # Returns
+///
+/// A file handle (as from open()) to the file opened for
+///   reading and writing. The file is opened in binary mode on platforms
+///   where there is a difference. The file handle should be closed with
+///   close(). In case of errors, -1 is returned and @error will be set.
+///
+/// ## `name_used`
+/// location to store actual name used,
+///   or [`None`]
+</span><span class="attr">#[cfg(unix)]
 #[doc(alias = <span class="string">"g_file_open_tmp"</span>)]
 </span><span class="kw">pub fn </span><a href="../../glib/fn.file_open_tmp.html">file_open_tmp</a>(
     tmpl: <span class="prelude-ty">Option</span>&lt;<span class="kw">impl </span>AsRef&lt;<a href="https://doc.rust-lang.org/nightly/std/path/struct.Path.html">std::path::Path</a>&gt;&gt;,
-) -&gt; <span class="prelude-ty">Result</span>&lt;(<a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/type.RawFd.html">RawFd</a>, <a href="https://doc.rust-lang.org/nightly/std/path/struct.PathBuf.html">std::path::PathBuf</a>), <a href="error.rs.html#10-28"><span class="kw">crate</span>::Error</a>&gt; {
+) -&gt; <span class="prelude-ty">Result</span>&lt;(<a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/type.RawFd.html">RawFd</a>, <a href="https://doc.rust-lang.org/nightly/std/path/struct.PathBuf.html">std::path::PathBuf</a>), <a href="error.rs.html#10-25"><span class="kw">crate</span>::Error</a>&gt; {
     <span class="kw">unsafe </span>{
         <span class="kw">let </span><span class="kw-2">mut </span>name_used = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
         <span class="kw">let </span><span class="kw-2">mut </span>error = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
         <span class="kw">let </span>ret = ffi::g_file_open_tmp(
-            <a href="#315">tmpl</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_ref">as_ref</a>().<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|p| <a href="#321">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>()).<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-            <span class="kw-2">&amp;mut </span><a href="#318">name_used</a>,
-            <span class="kw-2">&amp;mut </span><a href="#319">error</a>,
+            <a href="#317">tmpl</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_ref">as_ref</a>().<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|p| <a href="#323">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>()).<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+            <span class="kw-2">&amp;mut </span><a href="#320">name_used</a>,
+            <span class="kw-2">&amp;mut </span><a href="#321">error</a>,
         );
         <span class="kw">if </span>error.is_null() {
-            <span class="prelude-val">Ok</span>((<a href="#320">ret</a>.<a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/trait.IntoRawFd.html#tymethod.into_raw_fd">into_raw_fd</a>(), <a href="translate.rs.html#1634-1636">from_glib_full</a>(<a href="#318">name_used</a>)))
+            <span class="prelude-val">Ok</span>((<a href="#322">ret</a>.<a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/trait.IntoRawFd.html#tymethod.into_raw_fd">into_raw_fd</a>(), <a href="translate.rs.html#1634-1636">from_glib_full</a>(<a href="#320">name_used</a>)))
         } <span class="kw">else </span>{
-            <span class="prelude-val">Err</span>(<a href="translate.rs.html#1634-1636">from_glib_full</a>(<a href="#319">error</a>))
+            <span class="prelude-val">Err</span>(<a href="translate.rs.html#1634-1636">from_glib_full</a>(<a href="#321">error</a>))
         }
     }
 }
@@ -769,8 +773,8 @@
 </span><span class="kw">pub fn </span><a href="../../glib/fn.spawn_future.html">spawn_future</a>&lt;R: <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static</span>, F: std::future::Future&lt;Output = R&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static</span>&gt;(
     f: F,
 ) -&gt; <span class="kw">crate</span>::JoinHandle&lt;R&gt; {
-    <span class="kw">let </span>ctx = <a href="auto/main_context.rs.html#389-391"><span class="kw">crate</span>::MainContext::ref_thread_default</a>();
-    <a href="#341">ctx</a>.<a href="main_context_futures.rs.html#515-520">spawn</a>(<a href="#339">f</a>)
+    <span class="kw">let </span>ctx = <a href="auto/main_context.rs.html#254-256"><span class="kw">crate</span>::MainContext::ref_thread_default</a>();
+    <a href="#343">ctx</a>.<a href="main_context_futures.rs.html#515-520">spawn</a>(<a href="#341">f</a>)
 }
 
 <span class="comment">// rustdoc-stripper-ignore-next
@@ -784,7 +788,7 @@
 </span><span class="kw">pub fn </span><a href="../../glib/fn.spawn_future_local.html">spawn_future_local</a>&lt;R: <span class="lifetime">'static</span>, F: std::future::Future&lt;Output = R&gt; + <span class="lifetime">'static</span>&gt;(
     f: F,
 ) -&gt; <span class="kw">crate</span>::JoinHandle&lt;R&gt; {
-    <span class="kw">let </span>ctx = <a href="auto/main_context.rs.html#389-391"><span class="kw">crate</span>::MainContext::ref_thread_default</a>();
-    <a href="#356">ctx</a>.<a href="main_context_futures.rs.html#530-532">spawn_local</a>(<a href="#354">f</a>)
+    <span class="kw">let </span>ctx = <a href="auto/main_context.rs.html#254-256"><span class="kw">crate</span>::MainContext::ref_thread_default</a>();
+    <a href="#358">ctx</a>.<a href="main_context_futures.rs.html#530-532">spawn_local</a>(<a href="#356">f</a>)
 }
 </code></pre></div></section></main></body></html>
