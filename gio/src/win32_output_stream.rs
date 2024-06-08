@@ -14,20 +14,6 @@ glib::wrapper! {
     }
 }
 
-pub trait Win32OutputStreamExt: IsA<Win32OutputStream> + 'static {
-    #[doc(alias = "g_win32_output_stream_get_close_handle")]
-    #[doc(alias = "get_close_handle")]
-    fn closes_handle(&self) -> bool {
-        unsafe {
-            from_glib(ffi::g_win32_output_stream_get_close_handle(
-                self.as_ref().to_glib_none().0,
-            ))
-        }
-    }
-}
-
-impl<O: IsA<Win32OutputStream>> Win32OutputStreamExt for O {}
-
 impl Win32OutputStream {
     pub const NONE: Option<&'static Win32OutputStream> = None;
 
@@ -71,7 +57,17 @@ mod sealed {
     impl<T: super::IsA<super::Win32OutputStream>> Sealed for T {}
 }
 
-pub trait Win32OutputStreamExtManual: sealed::Sealed + IsA<Win32OutputStream> + Sized {
+pub trait Win32OutputStreamExt: sealed::Sealed + IsA<Win32OutputStream> + Sized {
+    #[doc(alias = "g_win32_output_stream_get_close_handle")]
+    #[doc(alias = "get_close_handle")]
+    fn closes_handle(&self) -> bool {
+        unsafe {
+            from_glib(ffi::g_win32_output_stream_get_close_handle(
+                self.as_ref().to_glib_none().0,
+            ))
+        }
+    }
+
     #[doc(alias = "g_win32_output_stream_get_handle")]
     #[doc(alias = "get_handle")]
     fn handle<T: FromRawHandle>(&self) -> T {
@@ -97,4 +93,4 @@ pub trait Win32OutputStreamExtManual: sealed::Sealed + IsA<Win32OutputStream> + 
     }
 }
 
-impl<O: IsA<Win32OutputStream>> Win32OutputStreamExtManual for O {}
+impl<O: IsA<Win32OutputStream>> Win32OutputStreamExt for O {}
