@@ -145,12 +145,12 @@ pub use crate::write_output_stream::WriteOutputStream;
 mod dbus_proxy;
 mod tls_connection;
 
-#[cfg(target_family = "windows")]
+#[cfg(windows)]
 mod win32_input_stream;
-#[cfg(target_family = "windows")]
+#[cfg(windows)]
 pub use self::win32_input_stream::Win32InputStream;
 
-#[cfg(target_family = "windows")]
+#[cfg(windows)]
 mod win32_output_stream;
-#[cfg(target_family = "windows")]
+#[cfg(windows)]
 pub use self::win32_output_stream::Win32OutputStream;
