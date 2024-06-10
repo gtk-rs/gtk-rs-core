@@ -13,24 +13,12 @@ impl UnixOutputStream {
     // rustdoc-stripper-ignore-next
     /// Creates a new [`Self`] that takes ownership of the passed in fd.
     #[doc(alias = "g_unix_output_stream_new")]
-    pub fn take_fd(fd: OwnedFd) -> UnixOutputStream {
+    pub fn from_fd(fd: OwnedFd) -> UnixOutputStream {
         let fd = fd.into_raw_fd();
         let close_fd = true.into_glib();
         unsafe {
             OutputStream::from_glib_full(ffi::g_unix_output_stream_new(fd, close_fd)).unsafe_cast()
         }
-    }
-
-    // rustdoc-stripper-ignore-next
-    /// Creates a new [`Self`] that does not take ownership of the passed in fd.
-    ///
-    /// # Safety
-    /// You may only close the fd if all references to this stream have been dropped.
-    #[doc(alias = "g_unix_output_stream_new")]
-    pub unsafe fn with_fd<T: AsRawFd>(fd: T) -> UnixOutputStream {
-        let fd = fd.as_raw_fd();
-        let close_fd = false.into_glib();
-        OutputStream::from_glib_full(ffi::g_unix_output_stream_new(fd, close_fd)).unsafe_cast()
     }
 }
 
