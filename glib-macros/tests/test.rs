@@ -1,6 +1,7 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
 use glib::{
+    collections::PtrSlice,
     prelude::*,
     translate::{FromGlib, IntoGlib},
 };
@@ -181,6 +182,22 @@ fn derive_boxed_nullable() {
     let v = b.to_value();
     assert_eq!(None, v.get::<Option<&MyNullableBoxed>>().unwrap());
     assert_eq!(None, v.get::<Option<MyNullableBoxed>>().unwrap());
+}
+
+#[test]
+fn boxed_transparent_ptr() {
+    #[derive(Clone, Debug, PartialEq, Eq, glib::Boxed)]
+    #[boxed_type(name = "MyBoxed")]
+    struct MyBoxed(String);
+
+    let vec = vec![MyBoxed(String::from("abc")), MyBoxed(String::from("dfg"))];
+
+    // PtrSlice requires TransparentPtrType trait
+    let ptr_slice = PtrSlice::from(vec);
+    assert_eq!(
+        ptr_slice.last(),
+        Some(MyBoxed(String::from("dfg"))).as_ref()
+    );
 }
 
 #[test]
