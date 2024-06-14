@@ -350,11 +350,24 @@ mod test {
 
         impl ObjectImpl for ChildObject {}
 
-        #[derive(Default)]
         pub struct SimpleObject {
             name: RefCell<Option<String>>,
             construct_name: RefCell<Option<String>>,
             constructed: RefCell<bool>,
+            answer: RefCell<i32>,
+            array: RefCell<Vec<String>>,
+        }
+
+        impl Default for SimpleObject {
+            fn default() -> Self {
+                SimpleObject {
+                    name: Default::default(),
+                    construct_name: Default::default(),
+                    constructed: Default::default(),
+                    answer: RefCell::new(42i32),
+                    array: RefCell::new(vec!["default0".to_string(), "default1".to_string()]),
+                }
+            }
         }
 
         #[glib::object_subclass]
@@ -377,6 +390,10 @@ mod test {
                             .read_only()
                             .build(),
                         crate::ParamSpecObject::builder::<super::ChildObject>("child").build(),
+                        crate::ParamSpecInt::builder("answer")
+                            .default_value(42i32)
+                            .build(),
+                        crate::ParamSpecValueArray::builder("array").build(),
                     ]
                 })
             }
@@ -437,6 +454,20 @@ mod test {
                     "child" => {
                         // not stored, only used to test `set_property` with `Objects`
                     }
+                    "answer" => {
+                        let answer = value
+                            .get()
+                            .expect("type conformity checked by 'Object::set_property'");
+                        self.answer.replace(answer);
+                    }
+                    "array" => {
+                        let value = value
+                            .get::<crate::ValueArray>()
+                            .expect("type conformity checked by 'Object::set_property'");
+                        let mut array = self.array.borrow_mut();
+                        array.clear();
+                        array.extend(value.iter().map(|v| v.get().unwrap()));
+                    }
                     _ => unimplemented!(),
                 }
             }
@@ -446,6 +477,8 @@ mod test {
                     "name" => self.name.borrow().to_value(),
                     "construct-name" => self.construct_name.borrow().to_value(),
                     "constructed" => self.constructed.borrow().to_value(),
+                    "answer" => self.answer.borrow().to_value(),
+                    "array" => crate::ValueArray::new(self.array.borrow().iter()).to_value(),
                     _ => unimplemented!(),
                 }
             }
@@ -523,11 +556,13 @@ mod test {
         assert!(obj.type_().is_a(Dummy::static_type()));
 
         let properties = obj.list_properties();
-        assert_eq!(properties.len(), 4);
+        assert_eq!(properties.len(), 6);
         assert_eq!(properties[0].name(), "name");
         assert_eq!(properties[1].name(), "construct-name");
         assert_eq!(properties[2].name(), "constructed");
         assert_eq!(properties[3].name(), "child");
+        assert_eq!(properties[4].name(), "answer");
+        assert_eq!(properties[5].name(), "array");
     }
 
     #[test]
@@ -575,6 +610,131 @@ mod test {
 
         let child = Object::with_type(ChildObject::static_type());
         obj.set_property("child", &child);
+    }
+
+    #[test]
+    fn builder_property_if() {
+        use crate::ValueArray;
+
+        let array = ["val0", "val1"];
+        let obj = Object::builder::<SimpleObject>()
+            .property_if("name", "some name", true)
+            .property_if("answer", 21i32, 6 != 9)
+            .property_if("array", ValueArray::new(["val0", "val1"]), array.len() == 2)
+            .build();
+
+        assert_eq!(obj.property::<String>("name").as_str(), "some name");
+        assert_eq!(
+            obj.property::<Option<String>>("name").as_deref(),
+            Some("some name")
+        );
+        assert_eq!(obj.property::<i32>("answer"), 21);
+        assert!(obj
+            .property::<ValueArray>("array")
+            .iter()
+            .map(|val| val.get::<&str>().unwrap())
+            .eq(array));
+
+        let obj = Object::builder::<SimpleObject>()
+            .property_if("name", "some name", false)
+            .property_if("answer", 21i32, 6 == 9)
+            .property_if("array", ValueArray::new(array), array.len() == 4)
+            .build();
+
+        assert!(obj.property::<Option<String>>("name").is_none());
+        assert_eq!(obj.property::<i32>("answer"), 42);
+        assert!(obj
+            .property::<ValueArray>("array")
+            .iter()
+            .map(|val| val.get::<&str>().unwrap())
+            .eq(["default0", "default1"]));
+    }
+
+    #[test]
+    fn builder_property_if_some() {
+        use crate::ValueArray;
+
+        let array = ["val0", "val1"];
+        let obj = Object::builder::<SimpleObject>()
+            .property_if_some("name", Some("some name"))
+            .property_if_some("answer", Some(21i32))
+            .property_if_some("array", Some(ValueArray::new(array)))
+            .build();
+
+        assert_eq!(obj.property::<String>("name").as_str(), "some name");
+        assert_eq!(
+            obj.property::<Option<String>>("name").as_deref(),
+            Some("some name")
+        );
+        assert_eq!(obj.property::<i32>("answer"), 21);
+        assert!(obj
+            .property::<ValueArray>("array")
+            .iter()
+            .map(|val| val.get::<&str>().unwrap())
+            .eq(array));
+
+        let obj = Object::builder::<SimpleObject>()
+            .property_if_some("name", Option::<&str>::None)
+            .property_if_some("answer", Option::<i32>::None)
+            .property_if_some("array", Option::<ValueArray>::None)
+            .build();
+
+        assert!(obj.property::<Option<String>>("name").is_none());
+        assert_eq!(obj.property::<i32>("answer"), 42);
+        assert!(obj
+            .property::<ValueArray>("array")
+            .iter()
+            .map(|val| val.get::<&str>().unwrap())
+            .eq(["default0", "default1"]));
+    }
+
+    #[test]
+    fn builder_property_from_iter() {
+        use crate::ValueArray;
+
+        let array = ["val0", "val1"];
+        let obj = Object::builder::<SimpleObject>()
+            .property_from_iter::<ValueArray>("array", &array)
+            .build();
+
+        assert!(obj
+            .property::<ValueArray>("array")
+            .iter()
+            .map(|val| val.get::<&str>().unwrap())
+            .eq(array));
+
+        let obj = Object::builder::<SimpleObject>()
+            .property_from_iter::<ValueArray>("array", Vec::<&str>::new())
+            .build();
+
+        assert!(obj.property::<ValueArray>("array").is_empty());
+    }
+
+    #[test]
+    fn builder_property_if_not_empty() {
+        use crate::ValueArray;
+
+        let array = ["val0", "val1"];
+        let obj = Object::builder::<SimpleObject>()
+            .property_if_not_empty::<ValueArray>("array", &array)
+            .build();
+
+        assert!(obj
+            .property::<ValueArray>("array")
+            .iter()
+            .map(|val| val.get::<&str>().unwrap())
+            .eq(array));
+
+        let empty_vec = Vec::<String>::new();
+        let obj = Object::builder::<SimpleObject>()
+            .property_if_not_empty::<ValueArray>("array", &empty_vec)
+            .build();
+
+        assert!(obj
+            .property::<ValueArray>("array")
+            .iter()
+            .map(|val| val.get::<&str>().unwrap())
+            .eq(["default0", "default1"]));
     }
 
     #[test]
