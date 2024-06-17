@@ -145,6 +145,9 @@ impl ToTokens for Closure {
                 &crate_ident,
                 &self.upgrade_behaviour,
                 &upgrade_failure_closure_wrapped_ident,
+                Some(quote! {
+                    return #crate_ident::closure::IntoClosureReturnValue::into_closure_return_value(());
+                }),
             )
         });
         let outer_after = self
