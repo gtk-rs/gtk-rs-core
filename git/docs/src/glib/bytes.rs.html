@@ -348,42 +348,6 @@
 <a href="#275" id="275">275</a>
 <a href="#276" id="276">276</a>
 <a href="#277" id="277">277</a>
-<a href="#278" id="278">278</a>
-<a href="#279" id="279">279</a>
-<a href="#280" id="280">280</a>
-<a href="#281" id="281">281</a>
-<a href="#282" id="282">282</a>
-<a href="#283" id="283">283</a>
-<a href="#284" id="284">284</a>
-<a href="#285" id="285">285</a>
-<a href="#286" id="286">286</a>
-<a href="#287" id="287">287</a>
-<a href="#288" id="288">288</a>
-<a href="#289" id="289">289</a>
-<a href="#290" id="290">290</a>
-<a href="#291" id="291">291</a>
-<a href="#292" id="292">292</a>
-<a href="#293" id="293">293</a>
-<a href="#294" id="294">294</a>
-<a href="#295" id="295">295</a>
-<a href="#296" id="296">296</a>
-<a href="#297" id="297">297</a>
-<a href="#298" id="298">298</a>
-<a href="#299" id="299">299</a>
-<a href="#300" id="300">300</a>
-<a href="#301" id="301">301</a>
-<a href="#302" id="302">302</a>
-<a href="#303" id="303">303</a>
-<a href="#304" id="304">304</a>
-<a href="#305" id="305">305</a>
-<a href="#306" id="306">306</a>
-<a href="#307" id="307">307</a>
-<a href="#308" id="308">308</a>
-<a href="#309" id="309">309</a>
-<a href="#310" id="310">310</a>
-<a href="#311" id="311">311</a>
-<a href="#312" id="312">312</a>
-<a href="#313" id="313">313</a>
 </pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
 </span><span class="kw">use </span>std::{
@@ -415,31 +379,6 @@
     /// let b = Bytes::from_static(s);
     /// assert_eq!(&amp;s[..], b);
     /// ```
-    </span><span class="comment">// rustdoc-stripper-ignore-next-stop
-    </span><span class="doccomment">/// A simple refcounted data type representing an immutable sequence of zero or
-    /// more bytes from an unspecified origin.
-    ///
-    /// The purpose of a #GBytes is to keep the memory region that it holds
-    /// alive for as long as anyone holds a reference to the bytes.  When
-    /// the last reference count is dropped, the memory is released. Multiple
-    /// unrelated callers can use byte data in the #GBytes without coordinating
-    /// their activities, resting assured that the byte data will not change or
-    /// move while they hold a reference.
-    ///
-    /// A #GBytes can come from many different origins that may have
-    /// different procedures for freeing the memory region.  Examples are
-    /// memory from g_malloc(), from memory slices, from a #GMappedFile or
-    /// memory from other allocators.
-    ///
-    /// #GBytes work well as keys in #GHashTable. Use g_bytes_equal() and
-    /// g_bytes_hash() as parameters to g_hash_table_new() or g_hash_table_new_full().
-    /// #GBytes can also be used as keys in a #GTree by passing the g_bytes_compare()
-    /// function to g_tree_new().
-    ///
-    /// The data pointed to by this bytes must not be modified. For a mutable
-    /// array of bytes see #GByteArray. Use g_bytes_unref_to_array() to create a
-    /// mutable array for a #GBytes sequence. To create an immutable #GBytes from
-    /// a mutable #GByteArray, use the g_byte_array_free_to_bytes() function.
     </span><span class="attr">#[doc(alias = <span class="string">"GBytes"</span>)]
     </span><span class="kw">pub struct </span><a href="../../glib/struct.Bytes.html">Bytes</a>(Shared&lt;ffi::GBytes&gt;);
 
@@ -450,138 +389,127 @@
     }
 }
 
-<span class="kw">impl </span><a href="#14-65">Bytes</a> {
+<span class="kw">impl </span><a href="#14-40">Bytes</a> {
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Copies `data` into a new shared slice.
-    </span><span class="comment">// rustdoc-stripper-ignore-next-stop
-    </span><span class="doccomment">/// Creates a new #GBytes from @data.
-    ///
-    /// @data is copied. If @size is 0, @data may be [`None`].
-    /// ## `data`
-    ///
-    ///        the data to be used for the bytes
-    ///
-    /// # Returns
-    ///
-    /// a new #GBytes
     </span><span class="attr">#[doc(alias = <span class="string">"g_bytes_new"</span>)]
     #[inline]
-    </span><span class="kw">fn </span>new&lt;T: AsRef&lt;[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]&gt;&gt;(data: T) -&gt; <a href="#14-65">Bytes</a> {
-        <span class="kw">let </span>data = <a href="#83">data</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>();
-        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1634-1636">from_glib_full</a>(ffi::g_bytes_new(<a href="#84">data</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>, <a href="#84">data</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.len">len</a>())) }
+    </span><span class="kw">fn </span>new&lt;T: AsRef&lt;[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]&gt;&gt;(data: T) -&gt; <a href="#14-40">Bytes</a> {
+        <span class="kw">let </span>data = <a href="#47">data</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>();
+        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1634-1636">from_glib_full</a>(ffi::g_bytes_new(<a href="#48">data</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>, <a href="#48">data</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.len">len</a>())) }
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Creates a view into static `data` without copying.
     </span><span class="attr">#[doc(alias = <span class="string">"g_bytes_new_static"</span>)]
     #[inline]
-    </span><span class="kw">pub fn </span>from_static(data: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]) -&gt; <a href="#14-65">Bytes</a> {
+    </span><span class="kw">pub fn </span>from_static(data: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]) -&gt; <a href="#14-40">Bytes</a> {
         <span class="kw">unsafe </span>{
             <a href="translate.rs.html#1634-1636">from_glib_full</a>(ffi::g_bytes_new_static(
-                <a href="#92">data</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
-                <a href="#92">data</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.len">len</a>(),
+                <a href="#56">data</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+                <a href="#56">data</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.len">len</a>(),
             ))
         }
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Takes ownership of `data` and creates a new `Bytes` without copying.
-    </span><span class="kw">pub fn </span>from_owned&lt;T: AsRef&lt;[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static</span>&gt;(data: T) -&gt; <a href="#14-65">Bytes</a> {
-        <span class="kw">let </span>data: Box&lt;T&gt; = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">Box::new</a>(<a href="#103">data</a>);
+    </span><span class="kw">pub fn </span>from_owned&lt;T: AsRef&lt;[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static</span>&gt;(data: T) -&gt; <a href="#14-40">Bytes</a> {
+        <span class="kw">let </span>data: Box&lt;T&gt; = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">Box::new</a>(<a href="#67">data</a>);
         <span class="kw">let </span>(size, data_ptr) = {
-            <span class="kw">let </span>data = (<span class="kw-2">*</span><a href="#104">data</a>).<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>();
-            (<a href="#106">data</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.len">len</a>(), <a href="#106">data</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.as_ptr">as_ptr</a>())
+            <span class="kw">let </span>data = (<span class="kw-2">*</span><a href="#68">data</a>).<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>();
+            (<a href="#70">data</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.len">len</a>(), <a href="#70">data</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.as_ptr">as_ptr</a>())
         };
 
         <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>drop_box&lt;T: AsRef&lt;[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static</span>&gt;(b: ffi::gpointer) {
-            <span class="kw">let _</span>: Box&lt;T&gt; = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.from_raw">Box::from_raw</a>(<a href="#110">b</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
+            <span class="kw">let _</span>: Box&lt;T&gt; = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.from_raw">Box::from_raw</a>(<a href="#74">b</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
         }
 
         <span class="kw">unsafe </span>{
             <a href="translate.rs.html#1634-1636">from_glib_full</a>(ffi::g_bytes_new_with_free_func(
-                <a href="#105">data_ptr</a> <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
-                <a href="#105">size</a>,
+                <a href="#69">data_ptr</a> <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+                <a href="#69">size</a>,
                 <span class="prelude-val">Some</span>(drop_box::&lt;T&gt;),
-                <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.into_raw">Box::into_raw</a>(<a href="#104">data</a>) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.into_raw">Box::into_raw</a>(<a href="#68">data</a>) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
             ))
         }
     }
 }
 
-<span class="kw">unsafe impl </span><a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> <span class="kw">for </span><a href="#14-65">Bytes</a> {}
-<span class="kw">unsafe impl </span><a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> <span class="kw">for </span><a href="#14-65">Bytes</a> {}
+<span class="kw">unsafe impl </span><a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> <span class="kw">for </span><a href="#14-40">Bytes</a> {}
+<span class="kw">unsafe impl </span><a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> <span class="kw">for </span><a href="#14-40">Bytes</a> {}
 
-<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T: <span class="question-mark">?</span><a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sized.html">Sized</a> + Borrow&lt;[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]&gt; + <span class="lifetime">'a</span>&gt; From&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>T&gt; <span class="kw">for </span><a href="#14-65">Bytes</a> {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T: <span class="question-mark">?</span><a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sized.html">Sized</a> + Borrow&lt;[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]&gt; + <span class="lifetime">'a</span>&gt; From&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>T&gt; <span class="kw">for </span><a href="#14-40">Bytes</a> {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>from(value: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>T) -&gt; <a href="#14-65">Bytes</a> {
-        <a href="#83-86">Bytes::new</a>(<a href="#130">value</a>.<a href="https://doc.rust-lang.org/nightly/core/borrow/trait.Borrow.html#tymethod.borrow">borrow</a>())
+    </span><span class="kw">fn </span>from(value: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>T) -&gt; <a href="#14-40">Bytes</a> {
+        <a href="#47-50">Bytes::new</a>(<a href="#94">value</a>.<a href="https://doc.rust-lang.org/nightly/core/borrow/trait.Borrow.html#tymethod.borrow">borrow</a>())
     }
 }
 
-<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html">fmt::Debug</a> <span class="kw">for </span><a href="#14-65">Bytes</a> {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html">fmt::Debug</a> <span class="kw">for </span><a href="#14-40">Bytes</a> {
     <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span><a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html">fmt::Formatter</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/core/fmt/type.Result.html">fmt::Result</a> {
-        <a href="#136">f</a>.<a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html#method.debug_struct">debug_struct</a>(<span class="string">"Bytes"</span>)
-            .<a href="https://doc.rust-lang.org/nightly/core/fmt/builders/struct.DebugStruct.html#method.field">field</a>(<span class="string">"ptr"</span>, <span class="kw-2">&amp;</span>ToGlibPtr::&lt;<span class="kw-2">*const </span><span class="kw">_</span>&gt;::to_glib_none(<a class="self" href="#136">self</a>).<span class="number">0</span>)
-            .<a href="https://doc.rust-lang.org/nightly/core/fmt/builders/struct.DebugStruct.html#method.field">field</a>(<span class="string">"data"</span>, &amp;&amp;<a class="self" href="#136">self</a>[..])
+        <a href="#100">f</a>.<a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html#method.debug_struct">debug_struct</a>(<span class="string">"Bytes"</span>)
+            .<a href="https://doc.rust-lang.org/nightly/core/fmt/builders/struct.DebugStruct.html#method.field">field</a>(<span class="string">"ptr"</span>, <span class="kw-2">&amp;</span>ToGlibPtr::&lt;<span class="kw-2">*const </span><span class="kw">_</span>&gt;::to_glib_none(<a class="self" href="#100">self</a>).<span class="number">0</span>)
+            .<a href="https://doc.rust-lang.org/nightly/core/fmt/builders/struct.DebugStruct.html#method.field">field</a>(<span class="string">"data"</span>, &amp;&amp;<a class="self" href="#100">self</a>[..])
             .<a href="https://doc.rust-lang.org/nightly/core/fmt/builders/struct.DebugStruct.html#method.finish">finish</a>()
     }
 }
 
-<span class="kw">impl </span>AsRef&lt;[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]&gt; <span class="kw">for </span><a href="#14-65">Bytes</a> {
+<span class="kw">impl </span>AsRef&lt;[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]&gt; <span class="kw">for </span><a href="#14-40">Bytes</a> {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>as_ref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>] {
-        <span class="self"><a href="#146">self</a>
+        <span class="self"><a href="#110">self</a>
     </span>}
 }
 
-<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/ops/deref/trait.Deref.html">Deref</a> <span class="kw">for </span><a href="#14-65">Bytes</a> {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/ops/deref/trait.Deref.html">Deref</a> <span class="kw">for </span><a href="#14-40">Bytes</a> {
     <span class="kw">type </span>Target = [<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>];
 
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>deref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>] {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>len = <span class="number">0</span>;
-            <span class="kw">let </span>ptr = ffi::g_bytes_get_data(<a class="self" href="#155">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>, <span class="kw-2">&amp;mut </span><a href="#157">len</a>);
+            <span class="kw">let </span>ptr = ffi::g_bytes_get_data(<a class="self" href="#119">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>, <span class="kw-2">&amp;mut </span><a href="#121">len</a>);
             <span class="kw">if </span>ptr.is_null() || len == <span class="number">0 </span>{
                 <span class="kw-2">&amp;</span>[]
             } <span class="kw">else </span>{
-                <a href="https://doc.rust-lang.org/nightly/core/slice/raw/fn.from_raw_parts.html">slice::from_raw_parts</a>(<a href="#158">ptr</a> <span class="kw">as </span><span class="kw-2">*const </span><a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>, <a href="#157">len</a>)
+                <a href="https://doc.rust-lang.org/nightly/core/slice/raw/fn.from_raw_parts.html">slice::from_raw_parts</a>(<a href="#122">ptr</a> <span class="kw">as </span><span class="kw-2">*const </span><a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>, <a href="#121">len</a>)
             }
         }
     }
 }
 
-<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html">PartialEq</a> <span class="kw">for </span><a href="#14-65">Bytes</a> {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html">PartialEq</a> <span class="kw">for </span><a href="#14-40">Bytes</a> {
     <span class="attr">#[doc(alias = <span class="string">"g_bytes_equal"</span>)]
     #[inline]
     </span><span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
         <span class="kw">unsafe </span>{
             <a href="translate.rs.html#1417-1419">from_glib</a>(ffi::g_bytes_equal(
-                ToGlibPtr::&lt;<span class="kw-2">*const </span><span class="kw">_</span>&gt;::to_glib_none(<a class="self" href="#171">self</a>).<span class="number">0 </span><span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
-                ToGlibPtr::&lt;<span class="kw-2">*const </span><span class="kw">_</span>&gt;::to_glib_none(<a href="#171">other</a>).<span class="number">0 </span><span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+                ToGlibPtr::&lt;<span class="kw-2">*const </span><span class="kw">_</span>&gt;::to_glib_none(<a class="self" href="#135">self</a>).<span class="number">0 </span><span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+                ToGlibPtr::&lt;<span class="kw-2">*const </span><span class="kw">_</span>&gt;::to_glib_none(<a href="#135">other</a>).<span class="number">0 </span><span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
             ))
         }
     }
 }
 
-<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/cmp/trait.Eq.html">Eq</a> <span class="kw">for </span><a href="#14-65">Bytes</a> {}
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/cmp/trait.Eq.html">Eq</a> <span class="kw">for </span><a href="#14-40">Bytes</a> {}
 
-<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/cmp/trait.PartialOrd.html">PartialOrd</a> <span class="kw">for </span><a href="#14-65">Bytes</a> {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/cmp/trait.PartialOrd.html">PartialOrd</a> <span class="kw">for </span><a href="#14-40">Bytes</a> {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>partial_cmp(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="https://doc.rust-lang.org/nightly/core/cmp/enum.Ordering.html">Ordering</a>&gt; {
-        <span class="prelude-val">Some</span>(<a class="self" href="#185">self</a>.<a href="https://doc.rust-lang.org/nightly/core/cmp/trait.Ord.html#tymethod.cmp">cmp</a>(<a href="#185">other</a>))
+        <span class="prelude-val">Some</span>(<a class="self" href="#149">self</a>.<a href="https://doc.rust-lang.org/nightly/core/cmp/trait.Ord.html#tymethod.cmp">cmp</a>(<a href="#149">other</a>))
     }
 }
 
-<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/cmp/trait.Ord.html">Ord</a> <span class="kw">for </span><a href="#14-65">Bytes</a> {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/cmp/trait.Ord.html">Ord</a> <span class="kw">for </span><a href="#14-40">Bytes</a> {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>cmp(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/core/cmp/enum.Ordering.html">Ordering</a> {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>ret = ffi::g_bytes_compare(
-                ToGlibPtr::&lt;<span class="kw-2">*const </span><span class="kw">_</span>&gt;::to_glib_none(<a class="self" href="#192">self</a>).<span class="number">0 </span><span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
-                ToGlibPtr::&lt;<span class="kw-2">*const </span><span class="kw">_</span>&gt;::to_glib_none(<a href="#192">other</a>).<span class="number">0 </span><span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+                ToGlibPtr::&lt;<span class="kw-2">*const </span><span class="kw">_</span>&gt;::to_glib_none(<a class="self" href="#156">self</a>).<span class="number">0 </span><span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+                ToGlibPtr::&lt;<span class="kw-2">*const </span><span class="kw">_</span>&gt;::to_glib_none(<a href="#156">other</a>).<span class="number">0 </span><span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
             );
-            <a href="#194">ret</a>.<a href="https://doc.rust-lang.org/nightly/core/cmp/trait.Ord.html#tymethod.cmp">cmp</a>(<span class="kw-2">&amp;</span><span class="number">0</span>)
+            <a href="#158">ret</a>.<a href="https://doc.rust-lang.org/nightly/core/cmp/trait.Ord.html#tymethod.cmp">cmp</a>(<span class="kw-2">&amp;</span><span class="number">0</span>)
         }
     }
 }
@@ -626,17 +554,17 @@
     };
 }
 
-<a class="macro" href="#203-241">impl_cmp!</a>(<a href="#14-65">Bytes</a>, [<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]);
-<a class="macro" href="#203-241">impl_cmp!</a>(<a href="#14-65">Bytes</a>, <span class="kw-2">&amp;</span><span class="lifetime">'a </span>[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]);
-<a class="macro" href="#203-241">impl_cmp!</a>(<span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#14-65">Bytes</a>, [<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]);
-<a class="macro" href="#203-241">impl_cmp!</a>(<a href="#14-65">Bytes</a>, Vec&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>&gt;);
-<a class="macro" href="#203-241">impl_cmp!</a>(<span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#14-65">Bytes</a>, Vec&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>&gt;);
+<a class="macro" href="#167-205">impl_cmp!</a>(<a href="#14-40">Bytes</a>, [<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]);
+<a class="macro" href="#167-205">impl_cmp!</a>(<a href="#14-40">Bytes</a>, <span class="kw-2">&amp;</span><span class="lifetime">'a </span>[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]);
+<a class="macro" href="#167-205">impl_cmp!</a>(<span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#14-40">Bytes</a>, [<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]);
+<a class="macro" href="#167-205">impl_cmp!</a>(<a href="#14-40">Bytes</a>, Vec&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>&gt;);
+<a class="macro" href="#167-205">impl_cmp!</a>(<span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#14-40">Bytes</a>, Vec&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>&gt;);
 
-<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/hash/trait.Hash.html">Hash</a> <span class="kw">for </span><a href="#14-65">Bytes</a> {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/hash/trait.Hash.html">Hash</a> <span class="kw">for </span><a href="#14-40">Bytes</a> {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>hash&lt;H: <a href="https://doc.rust-lang.org/nightly/core/hash/trait.Hasher.html">Hasher</a>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, state: <span class="kw-2">&amp;mut </span>H) {
-        <a class="self" href="#251">self</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.len">len</a>().<a href="https://doc.rust-lang.org/nightly/core/hash/trait.Hash.html#tymethod.hash">hash</a>(<a href="#251">state</a>);
-        <a href="https://doc.rust-lang.org/nightly/core/hash/trait.Hash.html#tymethod.hash_slice">Hash::hash_slice</a>(<a class="self" href="#251">self</a>, <a href="#251">state</a>)
+        <a class="self" href="#215">self</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.len">len</a>().<a href="https://doc.rust-lang.org/nightly/core/hash/trait.Hash.html#tymethod.hash">hash</a>(<a href="#215">state</a>);
+        <a href="https://doc.rust-lang.org/nightly/core/hash/trait.Hash.html#tymethod.hash_slice">Hash::hash_slice</a>(<a class="self" href="#215">self</a>, <a href="#215">state</a>)
     }
 }
 

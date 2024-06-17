@@ -71,7 +71,7 @@
 </script>
 
 
-<nav class="mobile-topbar"><button class="sidebar-menu-toggle" title="show sidebar"></button></nav><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../glib/index.html">glib</a><span class="version">0.20.0</span></h2></div><div class="sidebar-elems"></div></nav><div class="sidebar-resizer"></div><main><div class="width-limiter"><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1>Macro <a href="index.html">glib</a>::<wbr><a class="macro" href="#">clone</a><button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><span class="out-of-band"><a class="src" href="../src/glib_macros/lib.rs.html#285">source</a> · <button id="toggle-all-docs" title="collapse all docs">[<span>&#x2212;</span>]</button></span></div><pre class="rust item-decl"><code>clone!() { <span class="comment">/* proc-macro */</span> }</code></pre><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>Macro for passing variables as strong or weak references into a closure.</p>
+<nav class="mobile-topbar"><button class="sidebar-menu-toggle" title="show sidebar"></button></nav><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../glib/index.html">glib</a><span class="version">0.20.0</span></h2></div><div class="sidebar-elems"></div></nav><div class="sidebar-resizer"></div><main><div class="width-limiter"><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1>Macro <a href="index.html">glib</a>::<wbr><a class="macro" href="#">clone</a><button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><span class="out-of-band"><a class="src" href="../src/glib_macros/lib.rs.html#337">source</a> · <button id="toggle-all-docs" title="collapse all docs">[<span>&#x2212;</span>]</button></span></div><pre class="rust item-decl"><code>clone!() { <span class="comment">/* proc-macro */</span> }</code></pre><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>Macro for passing variables as strong or weak references into a closure.</p>
 <p>This macro can be useful in combination with closures, e.g. signal handlers, to reduce the
 boilerplate required for passing strong or weak references into the closure. It will
 automatically create the new reference and pass it with the same name into the closure.</p>
@@ -101,9 +101,12 @@ std::env::set_var(<span class="string">"G_MESSAGES_DEBUG"</span>, <span class="s
 <span class="kw">use </span>std::rc::Rc;
 
 <span class="kw">let </span>v = Rc::new(<span class="number">1</span>);
-<span class="kw">let </span>closure = <span class="macro">clone!</span>(@strong v =&gt; <span class="kw">move </span>|x| {
-    <span class="macro">println!</span>(<span class="string">"v: {}, x: {}"</span>, v, x);
-});
+<span class="kw">let </span>closure = <span class="macro">clone!</span>(
+    <span class="attr">#[strong] </span>v,
+    <span class="kw">move </span>|x| {
+        <span class="macro">println!</span>(<span class="string">"v: {}, x: {}"</span>, v, x);
+    },
+);
 
 closure(<span class="number">2</span>);</code></pre></div>
 <h4 id="passing-a-weak-reference"><a class="doc-anchor" href="#passing-a-weak-reference">§</a>Passing a weak reference</h4>
@@ -112,14 +115,18 @@ closure(<span class="number">2</span>);</code></pre></div>
 <span class="kw">use </span>std::rc::Rc;
 
 <span class="kw">let </span>u = Rc::new(<span class="number">2</span>);
-<span class="kw">let </span>closure = <span class="macro">clone!</span>(@weak u =&gt; <span class="kw">move </span>|x| {
-    <span class="macro">println!</span>(<span class="string">"u: {}, x: {}"</span>, u, x);
-});
+<span class="kw">let </span>closure = <span class="macro">clone!</span>(
+    <span class="attr">#[weak]
+    </span>u,
+    <span class="kw">move </span>|x| {
+        <span class="macro">println!</span>(<span class="string">"u: {}, x: {}"</span>, u, x);
+    },
+);
 
 closure(<span class="number">3</span>);</code></pre></div>
 <h5 id="allowing-a-nullable-weak-reference"><a class="doc-anchor" href="#allowing-a-nullable-weak-reference">§</a>Allowing a nullable weak reference</h5>
 <p>In some cases, even if the weak references can’t be retrieved, you might want to still have
-your closure called. In this case, you need to use <code>@weak-allow-none</code>:</p>
+your closure called. In this case, you need to use <code>#[weak_allow_none]</code> instead of <code>#[weak]</code>:</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>glib;
 <span class="kw">use </span>glib_macros::clone;
@@ -129,11 +136,15 @@ your closure called. In this case, you need to use <code>@weak-allow-none</code>
     <span class="comment">// This `Rc` won't be available in the closure because it's dropped at the end of the
     // current block
     </span><span class="kw">let </span>u = Rc::new(<span class="number">2</span>);
-    <span class="macro">clone!</span>(@weak-allow-none u =&gt; @default-<span class="kw">return </span><span class="bool-val">false</span>, <span class="kw">move </span>|x| {
-        <span class="comment">// We need to use a Debug print for `u` because it'll be an `Option`.
-        </span><span class="macro">println!</span>(<span class="string">"u: {:?}, x: {}"</span>, u, x);
-        <span class="bool-val">true
-    </span>})
+    <span class="macro">clone!</span>(
+        <span class="attr">#[weak_allow_none]
+        </span>u,
+        <span class="kw">move </span>|x| {
+            <span class="comment">// We need to use a Debug print for `u` because it'll be an `Option`.
+            </span><span class="macro">println!</span>(<span class="string">"u: {:?}, x: {}"</span>, u, x);
+            <span class="bool-val">true
+        </span>},
+    )
 };
 
 <span class="macro">assert_eq!</span>(closure(<span class="number">3</span>), <span class="bool-val">true</span>);</code></pre></div>
@@ -142,10 +153,13 @@ your closure called. In this case, you need to use <code>@weak-allow-none</code>
 <span class="kw">use </span>glib_macros::clone;
 
 <span class="kw">let </span>v = <span class="string">"123"</span>;
-<span class="kw">let </span>closure = <span class="macro">clone!</span>(@to-owned v =&gt; <span class="kw">move </span>|x| {
-    <span class="comment">// v is passed as `String` here
-    </span><span class="macro">println!</span>(<span class="string">"v: {}, x: {}"</span>, v, x);
-});
+<span class="kw">let </span>closure = <span class="macro">clone!</span>(
+    <span class="attr">#[to_owned] </span>v,
+    <span class="kw">move </span>|x| {
+        <span class="comment">// v is passed as `String` here
+        </span><span class="macro">println!</span>(<span class="string">"v: {}, x: {}"</span>, v, x);
+    },
+);
 
 closure(<span class="number">2</span>);</code></pre></div>
 <h4 id="renaming-variables"><a class="doc-anchor" href="#renaming-variables">§</a>Renaming variables</h4>
@@ -155,42 +169,65 @@ closure(<span class="number">2</span>);</code></pre></div>
 
 <span class="kw">let </span>v = Rc::new(<span class="number">1</span>);
 <span class="kw">let </span>u = Rc::new(<span class="number">2</span>);
-<span class="kw">let </span>closure = <span class="macro">clone!</span>(@strong v <span class="kw">as </span>y, @weak u =&gt; <span class="kw">move </span>|x| {
-    <span class="macro">println!</span>(<span class="string">"v as y: {}, u: {}, x: {}"</span>, y, u, x);
-});
+<span class="kw">let </span>closure = <span class="macro">clone!</span>(
+    <span class="attr">#[strong(rename_to = y)]
+    </span>v,
+    <span class="attr">#[weak] </span>u,
+    <span class="kw">move </span>|x| {
+        <span class="macro">println!</span>(<span class="string">"v as y: {}, u: {}, x: {}"</span>, y, u, x);
+    },
+);
 
 closure(<span class="number">3</span>);</code></pre></div>
-<h4 id="providing-a-default-return-value-if-upgrading-a-weak-reference-fails"><a class="doc-anchor" href="#providing-a-default-return-value-if-upgrading-a-weak-reference-fails">§</a>Providing a default return value if upgrading a weak reference fails</h4>
-<p>You can do it in two different ways:</p>
-<p>Either by providing the value yourself using <code>@default-return</code>:</p>
+<h4 id="providing-a-return-value-if-upgrading-a-weak-reference-fails"><a class="doc-anchor" href="#providing-a-return-value-if-upgrading-a-weak-reference-fails">§</a>Providing a return value if upgrading a weak reference fails</h4>
+<p>By default, <code>()</code> is returned if upgrading a weak reference fails. This behaviour can be
+adjusted in two different ways:</p>
+<p>Either by providing the value yourself using one of</p>
+<ul>
+<li><code>#[upgrade_or]</code>: Requires an expression that returns a <code>Copy</code> value of the expected return type,</li>
+<li><code>#[upgrade_or_else]</code>: Requires a closure that returns a value of the expected return type,</li>
+<li><code>#[upgrade_or_default]</code>: Requires that the return type implements <code>Default</code> and returns that.</li>
+</ul>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>glib;
 <span class="kw">use </span>glib_macros::clone;
 <span class="kw">use </span>std::rc::Rc;
 
 <span class="kw">let </span>v = Rc::new(<span class="number">1</span>);
-<span class="kw">let </span>closure = <span class="macro">clone!</span>(@weak v =&gt; @default-<span class="kw">return </span><span class="bool-val">false</span>, <span class="kw">move </span>|x| {
-    <span class="macro">println!</span>(<span class="string">"v: {}, x: {}"</span>, v, x);
-    <span class="bool-val">true
-</span>});
+<span class="kw">let </span>closure = <span class="macro">clone!</span>(
+    <span class="attr">#[weak] </span>v,
+    <span class="attr">#[upgrade_or]
+    </span><span class="bool-val">false</span>,
+    <span class="kw">move </span>|x| {
+        <span class="macro">println!</span>(<span class="string">"v: {}, x: {}"</span>, v, x);
+        <span class="bool-val">true
+    </span>},
+);
 
 <span class="comment">// Drop value so that the weak reference can't be upgraded.
 </span>drop(v);
 
 <span class="macro">assert_eq!</span>(closure(<span class="number">2</span>), <span class="bool-val">false</span>);</code></pre></div>
-<p>Or by using <code>@default-panic</code> (if the value fails to get upgraded, it’ll panic):</p>
+<p>Or by using <code>#[upgrade_or_panic]</code>: If the value fails to get upgraded, it’ll panic.</p>
 
-<div class="example-wrap should_panic"><a href="#" class="tooltip" title="This example panics">ⓘ</a><pre class="rust rust-example-rendered"><code><span class="kw">let </span>closure = <span class="macro">clone!</span>(@weak v =&gt; @default-panic, <span class="kw">move </span>|x| {
-    <span class="macro">println!</span>(<span class="string">"v: {}, x: {}"</span>, v, x);
-    <span class="bool-val">true
-</span>});</code></pre></div>
+<div class="example-wrap should_panic"><a href="#" class="tooltip" title="This example panics">ⓘ</a><pre class="rust rust-example-rendered"><code><span class="kw">let </span>closure = <span class="macro">clone!</span>(
+    <span class="attr">#[weak] </span>v,
+    <span class="attr">#[upgrade_or_panic]
+    </span><span class="kw">move </span>|x| {
+        <span class="macro">println!</span>(<span class="string">"v: {}, x: {}"</span>, v, x);
+        <span class="bool-val">true
+    </span>},
+);</code></pre></div>
 <h4 id="errors"><a class="doc-anchor" href="#errors">§</a>Errors</h4>
 <p>Here is a list of errors you might encounter:</p>
-<p><strong>Missing <code>@weak</code> or <code>@strong</code></strong>:</p>
+<p><strong>Missing <code>#[weak]</code> or <code>#[strong]</code></strong>:</p>
 
 <div class="example-wrap compile_fail"><a href="#" class="tooltip" title="This example deliberately fails to compile">ⓘ</a><pre class="rust rust-example-rendered"><code><span class="kw">let </span>v = Rc::new(<span class="number">1</span>);
 
-<span class="kw">let </span>closure = <span class="macro">clone!</span>(v =&gt; <span class="kw">move </span>|x| <span class="macro">println!</span>(<span class="string">"v: {}, x: {}"</span>, v, x));</code></pre></div>
+<span class="kw">let </span>closure = <span class="macro">clone!</span>(
+    v,
+    <span class="kw">move </span>|x| <span class="macro">println!</span>(<span class="string">"v: {}, x: {}"</span>, v, x),
+);</code></pre></div>
 <p><strong>Passing <code>self</code> as an argument</strong>:</p>
 
 <div class="example-wrap compile_fail"><a href="#" class="tooltip" title="This example deliberately fails to compile">ⓘ</a><pre class="rust rust-example-rendered"><code><span class="attr">#[derive(Debug)]
@@ -198,9 +235,12 @@ closure(<span class="number">3</span>);</code></pre></div>
 
 <span class="kw">impl </span>Foo {
     <span class="kw">fn </span>foo(<span class="kw-2">&amp;</span><span class="self">self</span>) {
-        <span class="kw">let </span>closure = <span class="macro">clone!</span>(@strong <span class="self">self </span>=&gt; <span class="kw">move </span>|x| {
-            <span class="macro">println!</span>(<span class="string">"self: {:?}"</span>, <span class="self">self</span>);
-        });
+        <span class="kw">let </span>closure = <span class="macro">clone!</span>(
+            <span class="attr">#[strong] </span><span class="self">self</span>,
+            <span class="kw">move </span>|x| {
+                <span class="macro">println!</span>(<span class="string">"self: {:?}"</span>, <span class="self">self</span>);
+            },
+        );
     }
 }</code></pre></div>
 <p>If you want to use <code>self</code> directly, you’ll need to rename it:</p>
@@ -210,9 +250,13 @@ closure(<span class="number">3</span>);</code></pre></div>
 
 <span class="kw">impl </span>Foo {
     <span class="kw">fn </span>foo(<span class="kw-2">&amp;</span><span class="self">self</span>) {
-        <span class="kw">let </span>closure = <span class="macro">clone!</span>(@strong <span class="self">self </span><span class="kw">as </span>this =&gt; <span class="kw">move </span>|x| {
-            <span class="macro">println!</span>(<span class="string">"self: {:?}"</span>, this);
-        });
+        <span class="kw">let </span>closure = <span class="macro">clone!</span>(
+            <span class="attr">#[strong(rename_to = this)]
+            </span><span class="self">self</span>,
+            <span class="kw">move </span>|x| {
+                <span class="macro">println!</span>(<span class="string">"self: {:?}"</span>, this);
+            },
+        );
     }
 }</code></pre></div>
 <p><strong>Passing fields directly</strong></p>
@@ -224,18 +268,25 @@ closure(<span class="number">3</span>);</code></pre></div>
 
 <span class="kw">impl </span>Foo {
     <span class="kw">fn </span>foo(<span class="kw-2">&amp;</span><span class="self">self</span>) {
-        <span class="kw">let </span>closure = <span class="macro">clone!</span>(@strong <span class="self">self</span>.v =&gt; <span class="kw">move </span>|x| {
-            <span class="macro">println!</span>(<span class="string">"self.v: {:?}"</span>, v);
-        });
+        <span class="kw">let </span>closure = <span class="macro">clone!</span>(
+            <span class="attr">#[strong] </span><span class="self">self</span>.v,
+            <span class="kw">move </span>|x| {
+                <span class="macro">println!</span>(<span class="string">"self.v: {:?}"</span>, v);
+            },
+        );
     }
 }</code></pre></div>
 <p>You can do it by renaming it:</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">impl </span>Foo {
     <span class="kw">fn </span>foo(<span class="kw-2">&amp;</span><span class="self">self</span>) {
-        <span class="kw">let </span>closure = <span class="macro">clone!</span>(@strong <span class="self">self</span>.v <span class="kw">as </span>v =&gt; <span class="kw">move </span>|x| {
-            <span class="macro">println!</span>(<span class="string">"self.v: {}"</span>, v);
-        });
+        <span class="kw">let </span>closure = <span class="macro">clone!</span>(
+            <span class="attr">#[strong(rename_to = v)]
+            </span><span class="self">self</span>.v,
+            <span class="kw">move </span>|x| {
+                <span class="macro">println!</span>(<span class="string">"self.v: {}"</span>, v);
+            },
+        );
     }
 }</code></pre></div>
 </div></details></section></div></main></body></html>

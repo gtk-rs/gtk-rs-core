@@ -71,7 +71,7 @@
 </script>
 
 
-<nav class="mobile-topbar"><button class="sidebar-menu-toggle" title="show sidebar"></button></nav><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../glib/index.html">glib</a><span class="version">0.20.0</span></h2></div><div class="sidebar-elems"></div></nav><div class="sidebar-resizer"></div><main><div class="width-limiter"><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1>Macro <a href="index.html">glib</a>::<wbr><a class="macro" href="#">closure</a><button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><span class="out-of-band"><a class="src" href="../src/glib_macros/lib.rs.html#424">source</a> · <button id="toggle-all-docs" title="collapse all docs">[<span>&#x2212;</span>]</button></span></div><pre class="rust item-decl"><code>closure!() { <span class="comment">/* proc-macro */</span> }</code></pre><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>Macro for creating a <a href="../glib/closure/struct.Closure.html"><code>Closure</code></a> object. This is a wrapper around <a href="../glib/closure/struct.Closure.html#method.new"><code>Closure::new</code></a> that
+<nav class="mobile-topbar"><button class="sidebar-menu-toggle" title="show sidebar"></button></nav><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../glib/index.html">glib</a><span class="version">0.20.0</span></h2></div><div class="sidebar-elems"></div></nav><div class="sidebar-resizer"></div><main><div class="width-limiter"><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1>Macro <a href="index.html">glib</a>::<wbr><a class="macro" href="#">closure</a><button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><span class="out-of-band"><a class="src" href="../src/glib_macros/lib.rs.html#506">source</a> · <button id="toggle-all-docs" title="collapse all docs">[<span>&#x2212;</span>]</button></span></div><pre class="rust item-decl"><code>closure!() { <span class="comment">/* proc-macro */</span> }</code></pre><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>Macro for creating a <a href="../glib/closure/struct.Closure.html"><code>Closure</code></a> object. This is a wrapper around <a href="../glib/closure/struct.Closure.html#method.new"><code>Closure::new</code></a> that
 automatically type checks its arguments at run-time.</p>
 <p>A <code>Closure</code> takes <a href="../glib/value/struct.Value.html"><code>Value</code></a> objects as inputs and output. This macro will automatically convert
 the inputs to Rust types when invoking its callback, and then will convert the output back to a
@@ -82,15 +82,18 @@ passing input types derived from <a href="../glib/object/struct.Object.html"><co
 the exact object or interface type that is being received.</p>
 <p>Similarly to <a href="macro.clone.html" title="macro glib::clone"><code>clone!</code></a>, this macro can be useful in combination with signal
 handlers to reduce boilerplate when passing references. Unique to <code>Closure</code> objects is the
-ability to watch an object using a the <code>@watch</code> directive. Only an <a href="../glib/object/struct.Object.html"><code>Object</code></a> value can be
-passed to <code>@watch</code>, and only one object can be watched per closure. When an object is watched,
+ability to watch an object using a the <code>#[watch]</code> attribute. Only an <a href="../glib/object/struct.Object.html"><code>Object</code></a> value can be
+passed to <code>#[watch]</code>, and only one object can be watched per closure. When an object is watched,
 a weak reference to the object is held in the closure. When the object is destroyed, the
 closure will become invalidated: all signal handlers connected to the closure will become
 disconnected, and any calls to <a href="../glib/closure/struct.Closure.html#method.invoke"><code>Closure::invoke</code></a> on the closure will be silently ignored.
 Internally, this is accomplished using <a href="../glib/object/trait.ObjectExt.html#tymethod.watch_closure"><code>Object::watch_closure</code></a> on the watched object.</p>
-<p>The <code>@weak-allow-none</code> and <code>@strong</code> captures are also supported and behave the same as in
-<a href="macro.clone.html" title="macro glib::clone"><code>clone!</code></a>, as is aliasing captures with the <code>as</code> keyword. Notably, these
-captures are able to reference <code>Rc</code> and <code>Arc</code> values in addition to <code>Object</code> values.</p>
+<p>The <code>#[weak]</code>, <code>#[weak_allow_none]</code>, <code>#[strong]</code>, <code>#[to_owned]</code> captures are also supported and
+behave the same as in <a href="macro.clone.html" title="macro glib::clone"><code>clone!</code></a>, as is aliasing captures via <code>rename_to</code>.
+Similarly, upgrade failure of weak references can be adjusted via <code>#[upgrade_or]</code>,
+<code>#[upgrade_or_else]</code>, <code>#[upgrade_or_default]</code> and <code>#[upgrade_or_panic]</code>.</p>
+<p>Notably, these captures are able to reference <code>Rc</code> and <code>Arc</code> values in addition to <code>Object</code>
+values.</p>
 <p><strong>⚠️ IMPORTANT ⚠️</strong></p>
 <p><code>glib</code> needs to be in scope, so unless it’s one of the direct crate dependencies, you need to
 import it because <code>closure!</code> is using it. For example:</p>
@@ -124,15 +127,18 @@ obj.connect_closure(
 
 <span class="kw">let </span>closure = {
     <span class="kw">let </span>obj = glib::Object::new::&lt;glib::Object&gt;();
-    <span class="kw">let </span>closure = <span class="macro">closure_local!</span>(@watch obj =&gt; <span class="kw">move </span>|| {
-        obj.type_().name()
-    });
+    <span class="kw">let </span>closure = <span class="macro">closure_local!</span>(
+        <span class="attr">#[watch] </span>obj,
+        <span class="kw">move </span>|| {
+            obj.type_().name()
+        },
+    );
     <span class="macro">assert_eq!</span>(closure.invoke::&lt;String&gt;(<span class="kw-2">&amp;</span>[]), <span class="string">"GObject"</span>);
     closure
 };
 <span class="comment">// `obj` is dropped, closure invalidated so it always does nothing and returns None
 </span>closure.invoke::&lt;()&gt;(<span class="kw-2">&amp;</span>[]);</code></pre></div>
-<p><code>@watch</code> has special behavior when connected to a signal:</p>
+<p><code>#[watch]</code> has special behavior when connected to a signal:</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>glib;
 <span class="kw">use </span>glib::prelude::<span class="kw-2">*</span>;
@@ -143,10 +149,15 @@ obj.connect_closure(
     <span class="kw">let </span>other = glib::Object::new::&lt;glib::Object&gt;();
     obj.connect_closure(
         <span class="string">"notify"</span>, <span class="bool-val">false</span>,
-        <span class="macro">closure_local!</span>(@watch other <span class="kw">as </span>b =&gt; <span class="kw">move </span>|a: glib::Object, pspec: glib::ParamSpec| {
-            <span class="kw">let </span>value = a.property_value(pspec.name());
-            b.set_property(pspec.name(), <span class="kw-2">&amp;</span>value);
-        }));
+        <span class="macro">closure_local!</span>(
+            <span class="attr">#[watch(rename_to = b)]
+            </span>other,
+            <span class="kw">move </span>|a: glib::Object, pspec: glib::ParamSpec| {
+                <span class="kw">let </span>value = a.property_value(pspec.name());
+                b.set_property(pspec.name(), <span class="kw-2">&amp;</span>value);
+            },
+        ),
+    );
     <span class="comment">// The signal handler will disconnect automatically at the end of this
     // block when `other` is dropped.
 </span>}</code></pre></div>
@@ -160,10 +171,17 @@ obj.connect_closure(
     <span class="kw">let </span>a = Arc::new(String::from(<span class="string">"Hello"</span>));
     <span class="kw">let </span>b = Arc::new(String::from(<span class="string">"World"</span>));
     <span class="kw">let </span>c = <span class="string">"!"</span>;
-    <span class="kw">let </span>closure = <span class="macro">closure!</span>(@strong a, @weak-allow-none b, @to-owned c =&gt; <span class="kw">move </span>|| {
-        <span class="comment">// `a` is Arc&lt;String&gt;, `b` is Option&lt;Arc&lt;String&gt;&gt;, `c` is a `String`
-        </span><span class="macro">format!</span>(<span class="string">"{} {}{}"</span>, a, b.as_ref().map(|b| b.as_str()).unwrap_or_else(|| <span class="string">"Moon"</span>), c)
-    });
+    <span class="kw">let </span>closure = <span class="macro">closure!</span>(
+        <span class="attr">#[strong] </span>a,
+        <span class="attr">#[weak_allow_none]
+        </span>b,
+        <span class="attr">#[to_owned]
+        </span>c,
+        <span class="kw">move </span>|| {
+            <span class="comment">// `a` is Arc&lt;String&gt;, `b` is Option&lt;Arc&lt;String&gt;&gt;, `c` is a `String`
+            </span><span class="macro">format!</span>(<span class="string">"{} {}{}"</span>, a, b.as_ref().map(|b| b.as_str()).unwrap_or_else(|| <span class="string">"Moon"</span>), c)
+        },
+    );
     <span class="macro">assert_eq!</span>(closure.invoke::&lt;String&gt;(<span class="kw-2">&amp;</span>[]), <span class="string">"Hello World!"</span>);
     closure
 };

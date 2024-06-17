@@ -154,6 +154,14 @@
 <a href="#81" id="81">81</a>
 <a href="#82" id="82">82</a>
 <a href="#83" id="83">83</a>
+<a href="#84" id="84">84</a>
+<a href="#85" id="85">85</a>
+<a href="#86" id="86">86</a>
+<a href="#87" id="87">87</a>
+<a href="#88" id="88">88</a>
+<a href="#89" id="89">89</a>
+<a href="#90" id="90">90</a>
+<a href="#91" id="91">91</a>
 </pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
 </span><span class="kw">use </span>glib::{<a href="../../glib_macros/macro.clone.html">clone</a>, <a href="../../glib/prelude/index.html">prelude</a>::<span class="kw-2">*</span>};
@@ -220,21 +228,29 @@
             };
             <span class="kw">let </span>action_map = <span class="self">self</span>.as_ref();
             <span class="kw">if let </span><span class="prelude-val">Some</span>(callback) = entry.activate {
-                action.connect_activate(<span class="macro">clone!</span>(@weak action_map =&gt;  <span class="kw">move </span>|action, state| {
-                    <span class="comment">// safe to unwrap as O: IsA&lt;ActionMap&gt;
-                    </span>callback(action_map.downcast_ref::&lt;<span class="self">Self</span>&gt;().unwrap(), action, state);
-                }));
+                action.connect_activate(<span class="macro">clone!</span>(
+                    <span class="attr">#[weak]
+                    </span>action_map,
+                    <span class="kw">move </span>|action, state| {
+                        <span class="comment">// safe to unwrap as O: IsA&lt;ActionMap&gt;
+                        </span>callback(action_map.downcast_ref::&lt;<span class="self">Self</span>&gt;().unwrap(), action, state);
+                    }
+                ));
             }
             <span class="kw">if let </span><span class="prelude-val">Some</span>(callback) = entry.change_state {
-                action.connect_change_state(<span class="macro">clone!</span>(@weak action_map =&gt; <span class="kw">move </span>|action, state| {
-                    <span class="comment">// safe to unwrap as O: IsA&lt;ActionMap&gt;
-                    </span>callback(action_map.downcast_ref::&lt;<span class="self">Self</span>&gt;().unwrap(), action, state);
-                }));
+                action.connect_change_state(<span class="macro">clone!</span>(
+                    <span class="attr">#[weak]
+                    </span>action_map,
+                    <span class="kw">move </span>|action, state| {
+                        <span class="comment">// safe to unwrap as O: IsA&lt;ActionMap&gt;
+                        </span>callback(action_map.downcast_ref::&lt;<span class="self">Self</span>&gt;().unwrap(), action, state);
+                    }
+                ));
             }
             <span class="self">self</span>.as_ref().add_action(<span class="kw-2">&amp;</span>action);
         }
     }
 }
 
-<span class="kw">impl</span>&lt;O: IsA&lt;<a href="auto/action_map.rs.html#8-30">ActionMap</a>&gt;&gt; <a href="#12-81">ActionMapExtManual</a> <span class="kw">for </span>O {}
+<span class="kw">impl</span>&lt;O: IsA&lt;<a href="auto/action_map.rs.html#8-30">ActionMap</a>&gt;&gt; <a href="#12-89">ActionMapExtManual</a> <span class="kw">for </span>O {}
 </code></pre></div></section></main></body></html>
