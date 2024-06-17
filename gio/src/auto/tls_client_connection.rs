@@ -132,7 +132,7 @@ pub trait TlsClientConnectionExt: IsA<TlsClientConnection> + sealed::Sealed + 's
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::accepted-cas\0".as_ptr() as *const _,
-                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_accepted_cas_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -158,7 +158,7 @@ pub trait TlsClientConnectionExt: IsA<TlsClientConnection> + sealed::Sealed + 's
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::server-identity\0".as_ptr() as *const _,
-                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_server_identity_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -185,7 +185,7 @@ pub trait TlsClientConnectionExt: IsA<TlsClientConnection> + sealed::Sealed + 's
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::validation-flags\0".as_ptr() as *const _,
-                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_validation_flags_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),

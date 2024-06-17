@@ -987,7 +987,7 @@ impl DBusConnection {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"closed\0".as_ptr() as *const _,
-                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     closed_trampoline::<F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -1015,7 +1015,7 @@ impl DBusConnection {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::capabilities\0".as_ptr() as *const _,
-                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_capabilities_trampoline::<F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -1043,7 +1043,7 @@ impl DBusConnection {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::closed\0".as_ptr() as *const _,
-                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_closed_trampoline::<F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -1071,7 +1071,7 @@ impl DBusConnection {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::exit-on-close\0".as_ptr() as *const _,
-                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_exit_on_close_trampoline::<F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -1099,7 +1099,7 @@ impl DBusConnection {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::unique-name\0".as_ptr() as *const _,
-                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_unique_name_trampoline::<F> as *const (),
                 )),
                 Box_::into_raw(f),

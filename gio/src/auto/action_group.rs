@@ -195,7 +195,7 @@ pub trait ActionGroupExt: IsA<ActionGroup> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 signal_name.as_ptr() as *const _,
-                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     action_added_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -235,7 +235,7 @@ pub trait ActionGroupExt: IsA<ActionGroup> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 signal_name.as_ptr() as *const _,
-                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     action_enabled_changed_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -272,7 +272,7 @@ pub trait ActionGroupExt: IsA<ActionGroup> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 signal_name.as_ptr() as *const _,
-                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     action_removed_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -311,7 +311,7 @@ pub trait ActionGroupExt: IsA<ActionGroup> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 signal_name.as_ptr() as *const _,
-                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     action_state_changed_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),

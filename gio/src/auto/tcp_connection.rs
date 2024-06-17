@@ -67,7 +67,7 @@ pub trait TcpConnectionExt: IsA<TcpConnection> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::graceful-disconnect\0".as_ptr() as *const _,
-                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_graceful_disconnect_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),

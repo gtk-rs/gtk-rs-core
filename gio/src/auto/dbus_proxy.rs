@@ -714,7 +714,7 @@ pub trait DBusProxyExt: IsA<DBusProxy> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::g-default-timeout\0".as_ptr() as *const _,
-                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_g_default_timeout_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -743,7 +743,7 @@ pub trait DBusProxyExt: IsA<DBusProxy> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::g-interface-info\0".as_ptr() as *const _,
-                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_g_interface_info_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -772,7 +772,7 @@ pub trait DBusProxyExt: IsA<DBusProxy> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::g-name-owner\0".as_ptr() as *const _,
-                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_g_name_owner_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
