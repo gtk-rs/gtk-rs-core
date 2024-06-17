@@ -343,6 +343,22 @@ impl<const N: usize> From<[GString; N]> for StrV {
     }
 }
 
+impl<const N: usize> From<[String; N]> for StrV {
+    #[inline]
+    fn from(value: [String; N]) -> Self {
+        unsafe {
+            let len = value.len();
+            let mut s = Self::with_capacity(len);
+            for (i, v) in value.into_iter().enumerate() {
+                *s.ptr.as_ptr().add(i) = GString::from(v).into_glib_ptr();
+            }
+            s.len = len;
+            *s.ptr.as_ptr().add(s.len) = ptr::null_mut();
+            s
+        }
+    }
+}
+
 impl<'a, const N: usize> From<[&'a str; N]> for StrV {
     #[inline]
     fn from(value: [&'a str; N]) -> Self {
