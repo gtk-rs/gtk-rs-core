@@ -448,7 +448,7 @@ pub trait MountExt: IsA<Mount> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"changed\0".as_ptr() as *const _,
-                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     changed_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -470,7 +470,7 @@ pub trait MountExt: IsA<Mount> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"pre-unmount\0".as_ptr() as *const _,
-                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     pre_unmount_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -492,7 +492,7 @@ pub trait MountExt: IsA<Mount> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"unmounted\0".as_ptr() as *const _,
-                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     unmounted_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),

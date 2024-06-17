@@ -1918,7 +1918,7 @@ pub trait ObjectExt: ObjectType {
     /// in C. This can be achieved with a closure that watches an object: see the documentation
     /// of the [`closure!`](crate::closure!) macro for more details.
     ///
-    /// Same as [`Self::connect`] but takes a [`Closure`](crate::Closure) instead of a `Fn`.
+    /// Same as [`Self::connect`] but takes a [`Closure`] instead of a `Fn`.
     #[doc(alias = "g_signal_connect_closure")]
     #[doc(alias = "g_signal_connect_object")]
     fn connect_closure(
@@ -1937,7 +1937,7 @@ pub trait ObjectExt: ObjectType {
     /// This panics if the signal does not exist.
     ///
     /// Same as [`Self::connect_closure`] but takes a
-    /// [`SignalId`](crate::subclass::signal::SignalId) instead of a signal name.
+    /// [`SignalId`] instead of a signal name.
     #[doc(alias = "g_signal_connect_closure_by_id")]
     fn connect_closure_id(
         &self,
@@ -2996,7 +2996,7 @@ impl<T: ObjectType> ObjectExt for T {
         crate::signal::connect_raw(
             self.as_object_ref().to_glib_none().0,
             signal_name.as_ptr() as *const _,
-            Some(mem::transmute::<_, unsafe extern "C" fn()>(
+            Some(mem::transmute::<*const (), unsafe extern "C" fn()>(
                 notify_trampoline::<Self, F> as *const (),
             )),
             Box::into_raw(f),

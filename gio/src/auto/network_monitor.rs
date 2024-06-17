@@ -176,7 +176,7 @@ pub trait NetworkMonitorExt: IsA<NetworkMonitor> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"network-changed\0".as_ptr() as *const _,
-                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     network_changed_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -202,7 +202,7 @@ pub trait NetworkMonitorExt: IsA<NetworkMonitor> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::connectivity\0".as_ptr() as *const _,
-                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_connectivity_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -228,7 +228,7 @@ pub trait NetworkMonitorExt: IsA<NetworkMonitor> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::network-available\0".as_ptr() as *const _,
-                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_network_available_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -254,7 +254,7 @@ pub trait NetworkMonitorExt: IsA<NetworkMonitor> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::network-metered\0".as_ptr() as *const _,
-                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_network_metered_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),

@@ -27,6 +27,10 @@ pub use crate::unix_input_stream::UnixInputStreamExtManual;
 pub use crate::unix_output_stream::UnixOutputStreamExtManual;
 #[cfg(unix)]
 pub use crate::unix_socket_address::{UnixSocketAddressExtManual, UnixSocketAddressPath};
+#[cfg(windows)]
+pub use crate::win32_input_stream::Win32InputStreamExt;
+#[cfg(windows)]
+pub use crate::win32_output_stream::Win32OutputStreamExt;
 pub use crate::{
     action_map::ActionMapExtManual, application::ApplicationExtManual, auto::traits::*,
     cancellable::CancellableExtManual, converter::ConverterExtManual,

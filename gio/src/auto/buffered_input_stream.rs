@@ -269,7 +269,7 @@ pub trait BufferedInputStreamExt: IsA<BufferedInputStream> + sealed::Sealed + 's
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::buffer-size\0".as_ptr() as *const _,
-                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_buffer_size_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),

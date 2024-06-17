@@ -757,6 +757,9 @@ mod tests {
             let l_clone = l.clone();
             move || {
                 c.spawn_from_within(move || async move {
+                    let rc = std::rc::Rc::new(123);
+                    futures_util::future::ready(()).await;
+                    assert_eq!(std::rc::Rc::strong_count(&rc), 1);
                     l_clone.quit();
                 });
             }
