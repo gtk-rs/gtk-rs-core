@@ -253,6 +253,7 @@ impl Capture {
         crate_ident: &TokenStream,
         weak_upgrade_failure_kind: &UpgradeBehaviour,
         upgrade_failure_closure_ident: &Ident,
+        unit_return: Option<TokenStream>,
     ) -> TokenStream {
         let alias = self.alias();
         match self.kind {
@@ -290,13 +291,16 @@ impl Capture {
                 }
                 UpgradeBehaviour::Unit => {
                     let err_msg = format!("Failed to upgrade `{}`", alias);
+                    let unit_return = unit_return.unwrap_or_else(|| {
+                        quote! { return; }
+                    });
                     quote! {
                         let Some(#alias) = #crate_ident::clone::Upgrade::upgrade(&#alias) else {
                             #crate_ident::g_debug!(
                                 #crate_ident::CLONE_MACRO_LOG_DOMAIN,
                                 #err_msg,
                             );
-                            return;
+                            #unit_return
                         };
                     }
                 }
@@ -459,6 +463,7 @@ impl ToTokens for Clone {
                 &crate_ident,
                 &self.upgrade_behaviour,
                 &upgrade_failure_closure_ident,
+                None,
             )
         });
 
