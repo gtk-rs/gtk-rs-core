@@ -68,9 +68,13 @@ impl AsyncInitable {
             obj.unsafe_cast_ref::<Self>().init_async(
                 io_priority,
                 cancellable,
-                glib::clone!(@strong obj => move |res| {
-                    callback(res.map(|_| obj));
-                }),
+                glib::clone!(
+                    #[strong]
+                    obj,
+                    move |res| {
+                        callback(res.map(|_| obj));
+                    }
+                ),
             )
         };
     }
@@ -98,9 +102,13 @@ impl AsyncInitable {
                     obj.unsafe_cast_ref::<Self>().init_async(
                         io_priority,
                         Some(cancellable),
-                        glib::clone!(@strong obj => move |res| {
-                            send.resolve(res.map(|_| obj));
-                        }),
+                        glib::clone!(
+                            #[strong]
+                            obj,
+                            move |res| {
+                                send.resolve(res.map(|_| obj));
+                            }
+                        ),
                     );
                 },
             ))
@@ -130,9 +138,13 @@ impl AsyncInitable {
             obj.unsafe_cast_ref::<Self>().init_async(
                 io_priority,
                 cancellable,
-                glib::clone!(@strong obj => move |res| {
-                    callback(res.map(|_| obj));
-                }),
+                glib::clone!(
+                    #[strong]
+                    obj,
+                    move |res| {
+                        callback(res.map(|_| obj));
+                    }
+                ),
             )
         };
     }
@@ -162,9 +174,13 @@ impl AsyncInitable {
                     obj.unsafe_cast_ref::<Self>().init_async(
                         io_priority,
                         Some(cancellable),
-                        glib::clone!(@strong obj => move |res| {
-                            send.resolve(res.map(|_| obj));
-                        }),
+                        glib::clone!(
+                            #[strong]
+                            obj,
+                            move |res| {
+                                send.resolve(res.map(|_| obj));
+                            }
+                        ),
                     );
                 },
             ))

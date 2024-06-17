@@ -1,211 +1,124 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
 use proc_macro2::{Ident, Span, TokenStream};
-use quote::{quote, ToTokens, TokenStreamExt};
-use syn::{ext::IdentExt, spanned::Spanned, Token};
+use quote::{quote, ToTokens};
+use syn::{
+    parse::{Parse, ParseStream},
+    spanned::Spanned,
+    Attribute, ExprClosure, Token,
+};
 
-use crate::utils::crate_ident_new;
-
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
-enum CaptureKind {
-    Watch,
-    WeakAllowNone,
-    Strong,
-    ToOwned,
-}
-
-struct Capture {
-    name: TokenStream,
-    alias: Option<syn::Ident>,
-    kind: CaptureKind,
-    start: Span,
-}
-
-impl Capture {
-    fn alias(&self) -> TokenStream {
-        if let Some(ref a) = self.alias {
-            a.to_token_stream()
-        } else {
-            self.name.to_token_stream()
-        }
-    }
-    fn outer_before_tokens(&self, crate_ident: &TokenStream) -> TokenStream {
-        let alias = self.alias();
-        let name = &self.name;
-        match self.kind {
-            CaptureKind::Watch => quote! {
-                let #alias = #crate_ident::object::Watchable::watched_object(&#name);
-            },
-            CaptureKind::WeakAllowNone => quote! {
-                let #alias = #crate_ident::clone::Downgrade::downgrade(&#name);
-            },
-            CaptureKind::Strong => quote! {
-                let #alias = #name.clone();
-            },
-            CaptureKind::ToOwned => quote! {
-                let #alias = ::std::borrow::ToOwned::to_owned(&*#name);
-            },
-        }
-    }
-
-    fn outer_after_tokens(&self, crate_ident: &TokenStream, closure_ident: &Ident) -> TokenStream {
-        let name = &self.name;
-        match self.kind {
-            CaptureKind::Watch => quote! {
-                #crate_ident::object::Watchable::watch_closure(&#name, &#closure_ident);
-            },
-            _ => Default::default(),
-        }
-    }
-
-    fn inner_before_tokens(&self, crate_ident: &TokenStream) -> TokenStream {
-        let alias = self.alias();
-        match self.kind {
-            CaptureKind::Watch => {
-                quote! {
-                    let #alias = unsafe { #alias.borrow() };
-                    let #alias = ::core::convert::AsRef::as_ref(&#alias);
-                }
-            }
-            CaptureKind::WeakAllowNone => quote! {
-                let #alias = #crate_ident::clone::Upgrade::upgrade(&#alias);
-            },
-            _ => Default::default(),
-        }
-    }
-}
-
-impl syn::parse::Parse for CaptureKind {
-    fn parse(input: syn::parse::ParseStream) -> syn::Result<Self> {
-        input.parse::<Token![@]>()?;
-        let mut idents = TokenStream::new();
-        idents.append(input.call(syn::Ident::parse_any)?);
-        while input.peek(Token![-]) {
-            input.parse::<Token![-]>()?;
-            idents.append(input.call(syn::Ident::parse_any)?);
-        }
-        let keyword = idents
-            .clone()
-            .into_iter()
-            .map(|i| i.to_string())
-            .collect::<Vec<_>>()
-            .join("-");
-        match keyword.as_str() {
-            "strong" => Ok(CaptureKind::Strong),
-            "watch" => Ok(CaptureKind::Watch),
-            "weak-allow-none" => Ok(CaptureKind::WeakAllowNone),
-            "to-owned" => Ok(CaptureKind::ToOwned),
-            k => Err(syn::Error::new(
-                idents.span(),
-                format!("Unknown keyword `{}`, only `watch`, `weak-allow-none`, `to-owned` and `strong` are allowed",
-                k),
-            )),
-        }
-    }
-}
-
-impl syn::parse::Parse for Capture {
-    fn parse(input: syn::parse::ParseStream) -> syn::Result<Self> {
-        let start = input.span();
-        let kind = input.parse()?;
-        let mut name = TokenStream::new();
-        name.append(input.call(syn::Ident::parse_any)?);
-        while input.peek(Token![.]) {
-            input.parse::<Token![.]>()?;
-            name.append(proc_macro2::Punct::new('.', proc_macro2::Spacing::Alone));
-            name.append(input.call(syn::Ident::parse_any)?);
-        }
-        let alias = if input.peek(Token![as]) {
-            input.parse::<Token![as]>()?;
-            input.parse()?
-        } else {
-            None
-        };
-        if alias.is_none() {
-            if name.to_string() == "self" {
-                return Err(syn::Error::new_spanned(
-                    name,
-                    "Can't use `self` as variable name. Try storing it in a temporary variable or \
-                    rename it using `as`.",
-                ));
-            }
-            if name.to_string().contains('.') {
-                return Err(syn::Error::new(
-                    name.span(),
-                    format!(
-                        "`{}`: Field accesses are not allowed as is, you must rename it!",
-                        name
-                    ),
-                ));
-            }
-        }
-        Ok(Capture {
-            name,
-            alias,
-            kind,
-            start,
-        })
-    }
-}
+use crate::{
+    clone::{Capture, CaptureKind, UpgradeBehaviour},
+    utils::crate_ident_new,
+};
 
 struct Closure {
     captures: Vec<Capture>,
     args: Vec<Ident>,
-    closure: syn::ExprClosure,
+    upgrade_behaviour: UpgradeBehaviour,
+    closure: ExprClosure,
     constructor: &'static str,
 }
 
-impl syn::parse::Parse for Closure {
-    fn parse(input: syn::parse::ParseStream) -> syn::Result<Self> {
+impl Parse for Closure {
+    fn parse(input: ParseStream) -> syn::Result<Self> {
         let mut captures: Vec<Capture> = vec![];
-        if input.peek(Token![@]) {
-            loop {
-                let capture = input.parse::<Capture>()?;
-                if capture.kind == CaptureKind::Watch {
-                    if let Some(existing) = captures.iter().find(|c| c.kind == CaptureKind::Watch) {
-                        return Err(syn::Error::new(
-                            existing.start,
-                            "Only one `@watch` capture is allowed per closure",
-                        ));
-                    }
+        let mut upgrade_behaviour: Option<(UpgradeBehaviour, Span)> = None;
+
+        loop {
+            // There must either be one or no attributes here. Multiple attributes are not
+            // supported.
+            //
+            // If this is a capture attribute, it must be followed by an identifier.
+            // If this is an upgrade failure attribute, it might be followed by a closure. After the
+            // upgrade failure attribute there must not be any further attributes.
+            //
+            // If this is not an attribute then it is a closure, async closure or async block which
+            // is handled outside the loop
+            let attrs = input.call(Attribute::parse_outer)?;
+            if attrs.is_empty() {
+                break;
+            };
+
+            if let Some(capture) = Capture::maybe_parse(&attrs, input)? {
+                if capture.kind == CaptureKind::Watch
+                    && captures.iter().any(|c| c.kind == CaptureKind::Watch)
+                {
+                    return Err(syn::Error::new_spanned(
+                        &attrs[0],
+                        "only one `watch` capture is allowed per closure",
+                    ));
                 }
+
                 captures.push(capture);
-                if input.peek(Token![,]) {
-                    input.parse::<Token![,]>()?;
-                    if !input.peek(Token![@]) {
-                        break;
-                    }
-                } else {
-                    break;
+            } else if let Some(behaviour) = UpgradeBehaviour::maybe_parse(&attrs, input)? {
+                if upgrade_behaviour.is_some() {
+                    return Err(syn::Error::new_spanned(
+                        &attrs[0],
+                        "multiple upgrade failure attributes are not supported",
+                    ));
                 }
+
+                upgrade_behaviour = Some((behaviour, attrs[0].span()));
+                break;
+            } else if let Some(ident) = attrs[0].path().get_ident() {
+                return Err(syn::Error::new_spanned(
+                        &attrs[0],
+                        format!(
+                            "unsupported attribute `{ident}`: only `watch`, `strong`, `weak`, `weak_allow_none`, `to_owned`, `upgrade_or`, `upgrade_or_else`, `upgrade_or_default` and `upgrade_or_panic` are supported",
+                        ),
+                ));
+            } else {
+                return Err(syn::Error::new_spanned(
+                        &attrs[0],
+                        "unsupported attribute: only `strong`, `weak`, `weak_allow_none`, `to_owned`, `upgrade_or_else`, `upgrade_or_default` and `upgrade_or_panic` are supported",
+                ));
             }
         }
-        if !captures.is_empty() {
-            input.parse::<Token![=>]>()?;
+
+        if let Some((_, ref span)) = upgrade_behaviour {
+            if captures.iter().all(|c| c.kind != CaptureKind::Weak) {
+                return Err(syn::Error::new(
+                    *span,
+                    "upgrade failure attribute can only be used together with weak variable captures",
+                ));
+            }
         }
-        let mut closure = input.parse::<syn::ExprClosure>()?;
+
+        let upgrade_behaviour = upgrade_behaviour.map(|x| x.0).unwrap_or_default();
+
+        let mut closure = input.parse::<ExprClosure>()?;
         if closure.asyncness.is_some() {
             return Err(syn::Error::new_spanned(
                 closure,
-                "Async closure not allowed",
+                "async closures not supported",
             ));
         }
         if !captures.is_empty() && closure.capture.is_none() {
             return Err(syn::Error::new_spanned(
                 closure,
-                "Closure with captures needs to be \"moved\" so please add `move` before closure",
+                "closures need to capture variables by move. Please add the `move` keyword",
             ));
         }
+        closure.capture = None;
+
         let args = closure
             .inputs
             .iter()
             .enumerate()
             .map(|(i, _)| Ident::new(&format!("____value{i}"), Span::call_site()))
             .collect();
-        closure.capture = None;
+
+        // Trailing comma, if any
+        if input.peek(Token![,]) {
+            input.parse::<Token![,]>()?;
+        }
+
         Ok(Closure {
             captures,
             args,
+            upgrade_behaviour,
             closure,
             constructor: "new",
         })
@@ -214,18 +127,26 @@ impl syn::parse::Parse for Closure {
 
 impl ToTokens for Closure {
     fn to_tokens(&self, tokens: &mut TokenStream) {
+        let crate_ident = crate_ident_new();
+
         let closure_ident = Ident::new("____closure", Span::call_site());
         let values_ident = Ident::new("____values", Span::call_site());
-        let crate_ident = crate_ident_new();
+        let upgrade_failure_closure_ident =
+            Ident::new("____upgrade_failure_closure", Span::call_site());
+        let upgrade_failure_closure_wrapped_ident =
+            Ident::new("____upgrade_failure_closure_wrapped", Span::call_site());
 
         let outer_before = self
             .captures
             .iter()
             .map(|c| c.outer_before_tokens(&crate_ident));
-        let inner_before = self
-            .captures
-            .iter()
-            .map(|c| c.inner_before_tokens(&crate_ident));
+        let inner_before = self.captures.iter().map(|c| {
+            c.inner_before_tokens(
+                &crate_ident,
+                &self.upgrade_behaviour,
+                &upgrade_failure_closure_wrapped_ident,
+            )
+        });
         let outer_after = self
             .captures
             .iter()
@@ -245,6 +166,40 @@ impl ToTokens for Closure {
         let closure = &self.closure;
         let constructor = Ident::new(self.constructor, Span::call_site());
 
+        let upgrade_failure_closure = match self.upgrade_behaviour {
+            UpgradeBehaviour::Default => Some(quote! {
+                let #upgrade_failure_closure_ident = ::std::default::Default::default;
+                let #upgrade_failure_closure_wrapped_ident = ||
+                    #crate_ident::closure::IntoClosureReturnValue::into_closure_return_value(
+                        (#upgrade_failure_closure_ident)()
+                    );
+            }),
+            UpgradeBehaviour::Expression(ref expr) => Some(quote! {
+                let #upgrade_failure_closure_ident = move || {
+                    #expr
+                };
+                let #upgrade_failure_closure_wrapped_ident = ||
+                    #crate_ident::closure::IntoClosureReturnValue::into_closure_return_value(
+                        (#upgrade_failure_closure_ident)()
+                    );
+            }),
+            UpgradeBehaviour::Closure(ref closure_2) => Some(quote! {
+                    let #upgrade_failure_closure_ident = #closure_2;
+                    let #upgrade_failure_closure_wrapped_ident = ||
+                        #crate_ident::closure::IntoClosureReturnValue::into_closure_return_value(
+                            (#upgrade_failure_closure_ident)()
+                        );
+            }),
+            _ => None,
+        };
+
+        let assert_return_type = upgrade_failure_closure.is_some().then(|| {
+            quote! {
+                fn ____same<T>(_a: &T, _b: impl Fn() -> T) {}
+                ____same(&____res, #upgrade_failure_closure_ident);
+            }
+        });
+
         tokens.extend(quote! {
             {
                 let #closure_ident = {
@@ -257,12 +212,16 @@ impl ToTokens for Closure {
                             #args_len,
                             #values_ident.len(),
                         );
+                        #upgrade_failure_closure
                         #(#inner_before)*
                         #(#arg_values)*
-                        #crate_ident::closure::IntoClosureReturnValue::into_closure_return_value(
-                            (#closure)(#(#arg_names),*)
-                        )
-                    })
+                        #crate_ident::closure::IntoClosureReturnValue::into_closure_return_value({
+                            let ____res = (#closure)(#(#arg_names),*);
+                            #assert_return_type
+                            ____res
+                        })
+                    }
+                    )
                 };
                 #(#outer_after)*
                 #closure_ident
