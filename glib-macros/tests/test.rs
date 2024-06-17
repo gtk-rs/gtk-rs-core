@@ -693,6 +693,31 @@ fn closure() {
     assert_eq!(weak_test_or_default.invoke::<u32>(&[]), 0);
 
     {
+        let ret = std::rc::Rc::new(std::cell::Cell::new(0));
+        let weak_test_or_unit = {
+            let obj = glib::Object::new::<glib::Object>();
+
+            let weak_test = glib::closure_local!(
+                #[weak]
+                obj,
+                #[strong]
+                ret,
+                move || {
+                    ret.set(obj.ref_count());
+                }
+            );
+            weak_test.invoke::<()>(&[]);
+            assert_eq!(ret.get(), 2);
+            ret.set(0);
+
+            weak_test
+        };
+        weak_test_or_unit.invoke::<()>(&[]);
+
+        assert_eq!(ret.get(), 0);
+    }
+
+    {
         let obj1 = glib::Object::new::<glib::Object>();
         let obj2 = glib::Object::new::<glib::Object>();
 
