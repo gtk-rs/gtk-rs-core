@@ -74,6 +74,7 @@ pub trait InetSocketAddressExt: IsA<InetSocketAddress> + sealed::Sealed + 'stati
 
     #[doc(alias = "g_inet_socket_address_get_scope_id")]
     #[doc(alias = "get_scope_id")]
+    #[doc(alias = "scope-id")]
     fn scope_id(&self) -> u32 {
         unsafe { ffi::g_inet_socket_address_get_scope_id(self.as_ref().to_glib_none().0) }
     }

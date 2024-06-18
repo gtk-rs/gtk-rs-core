@@ -37,6 +37,7 @@ impl BindingGroup {
     }
 
     #[doc(alias = "g_binding_group_set_source")]
+    #[doc(alias = "source")]
     pub fn set_source(&self, source: Option<&impl IsA<Object>>) {
         unsafe {
             crate::gobject_ffi::g_binding_group_set_source(

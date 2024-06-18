@@ -37,6 +37,7 @@ mod sealed {
 pub trait PowerProfileMonitorExt: IsA<PowerProfileMonitor> + sealed::Sealed + 'static {
     #[doc(alias = "g_power_profile_monitor_get_power_saver_enabled")]
     #[doc(alias = "get_power_saver_enabled")]
+    #[doc(alias = "power-saver-enabled")]
     fn is_power_saver_enabled(&self) -> bool {
         unsafe {
             from_glib(ffi::g_power_profile_monitor_get_power_saver_enabled(

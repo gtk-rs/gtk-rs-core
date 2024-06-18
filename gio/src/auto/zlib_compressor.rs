@@ -27,11 +27,13 @@ impl ZlibCompressor {
 
     #[doc(alias = "g_zlib_compressor_get_file_info")]
     #[doc(alias = "get_file_info")]
+    #[doc(alias = "file-info")]
     pub fn file_info(&self) -> Option<FileInfo> {
         unsafe { from_glib_none(ffi::g_zlib_compressor_get_file_info(self.to_glib_none().0)) }
     }
 
     #[doc(alias = "g_zlib_compressor_set_file_info")]
+    #[doc(alias = "file-info")]
     pub fn set_file_info(&self, file_info: Option<&FileInfo>) {
         unsafe {
             ffi::g_zlib_compressor_set_file_info(self.to_glib_none().0, file_info.to_glib_none().0);

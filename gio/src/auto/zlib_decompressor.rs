@@ -27,6 +27,7 @@ impl ZlibDecompressor {
 
     #[doc(alias = "g_zlib_decompressor_get_file_info")]
     #[doc(alias = "get_file_info")]
+    #[doc(alias = "file-info")]
     pub fn file_info(&self) -> Option<FileInfo> {
         unsafe {
             from_glib_none(ffi::g_zlib_decompressor_get_file_info(

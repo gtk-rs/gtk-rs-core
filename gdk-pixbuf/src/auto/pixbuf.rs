@@ -415,6 +415,7 @@ impl Pixbuf {
 
     #[doc(alias = "gdk_pixbuf_get_bits_per_sample")]
     #[doc(alias = "get_bits_per_sample")]
+    #[doc(alias = "bits-per-sample")]
     pub fn bits_per_sample(&self) -> i32 {
         unsafe { ffi::gdk_pixbuf_get_bits_per_sample(self.to_glib_none().0) }
     }
@@ -433,6 +434,7 @@ impl Pixbuf {
 
     #[doc(alias = "gdk_pixbuf_get_has_alpha")]
     #[doc(alias = "get_has_alpha")]
+    #[doc(alias = "has-alpha")]
     pub fn has_alpha(&self) -> bool {
         unsafe { from_glib(ffi::gdk_pixbuf_get_has_alpha(self.to_glib_none().0)) }
     }
@@ -445,6 +447,7 @@ impl Pixbuf {
 
     #[doc(alias = "gdk_pixbuf_get_n_channels")]
     #[doc(alias = "get_n_channels")]
+    #[doc(alias = "n-channels")]
     pub fn n_channels(&self) -> i32 {
         unsafe { ffi::gdk_pixbuf_get_n_channels(self.to_glib_none().0) }
     }

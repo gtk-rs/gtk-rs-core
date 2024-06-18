@@ -268,31 +268,6 @@ pub trait FileExt: IsA<File> + sealed::Sealed + 'static {
         }
     }
 
-    #[cfg(feature = "v2_82")]
-    #[cfg_attr(docsrs, doc(cfg(feature = "v2_82")))]
-    #[doc(alias = "g_file_copy_async_with_closures")]
-    fn copy_async_with_closures(
-        &self,
-        destination: &impl IsA<File>,
-        flags: FileCopyFlags,
-        io_priority: i32,
-        cancellable: Option<&impl IsA<Cancellable>>,
-        progress_callback_closure: Option<&glib::Closure>,
-        ready_callback_closure: &glib::Closure,
-    ) {
-        unsafe {
-            ffi::g_file_copy_async_with_closures(
-                self.as_ref().to_glib_none().0,
-                destination.as_ref().to_glib_none().0,
-                flags.into_glib(),
-                io_priority,
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
-                progress_callback_closure.to_glib_none().0,
-                ready_callback_closure.to_glib_none().0,
-            );
-        }
-    }
-
     #[doc(alias = "g_file_copy_attributes")]
     fn copy_attributes(
         &self,
@@ -1318,31 +1293,6 @@ pub trait FileExt: IsA<File> + sealed::Sealed + 'static {
             } else {
                 Err(from_glib_full(error))
             }
-        }
-    }
-
-    #[cfg(feature = "v2_82")]
-    #[cfg_attr(docsrs, doc(cfg(feature = "v2_82")))]
-    #[doc(alias = "g_file_move_async_with_closures")]
-    fn move_async_with_closures(
-        &self,
-        destination: &impl IsA<File>,
-        flags: FileCopyFlags,
-        io_priority: i32,
-        cancellable: Option<&impl IsA<Cancellable>>,
-        progress_callback_closure: Option<&glib::Closure>,
-        ready_callback_closure: &glib::Closure,
-    ) {
-        unsafe {
-            ffi::g_file_move_async_with_closures(
-                self.as_ref().to_glib_none().0,
-                destination.as_ref().to_glib_none().0,
-                flags.into_glib(),
-                io_priority,
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
-                progress_callback_closure.to_glib_none().0,
-                ready_callback_closure.to_glib_none().0,
-            );
         }
     }
 
