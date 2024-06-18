@@ -42,6 +42,7 @@ impl SignalGroup {
     }
 
     #[doc(alias = "g_signal_group_set_target")]
+    #[doc(alias = "target")]
     pub fn set_target(&self, target: Option<&impl IsA<Object>>) {
         unsafe {
             crate::gobject_ffi::g_signal_group_set_target(

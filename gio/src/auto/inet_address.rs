@@ -77,6 +77,7 @@ pub trait InetAddressExt: IsA<InetAddress> + sealed::Sealed + 'static {
 
     #[doc(alias = "g_inet_address_get_is_any")]
     #[doc(alias = "get_is_any")]
+    #[doc(alias = "is-any")]
     fn is_any(&self) -> bool {
         unsafe {
             from_glib(ffi::g_inet_address_get_is_any(
@@ -87,6 +88,7 @@ pub trait InetAddressExt: IsA<InetAddress> + sealed::Sealed + 'static {
 
     #[doc(alias = "g_inet_address_get_is_link_local")]
     #[doc(alias = "get_is_link_local")]
+    #[doc(alias = "is-link-local")]
     fn is_link_local(&self) -> bool {
         unsafe {
             from_glib(ffi::g_inet_address_get_is_link_local(
@@ -97,6 +99,7 @@ pub trait InetAddressExt: IsA<InetAddress> + sealed::Sealed + 'static {
 
     #[doc(alias = "g_inet_address_get_is_loopback")]
     #[doc(alias = "get_is_loopback")]
+    #[doc(alias = "is-loopback")]
     fn is_loopback(&self) -> bool {
         unsafe {
             from_glib(ffi::g_inet_address_get_is_loopback(
@@ -107,6 +110,7 @@ pub trait InetAddressExt: IsA<InetAddress> + sealed::Sealed + 'static {
 
     #[doc(alias = "g_inet_address_get_is_mc_global")]
     #[doc(alias = "get_is_mc_global")]
+    #[doc(alias = "is-mc-global")]
     fn is_mc_global(&self) -> bool {
         unsafe {
             from_glib(ffi::g_inet_address_get_is_mc_global(
@@ -117,6 +121,7 @@ pub trait InetAddressExt: IsA<InetAddress> + sealed::Sealed + 'static {
 
     #[doc(alias = "g_inet_address_get_is_mc_link_local")]
     #[doc(alias = "get_is_mc_link_local")]
+    #[doc(alias = "is-mc-link-local")]
     fn is_mc_link_local(&self) -> bool {
         unsafe {
             from_glib(ffi::g_inet_address_get_is_mc_link_local(
@@ -127,6 +132,7 @@ pub trait InetAddressExt: IsA<InetAddress> + sealed::Sealed + 'static {
 
     #[doc(alias = "g_inet_address_get_is_mc_node_local")]
     #[doc(alias = "get_is_mc_node_local")]
+    #[doc(alias = "is-mc-node-local")]
     fn is_mc_node_local(&self) -> bool {
         unsafe {
             from_glib(ffi::g_inet_address_get_is_mc_node_local(
@@ -137,6 +143,7 @@ pub trait InetAddressExt: IsA<InetAddress> + sealed::Sealed + 'static {
 
     #[doc(alias = "g_inet_address_get_is_mc_org_local")]
     #[doc(alias = "get_is_mc_org_local")]
+    #[doc(alias = "is-mc-org-local")]
     fn is_mc_org_local(&self) -> bool {
         unsafe {
             from_glib(ffi::g_inet_address_get_is_mc_org_local(
@@ -147,6 +154,7 @@ pub trait InetAddressExt: IsA<InetAddress> + sealed::Sealed + 'static {
 
     #[doc(alias = "g_inet_address_get_is_mc_site_local")]
     #[doc(alias = "get_is_mc_site_local")]
+    #[doc(alias = "is-mc-site-local")]
     fn is_mc_site_local(&self) -> bool {
         unsafe {
             from_glib(ffi::g_inet_address_get_is_mc_site_local(
@@ -157,6 +165,7 @@ pub trait InetAddressExt: IsA<InetAddress> + sealed::Sealed + 'static {
 
     #[doc(alias = "g_inet_address_get_is_multicast")]
     #[doc(alias = "get_is_multicast")]
+    #[doc(alias = "is-multicast")]
     fn is_multicast(&self) -> bool {
         unsafe {
             from_glib(ffi::g_inet_address_get_is_multicast(
@@ -167,6 +176,7 @@ pub trait InetAddressExt: IsA<InetAddress> + sealed::Sealed + 'static {
 
     #[doc(alias = "g_inet_address_get_is_site_local")]
     #[doc(alias = "get_is_site_local")]
+    #[doc(alias = "is-site-local")]
     fn is_site_local(&self) -> bool {
         unsafe {
             from_glib(ffi::g_inet_address_get_is_site_local(

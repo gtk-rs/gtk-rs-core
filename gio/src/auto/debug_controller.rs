@@ -31,6 +31,7 @@ mod sealed {
 pub trait DebugControllerExt: IsA<DebugController> + sealed::Sealed + 'static {
     #[doc(alias = "g_debug_controller_get_debug_enabled")]
     #[doc(alias = "get_debug_enabled")]
+    #[doc(alias = "debug-enabled")]
     fn is_debug_enabled(&self) -> bool {
         unsafe {
             from_glib(ffi::g_debug_controller_get_debug_enabled(
@@ -40,6 +41,7 @@ pub trait DebugControllerExt: IsA<DebugController> + sealed::Sealed + 'static {
     }
 
     #[doc(alias = "g_debug_controller_set_debug_enabled")]
+    #[doc(alias = "debug-enabled")]
     fn set_debug_enabled(&self, debug_enabled: bool) {
         unsafe {
             ffi::g_debug_controller_set_debug_enabled(

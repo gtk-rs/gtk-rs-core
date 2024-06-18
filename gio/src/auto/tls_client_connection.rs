@@ -62,6 +62,7 @@ pub trait TlsClientConnectionExt: IsA<TlsClientConnection> + sealed::Sealed + 's
 
     #[doc(alias = "g_tls_client_connection_get_accepted_cas")]
     #[doc(alias = "get_accepted_cas")]
+    #[doc(alias = "accepted-cas")]
     fn accepted_cas(&self) -> Vec<glib::ByteArray> {
         unsafe {
             FromGlibPtrContainer::from_glib_full(ffi::g_tls_client_connection_get_accepted_cas(
@@ -72,6 +73,7 @@ pub trait TlsClientConnectionExt: IsA<TlsClientConnection> + sealed::Sealed + 's
 
     #[doc(alias = "g_tls_client_connection_get_server_identity")]
     #[doc(alias = "get_server_identity")]
+    #[doc(alias = "server-identity")]
     fn server_identity(&self) -> Option<SocketConnectable> {
         unsafe {
             from_glib_none(ffi::g_tls_client_connection_get_server_identity(
@@ -84,6 +86,7 @@ pub trait TlsClientConnectionExt: IsA<TlsClientConnection> + sealed::Sealed + 's
     #[allow(deprecated)]
     #[doc(alias = "g_tls_client_connection_get_validation_flags")]
     #[doc(alias = "get_validation_flags")]
+    #[doc(alias = "validation-flags")]
     fn validation_flags(&self) -> TlsCertificateFlags {
         unsafe {
             from_glib(ffi::g_tls_client_connection_get_validation_flags(
@@ -93,6 +96,7 @@ pub trait TlsClientConnectionExt: IsA<TlsClientConnection> + sealed::Sealed + 's
     }
 
     #[doc(alias = "g_tls_client_connection_set_server_identity")]
+    #[doc(alias = "server-identity")]
     fn set_server_identity(&self, identity: &impl IsA<SocketConnectable>) {
         unsafe {
             ffi::g_tls_client_connection_set_server_identity(
@@ -105,6 +109,7 @@ pub trait TlsClientConnectionExt: IsA<TlsClientConnection> + sealed::Sealed + 's
     #[cfg_attr(feature = "v2_72", deprecated = "Since 2.72")]
     #[allow(deprecated)]
     #[doc(alias = "g_tls_client_connection_set_validation_flags")]
+    #[doc(alias = "validation-flags")]
     fn set_validation_flags(&self, flags: TlsCertificateFlags) {
         unsafe {
             ffi::g_tls_client_connection_set_validation_flags(

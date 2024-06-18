@@ -137,6 +137,7 @@ pub trait NetworkMonitorExt: IsA<NetworkMonitor> + sealed::Sealed + 'static {
 
     #[doc(alias = "g_network_monitor_get_network_available")]
     #[doc(alias = "get_network_available")]
+    #[doc(alias = "network-available")]
     fn is_network_available(&self) -> bool {
         unsafe {
             from_glib(ffi::g_network_monitor_get_network_available(
@@ -147,6 +148,7 @@ pub trait NetworkMonitorExt: IsA<NetworkMonitor> + sealed::Sealed + 'static {
 
     #[doc(alias = "g_network_monitor_get_network_metered")]
     #[doc(alias = "get_network_metered")]
+    #[doc(alias = "network-metered")]
     fn is_network_metered(&self) -> bool {
         unsafe {
             from_glib(ffi::g_network_monitor_get_network_metered(

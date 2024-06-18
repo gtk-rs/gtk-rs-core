@@ -208,6 +208,7 @@ pub trait BufferedInputStreamExt: IsA<BufferedInputStream> + sealed::Sealed + 's
 
     #[doc(alias = "g_buffered_input_stream_get_buffer_size")]
     #[doc(alias = "get_buffer_size")]
+    #[doc(alias = "buffer-size")]
     fn buffer_size(&self) -> usize {
         unsafe { ffi::g_buffered_input_stream_get_buffer_size(self.as_ref().to_glib_none().0) }
     }
@@ -245,6 +246,7 @@ pub trait BufferedInputStreamExt: IsA<BufferedInputStream> + sealed::Sealed + 's
     }
 
     #[doc(alias = "g_buffered_input_stream_set_buffer_size")]
+    #[doc(alias = "buffer-size")]
     fn set_buffer_size(&self, size: usize) {
         unsafe {
             ffi::g_buffered_input_stream_set_buffer_size(self.as_ref().to_glib_none().0, size);

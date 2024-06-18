@@ -94,6 +94,7 @@ pub trait ApplicationCommandLineExt:
 
     #[doc(alias = "g_application_command_line_get_is_remote")]
     #[doc(alias = "get_is_remote")]
+    #[doc(alias = "is-remote")]
     fn is_remote(&self) -> bool {
         unsafe {
             from_glib(ffi::g_application_command_line_get_is_remote(

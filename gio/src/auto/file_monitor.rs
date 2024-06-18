@@ -61,6 +61,7 @@ pub trait FileMonitorExt: IsA<FileMonitor> + sealed::Sealed + 'static {
     }
 
     #[doc(alias = "g_file_monitor_set_rate_limit")]
+    #[doc(alias = "rate-limit")]
     fn set_rate_limit(&self, limit_msecs: i32) {
         unsafe {
             ffi::g_file_monitor_set_rate_limit(self.as_ref().to_glib_none().0, limit_msecs);
