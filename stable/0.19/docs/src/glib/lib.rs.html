@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/lib.rs`."><title>lib.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.80.0-nightly (9cdfe285c 2024-05-22)" data-channel="nightly" data-search-js="search-d52510db62a78183.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/lib.rs`."><title>lib.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.81.0-nightly (8fcd4dd08 2024-06-18)" data-channel="nightly" data-search-js="search-0fe7219eb170c82e.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -301,12 +301,52 @@
 <a href="#228" id="228">228</a>
 <a href="#229" id="229">229</a>
 <a href="#230" id="230">230</a>
+<a href="#231" id="231">231</a>
+<a href="#232" id="232">232</a>
+<a href="#233" id="233">233</a>
+<a href="#234" id="234">234</a>
+<a href="#235" id="235">235</a>
+<a href="#236" id="236">236</a>
+<a href="#237" id="237">237</a>
+<a href="#238" id="238">238</a>
+<a href="#239" id="239">239</a>
+<a href="#240" id="240">240</a>
+<a href="#241" id="241">241</a>
+<a href="#242" id="242">242</a>
+<a href="#243" id="243">243</a>
+<a href="#244" id="244">244</a>
+<a href="#245" id="245">245</a>
+<a href="#246" id="246">246</a>
+<a href="#247" id="247">247</a>
+<a href="#248" id="248">248</a>
+<a href="#249" id="249">249</a>
+<a href="#250" id="250">250</a>
 </pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
 </span><span class="attr">#![cfg_attr(docsrs, feature(doc_cfg))]
 #![allow(clippy::missing_safety_doc)]
 #![allow(renamed_and_removed_lints)]
-#![doc = <span class="macro">include_str!</span>(<span class="string">"../README.md"</span>)]
+</span><span class="comment">// Override docs references to point to locally generated docs
+// rustdoc-stripper-ignore-next
+</span><span class="doccomment">//! [`Type`]: struct@Type
+//! [`StaticType`]: trait@types::StaticType
+//! [`Value`]: struct@Value
+//! [`Variant``]: struct@Variant
+//! [`StaticVariantType`]: trait@variant::StaticVariantType
+//! [`Error`]: struct@Error
+//! [`FileError`]: enum@FileError
+//! [`Object`]: struct@Object
+//! [`Rc&lt;RefCell&lt;T&gt;&gt;`]: mod@std::cell#introducing-mutability-inside-of-something-immutable
+//! [`IsA`]: trait@object::IsA
+//! [`Cast`]: trait@object::Cast
+//! [`ObjectExt`]: trait@object::ObjectExt
+//! [`wrapper!`]: macro@wrapper
+//! [`wrapper`]: mod@wrapper
+//! [`boxed`]: mod@boxed
+//! [`shared`]: mod@shared
+//! [mod@object]: mod@object
+//! [`translate`]: mod@translate
+</span><span class="attr">#![doc = <span class="macro">include_str!</span>(<span class="string">"../README.md"</span>)]
 
 </span><span class="kw">pub use </span>bitflags;
 <span class="kw">pub use </span>ffi;
@@ -381,7 +421,7 @@
     }};
 }
 
-<span class="kw">pub mod </span><a href="clone.rs.html#3-102">clone</a>;
+<span class="kw">pub mod </span><a href="clone.rs.html#3-103">clone</a>;
 <span class="attr">#[macro_use]
 </span><span class="kw">pub mod </span><a href="wrapper.rs.html#4-445">wrapper</a>;
 <span class="attr">#[macro_use]
@@ -403,7 +443,7 @@
 <span class="kw">pub mod </span><a href="collections/mod.rs.html#3-16">collections</a>;
 <span class="kw">pub use </span>collections::{<a href="collections/list.rs.html#12-15">List</a>, <a href="collections/ptr_slice.rs.html#18-26">PtrSlice</a>, <a href="collections/slist.rs.html#12-15">SList</a>, <a href="collections/slice.rs.html#15-19">Slice</a>, <a href="collections/strv.rs.html#17-25">StrV</a>};
 
-<span class="kw">pub use </span><a href="#108"><span class="self">self</span>::auto</a>::<span class="kw-2">*</span>;
+<span class="kw">pub use </span><a href="#128"><span class="self">self</span>::auto</a>::<span class="kw-2">*</span>;
 <span class="attr">#[allow(clippy::too_many_arguments)]
 #[allow(clippy::type_complexity)]
 #[allow(unused_imports)]
@@ -432,28 +472,28 @@
 <span class="kw">mod </span><a href="checksum.rs.html#3-91">checksum</a>;
 <span class="kw">pub mod </span><a href="closure.rs.html#5-449">closure</a>;
 <span class="kw">mod </span><a href="convert.rs.html#3-779">convert</a>;
-<span class="kw">pub use </span><a href="#131"><span class="self">self</span>::convert</a>::<span class="kw-2">*</span>;
+<span class="kw">pub use </span><a href="#151"><span class="self">self</span>::convert</a>::<span class="kw-2">*</span>;
 <span class="kw">pub mod </span><a href="enums.rs.html#3-1203">enums</a>;
 <span class="kw">mod </span><a href="functions.rs.html#3-346">functions</a>;
-<span class="kw">pub use </span><a href="#134"><span class="self">self</span>::functions</a>::<span class="kw-2">*</span>;
+<span class="kw">pub use </span><a href="#154"><span class="self">self</span>::functions</a>::<span class="kw-2">*</span>;
 <span class="kw">mod </span><a href="key_file.rs.html#3-508">key_file</a>;
 <span class="kw">pub mod </span><a href="prelude.rs.html#4-14">prelude</a>;
 <span class="kw">pub mod </span><a href="signal.rs.html#4-231">signal</a>;
 <span class="kw">pub mod </span><a href="source.rs.html#3-1197">source</a>;
-<span class="kw">pub use </span><a href="#139"><span class="self">self</span>::source</a>::<span class="kw-2">*</span>;
+<span class="kw">pub use </span><a href="#159"><span class="self">self</span>::source</a>::<span class="kw-2">*</span>;
 <span class="attr">#[macro_use]
 </span><span class="kw">pub mod </span><a href="translate.rs.html#4-2972">translate</a>;
 <span class="kw">mod </span><a href="gstring.rs.html#3-2547">gstring</a>;
-<span class="kw">pub use </span><a href="#143"><span class="self">self</span>::gstring</a>::<span class="kw-2">*</span>;
+<span class="kw">pub use </span><a href="#163"><span class="self">self</span>::gstring</a>::<span class="kw-2">*</span>;
 <span class="kw">mod </span><a href="gstring_builder.rs.html#3-367">gstring_builder</a>;
 <span class="kw">pub use </span><a href="gstring_builder.rs.html#7-44"><span class="self">self</span>::gstring_builder::GStringBuilder</a>;
 <span class="kw">pub mod </span><a href="types.rs.html#4-720">types</a>;
 <span class="kw">mod </span><a href="unicollate.rs.html#3-94">unicollate</a>;
 <span class="kw">pub use </span><span class="self">self</span>::unicollate::{<a href="unicollate.rs.html#8">CollationKey</a>, <a href="unicollate.rs.html#32">FilenameCollationKey</a>};
 <span class="kw">mod </span><a href="utils.rs.html#3-394">utils</a>;
-<span class="kw">pub use </span><a href="#150"><span class="self">self</span>::utils</a>::<span class="kw-2">*</span>;
+<span class="kw">pub use </span><a href="#170"><span class="self">self</span>::utils</a>::<span class="kw-2">*</span>;
 <span class="kw">mod </span><a href="unichar.rs.html#3-243">unichar</a>;
-<span class="kw">pub use </span><a href="#152"><span class="self">self</span>::unichar</a>::<span class="kw-2">*</span>;
+<span class="kw">pub use </span><a href="#172"><span class="self">self</span>::unichar</a>::<span class="kw-2">*</span>;
 <span class="kw">mod </span><a href="main_context.rs.html#3-354">main_context</a>;
 <span class="kw">pub use </span><a href="main_context.rs.html#252"><span class="self">self</span>::main_context::MainContextAcquireGuard</a>;
 <span class="kw">mod </span><a href="date.rs.html#3-443">date</a>;
@@ -469,8 +509,8 @@
 <span class="kw">pub use </span><a href="date.rs.html#7-16"><span class="self">self</span>::date::Date</a>;
 <span class="kw">mod </span><a href="value_array.rs.html#3-246">value_array</a>;
 <span class="kw">pub use </span><a href="value_array.rs.html#9-18"><span class="self">self</span>::value_array::ValueArray</a>;
-<span class="kw">mod </span><a href="param_spec.rs.html#3-2232">param_spec</a>;
-<span class="kw">pub use </span><a href="#169"><span class="self">self</span>::param_spec</a>::<span class="kw-2">*</span>;
+<span class="kw">mod </span><a href="param_spec.rs.html#3-2482">param_spec</a>;
+<span class="kw">pub use </span><a href="#189"><span class="self">self</span>::param_spec</a>::<span class="kw-2">*</span>;
 <span class="kw">pub mod </span><a href="property.rs.html#3-265">property</a>;
 <span class="kw">mod </span><a href="quark.rs.html#3-109">quark</a>;
 <span class="kw">pub use </span><a href="quark.rs.html#10"><span class="self">self</span>::quark::Quark</a>;
@@ -507,13 +547,13 @@
 <span class="attr">#[macro_use]
 </span><span class="kw">pub mod </span><a href="subclass/mod.rs.html#3-467">subclass</a>;
 
-<span class="kw">mod </span><a href="main_context_futures.rs.html#3-837">main_context_futures</a>;
+<span class="kw">mod </span><a href="main_context_futures.rs.html#3-840">main_context_futures</a>;
 <span class="kw">pub use </span>main_context_futures::{<a href="main_context_futures.rs.html#445">JoinError</a>, <a href="main_context_futures.rs.html#278-283">JoinHandle</a>, <a href="main_context_futures.rs.html#366-369">SpawnWithinJoinHandle</a>};
 <span class="kw">mod </span><a href="source_futures.rs.html#3-482">source_futures</a>;
-<span class="kw">pub use </span><a href="#209"><span class="self">self</span>::source_futures</a>::<span class="kw-2">*</span>;
+<span class="kw">pub use </span><a href="#229"><span class="self">self</span>::source_futures</a>::<span class="kw-2">*</span>;
 
 <span class="kw">mod </span><a href="future_with_timeout.rs.html#3-103">future_with_timeout</a>;
-<span class="kw">pub use </span><a href="#212"><span class="self">self</span>::future_with_timeout</a>::<span class="kw-2">*</span>;
+<span class="kw">pub use </span><a href="#232"><span class="self">self</span>::future_with_timeout</a>::<span class="kw-2">*</span>;
 
 <span class="kw">mod </span><a href="thread_pool.rs.html#3-384">thread_pool</a>;
 <span class="kw">pub use </span><span class="self">self</span>::thread_pool::{<a href="thread_pool.rs.html#49-51">ThreadHandle</a>, <a href="thread_pool.rs.html#37">ThreadPool</a>};

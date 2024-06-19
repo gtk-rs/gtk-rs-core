@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/gstring.rs`."><title>gstring.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.80.0-nightly (9cdfe285c 2024-05-22)" data-channel="nightly" data-search-js="search-d52510db62a78183.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/gstring.rs`."><title>gstring.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.81.0-nightly (8fcd4dd08 2024-06-18)" data-channel="nightly" data-search-js="search-0fe7219eb170c82e.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -2633,7 +2633,7 @@
     <a href="https://doc.rust-lang.org/nightly/core/ptr/index.html">ptr</a>, <a href="https://doc.rust-lang.org/nightly/alloc/slice/index.html">slice</a>,
 };
 
-<span class="kw">use crate</span>::{<a href="lib.rs.html#137">prelude</a>::<span class="kw-2">*</span>, <a href="lib.rs.html#142">translate</a>::<span class="kw-2">*</span>, <a href="types.rs.html#22">Type</a>, <a href="value.rs.html#477-511">Value</a>};
+<span class="kw">use crate</span>::{<a href="lib.rs.html#157">prelude</a>::<span class="kw-2">*</span>, <a href="lib.rs.html#162">translate</a>::<span class="kw-2">*</span>, <a href="types.rs.html#22">Type</a>, <a href="value.rs.html#477-511">Value</a>};
 
 <span class="comment">// rustdoc-stripper-ignore-next
 </span><span class="doccomment">/// Representation of a borrowed [`GString`].
@@ -2653,7 +2653,7 @@
     </span><span class="kw">pub fn </span>from_utf8_with_nul(bytes: <span class="kw-2">&amp;</span>[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="kw-2">&amp;</span><span class="self">Self</span>, <a href="#297-304">GStrError</a>&gt; {
         <a href="#273-280"><span class="self">Self</span>::check_trailing_nul</a>(<a href="#33">bytes</a>)<span class="question-mark">?</span>;
         <a href="https://doc.rust-lang.org/nightly/core/str/converts/fn.from_utf8.html">std::str::from_utf8</a>(<a href="#33">bytes</a>)<span class="question-mark">?</span>;
-        <span class="prelude-val">Ok</span>(<span class="kw">unsafe </span>{ <a href="https://doc.rust-lang.org/nightly/core/intrinsics/fn.transmute.html">mem::transmute</a>(<a href="#33">bytes</a>) })
+        <span class="prelude-val">Ok</span>(<span class="kw">unsafe </span>{ mem::transmute::&lt;<span class="kw-2">&amp;</span>[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>], <span class="kw-2">&amp;</span><a href="#24">GStr</a>&gt;(<a href="#33">bytes</a>) })
     }
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Creates a GLib string wrapper from a byte slice, checking for interior nul-bytes.
@@ -2664,7 +2664,7 @@
     </span><span class="kw">pub fn </span>from_utf8_with_nul_checked(bytes: <span class="kw-2">&amp;</span>[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="kw-2">&amp;</span><span class="self">Self</span>, <a href="#297-304">GStrError</a>&gt; {
         <a href="#260-271"><span class="self">Self</span>::check_nuls</a>(<a href="#44">bytes</a>)<span class="question-mark">?</span>;
         <a href="https://doc.rust-lang.org/nightly/core/str/converts/fn.from_utf8.html">std::str::from_utf8</a>(<a href="#44">bytes</a>)<span class="question-mark">?</span>;
-        <span class="prelude-val">Ok</span>(<span class="kw">unsafe </span>{ <a href="https://doc.rust-lang.org/nightly/core/intrinsics/fn.transmute.html">mem::transmute</a>(<a href="#44">bytes</a>) })
+        <span class="prelude-val">Ok</span>(<span class="kw">unsafe </span>{ mem::transmute::&lt;<span class="kw-2">&amp;</span>[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>], <span class="kw-2">&amp;</span><a href="#24">GStr</a>&gt;(<a href="#44">bytes</a>) })
     }
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Unsafely creates a GLib string wrapper from a byte slice.
@@ -2680,7 +2680,7 @@
     </span><span class="kw">pub const unsafe fn </span>from_utf8_with_nul_unchecked(bytes: <span class="kw-2">&amp;</span>[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]) -&gt; <span class="kw-2">&amp;</span><span class="self">Self </span>{
         <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert.html">debug_assert!</a>(!bytes.is_empty() &amp;&amp; bytes[bytes.len() - <span class="number">1</span>] == <span class="number">0</span>);
         <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert.html">debug_assert!</a>(std::str::from_utf8(bytes).is_ok());
-        <a href="https://doc.rust-lang.org/nightly/core/intrinsics/fn.transmute.html">mem::transmute</a>(<a href="#60">bytes</a>)
+        mem::transmute::&lt;<span class="kw-2">&amp;</span>[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>], <span class="kw-2">&amp;</span><a href="#24">GStr</a>&gt;(<a href="#60">bytes</a>)
     }
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Creates a GLib string wrapper from a byte slice, truncating it at the first nul-byte.
@@ -2692,7 +2692,7 @@
         <span class="kw">let </span>nul_pos = memchr::memchr(<span class="number">0</span>, <a href="#71">bytes</a>).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.ok_or">ok_or</a>(<a href="#303">GStrError::NoTrailingNul</a>)<span class="question-mark">?</span>;
         <span class="kw">let </span>bytes = <span class="kw">unsafe </span>{ <a href="#71">bytes</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.get_unchecked">get_unchecked</a>(..<a href="#72">nul_pos</a> + <span class="number">1</span>) };
         <a href="https://doc.rust-lang.org/nightly/core/str/converts/fn.from_utf8.html">std::str::from_utf8</a>(<a href="#73">bytes</a>)<span class="question-mark">?</span>;
-        <span class="prelude-val">Ok</span>(<span class="kw">unsafe </span>{ <a href="https://doc.rust-lang.org/nightly/core/intrinsics/fn.transmute.html">mem::transmute</a>(<a href="#73">bytes</a>) })
+        <span class="prelude-val">Ok</span>(<span class="kw">unsafe </span>{ mem::transmute::&lt;<span class="kw-2">&amp;</span>[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>], <span class="kw-2">&amp;</span><a href="#24">GStr</a>&gt;(<a href="#73">bytes</a>) })
     }
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Creates a GLib string wrapper from a string slice.
@@ -2704,7 +2704,7 @@
     </span><span class="attr">#[inline]
     </span><span class="kw">pub fn </span>from_str_with_nul(s: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="kw-2">&amp;</span><span class="self">Self</span>, <a href="#297-304">GStrError</a>&gt; {
         <a href="#273-280"><span class="self">Self</span>::check_trailing_nul</a>(<a href="#85">s</a>)<span class="question-mark">?</span>;
-        <span class="prelude-val">Ok</span>(<span class="kw">unsafe </span>{ <a href="https://doc.rust-lang.org/nightly/core/intrinsics/fn.transmute.html">mem::transmute</a>(<a href="#85">s</a>) })
+        <span class="prelude-val">Ok</span>(<span class="kw">unsafe </span>{ mem::transmute::&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, <span class="kw-2">&amp;</span><a href="#24">GStr</a>&gt;(<a href="#85">s</a>) })
     }
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Creates a GLib string wrapper from a string slice, checking for interior nul-bytes.
@@ -2716,7 +2716,7 @@
     </span><span class="attr">#[inline]
     </span><span class="kw">pub fn </span>from_str_with_nul_checked(s: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="kw-2">&amp;</span><span class="self">Self</span>, <a href="#297-304">GStrError</a>&gt; {
         <a href="#260-271"><span class="self">Self</span>::check_nuls</a>(<a href="#97">s</a>)<span class="question-mark">?</span>;
-        <span class="prelude-val">Ok</span>(<span class="kw">unsafe </span>{ <a href="https://doc.rust-lang.org/nightly/core/intrinsics/fn.transmute.html">mem::transmute</a>(<a href="#97">s</a>) })
+        <span class="prelude-val">Ok</span>(<span class="kw">unsafe </span>{ mem::transmute::&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, <span class="kw-2">&amp;</span><a href="#24">GStr</a>&gt;(<a href="#97">s</a>) })
     }
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Unsafely creates a GLib string wrapper from a string slice. The string slice must be
@@ -2732,7 +2732,7 @@
     </span><span class="attr">#[inline]
     </span><span class="kw">pub const unsafe fn </span>from_str_with_nul_unchecked(s: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="kw-2">&amp;</span><span class="self">Self </span>{
         <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert.html">debug_assert!</a>(!s.is_empty() &amp;&amp; s.as_bytes()[s.len() - <span class="number">1</span>] == <span class="number">0</span>);
-        <a href="https://doc.rust-lang.org/nightly/core/intrinsics/fn.transmute.html">mem::transmute</a>(<a href="#113">s</a>)
+        mem::transmute::&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, <span class="kw-2">&amp;</span><a href="#24">GStr</a>&gt;(<a href="#113">s</a>)
     }
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Creates a GLib string wrapper from a string slice, truncating it at the first nul-byte.
@@ -2746,7 +2746,7 @@
         <span class="kw">let </span>b = <a href="#125">s</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.str.html#method.as_bytes">as_bytes</a>();
         <span class="kw">let </span>nul_pos = memchr::memchr(<span class="number">0</span>, <a href="#126">b</a>).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.ok_or">ok_or</a>(<a href="#303">GStrError::NoTrailingNul</a>)<span class="question-mark">?</span>;
         <span class="kw">let </span>s = <span class="kw">unsafe </span>{ <a href="https://doc.rust-lang.org/nightly/core/str/converts/fn.from_utf8_unchecked.html">std::str::from_utf8_unchecked</a>(<a href="#126">b</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.get_unchecked">get_unchecked</a>(..<a href="#127">nul_pos</a> + <span class="number">1</span>)) };
-        <span class="prelude-val">Ok</span>(<span class="kw">unsafe </span>{ <a href="https://doc.rust-lang.org/nightly/core/intrinsics/fn.transmute.html">mem::transmute</a>(<a href="#128">s</a>) })
+        <span class="prelude-val">Ok</span>(<span class="kw">unsafe </span>{ mem::transmute::&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, <span class="kw-2">&amp;</span><a href="#24">GStr</a>&gt;(<a href="#128">s</a>) })
     }
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Wraps a raw C string with a safe GLib string wrapper. The provided C string **must** be
@@ -2754,7 +2754,7 @@
     ///
     /// # Safety
     ///
-    /// See [`CStr::from_ptr`](CStr::from_ptr#safety).
+    /// See [`CStr::from_ptr`](std::ffi::CStr#safety).
     </span><span class="attr">#[inline]
     </span><span class="kw">pub unsafe fn </span>from_ptr&lt;<span class="lifetime">'a</span>&gt;(ptr: <span class="kw-2">*const </span><a href="https://doc.rust-lang.org/nightly/std/os/raw/type.c_char.html">c_char</a>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="self">Self </span>{
         <span class="kw">let </span>cstr = <a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.from_ptr">CStr::from_ptr</a>(<a href="#139">ptr</a>);
@@ -2797,7 +2797,7 @@
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Converts this GLib string to a byte slice containing the trailing 0 byte.
     ///
-    /// This function is the equivalent of [`GStr::to_bytes`] except that it will retain the
+    /// This function is the equivalent of [`GStr::as_bytes`] except that it will retain the
     /// trailing nul terminator instead of chopping it off.
     </span><span class="attr">#[inline]
     </span><span class="kw">pub const fn </span>as_bytes_with_nul(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>] {
@@ -3289,9 +3289,9 @@
 }
 
 <span class="comment">// rustdoc-stripper-ignore-next
-</span><span class="doccomment">/// `NULL`-terminated UTF-8 string as stored in [`StrV`].
+</span><span class="doccomment">/// `NULL`-terminated UTF-8 string as stored in [`StrV`](crate::StrV).
 ///
-/// Unlike [`&amp;GStr`] this does not have its length stored.
+/// Unlike [`&amp;GStr`](crate::GStr) this does not have its length stored.
 </span><span class="attr">#[repr(transparent)]
 </span><span class="kw">pub struct </span><a href="../../glib/struct.GStringPtr.html">GStringPtr</a>(ptr::NonNull&lt;<a href="https://doc.rust-lang.org/nightly/std/os/raw/type.c_char.html">c_char</a>&gt;);
 
@@ -3305,7 +3305,7 @@
 
 <span class="kw">impl </span><a href="#676">GStringPtr</a> {
     <span class="comment">// rustdoc-stripper-ignore-next
-    </span><span class="doccomment">/// Returns the corresponding [`&amp;GStr`].
+    </span><span class="doccomment">/// Returns the corresponding [`&amp;GStr`](crate::GStr).
     </span><span class="attr">#[inline]
     </span><span class="kw">pub fn </span>to_gstr(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><a href="#24">GStr</a> {
         <span class="kw">unsafe </span>{ <a href="#139-142">GStr::from_ptr</a>(<a class="self" href="#690">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>()) }
@@ -3319,7 +3319,7 @@
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
-    </span><span class="doccomment">/// This is just an alias for [`as_str`].
+    </span><span class="doccomment">/// This is just an alias for [`as_str`](GStringPtr::as_str).
     </span><span class="attr">#[inline]
     #[deprecated = <span class="string">"Use as_str instead"</span>]
     </span><span class="kw">pub fn </span>to_str(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a> {
@@ -3649,7 +3649,7 @@
     /// [`Arguments`](std::fmt::Arguments) instance can be created with the
     /// [`format_args!`](std::format_args) macro.
     ///
-    /// Please note that using [`gformat!`] might be preferable.
+    /// Please note that using [`gformat!`](crate::gformat) might be preferable.
     </span><span class="kw">pub fn </span>format(args: <a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Arguments.html">fmt::Arguments</a>) -&gt; <span class="self">Self </span>{
         <span class="kw">if let </span><span class="prelude-val">Some</span>(s) = <a href="#1033">args</a>.<a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Arguments.html#method.as_str">as_str</a>() {
             <span class="kw">return </span><a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html#tymethod.from"><span class="self">Self</span>::from</a>(<a href="#1034">s</a>);

@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/clone.rs`."><title>clone.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.80.0-nightly (9cdfe285c 2024-05-22)" data-channel="nightly" data-search-js="search-d52510db62a78183.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/clone.rs`."><title>clone.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.81.0-nightly (8fcd4dd08 2024-06-18)" data-channel="nightly" data-search-js="search-0fe7219eb170c82e.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -173,9 +173,10 @@
 <a href="#100" id="100">100</a>
 <a href="#101" id="101">101</a>
 <a href="#102" id="102">102</a>
+<a href="#103" id="103">103</a>
 </pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
-</span><span class="kw">use </span><a href="lib.rs.html#137"><span class="kw">crate</span>::prelude</a>::<span class="kw-2">*</span>;
+</span><span class="kw">use </span><a href="lib.rs.html#157"><span class="kw">crate</span>::prelude</a>::<span class="kw-2">*</span>;
 <span class="kw">use </span>std::{
     <a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">marker::PhantomData</a>,
     rc::{<a class="self" href="https://doc.rust-lang.org/nightly/alloc/rc/index.html">self</a>, <a href="https://doc.rust-lang.org/nightly/alloc/rc/struct.Rc.html">Rc</a>},
@@ -187,6 +188,7 @@
 </span><span class="kw">pub trait </span><a href="../../glib/clone/trait.Downgrade.html">Downgrade</a>
 <span class="kw">where
     </span><span class="self">Self</span>: <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sized.html">Sized</a>,
+    <span class="self">Self</span>::Weak: <a href="#28-39">Upgrade</a>,
 {
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Weak reference type.
@@ -212,15 +214,15 @@
     </span><span class="kw">fn </span>upgrade(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>::Strong&gt;;
 }
 
-<span class="kw">impl</span>&lt;T: <a href="#12-23">Downgrade</a> + <a href="object.rs.html#21-51">ObjectType</a>&gt; <a href="#27-38">Upgrade</a> <span class="kw">for </span><span class="kw">crate</span>::WeakRef&lt;T&gt; {
+<span class="kw">impl</span>&lt;T: <a href="#12-24">Downgrade</a> + <a href="object.rs.html#21-51">ObjectType</a>&gt; <a href="#28-39">Upgrade</a> <span class="kw">for </span><span class="kw">crate</span>::WeakRef&lt;T&gt; {
     <span class="kw">type </span>Strong = T;
 
     <span class="kw">fn </span>upgrade(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>::Strong&gt; {
-        <a class="self" href="#43">self</a>.<a href="object.rs.html#3420-3430">upgrade</a>()
+        <a class="self" href="#44">self</a>.<a href="object.rs.html#3420-3430">upgrade</a>()
     }
 }
 
-<span class="kw">impl</span>&lt;T&gt; <a href="#12-23">Downgrade</a> <span class="kw">for </span>PhantomData&lt;T&gt; {
+<span class="kw">impl</span>&lt;T&gt; <a href="#12-24">Downgrade</a> <span class="kw">for </span>PhantomData&lt;T&gt; {
     <span class="kw">type </span>Weak = PhantomData&lt;T&gt;;
 
     <span class="kw">fn </span>downgrade(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self</span>::Weak {
@@ -228,23 +230,23 @@
     }
 }
 
-<span class="kw">impl</span>&lt;T: <a href="#12-23">Downgrade</a>&gt; <a href="#12-23">Downgrade</a> <span class="kw">for </span><span class="kw-2">&amp;</span>T {
+<span class="kw">impl</span>&lt;T: <a href="#12-24">Downgrade</a>&gt; <a href="#12-24">Downgrade</a> <span class="kw">for </span><span class="kw-2">&amp;</span>T {
     <span class="kw">type </span>Weak = T::Weak;
 
     <span class="kw">fn </span>downgrade(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self</span>::Weak {
-        <a href="#22">T::downgrade</a>(<span class="kw-2">*</span><a class="self" href="#59">self</a>)
+        <a href="#23">T::downgrade</a>(<span class="kw-2">*</span><a class="self" href="#60">self</a>)
     }
 }
 
-<span class="kw">impl</span>&lt;T&gt; <a href="#12-23">Downgrade</a> <span class="kw">for </span>Arc&lt;T&gt; {
+<span class="kw">impl</span>&lt;T&gt; <a href="#12-24">Downgrade</a> <span class="kw">for </span>Arc&lt;T&gt; {
     <span class="kw">type </span>Weak = sync::Weak&lt;T&gt;;
 
     <span class="kw">fn </span>downgrade(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self</span>::Weak {
-        <a href="https://doc.rust-lang.org/nightly/alloc/sync/struct.Arc.html#method.downgrade">Arc::downgrade</a>(<a class="self" href="#67">self</a>)
+        <a href="https://doc.rust-lang.org/nightly/alloc/sync/struct.Arc.html#method.downgrade">Arc::downgrade</a>(<a class="self" href="#68">self</a>)
     }
 }
 
-<span class="kw">impl</span>&lt;T&gt; <a href="#27-38">Upgrade</a> <span class="kw">for </span>PhantomData&lt;T&gt; {
+<span class="kw">impl</span>&lt;T&gt; <a href="#28-39">Upgrade</a> <span class="kw">for </span>PhantomData&lt;T&gt; {
     <span class="kw">type </span>Strong = PhantomData&lt;T&gt;;
 
     <span class="kw">fn </span>upgrade(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>::Strong&gt; {
@@ -252,27 +254,27 @@
     }
 }
 
-<span class="kw">impl</span>&lt;T&gt; <a href="#27-38">Upgrade</a> <span class="kw">for </span>sync::Weak&lt;T&gt; {
+<span class="kw">impl</span>&lt;T&gt; <a href="#28-39">Upgrade</a> <span class="kw">for </span>sync::Weak&lt;T&gt; {
     <span class="kw">type </span>Strong = Arc&lt;T&gt;;
 
     <span class="kw">fn </span>upgrade(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>::Strong&gt; {
-        <a class="self" href="#83">self</a>.<a href="https://doc.rust-lang.org/nightly/alloc/sync/struct.Weak.html#method.upgrade">upgrade</a>()
+        <a class="self" href="#84">self</a>.<a href="https://doc.rust-lang.org/nightly/alloc/sync/struct.Weak.html#method.upgrade">upgrade</a>()
     }
 }
 
-<span class="kw">impl</span>&lt;T&gt; <a href="#12-23">Downgrade</a> <span class="kw">for </span>Rc&lt;T&gt; {
+<span class="kw">impl</span>&lt;T&gt; <a href="#12-24">Downgrade</a> <span class="kw">for </span>Rc&lt;T&gt; {
     <span class="kw">type </span>Weak = rc::Weak&lt;T&gt;;
 
     <span class="kw">fn </span>downgrade(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self</span>::Weak {
-        <a href="https://doc.rust-lang.org/nightly/alloc/rc/struct.Rc.html#method.downgrade">Rc::downgrade</a>(<a class="self" href="#91">self</a>)
+        <a href="https://doc.rust-lang.org/nightly/alloc/rc/struct.Rc.html#method.downgrade">Rc::downgrade</a>(<a class="self" href="#92">self</a>)
     }
 }
 
-<span class="kw">impl</span>&lt;T&gt; <a href="#27-38">Upgrade</a> <span class="kw">for </span>rc::Weak&lt;T&gt; {
+<span class="kw">impl</span>&lt;T&gt; <a href="#28-39">Upgrade</a> <span class="kw">for </span>rc::Weak&lt;T&gt; {
     <span class="kw">type </span>Strong = Rc&lt;T&gt;;
 
     <span class="kw">fn </span>upgrade(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>::Strong&gt; {
-        <a class="self" href="#99">self</a>.<a href="https://doc.rust-lang.org/nightly/alloc/rc/struct.Weak.html#method.upgrade">upgrade</a>()
+        <a class="self" href="#100">self</a>.<a href="https://doc.rust-lang.org/nightly/alloc/rc/struct.Weak.html#method.upgrade">upgrade</a>()
     }
 }
 </code></pre></div></section></main></body></html>

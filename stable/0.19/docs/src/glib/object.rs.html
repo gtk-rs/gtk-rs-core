@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/object.rs`."><title>object.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.80.0-nightly (9cdfe285c 2024-05-22)" data-channel="nightly" data-search-js="search-d52510db62a78183.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/object.rs`."><title>object.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.81.0-nightly (8fcd4dd08 2024-06-18)" data-channel="nightly" data-search-js="search-0fe7219eb170c82e.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -4618,11 +4618,11 @@
 
 <span class="kw">use crate</span>::{
     <a href="closure.rs.html#356-358">closure::TryFromClosureReturnValue</a>,
-    <a href="lib.rs.html#137">prelude</a>::<span class="kw-2">*</span>,
+    <a href="lib.rs.html#157">prelude</a>::<span class="kw-2">*</span>,
     <a href="quark.rs.html#10">quark::Quark</a>,
     subclass::{<a href="subclass/mod.rs.html#442-458">prelude</a>::<span class="kw-2">*</span>, <a href="subclass/signal.rs.html#171">SignalId</a>, <a href="subclass/signal.rs.html#88">SignalQuery</a>},
     <a href="thread_guard.rs.html#17-20">thread_guard::thread_id</a>,
-    <a href="lib.rs.html#142">translate</a>::<span class="kw-2">*</span>,
+    <a href="lib.rs.html#162">translate</a>::<span class="kw-2">*</span>,
     <a href="value.rs.html#271-282">value::FromValue</a>,
     <a href="closure.rs.html#11-24">Closure</a>, <a href="collections/ptr_slice.rs.html#18-26">PtrSlice</a>, <a href="closure.rs.html#27">RustClosure</a>, <a href="signal.rs.html#50">SignalHandlerId</a>, <a href="types.rs.html#22">Type</a>, <a href="value.rs.html#477-511">Value</a>,
 };
@@ -6529,7 +6529,7 @@
     /// in C. This can be achieved with a closure that watches an object: see the documentation
     /// of the [`closure!`](crate::closure!) macro for more details.
     ///
-    /// Same as [`Self::connect`] but takes a [`Closure`](crate::Closure) instead of a `Fn`.
+    /// Same as [`Self::connect`] but takes a [`Closure`] instead of a `Fn`.
     </span><span class="attr">#[doc(alias = <span class="string">"g_signal_connect_closure"</span>)]
     #[doc(alias = <span class="string">"g_signal_connect_object"</span>)]
     </span><span class="kw">fn </span>connect_closure(
@@ -6548,7 +6548,7 @@
     /// This panics if the signal does not exist.
     ///
     /// Same as [`Self::connect_closure`] but takes a
-    /// [`SignalId`](crate::subclass::signal::SignalId) instead of a signal name.
+    /// [`SignalId`] instead of a signal name.
     </span><span class="attr">#[doc(alias = <span class="string">"g_signal_connect_closure_by_id"</span>)]
     </span><span class="kw">fn </span>connect_closure_id(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
@@ -7607,7 +7607,7 @@
         <a href="signal.rs.html#68-90"><span class="kw">crate</span>::signal::connect_raw</a>(
             <a class="self" href="#2971">self</a>.<a href="#47">as_object_ref</a>().<a href="translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>,
             <a href="#2989">signal_name</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.str.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
-            <span class="prelude-val">Some</span>(mem::transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>()&gt;(
+            <span class="prelude-val">Some</span>(mem::transmute::&lt;<span class="kw-2">*const </span>(), <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>()&gt;(
                 notify_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
             )),
             <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.into_raw">Box::into_raw</a>(<a href="#2995">f</a>),
@@ -8988,7 +8988,7 @@
     </span><span class="attr">#[inline]
     </span><span class="kw">pub fn </span>downgrade(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; &lt;<span class="self">Self </span><span class="kw">as </span><span class="kw">crate</span>::clone::Downgrade&gt;::Weak
     <span class="kw">where
-        </span>T: <a href="clone.rs.html#12-23"><span class="kw">crate</span>::clone::Downgrade</a>,
+        </span>T: <a href="clone.rs.html#12-24"><span class="kw">crate</span>::clone::Downgrade</a>,
     {
         &lt;T <span class="kw">as </span><span class="kw">crate</span>::clone::Downgrade&gt;::downgrade(<a class="self" href="#4378">self</a>)
     }
@@ -9024,7 +9024,7 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T: <a href="clone.rs.html#12-23"><span class="kw">crate</span>::clone::Downgrade</a> + <a href="#21-51">ObjectType</a>&gt; <a href="clone.rs.html#12-23"><span class="kw">crate</span>::clone::Downgrade</a>
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T: <a href="clone.rs.html#12-24"><span class="kw">crate</span>::clone::Downgrade</a> + <a href="#21-51">ObjectType</a>&gt; <a href="clone.rs.html#12-24"><span class="kw">crate</span>::clone::Downgrade</a>
     <span class="kw">for </span>BorrowedObject&lt;<span class="lifetime">'a</span>, T&gt;
 {
     <span class="kw">type </span>Weak = &lt;T <span class="kw">as </span><span class="kw">crate</span>::clone::Downgrade&gt;::Weak;
