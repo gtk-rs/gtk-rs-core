@@ -850,18 +850,6 @@ fn build_closure(
     // @weak and @strong annotations).
     let mut inner: Vec<TokenTree> = Vec::new();
 
-    {
-        let stream = "{
-#[deprecated = \"Using old-style clone! syntax\"]
-macro_rules! clone { () => {}; }
-clone!();
-}"
-        .parse::<TokenStream>()
-        .expect("can't parse deprecation");
-
-        inner.extend(stream);
-    }
-
     if matches!(kind, BlockKind::ClosureWrappingAsync(_)) {
         inner.extend(vec![
             TokenTree::Ident(Ident::new("async", Span::call_site())),
