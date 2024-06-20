@@ -524,6 +524,11 @@ impl ToTokens for Clone {
                     block,
                 } = a;
 
+                // Directly output the statements instead of the whole block including braces as we
+                // already produce a block with braces below and otherwise a compiler warning about
+                // unnecessary braces is wrongly emitted.
+                let stmts = &block.stmts;
+
                 quote! {
                     #(#attrs)*
                     #async_token
@@ -531,7 +536,7 @@ impl ToTokens for Clone {
                     {
                         #upgrade_failure_closure
                         #(#inner_before)*
-                        #block
+                        #(#stmts)*
                     }
                 }
             }
