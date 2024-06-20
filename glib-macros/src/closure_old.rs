@@ -245,28 +245,9 @@ impl ToTokens for Closure {
         let closure = &self.closure;
         let constructor = Ident::new(self.constructor, Span::call_site());
 
-        let deprecated = if self.constructor == "new" {
-            quote! {
-                {
-                    #[deprecated = "Using old-style closure! syntax"]
-                    macro_rules! closure { () => {}; }
-                    closure!();
-                }
-            }
-        } else {
-            quote! {
-                {
-                    #[deprecated = "Using old-style closure_local! syntax"]
-                    macro_rules! closure_local { () => {}; }
-                    closure_local!();
-                }
-            }
-        };
-
         tokens.extend(quote! {
             {
                 let #closure_ident = {
-                    #deprecated
                     #(#outer_before)*
                     #crate_ident::closure::RustClosure::#constructor(move |#values_ident| {
                         assert_eq!(
