@@ -20,24 +20,16 @@ pub trait ActionMapExtManual: sealed::Sealed + IsA<ActionMap> {
             };
             let action_map = self.as_ref();
             if let Some(callback) = entry.activate {
-                action.connect_activate(clone!(
-                    #[weak]
-                    action_map,
-                    move |action, state| {
-                        // safe to unwrap as O: IsA<ActionMap>
-                        callback(action_map.downcast_ref::<Self>().unwrap(), action, state);
-                    }
-                ));
+                action.connect_activate(clone!(@weak action_map =>  move |action, state| {
+                    // safe to unwrap as O: IsA<ActionMap>
+                    callback(action_map.downcast_ref::<Self>().unwrap(), action, state);
+                }));
             }
             if let Some(callback) = entry.change_state {
-                action.connect_change_state(clone!(
-                    #[weak]
-                    action_map,
-                    move |action, state| {
-                        // safe to unwrap as O: IsA<ActionMap>
-                        callback(action_map.downcast_ref::<Self>().unwrap(), action, state);
-                    }
-                ));
+                action.connect_change_state(clone!(@weak action_map => move |action, state| {
+                    // safe to unwrap as O: IsA<ActionMap>
+                    callback(action_map.downcast_ref::<Self>().unwrap(), action, state);
+                }));
             }
             self.as_ref().add_action(&action);
         }

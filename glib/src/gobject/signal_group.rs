@@ -222,28 +222,18 @@ mod tests {
         group.connect_closure(
             "sig-with-args",
             false,
-            glib::closure_local!(
-                #[watch]
-                obj,
-                #[strong]
-                store,
-                move |o: &SignalObject, a: u32, b: &str| {
-                    assert_eq!(o, obj);
-                    store.replace(format!("a {a} b {b}"));
-                }
-            ),
+            glib::closure_local!(@watch obj, @strong store => move |o: &SignalObject, a: u32, b: &str| {
+                assert_eq!(o, obj);
+                store.replace(format!("a {a} b {b}"));
+            })
         );
         group.connect_closure(
             "sig-with-ret",
             false,
-            glib::closure_local!(
-                #[watch]
-                obj,
-                move |o: &SignalObject| -> &'static crate::GStr {
-                    assert_eq!(o, obj);
-                    crate::gstr!("Hello")
-                }
-            ),
+            glib::closure_local!(@watch obj => move |o: &SignalObject| -> &'static crate::GStr {
+                assert_eq!(o, obj);
+                crate::gstr!("Hello")
+            }),
         );
         group.set_target(Some(&obj));
         obj.emit_by_name::<()>("sig-with-args", &[&5u32, &"World"]);
