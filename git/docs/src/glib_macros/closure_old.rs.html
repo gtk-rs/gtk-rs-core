@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib-macros/src/closure_old.rs`."><title>closure_old.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib_macros" data-themes="" data-resource-suffix="" data-rustdoc-version="1.81.0-nightly (d8a38b000 2024-06-19)" data-channel="nightly" data-search-js="search-0fe7219eb170c82e.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib-macros/src/closure_old.rs`."><title>closure_old.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib_macros" data-themes="" data-resource-suffix="" data-rustdoc-version="1.81.0-nightly (6b0f4b5ec 2024-06-24)" data-channel="nightly" data-search-js="search-0fe7219eb170c82e.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -373,7 +373,7 @@
 <a href="#300" id="300">300</a>
 </pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
-</span><span class="kw">use </span>proc_macro2::{<a href="https://docs.rs/proc-macro2/1.0.85/proc_macro2/struct.Ident.html">Ident</a>, <a href="https://docs.rs/proc-macro2/1.0.85/proc_macro2/struct.Span.html">Span</a>, <a href="https://docs.rs/proc-macro2/1.0.85/proc_macro2/struct.TokenStream.html">TokenStream</a>};
+</span><span class="kw">use </span>proc_macro2::{<a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.Ident.html">Ident</a>, <a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.Span.html">Span</a>, <a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.TokenStream.html">TokenStream</a>};
 <span class="kw">use </span>quote::{<a href="https://docs.rs/quote/1.0.36/quote/macro.quote.html">quote</a>, <a href="https://docs.rs/quote/1.0.36/quote/to_tokens/trait.ToTokens.html">ToTokens</a>, <a href="https://docs.rs/quote/1.0.36/quote/ext/trait.TokenStreamExt.html">TokenStreamExt</a>};
 <span class="kw">use </span>syn::{<a href="https://docs.rs/syn/2.0.66/syn/ext/trait.IdentExt.html">ext::IdentExt</a>, <a href="https://docs.rs/syn/2.0.66/syn/spanned/trait.Spanned.html">spanned::Spanned</a>, <a href="https://docs.rs/syn/2.0.66/syn/macro.Token.html">Token</a>};
 
@@ -388,21 +388,21 @@
 }
 
 <span class="kw">struct </span>Capture {
-    name: <a href="https://docs.rs/proc-macro2/1.0.85/proc_macro2/struct.TokenStream.html">TokenStream</a>,
-    alias: <span class="prelude-ty">Option</span>&lt;<a href="https://docs.rs/proc-macro2/1.0.85/proc_macro2/struct.Ident.html">syn::Ident</a>&gt;,
+    name: <a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.TokenStream.html">TokenStream</a>,
+    alias: <span class="prelude-ty">Option</span>&lt;<a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.Ident.html">syn::Ident</a>&gt;,
     kind: <a href="#10-15">CaptureKind</a>,
-    start: <a href="https://docs.rs/proc-macro2/1.0.85/proc_macro2/struct.Span.html">Span</a>,
+    start: <a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.Span.html">Span</a>,
 }
 
 <span class="kw">impl </span><a href="#17-22">Capture</a> {
-    <span class="kw">fn </span>alias(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://docs.rs/proc-macro2/1.0.85/proc_macro2/struct.TokenStream.html">TokenStream</a> {
+    <span class="kw">fn </span>alias(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.TokenStream.html">TokenStream</a> {
         <span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="kw-2">ref </span>a) = <a class="self" href="#25">self</a>.alias {
             <a href="#26">a</a>.<a href="https://docs.rs/quote/1.0.36/quote/to_tokens/trait.ToTokens.html#tymethod.to_token_stream">to_token_stream</a>()
         } <span class="kw">else </span>{
             <a class="self" href="#25">self</a>.name.<a href="https://docs.rs/quote/1.0.36/quote/to_tokens/trait.ToTokens.html#tymethod.to_token_stream">to_token_stream</a>()
         }
     }
-    <span class="kw">fn </span>outer_before_tokens(<span class="kw-2">&amp;</span><span class="self">self</span>, crate_ident: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.85/proc_macro2/struct.TokenStream.html">TokenStream</a>) -&gt; <a href="https://docs.rs/proc-macro2/1.0.85/proc_macro2/struct.TokenStream.html">TokenStream</a> {
+    <span class="kw">fn </span>outer_before_tokens(<span class="kw-2">&amp;</span><span class="self">self</span>, crate_ident: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.TokenStream.html">TokenStream</a>) -&gt; <a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.TokenStream.html">TokenStream</a> {
         <span class="kw">let </span>alias = <a class="self" href="#32">self</a>.<a href="#25-31">alias</a>();
         <span class="kw">let </span>name = <span class="kw-2">&amp;</span><a class="self" href="#32">self</a>.name;
         <span class="kw">match </span><a class="self" href="#32">self</a>.kind {
@@ -421,7 +421,7 @@
         }
     }
 
-    <span class="kw">fn </span>outer_after_tokens(<span class="kw-2">&amp;</span><span class="self">self</span>, crate_ident: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.85/proc_macro2/struct.TokenStream.html">TokenStream</a>, closure_ident: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.85/proc_macro2/struct.Ident.html">Ident</a>) -&gt; <a href="https://docs.rs/proc-macro2/1.0.85/proc_macro2/struct.TokenStream.html">TokenStream</a> {
+    <span class="kw">fn </span>outer_after_tokens(<span class="kw-2">&amp;</span><span class="self">self</span>, crate_ident: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.TokenStream.html">TokenStream</a>, closure_ident: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.Ident.html">Ident</a>) -&gt; <a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.TokenStream.html">TokenStream</a> {
         <span class="kw">let </span>name = <span class="kw-2">&amp;</span><a class="self" href="#51">self</a>.name;
         <span class="kw">match </span><a class="self" href="#51">self</a>.kind {
             <a href="#11">CaptureKind::Watch</a> =&gt; <a class="macro" href="https://docs.rs/quote/1.0.36/quote/macro.quote.html">quote!</a> {
@@ -431,7 +431,7 @@
         }
     }
 
-    <span class="kw">fn </span>inner_before_tokens(<span class="kw-2">&amp;</span><span class="self">self</span>, crate_ident: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.85/proc_macro2/struct.TokenStream.html">TokenStream</a>) -&gt; <a href="https://docs.rs/proc-macro2/1.0.85/proc_macro2/struct.TokenStream.html">TokenStream</a> {
+    <span class="kw">fn </span>inner_before_tokens(<span class="kw-2">&amp;</span><span class="self">self</span>, crate_ident: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.TokenStream.html">TokenStream</a>) -&gt; <a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.TokenStream.html">TokenStream</a> {
         <span class="kw">let </span>alias = <a class="self" href="#61">self</a>.<a href="#25-31">alias</a>();
         <span class="kw">match </span><a class="self" href="#61">self</a>.kind {
             <a href="#11">CaptureKind::Watch</a> =&gt; {
@@ -451,7 +451,7 @@
 <span class="kw">impl </span><a href="https://docs.rs/syn/2.0.66/syn/parse/trait.Parse.html">syn::parse::Parse</a> <span class="kw">for </span><a href="#10-15">CaptureKind</a> {
     <span class="kw">fn </span>parse(input: <a href="https://docs.rs/syn/2.0.66/syn/parse/type.ParseStream.html">syn::parse::ParseStream</a>) -&gt; syn::Result&lt;<span class="self">Self</span>&gt; {
         <a href="#79">input</a>.<a href="https://docs.rs/syn/2.0.66/syn/parse/struct.ParseBuffer.html#method.parse">parse</a>::&lt;<a class="macro" href="https://docs.rs/syn/2.0.66/syn/macro.Token.html">Token!</a>[@]&gt;()<span class="question-mark">?</span>;
-        <span class="kw">let </span><span class="kw-2">mut </span>idents = <a href="https://docs.rs/proc-macro2/1.0.85/proc_macro2/struct.TokenStream.html#method.new">TokenStream::new</a>();
+        <span class="kw">let </span><span class="kw-2">mut </span>idents = <a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.TokenStream.html#method.new">TokenStream::new</a>();
         <a href="#81">idents</a>.<a href="https://docs.rs/quote/1.0.36/quote/ext/trait.TokenStreamExt.html#tymethod.append">append</a>(<a href="#79">input</a>.<a href="https://docs.rs/syn/2.0.66/syn/parse/struct.ParseBuffer.html#method.call">call</a>(syn::Ident::parse_any)<span class="question-mark">?</span>);
         <span class="kw">while </span>input.peek(<span class="macro">Token!</span>[-]) {
             input.parse::&lt;<span class="macro">Token!</span>[-]&gt;()<span class="question-mark">?</span>;
@@ -481,7 +481,7 @@
     <span class="kw">fn </span>parse(input: <a href="https://docs.rs/syn/2.0.66/syn/parse/type.ParseStream.html">syn::parse::ParseStream</a>) -&gt; syn::Result&lt;<span class="self">Self</span>&gt; {
         <span class="kw">let </span>start = <a href="#108">input</a>.<a href="https://docs.rs/syn/2.0.66/syn/parse/struct.ParseBuffer.html#method.span">span</a>();
         <span class="kw">let </span>kind = <a href="#108">input</a>.<a href="https://docs.rs/syn/2.0.66/syn/parse/struct.ParseBuffer.html#method.parse">parse</a>()<span class="question-mark">?</span>;
-        <span class="kw">let </span><span class="kw-2">mut </span>name = <a href="https://docs.rs/proc-macro2/1.0.85/proc_macro2/struct.TokenStream.html#method.new">TokenStream::new</a>();
+        <span class="kw">let </span><span class="kw-2">mut </span>name = <a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.TokenStream.html#method.new">TokenStream::new</a>();
         <a href="#111">name</a>.<a href="https://docs.rs/quote/1.0.36/quote/ext/trait.TokenStreamExt.html#tymethod.append">append</a>(<a href="#108">input</a>.<a href="https://docs.rs/syn/2.0.66/syn/parse/struct.ParseBuffer.html#method.call">call</a>(syn::Ident::parse_any)<span class="question-mark">?</span>);
         <span class="kw">while </span>input.peek(<span class="macro">Token!</span>[.]) {
             input.parse::&lt;<span class="macro">Token!</span>[.]&gt;()<span class="question-mark">?</span>;
@@ -523,7 +523,7 @@
 
 <span class="kw">struct </span>Closure {
     captures: Vec&lt;<a href="#17-22">Capture</a>&gt;,
-    args: Vec&lt;<a href="https://docs.rs/proc-macro2/1.0.85/proc_macro2/struct.Ident.html">Ident</a>&gt;,
+    args: Vec&lt;<a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.Ident.html">Ident</a>&gt;,
     closure: <a href="https://docs.rs/syn/2.0.66/syn/expr/struct.ExprClosure.html">syn::ExprClosure</a>,
     constructor: <span class="kw-2">&amp;</span><span class="lifetime">'static </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
 }
@@ -573,7 +573,7 @@
             .inputs
             .<a href="https://docs.rs/syn/2.0.66/syn/punctuated/struct.Punctuated.html#method.iter">iter</a>()
             .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.enumerate">enumerate</a>()
-            .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|(i, <span class="kw">_</span>)| <a href="https://docs.rs/proc-macro2/1.0.85/proc_macro2/struct.Ident.html#method.new">Ident::new</a>(<span class="kw-2">&amp;</span><a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.format.html">format!</a>(<span class="string">"____value{i}"</span>), <a href="https://docs.rs/proc-macro2/1.0.85/proc_macro2/struct.Span.html#method.call_site">Span::call_site</a>()))
+            .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|(i, <span class="kw">_</span>)| <a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.Ident.html#method.new">Ident::new</a>(<span class="kw-2">&amp;</span><a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.format.html">format!</a>(<span class="string">"____value{i}"</span>), <a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.Span.html#method.call_site">Span::call_site</a>()))
             .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.collect">collect</a>();
         <a href="#186">closure</a>.capture = <span class="prelude-val">None</span>;
         <span class="prelude-val">Ok</span>(<a href="#151-156">Closure</a> {
@@ -586,9 +586,9 @@
 }
 
 <span class="kw">impl </span><a href="https://docs.rs/quote/1.0.36/quote/to_tokens/trait.ToTokens.html">ToTokens</a> <span class="kw">for </span><a href="#151-156">Closure</a> {
-    <span class="kw">fn </span>to_tokens(<span class="kw-2">&amp;</span><span class="self">self</span>, tokens: <span class="kw-2">&amp;mut </span><a href="https://docs.rs/proc-macro2/1.0.85/proc_macro2/struct.TokenStream.html">TokenStream</a>) {
-        <span class="kw">let </span>closure_ident = <a href="https://docs.rs/proc-macro2/1.0.85/proc_macro2/struct.Ident.html#method.new">Ident::new</a>(<span class="string">"____closure"</span>, <a href="https://docs.rs/proc-macro2/1.0.85/proc_macro2/struct.Span.html#method.call_site">Span::call_site</a>());
-        <span class="kw">let </span>values_ident = <a href="https://docs.rs/proc-macro2/1.0.85/proc_macro2/struct.Ident.html#method.new">Ident::new</a>(<span class="string">"____values"</span>, <a href="https://docs.rs/proc-macro2/1.0.85/proc_macro2/struct.Span.html#method.call_site">Span::call_site</a>());
+    <span class="kw">fn </span>to_tokens(<span class="kw-2">&amp;</span><span class="self">self</span>, tokens: <span class="kw-2">&amp;mut </span><a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.TokenStream.html">TokenStream</a>) {
+        <span class="kw">let </span>closure_ident = <a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.Ident.html#method.new">Ident::new</a>(<span class="string">"____closure"</span>, <a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.Span.html#method.call_site">Span::call_site</a>());
+        <span class="kw">let </span>values_ident = <a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.Ident.html#method.new">Ident::new</a>(<span class="string">"____values"</span>, <a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.Span.html#method.call_site">Span::call_site</a>());
         <span class="kw">let </span>crate_ident = <a href="utils.rs.html#188-215">crate_ident_new</a>();
 
         <span class="kw">let </span>outer_before = <span class="self"><a href="#216">self</a>
@@ -616,7 +616,7 @@
         <span class="kw">let </span>arg_names = <span class="kw-2">&amp;</span><a class="self" href="#216">self</a>.args;
         <span class="kw">let </span>args_len = <a class="self" href="#216">self</a>.args.<a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.len">len</a>();
         <span class="kw">let </span>closure = <span class="kw-2">&amp;</span><a class="self" href="#216">self</a>.closure;
-        <span class="kw">let </span>constructor = <a href="https://docs.rs/proc-macro2/1.0.85/proc_macro2/struct.Ident.html#method.new">Ident::new</a>(<a class="self" href="#216">self</a>.constructor, <a href="https://docs.rs/proc-macro2/1.0.85/proc_macro2/struct.Span.html#method.call_site">Span::call_site</a>());
+        <span class="kw">let </span>constructor = <a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.Ident.html#method.new">Ident::new</a>(<a class="self" href="#216">self</a>.constructor, <a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.Span.html#method.call_site">Span::call_site</a>());
 
         <span class="kw">let </span>deprecated = <span class="kw">if </span><span class="self">self</span>.constructor == <span class="string">"new" </span>{
             <a class="macro" href="https://docs.rs/quote/1.0.36/quote/macro.quote.html">quote!</a> {
