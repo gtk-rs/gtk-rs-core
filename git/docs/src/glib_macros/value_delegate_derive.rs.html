@@ -274,7 +274,7 @@
 </pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
 </span><span class="kw">use </span><a href="https://docs.rs/quote/1.0.36/quote/macro.quote.html">quote::quote</a>;
-<span class="kw">use </span>syn::{<a href="https://docs.rs/syn/2.0.66/syn/parse/trait.Parse.html">parse::Parse</a>, <a href="https://docs.rs/syn/2.0.66/syn/macro.Token.html">Token</a>};
+<span class="kw">use </span>syn::{<a href="https://docs.rs/syn/2.0.68/syn/parse/trait.Parse.html">parse::Parse</a>, <a href="https://docs.rs/syn/2.0.68/syn/macro.Token.html">Token</a>};
 
 <span class="kw">use </span><a href="utils.rs.html#188-215"><span class="kw">crate</span>::utils::crate_ident_new</a>;
 
@@ -286,28 +286,28 @@
 }
 
 <span class="kw">pub struct </span>ValueDelegateInput {
-    delegated_ty: <a href="https://docs.rs/syn/2.0.66/syn/path/struct.Path.html">syn::Path</a>,
+    delegated_ty: <a href="https://docs.rs/syn/2.0.68/syn/path/struct.Path.html">syn::Path</a>,
     ident: <a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.Ident.html">syn::Ident</a>,
     mode: <a href="#9-13">DeriveMode</a>,
     nullable: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>,
 }
 
 <span class="kw">enum </span>Arg {
-    FromPath(<a href="https://docs.rs/syn/2.0.66/syn/path/struct.Path.html">syn::Path</a>),
+    FromPath(<a href="https://docs.rs/syn/2.0.68/syn/path/struct.Path.html">syn::Path</a>),
     Nullable,
 }
 
-<span class="kw">impl </span><a href="https://docs.rs/syn/2.0.66/syn/parse/trait.Parse.html">Parse</a> <span class="kw">for </span><a href="#22-25">Arg</a> {
-    <span class="kw">fn </span>parse(input: <a href="https://docs.rs/syn/2.0.66/syn/parse/type.ParseStream.html">syn::parse::ParseStream</a>) -&gt; syn::Result&lt;<span class="self">Self</span>&gt; {
-        <span class="kw">let </span>argname: <a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.Ident.html">syn::Ident</a> = <a href="#28">input</a>.<a href="https://docs.rs/syn/2.0.66/syn/parse/struct.ParseBuffer.html#method.parse">parse</a>()<span class="question-mark">?</span>;
+<span class="kw">impl </span><a href="https://docs.rs/syn/2.0.68/syn/parse/trait.Parse.html">Parse</a> <span class="kw">for </span><a href="#22-25">Arg</a> {
+    <span class="kw">fn </span>parse(input: <a href="https://docs.rs/syn/2.0.68/syn/parse/type.ParseStream.html">syn::parse::ParseStream</a>) -&gt; syn::Result&lt;<span class="self">Self</span>&gt; {
+        <span class="kw">let </span>argname: <a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.Ident.html">syn::Ident</a> = <a href="#28">input</a>.<a href="https://docs.rs/syn/2.0.68/syn/parse/struct.ParseBuffer.html#method.parse">parse</a>()<span class="question-mark">?</span>;
         <span class="kw">if </span>argname == <span class="string">"nullable" </span>{
             <span class="prelude-val">Ok</span>(<a href="#24">Arg::Nullable</a>)
         } <span class="kw">else if </span>argname == <span class="string">"from" </span>{
-            <span class="kw">let </span>_eq: <a class="macro" href="https://docs.rs/syn/2.0.66/syn/macro.Token.html">Token!</a>[=] = <a href="#28">input</a>.<a href="https://docs.rs/syn/2.0.66/syn/parse/struct.ParseBuffer.html#method.parse">parse</a>()<span class="question-mark">?</span>;
-            <span class="prelude-val">Ok</span>(<a href="#23">Arg::FromPath</a>(<a href="#28">input</a>.<a href="https://docs.rs/syn/2.0.66/syn/parse/struct.ParseBuffer.html#method.parse">parse</a>()<span class="question-mark">?</span>))
+            <span class="kw">let </span>_eq: <a class="macro" href="https://docs.rs/syn/2.0.68/syn/macro.Token.html">Token!</a>[=] = <a href="#28">input</a>.<a href="https://docs.rs/syn/2.0.68/syn/parse/struct.ParseBuffer.html#method.parse">parse</a>()<span class="question-mark">?</span>;
+            <span class="prelude-val">Ok</span>(<a href="#23">Arg::FromPath</a>(<a href="#28">input</a>.<a href="https://docs.rs/syn/2.0.68/syn/parse/struct.ParseBuffer.html#method.parse">parse</a>()<span class="question-mark">?</span>))
         } <span class="kw">else </span>{
-            <span class="prelude-val">Err</span>(<a href="https://docs.rs/syn/2.0.66/syn/error/struct.Error.html#method.new">syn::Error::new</a>(
-                <a href="#28">input</a>.<a href="https://docs.rs/syn/2.0.66/syn/parse/struct.ParseBuffer.html#method.span">span</a>(),
+            <span class="prelude-val">Err</span>(<a href="https://docs.rs/syn/2.0.68/syn/error/struct.Error.html#method.new">syn::Error::new</a>(
+                <a href="#28">input</a>.<a href="https://docs.rs/syn/2.0.68/syn/parse/struct.ParseBuffer.html#method.span">span</a>(),
                 <span class="string">"expected `nullable` or `from`"</span>,
             ))
         }
@@ -317,12 +317,12 @@
 <span class="attr">#[derive(Default)]
 </span><span class="kw">struct </span>Args {
     nullable: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>,
-    from_path: <span class="prelude-ty">Option</span>&lt;<a href="https://docs.rs/syn/2.0.66/syn/path/struct.Path.html">syn::Path</a>&gt;,
+    from_path: <span class="prelude-ty">Option</span>&lt;<a href="https://docs.rs/syn/2.0.68/syn/path/struct.Path.html">syn::Path</a>&gt;,
 }
 
-<span class="kw">impl </span><a href="https://docs.rs/syn/2.0.66/syn/parse/trait.Parse.html">Parse</a> <span class="kw">for </span><a href="#45-48">Args</a> {
-    <span class="kw">fn </span>parse(input: <a href="https://docs.rs/syn/2.0.66/syn/parse/type.ParseStream.html">syn::parse::ParseStream</a>) -&gt; syn::Result&lt;<span class="self">Self</span>&gt; {
-        <span class="kw">let </span>args = syn::punctuated::Punctuated::&lt;<a href="#22-25">Arg</a>, <a class="macro" href="https://docs.rs/syn/2.0.66/syn/macro.Token.html">Token!</a>[,]&gt;::parse_terminated(<a href="#51">input</a>)<span class="question-mark">?</span>;
+<span class="kw">impl </span><a href="https://docs.rs/syn/2.0.68/syn/parse/trait.Parse.html">Parse</a> <span class="kw">for </span><a href="#45-48">Args</a> {
+    <span class="kw">fn </span>parse(input: <a href="https://docs.rs/syn/2.0.68/syn/parse/type.ParseStream.html">syn::parse::ParseStream</a>) -&gt; syn::Result&lt;<span class="self">Self</span>&gt; {
+        <span class="kw">let </span>args = syn::punctuated::Punctuated::&lt;<a href="#22-25">Arg</a>, <a class="macro" href="https://docs.rs/syn/2.0.68/syn/macro.Token.html">Token!</a>[,]&gt;::parse_terminated(<a href="#51">input</a>)<span class="question-mark">?</span>;
         <span class="kw">let </span><span class="kw-2">mut </span>this = <a href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html#tymethod.default">Args::default</a>();
         <span class="kw">for </span>a <span class="kw">in </span>args {
             <span class="kw">match </span>a {
@@ -334,15 +334,15 @@
     }
 }
 
-<span class="kw">impl </span><a href="https://docs.rs/syn/2.0.66/syn/parse/trait.Parse.html">Parse</a> <span class="kw">for </span><a href="#15-20">ValueDelegateInput</a> {
-    <span class="kw">fn </span>parse(input: <a href="https://docs.rs/syn/2.0.66/syn/parse/type.ParseStream.html">syn::parse::ParseStream</a>) -&gt; syn::Result&lt;<span class="self">Self</span>&gt; {
-        <span class="kw">let </span>derive_input: <a href="https://docs.rs/syn/2.0.66/syn/derive/struct.DeriveInput.html">syn::DeriveInput</a> = <a href="#65">input</a>.<a href="https://docs.rs/syn/2.0.66/syn/parse/struct.ParseBuffer.html#method.parse">parse</a>()<span class="question-mark">?</span>;
+<span class="kw">impl </span><a href="https://docs.rs/syn/2.0.68/syn/parse/trait.Parse.html">Parse</a> <span class="kw">for </span><a href="#15-20">ValueDelegateInput</a> {
+    <span class="kw">fn </span>parse(input: <a href="https://docs.rs/syn/2.0.68/syn/parse/type.ParseStream.html">syn::parse::ParseStream</a>) -&gt; syn::Result&lt;<span class="self">Self</span>&gt; {
+        <span class="kw">let </span>derive_input: <a href="https://docs.rs/syn/2.0.68/syn/derive/struct.DeriveInput.html">syn::DeriveInput</a> = <a href="#65">input</a>.<a href="https://docs.rs/syn/2.0.68/syn/parse/struct.ParseBuffer.html#method.parse">parse</a>()<span class="question-mark">?</span>;
         <span class="kw">let </span>args: <span class="prelude-ty">Option</span>&lt;<a href="#45-48">Args</a>&gt; = <span class="kw">if let </span><span class="prelude-val">Some</span>(attr) = <a href="#66">derive_input</a>
             .attrs
             .<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.iter">iter</a>()
-            .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.find">find</a>(|x| <a href="#70">x</a>.<a href="https://docs.rs/syn/2.0.66/syn/attr/struct.Attribute.html#method.path">path</a>().<a href="https://docs.rs/syn/2.0.66/syn/path/struct.Path.html#method.is_ident">is_ident</a>(<span class="string">"value_delegate"</span>))
+            .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.find">find</a>(|x| <a href="#70">x</a>.<a href="https://docs.rs/syn/2.0.68/syn/attr/struct.Attribute.html#method.path">path</a>().<a href="https://docs.rs/syn/2.0.68/syn/path/struct.Path.html#method.is_ident">is_ident</a>(<span class="string">"value_delegate"</span>))
         {
-            <span class="kw">let </span>args: <a href="#45-48">Args</a> = <a href="#67">attr</a>.<a href="https://docs.rs/syn/2.0.66/syn/attr/struct.Attribute.html#method.parse_args">parse_args</a>()<span class="question-mark">?</span>;
+            <span class="kw">let </span>args: <a href="#45-48">Args</a> = <a href="#67">attr</a>.<a href="https://docs.rs/syn/2.0.68/syn/attr/struct.Attribute.html#method.parse_args">parse_args</a>()<span class="question-mark">?</span>;
             <span class="prelude-val">Some</span>(<a href="#72">args</a>)
         } <span class="kw">else </span>{
             <span class="prelude-val">None
@@ -353,10 +353,10 @@
                 (<span class="prelude-val">Some</span>(<a href="#79">path</a>.<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">clone</a>()), <a href="#10">DeriveMode::From</a>)
             } <span class="kw">else </span>{
                 <span class="kw">let </span>path = <span class="kw">match </span><a href="#66">derive_input</a>.data {
-                    <a href="https://docs.rs/syn/2.0.66/syn/derive/enum.Data.html#variant.Struct">syn::Data::Struct</a>(s) =&gt; <span class="kw">match </span><a href="#83">s</a>.fields {
-                        <a href="https://docs.rs/syn/2.0.66/syn/data/enum.Fields.html#variant.Unnamed">syn::Fields::Unnamed</a>(fields) <span class="kw">if </span><a href="#84">fields</a>.unnamed.<a href="https://docs.rs/syn/2.0.66/syn/punctuated/struct.Punctuated.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.count">count</a>() == <span class="number">1 </span>=&gt; {
+                    <a href="https://docs.rs/syn/2.0.68/syn/derive/enum.Data.html#variant.Struct">syn::Data::Struct</a>(s) =&gt; <span class="kw">match </span><a href="#83">s</a>.fields {
+                        <a href="https://docs.rs/syn/2.0.68/syn/data/enum.Fields.html#variant.Unnamed">syn::Fields::Unnamed</a>(fields) <span class="kw">if </span><a href="#84">fields</a>.unnamed.<a href="https://docs.rs/syn/2.0.68/syn/punctuated/struct.Punctuated.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.count">count</a>() == <span class="number">1 </span>=&gt; {
                             <a href="#84">fields</a>.unnamed.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.IntoIterator.html#tymethod.into_iter">into_iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.next">next</a>().<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.and_then">and_then</a>(|x| <span class="kw">match </span><a href="#85">x</a>.ty {
-                                <a href="https://docs.rs/syn/2.0.66/syn/ty/enum.Type.html#variant.Path">syn::Type::Path</a>(p) =&gt; <span class="prelude-val">Some</span>(<a href="#86">p</a>.path),
+                                <a href="https://docs.rs/syn/2.0.68/syn/ty/enum.Type.html#variant.Path">syn::Type::Path</a>(p) =&gt; <span class="prelude-val">Some</span>(<a href="#86">p</a>.path),
                                 <span class="kw">_ </span>=&gt; <span class="prelude-val">None</span>,
                             })
                         }
@@ -367,7 +367,7 @@
                 (<a href="#82">path</a>, <a href="#12">DeriveMode::Private</a>)
             };
         <span class="kw">let </span>delegated_ty = <a href="#78">delegated_ty</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.ok_or_else">ok_or_else</a>(|| {
-            <a href="https://docs.rs/syn/2.0.66/syn/error/struct.Error.html#method.new">syn::Error::new</a>(
+            <a href="https://docs.rs/syn/2.0.68/syn/error/struct.Error.html#method.new">syn::Error::new</a>(
                 <a href="#66">derive_input</a>.ident.<a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.Ident.html#method.span">span</a>(),
                 <span class="string">"Unless `derive(ValueDelegate)` is used over a newtype with 1 field, \
                 the delegated type must be specified using \
