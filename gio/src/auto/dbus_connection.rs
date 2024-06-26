@@ -641,6 +641,7 @@ impl DBusConnection {
     }
 
     #[doc(alias = "g_dbus_connection_is_closed")]
+    #[doc(alias = "closed")]
     pub fn is_closed(&self) -> bool {
         unsafe { from_glib(ffi::g_dbus_connection_is_closed(self.to_glib_none().0)) }
     }
