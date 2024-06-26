@@ -1,45 +1,39 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
 #[cfg(unix)]
-use std::os::unix::io::{AsRawFd, IntoRawFd, RawFd};
+use std::os::unix::io::{AsFd, AsRawFd, BorrowedFd, IntoRawFd, OwnedFd, RawFd};
 
 use glib::{prelude::*, translate::*};
 #[cfg(all(not(unix), docsrs))]
-use socket::{AsRawFd, IntoRawFd, RawFd};
+use socket::{AsFd, AsRawFd, BorrowedFd, FromRawFd, IntoRawFd, OwnedFd, RawFd};
 
 use crate::{ffi, OutputStream, UnixOutputStream};
 
 impl UnixOutputStream {
     // rustdoc-stripper-ignore-next
     /// Creates a new [`Self`] that takes ownership of the passed in fd.
-    ///
-    /// # Safety
-    /// You must not close the fd unless you've previously called [`UnixOutputStreamExtManual::set_close_fd`]
-    /// on this stream. At which point you may only do so when all references to this stream have
-    /// been dropped.
     #[doc(alias = "g_unix_output_stream_new")]
-    pub unsafe fn take_fd(fd: impl IntoRawFd) -> UnixOutputStream {
+    pub fn from_fd(fd: OwnedFd) -> UnixOutputStream {
         let fd = fd.into_raw_fd();
         let close_fd = true.into_glib();
-        OutputStream::from_glib_full(ffi::g_unix_output_stream_new(fd, close_fd)).unsafe_cast()
-    }
-
-    // rustdoc-stripper-ignore-next
-    /// Creates a new [`Self`] that does not take ownership of the passed in fd.
-    ///
-    /// # Safety
-    /// You may only close the fd if all references to this stream have been dropped.
-    #[doc(alias = "g_unix_output_stream_new")]
-    pub unsafe fn with_fd<T: AsRawFd>(fd: T) -> UnixOutputStream {
-        let fd = fd.as_raw_fd();
-        let close_fd = false.into_glib();
-        OutputStream::from_glib_full(ffi::g_unix_output_stream_new(fd, close_fd)).unsafe_cast()
+        unsafe {
+            OutputStream::from_glib_full(ffi::g_unix_output_stream_new(fd, close_fd)).unsafe_cast()
+        }
     }
 }
 
 impl AsRawFd for UnixOutputStream {
     fn as_raw_fd(&self) -> RawFd {
         unsafe { ffi::g_unix_output_stream_get_fd(self.to_glib_none().0) as _ }
+    }
+}
+
+impl AsFd for UnixOutputStream {
+    fn as_fd(&self) -> BorrowedFd<'_> {
+        unsafe {
+            let raw_fd = self.as_raw_fd();
+            BorrowedFd::borrow_raw(raw_fd)
+        }
     }
 }
 
