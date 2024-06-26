@@ -66,6 +66,7 @@ impl DBusServer {
     }
 
     #[doc(alias = "g_dbus_server_is_active")]
+    #[doc(alias = "active")]
     pub fn is_active(&self) -> bool {
         unsafe { from_glib(ffi::g_dbus_server_is_active(self.to_glib_none().0)) }
     }

@@ -52,6 +52,7 @@ pub trait FileMonitorExt: IsA<FileMonitor> + sealed::Sealed + 'static {
     }
 
     #[doc(alias = "g_file_monitor_is_cancelled")]
+    #[doc(alias = "cancelled")]
     fn is_cancelled(&self) -> bool {
         unsafe {
             from_glib(ffi::g_file_monitor_is_cancelled(

@@ -82,14 +82,6 @@ impl ApplicationBuilder {
         }
     }
 
-    pub fn action_group(self, action_group: &impl IsA<ActionGroup>) -> Self {
-        Self {
-            builder: self
-                .builder
-                .property("action-group", action_group.clone().upcast()),
-        }
-    }
-
     pub fn application_id(self, application_id: impl Into<glib::GString>) -> Self {
         Self {
             builder: self
@@ -454,11 +446,6 @@ pub trait ApplicationExt: IsA<Application> + sealed::Sealed + 'static {
         }
     }
 
-    #[doc(alias = "action-group")]
-    fn set_action_group<P: IsA<ActionGroup>>(&self, action_group: Option<&P>) {
-        ObjectExt::set_property(self.as_ref(), "action-group", action_group)
-    }
-
     #[doc(alias = "activate")]
     fn connect_activate<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn activate_trampoline<P: IsA<Application>, F: Fn(&P) + 'static>(
@@ -610,32 +597,6 @@ pub trait ApplicationExt: IsA<Application> + sealed::Sealed + 'static {
                 b"startup\0".as_ptr() as *const _,
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     startup_trampoline::<Self, F> as *const (),
-                )),
-                Box_::into_raw(f),
-            )
-        }
-    }
-
-    #[doc(alias = "action-group")]
-    fn connect_action_group_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn notify_action_group_trampoline<
-            P: IsA<Application>,
-            F: Fn(&P) + 'static,
-        >(
-            this: *mut ffi::GApplication,
-            _param_spec: glib::ffi::gpointer,
-            f: glib::ffi::gpointer,
-        ) {
-            let f: &F = &*(f as *const F);
-            f(Application::from_glib_borrow(this).unsafe_cast_ref())
-        }
-        unsafe {
-            let f: Box_<F> = Box_::new(f);
-            connect_raw(
-                self.as_ptr() as *mut _,
-                b"notify::action-group\0".as_ptr() as *const _,
-                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
-                    notify_action_group_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
             )

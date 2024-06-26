@@ -41,6 +41,7 @@ mod sealed {
 
 pub trait SocketServiceExt: IsA<SocketService> + sealed::Sealed + 'static {
     #[doc(alias = "g_socket_service_is_active")]
+    #[doc(alias = "active")]
     fn is_active(&self) -> bool {
         unsafe {
             from_glib(ffi::g_socket_service_is_active(

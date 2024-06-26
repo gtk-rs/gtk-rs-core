@@ -146,6 +146,7 @@ pub trait IOStreamExt: IsA<IOStream> + sealed::Sealed + 'static {
     }
 
     #[doc(alias = "g_io_stream_is_closed")]
+    #[doc(alias = "closed")]
     fn is_closed(&self) -> bool {
         unsafe { from_glib(ffi::g_io_stream_is_closed(self.as_ref().to_glib_none().0)) }
     }
