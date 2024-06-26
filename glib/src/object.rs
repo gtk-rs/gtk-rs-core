@@ -1542,8 +1542,9 @@ impl<'a, O: IsA<Object> + IsClass> ObjectBuilder<'a, O> {
     }
 
     // rustdoc-stripper-ignore-next
-    /// Set property `name` to the given value `value`.
-    #[inline]
+    /// Sets property `name` to the given value `value`.
+    ///
+    /// Overrides any default or previously defined value for `name`.
     pub fn property(self, name: &'a str, value: impl Into<Value>) -> Self {
         let ObjectBuilder {
             type_,
@@ -1556,6 +1557,67 @@ impl<'a, O: IsA<Object> + IsClass> ObjectBuilder<'a, O> {
             type_,
             properties,
             phantom: PhantomData,
+        }
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Sets property `name` to the given inner value if the `predicate` evaluates to `true`.
+    ///
+    /// This has no effect if the `predicate` evaluates to `false`,
+    /// i.e. default or previous value for `name` is kept.
+    #[inline]
+    pub fn property_if(self, name: &'a str, value: impl Into<Value>, predicate: bool) -> Self {
+        if predicate {
+            self.property(name, value)
+        } else {
+            self
+        }
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Sets property `name` to the given inner value if `value` is `Some`.
+    ///
+    /// This has no effect if the value is `None`, i.e. default or previous value for `name` is kept.
+    #[inline]
+    pub fn property_if_some(self, name: &'a str, value: Option<impl Into<Value>>) -> Self {
+        if let Some(value) = value {
+            self.property(name, value)
+        } else {
+            self
+        }
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Sets property `name` using the given `ValueType` `V` built from `iter`'s the `Item`s.
+    ///
+    /// Overrides any default or previously defined value for `name`.
+    #[inline]
+    pub fn property_from_iter<V: ValueType + Into<Value> + FromIterator<Value>>(
+        self,
+        name: &'a str,
+        iter: impl IntoIterator<Item = impl Into<Value>>,
+    ) -> Self {
+        let iter = iter.into_iter().map(|item| item.into());
+        self.property(name, V::from_iter(iter))
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Sets property `name` using the given `ValueType` `V` built from `iter`'s Item`s,
+    /// if `iter` is not empty.
+    ///
+    /// This has no effect if `iter` is empty, i.e. previous property value for `name` is unchanged.
+    #[inline]
+    pub fn property_if_not_empty<V: ValueType + Into<Value> + FromIterator<Value>>(
+        self,
+        name: &'a str,
+        iter: impl IntoIterator<Item = impl Into<Value>>,
+    ) -> Self {
+        let mut iter = iter.into_iter().peekable();
+        if iter.peek().is_some() {
+            let iter = iter.map(|item| item.into());
+            self.property(name, V::from_iter(iter))
+        } else {
+            self
         }
     }
 
