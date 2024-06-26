@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib-macros/src/clone.rs`."><title>clone.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib_macros" data-themes="" data-resource-suffix="" data-rustdoc-version="1.81.0-nightly (8fcd4dd08 2024-06-18)" data-channel="nightly" data-search-js="search-0fe7219eb170c82e.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib-macros/src/clone.rs`."><title>clone.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib_macros" data-themes="" data-resource-suffix="" data-rustdoc-version="1.81.0-nightly (fda509e81 2024-06-25)" data-channel="nightly" data-search-js="search-0fe7219eb170c82e.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -628,1351 +628,561 @@
 <a href="#555" id="555">555</a>
 <a href="#556" id="556">556</a>
 <a href="#557" id="557">557</a>
-<a href="#558" id="558">558</a>
-<a href="#559" id="559">559</a>
-<a href="#560" id="560">560</a>
-<a href="#561" id="561">561</a>
-<a href="#562" id="562">562</a>
-<a href="#563" id="563">563</a>
-<a href="#564" id="564">564</a>
-<a href="#565" id="565">565</a>
-<a href="#566" id="566">566</a>
-<a href="#567" id="567">567</a>
-<a href="#568" id="568">568</a>
-<a href="#569" id="569">569</a>
-<a href="#570" id="570">570</a>
-<a href="#571" id="571">571</a>
-<a href="#572" id="572">572</a>
-<a href="#573" id="573">573</a>
-<a href="#574" id="574">574</a>
-<a href="#575" id="575">575</a>
-<a href="#576" id="576">576</a>
-<a href="#577" id="577">577</a>
-<a href="#578" id="578">578</a>
-<a href="#579" id="579">579</a>
-<a href="#580" id="580">580</a>
-<a href="#581" id="581">581</a>
-<a href="#582" id="582">582</a>
-<a href="#583" id="583">583</a>
-<a href="#584" id="584">584</a>
-<a href="#585" id="585">585</a>
-<a href="#586" id="586">586</a>
-<a href="#587" id="587">587</a>
-<a href="#588" id="588">588</a>
-<a href="#589" id="589">589</a>
-<a href="#590" id="590">590</a>
-<a href="#591" id="591">591</a>
-<a href="#592" id="592">592</a>
-<a href="#593" id="593">593</a>
-<a href="#594" id="594">594</a>
-<a href="#595" id="595">595</a>
-<a href="#596" id="596">596</a>
-<a href="#597" id="597">597</a>
-<a href="#598" id="598">598</a>
-<a href="#599" id="599">599</a>
-<a href="#600" id="600">600</a>
-<a href="#601" id="601">601</a>
-<a href="#602" id="602">602</a>
-<a href="#603" id="603">603</a>
-<a href="#604" id="604">604</a>
-<a href="#605" id="605">605</a>
-<a href="#606" id="606">606</a>
-<a href="#607" id="607">607</a>
-<a href="#608" id="608">608</a>
-<a href="#609" id="609">609</a>
-<a href="#610" id="610">610</a>
-<a href="#611" id="611">611</a>
-<a href="#612" id="612">612</a>
-<a href="#613" id="613">613</a>
-<a href="#614" id="614">614</a>
-<a href="#615" id="615">615</a>
-<a href="#616" id="616">616</a>
-<a href="#617" id="617">617</a>
-<a href="#618" id="618">618</a>
-<a href="#619" id="619">619</a>
-<a href="#620" id="620">620</a>
-<a href="#621" id="621">621</a>
-<a href="#622" id="622">622</a>
-<a href="#623" id="623">623</a>
-<a href="#624" id="624">624</a>
-<a href="#625" id="625">625</a>
-<a href="#626" id="626">626</a>
-<a href="#627" id="627">627</a>
-<a href="#628" id="628">628</a>
-<a href="#629" id="629">629</a>
-<a href="#630" id="630">630</a>
-<a href="#631" id="631">631</a>
-<a href="#632" id="632">632</a>
-<a href="#633" id="633">633</a>
-<a href="#634" id="634">634</a>
-<a href="#635" id="635">635</a>
-<a href="#636" id="636">636</a>
-<a href="#637" id="637">637</a>
-<a href="#638" id="638">638</a>
-<a href="#639" id="639">639</a>
-<a href="#640" id="640">640</a>
-<a href="#641" id="641">641</a>
-<a href="#642" id="642">642</a>
-<a href="#643" id="643">643</a>
-<a href="#644" id="644">644</a>
-<a href="#645" id="645">645</a>
-<a href="#646" id="646">646</a>
-<a href="#647" id="647">647</a>
-<a href="#648" id="648">648</a>
-<a href="#649" id="649">649</a>
-<a href="#650" id="650">650</a>
-<a href="#651" id="651">651</a>
-<a href="#652" id="652">652</a>
-<a href="#653" id="653">653</a>
-<a href="#654" id="654">654</a>
-<a href="#655" id="655">655</a>
-<a href="#656" id="656">656</a>
-<a href="#657" id="657">657</a>
-<a href="#658" id="658">658</a>
-<a href="#659" id="659">659</a>
-<a href="#660" id="660">660</a>
-<a href="#661" id="661">661</a>
-<a href="#662" id="662">662</a>
-<a href="#663" id="663">663</a>
-<a href="#664" id="664">664</a>
-<a href="#665" id="665">665</a>
-<a href="#666" id="666">666</a>
-<a href="#667" id="667">667</a>
-<a href="#668" id="668">668</a>
-<a href="#669" id="669">669</a>
-<a href="#670" id="670">670</a>
-<a href="#671" id="671">671</a>
-<a href="#672" id="672">672</a>
-<a href="#673" id="673">673</a>
-<a href="#674" id="674">674</a>
-<a href="#675" id="675">675</a>
-<a href="#676" id="676">676</a>
-<a href="#677" id="677">677</a>
-<a href="#678" id="678">678</a>
-<a href="#679" id="679">679</a>
-<a href="#680" id="680">680</a>
-<a href="#681" id="681">681</a>
-<a href="#682" id="682">682</a>
-<a href="#683" id="683">683</a>
-<a href="#684" id="684">684</a>
-<a href="#685" id="685">685</a>
-<a href="#686" id="686">686</a>
-<a href="#687" id="687">687</a>
-<a href="#688" id="688">688</a>
-<a href="#689" id="689">689</a>
-<a href="#690" id="690">690</a>
-<a href="#691" id="691">691</a>
-<a href="#692" id="692">692</a>
-<a href="#693" id="693">693</a>
-<a href="#694" id="694">694</a>
-<a href="#695" id="695">695</a>
-<a href="#696" id="696">696</a>
-<a href="#697" id="697">697</a>
-<a href="#698" id="698">698</a>
-<a href="#699" id="699">699</a>
-<a href="#700" id="700">700</a>
-<a href="#701" id="701">701</a>
-<a href="#702" id="702">702</a>
-<a href="#703" id="703">703</a>
-<a href="#704" id="704">704</a>
-<a href="#705" id="705">705</a>
-<a href="#706" id="706">706</a>
-<a href="#707" id="707">707</a>
-<a href="#708" id="708">708</a>
-<a href="#709" id="709">709</a>
-<a href="#710" id="710">710</a>
-<a href="#711" id="711">711</a>
-<a href="#712" id="712">712</a>
-<a href="#713" id="713">713</a>
-<a href="#714" id="714">714</a>
-<a href="#715" id="715">715</a>
-<a href="#716" id="716">716</a>
-<a href="#717" id="717">717</a>
-<a href="#718" id="718">718</a>
-<a href="#719" id="719">719</a>
-<a href="#720" id="720">720</a>
-<a href="#721" id="721">721</a>
-<a href="#722" id="722">722</a>
-<a href="#723" id="723">723</a>
-<a href="#724" id="724">724</a>
-<a href="#725" id="725">725</a>
-<a href="#726" id="726">726</a>
-<a href="#727" id="727">727</a>
-<a href="#728" id="728">728</a>
-<a href="#729" id="729">729</a>
-<a href="#730" id="730">730</a>
-<a href="#731" id="731">731</a>
-<a href="#732" id="732">732</a>
-<a href="#733" id="733">733</a>
-<a href="#734" id="734">734</a>
-<a href="#735" id="735">735</a>
-<a href="#736" id="736">736</a>
-<a href="#737" id="737">737</a>
-<a href="#738" id="738">738</a>
-<a href="#739" id="739">739</a>
-<a href="#740" id="740">740</a>
-<a href="#741" id="741">741</a>
-<a href="#742" id="742">742</a>
-<a href="#743" id="743">743</a>
-<a href="#744" id="744">744</a>
-<a href="#745" id="745">745</a>
-<a href="#746" id="746">746</a>
-<a href="#747" id="747">747</a>
-<a href="#748" id="748">748</a>
-<a href="#749" id="749">749</a>
-<a href="#750" id="750">750</a>
-<a href="#751" id="751">751</a>
-<a href="#752" id="752">752</a>
-<a href="#753" id="753">753</a>
-<a href="#754" id="754">754</a>
-<a href="#755" id="755">755</a>
-<a href="#756" id="756">756</a>
-<a href="#757" id="757">757</a>
-<a href="#758" id="758">758</a>
-<a href="#759" id="759">759</a>
-<a href="#760" id="760">760</a>
-<a href="#761" id="761">761</a>
-<a href="#762" id="762">762</a>
-<a href="#763" id="763">763</a>
-<a href="#764" id="764">764</a>
-<a href="#765" id="765">765</a>
-<a href="#766" id="766">766</a>
-<a href="#767" id="767">767</a>
-<a href="#768" id="768">768</a>
-<a href="#769" id="769">769</a>
-<a href="#770" id="770">770</a>
-<a href="#771" id="771">771</a>
-<a href="#772" id="772">772</a>
-<a href="#773" id="773">773</a>
-<a href="#774" id="774">774</a>
-<a href="#775" id="775">775</a>
-<a href="#776" id="776">776</a>
-<a href="#777" id="777">777</a>
-<a href="#778" id="778">778</a>
-<a href="#779" id="779">779</a>
-<a href="#780" id="780">780</a>
-<a href="#781" id="781">781</a>
-<a href="#782" id="782">782</a>
-<a href="#783" id="783">783</a>
-<a href="#784" id="784">784</a>
-<a href="#785" id="785">785</a>
-<a href="#786" id="786">786</a>
-<a href="#787" id="787">787</a>
-<a href="#788" id="788">788</a>
-<a href="#789" id="789">789</a>
-<a href="#790" id="790">790</a>
-<a href="#791" id="791">791</a>
-<a href="#792" id="792">792</a>
-<a href="#793" id="793">793</a>
-<a href="#794" id="794">794</a>
-<a href="#795" id="795">795</a>
-<a href="#796" id="796">796</a>
-<a href="#797" id="797">797</a>
-<a href="#798" id="798">798</a>
-<a href="#799" id="799">799</a>
-<a href="#800" id="800">800</a>
-<a href="#801" id="801">801</a>
-<a href="#802" id="802">802</a>
-<a href="#803" id="803">803</a>
-<a href="#804" id="804">804</a>
-<a href="#805" id="805">805</a>
-<a href="#806" id="806">806</a>
-<a href="#807" id="807">807</a>
-<a href="#808" id="808">808</a>
-<a href="#809" id="809">809</a>
-<a href="#810" id="810">810</a>
-<a href="#811" id="811">811</a>
-<a href="#812" id="812">812</a>
-<a href="#813" id="813">813</a>
-<a href="#814" id="814">814</a>
-<a href="#815" id="815">815</a>
-<a href="#816" id="816">816</a>
-<a href="#817" id="817">817</a>
-<a href="#818" id="818">818</a>
-<a href="#819" id="819">819</a>
-<a href="#820" id="820">820</a>
-<a href="#821" id="821">821</a>
-<a href="#822" id="822">822</a>
-<a href="#823" id="823">823</a>
-<a href="#824" id="824">824</a>
-<a href="#825" id="825">825</a>
-<a href="#826" id="826">826</a>
-<a href="#827" id="827">827</a>
-<a href="#828" id="828">828</a>
-<a href="#829" id="829">829</a>
-<a href="#830" id="830">830</a>
-<a href="#831" id="831">831</a>
-<a href="#832" id="832">832</a>
-<a href="#833" id="833">833</a>
-<a href="#834" id="834">834</a>
-<a href="#835" id="835">835</a>
-<a href="#836" id="836">836</a>
-<a href="#837" id="837">837</a>
-<a href="#838" id="838">838</a>
-<a href="#839" id="839">839</a>
-<a href="#840" id="840">840</a>
-<a href="#841" id="841">841</a>
-<a href="#842" id="842">842</a>
-<a href="#843" id="843">843</a>
-<a href="#844" id="844">844</a>
-<a href="#845" id="845">845</a>
-<a href="#846" id="846">846</a>
-<a href="#847" id="847">847</a>
-<a href="#848" id="848">848</a>
-<a href="#849" id="849">849</a>
-<a href="#850" id="850">850</a>
-<a href="#851" id="851">851</a>
-<a href="#852" id="852">852</a>
-<a href="#853" id="853">853</a>
-<a href="#854" id="854">854</a>
-<a href="#855" id="855">855</a>
-<a href="#856" id="856">856</a>
-<a href="#857" id="857">857</a>
-<a href="#858" id="858">858</a>
-<a href="#859" id="859">859</a>
-<a href="#860" id="860">860</a>
-<a href="#861" id="861">861</a>
-<a href="#862" id="862">862</a>
-<a href="#863" id="863">863</a>
-<a href="#864" id="864">864</a>
-<a href="#865" id="865">865</a>
-<a href="#866" id="866">866</a>
-<a href="#867" id="867">867</a>
-<a href="#868" id="868">868</a>
-<a href="#869" id="869">869</a>
-<a href="#870" id="870">870</a>
-<a href="#871" id="871">871</a>
-<a href="#872" id="872">872</a>
-<a href="#873" id="873">873</a>
-<a href="#874" id="874">874</a>
-<a href="#875" id="875">875</a>
-<a href="#876" id="876">876</a>
-<a href="#877" id="877">877</a>
-<a href="#878" id="878">878</a>
-<a href="#879" id="879">879</a>
-<a href="#880" id="880">880</a>
-<a href="#881" id="881">881</a>
-<a href="#882" id="882">882</a>
-<a href="#883" id="883">883</a>
-<a href="#884" id="884">884</a>
-<a href="#885" id="885">885</a>
-<a href="#886" id="886">886</a>
-<a href="#887" id="887">887</a>
-<a href="#888" id="888">888</a>
-<a href="#889" id="889">889</a>
-<a href="#890" id="890">890</a>
-<a href="#891" id="891">891</a>
-<a href="#892" id="892">892</a>
-<a href="#893" id="893">893</a>
-<a href="#894" id="894">894</a>
-<a href="#895" id="895">895</a>
-<a href="#896" id="896">896</a>
-<a href="#897" id="897">897</a>
-<a href="#898" id="898">898</a>
-<a href="#899" id="899">899</a>
-<a href="#900" id="900">900</a>
-<a href="#901" id="901">901</a>
-<a href="#902" id="902">902</a>
-<a href="#903" id="903">903</a>
-<a href="#904" id="904">904</a>
-<a href="#905" id="905">905</a>
-<a href="#906" id="906">906</a>
-<a href="#907" id="907">907</a>
-<a href="#908" id="908">908</a>
-<a href="#909" id="909">909</a>
-<a href="#910" id="910">910</a>
-<a href="#911" id="911">911</a>
-<a href="#912" id="912">912</a>
-<a href="#913" id="913">913</a>
-<a href="#914" id="914">914</a>
-<a href="#915" id="915">915</a>
-<a href="#916" id="916">916</a>
-<a href="#917" id="917">917</a>
-<a href="#918" id="918">918</a>
-<a href="#919" id="919">919</a>
-<a href="#920" id="920">920</a>
-<a href="#921" id="921">921</a>
-<a href="#922" id="922">922</a>
-<a href="#923" id="923">923</a>
-<a href="#924" id="924">924</a>
-<a href="#925" id="925">925</a>
-<a href="#926" id="926">926</a>
-<a href="#927" id="927">927</a>
-<a href="#928" id="928">928</a>
-<a href="#929" id="929">929</a>
-<a href="#930" id="930">930</a>
-<a href="#931" id="931">931</a>
-<a href="#932" id="932">932</a>
-<a href="#933" id="933">933</a>
-<a href="#934" id="934">934</a>
-<a href="#935" id="935">935</a>
-<a href="#936" id="936">936</a>
-<a href="#937" id="937">937</a>
-<a href="#938" id="938">938</a>
-<a href="#939" id="939">939</a>
-<a href="#940" id="940">940</a>
-<a href="#941" id="941">941</a>
-<a href="#942" id="942">942</a>
-<a href="#943" id="943">943</a>
-<a href="#944" id="944">944</a>
-<a href="#945" id="945">945</a>
-<a href="#946" id="946">946</a>
-<a href="#947" id="947">947</a>
-<a href="#948" id="948">948</a>
-<a href="#949" id="949">949</a>
-<a href="#950" id="950">950</a>
-<a href="#951" id="951">951</a>
-<a href="#952" id="952">952</a>
 </pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
-</span><span class="kw">use </span><a href="https://doc.rust-lang.org/nightly/core/iter/adapters/peekable/struct.Peekable.html">std::iter::Peekable</a>;
-
-<span class="kw">use </span>proc_macro::{
-    <a href="https://doc.rust-lang.org/nightly/proc_macro/token_stream/struct.IntoIter.html">token_stream::IntoIter</a> <span class="kw">as </span>ProcIter, <a href="https://doc.rust-lang.org/nightly/proc_macro/enum.Delimiter.html">Delimiter</a>, <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.Group.html">Group</a>, <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.Ident.html">Ident</a>, <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.Literal.html">Literal</a>, <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.Punct.html">Punct</a>, <a href="https://doc.rust-lang.org/nightly/proc_macro/enum.Spacing.html">Spacing</a>, <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.Span.html">Span</a>,
-    <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a>, <a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html">TokenTree</a>,
+</span><span class="kw">use </span>proc_macro2::{<a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.Ident.html">Ident</a>, <a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.Span.html">Span</a>, <a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.TokenStream.html">TokenStream</a>};
+<span class="kw">use </span>quote::{<a href="https://docs.rs/quote/1.0.36/quote/macro.quote.html">quote</a>, <a href="https://docs.rs/quote/1.0.36/quote/to_tokens/trait.ToTokens.html">ToTokens</a>};
+<span class="kw">use </span>syn::{
+    parse::{<a href="https://docs.rs/syn/2.0.68/syn/parse/trait.Parse.html">Parse</a>, <a href="https://docs.rs/syn/2.0.68/syn/parse/type.ParseStream.html">ParseStream</a>},
+    <a href="https://docs.rs/syn/2.0.68/syn/spanned/trait.Spanned.html">spanned::Spanned</a>,
+    <a href="https://docs.rs/syn/2.0.68/syn/attr/struct.Attribute.html">Attribute</a>, <a href="https://docs.rs/syn/2.0.68/syn/expr/enum.Expr.html">Expr</a>, <a href="https://docs.rs/syn/2.0.68/syn/expr/struct.ExprAsync.html">ExprAsync</a>, <a href="https://docs.rs/syn/2.0.68/syn/expr/struct.ExprClosure.html">ExprClosure</a>, <a href="https://docs.rs/syn/2.0.68/syn/macro.Token.html">Token</a>,
 };
 
 <span class="kw">use </span><a href="utils.rs.html#188-215"><span class="kw">crate</span>::utils::crate_ident_new</a>;
 
-<span class="kw">struct </span>PeekableProcIter {
-    inner: Peekable&lt;<a href="https://doc.rust-lang.org/nightly/proc_macro/token_stream/struct.IntoIter.html">ProcIter</a>&gt;,
-    current_span: <span class="prelude-ty">Option</span>&lt;<a href="https://doc.rust-lang.org/nightly/proc_macro/struct.Span.html">Span</a>&gt;,
-    next_span: <span class="prelude-ty">Option</span>&lt;<a href="https://doc.rust-lang.org/nightly/proc_macro/struct.Span.html">Span</a>&gt;,
-}
-
-<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; From&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://doc.rust-lang.org/nightly/proc_macro/struct.Group.html">Group</a>&gt; <span class="kw">for </span><a href="#12-16">PeekableProcIter</a> {
-    <span class="kw">fn </span>from(f: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://doc.rust-lang.org/nightly/proc_macro/struct.Group.html">Group</a>) -&gt; <span class="self">Self </span>{
-        <span class="kw">let </span>current_span = <span class="prelude-val">Some</span>(<a href="#19">f</a>.<a href="https://doc.rust-lang.org/nightly/proc_macro/struct.Group.html#method.span">span</a>());
-        <span class="kw">let </span><span class="kw-2">mut </span>inner = <a href="#19">f</a>.<a href="https://doc.rust-lang.org/nightly/proc_macro/struct.Group.html#method.stream">stream</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.IntoIterator.html#tymethod.into_iter">into_iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.peekable">peekable</a>();
-        <span class="kw">let </span>next_span = <a href="#21">inner</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/adapters/peekable/struct.Peekable.html#method.peek">peek</a>().<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|n| <a href="#22">n</a>.<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#method.span">span</a>());
-        <span class="self">Self </span>{
-            <a href="#21">inner</a>,
-            <a href="#20">current_span</a>,
-            <a href="#22">next_span</a>,
-        }
-    }
-}
-
-<span class="kw">impl </span>From&lt;<a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a>&gt; <span class="kw">for </span><a href="#12-16">PeekableProcIter</a> {
-    <span class="kw">fn </span>from(f: <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a>) -&gt; <span class="self">Self </span>{
-        <span class="kw">let </span><span class="kw-2">mut </span>inner = <a href="#32">f</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.IntoIterator.html#tymethod.into_iter">into_iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.peekable">peekable</a>();
-        <span class="kw">let </span>next_span = <a href="#33">inner</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/adapters/peekable/struct.Peekable.html#method.peek">peek</a>().<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|n| <a href="#34">n</a>.<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#method.span">span</a>());
-        <span class="self">Self </span>{
-            <a href="#33">inner</a>,
-            current_span: <span class="prelude-val">None</span>,
-            <a href="#34">next_span</a>,
-        }
-    }
-}
-
-<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html">Iterator</a> <span class="kw">for </span><a href="#12-16">PeekableProcIter</a> {
-    <span class="kw">type </span>Item = <a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html">TokenTree</a>;
-
-    <span class="kw">fn </span>next(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>::Item&gt; {
-        <span class="kw">let </span>next = <a class="self" href="#46">self</a>.inner.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.next">next</a>()<span class="question-mark">?</span>;
-        <a class="self" href="#46">self</a>.current_span = <span class="prelude-val">Some</span>(<a href="#47">next</a>.<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#method.span">span</a>());
-        <a class="self" href="#46">self</a>.next_span = <a class="self" href="#46">self</a>.inner.<a href="https://doc.rust-lang.org/nightly/core/iter/adapters/peekable/struct.Peekable.html#method.peek">peek</a>().<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|n| <a href="#49">n</a>.<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#method.span">span</a>());
-        <span class="prelude-val">Some</span>(<a href="#47">next</a>)
-    }
-}
-
-<span class="kw">impl </span><a href="#12-16">PeekableProcIter</a> {
-    <span class="kw">fn </span>peek(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html">TokenTree</a>&gt; {
-        <a class="self" href="#55">self</a>.inner.<a href="https://doc.rust-lang.org/nightly/core/iter/adapters/peekable/struct.Peekable.html#method.peek">peek</a>()
-    }
-
-    <span class="kw">fn </span>generate_error(<span class="kw-2">&amp;</span><span class="self">self</span>, message: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a> {
-        <a class="self" href="#59">self</a>.<a href="#67-93">generate_error_with_span</a>(<a href="#59">message</a>, <a class="self" href="#59">self</a>.current_span)
-    }
-
-    <span class="kw">fn </span>generate_error_with_next_span(<span class="kw-2">&amp;</span><span class="self">self</span>, message: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a> {
-        <a class="self" href="#63">self</a>.<a href="#67-93">generate_error_with_span</a>(<a href="#63">message</a>, <a class="self" href="#63">self</a>.next_span)
-    }
-
-    <span class="kw">fn </span>generate_error_with_span(<span class="kw-2">&amp;</span><span class="self">self</span>, message: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, span: <span class="prelude-ty">Option</span>&lt;<a href="https://doc.rust-lang.org/nightly/proc_macro/struct.Span.html">Span</a>&gt;) -&gt; <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a> {
-        <span class="kw">let </span>span = <a href="#67">span</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap_or_else">unwrap_or_else</a>(Span::call_site);
-        <span class="comment">// We generate a `compile_error` macro and assign it to the current span so the error
-        // displayed by rustc points to the right location.
-        </span><span class="kw">let </span><span class="kw-2">mut </span>stream = <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html#method.new">TokenStream::new</a>();
-        <a href="#71">stream</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.Extend.html#tymethod.extend">extend</a>(<a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.vec.html">vec!</a>[TokenTree::Literal(Literal::string(message))]);
-
-        <span class="kw">let </span><span class="kw-2">mut </span>tokens = <a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.vec.html">vec!</a>[
-            TokenTree::Ident(Ident::new(<span class="string">"compile_error"</span>, span)),
-            TokenTree::Punct(Punct::new(<span class="string">'!'</span>, Spacing::Alone)),
-            TokenTree::Group(Group::new(Delimiter::Parenthesis, stream)),
-            TokenTree::Punct(Punct::new(<span class="string">';'</span>, Spacing::Alone)),
-        ];
-
-        <span class="kw">for </span>tok <span class="kw">in </span><span class="kw-2">&amp;mut </span>tokens {
-            tok.set_span(span);
-        }
-
-        <span class="kw">let </span><span class="kw-2">mut </span>stream = <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html#method.new">TokenStream::new</a>();
-        <a href="#85">stream</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.Extend.html#tymethod.extend">extend</a>(<a href="#74">tokens</a>);
-        <span class="kw">let </span><span class="kw-2">mut </span>t = <a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#variant.Group">TokenTree::Group</a>(<a href="https://doc.rust-lang.org/nightly/proc_macro/struct.Group.html#method.new">Group::new</a>(<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.Delimiter.html#variant.Brace">Delimiter::Brace</a>, <a href="#85">stream</a>));
-        <a href="#87">t</a>.<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#method.set_span">set_span</a>(<a href="#68">span</a>);
-
-        <span class="kw">let </span><span class="kw-2">mut </span>stream = <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html#method.new">TokenStream::new</a>();
-        <a href="#90">stream</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.Extend.html#tymethod.extend">extend</a>(<a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.vec.html">vec!</a>[t]);
-        <a href="#90">stream</a>
-    }
-}
-
-<span class="attr">#[derive(Clone, Copy, Debug)]
-</span><span class="kw">enum </span>BorrowKind {
+<span class="attr">#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+</span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">enum </span>CaptureKind {
+    Watch,
     Weak,
     WeakAllowNone,
     Strong,
     ToOwned,
 }
 
-<span class="kw">impl </span><a href="#97-102">BorrowKind</a> {
-    <span class="kw">fn </span>to_str(<span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'static </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a> {
-        <span class="kw">match </span><span class="self"><a href="#105">self</a> </span>{
-            <span class="self">Self</span>::Weak =&gt; <span class="string">"@weak"</span>,
-            <span class="self">Self</span>::WeakAllowNone =&gt; <span class="string">"@weak-allow-none"</span>,
-            <span class="self">Self</span>::Strong =&gt; <span class="string">"@strong"</span>,
-            <span class="self">Self</span>::ToOwned =&gt; <span class="string">"@to-owned"</span>,
-        }
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; TryFrom&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.Ident.html">Ident</a>&gt; <span class="kw">for </span><a href="#14-20">CaptureKind</a> {
+    <span class="kw">type </span>Error = <a href="https://docs.rs/syn/2.0.68/syn/error/struct.Error.html">syn::Error</a>;
+
+    <span class="kw">fn </span>try_from(s: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.Ident.html">Ident</a>) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, <span class="self">Self</span>::Error&gt; {
+        <span class="prelude-val">Ok</span>(<span class="kw">match </span><a href="#25">s</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html#tymethod.to_string">to_string</a>().<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html#method.as_str">as_str</a>() {
+            <span class="string">"watch" </span>=&gt; <a href="#15">CaptureKind::Watch</a>,
+            <span class="string">"strong" </span>=&gt; <a href="#18">CaptureKind::Strong</a>,
+            <span class="string">"weak" </span>=&gt; <a href="#16">CaptureKind::Weak</a>,
+            <span class="string">"weak_allow_none" </span>=&gt; <a href="#17">CaptureKind::WeakAllowNone</a>,
+            <span class="string">"to_owned" </span>=&gt; <a href="#19">CaptureKind::ToOwned</a>,
+            <span class="kw">_ </span>=&gt; {
+                <span class="comment">// This is actually never shown to the user but we need some kind of error type for
+                // TryFrom, () would be enough but then clippy complains.
+                //
+                // We'll keep it here in case it is useful somewhere at a later time.
+                </span><span class="kw">return </span><span class="prelude-val">Err</span>(<a href="https://docs.rs/syn/2.0.68/syn/error/struct.Error.html#method.new">syn::Error::new</a>(
+                    <a href="#25">s</a>.<a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.Ident.html#method.span">span</a>(),
+                    <a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.format.html">format!</a>(<span class="string">"unknown capture type `{s}`"</span>),
+                ));
+            }
+        })
     }
 }
 
-<span class="kw">enum </span>WrapperKind {
-    DefaultPanic,
-    DefaultReturn(<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>),
+<span class="attr">#[derive(Default)]
+</span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">enum </span>UpgradeBehaviour {
+    <span class="attr">#[default]
+    </span>Unit,
+    Panic,
+    Default,
+    Expression(<a href="https://docs.rs/syn/2.0.68/syn/expr/enum.Expr.html">Expr</a>),
+    Closure(<a href="https://docs.rs/syn/2.0.68/syn/expr/struct.ExprClosure.html">ExprClosure</a>),
 }
 
-<span class="kw">impl </span><a href="#115-118">WrapperKind</a> {
-    <span class="kw">fn </span>to_str(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a> {
-        <span class="kw">match </span><span class="kw-2">*</span><span class="self"><a href="#121">self</a> </span>{
-            <span class="self">Self</span>::DefaultPanic =&gt; <span class="string">"@default-panic"</span>.<a href="https://doc.rust-lang.org/nightly/alloc/borrow/trait.ToOwned.html#tymethod.to_owned">to_owned</a>(),
-            <span class="self">Self</span>::DefaultReturn(<span class="kw-2">ref </span>r) =&gt; <a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.format.html">format!</a>(<span class="string">"@default-return {r}"</span>),
-        }
-    }
+<span class="kw">impl </span><a href="#47-54">UpgradeBehaviour</a> {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>maybe_parse(
+        attrs: <span class="kw-2">&amp;</span>[<a href="https://docs.rs/syn/2.0.68/syn/attr/struct.Attribute.html">Attribute</a>],
+        input: <a href="https://docs.rs/syn/2.0.68/syn/parse/type.ParseStream.html">ParseStream</a>,
+    ) -&gt; syn::Result&lt;<span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt;&gt; {
+        <span class="comment">// Caller checked for empty
+        </span><span class="kw">let </span>attr = <span class="kw-2">&amp;</span><a href="#58">attrs</a>[<span class="number">0</span>];
+        <a href="#62">attr</a>.meta.<a href="https://docs.rs/syn/2.0.68/syn/attr/enum.Meta.html#method.require_path_only">require_path_only</a>()<span class="question-mark">?</span>;
 
-    <span class="kw">fn </span>keyword(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'static </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a> {
-        <span class="kw">match </span><span class="kw-2">*</span><span class="self"><a href="#128">self</a> </span>{
-            <span class="self">Self</span>::DefaultPanic =&gt; <span class="string">"default-panic"</span>,
-            <span class="self">Self</span>::DefaultReturn(<span class="kw">_</span>) =&gt; <span class="string">"default-return"</span>,
-        }
-    }
-}
-
-<span class="attr">#[derive(Debug)]
-</span><span class="kw">struct </span>ElemToClone {
-    name: <a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>,
-    alias: <span class="prelude-ty">Option</span>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>&gt;,
-    borrow_kind: <a href="#97-102">BorrowKind</a>,
-}
-
-<span class="kw">impl </span><a href="#137-141">ElemToClone</a> {
-    <span class="kw">fn </span>to_str_before(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a> {
-        <span class="kw">match </span><a class="self" href="#144">self</a>.borrow_kind {
-            <a href="#98">BorrowKind::Weak</a> | <a href="#99">BorrowKind::WeakAllowNone</a> =&gt; <a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.format.html">format!</a>(
-                <span class="string">"let {} = {}::clone::Downgrade::downgrade(&amp;{});"</span>,
-                <span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="kw-2">ref </span>a) = <span class="self">self</span>.alias {
-                    a
-                } <span class="kw">else </span>{
-                    <span class="kw-2">&amp;</span><span class="self">self</span>.name
-                },
-                crate_ident_new(),
-                <span class="self">self</span>.name,
-            ),
-            <a href="#100">BorrowKind::Strong</a> =&gt; <a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.format.html">format!</a>(
-                <span class="string">"let {} = {}.clone();"</span>,
-                <span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="kw-2">ref </span>a) = <span class="self">self</span>.alias {
-                    a
-                } <span class="kw">else </span>{
-                    <span class="kw-2">&amp;</span><span class="self">self</span>.name
-                },
-                <span class="self">self</span>.name,
-            ),
-            <a href="#101">BorrowKind::ToOwned</a> =&gt; <a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.format.html">format!</a>(
-                <span class="string">"let {} = ::std::borrow::ToOwned::to_owned(&amp;*{});"</span>,
-                <span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="kw-2">ref </span>a) = <span class="self">self</span>.alias {
-                    a
-                } <span class="kw">else </span>{
-                    <span class="kw-2">&amp;</span><span class="self">self</span>.name
-                },
-                <span class="self">self</span>.name,
-            ),
-        }
-    }
-
-    <span class="kw">fn </span>to_str_after(<span class="kw-2">&amp;</span><span class="self">self</span>, wrapper_kind: <span class="kw-2">&amp;</span><span class="prelude-ty">Option</span>&lt;<a href="#115-118">WrapperKind</a>&gt;) -&gt; <a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a> {
-        <span class="kw">let </span>name = <span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="kw-2">ref </span>a) = <a class="self" href="#177">self</a>.alias {
-            <a href="#178">a</a>
-        } <span class="kw">else </span>{
-            <span class="kw-2">&amp;</span><a class="self" href="#177">self</a>.name
+        <span class="kw">let </span><span class="prelude-val">Some</span>(attr_name) = <a href="#62">attr</a>.<a href="https://docs.rs/syn/2.0.68/syn/attr/struct.Attribute.html#method.path">path</a>().<a href="https://docs.rs/syn/2.0.68/syn/path/struct.Path.html#method.get_ident">get_ident</a>() <span class="kw">else </span>{
+            <span class="kw">return </span><span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>);
         };
-        <span class="kw">match </span>(<a class="self" href="#177">self</a>.borrow_kind, <a href="#177">wrapper_kind</a>) {
-            (<a href="#98">BorrowKind::Weak</a>, <span class="prelude-val">Some</span>(<a href="#116">WrapperKind::DefaultPanic</a>)) =&gt; {
+
+        <span class="kw">let </span>upgrade_behaviour = <span class="kw">match </span><a href="#65">attr_name</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html#tymethod.to_string">to_string</a>().<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html#method.as_str">as_str</a>() {
+            <span class="string">"upgrade_or" </span>=&gt; {
+                <span class="kw">let </span>expr = <a href="#59">input</a>.<a href="https://docs.rs/syn/2.0.68/syn/parse/struct.ParseBuffer.html#method.parse">parse</a>::&lt;<a href="https://docs.rs/syn/2.0.68/syn/expr/enum.Expr.html">Expr</a>&gt;()<span class="question-mark">?</span>;
+                <a href="#59">input</a>.<a href="https://docs.rs/syn/2.0.68/syn/parse/struct.ParseBuffer.html#method.parse">parse</a>::&lt;<a class="macro" href="https://docs.rs/syn/2.0.68/syn/macro.Token.html">Token!</a>[,]&gt;()<span class="question-mark">?</span>;
+                <a href="#52">UpgradeBehaviour::Expression</a>(<a href="#71">expr</a>)
+            }
+            <span class="string">"upgrade_or_else" </span>=&gt; {
+                <span class="kw">let </span>closure = <a href="#59">input</a>.<a href="https://docs.rs/syn/2.0.68/syn/parse/struct.ParseBuffer.html#method.parse">parse</a>::&lt;<a href="https://docs.rs/syn/2.0.68/syn/expr/struct.ExprClosure.html">ExprClosure</a>&gt;()<span class="question-mark">?</span>;
+                <span class="kw">if </span>closure.asyncness.is_some() {
+                    <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="https://docs.rs/syn/2.0.68/syn/error/struct.Error.html#method.new_spanned">syn::Error::new_spanned</a>(
+                        <span class="kw-2">&amp;</span><a href="#76">closure</a>,
+                        <span class="string">"`upgrade_or_else` closure needs to be a non-async closure"</span>,
+                    ));
+                }
+                <span class="kw">if </span>!closure.inputs.is_empty() {
+                    <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="https://docs.rs/syn/2.0.68/syn/error/struct.Error.html#method.new_spanned">syn::Error::new_spanned</a>(
+                        <span class="kw-2">&amp;</span><a href="#76">closure</a>,
+                        <span class="string">"`upgrade_or_else` closure must not have any parameters"</span>,
+                    ));
+                }
+
+                <a href="#59">input</a>.<a href="https://docs.rs/syn/2.0.68/syn/parse/struct.ParseBuffer.html#method.parse">parse</a>::&lt;<a class="macro" href="https://docs.rs/syn/2.0.68/syn/macro.Token.html">Token!</a>[,]&gt;()<span class="question-mark">?</span>;
+                <a href="#53">UpgradeBehaviour::Closure</a>(<a href="#76">closure</a>)
+            }
+            <span class="string">"upgrade_or_default" </span>=&gt; <a href="#51">UpgradeBehaviour::Default</a>,
+            <span class="string">"upgrade_or_panic" </span>=&gt; <a href="#50">UpgradeBehaviour::Panic</a>,
+            <span class="kw">_ </span>=&gt; {
+                <span class="kw">return </span><span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>);
+            }
+        };
+
+        <span class="kw">if </span>attrs.len() &gt; <span class="number">1 </span>{
+            <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="https://docs.rs/syn/2.0.68/syn/error/struct.Error.html#method.new_spanned">syn::Error::new_spanned</a>(
+                <span class="kw-2">&amp;</span><a href="#58">attrs</a>[<span class="number">1</span>],
                 <a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.format.html">format!</a>(
-                    <span class="string">"\
-let {0} = match {1}::clone::Upgrade::upgrade(&amp;{0}) {{
-    Some(val) =&gt; val,
-    None =&gt; panic!(
-        \"failed to upgrade `{0}` (if you don't want to panic, use @default-return)\",
-    ),
-}};"</span>,
-                    name,
-                    crate_ident_new(),
-                )
-            }
-            (<a href="#98">BorrowKind::Weak</a>, <span class="prelude-val">Some</span>(<a href="#117">WrapperKind::DefaultReturn</a>(<span class="kw-2">ref </span>r))) =&gt; {
-                <span class="kw">let </span>not_unit_ret = <a href="#197">r</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.str.html#method.chars">chars</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.any">any</a>(|c| <a href="#198">c</a> != <span class="string">'(' </span>&amp;&amp; <a href="#198">c</a> != <span class="string">')' </span>&amp;&amp; <a href="#198">c</a> != <span class="string">' '</span>);
+                    <span class="string">"upgrade failure attribute must not be followed by any other attributes. Found {} more attribute{}"</span>,
+                    attrs.len() - <span class="number">1</span>,
+                    <span class="kw">if </span>attrs.len() &gt; <span class="number">2 </span>{ <span class="string">"s" </span>} <span class="kw">else </span>{ <span class="string">"" </span>},
+            )));
+        }
+
+        <span class="kw">let </span>next_attrs = <span class="kw-2">&amp;</span><a href="#59">input</a>.<a href="https://docs.rs/syn/2.0.68/syn/parse/struct.ParseBuffer.html#method.call">call</a>(Attribute::parse_outer)<span class="question-mark">?</span>;
+        <span class="kw">if </span>!next_attrs.is_empty() {
+            <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="https://docs.rs/syn/2.0.68/syn/error/struct.Error.html#method.new_spanned">syn::Error::new_spanned</a>(
+                <span class="kw-2">&amp;</span><a href="#110">next_attrs</a>[<span class="number">0</span>],
                 <a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.format.html">format!</a>(
-                    <span class="string">"\
-let {0} = match {1}::clone::Upgrade::upgrade(&amp;{0}) {{
-    Some(val) =&gt; val,
-    None =&gt; {{
-        {1}::g_debug!(
-            {1}::CLONE_MACRO_LOG_DOMAIN,
-            \"Failed to upgrade {0}\",
-        );
-        let ___return_value = || {{ {2} }};
-        return ___return_value();
-    }}
-}};"</span>,
-                    name,
-                    crate_ident_new(),
-                    <span class="kw">if </span>not_unit_ret { r } <span class="kw">else </span>{ <span class="string">"" </span>},
+                    <span class="string">"upgrade failure attribute must not be followed by any other attributes. Found {} more attribute{}"</span>,
+                    next_attrs.len(),
+                    <span class="kw">if </span>next_attrs.len() &gt; <span class="number">1 </span>{ <span class="string">"s" </span>} <span class="kw">else </span>{ <span class="string">"" </span>},
                 )
-            }
-            (<a href="#98">BorrowKind::Weak</a>, <span class="prelude-val">None</span>) =&gt; {
-                <a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.format.html">format!</a>(
-                    <span class="string">"\
-let {0} = match {1}::clone::Upgrade::upgrade(&amp;{0}) {{
-    Some(val) =&gt; val,
-    None =&gt; {{
-        {1}::g_debug!(
-            {1}::CLONE_MACRO_LOG_DOMAIN,
-            \"Failed to upgrade {0}\",
-        );
-        return;
-    }}
-}};"</span>,
-                    name,
-                    crate_ident_new(),
-                )
-            }
-            (<a href="#99">BorrowKind::WeakAllowNone</a>, <span class="kw">_</span>) =&gt; <a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.format.html">format!</a>(
-                <span class="string">"let {0} = {1}::clone::Upgrade::upgrade(&amp;{0});"</span>,
-                name,
-                crate_ident_new(),
-            ),
-            <span class="kw">_ </span>=&gt; <a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html#method.new">String::new</a>(),
-        }
-    }
-}
-
-<span class="kw">enum </span>SimpleToken {
-    Punct(<span class="kw-2">&amp;</span><span class="lifetime">'static </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>),
-    Ident(<span class="kw-2">&amp;</span><span class="lifetime">'static </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>),
-}
-
-<span class="kw">impl </span><a href="#244-247">SimpleToken</a> {
-    <span class="kw">fn </span>to_str(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a> {
-        <span class="kw">match </span><span class="kw-2">*</span><span class="self"><a href="#250">self</a> </span>{
-            <span class="self">Self</span>::Punct(p) =&gt; <a href="#252">p</a>,
-            <span class="self">Self</span>::Ident(i) =&gt; <a href="#253">i</a>,
-        }
-    }
-}
-
-<span class="kw">impl </span>PartialEq&lt;<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html">TokenTree</a>&gt; <span class="kw">for </span><a href="#244-247">SimpleToken</a> {
-    <span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html">TokenTree</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
-        <span class="kw">match </span>(<a class="self" href="#259">self</a>, <a href="#259">other</a>) {
-            (<a href="#245">SimpleToken::Punct</a>(p1), <a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#variant.Punct">TokenTree::Punct</a>(<span class="kw-2">ref </span>p2)) =&gt; <span class="kw-2">*</span><a href="#261">p1</a> == <a href="#261">p2</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html#tymethod.to_string">to_string</a>(),
-            (<a href="#246">SimpleToken::Ident</a>(i1), <a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#variant.Ident">TokenTree::Ident</a>(<span class="kw-2">ref </span>i2)) =&gt; <span class="kw-2">*</span><a href="#262">i1</a> == <a href="#262">i2</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html#tymethod.to_string">to_string</a>(),
-            <span class="kw">_ </span>=&gt; <span class="bool-val">false</span>,
-        }
-    }
-}
-
-<span class="kw">fn </span>is_punct(elem: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html">TokenTree</a>, punct: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
-    <span class="kw">match </span><a href="#268">elem</a> {
-        <a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#variant.Punct">TokenTree::Punct</a>(<span class="kw-2">ref </span>p) =&gt; <a href="#270">p</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html#tymethod.to_string">to_string</a>() == <a href="#268">punct</a>,
-        <span class="kw">_ </span>=&gt; <span class="bool-val">false</span>,
-    }
-}
-
-<span class="kw">enum </span>TokenCheck {
-    UnexpectedToken(<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>, <a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>),
-    UnexpectedEnd(<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>),
-}
-
-<span class="kw">fn </span>check_tokens(
-    tokens_to_check: <span class="kw-2">&amp;</span>[<a href="#244-247">SimpleToken</a>],
-    parts: <span class="kw-2">&amp;mut </span><a href="#12-16">PeekableProcIter</a>,
-) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="#275-278">TokenCheck</a>&gt; {
-    <span class="kw">let </span><span class="kw-2">mut </span>tokens = <a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html#method.new">String::new</a>();
-
-    <span class="kw">for </span>token <span class="kw">in </span>tokens_to_check {
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(next) = parts.peek() {
-            <span class="kw">if </span>token != next {
-                <span class="kw">return </span><span class="prelude-val">Err</span>(TokenCheck::UnexpectedToken(tokens, next.to_string()));
-            }
-            tokens.push_str(token.to_str());
-            parts.next();
-        } <span class="kw">else </span>{
-            <span class="kw">return </span><span class="prelude-val">Err</span>(TokenCheck::UnexpectedEnd(tokens));
-        }
-    }
-    <span class="prelude-val">Ok</span>(())
-}
-
-<span class="attr">#[doc(alias = <span class="string">"get_full_ident"</span>)]
-</span><span class="kw">fn </span>full_ident(
-    parts: <span class="kw-2">&amp;mut </span><a href="#12-16">PeekableProcIter</a>,
-    borrow_kind: <a href="#97-102">BorrowKind</a>,
-) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>, <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a>&gt; {
-    <span class="kw">let </span><span class="kw-2">mut </span>name = <a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html#method.new">String::new</a>();
-    <span class="kw">let </span><span class="kw-2">mut </span>prev_is_ident = <span class="bool-val">false</span>;
-
-    <span class="kw">loop </span>{
-        <span class="kw">match </span><a href="#302">parts</a>.<a href="#55-57">peek</a>() {
-            <span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#variant.Punct">TokenTree::Punct</a>(p)) =&gt; {
-                <span class="kw">let </span>p_s = <a href="#310">p</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html#tymethod.to_string">to_string</a>();
-                <span class="kw">if </span>p_s == <span class="string">"," </span>|| p_s == <span class="string">"=" </span>{
-                    <span class="kw">break</span>;
-                } <span class="kw">else if </span>p_s == <span class="string">"." </span>{
-                    <span class="kw">if </span>!prev_is_ident {
-                        <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="#302">parts</a>.<a href="#63-65">generate_error_with_next_span</a>(<span class="kw-2">&amp;</span><a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.format.html">format!</a>(
-                            <span class="string">"Unexpected `.` after `{}`"</span>,
-                            borrow_kind.to_str()
-                        )));
-                    }
-                    <a href="#306">prev_is_ident</a> = <span class="bool-val">false</span>;
-                    <a href="#305">name</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html#method.push">push</a>(<span class="string">'.'</span>);
-                    <a href="#302">parts</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.next">next</a>();
-                } <span class="kw">else if </span>name.is_empty() {
-                    <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="#302">parts</a>
-                        .<a href="#63-65">generate_error_with_next_span</a>(<span class="kw-2">&amp;</span><a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.format.html">format!</a>(<span class="string">"Expected ident, found `{p_s}`"</span>)));
-                } <span class="kw">else </span>{
-                    <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="#302">parts</a>.<a href="#63-65">generate_error_with_next_span</a>(<span class="kw-2">&amp;</span><a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.format.html">format!</a>(
-                        <span class="string">"Expected ident, found `{p_s}` after `{name}`"
-                    </span>)));
-                }
-            }
-            <span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#variant.Ident">TokenTree::Ident</a>(i)) =&gt; {
-                <span class="kw">if </span>prev_is_ident {
-                    <span class="kw">break</span>;
-                }
-                <a href="#306">prev_is_ident</a> = <span class="bool-val">true</span>;
-                <a href="#305">name</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html#method.push_str">push_str</a>(<span class="kw-2">&amp;</span><a href="#333">i</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html#tymethod.to_string">to_string</a>());
-                <a href="#302">parts</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.next">next</a>();
-            }
-            <span class="prelude-val">Some</span>(x) <span class="kw">if </span><a href="#305">name</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html#method.is_empty">is_empty</a>() =&gt; {
-                <span class="kw">let </span>err = <a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.format.html">format!</a>(<span class="string">"Expected ident, found `{x}`"</span>);
-                <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="#302">parts</a>.<a href="#63-65">generate_error_with_next_span</a>(<span class="kw-2">&amp;</span><a href="#342">err</a>));
-            }
-            <span class="prelude-val">Some</span>(x) =&gt; {
-                <span class="kw">let </span>err = <span class="kw-2">&amp;</span><a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.format.html">format!</a>(<span class="string">"Expected ident, found `{x}` after `{name}`"</span>);
-                <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="#302">parts</a>.<a href="#63-65">generate_error_with_next_span</a>(<a href="#346">err</a>));
-            }
-            <span class="prelude-val">None </span>=&gt; {
-                <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="#302">parts</a>.<a href="#59-61">generate_error</a>(<span class="kw-2">&amp;</span><a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.format.html">format!</a>(<span class="string">"Unexpected end after ident `{name}`"</span>)));
-            }
-        }
-    }
-    <span class="kw">if </span>name.is_empty() {
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(next) = <a href="#302">parts</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.next">next</a>() {
-            <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="#302">parts</a>.<a href="#59-61">generate_error</a>(<span class="kw-2">&amp;</span><a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.format.html">format!</a>(<span class="string">"Expected ident, found `{next}`"</span>)));
-        }
-        <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="#302">parts</a>.<a href="#59-61">generate_error</a>(<span class="string">"Expected something after, found nothing"</span>));
-    }
-    <span class="prelude-val">Ok</span>(<a href="#305">name</a>)
-}
-
-<span class="attr">#[doc(alias = <span class="string">"get_keyword"</span>)]
-</span><span class="kw">fn </span>keyword(parts: <span class="kw-2">&amp;mut </span><a href="#12-16">PeekableProcIter</a>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#97-102">BorrowKind</a>, <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a>&gt; {
-    <span class="kw">let </span><span class="kw-2">mut </span>ret = <a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html#method.new">String::new</a>();
-    <span class="kw">let </span><span class="kw-2">mut </span>prev_is_ident = <span class="bool-val">false</span>;
-    <span class="kw">let </span><span class="kw-2">mut </span>stored = <span class="bool-val">false</span>;
-    <span class="comment">// We unfortunately can't join spans since the `Span::join` method is nightly-only. Well, we'll
-    // do our best...
-    </span><span class="kw">let </span>start_span = <a href="#364">parts</a>.next_span;
-
-    <span class="kw">loop </span>{
-        <span class="kw">match </span><a href="#364">parts</a>.<a href="#55-57">peek</a>() {
-            <span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#variant.Ident">TokenTree::Ident</a>(i)) =&gt; {
-                <span class="kw">if </span>prev_is_ident {
-                    <span class="kw">break</span>;
-                }
-                <a href="#366">prev_is_ident</a> = <span class="bool-val">true</span>;
-                <span class="kw">if </span>stored {
-                    <a href="#365">ret</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html#method.push">push</a>(<span class="string">'-'</span>);
-                    <a href="#367">stored</a> = <span class="bool-val">false</span>;
-                }
-                <a href="#365">ret</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html#method.push_str">push_str</a>(<span class="kw-2">&amp;</span><a href="#374">i</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html#tymethod.to_string">to_string</a>());
-            }
-            <span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#variant.Punct">TokenTree::Punct</a>(p)) <span class="kw">if </span><a href="#385">p</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html#tymethod.to_string">to_string</a>() == <span class="string">"-" </span>=&gt; {
-                <span class="kw">if </span>!prev_is_ident {
-                    <span class="kw">break</span>;
-                }
-                <span class="comment">// This is to prevent to push `-` if the next item isn't an ident.
-                </span><a href="#366">prev_is_ident</a> = <span class="bool-val">false</span>;
-                <a href="#367">stored</a> = <span class="bool-val">true</span>;
-            }
-            <span class="kw">_ </span>=&gt; <span class="kw">break</span>,
-        }
-        <a href="#364">parts</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.next">next</a>();
-    }
-    <span class="kw">let </span>ret = <span class="kw">match </span><a href="#365">ret</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html#method.as_str">as_str</a>() {
-        <span class="string">"strong" </span>=&gt; <a href="#100">BorrowKind::Strong</a>,
-        <span class="string">"weak" </span>=&gt; <a href="#98">BorrowKind::Weak</a>,
-        <span class="string">"weak-allow-none" </span>=&gt; <a href="#99">BorrowKind::WeakAllowNone</a>,
-        <span class="string">"to-owned" </span>=&gt; <a href="#101">BorrowKind::ToOwned</a>,
-        <span class="string">"default-return" </span>=&gt; {
-            <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="#364">parts</a>
-                .<a href="#67-93">generate_error_with_span</a>(<span class="string">"`@default-return` should be after `=&gt;`"</span>, <a href="#370">start_span</a>));
-        }
-        <span class="string">"default-panic" </span>=&gt; {
-            <span class="kw">return </span><span class="prelude-val">Err</span>(
-                <a href="#364">parts</a>.<a href="#67-93">generate_error_with_span</a>(<span class="string">"`@default-panic` should be after `=&gt;`"</span>, <a href="#370">start_span</a>)
-            );
-        }
-        k =&gt; {
-            <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="#364">parts</a>.<a href="#67-93">generate_error_with_span</a>(
-                <span class="kw-2">&amp;</span><a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.format.html">format!</a>(
-                    <span class="string">"Unknown keyword `{k}`, only `weak`, `weak-allow-none`, `to-owned` and \
-                    `strong` are allowed"
-                </span>),
-                <a href="#370">start_span</a>,
             ));
         }
-    };
-    <span class="prelude-val">Ok</span>(<a href="#397">ret</a>)
-}
 
-<span class="kw">fn </span>parse_ident(
-    parts: <span class="kw-2">&amp;mut </span><a href="#12-16">PeekableProcIter</a>,
-    elements: <span class="kw-2">&amp;mut </span>Vec&lt;<a href="#137-141">ElemToClone</a>&gt;,
-) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a>&gt; {
-    <span class="kw">let </span>borrow_kind = <a href="#364-422">keyword</a>(<a href="#425">parts</a>)<span class="question-mark">?</span>;
-    <span class="kw">let </span>name = <a href="#301-361">full_ident</a>(<a href="#425">parts</a>, <a href="#428">borrow_kind</a>)<span class="question-mark">?</span>;
-    <span class="kw">let </span>name_span = <a href="#425">parts</a>.current_span;
-    <span class="kw">if </span>name.ends_with(<span class="string">'.'</span>) {
-        <span class="kw">return </span><span class="prelude-val">Err</span>(
-            <a href="#425">parts</a>.<a href="#67-93">generate_error_with_span</a>(<span class="kw-2">&amp;</span><a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.format.html">format!</a>(<span class="string">"Invalid variable name: `{name}`"</span>), <a href="#430">name_span</a>)
-        );
-    }
-    <span class="kw">let </span>alias = <span class="kw">match </span><a href="#425">parts</a>.<a href="#55-57">peek</a>() {
-        <span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#variant.Ident">TokenTree::Ident</a>(p)) <span class="kw">if </span><a href="#437">p</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html#tymethod.to_string">to_string</a>() == <span class="string">"as" </span>=&gt; {
-            <a href="#425">parts</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.next">next</a>();
-            <span class="kw">let </span>current_span = <a href="#425">parts</a>.current_span;
-            <span class="kw">match </span><a href="#425">parts</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.next">next</a>() {
-                <span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#variant.Ident">TokenTree::Ident</a>(i)) =&gt; <span class="prelude-val">Some</span>(<a href="#441">i</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html#tymethod.to_string">to_string</a>()),
-                <span class="prelude-val">Some</span>(x) =&gt; {
-                    <span class="kw">let </span>err = <a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.format.html">format!</a>(<span class="string">"Expected ident after `as` keyword, found `{x}`"</span>);
-                    <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="#425">parts</a>.<a href="#59-61">generate_error</a>(<span class="kw-2">&amp;</span><a href="#443">err</a>));
-                }
-                <span class="prelude-val">None </span>=&gt; {
-                    <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="#425">parts</a>.<a href="#67-93">generate_error_with_span</a>(
-                        <span class="string">"Unexpected end after `as` keyword"</span>,
-                        <a href="#439">current_span</a>,
-                    ))
-                }
-            }
-        }
-        <span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#variant.Ident">TokenTree::Ident</a>(p)) =&gt; {
-            <span class="kw">let </span>err = <a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.format.html">format!</a>(<span class="string">"Unexpected `{p}`"</span>);
-            <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="#425">parts</a>.<a href="#59-61">generate_error</a>(<span class="kw-2">&amp;</span><a href="#455">err</a>));
-        }
-        <span class="kw">_ </span>=&gt; <span class="prelude-val">None</span>,
-    };
-    <span class="kw">if </span>name == <span class="string">"self" </span>&amp;&amp; alias.is_none() {
-        <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="#425">parts</a>.<a href="#67-93">generate_error_with_span</a>(
-            <span class="string">"Can't use `self` as variable name. Try storing it in a temporary variable or \
-                rename it using `as`."</span>,
-            <a href="#430">name_span</a>,
-        ));
-    } <span class="kw">else if </span>name.contains(<span class="string">'.'</span>) &amp;&amp; alias.is_none() {
-        <span class="kw">let </span>err = <a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.format.html">format!</a>(<span class="string">"`{name}`: Field accesses are not allowed as is, you must rename it!"</span>);
-        <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="#425">parts</a>.<a href="#67-93">generate_error_with_span</a>(<span class="kw-2">&amp;</span><a href="#467">err</a>, <a href="#430">name_span</a>));
-    }
-
-    <a href="#426">elements</a>.<a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.push">push</a>(<a href="#137-141">ElemToClone</a> {
-        <a href="#429">name</a>,
-        <a href="#436">alias</a>,
-        <a href="#428">borrow_kind</a>,
-    });
-    <span class="prelude-val">Ok</span>(())
-}
-
-<span class="kw">fn </span>delimiter_to_string(delimiter: <a href="https://doc.rust-lang.org/nightly/proc_macro/enum.Delimiter.html">Delimiter</a>, open: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'static </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a> {
-    <span class="kw">match </span><a href="#479">delimiter</a> {
-        <a href="https://doc.rust-lang.org/nightly/proc_macro/enum.Delimiter.html#variant.Parenthesis">Delimiter::Parenthesis</a> =&gt; {
-            <span class="kw">if </span>open {
-                <span class="string">"("
-            </span>} <span class="kw">else </span>{
-                <span class="string">")"
-            </span>}
-        }
-        <a href="https://doc.rust-lang.org/nightly/proc_macro/enum.Delimiter.html#variant.Brace">Delimiter::Brace</a> =&gt; {
-            <span class="kw">if </span>open {
-                <span class="string">"{"
-            </span>} <span class="kw">else </span>{
-                <span class="string">"}"
-            </span>}
-        }
-        <a href="https://doc.rust-lang.org/nightly/proc_macro/enum.Delimiter.html#variant.Bracket">Delimiter::Bracket</a> =&gt; {
-            <span class="kw">if </span>open {
-                <span class="string">"["
-            </span>} <span class="kw">else </span>{
-                <span class="string">"]"
-            </span>}
-        }
-        <a href="https://doc.rust-lang.org/nightly/proc_macro/enum.Delimiter.html#variant.None">Delimiter::None</a> =&gt; <span class="string">""</span>,
+        <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(<a href="#69">upgrade_behaviour</a>))
     }
 }
 
-<span class="kw">fn </span>group_to_string(g: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/proc_macro/struct.Group.html">Group</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a> {
-    <a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.format.html">format!</a>(
-        <span class="string">"{}{}{}"</span>,
-        delimiter_to_string(g.delimiter(), <span class="bool-val">true</span>),
-        tokens_to_string(PeekableProcIter::from(g)),
-        delimiter_to_string(g.delimiter(), <span class="bool-val">false</span>),
-    )
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">struct </span>Capture {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) name: <a href="https://docs.rs/syn/2.0.68/syn/expr/enum.Expr.html">Expr</a>,
+    <span class="kw">pub</span>(<span class="kw">crate</span>) alias: <span class="prelude-ty">Option</span>&lt;<a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.Ident.html">Ident</a>&gt;,
+    <span class="kw">pub</span>(<span class="kw">crate</span>) kind: <a href="#14-20">CaptureKind</a>,
 }
 
-<span class="attr">#[doc(alias = <span class="string">"get_expr"</span>)]
-</span><span class="kw">fn </span>expr(parts: <span class="kw-2">&amp;mut </span><a href="#12-16">PeekableProcIter</a>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>, <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a>&gt; {
-    <span class="kw">let </span><span class="kw-2">mut </span>ret = <a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html#method.new">String::new</a>();
-    <span class="kw">let </span><span class="kw-2">mut </span>total = <span class="number">0</span>;
-    <span class="kw">let </span>span = <a href="#516">parts</a>.current_span;
-    <span class="kw">match </span><a href="#516">parts</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.next">next</a>() {
-        <span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#variant.Literal">TokenTree::Literal</a>(l)) =&gt; <a href="#517">ret</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html#method.push_str">push_str</a>(<span class="kw-2">&amp;</span><a href="#521">l</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html#tymethod.to_string">to_string</a>()),
-        <span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#variant.Ident">TokenTree::Ident</a>(i)) =&gt; <a href="#517">ret</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html#method.push_str">push_str</a>(<span class="kw-2">&amp;</span><a href="#522">i</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html#tymethod.to_string">to_string</a>()),
-        <span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#variant.Punct">TokenTree::Punct</a>(p)) =&gt; <span class="kw">match </span><a href="#523">p</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html#tymethod.to_string">to_string</a>().<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html#method.as_str">as_str</a>() {
-            <span class="string">"[" </span>| <span class="string">"{" </span>| <span class="string">"(" </span>=&gt; {
-                <a href="#518">total</a> += <span class="number">1</span>;
-            }
-            x =&gt; {
-                <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="#516">parts</a>
-                    .<a href="#59-61">generate_error</a>(<span class="kw-2">&amp;</span><a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.format.html">format!</a>(<span class="string">"Unexpected token `{x}` after `@default-return`"</span>)))
-            }
-        },
-        <span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#variant.Group">TokenTree::Group</a>(g)) =&gt; <span class="kw">return </span><span class="prelude-val">Ok</span>(<a href="#506-513">group_to_string</a>(<span class="kw-2">&amp;</span><a href="#532">g</a>)),
-        <span class="prelude-val">None </span>=&gt; {
-            <span class="kw">return </span><span class="prelude-val">Err</span>(
-                <a href="#516">parts</a>.<a href="#67-93">generate_error_with_span</a>(<span class="string">"Unexpected end after `@default-return`"</span>, <a href="#519">span</a>)
-            )
+<span class="kw">impl </span><a href="#126-130">Capture</a> {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>maybe_parse(
+        attrs: <span class="kw-2">&amp;</span>[<a href="https://docs.rs/syn/2.0.68/syn/attr/struct.Attribute.html">Attribute</a>],
+        input: <a href="https://docs.rs/syn/2.0.68/syn/parse/type.ParseStream.html">ParseStream</a>,
+    ) -&gt; syn::Result&lt;<span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt;&gt; {
+        <span class="comment">// Caller checked for empty
+        </span><span class="kw">let </span>attr = <span class="kw-2">&amp;</span><a href="#134">attrs</a>[<span class="number">0</span>];
+
+        <span class="kw">let </span><span class="prelude-val">Some</span>(attr_name) = <a href="#138">attr</a>.<a href="https://docs.rs/syn/2.0.68/syn/attr/struct.Attribute.html#method.path">path</a>().<a href="https://docs.rs/syn/2.0.68/syn/path/struct.Path.html#method.get_ident">get_ident</a>() <span class="kw">else </span>{
+            <span class="kw">return </span><span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>);
+        };
+        <span class="kw">let </span><span class="prelude-val">Ok</span>(kind) = <a href="https://doc.rust-lang.org/nightly/core/convert/trait.TryFrom.html#tymethod.try_from">CaptureKind::try_from</a>(<a href="#140">attr_name</a>) <span class="kw">else </span>{
+            <span class="kw">return </span><span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>);
+        };
+
+        <span class="kw">if </span>attrs.len() &gt; <span class="number">1 </span>{
+            <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="https://docs.rs/syn/2.0.68/syn/error/struct.Error.html#method.new_spanned">syn::Error::new_spanned</a>(
+                <span class="kw-2">&amp;</span><a href="#134">attrs</a>[<span class="number">1</span>],
+                <span class="string">"variable capture attributes must be followed by an identifier"</span>,
+            ));
         }
-    };
-    <span class="kw">loop </span>{
-        <span class="kw">match </span><a href="#516">parts</a>.<a href="#55-57">peek</a>() {
-            <span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#variant.Punct">TokenTree::Punct</a>(p)) =&gt; {
-                <span class="kw">let </span>p_s = <a href="#541">p</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html#tymethod.to_string">to_string</a>();
-                <span class="kw">if </span>p_s == <span class="string">"{" </span>|| p_s == <span class="string">"(" </span>|| p_s == <span class="string">"[" </span>|| p_s == <span class="string">"&lt;" </span>{
-                    <a href="#518">total</a> += <span class="number">1</span>;
-                } <span class="kw">else if </span>p_s == <span class="string">"}" </span>|| p_s == <span class="string">")" </span>|| p_s == <span class="string">"]" </span>|| p_s == <span class="string">"&gt;" </span>{
-                    <a href="#518">total</a> -= <span class="number">1</span>;
-                } <span class="kw">else if </span>p_s == <span class="string">"," </span>&amp;&amp; total == <span class="number">0 </span>{
-                    <span class="kw">return </span><span class="prelude-val">Ok</span>(<a href="#517">ret</a>);
+
+        <span class="kw">let </span><span class="kw-2">mut </span>alias = <span class="prelude-val">None</span>;
+        <span class="kw">if let </span><a href="https://docs.rs/syn/2.0.68/syn/attr/enum.Meta.html#variant.List">syn::Meta::List</a>(<span class="kw-2">ref </span>list) = <a href="#138">attr</a>.meta {
+            <a href="#155">list</a>.<a href="https://docs.rs/syn/2.0.68/syn/attr/struct.MetaList.html#method.parse_nested_meta">parse_nested_meta</a>(|meta| {
+                <span class="kw">if </span>meta.path.is_ident(<span class="string">"rename_to"</span>) {
+                    <span class="kw">let </span>value = <a href="#156">meta</a>.<a href="https://docs.rs/syn/2.0.68/syn/meta/struct.ParseNestedMeta.html#method.value">value</a>()<span class="question-mark">?</span>;
+                    <span class="kw">let </span>id = <a href="#158">value</a>.<a href="https://docs.rs/syn/2.0.68/syn/parse/struct.ParseBuffer.html#method.parse">parse</a>::&lt;<a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.Ident.html">Ident</a>&gt;()<span class="question-mark">?</span>;
+                    <span class="kw">if </span>alias.is_some() {
+                        <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="#156">meta</a>.<a href="https://docs.rs/syn/2.0.68/syn/meta/struct.ParseNestedMeta.html#method.error">error</a>(<span class="string">"multiple `rename_to` properties are not allowed"</span>));
+                    }
+                    <a href="#154">alias</a> = <span class="prelude-val">Some</span>(<a href="#159">id</a>);
+                } <span class="kw">else if let </span><span class="prelude-val">Some</span>(ident) = <a href="#156">meta</a>.path.<a href="https://docs.rs/syn/2.0.68/syn/path/struct.Path.html#method.get_ident">get_ident</a>() {
+                    <span class="kw">return </span><span class="prelude-val">Err</span>(
+                        <a href="#156">meta</a>.<a href="https://docs.rs/syn/2.0.68/syn/meta/struct.ParseNestedMeta.html#method.error">error</a>(
+                            <a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.format.html">format!</a>(
+                                <span class="string">"unsupported capture attribute property `{ident}`: only `rename_to` is supported"
+                            </span>),
+                        ),
+                    );
+                } <span class="kw">else </span>{
+                    <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="#156">meta</a>.<a href="https://docs.rs/syn/2.0.68/syn/meta/struct.ParseNestedMeta.html#method.error">error</a>(<span class="string">"unsupported capture attribute property"</span>));
                 }
-                <a href="#517">ret</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html#method.push_str">push_str</a>(<span class="kw-2">&amp;</span><a href="#542">p_s</a>);
-            }
-            <span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#variant.Group">TokenTree::Group</a>(g)) =&gt; {
-                <a href="#517">ret</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html#method.push_str">push_str</a>(<span class="kw-2">&amp;</span><a href="#506-513">group_to_string</a>(<a href="#552">g</a>));
-            }
-            <span class="prelude-val">Some</span>(x) =&gt; {
-                <span class="kw">if </span>total == <span class="number">0 </span>&amp;&amp; !ret.ends_with(<span class="string">':'</span>) {
-                    <span class="kw">return </span><span class="prelude-val">Ok</span>(<a href="#517">ret</a>);
+                <span class="prelude-val">Ok</span>(())
+            })<span class="question-mark">?</span>;
+        }
+
+        <span class="kw">let </span>name = <a href="#135">input</a>.<a href="https://docs.rs/syn/2.0.68/syn/parse/struct.ParseBuffer.html#method.parse">parse</a>::&lt;<a href="https://docs.rs/syn/2.0.68/syn/expr/enum.Expr.html">Expr</a>&gt;()<span class="question-mark">?</span>;
+        <span class="kw">match </span><a href="#179">name</a> {
+            <a href="https://docs.rs/syn/2.0.68/syn/expr/enum.Expr.html#variant.Path">Expr::Path</a>(<span class="kw-2">ref </span>p) <span class="kw">if </span><a href="#181">p</a>.path.<a href="https://docs.rs/syn/2.0.68/syn/path/struct.Path.html#method.get_ident">get_ident</a>().<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.is_some">is_some</a>() =&gt; {
+                <span class="kw">if </span>p.path.get_ident().unwrap() == <span class="string">"self" </span>&amp;&amp; alias.is_none() {
+                    <span class="kw">return </span><span class="prelude-val">Err</span>(
+                        <a href="https://docs.rs/syn/2.0.68/syn/error/struct.Error.html#method.new_spanned">syn::Error::new_spanned</a>(
+                            <a href="#138">attr</a>,
+                            <span class="string">"capture attribute for `self` requires usage of the `rename_to` attribute property"</span>,
+                        ),
+                    );
                 }
-                <a href="#517">ret</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html#method.push_str">push_str</a>(<span class="kw-2">&amp;</span><a href="#555">x</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html#tymethod.to_string">to_string</a>())
+                <span class="comment">// Nothing to do, it's just an identifier
+            </span>}
+            <span class="kw">_ if </span><a href="#154">alias</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.is_some">is_some</a>() =&gt; {
+                <span class="comment">// Nothing to do, it's an alias
+            </span>}
+            <span class="kw">_ </span>=&gt; {
+                <span class="kw">return </span><span class="prelude-val">Err</span>(
+                    <a href="https://docs.rs/syn/2.0.68/syn/error/struct.Error.html#method.new_spanned">syn::Error::new_spanned</a>(
+                        <a href="#138">attr</a>,
+                        <span class="string">"capture attribute for an expression requires usage of the `rename_to` attribute property"</span>,
+                    ),
+                );
             }
-            <span class="prelude-val">None </span>=&gt; <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="#516">parts</a>.<a href="#59-61">generate_error</a>(
-                <span class="string">"Unexpected end after `{ret}`. Did you forget a `,` after the @default-return value?"</span>,
+        }
+
+        <a href="#135">input</a>.<a href="https://docs.rs/syn/2.0.68/syn/parse/struct.ParseBuffer.html#method.parse">parse</a>::&lt;<a class="macro" href="https://docs.rs/syn/2.0.68/syn/macro.Token.html">Token!</a>[,]&gt;()<span class="question-mark">?</span>;
+
+        <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(<a href="#126-130">Capture</a> { <a href="#179">name</a>, <a href="#154">alias</a>, <a href="#143">kind</a> }))
+    }
+
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>alias(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.TokenStream.html">TokenStream</a> {
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="kw-2">ref </span>alias) = <a class="self" href="#210">self</a>.alias {
+            <a href="#211">alias</a>.<a href="https://docs.rs/quote/1.0.36/quote/to_tokens/trait.ToTokens.html#tymethod.to_token_stream">to_token_stream</a>()
+        } <span class="kw">else </span>{
+            <a class="self" href="#210">self</a>.name.<a href="https://docs.rs/quote/1.0.36/quote/to_tokens/trait.ToTokens.html#tymethod.to_token_stream">to_token_stream</a>()
+        }
+    }
+
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>outer_before_tokens(<span class="kw-2">&amp;</span><span class="self">self</span>, crate_ident: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.TokenStream.html">TokenStream</a>) -&gt; <a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.TokenStream.html">TokenStream</a> {
+        <span class="kw">let </span>alias = <a class="self" href="#218">self</a>.<a href="#210-216">alias</a>();
+        <span class="kw">let </span>name = <span class="kw-2">&amp;</span><a class="self" href="#218">self</a>.name;
+        <span class="kw">match </span><a class="self" href="#218">self</a>.kind {
+            <a href="#15">CaptureKind::Watch</a> =&gt; <a class="macro" href="https://docs.rs/quote/1.0.36/quote/macro.quote.html">quote!</a> {
+                <span class="kw">let </span>#alias = #crate_ident::object::Watchable::watched_object(<span class="kw-2">&amp;</span>#name);
+            },
+            <a href="#16">CaptureKind::Weak</a> | <a href="#17">CaptureKind::WeakAllowNone</a> =&gt; <a class="macro" href="https://docs.rs/quote/1.0.36/quote/macro.quote.html">quote!</a> {
+                <span class="kw">let </span>#alias = #crate_ident::clone::Downgrade::downgrade(<span class="kw-2">&amp;</span>#name);
+            },
+            <a href="#18">CaptureKind::Strong</a> =&gt; <a class="macro" href="https://docs.rs/quote/1.0.36/quote/macro.quote.html">quote!</a> {
+                <span class="kw">let </span>#alias = #name.clone();
+            },
+            <a href="#19">CaptureKind::ToOwned</a> =&gt; <a class="macro" href="https://docs.rs/quote/1.0.36/quote/macro.quote.html">quote!</a> {
+                <span class="kw">let </span>#alias = ::std::borrow::ToOwned::to_owned(<span class="kw-2">&amp;*</span>#name);
+            },
+        }
+    }
+
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>outer_after_tokens(
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
+        crate_ident: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.TokenStream.html">TokenStream</a>,
+        closure_ident: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.Ident.html">Ident</a>,
+    ) -&gt; <a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.TokenStream.html">TokenStream</a> {
+        <span class="kw">let </span>name = <span class="kw-2">&amp;</span><a class="self" href="#238">self</a>.name;
+        <span class="kw">match </span><a class="self" href="#238">self</a>.kind {
+            <a href="#15">CaptureKind::Watch</a> =&gt; <a class="macro" href="https://docs.rs/quote/1.0.36/quote/macro.quote.html">quote!</a> {
+                #crate_ident::object::Watchable::watch_closure(<span class="kw-2">&amp;</span>#name, <span class="kw-2">&amp;</span>#closure_ident);
+            },
+            <span class="kw">_ </span>=&gt; <a href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html#tymethod.default">Default::default</a>(),
+        }
+    }
+
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>inner_before_tokens(
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
+        crate_ident: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.TokenStream.html">TokenStream</a>,
+        weak_upgrade_failure_kind: <span class="kw-2">&amp;</span><a href="#47-54">UpgradeBehaviour</a>,
+        upgrade_failure_closure_ident: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.Ident.html">Ident</a>,
+        unit_return: <span class="prelude-ty">Option</span>&lt;<a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.TokenStream.html">TokenStream</a>&gt;,
+    ) -&gt; <a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.TokenStream.html">TokenStream</a> {
+        <span class="kw">let </span>alias = <a class="self" href="#252">self</a>.<a href="#210-216">alias</a>();
+        <span class="kw">match </span><a class="self" href="#252">self</a>.kind {
+            <a href="#15">CaptureKind::Watch</a> =&gt; {
+                <a class="macro" href="https://docs.rs/quote/1.0.36/quote/macro.quote.html">quote!</a> {
+                    <span class="kw">let </span>#alias = <span class="kw">unsafe </span>{ #alias.borrow() };
+                    <span class="kw">let </span>#alias = ::core::convert::AsRef::as_ref(<span class="kw-2">&amp;</span>#alias);
+                }
+            }
+            <a href="#16">CaptureKind::Weak</a> =&gt; <span class="kw">match </span><a href="#254">weak_upgrade_failure_kind</a> {
+                <a href="#50">UpgradeBehaviour::Panic</a> =&gt; {
+                    <span class="kw">let </span>err_msg = <a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.format.html">format!</a>(
+                        <span class="string">"Failed to upgrade `{}`. If you don't want to panic, use `#[upgrade_or]`, `#[upgrade_or_else]` or `#[upgrade_or_default]`"</span>,
+                        alias,
+                    );
+                    <a class="macro" href="https://docs.rs/quote/1.0.36/quote/macro.quote.html">quote!</a> {
+                        <span class="kw">let </span><span class="prelude-val">Some</span>(#alias) = #crate_ident::clone::Upgrade::upgrade(<span class="kw-2">&amp;</span>#alias) <span class="kw">else </span>{
+                            <span class="macro">panic!</span>(#err_msg);
+                        };
+                    }
+                }
+                <a href="#51">UpgradeBehaviour::Default</a>
+                | <a href="#52">UpgradeBehaviour::Expression</a>(<span class="kw">_</span>)
+                | <a href="#53">UpgradeBehaviour::Closure</a>(<span class="kw">_</span>) =&gt; {
+                    <span class="kw">let </span>err_msg = <a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.format.html">format!</a>(<span class="string">"Failed to upgrade `{}`"</span>, alias);
+                    <a class="macro" href="https://docs.rs/quote/1.0.36/quote/macro.quote.html">quote!</a> {
+                        <span class="kw">let </span><span class="prelude-val">Some</span>(#alias) = #crate_ident::clone::Upgrade::upgrade(<span class="kw-2">&amp;</span>#alias) <span class="kw">else </span>{
+                            #<span class="macro">crate_ident::g_debug!</span>(
+                                #crate_ident::CLONE_MACRO_LOG_DOMAIN,
+                                #err_msg,
+                            );
+                            <span class="kw">return </span>(#upgrade_failure_closure_ident)();
+                        };
+                    }
+                }
+                <a href="#49">UpgradeBehaviour::Unit</a> =&gt; {
+                    <span class="kw">let </span>err_msg = <a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.format.html">format!</a>(<span class="string">"Failed to upgrade `{}`"</span>, alias);
+                    <span class="kw">let </span>unit_return = <a href="#256">unit_return</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap_or_else">unwrap_or_else</a>(|| {
+                        <a class="macro" href="https://docs.rs/quote/1.0.36/quote/macro.quote.html">quote!</a> { <span class="kw">return</span>; }
+                    });
+                    <a class="macro" href="https://docs.rs/quote/1.0.36/quote/macro.quote.html">quote!</a> {
+                        <span class="kw">let </span><span class="prelude-val">Some</span>(#alias) = #crate_ident::clone::Upgrade::upgrade(<span class="kw-2">&amp;</span>#alias) <span class="kw">else </span>{
+                            #<span class="macro">crate_ident::g_debug!</span>(
+                                #crate_ident::CLONE_MACRO_LOG_DOMAIN,
+                                #err_msg,
+                            );
+                            #unit_return
+                        };
+                    }
+                }
+            },
+            <a href="#17">CaptureKind::WeakAllowNone</a> =&gt; <a class="macro" href="https://docs.rs/quote/1.0.36/quote/macro.quote.html">quote!</a> {
+                <span class="kw">let </span>#alias = #crate_ident::clone::Upgrade::upgrade(<span class="kw-2">&amp;</span>#alias);
+            },
+            <span class="kw">_ </span>=&gt; <a href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html#tymethod.default">Default::default</a>(),
+        }
+    }
+}
+
+<span class="attr">#[derive(Clone)]
+</span><span class="kw">enum </span>ClosureOrAsync {
+    Closure(<a href="https://docs.rs/syn/2.0.68/syn/expr/struct.ExprClosure.html">ExprClosure</a>),
+    Async(<a href="https://docs.rs/syn/2.0.68/syn/expr/struct.ExprAsync.html">ExprAsync</a>),
+}
+
+<span class="kw">impl </span><a href="https://docs.rs/syn/2.0.68/syn/parse/trait.Parse.html">Parse</a> <span class="kw">for </span><a href="#317-320">ClosureOrAsync</a> {
+    <span class="kw">fn </span>parse(input: <a href="https://docs.rs/syn/2.0.68/syn/parse/type.ParseStream.html">ParseStream</a>) -&gt; syn::Result&lt;<span class="self">Self</span>&gt; {
+        <span class="kw">let </span>expr = <a href="#323">input</a>.<a href="https://docs.rs/syn/2.0.68/syn/parse/struct.ParseBuffer.html#method.parse">parse</a>::&lt;<a href="https://docs.rs/syn/2.0.68/syn/expr/enum.Expr.html">Expr</a>&gt;()<span class="question-mark">?</span>;
+        <span class="kw">match </span><a href="#324">expr</a> {
+            <a href="https://docs.rs/syn/2.0.68/syn/expr/enum.Expr.html#variant.Async">Expr::Async</a>(async_) =&gt; {
+                <span class="kw">if </span>async_.capture.is_none() {
+                    <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="https://docs.rs/syn/2.0.68/syn/error/struct.Error.html#method.new_spanned">syn::Error::new_spanned</a>(
+                        <a href="#326">async_</a>,
+                        <span class="string">"async blocks need to capture variables by move. Please add the `move` keyword"</span>,
+                    ));
+                }
+
+                <span class="prelude-val">Ok</span>(<a href="#319">ClosureOrAsync::Async</a>(<a href="#326">async_</a>))
+            }
+            <a href="https://docs.rs/syn/2.0.68/syn/expr/enum.Expr.html#variant.Closure">Expr::Closure</a>(closure) =&gt; {
+                <span class="kw">if </span>closure.capture.is_none() {
+                    <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="https://docs.rs/syn/2.0.68/syn/error/struct.Error.html#method.new_spanned">syn::Error::new_spanned</a>(
+                        <a href="#336">closure</a>,
+                        <span class="string">"closures need to capture variables by move. Please add the `move` keyword"</span>,
+                    ));
+                }
+
+                <span class="prelude-val">Ok</span>(<a href="#318">ClosureOrAsync::Closure</a>(<a href="#336">closure</a>))
+            }
+            <span class="kw">_ </span>=&gt; <span class="prelude-val">Err</span>(<a href="https://docs.rs/syn/2.0.68/syn/error/struct.Error.html#method.new_spanned">syn::Error::new_spanned</a>(
+                <a href="#324">expr</a>,
+                <span class="string">"only closures and async blocks are supported"</span>,
             )),
         }
-        <a href="#516">parts</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.next">next</a>();
     }
 }
 
-<span class="attr">#[doc(alias = <span class="string">"get_return_kind"</span>)]
-</span><span class="kw">fn </span>return_kind(parts: <span class="kw-2">&amp;mut </span><a href="#12-16">PeekableProcIter</a>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#115-118">WrapperKind</a>, <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a>&gt; {
-    <span class="kw">match </span><a href="#280-298">check_tokens</a>(
-        <span class="kw-2">&amp;</span>[<a href="#246">SimpleToken::Ident</a>(<span class="string">"default"</span>), <a href="#245">SimpleToken::Punct</a>(<span class="string">"-"</span>)],
-        <a href="#570">parts</a>,
-    ) {
-        <span class="prelude-val">Err</span>(<a href="#276">TokenCheck::UnexpectedToken</a>(tokens, unexpected_token)) =&gt; {
-            <span class="kw">return </span><span class="prelude-val">Err</span>(
-                <a href="#570">parts</a>.<a href="#59-61">generate_error</a>(<span class="kw-2">&amp;</span><a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.format.html">format!</a>(<span class="string">"Unknown keyword `{tokens}{unexpected_token}`"</span>))
-            );
+<span class="kw">impl </span><a href="https://docs.rs/quote/1.0.36/quote/to_tokens/trait.ToTokens.html">ToTokens</a> <span class="kw">for </span><a href="#317-320">ClosureOrAsync</a> {
+    <span class="kw">fn </span>to_tokens(<span class="kw-2">&amp;</span><span class="self">self</span>, tokens: <span class="kw-2">&amp;mut </span><a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.TokenStream.html">TokenStream</a>) {
+        <span class="kw">match </span><span class="self"><a href="#355">self</a> </span>{
+            <a href="#318">ClosureOrAsync::Closure</a>(<span class="kw-2">ref </span>c) =&gt; <a href="#357">c</a>.<a href="https://docs.rs/quote/1.0.36/quote/to_tokens/trait.ToTokens.html#tymethod.to_tokens">to_tokens</a>(<a href="#355">tokens</a>),
+            <a href="#319">ClosureOrAsync::Async</a>(<span class="kw-2">ref </span>a) =&gt; <a href="#358">a</a>.<a href="https://docs.rs/quote/1.0.36/quote/to_tokens/trait.ToTokens.html#tymethod.to_tokens">to_tokens</a>(<a href="#355">tokens</a>),
         }
-        <span class="prelude-val">Err</span>(<a href="#277">TokenCheck::UnexpectedEnd</a>(tokens)) =&gt; {
-            <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="#570">parts</a>.<a href="#59-61">generate_error</a>(<span class="kw-2">&amp;</span><a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.format.html">format!</a>(<span class="string">"Unexpected end after tokens `{tokens}`"</span>)));
-        }
-        <span class="prelude-val">Ok</span>(()) =&gt; {}
     }
-    <span class="kw">let </span>prev = <a href="#570">parts</a>.current_span;
-    <span class="kw">match </span><a href="#570">parts</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.next">next</a>() {
-        <span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#variant.Ident">TokenTree::Ident</a>(i)) =&gt; {
-            <span class="kw">let </span>i_s = <a href="#587">i</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html#tymethod.to_string">to_string</a>();
-            <span class="kw">if </span>i_s == <span class="string">"panic" </span>{
-                <span class="kw">return </span><span class="prelude-val">Ok</span>(<a href="#116">WrapperKind::DefaultPanic</a>);
+}
+
+<span class="kw">struct </span>Clone {
+    captures: Vec&lt;<a href="#126-130">Capture</a>&gt;,
+    upgrade_behaviour: <a href="#47-54">UpgradeBehaviour</a>,
+    body: <a href="#317-320">ClosureOrAsync</a>,
+}
+
+<span class="kw">impl </span><a href="https://docs.rs/syn/2.0.68/syn/parse/trait.Parse.html">Parse</a> <span class="kw">for </span><a href="#363-367">Clone</a> {
+    <span class="kw">fn </span>parse(input: <a href="https://docs.rs/syn/2.0.68/syn/parse/type.ParseStream.html">ParseStream</a>) -&gt; syn::Result&lt;<span class="self">Self</span>&gt; {
+        <span class="kw">let </span><span class="kw-2">mut </span>captures: Vec&lt;<a href="#126-130">Capture</a>&gt; = <a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.vec.html">vec!</a>[];
+        <span class="kw">let </span><span class="kw-2">mut </span>upgrade_behaviour: <span class="prelude-ty">Option</span>&lt;(<a href="#47-54">UpgradeBehaviour</a>, <a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.Span.html">Span</a>)&gt; = <span class="prelude-val">None</span>;
+
+        <span class="kw">loop </span>{
+            <span class="comment">// There must either be one or no attributes here. Multiple attributes are not
+            // supported.
+            //
+            // If this is a capture attribute, it must be followed by an identifier.
+            // If this is an upgrade failure attribute, it might be followed by a closure. After the
+            // upgrade failure attribute there must not be any further attributes.
+            //
+            // If this is not an attribute then it is a closure, async closure or async block which
+            // is handled outside the loop
+            </span><span class="kw">let </span>attrs = <a href="#370">input</a>.<a href="https://docs.rs/syn/2.0.68/syn/parse/struct.ParseBuffer.html#method.call">call</a>(Attribute::parse_outer)<span class="question-mark">?</span>;
+            <span class="kw">if </span>attrs.is_empty() {
+                <span class="kw">break</span>;
+            };
+
+            <span class="kw">if let </span><span class="prelude-val">Some</span>(capture) = <a href="#133-208">Capture::maybe_parse</a>(<span class="kw-2">&amp;</span><a href="#384">attrs</a>, <a href="#370">input</a>)<span class="question-mark">? </span>{
+                <span class="kw">if </span>capture.kind == CaptureKind::Watch {
+                    <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="https://docs.rs/syn/2.0.68/syn/error/struct.Error.html#method.new_spanned">syn::Error::new_spanned</a>(
+                        <span class="kw-2">&amp;</span><a href="#384">attrs</a>[<span class="number">0</span>],
+                        <span class="string">"watch variable captures are not supported"</span>,
+                    ));
+                }
+
+                <a href="#371">captures</a>.<a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.push">push</a>(<a href="#389">capture</a>);
+            } <span class="kw">else if let </span><span class="prelude-val">Some</span>(behaviour) = <a href="#57-123">UpgradeBehaviour::maybe_parse</a>(<span class="kw-2">&amp;</span><a href="#384">attrs</a>, <a href="#370">input</a>)<span class="question-mark">? </span>{
+                <span class="kw">if </span>upgrade_behaviour.is_some() {
+                    <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="https://docs.rs/syn/2.0.68/syn/error/struct.Error.html#method.new_spanned">syn::Error::new_spanned</a>(
+                        <span class="kw-2">&amp;</span><a href="#384">attrs</a>[<span class="number">0</span>],
+                        <span class="string">"multiple upgrade failure attributes are not supported"</span>,
+                    ));
+                }
+
+                <a href="#372">upgrade_behaviour</a> = <span class="prelude-val">Some</span>((<a href="#398">behaviour</a>, <a href="#384">attrs</a>[<span class="number">0</span>].<a href="https://docs.rs/syn/2.0.68/syn/spanned/trait.Spanned.html#tymethod.span">span</a>()));
+                <span class="kw">break</span>;
+            } <span class="kw">else if let </span><span class="prelude-val">Some</span>(ident) = <a href="#384">attrs</a>[<span class="number">0</span>].<a href="https://docs.rs/syn/2.0.68/syn/attr/struct.Attribute.html#method.path">path</a>().<a href="https://docs.rs/syn/2.0.68/syn/path/struct.Path.html#method.get_ident">get_ident</a>() {
+                <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="https://docs.rs/syn/2.0.68/syn/error/struct.Error.html#method.new_spanned">syn::Error::new_spanned</a>(
+                        <span class="kw-2">&amp;</span><a href="#384">attrs</a>[<span class="number">0</span>],
+                        <a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.format.html">format!</a>(
+                            <span class="string">"unsupported attribute `{ident}`: only `strong`, `weak`, `weak_allow_none`, `to_owned`, `upgrade_or`, `upgrade_or_else`, `upgrade_or_default` and `upgrade_or_panic` are supported"</span>,
+                        ),
+                ));
+            } <span class="kw">else </span>{
+                <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="https://docs.rs/syn/2.0.68/syn/error/struct.Error.html#method.new_spanned">syn::Error::new_spanned</a>(
+                        <span class="kw-2">&amp;</span><a href="#384">attrs</a>[<span class="number">0</span>],
+                        <span class="string">"unsupported attribute: only `strong`, `weak`, `weak_allow_none`, `to_owned`, `upgrade_or_else`, `upgrade_or_default` and `upgrade_or_panic` are supported"</span>,
+                ));
             }
-            <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.assert.html">assert!</a>(i_s == <span class="string">"return"</span>, <span class="string">"Unknown keyword `@default-{i_s}`"</span>);
         }
-        <span class="prelude-val">Some</span>(x) =&gt; {
-            <span class="kw">let </span>err = <a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.format.html">format!</a>(<span class="string">"Unknown token `{x}` after `@default-`"</span>);
-            <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="#570">parts</a>.<a href="#59-61">generate_error</a>(<span class="kw-2">&amp;</span><a href="#595">err</a>));
-        }
-        <span class="prelude-val">None </span>=&gt; {
-            <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="#570">parts</a>.<a href="#67-93">generate_error_with_span</a>(<span class="string">"Unexpected end after `@default-`"</span>, <a href="#585">prev</a>))
-        }
-    }
-    <span class="prelude-val">Ok</span>(<a href="#117">WrapperKind::DefaultReturn</a>(<a href="#516-567">expr</a>(<a href="#570">parts</a>)<span class="question-mark">?</span>))
-}
 
-<span class="kw">fn </span>parse_return_kind(parts: <span class="kw-2">&amp;mut </span><a href="#12-16">PeekableProcIter</a>) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;<a href="#115-118">WrapperKind</a>&gt;, <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a>&gt; {
-    <span class="kw">match </span><a href="#605">parts</a>.<a href="#55-57">peek</a>() {
-        <span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#variant.Punct">TokenTree::Punct</a>(p)) <span class="kw">if </span><a href="#607">p</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html#tymethod.to_string">to_string</a>() == <span class="string">"@" </span>=&gt; {}
-        <span class="prelude-val">None </span>=&gt; <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="#605">parts</a>.<a href="#59-61">generate_error</a>(<span class="string">"Unexpected end 2"</span>)),
-        <span class="kw">_ </span>=&gt; <span class="kw">return </span><span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>),
-    }
-    <a href="#605">parts</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.next">next</a>();
-    <span class="kw">let </span>ret = <a href="#570-603">return_kind</a>(<a href="#605">parts</a>)<span class="question-mark">?</span>;
-    <span class="kw">match </span><a href="#280-298">check_tokens</a>(<span class="kw-2">&amp;</span>[<a href="#245">SimpleToken::Punct</a>(<span class="string">","</span>)], <a href="#605">parts</a>) {
-        <span class="prelude-val">Err</span>(<a href="#276">TokenCheck::UnexpectedToken</a>(<span class="kw">_</span>, unexpected_token)) =&gt; {
-            <span class="kw">let </span>err = <a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.format.html">format!</a>(
-                <span class="string">"Expected `,` after `{}`, found `{unexpected_token}`"</span>,
-                ret.to_str(),
-            );
-            <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="#605">parts</a>.<a href="#63-65">generate_error_with_next_span</a>(<span class="kw-2">&amp;</span><a href="#615">err</a>));
+        <span class="kw">if let </span><span class="prelude-val">Some</span>((<span class="kw">_</span>, <span class="kw-2">ref </span>span)) = <a href="#372">upgrade_behaviour</a> {
+            <span class="kw">if </span>captures.iter().all(|c| c.kind != CaptureKind::Weak) {
+                <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="https://docs.rs/syn/2.0.68/syn/error/struct.Error.html#method.new">syn::Error::new</a>(
+                    <span class="kw-2">*</span><a href="#423">span</a>,
+                    <span class="string">"upgrade failure attribute can only be used together with weak variable captures"</span>,
+                ));
+            }
         }
-        <span class="prelude-val">Err</span>(<a href="#277">TokenCheck::UnexpectedEnd</a>(tokens)) =&gt; {
-            <span class="kw">let </span>err = <a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.format.html">format!</a>(<span class="string">"Expected `,` after `{}{tokens}`"</span>, ret.to_str());
-            <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="#605">parts</a>.<a href="#59-61">generate_error</a>(<span class="kw-2">&amp;</span><a href="#622">err</a>));
-        }
-        <span class="prelude-val">Ok</span>(()) =&gt; {}
-    }
-    <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(<a href="#612">ret</a>))
-}
 
-<span class="kw">enum </span>BlockKind {
-    Closure(Vec&lt;<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html">TokenTree</a>&gt;),
-    ClosureWrappingAsync(Vec&lt;<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html">TokenTree</a>&gt;),
-    AsyncClosure(Vec&lt;<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html">TokenTree</a>&gt;),
-    AsyncBlock,
-}
+        <span class="kw">let </span>upgrade_behaviour = <a href="#372">upgrade_behaviour</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|x| <a href="#432">x</a>.<span class="number">0</span>).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap_or_default">unwrap_or_default</a>();
 
-<span class="kw">impl </span><a href="#630-635">BlockKind</a> {
-    <span class="attr">#[doc(alias = <span class="string">"get_closure"</span>)]
-    </span><span class="kw">fn </span>closure(<span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;Vec&lt;<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html">TokenTree</a>&gt;&gt; {
-        <span class="kw">match </span><span class="self"><a href="#639">self</a> </span>{
-            <span class="self">Self</span>::AsyncBlock =&gt; <span class="prelude-val">None</span>,
-            <span class="self">Self</span>::Closure(c) | <span class="self">Self</span>::ClosureWrappingAsync(c) | <span class="self">Self</span>::AsyncClosure(c) =&gt; <span class="prelude-val">Some</span>(<a href="#642">c</a>),
+        <span class="comment">// Following is a closure or async block
+        </span><span class="kw">let </span>body = <a href="#370">input</a>.<a href="https://docs.rs/syn/2.0.68/syn/parse/struct.ParseBuffer.html#method.parse">parse</a>::&lt;<a href="#317-320">ClosureOrAsync</a>&gt;()<span class="question-mark">?</span>;
+
+        <span class="comment">// Trailing comma, if any
+        </span><span class="kw">if </span>input.peek(<span class="macro">Token!</span>[,]) {
+            <a href="#370">input</a>.<a href="https://docs.rs/syn/2.0.68/syn/parse/struct.ParseBuffer.html#method.parse">parse</a>::&lt;<a class="macro" href="https://docs.rs/syn/2.0.68/syn/macro.Token.html">Token!</a>[,]&gt;()<span class="question-mark">?</span>;
         }
+
+        <span class="prelude-val">Ok</span>(<a href="#363-367">Clone</a> {
+            <a href="#371">captures</a>,
+            <a href="#432">upgrade_behaviour</a>,
+            <a href="#435">body</a>,
+        })
     }
 }
 
-<span class="kw">fn </span>check_move_after_async(parts: <span class="kw-2">&amp;mut </span><a href="#12-16">PeekableProcIter</a>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a>&gt; {
-    <span class="kw">let </span>span = <a href="#647">parts</a>.current_span;
-    <span class="kw">match </span><a href="#647">parts</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.next">next</a>() {
-        <span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#variant.Ident">TokenTree::Ident</a>(i)) <span class="kw">if </span><a href="#650">i</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html#tymethod.to_string">to_string</a>() == <span class="string">"move" </span>=&gt; <span class="prelude-val">Ok</span>(()),
-        <span class="comment">// The next checks are just for better error messages.
-        </span><span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#variant.Ident">TokenTree::Ident</a>(i)) =&gt; {
-            <span class="kw">let </span>err = <a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.format.html">format!</a>(<span class="string">"Expected `move` after `async`, found `{i}`"</span>);
-            <span class="prelude-val">Err</span>(<a href="#647">parts</a>.<a href="#59-61">generate_error</a>(<span class="kw-2">&amp;</span><a href="#653">err</a>))
-        }
-        <span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#variant.Punct">TokenTree::Punct</a>(p)) =&gt; {
-            <span class="kw">let </span>err = <a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.format.html">format!</a>(<span class="string">"Expected `move` after `async`, found `{p}`"</span>);
-            <span class="prelude-val">Err</span>(<a href="#647">parts</a>.<a href="#59-61">generate_error</a>(<span class="kw-2">&amp;</span><a href="#657">err</a>))
-        }
-        <span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#variant.Group">TokenTree::Group</a>(g)) =&gt; {
-            <span class="kw">let </span>err = <a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.format.html">format!</a>(
-                <span class="string">"Expected `move` after `async`, found `{}`"</span>,
-                delimiter_to_string(g.delimiter(), <span class="bool-val">true</span>),
-            );
-            <span class="prelude-val">Err</span>(<a href="#647">parts</a>.<a href="#59-61">generate_error</a>(<span class="kw-2">&amp;</span><a href="#661">err</a>))
-        }
-        <span class="kw">_ </span>=&gt; <span class="prelude-val">Err</span>(<a href="#647">parts</a>.<a href="#67-93">generate_error_with_span</a>(<span class="string">"Expected `move` after `async`"</span>, <a href="#648">span</a>)),
-    }
-}
+<span class="kw">impl </span><a href="https://docs.rs/quote/1.0.36/quote/to_tokens/trait.ToTokens.html">ToTokens</a> <span class="kw">for </span><a href="#363-367">Clone</a> {
+    <span class="kw">fn </span>to_tokens(<span class="kw-2">&amp;</span><span class="self">self</span>, tokens: <span class="kw-2">&amp;mut </span><a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.TokenStream.html">TokenStream</a>) {
+        <span class="kw">let </span>crate_ident = <a href="utils.rs.html#188-215">crate_ident_new</a>();
 
-<span class="kw">fn </span>check_async_syntax(parts: <span class="kw-2">&amp;mut </span><a href="#12-16">PeekableProcIter</a>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#630-635">BlockKind</a>, <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a>&gt; {
-    <a href="#647-669">check_move_after_async</a>(<a href="#671">parts</a>)<span class="question-mark">?</span>;
-    <span class="kw">match </span><a href="#671">parts</a>.<a href="#55-57">peek</a>() {
-        <span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#variant.Punct">TokenTree::Punct</a>(p)) <span class="kw">if </span><a href="#674">p</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html#tymethod.to_string">to_string</a>() == <span class="string">"|" </span>=&gt; {
-            <a href="#671">parts</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.next">next</a>();
-            <span class="prelude-val">Ok</span>(<a href="#633">BlockKind::AsyncClosure</a>(<a href="#761-773">closure</a>(<a href="#671">parts</a>)<span class="question-mark">?</span>))
-        }
-        <span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#variant.Punct">TokenTree::Punct</a>(p)) =&gt; {
-            <span class="kw">let </span>err = <a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.format.html">format!</a>(<span class="string">"Expected closure or block after `async move`, found `{p}`"</span>);
-            <span class="prelude-val">Err</span>(<a href="#671">parts</a>.<a href="#63-65">generate_error_with_next_span</a>(<span class="kw-2">&amp;</span><a href="#679">err</a>))
-        }
-        <span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#variant.Group">TokenTree::Group</a>(g)) <span class="kw">if </span><a href="#682">g</a>.<a href="https://doc.rust-lang.org/nightly/proc_macro/struct.Group.html#method.delimiter">delimiter</a>() == <a href="https://doc.rust-lang.org/nightly/proc_macro/enum.Delimiter.html#variant.Brace">Delimiter::Brace</a> =&gt; <span class="prelude-val">Ok</span>(<a href="#634">BlockKind::AsyncBlock</a>),
-        <span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#variant.Group">TokenTree::Group</a>(g)) =&gt; {
-            <span class="kw">let </span>err = <a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.format.html">format!</a>(
-                <span class="string">"Expected closure or block after `async move`, found `{}`"</span>,
-                delimiter_to_string(g.delimiter(), <span class="bool-val">true</span>),
-            );
-            <span class="prelude-val">Err</span>(<a href="#671">parts</a>.<a href="#63-65">generate_error_with_next_span</a>(<span class="kw-2">&amp;</span><a href="#684">err</a>))
-        }
-        <span class="kw">_ </span>=&gt; <span class="prelude-val">Err</span>(<a href="#671">parts</a>.<a href="#59-61">generate_error</a>(<span class="string">"Expected closure or block after `async move`"</span>)),
-    }
-}
+        <span class="kw">let </span>upgrade_failure_closure_ident =
+            <a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.Ident.html#method.new">Ident::new</a>(<span class="string">"____upgrade_failure_closure"</span>, <a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.Span.html#method.call_site">Span::call_site</a>());
 
-<span class="comment">// Returns `true` if this is an async context.
-</span><span class="kw">fn </span>check_before_closure(parts: <span class="kw-2">&amp;mut </span><a href="#12-16">PeekableProcIter</a>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#630-635">BlockKind</a>, <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a>&gt; {
-    <span class="kw">let </span>is_async = <span class="kw">match </span><a href="#695">parts</a>.<a href="#55-57">peek</a>() {
-        <span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#variant.Ident">TokenTree::Ident</a>(i)) <span class="kw">if </span><a href="#697">i</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html#tymethod.to_string">to_string</a>() == <span class="string">"move" </span>=&gt; <span class="bool-val">false</span>,
-        <span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#variant.Ident">TokenTree::Ident</a>(i)) <span class="kw">if </span><a href="#698">i</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html#tymethod.to_string">to_string</a>() == <span class="string">"async" </span>=&gt; <span class="bool-val">true</span>,
-        <span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#variant.Ident">TokenTree::Ident</a>(i)) <span class="kw">if </span><a href="#699">i</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html#tymethod.to_string">to_string</a>() == <span class="string">"default" </span>=&gt; {
-            <span class="kw">let </span>span = <a href="#695">parts</a>.next_span;
-            <span class="kw">let </span>ret = <a href="#570-603">return_kind</a>(<a href="#695">parts</a>)<span class="question-mark">?</span>;
-            <span class="kw">let </span>err = <a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.format.html">format!</a>(<span class="string">"Missing `@` before `{}`"</span>, ret.keyword());
-            <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="#695">parts</a>.<a href="#67-93">generate_error_with_span</a>(<span class="kw-2">&amp;</span><a href="#702">err</a>, <a href="#700">span</a>));
-        }
-        <span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#variant.Punct">TokenTree::Punct</a>(p)) <span class="kw">if </span><a href="#705">p</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html#tymethod.to_string">to_string</a>() == <span class="string">"|" </span>=&gt; {
-            <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="#695">parts</a>.<a href="#63-65">generate_error_with_next_span</a>(
-                <span class="string">"Closure needs to be \"moved\" so please add `move` before closure"</span>,
-            ));
-        }
-        <span class="kw">_ </span>=&gt; {
-            <span class="kw">return </span><span class="prelude-val">Err</span>(
-                <a href="#695">parts</a>.<a href="#63-65">generate_error_with_next_span</a>(<span class="string">"Missing `move` and closure declaration"</span>)
+        <span class="kw">let </span>outer_before = <span class="self"><a href="#451">self</a>
+            </span>.captures
+            .<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.iter">iter</a>()
+            .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|c| <a href="#460">c</a>.<a href="#218-235">outer_before_tokens</a>(<span class="kw-2">&amp;</span><a href="#452">crate_ident</a>));
+        <span class="kw">let </span>inner_before = <a class="self" href="#451">self</a>.captures.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|c| {
+            <a href="#461">c</a>.<a href="#251-313">inner_before_tokens</a>(
+                <span class="kw-2">&amp;</span><a href="#452">crate_ident</a>,
+                <span class="kw-2">&amp;</span><a class="self" href="#451">self</a>.upgrade_behaviour,
+                <span class="kw-2">&amp;</span><a href="#454">upgrade_failure_closure_ident</a>,
+                <span class="prelude-val">None</span>,
             )
-        }
-    };
-    <a href="#695">parts</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.next">next</a>();
-    <span class="kw">if </span>is_async {
-        <span class="kw">return </span><a href="#671-692">check_async_syntax</a>(<a href="#695">parts</a>);
-    }
-    <span class="kw">match </span><a href="#695">parts</a>.<a href="#55-57">peek</a>() {
-        <span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#variant.Punct">TokenTree::Punct</a>(p)) <span class="kw">if </span><a href="#721">p</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html#tymethod.to_string">to_string</a>() == <span class="string">"|" </span>=&gt; {}
-        <span class="prelude-val">Some</span>(x) =&gt; {
-            <span class="kw">let </span>err = <a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.format.html">format!</a>(<span class="string">"Expected closure, found `{x}`"</span>);
-            <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="#695">parts</a>.<a href="#63-65">generate_error_with_next_span</a>(<span class="kw-2">&amp;</span><a href="#723">err</a>));
-        }
-        <span class="prelude-val">None </span>=&gt; <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="#695">parts</a>.<a href="#59-61">generate_error</a>(<span class="string">"Expected closure"</span>)),
-    }
-    <a href="#695">parts</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.next">next</a>();
+        });
 
-    <span class="kw">let </span>closure = <a href="#761-773">closure</a>(<a href="#695">parts</a>)<span class="question-mark">?</span>;
-    <span class="kw">match </span><a href="#695">parts</a>.<a href="#55-57">peek</a>() {
-        <span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#variant.Ident">TokenTree::Ident</a>(i)) <span class="kw">if </span><a href="#732">i</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html#tymethod.to_string">to_string</a>() == <span class="string">"async" </span>=&gt; {
-            <a href="#695">parts</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.next">next</a>();
-            <a href="#647-669">check_move_after_async</a>(<a href="#695">parts</a>)<span class="question-mark">?</span>;
-            <span class="kw">match </span><a href="#695">parts</a>.<a href="#55-57">peek</a>() {
-                <span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#variant.Group">TokenTree::Group</a>(g)) <span class="kw">if </span><a href="#736">g</a>.<a href="https://doc.rust-lang.org/nightly/proc_macro/struct.Group.html#method.delimiter">delimiter</a>() == <a href="https://doc.rust-lang.org/nightly/proc_macro/enum.Delimiter.html#variant.Brace">Delimiter::Brace</a> =&gt; {
-                    <span class="prelude-val">Ok</span>(<a href="#632">BlockKind::ClosureWrappingAsync</a>(<a href="#730">closure</a>))
-                }
-                <span class="comment">// The next matchings are for better error messages.
-                </span><span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#variant.Punct">TokenTree::Punct</a>(p)) =&gt; {
-                    <span class="kw">let </span>err = <a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.format.html">format!</a>(<span class="string">"Expected block after `| async move`, found `{p}`"</span>);
-                    <span class="prelude-val">Err</span>(<a href="#695">parts</a>.<a href="#63-65">generate_error_with_next_span</a>(<span class="kw-2">&amp;</span><a href="#741">err</a>))
-                }
-                <span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#variant.Group">TokenTree::Group</a>(g)) =&gt; {
-                    <span class="kw">let </span>err = <a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.format.html">format!</a>(
-                        <span class="string">"Expected block after `| async move`, found `{}`"</span>,
-                        delimiter_to_string(g.delimiter(), <span class="bool-val">true</span>),
-                    );
-                    <span class="prelude-val">Err</span>(<a href="#695">parts</a>.<a href="#63-65">generate_error_with_next_span</a>(<span class="kw-2">&amp;</span><a href="#745">err</a>))
-                }
-                <span class="kw">_ </span>=&gt; {
-                    <span class="prelude-val">Err</span>(<a href="#695">parts</a>.<a href="#63-65">generate_error_with_next_span</a>(<span class="string">"Expected block after `| async move`"</span>))
-                }
-            }
-        }
-        <span class="kw">_ </span>=&gt; <span class="prelude-val">Ok</span>(<a href="#631">BlockKind::Closure</a>(<a href="#730">closure</a>)),
-    }
-}
+        <span class="kw">let </span>upgrade_failure_closure = <span class="kw">match </span><a class="self" href="#451">self</a>.upgrade_behaviour {
+            <a href="#51">UpgradeBehaviour::Default</a> =&gt; <span class="prelude-val">Some</span>(<a class="macro" href="https://docs.rs/quote/1.0.36/quote/macro.quote.html">quote!</a> {
+                <span class="kw">let </span>#upgrade_failure_closure_ident = ::std::default::Default::default;
+            }),
+            <a href="#52">UpgradeBehaviour::Expression</a>(<span class="kw-2">ref </span>expr) =&gt; <span class="prelude-val">Some</span>(<a class="macro" href="https://docs.rs/quote/1.0.36/quote/macro.quote.html">quote!</a> {
+                <span class="kw">let </span>#upgrade_failure_closure_ident = <span class="kw">move </span>|| {
+                    #expr
+                };
+            }),
+            <a href="#53">UpgradeBehaviour::Closure</a>(<span class="kw-2">ref </span>closure) =&gt; <span class="prelude-val">Some</span>(<a class="macro" href="https://docs.rs/quote/1.0.36/quote/macro.quote.html">quote!</a> {
+                <span class="kw">let </span>#upgrade_failure_closure_ident = #closure;
+            }),
+            <span class="kw">_ </span>=&gt; <span class="prelude-val">None</span>,
+        };
 
-<span class="attr">#[doc(alias = <span class="string">"get_closure"</span>)]
-</span><span class="kw">fn </span>closure(parts: <span class="kw-2">&amp;mut </span><a href="#12-16">PeekableProcIter</a>) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html">TokenTree</a>&gt;, <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a>&gt; {
-    <span class="kw">let </span><span class="kw-2">mut </span>ret = <a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.new">Vec::new</a>();
+        <span class="kw">let </span>body = <span class="kw">match </span><a class="self" href="#451">self</a>.body {
+            <a href="#318">ClosureOrAsync::Closure</a>(<span class="kw-2">ref </span>c) =&gt; {
+                <span class="kw">let </span><a href="https://docs.rs/syn/2.0.68/syn/expr/struct.ExprClosure.html">ExprClosure</a> {
+                    attrs,
+                    lifetimes,
+                    constness,
+                    movability,
+                    asyncness,
+                    capture,
+                    or1_token,
+                    inputs,
+                    or2_token,
+                    output,
+                    body,
+                } = <a href="#486">c</a>;
 
-    <span class="kw">loop </span>{
-        <span class="kw">let </span>span = <a href="#761">parts</a>.current_span;
-        <span class="kw">match </span><a href="#761">parts</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.next">next</a>() {
-            <span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#variant.Punct">TokenTree::Punct</a>(p)) <span class="kw">if </span><a href="#767">p</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html#tymethod.to_string">to_string</a>() == <span class="string">"|" </span>=&gt; <span class="kw">break</span>,
-            <span class="prelude-val">Some</span>(x) =&gt; <a href="#762">ret</a>.<a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.push">push</a>(<a href="#768">x</a>),
-            <span class="prelude-val">None </span>=&gt; <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="#761">parts</a>.<a href="#67-93">generate_error_with_span</a>(<span class="string">"Unexpected end 3"</span>, <a href="#765">span</a>)),
-        }
-    }
-    <span class="prelude-val">Ok</span>(<a href="#762">ret</a>)
-}
-
-<span class="kw">pub fn </span>tokens_to_string(parts: <span class="kw">impl </span>Iterator&lt;Item = <a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html">TokenTree</a>&gt;) -&gt; <a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a> {
-    <span class="kw">let </span><span class="kw-2">mut </span>ret = <a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html#method.new">String::new</a>();
-    <span class="comment">// This is used in case of "if ident" or other similar cases.
-    </span><span class="kw">let </span><span class="kw-2">mut </span>prev_is_ident = <span class="bool-val">false</span>;
-    <span class="kw">let </span>handle_ident_like = |i: <a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>, ret: <span class="kw-2">&amp;mut </span><a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>, prev_is_ident: <span class="kw-2">&amp;mut </span><a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>| {
-        <span class="kw">if </span><span class="kw-2">*</span>prev_is_ident {
-            <a href="#779">ret</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html#method.push">push</a>(<span class="string">' '</span>);
-        }
-        <a href="#779">ret</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html#method.push_str">push_str</a>(<span class="kw-2">&amp;</span><a href="#779">i</a>);
-        <span class="kw-2">*</span><a href="#779">prev_is_ident</a> = <span class="bool-val">true</span>;
-    };
-
-    <span class="kw">for </span>token <span class="kw">in </span>parts {
-        <span class="kw">match </span>token {
-            TokenTree::Punct(p) =&gt; {
-                prev_is_ident = <span class="bool-val">false</span>;
-                ret.push_str(<span class="kw-2">&amp;</span>p.to_string());
-            }
-            TokenTree::Ident(i) =&gt; handle_ident_like(i.to_string(), <span class="kw-2">&amp;mut </span>ret, <span class="kw-2">&amp;mut </span>prev_is_ident),
-            TokenTree::Literal(l) =&gt; handle_ident_like(l.to_string(), <span class="kw-2">&amp;mut </span>ret, <span class="kw-2">&amp;mut </span>prev_is_ident),
-            TokenTree::Group(g) =&gt; {
-                prev_is_ident = <span class="bool-val">false</span>;
-                ret.push_str(<span class="kw-2">&amp;</span>group_to_string(<span class="kw-2">&amp;</span>g));
-            }
-        }
-    }
-    <a href="#776">ret</a>
-}
-
-<span class="kw">fn </span>build_closure(
-    parts: <a href="#12-16">PeekableProcIter</a>,
-    elements: Vec&lt;<a href="#137-141">ElemToClone</a>&gt;,
-    return_kind: <span class="prelude-ty">Option</span>&lt;<a href="#115-118">WrapperKind</a>&gt;,
-    kind: <a href="#630-635">BlockKind</a>,
-) -&gt; <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a> {
-    <span class="kw">let </span><span class="kw-2">mut </span>body = <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html#method.new">TokenStream::new</a>();
-
-    <span class="kw">for </span>el <span class="kw">in </span><span class="kw-2">&amp;</span>elements {
-        <span class="kw">let </span>stream: TokenStream = el
-            .to_str_after(<span class="kw-2">&amp;</span>return_kind)
-            .parse()
-            .expect(<span class="string">"failed to convert element after"</span>);
-        body.extend(stream.into_iter().collect::&lt;Vec&lt;<span class="kw">_</span>&gt;&gt;());
-    }
-    <a href="#810">body</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.Extend.html#tymethod.extend">extend</a>(<a href="#805">parts</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.collect">collect</a>::&lt;Vec&lt;<span class="kw">_</span>&gt;&gt;());
-
-    <span class="comment">// To prevent to lose the spans in case some errors occur in the code, we need to keep `body`!
-    //
-    // If we replaced everything that follows with a `format!`, it'd look like this:
-    //
-    // format!(
-    //     "{{\n{}\nmove |{}| {{\n{}\nlet ____ret = {{ {} }};\n____ret\n}}\n}}",
-    //     elements
-    //         .iter()
-    //         .map(|x| x.to_str_before())
-    //         .collect::&lt;Vec&lt;_&gt;&gt;()
-    //         .join("\n"),
-    //     closure,
-    //     elements
-    //         .iter()
-    //         .map(|x| x.to_str_after(&amp;return_kind))
-    //         .collect::&lt;Vec&lt;_&gt;&gt;()
-    //         .join("\n"),
-    //     body,
-    // )
-    </span><span class="kw">let </span><span class="kw-2">mut </span>ret: Vec&lt;<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html">TokenTree</a>&gt; = <a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.vec.html">vec!</a>[];
-    <span class="kw">for </span>el <span class="kw">in </span>elements {
-        <span class="kw">let </span>stream: TokenStream = el
-            .to_str_before()
-            .parse()
-            .expect(<span class="string">"failed to convert element"</span>);
-        ret.extend(stream.into_iter().collect::&lt;Vec&lt;<span class="kw">_</span>&gt;&gt;());
-    }
-
-    <span class="comment">// This part is creating the TokenStream using the variables that needs to be cloned (from the
-    // @weak and @strong annotations).
-    </span><span class="kw">let </span><span class="kw-2">mut </span>inner: Vec&lt;<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html">TokenTree</a>&gt; = <a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.new">Vec::new</a>();
-    <span class="kw">if </span><a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.matches.html">matches!</a>(kind, BlockKind::ClosureWrappingAsync(<span class="kw">_</span>)) {
-        <a href="#851">inner</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.Extend.html#tymethod.extend">extend</a>(<a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.vec.html">vec!</a>[
-            TokenTree::Ident(Ident::new(<span class="string">"async"</span>, Span::call_site())),
-            TokenTree::Ident(Ident::new(<span class="string">"move"</span>, Span::call_site())),
-        ]);
-    }
-
-    <span class="kw">let </span>is_async_closure_kind = <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.matches.html">matches!</a>(kind, BlockKind::AsyncClosure(<span class="kw">_</span>));
-    <span class="kw">if let </span><span class="prelude-val">Some</span>(closure) = <a href="#808">kind</a>.<a href="#639-644">closure</a>() {
-        <span class="kw">if </span>is_async_closure_kind {
-            <a href="#840">ret</a>.<a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.push">push</a>(<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#variant.Ident">TokenTree::Ident</a>(<a href="https://doc.rust-lang.org/nightly/proc_macro/struct.Ident.html#method.new">Ident::new</a>(<span class="string">"async"</span>, <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.Span.html#method.call_site">Span::call_site</a>())));
-        }
-        <a href="#840">ret</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.Extend.html#tymethod.extend">extend</a>(<a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.vec.html">vec!</a>[
-            TokenTree::Ident(Ident::new(<span class="string">"move"</span>, Span::call_site())),
-            TokenTree::Punct(Punct::new(<span class="string">'|'</span>, Spacing::Alone)),
-        ]);
-        <a href="#840">ret</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.Extend.html#tymethod.extend">extend</a>(<a href="#860">closure</a>);
-        <a href="#840">ret</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.Extend.html#tymethod.extend">extend</a>(<a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.vec.html">vec!</a>[TokenTree::Punct(Punct::new(<span class="string">'|'</span>, Spacing::Alone))]);
-    } <span class="kw">else </span>{
-        <a href="#840">ret</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.Extend.html#tymethod.extend">extend</a>(<a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.vec.html">vec!</a>[
-            TokenTree::Ident(Ident::new(<span class="string">"async"</span>, Span::call_site())),
-            TokenTree::Ident(Ident::new(<span class="string">"move"</span>, Span::call_site())),
-        ]);
-    }
-    <span class="comment">// The commented lines that follow *might* be useful, don't know. Just in case, I'm keeping
-    // them around. You're welcome future me!
-    </span><a href="#851">inner</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.Extend.html#tymethod.extend">extend</a>(<a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.vec.html">vec!</a>[
-        <span class="comment">// TokenTree::Ident(Ident::new("let", Span::call_site())),
-        // TokenTree::Ident(Ident::new("____ret", Span::call_site())),
-        // TokenTree::Punct(Punct::new('=', Spacing::Alone)),
-        </span>TokenTree::Group(Group::new(Delimiter::Brace, body)),
-        <span class="comment">// TokenTree::Punct(Punct::new(';', Spacing::Alone)),
-        // TokenTree::Ident(Ident::new("____ret", Span::call_site())),
-    </span>]);
-    <span class="kw">let </span><span class="kw-2">mut </span>inners = <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html#method.new">TokenStream::new</a>();
-    <a href="#886">inners</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.Extend.html#tymethod.extend">extend</a>(<a href="#851">inner</a>);
-    <a href="#840">ret</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.Extend.html#tymethod.extend">extend</a>(<a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.vec.html">vec!</a>[TokenTree::Group(Group::new(Delimiter::Brace, inners))]);
-
-    <span class="kw">let </span><span class="kw-2">mut </span>rets = <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html#method.new">TokenStream::new</a>();
-    <a href="#890">rets</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.Extend.html#tymethod.extend">extend</a>(<a href="#840">ret</a>);
-
-    <a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#variant.Group">TokenTree::Group</a>(<a href="https://doc.rust-lang.org/nightly/proc_macro/struct.Group.html#method.new">Group::new</a>(<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.Delimiter.html#variant.Brace">Delimiter::Brace</a>, <a href="#890">rets</a>)).<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>()
-}
-
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>clone_inner(item: <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a> {
-    <span class="kw">let </span><span class="kw-2">mut </span>parts: <a href="#12-16">PeekableProcIter</a> = <a href="#896">item</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>();
-    <span class="kw">let </span><span class="kw-2">mut </span>elements = <a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.new">Vec::new</a>();
-    <span class="kw">let </span><span class="kw-2">mut </span>prev_is_ident = <span class="bool-val">false</span>;
-
-    <span class="kw">loop </span>{
-        <span class="kw">let </span>prev = <a href="#897">parts</a>.current_span;
-        <span class="kw">match </span><a href="#897">parts</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.next">next</a>() {
-            <span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#variant.Punct">TokenTree::Punct</a>(<span class="kw-2">ref </span>p)) =&gt; {
-                <span class="kw">let </span>p_s = <a href="#904">p</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html#tymethod.to_string">to_string</a>();
-                <span class="kw">if </span>p_s == <span class="string">"=" </span>&amp;&amp; parts.peek().map_or_else(|| <span class="bool-val">false</span>, |n| is_punct(n, <span class="string">"&gt;"</span>)) {
-                    <a href="#897">parts</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.next">next</a>();
-                    <span class="kw">break</span>;
-                } <span class="kw">else if </span>p_s == <span class="string">"@" </span>{
-                    <span class="kw">if let </span><span class="prelude-val">Err</span>(e) = <a href="#424-477">parse_ident</a>(<span class="kw-2">&amp;mut </span><a href="#897">parts</a>, <span class="kw-2">&amp;mut </span><a href="#898">elements</a>) {
-                        <span class="kw">return </span><a href="#910">e</a>;
+                <a class="macro" href="https://docs.rs/quote/1.0.36/quote/macro.quote.html">quote!</a> {
+                    #(#attrs)*
+                    #lifetimes
+                    #constness
+                    #movability
+                    #asyncness
+                    #capture
+                    #or1_token
+                    #inputs
+                    #or2_token
+                    #output
+                    {
+                        #upgrade_failure_closure
+                        #(#inner_before)*
+                        #body
                     }
-                    <a href="#899">prev_is_ident</a> = <span class="bool-val">true</span>;
-                } <span class="kw">else if </span>p_s == <span class="string">"," </span>{
-                    <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.assert.html">assert!</a>(prev_is_ident, <span class="string">"Unexpected `,`"</span>);
-                    <a href="#899">prev_is_ident</a> = <span class="bool-val">false</span>;
-                } <span class="kw">else if </span>p_s == <span class="string">"|" </span>{
-                    <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.assert.html">assert!</a>(
-                        !elements.is_empty(),
-                        <span class="string">"If you have nothing to clone, no need to use this macro!"
-                    </span>);
-                    <span class="kw">return </span><a href="#897">parts</a>.<a href="#59-61">generate_error</a>(<span class="string">"Expected `=&gt;` before closure"</span>);
                 }
             }
-            <span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/proc_macro/enum.TokenTree.html#variant.Ident">TokenTree::Ident</a>(i)) =&gt; {
-                <span class="kw">let </span>err = <a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.format.html">format!</a>(
-                    <span class="string">"Unexpected ident `{i}`: you need to specify if this is a weak or a strong \
-                     clone."</span>,
-                );
-                <span class="kw">return </span><a href="#897">parts</a>.<a href="#59-61">generate_error</a>(<span class="kw-2">&amp;</span><a href="#926">err</a>);
+            <a href="#319">ClosureOrAsync::Async</a>(<span class="kw-2">ref </span>a) =&gt; {
+                <span class="kw">let </span><a href="https://docs.rs/syn/2.0.68/syn/expr/struct.ExprAsync.html">ExprAsync</a> {
+                    attrs,
+                    async_token,
+                    capture,
+                    block,
+                } = <a href="#519">a</a>;
+
+                <span class="comment">// Directly output the statements instead of the whole block including braces as we
+                // already produce a block with braces below and otherwise a compiler warning about
+                // unnecessary braces is wrongly emitted.
+                </span><span class="kw">let </span>stmts = <span class="kw-2">&amp;</span><a href="#524">block</a>.stmts;
+
+                <a class="macro" href="https://docs.rs/quote/1.0.36/quote/macro.quote.html">quote!</a> {
+                    #(#attrs)*
+                    #async_token
+                    #capture
+                    {
+                        #upgrade_failure_closure
+                        #(#inner_before)*
+                        #(#stmts)*
+                    }
+                }
             }
-            <span class="prelude-val">Some</span>(t) =&gt; {
-                <span class="kw">let </span>err = <a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.format.html">format!</a>(<span class="string">"Unexpected token `{t}`"</span>);
-                <span class="kw">return </span><a href="#897">parts</a>.<a href="#59-61">generate_error</a>(<span class="kw-2">&amp;</span><a href="#933">err</a>);
+        };
+
+        <a href="#451">tokens</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.Extend.html#tymethod.extend">extend</a>(<a class="macro" href="https://docs.rs/quote/1.0.36/quote/macro.quote.html">quote!</a> {
+            {
+                #(#outer_before)*
+                #body
             }
-            <span class="prelude-val">None </span>=&gt; <span class="kw">return </span><a href="#897">parts</a>.<a href="#67-93">generate_error_with_span</a>(<span class="string">"Unexpected end 4"</span>, <a href="#902">prev</a>),
-        }
+        });
     }
-    <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.assert.html">assert!</a>(
-        !elements.is_empty(),
-        <span class="string">"If you have nothing to clone, no need to use this macro!"
-    </span>);
-    <span class="kw">let </span>return_kind = <span class="kw">match </span><a href="#605-628">parse_return_kind</a>(<span class="kw-2">&amp;mut </span><a href="#897">parts</a>) {
-        <span class="prelude-val">Ok</span>(r) =&gt; <a href="#944">r</a>,
-        <span class="prelude-val">Err</span>(e) =&gt; <span class="kw">return </span><a href="#945">e</a>,
-    };
-    <span class="kw">let </span>kind = <span class="kw">match </span><a href="#695-758">check_before_closure</a>(<span class="kw-2">&amp;mut </span><a href="#897">parts</a>) {
-        <span class="prelude-val">Ok</span>(r) =&gt; <a href="#948">r</a>,
-        <span class="prelude-val">Err</span>(e) =&gt; <span class="kw">return </span><a href="#949">e</a>,
-    };
-    <a href="#804-894">build_closure</a>(<a href="#897">parts</a>, <a href="#898">elements</a>, <a href="#943">return_kind</a>, <a href="#947">kind</a>)
+}
+
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>clone_inner(input: <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">proc_macro::TokenStream</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">proc_macro::TokenStream</a> {
+    <span class="kw">let </span>clone = <a class="macro" href="https://docs.rs/syn/2.0.68/syn/macro.parse_macro_input.html">syn::parse_macro_input!</a>(input <span class="kw">as </span>Clone);
+    <a href="#555">clone</a>.<a href="https://docs.rs/quote/1.0.36/quote/to_tokens/trait.ToTokens.html#tymethod.into_token_stream">into_token_stream</a>().<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>()
 }
 </code></pre></div></section></main></body></html>

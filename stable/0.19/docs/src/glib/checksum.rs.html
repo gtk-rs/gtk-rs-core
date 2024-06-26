@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/checksum.rs`."><title>checksum.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.81.0-nightly (8fcd4dd08 2024-06-18)" data-channel="nightly" data-search-js="search-0fe7219eb170c82e.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/checksum.rs`."><title>checksum.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.81.0-nightly (fda509e81 2024-06-25)" data-channel="nightly" data-search-js="search-0fe7219eb170c82e.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -143,76 +143,38 @@
 <a href="#70" id="70">70</a>
 <a href="#71" id="71">71</a>
 <a href="#72" id="72">72</a>
-<a href="#73" id="73">73</a>
-<a href="#74" id="74">74</a>
-<a href="#75" id="75">75</a>
-<a href="#76" id="76">76</a>
-<a href="#77" id="77">77</a>
-<a href="#78" id="78">78</a>
-<a href="#79" id="79">79</a>
-<a href="#80" id="80">80</a>
-<a href="#81" id="81">81</a>
-<a href="#82" id="82">82</a>
-<a href="#83" id="83">83</a>
-<a href="#84" id="84">84</a>
-<a href="#85" id="85">85</a>
-<a href="#86" id="86">86</a>
-<a href="#87" id="87">87</a>
-<a href="#88" id="88">88</a>
-<a href="#89" id="89">89</a>
-<a href="#90" id="90">90</a>
-<a href="#91" id="91">91</a>
 </pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
 </span><span class="kw">use </span>libc::size_t;
 
-<span class="kw">use crate</span>::{<a href="lib.rs.html#162">translate</a>::<span class="kw-2">*</span>, <a href="auto/checksum.rs.html#7-32">Checksum</a>};
+<span class="kw">use crate</span>::{<a href="lib.rs.html#162">translate</a>::<span class="kw-2">*</span>, <a href="auto/checksum.rs.html#7-16">Checksum</a>};
 
-<span class="kw">impl </span><a href="auto/checksum.rs.html#7-32">Checksum</a> {
-    <span class="doccomment">/// Gets the digest from @self as a raw binary vector and places it
-    /// into @buffer. The size of the digest depends on the type of checksum.
-    ///
-    /// Once this function has been called, the #GChecksum is closed and can
-    /// no longer be updated with g_checksum_update().
-    /// ## `buffer`
-    /// output buffer
-    </span><span class="attr">#[doc(alias = <span class="string">"g_checksum_get_digest"</span>)]
+<span class="kw">impl </span><a href="auto/checksum.rs.html#7-16">Checksum</a> {
+    <span class="attr">#[doc(alias = <span class="string">"g_checksum_get_digest"</span>)]
     #[doc(alias = <span class="string">"get_digest"</span>)]
     </span><span class="kw">pub fn </span>digest(<span class="self">self</span>) -&gt; Vec&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="comment">//Don't forget update when `ChecksumType` contains type bigger that Sha512.
             </span><span class="kw">let </span><span class="kw-2">mut </span>digest_len: size_t = <span class="number">512 </span>/ <span class="number">8</span>;
-            <span class="kw">let </span><span class="kw-2">mut </span>vec = <a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.with_capacity">Vec::with_capacity</a>(<a href="#20">digest_len</a> <span class="kw">as _</span>);
+            <span class="kw">let </span><span class="kw-2">mut </span>vec = <a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.with_capacity">Vec::with_capacity</a>(<a href="#13">digest_len</a> <span class="kw">as _</span>);
 
             ffi::g_checksum_get_digest(
-                <a href="translate.rs.html#201-203">mut_override</a>(<a class="self" href="#17">self</a>.<a href="translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>),
-                <a href="#21">vec</a>.<a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.as_mut_ptr">as_mut_ptr</a>(),
-                <span class="kw-2">&amp;mut </span><a href="#20">digest_len</a>,
+                <a href="translate.rs.html#201-203">mut_override</a>(<a class="self" href="#10">self</a>.<a href="translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>),
+                <a href="#14">vec</a>.<a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.as_mut_ptr">as_mut_ptr</a>(),
+                <span class="kw-2">&amp;mut </span><a href="#13">digest_len</a>,
             );
 
-            <a href="#21">vec</a>.<a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.set_len">set_len</a>(<a href="#20">digest_len</a>);
-            <a href="#21">vec</a>
+            <a href="#14">vec</a>.<a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.set_len">set_len</a>(<a href="#13">digest_len</a>);
+            <a href="#14">vec</a>
         }
     }
 
-    <span class="doccomment">/// Gets the digest as a hexadecimal string.
-    ///
-    /// Once this function has been called the #GChecksum can no longer be
-    /// updated with g_checksum_update().
-    ///
-    /// The hexadecimal characters will be lower case.
-    ///
-    /// # Returns
-    ///
-    /// the hexadecimal representation of the checksum. The
-    ///   returned string is owned by the checksum and should not be modified
-    ///   or freed.
-    </span><span class="attr">#[doc(alias = <span class="string">"g_checksum_get_string"</span>)]
+    <span class="attr">#[doc(alias = <span class="string">"g_checksum_get_string"</span>)]
     #[doc(alias = <span class="string">"get_string"</span>)]
     </span><span class="kw">pub fn </span>string(<span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>&gt; {
         <span class="kw">unsafe </span>{
             <a href="translate.rs.html#1624-1626">from_glib_none</a>(ffi::g_checksum_get_string(<a href="translate.rs.html#201-203">mut_override</a>(
-                <a class="self" href="#48">self</a>.<a href="translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>,
+                <a class="self" href="#29">self</a>.<a href="translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>,
             )))
         }
     }

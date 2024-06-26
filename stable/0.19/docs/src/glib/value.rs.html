@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/value.rs`."><title>value.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.81.0-nightly (8fcd4dd08 2024-06-18)" data-channel="nightly" data-search-js="search-0fe7219eb170c82e.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/value.rs`."><title>value.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.81.0-nightly (fda509e81 2024-06-25)" data-channel="nightly" data-search-js="search-0fe7219eb170c82e.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -1764,45 +1764,6 @@
 <a href="#1691" id="1691">1691</a>
 <a href="#1692" id="1692">1692</a>
 <a href="#1693" id="1693">1693</a>
-<a href="#1694" id="1694">1694</a>
-<a href="#1695" id="1695">1695</a>
-<a href="#1696" id="1696">1696</a>
-<a href="#1697" id="1697">1697</a>
-<a href="#1698" id="1698">1698</a>
-<a href="#1699" id="1699">1699</a>
-<a href="#1700" id="1700">1700</a>
-<a href="#1701" id="1701">1701</a>
-<a href="#1702" id="1702">1702</a>
-<a href="#1703" id="1703">1703</a>
-<a href="#1704" id="1704">1704</a>
-<a href="#1705" id="1705">1705</a>
-<a href="#1706" id="1706">1706</a>
-<a href="#1707" id="1707">1707</a>
-<a href="#1708" id="1708">1708</a>
-<a href="#1709" id="1709">1709</a>
-<a href="#1710" id="1710">1710</a>
-<a href="#1711" id="1711">1711</a>
-<a href="#1712" id="1712">1712</a>
-<a href="#1713" id="1713">1713</a>
-<a href="#1714" id="1714">1714</a>
-<a href="#1715" id="1715">1715</a>
-<a href="#1716" id="1716">1716</a>
-<a href="#1717" id="1717">1717</a>
-<a href="#1718" id="1718">1718</a>
-<a href="#1719" id="1719">1719</a>
-<a href="#1720" id="1720">1720</a>
-<a href="#1721" id="1721">1721</a>
-<a href="#1722" id="1722">1722</a>
-<a href="#1723" id="1723">1723</a>
-<a href="#1724" id="1724">1724</a>
-<a href="#1725" id="1725">1725</a>
-<a href="#1726" id="1726">1726</a>
-<a href="#1727" id="1727">1727</a>
-<a href="#1728" id="1728">1728</a>
-<a href="#1729" id="1729">1729</a>
-<a href="#1730" id="1730">1730</a>
-<a href="#1731" id="1731">1731</a>
-<a href="#1732" id="1732">1732</a>
 </pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
 // rustdoc-stripper-ignore-next
@@ -1901,7 +1862,7 @@
 </span><span class="kw">pub unsafe trait </span><a href="../../glib/value/trait.ValueTypeChecker.html">ValueTypeChecker</a> {
     <span class="kw">type </span>Error: <a href="https://doc.rust-lang.org/nightly/core/error/trait.Error.html">error::Error</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sized.html">Sized</a> + <span class="lifetime">'static</span>;
 
-    <span class="kw">fn </span>check(value: <span class="kw-2">&amp;</span><a href="#477-511">Value</a>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <span class="self">Self</span>::Error&gt;;
+    <span class="kw">fn </span>check(value: <span class="kw-2">&amp;</span><a href="#477-500">Value</a>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <span class="self">Self</span>::Error&gt;;
 }
 
 <span class="comment">// rustdoc-stripper-ignore-next
@@ -1957,7 +1918,7 @@
 
     <span class="attr">#[doc(alias = <span class="string">"g_type_check_value_holds"</span>)]
     #[inline]
-    </span><span class="kw">fn </span>check(value: <span class="kw-2">&amp;</span><a href="#477-511">Value</a>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <span class="self">Self</span>::Error&gt; {
+    </span><span class="kw">fn </span>check(value: <span class="kw-2">&amp;</span><a href="#477-500">Value</a>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <span class="self">Self</span>::Error&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">if </span>gobject_ffi::g_type_check_value_holds(<span class="kw-2">&amp;</span>value.inner, T::static_type().into_glib())
                 == ffi::GFALSE
@@ -1978,8 +1939,8 @@
     <span class="kw">type </span>Error = <a href="#189-192">InvalidCharError</a>;
 
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>check(value: <span class="kw-2">&amp;</span><a href="#477-511">Value</a>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <span class="self">Self</span>::Error&gt; {
-        <span class="kw">let </span>v = <a href="#176">value</a>.<a href="#584-592">get</a>::&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>&gt;()<span class="question-mark">?</span>;
+    </span><span class="kw">fn </span>check(value: <span class="kw-2">&amp;</span><a href="#477-500">Value</a>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <span class="self">Self</span>::Error&gt; {
+        <span class="kw">let </span>v = <a href="#176">value</a>.<a href="#573-581">get</a>::&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>&gt;()<span class="question-mark">?</span>;
         <span class="kw">match </span><a href="https://doc.rust-lang.org/nightly/core/char/foreigntype.methods.html#method.from_u32">char::from_u32</a>(<a href="#177">v</a>) {
             <span class="prelude-val">Some</span>(<span class="kw">_</span>) =&gt; <span class="prelude-val">Ok</span>(()),
             <span class="prelude-val">None </span>=&gt; <span class="prelude-val">Err</span>(<a href="#191">InvalidCharError::CharConversionError</a>),
@@ -2053,7 +2014,7 @@
     <span class="kw">type </span>Error = ValueTypeMismatchOrNoneError&lt;<a href="#106-109">ValueTypeMismatchError</a>&gt;;
 
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>check(value: <span class="kw-2">&amp;</span><a href="#477-511">Value</a>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <span class="self">Self</span>::Error&gt; {
+    </span><span class="kw">fn </span>check(value: <span class="kw-2">&amp;</span><a href="#477-500">Value</a>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <span class="self">Self</span>::Error&gt; {
         GenericValueTypeChecker::&lt;T&gt;::check(<a href="#251">value</a>)<span class="question-mark">?</span>;
 
         <span class="kw">unsafe </span>{
@@ -2083,7 +2044,7 @@
     ///
     /// # Safety
     /// `Self::Checker::check()` must be called first and must not fail.
-    </span><span class="kw">unsafe fn </span>from_value(value: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#477-511">Value</a>) -&gt; <span class="self">Self</span>;
+    </span><span class="kw">unsafe fn </span>from_value(value: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#477-500">Value</a>) -&gt; <span class="self">Self</span>;
 }
 
 <span class="comment">// rustdoc-stripper-ignore-next
@@ -2125,7 +2086,7 @@
     <span class="kw">type </span>Error = E;
 
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>check(value: <span class="kw-2">&amp;</span><a href="#477-511">Value</a>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <span class="self">Self</span>::Error&gt; {
+    </span><span class="kw">fn </span>check(value: <span class="kw-2">&amp;</span><a href="#477-500">Value</a>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <span class="self">Self</span>::Error&gt; {
         <span class="kw">match </span><a href="#99">T::Checker::check</a>(<a href="#323">value</a>) {
             <span class="prelude-val">Err</span>(<a href="#223">ValueTypeMismatchOrNoneError::UnexpectedNone</a>) =&gt; <span class="prelude-val">Ok</span>(()),
             <span class="prelude-val">Err</span>(<a href="#222">ValueTypeMismatchOrNoneError::WrongValueType</a>(err)) =&gt; <span class="prelude-val">Err</span>(<a href="#326">err</a>),
@@ -2145,7 +2106,7 @@
     <span class="kw">type </span>Checker = ValueTypeOrNoneChecker&lt;T, C, E&gt;;
 
     <span class="attr">#[inline]
-    </span><span class="kw">unsafe fn </span>from_value(value: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#477-511">Value</a>) -&gt; <span class="self">Self </span>{
+    </span><span class="kw">unsafe fn </span>from_value(value: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#477-500">Value</a>) -&gt; <span class="self">Self </span>{
         <span class="kw">match </span><a href="#99">T::Checker::check</a>(<a href="#343">value</a>) {
             <span class="prelude-val">Err</span>(<a href="#223">ValueTypeMismatchOrNoneError::UnexpectedNone</a>) =&gt; <span class="prelude-val">None</span>,
             <span class="prelude-val">Err</span>(<a href="#222">ValueTypeMismatchOrNoneError::WrongValueType</a>(_err)) =&gt; {
@@ -2175,7 +2136,7 @@
 </span><span class="kw">pub trait </span><a href="../../glib/value/trait.ToValue.html">ToValue</a> {
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Convert a value to a `Value`.
-    </span><span class="kw">fn </span>to_value(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="#477-511">Value</a>;
+    </span><span class="kw">fn </span>to_value(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="#477-500">Value</a>;
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Returns the type identifier of `self`.
@@ -2188,7 +2149,7 @@
 </span><span class="doccomment">/// Blanket implementation for all references.
 </span><span class="kw">impl</span>&lt;T: <a href="#370-380">ToValue</a> + <a href="types.rs.html#290-294">StaticType</a>&gt; <a href="#370-380">ToValue</a> <span class="kw">for </span><span class="kw-2">&amp;</span>T {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>to_value(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="#477-511">Value</a> {
+    </span><span class="kw">fn </span>to_value(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="#477-500">Value</a> {
         <a href="#373">T::to_value</a>(<span class="kw-2">*</span><a class="self" href="#386">self</a>)
     }
 
@@ -2204,14 +2165,14 @@
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Convert an `Option` to a `Value`.
     </span><span class="attr">#[allow(clippy::wrong_self_convention)]
-    </span><span class="kw">fn </span>to_value_optional(s: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="self">Self</span>&gt;) -&gt; <a href="#477-511">Value</a>;
+    </span><span class="kw">fn </span>to_value_optional(s: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="self">Self</span>&gt;) -&gt; <a href="#477-500">Value</a>;
 }
 
 <span class="comment">// rustdoc-stripper-ignore-next
 </span><span class="doccomment">/// Blanket implementation for all optional types.
 </span><span class="kw">impl</span>&lt;T: <a href="#398-403">ToValueOptional</a> + <a href="types.rs.html#290-294">StaticType</a>&gt; <a href="#370-380">ToValue</a> <span class="kw">for </span><span class="prelude-ty">Option</span>&lt;T&gt; {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>to_value(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="#477-511">Value</a> {
+    </span><span class="kw">fn </span>to_value(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="#477-500">Value</a> {
         <a href="#402">T::to_value_optional</a>(<a class="self" href="#409">self</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_ref">as_ref</a>())
     }
 
@@ -2221,7 +2182,7 @@
     }
 }
 
-<span class="kw">impl</span>&lt;T: Into&lt;<a href="#477-511">Value</a>&gt; + <a href="#398-403">ToValueOptional</a>&gt; From&lt;<span class="prelude-ty">Option</span>&lt;T&gt;&gt; <span class="kw">for </span><a href="#477-511">Value</a> {
+<span class="kw">impl</span>&lt;T: Into&lt;<a href="#477-500">Value</a>&gt; + <a href="#398-403">ToValueOptional</a>&gt; From&lt;<span class="prelude-ty">Option</span>&lt;T&gt;&gt; <span class="kw">for </span><a href="#477-500">Value</a> {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>from(t: <span class="prelude-ty">Option</span>&lt;T&gt;) -&gt; <span class="self">Self </span>{
         <span class="kw">match </span><a href="#421">t</a> {
@@ -2240,7 +2201,7 @@
 
 <span class="kw">impl</span>&lt;T: <a href="#398-403">ToValueOptional</a> + <a href="types.rs.html#290-294">StaticType</a> + <span class="question-mark">?</span><a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sized.html">Sized</a>&gt; <a href="#398-403">ToValueOptional</a> <span class="kw">for </span><span class="kw-2">&amp;</span>T {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>to_value_optional(s: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="self">Self</span>&gt;) -&gt; <a href="#477-511">Value</a> {
+    </span><span class="kw">fn </span>to_value_optional(s: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="self">Self</span>&gt;) -&gt; <a href="#477-500">Value</a> {
         &lt;T <span class="kw">as </span>ToValueOptional&gt;::to_value_optional(<a href="#438">s</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_ref">as_ref</a>().<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|s| <span class="kw-2">**</span><a href="#439">s</a>))
     }
 }
@@ -2292,17 +2253,6 @@
     /// used instead.
     ///
     /// See the [module documentation](index.html) for more details.
-    </span><span class="comment">// rustdoc-stripper-ignore-next-stop
-    </span><span class="doccomment">/// An opaque structure used to hold different types of values.
-    ///
-    /// The data within the structure has protected scope: it is accessible only
-    /// to functions within a [`TypeValueTable`][crate::TypeValueTable] structure, or implementations of
-    /// the g_value_*() API. That is, code portions which implement new fundamental
-    /// types.
-    ///
-    /// [`Value`][crate::Value] users cannot make any assumptions about how data is stored
-    /// within the 2 element `data` union, and the `g_type` member should
-    /// only be accessed through the G_VALUE_TYPE() macro.
     </span><span class="attr">#[doc(alias = <span class="string">"GValue"</span>)]
     </span><span class="kw">pub struct </span><a href="../../glib/value/struct.Value.html">Value</a>(BoxedInline&lt;gobject_ffi::GValue&gt;);
 
@@ -2315,7 +2265,7 @@
     }
 }
 
-<span class="kw">impl </span><a href="#477-511">Value</a> {
+<span class="kw">impl </span><a href="#477-500">Value</a> {
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Creates a new `Value` that is initialized with `type_`.
     ///
@@ -2328,7 +2278,7 @@
                 gobject_ffi::g_type_check_is_value_type(type_.into_glib()),
                 ffi::GTRUE
             );
-            <a href="#537-543"><span class="self">Self</span>::from_type_unchecked</a>(<a href="#520">type_</a>)
+            <a href="#526-532"><span class="self">Self</span>::from_type_unchecked</a>(<a href="#509">type_</a>)
         }
     }
 
@@ -2342,8 +2292,8 @@
     </span><span class="kw">pub unsafe fn </span>from_type_unchecked(type_: <a href="types.rs.html#22">Type</a>) -&gt; <span class="self">Self </span>{
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>value = <a href="translate.rs.html#219">Value::uninitialized</a>();
-            gobject_ffi::g_value_init(<a href="#539">value</a>.<a href="translate.rs.html#470">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#537">type_</a>.<a href="translate.rs.html#333">into_glib</a>());
-            <a href="#539">value</a>
+            gobject_ffi::g_value_init(<a href="#528">value</a>.<a href="translate.rs.html#470">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#526">type_</a>.<a href="translate.rs.html#333">into_glib</a>());
+            <a href="#528">value</a>
         }
     }
 
@@ -2351,7 +2301,7 @@
     </span><span class="doccomment">/// Creates a new `Value` that is initialized for a given `ValueType`.
     </span><span class="attr">#[inline]
     </span><span class="kw">pub fn </span>for_value_type&lt;T: <a href="#66-74">ValueType</a>&gt;() -&gt; <span class="self">Self </span>{
-        <span class="kw">unsafe </span>{ <a href="#537-543">Value::from_type_unchecked</a>(<a href="types.rs.html#293">T::Type::static_type</a>()) }
+        <span class="kw">unsafe </span>{ <a href="#526-532">Value::from_type_unchecked</a>(<a href="types.rs.html#293">T::Type::static_type</a>()) }
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
@@ -2360,9 +2310,9 @@
     #[doc(alias = <span class="string">"g_value_set_static_string"</span>)]
     </span><span class="kw">pub fn </span>from_static_str(s: <span class="kw-2">&amp;</span><span class="lifetime">'static </span><a href="gstring.rs.html#24">GStr</a>) -&gt; <span class="self">Self </span>{
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span><span class="kw-2">mut </span>v = <a href="#537-543"><span class="self">Self</span>::from_type_unchecked</a>(Type::STRING);
-            gobject_ffi::g_value_set_static_string(<a href="#558">v</a>.<a href="translate.rs.html#470">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#556">s</a>.<a href="gstring.rs.html#207-209">as_ptr</a>());
-            <a href="#558">v</a>
+            <span class="kw">let </span><span class="kw-2">mut </span>v = <a href="#526-532"><span class="self">Self</span>::from_type_unchecked</a>(Type::STRING);
+            gobject_ffi::g_value_set_static_string(<a href="#547">v</a>.<a href="translate.rs.html#470">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#545">s</a>.<a href="gstring.rs.html#207-209">as_ptr</a>());
+            <a href="#547">v</a>
         }
     }
 
@@ -2375,9 +2325,9 @@
     #[doc(alias = <span class="string">"g_value_set_interned_string"</span>)]
     </span><span class="kw">pub fn </span>from_interned_str(s: <span class="kw-2">&amp;</span><span class="lifetime">'static </span><a href="gstring.rs.html#24">GStr</a>) -&gt; <span class="self">Self </span>{
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span><span class="kw-2">mut </span>v = <a href="#537-543"><span class="self">Self</span>::from_type_unchecked</a>(Type::STRING);
-            gobject_ffi::g_value_set_interned_string(<a href="#573">v</a>.<a href="translate.rs.html#470">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#571">s</a>.<a href="gstring.rs.html#207-209">as_ptr</a>());
-            <a href="#573">v</a>
+            <span class="kw">let </span><span class="kw-2">mut </span>v = <a href="#526-532"><span class="self">Self</span>::from_type_unchecked</a>(Type::STRING);
+            gobject_ffi::g_value_set_interned_string(<a href="#562">v</a>.<a href="translate.rs.html#470">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#560">s</a>.<a href="gstring.rs.html#207-209">as_ptr</a>());
+            <a href="#562">v</a>
         }
     }
 
@@ -2391,8 +2341,8 @@
         </span>T: FromValue&lt;<span class="lifetime">'a</span>&gt;,
     {
         <span class="kw">unsafe </span>{
-            <a href="#99">T::Checker::check</a>(<a class="self" href="#584">self</a>)<span class="question-mark">?</span>;
-            <span class="prelude-val">Ok</span>(<a href="#281">T::from_value</a>(<a class="self" href="#584">self</a>))
+            <a href="#99">T::Checker::check</a>(<a class="self" href="#573">self</a>)<span class="question-mark">?</span>;
+            <span class="prelude-val">Ok</span>(<a href="#281">T::from_value</a>(<a class="self" href="#573">self</a>))
         }
     }
 
@@ -2404,8 +2354,8 @@
         </span>T: <span class="kw">for</span>&lt;<span class="lifetime">'b</span>&gt; FromValue&lt;<span class="lifetime">'b</span>&gt; + <span class="lifetime">'static</span>,
     {
         <span class="kw">unsafe </span>{
-            <a href="#99">T::Checker::check</a>(<a class="self" href="#597">self</a>)<span class="question-mark">?</span>;
-            <span class="prelude-val">Ok</span>(<a href="#281">FromValue::from_value</a>(<a class="self" href="#597">self</a>))
+            <a href="#99">T::Checker::check</a>(<a class="self" href="#586">self</a>)<span class="question-mark">?</span>;
+            <span class="prelude-val">Ok</span>(<a href="#281">FromValue::from_value</a>(<a class="self" href="#586">self</a>))
         }
     }
 
@@ -2414,7 +2364,7 @@
     /// or is a sub-type of `T`.
     </span><span class="attr">#[inline]
     </span><span class="kw">pub fn </span>is&lt;T: <a href="types.rs.html#290-294">StaticType</a>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
-        <a class="self" href="#611">self</a>.<a href="#619-621">is_type</a>(<a href="types.rs.html#293">T::static_type</a>())
+        <a class="self" href="#600">self</a>.<a href="#608-610">is_type</a>(<a href="types.rs.html#293">T::static_type</a>())
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
@@ -2422,76 +2372,48 @@
     /// or is a sub-type of `type_`.
     </span><span class="attr">#[inline]
     </span><span class="kw">pub fn </span>is_type(<span class="kw-2">&amp;</span><span class="self">self</span>, type_: <a href="types.rs.html#22">Type</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
-        <a class="self" href="#619">self</a>.<a href="#626-628">type_</a>().<a href="types.rs.html#160-167">is_a</a>(<a href="#619">type_</a>)
+        <a class="self" href="#608">self</a>.<a href="#615-617">type_</a>().<a href="types.rs.html#160-167">is_a</a>(<a href="#608">type_</a>)
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Returns the type of the value.
     </span><span class="attr">#[inline]
     </span><span class="kw">pub fn </span>type_(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="types.rs.html#22">Type</a> {
-        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1416-1418">from_glib</a>(<a class="self" href="#626">self</a>.inner.g_type) }
+        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1416-1418">from_glib</a>(<a class="self" href="#615">self</a>.inner.g_type) }
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Returns whether `Value`s of type `src` can be transformed to type `dst`.
-    </span><span class="comment">// rustdoc-stripper-ignore-next-stop
-    </span><span class="doccomment">/// Check whether [`transform()`][Self::transform()] is able to transform values
-    /// of type `src_type` into values of type `dest_type`. Note that for
-    /// the types to be transformable, they must be compatible or a
-    /// transformation function must be registered.
-    /// ## `src_type`
-    /// Source type.
-    /// ## `dest_type`
-    /// Target type.
-    ///
-    /// # Returns
-    ///
-    /// [`true`] if the transformation is possible, [`false`] otherwise.
     </span><span class="attr">#[doc(alias = <span class="string">"g_value_type_transformable"</span>)]
     </span><span class="kw">pub fn </span>type_transformable(src: <a href="types.rs.html#22">Type</a>, dst: <a href="types.rs.html#22">Type</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
         <span class="kw">unsafe </span>{
             <a href="translate.rs.html#1416-1418">from_glib</a>(gobject_ffi::g_value_type_transformable(
-                <a href="#646">src</a>.<a href="translate.rs.html#333">into_glib</a>(),
-                <a href="#646">dst</a>.<a href="translate.rs.html#333">into_glib</a>(),
+                <a href="#622">src</a>.<a href="translate.rs.html#333">into_glib</a>(),
+                <a href="#622">dst</a>.<a href="translate.rs.html#333">into_glib</a>(),
             ))
         }
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Tries to transform the value into a value of the target type
-    </span><span class="comment">// rustdoc-stripper-ignore-next-stop
-    </span><span class="doccomment">/// Tries to cast the contents of `self` into a type appropriate
-    /// to store in `dest_value`, e.g. to transform a `G_TYPE_INT` value
-    /// into a `G_TYPE_FLOAT` value. Performing transformations between
-    /// value types might incur precision lossage. Especially
-    /// transformations into strings might reveal seemingly arbitrary
-    /// results and shouldn't be relied upon for production code (such
-    /// as rcfile value or object property serialization).
-    /// ## `dest_value`
-    /// Target value.
-    ///
-    /// # Returns
-    ///
-    /// Whether a transformation rule was found and could be applied.
-    ///  Upon failing transformations, `dest_value` is left untouched.
     </span><span class="attr">#[doc(alias = <span class="string">"g_value_transform"</span>)]
-    </span><span class="kw">pub fn </span>transform&lt;T: <a href="#66-74">ValueType</a>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#477-511">Value</a>, <a href="error.rs.html#243-251"><span class="kw">crate</span>::BoolError</a>&gt; {
-        <a class="self" href="#673">self</a>.<a href="#680-696">transform_with_type</a>(<a href="types.rs.html#293">T::Type::static_type</a>())
+    </span><span class="kw">pub fn </span>transform&lt;T: <a href="#66-74">ValueType</a>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#477-500">Value</a>, <a href="error.rs.html#208-216"><span class="kw">crate</span>::BoolError</a>&gt; {
+        <a class="self" href="#634">self</a>.<a href="#641-657">transform_with_type</a>(<a href="types.rs.html#293">T::Type::static_type</a>())
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Tries to transform the value into a value of the target type
     </span><span class="attr">#[doc(alias = <span class="string">"g_value_transform"</span>)]
-    </span><span class="kw">pub fn </span>transform_with_type(<span class="kw-2">&amp;</span><span class="self">self</span>, type_: <a href="types.rs.html#22">Type</a>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#477-511">Value</a>, <a href="error.rs.html#243-251"><span class="kw">crate</span>::BoolError</a>&gt; {
+    </span><span class="kw">pub fn </span>transform_with_type(<span class="kw-2">&amp;</span><span class="self">self</span>, type_: <a href="types.rs.html#22">Type</a>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#477-500">Value</a>, <a href="error.rs.html#208-216"><span class="kw">crate</span>::BoolError</a>&gt; {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span><span class="kw-2">mut </span>dest = <a href="#520-528">Value::from_type</a>(<a href="#680">type_</a>);
+            <span class="kw">let </span><span class="kw-2">mut </span>dest = <a href="#509-517">Value::from_type</a>(<a href="#641">type_</a>);
             <span class="kw">if </span>from_glib(gobject_ffi::g_value_transform(
                 <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
                 dest.to_glib_none_mut().<span class="number">0</span>,
             )) {
-                <span class="prelude-val">Ok</span>(<a href="#682">dest</a>)
+                <span class="prelude-val">Ok</span>(<a href="#643">dest</a>)
             } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(<a class="macro" href="error.rs.html#189-211">crate::bool_error!</a>(
+                <span class="prelude-val">Err</span>(<a class="macro" href="error.rs.html#154-176">crate::bool_error!</a>(
                     <span class="string">"Can't transform value of type '{}' into '{}'"</span>,
                     <span class="self">self</span>.type_(),
                     type_
@@ -2505,123 +2427,123 @@
     </span><span class="attr">#[inline]
     </span><span class="kw">pub fn </span>into_raw(<span class="self">self</span>) -&gt; gobject_ffi::GValue {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>s = <a href="https://doc.rust-lang.org/nightly/core/mem/manually_drop/struct.ManuallyDrop.html#method.new">mem::ManuallyDrop::new</a>(<a class="self" href="#701">self</a>);
-            <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.read.html">ptr::read</a>(<span class="kw-2">&amp;</span><a href="#703">s</a>.inner)
+            <span class="kw">let </span>s = <a href="https://doc.rust-lang.org/nightly/core/mem/manually_drop/struct.ManuallyDrop.html#method.new">mem::ManuallyDrop::new</a>(<a class="self" href="#662">self</a>);
+            <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.read.html">ptr::read</a>(<span class="kw-2">&amp;</span><a href="#664">s</a>.inner)
         }
     }
 
     <span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>try_into_send_value&lt;T: <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="types.rs.html#290-294">StaticType</a>&gt;(<span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#826-842">SendValue</a>, <span class="self">Self</span>&gt; {
+    </span><span class="kw">pub fn </span>try_into_send_value&lt;T: <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="types.rs.html#290-294">StaticType</a>&gt;(<span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#787-803">SendValue</a>, <span class="self">Self</span>&gt; {
         <span class="kw">if </span><span class="self">self</span>.type_().is_a(T::static_type()) {
-            <span class="kw">unsafe </span>{ <span class="prelude-val">Ok</span>(<a href="translate.rs.html#325">SendValue::unsafe_from</a>(<a class="self" href="#709">self</a>.<a href="#701-706">into_raw</a>())) }
+            <span class="kw">unsafe </span>{ <span class="prelude-val">Ok</span>(<a href="translate.rs.html#325">SendValue::unsafe_from</a>(<a class="self" href="#670">self</a>.<a href="#662-667">into_raw</a>())) }
         } <span class="kw">else </span>{
-            <span class="prelude-val">Err</span>(<a class="self" href="#709">self</a>)
+            <span class="prelude-val">Err</span>(<a class="self" href="#670">self</a>)
         }
     }
 
     <span class="kw">fn </span>content_debug_string(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="gstring.rs.html#996">GString</a> {
-        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1633-1635">from_glib_full</a>(gobject_ffi::g_strdup_value_contents(<a class="self" href="#717">self</a>.<a href="translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>)) }
+        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1633-1635">from_glib_full</a>(gobject_ffi::g_strdup_value_contents(<a class="self" href="#678">self</a>.<a href="translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>)) }
     }
 }
 
-<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html">fmt::Debug</a> <span class="kw">for </span><a href="#477-511">Value</a> {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html">fmt::Debug</a> <span class="kw">for </span><a href="#477-500">Value</a> {
     <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span><a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html">fmt::Formatter</a>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Error.html">fmt::Error</a>&gt; {
-        <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.write.html">write!</a>(<a href="#723">f</a>, <span class="string">"({}) {}"</span>, <span class="self">self</span>.type_(), <span class="self">self</span>.content_debug_string())
+        <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.write.html">write!</a>(<a href="#684">f</a>, <span class="string">"({}) {}"</span>, <span class="self">self</span>.type_(), <span class="self">self</span>.content_debug_string())
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T: <span class="question-mark">?</span><a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sized.html">Sized</a> + <a href="#370-380">ToValue</a>&gt; From&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>T&gt; <span class="kw">for </span><a href="#477-511">Value</a> {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T: <span class="question-mark">?</span><a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sized.html">Sized</a> + <a href="#370-380">ToValue</a>&gt; From&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>T&gt; <span class="kw">for </span><a href="#477-500">Value</a> {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>from(value: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>T) -&gt; <span class="self">Self </span>{
-        <a href="#730">value</a>.<a href="#373">to_value</a>()
+        <a href="#691">value</a>.<a href="#373">to_value</a>()
     }
 }
 
-<span class="kw">impl </span>From&lt;<a href="#826-842">SendValue</a>&gt; <span class="kw">for </span><a href="#477-511">Value</a> {
+<span class="kw">impl </span>From&lt;<a href="#787-803">SendValue</a>&gt; <span class="kw">for </span><a href="#477-500">Value</a> {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>from(value: <a href="#826-842">SendValue</a>) -&gt; <span class="self">Self </span>{
-        <span class="kw">unsafe </span>{ <a href="translate.rs.html#325">Value::unsafe_from</a>(<a href="#737">value</a>.<a href="#850-855">into_raw</a>()) }
+    </span><span class="kw">fn </span>from(value: <a href="#787-803">SendValue</a>) -&gt; <span class="self">Self </span>{
+        <span class="kw">unsafe </span>{ <a href="translate.rs.html#325">Value::unsafe_from</a>(<a href="#698">value</a>.<a href="#811-816">into_raw</a>()) }
     }
 }
 
-<span class="kw">impl </span><a href="#370-380">ToValue</a> <span class="kw">for </span><a href="#477-511">Value</a> {
+<span class="kw">impl </span><a href="#370-380">ToValue</a> <span class="kw">for </span><a href="#477-500">Value</a> {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>to_value(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="#477-511">Value</a> {
-        <a class="self" href="#744">self</a>.<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">clone</a>()
+    </span><span class="kw">fn </span>to_value(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="#477-500">Value</a> {
+        <a class="self" href="#705">self</a>.<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">clone</a>()
     }
 
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>value_type(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="types.rs.html#22">Type</a> {
-        <a class="self" href="#749">self</a>.<a href="#626-628">type_</a>()
+        <a class="self" href="#710">self</a>.<a href="#615-617">type_</a>()
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; <a href="#370-380">ToValue</a> <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#477-511">Value</a> {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; <a href="#370-380">ToValue</a> <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#477-500">Value</a> {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>to_value(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="#477-511">Value</a> {
-        (<span class="kw-2">*</span><a class="self" href="#756">self</a>).<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">clone</a>()
+    </span><span class="kw">fn </span>to_value(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="#477-500">Value</a> {
+        (<span class="kw-2">*</span><a class="self" href="#717">self</a>).<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">clone</a>()
     }
 
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>value_type(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="types.rs.html#22">Type</a> {
-        <a class="self" href="#761">self</a>.<a href="#626-628">type_</a>()
+        <a class="self" href="#722">self</a>.<a href="#615-617">type_</a>()
     }
 }
 
 <span class="kw">pub struct </span><a href="../../glib/value/struct.NopChecker.html">NopChecker</a>;
 
-<span class="kw">unsafe impl </span><a href="#96-100">ValueTypeChecker</a> <span class="kw">for </span><a href="#766">NopChecker</a> {
+<span class="kw">unsafe impl </span><a href="#96-100">ValueTypeChecker</a> <span class="kw">for </span><a href="#727">NopChecker</a> {
     <span class="kw">type </span>Error = <a href="https://doc.rust-lang.org/nightly/core/convert/enum.Infallible.html">Infallible</a>;
 
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>check(_value: <span class="kw-2">&amp;</span><a href="#477-511">Value</a>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <span class="self">Self</span>::Error&gt; {
+    </span><span class="kw">fn </span>check(_value: <span class="kw-2">&amp;</span><a href="#477-500">Value</a>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <span class="self">Self</span>::Error&gt; {
         <span class="prelude-val">Ok</span>(())
     }
 }
 
-<span class="kw">unsafe impl</span>&lt;<span class="lifetime">'a</span>&gt; FromValue&lt;<span class="lifetime">'a</span>&gt; <span class="kw">for </span><a href="#477-511">Value</a> {
-    <span class="kw">type </span>Checker = <a href="#766">NopChecker</a>;
+<span class="kw">unsafe impl</span>&lt;<span class="lifetime">'a</span>&gt; FromValue&lt;<span class="lifetime">'a</span>&gt; <span class="kw">for </span><a href="#477-500">Value</a> {
+    <span class="kw">type </span>Checker = <a href="#727">NopChecker</a>;
 
     <span class="attr">#[inline]
-    </span><span class="kw">unsafe fn </span>from_value(value: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#477-511">Value</a>) -&gt; <span class="self">Self </span>{
-        <a href="#781">value</a>.<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">clone</a>()
+    </span><span class="kw">unsafe fn </span>from_value(value: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#477-500">Value</a>) -&gt; <span class="self">Self </span>{
+        <a href="#742">value</a>.<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">clone</a>()
     }
 }
 
-<span class="kw">unsafe impl</span>&lt;<span class="lifetime">'a</span>&gt; FromValue&lt;<span class="lifetime">'a</span>&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#477-511">Value</a> {
-    <span class="kw">type </span>Checker = <a href="#766">NopChecker</a>;
+<span class="kw">unsafe impl</span>&lt;<span class="lifetime">'a</span>&gt; FromValue&lt;<span class="lifetime">'a</span>&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#477-500">Value</a> {
+    <span class="kw">type </span>Checker = <a href="#727">NopChecker</a>;
 
     <span class="attr">#[inline]
-    </span><span class="kw">unsafe fn </span>from_value(value: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#477-511">Value</a>) -&gt; <span class="self">Self </span>{
-        <a href="#790">value</a>
+    </span><span class="kw">unsafe fn </span>from_value(value: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#477-500">Value</a>) -&gt; <span class="self">Self </span>{
+        <a href="#751">value</a>
     }
 }
 
-<span class="kw">impl </span><a href="#370-380">ToValue</a> <span class="kw">for </span><a href="#826-842">SendValue</a> {
+<span class="kw">impl </span><a href="#370-380">ToValue</a> <span class="kw">for </span><a href="#787-803">SendValue</a> {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>to_value(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="#477-511">Value</a> {
-        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1624-1626">from_glib_none</a>(<a class="self" href="#797">self</a>.<a href="translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>) }
+    </span><span class="kw">fn </span>to_value(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="#477-500">Value</a> {
+        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1624-1626">from_glib_none</a>(<a class="self" href="#758">self</a>.<a href="translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>) }
     }
 
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>value_type(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="types.rs.html#22">Type</a> {
-        <a class="self" href="#802">self</a>.<a href="#626-628">type_</a>()
+        <a class="self" href="#763">self</a>.<a href="#615-617">type_</a>()
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; <a href="#370-380">ToValue</a> <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#826-842">SendValue</a> {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; <a href="#370-380">ToValue</a> <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#787-803">SendValue</a> {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>to_value(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="#477-511">Value</a> {
-        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1624-1626">from_glib_none</a>(<a class="self" href="#809">self</a>.<a href="translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>) }
+    </span><span class="kw">fn </span>to_value(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="#477-500">Value</a> {
+        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1624-1626">from_glib_none</a>(<a class="self" href="#770">self</a>.<a href="translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>) }
     }
 
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>value_type(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="types.rs.html#22">Type</a> {
-        <a class="self" href="#814">self</a>.<a href="#626-628">type_</a>()
+        <a class="self" href="#775">self</a>.<a href="#615-617">type_</a>()
     }
 }
 
-<span class="kw">impl </span><a href="types.rs.html#290-294">StaticType</a> <span class="kw">for </span><a href="#1462">BoxedValue</a> {
+<span class="kw">impl </span><a href="types.rs.html#290-294">StaticType</a> <span class="kw">for </span><a href="#1423">BoxedValue</a> {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>static_type() -&gt; <a href="types.rs.html#22">Type</a> {
         <span class="kw">unsafe </span>{ <a href="translate.rs.html#1416-1418">from_glib</a>(gobject_ffi::g_value_get_type()) }
@@ -2646,43 +2568,43 @@
     }
 }
 
-<span class="kw">unsafe impl </span><a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> <span class="kw">for </span><a href="#826-842">SendValue</a> {}
+<span class="kw">unsafe impl </span><a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> <span class="kw">for </span><a href="#787-803">SendValue</a> {}
 
-<span class="kw">impl </span><a href="#826-842">SendValue</a> {
+<span class="kw">impl </span><a href="#787-803">SendValue</a> {
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Consumes `SendValue` and returns the corresponding `GValue`.
     </span><span class="attr">#[inline]
     </span><span class="kw">pub fn </span>into_raw(<span class="self">self</span>) -&gt; gobject_ffi::GValue {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>s = <a href="https://doc.rust-lang.org/nightly/core/mem/manually_drop/struct.ManuallyDrop.html#method.new">mem::ManuallyDrop::new</a>(<a class="self" href="#850">self</a>);
-            <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.read.html">ptr::read</a>(<span class="kw-2">&amp;</span><a href="#852">s</a>.inner)
+            <span class="kw">let </span>s = <a href="https://doc.rust-lang.org/nightly/core/mem/manually_drop/struct.ManuallyDrop.html#method.new">mem::ManuallyDrop::new</a>(<a class="self" href="#811">self</a>);
+            <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.read.html">ptr::read</a>(<span class="kw-2">&amp;</span><a href="#813">s</a>.inner)
         }
     }
     <span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>from_owned&lt;T: <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + Into&lt;<a href="#477-511">Value</a>&gt; + <span class="question-mark">?</span><a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sized.html">Sized</a>&gt;(t: T) -&gt; <span class="self">Self </span>{
-        <span class="kw">unsafe </span>{ <a href="translate.rs.html#325"><span class="self">Self</span>::unsafe_from</a>(<a href="#857">t</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>().<a href="#701-706">into_raw</a>()) }
+    </span><span class="kw">pub fn </span>from_owned&lt;T: <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + Into&lt;<a href="#477-500">Value</a>&gt; + <span class="question-mark">?</span><a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sized.html">Sized</a>&gt;(t: T) -&gt; <span class="self">Self </span>{
+        <span class="kw">unsafe </span>{ <a href="translate.rs.html#325"><span class="self">Self</span>::unsafe_from</a>(<a href="#818">t</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>().<a href="#662-667">into_raw</a>()) }
     }
 }
 
-<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html">fmt::Debug</a> <span class="kw">for </span><a href="#826-842">SendValue</a> {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html">fmt::Debug</a> <span class="kw">for </span><a href="#787-803">SendValue</a> {
     <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span><a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html">fmt::Formatter</a>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Error.html">fmt::Error</a>&gt; {
-        <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.write.html">write!</a>(<a href="#863">f</a>, <span class="string">"({}) {}"</span>, <span class="self">self</span>.type_(), <span class="self">self</span>.content_debug_string())
+        <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.write.html">write!</a>(<a href="#824">f</a>, <span class="string">"({}) {}"</span>, <span class="self">self</span>.type_(), <span class="self">self</span>.content_debug_string())
     }
 }
 
-<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/ops/deref/trait.Deref.html">Deref</a> <span class="kw">for </span><a href="#826-842">SendValue</a> {
-    <span class="kw">type </span>Target = <a href="#477-511">Value</a>;
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/ops/deref/trait.Deref.html">Deref</a> <span class="kw">for </span><a href="#787-803">SendValue</a> {
+    <span class="kw">type </span>Target = <a href="#477-500">Value</a>;
 
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>deref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><a href="#477-511">Value</a> {
-        <span class="kw">unsafe </span>{ <span class="kw-2">&amp;*</span>(<span class="self"><a href="#872">self</a> </span><span class="kw">as </span><span class="kw-2">*const </span><a href="#826-842">SendValue</a> <span class="kw">as </span><span class="kw-2">*const </span><a href="#477-511">Value</a>) }
+    </span><span class="kw">fn </span>deref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><a href="#477-500">Value</a> {
+        <span class="kw">unsafe </span>{ <span class="kw-2">&amp;*</span>(<span class="self"><a href="#833">self</a> </span><span class="kw">as </span><span class="kw-2">*const </span><a href="#787-803">SendValue</a> <span class="kw">as </span><span class="kw-2">*const </span><a href="#477-500">Value</a>) }
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T: <span class="question-mark">?</span><a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sized.html">Sized</a> + <a href="#886-890">ToSendValue</a>&gt; From&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>T&gt; <span class="kw">for </span><a href="#826-842">SendValue</a> {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T: <span class="question-mark">?</span><a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sized.html">Sized</a> + <a href="#847-851">ToSendValue</a>&gt; From&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>T&gt; <span class="kw">for </span><a href="#787-803">SendValue</a> {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>from(value: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>T) -&gt; <span class="self">Self </span>{
-        <a href="#879">value</a>.<a href="#889">to_send_value</a>()
+        <a href="#840">value</a>.<a href="#850">to_send_value</a>()
     }
 }
 
@@ -2691,13 +2613,13 @@
 </span><span class="kw">pub trait </span><a href="../../glib/value/trait.ToSendValue.html">ToSendValue</a>: <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="#370-380">ToValue</a> {
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Returns a `SendValue` clone of `self`.
-    </span><span class="kw">fn </span>to_send_value(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="#826-842">SendValue</a>;
+    </span><span class="kw">fn </span>to_send_value(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="#787-803">SendValue</a>;
 }
 
-<span class="kw">impl</span>&lt;T: <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="#370-380">ToValue</a> + <span class="question-mark">?</span><a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sized.html">Sized</a>&gt; <a href="#886-890">ToSendValue</a> <span class="kw">for </span>T {
+<span class="kw">impl</span>&lt;T: <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="#370-380">ToValue</a> + <span class="question-mark">?</span><a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sized.html">Sized</a>&gt; <a href="#847-851">ToSendValue</a> <span class="kw">for </span>T {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>to_send_value(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="#826-842">SendValue</a> {
-        <span class="kw">unsafe </span>{ <a href="translate.rs.html#325">SendValue::unsafe_from</a>(<a class="self" href="#894">self</a>.<a href="#373">to_value</a>().<a href="#701-706">into_raw</a>()) }
+    </span><span class="kw">fn </span>to_send_value(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="#787-803">SendValue</a> {
+        <span class="kw">unsafe </span>{ <a href="translate.rs.html#325">SendValue::unsafe_from</a>(<a class="self" href="#855">self</a>.<a href="#373">to_value</a>().<a href="#662-667">into_raw</a>()) }
     }
 }
 
@@ -2705,20 +2627,20 @@
     <span class="kw">type </span>Checker = GenericValueTypeOrNoneChecker&lt;<span class="self">Self</span>&gt;;
 
     <span class="attr">#[inline]
-    </span><span class="kw">unsafe fn </span>from_value(value: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#477-511">Value</a>) -&gt; <span class="self">Self </span>{
-        <span class="kw">let </span>ptr = gobject_ffi::g_value_get_string(<a href="#903">value</a>.<a href="translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>);
-        <a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.from_ptr">CStr::from_ptr</a>(<a href="#904">ptr</a>).<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.to_str">to_str</a>().<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.expect">expect</a>(<span class="string">"Invalid UTF-8"</span>)
+    </span><span class="kw">unsafe fn </span>from_value(value: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#477-500">Value</a>) -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span>ptr = gobject_ffi::g_value_get_string(<a href="#864">value</a>.<a href="translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>);
+        <a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.from_ptr">CStr::from_ptr</a>(<a href="#865">ptr</a>).<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.to_str">to_str</a>().<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.expect">expect</a>(<span class="string">"Invalid UTF-8"</span>)
     }
 }
 
 <span class="kw">impl </span><a href="#370-380">ToValue</a> <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a> {
-    <span class="kw">fn </span>to_value(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="#477-511">Value</a> {
+    <span class="kw">fn </span>to_value(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="#477-500">Value</a> {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>value = Value::for_value_type::&lt;<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>&gt;();
 
-            gobject_ffi::g_value_take_string(<a href="#912">value</a>.<a href="translate.rs.html#470">to_glib_none_mut</a>().<span class="number">0</span>, <a class="self" href="#910">self</a>.<a href="translate.rs.html#455-457">to_glib_full</a>());
+            gobject_ffi::g_value_take_string(<a href="#873">value</a>.<a href="translate.rs.html#470">to_glib_none_mut</a>().<span class="number">0</span>, <a class="self" href="#871">self</a>.<a href="translate.rs.html#455-457">to_glib_full</a>());
 
-            <a href="#912">value</a>
+            <a href="#873">value</a>
         }
     }
 
@@ -2728,8 +2650,8 @@
 }
 
 <span class="kw">impl </span><a href="#370-380">ToValue</a> <span class="kw">for </span><span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a> {
-    <span class="kw">fn </span>to_value(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="#477-511">Value</a> {
-        (<span class="kw-2">*</span><a class="self" href="#926">self</a>).<a href="#373">to_value</a>()
+    <span class="kw">fn </span>to_value(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="#477-500">Value</a> {
+        (<span class="kw-2">*</span><a class="self" href="#887">self</a>).<a href="#373">to_value</a>()
     }
 
     <span class="kw">fn </span>value_type(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="types.rs.html#22">Type</a> {
@@ -2738,13 +2660,13 @@
 }
 
 <span class="kw">impl </span><a href="#398-403">ToValueOptional</a> <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a> {
-    <span class="kw">fn </span>to_value_optional(s: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="self">Self</span>&gt;) -&gt; <a href="#477-511">Value</a> {
+    <span class="kw">fn </span>to_value_optional(s: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="self">Self</span>&gt;) -&gt; <a href="#477-500">Value</a> {
         <span class="kw">let </span><span class="kw-2">mut </span>value = Value::for_value_type::&lt;<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>&gt;();
         <span class="kw">unsafe </span>{
-            gobject_ffi::g_value_take_string(<a href="#937">value</a>.<a href="translate.rs.html#470">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#936">s</a>.<a href="translate.rs.html#455-457">to_glib_full</a>());
+            gobject_ffi::g_value_take_string(<a href="#898">value</a>.<a href="translate.rs.html#470">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#897">s</a>.<a href="translate.rs.html#455-457">to_glib_full</a>());
         }
 
-        <a href="#937">value</a>
+        <a href="#898">value</a>
     }
 }
 
@@ -2757,14 +2679,14 @@
 <span class="kw">unsafe impl</span>&lt;<span class="lifetime">'a</span>&gt; FromValue&lt;<span class="lifetime">'a</span>&gt; <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a> {
     <span class="kw">type </span>Checker = GenericValueTypeOrNoneChecker&lt;<span class="self">Self</span>&gt;;
 
-    <span class="kw">unsafe fn </span>from_value(value: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#477-511">Value</a>) -&gt; <span class="self">Self </span>{
-        <a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html#tymethod.from">String::from</a>(&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;::from_value(<a href="#955">value</a>))
+    <span class="kw">unsafe fn </span>from_value(value: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#477-500">Value</a>) -&gt; <span class="self">Self </span>{
+        <a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html#tymethod.from">String::from</a>(&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;::from_value(<a href="#916">value</a>))
     }
 }
 
 <span class="kw">impl </span><a href="#370-380">ToValue</a> <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a> {
-    <span class="kw">fn </span>to_value(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="#477-511">Value</a> {
-        &lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;::to_value(<span class="kw-2">&amp;</span><a class="self" href="#961">self</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html#method.as_str">as_str</a>())
+    <span class="kw">fn </span>to_value(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="#477-500">Value</a> {
+        &lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;::to_value(<span class="kw-2">&amp;</span><a class="self" href="#922">self</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html#method.as_str">as_str</a>())
     }
 
     <span class="kw">fn </span>value_type(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="types.rs.html#22">Type</a> {
@@ -2772,16 +2694,16 @@
     }
 }
 
-<span class="kw">impl </span>From&lt;<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>&gt; <span class="kw">for </span><a href="#477-511">Value</a> {
+<span class="kw">impl </span>From&lt;<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>&gt; <span class="kw">for </span><a href="#477-500">Value</a> {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>from(s: <a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>) -&gt; <span class="self">Self </span>{
-        <a href="#972">s</a>.<a href="#373">to_value</a>()
+        <a href="#933">s</a>.<a href="#373">to_value</a>()
     }
 }
 
 <span class="kw">impl </span><a href="#398-403">ToValueOptional</a> <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a> {
-    <span class="kw">fn </span>to_value_optional(s: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="self">Self</span>&gt;) -&gt; <a href="#477-511">Value</a> {
-        &lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;::to_value_optional(<a href="#978">s</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_ref">as_ref</a>().<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|s| <a href="#979">s</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html#method.as_str">as_str</a>()))
+    <span class="kw">fn </span>to_value_optional(s: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="self">Self</span>&gt;) -&gt; <a href="#477-500">Value</a> {
+        &lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;::to_value_optional(<a href="#939">s</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_ref">as_ref</a>().<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|s| <a href="#940">s</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html#method.as_str">as_str</a>()))
     }
 }
 
@@ -2794,8 +2716,8 @@
 <span class="kw">unsafe impl</span>&lt;<span class="lifetime">'a</span>&gt; FromValue&lt;<span class="lifetime">'a</span>&gt; <span class="kw">for </span>Box&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt; {
     <span class="kw">type </span>Checker = GenericValueTypeOrNoneChecker&lt;<span class="self">Self</span>&gt;;
 
-    <span class="kw">unsafe fn </span>from_value(value: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#477-511">Value</a>) -&gt; <span class="self">Self </span>{
-        Box::&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;::from(&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;::from_value(<a href="#992">value</a>))
+    <span class="kw">unsafe fn </span>from_value(value: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#477-500">Value</a>) -&gt; <span class="self">Self </span>{
+        Box::&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;::from(&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;::from_value(<a href="#953">value</a>))
     }
 }
 
@@ -2806,8 +2728,8 @@
 }
 
 <span class="kw">impl </span><a href="#370-380">ToValue</a> <span class="kw">for </span>Box&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt; {
-    <span class="kw">fn </span>to_value(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="#477-511">Value</a> {
-        &lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;::to_value(<span class="kw-2">&amp;</span><a class="self" href="#1004">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>())
+    <span class="kw">fn </span>to_value(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="#477-500">Value</a> {
+        &lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;::to_value(<span class="kw-2">&amp;</span><a class="self" href="#965">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>())
     }
 
     <span class="kw">fn </span>value_type(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="types.rs.html#22">Type</a> {
@@ -2815,16 +2737,16 @@
     }
 }
 
-<span class="kw">impl </span>From&lt;Box&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;&gt; <span class="kw">for </span><a href="#477-511">Value</a> {
+<span class="kw">impl </span>From&lt;Box&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;&gt; <span class="kw">for </span><a href="#477-500">Value</a> {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>from(s: Box&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;) -&gt; <span class="self">Self </span>{
-        <a href="#1015">s</a>.<a href="#373">to_value</a>()
+        <a href="#976">s</a>.<a href="#373">to_value</a>()
     }
 }
 
 <span class="kw">impl </span><a href="#398-403">ToValueOptional</a> <span class="kw">for </span>Box&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt; {
-    <span class="kw">fn </span>to_value_optional(s: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="self">Self</span>&gt;) -&gt; <a href="#477-511">Value</a> {
-        &lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;::to_value_optional(<a href="#1021">s</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_ref">as_ref</a>().<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|s| <a href="#1022">s</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>()))
+    <span class="kw">fn </span>to_value_optional(s: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="self">Self</span>&gt;) -&gt; <a href="#477-500">Value</a> {
+        &lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;::to_value_optional(<a href="#982">s</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_ref">as_ref</a>().<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|s| <a href="#983">s</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>()))
     }
 }
 
@@ -2835,19 +2757,19 @@
 <span class="kw">unsafe impl</span>&lt;<span class="lifetime">'a</span>&gt; FromValue&lt;<span class="lifetime">'a</span>&gt; <span class="kw">for </span>Vec&lt;<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>&gt; {
     <span class="kw">type </span>Checker = GenericValueTypeChecker&lt;<span class="self">Self</span>&gt;;
 
-    <span class="kw">unsafe fn </span>from_value(value: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#477-511">Value</a>) -&gt; <span class="self">Self </span>{
-        <span class="kw">let </span>ptr = gobject_ffi::g_value_get_boxed(<a href="#1033">value</a>.<a href="translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>) <span class="kw">as </span><span class="kw-2">*const *const </span>c_char;
-        <a href="translate.rs.html#1931">FromGlibPtrContainer::from_glib_none</a>(<a href="#1034">ptr</a>)
+    <span class="kw">unsafe fn </span>from_value(value: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#477-500">Value</a>) -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span>ptr = gobject_ffi::g_value_get_boxed(<a href="#994">value</a>.<a href="translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>) <span class="kw">as </span><span class="kw-2">*const *const </span>c_char;
+        <a href="translate.rs.html#1931">FromGlibPtrContainer::from_glib_none</a>(<a href="#995">ptr</a>)
     }
 }
 
 <span class="kw">impl </span><a href="#370-380">ToValue</a> <span class="kw">for </span>Vec&lt;<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>&gt; {
-    <span class="kw">fn </span>to_value(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="#477-511">Value</a> {
+    <span class="kw">fn </span>to_value(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="#477-500">Value</a> {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>value = Value::for_value_type::&lt;<span class="self">Self</span>&gt;();
-            <span class="kw">let </span>ptr: <span class="kw-2">*mut *mut </span>c_char = <a class="self" href="#1040">self</a>.<a href="translate.rs.html#455-457">to_glib_full</a>();
-            gobject_ffi::g_value_take_boxed(<a href="#1042">value</a>.<a href="translate.rs.html#470">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#1043">ptr</a> <span class="kw">as </span><span class="kw-2">*const </span><a href="https://doc.rust-lang.org/nightly/core/ffi/enum.c_void.html">c_void</a>);
-            <a href="#1042">value</a>
+            <span class="kw">let </span>ptr: <span class="kw-2">*mut *mut </span>c_char = <a class="self" href="#1001">self</a>.<a href="translate.rs.html#455-457">to_glib_full</a>();
+            gobject_ffi::g_value_take_boxed(<a href="#1003">value</a>.<a href="translate.rs.html#470">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#1004">ptr</a> <span class="kw">as </span><span class="kw-2">*const </span><a href="https://doc.rust-lang.org/nightly/core/ffi/enum.c_void.html">c_void</a>);
+            <a href="#1003">value</a>
         }
     }
 
@@ -2856,20 +2778,20 @@
     }
 }
 
-<span class="kw">impl </span>From&lt;Vec&lt;<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>&gt;&gt; <span class="kw">for </span><a href="#477-511">Value</a> {
+<span class="kw">impl </span>From&lt;Vec&lt;<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>&gt;&gt; <span class="kw">for </span><a href="#477-500">Value</a> {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>from(s: Vec&lt;<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>&gt;) -&gt; <span class="self">Self </span>{
-        <a href="#1056">s</a>.<a href="#373">to_value</a>()
+        <a href="#1017">s</a>.<a href="#373">to_value</a>()
     }
 }
 
 <span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; <a href="#370-380">ToValue</a> <span class="kw">for </span>[<span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>] {
-    <span class="kw">fn </span>to_value(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="#477-511">Value</a> {
+    <span class="kw">fn </span>to_value(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="#477-500">Value</a> {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>value = Value::for_value_type::&lt;Vec&lt;<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>&gt;&gt;();
-            <span class="kw">let </span>ptr: <span class="kw-2">*mut *mut </span>c_char = <a class="self" href="#1062">self</a>.<a href="translate.rs.html#455-457">to_glib_full</a>();
-            gobject_ffi::g_value_take_boxed(<a href="#1064">value</a>.<a href="translate.rs.html#470">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#1065">ptr</a> <span class="kw">as </span><span class="kw-2">*const </span><a href="https://doc.rust-lang.org/nightly/core/ffi/enum.c_void.html">c_void</a>);
-            <a href="#1064">value</a>
+            <span class="kw">let </span>ptr: <span class="kw-2">*mut *mut </span>c_char = <a class="self" href="#1023">self</a>.<a href="translate.rs.html#455-457">to_glib_full</a>();
+            gobject_ffi::g_value_take_boxed(<a href="#1025">value</a>.<a href="translate.rs.html#470">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#1026">ptr</a> <span class="kw">as </span><span class="kw-2">*const </span><a href="https://doc.rust-lang.org/nightly/core/ffi/enum.c_void.html">c_void</a>);
+            <a href="#1025">value</a>
         }
     }
 
@@ -2879,12 +2801,12 @@
 }
 
 <span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; <a href="#370-380">ToValue</a> <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span>[<span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>] {
-    <span class="kw">fn </span>to_value(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="#477-511">Value</a> {
+    <span class="kw">fn </span>to_value(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="#477-500">Value</a> {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>value = Value::for_value_type::&lt;Vec&lt;<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>&gt;&gt;();
-            <span class="kw">let </span>ptr: <span class="kw-2">*mut *mut </span>c_char = <a class="self" href="#1077">self</a>.<a href="translate.rs.html#455-457">to_glib_full</a>();
-            gobject_ffi::g_value_take_boxed(<a href="#1079">value</a>.<a href="translate.rs.html#470">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#1080">ptr</a> <span class="kw">as </span><span class="kw-2">*const </span><a href="https://doc.rust-lang.org/nightly/core/ffi/enum.c_void.html">c_void</a>);
-            <a href="#1079">value</a>
+            <span class="kw">let </span>ptr: <span class="kw-2">*mut *mut </span>c_char = <a class="self" href="#1038">self</a>.<a href="translate.rs.html#455-457">to_glib_full</a>();
+            gobject_ffi::g_value_take_boxed(<a href="#1040">value</a>.<a href="translate.rs.html#470">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#1041">ptr</a> <span class="kw">as </span><span class="kw-2">*const </span><a href="https://doc.rust-lang.org/nightly/core/ffi/enum.c_void.html">c_void</a>);
+            <a href="#1040">value</a>
         }
     }
 
@@ -2894,13 +2816,13 @@
 }
 
 <span class="kw">impl </span><a href="#370-380">ToValue</a> <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/std/path/struct.Path.html">Path</a> {
-    <span class="kw">fn </span>to_value(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="#477-511">Value</a> {
+    <span class="kw">fn </span>to_value(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="#477-500">Value</a> {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>value = Value::for_value_type::&lt;<a href="https://doc.rust-lang.org/nightly/std/path/struct.PathBuf.html">PathBuf</a>&gt;();
 
-            gobject_ffi::g_value_take_string(<a href="#1094">value</a>.<a href="translate.rs.html#470">to_glib_none_mut</a>().<span class="number">0</span>, <a class="self" href="#1092">self</a>.<a href="translate.rs.html#455-457">to_glib_full</a>());
+            gobject_ffi::g_value_take_string(<a href="#1055">value</a>.<a href="translate.rs.html#470">to_glib_none_mut</a>().<span class="number">0</span>, <a class="self" href="#1053">self</a>.<a href="translate.rs.html#455-457">to_glib_full</a>());
 
-            <a href="#1094">value</a>
+            <a href="#1055">value</a>
         }
     }
 
@@ -2910,8 +2832,8 @@
 }
 
 <span class="kw">impl </span><a href="#370-380">ToValue</a> <span class="kw">for </span><span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/path/struct.Path.html">Path</a> {
-    <span class="kw">fn </span>to_value(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="#477-511">Value</a> {
-        (<span class="kw-2">*</span><a class="self" href="#1108">self</a>).<a href="#373">to_value</a>()
+    <span class="kw">fn </span>to_value(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="#477-500">Value</a> {
+        (<span class="kw-2">*</span><a class="self" href="#1069">self</a>).<a href="#373">to_value</a>()
     }
 
     <span class="kw">fn </span>value_type(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="types.rs.html#22">Type</a> {
@@ -2920,13 +2842,13 @@
 }
 
 <span class="kw">impl </span><a href="#398-403">ToValueOptional</a> <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/std/path/struct.Path.html">Path</a> {
-    <span class="kw">fn </span>to_value_optional(s: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="self">Self</span>&gt;) -&gt; <a href="#477-511">Value</a> {
+    <span class="kw">fn </span>to_value_optional(s: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="self">Self</span>&gt;) -&gt; <a href="#477-500">Value</a> {
         <span class="kw">let </span><span class="kw-2">mut </span>value = Value::for_value_type::&lt;<a href="https://doc.rust-lang.org/nightly/std/path/struct.PathBuf.html">PathBuf</a>&gt;();
         <span class="kw">unsafe </span>{
-            gobject_ffi::g_value_take_string(<a href="#1119">value</a>.<a href="translate.rs.html#470">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#1118">s</a>.<a href="translate.rs.html#455-457">to_glib_full</a>());
+            gobject_ffi::g_value_take_string(<a href="#1080">value</a>.<a href="translate.rs.html#470">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#1079">s</a>.<a href="translate.rs.html#455-457">to_glib_full</a>());
         }
 
-        <a href="#1119">value</a>
+        <a href="#1080">value</a>
     }
 }
 
@@ -2939,14 +2861,14 @@
 <span class="kw">unsafe impl</span>&lt;<span class="lifetime">'a</span>&gt; FromValue&lt;<span class="lifetime">'a</span>&gt; <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/std/path/struct.PathBuf.html">PathBuf</a> {
     <span class="kw">type </span>Checker = GenericValueTypeOrNoneChecker&lt;<span class="self">Self</span>&gt;;
 
-    <span class="kw">unsafe fn </span>from_value(value: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#477-511">Value</a>) -&gt; <span class="self">Self </span>{
-        <a href="translate.rs.html#1624-1626">from_glib_none</a>(gobject_ffi::g_value_get_string(<a href="#1137">value</a>.<a href="translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>))
+    <span class="kw">unsafe fn </span>from_value(value: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#477-500">Value</a>) -&gt; <span class="self">Self </span>{
+        <a href="translate.rs.html#1624-1626">from_glib_none</a>(gobject_ffi::g_value_get_string(<a href="#1098">value</a>.<a href="translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>))
     }
 }
 
 <span class="kw">impl </span><a href="#370-380">ToValue</a> <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/std/path/struct.PathBuf.html">PathBuf</a> {
-    <span class="kw">fn </span>to_value(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="#477-511">Value</a> {
-        &lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/path/struct.Path.html">Path</a>&gt;::to_value(<span class="kw-2">&amp;</span><a class="self" href="#1143">self</a>.<a href="https://doc.rust-lang.org/nightly/std/path/struct.PathBuf.html#method.as_path">as_path</a>())
+    <span class="kw">fn </span>to_value(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="#477-500">Value</a> {
+        &lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/path/struct.Path.html">Path</a>&gt;::to_value(<span class="kw-2">&amp;</span><a class="self" href="#1104">self</a>.<a href="https://doc.rust-lang.org/nightly/std/path/struct.PathBuf.html#method.as_path">as_path</a>())
     }
 
     <span class="kw">fn </span>value_type(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="types.rs.html#22">Type</a> {
@@ -2954,16 +2876,16 @@
     }
 }
 
-<span class="kw">impl </span>From&lt;<a href="https://doc.rust-lang.org/nightly/std/path/struct.PathBuf.html">PathBuf</a>&gt; <span class="kw">for </span><a href="#477-511">Value</a> {
+<span class="kw">impl </span>From&lt;<a href="https://doc.rust-lang.org/nightly/std/path/struct.PathBuf.html">PathBuf</a>&gt; <span class="kw">for </span><a href="#477-500">Value</a> {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>from(s: <a href="https://doc.rust-lang.org/nightly/std/path/struct.PathBuf.html">PathBuf</a>) -&gt; <span class="self">Self </span>{
-        <a href="#1154">s</a>.<a href="#373">to_value</a>()
+        <a href="#1115">s</a>.<a href="#373">to_value</a>()
     }
 }
 
 <span class="kw">impl </span><a href="#398-403">ToValueOptional</a> <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/std/path/struct.PathBuf.html">PathBuf</a> {
-    <span class="kw">fn </span>to_value_optional(s: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="self">Self</span>&gt;) -&gt; <a href="#477-511">Value</a> {
-        &lt;<a href="https://doc.rust-lang.org/nightly/std/path/struct.Path.html">Path</a>&gt;::to_value_optional(<a href="#1160">s</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_ref">as_ref</a>().<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|s| <a href="#1161">s</a>.<a href="https://doc.rust-lang.org/nightly/std/path/struct.PathBuf.html#method.as_path">as_path</a>()))
+    <span class="kw">fn </span>to_value_optional(s: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="self">Self</span>&gt;) -&gt; <a href="#477-500">Value</a> {
+        &lt;<a href="https://doc.rust-lang.org/nightly/std/path/struct.Path.html">Path</a>&gt;::to_value_optional(<a href="#1121">s</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_ref">as_ref</a>().<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|s| <a href="#1122">s</a>.<a href="https://doc.rust-lang.org/nightly/std/path/struct.PathBuf.html#method.as_path">as_path</a>()))
     }
 }
 
@@ -2975,19 +2897,19 @@
     <span class="kw">type </span>Checker = GenericValueTypeChecker&lt;<span class="self">Self</span>&gt;;
 
     <span class="attr">#[inline]
-    </span><span class="kw">unsafe fn </span>from_value(value: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#477-511">Value</a>) -&gt; <span class="self">Self </span>{
-        <a href="translate.rs.html#1416-1418">from_glib</a>(gobject_ffi::g_value_get_boolean(<a href="#1173">value</a>.<a href="translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>))
+    </span><span class="kw">unsafe fn </span>from_value(value: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#477-500">Value</a>) -&gt; <span class="self">Self </span>{
+        <a href="translate.rs.html#1416-1418">from_glib</a>(gobject_ffi::g_value_get_boolean(<a href="#1134">value</a>.<a href="translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>))
     }
 }
 
 <span class="kw">impl </span><a href="#370-380">ToValue</a> <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>to_value(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="#477-511">Value</a> {
+    </span><span class="kw">fn </span>to_value(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="#477-500">Value</a> {
         <span class="kw">let </span><span class="kw-2">mut </span>value = Value::for_value_type::&lt;<span class="self">Self</span>&gt;();
         <span class="kw">unsafe </span>{
-            gobject_ffi::g_value_set_boolean(<span class="kw-2">&amp;mut </span><a href="#1181">value</a>.inner, <a class="self" href="#1180">self</a>.<a href="translate.rs.html#333">into_glib</a>());
+            gobject_ffi::g_value_set_boolean(<span class="kw-2">&amp;mut </span><a href="#1142">value</a>.inner, <a class="self" href="#1141">self</a>.<a href="translate.rs.html#333">into_glib</a>());
         }
-        <a href="#1181">value</a>
+        <a href="#1142">value</a>
     }
 
     <span class="attr">#[inline]
@@ -2996,10 +2918,10 @@
     }
 }
 
-<span class="kw">impl </span>From&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>&gt; <span class="kw">for </span><a href="#477-511">Value</a> {
+<span class="kw">impl </span>From&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>&gt; <span class="kw">for </span><a href="#477-500">Value</a> {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>from(v: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>) -&gt; <span class="self">Self </span>{
-        <a href="#1196">v</a>.<a href="#373">to_value</a>()
+        <a href="#1157">v</a>.<a href="#373">to_value</a>()
     }
 }
 
@@ -3011,19 +2933,19 @@
     <span class="kw">type </span>Checker = GenericValueTypeChecker&lt;<span class="self">Self</span>&gt;;
 
     <span class="attr">#[inline]
-    </span><span class="kw">unsafe fn </span>from_value(value: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#477-511">Value</a>) -&gt; <span class="self">Self </span>{
-        gobject_ffi::g_value_get_pointer(<a href="#1209">value</a>.<a href="translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>)
+    </span><span class="kw">unsafe fn </span>from_value(value: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#477-500">Value</a>) -&gt; <span class="self">Self </span>{
+        gobject_ffi::g_value_get_pointer(<a href="#1170">value</a>.<a href="translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>)
     }
 }
 
 <span class="kw">impl </span><a href="#370-380">ToValue</a> <span class="kw">for </span><a href="types.rs.html#387">Pointer</a> {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>to_value(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="#477-511">Value</a> {
+    </span><span class="kw">fn </span>to_value(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="#477-500">Value</a> {
         <span class="kw">let </span><span class="kw-2">mut </span>value = Value::for_value_type::&lt;<span class="self">Self</span>&gt;();
         <span class="kw">unsafe </span>{
-            gobject_ffi::g_value_set_pointer(<span class="kw-2">&amp;mut </span><a href="#1217">value</a>.inner, <span class="kw-2">*</span><a class="self" href="#1216">self</a>);
+            gobject_ffi::g_value_set_pointer(<span class="kw-2">&amp;mut </span><a href="#1178">value</a>.inner, <span class="kw-2">*</span><a class="self" href="#1177">self</a>);
         }
-        <a href="#1217">value</a>
+        <a href="#1178">value</a>
     }
 
     <span class="attr">#[inline]
@@ -3032,10 +2954,10 @@
     }
 }
 
-<span class="kw">impl </span>From&lt;<a href="types.rs.html#387">Pointer</a>&gt; <span class="kw">for </span><a href="#477-511">Value</a> {
+<span class="kw">impl </span>From&lt;<a href="types.rs.html#387">Pointer</a>&gt; <span class="kw">for </span><a href="#477-500">Value</a> {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>from(v: <a href="types.rs.html#387">Pointer</a>) -&gt; <span class="self">Self </span>{
-        <a href="#1232">v</a>.<a href="#373">to_value</a>()
+        <a href="#1193">v</a>.<a href="#373">to_value</a>()
     }
 }
 
@@ -3047,15 +2969,15 @@
     <span class="kw">type </span>Checker = GenericValueTypeOrNoneChecker&lt;<span class="self">Self</span>&gt;;
 
     <span class="attr">#[inline]
-    </span><span class="kw">unsafe fn </span>from_value(value: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#477-511">Value</a>) -&gt; <span class="self">Self </span>{
-        <a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.new_unchecked">ptr::NonNull::new_unchecked</a>(<a href="#281">Pointer::from_value</a>(<a href="#1245">value</a>))
+    </span><span class="kw">unsafe fn </span>from_value(value: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#477-500">Value</a>) -&gt; <span class="self">Self </span>{
+        <a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.new_unchecked">ptr::NonNull::new_unchecked</a>(<a href="#281">Pointer::from_value</a>(<a href="#1206">value</a>))
     }
 }
 
 <span class="kw">impl </span><a href="#370-380">ToValue</a> <span class="kw">for </span>ptr::NonNull&lt;<a href="types.rs.html#404">Pointee</a>&gt; {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>to_value(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="#477-511">Value</a> {
-        <a class="self" href="#1252">self</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>().<a href="#373">to_value</a>()
+    </span><span class="kw">fn </span>to_value(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="#477-500">Value</a> {
+        <a class="self" href="#1213">self</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>().<a href="#373">to_value</a>()
     }
 
     <span class="attr">#[inline]
@@ -3064,17 +2986,17 @@
     }
 }
 
-<span class="kw">impl </span>From&lt;ptr::NonNull&lt;<a href="types.rs.html#404">Pointee</a>&gt;&gt; <span class="kw">for </span><a href="#477-511">Value</a> {
+<span class="kw">impl </span>From&lt;ptr::NonNull&lt;<a href="types.rs.html#404">Pointee</a>&gt;&gt; <span class="kw">for </span><a href="#477-500">Value</a> {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>from(v: ptr::NonNull&lt;<a href="types.rs.html#404">Pointee</a>&gt;) -&gt; <span class="self">Self </span>{
-        <a href="#1264">v</a>.<a href="#373">to_value</a>()
+        <a href="#1225">v</a>.<a href="#373">to_value</a>()
     }
 }
 
 <span class="kw">impl </span><a href="#398-403">ToValueOptional</a> <span class="kw">for </span>ptr::NonNull&lt;<a href="types.rs.html#404">Pointee</a>&gt; {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>to_value_optional(p: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="self">Self</span>&gt;) -&gt; <a href="#477-511">Value</a> {
-        <a href="#1271">p</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|p| <a href="#1272">p</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>()).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap_or">unwrap_or</a>(<a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>()).<a href="#373">to_value</a>()
+    </span><span class="kw">fn </span>to_value_optional(p: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="self">Self</span>&gt;) -&gt; <a href="#477-500">Value</a> {
+        <a href="#1232">p</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|p| <a href="#1233">p</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>()).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap_or">unwrap_or</a>(<a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>()).<a href="#373">to_value</a>()
     }
 }
 
@@ -3167,58 +3089,58 @@
     };
 }
 
-<a class="macro" href="#1276-1316">numeric!</a>(
+<a class="macro" href="#1237-1277">numeric!</a>(
     <a href="https://doc.rust-lang.org/nightly/std/primitive.i8.html">i8</a>,
     gobject_ffi::g_value_get_schar,
     gobject_ffi::g_value_set_schar
 );
-<a class="macro" href="#1317-1363">not_zero!</a>(<a href="https://doc.rust-lang.org/nightly/core/num/nonzero/type.NonZeroI8.html">NonZeroI8</a>, i8);
-<a class="macro" href="#1276-1316">numeric!</a>(
+<a class="macro" href="#1278-1324">not_zero!</a>(<a href="https://doc.rust-lang.org/nightly/core/num/nonzero/type.NonZeroI8.html">NonZeroI8</a>, i8);
+<a class="macro" href="#1237-1277">numeric!</a>(
     <a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>,
     gobject_ffi::g_value_get_uchar,
     gobject_ffi::g_value_set_uchar
 );
-<a class="macro" href="#1317-1363">not_zero!</a>(<a href="https://doc.rust-lang.org/nightly/core/num/nonzero/type.NonZeroU8.html">NonZeroU8</a>, u8);
-<a class="macro" href="#1276-1316">numeric!</a>(
+<a class="macro" href="#1278-1324">not_zero!</a>(<a href="https://doc.rust-lang.org/nightly/core/num/nonzero/type.NonZeroU8.html">NonZeroU8</a>, u8);
+<a class="macro" href="#1237-1277">numeric!</a>(
     <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
     gobject_ffi::g_value_get_int,
     gobject_ffi::g_value_set_int
 );
-<a class="macro" href="#1317-1363">not_zero!</a>(<a href="https://doc.rust-lang.org/nightly/core/num/nonzero/type.NonZeroI32.html">NonZeroI32</a>, i32);
-<a class="macro" href="#1276-1316">numeric!</a>(
+<a class="macro" href="#1278-1324">not_zero!</a>(<a href="https://doc.rust-lang.org/nightly/core/num/nonzero/type.NonZeroI32.html">NonZeroI32</a>, i32);
+<a class="macro" href="#1237-1277">numeric!</a>(
     <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>,
     gobject_ffi::g_value_get_uint,
     gobject_ffi::g_value_set_uint
 );
-<a class="macro" href="#1317-1363">not_zero!</a>(<a href="https://doc.rust-lang.org/nightly/core/num/nonzero/type.NonZeroU32.html">NonZeroU32</a>, u32);
-<a class="macro" href="#1276-1316">numeric!</a>(
+<a class="macro" href="#1278-1324">not_zero!</a>(<a href="https://doc.rust-lang.org/nightly/core/num/nonzero/type.NonZeroU32.html">NonZeroU32</a>, u32);
+<a class="macro" href="#1237-1277">numeric!</a>(
     <a href="https://doc.rust-lang.org/nightly/std/primitive.i64.html">i64</a>,
     gobject_ffi::g_value_get_int64,
     gobject_ffi::g_value_set_int64
 );
-<a class="macro" href="#1317-1363">not_zero!</a>(<a href="https://doc.rust-lang.org/nightly/core/num/nonzero/type.NonZeroI64.html">NonZeroI64</a>, i64);
-<a class="macro" href="#1276-1316">numeric!</a>(
+<a class="macro" href="#1278-1324">not_zero!</a>(<a href="https://doc.rust-lang.org/nightly/core/num/nonzero/type.NonZeroI64.html">NonZeroI64</a>, i64);
+<a class="macro" href="#1237-1277">numeric!</a>(
     <a href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a>,
     gobject_ffi::g_value_get_uint64,
     gobject_ffi::g_value_set_uint64
 );
-<a class="macro" href="#1317-1363">not_zero!</a>(<a href="https://doc.rust-lang.org/nightly/core/num/nonzero/type.NonZeroU64.html">NonZeroU64</a>, u64);
-<a class="macro" href="#1276-1316">numeric!</a>(
+<a class="macro" href="#1278-1324">not_zero!</a>(<a href="https://doc.rust-lang.org/nightly/core/num/nonzero/type.NonZeroU64.html">NonZeroU64</a>, u64);
+<a class="macro" href="#1237-1277">numeric!</a>(
     <a href="types.rs.html#414"><span class="kw">crate</span>::ILong</a>,
     |v| gobject_ffi::g_value_get_long(v).into(),
     |v, i: <span class="kw">crate</span>::ILong| gobject_ffi::g_value_set_long(v, i.<span class="number">0</span>)
 );
-<a class="macro" href="#1276-1316">numeric!</a>(
+<a class="macro" href="#1237-1277">numeric!</a>(
     <a href="types.rs.html#475"><span class="kw">crate</span>::ULong</a>,
     |v| gobject_ffi::g_value_get_ulong(v).into(),
     |v, i: <span class="kw">crate</span>::ULong| gobject_ffi::g_value_set_ulong(v, i.<span class="number">0</span>)
 );
-<a class="macro" href="#1276-1316">numeric!</a>(
+<a class="macro" href="#1237-1277">numeric!</a>(
     <a href="https://doc.rust-lang.org/nightly/std/primitive.f32.html">f32</a>,
     gobject_ffi::g_value_get_float,
     gobject_ffi::g_value_set_float
 );
-<a class="macro" href="#1276-1316">numeric!</a>(
+<a class="macro" href="#1237-1277">numeric!</a>(
     <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>,
     gobject_ffi::g_value_get_double,
     gobject_ffi::g_value_set_double
@@ -3232,21 +3154,21 @@
     <span class="kw">type </span>Checker = <a href="#171">CharTypeChecker</a>;
 
     <span class="attr">#[inline]
-    </span><span class="kw">unsafe fn </span>from_value(value: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#477-511">Value</a>) -&gt; <span class="self">Self </span>{
-        <span class="kw">let </span>res: <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a> = gobject_ffi::g_value_get_uint(<a href="#1430">value</a>.<a href="translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>);
+    </span><span class="kw">unsafe fn </span>from_value(value: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#477-500">Value</a>) -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span>res: <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a> = gobject_ffi::g_value_get_uint(<a href="#1391">value</a>.<a href="translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>);
         <span class="comment">// safe because the check is done by `Self::Checker`
-        </span><a href="https://doc.rust-lang.org/nightly/core/char/foreigntype.methods.html#method.from_u32_unchecked">char::from_u32_unchecked</a>(<a href="#1431">res</a>)
+        </span><a href="https://doc.rust-lang.org/nightly/core/char/foreigntype.methods.html#method.from_u32_unchecked">char::from_u32_unchecked</a>(<a href="#1392">res</a>)
     }
 }
 
 <span class="kw">impl </span><a href="#370-380">ToValue</a> <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/std/primitive.char.html">char</a> {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>to_value(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="#477-511">Value</a> {
+    </span><span class="kw">fn </span>to_value(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="#477-500">Value</a> {
         <span class="kw">let </span><span class="kw-2">mut </span>value = Value::for_value_type::&lt;<span class="self">Self</span>&gt;();
         <span class="kw">unsafe </span>{
-            gobject_ffi::g_value_set_uint(<span class="kw-2">&amp;mut </span><a href="#1440">value</a>.inner, <span class="kw-2">*</span><span class="self"><a href="#1439">self</a> </span><span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>);
+            gobject_ffi::g_value_set_uint(<span class="kw-2">&amp;mut </span><a href="#1401">value</a>.inner, <span class="kw-2">*</span><span class="self"><a href="#1400">self</a> </span><span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>);
         }
-        <a href="#1440">value</a>
+        <a href="#1401">value</a>
     }
 
     <span class="attr">#[inline]
@@ -3255,54 +3177,54 @@
     }
 }
 
-<span class="kw">impl </span>From&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.char.html">char</a>&gt; <span class="kw">for </span><a href="#477-511">Value</a> {
+<span class="kw">impl </span>From&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.char.html">char</a>&gt; <span class="kw">for </span><a href="#477-500">Value</a> {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>from(v: <a href="https://doc.rust-lang.org/nightly/std/primitive.char.html">char</a>) -&gt; <span class="self">Self </span>{
-        <a href="#1455">v</a>.<a href="#373">to_value</a>()
+        <a href="#1416">v</a>.<a href="#373">to_value</a>()
     }
 }
 
 <span class="comment">// rustdoc-stripper-ignore-next
 </span><span class="doccomment">/// A [`Value`] containing another [`Value`].
-</span><span class="kw">pub struct </span><a href="../../glib/value/struct.BoxedValue.html">BoxedValue</a>(<span class="kw">pub </span><a href="#477-511">Value</a>);
+</span><span class="kw">pub struct </span><a href="../../glib/value/struct.BoxedValue.html">BoxedValue</a>(<span class="kw">pub </span><a href="#477-500">Value</a>);
 
-<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/ops/deref/trait.Deref.html">Deref</a> <span class="kw">for </span><a href="#1462">BoxedValue</a> {
-    <span class="kw">type </span>Target = <a href="#477-511">Value</a>;
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/ops/deref/trait.Deref.html">Deref</a> <span class="kw">for </span><a href="#1423">BoxedValue</a> {
+    <span class="kw">type </span>Target = <a href="#477-500">Value</a>;
 
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>deref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><a href="#477-511">Value</a> {
-        <span class="kw-2">&amp;</span><a class="self" href="#1468">self</a>.<span class="number">0
+    </span><span class="kw">fn </span>deref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><a href="#477-500">Value</a> {
+        <span class="kw-2">&amp;</span><a class="self" href="#1429">self</a>.<span class="number">0
     </span>}
 }
 
-<span class="kw">impl </span><a href="#66-74">ValueType</a> <span class="kw">for </span><a href="#1462">BoxedValue</a> {
-    <span class="kw">type </span>Type = <a href="#1462">BoxedValue</a>;
+<span class="kw">impl </span><a href="#66-74">ValueType</a> <span class="kw">for </span><a href="#1423">BoxedValue</a> {
+    <span class="kw">type </span>Type = <a href="#1423">BoxedValue</a>;
 }
 
-<span class="kw">impl </span><a href="#80-83">ValueTypeOptional</a> <span class="kw">for </span><a href="#1462">BoxedValue</a> {}
+<span class="kw">impl </span><a href="#80-83">ValueTypeOptional</a> <span class="kw">for </span><a href="#1423">BoxedValue</a> {}
 
-<span class="kw">unsafe impl</span>&lt;<span class="lifetime">'a</span>&gt; FromValue&lt;<span class="lifetime">'a</span>&gt; <span class="kw">for </span><a href="#1462">BoxedValue</a> {
+<span class="kw">unsafe impl</span>&lt;<span class="lifetime">'a</span>&gt; FromValue&lt;<span class="lifetime">'a</span>&gt; <span class="kw">for </span><a href="#1423">BoxedValue</a> {
     <span class="kw">type </span>Checker = GenericValueTypeOrNoneChecker&lt;<span class="self">Self</span>&gt;;
 
     <span class="attr">#[inline]
-    </span><span class="kw">unsafe fn </span>from_value(value: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#477-511">Value</a>) -&gt; <span class="self">Self </span>{
-        <span class="kw">let </span>ptr = gobject_ffi::g_value_get_boxed(<a href="#1483">value</a>.<a href="translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>);
-        <a href="#1462">BoxedValue</a>(<a href="translate.rs.html#1624-1626">from_glib_none</a>(<a href="#1484">ptr</a> <span class="kw">as </span><span class="kw-2">*const </span>gobject_ffi::GValue))
+    </span><span class="kw">unsafe fn </span>from_value(value: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#477-500">Value</a>) -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span>ptr = gobject_ffi::g_value_get_boxed(<a href="#1444">value</a>.<a href="translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>);
+        <a href="#1423">BoxedValue</a>(<a href="translate.rs.html#1624-1626">from_glib_none</a>(<a href="#1445">ptr</a> <span class="kw">as </span><span class="kw-2">*const </span>gobject_ffi::GValue))
     }
 }
 
-<span class="kw">impl </span><a href="#370-380">ToValue</a> <span class="kw">for </span><a href="#1462">BoxedValue</a> {
+<span class="kw">impl </span><a href="#370-380">ToValue</a> <span class="kw">for </span><a href="#1423">BoxedValue</a> {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>to_value(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="#477-511">Value</a> {
+    </span><span class="kw">fn </span>to_value(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="#477-500">Value</a> {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span><span class="kw-2">mut </span>value = Value::for_value_type::&lt;<a href="#1462">BoxedValue</a>&gt;();
+            <span class="kw">let </span><span class="kw-2">mut </span>value = Value::for_value_type::&lt;<a href="#1423">BoxedValue</a>&gt;();
 
             gobject_ffi::g_value_set_boxed(
-                <a href="#1493">value</a>.<a href="translate.rs.html#470">to_glib_none_mut</a>().<span class="number">0</span>,
-                <a class="self" href="#1491">self</a>.<span class="number">0</span>.<a href="translate.rs.html#440">to_glib_none</a>().<span class="number">0 </span><span class="kw">as </span>ffi::gconstpointer,
+                <a href="#1454">value</a>.<a href="translate.rs.html#470">to_glib_none_mut</a>().<span class="number">0</span>,
+                <a class="self" href="#1452">self</a>.<span class="number">0</span>.<a href="translate.rs.html#440">to_glib_none</a>().<span class="number">0 </span><span class="kw">as </span>ffi::gconstpointer,
             );
 
-            <a href="#1493">value</a>
+            <a href="#1454">value</a>
         }
     }
 
@@ -3312,34 +3234,34 @@
     }
 }
 
-<span class="kw">impl </span>From&lt;<a href="#1462">BoxedValue</a>&gt; <span class="kw">for </span><a href="#477-511">Value</a> {
+<span class="kw">impl </span>From&lt;<a href="#1423">BoxedValue</a>&gt; <span class="kw">for </span><a href="#477-500">Value</a> {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>from(v: <a href="#1462">BoxedValue</a>) -&gt; <span class="self">Self </span>{
+    </span><span class="kw">fn </span>from(v: <a href="#1423">BoxedValue</a>) -&gt; <span class="self">Self </span>{
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span><span class="kw-2">mut </span>value = Value::for_value_type::&lt;<a href="#1462">BoxedValue</a>&gt;();
+            <span class="kw">let </span><span class="kw-2">mut </span>value = Value::for_value_type::&lt;<a href="#1423">BoxedValue</a>&gt;();
 
             gobject_ffi::g_value_take_boxed(
-                <a href="#1514">value</a>.<a href="translate.rs.html#470">to_glib_none_mut</a>().<span class="number">0</span>,
-                <a href="#1512">v</a>.<span class="number">0</span>.<a href="translate.rs.html#455-457">to_glib_full</a>() <span class="kw">as </span>ffi::gconstpointer,
+                <a href="#1475">value</a>.<a href="translate.rs.html#470">to_glib_none_mut</a>().<span class="number">0</span>,
+                <a href="#1473">v</a>.<span class="number">0</span>.<a href="translate.rs.html#455-457">to_glib_full</a>() <span class="kw">as </span>ffi::gconstpointer,
             );
 
-            <a href="#1514">value</a>
+            <a href="#1475">value</a>
         }
     }
 }
 
-<span class="kw">impl </span><a href="#398-403">ToValueOptional</a> <span class="kw">for </span><a href="#1462">BoxedValue</a> {
+<span class="kw">impl </span><a href="#398-403">ToValueOptional</a> <span class="kw">for </span><a href="#1423">BoxedValue</a> {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>to_value_optional(s: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="self">Self</span>&gt;) -&gt; <a href="#477-511">Value</a> {
+    </span><span class="kw">fn </span>to_value_optional(s: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="self">Self</span>&gt;) -&gt; <a href="#477-500">Value</a> {
         <span class="kw">let </span><span class="kw-2">mut </span>value = Value::for_value_type::&lt;<span class="self">Self</span>&gt;();
         <span class="kw">unsafe </span>{
             gobject_ffi::g_value_set_boxed(
-                <a href="#1529">value</a>.<a href="translate.rs.html#470">to_glib_none_mut</a>().<span class="number">0</span>,
-                <a href="#1528">s</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|s| <span class="kw-2">&amp;</span><a href="#1533">s</a>.<span class="number">0</span>).<a href="translate.rs.html#440">to_glib_none</a>().<span class="number">0 </span><span class="kw">as </span>ffi::gconstpointer,
+                <a href="#1490">value</a>.<a href="translate.rs.html#470">to_glib_none_mut</a>().<span class="number">0</span>,
+                <a href="#1489">s</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|s| <span class="kw-2">&amp;</span><a href="#1494">s</a>.<span class="number">0</span>).<a href="translate.rs.html#440">to_glib_none</a>().<span class="number">0 </span><span class="kw">as </span>ffi::gconstpointer,
             );
         }
 
-        <a href="#1529">value</a>
+        <a href="#1490">value</a>
     }
 }
 
