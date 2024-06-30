@@ -436,28 +436,30 @@ macro_rules! interface_list_trait_impl(
 interface_list_trait!(A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S);
 
 /// Type-specific data that is filled in during type creation.
-// FIXME: Once trait bounds other than `Sized` on const fn parameters are stable
-// the content of `TypeData` can be made private, and we can add a `const fn new`
-// for initialization by the `object_subclass_internal!` macro.
 pub struct TypeData {
-    #[doc(hidden)]
-    pub type_: Type,
-    #[doc(hidden)]
-    pub parent_class: ffi::gpointer,
-    #[doc(hidden)]
-    pub parent_ifaces: Option<BTreeMap<Type, ffi::gpointer>>,
-    #[doc(hidden)]
-    pub class_data: Option<BTreeMap<Type, Box<dyn Any + Send + Sync>>>,
-    #[doc(hidden)]
-    pub private_offset: isize,
-    #[doc(hidden)]
-    pub private_imp_offset: isize,
+    type_: Type,
+    parent_class: ffi::gpointer,
+    parent_ifaces: Option<BTreeMap<Type, ffi::gpointer>>,
+    class_data: Option<BTreeMap<Type, Box<dyn Any + Send + Sync>>>,
+    private_offset: isize,
+    private_imp_offset: isize,
 }
 
 unsafe impl Send for TypeData {}
 unsafe impl Sync for TypeData {}
 
 impl TypeData {
+    pub const fn new() -> Self {
+        Self {
+            type_: Type::INVALID,
+            parent_class: ::std::ptr::null_mut(),
+            parent_ifaces: None,
+            class_data: None,
+            private_offset: 0,
+            private_imp_offset: 0,
+        }
+    }
+
     // rustdoc-stripper-ignore-next
     /// Returns the type ID.
     #[inline]
@@ -562,6 +564,12 @@ impl TypeData {
     }
 }
 
+impl Default for TypeData {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 // rustdoc-stripper-ignore-next
 /// Type methods required for an [`ObjectSubclass`] implementation.
 ///
@@ -578,15 +586,6 @@ pub unsafe trait ObjectSubclassType {
     #[doc(alias = "get_type")]
     fn type_() -> Type;
 }
-
-pub const INIT_TYPE_DATA: TypeData = TypeData {
-    type_: Type::INVALID,
-    parent_class: ::std::ptr::null_mut(),
-    parent_ifaces: None,
-    class_data: None,
-    private_offset: 0,
-    private_imp_offset: 0,
-};
 
 // rustdoc-stripper-ignore-next
 /// The central trait for subclassing a `GObject` type.

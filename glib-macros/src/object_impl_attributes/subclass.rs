@@ -102,7 +102,7 @@ pub fn impl_object_subclass(input: super::Input) -> TokenStream {
             #[inline]
             fn type_data() -> ::std::ptr::NonNull<#crate_ident::subclass::TypeData> {
                 static mut DATA: #crate_ident::subclass::TypeData =
-                    #crate_ident::subclass::types::INIT_TYPE_DATA;
+                    #crate_ident::subclass::types::TypeData::new();
                 unsafe { ::std::ptr::NonNull::from(&mut DATA) }
             }
 
