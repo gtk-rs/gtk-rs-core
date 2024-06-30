@@ -22,8 +22,10 @@ fn on_startup(app: &gio::Application, tx: &Sender<gio::RegistrationId>) {
 
     if let Ok(id) = connection
         .register_object("/com/github/gtk_rs/examples/HelloWorld", &example)
-        .method_call(
-            glib::clone!(@strong app => move |_, _, _, _, method, params, invocation| {
+        .method_call(glib::clone!(
+            #[strong]
+            app,
+            move |_, _, _, _, method, params, invocation| {
                 match method {
                     "Hello" => {
                         if let Some((name,)) = <(String,)>::from_variant(&params) {
@@ -37,8 +39,8 @@ fn on_startup(app: &gio::Application, tx: &Sender<gio::RegistrationId>) {
                     _ => unreachable!(),
                 }
                 app.quit();
-            }),
-        )
+            }
+        ))
         .build()
     {
         println!("Registered object");
