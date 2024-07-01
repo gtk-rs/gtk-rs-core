@@ -785,13 +785,25 @@ pub fn flags(attr: TokenStream, item: TokenStream) -> TokenStream {
     let mut name = NestedMetaItem::<syn::LitStr>::new("name")
         .required()
         .value_required();
+    let mut allow_name_conflict_attr =
+        NestedMetaItem::<syn::LitBool>::new("allow_name_conflict").value_optional();
 
-    if let Err(e) = parse_nested_meta_items_from_stream(attr.into(), &mut [&mut name]) {
+    if let Err(e) = parse_nested_meta_items_from_stream(
+        attr.into(),
+        &mut [&mut name, &mut allow_name_conflict_attr],
+    ) {
         return e.to_compile_error().into();
     }
 
+    let allow_name_conflict = allow_name_conflict_attr.found
+        || allow_name_conflict_attr
+            .value
+            .map(|b| b.value())
+            .unwrap_or(false);
+
     let attr_meta = AttrInput {
         enum_name: name.value.unwrap(),
+        allow_name_conflict,
     };
 
     syn::parse::<syn::ItemEnum>(item)

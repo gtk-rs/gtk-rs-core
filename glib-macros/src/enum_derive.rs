@@ -78,7 +78,13 @@ pub fn impl_enum(input: &syn::DeriveInput) -> syn::Result<TokenStream> {
     let mut gtype_name = NestedMetaItem::<syn::LitStr>::new("name")
         .required()
         .value_required();
-    let found = parse_nested_meta_items(&input.attrs, "enum_type", &mut [&mut gtype_name])?;
+    let mut allow_name_conflict =
+        NestedMetaItem::<syn::LitBool>::new("allow_name_conflict").value_optional();
+    let found = parse_nested_meta_items(
+        &input.attrs,
+        "enum_type",
+        &mut [&mut gtype_name, &mut allow_name_conflict],
+    )?;
 
     if found.is_none() {
         return Err(syn::Error::new_spanned(
@@ -87,6 +93,11 @@ pub fn impl_enum(input: &syn::DeriveInput) -> syn::Result<TokenStream> {
         ));
     }
     let gtype_name = gtype_name.value.unwrap();
+    let allow_name_conflict = allow_name_conflict.found
+        || allow_name_conflict
+            .value
+            .map(|b| b.value())
+            .unwrap_or(false);
 
     let mut plugin_type = NestedMetaItem::<syn::Path>::new("plugin_type").value_required();
     let mut lazy_registration =
@@ -105,10 +116,18 @@ pub fn impl_enum(input: &syn::DeriveInput) -> syn::Result<TokenStream> {
             &crate_ident,
             name,
             gtype_name,
+            allow_name_conflict,
             g_enum_values,
             nb_enum_values,
         ),
         Some(_) => {
+            if allow_name_conflict {
+                return Err(syn::Error::new_spanned(
+                    input,
+                    "#[enum_dynamic] and #[enum_type(allow_name_conflict)] are not allowed together",
+                ));
+            }
+
             let plugin_ty = plugin_type
                 .value
                 .map(|p| p.into_token_stream())
@@ -227,9 +246,45 @@ fn register_enum_as_static(
     crate_ident: &TokenStream,
     name: &syn::Ident,
     gtype_name: syn::LitStr,
+    allow_name_conflict: bool,
     g_enum_values: TokenStream,
     nb_enum_values: usize,
 ) -> TokenStream {
+    let type_name_snippet = if allow_name_conflict {
+        quote! {
+            unsafe {
+                let mut i = 0;
+                loop {
+                    let type_name = ::std::ffi::CString::new(if i == 0 {
+                        #gtype_name
+                    } else {
+                        format!("{}-{}", #gtype_name, i)
+                    })
+                    .unwrap();
+                    if #crate_ident::gobject_ffi::g_type_from_name(type_name.as_ptr()) == #crate_ident::gobject_ffi::G_TYPE_INVALID
+                    {
+                        break type_name;
+                    }
+                    i += 1;
+                }
+            }
+        }
+    } else {
+        quote! {
+            unsafe {
+                let type_name = ::std::ffi::CString::new(#gtype_name).unwrap();
+                assert_eq!(
+                    #crate_ident::gobject_ffi::g_type_from_name(type_name.as_ptr()),
+                    #crate_ident::gobject_ffi::G_TYPE_INVALID,
+                    "Type {} has already been registered",
+                    type_name.to_str().unwrap()
+                );
+
+                type_name
+            }
+        }
+    };
+
     // registers the enum on first use (lazy registration).
     quote! {
         impl #name {
@@ -246,9 +301,9 @@ fn register_enum_as_static(
                             value_nick: ::std::ptr::null(),
                         },
                     ];
-                    let name = ::std::ffi::CString::new(#gtype_name).expect("CString::new failed");
+                    let type_name = #type_name_snippet;
                     unsafe {
-                        let type_ = #crate_ident::gobject_ffi::g_enum_register_static(name.as_ptr(), VALUES.as_ptr());
+                        let type_ = #crate_ident::gobject_ffi::g_enum_register_static(type_name.as_ptr(), VALUES.as_ptr());
                         let type_: #crate_ident::Type = #crate_ident::translate::from_glib(type_);
                         assert!(type_.is_valid());
                         type_

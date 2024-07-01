@@ -97,11 +97,13 @@ pub fn impl_boxed(input: &syn::DeriveInput) -> syn::Result<TokenStream> {
         .required()
         .value_required();
     let mut nullable = NestedMetaItem::<syn::LitBool>::new("nullable").value_optional();
+    let mut allow_name_conflict =
+        NestedMetaItem::<syn::LitBool>::new("allow_name_conflict").value_optional();
 
     let found = parse_nested_meta_items(
         &input.attrs,
         "boxed_type",
-        &mut [&mut gtype_name, &mut nullable],
+        &mut [&mut gtype_name, &mut nullable, &mut allow_name_conflict],
     )?;
 
     if found.is_none() {
@@ -113,6 +115,11 @@ pub fn impl_boxed(input: &syn::DeriveInput) -> syn::Result<TokenStream> {
 
     let gtype_name = gtype_name.value.unwrap();
     let nullable = nullable.found || nullable.value.map(|b| b.value()).unwrap_or(false);
+    let allow_name_conflict = allow_name_conflict.found
+        || allow_name_conflict
+            .value
+            .map(|b| b.value())
+            .unwrap_or(false);
 
     let crate_ident = crate_ident_new();
 
@@ -130,6 +137,7 @@ pub fn impl_boxed(input: &syn::DeriveInput) -> syn::Result<TokenStream> {
     Ok(quote! {
         impl #crate_ident::subclass::boxed::BoxedType for #name {
             const NAME: &'static ::core::primitive::str = #gtype_name;
+            const ALLOW_NAME_CONFLICT: bool = #allow_name_conflict;
         }
 
         impl #crate_ident::prelude::StaticType for #name {

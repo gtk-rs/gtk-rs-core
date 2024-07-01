@@ -15,6 +15,7 @@ pub const WRONG_PLACE_MSG: &str = "#[glib::flags] only supports enums";
 
 pub struct AttrInput {
     pub enum_name: syn::LitStr,
+    pub allow_name_conflict: bool,
 }
 struct FlagsDesc {
     variant: Variant,
@@ -136,8 +137,8 @@ fn gen_default(
         })
 }
 
-pub fn impl_flags(attrs: AttrInput, input: &mut syn::ItemEnum) -> TokenStream {
-    let gtype_name = attrs.enum_name;
+pub fn impl_flags(attr_meta: AttrInput, input: &mut syn::ItemEnum) -> TokenStream {
+    let gtype_name = attr_meta.enum_name;
 
     let syn::ItemEnum {
         attrs,
@@ -167,10 +168,18 @@ pub fn impl_flags(attrs: AttrInput, input: &mut syn::ItemEnum) -> TokenStream {
             &crate_ident,
             name,
             gtype_name,
+            attr_meta.allow_name_conflict,
             g_flags_values,
             nb_flags_values,
         ),
         Ok(Some(_)) => {
+            if attr_meta.allow_name_conflict {
+                return syn::Error::new_spanned(
+                    input,
+                    "#[flags_dynamic] and #[glib::flags(allow_name_conflict)] are not allowed together",
+                ).to_compile_error();
+            }
+
             // remove attribute 'flags_dynamic' from the attribute list because it is not a real proc_macro_attribute
             attrs.retain(|attr| !attr.path().is_ident("flags_dynamic"));
             let plugin_ty = plugin_type
@@ -281,9 +290,45 @@ fn register_flags_as_static(
     crate_ident: &TokenStream,
     name: &syn::Ident,
     gtype_name: syn::LitStr,
+    allow_name_conflict: bool,
     g_flags_values: TokenStream,
     nb_flags_values: usize,
 ) -> TokenStream {
+    let type_name_snippet = if allow_name_conflict {
+        quote! {
+            unsafe {
+                let mut i = 0;
+                loop {
+                    let type_name = ::std::ffi::CString::new(if i == 0 {
+                        #gtype_name
+                    } else {
+                        format!("{}-{}", #gtype_name, i)
+                    })
+                    .unwrap();
+                    if #crate_ident::gobject_ffi::g_type_from_name(type_name.as_ptr()) == #crate_ident::gobject_ffi::G_TYPE_INVALID
+                    {
+                        break type_name;
+                    }
+                    i += 1;
+                }
+            }
+        }
+    } else {
+        quote! {
+            unsafe {
+                let type_name = ::std::ffi::CString::new(#gtype_name).unwrap();
+                assert_eq!(
+                    #crate_ident::gobject_ffi::g_type_from_name(type_name.as_ptr()),
+                    #crate_ident::gobject_ffi::G_TYPE_INVALID,
+                    "Type {} has already been registered",
+                    type_name.to_str().unwrap()
+                );
+
+                type_name
+            }
+        }
+    };
+
     // registers the flags on first use (lazy registration).
     quote! {
         impl #name {
@@ -301,9 +346,9 @@ fn register_flags_as_static(
                         },
                     ];
 
-                    let name = ::std::ffi::CString::new(#gtype_name).expect("CString::new failed");
+                    let type_name = #type_name_snippet;
                     unsafe {
-                        let type_ = #crate_ident::gobject_ffi::g_flags_register_static(name.as_ptr(), VALUES.as_ptr());
+                        let type_ = #crate_ident::gobject_ffi::g_flags_register_static(type_name.as_ptr(), VALUES.as_ptr());
                         let type_: #crate_ident::Type = #crate_ident::translate::from_glib(type_);
                         assert!(type_.is_valid());
                         type_

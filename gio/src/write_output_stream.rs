@@ -27,6 +27,7 @@ mod imp {
     #[glib::object_subclass]
     impl ObjectSubclass for WriteOutputStream {
         const NAME: &'static str = "WriteOutputStream";
+        const ALLOW_NAME_CONFLICT: bool = true;
         type Type = super::WriteOutputStream;
         type ParentType = OutputStream;
         type Interfaces = (crate::Seekable,);

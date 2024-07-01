@@ -37,6 +37,7 @@ mod imp {
     #[glib::object_subclass]
     impl ObjectSubclass for BoxedAnyObject {
         const NAME: &'static str = "BoxedAnyObject";
+        const ALLOW_NAME_CONFLICT: bool = true;
         type Type = super::BoxedAnyObject;
     }
     impl Default for BoxedAnyObject {
