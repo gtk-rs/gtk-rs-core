@@ -617,6 +617,24 @@ pub trait ObjectSubclass: ObjectSubclassType + Sized + 'static {
     const ABSTRACT: bool = false;
 
     // rustdoc-stripper-ignore-next
+    /// Allow name conflicts for this class.
+    ///
+    /// By default, trying to register a type with a name that was registered before will panic. If
+    /// this is set to `true` then a new name will be selected by appending a counter.
+    ///
+    /// This is useful for defining new types in Rust library crates that might be linked multiple
+    /// times in the same process.
+    ///
+    /// A consequence of setting this to `true` is that it's not guaranteed that
+    /// `glib::Type::from_name(Self::NAME).unwrap() == Self::type_()`.
+    ///
+    /// Note that this is not allowed for dynamic types. If a dynamic type is registered and a type
+    /// with that name exists already, it is assumed that they're the same.
+    ///
+    /// Optional.
+    const ALLOW_NAME_CONFLICT: bool = false;
+
+    // rustdoc-stripper-ignore-next
     /// Wrapper around this subclass defined with `wrapper!`
     type Type: ObjectType
         + ObjectSubclassIs<Subclass = Self>
@@ -1013,13 +1031,32 @@ pub fn register_type<T: ObjectSubclass>() -> Type {
     unsafe {
         use std::ffi::CString;
 
-        let type_name = CString::new(T::NAME).unwrap();
-        assert_eq!(
-            gobject_ffi::g_type_from_name(type_name.as_ptr()),
-            gobject_ffi::G_TYPE_INVALID,
-            "Type {} has already been registered",
-            type_name.to_str().unwrap()
-        );
+        let type_name = if T::ALLOW_NAME_CONFLICT {
+            let mut i = 0;
+            loop {
+                let type_name = CString::new(if i == 0 {
+                    T::NAME.to_string()
+                } else {
+                    format!("{}-{}", T::NAME, i)
+                })
+                .unwrap();
+                if gobject_ffi::g_type_from_name(type_name.as_ptr()) == gobject_ffi::G_TYPE_INVALID
+                {
+                    break type_name;
+                }
+                i += 1;
+            }
+        } else {
+            let type_name = CString::new(T::NAME).unwrap();
+            assert_eq!(
+                gobject_ffi::g_type_from_name(type_name.as_ptr()),
+                gobject_ffi::G_TYPE_INVALID,
+                "Type {} has already been registered",
+                type_name.to_str().unwrap()
+            );
+
+            type_name
+        };
 
         let type_ = Type::from_glib(gobject_ffi::g_type_register_static_simple(
             <T::ParentType as StaticType>::static_type().into_glib(),
