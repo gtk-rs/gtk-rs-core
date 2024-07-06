@@ -41,5 +41,6 @@ pub use crate::{
     output_stream::OutputStreamExtManual, pollable_input_stream::PollableInputStreamExtManual,
     pollable_output_stream::PollableOutputStreamExtManual, settings::SettingsExtManual,
     simple_proxy_resolver::SimpleProxyResolverExtManual, socket::SocketExtManual,
-    socket_control_message::SocketControlMessageExtManual, tls_connection::TlsConnectionExtManual,
+    socket_control_message::SocketControlMessageExtManual,
+    socket_listener::SocketListenerExtManual, tls_connection::TlsConnectionExtManual,
 };

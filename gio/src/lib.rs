@@ -82,6 +82,7 @@ mod simple_proxy_resolver;
 mod socket;
 pub use socket::{InputMessage, InputVector, OutputMessage, OutputVector, SocketControlMessages};
 mod socket_control_message;
+mod socket_listener;
 mod socket_msg_flags;
 pub use socket_msg_flags::SocketMsgFlags;
 mod subprocess;
