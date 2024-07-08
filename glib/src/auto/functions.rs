@@ -695,6 +695,11 @@ pub fn shell_unquote(
     }
 }
 
+//#[doc(alias = "g_sort_array")]
+//pub fn sort_array(array: /*Unimplemented*/&[&Basic: Pointer], element_size: usize, compare_func: /*Unimplemented*/FnMut(/*Unimplemented*/Option<Basic: Pointer>, /*Unimplemented*/Option<Basic: Pointer>) -> i32, user_data: /*Unimplemented*/Option<Basic: Pointer>) {
+//    unsafe { TODO: call ffi:g_sort_array() }
+//}
+
 #[doc(alias = "g_spaced_primes_closest")]
 pub fn spaced_primes_closest(num: u32) -> u32 {
     unsafe { ffi::g_spaced_primes_closest(num) }
