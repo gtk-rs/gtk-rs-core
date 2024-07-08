@@ -1183,6 +1183,12 @@ pub type GSequenceIterCompareFunc =
 pub type GSourceDisposeFunc = Option<unsafe extern "C" fn(*mut GSource)>;
 pub type GSourceDummyMarshal = Option<unsafe extern "C" fn()>;
 pub type GSourceFunc = Option<unsafe extern "C" fn(gpointer) -> gboolean>;
+pub type GSourceFuncsCheckFunc = Option<unsafe extern "C" fn(*mut GSource) -> gboolean>;
+pub type GSourceFuncsDispatchFunc =
+    Option<unsafe extern "C" fn(*mut GSource, GSourceFunc, gpointer) -> gboolean>;
+pub type GSourceFuncsFinalizeFunc = Option<unsafe extern "C" fn(*mut GSource)>;
+pub type GSourceFuncsPrepareFunc =
+    Option<unsafe extern "C" fn(*mut GSource, *mut c_int) -> gboolean>;
 pub type GSourceOnceFunc = Option<unsafe extern "C" fn(gpointer)>;
 pub type GSpawnChildSetupFunc = Option<unsafe extern "C" fn(gpointer)>;
 pub type GTestDataFunc = Option<unsafe extern "C" fn(gconstpointer)>;
@@ -2160,10 +2166,10 @@ impl ::std::fmt::Debug for GSourceCallbackFuncs {
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct GSourceFuncs {
-    pub prepare: Option<unsafe extern "C" fn(*mut GSource, *mut c_int) -> gboolean>,
-    pub check: Option<unsafe extern "C" fn(*mut GSource) -> gboolean>,
-    pub dispatch: Option<unsafe extern "C" fn(*mut GSource, GSourceFunc, gpointer) -> gboolean>,
-    pub finalize: Option<unsafe extern "C" fn(*mut GSource)>,
+    pub prepare: GSourceFuncsPrepareFunc,
+    pub check: GSourceFuncsCheckFunc,
+    pub dispatch: GSourceFuncsDispatchFunc,
+    pub finalize: GSourceFuncsFinalizeFunc,
     pub closure_callback: GSourceFunc,
     pub closure_marshal: GSourceDummyMarshal,
 }
@@ -6962,6 +6968,15 @@ extern "C" {
     ) -> *mut i64;
     pub fn g_slice_set_config(ckey: GSliceConfig, value: i64);
     pub fn g_snprintf(string: *mut c_char, n: c_ulong, format: *const c_char, ...) -> c_int;
+    #[cfg(feature = "v2_82")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_82")))]
+    pub fn g_sort_array(
+        array: *mut c_void,
+        n_elements: size_t,
+        element_size: size_t,
+        compare_func: GCompareDataFunc,
+        user_data: *mut c_void,
+    );
     pub fn g_spaced_primes_closest(num: c_uint) -> c_uint;
     pub fn g_spawn_async(
         working_directory: *const c_char,
