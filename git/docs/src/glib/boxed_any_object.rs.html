@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/boxed_any_object.rs`."><title>boxed_any_object.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.81.0-nightly (6b0f4b5ec 2024-06-24)" data-channel="nightly" data-search-js="search-0fe7219eb170c82e.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/boxed_any_object.rs`."><title>boxed_any_object.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.81.0-nightly (6be96e386 2024-07-09)" data-channel="nightly" data-search-js="search-d234aafac6c221dd.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -265,6 +265,7 @@
 <a href="#192" id="192">192</a>
 <a href="#193" id="193">193</a>
 <a href="#194" id="194">194</a>
+<a href="#195" id="195">195</a>
 </pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
 </span><span class="kw">use </span>std::{
@@ -302,9 +303,10 @@
     }
 
     <span class="attr">#[glib::object_subclass]
-    </span><span class="kw">impl </span><a href="subclass/types.rs.html#602-719">ObjectSubclass</a> <span class="kw">for </span><a href="#33-35">BoxedAnyObject</a> {
+    </span><span class="kw">impl </span><a href="subclass/types.rs.html#601-736">ObjectSubclass</a> <span class="kw">for </span><a href="#33-35">BoxedAnyObject</a> {
         <span class="kw">const </span>NAME: <span class="kw-2">&amp;</span><span class="lifetime">'static </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a> = <span class="string">"BoxedAnyObject"</span>;
-        <span class="kw">type </span>Type = <a href="#52-87"><span class="kw">super</span>::BoxedAnyObject</a>;
+        <span class="kw">const </span>ALLOW_NAME_CONFLICT: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> = <span class="bool-val">true</span>;
+        <span class="kw">type </span>Type = <a href="#53-88"><span class="kw">super</span>::BoxedAnyObject</a>;
     }
     <span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html">Default</a> <span class="kw">for </span><a href="#33-35">BoxedAnyObject</a> {
         <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
@@ -313,7 +315,7 @@
             }
         }
     }
-    <span class="kw">impl </span><a href="subclass/object.rs.html#22-124">ObjectImpl</a> <span class="kw">for </span><a href="#33-35">BoxedAnyObject</a> {}
+    <span class="kw">impl </span><a href="subclass/object.rs.html#22-87">ObjectImpl</a> <span class="kw">for </span><a href="#33-35">BoxedAnyObject</a> {}
 }
 
 <a class="macro" href="wrapper.rs.html#277-444">glib::wrapper!</a> {
@@ -353,13 +355,13 @@
     </span><span class="kw">pub struct </span><a href="../../glib/struct.BoxedAnyObject.html">BoxedAnyObject</a>(ObjectSubclass&lt;<a href="#33-35">imp::BoxedAnyObject</a>&gt;);
 }
 
-<span class="kw">impl </span><a href="#52-87">BoxedAnyObject</a> {
+<span class="kw">impl </span><a href="#53-88">BoxedAnyObject</a> {
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Creates a new `BoxedAnyObject` containing `value`
     </span><span class="kw">pub fn </span>new&lt;T: <span class="lifetime">'static</span>&gt;(value: T) -&gt; <span class="self">Self </span>{
         <span class="kw">let </span>obj: <span class="self">Self </span>= <a href="object.rs.html#1387-1390">Object::new</a>();
-        <a href="#93">obj</a>.<a href="#102-104">replace</a>(<a href="#92">value</a>);
-        <a href="#93">obj</a>
+        <a href="#94">obj</a>.<a href="#103-105">replace</a>(<a href="#93">value</a>);
+        <a href="#94">obj</a>
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
@@ -367,7 +369,7 @@
     /// The returned value is inside a `Box` and must be manually downcasted if needed.
     </span><span class="attr">#[track_caller]
     </span><span class="kw">pub fn </span>replace&lt;T: <span class="lifetime">'static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, t: T) -&gt; Box&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/any/trait.Any.html">Any</a>&gt; {
-        <a class="self" href="#102">self</a>.<a href="subclass/types.rs.html#158">imp</a>().value.<a href="https://doc.rust-lang.org/nightly/core/cell/struct.RefCell.html#method.replace">replace</a>(<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">Box::new</a>(<a href="#102">t</a>) <span class="kw">as </span>Box&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/any/trait.Any.html">Any</a>&gt;)
+        <a class="self" href="#103">self</a>.<a href="subclass/types.rs.html#158">imp</a>().value.<a href="https://doc.rust-lang.org/nightly/core/cell/struct.RefCell.html#method.replace">replace</a>(<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">Box::new</a>(<a href="#103">t</a>) <span class="kw">as </span>Box&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/any/trait.Any.html">Any</a>&gt;)
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
@@ -383,12 +385,12 @@
         // https://doc.rust-lang.org/std/cell/struct.Ref.html#method.filter_map.
         // As a workaround, I check if everything is safe, then I unwrap
 
-        </span><span class="kw">let </span>borrowed = <a class="self" href="#114">self</a>.<a href="subclass/types.rs.html#158">imp</a>().value.<a href="https://doc.rust-lang.org/nightly/core/cell/struct.RefCell.html#method.try_borrow">try_borrow</a>()<span class="question-mark">?</span>;
-        <a href="#119">borrowed</a>
+        </span><span class="kw">let </span>borrowed = <a class="self" href="#115">self</a>.<a href="subclass/types.rs.html#158">imp</a>().value.<a href="https://doc.rust-lang.org/nightly/core/cell/struct.RefCell.html#method.try_borrow">try_borrow</a>()<span class="question-mark">?</span>;
+        <a href="#120">borrowed</a>
             .<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>()
             .<a href="https://doc.rust-lang.org/nightly/core/foreigntype.any.html#method.downcast_ref">downcast_ref</a>::&lt;T&gt;()
             .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.ok_or">ok_or</a>(<a href="#14">BorrowError::InvalidType</a>)<span class="question-mark">?</span>;
-        <span class="prelude-val">Ok</span>(<a class="self" href="#114">self</a>.<a href="#163-170">borrow</a>()) <span class="comment">// Now this won't panic
+        <span class="prelude-val">Ok</span>(<a class="self" href="#115">self</a>.<a href="#164-171">borrow</a>()) <span class="comment">// Now this won't panic
     </span>}
 
     <span class="comment">// rustdoc-stripper-ignore-next
@@ -405,13 +407,13 @@
         // https://doc.rust-lang.org/std/cell/struct.Ref.html#method.filter_map
         // As a workaround, I check if everything is safe, then I unwrap.
 
-        </span><span class="kw">let </span><span class="kw-2">mut </span>borrowed_mut = <a class="self" href="#136">self</a>.<a href="subclass/types.rs.html#158">imp</a>().value.<a href="https://doc.rust-lang.org/nightly/core/cell/struct.RefCell.html#method.try_borrow_mut">try_borrow_mut</a>()<span class="question-mark">?</span>;
-        <a href="#141">borrowed_mut</a>
+        </span><span class="kw">let </span><span class="kw-2">mut </span>borrowed_mut = <a class="self" href="#137">self</a>.<a href="subclass/types.rs.html#158">imp</a>().value.<a href="https://doc.rust-lang.org/nightly/core/cell/struct.RefCell.html#method.try_borrow_mut">try_borrow_mut</a>()<span class="question-mark">?</span>;
+        <a href="#142">borrowed_mut</a>
             .<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsMut.html#tymethod.as_mut">as_mut</a>()
             .<a href="https://doc.rust-lang.org/nightly/core/foreigntype.any.html#method.downcast_mut">downcast_mut</a>::&lt;T&gt;()
             .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.ok_or">ok_or</a>(<a href="#21">BorrowMutError::InvalidType</a>)<span class="question-mark">?</span>;
-        <a href="https://doc.rust-lang.org/nightly/core/mem/fn.drop.html">drop</a>(<a href="#141">borrowed_mut</a>);
-        <span class="prelude-val">Ok</span>(<a class="self" href="#136">self</a>.<a href="#186-193">borrow_mut</a>()) <span class="comment">// Now this won't panic
+        <a href="https://doc.rust-lang.org/nightly/core/mem/fn.drop.html">drop</a>(<a href="#142">borrowed_mut</a>);
+        <span class="prelude-val">Ok</span>(<a class="self" href="#137">self</a>.<a href="#187-194">borrow_mut</a>()) <span class="comment">// Now this won't panic
     </span>}
 
     <span class="comment">// rustdoc-stripper-ignore-next
@@ -428,8 +430,8 @@
     /// [`try_borrow`](#method.try_borrow).
     </span><span class="attr">#[track_caller]
     </span><span class="kw">pub fn </span>borrow&lt;T: <span class="lifetime">'static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Ref&lt;<span class="lifetime">'_</span>, T&gt; {
-        <a href="https://doc.rust-lang.org/nightly/core/cell/struct.Ref.html#method.map">Ref::map</a>(<a class="self" href="#163">self</a>.<a href="subclass/types.rs.html#158">imp</a>().value.<a href="https://doc.rust-lang.org/nightly/core/cell/struct.RefCell.html#method.borrow">borrow</a>(), |value| {
-            <a href="#164">value</a>
+        <a href="https://doc.rust-lang.org/nightly/core/cell/struct.Ref.html#method.map">Ref::map</a>(<a class="self" href="#164">self</a>.<a href="subclass/types.rs.html#158">imp</a>().value.<a href="https://doc.rust-lang.org/nightly/core/cell/struct.RefCell.html#method.borrow">borrow</a>(), |value| {
+            <a href="#165">value</a>
                 .<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>()
                 .<a href="https://doc.rust-lang.org/nightly/core/foreigntype.any.html#method.downcast_ref">downcast_ref</a>::&lt;T&gt;()
                 .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.expect">expect</a>(<span class="string">"can't downcast value to requested type"</span>)
@@ -451,8 +453,8 @@
     /// [`try_borrow_mut`](#method.try_borrow_mut).
     </span><span class="attr">#[track_caller]
     </span><span class="kw">pub fn </span>borrow_mut&lt;T: <span class="lifetime">'static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; RefMut&lt;<span class="lifetime">'_</span>, T&gt; {
-        <a href="https://doc.rust-lang.org/nightly/core/cell/struct.RefMut.html#method.map">RefMut::map</a>(<a class="self" href="#186">self</a>.<a href="subclass/types.rs.html#158">imp</a>().value.<a href="https://doc.rust-lang.org/nightly/core/cell/struct.RefCell.html#method.borrow_mut">borrow_mut</a>(), |value| {
-            <a href="#187">value</a>
+        <a href="https://doc.rust-lang.org/nightly/core/cell/struct.RefMut.html#method.map">RefMut::map</a>(<a class="self" href="#187">self</a>.<a href="subclass/types.rs.html#158">imp</a>().value.<a href="https://doc.rust-lang.org/nightly/core/cell/struct.RefCell.html#method.borrow_mut">borrow_mut</a>(), |value| {
+            <a href="#188">value</a>
                 .<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsMut.html#tymethod.as_mut">as_mut</a>()
                 .<a href="https://doc.rust-lang.org/nightly/core/foreigntype.any.html#method.downcast_mut">downcast_mut</a>::&lt;T&gt;()
                 .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.expect">expect</a>(<span class="string">"can't downcast value to requested type"</span>)

@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/subclass/shared.rs`."><title>shared.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.81.0-nightly (6b0f4b5ec 2024-06-24)" data-channel="nightly" data-search-js="search-0fe7219eb170c82e.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/subclass/shared.rs`."><title>shared.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.81.0-nightly (6be96e386 2024-07-09)" data-channel="nightly" data-search-js="search-d234aafac6c221dd.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -374,12 +374,46 @@
 <a href="#301" id="301">301</a>
 <a href="#302" id="302">302</a>
 <a href="#303" id="303">303</a>
+<a href="#304" id="304">304</a>
+<a href="#305" id="305">305</a>
+<a href="#306" id="306">306</a>
+<a href="#307" id="307">307</a>
+<a href="#308" id="308">308</a>
+<a href="#309" id="309">309</a>
+<a href="#310" id="310">310</a>
+<a href="#311" id="311">311</a>
+<a href="#312" id="312">312</a>
+<a href="#313" id="313">313</a>
+<a href="#314" id="314">314</a>
+<a href="#315" id="315">315</a>
+<a href="#316" id="316">316</a>
+<a href="#317" id="317">317</a>
+<a href="#318" id="318">318</a>
+<a href="#319" id="319">319</a>
+<a href="#320" id="320">320</a>
+<a href="#321" id="321">321</a>
+<a href="#322" id="322">322</a>
+<a href="#323" id="323">323</a>
+<a href="#324" id="324">324</a>
+<a href="#325" id="325">325</a>
+<a href="#326" id="326">326</a>
+<a href="#327" id="327">327</a>
+<a href="#328" id="328">328</a>
+<a href="#329" id="329">329</a>
+<a href="#330" id="330">330</a>
+<a href="#331" id="331">331</a>
+<a href="#332" id="332">332</a>
+<a href="#333" id="333">333</a>
+<a href="#334" id="334">334</a>
+<a href="#335" id="335">335</a>
+<a href="#336" id="336">336</a>
+<a href="#337" id="337">337</a>
 </pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
 // rustdoc-stripper-ignore-next
 </span><span class="doccomment">//! Module for registering shared types for Rust types.
 
-</span><span class="kw">use crate</span>::{ffi, gobject_ffi, <a href="../lib.rs.html#157">prelude</a>::<span class="kw-2">*</span>, <a href="../lib.rs.html#162">translate</a>::<span class="kw-2">*</span>};
+</span><span class="kw">use crate</span>::{ffi, <a href="../../../gobject_sys/index.html">gobject_ffi</a>, <a href="../lib.rs.html#157">prelude</a>::<span class="kw-2">*</span>, <a href="../lib.rs.html#162">translate</a>::<span class="kw-2">*</span>};
 
 <span class="kw">pub unsafe trait </span><a href="../../../glib/subclass/shared/trait.RefCounted.html">RefCounted</a>: <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">Clone</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sized.html">Sized</a> + <span class="lifetime">'static </span>{
     <span class="comment">// rustdoc-stripper-ignore-next
@@ -477,6 +511,21 @@
     </span><span class="kw">const </span>NAME: <span class="kw-2">&amp;</span><span class="lifetime">'static </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>;
 
     <span class="comment">// rustdoc-stripper-ignore-next
+    </span><span class="doccomment">/// Allow name conflicts for this boxed type.
+    ///
+    /// By default, trying to register a type with a name that was registered before will panic. If
+    /// this is set to `true` then a new name will be selected by appending a counter.
+    ///
+    /// This is useful for defining new types in Rust library crates that might be linked multiple
+    /// times in the same process.
+    ///
+    /// A consequence of setting this to `true` is that it's not guaranteed that
+    /// `glib::Type::from_name(Self::NAME).unwrap() == Self::static_type()`.
+    ///
+    /// Optional.
+    </span><span class="kw">const </span>ALLOW_NAME_CONFLICT: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> = <span class="bool-val">false</span>;
+
+    <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// The inner refcounted type
     </span><span class="kw">type </span>RefCountedType: <a href="#8-28">RefCounted</a>;
 
@@ -498,35 +547,54 @@
 /// this is only called once and returns the type id.
 ///
 /// [`Shared!`]: ../../derive.Shared.html
-</span><span class="kw">pub fn </span><a href="../../../glib/subclass/shared/fn.register_shared_type.html">register_shared_type</a>&lt;T: <a href="#96-114">SharedType</a>&gt;() -&gt; <a href="../types.rs.html#22"><span class="kw">crate</span>::Type</a> {
+</span><span class="kw">pub fn </span><a href="../../../glib/subclass/shared/fn.register_shared_type.html">register_shared_type</a>&lt;T: <a href="#96-129">SharedType</a>&gt;() -&gt; <a href="../types.rs.html#22"><span class="kw">crate</span>::Type</a> {
     <span class="kw">unsafe </span>{
         <span class="kw">use </span><a href="https://doc.rust-lang.org/nightly/alloc/ffi/c_str/struct.CString.html">std::ffi::CString</a>;
-        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>shared_ref&lt;T: <a href="#96-114">SharedType</a>&gt;(v: ffi::gpointer) -&gt; ffi::gpointer {
-            <a href="#15">T::RefCountedType::ref_</a>(<a href="#128">v</a> <span class="kw">as </span><span class="kw-2">*const </span>&lt;T::RefCountedType <span class="kw">as </span>RefCounted&gt;::InnerType)
+        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>shared_ref&lt;T: <a href="#96-129">SharedType</a>&gt;(v: ffi::gpointer) -&gt; ffi::gpointer {
+            <a href="#15">T::RefCountedType::ref_</a>(<a href="#143">v</a> <span class="kw">as </span><span class="kw-2">*const </span>&lt;T::RefCountedType <span class="kw">as </span>RefCounted&gt;::InnerType)
                 <span class="kw">as </span>ffi::gpointer
         }
-        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>shared_unref&lt;T: <a href="#96-114">SharedType</a>&gt;(v: ffi::gpointer) {
+        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>shared_unref&lt;T: <a href="#96-129">SharedType</a>&gt;(v: ffi::gpointer) {
             <span class="kw">let _ </span>= <a href="#27">T::RefCountedType::from_raw</a>(
-                <a href="#132">v</a> <span class="kw">as </span><span class="kw-2">*const </span>&lt;T::RefCountedType <span class="kw">as </span>RefCounted&gt;::InnerType,
+                <a href="#147">v</a> <span class="kw">as </span><span class="kw-2">*const </span>&lt;T::RefCountedType <span class="kw">as </span>RefCounted&gt;::InnerType,
             );
         }
 
-        <span class="kw">let </span>type_name = <a href="https://doc.rust-lang.org/nightly/alloc/ffi/c_str/struct.CString.html#method.new">CString::new</a>(T::NAME).<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>();
-        <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.assert_eq.html">assert_eq!</a>(
-            gobject_ffi::g_type_from_name(type_name.as_ptr()),
-            gobject_ffi::G_TYPE_INVALID,
-            <span class="string">"Type {} has already been registered"</span>,
-            type_name.to_str().unwrap()
-        );
+        <span class="kw">let </span>type_name = <span class="kw">if </span>T::ALLOW_NAME_CONFLICT {
+            <span class="kw">let </span><span class="kw-2">mut </span>i = <span class="number">0</span>;
+            <span class="kw">loop </span>{
+                <span class="kw">let </span>type_name = <a href="https://doc.rust-lang.org/nightly/alloc/ffi/c_str/struct.CString.html#method.new">CString::new</a>(<span class="kw">if </span>i == <span class="number">0 </span>{
+                    T::NAME.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html#tymethod.to_string">to_string</a>()
+                } <span class="kw">else </span>{
+                    <a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.format.html">format!</a>(<span class="string">"{}-{}"</span>, T::NAME, i)
+                })
+                .<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>();
+                <span class="kw">if </span>gobject_ffi::g_type_from_name(type_name.as_ptr()) == gobject_ffi::G_TYPE_INVALID
+                {
+                    <span class="kw">break </span><a href="#156">type_name</a>;
+                }
+                <a href="#154">i</a> += <span class="number">1</span>;
+            }
+        } <span class="kw">else </span>{
+            <span class="kw">let </span>type_name = <a href="https://doc.rust-lang.org/nightly/alloc/ffi/c_str/struct.CString.html#method.new">CString::new</a>(T::NAME).<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>();
+            <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.assert_eq.html">assert_eq!</a>(
+                gobject_ffi::g_type_from_name(type_name.as_ptr()),
+                gobject_ffi::G_TYPE_INVALID,
+                <span class="string">"Type {} has already been registered"</span>,
+                type_name.to_str().unwrap()
+            );
 
-        <span class="kw">let </span>type_ = <a href="../translate.rs.html#1411"><span class="kw">crate</span>::Type::from_glib</a>(gobject_ffi::g_boxed_type_register_static(
-            <a href="#138">type_name</a>.<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.as_ptr">as_ptr</a>(),
+            <a href="#169">type_name</a>
+        };
+
+        <span class="kw">let </span>type_ = <a href="../translate.rs.html#1411"><span class="kw">crate</span>::Type::from_glib</a>(<a href="../../../gobject_sys/fn.g_boxed_type_register_static.html">gobject_ffi::g_boxed_type_register_static</a>(
+            <a href="#153">type_name</a>.<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.as_ptr">as_ptr</a>(),
             <span class="prelude-val">Some</span>(shared_ref::&lt;T&gt;),
             <span class="prelude-val">Some</span>(shared_unref::&lt;T&gt;),
         ));
         <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.assert.html">assert!</a>(type_.is_valid());
 
-        <a href="#146">type_</a>
+        <a href="#180">type_</a>
     }
 }
 

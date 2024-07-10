@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/gobject/dynamic_object.rs`."><title>dynamic_object.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.81.0-nightly (6b0f4b5ec 2024-06-24)" data-channel="nightly" data-search-js="search-0fe7219eb170c82e.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/gobject/dynamic_object.rs`."><title>dynamic_object.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.81.0-nightly (6be96e386 2024-07-09)" data-channel="nightly" data-search-js="search-d234aafac6c221dd.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -195,47 +195,47 @@
 </pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
 </span><span class="kw">use crate</span>::{
-    enums::{<a href="../enums.rs.html#380">EnumValues</a>, <a href="../enums.rs.html#959">FlagsValues</a>},
+    enums::{<a href="../enums.rs.html#385">EnumValues</a>, <a href="../enums.rs.html#961">FlagsValues</a>},
     <a href="../lib.rs.html#157">prelude</a>::<span class="kw-2">*</span>,
     <a href="../subclass/mod.rs.html#442-458">subclass::prelude</a>::<span class="kw-2">*</span>,
-    <a href="interface_info.rs.html#10">InterfaceInfo</a>, <a href="auto/flags.rs.html#182-209">TypeFlags</a>, <a href="type_info.rs.html#17">TypeInfo</a>, <a href="type_module.rs.html#11-55">TypeModule</a>, <a href="type_plugin.rs.html#5-66">TypePlugin</a>,
+    <a href="interface_info.rs.html#8">InterfaceInfo</a>, <a href="auto/flags.rs.html#141-156">TypeFlags</a>, <a href="type_info.rs.html#8">TypeInfo</a>, <a href="type_module.rs.html#11-18">TypeModule</a>, <a href="type_plugin.rs.html#5-12">TypePlugin</a>,
 };
 
 <span class="kw">mod </span>sealed {
     <span class="kw">pub trait </span>Sealed {}
-    <span class="kw">impl</span>&lt;T: <span class="kw">super</span>::IsA&lt;<a href="type_plugin.rs.html#5-66"><span class="kw">super</span>::TypePlugin</a>&gt;&gt; <a href="#11">Sealed</a> <span class="kw">for </span>T {}
+    <span class="kw">impl</span>&lt;T: <span class="kw">super</span>::IsA&lt;<a href="type_plugin.rs.html#5-12"><span class="kw">super</span>::TypePlugin</a>&gt;&gt; <a href="#11">Sealed</a> <span class="kw">for </span>T {}
 }
 
-<span class="kw">pub trait </span><a href="../../../glib/prelude/trait.DynamicObjectRegisterExt.html">DynamicObjectRegisterExt</a>: AsRef&lt;<a href="type_plugin.rs.html#5-66">TypePlugin</a>&gt; + <a href="#11">sealed::Sealed</a> + <span class="lifetime">'static </span>{
+<span class="kw">pub trait </span><a href="../../../glib/prelude/trait.DynamicObjectRegisterExt.html">DynamicObjectRegisterExt</a>: AsRef&lt;<a href="type_plugin.rs.html#5-12">TypePlugin</a>&gt; + <a href="#11">sealed::Sealed</a> + <span class="lifetime">'static </span>{
     <span class="kw">fn </span>add_dynamic_interface(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         instance_type: <a href="../types.rs.html#22"><span class="kw">crate</span>::types::Type</a>,
         interface_type: <a href="../types.rs.html#22"><span class="kw">crate</span>::types::Type</a>,
-        interface_info: <span class="kw-2">&amp;</span><a href="interface_info.rs.html#10">InterfaceInfo</a>,
+        interface_info: <span class="kw-2">&amp;</span><a href="interface_info.rs.html#8">InterfaceInfo</a>,
     );
 
     <span class="kw">fn </span>register_dynamic_enum(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
-        const_static_values: <span class="kw-2">&amp;</span><span class="lifetime">'static </span><a href="../enums.rs.html#380">EnumValues</a>,
+        const_static_values: <span class="kw-2">&amp;</span><span class="lifetime">'static </span><a href="../enums.rs.html#385">EnumValues</a>,
     ) -&gt; <a href="../types.rs.html#22"><span class="kw">crate</span>::types::Type</a>;
 
     <span class="kw">fn </span>register_dynamic_flags(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
-        const_static_values: <span class="kw-2">&amp;</span><span class="lifetime">'static </span><a href="../enums.rs.html#959">FlagsValues</a>,
+        const_static_values: <span class="kw-2">&amp;</span><span class="lifetime">'static </span><a href="../enums.rs.html#961">FlagsValues</a>,
     ) -&gt; <a href="../types.rs.html#22"><span class="kw">crate</span>::types::Type</a>;
 
     <span class="kw">fn </span>register_dynamic_type(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         parent_type: <a href="../types.rs.html#22"><span class="kw">crate</span>::types::Type</a>,
         type_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
-        type_info: <span class="kw-2">&amp;</span><a href="type_info.rs.html#17">TypeInfo</a>,
-        flags: <a href="auto/flags.rs.html#182-209">TypeFlags</a>,
+        type_info: <span class="kw-2">&amp;</span><a href="type_info.rs.html#8">TypeInfo</a>,
+        flags: <a href="auto/flags.rs.html#141-156">TypeFlags</a>,
     ) -&gt; <a href="../types.rs.html#22"><span class="kw">crate</span>::types::Type</a>;
 }
 
-<span class="kw">impl</span>&lt;O: IsA&lt;<a href="type_plugin.rs.html#5-66">TypePlugin</a>&gt; + <a href="../subclass/types.rs.html#155-159">ObjectSubclassIsExt</a>&gt; <a href="#15-42">DynamicObjectRegisterExt</a> <span class="kw">for </span>O
+<span class="kw">impl</span>&lt;O: IsA&lt;<a href="type_plugin.rs.html#5-12">TypePlugin</a>&gt; + <a href="../subclass/types.rs.html#155-159">ObjectSubclassIsExt</a>&gt; <a href="#15-42">DynamicObjectRegisterExt</a> <span class="kw">for </span>O
 <span class="kw">where
     </span>O::Subclass: <a href="../subclass/type_plugin.rs.html#178-210">TypePluginRegisterImpl</a>,
 {
@@ -243,7 +243,7 @@
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         instance_type: <a href="../types.rs.html#22"><span class="kw">crate</span>::types::Type</a>,
         interface_type: <a href="../types.rs.html#22"><span class="kw">crate</span>::types::Type</a>,
-        interface_info: <span class="kw-2">&amp;</span><a href="interface_info.rs.html#10">InterfaceInfo</a>,
+        interface_info: <span class="kw-2">&amp;</span><a href="interface_info.rs.html#8">InterfaceInfo</a>,
     ) {
         <a class="self" href="#49">self</a>.<a href="../subclass/types.rs.html#158">imp</a>()
             .<a href="../subclass/type_plugin.rs.html#179-186">add_dynamic_interface</a>(<a href="#50">instance_type</a>, <a href="#51">interface_type</a>, <a href="#52">interface_info</a>);
@@ -252,7 +252,7 @@
     <span class="kw">fn </span>register_dynamic_enum(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
-        const_static_values: <span class="kw-2">&amp;</span><span class="lifetime">'static </span><a href="../enums.rs.html#380">EnumValues</a>,
+        const_static_values: <span class="kw-2">&amp;</span><span class="lifetime">'static </span><a href="../enums.rs.html#385">EnumValues</a>,
     ) -&gt; <a href="../types.rs.html#22"><span class="kw">crate</span>::types::Type</a> {
         <a class="self" href="#59">self</a>.<a href="../subclass/types.rs.html#158">imp</a>().<a href="../subclass/type_plugin.rs.html#187-193">register_dynamic_enum</a>(<a href="#60">name</a>, <a href="#61">const_static_values</a>)
     }
@@ -260,7 +260,7 @@
     <span class="kw">fn </span>register_dynamic_flags(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
-        const_static_values: <span class="kw-2">&amp;</span><span class="lifetime">'static </span><a href="../enums.rs.html#959">FlagsValues</a>,
+        const_static_values: <span class="kw-2">&amp;</span><span class="lifetime">'static </span><a href="../enums.rs.html#961">FlagsValues</a>,
     ) -&gt; <a href="../types.rs.html#22"><span class="kw">crate</span>::types::Type</a> {
         <a class="self" href="#67">self</a>.<a href="../subclass/types.rs.html#158">imp</a>().<a href="../subclass/type_plugin.rs.html#194-200">register_dynamic_flags</a>(<a href="#68">name</a>, <a href="#69">const_static_values</a>)
     }
@@ -269,20 +269,20 @@
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         parent_type: <a href="../types.rs.html#22"><span class="kw">crate</span>::types::Type</a>,
         type_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
-        type_info: <span class="kw-2">&amp;</span><a href="type_info.rs.html#17">TypeInfo</a>,
-        flags: <a href="auto/flags.rs.html#182-209">TypeFlags</a>,
+        type_info: <span class="kw-2">&amp;</span><a href="type_info.rs.html#8">TypeInfo</a>,
+        flags: <a href="auto/flags.rs.html#141-156">TypeFlags</a>,
     ) -&gt; <a href="../types.rs.html#22"><span class="kw">crate</span>::types::Type</a> {
         <a class="self" href="#75">self</a>.<a href="../subclass/types.rs.html#158">imp</a>()
             .<a href="../subclass/type_plugin.rs.html#201-209">register_dynamic_type</a>(<a href="#76">parent_type</a>, <a href="#77">type_name</a>, <a href="#78">type_info</a>, <a href="#79">flags</a>)
     }
 }
 
-<span class="kw">impl </span><a href="#15-42">DynamicObjectRegisterExt</a> <span class="kw">for </span><a href="type_module.rs.html#11-55">TypeModule</a> {
+<span class="kw">impl </span><a href="#15-42">DynamicObjectRegisterExt</a> <span class="kw">for </span><a href="type_module.rs.html#11-18">TypeModule</a> {
     <span class="kw">fn </span>add_dynamic_interface(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         instance_type: <a href="../types.rs.html#22"><span class="kw">crate</span>::types::Type</a>,
         interface_type: <a href="../types.rs.html#22"><span class="kw">crate</span>::types::Type</a>,
-        interface_info: <span class="kw-2">&amp;</span><a href="interface_info.rs.html#10">InterfaceInfo</a>,
+        interface_info: <span class="kw-2">&amp;</span><a href="interface_info.rs.html#8">InterfaceInfo</a>,
     ) {
         &lt;<span class="self">Self </span><span class="kw">as </span>TypeModuleExt&gt;::add_interface(<a class="self" href="#88">self</a>, <a href="#89">instance_type</a>, <a href="#90">interface_type</a>, <a href="#91">interface_info</a>);
     }
@@ -290,7 +290,7 @@
     <span class="kw">fn </span>register_dynamic_enum(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
-        const_static_values: <span class="kw-2">&amp;</span><span class="lifetime">'static </span><a href="../enums.rs.html#380">EnumValues</a>,
+        const_static_values: <span class="kw-2">&amp;</span><span class="lifetime">'static </span><a href="../enums.rs.html#385">EnumValues</a>,
     ) -&gt; <a href="../types.rs.html#22"><span class="kw">crate</span>::types::Type</a> {
         &lt;<span class="self">Self </span><span class="kw">as </span>TypeModuleExt&gt;::register_enum(<a class="self" href="#97">self</a>, <a href="#98">name</a>, <a href="#99">const_static_values</a>)
     }
@@ -298,7 +298,7 @@
     <span class="kw">fn </span>register_dynamic_flags(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
-        const_static_values: <span class="kw-2">&amp;</span><span class="lifetime">'static </span><a href="../enums.rs.html#959">FlagsValues</a>,
+        const_static_values: <span class="kw-2">&amp;</span><span class="lifetime">'static </span><a href="../enums.rs.html#961">FlagsValues</a>,
     ) -&gt; <a href="../types.rs.html#22"><span class="kw">crate</span>::types::Type</a> {
         &lt;<span class="self">Self </span><span class="kw">as </span>TypeModuleExt&gt;::register_flags(<a class="self" href="#105">self</a>, <a href="#106">name</a>, <a href="#107">const_static_values</a>)
     }
@@ -307,8 +307,8 @@
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         parent_type: <a href="../types.rs.html#22"><span class="kw">crate</span>::types::Type</a>,
         type_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
-        type_info: <span class="kw-2">&amp;</span><a href="type_info.rs.html#17">TypeInfo</a>,
-        flags: <a href="auto/flags.rs.html#182-209">TypeFlags</a>,
+        type_info: <span class="kw-2">&amp;</span><a href="type_info.rs.html#8">TypeInfo</a>,
+        flags: <a href="auto/flags.rs.html#141-156">TypeFlags</a>,
     ) -&gt; <a href="../types.rs.html#22"><span class="kw">crate</span>::types::Type</a> {
         &lt;<span class="self">Self </span><span class="kw">as </span>TypeModuleExt&gt;::register_type(<a class="self" href="#113">self</a>, <a href="#114">parent_type</a>, <a href="#115">type_name</a>, <a href="#116">type_info</a>, <a href="#117">flags</a>)
     }
