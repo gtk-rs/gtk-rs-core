@@ -35,6 +35,8 @@ jobs:
           toolchain: nightly
           override: true
           components: rustfmt
+      - run: git config --global --add safe.directory /__w/gtk-rs-core/gtk-rs-core
+      - run: git submodule update --checkout
       - run: cargo install rustdoc-stripper
       - run: python3 ./generator.py --embed-docs --yes ./
       - run: git clone https://gitlab.gnome.org/World/Rust/gir-rustdoc/ # checkout action doesn't support random urls
