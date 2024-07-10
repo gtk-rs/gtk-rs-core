@@ -9,7 +9,7 @@ name: CI
 jobs:
   build:
     name: ${{matrix.conf.name}} (rust ${{matrix.rust}})
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     container:
       image: ghcr.io/gtk-rs/gtk-rs-core/core:latest
     strategy:
@@ -95,7 +95,7 @@ jobs:
         if: matrix.rust == 'stable'
 
   build-others:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     container:
       image: ghcr.io/gtk-rs/gtk-rs-core/core:latest
     strategy:
@@ -128,7 +128,7 @@ jobs:
 
   fmt:
     name: rust fmt
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - uses: actions-rs/toolchain@v1
@@ -143,14 +143,14 @@ jobs:
           args: --all -- --check
 
   cargo-deny:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
     - uses: actions/checkout@v4
     - uses: EmbarkStudios/cargo-deny-action@v1
 
   generator:
     name: regen check
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
         with:
@@ -167,7 +167,7 @@ jobs:
 
   docs:
     name: docs embed check
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
         with:
