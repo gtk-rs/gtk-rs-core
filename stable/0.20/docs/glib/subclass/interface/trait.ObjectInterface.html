@@ -1,0 +1,121 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="The central trait for defining a `GObject` interface."><title>ObjectInterface in glib::subclass::interface - Rust</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.81.0-nightly (6be96e386 2024-07-09)" data-channel="nightly" data-search-js="search-d234aafac6c221dd.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="sidebar-items.js"></script><script defer src="../../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc trait"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
+
+    function checkDocsLatestStable() {
+        function popup(msg, url) { return `
+            <style scoped="scoped">
+                .popup {
+                    max-width: 16em;
+                    background-color: #fff;
+                    position: fixed;
+                    z-index: 1;
+                    margin-left: auto;
+                    bottom: 1em;
+                    right: 1em;
+                    border-radius: 5px;
+                    box-shadow: 1px 1px 4px #777;
+                }
+
+                .popup a.version {
+                    color: #e57300;
+                    padding: 0.6em 1em;
+                    display: block;
+                }
+                .popup a.version:hover {
+                    color: #b25900;
+                }
+
+                .popup a.close {
+                    color: white;
+                    background: grey;
+                    border-radius: 99px;
+                    display: inline-block;
+                    width: 19px;
+                    line-height: 19px;
+                    font-weight: bold;
+                    text-align: center;
+                    margin: 0.6em;
+                    float: right;
+                }
+                .popup a.close:hover {
+                    background: black;
+                }
+            </style>
+            <section class="popup" id="gir_docs_popup">
+                <a class="close" href="#" onclick="document.getElementById('gir_docs_popup').remove(); return false">×</a>
+                <a class="version" href="https://gtk-rs.org/gtk-rs-core/stable/latest/docs">
+                    ⚠ ${msg}
+                </a>
+            </section>
+        ` };
+
+        if ("0.20" == "master") {
+            document.body.insertAdjacentHTML(
+                'beforeend',
+                popup("This is the development version. Go to latest stable version.", "stable/latest")
+            );
+        } else {
+            fetch('https://gtk-rs.org/gtk-rs-core/LATEST_RELEASE_BRANCH')
+                .then(response => response.text())
+                .then(latest_branch => {
+                    if (latest_branch.trim() != "0.20") {
+                        document.body.insertAdjacentHTML(
+                            'beforeend',
+                            popup("This version is outdated. Go to latest version.", "stable/latest")
+                        );
+                    }
+                });
+        }
+    }
+</script>
+
+
+<nav class="mobile-topbar"><button class="sidebar-menu-toggle" title="show sidebar"></button></nav><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../../../glib/index.html">glib</a><span class="version">0.20.0</span></h2></div><h2 class="location"><a href="#">ObjectInterface</a></h2><div class="sidebar-elems"><section><h3><a href="#required-associated-types">Required Associated Types</a></h3><ul class="block"><li><a href="#associatedtype.Interface">Interface</a></li><li><a href="#associatedtype.Prerequisites">Prerequisites</a></li></ul><h3><a href="#required-associated-consts">Required Associated Constants</a></h3><ul class="block"><li><a href="#associatedconstant.NAME">NAME</a></li></ul><h3><a href="#provided-associated-consts">Provided Associated Constants</a></h3><ul class="block"><li><a href="#associatedconstant.ALLOW_NAME_CONFLICT">ALLOW_NAME_CONFLICT</a></li></ul><h3><a href="#provided-methods">Provided Methods</a></h3><ul class="block"><li><a href="#method.interface_init">interface_init</a></li><li><a href="#method.properties">properties</a></li><li><a href="#method.signals">signals</a></li><li><a href="#method.type_init">type_init</a></li></ul><h3><a href="#object-safety">Object Safety</a></h3><h3><a href="#implementors">Implementors</a></h3></section><h2><a href="index.html">In glib::subclass::interface</a></h2></div></nav><div class="sidebar-resizer"></div><main><div class="width-limiter"><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1>Trait <a href="../../index.html">glib</a>::<wbr><a href="../index.html">subclass</a>::<wbr><a href="index.html">interface</a>::<wbr><a class="trait" href="#">ObjectInterface</a><button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><span class="out-of-band"><a class="src" href="../../../src/glib/subclass/interface.rs.html#82-145">source</a> · <button id="toggle-all-docs" title="collapse all docs">[<span>&#x2212;</span>]</button></span></div><pre class="rust item-decl"><code>pub trait ObjectInterface: <a class="trait" href="trait.ObjectInterfaceType.html" title="trait glib::subclass::interface::ObjectInterfaceType">ObjectInterfaceType</a> + <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Sized.html" title="trait core::marker::Sized">Sized</a> + 'static {
+    type <a href="#associatedtype.Prerequisites" class="associatedtype">Prerequisites</a>: <a class="trait" href="trait.PrerequisiteList.html" title="trait glib::subclass::interface::PrerequisiteList">PrerequisiteList</a>;
+    type <a href="#associatedtype.Interface" class="associatedtype">Interface</a>: <a class="trait" href="../types/trait.InterfaceStruct.html" title="trait glib::subclass::types::InterfaceStruct">InterfaceStruct</a>&lt;Type = Self&gt;;
+
+    const <a href="#associatedconstant.NAME" class="constant">NAME</a>: &amp;'static <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>;
+    const <a href="#associatedconstant.ALLOW_NAME_CONFLICT" class="constant">ALLOW_NAME_CONFLICT</a>: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> = false;
+
+    // Provided methods
+    fn <a href="#method.type_init" class="fn">type_init</a>(_type_: &amp;mut <a class="struct" href="../types/struct.InitializingType.html" title="struct glib::subclass::types::InitializingType">InitializingType</a>&lt;Self&gt;) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.interface_init" class="fn">interface_init</a>(_klass: &amp;mut Self::<a class="associatedtype" href="trait.ObjectInterface.html#associatedtype.Interface" title="type glib::subclass::interface::ObjectInterface::Interface">Interface</a>) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.properties" class="fn">properties</a>() -&gt; &amp;'static [<a class="struct" href="../../struct.ParamSpec.html" title="struct glib::ParamSpec">ParamSpec</a>] { ... }
+<span class="item-spacer"></span>    fn <a href="#method.signals" class="fn">signals</a>() -&gt; &amp;'static [<a class="struct" href="../signal/struct.Signal.html" title="struct glib::subclass::signal::Signal">Signal</a>] { ... }
+}</code></pre><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>The central trait for defining a <code>GObject</code> interface.</p>
+<p>Links together the type name, the empty instance and class structs for type
+registration and allows hooking into various steps of the type registration
+and initialization.</p>
+<p>See <a href="fn.register_interface.html"><code>register_interface</code></a> for registering an implementation of this trait
+with the type system.</p>
+</div></details><h2 id="required-associated-types" class="section-header">Required Associated Types<a href="#required-associated-types" class="anchor">§</a></h2><div class="methods"><details class="toggle" open><summary><section id="associatedtype.Prerequisites" class="method"><a class="src rightside" href="../../../src/glib/subclass/interface.rs.html#110">source</a><h4 class="code-header">type <a href="#associatedtype.Prerequisites" class="associatedtype">Prerequisites</a>: <a class="trait" href="trait.PrerequisiteList.html" title="trait glib::subclass::interface::PrerequisiteList">PrerequisiteList</a></h4></section></summary><div class="docblock"><p>Prerequisites for this interface.</p>
+<p>Any implementer of the interface must be a subclass of the prerequisites or implement them
+in case of interfaces.</p>
+</div></details><details class="toggle" open><summary><section id="associatedtype.Interface" class="method"><a class="src rightside" href="../../../src/glib/subclass/interface.rs.html#114">source</a><h4 class="code-header">type <a href="#associatedtype.Interface" class="associatedtype">Interface</a>: <a class="trait" href="../types/trait.InterfaceStruct.html" title="trait glib::subclass::types::InterfaceStruct">InterfaceStruct</a>&lt;Type = Self&gt;</h4></section></summary><div class="docblock"><p>The C class struct.</p>
+</div></details></div><h2 id="required-associated-consts" class="section-header">Required Associated Constants<a href="#required-associated-consts" class="anchor">§</a></h2><div class="methods"><details class="toggle" open><summary><section id="associatedconstant.NAME" class="method"><a class="src rightside" href="../../../src/glib/subclass/interface.rs.html#86">source</a><h4 class="code-header">const <a href="#associatedconstant.NAME" class="constant">NAME</a>: &amp;'static <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a></h4></section></summary><div class="docblock"><p><code>GObject</code> type name.</p>
+<p>This must be unique in the whole process.</p>
+</div></details></div><h2 id="provided-associated-consts" class="section-header">Provided Associated Constants<a href="#provided-associated-consts" class="anchor">§</a></h2><div class="methods"><details class="toggle" open><summary><section id="associatedconstant.ALLOW_NAME_CONFLICT" class="method"><a class="src rightside" href="../../../src/glib/subclass/interface.rs.html#104">source</a><h4 class="code-header">const <a href="#associatedconstant.ALLOW_NAME_CONFLICT" class="constant">ALLOW_NAME_CONFLICT</a>: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> = false</h4></section></summary><div class="docblock"><p>Allow name conflicts for this class.</p>
+<p>By default, trying to register a type with a name that was registered before will panic. If
+this is set to <code>true</code> then a new name will be selected by appending a counter.</p>
+<p>This is useful for defining new types in Rust library crates that might be linked multiple
+times in the same process.</p>
+<p>A consequence of setting this to <code>true</code> is that it’s not guaranteed that
+<code>glib::Type::from_name(Self::NAME).unwrap() == Self::type_()</code>.</p>
+<p>Note that this is not allowed for dynamic types. If a dynamic type is registered and a type
+with that name exists already, it is assumed that they’re the same.</p>
+<p>Optional.</p>
+</div></details></div><h2 id="provided-methods" class="section-header">Provided Methods<a href="#provided-methods" class="anchor">§</a></h2><div class="methods"><details class="toggle method-toggle" open><summary><section id="method.type_init" class="method"><a class="src rightside" href="../../../src/glib/subclass/interface.rs.html#122">source</a><h4 class="code-header">fn <a href="#method.type_init" class="fn">type_init</a>(_type_: &amp;mut <a class="struct" href="../types/struct.InitializingType.html" title="struct glib::subclass::types::InitializingType">InitializingType</a>&lt;Self&gt;)</h4></section></summary><div class="docblock"><p>Additional type initialization.</p>
+<p>This is called right after the type was registered and allows
+interfaces to do additional type-specific initialization.</p>
+<p>Optional</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.interface_init" class="method"><a class="src rightside" href="../../../src/glib/subclass/interface.rs.html#132">source</a><h4 class="code-header">fn <a href="#method.interface_init" class="fn">interface_init</a>(_klass: &amp;mut Self::<a class="associatedtype" href="trait.ObjectInterface.html#associatedtype.Interface" title="type glib::subclass::interface::ObjectInterface::Interface">Interface</a>)</h4></section></summary><div class="docblock"><p>Interface initialization.</p>
+<p>This is called after <code>type_init</code> and before the first implementor
+of the interface is created. Interfaces can use this to do interface-
+specific initialization, e.g. for installing signals on the interface,
+and for setting default implementations of interface functions.</p>
+<p>Optional</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.properties" class="method"><a class="src rightside" href="../../../src/glib/subclass/interface.rs.html#137-139">source</a><h4 class="code-header">fn <a href="#method.properties" class="fn">properties</a>() -&gt; &amp;'static [<a class="struct" href="../../struct.ParamSpec.html" title="struct glib::ParamSpec">ParamSpec</a>]</h4></section></summary><div class="docblock"><p>Properties installed for this interface.</p>
+<p>All implementors of the interface must provide these properties.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.signals" class="method"><a class="src rightside" href="../../../src/glib/subclass/interface.rs.html#142-144">source</a><h4 class="code-header">fn <a href="#method.signals" class="fn">signals</a>() -&gt; &amp;'static [<a class="struct" href="../signal/struct.Signal.html" title="struct glib::subclass::signal::Signal">Signal</a>]</h4></section></summary><div class="docblock"><p>Signals installed for this interface.</p>
+</div></details></div><h2 id="object-safety" class="section-header">Object Safety<a href="#object-safety" class="anchor">§</a></h2><div class="object-safety-info">This trait is <b>not</b> <a href="https://doc.rust-lang.org/nightly/reference/items/traits.html#object-safety">object safe</a>.</div><h2 id="implementors" class="section-header">Implementors<a href="#implementors" class="anchor">§</a></h2><div id="implementors-list"></div><script src="../../../trait.impl/glib/subclass/interface/trait.ObjectInterface.js" async></script></section></div></main></body></html>

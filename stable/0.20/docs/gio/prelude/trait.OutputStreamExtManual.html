@@ -1,0 +1,381 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="API documentation for the Rust `OutputStreamExtManual` trait in crate `gio`."><title>OutputStreamExtManual in gio::prelude - Rust</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.81.0-nightly (6be96e386 2024-07-09)" data-channel="nightly" data-search-js="search-d234aafac6c221dd.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="sidebar-items.js"></script><script defer src="../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc trait"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
+
+    function checkDocsLatestStable() {
+        function popup(msg, url) { return `
+            <style scoped="scoped">
+                .popup {
+                    max-width: 16em;
+                    background-color: #fff;
+                    position: fixed;
+                    z-index: 1;
+                    margin-left: auto;
+                    bottom: 1em;
+                    right: 1em;
+                    border-radius: 5px;
+                    box-shadow: 1px 1px 4px #777;
+                }
+
+                .popup a.version {
+                    color: #e57300;
+                    padding: 0.6em 1em;
+                    display: block;
+                }
+                .popup a.version:hover {
+                    color: #b25900;
+                }
+
+                .popup a.close {
+                    color: white;
+                    background: grey;
+                    border-radius: 99px;
+                    display: inline-block;
+                    width: 19px;
+                    line-height: 19px;
+                    font-weight: bold;
+                    text-align: center;
+                    margin: 0.6em;
+                    float: right;
+                }
+                .popup a.close:hover {
+                    background: black;
+                }
+            </style>
+            <section class="popup" id="gir_docs_popup">
+                <a class="close" href="#" onclick="document.getElementById('gir_docs_popup').remove(); return false">×</a>
+                <a class="version" href="https://gtk-rs.org/gtk-rs-core/stable/latest/docs">
+                    ⚠ ${msg}
+                </a>
+            </section>
+        ` };
+
+        if ("0.20" == "master") {
+            document.body.insertAdjacentHTML(
+                'beforeend',
+                popup("This is the development version. Go to latest stable version.", "stable/latest")
+            );
+        } else {
+            fetch('https://gtk-rs.org/gtk-rs-core/LATEST_RELEASE_BRANCH')
+                .then(response => response.text())
+                .then(latest_branch => {
+                    if (latest_branch.trim() != "0.20") {
+                        document.body.insertAdjacentHTML(
+                            'beforeend',
+                            popup("This version is outdated. Go to latest version.", "stable/latest")
+                        );
+                    }
+                });
+        }
+    }
+</script>
+
+
+<nav class="mobile-topbar"><button class="sidebar-menu-toggle" title="show sidebar"></button></nav><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../../gio/index.html">gio</a><span class="version">0.20.0</span></h2></div><h2 class="location"><a href="#">OutputStreamExtManual</a></h2><div class="sidebar-elems"><section><h3><a href="#provided-methods">Provided Methods</a></h3><ul class="block"><li><a href="#method.into_write">into_write</a></li><li><a href="#method.write_all">write_all</a></li><li><a href="#method.write_all_async">write_all_async</a></li><li><a href="#method.write_all_future">write_all_future</a></li><li><a href="#method.write_async">write_async</a></li><li><a href="#method.write_future">write_future</a></li><li><a href="#method.writev">writev</a></li><li><a href="#method.writev_all">writev_all</a></li><li><a href="#method.writev_all_async">writev_all_async</a></li><li><a href="#method.writev_all_future">writev_all_future</a></li><li><a href="#method.writev_async">writev_async</a></li><li><a href="#method.writev_future">writev_future</a></li></ul><h3><a href="#object-safety">Object Safety</a></h3><h3><a href="#implementors">Implementors</a></h3></section><h2><a href="index.html">In gio::prelude</a></h2></div></nav><div class="sidebar-resizer"></div><main><div class="width-limiter"><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1>Trait <a href="../index.html">gio</a>::<wbr><a href="index.html">prelude</a>::<wbr><a class="trait" href="#">OutputStreamExtManual</a><button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><span class="out-of-band"><a class="src" href="../../src/gio/output_stream.rs.html#16-757">source</a> · <button id="toggle-all-docs" title="collapse all docs">[<span>&#x2212;</span>]</button></span></div><pre class="rust item-decl"><code>pub trait OutputStreamExtManual: Sealed + <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.OutputStream.html" title="struct gio::OutputStream">OutputStream</a>&gt; + <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Sized.html" title="trait core::marker::Sized">Sized</a> {
+    // Provided methods
+    fn <a href="#method.write_async" class="fn">write_async</a>&lt;B: <a class="trait" href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html" title="trait core::convert::AsRef">AsRef</a>&lt;[<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]&gt; + <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html" title="trait core::marker::Send">Send</a> + 'static, Q: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html" title="trait core::ops::function::FnOnce">FnOnce</a>(<a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;(B, <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>), (B, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>)&gt;) + 'static, C: <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.Cancellable.html" title="struct gio::Cancellable">Cancellable</a>&gt;&gt;(
+        &amp;self,
+        buffer: B,
+        io_priority: <a class="struct" href="../../glib/source/struct.Priority.html" title="struct glib::source::Priority">Priority</a>,
+        cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.reference.html">&amp;C</a>&gt;,
+        callback: Q,
+    ) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.write_all" class="fn">write_all</a>&lt;C: <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.Cancellable.html" title="struct gio::Cancellable">Cancellable</a>&gt;&gt;(
+        &amp;self,
+        buffer: &amp;[<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>],
+        cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.reference.html">&amp;C</a>&gt;,
+    ) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;(<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>, <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;), <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.write_all_async" class="fn">write_all_async</a>&lt;B: <a class="trait" href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html" title="trait core::convert::AsRef">AsRef</a>&lt;[<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]&gt; + <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html" title="trait core::marker::Send">Send</a> + 'static, Q: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html" title="trait core::ops::function::FnOnce">FnOnce</a>(<a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;(B, <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>, <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;), (B, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>)&gt;) + 'static, C: <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.Cancellable.html" title="struct gio::Cancellable">Cancellable</a>&gt;&gt;(
+        &amp;self,
+        buffer: B,
+        io_priority: <a class="struct" href="../../glib/source/struct.Priority.html" title="struct glib::source::Priority">Priority</a>,
+        cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.reference.html">&amp;C</a>&gt;,
+        callback: Q,
+    ) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.write_future" class="fn">write_future</a>&lt;B: <a class="trait" href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html" title="trait core::convert::AsRef">AsRef</a>&lt;[<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]&gt; + <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html" title="trait core::marker::Send">Send</a> + 'static&gt;(
+        &amp;self,
+        buffer: B,
+        io_priority: <a class="struct" href="../../glib/source/struct.Priority.html" title="struct glib::source::Priority">Priority</a>,
+    ) -&gt; <a class="struct" href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html" title="struct core::pin::Pin">Pin</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box</a>&lt;dyn <a class="trait" href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html" title="trait core::future::future::Future">Future</a>&lt;Output = <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;(B, <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>), (B, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>)&gt;&gt; + 'static&gt;&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.write_all_future" class="fn">write_all_future</a>&lt;B: <a class="trait" href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html" title="trait core::convert::AsRef">AsRef</a>&lt;[<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]&gt; + <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html" title="trait core::marker::Send">Send</a> + 'static&gt;(
+        &amp;self,
+        buffer: B,
+        io_priority: <a class="struct" href="../../glib/source/struct.Priority.html" title="struct glib::source::Priority">Priority</a>,
+    ) -&gt; <a class="struct" href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html" title="struct core::pin::Pin">Pin</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box</a>&lt;dyn <a class="trait" href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html" title="trait core::future::future::Future">Future</a>&lt;Output = <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;(B, <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>, <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;), (B, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>)&gt;&gt; + 'static&gt;&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.writev" class="fn">writev</a>(
+        &amp;self,
+        vectors: &amp;[<a class="struct" href="../struct.OutputVector.html" title="struct gio::OutputVector">OutputVector</a>&lt;'_&gt;],
+        cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.Cancellable.html" title="struct gio::Cancellable">Cancellable</a>&gt;&gt;,
+    ) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.writev_async" class="fn">writev_async</a>&lt;B: <a class="trait" href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html" title="trait core::convert::AsRef">AsRef</a>&lt;[<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]&gt; + <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html" title="trait core::marker::Send">Send</a> + 'static, P: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html" title="trait core::ops::function::FnOnce">FnOnce</a>(<a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;(<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html" title="struct alloc::vec::Vec">Vec</a>&lt;B&gt;, <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>), (<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html" title="struct alloc::vec::Vec">Vec</a>&lt;B&gt;, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>)&gt;) + 'static&gt;(
+        &amp;self,
+        vectors: impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.IntoIterator.html" title="trait core::iter::traits::collect::IntoIterator">IntoIterator</a>&lt;Item = B&gt; + 'static,
+        io_priority: <a class="struct" href="../../glib/source/struct.Priority.html" title="struct glib::source::Priority">Priority</a>,
+        cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.Cancellable.html" title="struct gio::Cancellable">Cancellable</a>&gt;&gt;,
+        callback: P,
+    ) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.writev_future" class="fn">writev_future</a>&lt;B: <a class="trait" href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html" title="trait core::convert::AsRef">AsRef</a>&lt;[<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]&gt; + <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html" title="trait core::marker::Send">Send</a> + 'static&gt;(
+        &amp;self,
+        vectors: impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.IntoIterator.html" title="trait core::iter::traits::collect::IntoIterator">IntoIterator</a>&lt;Item = B&gt; + 'static,
+        io_priority: <a class="struct" href="../../glib/source/struct.Priority.html" title="struct glib::source::Priority">Priority</a>,
+    ) -&gt; <a class="struct" href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html" title="struct core::pin::Pin">Pin</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box</a>&lt;dyn <a class="trait" href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html" title="trait core::future::future::Future">Future</a>&lt;Output = <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;(<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html" title="struct alloc::vec::Vec">Vec</a>&lt;B&gt;, <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>), (<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html" title="struct alloc::vec::Vec">Vec</a>&lt;B&gt;, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>)&gt;&gt; + 'static&gt;&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.writev_all" class="fn">writev_all</a>(
+        &amp;self,
+        vectors: &amp;[<a class="struct" href="../struct.OutputVector.html" title="struct gio::OutputVector">OutputVector</a>&lt;'_&gt;],
+        cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.Cancellable.html" title="struct gio::Cancellable">Cancellable</a>&gt;&gt;,
+    ) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;(<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>, <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;), <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.writev_all_async" class="fn">writev_all_async</a>&lt;B: <a class="trait" href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html" title="trait core::convert::AsRef">AsRef</a>&lt;[<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]&gt; + <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html" title="trait core::marker::Send">Send</a> + 'static, P: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html" title="trait core::ops::function::FnOnce">FnOnce</a>(<a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;(<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html" title="struct alloc::vec::Vec">Vec</a>&lt;B&gt;, <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>, <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;), (<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html" title="struct alloc::vec::Vec">Vec</a>&lt;B&gt;, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>)&gt;) + 'static&gt;(
+        &amp;self,
+        vectors: impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.IntoIterator.html" title="trait core::iter::traits::collect::IntoIterator">IntoIterator</a>&lt;Item = B&gt; + 'static,
+        io_priority: <a class="struct" href="../../glib/source/struct.Priority.html" title="struct glib::source::Priority">Priority</a>,
+        cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.Cancellable.html" title="struct gio::Cancellable">Cancellable</a>&gt;&gt;,
+        callback: P,
+    ) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.writev_all_future" class="fn">writev_all_future</a>&lt;B: <a class="trait" href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html" title="trait core::convert::AsRef">AsRef</a>&lt;[<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]&gt; + <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html" title="trait core::marker::Send">Send</a> + 'static&gt;(
+        &amp;self,
+        vectors: impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.IntoIterator.html" title="trait core::iter::traits::collect::IntoIterator">IntoIterator</a>&lt;Item = B&gt; + 'static,
+        io_priority: <a class="struct" href="../../glib/source/struct.Priority.html" title="struct glib::source::Priority">Priority</a>,
+    ) -&gt; <a class="struct" href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html" title="struct core::pin::Pin">Pin</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box</a>&lt;dyn <a class="trait" href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html" title="trait core::future::future::Future">Future</a>&lt;Output = <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;(<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html" title="struct alloc::vec::Vec">Vec</a>&lt;B&gt;, <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>, <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;), (<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html" title="struct alloc::vec::Vec">Vec</a>&lt;B&gt;, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>)&gt;&gt; + 'static&gt;&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.into_write" class="fn">into_write</a>(self) -&gt; <a class="struct" href="../struct.OutputStreamWrite.html" title="struct gio::OutputStreamWrite">OutputStreamWrite</a>&lt;Self&gt; <a href="#" class="tooltip" data-notable-ty="OutputStreamWrite&lt;Self&gt;">ⓘ</a>
+       <span class="where">where Self: <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.OutputStream.html" title="struct gio::OutputStream">OutputStream</a>&gt;</span> { ... }
+}</code></pre><h2 id="provided-methods" class="section-header">Provided Methods<a href="#provided-methods" class="anchor">§</a></h2><div class="methods"><details class="toggle method-toggle" open><summary><section id="method.write_async" class="method"><a class="src rightside" href="../../src/gio/output_stream.rs.html#62-127">source</a><h4 class="code-header">fn <a href="#method.write_async" class="fn">write_async</a>&lt;B: <a class="trait" href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html" title="trait core::convert::AsRef">AsRef</a>&lt;[<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]&gt; + <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html" title="trait core::marker::Send">Send</a> + 'static, Q: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html" title="trait core::ops::function::FnOnce">FnOnce</a>(<a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;(B, <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>), (B, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>)&gt;) + 'static, C: <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.Cancellable.html" title="struct gio::Cancellable">Cancellable</a>&gt;&gt;(
+    &amp;self,
+    buffer: B,
+    io_priority: <a class="struct" href="../../glib/source/struct.Priority.html" title="struct glib::source::Priority">Priority</a>,
+    cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.reference.html">&amp;C</a>&gt;,
+    callback: Q,
+)</h4></section></summary><div class="docblock"><p>Request an asynchronous write of @count bytes from @buffer into
+the stream. When the operation is finished @callback will be called.
+You can then call g_output_stream_write_finish() to get the result of the
+operation.</p>
+<p>During an async request no other sync and async calls are allowed,
+and will result in <a href="../enum.IOErrorEnum.html#variant.Pending" title="variant gio::IOErrorEnum::Pending"><code>IOErrorEnum::Pending</code></a> errors.</p>
+<p>A value of @count larger than <code>G_MAXSSIZE</code> will cause a
+<a href="../enum.IOErrorEnum.html#variant.InvalidArgument" title="variant gio::IOErrorEnum::InvalidArgument"><code>IOErrorEnum::InvalidArgument</code></a> error.</p>
+<p>On success, the number of bytes written will be passed to the
+@callback. It is not an error if this is not the same as the
+requested size, as it can happen e.g. on a partial I/O error,
+but generally we try to write as many bytes as requested.</p>
+<p>You are guaranteed that this method will never fail with
+<a href="../enum.IOErrorEnum.html#variant.WouldBlock" title="variant gio::IOErrorEnum::WouldBlock"><code>IOErrorEnum::WouldBlock</code></a> - if @self can’t accept more data, the
+method will just wait until this changes.</p>
+<p>Any outstanding I/O request with higher priority (lower numerical
+value) will be executed before an outstanding request with lower
+priority. Default priority is <code>G_PRIORITY_DEFAULT</code>.</p>
+<p>The asynchronous methods have a default fallback that uses threads
+to implement asynchronicity, so they are optional for inheriting
+classes. However, if you override one you must override all.</p>
+<p>For the synchronous, blocking version of this function, see
+g_output_stream_write().</p>
+<p>Note that no copy of @buffer will be made, so it must stay valid
+until @callback is called. See g_output_stream_write_bytes_async()
+for a #GBytes version that will automatically hold a reference to
+the contents (without copying) for the duration of the call.</p>
+<h6 id="buffer"><a class="doc-anchor" href="#buffer">§</a><code>buffer</code></h6>
+<p>the buffer containing the data to write.</p>
+<h6 id="io_priority"><a class="doc-anchor" href="#io_priority">§</a><code>io_priority</code></h6>
+<p>the io priority of the request.</p>
+<h6 id="cancellable"><a class="doc-anchor" href="#cancellable">§</a><code>cancellable</code></h6>
+<p>optional #GCancellable object, <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a> to ignore.</p>
+<h6 id="callback"><a class="doc-anchor" href="#callback">§</a><code>callback</code></h6>
+<p>a #GAsyncReadyCallback
+to call when the request is satisfied</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.write_all" class="method"><a class="src rightside" href="../../src/gio/output_stream.rs.html#161-190">source</a><h4 class="code-header">fn <a href="#method.write_all" class="fn">write_all</a>&lt;C: <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.Cancellable.html" title="struct gio::Cancellable">Cancellable</a>&gt;&gt;(
+    &amp;self,
+    buffer: &amp;[<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>],
+    cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.reference.html">&amp;C</a>&gt;,
+) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;(<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>, <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;), <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;</h4></section></summary><div class="docblock"><p>Tries to write @count bytes from @buffer into the stream. Will block
+during the operation.</p>
+<p>This function is similar to g_output_stream_write(), except it tries to
+write as many bytes as requested, only stopping on an error.</p>
+<p>On a successful write of @count bytes, <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>true</code></a> is returned, and @bytes_written
+is set to @count.</p>
+<p>If there is an error during the operation <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>false</code></a> is returned and @error
+is set to indicate the error status.</p>
+<p>As a special exception to the normal conventions for functions that
+use #GError, if this function returns <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>false</code></a> (and sets @error) then
+@bytes_written will be set to the number of bytes that were
+successfully written before the error was encountered.  This
+functionality is only available from C.  If you need it from another
+language then you must write your own loop around
+g_output_stream_write().</p>
+<h6 id="buffer-1"><a class="doc-anchor" href="#buffer-1">§</a><code>buffer</code></h6>
+<p>the buffer containing the data to write.</p>
+<h6 id="cancellable-1"><a class="doc-anchor" href="#cancellable-1">§</a><code>cancellable</code></h6>
+<p>optional #GCancellable object, <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a> to ignore.</p>
+<h5 id="returns"><a class="doc-anchor" href="#returns">§</a>Returns</h5>
+<p><a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>true</code></a> on success, <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>false</code></a> if there was an error</p>
+<h6 id="bytes_written"><a class="doc-anchor" href="#bytes_written">§</a><code>bytes_written</code></h6>
+<p>location to store the number of bytes that was
+written to the stream</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.write_all_async" class="method"><a class="src rightside" href="../../src/gio/output_stream.rs.html#217-291">source</a><h4 class="code-header">fn <a href="#method.write_all_async" class="fn">write_all_async</a>&lt;B: <a class="trait" href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html" title="trait core::convert::AsRef">AsRef</a>&lt;[<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]&gt; + <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html" title="trait core::marker::Send">Send</a> + 'static, Q: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html" title="trait core::ops::function::FnOnce">FnOnce</a>(<a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;(B, <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>, <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;), (B, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>)&gt;) + 'static, C: <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.Cancellable.html" title="struct gio::Cancellable">Cancellable</a>&gt;&gt;(
+    &amp;self,
+    buffer: B,
+    io_priority: <a class="struct" href="../../glib/source/struct.Priority.html" title="struct glib::source::Priority">Priority</a>,
+    cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.reference.html">&amp;C</a>&gt;,
+    callback: Q,
+)</h4></section></summary><div class="docblock"><p>Request an asynchronous write of @count bytes from @buffer into
+the stream. When the operation is finished @callback will be called.
+You can then call g_output_stream_write_all_finish() to get the result of the
+operation.</p>
+<p>This is the asynchronous version of g_output_stream_write_all().</p>
+<p>Call g_output_stream_write_all_finish() to collect the result.</p>
+<p>Any outstanding I/O request with higher priority (lower numerical
+value) will be executed before an outstanding request with lower
+priority. Default priority is <code>G_PRIORITY_DEFAULT</code>.</p>
+<p>Note that no copy of @buffer will be made, so it must stay valid
+until @callback is called.</p>
+<h6 id="buffer-2"><a class="doc-anchor" href="#buffer-2">§</a><code>buffer</code></h6>
+<p>the buffer containing the data to write</p>
+<h6 id="io_priority-1"><a class="doc-anchor" href="#io_priority-1">§</a><code>io_priority</code></h6>
+<p>the io priority of the request</p>
+<h6 id="cancellable-2"><a class="doc-anchor" href="#cancellable-2">§</a><code>cancellable</code></h6>
+<p>optional #GCancellable object, <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a> to ignore</p>
+<h6 id="callback-1"><a class="doc-anchor" href="#callback-1">§</a><code>callback</code></h6>
+<p>a #GAsyncReadyCallback
+to call when the request is satisfied</p>
+</div></details><section id="method.write_future" class="method"><a class="src rightside" href="../../src/gio/output_stream.rs.html#293-307">source</a><h4 class="code-header">fn <a href="#method.write_future" class="fn">write_future</a>&lt;B: <a class="trait" href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html" title="trait core::convert::AsRef">AsRef</a>&lt;[<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]&gt; + <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html" title="trait core::marker::Send">Send</a> + 'static&gt;(
+    &amp;self,
+    buffer: B,
+    io_priority: <a class="struct" href="../../glib/source/struct.Priority.html" title="struct glib::source::Priority">Priority</a>,
+) -&gt; <a class="struct" href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html" title="struct core::pin::Pin">Pin</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box</a>&lt;dyn <a class="trait" href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html" title="trait core::future::future::Future">Future</a>&lt;Output = <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;(B, <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>), (B, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>)&gt;&gt; + 'static&gt;&gt;</h4></section><section id="method.write_all_future" class="method"><a class="src rightside" href="../../src/gio/output_stream.rs.html#309-328">source</a><h4 class="code-header">fn <a href="#method.write_all_future" class="fn">write_all_future</a>&lt;B: <a class="trait" href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html" title="trait core::convert::AsRef">AsRef</a>&lt;[<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]&gt; + <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html" title="trait core::marker::Send">Send</a> + 'static&gt;(
+    &amp;self,
+    buffer: B,
+    io_priority: <a class="struct" href="../../glib/source/struct.Priority.html" title="struct glib::source::Priority">Priority</a>,
+) -&gt; <a class="struct" href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html" title="struct core::pin::Pin">Pin</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box</a>&lt;dyn <a class="trait" href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html" title="trait core::future::future::Future">Future</a>&lt;Output = <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;(B, <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>, <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;), (B, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>)&gt;&gt; + 'static&gt;&gt;</h4></section><details class="toggle method-toggle" open><summary><section id="method.writev" class="method"><a class="src rightside" href="../../src/gio/output_stream.rs.html#368-391">source</a><h4 class="code-header">fn <a href="#method.writev" class="fn">writev</a>(
+    &amp;self,
+    vectors: &amp;[<a class="struct" href="../struct.OutputVector.html" title="struct gio::OutputVector">OutputVector</a>&lt;'_&gt;],
+    cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.Cancellable.html" title="struct gio::Cancellable">Cancellable</a>&gt;&gt;,
+) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;</h4></section><span class="item-info"><div class="stab portability">Available on <strong>crate feature <code>v2_60</code></strong> only.</div></span></summary><div class="docblock"><p>Tries to write the bytes contained in the @n_vectors @vectors into the
+stream. Will block during the operation.</p>
+<p>If @n_vectors is 0 or the sum of all bytes in @vectors is 0, returns 0 and
+does nothing.</p>
+<p>On success, the number of bytes written to the stream is returned.
+It is not an error if this is not the same as the requested size, as it
+can happen e.g. on a partial I/O error, or if there is not enough
+storage in the stream. All writes block until at least one byte
+is written or an error occurs; 0 is never returned (unless
+@n_vectors is 0 or the sum of all bytes in @vectors is 0).</p>
+<p>If @cancellable is not <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a>, then the operation can be cancelled by
+triggering the cancellable object from another thread. If the operation
+was cancelled, the error <a href="../enum.IOErrorEnum.html#variant.Cancelled" title="variant gio::IOErrorEnum::Cancelled"><code>IOErrorEnum::Cancelled</code></a> will be returned. If an
+operation was partially finished when the operation was cancelled the
+partial result will be returned, without an error.</p>
+<p>Some implementations of g_output_stream_writev() may have limitations on the
+aggregate buffer size, and will return <a href="../enum.IOErrorEnum.html#variant.InvalidArgument" title="variant gio::IOErrorEnum::InvalidArgument"><code>IOErrorEnum::InvalidArgument</code></a> if these
+are exceeded. For example, when writing to a local file on UNIX platforms,
+the aggregate buffer size must not exceed <code>G_MAXSSIZE</code> bytes.</p>
+<h6 id="vectors"><a class="doc-anchor" href="#vectors">§</a><code>vectors</code></h6>
+<p>the buffer containing the #GOutputVectors to write.</p>
+<h6 id="cancellable-3"><a class="doc-anchor" href="#cancellable-3">§</a><code>cancellable</code></h6>
+<p>optional cancellable object</p>
+<h5 id="returns-1"><a class="doc-anchor" href="#returns-1">§</a>Returns</h5>
+<p><a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>true</code></a> on success, <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>false</code></a> if there was an error</p>
+<h6 id="bytes_written-1"><a class="doc-anchor" href="#bytes_written-1">§</a><code>bytes_written</code></h6>
+<p>location to store the number of bytes that were
+written to the stream</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.writev_async" class="method"><a class="src rightside" href="../../src/gio/output_stream.rs.html#435-521">source</a><h4 class="code-header">fn <a href="#method.writev_async" class="fn">writev_async</a>&lt;B: <a class="trait" href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html" title="trait core::convert::AsRef">AsRef</a>&lt;[<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]&gt; + <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html" title="trait core::marker::Send">Send</a> + 'static, P: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html" title="trait core::ops::function::FnOnce">FnOnce</a>(<a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;(<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html" title="struct alloc::vec::Vec">Vec</a>&lt;B&gt;, <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>), (<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html" title="struct alloc::vec::Vec">Vec</a>&lt;B&gt;, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>)&gt;) + 'static&gt;(
+    &amp;self,
+    vectors: impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.IntoIterator.html" title="trait core::iter::traits::collect::IntoIterator">IntoIterator</a>&lt;Item = B&gt; + 'static,
+    io_priority: <a class="struct" href="../../glib/source/struct.Priority.html" title="struct glib::source::Priority">Priority</a>,
+    cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.Cancellable.html" title="struct gio::Cancellable">Cancellable</a>&gt;&gt;,
+    callback: P,
+)</h4></section><span class="item-info"><div class="stab portability">Available on <strong>crate feature <code>v2_60</code></strong> only.</div></span></summary><div class="docblock"><p>Request an asynchronous write of the bytes contained in @n_vectors @vectors into
+the stream. When the operation is finished @callback will be called.
+You can then call g_output_stream_writev_finish() to get the result of the
+operation.</p>
+<p>During an async request no other sync and async calls are allowed,
+and will result in <a href="../enum.IOErrorEnum.html#variant.Pending" title="variant gio::IOErrorEnum::Pending"><code>IOErrorEnum::Pending</code></a> errors.</p>
+<p>On success, the number of bytes written will be passed to the
+@callback. It is not an error if this is not the same as the
+requested size, as it can happen e.g. on a partial I/O error,
+but generally we try to write as many bytes as requested.</p>
+<p>You are guaranteed that this method will never fail with
+<a href="../enum.IOErrorEnum.html#variant.WouldBlock" title="variant gio::IOErrorEnum::WouldBlock"><code>IOErrorEnum::WouldBlock</code></a> — if @self can’t accept more data, the
+method will just wait until this changes.</p>
+<p>Any outstanding I/O request with higher priority (lower numerical
+value) will be executed before an outstanding request with lower
+priority. Default priority is <code>G_PRIORITY_DEFAULT</code>.</p>
+<p>The asynchronous methods have a default fallback that uses threads
+to implement asynchronicity, so they are optional for inheriting
+classes. However, if you override one you must override all.</p>
+<p>For the synchronous, blocking version of this function, see
+g_output_stream_writev().</p>
+<p>Note that no copy of @vectors will be made, so it must stay valid
+until @callback is called.</p>
+<h6 id="vectors-1"><a class="doc-anchor" href="#vectors-1">§</a><code>vectors</code></h6>
+<p>the buffer containing the #GOutputVectors to write.</p>
+<h6 id="io_priority-2"><a class="doc-anchor" href="#io_priority-2">§</a><code>io_priority</code></h6>
+<p>the I/O priority of the request.</p>
+<h6 id="cancellable-4"><a class="doc-anchor" href="#cancellable-4">§</a><code>cancellable</code></h6>
+<p>optional #GCancellable object, <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a> to ignore.</p>
+<h6 id="callback-2"><a class="doc-anchor" href="#callback-2">§</a><code>callback</code></h6>
+<p>a #GAsyncReadyCallback
+to call when the request is satisfied</p>
+</div></details><section id="method.writev_future" class="method"><a class="src rightside" href="../../src/gio/output_stream.rs.html#525-543">source</a><h4 class="code-header">fn <a href="#method.writev_future" class="fn">writev_future</a>&lt;B: <a class="trait" href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html" title="trait core::convert::AsRef">AsRef</a>&lt;[<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]&gt; + <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html" title="trait core::marker::Send">Send</a> + 'static&gt;(
+    &amp;self,
+    vectors: impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.IntoIterator.html" title="trait core::iter::traits::collect::IntoIterator">IntoIterator</a>&lt;Item = B&gt; + 'static,
+    io_priority: <a class="struct" href="../../glib/source/struct.Priority.html" title="struct glib::source::Priority">Priority</a>,
+) -&gt; <a class="struct" href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html" title="struct core::pin::Pin">Pin</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box</a>&lt;dyn <a class="trait" href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html" title="trait core::future::future::Future">Future</a>&lt;Output = <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;(<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html" title="struct alloc::vec::Vec">Vec</a>&lt;B&gt;, <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>), (<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html" title="struct alloc::vec::Vec">Vec</a>&lt;B&gt;, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>)&gt;&gt; + 'static&gt;&gt;</h4></section><span class="item-info"><div class="stab portability">Available on <strong>crate feature <code>v2_60</code></strong> only.</div></span><details class="toggle method-toggle" open><summary><section id="method.writev_all" class="method"><a class="src rightside" href="../../src/gio/output_stream.rs.html#582-608">source</a><h4 class="code-header">fn <a href="#method.writev_all" class="fn">writev_all</a>(
+    &amp;self,
+    vectors: &amp;[<a class="struct" href="../struct.OutputVector.html" title="struct gio::OutputVector">OutputVector</a>&lt;'_&gt;],
+    cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.Cancellable.html" title="struct gio::Cancellable">Cancellable</a>&gt;&gt;,
+) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;(<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>, <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;), <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;</h4></section><span class="item-info"><div class="stab portability">Available on <strong>crate feature <code>v2_60</code></strong> only.</div></span></summary><div class="docblock"><p>Tries to write the bytes contained in the @n_vectors @vectors into the
+stream. Will block during the operation.</p>
+<p>This function is similar to g_output_stream_writev(), except it tries to
+write as many bytes as requested, only stopping on an error.</p>
+<p>On a successful write of all @n_vectors vectors, <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>true</code></a> is returned, and
+@bytes_written is set to the sum of all the sizes of @vectors.</p>
+<p>If there is an error during the operation <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>false</code></a> is returned and @error
+is set to indicate the error status.</p>
+<p>As a special exception to the normal conventions for functions that
+use #GError, if this function returns <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>false</code></a> (and sets @error) then
+@bytes_written will be set to the number of bytes that were
+successfully written before the error was encountered.  This
+functionality is only available from C. If you need it from another
+language then you must write your own loop around
+g_output_stream_write().</p>
+<p>The content of the individual elements of @vectors might be changed by this
+function.</p>
+<h6 id="vectors-2"><a class="doc-anchor" href="#vectors-2">§</a><code>vectors</code></h6>
+<p>the buffer containing the #GOutputVectors to write.</p>
+<h6 id="cancellable-5"><a class="doc-anchor" href="#cancellable-5">§</a><code>cancellable</code></h6>
+<p>optional #GCancellable object, <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a> to ignore.</p>
+<h5 id="returns-2"><a class="doc-anchor" href="#returns-2">§</a>Returns</h5>
+<p><a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>true</code></a> on success, <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>false</code></a> if there was an error</p>
+<h6 id="bytes_written-2"><a class="doc-anchor" href="#bytes_written-2">§</a><code>bytes_written</code></h6>
+<p>location to store the number of bytes that were
+written to the stream</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.writev_all_async" class="method"><a class="src rightside" href="../../src/gio/output_stream.rs.html#638-726">source</a><h4 class="code-header">fn <a href="#method.writev_all_async" class="fn">writev_all_async</a>&lt;B: <a class="trait" href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html" title="trait core::convert::AsRef">AsRef</a>&lt;[<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]&gt; + <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html" title="trait core::marker::Send">Send</a> + 'static, P: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html" title="trait core::ops::function::FnOnce">FnOnce</a>(<a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;(<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html" title="struct alloc::vec::Vec">Vec</a>&lt;B&gt;, <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>, <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;), (<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html" title="struct alloc::vec::Vec">Vec</a>&lt;B&gt;, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>)&gt;) + 'static&gt;(
+    &amp;self,
+    vectors: impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.IntoIterator.html" title="trait core::iter::traits::collect::IntoIterator">IntoIterator</a>&lt;Item = B&gt; + 'static,
+    io_priority: <a class="struct" href="../../glib/source/struct.Priority.html" title="struct glib::source::Priority">Priority</a>,
+    cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.Cancellable.html" title="struct gio::Cancellable">Cancellable</a>&gt;&gt;,
+    callback: P,
+)</h4></section><span class="item-info"><div class="stab portability">Available on <strong>crate feature <code>v2_60</code></strong> only.</div></span></summary><div class="docblock"><p>Request an asynchronous write of the bytes contained in the @n_vectors @vectors into
+the stream. When the operation is finished @callback will be called.
+You can then call g_output_stream_writev_all_finish() to get the result of the
+operation.</p>
+<p>This is the asynchronous version of g_output_stream_writev_all().</p>
+<p>Call g_output_stream_writev_all_finish() to collect the result.</p>
+<p>Any outstanding I/O request with higher priority (lower numerical
+value) will be executed before an outstanding request with lower
+priority. Default priority is <code>G_PRIORITY_DEFAULT</code>.</p>
+<p>Note that no copy of @vectors will be made, so it must stay valid
+until @callback is called. The content of the individual elements
+of @vectors might be changed by this function.</p>
+<h6 id="vectors-3"><a class="doc-anchor" href="#vectors-3">§</a><code>vectors</code></h6>
+<p>the buffer containing the #GOutputVectors to write.</p>
+<h6 id="io_priority-3"><a class="doc-anchor" href="#io_priority-3">§</a><code>io_priority</code></h6>
+<p>the I/O priority of the request</p>
+<h6 id="cancellable-6"><a class="doc-anchor" href="#cancellable-6">§</a><code>cancellable</code></h6>
+<p>optional #GCancellable object, <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a> to ignore</p>
+<h6 id="callback-3"><a class="doc-anchor" href="#callback-3">§</a><code>callback</code></h6>
+<p>a #GAsyncReadyCallback
+to call when the request is satisfied</p>
+</div></details><section id="method.writev_all_future" class="method"><a class="src rightside" href="../../src/gio/output_stream.rs.html#730-749">source</a><h4 class="code-header">fn <a href="#method.writev_all_future" class="fn">writev_all_future</a>&lt;B: <a class="trait" href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html" title="trait core::convert::AsRef">AsRef</a>&lt;[<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]&gt; + <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html" title="trait core::marker::Send">Send</a> + 'static&gt;(
+    &amp;self,
+    vectors: impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.IntoIterator.html" title="trait core::iter::traits::collect::IntoIterator">IntoIterator</a>&lt;Item = B&gt; + 'static,
+    io_priority: <a class="struct" href="../../glib/source/struct.Priority.html" title="struct glib::source::Priority">Priority</a>,
+) -&gt; <a class="struct" href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html" title="struct core::pin::Pin">Pin</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box</a>&lt;dyn <a class="trait" href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html" title="trait core::future::future::Future">Future</a>&lt;Output = <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;(<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html" title="struct alloc::vec::Vec">Vec</a>&lt;B&gt;, <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>, <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;), (<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html" title="struct alloc::vec::Vec">Vec</a>&lt;B&gt;, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>)&gt;&gt; + 'static&gt;&gt;</h4></section><span class="item-info"><div class="stab portability">Available on <strong>crate feature <code>v2_60</code></strong> only.</div></span><section id="method.into_write" class="method"><a class="src rightside" href="../../src/gio/output_stream.rs.html#751-756">source</a><h4 class="code-header">fn <a href="#method.into_write" class="fn">into_write</a>(self) -&gt; <a class="struct" href="../struct.OutputStreamWrite.html" title="struct gio::OutputStreamWrite">OutputStreamWrite</a>&lt;Self&gt; <a href="#" class="tooltip" data-notable-ty="OutputStreamWrite&lt;Self&gt;">ⓘ</a><div class="where">where
+    Self: <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.OutputStream.html" title="struct gio::OutputStream">OutputStream</a>&gt;,</div></h4></section></div><h2 id="object-safety" class="section-header">Object Safety<a href="#object-safety" class="anchor">§</a></h2><div class="object-safety-info">This trait is <b>not</b> <a href="https://doc.rust-lang.org/nightly/reference/items/traits.html#object-safety">object safe</a>.</div><h2 id="implementors" class="section-header">Implementors<a href="#implementors" class="anchor">§</a></h2><div id="implementors-list"><section id="impl-OutputStreamExtManual-for-O" class="impl"><a class="src rightside" href="../../src/gio/output_stream.rs.html#759">source</a><a href="#impl-OutputStreamExtManual-for-O" class="anchor">§</a><h3 class="code-header">impl&lt;O: <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.OutputStream.html" title="struct gio::OutputStream">OutputStream</a>&gt;&gt; <a class="trait" href="trait.OutputStreamExtManual.html" title="trait gio::prelude::OutputStreamExtManual">OutputStreamExtManual</a> for O</h3></section></div><script src="../../trait.impl/gio/output_stream/trait.OutputStreamExtManual.js" async></script><script type="text/json" id="notable-traits-data">{"OutputStreamWrite<Self>":"<h3>Notable traits for <code><a class=\"struct\" href=\"../struct.OutputStreamWrite.html\" title=\"struct gio::OutputStreamWrite\">OutputStreamWrite</a>&lt;T&gt;</code></h3><pre><code><div class=\"where\">impl&lt;T: <a class=\"trait\" href=\"../../glib/object/trait.IsA.html\" title=\"trait glib::object::IsA\">IsA</a>&lt;<a class=\"struct\" href=\"../struct.OutputStream.html\" title=\"struct gio::OutputStream\">OutputStream</a>&gt;&gt; <a class=\"trait\" href=\"https://doc.rust-lang.org/nightly/std/io/trait.Write.html\" title=\"trait std::io::Write\">Write</a> for <a class=\"struct\" href=\"../struct.OutputStreamWrite.html\" title=\"struct gio::OutputStreamWrite\">OutputStreamWrite</a>&lt;T&gt;</div>"}</script></section></div></main></body></html>

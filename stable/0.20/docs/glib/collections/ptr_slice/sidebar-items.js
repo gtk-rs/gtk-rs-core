@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":["IntoIter","PtrSlice"],"trait":["IntoPtrSlice"]};

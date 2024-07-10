@@ -1,0 +1,292 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Macro for passing variables as strong or weak references into a closure."><title>clone in glib - Rust</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../" data-static-root-path="../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.81.0-nightly (6be96e386 2024-07-09)" data-channel="nightly" data-search-js="search-d234aafac6c221dd.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../static.files/storage-118b08c4c78b968e.js"></script><script defer src="sidebar-items.js"></script><script defer src="../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc macro"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
+
+    function checkDocsLatestStable() {
+        function popup(msg, url) { return `
+            <style scoped="scoped">
+                .popup {
+                    max-width: 16em;
+                    background-color: #fff;
+                    position: fixed;
+                    z-index: 1;
+                    margin-left: auto;
+                    bottom: 1em;
+                    right: 1em;
+                    border-radius: 5px;
+                    box-shadow: 1px 1px 4px #777;
+                }
+
+                .popup a.version {
+                    color: #e57300;
+                    padding: 0.6em 1em;
+                    display: block;
+                }
+                .popup a.version:hover {
+                    color: #b25900;
+                }
+
+                .popup a.close {
+                    color: white;
+                    background: grey;
+                    border-radius: 99px;
+                    display: inline-block;
+                    width: 19px;
+                    line-height: 19px;
+                    font-weight: bold;
+                    text-align: center;
+                    margin: 0.6em;
+                    float: right;
+                }
+                .popup a.close:hover {
+                    background: black;
+                }
+            </style>
+            <section class="popup" id="gir_docs_popup">
+                <a class="close" href="#" onclick="document.getElementById('gir_docs_popup').remove(); return false">×</a>
+                <a class="version" href="https://gtk-rs.org/gtk-rs-core/stable/latest/docs">
+                    ⚠ ${msg}
+                </a>
+            </section>
+        ` };
+
+        if ("0.20" == "master") {
+            document.body.insertAdjacentHTML(
+                'beforeend',
+                popup("This is the development version. Go to latest stable version.", "stable/latest")
+            );
+        } else {
+            fetch('https://gtk-rs.org/gtk-rs-core/LATEST_RELEASE_BRANCH')
+                .then(response => response.text())
+                .then(latest_branch => {
+                    if (latest_branch.trim() != "0.20") {
+                        document.body.insertAdjacentHTML(
+                            'beforeend',
+                            popup("This version is outdated. Go to latest version.", "stable/latest")
+                        );
+                    }
+                });
+        }
+    }
+</script>
+
+
+<nav class="mobile-topbar"><button class="sidebar-menu-toggle" title="show sidebar"></button></nav><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../glib/index.html">glib</a><span class="version">0.20.0</span></h2></div><div class="sidebar-elems"></div></nav><div class="sidebar-resizer"></div><main><div class="width-limiter"><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1>Macro <a href="index.html">glib</a>::<wbr><a class="macro" href="#">clone</a><button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><span class="out-of-band"><a class="src" href="../src/glib_macros/lib.rs.html#337">source</a> · <button id="toggle-all-docs" title="collapse all docs">[<span>&#x2212;</span>]</button></span></div><pre class="rust item-decl"><code>clone!() { <span class="comment">/* proc-macro */</span> }</code></pre><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>Macro for passing variables as strong or weak references into a closure.</p>
+<p>This macro can be useful in combination with closures, e.g. signal handlers, to reduce the
+boilerplate required for passing strong or weak references into the closure. It will
+automatically create the new reference and pass it with the same name into the closure.</p>
+<p>If upgrading the weak reference to a strong reference inside the closure is failing, the
+closure is immediately returning an optional default return value. If none is provided, <code>()</code> is
+returned.</p>
+<p><strong>⚠️ IMPORTANT ⚠️</strong></p>
+<p><code>glib</code> needs to be in scope, so unless it’s one of the direct crate dependencies, you need to
+import it because <code>clone!</code> is using it. For example:</p>
+
+<div class="example-wrap ignore"><a href="#" class="tooltip" title="This example is not tested">ⓘ</a><pre class="rust rust-example-rendered"><code><span class="kw">use </span>gtk::glib;</code></pre></div>
+<h4 id="debugging"><a class="doc-anchor" href="#debugging">§</a>Debugging</h4>
+<p>In case something goes wrong inside the <code>clone!</code> macro, we use the <a href="../glib/macro.g_debug.html"><code>g_debug</code></a> macro. Meaning
+that if you want to see these debug messages, you’ll have to set the <code>G_MESSAGES_DEBUG</code>
+environment variable when running your code (either in the code directly or when running the
+binary) to either “all” or <a href="../glib/constant.CLONE_MACRO_LOG_DOMAIN.html"><code>CLONE_MACRO_LOG_DOMAIN</code></a>:</p>
+
+<div class="example-wrap ignore"><a href="#" class="tooltip" title="This example is not tested">ⓘ</a><pre class="rust rust-example-rendered"><code><span class="kw">use </span>glib::CLONE_MACRO_LOG_DOMAIN;
+
+std::env::set_var(<span class="string">"G_MESSAGES_DEBUG"</span>, CLONE_MACRO_LOG_DOMAIN);
+std::env::set_var(<span class="string">"G_MESSAGES_DEBUG"</span>, <span class="string">"all"</span>);</code></pre></div>
+<p>Or:</p>
+<div class="example-wrap"><pre class="language-bash"><code>$ G_MESSAGES_DEBUG=all ./binary
+</code></pre></div><h4 id="passing-a-strong-reference"><a class="doc-anchor" href="#passing-a-strong-reference">§</a>Passing a strong reference</h4>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>glib;
+<span class="kw">use </span>glib_macros::clone;
+<span class="kw">use </span>std::rc::Rc;
+
+<span class="kw">let </span>v = Rc::new(<span class="number">1</span>);
+<span class="kw">let </span>closure = <span class="macro">clone!</span>(
+    <span class="attr">#[strong] </span>v,
+    <span class="kw">move </span>|x| {
+        <span class="macro">println!</span>(<span class="string">"v: {}, x: {}"</span>, v, x);
+    },
+);
+
+closure(<span class="number">2</span>);</code></pre></div>
+<h4 id="passing-a-weak-reference"><a class="doc-anchor" href="#passing-a-weak-reference">§</a>Passing a weak reference</h4>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>glib;
+<span class="kw">use </span>glib_macros::clone;
+<span class="kw">use </span>std::rc::Rc;
+
+<span class="kw">let </span>u = Rc::new(<span class="number">2</span>);
+<span class="kw">let </span>closure = <span class="macro">clone!</span>(
+    <span class="attr">#[weak]
+    </span>u,
+    <span class="kw">move </span>|x| {
+        <span class="macro">println!</span>(<span class="string">"u: {}, x: {}"</span>, u, x);
+    },
+);
+
+closure(<span class="number">3</span>);</code></pre></div>
+<h5 id="allowing-a-nullable-weak-reference"><a class="doc-anchor" href="#allowing-a-nullable-weak-reference">§</a>Allowing a nullable weak reference</h5>
+<p>In some cases, even if the weak references can’t be retrieved, you might want to still have
+your closure called. In this case, you need to use <code>#[weak_allow_none]</code> instead of <code>#[weak]</code>:</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>glib;
+<span class="kw">use </span>glib_macros::clone;
+<span class="kw">use </span>std::rc::Rc;
+
+<span class="kw">let </span>closure = {
+    <span class="comment">// This `Rc` won't be available in the closure because it's dropped at the end of the
+    // current block
+    </span><span class="kw">let </span>u = Rc::new(<span class="number">2</span>);
+    <span class="macro">clone!</span>(
+        <span class="attr">#[weak_allow_none]
+        </span>u,
+        <span class="kw">move </span>|x| {
+            <span class="comment">// We need to use a Debug print for `u` because it'll be an `Option`.
+            </span><span class="macro">println!</span>(<span class="string">"u: {:?}, x: {}"</span>, u, x);
+            <span class="bool-val">true
+        </span>},
+    )
+};
+
+<span class="macro">assert_eq!</span>(closure(<span class="number">3</span>), <span class="bool-val">true</span>);</code></pre></div>
+<h4 id="creating-owned-values-from-references-toowned"><a class="doc-anchor" href="#creating-owned-values-from-references-toowned">§</a>Creating owned values from references (<code>ToOwned</code>)</h4>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>glib;
+<span class="kw">use </span>glib_macros::clone;
+
+<span class="kw">let </span>v = <span class="string">"123"</span>;
+<span class="kw">let </span>closure = <span class="macro">clone!</span>(
+    <span class="attr">#[to_owned] </span>v,
+    <span class="kw">move </span>|x| {
+        <span class="comment">// v is passed as `String` here
+        </span><span class="macro">println!</span>(<span class="string">"v: {}, x: {}"</span>, v, x);
+    },
+);
+
+closure(<span class="number">2</span>);</code></pre></div>
+<h4 id="renaming-variables"><a class="doc-anchor" href="#renaming-variables">§</a>Renaming variables</h4>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>glib;
+<span class="kw">use </span>glib_macros::clone;
+<span class="kw">use </span>std::rc::Rc;
+
+<span class="kw">let </span>v = Rc::new(<span class="number">1</span>);
+<span class="kw">let </span>u = Rc::new(<span class="number">2</span>);
+<span class="kw">let </span>closure = <span class="macro">clone!</span>(
+    <span class="attr">#[strong(rename_to = y)]
+    </span>v,
+    <span class="attr">#[weak] </span>u,
+    <span class="kw">move </span>|x| {
+        <span class="macro">println!</span>(<span class="string">"v as y: {}, u: {}, x: {}"</span>, y, u, x);
+    },
+);
+
+closure(<span class="number">3</span>);</code></pre></div>
+<h4 id="providing-a-return-value-if-upgrading-a-weak-reference-fails"><a class="doc-anchor" href="#providing-a-return-value-if-upgrading-a-weak-reference-fails">§</a>Providing a return value if upgrading a weak reference fails</h4>
+<p>By default, <code>()</code> is returned if upgrading a weak reference fails. This behaviour can be
+adjusted in two different ways:</p>
+<p>Either by providing the value yourself using one of</p>
+<ul>
+<li><code>#[upgrade_or]</code>: Requires an expression that returns a <code>Copy</code> value of the expected return type,</li>
+<li><code>#[upgrade_or_else]</code>: Requires a closure that returns a value of the expected return type,</li>
+<li><code>#[upgrade_or_default]</code>: Requires that the return type implements <code>Default</code> and returns that.</li>
+</ul>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>glib;
+<span class="kw">use </span>glib_macros::clone;
+<span class="kw">use </span>std::rc::Rc;
+
+<span class="kw">let </span>v = Rc::new(<span class="number">1</span>);
+<span class="kw">let </span>closure = <span class="macro">clone!</span>(
+    <span class="attr">#[weak] </span>v,
+    <span class="attr">#[upgrade_or]
+    </span><span class="bool-val">false</span>,
+    <span class="kw">move </span>|x| {
+        <span class="macro">println!</span>(<span class="string">"v: {}, x: {}"</span>, v, x);
+        <span class="bool-val">true
+    </span>},
+);
+
+<span class="comment">// Drop value so that the weak reference can't be upgraded.
+</span>drop(v);
+
+<span class="macro">assert_eq!</span>(closure(<span class="number">2</span>), <span class="bool-val">false</span>);</code></pre></div>
+<p>Or by using <code>#[upgrade_or_panic]</code>: If the value fails to get upgraded, it’ll panic.</p>
+
+<div class="example-wrap should_panic"><a href="#" class="tooltip" title="This example panics">ⓘ</a><pre class="rust rust-example-rendered"><code><span class="kw">let </span>closure = <span class="macro">clone!</span>(
+    <span class="attr">#[weak] </span>v,
+    <span class="attr">#[upgrade_or_panic]
+    </span><span class="kw">move </span>|x| {
+        <span class="macro">println!</span>(<span class="string">"v: {}, x: {}"</span>, v, x);
+        <span class="bool-val">true
+    </span>},
+);</code></pre></div>
+<h4 id="errors"><a class="doc-anchor" href="#errors">§</a>Errors</h4>
+<p>Here is a list of errors you might encounter:</p>
+<p><strong>Missing <code>#[weak]</code> or <code>#[strong]</code></strong>:</p>
+
+<div class="example-wrap compile_fail"><a href="#" class="tooltip" title="This example deliberately fails to compile">ⓘ</a><pre class="rust rust-example-rendered"><code><span class="kw">let </span>v = Rc::new(<span class="number">1</span>);
+
+<span class="kw">let </span>closure = <span class="macro">clone!</span>(
+    v,
+    <span class="kw">move </span>|x| <span class="macro">println!</span>(<span class="string">"v: {}, x: {}"</span>, v, x),
+);</code></pre></div>
+<p><strong>Passing <code>self</code> as an argument</strong>:</p>
+
+<div class="example-wrap compile_fail"><a href="#" class="tooltip" title="This example deliberately fails to compile">ⓘ</a><pre class="rust rust-example-rendered"><code><span class="attr">#[derive(Debug)]
+</span><span class="kw">struct </span>Foo;
+
+<span class="kw">impl </span>Foo {
+    <span class="kw">fn </span>foo(<span class="kw-2">&amp;</span><span class="self">self</span>) {
+        <span class="kw">let </span>closure = <span class="macro">clone!</span>(
+            <span class="attr">#[strong] </span><span class="self">self</span>,
+            <span class="kw">move </span>|x| {
+                <span class="macro">println!</span>(<span class="string">"self: {:?}"</span>, <span class="self">self</span>);
+            },
+        );
+    }
+}</code></pre></div>
+<p>If you want to use <code>self</code> directly, you’ll need to rename it:</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attr">#[derive(Debug)]
+</span><span class="kw">struct </span>Foo;
+
+<span class="kw">impl </span>Foo {
+    <span class="kw">fn </span>foo(<span class="kw-2">&amp;</span><span class="self">self</span>) {
+        <span class="kw">let </span>closure = <span class="macro">clone!</span>(
+            <span class="attr">#[strong(rename_to = this)]
+            </span><span class="self">self</span>,
+            <span class="kw">move </span>|x| {
+                <span class="macro">println!</span>(<span class="string">"self: {:?}"</span>, this);
+            },
+        );
+    }
+}</code></pre></div>
+<p><strong>Passing fields directly</strong></p>
+
+<div class="example-wrap compile_fail"><a href="#" class="tooltip" title="This example deliberately fails to compile">ⓘ</a><pre class="rust rust-example-rendered"><code><span class="attr">#[derive(Debug)]
+</span><span class="kw">struct </span>Foo {
+    v: Rc&lt;usize&gt;,
+}
+
+<span class="kw">impl </span>Foo {
+    <span class="kw">fn </span>foo(<span class="kw-2">&amp;</span><span class="self">self</span>) {
+        <span class="kw">let </span>closure = <span class="macro">clone!</span>(
+            <span class="attr">#[strong] </span><span class="self">self</span>.v,
+            <span class="kw">move </span>|x| {
+                <span class="macro">println!</span>(<span class="string">"self.v: {:?}"</span>, v);
+            },
+        );
+    }
+}</code></pre></div>
+<p>You can do it by renaming it:</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">impl </span>Foo {
+    <span class="kw">fn </span>foo(<span class="kw-2">&amp;</span><span class="self">self</span>) {
+        <span class="kw">let </span>closure = <span class="macro">clone!</span>(
+            <span class="attr">#[strong(rename_to = v)]
+            </span><span class="self">self</span>.v,
+            <span class="kw">move </span>|x| {
+                <span class="macro">println!</span>(<span class="string">"self.v: {}"</span>, v);
+            },
+        );
+    }
+}</code></pre></div>
+</div></details></section></div></main></body></html>

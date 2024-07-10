@@ -1,0 +1,89 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Trait implemented by structs that implement a `GObject` C instance struct."><title>InstanceStruct in glib::subclass::types - Rust</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.81.0-nightly (6be96e386 2024-07-09)" data-channel="nightly" data-search-js="search-d234aafac6c221dd.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="sidebar-items.js"></script><script defer src="../../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc trait"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
+
+    function checkDocsLatestStable() {
+        function popup(msg, url) { return `
+            <style scoped="scoped">
+                .popup {
+                    max-width: 16em;
+                    background-color: #fff;
+                    position: fixed;
+                    z-index: 1;
+                    margin-left: auto;
+                    bottom: 1em;
+                    right: 1em;
+                    border-radius: 5px;
+                    box-shadow: 1px 1px 4px #777;
+                }
+
+                .popup a.version {
+                    color: #e57300;
+                    padding: 0.6em 1em;
+                    display: block;
+                }
+                .popup a.version:hover {
+                    color: #b25900;
+                }
+
+                .popup a.close {
+                    color: white;
+                    background: grey;
+                    border-radius: 99px;
+                    display: inline-block;
+                    width: 19px;
+                    line-height: 19px;
+                    font-weight: bold;
+                    text-align: center;
+                    margin: 0.6em;
+                    float: right;
+                }
+                .popup a.close:hover {
+                    background: black;
+                }
+            </style>
+            <section class="popup" id="gir_docs_popup">
+                <a class="close" href="#" onclick="document.getElementById('gir_docs_popup').remove(); return false">×</a>
+                <a class="version" href="https://gtk-rs.org/gtk-rs-core/stable/latest/docs">
+                    ⚠ ${msg}
+                </a>
+            </section>
+        ` };
+
+        if ("0.20" == "master") {
+            document.body.insertAdjacentHTML(
+                'beforeend',
+                popup("This is the development version. Go to latest stable version.", "stable/latest")
+            );
+        } else {
+            fetch('https://gtk-rs.org/gtk-rs-core/LATEST_RELEASE_BRANCH')
+                .then(response => response.text())
+                .then(latest_branch => {
+                    if (latest_branch.trim() != "0.20") {
+                        document.body.insertAdjacentHTML(
+                            'beforeend',
+                            popup("This version is outdated. Go to latest version.", "stable/latest")
+                        );
+                    }
+                });
+        }
+    }
+</script>
+
+
+<nav class="mobile-topbar"><button class="sidebar-menu-toggle" title="show sidebar"></button></nav><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../../../glib/index.html">glib</a><span class="version">0.20.0</span></h2></div><h2 class="location"><a href="#">InstanceStruct</a></h2><div class="sidebar-elems"><section><h3><a href="#required-associated-types">Required Associated Types</a></h3><ul class="block"><li><a href="#associatedtype.Type">Type</a></li></ul><h3><a href="#provided-methods">Provided Methods</a></h3><ul class="block"><li><a href="#method.instance_init">instance_init</a></li></ul><h3><a href="#object-safety">Object Safety</a></h3><h3><a href="#implementors">Implementors</a></h3></section><h2><a href="index.html">In glib::subclass::types</a></h2></div></nav><div class="sidebar-resizer"></div><main><div class="width-limiter"><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1>Trait <a href="../../index.html">glib</a>::<wbr><a href="../index.html">subclass</a>::<wbr><a href="index.html">types</a>::<wbr><a class="trait" href="#">InstanceStruct</a><button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><span class="out-of-band"><a class="src" href="../../../src/glib/subclass/types.rs.html#51-73">source</a> · <button id="toggle-all-docs" title="collapse all docs">[<span>&#x2212;</span>]</button></span></div><pre class="rust item-decl"><code>pub unsafe trait InstanceStruct: <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Sized.html" title="trait core::marker::Sized">Sized</a> + 'static {
+    type <a href="#associatedtype.Type" class="associatedtype">Type</a>: <a class="trait" href="trait.ObjectSubclass.html" title="trait glib::subclass::types::ObjectSubclass">ObjectSubclass</a>;
+
+    // Provided method
+    fn <a href="#method.instance_init" class="fn">instance_init</a>(&amp;mut self) { ... }
+}</code></pre><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>Trait implemented by structs that implement a <code>GObject</code> C instance struct.</p>
+<p>The struct must be <code>#[repr(C)]</code> and have the parent type’s instance struct
+as the first field.</p>
+<p>See <a href="../basic/struct.InstanceStruct.html"><code>basic::InstanceStruct</code></a> for a basic implementation of this that can
+be used most of the time and should only not be used if additional fields are
+required in the instance struct.</p>
+</div></details><h2 id="required-associated-types" class="section-header">Required Associated Types<a href="#required-associated-types" class="anchor">§</a></h2><div class="methods"><details class="toggle" open><summary><section id="associatedtype.Type" class="method"><a class="src rightside" href="../../../src/glib/subclass/types.rs.html#54">source</a><h4 class="code-header">type <a href="#associatedtype.Type" class="associatedtype">Type</a>: <a class="trait" href="trait.ObjectSubclass.html" title="trait glib::subclass::types::ObjectSubclass">ObjectSubclass</a></h4></section></summary><div class="docblock"><p>Corresponding object subclass type for this instance struct.</p>
+</div></details></div><h2 id="provided-methods" class="section-header">Provided Methods<a href="#provided-methods" class="anchor">§</a></h2><div class="methods"><details class="toggle method-toggle" open><summary><section id="method.instance_init" class="method"><a class="src rightside" href="../../../src/glib/subclass/types.rs.html#62-72">source</a><h4 class="code-header">fn <a href="#method.instance_init" class="fn">instance_init</a>(&amp;mut self)</h4></section></summary><div class="docblock"><p>Instance specific initialization.</p>
+<p>This is automatically called during instance initialization and must call <code>instance_init()</code>
+of the parent class.</p>
+</div></details></div><h2 id="object-safety" class="section-header">Object Safety<a href="#object-safety" class="anchor">§</a></h2><div class="object-safety-info">This trait is <b>not</b> <a href="https://doc.rust-lang.org/nightly/reference/items/traits.html#object-safety">object safe</a>.</div><h2 id="implementors" class="section-header">Implementors<a href="#implementors" class="anchor">§</a></h2><div id="implementors-list"><details class="toggle implementors-toggle"><summary><section id="impl-InstanceStruct-for-InstanceStruct%3CT%3E" class="impl"><a class="src rightside" href="../../../src/glib/subclass/basic.rs.html#31-33">source</a><a href="#impl-InstanceStruct-for-InstanceStruct%3CT%3E" class="anchor">§</a><h3 class="code-header">impl&lt;T: <a class="trait" href="trait.ObjectSubclass.html" title="trait glib::subclass::types::ObjectSubclass">ObjectSubclass</a>&gt; <a class="trait" href="trait.InstanceStruct.html" title="trait glib::subclass::types::InstanceStruct">InstanceStruct</a> for <a class="struct" href="../basic/struct.InstanceStruct.html" title="struct glib::subclass::basic::InstanceStruct">InstanceStruct</a>&lt;T&gt;</h3></section></summary><div class="impl-items"><section id="associatedtype.Type-1" class="associatedtype trait-impl"><a href="#associatedtype.Type-1" class="anchor">§</a><h4 class="code-header">type <a href="#associatedtype.Type" class="associatedtype">Type</a> = T</h4></section></div></details></div><script src="../../../trait.impl/glib/subclass/types/trait.InstanceStruct.js" async></script></section></div></main></body></html>

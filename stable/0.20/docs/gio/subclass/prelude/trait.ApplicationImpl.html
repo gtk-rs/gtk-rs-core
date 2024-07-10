@@ -1,0 +1,142 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="API documentation for the Rust `ApplicationImpl` trait in crate `gio`."><title>ApplicationImpl in gio::subclass::prelude - Rust</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.81.0-nightly (6be96e386 2024-07-09)" data-channel="nightly" data-search-js="search-d234aafac6c221dd.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="sidebar-items.js"></script><script defer src="../../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc trait"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
+
+    function checkDocsLatestStable() {
+        function popup(msg, url) { return `
+            <style scoped="scoped">
+                .popup {
+                    max-width: 16em;
+                    background-color: #fff;
+                    position: fixed;
+                    z-index: 1;
+                    margin-left: auto;
+                    bottom: 1em;
+                    right: 1em;
+                    border-radius: 5px;
+                    box-shadow: 1px 1px 4px #777;
+                }
+
+                .popup a.version {
+                    color: #e57300;
+                    padding: 0.6em 1em;
+                    display: block;
+                }
+                .popup a.version:hover {
+                    color: #b25900;
+                }
+
+                .popup a.close {
+                    color: white;
+                    background: grey;
+                    border-radius: 99px;
+                    display: inline-block;
+                    width: 19px;
+                    line-height: 19px;
+                    font-weight: bold;
+                    text-align: center;
+                    margin: 0.6em;
+                    float: right;
+                }
+                .popup a.close:hover {
+                    background: black;
+                }
+            </style>
+            <section class="popup" id="gir_docs_popup">
+                <a class="close" href="#" onclick="document.getElementById('gir_docs_popup').remove(); return false">×</a>
+                <a class="version" href="https://gtk-rs.org/gtk-rs-core/stable/latest/docs">
+                    ⚠ ${msg}
+                </a>
+            </section>
+        ` };
+
+        if ("0.20" == "master") {
+            document.body.insertAdjacentHTML(
+                'beforeend',
+                popup("This is the development version. Go to latest stable version.", "stable/latest")
+            );
+        } else {
+            fetch('https://gtk-rs.org/gtk-rs-core/LATEST_RELEASE_BRANCH')
+                .then(response => response.text())
+                .then(latest_branch => {
+                    if (latest_branch.trim() != "0.20") {
+                        document.body.insertAdjacentHTML(
+                            'beforeend',
+                            popup("This version is outdated. Go to latest version.", "stable/latest")
+                        );
+                    }
+                });
+        }
+    }
+</script>
+
+
+<nav class="mobile-topbar"><button class="sidebar-menu-toggle" title="show sidebar"></button></nav><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../../../gio/index.html">gio</a><span class="version">0.20.0</span></h2></div><h2 class="location"><a href="#">ApplicationImpl</a></h2><div class="sidebar-elems"><section><h3><a href="#provided-methods">Provided Methods</a></h3><ul class="block"><li><a href="#method.activate">activate</a></li><li><a href="#method.after_emit">after_emit</a></li><li><a href="#method.before_emit">before_emit</a></li><li><a href="#method.command_line">command_line</a></li><li><a href="#method.handle_local_options">handle_local_options</a></li><li><a href="#method.local_command_line">local_command_line</a></li><li><a href="#method.open">open</a></li><li><a href="#method.quit_mainloop">quit_mainloop</a></li><li><a href="#method.run_mainloop">run_mainloop</a></li><li><a href="#method.shutdown">shutdown</a></li><li><a href="#method.startup">startup</a></li></ul><h3><a href="#object-safety">Object Safety</a></h3><h3><a href="#implementors">Implementors</a></h3></section><h2><a href="index.html">In gio::subclass::prelude</a></h2></div></nav><div class="sidebar-resizer"></div><main><div class="width-limiter"><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1>Trait <a href="../../index.html">gio</a>::<wbr><a href="../index.html">subclass</a>::<wbr><a href="index.html">prelude</a>::<wbr><a class="trait" href="#">ApplicationImpl</a><button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><span class="out-of-band"><a class="src" href="../../../src/gio/subclass/application.rs.html#67-174">source</a> · <button id="toggle-all-docs" title="collapse all docs">[<span>&#x2212;</span>]</button></span></div><pre class="rust item-decl"><code>pub trait ApplicationImpl: <a class="trait" href="../../../glib/subclass/object/trait.ObjectImpl.html" title="trait glib::subclass::object::ObjectImpl">ObjectImpl</a> + <a class="trait" href="trait.ApplicationImplExt.html" title="trait gio::subclass::prelude::ApplicationImplExt">ApplicationImplExt</a> {
+    // Provided methods
+    fn <a href="#method.activate" class="fn">activate</a>(&amp;self) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.after_emit" class="fn">after_emit</a>(&amp;self, platform_data: &amp;<a class="struct" href="../../../glib/variant/struct.Variant.html" title="struct glib::variant::Variant">Variant</a>) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.before_emit" class="fn">before_emit</a>(&amp;self, platform_data: &amp;<a class="struct" href="../../../glib/variant/struct.Variant.html" title="struct glib::variant::Variant">Variant</a>) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.command_line" class="fn">command_line</a>(&amp;self, command_line: &amp;<a class="struct" href="../../struct.ApplicationCommandLine.html" title="struct gio::ApplicationCommandLine">ApplicationCommandLine</a>) -&gt; <a class="struct" href="../../../glib/exit_code/struct.ExitCode.html" title="struct glib::exit_code::ExitCode">ExitCode</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.local_command_line" class="fn">local_command_line</a>(
+        &amp;self,
+        arguments: &amp;mut <a class="struct" href="../struct.ArgumentList.html" title="struct gio::subclass::ArgumentList">ArgumentList</a>,
+    ) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../../glib/exit_code/struct.ExitCode.html" title="struct glib::exit_code::ExitCode">ExitCode</a>&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.open" class="fn">open</a>(&amp;self, files: &amp;[<a class="struct" href="../../struct.File.html" title="struct gio::File">File</a>], hint: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.quit_mainloop" class="fn">quit_mainloop</a>(&amp;self) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.run_mainloop" class="fn">run_mainloop</a>(&amp;self) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.shutdown" class="fn">shutdown</a>(&amp;self) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.startup" class="fn">startup</a>(&amp;self) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.handle_local_options" class="fn">handle_local_options</a>(&amp;self, options: &amp;<a class="struct" href="../../../glib/variant_dict/struct.VariantDict.html" title="struct glib::variant_dict::VariantDict">VariantDict</a>) -&gt; <a class="struct" href="../../../glib/exit_code/struct.ExitCode.html" title="struct glib::exit_code::ExitCode">ExitCode</a> { ... }
+}</code></pre><h2 id="provided-methods" class="section-header">Provided Methods<a href="#provided-methods" class="anchor">§</a></h2><div class="methods"><details class="toggle method-toggle" open><summary><section id="method.activate" class="method"><a class="src rightside" href="../../../src/gio/subclass/application.rs.html#74-76">source</a><h4 class="code-header">fn <a href="#method.activate" class="fn">activate</a>(&amp;self)</h4></section></summary><div class="docblock"><p>Activates the application.</p>
+<p>In essence, this results in the #GApplication::activate signal being
+emitted in the primary instance.</p>
+<p>The application must be registered before calling this function.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.after_emit" class="method"><a class="src rightside" href="../../../src/gio/subclass/application.rs.html#81-83">source</a><h4 class="code-header">fn <a href="#method.after_emit" class="fn">after_emit</a>(&amp;self, platform_data: &amp;<a class="struct" href="../../../glib/variant/struct.Variant.html" title="struct glib::variant::Variant">Variant</a>)</h4></section></summary><div class="docblock"><p>invoked on the primary instance after ‘activate’, ‘open’,
+‘command-line’ or any action invocation, gets the ‘platform data’ from
+the calling instance</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.before_emit" class="method"><a class="src rightside" href="../../../src/gio/subclass/application.rs.html#88-90">source</a><h4 class="code-header">fn <a href="#method.before_emit" class="fn">before_emit</a>(&amp;self, platform_data: &amp;<a class="struct" href="../../../glib/variant/struct.Variant.html" title="struct glib::variant::Variant">Variant</a>)</h4></section></summary><div class="docblock"><p>invoked on the primary instance before ‘activate’, ‘open’,
+‘command-line’ or any action invocation, gets the ‘platform data’ from
+the calling instance</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.command_line" class="method"><a class="src rightside" href="../../../src/gio/subclass/application.rs.html#94-96">source</a><h4 class="code-header">fn <a href="#method.command_line" class="fn">command_line</a>(&amp;self, command_line: &amp;<a class="struct" href="../../struct.ApplicationCommandLine.html" title="struct gio::ApplicationCommandLine">ApplicationCommandLine</a>) -&gt; <a class="struct" href="../../../glib/exit_code/struct.ExitCode.html" title="struct glib::exit_code::ExitCode">ExitCode</a></h4></section></summary><div class="docblock"><p>invoked on the primary instance when a command-line is
+not handled locally</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.local_command_line" class="method"><a class="src rightside" href="../../../src/gio/subclass/application.rs.html#117-119">source</a><h4 class="code-header">fn <a href="#method.local_command_line" class="fn">local_command_line</a>(&amp;self, arguments: &amp;mut <a class="struct" href="../struct.ArgumentList.html" title="struct gio::subclass::ArgumentList">ArgumentList</a>) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../../glib/exit_code/struct.ExitCode.html" title="struct glib::exit_code::ExitCode">ExitCode</a>&gt;</h4></section></summary><div class="docblock"><p>This virtual function is always invoked in the local instance. It
+gets passed a pointer to a <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a>-terminated copy of @argv and is
+expected to remove arguments that it handled (shifting up remaining
+arguments).</p>
+<p>The last argument to local_command_line() is a pointer to the @status
+variable which can used to set the exit status that is returned from
+g_application_run().</p>
+<p>See g_application_run() for more details on #GApplication startup.</p>
+<h6 id="arguments"><a class="doc-anchor" href="#arguments">§</a><code>arguments</code></h6>
+<p>array of command line arguments</p>
+<h5 id="returns"><a class="doc-anchor" href="#returns">§</a>Returns</h5>
+<p><a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>true</code></a> if the commandline has been completely handled</p>
+<h6 id="exit_status"><a class="doc-anchor" href="#exit_status">§</a><code>exit_status</code></h6>
+<p>exit status to fill after processing the command line.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.open" class="method"><a class="src rightside" href="../../../src/gio/subclass/application.rs.html#139-141">source</a><h4 class="code-header">fn <a href="#method.open" class="fn">open</a>(&amp;self, files: &amp;[<a class="struct" href="../../struct.File.html" title="struct gio::File">File</a>], hint: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>)</h4></section></summary><div class="docblock"><p>Opens the given files.</p>
+<p>In essence, this results in the #GApplication::open signal being emitted
+in the primary instance.</p>
+<p>@n_files must be greater than zero.</p>
+<p>@hint is simply passed through to the ::open signal.  It is
+intended to be used by applications that have multiple modes for
+opening files (eg: “view” vs “edit”, etc).  Unless you have a need
+for this functionality, you should use “”.</p>
+<p>The application must be registered before calling this function
+and it must have the <a href="../../struct.ApplicationFlags.html#associatedconstant.HANDLES_OPEN" title="associated constant gio::ApplicationFlags::HANDLES_OPEN"><code>ApplicationFlags::HANDLES_OPEN</code></a> flag set.</p>
+<h6 id="files"><a class="doc-anchor" href="#files">§</a><code>files</code></h6>
+<p>an array of #GFiles to open</p>
+<h6 id="hint"><a class="doc-anchor" href="#hint">§</a><code>hint</code></h6>
+<p>a hint (or “”), but never <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a></p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.quit_mainloop" class="method"><a class="src rightside" href="../../../src/gio/subclass/application.rs.html#146-148">source</a><h4 class="code-header">fn <a href="#method.quit_mainloop" class="fn">quit_mainloop</a>(&amp;self)</h4></section></summary><div class="docblock"><p>Used to be invoked on the primary instance when the use
+count of the application drops to zero (and after any inactivity
+timeout, if requested). Not used anymore since 2.32</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.run_mainloop" class="method"><a class="src rightside" href="../../../src/gio/subclass/application.rs.html#154-156">source</a><h4 class="code-header">fn <a href="#method.run_mainloop" class="fn">run_mainloop</a>(&amp;self)</h4></section></summary><div class="docblock"><p>Used to be invoked on the primary instance from
+g_application_run() if the use-count is non-zero. Since 2.32,
+GApplication is iterating the main context directly and is not
+using @run_mainloop anymore</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.shutdown" class="method"><a class="src rightside" href="../../../src/gio/subclass/application.rs.html#160-162">source</a><h4 class="code-header">fn <a href="#method.shutdown" class="fn">shutdown</a>(&amp;self)</h4></section></summary><div class="docblock"><p>invoked only on the registered primary instance immediately
+after the main loop terminates</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.startup" class="method"><a class="src rightside" href="../../../src/gio/subclass/application.rs.html#165-167">source</a><h4 class="code-header">fn <a href="#method.startup" class="fn">startup</a>(&amp;self)</h4></section></summary><div class="docblock"><p>invoked on the primary instance immediately after registration</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.handle_local_options" class="method"><a class="src rightside" href="../../../src/gio/subclass/application.rs.html#171-173">source</a><h4 class="code-header">fn <a href="#method.handle_local_options" class="fn">handle_local_options</a>(&amp;self, options: &amp;<a class="struct" href="../../../glib/variant_dict/struct.VariantDict.html" title="struct glib::variant_dict::VariantDict">VariantDict</a>) -&gt; <a class="struct" href="../../../glib/exit_code/struct.ExitCode.html" title="struct glib::exit_code::ExitCode">ExitCode</a></h4></section></summary><div class="docblock"><p>invoked locally after the parsing of the commandline
+options has occurred. Since: 2.40</p>
+</div></details></div><h2 id="object-safety" class="section-header">Object Safety<a href="#object-safety" class="anchor">§</a></h2><div class="object-safety-info">This trait is <b>not</b> <a href="https://doc.rust-lang.org/nightly/reference/items/traits.html#object-safety">object safe</a>.</div><h2 id="implementors" class="section-header">Implementors<a href="#implementors" class="anchor">§</a></h2><div id="implementors-list"></div><script src="../../../trait.impl/gio/subclass/application/trait.ApplicationImpl.js" async></script></section></div></main></body></html>

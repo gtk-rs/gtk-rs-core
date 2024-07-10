@@ -1,0 +1,383 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Trait containing all `struct@OutputStream` methods."><title>OutputStreamExt in gio::prelude - Rust</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.81.0-nightly (6be96e386 2024-07-09)" data-channel="nightly" data-search-js="search-d234aafac6c221dd.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="sidebar-items.js"></script><script defer src="../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc trait"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
+
+    function checkDocsLatestStable() {
+        function popup(msg, url) { return `
+            <style scoped="scoped">
+                .popup {
+                    max-width: 16em;
+                    background-color: #fff;
+                    position: fixed;
+                    z-index: 1;
+                    margin-left: auto;
+                    bottom: 1em;
+                    right: 1em;
+                    border-radius: 5px;
+                    box-shadow: 1px 1px 4px #777;
+                }
+
+                .popup a.version {
+                    color: #e57300;
+                    padding: 0.6em 1em;
+                    display: block;
+                }
+                .popup a.version:hover {
+                    color: #b25900;
+                }
+
+                .popup a.close {
+                    color: white;
+                    background: grey;
+                    border-radius: 99px;
+                    display: inline-block;
+                    width: 19px;
+                    line-height: 19px;
+                    font-weight: bold;
+                    text-align: center;
+                    margin: 0.6em;
+                    float: right;
+                }
+                .popup a.close:hover {
+                    background: black;
+                }
+            </style>
+            <section class="popup" id="gir_docs_popup">
+                <a class="close" href="#" onclick="document.getElementById('gir_docs_popup').remove(); return false">×</a>
+                <a class="version" href="https://gtk-rs.org/gtk-rs-core/stable/latest/docs">
+                    ⚠ ${msg}
+                </a>
+            </section>
+        ` };
+
+        if ("0.20" == "master") {
+            document.body.insertAdjacentHTML(
+                'beforeend',
+                popup("This is the development version. Go to latest stable version.", "stable/latest")
+            );
+        } else {
+            fetch('https://gtk-rs.org/gtk-rs-core/LATEST_RELEASE_BRANCH')
+                .then(response => response.text())
+                .then(latest_branch => {
+                    if (latest_branch.trim() != "0.20") {
+                        document.body.insertAdjacentHTML(
+                            'beforeend',
+                            popup("This version is outdated. Go to latest version.", "stable/latest")
+                        );
+                    }
+                });
+        }
+    }
+</script>
+
+
+<nav class="mobile-topbar"><button class="sidebar-menu-toggle" title="show sidebar"></button></nav><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../../gio/index.html">gio</a><span class="version">0.20.0</span></h2></div><h2 class="location"><a href="#">OutputStreamExt</a></h2><div class="sidebar-elems"><section><h3><a href="#provided-methods">Provided Methods</a></h3><ul class="block"><li><a href="#method.clear_pending">clear_pending</a></li><li><a href="#method.close">close</a></li><li><a href="#method.close_async">close_async</a></li><li><a href="#method.close_future">close_future</a></li><li><a href="#method.flush">flush</a></li><li><a href="#method.flush_async">flush_async</a></li><li><a href="#method.flush_future">flush_future</a></li><li><a href="#method.has_pending">has_pending</a></li><li><a href="#method.is_closed">is_closed</a></li><li><a href="#method.is_closing">is_closing</a></li><li><a href="#method.set_pending">set_pending</a></li><li><a href="#method.splice">splice</a></li><li><a href="#method.splice_async">splice_async</a></li><li><a href="#method.splice_future">splice_future</a></li><li><a href="#method.write">write</a></li><li><a href="#method.write_bytes">write_bytes</a></li><li><a href="#method.write_bytes_async">write_bytes_async</a></li><li><a href="#method.write_bytes_future">write_bytes_future</a></li></ul><h3><a href="#object-safety">Object Safety</a></h3><h3><a href="#implementors">Implementors</a></h3></section><h2><a href="index.html">In gio::prelude</a></h2></div></nav><div class="sidebar-resizer"></div><main><div class="width-limiter"><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1>Trait <a href="../index.html">gio</a>::<wbr><a href="index.html">prelude</a>::<wbr><a class="trait" href="#">OutputStreamExt</a><button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><span class="out-of-band"><a class="src" href="../../src/gio/auto/output_stream.rs.html#55-697">source</a> · <button id="toggle-all-docs" title="collapse all docs">[<span>&#x2212;</span>]</button></span></div><pre class="rust item-decl"><code>pub trait OutputStreamExt: <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.OutputStream.html" title="struct gio::OutputStream">OutputStream</a>&gt; + Sealed + 'static {
+<details class="toggle type-contents-toggle"><summary class="hideme"><span>Show 18 methods</span></summary>    // Provided methods
+    fn <a href="#method.clear_pending" class="fn">clear_pending</a>(&amp;self) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.close" class="fn">close</a>(
+        &amp;self,
+        cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.Cancellable.html" title="struct gio::Cancellable">Cancellable</a>&gt;&gt;,
+    ) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.close_async" class="fn">close_async</a>&lt;P: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html" title="trait core::ops::function::FnOnce">FnOnce</a>(<a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;) + 'static&gt;(
+        &amp;self,
+        io_priority: <a class="struct" href="../../glib/source/struct.Priority.html" title="struct glib::source::Priority">Priority</a>,
+        cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.Cancellable.html" title="struct gio::Cancellable">Cancellable</a>&gt;&gt;,
+        callback: P,
+    ) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.close_future" class="fn">close_future</a>(
+        &amp;self,
+        io_priority: <a class="struct" href="../../glib/source/struct.Priority.html" title="struct glib::source::Priority">Priority</a>,
+    ) -&gt; <a class="struct" href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html" title="struct core::pin::Pin">Pin</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box_</a>&lt;dyn <a class="trait" href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html" title="trait core::future::future::Future">Future</a>&lt;Output = <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;&gt; + 'static&gt;&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.flush" class="fn">flush</a>(
+        &amp;self,
+        cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.Cancellable.html" title="struct gio::Cancellable">Cancellable</a>&gt;&gt;,
+    ) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.flush_async" class="fn">flush_async</a>&lt;P: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html" title="trait core::ops::function::FnOnce">FnOnce</a>(<a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;) + 'static&gt;(
+        &amp;self,
+        io_priority: <a class="struct" href="../../glib/source/struct.Priority.html" title="struct glib::source::Priority">Priority</a>,
+        cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.Cancellable.html" title="struct gio::Cancellable">Cancellable</a>&gt;&gt;,
+        callback: P,
+    ) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.flush_future" class="fn">flush_future</a>(
+        &amp;self,
+        io_priority: <a class="struct" href="../../glib/source/struct.Priority.html" title="struct glib::source::Priority">Priority</a>,
+    ) -&gt; <a class="struct" href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html" title="struct core::pin::Pin">Pin</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box_</a>&lt;dyn <a class="trait" href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html" title="trait core::future::future::Future">Future</a>&lt;Output = <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;&gt; + 'static&gt;&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.has_pending" class="fn">has_pending</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.is_closed" class="fn">is_closed</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.is_closing" class="fn">is_closing</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.set_pending" class="fn">set_pending</a>(&amp;self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.splice" class="fn">splice</a>(
+        &amp;self,
+        source: &amp;impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.InputStream.html" title="struct gio::InputStream">InputStream</a>&gt;,
+        flags: <a class="struct" href="../struct.OutputStreamSpliceFlags.html" title="struct gio::OutputStreamSpliceFlags">OutputStreamSpliceFlags</a>,
+        cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.Cancellable.html" title="struct gio::Cancellable">Cancellable</a>&gt;&gt;,
+    ) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.isize.html">isize</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.splice_async" class="fn">splice_async</a>&lt;P: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html" title="trait core::ops::function::FnOnce">FnOnce</a>(<a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.isize.html">isize</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;) + 'static&gt;(
+        &amp;self,
+        source: &amp;impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.InputStream.html" title="struct gio::InputStream">InputStream</a>&gt;,
+        flags: <a class="struct" href="../struct.OutputStreamSpliceFlags.html" title="struct gio::OutputStreamSpliceFlags">OutputStreamSpliceFlags</a>,
+        io_priority: <a class="struct" href="../../glib/source/struct.Priority.html" title="struct glib::source::Priority">Priority</a>,
+        cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.Cancellable.html" title="struct gio::Cancellable">Cancellable</a>&gt;&gt;,
+        callback: P,
+    ) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.splice_future" class="fn">splice_future</a>(
+        &amp;self,
+        source: &amp;(impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.InputStream.html" title="struct gio::InputStream">InputStream</a>&gt; + <a class="trait" href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html" title="trait core::clone::Clone">Clone</a> + 'static),
+        flags: <a class="struct" href="../struct.OutputStreamSpliceFlags.html" title="struct gio::OutputStreamSpliceFlags">OutputStreamSpliceFlags</a>,
+        io_priority: <a class="struct" href="../../glib/source/struct.Priority.html" title="struct glib::source::Priority">Priority</a>,
+    ) -&gt; <a class="struct" href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html" title="struct core::pin::Pin">Pin</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box_</a>&lt;dyn <a class="trait" href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html" title="trait core::future::future::Future">Future</a>&lt;Output = <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.isize.html">isize</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;&gt; + 'static&gt;&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.write" class="fn">write</a>(
+        &amp;self,
+        buffer: &amp;[<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>],
+        cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.Cancellable.html" title="struct gio::Cancellable">Cancellable</a>&gt;&gt;,
+    ) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.isize.html">isize</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.write_bytes" class="fn">write_bytes</a>(
+        &amp;self,
+        bytes: &amp;<a class="struct" href="../../glib/bytes/struct.Bytes.html" title="struct glib::bytes::Bytes">Bytes</a>,
+        cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.Cancellable.html" title="struct gio::Cancellable">Cancellable</a>&gt;&gt;,
+    ) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.isize.html">isize</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.write_bytes_async" class="fn">write_bytes_async</a>&lt;P: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html" title="trait core::ops::function::FnOnce">FnOnce</a>(<a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.isize.html">isize</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;) + 'static&gt;(
+        &amp;self,
+        bytes: &amp;<a class="struct" href="../../glib/bytes/struct.Bytes.html" title="struct glib::bytes::Bytes">Bytes</a>,
+        io_priority: <a class="struct" href="../../glib/source/struct.Priority.html" title="struct glib::source::Priority">Priority</a>,
+        cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.Cancellable.html" title="struct gio::Cancellable">Cancellable</a>&gt;&gt;,
+        callback: P,
+    ) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.write_bytes_future" class="fn">write_bytes_future</a>(
+        &amp;self,
+        bytes: &amp;<a class="struct" href="../../glib/bytes/struct.Bytes.html" title="struct glib::bytes::Bytes">Bytes</a>,
+        io_priority: <a class="struct" href="../../glib/source/struct.Priority.html" title="struct glib::source::Priority">Priority</a>,
+    ) -&gt; <a class="struct" href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html" title="struct core::pin::Pin">Pin</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box_</a>&lt;dyn <a class="trait" href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html" title="trait core::future::future::Future">Future</a>&lt;Output = <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.isize.html">isize</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;&gt; + 'static&gt;&gt; { ... }
+</details>}</code></pre><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>Trait containing all <a href="../struct.OutputStream.html" title="struct gio::OutputStream"><code>OutputStream</code></a> methods.</p>
+<h2 id="implementors-1"><a class="doc-anchor" href="#implementors-1">§</a>Implementors</h2>
+<p><a href="../struct.FileOutputStream.html" title="struct gio::FileOutputStream"><code>FileOutputStream</code></a>, <a href="../struct.FilterOutputStream.html" title="struct gio::FilterOutputStream"><code>FilterOutputStream</code></a>, <a href="../struct.MemoryOutputStream.html" title="struct gio::MemoryOutputStream"><code>MemoryOutputStream</code></a>, <a href="../struct.OutputStream.html" title="struct gio::OutputStream"><code>OutputStream</code></a>, <a href="../struct.PollableOutputStream.html" title="struct gio::PollableOutputStream"><code>PollableOutputStream</code></a>, <a href="../struct.UnixOutputStream.html" title="struct gio::UnixOutputStream"><code>UnixOutputStream</code></a></p>
+</div></details><h2 id="provided-methods" class="section-header">Provided Methods<a href="#provided-methods" class="anchor">§</a></h2><div class="methods"><details class="toggle method-toggle" open><summary><section id="method.clear_pending" class="method"><a class="src rightside" href="../../src/gio/auto/output_stream.rs.html#58-62">source</a><h4 class="code-header">fn <a href="#method.clear_pending" class="fn">clear_pending</a>(&amp;self)</h4></section></summary><div class="docblock"><p>Clears the pending flag on @self.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.close" class="method"><a class="src rightside" href="../../src/gio/auto/output_stream.rs.html#100-115">source</a><h4 class="code-header">fn <a href="#method.close" class="fn">close</a>(
+    &amp;self,
+    cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.Cancellable.html" title="struct gio::Cancellable">Cancellable</a>&gt;&gt;,
+) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;</h4></section></summary><div class="docblock"><p>Closes the stream, releasing resources related to it.</p>
+<p>Once the stream is closed, all other operations will return <a href="../enum.IOErrorEnum.html#variant.Closed" title="variant gio::IOErrorEnum::Closed"><code>IOErrorEnum::Closed</code></a>.
+Closing a stream multiple times will not return an error.</p>
+<p>Closing a stream will automatically flush any outstanding buffers in the
+stream.</p>
+<p>Streams will be automatically closed when the last reference
+is dropped, but you might want to call this function to make sure
+resources are released as early as possible.</p>
+<p>Some streams might keep the backing store of the stream (e.g. a file descriptor)
+open after the stream is closed. See the documentation for the individual
+stream for details.</p>
+<p>On failure the first error that happened will be reported, but the close
+operation will finish as much as possible. A stream that failed to
+close will still return <a href="../enum.IOErrorEnum.html#variant.Closed" title="variant gio::IOErrorEnum::Closed"><code>IOErrorEnum::Closed</code></a> for all operations. Still, it
+is important to check and report the error to the user, otherwise
+there might be a loss of data as all data might not be written.</p>
+<p>If @cancellable is not <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a>, then the operation can be cancelled by
+triggering the cancellable object from another thread. If the operation
+was cancelled, the error <a href="../enum.IOErrorEnum.html#variant.Cancelled" title="variant gio::IOErrorEnum::Cancelled"><code>IOErrorEnum::Cancelled</code></a> will be returned.
+Cancelling a close will still leave the stream closed, but there some streams
+can use a faster close that doesn’t block to e.g. check errors. On
+cancellation (as with any error) there is no guarantee that all written
+data will reach the target.</p>
+<h6 id="cancellable"><a class="doc-anchor" href="#cancellable">§</a><code>cancellable</code></h6>
+<p>optional cancellable object</p>
+<h5 id="returns"><a class="doc-anchor" href="#returns">§</a>Returns</h5>
+<p><a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>true</code></a> on success, <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>false</code></a> on failure</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.close_async" class="method"><a class="src rightside" href="../../src/gio/auto/output_stream.rs.html#135-182">source</a><h4 class="code-header">fn <a href="#method.close_async" class="fn">close_async</a>&lt;P: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html" title="trait core::ops::function::FnOnce">FnOnce</a>(<a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;) + 'static&gt;(
+    &amp;self,
+    io_priority: <a class="struct" href="../../glib/source/struct.Priority.html" title="struct glib::source::Priority">Priority</a>,
+    cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.Cancellable.html" title="struct gio::Cancellable">Cancellable</a>&gt;&gt;,
+    callback: P,
+)</h4></section></summary><div class="docblock"><p>Requests an asynchronous close of the stream, releasing resources
+related to it. When the operation is finished @callback will be
+called. You can then call g_output_stream_close_finish() to get
+the result of the operation.</p>
+<p>For behaviour details see g_output_stream_close().</p>
+<p>The asynchronous methods have a default fallback that uses threads
+to implement asynchronicity, so they are optional for inheriting
+classes. However, if you override one you must override all.</p>
+<h6 id="io_priority"><a class="doc-anchor" href="#io_priority">§</a><code>io_priority</code></h6>
+<p>the io priority of the request.</p>
+<h6 id="cancellable-1"><a class="doc-anchor" href="#cancellable-1">§</a><code>cancellable</code></h6>
+<p>optional cancellable object</p>
+<h6 id="callback"><a class="doc-anchor" href="#callback">§</a><code>callback</code></h6>
+<p>a #GAsyncReadyCallback
+to call when the request is satisfied</p>
+</div></details><section id="method.close_future" class="method"><a class="src rightside" href="../../src/gio/auto/output_stream.rs.html#184-196">source</a><h4 class="code-header">fn <a href="#method.close_future" class="fn">close_future</a>(
+    &amp;self,
+    io_priority: <a class="struct" href="../../glib/source/struct.Priority.html" title="struct glib::source::Priority">Priority</a>,
+) -&gt; <a class="struct" href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html" title="struct core::pin::Pin">Pin</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box_</a>&lt;dyn <a class="trait" href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html" title="trait core::future::future::Future">Future</a>&lt;Output = <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;&gt; + 'static&gt;&gt;</h4></section><details class="toggle method-toggle" open><summary><section id="method.flush" class="method"><a class="src rightside" href="../../src/gio/auto/output_stream.rs.html#214-229">source</a><h4 class="code-header">fn <a href="#method.flush" class="fn">flush</a>(
+    &amp;self,
+    cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.Cancellable.html" title="struct gio::Cancellable">Cancellable</a>&gt;&gt;,
+) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;</h4></section></summary><div class="docblock"><p>Forces a write of all user-space buffered data for the given
+@self. Will block during the operation. Closing the stream will
+implicitly cause a flush.</p>
+<p>This function is optional for inherited classes.</p>
+<p>If @cancellable is not <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a>, then the operation can be cancelled by
+triggering the cancellable object from another thread. If the operation
+was cancelled, the error <a href="../enum.IOErrorEnum.html#variant.Cancelled" title="variant gio::IOErrorEnum::Cancelled"><code>IOErrorEnum::Cancelled</code></a> will be returned.</p>
+<h6 id="cancellable-2"><a class="doc-anchor" href="#cancellable-2">§</a><code>cancellable</code></h6>
+<p>optional cancellable object</p>
+<h5 id="returns-1"><a class="doc-anchor" href="#returns-1">§</a>Returns</h5>
+<p><a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>true</code></a> on success, <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>false</code></a> on error</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.flush_async" class="method"><a class="src rightside" href="../../src/gio/auto/output_stream.rs.html#246-293">source</a><h4 class="code-header">fn <a href="#method.flush_async" class="fn">flush_async</a>&lt;P: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html" title="trait core::ops::function::FnOnce">FnOnce</a>(<a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;) + 'static&gt;(
+    &amp;self,
+    io_priority: <a class="struct" href="../../glib/source/struct.Priority.html" title="struct glib::source::Priority">Priority</a>,
+    cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.Cancellable.html" title="struct gio::Cancellable">Cancellable</a>&gt;&gt;,
+    callback: P,
+)</h4></section></summary><div class="docblock"><p>Forces an asynchronous write of all user-space buffered data for
+the given @self.
+For behaviour details see g_output_stream_flush().</p>
+<p>When the operation is finished @callback will be
+called. You can then call g_output_stream_flush_finish() to get the
+result of the operation.</p>
+<h6 id="io_priority-1"><a class="doc-anchor" href="#io_priority-1">§</a><code>io_priority</code></h6>
+<p>the io priority of the request.</p>
+<h6 id="cancellable-3"><a class="doc-anchor" href="#cancellable-3">§</a><code>cancellable</code></h6>
+<p>optional #GCancellable object, <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a> to ignore.</p>
+<h6 id="callback-1"><a class="doc-anchor" href="#callback-1">§</a><code>callback</code></h6>
+<p>a #GAsyncReadyCallback
+to call when the request is satisfied</p>
+</div></details><section id="method.flush_future" class="method"><a class="src rightside" href="../../src/gio/auto/output_stream.rs.html#295-307">source</a><h4 class="code-header">fn <a href="#method.flush_future" class="fn">flush_future</a>(
+    &amp;self,
+    io_priority: <a class="struct" href="../../glib/source/struct.Priority.html" title="struct glib::source::Priority">Priority</a>,
+) -&gt; <a class="struct" href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html" title="struct core::pin::Pin">Pin</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box_</a>&lt;dyn <a class="trait" href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html" title="trait core::future::future::Future">Future</a>&lt;Output = <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;&gt; + 'static&gt;&gt;</h4></section><details class="toggle method-toggle" open><summary><section id="method.has_pending" class="method"><a class="src rightside" href="../../src/gio/auto/output_stream.rs.html#315-321">source</a><h4 class="code-header">fn <a href="#method.has_pending" class="fn">has_pending</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a></h4></section></summary><div class="docblock"><p>Checks if an output stream has pending actions.</p>
+<h5 id="returns-2"><a class="doc-anchor" href="#returns-2">§</a>Returns</h5>
+<p><a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>true</code></a> if @self has pending actions.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.is_closed" class="method"><a class="src rightside" href="../../src/gio/auto/output_stream.rs.html#329-335">source</a><h4 class="code-header">fn <a href="#method.is_closed" class="fn">is_closed</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a></h4></section></summary><div class="docblock"><p>Checks if an output stream has already been closed.</p>
+<h5 id="returns-3"><a class="doc-anchor" href="#returns-3">§</a>Returns</h5>
+<p><a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>true</code></a> if @self is closed. <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>false</code></a> otherwise.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.is_closing" class="method"><a class="src rightside" href="../../src/gio/auto/output_stream.rs.html#346-352">source</a><h4 class="code-header">fn <a href="#method.is_closing" class="fn">is_closing</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a></h4></section></summary><div class="docblock"><p>Checks if an output stream is being closed. This can be
+used inside e.g. a flush implementation to see if the
+flush (or other i/o operation) is called from within
+the closing operation.</p>
+<h5 id="returns-4"><a class="doc-anchor" href="#returns-4">§</a>Returns</h5>
+<p><a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>true</code></a> if @self is being closed. <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>false</code></a> otherwise.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.set_pending" class="method"><a class="src rightside" href="../../src/gio/auto/output_stream.rs.html#367-379">source</a><h4 class="code-header">fn <a href="#method.set_pending" class="fn">set_pending</a>(&amp;self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;</h4></section></summary><div class="docblock"><p>Sets @self to have actions pending. If the pending flag is
+already set or @self is closed, it will return <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>false</code></a> and set
+@error.</p>
+<h5 id="returns-5"><a class="doc-anchor" href="#returns-5">§</a>Returns</h5>
+<p><a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>true</code></a> if pending was previously unset and is now set.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.splice" class="method"><a class="src rightside" href="../../src/gio/auto/output_stream.rs.html#397-418">source</a><h4 class="code-header">fn <a href="#method.splice" class="fn">splice</a>(
+    &amp;self,
+    source: &amp;impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.InputStream.html" title="struct gio::InputStream">InputStream</a>&gt;,
+    flags: <a class="struct" href="../struct.OutputStreamSpliceFlags.html" title="struct gio::OutputStreamSpliceFlags">OutputStreamSpliceFlags</a>,
+    cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.Cancellable.html" title="struct gio::Cancellable">Cancellable</a>&gt;&gt;,
+) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.isize.html">isize</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;</h4></section></summary><div class="docblock"><p>Splices an input stream into an output stream.</p>
+<h6 id="source"><a class="doc-anchor" href="#source">§</a><code>source</code></h6>
+<p>a #GInputStream.</p>
+<h6 id="flags"><a class="doc-anchor" href="#flags">§</a><code>flags</code></h6>
+<p>a set of #GOutputStreamSpliceFlags.</p>
+<h6 id="cancellable-4"><a class="doc-anchor" href="#cancellable-4">§</a><code>cancellable</code></h6>
+<p>optional #GCancellable object, <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a> to ignore.</p>
+<h5 id="returns-6"><a class="doc-anchor" href="#returns-6">§</a>Returns</h5>
+<p>a #gssize containing the size of the data spliced, or
+-1 if an error occurred. Note that if the number of bytes
+spliced is greater than <code>G_MAXSSIZE</code>, then that will be
+returned, and there is no way to determine the actual number
+of bytes spliced.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.splice_async" class="method"><a class="src rightside" href="../../src/gio/auto/output_stream.rs.html#439-490">source</a><h4 class="code-header">fn <a href="#method.splice_async" class="fn">splice_async</a>&lt;P: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html" title="trait core::ops::function::FnOnce">FnOnce</a>(<a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.isize.html">isize</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;) + 'static&gt;(
+    &amp;self,
+    source: &amp;impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.InputStream.html" title="struct gio::InputStream">InputStream</a>&gt;,
+    flags: <a class="struct" href="../struct.OutputStreamSpliceFlags.html" title="struct gio::OutputStreamSpliceFlags">OutputStreamSpliceFlags</a>,
+    io_priority: <a class="struct" href="../../glib/source/struct.Priority.html" title="struct glib::source::Priority">Priority</a>,
+    cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.Cancellable.html" title="struct gio::Cancellable">Cancellable</a>&gt;&gt;,
+    callback: P,
+)</h4></section></summary><div class="docblock"><p>Splices a stream asynchronously.
+When the operation is finished @callback will be called.
+You can then call g_output_stream_splice_finish() to get the
+result of the operation.</p>
+<p>For the synchronous, blocking version of this function, see
+g_output_stream_splice().</p>
+<h6 id="source-1"><a class="doc-anchor" href="#source-1">§</a><code>source</code></h6>
+<p>a #GInputStream.</p>
+<h6 id="flags-1"><a class="doc-anchor" href="#flags-1">§</a><code>flags</code></h6>
+<p>a set of #GOutputStreamSpliceFlags.</p>
+<h6 id="io_priority-2"><a class="doc-anchor" href="#io_priority-2">§</a><code>io_priority</code></h6>
+<p>the io priority of the request.</p>
+<h6 id="cancellable-5"><a class="doc-anchor" href="#cancellable-5">§</a><code>cancellable</code></h6>
+<p>optional #GCancellable object, <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a> to ignore.</p>
+<h6 id="callback-2"><a class="doc-anchor" href="#callback-2">§</a><code>callback</code></h6>
+<p>a #GAsyncReadyCallback
+to call when the request is satisfied</p>
+</div></details><section id="method.splice_future" class="method"><a class="src rightside" href="../../src/gio/auto/output_stream.rs.html#492-507">source</a><h4 class="code-header">fn <a href="#method.splice_future" class="fn">splice_future</a>(
+    &amp;self,
+    source: &amp;(impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.InputStream.html" title="struct gio::InputStream">InputStream</a>&gt; + <a class="trait" href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html" title="trait core::clone::Clone">Clone</a> + 'static),
+    flags: <a class="struct" href="../struct.OutputStreamSpliceFlags.html" title="struct gio::OutputStreamSpliceFlags">OutputStreamSpliceFlags</a>,
+    io_priority: <a class="struct" href="../../glib/source/struct.Priority.html" title="struct glib::source::Priority">Priority</a>,
+) -&gt; <a class="struct" href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html" title="struct core::pin::Pin">Pin</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box_</a>&lt;dyn <a class="trait" href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html" title="trait core::future::future::Future">Future</a>&lt;Output = <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.isize.html">isize</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;&gt; + 'static&gt;&gt;</h4></section><details class="toggle method-toggle" open><summary><section id="method.write" class="method"><a class="src rightside" href="../../src/gio/auto/output_stream.rs.html#543-564">source</a><h4 class="code-header">fn <a href="#method.write" class="fn">write</a>(
+    &amp;self,
+    buffer: &amp;[<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>],
+    cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.Cancellable.html" title="struct gio::Cancellable">Cancellable</a>&gt;&gt;,
+) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.isize.html">isize</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;</h4></section></summary><div class="docblock"><p>Tries to write @count bytes from @buffer into the stream. Will block
+during the operation.</p>
+<p>If count is 0, returns 0 and does nothing. A value of @count
+larger than <code>G_MAXSSIZE</code> will cause a <a href="../enum.IOErrorEnum.html#variant.InvalidArgument" title="variant gio::IOErrorEnum::InvalidArgument"><code>IOErrorEnum::InvalidArgument</code></a> error.</p>
+<p>On success, the number of bytes written to the stream is returned.
+It is not an error if this is not the same as the requested size, as it
+can happen e.g. on a partial I/O error, or if there is not enough
+storage in the stream. All writes block until at least one byte
+is written or an error occurs; 0 is never returned (unless
+@count is 0).</p>
+<p>If @cancellable is not <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a>, then the operation can be cancelled by
+triggering the cancellable object from another thread. If the operation
+was cancelled, the error <a href="../enum.IOErrorEnum.html#variant.Cancelled" title="variant gio::IOErrorEnum::Cancelled"><code>IOErrorEnum::Cancelled</code></a> will be returned. If an
+operation was partially finished when the operation was cancelled the
+partial result will be returned, without an error.</p>
+<p>On error -1 is returned and @error is set accordingly.</p>
+<h6 id="buffer"><a class="doc-anchor" href="#buffer">§</a><code>buffer</code></h6>
+<p>the buffer containing the data to write.</p>
+<h6 id="cancellable-6"><a class="doc-anchor" href="#cancellable-6">§</a><code>cancellable</code></h6>
+<p>optional cancellable object</p>
+<h5 id="returns-7"><a class="doc-anchor" href="#returns-7">§</a>Returns</h5>
+<p>Number of bytes written, or -1 on error</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.write_bytes" class="method"><a class="src rightside" href="../../src/gio/auto/output_stream.rs.html#586-605">source</a><h4 class="code-header">fn <a href="#method.write_bytes" class="fn">write_bytes</a>(
+    &amp;self,
+    bytes: &amp;<a class="struct" href="../../glib/bytes/struct.Bytes.html" title="struct glib::bytes::Bytes">Bytes</a>,
+    cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.Cancellable.html" title="struct gio::Cancellable">Cancellable</a>&gt;&gt;,
+) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.isize.html">isize</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;</h4></section></summary><div class="docblock"><p>A wrapper function for g_output_stream_write() which takes a
+#GBytes as input.  This can be more convenient for use by language
+bindings or in other cases where the refcounted nature of #GBytes
+is helpful over a bare pointer interface.</p>
+<p>However, note that this function may still perform partial writes,
+just like g_output_stream_write().  If that occurs, to continue
+writing, you will need to create a new #GBytes containing just the
+remaining bytes, using g_bytes_new_from_bytes(). Passing the same
+#GBytes instance multiple times potentially can result in duplicated
+data in the output stream.</p>
+<h6 id="bytes"><a class="doc-anchor" href="#bytes">§</a><code>bytes</code></h6>
+<p>the #GBytes to write</p>
+<h6 id="cancellable-7"><a class="doc-anchor" href="#cancellable-7">§</a><code>cancellable</code></h6>
+<p>optional cancellable object</p>
+<h5 id="returns-8"><a class="doc-anchor" href="#returns-8">§</a>Returns</h5>
+<p>Number of bytes written, or -1 on error</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.write_bytes_async" class="method"><a class="src rightside" href="../../src/gio/auto/output_stream.rs.html#630-680">source</a><h4 class="code-header">fn <a href="#method.write_bytes_async" class="fn">write_bytes_async</a>&lt;P: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html" title="trait core::ops::function::FnOnce">FnOnce</a>(<a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.isize.html">isize</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;) + 'static&gt;(
+    &amp;self,
+    bytes: &amp;<a class="struct" href="../../glib/bytes/struct.Bytes.html" title="struct glib::bytes::Bytes">Bytes</a>,
+    io_priority: <a class="struct" href="../../glib/source/struct.Priority.html" title="struct glib::source::Priority">Priority</a>,
+    cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.Cancellable.html" title="struct gio::Cancellable">Cancellable</a>&gt;&gt;,
+    callback: P,
+)</h4></section></summary><div class="docblock"><p>This function is similar to g_output_stream_write_async(), but
+takes a #GBytes as input.  Due to the refcounted nature of #GBytes,
+this allows the stream to avoid taking a copy of the data.</p>
+<p>However, note that this function may still perform partial writes,
+just like g_output_stream_write_async(). If that occurs, to continue
+writing, you will need to create a new #GBytes containing just the
+remaining bytes, using g_bytes_new_from_bytes(). Passing the same
+#GBytes instance multiple times potentially can result in duplicated
+data in the output stream.</p>
+<p>For the synchronous, blocking version of this function, see
+g_output_stream_write_bytes().</p>
+<h6 id="bytes-1"><a class="doc-anchor" href="#bytes-1">§</a><code>bytes</code></h6>
+<p>The bytes to write</p>
+<h6 id="io_priority-3"><a class="doc-anchor" href="#io_priority-3">§</a><code>io_priority</code></h6>
+<p>the io priority of the request.</p>
+<h6 id="cancellable-8"><a class="doc-anchor" href="#cancellable-8">§</a><code>cancellable</code></h6>
+<p>optional #GCancellable object, <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a> to ignore.</p>
+<h6 id="callback-3"><a class="doc-anchor" href="#callback-3">§</a><code>callback</code></h6>
+<p>a #GAsyncReadyCallback
+to call when the request is satisfied</p>
+</div></details><section id="method.write_bytes_future" class="method"><a class="src rightside" href="../../src/gio/auto/output_stream.rs.html#682-696">source</a><h4 class="code-header">fn <a href="#method.write_bytes_future" class="fn">write_bytes_future</a>(
+    &amp;self,
+    bytes: &amp;<a class="struct" href="../../glib/bytes/struct.Bytes.html" title="struct glib::bytes::Bytes">Bytes</a>,
+    io_priority: <a class="struct" href="../../glib/source/struct.Priority.html" title="struct glib::source::Priority">Priority</a>,
+) -&gt; <a class="struct" href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html" title="struct core::pin::Pin">Pin</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box_</a>&lt;dyn <a class="trait" href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html" title="trait core::future::future::Future">Future</a>&lt;Output = <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.isize.html">isize</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;&gt; + 'static&gt;&gt;</h4></section></div><h2 id="object-safety" class="section-header">Object Safety<a href="#object-safety" class="anchor">§</a></h2><div class="object-safety-info">This trait is <b>not</b> <a href="https://doc.rust-lang.org/nightly/reference/items/traits.html#object-safety">object safe</a>.</div><h2 id="implementors" class="section-header">Implementors<a href="#implementors" class="anchor">§</a></h2><div id="implementors-list"><section id="impl-OutputStreamExt-for-O" class="impl"><a class="src rightside" href="../../src/gio/auto/output_stream.rs.html#699">source</a><a href="#impl-OutputStreamExt-for-O" class="anchor">§</a><h3 class="code-header">impl&lt;O: <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.OutputStream.html" title="struct gio::OutputStream">OutputStream</a>&gt;&gt; <a class="trait" href="trait.OutputStreamExt.html" title="trait gio::prelude::OutputStreamExt">OutputStreamExt</a> for O</h3></section></div><script src="../../trait.impl/gio/auto/output_stream/trait.OutputStreamExt.js" async></script></section></div></main></body></html>

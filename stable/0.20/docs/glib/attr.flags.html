@@ -1,0 +1,175 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Attribute macro for defining flags using the `bitflags` crate. This macro will also define a `GFlags::type_` function and the `glib::Value` traits."><title>flags in glib - Rust</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../" data-static-root-path="../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.81.0-nightly (6be96e386 2024-07-09)" data-channel="nightly" data-search-js="search-d234aafac6c221dd.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../static.files/storage-118b08c4c78b968e.js"></script><script defer src="sidebar-items.js"></script><script defer src="../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc attr"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
+
+    function checkDocsLatestStable() {
+        function popup(msg, url) { return `
+            <style scoped="scoped">
+                .popup {
+                    max-width: 16em;
+                    background-color: #fff;
+                    position: fixed;
+                    z-index: 1;
+                    margin-left: auto;
+                    bottom: 1em;
+                    right: 1em;
+                    border-radius: 5px;
+                    box-shadow: 1px 1px 4px #777;
+                }
+
+                .popup a.version {
+                    color: #e57300;
+                    padding: 0.6em 1em;
+                    display: block;
+                }
+                .popup a.version:hover {
+                    color: #b25900;
+                }
+
+                .popup a.close {
+                    color: white;
+                    background: grey;
+                    border-radius: 99px;
+                    display: inline-block;
+                    width: 19px;
+                    line-height: 19px;
+                    font-weight: bold;
+                    text-align: center;
+                    margin: 0.6em;
+                    float: right;
+                }
+                .popup a.close:hover {
+                    background: black;
+                }
+            </style>
+            <section class="popup" id="gir_docs_popup">
+                <a class="close" href="#" onclick="document.getElementById('gir_docs_popup').remove(); return false">×</a>
+                <a class="version" href="https://gtk-rs.org/gtk-rs-core/stable/latest/docs">
+                    ⚠ ${msg}
+                </a>
+            </section>
+        ` };
+
+        if ("0.20" == "master") {
+            document.body.insertAdjacentHTML(
+                'beforeend',
+                popup("This is the development version. Go to latest stable version.", "stable/latest")
+            );
+        } else {
+            fetch('https://gtk-rs.org/gtk-rs-core/LATEST_RELEASE_BRANCH')
+                .then(response => response.text())
+                .then(latest_branch => {
+                    if (latest_branch.trim() != "0.20") {
+                        document.body.insertAdjacentHTML(
+                            'beforeend',
+                            popup("This version is outdated. Go to latest version.", "stable/latest")
+                        );
+                    }
+                });
+        }
+    }
+</script>
+
+
+<nav class="mobile-topbar"><button class="sidebar-menu-toggle" title="show sidebar"></button></nav><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../glib/index.html">glib</a><span class="version">0.20.0</span></h2></div><div class="sidebar-elems"></div></nav><div class="sidebar-resizer"></div><main><div class="width-limiter"><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1>Attribute Macro <a href="index.html">glib</a>::<wbr><a class="attr" href="#">flags</a><button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><span class="out-of-band"><a class="src" href="../src/glib_macros/lib.rs.html#784">source</a> · <button id="toggle-all-docs" title="collapse all docs">[<span>&#x2212;</span>]</button></span></div><pre class="rust item-decl"><code>#[flags]</code></pre><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>Attribute macro for defining flags using the <code>bitflags</code> crate.
+This macro will also define a <code>GFlags::type_</code> function and
+the <a href="../glib/value/struct.Value.html"><code>glib::Value</code></a> traits.</p>
+<p>The expected <code>GType</code> name has to be passed as macro attribute.
+The name and nick of each flag can also be optionally defined.
+Default name is the flag identifier in CamelCase and default nick
+is the identifier in kebab-case.
+Combined flags should not be registered with the <code>GType</code> system
+and so needs to be tagged with the <code>#[flags_value(skip)]</code> attribute.</p>
+<h2 id="example"><a class="doc-anchor" href="#example">§</a>Example</h2>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>glib::prelude::<span class="kw-2">*</span>;
+<span class="kw">use </span>glib::subclass::prelude::<span class="kw-2">*</span>;
+
+<span class="attr">#[glib::flags(name = <span class="string">"MyFlags"</span>)]
+</span><span class="kw">enum </span>MyFlags {
+    <span class="attr">#[flags_value(name = <span class="string">"Flag A"</span>, nick = <span class="string">"nick-a"</span>)]
+    </span>A = <span class="number">0b00000001</span>,
+    <span class="attr">#[flags_value(name = <span class="string">"Flag B"</span>)]
+    </span>B = <span class="number">0b00000010</span>,
+    <span class="attr">#[flags_value(skip)]
+    </span>AB = <span class="self">Self</span>::A.bits() | <span class="self">Self</span>::B.bits(),
+    C = <span class="number">0b00000100</span>,
+}</code></pre></div>
+<p>The flags can be registered as a dynamic type by setting the macro helper
+attribute <code>flags_dynamic</code>:</p>
+
+<div class="example-wrap ignore"><a href="#" class="tooltip" title="This example is not tested">ⓘ</a><pre class="rust rust-example-rendered"><code><span class="kw">use </span>glib::prelude::<span class="kw-2">*</span>;
+<span class="kw">use </span>glib::subclass::prelude::<span class="kw-2">*</span>;
+
+<span class="attr">#[glib::flags(name = <span class="string">"MyFlags"</span>)]
+#[flags_dynamic]
+</span><span class="kw">enum </span>MyFlags {
+    ...
+}</code></pre></div>
+<p>As a dynamic type, the flags must be explicitly registered when the system
+loads the implementation (see <a href="../glib/gobject/type_plugin/struct.TypePlugin.html"><code>TypePlugin</code></a> and <a href="../glib/gobject/type_module/struct.TypeModule.html"><code>TypeModule</code></a>.
+Therefore, whereas the flags can be registered only once as a static type,
+they can be registered several times as a dynamic type.</p>
+<p>The flags registered as a dynamic type are never unregistered. The system
+calls <a href="../glib/gobject/type_plugin/trait.TypePluginExt."><code>TypePluginExt::unuse</code></a> to unload the implementation. If the
+<a href="../glib/gobject/type_plugin/struct.TypePlugin.html"><code>TypePlugin</code></a> subclass is a <a href="../glib/gobject/type_module/struct.TypeModule.html"><code>TypeModule</code></a>, the flags registered as a
+dynamic type are marked as unloaded and must be registered again when the
+module is reloaded.</p>
+<p>The macro helper attribute <code>flags_dynamic</code> provides two behaviors when
+registering the flags as a dynamic type:</p>
+<ul>
+<li>lazy registration: by default the flags are registered as a dynamic type
+when the system loads the implementation (e.g. when the module is loaded).
+Optionally setting <code>lazy_registration</code> to <code>true</code> postpones registration on
+the first use (when <code>static_type()</code> is called for the first time):</li>
+</ul>
+
+<div class="example-wrap ignore"><a href="#" class="tooltip" title="This example is not tested">ⓘ</a><pre class="rust rust-example-rendered"><code><span class="attr">#[glib::flags(name = <span class="string">"MyFlags"</span>)]
+#[flags_dynamic(lazy_registration = <span class="bool-val">true</span>)]
+</span><span class="kw">enum </span>MyFlags {
+    ...
+}</code></pre></div>
+<ul>
+<li>registration within <a href="../glib/gobject/type_module/struct.TypeModule.html"><code>TypeModule</code></a> subclass or within <a href="../glib/gobject/type_plugin/struct.TypePlugin.html"><code>TypePlugin</code></a>
+subclass: the flags are usually registered as a dynamic type within a
+<a href="../glib/gobject/type_module/struct.TypeModule.html"><code>TypeModule</code></a> subclass:</li>
+</ul>
+
+<div class="example-wrap ignore"><a href="#" class="tooltip" title="This example is not tested">ⓘ</a><pre class="rust rust-example-rendered"><code><span class="attr">#[glib::flags(name = <span class="string">"MyModuleFlags"</span>)]
+#[flags_dynamic]
+</span><span class="kw">enum </span>MyModuleFlags {
+    ...
+}
+...
+<span class="attr">#[derive(Default)]
+</span><span class="kw">pub struct </span>MyModule;
+...
+<span class="kw">impl </span>TypeModuleImpl <span class="kw">for </span>MyModule {
+    <span class="kw">fn </span>load(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        <span class="comment">// registers flags as dynamic types.
+        </span><span class="kw">let </span>my_module = <span class="self">self</span>.obj();
+        <span class="kw">let </span>type_module: <span class="kw-2">&amp;</span>glib::TypeModule = my_module.upcast_ref();
+        MyModuleFlags::on_implementation_load(type_module)
+    }
+    ...
+}</code></pre></div>
+<p>Optionally setting <code>plugin_type</code> allows to register the flags as a dynamic
+type within a <a href="../glib/gobject/type_plugin/struct.TypePlugin.html"><code>TypePlugin</code></a> subclass that is not a <a href="../glib/gobject/type_module/struct.TypeModule.html"><code>TypeModule</code></a>:</p>
+
+<div class="example-wrap ignore"><a href="#" class="tooltip" title="This example is not tested">ⓘ</a><pre class="rust rust-example-rendered"><code><span class="attr">#[glib::flags(name = <span class="string">"MyModuleFlags"</span>)]
+#[flags_dynamic(plugin_type = MyPlugin)]
+</span><span class="kw">enum </span>MyModuleFlags {
+    ...
+}
+...
+<span class="attr">#[derive(Default)]
+</span><span class="kw">pub struct </span>MyPlugin;
+...
+<span class="kw">impl </span>TypePluginImpl <span class="kw">for </span>MyPlugin {
+    <span class="kw">fn </span>use_plugin(<span class="kw-2">&amp;</span><span class="self">self</span>) {
+        <span class="comment">// register flags as dynamic types.
+        </span><span class="kw">let </span>my_plugin = <span class="self">self</span>.obj();
+        MyPluginFlags::on_implementation_load(my_plugin.as_ref());
+    }
+    ...
+}</code></pre></div>
+</div></details></section></div></main></body></html>
