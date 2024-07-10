@@ -71,7 +71,7 @@
 </script>
 
 
-<nav class="mobile-topbar"><button class="sidebar-menu-toggle" title="show sidebar"></button></nav><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../glib/index.html">glib</a><span class="version">0.21.0</span></h2></div><div class="sidebar-elems"></div></nav><div class="sidebar-resizer"></div><main><div class="width-limiter"><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1>Function <a href="index.html">glib</a>::<wbr><a class="fn" href="#">locale_from_utf8</a><button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><span class="out-of-band"><a class="src" href="../src/glib/convert.rs.html#890-916">source</a> · <button id="toggle-all-docs" title="collapse all docs">[<span>&#x2212;</span>]</button></span></div><pre class="rust item-decl"><code>pub fn locale_from_utf8(
+<nav class="mobile-topbar"><button class="sidebar-menu-toggle" title="show sidebar"></button></nav><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../glib/index.html">glib</a><span class="version">0.21.0</span></h2></div><div class="sidebar-elems"></div></nav><div class="sidebar-resizer"></div><main><div class="width-limiter"><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1>Function <a href="index.html">glib</a>::<wbr><a class="fn" href="#">locale_from_utf8</a><button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><span class="out-of-band"><a class="src" href="../src/glib/convert.rs.html#580-606">source</a> · <button id="toggle-all-docs" title="collapse all docs">[<span>&#x2212;</span>]</button></span></div><pre class="rust item-decl"><code>pub fn locale_from_utf8(
     utf8string: impl <a class="trait" href="translate/trait.IntoGStr.html" title="trait glib::translate::IntoGStr">IntoGStr</a>,
 ) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;(<a class="struct" href="collections/slice/struct.Slice.html" title="struct glib::collections::slice::Slice">Slice</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>&gt;, <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>), <a class="enum" href="enum.CvtError.html" title="enum glib::CvtError">CvtError</a>&gt;</code></pre><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>Converts a string from UTF-8 to the encoding used for strings by
 the C runtime (usually the same as that used by the operating
@@ -90,31 +90,6 @@ nul-terminated.</p>
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>     A newly-allocated buffer containing the converted string,
      or [`<span class="prelude-val">None</span>`] on an error, and error will be set.</code></pre></div>
 <h3 id="bytes_read"><a class="doc-anchor" href="#bytes_read">§</a><code>bytes_read</code></h3>
-<p>location to store the number of bytes in the
-input string that were successfully converted, or <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a>.
-Even if the conversion was successful, this may be
-less than @len if there were partial characters
-at the end of the input. If the error
-<a href="enum.ConvertError.html#variant.IllegalSequence" title="variant glib::ConvertError::IllegalSequence"><code>ConvertError::IllegalSequence</code></a> occurs, the value
-stored will be the byte offset after the last valid
-input sequence.
-Converts a string from UTF-8 to the encoding used for strings by
-the C runtime (usually the same as that used by the operating
-system) in the [current locale][setlocale]. On Windows this means
-the system codepage.</p>
-<p>The input string shall not contain nul characters even if the @len
-argument is positive. A nul character found inside the string will result
-in error <a href="enum.ConvertError.html#variant.IllegalSequence" title="variant glib::ConvertError::IllegalSequence"><code>ConvertError::IllegalSequence</code></a>. Use g_convert() to convert
-input that may contain embedded nul characters.</p>
-<h3 id="utf8string-1"><a class="doc-anchor" href="#utf8string-1">§</a><code>utf8string</code></h3>
-<p>a UTF-8 encoded string</p>
-<h3 id="len-1"><a class="doc-anchor" href="#len-1">§</a><code>len</code></h3>
-<p>the length of the string, or -1 if the string is
-nul-terminated.</p>
-<h2 id="returns-1"><a class="doc-anchor" href="#returns-1">§</a>Returns</h2>
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>     A newly-allocated buffer containing the converted string,
-     or [`<span class="prelude-val">None</span>`] on an error, and error will be set.</code></pre></div>
-<h3 id="bytes_read-1"><a class="doc-anchor" href="#bytes_read-1">§</a><code>bytes_read</code></h3>
 <p>location to store the number of bytes in the
 input string that were successfully converted, or <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a>.
 Even if the conversion was successful, this may be

@@ -130,26 +130,56 @@
 <a href="#57" id="57">57</a>
 <a href="#58" id="58">58</a>
 <a href="#59" id="59">59</a>
+<a href="#60" id="60">60</a>
+<a href="#61" id="61">61</a>
+<a href="#62" id="62">62</a>
+<a href="#63" id="63">63</a>
+<a href="#64" id="64">64</a>
+<a href="#65" id="65">65</a>
+<a href="#66" id="66">66</a>
+<a href="#67" id="67">67</a>
+<a href="#68" id="68">68</a>
+<a href="#69" id="69">69</a>
+<a href="#70" id="70">70</a>
+<a href="#71" id="71">71</a>
+<a href="#72" id="72">72</a>
+<a href="#73" id="73">73</a>
+<a href="#74" id="74">74</a>
+<a href="#75" id="75">75</a>
+<a href="#76" id="76">76</a>
+<a href="#77" id="77">77</a>
+<a href="#78" id="78">78</a>
 </pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
-</span><span class="kw">use crate</span>::{<a href="../../../gobject_sys/index.html">gobject_ffi</a>, <a href="../lib.rs.html#162">translate</a>::<span class="kw-2">*</span>};
+</span><span class="kw">use crate</span>::{gobject_ffi, <a href="../lib.rs.html#162">translate</a>::<span class="kw-2">*</span>};
 
 <span class="macro">bitflags::bitflags!</span> {
-    <span class="attr">#[doc(alias = <span class="string">"GParamFlags"</span>)]
+    <span class="doccomment">/// Through the [`ParamFlags`][crate::ParamFlags] flag values, certain aspects of parameters
+    /// can be configured.
+    ///
+    /// See also: `G_PARAM_STATIC_STRINGS`
+    </span><span class="attr">#[doc(alias = <span class="string">"GParamFlags"</span>)]
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     </span><span class="kw">pub struct </span><a href="../../../glib/struct.ParamFlags.html">ParamFlags</a>: <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a> {
-        <span class="attr">#[doc(alias = <span class="string">"G_PARAM_READABLE"</span>)]
-        </span><span class="kw">const </span>READABLE = <a href="../../../gobject_sys/constant.G_PARAM_READABLE.html">gobject_ffi::G_PARAM_READABLE</a> <span class="kw">as _</span>;
-        <span class="attr">#[doc(alias = <span class="string">"G_PARAM_WRITABLE"</span>)]
-        </span><span class="kw">const </span>WRITABLE = <a href="../../../gobject_sys/constant.G_PARAM_WRITABLE.html">gobject_ffi::G_PARAM_WRITABLE</a> <span class="kw">as _</span>;
-        <span class="attr">#[doc(alias = <span class="string">"G_PARAM_READWRITE"</span>)]
-        </span><span class="kw">const </span>READWRITE = <a href="../../../gobject_sys/constant.G_PARAM_READWRITE.html">gobject_ffi::G_PARAM_READWRITE</a> <span class="kw">as _</span>;
-        <span class="attr">#[doc(alias = <span class="string">"G_PARAM_CONSTRUCT"</span>)]
-        </span><span class="kw">const </span>CONSTRUCT = <a href="../../../gobject_sys/constant.G_PARAM_CONSTRUCT.html">gobject_ffi::G_PARAM_CONSTRUCT</a> <span class="kw">as _</span>;
-        <span class="attr">#[doc(alias = <span class="string">"G_PARAM_CONSTRUCT_ONLY"</span>)]
-        </span><span class="kw">const </span>CONSTRUCT_ONLY = <a href="../../../gobject_sys/constant.G_PARAM_CONSTRUCT_ONLY.html">gobject_ffi::G_PARAM_CONSTRUCT_ONLY</a> <span class="kw">as _</span>;
-        <span class="attr">#[doc(alias = <span class="string">"G_PARAM_LAX_VALIDATION"</span>)]
-        </span><span class="kw">const </span>LAX_VALIDATION = <a href="../../../gobject_sys/constant.G_PARAM_LAX_VALIDATION.html">gobject_ffi::G_PARAM_LAX_VALIDATION</a> <span class="kw">as _</span>;
+        <span class="doccomment">/// the parameter is readable
+        </span><span class="attr">#[doc(alias = <span class="string">"G_PARAM_READABLE"</span>)]
+        </span><span class="kw">const </span>READABLE = gobject_ffi::G_PARAM_READABLE <span class="kw">as _</span>;
+        <span class="doccomment">/// the parameter is writable
+        </span><span class="attr">#[doc(alias = <span class="string">"G_PARAM_WRITABLE"</span>)]
+        </span><span class="kw">const </span>WRITABLE = gobject_ffi::G_PARAM_WRITABLE <span class="kw">as _</span>;
+        <span class="doccomment">/// alias for [`READABLE`][Self::READABLE] | [`WRITABLE`][Self::WRITABLE]
+        </span><span class="attr">#[doc(alias = <span class="string">"G_PARAM_READWRITE"</span>)]
+        </span><span class="kw">const </span>READWRITE = gobject_ffi::G_PARAM_READWRITE <span class="kw">as _</span>;
+        <span class="doccomment">/// the parameter will be set upon object construction
+        </span><span class="attr">#[doc(alias = <span class="string">"G_PARAM_CONSTRUCT"</span>)]
+        </span><span class="kw">const </span>CONSTRUCT = gobject_ffi::G_PARAM_CONSTRUCT <span class="kw">as _</span>;
+        <span class="doccomment">/// the parameter can only be set upon object construction
+        </span><span class="attr">#[doc(alias = <span class="string">"G_PARAM_CONSTRUCT_ONLY"</span>)]
+        </span><span class="kw">const </span>CONSTRUCT_ONLY = gobject_ffi::G_PARAM_CONSTRUCT_ONLY <span class="kw">as _</span>;
+        <span class="doccomment">/// upon parameter conversion (see `g_param_value_convert()`)
+        ///  strict validation is not required
+        </span><span class="attr">#[doc(alias = <span class="string">"G_PARAM_LAX_VALIDATION"</span>)]
+        </span><span class="kw">const </span>LAX_VALIDATION = gobject_ffi::G_PARAM_LAX_VALIDATION <span class="kw">as _</span>;
         <span class="kw">const </span>USER_0 = <span class="number">256</span>;
         <span class="kw">const </span>USER_1 = <span class="number">512</span>;
         <span class="kw">const </span>USER_2 = <span class="number">1024</span>;
@@ -159,34 +189,42 @@
         <span class="kw">const </span>USER_6 = <span class="number">16384</span>;
         <span class="kw">const </span>USER_7 = <span class="number">32768</span>;
         <span class="kw">const </span>USER_8 = <span class="number">65536</span>;
-        <span class="attr">#[doc(alias = <span class="string">"G_PARAM_EXPLICIT_NOTIFY"</span>)]
-        </span><span class="kw">const </span>EXPLICIT_NOTIFY = <a href="../../../gobject_sys/constant.G_PARAM_EXPLICIT_NOTIFY.html">gobject_ffi::G_PARAM_EXPLICIT_NOTIFY</a> <span class="kw">as _</span>;
-        <span class="attr">#[doc(alias = <span class="string">"G_PARAM_DEPRECATED"</span>)]
-        </span><span class="kw">const </span>DEPRECATED = <a href="../../../gobject_sys/constant.G_PARAM_DEPRECATED.html">gobject_ffi::G_PARAM_DEPRECATED</a> <span class="kw">as _</span>;
+        <span class="doccomment">/// calls to [`ObjectExt::set_property()`][crate::prelude::ObjectExt::set_property()] for this
+        ///  property will not automatically result in a "notify" signal being
+        ///  emitted: the implementation must call [`ObjectExt::notify()`][crate::prelude::ObjectExt::notify()] themselves
+        ///  in case the property actually changes. Since: 2.42.
+        </span><span class="attr">#[doc(alias = <span class="string">"G_PARAM_EXPLICIT_NOTIFY"</span>)]
+        </span><span class="kw">const </span>EXPLICIT_NOTIFY = gobject_ffi::G_PARAM_EXPLICIT_NOTIFY <span class="kw">as _</span>;
+        <span class="doccomment">/// the parameter is deprecated and will be removed
+        ///  in a future version. A warning will be generated if it is used
+        ///  while running with G_ENABLE_DIAGNOSTIC=1.
+        ///  Since 2.26
+        </span><span class="attr">#[doc(alias = <span class="string">"G_PARAM_DEPRECATED"</span>)]
+        </span><span class="kw">const </span>DEPRECATED = gobject_ffi::G_PARAM_DEPRECATED <span class="kw">as _</span>;
     }
 }
 
-<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html">Default</a> <span class="kw">for </span><a href="#5-35">ParamFlags</a> {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html">Default</a> <span class="kw">for </span><a href="#5-54">ParamFlags</a> {
     <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
         ParamFlags::READWRITE
     }
 }
 
 <span class="attr">#[doc(hidden)]
-</span><span class="kw">impl </span><a href="../translate.rs.html#331-335">IntoGlib</a> <span class="kw">for </span><a href="#5-35">ParamFlags</a> {
-    <span class="kw">type </span>GlibType = <a href="../../../gobject_sys/type.GParamFlags.html">gobject_ffi::GParamFlags</a>;
+</span><span class="kw">impl </span><a href="../translate.rs.html#331-335">IntoGlib</a> <span class="kw">for </span><a href="#5-54">ParamFlags</a> {
+    <span class="kw">type </span>GlibType = gobject_ffi::GParamFlags;
 
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>into_glib(<span class="self">self</span>) -&gt; <a href="../../../gobject_sys/type.GParamFlags.html">gobject_ffi::GParamFlags</a> {
-        <a class="self" href="#48">self</a>.<a href="#5-35">bits</a>()
+    </span><span class="kw">fn </span>into_glib(<span class="self">self</span>) -&gt; gobject_ffi::GParamFlags {
+        <a class="self" href="#67">self</a>.<a href="#5-54">bits</a>()
     }
 }
 
 <span class="attr">#[doc(hidden)]
-</span><span class="kw">impl </span>FromGlib&lt;<a href="../../../gobject_sys/type.GParamFlags.html">gobject_ffi::GParamFlags</a>&gt; <span class="kw">for </span><a href="#5-35">ParamFlags</a> {
+</span><span class="kw">impl </span>FromGlib&lt;gobject_ffi::GParamFlags&gt; <span class="kw">for </span><a href="#5-54">ParamFlags</a> {
     <span class="attr">#[inline]
-    </span><span class="kw">unsafe fn </span>from_glib(value: <a href="../../../gobject_sys/type.GParamFlags.html">gobject_ffi::GParamFlags</a>) -&gt; <span class="self">Self </span>{
-        <a href="#5-35"><span class="self">Self</span>::from_bits_truncate</a>(<a href="#56">value</a>)
+    </span><span class="kw">unsafe fn </span>from_glib(value: gobject_ffi::GParamFlags) -&gt; <span class="self">Self </span>{
+        <a href="#5-54"><span class="self">Self</span>::from_bits_truncate</a>(<a href="#75">value</a>)
     }
 }
 </code></pre></div></section></main></body></html>
