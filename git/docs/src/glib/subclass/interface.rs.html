@@ -396,7 +396,7 @@
 
 <span class="kw">use super</span>::{<a href="types.rs.html#288-302">types::InterfaceStruct</a>, <a href="types.rs.html#22">InitializingType</a>, <a href="signal.rs.html#29-35">Signal</a>};
 <span class="kw">use crate</span>::{
-    ffi, gobject_ffi, <a href="../lib.rs.html#157">prelude</a>::<span class="kw-2">*</span>, <a href="../lib.rs.html#162">translate</a>::<span class="kw-2">*</span>, <a href="../object.rs.html#1370-1373">Object</a>, <a href="../param_spec.rs.html#19-42">ParamSpec</a>, <a href="../types.rs.html#22">Type</a>, <a href="../gobject/auto/flags.rs.html#182-209">TypeFlags</a>, <a href="../gobject/type_info.rs.html#17">TypeInfo</a>,
+    ffi, <a href="../../../gobject_sys/index.html">gobject_ffi</a>, <a href="../lib.rs.html#157">prelude</a>::<span class="kw-2">*</span>, <a href="../lib.rs.html#162">translate</a>::<span class="kw-2">*</span>, <a href="../object.rs.html#1370-1373">Object</a>, <a href="../param_spec.rs.html#19-28">ParamSpec</a>, <a href="../types.rs.html#22">Type</a>, <a href="../gobject/auto/flags.rs.html#163-208">TypeFlags</a>, <a href="../gobject/type_info.rs.html#27">TypeInfo</a>,
 };
 
 <span class="comment">// rustdoc-stripper-ignore-next
@@ -526,7 +526,7 @@
     <span class="doccomment">/// Properties installed for this interface.
     ///
     /// All implementors of the interface must provide these properties.
-    </span><span class="kw">fn </span>properties() -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'static </span>[<a href="../param_spec.rs.html#19-42">ParamSpec</a>] {
+    </span><span class="kw">fn </span>properties() -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'static </span>[<a href="../param_spec.rs.html#19-28">ParamSpec</a>] {
         <span class="kw-2">&amp;</span>[]
     }
 
@@ -554,9 +554,9 @@
         <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.assert.html">assert!</a>(obj.as_ref().type_().is_a(<span class="self">Self</span>::type_()));
 
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>klass = (<span class="kw-2">*</span>(<a href="#161">obj</a>.<a href="../object.rs.html#49">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span>gobject_ffi::GTypeInstance)).g_class;
+            <span class="kw">let </span>klass = (<span class="kw-2">*</span>(<a href="#161">obj</a>.<a href="../object.rs.html#49">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span><a href="../../../gobject_sys/struct.GTypeInstance.html">gobject_ffi::GTypeInstance</a>)).g_class;
             <span class="kw">let </span>interface =
-                gobject_ffi::g_type_interface_peek(<a href="#165">klass</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>, <a href="#69"><span class="self">Self</span>::type_</a>().<a href="../translate.rs.html#334">into_glib</a>());
+                <a href="../../../gobject_sys/fn.g_type_interface_peek.html">gobject_ffi::g_type_interface_peek</a>(<a href="#165">klass</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>, <a href="#69"><span class="self">Self</span>::type_</a>().<a href="../translate.rs.html#334">into_glib</a>());
             <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert.html">debug_assert!</a>(!interface.is_null());
             <span class="kw-2">&amp;*</span>(<a href="#166">interface</a> <span class="kw">as </span><span class="kw-2">*const </span><span class="self">Self</span>)
         }
@@ -627,7 +627,7 @@
             <a href="#227">type_name</a>
         };
 
-        <span class="kw">let </span>type_ = gobject_ffi::g_type_register_static_simple(
+        <span class="kw">let </span>type_ = <a href="../../../gobject_sys/fn.g_type_register_static_simple.html">gobject_ffi::g_type_register_static_simple</a>(
             Type::INTERFACE.<a href="../translate.rs.html#334">into_glib</a>(),
             <a href="#211">type_name</a>.<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.as_ptr">as_ptr</a>(),
             mem::size_of::&lt;T::Interface&gt;() <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>,
@@ -675,9 +675,9 @@
         <span class="kw">let </span>type_name = <a href="https://doc.rust-lang.org/nightly/alloc/ffi/c_str/struct.CString.html#method.new">CString::new</a>(T::NAME).<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>();
 
         <span class="kw">let </span>already_registered =
-            gobject_ffi::g_type_from_name(<a href="#283">type_name</a>.<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.as_ptr">as_ptr</a>()) != gobject_ffi::G_TYPE_INVALID;
+            <a href="../../../gobject_sys/fn.g_type_from_name.html">gobject_ffi::g_type_from_name</a>(<a href="#283">type_name</a>.<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.as_ptr">as_ptr</a>()) != <a href="../../../gobject_sys/constant.G_TYPE_INVALID.html">gobject_ffi::G_TYPE_INVALID</a>;
 
-        <span class="kw">let </span>type_info = <a href="../gobject/type_info.rs.html#17">TypeInfo</a>(gobject_ffi::GTypeInfo {
+        <span class="kw">let </span>type_info = <a href="../gobject/type_info.rs.html#27">TypeInfo</a>(<a href="../../../gobject_sys/struct.GTypeInfo.html">gobject_ffi::GTypeInfo</a> {
             class_size: mem::size_of::&lt;T::Interface&gt;() <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.u16.html">u16</a>,
             class_init: <span class="prelude-val">Some</span>(interface_init::&lt;T&gt;),
             ..<a href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html#tymethod.default">TypeInfo::default</a>().<span class="number">0
