@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/translate.rs`."><title>translate.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.81.0-nightly (032be6f7b 2024-07-16)" data-channel="nightly" data-search-js="search-d234aafac6c221dd.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/translate.rs`."><title>translate.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-c5d6553a23f1e5a6.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.81.0-nightly (9057c3ffe 2024-07-19)" data-channel="nightly" data-search-js="search-d234aafac6c221dd.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-d2fab2bf619172d3.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -3193,7 +3193,7 @@
 };
 
 <span class="kw">pub use </span><span class="kw">crate</span>::collections::{<a href="collections/ptr_slice.rs.html#1076-1080">ptr_slice::IntoPtrSlice</a>, <a href="collections/strv.rs.html#1084-1088">strv::IntoStrV</a>};
-<span class="kw">use </span><span class="kw">crate</span>::ffi;
+<span class="kw">use </span><a href="../../glib_sys/index.html"><span class="kw">crate</span>::ffi</a>;
 <span class="kw">pub use </span><span class="kw">crate</span>::gstring::{<a href="gstring.rs.html#2301-2303">IntoGStr</a>, <a href="gstring.rs.html#2377-2379">IntoOptionalGStr</a>};
 
 <span class="kw">use </span>libc::{c_char, size_t};
@@ -3381,14 +3381,14 @@
 }
 
 <span class="kw">impl </span><a href="#331-335">IntoGlib</a> <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
-    <span class="kw">type </span>GlibType = ffi::gboolean;
+    <span class="kw">type </span>GlibType = <a href="../../glib_sys/type.gboolean.html">ffi::gboolean</a>;
 
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>into_glib(<span class="self">self</span>) -&gt; ffi::gboolean {
+    </span><span class="kw">fn </span>into_glib(<span class="self">self</span>) -&gt; <a href="../../glib_sys/type.gboolean.html">ffi::gboolean</a> {
         <span class="kw">if </span><span class="self">self </span>{
-            ffi::GTRUE
+            <a href="../../glib_sys/constant.GTRUE.html">ffi::GTRUE</a>
         } <span class="kw">else </span>{
-            ffi::GFALSE
+            <a href="../../glib_sys/constant.GFALSE.html">ffi::GFALSE</a>
         }
     }
 }
@@ -3630,7 +3630,7 @@
             <a href="gstring.rs.html#284-290"><span class="kw">crate</span>::GStr::check_interior_nuls</a>(<a class="self" href="#582">self</a>).<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>();
         }
         <span class="kw">unsafe </span>{
-            ffi::g_strndup(<a class="self" href="#582">self</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.str.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span>c_char, <a class="self" href="#582">self</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.str.html#method.len">len</a>() <span class="kw">as </span>size_t) <span class="kw">as </span><span class="kw-2">*const </span>c_char
+            <a href="../../glib_sys/fn.g_strndup.html">ffi::g_strndup</a>(<a class="self" href="#582">self</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.str.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span>c_char, <a class="self" href="#582">self</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.str.html#method.len">len</a>() <span class="kw">as </span>size_t) <span class="kw">as </span><span class="kw-2">*const </span>c_char
         }
     }
 }
@@ -3691,7 +3691,7 @@
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>to_glib_full(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">*const </span>c_char {
         <span class="kw">unsafe </span>{
-            ffi::g_strndup(
+            <a href="../../glib_sys/fn.g_strndup.html">ffi::g_strndup</a>(
                 <a class="self" href="#646">self</a>.<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span>c_char,
                 <a class="self" href="#646">self</a>.<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.to_bytes">to_bytes</a>().<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.len">len</a>() <span class="kw">as </span>size_t,
             ) <span class="kw">as </span><span class="kw-2">*const </span>c_char
@@ -3710,7 +3710,7 @@
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>to_glib_full(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">*mut </span>c_char {
         <span class="kw">unsafe </span>{
-            ffi::g_strndup(
+            <a href="../../glib_sys/fn.g_strndup.html">ffi::g_strndup</a>(
                 <a class="self" href="#665">self</a>.<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span>c_char,
                 <a class="self" href="#665">self</a>.<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.to_bytes">to_bytes</a>().<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.len">len</a>() <span class="kw">as </span>size_t,
             ) <span class="kw">as </span><span class="kw-2">*mut </span>c_char
@@ -3729,7 +3729,7 @@
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>to_glib_full(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">*const </span>c_char {
         <span class="kw">unsafe </span>{
-            ffi::g_strndup(
+            <a href="../../glib_sys/fn.g_strndup.html">ffi::g_strndup</a>(
                 <a class="self" href="#684">self</a>.<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span>c_char,
                 <a class="self" href="#684">self</a>.<a href="https://doc.rust-lang.org/nightly/alloc/ffi/c_str/struct.CString.html#method.as_bytes">as_bytes</a>().<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.len">len</a>() <span class="kw">as </span>size_t,
             ) <span class="kw">as </span><span class="kw-2">*const </span>c_char
@@ -3748,7 +3748,7 @@
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>to_glib_full(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">*mut </span>c_char {
         <span class="kw">unsafe </span>{
-            ffi::g_strndup(
+            <a href="../../glib_sys/fn.g_strndup.html">ffi::g_strndup</a>(
                 <a class="self" href="#703">self</a>.<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span>c_char,
                 <a class="self" href="#703">self</a>.<a href="https://doc.rust-lang.org/nightly/alloc/ffi/c_str/struct.CString.html#method.as_bytes">as_bytes</a>().<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.len">len</a>() <span class="kw">as </span>size_t,
             ) <span class="kw">as </span><span class="kw-2">*mut </span>c_char
@@ -3871,7 +3871,7 @@
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>to_glib_full(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">*mut </span>c_char {
         <span class="kw">let </span>tmp = <a href="#740-747">path_to_c</a>(<a class="self" href="#826">self</a>);
-        <span class="kw">unsafe </span>{ ffi::g_strdup(<a href="#827">tmp</a>.<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.as_ptr">as_ptr</a>()) }
+        <span class="kw">unsafe </span>{ <a href="../../glib_sys/fn.g_strdup.html">ffi::g_strdup</a>(<a href="#827">tmp</a>.<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.as_ptr">as_ptr</a>()) }
     }
 }
 
@@ -3897,7 +3897,7 @@
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>to_glib_full(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">*mut </span>c_char {
         <span class="kw">let </span>tmp = <a href="#740-747">path_to_c</a>(<a class="self" href="#852">self</a>);
-        <span class="kw">unsafe </span>{ ffi::g_strdup(<a href="#853">tmp</a>.<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.as_ptr">as_ptr</a>()) }
+        <span class="kw">unsafe </span>{ <a href="../../glib_sys/fn.g_strdup.html">ffi::g_strdup</a>(<a href="#853">tmp</a>.<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.as_ptr">as_ptr</a>()) }
     }
 }
 
@@ -3931,7 +3931,7 @@
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>to_glib_full(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">*mut </span>c_char {
         <span class="kw">let </span>tmp = <a href="#778-786">os_str_to_c</a>(<a class="self" href="#886">self</a>);
-        <span class="kw">unsafe </span>{ ffi::g_strdup(<a href="#887">tmp</a>.<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.as_ptr">as_ptr</a>()) }
+        <span class="kw">unsafe </span>{ <a href="../../glib_sys/fn.g_strdup.html">ffi::g_strdup</a>(<a href="#887">tmp</a>.<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.as_ptr">as_ptr</a>()) }
     }
 }
 
@@ -3957,7 +3957,7 @@
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>to_glib_full(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">*mut </span>c_char {
         <span class="kw">let </span>tmp = <a href="#778-786">os_str_to_c</a>(<a class="self" href="#912">self</a>);
-        <span class="kw">unsafe </span>{ ffi::g_strdup(<a href="#913">tmp</a>.<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.as_ptr">as_ptr</a>()) }
+        <span class="kw">unsafe </span>{ <a href="../../glib_sys/fn.g_strdup.html">ffi::g_strdup</a>(<a href="#913">tmp</a>.<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.as_ptr">as_ptr</a>()) }
     }
 }
 
@@ -4134,7 +4134,7 @@
 <a class="macro" href="#985-1074">impl_to_glib_container_from_slice_string!</a>(<a href="gstring.rs.html#996"><span class="kw">crate</span>::GString</a>, <span class="kw-2">*mut </span>c_char);
 <a class="macro" href="#985-1074">impl_to_glib_container_from_slice_string!</a>(<a href="gstring.rs.html#996"><span class="kw">crate</span>::GString</a>, <span class="kw-2">*const </span>c_char);
 
-<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T&gt; ToGlibContainerFromSlice&lt;<span class="lifetime">'a</span>, <span class="kw-2">*mut </span>ffi::GList&gt; <span class="kw">for </span>T
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T&gt; ToGlibContainerFromSlice&lt;<span class="lifetime">'a</span>, <span class="kw-2">*mut </span><a href="../../glib_sys/struct.GList.html">ffi::GList</a>&gt; <span class="kw">for </span>T
 <span class="kw">where
     </span>T: <a href="#424-426">GlibPtrDefault</a> + ToGlibPtr&lt;<span class="lifetime">'a</span>, &lt;T <span class="kw">as </span>GlibPtrDefault&gt;::GlibType&gt;,
 {
@@ -4144,9 +4144,9 @@
     );
 
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>to_glib_none_from_slice(t: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>[T]) -&gt; (<span class="kw-2">*mut </span>ffi::GList, <span class="self">Self</span>::Storage) {
+    </span><span class="kw">fn </span>to_glib_none_from_slice(t: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>[T]) -&gt; (<span class="kw-2">*mut </span><a href="../../glib_sys/struct.GList.html">ffi::GList</a>, <span class="self">Self</span>::Storage) {
         <span class="kw">let </span>stash_vec: Vec&lt;<span class="kw">_</span>&gt; = <a href="#1101">t</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.rev">rev</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(<a href="#441">ToGlibPtr::to_glib_none</a>).<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.collect">collect</a>();
-        <span class="kw">let </span><span class="kw-2">mut </span>list: <span class="kw-2">*mut </span>ffi::GList = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
+        <span class="kw">let </span><span class="kw-2">mut </span>list: <span class="kw-2">*mut </span><a href="../../glib_sys/struct.GList.html">ffi::GList</a> = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
         <span class="kw">unsafe </span>{
             <span class="kw">for </span>stash <span class="kw">in </span><span class="kw-2">&amp;</span>stash_vec {
                 list = ffi::g_list_prepend(list, Ptr::to(stash.<span class="number">0</span>));
@@ -4157,9 +4157,9 @@
     }
 
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>to_glib_container_from_slice(t: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>[T]) -&gt; (<span class="kw-2">*mut </span>ffi::GList, <span class="self">Self</span>::Storage) {
+    </span><span class="kw">fn </span>to_glib_container_from_slice(t: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>[T]) -&gt; (<span class="kw-2">*mut </span><a href="../../glib_sys/struct.GList.html">ffi::GList</a>, <span class="self">Self</span>::Storage) {
         <span class="kw">let </span>stash_vec: Vec&lt;<span class="kw">_</span>&gt; = <a href="#1114">t</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.rev">rev</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(<a href="#441">ToGlibPtr::to_glib_none</a>).<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.collect">collect</a>();
-        <span class="kw">let </span><span class="kw-2">mut </span>list: <span class="kw-2">*mut </span>ffi::GList = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
+        <span class="kw">let </span><span class="kw-2">mut </span>list: <span class="kw-2">*mut </span><a href="../../glib_sys/struct.GList.html">ffi::GList</a> = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
         <span class="kw">unsafe </span>{
             <span class="kw">for </span>stash <span class="kw">in </span><span class="kw-2">&amp;</span>stash_vec {
                 list = ffi::g_list_prepend(list, Ptr::to(stash.<span class="number">0</span>));
@@ -4169,8 +4169,8 @@
     }
 
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>to_glib_full_from_slice(t: <span class="kw-2">&amp;</span>[T]) -&gt; <span class="kw-2">*mut </span>ffi::GList {
-        <span class="kw">let </span><span class="kw-2">mut </span>list: <span class="kw-2">*mut </span>ffi::GList = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
+    </span><span class="kw">fn </span>to_glib_full_from_slice(t: <span class="kw-2">&amp;</span>[T]) -&gt; <span class="kw-2">*mut </span><a href="../../glib_sys/struct.GList.html">ffi::GList</a> {
+        <span class="kw">let </span><span class="kw-2">mut </span>list: <span class="kw-2">*mut </span><a href="../../glib_sys/struct.GList.html">ffi::GList</a> = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
         <span class="kw">unsafe </span>{
             <span class="kw">for </span>ptr <span class="kw">in </span>t.iter().rev().map(ToGlibPtr::to_glib_full) {
                 list = ffi::g_list_prepend(list, Ptr::to(ptr));
@@ -4180,7 +4180,7 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T&gt; ToGlibContainerFromSlice&lt;<span class="lifetime">'a</span>, <span class="kw-2">*const </span>ffi::GList&gt; <span class="kw">for </span>T
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T&gt; ToGlibContainerFromSlice&lt;<span class="lifetime">'a</span>, <span class="kw-2">*const </span><a href="../../glib_sys/struct.GList.html">ffi::GList</a>&gt; <span class="kw">for </span>T
 <span class="kw">where
     </span>T: <a href="#424-426">GlibPtrDefault</a> + ToGlibPtr&lt;<span class="lifetime">'a</span>, &lt;T <span class="kw">as </span>GlibPtrDefault&gt;::GlibType&gt;,
 {
@@ -4190,33 +4190,33 @@
     );
 
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>to_glib_none_from_slice(t: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>[T]) -&gt; (<span class="kw-2">*const </span>ffi::GList, <span class="self">Self</span>::Storage) {
-        <span class="kw">let </span>(list, stash) = ToGlibContainerFromSlice::&lt;<span class="kw-2">*mut </span>ffi::GList&gt;::to_glib_none_from_slice(<a href="#1147">t</a>);
-        (<a href="#1148">list</a> <span class="kw">as </span><span class="kw-2">*const </span>ffi::GList, <a href="#1148">stash</a>)
+    </span><span class="kw">fn </span>to_glib_none_from_slice(t: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>[T]) -&gt; (<span class="kw-2">*const </span><a href="../../glib_sys/struct.GList.html">ffi::GList</a>, <span class="self">Self</span>::Storage) {
+        <span class="kw">let </span>(list, stash) = ToGlibContainerFromSlice::&lt;<span class="kw-2">*mut </span><a href="../../glib_sys/struct.GList.html">ffi::GList</a>&gt;::to_glib_none_from_slice(<a href="#1147">t</a>);
+        (<a href="#1148">list</a> <span class="kw">as </span><span class="kw-2">*const </span><a href="../../glib_sys/struct.GList.html">ffi::GList</a>, <a href="#1148">stash</a>)
     }
 
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>to_glib_container_from_slice(_t: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>[T]) -&gt; (<span class="kw-2">*const </span>ffi::GList, <span class="self">Self</span>::Storage) {
+    </span><span class="kw">fn </span>to_glib_container_from_slice(_t: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>[T]) -&gt; (<span class="kw-2">*const </span><a href="../../glib_sys/struct.GList.html">ffi::GList</a>, <span class="self">Self</span>::Storage) {
         <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.unimplemented.html">unimplemented!</a>()
     }
 
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>to_glib_full_from_slice(_t: <span class="kw-2">&amp;</span>[T]) -&gt; <span class="kw-2">*const </span>ffi::GList {
+    </span><span class="kw">fn </span>to_glib_full_from_slice(_t: <span class="kw-2">&amp;</span>[T]) -&gt; <span class="kw-2">*const </span><a href="../../glib_sys/struct.GList.html">ffi::GList</a> {
         <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.unimplemented.html">unimplemented!</a>()
     }
 }
 
 <span class="attr">#[doc(alias = <span class="string">"GList"</span>)]
-</span><span class="kw">pub struct </span><a href="../../glib/translate/struct.List.html">List</a>(ptr::NonNull&lt;ffi::GList&gt;);
+</span><span class="kw">pub struct </span><a href="../../glib/translate/struct.List.html">List</a>(ptr::NonNull&lt;<a href="../../glib_sys/struct.GList.html">ffi::GList</a>&gt;);
 
 <span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/ops/drop/trait.Drop.html">Drop</a> <span class="kw">for </span><a href="#1164">List</a> {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
-        <span class="kw">unsafe </span>{ ffi::g_list_free(<a class="self" href="#1168">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>()) }
+        <span class="kw">unsafe </span>{ <a href="../../glib_sys/fn.g_list_free.html">ffi::g_list_free</a>(<a class="self" href="#1168">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>()) }
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T&gt; ToGlibContainerFromSlice&lt;<span class="lifetime">'a</span>, <span class="kw-2">*mut </span>ffi::GSList&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span>T
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T&gt; ToGlibContainerFromSlice&lt;<span class="lifetime">'a</span>, <span class="kw-2">*mut </span><a href="../../glib_sys/struct.GSList.html">ffi::GSList</a>&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span>T
 <span class="kw">where
     </span>T: <a href="#424-426">GlibPtrDefault</a> + ToGlibPtr&lt;<span class="lifetime">'a</span>, &lt;T <span class="kw">as </span>GlibPtrDefault&gt;::GlibType&gt;,
 {
@@ -4226,9 +4226,9 @@
     );
 
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>to_glib_none_from_slice(t: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>[<span class="kw-2">&amp;</span><span class="lifetime">'a </span>T]) -&gt; (<span class="kw-2">*mut </span>ffi::GSList, <span class="self">Self</span>::Storage) {
+    </span><span class="kw">fn </span>to_glib_none_from_slice(t: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>[<span class="kw-2">&amp;</span><span class="lifetime">'a </span>T]) -&gt; (<span class="kw-2">*mut </span><a href="../../glib_sys/struct.GSList.html">ffi::GSList</a>, <span class="self">Self</span>::Storage) {
         <span class="kw">let </span>stash_vec: Vec&lt;<span class="kw">_</span>&gt; = <a href="#1183">t</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.rev">rev</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(<a href="#441">ToGlibPtr::to_glib_none</a>).<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.collect">collect</a>();
-        <span class="kw">let </span><span class="kw-2">mut </span>list: <span class="kw-2">*mut </span>ffi::GSList = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
+        <span class="kw">let </span><span class="kw-2">mut </span>list: <span class="kw-2">*mut </span><a href="../../glib_sys/struct.GSList.html">ffi::GSList</a> = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
         <span class="kw">unsafe </span>{
             <span class="kw">for </span>stash <span class="kw">in </span><span class="kw-2">&amp;</span>stash_vec {
                 list = ffi::g_slist_prepend(list, Ptr::to(stash.<span class="number">0</span>));
@@ -4240,9 +4240,9 @@
     }
 
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>to_glib_container_from_slice(t: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>[<span class="kw-2">&amp;</span><span class="lifetime">'a </span>T]) -&gt; (<span class="kw-2">*mut </span>ffi::GSList, <span class="self">Self</span>::Storage) {
+    </span><span class="kw">fn </span>to_glib_container_from_slice(t: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>[<span class="kw-2">&amp;</span><span class="lifetime">'a </span>T]) -&gt; (<span class="kw-2">*mut </span><a href="../../glib_sys/struct.GSList.html">ffi::GSList</a>, <span class="self">Self</span>::Storage) {
         <span class="kw">let </span>stash_vec: Vec&lt;<span class="kw">_</span>&gt; = <a href="#1197">t</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.rev">rev</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(<a href="#441">ToGlibPtr::to_glib_none</a>).<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.collect">collect</a>();
-        <span class="kw">let </span><span class="kw-2">mut </span>list: <span class="kw-2">*mut </span>ffi::GSList = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
+        <span class="kw">let </span><span class="kw-2">mut </span>list: <span class="kw-2">*mut </span><a href="../../glib_sys/struct.GSList.html">ffi::GSList</a> = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
         <span class="kw">unsafe </span>{
             <span class="kw">for </span>stash <span class="kw">in </span><span class="kw-2">&amp;</span>stash_vec {
                 list = ffi::g_slist_prepend(list, Ptr::to(stash.<span class="number">0</span>));
@@ -4252,8 +4252,8 @@
     }
 
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>to_glib_full_from_slice(t: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><span class="lifetime">'a </span>T]) -&gt; <span class="kw-2">*mut </span>ffi::GSList {
-        <span class="kw">let </span><span class="kw-2">mut </span>list: <span class="kw-2">*mut </span>ffi::GSList = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
+    </span><span class="kw">fn </span>to_glib_full_from_slice(t: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><span class="lifetime">'a </span>T]) -&gt; <span class="kw-2">*mut </span><a href="../../glib_sys/struct.GSList.html">ffi::GSList</a> {
+        <span class="kw">let </span><span class="kw-2">mut </span>list: <span class="kw-2">*mut </span><a href="../../glib_sys/struct.GSList.html">ffi::GSList</a> = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
         <span class="kw">unsafe </span>{
             <span class="kw">for </span>ptr <span class="kw">in </span>t.iter().rev().map(ToGlibPtr::to_glib_full) {
                 list = ffi::g_slist_prepend(list, Ptr::to(ptr));
@@ -4263,7 +4263,7 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T&gt; ToGlibContainerFromSlice&lt;<span class="lifetime">'a</span>, <span class="kw-2">*const </span>ffi::GSList&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span>T
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T&gt; ToGlibContainerFromSlice&lt;<span class="lifetime">'a</span>, <span class="kw-2">*const </span><a href="../../glib_sys/struct.GSList.html">ffi::GSList</a>&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span>T
 <span class="kw">where
     </span>T: <a href="#424-426">GlibPtrDefault</a> + ToGlibPtr&lt;<span class="lifetime">'a</span>, &lt;T <span class="kw">as </span>GlibPtrDefault&gt;::GlibType&gt;,
 {
@@ -4273,30 +4273,30 @@
     );
 
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>to_glib_none_from_slice(t: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>[<span class="kw-2">&amp;</span><span class="lifetime">'a </span>T]) -&gt; (<span class="kw-2">*const </span>ffi::GSList, <span class="self">Self</span>::Storage) {
+    </span><span class="kw">fn </span>to_glib_none_from_slice(t: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>[<span class="kw-2">&amp;</span><span class="lifetime">'a </span>T]) -&gt; (<span class="kw-2">*const </span><a href="../../glib_sys/struct.GSList.html">ffi::GSList</a>, <span class="self">Self</span>::Storage) {
         <span class="kw">let </span>(list, stash) =
-            ToGlibContainerFromSlice::&lt;<span class="kw-2">*mut </span>ffi::GSList&gt;::to_glib_none_from_slice(<a href="#1230">t</a>);
-        (<a href="#1231">list</a> <span class="kw">as </span><span class="kw-2">*const </span>ffi::GSList, <a href="#1231">stash</a>)
+            ToGlibContainerFromSlice::&lt;<span class="kw-2">*mut </span><a href="../../glib_sys/struct.GSList.html">ffi::GSList</a>&gt;::to_glib_none_from_slice(<a href="#1230">t</a>);
+        (<a href="#1231">list</a> <span class="kw">as </span><span class="kw-2">*const </span><a href="../../glib_sys/struct.GSList.html">ffi::GSList</a>, <a href="#1231">stash</a>)
     }
 
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>to_glib_container_from_slice(_t: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>[<span class="kw-2">&amp;</span><span class="lifetime">'a </span>T]) -&gt; (<span class="kw-2">*const </span>ffi::GSList, <span class="self">Self</span>::Storage) {
+    </span><span class="kw">fn </span>to_glib_container_from_slice(_t: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>[<span class="kw-2">&amp;</span><span class="lifetime">'a </span>T]) -&gt; (<span class="kw-2">*const </span><a href="../../glib_sys/struct.GSList.html">ffi::GSList</a>, <span class="self">Self</span>::Storage) {
         <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.unimplemented.html">unimplemented!</a>()
     }
 
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>to_glib_full_from_slice(_t: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><span class="lifetime">'a </span>T]) -&gt; <span class="kw-2">*const </span>ffi::GSList {
+    </span><span class="kw">fn </span>to_glib_full_from_slice(_t: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><span class="lifetime">'a </span>T]) -&gt; <span class="kw-2">*const </span><a href="../../glib_sys/struct.GSList.html">ffi::GSList</a> {
         <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.unimplemented.html">unimplemented!</a>()
     }
 }
 
 <span class="attr">#[doc(alias = <span class="string">"GSList"</span>)]
-</span><span class="kw">pub struct </span><a href="../../glib/translate/struct.SList.html">SList</a>(ptr::NonNull&lt;ffi::GSList&gt;);
+</span><span class="kw">pub struct </span><a href="../../glib/translate/struct.SList.html">SList</a>(ptr::NonNull&lt;<a href="../../glib_sys/struct.GSList.html">ffi::GSList</a>&gt;);
 
 <span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/ops/drop/trait.Drop.html">Drop</a> <span class="kw">for </span><a href="#1248">SList</a> {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
-        <span class="kw">unsafe </span>{ ffi::g_slist_free(<a class="self" href="#1252">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>()) }
+        <span class="kw">unsafe </span>{ <a href="../../glib_sys/fn.g_slist_free.html">ffi::g_slist_free</a>(<a class="self" href="#1252">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>()) }
     }
 }
 
@@ -4322,23 +4322,23 @@
 }
 
 <span class="attr">#[allow(clippy::implicit_hasher)]
-</span><span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; ToGlibPtr&lt;<span class="lifetime">'a</span>, <span class="kw-2">*mut </span>ffi::GHashTable&gt; <span class="kw">for </span>HashMap&lt;<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>, <a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>&gt; {
+</span><span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; ToGlibPtr&lt;<span class="lifetime">'a</span>, <span class="kw-2">*mut </span><a href="../../glib_sys/struct.GHashTable.html">ffi::GHashTable</a>&gt; <span class="kw">for </span>HashMap&lt;<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>, <a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>&gt; {
     <span class="kw">type </span>Storage = <a href="#1308">HashTable</a>;
 
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>to_glib_none(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Stash&lt;<span class="lifetime">'a</span>, <span class="kw-2">*mut </span>ffi::GHashTable, <span class="self">Self</span>&gt; {
+    </span><span class="kw">fn </span>to_glib_none(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Stash&lt;<span class="lifetime">'a</span>, <span class="kw-2">*mut </span><a href="../../glib_sys/struct.GHashTable.html">ffi::GHashTable</a>, <span class="self">Self</span>&gt; {
         <span class="kw">let </span>ptr = <a class="self" href="#1283">self</a>.<a href="#456-458">to_glib_full</a>();
         <a href="#259-262">Stash</a>(<a href="#1284">ptr</a>, <a href="#1308">HashTable</a>(<span class="kw">unsafe </span>{ <a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.new_unchecked">ptr::NonNull::new_unchecked</a>(<a href="#1284">ptr</a>) }))
     }
 
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>to_glib_full(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">*mut </span>ffi::GHashTable {
+    </span><span class="kw">fn </span>to_glib_full(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">*mut </span><a href="../../glib_sys/struct.GHashTable.html">ffi::GHashTable</a> {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>ptr = ffi::g_hash_table_new_full(
-                <span class="prelude-val">Some</span>(ffi::g_str_hash),
-                <span class="prelude-val">Some</span>(ffi::g_str_equal),
-                <span class="prelude-val">Some</span>(ffi::g_free),
-                <span class="prelude-val">Some</span>(ffi::g_free),
+            <span class="kw">let </span>ptr = <a href="../../glib_sys/fn.g_hash_table_new_full.html">ffi::g_hash_table_new_full</a>(
+                <span class="prelude-val">Some</span>(<a href="../../glib_sys/fn.g_str_hash.html">ffi::g_str_hash</a>),
+                <span class="prelude-val">Some</span>(<a href="../../glib_sys/fn.g_str_equal.html">ffi::g_str_equal</a>),
+                <span class="prelude-val">Some</span>(<a href="../../glib_sys/fn.g_free.html">ffi::g_free</a>),
+                <span class="prelude-val">Some</span>(<a href="../../glib_sys/fn.g_free.html">ffi::g_free</a>),
             );
             <span class="kw">for </span>(k, v) <span class="kw">in </span><span class="self">self </span>{
                 <span class="kw">let </span>k: <span class="kw-2">*mut </span>c_char = k.to_glib_full();
@@ -4351,28 +4351,28 @@
 }
 
 <span class="attr">#[doc(alias = <span class="string">"GHashTable"</span>)]
-</span><span class="kw">pub struct </span><a href="../../glib/translate/struct.HashTable.html">HashTable</a>(ptr::NonNull&lt;ffi::GHashTable&gt;);
+</span><span class="kw">pub struct </span><a href="../../glib/translate/struct.HashTable.html">HashTable</a>(ptr::NonNull&lt;<a href="../../glib_sys/struct.GHashTable.html">ffi::GHashTable</a>&gt;);
 
 <span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/ops/drop/trait.Drop.html">Drop</a> <span class="kw">for </span><a href="#1308">HashTable</a> {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
-        <span class="kw">unsafe </span>{ ffi::g_hash_table_unref(<a class="self" href="#1312">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>()) }
+        <span class="kw">unsafe </span>{ <a href="../../glib_sys/fn.g_hash_table_unref.html">ffi::g_hash_table_unref</a>(<a class="self" href="#1312">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>()) }
     }
 }
 
 <span class="attr">#[doc(alias = <span class="string">"GPtrArray"</span>)]
-</span><span class="kw">pub struct </span><a href="../../glib/translate/struct.PtrArray.html">PtrArray</a>(ptr::NonNull&lt;ffi::GPtrArray&gt;);
+</span><span class="kw">pub struct </span><a href="../../glib/translate/struct.PtrArray.html">PtrArray</a>(ptr::NonNull&lt;<a href="../../glib_sys/struct.GPtrArray.html">ffi::GPtrArray</a>&gt;);
 
 <span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/ops/drop/trait.Drop.html">Drop</a> <span class="kw">for </span><a href="#1318">PtrArray</a> {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
         <span class="kw">unsafe </span>{
-            ffi::g_ptr_array_unref(<a class="self" href="#1322">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>());
+            <a href="../../glib_sys/fn.g_ptr_array_unref.html">ffi::g_ptr_array_unref</a>(<a class="self" href="#1322">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>());
         }
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T&gt; ToGlibContainerFromSlice&lt;<span class="lifetime">'a</span>, <span class="kw-2">*mut </span>ffi::GPtrArray&gt; <span class="kw">for </span>T
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T&gt; ToGlibContainerFromSlice&lt;<span class="lifetime">'a</span>, <span class="kw-2">*mut </span><a href="../../glib_sys/struct.GPtrArray.html">ffi::GPtrArray</a>&gt; <span class="kw">for </span>T
 <span class="kw">where
     </span>T: <a href="#424-426">GlibPtrDefault</a> + ToGlibPtr&lt;<span class="lifetime">'a</span>, &lt;T <span class="kw">as </span>GlibPtrDefault&gt;::GlibType&gt;,
 {
@@ -4382,9 +4382,9 @@
     );
 
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>to_glib_none_from_slice(t: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>[T]) -&gt; (<span class="kw-2">*mut </span>ffi::GPtrArray, <span class="self">Self</span>::Storage) {
+    </span><span class="kw">fn </span>to_glib_none_from_slice(t: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>[T]) -&gt; (<span class="kw-2">*mut </span><a href="../../glib_sys/struct.GPtrArray.html">ffi::GPtrArray</a>, <span class="self">Self</span>::Storage) {
         <span class="kw">let </span>stash_vec: Vec&lt;<span class="kw">_</span>&gt; = <a href="#1339">t</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(<a href="#441">ToGlibPtr::to_glib_none</a>).<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.collect">collect</a>();
-        <span class="kw">let </span>arr = <span class="kw">unsafe </span>{ ffi::g_ptr_array_sized_new(<a href="#1339">t</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.len">len</a>() <span class="kw">as _</span>) };
+        <span class="kw">let </span>arr = <span class="kw">unsafe </span>{ <a href="../../glib_sys/fn.g_ptr_array_sized_new.html">ffi::g_ptr_array_sized_new</a>(<a href="#1339">t</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.len">len</a>() <span class="kw">as _</span>) };
         <span class="kw">unsafe </span>{
             <span class="kw">for </span>stash <span class="kw">in </span><span class="kw-2">&amp;</span>stash_vec {
                 ffi::g_ptr_array_add(arr, Ptr::to(stash.<span class="number">0</span>));
@@ -4401,9 +4401,9 @@
     }
 
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>to_glib_container_from_slice(t: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>[T]) -&gt; (<span class="kw-2">*mut </span>ffi::GPtrArray, <span class="self">Self</span>::Storage) {
+    </span><span class="kw">fn </span>to_glib_container_from_slice(t: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>[T]) -&gt; (<span class="kw-2">*mut </span><a href="../../glib_sys/struct.GPtrArray.html">ffi::GPtrArray</a>, <span class="self">Self</span>::Storage) {
         <span class="kw">let </span>stash_vec: Vec&lt;<span class="kw">_</span>&gt; = <a href="#1358">t</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(<a href="#441">ToGlibPtr::to_glib_none</a>).<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.collect">collect</a>();
-        <span class="kw">let </span>arr = <span class="kw">unsafe </span>{ ffi::g_ptr_array_sized_new(<a href="#1358">t</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.len">len</a>() <span class="kw">as _</span>) };
+        <span class="kw">let </span>arr = <span class="kw">unsafe </span>{ <a href="../../glib_sys/fn.g_ptr_array_sized_new.html">ffi::g_ptr_array_sized_new</a>(<a href="#1358">t</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.len">len</a>() <span class="kw">as _</span>) };
         <span class="kw">unsafe </span>{
             <span class="kw">for </span>stash <span class="kw">in </span><span class="kw-2">&amp;</span>stash_vec {
                 ffi::g_ptr_array_add(arr, Ptr::to(stash.<span class="number">0</span>));
@@ -4413,8 +4413,8 @@
     }
 
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>to_glib_full_from_slice(t: <span class="kw-2">&amp;</span>[T]) -&gt; <span class="kw-2">*mut </span>ffi::GPtrArray {
-        <span class="kw">let </span>arr = <span class="kw">unsafe </span>{ ffi::g_ptr_array_sized_new(<a href="#1370">t</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.len">len</a>() <span class="kw">as _</span>) };
+    </span><span class="kw">fn </span>to_glib_full_from_slice(t: <span class="kw-2">&amp;</span>[T]) -&gt; <span class="kw-2">*mut </span><a href="../../glib_sys/struct.GPtrArray.html">ffi::GPtrArray</a> {
+        <span class="kw">let </span>arr = <span class="kw">unsafe </span>{ <a href="../../glib_sys/fn.g_ptr_array_sized_new.html">ffi::g_ptr_array_sized_new</a>(<a href="#1370">t</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.len">len</a>() <span class="kw">as _</span>) };
         <span class="kw">unsafe </span>{
             <span class="kw">for </span>ptr <span class="kw">in </span>t.iter().map(ToGlibPtr::to_glib_full) {
                 ffi::g_ptr_array_add(arr, Ptr::to(ptr));
@@ -4424,7 +4424,7 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T&gt; ToGlibContainerFromSlice&lt;<span class="lifetime">'a</span>, <span class="kw-2">*const </span>ffi::GPtrArray&gt; <span class="kw">for </span>T
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T&gt; ToGlibContainerFromSlice&lt;<span class="lifetime">'a</span>, <span class="kw-2">*const </span><a href="../../glib_sys/struct.GPtrArray.html">ffi::GPtrArray</a>&gt; <span class="kw">for </span>T
 <span class="kw">where
     </span>T: <a href="#424-426">GlibPtrDefault</a> + ToGlibPtr&lt;<span class="lifetime">'a</span>, &lt;T <span class="kw">as </span>GlibPtrDefault&gt;::GlibType&gt;,
 {
@@ -4434,19 +4434,19 @@
     );
 
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>to_glib_none_from_slice(t: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>[T]) -&gt; (<span class="kw-2">*const </span>ffi::GPtrArray, <span class="self">Self</span>::Storage) {
+    </span><span class="kw">fn </span>to_glib_none_from_slice(t: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>[T]) -&gt; (<span class="kw-2">*const </span><a href="../../glib_sys/struct.GPtrArray.html">ffi::GPtrArray</a>, <span class="self">Self</span>::Storage) {
         <span class="kw">let </span>(arr, stash) =
-            ToGlibContainerFromSlice::&lt;<span class="kw-2">*mut </span>ffi::GPtrArray&gt;::to_glib_none_from_slice(<a href="#1391">t</a>);
-        (<a href="#1392">arr</a> <span class="kw">as </span><span class="kw-2">*const </span>ffi::GPtrArray, <a href="#1392">stash</a>)
+            ToGlibContainerFromSlice::&lt;<span class="kw-2">*mut </span><a href="../../glib_sys/struct.GPtrArray.html">ffi::GPtrArray</a>&gt;::to_glib_none_from_slice(<a href="#1391">t</a>);
+        (<a href="#1392">arr</a> <span class="kw">as </span><span class="kw-2">*const </span><a href="../../glib_sys/struct.GPtrArray.html">ffi::GPtrArray</a>, <a href="#1392">stash</a>)
     }
 
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>to_glib_container_from_slice(_t: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>[T]) -&gt; (<span class="kw-2">*const </span>ffi::GPtrArray, <span class="self">Self</span>::Storage) {
+    </span><span class="kw">fn </span>to_glib_container_from_slice(_t: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>[T]) -&gt; (<span class="kw-2">*const </span><a href="../../glib_sys/struct.GPtrArray.html">ffi::GPtrArray</a>, <span class="self">Self</span>::Storage) {
         <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.unimplemented.html">unimplemented!</a>()
     }
 
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>to_glib_full_from_slice(_t: <span class="kw-2">&amp;</span>[T]) -&gt; <span class="kw-2">*const </span>ffi::GPtrArray {
+    </span><span class="kw">fn </span>to_glib_full_from_slice(_t: <span class="kw-2">&amp;</span>[T]) -&gt; <span class="kw-2">*const </span><a href="../../glib_sys/struct.GPtrArray.html">ffi::GPtrArray</a> {
         <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.unimplemented.html">unimplemented!</a>()
     }
 }
@@ -4464,10 +4464,10 @@
     <a href="#1411">FromGlib::from_glib</a>(<a href="#1417">val</a>)
 }
 
-<span class="kw">impl </span>FromGlib&lt;ffi::gboolean&gt; <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
+<span class="kw">impl </span>FromGlib&lt;<a href="../../glib_sys/type.gboolean.html">ffi::gboolean</a>&gt; <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
     <span class="attr">#[inline]
-    </span><span class="kw">unsafe fn </span>from_glib(val: ffi::gboolean) -&gt; <span class="self">Self </span>{
-        <a href="#1423">val</a> != ffi::GFALSE
+    </span><span class="kw">unsafe fn </span>from_glib(val: <a href="../../glib_sys/type.gboolean.html">ffi::gboolean</a>) -&gt; <span class="self">Self </span>{
+        <a href="#1423">val</a> != <a href="../../glib_sys/constant.GFALSE.html">ffi::GFALSE</a>
     }
 }
 
@@ -4737,7 +4737,7 @@
     <span class="attr">#[inline]
     </span><span class="kw">unsafe fn </span>from_glib_full(ptr: <span class="kw-2">*const </span>c_char) -&gt; <span class="self">Self </span>{
         <span class="kw">let </span>res = <a href="#1625-1627">from_glib_none</a>(<a href="#1692">ptr</a>);
-        ffi::g_free(<a href="#1692">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
+        <a href="../../glib_sys/fn.g_free.html">ffi::g_free</a>(<a href="#1692">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
         <a href="#1693">res</a>
     }
 }
@@ -4756,7 +4756,7 @@
     <span class="attr">#[inline]
     </span><span class="kw">unsafe fn </span>from_glib_full(ptr: <span class="kw-2">*mut </span>c_char) -&gt; <span class="self">Self </span>{
         <span class="kw">let </span>res = <a href="#1625-1627">from_glib_none</a>(<a href="#1711">ptr</a>);
-        ffi::g_free(<a href="#1711">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
+        <a href="../../glib_sys/fn.g_free.html">ffi::g_free</a>(<a href="#1711">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
         <a href="#1712">res</a>
     }
 }
@@ -4820,7 +4820,7 @@
     <span class="attr">#[inline]
     </span><span class="kw">unsafe fn </span>from_glib_full(ptr: <span class="kw-2">*const </span>c_char) -&gt; <span class="self">Self </span>{
         <span class="kw">let </span>res = <a href="#1625-1627">from_glib_none</a>(<a href="#1775">ptr</a>);
-        ffi::g_free(<a href="#1775">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
+        <a href="../../glib_sys/fn.g_free.html">ffi::g_free</a>(<a href="#1775">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
         <a href="#1776">res</a>
     }
 }
@@ -4837,7 +4837,7 @@
     <span class="attr">#[inline]
     </span><span class="kw">unsafe fn </span>from_glib_full(ptr: <span class="kw-2">*mut </span>c_char) -&gt; <span class="self">Self </span>{
         <span class="kw">let </span>res = <a href="#1625-1627">from_glib_none</a>(<a href="#1792">ptr</a>);
-        ffi::g_free(<a href="#1792">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
+        <a href="../../glib_sys/fn.g_free.html">ffi::g_free</a>(<a href="#1792">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
         <a href="#1793">res</a>
     }
 }
@@ -4870,7 +4870,7 @@
 
     <span class="kw">unsafe fn </span>from_glib_full_num(ptr: <span class="kw-2">*const </span><a href="https://doc.rust-lang.org/nightly/std/primitive.i8.html">i8</a>, num: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; <span class="self">Self </span>{
         <span class="kw">let </span>res = <a href="#1800-1804">c_to_path_buf_num</a>(<a href="#1825">ptr</a> <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>, <a href="#1825">num</a>);
-        ffi::g_free(<a href="#1825">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
+        <a href="../../glib_sys/fn.g_free.html">ffi::g_free</a>(<a href="#1825">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
         <a href="#1826">res</a>
     }
 }
@@ -4932,7 +4932,7 @@
     <span class="attr">#[inline]
     </span><span class="kw">unsafe fn </span>from_glib_full(ptr: <span class="kw-2">*const </span>c_char) -&gt; <span class="self">Self </span>{
         <span class="kw">let </span>res = <a href="#1625-1627">from_glib_none</a>(<a href="#1887">ptr</a>);
-        ffi::g_free(<a href="#1887">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
+        <a href="../../glib_sys/fn.g_free.html">ffi::g_free</a>(<a href="#1887">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
         <a href="#1888">res</a>
     }
 }
@@ -4949,7 +4949,7 @@
     <span class="attr">#[inline]
     </span><span class="kw">unsafe fn </span>from_glib_full(ptr: <span class="kw-2">*mut </span>c_char) -&gt; <span class="self">Self </span>{
         <span class="kw">let </span>res = <a href="#1625-1627">from_glib_none</a>(<a href="#1904">ptr</a>);
-        ffi::g_free(<a href="#1904">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
+        <a href="../../glib_sys/fn.g_free.html">ffi::g_free</a>(<a href="#1904">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
         <a href="#1905">res</a>
     }
 }
@@ -5014,8 +5014,8 @@
     <span class="kw">unsafe fn </span>from_glib_full_as_vec(ptr: PP) -&gt; Vec&lt;<span class="self">Self</span>&gt;;
 }
 
-<span class="kw">impl </span>FromGlibContainerAsVec&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>, <span class="kw-2">*const </span>ffi::gboolean&gt; <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
-    <span class="kw">unsafe fn </span>from_glib_none_num_as_vec(ptr: <span class="kw-2">*const </span>ffi::gboolean, num: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; Vec&lt;<span class="self">Self</span>&gt; {
+<span class="kw">impl </span>FromGlibContainerAsVec&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>, <span class="kw-2">*const </span><a href="../../glib_sys/type.gboolean.html">ffi::gboolean</a>&gt; <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
+    <span class="kw">unsafe fn </span>from_glib_none_num_as_vec(ptr: <span class="kw-2">*const </span><a href="../../glib_sys/type.gboolean.html">ffi::gboolean</a>, num: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; Vec&lt;<span class="self">Self</span>&gt; {
         <span class="kw">if </span>num == <span class="number">0 </span>|| ptr.is_null() {
             <span class="kw">return </span><a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.new">Vec::new</a>();
         }
@@ -5029,29 +5029,29 @@
         <a href="#1977">res</a>
     }
 
-    <span class="kw">unsafe fn </span>from_glib_container_num_as_vec(<span class="kw">_</span>: <span class="kw-2">*const </span>ffi::gboolean, <span class="kw">_</span>: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; Vec&lt;<span class="self">Self</span>&gt; {
+    <span class="kw">unsafe fn </span>from_glib_container_num_as_vec(<span class="kw">_</span>: <span class="kw-2">*const </span><a href="../../glib_sys/type.gboolean.html">ffi::gboolean</a>, <span class="kw">_</span>: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; Vec&lt;<span class="self">Self</span>&gt; {
         <span class="comment">// Can't really free a *const
         </span><a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.unimplemented.html">unimplemented!</a>();
     }
 
-    <span class="kw">unsafe fn </span>from_glib_full_num_as_vec(<span class="kw">_</span>: <span class="kw-2">*const </span>ffi::gboolean, <span class="kw">_</span>: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; Vec&lt;<span class="self">Self</span>&gt; {
+    <span class="kw">unsafe fn </span>from_glib_full_num_as_vec(<span class="kw">_</span>: <span class="kw-2">*const </span><a href="../../glib_sys/type.gboolean.html">ffi::gboolean</a>, <span class="kw">_</span>: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; Vec&lt;<span class="self">Self</span>&gt; {
         <span class="comment">// Can't really free a *const
         </span><a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.unimplemented.html">unimplemented!</a>();
     }
 }
 
-<span class="kw">impl </span>FromGlibContainerAsVec&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>, <span class="kw-2">*mut </span>ffi::gboolean&gt; <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
-    <span class="kw">unsafe fn </span>from_glib_none_num_as_vec(ptr: <span class="kw-2">*mut </span>ffi::gboolean, num: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; Vec&lt;<span class="self">Self</span>&gt; {
+<span class="kw">impl </span>FromGlibContainerAsVec&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>, <span class="kw-2">*mut </span><a href="../../glib_sys/type.gboolean.html">ffi::gboolean</a>&gt; <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
+    <span class="kw">unsafe fn </span>from_glib_none_num_as_vec(ptr: <span class="kw-2">*mut </span><a href="../../glib_sys/type.gboolean.html">ffi::gboolean</a>, num: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; Vec&lt;<span class="self">Self</span>&gt; {
         <a href="#1957">FromGlibContainerAsVec::from_glib_none_num_as_vec</a>(<a href="#1998">ptr</a> <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>, <a href="#1998">num</a>)
     }
 
-    <span class="kw">unsafe fn </span>from_glib_container_num_as_vec(ptr: <span class="kw-2">*mut </span>ffi::gboolean, num: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; Vec&lt;<span class="self">Self</span>&gt; {
+    <span class="kw">unsafe fn </span>from_glib_container_num_as_vec(ptr: <span class="kw-2">*mut </span><a href="../../glib_sys/type.gboolean.html">ffi::gboolean</a>, num: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; Vec&lt;<span class="self">Self</span>&gt; {
         <span class="kw">let </span>res = <a href="#1957">FromGlibContainerAsVec::from_glib_none_num_as_vec</a>(<a href="#2002">ptr</a>, <a href="#2002">num</a>);
-        ffi::g_free(<a href="#2002">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
+        <a href="../../glib_sys/fn.g_free.html">ffi::g_free</a>(<a href="#2002">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
         <a href="#2003">res</a>
     }
 
-    <span class="kw">unsafe fn </span>from_glib_full_num_as_vec(ptr: <span class="kw-2">*mut </span>ffi::gboolean, num: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; Vec&lt;<span class="self">Self</span>&gt; {
+    <span class="kw">unsafe fn </span>from_glib_full_num_as_vec(ptr: <span class="kw-2">*mut </span><a href="../../glib_sys/type.gboolean.html">ffi::gboolean</a>, num: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; Vec&lt;<span class="self">Self</span>&gt; {
         <a href="#1958">FromGlibContainerAsVec::from_glib_container_num_as_vec</a>(<a href="#2008">ptr</a>, <a href="#2008">num</a>)
     }
 }
@@ -5246,13 +5246,13 @@
     }
 }
 
-<span class="kw">impl</span>&lt;T&gt; FromGlibContainerAsVec&lt;&lt;T <span class="kw">as </span>GlibPtrDefault&gt;::GlibType, <span class="kw-2">*mut </span>ffi::GSList&gt; <span class="kw">for </span>T
+<span class="kw">impl</span>&lt;T&gt; FromGlibContainerAsVec&lt;&lt;T <span class="kw">as </span>GlibPtrDefault&gt;::GlibType, <span class="kw-2">*mut </span><a href="../../glib_sys/struct.GSList.html">ffi::GSList</a>&gt; <span class="kw">for </span>T
 <span class="kw">where
     </span>T: <a href="#424-426">GlibPtrDefault</a>
         + FromGlibPtrNone&lt;&lt;T <span class="kw">as </span>GlibPtrDefault&gt;::GlibType&gt;
         + FromGlibPtrFull&lt;&lt;T <span class="kw">as </span>GlibPtrDefault&gt;::GlibType&gt;,
 {
-    <span class="kw">unsafe fn </span>from_glib_none_num_as_vec(<span class="kw-2">mut </span>ptr: <span class="kw-2">*mut </span>ffi::GSList, num: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; Vec&lt;T&gt; {
+    <span class="kw">unsafe fn </span>from_glib_none_num_as_vec(<span class="kw-2">mut </span>ptr: <span class="kw-2">*mut </span><a href="../../glib_sys/struct.GSList.html">ffi::GSList</a>, num: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; Vec&lt;T&gt; {
         <span class="kw">if </span>num == <span class="number">0 </span>|| ptr.is_null() {
             <span class="kw">return </span><a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.new">Vec::new</a>();
         }
@@ -5271,13 +5271,13 @@
         <a href="#2213">res</a>
     }
 
-    <span class="kw">unsafe fn </span>from_glib_container_num_as_vec(ptr: <span class="kw-2">*mut </span>ffi::GSList, num: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; Vec&lt;T&gt; {
+    <span class="kw">unsafe fn </span>from_glib_container_num_as_vec(ptr: <span class="kw-2">*mut </span><a href="../../glib_sys/struct.GSList.html">ffi::GSList</a>, num: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; Vec&lt;T&gt; {
         <span class="kw">let </span>res = <a href="#1957">FromGlibContainerAsVec::from_glib_none_num_as_vec</a>(<a href="#2228">ptr</a>, <a href="#2228">num</a>);
-        ffi::g_slist_free(<a href="#2228">ptr</a>);
+        <a href="../../glib_sys/fn.g_slist_free.html">ffi::g_slist_free</a>(<a href="#2228">ptr</a>);
         <a href="#2229">res</a>
     }
 
-    <span class="kw">unsafe fn </span>from_glib_full_num_as_vec(<span class="kw-2">mut </span>ptr: <span class="kw-2">*mut </span>ffi::GSList, num: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; Vec&lt;T&gt; {
+    <span class="kw">unsafe fn </span>from_glib_full_num_as_vec(<span class="kw-2">mut </span>ptr: <span class="kw-2">*mut </span><a href="../../glib_sys/struct.GSList.html">ffi::GSList</a>, num: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; Vec&lt;T&gt; {
         <span class="kw">if </span>num == <span class="number">0 </span>|| ptr.is_null() {
             <span class="kw">return </span><a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.new">Vec::new</a>();
         }
@@ -5294,18 +5294,18 @@
             }
             ptr = (<span class="kw-2">*</span>ptr).next;
         }
-        ffi::g_slist_free(<a href="#2238">orig_ptr</a>);
+        <a href="../../glib_sys/fn.g_slist_free.html">ffi::g_slist_free</a>(<a href="#2238">orig_ptr</a>);
         <a href="#2239">res</a>
     }
 }
 
-<span class="kw">impl</span>&lt;T&gt; FromGlibPtrArrayContainerAsVec&lt;&lt;T <span class="kw">as </span>GlibPtrDefault&gt;::GlibType, <span class="kw-2">*mut </span>ffi::GSList&gt; <span class="kw">for </span>T
+<span class="kw">impl</span>&lt;T&gt; FromGlibPtrArrayContainerAsVec&lt;&lt;T <span class="kw">as </span>GlibPtrDefault&gt;::GlibType, <span class="kw-2">*mut </span><a href="../../glib_sys/struct.GSList.html">ffi::GSList</a>&gt; <span class="kw">for </span>T
 <span class="kw">where
     </span>T: <a href="#424-426">GlibPtrDefault</a>
         + FromGlibPtrNone&lt;&lt;T <span class="kw">as </span>GlibPtrDefault&gt;::GlibType&gt;
         + FromGlibPtrFull&lt;&lt;T <span class="kw">as </span>GlibPtrDefault&gt;::GlibType&gt;,
 {
-    <span class="kw">unsafe fn </span>from_glib_none_as_vec(<span class="kw-2">mut </span>ptr: <span class="kw-2">*mut </span>ffi::GSList) -&gt; Vec&lt;T&gt; {
+    <span class="kw">unsafe fn </span>from_glib_none_as_vec(<span class="kw-2">mut </span>ptr: <span class="kw-2">*mut </span><a href="../../glib_sys/struct.GSList.html">ffi::GSList</a>) -&gt; Vec&lt;T&gt; {
         <span class="kw">let </span><span class="kw-2">mut </span>res = <a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.new">Vec::new</a>();
         <span class="kw">while </span>!ptr.is_null() {
             <span class="kw">let </span>item_ptr: &lt;T <span class="kw">as </span>GlibPtrDefault&gt;::GlibType = Ptr::from((<span class="kw-2">*</span>ptr).data);
@@ -5317,13 +5317,13 @@
         <a href="#2263">res</a>
     }
 
-    <span class="kw">unsafe fn </span>from_glib_container_as_vec(ptr: <span class="kw-2">*mut </span>ffi::GSList) -&gt; Vec&lt;T&gt; {
+    <span class="kw">unsafe fn </span>from_glib_container_as_vec(ptr: <span class="kw-2">*mut </span><a href="../../glib_sys/struct.GSList.html">ffi::GSList</a>) -&gt; Vec&lt;T&gt; {
         <span class="kw">let </span>res = <a href="#1966">FromGlibPtrArrayContainerAsVec::from_glib_none_as_vec</a>(<a href="#2274">ptr</a>);
-        ffi::g_slist_free(<a href="#2274">ptr</a>);
+        <a href="../../glib_sys/fn.g_slist_free.html">ffi::g_slist_free</a>(<a href="#2274">ptr</a>);
         <a href="#2275">res</a>
     }
 
-    <span class="kw">unsafe fn </span>from_glib_full_as_vec(<span class="kw-2">mut </span>ptr: <span class="kw-2">*mut </span>ffi::GSList) -&gt; Vec&lt;T&gt; {
+    <span class="kw">unsafe fn </span>from_glib_full_as_vec(<span class="kw-2">mut </span>ptr: <span class="kw-2">*mut </span><a href="../../glib_sys/struct.GSList.html">ffi::GSList</a>) -&gt; Vec&lt;T&gt; {
         <span class="kw">let </span>orig_ptr = <a href="#2280">ptr</a>;
         <span class="kw">let </span><span class="kw-2">mut </span>res = <a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.new">Vec::new</a>();
         <span class="kw">while </span>!ptr.is_null() {
@@ -5333,18 +5333,18 @@
             }
             ptr = (<span class="kw-2">*</span>ptr).next;
         }
-        ffi::g_slist_free(<a href="#2281">orig_ptr</a>);
+        <a href="../../glib_sys/fn.g_slist_free.html">ffi::g_slist_free</a>(<a href="#2281">orig_ptr</a>);
         <a href="#2282">res</a>
     }
 }
 
-<span class="kw">impl</span>&lt;T&gt; FromGlibContainerAsVec&lt;&lt;T <span class="kw">as </span>GlibPtrDefault&gt;::GlibType, <span class="kw-2">*mut </span>ffi::GList&gt; <span class="kw">for </span>T
+<span class="kw">impl</span>&lt;T&gt; FromGlibContainerAsVec&lt;&lt;T <span class="kw">as </span>GlibPtrDefault&gt;::GlibType, <span class="kw-2">*mut </span><a href="../../glib_sys/struct.GList.html">ffi::GList</a>&gt; <span class="kw">for </span>T
 <span class="kw">where
     </span>T: <a href="#424-426">GlibPtrDefault</a>
         + FromGlibPtrNone&lt;&lt;T <span class="kw">as </span>GlibPtrDefault&gt;::GlibType&gt;
         + FromGlibPtrFull&lt;&lt;T <span class="kw">as </span>GlibPtrDefault&gt;::GlibType&gt;,
 {
-    <span class="kw">unsafe fn </span>from_glib_none_num_as_vec(<span class="kw-2">mut </span>ptr: <span class="kw-2">*mut </span>ffi::GList, num: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; Vec&lt;T&gt; {
+    <span class="kw">unsafe fn </span>from_glib_none_num_as_vec(<span class="kw-2">mut </span>ptr: <span class="kw-2">*mut </span><a href="../../glib_sys/struct.GList.html">ffi::GList</a>, num: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; Vec&lt;T&gt; {
         <span class="kw">if </span>num == <span class="number">0 </span>|| ptr.is_null() {
             <span class="kw">return </span><a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.new">Vec::new</a>();
         }
@@ -5363,13 +5363,13 @@
         <a href="#2305">res</a>
     }
 
-    <span class="kw">unsafe fn </span>from_glib_container_num_as_vec(ptr: <span class="kw-2">*mut </span>ffi::GList, num: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; Vec&lt;T&gt; {
+    <span class="kw">unsafe fn </span>from_glib_container_num_as_vec(ptr: <span class="kw-2">*mut </span><a href="../../glib_sys/struct.GList.html">ffi::GList</a>, num: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; Vec&lt;T&gt; {
         <span class="kw">let </span>res = <a href="#1957">FromGlibContainerAsVec::from_glib_none_num_as_vec</a>(<a href="#2320">ptr</a>, <a href="#2320">num</a>);
-        ffi::g_list_free(<a href="#2320">ptr</a>);
+        <a href="../../glib_sys/fn.g_list_free.html">ffi::g_list_free</a>(<a href="#2320">ptr</a>);
         <a href="#2321">res</a>
     }
 
-    <span class="kw">unsafe fn </span>from_glib_full_num_as_vec(<span class="kw-2">mut </span>ptr: <span class="kw-2">*mut </span>ffi::GList, num: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; Vec&lt;T&gt; {
+    <span class="kw">unsafe fn </span>from_glib_full_num_as_vec(<span class="kw-2">mut </span>ptr: <span class="kw-2">*mut </span><a href="../../glib_sys/struct.GList.html">ffi::GList</a>, num: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; Vec&lt;T&gt; {
         <span class="kw">if </span>num == <span class="number">0 </span>|| ptr.is_null() {
             <span class="kw">return </span><a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.new">Vec::new</a>();
         }
@@ -5386,18 +5386,18 @@
             }
             ptr = (<span class="kw-2">*</span>ptr).next;
         }
-        ffi::g_list_free(<a href="#2330">orig_ptr</a>);
+        <a href="../../glib_sys/fn.g_list_free.html">ffi::g_list_free</a>(<a href="#2330">orig_ptr</a>);
         <a href="#2331">res</a>
     }
 }
 
-<span class="kw">impl</span>&lt;T&gt; FromGlibPtrArrayContainerAsVec&lt;&lt;T <span class="kw">as </span>GlibPtrDefault&gt;::GlibType, <span class="kw-2">*mut </span>ffi::GList&gt; <span class="kw">for </span>T
+<span class="kw">impl</span>&lt;T&gt; FromGlibPtrArrayContainerAsVec&lt;&lt;T <span class="kw">as </span>GlibPtrDefault&gt;::GlibType, <span class="kw-2">*mut </span><a href="../../glib_sys/struct.GList.html">ffi::GList</a>&gt; <span class="kw">for </span>T
 <span class="kw">where
     </span>T: <a href="#424-426">GlibPtrDefault</a>
         + FromGlibPtrNone&lt;&lt;T <span class="kw">as </span>GlibPtrDefault&gt;::GlibType&gt;
         + FromGlibPtrFull&lt;&lt;T <span class="kw">as </span>GlibPtrDefault&gt;::GlibType&gt;,
 {
-    <span class="kw">unsafe fn </span>from_glib_none_as_vec(<span class="kw-2">mut </span>ptr: <span class="kw-2">*mut </span>ffi::GList) -&gt; Vec&lt;T&gt; {
+    <span class="kw">unsafe fn </span>from_glib_none_as_vec(<span class="kw-2">mut </span>ptr: <span class="kw-2">*mut </span><a href="../../glib_sys/struct.GList.html">ffi::GList</a>) -&gt; Vec&lt;T&gt; {
         <span class="kw">let </span><span class="kw-2">mut </span>res = <a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.new">Vec::new</a>();
         <span class="kw">while </span>!ptr.is_null() {
             <span class="kw">let </span>item_ptr: &lt;T <span class="kw">as </span>GlibPtrDefault&gt;::GlibType = Ptr::from((<span class="kw-2">*</span>ptr).data);
@@ -5409,13 +5409,13 @@
         <a href="#2355">res</a>
     }
 
-    <span class="kw">unsafe fn </span>from_glib_container_as_vec(ptr: <span class="kw-2">*mut </span>ffi::GList) -&gt; Vec&lt;T&gt; {
+    <span class="kw">unsafe fn </span>from_glib_container_as_vec(ptr: <span class="kw-2">*mut </span><a href="../../glib_sys/struct.GList.html">ffi::GList</a>) -&gt; Vec&lt;T&gt; {
         <span class="kw">let </span>res = <a href="#1966">FromGlibPtrArrayContainerAsVec::from_glib_none_as_vec</a>(<a href="#2366">ptr</a>);
-        ffi::g_list_free(<a href="#2366">ptr</a>);
+        <a href="../../glib_sys/fn.g_list_free.html">ffi::g_list_free</a>(<a href="#2366">ptr</a>);
         <a href="#2367">res</a>
     }
 
-    <span class="kw">unsafe fn </span>from_glib_full_as_vec(<span class="kw-2">mut </span>ptr: <span class="kw-2">*mut </span>ffi::GList) -&gt; Vec&lt;T&gt; {
+    <span class="kw">unsafe fn </span>from_glib_full_as_vec(<span class="kw-2">mut </span>ptr: <span class="kw-2">*mut </span><a href="../../glib_sys/struct.GList.html">ffi::GList</a>) -&gt; Vec&lt;T&gt; {
         <span class="kw">let </span>orig_ptr = <a href="#2372">ptr</a>;
         <span class="kw">let </span><span class="kw-2">mut </span>res = <a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.new">Vec::new</a>();
         <span class="kw">while </span>!ptr.is_null() {
@@ -5425,117 +5425,117 @@
             }
             ptr = (<span class="kw-2">*</span>ptr).next;
         }
-        ffi::g_list_free(<a href="#2373">orig_ptr</a>);
+        <a href="../../glib_sys/fn.g_list_free.html">ffi::g_list_free</a>(<a href="#2373">orig_ptr</a>);
         <a href="#2374">res</a>
     }
 }
 
-<span class="kw">impl</span>&lt;T&gt; FromGlibContainerAsVec&lt;&lt;T <span class="kw">as </span>GlibPtrDefault&gt;::GlibType, <span class="kw-2">*const </span>ffi::GList&gt; <span class="kw">for </span>T
+<span class="kw">impl</span>&lt;T&gt; FromGlibContainerAsVec&lt;&lt;T <span class="kw">as </span>GlibPtrDefault&gt;::GlibType, <span class="kw-2">*const </span><a href="../../glib_sys/struct.GList.html">ffi::GList</a>&gt; <span class="kw">for </span>T
 <span class="kw">where
     </span>T: <a href="#424-426">GlibPtrDefault</a>
         + FromGlibPtrNone&lt;&lt;T <span class="kw">as </span>GlibPtrDefault&gt;::GlibType&gt;
         + FromGlibPtrFull&lt;&lt;T <span class="kw">as </span>GlibPtrDefault&gt;::GlibType&gt;,
 {
-    <span class="kw">unsafe fn </span>from_glib_none_num_as_vec(ptr: <span class="kw-2">*const </span>ffi::GList, num: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; Vec&lt;T&gt; {
+    <span class="kw">unsafe fn </span>from_glib_none_num_as_vec(ptr: <span class="kw-2">*const </span><a href="../../glib_sys/struct.GList.html">ffi::GList</a>, num: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; Vec&lt;T&gt; {
         <a href="#1957">FromGlibContainerAsVec::from_glib_none_num_as_vec</a>(<a href="#202-204">mut_override</a>(<a href="#2393">ptr</a>), <a href="#2393">num</a>)
     }
 
-    <span class="kw">unsafe fn </span>from_glib_container_num_as_vec(<span class="kw">_</span>: <span class="kw-2">*const </span>ffi::GList, <span class="kw">_</span>: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; Vec&lt;T&gt; {
+    <span class="kw">unsafe fn </span>from_glib_container_num_as_vec(<span class="kw">_</span>: <span class="kw-2">*const </span><a href="../../glib_sys/struct.GList.html">ffi::GList</a>, <span class="kw">_</span>: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; Vec&lt;T&gt; {
         <span class="comment">// Can't really free a *const
         </span><a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.unimplemented.html">unimplemented!</a>()
     }
 
-    <span class="kw">unsafe fn </span>from_glib_full_num_as_vec(<span class="kw">_</span>: <span class="kw-2">*const </span>ffi::GList, <span class="kw">_</span>: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; Vec&lt;T&gt; {
+    <span class="kw">unsafe fn </span>from_glib_full_num_as_vec(<span class="kw">_</span>: <span class="kw-2">*const </span><a href="../../glib_sys/struct.GList.html">ffi::GList</a>, <span class="kw">_</span>: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; Vec&lt;T&gt; {
         <span class="comment">// Can't really free a *const
         </span><a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.unimplemented.html">unimplemented!</a>()
     }
 }
 
-<span class="kw">impl</span>&lt;T&gt; FromGlibPtrArrayContainerAsVec&lt;&lt;T <span class="kw">as </span>GlibPtrDefault&gt;::GlibType, <span class="kw-2">*const </span>ffi::GList&gt; <span class="kw">for </span>T
+<span class="kw">impl</span>&lt;T&gt; FromGlibPtrArrayContainerAsVec&lt;&lt;T <span class="kw">as </span>GlibPtrDefault&gt;::GlibType, <span class="kw-2">*const </span><a href="../../glib_sys/struct.GList.html">ffi::GList</a>&gt; <span class="kw">for </span>T
 <span class="kw">where
     </span>T: <a href="#424-426">GlibPtrDefault</a>
         + FromGlibPtrNone&lt;&lt;T <span class="kw">as </span>GlibPtrDefault&gt;::GlibType&gt;
         + FromGlibPtrFull&lt;&lt;T <span class="kw">as </span>GlibPtrDefault&gt;::GlibType&gt;,
 {
-    <span class="kw">unsafe fn </span>from_glib_none_as_vec(ptr: <span class="kw-2">*const </span>ffi::GList) -&gt; Vec&lt;T&gt; {
+    <span class="kw">unsafe fn </span>from_glib_none_as_vec(ptr: <span class="kw-2">*const </span><a href="../../glib_sys/struct.GList.html">ffi::GList</a>) -&gt; Vec&lt;T&gt; {
         <a href="#1966">FromGlibPtrArrayContainerAsVec::from_glib_none_as_vec</a>(<a href="#202-204">mut_override</a>(<a href="#2414">ptr</a>))
     }
 
-    <span class="kw">unsafe fn </span>from_glib_container_as_vec(<span class="kw">_</span>: <span class="kw-2">*const </span>ffi::GList) -&gt; Vec&lt;T&gt; {
+    <span class="kw">unsafe fn </span>from_glib_container_as_vec(<span class="kw">_</span>: <span class="kw-2">*const </span><a href="../../glib_sys/struct.GList.html">ffi::GList</a>) -&gt; Vec&lt;T&gt; {
         <span class="comment">// Can't really free a *const
         </span><a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.unimplemented.html">unimplemented!</a>()
     }
 
-    <span class="kw">unsafe fn </span>from_glib_full_as_vec(<span class="kw">_</span>: <span class="kw-2">*const </span>ffi::GList) -&gt; Vec&lt;T&gt; {
+    <span class="kw">unsafe fn </span>from_glib_full_as_vec(<span class="kw">_</span>: <span class="kw-2">*const </span><a href="../../glib_sys/struct.GList.html">ffi::GList</a>) -&gt; Vec&lt;T&gt; {
         <span class="comment">// Can't really free a *const
         </span><a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.unimplemented.html">unimplemented!</a>()
     }
 }
 
-<span class="kw">impl</span>&lt;T&gt; FromGlibContainerAsVec&lt;&lt;T <span class="kw">as </span>GlibPtrDefault&gt;::GlibType, <span class="kw-2">*const </span>ffi::GSList&gt; <span class="kw">for </span>T
+<span class="kw">impl</span>&lt;T&gt; FromGlibContainerAsVec&lt;&lt;T <span class="kw">as </span>GlibPtrDefault&gt;::GlibType, <span class="kw-2">*const </span><a href="../../glib_sys/struct.GSList.html">ffi::GSList</a>&gt; <span class="kw">for </span>T
 <span class="kw">where
     </span>T: <a href="#424-426">GlibPtrDefault</a>
         + FromGlibPtrNone&lt;&lt;T <span class="kw">as </span>GlibPtrDefault&gt;::GlibType&gt;
         + FromGlibPtrFull&lt;&lt;T <span class="kw">as </span>GlibPtrDefault&gt;::GlibType&gt;,
 {
-    <span class="kw">unsafe fn </span>from_glib_none_num_as_vec(ptr: <span class="kw-2">*const </span>ffi::GSList, num: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; Vec&lt;T&gt; {
+    <span class="kw">unsafe fn </span>from_glib_none_num_as_vec(ptr: <span class="kw-2">*const </span><a href="../../glib_sys/struct.GSList.html">ffi::GSList</a>, num: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; Vec&lt;T&gt; {
         <a href="#1957">FromGlibContainerAsVec::from_glib_none_num_as_vec</a>(<a href="#202-204">mut_override</a>(<a href="#2435">ptr</a>), <a href="#2435">num</a>)
     }
 
-    <span class="kw">unsafe fn </span>from_glib_container_num_as_vec(<span class="kw">_</span>: <span class="kw-2">*const </span>ffi::GSList, <span class="kw">_</span>: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; Vec&lt;T&gt; {
+    <span class="kw">unsafe fn </span>from_glib_container_num_as_vec(<span class="kw">_</span>: <span class="kw-2">*const </span><a href="../../glib_sys/struct.GSList.html">ffi::GSList</a>, <span class="kw">_</span>: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; Vec&lt;T&gt; {
         <span class="comment">// Can't really free a *const
         </span><a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.unimplemented.html">unimplemented!</a>()
     }
 
-    <span class="kw">unsafe fn </span>from_glib_full_num_as_vec(<span class="kw">_</span>: <span class="kw-2">*const </span>ffi::GSList, <span class="kw">_</span>: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; Vec&lt;T&gt; {
+    <span class="kw">unsafe fn </span>from_glib_full_num_as_vec(<span class="kw">_</span>: <span class="kw-2">*const </span><a href="../../glib_sys/struct.GSList.html">ffi::GSList</a>, <span class="kw">_</span>: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; Vec&lt;T&gt; {
         <span class="comment">// Can't really free a *const
         </span><a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.unimplemented.html">unimplemented!</a>()
     }
 }
 
-<span class="kw">impl</span>&lt;T&gt; FromGlibPtrArrayContainerAsVec&lt;&lt;T <span class="kw">as </span>GlibPtrDefault&gt;::GlibType, <span class="kw-2">*const </span>ffi::GSList&gt; <span class="kw">for </span>T
+<span class="kw">impl</span>&lt;T&gt; FromGlibPtrArrayContainerAsVec&lt;&lt;T <span class="kw">as </span>GlibPtrDefault&gt;::GlibType, <span class="kw-2">*const </span><a href="../../glib_sys/struct.GSList.html">ffi::GSList</a>&gt; <span class="kw">for </span>T
 <span class="kw">where
     </span>T: <a href="#424-426">GlibPtrDefault</a>
         + FromGlibPtrNone&lt;&lt;T <span class="kw">as </span>GlibPtrDefault&gt;::GlibType&gt;
         + FromGlibPtrFull&lt;&lt;T <span class="kw">as </span>GlibPtrDefault&gt;::GlibType&gt;,
 {
-    <span class="kw">unsafe fn </span>from_glib_none_as_vec(ptr: <span class="kw-2">*const </span>ffi::GSList) -&gt; Vec&lt;T&gt; {
+    <span class="kw">unsafe fn </span>from_glib_none_as_vec(ptr: <span class="kw-2">*const </span><a href="../../glib_sys/struct.GSList.html">ffi::GSList</a>) -&gt; Vec&lt;T&gt; {
         <a href="#1966">FromGlibPtrArrayContainerAsVec::from_glib_none_as_vec</a>(<a href="#202-204">mut_override</a>(<a href="#2456">ptr</a>))
     }
 
-    <span class="kw">unsafe fn </span>from_glib_container_as_vec(<span class="kw">_</span>: <span class="kw-2">*const </span>ffi::GSList) -&gt; Vec&lt;T&gt; {
+    <span class="kw">unsafe fn </span>from_glib_container_as_vec(<span class="kw">_</span>: <span class="kw-2">*const </span><a href="../../glib_sys/struct.GSList.html">ffi::GSList</a>) -&gt; Vec&lt;T&gt; {
         <span class="comment">// Can't really free a *const
         </span><a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.unimplemented.html">unimplemented!</a>()
     }
 
-    <span class="kw">unsafe fn </span>from_glib_full_as_vec(<span class="kw">_</span>: <span class="kw-2">*const </span>ffi::GSList) -&gt; Vec&lt;T&gt; {
+    <span class="kw">unsafe fn </span>from_glib_full_as_vec(<span class="kw">_</span>: <span class="kw-2">*const </span><a href="../../glib_sys/struct.GSList.html">ffi::GSList</a>) -&gt; Vec&lt;T&gt; {
         <span class="comment">// Can't really free a *const
         </span><a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.unimplemented.html">unimplemented!</a>()
     }
 }
 
 <span class="attr">#[allow(clippy::implicit_hasher)]
-</span><span class="kw">impl </span>FromGlibContainer&lt;<span class="kw-2">*const </span>c_char, <span class="kw-2">*mut </span>ffi::GHashTable&gt; <span class="kw">for </span>HashMap&lt;<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>, <a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>&gt; {
-    <span class="kw">unsafe fn </span>from_glib_none_num(ptr: <span class="kw-2">*mut </span>ffi::GHashTable, <span class="kw">_</span>: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; <span class="self">Self </span>{
+</span><span class="kw">impl </span>FromGlibContainer&lt;<span class="kw-2">*const </span>c_char, <span class="kw-2">*mut </span><a href="../../glib_sys/struct.GHashTable.html">ffi::GHashTable</a>&gt; <span class="kw">for </span>HashMap&lt;<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>, <a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>&gt; {
+    <span class="kw">unsafe fn </span>from_glib_none_num(ptr: <span class="kw-2">*mut </span><a href="../../glib_sys/struct.GHashTable.html">ffi::GHashTable</a>, <span class="kw">_</span>: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; <span class="self">Self </span>{
         <a href="#1932">FromGlibPtrContainer::from_glib_none</a>(<a href="#2473">ptr</a>)
     }
 
-    <span class="kw">unsafe fn </span>from_glib_container_num(ptr: <span class="kw-2">*mut </span>ffi::GHashTable, <span class="kw">_</span>: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; <span class="self">Self </span>{
+    <span class="kw">unsafe fn </span>from_glib_container_num(ptr: <span class="kw-2">*mut </span><a href="../../glib_sys/struct.GHashTable.html">ffi::GHashTable</a>, <span class="kw">_</span>: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; <span class="self">Self </span>{
         <a href="#1938">FromGlibPtrContainer::from_glib_full</a>(<a href="#2477">ptr</a>)
     }
 
-    <span class="kw">unsafe fn </span>from_glib_full_num(ptr: <span class="kw-2">*mut </span>ffi::GHashTable, <span class="kw">_</span>: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; <span class="self">Self </span>{
+    <span class="kw">unsafe fn </span>from_glib_full_num(ptr: <span class="kw-2">*mut </span><a href="../../glib_sys/struct.GHashTable.html">ffi::GHashTable</a>, <span class="kw">_</span>: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; <span class="self">Self </span>{
         <a href="#1938">FromGlibPtrContainer::from_glib_full</a>(<a href="#2481">ptr</a>)
     }
 }
 
 <span class="attr">#[allow(clippy::implicit_hasher)]
-</span><span class="kw">impl </span>FromGlibPtrContainer&lt;<span class="kw-2">*const </span>c_char, <span class="kw-2">*mut </span>ffi::GHashTable&gt; <span class="kw">for </span>HashMap&lt;<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>, <a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>&gt; {
-    <span class="kw">unsafe fn </span>from_glib_none(ptr: <span class="kw-2">*mut </span>ffi::GHashTable) -&gt; <span class="self">Self </span>{
+</span><span class="kw">impl </span>FromGlibPtrContainer&lt;<span class="kw-2">*const </span>c_char, <span class="kw-2">*mut </span><a href="../../glib_sys/struct.GHashTable.html">ffi::GHashTable</a>&gt; <span class="kw">for </span>HashMap&lt;<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>, <a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>&gt; {
+    <span class="kw">unsafe fn </span>from_glib_none(ptr: <span class="kw-2">*mut </span><a href="../../glib_sys/struct.GHashTable.html">ffi::GHashTable</a>) -&gt; <span class="self">Self </span>{
         <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>read_string_hash_table(
-            key: ffi::gpointer,
-            value: ffi::gpointer,
-            hash_map: ffi::gpointer,
+            key: <a href="../../glib_sys/type.gpointer.html">ffi::gpointer</a>,
+            value: <a href="../../glib_sys/type.gpointer.html">ffi::gpointer</a>,
+            hash_map: <a href="../../glib_sys/type.gpointer.html">ffi::gpointer</a>,
         ) {
             <span class="kw">let </span>key: <a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a> = <a href="#1625-1627">from_glib_none</a>(<a href="#2490">key</a> <span class="kw">as </span><span class="kw-2">*const </span>c_char);
             <span class="kw">let </span>value: <a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a> = <a href="#1625-1627">from_glib_none</a>(<a href="#2491">value</a> <span class="kw">as </span><span class="kw-2">*const </span>c_char);
@@ -5543,8 +5543,8 @@
                 <span class="kw-2">&amp;mut *</span>(<a href="#2492">hash_map</a> <span class="kw">as </span><span class="kw-2">*mut </span>HashMap&lt;<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>, <a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>&gt;);
             <a href="#2496">hash_map</a>.<a href="https://doc.rust-lang.org/nightly/std/collections/hash/map/struct.HashMap.html#method.insert">insert</a>(<a href="#2494">key</a>, <a href="#2495">value</a>);
         }
-        <span class="kw">let </span><span class="kw-2">mut </span>map = <a href="https://doc.rust-lang.org/nightly/std/collections/hash/map/struct.HashMap.html#method.with_capacity">HashMap::with_capacity</a>(ffi::g_hash_table_size(<a href="#2488">ptr</a>) <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>);
-        ffi::g_hash_table_foreach(
+        <span class="kw">let </span><span class="kw-2">mut </span>map = <a href="https://doc.rust-lang.org/nightly/std/collections/hash/map/struct.HashMap.html#method.with_capacity">HashMap::with_capacity</a>(<a href="../../glib_sys/fn.g_hash_table_size.html">ffi::g_hash_table_size</a>(<a href="#2488">ptr</a>) <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>);
+        <a href="../../glib_sys/fn.g_hash_table_foreach.html">ffi::g_hash_table_foreach</a>(
             <a href="#2488">ptr</a>,
             <span class="prelude-val">Some</span>(<a href="#2489-2499">read_string_hash_table</a>),
             <span class="kw-2">&amp;mut </span><a href="#2500">map</a> <span class="kw">as </span><span class="kw-2">*mut </span>HashMap&lt;<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>, <a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>&gt; <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
@@ -5552,24 +5552,24 @@
         <a href="#2500">map</a>
     }
 
-    <span class="kw">unsafe fn </span>from_glib_container(ptr: <span class="kw-2">*mut </span>ffi::GHashTable) -&gt; <span class="self">Self </span>{
+    <span class="kw">unsafe fn </span>from_glib_container(ptr: <span class="kw-2">*mut </span><a href="../../glib_sys/struct.GHashTable.html">ffi::GHashTable</a>) -&gt; <span class="self">Self </span>{
         <a href="#1938">FromGlibPtrContainer::from_glib_full</a>(<a href="#2509">ptr</a>)
     }
 
-    <span class="kw">unsafe fn </span>from_glib_full(ptr: <span class="kw-2">*mut </span>ffi::GHashTable) -&gt; <span class="self">Self </span>{
+    <span class="kw">unsafe fn </span>from_glib_full(ptr: <span class="kw-2">*mut </span><a href="../../glib_sys/struct.GHashTable.html">ffi::GHashTable</a>) -&gt; <span class="self">Self </span>{
         <span class="kw">let </span>map = <a href="#1932">FromGlibPtrContainer::from_glib_none</a>(<a href="#2513">ptr</a>);
-        ffi::g_hash_table_unref(<a href="#2513">ptr</a>);
+        <a href="../../glib_sys/fn.g_hash_table_unref.html">ffi::g_hash_table_unref</a>(<a href="#2513">ptr</a>);
         <a href="#2514">map</a>
     }
 }
 
-<span class="kw">impl</span>&lt;T&gt; FromGlibContainerAsVec&lt;&lt;T <span class="kw">as </span>GlibPtrDefault&gt;::GlibType, <span class="kw-2">*mut </span>ffi::GPtrArray&gt; <span class="kw">for </span>T
+<span class="kw">impl</span>&lt;T&gt; FromGlibContainerAsVec&lt;&lt;T <span class="kw">as </span>GlibPtrDefault&gt;::GlibType, <span class="kw-2">*mut </span><a href="../../glib_sys/struct.GPtrArray.html">ffi::GPtrArray</a>&gt; <span class="kw">for </span>T
 <span class="kw">where
     </span>T: <a href="#424-426">GlibPtrDefault</a>
         + FromGlibPtrNone&lt;&lt;T <span class="kw">as </span>GlibPtrDefault&gt;::GlibType&gt;
         + FromGlibPtrFull&lt;&lt;T <span class="kw">as </span>GlibPtrDefault&gt;::GlibType&gt;,
 {
-    <span class="kw">unsafe fn </span>from_glib_none_num_as_vec(ptr: <span class="kw-2">*mut </span>ffi::GPtrArray, num: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; Vec&lt;T&gt; {
+    <span class="kw">unsafe fn </span>from_glib_none_num_as_vec(ptr: <span class="kw-2">*mut </span><a href="../../glib_sys/struct.GPtrArray.html">ffi::GPtrArray</a>, num: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; Vec&lt;T&gt; {
         <span class="kw">if </span>num == <span class="number">0 </span>|| ptr.is_null() {
             <span class="kw">return </span><a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.new">Vec::new</a>();
         }
@@ -5585,20 +5585,20 @@
         <a href="#2532">res</a>
     }
 
-    <span class="kw">unsafe fn </span>from_glib_container_num_as_vec(ptr: <span class="kw-2">*mut </span>ffi::GPtrArray, num: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; Vec&lt;T&gt; {
+    <span class="kw">unsafe fn </span>from_glib_container_num_as_vec(ptr: <span class="kw-2">*mut </span><a href="../../glib_sys/struct.GPtrArray.html">ffi::GPtrArray</a>, num: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; Vec&lt;T&gt; {
         <span class="kw">let </span>res = <a href="#1916">FromGlibContainer::from_glib_none_num</a>(<a href="#2542">ptr</a>, <a href="#2542">num</a>);
         <span class="kw">if </span>!ptr.is_null() {
-            ffi::g_ptr_array_unref(<a href="#2542">ptr</a>);
+            <a href="../../glib_sys/fn.g_ptr_array_unref.html">ffi::g_ptr_array_unref</a>(<a href="#2542">ptr</a>);
         }
         <a href="#2543">res</a>
     }
 
-    <span class="kw">unsafe fn </span>from_glib_full_num_as_vec(ptr: <span class="kw-2">*mut </span>ffi::GPtrArray, num: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; Vec&lt;T&gt; {
+    <span class="kw">unsafe fn </span>from_glib_full_num_as_vec(ptr: <span class="kw-2">*mut </span><a href="../../glib_sys/struct.GPtrArray.html">ffi::GPtrArray</a>, num: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; Vec&lt;T&gt; {
         <span class="kw">if </span>ptr.is_null() {
             <span class="kw">return </span><a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.new">Vec::new</a>();
         }
         <span class="kw">if </span>num == <span class="number">0 </span>{
-            ffi::g_ptr_array_unref(<a href="#2550">ptr</a>);
+            <a href="../../glib_sys/fn.g_ptr_array_unref.html">ffi::g_ptr_array_unref</a>(<a href="#2550">ptr</a>);
             <span class="kw">return </span><a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.new">Vec::new</a>();
         }
         <span class="kw">let </span>pdata = (<span class="kw-2">*</span><a href="#2550">ptr</a>).pdata;
@@ -5610,70 +5610,70 @@
                 res.push(from_glib_none(item_ptr));
             }
         }
-        ffi::g_ptr_array_unref(<a href="#2550">ptr</a>);
+        <a href="../../glib_sys/fn.g_ptr_array_unref.html">ffi::g_ptr_array_unref</a>(<a href="#2550">ptr</a>);
         <a href="#2560">res</a>
     }
 }
 
-<span class="kw">impl</span>&lt;T&gt; FromGlibPtrArrayContainerAsVec&lt;&lt;T <span class="kw">as </span>GlibPtrDefault&gt;::GlibType, <span class="kw-2">*mut </span>ffi::GPtrArray&gt; <span class="kw">for </span>T
+<span class="kw">impl</span>&lt;T&gt; FromGlibPtrArrayContainerAsVec&lt;&lt;T <span class="kw">as </span>GlibPtrDefault&gt;::GlibType, <span class="kw-2">*mut </span><a href="../../glib_sys/struct.GPtrArray.html">ffi::GPtrArray</a>&gt; <span class="kw">for </span>T
 <span class="kw">where
     </span>T: <a href="#424-426">GlibPtrDefault</a>
         + FromGlibPtrNone&lt;&lt;T <span class="kw">as </span>GlibPtrDefault&gt;::GlibType&gt;
         + FromGlibPtrFull&lt;&lt;T <span class="kw">as </span>GlibPtrDefault&gt;::GlibType&gt;,
 {
-    <span class="kw">unsafe fn </span>from_glib_none_as_vec(ptr: <span class="kw-2">*mut </span>ffi::GPtrArray) -&gt; Vec&lt;T&gt; {
+    <span class="kw">unsafe fn </span>from_glib_none_as_vec(ptr: <span class="kw-2">*mut </span><a href="../../glib_sys/struct.GPtrArray.html">ffi::GPtrArray</a>) -&gt; Vec&lt;T&gt; {
         <span class="kw">let </span>num = (<span class="kw-2">*</span><a href="#2578">ptr</a>).len <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>;
         <a href="#1916">FromGlibContainer::from_glib_none_num</a>(<a href="#2578">ptr</a>, <a href="#2579">num</a>)
     }
 
-    <span class="kw">unsafe fn </span>from_glib_container_as_vec(ptr: <span class="kw-2">*mut </span>ffi::GPtrArray) -&gt; Vec&lt;T&gt; {
+    <span class="kw">unsafe fn </span>from_glib_container_as_vec(ptr: <span class="kw-2">*mut </span><a href="../../glib_sys/struct.GPtrArray.html">ffi::GPtrArray</a>) -&gt; Vec&lt;T&gt; {
         <span class="kw">let </span>num = (<span class="kw-2">*</span><a href="#2583">ptr</a>).len <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>;
         <a href="#1921">FromGlibContainer::from_glib_container_num</a>(<a href="#2583">ptr</a>, <a href="#2584">num</a>)
     }
 
-    <span class="kw">unsafe fn </span>from_glib_full_as_vec(ptr: <span class="kw-2">*mut </span>ffi::GPtrArray) -&gt; Vec&lt;T&gt; {
+    <span class="kw">unsafe fn </span>from_glib_full_as_vec(ptr: <span class="kw-2">*mut </span><a href="../../glib_sys/struct.GPtrArray.html">ffi::GPtrArray</a>) -&gt; Vec&lt;T&gt; {
         <span class="kw">let </span>num = (<span class="kw-2">*</span><a href="#2588">ptr</a>).len <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>;
         <a href="#1926">FromGlibContainer::from_glib_full_num</a>(<a href="#2588">ptr</a>, <a href="#2589">num</a>)
     }
 }
 
-<span class="kw">impl</span>&lt;T&gt; FromGlibContainerAsVec&lt;&lt;T <span class="kw">as </span>GlibPtrDefault&gt;::GlibType, <span class="kw-2">*const </span>ffi::GPtrArray&gt; <span class="kw">for </span>T
+<span class="kw">impl</span>&lt;T&gt; FromGlibContainerAsVec&lt;&lt;T <span class="kw">as </span>GlibPtrDefault&gt;::GlibType, <span class="kw-2">*const </span><a href="../../glib_sys/struct.GPtrArray.html">ffi::GPtrArray</a>&gt; <span class="kw">for </span>T
 <span class="kw">where
     </span>T: <a href="#424-426">GlibPtrDefault</a>
         + FromGlibPtrNone&lt;&lt;T <span class="kw">as </span>GlibPtrDefault&gt;::GlibType&gt;
         + FromGlibPtrFull&lt;&lt;T <span class="kw">as </span>GlibPtrDefault&gt;::GlibType&gt;,
 {
-    <span class="kw">unsafe fn </span>from_glib_none_num_as_vec(ptr: <span class="kw-2">*const </span>ffi::GPtrArray, num: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; Vec&lt;T&gt; {
+    <span class="kw">unsafe fn </span>from_glib_none_num_as_vec(ptr: <span class="kw-2">*const </span><a href="../../glib_sys/struct.GPtrArray.html">ffi::GPtrArray</a>, num: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; Vec&lt;T&gt; {
         <a href="#1957">FromGlibContainerAsVec::from_glib_none_num_as_vec</a>(<a href="#202-204">mut_override</a>(<a href="#2600">ptr</a>), <a href="#2600">num</a>)
     }
 
-    <span class="kw">unsafe fn </span>from_glib_container_num_as_vec(<span class="kw">_</span>: <span class="kw-2">*const </span>ffi::GPtrArray, <span class="kw">_</span>: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; Vec&lt;T&gt; {
+    <span class="kw">unsafe fn </span>from_glib_container_num_as_vec(<span class="kw">_</span>: <span class="kw-2">*const </span><a href="../../glib_sys/struct.GPtrArray.html">ffi::GPtrArray</a>, <span class="kw">_</span>: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; Vec&lt;T&gt; {
         <span class="comment">// Can't really free a *const
         </span><a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.unimplemented.html">unimplemented!</a>()
     }
 
-    <span class="kw">unsafe fn </span>from_glib_full_num_as_vec(<span class="kw">_</span>: <span class="kw-2">*const </span>ffi::GPtrArray, <span class="kw">_</span>: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; Vec&lt;T&gt; {
+    <span class="kw">unsafe fn </span>from_glib_full_num_as_vec(<span class="kw">_</span>: <span class="kw-2">*const </span><a href="../../glib_sys/struct.GPtrArray.html">ffi::GPtrArray</a>, <span class="kw">_</span>: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; Vec&lt;T&gt; {
         <span class="comment">// Can't really free a *const
         </span><a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.unimplemented.html">unimplemented!</a>()
     }
 }
 
-<span class="kw">impl</span>&lt;T&gt; FromGlibPtrArrayContainerAsVec&lt;&lt;T <span class="kw">as </span>GlibPtrDefault&gt;::GlibType, <span class="kw-2">*const </span>ffi::GPtrArray&gt; <span class="kw">for </span>T
+<span class="kw">impl</span>&lt;T&gt; FromGlibPtrArrayContainerAsVec&lt;&lt;T <span class="kw">as </span>GlibPtrDefault&gt;::GlibType, <span class="kw-2">*const </span><a href="../../glib_sys/struct.GPtrArray.html">ffi::GPtrArray</a>&gt; <span class="kw">for </span>T
 <span class="kw">where
     </span>T: <a href="#424-426">GlibPtrDefault</a>
         + FromGlibPtrNone&lt;&lt;T <span class="kw">as </span>GlibPtrDefault&gt;::GlibType&gt;
         + FromGlibPtrFull&lt;&lt;T <span class="kw">as </span>GlibPtrDefault&gt;::GlibType&gt;,
 {
-    <span class="kw">unsafe fn </span>from_glib_none_as_vec(ptr: <span class="kw-2">*const </span>ffi::GPtrArray) -&gt; Vec&lt;T&gt; {
+    <span class="kw">unsafe fn </span>from_glib_none_as_vec(ptr: <span class="kw-2">*const </span><a href="../../glib_sys/struct.GPtrArray.html">ffi::GPtrArray</a>) -&gt; Vec&lt;T&gt; {
         <a href="#1966">FromGlibPtrArrayContainerAsVec::from_glib_none_as_vec</a>(<a href="#202-204">mut_override</a>(<a href="#2621">ptr</a>))
     }
 
-    <span class="kw">unsafe fn </span>from_glib_container_as_vec(<span class="kw">_</span>: <span class="kw-2">*const </span>ffi::GPtrArray) -&gt; Vec&lt;T&gt; {
+    <span class="kw">unsafe fn </span>from_glib_container_as_vec(<span class="kw">_</span>: <span class="kw-2">*const </span><a href="../../glib_sys/struct.GPtrArray.html">ffi::GPtrArray</a>) -&gt; Vec&lt;T&gt; {
         <span class="comment">// Can't really free a *const
         </span><a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.unimplemented.html">unimplemented!</a>()
     }
 
-    <span class="kw">unsafe fn </span>from_glib_full_as_vec(<span class="kw">_</span>: <span class="kw-2">*const </span>ffi::GPtrArray) -&gt; Vec&lt;T&gt; {
+    <span class="kw">unsafe fn </span>from_glib_full_as_vec(<span class="kw">_</span>: <span class="kw-2">*const </span><a href="../../glib_sys/struct.GPtrArray.html">ffi::GPtrArray</a>) -&gt; Vec&lt;T&gt; {
         <span class="comment">// Can't really free a *const
         </span><a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.unimplemented.html">unimplemented!</a>()
     }
