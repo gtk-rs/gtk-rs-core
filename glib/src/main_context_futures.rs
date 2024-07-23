@@ -1,7 +1,8 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
 use std::{
-    any::Any, cell::Cell, marker::PhantomData, mem, num::NonZeroU32, panic, pin::Pin, ptr, thread,
+    any::Any, cell::Cell, fmt, marker::PhantomData, mem, num::NonZeroU32, panic, pin::Pin, ptr,
+    thread,
 };
 
 use futures_channel::oneshot;
@@ -491,11 +492,9 @@ impl std::fmt::Display for JoinError {
     }
 }
 
-#[derive(thiserror::Error, Debug)]
+#[derive(Debug)]
 enum JoinErrorInner {
-    #[error("task cancelled")]
     Cancelled,
-    #[error("task panicked")]
     Panic(Box<dyn Any + Send + 'static>),
 }
 
@@ -503,6 +502,17 @@ impl From<JoinErrorInner> for JoinError {
     #[inline]
     fn from(e: JoinErrorInner) -> Self {
         Self(e)
+    }
+}
+
+impl std::error::Error for JoinErrorInner {}
+
+impl fmt::Display for JoinErrorInner {
+    fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            Self::Cancelled => fmt.write_str("task cancelled"),
+            Self::Panic(_) => fmt.write_str("task panicked"),
+        }
     }
 }
 
