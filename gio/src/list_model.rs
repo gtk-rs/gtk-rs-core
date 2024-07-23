@@ -1,6 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use std::{cell::Cell, iter::FusedIterator, marker::PhantomData, rc::Rc};
+use std::{cell::Cell, fmt, iter::FusedIterator, marker::PhantomData, rc::Rc};
 
 use glib::SignalHandlerId;
 
@@ -58,9 +58,16 @@ pub trait ListModelExtManual: sealed::Sealed + IsA<ListModel> + Sized {
 
 impl<T: IsA<ListModel>> ListModelExtManual for T {}
 
-#[derive(thiserror::Error, Debug, PartialEq, Eq)]
-#[error("the list model was mutated during iteration")]
+#[derive(Debug, PartialEq, Eq)]
 pub struct ListModelMutatedDuringIter;
+
+impl std::error::Error for ListModelMutatedDuringIter {}
+
+impl fmt::Display for ListModelMutatedDuringIter {
+    fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
+        fmt.write_str("the list model was mutated during iteration")
+    }
+}
 
 // rustdoc-stripper-ignore-next
 /// Iterator of `ListModel`'s items.
