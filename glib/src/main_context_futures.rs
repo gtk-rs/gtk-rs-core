@@ -491,12 +491,20 @@ impl std::fmt::Display for JoinError {
     }
 }
 
-#[derive(thiserror::Error, Debug)]
+#[derive(Debug)]
 enum JoinErrorInner {
-    #[error("task cancelled")]
     Cancelled,
-    #[error("task panicked")]
     Panic(Box<dyn Any + Send + 'static>),
+}
+
+impl std::error::Error for JoinErrorInner {}
+impl std::fmt::Display for JoinErrorInner {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Cancelled => f.write_str("task cancelled"),
+            Self::Panic(_) => f.write_str("task panicked"),
+        }
+    }
 }
 
 impl From<JoinErrorInner> for JoinError {

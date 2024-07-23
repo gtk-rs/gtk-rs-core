@@ -491,10 +491,18 @@ impl<T: IsA<InputStream>> InputStreamAsyncBufRead<T> {
     }
 }
 
-#[derive(thiserror::Error, Debug)]
+#[derive(Debug)]
 enum BufReadError {
-    #[error("Previous read operation failed")]
     Failed,
+}
+
+impl std::error::Error for BufReadError {}
+impl std::fmt::Display for BufReadError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Failed => f.write_str("Previous read operation failed"),
+        }
+    }
 }
 
 impl<T: IsA<InputStream>> AsyncRead for InputStreamAsyncBufRead<T> {

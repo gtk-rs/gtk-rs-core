@@ -8,19 +8,48 @@ use std::{
 use crate as glib;
 use crate::{subclass::prelude::*, Object};
 
-#[derive(thiserror::Error, Debug)]
+#[derive(Debug)]
 pub enum BorrowError {
-    #[error("type of the inner value is not as requested")]
     InvalidType,
-    #[error("value is already mutably borrowed")]
-    AlreadyBorrowed(#[from] std::cell::BorrowError),
+    AlreadyBorrowed(std::cell::BorrowError),
 }
-#[derive(thiserror::Error, Debug)]
+
+impl std::error::Error for BorrowError {}
+impl std::fmt::Display for BorrowError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            BorrowError::InvalidType => f.write_str("type of the inner value is not as requested"),
+            BorrowError::AlreadyBorrowed(_) => f.write_str("value is already mutably borrowed"),
+        }
+    }
+}
+
+impl From<std::cell::BorrowError> for BorrowError {
+    fn from(value: std::cell::BorrowError) -> Self {
+        Self::AlreadyBorrowed(value)
+    }
+}
+
+#[derive(Debug)]
 pub enum BorrowMutError {
-    #[error("type of the inner value is not as requested")]
     InvalidType,
-    #[error("value is already immutably borrowed")]
-    AlreadyMutBorrowed(#[from] std::cell::BorrowMutError),
+    AlreadyMutBorrowed(std::cell::BorrowMutError),
+}
+
+impl std::error::Error for BorrowMutError {}
+impl std::fmt::Display for BorrowMutError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::InvalidType => f.write_str("type of the inner value is not as requested"),
+            Self::AlreadyMutBorrowed(_) => f.write_str("value is already immutably borrowed"),
+        }
+    }
+}
+
+impl From<std::cell::BorrowMutError> for BorrowMutError {
+    fn from(value: std::cell::BorrowMutError) -> Self {
+        Self::AlreadyMutBorrowed(value)
+    }
 }
 
 mod imp {

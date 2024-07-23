@@ -58,9 +58,15 @@ pub trait ListModelExtManual: sealed::Sealed + IsA<ListModel> + Sized {
 
 impl<T: IsA<ListModel>> ListModelExtManual for T {}
 
-#[derive(thiserror::Error, Debug, PartialEq, Eq)]
-#[error("the list model was mutated during iteration")]
+#[derive(Debug, PartialEq, Eq)]
 pub struct ListModelMutatedDuringIter;
+
+impl std::error::Error for ListModelMutatedDuringIter {}
+impl std::fmt::Display for ListModelMutatedDuringIter {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str("the list model was mutated during iteration")
+    }
+}
 
 // rustdoc-stripper-ignore-next
 /// Iterator of `ListModel`'s items.

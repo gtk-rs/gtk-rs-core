@@ -7,16 +7,36 @@ use crate::{ffi, translate::*, ConvertError, Error, GString, NormalizeMode, Slic
 // rustdoc-stripper-ignore-next
 /// A wrapper for [`ConvertError`](crate::ConvertError) that can hold an offset into the input
 /// string.
-#[derive(thiserror::Error, Debug)]
+#[derive(Debug)]
 pub enum CvtError {
-    #[error(transparent)]
-    Convert(#[from] Error),
-    #[error("{source} at offset {offset}")]
-    IllegalSequence {
-        #[source]
-        source: Error,
-        offset: usize,
-    },
+    Convert(Error),
+    IllegalSequence { source: Error, offset: usize },
+}
+
+impl std::error::Error for CvtError {
+    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
+        match self {
+            Self::Convert(e) => e.source(),
+            Self::IllegalSequence { source, offset: _ } => source.source(),
+        }
+    }
+}
+
+impl std::fmt::Display for CvtError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Convert(e) => e.fmt(f),
+            Self::IllegalSequence { source, offset } => {
+                f.write_fmt(format_args!("{source} at offset {offset}"))
+            }
+        }
+    }
+}
+
+impl From<Error> for CvtError {
+    fn from(value: Error) -> Self {
+        Self::Convert(value)
+    }
 }
 
 impl CvtError {
@@ -101,16 +121,36 @@ pub fn convert_with_fallback(
 
 // rustdoc-stripper-ignore-next
 /// A wrapper for [`std::io::Error`] that can hold an offset into an input string.
-#[derive(thiserror::Error, Debug)]
+#[derive(Debug)]
 pub enum IConvError {
-    #[error(transparent)]
-    Error(#[from] io::Error),
-    #[error("{source} at offset {offset}")]
-    WithOffset {
-        #[source]
-        source: io::Error,
-        offset: usize,
-    },
+    Error(io::Error),
+    WithOffset { source: io::Error, offset: usize },
+}
+
+impl std::error::Error for IConvError {
+    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
+        match self {
+            Self::Error(e) => e.source(),
+            Self::WithOffset { source, offset: _ } => source.source(),
+        }
+    }
+}
+
+impl std::fmt::Display for IConvError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Error(e) => e.fmt(f),
+            Self::WithOffset { source, offset } => {
+                f.write_fmt(format_args!("{source} at offset {offset}"))
+            }
+        }
+    }
+}
+
+impl From<io::Error> for IConvError {
+    fn from(value: io::Error) -> Self {
+        Self::Error(value)
+    }
 }
 
 #[derive(Debug)]

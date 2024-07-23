@@ -3,152 +3,162 @@
 use std::{fmt::Debug, io};
 
 use crate::ffi;
-use thiserror::Error;
 
-#[derive(Error, Debug, Clone, PartialEq, Copy, Eq)]
+#[derive(Debug, Clone, PartialEq, Copy, Eq)]
 #[non_exhaustive]
 #[doc(alias = "cairo_status_t")]
 pub enum Error {
-    #[error("No Memory")]
     #[doc(alias = "STATUS_NO_MEMORY")]
     NoMemory,
-    #[error("Invalid Restore")]
     #[doc(alias = "STATUS_INVALID_RESTORE")]
     InvalidRestore,
-    #[error("Invalid Pop Group")]
     #[doc(alias = "STATUS_INVALID_POP_GROUP")]
     InvalidPopGroup,
-    #[error("No Current Point")]
     #[doc(alias = "STATUS_NO_CURRENT_POINT")]
     NoCurrentPoint,
-    #[error("Invalid Matrix")]
     #[doc(alias = "STATUS_INVALID_MATRIX")]
     InvalidMatrix,
-    #[error("Invalid Status")]
     #[doc(alias = "STATUS_INVALID_STATUS")]
     InvalidStatus,
-    #[error("Null Pointer")]
     #[doc(alias = "STATUS_NULL_POINTER")]
     NullPointer,
-    #[error("Invalid String")]
     #[doc(alias = "STATUS_INVALID_STRING")]
     InvalidString,
-    #[error("Invalid Path Data")]
     #[doc(alias = "STATUS_INVALID_PATH_DATA")]
     InvalidPathData,
-    #[error("Cairo : Read Error")]
     #[doc(alias = "STATUS_READ_ERROR")]
     ReadError,
-    #[error("Write Error")]
     #[doc(alias = "STATUS_WRITE_ERROR")]
     WriteError,
-    #[error("Surface Finished")]
     #[doc(alias = "STATUS_SURFACE_FINISHED")]
     SurfaceFinished,
-    #[error("Surface Type Mismatch")]
     #[doc(alias = "STATUS_SURFACE_TYPE_MISMATCH")]
     SurfaceTypeMismatch,
-    #[error("Pattern Type Mismatch")]
     #[doc(alias = "STATUS_PATTERN_TYPE_MISMATCH")]
     PatternTypeMismatch,
-    #[error("Invalid Content")]
     #[doc(alias = "STATUS_INVALID_CONTENT")]
     InvalidContent,
-    #[error("Invalid Format")]
     #[doc(alias = "STATUS_INVALID_FORMAT")]
     InvalidFormat,
-    #[error("Invalid Visual")]
     #[doc(alias = "STATUS_INVALID_VISUAL")]
     InvalidVisual,
-    #[error("File Not Found")]
     #[doc(alias = "STATUS_FILE_NOT_FOUND")]
     FileNotFound,
-    #[error("Invalid Dash")]
     #[doc(alias = "STATUS_INVALID_DASH")]
     InvalidDash,
-    #[error("Invalid Dash Comment")]
     #[doc(alias = "STATUS_INVALID_DSC_COMMENT")]
     InvalidDscComment,
-    #[error("Invalid Index")]
     #[doc(alias = "STATUS_INVALID_INDEX")]
     InvalidIndex,
-    #[error("Clip Not Representable")]
     #[doc(alias = "STATUS_CLIP_NOT_REPRESENTABLE")]
     ClipNotRepresentable,
-    #[error("Temp File Error")]
     #[doc(alias = "STATUS_TEMP_FILE_ERROR")]
     TempFileError,
-    #[error("Invalid Stride")]
     #[doc(alias = "STATUS_INVALID_STRIDE")]
     InvalidStride,
-    #[error("Font Type Mismatch")]
     #[doc(alias = "STATUS_FONT_TYPE_MISMATCH")]
     FontTypeMismatch,
-    #[error("User Font Immutable")]
     #[doc(alias = "STATUS_USER_FONT_IMMUTABLE")]
     UserFontImmutable,
-    #[error("User Font Error")]
     #[doc(alias = "STATUS_USER_FONT_ERROR")]
     UserFontError,
-    #[error("Negative Count")]
     #[doc(alias = "STATUS_NEGATIVE_COUNT")]
     NegativeCount,
-    #[error("Invalid Clusters")]
     #[doc(alias = "STATUS_INVALID_CLUSTERS")]
     InvalidClusters,
-    #[error("Invalid Slant")]
     #[doc(alias = "STATUS_INVALID_SLANT")]
     InvalidSlant,
-    #[error("Invalid Weight")]
     #[doc(alias = "STATUS_INVALID_WEIGHT")]
     InvalidWeight,
-    #[error("Invalid Size")]
     #[doc(alias = "STATUS_INVALID_SIZE")]
     InvalidSize,
-    #[error("User Font Not Implemented")]
     #[doc(alias = "STATUS_USER_FONT_NOT_IMPLEMENTED")]
     UserFontNotImplemented,
-    #[error("Device Type Mismatch")]
     #[doc(alias = "STATUS_DEVICE_TYPE_MISMATCH")]
     DeviceTypeMismatch,
-    #[error("Device Error")]
     #[doc(alias = "STATUS_DEVICE_ERROR")]
     DeviceError,
-    #[error("Invalid Mesh Construction")]
     #[doc(alias = "STATUS_INVALID_MESH_CONSTRUCTION")]
     InvalidMeshConstruction,
-    #[error("Device Finished")]
     #[doc(alias = "STATUS_DEVICE_FINISHED")]
     DeviceFinished,
-    #[error("JBig2Global Missing")]
     #[doc(alias = "STATUS_J_BIG2_GLOBAL_MISSING")]
     JBig2GlobalMissing,
-    #[error("PNG Error")]
     #[doc(alias = "STATUS_PNG_ERROR")]
     PngError,
-    #[error("Freetype Error")]
     #[doc(alias = "STATUS_FREETYPE_ERROR")]
     FreetypeError,
-    #[error("Win32Gdi Error")]
     #[doc(alias = "STATUS_WIN32_GDI_ERROR")]
     Win32GdiError,
     #[cfg(feature = "v1_16")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_16")))]
-    #[error("Tag Error")]
     #[doc(alias = "STATUS_TAG_ERROR")]
     TagError,
     #[cfg(feature = "v1_18")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_18")))]
-    #[error("Dwrite Error")]
     #[doc(alias = "STATUS_DWRITE_ERROR")]
     DwriteError,
-    #[error("LastStatus")]
     #[doc(alias = "STATUS_LAST_STATUS")]
     LastStatus,
-    #[error("Unknown {0}")]
     #[doc(hidden)]
     __Unknown(i32),
 }
+
+impl std::error::Error for Error {}
+impl std::fmt::Display for Error {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Error::NoMemory => f.write_str("No Memory"),
+            Error::InvalidRestore => f.write_str("Invalid Restore"),
+            Error::InvalidPopGroup => f.write_str("Invalid Pop Group"),
+            Error::NoCurrentPoint => f.write_str("No Current Point"),
+            Error::InvalidMatrix => f.write_str("Invalid Matrix"),
+            Error::InvalidStatus => f.write_str("Invalid Status"),
+            Error::NullPointer => f.write_str("Null Pointer"),
+            Error::InvalidString => f.write_str("Invalid String"),
+            Error::InvalidPathData => f.write_str("Invalid Path Data"),
+            Error::ReadError => f.write_str("Read Error"),
+            Error::WriteError => f.write_str("Write Error"),
+            Error::SurfaceFinished => f.write_str("Surface Finished"),
+            Error::SurfaceTypeMismatch => f.write_str("Surface Type Mismatch"),
+            Error::PatternTypeMismatch => f.write_str("Pattern Type Mismatch"),
+            Error::InvalidContent => f.write_str("Invalid Content"),
+            Error::InvalidFormat => f.write_str("Invalid Format"),
+            Error::InvalidVisual => f.write_str("Invalid Visual"),
+            Error::FileNotFound => f.write_str("File Not Found"),
+            Error::InvalidDash => f.write_str("Invalid Dash"),
+            Error::InvalidDscComment => f.write_str("Invalid Dash Comment"),
+            Error::InvalidIndex => f.write_str("Invalid Index"),
+            Error::ClipNotRepresentable => f.write_str("Clip Not Representable"),
+            Error::TempFileError => f.write_str("Temp File Error"),
+            Error::InvalidStride => f.write_str("Invalid Stride"),
+            Error::FontTypeMismatch => f.write_str("Font Type Mismatch"),
+            Error::UserFontImmutable => f.write_str("User Font Immutable"),
+            Error::UserFontError => f.write_str("User Font Error"),
+            Error::NegativeCount => f.write_str("Negative Count"),
+            Error::InvalidClusters => f.write_str("Invalid Clusters"),
+            Error::InvalidSlant => f.write_str("Invalid Slant"),
+            Error::InvalidWeight => f.write_str("Invalid Weight"),
+            Error::InvalidSize => f.write_str("Invalid Size"),
+            Error::UserFontNotImplemented => f.write_str("User Font Not Implemented"),
+            Error::DeviceTypeMismatch => f.write_str("Device Type Mismatch"),
+            Error::DeviceError => f.write_str("Device Error"),
+            Error::InvalidMeshConstruction => f.write_str("Invalid Mesh Construction"),
+            Error::DeviceFinished => f.write_str("Device Finished"),
+            Error::JBig2GlobalMissing => f.write_str("JBig2Global Missing"),
+            Error::PngError => f.write_str("PNG Error"),
+            Error::FreetypeError => f.write_str("Freetype Error"),
+            Error::Win32GdiError => f.write_str("Win32Gdi Error"),
+            #[cfg(feature = "v1_16")]
+            Error::TagError => f.write_str("Tag Error"),
+            #[cfg(feature = "v1_18")]
+            Error::DwriteError => f.write_str("Dwrite Error"),
+            Error::LastStatus => f.write_str("LastStatus"),
+            Error::__Unknown(e) => f.write_fmt(format_args!("Unknown {e}")),
+        }
+    }
+}
+
 #[doc(hidden)]
 impl From<Error> for ffi::cairo_status_t {
     fn from(err: Error) -> ffi::cairo_status_t {
@@ -259,20 +269,51 @@ impl From<ffi::cairo_status_t> for Error {
     }
 }
 
-#[derive(Error, Debug)]
+#[derive(Debug)]
 pub enum IoError {
-    #[error("Cairo error: {0}")]
-    Cairo(#[from] Error),
-    #[error("IO error: {0}")]
-    Io(#[from] io::Error),
+    Cairo(Error),
+    Io(io::Error),
 }
 
-#[derive(Error, Debug)]
+impl std::error::Error for IoError {}
+impl std::fmt::Display for IoError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            IoError::Cairo(e) => {
+                f.write_fmt(format_args!("Failed to borrow with Cairo error: {e}"))
+            }
+            IoError::Io(e) => f.write_fmt(format_args!("IO error: {e}")),
+        }
+    }
+}
+
+impl From<Error> for IoError {
+    fn from(value: Error) -> Self {
+        Self::Cairo(value)
+    }
+}
+
+#[derive(Debug)]
 pub enum BorrowError {
-    #[error("Failed to borrow with Cairo error: {0}")]
-    Cairo(#[from] crate::Error),
-    #[error("Can't get exclusive access")]
+    Cairo(Error),
     NonExclusive,
+}
+
+impl std::error::Error for BorrowError {}
+impl std::fmt::Display for BorrowError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            BorrowError::Cairo(e) => {
+                f.write_fmt(format_args!("Failed to borrow with Cairo error: {e}"))
+            }
+            BorrowError::NonExclusive => f.write_str("Can't get exclusive access"),
+        }
+    }
+}
+impl From<Error> for BorrowError {
+    fn from(value: Error) -> Self {
+        Self::Cairo(value)
+    }
 }
 
 pub type Result<T> = std::result::Result<T, Error>;
