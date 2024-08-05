@@ -1357,10 +1357,7 @@ macro_rules! gformat {
 #[derive(Clone, PartialEq, Eq, Debug)]
 pub struct GStringNoTrailingNulError<T>(T);
 
-impl<T> std::error::Error for GStringNoTrailingNulError<T> where
-    T: fmt::Debug
-{
-}
+impl<T> std::error::Error for GStringNoTrailingNulError<T> where T: fmt::Debug {}
 
 impl<T> fmt::Display for GStringNoTrailingNulError<T> {
     fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
@@ -1384,10 +1381,7 @@ impl<T> GStringNoTrailingNulError<T> {
 #[derive(Clone, PartialEq, Eq, Debug)]
 pub struct GStringInteriorNulError<T>(T, GStrInteriorNulError);
 
-impl<T> std::error::Error for GStringInteriorNulError<T> where
-    T: fmt::Debug
-{
-}
+impl<T> std::error::Error for GStringInteriorNulError<T> where T: fmt::Debug {}
 
 impl<T> fmt::Display for GStringInteriorNulError<T> {
     fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
@@ -1417,10 +1411,7 @@ impl<T> GStringInteriorNulError<T> {
 #[derive(Clone, PartialEq, Eq, Debug)]
 pub struct GStringUtf8Error<T>(T, std::str::Utf8Error);
 
-impl<T> std::error::Error for GStringUtf8Error<T> where
-    T: fmt::Debug
-{
-}
+impl<T> std::error::Error for GStringUtf8Error<T> where T: fmt::Debug {}
 
 impl<T> fmt::Display for GStringUtf8Error<T> {
     fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
