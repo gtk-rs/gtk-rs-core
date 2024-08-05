@@ -3,24 +3,70 @@
 use std::{
     any::Any,
     cell::{Ref, RefMut},
+    fmt,
 };
 
 use crate as glib;
 use crate::{subclass::prelude::*, Object};
 
-#[derive(thiserror::Error, Debug)]
+#[derive(Debug)]
 pub enum BorrowError {
-    #[error("type of the inner value is not as requested")]
     InvalidType,
-    #[error("value is already mutably borrowed")]
-    AlreadyBorrowed(#[from] std::cell::BorrowError),
+    AlreadyBorrowed(std::cell::BorrowError),
 }
-#[derive(thiserror::Error, Debug)]
+
+impl std::error::Error for BorrowError {
+    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
+        match self {
+            Self::InvalidType => None,
+            Self::AlreadyBorrowed(err) => Some(err),
+        }
+    }
+}
+
+impl fmt::Display for BorrowError {
+    fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            Self::InvalidType => fmt.write_str("type of the inner value is not as requested"),
+            Self::AlreadyBorrowed(_) => fmt.write_str("value is already mutably borrowed"),
+        }
+    }
+}
+
+impl From<std::cell::BorrowError> for BorrowError {
+    fn from(err: std::cell::BorrowError) -> Self {
+        Self::AlreadyBorrowed(err)
+    }
+}
+
+#[derive(Debug)]
 pub enum BorrowMutError {
-    #[error("type of the inner value is not as requested")]
     InvalidType,
-    #[error("value is already immutably borrowed")]
-    AlreadyMutBorrowed(#[from] std::cell::BorrowMutError),
+    AlreadyMutBorrowed(std::cell::BorrowMutError),
+}
+
+impl std::error::Error for BorrowMutError {
+    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
+        match self {
+            Self::InvalidType => None,
+            Self::AlreadyMutBorrowed(err) => Some(err),
+        }
+    }
+}
+
+impl fmt::Display for BorrowMutError {
+    fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            Self::InvalidType => fmt.write_str("type of the inner value is not as requested"),
+            Self::AlreadyMutBorrowed(_) => fmt.write_str("value is already immutably borrowed"),
+        }
+    }
+}
+
+impl From<std::cell::BorrowMutError> for BorrowMutError {
+    fn from(err: std::cell::BorrowMutError) -> Self {
+        Self::AlreadyMutBorrowed(err)
+    }
 }
 
 mod imp {

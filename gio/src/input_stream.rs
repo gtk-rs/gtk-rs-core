@@ -1,6 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use std::{future::Future, io, mem, pin::Pin, ptr};
+use std::{fmt, future::Future, io, mem, pin::Pin, ptr};
 
 use futures_core::task::{Context, Poll};
 use futures_io::{AsyncBufRead, AsyncRead};
@@ -491,10 +491,19 @@ impl<T: IsA<InputStream>> InputStreamAsyncBufRead<T> {
     }
 }
 
-#[derive(thiserror::Error, Debug)]
+#[derive(Debug)]
 enum BufReadError {
-    #[error("Previous read operation failed")]
     Failed,
+}
+
+impl std::error::Error for BufReadError {}
+
+impl fmt::Display for BufReadError {
+    fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            Self::Failed => fmt.write_str("Previous read operation failed"),
+        }
+    }
 }
 
 impl<T: IsA<InputStream>> AsyncRead for InputStreamAsyncBufRead<T> {
