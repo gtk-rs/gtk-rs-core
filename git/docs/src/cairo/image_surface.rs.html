@@ -445,13 +445,13 @@
 <span class="attr">#[cfg(feature = <span class="string">"use_glib"</span>)]
 </span><span class="kw">use </span><a href="../../glib/translate/index.html">glib::translate</a>::<span class="kw-2">*</span>;
 
-<span class="kw">use crate</span>::{<a href="../../cairo_sys/index.html">ffi</a>, <a href="utils.rs.html#21-26">utils::status_to_result</a>, <a href="error.rs.html#271-276">BorrowError</a>, <a href="error.rs.html#11-151">Error</a>, <a href="enums.rs.html#1155-1172">Format</a>, <a href="surface.rs.html#19">Surface</a>, <a href="enums.rs.html#951-1004">SurfaceType</a>};
+<span class="kw">use crate</span>::{<a href="../../cairo_sys/index.html">ffi</a>, <a href="utils.rs.html#21-26">utils::status_to_result</a>, <a href="error.rs.html#309-312">BorrowError</a>, <a href="error.rs.html#9-104">Error</a>, <a href="enums.rs.html#1155-1172">Format</a>, <a href="surface.rs.html#19">Surface</a>, <a href="enums.rs.html#951-1004">SurfaceType</a>};
 
 <a class="macro" href="surface_macros.rs.html#4-125">declare_surface!</a>(<a href="../../cairo/struct.ImageSurface.html">ImageSurface</a>, SurfaceType::Image);
 
 <span class="kw">impl </span><a href="#14">ImageSurface</a> {
     <span class="attr">#[doc(alias = <span class="string">"cairo_image_surface_create"</span>)]
-    </span><span class="kw">pub fn </span>create(format: <a href="enums.rs.html#1155-1172">Format</a>, width: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>, height: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#14">ImageSurface</a>, <a href="error.rs.html#11-151">Error</a>&gt; {
+    </span><span class="kw">pub fn </span>create(format: <a href="enums.rs.html#1155-1172">Format</a>, width: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>, height: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#14">ImageSurface</a>, <a href="error.rs.html#9-104">Error</a>&gt; {
         <span class="kw">unsafe </span>{
             <a href="#14"><span class="self">Self</span>::from_raw_full</a>(<a href="../../cairo_sys/fn.cairo_image_surface_create.html">ffi::cairo_image_surface_create</a>(
                 <a href="#18">format</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>(),
@@ -474,7 +474,7 @@
         width: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
         height: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
         stride: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#14">ImageSurface</a>, <a href="error.rs.html#11-151">Error</a>&gt; {
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#14">ImageSurface</a>, <a href="error.rs.html#9-104">Error</a>&gt; {
         <a href="#14">ImageSurface::from_raw_full</a>(<a href="../../cairo_sys/fn.cairo_image_surface_create_for_data.html">ffi::cairo_image_surface_create_for_data</a>(
             <a href="#36">data</a>,
             <a href="#37">format</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>(),
@@ -491,7 +491,7 @@
         width: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
         height: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
         stride: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#14">ImageSurface</a>, <a href="error.rs.html#11-151">Error</a>&gt; {
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#14">ImageSurface</a>, <a href="error.rs.html#9-104">Error</a>&gt; {
         <span class="kw">let </span><span class="kw-2">mut </span>data: Box&lt;<span class="kw">dyn </span>AsMut&lt;[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]&gt;&gt; = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">Box::new</a>(<a href="#53">data</a>);
 
         <span class="kw">let </span>(ptr, len) = {
@@ -520,10 +520,10 @@
 
     <span class="attr">#[doc(alias = <span class="string">"cairo_image_surface_get_data"</span>)]
     #[doc(alias = <span class="string">"get_data"</span>)]
-    </span><span class="kw">pub fn </span>data(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#231-235">ImageSurfaceData</a>, <a href="error.rs.html#271-276">BorrowError</a>&gt; {
+    </span><span class="kw">pub fn </span>data(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#231-235">ImageSurfaceData</a>, <a href="error.rs.html#309-312">BorrowError</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">if </span>ffi::cairo_surface_get_reference_count(<span class="self">self</span>.to_raw_none()) &gt; <span class="number">1 </span>{
-                <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="error.rs.html#275">BorrowError::NonExclusive</a>);
+                <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="error.rs.html#311">BorrowError::NonExclusive</a>);
             }
 
             <a class="self" href="#87">self</a>.<a href="surface.rs.html#371-375">flush</a>();
@@ -533,16 +533,16 @@
             }
             <span class="kw">if </span>ffi::cairo_image_surface_get_data(<span class="self">self</span>.to_raw_none()).is_null() || is_finished(<span class="self">self</span>)
             {
-                <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html#tymethod.from">BorrowError::from</a>(<a href="error.rs.html#47">Error::SurfaceFinished</a>));
+                <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html#tymethod.from">BorrowError::from</a>(<a href="error.rs.html#33">Error::SurfaceFinished</a>));
             }
             <span class="prelude-val">Ok</span>(<a href="#241-255">ImageSurfaceData::new</a>(<a class="self" href="#87">self</a>))
         }
     }
 
-    <span class="kw">pub fn </span>take_data(<span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#172-174">ImageSurfaceDataOwned</a>, <a href="error.rs.html#271-276">BorrowError</a>&gt; {
+    <span class="kw">pub fn </span>take_data(<span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#172-174">ImageSurfaceDataOwned</a>, <a href="error.rs.html#309-312">BorrowError</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">if </span>ffi::cairo_surface_get_reference_count(<span class="self">self</span>.to_raw_none()) &gt; <span class="number">1 </span>{
-                <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="error.rs.html#275">BorrowError::NonExclusive</a>);
+                <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="error.rs.html#311">BorrowError::NonExclusive</a>);
             }
 
             <a class="self" href="#106">self</a>.<a href="surface.rs.html#371-375">flush</a>();
@@ -552,13 +552,13 @@
             }
             <span class="kw">if </span>ffi::cairo_image_surface_get_data(<span class="self">self</span>.to_raw_none()).is_null() || is_finished(<span class="kw-2">&amp;</span><span class="self">self</span>)
             {
-                <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html#tymethod.from">BorrowError::from</a>(<a href="error.rs.html#47">Error::SurfaceFinished</a>));
+                <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html#tymethod.from">BorrowError::from</a>(<a href="error.rs.html#33">Error::SurfaceFinished</a>));
             }
             <span class="prelude-val">Ok</span>(<a href="#172-174">ImageSurfaceDataOwned</a> { surface: <span class="self"><a href="#106">self</a> </span>})
         }
     }
 
-    <span class="kw">pub fn </span>with_data&lt;F: FnOnce(<span class="kw-2">&amp;</span>[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>])&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="error.rs.html#271-276">BorrowError</a>&gt; {
+    <span class="kw">pub fn </span>with_data&lt;F: FnOnce(<span class="kw-2">&amp;</span>[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>])&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="error.rs.html#309-312">BorrowError</a>&gt; {
         <a class="self" href="#125">self</a>.<a href="surface.rs.html#371-375">flush</a>();
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>status = <a href="../../cairo_sys/fn.cairo_surface_status.html">ffi::cairo_surface_status</a>(<a class="self" href="#125">self</a>.<a href="surface.rs.html#44-46">to_raw_none</a>());
@@ -567,7 +567,7 @@
             }
             <span class="kw">let </span>ptr = <a href="../../cairo_sys/fn.cairo_image_surface_get_data.html">ffi::cairo_image_surface_get_data</a>(<a class="self" href="#125">self</a>.<a href="surface.rs.html#44-46">to_raw_none</a>());
             <span class="kw">if </span>ptr.is_null() || is_finished(<span class="self">self</span>) {
-                <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html#tymethod.from">BorrowError::from</a>(<a href="error.rs.html#47">Error::SurfaceFinished</a>));
+                <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html#tymethod.from">BorrowError::from</a>(<a href="error.rs.html#33">Error::SurfaceFinished</a>));
             }
             <span class="kw">let </span>len = <a class="self" href="#125">self</a>.<a href="#155-157">height</a>() <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a> * <a class="self" href="#125">self</a>.<a href="#161-163">stride</a>() <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>;
             <span class="kw">let </span>data = <span class="kw">if </span>len == <span class="number">0 </span>{

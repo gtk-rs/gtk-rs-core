@@ -308,7 +308,7 @@
 <span class="kw">use </span><a href="../../cairo_sys/index.html"><span class="kw">crate</span>::ffi</a>;
 <span class="kw">use </span>libc::{c_uint, <a href="https://doc.rust-lang.org/nightly/core/ffi/enum.c_void.html">c_void</a>};
 
-<span class="kw">use crate</span>::{<a href="utils.rs.html#21-26">utils::status_to_result</a>, <a href="error.rs.html#11-151">Error</a>, <a href="image_surface.rs.html#14">ImageSurface</a>, <a href="error.rs.html#263-268">IoError</a>, <a href="surface.rs.html#19">Surface</a>};
+<span class="kw">use crate</span>::{<a href="utils.rs.html#21-26">utils::status_to_result</a>, <a href="error.rs.html#9-104">Error</a>, <a href="image_surface.rs.html#14">ImageSurface</a>, <a href="error.rs.html#273-276">IoError</a>, <a href="surface.rs.html#19">Surface</a>};
 
 <span class="kw">struct </span>ReadEnv&lt;<span class="lifetime">'a</span>, R: <span class="lifetime">'a </span>+ <a href="https://doc.rust-lang.org/nightly/std/io/trait.Read.html">Read</a>&gt; {
     reader: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>R,
@@ -325,7 +325,7 @@
 
     <span class="comment">// Don’t attempt another read, if a previous one errored or panicked:
     </span><span class="kw">if </span>read_env.io_error.is_some() || read_env.unwind_payload.is_some() {
-        <span class="kw">return </span><a href="error.rs.html#41">Error::ReadError</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>();
+        <span class="kw">return </span><a href="error.rs.html#29">Error::ReadError</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>();
     }
 
     <span class="kw">let </span>buffer = <span class="kw">if </span>data.is_null() || len == <span class="number">0 </span>{
@@ -338,11 +338,11 @@
         <span class="prelude-val">Ok</span>(<span class="prelude-val">Ok</span>(())) =&gt; <a href="../../cairo_sys/constant.STATUS_SUCCESS.html">ffi::STATUS_SUCCESS</a>,
         <span class="prelude-val">Ok</span>(<span class="prelude-val">Err</span>(error)) =&gt; {
             <a href="#26">read_env</a>.io_error = <span class="prelude-val">Some</span>(<a href="#41">error</a>);
-            <a href="error.rs.html#41">Error::ReadError</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>()
+            <a href="error.rs.html#29">Error::ReadError</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>()
         }
         <span class="prelude-val">Err</span>(payload) =&gt; {
             <a href="#26">read_env</a>.unwind_payload = <span class="prelude-val">Some</span>(<a href="#45">payload</a>);
-            <a href="error.rs.html#41">Error::ReadError</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>()
+            <a href="error.rs.html#29">Error::ReadError</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>()
         }
     }
 }
@@ -362,7 +362,7 @@
 
     <span class="comment">// Don’t attempt another write, if a previous one errored or panicked:
     </span><span class="kw">if </span>write_env.io_error.is_some() || write_env.unwind_payload.is_some() {
-        <span class="kw">return </span><a href="error.rs.html#44">Error::WriteError</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>();
+        <span class="kw">return </span><a href="error.rs.html#31">Error::WriteError</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>();
     }
 
     <span class="kw">let </span>buffer = <span class="kw">if </span>data.is_null() || len == <span class="number">0 </span>{
@@ -375,18 +375,18 @@
         <span class="prelude-val">Ok</span>(<span class="prelude-val">Ok</span>(())) =&gt; <a href="../../cairo_sys/constant.STATUS_SUCCESS.html">ffi::STATUS_SUCCESS</a>,
         <span class="prelude-val">Ok</span>(<span class="prelude-val">Err</span>(error)) =&gt; {
             <a href="#63">write_env</a>.io_error = <span class="prelude-val">Some</span>(<a href="#78">error</a>);
-            <a href="error.rs.html#44">Error::WriteError</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>()
+            <a href="error.rs.html#31">Error::WriteError</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>()
         }
         <span class="prelude-val">Err</span>(payload) =&gt; {
             <a href="#63">write_env</a>.unwind_payload = <span class="prelude-val">Some</span>(<a href="#82">payload</a>);
-            <a href="error.rs.html#44">Error::WriteError</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>()
+            <a href="error.rs.html#31">Error::WriteError</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>()
         }
     }
 }
 
 <span class="kw">impl </span><a href="image_surface.rs.html#14">ImageSurface</a> {
     <span class="attr">#[doc(alias = <span class="string">"cairo_image_surface_create_from_png_stream"</span>)]
-    </span><span class="kw">pub fn </span>create_from_png&lt;R: <a href="https://doc.rust-lang.org/nightly/std/io/trait.Read.html">Read</a>&gt;(stream: <span class="kw-2">&amp;mut </span>R) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="image_surface.rs.html#14">ImageSurface</a>, <a href="error.rs.html#263-268">IoError</a>&gt; {
+    </span><span class="kw">pub fn </span>create_from_png&lt;R: <a href="https://doc.rust-lang.org/nightly/std/io/trait.Read.html">Read</a>&gt;(stream: <span class="kw-2">&amp;mut </span>R) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="image_surface.rs.html#14">ImageSurface</a>, <a href="error.rs.html#273-276">IoError</a>&gt; {
         <span class="kw">let </span><span class="kw-2">mut </span>env = <a href="#15-19">ReadEnv</a> {
             reader: <a href="#91">stream</a>,
             io_error: <span class="prelude-val">None</span>,
@@ -406,7 +406,7 @@
 
             <span class="kw">match </span><a href="#92">env</a>.io_error {
                 <span class="prelude-val">None </span>=&gt; <span class="prelude-val">Ok</span>(<a href="#103">surface</a>),
-                <span class="prelude-val">Some</span>(err) =&gt; <span class="prelude-val">Err</span>(<a href="error.rs.html#267">IoError::Io</a>(<a href="#111">err</a>)),
+                <span class="prelude-val">Some</span>(err) =&gt; <span class="prelude-val">Err</span>(<a href="error.rs.html#275">IoError::Io</a>(<a href="#111">err</a>)),
             }
         }
     }
@@ -420,7 +420,7 @@
     /// [`Error::SurfaceTypeMismatch`]
     </span><span class="attr">#[doc(alias = <span class="string">"cairo_surface_write_to_png_stream"</span>)]
     #[doc(alias = <span class="string">"cairo_surface_write_to_png"</span>)]
-    </span><span class="kw">pub fn </span>write_to_png&lt;W: <a href="https://doc.rust-lang.org/nightly/std/io/trait.Write.html">Write</a>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, stream: <span class="kw-2">&amp;mut </span>W) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="error.rs.html#263-268">IoError</a>&gt; {
+    </span><span class="kw">pub fn </span>write_to_png&lt;W: <a href="https://doc.rust-lang.org/nightly/std/io/trait.Write.html">Write</a>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, stream: <span class="kw-2">&amp;mut </span>W) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="error.rs.html#273-276">IoError</a>&gt; {
         <span class="kw">let </span><span class="kw-2">mut </span>env = <a href="#52-56">WriteEnv</a> {
             writer: <a href="#125">stream</a>,
             io_error: <span class="prelude-val">None</span>,
@@ -440,10 +440,10 @@
 
         <span class="kw">match </span><a href="#126">env</a>.io_error {
             <span class="prelude-val">None </span>=&gt; <span class="kw">match </span><a href="utils.rs.html#21-26">status_to_result</a>(<a href="#131">status</a>) {
-                <span class="prelude-val">Err</span>(err) =&gt; <span class="prelude-val">Err</span>(<a href="error.rs.html#265">IoError::Cairo</a>(<a href="#145">err</a>)),
+                <span class="prelude-val">Err</span>(err) =&gt; <span class="prelude-val">Err</span>(<a href="error.rs.html#274">IoError::Cairo</a>(<a href="#145">err</a>)),
                 <span class="prelude-val">Ok</span>(<span class="kw">_</span>) =&gt; <span class="prelude-val">Ok</span>(()),
             },
-            <span class="prelude-val">Some</span>(err) =&gt; <span class="prelude-val">Err</span>(<a href="error.rs.html#267">IoError::Io</a>(<a href="#148">err</a>)),
+            <span class="prelude-val">Some</span>(err) =&gt; <span class="prelude-val">Err</span>(<a href="error.rs.html#275">IoError::Io</a>(<a href="#148">err</a>)),
         }
     }
 }

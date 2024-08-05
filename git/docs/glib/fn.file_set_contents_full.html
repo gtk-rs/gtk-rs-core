@@ -71,7 +71,7 @@
 </script>
 
 
-<nav class="mobile-topbar"><button class="sidebar-menu-toggle" title="show sidebar"></button></nav><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../glib/index.html">glib</a><span class="version">0.21.0</span></h2></div><div class="sidebar-elems"></div></nav><div class="sidebar-resizer"></div><main><div class="width-limiter"><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1>Function <a href="index.html">glib</a>::<wbr><a class="fn" href="#">file_set_contents_full</a><button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><span class="out-of-band"><a class="src" href="../src/glib/auto/functions.rs.html#975-999">source</a> · <button id="toggle-all-docs" title="collapse all docs">[<span>&#x2212;</span>]</button></span></div><pre class="rust item-decl"><code>pub fn file_set_contents_full(
+<nav class="mobile-topbar"><button class="sidebar-menu-toggle" title="show sidebar"></button></nav><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../glib/index.html">glib</a><span class="version">0.21.0</span></h2></div><div class="sidebar-elems"></div></nav><div class="sidebar-resizer"></div><main><div class="width-limiter"><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1>Function <a href="index.html">glib</a>::<wbr><a class="fn" href="#">file_set_contents_full</a><button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><span class="out-of-band"><a class="src" href="../src/glib/auto/functions.rs.html#907-931">source</a> · <button id="toggle-all-docs" title="collapse all docs">[<span>&#x2212;</span>]</button></span></div><pre class="rust item-decl"><code>pub fn file_set_contents_full(
     filename: impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html" title="trait core::convert::AsRef">AsRef</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/std/path/struct.Path.html" title="struct std::path::Path">Path</a>&gt;,
     contents: &amp;[<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>],
     flags: <a class="struct" href="struct.FileSetContentsFlags.html" title="struct glib::FileSetContentsFlags">FileSetContentsFlags</a>,
@@ -129,46 +129,18 @@ Possible error codes are those in the #GFileError enumeration.</p>
 to 7 characters to @filename.</p>
 <p>If the file didn’t exist before and is created, it will be given the
 permissions from @mode. Otherwise, the permissions of the existing file may
-be chanComplete version of [<code>bind_property()</code>][Self::bind_property()].</p>
-<p>Creates a binding between <code>source_property</code> on <code>self</code> and <code>target_property</code>
-on <code>target</code>, allowing you to set the transformation functions to be used by
-the binding.</p>
-<p>If <code>flags</code> contains <a href="struct.BindingFlags.html#associatedconstant.BIDIRECTIONAL" title="associated constant glib::BindingFlags::BIDIRECTIONAL"><code>BindingFlags::BIDIRECTIONAL</code></a> then the binding will be mutual:
-if <code>target_property</code> on <code>target</code> changes then the <code>source_property</code> on <code>self</code>
-will be updated as well. The <code>transform_from</code> function is only used in case
-of bidirectional bindings, otherwise it will be ignored</p>
-<p>The binding will automatically be removed when either the <code>self</code> or the
-<code>target</code> instances are finalized. This will release the reference that is
-being held on the <a href="struct.Binding.html" title="struct glib::Binding"><code>Binding</code></a> instance; if you want to hold on to the
-<a href="struct.Binding.html" title="struct glib::Binding"><code>Binding</code></a> instance, you will need to hold a reference to it.</p>
-<p>To remove the binding, call <a href="struct.Binding.html#method.unbind" title="method glib::Binding::unbind"><code>Binding::unbind()</code></a>.</p>
-<p>A <a href="object/struct.Object.html" title="struct glib::object::Object"><code>Object</code></a> can have multiple bindings.</p>
-<p>The same <code>user_data</code> parameter will be used for both <code>transform_to</code>
-and <code>transform_from</code> transformation functions; the <code>notify</code> function will
-be called once, when the binding is removed. If you need different data
-for each transformation function, please use
-[<code>bind_property_with_closures()</code>][Self::bind_property_with_closures()] instead.</p>
-<h3 id="source_property"><a class="doc-anchor" href="#source_property">§</a><code>source_property</code></h3>
-<p>the property on <code>self</code> to bind</p>
-<h3 id="target"><a class="doc-anchor" href="#target">§</a><code>target</code></h3>
-<p>the target <a href="object/struct.Object.html" title="struct glib::object::Object"><code>Object</code></a></p>
-<h3 id="target_property"><a class="doc-anchor" href="#target_property">§</a><code>target_property</code></h3>
-<p>the property on <code>target</code> to bind</p>
+be changed to @mode depending on @flags, or they may remain unchanged.</p>
+<h3 id="filename"><a class="doc-anchor" href="#filename">§</a><code>filename</code></h3>
+<p>name of a file to write @contents to, in the GLib file name
+encoding</p>
+<h3 id="contents"><a class="doc-anchor" href="#contents">§</a><code>contents</code></h3>
+<p>string to write to the file</p>
 <h3 id="flags"><a class="doc-anchor" href="#flags">§</a><code>flags</code></h3>
-<p>flags to pass to <a href="struct.Binding.html" title="struct glib::Binding"><code>Binding</code></a></p>
-<h3 id="transform_to"><a class="doc-anchor" href="#transform_to">§</a><code>transform_to</code></h3>
-<p>the transformation function
-from the <code>self</code> to the <code>target</code>, or <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a> to use the default</p>
-<h3 id="transform_from"><a class="doc-anchor" href="#transform_from">§</a><code>transform_from</code></h3>
-<p>the transformation function
-from the <code>target</code> to the <code>self</code>, or <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a> to use the default</p>
-<h3 id="notify"><a class="doc-anchor" href="#notify">§</a><code>notify</code></h3>
-<p>a function to call when disposing the binding, to free
-resources used by the transformation functions, or <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a> if not required</p>
+<p>flags controlling the safety vs speed of the operation</p>
+<h3 id="mode"><a class="doc-anchor" href="#mode">§</a><code>mode</code></h3>
+<p>file mode, as passed to <code>open()</code>; typically this will be <code>0666</code></p>
 <h2 id="returns"><a class="doc-anchor" href="#returns">§</a>Returns</h2>
-<p>the <a href="struct.Binding.html" title="struct glib::Binding"><code>Binding</code></a> instance representing the
-binding between the two <a href="object/struct.Object.html" title="struct glib::object::Object"><code>Object</code></a> instances. The binding is released
-whenever the <a href="struct.Binding.html" title="struct glib::Binding"><code>Binding</code></a> reference count reaches zero.
+<p><a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>true</code></a> on success, <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>false</code></a> if an error occurred
 Writes all of @contents to a file named @filename, with good error checking.
 If a file called @filename already exists it will be overwritten.</p>
 <p>@flags control the properties of the write operation: whether it’s atomic,
@@ -222,44 +194,16 @@ Possible error codes are those in the #GFileError enumeration.</p>
 to 7 characters to @filename.</p>
 <p>If the file didn’t exist before and is created, it will be given the
 permissions from @mode. Otherwise, the permissions of the existing file may
-be chanComplete version of [<code>bind_property()</code>][Self::bind_property()].</p>
-<p>Creates a binding between <code>source_property</code> on <code>self</code> and <code>target_property</code>
-on <code>target</code>, allowing you to set the transformation functions to be used by
-the binding.</p>
-<p>If <code>flags</code> contains <a href="struct.BindingFlags.html#associatedconstant.BIDIRECTIONAL" title="associated constant glib::BindingFlags::BIDIRECTIONAL"><code>BindingFlags::BIDIRECTIONAL</code></a> then the binding will be mutual:
-if <code>target_property</code> on <code>target</code> changes then the <code>source_property</code> on <code>self</code>
-will be updated as well. The <code>transform_from</code> function is only used in case
-of bidirectional bindings, otherwise it will be ignored</p>
-<p>The binding will automatically be removed when either the <code>self</code> or the
-<code>target</code> instances are finalized. This will release the reference that is
-being held on the <a href="struct.Binding.html" title="struct glib::Binding"><code>Binding</code></a> instance; if you want to hold on to the
-<a href="struct.Binding.html" title="struct glib::Binding"><code>Binding</code></a> instance, you will need to hold a reference to it.</p>
-<p>To remove the binding, call <a href="struct.Binding.html#method.unbind" title="method glib::Binding::unbind"><code>Binding::unbind()</code></a>.</p>
-<p>A <a href="object/struct.Object.html" title="struct glib::object::Object"><code>Object</code></a> can have multiple bindings.</p>
-<p>The same <code>user_data</code> parameter will be used for both <code>transform_to</code>
-and <code>transform_from</code> transformation functions; the <code>notify</code> function will
-be called once, when the binding is removed. If you need different data
-for each transformation function, please use
-[<code>bind_property_with_closures()</code>][Self::bind_property_with_closures()] instead.</p>
-<h3 id="source_property-1"><a class="doc-anchor" href="#source_property-1">§</a><code>source_property</code></h3>
-<p>the property on <code>self</code> to bind</p>
-<h3 id="target-1"><a class="doc-anchor" href="#target-1">§</a><code>target</code></h3>
-<p>the target <a href="object/struct.Object.html" title="struct glib::object::Object"><code>Object</code></a></p>
-<h3 id="target_property-1"><a class="doc-anchor" href="#target_property-1">§</a><code>target_property</code></h3>
-<p>the property on <code>target</code> to bind</p>
+be changed to @mode depending on @flags, or they may remain unchanged.</p>
+<h3 id="filename-1"><a class="doc-anchor" href="#filename-1">§</a><code>filename</code></h3>
+<p>name of a file to write @contents to, in the GLib file name
+encoding</p>
+<h3 id="contents-1"><a class="doc-anchor" href="#contents-1">§</a><code>contents</code></h3>
+<p>string to write to the file</p>
 <h3 id="flags-1"><a class="doc-anchor" href="#flags-1">§</a><code>flags</code></h3>
-<p>flags to pass to <a href="struct.Binding.html" title="struct glib::Binding"><code>Binding</code></a></p>
-<h3 id="transform_to-1"><a class="doc-anchor" href="#transform_to-1">§</a><code>transform_to</code></h3>
-<p>the transformation function
-from the <code>self</code> to the <code>target</code>, or <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a> to use the default</p>
-<h3 id="transform_from-1"><a class="doc-anchor" href="#transform_from-1">§</a><code>transform_from</code></h3>
-<p>the transformation function
-from the <code>target</code> to the <code>self</code>, or <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a> to use the default</p>
-<h3 id="notify-1"><a class="doc-anchor" href="#notify-1">§</a><code>notify</code></h3>
-<p>a function to call when disposing the binding, to free
-resources used by the transformation functions, or <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a> if not required</p>
+<p>flags controlling the safety vs speed of the operation</p>
+<h3 id="mode-1"><a class="doc-anchor" href="#mode-1">§</a><code>mode</code></h3>
+<p>file mode, as passed to <code>open()</code>; typically this will be <code>0666</code></p>
 <h2 id="returns-1"><a class="doc-anchor" href="#returns-1">§</a>Returns</h2>
-<p>the <a href="struct.Binding.html" title="struct glib::Binding"><code>Binding</code></a> instance representing the
-binding between the two <a href="object/struct.Object.html" title="struct glib::object::Object"><code>Object</code></a> instances. The binding is released
-whenever the <a href="struct.Binding.html" title="struct glib::Binding"><code>Binding</code></a> reference count reaches zero.</p>
+<p><a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>true</code></a> on success, <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>false</code></a> if an error occurred</p>
 </div></details></section></div></main></body></html>

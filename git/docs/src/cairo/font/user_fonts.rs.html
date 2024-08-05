@@ -322,19 +322,19 @@
 </span><span class="kw">use </span><a href="https://doc.rust-lang.org/nightly/std/sync/once_lock/struct.OnceLock.html">std::sync::OnceLock</a>;
 
 <span class="kw">use super</span>::{<a href="font_extents.rs.html#9">FontExtents</a>, <a href="font_face.rs.html#20-30">FontFace</a>, <a href="scaled_font.rs.html#14-24">ScaledFont</a>, <a href="text_cluster.rs.html#9">TextCluster</a>, <a href="../enums.rs.html#709-716">TextClusterFlags</a>, <a href="text_extents.rs.html#9">TextExtents</a>};
-<span class="kw">use crate</span>::{<a href="../../../cairo_sys/index.html">ffi</a>, <a href="../utils.rs.html#21-26">utils::status_to_result</a>, <a href="../context.rs.html#57">Context</a>, <a href="../error.rs.html#11-151">Error</a>, <a href="glyph.rs.html#9">Glyph</a>};
+<span class="kw">use crate</span>::{<a href="../../../cairo_sys/index.html">ffi</a>, <a href="../utils.rs.html#21-26">utils::status_to_result</a>, <a href="../context.rs.html#57">Context</a>, <a href="../error.rs.html#9-104">Error</a>, <a href="glyph.rs.html#9">Glyph</a>};
 
 <span class="kw">type </span>BoxInitFunc =
-    Box&lt;<span class="kw">dyn </span>Fn(<span class="kw-2">&amp;</span><a href="scaled_font.rs.html#14-24">ScaledFont</a>, <span class="kw-2">&amp;</span><a href="../context.rs.html#57">Context</a>, <span class="kw-2">&amp;mut </span><a href="font_extents.rs.html#9">FontExtents</a>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="../error.rs.html#11-151">Error</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a>&gt;;
+    Box&lt;<span class="kw">dyn </span>Fn(<span class="kw-2">&amp;</span><a href="scaled_font.rs.html#14-24">ScaledFont</a>, <span class="kw-2">&amp;</span><a href="../context.rs.html#57">Context</a>, <span class="kw-2">&amp;mut </span><a href="font_extents.rs.html#9">FontExtents</a>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="../error.rs.html#9-104">Error</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a>&gt;;
 <span class="kw">type </span>BoxRenderGlyphFunc = Box&lt;
-    <span class="kw">dyn </span>Fn(<span class="kw-2">&amp;</span><a href="scaled_font.rs.html#14-24">ScaledFont</a>, libc::c_ulong, <span class="kw-2">&amp;</span><a href="../context.rs.html#57">Context</a>, <span class="kw-2">&amp;mut </span><a href="text_extents.rs.html#9">TextExtents</a>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="../error.rs.html#11-151">Error</a>&gt;
+    <span class="kw">dyn </span>Fn(<span class="kw-2">&amp;</span><a href="scaled_font.rs.html#14-24">ScaledFont</a>, libc::c_ulong, <span class="kw-2">&amp;</span><a href="../context.rs.html#57">Context</a>, <span class="kw-2">&amp;mut </span><a href="text_extents.rs.html#9">TextExtents</a>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="../error.rs.html#9-104">Error</a>&gt;
         + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a>
         + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a>,
 &gt;;
 <span class="kw">type </span>BoxUnicodeToGlyphFunc =
-    Box&lt;<span class="kw">dyn </span>Fn(<span class="kw-2">&amp;</span><a href="scaled_font.rs.html#14-24">ScaledFont</a>, libc::c_ulong) -&gt; <span class="prelude-ty">Result</span>&lt;libc::c_ulong, <a href="../error.rs.html#11-151">Error</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a>&gt;;
+    Box&lt;<span class="kw">dyn </span>Fn(<span class="kw-2">&amp;</span><a href="scaled_font.rs.html#14-24">ScaledFont</a>, libc::c_ulong) -&gt; <span class="prelude-ty">Result</span>&lt;libc::c_ulong, <a href="../error.rs.html#9-104">Error</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a>&gt;;
 <span class="kw">type </span>BoxTextToGlyphsFunc = Box&lt;
-    <span class="kw">dyn </span>Fn(<span class="kw-2">&amp;</span><a href="scaled_font.rs.html#14-24">ScaledFont</a>, <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Result</span>&lt;(Vec&lt;<a href="glyph.rs.html#9">Glyph</a>&gt;, Vec&lt;<a href="text_cluster.rs.html#9">TextCluster</a>&gt;, <a href="../enums.rs.html#709-716">TextClusterFlags</a>), <a href="../error.rs.html#11-151">Error</a>&gt;
+    <span class="kw">dyn </span>Fn(<span class="kw-2">&amp;</span><a href="scaled_font.rs.html#14-24">ScaledFont</a>, <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Result</span>&lt;(Vec&lt;<a href="glyph.rs.html#9">Glyph</a>&gt;, Vec&lt;<a href="text_cluster.rs.html#9">TextCluster</a>&gt;, <a href="../enums.rs.html#709-716">TextClusterFlags</a>), <a href="../error.rs.html#9-104">Error</a>&gt;
         + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a>
         + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a>,
 &gt;;
@@ -343,7 +343,7 @@
 
 <span class="kw">impl </span><a href="#23">UserFontFace</a> {
     <span class="attr">#[doc(alias = <span class="string">"cairo_user_font_face_create"</span>)]
-    </span><span class="kw">pub fn </span>create() -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, <a href="../error.rs.html#11-151">Error</a>&gt; {
+    </span><span class="kw">pub fn </span>create() -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, <a href="../error.rs.html#9-104">Error</a>&gt; {
         <span class="kw">let </span>font_face = <span class="kw">unsafe </span>{ <a href="font_face.rs.html#113-115">FontFace::from_raw_full</a>(<a href="../../../cairo_sys/fn.cairo_user_font_face_create.html">ffi::cairo_user_font_face_create</a>()) };
         <span class="kw">let </span>status = <span class="kw">unsafe </span>{ <a href="../../../cairo_sys/fn.cairo_font_face_status.html">ffi::cairo_font_face_status</a>(<a href="#28">font_face</a>.<a href="font_face.rs.html#139-141">to_raw_none</a>()) };
         <a href="../utils.rs.html#21-26">status_to_result</a>(<a href="#29">status</a>)<span class="question-mark">?</span>;
@@ -353,7 +353,7 @@
     <span class="attr">#[doc(alias = <span class="string">"cairo_user_font_face_set_init_func"</span>)]
     </span><span class="kw">pub fn </span>set_init_func&lt;F&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, func: F)
     <span class="kw">where
-        </span>F: Fn(<span class="kw-2">&amp;</span><a href="scaled_font.rs.html#14-24">ScaledFont</a>, <span class="kw-2">&amp;</span><a href="../context.rs.html#57">Context</a>, <span class="kw-2">&amp;mut </span><a href="font_extents.rs.html#9">FontExtents</a>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="../error.rs.html#11-151">Error</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>,
+        </span>F: Fn(<span class="kw-2">&amp;</span><a href="scaled_font.rs.html#14-24">ScaledFont</a>, <span class="kw-2">&amp;</span><a href="../context.rs.html#57">Context</a>, <span class="kw-2">&amp;mut </span><a href="font_extents.rs.html#9">FontExtents</a>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="../error.rs.html#9-104">Error</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>,
     {
         <span class="kw">static </span>INIT_FUNC: OnceLock&lt;<a href="#8-9">BoxInitFunc</a>&gt; = <a href="https://doc.rust-lang.org/nightly/std/sync/once_lock/struct.OnceLock.html#method.new">OnceLock::new</a>();
         <span class="kw">if </span>INIT_FUNC.set(Box::new(func)).is_err() {
@@ -384,7 +384,7 @@
     <span class="attr">#[doc(alias = <span class="string">"cairo_user_font_face_set_render_glyph_func"</span>)]
     </span><span class="kw">pub fn </span>set_render_glyph_func&lt;F&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, func: F)
     <span class="kw">where
-        </span>F: Fn(<span class="kw-2">&amp;</span><a href="scaled_font.rs.html#14-24">ScaledFont</a>, libc::c_ulong, <span class="kw-2">&amp;</span><a href="../context.rs.html#57">Context</a>, <span class="kw-2">&amp;mut </span><a href="text_extents.rs.html#9">TextExtents</a>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="../error.rs.html#11-151">Error</a>&gt;
+        </span>F: Fn(<span class="kw-2">&amp;</span><a href="scaled_font.rs.html#14-24">ScaledFont</a>, libc::c_ulong, <span class="kw-2">&amp;</span><a href="../context.rs.html#57">Context</a>, <span class="kw-2">&amp;mut </span><a href="text_extents.rs.html#9">TextExtents</a>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="../error.rs.html#9-104">Error</a>&gt;
             + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a>
             + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a>
             + <span class="lifetime">'static</span>,
@@ -423,7 +423,7 @@
     <span class="attr">#[doc(alias = <span class="string">"cairo_user_font_face_set_render_color_glyph_func"</span>)]
     </span><span class="kw">pub fn </span>set_render_color_glyph_func&lt;F&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, func: F)
     <span class="kw">where
-        </span>F: Fn(<span class="kw-2">&amp;</span><a href="scaled_font.rs.html#14-24">ScaledFont</a>, libc::c_ulong, <span class="kw-2">&amp;</span><a href="../context.rs.html#57">Context</a>, <span class="kw-2">&amp;mut </span><a href="text_extents.rs.html#9">TextExtents</a>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="../error.rs.html#11-151">Error</a>&gt;
+        </span>F: Fn(<span class="kw-2">&amp;</span><a href="scaled_font.rs.html#14-24">ScaledFont</a>, libc::c_ulong, <span class="kw-2">&amp;</span><a href="../context.rs.html#57">Context</a>, <span class="kw-2">&amp;mut </span><a href="text_extents.rs.html#9">TextExtents</a>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="../error.rs.html#9-104">Error</a>&gt;
             + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a>
             + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a>
             + <span class="lifetime">'static</span>,
@@ -462,7 +462,7 @@
     <span class="attr">#[doc(alias = <span class="string">"cairo_user_font_face_set_unicode_to_glyph_func"</span>)]
     </span><span class="kw">pub fn </span>set_unicode_to_glyph_func&lt;F&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, func: F)
     <span class="kw">where
-        </span>F: Fn(<span class="kw-2">&amp;</span><a href="scaled_font.rs.html#14-24">ScaledFont</a>, libc::c_ulong) -&gt; <span class="prelude-ty">Result</span>&lt;libc::c_ulong, <a href="../error.rs.html#11-151">Error</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>,
+        </span>F: Fn(<span class="kw-2">&amp;</span><a href="scaled_font.rs.html#14-24">ScaledFont</a>, libc::c_ulong) -&gt; <span class="prelude-ty">Result</span>&lt;libc::c_ulong, <a href="../error.rs.html#9-104">Error</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>,
     {
         <span class="kw">static </span>UNICODE_TO_GLYPH_FUNC: OnceLock&lt;<a href="#15-16">BoxUnicodeToGlyphFunc</a>&gt; = <a href="https://doc.rust-lang.org/nightly/std/sync/once_lock/struct.OnceLock.html#method.new">OnceLock::new</a>();
         <span class="kw">if </span>UNICODE_TO_GLYPH_FUNC.set(Box::new(func)).is_err() {
@@ -493,7 +493,7 @@
     <span class="attr">#[doc(alias = <span class="string">"cairo_user_font_face_set_text_to_glyphs_func"</span>)]
     </span><span class="kw">pub fn </span>set_text_to_glyphs_func&lt;F&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, func: F)
     <span class="kw">where
-        </span>F: Fn(<span class="kw-2">&amp;</span><a href="scaled_font.rs.html#14-24">ScaledFont</a>, <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Result</span>&lt;(Vec&lt;<a href="glyph.rs.html#9">Glyph</a>&gt;, Vec&lt;<a href="text_cluster.rs.html#9">TextCluster</a>&gt;, <a href="../enums.rs.html#709-716">TextClusterFlags</a>), <a href="../error.rs.html#11-151">Error</a>&gt;
+        </span>F: Fn(<span class="kw-2">&amp;</span><a href="scaled_font.rs.html#14-24">ScaledFont</a>, <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Result</span>&lt;(Vec&lt;<a href="glyph.rs.html#9">Glyph</a>&gt;, Vec&lt;<a href="text_cluster.rs.html#9">TextCluster</a>&gt;, <a href="../enums.rs.html#709-716">TextClusterFlags</a>), <a href="../error.rs.html#9-104">Error</a>&gt;
             + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a>
             + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a>
             + <span class="lifetime">'static</span>,

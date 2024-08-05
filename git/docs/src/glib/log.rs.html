@@ -1155,7 +1155,7 @@
     sync::{<a href="https://doc.rust-lang.org/nightly/alloc/sync/struct.Arc.html">Arc</a>, <a href="https://doc.rust-lang.org/nightly/std/sync/mutex/struct.Mutex.html">Mutex</a>, <a href="https://doc.rust-lang.org/nightly/std/sync/once_lock/struct.OnceLock.html">OnceLock</a>},
 };
 
-<span class="kw">use crate</span>::{ffi, <a href="lib.rs.html#162">translate</a>::<span class="kw-2">*</span>, <a href="gstring.rs.html#24">GStr</a>, <a href="gstring.rs.html#996">GString</a>, <a href="auto/enums.rs.html#650-659">LogWriterOutput</a>};
+<span class="kw">use crate</span>::{ffi, <a href="lib.rs.html#162">translate</a>::<span class="kw-2">*</span>, <a href="gstring.rs.html#24">GStr</a>, <a href="gstring.rs.html#1036">GString</a>, <a href="auto/enums.rs.html#650-659">LogWriterOutput</a>};
 
 <span class="attr">#[derive(Debug)]
 </span><span class="kw">pub struct </span><a href="../../glib/struct.LogHandlerId.html">LogHandlerId</a>(<a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>);
@@ -1310,13 +1310,13 @@
         message: <span class="kw-2">*const </span>libc::c_char,
         user_data: ffi::gpointer,
     ) {
-        <span class="kw">let </span>log_domain: Borrowed&lt;<span class="prelude-ty">Option</span>&lt;<a href="gstring.rs.html#996">GString</a>&gt;&gt; = <a href="translate.rs.html#1643-1645">from_glib_borrow</a>(<a href="#160">log_domain</a>);
-        <span class="kw">let </span>message: Borrowed&lt;<a href="gstring.rs.html#996">GString</a>&gt; = <a href="translate.rs.html#1643-1645">from_glib_borrow</a>(<a href="#162">message</a>);
+        <span class="kw">let </span>log_domain: Borrowed&lt;<span class="prelude-ty">Option</span>&lt;<a href="gstring.rs.html#1036">GString</a>&gt;&gt; = <a href="translate.rs.html#1643-1645">from_glib_borrow</a>(<a href="#160">log_domain</a>);
+        <span class="kw">let </span>message: Borrowed&lt;<a href="gstring.rs.html#1036">GString</a>&gt; = <a href="translate.rs.html#1643-1645">from_glib_borrow</a>(<a href="#162">message</a>);
         <span class="kw">let </span>callback: <span class="kw-2">&amp;</span>P = <span class="kw-2">&amp;*</span>(<a href="#163">user_data</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
         (<span class="kw-2">*</span><a href="#167">callback</a>)(
-            (<span class="kw-2">*</span><a href="#165">log_domain</a>).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_ref">as_ref</a>().<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|s| <a href="#169">s</a>.<a href="gstring.rs.html#1221-1235">as_str</a>()),
+            (<span class="kw-2">*</span><a href="#165">log_domain</a>).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_ref">as_ref</a>().<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|s| <a href="#169">s</a>.<a href="gstring.rs.html#1261-1275">as_str</a>()),
             <a href="translate.rs.html#1417-1419">from_glib</a>(<a href="#161">log_level</a>),
-            <a href="#166">message</a>.<a href="gstring.rs.html#1221-1235">as_str</a>(),
+            <a href="#166">message</a>.<a href="gstring.rs.html#1261-1275">as_str</a>(),
         );
     }
     <span class="kw">let </span>log_func = <span class="prelude-val">Some</span>(log_func_func::&lt;P&gt; <span class="kw">as _</span>);
@@ -1380,8 +1380,8 @@
             .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_ref">as_ref</a>()
             .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(Arc::clone)
         {
-            <span class="kw">let </span>string: Borrowed&lt;<a href="gstring.rs.html#996">GString</a>&gt; = <a href="translate.rs.html#1643-1645">from_glib_borrow</a>(<a href="#228">string</a>);
-            (<span class="kw-2">*</span><a href="#229">callback</a>)(<a href="#235">string</a>.<a href="gstring.rs.html#1221-1235">as_str</a>())
+            <span class="kw">let </span>string: Borrowed&lt;<a href="gstring.rs.html#1036">GString</a>&gt; = <a href="translate.rs.html#1643-1645">from_glib_borrow</a>(<a href="#228">string</a>);
+            (<span class="kw-2">*</span><a href="#229">callback</a>)(<a href="#235">string</a>.<a href="gstring.rs.html#1261-1275">as_str</a>())
         }
     }
     <span class="kw-2">*</span><a href="#219-222">print_handler</a>()
@@ -1415,8 +1415,8 @@
             .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_ref">as_ref</a>()
             .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(Arc::clone)
         {
-            <span class="kw">let </span>string: Borrowed&lt;<a href="gstring.rs.html#996">GString</a>&gt; = <a href="translate.rs.html#1643-1645">from_glib_borrow</a>(<a href="#263">string</a>);
-            (<span class="kw-2">*</span><a href="#264">callback</a>)(<a href="#270">string</a>.<a href="gstring.rs.html#1221-1235">as_str</a>())
+            <span class="kw">let </span>string: Borrowed&lt;<a href="gstring.rs.html#1036">GString</a>&gt; = <a href="translate.rs.html#1643-1645">from_glib_borrow</a>(<a href="#263">string</a>);
+            (<span class="kw-2">*</span><a href="#264">callback</a>)(<a href="#270">string</a>.<a href="gstring.rs.html#1261-1275">as_str</a>())
         }
     }
     <span class="kw-2">*</span><a href="#254-257">printerr_handler</a>()
@@ -1459,12 +1459,12 @@
             .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_ref">as_ref</a>()
             .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(Arc::clone)
         {
-            <span class="kw">let </span>log_domain: Borrowed&lt;<span class="prelude-ty">Option</span>&lt;<a href="gstring.rs.html#996">GString</a>&gt;&gt; = <a href="translate.rs.html#1643-1645">from_glib_borrow</a>(<a href="#303">log_domain</a>);
-            <span class="kw">let </span>message: Borrowed&lt;<a href="gstring.rs.html#996">GString</a>&gt; = <a href="translate.rs.html#1643-1645">from_glib_borrow</a>(<a href="#305">message</a>);
+            <span class="kw">let </span>log_domain: Borrowed&lt;<span class="prelude-ty">Option</span>&lt;<a href="gstring.rs.html#1036">GString</a>&gt;&gt; = <a href="translate.rs.html#1643-1645">from_glib_borrow</a>(<a href="#303">log_domain</a>);
+            <span class="kw">let </span>message: Borrowed&lt;<a href="gstring.rs.html#1036">GString</a>&gt; = <a href="translate.rs.html#1643-1645">from_glib_borrow</a>(<a href="#305">message</a>);
             (<span class="kw-2">*</span><a href="#308">callback</a>)(
-                (<span class="kw-2">*</span><a href="#314">log_domain</a>).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_ref">as_ref</a>().<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|s| <a href="#317">s</a>.<a href="gstring.rs.html#1221-1235">as_str</a>()),
+                (<span class="kw-2">*</span><a href="#314">log_domain</a>).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_ref">as_ref</a>().<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|s| <a href="#317">s</a>.<a href="gstring.rs.html#1261-1275">as_str</a>()),
                 <a href="translate.rs.html#1417-1419">from_glib</a>(<a href="#304">log_levels</a>),
-                <a href="#315">message</a>.<a href="gstring.rs.html#1221-1235">as_str</a>(),
+                <a href="#315">message</a>.<a href="gstring.rs.html#1261-1275">as_str</a>(),
             );
         }
     }
@@ -2138,7 +2138,7 @@
     log_level: <a href="#34-47">LogLevel</a>,
     fields: <span class="kw-2">&amp;</span>[LogField&lt;<span class="lifetime">'_</span>&gt;],
     use_color: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>,
-) -&gt; <a href="gstring.rs.html#996">GString</a> {
+) -&gt; <a href="gstring.rs.html#1036">GString</a> {
     <span class="kw">unsafe </span>{
         <a href="translate.rs.html#1634-1636">from_glib_full</a>(ffi::g_log_writer_format_fields(
             <a href="#990">log_level</a>.<a href="translate.rs.html#334">into_glib</a>(),
