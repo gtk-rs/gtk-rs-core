@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/subclass/signal.rs`."><title>signal.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-c5d6553a23f1e5a6.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.81.0-nightly (9057c3ffe 2024-07-19)" data-channel="nightly" data-search-js="search-d234aafac6c221dd.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-d2fab2bf619172d3.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/subclass/signal.rs`."><title>signal.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-d10b2a06af903387.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.82.0-nightly (176e54520 2024-08-04)" data-channel="nightly" data-search-js="search-ef54e092fea9c776.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-9345f17bf569ecba.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -781,8 +781,8 @@
 </span><span class="kw">use </span>std::{<a href="https://doc.rust-lang.org/nightly/alloc/fmt/index.html">fmt</a>, <a href="https://doc.rust-lang.org/nightly/core/num/nonzero/type.NonZeroU32.html">num::NonZeroU32</a>, <a href="https://doc.rust-lang.org/nightly/core/ptr/index.html">ptr</a>, <a href="https://doc.rust-lang.org/nightly/std/sync/mutex/struct.Mutex.html">sync::Mutex</a>};
 
 <span class="kw">use crate</span>::{
-    <a href="../../../glib_sys/index.html">ffi</a>, <a href="../../../gobject_sys/index.html">gobject_ffi</a>, <a href="../lib.rs.html#157">prelude</a>::<span class="kw-2">*</span>, <a href="../lib.rs.html#162">translate</a>::<span class="kw-2">*</span>, <a href="../utils.rs.html#127-133">utils::is_canonical_pspec_name</a>, <a href="../closure.rs.html#11-24">Closure</a>,
-    <a href="../gobject/auto/flags.rs.html#96-180">SignalFlags</a>, <a href="../types.rs.html#22">Type</a>, <a href="../value.rs.html#478-523">Value</a>,
+    ffi, gobject_ffi, <a href="../lib.rs.html#157">prelude</a>::<span class="kw-2">*</span>, <a href="../lib.rs.html#162">translate</a>::<span class="kw-2">*</span>, <a href="../utils.rs.html#168-174">utils::is_canonical_pspec_name</a>, <a href="../closure.rs.html#11-24">Closure</a>,
+    <a href="../gobject/auto/flags.rs.html#96-143">SignalFlags</a>, <a href="../types.rs.html#22">Type</a>, <a href="../value.rs.html#478-523">Value</a>,
 };
 
 <span class="comment">// rustdoc-stripper-ignore-next
@@ -791,7 +791,7 @@
 #[must_use = <span class="string">"The builder must be built to be used"</span>]
 </span><span class="kw">pub struct </span><a href="../../../glib/subclass/signal/struct.SignalBuilder.html">SignalBuilder</a> {
     name: <a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>,
-    flags: <a href="../gobject/auto/flags.rs.html#96-180">SignalFlags</a>,
+    flags: <a href="../gobject/auto/flags.rs.html#96-143">SignalFlags</a>,
     param_types: Vec&lt;<a href="#281">SignalType</a>&gt;,
     return_type: <a href="#281">SignalType</a>,
     class_handler: <span class="prelude-ty">Option</span>&lt;
@@ -806,7 +806,7 @@
 </span><span class="doccomment">/// Signal metadata.
 </span><span class="kw">pub struct </span><a href="../../../glib/subclass/signal/struct.Signal.html">Signal</a> {
     name: <a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>,
-    flags: <a href="../gobject/auto/flags.rs.html#96-180">SignalFlags</a>,
+    flags: <a href="../gobject/auto/flags.rs.html#96-143">SignalFlags</a>,
     param_types: Vec&lt;<a href="#281">SignalType</a>&gt;,
     return_type: <a href="#281">SignalType</a>,
     registration: Mutex&lt;<a href="#353-368">SignalRegistration</a>&gt;,
@@ -817,7 +817,7 @@
 </span><span class="kw">pub struct </span><a href="../../../glib/subclass/signal/struct.SignalClassHandlerToken.html">SignalClassHandlerToken</a>(
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Instance for which the signal is emitted.
-    </span><span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw-2">*mut </span><a href="../../../gobject_sys/struct.GTypeInstance.html">gobject_ffi::GTypeInstance</a>,
+    </span><span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw-2">*mut </span>gobject_ffi::GTypeInstance,
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Return type.
     </span><span class="kw">pub</span>(<span class="kw">super</span>) <a href="../types.rs.html#22">Type</a>,
@@ -830,7 +830,7 @@
     <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span><a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html">fmt::Formatter</a>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Error.html">fmt::Error</a>&gt; {
         <a href="#52">f</a>.<a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html#method.debug_struct">debug_struct</a>(<span class="string">"SignalClassHandlerToken"</span>)
             .<a href="https://doc.rust-lang.org/nightly/core/fmt/builders/struct.DebugStruct.html#method.field">field</a>(<span class="string">"type"</span>, <span class="kw-2">&amp;</span><span class="kw">unsafe </span>{
-                <a href="../translate.rs.html#1615-1617"><span class="kw">crate</span>::Object::from_glib_borrow</a>(<a class="self" href="#52">self</a>.<span class="number">0 </span><span class="kw">as </span><span class="kw-2">*mut </span><a href="../../../gobject_sys/struct.GObject.html">gobject_ffi::GObject</a>)
+                <a href="../translate.rs.html#1615-1617"><span class="kw">crate</span>::Object::from_glib_borrow</a>(<a class="self" href="#52">self</a>.<span class="number">0 </span><span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GObject)
             })
             .<a href="https://doc.rust-lang.org/nightly/core/fmt/builders/struct.DebugStruct.html#method.finish">finish</a>()
     }
@@ -839,7 +839,7 @@
 <span class="comment">// rustdoc-stripper-ignore-next
 </span><span class="doccomment">/// Signal invocation hint passed to signal accumulators.
 </span><span class="attr">#[repr(transparent)]
-</span><span class="kw">pub struct </span><a href="../../../glib/subclass/signal/struct.SignalInvocationHint.html">SignalInvocationHint</a>(<a href="../../../gobject_sys/struct.GSignalInvocationHint.html">gobject_ffi::GSignalInvocationHint</a>);
+</span><span class="kw">pub struct </span><a href="../../../glib/subclass/signal/struct.SignalInvocationHint.html">SignalInvocationHint</a>(gobject_ffi::GSignalInvocationHint);
 
 <span class="kw">impl </span><a href="#64">SignalInvocationHint</a> {
     <span class="attr">#[inline]
@@ -848,7 +848,7 @@
     }
 
     <span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>run_type(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="../gobject/auto/flags.rs.html#96-180">SignalFlags</a> {
+    </span><span class="kw">pub fn </span>run_type(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="../gobject/auto/flags.rs.html#96-143">SignalFlags</a> {
         <span class="kw">unsafe </span>{ <a href="../translate.rs.html#1417-1419">from_glib</a>(<a class="self" href="#73">self</a>.<span class="number">0</span>.run_type) }
     }
 }
@@ -864,7 +864,7 @@
 
 <span class="comment">// rustdoc-stripper-ignore-next
 </span><span class="doccomment">/// In-depth information of a specific signal
-</span><span class="kw">pub struct </span><a href="../../../glib/subclass/signal/struct.SignalQuery.html">SignalQuery</a>(<a href="../../../gobject_sys/struct.GSignalQuery.html">gobject_ffi::GSignalQuery</a>);
+</span><span class="kw">pub struct </span><a href="../../../glib/subclass/signal/struct.SignalQuery.html">SignalQuery</a>(gobject_ffi::GSignalQuery);
 
 <span class="kw">unsafe impl </span><a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> <span class="kw">for </span><a href="#89">SignalQuery</a> {}
 <span class="kw">unsafe impl </span><a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> <span class="kw">for </span><a href="#89">SignalQuery</a> {}
@@ -897,7 +897,7 @@
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// The signal flags.
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>flags(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="../gobject/auto/flags.rs.html#96-180">SignalFlags</a> {
+    </span><span class="kw">pub fn </span>flags(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="../gobject/auto/flags.rs.html#96-143">SignalFlags</a> {
         <span class="kw">unsafe </span>{ <a href="../translate.rs.html#1417-1419">from_glib</a>(<a class="self" href="#122">self</a>.<span class="number">0</span>.signal_flags) }
     }
 
@@ -972,7 +972,7 @@
         <span class="kw">let </span><span class="kw-2">mut </span>detail_quark = <a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.uninit">std::mem::MaybeUninit::uninit</a>();
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>found: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> = <a href="#189">name</a>.<a href="../gstring.rs.html#2302">run_with_gstr</a>(|name| {
-                <a href="../translate.rs.html#1417-1419">from_glib</a>(<a href="../../../gobject_sys/fn.g_signal_parse_name.html">gobject_ffi::g_signal_parse_name</a>(
+                <a href="../translate.rs.html#1417-1419">from_glib</a>(gobject_ffi::g_signal_parse_name(
                     <a href="#196">name</a>.<a href="../gstring.rs.html#207-209">as_ptr</a>(),
                     <a href="#190">type_</a>.<a href="../translate.rs.html#334">into_glib</a>(),
                     <a href="#193">signal_id</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.as_mut_ptr">as_mut_ptr</a>(),
@@ -999,7 +999,7 @@
     </span><span class="kw">pub fn </span>lookup(name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, type_: <a href="../types.rs.html#22">Type</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>signal_id = <a href="#221">name</a>.<a href="../gstring.rs.html#2302">run_with_gstr</a>(|name| {
-                <a href="../../../gobject_sys/fn.g_signal_lookup.html">gobject_ffi::g_signal_lookup</a>(<a href="#223">name</a>.<a href="../gstring.rs.html#207-209">as_ptr</a>(), <a href="#221">type_</a>.<a href="../translate.rs.html#334">into_glib</a>())
+                gobject_ffi::g_signal_lookup(<a href="#223">name</a>.<a href="../gstring.rs.html#207-209">as_ptr</a>(), <a href="#221">type_</a>.<a href="../translate.rs.html#334">into_glib</a>())
             });
             <span class="kw">if </span>signal_id == <span class="number">0 </span>{
                 <span class="prelude-val">None
@@ -1016,7 +1016,7 @@
     </span><span class="kw">pub fn </span>query(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="#89">SignalQuery</a> {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>query_ptr = <a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.uninit">std::mem::MaybeUninit::uninit</a>();
-            <a href="../../../gobject_sys/fn.g_signal_query.html">gobject_ffi::g_signal_query</a>(<a class="self" href="#238">self</a>.<a href="../translate.rs.html#334">into_glib</a>(), <a href="#240">query_ptr</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.as_mut_ptr">as_mut_ptr</a>());
+            gobject_ffi::g_signal_query(<a class="self" href="#238">self</a>.<a href="../translate.rs.html#334">into_glib</a>(), <a href="#240">query_ptr</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.as_mut_ptr">as_mut_ptr</a>());
             <span class="kw">let </span>query = <a href="#240">query_ptr</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.assume_init">assume_init</a>();
             <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert_ne.html">debug_assert_ne!</a>(query.signal_id, <span class="number">0</span>);
             <a href="#89">SignalQuery</a>(<a href="#242">query</a>)
@@ -1029,7 +1029,7 @@
     #[inline]
     </span><span class="kw">pub fn </span>name&lt;<span class="lifetime">'a</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a> {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>ptr = <a href="../../../gobject_sys/fn.g_signal_name.html">gobject_ffi::g_signal_name</a>(<a class="self" href="#252">self</a>.<a href="../translate.rs.html#334">into_glib</a>());
+            <span class="kw">let </span>ptr = gobject_ffi::g_signal_name(<a class="self" href="#252">self</a>.<a href="../translate.rs.html#334">into_glib</a>());
             <a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.from_ptr">std::ffi::CStr::from_ptr</a>(<a href="#254">ptr</a>).<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.to_str">to_str</a>().<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>()
         }
     }
@@ -1056,17 +1056,17 @@
 
 <span class="attr">#[derive(Copy, Clone, Hash)]
 #[repr(transparent)]
-</span><span class="kw">pub struct </span><a href="../../../glib/subclass/signal/struct.SignalType.html">SignalType</a>(<a href="../../../glib_sys/manual/type.GType.html">ffi::GType</a>);
+</span><span class="kw">pub struct </span><a href="../../../glib/subclass/signal/struct.SignalType.html">SignalType</a>(ffi::GType);
 
 <span class="kw">impl </span><a href="#281">SignalType</a> {
     <span class="attr">#[inline]
     </span><span class="kw">pub fn </span>with_static_scope(type_: <a href="../types.rs.html#22">Type</a>) -&gt; <span class="self">Self </span>{
-        <span class="self">Self</span>(<a href="#285">type_</a>.<a href="../translate.rs.html#334">into_glib</a>() | <a href="../../../gobject_sys/constant.G_TYPE_FLAG_RESERVED_ID_BIT.html">gobject_ffi::G_TYPE_FLAG_RESERVED_ID_BIT</a>)
+        <span class="self">Self</span>(<a href="#285">type_</a>.<a href="../translate.rs.html#334">into_glib</a>() | gobject_ffi::G_TYPE_FLAG_RESERVED_ID_BIT)
     }
 
     <span class="attr">#[inline]
     </span><span class="kw">pub fn </span>static_scope(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
-        (<a class="self" href="#290">self</a>.<span class="number">0 </span>&amp; <a href="../../../gobject_sys/constant.G_TYPE_FLAG_RESERVED_ID_BIT.html">gobject_ffi::G_TYPE_FLAG_RESERVED_ID_BIT</a>) != <span class="number">0
+        (<a class="self" href="#290">self</a>.<span class="number">0 </span>&amp; gobject_ffi::G_TYPE_FLAG_RESERVED_ID_BIT) != <span class="number">0
     </span>}
 
     <span class="attr">#[inline]
@@ -1086,7 +1086,7 @@
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>from(type_: <a href="#281">SignalType</a>) -&gt; <span class="self">Self </span>{
         <span class="comment">// Remove the extra-bit used for G_SIGNAL_TYPE_STATIC_SCOPE
-        </span><span class="kw">let </span>type_ = <a href="#309">type_</a>.<span class="number">0 </span>&amp; (!<a href="../../../gobject_sys/constant.G_TYPE_FLAG_RESERVED_ID_BIT.html">gobject_ffi::G_TYPE_FLAG_RESERVED_ID_BIT</a>);
+        </span><span class="kw">let </span>type_ = <a href="#309">type_</a>.<span class="number">0 </span>&amp; (!gobject_ffi::G_TYPE_FLAG_RESERVED_ID_BIT);
         <span class="kw">unsafe </span>{ <a href="../translate.rs.html#1417-1419">from_glib</a>(<a href="#311">type_</a>) }
     }
 }
@@ -1110,19 +1110,19 @@
 }
 
 <span class="attr">#[doc(hidden)]
-</span><span class="kw">impl </span>FromGlib&lt;<a href="../../../glib_sys/manual/type.GType.html">ffi::GType</a>&gt; <span class="kw">for </span><a href="#281">SignalType</a> {
+</span><span class="kw">impl </span>FromGlib&lt;ffi::GType&gt; <span class="kw">for </span><a href="#281">SignalType</a> {
     <span class="attr">#[inline]
-    </span><span class="kw">unsafe fn </span>from_glib(type_: <a href="../../../glib_sys/manual/type.GType.html">ffi::GType</a>) -&gt; <span class="self">Self </span>{
+    </span><span class="kw">unsafe fn </span>from_glib(type_: ffi::GType) -&gt; <span class="self">Self </span>{
         <span class="self">Self</span>(<a href="#337">type_</a>)
     }
 }
 
 <span class="attr">#[doc(hidden)]
 </span><span class="kw">impl </span><a href="../translate.rs.html#331-335">IntoGlib</a> <span class="kw">for </span><a href="#281">SignalType</a> {
-    <span class="kw">type </span>GlibType = <a href="../../../glib_sys/manual/type.GType.html">ffi::GType</a>;
+    <span class="kw">type </span>GlibType = ffi::GType;
 
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>into_glib(<span class="self">self</span>) -&gt; <a href="../../../glib_sys/manual/type.GType.html">ffi::GType</a> {
+    </span><span class="kw">fn </span>into_glib(<span class="self">self</span>) -&gt; ffi::GType {
         <a class="self" href="#347">self</a>.<span class="number">0
     </span>}
 }
@@ -1243,7 +1243,7 @@
     </span><span class="doccomment">/// Explicitly set all flags.
     ///
     /// This overrides previously set flags on this builder.
-    </span><span class="kw">pub fn </span>flags(<span class="kw-2">mut </span><span class="self">self</span>, flags: <a href="../gobject/auto/flags.rs.html#96-180">SignalFlags</a>) -&gt; <span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>flags(<span class="kw-2">mut </span><span class="self">self</span>, flags: <a href="../gobject/auto/flags.rs.html#96-143">SignalFlags</a>) -&gt; <span class="self">Self </span>{
         <a class="self" href="#468">self</a>.flags = <a href="#468">flags</a>;
         <span class="self"><a href="#468">self</a>
     </span>}
@@ -1316,7 +1316,7 @@
             name: <a href="#532">name</a>.<a href="https://doc.rust-lang.org/nightly/alloc/borrow/trait.ToOwned.html#tymethod.to_owned">to_owned</a>(),
             param_types: <a href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html#tymethod.default">Vec::default</a>(),
             return_type: &lt;()&gt;::static_type().<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>(),
-            flags: <a href="../gobject/auto/flags.rs.html#96-180">SignalFlags::empty</a>(),
+            flags: <a href="../gobject/auto/flags.rs.html#96-143">SignalFlags::empty</a>(),
             class_handler: <span class="prelude-val">None</span>,
             accumulator: <span class="prelude-val">None</span>,
         }
@@ -1332,7 +1332,7 @@
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Flags of the signal.
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>flags(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="../gobject/auto/flags.rs.html#96-180">SignalFlags</a> {
+    </span><span class="kw">pub fn </span>flags(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="../gobject/auto/flags.rs.html#96-143">SignalFlags</a> {
         <a class="self" href="#557">self</a>.flags
     }
 
@@ -1389,7 +1389,7 @@
 
         <span class="kw">let </span>class_handler = <a href="#602">class_handler</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|class_handler| {
             <a href="../closure.rs.html#181-183">Closure::new</a>(<span class="kw">move </span>|values| <span class="kw">unsafe </span>{
-                <span class="kw">let </span>instance = <a href="../../../gobject_sys/fn.g_value_get_object.html">gobject_ffi::g_value_get_object</a>(<a href="#613">values</a>[<span class="number">0</span>].<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>);
+                <span class="kw">let </span>instance = gobject_ffi::g_value_get_object(<a href="#613">values</a>[<span class="number">0</span>].<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>);
                 <span class="kw">let </span>res = <a href="#612">class_handler</a>(<span class="kw-2">&amp;</span><a href="#39-49">SignalClassHandlerToken</a>(<a href="#614">instance</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>, <a href="#610">return_type</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>(), <a href="#613">values</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.as_ptr">as_ptr</a>()), <a href="#613">values</a>);
 
                 <span class="kw">if </span>return_type == Type::UNIT {
@@ -1412,11 +1412,11 @@
         });
 
         <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>accumulator_trampoline(
-            ihint: <span class="kw-2">*mut </span><a href="../../../gobject_sys/struct.GSignalInvocationHint.html">gobject_ffi::GSignalInvocationHint</a>,
-            return_accu: <span class="kw-2">*mut </span><a href="../../../gobject_sys/struct.GValue.html">gobject_ffi::GValue</a>,
-            handler_return: <span class="kw-2">*const </span><a href="../../../gobject_sys/struct.GValue.html">gobject_ffi::GValue</a>,
-            data: <a href="../../../glib_sys/type.gpointer.html">ffi::gpointer</a>,
-        ) -&gt; <a href="../../../glib_sys/type.gboolean.html">ffi::gboolean</a> {
+            ihint: <span class="kw-2">*mut </span>gobject_ffi::GSignalInvocationHint,
+            return_accu: <span class="kw-2">*mut </span>gobject_ffi::GValue,
+            handler_return: <span class="kw-2">*const </span>gobject_ffi::GValue,
+            data: ffi::gpointer,
+        ) -&gt; ffi::gboolean {
             <span class="kw">let </span>accumulator = <span class="kw-2">&amp;*</span>(<a href="#640">data</a> <span class="kw">as </span><span class="kw-2">*const </span>(
                 <a href="#281">SignalType</a>,
                 Box&lt;
@@ -1462,13 +1462,13 @@
             };
 
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>signal_id = <a href="../../../gobject_sys/fn.g_signal_newv.html">gobject_ffi::g_signal_newv</a>(
+            <span class="kw">let </span>signal_id = gobject_ffi::g_signal_newv(
                 <a class="self" href="#599">self</a>.name.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
                 <a href="#599">type_</a>.<a href="../translate.rs.html#334">into_glib</a>(),
                 <a class="self" href="#599">self</a>.flags.<a href="../translate.rs.html#334">into_glib</a>(),
                 <a href="#612">class_handler</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
                 <a href="#676">accumulator_trampoline</a>,
-                <a href="#676">accumulator</a> <span class="kw">as </span><a href="../../../glib_sys/type.gpointer.html">ffi::gpointer</a>,
+                <a href="#676">accumulator</a> <span class="kw">as </span>ffi::gpointer,
                 <span class="prelude-val">None</span>,
                 <a href="#610">return_type</a>.<a href="../translate.rs.html#334">into_glib</a>(),
                 <a class="self" href="#599">self</a>.param_types.<a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.len">len</a>() <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>,

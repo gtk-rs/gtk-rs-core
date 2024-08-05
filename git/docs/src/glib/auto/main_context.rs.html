@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/auto/main_context.rs`."><title>main_context.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-c5d6553a23f1e5a6.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.81.0-nightly (9057c3ffe 2024-07-19)" data-channel="nightly" data-search-js="search-d234aafac6c221dd.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-d2fab2bf619172d3.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/auto/main_context.rs`."><title>main_context.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-d10b2a06af903387.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.82.0-nightly (176e54520 2024-08-04)" data-channel="nightly" data-search-js="search-ef54e092fea9c776.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-9345f17bf569ecba.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -479,7 +479,7 @@
 </span><span class="attr">#[cfg(feature = <span class="string">"v2_72"</span>)]
 #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"v2_72"</span>)))]
 </span><span class="kw">use </span><a href="flags.rs.html#368-385"><span class="kw">crate</span>::MainContextFlags</a>;
-<span class="kw">use crate</span>::{<a href="../../../glib_sys/index.html">ffi</a>, <a href="../lib.rs.html#162">translate</a>::<span class="kw-2">*</span>};
+<span class="kw">use crate</span>::{ffi, <a href="../lib.rs.html#162">translate</a>::<span class="kw-2">*</span>};
 
 <a class="macro" href="../wrapper.rs.html#277-444">crate::wrapper!</a> {
     <span class="doccomment">/// The `GMainContext` struct is an opaque data
@@ -488,7 +488,7 @@
     </span><span class="doccomment">/// The `GMainContext` struct is an opaque data
     /// type representing a set of sources to be handled in a main loop.
     </span><span class="attr">#[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
-    </span><span class="kw">pub struct </span><a href="../../../glib/struct.MainContext.html">MainContext</a>(Shared&lt;<a href="../../../glib_sys/struct.GMainContext.html">ffi::GMainContext</a>&gt;);
+    </span><span class="kw">pub struct </span><a href="../../../glib/struct.MainContext.html">MainContext</a>(Shared&lt;ffi::GMainContext&gt;);
 
     <span class="kw">match fn </span>{
         <span class="kw-2">ref </span>=&gt; |ptr| ffi::g_main_context_ref(ptr),
@@ -511,7 +511,7 @@
     /// the new #GMainContext
     </span><span class="attr">#[doc(alias = <span class="string">"g_main_context_new"</span>)]
     </span><span class="kw">pub fn </span>new() -&gt; <a href="#10-24">MainContext</a> {
-        <span class="kw">unsafe </span>{ <a href="../translate.rs.html#1634-1636">from_glib_full</a>(<a href="../../../glib_sys/fn.g_main_context_new.html">ffi::g_main_context_new</a>()) }
+        <span class="kw">unsafe </span>{ <a href="../translate.rs.html#1634-1636">from_glib_full</a>(ffi::g_main_context_new()) }
     }
 
     <span class="doccomment">/// Creates a new #GMainContext structure.
@@ -536,7 +536,7 @@
     #[doc(alias = <span class="string">"g_main_context_new_with_flags"</span>)]
     #[doc(alias = <span class="string">"new_with_flags"</span>)]
     </span><span class="kw">pub fn </span>with_flags(flags: <a href="flags.rs.html#368-385">MainContextFlags</a>) -&gt; <a href="#10-24">MainContext</a> {
-        <span class="kw">unsafe </span>{ <a href="../translate.rs.html#1634-1636">from_glib_full</a>(<a href="../../../glib_sys/fn.g_main_context_new_with_flags.html">ffi::g_main_context_new_with_flags</a>(<a href="#64">flags</a>.<a href="../translate.rs.html#334">into_glib</a>())) }
+        <span class="kw">unsafe </span>{ <a href="../translate.rs.html#1634-1636">from_glib_full</a>(ffi::g_main_context_new_with_flags(<a href="#64">flags</a>.<a href="../translate.rs.html#334">into_glib</a>())) }
     }
 
     <span class="comment">//#[doc(alias = "g_main_context_add_poll")]
@@ -567,7 +567,7 @@
     </span><span class="attr">#[doc(alias = <span class="string">"g_main_context_dispatch"</span>)]
     </span><span class="kw">pub fn </span>dispatch(<span class="kw-2">&amp;</span><span class="self">self</span>) {
         <span class="kw">unsafe </span>{
-            <a href="../../../glib_sys/fn.g_main_context_dispatch.html">ffi::g_main_context_dispatch</a>(<a class="self" href="#94">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>);
+            ffi::g_main_context_dispatch(<a class="self" href="#94">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>);
         }
     }
 
@@ -606,7 +606,7 @@
     /// [`true`] if current thread is owner of @self.
     </span><span class="attr">#[doc(alias = <span class="string">"g_main_context_is_owner"</span>)]
     </span><span class="kw">pub fn </span>is_owner(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
-        <span class="kw">unsafe </span>{ <a href="../translate.rs.html#1417-1419">from_glib</a>(<a href="../../../glib_sys/fn.g_main_context_is_owner.html">ffi::g_main_context_is_owner</a>(<a class="self" href="#134">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>)) }
+        <span class="kw">unsafe </span>{ <a href="../translate.rs.html#1417-1419">from_glib</a>(ffi::g_main_context_is_owner(<a class="self" href="#134">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>)) }
     }
 
     <span class="doccomment">/// Runs a single iteration for the given main loop. This involves
@@ -649,7 +649,7 @@
     </span><span class="attr">#[doc(alias = <span class="string">"g_main_context_iteration"</span>)]
     </span><span class="kw">pub fn </span>iteration(<span class="kw-2">&amp;</span><span class="self">self</span>, may_block: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
         <span class="kw">unsafe </span>{
-            <a href="../translate.rs.html#1417-1419">from_glib</a>(<a href="../../../glib_sys/fn.g_main_context_iteration.html">ffi::g_main_context_iteration</a>(
+            <a href="../translate.rs.html#1417-1419">from_glib</a>(ffi::g_main_context_iteration(
                 <a class="self" href="#176">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
                 <a href="#176">may_block</a>.<a href="../translate.rs.html#334">into_glib</a>(),
             ))
@@ -669,7 +669,7 @@
     /// [`true`] if events are pending.
     </span><span class="attr">#[doc(alias = <span class="string">"g_main_context_pending"</span>)]
     </span><span class="kw">pub fn </span>pending(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
-        <span class="kw">unsafe </span>{ <a href="../translate.rs.html#1417-1419">from_glib</a>(<a href="../../../glib_sys/fn.g_main_context_pending.html">ffi::g_main_context_pending</a>(<a class="self" href="#197">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>)) }
+        <span class="kw">unsafe </span>{ <a href="../translate.rs.html#1417-1419">from_glib</a>(ffi::g_main_context_pending(<a class="self" href="#197">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>)) }
     }
 
     <span class="comment">//#[doc(alias = "g_main_context_query")]
@@ -770,7 +770,7 @@
     </span><span class="attr">#[doc(alias = <span class="string">"g_main_context_wakeup"</span>)]
     </span><span class="kw">pub fn </span>wakeup(<span class="kw-2">&amp;</span><span class="self">self</span>) {
         <span class="kw">unsafe </span>{
-            <a href="../../../glib_sys/fn.g_main_context_wakeup.html">ffi::g_main_context_wakeup</a>(<a class="self" href="#297">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>);
+            ffi::g_main_context_wakeup(<a class="self" href="#297">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>);
         }
     }
 
@@ -794,7 +794,7 @@
     </span><span class="attr">#[doc(alias = <span class="string">"g_main_context_default"</span>)]
     #[allow(clippy::should_implement_trait)]
     </span><span class="kw">pub fn </span>default() -&gt; <a href="#10-24">MainContext</a> {
-        <span class="kw">unsafe </span>{ <a href="../translate.rs.html#1625-1627">from_glib_none</a>(<a href="../../../glib_sys/fn.g_main_context_default.html">ffi::g_main_context_default</a>()) }
+        <span class="kw">unsafe </span>{ <a href="../translate.rs.html#1625-1627">from_glib_none</a>(ffi::g_main_context_default()) }
     }
 
     <span class="doccomment">/// Gets the thread-default #GMainContext for this thread. Asynchronous
@@ -833,7 +833,7 @@
     </span><span class="attr">#[doc(alias = <span class="string">"g_main_context_get_thread_default"</span>)]
     #[doc(alias = <span class="string">"get_thread_default"</span>)]
     </span><span class="kw">pub fn </span>thread_default() -&gt; <span class="prelude-ty">Option</span>&lt;<a href="#10-24">MainContext</a>&gt; {
-        <span class="kw">unsafe </span>{ <a href="../translate.rs.html#1625-1627">from_glib_none</a>(<a href="../../../glib_sys/fn.g_main_context_get_thread_default.html">ffi::g_main_context_get_thread_default</a>()) }
+        <span class="kw">unsafe </span>{ <a href="../translate.rs.html#1625-1627">from_glib_none</a>(ffi::g_main_context_get_thread_default()) }
     }
 
     <span class="doccomment">/// Gets the thread-default #GMainContext for this thread, as with
@@ -861,7 +861,7 @@
     ///     with g_main_context_unref() when you are done with it.
     </span><span class="attr">#[doc(alias = <span class="string">"g_main_context_ref_thread_default"</span>)]
     </span><span class="kw">pub fn </span>ref_thread_default() -&gt; <a href="#10-24">MainContext</a> {
-        <span class="kw">unsafe </span>{ <a href="../translate.rs.html#1634-1636">from_glib_full</a>(<a href="../../../glib_sys/fn.g_main_context_ref_thread_default.html">ffi::g_main_context_ref_thread_default</a>()) }
+        <span class="kw">unsafe </span>{ <a href="../translate.rs.html#1634-1636">from_glib_full</a>(ffi::g_main_context_ref_thread_default()) }
     }
 }
 
