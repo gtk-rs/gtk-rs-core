@@ -563,6 +563,7 @@ pub fn closure_local(item: TokenStream) -> TokenStream {
 ///
 /// An enum can be registered as a dynamic type by setting the derive macro
 /// helper attribute `enum_dynamic`:
+///
 /// ```ignore
 /// use glib::prelude::*;
 /// use glib::subclass::prelude::*;
@@ -590,9 +591,10 @@ pub fn closure_local(item: TokenStream) -> TokenStream {
 /// when registering an enum as a dynamic type:
 ///
 /// - lazy registration: by default an enum is registered as a dynamic type
-/// when the system loads the implementation (e.g. when the module is loaded).
-/// Optionally setting `lazy_registration` to `true` postpones registration on
-/// the first use (when `static_type()` is called for the first time):
+///   when the system loads the implementation (e.g. when the module is loaded).
+///   Optionally setting `lazy_registration` to `true` postpones registration on
+///   the first use (when `static_type()` is called for the first time):
+///
 /// ```ignore
 /// #[derive(Debug, Copy, Clone, PartialEq, Eq, glib::Enum)]
 /// #[enum_type(name = "MyEnum")]
@@ -603,8 +605,9 @@ pub fn closure_local(item: TokenStream) -> TokenStream {
 /// ```
 ///
 /// - registration within [`TypeModule`] subclass or within [`TypePlugin`]
-/// subclass: an enum is usually registered as a dynamic type within a
-/// [`TypeModule`] subclass:
+///   subclass: an enum is usually registered as a dynamic type within a
+///   [`TypeModule`] subclass:
+///
 /// ```ignore
 /// #[derive(Debug, Copy, Clone, PartialEq, Eq, glib::Enum)]
 /// #[enum_type(name = "MyModuleEnum")]
@@ -629,6 +632,7 @@ pub fn closure_local(item: TokenStream) -> TokenStream {
 ///
 /// Optionally setting `plugin_type` allows to register an enum as a dynamic
 /// type within a [`TypePlugin`] subclass that is not a [`TypeModule`]:
+///
 /// ```ignore
 /// #[derive(Debug, Copy, Clone, PartialEq, Eq, glib::Enum)]
 /// #[enum_type(name = "MyPluginEnum")]
@@ -719,9 +723,10 @@ pub fn enum_derive(input: TokenStream) -> TokenStream {
 /// registering the flags as a dynamic type:
 ///
 /// - lazy registration: by default the flags are registered as a dynamic type
-/// when the system loads the implementation (e.g. when the module is loaded).
-/// Optionally setting `lazy_registration` to `true` postpones registration on
-/// the first use (when `static_type()` is called for the first time):
+///   when the system loads the implementation (e.g. when the module is loaded).
+///   Optionally setting `lazy_registration` to `true` postpones registration on
+///   the first use (when `static_type()` is called for the first time):
+///
 /// ```ignore
 /// #[glib::flags(name = "MyFlags")]
 /// #[flags_dynamic(lazy_registration = true)]
@@ -731,8 +736,9 @@ pub fn enum_derive(input: TokenStream) -> TokenStream {
 /// ```
 ///
 /// - registration within [`TypeModule`] subclass or within [`TypePlugin`]
-/// subclass: the flags are usually registered as a dynamic type within a
-/// [`TypeModule`] subclass:
+///   subclass: the flags are usually registered as a dynamic type within a
+///   [`TypeModule`] subclass:
+///
 /// ```ignore
 /// #[glib::flags(name = "MyModuleFlags")]
 /// #[flags_dynamic]
@@ -932,6 +938,7 @@ pub fn shared_boxed_derive(input: TokenStream) -> TokenStream {
 ///
 /// An object subclass can be registered as a dynamic type by setting the macro
 /// helper attribute `object_class_dynamic`:
+///
 /// ```ignore
 /// #[derive(Default)]
 /// pub struct MyType;
@@ -956,10 +963,11 @@ pub fn shared_boxed_derive(input: TokenStream) -> TokenStream {
 /// when registering an object subclass as a dynamic type:
 ///
 /// - lazy registration: by default an object subclass is registered as a
-/// dynamic type when the system loads the implementation (e.g. when the module
-/// is loaded). Optionally setting `lazy_registration` to `true` postpones
-/// registration on the first use (when `static_type()` is called for the first
-/// time):
+///   dynamic type when the system loads the implementation (e.g. when the module
+///   is loaded). Optionally setting `lazy_registration` to `true` postpones
+///   registration on the first use (when `static_type()` is called for the first
+///   time):
+///
 /// ```ignore
 /// #[derive(Default)]
 /// pub struct MyType;
@@ -970,8 +978,9 @@ pub fn shared_boxed_derive(input: TokenStream) -> TokenStream {
 /// ```
 ///
 /// - registration within [`TypeModule`] subclass or within [`TypePlugin`]
-/// subclass: an object subclass is usually registered as a dynamic type within
-/// a [`TypeModule`] subclass:
+///   subclass: an object subclass is usually registered as a dynamic type within
+///   a [`TypeModule`] subclass:
+///
 /// ```ignore
 /// #[derive(Default)]
 /// pub struct MyModuleType;
@@ -996,6 +1005,7 @@ pub fn shared_boxed_derive(input: TokenStream) -> TokenStream {
 ///
 /// Optionally setting `plugin_type` allows to register an object subclass as a
 /// dynamic type within a [`TypePlugin`] subclass that is not a [`TypeModule`]:
+///
 /// ```ignore
 /// #[derive(Default)]
 /// pub struct MyPluginType;
@@ -1067,9 +1077,10 @@ pub fn object_subclass(_attr: TokenStream, item: TokenStream) -> TokenStream {
 /// behaviors when registering an object interface as a dynamic type:
 ///
 /// - lazy registration: by default an object interface is registered as a
-/// dynamic type when the system loads the implementation (e.g. when the module
-/// is loaded). Optionally setting `lazy_registration` to `true` postpones
-/// registration on the first use (when `type_()` is called for the first time):
+///   dynamic type when the system loads the implementation (e.g. when the module
+///   is loaded). Optionally setting `lazy_registration` to `true` postpones
+///   registration on the first use (when `type_()` is called for the first time):
+///
 /// ```ignore
 /// pub struct MyInterface {
 ///     parent: glib::gobject_ffi::GTypeInterface,
@@ -1080,8 +1091,9 @@ pub fn object_subclass(_attr: TokenStream, item: TokenStream) -> TokenStream {
 /// ```
 ///
 /// - registration within [`TypeModule`] subclass or within [`TypePlugin`]
-/// subclass: an object interface is usually registered as a dynamic type
-/// within a [`TypeModule`] subclass:
+///   subclass: an object interface is usually registered as a dynamic type
+///   within a [`TypeModule`] subclass:
+///
 /// ```ignore
 /// pub struct MyModuleInterface {
 ///     parent: glib::gobject_ffi::GTypeInterface,
@@ -1106,6 +1118,7 @@ pub fn object_subclass(_attr: TokenStream, item: TokenStream) -> TokenStream {
 ///
 /// Optionally setting `plugin_type` allows to register an object interface as
 /// a dynamic type within a [`TypePlugin`] subclass that is not a [`TypeModule`]:
+///
 /// ```ignore
 /// pub struct MyPluginInterface {
 ///     parent: glib::gobject_ffi::GTypeInterface,
@@ -1249,16 +1262,16 @@ pub fn downgrade(input: TokenStream) -> TokenStream {
 /// enum variant, or just `s` if this is a C-style enum. Some additional attributes are supported
 /// for enums:
 /// - `#[variant_enum(repr)]` to serialize the enum variant as an integer type instead of `s`.  The
-/// `#[repr]` attribute must also be specified on the enum with a sized integer type, and the type
-/// must implement `Copy`.
+///   `#[repr]` attribute must also be specified on the enum with a sized integer type, and the type
+///   must implement `Copy`.
 /// - `#[variant_enum(enum)]` uses [`EnumClass`] to serialize/deserialize as nicks. Meant for use
-/// with [`glib::Enum`](Enum).
+///   with [`glib::Enum`](Enum).
 /// - `#[variant_enum(flags)]` uses [`FlagsClass`] to serialize/deserialize as nicks. Meant for use
-/// with [`glib::flags`](macro@flags).
+///   with [`glib::flags`](macro@flags).
 /// - `#[variant_enum(enum, repr)]` serializes as `i32`. Meant for use with [`glib::Enum`](Enum).
-/// The type must also implement `Copy`.
+///   The type must also implement `Copy`.
 /// - `#[variant_enum(flags, repr)]` serializes as `u32`. Meant for use with
-/// [`glib::flags`](macro@flags).
+///   [`glib::flags`](macro@flags).
 ///
 /// # Example
 ///

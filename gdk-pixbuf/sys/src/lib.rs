@@ -290,6 +290,7 @@ impl ::std::fmt::Debug for GdkPixbufModulePattern {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GdkPixbufSimpleAnimClass {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -299,6 +300,7 @@ pub type GdkPixbufSimpleAnimClass = _GdkPixbufSimpleAnimClass;
 
 // Classes
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GdkPixbuf {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -353,6 +355,7 @@ impl ::std::fmt::Debug for GdkPixbufLoader {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GdkPixbufNonAnim {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -366,6 +369,7 @@ impl ::std::fmt::Debug for GdkPixbufNonAnim {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GdkPixbufSimpleAnim {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -379,6 +383,7 @@ impl ::std::fmt::Debug for GdkPixbufSimpleAnim {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GdkPixbufSimpleAnimIter {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
