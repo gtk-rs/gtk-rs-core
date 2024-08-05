@@ -195,185 +195,35 @@
 <a href="#122" id="122">122</a>
 <a href="#123" id="123">123</a>
 <a href="#124" id="124">124</a>
-<a href="#125" id="125">125</a>
-<a href="#126" id="126">126</a>
-<a href="#127" id="127">127</a>
-<a href="#128" id="128">128</a>
-<a href="#129" id="129">129</a>
-<a href="#130" id="130">130</a>
-<a href="#131" id="131">131</a>
-<a href="#132" id="132">132</a>
-<a href="#133" id="133">133</a>
-<a href="#134" id="134">134</a>
-<a href="#135" id="135">135</a>
-<a href="#136" id="136">136</a>
-<a href="#137" id="137">137</a>
-<a href="#138" id="138">138</a>
-<a href="#139" id="139">139</a>
-<a href="#140" id="140">140</a>
-<a href="#141" id="141">141</a>
-<a href="#142" id="142">142</a>
-<a href="#143" id="143">143</a>
-<a href="#144" id="144">144</a>
-<a href="#145" id="145">145</a>
-<a href="#146" id="146">146</a>
-<a href="#147" id="147">147</a>
-<a href="#148" id="148">148</a>
-<a href="#149" id="149">149</a>
-<a href="#150" id="150">150</a>
-<a href="#151" id="151">151</a>
-<a href="#152" id="152">152</a>
-<a href="#153" id="153">153</a>
-<a href="#154" id="154">154</a>
-<a href="#155" id="155">155</a>
-<a href="#156" id="156">156</a>
-<a href="#157" id="157">157</a>
-<a href="#158" id="158">158</a>
-<a href="#159" id="159">159</a>
-<a href="#160" id="160">160</a>
-<a href="#161" id="161">161</a>
-<a href="#162" id="162">162</a>
-<a href="#163" id="163">163</a>
-<a href="#164" id="164">164</a>
-<a href="#165" id="165">165</a>
-<a href="#166" id="166">166</a>
-<a href="#167" id="167">167</a>
-<a href="#168" id="168">168</a>
-<a href="#169" id="169">169</a>
-<a href="#170" id="170">170</a>
-<a href="#171" id="171">171</a>
-<a href="#172" id="172">172</a>
-<a href="#173" id="173">173</a>
-<a href="#174" id="174">174</a>
-<a href="#175" id="175">175</a>
-<a href="#176" id="176">176</a>
-<a href="#177" id="177">177</a>
-<a href="#178" id="178">178</a>
-<a href="#179" id="179">179</a>
-<a href="#180" id="180">180</a>
-<a href="#181" id="181">181</a>
-<a href="#182" id="182">182</a>
-<a href="#183" id="183">183</a>
-<a href="#184" id="184">184</a>
-<a href="#185" id="185">185</a>
-<a href="#186" id="186">186</a>
-<a href="#187" id="187">187</a>
-<a href="#188" id="188">188</a>
-<a href="#189" id="189">189</a>
-<a href="#190" id="190">190</a>
-<a href="#191" id="191">191</a>
-<a href="#192" id="192">192</a>
-<a href="#193" id="193">193</a>
-<a href="#194" id="194">194</a>
-<a href="#195" id="195">195</a>
-<a href="#196" id="196">196</a>
-<a href="#197" id="197">197</a>
-<a href="#198" id="198">198</a>
-<a href="#199" id="199">199</a>
 </pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
 </span><span class="kw">use crate</span>::{
-    enums::{<a href="../enums.rs.html#377">EnumValues</a>, <a href="../enums.rs.html#953">FlagsValues</a>},
+    enums::{<a href="../enums.rs.html#370">EnumValues</a>, <a href="../enums.rs.html#946">FlagsValues</a>},
     gobject_ffi,
     <a href="../lib.rs.html#157">prelude</a>::<span class="kw-2">*</span>,
     <a href="../lib.rs.html#162">translate</a>::<span class="kw-2">*</span>,
-    <a href="interface_info.rs.html#8">InterfaceInfo</a>, <a href="auto/flags.rs.html#200-245">TypeFlags</a>, <a href="type_info.rs.html#27">TypeInfo</a>, <a href="type_plugin.rs.html#5-121">TypePlugin</a>,
+    <a href="interface_info.rs.html#8">InterfaceInfo</a>, <a href="auto/flags.rs.html#141-156">TypeFlags</a>, <a href="type_info.rs.html#8">TypeInfo</a>, <a href="type_plugin.rs.html#5-12">TypePlugin</a>,
 };
 
 <a class="macro" href="../wrapper.rs.html#277-444">crate::wrapper!</a> {
-    <span class="doccomment">/// `GTypeModule` provides a simple implementation of the `GTypePlugin`
-    /// interface.
-    ///
-    /// The model of `GTypeModule` is a dynamically loaded module which
-    /// implements some number of types and interface implementations.
-    ///
-    /// When the module is loaded, it registers its types and interfaces
-    /// using [method[`Object`][crate::Object].register_type] and
-    /// [method[`Object`][crate::Object].add_interface].
-    /// As long as any instances of these types and interface implementations
-    /// are in use, the module is kept loaded. When the types and interfaces
-    /// are gone, the module may be unloaded. If the types and interfaces
-    /// become used again, the module will be reloaded. Note that the last
-    /// reference cannot be released from within the module code, since that
-    /// would lead to the caller's code being unloaded before ``g_object_unref()``
-    /// returns to it.
-    ///
-    /// Keeping track of whether the module should be loaded or not is done by
-    /// using a use count - it starts at zero, and whenever it is greater than
-    /// zero, the module is loaded. The use count is maintained internally by
-    /// the type system, but also can be explicitly controlled by
-    /// [method[`Object`][crate::Object].use] and [method[`Object`][crate::Object].unuse].
-    /// Typically, when loading a module for the first type, `[`TypeModuleExtManual::use_()`][crate::prelude::TypeModuleExtManual::use_()]`
-    /// will be used to load it so that it can initialize its types. At some later
-    /// point, when the module no longer needs to be loaded except for the type
-    /// implementations it contains, `[`TypeModuleExtManual::unuse()`][crate::prelude::TypeModuleExtManual::unuse()]` is called.
-    ///
-    /// `GTypeModule` does not actually provide any implementation of module
-    /// loading and unloading. To create a particular module type you must
-    /// derive from `GTypeModule` and implement the load and unload functions
-    /// in `GTypeModuleClass`.
-    ///
-    /// This is an Abstract Base Class, you cannot instantiate it.
-    ///
-    /// # Implements
-    ///
-    /// [`ObjectExt`][trait@crate::prelude::ObjectExt], [`TypePluginExt`][trait@crate::prelude::TypePluginExt]
-    </span><span class="comment">// rustdoc-stripper-ignore-next-stop
-    </span><span class="doccomment">/// `GTypeModule` provides a simple implementation of the `GTypePlugin`
-    /// interface.
-    ///
-    /// The model of `GTypeModule` is a dynamically loaded module which
-    /// implements some number of types and interface implementations.
-    ///
-    /// When the module is loaded, it registers its types and interfaces
-    /// using [method[`Object`][crate::Object].register_type] and
-    /// [method[`Object`][crate::Object].add_interface].
-    /// As long as any instances of these types and interface implementations
-    /// are in use, the module is kept loaded. When the types and interfaces
-    /// are gone, the module may be unloaded. If the types and interfaces
-    /// become used again, the module will be reloaded. Note that the last
-    /// reference cannot be released from within the module code, since that
-    /// would lead to the caller's code being unloaded before ``g_object_unref()``
-    /// returns to it.
-    ///
-    /// Keeping track of whether the module should be loaded or not is done by
-    /// using a use count - it starts at zero, and whenever it is greater than
-    /// zero, the module is loaded. The use count is maintained internally by
-    /// the type system, but also can be explicitly controlled by
-    /// [method[`Object`][crate::Object].use] and [method[`Object`][crate::Object].unuse].
-    /// Typically, when loading a module for the first type, `[`TypeModuleExtManual::use_()`][crate::prelude::TypeModuleExtManual::use_()]`
-    /// will be used to load it so that it can initialize its types. At some later
-    /// point, when the module no longer needs to be loaded except for the type
-    /// implementations it contains, `[`TypeModuleExtManual::unuse()`][crate::prelude::TypeModuleExtManual::unuse()]` is called.
-    ///
-    /// `GTypeModule` does not actually provide any implementation of module
-    /// loading and unloading. To create a particular module type you must
-    /// derive from `GTypeModule` and implement the load and unload functions
-    /// in `GTypeModuleClass`.
-    ///
-    /// This is an Abstract Base Class, you cannot instantiate it.
-    ///
-    /// # Implements
-    ///
-    /// [`ObjectExt`][trait@crate::prelude::ObjectExt], [`TypePluginExt`][trait@crate::prelude::TypePluginExt]
-    </span><span class="attr">#[doc(alias = <span class="string">"GTypeModule"</span>)]
-    </span><span class="kw">pub struct </span><a href="../../../glib/struct.TypeModule.html">TypeModule</a>(Object&lt;gobject_ffi::GTypeModule, gobject_ffi::GTypeModuleClass&gt;) @implements <a href="type_plugin.rs.html#5-121">TypePlugin</a>;
+    <span class="attr">#[doc(alias = <span class="string">"GTypeModule"</span>)]
+    </span><span class="kw">pub struct </span><a href="../../../glib/struct.TypeModule.html">TypeModule</a>(Object&lt;gobject_ffi::GTypeModule, gobject_ffi::GTypeModuleClass&gt;) @implements <a href="type_plugin.rs.html#5-12">TypePlugin</a>;
 
     <span class="kw">match fn </span>{
         type_ =&gt; || gobject_ffi::g_type_module_get_type(),
     }
 }
 
-<span class="kw">impl </span><a href="#11-93">TypeModule</a> {
-    <span class="kw">pub const </span>NONE: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'static </span><a href="#11-93">TypeModule</a>&gt; = <span class="prelude-val">None</span>;
+<span class="kw">impl </span><a href="#11-18">TypeModule</a> {
+    <span class="kw">pub const </span>NONE: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'static </span><a href="#11-18">TypeModule</a>&gt; = <span class="prelude-val">None</span>;
 }
 
 <span class="kw">mod </span>sealed {
     <span class="kw">pub trait </span>Sealed {}
-    <span class="kw">impl</span>&lt;T: <span class="kw">super</span>::IsA&lt;<a href="#11-93"><span class="kw">super</span>::TypeModule</a>&gt;&gt; <a href="#100">Sealed</a> <span class="kw">for </span>T {}
+    <span class="kw">impl</span>&lt;T: <span class="kw">super</span>::IsA&lt;<a href="#11-18"><span class="kw">super</span>::TypeModule</a>&gt;&gt; <a href="#25">Sealed</a> <span class="kw">for </span>T {}
 }
 
-<span class="kw">pub trait </span><a href="../../../glib/prelude/trait.TypeModuleExt.html">TypeModuleExt</a>: IsA&lt;<a href="#11-93">TypeModule</a>&gt; + <a href="#100">sealed::Sealed</a> + <span class="lifetime">'static </span>{
+<span class="kw">pub trait </span><a href="../../../glib/prelude/trait.TypeModuleExt.html">TypeModuleExt</a>: IsA&lt;<a href="#11-18">TypeModule</a>&gt; + <a href="#25">sealed::Sealed</a> + <span class="lifetime">'static </span>{
     <span class="attr">#[doc(alias = <span class="string">"g_type_module_add_interface"</span>)]
     </span><span class="kw">fn </span>add_interface(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
@@ -383,10 +233,10 @@
     ) {
         <span class="kw">unsafe </span>{
             gobject_ffi::g_type_module_add_interface(
-                <a class="self" href="#107">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#108">instance_type</a>.<a href="../translate.rs.html#334">into_glib</a>(),
-                <a href="#109">interface_type</a>.<a href="../translate.rs.html#334">into_glib</a>(),
-                <a href="#110">interface_info</a>.<a href="interface_info.rs.html#15-17">as_ptr</a>(),
+                <a class="self" href="#32">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#33">instance_type</a>.<a href="../translate.rs.html#334">into_glib</a>(),
+                <a href="#34">interface_type</a>.<a href="../translate.rs.html#334">into_glib</a>(),
+                <a href="#35">interface_info</a>.<a href="interface_info.rs.html#15-17">as_ptr</a>(),
             );
         }
     }
@@ -395,13 +245,13 @@
     </span><span class="kw">fn </span>register_enum(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
-        const_static_values: <span class="kw-2">&amp;</span><span class="lifetime">'static </span><a href="../enums.rs.html#377">EnumValues</a>,
+        const_static_values: <span class="kw-2">&amp;</span><span class="lifetime">'static </span><a href="../enums.rs.html#370">EnumValues</a>,
     ) -&gt; <a href="../types.rs.html#22"><span class="kw">crate</span>::types::Type</a> {
         <span class="kw">unsafe </span>{
             <a href="../translate.rs.html#1417-1419">from_glib</a>(gobject_ffi::g_type_module_register_enum(
-                <a class="self" href="#124">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#125">name</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#126">const_static_values</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+                <a class="self" href="#49">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#50">name</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#51">const_static_values</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
             ))
         }
     }
@@ -410,13 +260,13 @@
     </span><span class="kw">fn </span>register_flags(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
-        const_static_values: <span class="kw-2">&amp;</span><span class="lifetime">'static </span><a href="../enums.rs.html#953">FlagsValues</a>,
+        const_static_values: <span class="kw-2">&amp;</span><span class="lifetime">'static </span><a href="../enums.rs.html#946">FlagsValues</a>,
     ) -&gt; <a href="../types.rs.html#22"><span class="kw">crate</span>::types::Type</a> {
         <span class="kw">unsafe </span>{
             <a href="../translate.rs.html#1417-1419">from_glib</a>(gobject_ffi::g_type_module_register_flags(
-                <a class="self" href="#139">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#140">name</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#141">const_static_values</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+                <a class="self" href="#64">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#65">name</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#66">const_static_values</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
             ))
         }
     }
@@ -426,16 +276,16 @@
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         parent_type: <a href="../types.rs.html#22"><span class="kw">crate</span>::types::Type</a>,
         type_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
-        type_info: <span class="kw-2">&amp;</span><a href="type_info.rs.html#27">TypeInfo</a>,
-        flags: <a href="auto/flags.rs.html#200-245">TypeFlags</a>,
+        type_info: <span class="kw-2">&amp;</span><a href="type_info.rs.html#8">TypeInfo</a>,
+        flags: <a href="auto/flags.rs.html#141-156">TypeFlags</a>,
     ) -&gt; <a href="../types.rs.html#22"><span class="kw">crate</span>::types::Type</a> {
         <span class="kw">unsafe </span>{
             <a href="../translate.rs.html#1417-1419">from_glib</a>(gobject_ffi::g_type_module_register_type(
-                <a class="self" href="#154">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#155">parent_type</a>.<a href="../translate.rs.html#334">into_glib</a>(),
-                <a href="#156">type_name</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#157">type_info</a>.<a href="type_info.rs.html#34-36">as_ptr</a>(),
-                <a href="#158">flags</a>.<a href="../translate.rs.html#334">into_glib</a>(),
+                <a class="self" href="#79">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#80">parent_type</a>.<a href="../translate.rs.html#334">into_glib</a>(),
+                <a href="#81">type_name</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#82">type_info</a>.<a href="type_info.rs.html#15-17">as_ptr</a>(),
+                <a href="#83">flags</a>.<a href="../translate.rs.html#334">into_glib</a>(),
             ))
         }
     }
@@ -444,8 +294,8 @@
     </span><span class="kw">fn </span>set_name(<span class="kw-2">&amp;</span><span class="self">self</span>, name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) {
         <span class="kw">unsafe </span>{
             gobject_ffi::g_type_module_set_name(
-                <a class="self" href="#172">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#172">name</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+                <a class="self" href="#97">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#97">name</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
             );
         }
     }
@@ -453,7 +303,7 @@
     <span class="attr">#[doc(alias = <span class="string">"g_type_module_unuse"</span>)]
     </span><span class="kw">fn </span>unuse(<span class="kw-2">&amp;</span><span class="self">self</span>) {
         <span class="kw">unsafe </span>{
-            gobject_ffi::g_type_module_unuse(<a class="self" href="#182">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>);
+            gobject_ffi::g_type_module_unuse(<a class="self" href="#107">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>);
         }
     }
 
@@ -462,11 +312,11 @@
     </span><span class="kw">fn </span>use_(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
         <span class="kw">unsafe </span>{
             <a href="../translate.rs.html#1417-1419">from_glib</a>(gobject_ffi::g_type_module_use(
-                <a class="self" href="#190">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+                <a class="self" href="#115">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
             ))
         }
     }
 }
 
-<span class="kw">impl</span>&lt;O: IsA&lt;<a href="#11-93">TypeModule</a>&gt;&gt; <a href="#104-197">TypeModuleExt</a> <span class="kw">for </span>O {}
+<span class="kw">impl</span>&lt;O: IsA&lt;<a href="#11-18">TypeModule</a>&gt;&gt; <a href="#29-122">TypeModuleExt</a> <span class="kw">for </span>O {}
 </code></pre></div></section></main></body></html>
