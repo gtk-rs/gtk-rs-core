@@ -266,6 +266,7 @@ pub type GWeakNotify = Option<unsafe extern "C" fn(gpointer, *mut GObject)>;
 
 // Records
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GCClosure {
     _truncated_record_marker: c_void,
     // /*Ignored*/field closure has incomplete type
@@ -278,6 +279,7 @@ impl ::std::fmt::Debug for GCClosure {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GClosure {
     pub ref_count: c_uint,
     _truncated_record_marker: c_void,
@@ -533,6 +535,7 @@ impl ::std::fmt::Debug for GParamSpecClass {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GParamSpecPool {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -857,6 +860,7 @@ impl ::std::fmt::Debug for GWeakRef {
 
 // Classes
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GBinding {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -869,6 +873,7 @@ impl ::std::fmt::Debug for GBinding {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GBindingGroup {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -1203,6 +1208,7 @@ impl ::std::fmt::Debug for GParamSpecPointer {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GParamSpecString {
     pub parent_instance: GParamSpec,
     pub default_value: *mut c_char,
@@ -1361,6 +1367,7 @@ impl ::std::fmt::Debug for GParamSpecVariant {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GSignalGroup {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -1396,6 +1403,7 @@ impl ::std::fmt::Debug for GTypeModule {
 
 // Interfaces
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GTypePlugin {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
