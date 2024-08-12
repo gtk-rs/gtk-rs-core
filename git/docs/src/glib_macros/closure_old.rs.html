@@ -375,7 +375,7 @@
 
 </span><span class="kw">use </span>proc_macro2::{<a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.Ident.html">Ident</a>, <a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.Span.html">Span</a>, <a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.TokenStream.html">TokenStream</a>};
 <span class="kw">use </span>quote::{<a href="https://docs.rs/quote/1.0.36/quote/macro.quote.html">quote</a>, <a href="https://docs.rs/quote/1.0.36/quote/to_tokens/trait.ToTokens.html">ToTokens</a>, <a href="https://docs.rs/quote/1.0.36/quote/ext/trait.TokenStreamExt.html">TokenStreamExt</a>};
-<span class="kw">use </span>syn::{<a href="https://docs.rs/syn/2.0.72/syn/ext/trait.IdentExt.html">ext::IdentExt</a>, <a href="https://docs.rs/syn/2.0.72/syn/spanned/trait.Spanned.html">spanned::Spanned</a>, <a href="https://docs.rs/syn/2.0.72/syn/macro.Token.html">Token</a>};
+<span class="kw">use </span>syn::{<a href="https://docs.rs/syn/2.0.74/syn/ext/trait.IdentExt.html">ext::IdentExt</a>, <a href="https://docs.rs/syn/2.0.74/syn/spanned/trait.Spanned.html">spanned::Spanned</a>, <a href="https://docs.rs/syn/2.0.74/syn/macro.Token.html">Token</a>};
 
 <span class="kw">use </span><a href="utils.rs.html#188-215"><span class="kw">crate</span>::utils::crate_ident_new</a>;
 
@@ -448,11 +448,11 @@
     }
 }
 
-<span class="kw">impl </span><a href="https://docs.rs/syn/2.0.72/syn/parse/trait.Parse.html">syn::parse::Parse</a> <span class="kw">for </span><a href="#10-15">CaptureKind</a> {
-    <span class="kw">fn </span>parse(input: <a href="https://docs.rs/syn/2.0.72/syn/parse/type.ParseStream.html">syn::parse::ParseStream</a>) -&gt; syn::Result&lt;<span class="self">Self</span>&gt; {
-        <a href="#79">input</a>.<a href="https://docs.rs/syn/2.0.72/syn/parse/struct.ParseBuffer.html#method.parse">parse</a>::&lt;<a class="macro" href="https://docs.rs/syn/2.0.72/syn/macro.Token.html">Token!</a>[@]&gt;()<span class="question-mark">?</span>;
+<span class="kw">impl </span><a href="https://docs.rs/syn/2.0.74/syn/parse/trait.Parse.html">syn::parse::Parse</a> <span class="kw">for </span><a href="#10-15">CaptureKind</a> {
+    <span class="kw">fn </span>parse(input: <a href="https://docs.rs/syn/2.0.74/syn/parse/type.ParseStream.html">syn::parse::ParseStream</a>) -&gt; syn::Result&lt;<span class="self">Self</span>&gt; {
+        <a href="#79">input</a>.<a href="https://docs.rs/syn/2.0.74/syn/parse/struct.ParseBuffer.html#method.parse">parse</a>::&lt;<a class="macro" href="https://docs.rs/syn/2.0.74/syn/macro.Token.html">Token!</a>[@]&gt;()<span class="question-mark">?</span>;
         <span class="kw">let </span><span class="kw-2">mut </span>idents = <a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.TokenStream.html#method.new">TokenStream::new</a>();
-        <a href="#81">idents</a>.<a href="https://docs.rs/quote/1.0.36/quote/ext/trait.TokenStreamExt.html#tymethod.append">append</a>(<a href="#79">input</a>.<a href="https://docs.rs/syn/2.0.72/syn/parse/struct.ParseBuffer.html#method.call">call</a>(syn::Ident::parse_any)<span class="question-mark">?</span>);
+        <a href="#81">idents</a>.<a href="https://docs.rs/quote/1.0.36/quote/ext/trait.TokenStreamExt.html#tymethod.append">append</a>(<a href="#79">input</a>.<a href="https://docs.rs/syn/2.0.74/syn/parse/struct.ParseBuffer.html#method.call">call</a>(syn::Ident::parse_any)<span class="question-mark">?</span>);
         <span class="kw">while </span>input.peek(<span class="macro">Token!</span>[-]) {
             input.parse::&lt;<span class="macro">Token!</span>[-]&gt;()<span class="question-mark">?</span>;
             idents.append(input.call(syn::Ident::parse_any)<span class="question-mark">?</span>);
@@ -468,8 +468,8 @@
             <span class="string">"watch" </span>=&gt; <span class="prelude-val">Ok</span>(<a href="#11">CaptureKind::Watch</a>),
             <span class="string">"weak-allow-none" </span>=&gt; <span class="prelude-val">Ok</span>(<a href="#12">CaptureKind::WeakAllowNone</a>),
             <span class="string">"to-owned" </span>=&gt; <span class="prelude-val">Ok</span>(<a href="#14">CaptureKind::ToOwned</a>),
-            k =&gt; <span class="prelude-val">Err</span>(<a href="https://docs.rs/syn/2.0.72/syn/error/struct.Error.html#method.new">syn::Error::new</a>(
-                <a href="#81">idents</a>.<a href="https://docs.rs/syn/2.0.72/syn/spanned/trait.Spanned.html#tymethod.span">span</a>(),
+            k =&gt; <span class="prelude-val">Err</span>(<a href="https://docs.rs/syn/2.0.74/syn/error/struct.Error.html#method.new">syn::Error::new</a>(
+                <a href="#81">idents</a>.<a href="https://docs.rs/syn/2.0.74/syn/spanned/trait.Spanned.html#tymethod.span">span</a>(),
                 <a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.format.html">format!</a>(<span class="string">"Unknown keyword `{}`, only `watch`, `weak-allow-none`, `to-owned` and `strong` are allowed"</span>,
                 k),
             )),
@@ -477,34 +477,34 @@
     }
 }
 
-<span class="kw">impl </span><a href="https://docs.rs/syn/2.0.72/syn/parse/trait.Parse.html">syn::parse::Parse</a> <span class="kw">for </span><a href="#17-22">Capture</a> {
-    <span class="kw">fn </span>parse(input: <a href="https://docs.rs/syn/2.0.72/syn/parse/type.ParseStream.html">syn::parse::ParseStream</a>) -&gt; syn::Result&lt;<span class="self">Self</span>&gt; {
-        <span class="kw">let </span>start = <a href="#108">input</a>.<a href="https://docs.rs/syn/2.0.72/syn/parse/struct.ParseBuffer.html#method.span">span</a>();
-        <span class="kw">let </span>kind = <a href="#108">input</a>.<a href="https://docs.rs/syn/2.0.72/syn/parse/struct.ParseBuffer.html#method.parse">parse</a>()<span class="question-mark">?</span>;
+<span class="kw">impl </span><a href="https://docs.rs/syn/2.0.74/syn/parse/trait.Parse.html">syn::parse::Parse</a> <span class="kw">for </span><a href="#17-22">Capture</a> {
+    <span class="kw">fn </span>parse(input: <a href="https://docs.rs/syn/2.0.74/syn/parse/type.ParseStream.html">syn::parse::ParseStream</a>) -&gt; syn::Result&lt;<span class="self">Self</span>&gt; {
+        <span class="kw">let </span>start = <a href="#108">input</a>.<a href="https://docs.rs/syn/2.0.74/syn/parse/struct.ParseBuffer.html#method.span">span</a>();
+        <span class="kw">let </span>kind = <a href="#108">input</a>.<a href="https://docs.rs/syn/2.0.74/syn/parse/struct.ParseBuffer.html#method.parse">parse</a>()<span class="question-mark">?</span>;
         <span class="kw">let </span><span class="kw-2">mut </span>name = <a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.TokenStream.html#method.new">TokenStream::new</a>();
-        <a href="#111">name</a>.<a href="https://docs.rs/quote/1.0.36/quote/ext/trait.TokenStreamExt.html#tymethod.append">append</a>(<a href="#108">input</a>.<a href="https://docs.rs/syn/2.0.72/syn/parse/struct.ParseBuffer.html#method.call">call</a>(syn::Ident::parse_any)<span class="question-mark">?</span>);
+        <a href="#111">name</a>.<a href="https://docs.rs/quote/1.0.36/quote/ext/trait.TokenStreamExt.html#tymethod.append">append</a>(<a href="#108">input</a>.<a href="https://docs.rs/syn/2.0.74/syn/parse/struct.ParseBuffer.html#method.call">call</a>(syn::Ident::parse_any)<span class="question-mark">?</span>);
         <span class="kw">while </span>input.peek(<span class="macro">Token!</span>[.]) {
             input.parse::&lt;<span class="macro">Token!</span>[.]&gt;()<span class="question-mark">?</span>;
             name.append(proc_macro2::Punct::new(<span class="string">'.'</span>, proc_macro2::Spacing::Alone));
             name.append(input.call(syn::Ident::parse_any)<span class="question-mark">?</span>);
         }
         <span class="kw">let </span>alias = <span class="kw">if </span>input.peek(<span class="macro">Token!</span>[<span class="kw">as</span>]) {
-            <a href="#108">input</a>.<a href="https://docs.rs/syn/2.0.72/syn/parse/struct.ParseBuffer.html#method.parse">parse</a>::&lt;<a class="macro" href="https://docs.rs/syn/2.0.72/syn/macro.Token.html">Token!</a>[<span class="kw">as</span>]&gt;()<span class="question-mark">?</span>;
-            <a href="#108">input</a>.<a href="https://docs.rs/syn/2.0.72/syn/parse/struct.ParseBuffer.html#method.parse">parse</a>()<span class="question-mark">?
+            <a href="#108">input</a>.<a href="https://docs.rs/syn/2.0.74/syn/parse/struct.ParseBuffer.html#method.parse">parse</a>::&lt;<a class="macro" href="https://docs.rs/syn/2.0.74/syn/macro.Token.html">Token!</a>[<span class="kw">as</span>]&gt;()<span class="question-mark">?</span>;
+            <a href="#108">input</a>.<a href="https://docs.rs/syn/2.0.74/syn/parse/struct.ParseBuffer.html#method.parse">parse</a>()<span class="question-mark">?
         </span>} <span class="kw">else </span>{
             <span class="prelude-val">None
         </span>};
         <span class="kw">if </span>alias.is_none() {
             <span class="kw">if </span>name.to_string() == <span class="string">"self" </span>{
-                <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="https://docs.rs/syn/2.0.72/syn/error/struct.Error.html#method.new_spanned">syn::Error::new_spanned</a>(
+                <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="https://docs.rs/syn/2.0.74/syn/error/struct.Error.html#method.new_spanned">syn::Error::new_spanned</a>(
                     <a href="#111">name</a>,
                     <span class="string">"Can't use `self` as variable name. Try storing it in a temporary variable or \
                     rename it using `as`."</span>,
                 ));
             }
             <span class="kw">if </span>name.to_string().contains(<span class="string">'.'</span>) {
-                <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="https://docs.rs/syn/2.0.72/syn/error/struct.Error.html#method.new">syn::Error::new</a>(
-                    <a href="#111">name</a>.<a href="https://docs.rs/syn/2.0.72/syn/spanned/trait.Spanned.html#tymethod.span">span</a>(),
+                <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="https://docs.rs/syn/2.0.74/syn/error/struct.Error.html#method.new">syn::Error::new</a>(
+                    <a href="#111">name</a>.<a href="https://docs.rs/syn/2.0.74/syn/spanned/trait.Spanned.html#tymethod.span">span</a>(),
                     <a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.format.html">format!</a>(
                         <span class="string">"`{}`: Field accesses are not allowed as is, you must rename it!"</span>,
                         name
@@ -524,19 +524,19 @@
 <span class="kw">struct </span>Closure {
     captures: Vec&lt;<a href="#17-22">Capture</a>&gt;,
     args: Vec&lt;<a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.Ident.html">Ident</a>&gt;,
-    closure: <a href="https://docs.rs/syn/2.0.72/syn/expr/struct.ExprClosure.html">syn::ExprClosure</a>,
+    closure: <a href="https://docs.rs/syn/2.0.74/syn/expr/struct.ExprClosure.html">syn::ExprClosure</a>,
     constructor: <span class="kw-2">&amp;</span><span class="lifetime">'static </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
 }
 
-<span class="kw">impl </span><a href="https://docs.rs/syn/2.0.72/syn/parse/trait.Parse.html">syn::parse::Parse</a> <span class="kw">for </span><a href="#151-156">Closure</a> {
-    <span class="kw">fn </span>parse(input: <a href="https://docs.rs/syn/2.0.72/syn/parse/type.ParseStream.html">syn::parse::ParseStream</a>) -&gt; syn::Result&lt;<span class="self">Self</span>&gt; {
+<span class="kw">impl </span><a href="https://docs.rs/syn/2.0.74/syn/parse/trait.Parse.html">syn::parse::Parse</a> <span class="kw">for </span><a href="#151-156">Closure</a> {
+    <span class="kw">fn </span>parse(input: <a href="https://docs.rs/syn/2.0.74/syn/parse/type.ParseStream.html">syn::parse::ParseStream</a>) -&gt; syn::Result&lt;<span class="self">Self</span>&gt; {
         <span class="kw">let </span><span class="kw-2">mut </span>captures: Vec&lt;<a href="#17-22">Capture</a>&gt; = <a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.vec.html">vec!</a>[];
         <span class="kw">if </span>input.peek(<span class="macro">Token!</span>[@]) {
             <span class="kw">loop </span>{
-                <span class="kw">let </span>capture = <a href="#159">input</a>.<a href="https://docs.rs/syn/2.0.72/syn/parse/struct.ParseBuffer.html#method.parse">parse</a>::&lt;<a href="#17-22">Capture</a>&gt;()<span class="question-mark">?</span>;
+                <span class="kw">let </span>capture = <a href="#159">input</a>.<a href="https://docs.rs/syn/2.0.74/syn/parse/struct.ParseBuffer.html#method.parse">parse</a>::&lt;<a href="#17-22">Capture</a>&gt;()<span class="question-mark">?</span>;
                 <span class="kw">if </span>capture.kind == CaptureKind::Watch {
                     <span class="kw">if let </span><span class="prelude-val">Some</span>(existing) = <a href="#160">captures</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.find">find</a>(|c| <a href="#165">c</a>.kind == <a href="#11">CaptureKind::Watch</a>) {
-                        <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="https://docs.rs/syn/2.0.72/syn/error/struct.Error.html#method.new">syn::Error::new</a>(
+                        <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="https://docs.rs/syn/2.0.74/syn/error/struct.Error.html#method.new">syn::Error::new</a>(
                             <a href="#165">existing</a>.start,
                             <span class="string">"Only one `@watch` capture is allowed per closure"</span>,
                         ));
@@ -544,7 +544,7 @@
                 }
                 <a href="#160">captures</a>.<a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.push">push</a>(<a href="#163">capture</a>);
                 <span class="kw">if </span>input.peek(<span class="macro">Token!</span>[,]) {
-                    <a href="#159">input</a>.<a href="https://docs.rs/syn/2.0.72/syn/parse/struct.ParseBuffer.html#method.parse">parse</a>::&lt;<a class="macro" href="https://docs.rs/syn/2.0.72/syn/macro.Token.html">Token!</a>[,]&gt;()<span class="question-mark">?</span>;
+                    <a href="#159">input</a>.<a href="https://docs.rs/syn/2.0.74/syn/parse/struct.ParseBuffer.html#method.parse">parse</a>::&lt;<a class="macro" href="https://docs.rs/syn/2.0.74/syn/macro.Token.html">Token!</a>[,]&gt;()<span class="question-mark">?</span>;
                     <span class="kw">if </span>!input.peek(<span class="macro">Token!</span>[@]) {
                         <span class="kw">break</span>;
                     }
@@ -554,24 +554,24 @@
             }
         }
         <span class="kw">if </span>!captures.is_empty() {
-            <a href="#159">input</a>.<a href="https://docs.rs/syn/2.0.72/syn/parse/struct.ParseBuffer.html#method.parse">parse</a>::&lt;<a class="macro" href="https://docs.rs/syn/2.0.72/syn/macro.Token.html">Token!</a>[=&gt;]&gt;()<span class="question-mark">?</span>;
+            <a href="#159">input</a>.<a href="https://docs.rs/syn/2.0.74/syn/parse/struct.ParseBuffer.html#method.parse">parse</a>::&lt;<a class="macro" href="https://docs.rs/syn/2.0.74/syn/macro.Token.html">Token!</a>[=&gt;]&gt;()<span class="question-mark">?</span>;
         }
-        <span class="kw">let </span><span class="kw-2">mut </span>closure = <a href="#159">input</a>.<a href="https://docs.rs/syn/2.0.72/syn/parse/struct.ParseBuffer.html#method.parse">parse</a>::&lt;<a href="https://docs.rs/syn/2.0.72/syn/expr/struct.ExprClosure.html">syn::ExprClosure</a>&gt;()<span class="question-mark">?</span>;
+        <span class="kw">let </span><span class="kw-2">mut </span>closure = <a href="#159">input</a>.<a href="https://docs.rs/syn/2.0.74/syn/parse/struct.ParseBuffer.html#method.parse">parse</a>::&lt;<a href="https://docs.rs/syn/2.0.74/syn/expr/struct.ExprClosure.html">syn::ExprClosure</a>&gt;()<span class="question-mark">?</span>;
         <span class="kw">if </span>closure.asyncness.is_some() {
-            <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="https://docs.rs/syn/2.0.72/syn/error/struct.Error.html#method.new_spanned">syn::Error::new_spanned</a>(
+            <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="https://docs.rs/syn/2.0.74/syn/error/struct.Error.html#method.new_spanned">syn::Error::new_spanned</a>(
                 <a href="#186">closure</a>,
                 <span class="string">"Async closure not allowed"</span>,
             ));
         }
         <span class="kw">if </span>!captures.is_empty() &amp;&amp; closure.capture.is_none() {
-            <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="https://docs.rs/syn/2.0.72/syn/error/struct.Error.html#method.new_spanned">syn::Error::new_spanned</a>(
+            <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="https://docs.rs/syn/2.0.74/syn/error/struct.Error.html#method.new_spanned">syn::Error::new_spanned</a>(
                 <a href="#186">closure</a>,
                 <span class="string">"Closure with captures needs to be \"moved\" so please add `move` before closure"</span>,
             ));
         }
         <span class="kw">let </span>args = <a href="#186">closure</a>
             .inputs
-            .<a href="https://docs.rs/syn/2.0.72/syn/punctuated/struct.Punctuated.html#method.iter">iter</a>()
+            .<a href="https://docs.rs/syn/2.0.74/syn/punctuated/struct.Punctuated.html#method.iter">iter</a>()
             .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.enumerate">enumerate</a>()
             .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|(i, <span class="kw">_</span>)| <a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.Ident.html#method.new">Ident::new</a>(<span class="kw-2">&amp;</span><a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.format.html">format!</a>(<span class="string">"____value{i}"</span>), <a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.Span.html#method.call_site">Span::call_site</a>()))
             .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.collect">collect</a>();
@@ -667,7 +667,7 @@
     input: <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">proc_macro::TokenStream</a>,
     constructor: <span class="kw-2">&amp;</span><span class="lifetime">'static </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
 ) -&gt; <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">proc_macro::TokenStream</a> {
-    <span class="kw">let </span><span class="kw-2">mut </span>closure = <a class="macro" href="https://docs.rs/syn/2.0.72/syn/macro.parse_macro_input.html">syn::parse_macro_input!</a>(input <span class="kw">as </span>Closure);
+    <span class="kw">let </span><span class="kw-2">mut </span>closure = <a class="macro" href="https://docs.rs/syn/2.0.74/syn/macro.parse_macro_input.html">syn::parse_macro_input!</a>(input <span class="kw">as </span>Closure);
     <a href="#297">closure</a>.constructor = <a href="#295">constructor</a>;
     <a href="#297">closure</a>.<a href="https://docs.rs/quote/1.0.36/quote/to_tokens/trait.ToTokens.html#tymethod.into_token_stream">into_token_stream</a>().<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>()
 }

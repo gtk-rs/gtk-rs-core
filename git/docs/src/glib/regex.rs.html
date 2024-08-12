@@ -837,8 +837,8 @@
 //! compatibility with GLib.Regex based APIs.
 
 </span><span class="kw">use crate</span>::{
-    ffi, <a href="lib.rs.html#162">translate</a>::<span class="kw-2">*</span>, <a href="gstring.rs.html#24">GStr</a>, <a href="gstring.rs.html#716">GStringPtr</a>, <a href="match_info.rs.html#10-13">MatchInfo</a>, <a href="collections/ptr_slice.rs.html#18-26">PtrSlice</a>, <a href="auto/regex.rs.html#7-69">Regex</a>, <a href="auto/flags.rs.html#474-593">RegexCompileFlags</a>,
-    <a href="auto/flags.rs.html#613-711">RegexMatchFlags</a>,
+    ffi, <a href="lib.rs.html#162">translate</a>::<span class="kw-2">*</span>, <a href="gstring.rs.html#24">GStr</a>, <a href="gstring.rs.html#716">GStringPtr</a>, <a href="match_info.rs.html#10-13">MatchInfo</a>, <a href="collections/ptr_slice.rs.html#18-26">PtrSlice</a>, <a href="auto/regex.rs.html#7-69">Regex</a>, <a href="auto/flags.rs.html#365-408">RegexCompileFlags</a>,
+    <a href="auto/flags.rs.html#428-465">RegexMatchFlags</a>,
 };
 <span class="kw">use </span>std::{<a href="https://doc.rust-lang.org/nightly/core/mem/index.html">mem</a>, <a href="https://doc.rust-lang.org/nightly/core/ptr/index.html">ptr</a>};
 
@@ -975,8 +975,8 @@
     </span><span class="kw">pub fn </span>match_simple(
         pattern: <span class="kw">impl </span><a href="gstring.rs.html#2401-2403">IntoGStr</a>,
         string: <span class="kw">impl </span><a href="gstring.rs.html#2401-2403">IntoGStr</a>,
-        compile_options: <a href="auto/flags.rs.html#474-593">RegexCompileFlags</a>,
-        match_options: <a href="auto/flags.rs.html#613-711">RegexMatchFlags</a>,
+        compile_options: <a href="auto/flags.rs.html#365-408">RegexCompileFlags</a>,
+        match_options: <a href="auto/flags.rs.html#428-465">RegexMatchFlags</a>,
     ) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
         <a href="#144">pattern</a>.<a href="gstring.rs.html#2402">run_with_gstr</a>(|pattern| {
             <a href="#145">string</a>.<a href="gstring.rs.html#2402">run_with_gstr</a>(|string| <span class="kw">unsafe </span>{
@@ -1034,7 +1034,7 @@
         string: <span class="kw">impl </span><a href="gstring.rs.html#2401-2403">IntoGStr</a>,
         start_position: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
         replacement: <span class="kw">impl </span><a href="gstring.rs.html#2401-2403">IntoGStr</a>,
-        match_options: <a href="auto/flags.rs.html#613-711">RegexMatchFlags</a>,
+        match_options: <a href="auto/flags.rs.html#428-465">RegexMatchFlags</a>,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="gstring.rs.html#1036"><span class="kw">crate</span>::GString</a>, <a href="error.rs.html#10-25"><span class="kw">crate</span>::Error</a>&gt; {
         <span class="kw">unsafe </span>{
             <a href="#202">string</a>.<a href="gstring.rs.html#2402">run_with_gstr</a>(|string| {
@@ -1089,7 +1089,7 @@
     </span><span class="kw">pub fn </span>match_all&lt;<span class="lifetime">'input</span>&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         string: <span class="kw-2">&amp;</span><span class="lifetime">'input </span><a href="gstring.rs.html#24">GStr</a>,
-        match_options: <a href="auto/flags.rs.html#613-711">RegexMatchFlags</a>,
+        match_options: <a href="auto/flags.rs.html#428-465">RegexMatchFlags</a>,
     ) -&gt; <span class="prelude-ty">Option</span>&lt;MatchInfo&lt;<span class="lifetime">'input</span>&gt;&gt; {
         <a class="self" href="#258">self</a>.<a href="#318-343">match_all_full</a>(<a href="#259">string</a>, <span class="number">0</span>, <a href="#260">match_options</a>).<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.ok">ok</a>()
     }
@@ -1151,7 +1151,7 @@
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         string: <span class="kw-2">&amp;</span><span class="lifetime">'input </span><a href="gstring.rs.html#24">GStr</a>,
         start_position: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
-        match_options: <a href="auto/flags.rs.html#613-711">RegexMatchFlags</a>,
+        match_options: <a href="auto/flags.rs.html#428-465">RegexMatchFlags</a>,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;MatchInfo&lt;<span class="lifetime">'input</span>&gt;, <a href="error.rs.html#10-25"><span class="kw">crate</span>::Error</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>match_info = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
@@ -1234,7 +1234,7 @@
     </span><span class="kw">pub fn </span>match_&lt;<span class="lifetime">'input</span>&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         string: <span class="kw-2">&amp;</span><span class="lifetime">'input </span><a href="gstring.rs.html#24">GStr</a>,
-        match_options: <a href="auto/flags.rs.html#613-711">RegexMatchFlags</a>,
+        match_options: <a href="auto/flags.rs.html#428-465">RegexMatchFlags</a>,
     ) -&gt; <span class="prelude-ty">Option</span>&lt;MatchInfo&lt;<span class="lifetime">'input</span>&gt;&gt; {
         <a class="self" href="#403">self</a>.<a href="#480-505">match_full</a>(<a href="#404">string</a>, <span class="number">0</span>, <a href="#405">match_options</a>).<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.ok">ok</a>()
     }
@@ -1313,7 +1313,7 @@
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         string: <span class="kw-2">&amp;</span><span class="lifetime">'input </span><a href="gstring.rs.html#24">GStr</a>,
         start_position: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
-        match_options: <a href="auto/flags.rs.html#613-711">RegexMatchFlags</a>,
+        match_options: <a href="auto/flags.rs.html#428-465">RegexMatchFlags</a>,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;MatchInfo&lt;<span class="lifetime">'input</span>&gt;, <a href="error.rs.html#10-25"><span class="kw">crate</span>::Error</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>match_info = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
@@ -1362,7 +1362,7 @@
         string: <span class="kw">impl </span><a href="gstring.rs.html#2401-2403">IntoGStr</a>,
         start_position: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
         replacement: <span class="kw">impl </span><a href="gstring.rs.html#2401-2403">IntoGStr</a>,
-        match_options: <a href="auto/flags.rs.html#613-711">RegexMatchFlags</a>,
+        match_options: <a href="auto/flags.rs.html#428-465">RegexMatchFlags</a>,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="gstring.rs.html#1036"><span class="kw">crate</span>::GString</a>, <a href="error.rs.html#10-25"><span class="kw">crate</span>::Error</a>&gt; {
         <span class="kw">unsafe </span>{
             <a href="#530">string</a>.<a href="gstring.rs.html#2402">run_with_gstr</a>(|string| {
@@ -1417,7 +1417,7 @@
     </span><span class="kw">pub fn </span>split(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         string: <span class="kw">impl </span><a href="gstring.rs.html#2401-2403">IntoGStr</a>,
-        match_options: <a href="auto/flags.rs.html#613-711">RegexMatchFlags</a>,
+        match_options: <a href="auto/flags.rs.html#428-465">RegexMatchFlags</a>,
     ) -&gt; PtrSlice&lt;<a href="gstring.rs.html#716">GStringPtr</a>&gt; {
         <a class="self" href="#586">self</a>.<a href="#630-656">split_full</a>(<a href="#587">string</a>, <span class="number">0</span>, <a href="#588">match_options</a>, <span class="number">0</span>)
             .<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap_or_default">unwrap_or_default</a>()
@@ -1463,7 +1463,7 @@
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         string: <span class="kw">impl </span><a href="gstring.rs.html#2401-2403">IntoGStr</a>,
         start_position: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
-        match_options: <a href="auto/flags.rs.html#613-711">RegexMatchFlags</a>,
+        match_options: <a href="auto/flags.rs.html#428-465">RegexMatchFlags</a>,
         max_tokens: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;PtrSlice&lt;<a href="gstring.rs.html#716">GStringPtr</a>&gt;, <a href="error.rs.html#10-25"><span class="kw">crate</span>::Error</a>&gt; {
         <span class="kw">unsafe </span>{
@@ -1531,8 +1531,8 @@
     </span><span class="kw">pub fn </span>split_simple(
         pattern: <span class="kw">impl </span><a href="gstring.rs.html#2401-2403">IntoGStr</a>,
         string: <span class="kw">impl </span><a href="gstring.rs.html#2401-2403">IntoGStr</a>,
-        compile_options: <a href="auto/flags.rs.html#474-593">RegexCompileFlags</a>,
-        match_options: <a href="auto/flags.rs.html#613-711">RegexMatchFlags</a>,
+        compile_options: <a href="auto/flags.rs.html#365-408">RegexCompileFlags</a>,
+        match_options: <a href="auto/flags.rs.html#428-465">RegexMatchFlags</a>,
     ) -&gt; PtrSlice&lt;<a href="gstring.rs.html#716">GStringPtr</a>&gt; {
         <a href="#700">pattern</a>.<a href="gstring.rs.html#2402">run_with_gstr</a>(|pattern| {
             <a href="#701">string</a>.<a href="gstring.rs.html#2402">run_with_gstr</a>(|string| <span class="kw">unsafe </span>{
