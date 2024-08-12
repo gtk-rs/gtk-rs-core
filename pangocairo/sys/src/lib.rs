@@ -34,6 +34,7 @@ pub type PangoCairoShapeRendererFunc = Option<
 
 // Interfaces
 #[repr(C)]
+#[allow(dead_code)]
 pub struct PangoCairoFont {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -46,6 +47,7 @@ impl ::std::fmt::Debug for PangoCairoFont {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct PangoCairoFontMap {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
