@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/list_model.rs`."><title>list_model.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.81.0-nightly (6be96e386 2024-07-09)" data-channel="nightly" data-search-js="search-d234aafac6c221dd.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/list_model.rs`."><title>list_model.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-d10b2a06af903387.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.82.0-nightly (41dd149fd 2024-08-11)" data-channel="nightly" data-search-js="search-ef54e092fea9c776.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-04a29ac50d05d0b1.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -386,9 +386,16 @@
 <a href="#313" id="313">313</a>
 <a href="#314" id="314">314</a>
 <a href="#315" id="315">315</a>
+<a href="#316" id="316">316</a>
+<a href="#317" id="317">317</a>
+<a href="#318" id="318">318</a>
+<a href="#319" id="319">319</a>
+<a href="#320" id="320">320</a>
+<a href="#321" id="321">321</a>
+<a href="#322" id="322">322</a>
 </pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
-</span><span class="kw">use </span>std::{<a href="https://doc.rust-lang.org/nightly/core/cell/struct.Cell.html">cell::Cell</a>, <a href="https://doc.rust-lang.org/nightly/core/iter/traits/marker/trait.FusedIterator.html">iter::FusedIterator</a>, <a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">marker::PhantomData</a>, <a href="https://doc.rust-lang.org/nightly/alloc/rc/struct.Rc.html">rc::Rc</a>};
+</span><span class="kw">use </span>std::{<a href="https://doc.rust-lang.org/nightly/core/cell/struct.Cell.html">cell::Cell</a>, <a href="https://doc.rust-lang.org/nightly/alloc/fmt/index.html">fmt</a>, <a href="https://doc.rust-lang.org/nightly/core/iter/traits/marker/trait.FusedIterator.html">iter::FusedIterator</a>, <a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">marker::PhantomData</a>, <a href="https://doc.rust-lang.org/nightly/alloc/rc/struct.Rc.html">rc::Rc</a>};
 
 <span class="kw">use </span><a href="../../glib/signal/struct.SignalHandlerId.html">glib::SignalHandlerId</a>;
 
@@ -433,7 +440,7 @@
             }
         }));
 
-        <a href="#72-80">ListModelIter</a> {
+        <a href="#79-87">ListModelIter</a> {
             ty: <a href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html#tymethod.default">Default::default</a>(),
             i: <span class="number">0</span>,
             reverse_pos: <a href="#38">len</a>,
@@ -446,9 +453,16 @@
 
 <span class="kw">impl</span>&lt;T: IsA&lt;<a href="auto/list_model.rs.html#13-103">ListModel</a>&gt;&gt; <a href="#14-57">ListModelExtManual</a> <span class="kw">for </span>T {}
 
-<span class="attr">#[derive(thiserror::Error, Debug, PartialEq, Eq)]
-#[error(<span class="string">"the list model was mutated during iteration"</span>)]
-</span><span class="kw">pub struct </span><a href="#63">ListModelMutatedDuringIter</a>;
+<span class="attr">#[derive(Debug, PartialEq, Eq)]
+</span><span class="kw">pub struct </span>ListModelMutatedDuringIter;
+
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/error/trait.Error.html">std::error::Error</a> <span class="kw">for </span><a href="#62">ListModelMutatedDuringIter</a> {}
+
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Display.html">fmt::Display</a> <span class="kw">for </span><a href="#62">ListModelMutatedDuringIter</a> {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, fmt: <span class="kw-2">&amp;mut </span><a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html">fmt::Formatter</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/core/fmt/type.Result.html">fmt::Result</a> {
+        <a href="#67">fmt</a>.<a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html#method.write_str">write_str</a>(<span class="string">"the list model was mutated during iteration"</span>)
+    }
+}
 
 <span class="comment">// rustdoc-stripper-ignore-next
 </span><span class="doccomment">/// Iterator of `ListModel`'s items.
@@ -467,43 +481,43 @@
     signal_id: <span class="prelude-ty">Option</span>&lt;<a href="../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a>&gt;,
 }
 <span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T: IsA&lt;<a href="../../glib/object/struct.Object.html">glib::Object</a>&gt;&gt; <a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html">Iterator</a> <span class="kw">for </span>ListModelIter&lt;<span class="lifetime">'a</span>, T&gt; {
-    <span class="kw">type </span>Item = <span class="prelude-ty">Result</span>&lt;T, <a href="#63">ListModelMutatedDuringIter</a>&gt;;
+    <span class="kw">type </span>Item = <span class="prelude-ty">Result</span>&lt;T, <a href="#62">ListModelMutatedDuringIter</a>&gt;;
 
     <span class="kw">fn </span>next(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>::Item&gt; {
         <span class="kw">if </span><span class="self">self</span>.i &gt;= <span class="self">self</span>.reverse_pos {
             <span class="kw">return </span><span class="prelude-val">None</span>;
         }
-        <span class="kw">let </span>res = <span class="kw">match </span><a class="self" href="#84">self</a>.changed.<a href="https://doc.rust-lang.org/nightly/core/cell/struct.Cell.html#method.get">get</a>() {
-            <span class="bool-val">true </span>=&gt; <span class="prelude-val">Err</span>(<a href="#63">ListModelMutatedDuringIter</a>),
-            <span class="bool-val">false </span>=&gt; <span class="prelude-val">Ok</span>(<a class="self" href="#84">self</a>.model.<a href="auto/list_model.rs.html#177-184">item</a>(<a class="self" href="#84">self</a>.i).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap">unwrap</a>().<a href="../../glib/object/trait.Cast.html#tymethod.downcast">downcast</a>::&lt;T&gt;().<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>()),
+        <span class="kw">let </span>res = <span class="kw">match </span><a class="self" href="#91">self</a>.changed.<a href="https://doc.rust-lang.org/nightly/core/cell/struct.Cell.html#method.get">get</a>() {
+            <span class="bool-val">true </span>=&gt; <span class="prelude-val">Err</span>(<a href="#62">ListModelMutatedDuringIter</a>),
+            <span class="bool-val">false </span>=&gt; <span class="prelude-val">Ok</span>(<a class="self" href="#91">self</a>.model.<a href="auto/list_model.rs.html#177-184">item</a>(<a class="self" href="#91">self</a>.i).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap">unwrap</a>().<a href="../../glib/object/trait.Cast.html#tymethod.downcast">downcast</a>::&lt;T&gt;().<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>()),
         };
-        <a class="self" href="#84">self</a>.i += <span class="number">1</span>;
-        <span class="prelude-val">Some</span>(<a href="#88">res</a>)
+        <a class="self" href="#91">self</a>.i += <span class="number">1</span>;
+        <span class="prelude-val">Some</span>(<a href="#95">res</a>)
     }
 
     <span class="kw">fn </span>size_hint(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; (<a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>, <span class="prelude-ty">Option</span>&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>&gt;) {
-        <span class="kw">let </span>n: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a> = (<a class="self" href="#96">self</a>.reverse_pos - <a class="self" href="#96">self</a>.i) <span class="kw">as _</span>;
-        (<a href="#97">n</a>, <span class="prelude-val">Some</span>(<a href="#97">n</a>))
+        <span class="kw">let </span>n: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a> = (<a class="self" href="#103">self</a>.reverse_pos - <a class="self" href="#103">self</a>.i) <span class="kw">as _</span>;
+        (<a href="#104">n</a>, <span class="prelude-val">Some</span>(<a href="#104">n</a>))
     }
 
     <span class="kw">fn </span>count(<span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a> {
-        (<a class="self" href="#101">self</a>.reverse_pos - <a class="self" href="#101">self</a>.i) <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>
+        (<a class="self" href="#108">self</a>.reverse_pos - <a class="self" href="#108">self</a>.i) <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>
     }
 
     <span class="kw">fn </span>nth(<span class="kw-2">&amp;mut </span><span class="self">self</span>, n: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>::Item&gt; {
-        <span class="kw">let </span>(end, overflow) = (<a class="self" href="#105">self</a>.i <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>).<a href="https://doc.rust-lang.org/nightly/core/foreigntype.num.html#method.overflowing_add">overflowing_add</a>(<a href="#105">n</a>);
+        <span class="kw">let </span>(end, overflow) = (<a class="self" href="#112">self</a>.i <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>).<a href="https://doc.rust-lang.org/nightly/core/foreigntype.num.html#method.overflowing_add">overflowing_add</a>(<a href="#112">n</a>);
         <span class="kw">if </span>end &gt;= <span class="self">self</span>.reverse_pos <span class="kw">as </span>usize || overflow {
-            <a class="self" href="#105">self</a>.i = <a class="self" href="#105">self</a>.reverse_pos;
+            <a class="self" href="#112">self</a>.i = <a class="self" href="#112">self</a>.reverse_pos;
             <span class="prelude-val">None
         </span>} <span class="kw">else </span>{
-            <span class="kw">let </span>end = <a href="#106">end</a> <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>;
-            <a class="self" href="#105">self</a>.i = <a href="#111">end</a> + <span class="number">1</span>;
+            <span class="kw">let </span>end = <a href="#113">end</a> <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>;
+            <a class="self" href="#112">self</a>.i = <a href="#118">end</a> + <span class="number">1</span>;
 
-            <span class="kw">let </span>res = <span class="kw">match </span><a class="self" href="#105">self</a>.changed.<a href="https://doc.rust-lang.org/nightly/core/cell/struct.Cell.html#method.get">get</a>() {
-                <span class="bool-val">true </span>=&gt; <span class="prelude-val">Err</span>(<a href="#63">ListModelMutatedDuringIter</a>),
-                <span class="bool-val">false </span>=&gt; <span class="prelude-val">Ok</span>(<a class="self" href="#105">self</a>.model.<a href="auto/list_model.rs.html#177-184">item</a>(<a href="#111">end</a>).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap">unwrap</a>().<a href="../../glib/object/trait.Cast.html#tymethod.downcast">downcast</a>::&lt;T&gt;().<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>()),
+            <span class="kw">let </span>res = <span class="kw">match </span><a class="self" href="#112">self</a>.changed.<a href="https://doc.rust-lang.org/nightly/core/cell/struct.Cell.html#method.get">get</a>() {
+                <span class="bool-val">true </span>=&gt; <span class="prelude-val">Err</span>(<a href="#62">ListModelMutatedDuringIter</a>),
+                <span class="bool-val">false </span>=&gt; <span class="prelude-val">Ok</span>(<a class="self" href="#112">self</a>.model.<a href="auto/list_model.rs.html#177-184">item</a>(<a href="#118">end</a>).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap">unwrap</a>().<a href="../../glib/object/trait.Cast.html#tymethod.downcast">downcast</a>::&lt;T&gt;().<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>()),
             };
-            <span class="prelude-val">Some</span>(<a href="#114">res</a>)
+            <span class="prelude-val">Some</span>(<a href="#121">res</a>)
         }
     }
 
@@ -511,16 +525,16 @@
         <span class="kw">if </span><span class="self">self</span>.i == <span class="self">self</span>.reverse_pos {
             <span class="prelude-val">None
         </span>} <span class="kw">else </span>{
-            <span class="kw">let </span>res = <span class="kw">match </span><a class="self" href="#122">self</a>.changed.<a href="https://doc.rust-lang.org/nightly/core/cell/struct.Cell.html#method.get">get</a>() {
-                <span class="bool-val">true </span>=&gt; <span class="prelude-val">Err</span>(<a href="#63">ListModelMutatedDuringIter</a>),
-                <span class="bool-val">false </span>=&gt; <span class="prelude-val">Ok</span>(<span class="self"><a href="#122">self</a>
+            <span class="kw">let </span>res = <span class="kw">match </span><a class="self" href="#129">self</a>.changed.<a href="https://doc.rust-lang.org/nightly/core/cell/struct.Cell.html#method.get">get</a>() {
+                <span class="bool-val">true </span>=&gt; <span class="prelude-val">Err</span>(<a href="#62">ListModelMutatedDuringIter</a>),
+                <span class="bool-val">false </span>=&gt; <span class="prelude-val">Ok</span>(<span class="self"><a href="#129">self</a>
                     </span>.model
-                    .<a href="auto/list_model.rs.html#177-184">item</a>(<a class="self" href="#122">self</a>.reverse_pos - <span class="number">1</span>)
+                    .<a href="auto/list_model.rs.html#177-184">item</a>(<a class="self" href="#129">self</a>.reverse_pos - <span class="number">1</span>)
                     .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap">unwrap</a>()
                     .<a href="../../glib/object/trait.Cast.html#tymethod.downcast">downcast</a>::&lt;T&gt;()
                     .<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>()),
             };
-            <span class="prelude-val">Some</span>(<a href="#126">res</a>)
+            <span class="prelude-val">Some</span>(<a href="#133">res</a>)
         }
     }
 }
@@ -534,49 +548,49 @@
         <span class="kw">if </span><span class="self">self</span>.reverse_pos == <span class="self">self</span>.i {
             <span class="kw">return </span><span class="prelude-val">None</span>;
         }
-        <a class="self" href="#145">self</a>.reverse_pos -= <span class="number">1</span>;
-        <span class="kw">let </span>res = <span class="kw">match </span><a class="self" href="#145">self</a>.changed.<a href="https://doc.rust-lang.org/nightly/core/cell/struct.Cell.html#method.get">get</a>() {
-            <span class="bool-val">true </span>=&gt; <span class="prelude-val">Err</span>(<a href="#63">ListModelMutatedDuringIter</a>),
-            <span class="bool-val">false </span>=&gt; <span class="prelude-val">Ok</span>(<span class="self"><a href="#145">self</a>
+        <a class="self" href="#152">self</a>.reverse_pos -= <span class="number">1</span>;
+        <span class="kw">let </span>res = <span class="kw">match </span><a class="self" href="#152">self</a>.changed.<a href="https://doc.rust-lang.org/nightly/core/cell/struct.Cell.html#method.get">get</a>() {
+            <span class="bool-val">true </span>=&gt; <span class="prelude-val">Err</span>(<a href="#62">ListModelMutatedDuringIter</a>),
+            <span class="bool-val">false </span>=&gt; <span class="prelude-val">Ok</span>(<span class="self"><a href="#152">self</a>
                 </span>.model
-                .<a href="auto/list_model.rs.html#177-184">item</a>(<a class="self" href="#145">self</a>.reverse_pos)
+                .<a href="auto/list_model.rs.html#177-184">item</a>(<a class="self" href="#152">self</a>.reverse_pos)
                 .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap">unwrap</a>()
                 .<a href="../../glib/object/trait.Cast.html#tymethod.downcast">downcast</a>::&lt;T&gt;()
                 .<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>()),
         };
-        <span class="prelude-val">Some</span>(<a href="#150">res</a>)
+        <span class="prelude-val">Some</span>(<a href="#157">res</a>)
     }
 
     <span class="kw">fn </span>nth_back(<span class="kw-2">&amp;mut </span><span class="self">self</span>, n: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>::Item&gt; {
-        <span class="kw">let </span>(end, overflow) = (<a class="self" href="#162">self</a>.reverse_pos <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>).<a href="https://doc.rust-lang.org/nightly/core/foreigntype.num.html#method.overflowing_sub">overflowing_sub</a>(<a href="#162">n</a>);
+        <span class="kw">let </span>(end, overflow) = (<a class="self" href="#169">self</a>.reverse_pos <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>).<a href="https://doc.rust-lang.org/nightly/core/foreigntype.num.html#method.overflowing_sub">overflowing_sub</a>(<a href="#169">n</a>);
         <span class="kw">if </span>end &lt;= <span class="self">self</span>.i <span class="kw">as </span>usize || overflow {
-            <a class="self" href="#162">self</a>.i = <a class="self" href="#162">self</a>.reverse_pos;
+            <a class="self" href="#169">self</a>.i = <a class="self" href="#169">self</a>.reverse_pos;
             <span class="prelude-val">None
         </span>} <span class="kw">else </span>{
-            <span class="kw">let </span>end = <a href="#163">end</a> <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>;
-            <a class="self" href="#162">self</a>.reverse_pos = <a href="#168">end</a> - <span class="number">1</span>;
+            <span class="kw">let </span>end = <a href="#170">end</a> <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>;
+            <a class="self" href="#169">self</a>.reverse_pos = <a href="#175">end</a> - <span class="number">1</span>;
 
-            <span class="kw">let </span>res = <span class="kw">match </span><a class="self" href="#162">self</a>.changed.<a href="https://doc.rust-lang.org/nightly/core/cell/struct.Cell.html#method.get">get</a>() {
-                <span class="bool-val">true </span>=&gt; <span class="prelude-val">Err</span>(<a href="#63">ListModelMutatedDuringIter</a>),
-                <span class="bool-val">false </span>=&gt; <span class="prelude-val">Ok</span>(<a class="self" href="#162">self</a>.model.<a href="auto/list_model.rs.html#177-184">item</a>(<a href="#168">end</a> - <span class="number">1</span>).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap">unwrap</a>().<a href="../../glib/object/trait.Cast.html#tymethod.downcast">downcast</a>::&lt;T&gt;().<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>()),
+            <span class="kw">let </span>res = <span class="kw">match </span><a class="self" href="#169">self</a>.changed.<a href="https://doc.rust-lang.org/nightly/core/cell/struct.Cell.html#method.get">get</a>() {
+                <span class="bool-val">true </span>=&gt; <span class="prelude-val">Err</span>(<a href="#62">ListModelMutatedDuringIter</a>),
+                <span class="bool-val">false </span>=&gt; <span class="prelude-val">Ok</span>(<a class="self" href="#169">self</a>.model.<a href="auto/list_model.rs.html#177-184">item</a>(<a href="#175">end</a> - <span class="number">1</span>).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap">unwrap</a>().<a href="../../glib/object/trait.Cast.html#tymethod.downcast">downcast</a>::&lt;T&gt;().<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>()),
             };
-            <span class="prelude-val">Some</span>(<a href="#171">res</a>)
+            <span class="prelude-val">Some</span>(<a href="#178">res</a>)
         }
     }
 }
 <span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T: IsA&lt;<a href="../../glib/object/struct.Object.html">glib::Object</a>&gt;&gt; <a href="https://doc.rust-lang.org/nightly/core/ops/drop/trait.Drop.html">Drop</a> <span class="kw">for </span>ListModelIter&lt;<span class="lifetime">'a</span>, T&gt; {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
-        <a class="self" href="#181">self</a>.model.<a href="../../glib/object/trait.ObjectExt.html#tymethod.disconnect">disconnect</a>(<a class="self" href="#181">self</a>.signal_id.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.take">take</a>().<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap">unwrap</a>());
+        <a class="self" href="#188">self</a>.model.<a href="../../glib/object/trait.ObjectExt.html#tymethod.disconnect">disconnect</a>(<a class="self" href="#188">self</a>.signal_id.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.take">take</a>().<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap">unwrap</a>());
     }
 }
 
 <span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; <a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.IntoIterator.html">std::iter::IntoIterator</a> <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="auto/list_model.rs.html#13-103">ListModel</a> {
-    <span class="kw">type </span>Item = <span class="prelude-ty">Result</span>&lt;<a href="../../glib/object/struct.Object.html">glib::Object</a>, <a href="#63">ListModelMutatedDuringIter</a>&gt;;
+    <span class="kw">type </span>Item = <span class="prelude-ty">Result</span>&lt;<a href="../../glib/object/struct.Object.html">glib::Object</a>, <a href="#62">ListModelMutatedDuringIter</a>&gt;;
     <span class="kw">type </span>IntoIter = ListModelIter&lt;<span class="lifetime">'a</span>, <a href="../../glib/object/struct.Object.html">glib::Object</a>&gt;;
 
     <span class="kw">fn </span>into_iter(<span class="self">self</span>) -&gt; <span class="self">Self</span>::IntoIter {
-        <a class="self" href="#190">self</a>.<a href="#35-56">iter</a>()
+        <a class="self" href="#197">self</a>.<a href="#35-56">iter</a>()
     }
 }
 

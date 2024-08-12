@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `cairo/src/font/scaled_font.rs`."><title>scaled_font.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="cairo" data-themes="" data-resource-suffix="" data-rustdoc-version="1.81.0-nightly (6be96e386 2024-07-09)" data-channel="nightly" data-search-js="search-d234aafac6c221dd.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `cairo/src/font/scaled_font.rs`."><title>scaled_font.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-d10b2a06af903387.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="cairo" data-themes="" data-resource-suffix="" data-rustdoc-version="1.82.0-nightly (41dd149fd 2024-08-11)" data-channel="nightly" data-search-js="search-ef54e092fea9c776.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-04a29ac50d05d0b1.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -362,7 +362,7 @@
 </span><span class="kw">use </span><a href="../../../glib/translate/index.html">glib::translate</a>::<span class="kw-2">*</span>;
 
 <span class="kw">use crate</span>::{
-    <a href="../../../cairo_sys/index.html">ffi</a>, <a href="../utils.rs.html#21-26">utils::status_to_result</a>, <a href="../error.rs.html#11-151">Error</a>, <a href="font_extents.rs.html#9">FontExtents</a>, <a href="font_face.rs.html#20-30">FontFace</a>, <a href="font_options.rs.html#19-34">FontOptions</a>, <a href="../enums.rs.html#749-766">FontType</a>, <a href="glyph.rs.html#9">Glyph</a>,
+    <a href="../../../cairo_sys/index.html">ffi</a>, <a href="../utils.rs.html#21-26">utils::status_to_result</a>, <a href="../error.rs.html#9-104">Error</a>, <a href="font_extents.rs.html#9">FontExtents</a>, <a href="font_face.rs.html#20-30">FontFace</a>, <a href="font_options.rs.html#19-34">FontOptions</a>, <a href="../enums.rs.html#749-766">FontType</a>, <a href="glyph.rs.html#9">Glyph</a>,
     <a href="../matrices.rs.html#12">Matrix</a>, <a href="text_cluster.rs.html#9">TextCluster</a>, <a href="text_extents.rs.html#9">TextExtents</a>,
 };
 
@@ -391,7 +391,7 @@
         font_matrix: <span class="kw-2">&amp;</span><a href="../matrices.rs.html#12">Matrix</a>,
         ctm: <span class="kw-2">&amp;</span><a href="../matrices.rs.html#12">Matrix</a>,
         options: <span class="kw-2">&amp;</span><a href="font_options.rs.html#19-34">FontOptions</a>,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#14-24">ScaledFont</a>, <a href="../error.rs.html#11-151">Error</a>&gt; {
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#14-24">ScaledFont</a>, <a href="../error.rs.html#9-104">Error</a>&gt; {
         <span class="kw">let </span>scaled_font: <a href="#14-24">ScaledFont</a> = <span class="kw">unsafe </span>{
             <a href="#74-76">ScaledFont::from_raw_full</a>(<a href="../../../cairo_sys/fn.cairo_scaled_font_create.html">ffi::cairo_scaled_font_create</a>(
                 <a href="#34">font_face</a>.<a href="font_face.rs.html#139-141">to_raw_none</a>(),
@@ -503,7 +503,7 @@
         x: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>,
         y: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>,
         text: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;(Vec&lt;<a href="glyph.rs.html#9">Glyph</a>&gt;, Vec&lt;<a href="text_cluster.rs.html#9">TextCluster</a>&gt;), <a href="../error.rs.html#11-151">Error</a>&gt; {
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;(Vec&lt;<a href="glyph.rs.html#9">Glyph</a>&gt;, Vec&lt;<a href="text_cluster.rs.html#9">TextCluster</a>&gt;), <a href="../error.rs.html#9-104">Error</a>&gt; {
         <span class="comment">// This large unsafe block is due to the FFI function returning two specially allocated
         // (cairo_{glyph,text_cluster}_allocate) pointers that need to be copied into Vec&lt;T&gt;
         // types before they're of any use to Rust code.
@@ -568,7 +568,7 @@
 
     <span class="attr">#[doc(alias = <span class="string">"cairo_scaled_font_get_font_options"</span>)]
     #[doc(alias = <span class="string">"get_font_options"</span>)]
-    </span><span class="kw">pub fn </span>font_options(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="font_options.rs.html#19-34">FontOptions</a>, <a href="../error.rs.html#11-151">Error</a>&gt; {
+    </span><span class="kw">pub fn </span>font_options(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="font_options.rs.html#19-34">FontOptions</a>, <a href="../error.rs.html#9-104">Error</a>&gt; {
         <span class="kw">let </span>options = <a href="font_options.rs.html#47-55">FontOptions::new</a>()<span class="question-mark">?</span>;
 
         <span class="kw">unsafe </span>{
@@ -609,7 +609,7 @@
     }
 
     <span class="attr">#[doc(alias = <span class="string">"cairo_scaled_font_status"</span>)]
-    </span><span class="kw">pub fn </span>status(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="../error.rs.html#11-151">Error</a>&gt; {
+    </span><span class="kw">pub fn </span>status(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="../error.rs.html#9-104">Error</a>&gt; {
         <span class="kw">let </span>status = <span class="kw">unsafe </span>{ <a href="../../../cairo_sys/fn.cairo_scaled_font_status.html">ffi::cairo_scaled_font_status</a>(<a class="self" href="#256">self</a>.<a href="#55-57">to_raw_none</a>()) };
         <a href="../utils.rs.html#21-26">status_to_result</a>(<a href="#257">status</a>)
     }

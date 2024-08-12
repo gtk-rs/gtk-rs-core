@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `cairo/src/font/font_face.rs`."><title>font_face.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="cairo" data-themes="" data-resource-suffix="" data-rustdoc-version="1.81.0-nightly (6be96e386 2024-07-09)" data-channel="nightly" data-search-js="search-d234aafac6c221dd.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `cairo/src/font/font_face.rs`."><title>font_face.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-d10b2a06af903387.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="cairo" data-themes="" data-resource-suffix="" data-rustdoc-version="1.82.0-nightly (41dd149fd 2024-08-11)" data-channel="nightly" data-search-js="search-ef54e092fea9c776.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-04a29ac50d05d0b1.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -315,7 +315,7 @@
 
 <span class="attr">#[cfg(feature = <span class="string">"freetype"</span>)]
 </span><span class="kw">use </span><a href="../enums.rs.html#1523-1530"><span class="kw">crate</span>::FtSynthesize</a>;
-<span class="kw">use crate</span>::{<a href="../../../cairo_sys/index.html">ffi</a>, <a href="../utils.rs.html#21-26">utils::status_to_result</a>, <a href="../error.rs.html#11-151">Error</a>, <a href="../enums.rs.html#631-640">FontSlant</a>, <a href="../enums.rs.html#749-766">FontType</a>, <a href="../enums.rs.html#672-679">FontWeight</a>};
+<span class="kw">use crate</span>::{<a href="../../../cairo_sys/index.html">ffi</a>, <a href="../utils.rs.html#21-26">utils::status_to_result</a>, <a href="../error.rs.html#9-104">Error</a>, <a href="../enums.rs.html#631-640">FontSlant</a>, <a href="../enums.rs.html#749-766">FontType</a>, <a href="../enums.rs.html#672-679">FontWeight</a>};
 
 <span class="attr">#[cfg(feature = <span class="string">"freetype"</span>)]
 </span><span class="kw">static </span>FT_FACE_KEY: <span class="kw">crate</span>::UserDataKey&lt;freetype::face::Face&gt; = <a href="../user_data.rs.html#15-20"><span class="kw">crate</span>::UserDataKey::new</a>();
@@ -345,7 +345,7 @@
         family: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
         slant: <a href="../enums.rs.html#631-640">FontSlant</a>,
         weight: <a href="../enums.rs.html#672-679">FontWeight</a>,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#20-30">FontFace</a>, <a href="../error.rs.html#11-151">Error</a>&gt; {
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#20-30">FontFace</a>, <a href="../error.rs.html#9-104">Error</a>&gt; {
         <span class="kw">let </span>font_face: <a href="#20-30">FontFace</a> = <span class="kw">unsafe </span>{
             <span class="kw">let </span>family = <a href="https://doc.rust-lang.org/nightly/alloc/ffi/c_str/struct.CString.html#method.new">CString::new</a>(<a href="#41">family</a>).<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>();
             <a href="#113-115">FontFace::from_raw_full</a>(<a href="../../../cairo_sys/fn.cairo_toy_font_face_create.html">ffi::cairo_toy_font_face_create</a>(
@@ -365,7 +365,7 @@
     </span><span class="attr">#[cfg(feature = <span class="string">"freetype"</span>)]
     #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"freetype"</span>)))]
     #[doc(alias = <span class="string">"cairo_ft_font_face_create_for_ft_face"</span>)]
-    </span><span class="kw">pub fn </span>create_from_ft(face: <span class="kw-2">&amp;</span>freetype::face::Face) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#20-30">FontFace</a>, <a href="../error.rs.html#11-151">Error</a>&gt; {
+    </span><span class="kw">pub fn </span>create_from_ft(face: <span class="kw-2">&amp;</span>freetype::face::Face) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#20-30">FontFace</a>, <a href="../error.rs.html#9-104">Error</a>&gt; {
         <span class="comment">// Increase reference count of `FT_Face`.
         </span><span class="kw">let </span><span class="kw-2">mut </span>face = <a href="#64">face</a>.<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">clone</a>();
 
@@ -393,7 +393,7 @@
     </span><span class="kw">pub fn </span>create_from_ft_with_flags(
         face: <span class="kw-2">&amp;</span>freetype::face::Face,
         load_flags: libc::c_int,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#20-30">FontFace</a>, <a href="../error.rs.html#11-151">Error</a>&gt; {
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#20-30">FontFace</a>, <a href="../error.rs.html#9-104">Error</a>&gt; {
         <span class="comment">// Increase reference count of `FT_Face`.
         </span><span class="kw">let </span><span class="kw-2">mut </span>face = <a href="#90">face</a>.<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">clone</a>();
 
@@ -497,7 +497,7 @@
     }
 
     <span class="attr">#[doc(alias = <span class="string">"cairo_font_face_status"</span>)]
-    </span><span class="kw">pub fn </span>status(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="../error.rs.html#11-151">Error</a>&gt; {
+    </span><span class="kw">pub fn </span>status(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="../error.rs.html#9-104">Error</a>&gt; {
         <span class="kw">let </span>status = <span class="kw">unsafe </span>{ <a href="../../../cairo_sys/fn.cairo_font_face_status.html">ffi::cairo_font_face_status</a>(<a class="self" href="#196">self</a>.<a href="#139-141">to_raw_none</a>()) };
         <a href="../utils.rs.html#21-26">status_to_result</a>(<a href="#197">status</a>)
     }

@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `cairo/src/error.rs`."><title>error.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="cairo" data-themes="" data-resource-suffix="" data-rustdoc-version="1.81.0-nightly (6be96e386 2024-07-09)" data-channel="nightly" data-search-js="search-d234aafac6c221dd.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `cairo/src/error.rs`."><title>error.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-d10b2a06af903387.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="cairo" data-themes="" data-resource-suffix="" data-rustdoc-version="1.82.0-nightly (41dd149fd 2024-08-11)" data-channel="nightly" data-search-js="search-ef54e092fea9c776.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-04a29ac50d05d0b1.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -349,216 +349,286 @@
 <a href="#276" id="276">276</a>
 <a href="#277" id="277">277</a>
 <a href="#278" id="278">278</a>
+<a href="#279" id="279">279</a>
+<a href="#280" id="280">280</a>
+<a href="#281" id="281">281</a>
+<a href="#282" id="282">282</a>
+<a href="#283" id="283">283</a>
+<a href="#284" id="284">284</a>
+<a href="#285" id="285">285</a>
+<a href="#286" id="286">286</a>
+<a href="#287" id="287">287</a>
+<a href="#288" id="288">288</a>
+<a href="#289" id="289">289</a>
+<a href="#290" id="290">290</a>
+<a href="#291" id="291">291</a>
+<a href="#292" id="292">292</a>
+<a href="#293" id="293">293</a>
+<a href="#294" id="294">294</a>
+<a href="#295" id="295">295</a>
+<a href="#296" id="296">296</a>
+<a href="#297" id="297">297</a>
+<a href="#298" id="298">298</a>
+<a href="#299" id="299">299</a>
+<a href="#300" id="300">300</a>
+<a href="#301" id="301">301</a>
+<a href="#302" id="302">302</a>
+<a href="#303" id="303">303</a>
+<a href="#304" id="304">304</a>
+<a href="#305" id="305">305</a>
+<a href="#306" id="306">306</a>
+<a href="#307" id="307">307</a>
+<a href="#308" id="308">308</a>
+<a href="#309" id="309">309</a>
+<a href="#310" id="310">310</a>
+<a href="#311" id="311">311</a>
+<a href="#312" id="312">312</a>
+<a href="#313" id="313">313</a>
+<a href="#314" id="314">314</a>
+<a href="#315" id="315">315</a>
+<a href="#316" id="316">316</a>
+<a href="#317" id="317">317</a>
+<a href="#318" id="318">318</a>
+<a href="#319" id="319">319</a>
+<a href="#320" id="320">320</a>
+<a href="#321" id="321">321</a>
+<a href="#322" id="322">322</a>
+<a href="#323" id="323">323</a>
+<a href="#324" id="324">324</a>
+<a href="#325" id="325">325</a>
+<a href="#326" id="326">326</a>
+<a href="#327" id="327">327</a>
+<a href="#328" id="328">328</a>
+<a href="#329" id="329">329</a>
+<a href="#330" id="330">330</a>
+<a href="#331" id="331">331</a>
+<a href="#332" id="332">332</a>
+<a href="#333" id="333">333</a>
+<a href="#334" id="334">334</a>
+<a href="#335" id="335">335</a>
+<a href="#336" id="336">336</a>
+<a href="#337" id="337">337</a>
+<a href="#338" id="338">338</a>
 </pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
-</span><span class="kw">use </span>std::{<a href="https://doc.rust-lang.org/nightly/core/fmt/macros/derive.Debug.html">fmt::Debug</a>, <a href="https://doc.rust-lang.org/nightly/std/io/index.html">io</a>};
+</span><span class="kw">use </span><a href="../../cairo_sys/index.html"><span class="kw">crate</span>::ffi</a>;
+<span class="kw">use </span>std::{<a href="https://doc.rust-lang.org/nightly/alloc/fmt/index.html">fmt</a>, <a href="https://doc.rust-lang.org/nightly/core/fmt/macros/derive.Debug.html">fmt::Debug</a>, <a href="https://doc.rust-lang.org/nightly/std/io/index.html">io</a>};
 
-<span class="kw">use </span><a href="../../cairo_sys/index.html"><span class="kw">crate</span>::ffi</a>;
-<span class="kw">use </span>thiserror::Error;
-
-<span class="attr">#[derive(Error, Debug, Clone, PartialEq, Copy, Eq)]
+<span class="attr">#[derive(Debug, Clone, PartialEq, Copy, Eq)]
 #[non_exhaustive]
 #[doc(alias = <span class="string">"cairo_status_t"</span>)]
-</span><span class="kw">pub enum </span><a href="#11-151">Error</a> {
-    <span class="attr">#[error(<span class="string">"No Memory"</span>)]
-    #[doc(alias = <span class="string">"STATUS_NO_MEMORY"</span>)]
+</span><span class="kw">pub enum </span><a href="../../cairo/enum.Error.html">Error</a> {
+    <span class="attr">#[doc(alias = <span class="string">"STATUS_NO_MEMORY"</span>)]
     </span>NoMemory,
-    <span class="attr">#[error(<span class="string">"Invalid Restore"</span>)]
-    #[doc(alias = <span class="string">"STATUS_INVALID_RESTORE"</span>)]
+    <span class="attr">#[doc(alias = <span class="string">"STATUS_INVALID_RESTORE"</span>)]
     </span>InvalidRestore,
-    <span class="attr">#[error(<span class="string">"Invalid Pop Group"</span>)]
-    #[doc(alias = <span class="string">"STATUS_INVALID_POP_GROUP"</span>)]
+    <span class="attr">#[doc(alias = <span class="string">"STATUS_INVALID_POP_GROUP"</span>)]
     </span>InvalidPopGroup,
-    <span class="attr">#[error(<span class="string">"No Current Point"</span>)]
-    #[doc(alias = <span class="string">"STATUS_NO_CURRENT_POINT"</span>)]
+    <span class="attr">#[doc(alias = <span class="string">"STATUS_NO_CURRENT_POINT"</span>)]
     </span>NoCurrentPoint,
-    <span class="attr">#[error(<span class="string">"Invalid Matrix"</span>)]
-    #[doc(alias = <span class="string">"STATUS_INVALID_MATRIX"</span>)]
+    <span class="attr">#[doc(alias = <span class="string">"STATUS_INVALID_MATRIX"</span>)]
     </span>InvalidMatrix,
-    <span class="attr">#[error(<span class="string">"Invalid Status"</span>)]
-    #[doc(alias = <span class="string">"STATUS_INVALID_STATUS"</span>)]
+    <span class="attr">#[doc(alias = <span class="string">"STATUS_INVALID_STATUS"</span>)]
     </span>InvalidStatus,
-    <span class="attr">#[error(<span class="string">"Null Pointer"</span>)]
-    #[doc(alias = <span class="string">"STATUS_NULL_POINTER"</span>)]
+    <span class="attr">#[doc(alias = <span class="string">"STATUS_NULL_POINTER"</span>)]
     </span>NullPointer,
-    <span class="attr">#[error(<span class="string">"Invalid String"</span>)]
-    #[doc(alias = <span class="string">"STATUS_INVALID_STRING"</span>)]
+    <span class="attr">#[doc(alias = <span class="string">"STATUS_INVALID_STRING"</span>)]
     </span>InvalidString,
-    <span class="attr">#[error(<span class="string">"Invalid Path Data"</span>)]
-    #[doc(alias = <span class="string">"STATUS_INVALID_PATH_DATA"</span>)]
+    <span class="attr">#[doc(alias = <span class="string">"STATUS_INVALID_PATH_DATA"</span>)]
     </span>InvalidPathData,
-    <span class="attr">#[error(<span class="string">"Cairo : Read Error"</span>)]
-    #[doc(alias = <span class="string">"STATUS_READ_ERROR"</span>)]
+    <span class="attr">#[doc(alias = <span class="string">"STATUS_READ_ERROR"</span>)]
     </span>ReadError,
-    <span class="attr">#[error(<span class="string">"Write Error"</span>)]
-    #[doc(alias = <span class="string">"STATUS_WRITE_ERROR"</span>)]
+    <span class="attr">#[doc(alias = <span class="string">"STATUS_WRITE_ERROR"</span>)]
     </span>WriteError,
-    <span class="attr">#[error(<span class="string">"Surface Finished"</span>)]
-    #[doc(alias = <span class="string">"STATUS_SURFACE_FINISHED"</span>)]
+    <span class="attr">#[doc(alias = <span class="string">"STATUS_SURFACE_FINISHED"</span>)]
     </span>SurfaceFinished,
-    <span class="attr">#[error(<span class="string">"Surface Type Mismatch"</span>)]
-    #[doc(alias = <span class="string">"STATUS_SURFACE_TYPE_MISMATCH"</span>)]
+    <span class="attr">#[doc(alias = <span class="string">"STATUS_SURFACE_TYPE_MISMATCH"</span>)]
     </span>SurfaceTypeMismatch,
-    <span class="attr">#[error(<span class="string">"Pattern Type Mismatch"</span>)]
-    #[doc(alias = <span class="string">"STATUS_PATTERN_TYPE_MISMATCH"</span>)]
+    <span class="attr">#[doc(alias = <span class="string">"STATUS_PATTERN_TYPE_MISMATCH"</span>)]
     </span>PatternTypeMismatch,
-    <span class="attr">#[error(<span class="string">"Invalid Content"</span>)]
-    #[doc(alias = <span class="string">"STATUS_INVALID_CONTENT"</span>)]
+    <span class="attr">#[doc(alias = <span class="string">"STATUS_INVALID_CONTENT"</span>)]
     </span>InvalidContent,
-    <span class="attr">#[error(<span class="string">"Invalid Format"</span>)]
-    #[doc(alias = <span class="string">"STATUS_INVALID_FORMAT"</span>)]
+    <span class="attr">#[doc(alias = <span class="string">"STATUS_INVALID_FORMAT"</span>)]
     </span>InvalidFormat,
-    <span class="attr">#[error(<span class="string">"Invalid Visual"</span>)]
-    #[doc(alias = <span class="string">"STATUS_INVALID_VISUAL"</span>)]
+    <span class="attr">#[doc(alias = <span class="string">"STATUS_INVALID_VISUAL"</span>)]
     </span>InvalidVisual,
-    <span class="attr">#[error(<span class="string">"File Not Found"</span>)]
-    #[doc(alias = <span class="string">"STATUS_FILE_NOT_FOUND"</span>)]
+    <span class="attr">#[doc(alias = <span class="string">"STATUS_FILE_NOT_FOUND"</span>)]
     </span>FileNotFound,
-    <span class="attr">#[error(<span class="string">"Invalid Dash"</span>)]
-    #[doc(alias = <span class="string">"STATUS_INVALID_DASH"</span>)]
+    <span class="attr">#[doc(alias = <span class="string">"STATUS_INVALID_DASH"</span>)]
     </span>InvalidDash,
-    <span class="attr">#[error(<span class="string">"Invalid Dash Comment"</span>)]
-    #[doc(alias = <span class="string">"STATUS_INVALID_DSC_COMMENT"</span>)]
+    <span class="attr">#[doc(alias = <span class="string">"STATUS_INVALID_DSC_COMMENT"</span>)]
     </span>InvalidDscComment,
-    <span class="attr">#[error(<span class="string">"Invalid Index"</span>)]
-    #[doc(alias = <span class="string">"STATUS_INVALID_INDEX"</span>)]
+    <span class="attr">#[doc(alias = <span class="string">"STATUS_INVALID_INDEX"</span>)]
     </span>InvalidIndex,
-    <span class="attr">#[error(<span class="string">"Clip Not Representable"</span>)]
-    #[doc(alias = <span class="string">"STATUS_CLIP_NOT_REPRESENTABLE"</span>)]
+    <span class="attr">#[doc(alias = <span class="string">"STATUS_CLIP_NOT_REPRESENTABLE"</span>)]
     </span>ClipNotRepresentable,
-    <span class="attr">#[error(<span class="string">"Temp File Error"</span>)]
-    #[doc(alias = <span class="string">"STATUS_TEMP_FILE_ERROR"</span>)]
+    <span class="attr">#[doc(alias = <span class="string">"STATUS_TEMP_FILE_ERROR"</span>)]
     </span>TempFileError,
-    <span class="attr">#[error(<span class="string">"Invalid Stride"</span>)]
-    #[doc(alias = <span class="string">"STATUS_INVALID_STRIDE"</span>)]
+    <span class="attr">#[doc(alias = <span class="string">"STATUS_INVALID_STRIDE"</span>)]
     </span>InvalidStride,
-    <span class="attr">#[error(<span class="string">"Font Type Mismatch"</span>)]
-    #[doc(alias = <span class="string">"STATUS_FONT_TYPE_MISMATCH"</span>)]
+    <span class="attr">#[doc(alias = <span class="string">"STATUS_FONT_TYPE_MISMATCH"</span>)]
     </span>FontTypeMismatch,
-    <span class="attr">#[error(<span class="string">"User Font Immutable"</span>)]
-    #[doc(alias = <span class="string">"STATUS_USER_FONT_IMMUTABLE"</span>)]
+    <span class="attr">#[doc(alias = <span class="string">"STATUS_USER_FONT_IMMUTABLE"</span>)]
     </span>UserFontImmutable,
-    <span class="attr">#[error(<span class="string">"User Font Error"</span>)]
-    #[doc(alias = <span class="string">"STATUS_USER_FONT_ERROR"</span>)]
+    <span class="attr">#[doc(alias = <span class="string">"STATUS_USER_FONT_ERROR"</span>)]
     </span>UserFontError,
-    <span class="attr">#[error(<span class="string">"Negative Count"</span>)]
-    #[doc(alias = <span class="string">"STATUS_NEGATIVE_COUNT"</span>)]
+    <span class="attr">#[doc(alias = <span class="string">"STATUS_NEGATIVE_COUNT"</span>)]
     </span>NegativeCount,
-    <span class="attr">#[error(<span class="string">"Invalid Clusters"</span>)]
-    #[doc(alias = <span class="string">"STATUS_INVALID_CLUSTERS"</span>)]
+    <span class="attr">#[doc(alias = <span class="string">"STATUS_INVALID_CLUSTERS"</span>)]
     </span>InvalidClusters,
-    <span class="attr">#[error(<span class="string">"Invalid Slant"</span>)]
-    #[doc(alias = <span class="string">"STATUS_INVALID_SLANT"</span>)]
+    <span class="attr">#[doc(alias = <span class="string">"STATUS_INVALID_SLANT"</span>)]
     </span>InvalidSlant,
-    <span class="attr">#[error(<span class="string">"Invalid Weight"</span>)]
-    #[doc(alias = <span class="string">"STATUS_INVALID_WEIGHT"</span>)]
+    <span class="attr">#[doc(alias = <span class="string">"STATUS_INVALID_WEIGHT"</span>)]
     </span>InvalidWeight,
-    <span class="attr">#[error(<span class="string">"Invalid Size"</span>)]
-    #[doc(alias = <span class="string">"STATUS_INVALID_SIZE"</span>)]
+    <span class="attr">#[doc(alias = <span class="string">"STATUS_INVALID_SIZE"</span>)]
     </span>InvalidSize,
-    <span class="attr">#[error(<span class="string">"User Font Not Implemented"</span>)]
-    #[doc(alias = <span class="string">"STATUS_USER_FONT_NOT_IMPLEMENTED"</span>)]
+    <span class="attr">#[doc(alias = <span class="string">"STATUS_USER_FONT_NOT_IMPLEMENTED"</span>)]
     </span>UserFontNotImplemented,
-    <span class="attr">#[error(<span class="string">"Device Type Mismatch"</span>)]
-    #[doc(alias = <span class="string">"STATUS_DEVICE_TYPE_MISMATCH"</span>)]
+    <span class="attr">#[doc(alias = <span class="string">"STATUS_DEVICE_TYPE_MISMATCH"</span>)]
     </span>DeviceTypeMismatch,
-    <span class="attr">#[error(<span class="string">"Device Error"</span>)]
-    #[doc(alias = <span class="string">"STATUS_DEVICE_ERROR"</span>)]
+    <span class="attr">#[doc(alias = <span class="string">"STATUS_DEVICE_ERROR"</span>)]
     </span>DeviceError,
-    <span class="attr">#[error(<span class="string">"Invalid Mesh Construction"</span>)]
-    #[doc(alias = <span class="string">"STATUS_INVALID_MESH_CONSTRUCTION"</span>)]
+    <span class="attr">#[doc(alias = <span class="string">"STATUS_INVALID_MESH_CONSTRUCTION"</span>)]
     </span>InvalidMeshConstruction,
-    <span class="attr">#[error(<span class="string">"Device Finished"</span>)]
-    #[doc(alias = <span class="string">"STATUS_DEVICE_FINISHED"</span>)]
+    <span class="attr">#[doc(alias = <span class="string">"STATUS_DEVICE_FINISHED"</span>)]
     </span>DeviceFinished,
-    <span class="attr">#[error(<span class="string">"JBig2Global Missing"</span>)]
-    #[doc(alias = <span class="string">"STATUS_J_BIG2_GLOBAL_MISSING"</span>)]
+    <span class="attr">#[doc(alias = <span class="string">"STATUS_J_BIG2_GLOBAL_MISSING"</span>)]
     </span>JBig2GlobalMissing,
-    <span class="attr">#[error(<span class="string">"PNG Error"</span>)]
-    #[doc(alias = <span class="string">"STATUS_PNG_ERROR"</span>)]
+    <span class="attr">#[doc(alias = <span class="string">"STATUS_PNG_ERROR"</span>)]
     </span>PngError,
-    <span class="attr">#[error(<span class="string">"Freetype Error"</span>)]
-    #[doc(alias = <span class="string">"STATUS_FREETYPE_ERROR"</span>)]
+    <span class="attr">#[doc(alias = <span class="string">"STATUS_FREETYPE_ERROR"</span>)]
     </span>FreetypeError,
-    <span class="attr">#[error(<span class="string">"Win32Gdi Error"</span>)]
-    #[doc(alias = <span class="string">"STATUS_WIN32_GDI_ERROR"</span>)]
+    <span class="attr">#[doc(alias = <span class="string">"STATUS_WIN32_GDI_ERROR"</span>)]
     </span>Win32GdiError,
     <span class="attr">#[cfg(feature = <span class="string">"v1_16"</span>)]
     #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"v1_16"</span>)))]
-    #[error(<span class="string">"Tag Error"</span>)]
     #[doc(alias = <span class="string">"STATUS_TAG_ERROR"</span>)]
     </span>TagError,
     <span class="attr">#[cfg(feature = <span class="string">"v1_18"</span>)]
     #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"v1_18"</span>)))]
-    #[error(<span class="string">"Dwrite Error"</span>)]
     #[doc(alias = <span class="string">"STATUS_DWRITE_ERROR"</span>)]
     </span>DwriteError,
-    <span class="attr">#[error(<span class="string">"LastStatus"</span>)]
-    #[doc(alias = <span class="string">"STATUS_LAST_STATUS"</span>)]
+    <span class="attr">#[doc(alias = <span class="string">"STATUS_LAST_STATUS"</span>)]
     </span>LastStatus,
-    <span class="attr">#[error(<span class="string">"Unknown {0}"</span>)]
-    #[doc(hidden)]
+    <span class="attr">#[doc(hidden)]
     </span>__Unknown(<a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>),
 }
-<span class="attr">#[doc(hidden)]
-</span><span class="kw">impl </span>From&lt;<a href="#11-151">Error</a>&gt; <span class="kw">for </span><a href="../../cairo_sys/type.cairo_status_t.html">ffi::cairo_status_t</a> {
-    <span class="kw">fn </span>from(err: <a href="#11-151">Error</a>) -&gt; <a href="../../cairo_sys/type.cairo_status_t.html">ffi::cairo_status_t</a> {
-        <span class="kw">match </span><a href="#154">err</a> {
-            <a href="#14">Error::NoMemory</a> =&gt; <a href="../../cairo_sys/constant.STATUS_NO_MEMORY.html">ffi::STATUS_NO_MEMORY</a>,
-            <a href="#17">Error::InvalidRestore</a> =&gt; <a href="../../cairo_sys/constant.STATUS_INVALID_RESTORE.html">ffi::STATUS_INVALID_RESTORE</a>,
-            <a href="#20">Error::InvalidPopGroup</a> =&gt; <a href="../../cairo_sys/constant.STATUS_INVALID_POP_GROUP.html">ffi::STATUS_INVALID_POP_GROUP</a>,
-            <a href="#23">Error::NoCurrentPoint</a> =&gt; <a href="../../cairo_sys/constant.STATUS_NO_CURRENT_POINT.html">ffi::STATUS_NO_CURRENT_POINT</a>,
-            <a href="#26">Error::InvalidMatrix</a> =&gt; <a href="../../cairo_sys/constant.STATUS_INVALID_MATRIX.html">ffi::STATUS_INVALID_MATRIX</a>,
-            <a href="#29">Error::InvalidStatus</a> =&gt; <a href="../../cairo_sys/constant.STATUS_INVALID_STATUS.html">ffi::STATUS_INVALID_STATUS</a>,
-            <a href="#32">Error::NullPointer</a> =&gt; <a href="../../cairo_sys/constant.STATUS_NULL_POINTER.html">ffi::STATUS_NULL_POINTER</a>,
-            <a href="#35">Error::InvalidString</a> =&gt; <a href="../../cairo_sys/constant.STATUS_INVALID_STRING.html">ffi::STATUS_INVALID_STRING</a>,
-            <a href="#38">Error::InvalidPathData</a> =&gt; <a href="../../cairo_sys/constant.STATUS_INVALID_PATH_DATA.html">ffi::STATUS_INVALID_PATH_DATA</a>,
-            <a href="#41">Error::ReadError</a> =&gt; <a href="../../cairo_sys/constant.STATUS_READ_ERROR.html">ffi::STATUS_READ_ERROR</a>,
-            <a href="#44">Error::WriteError</a> =&gt; <a href="../../cairo_sys/constant.STATUS_WRITE_ERROR.html">ffi::STATUS_WRITE_ERROR</a>,
-            <a href="#47">Error::SurfaceFinished</a> =&gt; <a href="../../cairo_sys/constant.STATUS_SURFACE_FINISHED.html">ffi::STATUS_SURFACE_FINISHED</a>,
-            <a href="#50">Error::SurfaceTypeMismatch</a> =&gt; <a href="../../cairo_sys/constant.STATUS_SURFACE_TYPE_MISMATCH.html">ffi::STATUS_SURFACE_TYPE_MISMATCH</a>,
-            <a href="#53">Error::PatternTypeMismatch</a> =&gt; <a href="../../cairo_sys/constant.STATUS_PATTERN_TYPE_MISMATCH.html">ffi::STATUS_PATTERN_TYPE_MISMATCH</a>,
-            <a href="#56">Error::InvalidContent</a> =&gt; <a href="../../cairo_sys/constant.STATUS_INVALID_CONTENT.html">ffi::STATUS_INVALID_CONTENT</a>,
-            <a href="#59">Error::InvalidFormat</a> =&gt; <a href="../../cairo_sys/constant.STATUS_INVALID_FORMAT.html">ffi::STATUS_INVALID_FORMAT</a>,
-            <a href="#62">Error::InvalidVisual</a> =&gt; <a href="../../cairo_sys/constant.STATUS_INVALID_VISUAL.html">ffi::STATUS_INVALID_VISUAL</a>,
-            <a href="#65">Error::FileNotFound</a> =&gt; <a href="../../cairo_sys/constant.STATUS_FILE_NOT_FOUND.html">ffi::STATUS_FILE_NOT_FOUND</a>,
-            <a href="#68">Error::InvalidDash</a> =&gt; <a href="../../cairo_sys/constant.STATUS_INVALID_DASH.html">ffi::STATUS_INVALID_DASH</a>,
-            <a href="#71">Error::InvalidDscComment</a> =&gt; <a href="../../cairo_sys/constant.STATUS_INVALID_DSC_COMMENT.html">ffi::STATUS_INVALID_DSC_COMMENT</a>,
-            <a href="#74">Error::InvalidIndex</a> =&gt; <a href="../../cairo_sys/constant.STATUS_INVALID_INDEX.html">ffi::STATUS_INVALID_INDEX</a>,
-            <a href="#77">Error::ClipNotRepresentable</a> =&gt; <a href="../../cairo_sys/constant.STATUS_CLIP_NOT_REPRESENTABLE.html">ffi::STATUS_CLIP_NOT_REPRESENTABLE</a>,
-            <a href="#80">Error::TempFileError</a> =&gt; <a href="../../cairo_sys/constant.STATUS_TEMP_FILE_ERROR.html">ffi::STATUS_TEMP_FILE_ERROR</a>,
-            <a href="#83">Error::InvalidStride</a> =&gt; <a href="../../cairo_sys/constant.STATUS_INVALID_STRIDE.html">ffi::STATUS_INVALID_STRIDE</a>,
-            <a href="#86">Error::FontTypeMismatch</a> =&gt; <a href="../../cairo_sys/constant.STATUS_FONT_TYPE_MISMATCH.html">ffi::STATUS_FONT_TYPE_MISMATCH</a>,
-            <a href="#89">Error::UserFontImmutable</a> =&gt; <a href="../../cairo_sys/constant.STATUS_USER_FONT_IMMUTABLE.html">ffi::STATUS_USER_FONT_IMMUTABLE</a>,
-            <a href="#92">Error::UserFontError</a> =&gt; <a href="../../cairo_sys/constant.STATUS_USER_FONT_ERROR.html">ffi::STATUS_USER_FONT_ERROR</a>,
-            <a href="#95">Error::NegativeCount</a> =&gt; <a href="../../cairo_sys/constant.STATUS_NEGATIVE_COUNT.html">ffi::STATUS_NEGATIVE_COUNT</a>,
-            <a href="#98">Error::InvalidClusters</a> =&gt; <a href="../../cairo_sys/constant.STATUS_INVALID_CLUSTERS.html">ffi::STATUS_INVALID_CLUSTERS</a>,
-            <a href="#101">Error::InvalidSlant</a> =&gt; <a href="../../cairo_sys/constant.STATUS_INVALID_SLANT.html">ffi::STATUS_INVALID_SLANT</a>,
-            <a href="#104">Error::InvalidWeight</a> =&gt; <a href="../../cairo_sys/constant.STATUS_INVALID_WEIGHT.html">ffi::STATUS_INVALID_WEIGHT</a>,
-            <a href="#107">Error::InvalidSize</a> =&gt; <a href="../../cairo_sys/constant.STATUS_INVALID_SIZE.html">ffi::STATUS_INVALID_SIZE</a>,
-            <a href="#110">Error::UserFontNotImplemented</a> =&gt; <a href="../../cairo_sys/constant.STATUS_USER_FONT_NOT_IMPLEMENTED.html">ffi::STATUS_USER_FONT_NOT_IMPLEMENTED</a>,
-            <a href="#113">Error::DeviceTypeMismatch</a> =&gt; <a href="../../cairo_sys/constant.STATUS_DEVICE_TYPE_MISMATCH.html">ffi::STATUS_DEVICE_TYPE_MISMATCH</a>,
-            <a href="#116">Error::DeviceError</a> =&gt; <a href="../../cairo_sys/constant.STATUS_DEVICE_ERROR.html">ffi::STATUS_DEVICE_ERROR</a>,
-            <a href="#119">Error::InvalidMeshConstruction</a> =&gt; <a href="../../cairo_sys/constant.STATUS_INVALID_MESH_CONSTRUCTION.html">ffi::STATUS_INVALID_MESH_CONSTRUCTION</a>,
-            <a href="#122">Error::DeviceFinished</a> =&gt; <a href="../../cairo_sys/constant.STATUS_DEVICE_FINISHED.html">ffi::STATUS_DEVICE_FINISHED</a>,
-            <a href="#125">Error::JBig2GlobalMissing</a> =&gt; <a href="../../cairo_sys/constant.STATUS_J_BIG2_GLOBAL_MISSING.html">ffi::STATUS_J_BIG2_GLOBAL_MISSING</a>,
-            <a href="#128">Error::PngError</a> =&gt; <a href="../../cairo_sys/constant.STATUS_PNG_ERROR.html">ffi::STATUS_PNG_ERROR</a>,
-            <a href="#131">Error::FreetypeError</a> =&gt; <a href="../../cairo_sys/constant.STATUS_FREETYPE_ERROR.html">ffi::STATUS_FREETYPE_ERROR</a>,
-            <a href="#134">Error::Win32GdiError</a> =&gt; <a href="../../cairo_sys/constant.STATUS_WIN32_GDI_ERROR.html">ffi::STATUS_WIN32_GDI_ERROR</a>,
+
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/error/trait.Error.html">std::error::Error</a> <span class="kw">for </span><a href="#9-104">Error</a> {}
+
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Display.html">fmt::Display</a> <span class="kw">for </span><a href="#9-104">Error</a> {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, fmt: <span class="kw-2">&amp;mut </span><a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html">fmt::Formatter</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/core/fmt/type.Result.html">fmt::Result</a> {
+        <span class="kw">match </span><span class="self"><a href="#109">self</a> </span>{
+            <a href="#11">Error::NoMemory</a> =&gt; <a href="#109">fmt</a>.<a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html#method.write_str">write_str</a>(<span class="string">"No Memory"</span>),
+            <a href="#13">Error::InvalidRestore</a> =&gt; <a href="#109">fmt</a>.<a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html#method.write_str">write_str</a>(<span class="string">"Invalid Restore"</span>),
+            <a href="#15">Error::InvalidPopGroup</a> =&gt; <a href="#109">fmt</a>.<a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html#method.write_str">write_str</a>(<span class="string">"Invalid Pop Group"</span>),
+            <a href="#17">Error::NoCurrentPoint</a> =&gt; <a href="#109">fmt</a>.<a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html#method.write_str">write_str</a>(<span class="string">"No Current Point"</span>),
+            <a href="#19">Error::InvalidMatrix</a> =&gt; <a href="#109">fmt</a>.<a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html#method.write_str">write_str</a>(<span class="string">"Invalid Matrix"</span>),
+            <a href="#21">Error::InvalidStatus</a> =&gt; <a href="#109">fmt</a>.<a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html#method.write_str">write_str</a>(<span class="string">"Invalid Status"</span>),
+            <a href="#23">Error::NullPointer</a> =&gt; <a href="#109">fmt</a>.<a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html#method.write_str">write_str</a>(<span class="string">"Null Pointer"</span>),
+            <a href="#25">Error::InvalidString</a> =&gt; <a href="#109">fmt</a>.<a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html#method.write_str">write_str</a>(<span class="string">"Invalid String"</span>),
+            <a href="#27">Error::InvalidPathData</a> =&gt; <a href="#109">fmt</a>.<a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html#method.write_str">write_str</a>(<span class="string">"Invalid Path Data"</span>),
+            <a href="#29">Error::ReadError</a> =&gt; <a href="#109">fmt</a>.<a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html#method.write_str">write_str</a>(<span class="string">"Cairo : Read Error"</span>),
+            <a href="#31">Error::WriteError</a> =&gt; <a href="#109">fmt</a>.<a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html#method.write_str">write_str</a>(<span class="string">"Write Error"</span>),
+            <a href="#33">Error::SurfaceFinished</a> =&gt; <a href="#109">fmt</a>.<a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html#method.write_str">write_str</a>(<span class="string">"Surface Finished"</span>),
+            <a href="#35">Error::SurfaceTypeMismatch</a> =&gt; <a href="#109">fmt</a>.<a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html#method.write_str">write_str</a>(<span class="string">"Surface Type Mismatch"</span>),
+            <a href="#37">Error::PatternTypeMismatch</a> =&gt; <a href="#109">fmt</a>.<a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html#method.write_str">write_str</a>(<span class="string">"Pattern Type Mismatch"</span>),
+            <a href="#39">Error::InvalidContent</a> =&gt; <a href="#109">fmt</a>.<a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html#method.write_str">write_str</a>(<span class="string">"Invalid Content"</span>),
+            <a href="#41">Error::InvalidFormat</a> =&gt; <a href="#109">fmt</a>.<a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html#method.write_str">write_str</a>(<span class="string">"Invalid Format"</span>),
+            <a href="#43">Error::InvalidVisual</a> =&gt; <a href="#109">fmt</a>.<a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html#method.write_str">write_str</a>(<span class="string">"Invalid Visual"</span>),
+            <a href="#45">Error::FileNotFound</a> =&gt; <a href="#109">fmt</a>.<a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html#method.write_str">write_str</a>(<span class="string">"File Not Found"</span>),
+            <a href="#47">Error::InvalidDash</a> =&gt; <a href="#109">fmt</a>.<a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html#method.write_str">write_str</a>(<span class="string">"Invalid Dash"</span>),
+            <a href="#49">Error::InvalidDscComment</a> =&gt; <a href="#109">fmt</a>.<a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html#method.write_str">write_str</a>(<span class="string">"Invalid Dash Comment"</span>),
+            <a href="#51">Error::InvalidIndex</a> =&gt; <a href="#109">fmt</a>.<a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html#method.write_str">write_str</a>(<span class="string">"Invalid Index"</span>),
+            <a href="#53">Error::ClipNotRepresentable</a> =&gt; <a href="#109">fmt</a>.<a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html#method.write_str">write_str</a>(<span class="string">"Clip Not Representable"</span>),
+            <a href="#55">Error::TempFileError</a> =&gt; <a href="#109">fmt</a>.<a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html#method.write_str">write_str</a>(<span class="string">"Temp File Error"</span>),
+            <a href="#57">Error::InvalidStride</a> =&gt; <a href="#109">fmt</a>.<a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html#method.write_str">write_str</a>(<span class="string">"Invalid Stride"</span>),
+            <a href="#59">Error::FontTypeMismatch</a> =&gt; <a href="#109">fmt</a>.<a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html#method.write_str">write_str</a>(<span class="string">"Font Type Mismatch"</span>),
+            <a href="#61">Error::UserFontImmutable</a> =&gt; <a href="#109">fmt</a>.<a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html#method.write_str">write_str</a>(<span class="string">"User Font Immutable"</span>),
+            <a href="#63">Error::UserFontError</a> =&gt; <a href="#109">fmt</a>.<a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html#method.write_str">write_str</a>(<span class="string">"User Font Error"</span>),
+            <a href="#65">Error::NegativeCount</a> =&gt; <a href="#109">fmt</a>.<a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html#method.write_str">write_str</a>(<span class="string">"Negative Count"</span>),
+            <a href="#67">Error::InvalidClusters</a> =&gt; <a href="#109">fmt</a>.<a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html#method.write_str">write_str</a>(<span class="string">"Invalid Clusters"</span>),
+            <a href="#69">Error::InvalidSlant</a> =&gt; <a href="#109">fmt</a>.<a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html#method.write_str">write_str</a>(<span class="string">"Invalid Slant"</span>),
+            <a href="#71">Error::InvalidWeight</a> =&gt; <a href="#109">fmt</a>.<a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html#method.write_str">write_str</a>(<span class="string">"Invalid Weight"</span>),
+            <a href="#73">Error::InvalidSize</a> =&gt; <a href="#109">fmt</a>.<a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html#method.write_str">write_str</a>(<span class="string">"Invalid Size"</span>),
+            <a href="#75">Error::UserFontNotImplemented</a> =&gt; <a href="#109">fmt</a>.<a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html#method.write_str">write_str</a>(<span class="string">"User Font Not Implemented"</span>),
+            <a href="#77">Error::DeviceTypeMismatch</a> =&gt; <a href="#109">fmt</a>.<a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html#method.write_str">write_str</a>(<span class="string">"Device Type Mismatch"</span>),
+            <a href="#79">Error::DeviceError</a> =&gt; <a href="#109">fmt</a>.<a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html#method.write_str">write_str</a>(<span class="string">"Device Error"</span>),
+            <a href="#81">Error::InvalidMeshConstruction</a> =&gt; <a href="#109">fmt</a>.<a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html#method.write_str">write_str</a>(<span class="string">"Invalid Mesh Construction"</span>),
+            <a href="#83">Error::DeviceFinished</a> =&gt; <a href="#109">fmt</a>.<a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html#method.write_str">write_str</a>(<span class="string">"Device Finished"</span>),
+            <a href="#85">Error::JBig2GlobalMissing</a> =&gt; <a href="#109">fmt</a>.<a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html#method.write_str">write_str</a>(<span class="string">"JBig2Global Missing"</span>),
+            <a href="#87">Error::PngError</a> =&gt; <a href="#109">fmt</a>.<a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html#method.write_str">write_str</a>(<span class="string">"PNG Error"</span>),
+            <a href="#89">Error::FreetypeError</a> =&gt; <a href="#109">fmt</a>.<a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html#method.write_str">write_str</a>(<span class="string">"Freetype Error"</span>),
+            <a href="#91">Error::Win32GdiError</a> =&gt; <a href="#109">fmt</a>.<a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html#method.write_str">write_str</a>(<span class="string">"Win32Gdi Error"</span>),
             <span class="attr">#[cfg(feature = <span class="string">"v1_16"</span>)]
-            </span><a href="#139">Error::TagError</a> =&gt; <a href="../../cairo_sys/constant.STATUS_TAG_ERROR.html">ffi::STATUS_TAG_ERROR</a>,
+            </span><a href="#95">Error::TagError</a> =&gt; <a href="#109">fmt</a>.<a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html#method.write_str">write_str</a>(<span class="string">"Tag error"</span>),
             <span class="attr">#[cfg(feature = <span class="string">"v1_18"</span>)]
-            </span><a href="#144">Error::DwriteError</a> =&gt; <a href="../../cairo_sys/constant.STATUS_DWRITE_ERROR.html">ffi::STATUS_DWRITE_ERROR</a>,
-            <a href="#147">Error::LastStatus</a> =&gt; <a href="../../cairo_sys/constant.STATUS_LAST_STATUS.html">ffi::STATUS_LAST_STATUS</a>,
-            <a href="#150">Error::__Unknown</a>(value) =&gt; <a href="#202">value</a>,
+            </span><a href="#99">Error::DwriteError</a> =&gt; <a href="#109">fmt</a>.<a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html#method.write_str">write_str</a>(<span class="string">"Dwrite error"</span>),
+            <a href="#101">Error::LastStatus</a> =&gt; <a href="#109">fmt</a>.<a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html#method.write_str">write_str</a>(<span class="string">"LastStatus"</span>),
+            <a href="#103">Error::__Unknown</a>(value) =&gt; <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.write.html">write!</a>(<a href="#109">fmt</a>, <span class="string">"Unknown {value}"</span>),
         }
     }
 }
 
 <span class="attr">#[doc(hidden)]
-</span><span class="kw">impl </span>From&lt;<a href="../../cairo_sys/type.cairo_status_t.html">ffi::cairo_status_t</a>&gt; <span class="kw">for </span><a href="#11-151">Error</a> {
+</span><span class="kw">impl </span>From&lt;<a href="#9-104">Error</a>&gt; <span class="kw">for </span><a href="../../cairo_sys/type.cairo_status_t.html">ffi::cairo_status_t</a> {
+    <span class="kw">fn </span>from(err: <a href="#9-104">Error</a>) -&gt; <span class="self">Self </span>{
+        <span class="kw">match </span><a href="#164">err</a> {
+            <a href="#11">Error::NoMemory</a> =&gt; <a href="../../cairo_sys/constant.STATUS_NO_MEMORY.html">ffi::STATUS_NO_MEMORY</a>,
+            <a href="#13">Error::InvalidRestore</a> =&gt; <a href="../../cairo_sys/constant.STATUS_INVALID_RESTORE.html">ffi::STATUS_INVALID_RESTORE</a>,
+            <a href="#15">Error::InvalidPopGroup</a> =&gt; <a href="../../cairo_sys/constant.STATUS_INVALID_POP_GROUP.html">ffi::STATUS_INVALID_POP_GROUP</a>,
+            <a href="#17">Error::NoCurrentPoint</a> =&gt; <a href="../../cairo_sys/constant.STATUS_NO_CURRENT_POINT.html">ffi::STATUS_NO_CURRENT_POINT</a>,
+            <a href="#19">Error::InvalidMatrix</a> =&gt; <a href="../../cairo_sys/constant.STATUS_INVALID_MATRIX.html">ffi::STATUS_INVALID_MATRIX</a>,
+            <a href="#21">Error::InvalidStatus</a> =&gt; <a href="../../cairo_sys/constant.STATUS_INVALID_STATUS.html">ffi::STATUS_INVALID_STATUS</a>,
+            <a href="#23">Error::NullPointer</a> =&gt; <a href="../../cairo_sys/constant.STATUS_NULL_POINTER.html">ffi::STATUS_NULL_POINTER</a>,
+            <a href="#25">Error::InvalidString</a> =&gt; <a href="../../cairo_sys/constant.STATUS_INVALID_STRING.html">ffi::STATUS_INVALID_STRING</a>,
+            <a href="#27">Error::InvalidPathData</a> =&gt; <a href="../../cairo_sys/constant.STATUS_INVALID_PATH_DATA.html">ffi::STATUS_INVALID_PATH_DATA</a>,
+            <a href="#29">Error::ReadError</a> =&gt; <a href="../../cairo_sys/constant.STATUS_READ_ERROR.html">ffi::STATUS_READ_ERROR</a>,
+            <a href="#31">Error::WriteError</a> =&gt; <a href="../../cairo_sys/constant.STATUS_WRITE_ERROR.html">ffi::STATUS_WRITE_ERROR</a>,
+            <a href="#33">Error::SurfaceFinished</a> =&gt; <a href="../../cairo_sys/constant.STATUS_SURFACE_FINISHED.html">ffi::STATUS_SURFACE_FINISHED</a>,
+            <a href="#35">Error::SurfaceTypeMismatch</a> =&gt; <a href="../../cairo_sys/constant.STATUS_SURFACE_TYPE_MISMATCH.html">ffi::STATUS_SURFACE_TYPE_MISMATCH</a>,
+            <a href="#37">Error::PatternTypeMismatch</a> =&gt; <a href="../../cairo_sys/constant.STATUS_PATTERN_TYPE_MISMATCH.html">ffi::STATUS_PATTERN_TYPE_MISMATCH</a>,
+            <a href="#39">Error::InvalidContent</a> =&gt; <a href="../../cairo_sys/constant.STATUS_INVALID_CONTENT.html">ffi::STATUS_INVALID_CONTENT</a>,
+            <a href="#41">Error::InvalidFormat</a> =&gt; <a href="../../cairo_sys/constant.STATUS_INVALID_FORMAT.html">ffi::STATUS_INVALID_FORMAT</a>,
+            <a href="#43">Error::InvalidVisual</a> =&gt; <a href="../../cairo_sys/constant.STATUS_INVALID_VISUAL.html">ffi::STATUS_INVALID_VISUAL</a>,
+            <a href="#45">Error::FileNotFound</a> =&gt; <a href="../../cairo_sys/constant.STATUS_FILE_NOT_FOUND.html">ffi::STATUS_FILE_NOT_FOUND</a>,
+            <a href="#47">Error::InvalidDash</a> =&gt; <a href="../../cairo_sys/constant.STATUS_INVALID_DASH.html">ffi::STATUS_INVALID_DASH</a>,
+            <a href="#49">Error::InvalidDscComment</a> =&gt; <a href="../../cairo_sys/constant.STATUS_INVALID_DSC_COMMENT.html">ffi::STATUS_INVALID_DSC_COMMENT</a>,
+            <a href="#51">Error::InvalidIndex</a> =&gt; <a href="../../cairo_sys/constant.STATUS_INVALID_INDEX.html">ffi::STATUS_INVALID_INDEX</a>,
+            <a href="#53">Error::ClipNotRepresentable</a> =&gt; <a href="../../cairo_sys/constant.STATUS_CLIP_NOT_REPRESENTABLE.html">ffi::STATUS_CLIP_NOT_REPRESENTABLE</a>,
+            <a href="#55">Error::TempFileError</a> =&gt; <a href="../../cairo_sys/constant.STATUS_TEMP_FILE_ERROR.html">ffi::STATUS_TEMP_FILE_ERROR</a>,
+            <a href="#57">Error::InvalidStride</a> =&gt; <a href="../../cairo_sys/constant.STATUS_INVALID_STRIDE.html">ffi::STATUS_INVALID_STRIDE</a>,
+            <a href="#59">Error::FontTypeMismatch</a> =&gt; <a href="../../cairo_sys/constant.STATUS_FONT_TYPE_MISMATCH.html">ffi::STATUS_FONT_TYPE_MISMATCH</a>,
+            <a href="#61">Error::UserFontImmutable</a> =&gt; <a href="../../cairo_sys/constant.STATUS_USER_FONT_IMMUTABLE.html">ffi::STATUS_USER_FONT_IMMUTABLE</a>,
+            <a href="#63">Error::UserFontError</a> =&gt; <a href="../../cairo_sys/constant.STATUS_USER_FONT_ERROR.html">ffi::STATUS_USER_FONT_ERROR</a>,
+            <a href="#65">Error::NegativeCount</a> =&gt; <a href="../../cairo_sys/constant.STATUS_NEGATIVE_COUNT.html">ffi::STATUS_NEGATIVE_COUNT</a>,
+            <a href="#67">Error::InvalidClusters</a> =&gt; <a href="../../cairo_sys/constant.STATUS_INVALID_CLUSTERS.html">ffi::STATUS_INVALID_CLUSTERS</a>,
+            <a href="#69">Error::InvalidSlant</a> =&gt; <a href="../../cairo_sys/constant.STATUS_INVALID_SLANT.html">ffi::STATUS_INVALID_SLANT</a>,
+            <a href="#71">Error::InvalidWeight</a> =&gt; <a href="../../cairo_sys/constant.STATUS_INVALID_WEIGHT.html">ffi::STATUS_INVALID_WEIGHT</a>,
+            <a href="#73">Error::InvalidSize</a> =&gt; <a href="../../cairo_sys/constant.STATUS_INVALID_SIZE.html">ffi::STATUS_INVALID_SIZE</a>,
+            <a href="#75">Error::UserFontNotImplemented</a> =&gt; <a href="../../cairo_sys/constant.STATUS_USER_FONT_NOT_IMPLEMENTED.html">ffi::STATUS_USER_FONT_NOT_IMPLEMENTED</a>,
+            <a href="#77">Error::DeviceTypeMismatch</a> =&gt; <a href="../../cairo_sys/constant.STATUS_DEVICE_TYPE_MISMATCH.html">ffi::STATUS_DEVICE_TYPE_MISMATCH</a>,
+            <a href="#79">Error::DeviceError</a> =&gt; <a href="../../cairo_sys/constant.STATUS_DEVICE_ERROR.html">ffi::STATUS_DEVICE_ERROR</a>,
+            <a href="#81">Error::InvalidMeshConstruction</a> =&gt; <a href="../../cairo_sys/constant.STATUS_INVALID_MESH_CONSTRUCTION.html">ffi::STATUS_INVALID_MESH_CONSTRUCTION</a>,
+            <a href="#83">Error::DeviceFinished</a> =&gt; <a href="../../cairo_sys/constant.STATUS_DEVICE_FINISHED.html">ffi::STATUS_DEVICE_FINISHED</a>,
+            <a href="#85">Error::JBig2GlobalMissing</a> =&gt; <a href="../../cairo_sys/constant.STATUS_J_BIG2_GLOBAL_MISSING.html">ffi::STATUS_J_BIG2_GLOBAL_MISSING</a>,
+            <a href="#87">Error::PngError</a> =&gt; <a href="../../cairo_sys/constant.STATUS_PNG_ERROR.html">ffi::STATUS_PNG_ERROR</a>,
+            <a href="#89">Error::FreetypeError</a> =&gt; <a href="../../cairo_sys/constant.STATUS_FREETYPE_ERROR.html">ffi::STATUS_FREETYPE_ERROR</a>,
+            <a href="#91">Error::Win32GdiError</a> =&gt; <a href="../../cairo_sys/constant.STATUS_WIN32_GDI_ERROR.html">ffi::STATUS_WIN32_GDI_ERROR</a>,
+            <span class="attr">#[cfg(feature = <span class="string">"v1_16"</span>)]
+            </span><a href="#95">Error::TagError</a> =&gt; <a href="../../cairo_sys/constant.STATUS_TAG_ERROR.html">ffi::STATUS_TAG_ERROR</a>,
+            <span class="attr">#[cfg(feature = <span class="string">"v1_18"</span>)]
+            </span><a href="#99">Error::DwriteError</a> =&gt; <a href="../../cairo_sys/constant.STATUS_DWRITE_ERROR.html">ffi::STATUS_DWRITE_ERROR</a>,
+            <a href="#101">Error::LastStatus</a> =&gt; <a href="../../cairo_sys/constant.STATUS_LAST_STATUS.html">ffi::STATUS_LAST_STATUS</a>,
+            <a href="#103">Error::__Unknown</a>(value) =&gt; <a href="#212">value</a>,
+        }
+    }
+}
+
+<span class="attr">#[doc(hidden)]
+</span><span class="kw">impl </span>From&lt;<a href="../../cairo_sys/type.cairo_status_t.html">ffi::cairo_status_t</a>&gt; <span class="kw">for </span><a href="#9-104">Error</a> {
     <span class="kw">fn </span>from(value: <a href="../../cairo_sys/type.cairo_status_t.html">ffi::cairo_status_t</a>) -&gt; <span class="self">Self </span>{
-        <span class="kw">match </span><a href="#209">value</a> {
+        <span class="kw">match </span><a href="#219">value</a> {
             <a href="../../cairo_sys/constant.STATUS_NO_MEMORY.html">ffi::STATUS_NO_MEMORY</a> =&gt; <span class="self">Self</span>::NoMemory,
             <a href="../../cairo_sys/constant.STATUS_INVALID_RESTORE.html">ffi::STATUS_INVALID_RESTORE</a> =&gt; <span class="self">Self</span>::InvalidRestore,
             <a href="../../cairo_sys/constant.STATUS_INVALID_POP_GROUP.html">ffi::STATUS_INVALID_POP_GROUP</a> =&gt; <span class="self">Self</span>::InvalidPopGroup,
@@ -601,30 +671,80 @@
             <a href="../../cairo_sys/constant.STATUS_FREETYPE_ERROR.html">ffi::STATUS_FREETYPE_ERROR</a> =&gt; <span class="self">Self</span>::FreetypeError,
             <a href="../../cairo_sys/constant.STATUS_WIN32_GDI_ERROR.html">ffi::STATUS_WIN32_GDI_ERROR</a> =&gt; <span class="self">Self</span>::Win32GdiError,
             <span class="attr">#[cfg(feature = <span class="string">"v1_16"</span>)]
-            </span><a href="../../cairo_sys/constant.STATUS_TAG_ERROR.html">ffi::STATUS_TAG_ERROR</a> =&gt; <span class="self">Self</span>::TagError,
+            </span><a href="../../cairo_sys/constant.STATUS_TAG_ERROR.html">ffi::STATUS_TAG_ERROR</a> =&gt; <a href="#95">Error::TagError</a>,
             <span class="attr">#[cfg(feature = <span class="string">"v1_18"</span>)]
-            </span><a href="../../cairo_sys/constant.STATUS_DWRITE_ERROR.html">ffi::STATUS_DWRITE_ERROR</a> =&gt; <span class="self">Self</span>::DwriteError,
+            </span><a href="../../cairo_sys/constant.STATUS_DWRITE_ERROR.html">ffi::STATUS_DWRITE_ERROR</a> =&gt; <a href="#99">Error::DwriteError</a>,
             <a href="../../cairo_sys/constant.STATUS_LAST_STATUS.html">ffi::STATUS_LAST_STATUS</a> =&gt; <span class="self">Self</span>::LastStatus,
-            value =&gt; <a href="#150"><span class="self">Self</span>::__Unknown</a>(<a href="#257">value</a>),
+            value =&gt; <a href="#103"><span class="self">Self</span>::__Unknown</a>(<a href="#267">value</a>),
         }
     }
 }
 
-<span class="attr">#[derive(Error, Debug)]
-</span><span class="kw">pub enum </span><a href="#263-268">IoError</a> {
-    <span class="attr">#[error(<span class="string">"Cairo error: {0}"</span>)]
-    </span>Cairo(<span class="attr">#[from] </span><a href="#11-151">Error</a>),
-    <span class="attr">#[error(<span class="string">"IO error: {0}"</span>)]
-    </span>Io(<span class="attr">#[from] </span><a href="https://doc.rust-lang.org/nightly/std/io/error/struct.Error.html">io::Error</a>),
+<span class="attr">#[derive(Debug)]
+</span><span class="kw">pub enum </span><a href="../../cairo/enum.IoError.html">IoError</a> {
+    Cairo(<a href="#9-104">Error</a>),
+    Io(<a href="https://doc.rust-lang.org/nightly/std/io/error/struct.Error.html">io::Error</a>),
 }
 
-<span class="attr">#[derive(Error, Debug)]
-</span><span class="kw">pub enum </span><a href="#271-276">BorrowError</a> {
-    <span class="attr">#[error(<span class="string">"Failed to borrow with Cairo error: {0}"</span>)]
-    </span>Cairo(<span class="attr">#[from] </span><a href="#11-151"><span class="kw">crate</span>::Error</a>),
-    <span class="attr">#[error(<span class="string">"Can't get exclusive access"</span>)]
-    </span>NonExclusive,
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/error/trait.Error.html">std::error::Error</a> <span class="kw">for </span><a href="#273-276">IoError</a> {
+    <span class="kw">fn </span>source(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>(<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/error/trait.Error.html">std::error::Error</a> + <span class="lifetime">'static</span>)&gt; {
+        <span class="kw">match </span><span class="self"><a href="#279">self</a> </span>{
+            <a href="#274">IoError::Cairo</a>(err) =&gt; <span class="prelude-val">Some</span>(<a href="#281">err</a>),
+            <a href="#275">IoError::Io</a>(err) =&gt; <span class="prelude-val">Some</span>(<a href="#282">err</a>),
+        }
+    }
 }
 
-<span class="kw">pub type </span><span class="prelude-ty">Result</span>&lt;T&gt; = std::result::Result&lt;T, <a href="#11-151">Error</a>&gt;;
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Display.html">fmt::Display</a> <span class="kw">for </span><a href="#273-276">IoError</a> {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, fmt: <span class="kw-2">&amp;mut </span><a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html">fmt::Formatter</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/core/fmt/type.Result.html">::core::fmt::Result</a> {
+        <span class="kw">match </span><span class="self"><a href="#288">self</a> </span>{
+            <a href="#274">IoError::Cairo</a>(err) =&gt; <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.write.html">write!</a>(<a href="#288">fmt</a>, <span class="string">"Cairo error: {err}"</span>),
+            <a href="#275">IoError::Io</a>(err) =&gt; <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.write.html">write!</a>(<a href="#288">fmt</a>, <span class="string">"IO error: {err}"</span>),
+        }
+    }
+}
+
+<span class="kw">impl </span>std::convert::From&lt;<a href="#9-104">Error</a>&gt; <span class="kw">for </span><a href="#273-276">IoError</a> {
+    <span class="kw">fn </span>from(source: <a href="#9-104">Error</a>) -&gt; <span class="self">Self </span>{
+        <a href="#274">IoError::Cairo</a>(<a href="#297">source</a>)
+    }
+}
+
+<span class="kw">impl </span>std::convert::From&lt;<a href="https://doc.rust-lang.org/nightly/std/io/error/struct.Error.html">io::Error</a>&gt; <span class="kw">for </span><a href="#273-276">IoError</a> {
+    <span class="kw">fn </span>from(source: <a href="https://doc.rust-lang.org/nightly/std/io/error/struct.Error.html">io::Error</a>) -&gt; <span class="self">Self </span>{
+        <a href="#275">IoError::Io</a>(<a href="#303">source</a>)
+    }
+}
+
+<span class="attr">#[derive(Debug)]
+</span><span class="kw">pub enum </span><a href="../../cairo/enum.BorrowError.html">BorrowError</a> {
+    Cairo(<a href="#9-104"><span class="kw">crate</span>::Error</a>),
+    NonExclusive,
+}
+
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/error/trait.Error.html">std::error::Error</a> <span class="kw">for </span><a href="#309-312">BorrowError</a> {
+    <span class="kw">fn </span>source(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>(<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/error/trait.Error.html">std::error::Error</a> + <span class="lifetime">'static</span>)&gt; {
+        <span class="kw">match </span><span class="self"><a href="#315">self</a> </span>{
+            <a href="#310">BorrowError::Cairo</a>(err) =&gt; <span class="prelude-val">Some</span>(<a href="#317">err</a>),
+            <a href="#311">BorrowError::NonExclusive</a> =&gt; <span class="prelude-val">None</span>,
+        }
+    }
+}
+
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Display.html">fmt::Display</a> <span class="kw">for </span><a href="#309-312">BorrowError</a> {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, fmt: <span class="kw-2">&amp;mut </span><a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html">fmt::Formatter</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/core/fmt/type.Result.html">fmt::Result</a> {
+        <span class="kw">match </span><span class="self"><a href="#324">self</a> </span>{
+            <a href="#310">BorrowError::Cairo</a>(err) =&gt; <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.write.html">write!</a>(<a href="#324">fmt</a>, <span class="string">"Failed to borrow with Cairo error: {err}"</span>),
+            <a href="#311">BorrowError::NonExclusive</a> =&gt; <a href="#324">fmt</a>.<a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html#method.write_str">write_str</a>(<span class="string">"Can't get exclusive access"</span>),
+        }
+    }
+}
+
+<span class="kw">impl </span>std::convert::From&lt;<a href="#9-104"><span class="kw">crate</span>::Error</a>&gt; <span class="kw">for </span><a href="#309-312">BorrowError</a> {
+    <span class="kw">fn </span>from(err: <a href="#9-104"><span class="kw">crate</span>::Error</a>) -&gt; <span class="self">Self </span>{
+        <a href="#310">BorrowError::Cairo</a>(<a href="#333">err</a>)
+    }
+}
+
+<span class="kw">pub type </span><span class="prelude-ty">Result</span>&lt;T&gt; = std::result::Result&lt;T, <a href="#9-104">Error</a>&gt;;
 </code></pre></div></section></main></body></html>

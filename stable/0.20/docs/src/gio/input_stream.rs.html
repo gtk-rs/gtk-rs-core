@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/input_stream.rs`."><title>input_stream.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.81.0-nightly (6be96e386 2024-07-09)" data-channel="nightly" data-search-js="search-d234aafac6c221dd.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/input_stream.rs`."><title>input_stream.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-d10b2a06af903387.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.82.0-nightly (41dd149fd 2024-08-11)" data-channel="nightly" data-search-js="search-ef54e092fea9c776.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-04a29ac50d05d0b1.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -886,9 +886,18 @@
 <a href="#813" id="813">813</a>
 <a href="#814" id="814">814</a>
 <a href="#815" id="815">815</a>
+<a href="#816" id="816">816</a>
+<a href="#817" id="817">817</a>
+<a href="#818" id="818">818</a>
+<a href="#819" id="819">819</a>
+<a href="#820" id="820">820</a>
+<a href="#821" id="821">821</a>
+<a href="#822" id="822">822</a>
+<a href="#823" id="823">823</a>
+<a href="#824" id="824">824</a>
 </pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
-</span><span class="kw">use </span>std::{<a href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html">future::Future</a>, <a href="https://doc.rust-lang.org/nightly/std/io/index.html">io</a>, <a href="https://doc.rust-lang.org/nightly/core/mem/index.html">mem</a>, <a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html">pin::Pin</a>, <a href="https://doc.rust-lang.org/nightly/core/ptr/index.html">ptr</a>};
+</span><span class="kw">use </span>std::{<a href="https://doc.rust-lang.org/nightly/alloc/fmt/index.html">fmt</a>, <a href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html">future::Future</a>, <a href="https://doc.rust-lang.org/nightly/std/io/index.html">io</a>, <a href="https://doc.rust-lang.org/nightly/core/mem/index.html">mem</a>, <a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html">pin::Pin</a>, <a href="https://doc.rust-lang.org/nightly/core/ptr/index.html">ptr</a>};
 
 <span class="kw">use </span>futures_core::task::{<a href="https://doc.rust-lang.org/nightly/core/task/wake/struct.Context.html">Context</a>, <a href="https://doc.rust-lang.org/nightly/core/task/poll/enum.Poll.html">Poll</a>};
 <span class="kw">use </span>futures_io::{AsyncBufRead, AsyncRead};
@@ -1446,7 +1455,7 @@
         <span class="kw">match </span><a class="self" href="#557">self</a>.state {
             <a href="#459">State::Failed</a>(kind) =&gt; <a href="https://doc.rust-lang.org/nightly/core/task/poll/enum.Poll.html#variant.Ready">Poll::Ready</a>(<span class="prelude-val">Err</span>(<a href="https://doc.rust-lang.org/nightly/std/io/error/struct.Error.html#method.new">io::Error::new</a>(
                 <a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html#tymethod.from">io::ErrorKind::from</a>(<a href="#559">kind</a>),
-                <a href="#622">BufReadError::Failed</a>,
+                <a href="#621">BufReadError::Failed</a>,
             ))),
             <a href="#455-458">State::HasData</a> { .. } =&gt; <a class="self" href="#557">self</a>.<a href="#530-539">data</a>(),
             <a href="#446">State::Transitioning</a> =&gt; <a class="macro" href="https://doc.rust-lang.org/nightly/std/macro.panic.html">panic!</a>(<span class="string">"Invalid state"</span>),
@@ -1504,10 +1513,19 @@
     }
 }
 
-<span class="attr">#[derive(thiserror::Error, Debug)]
-</span><span class="kw">enum </span><a href="#620-623">BufReadError</a> {
-    <span class="attr">#[error(<span class="string">"Previous read operation failed"</span>)]
-    </span>Failed,
+<span class="attr">#[derive(Debug)]
+</span><span class="kw">enum </span>BufReadError {
+    Failed,
+}
+
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/error/trait.Error.html">std::error::Error</a> <span class="kw">for </span><a href="#620-622">BufReadError</a> {}
+
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Display.html">fmt::Display</a> <span class="kw">for </span><a href="#620-622">BufReadError</a> {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, fmt: <span class="kw-2">&amp;mut </span><a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html">fmt::Formatter</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/core/fmt/type.Result.html">fmt::Result</a> {
+        <span class="kw">match </span><span class="self"><a href="#627">self</a> </span>{
+            <span class="self">Self</span>::Failed =&gt; <a href="#627">fmt</a>.<a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html#method.write_str">write_str</a>(<span class="string">"Previous read operation failed"</span>),
+        }
+    }
 }
 
 <span class="kw">impl</span>&lt;T: IsA&lt;<a href="auto/input_stream.rs.html#9-35">InputStream</a>&gt;&gt; AsyncRead <span class="kw">for </span>InputStreamAsyncBufRead&lt;T&gt; {
@@ -1516,19 +1534,19 @@
         cx: <span class="kw-2">&amp;mut </span><a href="https://doc.rust-lang.org/nightly/core/task/wake/struct.Context.html">Context</a>,
         out_buf: <span class="kw-2">&amp;mut </span>[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>],
     ) -&gt; Poll&lt;io::Result&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>&gt;&gt; {
-        <span class="kw">let </span>reader = <a class="self" href="#627">self</a>.<a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html#method.get_mut">get_mut</a>();
-        <span class="kw">let </span>poll = <a href="#631">reader</a>.<a href="#557-588">poll_fill_buf</a>(<a href="#628">cx</a>);
+        <span class="kw">let </span>reader = <a class="self" href="#636">self</a>.<a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html#method.get_mut">get_mut</a>();
+        <span class="kw">let </span>poll = <a href="#640">reader</a>.<a href="#557-588">poll_fill_buf</a>(<a href="#637">cx</a>);
 
-        <span class="kw">let </span>poll = <a href="#632">poll</a>.<a href="https://doc.rust-lang.org/nightly/core/task/poll/enum.Poll.html#method.map_ok">map_ok</a>(|buffer| {
-            <span class="kw">let </span>copied = <a href="#634">buffer</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.len">len</a>().<a href="https://doc.rust-lang.org/nightly/core/cmp/trait.Ord.html#tymethod.min">min</a>(<a href="#629">out_buf</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.len">len</a>());
-            <a href="#629">out_buf</a>[..<a href="#635">copied</a>].<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.copy_from_slice">copy_from_slice</a>(<span class="kw-2">&amp;</span><a href="#634">buffer</a>[..<a href="#635">copied</a>]);
-            <a href="#635">copied</a>
+        <span class="kw">let </span>poll = <a href="#641">poll</a>.<a href="https://doc.rust-lang.org/nightly/core/task/poll/enum.Poll.html#method.map_ok">map_ok</a>(|buffer| {
+            <span class="kw">let </span>copied = <a href="#643">buffer</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.len">len</a>().<a href="https://doc.rust-lang.org/nightly/core/cmp/trait.Ord.html#tymethod.min">min</a>(<a href="#638">out_buf</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.len">len</a>());
+            <a href="#638">out_buf</a>[..<a href="#644">copied</a>].<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.copy_from_slice">copy_from_slice</a>(<span class="kw-2">&amp;</span><a href="#643">buffer</a>[..<a href="#644">copied</a>]);
+            <a href="#644">copied</a>
         });
 
-        <span class="kw">if let </span><a href="https://doc.rust-lang.org/nightly/core/task/poll/enum.Poll.html#variant.Ready">Poll::Ready</a>(<span class="prelude-val">Ok</span>(consumed)) = <a href="#634">poll</a> {
-            <a href="#631">reader</a>.<a href="#590-616">consume</a>(<a href="#640">consumed</a>);
+        <span class="kw">if let </span><a href="https://doc.rust-lang.org/nightly/core/task/poll/enum.Poll.html#variant.Ready">Poll::Ready</a>(<span class="prelude-val">Ok</span>(consumed)) = <a href="#643">poll</a> {
+            <a href="#640">reader</a>.<a href="#590-616">consume</a>(<a href="#649">consumed</a>);
         }
-        <a href="#634">poll</a>
+        <a href="#643">poll</a>
     }
 }
 
@@ -1537,11 +1555,11 @@
         <span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;,
         cx: <span class="kw-2">&amp;mut </span><a href="https://doc.rust-lang.org/nightly/core/task/wake/struct.Context.html">Context</a>,
     ) -&gt; Poll&lt;<span class="prelude-ty">Result</span>&lt;<span class="kw-2">&amp;</span>[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>], <a href="https://doc.rust-lang.org/nightly/std/io/error/struct.Error.html">futures_io::Error</a>&gt;&gt; {
-        <a class="self" href="#649">self</a>.<a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html#method.get_mut">get_mut</a>().<a href="#557-588">poll_fill_buf</a>(<a href="#650">cx</a>)
+        <a class="self" href="#658">self</a>.<a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html#method.get_mut">get_mut</a>().<a href="#557-588">poll_fill_buf</a>(<a href="#659">cx</a>)
     }
 
     <span class="kw">fn </span>consume(<span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;, amt: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) {
-        <a class="self" href="#655">self</a>.<a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html#method.get_mut">get_mut</a>().<a href="#590-616">consume</a>(<a href="#655">amt</a>);
+        <a class="self" href="#664">self</a>.<a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html#method.get_mut">get_mut</a>().<a href="#590-616">consume</a>(<a href="#664">amt</a>);
     }
 }
 

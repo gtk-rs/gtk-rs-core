@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/key_file.rs`."><title>key_file.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.81.0-nightly (6be96e386 2024-07-09)" data-channel="nightly" data-search-js="search-d234aafac6c221dd.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/key_file.rs`."><title>key_file.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-d10b2a06af903387.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.82.0-nightly (41dd149fd 2024-08-11)" data-channel="nightly" data-search-js="search-ef54e092fea9c776.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-04a29ac50d05d0b1.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -579,252 +579,13 @@
 <a href="#506" id="506">506</a>
 <a href="#507" id="507">507</a>
 <a href="#508" id="508">508</a>
-<a href="#509" id="509">509</a>
-<a href="#510" id="510">510</a>
-<a href="#511" id="511">511</a>
-<a href="#512" id="512">512</a>
-<a href="#513" id="513">513</a>
-<a href="#514" id="514">514</a>
-<a href="#515" id="515">515</a>
-<a href="#516" id="516">516</a>
-<a href="#517" id="517">517</a>
-<a href="#518" id="518">518</a>
-<a href="#519" id="519">519</a>
-<a href="#520" id="520">520</a>
-<a href="#521" id="521">521</a>
-<a href="#522" id="522">522</a>
-<a href="#523" id="523">523</a>
-<a href="#524" id="524">524</a>
-<a href="#525" id="525">525</a>
-<a href="#526" id="526">526</a>
-<a href="#527" id="527">527</a>
-<a href="#528" id="528">528</a>
-<a href="#529" id="529">529</a>
-<a href="#530" id="530">530</a>
-<a href="#531" id="531">531</a>
-<a href="#532" id="532">532</a>
-<a href="#533" id="533">533</a>
-<a href="#534" id="534">534</a>
-<a href="#535" id="535">535</a>
-<a href="#536" id="536">536</a>
-<a href="#537" id="537">537</a>
-<a href="#538" id="538">538</a>
-<a href="#539" id="539">539</a>
-<a href="#540" id="540">540</a>
-<a href="#541" id="541">541</a>
-<a href="#542" id="542">542</a>
-<a href="#543" id="543">543</a>
-<a href="#544" id="544">544</a>
-<a href="#545" id="545">545</a>
-<a href="#546" id="546">546</a>
-<a href="#547" id="547">547</a>
-<a href="#548" id="548">548</a>
-<a href="#549" id="549">549</a>
-<a href="#550" id="550">550</a>
-<a href="#551" id="551">551</a>
-<a href="#552" id="552">552</a>
-<a href="#553" id="553">553</a>
-<a href="#554" id="554">554</a>
-<a href="#555" id="555">555</a>
-<a href="#556" id="556">556</a>
-<a href="#557" id="557">557</a>
-<a href="#558" id="558">558</a>
-<a href="#559" id="559">559</a>
-<a href="#560" id="560">560</a>
-<a href="#561" id="561">561</a>
-<a href="#562" id="562">562</a>
-<a href="#563" id="563">563</a>
-<a href="#564" id="564">564</a>
-<a href="#565" id="565">565</a>
-<a href="#566" id="566">566</a>
-<a href="#567" id="567">567</a>
-<a href="#568" id="568">568</a>
-<a href="#569" id="569">569</a>
-<a href="#570" id="570">570</a>
-<a href="#571" id="571">571</a>
-<a href="#572" id="572">572</a>
-<a href="#573" id="573">573</a>
-<a href="#574" id="574">574</a>
-<a href="#575" id="575">575</a>
-<a href="#576" id="576">576</a>
-<a href="#577" id="577">577</a>
-<a href="#578" id="578">578</a>
-<a href="#579" id="579">579</a>
-<a href="#580" id="580">580</a>
-<a href="#581" id="581">581</a>
-<a href="#582" id="582">582</a>
-<a href="#583" id="583">583</a>
-<a href="#584" id="584">584</a>
-<a href="#585" id="585">585</a>
-<a href="#586" id="586">586</a>
-<a href="#587" id="587">587</a>
-<a href="#588" id="588">588</a>
-<a href="#589" id="589">589</a>
-<a href="#590" id="590">590</a>
-<a href="#591" id="591">591</a>
-<a href="#592" id="592">592</a>
-<a href="#593" id="593">593</a>
-<a href="#594" id="594">594</a>
-<a href="#595" id="595">595</a>
-<a href="#596" id="596">596</a>
-<a href="#597" id="597">597</a>
-<a href="#598" id="598">598</a>
-<a href="#599" id="599">599</a>
-<a href="#600" id="600">600</a>
-<a href="#601" id="601">601</a>
-<a href="#602" id="602">602</a>
-<a href="#603" id="603">603</a>
-<a href="#604" id="604">604</a>
-<a href="#605" id="605">605</a>
-<a href="#606" id="606">606</a>
-<a href="#607" id="607">607</a>
-<a href="#608" id="608">608</a>
-<a href="#609" id="609">609</a>
-<a href="#610" id="610">610</a>
-<a href="#611" id="611">611</a>
-<a href="#612" id="612">612</a>
-<a href="#613" id="613">613</a>
-<a href="#614" id="614">614</a>
-<a href="#615" id="615">615</a>
-<a href="#616" id="616">616</a>
-<a href="#617" id="617">617</a>
-<a href="#618" id="618">618</a>
-<a href="#619" id="619">619</a>
-<a href="#620" id="620">620</a>
-<a href="#621" id="621">621</a>
-<a href="#622" id="622">622</a>
-<a href="#623" id="623">623</a>
-<a href="#624" id="624">624</a>
-<a href="#625" id="625">625</a>
-<a href="#626" id="626">626</a>
-<a href="#627" id="627">627</a>
-<a href="#628" id="628">628</a>
-<a href="#629" id="629">629</a>
-<a href="#630" id="630">630</a>
-<a href="#631" id="631">631</a>
-<a href="#632" id="632">632</a>
-<a href="#633" id="633">633</a>
-<a href="#634" id="634">634</a>
-<a href="#635" id="635">635</a>
-<a href="#636" id="636">636</a>
-<a href="#637" id="637">637</a>
-<a href="#638" id="638">638</a>
-<a href="#639" id="639">639</a>
-<a href="#640" id="640">640</a>
-<a href="#641" id="641">641</a>
-<a href="#642" id="642">642</a>
-<a href="#643" id="643">643</a>
-<a href="#644" id="644">644</a>
-<a href="#645" id="645">645</a>
-<a href="#646" id="646">646</a>
-<a href="#647" id="647">647</a>
-<a href="#648" id="648">648</a>
-<a href="#649" id="649">649</a>
-<a href="#650" id="650">650</a>
-<a href="#651" id="651">651</a>
-<a href="#652" id="652">652</a>
-<a href="#653" id="653">653</a>
-<a href="#654" id="654">654</a>
-<a href="#655" id="655">655</a>
-<a href="#656" id="656">656</a>
-<a href="#657" id="657">657</a>
-<a href="#658" id="658">658</a>
-<a href="#659" id="659">659</a>
-<a href="#660" id="660">660</a>
-<a href="#661" id="661">661</a>
-<a href="#662" id="662">662</a>
-<a href="#663" id="663">663</a>
-<a href="#664" id="664">664</a>
-<a href="#665" id="665">665</a>
-<a href="#666" id="666">666</a>
-<a href="#667" id="667">667</a>
-<a href="#668" id="668">668</a>
-<a href="#669" id="669">669</a>
-<a href="#670" id="670">670</a>
-<a href="#671" id="671">671</a>
-<a href="#672" id="672">672</a>
-<a href="#673" id="673">673</a>
-<a href="#674" id="674">674</a>
-<a href="#675" id="675">675</a>
-<a href="#676" id="676">676</a>
-<a href="#677" id="677">677</a>
-<a href="#678" id="678">678</a>
-<a href="#679" id="679">679</a>
-<a href="#680" id="680">680</a>
-<a href="#681" id="681">681</a>
-<a href="#682" id="682">682</a>
-<a href="#683" id="683">683</a>
-<a href="#684" id="684">684</a>
-<a href="#685" id="685">685</a>
-<a href="#686" id="686">686</a>
-<a href="#687" id="687">687</a>
-<a href="#688" id="688">688</a>
-<a href="#689" id="689">689</a>
-<a href="#690" id="690">690</a>
-<a href="#691" id="691">691</a>
-<a href="#692" id="692">692</a>
-<a href="#693" id="693">693</a>
-<a href="#694" id="694">694</a>
-<a href="#695" id="695">695</a>
-<a href="#696" id="696">696</a>
-<a href="#697" id="697">697</a>
-<a href="#698" id="698">698</a>
-<a href="#699" id="699">699</a>
-<a href="#700" id="700">700</a>
-<a href="#701" id="701">701</a>
-<a href="#702" id="702">702</a>
-<a href="#703" id="703">703</a>
-<a href="#704" id="704">704</a>
-<a href="#705" id="705">705</a>
-<a href="#706" id="706">706</a>
-<a href="#707" id="707">707</a>
-<a href="#708" id="708">708</a>
-<a href="#709" id="709">709</a>
-<a href="#710" id="710">710</a>
-<a href="#711" id="711">711</a>
-<a href="#712" id="712">712</a>
-<a href="#713" id="713">713</a>
-<a href="#714" id="714">714</a>
-<a href="#715" id="715">715</a>
-<a href="#716" id="716">716</a>
-<a href="#717" id="717">717</a>
-<a href="#718" id="718">718</a>
-<a href="#719" id="719">719</a>
-<a href="#720" id="720">720</a>
-<a href="#721" id="721">721</a>
-<a href="#722" id="722">722</a>
-<a href="#723" id="723">723</a>
-<a href="#724" id="724">724</a>
-<a href="#725" id="725">725</a>
-<a href="#726" id="726">726</a>
-<a href="#727" id="727">727</a>
-<a href="#728" id="728">728</a>
-<a href="#729" id="729">729</a>
-<a href="#730" id="730">730</a>
-<a href="#731" id="731">731</a>
-<a href="#732" id="732">732</a>
-<a href="#733" id="733">733</a>
-<a href="#734" id="734">734</a>
-<a href="#735" id="735">735</a>
-<a href="#736" id="736">736</a>
-<a href="#737" id="737">737</a>
-<a href="#738" id="738">738</a>
-<a href="#739" id="739">739</a>
-<a href="#740" id="740">740</a>
-<a href="#741" id="741">741</a>
-<a href="#742" id="742">742</a>
-<a href="#743" id="743">743</a>
-<a href="#744" id="744">744</a>
-<a href="#745" id="745">745</a>
-<a href="#746" id="746">746</a>
-<a href="#747" id="747">747</a>
 </pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
 </span><span class="kw">use </span>std::{<a href="https://doc.rust-lang.org/nightly/core/mem/index.html">mem</a>, <a href="https://doc.rust-lang.org/nightly/std/path/index.html">path</a>, <a href="https://doc.rust-lang.org/nightly/core/ptr/index.html">ptr</a>};
 
-<span class="kw">use crate</span>::{ffi, <a href="lib.rs.html#162">translate</a>::<span class="kw-2">*</span>, <a href="error.rs.html#10-28">Error</a>, <a href="gstring.rs.html#996">GString</a>, <a href="gstring.rs.html#676">GStringPtr</a>, <a href="auto/key_file.rs.html#7-291">KeyFile</a>, <a href="auto/flags.rs.html#267-288">KeyFileFlags</a>, <a href="collections/ptr_slice.rs.html#18-26">PtrSlice</a>};
+<span class="kw">use crate</span>::{ffi, <a href="lib.rs.html#162">translate</a>::<span class="kw-2">*</span>, <a href="error.rs.html#10-25">Error</a>, <a href="gstring.rs.html#1036">GString</a>, <a href="gstring.rs.html#716">GStringPtr</a>, <a href="auto/key_file.rs.html#7-153">KeyFile</a>, <a href="auto/flags.rs.html#267-288">KeyFileFlags</a>, <a href="collections/ptr_slice.rs.html#18-26">PtrSlice</a>};
 
-<span class="kw">impl </span><a href="auto/key_file.rs.html#7-291">KeyFile</a> {
+<span class="kw">impl </span><a href="auto/key_file.rs.html#7-153">KeyFile</a> {
     <span class="doccomment">/// Writes the contents of @self to @filename using
     /// g_file_set_contents(). If you need stricter guarantees about durability of
     /// the written file than are provided by g_file_set_contents(), use
@@ -838,56 +599,24 @@
     /// # Returns
     ///
     /// [`true`] if successful, else [`false`] with @error set
-    </span><span class="comment">// rustdoc-stripper-ignore-next-stop
-    </span><span class="doccomment">/// Writes the contents of @self to @filename using
-    /// g_file_set_contents(). If you need stricter guarantees about durability of
-    /// the written file than are provided by g_file_set_contents(), use
-    /// g_file_set_contents_full() with the return value of g_key_file_to_data().
-    ///
-    /// This function can fail for any of the reasons that
-    /// g_file_set_contents() may fail.
-    /// ## `filename`
-    /// the name of the file to write to
-    ///
-    /// # Returns
-    ///
-    /// [`true`] if successful, else [`false`] with @error set
     </span><span class="attr">#[doc(alias = <span class="string">"g_key_file_save_to_file"</span>)]
-    </span><span class="kw">pub fn </span>save_to_file&lt;T: AsRef&lt;<a href="https://doc.rust-lang.org/nightly/std/path/struct.Path.html">std::path::Path</a>&gt;&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, filename: T) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="error.rs.html#10-28">Error</a>&gt; {
+    </span><span class="kw">pub fn </span>save_to_file&lt;T: AsRef&lt;<a href="https://doc.rust-lang.org/nightly/std/path/struct.Path.html">std::path::Path</a>&gt;&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, filename: T) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="error.rs.html#10-25">Error</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>error = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
             <span class="kw">let _ </span>= ffi::g_key_file_save_to_file(
-                <a class="self" href="#36">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#36">filename</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-                <span class="kw-2">&amp;mut </span><a href="#38">error</a>,
+                <a class="self" href="#22">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#22">filename</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+                <span class="kw-2">&amp;mut </span><a href="#24">error</a>,
             );
             <span class="kw">if </span>error.is_null() {
                 <span class="prelude-val">Ok</span>(())
             } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(<a href="translate.rs.html#1634-1636">from_glib_full</a>(<a href="#38">error</a>))
+                <span class="prelude-val">Err</span>(<a href="translate.rs.html#1634-1636">from_glib_full</a>(<a href="#24">error</a>))
             }
         }
     }
 
     <span class="doccomment">/// This function looks for a key file named @file in the paths
-    /// returned from g_get_user_data_dir() and g_get_system_data_dirs(),
-    /// loads the file into @self and returns the file's full path in
-    /// @full_path.  If the file could not be loaded then an `error` is
-    /// set to either a #GFileError or #GKeyFileError.
-    /// ## `file`
-    /// a relative path to a filename to open and parse
-    /// ## `flags`
-    /// flags from #GKeyFileFlags
-    ///
-    /// # Returns
-    ///
-    /// [`true`] if a key file could be loaded, [`false`] otherwise
-    ///
-    /// ## `full_path`
-    /// return location for a string containing the full path
-    ///   of the file, or [`None`]
-    </span><span class="comment">// rustdoc-stripper-ignore-next-stop
-    </span><span class="doccomment">/// This function looks for a key file named @file in the paths
     /// returned from g_get_user_data_dir() and g_get_system_data_dirs(),
     /// loads the file into @self and returns the file's full path in
     /// @full_path.  If the file could not be loaded then an `error` is
@@ -909,51 +638,27 @@
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         file: T,
         flags: <a href="auto/flags.rs.html#267-288">KeyFileFlags</a>,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="https://doc.rust-lang.org/nightly/std/path/struct.PathBuf.html">path::PathBuf</a>, <a href="error.rs.html#10-28">Error</a>&gt; {
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="https://doc.rust-lang.org/nightly/std/path/struct.PathBuf.html">path::PathBuf</a>, <a href="error.rs.html#10-25">Error</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>error = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
             <span class="kw">let </span><span class="kw-2">mut </span>full_path: <span class="kw-2">*mut </span>libc::c_char = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
             <span class="kw">let _ </span>= ffi::g_key_file_load_from_data_dirs(
-                <a class="self" href="#89">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#90">file</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-                <span class="kw-2">&amp;mut </span><a href="#95">full_path</a>,
-                <a href="#91">flags</a>.<a href="translate.rs.html#334">into_glib</a>(),
-                <span class="kw-2">&amp;mut </span><a href="#94">error</a>,
+                <a class="self" href="#57">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#58">file</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+                <span class="kw-2">&amp;mut </span><a href="#63">full_path</a>,
+                <a href="#59">flags</a>.<a href="translate.rs.html#334">into_glib</a>(),
+                <span class="kw-2">&amp;mut </span><a href="#62">error</a>,
             );
             <span class="kw">if </span>error.is_null() {
-                <span class="kw">let </span>path: <a href="gstring.rs.html#996">GString</a> = <a href="translate.rs.html#1634-1636">from_glib_full</a>(<a href="#95">full_path</a>);
-                <span class="prelude-val">Ok</span>(<a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html#tymethod.from">path::PathBuf::from</a>(<span class="kw-2">&amp;</span><a href="#104">path</a>))
+                <span class="kw">let </span>path: <a href="gstring.rs.html#1036">GString</a> = <a href="translate.rs.html#1634-1636">from_glib_full</a>(<a href="#63">full_path</a>);
+                <span class="prelude-val">Ok</span>(<a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html#tymethod.from">path::PathBuf::from</a>(<span class="kw-2">&amp;</span><a href="#72">path</a>))
             } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(<a href="translate.rs.html#1634-1636">from_glib_full</a>(<a href="#94">error</a>))
+                <span class="prelude-val">Err</span>(<a href="translate.rs.html#1634-1636">from_glib_full</a>(<a href="#62">error</a>))
             }
         }
     }
 
     <span class="doccomment">/// This function looks for a key file named @file in the paths
-    /// specified in @search_dirs, loads the file into @self and
-    /// returns the file's full path in @full_path.
-    ///
-    /// If the file could not be found in any of the @search_dirs,
-    /// [`KeyFileError::NotFound`][crate::KeyFileError::NotFound] is returned. If
-    /// the file is found but the OS returns an error when opening or reading the
-    /// file, a `G_FILE_ERROR` is returned. If there is a problem parsing the file, a
-    /// `G_KEY_FILE_ERROR` is returned.
-    /// ## `file`
-    /// a relative path to a filename to open and parse
-    /// ## `search_dirs`
-    /// [`None`]-terminated array of directories to search
-    /// ## `flags`
-    /// flags from #GKeyFileFlags
-    ///
-    /// # Returns
-    ///
-    /// [`true`] if a key file could be loaded, [`false`] otherwise
-    ///
-    /// ## `full_path`
-    /// return location for a string containing the full path
-    ///   of the file, or [`None`]
-    </span><span class="comment">// rustdoc-stripper-ignore-next-stop
-    </span><span class="doccomment">/// This function looks for a key file named @file in the paths
     /// specified in @search_dirs, loads the file into @self and
     /// returns the file's full path in @full_path.
     ///
@@ -982,25 +687,25 @@
         file: T,
         search_dirs: <span class="kw-2">&amp;</span>[U],
         flags: <a href="auto/flags.rs.html#267-288">KeyFileFlags</a>,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="https://doc.rust-lang.org/nightly/std/path/struct.PathBuf.html">path::PathBuf</a>, <a href="error.rs.html#10-28">Error</a>&gt; {
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="https://doc.rust-lang.org/nightly/std/path/struct.PathBuf.html">path::PathBuf</a>, <a href="error.rs.html#10-25">Error</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>search_dirs: Vec&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/path/struct.Path.html">std::path::Path</a>&gt; =
-                <a href="#163">search_dirs</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">AsRef::as_ref</a>).<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.collect">collect</a>();
+                <a href="#107">search_dirs</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">AsRef::as_ref</a>).<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.collect">collect</a>();
             <span class="kw">let </span><span class="kw-2">mut </span>error = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
             <span class="kw">let </span><span class="kw-2">mut </span>full_path: <span class="kw-2">*mut </span>libc::c_char = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
             <span class="kw">let _ </span>= ffi::g_key_file_load_from_dirs(
-                <a class="self" href="#161">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#162">file</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#167">search_dirs</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-                <span class="kw-2">&amp;mut </span><a href="#170">full_path</a>,
-                <a href="#164">flags</a>.<a href="translate.rs.html#334">into_glib</a>(),
-                <span class="kw-2">&amp;mut </span><a href="#169">error</a>,
+                <a class="self" href="#105">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#106">file</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#111">search_dirs</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+                <span class="kw-2">&amp;mut </span><a href="#114">full_path</a>,
+                <a href="#108">flags</a>.<a href="translate.rs.html#334">into_glib</a>(),
+                <span class="kw-2">&amp;mut </span><a href="#113">error</a>,
             );
             <span class="kw">if </span>error.is_null() {
-                <span class="kw">let </span>path: <a href="gstring.rs.html#996">GString</a> = <a href="translate.rs.html#1634-1636">from_glib_full</a>(<a href="#170">full_path</a>);
-                <span class="prelude-val">Ok</span>(<a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html#tymethod.from">path::PathBuf::from</a>(<span class="kw-2">&amp;</span><a href="#180">path</a>))
+                <span class="kw">let </span>path: <a href="gstring.rs.html#1036">GString</a> = <a href="translate.rs.html#1634-1636">from_glib_full</a>(<a href="#114">full_path</a>);
+                <span class="prelude-val">Ok</span>(<a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html#tymethod.from">path::PathBuf::from</a>(<span class="kw-2">&amp;</span><a href="#124">path</a>))
             } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(<a href="translate.rs.html#1634-1636">from_glib_full</a>(<a href="#169">error</a>))
+                <span class="prelude-val">Err</span>(<a href="translate.rs.html#1634-1636">from_glib_full</a>(<a href="#113">error</a>))
             }
         }
     }
@@ -1018,26 +723,12 @@
     /// ## `length`
     /// return location for the length of the
     ///   returned string, or [`None`]
-    </span><span class="comment">// rustdoc-stripper-ignore-next-stop
-    </span><span class="doccomment">/// This function outputs @self as a string.
-    ///
-    /// Note that this function never reports an error,
-    /// so it is safe to pass [`None`] as @error.
-    ///
-    /// # Returns
-    ///
-    /// a newly allocated string holding
-    ///   the contents of the #GKeyFile
-    ///
-    /// ## `length`
-    /// return location for the length of the
-    ///   returned string, or [`None`]
     </span><span class="attr">#[doc(alias = <span class="string">"g_key_file_to_data"</span>)]
-    </span><span class="kw">pub fn </span>to_data(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="gstring.rs.html#996">GString</a> {
+    </span><span class="kw">pub fn </span>to_data(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="gstring.rs.html#1036">GString</a> {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>ret =
-                ffi::g_key_file_to_data(<a class="self" href="#216">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>, <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>(), <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>());
-            <a href="translate.rs.html#1634-1636">from_glib_full</a>(<a href="#218">ret</a>)
+                ffi::g_key_file_to_data(<a class="self" href="#146">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>, <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>(), <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>());
+            <a href="translate.rs.html#1634-1636">from_glib_full</a>(<a href="#148">ret</a>)
         }
     }
 
@@ -1052,25 +743,13 @@
     ///
     /// ## `length`
     /// return location for the number of returned groups, or [`None`]
-    </span><span class="comment">// rustdoc-stripper-ignore-next-stop
-    </span><span class="doccomment">/// Returns all groups in the key file loaded with @self.
-    /// The array of returned groups will be [`None`]-terminated, so
-    /// @length may optionally be [`None`].
-    ///
-    /// # Returns
-    ///
-    /// a newly-allocated [`None`]-terminated array of strings.
-    ///   Use g_strfreev() to free it.
-    ///
-    /// ## `length`
-    /// return location for the number of returned groups, or [`None`]
     </span><span class="attr">#[doc(alias = <span class="string">"g_key_file_get_groups"</span>)]
     #[doc(alias = <span class="string">"get_groups"</span>)]
-    </span><span class="kw">pub fn </span>groups(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; PtrSlice&lt;<a href="gstring.rs.html#676">GStringPtr</a>&gt; {
+    </span><span class="kw">pub fn </span>groups(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; PtrSlice&lt;<a href="gstring.rs.html#716">GStringPtr</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>length = <a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.uninit">mem::MaybeUninit::uninit</a>();
-            <span class="kw">let </span>ret = ffi::g_key_file_get_groups(<a class="self" href="#249">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>, <a href="#251">length</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.as_mut_ptr">as_mut_ptr</a>());
-            <a href="translate.rs.html#1926">FromGlibContainer::from_glib_full_num</a>(<a href="#252">ret</a>, <a href="#251">length</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.assume_init">assume_init</a>() <span class="kw">as _</span>)
+            <span class="kw">let </span>ret = ffi::g_key_file_get_groups(<a class="self" href="#167">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>, <a href="#169">length</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.as_mut_ptr">as_mut_ptr</a>());
+            <a href="translate.rs.html#1926">FromGlibContainer::from_glib_full_num</a>(<a href="#170">ret</a>, <a href="#169">length</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.assume_init">assume_init</a>() <span class="kw">as _</span>)
         }
     }
 
@@ -1089,41 +768,25 @@
     ///
     /// ## `length`
     /// return location for the number of keys returned, or [`None`]
-    </span><span class="comment">// rustdoc-stripper-ignore-next-stop
-    </span><span class="doccomment">/// Returns all keys for the group name @group_name.  The array of
-    /// returned keys will be [`None`]-terminated, so @length may
-    /// optionally be [`None`]. In the event that the @group_name cannot
-    /// be found, [`None`] is returned and @error is set to
-    /// [`KeyFileError::GroupNotFound`][crate::KeyFileError::GroupNotFound].
-    /// ## `group_name`
-    /// a group name
-    ///
-    /// # Returns
-    ///
-    /// a newly-allocated [`None`]-terminated array of strings.
-    ///     Use g_strfreev() to free it.
-    ///
-    /// ## `length`
-    /// return location for the number of keys returned, or [`None`]
     </span><span class="attr">#[doc(alias = <span class="string">"g_key_file_get_keys"</span>)]
     #[doc(alias = <span class="string">"get_keys"</span>)]
-    </span><span class="kw">pub fn </span>keys(<span class="kw-2">&amp;</span><span class="self">self</span>, group_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Result</span>&lt;PtrSlice&lt;<a href="gstring.rs.html#676">GStringPtr</a>&gt;, <a href="error.rs.html#10-28"><span class="kw">crate</span>::Error</a>&gt; {
+    </span><span class="kw">pub fn </span>keys(<span class="kw-2">&amp;</span><span class="self">self</span>, group_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Result</span>&lt;PtrSlice&lt;<a href="gstring.rs.html#716">GStringPtr</a>&gt;, <a href="error.rs.html#10-25"><span class="kw">crate</span>::Error</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>length = <a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.uninit">mem::MaybeUninit::uninit</a>();
             <span class="kw">let </span><span class="kw-2">mut </span>error = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
             <span class="kw">let </span>ret = ffi::g_key_file_get_keys(
-                <a class="self" href="#290">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#290">group_name</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#292">length</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.as_mut_ptr">as_mut_ptr</a>(),
-                <span class="kw-2">&amp;mut </span><a href="#293">error</a>,
+                <a class="self" href="#192">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#192">group_name</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#194">length</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.as_mut_ptr">as_mut_ptr</a>(),
+                <span class="kw-2">&amp;mut </span><a href="#195">error</a>,
             );
             <span class="kw">if </span>error.is_null() {
                 <span class="prelude-val">Ok</span>(<a href="translate.rs.html#1926">FromGlibContainer::from_glib_full_num</a>(
-                    <a href="#294">ret</a>,
-                    <a href="#292">length</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.assume_init">assume_init</a>() <span class="kw">as _</span>,
+                    <a href="#196">ret</a>,
+                    <a href="#194">length</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.assume_init">assume_init</a>() <span class="kw">as _</span>,
                 ))
             } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(<a href="translate.rs.html#1634-1636">from_glib_full</a>(<a href="#293">error</a>))
+                <span class="prelude-val">Err</span>(<a href="translate.rs.html#1634-1636">from_glib_full</a>(<a href="#195">error</a>))
             }
         }
     }
@@ -1144,38 +807,21 @@
     ///
     /// the value associated with the key as a boolean,
     ///    or [`false`] if the key was not found or could not be parsed.
-    </span><span class="comment">// rustdoc-stripper-ignore-next-stop
-    </span><span class="doccomment">/// Returns the value associated with @key under @group_name as a
-    /// boolean.
-    ///
-    /// If @key cannot be found then [`false`] is returned and @error is set
-    /// to [`KeyFileError::KeyNotFound`][crate::KeyFileError::KeyNotFound]. Likewise, if the value
-    /// associated with @key cannot be interpreted as a boolean then [`false`]
-    /// is returned and @error is set to [`KeyFileError::InvalidValue`][crate::KeyFileError::InvalidValue].
-    /// ## `group_name`
-    /// a group name
-    /// ## `key`
-    /// a key
-    ///
-    /// # Returns
-    ///
-    /// the value associated with the key as a boolean,
-    ///    or [`false`] if the key was not found or could not be parsed.
     </span><span class="attr">#[doc(alias = <span class="string">"g_key_file_get_boolean"</span>)]
     #[doc(alias = <span class="string">"get_boolean"</span>)]
-    </span><span class="kw">pub fn </span>boolean(<span class="kw-2">&amp;</span><span class="self">self</span>, group_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, key: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>, <a href="error.rs.html#10-28">Error</a>&gt; {
+    </span><span class="kw">pub fn </span>boolean(<span class="kw-2">&amp;</span><span class="self">self</span>, group_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, key: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>, <a href="error.rs.html#10-25">Error</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>error = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
             <span class="kw">let </span>ret = ffi::g_key_file_get_boolean(
-                <a class="self" href="#346">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#346">group_name</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#346">key</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-                <span class="kw-2">&amp;mut </span><a href="#348">error</a>,
+                <a class="self" href="#231">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#231">group_name</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#231">key</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+                <span class="kw-2">&amp;mut </span><a href="#233">error</a>,
             );
             <span class="kw">if </span>error.is_null() {
-                <span class="prelude-val">Ok</span>(<a href="translate.rs.html#1417-1419">from_glib</a>(<a href="#349">ret</a>))
+                <span class="prelude-val">Ok</span>(<a href="translate.rs.html#1417-1419">from_glib</a>(<a href="#234">ret</a>))
             } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(<a href="translate.rs.html#1634-1636">from_glib_full</a>(<a href="#348">error</a>))
+                <span class="prelude-val">Err</span>(<a href="translate.rs.html#1634-1636">from_glib_full</a>(<a href="#233">error</a>))
             }
         }
     }
@@ -1198,39 +844,20 @@
     /// # Returns
     ///
     /// [`true`] if @key is a part of @group_name, [`false`] otherwise
-    </span><span class="comment">// rustdoc-stripper-ignore-next-stop
-    </span><span class="doccomment">/// Looks whether the key file has the key @key in the group
-    /// @group_name.
-    ///
-    /// Note that this function does not follow the rules for #GError strictly;
-    /// the return value both carries meaning and signals an error.  To use
-    /// this function, you must pass a #GError pointer in @error, and check
-    /// whether it is not [`None`] to see if an error occurred.
-    ///
-    /// Language bindings should use g_key_file_get_value() to test whether
-    /// or not a key exists.
-    /// ## `group_name`
-    /// a group name
-    /// ## `key`
-    /// a key name
-    ///
-    /// # Returns
-    ///
-    /// [`true`] if @key is a part of @group_name, [`false`] otherwise
     </span><span class="attr">#[doc(alias = <span class="string">"g_key_file_has_key"</span>)]
-    </span><span class="kw">pub fn </span>has_key(<span class="kw-2">&amp;</span><span class="self">self</span>, group_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, key: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>, <a href="error.rs.html#10-28">Error</a>&gt; {
+    </span><span class="kw">pub fn </span>has_key(<span class="kw-2">&amp;</span><span class="self">self</span>, group_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, key: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>, <a href="error.rs.html#10-25">Error</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>error = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
             <span class="kw">let </span>ret = ffi::g_key_file_has_key(
-                <a class="self" href="#401">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#401">group_name</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#401">key</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-                <span class="kw-2">&amp;mut </span><a href="#403">error</a>,
+                <a class="self" href="#267">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#267">group_name</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#267">key</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+                <span class="kw-2">&amp;mut </span><a href="#269">error</a>,
             );
             <span class="kw">if </span>error.is_null() {
-                <span class="prelude-val">Ok</span>(<a href="translate.rs.html#1417-1419">from_glib</a>(<a href="#404">ret</a>))
+                <span class="prelude-val">Ok</span>(<a href="translate.rs.html#1417-1419">from_glib</a>(<a href="#270">ret</a>))
             } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(<a href="translate.rs.html#1634-1636">from_glib_full</a>(<a href="#403">error</a>))
+                <span class="prelude-val">Err</span>(<a href="translate.rs.html#1634-1636">from_glib_full</a>(<a href="#269">error</a>))
             }
         }
     }
@@ -1253,44 +880,25 @@
     ///    the values associated with the key as a list of booleans, or [`None`] if the
     ///    key was not found or could not be parsed. The returned list of booleans
     ///    should be freed with g_free() when no longer needed.
-    </span><span class="comment">// rustdoc-stripper-ignore-next-stop
-    </span><span class="doccomment">/// Returns the values associated with @key under @group_name as
-    /// booleans.
-    ///
-    /// If @key cannot be found then [`None`] is returned and @error is set to
-    /// [`KeyFileError::KeyNotFound`][crate::KeyFileError::KeyNotFound]. Likewise, if the values associated
-    /// with @key cannot be interpreted as booleans then [`None`] is returned
-    /// and @error is set to [`KeyFileError::InvalidValue`][crate::KeyFileError::InvalidValue].
-    /// ## `group_name`
-    /// a group name
-    /// ## `key`
-    /// a key
-    ///
-    /// # Returns
-    ///
-    ///
-    ///    the values associated with the key as a list of booleans, or [`None`] if the
-    ///    key was not found or could not be parsed. The returned list of booleans
-    ///    should be freed with g_free() when no longer needed.
     </span><span class="attr">#[doc(alias = <span class="string">"g_key_file_get_boolean_list"</span>)]
     #[doc(alias = <span class="string">"get_boolean_list"</span>)]
-    </span><span class="kw">pub fn </span>boolean_list(<span class="kw-2">&amp;</span><span class="self">self</span>, group_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, key: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>&gt;, <a href="error.rs.html#10-28">Error</a>&gt; {
+    </span><span class="kw">pub fn </span>boolean_list(<span class="kw-2">&amp;</span><span class="self">self</span>, group_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, key: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>&gt;, <a href="error.rs.html#10-25">Error</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>length = <a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.uninit">mem::MaybeUninit::uninit</a>();
             <span class="kw">let </span><span class="kw-2">mut </span>error = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
             <span class="kw">let </span>ret = ffi::g_key_file_get_boolean_list(
-                <a class="self" href="#457">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#457">group_name</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#457">key</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#459">length</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.as_mut_ptr">as_mut_ptr</a>(),
-                <span class="kw-2">&amp;mut </span><a href="#460">error</a>,
+                <a class="self" href="#304">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#304">group_name</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#304">key</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#306">length</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.as_mut_ptr">as_mut_ptr</a>(),
+                <span class="kw-2">&amp;mut </span><a href="#307">error</a>,
             );
             <span class="kw">if </span>!error.is_null() {
-                <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="translate.rs.html#1634-1636">from_glib_full</a>(<a href="#460">error</a>));
+                <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="translate.rs.html#1634-1636">from_glib_full</a>(<a href="#307">error</a>));
             }
             <span class="prelude-val">Ok</span>(<a href="translate.rs.html#1921">FromGlibContainer::from_glib_container_num</a>(
-                <a href="#461">ret</a>,
-                <a href="#459">length</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.assume_init">assume_init</a>() <span class="kw">as _</span>,
+                <a href="#308">ret</a>,
+                <a href="#306">length</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.assume_init">assume_init</a>() <span class="kw">as _</span>,
             ))
         }
     }
@@ -1312,40 +920,22 @@
     ///
     /// a newly allocated string or [`None`] if the specified
     ///   key cannot be found.
-    </span><span class="comment">// rustdoc-stripper-ignore-next-stop
-    </span><span class="doccomment">/// Returns the string value associated with @key under @group_name.
-    /// Unlike g_key_file_get_value(), this function handles escape sequences
-    /// like \s.
-    ///
-    /// In the event the key cannot be found, [`None`] is returned and
-    /// @error is set to [`KeyFileError::KeyNotFound`][crate::KeyFileError::KeyNotFound].  In the
-    /// event that the @group_name cannot be found, [`None`] is returned
-    /// and @error is set to [`KeyFileError::GroupNotFound`][crate::KeyFileError::GroupNotFound].
-    /// ## `group_name`
-    /// a group name
-    /// ## `key`
-    /// a key
-    ///
-    /// # Returns
-    ///
-    /// a newly allocated string or [`None`] if the specified
-    ///   key cannot be found.
     </span><span class="attr">#[doc(alias = <span class="string">"g_key_file_get_string"</span>)]
     #[doc(alias = <span class="string">"get_string"</span>)]
-    </span><span class="kw">pub fn </span>string(<span class="kw-2">&amp;</span><span class="self">self</span>, group_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, key: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="gstring.rs.html#996">GString</a>, <a href="error.rs.html#10-28">Error</a>&gt; {
+    </span><span class="kw">pub fn </span>string(<span class="kw-2">&amp;</span><span class="self">self</span>, group_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, key: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="gstring.rs.html#1036">GString</a>, <a href="error.rs.html#10-25">Error</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>error = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
             <span class="kw">let </span>ret = ffi::g_key_file_get_string(
-                <a class="self" href="#515">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#515">group_name</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#515">key</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-                <span class="kw-2">&amp;mut </span><a href="#517">error</a>,
+                <a class="self" href="#344">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#344">group_name</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#344">key</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+                <span class="kw-2">&amp;mut </span><a href="#346">error</a>,
             );
             <span class="kw">if </span>error.is_null() {
-                <span class="prelude-val">Ok</span>(<a href="translate.rs.html#1634-1636">from_glib_full</a>(<a href="#518">ret</a>))
+                <span class="prelude-val">Ok</span>(<a href="translate.rs.html#1634-1636">from_glib_full</a>(<a href="#347">ret</a>))
             } <span class="kw">else </span>{
-                ffi::g_free(<a href="#518">ret</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
-                <span class="prelude-val">Err</span>(<a href="translate.rs.html#1634-1636">from_glib_full</a>(<a href="#517">error</a>))
+                ffi::g_free(<a href="#347">ret</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
+                <span class="prelude-val">Err</span>(<a href="translate.rs.html#1634-1636">from_glib_full</a>(<a href="#346">error</a>))
             }
         }
     }
@@ -1366,73 +956,32 @@
     ///
     ///  a [`None`]-terminated string array or [`None`] if the specified
     ///  key cannot be found. The array should be freed with g_strfreev().
-    </span><span class="comment">// rustdoc-stripper-ignore-next-stop
-    </span><span class="doccomment">/// Returns the values associated with @key under @group_name.
-    ///
-    /// In the event the key cannot be found, [`None`] is returned and
-    /// @error is set to [`KeyFileError::KeyNotFound`][crate::KeyFileError::KeyNotFound].  In the
-    /// event that the @group_name cannot be found, [`None`] is returned
-    /// and @error is set to [`KeyFileError::GroupNotFound`][crate::KeyFileError::GroupNotFound].
-    /// ## `group_name`
-    /// a group name
-    /// ## `key`
-    /// a key
-    ///
-    /// # Returns
-    ///
-    ///
-    ///  a [`None`]-terminated string array or [`None`] if the specified
-    ///  key cannot be found. The array should be freed with g_strfreev().
     </span><span class="attr">#[doc(alias = <span class="string">"g_key_file_get_string_list"</span>)]
     #[doc(alias = <span class="string">"get_string_list"</span>)]
-    </span><span class="kw">pub fn </span>string_list(<span class="kw-2">&amp;</span><span class="self">self</span>, group_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, key: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Result</span>&lt;PtrSlice&lt;<a href="gstring.rs.html#676">GStringPtr</a>&gt;, <a href="error.rs.html#10-28">Error</a>&gt; {
+    </span><span class="kw">pub fn </span>string_list(<span class="kw-2">&amp;</span><span class="self">self</span>, group_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, key: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Result</span>&lt;PtrSlice&lt;<a href="gstring.rs.html#716">GStringPtr</a>&gt;, <a href="error.rs.html#10-25">Error</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>length = <a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.uninit">mem::MaybeUninit::uninit</a>();
             <span class="kw">let </span><span class="kw-2">mut </span>error = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
             <span class="kw">let </span>ret = ffi::g_key_file_get_string_list(
-                <a class="self" href="#568">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#568">group_name</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#568">key</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#570">length</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.as_mut_ptr">as_mut_ptr</a>(),
-                <span class="kw-2">&amp;mut </span><a href="#571">error</a>,
+                <a class="self" href="#380">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#380">group_name</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#380">key</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#382">length</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.as_mut_ptr">as_mut_ptr</a>(),
+                <span class="kw-2">&amp;mut </span><a href="#383">error</a>,
             );
             <span class="kw">if </span>error.is_null() {
                 <span class="prelude-val">Ok</span>(<a href="translate.rs.html#1926">FromGlibContainer::from_glib_full_num</a>(
-                    <a href="#572">ret</a>,
-                    <a href="#570">length</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.assume_init">assume_init</a>() <span class="kw">as _</span>,
+                    <a href="#384">ret</a>,
+                    <a href="#382">length</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.assume_init">assume_init</a>() <span class="kw">as _</span>,
                 ))
             } <span class="kw">else </span>{
-                ffi::g_strfreev(<a href="#572">ret</a>);
-                <span class="prelude-val">Err</span>(<a href="translate.rs.html#1634-1636">from_glib_full</a>(<a href="#571">error</a>))
+                ffi::g_strfreev(<a href="#384">ret</a>);
+                <span class="prelude-val">Err</span>(<a href="translate.rs.html#1634-1636">from_glib_full</a>(<a href="#383">error</a>))
             }
         }
     }
 
     <span class="doccomment">/// Returns the value associated with @key under @group_name
-    /// translated in the given @locale if available.  If @locale is
-    /// [`None`] then the current locale is assumed.
-    ///
-    /// If @locale is to be non-[`None`], or if the current locale will change over
-    /// the lifetime of the #GKeyFile, it must be loaded with
-    /// [`KeyFileFlags::KEEP_TRANSLATIONS`][crate::KeyFileFlags::KEEP_TRANSLATIONS] in order to load strings for all locales.
-    ///
-    /// If @key cannot be found then [`None`] is returned and @error is set
-    /// to [`KeyFileError::KeyNotFound`][crate::KeyFileError::KeyNotFound]. If the value associated
-    /// with @key cannot be interpreted or no suitable translation can
-    /// be found then the untranslated value is returned.
-    /// ## `group_name`
-    /// a group name
-    /// ## `key`
-    /// a key
-    /// ## `locale`
-    /// a locale identifier or [`None`]
-    ///
-    /// # Returns
-    ///
-    /// a newly allocated string or [`None`] if the specified
-    ///   key cannot be found.
-    </span><span class="comment">// rustdoc-stripper-ignore-next-stop
-    </span><span class="doccomment">/// Returns the value associated with @key under @group_name
     /// translated in the given @locale if available.  If @locale is
     /// [`None`] then the current locale is assumed.
     ///
@@ -1462,53 +1011,26 @@
         group_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
         key: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
         locale: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="gstring.rs.html#996">GString</a>, <a href="error.rs.html#10-28">Error</a>&gt; {
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="gstring.rs.html#1036">GString</a>, <a href="error.rs.html#10-25">Error</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>error = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
             <span class="kw">let </span>ret = ffi::g_key_file_get_locale_string(
-                <a class="self" href="#641">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#642">group_name</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#643">key</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#644">locale</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-                <span class="kw-2">&amp;mut </span><a href="#647">error</a>,
+                <a class="self" href="#429">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#430">group_name</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#431">key</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#432">locale</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+                <span class="kw-2">&amp;mut </span><a href="#435">error</a>,
             );
             <span class="kw">if </span>error.is_null() {
-                <span class="prelude-val">Ok</span>(<a href="translate.rs.html#1634-1636">from_glib_full</a>(<a href="#648">ret</a>))
+                <span class="prelude-val">Ok</span>(<a href="translate.rs.html#1634-1636">from_glib_full</a>(<a href="#436">ret</a>))
             } <span class="kw">else </span>{
-                ffi::g_free(<a href="#648">ret</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
-                <span class="prelude-val">Err</span>(<a href="translate.rs.html#1634-1636">from_glib_full</a>(<a href="#647">error</a>))
+                ffi::g_free(<a href="#436">ret</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
+                <span class="prelude-val">Err</span>(<a href="translate.rs.html#1634-1636">from_glib_full</a>(<a href="#435">error</a>))
             }
         }
     }
 
     <span class="doccomment">/// Returns the values associated with @key under @group_name
-    /// translated in the given @locale if available.  If @locale is
-    /// [`None`] then the current locale is assumed.
-    ///
-    /// If @locale is to be non-[`None`], or if the current locale will change over
-    /// the lifetime of the #GKeyFile, it must be loaded with
-    /// [`KeyFileFlags::KEEP_TRANSLATIONS`][crate::KeyFileFlags::KEEP_TRANSLATIONS] in order to load strings for all locales.
-    ///
-    /// If @key cannot be found then [`None`] is returned and @error is set
-    /// to [`KeyFileError::KeyNotFound`][crate::KeyFileError::KeyNotFound]. If the values associated
-    /// with @key cannot be interpreted or no suitable translations
-    /// can be found then the untranslated values are returned. The
-    /// returned array is [`None`]-terminated, so @length may optionally
-    /// be [`None`].
-    /// ## `group_name`
-    /// a group name
-    /// ## `key`
-    /// a key
-    /// ## `locale`
-    /// a locale identifier or [`None`]
-    ///
-    /// # Returns
-    ///
-    /// a newly allocated [`None`]-terminated string array
-    ///   or [`None`] if the key isn't found. The string array should be freed
-    ///   with g_strfreev().
-    </span><span class="comment">// rustdoc-stripper-ignore-next-stop
-    </span><span class="doccomment">/// Returns the values associated with @key under @group_name
     /// translated in the given @locale if available.  If @locale is
     /// [`None`] then the current locale is assumed.
     ///
@@ -1541,26 +1063,26 @@
         group_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
         key: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
         locale: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;PtrSlice&lt;<a href="gstring.rs.html#676">GStringPtr</a>&gt;, <a href="error.rs.html#10-28">Error</a>&gt; {
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;PtrSlice&lt;<a href="gstring.rs.html#716">GStringPtr</a>&gt;, <a href="error.rs.html#10-25">Error</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>length = <a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.uninit">mem::MaybeUninit::uninit</a>();
             <span class="kw">let </span><span class="kw-2">mut </span>error = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
             <span class="kw">let </span>ret = ffi::g_key_file_get_locale_string_list(
-                <a class="self" href="#720">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#721">group_name</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#722">key</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#723">locale</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#726">length</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.as_mut_ptr">as_mut_ptr</a>(),
-                <span class="kw-2">&amp;mut </span><a href="#727">error</a>,
+                <a class="self" href="#481">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#482">group_name</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#483">key</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#484">locale</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#487">length</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.as_mut_ptr">as_mut_ptr</a>(),
+                <span class="kw-2">&amp;mut </span><a href="#488">error</a>,
             );
             <span class="kw">if </span>error.is_null() {
                 <span class="prelude-val">Ok</span>(<a href="translate.rs.html#1926">FromGlibContainer::from_glib_full_num</a>(
-                    <a href="#728">ret</a>,
-                    <a href="#726">length</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.assume_init">assume_init</a>() <span class="kw">as _</span>,
+                    <a href="#489">ret</a>,
+                    <a href="#487">length</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.assume_init">assume_init</a>() <span class="kw">as _</span>,
                 ))
             } <span class="kw">else </span>{
-                ffi::g_strfreev(<a href="#728">ret</a>);
-                <span class="prelude-val">Err</span>(<a href="translate.rs.html#1634-1636">from_glib_full</a>(<a href="#727">error</a>))
+                ffi::g_strfreev(<a href="#489">ret</a>);
+                <span class="prelude-val">Err</span>(<a href="translate.rs.html#1634-1636">from_glib_full</a>(<a href="#488">error</a>))
             }
         }
     }
