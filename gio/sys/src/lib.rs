@@ -1174,6 +1174,7 @@ impl ::std::fmt::Debug for GAppLaunchContextClass {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GAppLaunchContextPrivate {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -1262,6 +1263,7 @@ impl ::std::fmt::Debug for GApplicationCommandLineClass {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GApplicationCommandLinePrivate {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -1270,6 +1272,7 @@ pub struct _GApplicationCommandLinePrivate {
 pub type GApplicationCommandLinePrivate = _GApplicationCommandLinePrivate;
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GApplicationPrivate {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -1382,6 +1385,7 @@ impl ::std::fmt::Debug for GBufferedInputStreamClass {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GBufferedInputStreamPrivate {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -1408,6 +1412,7 @@ impl ::std::fmt::Debug for GBufferedOutputStreamClass {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GBufferedOutputStreamPrivate {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -1442,6 +1447,7 @@ impl ::std::fmt::Debug for GCancellableClass {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GCancellablePrivate {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -1518,6 +1524,7 @@ impl ::std::fmt::Debug for GConverterInputStreamClass {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GConverterInputStreamPrivate {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -1550,6 +1557,7 @@ impl ::std::fmt::Debug for GConverterOutputStreamClass {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GConverterOutputStreamPrivate {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -1558,6 +1566,7 @@ pub struct _GConverterOutputStreamPrivate {
 pub type GConverterOutputStreamPrivate = _GConverterOutputStreamPrivate;
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GCredentialsClass {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -1699,6 +1708,7 @@ impl ::std::fmt::Debug for GDBusInterfaceSkeletonClass {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GDBusInterfaceSkeletonPrivate {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -1834,6 +1844,7 @@ impl ::std::fmt::Debug for GDBusObjectManagerClientClass {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GDBusObjectManagerClientPrivate {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -1898,6 +1909,7 @@ impl ::std::fmt::Debug for GDBusObjectManagerServerClass {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GDBusObjectManagerServerPrivate {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -1921,6 +1933,7 @@ impl ::std::fmt::Debug for GDBusObjectProxyClass {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GDBusObjectProxyPrivate {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -1952,6 +1965,7 @@ impl ::std::fmt::Debug for GDBusObjectSkeletonClass {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GDBusObjectSkeletonPrivate {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -2003,6 +2017,7 @@ impl ::std::fmt::Debug for GDBusProxyClass {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GDBusProxyPrivate {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -2074,6 +2089,7 @@ impl ::std::fmt::Debug for GDataInputStreamClass {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GDataInputStreamPrivate {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -2106,6 +2122,7 @@ impl ::std::fmt::Debug for GDataOutputStreamClass {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GDataOutputStreamPrivate {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -2488,6 +2505,7 @@ impl ::std::fmt::Debug for GDtlsServerConnectionInterface {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GEmblemClass {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -2510,6 +2528,7 @@ impl ::std::fmt::Debug for GEmblemedIconClass {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GEmblemedIconPrivate {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -2552,6 +2571,7 @@ impl ::std::fmt::Debug for GFileAttributeInfoList {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GFileAttributeMatcher {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -2662,6 +2682,7 @@ impl ::std::fmt::Debug for GFileEnumeratorClass {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GFileEnumeratorPrivate {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -2749,6 +2770,7 @@ impl ::std::fmt::Debug for GFileIOStreamClass {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GFileIOStreamPrivate {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -2757,6 +2779,7 @@ pub struct _GFileIOStreamPrivate {
 pub type GFileIOStreamPrivate = _GFileIOStreamPrivate;
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GFileIconClass {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -3536,6 +3559,7 @@ impl ::std::fmt::Debug for GFileIface {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GFileInfoClass {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -3610,6 +3634,7 @@ impl ::std::fmt::Debug for GFileInputStreamClass {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GFileInputStreamPrivate {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -3647,6 +3672,7 @@ impl ::std::fmt::Debug for GFileMonitorClass {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GFileMonitorPrivate {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -3734,6 +3760,7 @@ impl ::std::fmt::Debug for GFileOutputStreamClass {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GFileOutputStreamPrivate {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -3804,6 +3831,7 @@ impl ::std::fmt::Debug for GFilterOutputStreamClass {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GIOExtension {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -3812,6 +3840,7 @@ pub struct _GIOExtension {
 pub type GIOExtension = _GIOExtension;
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GIOExtensionPoint {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -3820,6 +3849,7 @@ pub struct _GIOExtensionPoint {
 pub type GIOExtensionPoint = _GIOExtensionPoint;
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GIOModuleClass {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -3828,6 +3858,7 @@ pub struct _GIOModuleClass {
 pub type GIOModuleClass = _GIOModuleClass;
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GIOModuleScope {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -3836,6 +3867,7 @@ pub struct _GIOModuleScope {
 pub type GIOModuleScope = _GIOModuleScope;
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GIOSchedulerJob {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -3844,6 +3876,7 @@ pub struct _GIOSchedulerJob {
 pub type GIOSchedulerJob = _GIOSchedulerJob;
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GIOStreamAdapter {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -3908,6 +3941,7 @@ impl ::std::fmt::Debug for GIOStreamClass {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GIOStreamPrivate {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -3975,6 +4009,7 @@ impl ::std::fmt::Debug for GInetAddressMaskClass {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GInetAddressMaskPrivate {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -3983,6 +4018,7 @@ pub struct _GInetAddressMaskPrivate {
 pub type GInetAddressMaskPrivate = _GInetAddressMaskPrivate;
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GInetAddressPrivate {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -4005,6 +4041,7 @@ impl ::std::fmt::Debug for GInetSocketAddressClass {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GInetSocketAddressPrivate {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -4165,6 +4202,7 @@ impl ::std::fmt::Debug for GInputStreamClass {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GInputStreamPrivate {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -4290,6 +4328,7 @@ impl ::std::fmt::Debug for GMemoryInputStreamClass {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GMemoryInputStreamPrivate {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -4338,6 +4377,7 @@ impl ::std::fmt::Debug for GMemoryOutputStreamClass {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GMemoryOutputStreamPrivate {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -4368,6 +4408,7 @@ impl ::std::fmt::Debug for GMenuAttributeIterClass {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GMenuAttributeIterPrivate {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -4398,6 +4439,7 @@ impl ::std::fmt::Debug for GMenuLinkIterClass {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GMenuLinkIterPrivate {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -4448,6 +4490,7 @@ impl ::std::fmt::Debug for GMenuModelClass {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GMenuModelPrivate {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -4665,6 +4708,7 @@ impl ::std::fmt::Debug for GMountOperationClass {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GMountOperationPrivate {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -4687,6 +4731,7 @@ impl ::std::fmt::Debug for GNativeSocketAddressClass {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GNativeSocketAddressPrivate {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -4726,6 +4771,7 @@ impl ::std::fmt::Debug for GNetworkAddressClass {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GNetworkAddressPrivate {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -4791,6 +4837,7 @@ impl ::std::fmt::Debug for GNetworkServiceClass {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GNetworkServicePrivate {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -4991,6 +5038,7 @@ impl ::std::fmt::Debug for GOutputStreamClass {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GOutputStreamPrivate {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -5071,6 +5119,7 @@ impl ::std::fmt::Debug for GPermissionClass {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GPermissionPrivate {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -5205,6 +5254,7 @@ impl ::std::fmt::Debug for GProxyAddressEnumeratorClass {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GProxyAddressEnumeratorPrivate {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -5213,6 +5263,7 @@ pub struct _GProxyAddressEnumeratorPrivate {
 pub type GProxyAddressEnumeratorPrivate = _GProxyAddressEnumeratorPrivate;
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GProxyAddressPrivate {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -5502,6 +5553,7 @@ impl ::std::fmt::Debug for GResolverClass {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GResolverPrivate {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -5510,6 +5562,7 @@ pub struct _GResolverPrivate {
 pub type GResolverPrivate = _GResolverPrivate;
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GResource {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -5619,6 +5672,7 @@ impl ::std::fmt::Debug for GSettingsBackendClass {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GSettingsBackendPrivate {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -5653,6 +5707,7 @@ impl ::std::fmt::Debug for GSettingsClass {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GSettingsPrivate {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -5661,6 +5716,7 @@ pub struct _GSettingsPrivate {
 pub type GSettingsPrivate = _GSettingsPrivate;
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GSettingsSchema {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -5674,6 +5730,7 @@ impl ::std::fmt::Debug for GSettingsSchema {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GSettingsSchemaKey {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -5687,6 +5744,7 @@ impl ::std::fmt::Debug for GSettingsSchemaKey {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GSettingsSchemaSource {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -5714,6 +5772,7 @@ impl ::std::fmt::Debug for GSimpleActionGroupClass {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GSimpleActionGroupPrivate {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -5722,6 +5781,7 @@ pub struct _GSimpleActionGroupPrivate {
 pub type GSimpleActionGroupPrivate = _GSimpleActionGroupPrivate;
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GSimpleAsyncResultClass {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -5754,6 +5814,7 @@ impl ::std::fmt::Debug for GSimpleProxyResolverClass {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GSimpleProxyResolverPrivate {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -5892,6 +5953,7 @@ impl ::std::fmt::Debug for GSocketClientClass {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GSocketClientPrivate {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -5948,6 +6010,7 @@ impl ::std::fmt::Debug for GSocketConnectionClass {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GSocketConnectionPrivate {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -5991,6 +6054,7 @@ impl ::std::fmt::Debug for GSocketControlMessageClass {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GSocketControlMessagePrivate {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -6028,6 +6092,7 @@ impl ::std::fmt::Debug for GSocketListenerClass {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GSocketListenerPrivate {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -6036,6 +6101,7 @@ pub struct _GSocketListenerPrivate {
 pub type GSocketListenerPrivate = _GSocketListenerPrivate;
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GSocketPrivate {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -6078,6 +6144,7 @@ impl ::std::fmt::Debug for GSocketServiceClass {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GSocketServicePrivate {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -6086,6 +6153,7 @@ pub struct _GSocketServicePrivate {
 pub type GSocketServicePrivate = _GSocketServicePrivate;
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GSrvTarget {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -6115,6 +6183,7 @@ impl ::std::fmt::Debug for GStaticResource {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GTaskClass {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -6137,6 +6206,7 @@ impl ::std::fmt::Debug for GTcpConnectionClass {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GTcpConnectionPrivate {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -6159,6 +6229,7 @@ impl ::std::fmt::Debug for GTcpWrapperConnectionClass {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GTcpWrapperConnectionPrivate {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -6167,6 +6238,7 @@ pub struct _GTcpWrapperConnectionPrivate {
 pub type GTcpWrapperConnectionPrivate = _GTcpWrapperConnectionPrivate;
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GThemedIconClass {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -6207,6 +6279,7 @@ impl ::std::fmt::Debug for GThreadedSocketServiceClass {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GThreadedSocketServicePrivate {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -6282,6 +6355,7 @@ impl ::std::fmt::Debug for GTlsCertificateClass {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GTlsCertificatePrivate {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -6367,6 +6441,7 @@ impl ::std::fmt::Debug for GTlsConnectionClass {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GTlsConnectionPrivate {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -6545,6 +6620,7 @@ impl ::std::fmt::Debug for GTlsDatabaseClass {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GTlsDatabasePrivate {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -6641,6 +6717,7 @@ impl ::std::fmt::Debug for GTlsInteractionClass {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GTlsInteractionPrivate {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -6671,6 +6748,7 @@ impl ::std::fmt::Debug for GTlsPasswordClass {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GTlsPasswordPrivate {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -6707,6 +6785,7 @@ impl ::std::fmt::Debug for GUnixConnectionClass {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GUnixConnectionPrivate {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -6733,6 +6812,7 @@ impl ::std::fmt::Debug for GUnixCredentialsMessageClass {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GUnixCredentialsMessagePrivate {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -6765,6 +6845,7 @@ impl ::std::fmt::Debug for GUnixFDListClass {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GUnixFDListPrivate {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -6791,6 +6872,7 @@ impl ::std::fmt::Debug for GUnixFDMessageClass {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GUnixFDMessagePrivate {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -6823,6 +6905,7 @@ impl ::std::fmt::Debug for GUnixInputStreamClass {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GUnixInputStreamPrivate {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -6831,6 +6914,7 @@ pub struct _GUnixInputStreamPrivate {
 pub type GUnixInputStreamPrivate = _GUnixInputStreamPrivate;
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GUnixMountEntry {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -6844,6 +6928,7 @@ impl ::std::fmt::Debug for GUnixMountEntry {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GUnixMountMonitorClass {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -6852,6 +6937,7 @@ pub struct _GUnixMountMonitorClass {
 pub type GUnixMountMonitorClass = _GUnixMountMonitorClass;
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GUnixMountPoint {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -6889,6 +6975,7 @@ impl ::std::fmt::Debug for GUnixOutputStreamClass {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GUnixOutputStreamPrivate {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -6911,6 +6998,7 @@ impl ::std::fmt::Debug for GUnixSocketAddressClass {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GUnixSocketAddressPrivate {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -7176,6 +7264,7 @@ impl ::std::fmt::Debug for GZlibDecompressorClass {
 
 // Classes
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GAppInfoMonitor {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -7262,6 +7351,7 @@ impl ::std::fmt::Debug for GBufferedOutputStream {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GBytesIcon {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -7289,6 +7379,7 @@ impl ::std::fmt::Debug for GCancellable {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GCharsetConverter {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -7332,6 +7423,7 @@ impl ::std::fmt::Debug for GConverterOutputStream {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GCredentials {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -7344,6 +7436,7 @@ impl ::std::fmt::Debug for GCredentials {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GDBusActionGroup {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -7357,6 +7450,7 @@ impl ::std::fmt::Debug for GDBusActionGroup {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GDBusAuthObserver {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -7370,6 +7464,7 @@ impl ::std::fmt::Debug for GDBusAuthObserver {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GDBusConnection {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -7397,6 +7492,7 @@ impl ::std::fmt::Debug for GDBusInterfaceSkeleton {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GDBusMenuModel {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -7410,6 +7506,7 @@ impl ::std::fmt::Debug for GDBusMenuModel {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GDBusMessage {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -7422,6 +7519,7 @@ impl ::std::fmt::Debug for GDBusMessage {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GDBusMethodInvocation {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -7504,6 +7602,7 @@ impl ::std::fmt::Debug for GDBusProxy {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GDBusServer {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -7560,6 +7659,7 @@ impl ::std::fmt::Debug for GDebugControllerDBus {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GDesktopAppInfo {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -7573,6 +7673,7 @@ impl ::std::fmt::Debug for GDesktopAppInfo {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GEmblem {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -7630,6 +7731,7 @@ impl ::std::fmt::Debug for GFileIOStream {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GFileIcon {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -7642,6 +7744,7 @@ impl ::std::fmt::Debug for GFileIcon {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GFileInfo {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -7699,6 +7802,7 @@ impl ::std::fmt::Debug for GFileOutputStream {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GFilenameCompleter {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -7744,6 +7848,7 @@ impl ::std::fmt::Debug for GFilterOutputStream {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GIOModule {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -7831,6 +7936,7 @@ impl ::std::fmt::Debug for GInputStream {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GListStore {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -7873,6 +7979,7 @@ impl ::std::fmt::Debug for GMemoryOutputStream {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GMenu {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -7901,6 +8008,7 @@ impl ::std::fmt::Debug for GMenuAttributeIter {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GMenuItem {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -8020,6 +8128,7 @@ impl ::std::fmt::Debug for GNetworkService {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GNotification {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -8063,6 +8172,7 @@ impl ::std::fmt::Debug for GPermission {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GPropertyAction {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -8152,6 +8262,7 @@ impl ::std::fmt::Debug for GSettingsBackend {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GSimpleAction {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -8179,6 +8290,7 @@ impl ::std::fmt::Debug for GSimpleActionGroup {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GSimpleAsyncResult {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -8192,6 +8304,7 @@ impl ::std::fmt::Debug for GSimpleAsyncResult {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GSimpleIOStream {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -8205,6 +8318,7 @@ impl ::std::fmt::Debug for GSimpleIOStream {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GSimplePermission {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -8356,6 +8470,7 @@ impl ::std::fmt::Debug for GSocketService {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GSubprocess {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -8368,6 +8483,7 @@ impl ::std::fmt::Debug for GSubprocess {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GSubprocessLauncher {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -8381,6 +8497,7 @@ impl ::std::fmt::Debug for GSubprocessLauncher {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GTask {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -8425,6 +8542,7 @@ impl ::std::fmt::Debug for GTcpWrapperConnection {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GTestDBus {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -8437,6 +8555,7 @@ impl ::std::fmt::Debug for GTestDBus {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GThemedIcon {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -8449,6 +8568,7 @@ impl ::std::fmt::Debug for GThemedIcon {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GThreadedResolver {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -8635,6 +8755,7 @@ impl ::std::fmt::Debug for GUnixInputStream {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GUnixMountMonitor {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -8707,6 +8828,7 @@ impl ::std::fmt::Debug for GVolumeMonitor {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GZlibCompressor {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -8720,6 +8842,7 @@ impl ::std::fmt::Debug for GZlibCompressor {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GZlibDecompressor {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -8734,6 +8857,7 @@ impl ::std::fmt::Debug for GZlibDecompressor {
 
 // Interfaces
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GAction {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -8746,6 +8870,7 @@ impl ::std::fmt::Debug for GAction {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GActionGroup {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -8758,6 +8883,7 @@ impl ::std::fmt::Debug for GActionGroup {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GActionMap {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -8770,6 +8896,7 @@ impl ::std::fmt::Debug for GActionMap {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GAppInfo {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -8782,6 +8909,7 @@ impl ::std::fmt::Debug for GAppInfo {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GAsyncInitable {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -8794,6 +8922,7 @@ impl ::std::fmt::Debug for GAsyncInitable {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GAsyncResult {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -8806,6 +8935,7 @@ impl ::std::fmt::Debug for GAsyncResult {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GConverter {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -8818,6 +8948,7 @@ impl ::std::fmt::Debug for GConverter {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GDBusInterface {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -8830,6 +8961,7 @@ impl ::std::fmt::Debug for GDBusInterface {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GDBusObject {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -8842,6 +8974,7 @@ impl ::std::fmt::Debug for GDBusObject {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GDBusObjectManager {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -8854,6 +8987,7 @@ impl ::std::fmt::Debug for GDBusObjectManager {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GDatagramBased {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -8866,6 +9000,7 @@ impl ::std::fmt::Debug for GDatagramBased {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GDebugController {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -8878,6 +9013,7 @@ impl ::std::fmt::Debug for GDebugController {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GDesktopAppInfoLookup {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -8890,6 +9026,7 @@ impl ::std::fmt::Debug for GDesktopAppInfoLookup {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GDrive {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -8902,6 +9039,7 @@ impl ::std::fmt::Debug for GDrive {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GDtlsClientConnection {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -8914,6 +9052,7 @@ impl ::std::fmt::Debug for GDtlsClientConnection {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GDtlsConnection {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -8926,6 +9065,7 @@ impl ::std::fmt::Debug for GDtlsConnection {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GDtlsServerConnection {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -8938,6 +9078,7 @@ impl ::std::fmt::Debug for GDtlsServerConnection {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GFile {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -8950,6 +9091,7 @@ impl ::std::fmt::Debug for GFile {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GFileDescriptorBased {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -8962,6 +9104,7 @@ impl ::std::fmt::Debug for GFileDescriptorBased {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GIcon {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -8974,6 +9117,7 @@ impl ::std::fmt::Debug for GIcon {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GInitable {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -8986,6 +9130,7 @@ impl ::std::fmt::Debug for GInitable {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GListModel {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -8998,6 +9143,7 @@ impl ::std::fmt::Debug for GListModel {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GLoadableIcon {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -9010,6 +9156,7 @@ impl ::std::fmt::Debug for GLoadableIcon {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GMemoryMonitor {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -9022,6 +9169,7 @@ impl ::std::fmt::Debug for GMemoryMonitor {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GMount {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -9034,6 +9182,7 @@ impl ::std::fmt::Debug for GMount {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GNetworkMonitor {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -9046,6 +9195,7 @@ impl ::std::fmt::Debug for GNetworkMonitor {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GPollableInputStream {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -9058,6 +9208,7 @@ impl ::std::fmt::Debug for GPollableInputStream {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GPollableOutputStream {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -9070,6 +9221,7 @@ impl ::std::fmt::Debug for GPollableOutputStream {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GPowerProfileMonitor {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -9082,6 +9234,7 @@ impl ::std::fmt::Debug for GPowerProfileMonitor {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GProxy {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -9094,6 +9247,7 @@ impl ::std::fmt::Debug for GProxy {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GProxyResolver {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -9106,6 +9260,7 @@ impl ::std::fmt::Debug for GProxyResolver {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GRemoteActionGroup {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -9118,6 +9273,7 @@ impl ::std::fmt::Debug for GRemoteActionGroup {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GSeekable {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -9130,6 +9286,7 @@ impl ::std::fmt::Debug for GSeekable {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GSocketConnectable {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -9142,6 +9299,7 @@ impl ::std::fmt::Debug for GSocketConnectable {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GTlsBackend {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -9154,6 +9312,7 @@ impl ::std::fmt::Debug for GTlsBackend {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GTlsClientConnection {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -9166,6 +9325,7 @@ impl ::std::fmt::Debug for GTlsClientConnection {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GTlsFileDatabase {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -9178,6 +9338,7 @@ impl ::std::fmt::Debug for GTlsFileDatabase {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GTlsServerConnection {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -9190,6 +9351,7 @@ impl ::std::fmt::Debug for GTlsServerConnection {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GVolume {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,

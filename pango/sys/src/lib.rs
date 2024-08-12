@@ -529,6 +529,7 @@ impl ::std::fmt::Debug for PangoAttrInt {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct PangoAttrIterator {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -558,6 +559,7 @@ impl ::std::fmt::Debug for PangoAttrLanguage {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct PangoAttrList {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -665,6 +667,7 @@ impl ::std::fmt::Debug for PangoColor {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _PangoContextClass {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -709,6 +712,7 @@ impl ::std::fmt::Debug for PangoFontClass {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct PangoFontDescription {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -877,6 +881,7 @@ impl ::std::fmt::Debug for PangoFontsetClass {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _PangoFontsetSimpleClass {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -1024,6 +1029,7 @@ impl ::std::fmt::Debug for PangoItem {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct PangoLanguage {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -1037,6 +1043,7 @@ impl ::std::fmt::Debug for PangoLanguage {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _PangoLayoutClass {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -1045,6 +1052,7 @@ pub struct _PangoLayoutClass {
 pub type PangoLayoutClass = _PangoLayoutClass;
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct PangoLayoutIter {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -1058,6 +1066,7 @@ impl ::std::fmt::Debug for PangoLayoutIter {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct PangoLayoutLine {
     pub layout: *mut PangoLayout,
     pub start_index: c_int,
@@ -1081,6 +1090,7 @@ impl ::std::fmt::Debug for PangoLayoutLine {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct PangoLogAttr {
     pub is_line_break: c_uint,
     _truncated_record_marker: c_void,
@@ -1208,6 +1218,7 @@ impl ::std::fmt::Debug for PangoRendererClass {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _PangoRendererPrivate {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -1216,6 +1227,7 @@ pub struct _PangoRendererPrivate {
 pub type PangoRendererPrivate = _PangoRendererPrivate;
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct PangoScriptIter {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -1229,6 +1241,7 @@ impl ::std::fmt::Debug for PangoScriptIter {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct PangoTabArray {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -1243,6 +1256,7 @@ impl ::std::fmt::Debug for PangoTabArray {
 
 // Classes
 #[repr(C)]
+#[allow(dead_code)]
 pub struct PangoContext {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -1255,6 +1269,7 @@ impl ::std::fmt::Debug for PangoContext {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct PangoCoverage {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -1338,6 +1353,7 @@ impl ::std::fmt::Debug for PangoFontset {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct PangoFontsetSimple {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -1351,6 +1367,7 @@ impl ::std::fmt::Debug for PangoFontsetSimple {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct PangoLayout {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
