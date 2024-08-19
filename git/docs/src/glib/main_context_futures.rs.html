@@ -921,6 +921,10 @@
 <a href="#848" id="848">848</a>
 <a href="#849" id="849">849</a>
 <a href="#850" id="850">850</a>
+<a href="#851" id="851">851</a>
+<a href="#852" id="852">852</a>
+<a href="#853" id="853">853</a>
+<a href="#854" id="854">854</a>
 </pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
 </span><span class="kw">use </span>std::{
@@ -1656,13 +1660,15 @@
                 }),
         );
 
-        thread::spawn(<span class="kw">move </span>|| {
+        <span class="kw">let </span>join_handle = thread::spawn(<span class="kw">move </span>|| {
             l.run();
         });
 
         o_sender.send(()).unwrap();
 
         receiver.recv().unwrap();
+
+        join_handle.join().unwrap();
     }
 
     <span class="attr">#[test]
@@ -1686,7 +1692,7 @@
         <span class="kw">let </span>c = MainContext::new();
         <span class="kw">let </span>l = <span class="kw">crate</span>::MainLoop::new(<span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span>c), <span class="bool-val">false</span>);
 
-        std::thread::spawn({
+        <span class="kw">let </span>join_handle = std::thread::spawn({
             <span class="kw">let </span>l_clone = l.clone();
             <span class="kw">move </span>|| {
                 c.spawn_from_within(<span class="kw">move </span>|| <span class="kw">async move </span>{
@@ -1699,6 +1705,8 @@
         });
 
         l.run();
+
+        join_handle.join().unwrap();
     }
 
     <span class="attr">#[test]
