@@ -597,7 +597,7 @@
 <span class="kw">use </span><a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.TokenStream.html">proc_macro2::TokenStream</a>;
 <span class="kw">use </span>quote::{<a href="https://docs.rs/quote/1.0.36/quote/macro.format_ident.html">format_ident</a>, <a href="https://docs.rs/quote/1.0.36/quote/macro.quote.html">quote</a>, <a href="https://docs.rs/quote/1.0.36/quote/macro.quote_spanned.html">quote_spanned</a>, <a href="https://docs.rs/quote/1.0.36/quote/to_tokens/trait.ToTokens.html">ToTokens</a>};
 <span class="kw">use </span>syn::{
-    <a href="https://docs.rs/syn/2.0.74/syn/punctuated/struct.Punctuated.html">punctuated::Punctuated</a>, <a href="https://docs.rs/syn/2.0.74/syn/spanned/trait.Spanned.html">spanned::Spanned</a>, token::Comma, <a href="https://docs.rs/syn/2.0.74/syn/attr/struct.Attribute.html">Attribute</a>, Ident, <a href="https://docs.rs/syn/2.0.74/syn/data/struct.Variant.html">Variant</a>, <a href="https://docs.rs/syn/2.0.74/syn/restriction/enum.Visibility.html">Visibility</a>,
+    <a href="https://docs.rs/syn/2.0.75/syn/punctuated/struct.Punctuated.html">punctuated::Punctuated</a>, <a href="https://docs.rs/syn/2.0.75/syn/spanned/trait.Spanned.html">spanned::Spanned</a>, token::Comma, <a href="https://docs.rs/syn/2.0.75/syn/attr/struct.Attribute.html">Attribute</a>, Ident, <a href="https://docs.rs/syn/2.0.75/syn/data/struct.Variant.html">Variant</a>, <a href="https://docs.rs/syn/2.0.75/syn/restriction/enum.Visibility.html">Visibility</a>,
 };
 
 <span class="kw">use </span><span class="kw">crate</span>::utils::{
@@ -607,28 +607,28 @@
 <span class="kw">pub const </span>WRONG_PLACE_MSG: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a> = <span class="string">"#[glib::flags] only supports enums"</span>;
 
 <span class="kw">pub struct </span>AttrInput {
-    <span class="kw">pub </span>enum_name: <a href="https://docs.rs/syn/2.0.74/syn/lit/struct.LitStr.html">syn::LitStr</a>,
+    <span class="kw">pub </span>enum_name: <a href="https://docs.rs/syn/2.0.75/syn/lit/struct.LitStr.html">syn::LitStr</a>,
     <span class="kw">pub </span>allow_name_conflict: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>,
 }
 <span class="kw">struct </span>FlagsDesc {
-    variant: <a href="https://docs.rs/syn/2.0.74/syn/data/struct.Variant.html">Variant</a>,
+    variant: <a href="https://docs.rs/syn/2.0.75/syn/data/struct.Variant.html">Variant</a>,
     name: <span class="prelude-ty">Option</span>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>&gt;,
     nick: <span class="prelude-ty">Option</span>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>&gt;,
     skip: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>,
 }
 <span class="kw">impl </span><a href="#20-25">FlagsDesc</a> {
-    <span class="kw">fn </span>from_attrs(variant: <a href="https://docs.rs/syn/2.0.74/syn/data/struct.Variant.html">Variant</a>, attrs: <span class="kw-2">&amp;</span>[<a href="https://docs.rs/syn/2.0.74/syn/attr/struct.Attribute.html">Attribute</a>]) -&gt; syn::Result&lt;<span class="self">Self</span>&gt; {
-        <span class="kw">let </span><span class="kw-2">mut </span>name = NestedMetaItem::&lt;<a href="https://docs.rs/syn/2.0.74/syn/lit/struct.LitStr.html">syn::LitStr</a>&gt;::new(<span class="string">"name"</span>).<a href="utils.rs.html#55-58">value_required</a>();
-        <span class="kw">let </span><span class="kw-2">mut </span>nick = NestedMetaItem::&lt;<a href="https://docs.rs/syn/2.0.74/syn/lit/struct.LitStr.html">syn::LitStr</a>&gt;::new(<span class="string">"nick"</span>).<a href="utils.rs.html#55-58">value_required</a>();
-        <span class="kw">let </span><span class="kw-2">mut </span>skip = NestedMetaItem::&lt;<a href="https://docs.rs/syn/2.0.74/syn/lit/struct.LitBool.html">syn::LitBool</a>&gt;::new(<span class="string">"skip"</span>).<a href="utils.rs.html#59-62">value_optional</a>();
+    <span class="kw">fn </span>from_attrs(variant: <a href="https://docs.rs/syn/2.0.75/syn/data/struct.Variant.html">Variant</a>, attrs: <span class="kw-2">&amp;</span>[<a href="https://docs.rs/syn/2.0.75/syn/attr/struct.Attribute.html">Attribute</a>]) -&gt; syn::Result&lt;<span class="self">Self</span>&gt; {
+        <span class="kw">let </span><span class="kw-2">mut </span>name = NestedMetaItem::&lt;<a href="https://docs.rs/syn/2.0.75/syn/lit/struct.LitStr.html">syn::LitStr</a>&gt;::new(<span class="string">"name"</span>).<a href="utils.rs.html#55-58">value_required</a>();
+        <span class="kw">let </span><span class="kw-2">mut </span>nick = NestedMetaItem::&lt;<a href="https://docs.rs/syn/2.0.75/syn/lit/struct.LitStr.html">syn::LitStr</a>&gt;::new(<span class="string">"nick"</span>).<a href="utils.rs.html#55-58">value_required</a>();
+        <span class="kw">let </span><span class="kw-2">mut </span>skip = NestedMetaItem::&lt;<a href="https://docs.rs/syn/2.0.75/syn/lit/struct.LitBool.html">syn::LitBool</a>&gt;::new(<span class="string">"skip"</span>).<a href="utils.rs.html#59-62">value_optional</a>();
 
         <a href="utils.rs.html#150-165">parse_nested_meta_items</a>(<a href="#27">attrs</a>, <span class="string">"flags_value"</span>, <span class="kw-2">&amp;mut </span>[<span class="kw-2">&amp;mut </span><a href="#28">name</a>, <span class="kw-2">&amp;mut </span><a href="#29">nick</a>, <span class="kw-2">&amp;mut </span><a href="#30">skip</a>])<span class="question-mark">?</span>;
 
         <span class="prelude-val">Ok</span>(<span class="self">Self </span>{
             <a href="#27">variant</a>,
-            name: <a href="#28">name</a>.value.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|s| <a href="#36">s</a>.<a href="https://docs.rs/syn/2.0.74/syn/lit/struct.LitStr.html#method.value">value</a>()),
-            nick: <a href="#29">nick</a>.value.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|s| <a href="#37">s</a>.<a href="https://docs.rs/syn/2.0.74/syn/lit/struct.LitStr.html#method.value">value</a>()),
-            skip: <a href="#30">skip</a>.found || <a href="#30">skip</a>.value.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|b| <a href="#38">b</a>.<a href="https://docs.rs/syn/2.0.74/syn/lit/struct.LitBool.html#method.value">value</a>()).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap_or">unwrap_or</a>(<span class="bool-val">false</span>),
+            name: <a href="#28">name</a>.value.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|s| <a href="#36">s</a>.<a href="https://docs.rs/syn/2.0.75/syn/lit/struct.LitStr.html#method.value">value</a>()),
+            nick: <a href="#29">nick</a>.value.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|s| <a href="#37">s</a>.<a href="https://docs.rs/syn/2.0.75/syn/lit/struct.LitStr.html#method.value">value</a>()),
+            skip: <a href="#30">skip</a>.found || <a href="#30">skip</a>.value.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|b| <a href="#38">b</a>.<a href="https://docs.rs/syn/2.0.75/syn/lit/struct.LitBool.html#method.value">value</a>()).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap_or">unwrap_or</a>(<span class="bool-val">false</span>),
         })
     }
 }
@@ -641,14 +641,14 @@
 //     },
 </span><span class="kw">fn </span>gen_flags_values(
     enum_name: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.Ident.html">Ident</a>,
-    enum_variants: <span class="kw-2">&amp;</span>Punctuated&lt;<a href="https://docs.rs/syn/2.0.74/syn/data/struct.Variant.html">Variant</a>, <a href="https://docs.rs/syn/2.0.74/syn/token/struct.Comma.html">Comma</a>&gt;,
+    enum_variants: <span class="kw-2">&amp;</span>Punctuated&lt;<a href="https://docs.rs/syn/2.0.75/syn/data/struct.Variant.html">Variant</a>, <a href="https://docs.rs/syn/2.0.75/syn/token/struct.Comma.html">Comma</a>&gt;,
 ) -&gt; (<a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.TokenStream.html">TokenStream</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) {
     <span class="kw">let </span>crate_ident = <a href="utils.rs.html#188-215">crate_ident_new</a>();
 
     <span class="comment">// start at one as GFlagsValue array is null-terminated
     </span><span class="kw">let </span><span class="kw-2">mut </span>n = <span class="number">1</span>;
     <span class="kw">let </span>recurse = <a href="#51">enum_variants</a>
-        .<a href="https://docs.rs/syn/2.0.74/syn/punctuated/struct.Punctuated.html#method.iter">iter</a>()
+        .<a href="https://docs.rs/syn/2.0.75/syn/punctuated/struct.Punctuated.html#method.iter">iter</a>()
         .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|v| <a href="#27-40">FlagsDesc::from_attrs</a>(<a href="#59">v</a>.<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">clone</a>(), <span class="kw-2">&amp;</span><a href="#59">v</a>.attrs).<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>())
         .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.filter">filter</a>(|desc| !<a href="#60">desc</a>.skip)
         .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|desc| {
@@ -686,11 +686,11 @@
 
 <span class="kw">fn </span>gen_bitflags(
     enum_name: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.Ident.html">Ident</a>,
-    visibility: <span class="kw-2">&amp;</span><a href="https://docs.rs/syn/2.0.74/syn/restriction/enum.Visibility.html">Visibility</a>,
-    enum_variants: <span class="kw-2">&amp;</span>Punctuated&lt;<a href="https://docs.rs/syn/2.0.74/syn/data/struct.Variant.html">Variant</a>, <a href="https://docs.rs/syn/2.0.74/syn/token/struct.Comma.html">Comma</a>&gt;,
+    visibility: <span class="kw-2">&amp;</span><a href="https://docs.rs/syn/2.0.75/syn/restriction/enum.Visibility.html">Visibility</a>,
+    enum_variants: <span class="kw-2">&amp;</span>Punctuated&lt;<a href="https://docs.rs/syn/2.0.75/syn/data/struct.Variant.html">Variant</a>, <a href="https://docs.rs/syn/2.0.75/syn/token/struct.Comma.html">Comma</a>&gt;,
     crate_ident: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.TokenStream.html">TokenStream</a>,
 ) -&gt; <a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.TokenStream.html">TokenStream</a> {
-    <span class="kw">let </span>recurse = <a href="#97">enum_variants</a>.<a href="https://docs.rs/syn/2.0.74/syn/punctuated/struct.Punctuated.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|v| {
+    <span class="kw">let </span>recurse = <a href="#97">enum_variants</a>.<a href="https://docs.rs/syn/2.0.75/syn/punctuated/struct.Punctuated.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|v| {
         <span class="kw">let </span>name = <span class="kw-2">&amp;</span><a href="#100">v</a>.ident;
         <span class="kw">let </span>disc = <a href="#100">v</a>.discriminant.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_ref">as_ref</a>().<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.expect">expect</a>(<span class="string">"missing discriminant"</span>);
         <span class="kw">let </span>value = <span class="kw-2">&amp;</span><a href="#102">disc</a>.<span class="number">1</span>;
@@ -712,11 +712,11 @@
 
 <span class="kw">fn </span>gen_default(
     enum_name: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.Ident.html">Ident</a>,
-    enum_variants: <span class="kw-2">&amp;</span>Punctuated&lt;<a href="https://docs.rs/syn/2.0.74/syn/data/struct.Variant.html">Variant</a>, <a href="https://docs.rs/syn/2.0.74/syn/token/struct.Comma.html">Comma</a>&gt;,
+    enum_variants: <span class="kw-2">&amp;</span>Punctuated&lt;<a href="https://docs.rs/syn/2.0.75/syn/data/struct.Variant.html">Variant</a>, <a href="https://docs.rs/syn/2.0.75/syn/token/struct.Comma.html">Comma</a>&gt;,
 ) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.TokenStream.html">TokenStream</a>&gt; {
     <a href="#122">enum_variants</a>
-        .<a href="https://docs.rs/syn/2.0.74/syn/punctuated/struct.Punctuated.html#method.iter">iter</a>()
-        .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.find">find</a>(|v| <a href="#126">v</a>.attrs.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.any">any</a>(|attr| <a href="#126">attr</a>.<a href="https://docs.rs/syn/2.0.74/syn/attr/struct.Attribute.html#method.path">path</a>().<a href="https://docs.rs/syn/2.0.74/syn/path/struct.Path.html#method.is_ident">is_ident</a>(<span class="string">"default"</span>)))
+        .<a href="https://docs.rs/syn/2.0.75/syn/punctuated/struct.Punctuated.html#method.iter">iter</a>()
+        .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.find">find</a>(|v| <a href="#126">v</a>.attrs.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.any">any</a>(|attr| <a href="#126">attr</a>.<a href="https://docs.rs/syn/2.0.75/syn/attr/struct.Attribute.html#method.path">path</a>().<a href="https://docs.rs/syn/2.0.75/syn/path/struct.Path.html#method.is_ident">is_ident</a>(<span class="string">"default"</span>)))
         .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|v| {
             <span class="kw">let </span>default_value = <span class="kw-2">&amp;</span><a href="#127">v</a>.ident;
 
@@ -730,10 +730,10 @@
         })
 }
 
-<span class="kw">pub fn </span>impl_flags(attr_meta: <a href="#16-19">AttrInput</a>, input: <span class="kw-2">&amp;mut </span><a href="https://docs.rs/syn/2.0.74/syn/item/struct.ItemEnum.html">syn::ItemEnum</a>) -&gt; <a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.TokenStream.html">TokenStream</a> {
+<span class="kw">pub fn </span>impl_flags(attr_meta: <a href="#16-19">AttrInput</a>, input: <span class="kw-2">&amp;mut </span><a href="https://docs.rs/syn/2.0.75/syn/item/struct.ItemEnum.html">syn::ItemEnum</a>) -&gt; <a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.TokenStream.html">TokenStream</a> {
     <span class="kw">let </span>gtype_name = <a href="#140">attr_meta</a>.enum_name;
 
-    <span class="kw">let </span><a href="https://docs.rs/syn/2.0.74/syn/item/struct.ItemEnum.html">syn::ItemEnum</a> {
+    <span class="kw">let </span><a href="https://docs.rs/syn/2.0.75/syn/item/struct.ItemEnum.html">syn::ItemEnum</a> {
         attrs,
         ident: name,
         vis: visibility,
@@ -745,9 +745,9 @@
 
     <span class="kw">let </span>crate_ident = <a href="utils.rs.html#188-215">crate_ident_new</a>();
 
-    <span class="kw">let </span><span class="kw-2">mut </span>plugin_type = NestedMetaItem::&lt;<a href="https://docs.rs/syn/2.0.74/syn/path/struct.Path.html">syn::Path</a>&gt;::new(<span class="string">"plugin_type"</span>).<a href="utils.rs.html#55-58">value_required</a>();
+    <span class="kw">let </span><span class="kw-2">mut </span>plugin_type = NestedMetaItem::&lt;<a href="https://docs.rs/syn/2.0.75/syn/path/struct.Path.html">syn::Path</a>&gt;::new(<span class="string">"plugin_type"</span>).<a href="utils.rs.html#55-58">value_required</a>();
     <span class="kw">let </span><span class="kw-2">mut </span>lazy_registration =
-        NestedMetaItem::&lt;<a href="https://docs.rs/syn/2.0.74/syn/lit/struct.LitBool.html">syn::LitBool</a>&gt;::new(<span class="string">"lazy_registration"</span>).<a href="utils.rs.html#55-58">value_required</a>();
+        NestedMetaItem::&lt;<a href="https://docs.rs/syn/2.0.75/syn/lit/struct.LitBool.html">syn::LitBool</a>&gt;::new(<span class="string">"lazy_registration"</span>).<a href="utils.rs.html#55-58">value_required</a>();
 
     <span class="kw">let </span>found = <a href="utils.rs.html#167-186">parse_optional_nested_meta_items</a>(
         <span class="kw-2">&amp;*</span><a href="#144">attrs</a>,
@@ -756,7 +756,7 @@
     );
 
     <span class="kw">let </span>register_flags = <span class="kw">match </span><a href="#159">found</a> {
-        <span class="prelude-val">Err</span>(e) =&gt; <span class="kw">return </span><a href="#166">e</a>.<a href="https://docs.rs/syn/2.0.74/syn/error/struct.Error.html#method.to_compile_error">to_compile_error</a>(),
+        <span class="prelude-val">Err</span>(e) =&gt; <span class="kw">return </span><a href="#166">e</a>.<a href="https://docs.rs/syn/2.0.75/syn/error/struct.Error.html#method.to_compile_error">to_compile_error</a>(),
         <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>) =&gt; <a href="#289-360">register_flags_as_static</a>(
             <span class="kw-2">&amp;</span><a href="#153">crate_ident</a>,
             <a href="#145">name</a>,
@@ -767,14 +767,14 @@
         ),
         <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(<span class="kw">_</span>)) =&gt; {
             <span class="kw">if </span>attr_meta.allow_name_conflict {
-                <span class="kw">return </span><a href="https://docs.rs/syn/2.0.74/syn/error/struct.Error.html#method.new_spanned">syn::Error::new_spanned</a>(
+                <span class="kw">return </span><a href="https://docs.rs/syn/2.0.75/syn/error/struct.Error.html#method.new_spanned">syn::Error::new_spanned</a>(
                     <a href="#140">input</a>,
                     <span class="string">"#[flags_dynamic] and #[glib::flags(allow_name_conflict)] are not allowed together"</span>,
-                ).<a href="https://docs.rs/syn/2.0.74/syn/error/struct.Error.html#method.to_compile_error">to_compile_error</a>();
+                ).<a href="https://docs.rs/syn/2.0.75/syn/error/struct.Error.html#method.to_compile_error">to_compile_error</a>();
             }
 
             <span class="comment">// remove attribute 'flags_dynamic' from the attribute list because it is not a real proc_macro_attribute
-            </span><a href="#144">attrs</a>.<a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.retain">retain</a>(|attr| !<a href="#184">attr</a>.<a href="https://docs.rs/syn/2.0.74/syn/attr/struct.Attribute.html#method.path">path</a>().<a href="https://docs.rs/syn/2.0.74/syn/path/struct.Path.html#method.is_ident">is_ident</a>(<span class="string">"flags_dynamic"</span>));
+            </span><a href="#144">attrs</a>.<a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.retain">retain</a>(|attr| !<a href="#184">attr</a>.<a href="https://docs.rs/syn/2.0.75/syn/attr/struct.Attribute.html#method.path">path</a>().<a href="https://docs.rs/syn/2.0.75/syn/path/struct.Path.html#method.is_ident">is_ident</a>(<span class="string">"flags_dynamic"</span>));
             <span class="kw">let </span>plugin_ty = <a href="#155">plugin_type</a>
                 .value
                 .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|p| <a href="#187">p</a>.<a href="https://docs.rs/quote/1.0.36/quote/to_tokens/trait.ToTokens.html#tymethod.into_token_stream">into_token_stream</a>())
@@ -882,7 +882,7 @@
 </span><span class="kw">fn </span>register_flags_as_static(
     crate_ident: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.TokenStream.html">TokenStream</a>,
     name: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.Ident.html">syn::Ident</a>,
-    gtype_name: <a href="https://docs.rs/syn/2.0.74/syn/lit/struct.LitStr.html">syn::LitStr</a>,
+    gtype_name: <a href="https://docs.rs/syn/2.0.75/syn/lit/struct.LitStr.html">syn::LitStr</a>,
     allow_name_conflict: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>,
     g_flags_values: <a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.TokenStream.html">TokenStream</a>,
     nb_flags_values: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>,
@@ -959,13 +959,13 @@
     plugin_ty: <a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.TokenStream.html">TokenStream</a>,
     lazy_registration: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>,
     name: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.Ident.html">syn::Ident</a>,
-    gtype_name: <a href="https://docs.rs/syn/2.0.74/syn/lit/struct.LitStr.html">syn::LitStr</a>,
+    gtype_name: <a href="https://docs.rs/syn/2.0.75/syn/lit/struct.LitStr.html">syn::LitStr</a>,
     g_flags_values: <a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.TokenStream.html">TokenStream</a>,
     nb_flags_values: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>,
 ) -&gt; <a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.TokenStream.html">TokenStream</a> {
     <span class="comment">// Wrap each GFlagsValue to FlagsValue
-    </span><span class="kw">let </span>g_flags_values_expr: <a href="https://docs.rs/syn/2.0.74/syn/expr/struct.ExprArray.html">syn::ExprArray</a> = <a class="macro" href="https://docs.rs/syn/2.0.74/syn/macro.parse_quote.html">syn::parse_quote!</a> { [#g_flags_values] };
-    <span class="kw">let </span>flags_values_iter = <a href="#374">g_flags_values_expr</a>.elems.<a href="https://docs.rs/syn/2.0.74/syn/punctuated/struct.Punctuated.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|v| {
+    </span><span class="kw">let </span>g_flags_values_expr: <a href="https://docs.rs/syn/2.0.75/syn/expr/struct.ExprArray.html">syn::ExprArray</a> = <a class="macro" href="https://docs.rs/syn/2.0.75/syn/macro.parse_quote.html">syn::parse_quote!</a> { [#g_flags_values] };
+    <span class="kw">let </span>flags_values_iter = <a href="#374">g_flags_values_expr</a>.elems.<a href="https://docs.rs/syn/2.0.75/syn/punctuated/struct.Punctuated.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|v| {
         <a class="macro" href="https://docs.rs/quote/1.0.36/quote/macro.quote_spanned.html">quote_spanned!</a> {syn::spanned::Spanned::span(<span class="kw-2">&amp;</span>v)=&gt;
             #crate_ident::FlagsValue::unsafe_from(#v),
         }

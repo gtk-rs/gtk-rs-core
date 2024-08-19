@@ -100,17 +100,17 @@
 <span class="kw">mod </span><a href="structs.rs.html#3-123">structs</a>;
 
 <span class="kw">use </span><a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">proc_macro::TokenStream</a>;
-<span class="kw">use </span>syn::{<a href="https://docs.rs/syn/2.0.74/syn/derive/enum.Data.html">Data</a>, <a href="https://docs.rs/syn/2.0.74/syn/derive/struct.DeriveInput.html">DeriveInput</a>};
+<span class="kw">use </span>syn::{<a href="https://docs.rs/syn/2.0.75/syn/derive/enum.Data.html">Data</a>, <a href="https://docs.rs/syn/2.0.75/syn/derive/struct.DeriveInput.html">DeriveInput</a>};
 
-<span class="kw">pub fn </span>impl_downgrade(input: <a href="https://docs.rs/syn/2.0.74/syn/derive/struct.DeriveInput.html">DeriveInput</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a> {
+<span class="kw">pub fn </span>impl_downgrade(input: <a href="https://docs.rs/syn/2.0.75/syn/derive/struct.DeriveInput.html">DeriveInput</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a> {
     <span class="kw">match </span><a href="#10">input</a>.data {
-        <a href="https://docs.rs/syn/2.0.74/syn/derive/enum.Data.html#variant.Struct">Data::Struct</a>(data_struct) =&gt; {
+        <a href="https://docs.rs/syn/2.0.75/syn/derive/enum.Data.html#variant.Struct">Data::Struct</a>(data_struct) =&gt; {
             <a href="structs.rs.html#84-123">structs::derive_downgrade_for_struct</a>(<a href="#10">input</a>.ident, <a href="#10">input</a>.generics, <a href="#12">data_struct</a>)
         }
-        <a href="https://docs.rs/syn/2.0.74/syn/derive/enum.Data.html#variant.Enum">Data::Enum</a>(data_enum) =&gt; {
+        <a href="https://docs.rs/syn/2.0.75/syn/derive/enum.Data.html#variant.Enum">Data::Enum</a>(data_enum) =&gt; {
             <a href="enums.rs.html#68-141">enums::derive_downgrade_for_enum</a>(<a href="#10">input</a>.ident, <a href="#10">input</a>.generics, <a href="#15">data_enum</a>)
         }
-        <a href="https://docs.rs/syn/2.0.74/syn/derive/enum.Data.html#variant.Union">Data::Union</a>(..) =&gt; {
+        <a href="https://docs.rs/syn/2.0.75/syn/derive/enum.Data.html#variant.Union">Data::Union</a>(..) =&gt; {
             <a class="macro" href="https://doc.rust-lang.org/nightly/std/macro.panic.html">panic!</a>(<span class="string">"#[derive(Downgrade)] is not available for unions."</span>);
         }
     }
