@@ -69,7 +69,7 @@ pub const G_VARIANT_TYPE_DICTIONARY: &str = "a{?*}";
 pub const G_VARIANT_TYPE_STRING_ARRAY: &str = "as";
 pub const G_VARIANT_TYPE_OBJECT_PATH_ARRAY: &str = "ao";
 pub const G_VARIANT_TYPE_BYTE_STRING: &str = "ay";
-pub const G_VARIANT_TYPE_BYTE_STRING_ARRAY: &str = "ayy";
+pub const G_VARIANT_TYPE_BYTE_STRING_ARRAY: &str = "aay";
 pub const G_VARIANT_TYPE_VARDICT: &str = "a{sv}";
 
 #[cfg(target_family = "windows")]
