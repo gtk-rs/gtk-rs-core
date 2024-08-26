@@ -393,14 +393,14 @@
 </pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
 </span><span class="kw">use </span>proc_macro2::{<a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.Ident.html">Ident</a>, <a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.TokenStream.html">TokenStream</a>};
-<span class="kw">use </span><a href="https://docs.rs/quote/1.0.36/quote/macro.quote.html">quote::quote</a>;
+<span class="kw">use </span><a href="https://docs.rs/quote/1.0.37/quote/macro.quote.html">quote::quote</a>;
 
 <span class="kw">use </span><span class="kw">crate</span>::utils::{<a href="utils.rs.html#188-215">crate_ident_new</a>, <a href="utils.rs.html#150-165">parse_nested_meta_items</a>, <a href="utils.rs.html#19-25">NestedMetaItem</a>};
 
 <span class="kw">fn </span>gen_impl_to_value_optional(name: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.Ident.html">Ident</a>, crate_ident: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.TokenStream.html">TokenStream</a>) -&gt; <a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.TokenStream.html">TokenStream</a> {
     <span class="kw">let </span>refcounted_type_prefix = <a href="#89-93">refcounted_type_prefix</a>(<a href="#8">name</a>, <a href="#8">crate_ident</a>);
 
-    <a class="macro" href="https://docs.rs/quote/1.0.36/quote/macro.quote.html">quote!</a> {
+    <a class="macro" href="https://docs.rs/quote/1.0.37/quote/macro.quote.html">quote!</a> {
         <span class="kw">impl </span>#crate_ident::value::ToValueOptional <span class="kw">for </span>#name {
             <span class="attr">#[inline]
             </span><span class="kw">fn </span>to_value_optional(s: ::core::option::Option&lt;<span class="kw-2">&amp;</span><span class="self">Self</span>&gt;) -&gt; #crate_ident::Value {
@@ -428,7 +428,7 @@
 <span class="kw">fn </span>gen_impl_from_value_optional(name: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.Ident.html">Ident</a>, crate_ident: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.TokenStream.html">TokenStream</a>) -&gt; <a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.TokenStream.html">TokenStream</a> {
     <span class="kw">let </span>refcounted_type_prefix = <a href="#89-93">refcounted_type_prefix</a>(<a href="#36">name</a>, <a href="#36">crate_ident</a>);
 
-    <a class="macro" href="https://docs.rs/quote/1.0.36/quote/macro.quote.html">quote!</a> {
+    <a class="macro" href="https://docs.rs/quote/1.0.37/quote/macro.quote.html">quote!</a> {
         <span class="kw">unsafe impl</span>&lt;<span class="lifetime">'a</span>&gt; #crate_ident::value::FromValue&lt;<span class="lifetime">'a</span>&gt; <span class="kw">for </span>#name {
             <span class="kw">type </span>Checker = #crate_ident::value::GenericValueTypeOrNoneChecker&lt;<span class="self">Self</span>&gt;;
 
@@ -445,7 +445,7 @@
 <span class="kw">fn </span>gen_impl_from_value(name: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.Ident.html">Ident</a>, crate_ident: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.TokenStream.html">TokenStream</a>) -&gt; <a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.TokenStream.html">TokenStream</a> {
     <span class="kw">let </span>refcounted_type_prefix = <a href="#89-93">refcounted_type_prefix</a>(<a href="#53">name</a>, <a href="#53">crate_ident</a>);
 
-    <a class="macro" href="https://docs.rs/quote/1.0.36/quote/macro.quote.html">quote!</a> {
+    <a class="macro" href="https://docs.rs/quote/1.0.37/quote/macro.quote.html">quote!</a> {
         <span class="kw">unsafe impl</span>&lt;<span class="lifetime">'a</span>&gt; #crate_ident::value::FromValue&lt;<span class="lifetime">'a</span>&gt; <span class="kw">for </span>#name {
             <span class="kw">type </span>Checker = #crate_ident::value::GenericValueTypeChecker&lt;<span class="self">Self</span>&gt;;
 
@@ -479,7 +479,7 @@
 }
 
 <span class="kw">fn </span>refcounted_type_prefix(name: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.Ident.html">Ident</a>, crate_ident: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.TokenStream.html">TokenStream</a>) -&gt; <a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.TokenStream.html">proc_macro2::TokenStream</a> {
-    <a class="macro" href="https://docs.rs/quote/1.0.36/quote/macro.quote.html">quote!</a> {
+    <a class="macro" href="https://docs.rs/quote/1.0.37/quote/macro.quote.html">quote!</a> {
         &lt;&lt;#name <span class="kw">as </span>#crate_ident::subclass::shared::SharedType&gt;::RefCountedType <span class="kw">as </span>#crate_ident::subclass::shared::RefCounted&gt;
     }
 }
@@ -533,10 +533,10 @@
     <span class="kw">let </span>impl_to_value_optional = <span class="kw">if </span>nullable {
         <a href="#8-34">gen_impl_to_value_optional</a>(<a href="#96">name</a>, <span class="kw-2">&amp;</span><a href="#132">crate_ident</a>)
     } <span class="kw">else </span>{
-        <a class="macro" href="https://docs.rs/quote/1.0.36/quote/macro.quote.html">quote!</a> {}
+        <a class="macro" href="https://docs.rs/quote/1.0.37/quote/macro.quote.html">quote!</a> {}
     };
 
-    <span class="prelude-val">Ok</span>(<a class="macro" href="https://docs.rs/quote/1.0.36/quote/macro.quote.html">quote!</a> {
+    <span class="prelude-val">Ok</span>(<a class="macro" href="https://docs.rs/quote/1.0.37/quote/macro.quote.html">quote!</a> {
         <span class="kw">impl </span>#crate_ident::subclass::shared::SharedType <span class="kw">for </span>#name {
             <span class="kw">const </span>NAME: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>::core::primitive::str = #gtype_name;
             <span class="kw">const </span>ALLOW_NAME_CONFLICT: bool = #allow_name_conflict;

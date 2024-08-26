@@ -892,15 +892,15 @@
 
 </span><span class="kw">use </span>std::{<a href="https://doc.rust-lang.org/nightly/alloc/fmt/index.html">fmt</a>, <a href="https://doc.rust-lang.org/nightly/std/io/index.html">io</a>, <a href="https://doc.rust-lang.org/nightly/std/os/raw/type.c_char.html">os::raw::c_char</a>, <a href="https://doc.rust-lang.org/nightly/std/path/struct.PathBuf.html">path::PathBuf</a>, <a href="https://doc.rust-lang.org/nightly/core/ptr/index.html">ptr</a>};
 
-<span class="kw">use crate</span>::{ffi, <a href="lib.rs.html#162">translate</a>::<span class="kw-2">*</span>, <a href="auto/enums.rs.html#71-103">ConvertError</a>, <a href="error.rs.html#10-25">Error</a>, <a href="gstring.rs.html#1036">GString</a>, <a href="auto/enums.rs.html#785-807">NormalizeMode</a>, <a href="collections/slice.rs.html#15-19">Slice</a>};
+<span class="kw">use crate</span>::{ffi, <a href="lib.rs.html#162">translate</a>::<span class="kw-2">*</span>, <a href="auto/enums.rs.html#71-103">ConvertError</a>, <a href="error.rs.html#10-28">Error</a>, <a href="gstring.rs.html#1036">GString</a>, <a href="auto/enums.rs.html#785-807">NormalizeMode</a>, <a href="collections/slice.rs.html#15-19">Slice</a>};
 
 <span class="comment">// rustdoc-stripper-ignore-next
 </span><span class="doccomment">/// A wrapper for [`ConvertError`](crate::ConvertError) that can hold an offset into the input
 /// string.
 </span><span class="attr">#[derive(Debug)]
 </span><span class="kw">pub enum </span><a href="../../glib/enum.CvtError.html">CvtError</a> {
-    Convert(<a href="error.rs.html#10-25">Error</a>),
-    IllegalSequence { source: <a href="error.rs.html#10-25">Error</a>, offset: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a> },
+    Convert(<a href="error.rs.html#10-28">Error</a>),
+    IllegalSequence { source: <a href="error.rs.html#10-28">Error</a>, offset: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a> },
 }
 
 <span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/error/trait.Error.html">std::error::Error</a> <span class="kw">for </span><a href="#11-14">CvtError</a> {
@@ -923,15 +923,15 @@
     }
 }
 
-<span class="kw">impl </span>std::convert::From&lt;<a href="error.rs.html#10-25">Error</a>&gt; <span class="kw">for </span><a href="#11-14">CvtError</a> {
-    <span class="kw">fn </span>from(err: <a href="error.rs.html#10-25">Error</a>) -&gt; <span class="self">Self </span>{
+<span class="kw">impl </span>std::convert::From&lt;<a href="error.rs.html#10-28">Error</a>&gt; <span class="kw">for </span><a href="#11-14">CvtError</a> {
+    <span class="kw">fn </span>from(err: <a href="error.rs.html#10-28">Error</a>) -&gt; <span class="self">Self </span>{
         <a href="#12">CvtError::Convert</a>(<a href="#37">err</a>)
     }
 }
 
 <span class="kw">impl </span><a href="#11-14">CvtError</a> {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>new(err: <a href="error.rs.html#10-25">Error</a>, bytes_read: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; <span class="self">Self </span>{
+    </span><span class="kw">fn </span>new(err: <a href="error.rs.html#10-28">Error</a>, bytes_read: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; <span class="self">Self </span>{
         <span class="kw">if </span>err.kind::&lt;ConvertError&gt;() == <span class="prelude-val">Some</span>(ConvertError::IllegalSequence) {
             <span class="self">Self</span>::IllegalSequence {
                 source: <a href="#44">err</a>,

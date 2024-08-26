@@ -372,7 +372,7 @@
 
 </span><span class="kw">use </span>proc_macro2::{<a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.Ident.html">Ident</a>, <a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.Span.html">Span</a>, <a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.TokenStream.html">TokenStream</a>};
 <span class="kw">use </span>proc_macro_crate::crate_name;
-<span class="kw">use </span>quote::{<a href="https://docs.rs/quote/1.0.36/quote/macro.quote.html">quote</a>, <a href="https://docs.rs/quote/1.0.36/quote/macro.quote_spanned.html">quote_spanned</a>, <a href="https://docs.rs/quote/1.0.36/quote/to_tokens/trait.ToTokens.html">ToTokens</a>};
+<span class="kw">use </span>quote::{<a href="https://docs.rs/quote/1.0.37/quote/macro.quote.html">quote</a>, <a href="https://docs.rs/quote/1.0.37/quote/macro.quote_spanned.html">quote_spanned</a>, <a href="https://docs.rs/quote/1.0.37/quote/to_tokens/trait.ToTokens.html">ToTokens</a>};
 <span class="kw">use </span>syn::{
     <a href="https://docs.rs/syn/2.0.76/syn/meta/struct.ParseNestedMeta.html">meta::ParseNestedMeta</a>, <a href="https://docs.rs/syn/2.0.76/syn/parse/trait.Parse.html">parse::Parse</a>, <a href="https://docs.rs/syn/2.0.76/syn/punctuated/struct.Punctuated.html">punctuated::Punctuated</a>, <a href="https://docs.rs/syn/2.0.76/syn/spanned/trait.Spanned.html">spanned::Spanned</a>, token::Comma,
     <a href="https://docs.rs/syn/2.0.76/syn/macro.Token.html">Token</a>, <a href="https://docs.rs/syn/2.0.76/syn/data/struct.Variant.html">Variant</a>,
@@ -394,14 +394,14 @@
     <span class="kw">pub </span>value: <span class="prelude-ty">Option</span>&lt;T&gt;,
 }
 
-<span class="kw">impl</span>&lt;T: <a href="https://docs.rs/syn/2.0.76/syn/parse/trait.Parse.html">Parse</a> + <a href="https://docs.rs/quote/1.0.36/quote/to_tokens/trait.ToTokens.html">ToTokens</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html">std::fmt::Debug</a> <span class="kw">for </span>NestedMetaItem&lt;T&gt; {
+<span class="kw">impl</span>&lt;T: <a href="https://docs.rs/syn/2.0.76/syn/parse/trait.Parse.html">Parse</a> + <a href="https://docs.rs/quote/1.0.37/quote/to_tokens/trait.ToTokens.html">ToTokens</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html">std::fmt::Debug</a> <span class="kw">for </span>NestedMetaItem&lt;T&gt; {
     <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>std::fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; <a href="https://doc.rust-lang.org/nightly/core/fmt/type.Result.html">std::fmt::Result</a> {
         <a href="#28">f</a>.<a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html#method.debug_struct">debug_struct</a>(<span class="string">"NestedMetaItem"</span>)
             .<a href="https://doc.rust-lang.org/nightly/core/fmt/builders/struct.DebugStruct.html#method.field">field</a>(<span class="string">"name"</span>, <span class="kw-2">&amp;</span><a class="self" href="#28">self</a>.name)
             .<a href="https://doc.rust-lang.org/nightly/core/fmt/builders/struct.DebugStruct.html#method.field">field</a>(<span class="string">"required"</span>, <span class="kw-2">&amp;</span><a class="self" href="#28">self</a>.required)
             .<a href="https://doc.rust-lang.org/nightly/core/fmt/builders/struct.DebugStruct.html#method.field">field</a>(<span class="string">"value_required"</span>, <span class="kw-2">&amp;</span><a class="self" href="#28">self</a>.value_required)
             .<a href="https://doc.rust-lang.org/nightly/core/fmt/builders/struct.DebugStruct.html#method.field">field</a>(<span class="string">"found"</span>, <span class="kw-2">&amp;</span><a class="self" href="#28">self</a>.found)
-            .<a href="https://doc.rust-lang.org/nightly/core/fmt/builders/struct.DebugStruct.html#method.field">field</a>(<span class="string">"value"</span>, <span class="kw-2">&amp;</span><a class="self" href="#28">self</a>.value.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_ref">as_ref</a>().<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|v| <a class="macro" href="https://docs.rs/quote/1.0.36/quote/macro.quote.html">quote!</a>(#v)))
+            .<a href="https://doc.rust-lang.org/nightly/core/fmt/builders/struct.DebugStruct.html#method.field">field</a>(<span class="string">"value"</span>, <span class="kw-2">&amp;</span><a class="self" href="#28">self</a>.value.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_ref">as_ref</a>().<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|v| <a class="macro" href="https://docs.rs/quote/1.0.37/quote/macro.quote.html">quote!</a>(#v)))
             .<a href="https://doc.rust-lang.org/nightly/core/fmt/builders/struct.DebugStruct.html#method.finish">finish</a>()
     }
 }
@@ -565,7 +565,7 @@
     }
     .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|s| {
         <span class="kw">let </span>glib = <a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.Ident.html#method.new">Ident::new</a>(<span class="kw-2">&amp;</span><a href="#196">s</a>, <a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.Span.html#method.call_site">Span::call_site</a>());
-        <a class="macro" href="https://docs.rs/quote/1.0.36/quote/macro.quote.html">quote!</a>(#glib)
+        <a class="macro" href="https://docs.rs/quote/1.0.37/quote/macro.quote.html">quote!</a>(#glib)
     })
     .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap_or_else">unwrap_or_else</a>(|| {
         <span class="comment">// We couldn't find the glib crate (renamed or not) so let's just hope it's in scope!
@@ -580,7 +580,7 @@
         //
         // Then we can use proc_macro to parse the file and check if glib is imported somehow.
         </span><span class="kw">let </span>glib = <a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.Ident.html#method.new">Ident::new</a>(<span class="string">"glib"</span>, <a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.Span.html#method.call_site">Span::call_site</a>());
-        <a class="macro" href="https://docs.rs/quote/1.0.36/quote/macro.quote.html">quote!</a>(#glib)
+        <a class="macro" href="https://docs.rs/quote/1.0.37/quote/macro.quote.html">quote!</a>(#glib)
     })
 }
 
@@ -597,13 +597,13 @@
     <span class="comment">// FIXME: can we express this with a match()?
     </span><span class="kw">let </span>recurse = <a href="#225">enum_variants</a>.<a href="https://docs.rs/syn/2.0.76/syn/punctuated/struct.Punctuated.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|v| {
         <span class="kw">let </span>name = <span class="kw-2">&amp;</span><a href="#228">v</a>.ident;
-        <a class="macro" href="https://docs.rs/quote/1.0.36/quote/macro.quote_spanned.html">quote_spanned!</a> { v.span() =&gt;
+        <a class="macro" href="https://docs.rs/quote/1.0.37/quote/macro.quote_spanned.html">quote_spanned!</a> { v.span() =&gt;
             <span class="kw">if </span>value == #enum_name::#name <span class="kw">as </span>i32 {
                 <span class="kw">return </span>::core::option::Option::Some(#enum_name::#name);
             }
         }
     });
-    <a class="macro" href="https://docs.rs/quote/1.0.36/quote/macro.quote.html">quote!</a> {
+    <a class="macro" href="https://docs.rs/quote/1.0.37/quote/macro.quote.html">quote!</a> {
         #(#recurse)*
         ::core::option::Option::None
     }

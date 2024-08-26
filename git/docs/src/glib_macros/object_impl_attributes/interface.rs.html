@@ -297,7 +297,7 @@
 
 </span><span class="kw">use </span>heck::ToShoutySnakeCase;
 <span class="kw">use </span><a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.TokenStream.html">proc_macro2::TokenStream</a>;
-<span class="kw">use </span>quote::{<a href="https://docs.rs/quote/1.0.36/quote/macro.format_ident.html">format_ident</a>, <a href="https://docs.rs/quote/1.0.36/quote/macro.quote.html">quote</a>, <a href="https://docs.rs/quote/1.0.36/quote/to_tokens/trait.ToTokens.html">ToTokens</a>};
+<span class="kw">use </span>quote::{<a href="https://docs.rs/quote/1.0.37/quote/macro.format_ident.html">format_ident</a>, <a href="https://docs.rs/quote/1.0.37/quote/macro.quote.html">quote</a>, <a href="https://docs.rs/quote/1.0.37/quote/to_tokens/trait.ToTokens.html">ToTokens</a>};
 
 <span class="kw">pub fn </span>impl_object_interface(input: <a href="../object_impl_attributes.rs.html#19-27"><span class="kw">super</span>::Input</a>) -&gt; <a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.TokenStream.html">TokenStream</a> {
     <span class="kw">let </span>crate_ident = <a href="../utils.rs.html#188-215"><span class="kw">crate</span>::utils::crate_ident_new</a>();
@@ -314,8 +314,8 @@
     <span class="kw">let </span>register_object_interface = <span class="kw">if let </span><span class="prelude-val">Some</span>(dynamic) = <a href="#16">meta_dynamic</a> {
         <span class="kw">let </span>plugin_ty = <a href="#19">dynamic</a>
             .plugin_type
-            .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|p| <a href="#22">p</a>.<a href="https://docs.rs/quote/1.0.36/quote/to_tokens/trait.ToTokens.html#tymethod.into_token_stream">into_token_stream</a>())
-            .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap_or">unwrap_or</a>(<a class="macro" href="https://docs.rs/quote/1.0.36/quote/macro.quote.html">quote!</a>(#crate_ident::TypeModule));
+            .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|p| <a href="#22">p</a>.<a href="https://docs.rs/quote/1.0.37/quote/to_tokens/trait.ToTokens.html#tymethod.into_token_stream">into_token_stream</a>())
+            .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap_or">unwrap_or</a>(<a class="macro" href="https://docs.rs/quote/1.0.37/quote/macro.quote.html">quote!</a>(#crate_ident::TypeModule));
         <a href="#92-222">register_object_interface_as_dynamic</a>(
             <span class="kw-2">&amp;</span><a href="#8">crate_ident</a>,
             <span class="kw-2">&amp;</span><a href="#13">self_ty</a>,
@@ -339,12 +339,12 @@
     <span class="kw">let </span>prerequisites_opt = <span class="kw">if </span>has_prerequisites {
         <span class="prelude-val">None
     </span>} <span class="kw">else </span>{
-        <span class="prelude-val">Some</span>(<a class="macro" href="https://docs.rs/quote/1.0.36/quote/macro.quote.html">quote!</a>(
+        <span class="prelude-val">Some</span>(<a class="macro" href="https://docs.rs/quote/1.0.37/quote/macro.quote.html">quote!</a>(
             <span class="kw">type </span>Prerequisites = ();
         ))
     };
 
-    <a class="macro" href="https://docs.rs/quote/1.0.36/quote/macro.quote.html">quote!</a> {
+    <a class="macro" href="https://docs.rs/quote/1.0.37/quote/macro.quote.html">quote!</a> {
         #(#attrs)*
         #unsafety <span class="kw">impl </span>#generics #trait_path <span class="kw">for </span>#self_ty {
             #prerequisites_opt
@@ -368,7 +368,7 @@
     self_ty: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.Ident.html">syn::Ident</a>,
 ) -&gt; <a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.TokenStream.html">TokenStream</a> {
     <span class="comment">// registers the interface on first use (lazy registration).
-    </span><a class="macro" href="https://docs.rs/quote/1.0.36/quote/macro.quote.html">quote!</a> {
+    </span><a class="macro" href="https://docs.rs/quote/1.0.37/quote/macro.quote.html">quote!</a> {
         <span class="kw">impl </span>#self_ty {
             <span class="doccomment">/// Registers the interface only once.
             </span><span class="attr">#[inline]
@@ -398,14 +398,14 @@
         // this implementation relies on a static storage of a weak reference on the plugin and of the GLib type to know if the object interface has been registered.
 
         // the registration status type.
-        </span><span class="kw">let </span>registration_status_type = <a class="macro" href="https://docs.rs/quote/1.0.36/quote/macro.format_ident.html">format_ident!</a>(<span class="string">"{}RegistrationStatus"</span>, self_ty);
+        </span><span class="kw">let </span>registration_status_type = <a class="macro" href="https://docs.rs/quote/1.0.37/quote/macro.format_ident.html">format_ident!</a>(<span class="string">"{}RegistrationStatus"</span>, self_ty);
         <span class="comment">// name of the static variable to store the registration status.
-        </span><span class="kw">let </span>registration_status = <a class="macro" href="https://docs.rs/quote/1.0.36/quote/macro.format_ident.html">format_ident!</a>(
+        </span><span class="kw">let </span>registration_status = <a class="macro" href="https://docs.rs/quote/1.0.37/quote/macro.format_ident.html">format_ident!</a>(
             <span class="string">"{}"</span>,
             registration_status_type.to_string().to_shouty_snake_case()
         );
 
-        <a class="macro" href="https://docs.rs/quote/1.0.36/quote/macro.quote.html">quote!</a> {
+        <a class="macro" href="https://docs.rs/quote/1.0.37/quote/macro.quote.html">quote!</a> {
             <span class="doccomment">/// The registration status type: a tuple of the weak reference on the plugin and of the GLib type.
             </span><span class="kw">struct </span>#registration_status_type(&lt;#plugin_ty <span class="kw">as </span>#crate_ident::clone::Downgrade&gt;::Weak, #crate_ident::Type);
             <span class="kw">unsafe impl </span>Send <span class="kw">for </span>#registration_status_type {}
@@ -483,9 +483,9 @@
         <span class="comment">// registers immediately the object interface as a dynamic type.
 
         // name of the static variable to store the GLib type.
-        </span><span class="kw">let </span>gtype_status = <a class="macro" href="https://docs.rs/quote/1.0.36/quote/macro.format_ident.html">format_ident!</a>(<span class="string">"{}_G_TYPE"</span>, self_ty.to_string().to_shouty_snake_case());
+        </span><span class="kw">let </span>gtype_status = <a class="macro" href="https://docs.rs/quote/1.0.37/quote/macro.format_ident.html">format_ident!</a>(<span class="string">"{}_G_TYPE"</span>, self_ty.to_string().to_shouty_snake_case());
 
-        <a class="macro" href="https://docs.rs/quote/1.0.36/quote/macro.quote.html">quote!</a> {
+        <a class="macro" href="https://docs.rs/quote/1.0.37/quote/macro.quote.html">quote!</a> {
             <span class="doccomment">/// The GLib type which can be safely shared between threads.
             </span><span class="kw">static </span>#gtype_status: ::std::sync::atomic::AtomicUsize = ::std::sync::atomic::AtomicUsize::new(#crate_ident::gobject_ffi::G_TYPE_INVALID);
 

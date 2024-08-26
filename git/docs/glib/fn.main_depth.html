@@ -71,7 +71,7 @@
 </script>
 
 
-<nav class="mobile-topbar"><button class="sidebar-menu-toggle" title="show sidebar"></button></nav><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../glib/index.html">glib</a><span class="version">0.21.0</span></h2></div><div class="sidebar-elems"></div></nav><div class="sidebar-resizer"></div><main><div class="width-limiter"><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1>Function <a href="index.html">glib</a>::<wbr><a class="fn" href="#">main_depth</a><button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><span class="out-of-band"><a class="src" href="../src/glib/auto/functions.rs.html#1740-1742">source</a> · <button id="toggle-all-docs" title="collapse all docs">[<span>&#x2212;</span>]</button></span></div><pre class="rust item-decl"><code>pub fn main_depth() -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a></code></pre><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>Returns the depth of the stack of calls to
+<nav class="mobile-topbar"><button class="sidebar-menu-toggle" title="show sidebar"></button></nav><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../glib/index.html">glib</a><span class="version">0.21.0</span></h2></div><div class="sidebar-elems"></div></nav><div class="sidebar-resizer"></div><main><div class="width-limiter"><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1>Function <a href="index.html">glib</a>::<wbr><a class="fn" href="#">main_depth</a><button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><span class="out-of-band"><a class="src" href="../src/glib/auto/functions.rs.html#2878-2880">source</a> · <button id="toggle-all-docs" title="collapse all docs">[<span>&#x2212;</span>]</button></span></div><pre class="rust item-decl"><code>pub fn main_depth() -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a></code></pre><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>Returns the depth of the stack of calls to
 g_main_context_dispatch() on any #GMainContext in the current thread.
 That is, when called from the toplevel, it gives 0. When
 called from within a callback from g_main_context_iteration()
@@ -111,66 +111,56 @@ while (TRUE);
 </code></pre></div>
 <p>This works from an application, however, if you want to do the same
 thing from a library, it gets more difficult, since you no longer
-control the main loop. You might think you can simply use an idle
-function to make the call to free_allocated_memory(), but that
-doesn’t work, since the idle function could be called from a
-recursive callback. This can be fixed by using g_main_depth()</p>
+control the main loop. Action signals are signals that may freely be emitted on alive
+objects from user code via <code>g_signal_emit()</code> and friends, without
+the need of being embedded into extra code that performs pre or
+post emission adjustments on the object. They can also be thought
+of as object methods which can be called generically by
+third-party code.
+Returns the depth of the stack of calls to
+g_main_context_dispatch() on any #GMainContext in the current thread.
+That is, when called from the toplevel, it gives 0. When
+called from within a callback from g_main_context_iteration()
+(or g_main_loop_run(), etc.) it returns 1. When called from within
+a callback to a recursive call to g_main_context_iteration(),
+it returns 2. And so forth.</p>
+<p>This function is useful in a situation like the following:
+Imagine an extremely simple “garbage collected” system.</p>
 <p><strong>⚠️ The following code is in C ⚠️</strong></p>
-<div class="example-wrap"><pre class="language-C"><code>gpointer
+<div class="example-wrap"><pre class="language-C"><code>static GList *free_list;
+
+gpointer
 allocate_memory (gsize size)
 {
-  FreeListBlock *block = g_new (FreeListBlock, 1);
-  block-&gt;mem = g_malloc (size);
-  block-&gt;depth = g_main_depth ();
-  free_list = g_list_prepend (free_list, block);
-  return block-&gt;mem;
+  gpointer result = g_malloc (size);
+  free_list = g_list_prepend (free_list, result);
+  return result;
 }
 
 void
 free_allocated_memory (void)
 {
   GList *l;
+  for (l = free_list; l; l = l-&gt;next);
+    g_free (l-&gt;data);
+  g_list_free (free_list);
+  free_list = NULL;
+ }
 
-  int depth = g_main_depth ();
-  for (l = free_list; l; );
-    {
-      GList *next = l-&gt;next;
-      FreeListBlock *block = l-&gt;data;
-      if (block-&gt;depth &gt; depth)
-        {
-          g_free (block-&gt;mem);
-          g_free (block);
-          free_list = g_list_delete_link (free_list, l);
-        }
+[...]
 
-      l = next;
-    }
+while (TRUE);
+ {
+   g_main_context_iteration (NULL, TRUE);
+   free_allocated_memory();
   }
 </code></pre></div>
-<p>There is a temptation to use g_main_depth() to solve
-problems with reentrancy. For instance, while waiting for data
-to be received from the network in response to a menu item,
-the menu item might be selected again. It might seem that
-one could make the menu item’s callback return immediately
-and do nothing if g_main_depth() returns a value greater than 1.
-However, this should be avoided since the user then sees selecting
-the menu item do nothing. Furthermore, you’ll find yourself adding
-these checks all over your code, since there are doubtless many,
-many things that the user could do. Instead, you can use the
-following techniques:</p>
-<ol>
-<li>
-<p>Use gtk_widget_set_sensitive() or modal dialogs to prevent
-the user from interacting with elements while the main
-loop is recursing.</p>
-</li>
-<li>
-<p>Avoid main loop recursion in situations where you can’t handle
-arbitrary  callbacks. Instead, structure your code so that you
-simply return to the main loop and then get called again when
-there is more work to do.</p>
-</li>
-</ol>
-<h2 id="returns"><a class="doc-anchor" href="#returns">§</a>Returns</h2>
-<p>The main loop recursion level in the current thread</p>
+<p>This works from an application, however, if you want to do the same
+thing from a library, it gets more difficult, since you no longer
+control the main loop. Action signals are signals that may freely be emitted on alive
+objects from user code via <code>g_signal_emit()</code> and friends, without
+the need of being embedded into extra code that performs pre or
+post emission adjustments on the object. They can also be thought
+of as object methods which can be called generically by
+third-party code.</p>
 </div></details></section></div></main></body></html>

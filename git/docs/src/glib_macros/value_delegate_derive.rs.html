@@ -273,7 +273,7 @@
 <a href="#200" id="200">200</a>
 </pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
-</span><span class="kw">use </span><a href="https://docs.rs/quote/1.0.36/quote/macro.quote.html">quote::quote</a>;
+</span><span class="kw">use </span><a href="https://docs.rs/quote/1.0.37/quote/macro.quote.html">quote::quote</a>;
 <span class="kw">use </span>syn::{<a href="https://docs.rs/syn/2.0.76/syn/parse/trait.Parse.html">parse::Parse</a>, <a href="https://docs.rs/syn/2.0.76/syn/macro.Token.html">Token</a>};
 
 <span class="kw">use </span><a href="utils.rs.html#188-215"><span class="kw">crate</span>::utils::crate_ident_new</a>;
@@ -397,13 +397,13 @@
     <span class="comment">// this must be called in a context where `this` is defined.
     </span><span class="kw">let </span>delegate_value = <span class="kw">match </span><a href="#118">mode</a> {
         <a href="#10">DeriveMode::From</a> =&gt; {
-            <a class="macro" href="https://docs.rs/quote/1.0.36/quote/macro.quote.html">quote!</a>(&lt;#delegated_ty <span class="kw">as </span>std::convert::From&lt;<span class="kw">_</span>&gt;&gt;::from(this))
+            <a class="macro" href="https://docs.rs/quote/1.0.37/quote/macro.quote.html">quote!</a>(&lt;#delegated_ty <span class="kw">as </span>std::convert::From&lt;<span class="kw">_</span>&gt;&gt;::from(this))
         }
-        <a href="#12">DeriveMode::Private</a> =&gt; <a class="macro" href="https://docs.rs/quote/1.0.36/quote/macro.quote.html">quote!</a>(this.<span class="number">0</span>),
+        <a href="#12">DeriveMode::Private</a> =&gt; <a class="macro" href="https://docs.rs/quote/1.0.37/quote/macro.quote.html">quote!</a>(this.<span class="number">0</span>),
     };
 
     <span class="kw">let </span>to_value_optional = <a href="#119">nullable</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.bool.html#method.then">then</a>(|| {
-        <a class="macro" href="https://docs.rs/quote/1.0.36/quote/macro.quote.html">quote!</a> {
+        <a class="macro" href="https://docs.rs/quote/1.0.37/quote/macro.quote.html">quote!</a> {
             <span class="kw">impl </span>#crate_ident::value::ToValueOptional <span class="kw">for </span>#ident {
                 <span class="kw">fn </span>to_value_optional(s: ::core::option::Option&lt;<span class="kw-2">&amp;</span><span class="self">Self</span>&gt;) -&gt; #crate_ident::value::Value {
                     <span class="kw">if let </span>::core::option::Option::Some(this) = s {
@@ -418,14 +418,14 @@
 
     <span class="kw">let </span>from_value = <span class="kw">match </span><a href="#118">mode</a> {
         <a href="#10">DeriveMode::From</a> =&gt; {
-            <a class="macro" href="https://docs.rs/quote/1.0.36/quote/macro.quote.html">quote!</a>(#ident::from(&lt;#delegated_ty <span class="kw">as </span>#crate_ident::value::FromValue&lt;<span class="lifetime">'a</span>&gt;&gt;::from_value(value)))
+            <a class="macro" href="https://docs.rs/quote/1.0.37/quote/macro.quote.html">quote!</a>(#ident::from(&lt;#delegated_ty <span class="kw">as </span>#crate_ident::value::FromValue&lt;<span class="lifetime">'a</span>&gt;&gt;::from_value(value)))
         }
         <a href="#12">DeriveMode::Private</a> =&gt; {
-            <a class="macro" href="https://docs.rs/quote/1.0.36/quote/macro.quote.html">quote!</a>(#ident(&lt;#delegated_ty <span class="kw">as </span>#crate_ident::value::FromValue&lt;<span class="lifetime">'a</span>&gt;&gt;::from_value(value)))
+            <a class="macro" href="https://docs.rs/quote/1.0.37/quote/macro.quote.html">quote!</a>(#ident(&lt;#delegated_ty <span class="kw">as </span>#crate_ident::value::FromValue&lt;<span class="lifetime">'a</span>&gt;&gt;::from_value(value)))
         }
     };
 
-    <span class="kw">let </span>res = <a class="macro" href="https://docs.rs/quote/1.0.36/quote/macro.quote.html">quote!</a> {
+    <span class="kw">let </span>res = <a class="macro" href="https://docs.rs/quote/1.0.37/quote/macro.quote.html">quote!</a> {
         <span class="kw">impl </span>#crate_ident::prelude::StaticType <span class="kw">for </span>#ident {
             <span class="kw">fn </span>static_type() -&gt; glib::types::Type {
                 &lt;#delegated_ty <span class="kw">as </span>#crate_ident::prelude::StaticType&gt;::static_type()

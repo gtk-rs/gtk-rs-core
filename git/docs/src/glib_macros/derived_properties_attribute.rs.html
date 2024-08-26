@@ -149,7 +149,7 @@
 </pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
 </span><span class="kw">use </span>proc_macro2::{<a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.Span.html">Span</a>, <a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.TokenStream.html">TokenStream</a>};
-<span class="kw">use </span><a href="https://docs.rs/quote/1.0.36/quote/macro.quote.html">quote::quote</a>;
+<span class="kw">use </span><a href="https://docs.rs/quote/1.0.37/quote/macro.quote.html">quote::quote</a>;
 
 <span class="kw">pub const </span>WRONG_PLACE_MSG: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a> =
     <span class="string">"This macro should be used on `impl` block for `glib::ObjectImpl` trait"</span>;
@@ -189,19 +189,19 @@
 
     <span class="kw">let </span>crate_ident = <a href="utils.rs.html#188-215"><span class="kw">crate</span>::utils::crate_ident_new</a>();
 
-    <span class="kw">let </span>properties = <a class="macro" href="https://docs.rs/quote/1.0.36/quote/macro.quote.html">quote!</a>(
+    <span class="kw">let </span>properties = <a class="macro" href="https://docs.rs/quote/1.0.37/quote/macro.quote.html">quote!</a>(
         <span class="kw">fn </span>properties() -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'static </span>[#crate_ident::ParamSpec] {
             <span class="self">Self</span>::derived_properties()
         }
     );
 
-    <span class="kw">let </span>set_property = <a class="macro" href="https://docs.rs/quote/1.0.36/quote/macro.quote.html">quote!</a>(
+    <span class="kw">let </span>set_property = <a class="macro" href="https://docs.rs/quote/1.0.37/quote/macro.quote.html">quote!</a>(
         <span class="kw">fn </span>set_property(<span class="kw-2">&amp;</span><span class="self">self</span>, id: usize, value: <span class="kw-2">&amp;</span>#crate_ident::Value, pspec: <span class="kw-2">&amp;</span>#crate_ident::ParamSpec) {
             <span class="self">Self</span>::derived_set_property(<span class="self">self</span>, id, value, pspec)
         }
     );
 
-    <span class="kw">let </span>property = <a class="macro" href="https://docs.rs/quote/1.0.36/quote/macro.quote.html">quote!</a>(
+    <span class="kw">let </span>property = <a class="macro" href="https://docs.rs/quote/1.0.37/quote/macro.quote.html">quote!</a>(
         <span class="kw">fn </span>property(<span class="kw-2">&amp;</span><span class="self">self</span>, id: usize, pspec: <span class="kw-2">&amp;</span>#crate_ident::ParamSpec) -&gt; #crate_ident::Value {
             <span class="self">Self</span>::derived_property(<span class="self">self</span>, id, pspec)
         }
@@ -213,7 +213,7 @@
         (!<a href="#24">has_property</a>).<a href="https://doc.rust-lang.org/nightly/core/foreigntype.bool.html#method.then_some">then_some</a>(<a href="#56">property</a>),
     ];
 
-    <span class="prelude-val">Ok</span>(<a class="macro" href="https://docs.rs/quote/1.0.36/quote/macro.quote.html">quote!</a>(
+    <span class="prelude-val">Ok</span>(<a class="macro" href="https://docs.rs/quote/1.0.37/quote/macro.quote.html">quote!</a>(
         #(#attrs)*
         <span class="kw">impl </span>#generics #trait_path <span class="kw">for </span>#self_ty {
             #(#items)*

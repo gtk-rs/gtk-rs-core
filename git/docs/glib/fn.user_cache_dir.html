@@ -71,7 +71,7 @@
 </script>
 
 
-<nav class="mobile-topbar"><button class="sidebar-menu-toggle" title="show sidebar"></button></nav><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../glib/index.html">glib</a><span class="version">0.21.0</span></h2></div><div class="sidebar-elems"></div></nav><div class="sidebar-resizer"></div><main><div class="width-limiter"><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1>Function <a href="index.html">glib</a>::<wbr><a class="fn" href="#">user_cache_dir</a><button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><span class="out-of-band"><a class="src" href="../src/glib/auto/functions.rs.html#1337-1339">source</a> · <button id="toggle-all-docs" title="collapse all docs">[<span>&#x2212;</span>]</button></span></div><pre class="rust item-decl"><code>pub fn user_cache_dir() -&gt; <a class="struct" href="https://doc.rust-lang.org/nightly/std/path/struct.PathBuf.html" title="struct std::path::PathBuf">PathBuf</a></code></pre><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>Returns a base directory in which to store non-essential, cached
+<nav class="mobile-topbar"><button class="sidebar-menu-toggle" title="show sidebar"></button></nav><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../glib/index.html">glib</a><span class="version">0.21.0</span></h2></div><div class="sidebar-elems"></div></nav><div class="sidebar-resizer"></div><main><div class="width-limiter"><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1>Function <a href="index.html">glib</a>::<wbr><a class="fn" href="#">user_cache_dir</a><button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><span class="out-of-band"><a class="src" href="../src/glib/auto/functions.rs.html#2260-2262">source</a> · <button id="toggle-all-docs" title="collapse all docs">[<span>&#x2212;</span>]</button></span></div><pre class="rust item-decl"><code>pub fn user_cache_dir() -&gt; <a class="struct" href="https://doc.rust-lang.org/nightly/std/path/struct.PathBuf.html" title="struct std::path::PathBuf">PathBuf</a></code></pre><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>Returns a base directory in which to store non-essential, cached
 data specific to particular user.</p>
 <p>On UNIX platforms this is determined using the mechanisms described
 in the
@@ -85,6 +85,22 @@ See the <a href="https://docs.microsoft.com/en-us/windows/win32/shell/knownfolde
 <p>The return value is cached and modifying it at runtime is not supported, as
 it’s not thread-safe to modify environment variables at runtime.</p>
 <h2 id="returns"><a class="doc-anchor" href="#returns">§</a>Returns</h2>
+<p>a string owned by GLib that
+must not be modified or freed.
+Returns a base directory in which to store non-essential, cached
+data specific to particular user.</p>
+<p>On UNIX platforms this is determined using the mechanisms described
+in the
+<a href="http://www.freedesktop.org/Standards/basedir-spec">XDG Base Directory Specification</a>.
+In this case the directory retrieved will be <code>XDG_CACHE_HOME</code>.</p>
+<p>On Windows it follows XDG Base Directory Specification if <code>XDG_CACHE_HOME</code> is defined.
+If <code>XDG_CACHE_HOME</code> is undefined, the directory that serves as a common
+repository for temporary Internet files is used instead. A typical path is
+<code>C:\Documents and Settings\username\Local Settings\Temporary Internet Files</code>.
+See the <a href="https://docs.microsoft.com/en-us/windows/win32/shell/knownfolderid">documentation for <code>FOLDERID_InternetCache</code></a>.</p>
+<p>The return value is cached and modifying it at runtime is not supported, as
+it’s not thread-safe to modify environment variables at runtime.</p>
+<h2 id="returns-1"><a class="doc-anchor" href="#returns-1">§</a>Returns</h2>
 <p>a string owned by GLib that
 must not be modified or freed.</p>
 </div></details></section></div></main></body></html>

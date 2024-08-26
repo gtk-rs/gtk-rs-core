@@ -317,7 +317,7 @@
 </pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
 </span><span class="kw">use </span>proc_macro2::{<a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.Ident.html">Ident</a>, <a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.Span.html">Span</a>, <a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.TokenStream.html">TokenStream</a>};
-<span class="kw">use </span>quote::{<a href="https://docs.rs/quote/1.0.36/quote/macro.quote.html">quote</a>, <a href="https://docs.rs/quote/1.0.36/quote/to_tokens/trait.ToTokens.html">ToTokens</a>};
+<span class="kw">use </span>quote::{<a href="https://docs.rs/quote/1.0.37/quote/macro.quote.html">quote</a>, <a href="https://docs.rs/quote/1.0.37/quote/to_tokens/trait.ToTokens.html">ToTokens</a>};
 <span class="kw">use </span>syn::{
     parse::{<a href="https://docs.rs/syn/2.0.76/syn/parse/trait.Parse.html">Parse</a>, <a href="https://docs.rs/syn/2.0.76/syn/parse/type.ParseStream.html">ParseStream</a>},
     <a href="https://docs.rs/syn/2.0.76/syn/spanned/trait.Spanned.html">spanned::Spanned</a>,
@@ -441,7 +441,7 @@
     }
 }
 
-<span class="kw">impl </span><a href="https://docs.rs/quote/1.0.36/quote/to_tokens/trait.ToTokens.html">ToTokens</a> <span class="kw">for </span><a href="#16-22">Closure</a> {
+<span class="kw">impl </span><a href="https://docs.rs/quote/1.0.37/quote/to_tokens/trait.ToTokens.html">ToTokens</a> <span class="kw">for </span><a href="#16-22">Closure</a> {
     <span class="kw">fn </span>to_tokens(<span class="kw-2">&amp;</span><span class="self">self</span>, tokens: <span class="kw-2">&amp;mut </span><a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.TokenStream.html">TokenStream</a>) {
         <span class="kw">let </span>crate_ident = <a href="utils.rs.html#188-215">crate_ident_new</a>();
 
@@ -461,7 +461,7 @@
                 <span class="kw-2">&amp;</span><a href="#130">crate_ident</a>,
                 <span class="kw-2">&amp;</span><a class="self" href="#129">self</a>.upgrade_behaviour,
                 <span class="kw-2">&amp;</span><a href="#136">upgrade_failure_closure_wrapped_ident</a>,
-                <span class="prelude-val">Some</span>(<a class="macro" href="https://docs.rs/quote/1.0.36/quote/macro.quote.html">quote!</a> {
+                <span class="prelude-val">Some</span>(<a class="macro" href="https://docs.rs/quote/1.0.37/quote/macro.quote.html">quote!</a> {
                     <span class="kw">return </span>#crate_ident::closure::IntoClosureReturnValue::into_closure_return_value(());
                 }),
             )
@@ -473,7 +473,7 @@
 
         <span class="kw">let </span>arg_values = <a class="self" href="#129">self</a>.args.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.enumerate">enumerate</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|(index, arg)| {
             <span class="kw">let </span>err_msg = <a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.format.html">format!</a>(<span class="string">"Wrong type for argument {index}: {{:?}}"</span>);
-            <a class="macro" href="https://docs.rs/quote/1.0.36/quote/macro.quote.html">quote!</a> {
+            <a class="macro" href="https://docs.rs/quote/1.0.37/quote/macro.quote.html">quote!</a> {
                 <span class="kw">let </span>#arg = ::core::result::Result::unwrap_or_else(
                     #crate_ident::Value::get(<span class="kw-2">&amp;</span>#values_ident[#index]),
                     |e| <span class="macro">panic!</span>(#err_msg, e),
@@ -486,14 +486,14 @@
         <span class="kw">let </span>constructor = <a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.Ident.html#method.new">Ident::new</a>(<a class="self" href="#129">self</a>.constructor, <a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.Span.html#method.call_site">Span::call_site</a>());
 
         <span class="kw">let </span>upgrade_failure_closure = <span class="kw">match </span><a class="self" href="#129">self</a>.upgrade_behaviour {
-            <a href="clone.rs.html#51">UpgradeBehaviour::Default</a> =&gt; <span class="prelude-val">Some</span>(<a class="macro" href="https://docs.rs/quote/1.0.36/quote/macro.quote.html">quote!</a> {
+            <a href="clone.rs.html#51">UpgradeBehaviour::Default</a> =&gt; <span class="prelude-val">Some</span>(<a class="macro" href="https://docs.rs/quote/1.0.37/quote/macro.quote.html">quote!</a> {
                 <span class="kw">let </span>#upgrade_failure_closure_ident = ::std::default::Default::default;
                 <span class="kw">let </span>#upgrade_failure_closure_wrapped_ident = ||
                     #crate_ident::closure::IntoClosureReturnValue::into_closure_return_value(
                         (#upgrade_failure_closure_ident)()
                     );
             }),
-            <a href="clone.rs.html#52">UpgradeBehaviour::Expression</a>(<span class="kw-2">ref </span>expr) =&gt; <span class="prelude-val">Some</span>(<a class="macro" href="https://docs.rs/quote/1.0.36/quote/macro.quote.html">quote!</a> {
+            <a href="clone.rs.html#52">UpgradeBehaviour::Expression</a>(<span class="kw-2">ref </span>expr) =&gt; <span class="prelude-val">Some</span>(<a class="macro" href="https://docs.rs/quote/1.0.37/quote/macro.quote.html">quote!</a> {
                 <span class="kw">let </span>#upgrade_failure_closure_ident = <span class="kw">move </span>|| {
                     #expr
                 };
@@ -502,7 +502,7 @@
                         (#upgrade_failure_closure_ident)()
                     );
             }),
-            <a href="clone.rs.html#53">UpgradeBehaviour::Closure</a>(<span class="kw-2">ref </span>closure_2) =&gt; <span class="prelude-val">Some</span>(<a class="macro" href="https://docs.rs/quote/1.0.36/quote/macro.quote.html">quote!</a> {
+            <a href="clone.rs.html#53">UpgradeBehaviour::Closure</a>(<span class="kw-2">ref </span>closure_2) =&gt; <span class="prelude-val">Some</span>(<a class="macro" href="https://docs.rs/quote/1.0.37/quote/macro.quote.html">quote!</a> {
                     <span class="kw">let </span>#upgrade_failure_closure_ident = #closure_2;
                     <span class="kw">let </span>#upgrade_failure_closure_wrapped_ident = ||
                         #crate_ident::closure::IntoClosureReturnValue::into_closure_return_value(
@@ -513,13 +513,13 @@
         };
 
         <span class="kw">let </span>assert_return_type = <a href="#172">upgrade_failure_closure</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.is_some">is_some</a>().<a href="https://doc.rust-lang.org/nightly/core/foreigntype.bool.html#method.then">then</a>(|| {
-            <a class="macro" href="https://docs.rs/quote/1.0.36/quote/macro.quote.html">quote!</a> {
+            <a class="macro" href="https://docs.rs/quote/1.0.37/quote/macro.quote.html">quote!</a> {
                 <span class="kw">fn </span>____same&lt;T&gt;(_a: <span class="kw-2">&amp;</span>T, _b: <span class="kw">impl </span>Fn() -&gt; T) {}
                 ____same(<span class="kw-2">&amp;</span>____res, #upgrade_failure_closure_ident);
             }
         });
 
-        <a href="#129">tokens</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.Extend.html#tymethod.extend">extend</a>(<a class="macro" href="https://docs.rs/quote/1.0.36/quote/macro.quote.html">quote!</a> {
+        <a href="#129">tokens</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.Extend.html#tymethod.extend">extend</a>(<a class="macro" href="https://docs.rs/quote/1.0.37/quote/macro.quote.html">quote!</a> {
             {
                 <span class="kw">let </span>#closure_ident = {
                     #(#outer_before)*
@@ -555,6 +555,6 @@
 ) -&gt; <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">proc_macro::TokenStream</a> {
     <span class="kw">let </span><span class="kw-2">mut </span>closure = <a class="macro" href="https://docs.rs/syn/2.0.76/syn/macro.parse_macro_input.html">syn::parse_macro_input!</a>(input <span class="kw">as </span>Closure);
     <a href="#240">closure</a>.constructor = <a href="#238">constructor</a>;
-    <a href="#240">closure</a>.<a href="https://docs.rs/quote/1.0.36/quote/to_tokens/trait.ToTokens.html#tymethod.into_token_stream">into_token_stream</a>().<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>()
+    <a href="#240">closure</a>.<a href="https://docs.rs/quote/1.0.37/quote/to_tokens/trait.ToTokens.html#tymethod.into_token_stream">into_token_stream</a>().<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>()
 }
 </code></pre></div></section></main></body></html>

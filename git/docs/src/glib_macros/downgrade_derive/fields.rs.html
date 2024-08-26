@@ -271,7 +271,7 @@
 </pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
 </span><span class="kw">use </span><a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.TokenStream.html">proc_macro2::TokenStream</a>;
-<span class="kw">use </span>quote::{<a href="https://docs.rs/quote/1.0.36/quote/macro.format_ident.html">format_ident</a>, <a href="https://docs.rs/quote/1.0.36/quote/macro.quote.html">quote</a>};
+<span class="kw">use </span>quote::{<a href="https://docs.rs/quote/1.0.37/quote/macro.format_ident.html">format_ident</a>, <a href="https://docs.rs/quote/1.0.37/quote/macro.quote.html">quote</a>};
 <span class="kw">use </span>syn::{<a href="https://docs.rs/syn/2.0.76/syn/data/enum.Fields.html">Fields</a>, <a href="https://docs.rs/syn/2.0.76/syn/data/struct.FieldsNamed.html">FieldsNamed</a>, <a href="https://docs.rs/syn/2.0.76/syn/data/struct.FieldsUnnamed.html">FieldsUnnamed</a>, Ident, <a href="https://docs.rs/syn/2.0.76/syn/ty/enum.Type.html">Type</a>};
 
 <span class="kw">use </span><a href="../utils.rs.html#188-215"><span class="kw">crate</span>::utils::crate_ident_new</a>;
@@ -381,33 +381,33 @@
             <span class="kw">let </span>weak_fields: Vec&lt;<span class="kw">_</span>&gt; = <a href="#105">fields</a>
                 .<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.iter">iter</a>()
                 .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|ty| {
-                    <a class="macro" href="https://docs.rs/quote/1.0.36/quote/macro.quote.html">quote!</a> {
+                    <a class="macro" href="https://docs.rs/quote/1.0.37/quote/macro.quote.html">quote!</a> {
                         &lt;#ty <span class="kw">as </span>#glib::clone::Downgrade&gt;::Weak
                     }
                 })
                 .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.collect">collect</a>();
 
             <span class="kw">let </span>field_ident: Vec&lt;<a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.Ident.html">Ident</a>&gt; =
-                (<span class="number">0</span>..<a href="#105">fields</a>.<a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.len">len</a>()).<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|i| <a class="macro" href="https://docs.rs/quote/1.0.36/quote/macro.format_ident.html">format_ident!</a>(<span class="string">"_{}"</span>, i)).<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.collect">collect</a>();
+                (<span class="number">0</span>..<a href="#105">fields</a>.<a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.len">len</a>()).<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|i| <a class="macro" href="https://docs.rs/quote/1.0.37/quote/macro.format_ident.html">format_ident!</a>(<span class="string">"_{}"</span>, i)).<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.collect">collect</a>();
 
             <a href="#10-21">DowngradeStructParts</a> {
-                weak_fields: <a class="macro" href="https://docs.rs/quote/1.0.36/quote/macro.quote.html">quote!</a> {
+                weak_fields: <a class="macro" href="https://docs.rs/quote/1.0.37/quote/macro.quote.html">quote!</a> {
                     (#(
                         #weak_fields
                     ),<span class="kw-2">*</span>)
                 },
-                end_of_struct: <a class="macro" href="https://docs.rs/quote/1.0.36/quote/macro.quote.html">quote!</a>(;),
-                destruct: <a class="macro" href="https://docs.rs/quote/1.0.36/quote/macro.quote.html">quote!</a> {
+                end_of_struct: <a class="macro" href="https://docs.rs/quote/1.0.37/quote/macro.quote.html">quote!</a>(;),
+                destruct: <a class="macro" href="https://docs.rs/quote/1.0.37/quote/macro.quote.html">quote!</a> {
                     (#(
                         <span class="kw-2">ref </span>#field_ident
                     ),<span class="kw-2">*</span>)
                 },
-                downgrade: <a class="macro" href="https://docs.rs/quote/1.0.36/quote/macro.quote.html">quote!</a> {
+                downgrade: <a class="macro" href="https://docs.rs/quote/1.0.37/quote/macro.quote.html">quote!</a> {
                     (#(
                         #glib::clone::Downgrade::downgrade(#field_ident)
                     ),<span class="kw-2">*</span>)
                 },
-                upgrade: <a class="macro" href="https://docs.rs/quote/1.0.36/quote/macro.quote.html">quote!</a> {
+                upgrade: <a class="macro" href="https://docs.rs/quote/1.0.37/quote/macro.quote.html">quote!</a> {
                     (#(
                         #glib::clone::Upgrade::upgrade(#field_ident)<span class="question-mark">?
                     </span>),<span class="kw-2">*</span>)
@@ -424,7 +424,7 @@
             <span class="kw">let </span>weak_fields: Vec&lt;<span class="kw">_</span>&gt; = <a href="#148">fields</a>
                 .<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.iter">iter</a>()
                 .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|(ident, ty)| {
-                    <a class="macro" href="https://docs.rs/quote/1.0.36/quote/macro.quote.html">quote!</a> {
+                    <a class="macro" href="https://docs.rs/quote/1.0.37/quote/macro.quote.html">quote!</a> {
                         #ident: &lt;#ty <span class="kw">as </span>#glib::clone::Downgrade&gt;::Weak
                     }
                 })
@@ -433,23 +433,23 @@
             <span class="kw">let </span>field_ident: Vec&lt;<span class="kw">_</span>&gt; = <a href="#148">fields</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|(ident, _ty)| <a href="#163">ident</a>).<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.collect">collect</a>();
 
             <a href="#10-21">DowngradeStructParts</a> {
-                weak_fields: <a class="macro" href="https://docs.rs/quote/1.0.36/quote/macro.quote.html">quote!</a> {
+                weak_fields: <a class="macro" href="https://docs.rs/quote/1.0.37/quote/macro.quote.html">quote!</a> {
                     {#(
                         #weak_fields
                     ),<span class="kw-2">*</span>}
                 },
-                end_of_struct: <a class="macro" href="https://docs.rs/quote/1.0.36/quote/macro.quote.html">quote!</a>(),
-                destruct: <a class="macro" href="https://docs.rs/quote/1.0.36/quote/macro.quote.html">quote!</a> {
+                end_of_struct: <a class="macro" href="https://docs.rs/quote/1.0.37/quote/macro.quote.html">quote!</a>(),
+                destruct: <a class="macro" href="https://docs.rs/quote/1.0.37/quote/macro.quote.html">quote!</a> {
                     {#(
                         <span class="kw-2">ref </span>#field_ident
                     ),<span class="kw-2">*</span>}
                 },
-                downgrade: <a class="macro" href="https://docs.rs/quote/1.0.36/quote/macro.quote.html">quote!</a> {
+                downgrade: <a class="macro" href="https://docs.rs/quote/1.0.37/quote/macro.quote.html">quote!</a> {
                     {#(
                         #field_ident: #glib::clone::Downgrade::downgrade(#field_ident)
                     ),<span class="kw-2">*</span>}
                 },
-                upgrade: <a class="macro" href="https://docs.rs/quote/1.0.36/quote/macro.quote.html">quote!</a> {
+                upgrade: <a class="macro" href="https://docs.rs/quote/1.0.37/quote/macro.quote.html">quote!</a> {
                     {#(
                         #field_ident: #glib::clone::Upgrade::upgrade(#field_ident)<span class="question-mark">?
                     </span>),<span class="kw-2">*</span>}
@@ -457,11 +457,11 @@
             }
         }
         <a href="https://docs.rs/syn/2.0.76/syn/data/enum.Fields.html#variant.Unit">Fields::Unit</a> =&gt; <a href="#10-21">DowngradeStructParts</a> {
-            weak_fields: <a class="macro" href="https://docs.rs/quote/1.0.36/quote/macro.quote.html">quote!</a> {},
-            end_of_struct: <a class="macro" href="https://docs.rs/quote/1.0.36/quote/macro.quote.html">quote!</a> { ; },
-            destruct: <a class="macro" href="https://docs.rs/quote/1.0.36/quote/macro.quote.html">quote!</a> {},
-            downgrade: <a class="macro" href="https://docs.rs/quote/1.0.36/quote/macro.quote.html">quote!</a> {},
-            upgrade: <a class="macro" href="https://docs.rs/quote/1.0.36/quote/macro.quote.html">quote!</a> {},
+            weak_fields: <a class="macro" href="https://docs.rs/quote/1.0.37/quote/macro.quote.html">quote!</a> {},
+            end_of_struct: <a class="macro" href="https://docs.rs/quote/1.0.37/quote/macro.quote.html">quote!</a> { ; },
+            destruct: <a class="macro" href="https://docs.rs/quote/1.0.37/quote/macro.quote.html">quote!</a> {},
+            downgrade: <a class="macro" href="https://docs.rs/quote/1.0.37/quote/macro.quote.html">quote!</a> {},
+            upgrade: <a class="macro" href="https://docs.rs/quote/1.0.37/quote/macro.quote.html">quote!</a> {},
         },
     }
 }
