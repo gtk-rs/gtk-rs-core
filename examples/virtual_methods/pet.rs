@@ -5,8 +5,7 @@ use glib::subclass::prelude::*;
 #[allow(dead_code)]
 pub mod ffi {
     /// The instance pointer is used for references to the object.
-    #[repr(C)]
-    pub struct Instance(std::ffi::c_void);
+    pub type Instance = <super::Pet as super::ObjectSubclass>::Instance;
 
     /// Custom class struct for the [`Pet`](super::Pet) class.
     ///
