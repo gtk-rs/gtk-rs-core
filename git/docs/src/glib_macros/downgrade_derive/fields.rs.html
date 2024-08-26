@@ -272,7 +272,7 @@
 
 </span><span class="kw">use </span><a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.TokenStream.html">proc_macro2::TokenStream</a>;
 <span class="kw">use </span>quote::{<a href="https://docs.rs/quote/1.0.36/quote/macro.format_ident.html">format_ident</a>, <a href="https://docs.rs/quote/1.0.36/quote/macro.quote.html">quote</a>};
-<span class="kw">use </span>syn::{<a href="https://docs.rs/syn/2.0.75/syn/data/enum.Fields.html">Fields</a>, <a href="https://docs.rs/syn/2.0.75/syn/data/struct.FieldsNamed.html">FieldsNamed</a>, <a href="https://docs.rs/syn/2.0.75/syn/data/struct.FieldsUnnamed.html">FieldsUnnamed</a>, Ident, <a href="https://docs.rs/syn/2.0.75/syn/ty/enum.Type.html">Type</a>};
+<span class="kw">use </span>syn::{<a href="https://docs.rs/syn/2.0.76/syn/data/enum.Fields.html">Fields</a>, <a href="https://docs.rs/syn/2.0.76/syn/data/struct.FieldsNamed.html">FieldsNamed</a>, <a href="https://docs.rs/syn/2.0.76/syn/data/struct.FieldsUnnamed.html">FieldsUnnamed</a>, Ident, <a href="https://docs.rs/syn/2.0.76/syn/ty/enum.Type.html">Type</a>};
 
 <span class="kw">use </span><a href="../utils.rs.html#188-215"><span class="kw">crate</span>::utils::crate_ident_new</a>;
 
@@ -368,13 +368,13 @@
 ///     y: glib::clone::Upgrade::upgrade(y)?,
 /// }
 /// ```
-</span><span class="kw">pub fn </span>derive_downgrade_fields(fields: <a href="https://docs.rs/syn/2.0.75/syn/data/enum.Fields.html">syn::Fields</a>) -&gt; <a href="#10-21">DowngradeStructParts</a> {
+</span><span class="kw">pub fn </span>derive_downgrade_fields(fields: <a href="https://docs.rs/syn/2.0.76/syn/data/enum.Fields.html">syn::Fields</a>) -&gt; <a href="#10-21">DowngradeStructParts</a> {
     <span class="kw">let </span>glib = <a href="../utils.rs.html#188-215">crate_ident_new</a>();
     <span class="kw">match </span><a href="#101">fields</a> {
-        <a href="https://docs.rs/syn/2.0.75/syn/data/enum.Fields.html#variant.Unnamed">Fields::Unnamed</a>(<a href="https://docs.rs/syn/2.0.75/syn/data/struct.FieldsUnnamed.html">FieldsUnnamed</a> { unnamed, .. }) =&gt; {
-            <span class="kw">let </span>fields: Vec&lt;<a href="https://docs.rs/syn/2.0.75/syn/ty/enum.Type.html">Type</a>&gt; = <a href="#104">unnamed</a>
-                .<a href="https://docs.rs/syn/2.0.75/syn/punctuated/struct.Punctuated.html#method.into_pairs">into_pairs</a>()
-                .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|pair| <a href="#107">pair</a>.<a href="https://docs.rs/syn/2.0.75/syn/punctuated/enum.Pair.html#method.into_value">into_value</a>())
+        <a href="https://docs.rs/syn/2.0.76/syn/data/enum.Fields.html#variant.Unnamed">Fields::Unnamed</a>(<a href="https://docs.rs/syn/2.0.76/syn/data/struct.FieldsUnnamed.html">FieldsUnnamed</a> { unnamed, .. }) =&gt; {
+            <span class="kw">let </span>fields: Vec&lt;<a href="https://docs.rs/syn/2.0.76/syn/ty/enum.Type.html">Type</a>&gt; = <a href="#104">unnamed</a>
+                .<a href="https://docs.rs/syn/2.0.76/syn/punctuated/struct.Punctuated.html#method.into_pairs">into_pairs</a>()
+                .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|pair| <a href="#107">pair</a>.<a href="https://docs.rs/syn/2.0.76/syn/punctuated/enum.Pair.html#method.into_value">into_value</a>())
                 .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|field| <a href="#108">field</a>.ty)
                 .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.collect">collect</a>();
 
@@ -414,10 +414,10 @@
                 },
             }
         }
-        <a href="https://docs.rs/syn/2.0.75/syn/data/enum.Fields.html#variant.Named">Fields::Named</a>(<a href="https://docs.rs/syn/2.0.75/syn/data/struct.FieldsNamed.html">FieldsNamed</a> { named, .. }) =&gt; {
-            <span class="kw">let </span>fields: Vec&lt;(<a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.Ident.html">Ident</a>, <a href="https://docs.rs/syn/2.0.75/syn/ty/enum.Type.html">Type</a>)&gt; = <a href="#147">named</a>
-                .<a href="https://docs.rs/syn/2.0.75/syn/punctuated/struct.Punctuated.html#method.into_pairs">into_pairs</a>()
-                .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|pair| <a href="#150">pair</a>.<a href="https://docs.rs/syn/2.0.75/syn/punctuated/enum.Pair.html#method.into_value">into_value</a>())
+        <a href="https://docs.rs/syn/2.0.76/syn/data/enum.Fields.html#variant.Named">Fields::Named</a>(<a href="https://docs.rs/syn/2.0.76/syn/data/struct.FieldsNamed.html">FieldsNamed</a> { named, .. }) =&gt; {
+            <span class="kw">let </span>fields: Vec&lt;(<a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.Ident.html">Ident</a>, <a href="https://docs.rs/syn/2.0.76/syn/ty/enum.Type.html">Type</a>)&gt; = <a href="#147">named</a>
+                .<a href="https://docs.rs/syn/2.0.76/syn/punctuated/struct.Punctuated.html#method.into_pairs">into_pairs</a>()
+                .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|pair| <a href="#150">pair</a>.<a href="https://docs.rs/syn/2.0.76/syn/punctuated/enum.Pair.html#method.into_value">into_value</a>())
                 .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|field| (<a href="#151">field</a>.ident.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.expect">expect</a>(<span class="string">"Field ident is specified"</span>), <a href="#151">field</a>.ty))
                 .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.collect">collect</a>();
 
@@ -456,7 +456,7 @@
                 },
             }
         }
-        <a href="https://docs.rs/syn/2.0.75/syn/data/enum.Fields.html#variant.Unit">Fields::Unit</a> =&gt; <a href="#10-21">DowngradeStructParts</a> {
+        <a href="https://docs.rs/syn/2.0.76/syn/data/enum.Fields.html#variant.Unit">Fields::Unit</a> =&gt; <a href="#10-21">DowngradeStructParts</a> {
             weak_fields: <a class="macro" href="https://docs.rs/quote/1.0.36/quote/macro.quote.html">quote!</a> {},
             end_of_struct: <a class="macro" href="https://docs.rs/quote/1.0.36/quote/macro.quote.html">quote!</a> { ; },
             destruct: <a class="macro" href="https://docs.rs/quote/1.0.36/quote/macro.quote.html">quote!</a> {},
