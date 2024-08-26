@@ -1381,6 +1381,10 @@ pub fn cstr_bytes(item: TokenStream) -> TokenStream {
 /// * `connect_$property_notify()`
 /// * `notify_$property()`
 ///
+/// # Documentation
+///
+/// Doc comments preceding a `#[property]` attribute will be copied to the generated getter method.
+///
 /// ## Extension trait
 /// You can choose to move the method definitions to a trait by using `#[properties(wrapper_type = super::MyType, ext_trait = MyTypePropertiesExt)]`.
 /// The trait name is optional, and defaults to `MyTypePropertiesExt`, where `MyType` is extracted from the wrapper type.
@@ -1444,7 +1448,9 @@ pub fn cstr_bytes(item: TokenStream) -> TokenStream {
 ///     pub struct Foo {
 ///         #[property(get, set = Self::set_fizz)]
 ///         fizz: RefCell<String>,
+///         /// The author's name
 ///         #[property(name = "author-name", get, set, type = String, member = name)]
+///         /// The author's childhood nickname
 ///         #[property(name = "author-nick", get, set, type = String, member = nick)]
 ///         author: RefCell<Author>,
 ///         #[property(get, set, explicit_notify, lax_validation)]
