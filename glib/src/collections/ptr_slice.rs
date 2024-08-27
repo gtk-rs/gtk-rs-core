@@ -718,6 +718,12 @@ impl<T: TransparentPtrType> PtrSlice<T> {
             let new_ptr =
                 ffi::g_realloc(ptr, mem::size_of::<T>().checked_mul(new_capacity).unwrap())
                     as *mut <T as GlibPtrDefault>::GlibType;
+            if self.capacity == 0 {
+                ptr::write(
+                    new_ptr,
+                    Ptr::from(ptr::null_mut::<<T as GlibPtrDefault>::GlibType>()),
+                );
+            }
             self.ptr = ptr::NonNull::new_unchecked(new_ptr);
             self.capacity = new_capacity;
         }
