@@ -714,6 +714,9 @@ impl StrV {
                     .checked_mul(new_capacity)
                     .unwrap(),
             ) as *mut *mut c_char;
+            if self.capacity == 0 {
+                *new_ptr = ptr::null_mut();
+            }
             self.ptr = ptr::NonNull::new_unchecked(new_ptr);
             self.capacity = new_capacity;
         }
