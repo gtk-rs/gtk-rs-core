@@ -218,11 +218,13 @@ mod tests {
         let l = crate::MainLoop::new(Some(&c), false);
 
         let l_clone = l.clone();
-        thread::spawn(move || {
+        let join_handle = thread::spawn(move || {
             c.invoke(move || l_clone.quit());
         });
 
         l.run();
+
+        join_handle.join().unwrap();
     }
 
     fn is_same_context(a: &MainContext, b: &MainContext) -> bool {

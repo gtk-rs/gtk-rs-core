@@ -73,8 +73,8 @@ pub trait PurrableExt: IsA<Purrable> {
     /// Return the current purring status
     fn is_purring(&self) -> bool {
         let this = self.upcast_ref::<Purrable>();
-        let class = this.interface::<Purrable>().unwrap();
-        (class.as_ref().is_purring)(this)
+        let iface = this.interface::<Purrable>().unwrap();
+        (iface.as_ref().is_purring)(this)
     }
 }
 
@@ -99,9 +99,9 @@ pub trait PurrableImplExt: PurrableImpl {
     /// Chains up to the parent implementation of [`PurrableExt::is_purring`]
     fn parent_is_purring(&self) -> bool {
         let data = Self::type_data();
-        let parent_class =
+        let parent_iface =
             unsafe { &*(data.as_ref().parent_interface::<Purrable>() as *const ffi::Interface) };
-        let is_purring = parent_class.is_purring;
+        let is_purring = parent_iface.is_purring;
 
         is_purring(unsafe { self.obj().unsafe_cast_ref() })
     }

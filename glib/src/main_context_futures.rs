@@ -733,13 +733,15 @@ mod tests {
                 }),
         );
 
-        thread::spawn(move || {
+        let join_handle = thread::spawn(move || {
             l.run();
         });
 
         o_sender.send(()).unwrap();
 
         receiver.recv().unwrap();
+
+        join_handle.join().unwrap();
     }
 
     #[test]
@@ -763,7 +765,7 @@ mod tests {
         let c = MainContext::new();
         let l = crate::MainLoop::new(Some(&c), false);
 
-        std::thread::spawn({
+        let join_handle = std::thread::spawn({
             let l_clone = l.clone();
             move || {
                 c.spawn_from_within(move || async move {
@@ -776,6 +778,8 @@ mod tests {
         });
 
         l.run();
+
+        join_handle.join().unwrap();
     }
 
     #[test]

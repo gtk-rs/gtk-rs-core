@@ -362,7 +362,7 @@ pub fn clone(item: TokenStream) -> TokenStream {
 ///
 /// Similarly to [`clone!`](crate::clone!), this macro can be useful in combination with signal
 /// handlers to reduce boilerplate when passing references. Unique to `Closure` objects is the
-/// ability to watch an object using a the `#[watch]` attribute. Only an [`Object`] value can be
+/// ability to watch an object using the `#[watch]` attribute. Only an [`Object`] value can be
 /// passed to `#[watch]`, and only one object can be watched per closure. When an object is watched,
 /// a weak reference to the object is held in the closure. When the object is destroyed, the
 /// closure will become invalidated: all signal handlers connected to the closure will become
@@ -541,8 +541,8 @@ pub fn closure_local(item: TokenStream) -> TokenStream {
     }
 }
 
-/// Derive macro for register a Rust enum in the GLib type system and derive the
-/// the [`glib::Value`] traits.
+/// Derive macro to register a Rust enum in the GLib type system and derive the
+/// [`glib::Value`] traits.
 ///
 /// # Example
 ///
@@ -577,7 +577,7 @@ pub fn closure_local(item: TokenStream) -> TokenStream {
 /// ```
 ///
 /// As a dynamic type, an enum must be explicitly registered when the system
-/// loads the implementation (see [`TypePlugin`] and [`TypeModule`].
+/// loads the implementation (see [`TypePlugin`] and [`TypeModule`]).
 /// Therefore, whereas an enum can be registered only once as a static type,
 /// it can be registered several times as a dynamic type.
 ///
@@ -675,7 +675,7 @@ pub fn enum_derive(input: TokenStream) -> TokenStream {
 /// Default name is the flag identifier in CamelCase and default nick
 /// is the identifier in kebab-case.
 /// Combined flags should not be registered with the `GType` system
-/// and so needs to be tagged with the `#[flags_value(skip)]` attribute.
+/// and so need to be tagged with the `#[flags_value(skip)]` attribute.
 ///
 /// # Example
 ///
@@ -709,7 +709,7 @@ pub fn enum_derive(input: TokenStream) -> TokenStream {
 /// ```
 ///
 /// As a dynamic type, the flags must be explicitly registered when the system
-/// loads the implementation (see [`TypePlugin`] and [`TypeModule`].
+/// loads the implementation (see [`TypePlugin`] and [`TypeModule`]).
 /// Therefore, whereas the flags can be registered only once as a static type,
 /// they can be registered several times as a dynamic type.
 ///
@@ -926,7 +926,7 @@ pub fn shared_boxed_derive(input: TokenStream) -> TokenStream {
 /// type Interfaces = ();
 /// ```
 ///
-/// If no `new()` or `with_class()` method is provide, the macro adds a `new()`
+/// If no `new()` or `with_class()` method is provided, the macro adds a `new()`
 /// implementation calling `Default::default()`. So the type needs to implement
 /// `Default`, or this should be overridden.
 ///
@@ -949,7 +949,7 @@ pub fn shared_boxed_derive(input: TokenStream) -> TokenStream {
 /// ```
 ///
 /// As a dynamic type, an object subclass must be explicitly registered when
-/// the system loads the implementation (see [`TypePlugin`] and [`TypeModule`].
+/// the system loads the implementation (see [`TypePlugin`] and [`TypeModule`]).
 /// Therefore, whereas an object subclass can be registered only once as a
 /// static type, it can be registered several times as a dynamic type.
 ///
@@ -1042,10 +1042,10 @@ pub fn object_subclass(_attr: TokenStream, item: TokenStream) -> TokenStream {
 /// This adds implementations for the `get_type()` method, which should probably never be defined
 /// differently.
 ///
-/// It provides default values for the `Prerequisites` type parameter. If this present, the macro
+/// It provides default values for the `Prerequisites` type parameter. If this is present, the macro
 /// will use the provided value instead of the default.
 ///
-/// `Prerequisites` is interfaces for types that require a specific base class or interfaces.
+/// `Prerequisites` are interfaces for types that require a specific base class or interfaces.
 ///
 /// ```ignore
 /// type Prerequisites = ();
@@ -1063,7 +1063,7 @@ pub fn object_subclass(_attr: TokenStream, item: TokenStream) -> TokenStream {
 /// ```
 ///
 /// As a dynamic type, an object interface must be explicitly registered when
-/// the system loads the implementation (see [`TypePlugin`] and [`TypeModule`].
+/// the system loads the implementation (see [`TypePlugin`] and [`TypeModule`]).
 /// Therefore, whereas an object interface can be registered only once as a
 /// static type, it can be registered several times as a dynamic type.
 ///

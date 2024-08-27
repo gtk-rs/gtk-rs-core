@@ -465,7 +465,7 @@ mod tests {
 
     #[test]
     fn test_timeout_and_channel() {
-        let c = MainContext::default();
+        let c = MainContext::new();
 
         let res = c.block_on(timeout_future(Duration::from_millis(20)).then(|()| {
             let (sender, receiver) = oneshot::channel();
