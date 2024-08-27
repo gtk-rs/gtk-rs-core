@@ -110,6 +110,13 @@ pub trait ObjectInterface: ObjectInterfaceType + Sized + 'static {
     type Prerequisites: PrerequisiteList;
 
     // rustdoc-stripper-ignore-next
+    /// The C instance struct. This is usually either `std::ffi::c_void` or a newtype wrapper
+    /// around it.
+    ///
+    /// Optional
+    type Instance;
+
+    // rustdoc-stripper-ignore-next
     /// The C class struct.
     type Interface: InterfaceStruct<Type = Self>;
 
