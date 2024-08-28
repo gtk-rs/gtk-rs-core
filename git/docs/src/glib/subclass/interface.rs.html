@@ -392,22 +392,13 @@
 <a href="#319" id="319">319</a>
 <a href="#320" id="320">320</a>
 <a href="#321" id="321">321</a>
-<a href="#322" id="322">322</a>
-<a href="#323" id="323">323</a>
-<a href="#324" id="324">324</a>
-<a href="#325" id="325">325</a>
-<a href="#326" id="326">326</a>
-<a href="#327" id="327">327</a>
-<a href="#328" id="328">328</a>
-<a href="#329" id="329">329</a>
-<a href="#330" id="330">330</a>
 </pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
 </span><span class="kw">use </span>std::{<a href="https://doc.rust-lang.org/nightly/core/marker/index.html">marker</a>, <a href="https://doc.rust-lang.org/nightly/core/mem/index.html">mem</a>};
 
 <span class="kw">use super</span>::{<a href="types.rs.html#288-302">types::InterfaceStruct</a>, <a href="types.rs.html#22">InitializingType</a>, <a href="signal.rs.html#29-35">Signal</a>};
 <span class="kw">use crate</span>::{
-    <a href="../../../glib_sys/index.html">ffi</a>, <a href="../../../gobject_sys/index.html">gobject_ffi</a>, <a href="../lib.rs.html#157">prelude</a>::<span class="kw-2">*</span>, <a href="../lib.rs.html#162">translate</a>::<span class="kw-2">*</span>, <a href="../object.rs.html#1371-1374">Object</a>, <a href="../param_spec.rs.html#19-42">ParamSpec</a>, <a href="../types.rs.html#22">Type</a>, <a href="../gobject/auto/flags.rs.html#182-209">TypeFlags</a>, <a href="../gobject/type_info.rs.html#17">TypeInfo</a>,
+    ffi, <a href="../../../gobject_sys/index.html">gobject_ffi</a>, <a href="../lib.rs.html#157">prelude</a>::<span class="kw-2">*</span>, <a href="../lib.rs.html#162">translate</a>::<span class="kw-2">*</span>, <a href="../object.rs.html#1371-1374">Object</a>, <a href="../param_spec.rs.html#19-42">ParamSpec</a>, <a href="../types.rs.html#22">Type</a>, <a href="../gobject/auto/flags.rs.html#182-209">TypeFlags</a>, <a href="../gobject/type_info.rs.html#17">TypeInfo</a>,
 };
 
 <span class="comment">// rustdoc-stripper-ignore-next
@@ -559,35 +550,26 @@
     ///
     /// This will panic if `obj` does not implement the interface.
     </span><span class="attr">#[inline]
-    #[deprecated = <span class="string">"Use from_obj() instead"</span>]
-    </span><span class="kw">fn </span>from_instance&lt;T: IsA&lt;<a href="../object.rs.html#1371-1374">Object</a>&gt;&gt;(obj: <span class="kw-2">&amp;</span>T) -&gt; <span class="kw-2">&amp;</span><span class="self">Self </span>{
-        <a href="#168-178"><span class="self">Self</span>::from_obj</a>(<a href="#160">obj</a>)
-    }
-
-    <span class="doccomment">/// Get interface from an instance.
-    ///
-    /// This will panic if `obj` does not implement the interface.
-    </span><span class="attr">#[inline]
     </span><span class="kw">fn </span>from_obj&lt;T: IsA&lt;<a href="../object.rs.html#1371-1374">Object</a>&gt;&gt;(obj: <span class="kw-2">&amp;</span>T) -&gt; <span class="kw-2">&amp;</span><span class="self">Self </span>{
         <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.assert.html">assert!</a>(obj.as_ref().type_().is_a(<span class="self">Self</span>::type_()));
 
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>klass = (<span class="kw-2">*</span>(<a href="#168">obj</a>.<a href="../object.rs.html#49">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span><a href="../../../gobject_sys/struct.GTypeInstance.html">gobject_ffi::GTypeInstance</a>)).g_class;
+            <span class="kw">let </span>klass = (<span class="kw-2">*</span>(<a href="#159">obj</a>.<a href="../object.rs.html#49">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span><a href="../../../gobject_sys/struct.GTypeInstance.html">gobject_ffi::GTypeInstance</a>)).g_class;
             <span class="kw">let </span>interface =
-                <a href="../../../gobject_sys/fn.g_type_interface_peek.html">gobject_ffi::g_type_interface_peek</a>(<a href="#172">klass</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>, <a href="#69"><span class="self">Self</span>::type_</a>().<a href="../translate.rs.html#334">into_glib</a>());
+                <a href="../../../gobject_sys/fn.g_type_interface_peek.html">gobject_ffi::g_type_interface_peek</a>(<a href="#163">klass</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>, <a href="#69"><span class="self">Self</span>::type_</a>().<a href="../translate.rs.html#334">into_glib</a>());
             <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert.html">debug_assert!</a>(!interface.is_null());
-            <span class="kw-2">&amp;*</span>(<a href="#173">interface</a> <span class="kw">as </span><span class="kw-2">*const </span><span class="self">Self</span>)
+            <span class="kw-2">&amp;*</span>(<a href="#164">interface</a> <span class="kw">as </span><span class="kw-2">*const </span><span class="self">Self</span>)
         }
     }
 }
 
-<span class="kw">impl</span>&lt;T: <a href="#82-152">ObjectInterface</a>&gt; <a href="#154-179">ObjectInterfaceExt</a> <span class="kw">for </span>T {}
+<span class="kw">impl</span>&lt;T: <a href="#82-152">ObjectInterface</a>&gt; <a href="#154-170">ObjectInterfaceExt</a> <span class="kw">for </span>T {}
 
 <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>interface_init&lt;T: <a href="#82-152">ObjectInterface</a>&gt;(
-    klass: <a href="../../../glib_sys/type.gpointer.html">ffi::gpointer</a>,
-    _klass_data: <a href="../../../glib_sys/type.gpointer.html">ffi::gpointer</a>,
+    klass: ffi::gpointer,
+    _klass_data: ffi::gpointer,
 ) {
-    <span class="kw">let </span>iface = <span class="kw-2">&amp;mut *</span>(<a href="#184">klass</a> <span class="kw">as </span><span class="kw-2">*mut </span>T::Interface);
+    <span class="kw">let </span>iface = <span class="kw-2">&amp;mut *</span>(<a href="#175">klass</a> <span class="kw">as </span><span class="kw-2">*mut </span>T::Interface);
 
     <span class="kw">let </span>pspecs = &lt;T <span class="kw">as </span>ObjectInterface&gt;::properties();
     <span class="kw">for </span>pspec <span class="kw">in </span>pspecs {
@@ -603,7 +585,7 @@
         signal.register(type_);
     }
 
-    <a href="#139">T::interface_init</a>(<a href="#187">iface</a>);
+    <a href="#139">T::interface_init</a>(<a href="#178">iface</a>);
 }
 
 <span class="doccomment">/// Register a `glib::Type` ID for `T::Class`.
@@ -631,9 +613,9 @@
                 .<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>();
                 <span class="kw">if </span>gobject_ffi::g_type_from_name(type_name.as_ptr()) == gobject_ffi::G_TYPE_INVALID
                 {
-                    <span class="kw">break </span><a href="#223">type_name</a>;
+                    <span class="kw">break </span><a href="#214">type_name</a>;
                 }
-                <a href="#221">i</a> += <span class="number">1</span>;
+                <a href="#212">i</a> += <span class="number">1</span>;
             }
         } <span class="kw">else </span>{
             <span class="kw">let </span>type_name = <a href="https://doc.rust-lang.org/nightly/alloc/ffi/c_str/struct.CString.html#method.new">CString::new</a>(T::NAME).<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>();
@@ -644,12 +626,12 @@
                 type_name.to_str().unwrap()
             );
 
-            <a href="#236">type_name</a>
+            <a href="#227">type_name</a>
         };
 
         <span class="kw">let </span>type_ = <a href="../../../gobject_sys/fn.g_type_register_static_simple.html">gobject_ffi::g_type_register_static_simple</a>(
             Type::INTERFACE.<a href="../translate.rs.html#334">into_glib</a>(),
-            <a href="#220">type_name</a>.<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.as_ptr">as_ptr</a>(),
+            <a href="#211">type_name</a>.<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.as_ptr">as_ptr</a>(),
             mem::size_of::&lt;T::Interface&gt;() <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>,
             <span class="prelude-val">Some</span>(interface_init::&lt;T&gt;),
             <span class="number">0</span>,
@@ -662,12 +644,12 @@
             gobject_ffi::g_type_interface_add_prerequisite(type_, prerequisite.into_glib());
         }
 
-        <span class="kw">let </span>type_ = <a href="../translate.rs.html#1411">Type::from_glib</a>(<a href="#247">type_</a>);
+        <span class="kw">let </span>type_ = <a href="../translate.rs.html#1411">Type::from_glib</a>(<a href="#238">type_</a>);
         <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.assert.html">assert!</a>(type_.is_valid());
 
-        <a href="#129">T::type_init</a>(<span class="kw-2">&amp;mut </span>InitializingType::&lt;T&gt;(<a href="#262">type_</a>, <a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">marker::PhantomData</a>));
+        <a href="#129">T::type_init</a>(<span class="kw-2">&amp;mut </span>InitializingType::&lt;T&gt;(<a href="#253">type_</a>, <a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">marker::PhantomData</a>));
 
-        <a href="#262">type_</a>
+        <a href="#253">type_</a>
     }
 }
 
@@ -697,7 +679,7 @@
         <span class="kw">let </span>type_name = <a href="https://doc.rust-lang.org/nightly/alloc/ffi/c_str/struct.CString.html#method.new">CString::new</a>(T::NAME).<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>();
 
         <span class="kw">let </span>already_registered =
-            <a href="../../../gobject_sys/fn.g_type_from_name.html">gobject_ffi::g_type_from_name</a>(<a href="#294">type_name</a>.<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.as_ptr">as_ptr</a>()) != <a href="../../../gobject_sys/constant.G_TYPE_INVALID.html">gobject_ffi::G_TYPE_INVALID</a>;
+            <a href="../../../gobject_sys/fn.g_type_from_name.html">gobject_ffi::g_type_from_name</a>(<a href="#285">type_name</a>.<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.as_ptr">as_ptr</a>()) != <a href="../../../gobject_sys/constant.G_TYPE_INVALID.html">gobject_ffi::G_TYPE_INVALID</a>;
 
         <span class="kw">let </span>type_info = <a href="../gobject/type_info.rs.html#17">TypeInfo</a>(<a href="../../../gobject_sys/struct.GTypeInfo.html">gobject_ffi::GTypeInfo</a> {
             class_size: mem::size_of::&lt;T::Interface&gt;() <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.u16.html">u16</a>,
@@ -706,10 +688,10 @@
         </span>});
 
         <span class="comment">// registers the interface within the `type_plugin`
-        </span><span class="kw">let </span>type_ = <a href="#287">type_plugin</a>.<a href="../gobject/dynamic_object.rs.html#35-41">register_dynamic_type</a>(
+        </span><span class="kw">let </span>type_ = <a href="#278">type_plugin</a>.<a href="../gobject/dynamic_object.rs.html#35-41">register_dynamic_type</a>(
             Type::INTERFACE,
-            <a href="#294">type_name</a>.<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.to_str">to_str</a>().<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>(),
-            <span class="kw-2">&amp;</span><a href="#299">type_info</a>,
+            <a href="#285">type_name</a>.<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.to_str">to_str</a>().<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>(),
+            <span class="kw-2">&amp;</span><a href="#290">type_info</a>,
             TypeFlags::ABSTRACT,
         );
 
@@ -726,9 +708,9 @@
 
         <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.assert.html">assert!</a>(type_.is_valid());
 
-        <a href="#129">T::type_init</a>(<span class="kw-2">&amp;mut </span>InitializingType::&lt;T&gt;(<a href="#306">type_</a>, <a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">marker::PhantomData</a>));
+        <a href="#129">T::type_init</a>(<span class="kw-2">&amp;mut </span>InitializingType::&lt;T&gt;(<a href="#297">type_</a>, <a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">marker::PhantomData</a>));
 
-        <a href="#306">type_</a>
+        <a href="#297">type_</a>
     }
 }
 </code></pre></div></section></main></body></html>

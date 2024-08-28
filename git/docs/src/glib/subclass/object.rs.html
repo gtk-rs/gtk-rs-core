@@ -1004,7 +1004,7 @@
 </span><span class="kw">use </span>std::{<a href="https://doc.rust-lang.org/nightly/core/mem/index.html">mem</a>, <a href="https://doc.rust-lang.org/nightly/core/ptr/index.html">ptr</a>};
 
 <span class="kw">use crate</span>::{
-    <a href="../../../glib_sys/index.html">ffi</a>, <a href="../../../gobject_sys/index.html">gobject_ffi</a>,
+    ffi, <a href="../../../gobject_sys/index.html">gobject_ffi</a>,
     <a href="../lib.rs.html#157">prelude</a>::<span class="kw-2">*</span>,
     subclass::{<a href="mod.rs.html#442-458">prelude</a>::<span class="kw-2">*</span>, <a href="signal.rs.html#29-35">Signal</a>},
     <a href="../lib.rs.html#162">translate</a>::<span class="kw-2">*</span>,
@@ -1236,9 +1236,9 @@
         </span>F: Fn(<span class="kw-2">&amp;</span><a href="signal.rs.html#39-49"><span class="kw">super</span>::SignalClassHandlerToken</a>, <span class="kw-2">&amp;</span>[<a href="../value.rs.html#478-512">Value</a>]) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="../value.rs.html#478-512">Value</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>,
     {
         <span class="kw">unsafe </span>{
-            <a href="types.rs.html#1210-1265"><span class="kw">super</span>::types::signal_override_class_handler</a>(
+            <a href="types.rs.html#1189-1244"><span class="kw">super</span>::types::signal_override_class_handler</a>(
                 <a href="#237">name</a>,
-                <span class="kw-2">*</span>(<span class="self"><a href="#237">self</a> </span><span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_ as </span><span class="kw-2">*mut </span><a href="../../../glib_sys/manual/type.GType.html">ffi::GType</a>),
+                <span class="kw-2">*</span>(<span class="self"><a href="#237">self</a> </span><span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_ as </span><span class="kw-2">*mut </span>ffi::GType),
                 <a href="#237">class_handler</a>,
             );
         }
@@ -1302,7 +1302,7 @@
             <span class="kw">let </span>parent_class = <a href="#304">data</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().<a href="types.rs.html#478-481">parent_class</a>() <span class="kw">as </span><span class="kw-2">*mut </span><a href="../../../gobject_sys/struct.GObjectClass.html">gobject_ffi::GObjectClass</a>;
 
             <span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="kw-2">ref </span>func) = (<span class="kw-2">*</span><a href="#305">parent_class</a>).constructed {
-                <a href="#307">func</a>(<a class="self" href="#302">self</a>.<a href="types.rs.html#757">obj</a>().<a href="../object.rs.html#273-280">unsafe_cast_ref</a>::&lt;<a href="../object.rs.html#1371-1374">Object</a>&gt;().<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>);
+                <a href="#307">func</a>(<a class="self" href="#302">self</a>.<a href="types.rs.html#746">obj</a>().<a href="../object.rs.html#273-280">unsafe_cast_ref</a>::&lt;<a href="../object.rs.html#1371-1374">Object</a>&gt;().<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>);
             }
         }
     }
@@ -1317,7 +1317,7 @@
 
             <span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="kw-2">ref </span>func) = (<span class="kw-2">*</span><a href="#319">parent_class</a>).notify {
                 <a href="#321">func</a>(
-                    <a class="self" href="#316">self</a>.<a href="types.rs.html#757">obj</a>().<a href="../object.rs.html#273-280">unsafe_cast_ref</a>::&lt;<a href="../object.rs.html#1371-1374">Object</a>&gt;().<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+                    <a class="self" href="#316">self</a>.<a href="types.rs.html#746">obj</a>().<a href="../object.rs.html#273-280">unsafe_cast_ref</a>::&lt;<a href="../object.rs.html#1371-1374">Object</a>&gt;().<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
                     <a href="#316">pspec</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
                 );
             }
@@ -1334,7 +1334,7 @@
 
             <span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="kw-2">ref </span>func) = (<span class="kw-2">*</span><a href="#336">parent_class</a>).dispatch_properties_changed {
                 <a href="#338">func</a>(
-                    <a class="self" href="#333">self</a>.<a href="types.rs.html#757">obj</a>().<a href="../object.rs.html#273-280">unsafe_cast_ref</a>::&lt;<a href="../object.rs.html#1371-1374">Object</a>&gt;().<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+                    <a class="self" href="#333">self</a>.<a href="types.rs.html#746">obj</a>().<a href="../object.rs.html#273-280">unsafe_cast_ref</a>::&lt;<a href="../object.rs.html#1371-1374">Object</a>&gt;().<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
                     <a href="#333">pspecs</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.len">len</a>() <span class="kw">as _</span>,
                     <a href="#333">pspecs</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
                 );
@@ -1350,7 +1350,7 @@
         values: <span class="kw-2">&amp;</span>[<a href="../value.rs.html#478-512">Value</a>],
     ) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="../value.rs.html#478-512">Value</a>&gt; {
         <span class="kw">unsafe </span>{
-            <a href="types.rs.html#1267-1285"><span class="kw">super</span>::types::signal_chain_from_overridden</a>(<a class="self" href="#351">self</a>.<a href="types.rs.html#757">obj</a>().<a href="../object.rs.html#49">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>, <a href="#352">token</a>, <a href="#353">values</a>)
+            <a href="types.rs.html#1246-1264"><span class="kw">super</span>::types::signal_chain_from_overridden</a>(<a class="self" href="#351">self</a>.<a href="types.rs.html#746">obj</a>().<a href="../object.rs.html#49">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>, <a href="#352">token</a>, <a href="#353">values</a>)
         }
     }
 }

@@ -393,7 +393,7 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-</span><span class="kw">use crate</span>::{<a href="../../../glib_sys/index.html">ffi</a>, <a href="../lib.rs.html#162">translate</a>::<span class="kw-2">*</span>, <a href="enums.rs.html#1039-1051">TimeType</a>};
+</span><span class="kw">use crate</span>::{ffi, <a href="../lib.rs.html#162">translate</a>::<span class="kw-2">*</span>, <a href="enums.rs.html#1039-1051">TimeType</a>};
 
 <a class="macro" href="../wrapper.rs.html#277-444">crate::wrapper!</a> {
     <span class="doccomment">/// A `GTimeZone` represents a time zone, at no particular point in time.
@@ -423,7 +423,7 @@
     /// that some properties (like the abbreviation) change between intervals
     /// without other properties changing.
     </span><span class="attr">#[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
-    </span><span class="kw">pub struct </span><a href="../../../glib/struct.TimeZone.html">TimeZone</a>(Shared&lt;<a href="../../../glib_sys/struct.GTimeZone.html">ffi::GTimeZone</a>&gt;);
+    </span><span class="kw">pub struct </span><a href="../../../glib/struct.TimeZone.html">TimeZone</a>(Shared&lt;ffi::GTimeZone&gt;);
 
     <span class="kw">match fn </span>{
         <span class="kw-2">ref </span>=&gt; |ptr| ffi::g_time_zone_ref(ptr),
@@ -454,7 +454,7 @@
     #[allow(deprecated)]
     #[doc(alias = <span class="string">"g_time_zone_new"</span>)]
     </span><span class="kw">pub fn </span>new(identifier: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;) -&gt; <a href="#7-42">TimeZone</a> {
-        <span class="kw">unsafe </span>{ <a href="../translate.rs.html#1634-1636">from_glib_full</a>(<a href="../../../glib_sys/fn.g_time_zone_new.html">ffi::g_time_zone_new</a>(<a href="#65">identifier</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>)) }
+        <span class="kw">unsafe </span>{ <a href="../translate.rs.html#1634-1636">from_glib_full</a>(ffi::g_time_zone_new(<a href="#65">identifier</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>)) }
     }
 
     <span class="doccomment">/// Creates a #GTimeZone corresponding to @identifier. If @identifier cannot be
@@ -534,7 +534,7 @@
     #[doc(alias = <span class="string">"g_time_zone_new_identifier"</span>)]
     #[doc(alias = <span class="string">"new_identifier"</span>)]
     </span><span class="kw">pub fn </span>from_identifier(identifier: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="#7-42">TimeZone</a>&gt; {
-        <span class="kw">unsafe </span>{ <a href="../translate.rs.html#1634-1636">from_glib_full</a>(<a href="../../../glib_sys/fn.g_time_zone_new_identifier.html">ffi::g_time_zone_new_identifier</a>(<a href="#145">identifier</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>)) }
+        <span class="kw">unsafe </span>{ <a href="../translate.rs.html#1634-1636">from_glib_full</a>(ffi::g_time_zone_new_identifier(<a href="#145">identifier</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>)) }
     }
 
     <span class="doccomment">/// Creates a #GTimeZone corresponding to local time.  The local time
@@ -553,7 +553,7 @@
     </span><span class="attr">#[doc(alias = <span class="string">"g_time_zone_new_local"</span>)]
     #[doc(alias = <span class="string">"new_local"</span>)]
     </span><span class="kw">pub fn </span>local() -&gt; <a href="#7-42">TimeZone</a> {
-        <span class="kw">unsafe </span>{ <a href="../translate.rs.html#1634-1636">from_glib_full</a>(<a href="../../../glib_sys/fn.g_time_zone_new_local.html">ffi::g_time_zone_new_local</a>()) }
+        <span class="kw">unsafe </span>{ <a href="../translate.rs.html#1634-1636">from_glib_full</a>(ffi::g_time_zone_new_local()) }
     }
 
     <span class="doccomment">/// Creates a #GTimeZone corresponding to the given constant offset from UTC,
@@ -578,7 +578,7 @@
     #[doc(alias = <span class="string">"g_time_zone_new_offset"</span>)]
     #[doc(alias = <span class="string">"new_offset"</span>)]
     </span><span class="kw">pub fn </span>from_offset(seconds: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>) -&gt; <a href="#7-42">TimeZone</a> {
-        <span class="kw">unsafe </span>{ <a href="../translate.rs.html#1634-1636">from_glib_full</a>(<a href="../../../glib_sys/fn.g_time_zone_new_offset.html">ffi::g_time_zone_new_offset</a>(<a href="#189">seconds</a>)) }
+        <span class="kw">unsafe </span>{ <a href="../translate.rs.html#1634-1636">from_glib_full</a>(ffi::g_time_zone_new_offset(<a href="#189">seconds</a>)) }
     }
 
     <span class="doccomment">/// Creates a #GTimeZone corresponding to UTC.
@@ -595,7 +595,7 @@
     </span><span class="attr">#[doc(alias = <span class="string">"g_time_zone_new_utc"</span>)]
     #[doc(alias = <span class="string">"new_utc"</span>)]
     </span><span class="kw">pub fn </span>utc() -&gt; <a href="#7-42">TimeZone</a> {
-        <span class="kw">unsafe </span>{ <a href="../translate.rs.html#1634-1636">from_glib_full</a>(<a href="../../../glib_sys/fn.g_time_zone_new_utc.html">ffi::g_time_zone_new_utc</a>()) }
+        <span class="kw">unsafe </span>{ <a href="../translate.rs.html#1634-1636">from_glib_full</a>(ffi::g_time_zone_new_utc()) }
     }
 
     <span class="doccomment">/// Finds an interval within @self that corresponds to the given @time_.
@@ -626,7 +626,7 @@
     /// the interval containing @time_, or -1 in case of failure
     </span><span class="attr">#[doc(alias = <span class="string">"g_time_zone_find_interval"</span>)]
     </span><span class="kw">pub fn </span>find_interval(<span class="kw-2">&amp;</span><span class="self">self</span>, type_: <a href="enums.rs.html#1039-1051">TimeType</a>, time_: <a href="https://doc.rust-lang.org/nightly/std/primitive.i64.html">i64</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a> {
-        <span class="kw">unsafe </span>{ <a href="../../../glib_sys/fn.g_time_zone_find_interval.html">ffi::g_time_zone_find_interval</a>(<a class="self" href="#237">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>, <a href="#237">type_</a>.<a href="../translate.rs.html#334">into_glib</a>(), <a href="#237">time_</a>) }
+        <span class="kw">unsafe </span>{ ffi::g_time_zone_find_interval(<a class="self" href="#237">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>, <a href="#237">type_</a>.<a href="../translate.rs.html#334">into_glib</a>(), <a href="#237">time_</a>) }
     }
 
     <span class="doccomment">/// Determines the time zone abbreviation to be used during a particular
@@ -643,9 +643,9 @@
     /// the time zone abbreviation, which belongs to @self
     </span><span class="attr">#[doc(alias = <span class="string">"g_time_zone_get_abbreviation"</span>)]
     #[doc(alias = <span class="string">"get_abbreviation"</span>)]
-    </span><span class="kw">pub fn </span>abbreviation(<span class="kw-2">&amp;</span><span class="self">self</span>, interval: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>) -&gt; <a href="../gstring.rs.html#1036"><span class="kw">crate</span>::GString</a> {
+    </span><span class="kw">pub fn </span>abbreviation(<span class="kw-2">&amp;</span><span class="self">self</span>, interval: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>) -&gt; <a href="../gstring.rs.html#1028"><span class="kw">crate</span>::GString</a> {
         <span class="kw">unsafe </span>{
-            <a href="../translate.rs.html#1625-1627">from_glib_none</a>(<a href="../../../glib_sys/fn.g_time_zone_get_abbreviation.html">ffi::g_time_zone_get_abbreviation</a>(
+            <a href="../translate.rs.html#1625-1627">from_glib_none</a>(ffi::g_time_zone_get_abbreviation(
                 <a class="self" href="#255">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
                 <a href="#255">interval</a>,
             ))
@@ -668,8 +668,8 @@
     #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"v2_58"</span>)))]
     #[doc(alias = <span class="string">"g_time_zone_get_identifier"</span>)]
     #[doc(alias = <span class="string">"get_identifier"</span>)]
-    </span><span class="kw">pub fn </span>identifier(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="../gstring.rs.html#1036"><span class="kw">crate</span>::GString</a> {
-        <span class="kw">unsafe </span>{ <a href="../translate.rs.html#1625-1627">from_glib_none</a>(<a href="../../../glib_sys/fn.g_time_zone_get_identifier.html">ffi::g_time_zone_get_identifier</a>(<a class="self" href="#280">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>)) }
+    </span><span class="kw">pub fn </span>identifier(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="../gstring.rs.html#1028"><span class="kw">crate</span>::GString</a> {
+        <span class="kw">unsafe </span>{ <a href="../translate.rs.html#1625-1627">from_glib_none</a>(ffi::g_time_zone_get_identifier(<a class="self" href="#280">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>)) }
     }
 
     <span class="doccomment">/// Determines the offset to UTC in effect during a particular @interval
@@ -688,7 +688,7 @@
     </span><span class="attr">#[doc(alias = <span class="string">"g_time_zone_get_offset"</span>)]
     #[doc(alias = <span class="string">"get_offset"</span>)]
     </span><span class="kw">pub fn </span>offset(<span class="kw-2">&amp;</span><span class="self">self</span>, interval: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a> {
-        <span class="kw">unsafe </span>{ <a href="../../../glib_sys/fn.g_time_zone_get_offset.html">ffi::g_time_zone_get_offset</a>(<a class="self" href="#299">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>, <a href="#299">interval</a>) }
+        <span class="kw">unsafe </span>{ ffi::g_time_zone_get_offset(<a class="self" href="#299">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>, <a href="#299">interval</a>) }
     }
 
     <span class="doccomment">/// Determines if daylight savings time is in effect during a particular
@@ -701,7 +701,7 @@
     /// [`true`] if daylight savings time is in effect
     </span><span class="attr">#[doc(alias = <span class="string">"g_time_zone_is_dst"</span>)]
     </span><span class="kw">pub fn </span>is_dst(<span class="kw-2">&amp;</span><span class="self">self</span>, interval: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
-        <span class="kw">unsafe </span>{ <a href="../translate.rs.html#1417-1419">from_glib</a>(<a href="../../../glib_sys/fn.g_time_zone_is_dst.html">ffi::g_time_zone_is_dst</a>(<a class="self" href="#312">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>, <a href="#312">interval</a>)) }
+        <span class="kw">unsafe </span>{ <a href="../translate.rs.html#1417-1419">from_glib</a>(ffi::g_time_zone_is_dst(<a class="self" href="#312">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>, <a href="#312">interval</a>)) }
     }
 }
 

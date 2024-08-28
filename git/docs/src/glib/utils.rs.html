@@ -472,7 +472,7 @@
     <a href="https://doc.rust-lang.org/nightly/core/mem/index.html">mem</a>, <a href="https://doc.rust-lang.org/nightly/core/ptr/index.html">ptr</a>,
 };
 
-<span class="kw">use crate</span>::{<a href="../../glib_sys/index.html">ffi</a>, <a href="lib.rs.html#162">translate</a>::<span class="kw-2">*</span>, <a href="gstring.rs.html#1036">GString</a>};
+<span class="kw">use crate</span>::{ffi, <a href="lib.rs.html#162">translate</a>::<span class="kw-2">*</span>, <a href="gstring.rs.html#1028">GString</a>};
 
 <span class="comment">// rustdoc-stripper-ignore-next
 </span><span class="doccomment">/// Same as [`get_prgname()`].
@@ -480,15 +480,15 @@
 /// [`get_prgname()`]: fn.get_prgname.html
 </span><span class="attr">#[doc(alias = <span class="string">"get_program_name"</span>)]
 #[inline]
-</span><span class="kw">pub fn </span><a href="../../glib/fn.program_name.html">program_name</a>() -&gt; <span class="prelude-ty">Option</span>&lt;<a href="gstring.rs.html#1036">GString</a>&gt; {
+</span><span class="kw">pub fn </span><a href="../../glib/fn.program_name.html">program_name</a>() -&gt; <span class="prelude-ty">Option</span>&lt;<a href="gstring.rs.html#1028">GString</a>&gt; {
     <a href="#23-25">prgname</a>()
 }
 
 <span class="attr">#[doc(alias = <span class="string">"g_get_prgname"</span>)]
 #[doc(alias = <span class="string">"get_prgname"</span>)]
 #[inline]
-</span><span class="kw">pub fn </span><a href="../../glib/fn.prgname.html">prgname</a>() -&gt; <span class="prelude-ty">Option</span>&lt;<a href="gstring.rs.html#1036">GString</a>&gt; {
-    <span class="kw">unsafe </span>{ <a href="translate.rs.html#1625-1627">from_glib_none</a>(<a href="../../glib_sys/fn.g_get_prgname.html">ffi::g_get_prgname</a>()) }
+</span><span class="kw">pub fn </span><a href="../../glib/fn.prgname.html">prgname</a>() -&gt; <span class="prelude-ty">Option</span>&lt;<a href="gstring.rs.html#1028">GString</a>&gt; {
+    <span class="kw">unsafe </span>{ <a href="translate.rs.html#1625-1627">from_glib_none</a>(ffi::g_get_prgname()) }
 }
 
 <span class="comment">// rustdoc-stripper-ignore-next
@@ -496,20 +496,20 @@
 ///
 /// [`set_prgname()`]: fn.set_prgname.html
 </span><span class="attr">#[inline]
-</span><span class="kw">pub fn </span><a href="../../glib/fn.set_program_name.html">set_program_name</a>(name: <span class="prelude-ty">Option</span>&lt;<span class="kw">impl </span><a href="gstring.rs.html#2401-2403">IntoGStr</a>&gt;) {
+</span><span class="kw">pub fn </span><a href="../../glib/fn.set_program_name.html">set_program_name</a>(name: <span class="prelude-ty">Option</span>&lt;<span class="kw">impl </span><a href="gstring.rs.html#2393-2395">IntoGStr</a>&gt;) {
     <a href="#38-40">set_prgname</a>(<a href="#32">name</a>)
 }
 
 <span class="attr">#[doc(alias = <span class="string">"g_set_prgname"</span>)]
 #[inline]
-</span><span class="kw">pub fn </span><a href="../../glib/fn.set_prgname.html">set_prgname</a>(name: <span class="prelude-ty">Option</span>&lt;<span class="kw">impl </span><a href="gstring.rs.html#2401-2403">IntoGStr</a>&gt;) {
-    <a href="#38">name</a>.<a href="gstring.rs.html#2478">run_with_gstr</a>(|name| <span class="kw">unsafe </span>{ <a href="../../glib_sys/fn.g_set_prgname.html">ffi::g_set_prgname</a>(<a href="#39">name</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>) })
+</span><span class="kw">pub fn </span><a href="../../glib/fn.set_prgname.html">set_prgname</a>(name: <span class="prelude-ty">Option</span>&lt;<span class="kw">impl </span><a href="gstring.rs.html#2393-2395">IntoGStr</a>&gt;) {
+    <a href="#38">name</a>.<a href="gstring.rs.html#2470">run_with_gstr</a>(|name| <span class="kw">unsafe </span>{ ffi::g_set_prgname(<a href="#39">name</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>) })
 }
 
 <span class="attr">#[doc(alias = <span class="string">"g_environ_getenv"</span>)]
 </span><span class="kw">pub fn </span><a href="../../glib/fn.environ_getenv.html">environ_getenv</a>&lt;K: AsRef&lt;<a href="https://doc.rust-lang.org/nightly/std/ffi/os_str/struct.OsStr.html">OsStr</a>&gt;&gt;(envp: <span class="kw-2">&amp;</span>[<a href="https://doc.rust-lang.org/nightly/std/ffi/os_str/struct.OsString.html">OsString</a>], variable: K) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="https://doc.rust-lang.org/nightly/std/ffi/os_str/struct.OsString.html">OsString</a>&gt; {
     <span class="kw">unsafe </span>{
-        <a href="translate.rs.html#1625-1627">from_glib_none</a>(<a href="../../glib_sys/fn.g_environ_getenv.html">ffi::g_environ_getenv</a>(
+        <a href="translate.rs.html#1625-1627">from_glib_none</a>(ffi::g_environ_getenv(
             <a href="#43">envp</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
             <a href="#43">variable</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
         ))
@@ -541,7 +541,7 @@
     <span class="kw">unsafe </span>{
         <span class="comment">// NOTE: This modifies the string in place, which is fine here because
         // to_glib_none() will create a temporary, NUL-terminated copy of the string.
-        </span><a href="../../glib_sys/fn.g_mkstemp.html">ffi::g_mkstemp</a>(<a href="#73">tmpl</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>)
+        </span>ffi::g_mkstemp(<a href="#73">tmpl</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>)
     }
 }
 
@@ -575,7 +575,7 @@
     <span class="kw">unsafe </span>{
         <span class="comment">// NOTE: This modifies the string in place, which is fine here because
         // to_glib_none() will create a temporary, NUL-terminated copy of the string.
-        </span><a href="../../glib_sys/fn.g_mkstemp_full.html">ffi::g_mkstemp_full</a>(<a href="#107">tmpl</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>, <a href="#107">flags</a>, <a href="#107">mode</a>)
+        </span>ffi::g_mkstemp_full(<a href="#107">tmpl</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>, <a href="#107">flags</a>, <a href="#107">mode</a>)
     }
 }
 
@@ -608,9 +608,9 @@
         <span class="comment">// NOTE: This modifies the string in place and returns it but does not free it
         // if it returns NULL.
         </span><span class="kw">let </span>tmpl = <a href="#139">tmpl</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="translate.rs.html#456-458">to_glib_full</a>();
-        <span class="kw">let </span>res = <a href="../../glib_sys/fn.g_mkdtemp.html">ffi::g_mkdtemp</a>(<a href="#143">tmpl</a>);
+        <span class="kw">let </span>res = ffi::g_mkdtemp(<a href="#143">tmpl</a>);
         <span class="kw">if </span>res.is_null() {
-            <a href="../../glib_sys/fn.g_free.html">ffi::g_free</a>(<a href="#143">tmpl</a> <span class="kw">as </span><a href="../../glib_sys/type.gpointer.html">ffi::gpointer</a>);
+            ffi::g_free(<a href="#143">tmpl</a> <span class="kw">as </span>ffi::gpointer);
             <span class="prelude-val">None
         </span>} <span class="kw">else </span>{
             <a href="translate.rs.html#1634-1636">from_glib_full</a>(<a href="#144">res</a>)
@@ -649,9 +649,9 @@
         <span class="comment">// NOTE: This modifies the string in place and returns it but does not free it
         // if it returns NULL.
         </span><span class="kw">let </span>tmpl = <a href="#180">tmpl</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="translate.rs.html#456-458">to_glib_full</a>();
-        <span class="kw">let </span>res = <a href="../../glib_sys/fn.g_mkdtemp_full.html">ffi::g_mkdtemp_full</a>(<a href="#184">tmpl</a>, <a href="#180">mode</a>);
+        <span class="kw">let </span>res = ffi::g_mkdtemp_full(<a href="#184">tmpl</a>, <a href="#180">mode</a>);
         <span class="kw">if </span>res.is_null() {
-            <a href="../../glib_sys/fn.g_free.html">ffi::g_free</a>(<a href="#184">tmpl</a> <span class="kw">as </span><a href="../../glib_sys/type.gpointer.html">ffi::gpointer</a>);
+            ffi::g_free(<a href="#184">tmpl</a> <span class="kw">as </span>ffi::gpointer);
             <span class="prelude-val">None
         </span>} <span class="kw">else </span>{
             <a href="translate.rs.html#1634-1636">from_glib_full</a>(<a href="#185">res</a>)
@@ -687,7 +687,7 @@
         <span class="kw">let </span><span class="kw-2">mut </span>contents = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
         <span class="kw">let </span><span class="kw-2">mut </span>length = <a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.uninit">mem::MaybeUninit::uninit</a>();
         <span class="kw">let </span><span class="kw-2">mut </span>error = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
-        <span class="kw">let _ </span>= <a href="../../glib_sys/fn.g_file_get_contents.html">ffi::g_file_get_contents</a>(
+        <span class="kw">let _ </span>= ffi::g_file_get_contents(
             <a href="#217">filename</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
             <span class="kw-2">&amp;mut </span><a href="#220">contents</a>,
             <a href="#221">length</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.as_mut_ptr">as_mut_ptr</a>(),
@@ -714,13 +714,13 @@
 
 <span class="attr">#[doc(alias = <span class="string">"g_uri_escape_string"</span>)]
 </span><span class="kw">pub fn </span><a href="../../glib/fn.uri_escape_string.html">uri_escape_string</a>(
-    unescaped: <span class="kw">impl </span><a href="gstring.rs.html#2401-2403">IntoGStr</a>,
-    reserved_chars_allowed: <span class="prelude-ty">Option</span>&lt;<span class="kw">impl </span><a href="gstring.rs.html#2401-2403">IntoGStr</a>&gt;,
+    unescaped: <span class="kw">impl </span><a href="gstring.rs.html#2393-2395">IntoGStr</a>,
+    reserved_chars_allowed: <span class="prelude-ty">Option</span>&lt;<span class="kw">impl </span><a href="gstring.rs.html#2393-2395">IntoGStr</a>&gt;,
     allow_utf8: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>,
-) -&gt; <a href="gstring.rs.html#1036"><span class="kw">crate</span>::GString</a> {
-    <a href="#250">unescaped</a>.<a href="gstring.rs.html#2402">run_with_gstr</a>(|unescaped| {
-        <a href="#251">reserved_chars_allowed</a>.<a href="gstring.rs.html#2478">run_with_gstr</a>(|reserved_chars_allowed| <span class="kw">unsafe </span>{
-            <a href="translate.rs.html#1634-1636">from_glib_full</a>(<a href="../../glib_sys/fn.g_uri_escape_string.html">ffi::g_uri_escape_string</a>(
+) -&gt; <a href="gstring.rs.html#1028"><span class="kw">crate</span>::GString</a> {
+    <a href="#250">unescaped</a>.<a href="gstring.rs.html#2394">run_with_gstr</a>(|unescaped| {
+        <a href="#251">reserved_chars_allowed</a>.<a href="gstring.rs.html#2470">run_with_gstr</a>(|reserved_chars_allowed| <span class="kw">unsafe </span>{
+            <a href="translate.rs.html#1634-1636">from_glib_full</a>(ffi::g_uri_escape_string(
                 <a href="#254">unescaped</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
                 <a href="#255">reserved_chars_allowed</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
                 <a href="#252">allow_utf8</a>.<a href="translate.rs.html#334">into_glib</a>(),
@@ -731,12 +731,12 @@
 
 <span class="attr">#[doc(alias = <span class="string">"g_uri_unescape_string"</span>)]
 </span><span class="kw">pub fn </span><a href="../../glib/fn.uri_unescape_string.html">uri_unescape_string</a>(
-    escaped_string: <span class="kw">impl </span><a href="gstring.rs.html#2401-2403">IntoGStr</a>,
-    illegal_characters: <span class="prelude-ty">Option</span>&lt;<span class="kw">impl </span><a href="gstring.rs.html#2401-2403">IntoGStr</a>&gt;,
-) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="gstring.rs.html#1036"><span class="kw">crate</span>::GString</a>&gt; {
-    <a href="#267">escaped_string</a>.<a href="gstring.rs.html#2402">run_with_gstr</a>(|escaped_string| {
-        <a href="#268">illegal_characters</a>.<a href="gstring.rs.html#2478">run_with_gstr</a>(|illegal_characters| <span class="kw">unsafe </span>{
-            <a href="translate.rs.html#1634-1636">from_glib_full</a>(<a href="../../glib_sys/fn.g_uri_unescape_string.html">ffi::g_uri_unescape_string</a>(
+    escaped_string: <span class="kw">impl </span><a href="gstring.rs.html#2393-2395">IntoGStr</a>,
+    illegal_characters: <span class="prelude-ty">Option</span>&lt;<span class="kw">impl </span><a href="gstring.rs.html#2393-2395">IntoGStr</a>&gt;,
+) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="gstring.rs.html#1028"><span class="kw">crate</span>::GString</a>&gt; {
+    <a href="#267">escaped_string</a>.<a href="gstring.rs.html#2394">run_with_gstr</a>(|escaped_string| {
+        <a href="#268">illegal_characters</a>.<a href="gstring.rs.html#2470">run_with_gstr</a>(|illegal_characters| <span class="kw">unsafe </span>{
+            <a href="translate.rs.html#1634-1636">from_glib_full</a>(ffi::g_uri_unescape_string(
                 <a href="#270">escaped_string</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
                 <a href="#271">illegal_characters</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
             ))
@@ -745,22 +745,22 @@
 }
 
 <span class="attr">#[doc(alias = <span class="string">"g_uri_parse_scheme"</span>)]
-</span><span class="kw">pub fn </span><a href="../../glib/fn.uri_parse_scheme.html">uri_parse_scheme</a>(uri: <span class="kw">impl </span><a href="gstring.rs.html#2401-2403">IntoGStr</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="gstring.rs.html#1036"><span class="kw">crate</span>::GString</a>&gt; {
-    <a href="#281">uri</a>.<a href="gstring.rs.html#2402">run_with_gstr</a>(|uri| <span class="kw">unsafe </span>{
-        <a href="translate.rs.html#1634-1636">from_glib_full</a>(<a href="../../glib_sys/fn.g_uri_parse_scheme.html">ffi::g_uri_parse_scheme</a>(<a href="#282">uri</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>))
+</span><span class="kw">pub fn </span><a href="../../glib/fn.uri_parse_scheme.html">uri_parse_scheme</a>(uri: <span class="kw">impl </span><a href="gstring.rs.html#2393-2395">IntoGStr</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="gstring.rs.html#1028"><span class="kw">crate</span>::GString</a>&gt; {
+    <a href="#281">uri</a>.<a href="gstring.rs.html#2394">run_with_gstr</a>(|uri| <span class="kw">unsafe </span>{
+        <a href="translate.rs.html#1634-1636">from_glib_full</a>(ffi::g_uri_parse_scheme(<a href="#282">uri</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>))
     })
 }
 
 <span class="attr">#[doc(alias = <span class="string">"g_uri_unescape_segment"</span>)]
 </span><span class="kw">pub fn </span><a href="../../glib/fn.uri_unescape_segment.html">uri_unescape_segment</a>(
-    escaped_string: <span class="prelude-ty">Option</span>&lt;<span class="kw">impl </span><a href="gstring.rs.html#2401-2403">IntoGStr</a>&gt;,
-    escaped_string_end: <span class="prelude-ty">Option</span>&lt;<span class="kw">impl </span><a href="gstring.rs.html#2401-2403">IntoGStr</a>&gt;,
-    illegal_characters: <span class="prelude-ty">Option</span>&lt;<span class="kw">impl </span><a href="gstring.rs.html#2401-2403">IntoGStr</a>&gt;,
-) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="gstring.rs.html#1036"><span class="kw">crate</span>::GString</a>&gt; {
-    <a href="#289">escaped_string</a>.<a href="gstring.rs.html#2478">run_with_gstr</a>(|escaped_string| {
-        <a href="#290">escaped_string_end</a>.<a href="gstring.rs.html#2478">run_with_gstr</a>(|escaped_string_end| {
-            <a href="#291">illegal_characters</a>.<a href="gstring.rs.html#2478">run_with_gstr</a>(|illegal_characters| <span class="kw">unsafe </span>{
-                <a href="translate.rs.html#1634-1636">from_glib_full</a>(<a href="../../glib_sys/fn.g_uri_unescape_segment.html">ffi::g_uri_unescape_segment</a>(
+    escaped_string: <span class="prelude-ty">Option</span>&lt;<span class="kw">impl </span><a href="gstring.rs.html#2393-2395">IntoGStr</a>&gt;,
+    escaped_string_end: <span class="prelude-ty">Option</span>&lt;<span class="kw">impl </span><a href="gstring.rs.html#2393-2395">IntoGStr</a>&gt;,
+    illegal_characters: <span class="prelude-ty">Option</span>&lt;<span class="kw">impl </span><a href="gstring.rs.html#2393-2395">IntoGStr</a>&gt;,
+) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="gstring.rs.html#1028"><span class="kw">crate</span>::GString</a>&gt; {
+    <a href="#289">escaped_string</a>.<a href="gstring.rs.html#2470">run_with_gstr</a>(|escaped_string| {
+        <a href="#290">escaped_string_end</a>.<a href="gstring.rs.html#2470">run_with_gstr</a>(|escaped_string_end| {
+            <a href="#291">illegal_characters</a>.<a href="gstring.rs.html#2470">run_with_gstr</a>(|illegal_characters| <span class="kw">unsafe </span>{
+                <a href="translate.rs.html#1634-1636">from_glib_full</a>(ffi::g_uri_unescape_segment(
                     <a href="#293">escaped_string</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
                     <a href="#294">escaped_string_end</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
                     <a href="#295">illegal_characters</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
