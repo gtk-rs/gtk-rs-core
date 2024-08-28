@@ -212,6 +212,8 @@ unsafe extern "C" fn interface_init<T: ObjectInterface>(
 ///
 /// [`object_interface!`]: ../../macro.object_interface.html
 pub fn register_interface<T: ObjectInterface>() -> Type {
+    assert_eq!(mem::size_of::<T>(), 0);
+
     unsafe {
         use std::ffi::CString;
 
@@ -284,6 +286,8 @@ pub fn register_interface<T: ObjectInterface>() -> Type {
 pub fn register_dynamic_interface<P: DynamicObjectRegisterExt, T: ObjectInterface>(
     type_plugin: &P,
 ) -> Type {
+    assert_eq!(mem::size_of::<T>(), 0);
+
     unsafe {
         use std::ffi::CString;
 
