@@ -32,11 +32,14 @@ pub fn impl_object_interface(input: super::Input) -> TokenStream {
     };
 
     let mut has_prerequisites = false;
+    let mut has_instance = false;
     for item in items.iter() {
         if let syn::ImplItem::Type(type_) = item {
             let name = type_.ident.to_string();
             if name == "Prerequisites" {
                 has_prerequisites = true;
+            } else if name == "Instance" {
+                has_instance = true;
             }
         }
     }
@@ -49,10 +52,19 @@ pub fn impl_object_interface(input: super::Input) -> TokenStream {
         ))
     };
 
+    let instance_opt = if has_instance {
+        None
+    } else {
+        Some(quote!(
+            type Instance = ::std::ffi::c_void;
+        ))
+    };
+
     quote! {
         #(#attrs)*
         #unsafety impl #generics #trait_path for #self_ty {
             #prerequisites_opt
+            #instance_opt
             #(#items)*
         }
 

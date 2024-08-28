@@ -110,6 +110,13 @@ pub trait ObjectInterface: ObjectInterfaceType + Sized + 'static {
     type Prerequisites: PrerequisiteList;
 
     // rustdoc-stripper-ignore-next
+    /// The C instance struct. This is usually either `std::ffi::c_void` or a newtype wrapper
+    /// around it.
+    ///
+    /// Optional
+    type Instance;
+
+    // rustdoc-stripper-ignore-next
     /// The C class struct.
     type Interface: InterfaceStruct<Type = Self>;
 
@@ -205,6 +212,8 @@ unsafe extern "C" fn interface_init<T: ObjectInterface>(
 ///
 /// [`object_interface!`]: ../../macro.object_interface.html
 pub fn register_interface<T: ObjectInterface>() -> Type {
+    assert_eq!(mem::size_of::<T>(), 0);
+
     unsafe {
         use std::ffi::CString;
 
@@ -277,6 +286,8 @@ pub fn register_interface<T: ObjectInterface>() -> Type {
 pub fn register_dynamic_interface<P: DynamicObjectRegisterExt, T: ObjectInterface>(
     type_plugin: &P,
 ) -> Type {
+    assert_eq!(mem::size_of::<T>(), 0);
+
     unsafe {
         use std::ffi::CString;
 

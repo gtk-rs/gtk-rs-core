@@ -43,6 +43,7 @@ mod iface {
     impl ObjectInterface for Purrable {
         const NAME: &'static str = "Purrable";
 
+        type Instance = super::ffi::Instance;
         type Interface = super::ffi::Interface;
 
         /// Initialize the class struct with the default implementations of the
