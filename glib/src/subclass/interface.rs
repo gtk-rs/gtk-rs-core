@@ -156,15 +156,6 @@ pub trait ObjectInterfaceExt: ObjectInterface {
     ///
     /// This will panic if `obj` does not implement the interface.
     #[inline]
-    #[deprecated = "Use from_obj() instead"]
-    fn from_instance<T: IsA<Object>>(obj: &T) -> &Self {
-        Self::from_obj(obj)
-    }
-
-    /// Get interface from an instance.
-    ///
-    /// This will panic if `obj` does not implement the interface.
-    #[inline]
     fn from_obj<T: IsA<Object>>(obj: &T) -> &Self {
         assert!(obj.as_ref().type_().is_a(Self::type_()));
 

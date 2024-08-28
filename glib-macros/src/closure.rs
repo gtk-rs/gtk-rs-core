@@ -23,6 +23,10 @@ struct Closure {
 
 impl Parse for Closure {
     fn parse(input: ParseStream) -> syn::Result<Self> {
+        if input.is_empty() {
+            return Err(syn::Error::new(Span::call_site(), "expected a closure"));
+        }
+
         let mut captures: Vec<Capture> = vec![];
         let mut upgrade_behaviour: Option<(UpgradeBehaviour, Span)> = None;
 

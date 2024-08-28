@@ -368,6 +368,13 @@ struct Clone {
 
 impl Parse for Clone {
     fn parse(input: ParseStream) -> syn::Result<Self> {
+        if input.is_empty() {
+            return Err(syn::Error::new(
+                Span::call_site(),
+                "expected a closure or async block",
+            ));
+        }
+
         let mut captures: Vec<Capture> = vec![];
         let mut upgrade_behaviour: Option<(UpgradeBehaviour, Span)> = None;
 

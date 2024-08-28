@@ -2,9 +2,7 @@
 
 mod boxed_derive;
 mod clone;
-mod clone_old;
 mod closure;
-mod closure_old;
 mod derived_properties_attribute;
 mod downgrade_derive;
 mod enum_derive;
@@ -19,7 +17,7 @@ mod variant_derive;
 mod utils;
 
 use flags_attribute::AttrInput;
-use proc_macro::{TokenStream, TokenTree};
+use proc_macro::TokenStream;
 use proc_macro2::Span;
 use syn::{parse_macro_input, DeriveInput};
 use utils::{parse_nested_meta_items_from_stream, NestedMetaItem};
@@ -335,18 +333,7 @@ use utils::{parse_nested_meta_items_from_stream, NestedMetaItem};
 /// ```
 #[proc_macro]
 pub fn clone(item: TokenStream) -> TokenStream {
-    // Check if this is an old-style clone macro invocation.
-    // These always start with an '@' punctuation.
-    let Some(first) = item.clone().into_iter().next() else {
-        return syn::Error::new(Span::call_site(), "expected a closure or async block")
-            .to_compile_error()
-            .into();
-    };
-
-    match first {
-        TokenTree::Punct(ref p) if p.to_string() == "@" => clone_old::clone_inner(item),
-        _ => clone::clone_inner(item),
-    }
+    clone::clone_inner(item)
 }
 
 /// Macro for creating a [`Closure`] object. This is a wrapper around [`Closure::new`] that
@@ -504,18 +491,7 @@ pub fn clone(item: TokenStream) -> TokenStream {
 /// ```
 #[proc_macro]
 pub fn closure(item: TokenStream) -> TokenStream {
-    // Check if this is an old-style closure macro invocation.
-    // These always start with an '@' punctuation.
-    let Some(first) = item.clone().into_iter().next() else {
-        return syn::Error::new(Span::call_site(), "expected a closure")
-            .to_compile_error()
-            .into();
-    };
-
-    match first {
-        TokenTree::Punct(ref p) if p.to_string() == "@" => closure_old::closure_inner(item, "new"),
-        _ => closure::closure_inner(item, "new"),
-    }
+    closure::closure_inner(item, "new")
 }
 
 /// The same as [`closure!`](crate::closure!) but uses [`Closure::new_local`] as a constructor.
@@ -525,20 +501,7 @@ pub fn closure(item: TokenStream) -> TokenStream {
 /// [`Closure::new_local`]: ../glib/closure/struct.Closure.html#method.new_local
 #[proc_macro]
 pub fn closure_local(item: TokenStream) -> TokenStream {
-    // Check if this is an old-style closure macro invocation.
-    // These always start with an '@' punctuation.
-    let Some(first) = item.clone().into_iter().next() else {
-        return syn::Error::new(Span::call_site(), "expected a closure")
-            .to_compile_error()
-            .into();
-    };
-
-    match first {
-        TokenTree::Punct(ref p) if p.to_string() == "@" => {
-            closure_old::closure_inner(item, "new_local")
-        }
-        _ => closure::closure_inner(item, "new_local"),
-    }
+    closure::closure_inner(item, "new_local")
 }
 
 /// Derive macro to register a Rust enum in the GLib type system and derive the
