@@ -739,14 +739,6 @@ impl GStringPtr {
     }
 
     // rustdoc-stripper-ignore-next
-    /// This is just an alias for [`as_str`](GStringPtr::as_str).
-    #[inline]
-    #[deprecated = "Use as_str instead"]
-    pub fn to_str(&self) -> &str {
-        self
-    }
-
-    // rustdoc-stripper-ignore-next
     /// Returns the string's C pointer.
     #[inline]
     pub const fn as_ptr(&self) -> *const c_char {
