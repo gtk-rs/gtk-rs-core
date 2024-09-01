@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/value_array.rs`."><title>value_array.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-492a78a4a87dcc01.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.82.0-nightly (1f12b9b0f 2024-08-27)" data-channel="nightly" data-search-js="search-acd2e111c9cb27e3.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-cb0df477c2d67d00.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-3b12f09e550e0385.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/value_array.rs`."><title>value_array.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-492a78a4a87dcc01.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.82.0-nightly (a7399ba69 2024-08-31)" data-channel="nightly" data-search-js="search-a99f1315e7cc5121.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-921df33f47b8780c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-3b12f09e550e0385.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -421,7 +421,7 @@
 </span><span class="kw">use </span>std::{<a href="https://doc.rust-lang.org/nightly/core/cmp/enum.Ordering.html">cmp::Ordering</a>, <a href="https://doc.rust-lang.org/nightly/core/ops/index.html">ops</a>, <a href="https://doc.rust-lang.org/nightly/alloc/slice/index.html">slice</a>};
 
 <span class="kw">use crate</span>::{
-    ffi, <a href="../../gobject_sys/index.html">gobject_ffi</a>, <a href="lib.rs.html#157">prelude</a>::<span class="kw-2">*</span>, <a href="lib.rs.html#162">translate</a>::<span class="kw-2">*</span>, <a href="param_spec.rs.html#1741-1751">ParamSpecValueArray</a>, <a href="param_spec.rs.html#1807-1813">ParamSpecValueArrayBuilder</a>,
+    <a href="../../glib_sys/index.html">ffi</a>, <a href="../../gobject_sys/index.html">gobject_ffi</a>, <a href="lib.rs.html#157">prelude</a>::<span class="kw-2">*</span>, <a href="lib.rs.html#162">translate</a>::<span class="kw-2">*</span>, <a href="param_spec.rs.html#1831-1843">ParamSpecValueArray</a>, <a href="param_spec.rs.html#1899-1905">ParamSpecValueArrayBuilder</a>,
     <a href="types.rs.html#22">Type</a>, <a href="value.rs.html#478-512">Value</a>,
 };
 
@@ -532,9 +532,9 @@
     <span class="attr">#[doc(alias = <span class="string">"g_value_array_sort_with_data"</span>)]
     </span><span class="kw">pub fn </span>sort_with_data&lt;F: FnMut(<span class="kw-2">&amp;</span><a href="value.rs.html#478-512">Value</a>, <span class="kw-2">&amp;</span><a href="value.rs.html#478-512">Value</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/core/cmp/enum.Ordering.html">Ordering</a>&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, compare_func: F) {
         <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>compare_func_trampoline(
-            a: ffi::gconstpointer,
-            b: ffi::gconstpointer,
-            func: ffi::gpointer,
+            a: <a href="../../glib_sys/type.gconstpointer.html">ffi::gconstpointer</a>,
+            b: <a href="../../glib_sys/type.gconstpointer.html">ffi::gconstpointer</a>,
+            func: <a href="../../glib_sys/type.gpointer.html">ffi::gpointer</a>,
         ) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a> {
             <span class="kw">let </span>func = <a href="#119">func</a> <span class="kw">as </span><span class="kw-2">*mut &amp;mut </span>(<span class="kw">dyn </span>FnMut(<span class="kw-2">&amp;</span><a href="value.rs.html#478-512">Value</a>, <span class="kw-2">&amp;</span><a href="value.rs.html#478-512">Value</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/core/cmp/enum.Ordering.html">Ordering</a>);
 
@@ -547,7 +547,7 @@
             <span class="kw">let </span><span class="kw-2">mut </span>func = <a href="#115">compare_func</a>;
             <span class="kw">let </span>func_obj: <span class="kw-2">&amp;mut </span>(<span class="kw">dyn </span>FnMut(<span class="kw-2">&amp;</span><a href="value.rs.html#478-512">Value</a>, <span class="kw-2">&amp;</span><a href="value.rs.html#478-512">Value</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/core/cmp/enum.Ordering.html">Ordering</a>) = <span class="kw-2">&amp;mut </span><a href="#129">func</a>;
             <span class="kw">let </span>func_ptr =
-                <span class="kw-2">&amp;</span><a href="#130">func_obj</a> <span class="kw">as </span><span class="kw-2">*const &amp;mut </span>(<span class="kw">dyn </span>FnMut(<span class="kw-2">&amp;</span><a href="value.rs.html#478-512">Value</a>, <span class="kw-2">&amp;</span><a href="value.rs.html#478-512">Value</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/core/cmp/enum.Ordering.html">Ordering</a>) <span class="kw">as </span>ffi::gpointer;
+                <span class="kw-2">&amp;</span><a href="#130">func_obj</a> <span class="kw">as </span><span class="kw-2">*const &amp;mut </span>(<span class="kw">dyn </span>FnMut(<span class="kw-2">&amp;</span><a href="value.rs.html#478-512">Value</a>, <span class="kw-2">&amp;</span><a href="value.rs.html#478-512">Value</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/core/cmp/enum.Ordering.html">Ordering</a>) <span class="kw">as </span><a href="../../glib_sys/type.gpointer.html">ffi::gpointer</a>;
 
             <a href="../../gobject_sys/fn.g_value_array_sort_with_data.html">gobject_ffi::g_value_array_sort_with_data</a>(
                 <a class="self" href="#115">self</a>.<a href="translate.rs.html#471">to_glib_none_mut</a>().<span class="number">0</span>,
@@ -663,7 +663,7 @@
         <span class="kw">let </span>value = <span class="kw-2">&amp;*</span>(<a href="#240">value</a> <span class="kw">as </span><span class="kw-2">*const </span><a href="value.rs.html#478-512">Value</a> <span class="kw">as </span><span class="kw-2">*const </span><a href="../../gobject_sys/struct.GValue.html">gobject_ffi::GValue</a>);
         <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert.html">debug_assert!</a>(!value.data[<span class="number">0</span>].v_pointer.is_null());
         &lt;<a href="#10-19">ValueArray</a>&gt;::from_glib_ptr_borrow(
-            <span class="kw-2">&amp;*</span>(<span class="kw-2">&amp;</span><a href="#245">value</a>.data[<span class="number">0</span>].v_pointer <span class="kw">as </span><span class="kw-2">*const </span>ffi::gpointer
+            <span class="kw-2">&amp;*</span>(<span class="kw-2">&amp;</span><a href="#245">value</a>.data[<span class="number">0</span>].v_pointer <span class="kw">as </span><span class="kw-2">*const </span><a href="../../glib_sys/type.gpointer.html">ffi::gpointer</a>
                 <span class="kw">as </span><span class="kw-2">*const *mut </span><a href="../../gobject_sys/struct.GValueArray.html">gobject_ffi::GValueArray</a>),
         )
     }
@@ -719,10 +719,10 @@
     }
 }
 
-<span class="kw">impl </span><a href="param_spec.rs.html#2237-2245">HasParamSpec</a> <span class="kw">for </span><a href="#10-19">ValueArray</a> {
-    <span class="kw">type </span>ParamSpec = <a href="param_spec.rs.html#1741-1751">ParamSpecValueArray</a>;
+<span class="kw">impl </span><a href="param_spec.rs.html#2353-2361">HasParamSpec</a> <span class="kw">for </span><a href="#10-19">ValueArray</a> {
+    <span class="kw">type </span>ParamSpec = <a href="param_spec.rs.html#1831-1843">ParamSpecValueArray</a>;
     <span class="kw">type </span>SetValue = <span class="self">Self</span>;
-    <span class="kw">type </span>BuilderFn = <span class="kw">fn</span>(<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a href="param_spec.rs.html#1807-1813">ParamSpecValueArrayBuilder</a>;
+    <span class="kw">type </span>BuilderFn = <span class="kw">fn</span>(<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a href="param_spec.rs.html#1899-1905">ParamSpecValueArrayBuilder</a>;
 
     <span class="kw">fn </span>param_spec_builder() -&gt; <span class="self">Self</span>::BuilderFn {
         <span class="self">Self</span>::ParamSpec::builder

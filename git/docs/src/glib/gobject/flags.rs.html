@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/gobject/flags.rs`."><title>flags.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-492a78a4a87dcc01.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.82.0-nightly (1f12b9b0f 2024-08-27)" data-channel="nightly" data-search-js="search-acd2e111c9cb27e3.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-cb0df477c2d67d00.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-3b12f09e550e0385.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/gobject/flags.rs`."><title>flags.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-492a78a4a87dcc01.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.82.0-nightly (a7399ba69 2024-08-31)" data-channel="nightly" data-search-js="search-a99f1315e7cc5121.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-921df33f47b8780c.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-3b12f09e550e0385.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -149,6 +149,34 @@
 <a href="#76" id="76">76</a>
 <a href="#77" id="77">77</a>
 <a href="#78" id="78">78</a>
+<a href="#79" id="79">79</a>
+<a href="#80" id="80">80</a>
+<a href="#81" id="81">81</a>
+<a href="#82" id="82">82</a>
+<a href="#83" id="83">83</a>
+<a href="#84" id="84">84</a>
+<a href="#85" id="85">85</a>
+<a href="#86" id="86">86</a>
+<a href="#87" id="87">87</a>
+<a href="#88" id="88">88</a>
+<a href="#89" id="89">89</a>
+<a href="#90" id="90">90</a>
+<a href="#91" id="91">91</a>
+<a href="#92" id="92">92</a>
+<a href="#93" id="93">93</a>
+<a href="#94" id="94">94</a>
+<a href="#95" id="95">95</a>
+<a href="#96" id="96">96</a>
+<a href="#97" id="97">97</a>
+<a href="#98" id="98">98</a>
+<a href="#99" id="99">99</a>
+<a href="#100" id="100">100</a>
+<a href="#101" id="101">101</a>
+<a href="#102" id="102">102</a>
+<a href="#103" id="103">103</a>
+<a href="#104" id="104">104</a>
+<a href="#105" id="105">105</a>
+<a href="#106" id="106">106</a>
 </pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
 </span><span class="kw">use crate</span>::{<a href="../../../gobject_sys/index.html">gobject_ffi</a>, <a href="../lib.rs.html#162">translate</a>::<span class="kw-2">*</span>};
@@ -158,25 +186,43 @@
     /// can be configured.
     ///
     /// See also: `G_PARAM_STATIC_STRINGS`
+    </span><span class="comment">// rustdoc-stripper-ignore-next-stop
+    </span><span class="doccomment">/// Through the [`ParamFlags`][crate::ParamFlags] flag values, certain aspects of parameters
+    /// can be configured.
+    ///
+    /// See also: `G_PARAM_STATIC_STRINGS`
     </span><span class="attr">#[doc(alias = <span class="string">"GParamFlags"</span>)]
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     </span><span class="kw">pub struct </span><a href="../../../glib/struct.ParamFlags.html">ParamFlags</a>: <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a> {
         <span class="doccomment">/// the parameter is readable
+        </span><span class="comment">// rustdoc-stripper-ignore-next-stop
+        </span><span class="doccomment">/// the parameter is readable
         </span><span class="attr">#[doc(alias = <span class="string">"G_PARAM_READABLE"</span>)]
         </span><span class="kw">const </span>READABLE = <a href="../../../gobject_sys/constant.G_PARAM_READABLE.html">gobject_ffi::G_PARAM_READABLE</a> <span class="kw">as _</span>;
         <span class="doccomment">/// the parameter is writable
+        </span><span class="comment">// rustdoc-stripper-ignore-next-stop
+        </span><span class="doccomment">/// the parameter is writable
         </span><span class="attr">#[doc(alias = <span class="string">"G_PARAM_WRITABLE"</span>)]
         </span><span class="kw">const </span>WRITABLE = <a href="../../../gobject_sys/constant.G_PARAM_WRITABLE.html">gobject_ffi::G_PARAM_WRITABLE</a> <span class="kw">as _</span>;
         <span class="doccomment">/// alias for [`READABLE`][Self::READABLE] | [`WRITABLE`][Self::WRITABLE]
+        </span><span class="comment">// rustdoc-stripper-ignore-next-stop
+        </span><span class="doccomment">/// alias for [`READABLE`][Self::READABLE] | [`WRITABLE`][Self::WRITABLE]
         </span><span class="attr">#[doc(alias = <span class="string">"G_PARAM_READWRITE"</span>)]
         </span><span class="kw">const </span>READWRITE = <a href="../../../gobject_sys/constant.G_PARAM_READWRITE.html">gobject_ffi::G_PARAM_READWRITE</a> <span class="kw">as _</span>;
         <span class="doccomment">/// the parameter will be set upon object construction
+        </span><span class="comment">// rustdoc-stripper-ignore-next-stop
+        </span><span class="doccomment">/// the parameter will be set upon object construction
         </span><span class="attr">#[doc(alias = <span class="string">"G_PARAM_CONSTRUCT"</span>)]
         </span><span class="kw">const </span>CONSTRUCT = <a href="../../../gobject_sys/constant.G_PARAM_CONSTRUCT.html">gobject_ffi::G_PARAM_CONSTRUCT</a> <span class="kw">as _</span>;
         <span class="doccomment">/// the parameter can only be set upon object construction
+        </span><span class="comment">// rustdoc-stripper-ignore-next-stop
+        </span><span class="doccomment">/// the parameter can only be set upon object construction
         </span><span class="attr">#[doc(alias = <span class="string">"G_PARAM_CONSTRUCT_ONLY"</span>)]
         </span><span class="kw">const </span>CONSTRUCT_ONLY = <a href="../../../gobject_sys/constant.G_PARAM_CONSTRUCT_ONLY.html">gobject_ffi::G_PARAM_CONSTRUCT_ONLY</a> <span class="kw">as _</span>;
         <span class="doccomment">/// upon parameter conversion (see `g_param_value_convert()`)
+        ///  strict validation is not required
+        </span><span class="comment">// rustdoc-stripper-ignore-next-stop
+        </span><span class="doccomment">/// upon parameter conversion (see `g_param_value_convert()`)
         ///  strict validation is not required
         </span><span class="attr">#[doc(alias = <span class="string">"G_PARAM_LAX_VALIDATION"</span>)]
         </span><span class="kw">const </span>LAX_VALIDATION = <a href="../../../gobject_sys/constant.G_PARAM_LAX_VALIDATION.html">gobject_ffi::G_PARAM_LAX_VALIDATION</a> <span class="kw">as _</span>;
@@ -193,9 +239,19 @@
         ///  property will not automatically result in a "notify" signal being
         ///  emitted: the implementation must call [`ObjectExt::notify()`][crate::prelude::ObjectExt::notify()] themselves
         ///  in case the property actually changes. Since: 2.42.
+        </span><span class="comment">// rustdoc-stripper-ignore-next-stop
+        </span><span class="doccomment">/// calls to [`ObjectExt::set_property()`][crate::prelude::ObjectExt::set_property()] for this
+        ///  property will not automatically result in a "notify" signal being
+        ///  emitted: the implementation must call [`ObjectExt::notify()`][crate::prelude::ObjectExt::notify()] themselves
+        ///  in case the property actually changes. Since: 2.42.
         </span><span class="attr">#[doc(alias = <span class="string">"G_PARAM_EXPLICIT_NOTIFY"</span>)]
         </span><span class="kw">const </span>EXPLICIT_NOTIFY = <a href="../../../gobject_sys/constant.G_PARAM_EXPLICIT_NOTIFY.html">gobject_ffi::G_PARAM_EXPLICIT_NOTIFY</a> <span class="kw">as _</span>;
         <span class="doccomment">/// the parameter is deprecated and will be removed
+        ///  in a future version. A warning will be generated if it is used
+        ///  while running with G_ENABLE_DIAGNOSTIC=1.
+        ///  Since 2.26
+        </span><span class="comment">// rustdoc-stripper-ignore-next-stop
+        </span><span class="doccomment">/// the parameter is deprecated and will be removed
         ///  in a future version. A warning will be generated if it is used
         ///  while running with G_ENABLE_DIAGNOSTIC=1.
         ///  Since 2.26
@@ -204,27 +260,27 @@
     }
 }
 
-<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html">Default</a> <span class="kw">for </span><a href="#5-54">ParamFlags</a> {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html">Default</a> <span class="kw">for </span><a href="#5-82">ParamFlags</a> {
     <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
         ParamFlags::READWRITE
     }
 }
 
 <span class="attr">#[doc(hidden)]
-</span><span class="kw">impl </span><a href="../translate.rs.html#331-335">IntoGlib</a> <span class="kw">for </span><a href="#5-54">ParamFlags</a> {
+</span><span class="kw">impl </span><a href="../translate.rs.html#331-335">IntoGlib</a> <span class="kw">for </span><a href="#5-82">ParamFlags</a> {
     <span class="kw">type </span>GlibType = <a href="../../../gobject_sys/type.GParamFlags.html">gobject_ffi::GParamFlags</a>;
 
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>into_glib(<span class="self">self</span>) -&gt; <a href="../../../gobject_sys/type.GParamFlags.html">gobject_ffi::GParamFlags</a> {
-        <a class="self" href="#67">self</a>.<a href="#5-54">bits</a>()
+        <a class="self" href="#95">self</a>.<a href="#5-82">bits</a>()
     }
 }
 
 <span class="attr">#[doc(hidden)]
-</span><span class="kw">impl </span>FromGlib&lt;<a href="../../../gobject_sys/type.GParamFlags.html">gobject_ffi::GParamFlags</a>&gt; <span class="kw">for </span><a href="#5-54">ParamFlags</a> {
+</span><span class="kw">impl </span>FromGlib&lt;<a href="../../../gobject_sys/type.GParamFlags.html">gobject_ffi::GParamFlags</a>&gt; <span class="kw">for </span><a href="#5-82">ParamFlags</a> {
     <span class="attr">#[inline]
     </span><span class="kw">unsafe fn </span>from_glib(value: <a href="../../../gobject_sys/type.GParamFlags.html">gobject_ffi::GParamFlags</a>) -&gt; <span class="self">Self </span>{
-        <a href="#5-54"><span class="self">Self</span>::from_bits_truncate</a>(<a href="#75">value</a>)
+        <a href="#5-82"><span class="self">Self</span>::from_bits_truncate</a>(<a href="#103">value</a>)
     }
 }
 </code></pre></div></section></main></body></html>
