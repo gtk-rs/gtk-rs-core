@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/auto/regex.rs`."><title>regex.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-492a78a4a87dcc01.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.82.0-nightly (a7399ba69 2024-08-31)" data-channel="nightly" data-search-js="search-a99f1315e7cc5121.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-921df33f47b8780c.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-3b12f09e550e0385.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/auto/regex.rs`."><title>regex.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-492a78a4a87dcc01.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.83.0-nightly (94885bc69 2024-09-01)" data-channel="nightly" data-search-js="search-a99f1315e7cc5121.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-921df33f47b8780c.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-3b12f09e550e0385.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -268,187 +268,14 @@
 <a href="#195" id="195">195</a>
 <a href="#196" id="196">196</a>
 <a href="#197" id="197">197</a>
-<a href="#198" id="198">198</a>
-<a href="#199" id="199">199</a>
-<a href="#200" id="200">200</a>
-<a href="#201" id="201">201</a>
-<a href="#202" id="202">202</a>
-<a href="#203" id="203">203</a>
-<a href="#204" id="204">204</a>
-<a href="#205" id="205">205</a>
-<a href="#206" id="206">206</a>
-<a href="#207" id="207">207</a>
-<a href="#208" id="208">208</a>
-<a href="#209" id="209">209</a>
-<a href="#210" id="210">210</a>
-<a href="#211" id="211">211</a>
-<a href="#212" id="212">212</a>
-<a href="#213" id="213">213</a>
-<a href="#214" id="214">214</a>
-<a href="#215" id="215">215</a>
-<a href="#216" id="216">216</a>
-<a href="#217" id="217">217</a>
-<a href="#218" id="218">218</a>
-<a href="#219" id="219">219</a>
-<a href="#220" id="220">220</a>
-<a href="#221" id="221">221</a>
-<a href="#222" id="222">222</a>
-<a href="#223" id="223">223</a>
-<a href="#224" id="224">224</a>
-<a href="#225" id="225">225</a>
-<a href="#226" id="226">226</a>
-<a href="#227" id="227">227</a>
-<a href="#228" id="228">228</a>
-<a href="#229" id="229">229</a>
-<a href="#230" id="230">230</a>
-<a href="#231" id="231">231</a>
-<a href="#232" id="232">232</a>
-<a href="#233" id="233">233</a>
-<a href="#234" id="234">234</a>
-<a href="#235" id="235">235</a>
-<a href="#236" id="236">236</a>
-<a href="#237" id="237">237</a>
-<a href="#238" id="238">238</a>
-<a href="#239" id="239">239</a>
-<a href="#240" id="240">240</a>
-<a href="#241" id="241">241</a>
-<a href="#242" id="242">242</a>
-<a href="#243" id="243">243</a>
-<a href="#244" id="244">244</a>
-<a href="#245" id="245">245</a>
-<a href="#246" id="246">246</a>
-<a href="#247" id="247">247</a>
-<a href="#248" id="248">248</a>
-<a href="#249" id="249">249</a>
-<a href="#250" id="250">250</a>
-<a href="#251" id="251">251</a>
-<a href="#252" id="252">252</a>
-<a href="#253" id="253">253</a>
-<a href="#254" id="254">254</a>
-<a href="#255" id="255">255</a>
-<a href="#256" id="256">256</a>
-<a href="#257" id="257">257</a>
-<a href="#258" id="258">258</a>
-<a href="#259" id="259">259</a>
-<a href="#260" id="260">260</a>
-<a href="#261" id="261">261</a>
-<a href="#262" id="262">262</a>
-<a href="#263" id="263">263</a>
-<a href="#264" id="264">264</a>
-<a href="#265" id="265">265</a>
-<a href="#266" id="266">266</a>
-<a href="#267" id="267">267</a>
-<a href="#268" id="268">268</a>
-<a href="#269" id="269">269</a>
-<a href="#270" id="270">270</a>
-<a href="#271" id="271">271</a>
-<a href="#272" id="272">272</a>
-<a href="#273" id="273">273</a>
-<a href="#274" id="274">274</a>
-<a href="#275" id="275">275</a>
-<a href="#276" id="276">276</a>
-<a href="#277" id="277">277</a>
-<a href="#278" id="278">278</a>
-<a href="#279" id="279">279</a>
-<a href="#280" id="280">280</a>
-<a href="#281" id="281">281</a>
-<a href="#282" id="282">282</a>
-<a href="#283" id="283">283</a>
-<a href="#284" id="284">284</a>
-<a href="#285" id="285">285</a>
-<a href="#286" id="286">286</a>
-<a href="#287" id="287">287</a>
-<a href="#288" id="288">288</a>
-<a href="#289" id="289">289</a>
-<a href="#290" id="290">290</a>
-<a href="#291" id="291">291</a>
-<a href="#292" id="292">292</a>
-<a href="#293" id="293">293</a>
-<a href="#294" id="294">294</a>
-<a href="#295" id="295">295</a>
-<a href="#296" id="296">296</a>
-<a href="#297" id="297">297</a>
-<a href="#298" id="298">298</a>
-<a href="#299" id="299">299</a>
-<a href="#300" id="300">300</a>
-<a href="#301" id="301">301</a>
-<a href="#302" id="302">302</a>
-<a href="#303" id="303">303</a>
-<a href="#304" id="304">304</a>
-<a href="#305" id="305">305</a>
-<a href="#306" id="306">306</a>
-<a href="#307" id="307">307</a>
-<a href="#308" id="308">308</a>
-<a href="#309" id="309">309</a>
-<a href="#310" id="310">310</a>
-<a href="#311" id="311">311</a>
-<a href="#312" id="312">312</a>
-<a href="#313" id="313">313</a>
-<a href="#314" id="314">314</a>
-<a href="#315" id="315">315</a>
-<a href="#316" id="316">316</a>
 </pre></div><pre class="rust"><code><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-</span><span class="kw">use crate</span>::{<a href="../../../glib_sys/index.html">ffi</a>, <a href="../lib.rs.html#162">translate</a>::<span class="kw-2">*</span>, <a href="../error.rs.html#10-28">Error</a>, <a href="flags.rs.html#474-593">RegexCompileFlags</a>, <a href="flags.rs.html#613-711">RegexMatchFlags</a>};
+</span><span class="kw">use crate</span>::{<a href="../../../glib_sys/index.html">ffi</a>, <a href="../lib.rs.html#162">translate</a>::<span class="kw-2">*</span>, <a href="../error.rs.html#10-25">Error</a>, <a href="flags.rs.html#474-593">RegexCompileFlags</a>, <a href="flags.rs.html#613-711">RegexMatchFlags</a>};
 
 <a class="macro" href="../wrapper.rs.html#277-444">crate::wrapper!</a> {
     <span class="doccomment">/// A `GRegex` is the "compiled" form of a regular expression pattern.
-    ///
-    /// `GRegex` implements regular expression pattern matching using syntax and
-    /// semantics similar to Perl regular expression. See the
-    /// [PCRE documentation](man:pcrepattern(3)) for the syntax definition.
-    ///
-    /// Some functions accept a @start_position argument, setting it differs
-    /// from just passing over a shortened string and setting [`RegexMatchFlags::NOTBOL`][crate::RegexMatchFlags::NOTBOL]
-    /// in the case of a pattern that begins with any kind of lookbehind assertion.
-    /// For example, consider the pattern "\Biss\B" which finds occurrences of "iss"
-    /// in the middle of words. ("\B" matches only if the current position in the
-    /// subject is not a word boundary.) When applied to the string "Mississipi"
-    /// from the fourth byte, namely "issipi", it does not match, because "\B" is
-    /// always false at the start of the subject, which is deemed to be a word
-    /// boundary. However, if the entire string is passed , but with
-    /// @start_position set to 4, it finds the second occurrence of "iss" because
-    /// it is able to look behind the starting point to discover that it is
-    /// preceded by a letter.
-    ///
-    /// Note that, unless you set the [`RegexCompileFlags::RAW`][crate::RegexCompileFlags::RAW] flag, all the strings passed
-    /// to these functions must be encoded in UTF-8. The lengths and the positions
-    /// inside the strings are in bytes and not in characters, so, for instance,
-    /// "\xc3\xa0" (i.e. "à") is two bytes long but it is treated as a
-    /// single character. If you set [`RegexCompileFlags::RAW`][crate::RegexCompileFlags::RAW] the strings can be non-valid
-    /// UTF-8 strings and a byte is treated as a character, so "\xc3\xa0" is two
-    /// bytes and two characters long.
-    ///
-    /// When matching a pattern, "\n" matches only against a "\n" character in
-    /// the string, and "\r" matches only a "\r" character. To match any newline
-    /// sequence use "\R". This particular group matches either the two-character
-    /// sequence CR + LF ("\r\n"), or one of the single characters LF (linefeed,
-    /// U+000A, "\n"), VT vertical tab, U+000B, "\v"), FF (formfeed, U+000C, "\f"),
-    /// CR (carriage return, U+000D, "\r"), NEL (next line, U+0085), LS (line
-    /// separator, U+2028), or PS (paragraph separator, U+2029).
-    ///
-    /// The behaviour of the dot, circumflex, and dollar metacharacters are
-    /// affected by newline characters, the default is to recognize any newline
-    /// character (the same characters recognized by "\R"). This can be changed
-    /// with `G_REGEX_NEWLINE_CR`, `G_REGEX_NEWLINE_LF` and `G_REGEX_NEWLINE_CRLF`
-    /// compile options, and with `G_REGEX_MATCH_NEWLINE_ANY`,
-    /// `G_REGEX_MATCH_NEWLINE_CR`, `G_REGEX_MATCH_NEWLINE_LF` and
-    /// `G_REGEX_MATCH_NEWLINE_CRLF` match options. These settings are also
-    /// relevant when compiling a pattern if `G_REGEX_EXTENDED` is set, and an
-    /// unescaped "#" outside a character class is encountered. This indicates
-    /// a comment that lasts until after the next newline.
-    ///
-    /// Creating and manipulating the same `GRegex` structure from different
-    /// threads is not a problem as `GRegex` does not modify its internal
-    /// state between creation and destruction, on the other hand `GMatchInfo`
-    /// is not threadsafe.
-    ///
-    /// The regular expressions low-level functionalities are obtained through
-    /// the excellent [PCRE](http://www.pcre.org/) library written by Philip Hazel.
-    </span><span class="comment">// rustdoc-stripper-ignore-next-stop
-    </span><span class="doccomment">/// A `GRegex` is the "compiled" form of a regular expression pattern.
     ///
     /// `GRegex` implements regular expression pattern matching using syntax and
     /// semantics similar to Perl regular expression. See the
@@ -511,22 +338,8 @@
     }
 }
 
-<span class="kw">impl </span><a href="#7-123">Regex</a> {
+<span class="kw">impl </span><a href="#7-69">Regex</a> {
     <span class="doccomment">/// Compiles the regular expression to an internal form, and does
-    /// the initial setup of the #GRegex structure.
-    /// ## `pattern`
-    /// the regular expression
-    /// ## `compile_options`
-    /// compile options for the regular expression, or 0
-    /// ## `match_options`
-    /// match options for the regular expression, or 0
-    ///
-    /// # Returns
-    ///
-    /// a #GRegex structure or [`None`] if an error occurred. Call
-    ///   g_regex_unref() when you are done with it
-    </span><span class="comment">// rustdoc-stripper-ignore-next-stop
-    </span><span class="doccomment">/// Compiles the regular expression to an internal form, and does
     /// the initial setup of the #GRegex structure.
     /// ## `pattern`
     /// the regular expression
@@ -544,19 +357,19 @@
         pattern: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
         compile_options: <a href="flags.rs.html#474-593">RegexCompileFlags</a>,
         match_options: <a href="flags.rs.html#613-711">RegexMatchFlags</a>,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;<a href="#7-123">Regex</a>&gt;, <a href="../error.rs.html#10-28"><span class="kw">crate</span>::Error</a>&gt; {
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;<a href="#7-69">Regex</a>&gt;, <a href="../error.rs.html#10-25"><span class="kw">crate</span>::Error</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>error = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">std::ptr::null_mut</a>();
             <span class="kw">let </span>ret = <a href="../../../glib_sys/fn.g_regex_new.html">ffi::g_regex_new</a>(
-                <a href="#155">pattern</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#156">compile_options</a>.<a href="../translate.rs.html#334">into_glib</a>(),
-                <a href="#157">match_options</a>.<a href="../translate.rs.html#334">into_glib</a>(),
-                <span class="kw-2">&amp;mut </span><a href="#160">error</a>,
+                <a href="#87">pattern</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#88">compile_options</a>.<a href="../translate.rs.html#334">into_glib</a>(),
+                <a href="#89">match_options</a>.<a href="../translate.rs.html#334">into_glib</a>(),
+                <span class="kw-2">&amp;mut </span><a href="#92">error</a>,
             );
             <span class="kw">if </span>error.is_null() {
-                <span class="prelude-val">Ok</span>(<a href="../translate.rs.html#1634-1636">from_glib_full</a>(<a href="#161">ret</a>))
+                <span class="prelude-val">Ok</span>(<a href="../translate.rs.html#1634-1636">from_glib_full</a>(<a href="#93">ret</a>))
             } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(<a href="../translate.rs.html#1634-1636">from_glib_full</a>(<a href="#160">error</a>))
+                <span class="prelude-val">Err</span>(<a href="../translate.rs.html#1634-1636">from_glib_full</a>(<a href="#92">error</a>))
             }
         }
     }
@@ -566,16 +379,10 @@
     /// # Returns
     ///
     /// the number of capturing subpatterns
-    </span><span class="comment">// rustdoc-stripper-ignore-next-stop
-    </span><span class="doccomment">/// Returns the number of capturing subpatterns in the pattern.
-    ///
-    /// # Returns
-    ///
-    /// the number of capturing subpatterns
     </span><span class="attr">#[doc(alias = <span class="string">"g_regex_get_capture_count"</span>)]
     #[doc(alias = <span class="string">"get_capture_count"</span>)]
     </span><span class="kw">pub fn </span>capture_count(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a> {
-        <span class="kw">unsafe </span>{ <a href="../../../glib_sys/fn.g_regex_get_capture_count.html">ffi::g_regex_get_capture_count</a>(<a class="self" href="#188">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>) }
+        <span class="kw">unsafe </span>{ <a href="../../../glib_sys/fn.g_regex_get_capture_count.html">ffi::g_regex_get_capture_count</a>(<a class="self" href="#114">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>) }
     }
 
     <span class="doccomment">/// Returns the compile options that @self was created with.
@@ -587,20 +394,10 @@
     /// # Returns
     ///
     /// flags from #GRegexCompileFlags
-    </span><span class="comment">// rustdoc-stripper-ignore-next-stop
-    </span><span class="doccomment">/// Returns the compile options that @self was created with.
-    ///
-    /// Depending on the version of PCRE that is used, this may or may not
-    /// include flags set by option expressions such as `(?i)` found at the
-    /// top-level within the compiled pattern.
-    ///
-    /// # Returns
-    ///
-    /// flags from #GRegexCompileFlags
     </span><span class="attr">#[doc(alias = <span class="string">"g_regex_get_compile_flags"</span>)]
     #[doc(alias = <span class="string">"get_compile_flags"</span>)]
     </span><span class="kw">pub fn </span>compile_flags(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="flags.rs.html#474-593">RegexCompileFlags</a> {
-        <span class="kw">unsafe </span>{ <a href="../translate.rs.html#1417-1419">from_glib</a>(<a href="../../../glib_sys/fn.g_regex_get_compile_flags.html">ffi::g_regex_get_compile_flags</a>(<a class="self" href="#213">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>)) }
+        <span class="kw">unsafe </span>{ <a href="../translate.rs.html#1417-1419">from_glib</a>(<a href="../../../glib_sys/fn.g_regex_get_compile_flags.html">ffi::g_regex_get_compile_flags</a>(<a class="self" href="#129">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>)) }
     }
 
     <span class="doccomment">/// Checks whether the pattern contains explicit CR or LF references.
@@ -608,16 +405,10 @@
     /// # Returns
     ///
     /// [`true`] if the pattern contains explicit CR or LF references
-    </span><span class="comment">// rustdoc-stripper-ignore-next-stop
-    </span><span class="doccomment">/// Checks whether the pattern contains explicit CR or LF references.
-    ///
-    /// # Returns
-    ///
-    /// [`true`] if the pattern contains explicit CR or LF references
     </span><span class="attr">#[doc(alias = <span class="string">"g_regex_get_has_cr_or_lf"</span>)]
     #[doc(alias = <span class="string">"get_has_cr_or_lf"</span>)]
     </span><span class="kw">pub fn </span>has_cr_or_lf(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
-        <span class="kw">unsafe </span>{ <a href="../translate.rs.html#1417-1419">from_glib</a>(<a href="../../../glib_sys/fn.g_regex_get_has_cr_or_lf.html">ffi::g_regex_get_has_cr_or_lf</a>(<a class="self" href="#230">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>)) }
+        <span class="kw">unsafe </span>{ <a href="../translate.rs.html#1417-1419">from_glib</a>(<a href="../../../glib_sys/fn.g_regex_get_has_cr_or_lf.html">ffi::g_regex_get_has_cr_or_lf</a>(<a class="self" href="#140">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>)) }
     }
 
     <span class="doccomment">/// Returns the match options that @self was created with.
@@ -625,16 +416,10 @@
     /// # Returns
     ///
     /// flags from #GRegexMatchFlags
-    </span><span class="comment">// rustdoc-stripper-ignore-next-stop
-    </span><span class="doccomment">/// Returns the match options that @self was created with.
-    ///
-    /// # Returns
-    ///
-    /// flags from #GRegexMatchFlags
     </span><span class="attr">#[doc(alias = <span class="string">"g_regex_get_match_flags"</span>)]
     #[doc(alias = <span class="string">"get_match_flags"</span>)]
     </span><span class="kw">pub fn </span>match_flags(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="flags.rs.html#613-711">RegexMatchFlags</a> {
-        <span class="kw">unsafe </span>{ <a href="../translate.rs.html#1417-1419">from_glib</a>(<a href="../../../glib_sys/fn.g_regex_get_match_flags.html">ffi::g_regex_get_match_flags</a>(<a class="self" href="#247">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>)) }
+        <span class="kw">unsafe </span>{ <a href="../translate.rs.html#1417-1419">from_glib</a>(<a href="../../../glib_sys/fn.g_regex_get_match_flags.html">ffi::g_regex_get_match_flags</a>(<a class="self" href="#151">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>)) }
     }
 
     <span class="doccomment">/// Returns the number of the highest back reference
@@ -644,18 +429,10 @@
     /// # Returns
     ///
     /// the number of the highest back reference
-    </span><span class="comment">// rustdoc-stripper-ignore-next-stop
-    </span><span class="doccomment">/// Returns the number of the highest back reference
-    /// in the pattern, or 0 if the pattern does not contain
-    /// back references.
-    ///
-    /// # Returns
-    ///
-    /// the number of the highest back reference
     </span><span class="attr">#[doc(alias = <span class="string">"g_regex_get_max_backref"</span>)]
     #[doc(alias = <span class="string">"get_max_backref"</span>)]
     </span><span class="kw">pub fn </span>max_backref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a> {
-        <span class="kw">unsafe </span>{ <a href="../../../glib_sys/fn.g_regex_get_max_backref.html">ffi::g_regex_get_max_backref</a>(<a class="self" href="#268">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>) }
+        <span class="kw">unsafe </span>{ <a href="../../../glib_sys/fn.g_regex_get_max_backref.html">ffi::g_regex_get_max_backref</a>(<a class="self" href="#164">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>) }
     }
 
     <span class="doccomment">/// Gets the number of characters in the longest lookbehind assertion in the
@@ -665,18 +442,10 @@
     /// # Returns
     ///
     /// the number of characters in the longest lookbehind assertion.
-    </span><span class="comment">// rustdoc-stripper-ignore-next-stop
-    </span><span class="doccomment">/// Gets the number of characters in the longest lookbehind assertion in the
-    /// pattern. This information is useful when doing multi-segment matching using
-    /// the partial matching facilities.
-    ///
-    /// # Returns
-    ///
-    /// the number of characters in the longest lookbehind assertion.
     </span><span class="attr">#[doc(alias = <span class="string">"g_regex_get_max_lookbehind"</span>)]
     #[doc(alias = <span class="string">"get_max_lookbehind"</span>)]
     </span><span class="kw">pub fn </span>max_lookbehind(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a> {
-        <span class="kw">unsafe </span>{ <a href="../../../glib_sys/fn.g_regex_get_max_lookbehind.html">ffi::g_regex_get_max_lookbehind</a>(<a class="self" href="#289">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>) }
+        <span class="kw">unsafe </span>{ <a href="../../../glib_sys/fn.g_regex_get_max_lookbehind.html">ffi::g_regex_get_max_lookbehind</a>(<a class="self" href="#177">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>) }
     }
 
     <span class="doccomment">/// Gets the pattern string associated with @self, i.e. a copy of
@@ -685,17 +454,10 @@
     /// # Returns
     ///
     /// the pattern of @self
-    </span><span class="comment">// rustdoc-stripper-ignore-next-stop
-    </span><span class="doccomment">/// Gets the pattern string associated with @self, i.e. a copy of
-    /// the string passed to g_regex_new().
-    ///
-    /// # Returns
-    ///
-    /// the pattern of @self
     </span><span class="attr">#[doc(alias = <span class="string">"g_regex_get_pattern"</span>)]
     #[doc(alias = <span class="string">"get_pattern"</span>)]
     </span><span class="kw">pub fn </span>pattern(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="../gstring.rs.html#1028"><span class="kw">crate</span>::GString</a> {
-        <span class="kw">unsafe </span>{ <a href="../translate.rs.html#1625-1627">from_glib_none</a>(<a href="../../../glib_sys/fn.g_regex_get_pattern.html">ffi::g_regex_get_pattern</a>(<a class="self" href="#308">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>)) }
+        <span class="kw">unsafe </span>{ <a href="../translate.rs.html#1625-1627">from_glib_none</a>(<a href="../../../glib_sys/fn.g_regex_get_pattern.html">ffi::g_regex_get_pattern</a>(<a class="self" href="#189">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>)) }
     }
 
     <span class="comment">//#[doc(alias = "g_regex_replace_eval")]
