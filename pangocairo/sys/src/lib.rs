@@ -59,7 +59,6 @@ impl ::std::fmt::Debug for PangoCairoFontMap {
     }
 }
 
-#[link(name = "pangocairo-1.0")]
 extern "C" {
 
     //=========================================================================

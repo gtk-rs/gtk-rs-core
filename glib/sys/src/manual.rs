@@ -84,7 +84,6 @@ mod win32 {
     pub const G_WIN32_OS_WORKSTATION: GWin32OSType = 1;
     pub const G_WIN32_OS_SERVER: GWin32OSType = 2;
 
-    #[link(name = "glib-2.0")]
     extern "C" {
         pub fn g_win32_check_windows_version(
             major: c_int,

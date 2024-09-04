@@ -296,19 +296,13 @@ pub unsafe trait ParamSpecType:
 {
 }
 
-#[link(name = "gobject-2.0")]
-extern "C" {
-    pub static g_param_spec_types: *const ffi::GType;
-}
-
 macro_rules! define_param_spec {
     ($rust_type:ident, $ffi_type:path, $rust_type_offset:expr) => {
-        // Can't use get_type here as this is not a boxed type but another fundamental type
         impl StaticType for $rust_type {
             #[inline]
             fn static_type() -> Type {
                 unsafe {
-                    from_glib(*g_param_spec_types.add($rust_type_offset))
+                    from_glib(gobject_ffi::g_param_spec_types_get_type($rust_type_offset))
                 }
             }
         }
