@@ -758,8 +758,6 @@ pub fn impl_derive_props(input: PropsMacroInput) -> TokenStream {
     };
 
     let expanded = quote! {
-        use #crate_ident::property::{PropertyGet, PropertySet};
-
         #properties_enum
 
         impl #crate_ident::subclass::object::DerivedObjectProperties for #struct_ident {
