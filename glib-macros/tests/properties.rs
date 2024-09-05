@@ -182,6 +182,19 @@ mod foo {
                     .expect("Setter to be only called once");
             }
         }
+
+        /// Checks that `Properties` does not pollute the scope with
+        /// trait imports, as it did in older versions.
+        #[test]
+        fn no_import_leaks() {
+            // `vec.get` can match these methods (in order of precedence):
+            // (1) `<Vec<String> as PropertyGet>::get`
+            // (2) `<[String]>::get` through deref of `Vec<String>`
+            // Had the macro introduced `PropertyGet` into the scope, it would
+            // resolve to (1), which we do not want.
+            let vec: Vec<String> = vec![String::new(); 2];
+            assert_eq!(vec.get(1), Some(&String::new()));
+        }
     }
 
     glib::wrapper! {
