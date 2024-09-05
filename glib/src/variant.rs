@@ -1004,7 +1004,7 @@ impl<'a, T: ?Sized + ToVariant> ToVariant for &'a T {
     }
 }
 
-impl<'a, T: ?Sized + Into<Variant> + Clone> From<&'a T> for Variant {
+impl<'a, T: Into<Variant> + Clone> From<&'a T> for Variant {
     #[inline]
     fn from(v: &'a T) -> Self {
         v.clone().into()

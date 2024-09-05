@@ -830,7 +830,7 @@ impl SendValue {
         }
     }
     #[inline]
-    pub fn from_owned<T: Send + Into<Value> + ?Sized>(t: T) -> Self {
+    pub fn from_owned<T: Send + Into<Value>>(t: T) -> Self {
         unsafe { Self::unsafe_from(t.into().into_raw()) }
     }
 }
