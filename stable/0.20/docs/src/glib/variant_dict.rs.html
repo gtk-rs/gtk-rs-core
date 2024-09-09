@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/variant_dict.rs`."><title>variant_dict.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-492a78a4a87dcc01.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.82.0-nightly (515395af0 2024-08-26)" data-channel="nightly" data-search-js="search-acd2e111c9cb27e3.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-cb0df477c2d67d00.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-3b12f09e550e0385.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/variant_dict.rs`."><title>variant_dict.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-405f8b29f52305f8.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.83.0-nightly (adf8d168a 2024-09-08)" data-channel="nightly" data-search-js="search-0cfde64e8ad3a7fe.js" data-settings-js="settings-7e3bb6c46e92e77c.js" ><script src="../../static.files/storage-29b1d5a9048d38fe.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-14659ec02b58af51.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-40f72c9259523cb3.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -71,7 +71,8 @@
 </script>
 
 
-<nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers">
+<a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -364,7 +365,34 @@
 <a href="#291" id="291">291</a>
 <a href="#292" id="292">292</a>
 <a href="#293" id="293">293</a>
-</pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
+<a href="#294" id="294">294</a>
+<a href="#295" id="295">295</a>
+<a href="#296" id="296">296</a>
+<a href="#297" id="297">297</a>
+<a href="#298" id="298">298</a>
+<a href="#299" id="299">299</a>
+<a href="#300" id="300">300</a>
+<a href="#301" id="301">301</a>
+<a href="#302" id="302">302</a>
+<a href="#303" id="303">303</a>
+<a href="#304" id="304">304</a>
+<a href="#305" id="305">305</a>
+<a href="#306" id="306">306</a>
+<a href="#307" id="307">307</a>
+<a href="#308" id="308">308</a>
+<a href="#309" id="309">309</a>
+<a href="#310" id="310">310</a>
+<a href="#311" id="311">311</a>
+<a href="#312" id="312">312</a>
+<a href="#313" id="313">313</a>
+<a href="#314" id="314">314</a>
+<a href="#315" id="315">315</a>
+<a href="#316" id="316">316</a>
+<a href="#317" id="317">317</a>
+<a href="#318" id="318">318</a>
+<a href="#319" id="319">319</a>
+<a href="#320" id="320">320</a>
+<a href="#321" id="321">321</a></pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
 </span><span class="kw">use </span><a href="https://doc.rust-lang.org/nightly/alloc/borrow/enum.Cow.html">std::borrow::Cow</a>;
 
@@ -579,16 +607,22 @@
 }
 
 <span class="kw">impl </span>From&lt;<a href="#7-27">VariantDict</a>&gt; <span class="kw">for </span><a href="variant.rs.html#118-377">Variant</a> {
-    <span class="attr">#[inline]
+    <span class="comment">// rustdoc-stripper-ignore-next
+    </span><span class="doccomment">/// Consume a given `VariantDict` and call [`VariantDict::end`] on it.
+    ///
+    /// Note: While this method consumes the `VariantDict`, the underlying
+    /// object could still be accessed through other clones because of the
+    /// reference counted clone semantics.
+    </span><span class="attr">#[inline]
     </span><span class="kw">fn </span>from(d: <a href="#7-27">VariantDict</a>) -&gt; <span class="self">Self </span>{
-        <span class="kw">unsafe </span>{ <a href="#217">d</a>.<a href="#173-175">end_unsafe</a>() }
+        <a href="#223">d</a>.<a href="#187-194">end</a>()
     }
 }
 
 <span class="kw">impl </span><a href="variant.rs.html#1588-1594">FromVariant</a> <span class="kw">for </span><a href="#7-27">VariantDict</a> {
     <span class="kw">fn </span>from_variant(variant: <span class="kw-2">&amp;</span><a href="variant.rs.html#118-377">Variant</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt; {
         <span class="kw">if </span>variant.type_() == VariantDict::static_variant_type() {
-            <span class="prelude-val">Some</span>(<a href="#40-45"><span class="self">Self</span>::new</a>(<span class="prelude-val">Some</span>(<a href="#223">variant</a>)))
+            <span class="prelude-val">Some</span>(<a href="#40-45"><span class="self">Self</span>::new</a>(<span class="prelude-val">Some</span>(<a href="#229">variant</a>)))
         } <span class="kw">else </span>{
             <span class="prelude-val">None
         </span>}
@@ -597,7 +631,7 @@
 
 <span class="kw">impl </span>From&lt;<a href="variant.rs.html#118-377">Variant</a>&gt; <span class="kw">for </span><a href="#7-27">VariantDict</a> {
     <span class="kw">fn </span>from(other: <a href="variant.rs.html#118-377">Variant</a>) -&gt; <span class="self">Self </span>{
-        <a href="#40-45"><span class="self">Self</span>::new</a>(<span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><a href="#233">other</a>))
+        <a href="#40-45"><span class="self">Self</span>::new</a>(<span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><a href="#239">other</a>))
     }
 }
 
@@ -615,6 +649,28 @@
         <span class="kw">let </span>dict = VariantDict::default();
         <span class="kw">let </span>var: Variant = dict.to_variant();
         <span class="kw">let </span>_dict2: VariantDict = var.into();
+    }
+
+    <span class="attr">#[test]
+    </span><span class="kw">fn </span>into_variant_roundtrip() {
+        <span class="kw">let </span>dict1 = VariantDict::default();
+        <span class="kw">let </span>dict2 = dict1.clone();
+        dict1.insert_value(<span class="string">"one"</span>, <span class="kw-2">&amp;</span>(<span class="number">1u8</span>.to_variant()));
+
+        <span class="macro">assert_eq!</span>(dict1.lookup::&lt;u8&gt;(<span class="string">"one"</span>).unwrap(), <span class="prelude-val">Some</span>(<span class="number">1u8</span>));
+        <span class="macro">assert_eq!</span>(dict2.lookup::&lt;u8&gt;(<span class="string">"one"</span>).unwrap(), <span class="prelude-val">Some</span>(<span class="number">1u8</span>));
+
+        <span class="comment">// Convert it into `Variant`
+        </span><span class="kw">let </span>dict: Variant = dict1.into();
+
+        <span class="comment">// While we can still access the `VariantDict` via `dict2`,
+        // it should be empty now
+        </span><span class="macro">assert_eq!</span>(dict2.lookup::&lt;u8&gt;(<span class="string">"one"</span>).unwrap(), <span class="prelude-val">None</span>);
+
+        <span class="comment">// Convert it back
+        </span><span class="kw">let </span>dict3: VariantDict = dict.into();
+
+        <span class="macro">assert_eq!</span>(dict3.lookup::&lt;u8&gt;(<span class="string">"one"</span>).unwrap(), <span class="prelude-val">Some</span>(<span class="number">1u8</span>));
     }
 
     <span class="attr">#[test]
