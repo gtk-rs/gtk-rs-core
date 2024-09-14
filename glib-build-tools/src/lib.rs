@@ -39,7 +39,7 @@ pub fn compile_resources<P: AsRef<Path>>(source_dirs: &[P], gresource: &str, tar
         String::from_utf8_lossy(&output.stderr)
     );
 
-    println!("cargo:rerun-if-changed={gresource}");
+    println!("cargo::rerun-if-changed={gresource}");
     let mut command = Command::new("glib-compile-resources");
 
     for source_dir in source_dirs {
@@ -54,6 +54,6 @@ pub fn compile_resources<P: AsRef<Path>>(source_dirs: &[P], gresource: &str, tar
         .stdout;
     let output = String::from_utf8(output).unwrap();
     for dep in output.split_whitespace() {
-        println!("cargo:rerun-if-changed={dep}");
+        println!("cargo::rerun-if-changed={dep}");
     }
 }
