@@ -1,5 +1,7 @@
+#[cfg(not(docsrs))]
 use std::{env, fs::File, io::Write, path::Path};
 
+#[cfg(not(docsrs))]
 pub fn main() {
     let deps = system_deps::Config::new()
         .probe()
