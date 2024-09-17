@@ -302,7 +302,7 @@ macro_rules! define_param_spec {
             #[inline]
             fn static_type() -> Type {
                 unsafe {
-                    from_glib(gobject_ffi::g_param_spec_types_get_type($rust_type_offset))
+                    from_glib(gobject_sys::g_param_spec_types_get_type($rust_type_offset))
                 }
             }
         }

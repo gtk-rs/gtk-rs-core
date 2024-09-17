@@ -2,8 +2,6 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-mod build_manual;
-
 #[cfg(not(docsrs))]
 use std::process;
 
@@ -16,6 +14,4 @@ fn main() {
         println!("cargo:warning={s}");
         process::exit(1);
     }
-
-    build_manual::main();
 }
