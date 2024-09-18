@@ -1,6 +1,5 @@
 [build-dependencies]
 system-deps = "7"
-pkg-config = "0.3"
 
 [dependencies]
 libc = "0.2"
@@ -29,7 +28,7 @@ v2_82 = ["v2_80"]
 name = "gobject_sys"
 
 [package]
-build = "build.rs"
+build = "build_manual.rs"
 description = "FFI bindings to libgobject-2.0"
 keywords = ["gobject", "ffi", "gtk-rs", "gnome"]
 name = "gobject-sys"
@@ -99,3 +98,7 @@ version = "2.81"
 rustc-args = ["--cfg", "docsrs"]
 rustdoc-args = ["--cfg", "docsrs", "--generate-link-to-definition"]
 all-features = true
+
+[lints.rust.unexpected_cfgs]
+level = "warn"
+check-cfg = ["cfg(msvc_dll)"]
