@@ -99,7 +99,7 @@ pub trait VfsExt: IsA<Vfs> + sealed::Sealed + 'static {
             Box_::new(uri_func);
         unsafe extern "C" fn uri_func_func(
             vfs: *mut ffi::GVfs,
-            identifier: *const libc::c_char,
+            identifier: *const std::ffi::c_char,
             user_data: glib::ffi::gpointer,
         ) -> *mut ffi::GFile {
             let vfs = from_glib_borrow(vfs);
@@ -121,7 +121,7 @@ pub trait VfsExt: IsA<Vfs> + sealed::Sealed + 'static {
             Box_::new(parse_name_func);
         unsafe extern "C" fn parse_name_func_func(
             vfs: *mut ffi::GVfs,
-            identifier: *const libc::c_char,
+            identifier: *const std::ffi::c_char,
             user_data: glib::ffi::gpointer,
         ) -> *mut ffi::GFile {
             let vfs = from_glib_borrow(vfs);
