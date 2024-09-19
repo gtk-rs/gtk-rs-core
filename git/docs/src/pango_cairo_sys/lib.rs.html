@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `pangocairo/sys/src/lib.rs`."><title>lib.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-405f8b29f52305f8.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="pango_cairo_sys" data-themes="" data-resource-suffix="" data-rustdoc-version="1.83.0-nightly (adf8d168a 2024-09-08)" data-channel="nightly" data-search-js="search-0cfde64e8ad3a7fe.js" data-settings-js="settings-7e3bb6c46e92e77c.js" ><script src="../../static.files/storage-29b1d5a9048d38fe.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-14659ec02b58af51.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-40f72c9259523cb3.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `pangocairo/sys/src/lib.rs`."><title>lib.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-405f8b29f52305f8.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="pango_cairo_sys" data-themes="" data-resource-suffix="" data-rustdoc-version="1.83.0-nightly (f79a912d9 2024-09-18)" data-channel="nightly" data-search-js="search-0cfde64e8ad3a7fe.js" data-settings-js="settings-7e3bb6c46e92e77c.js" ><script src="../../static.files/storage-29b1d5a9048d38fe.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-14659ec02b58af51.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-40f72c9259523cb3.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -240,14 +240,15 @@
 <span class="kw">use </span>glib_sys <span class="kw">as </span>glib;
 <span class="kw">use </span>pango_sys <span class="kw">as </span>pango;
 
-<span class="attr">#[allow(unused_imports)]
-</span><span class="kw">use </span>libc::{
-    c_char, c_double, c_float, c_int, c_long, c_short, c_uchar, c_uint, c_ulong, c_ushort, <a href="https://doc.rust-lang.org/nightly/core/ffi/enum.c_void.html">c_void</a>,
-    intptr_t, off_t, size_t, ssize_t, time_t, uintptr_t, FILE,
-};
 <span class="attr">#[cfg(unix)]
 #[allow(unused_imports)]
 </span><span class="kw">use </span>libc::{dev_t, gid_t, pid_t, socklen_t, uid_t};
+<span class="attr">#[allow(unused_imports)]
+</span><span class="kw">use </span>libc::{intptr_t, off_t, size_t, ssize_t, time_t, uintptr_t, FILE};
+<span class="attr">#[allow(unused_imports)]
+</span><span class="kw">use </span>std::ffi::{
+    <a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>, <a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_double.html">c_double</a>, <a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_float.html">c_float</a>, <a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_int.html">c_int</a>, <a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_long.html">c_long</a>, <a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_short.html">c_short</a>, <a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_uchar.html">c_uchar</a>, <a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_uint.html">c_uint</a>, <a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_ulong.html">c_ulong</a>, <a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_ushort.html">c_ushort</a>, <a href="https://doc.rust-lang.org/nightly/core/ffi/enum.c_void.html">c_void</a>,
+};
 
 <span class="attr">#[allow(unused_imports)]
 </span><span class="kw">use </span>glib::{gboolean, gconstpointer, gpointer, GType};
@@ -265,9 +266,9 @@
     _marker: core::marker::PhantomData&lt;(<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>, <a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomPinned.html">core::marker::PhantomPinned</a>)&gt;,
 }
 
-<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html">::std::fmt::Debug</a> <span class="kw">for </span><a href="#38-41">PangoCairoFont</a> {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html">::std::fmt::Debug</a> <span class="kw">for </span><a href="#39-42">PangoCairoFont</a> {
     <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span><a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html">::std::fmt::Formatter</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/core/fmt/type.Result.html">::std::fmt::Result</a> {
-        <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.write.html">write!</a>(<a href="#44">f</a>, <span class="string">"PangoCairoFont @ {self:p}"</span>)
+        <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.write.html">write!</a>(<a href="#45">f</a>, <span class="string">"PangoCairoFont @ {self:p}"</span>)
     }
 }
 
@@ -278,21 +279,20 @@
     _marker: core::marker::PhantomData&lt;(<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>, <a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomPinned.html">core::marker::PhantomPinned</a>)&gt;,
 }
 
-<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html">::std::fmt::Debug</a> <span class="kw">for </span><a href="#51-54">PangoCairoFontMap</a> {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html">::std::fmt::Debug</a> <span class="kw">for </span><a href="#52-55">PangoCairoFontMap</a> {
     <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span><a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html">::std::fmt::Formatter</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/core/fmt/type.Result.html">::std::fmt::Result</a> {
-        <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.write.html">write!</a>(<a href="#57">f</a>, <span class="string">"PangoCairoFontMap @ {self:p}"</span>)
+        <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.write.html">write!</a>(<a href="#58">f</a>, <span class="string">"PangoCairoFontMap @ {self:p}"</span>)
     }
 }
 
-<span class="attr">#[link(name = <span class="string">"pangocairo-1.0"</span>)]
-</span><span class="kw">extern </span><span class="string">"C" </span>{
+<span class="kw">extern </span><span class="string">"C" </span>{
 
     <span class="comment">//=========================================================================
     // PangoCairoFont
     //=========================================================================
     </span><span class="kw">pub fn </span>pango_cairo_font_get_type() -&gt; GType;
     <span class="kw">pub fn </span>pango_cairo_font_get_scaled_font(
-        font: <span class="kw-2">*mut </span><a href="#38-41">PangoCairoFont</a>,
+        font: <span class="kw-2">*mut </span><a href="#39-42">PangoCairoFont</a>,
     ) -&gt; <span class="kw-2">*mut </span>cairo::cairo_scaled_font_t;
 
     <span class="comment">//=========================================================================
@@ -305,14 +305,14 @@
         fonttype: cairo::cairo_font_type_t,
     ) -&gt; <span class="kw-2">*mut </span>pango::PangoFontMap;
     <span class="kw">pub fn </span>pango_cairo_font_map_create_context(
-        fontmap: <span class="kw-2">*mut </span><a href="#51-54">PangoCairoFontMap</a>,
+        fontmap: <span class="kw-2">*mut </span><a href="#52-55">PangoCairoFontMap</a>,
     ) -&gt; <span class="kw-2">*mut </span>pango::PangoContext;
     <span class="kw">pub fn </span>pango_cairo_font_map_get_font_type(
-        fontmap: <span class="kw-2">*mut </span><a href="#51-54">PangoCairoFontMap</a>,
+        fontmap: <span class="kw-2">*mut </span><a href="#52-55">PangoCairoFontMap</a>,
     ) -&gt; cairo::cairo_font_type_t;
-    <span class="kw">pub fn </span>pango_cairo_font_map_get_resolution(fontmap: <span class="kw-2">*mut </span><a href="#51-54">PangoCairoFontMap</a>) -&gt; c_double;
-    <span class="kw">pub fn </span>pango_cairo_font_map_set_default(fontmap: <span class="kw-2">*mut </span><a href="#51-54">PangoCairoFontMap</a>);
-    <span class="kw">pub fn </span>pango_cairo_font_map_set_resolution(fontmap: <span class="kw-2">*mut </span><a href="#51-54">PangoCairoFontMap</a>, dpi: c_double);
+    <span class="kw">pub fn </span>pango_cairo_font_map_get_resolution(fontmap: <span class="kw-2">*mut </span><a href="#52-55">PangoCairoFontMap</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_double.html">c_double</a>;
+    <span class="kw">pub fn </span>pango_cairo_font_map_set_default(fontmap: <span class="kw-2">*mut </span><a href="#52-55">PangoCairoFontMap</a>);
+    <span class="kw">pub fn </span>pango_cairo_font_map_set_resolution(fontmap: <span class="kw-2">*mut </span><a href="#52-55">PangoCairoFontMap</a>, dpi: <a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_double.html">c_double</a>);
 
     <span class="comment">//=========================================================================
     // Other functions
@@ -320,19 +320,19 @@
     </span><span class="kw">pub fn </span>pango_cairo_context_get_font_options(
         context: <span class="kw-2">*mut </span>pango::PangoContext,
     ) -&gt; <span class="kw-2">*const </span>cairo::cairo_font_options_t;
-    <span class="kw">pub fn </span>pango_cairo_context_get_resolution(context: <span class="kw-2">*mut </span>pango::PangoContext) -&gt; c_double;
+    <span class="kw">pub fn </span>pango_cairo_context_get_resolution(context: <span class="kw-2">*mut </span>pango::PangoContext) -&gt; <a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_double.html">c_double</a>;
     <span class="kw">pub fn </span>pango_cairo_context_get_shape_renderer(
         context: <span class="kw-2">*mut </span>pango::PangoContext,
         data: <span class="kw-2">*mut </span>gpointer,
-    ) -&gt; <a href="#31-33">PangoCairoShapeRendererFunc</a>;
+    ) -&gt; <a href="#32-34">PangoCairoShapeRendererFunc</a>;
     <span class="kw">pub fn </span>pango_cairo_context_set_font_options(
         context: <span class="kw-2">*mut </span>pango::PangoContext,
         options: <span class="kw-2">*const </span>cairo::cairo_font_options_t,
     );
-    <span class="kw">pub fn </span>pango_cairo_context_set_resolution(context: <span class="kw-2">*mut </span>pango::PangoContext, dpi: c_double);
+    <span class="kw">pub fn </span>pango_cairo_context_set_resolution(context: <span class="kw-2">*mut </span>pango::PangoContext, dpi: <a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_double.html">c_double</a>);
     <span class="kw">pub fn </span>pango_cairo_context_set_shape_renderer(
         context: <span class="kw-2">*mut </span>pango::PangoContext,
-        func: <a href="#31-33">PangoCairoShapeRendererFunc</a>,
+        func: <a href="#32-34">PangoCairoShapeRendererFunc</a>,
         data: gpointer,
         dnotify: glib::GDestroyNotify,
     );
@@ -340,10 +340,10 @@
     <span class="kw">pub fn </span>pango_cairo_create_layout(cr: <span class="kw-2">*mut </span>cairo::cairo_t) -&gt; <span class="kw-2">*mut </span>pango::PangoLayout;
     <span class="kw">pub fn </span>pango_cairo_error_underline_path(
         cr: <span class="kw-2">*mut </span>cairo::cairo_t,
-        x: c_double,
-        y: c_double,
-        width: c_double,
-        height: c_double,
+        x: <a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_double.html">c_double</a>,
+        y: <a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_double.html">c_double</a>,
+        width: <a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_double.html">c_double</a>,
+        height: <a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_double.html">c_double</a>,
     );
     <span class="kw">pub fn </span>pango_cairo_glyph_string_path(
         cr: <span class="kw-2">*mut </span>cairo::cairo_t,
@@ -354,14 +354,14 @@
     <span class="kw">pub fn </span>pango_cairo_layout_path(cr: <span class="kw-2">*mut </span>cairo::cairo_t, layout: <span class="kw-2">*mut </span>pango::PangoLayout);
     <span class="kw">pub fn </span>pango_cairo_show_error_underline(
         cr: <span class="kw-2">*mut </span>cairo::cairo_t,
-        x: c_double,
-        y: c_double,
-        width: c_double,
-        height: c_double,
+        x: <a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_double.html">c_double</a>,
+        y: <a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_double.html">c_double</a>,
+        width: <a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_double.html">c_double</a>,
+        height: <a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_double.html">c_double</a>,
     );
     <span class="kw">pub fn </span>pango_cairo_show_glyph_item(
         cr: <span class="kw-2">*mut </span>cairo::cairo_t,
-        text: <span class="kw-2">*const </span>c_char,
+        text: <span class="kw-2">*const </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>,
         glyph_item: <span class="kw-2">*mut </span>pango::PangoGlyphItem,
     );
     <span class="kw">pub fn </span>pango_cairo_show_glyph_string(
