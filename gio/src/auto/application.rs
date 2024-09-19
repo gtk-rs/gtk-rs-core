@@ -480,7 +480,7 @@ pub trait ApplicationExt: IsA<Application> + sealed::Sealed + 'static {
             this: *mut ffi::GApplication,
             command_line: *mut ffi::GApplicationCommandLine,
             f: glib::ffi::gpointer,
-        ) -> libc::c_int {
+        ) -> std::ffi::c_int {
             let f: &F = &*(f as *const F);
             f(
                 Application::from_glib_borrow(this).unsafe_cast_ref(),
@@ -512,7 +512,7 @@ pub trait ApplicationExt: IsA<Application> + sealed::Sealed + 'static {
             this: *mut ffi::GApplication,
             options: *mut glib::ffi::GVariantDict,
             f: glib::ffi::gpointer,
-        ) -> libc::c_int {
+        ) -> std::ffi::c_int {
             let f: &F = &*(f as *const F);
             f(
                 Application::from_glib_borrow(this).unsafe_cast_ref(),
