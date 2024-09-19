@@ -301,8 +301,11 @@ macro_rules! define_param_spec {
         impl StaticType for $rust_type {
             #[inline]
             fn static_type() -> Type {
-                const NAME: &CStr = unsafe { std::ffi::CStr::from_bytes_with_nul_unchecked(concat!($type_name, "\0").as_bytes()) };
-                unsafe { from_glib(gobject_ffi::g_type_from_name(NAME.as_ptr())) }
+                // Instead of using the direct reference to the `g_param_spec_types` table, we
+                // use `g_type_from_name` to query for each of the param spec types. This is
+                // because rust currently has issues properly linking variables from external
+                // libraries without using a `#[link]` attribute.
+                unsafe { from_glib(gobject_ffi::g_type_from_name(concat!($type_name, "\0").as_ptr() as *const _)) }
             }
         }
 
