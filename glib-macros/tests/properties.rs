@@ -93,6 +93,8 @@ mod foo {
             string_vec: RefCell<Vec<String>>,
             #[property(get, set, builder(glib::VariantTy::DOUBLE))]
             variant: RefCell<Option<glib::Variant>>,
+            #[property(get, set, builder(&<Option<i32>>::static_variant_type()))]
+            variant2: RefCell<Option<glib::Variant>>,
             #[property(get = |_| 42.0, set)]
             infer_inline_type: RefCell<f64>,
             // The following property doesn't store any data. The value of the property is calculated
