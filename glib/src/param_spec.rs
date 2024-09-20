@@ -2307,8 +2307,7 @@ has_simple_spec!(bool, ParamSpecBoolean, ParamSpecBooleanBuilder);
 impl HasParamSpec for crate::Variant {
     type ParamSpec = ParamSpecVariant;
     type SetValue = Self;
-    type BuilderFn =
-        fn(&'static str, ty: &'static crate::VariantTy) -> ParamSpecVariantBuilder<'static>;
+    type BuilderFn = for<'a> fn(&'a str, ty: &'a crate::VariantTy) -> ParamSpecVariantBuilder<'a>;
 
     fn param_spec_builder() -> Self::BuilderFn {
         Self::ParamSpec::builder
