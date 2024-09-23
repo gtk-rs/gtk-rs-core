@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="`GObject` instance (or source) and another property on another `GObject` instance (or target)."><title>Binding in glib - Rust</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../static.files/rustdoc-405f8b29f52305f8.css"><meta name="rustdoc-vars" data-root-path="../" data-static-root-path="../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.83.0-nightly (506f22b46 2024-09-19)" data-channel="nightly" data-search-js="search-0cfde64e8ad3a7fe.js" data-settings-js="settings-7e3bb6c46e92e77c.js" ><script src="../static.files/storage-29b1d5a9048d38fe.js"></script><script defer src="sidebar-items.js"></script><script defer src="../static.files/main-59a36e46ca746814.js"></script><noscript><link rel="stylesheet" href="../static.files/noscript-40f72c9259523cb3.css"></noscript><link rel="alternate icon" type="image/png" href="../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc struct"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="`GObject` instance (or source) and another property on another `GObject` instance (or target)."><title>Binding in glib - Rust</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../static.files/rustdoc-9d5ec5f3536319c6.css"><meta name="rustdoc-vars" data-root-path="../" data-static-root-path="../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.83.0-nightly (6c6d21008 2024-09-22)" data-channel="nightly" data-search-js="search-0cfde64e8ad3a7fe.js" data-settings-js="settings-7e3bb6c46e92e77c.js" ><script src="../static.files/storage-29b1d5a9048d38fe.js"></script><script defer src="sidebar-items.js"></script><script defer src="../static.files/main-2a73ac97dd39bfde.js"></script><noscript><link rel="stylesheet" href="../static.files/noscript-40f72c9259523cb3.css"></noscript><link rel="alternate icon" type="image/png" href="../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc struct"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -78,8 +78,7 @@ target property; for instance, the following binding:</p>
 <p><strong>⚠️ The following code is in c ⚠️</strong></p>
 <div class="example-wrap"><pre class="language-c"><code>  g_object_bind_property (object1, &quot;property-a&quot;,
                           object2, &quot;property-b&quot;,
-                          G_BINDING_DEFAULT);
-</code></pre></div>
+                          G_BINDING_DEFAULT);</code></pre></div>
 <p>will cause the property named “property-b” of <code>object2</code> to be updated
 every time [method<a href="object/struct.Object.html" title="struct glib::object::Object"><code>Object</code></a>] or the specific accessor changes the value of
 the property “property-a” of <code>object1</code>.</p>
@@ -89,8 +88,7 @@ other is updated as well, for instance:</p>
 <p><strong>⚠️ The following code is in c ⚠️</strong></p>
 <div class="example-wrap"><pre class="language-c"><code>  g_object_bind_property (object1, &quot;property-a&quot;,
                           object2, &quot;property-b&quot;,
-                          G_BINDING_BIDIRECTIONAL);
-</code></pre></div>
+                          G_BINDING_BIDIRECTIONAL);</code></pre></div>
 <p>will keep the two properties in sync.</p>
 <p>It is also possible to set a custom transformation function (in both
 directions, in case of a bidirectional binding) to apply a custom
@@ -102,8 +100,7 @@ applying it; for instance, the following binding:</p>
                                G_BINDING_BIDIRECTIONAL,
                                celsius_to_fahrenheit,
                                fahrenheit_to_celsius,
-                               NULL, NULL);
-</code></pre></div>
+                               NULL, NULL);</code></pre></div>
 <p>will keep the “value” property of the two adjustments in sync; the
 <code>celsius_to_fahrenheit</code> function will be called whenever the “value”
 property of <code>adjustment1</code> changes and will transform the current value
@@ -115,8 +112,7 @@ of <code>adjustment1</code>.</p>
 <p>Note that <a href="struct.Binding.html" title="struct glib::Binding"><code>Binding</code></a> does not resolve cycles by itself; a cycle like</p>
 <div class="example-wrap"><pre class="language-text"><code>  object1:propertyA -&gt; object2:propertyB
   object2:propertyB -&gt; object3:propertyC
-  object3:propertyC -&gt; object1:propertyA
-</code></pre></div>
+  object3:propertyC -&gt; object1:propertyA</code></pre></div>
 <p>might lead to an infinite loop. The loop, in this particular case,
 can be avoided if the objects emit the <code>GObject::notify</code> signal only
 if the value has effectively been changed. A binding is implemented
