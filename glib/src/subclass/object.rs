@@ -19,7 +19,7 @@ use crate::{
 ///
 /// This allows overriding the virtual methods of `glib::Object`. Except for
 /// `finalize` as implementing `Drop` would allow the same behavior.
-pub trait ObjectImpl: ObjectSubclass + ObjectImplExt {
+pub trait ObjectImpl: ObjectSubclass {
     // rustdoc-stripper-ignore-next
     /// Properties installed for this type.
     fn properties() -> &'static [ParamSpec] {
@@ -253,12 +253,7 @@ unsafe impl<T: ObjectImpl> IsSubclassable<T> for Object {
     fn instance_init(_instance: &mut super::InitializingObject<T>) {}
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::ObjectImplExt> Sealed for T {}
-}
-
-pub trait ObjectImplExt: sealed::Sealed + ObjectSubclass {
+pub trait ObjectImplExt: ObjectSubclass + ObjectImpl {
     // rustdoc-stripper-ignore-next
     /// Chain up to the parent class' implementation of `glib::Object::constructed()`.
     #[inline]

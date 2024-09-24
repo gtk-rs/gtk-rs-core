@@ -6,7 +6,10 @@ use glib::{prelude::*, subclass::prelude::*, translate::*, Error, SeekType};
 
 use crate::{ffi, Cancellable, Seekable};
 
-pub trait SeekableImpl: ObjectImpl + Send {
+pub trait SeekableImpl: ObjectImpl + Send
+where
+    <Self as ObjectSubclass>::Type: IsA<Seekable>,
+{
     fn tell(&self) -> i64;
     fn can_seek(&self) -> bool;
     fn seek(
@@ -19,12 +22,10 @@ pub trait SeekableImpl: ObjectImpl + Send {
     fn truncate(&self, offset: i64, cancellable: Option<&Cancellable>) -> Result<(), Error>;
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::SeekableImplExt> Sealed for T {}
-}
-
-pub trait SeekableImplExt: sealed::Sealed + ObjectSubclass {
+pub trait SeekableImplExt: ObjectSubclass + SeekableImpl
+where
+    <Self as ObjectSubclass>::Type: IsA<Seekable>,
+{
     fn parent_tell(&self) -> i64 {
         unsafe {
             let type_data = Self::type_data();
@@ -125,9 +126,12 @@ pub trait SeekableImplExt: sealed::Sealed + ObjectSubclass {
     }
 }
 
-impl<T: SeekableImpl> SeekableImplExt for T {}
+impl<T: SeekableImpl> SeekableImplExt for T where <T as ObjectSubclass>::Type: IsA<Seekable> {}
 
-unsafe impl<T: SeekableImpl> IsImplementable<T> for Seekable {
+unsafe impl<T: SeekableImpl> IsImplementable<T> for Seekable
+where
+    <T as ObjectSubclass>::Type: IsA<Seekable>,
+{
     fn interface_init(iface: &mut glib::Interface<Self>) {
         let iface = iface.as_mut();
 
@@ -139,7 +143,10 @@ unsafe impl<T: SeekableImpl> IsImplementable<T> for Seekable {
     }
 }
 
-unsafe extern "C" fn seekable_tell<T: SeekableImpl>(seekable: *mut ffi::GSeekable) -> i64 {
+unsafe extern "C" fn seekable_tell<T: SeekableImpl>(seekable: *mut ffi::GSeekable) -> i64
+where
+    <T as ObjectSubclass>::Type: IsA<Seekable>,
+{
     let instance = &*(seekable as *mut T::Instance);
     let imp = instance.imp();
 
@@ -148,7 +155,10 @@ unsafe extern "C" fn seekable_tell<T: SeekableImpl>(seekable: *mut ffi::GSeekabl
 
 unsafe extern "C" fn seekable_can_seek<T: SeekableImpl>(
     seekable: *mut ffi::GSeekable,
-) -> glib::ffi::gboolean {
+) -> glib::ffi::gboolean
+where
+    <T as ObjectSubclass>::Type: IsA<Seekable>,
+{
     let instance = &*(seekable as *mut T::Instance);
     let imp = instance.imp();
 
@@ -161,7 +171,10 @@ unsafe extern "C" fn seekable_seek<T: SeekableImpl>(
     type_: glib::ffi::GSeekType,
     cancellable: *mut ffi::GCancellable,
     err: *mut *mut glib::ffi::GError,
-) -> glib::ffi::gboolean {
+) -> glib::ffi::gboolean
+where
+    <T as ObjectSubclass>::Type: IsA<Seekable>,
+{
     let instance = &*(seekable as *mut T::Instance);
     let imp = instance.imp();
 
@@ -184,7 +197,10 @@ unsafe extern "C" fn seekable_seek<T: SeekableImpl>(
 
 unsafe extern "C" fn seekable_can_truncate<T: SeekableImpl>(
     seekable: *mut ffi::GSeekable,
-) -> glib::ffi::gboolean {
+) -> glib::ffi::gboolean
+where
+    <T as ObjectSubclass>::Type: IsA<Seekable>,
+{
     let instance = &*(seekable as *mut T::Instance);
     let imp = instance.imp();
 
@@ -196,7 +212,10 @@ unsafe extern "C" fn seekable_truncate<T: SeekableImpl>(
     offset: i64,
     cancellable: *mut ffi::GCancellable,
     err: *mut *mut glib::ffi::GError,
-) -> glib::ffi::gboolean {
+) -> glib::ffi::gboolean
+where
+    <T as ObjectSubclass>::Type: IsA<Seekable>,
+{
     let instance = &*(seekable as *mut T::Instance);
     let imp = instance.imp();
 
