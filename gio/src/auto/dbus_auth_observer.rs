@@ -59,7 +59,7 @@ impl DBusAuthObserver {
             F: Fn(&DBusAuthObserver, &str) -> bool + 'static,
         >(
             this: *mut ffi::GDBusAuthObserver,
-            mechanism: *mut libc::c_char,
+            mechanism: *mut std::ffi::c_char,
             f: glib::ffi::gpointer,
         ) -> glib::ffi::gboolean {
             let f: &F = &*(f as *const F);

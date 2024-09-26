@@ -112,7 +112,7 @@ pub trait AppLaunchContextExt: IsA<AppLaunchContext> + sealed::Sealed + 'static 
             F: Fn(&P, &str) + 'static,
         >(
             this: *mut ffi::GAppLaunchContext,
-            startup_notify_id: *mut libc::c_char,
+            startup_notify_id: *mut std::ffi::c_char,
             f: glib::ffi::gpointer,
         ) {
             let f: &F = &*(f as *const F);

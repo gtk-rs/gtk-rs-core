@@ -78,9 +78,9 @@ pub trait ListModelExt: IsA<ListModel> + sealed::Sealed + 'static {
             F: Fn(&P, u32, u32, u32) + 'static,
         >(
             this: *mut ffi::GListModel,
-            position: libc::c_uint,
-            removed: libc::c_uint,
-            added: libc::c_uint,
+            position: std::ffi::c_uint,
+            removed: std::ffi::c_uint,
+            added: std::ffi::c_uint,
             f: glib::ffi::gpointer,
         ) {
             let f: &F = &*(f as *const F);
