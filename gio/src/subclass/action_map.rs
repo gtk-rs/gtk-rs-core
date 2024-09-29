@@ -8,6 +8,7 @@ use crate::{ffi, Action, ActionMap};
 
 pub trait ActionMapImpl: ObjectImpl
 where
+    <Self as ObjectSubclass>::Type: IsA<glib::Object>,
     <Self as ObjectSubclass>::Type: IsA<ActionMap>,
 {
     fn lookup_action(&self, action_name: &str) -> Option<Action>;
@@ -17,6 +18,7 @@ where
 
 pub trait ActionMapImplExt: ObjectSubclass + ActionMapImpl
 where
+    <Self as ObjectSubclass>::Type: IsA<glib::Object>,
     <Self as ObjectSubclass>::Type: IsA<ActionMap>,
 {
     fn parent_lookup_action(&self, name: &str) -> Option<Action> {
@@ -69,10 +71,16 @@ where
     }
 }
 
-impl<T: ActionMapImpl> ActionMapImplExt for T where <T as ObjectSubclass>::Type: IsA<ActionMap> {}
+impl<T: ActionMapImpl> ActionMapImplExt for T
+where
+    <T as ObjectSubclass>::Type: IsA<glib::Object>,
+    <T as ObjectSubclass>::Type: IsA<ActionMap>,
+{
+}
 
 unsafe impl<T: ActionMapImpl> IsImplementable<T> for ActionMap
 where
+    <T as ObjectSubclass>::Type: IsA<glib::Object>,
     <T as ObjectSubclass>::Type: IsA<ActionMap>,
 {
     fn interface_init(iface: &mut glib::Interface<Self>) {
@@ -89,6 +97,7 @@ unsafe extern "C" fn action_map_lookup_action<T: ActionMapImpl>(
     action_nameptr: *const libc::c_char,
 ) -> *mut ffi::GAction
 where
+    <T as ObjectSubclass>::Type: IsA<glib::Object>,
     <T as ObjectSubclass>::Type: IsA<ActionMap>,
 {
     let instance = &*(action_map as *mut T::Instance);
@@ -121,6 +130,7 @@ unsafe extern "C" fn action_map_add_action<T: ActionMapImpl>(
     action_map: *mut ffi::GActionMap,
     actionptr: *mut ffi::GAction,
 ) where
+    <T as ObjectSubclass>::Type: IsA<glib::Object>,
     <T as ObjectSubclass>::Type: IsA<ActionMap>,
 {
     let instance = &*(action_map as *mut T::Instance);
@@ -134,6 +144,7 @@ unsafe extern "C" fn action_map_remove_action<T: ActionMapImpl>(
     action_map: *mut ffi::GActionMap,
     action_nameptr: *const libc::c_char,
 ) where
+    <T as ObjectSubclass>::Type: IsA<glib::Object>,
     <T as ObjectSubclass>::Type: IsA<ActionMap>,
 {
     let instance = &*(action_map as *mut T::Instance);

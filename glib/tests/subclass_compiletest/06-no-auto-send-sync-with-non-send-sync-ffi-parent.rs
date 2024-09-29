@@ -7,10 +7,14 @@ glib::wrapper! {
     }
 }
 
-pub trait InitiallyUnownedImpl: glib::subclass::prelude::ObjectImpl {}
+pub trait InitiallyUnownedImpl: glib::subclass::prelude::ObjectImpl
+where
+    <Self as glib::subclass::prelude::ObjectSubclass>::Type: glib::prelude::IsA<glib::Object>,
+{
+}
 
-unsafe impl<T: InitiallyUnownedImpl> glib::subclass::prelude::IsSubclassable<T>
-    for InitiallyUnowned
+unsafe impl<T: InitiallyUnownedImpl> glib::subclass::prelude::IsSubclassable<T> for InitiallyUnowned where
+    <T as glib::subclass::prelude::ObjectSubclass>::Type: glib::prelude::IsA<glib::Object>
 {
 }
 

@@ -8,6 +8,7 @@ use crate::{ffi, ActionGroup};
 
 pub trait ActionGroupImpl: ObjectImpl
 where
+    <Self as ObjectSubclass>::Type: IsA<glib::Object>,
     <Self as ObjectSubclass>::Type: IsA<ActionGroup>,
 {
     fn action_added(&self, action_name: &str) {
@@ -78,6 +79,7 @@ where
 
 pub trait ActionGroupImplExt: ObjectSubclass + ActionGroupImpl
 where
+    <Self as ObjectSubclass>::Type: IsA<glib::Object>,
     <Self as ObjectSubclass>::Type: IsA<ActionGroup>,
 {
     fn parent_action_added(&self, action_name: &str) {
@@ -342,11 +344,16 @@ where
     }
 }
 
-impl<T: ActionGroupImpl> ActionGroupImplExt for T where <T as ObjectSubclass>::Type: IsA<ActionGroup>
-{}
+impl<T: ActionGroupImpl> ActionGroupImplExt for T
+where
+    <T as ObjectSubclass>::Type: IsA<glib::Object>,
+    <T as ObjectSubclass>::Type: IsA<ActionGroup>,
+{
+}
 
 unsafe impl<T: ActionGroupImpl> IsImplementable<T> for ActionGroup
 where
+    <T as ObjectSubclass>::Type: IsA<glib::Object>,
     <T as ObjectSubclass>::Type: IsA<ActionGroup>,
 {
     fn interface_init(iface: &mut glib::Interface<Self>) {
@@ -374,6 +381,7 @@ unsafe extern "C" fn action_group_has_action<T: ActionGroupImpl>(
     action_nameptr: *const libc::c_char,
 ) -> glib::ffi::gboolean
 where
+    <T as ObjectSubclass>::Type: IsA<glib::Object>,
     <T as ObjectSubclass>::Type: IsA<ActionGroup>,
 {
     let instance = &*(action_group as *mut T::Instance);
@@ -388,6 +396,7 @@ unsafe extern "C" fn action_group_get_action_enabled<T: ActionGroupImpl>(
     action_nameptr: *const libc::c_char,
 ) -> glib::ffi::gboolean
 where
+    <T as ObjectSubclass>::Type: IsA<glib::Object>,
     <T as ObjectSubclass>::Type: IsA<ActionGroup>,
 {
     let instance = &*(action_group as *mut T::Instance);
@@ -412,6 +421,7 @@ unsafe extern "C" fn action_group_get_action_parameter_type<T: ActionGroupImpl>(
     action_nameptr: *const libc::c_char,
 ) -> *const glib::ffi::GVariantType
 where
+    <T as ObjectSubclass>::Type: IsA<glib::Object>,
     <T as ObjectSubclass>::Type: IsA<ActionGroup>,
 {
     let instance = &*(action_group as *mut T::Instance);
@@ -444,6 +454,7 @@ unsafe extern "C" fn action_group_get_action_state_type<T: ActionGroupImpl>(
     action_nameptr: *const libc::c_char,
 ) -> *const glib::ffi::GVariantType
 where
+    <T as ObjectSubclass>::Type: IsA<glib::Object>,
     <T as ObjectSubclass>::Type: IsA<ActionGroup>,
 {
     let instance = &*(action_group as *mut T::Instance);
@@ -476,6 +487,7 @@ unsafe extern "C" fn action_group_get_action_state_hint<T: ActionGroupImpl>(
     action_nameptr: *const libc::c_char,
 ) -> *mut glib::ffi::GVariant
 where
+    <T as ObjectSubclass>::Type: IsA<glib::Object>,
     <T as ObjectSubclass>::Type: IsA<ActionGroup>,
 {
     let instance = &*(action_group as *mut T::Instance);
@@ -507,6 +519,7 @@ unsafe extern "C" fn action_group_get_action_state<T: ActionGroupImpl>(
     action_nameptr: *const libc::c_char,
 ) -> *mut glib::ffi::GVariant
 where
+    <T as ObjectSubclass>::Type: IsA<glib::Object>,
     <T as ObjectSubclass>::Type: IsA<ActionGroup>,
 {
     let instance = &*(action_group as *mut T::Instance);
@@ -536,6 +549,7 @@ unsafe extern "C" fn action_group_change_action_state<T: ActionGroupImpl>(
     action_nameptr: *const libc::c_char,
     stateptr: *mut glib::ffi::GVariant,
 ) where
+    <T as ObjectSubclass>::Type: IsA<glib::Object>,
     <T as ObjectSubclass>::Type: IsA<ActionGroup>,
 {
     let instance = &*(action_group as *mut T::Instance);
@@ -551,6 +565,7 @@ unsafe extern "C" fn action_group_activate_action<T: ActionGroupImpl>(
     action_nameptr: *const libc::c_char,
     parameterptr: *mut glib::ffi::GVariant,
 ) where
+    <T as ObjectSubclass>::Type: IsA<glib::Object>,
     <T as ObjectSubclass>::Type: IsA<ActionGroup>,
 {
     let instance = &*(action_group as *mut T::Instance);
@@ -565,6 +580,7 @@ unsafe extern "C" fn action_group_action_added<T: ActionGroupImpl>(
     action_group: *mut ffi::GActionGroup,
     action_nameptr: *const libc::c_char,
 ) where
+    <T as ObjectSubclass>::Type: IsA<glib::Object>,
     <T as ObjectSubclass>::Type: IsA<ActionGroup>,
 {
     let instance = &*(action_group as *mut T::Instance);
@@ -578,6 +594,7 @@ unsafe extern "C" fn action_group_action_removed<T: ActionGroupImpl>(
     action_group: *mut ffi::GActionGroup,
     action_nameptr: *const libc::c_char,
 ) where
+    <T as ObjectSubclass>::Type: IsA<glib::Object>,
     <T as ObjectSubclass>::Type: IsA<ActionGroup>,
 {
     let instance = &*(action_group as *mut T::Instance);
@@ -592,6 +609,7 @@ unsafe extern "C" fn action_group_action_enabled_changed<T: ActionGroupImpl>(
     action_nameptr: *const libc::c_char,
     enabled: glib::ffi::gboolean,
 ) where
+    <T as ObjectSubclass>::Type: IsA<glib::Object>,
     <T as ObjectSubclass>::Type: IsA<ActionGroup>,
 {
     let instance = &*(action_group as *mut T::Instance);
@@ -606,6 +624,7 @@ unsafe extern "C" fn action_group_action_state_changed<T: ActionGroupImpl>(
     action_nameptr: *const libc::c_char,
     stateptr: *mut glib::ffi::GVariant,
 ) where
+    <T as ObjectSubclass>::Type: IsA<glib::Object>,
     <T as ObjectSubclass>::Type: IsA<ActionGroup>,
 {
     let instance = &*(action_group as *mut T::Instance);
@@ -620,6 +639,7 @@ unsafe extern "C" fn action_group_list_actions<T: ActionGroupImpl>(
     action_group: *mut ffi::GActionGroup,
 ) -> *mut *mut libc::c_char
 where
+    <T as ObjectSubclass>::Type: IsA<glib::Object>,
     <T as ObjectSubclass>::Type: IsA<ActionGroup>,
 {
     let instance = &*(action_group as *mut T::Instance);
@@ -649,6 +669,7 @@ unsafe extern "C" fn action_group_query_action<T: ActionGroupImpl>(
     state: *mut *mut glib::ffi::GVariant,
 ) -> glib::ffi::gboolean
 where
+    <T as ObjectSubclass>::Type: IsA<glib::Object>,
     <T as ObjectSubclass>::Type: IsA<ActionGroup>,
 {
     let instance = &*(action_group as *mut T::Instance);

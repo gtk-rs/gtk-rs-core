@@ -8,6 +8,7 @@ use crate::{ffi, ListModel};
 
 pub trait ListModelImpl: ObjectImpl
 where
+    <Self as ObjectSubclass>::Type: IsA<glib::Object>,
     <Self as ObjectSubclass>::Type: IsA<ListModel>,
 {
     #[doc(alias = "get_item_type")]
@@ -20,6 +21,7 @@ where
 
 pub trait ListModelImplExt: ObjectSubclass + ListModelImpl
 where
+    <Self as ObjectSubclass>::Type: IsA<glib::Object>,
     <Self as ObjectSubclass>::Type: IsA<ListModel>,
 {
     fn parent_item_type(&self) -> glib::Type {
@@ -67,10 +69,16 @@ where
     }
 }
 
-impl<T: ListModelImpl> ListModelImplExt for T where <T as ObjectSubclass>::Type: IsA<ListModel> {}
+impl<T: ListModelImpl> ListModelImplExt for T
+where
+    <T as ObjectSubclass>::Type: IsA<glib::Object>,
+    <T as ObjectSubclass>::Type: IsA<ListModel>,
+{
+}
 
 unsafe impl<T: ListModelImpl> IsImplementable<T> for ListModel
 where
+    <T as ObjectSubclass>::Type: IsA<glib::Object>,
     <T as ObjectSubclass>::Type: IsA<ListModel>,
 {
     fn interface_init(iface: &mut glib::Interface<Self>) {
@@ -86,6 +94,7 @@ unsafe extern "C" fn list_model_get_item_type<T: ListModelImpl>(
     list_model: *mut ffi::GListModel,
 ) -> glib::ffi::GType
 where
+    <T as ObjectSubclass>::Type: IsA<glib::Object>,
     <T as ObjectSubclass>::Type: IsA<ListModel>,
 {
     let instance = &*(list_model as *mut T::Instance);
@@ -118,6 +127,7 @@ unsafe extern "C" fn list_model_get_n_items<T: ListModelImpl>(
     list_model: *mut ffi::GListModel,
 ) -> u32
 where
+    <T as ObjectSubclass>::Type: IsA<glib::Object>,
     <T as ObjectSubclass>::Type: IsA<ListModel>,
 {
     let instance = &*(list_model as *mut T::Instance);
@@ -131,6 +141,7 @@ unsafe extern "C" fn list_model_get_item<T: ListModelImpl>(
     position: u32,
 ) -> *mut glib::gobject_ffi::GObject
 where
+    <T as ObjectSubclass>::Type: IsA<glib::Object>,
     <T as ObjectSubclass>::Type: IsA<ListModel>,
 {
     let instance = &*(list_model as *mut T::Instance);

@@ -8,6 +8,7 @@ use crate::{ffi, Cancellable, IOStream, InputStream, OutputStream};
 
 pub trait IOStreamImpl: ObjectImpl + Send
 where
+    <Self as ObjectSubclass>::Type: IsA<glib::Object>,
     <Self as ObjectSubclass>::Type: IsA<IOStream>,
 {
     fn input_stream(&self) -> InputStream {
@@ -25,6 +26,7 @@ where
 
 pub trait IOStreamImplExt: ObjectSubclass + IOStreamImpl
 where
+    <Self as ObjectSubclass>::Type: IsA<glib::Object>,
     <Self as ObjectSubclass>::Type: IsA<IOStream>,
 {
     fn parent_input_stream(&self) -> InputStream {
@@ -71,10 +73,16 @@ where
     }
 }
 
-impl<T: IOStreamImpl> IOStreamImplExt for T where <T as ObjectSubclass>::Type: IsA<IOStream> {}
+impl<T: IOStreamImpl> IOStreamImplExt for T
+where
+    <T as ObjectSubclass>::Type: IsA<glib::Object>,
+    <T as ObjectSubclass>::Type: IsA<IOStream>,
+{
+}
 
 unsafe impl<T: IOStreamImpl> IsSubclassable<T> for IOStream
 where
+    <T as ObjectSubclass>::Type: IsA<glib::Object>,
     <T as ObjectSubclass>::Type: IsA<IOStream>,
 {
     fn class_init(class: &mut ::glib::Class<Self>) {
@@ -91,6 +99,7 @@ unsafe extern "C" fn stream_get_input_stream<T: IOStreamImpl>(
     ptr: *mut ffi::GIOStream,
 ) -> *mut ffi::GInputStream
 where
+    <T as ObjectSubclass>::Type: IsA<glib::Object>,
     <T as ObjectSubclass>::Type: IsA<IOStream>,
 {
     let instance = &*(ptr as *mut T::Instance);
@@ -121,6 +130,7 @@ unsafe extern "C" fn stream_get_output_stream<T: IOStreamImpl>(
     ptr: *mut ffi::GIOStream,
 ) -> *mut ffi::GOutputStream
 where
+    <T as ObjectSubclass>::Type: IsA<glib::Object>,
     <T as ObjectSubclass>::Type: IsA<IOStream>,
 {
     let instance = &*(ptr as *mut T::Instance);
@@ -153,6 +163,7 @@ unsafe extern "C" fn stream_close<T: IOStreamImpl>(
     err: *mut *mut glib::ffi::GError,
 ) -> glib::ffi::gboolean
 where
+    <T as ObjectSubclass>::Type: IsA<glib::Object>,
     <T as ObjectSubclass>::Type: IsA<IOStream>,
 {
     let instance = &*(ptr as *mut T::Instance);

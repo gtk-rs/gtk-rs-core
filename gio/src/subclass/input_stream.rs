@@ -8,6 +8,7 @@ use crate::{ffi, Cancellable, InputStream};
 
 pub trait InputStreamImpl: ObjectImpl + Send
 where
+    <Self as ObjectSubclass>::Type: IsA<glib::Object>,
     <Self as ObjectSubclass>::Type: IsA<InputStream>,
 {
     fn read(&self, buffer: &mut [u8], cancellable: Option<&Cancellable>) -> Result<usize, Error> {
@@ -25,6 +26,7 @@ where
 
 pub trait InputStreamImplExt: ObjectSubclass + InputStreamImpl
 where
+    <Self as ObjectSubclass>::Type: IsA<glib::Object>,
     <Self as ObjectSubclass>::Type: IsA<InputStream>,
 {
     fn parent_read(
@@ -104,11 +106,16 @@ where
     }
 }
 
-impl<T: InputStreamImpl> InputStreamImplExt for T where <T as ObjectSubclass>::Type: IsA<InputStream>
-{}
+impl<T: InputStreamImpl> InputStreamImplExt for T
+where
+    <T as ObjectSubclass>::Type: IsA<glib::Object>,
+    <T as ObjectSubclass>::Type: IsA<InputStream>,
+{
+}
 
 unsafe impl<T: InputStreamImpl> IsSubclassable<T> for InputStream
 where
+    <T as ObjectSubclass>::Type: IsA<glib::Object>,
     <T as ObjectSubclass>::Type: IsA<InputStream>,
 {
     fn class_init(class: &mut ::glib::Class<Self>) {
@@ -129,6 +136,7 @@ unsafe extern "C" fn stream_read<T: InputStreamImpl>(
     err: *mut *mut glib::ffi::GError,
 ) -> isize
 where
+    <T as ObjectSubclass>::Type: IsA<glib::Object>,
     <T as ObjectSubclass>::Type: IsA<InputStream>,
 {
     debug_assert!(count <= isize::MAX as usize);
@@ -166,6 +174,7 @@ unsafe extern "C" fn stream_close<T: InputStreamImpl>(
     err: *mut *mut glib::ffi::GError,
 ) -> glib::ffi::gboolean
 where
+    <T as ObjectSubclass>::Type: IsA<glib::Object>,
     <T as ObjectSubclass>::Type: IsA<InputStream>,
 {
     let instance = &*(ptr as *mut T::Instance);
@@ -193,6 +202,7 @@ unsafe extern "C" fn stream_skip<T: InputStreamImpl>(
     err: *mut *mut glib::ffi::GError,
 ) -> isize
 where
+    <T as ObjectSubclass>::Type: IsA<glib::Object>,
     <T as ObjectSubclass>::Type: IsA<InputStream>,
 {
     debug_assert!(count <= isize::MAX as usize);

@@ -8,6 +8,7 @@ use crate::{ffi, Cancellable, Initable};
 
 pub trait InitableImpl: ObjectImpl
 where
+    <Self as ObjectSubclass>::Type: IsA<glib::Object>,
     <Self as ObjectSubclass>::Type: IsA<Initable>,
 {
     fn init(&self, cancellable: Option<&Cancellable>) -> Result<(), Error> {
@@ -17,6 +18,7 @@ where
 
 pub trait InitableImplExt: ObjectSubclass + InitableImpl
 where
+    <Self as ObjectSubclass>::Type: IsA<glib::Object>,
     <Self as ObjectSubclass>::Type: IsA<Initable>,
 {
     fn parent_init(&self, cancellable: Option<&Cancellable>) -> Result<(), Error> {
@@ -45,10 +47,16 @@ where
     }
 }
 
-impl<T: InitableImpl> InitableImplExt for T where <Self as ObjectSubclass>::Type: IsA<Initable> {}
+impl<T: InitableImpl> InitableImplExt for T
+where
+    <Self as ObjectSubclass>::Type: IsA<glib::Object>,
+    <Self as ObjectSubclass>::Type: IsA<Initable>,
+{
+}
 
 unsafe impl<T: InitableImpl> IsImplementable<T> for Initable
 where
+    <T as ObjectSubclass>::Type: IsA<glib::Object>,
     <T as ObjectSubclass>::Type: IsA<Initable>,
 {
     fn interface_init(iface: &mut glib::Interface<Self>) {
@@ -63,6 +71,7 @@ unsafe extern "C" fn initable_init<T: InitableImpl>(
     error: *mut *mut glib::ffi::GError,
 ) -> glib::ffi::gboolean
 where
+    <T as ObjectSubclass>::Type: IsA<glib::Object>,
     <T as ObjectSubclass>::Type: IsA<Initable>,
 {
     let instance = &*(initable as *mut T::Instance);

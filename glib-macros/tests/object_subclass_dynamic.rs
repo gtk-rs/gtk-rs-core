@@ -28,7 +28,12 @@ mod static_ {
             type Interface = MyStaticInterfaceClass;
         }
 
-        pub trait MyStaticInterfaceImpl: ObjectImpl + ObjectSubclass {}
+        pub trait MyStaticInterfaceImpl: ObjectImpl + ObjectSubclass
+        where
+            <Self as ObjectSubclass>::Type: IsA<glib::Object>,
+            <Self as ObjectSubclass>::Type: IsA<super::MyStaticInterface>,
+        {
+        }
 
         // impl for an object subclass to register as a static type and that implements `MyStaticInterface`.
         #[derive(Default)]
@@ -45,7 +50,12 @@ mod static_ {
 
         impl MyStaticInterfaceImpl for MyStaticType {}
 
-        pub trait MyStaticTypeImpl: ObjectImpl + ObjectSubclass {}
+        pub trait MyStaticTypeImpl: ObjectImpl + ObjectSubclass
+        where
+            <Self as ObjectSubclass>::Type: IsA<glib::Object>,
+            <Self as ObjectSubclass>::Type: IsA<super::MyStaticType>,
+        {
+        }
     }
 
     // an object interface to register as a static type.
@@ -53,14 +63,24 @@ mod static_ {
         pub struct MyStaticInterface(ObjectInterface<imp::MyStaticInterface>);
     }
 
-    unsafe impl<T: imp::MyStaticInterfaceImpl> IsImplementable<T> for MyStaticInterface {}
+    unsafe impl<T: imp::MyStaticInterfaceImpl> IsImplementable<T> for MyStaticInterface
+    where
+        <T as ObjectSubclass>::Type: IsA<glib::Object>,
+        <T as ObjectSubclass>::Type: IsA<MyStaticInterface>,
+    {
+    }
 
     // an object subclass to register as a static type and that implements `MyStaticInterface`.
     glib::wrapper! {
         pub struct MyStaticType(ObjectSubclass<imp::MyStaticType>) @implements MyStaticInterface;
     }
 
-    unsafe impl<T: imp::MyStaticTypeImpl> IsSubclassable<T> for MyStaticType {}
+    unsafe impl<T: imp::MyStaticTypeImpl> IsSubclassable<T> for MyStaticType
+    where
+        <T as ObjectSubclass>::Type: IsA<glib::Object>,
+        <T as ObjectSubclass>::Type: IsA<MyStaticType>,
+    {
+    }
 }
 
 use static_::{
@@ -95,7 +115,11 @@ mod module {
             type Interface = MyModuleInterfaceClass;
         }
 
-        pub trait MyModuleInterfaceImpl: ObjectImpl + ObjectSubclass {}
+        pub trait MyModuleInterfaceImpl: ObjectImpl + ObjectSubclass
+        where
+            <Self as ObjectSubclass>::Type: IsA<glib::Object>,
+        {
+        }
 
         // impl for an object subclass to register as a dynamic type and that extends `MyStaticType` and that implements `MyStaticInterface` and `MyModuleInterface`.
         #[derive(Default)]
@@ -139,7 +163,12 @@ mod module {
             type Interface = MyModuleInterfaceLazyClass;
         }
 
-        pub trait MyModuleInterfaceLazyImpl: ObjectImpl + ObjectSubclass {}
+        pub trait MyModuleInterfaceLazyImpl: ObjectImpl + ObjectSubclass
+        where
+            <Self as ObjectSubclass>::Type: IsA<glib::Object>,
+            <Self as ObjectSubclass>::Type: IsA<super::MyModuleInterfaceLazy>,
+        {
+        }
 
         // impl for an object subclass to lazy register as a dynamic type and that extends `MyStaticType` and that implements `MyStaticInterface` and `MyModuleInterfaceLazy`.
         #[derive(Default)]
@@ -206,7 +235,12 @@ mod module {
         pub struct MyModuleInterface(ObjectInterface<imp::MyModuleInterface>) @requires MyStaticInterface;
     }
 
-    unsafe impl<T: imp::MyModuleInterfaceImpl> IsImplementable<T> for MyModuleInterface {}
+    unsafe impl<T: imp::MyModuleInterfaceImpl> IsImplementable<T> for MyModuleInterface
+    where
+        <T as ObjectSubclass>::Type: IsA<glib::Object>,
+        <T as ObjectSubclass>::Type: IsA<MyModuleInterface>,
+    {
+    }
 
     // an object subclass to register as a dynamic type and that extends `MyStaticType` and that implements `MyStaticInterface` and `MyModuleInterface`.
     glib::wrapper! {
@@ -218,7 +252,12 @@ mod module {
         pub struct MyModuleInterfaceLazy(ObjectInterface<imp::MyModuleInterfaceLazy>) @requires MyStaticInterface;
     }
 
-    unsafe impl<T: imp::MyModuleInterfaceLazyImpl> IsImplementable<T> for MyModuleInterfaceLazy {}
+    unsafe impl<T: imp::MyModuleInterfaceLazyImpl> IsImplementable<T> for MyModuleInterfaceLazy
+    where
+        <T as ObjectSubclass>::Type: IsA<glib::Object>,
+        <T as ObjectSubclass>::Type: IsA<MyModuleInterfaceLazy>,
+    {
+    }
 
     // an object subclass to lazy register as a dynamic type and that extends `MyStaticType` that implements `MyStaticInterface` and `MyModuleInterfaceLazy`.
     glib::wrapper! {
@@ -335,7 +374,12 @@ pub mod plugin {
             type Interface = MyPluginInterfaceClass;
         }
 
-        pub trait MyPluginInterfaceImpl: ObjectImpl + ObjectSubclass {}
+        pub trait MyPluginInterfaceImpl: ObjectImpl + ObjectSubclass
+        where
+            <Self as ObjectSubclass>::Type: IsA<glib::Object>,
+            <Self as ObjectSubclass>::Type: IsA<super::MyPluginInterface>,
+        {
+        }
 
         // impl for an object subclass to register as a dynamic type and that extends `MyStaticType` and that implements `MyStaticInterface` and `MyPluginInterface`.
         #[derive(Default)]
@@ -379,7 +423,12 @@ pub mod plugin {
             type Interface = MyPluginInterfaceLazyClass;
         }
 
-        pub trait MyPluginInterfaceLazyImpl: ObjectImpl + ObjectSubclass {}
+        pub trait MyPluginInterfaceLazyImpl: ObjectImpl + ObjectSubclass
+        where
+            <Self as ObjectSubclass>::Type: IsA<glib::Object>,
+            <Self as ObjectSubclass>::Type: IsA<super::MyPluginInterfaceLazy>,
+        {
+        }
 
         // impl for an object subclass to lazy register as a dynamic type and that extends `MyStaticType` and that implements `MyStaticInterface` and `MyPluginInterfaceLazy`.
         #[derive(Default)]
@@ -400,7 +449,10 @@ pub mod plugin {
 
         impl MyStaticInterfaceImpl for MyPluginTypeLazy {}
 
-        impl MyPluginInterfaceLazyImpl for MyPluginTypeLazy {}
+        impl MyPluginInterfaceLazyImpl for MyPluginTypeLazy where
+            <Self as ObjectSubclass>::Type: IsA<super::MyPluginInterfaceLazy>
+        {
+        }
 
         // impl for a type plugin (must implement `glib::TypePlugin`).
         #[derive(Default)]
@@ -549,11 +601,16 @@ pub mod plugin {
         pub struct MyPluginInterface(ObjectInterface<imp::MyPluginInterface>) @requires MyStaticInterface;
     }
 
-    unsafe impl<T: imp::MyPluginInterfaceImpl> IsImplementable<T> for MyPluginInterface {}
+    unsafe impl<T: imp::MyPluginInterfaceImpl> IsImplementable<T> for MyPluginInterface
+    where
+        <T as ObjectSubclass>::Type: IsA<glib::Object>,
+        <T as ObjectSubclass>::Type: IsA<MyPluginInterface>,
+    {
+    }
 
     // an object subclass to register as a dynamic type and that extends `MyStaticType` and that implements `MyStaticInterface` and `MyPluginInterface`.
     glib::wrapper! {
-        pub struct MyPluginType(ObjectSubclass<imp::MyPluginType>) @implements MyPluginInterface;
+        pub struct MyPluginType(ObjectSubclass<imp::MyPluginType>) @extends MyStaticType, @implements MyPluginInterface, MyStaticInterface;
     }
 
     // an object interface to lazy register as a dynamic type and that extends `MyStaticInterface`.
@@ -561,11 +618,16 @@ pub mod plugin {
         pub struct MyPluginInterfaceLazy(ObjectInterface<imp::MyPluginInterfaceLazy>) @requires MyStaticInterface;
     }
 
-    unsafe impl<T: imp::MyPluginInterfaceLazyImpl> IsImplementable<T> for MyPluginInterfaceLazy {}
+    unsafe impl<T: imp::MyPluginInterfaceLazyImpl> IsImplementable<T> for MyPluginInterfaceLazy
+    where
+        <T as ObjectSubclass>::Type: IsA<glib::Object>,
+        <T as ObjectSubclass>::Type: IsA<MyPluginInterfaceLazy>,
+    {
+    }
 
     // an object subclass to lazy register as a dynamic type and that extends `MyStaticType` that implements `MyStaticInterface` and `MyPluginInterfaceLazy`.
     glib::wrapper! {
-        pub struct MyPluginTypeLazy(ObjectSubclass<imp::MyPluginTypeLazy>) @implements MyPluginInterfaceLazy;
+        pub struct MyPluginTypeLazy(ObjectSubclass<imp::MyPluginTypeLazy>) @extends MyStaticType, @implements MyPluginInterfaceLazy, MyStaticInterface;
     }
 
     // a plugin (must implement `glib::TypePlugin`).

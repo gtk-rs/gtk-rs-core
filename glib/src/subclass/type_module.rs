@@ -1,9 +1,10 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::{ffi, gobject_ffi, prelude::*, subclass::prelude::*, translate::*, TypeModule};
+use crate::{ffi, gobject_ffi, prelude::*, subclass::prelude::*, translate::*, Object, TypeModule};
 
 pub trait TypeModuleImpl: ObjectImpl
 where
+    <Self as ObjectSubclass>::Type: IsA<Object>,
     <Self as ObjectSubclass>::Type: IsA<TypeModule>,
 {
     // rustdoc-stripper-ignore-next
@@ -26,6 +27,7 @@ where
 
 pub trait TypeModuleImplExt: ObjectSubclass + TypeModuleImpl
 where
+    <Self as ObjectSubclass>::Type: IsA<Object>,
     <Self as ObjectSubclass>::Type: IsA<TypeModule>,
 {
     fn parent_load(&self) -> bool;
@@ -34,6 +36,7 @@ where
 
 impl<T: TypeModuleImpl> TypeModuleImplExt for T
 where
+    <Self as ObjectSubclass>::Type: IsA<Object>,
     <Self as ObjectSubclass>::Type: IsA<TypeModule>,
 {
     fn parent_load(&self) -> bool {
@@ -69,6 +72,7 @@ where
 
 unsafe impl<T: TypeModuleImpl> IsSubclassable<T> for TypeModule
 where
+    <T as ObjectSubclass>::Type: IsA<Object>,
     <T as ObjectSubclass>::Type: IsA<TypeModule>,
 {
     fn class_init(class: &mut crate::Class<Self>) {
@@ -84,6 +88,7 @@ unsafe extern "C" fn load<T: TypeModuleImpl>(
     type_module: *mut gobject_ffi::GTypeModule,
 ) -> ffi::gboolean
 where
+    <T as ObjectSubclass>::Type: IsA<Object>,
     <T as ObjectSubclass>::Type: IsA<TypeModule>,
 {
     let instance = &*(type_module as *mut T::Instance);
@@ -107,6 +112,7 @@ where
 
 unsafe extern "C" fn unload<T: TypeModuleImpl>(type_module: *mut gobject_ffi::GTypeModule)
 where
+    <T as ObjectSubclass>::Type: IsA<Object>,
     <T as ObjectSubclass>::Type: IsA<TypeModule>,
 {
     let instance = &*(type_module as *mut T::Instance);

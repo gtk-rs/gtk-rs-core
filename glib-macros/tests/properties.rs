@@ -42,7 +42,10 @@ mod base {
         pub struct Base(ObjectSubclass<imp::Base>);
     }
 
-    unsafe impl<T: ObjectImpl> IsSubclassable<T> for Base {}
+    unsafe impl<T: ObjectImpl> IsSubclassable<T> for Base where
+        <T as ObjectSubclass>::Type: IsA<glib::Object>
+    {
+    }
 }
 
 #[cfg(test)]

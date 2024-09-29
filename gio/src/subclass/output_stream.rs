@@ -8,6 +8,7 @@ use crate::{ffi, Cancellable, InputStream, OutputStream, OutputStreamSpliceFlags
 
 pub trait OutputStreamImpl: ObjectImpl + Send
 where
+    <Self as ObjectSubclass>::Type: IsA<glib::Object>,
     <Self as ObjectSubclass>::Type: IsA<OutputStream>,
 {
     fn write(&self, buffer: &[u8], cancellable: Option<&Cancellable>) -> Result<usize, Error> {
@@ -34,6 +35,7 @@ where
 
 pub trait OutputStreamImplExt: ObjectSubclass + OutputStreamImpl
 where
+    <Self as ObjectSubclass>::Type: IsA<glib::Object>,
     <Self as ObjectSubclass>::Type: IsA<OutputStream>,
 {
     fn parent_write(
@@ -151,13 +153,16 @@ where
     }
 }
 
-impl<T: OutputStreamImpl> OutputStreamImplExt for T where
-    <T as ObjectSubclass>::Type: IsA<OutputStream>
+impl<T: OutputStreamImpl> OutputStreamImplExt for T
+where
+    <T as ObjectSubclass>::Type: IsA<glib::Object>,
+    <T as ObjectSubclass>::Type: IsA<OutputStream>,
 {
 }
 
 unsafe impl<T: OutputStreamImpl> IsSubclassable<T> for OutputStream
 where
+    <T as ObjectSubclass>::Type: IsA<glib::Object>,
     <T as ObjectSubclass>::Type: IsA<OutputStream>,
 {
     fn class_init(class: &mut ::glib::Class<Self>) {
@@ -179,6 +184,7 @@ unsafe extern "C" fn stream_write<T: OutputStreamImpl>(
     err: *mut *mut glib::ffi::GError,
 ) -> isize
 where
+    <T as ObjectSubclass>::Type: IsA<glib::Object>,
     <T as ObjectSubclass>::Type: IsA<OutputStream>,
 {
     debug_assert!(count <= isize::MAX as usize);
@@ -216,6 +222,7 @@ unsafe extern "C" fn stream_close<T: OutputStreamImpl>(
     err: *mut *mut glib::ffi::GError,
 ) -> glib::ffi::gboolean
 where
+    <T as ObjectSubclass>::Type: IsA<glib::Object>,
     <T as ObjectSubclass>::Type: IsA<OutputStream>,
 {
     let instance = &*(ptr as *mut T::Instance);
@@ -242,6 +249,7 @@ unsafe extern "C" fn stream_flush<T: OutputStreamImpl>(
     err: *mut *mut glib::ffi::GError,
 ) -> glib::ffi::gboolean
 where
+    <T as ObjectSubclass>::Type: IsA<glib::Object>,
     <T as ObjectSubclass>::Type: IsA<OutputStream>,
 {
     let instance = &*(ptr as *mut T::Instance);
@@ -270,6 +278,7 @@ unsafe extern "C" fn stream_splice<T: OutputStreamImpl>(
     err: *mut *mut glib::ffi::GError,
 ) -> isize
 where
+    <T as ObjectSubclass>::Type: IsA<glib::Object>,
     <T as ObjectSubclass>::Type: IsA<OutputStream>,
 {
     let instance = &*(ptr as *mut T::Instance);

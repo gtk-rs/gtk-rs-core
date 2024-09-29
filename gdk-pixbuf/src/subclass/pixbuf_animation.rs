@@ -15,6 +15,7 @@ use crate::{ffi, Pixbuf, PixbufAnimation, PixbufAnimationIter};
 
 pub trait PixbufAnimationImpl: ObjectImpl
 where
+    <Self as ObjectSubclass>::Type: IsA<glib::Object>,
     <Self as ObjectSubclass>::Type: IsA<PixbufAnimation>,
 {
     fn is_static_image(&self) -> bool {
@@ -36,6 +37,7 @@ where
 
 pub trait PixbufAnimationImplExt: ObjectSubclass + PixbufAnimationImpl
 where
+    <Self as ObjectSubclass>::Type: IsA<glib::Object>,
     <Self as ObjectSubclass>::Type: IsA<PixbufAnimation>,
 {
     fn parent_is_static_image(&self) -> bool {
@@ -117,13 +119,16 @@ where
     }
 }
 
-impl<T: PixbufAnimationImpl> PixbufAnimationImplExt for T where
-    <Self as ObjectSubclass>::Type: IsA<PixbufAnimation>
+impl<T: PixbufAnimationImpl> PixbufAnimationImplExt for T
+where
+    <T as ObjectSubclass>::Type: IsA<glib::Object>,
+    <T as ObjectSubclass>::Type: IsA<PixbufAnimation>,
 {
 }
 
 unsafe impl<T: PixbufAnimationImpl> IsSubclassable<T> for PixbufAnimation
 where
+    <T as ObjectSubclass>::Type: IsA<glib::Object>,
     <T as ObjectSubclass>::Type: IsA<PixbufAnimation>,
 {
     fn class_init(class: &mut ::glib::Class<Self>) {
@@ -141,6 +146,7 @@ unsafe extern "C" fn animation_is_static_image<T: PixbufAnimationImpl>(
     ptr: *mut ffi::GdkPixbufAnimation,
 ) -> glib::ffi::gboolean
 where
+    <T as ObjectSubclass>::Type: IsA<glib::Object>,
     <T as ObjectSubclass>::Type: IsA<PixbufAnimation>,
 {
     let instance = &*(ptr as *mut T::Instance);
@@ -154,6 +160,7 @@ unsafe extern "C" fn animation_get_size<T: PixbufAnimationImpl>(
     width_ptr: *mut libc::c_int,
     height_ptr: *mut libc::c_int,
 ) where
+    <T as ObjectSubclass>::Type: IsA<glib::Object>,
     <T as ObjectSubclass>::Type: IsA<PixbufAnimation>,
 {
     if width_ptr.is_null() && height_ptr.is_null() {
@@ -176,6 +183,7 @@ unsafe extern "C" fn animation_get_static_image<T: PixbufAnimationImpl>(
     ptr: *mut ffi::GdkPixbufAnimation,
 ) -> *mut ffi::GdkPixbuf
 where
+    <T as ObjectSubclass>::Type: IsA<glib::Object>,
     <T as ObjectSubclass>::Type: IsA<PixbufAnimation>,
 {
     let instance = &*(ptr as *mut T::Instance);
@@ -209,6 +217,7 @@ unsafe extern "C" fn animation_get_iter<T: PixbufAnimationImpl>(
     start_time_ptr: *const glib::ffi::GTimeVal,
 ) -> *mut ffi::GdkPixbufAnimationIter
 where
+    <T as ObjectSubclass>::Type: IsA<glib::Object>,
     <T as ObjectSubclass>::Type: IsA<PixbufAnimation>,
 {
     let instance = &*(ptr as *mut T::Instance);

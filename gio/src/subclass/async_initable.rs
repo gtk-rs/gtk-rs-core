@@ -10,6 +10,7 @@ use crate::{
 
 pub trait AsyncInitableImpl: ObjectImpl
 where
+    <Self as ObjectSubclass>::Type: IsA<glib::Object>,
     <Self as ObjectSubclass>::Type: IsA<AsyncInitable>,
 {
     fn init_future(
@@ -22,6 +23,7 @@ where
 
 pub trait AsyncInitableImplExt: ObjectSubclass + AsyncInitableImpl
 where
+    <Self as ObjectSubclass>::Type: IsA<glib::Object>,
     <Self as ObjectSubclass>::Type: IsA<AsyncInitable>,
 {
     fn parent_init_future(
@@ -43,6 +45,7 @@ where
                 user_data: glib::ffi::gpointer,
             ) where
                 T: AsyncInitableImpl,
+                <T as ObjectSubclass>::Type: IsA<glib::Object>,
                 <T as ObjectSubclass>::Type: IsA<AsyncInitable>,
             {
                 let type_data = T::type_data();
@@ -85,13 +88,16 @@ where
     }
 }
 
-impl<T: AsyncInitableImpl> AsyncInitableImplExt for T where
-    <T as ObjectSubclass>::Type: IsA<AsyncInitable>
+impl<T: AsyncInitableImpl> AsyncInitableImplExt for T
+where
+    <T as ObjectSubclass>::Type: IsA<glib::Object>,
+    <T as ObjectSubclass>::Type: IsA<AsyncInitable>,
 {
 }
 
 unsafe impl<T: AsyncInitableImpl> IsImplementable<T> for AsyncInitable
 where
+    <T as ObjectSubclass>::Type: IsA<glib::Object>,
     <T as ObjectSubclass>::Type: IsA<AsyncInitable>,
 {
     fn interface_init(iface: &mut glib::Interface<Self>) {
@@ -108,6 +114,7 @@ unsafe extern "C" fn async_initable_init_async<T: AsyncInitableImpl>(
     callback: ffi::GAsyncReadyCallback,
     user_data: glib::ffi::gpointer,
 ) where
+    <T as ObjectSubclass>::Type: IsA<glib::Object>,
     <T as ObjectSubclass>::Type: IsA<AsyncInitable>,
 {
     let instance = &*(initable as *mut T::Instance);
