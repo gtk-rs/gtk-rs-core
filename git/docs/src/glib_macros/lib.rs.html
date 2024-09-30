@@ -1682,7 +1682,7 @@
 <span class="kw">use </span><a href="flags_attribute.rs.html#16-19">flags_attribute::AttrInput</a>;
 <span class="kw">use </span><a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">proc_macro::TokenStream</a>;
 <span class="kw">use </span><a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.Span.html">proc_macro2::Span</a>;
-<span class="kw">use </span>syn::{<a href="https://docs.rs/syn/2.0.77/syn/macro.parse_macro_input.html">parse_macro_input</a>, <a href="https://docs.rs/syn/2.0.77/syn/derive/struct.DeriveInput.html">DeriveInput</a>};
+<span class="kw">use </span>syn::{<a href="https://docs.rs/syn/2.0.79/syn/macro.parse_macro_input.html">parse_macro_input</a>, <a href="https://docs.rs/syn/2.0.79/syn/derive/struct.DeriveInput.html">DeriveInput</a>};
 <span class="kw">use </span>utils::{<a href="utils.rs.html#136-148">parse_nested_meta_items_from_stream</a>, <a href="utils.rs.html#19-25">NestedMetaItem</a>};
 
 <span class="doccomment">/// Macro for passing variables as strong or weak references into a closure.
@@ -2286,7 +2286,7 @@
 /// [`TypePluginExt::unuse`]: ../glib/gobject/type_plugin/trait.TypePluginExt.
 </span><span class="attr">#[proc_macro_derive(Enum, attributes(enum_type, enum_dynamic, enum_value))]
 </span><span class="kw">pub fn </span><a href="../../glib_macros/derive.Enum.html">enum_derive</a>(input: <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a> {
-    <span class="kw">let </span>input = <a class="macro" href="https://docs.rs/syn/2.0.77/syn/macro.parse_macro_input.html">parse_macro_input!</a>(input <span class="kw">as </span>DeriveInput);
+    <span class="kw">let </span>input = <a class="macro" href="https://docs.rs/syn/2.0.79/syn/macro.parse_macro_input.html">parse_macro_input!</a>(input <span class="kw">as </span>DeriveInput);
     <a href="enum_derive.rs.html#64-242">enum_derive::impl_enum</a>(<span class="kw-2">&amp;</span><a href="#627">input</a>)
         .<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap_or_else">unwrap_or_else</a>(syn::Error::into_compile_error)
         .<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>()
@@ -2414,23 +2414,23 @@
 /// [`TypePluginExt::unuse`]: ../glib/gobject/type_plugin/trait.TypePluginExt.
 </span><span class="attr">#[proc_macro_attribute]
 </span><span class="kw">pub fn </span><a href="../../glib_macros/attr.flags.html">flags</a>(attr: <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a>, item: <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a> {
-    <span class="kw">let </span><span class="kw-2">mut </span>name = NestedMetaItem::&lt;<a href="https://docs.rs/syn/2.0.77/syn/lit/struct.LitStr.html">syn::LitStr</a>&gt;::new(<span class="string">"name"</span>)
+    <span class="kw">let </span><span class="kw-2">mut </span>name = NestedMetaItem::&lt;<a href="https://docs.rs/syn/2.0.79/syn/lit/struct.LitStr.html">syn::LitStr</a>&gt;::new(<span class="string">"name"</span>)
         .<a href="utils.rs.html#49-52">required</a>()
         .<a href="utils.rs.html#55-58">value_required</a>();
     <span class="kw">let </span><span class="kw-2">mut </span>allow_name_conflict_attr =
-        NestedMetaItem::&lt;<a href="https://docs.rs/syn/2.0.77/syn/lit/struct.LitBool.html">syn::LitBool</a>&gt;::new(<span class="string">"allow_name_conflict"</span>).<a href="utils.rs.html#59-62">value_optional</a>();
+        NestedMetaItem::&lt;<a href="https://docs.rs/syn/2.0.79/syn/lit/struct.LitBool.html">syn::LitBool</a>&gt;::new(<span class="string">"allow_name_conflict"</span>).<a href="utils.rs.html#59-62">value_optional</a>();
 
     <span class="kw">if let </span><span class="prelude-val">Err</span>(e) = <a href="utils.rs.html#136-148">parse_nested_meta_items_from_stream</a>(
         <a href="#754">attr</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>(),
         <span class="kw-2">&amp;mut </span>[<span class="kw-2">&amp;mut </span><a href="#755">name</a>, <span class="kw-2">&amp;mut </span><a href="#758">allow_name_conflict_attr</a>],
     ) {
-        <span class="kw">return </span><a href="#761">e</a>.<a href="https://docs.rs/syn/2.0.77/syn/error/struct.Error.html#method.to_compile_error">to_compile_error</a>().<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>();
+        <span class="kw">return </span><a href="#761">e</a>.<a href="https://docs.rs/syn/2.0.79/syn/error/struct.Error.html#method.to_compile_error">to_compile_error</a>().<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>();
     }
 
     <span class="kw">let </span>allow_name_conflict = <a href="#758">allow_name_conflict_attr</a>.found
         || <a href="#758">allow_name_conflict_attr</a>
             .value
-            .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|b| <a href="#771">b</a>.<a href="https://docs.rs/syn/2.0.77/syn/lit/struct.LitBool.html#method.value">value</a>())
+            .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|b| <a href="#771">b</a>.<a href="https://docs.rs/syn/2.0.79/syn/lit/struct.LitBool.html#method.value">value</a>())
             .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap_or">unwrap_or</a>(<span class="bool-val">false</span>);
 
     <span class="kw">let </span>attr_meta = <a href="flags_attribute.rs.html#16-19">AttrInput</a> {
@@ -2438,8 +2438,8 @@
         <a href="#768">allow_name_conflict</a>,
     };
 
-    syn::parse::&lt;<a href="https://docs.rs/syn/2.0.77/syn/item/struct.ItemEnum.html">syn::ItemEnum</a>&gt;(<a href="#754">item</a>)
-        .<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.map_err">map_err</a>(|<span class="kw">_</span>| <a href="https://docs.rs/syn/2.0.77/syn/error/struct.Error.html#method.new">syn::Error::new</a>(<a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.Span.html#method.call_site">Span::call_site</a>(), <a href="flags_attribute.rs.html#14">flags_attribute::WRONG_PLACE_MSG</a>))
+    syn::parse::&lt;<a href="https://docs.rs/syn/2.0.79/syn/item/struct.ItemEnum.html">syn::ItemEnum</a>&gt;(<a href="#754">item</a>)
+        .<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.map_err">map_err</a>(|<span class="kw">_</span>| <a href="https://docs.rs/syn/2.0.79/syn/error/struct.Error.html#method.new">syn::Error::new</a>(<a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.Span.html#method.call_site">Span::call_site</a>(), <a href="flags_attribute.rs.html#14">flags_attribute::WRONG_PLACE_MSG</a>))
         .<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.map">map</a>(|<span class="kw-2">mut </span>input| <a href="flags_attribute.rs.html#140-286">flags_attribute::impl_flags</a>(<a href="#774">attr_meta</a>, <span class="kw-2">&amp;mut </span><a href="#781">input</a>))
         .<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap_or_else">unwrap_or_else</a>(syn::Error::into_compile_error)
         .<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>()
@@ -2465,7 +2465,7 @@
 /// [`ErrorDomain`]: ../glib/error/trait.ErrorDomain.html
 </span><span class="attr">#[proc_macro_derive(ErrorDomain, attributes(error_domain))]
 </span><span class="kw">pub fn </span><a href="../../glib_macros/derive.ErrorDomain.html">error_domain_derive</a>(input: <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a> {
-    <span class="kw">let </span>input = <a class="macro" href="https://docs.rs/syn/2.0.77/syn/macro.parse_macro_input.html">parse_macro_input!</a>(input <span class="kw">as </span>DeriveInput);
+    <span class="kw">let </span>input = <a class="macro" href="https://docs.rs/syn/2.0.79/syn/macro.parse_macro_input.html">parse_macro_input!</a>(input <span class="kw">as </span>DeriveInput);
     <a href="error_domain_derive.rs.html#9-64">error_domain_derive::impl_error_domain</a>(<span class="kw-2">&amp;</span><a href="#806">input</a>)
         .<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap_or_else">unwrap_or_else</a>(syn::Error::into_compile_error)
         .<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>()
@@ -2494,7 +2494,7 @@
 /// [`glib::Value`]: ../glib/value/struct.Value.html
 </span><span class="attr">#[proc_macro_derive(Boxed, attributes(boxed_type))]
 </span><span class="kw">pub fn </span><a href="../../glib_macros/derive.Boxed.html">boxed_derive</a>(input: <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a> {
-    <span class="kw">let </span>input = <a class="macro" href="https://docs.rs/syn/2.0.77/syn/macro.parse_macro_input.html">parse_macro_input!</a>(input <span class="kw">as </span>DeriveInput);
+    <span class="kw">let </span>input = <a class="macro" href="https://docs.rs/syn/2.0.79/syn/macro.parse_macro_input.html">parse_macro_input!</a>(input <span class="kw">as </span>DeriveInput);
     <a href="boxed_derive.rs.html#93-285">boxed_derive::impl_boxed</a>(<span class="kw-2">&amp;</span><a href="#835">input</a>)
         .<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap_or_else">unwrap_or_else</a>(syn::Error::into_compile_error)
         .<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>()
@@ -2528,7 +2528,7 @@
 /// [`glib::Value`]: ../glib/value/struct.Value.html
 </span><span class="attr">#[proc_macro_derive(SharedBoxed, attributes(shared_boxed_type))]
 </span><span class="kw">pub fn </span><a href="../../glib_macros/derive.SharedBoxed.html">shared_boxed_derive</a>(input: <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a> {
-    <span class="kw">let </span>input = <a class="macro" href="https://docs.rs/syn/2.0.77/syn/macro.parse_macro_input.html">parse_macro_input!</a>(input <span class="kw">as </span>DeriveInput);
+    <span class="kw">let </span>input = <a class="macro" href="https://docs.rs/syn/2.0.79/syn/macro.parse_macro_input.html">parse_macro_input!</a>(input <span class="kw">as </span>DeriveInput);
     <a href="shared_boxed_derive.rs.html#95-319">shared_boxed_derive::impl_shared_boxed</a>(<span class="kw-2">&amp;</span><a href="#869">input</a>)
         .<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap_or_else">unwrap_or_else</a>(syn::Error::into_compile_error)
         .<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>()
@@ -2659,7 +2659,7 @@
 /// [`TypePluginExt::unuse`]: ../glib/gobject/type_plugin/trait.TypePluginExt.html#method.unuse
 </span><span class="attr">#[proc_macro_attribute]
 </span><span class="kw">pub fn </span><a href="../../glib_macros/attr.object_subclass.html">object_subclass</a>(_attr: <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a>, item: <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a> {
-    <span class="kw">let </span>input = <a class="macro" href="https://docs.rs/syn/2.0.77/syn/macro.parse_macro_input.html">parse_macro_input!</a>(item with object_impl_attributes::Input::parse_subclass);
+    <span class="kw">let </span>input = <a class="macro" href="https://docs.rs/syn/2.0.79/syn/macro.parse_macro_input.html">parse_macro_input!</a>(item with object_impl_attributes::Input::parse_subclass);
     <a href="object_impl_attributes/subclass.rs.html#7-169">object_impl_attributes::subclass::impl_object_subclass</a>(<a href="#1000">input</a>).<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>()
 }
 
@@ -2772,7 +2772,7 @@
 /// [`TypePluginExt::unuse`]: ../glib/gobject/type_plugin/trait.TypePluginExt.html#method.unuse///
 </span><span class="attr">#[proc_macro_attribute]
 </span><span class="kw">pub fn </span><a href="../../glib_macros/attr.object_interface.html">object_interface</a>(_attr: <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a>, item: <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a> {
-    <span class="kw">let </span>input = <a class="macro" href="https://docs.rs/syn/2.0.77/syn/macro.parse_macro_input.html">parse_macro_input!</a>(item with object_impl_attributes::Input::parse_interface);
+    <span class="kw">let </span>input = <a class="macro" href="https://docs.rs/syn/2.0.79/syn/macro.parse_macro_input.html">parse_macro_input!</a>(item with object_impl_attributes::Input::parse_interface);
     <a href="object_impl_attributes/interface.rs.html#7-80">object_impl_attributes::interface::impl_object_interface</a>(<a href="#1113">input</a>).<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>()
 }
 
@@ -2843,7 +2843,7 @@
 /// [`glib::clone::Upgrade`]: ../glib/clone/trait.Upgrade.html
 </span><span class="attr">#[proc_macro_derive(Downgrade)]
 </span><span class="kw">pub fn </span><a href="../../glib_macros/derive.Downgrade.html">downgrade</a>(input: <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a> {
-    <span class="kw">let </span>input = <a class="macro" href="https://docs.rs/syn/2.0.77/syn/macro.parse_macro_input.html">parse_macro_input!</a>(input <span class="kw">as </span>DeriveInput);
+    <span class="kw">let </span>input = <a class="macro" href="https://docs.rs/syn/2.0.79/syn/macro.parse_macro_input.html">parse_macro_input!</a>(input <span class="kw">as </span>DeriveInput);
     <a href="downgrade_derive/mod.rs.html#10-22">downgrade_derive::impl_downgrade</a>(<a href="#1184">input</a>)
 }
 
@@ -2953,26 +2953,26 @@
 /// [kebab case]: https://docs.rs/heck/0.4.0/heck/trait.ToKebabCase.html
 </span><span class="attr">#[proc_macro_derive(Variant, attributes(variant_enum))]
 </span><span class="kw">pub fn </span><a href="../../glib_macros/derive.Variant.html">variant_derive</a>(input: <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a> {
-    <span class="kw">let </span>input = <a class="macro" href="https://docs.rs/syn/2.0.77/syn/macro.parse_macro_input.html">parse_macro_input!</a>(input <span class="kw">as </span>DeriveInput);
+    <span class="kw">let </span>input = <a class="macro" href="https://docs.rs/syn/2.0.79/syn/macro.parse_macro_input.html">parse_macro_input!</a>(input <span class="kw">as </span>DeriveInput);
     <a href="variant_derive.rs.html#10-39">variant_derive::impl_variant</a>(<a href="#1294">input</a>)
         .<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap_or_else">unwrap_or_else</a>(syn::Error::into_compile_error)
         .<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>()
 }
 <span class="attr">#[proc_macro]
 </span><span class="kw">pub fn </span><a href="../../glib_macros/macro.cstr_bytes.html">cstr_bytes</a>(item: <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a> {
-    <a href="https://docs.rs/syn/2.0.77/syn/parse/trait.Parser.html#tymethod.parse2">syn::parse::Parser::parse2</a>(
+    <a href="https://docs.rs/syn/2.0.79/syn/parse/trait.Parser.html#tymethod.parse2">syn::parse::Parser::parse2</a>(
         |stream: syn::parse::ParseStream&lt;<span class="lifetime">'_</span>&gt;| {
-            <span class="kw">let </span>literal = <a href="#1302">stream</a>.<a href="https://docs.rs/syn/2.0.77/syn/parse/struct.ParseBuffer.html#method.parse">parse</a>::&lt;<a href="https://docs.rs/syn/2.0.77/syn/lit/struct.LitStr.html">syn::LitStr</a>&gt;()<span class="question-mark">?</span>;
-            <a href="#1302">stream</a>.<a href="https://docs.rs/syn/2.0.77/syn/parse/struct.ParseBuffer.html#method.parse">parse</a>::&lt;<a href="https://docs.rs/syn/2.0.77/syn/parse/struct.Nothing.html">syn::parse::Nothing</a>&gt;()<span class="question-mark">?</span>;
-            <span class="kw">let </span>bytes = <a href="https://doc.rust-lang.org/nightly/alloc/ffi/c_str/struct.CString.html#method.new">std::ffi::CString::new</a>(<a href="#1303">literal</a>.<a href="https://docs.rs/syn/2.0.77/syn/lit/struct.LitStr.html#method.value">value</a>())
-                .<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.map_err">map_err</a>(|e| <a href="https://docs.rs/syn/2.0.77/syn/error/struct.Error.html#method.new_spanned">syn::Error::new_spanned</a>(<span class="kw-2">&amp;</span><a href="#1303">literal</a>, <a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.format.html">format!</a>(<span class="string">"{e}"</span>)))<span class="question-mark">?
+            <span class="kw">let </span>literal = <a href="#1302">stream</a>.<a href="https://docs.rs/syn/2.0.79/syn/parse/struct.ParseBuffer.html#method.parse">parse</a>::&lt;<a href="https://docs.rs/syn/2.0.79/syn/lit/struct.LitStr.html">syn::LitStr</a>&gt;()<span class="question-mark">?</span>;
+            <a href="#1302">stream</a>.<a href="https://docs.rs/syn/2.0.79/syn/parse/struct.ParseBuffer.html#method.parse">parse</a>::&lt;<a href="https://docs.rs/syn/2.0.79/syn/parse/struct.Nothing.html">syn::parse::Nothing</a>&gt;()<span class="question-mark">?</span>;
+            <span class="kw">let </span>bytes = <a href="https://doc.rust-lang.org/nightly/alloc/ffi/c_str/struct.CString.html#method.new">std::ffi::CString::new</a>(<a href="#1303">literal</a>.<a href="https://docs.rs/syn/2.0.79/syn/lit/struct.LitStr.html#method.value">value</a>())
+                .<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.map_err">map_err</a>(|e| <a href="https://docs.rs/syn/2.0.79/syn/error/struct.Error.html#method.new_spanned">syn::Error::new_spanned</a>(<span class="kw-2">&amp;</span><a href="#1303">literal</a>, <a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.format.html">format!</a>(<span class="string">"{e}"</span>)))<span class="question-mark">?
                 </span>.<a href="https://doc.rust-lang.org/nightly/alloc/ffi/c_str/struct.CString.html#method.into_bytes_with_nul">into_bytes_with_nul</a>();
             <span class="kw">let </span>bytes = <a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.Literal.html#method.byte_string">proc_macro2::Literal::byte_string</a>(<span class="kw-2">&amp;</span><a href="#1305">bytes</a>);
             <span class="prelude-val">Ok</span>(<a class="macro" href="https://docs.rs/quote/1.0.37/quote/macro.quote.html">quote::quote!</a> { #bytes }.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>())
         },
         <a href="#1300">item</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>(),
     )
-    .<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap_or_else">unwrap_or_else</a>(|e| <a href="#1313">e</a>.<a href="https://docs.rs/syn/2.0.77/syn/error/struct.Error.html#method.into_compile_error">into_compile_error</a>().<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>())
+    .<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap_or_else">unwrap_or_else</a>(|e| <a href="#1313">e</a>.<a href="https://docs.rs/syn/2.0.79/syn/error/struct.Error.html#method.into_compile_error">into_compile_error</a>().<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>())
 }
 
 <span class="doccomment">/// This macro enables you to derive object properties in a quick way.
@@ -3126,7 +3126,7 @@
 </span><span class="attr">#[allow(clippy::needless_doctest_main)]
 #[proc_macro_derive(Properties, attributes(properties, property))]
 </span><span class="kw">pub fn </span><a href="../../glib_macros/derive.Properties.html">derive_props</a>(input: <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a> {
-    <span class="kw">let </span>input = <a class="macro" href="https://docs.rs/syn/2.0.77/syn/macro.parse_macro_input.html">parse_macro_input!</a>(input <span class="kw">as </span>properties::PropsMacroInput);
+    <span class="kw">let </span>input = <a class="macro" href="https://docs.rs/syn/2.0.79/syn/macro.parse_macro_input.html">parse_macro_input!</a>(input <span class="kw">as </span>properties::PropsMacroInput);
     <a href="properties.rs.html#714-772">properties::impl_derive_props</a>(<a href="#1467">input</a>)
 }
 
@@ -3151,9 +3151,9 @@
 /// ```
 </span><span class="attr">#[proc_macro_attribute]
 </span><span class="kw">pub fn </span><a href="../../glib_macros/attr.derived_properties.html">derived_properties</a>(_attr: <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a>, item: <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a> {
-    syn::parse::&lt;<a href="https://docs.rs/syn/2.0.77/syn/item/struct.ItemImpl.html">syn::ItemImpl</a>&gt;(<a href="#1491">item</a>)
+    syn::parse::&lt;<a href="https://docs.rs/syn/2.0.79/syn/item/struct.ItemImpl.html">syn::ItemImpl</a>&gt;(<a href="#1491">item</a>)
         .<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.map_err">map_err</a>(|<span class="kw">_</span>| {
-            <a href="https://docs.rs/syn/2.0.77/syn/error/struct.Error.html#method.new">syn::Error::new</a>(
+            <a href="https://docs.rs/syn/2.0.79/syn/error/struct.Error.html#method.new">syn::Error::new</a>(
                 <a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.Span.html#method.call_site">Span::call_site</a>(),
                 <a href="derived_properties_attribute.rs.html#6-7">derived_properties_attribute::WRONG_PLACE_MSG</a>,
             )
@@ -3227,7 +3227,7 @@
 /// ```
 </span><span class="attr">#[proc_macro_derive(ValueDelegate, attributes(value_delegate))]
 </span><span class="kw">pub fn </span><a href="../../glib_macros/derive.ValueDelegate.html">derive_value_delegate</a>(input: <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a> {
-    <span class="kw">let </span>input = <a class="macro" href="https://docs.rs/syn/2.0.77/syn/macro.parse_macro_input.html">parse_macro_input!</a>(input <span class="kw">as </span>value_delegate_derive::ValueDelegateInput);
+    <span class="kw">let </span>input = <a class="macro" href="https://docs.rs/syn/2.0.79/syn/macro.parse_macro_input.html">parse_macro_input!</a>(input <span class="kw">as </span>value_delegate_derive::ValueDelegateInput);
     <a href="value_delegate_derive.rs.html#114-200">value_delegate_derive::impl_value_delegate</a>(<a href="#1568">input</a>).<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>()
 }
 

@@ -459,19 +459,19 @@
     }
 }
 
-<span class="kw">fn </span>refcounted_type(input: <span class="kw-2">&amp;</span><a href="https://docs.rs/syn/2.0.77/syn/derive/struct.DeriveInput.html">syn::DeriveInput</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="https://docs.rs/syn/2.0.77/syn/ty/struct.TypePath.html">syn::TypePath</a>&gt; {
+<span class="kw">fn </span>refcounted_type(input: <span class="kw-2">&amp;</span><a href="https://docs.rs/syn/2.0.79/syn/derive/struct.DeriveInput.html">syn::DeriveInput</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="https://docs.rs/syn/2.0.79/syn/ty/struct.TypePath.html">syn::TypePath</a>&gt; {
     <span class="kw">let </span>fields = <span class="kw">match </span><span class="kw-2">&amp;</span><a href="#70">input</a>.data {
-        <a href="https://docs.rs/syn/2.0.77/syn/derive/enum.Data.html#variant.Struct">syn::Data::Struct</a>(s) =&gt; <span class="kw-2">&amp;</span><a href="#72">s</a>.fields,
+        <a href="https://docs.rs/syn/2.0.79/syn/derive/enum.Data.html#variant.Struct">syn::Data::Struct</a>(s) =&gt; <span class="kw-2">&amp;</span><a href="#72">s</a>.fields,
         <span class="kw">_ </span>=&gt; <span class="kw">return </span><span class="prelude-val">None</span>,
     };
 
     <span class="kw">let </span>unnamed = <span class="kw">match </span><a href="#71">fields</a> {
-        <a href="https://docs.rs/syn/2.0.77/syn/data/enum.Fields.html#variant.Unnamed">syn::Fields::Unnamed</a>(u) <span class="kw">if </span><a href="#77">u</a>.unnamed.<a href="https://docs.rs/syn/2.0.77/syn/punctuated/struct.Punctuated.html#method.len">len</a>() == <span class="number">1 </span>=&gt; <span class="kw-2">&amp;</span><a href="#77">u</a>.unnamed[<span class="number">0</span>],
+        <a href="https://docs.rs/syn/2.0.79/syn/data/enum.Fields.html#variant.Unnamed">syn::Fields::Unnamed</a>(u) <span class="kw">if </span><a href="#77">u</a>.unnamed.<a href="https://docs.rs/syn/2.0.79/syn/punctuated/struct.Punctuated.html#method.len">len</a>() == <span class="number">1 </span>=&gt; <span class="kw-2">&amp;</span><a href="#77">u</a>.unnamed[<span class="number">0</span>],
         <span class="kw">_ </span>=&gt; <span class="kw">return </span><span class="prelude-val">None</span>,
     };
 
     <span class="kw">let </span>refcounted = <span class="kw">match </span><span class="kw-2">&amp;</span><a href="#76">unnamed</a>.ty {
-        <a href="https://docs.rs/syn/2.0.77/syn/ty/enum.Type.html#variant.Path">syn::Type::Path</a>(p) =&gt; <a href="#82">p</a>,
+        <a href="https://docs.rs/syn/2.0.79/syn/ty/enum.Type.html#variant.Path">syn::Type::Path</a>(p) =&gt; <a href="#82">p</a>,
         <span class="kw">_ </span>=&gt; <span class="kw">return </span><span class="prelude-val">None</span>,
     };
 
@@ -484,22 +484,22 @@
     }
 }
 
-<span class="kw">pub fn </span>impl_shared_boxed(input: <span class="kw-2">&amp;</span><a href="https://docs.rs/syn/2.0.77/syn/derive/struct.DeriveInput.html">syn::DeriveInput</a>) -&gt; syn::Result&lt;<a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.TokenStream.html">proc_macro2::TokenStream</a>&gt; {
+<span class="kw">pub fn </span>impl_shared_boxed(input: <span class="kw-2">&amp;</span><a href="https://docs.rs/syn/2.0.79/syn/derive/struct.DeriveInput.html">syn::DeriveInput</a>) -&gt; syn::Result&lt;<a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.TokenStream.html">proc_macro2::TokenStream</a>&gt; {
     <span class="kw">let </span>name = <span class="kw-2">&amp;</span><a href="#95">input</a>.ident;
 
     <span class="kw">let </span><span class="prelude-val">Some</span>(refcounted_type) = <a href="#70-87">refcounted_type</a>(<a href="#95">input</a>) <span class="kw">else </span>{
-        <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="https://docs.rs/syn/2.0.77/syn/error/struct.Error.html#method.new_spanned">syn::Error::new_spanned</a>(
+        <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="https://docs.rs/syn/2.0.79/syn/error/struct.Error.html#method.new_spanned">syn::Error::new_spanned</a>(
             <a href="#95">input</a>,
             <span class="string">"#[derive(glib::SharedBoxed)] requires struct MyStruct(T: RefCounted)"</span>,
         ));
     };
 
-    <span class="kw">let </span><span class="kw-2">mut </span>gtype_name = NestedMetaItem::&lt;<a href="https://docs.rs/syn/2.0.77/syn/lit/struct.LitStr.html">syn::LitStr</a>&gt;::new(<span class="string">"name"</span>)
+    <span class="kw">let </span><span class="kw-2">mut </span>gtype_name = NestedMetaItem::&lt;<a href="https://docs.rs/syn/2.0.79/syn/lit/struct.LitStr.html">syn::LitStr</a>&gt;::new(<span class="string">"name"</span>)
         .<a href="utils.rs.html#49-52">required</a>()
         .<a href="utils.rs.html#55-58">value_required</a>();
-    <span class="kw">let </span><span class="kw-2">mut </span>nullable = NestedMetaItem::&lt;<a href="https://docs.rs/syn/2.0.77/syn/lit/struct.LitBool.html">syn::LitBool</a>&gt;::new(<span class="string">"nullable"</span>).<a href="utils.rs.html#59-62">value_optional</a>();
+    <span class="kw">let </span><span class="kw-2">mut </span>nullable = NestedMetaItem::&lt;<a href="https://docs.rs/syn/2.0.79/syn/lit/struct.LitBool.html">syn::LitBool</a>&gt;::new(<span class="string">"nullable"</span>).<a href="utils.rs.html#59-62">value_optional</a>();
     <span class="kw">let </span><span class="kw-2">mut </span>allow_name_conflict =
-        NestedMetaItem::&lt;<a href="https://docs.rs/syn/2.0.77/syn/lit/struct.LitBool.html">syn::LitBool</a>&gt;::new(<span class="string">"allow_name_conflict"</span>).<a href="utils.rs.html#59-62">value_optional</a>();
+        NestedMetaItem::&lt;<a href="https://docs.rs/syn/2.0.79/syn/lit/struct.LitBool.html">syn::LitBool</a>&gt;::new(<span class="string">"allow_name_conflict"</span>).<a href="utils.rs.html#59-62">value_optional</a>();
 
     <span class="kw">let </span>found = <a href="utils.rs.html#150-165">parse_nested_meta_items</a>(
         <span class="kw-2">&amp;</span><a href="#95">input</a>.attrs,
@@ -508,17 +508,17 @@
     )<span class="question-mark">?</span>;
 
     <span class="kw">if </span>found.is_none() {
-        <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="https://docs.rs/syn/2.0.77/syn/error/struct.Error.html#method.new_spanned">syn::Error::new_spanned</a>(<a href="#95">input</a>,
+        <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="https://docs.rs/syn/2.0.79/syn/error/struct.Error.html#method.new_spanned">syn::Error::new_spanned</a>(<a href="#95">input</a>,
             <span class="string">"#[derive(glib::SharedBoxed)] requires #[shared_boxed_type(name = \"SharedBoxedTypeName\")]"
         </span>));
     }
 
     <span class="kw">let </span>gtype_name = <a href="#105">gtype_name</a>.value.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap">unwrap</a>();
-    <span class="kw">let </span>nullable = <a href="#108">nullable</a>.found || <a href="#108">nullable</a>.value.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|b| <a href="#125">b</a>.<a href="https://docs.rs/syn/2.0.77/syn/lit/struct.LitBool.html#method.value">value</a>()).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap_or">unwrap_or</a>(<span class="bool-val">false</span>);
+    <span class="kw">let </span>nullable = <a href="#108">nullable</a>.found || <a href="#108">nullable</a>.value.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|b| <a href="#125">b</a>.<a href="https://docs.rs/syn/2.0.79/syn/lit/struct.LitBool.html#method.value">value</a>()).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap_or">unwrap_or</a>(<span class="bool-val">false</span>);
     <span class="kw">let </span>allow_name_conflict = <a href="#109">allow_name_conflict</a>.found
         || <a href="#109">allow_name_conflict</a>
             .value
-            .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|b| <a href="#129">b</a>.<a href="https://docs.rs/syn/2.0.77/syn/lit/struct.LitBool.html#method.value">value</a>())
+            .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|b| <a href="#129">b</a>.<a href="https://docs.rs/syn/2.0.79/syn/lit/struct.LitBool.html#method.value">value</a>())
             .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap_or">unwrap_or</a>(<span class="bool-val">false</span>);
 
     <span class="kw">let </span>crate_ident = <a href="utils.rs.html#188-215">crate_ident_new</a>();
