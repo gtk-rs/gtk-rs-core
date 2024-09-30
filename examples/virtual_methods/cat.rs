@@ -96,7 +96,19 @@ impl Default for Cat {
 ///
 /// By convention we still create an empty `CatImpl` trait, this allows us to add
 /// 'protected' cat methods only available to be called by other Cats later.
-pub trait CatImpl: PetImpl {}
+pub trait CatImpl: PetImpl
+where
+    <Self as ObjectSubclass>::Type: IsA<glib::Object>,
+    <Self as ObjectSubclass>::Type: IsA<Pet>,
+    <Self as ObjectSubclass>::Type: IsA<Cat>,
+{
+}
 
 /// To make this class subclassable we need to implement IsSubclassable
-unsafe impl<Obj: CatImpl + PetImpl> IsSubclassable<Obj> for Cat {}
+unsafe impl<Obj: CatImpl + PetImpl> IsSubclassable<Obj> for Cat
+where
+    <Obj as ObjectSubclass>::Type: IsA<glib::Object>,
+    <Obj as ObjectSubclass>::Type: IsA<Pet>,
+    <Obj as ObjectSubclass>::Type: IsA<Cat>,
+{
+}
