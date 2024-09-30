@@ -363,7 +363,7 @@
 </span><span class="kw">use </span><a href="https://doc.rust-lang.org/nightly/core/intrinsics/fn.transmute.html">std::mem::transmute</a>;
 
 <span class="kw">use crate</span>::{
-    <a href="../../../glib_sys/index.html">ffi</a>, <a href="../../../gobject_sys/index.html">gobject_ffi</a>,
+    ffi, <a href="../../../gobject_sys/index.html">gobject_ffi</a>,
     <a href="../lib.rs.html#158">prelude</a>::<span class="kw-2">*</span>,
     signal::{<a href="../signal.rs.html#67-89">connect_raw</a>, <a href="../signal.rs.html#49">SignalHandlerId</a>},
     <a href="../lib.rs.html#163">translate</a>::<span class="kw-2">*</span>,
@@ -474,7 +474,7 @@
         <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>bind_trampoline&lt;F: Fn(<span class="kw-2">&amp;</span><a href="auto/signal_group.rs.html#7-72">SignalGroup</a>, <span class="kw-2">&amp;</span><a href="../object.rs.html#1371-1374">Object</a>)&gt;(
             this: <span class="kw-2">*mut </span><a href="../../../gobject_sys/struct.GSignalGroup.html"><span class="kw">crate</span>::gobject_ffi::GSignalGroup</a>,
             instance: <span class="kw-2">*mut </span><a href="../../../gobject_sys/struct.GObject.html"><span class="kw">crate</span>::gobject_ffi::GObject</a>,
-            f: <a href="../../../glib_sys/type.gpointer.html">ffi::gpointer</a>,
+            f: ffi::gpointer,
         ) {
             <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#117">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
             <a href="#119">f</a>(<span class="kw-2">&amp;</span><a href="../translate.rs.html#1643-1645">from_glib_borrow</a>(<a href="#115">this</a>), <span class="kw-2">&amp;</span><a href="../translate.rs.html#1643-1645">from_glib_borrow</a>(<a href="#116">instance</a>))
@@ -493,7 +493,7 @@
     <span class="kw">unsafe fn </span>connect_unbind_unsafe&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>)&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; <a href="../signal.rs.html#49">SignalHandlerId</a> {
         <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>unbind_trampoline&lt;F: Fn(<span class="kw-2">&amp;</span><a href="auto/signal_group.rs.html#7-72">SignalGroup</a>)&gt;(
             this: <span class="kw-2">*mut </span><a href="../../../gobject_sys/struct.GSignalGroup.html"><span class="kw">crate</span>::gobject_ffi::GSignalGroup</a>,
-            f: <a href="../../../glib_sys/type.gpointer.html">ffi::gpointer</a>,
+            f: ffi::gpointer,
         ) {
             <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#136">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
             <a href="#138">f</a>(<span class="kw-2">&amp;</span><a href="../translate.rs.html#1643-1645">from_glib_borrow</a>(<a href="#135">this</a>))
