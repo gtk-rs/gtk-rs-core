@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/subclass/application.rs`."><title>application.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-b778ab399e080a4b.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.83.0-nightly (7608018cb 2024-09-29)" data-channel="nightly" data-search-js="search-e056c65ede92db13.js" data-settings-js="settings-805db61a62df4bd2.js" ><script src="../../../static.files/storage-1d39b6787ed640ff.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-54bc299d2a5e4e43.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-0111fcff984fae8f.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/subclass/application.rs`."><title>application.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-d5c83a227aeda803.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.83.0-nightly (18b1161ec 2024-10-02)" data-channel="nightly" data-search-js="search-e056c65ede92db13.js" data-settings-js="settings-805db61a62df4bd2.js" ><script src="../../../static.files/storage-1d39b6787ed640ff.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-f070b9041d14864c.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-0111fcff984fae8f.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -608,7 +608,60 @@
 <a href="#534" id="534">534</a>
 <a href="#535" id="535">535</a>
 <a href="#536" id="536">536</a>
-<a href="#537" id="537">537</a></pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
+<a href="#537" id="537">537</a>
+<a href="#538" id="538">538</a>
+<a href="#539" id="539">539</a>
+<a href="#540" id="540">540</a>
+<a href="#541" id="541">541</a>
+<a href="#542" id="542">542</a>
+<a href="#543" id="543">543</a>
+<a href="#544" id="544">544</a>
+<a href="#545" id="545">545</a>
+<a href="#546" id="546">546</a>
+<a href="#547" id="547">547</a>
+<a href="#548" id="548">548</a>
+<a href="#549" id="549">549</a>
+<a href="#550" id="550">550</a>
+<a href="#551" id="551">551</a>
+<a href="#552" id="552">552</a>
+<a href="#553" id="553">553</a>
+<a href="#554" id="554">554</a>
+<a href="#555" id="555">555</a>
+<a href="#556" id="556">556</a>
+<a href="#557" id="557">557</a>
+<a href="#558" id="558">558</a>
+<a href="#559" id="559">559</a>
+<a href="#560" id="560">560</a>
+<a href="#561" id="561">561</a>
+<a href="#562" id="562">562</a>
+<a href="#563" id="563">563</a>
+<a href="#564" id="564">564</a>
+<a href="#565" id="565">565</a>
+<a href="#566" id="566">566</a>
+<a href="#567" id="567">567</a>
+<a href="#568" id="568">568</a>
+<a href="#569" id="569">569</a>
+<a href="#570" id="570">570</a>
+<a href="#571" id="571">571</a>
+<a href="#572" id="572">572</a>
+<a href="#573" id="573">573</a>
+<a href="#574" id="574">574</a>
+<a href="#575" id="575">575</a>
+<a href="#576" id="576">576</a>
+<a href="#577" id="577">577</a>
+<a href="#578" id="578">578</a>
+<a href="#579" id="579">579</a>
+<a href="#580" id="580">580</a>
+<a href="#581" id="581">581</a>
+<a href="#582" id="582">582</a>
+<a href="#583" id="583">583</a>
+<a href="#584" id="584">584</a>
+<a href="#585" id="585">585</a>
+<a href="#586" id="586">586</a>
+<a href="#587" id="587">587</a>
+<a href="#588" id="588">588</a>
+<a href="#589" id="589">589</a>
+<a href="#590" id="590">590</a></pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
 </span><span class="kw">use </span>std::{<a href="https://doc.rust-lang.org/nightly/std/ffi/os_str/struct.OsString.html">ffi::OsString</a>, <a href="https://doc.rust-lang.org/nightly/alloc/fmt/index.html">fmt</a>, <a href="https://doc.rust-lang.org/nightly/core/ops/deref/trait.Deref.html">ops::Deref</a>, <a href="https://doc.rust-lang.org/nightly/core/ptr/index.html">ptr</a>};
 
@@ -674,7 +727,11 @@
     }
 }
 
-<span class="kw">pub trait </span><a href="../../../gio/subclass/prelude/trait.ApplicationImpl.html">ApplicationImpl</a>: <a href="../../../glib/subclass/object/trait.ObjectImpl.html">ObjectImpl</a> + <a href="#181-335">ApplicationImplExt</a> {
+<span class="kw">pub trait </span><a href="../../../gio/subclass/prelude/trait.ApplicationImpl.html">ApplicationImpl</a>: <a href="../../../glib/subclass/object/trait.ObjectImpl.html">ObjectImpl</a>
+<span class="kw">where
+    </span>&lt;<span class="self">Self </span><span class="kw">as </span>ObjectSubclass&gt;::Type: IsA&lt;<a href="../../../glib/object/struct.Object.html">glib::Object</a>&gt;,
+    &lt;<span class="self">Self </span><span class="kw">as </span>ObjectSubclass&gt;::Type: IsA&lt;<a href="../auto/application.rs.html#16-333">Application</a>&gt;,
+{
     <span class="doccomment">/// Activates the application.
     ///
     /// In essence, this results in the #GApplication::activate signal being
@@ -682,27 +739,27 @@
     ///
     /// The application must be registered before calling this function.
     </span><span class="kw">fn </span>activate(<span class="kw-2">&amp;</span><span class="self">self</span>) {
-        <a class="self" href="#74">self</a>.<a href="#182-191">parent_activate</a>()
+        <a class="self" href="#78">self</a>.<a href="#185-194">parent_activate</a>()
     }
 
     <span class="doccomment">/// invoked on the primary instance after 'activate', 'open',
     ///     'command-line' or any action invocation, gets the 'platform data' from
     ///     the calling instance
     </span><span class="kw">fn </span>after_emit(<span class="kw-2">&amp;</span><span class="self">self</span>, platform_data: <span class="kw-2">&amp;</span><a href="../../../glib/variant/struct.Variant.html">glib::Variant</a>) {
-        <a class="self" href="#81">self</a>.<a href="#193-205">parent_after_emit</a>(<a href="#81">platform_data</a>)
+        <a class="self" href="#85">self</a>.<a href="#196-208">parent_after_emit</a>(<a href="#85">platform_data</a>)
     }
 
     <span class="doccomment">/// invoked on the primary instance before 'activate', 'open',
     ///     'command-line' or any action invocation, gets the 'platform data' from
     ///     the calling instance
     </span><span class="kw">fn </span>before_emit(<span class="kw-2">&amp;</span><span class="self">self</span>, platform_data: <span class="kw-2">&amp;</span><a href="../../../glib/variant/struct.Variant.html">glib::Variant</a>) {
-        <a class="self" href="#88">self</a>.<a href="#207-219">parent_before_emit</a>(<a href="#88">platform_data</a>)
+        <a class="self" href="#92">self</a>.<a href="#210-222">parent_before_emit</a>(<a href="#92">platform_data</a>)
     }
 
     <span class="doccomment">/// invoked on the primary instance when a command-line is
     ///   not handled locally
     </span><span class="kw">fn </span>command_line(<span class="kw-2">&amp;</span><span class="self">self</span>, command_line: <span class="kw-2">&amp;</span><a href="../auto/application_command_line.rs.html#13-225"><span class="kw">crate</span>::ApplicationCommandLine</a>) -&gt; <a href="../../../glib/exit_code/struct.ExitCode.html">ExitCode</a> {
-        <a class="self" href="#94">self</a>.<a href="#221-234">parent_command_line</a>(<a href="#94">command_line</a>)
+        <a class="self" href="#98">self</a>.<a href="#224-237">parent_command_line</a>(<a href="#98">command_line</a>)
     }
 
     <span class="doccomment">/// This virtual function is always invoked in the local instance. It
@@ -725,7 +782,7 @@
     /// ## `exit_status`
     /// exit status to fill after processing the command line.
     </span><span class="kw">fn </span>local_command_line(<span class="kw-2">&amp;</span><span class="self">self</span>, arguments: <span class="kw-2">&amp;mut </span><a href="#10-13">ArgumentList</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="../../../glib/exit_code/struct.ExitCode.html">ExitCode</a>&gt; {
-        <a class="self" href="#117">self</a>.<a href="#236-257">parent_local_command_line</a>(<a href="#117">arguments</a>)
+        <a class="self" href="#121">self</a>.<a href="#239-260">parent_local_command_line</a>(<a href="#121">arguments</a>)
     }
 
     <span class="doccomment">/// Opens the given files.
@@ -747,14 +804,14 @@
     /// ## `hint`
     /// a hint (or ""), but never [`None`]
     </span><span class="kw">fn </span>open(<span class="kw-2">&amp;</span><span class="self">self</span>, files: <span class="kw-2">&amp;</span>[<a href="../auto/file.rs.html#14-116"><span class="kw">crate</span>::File</a>], hint: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) {
-        <a class="self" href="#139">self</a>.<a href="#259-273">parent_open</a>(<a href="#139">files</a>, <a href="#139">hint</a>)
+        <a class="self" href="#143">self</a>.<a href="#262-276">parent_open</a>(<a href="#143">files</a>, <a href="#143">hint</a>)
     }
 
     <span class="doccomment">/// Used to be invoked on the primary instance when the use
     ///     count of the application drops to zero (and after any inactivity
     ///     timeout, if requested). Not used anymore since 2.32
     </span><span class="kw">fn </span>quit_mainloop(<span class="kw-2">&amp;</span><span class="self">self</span>) {
-        <a class="self" href="#146">self</a>.<a href="#275-284">parent_quit_mainloop</a>()
+        <a class="self" href="#150">self</a>.<a href="#278-287">parent_quit_mainloop</a>()
     }
 
     <span class="doccomment">/// Used to be invoked on the primary instance from
@@ -762,54 +819,53 @@
     ///     GApplication is iterating the main context directly and is not
     ///     using @run_mainloop anymore
     </span><span class="kw">fn </span>run_mainloop(<span class="kw-2">&amp;</span><span class="self">self</span>) {
-        <a class="self" href="#154">self</a>.<a href="#286-295">parent_run_mainloop</a>()
+        <a class="self" href="#158">self</a>.<a href="#289-298">parent_run_mainloop</a>()
     }
 
     <span class="doccomment">/// invoked only on the registered primary instance immediately
     ///      after the main loop terminates
     </span><span class="kw">fn </span>shutdown(<span class="kw-2">&amp;</span><span class="self">self</span>) {
-        <a class="self" href="#160">self</a>.<a href="#297-306">parent_shutdown</a>()
+        <a class="self" href="#164">self</a>.<a href="#300-309">parent_shutdown</a>()
     }
 
     <span class="doccomment">/// invoked on the primary instance immediately after registration
     </span><span class="kw">fn </span>startup(<span class="kw-2">&amp;</span><span class="self">self</span>) {
-        <a class="self" href="#165">self</a>.<a href="#308-317">parent_startup</a>()
+        <a class="self" href="#169">self</a>.<a href="#311-320">parent_startup</a>()
     }
 
     <span class="doccomment">/// invoked locally after the parsing of the commandline
     ///  options has occurred. Since: 2.40
     </span><span class="kw">fn </span>handle_local_options(<span class="kw-2">&amp;</span><span class="self">self</span>, options: <span class="kw-2">&amp;</span><a href="../../../glib/variant_dict/struct.VariantDict.html">VariantDict</a>) -&gt; <a href="../../../glib/exit_code/struct.ExitCode.html">ExitCode</a> {
-        <a class="self" href="#171">self</a>.<a href="#319-334">parent_handle_local_options</a>(<a href="#171">options</a>)
+        <a class="self" href="#175">self</a>.<a href="#322-337">parent_handle_local_options</a>(<a href="#175">options</a>)
     }
 }
 
-<span class="kw">mod </span>sealed {
-    <span class="kw">pub trait </span>Sealed {}
-    <span class="kw">impl</span>&lt;T: <a href="#181-335"><span class="kw">super</span>::ApplicationImplExt</a>&gt; <a href="#177">Sealed</a> <span class="kw">for </span>T {}
-}
-
-<span class="kw">pub trait </span><a href="../../../gio/subclass/prelude/trait.ApplicationImplExt.html">ApplicationImplExt</a>: <a href="#177">sealed::Sealed</a> + <a href="../../../glib/subclass/types/trait.ObjectSubclass.html">ObjectSubclass</a> {
+<span class="kw">pub trait </span><a href="../../../gio/subclass/prelude/trait.ApplicationImplExt.html">ApplicationImplExt</a>: <a href="../../../glib/subclass/types/trait.ObjectSubclass.html">ObjectSubclass</a> + <a href="#67-178">ApplicationImpl</a>
+<span class="kw">where
+    </span>&lt;<span class="self">Self </span><span class="kw">as </span>ObjectSubclass&gt;::Type: IsA&lt;<a href="../../../glib/object/struct.Object.html">glib::Object</a>&gt;,
+    &lt;<span class="self">Self </span><span class="kw">as </span>ObjectSubclass&gt;::Type: IsA&lt;<a href="../auto/application.rs.html#16-333">Application</a>&gt;,
+{
     <span class="kw">fn </span>parent_activate(<span class="kw-2">&amp;</span><span class="self">self</span>) {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>data = <a href="../../../glib/subclass/types/trait.ObjectSubclassType.html#tymethod.type_data"><span class="self">Self</span>::type_data</a>();
-            <span class="kw">let </span>parent_class = <a href="#184">data</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().<a href="../../../glib/subclass/types/struct.TypeData.html#method.parent_class">parent_class</a>() <span class="kw">as </span><span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GApplicationClass.html">ffi::GApplicationClass</a>;
-            <span class="kw">let </span>f = (<span class="kw-2">*</span><a href="#185">parent_class</a>)
+            <span class="kw">let </span>parent_class = <a href="#187">data</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().<a href="../../../glib/subclass/types/struct.TypeData.html#method.parent_class">parent_class</a>() <span class="kw">as </span><span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GApplicationClass.html">ffi::GApplicationClass</a>;
+            <span class="kw">let </span>f = (<span class="kw-2">*</span><a href="#188">parent_class</a>)
                 .activate
                 .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.expect">expect</a>(<span class="string">"No parent class implementation for \"activate\""</span>);
-            <a href="#186">f</a>(<a class="self" href="#182">self</a>.<a href="../../../glib/subclass/types/trait.ObjectSubclassExt.html#tymethod.obj">obj</a>().<a href="../../../glib/object/trait.Cast.html#tymethod.unsafe_cast_ref">unsafe_cast_ref</a>::&lt;<a href="../auto/application.rs.html#16-333">Application</a>&gt;().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>)
+            <a href="#189">f</a>(<a class="self" href="#185">self</a>.<a href="../../../glib/subclass/types/trait.ObjectSubclassExt.html#tymethod.obj">obj</a>().<a href="../../../glib/object/trait.Cast.html#tymethod.unsafe_cast_ref">unsafe_cast_ref</a>::&lt;<a href="../auto/application.rs.html#16-333">Application</a>&gt;().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>)
         }
     }
 
     <span class="kw">fn </span>parent_after_emit(<span class="kw-2">&amp;</span><span class="self">self</span>, platform_data: <span class="kw-2">&amp;</span><a href="../../../glib/variant/struct.Variant.html">glib::Variant</a>) {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>data = <a href="../../../glib/subclass/types/trait.ObjectSubclassType.html#tymethod.type_data"><span class="self">Self</span>::type_data</a>();
-            <span class="kw">let </span>parent_class = <a href="#195">data</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().<a href="../../../glib/subclass/types/struct.TypeData.html#method.parent_class">parent_class</a>() <span class="kw">as </span><span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GApplicationClass.html">ffi::GApplicationClass</a>;
-            <span class="kw">let </span>f = (<span class="kw-2">*</span><a href="#196">parent_class</a>)
+            <span class="kw">let </span>parent_class = <a href="#198">data</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().<a href="../../../glib/subclass/types/struct.TypeData.html#method.parent_class">parent_class</a>() <span class="kw">as </span><span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GApplicationClass.html">ffi::GApplicationClass</a>;
+            <span class="kw">let </span>f = (<span class="kw-2">*</span><a href="#199">parent_class</a>)
                 .after_emit
                 .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.expect">expect</a>(<span class="string">"No parent class implementation for \"after_emit\""</span>);
-            <a href="#197">f</a>(
-                <a class="self" href="#193">self</a>.<a href="../../../glib/subclass/types/trait.ObjectSubclassExt.html#tymethod.obj">obj</a>().<a href="../../../glib/object/trait.Cast.html#tymethod.unsafe_cast_ref">unsafe_cast_ref</a>::&lt;<a href="../auto/application.rs.html#16-333">Application</a>&gt;().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#193">platform_data</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+            <a href="#200">f</a>(
+                <a class="self" href="#196">self</a>.<a href="../../../glib/subclass/types/trait.ObjectSubclassExt.html#tymethod.obj">obj</a>().<a href="../../../glib/object/trait.Cast.html#tymethod.unsafe_cast_ref">unsafe_cast_ref</a>::&lt;<a href="../auto/application.rs.html#16-333">Application</a>&gt;().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#196">platform_data</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
             )
         }
     }
@@ -817,13 +873,13 @@
     <span class="kw">fn </span>parent_before_emit(<span class="kw-2">&amp;</span><span class="self">self</span>, platform_data: <span class="kw-2">&amp;</span><a href="../../../glib/variant/struct.Variant.html">glib::Variant</a>) {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>data = <a href="../../../glib/subclass/types/trait.ObjectSubclassType.html#tymethod.type_data"><span class="self">Self</span>::type_data</a>();
-            <span class="kw">let </span>parent_class = <a href="#209">data</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().<a href="../../../glib/subclass/types/struct.TypeData.html#method.parent_class">parent_class</a>() <span class="kw">as </span><span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GApplicationClass.html">ffi::GApplicationClass</a>;
-            <span class="kw">let </span>f = (<span class="kw-2">*</span><a href="#210">parent_class</a>)
+            <span class="kw">let </span>parent_class = <a href="#212">data</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().<a href="../../../glib/subclass/types/struct.TypeData.html#method.parent_class">parent_class</a>() <span class="kw">as </span><span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GApplicationClass.html">ffi::GApplicationClass</a>;
+            <span class="kw">let </span>f = (<span class="kw-2">*</span><a href="#213">parent_class</a>)
                 .before_emit
                 .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.expect">expect</a>(<span class="string">"No parent class implementation for \"before_emit\""</span>);
-            <a href="#211">f</a>(
-                <a class="self" href="#207">self</a>.<a href="../../../glib/subclass/types/trait.ObjectSubclassExt.html#tymethod.obj">obj</a>().<a href="../../../glib/object/trait.Cast.html#tymethod.unsafe_cast_ref">unsafe_cast_ref</a>::&lt;<a href="../auto/application.rs.html#16-333">Application</a>&gt;().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#207">platform_data</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+            <a href="#214">f</a>(
+                <a class="self" href="#210">self</a>.<a href="../../../glib/subclass/types/trait.ObjectSubclassExt.html#tymethod.obj">obj</a>().<a href="../../../glib/object/trait.Cast.html#tymethod.unsafe_cast_ref">unsafe_cast_ref</a>::&lt;<a href="../auto/application.rs.html#16-333">Application</a>&gt;().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#210">platform_data</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
             )
         }
     }
@@ -831,13 +887,13 @@
     <span class="kw">fn </span>parent_command_line(<span class="kw-2">&amp;</span><span class="self">self</span>, command_line: <span class="kw-2">&amp;</span><a href="../auto/application_command_line.rs.html#13-225"><span class="kw">crate</span>::ApplicationCommandLine</a>) -&gt; <a href="../../../glib/exit_code/struct.ExitCode.html">ExitCode</a> {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>data = <a href="../../../glib/subclass/types/trait.ObjectSubclassType.html#tymethod.type_data"><span class="self">Self</span>::type_data</a>();
-            <span class="kw">let </span>parent_class = <a href="#223">data</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().<a href="../../../glib/subclass/types/struct.TypeData.html#method.parent_class">parent_class</a>() <span class="kw">as </span><span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GApplicationClass.html">ffi::GApplicationClass</a>;
-            <span class="kw">let </span>f = (<span class="kw-2">*</span><a href="#224">parent_class</a>)
+            <span class="kw">let </span>parent_class = <a href="#226">data</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().<a href="../../../glib/subclass/types/struct.TypeData.html#method.parent_class">parent_class</a>() <span class="kw">as </span><span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GApplicationClass.html">ffi::GApplicationClass</a>;
+            <span class="kw">let </span>f = (<span class="kw-2">*</span><a href="#227">parent_class</a>)
                 .command_line
                 .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.expect">expect</a>(<span class="string">"No parent class implementation for \"command_line\""</span>);
-            <a href="#225">f</a>(
-                <a class="self" href="#221">self</a>.<a href="../../../glib/subclass/types/trait.ObjectSubclassExt.html#tymethod.obj">obj</a>().<a href="../../../glib/object/trait.Cast.html#tymethod.unsafe_cast_ref">unsafe_cast_ref</a>::&lt;<a href="../auto/application.rs.html#16-333">Application</a>&gt;().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#221">command_line</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+            <a href="#228">f</a>(
+                <a class="self" href="#224">self</a>.<a href="../../../glib/subclass/types/trait.ObjectSubclassExt.html#tymethod.obj">obj</a>().<a href="../../../glib/object/trait.Cast.html#tymethod.unsafe_cast_ref">unsafe_cast_ref</a>::&lt;<a href="../auto/application.rs.html#16-333">Application</a>&gt;().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#224">command_line</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
             )
             .<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>()
         }
@@ -846,22 +902,22 @@
     <span class="kw">fn </span>parent_local_command_line(<span class="kw-2">&amp;</span><span class="self">self</span>, arguments: <span class="kw-2">&amp;mut </span><a href="#10-13">ArgumentList</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="../../../glib/exit_code/struct.ExitCode.html">ExitCode</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>data = <a href="../../../glib/subclass/types/trait.ObjectSubclassType.html#tymethod.type_data"><span class="self">Self</span>::type_data</a>();
-            <span class="kw">let </span>parent_class = <a href="#238">data</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().<a href="../../../glib/subclass/types/struct.TypeData.html#method.parent_class">parent_class</a>() <span class="kw">as </span><span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GApplicationClass.html">ffi::GApplicationClass</a>;
-            <span class="kw">let </span>f = (<span class="kw-2">*</span><a href="#239">parent_class</a>)
+            <span class="kw">let </span>parent_class = <a href="#241">data</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().<a href="../../../glib/subclass/types/struct.TypeData.html#method.parent_class">parent_class</a>() <span class="kw">as </span><span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GApplicationClass.html">ffi::GApplicationClass</a>;
+            <span class="kw">let </span>f = (<span class="kw-2">*</span><a href="#242">parent_class</a>)
                 .local_command_line
                 .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.expect">expect</a>(<span class="string">"No parent class implementation for \"local_command_line\""</span>);
 
             <span class="kw">let </span><span class="kw-2">mut </span>exit_status = <span class="number">0</span>;
-            <span class="kw">let </span>res = <a href="#240">f</a>(
-                <a class="self" href="#236">self</a>.<a href="../../../glib/subclass/types/trait.ObjectSubclassExt.html#tymethod.obj">obj</a>().<a href="../../../glib/object/trait.Cast.html#tymethod.unsafe_cast_ref">unsafe_cast_ref</a>::&lt;<a href="../auto/application.rs.html#16-333">Application</a>&gt;().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#236">arguments</a>.ptr,
-                <span class="kw-2">&amp;mut </span><a href="#244">exit_status</a>,
+            <span class="kw">let </span>res = <a href="#243">f</a>(
+                <a class="self" href="#239">self</a>.<a href="../../../glib/subclass/types/trait.ObjectSubclassExt.html#tymethod.obj">obj</a>().<a href="../../../glib/object/trait.Cast.html#tymethod.unsafe_cast_ref">unsafe_cast_ref</a>::&lt;<a href="../auto/application.rs.html#16-333">Application</a>&gt;().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#239">arguments</a>.ptr,
+                <span class="kw-2">&amp;mut </span><a href="#247">exit_status</a>,
             );
-            <a href="#236">arguments</a>.<a href="#23-25">refresh</a>();
+            <a href="#239">arguments</a>.<a href="#23-25">refresh</a>();
 
-            <span class="kw">match </span><a href="#245">res</a> {
+            <span class="kw">match </span><a href="#248">res</a> {
                 <a href="../../../glib_sys/constant.GFALSE.html">glib::ffi::GFALSE</a> =&gt; <span class="prelude-val">None</span>,
-                <span class="kw">_ </span>=&gt; <span class="prelude-val">Some</span>(<a href="#244">exit_status</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>()),
+                <span class="kw">_ </span>=&gt; <span class="prelude-val">Some</span>(<a href="#247">exit_status</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>()),
             }
         }
     }
@@ -869,15 +925,15 @@
     <span class="kw">fn </span>parent_open(<span class="kw-2">&amp;</span><span class="self">self</span>, files: <span class="kw-2">&amp;</span>[<a href="../auto/file.rs.html#14-116"><span class="kw">crate</span>::File</a>], hint: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>data = <a href="../../../glib/subclass/types/trait.ObjectSubclassType.html#tymethod.type_data"><span class="self">Self</span>::type_data</a>();
-            <span class="kw">let </span>parent_class = <a href="#261">data</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().<a href="../../../glib/subclass/types/struct.TypeData.html#method.parent_class">parent_class</a>() <span class="kw">as </span><span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GApplicationClass.html">ffi::GApplicationClass</a>;
-            <span class="kw">let </span>f = (<span class="kw-2">*</span><a href="#262">parent_class</a>)
+            <span class="kw">let </span>parent_class = <a href="#264">data</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().<a href="../../../glib/subclass/types/struct.TypeData.html#method.parent_class">parent_class</a>() <span class="kw">as </span><span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GApplicationClass.html">ffi::GApplicationClass</a>;
+            <span class="kw">let </span>f = (<span class="kw-2">*</span><a href="#265">parent_class</a>)
                 .open
                 .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.expect">expect</a>(<span class="string">"No parent class implementation for \"open\""</span>);
-            <a href="#263">f</a>(
-                <a class="self" href="#259">self</a>.<a href="../../../glib/subclass/types/trait.ObjectSubclassExt.html#tymethod.obj">obj</a>().<a href="../../../glib/object/trait.Cast.html#tymethod.unsafe_cast_ref">unsafe_cast_ref</a>::&lt;<a href="../auto/application.rs.html#16-333">Application</a>&gt;().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#259">files</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#259">files</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.len">len</a>() <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
-                <a href="#259">hint</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+            <a href="#266">f</a>(
+                <a class="self" href="#262">self</a>.<a href="../../../glib/subclass/types/trait.ObjectSubclassExt.html#tymethod.obj">obj</a>().<a href="../../../glib/object/trait.Cast.html#tymethod.unsafe_cast_ref">unsafe_cast_ref</a>::&lt;<a href="../auto/application.rs.html#16-333">Application</a>&gt;().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#262">files</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#262">files</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.len">len</a>() <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
+                <a href="#262">hint</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
             )
         }
     }
@@ -885,55 +941,55 @@
     <span class="kw">fn </span>parent_quit_mainloop(<span class="kw-2">&amp;</span><span class="self">self</span>) {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>data = <a href="../../../glib/subclass/types/trait.ObjectSubclassType.html#tymethod.type_data"><span class="self">Self</span>::type_data</a>();
-            <span class="kw">let </span>parent_class = <a href="#277">data</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().<a href="../../../glib/subclass/types/struct.TypeData.html#method.parent_class">parent_class</a>() <span class="kw">as </span><span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GApplicationClass.html">ffi::GApplicationClass</a>;
-            <span class="kw">let </span>f = (<span class="kw-2">*</span><a href="#278">parent_class</a>)
+            <span class="kw">let </span>parent_class = <a href="#280">data</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().<a href="../../../glib/subclass/types/struct.TypeData.html#method.parent_class">parent_class</a>() <span class="kw">as </span><span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GApplicationClass.html">ffi::GApplicationClass</a>;
+            <span class="kw">let </span>f = (<span class="kw-2">*</span><a href="#281">parent_class</a>)
                 .quit_mainloop
                 .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.expect">expect</a>(<span class="string">"No parent class implementation for \"quit_mainloop\""</span>);
-            <a href="#279">f</a>(<a class="self" href="#275">self</a>.<a href="../../../glib/subclass/types/trait.ObjectSubclassExt.html#tymethod.obj">obj</a>().<a href="../../../glib/object/trait.Cast.html#tymethod.unsafe_cast_ref">unsafe_cast_ref</a>::&lt;<a href="../auto/application.rs.html#16-333">Application</a>&gt;().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>)
+            <a href="#282">f</a>(<a class="self" href="#278">self</a>.<a href="../../../glib/subclass/types/trait.ObjectSubclassExt.html#tymethod.obj">obj</a>().<a href="../../../glib/object/trait.Cast.html#tymethod.unsafe_cast_ref">unsafe_cast_ref</a>::&lt;<a href="../auto/application.rs.html#16-333">Application</a>&gt;().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>)
         }
     }
 
     <span class="kw">fn </span>parent_run_mainloop(<span class="kw-2">&amp;</span><span class="self">self</span>) {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>data = <a href="../../../glib/subclass/types/trait.ObjectSubclassType.html#tymethod.type_data"><span class="self">Self</span>::type_data</a>();
-            <span class="kw">let </span>parent_class = <a href="#288">data</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().<a href="../../../glib/subclass/types/struct.TypeData.html#method.parent_class">parent_class</a>() <span class="kw">as </span><span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GApplicationClass.html">ffi::GApplicationClass</a>;
-            <span class="kw">let </span>f = (<span class="kw-2">*</span><a href="#289">parent_class</a>)
+            <span class="kw">let </span>parent_class = <a href="#291">data</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().<a href="../../../glib/subclass/types/struct.TypeData.html#method.parent_class">parent_class</a>() <span class="kw">as </span><span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GApplicationClass.html">ffi::GApplicationClass</a>;
+            <span class="kw">let </span>f = (<span class="kw-2">*</span><a href="#292">parent_class</a>)
                 .run_mainloop
                 .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.expect">expect</a>(<span class="string">"No parent class implementation for \"run_mainloop\""</span>);
-            <a href="#290">f</a>(<a class="self" href="#286">self</a>.<a href="../../../glib/subclass/types/trait.ObjectSubclassExt.html#tymethod.obj">obj</a>().<a href="../../../glib/object/trait.Cast.html#tymethod.unsafe_cast_ref">unsafe_cast_ref</a>::&lt;<a href="../auto/application.rs.html#16-333">Application</a>&gt;().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>)
+            <a href="#293">f</a>(<a class="self" href="#289">self</a>.<a href="../../../glib/subclass/types/trait.ObjectSubclassExt.html#tymethod.obj">obj</a>().<a href="../../../glib/object/trait.Cast.html#tymethod.unsafe_cast_ref">unsafe_cast_ref</a>::&lt;<a href="../auto/application.rs.html#16-333">Application</a>&gt;().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>)
         }
     }
 
     <span class="kw">fn </span>parent_shutdown(<span class="kw-2">&amp;</span><span class="self">self</span>) {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>data = <a href="../../../glib/subclass/types/trait.ObjectSubclassType.html#tymethod.type_data"><span class="self">Self</span>::type_data</a>();
-            <span class="kw">let </span>parent_class = <a href="#299">data</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().<a href="../../../glib/subclass/types/struct.TypeData.html#method.parent_class">parent_class</a>() <span class="kw">as </span><span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GApplicationClass.html">ffi::GApplicationClass</a>;
-            <span class="kw">let </span>f = (<span class="kw-2">*</span><a href="#300">parent_class</a>)
+            <span class="kw">let </span>parent_class = <a href="#302">data</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().<a href="../../../glib/subclass/types/struct.TypeData.html#method.parent_class">parent_class</a>() <span class="kw">as </span><span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GApplicationClass.html">ffi::GApplicationClass</a>;
+            <span class="kw">let </span>f = (<span class="kw-2">*</span><a href="#303">parent_class</a>)
                 .shutdown
                 .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.expect">expect</a>(<span class="string">"No parent class implementation for \"shutdown\""</span>);
-            <a href="#301">f</a>(<a class="self" href="#297">self</a>.<a href="../../../glib/subclass/types/trait.ObjectSubclassExt.html#tymethod.obj">obj</a>().<a href="../../../glib/object/trait.Cast.html#tymethod.unsafe_cast_ref">unsafe_cast_ref</a>::&lt;<a href="../auto/application.rs.html#16-333">Application</a>&gt;().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>)
+            <a href="#304">f</a>(<a class="self" href="#300">self</a>.<a href="../../../glib/subclass/types/trait.ObjectSubclassExt.html#tymethod.obj">obj</a>().<a href="../../../glib/object/trait.Cast.html#tymethod.unsafe_cast_ref">unsafe_cast_ref</a>::&lt;<a href="../auto/application.rs.html#16-333">Application</a>&gt;().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>)
         }
     }
 
     <span class="kw">fn </span>parent_startup(<span class="kw-2">&amp;</span><span class="self">self</span>) {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>data = <a href="../../../glib/subclass/types/trait.ObjectSubclassType.html#tymethod.type_data"><span class="self">Self</span>::type_data</a>();
-            <span class="kw">let </span>parent_class = <a href="#310">data</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().<a href="../../../glib/subclass/types/struct.TypeData.html#method.parent_class">parent_class</a>() <span class="kw">as </span><span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GApplicationClass.html">ffi::GApplicationClass</a>;
-            <span class="kw">let </span>f = (<span class="kw-2">*</span><a href="#311">parent_class</a>)
+            <span class="kw">let </span>parent_class = <a href="#313">data</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().<a href="../../../glib/subclass/types/struct.TypeData.html#method.parent_class">parent_class</a>() <span class="kw">as </span><span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GApplicationClass.html">ffi::GApplicationClass</a>;
+            <span class="kw">let </span>f = (<span class="kw-2">*</span><a href="#314">parent_class</a>)
                 .startup
                 .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.expect">expect</a>(<span class="string">"No parent class implementation for \"startup\""</span>);
-            <a href="#312">f</a>(<a class="self" href="#308">self</a>.<a href="../../../glib/subclass/types/trait.ObjectSubclassExt.html#tymethod.obj">obj</a>().<a href="../../../glib/object/trait.Cast.html#tymethod.unsafe_cast_ref">unsafe_cast_ref</a>::&lt;<a href="../auto/application.rs.html#16-333">Application</a>&gt;().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>)
+            <a href="#315">f</a>(<a class="self" href="#311">self</a>.<a href="../../../glib/subclass/types/trait.ObjectSubclassExt.html#tymethod.obj">obj</a>().<a href="../../../glib/object/trait.Cast.html#tymethod.unsafe_cast_ref">unsafe_cast_ref</a>::&lt;<a href="../auto/application.rs.html#16-333">Application</a>&gt;().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>)
         }
     }
 
     <span class="kw">fn </span>parent_handle_local_options(<span class="kw-2">&amp;</span><span class="self">self</span>, options: <span class="kw-2">&amp;</span><a href="../../../glib/variant_dict/struct.VariantDict.html">VariantDict</a>) -&gt; <a href="../../../glib/exit_code/struct.ExitCode.html">ExitCode</a> {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>data = <a href="../../../glib/subclass/types/trait.ObjectSubclassType.html#tymethod.type_data"><span class="self">Self</span>::type_data</a>();
-            <span class="kw">let </span>parent_class = <a href="#321">data</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().<a href="../../../glib/subclass/types/struct.TypeData.html#method.parent_class">parent_class</a>() <span class="kw">as </span><span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GApplicationClass.html">ffi::GApplicationClass</a>;
-            <span class="kw">if let </span><span class="prelude-val">Some</span>(f) = (<span class="kw-2">*</span><a href="#322">parent_class</a>).handle_local_options {
-                <a href="#323">f</a>(
-                    <a class="self" href="#319">self</a>.<a href="../../../glib/subclass/types/trait.ObjectSubclassExt.html#tymethod.obj">obj</a>().<a href="../../../glib/object/trait.Cast.html#tymethod.unsafe_cast_ref">unsafe_cast_ref</a>::&lt;<a href="../auto/application.rs.html#16-333">Application</a>&gt;().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
-                    <a href="#319">options</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+            <span class="kw">let </span>parent_class = <a href="#324">data</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().<a href="../../../glib/subclass/types/struct.TypeData.html#method.parent_class">parent_class</a>() <span class="kw">as </span><span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GApplicationClass.html">ffi::GApplicationClass</a>;
+            <span class="kw">if let </span><span class="prelude-val">Some</span>(f) = (<span class="kw-2">*</span><a href="#325">parent_class</a>).handle_local_options {
+                <a href="#326">f</a>(
+                    <a class="self" href="#322">self</a>.<a href="../../../glib/subclass/types/trait.ObjectSubclassExt.html#tymethod.obj">obj</a>().<a href="../../../glib/object/trait.Cast.html#tymethod.unsafe_cast_ref">unsafe_cast_ref</a>::&lt;<a href="../auto/application.rs.html#16-333">Application</a>&gt;().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+                    <a href="#322">options</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
                 )
                 .<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>()
             } <span class="kw">else </span>{
@@ -944,126 +1000,176 @@
     }
 }
 
-<span class="kw">impl</span>&lt;T: <a href="#67-174">ApplicationImpl</a>&gt; <a href="#181-335">ApplicationImplExt</a> <span class="kw">for </span>T {}
+<span class="kw">impl</span>&lt;T: <a href="#67-178">ApplicationImpl</a>&gt; <a href="#180-338">ApplicationImplExt</a> <span class="kw">for </span>T
+<span class="kw">where
+    </span>&lt;T <span class="kw">as </span>ObjectSubclass&gt;::Type: IsA&lt;<a href="../../../glib/object/struct.Object.html">glib::Object</a>&gt;,
+    &lt;T <span class="kw">as </span>ObjectSubclass&gt;::Type: IsA&lt;<a href="../auto/application.rs.html#16-333">Application</a>&gt;,
+{
+}
 
-<span class="kw">unsafe impl</span>&lt;T: <a href="#67-174">ApplicationImpl</a>&gt; IsSubclassable&lt;T&gt; <span class="kw">for </span><a href="../auto/application.rs.html#16-333">Application</a> {
+<span class="kw">unsafe impl</span>&lt;T: <a href="#67-178">ApplicationImpl</a>&gt; IsSubclassable&lt;T&gt; <span class="kw">for </span><a href="../auto/application.rs.html#16-333">Application</a>
+<span class="kw">where
+    </span>&lt;T <span class="kw">as </span>ObjectSubclass&gt;::Type: IsA&lt;<a href="../../../glib/object/struct.Object.html">glib::Object</a>&gt;,
+    &lt;T <span class="kw">as </span>ObjectSubclass&gt;::Type: IsA&lt;<a href="../auto/application.rs.html#16-333">Application</a>&gt;,
+{
     <span class="kw">fn </span>class_init(class: <span class="kw-2">&amp;mut </span>::glib::Class&lt;<span class="self">Self</span>&gt;) {
-        <span class="self">Self</span>::parent_class_init::&lt;T&gt;(<a href="#340">class</a>);
+        <span class="self">Self</span>::parent_class_init::&lt;T&gt;(<a href="#352">class</a>);
 
-        <span class="kw">let </span>klass = <a href="#340">class</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsMut.html#tymethod.as_mut">as_mut</a>();
-        <a href="#343">klass</a>.activate = <span class="prelude-val">Some</span>(application_activate::&lt;T&gt;);
-        <a href="#343">klass</a>.after_emit = <span class="prelude-val">Some</span>(application_after_emit::&lt;T&gt;);
-        <a href="#343">klass</a>.before_emit = <span class="prelude-val">Some</span>(application_before_emit::&lt;T&gt;);
-        <a href="#343">klass</a>.command_line = <span class="prelude-val">Some</span>(application_command_line::&lt;T&gt;);
-        <a href="#343">klass</a>.local_command_line = <span class="prelude-val">Some</span>(application_local_command_line::&lt;T&gt;);
-        <a href="#343">klass</a>.open = <span class="prelude-val">Some</span>(application_open::&lt;T&gt;);
-        <a href="#343">klass</a>.quit_mainloop = <span class="prelude-val">Some</span>(application_quit_mainloop::&lt;T&gt;);
-        <a href="#343">klass</a>.run_mainloop = <span class="prelude-val">Some</span>(application_run_mainloop::&lt;T&gt;);
-        <a href="#343">klass</a>.shutdown = <span class="prelude-val">Some</span>(application_shutdown::&lt;T&gt;);
-        <a href="#343">klass</a>.startup = <span class="prelude-val">Some</span>(application_startup::&lt;T&gt;);
-        <a href="#343">klass</a>.handle_local_options = <span class="prelude-val">Some</span>(application_handle_local_options::&lt;T&gt;);
+        <span class="kw">let </span>klass = <a href="#352">class</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsMut.html#tymethod.as_mut">as_mut</a>();
+        <a href="#355">klass</a>.activate = <span class="prelude-val">Some</span>(application_activate::&lt;T&gt;);
+        <a href="#355">klass</a>.after_emit = <span class="prelude-val">Some</span>(application_after_emit::&lt;T&gt;);
+        <a href="#355">klass</a>.before_emit = <span class="prelude-val">Some</span>(application_before_emit::&lt;T&gt;);
+        <a href="#355">klass</a>.command_line = <span class="prelude-val">Some</span>(application_command_line::&lt;T&gt;);
+        <a href="#355">klass</a>.local_command_line = <span class="prelude-val">Some</span>(application_local_command_line::&lt;T&gt;);
+        <a href="#355">klass</a>.open = <span class="prelude-val">Some</span>(application_open::&lt;T&gt;);
+        <a href="#355">klass</a>.quit_mainloop = <span class="prelude-val">Some</span>(application_quit_mainloop::&lt;T&gt;);
+        <a href="#355">klass</a>.run_mainloop = <span class="prelude-val">Some</span>(application_run_mainloop::&lt;T&gt;);
+        <a href="#355">klass</a>.shutdown = <span class="prelude-val">Some</span>(application_shutdown::&lt;T&gt;);
+        <a href="#355">klass</a>.startup = <span class="prelude-val">Some</span>(application_startup::&lt;T&gt;);
+        <a href="#355">klass</a>.handle_local_options = <span class="prelude-val">Some</span>(application_handle_local_options::&lt;T&gt;);
     }
 }
 
-<span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>application_activate&lt;T: <a href="#67-174">ApplicationImpl</a>&gt;(ptr: <span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GApplication.html">ffi::GApplication</a>) {
-    <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(<a href="#358">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
-    <span class="kw">let </span>imp = <a href="#359">instance</a>.<a href="../../../glib/subclass/types/trait.InstanceStructExt.html#tymethod.imp">imp</a>();
+<span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>application_activate&lt;T: <a href="#67-178">ApplicationImpl</a>&gt;(ptr: <span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GApplication.html">ffi::GApplication</a>)
+<span class="kw">where
+    </span>&lt;T <span class="kw">as </span>ObjectSubclass&gt;::Type: IsA&lt;<a href="../../../glib/object/struct.Object.html">glib::Object</a>&gt;,
+    &lt;T <span class="kw">as </span>ObjectSubclass&gt;::Type: IsA&lt;<a href="../auto/application.rs.html#16-333">Application</a>&gt;,
+{
+    <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(<a href="#370">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
+    <span class="kw">let </span>imp = <a href="#375">instance</a>.<a href="../../../glib/subclass/types/trait.InstanceStructExt.html#tymethod.imp">imp</a>();
 
-    <a href="#360">imp</a>.<a href="#74-76">activate</a>()
+    <a href="#376">imp</a>.<a href="#78-80">activate</a>()
 }
 
-<span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>application_after_emit&lt;T: <a href="#67-174">ApplicationImpl</a>&gt;(
+<span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>application_after_emit&lt;T: <a href="#67-178">ApplicationImpl</a>&gt;(
     ptr: <span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GApplication.html">ffi::GApplication</a>,
     platform_data: <span class="kw-2">*mut </span><a href="../../../glib_sys/struct.GVariant.html">glib::ffi::GVariant</a>,
-) {
-    <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(<a href="#366">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
-    <span class="kw">let </span>imp = <a href="#369">instance</a>.<a href="../../../glib/subclass/types/trait.InstanceStructExt.html#tymethod.imp">imp</a>();
+) <span class="kw">where
+    </span>&lt;T <span class="kw">as </span>ObjectSubclass&gt;::Type: IsA&lt;<a href="../../../glib/object/struct.Object.html">glib::Object</a>&gt;,
+    &lt;T <span class="kw">as </span>ObjectSubclass&gt;::Type: IsA&lt;<a href="../auto/application.rs.html#16-333">Application</a>&gt;,
+{
+    <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(<a href="#382">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
+    <span class="kw">let </span>imp = <a href="#388">instance</a>.<a href="../../../glib/subclass/types/trait.InstanceStructExt.html#tymethod.imp">imp</a>();
 
-    <a href="#370">imp</a>.<a href="#81-83">after_emit</a>(<span class="kw-2">&amp;</span><a href="../../../glib/translate/fn.from_glib_borrow.html">from_glib_borrow</a>(<a href="#367">platform_data</a>))
+    <a href="#389">imp</a>.<a href="#85-87">after_emit</a>(<span class="kw-2">&amp;</span><a href="../../../glib/translate/fn.from_glib_borrow.html">from_glib_borrow</a>(<a href="#383">platform_data</a>))
 }
-<span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>application_before_emit&lt;T: <a href="#67-174">ApplicationImpl</a>&gt;(
+<span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>application_before_emit&lt;T: <a href="#67-178">ApplicationImpl</a>&gt;(
     ptr: <span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GApplication.html">ffi::GApplication</a>,
     platform_data: <span class="kw-2">*mut </span><a href="../../../glib_sys/struct.GVariant.html">glib::ffi::GVariant</a>,
-) {
-    <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(<a href="#375">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
-    <span class="kw">let </span>imp = <a href="#378">instance</a>.<a href="../../../glib/subclass/types/trait.InstanceStructExt.html#tymethod.imp">imp</a>();
+) <span class="kw">where
+    </span>&lt;T <span class="kw">as </span>ObjectSubclass&gt;::Type: IsA&lt;<a href="../../../glib/object/struct.Object.html">glib::Object</a>&gt;,
+    &lt;T <span class="kw">as </span>ObjectSubclass&gt;::Type: IsA&lt;<a href="../auto/application.rs.html#16-333">Application</a>&gt;,
+{
+    <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(<a href="#394">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
+    <span class="kw">let </span>imp = <a href="#400">instance</a>.<a href="../../../glib/subclass/types/trait.InstanceStructExt.html#tymethod.imp">imp</a>();
 
-    <a href="#379">imp</a>.<a href="#88-90">before_emit</a>(<span class="kw-2">&amp;</span><a href="../../../glib/translate/fn.from_glib_borrow.html">from_glib_borrow</a>(<a href="#376">platform_data</a>))
+    <a href="#401">imp</a>.<a href="#92-94">before_emit</a>(<span class="kw-2">&amp;</span><a href="../../../glib/translate/fn.from_glib_borrow.html">from_glib_borrow</a>(<a href="#395">platform_data</a>))
 }
-<span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>application_command_line&lt;T: <a href="#67-174">ApplicationImpl</a>&gt;(
+<span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>application_command_line&lt;T: <a href="#67-178">ApplicationImpl</a>&gt;(
     ptr: <span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GApplication.html">ffi::GApplication</a>,
     command_line: <span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GApplicationCommandLine.html">ffi::GApplicationCommandLine</a>,
-) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a> {
-    <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(<a href="#384">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
-    <span class="kw">let </span>imp = <a href="#387">instance</a>.<a href="../../../glib/subclass/types/trait.InstanceStructExt.html#tymethod.imp">imp</a>();
+) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>
+<span class="kw">where
+    </span>&lt;T <span class="kw">as </span>ObjectSubclass&gt;::Type: IsA&lt;<a href="../../../glib/object/struct.Object.html">glib::Object</a>&gt;,
+    &lt;T <span class="kw">as </span>ObjectSubclass&gt;::Type: IsA&lt;<a href="../auto/application.rs.html#16-333">Application</a>&gt;,
+{
+    <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(<a href="#406">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
+    <span class="kw">let </span>imp = <a href="#413">instance</a>.<a href="../../../glib/subclass/types/trait.InstanceStructExt.html#tymethod.imp">imp</a>();
 
-    <a href="#388">imp</a>.<a href="#94-96">command_line</a>(<span class="kw-2">&amp;</span><a href="../../../glib/translate/fn.from_glib_borrow.html">from_glib_borrow</a>(<a href="#385">command_line</a>)).<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>()
+    <a href="#414">imp</a>.<a href="#98-100">command_line</a>(<span class="kw-2">&amp;</span><a href="../../../glib/translate/fn.from_glib_borrow.html">from_glib_borrow</a>(<a href="#407">command_line</a>)).<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>()
 }
-<span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>application_local_command_line&lt;T: <a href="#67-174">ApplicationImpl</a>&gt;(
+<span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>application_local_command_line&lt;T: <a href="#67-178">ApplicationImpl</a>&gt;(
     ptr: <span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GApplication.html">ffi::GApplication</a>,
     arguments: <span class="kw-2">*mut *mut *mut </span>c_char,
     exit_status: <span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
-) -&gt; <a href="../../../glib_sys/type.gboolean.html">glib::ffi::gboolean</a> {
-    <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(<a href="#393">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
-    <span class="kw">let </span>imp = <a href="#397">instance</a>.<a href="../../../glib/subclass/types/trait.InstanceStructExt.html#tymethod.imp">imp</a>();
+) -&gt; <a href="../../../glib_sys/type.gboolean.html">glib::ffi::gboolean</a>
+<span class="kw">where
+    </span>&lt;T <span class="kw">as </span>ObjectSubclass&gt;::Type: IsA&lt;<a href="../../../glib/object/struct.Object.html">glib::Object</a>&gt;,
+    &lt;T <span class="kw">as </span>ObjectSubclass&gt;::Type: IsA&lt;<a href="../auto/application.rs.html#16-333">Application</a>&gt;,
+{
+    <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(<a href="#419">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
+    <span class="kw">let </span>imp = <a href="#427">instance</a>.<a href="../../../glib/subclass/types/trait.InstanceStructExt.html#tymethod.imp">imp</a>();
 
-    <span class="kw">let </span><span class="kw-2">mut </span>args = <a href="#16-21">ArgumentList::new</a>(<a href="#394">arguments</a>);
-    <span class="kw">let </span>res = <a href="#398">imp</a>.<a href="#117-119">local_command_line</a>(<span class="kw-2">&amp;mut </span><a href="#400">args</a>).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(i32::from);
-    <a href="#400">args</a>.<a href="#23-25">refresh</a>();
+    <span class="kw">let </span><span class="kw-2">mut </span>args = <a href="#16-21">ArgumentList::new</a>(<a href="#420">arguments</a>);
+    <span class="kw">let </span>res = <a href="#428">imp</a>.<a href="#121-123">local_command_line</a>(<span class="kw-2">&amp;mut </span><a href="#430">args</a>).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(i32::from);
+    <a href="#430">args</a>.<a href="#23-25">refresh</a>();
 
-    <span class="kw">match </span><a href="#401">res</a> {
+    <span class="kw">match </span><a href="#431">res</a> {
         <span class="prelude-val">Some</span>(ret) =&gt; {
-            <span class="kw-2">*</span><a href="#395">exit_status</a> = <a href="#405">ret</a>;
+            <span class="kw-2">*</span><a href="#421">exit_status</a> = <a href="#435">ret</a>;
             <a href="../../../glib_sys/constant.GTRUE.html">glib::ffi::GTRUE</a>
         }
         <span class="prelude-val">None </span>=&gt; <a href="../../../glib_sys/constant.GFALSE.html">glib::ffi::GFALSE</a>,
     }
 }
-<span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>application_open&lt;T: <a href="#67-174">ApplicationImpl</a>&gt;(
+<span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>application_open&lt;T: <a href="#67-178">ApplicationImpl</a>&gt;(
     ptr: <span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GApplication.html">ffi::GApplication</a>,
     files: <span class="kw-2">*mut *mut </span><a href="../../../gio_sys/struct.GFile.html">ffi::GFile</a>,
     num_files: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
     hint: <span class="kw-2">*const </span>c_char,
-) {
-    <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(<a href="#413">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
-    <span class="kw">let </span>imp = <a href="#418">instance</a>.<a href="../../../glib/subclass/types/trait.InstanceStructExt.html#tymethod.imp">imp</a>();
+) <span class="kw">where
+    </span>&lt;T <span class="kw">as </span>ObjectSubclass&gt;::Type: IsA&lt;<a href="../../../glib/object/struct.Object.html">glib::Object</a>&gt;,
+    &lt;T <span class="kw">as </span>ObjectSubclass&gt;::Type: IsA&lt;<a href="../auto/application.rs.html#16-333">Application</a>&gt;,
+{
+    <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(<a href="#443">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
+    <span class="kw">let </span>imp = <a href="#451">instance</a>.<a href="../../../glib/subclass/types/trait.InstanceStructExt.html#tymethod.imp">imp</a>();
 
-    <span class="kw">let </span>files: Vec&lt;<a href="../auto/file.rs.html#14-116"><span class="kw">crate</span>::File</a>&gt; = <a href="../../../glib/translate/trait.FromGlibContainer.html#tymethod.from_glib_none_num">FromGlibContainer::from_glib_none_num</a>(<a href="#414">files</a>, <a href="#415">num_files</a> <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>);
-    <a href="#419">imp</a>.<a href="#139-141">open</a>(<a href="#421">files</a>.<a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.as_slice">as_slice</a>(), <span class="kw-2">&amp;</span><a href="../../../glib/translate/trait.FromGlibPtrBorrow.html#tymethod.from_glib_borrow">glib::GString::from_glib_borrow</a>(<a href="#416">hint</a>))
+    <span class="kw">let </span>files: Vec&lt;<a href="../auto/file.rs.html#14-116"><span class="kw">crate</span>::File</a>&gt; = <a href="../../../glib/translate/trait.FromGlibContainer.html#tymethod.from_glib_none_num">FromGlibContainer::from_glib_none_num</a>(<a href="#444">files</a>, <a href="#445">num_files</a> <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>);
+    <a href="#452">imp</a>.<a href="#143-145">open</a>(<a href="#454">files</a>.<a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.as_slice">as_slice</a>(), <span class="kw-2">&amp;</span><a href="../../../glib/translate/trait.FromGlibPtrBorrow.html#tymethod.from_glib_borrow">glib::GString::from_glib_borrow</a>(<a href="#446">hint</a>))
 }
-<span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>application_quit_mainloop&lt;T: <a href="#67-174">ApplicationImpl</a>&gt;(ptr: <span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GApplication.html">ffi::GApplication</a>) {
-    <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(<a href="#424">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
-    <span class="kw">let </span>imp = <a href="#425">instance</a>.<a href="../../../glib/subclass/types/trait.InstanceStructExt.html#tymethod.imp">imp</a>();
+<span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>application_quit_mainloop&lt;T: <a href="#67-178">ApplicationImpl</a>&gt;(ptr: <span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GApplication.html">ffi::GApplication</a>)
+<span class="kw">where
+    </span>&lt;T <span class="kw">as </span>ObjectSubclass&gt;::Type: IsA&lt;<a href="../../../glib/object/struct.Object.html">glib::Object</a>&gt;,
+    &lt;T <span class="kw">as </span>ObjectSubclass&gt;::Type: IsA&lt;<a href="../auto/application.rs.html#16-333">Application</a>&gt;,
+{
+    <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(<a href="#457">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
+    <span class="kw">let </span>imp = <a href="#462">instance</a>.<a href="../../../glib/subclass/types/trait.InstanceStructExt.html#tymethod.imp">imp</a>();
 
-    <a href="#426">imp</a>.<a href="#146-148">quit_mainloop</a>()
+    <a href="#463">imp</a>.<a href="#150-152">quit_mainloop</a>()
 }
-<span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>application_run_mainloop&lt;T: <a href="#67-174">ApplicationImpl</a>&gt;(ptr: <span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GApplication.html">ffi::GApplication</a>) {
-    <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(<a href="#430">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
-    <span class="kw">let </span>imp = <a href="#431">instance</a>.<a href="../../../glib/subclass/types/trait.InstanceStructExt.html#tymethod.imp">imp</a>();
+<span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>application_run_mainloop&lt;T: <a href="#67-178">ApplicationImpl</a>&gt;(ptr: <span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GApplication.html">ffi::GApplication</a>)
+<span class="kw">where
+    </span>&lt;T <span class="kw">as </span>ObjectSubclass&gt;::Type: IsA&lt;<a href="../../../glib/object/struct.Object.html">glib::Object</a>&gt;,
+    &lt;T <span class="kw">as </span>ObjectSubclass&gt;::Type: IsA&lt;<a href="../auto/application.rs.html#16-333">Application</a>&gt;,
+{
+    <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(<a href="#467">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
+    <span class="kw">let </span>imp = <a href="#472">instance</a>.<a href="../../../glib/subclass/types/trait.InstanceStructExt.html#tymethod.imp">imp</a>();
 
-    <a href="#432">imp</a>.<a href="#154-156">run_mainloop</a>()
+    <a href="#473">imp</a>.<a href="#158-160">run_mainloop</a>()
 }
-<span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>application_shutdown&lt;T: <a href="#67-174">ApplicationImpl</a>&gt;(ptr: <span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GApplication.html">ffi::GApplication</a>) {
-    <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(<a href="#436">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
-    <span class="kw">let </span>imp = <a href="#437">instance</a>.<a href="../../../glib/subclass/types/trait.InstanceStructExt.html#tymethod.imp">imp</a>();
+<span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>application_shutdown&lt;T: <a href="#67-178">ApplicationImpl</a>&gt;(ptr: <span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GApplication.html">ffi::GApplication</a>)
+<span class="kw">where
+    </span>&lt;T <span class="kw">as </span>ObjectSubclass&gt;::Type: IsA&lt;<a href="../../../glib/object/struct.Object.html">glib::Object</a>&gt;,
+    &lt;T <span class="kw">as </span>ObjectSubclass&gt;::Type: IsA&lt;<a href="../auto/application.rs.html#16-333">Application</a>&gt;,
+{
+    <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(<a href="#477">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
+    <span class="kw">let </span>imp = <a href="#482">instance</a>.<a href="../../../glib/subclass/types/trait.InstanceStructExt.html#tymethod.imp">imp</a>();
 
-    <a href="#438">imp</a>.<a href="#160-162">shutdown</a>()
+    <a href="#483">imp</a>.<a href="#164-166">shutdown</a>()
 }
-<span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>application_startup&lt;T: <a href="#67-174">ApplicationImpl</a>&gt;(ptr: <span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GApplication.html">ffi::GApplication</a>) {
-    <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(<a href="#442">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
-    <span class="kw">let </span>imp = <a href="#443">instance</a>.<a href="../../../glib/subclass/types/trait.InstanceStructExt.html#tymethod.imp">imp</a>();
+<span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>application_startup&lt;T: <a href="#67-178">ApplicationImpl</a>&gt;(ptr: <span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GApplication.html">ffi::GApplication</a>)
+<span class="kw">where
+    </span>&lt;T <span class="kw">as </span>ObjectSubclass&gt;::Type: IsA&lt;<a href="../../../glib/object/struct.Object.html">glib::Object</a>&gt;,
+    &lt;T <span class="kw">as </span>ObjectSubclass&gt;::Type: IsA&lt;<a href="../auto/application.rs.html#16-333">Application</a>&gt;,
+{
+    <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(<a href="#487">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
+    <span class="kw">let </span>imp = <a href="#492">instance</a>.<a href="../../../glib/subclass/types/trait.InstanceStructExt.html#tymethod.imp">imp</a>();
 
-    <a href="#444">imp</a>.<a href="#165-167">startup</a>()
+    <a href="#493">imp</a>.<a href="#169-171">startup</a>()
 }
 
-<span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>application_handle_local_options&lt;T: <a href="#67-174">ApplicationImpl</a>&gt;(
+<span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>application_handle_local_options&lt;T: <a href="#67-178">ApplicationImpl</a>&gt;(
     ptr: <span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GApplication.html">ffi::GApplication</a>,
     options: <span class="kw-2">*mut </span><a href="../../../glib_sys/struct.GVariantDict.html">glib::ffi::GVariantDict</a>,
-) -&gt; c_int {
-    <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(<a href="#450">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
-    <span class="kw">let </span>imp = <a href="#453">instance</a>.<a href="../../../glib/subclass/types/trait.InstanceStructExt.html#tymethod.imp">imp</a>();
+) -&gt; c_int
+<span class="kw">where
+    </span>&lt;T <span class="kw">as </span>ObjectSubclass&gt;::Type: IsA&lt;<a href="../../../glib/object/struct.Object.html">glib::Object</a>&gt;,
+    &lt;T <span class="kw">as </span>ObjectSubclass&gt;::Type: IsA&lt;<a href="../auto/application.rs.html#16-333">Application</a>&gt;,
+{
+    <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(<a href="#499">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
+    <span class="kw">let </span>imp = <a href="#506">instance</a>.<a href="../../../glib/subclass/types/trait.InstanceStructExt.html#tymethod.imp">imp</a>();
 
-    <a href="#454">imp</a>.<a href="#171-173">handle_local_options</a>(<span class="kw-2">&amp;</span><a href="../../../glib/translate/fn.from_glib_borrow.html">from_glib_borrow</a>(<a href="#451">options</a>)).<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>()
+    <a href="#507">imp</a>.<a href="#175-177">handle_local_options</a>(<span class="kw-2">&amp;</span><a href="../../../glib/translate/fn.from_glib_borrow.html">from_glib_borrow</a>(<a href="#500">options</a>)).<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>()
 }
 
 <span class="attr">#[cfg(test)]

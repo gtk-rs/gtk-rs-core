@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gdk-pixbuf/src/subclass/pixbuf_loader.rs`."><title>pixbuf_loader.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-b778ab399e080a4b.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gdk_pixbuf" data-themes="" data-resource-suffix="" data-rustdoc-version="1.83.0-nightly (7608018cb 2024-09-29)" data-channel="nightly" data-search-js="search-e056c65ede92db13.js" data-settings-js="settings-805db61a62df4bd2.js" ><script src="../../../static.files/storage-1d39b6787ed640ff.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-54bc299d2a5e4e43.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-0111fcff984fae8f.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gdk-pixbuf/src/subclass/pixbuf_loader.rs`."><title>pixbuf_loader.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-d5c83a227aeda803.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gdk_pixbuf" data-themes="" data-resource-suffix="" data-rustdoc-version="1.83.0-nightly (18b1161ec 2024-10-02)" data-channel="nightly" data-search-js="search-e056c65ede92db13.js" data-settings-js="settings-805db61a62df4bd2.js" ><script src="../../../static.files/storage-1d39b6787ed640ff.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-f070b9041d14864c.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-0111fcff984fae8f.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -220,7 +220,33 @@
 <a href="#146" id="146">146</a>
 <a href="#147" id="147">147</a>
 <a href="#148" id="148">148</a>
-<a href="#149" id="149">149</a></pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
+<a href="#149" id="149">149</a>
+<a href="#150" id="150">150</a>
+<a href="#151" id="151">151</a>
+<a href="#152" id="152">152</a>
+<a href="#153" id="153">153</a>
+<a href="#154" id="154">154</a>
+<a href="#155" id="155">155</a>
+<a href="#156" id="156">156</a>
+<a href="#157" id="157">157</a>
+<a href="#158" id="158">158</a>
+<a href="#159" id="159">159</a>
+<a href="#160" id="160">160</a>
+<a href="#161" id="161">161</a>
+<a href="#162" id="162">162</a>
+<a href="#163" id="163">163</a>
+<a href="#164" id="164">164</a>
+<a href="#165" id="165">165</a>
+<a href="#166" id="166">166</a>
+<a href="#167" id="167">167</a>
+<a href="#168" id="168">168</a>
+<a href="#169" id="169">169</a>
+<a href="#170" id="170">170</a>
+<a href="#171" id="171">171</a>
+<a href="#172" id="172">172</a>
+<a href="#173" id="173">173</a>
+<a href="#174" id="174">174</a>
+<a href="#175" id="175">175</a></pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
 // rustdoc-stripper-ignore-next
 </span><span class="doccomment">//! Traits intended for subclassing [`PixbufLoader`].
@@ -229,42 +255,45 @@
 
 <span class="kw">use crate</span>::{<a href="../../../gdk_pixbuf_sys/index.html">ffi</a>, <a href="../auto/pixbuf_loader.rs.html#13-117">PixbufLoader</a>};
 
-<span class="kw">pub trait </span><a href="../../../gdk_pixbuf/subclass/pixbuf_loader/trait.PixbufLoaderImpl.html">PixbufLoaderImpl</a>: <a href="../../../gdk_pixbuf/subclass/prelude/trait.ObjectImpl.html">ObjectImpl</a> {
+<span class="kw">pub trait </span><a href="../../../gdk_pixbuf/subclass/pixbuf_loader/trait.PixbufLoaderImpl.html">PixbufLoaderImpl</a>: <a href="../../../gdk_pixbuf/subclass/prelude/trait.ObjectImpl.html">ObjectImpl</a>
+<span class="kw">where
+    </span>&lt;<span class="self">Self </span><span class="kw">as </span>ObjectSubclass&gt;::Type: IsA&lt;<a href="../../../glib/object/struct.Object.html">glib::Object</a>&gt;,
+    &lt;<span class="self">Self </span><span class="kw">as </span>ObjectSubclass&gt;::Type: IsA&lt;<a href="../auto/pixbuf_loader.rs.html#13-117">PixbufLoader</a>&gt;,
+{
     <span class="kw">fn </span>size_prepared(<span class="kw-2">&amp;</span><span class="self">self</span>, width: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>, height: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>) {
-        <a class="self" href="#11">self</a>.<a href="#34-49">parent_size_prepared</a>(<a href="#11">width</a>, <a href="#11">height</a>)
+        <a class="self" href="#15">self</a>.<a href="#37-52">parent_size_prepared</a>(<a href="#15">width</a>, <a href="#15">height</a>)
     }
 
     <span class="kw">fn </span>area_prepared(<span class="kw-2">&amp;</span><span class="self">self</span>) {
-        <a class="self" href="#15">self</a>.<a href="#51-63">parent_area_prepared</a>()
+        <a class="self" href="#19">self</a>.<a href="#54-66">parent_area_prepared</a>()
     }
 
     <span class="kw">fn </span>area_updated(<span class="kw-2">&amp;</span><span class="self">self</span>, x: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>, y: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>, width: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>, height: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>) {
-        <a class="self" href="#19">self</a>.<a href="#65-82">parent_area_updated</a>(<a href="#19">x</a>, <a href="#19">y</a>, <a href="#19">width</a>, <a href="#19">height</a>)
+        <a class="self" href="#23">self</a>.<a href="#68-85">parent_area_updated</a>(<a href="#23">x</a>, <a href="#23">y</a>, <a href="#23">width</a>, <a href="#23">height</a>)
     }
 
     <span class="kw">fn </span>closed(<span class="kw-2">&amp;</span><span class="self">self</span>) {
-        <a class="self" href="#23">self</a>.<a href="#84-96">parent_closed</a>()
+        <a class="self" href="#27">self</a>.<a href="#87-99">parent_closed</a>()
     }
 }
 
-<span class="kw">mod </span>sealed {
-    <span class="kw">pub trait </span>Sealed {}
-    <span class="kw">impl</span>&lt;T: <a href="#33-97"><span class="kw">super</span>::PixbufLoaderImplExt</a>&gt; <a href="#29">Sealed</a> <span class="kw">for </span>T {}
-}
-
-<span class="kw">pub trait </span><a href="../../../gdk_pixbuf/subclass/pixbuf_loader/trait.PixbufLoaderImplExt.html">PixbufLoaderImplExt</a>: <a href="#29">sealed::Sealed</a> + <a href="../../../gdk_pixbuf/subclass/prelude/trait.ObjectSubclass.html">ObjectSubclass</a> {
+<span class="kw">pub trait </span><a href="../../../gdk_pixbuf/subclass/pixbuf_loader/trait.PixbufLoaderImplExt.html">PixbufLoaderImplExt</a>: <a href="../../../gdk_pixbuf/subclass/prelude/trait.ObjectSubclass.html">ObjectSubclass</a> + <a href="#10-30">PixbufLoaderImpl</a>
+<span class="kw">where
+    </span>&lt;<span class="self">Self </span><span class="kw">as </span>ObjectSubclass&gt;::Type: IsA&lt;<a href="../../../glib/object/struct.Object.html">glib::Object</a>&gt;,
+    &lt;<span class="self">Self </span><span class="kw">as </span>ObjectSubclass&gt;::Type: IsA&lt;<a href="../auto/pixbuf_loader.rs.html#13-117">PixbufLoader</a>&gt;,
+{
     <span class="kw">fn </span>parent_size_prepared(<span class="kw-2">&amp;</span><span class="self">self</span>, width: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>, height: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>) {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>data = <a href="../../../gdk_pixbuf/subclass/prelude/trait.ObjectSubclassType.html"><span class="self">Self</span>::type_data</a>();
-            <span class="kw">let </span>parent_class = <a href="#36">data</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().<a href="../../../glib/subclass/types/struct.TypeData.html#method.parent_class">parent_class</a>() <span class="kw">as </span><span class="kw-2">*mut </span><a href="../../../gdk_pixbuf_sys/struct.GdkPixbufLoaderClass.html">ffi::GdkPixbufLoaderClass</a>;
-            <span class="kw">if let </span><span class="prelude-val">Some</span>(f) = (<span class="kw-2">*</span><a href="#37">parent_class</a>).size_prepared {
-                <a href="#38">f</a>(
-                    <a class="self" href="#34">self</a>.<a href="../../../gdk_pixbuf/subclass/prelude/trait.ObjectSubclassExt.html">obj</a>()
+            <span class="kw">let </span>parent_class = <a href="#39">data</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().<a href="../../../glib/subclass/types/struct.TypeData.html#method.parent_class">parent_class</a>() <span class="kw">as </span><span class="kw-2">*mut </span><a href="../../../gdk_pixbuf_sys/struct.GdkPixbufLoaderClass.html">ffi::GdkPixbufLoaderClass</a>;
+            <span class="kw">if let </span><span class="prelude-val">Some</span>(f) = (<span class="kw-2">*</span><a href="#40">parent_class</a>).size_prepared {
+                <a href="#41">f</a>(
+                    <a class="self" href="#37">self</a>.<a href="../../../gdk_pixbuf/subclass/prelude/trait.ObjectSubclassExt.html">obj</a>()
                         .<a href="../../../glib/object/trait.Cast.html#tymethod.unsafe_cast_ref">unsafe_cast_ref</a>::&lt;<a href="../auto/pixbuf_loader.rs.html#13-117">PixbufLoader</a>&gt;()
                         .<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>()
                         .<span class="number">0</span>,
-                    <a href="#34">width</a>,
-                    <a href="#34">height</a>,
+                    <a href="#37">width</a>,
+                    <a href="#37">height</a>,
                 )
             }
         }
@@ -273,9 +302,9 @@
     <span class="kw">fn </span>parent_area_prepared(<span class="kw-2">&amp;</span><span class="self">self</span>) {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>data = <a href="../../../gdk_pixbuf/subclass/prelude/trait.ObjectSubclassType.html"><span class="self">Self</span>::type_data</a>();
-            <span class="kw">let </span>parent_class = <a href="#53">data</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().<a href="../../../glib/subclass/types/struct.TypeData.html#method.parent_class">parent_class</a>() <span class="kw">as </span><span class="kw-2">*mut </span><a href="../../../gdk_pixbuf_sys/struct.GdkPixbufLoaderClass.html">ffi::GdkPixbufLoaderClass</a>;
-            <span class="kw">if let </span><span class="prelude-val">Some</span>(f) = (<span class="kw-2">*</span><a href="#54">parent_class</a>).area_prepared {
-                <a href="#55">f</a>(<span class="self"><a href="#51">self</a>
+            <span class="kw">let </span>parent_class = <a href="#56">data</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().<a href="../../../glib/subclass/types/struct.TypeData.html#method.parent_class">parent_class</a>() <span class="kw">as </span><span class="kw-2">*mut </span><a href="../../../gdk_pixbuf_sys/struct.GdkPixbufLoaderClass.html">ffi::GdkPixbufLoaderClass</a>;
+            <span class="kw">if let </span><span class="prelude-val">Some</span>(f) = (<span class="kw-2">*</span><a href="#57">parent_class</a>).area_prepared {
+                <a href="#58">f</a>(<span class="self"><a href="#54">self</a>
                     </span>.<a href="../../../gdk_pixbuf/subclass/prelude/trait.ObjectSubclassExt.html">obj</a>()
                     .<a href="../../../glib/object/trait.Cast.html#tymethod.unsafe_cast_ref">unsafe_cast_ref</a>::&lt;<a href="../auto/pixbuf_loader.rs.html#13-117">PixbufLoader</a>&gt;()
                     .<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>()
@@ -287,17 +316,17 @@
     <span class="kw">fn </span>parent_area_updated(<span class="kw-2">&amp;</span><span class="self">self</span>, x: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>, y: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>, width: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>, height: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>) {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>data = <a href="../../../gdk_pixbuf/subclass/prelude/trait.ObjectSubclassType.html"><span class="self">Self</span>::type_data</a>();
-            <span class="kw">let </span>parent_class = <a href="#67">data</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().<a href="../../../glib/subclass/types/struct.TypeData.html#method.parent_class">parent_class</a>() <span class="kw">as </span><span class="kw-2">*mut </span><a href="../../../gdk_pixbuf_sys/struct.GdkPixbufLoaderClass.html">ffi::GdkPixbufLoaderClass</a>;
-            <span class="kw">if let </span><span class="prelude-val">Some</span>(f) = (<span class="kw-2">*</span><a href="#68">parent_class</a>).area_updated {
-                <a href="#69">f</a>(
-                    <a class="self" href="#65">self</a>.<a href="../../../gdk_pixbuf/subclass/prelude/trait.ObjectSubclassExt.html">obj</a>()
+            <span class="kw">let </span>parent_class = <a href="#70">data</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().<a href="../../../glib/subclass/types/struct.TypeData.html#method.parent_class">parent_class</a>() <span class="kw">as </span><span class="kw-2">*mut </span><a href="../../../gdk_pixbuf_sys/struct.GdkPixbufLoaderClass.html">ffi::GdkPixbufLoaderClass</a>;
+            <span class="kw">if let </span><span class="prelude-val">Some</span>(f) = (<span class="kw-2">*</span><a href="#71">parent_class</a>).area_updated {
+                <a href="#72">f</a>(
+                    <a class="self" href="#68">self</a>.<a href="../../../gdk_pixbuf/subclass/prelude/trait.ObjectSubclassExt.html">obj</a>()
                         .<a href="../../../glib/object/trait.Cast.html#tymethod.unsafe_cast_ref">unsafe_cast_ref</a>::&lt;<a href="../auto/pixbuf_loader.rs.html#13-117">PixbufLoader</a>&gt;()
                         .<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>()
                         .<span class="number">0</span>,
-                    <a href="#65">x</a>,
-                    <a href="#65">y</a>,
-                    <a href="#65">width</a>,
-                    <a href="#65">height</a>,
+                    <a href="#68">x</a>,
+                    <a href="#68">y</a>,
+                    <a href="#68">width</a>,
+                    <a href="#68">height</a>,
                 )
             }
         }
@@ -306,9 +335,9 @@
     <span class="kw">fn </span>parent_closed(<span class="kw-2">&amp;</span><span class="self">self</span>) {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>data = <a href="../../../gdk_pixbuf/subclass/prelude/trait.ObjectSubclassType.html"><span class="self">Self</span>::type_data</a>();
-            <span class="kw">let </span>parent_class = <a href="#86">data</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().<a href="../../../glib/subclass/types/struct.TypeData.html#method.parent_class">parent_class</a>() <span class="kw">as </span><span class="kw-2">*mut </span><a href="../../../gdk_pixbuf_sys/struct.GdkPixbufLoaderClass.html">ffi::GdkPixbufLoaderClass</a>;
-            <span class="kw">if let </span><span class="prelude-val">Some</span>(f) = (<span class="kw-2">*</span><a href="#87">parent_class</a>).closed {
-                <a href="#88">f</a>(<span class="self"><a href="#84">self</a>
+            <span class="kw">let </span>parent_class = <a href="#89">data</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().<a href="../../../glib/subclass/types/struct.TypeData.html#method.parent_class">parent_class</a>() <span class="kw">as </span><span class="kw-2">*mut </span><a href="../../../gdk_pixbuf_sys/struct.GdkPixbufLoaderClass.html">ffi::GdkPixbufLoaderClass</a>;
+            <span class="kw">if let </span><span class="prelude-val">Some</span>(f) = (<span class="kw-2">*</span><a href="#90">parent_class</a>).closed {
+                <a href="#91">f</a>(<span class="self"><a href="#87">self</a>
                     </span>.<a href="../../../gdk_pixbuf/subclass/prelude/trait.ObjectSubclassExt.html">obj</a>()
                     .<a href="../../../glib/object/trait.Cast.html#tymethod.unsafe_cast_ref">unsafe_cast_ref</a>::&lt;<a href="../auto/pixbuf_loader.rs.html#13-117">PixbufLoader</a>&gt;()
                     .<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>()
@@ -318,55 +347,78 @@
     }
 }
 
-<span class="kw">impl</span>&lt;T: <a href="#10-26">PixbufLoaderImpl</a>&gt; <a href="#33-97">PixbufLoaderImplExt</a> <span class="kw">for </span>T {}
+<span class="kw">impl</span>&lt;T: <a href="#10-30">PixbufLoaderImpl</a>&gt; <a href="#32-100">PixbufLoaderImplExt</a> <span class="kw">for </span>T
+<span class="kw">where
+    </span>&lt;T <span class="kw">as </span>ObjectSubclass&gt;::Type: IsA&lt;<a href="../../../glib/object/struct.Object.html">glib::Object</a>&gt;,
+    &lt;T <span class="kw">as </span>ObjectSubclass&gt;::Type: IsA&lt;<a href="../auto/pixbuf_loader.rs.html#13-117">PixbufLoader</a>&gt;,
+{
+}
 
-<span class="kw">unsafe impl</span>&lt;T: <a href="#10-26">PixbufLoaderImpl</a>&gt; IsSubclassable&lt;T&gt; <span class="kw">for </span><a href="../auto/pixbuf_loader.rs.html#13-117">PixbufLoader</a> {
+<span class="kw">unsafe impl</span>&lt;T: <a href="#10-30">PixbufLoaderImpl</a>&gt; IsSubclassable&lt;T&gt; <span class="kw">for </span><a href="../auto/pixbuf_loader.rs.html#13-117">PixbufLoader</a>
+<span class="kw">where
+    </span>&lt;T <span class="kw">as </span>ObjectSubclass&gt;::Type: IsA&lt;<a href="../../../glib/object/struct.Object.html">glib::Object</a>&gt;,
+    &lt;T <span class="kw">as </span>ObjectSubclass&gt;::Type: IsA&lt;<a href="../auto/pixbuf_loader.rs.html#13-117">PixbufLoader</a>&gt;,
+{
     <span class="kw">fn </span>class_init(class: <span class="kw-2">&amp;mut </span>::glib::Class&lt;<span class="self">Self</span>&gt;) {
-        <span class="self">Self</span>::parent_class_init::&lt;T&gt;(<a href="#102">class</a>);
+        <span class="self">Self</span>::parent_class_init::&lt;T&gt;(<a href="#114">class</a>);
 
-        <span class="kw">let </span>klass = <a href="#102">class</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsMut.html#tymethod.as_mut">as_mut</a>();
-        <a href="#105">klass</a>.size_prepared = <span class="prelude-val">Some</span>(loader_size_prepared::&lt;T&gt;);
-        <a href="#105">klass</a>.area_prepared = <span class="prelude-val">Some</span>(loader_area_prepared::&lt;T&gt;);
-        <a href="#105">klass</a>.area_updated = <span class="prelude-val">Some</span>(loader_area_updated::&lt;T&gt;);
-        <a href="#105">klass</a>.closed = <span class="prelude-val">Some</span>(loader_closed::&lt;T&gt;);
+        <span class="kw">let </span>klass = <a href="#114">class</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsMut.html#tymethod.as_mut">as_mut</a>();
+        <a href="#117">klass</a>.size_prepared = <span class="prelude-val">Some</span>(loader_size_prepared::&lt;T&gt;);
+        <a href="#117">klass</a>.area_prepared = <span class="prelude-val">Some</span>(loader_area_prepared::&lt;T&gt;);
+        <a href="#117">klass</a>.area_updated = <span class="prelude-val">Some</span>(loader_area_updated::&lt;T&gt;);
+        <a href="#117">klass</a>.closed = <span class="prelude-val">Some</span>(loader_closed::&lt;T&gt;);
     }
 }
 
-<span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>loader_size_prepared&lt;T: <a href="#10-26">PixbufLoaderImpl</a>&gt;(
+<span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>loader_size_prepared&lt;T: <a href="#10-30">PixbufLoaderImpl</a>&gt;(
     ptr: <span class="kw-2">*mut </span><a href="../../../gdk_pixbuf_sys/struct.GdkPixbufLoader.html">ffi::GdkPixbufLoader</a>,
     width: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
     height: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
-) {
-    <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(<a href="#114">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
-    <span class="kw">let </span>imp = <a href="#118">instance</a>.<a href="../../../gdk_pixbuf/subclass/prelude/trait.InstanceStructExt.html">imp</a>();
+) <span class="kw">where
+    </span>&lt;T <span class="kw">as </span>ObjectSubclass&gt;::Type: IsA&lt;<a href="../../../glib/object/struct.Object.html">glib::Object</a>&gt;,
+    &lt;T <span class="kw">as </span>ObjectSubclass&gt;::Type: IsA&lt;<a href="../auto/pixbuf_loader.rs.html#13-117">PixbufLoader</a>&gt;,
+{
+    <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(<a href="#126">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
+    <span class="kw">let </span>imp = <a href="#133">instance</a>.<a href="../../../gdk_pixbuf/subclass/prelude/trait.InstanceStructExt.html">imp</a>();
 
-    <a href="#119">imp</a>.<a href="#11-13">size_prepared</a>(<a href="#115">width</a>, <a href="#116">height</a>)
+    <a href="#134">imp</a>.<a href="#15-17">size_prepared</a>(<a href="#127">width</a>, <a href="#128">height</a>)
 }
 
-<span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>loader_area_prepared&lt;T: <a href="#10-26">PixbufLoaderImpl</a>&gt;(ptr: <span class="kw-2">*mut </span><a href="../../../gdk_pixbuf_sys/struct.GdkPixbufLoader.html">ffi::GdkPixbufLoader</a>) {
-    <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(<a href="#124">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
-    <span class="kw">let </span>imp = <a href="#125">instance</a>.<a href="../../../gdk_pixbuf/subclass/prelude/trait.InstanceStructExt.html">imp</a>();
+<span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>loader_area_prepared&lt;T: <a href="#10-30">PixbufLoaderImpl</a>&gt;(ptr: <span class="kw-2">*mut </span><a href="../../../gdk_pixbuf_sys/struct.GdkPixbufLoader.html">ffi::GdkPixbufLoader</a>)
+<span class="kw">where
+    </span>&lt;T <span class="kw">as </span>ObjectSubclass&gt;::Type: IsA&lt;<a href="../../../glib/object/struct.Object.html">glib::Object</a>&gt;,
+    &lt;T <span class="kw">as </span>ObjectSubclass&gt;::Type: IsA&lt;<a href="../auto/pixbuf_loader.rs.html#13-117">PixbufLoader</a>&gt;,
+{
+    <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(<a href="#139">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
+    <span class="kw">let </span>imp = <a href="#144">instance</a>.<a href="../../../gdk_pixbuf/subclass/prelude/trait.InstanceStructExt.html">imp</a>();
 
-    <a href="#126">imp</a>.<a href="#15-17">area_prepared</a>();
+    <a href="#145">imp</a>.<a href="#19-21">area_prepared</a>();
 }
 
-<span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>loader_area_updated&lt;T: <a href="#10-26">PixbufLoaderImpl</a>&gt;(
+<span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>loader_area_updated&lt;T: <a href="#10-30">PixbufLoaderImpl</a>&gt;(
     ptr: <span class="kw-2">*mut </span><a href="../../../gdk_pixbuf_sys/struct.GdkPixbufLoader.html">ffi::GdkPixbufLoader</a>,
     x: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
     y: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
     width: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
     height: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
-) {
-    <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(<a href="#132">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
-    <span class="kw">let </span>imp = <a href="#138">instance</a>.<a href="../../../gdk_pixbuf/subclass/prelude/trait.InstanceStructExt.html">imp</a>();
+) <span class="kw">where
+    </span>&lt;T <span class="kw">as </span>ObjectSubclass&gt;::Type: IsA&lt;<a href="../../../glib/object/struct.Object.html">glib::Object</a>&gt;,
+    &lt;T <span class="kw">as </span>ObjectSubclass&gt;::Type: IsA&lt;<a href="../auto/pixbuf_loader.rs.html#13-117">PixbufLoader</a>&gt;,
+{
+    <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(<a href="#151">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
+    <span class="kw">let </span>imp = <a href="#160">instance</a>.<a href="../../../gdk_pixbuf/subclass/prelude/trait.InstanceStructExt.html">imp</a>();
 
-    <a href="#139">imp</a>.<a href="#19-21">area_updated</a>(<a href="#133">x</a>, <a href="#134">y</a>, <a href="#135">width</a>, <a href="#136">height</a>)
+    <a href="#161">imp</a>.<a href="#23-25">area_updated</a>(<a href="#152">x</a>, <a href="#153">y</a>, <a href="#154">width</a>, <a href="#155">height</a>)
 }
 
-<span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>loader_closed&lt;T: <a href="#10-26">PixbufLoaderImpl</a>&gt;(ptr: <span class="kw-2">*mut </span><a href="../../../gdk_pixbuf_sys/struct.GdkPixbufLoader.html">ffi::GdkPixbufLoader</a>) {
-    <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(<a href="#144">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
-    <span class="kw">let </span>imp = <a href="#145">instance</a>.<a href="../../../gdk_pixbuf/subclass/prelude/trait.InstanceStructExt.html">imp</a>();
+<span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>loader_closed&lt;T: <a href="#10-30">PixbufLoaderImpl</a>&gt;(ptr: <span class="kw-2">*mut </span><a href="../../../gdk_pixbuf_sys/struct.GdkPixbufLoader.html">ffi::GdkPixbufLoader</a>)
+<span class="kw">where
+    </span>&lt;T <span class="kw">as </span>ObjectSubclass&gt;::Type: IsA&lt;<a href="../../../glib/object/struct.Object.html">glib::Object</a>&gt;,
+    &lt;T <span class="kw">as </span>ObjectSubclass&gt;::Type: IsA&lt;<a href="../auto/pixbuf_loader.rs.html#13-117">PixbufLoader</a>&gt;,
+{
+    <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(<a href="#166">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
+    <span class="kw">let </span>imp = <a href="#171">instance</a>.<a href="../../../gdk_pixbuf/subclass/prelude/trait.InstanceStructExt.html">imp</a>();
 
-    <a href="#146">imp</a>.<a href="#23-25">closed</a>()
+    <a href="#172">imp</a>.<a href="#27-29">closed</a>()
 }
 </code></pre></div></section></main></body></html>
