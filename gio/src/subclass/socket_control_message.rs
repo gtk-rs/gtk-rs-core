@@ -4,7 +4,11 @@ use glib::{prelude::*, subclass::prelude::*, translate::*};
 
 use crate::{ffi, SocketControlMessage};
 
-pub trait SocketControlMessageImpl: ObjectImpl + SocketControlMessageImplExt {
+pub trait SocketControlMessageImpl: ObjectImpl
+where
+    <Self as ObjectSubclass>::Type: IsA<glib::Object>,
+    <Self as ObjectSubclass>::Type: IsA<SocketControlMessage>,
+{
     fn level(&self) -> i32 {
         self.parent_level()
     }
@@ -26,12 +30,11 @@ pub trait SocketControlMessageImpl: ObjectImpl + SocketControlMessageImplExt {
     }
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::SocketControlMessageImplExt> Sealed for T {}
-}
-
-pub trait SocketControlMessageImplExt: sealed::Sealed + ObjectSubclass {
+pub trait SocketControlMessageImplExt: ObjectSubclass + SocketControlMessageImpl
+where
+    <Self as ObjectSubclass>::Type: IsA<glib::Object>,
+    <Self as ObjectSubclass>::Type: IsA<SocketControlMessage>,
+{
     fn parent_level(&self) -> i32 {
         unsafe {
             let data = Self::type_data();
@@ -113,9 +116,18 @@ pub trait SocketControlMessageImplExt: sealed::Sealed + ObjectSubclass {
     }
 }
 
-impl<T: SocketControlMessageImpl> SocketControlMessageImplExt for T {}
+impl<T: SocketControlMessageImpl> SocketControlMessageImplExt for T
+where
+    <T as ObjectSubclass>::Type: IsA<glib::Object>,
+    <T as ObjectSubclass>::Type: IsA<SocketControlMessage>,
+{
+}
 
-unsafe impl<T: SocketControlMessageImpl> IsSubclassable<T> for SocketControlMessage {
+unsafe impl<T: SocketControlMessageImpl> IsSubclassable<T> for SocketControlMessage
+where
+    <T as ObjectSubclass>::Type: IsA<glib::Object>,
+    <T as ObjectSubclass>::Type: IsA<SocketControlMessage>,
+{
     fn class_init(class: &mut ::glib::Class<Self>) {
         Self::parent_class_init::<T>(class);
 
@@ -130,7 +142,11 @@ unsafe impl<T: SocketControlMessageImpl> IsSubclassable<T> for SocketControlMess
 
 unsafe extern "C" fn socket_control_message_get_level<T: SocketControlMessageImpl>(
     ptr: *mut ffi::GSocketControlMessage,
-) -> i32 {
+) -> i32
+where
+    <T as ObjectSubclass>::Type: IsA<glib::Object>,
+    <T as ObjectSubclass>::Type: IsA<SocketControlMessage>,
+{
     let instance = &*(ptr as *mut T::Instance);
     let imp = instance.imp();
 
@@ -139,7 +155,11 @@ unsafe extern "C" fn socket_control_message_get_level<T: SocketControlMessageImp
 
 unsafe extern "C" fn socket_control_message_get_type<T: SocketControlMessageImpl>(
     ptr: *mut ffi::GSocketControlMessage,
-) -> i32 {
+) -> i32
+where
+    <T as ObjectSubclass>::Type: IsA<glib::Object>,
+    <T as ObjectSubclass>::Type: IsA<SocketControlMessage>,
+{
     let instance = &*(ptr as *mut T::Instance);
     let imp = instance.imp();
 
@@ -148,7 +168,11 @@ unsafe extern "C" fn socket_control_message_get_type<T: SocketControlMessageImpl
 
 unsafe extern "C" fn socket_control_message_get_size<T: SocketControlMessageImpl>(
     ptr: *mut ffi::GSocketControlMessage,
-) -> usize {
+) -> usize
+where
+    <T as ObjectSubclass>::Type: IsA<glib::Object>,
+    <T as ObjectSubclass>::Type: IsA<SocketControlMessage>,
+{
     let instance = &*(ptr as *mut T::Instance);
     let imp = instance.imp();
 
@@ -158,7 +182,10 @@ unsafe extern "C" fn socket_control_message_get_size<T: SocketControlMessageImpl
 unsafe extern "C" fn socket_control_message_serialize<T: SocketControlMessageImpl>(
     ptr: *mut ffi::GSocketControlMessage,
     data: glib::ffi::gpointer,
-) {
+) where
+    <T as ObjectSubclass>::Type: IsA<glib::Object>,
+    <T as ObjectSubclass>::Type: IsA<SocketControlMessage>,
+{
     let instance = &*(ptr as *mut T::Instance);
     let imp = instance.imp();
 
@@ -172,7 +199,11 @@ unsafe extern "C" fn socket_control_message_deserialize<T: SocketControlMessageI
     type_: i32,
     size: usize,
     data: glib::ffi::gpointer,
-) -> *mut ffi::GSocketControlMessage {
+) -> *mut ffi::GSocketControlMessage
+where
+    <T as ObjectSubclass>::Type: IsA<glib::Object>,
+    <T as ObjectSubclass>::Type: IsA<SocketControlMessage>,
+{
     let data = std::slice::from_raw_parts(data as *mut u8, size);
 
     T::deserialize(level, type_, data).into_glib_ptr()

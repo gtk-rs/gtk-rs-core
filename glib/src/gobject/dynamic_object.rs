@@ -4,7 +4,7 @@ use crate::{
     enums::{EnumValues, FlagsValues},
     prelude::*,
     subclass::prelude::*,
-    InterfaceInfo, TypeFlags, TypeInfo, TypeModule, TypePlugin,
+    InterfaceInfo, Object, TypeFlags, TypeInfo, TypeModule, TypePlugin,
 };
 
 mod sealed {
@@ -44,6 +44,8 @@ pub trait DynamicObjectRegisterExt: AsRef<TypePlugin> + sealed::Sealed + 'static
 impl<O: IsA<TypePlugin> + ObjectSubclassIsExt> DynamicObjectRegisterExt for O
 where
     O::Subclass: TypePluginRegisterImpl,
+    <O::Subclass as ObjectSubclass>::Type: IsA<Object>,
+    <O::Subclass as ObjectSubclass>::Type: IsA<TypePlugin>,
 {
     fn add_dynamic_interface(
         &self,

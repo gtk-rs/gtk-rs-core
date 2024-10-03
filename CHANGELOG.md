@@ -258,7 +258,7 @@ Paolo Borelli:
 - gio: use `StrV` for the `file_info` API
 - gio: use `GStr` for the manual extension point implementation
 - glib: list: mark as transparent and impl TransparentPtr
-- glib: Rename `StrVItem` to `GStrPtr` and make it clonable and transparent
+- glib: Rename `StrVItem` to `GStrPtr` and make it cloneable and transparent
 - glib: `key_file`: return `PtrSlice<GStrPtr>`
 - glib-macros: further tweak docs
 - glib: Rename `GStrPtr` to `GStringPtr`

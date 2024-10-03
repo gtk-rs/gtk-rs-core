@@ -19,7 +19,10 @@ use crate::{
 ///
 /// This allows overriding the virtual methods of `glib::Object`. Except for
 /// `finalize` as implementing `Drop` would allow the same behavior.
-pub trait ObjectImpl: ObjectSubclass + ObjectImplExt {
+pub trait ObjectImpl: ObjectSubclass
+where
+    <Self as ObjectSubclass>::Type: IsA<Object>,
+{
     // rustdoc-stripper-ignore-next
     /// Properties installed for this type.
     fn properties() -> &'static [ParamSpec] {
@@ -92,7 +95,9 @@ unsafe extern "C" fn property<T: ObjectImpl>(
     id: u32,
     value: *mut gobject_ffi::GValue,
     pspec: *mut gobject_ffi::GParamSpec,
-) {
+) where
+    <T as ObjectSubclass>::Type: IsA<Object>,
+{
     let instance = &*(obj as *mut T::Instance);
     let imp = instance.imp();
 
@@ -116,7 +121,9 @@ unsafe extern "C" fn set_property<T: ObjectImpl>(
     id: u32,
     value: *mut gobject_ffi::GValue,
     pspec: *mut gobject_ffi::GParamSpec,
-) {
+) where
+    <T as ObjectSubclass>::Type: IsA<Object>,
+{
     let instance = &*(obj as *mut T::Instance);
     let imp = instance.imp();
     imp.set_property(
@@ -126,7 +133,10 @@ unsafe extern "C" fn set_property<T: ObjectImpl>(
     );
 }
 
-unsafe extern "C" fn constructed<T: ObjectImpl>(obj: *mut gobject_ffi::GObject) {
+unsafe extern "C" fn constructed<T: ObjectImpl>(obj: *mut gobject_ffi::GObject)
+where
+    <T as ObjectSubclass>::Type: IsA<Object>,
+{
     let instance = &*(obj as *mut T::Instance);
     let imp = instance.imp();
 
@@ -136,7 +146,9 @@ unsafe extern "C" fn constructed<T: ObjectImpl>(obj: *mut gobject_ffi::GObject) 
 unsafe extern "C" fn notify<T: ObjectImpl>(
     obj: *mut gobject_ffi::GObject,
     pspec: *mut gobject_ffi::GParamSpec,
-) {
+) where
+    <T as ObjectSubclass>::Type: IsA<Object>,
+{
     let instance = &*(obj as *mut T::Instance);
     let imp = instance.imp();
     imp.notify(&from_glib_borrow(pspec));
@@ -146,13 +158,18 @@ unsafe extern "C" fn dispatch_properties_changed<T: ObjectImpl>(
     obj: *mut gobject_ffi::GObject,
     n_pspecs: u32,
     pspecs: *mut *mut gobject_ffi::GParamSpec,
-) {
+) where
+    <T as ObjectSubclass>::Type: IsA<Object>,
+{
     let instance = &*(obj as *mut T::Instance);
     let imp = instance.imp();
     imp.dispatch_properties_changed(Slice::from_glib_borrow_num(pspecs, n_pspecs as _));
 }
 
-unsafe extern "C" fn dispose<T: ObjectImpl>(obj: *mut gobject_ffi::GObject) {
+unsafe extern "C" fn dispose<T: ObjectImpl>(obj: *mut gobject_ffi::GObject)
+where
+    <T as ObjectSubclass>::Type: IsA<Object>,
+{
     let instance = &*(obj as *mut T::Instance);
     let imp = instance.imp();
 
@@ -213,7 +230,10 @@ pub unsafe trait ObjectClassSubclassExt: Sized + 'static {
 
 unsafe impl ObjectClassSubclassExt for crate::Class<Object> {}
 
-unsafe impl<T: ObjectImpl> IsSubclassable<T> for Object {
+unsafe impl<T: ObjectImpl> IsSubclassable<T> for Object
+where
+    <T as ObjectSubclass>::Type: IsA<Object>,
+{
     fn class_init(class: &mut crate::Class<Self>) {
         let klass = class.as_mut();
         klass.set_property = Some(set_property::<T>);
@@ -253,12 +273,10 @@ unsafe impl<T: ObjectImpl> IsSubclassable<T> for Object {
     fn instance_init(_instance: &mut super::InitializingObject<T>) {}
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::ObjectImplExt> Sealed for T {}
-}
-
-pub trait ObjectImplExt: sealed::Sealed + ObjectSubclass {
+pub trait ObjectImplExt: ObjectSubclass + ObjectImpl
+where
+    <Self as ObjectSubclass>::Type: IsA<Object>,
+{
     // rustdoc-stripper-ignore-next
     /// Chain up to the parent class' implementation of `glib::Object::constructed()`.
     #[inline]
@@ -321,7 +339,7 @@ pub trait ObjectImplExt: sealed::Sealed + ObjectSubclass {
     }
 }
 
-impl<T: ObjectImpl> ObjectImplExt for T {}
+impl<T: ObjectImpl> ObjectImplExt for T where <T as ObjectSubclass>::Type: IsA<Object> {}
 
 #[cfg(test)]
 mod test {

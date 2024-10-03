@@ -6,18 +6,21 @@ use glib::{prelude::*, subclass::prelude::*, translate::*, Error};
 
 use crate::{ffi, Cancellable, Initable};
 
-pub trait InitableImpl: ObjectImpl {
+pub trait InitableImpl: ObjectImpl
+where
+    <Self as ObjectSubclass>::Type: IsA<glib::Object>,
+    <Self as ObjectSubclass>::Type: IsA<Initable>,
+{
     fn init(&self, cancellable: Option<&Cancellable>) -> Result<(), Error> {
         self.parent_init(cancellable)
     }
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::InitableImplExt> Sealed for T {}
-}
-
-pub trait InitableImplExt: sealed::Sealed + ObjectSubclass {
+pub trait InitableImplExt: ObjectSubclass + InitableImpl
+where
+    <Self as ObjectSubclass>::Type: IsA<glib::Object>,
+    <Self as ObjectSubclass>::Type: IsA<Initable>,
+{
     fn parent_init(&self, cancellable: Option<&Cancellable>) -> Result<(), Error> {
         unsafe {
             let type_data = Self::type_data();
@@ -44,9 +47,18 @@ pub trait InitableImplExt: sealed::Sealed + ObjectSubclass {
     }
 }
 
-impl<T: InitableImpl> InitableImplExt for T {}
+impl<T: InitableImpl> InitableImplExt for T
+where
+    <Self as ObjectSubclass>::Type: IsA<glib::Object>,
+    <Self as ObjectSubclass>::Type: IsA<Initable>,
+{
+}
 
-unsafe impl<T: InitableImpl> IsImplementable<T> for Initable {
+unsafe impl<T: InitableImpl> IsImplementable<T> for Initable
+where
+    <T as ObjectSubclass>::Type: IsA<glib::Object>,
+    <T as ObjectSubclass>::Type: IsA<Initable>,
+{
     fn interface_init(iface: &mut glib::Interface<Self>) {
         let iface = iface.as_mut();
         iface.init = Some(initable_init::<T>);
@@ -57,7 +69,11 @@ unsafe extern "C" fn initable_init<T: InitableImpl>(
     initable: *mut ffi::GInitable,
     cancellable: *mut ffi::GCancellable,
     error: *mut *mut glib::ffi::GError,
-) -> glib::ffi::gboolean {
+) -> glib::ffi::gboolean
+where
+    <T as ObjectSubclass>::Type: IsA<glib::Object>,
+    <T as ObjectSubclass>::Type: IsA<Initable>,
+{
     let instance = &*(initable as *mut T::Instance);
     let imp = instance.imp();
 
