@@ -41,11 +41,9 @@ pub trait DynamicObjectRegisterExt: AsRef<TypePlugin> + sealed::Sealed + 'static
     ) -> crate::types::Type;
 }
 
-impl<O: IsA<TypePlugin> + ObjectSubclassIsExt> DynamicObjectRegisterExt for O
+impl<O: IsA<Object> + IsA<TypePlugin> + ObjectSubclassIsExt> DynamicObjectRegisterExt for O
 where
     O::Subclass: TypePluginRegisterImpl,
-    <O::Subclass as ObjectSubclass>::Type: IsA<Object>,
-    <O::Subclass as ObjectSubclass>::Type: IsA<TypePlugin>,
 {
     fn add_dynamic_interface(
         &self,

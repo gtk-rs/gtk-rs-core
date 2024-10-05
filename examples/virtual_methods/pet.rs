@@ -125,11 +125,7 @@ pub trait PetExt: IsA<Pet> {
 impl<T: IsA<Pet>> PetExt for T {}
 
 /// The `PetImpl` trait contains overridable virtual function definitions for [`Pet`] objects.
-pub trait PetImpl: ObjectImpl
-where
-    <Self as ObjectSubclass>::Type: IsA<glib::Object>,
-    <Self as ObjectSubclass>::Type: IsA<Pet>,
-{
+pub trait PetImpl: ObjectImpl + ObjectSubclass<Type: IsA<Pet>> {
     /// Default implementation of a virtual method.
     ///
     /// This always calls into the implementation of the parent class so that if
@@ -152,11 +148,7 @@ where
 /// The `PetImplExt` trait contains non-overridable methods for subclasses to use.
 ///
 /// These are supposed to be called only from inside implementations of `Pet` subclasses.
-pub trait PetImplExt: PetImpl
-where
-    <Self as ObjectSubclass>::Type: IsA<glib::Object>,
-    <Self as ObjectSubclass>::Type: IsA<Pet>,
-{
+pub trait PetImplExt: PetImpl {
     /// Chains up to the parent implementation of [`PetImpl::pet`]
     fn parent_pet(&self) -> bool {
         let data = Self::type_data();
@@ -177,19 +169,10 @@ where
 }
 
 /// The `PetImplExt` trait is implemented for all subclasses that have [`Pet`] in the class hierarchy
-impl<T: PetImpl> PetImplExt for T
-where
-    <Self as ObjectSubclass>::Type: IsA<glib::Object>,
-    <Self as ObjectSubclass>::Type: IsA<Pet>,
-{
-}
+impl<T: PetImpl> PetImplExt for T {}
 
 /// To make this class subclassable we need to implement IsSubclassable
-unsafe impl<Obj: PetImpl> IsSubclassable<Obj> for Pet
-where
-    <Obj as ObjectSubclass>::Type: IsA<glib::Object>,
-    <Obj as ObjectSubclass>::Type: IsA<Pet>,
-{
+unsafe impl<Obj: PetImpl> IsSubclassable<Obj> for Pet {
     /// Override the virtual method function pointers in subclasses to call directly into the
     /// `PetImpl` of the subclass.
     ///

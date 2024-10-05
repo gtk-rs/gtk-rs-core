@@ -8,11 +8,7 @@ use crate::{
     ffi, AsyncInitable, AsyncResult, Cancellable, CancellableFuture, GioFutureResult, LocalTask,
 };
 
-pub trait AsyncInitableImpl: ObjectImpl
-where
-    <Self as ObjectSubclass>::Type: IsA<glib::Object>,
-    <Self as ObjectSubclass>::Type: IsA<AsyncInitable>,
-{
+pub trait AsyncInitableImpl: ObjectImpl + ObjectSubclass<Type: IsA<AsyncInitable>> {
     fn init_future(
         &self,
         io_priority: glib::Priority,
@@ -21,11 +17,7 @@ where
     }
 }
 
-pub trait AsyncInitableImplExt: ObjectSubclass + AsyncInitableImpl
-where
-    <Self as ObjectSubclass>::Type: IsA<glib::Object>,
-    <Self as ObjectSubclass>::Type: IsA<AsyncInitable>,
-{
+pub trait AsyncInitableImplExt: AsyncInitableImpl {
     fn parent_init_future(
         &self,
         io_priority: glib::Priority,
@@ -39,15 +31,13 @@ where
                 .init_async
                 .expect("no parent \"init_async\" implementation");
 
-            unsafe extern "C" fn parent_init_future_callback<T>(
+            unsafe extern "C" fn parent_init_future_callback<
+                T: ObjectSubclass<Type: IsA<glib::Object>>,
+            >(
                 source_object: *mut glib::gobject_ffi::GObject,
                 res: *mut crate::ffi::GAsyncResult,
                 user_data: glib::ffi::gpointer,
-            ) where
-                T: AsyncInitableImpl,
-                <T as ObjectSubclass>::Type: IsA<glib::Object>,
-                <T as ObjectSubclass>::Type: IsA<AsyncInitable>,
-            {
+            ) {
                 let type_data = T::type_data();
                 let parent_iface = type_data.as_ref().parent_interface::<AsyncInitable>()
                     as *const ffi::GAsyncInitableIface;
@@ -88,18 +78,9 @@ where
     }
 }
 
-impl<T: AsyncInitableImpl> AsyncInitableImplExt for T
-where
-    <T as ObjectSubclass>::Type: IsA<glib::Object>,
-    <T as ObjectSubclass>::Type: IsA<AsyncInitable>,
-{
-}
+impl<T: AsyncInitableImpl> AsyncInitableImplExt for T {}
 
-unsafe impl<T: AsyncInitableImpl> IsImplementable<T> for AsyncInitable
-where
-    <T as ObjectSubclass>::Type: IsA<glib::Object>,
-    <T as ObjectSubclass>::Type: IsA<AsyncInitable>,
-{
+unsafe impl<T: AsyncInitableImpl> IsImplementable<T> for AsyncInitable {
     fn interface_init(iface: &mut glib::Interface<Self>) {
         let iface = iface.as_mut();
         iface.init_async = Some(async_initable_init_async::<T>);
@@ -113,10 +94,7 @@ unsafe extern "C" fn async_initable_init_async<T: AsyncInitableImpl>(
     cancellable: *mut ffi::GCancellable,
     callback: ffi::GAsyncReadyCallback,
     user_data: glib::ffi::gpointer,
-) where
-    <T as ObjectSubclass>::Type: IsA<glib::Object>,
-    <T as ObjectSubclass>::Type: IsA<AsyncInitable>,
-{
+) {
     let instance = &*(initable as *mut T::Instance);
     let imp = instance.imp();
     let cancellable = Option::<Cancellable>::from_glib_none(cancellable);

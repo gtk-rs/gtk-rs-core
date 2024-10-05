@@ -6,11 +6,7 @@ use crate::{
     Object, Type, TypeFlags, TypeInfo, TypePlugin, TypeValueTable,
 };
 
-pub trait TypePluginImpl: ObjectImpl
-where
-    <Self as ObjectSubclass>::Type: IsA<Object>,
-    <Self as ObjectSubclass>::Type: IsA<TypePlugin>,
-{
+pub trait TypePluginImpl: ObjectImpl + ObjectSubclass<Type: IsA<Object> + IsA<TypePlugin>> {
     fn use_plugin(&self) {
         self.parent_use_plugin();
     }
@@ -28,11 +24,7 @@ where
     }
 }
 
-pub trait TypePluginImplExt: ObjectSubclass + TypePluginImpl
-where
-    <Self as ObjectSubclass>::Type: IsA<Object>,
-    <Self as ObjectSubclass>::Type: IsA<TypePlugin>,
-{
+pub trait TypePluginImplExt: TypePluginImpl {
     fn parent_use_plugin(&self);
     fn parent_unuse_plugin(&self);
     fn parent_complete_type_info(&self, type_: Type) -> (TypeInfo, TypeValueTable);
@@ -43,11 +35,7 @@ where
     ) -> InterfaceInfo;
 }
 
-impl<T: TypePluginImpl> TypePluginImplExt for T
-where
-    <Self as ObjectSubclass>::Type: IsA<Object>,
-    <Self as ObjectSubclass>::Type: IsA<TypePlugin>,
-{
+impl<T: TypePluginImpl> TypePluginImplExt for T {
     fn parent_use_plugin(&self) {
         unsafe {
             let type_data = Self::type_data();
@@ -125,11 +113,7 @@ where
     }
 }
 
-unsafe impl<T: TypePluginImpl> IsImplementable<T> for TypePlugin
-where
-    <T as ObjectSubclass>::Type: IsA<Object>,
-    <T as ObjectSubclass>::Type: IsA<TypePlugin>,
-{
+unsafe impl<T: TypePluginImpl> IsImplementable<T> for TypePlugin {
     fn interface_init(iface: &mut Interface<Self>) {
         let iface = iface.as_mut();
 
@@ -140,22 +124,14 @@ where
     }
 }
 
-unsafe extern "C" fn use_plugin<T: TypePluginImpl>(type_plugin: *mut gobject_ffi::GTypePlugin)
-where
-    <T as ObjectSubclass>::Type: IsA<Object>,
-    <T as ObjectSubclass>::Type: IsA<TypePlugin>,
-{
+unsafe extern "C" fn use_plugin<T: TypePluginImpl>(type_plugin: *mut gobject_ffi::GTypePlugin) {
     let instance = &*(type_plugin as *mut T::Instance);
     let imp = instance.imp();
 
     imp.use_plugin();
 }
 
-unsafe extern "C" fn unuse_plugin<T: TypePluginImpl>(type_plugin: *mut gobject_ffi::GTypePlugin)
-where
-    <T as ObjectSubclass>::Type: IsA<Object>,
-    <T as ObjectSubclass>::Type: IsA<TypePlugin>,
-{
+unsafe extern "C" fn unuse_plugin<T: TypePluginImpl>(type_plugin: *mut gobject_ffi::GTypePlugin) {
     let instance = &*(type_plugin as *mut T::Instance);
     let imp = instance.imp();
 
@@ -167,10 +143,7 @@ unsafe extern "C" fn complete_type_info<T: TypePluginImpl>(
     gtype: ffi::GType,
     info_ptr: *mut gobject_ffi::GTypeInfo,
     value_table_ptr: *mut gobject_ffi::GTypeValueTable,
-) where
-    <T as ObjectSubclass>::Type: IsA<Object>,
-    <T as ObjectSubclass>::Type: IsA<TypePlugin>,
-{
+) {
     assert!(!info_ptr.is_null());
     assert!(!value_table_ptr.is_null());
     let instance = &*(type_plugin as *mut T::Instance);
@@ -190,10 +163,7 @@ unsafe extern "C" fn complete_interface_info<T: TypePluginImpl>(
     instance_gtype: ffi::GType,
     interface_gtype: ffi::GType,
     info_ptr: *mut gobject_ffi::GInterfaceInfo,
-) where
-    <T as ObjectSubclass>::Type: IsA<Object>,
-    <T as ObjectSubclass>::Type: IsA<TypePlugin>,
-{
+) {
     assert!(!info_ptr.is_null());
     let instance = &*(type_plugin as *mut T::Instance);
     let imp = instance.imp();
@@ -205,10 +175,8 @@ unsafe extern "C" fn complete_interface_info<T: TypePluginImpl>(
     *info = info_;
 }
 
-pub trait TypePluginRegisterImpl: ObjectImpl + TypePluginImpl
-where
-    <Self as ObjectSubclass>::Type: IsA<Object>,
-    <Self as ObjectSubclass>::Type: IsA<TypePlugin>,
+pub trait TypePluginRegisterImpl:
+    TypePluginImpl + ObjectSubclass<Type: IsA<Object> + IsA<TypePlugin>>
 {
     fn add_dynamic_interface(
         &self,

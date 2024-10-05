@@ -2,11 +2,7 @@
 
 use crate::{ffi, gobject_ffi, prelude::*, subclass::prelude::*, translate::*, Object, TypeModule};
 
-pub trait TypeModuleImpl: ObjectImpl
-where
-    <Self as ObjectSubclass>::Type: IsA<Object>,
-    <Self as ObjectSubclass>::Type: IsA<TypeModule>,
-{
+pub trait TypeModuleImpl: ObjectImpl + ObjectSubclass<Type: IsA<Object> + IsA<TypeModule>> {
     // rustdoc-stripper-ignore-next
     /// Loads the module, registers one or more object subclasses using
     /// [`register_dynamic_type`] and registers one or more object interfaces
@@ -25,20 +21,12 @@ where
     fn unload(&self);
 }
 
-pub trait TypeModuleImplExt: ObjectSubclass + TypeModuleImpl
-where
-    <Self as ObjectSubclass>::Type: IsA<Object>,
-    <Self as ObjectSubclass>::Type: IsA<TypeModule>,
-{
+pub trait TypeModuleImplExt: TypeModuleImpl {
     fn parent_load(&self) -> bool;
     fn parent_unload(&self);
 }
 
-impl<T: TypeModuleImpl> TypeModuleImplExt for T
-where
-    <Self as ObjectSubclass>::Type: IsA<Object>,
-    <Self as ObjectSubclass>::Type: IsA<TypeModule>,
-{
+impl<T: TypeModuleImpl> TypeModuleImplExt for T {
     fn parent_load(&self) -> bool {
         unsafe {
             let data = T::type_data();
@@ -70,11 +58,7 @@ where
     }
 }
 
-unsafe impl<T: TypeModuleImpl> IsSubclassable<T> for TypeModule
-where
-    <T as ObjectSubclass>::Type: IsA<Object>,
-    <T as ObjectSubclass>::Type: IsA<TypeModule>,
-{
+unsafe impl<T: TypeModuleImpl> IsSubclassable<T> for TypeModule {
     fn class_init(class: &mut crate::Class<Self>) {
         Self::parent_class_init::<T>(class);
 
@@ -86,11 +70,7 @@ where
 
 unsafe extern "C" fn load<T: TypeModuleImpl>(
     type_module: *mut gobject_ffi::GTypeModule,
-) -> ffi::gboolean
-where
-    <T as ObjectSubclass>::Type: IsA<Object>,
-    <T as ObjectSubclass>::Type: IsA<TypeModule>,
-{
+) -> ffi::gboolean {
     let instance = &*(type_module as *mut T::Instance);
     let imp = instance.imp();
 
@@ -110,11 +90,7 @@ where
     res.into_glib()
 }
 
-unsafe extern "C" fn unload<T: TypeModuleImpl>(type_module: *mut gobject_ffi::GTypeModule)
-where
-    <T as ObjectSubclass>::Type: IsA<Object>,
-    <T as ObjectSubclass>::Type: IsA<TypeModule>,
-{
+unsafe extern "C" fn unload<T: TypeModuleImpl>(type_module: *mut gobject_ffi::GTypeModule) {
     let instance = &*(type_module as *mut T::Instance);
     let imp = instance.imp();
 

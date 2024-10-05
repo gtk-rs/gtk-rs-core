@@ -6,11 +6,7 @@ use glib::{prelude::*, subclass::prelude::*, translate::*, Error};
 
 use crate::{ffi, Cancellable, InputStream, OutputStream, OutputStreamSpliceFlags};
 
-pub trait OutputStreamImpl: ObjectImpl + Send
-where
-    <Self as ObjectSubclass>::Type: IsA<glib::Object>,
-    <Self as ObjectSubclass>::Type: IsA<OutputStream>,
-{
+pub trait OutputStreamImpl: Send + ObjectImpl + ObjectSubclass<Type: IsA<OutputStream>> {
     fn write(&self, buffer: &[u8], cancellable: Option<&Cancellable>) -> Result<usize, Error> {
         self.parent_write(buffer, cancellable)
     }
@@ -33,11 +29,7 @@ where
     }
 }
 
-pub trait OutputStreamImplExt: ObjectSubclass + OutputStreamImpl
-where
-    <Self as ObjectSubclass>::Type: IsA<glib::Object>,
-    <Self as ObjectSubclass>::Type: IsA<OutputStream>,
-{
+pub trait OutputStreamImplExt: OutputStreamImpl {
     fn parent_write(
         &self,
         buffer: &[u8],
@@ -153,18 +145,9 @@ where
     }
 }
 
-impl<T: OutputStreamImpl> OutputStreamImplExt for T
-where
-    <T as ObjectSubclass>::Type: IsA<glib::Object>,
-    <T as ObjectSubclass>::Type: IsA<OutputStream>,
-{
-}
+impl<T: OutputStreamImpl> OutputStreamImplExt for T {}
 
-unsafe impl<T: OutputStreamImpl> IsSubclassable<T> for OutputStream
-where
-    <T as ObjectSubclass>::Type: IsA<glib::Object>,
-    <T as ObjectSubclass>::Type: IsA<OutputStream>,
-{
+unsafe impl<T: OutputStreamImpl> IsSubclassable<T> for OutputStream {
     fn class_init(class: &mut ::glib::Class<Self>) {
         Self::parent_class_init::<T>(class);
 
@@ -182,11 +165,7 @@ unsafe extern "C" fn stream_write<T: OutputStreamImpl>(
     count: usize,
     cancellable: *mut ffi::GCancellable,
     err: *mut *mut glib::ffi::GError,
-) -> isize
-where
-    <T as ObjectSubclass>::Type: IsA<glib::Object>,
-    <T as ObjectSubclass>::Type: IsA<OutputStream>,
-{
+) -> isize {
     debug_assert!(count <= isize::MAX as usize);
 
     let instance = &*(ptr as *mut T::Instance);
@@ -220,11 +199,7 @@ unsafe extern "C" fn stream_close<T: OutputStreamImpl>(
     ptr: *mut ffi::GOutputStream,
     cancellable: *mut ffi::GCancellable,
     err: *mut *mut glib::ffi::GError,
-) -> glib::ffi::gboolean
-where
-    <T as ObjectSubclass>::Type: IsA<glib::Object>,
-    <T as ObjectSubclass>::Type: IsA<OutputStream>,
-{
+) -> glib::ffi::gboolean {
     let instance = &*(ptr as *mut T::Instance);
     let imp = instance.imp();
 
@@ -247,11 +222,7 @@ unsafe extern "C" fn stream_flush<T: OutputStreamImpl>(
     ptr: *mut ffi::GOutputStream,
     cancellable: *mut ffi::GCancellable,
     err: *mut *mut glib::ffi::GError,
-) -> glib::ffi::gboolean
-where
-    <T as ObjectSubclass>::Type: IsA<glib::Object>,
-    <T as ObjectSubclass>::Type: IsA<OutputStream>,
-{
+) -> glib::ffi::gboolean {
     let instance = &*(ptr as *mut T::Instance);
     let imp = instance.imp();
 
@@ -276,11 +247,7 @@ unsafe extern "C" fn stream_splice<T: OutputStreamImpl>(
     flags: ffi::GOutputStreamSpliceFlags,
     cancellable: *mut ffi::GCancellable,
     err: *mut *mut glib::ffi::GError,
-) -> isize
-where
-    <T as ObjectSubclass>::Type: IsA<glib::Object>,
-    <T as ObjectSubclass>::Type: IsA<OutputStream>,
-{
+) -> isize {
     let instance = &*(ptr as *mut T::Instance);
     let imp = instance.imp();
 

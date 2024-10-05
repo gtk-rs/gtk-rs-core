@@ -64,11 +64,7 @@ impl From<ArgumentList> for Vec<OsString> {
     }
 }
 
-pub trait ApplicationImpl: ObjectImpl
-where
-    <Self as ObjectSubclass>::Type: IsA<glib::Object>,
-    <Self as ObjectSubclass>::Type: IsA<Application>,
-{
+pub trait ApplicationImpl: ObjectImpl + ObjectSubclass<Type: IsA<Application>> {
     fn activate(&self) {
         self.parent_activate()
     }
@@ -114,11 +110,7 @@ where
     }
 }
 
-pub trait ApplicationImplExt: ObjectSubclass + ApplicationImpl
-where
-    <Self as ObjectSubclass>::Type: IsA<glib::Object>,
-    <Self as ObjectSubclass>::Type: IsA<Application>,
-{
+pub trait ApplicationImplExt: ApplicationImpl {
     fn parent_activate(&self) {
         unsafe {
             let data = Self::type_data();
@@ -274,18 +266,9 @@ where
     }
 }
 
-impl<T: ApplicationImpl> ApplicationImplExt for T
-where
-    <T as ObjectSubclass>::Type: IsA<glib::Object>,
-    <T as ObjectSubclass>::Type: IsA<Application>,
-{
-}
+impl<T: ApplicationImpl> ApplicationImplExt for T {}
 
-unsafe impl<T: ApplicationImpl> IsSubclassable<T> for Application
-where
-    <T as ObjectSubclass>::Type: IsA<glib::Object>,
-    <T as ObjectSubclass>::Type: IsA<Application>,
-{
+unsafe impl<T: ApplicationImpl> IsSubclassable<T> for Application {
     fn class_init(class: &mut ::glib::Class<Self>) {
         Self::parent_class_init::<T>(class);
 
@@ -304,11 +287,7 @@ where
     }
 }
 
-unsafe extern "C" fn application_activate<T: ApplicationImpl>(ptr: *mut ffi::GApplication)
-where
-    <T as ObjectSubclass>::Type: IsA<glib::Object>,
-    <T as ObjectSubclass>::Type: IsA<Application>,
-{
+unsafe extern "C" fn application_activate<T: ApplicationImpl>(ptr: *mut ffi::GApplication) {
     let instance = &*(ptr as *mut T::Instance);
     let imp = instance.imp();
 
@@ -318,10 +297,7 @@ where
 unsafe extern "C" fn application_after_emit<T: ApplicationImpl>(
     ptr: *mut ffi::GApplication,
     platform_data: *mut glib::ffi::GVariant,
-) where
-    <T as ObjectSubclass>::Type: IsA<glib::Object>,
-    <T as ObjectSubclass>::Type: IsA<Application>,
-{
+) {
     let instance = &*(ptr as *mut T::Instance);
     let imp = instance.imp();
 
@@ -330,10 +306,7 @@ unsafe extern "C" fn application_after_emit<T: ApplicationImpl>(
 unsafe extern "C" fn application_before_emit<T: ApplicationImpl>(
     ptr: *mut ffi::GApplication,
     platform_data: *mut glib::ffi::GVariant,
-) where
-    <T as ObjectSubclass>::Type: IsA<glib::Object>,
-    <T as ObjectSubclass>::Type: IsA<Application>,
-{
+) {
     let instance = &*(ptr as *mut T::Instance);
     let imp = instance.imp();
 
@@ -342,11 +315,7 @@ unsafe extern "C" fn application_before_emit<T: ApplicationImpl>(
 unsafe extern "C" fn application_command_line<T: ApplicationImpl>(
     ptr: *mut ffi::GApplication,
     command_line: *mut ffi::GApplicationCommandLine,
-) -> i32
-where
-    <T as ObjectSubclass>::Type: IsA<glib::Object>,
-    <T as ObjectSubclass>::Type: IsA<Application>,
-{
+) -> i32 {
     let instance = &*(ptr as *mut T::Instance);
     let imp = instance.imp();
 
@@ -356,11 +325,7 @@ unsafe extern "C" fn application_local_command_line<T: ApplicationImpl>(
     ptr: *mut ffi::GApplication,
     arguments: *mut *mut *mut c_char,
     exit_status: *mut i32,
-) -> glib::ffi::gboolean
-where
-    <T as ObjectSubclass>::Type: IsA<glib::Object>,
-    <T as ObjectSubclass>::Type: IsA<Application>,
-{
+) -> glib::ffi::gboolean {
     let instance = &*(ptr as *mut T::Instance);
     let imp = instance.imp();
 
@@ -381,51 +346,32 @@ unsafe extern "C" fn application_open<T: ApplicationImpl>(
     files: *mut *mut ffi::GFile,
     num_files: i32,
     hint: *const c_char,
-) where
-    <T as ObjectSubclass>::Type: IsA<glib::Object>,
-    <T as ObjectSubclass>::Type: IsA<Application>,
-{
+) {
     let instance = &*(ptr as *mut T::Instance);
     let imp = instance.imp();
 
     let files: Vec<crate::File> = FromGlibContainer::from_glib_none_num(files, num_files as usize);
     imp.open(files.as_slice(), &glib::GString::from_glib_borrow(hint))
 }
-unsafe extern "C" fn application_quit_mainloop<T: ApplicationImpl>(ptr: *mut ffi::GApplication)
-where
-    <T as ObjectSubclass>::Type: IsA<glib::Object>,
-    <T as ObjectSubclass>::Type: IsA<Application>,
-{
+unsafe extern "C" fn application_quit_mainloop<T: ApplicationImpl>(ptr: *mut ffi::GApplication) {
     let instance = &*(ptr as *mut T::Instance);
     let imp = instance.imp();
 
     imp.quit_mainloop()
 }
-unsafe extern "C" fn application_run_mainloop<T: ApplicationImpl>(ptr: *mut ffi::GApplication)
-where
-    <T as ObjectSubclass>::Type: IsA<glib::Object>,
-    <T as ObjectSubclass>::Type: IsA<Application>,
-{
+unsafe extern "C" fn application_run_mainloop<T: ApplicationImpl>(ptr: *mut ffi::GApplication) {
     let instance = &*(ptr as *mut T::Instance);
     let imp = instance.imp();
 
     imp.run_mainloop()
 }
-unsafe extern "C" fn application_shutdown<T: ApplicationImpl>(ptr: *mut ffi::GApplication)
-where
-    <T as ObjectSubclass>::Type: IsA<glib::Object>,
-    <T as ObjectSubclass>::Type: IsA<Application>,
-{
+unsafe extern "C" fn application_shutdown<T: ApplicationImpl>(ptr: *mut ffi::GApplication) {
     let instance = &*(ptr as *mut T::Instance);
     let imp = instance.imp();
 
     imp.shutdown()
 }
-unsafe extern "C" fn application_startup<T: ApplicationImpl>(ptr: *mut ffi::GApplication)
-where
-    <T as ObjectSubclass>::Type: IsA<glib::Object>,
-    <T as ObjectSubclass>::Type: IsA<Application>,
-{
+unsafe extern "C" fn application_startup<T: ApplicationImpl>(ptr: *mut ffi::GApplication) {
     let instance = &*(ptr as *mut T::Instance);
     let imp = instance.imp();
 
@@ -435,11 +381,7 @@ where
 unsafe extern "C" fn application_handle_local_options<T: ApplicationImpl>(
     ptr: *mut ffi::GApplication,
     options: *mut glib::ffi::GVariantDict,
-) -> c_int
-where
-    <T as ObjectSubclass>::Type: IsA<glib::Object>,
-    <T as ObjectSubclass>::Type: IsA<Application>,
-{
+) -> c_int {
     let instance = &*(ptr as *mut T::Instance);
     let imp = instance.imp();
 
