@@ -4,10 +4,8 @@ use glib::{prelude::*, subclass::prelude::*, translate::*};
 
 use crate::{ffi, SocketControlMessage};
 
-pub trait SocketControlMessageImpl: ObjectImpl
-where
-    <Self as ObjectSubclass>::Type: IsA<glib::Object>,
-    <Self as ObjectSubclass>::Type: IsA<SocketControlMessage>,
+pub trait SocketControlMessageImpl:
+    ObjectImpl + ObjectSubclass<Type: IsA<SocketControlMessage>>
 {
     fn level(&self) -> i32 {
         self.parent_level()
@@ -30,11 +28,7 @@ where
     }
 }
 
-pub trait SocketControlMessageImplExt: ObjectSubclass + SocketControlMessageImpl
-where
-    <Self as ObjectSubclass>::Type: IsA<glib::Object>,
-    <Self as ObjectSubclass>::Type: IsA<SocketControlMessage>,
-{
+pub trait SocketControlMessageImplExt: SocketControlMessageImpl {
     fn parent_level(&self) -> i32 {
         unsafe {
             let data = Self::type_data();
@@ -116,18 +110,9 @@ where
     }
 }
 
-impl<T: SocketControlMessageImpl> SocketControlMessageImplExt for T
-where
-    <T as ObjectSubclass>::Type: IsA<glib::Object>,
-    <T as ObjectSubclass>::Type: IsA<SocketControlMessage>,
-{
-}
+impl<T: SocketControlMessageImpl> SocketControlMessageImplExt for T {}
 
-unsafe impl<T: SocketControlMessageImpl> IsSubclassable<T> for SocketControlMessage
-where
-    <T as ObjectSubclass>::Type: IsA<glib::Object>,
-    <T as ObjectSubclass>::Type: IsA<SocketControlMessage>,
-{
+unsafe impl<T: SocketControlMessageImpl> IsSubclassable<T> for SocketControlMessage {
     fn class_init(class: &mut ::glib::Class<Self>) {
         Self::parent_class_init::<T>(class);
 
@@ -142,11 +127,7 @@ where
 
 unsafe extern "C" fn socket_control_message_get_level<T: SocketControlMessageImpl>(
     ptr: *mut ffi::GSocketControlMessage,
-) -> i32
-where
-    <T as ObjectSubclass>::Type: IsA<glib::Object>,
-    <T as ObjectSubclass>::Type: IsA<SocketControlMessage>,
-{
+) -> i32 {
     let instance = &*(ptr as *mut T::Instance);
     let imp = instance.imp();
 
@@ -155,11 +136,7 @@ where
 
 unsafe extern "C" fn socket_control_message_get_type<T: SocketControlMessageImpl>(
     ptr: *mut ffi::GSocketControlMessage,
-) -> i32
-where
-    <T as ObjectSubclass>::Type: IsA<glib::Object>,
-    <T as ObjectSubclass>::Type: IsA<SocketControlMessage>,
-{
+) -> i32 {
     let instance = &*(ptr as *mut T::Instance);
     let imp = instance.imp();
 
@@ -168,11 +145,7 @@ where
 
 unsafe extern "C" fn socket_control_message_get_size<T: SocketControlMessageImpl>(
     ptr: *mut ffi::GSocketControlMessage,
-) -> usize
-where
-    <T as ObjectSubclass>::Type: IsA<glib::Object>,
-    <T as ObjectSubclass>::Type: IsA<SocketControlMessage>,
-{
+) -> usize {
     let instance = &*(ptr as *mut T::Instance);
     let imp = instance.imp();
 
@@ -182,10 +155,7 @@ where
 unsafe extern "C" fn socket_control_message_serialize<T: SocketControlMessageImpl>(
     ptr: *mut ffi::GSocketControlMessage,
     data: glib::ffi::gpointer,
-) where
-    <T as ObjectSubclass>::Type: IsA<glib::Object>,
-    <T as ObjectSubclass>::Type: IsA<SocketControlMessage>,
-{
+) {
     let instance = &*(ptr as *mut T::Instance);
     let imp = instance.imp();
 
@@ -199,11 +169,7 @@ unsafe extern "C" fn socket_control_message_deserialize<T: SocketControlMessageI
     type_: i32,
     size: usize,
     data: glib::ffi::gpointer,
-) -> *mut ffi::GSocketControlMessage
-where
-    <T as ObjectSubclass>::Type: IsA<glib::Object>,
-    <T as ObjectSubclass>::Type: IsA<SocketControlMessage>,
-{
+) -> *mut ffi::GSocketControlMessage {
     let data = std::slice::from_raw_parts(data as *mut u8, size);
 
     T::deserialize(level, type_, data).into_glib_ptr()

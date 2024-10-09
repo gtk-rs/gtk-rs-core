@@ -19,16 +19,15 @@ glib::wrapper! {
     pub struct TestParent(ObjectSubclass<imp_parent::TestParent>);
 }
 
-pub trait TestParentImpl: glib::subclass::prelude::ObjectImpl + Send + Sync
-where
-    <Self as glib::subclass::prelude::ObjectSubclass>::Type: glib::prelude::IsA<glib::Object>,
+pub trait TestParentImpl:
+    Send
+    + Sync
+    + glib::subclass::prelude::ObjectImpl
+    + glib::subclass::prelude::ObjectSubclass<Type: glib::prelude::IsA<TestParent>>
 {
 }
 
-unsafe impl<T: TestParentImpl> glib::subclass::prelude::IsSubclassable<T> for TestParent where
-    <T as glib::subclass::prelude::ObjectSubclass>::Type: glib::prelude::IsA<glib::Object>
-{
-}
+unsafe impl<T: TestParentImpl> glib::subclass::prelude::IsSubclassable<T> for TestParent {}
 
 impl Default for TestParent {
     fn default() -> Self {

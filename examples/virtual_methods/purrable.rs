@@ -82,11 +82,7 @@ pub trait PurrableExt: IsA<Purrable> {
 impl<T: IsA<Purrable>> PurrableExt for T {}
 
 /// The `PurrableImpl` trait contains virtual function definitions for [`Purrable`] objects.
-pub trait PurrableImpl: ObjectImpl
-where
-    <Self as ObjectSubclass>::Type: IsA<glib::Object>,
-    <Self as ObjectSubclass>::Type: IsA<Purrable>,
-{
+pub trait PurrableImpl: ObjectImpl + ObjectSubclass<Type: IsA<Purrable>> {
     /// Return the current purring status.
     ///
     /// The default implementation chains up to the parent implementation,
@@ -100,11 +96,7 @@ where
 /// The `PurrableImplExt` trait contains non-overridable methods for subclasses to use.
 ///
 /// These are supposed to be called only from inside implementations of `Pet` subclasses.
-pub trait PurrableImplExt: PurrableImpl
-where
-    <Self as ObjectSubclass>::Type: IsA<glib::Object>,
-    <Self as ObjectSubclass>::Type: IsA<Purrable>,
-{
+pub trait PurrableImplExt: PurrableImpl {
     /// Chains up to the parent implementation of [`PurrableExt::is_purring`]
     fn parent_is_purring(&self) -> bool {
         let data = Self::type_data();
@@ -117,19 +109,10 @@ where
 }
 
 /// The `PurrableImplExt` trait is implemented for all classes that implement [`Purrable`].
-impl<T: PurrableImpl> PurrableImplExt for T
-where
-    <Self as ObjectSubclass>::Type: IsA<glib::Object>,
-    <Self as ObjectSubclass>::Type: IsA<Purrable>,
-{
-}
+impl<T: PurrableImpl> PurrableImplExt for T {}
 
 /// To make this interface implementable we need to implement [`IsImplementable`]
-unsafe impl<Obj: PurrableImpl> IsImplementable<Obj> for Purrable
-where
-    <Obj as ObjectSubclass>::Type: IsA<glib::Object>,
-    <Obj as ObjectSubclass>::Type: IsA<Purrable>,
-{
+unsafe impl<Obj: PurrableImpl> IsImplementable<Obj> for Purrable {
     fn interface_init(iface: &mut glib::Interface<Self>) {
         let klass = iface.as_mut();
 

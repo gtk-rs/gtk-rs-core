@@ -12,10 +12,8 @@ use glib::{prelude::*, subclass::prelude::*, translate::*};
 
 use crate::{ffi, Pixbuf, PixbufAnimationIter};
 
-pub trait PixbufAnimationIterImpl: ObjectImpl
-where
-    <Self as ObjectSubclass>::Type: IsA<glib::Object>,
-    <Self as ObjectSubclass>::Type: IsA<PixbufAnimationIter>,
+pub trait PixbufAnimationIterImpl:
+    ObjectImpl + ObjectSubclass<Type: IsA<PixbufAnimationIter>>
 {
     // rustdoc-stripper-ignore-next
     /// Time in milliseconds, returning `None` implies showing the same pixbuf forever.
@@ -36,11 +34,7 @@ where
     }
 }
 
-pub trait PixbufAnimationIterImplExt: ObjectSubclass + PixbufAnimationIterImpl
-where
-    <Self as ObjectSubclass>::Type: IsA<glib::Object>,
-    <Self as ObjectSubclass>::Type: IsA<PixbufAnimationIter>,
-{
+pub trait PixbufAnimationIterImplExt: PixbufAnimationIterImpl {
     fn parent_delay_time(&self) -> Option<Duration> {
         unsafe {
             let data = Self::type_data();
@@ -124,18 +118,9 @@ where
     }
 }
 
-impl<T: PixbufAnimationIterImpl> PixbufAnimationIterImplExt for T
-where
-    <T as ObjectSubclass>::Type: IsA<glib::Object>,
-    <T as ObjectSubclass>::Type: IsA<PixbufAnimationIter>,
-{
-}
+impl<T: PixbufAnimationIterImpl> PixbufAnimationIterImplExt for T {}
 
-unsafe impl<T: PixbufAnimationIterImpl> IsSubclassable<T> for PixbufAnimationIter
-where
-    <T as ObjectSubclass>::Type: IsA<glib::Object>,
-    <T as ObjectSubclass>::Type: IsA<PixbufAnimationIter>,
-{
+unsafe impl<T: PixbufAnimationIterImpl> IsSubclassable<T> for PixbufAnimationIter {
     fn class_init(class: &mut ::glib::Class<Self>) {
         Self::parent_class_init::<T>(class);
 
@@ -149,11 +134,7 @@ where
 
 unsafe extern "C" fn animation_iter_get_delay_time<T: PixbufAnimationIterImpl>(
     ptr: *mut ffi::GdkPixbufAnimationIter,
-) -> i32
-where
-    <T as ObjectSubclass>::Type: IsA<glib::Object>,
-    <T as ObjectSubclass>::Type: IsA<PixbufAnimationIter>,
-{
+) -> i32 {
     let instance = &*(ptr as *mut T::Instance);
     let imp = instance.imp();
 
@@ -162,11 +143,7 @@ where
 
 unsafe extern "C" fn animation_iter_get_pixbuf<T: PixbufAnimationIterImpl>(
     ptr: *mut ffi::GdkPixbufAnimationIter,
-) -> *mut ffi::GdkPixbuf
-where
-    <T as ObjectSubclass>::Type: IsA<glib::Object>,
-    <T as ObjectSubclass>::Type: IsA<PixbufAnimationIter>,
-{
+) -> *mut ffi::GdkPixbuf {
     let instance = &*(ptr as *mut T::Instance);
     let imp = instance.imp();
 
@@ -182,11 +159,7 @@ where
 
 unsafe extern "C" fn animation_iter_on_currently_loading_frame<T: PixbufAnimationIterImpl>(
     ptr: *mut ffi::GdkPixbufAnimationIter,
-) -> glib::ffi::gboolean
-where
-    <T as ObjectSubclass>::Type: IsA<glib::Object>,
-    <T as ObjectSubclass>::Type: IsA<PixbufAnimationIter>,
-{
+) -> glib::ffi::gboolean {
     let instance = &*(ptr as *mut T::Instance);
     let imp = instance.imp();
 
@@ -196,11 +169,7 @@ where
 unsafe extern "C" fn animation_iter_advance<T: PixbufAnimationIterImpl>(
     ptr: *mut ffi::GdkPixbufAnimationIter,
     current_time_ptr: *const glib::ffi::GTimeVal,
-) -> glib::ffi::gboolean
-where
-    <T as ObjectSubclass>::Type: IsA<glib::Object>,
-    <T as ObjectSubclass>::Type: IsA<PixbufAnimationIter>,
-{
+) -> glib::ffi::gboolean {
     let instance = &*(ptr as *mut T::Instance);
     let imp = instance.imp();
 

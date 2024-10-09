@@ -7,11 +7,7 @@ use glib::{prelude::*, subclass::prelude::*, translate::*};
 
 use crate::{ffi, PixbufLoader};
 
-pub trait PixbufLoaderImpl: ObjectImpl
-where
-    <Self as ObjectSubclass>::Type: IsA<glib::Object>,
-    <Self as ObjectSubclass>::Type: IsA<PixbufLoader>,
-{
+pub trait PixbufLoaderImpl: ObjectImpl + ObjectSubclass<Type: IsA<PixbufLoader>> {
     fn size_prepared(&self, width: i32, height: i32) {
         self.parent_size_prepared(width, height)
     }
@@ -29,11 +25,7 @@ where
     }
 }
 
-pub trait PixbufLoaderImplExt: ObjectSubclass + PixbufLoaderImpl
-where
-    <Self as ObjectSubclass>::Type: IsA<glib::Object>,
-    <Self as ObjectSubclass>::Type: IsA<PixbufLoader>,
-{
+pub trait PixbufLoaderImplExt: PixbufLoaderImpl {
     fn parent_size_prepared(&self, width: i32, height: i32) {
         unsafe {
             let data = Self::type_data();
@@ -99,18 +91,9 @@ where
     }
 }
 
-impl<T: PixbufLoaderImpl> PixbufLoaderImplExt for T
-where
-    <T as ObjectSubclass>::Type: IsA<glib::Object>,
-    <T as ObjectSubclass>::Type: IsA<PixbufLoader>,
-{
-}
+impl<T: PixbufLoaderImpl> PixbufLoaderImplExt for T {}
 
-unsafe impl<T: PixbufLoaderImpl> IsSubclassable<T> for PixbufLoader
-where
-    <T as ObjectSubclass>::Type: IsA<glib::Object>,
-    <T as ObjectSubclass>::Type: IsA<PixbufLoader>,
-{
+unsafe impl<T: PixbufLoaderImpl> IsSubclassable<T> for PixbufLoader {
     fn class_init(class: &mut ::glib::Class<Self>) {
         Self::parent_class_init::<T>(class);
 
@@ -126,21 +109,14 @@ unsafe extern "C" fn loader_size_prepared<T: PixbufLoaderImpl>(
     ptr: *mut ffi::GdkPixbufLoader,
     width: i32,
     height: i32,
-) where
-    <T as ObjectSubclass>::Type: IsA<glib::Object>,
-    <T as ObjectSubclass>::Type: IsA<PixbufLoader>,
-{
+) {
     let instance = &*(ptr as *mut T::Instance);
     let imp = instance.imp();
 
     imp.size_prepared(width, height)
 }
 
-unsafe extern "C" fn loader_area_prepared<T: PixbufLoaderImpl>(ptr: *mut ffi::GdkPixbufLoader)
-where
-    <T as ObjectSubclass>::Type: IsA<glib::Object>,
-    <T as ObjectSubclass>::Type: IsA<PixbufLoader>,
-{
+unsafe extern "C" fn loader_area_prepared<T: PixbufLoaderImpl>(ptr: *mut ffi::GdkPixbufLoader) {
     let instance = &*(ptr as *mut T::Instance);
     let imp = instance.imp();
 
@@ -153,21 +129,14 @@ unsafe extern "C" fn loader_area_updated<T: PixbufLoaderImpl>(
     y: i32,
     width: i32,
     height: i32,
-) where
-    <T as ObjectSubclass>::Type: IsA<glib::Object>,
-    <T as ObjectSubclass>::Type: IsA<PixbufLoader>,
-{
+) {
     let instance = &*(ptr as *mut T::Instance);
     let imp = instance.imp();
 
     imp.area_updated(x, y, width, height)
 }
 
-unsafe extern "C" fn loader_closed<T: PixbufLoaderImpl>(ptr: *mut ffi::GdkPixbufLoader)
-where
-    <T as ObjectSubclass>::Type: IsA<glib::Object>,
-    <T as ObjectSubclass>::Type: IsA<PixbufLoader>,
-{
+unsafe extern "C" fn loader_closed<T: PixbufLoaderImpl>(ptr: *mut ffi::GdkPixbufLoader) {
     let instance = &*(ptr as *mut T::Instance);
     let imp = instance.imp();
 
