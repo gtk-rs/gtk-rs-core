@@ -381,39 +381,7 @@
 <a href="#307" id="307">307</a>
 <a href="#308" id="308">308</a>
 <a href="#309" id="309">309</a>
-<a href="#310" id="310">310</a>
-<a href="#311" id="311">311</a>
-<a href="#312" id="312">312</a>
-<a href="#313" id="313">313</a>
-<a href="#314" id="314">314</a>
-<a href="#315" id="315">315</a>
-<a href="#316" id="316">316</a>
-<a href="#317" id="317">317</a>
-<a href="#318" id="318">318</a>
-<a href="#319" id="319">319</a>
-<a href="#320" id="320">320</a>
-<a href="#321" id="321">321</a>
-<a href="#322" id="322">322</a>
-<a href="#323" id="323">323</a>
-<a href="#324" id="324">324</a>
-<a href="#325" id="325">325</a>
-<a href="#326" id="326">326</a>
-<a href="#327" id="327">327</a>
-<a href="#328" id="328">328</a>
-<a href="#329" id="329">329</a>
-<a href="#330" id="330">330</a>
-<a href="#331" id="331">331</a>
-<a href="#332" id="332">332</a>
-<a href="#333" id="333">333</a>
-<a href="#334" id="334">334</a>
-<a href="#335" id="335">335</a>
-<a href="#336" id="336">336</a>
-<a href="#337" id="337">337</a>
-<a href="#338" id="338">338</a>
-<a href="#339" id="339">339</a>
-<a href="#340" id="340">340</a>
-<a href="#341" id="341">341</a>
-<a href="#342" id="342">342</a></pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
+<a href="#310" id="310">310</a></pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
 </span><span class="kw">use </span><span class="kw">crate</span>::enums::{<a href="../enums.rs.html#380">EnumValues</a>, <a href="../enums.rs.html#959">FlagsValues</a>};
 <span class="kw">use crate</span>::{
@@ -421,33 +389,25 @@
     <a href="../object.rs.html#1371-1374">Object</a>, <a href="../types.rs.html#22">Type</a>, <a href="../gobject/auto/flags.rs.html#182-209">TypeFlags</a>, <a href="../gobject/type_info.rs.html#17">TypeInfo</a>, <a href="../gobject/type_plugin.rs.html#5-66">TypePlugin</a>, <a href="../gobject/type_value_table.rs.html#10">TypeValueTable</a>,
 };
 
-<span class="kw">pub trait </span><a href="../../../glib/subclass/type_plugin/trait.TypePluginImpl.html">TypePluginImpl</a>: <a href="object.rs.html#22-127">ObjectImpl</a>
-<span class="kw">where
-    </span>&lt;<span class="self">Self </span><span class="kw">as </span>ObjectSubclass&gt;::Type: IsA&lt;<a href="../object.rs.html#1371-1374">Object</a>&gt;,
-    &lt;<span class="self">Self </span><span class="kw">as </span>ObjectSubclass&gt;::Type: IsA&lt;<a href="../gobject/type_plugin.rs.html#5-66">TypePlugin</a>&gt;,
-{
+<span class="kw">pub trait </span><a href="../../../glib/subclass/type_plugin/trait.TypePluginImpl.html">TypePluginImpl</a>: <a href="object.rs.html#22-124">ObjectImpl</a> + ObjectSubclass&lt;Type: IsA&lt;<a href="../object.rs.html#1371-1374">Object</a>&gt; + IsA&lt;<a href="../gobject/type_plugin.rs.html#5-66">TypePlugin</a>&gt;&gt; {
     <span class="kw">fn </span>use_plugin(<span class="kw-2">&amp;</span><span class="self">self</span>) {
-        <a class="self" href="#14">self</a>.<a href="#36">parent_use_plugin</a>();
+        <a class="self" href="#10">self</a>.<a href="#28">parent_use_plugin</a>();
     }
 
     <span class="kw">fn </span>unuse_plugin(<span class="kw-2">&amp;</span><span class="self">self</span>) {
-        <a class="self" href="#18">self</a>.<a href="#37">parent_unuse_plugin</a>();
+        <a class="self" href="#14">self</a>.<a href="#29">parent_unuse_plugin</a>();
     }
 
     <span class="kw">fn </span>complete_type_info(<span class="kw-2">&amp;</span><span class="self">self</span>, type_: <a href="../types.rs.html#22">Type</a>) -&gt; (<a href="../gobject/type_info.rs.html#17">TypeInfo</a>, <a href="../gobject/type_value_table.rs.html#10">TypeValueTable</a>) {
-        <a class="self" href="#22">self</a>.<a href="#38">parent_complete_type_info</a>(<a href="#22">type_</a>)
+        <a class="self" href="#18">self</a>.<a href="#30">parent_complete_type_info</a>(<a href="#18">type_</a>)
     }
 
     <span class="kw">fn </span>complete_interface_info(<span class="kw-2">&amp;</span><span class="self">self</span>, instance_type: <a href="../types.rs.html#22">Type</a>, interface_type: <a href="../types.rs.html#22">Type</a>) -&gt; <a href="../gobject/interface_info.rs.html#10">InterfaceInfo</a> {
-        <a class="self" href="#26">self</a>.<a href="#39-43">parent_complete_interface_info</a>(<a href="#26">instance_type</a>, <a href="#26">interface_type</a>)
+        <a class="self" href="#22">self</a>.<a href="#31-35">parent_complete_interface_info</a>(<a href="#22">instance_type</a>, <a href="#22">interface_type</a>)
     }
 }
 
-<span class="kw">pub trait </span><a href="../../../glib/subclass/type_plugin/trait.TypePluginImplExt.html">TypePluginImplExt</a>: <a href="types.rs.html#601-736">ObjectSubclass</a> + <a href="#9-29">TypePluginImpl</a>
-<span class="kw">where
-    </span>&lt;<span class="self">Self </span><span class="kw">as </span>ObjectSubclass&gt;::Type: IsA&lt;<a href="../object.rs.html#1371-1374">Object</a>&gt;,
-    &lt;<span class="self">Self </span><span class="kw">as </span>ObjectSubclass&gt;::Type: IsA&lt;<a href="../gobject/type_plugin.rs.html#5-66">TypePlugin</a>&gt;,
-{
+<span class="kw">pub trait </span><a href="../../../glib/subclass/type_plugin/trait.TypePluginImplExt.html">TypePluginImplExt</a>: <a href="#9-25">TypePluginImpl</a> {
     <span class="kw">fn </span>parent_use_plugin(<span class="kw-2">&amp;</span><span class="self">self</span>);
     <span class="kw">fn </span>parent_unuse_plugin(<span class="kw-2">&amp;</span><span class="self">self</span>);
     <span class="kw">fn </span>parent_complete_type_info(<span class="kw-2">&amp;</span><span class="self">self</span>, type_: <a href="../types.rs.html#22">Type</a>) -&gt; (<a href="../gobject/type_info.rs.html#17">TypeInfo</a>, <a href="../gobject/type_value_table.rs.html#10">TypeValueTable</a>);
@@ -458,59 +418,55 @@
     ) -&gt; <a href="../gobject/interface_info.rs.html#10">InterfaceInfo</a>;
 }
 
-<span class="kw">impl</span>&lt;T: <a href="#9-29">TypePluginImpl</a>&gt; <a href="#31-44">TypePluginImplExt</a> <span class="kw">for </span>T
-<span class="kw">where
-    </span>&lt;<span class="self">Self </span><span class="kw">as </span>ObjectSubclass&gt;::Type: IsA&lt;<a href="../object.rs.html#1371-1374">Object</a>&gt;,
-    &lt;<span class="self">Self </span><span class="kw">as </span>ObjectSubclass&gt;::Type: IsA&lt;<a href="../gobject/type_plugin.rs.html#5-66">TypePlugin</a>&gt;,
-{
+<span class="kw">impl</span>&lt;T: <a href="#9-25">TypePluginImpl</a>&gt; <a href="#27-36">TypePluginImplExt</a> <span class="kw">for </span>T {
     <span class="kw">fn </span>parent_use_plugin(<span class="kw-2">&amp;</span><span class="self">self</span>) {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>type_data = <a href="types.rs.html#580"><span class="self">Self</span>::type_data</a>();
-            <span class="kw">let </span>parent_iface = <a href="#53">type_data</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().<a href="types.rs.html#494-501">parent_interface</a>::&lt;<a href="../gobject/type_plugin.rs.html#5-66">TypePlugin</a>&gt;()
+            <span class="kw">let </span>parent_iface = <a href="#41">type_data</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().<a href="types.rs.html#494-501">parent_interface</a>::&lt;<a href="../gobject/type_plugin.rs.html#5-66">TypePlugin</a>&gt;()
                 <span class="kw">as </span><span class="kw-2">*const </span><a href="../../../gobject_sys/struct.GTypePluginClass.html">gobject_ffi::GTypePluginClass</a>;
 
-            <span class="kw">let </span>f = (<span class="kw-2">*</span><a href="#54">parent_iface</a>)
+            <span class="kw">let </span>f = (<span class="kw-2">*</span><a href="#42">parent_iface</a>)
                 .use_plugin
                 .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.expect">expect</a>(<span class="string">"no parent \"use_plugin\" implementation"</span>);
 
-            <a href="#57">f</a>(<a class="self" href="#51">self</a>.<a href="types.rs.html#746">obj</a>().<a href="../object.rs.html#273-280">unsafe_cast_ref</a>::&lt;<a href="../gobject/type_plugin.rs.html#5-66">TypePlugin</a>&gt;().<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>)
+            <a href="#45">f</a>(<a class="self" href="#39">self</a>.<a href="types.rs.html#746">obj</a>().<a href="../object.rs.html#273-280">unsafe_cast_ref</a>::&lt;<a href="../gobject/type_plugin.rs.html#5-66">TypePlugin</a>&gt;().<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>)
         }
     }
 
     <span class="kw">fn </span>parent_unuse_plugin(<span class="kw-2">&amp;</span><span class="self">self</span>) {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>type_data = <a href="types.rs.html#580"><span class="self">Self</span>::type_data</a>();
-            <span class="kw">let </span>parent_iface = <a href="#67">type_data</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().<a href="types.rs.html#494-501">parent_interface</a>::&lt;<a href="../gobject/type_plugin.rs.html#5-66">TypePlugin</a>&gt;()
+            <span class="kw">let </span>parent_iface = <a href="#55">type_data</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().<a href="types.rs.html#494-501">parent_interface</a>::&lt;<a href="../gobject/type_plugin.rs.html#5-66">TypePlugin</a>&gt;()
                 <span class="kw">as </span><span class="kw-2">*const </span><a href="../../../gobject_sys/struct.GTypePluginClass.html">gobject_ffi::GTypePluginClass</a>;
 
-            <span class="kw">let </span>f = (<span class="kw-2">*</span><a href="#68">parent_iface</a>)
+            <span class="kw">let </span>f = (<span class="kw-2">*</span><a href="#56">parent_iface</a>)
                 .unuse_plugin
                 .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.expect">expect</a>(<span class="string">"no parent \"unuse_plugin\" implementation"</span>);
 
-            <a href="#71">f</a>(<a class="self" href="#65">self</a>.<a href="types.rs.html#746">obj</a>().<a href="../object.rs.html#273-280">unsafe_cast_ref</a>::&lt;<a href="../gobject/type_plugin.rs.html#5-66">TypePlugin</a>&gt;().<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>)
+            <a href="#59">f</a>(<a class="self" href="#53">self</a>.<a href="types.rs.html#746">obj</a>().<a href="../object.rs.html#273-280">unsafe_cast_ref</a>::&lt;<a href="../gobject/type_plugin.rs.html#5-66">TypePlugin</a>&gt;().<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>)
         }
     }
 
     <span class="kw">fn </span>parent_complete_type_info(<span class="kw-2">&amp;</span><span class="self">self</span>, type_: <a href="../types.rs.html#22">Type</a>) -&gt; (<a href="../gobject/type_info.rs.html#17">TypeInfo</a>, <a href="../gobject/type_value_table.rs.html#10">TypeValueTable</a>) {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>type_data = <a href="types.rs.html#580"><span class="self">Self</span>::type_data</a>();
-            <span class="kw">let </span>parent_iface = <a href="#81">type_data</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().<a href="types.rs.html#494-501">parent_interface</a>::&lt;<a href="../gobject/type_plugin.rs.html#5-66">TypePlugin</a>&gt;()
+            <span class="kw">let </span>parent_iface = <a href="#69">type_data</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().<a href="types.rs.html#494-501">parent_interface</a>::&lt;<a href="../gobject/type_plugin.rs.html#5-66">TypePlugin</a>&gt;()
                 <span class="kw">as </span><span class="kw-2">*const </span><a href="../../../gobject_sys/struct.GTypePluginClass.html">gobject_ffi::GTypePluginClass</a>;
 
-            <span class="kw">let </span>f = (<span class="kw-2">*</span><a href="#82">parent_iface</a>)
+            <span class="kw">let </span>f = (<span class="kw-2">*</span><a href="#70">parent_iface</a>)
                 .complete_type_info
                 .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.expect">expect</a>(<span class="string">"no parent \"complete_type_info\" implementation"</span>);
 
             <span class="kw">let </span>info = <a href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html#tymethod.default">TypeInfo::default</a>();
             <span class="kw">let </span>value_table = <a href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html#tymethod.default">TypeValueTable::default</a>();
-            <a href="#85">f</a>(
-                <a class="self" href="#79">self</a>.<a href="types.rs.html#746">obj</a>().<a href="../object.rs.html#273-280">unsafe_cast_ref</a>::&lt;<a href="../gobject/type_plugin.rs.html#5-66">TypePlugin</a>&gt;().<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#79">type_</a>.<a href="../translate.rs.html#334">into_glib</a>(),
-                <a href="#89">info</a>.<a href="../gobject/type_info.rs.html#24-26">as_ptr</a>(),
-                <a href="#90">value_table</a>.<a href="../gobject/type_value_table.rs.html#17-19">as_ptr</a>(),
+            <a href="#73">f</a>(
+                <a class="self" href="#67">self</a>.<a href="types.rs.html#746">obj</a>().<a href="../object.rs.html#273-280">unsafe_cast_ref</a>::&lt;<a href="../gobject/type_plugin.rs.html#5-66">TypePlugin</a>&gt;().<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#67">type_</a>.<a href="../translate.rs.html#334">into_glib</a>(),
+                <a href="#77">info</a>.<a href="../gobject/type_info.rs.html#24-26">as_ptr</a>(),
+                <a href="#78">value_table</a>.<a href="../gobject/type_value_table.rs.html#17-19">as_ptr</a>(),
             );
 
-            (<a href="#89">info</a>, <a href="#90">value_table</a>)
+            (<a href="#77">info</a>, <a href="#78">value_table</a>)
         }
     }
 
@@ -522,108 +478,88 @@
         <span class="kw">let </span>info = <a href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html#tymethod.default">InterfaceInfo::default</a>();
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>type_data = <a href="types.rs.html#580"><span class="self">Self</span>::type_data</a>();
-            <span class="kw">let </span>parent_iface = <a href="#109">type_data</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().<a href="types.rs.html#494-501">parent_interface</a>::&lt;<a href="../gobject/type_plugin.rs.html#5-66">TypePlugin</a>&gt;()
+            <span class="kw">let </span>parent_iface = <a href="#97">type_data</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().<a href="types.rs.html#494-501">parent_interface</a>::&lt;<a href="../gobject/type_plugin.rs.html#5-66">TypePlugin</a>&gt;()
                 <span class="kw">as </span><span class="kw-2">*const </span><a href="../../../gobject_sys/struct.GTypePluginClass.html">gobject_ffi::GTypePluginClass</a>;
 
-            <span class="kw">let </span>f = (<span class="kw-2">*</span><a href="#110">parent_iface</a>)
+            <span class="kw">let </span>f = (<span class="kw-2">*</span><a href="#98">parent_iface</a>)
                 .complete_interface_info
                 .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.expect">expect</a>(<span class="string">"no parent \"complete_interface_info\" implementation"</span>);
 
-            <a href="#113">f</a>(
-                <a class="self" href="#103">self</a>.<a href="types.rs.html#746">obj</a>().<a href="../object.rs.html#273-280">unsafe_cast_ref</a>::&lt;<a href="../gobject/type_plugin.rs.html#5-66">TypePlugin</a>&gt;().<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#104">instance_type</a>.<a href="../translate.rs.html#334">into_glib</a>(),
-                <a href="#105">interface_type</a>.<a href="../translate.rs.html#334">into_glib</a>(),
-                <a href="#107">info</a>.<a href="../gobject/interface_info.rs.html#17-19">as_ptr</a>(),
+            <a href="#101">f</a>(
+                <a class="self" href="#91">self</a>.<a href="types.rs.html#746">obj</a>().<a href="../object.rs.html#273-280">unsafe_cast_ref</a>::&lt;<a href="../gobject/type_plugin.rs.html#5-66">TypePlugin</a>&gt;().<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#92">instance_type</a>.<a href="../translate.rs.html#334">into_glib</a>(),
+                <a href="#93">interface_type</a>.<a href="../translate.rs.html#334">into_glib</a>(),
+                <a href="#95">info</a>.<a href="../gobject/interface_info.rs.html#17-19">as_ptr</a>(),
             )
         }
-        <a href="#107">info</a>
+        <a href="#95">info</a>
     }
 }
 
-<span class="kw">unsafe impl</span>&lt;T: <a href="#9-29">TypePluginImpl</a>&gt; IsImplementable&lt;T&gt; <span class="kw">for </span><a href="../gobject/type_plugin.rs.html#5-66">TypePlugin</a>
-<span class="kw">where
-    </span>&lt;T <span class="kw">as </span>ObjectSubclass&gt;::Type: IsA&lt;<a href="../object.rs.html#1371-1374">Object</a>&gt;,
-    &lt;T <span class="kw">as </span>ObjectSubclass&gt;::Type: IsA&lt;<a href="../gobject/type_plugin.rs.html#5-66">TypePlugin</a>&gt;,
-{
+<span class="kw">unsafe impl</span>&lt;T: <a href="#9-25">TypePluginImpl</a>&gt; IsImplementable&lt;T&gt; <span class="kw">for </span><a href="../gobject/type_plugin.rs.html#5-66">TypePlugin</a> {
     <span class="kw">fn </span>interface_init(iface: <span class="kw-2">&amp;mut </span>Interface&lt;<span class="self">Self</span>&gt;) {
-        <span class="kw">let </span>iface = <a href="#133">iface</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsMut.html#tymethod.as_mut">as_mut</a>();
+        <span class="kw">let </span>iface = <a href="#117">iface</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsMut.html#tymethod.as_mut">as_mut</a>();
 
-        <a href="#134">iface</a>.use_plugin = <span class="prelude-val">Some</span>(use_plugin::&lt;T&gt;);
-        <a href="#134">iface</a>.unuse_plugin = <span class="prelude-val">Some</span>(unuse_plugin::&lt;T&gt;);
-        <a href="#134">iface</a>.complete_type_info = <span class="prelude-val">Some</span>(complete_type_info::&lt;T&gt;);
-        <a href="#134">iface</a>.complete_interface_info = <span class="prelude-val">Some</span>(complete_interface_info::&lt;T&gt;);
+        <a href="#118">iface</a>.use_plugin = <span class="prelude-val">Some</span>(use_plugin::&lt;T&gt;);
+        <a href="#118">iface</a>.unuse_plugin = <span class="prelude-val">Some</span>(unuse_plugin::&lt;T&gt;);
+        <a href="#118">iface</a>.complete_type_info = <span class="prelude-val">Some</span>(complete_type_info::&lt;T&gt;);
+        <a href="#118">iface</a>.complete_interface_info = <span class="prelude-val">Some</span>(complete_interface_info::&lt;T&gt;);
     }
 }
 
-<span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>use_plugin&lt;T: <a href="#9-29">TypePluginImpl</a>&gt;(type_plugin: <span class="kw-2">*mut </span><a href="../../../gobject_sys/struct.GTypePlugin.html">gobject_ffi::GTypePlugin</a>)
-<span class="kw">where
-    </span>&lt;T <span class="kw">as </span>ObjectSubclass&gt;::Type: IsA&lt;<a href="../object.rs.html#1371-1374">Object</a>&gt;,
-    &lt;T <span class="kw">as </span>ObjectSubclass&gt;::Type: IsA&lt;<a href="../gobject/type_plugin.rs.html#5-66">TypePlugin</a>&gt;,
-{
-    <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(<a href="#143">type_plugin</a> <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
-    <span class="kw">let </span>imp = <a href="#148">instance</a>.<a href="types.rs.html#84">imp</a>();
+<span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>use_plugin&lt;T: <a href="#9-25">TypePluginImpl</a>&gt;(type_plugin: <span class="kw-2">*mut </span><a href="../../../gobject_sys/struct.GTypePlugin.html">gobject_ffi::GTypePlugin</a>) {
+    <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(<a href="#127">type_plugin</a> <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
+    <span class="kw">let </span>imp = <a href="#128">instance</a>.<a href="types.rs.html#84">imp</a>();
 
-    <a href="#149">imp</a>.<a href="#14-16">use_plugin</a>();
+    <a href="#129">imp</a>.<a href="#10-12">use_plugin</a>();
 }
 
-<span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>unuse_plugin&lt;T: <a href="#9-29">TypePluginImpl</a>&gt;(type_plugin: <span class="kw-2">*mut </span><a href="../../../gobject_sys/struct.GTypePlugin.html">gobject_ffi::GTypePlugin</a>)
-<span class="kw">where
-    </span>&lt;T <span class="kw">as </span>ObjectSubclass&gt;::Type: IsA&lt;<a href="../object.rs.html#1371-1374">Object</a>&gt;,
-    &lt;T <span class="kw">as </span>ObjectSubclass&gt;::Type: IsA&lt;<a href="../gobject/type_plugin.rs.html#5-66">TypePlugin</a>&gt;,
-{
-    <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(<a href="#154">type_plugin</a> <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
-    <span class="kw">let </span>imp = <a href="#159">instance</a>.<a href="types.rs.html#84">imp</a>();
+<span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>unuse_plugin&lt;T: <a href="#9-25">TypePluginImpl</a>&gt;(type_plugin: <span class="kw-2">*mut </span><a href="../../../gobject_sys/struct.GTypePlugin.html">gobject_ffi::GTypePlugin</a>) {
+    <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(<a href="#134">type_plugin</a> <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
+    <span class="kw">let </span>imp = <a href="#135">instance</a>.<a href="types.rs.html#84">imp</a>();
 
-    <a href="#160">imp</a>.<a href="#18-20">unuse_plugin</a>();
+    <a href="#136">imp</a>.<a href="#14-16">unuse_plugin</a>();
 }
 
-<span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>complete_type_info&lt;T: <a href="#9-29">TypePluginImpl</a>&gt;(
+<span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>complete_type_info&lt;T: <a href="#9-25">TypePluginImpl</a>&gt;(
     type_plugin: <span class="kw-2">*mut </span><a href="../../../gobject_sys/struct.GTypePlugin.html">gobject_ffi::GTypePlugin</a>,
     gtype: <a href="../../../glib_sys/manual/type.GType.html">ffi::GType</a>,
     info_ptr: <span class="kw-2">*mut </span><a href="../../../gobject_sys/struct.GTypeInfo.html">gobject_ffi::GTypeInfo</a>,
     value_table_ptr: <span class="kw-2">*mut </span><a href="../../../gobject_sys/struct.GTypeValueTable.html">gobject_ffi::GTypeValueTable</a>,
-) <span class="kw">where
-    </span>&lt;T <span class="kw">as </span>ObjectSubclass&gt;::Type: IsA&lt;<a href="../object.rs.html#1371-1374">Object</a>&gt;,
-    &lt;T <span class="kw">as </span>ObjectSubclass&gt;::Type: IsA&lt;<a href="../gobject/type_plugin.rs.html#5-66">TypePlugin</a>&gt;,
-{
+) {
     <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.assert.html">assert!</a>(!info_ptr.is_null());
     <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.assert.html">assert!</a>(!value_table_ptr.is_null());
-    <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(<a href="#166">type_plugin</a> <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
-    <span class="kw">let </span>imp = <a href="#176">instance</a>.<a href="types.rs.html#84">imp</a>();
-    <span class="kw">let </span>type_ = <a href="../translate.rs.html#1411">Type::from_glib</a>(<a href="#167">gtype</a>);
-    <span class="kw">let </span>info = <a href="../gobject/type_info.rs.html#32-34">TypeInfo::from_glib_ptr_borrow_mut</a>(<a href="#168">info_ptr</a>);
-    <span class="kw">let </span>value_table = <a href="../gobject/type_value_table.rs.html#25-29">TypeValueTable::from_glib_ptr_borrow_mut</a>(<a href="#169">value_table_ptr</a>);
+    <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(<a href="#142">type_plugin</a> <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
+    <span class="kw">let </span>imp = <a href="#149">instance</a>.<a href="types.rs.html#84">imp</a>();
+    <span class="kw">let </span>type_ = <a href="../translate.rs.html#1411">Type::from_glib</a>(<a href="#143">gtype</a>);
+    <span class="kw">let </span>info = <a href="../gobject/type_info.rs.html#32-34">TypeInfo::from_glib_ptr_borrow_mut</a>(<a href="#144">info_ptr</a>);
+    <span class="kw">let </span>value_table = <a href="../gobject/type_value_table.rs.html#25-29">TypeValueTable::from_glib_ptr_borrow_mut</a>(<a href="#145">value_table_ptr</a>);
 
-    <span class="kw">let </span>(info_, value_table_) = <a href="#177">imp</a>.<a href="#22-24">complete_type_info</a>(<a href="#178">type_</a>);
+    <span class="kw">let </span>(info_, value_table_) = <a href="#150">imp</a>.<a href="#18-20">complete_type_info</a>(<a href="#151">type_</a>);
 
-    <span class="kw-2">*</span><a href="#179">info</a> = <a href="#182">info_</a>;
-    <span class="kw-2">*</span><a href="#180">value_table</a> = <a href="#182">value_table_</a>;
+    <span class="kw-2">*</span><a href="#152">info</a> = <a href="#155">info_</a>;
+    <span class="kw-2">*</span><a href="#153">value_table</a> = <a href="#155">value_table_</a>;
 }
 
-<span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>complete_interface_info&lt;T: <a href="#9-29">TypePluginImpl</a>&gt;(
+<span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>complete_interface_info&lt;T: <a href="#9-25">TypePluginImpl</a>&gt;(
     type_plugin: <span class="kw-2">*mut </span><a href="../../../gobject_sys/struct.GTypePlugin.html">gobject_ffi::GTypePlugin</a>,
     instance_gtype: <a href="../../../glib_sys/manual/type.GType.html">ffi::GType</a>,
     interface_gtype: <a href="../../../glib_sys/manual/type.GType.html">ffi::GType</a>,
     info_ptr: <span class="kw-2">*mut </span><a href="../../../gobject_sys/struct.GInterfaceInfo.html">gobject_ffi::GInterfaceInfo</a>,
-) <span class="kw">where
-    </span>&lt;T <span class="kw">as </span>ObjectSubclass&gt;::Type: IsA&lt;<a href="../object.rs.html#1371-1374">Object</a>&gt;,
-    &lt;T <span class="kw">as </span>ObjectSubclass&gt;::Type: IsA&lt;<a href="../gobject/type_plugin.rs.html#5-66">TypePlugin</a>&gt;,
-{
+) {
     <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.assert.html">assert!</a>(!info_ptr.is_null());
-    <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(<a href="#189">type_plugin</a> <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
-    <span class="kw">let </span>imp = <a href="#198">instance</a>.<a href="types.rs.html#84">imp</a>();
-    <span class="kw">let </span>instance_type = <a href="../translate.rs.html#1411">Type::from_glib</a>(<a href="#190">instance_gtype</a>);
-    <span class="kw">let </span>interface_type = <a href="../translate.rs.html#1411">Type::from_glib</a>(<a href="#191">interface_gtype</a>);
-    <span class="kw">let </span>info = <a href="../gobject/interface_info.rs.html#25-29">InterfaceInfo::from_glib_ptr_borrow_mut</a>(<a href="#192">info_ptr</a>);
+    <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(<a href="#162">type_plugin</a> <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
+    <span class="kw">let </span>imp = <a href="#168">instance</a>.<a href="types.rs.html#84">imp</a>();
+    <span class="kw">let </span>instance_type = <a href="../translate.rs.html#1411">Type::from_glib</a>(<a href="#163">instance_gtype</a>);
+    <span class="kw">let </span>interface_type = <a href="../translate.rs.html#1411">Type::from_glib</a>(<a href="#164">interface_gtype</a>);
+    <span class="kw">let </span>info = <a href="../gobject/interface_info.rs.html#25-29">InterfaceInfo::from_glib_ptr_borrow_mut</a>(<a href="#165">info_ptr</a>);
 
-    <span class="kw">let </span>info_ = <a href="#199">imp</a>.<a href="#26-28">complete_interface_info</a>(<a href="#200">instance_type</a>, <a href="#201">interface_type</a>);
-    <span class="kw-2">*</span><a href="#202">info</a> = <a href="#204">info_</a>;
+    <span class="kw">let </span>info_ = <a href="#169">imp</a>.<a href="#22-24">complete_interface_info</a>(<a href="#170">instance_type</a>, <a href="#171">interface_type</a>);
+    <span class="kw-2">*</span><a href="#172">info</a> = <a href="#174">info_</a>;
 }
 
-<span class="kw">pub trait </span><a href="../../../glib/subclass/type_plugin/trait.TypePluginRegisterImpl.html">TypePluginRegisterImpl</a>: <a href="object.rs.html#22-127">ObjectImpl</a> + <a href="#9-29">TypePluginImpl</a>
-<span class="kw">where
-    </span>&lt;<span class="self">Self </span><span class="kw">as </span>ObjectSubclass&gt;::Type: IsA&lt;<a href="../object.rs.html#1371-1374">Object</a>&gt;,
-    &lt;<span class="self">Self </span><span class="kw">as </span>ObjectSubclass&gt;::Type: IsA&lt;<a href="../gobject/type_plugin.rs.html#5-66">TypePlugin</a>&gt;,
+<span class="kw">pub trait </span><a href="../../../glib/subclass/type_plugin/trait.TypePluginRegisterImpl.html">TypePluginRegisterImpl</a>:
+    <a href="#9-25">TypePluginImpl</a> + ObjectSubclass&lt;Type: IsA&lt;<a href="../object.rs.html#1371-1374">Object</a>&gt; + IsA&lt;<a href="../gobject/type_plugin.rs.html#5-66">TypePlugin</a>&gt;&gt;
 {
     <span class="kw">fn </span>add_dynamic_interface(
         <span class="kw-2">&amp;</span><span class="self">self</span>,

@@ -343,50 +343,14 @@
 <a href="#269" id="269">269</a>
 <a href="#270" id="270">270</a>
 <a href="#271" id="271">271</a>
-<a href="#272" id="272">272</a>
-<a href="#273" id="273">273</a>
-<a href="#274" id="274">274</a>
-<a href="#275" id="275">275</a>
-<a href="#276" id="276">276</a>
-<a href="#277" id="277">277</a>
-<a href="#278" id="278">278</a>
-<a href="#279" id="279">279</a>
-<a href="#280" id="280">280</a>
-<a href="#281" id="281">281</a>
-<a href="#282" id="282">282</a>
-<a href="#283" id="283">283</a>
-<a href="#284" id="284">284</a>
-<a href="#285" id="285">285</a>
-<a href="#286" id="286">286</a>
-<a href="#287" id="287">287</a>
-<a href="#288" id="288">288</a>
-<a href="#289" id="289">289</a>
-<a href="#290" id="290">290</a>
-<a href="#291" id="291">291</a>
-<a href="#292" id="292">292</a>
-<a href="#293" id="293">293</a>
-<a href="#294" id="294">294</a>
-<a href="#295" id="295">295</a>
-<a href="#296" id="296">296</a>
-<a href="#297" id="297">297</a>
-<a href="#298" id="298">298</a>
-<a href="#299" id="299">299</a>
-<a href="#300" id="300">300</a>
-<a href="#301" id="301">301</a>
-<a href="#302" id="302">302</a>
-<a href="#303" id="303">303</a>
-<a href="#304" id="304">304</a>
-<a href="#305" id="305">305</a>
-<a href="#306" id="306">306</a></pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
+<a href="#272" id="272">272</a></pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
 </span><span class="kw">use </span>glib::{<a href="../../../glib/prelude/index.html">prelude</a>::<span class="kw-2">*</span>, <a href="../../../glib/subclass/prelude/index.html">subclass::prelude</a>::<span class="kw-2">*</span>, <a href="../../../glib/translate/index.html">translate</a>::<span class="kw-2">*</span>};
 
 <span class="kw">use crate</span>::{<a href="../../../gio_sys/index.html">ffi</a>, <a href="../auto/socket_control_message.rs.html#8-41">SocketControlMessage</a>};
 
-<span class="kw">pub trait </span><a href="../../../gio/subclass/prelude/trait.SocketControlMessageImpl.html">SocketControlMessageImpl</a>: <a href="../../../glib/subclass/object/trait.ObjectImpl.html">ObjectImpl</a>
-<span class="kw">where
-    </span>&lt;<span class="self">Self </span><span class="kw">as </span>ObjectSubclass&gt;::Type: IsA&lt;<a href="../../../glib/object/struct.Object.html">glib::Object</a>&gt;,
-    &lt;<span class="self">Self </span><span class="kw">as </span>ObjectSubclass&gt;::Type: IsA&lt;<a href="../auto/socket_control_message.rs.html#8-41">SocketControlMessage</a>&gt;,
+<span class="kw">pub trait </span><a href="../../../gio/subclass/prelude/trait.SocketControlMessageImpl.html">SocketControlMessageImpl</a>:
+    <a href="../../../glib/subclass/object/trait.ObjectImpl.html">ObjectImpl</a> + ObjectSubclass&lt;Type: IsA&lt;<a href="../auto/socket_control_message.rs.html#8-41">SocketControlMessage</a>&gt;&gt;
 {
     <span class="doccomment">/// Returns the "level" (i.e. the originating protocol) of the control message.
     /// This is often SOL_SOCKET.
@@ -395,11 +359,11 @@
     ///
     /// an integer describing the level
     </span><span class="kw">fn </span>level(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a> {
-        <a class="self" href="#18">self</a>.<a href="#56-70">parent_level</a>()
+        <a class="self" href="#16">self</a>.<a href="#50-64">parent_level</a>()
     }
 
     <span class="kw">fn </span>msg_type(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a> {
-        <a class="self" href="#22">self</a>.<a href="#72-86">parent_msg_type</a>()
+        <a class="self" href="#20">self</a>.<a href="#66-80">parent_msg_type</a>()
     }
 
     <span class="doccomment">/// Returns the space required for the control message, not including
@@ -409,7 +373,7 @@
     ///
     /// The number of bytes required.
     </span><span class="kw">fn </span>size(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a> {
-        <a class="self" href="#32">self</a>.<a href="#88-102">parent_size</a>()
+        <a class="self" href="#30">self</a>.<a href="#82-96">parent_size</a>()
     }
 
     <span class="doccomment">/// Converts the data in the message to bytes placed in the
@@ -419,28 +383,24 @@
     /// returned by g_socket_control_message_get_size() on this
     /// object.
     </span><span class="kw">fn </span>serialize(<span class="kw-2">&amp;</span><span class="self">self</span>, data: <span class="kw-2">&amp;mut </span>[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]) {
-        <a class="self" href="#42">self</a>.<a href="#104-121">parent_serialize</a>(<a href="#42">data</a>);
+        <a class="self" href="#40">self</a>.<a href="#98-115">parent_serialize</a>(<a href="#40">data</a>);
     }
 
     <span class="kw">fn </span>deserialize(level: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>, type_: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>, data: <span class="kw-2">&amp;</span>[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="../auto/socket_control_message.rs.html#8-41">SocketControlMessage</a>&gt; {
-        <a href="#123-134"><span class="self">Self</span>::parent_deserialize</a>(<a href="#46">level</a>, <a href="#46">type_</a>, <a href="#46">data</a>)
+        <a href="#117-128"><span class="self">Self</span>::parent_deserialize</a>(<a href="#44">level</a>, <a href="#44">type_</a>, <a href="#44">data</a>)
     }
 }
 
-<span class="kw">pub trait </span><a href="../../../gio/subclass/prelude/trait.SocketControlMessageImplExt.html">SocketControlMessageImplExt</a>: <a href="../../../glib/subclass/types/trait.ObjectSubclass.html">ObjectSubclass</a> + <a href="#7-49">SocketControlMessageImpl</a>
-<span class="kw">where
-    </span>&lt;<span class="self">Self </span><span class="kw">as </span>ObjectSubclass&gt;::Type: IsA&lt;<a href="../../../glib/object/struct.Object.html">glib::Object</a>&gt;,
-    &lt;<span class="self">Self </span><span class="kw">as </span>ObjectSubclass&gt;::Type: IsA&lt;<a href="../auto/socket_control_message.rs.html#8-41">SocketControlMessage</a>&gt;,
-{
+<span class="kw">pub trait </span><a href="../../../gio/subclass/prelude/trait.SocketControlMessageImplExt.html">SocketControlMessageImplExt</a>: <a href="#7-47">SocketControlMessageImpl</a> {
     <span class="kw">fn </span>parent_level(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a> {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>data = <a href="../../../glib/subclass/types/trait.ObjectSubclassType.html#tymethod.type_data"><span class="self">Self</span>::type_data</a>();
-            <span class="kw">let </span>parent_class = <a href="#58">data</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().<a href="../../../glib/subclass/types/struct.TypeData.html#method.parent_class">parent_class</a>() <span class="kw">as </span><span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GSocketControlMessageClass.html">ffi::GSocketControlMessageClass</a>;
-            <span class="kw">let </span>f = (<span class="kw-2">*</span><a href="#59">parent_class</a>)
+            <span class="kw">let </span>parent_class = <a href="#52">data</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().<a href="../../../glib/subclass/types/struct.TypeData.html#method.parent_class">parent_class</a>() <span class="kw">as </span><span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GSocketControlMessageClass.html">ffi::GSocketControlMessageClass</a>;
+            <span class="kw">let </span>f = (<span class="kw-2">*</span><a href="#53">parent_class</a>)
                 .get_level
                 .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.expect">expect</a>(<span class="string">"No parent class implementation for \"level\""</span>);
 
-            <a href="#60">f</a>(<span class="self"><a href="#56">self</a>
+            <a href="#54">f</a>(<span class="self"><a href="#50">self</a>
                 </span>.<a href="../../../glib/subclass/types/trait.ObjectSubclassExt.html#tymethod.obj">obj</a>()
                 .<a href="../../../glib/object/trait.Cast.html#tymethod.unsafe_cast_ref">unsafe_cast_ref</a>::&lt;<a href="../auto/socket_control_message.rs.html#8-41">SocketControlMessage</a>&gt;()
                 .<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>()
@@ -451,12 +411,12 @@
     <span class="kw">fn </span>parent_msg_type(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a> {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>data = <a href="../../../glib/subclass/types/trait.ObjectSubclassType.html#tymethod.type_data"><span class="self">Self</span>::type_data</a>();
-            <span class="kw">let </span>parent_class = <a href="#74">data</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().<a href="../../../glib/subclass/types/struct.TypeData.html#method.parent_class">parent_class</a>() <span class="kw">as </span><span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GSocketControlMessageClass.html">ffi::GSocketControlMessageClass</a>;
-            <span class="kw">let </span>f = (<span class="kw-2">*</span><a href="#75">parent_class</a>)
+            <span class="kw">let </span>parent_class = <a href="#68">data</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().<a href="../../../glib/subclass/types/struct.TypeData.html#method.parent_class">parent_class</a>() <span class="kw">as </span><span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GSocketControlMessageClass.html">ffi::GSocketControlMessageClass</a>;
+            <span class="kw">let </span>f = (<span class="kw-2">*</span><a href="#69">parent_class</a>)
                 .get_type
                 .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.expect">expect</a>(<span class="string">"No parent class implementation for \"msg_type\""</span>);
 
-            <a href="#76">f</a>(<span class="self"><a href="#72">self</a>
+            <a href="#70">f</a>(<span class="self"><a href="#66">self</a>
                 </span>.<a href="../../../glib/subclass/types/trait.ObjectSubclassExt.html#tymethod.obj">obj</a>()
                 .<a href="../../../glib/object/trait.Cast.html#tymethod.unsafe_cast_ref">unsafe_cast_ref</a>::&lt;<a href="../auto/socket_control_message.rs.html#8-41">SocketControlMessage</a>&gt;()
                 .<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>()
@@ -467,12 +427,12 @@
     <span class="kw">fn </span>parent_size(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a> {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>data = <a href="../../../glib/subclass/types/trait.ObjectSubclassType.html#tymethod.type_data"><span class="self">Self</span>::type_data</a>();
-            <span class="kw">let </span>parent_class = <a href="#90">data</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().<a href="../../../glib/subclass/types/struct.TypeData.html#method.parent_class">parent_class</a>() <span class="kw">as </span><span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GSocketControlMessageClass.html">ffi::GSocketControlMessageClass</a>;
-            <span class="kw">let </span>f = (<span class="kw-2">*</span><a href="#91">parent_class</a>)
+            <span class="kw">let </span>parent_class = <a href="#84">data</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().<a href="../../../glib/subclass/types/struct.TypeData.html#method.parent_class">parent_class</a>() <span class="kw">as </span><span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GSocketControlMessageClass.html">ffi::GSocketControlMessageClass</a>;
+            <span class="kw">let </span>f = (<span class="kw-2">*</span><a href="#85">parent_class</a>)
                 .get_size
                 .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.expect">expect</a>(<span class="string">"No parent class implementation for \"size\""</span>);
 
-            <a href="#92">f</a>(<span class="self"><a href="#88">self</a>
+            <a href="#86">f</a>(<span class="self"><a href="#82">self</a>
                 </span>.<a href="../../../glib/subclass/types/trait.ObjectSubclassExt.html#tymethod.obj">obj</a>()
                 .<a href="../../../glib/object/trait.Cast.html#tymethod.unsafe_cast_ref">unsafe_cast_ref</a>::&lt;<a href="../auto/socket_control_message.rs.html#8-41">SocketControlMessage</a>&gt;()
                 .<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>()
@@ -484,17 +444,17 @@
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>type_data = <a href="../../../glib/subclass/types/trait.ObjectSubclassType.html#tymethod.type_data"><span class="self">Self</span>::type_data</a>();
             <span class="kw">let </span>parent_class =
-                <a href="#106">type_data</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().<a href="../../../glib/subclass/types/struct.TypeData.html#method.parent_class">parent_class</a>() <span class="kw">as </span><span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GSocketControlMessageClass.html">ffi::GSocketControlMessageClass</a>;
-            <span class="kw">let </span>f = (<span class="kw-2">*</span><a href="#107">parent_class</a>)
+                <a href="#100">type_data</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().<a href="../../../glib/subclass/types/struct.TypeData.html#method.parent_class">parent_class</a>() <span class="kw">as </span><span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GSocketControlMessageClass.html">ffi::GSocketControlMessageClass</a>;
+            <span class="kw">let </span>f = (<span class="kw-2">*</span><a href="#101">parent_class</a>)
                 .serialize
                 .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.expect">expect</a>(<span class="string">"No parent class implementation for \"serialize\""</span>);
 
-            <a href="#109">f</a>(
-                <a class="self" href="#104">self</a>.<a href="../../../glib/subclass/types/trait.ObjectSubclassExt.html#tymethod.obj">obj</a>()
+            <a href="#103">f</a>(
+                <a class="self" href="#98">self</a>.<a href="../../../glib/subclass/types/trait.ObjectSubclassExt.html#tymethod.obj">obj</a>()
                     .<a href="../../../glib/object/trait.Cast.html#tymethod.unsafe_cast_ref">unsafe_cast_ref</a>::&lt;<a href="../auto/socket_control_message.rs.html#8-41">SocketControlMessage</a>&gt;()
                     .<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>()
                     .<span class="number">0</span>,
-                <a href="#104">data</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.as_mut_ptr">as_mut_ptr</a>() <span class="kw">as _</span>,
+                <a href="#98">data</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.as_mut_ptr">as_mut_ptr</a>() <span class="kw">as _</span>,
             )
         }
     }
@@ -503,107 +463,79 @@
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>type_data = <a href="../../../glib/subclass/types/trait.ObjectSubclassType.html#tymethod.type_data"><span class="self">Self</span>::type_data</a>();
             <span class="kw">let </span>parent_class =
-                <a href="#125">type_data</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().<a href="../../../glib/subclass/types/struct.TypeData.html#method.parent_class">parent_class</a>() <span class="kw">as </span><span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GSocketControlMessageClass.html">ffi::GSocketControlMessageClass</a>;
+                <a href="#119">type_data</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().<a href="../../../glib/subclass/types/struct.TypeData.html#method.parent_class">parent_class</a>() <span class="kw">as </span><span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GSocketControlMessageClass.html">ffi::GSocketControlMessageClass</a>;
 
-            (<span class="kw-2">*</span><a href="#126">parent_class</a>).deserialize.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|f| {
-                <span class="kw">let </span>message_ptr = <a href="#129">f</a>(<a href="#123">level</a>, <a href="#123">type_</a>, <a href="#123">data</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.len">len</a>(), <a href="#123">data</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.as_ptr">as_ptr</a>() <span class="kw">as _</span>);
-                <a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#130">message_ptr</a>)
+            (<span class="kw-2">*</span><a href="#120">parent_class</a>).deserialize.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|f| {
+                <span class="kw">let </span>message_ptr = <a href="#123">f</a>(<a href="#117">level</a>, <a href="#117">type_</a>, <a href="#117">data</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.len">len</a>(), <a href="#117">data</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.as_ptr">as_ptr</a>() <span class="kw">as _</span>);
+                <a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#124">message_ptr</a>)
             })
         }
     }
 }
 
-<span class="kw">impl</span>&lt;T: <a href="#7-49">SocketControlMessageImpl</a>&gt; <a href="#51-135">SocketControlMessageImplExt</a> <span class="kw">for </span>T
-<span class="kw">where
-    </span>&lt;T <span class="kw">as </span>ObjectSubclass&gt;::Type: IsA&lt;<a href="../../../glib/object/struct.Object.html">glib::Object</a>&gt;,
-    &lt;T <span class="kw">as </span>ObjectSubclass&gt;::Type: IsA&lt;<a href="../auto/socket_control_message.rs.html#8-41">SocketControlMessage</a>&gt;,
-{
-}
+<span class="kw">impl</span>&lt;T: <a href="#7-47">SocketControlMessageImpl</a>&gt; <a href="#49-129">SocketControlMessageImplExt</a> <span class="kw">for </span>T {}
 
-<span class="kw">unsafe impl</span>&lt;T: <a href="#7-49">SocketControlMessageImpl</a>&gt; IsSubclassable&lt;T&gt; <span class="kw">for </span><a href="../auto/socket_control_message.rs.html#8-41">SocketControlMessage</a>
-<span class="kw">where
-    </span>&lt;T <span class="kw">as </span>ObjectSubclass&gt;::Type: IsA&lt;<a href="../../../glib/object/struct.Object.html">glib::Object</a>&gt;,
-    &lt;T <span class="kw">as </span>ObjectSubclass&gt;::Type: IsA&lt;<a href="../auto/socket_control_message.rs.html#8-41">SocketControlMessage</a>&gt;,
-{
+<span class="kw">unsafe impl</span>&lt;T: <a href="#7-47">SocketControlMessageImpl</a>&gt; IsSubclassable&lt;T&gt; <span class="kw">for </span><a href="../auto/socket_control_message.rs.html#8-41">SocketControlMessage</a> {
     <span class="kw">fn </span>class_init(class: <span class="kw-2">&amp;mut </span>::glib::Class&lt;<span class="self">Self</span>&gt;) {
-        <span class="self">Self</span>::parent_class_init::&lt;T&gt;(<a href="#149">class</a>);
+        <span class="self">Self</span>::parent_class_init::&lt;T&gt;(<a href="#134">class</a>);
 
-        <span class="kw">let </span>klass = <a href="#149">class</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsMut.html#tymethod.as_mut">as_mut</a>();
-        <a href="#152">klass</a>.get_level = <span class="prelude-val">Some</span>(socket_control_message_get_level::&lt;T&gt;);
-        <a href="#152">klass</a>.get_type = <span class="prelude-val">Some</span>(socket_control_message_get_type::&lt;T&gt;);
-        <a href="#152">klass</a>.get_size = <span class="prelude-val">Some</span>(socket_control_message_get_size::&lt;T&gt;);
-        <a href="#152">klass</a>.serialize = <span class="prelude-val">Some</span>(socket_control_message_serialize::&lt;T&gt;);
-        <a href="#152">klass</a>.deserialize = <span class="prelude-val">Some</span>(socket_control_message_deserialize::&lt;T&gt;);
+        <span class="kw">let </span>klass = <a href="#134">class</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsMut.html#tymethod.as_mut">as_mut</a>();
+        <a href="#137">klass</a>.get_level = <span class="prelude-val">Some</span>(socket_control_message_get_level::&lt;T&gt;);
+        <a href="#137">klass</a>.get_type = <span class="prelude-val">Some</span>(socket_control_message_get_type::&lt;T&gt;);
+        <a href="#137">klass</a>.get_size = <span class="prelude-val">Some</span>(socket_control_message_get_size::&lt;T&gt;);
+        <a href="#137">klass</a>.serialize = <span class="prelude-val">Some</span>(socket_control_message_serialize::&lt;T&gt;);
+        <a href="#137">klass</a>.deserialize = <span class="prelude-val">Some</span>(socket_control_message_deserialize::&lt;T&gt;);
     }
 }
 
-<span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>socket_control_message_get_level&lt;T: <a href="#7-49">SocketControlMessageImpl</a>&gt;(
+<span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>socket_control_message_get_level&lt;T: <a href="#7-47">SocketControlMessageImpl</a>&gt;(
     ptr: <span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GSocketControlMessage.html">ffi::GSocketControlMessage</a>,
-) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>
-<span class="kw">where
-    </span>&lt;T <span class="kw">as </span>ObjectSubclass&gt;::Type: IsA&lt;<a href="../../../glib/object/struct.Object.html">glib::Object</a>&gt;,
-    &lt;T <span class="kw">as </span>ObjectSubclass&gt;::Type: IsA&lt;<a href="../auto/socket_control_message.rs.html#8-41">SocketControlMessage</a>&gt;,
-{
-    <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(<a href="#162">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
-    <span class="kw">let </span>imp = <a href="#168">instance</a>.<a href="../../../glib/subclass/types/trait.InstanceStructExt.html#tymethod.imp">imp</a>();
+) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a> {
+    <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(<a href="#147">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
+    <span class="kw">let </span>imp = <a href="#149">instance</a>.<a href="../../../glib/subclass/types/trait.InstanceStructExt.html#tymethod.imp">imp</a>();
 
-    <a href="#169">imp</a>.<a href="#18-20">level</a>()
+    <a href="#150">imp</a>.<a href="#16-18">level</a>()
 }
 
-<span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>socket_control_message_get_type&lt;T: <a href="#7-49">SocketControlMessageImpl</a>&gt;(
+<span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>socket_control_message_get_type&lt;T: <a href="#7-47">SocketControlMessageImpl</a>&gt;(
     ptr: <span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GSocketControlMessage.html">ffi::GSocketControlMessage</a>,
-) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>
-<span class="kw">where
-    </span>&lt;T <span class="kw">as </span>ObjectSubclass&gt;::Type: IsA&lt;<a href="../../../glib/object/struct.Object.html">glib::Object</a>&gt;,
-    &lt;T <span class="kw">as </span>ObjectSubclass&gt;::Type: IsA&lt;<a href="../auto/socket_control_message.rs.html#8-41">SocketControlMessage</a>&gt;,
-{
-    <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(<a href="#175">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
-    <span class="kw">let </span>imp = <a href="#181">instance</a>.<a href="../../../glib/subclass/types/trait.InstanceStructExt.html#tymethod.imp">imp</a>();
+) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a> {
+    <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(<a href="#156">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
+    <span class="kw">let </span>imp = <a href="#158">instance</a>.<a href="../../../glib/subclass/types/trait.InstanceStructExt.html#tymethod.imp">imp</a>();
 
-    <a href="#182">imp</a>.<a href="#22-24">msg_type</a>()
+    <a href="#159">imp</a>.<a href="#20-22">msg_type</a>()
 }
 
-<span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>socket_control_message_get_size&lt;T: <a href="#7-49">SocketControlMessageImpl</a>&gt;(
+<span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>socket_control_message_get_size&lt;T: <a href="#7-47">SocketControlMessageImpl</a>&gt;(
     ptr: <span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GSocketControlMessage.html">ffi::GSocketControlMessage</a>,
-) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>
-<span class="kw">where
-    </span>&lt;T <span class="kw">as </span>ObjectSubclass&gt;::Type: IsA&lt;<a href="../../../glib/object/struct.Object.html">glib::Object</a>&gt;,
-    &lt;T <span class="kw">as </span>ObjectSubclass&gt;::Type: IsA&lt;<a href="../auto/socket_control_message.rs.html#8-41">SocketControlMessage</a>&gt;,
-{
-    <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(<a href="#188">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
-    <span class="kw">let </span>imp = <a href="#194">instance</a>.<a href="../../../glib/subclass/types/trait.InstanceStructExt.html#tymethod.imp">imp</a>();
+) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a> {
+    <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(<a href="#165">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
+    <span class="kw">let </span>imp = <a href="#167">instance</a>.<a href="../../../glib/subclass/types/trait.InstanceStructExt.html#tymethod.imp">imp</a>();
 
-    <a href="#195">imp</a>.<a href="#32-34">size</a>()
+    <a href="#168">imp</a>.<a href="#30-32">size</a>()
 }
 
-<span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>socket_control_message_serialize&lt;T: <a href="#7-49">SocketControlMessageImpl</a>&gt;(
+<span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>socket_control_message_serialize&lt;T: <a href="#7-47">SocketControlMessageImpl</a>&gt;(
     ptr: <span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GSocketControlMessage.html">ffi::GSocketControlMessage</a>,
     data: <a href="../../../glib_sys/type.gpointer.html">glib::ffi::gpointer</a>,
-) <span class="kw">where
-    </span>&lt;T <span class="kw">as </span>ObjectSubclass&gt;::Type: IsA&lt;<a href="../../../glib/object/struct.Object.html">glib::Object</a>&gt;,
-    &lt;T <span class="kw">as </span>ObjectSubclass&gt;::Type: IsA&lt;<a href="../auto/socket_control_message.rs.html#8-41">SocketControlMessage</a>&gt;,
-{
-    <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(<a href="#201">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
-    <span class="kw">let </span>imp = <a href="#207">instance</a>.<a href="../../../glib/subclass/types/trait.InstanceStructExt.html#tymethod.imp">imp</a>();
+) {
+    <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(<a href="#174">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
+    <span class="kw">let </span>imp = <a href="#177">instance</a>.<a href="../../../glib/subclass/types/trait.InstanceStructExt.html#tymethod.imp">imp</a>();
 
-    <span class="kw">let </span>data = <a href="https://doc.rust-lang.org/nightly/core/slice/raw/fn.from_raw_parts_mut.html">std::slice::from_raw_parts_mut</a>(<a href="#202">data</a> <span class="kw">as </span><span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>, <a href="#208">imp</a>.<a href="#32-34">size</a>());
+    <span class="kw">let </span>data = <a href="https://doc.rust-lang.org/nightly/core/slice/raw/fn.from_raw_parts_mut.html">std::slice::from_raw_parts_mut</a>(<a href="#175">data</a> <span class="kw">as </span><span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>, <a href="#178">imp</a>.<a href="#30-32">size</a>());
 
-    <a href="#208">imp</a>.<a href="#42-44">serialize</a>(<a href="#210">data</a>);
+    <a href="#178">imp</a>.<a href="#40-42">serialize</a>(<a href="#180">data</a>);
 }
 
-<span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>socket_control_message_deserialize&lt;T: <a href="#7-49">SocketControlMessageImpl</a>&gt;(
+<span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>socket_control_message_deserialize&lt;T: <a href="#7-47">SocketControlMessageImpl</a>&gt;(
     level: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
     type_: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
     size: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>,
     data: <a href="../../../glib_sys/type.gpointer.html">glib::ffi::gpointer</a>,
-) -&gt; <span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GSocketControlMessage.html">ffi::GSocketControlMessage</a>
-<span class="kw">where
-    </span>&lt;T <span class="kw">as </span>ObjectSubclass&gt;::Type: IsA&lt;<a href="../../../glib/object/struct.Object.html">glib::Object</a>&gt;,
-    &lt;T <span class="kw">as </span>ObjectSubclass&gt;::Type: IsA&lt;<a href="../auto/socket_control_message.rs.html#8-41">SocketControlMessage</a>&gt;,
-{
-    <span class="kw">let </span>data = <a href="https://doc.rust-lang.org/nightly/core/slice/raw/fn.from_raw_parts.html">std::slice::from_raw_parts</a>(<a href="#219">data</a> <span class="kw">as </span><span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>, <a href="#218">size</a>);
+) -&gt; <span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GSocketControlMessage.html">ffi::GSocketControlMessage</a> {
+    <span class="kw">let </span>data = <a href="https://doc.rust-lang.org/nightly/core/slice/raw/fn.from_raw_parts.html">std::slice::from_raw_parts</a>(<a href="#189">data</a> <span class="kw">as </span><span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>, <a href="#188">size</a>);
 
-    <a href="#46-48">T::deserialize</a>(<a href="#216">level</a>, <a href="#217">type_</a>, <a href="#225">data</a>).<a href="../../../glib/translate/trait.IntoGlibPtr.html#tymethod.into_glib_ptr">into_glib_ptr</a>()
+    <a href="#44-46">T::deserialize</a>(<a href="#186">level</a>, <a href="#187">type_</a>, <a href="#191">data</a>).<a href="../../../glib/translate/trait.IntoGlibPtr.html#tymethod.into_glib_ptr">into_glib_ptr</a>()
 }
 
 <span class="attr">#[cfg(test)]

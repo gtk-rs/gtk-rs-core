@@ -192,9 +192,7 @@
 <a href="#118" id="118">118</a>
 <a href="#119" id="119">119</a>
 <a href="#120" id="120">120</a>
-<a href="#121" id="121">121</a>
-<a href="#122" id="122">122</a>
-<a href="#123" id="123">123</a></pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
+<a href="#121" id="121">121</a></pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
 </span><span class="kw">use crate</span>::{
     enums::{<a href="../enums.rs.html#380">EnumValues</a>, <a href="../enums.rs.html#959">FlagsValues</a>},
@@ -237,11 +235,9 @@
     ) -&gt; <a href="../types.rs.html#22"><span class="kw">crate</span>::types::Type</a>;
 }
 
-<span class="kw">impl</span>&lt;O: IsA&lt;<a href="type_plugin.rs.html#5-66">TypePlugin</a>&gt; + <a href="../subclass/types.rs.html#155-159">ObjectSubclassIsExt</a>&gt; <a href="#15-42">DynamicObjectRegisterExt</a> <span class="kw">for </span>O
+<span class="kw">impl</span>&lt;O: IsA&lt;<a href="../object.rs.html#1371-1374">Object</a>&gt; + IsA&lt;<a href="type_plugin.rs.html#5-66">TypePlugin</a>&gt; + <a href="../subclass/types.rs.html#155-159">ObjectSubclassIsExt</a>&gt; <a href="#15-42">DynamicObjectRegisterExt</a> <span class="kw">for </span>O
 <span class="kw">where
-    </span>O::Subclass: <a href="../subclass/type_plugin.rs.html#208-244">TypePluginRegisterImpl</a>,
-    &lt;O::Subclass <span class="kw">as </span>ObjectSubclass&gt;::Type: IsA&lt;<a href="../object.rs.html#1371-1374">Object</a>&gt;,
-    &lt;O::Subclass <span class="kw">as </span>ObjectSubclass&gt;::Type: IsA&lt;<a href="type_plugin.rs.html#5-66">TypePlugin</a>&gt;,
+    </span>O::Subclass: <a href="../subclass/type_plugin.rs.html#178-212">TypePluginRegisterImpl</a>,
 {
     <span class="kw">fn </span>add_dynamic_interface(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
@@ -249,8 +245,8 @@
         interface_type: <a href="../types.rs.html#22"><span class="kw">crate</span>::types::Type</a>,
         interface_info: <span class="kw-2">&amp;</span><a href="interface_info.rs.html#10">InterfaceInfo</a>,
     ) {
-        <a class="self" href="#51">self</a>.<a href="../subclass/types.rs.html#158">imp</a>()
-            .<a href="../subclass/type_plugin.rs.html#213-220">add_dynamic_interface</a>(<a href="#52">instance_type</a>, <a href="#53">interface_type</a>, <a href="#54">interface_info</a>);
+        <a class="self" href="#49">self</a>.<a href="../subclass/types.rs.html#158">imp</a>()
+            .<a href="../subclass/type_plugin.rs.html#181-188">add_dynamic_interface</a>(<a href="#50">instance_type</a>, <a href="#51">interface_type</a>, <a href="#52">interface_info</a>);
     }
 
     <span class="kw">fn </span>register_dynamic_enum(
@@ -258,7 +254,7 @@
         name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
         const_static_values: <span class="kw-2">&amp;</span><span class="lifetime">'static </span><a href="../enums.rs.html#380">EnumValues</a>,
     ) -&gt; <a href="../types.rs.html#22"><span class="kw">crate</span>::types::Type</a> {
-        <a class="self" href="#61">self</a>.<a href="../subclass/types.rs.html#158">imp</a>().<a href="../subclass/type_plugin.rs.html#221-227">register_dynamic_enum</a>(<a href="#62">name</a>, <a href="#63">const_static_values</a>)
+        <a class="self" href="#59">self</a>.<a href="../subclass/types.rs.html#158">imp</a>().<a href="../subclass/type_plugin.rs.html#189-195">register_dynamic_enum</a>(<a href="#60">name</a>, <a href="#61">const_static_values</a>)
     }
 
     <span class="kw">fn </span>register_dynamic_flags(
@@ -266,7 +262,7 @@
         name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
         const_static_values: <span class="kw-2">&amp;</span><span class="lifetime">'static </span><a href="../enums.rs.html#959">FlagsValues</a>,
     ) -&gt; <a href="../types.rs.html#22"><span class="kw">crate</span>::types::Type</a> {
-        <a class="self" href="#69">self</a>.<a href="../subclass/types.rs.html#158">imp</a>().<a href="../subclass/type_plugin.rs.html#228-234">register_dynamic_flags</a>(<a href="#70">name</a>, <a href="#71">const_static_values</a>)
+        <a class="self" href="#67">self</a>.<a href="../subclass/types.rs.html#158">imp</a>().<a href="../subclass/type_plugin.rs.html#196-202">register_dynamic_flags</a>(<a href="#68">name</a>, <a href="#69">const_static_values</a>)
     }
 
     <span class="kw">fn </span>register_dynamic_type(
@@ -276,8 +272,8 @@
         type_info: <span class="kw-2">&amp;</span><a href="type_info.rs.html#17">TypeInfo</a>,
         flags: <a href="auto/flags.rs.html#182-209">TypeFlags</a>,
     ) -&gt; <a href="../types.rs.html#22"><span class="kw">crate</span>::types::Type</a> {
-        <a class="self" href="#77">self</a>.<a href="../subclass/types.rs.html#158">imp</a>()
-            .<a href="../subclass/type_plugin.rs.html#235-243">register_dynamic_type</a>(<a href="#78">parent_type</a>, <a href="#79">type_name</a>, <a href="#80">type_info</a>, <a href="#81">flags</a>)
+        <a class="self" href="#75">self</a>.<a href="../subclass/types.rs.html#158">imp</a>()
+            .<a href="../subclass/type_plugin.rs.html#203-211">register_dynamic_type</a>(<a href="#76">parent_type</a>, <a href="#77">type_name</a>, <a href="#78">type_info</a>, <a href="#79">flags</a>)
     }
 }
 
@@ -288,7 +284,7 @@
         interface_type: <a href="../types.rs.html#22"><span class="kw">crate</span>::types::Type</a>,
         interface_info: <span class="kw-2">&amp;</span><a href="interface_info.rs.html#10">InterfaceInfo</a>,
     ) {
-        &lt;<span class="self">Self </span><span class="kw">as </span>TypeModuleExt&gt;::add_interface(<a class="self" href="#90">self</a>, <a href="#91">instance_type</a>, <a href="#92">interface_type</a>, <a href="#93">interface_info</a>);
+        &lt;<span class="self">Self </span><span class="kw">as </span>TypeModuleExt&gt;::add_interface(<a class="self" href="#88">self</a>, <a href="#89">instance_type</a>, <a href="#90">interface_type</a>, <a href="#91">interface_info</a>);
     }
 
     <span class="kw">fn </span>register_dynamic_enum(
@@ -296,7 +292,7 @@
         name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
         const_static_values: <span class="kw-2">&amp;</span><span class="lifetime">'static </span><a href="../enums.rs.html#380">EnumValues</a>,
     ) -&gt; <a href="../types.rs.html#22"><span class="kw">crate</span>::types::Type</a> {
-        &lt;<span class="self">Self </span><span class="kw">as </span>TypeModuleExt&gt;::register_enum(<a class="self" href="#99">self</a>, <a href="#100">name</a>, <a href="#101">const_static_values</a>)
+        &lt;<span class="self">Self </span><span class="kw">as </span>TypeModuleExt&gt;::register_enum(<a class="self" href="#97">self</a>, <a href="#98">name</a>, <a href="#99">const_static_values</a>)
     }
 
     <span class="kw">fn </span>register_dynamic_flags(
@@ -304,7 +300,7 @@
         name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
         const_static_values: <span class="kw-2">&amp;</span><span class="lifetime">'static </span><a href="../enums.rs.html#959">FlagsValues</a>,
     ) -&gt; <a href="../types.rs.html#22"><span class="kw">crate</span>::types::Type</a> {
-        &lt;<span class="self">Self </span><span class="kw">as </span>TypeModuleExt&gt;::register_flags(<a class="self" href="#107">self</a>, <a href="#108">name</a>, <a href="#109">const_static_values</a>)
+        &lt;<span class="self">Self </span><span class="kw">as </span>TypeModuleExt&gt;::register_flags(<a class="self" href="#105">self</a>, <a href="#106">name</a>, <a href="#107">const_static_values</a>)
     }
 
     <span class="kw">fn </span>register_dynamic_type(
@@ -314,7 +310,7 @@
         type_info: <span class="kw-2">&amp;</span><a href="type_info.rs.html#17">TypeInfo</a>,
         flags: <a href="auto/flags.rs.html#182-209">TypeFlags</a>,
     ) -&gt; <a href="../types.rs.html#22"><span class="kw">crate</span>::types::Type</a> {
-        &lt;<span class="self">Self </span><span class="kw">as </span>TypeModuleExt&gt;::register_type(<a class="self" href="#115">self</a>, <a href="#116">parent_type</a>, <a href="#117">type_name</a>, <a href="#118">type_info</a>, <a href="#119">flags</a>)
+        &lt;<span class="self">Self </span><span class="kw">as </span>TypeModuleExt&gt;::register_type(<a class="self" href="#113">self</a>, <a href="#114">parent_type</a>, <a href="#115">type_name</a>, <a href="#116">type_info</a>, <a href="#117">flags</a>)
     }
 }
 </code></pre></div></section></main></body></html>
