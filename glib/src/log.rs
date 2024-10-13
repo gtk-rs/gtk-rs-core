@@ -365,6 +365,9 @@ pub struct LogField<'a>(ffi::GLogField, std::marker::PhantomData<&'a GStr>);
 impl<'a> LogField<'a> {
     // rustdoc-stripper-ignore-next
     /// Creates a field from a borrowed key and value.
+    ///
+    /// Adds `value` as byte field with explicit length.  See [`new_str`] for
+    /// means to add field values as nul-terminated strings.
     pub fn new(key: &'a GStr, value: &[u8]) -> Self {
         let (value, length) = if value.is_empty() {
             // Use an empty C string to represent empty data, since length: 0 is reserved for user
@@ -382,6 +385,29 @@ impl<'a> LogField<'a> {
             Default::default(),
         )
     }
+
+    /// Creates a field from a borrowed key and value.
+    ///
+    /// Adds `value` as nul-terminated string, contrary to [`new`] which adds
+    /// `value` with explicit length.
+    pub fn new_str(key: &'a GStr, value: &'a GStr) -> Self {
+        let value = if value.is_empty() {
+            // Use an empty C string to represent empty data, since length: 0 is reserved for user
+            // data fields.
+            &[0u8] as &[u8]
+        } else {
+            value.as_bytes_with_nul()
+        };
+        Self(
+            ffi::GLogField {
+                key: key.as_ptr(),
+                value: value.as_ptr() as *const _,
+                length: -1,
+            },
+            Default::default(),
+        )
+    }
+
     // rustdoc-stripper-ignore-next
     /// Creates a field with an empty value and `data` as a user data key. Fields created with this
     /// function are ignored by the default log writer. These fields are used to pass custom data
@@ -876,6 +902,9 @@ macro_rules! log_structured {
     ($log_domain:expr, $log_level:expr, {$($key:expr => $format:expr $(,$arg:expr)* $(,)?);+ $(;)?} $(,)?) => {{
         let log_domain = <Option<&str> as std::convert::From<_>>::from($log_domain);
         let log_domain_str = log_domain.unwrap_or_default();
+        // Convert the log domain into a nul-terminated string.  Replace all
+        // internal nul-bytes with _.
+        let log_domain_with_nul = $crate::GString::from_string_unchecked(log_domain_str.replace("\0", "_"));
         let level: $crate::LogLevel = $log_level;
         let field_count =
             <[()]>::len(&[$($crate::log_structured_inner!(@clear $key)),+])
@@ -917,9 +946,12 @@ macro_rules! log_structured {
                         $crate::log_structured_inner!(@value $format $(,$arg)*),
                     ),
                 )+
-                $crate::LogField::new(
+                // Pass GLIB_DOMAIN as nul-terminated string because glib compares
+                // domains as strings when checking G_MESSAGES_DEBUG.  If passed as
+                // field with explicit length G_MESSAGES_DEBUG fails to find the domain.
+                $crate::LogField::new_str(
                     $crate::gstr!("GLIB_DOMAIN"),
-                    log_domain_str.as_bytes(),
+                    log_domain_with_nul.as_gstr(),
                 ),
             ][0..field_count],
         )
