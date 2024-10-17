@@ -1,6 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::{log as glib_log, translate::*};
+use crate::{gstr, log as glib_log, log_structured_array, translate::*, LogField};
 
 // rustdoc-stripper-ignore-next
 /// Enumeration of the possible formatting behaviours for a
@@ -143,17 +143,25 @@ impl GlibLogger {
     ) {
         let line = line.map(|l| l.to_string());
         let line = line.as_deref();
-
-        crate::log_structured!(
-            domain.unwrap_or("default"),
-            GlibLogger::level_to_glib(level),
-            {
-                "CODE_FILE" => file.unwrap_or("<unknown file>");
-                "CODE_LINE" => line.unwrap_or("<unknown line>");
-                "CODE_FUNC" => func.unwrap_or("<unknown module path>");
-                "MESSAGE" => message;
-            }
-        );
+        let glib_level = GlibLogger::level_to_glib(level);
+        let fields = [
+            LogField::new(gstr!("PRIORITY"), glib_level.priority().as_bytes()),
+            LogField::new(
+                gstr!("CODE_FILE"),
+                file.unwrap_or("<unknown file>").as_bytes(),
+            ),
+            LogField::new(
+                gstr!("CODE_LINE"),
+                line.unwrap_or("<unknown line>").as_bytes(),
+            ),
+            LogField::new(
+                gstr!("CODE_FUNC"),
+                func.unwrap_or("<unknown module path>").as_bytes(),
+            ),
+            LogField::new(gstr!("MESSAGE"), message.as_bytes()),
+            LogField::new(gstr!("GLIB_DOMAIN"), domain.unwrap_or("default").as_bytes()),
+        ];
+        log_structured_array(glib_level, &fields);
     }
 }
 

@@ -105,15 +105,6 @@ fn glib_logger_formats() {
                 ("PRIORITY".to_string(), Some("6".to_string())),
                 (
                     "CODE_FILE".to_string(),
-                    Some("glib/src/bridged_logging.rs".to_string())
-                ),
-                ("CODE_LINE".to_string(), Some("147".to_string())),
-                (
-                    "CODE_FUNC".to_string(),
-                    Some("glib::bridged_logging::GlibLogger::write_log_structured".to_string())
-                ),
-                (
-                    "CODE_FILE".to_string(),
                     Some("/path/to/a/test/file.rs".to_string())
                 ),
                 ("CODE_LINE".to_string(), Some("42".to_string())),
