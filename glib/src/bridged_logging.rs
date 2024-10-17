@@ -200,25 +200,19 @@ impl rs_log::Log for GlibLogger {
             }
             GlibLoggerFormat::Structured => {
                 let args = record.args();
-                if let Some(s) = args.as_str() {
-                    GlibLogger::write_log_structured(
-                        domain,
-                        record.level(),
-                        record.file(),
-                        record.line(),
-                        record.module_path(),
-                        s,
-                    );
+                let message = if let Some(s) = args.as_str() {
+                    s
                 } else {
-                    GlibLogger::write_log_structured(
-                        domain,
-                        record.level(),
-                        record.file(),
-                        record.line(),
-                        record.module_path(),
-                        &args.to_string(),
-                    );
-                }
+                    &args.to_string()
+                };
+                GlibLogger::write_log_structured(
+                    domain,
+                    record.level(),
+                    record.file(),
+                    record.line(),
+                    record.module_path(),
+                    message,
+                );
             }
         };
     }
