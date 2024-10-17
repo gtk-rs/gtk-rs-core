@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/quark.rs`."><title>quark.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-b0742ba02757f159.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.84.0-nightly (27861c429 2024-10-13)" data-channel="nightly" data-search-js="search-e056c65ede92db13.js" data-settings-js="settings-805db61a62df4bd2.js" ><script src="../../static.files/storage-1d39b6787ed640ff.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-f070b9041d14864c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-0111fcff984fae8f.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/quark.rs`."><title>quark.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-b0742ba02757f159.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.84.0-nightly (798fb83f7 2024-10-16)" data-channel="nightly" data-search-js="search-e056c65ede92db13.js" data-settings-js="settings-805db61a62df4bd2.js" ><script src="../../static.files/storage-1d39b6787ed640ff.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-f070b9041d14864c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-0111fcff984fae8f.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -184,7 +184,7 @@
 
 </span><span class="kw">use </span>std::{<a href="https://doc.rust-lang.org/nightly/alloc/fmt/index.html">fmt</a>, <a href="https://doc.rust-lang.org/nightly/core/num/nonzero/type.NonZeroU32.html">num::NonZeroU32</a>};
 
-<span class="kw">use crate</span>::{<a href="../../glib_sys/index.html">ffi</a>, <a href="lib.rs.html#163">translate</a>::<span class="kw-2">*</span>, <a href="gstring.rs.html#24">GStr</a>};
+<span class="kw">use crate</span>::{ffi, <a href="lib.rs.html#163">translate</a>::<span class="kw-2">*</span>, <a href="gstring.rs.html#24">GStr</a>};
 
 <span class="attr">#[derive(Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[repr(transparent)]
@@ -195,24 +195,24 @@
     <span class="attr">#[doc(alias = <span class="string">"g_quark_from_string"</span>)]
     #[allow(clippy::should_implement_trait)]
     </span><span class="kw">pub fn </span>from_str(s: <span class="kw">impl </span><a href="gstring.rs.html#2393-2395">IntoGStr</a>) -&gt; <span class="self">Self </span>{
-        <span class="kw">unsafe </span>{ <a href="#15">s</a>.<a href="gstring.rs.html#2394">run_with_gstr</a>(|s| <a href="translate.rs.html#1417-1419">from_glib</a>(<a href="../../glib_sys/fn.g_quark_from_string.html">ffi::g_quark_from_string</a>(<a href="#16">s</a>.<a href="gstring.rs.html#207-209">as_ptr</a>()))) }
+        <span class="kw">unsafe </span>{ <a href="#15">s</a>.<a href="gstring.rs.html#2394">run_with_gstr</a>(|s| <a href="translate.rs.html#1417-1419">from_glib</a>(ffi::g_quark_from_string(<a href="#16">s</a>.<a href="gstring.rs.html#207-209">as_ptr</a>()))) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">"g_quark_from_static_string"</span>)]
     #[allow(clippy::should_implement_trait)]
     </span><span class="kw">pub fn </span>from_static_str(s: <span class="kw-2">&amp;</span><span class="lifetime">'static </span><a href="gstring.rs.html#24">GStr</a>) -&gt; <span class="self">Self </span>{
-        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1417-1419">from_glib</a>(<a href="../../glib_sys/fn.g_quark_from_static_string.html">ffi::g_quark_from_static_string</a>(<a href="#21">s</a>.<a href="gstring.rs.html#207-209">as_ptr</a>())) }
+        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1417-1419">from_glib</a>(ffi::g_quark_from_static_string(<a href="#21">s</a>.<a href="gstring.rs.html#207-209">as_ptr</a>())) }
     }
 
     <span class="attr">#[allow(clippy::trivially_copy_pass_by_ref)]
     #[doc(alias = <span class="string">"g_quark_to_string"</span>)]
     </span><span class="kw">pub fn </span>as_str&lt;<span class="lifetime">'a</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="gstring.rs.html#24">GStr</a> {
-        <span class="kw">unsafe </span>{ <a href="gstring.rs.html#139-142">GStr::from_ptr</a>(<a href="../../glib_sys/fn.g_quark_to_string.html">ffi::g_quark_to_string</a>(<a class="self" href="#27">self</a>.<a href="translate.rs.html#334">into_glib</a>())) }
+        <span class="kw">unsafe </span>{ <a href="gstring.rs.html#139-142">GStr::from_ptr</a>(ffi::g_quark_to_string(<a class="self" href="#27">self</a>.<a href="translate.rs.html#334">into_glib</a>())) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">"g_quark_try_string"</span>)]
     </span><span class="kw">pub fn </span>try_from_str(s: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt; {
-        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1439"><span class="self">Self</span>::try_from_glib</a>(<a href="../../glib_sys/fn.g_quark_try_string.html">ffi::g_quark_try_string</a>(<a href="#32">s</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>)).<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.ok">ok</a>() }
+        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1439"><span class="self">Self</span>::try_from_glib</a>(ffi::g_quark_try_string(<a href="#32">s</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>)).<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.ok">ok</a>() }
     }
 }
 
@@ -237,18 +237,18 @@
 }
 
 <span class="attr">#[doc(hidden)]
-</span><span class="kw">impl </span>FromGlib&lt;<a href="../../glib_sys/type.GQuark.html">ffi::GQuark</a>&gt; <span class="kw">for </span><a href="#10">Quark</a> {
+</span><span class="kw">impl </span>FromGlib&lt;ffi::GQuark&gt; <span class="kw">for </span><a href="#10">Quark</a> {
     <span class="attr">#[inline]
-    </span><span class="kw">unsafe fn </span>from_glib(value: <a href="../../glib_sys/type.GQuark.html">ffi::GQuark</a>) -&gt; <span class="self">Self </span>{
+    </span><span class="kw">unsafe fn </span>from_glib(value: ffi::GQuark) -&gt; <span class="self">Self </span>{
         <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert_ne.html">debug_assert_ne!</a>(value, <span class="number">0</span>);
         <span class="self">Self</span>(<a href="https://doc.rust-lang.org/nightly/core/num/nonzero/struct.NonZero.html#method.new_unchecked">NonZeroU32::new_unchecked</a>(<a href="#60">value</a>))
     }
 }
 
 <span class="attr">#[doc(hidden)]
-</span><span class="kw">impl </span>TryFromGlib&lt;<a href="../../glib_sys/type.GQuark.html">ffi::GQuark</a>&gt; <span class="kw">for </span><a href="#10">Quark</a> {
+</span><span class="kw">impl </span>TryFromGlib&lt;ffi::GQuark&gt; <span class="kw">for </span><a href="#10">Quark</a> {
     <span class="kw">type </span>Error = <a href="translate.rs.html#1454">GlibNoneError</a>;
-    <span class="kw">unsafe fn </span>try_from_glib(value: <a href="../../glib_sys/type.GQuark.html">ffi::GQuark</a>) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, <span class="self">Self</span>::Error&gt; {
+    <span class="kw">unsafe fn </span>try_from_glib(value: ffi::GQuark) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, <span class="self">Self</span>::Error&gt; {
         <span class="kw">if </span>value == <span class="number">0 </span>{
             <span class="prelude-val">Err</span>(<a href="translate.rs.html#1454">GlibNoneError</a>)
         } <span class="kw">else </span>{
@@ -259,20 +259,20 @@
 
 <span class="attr">#[doc(hidden)]
 </span><span class="kw">impl </span><a href="translate.rs.html#331-335">IntoGlib</a> <span class="kw">for </span><a href="#10">Quark</a> {
-    <span class="kw">type </span>GlibType = <a href="../../glib_sys/type.GQuark.html">ffi::GQuark</a>;
+    <span class="kw">type </span>GlibType = ffi::GQuark;
 
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>into_glib(<span class="self">self</span>) -&gt; <a href="../../glib_sys/type.GQuark.html">ffi::GQuark</a> {
+    </span><span class="kw">fn </span>into_glib(<span class="self">self</span>) -&gt; ffi::GQuark {
         <a class="self" href="#83">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/num/nonzero/struct.NonZero.html#method.get">get</a>()
     }
 }
 
 <span class="attr">#[doc(hidden)]
 </span><span class="kw">impl </span><a href="translate.rs.html#331-335">IntoGlib</a> <span class="kw">for </span><span class="prelude-ty">Option</span>&lt;<a href="#10">Quark</a>&gt; {
-    <span class="kw">type </span>GlibType = <a href="../../glib_sys/type.GQuark.html">ffi::GQuark</a>;
+    <span class="kw">type </span>GlibType = ffi::GQuark;
 
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>into_glib(<span class="self">self</span>) -&gt; <a href="../../glib_sys/type.GQuark.html">ffi::GQuark</a> {
+    </span><span class="kw">fn </span>into_glib(<span class="self">self</span>) -&gt; ffi::GQuark {
         <a class="self" href="#93">self</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|s| <a href="#94">s</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/num/nonzero/struct.NonZero.html#method.get">get</a>()).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap_or">unwrap_or</a>(<span class="number">0</span>)
     }
 }

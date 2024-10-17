@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/gobject/binding_group.rs`."><title>binding_group.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-b0742ba02757f159.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.84.0-nightly (27861c429 2024-10-13)" data-channel="nightly" data-search-js="search-e056c65ede92db13.js" data-settings-js="settings-805db61a62df4bd2.js" ><script src="../../../static.files/storage-1d39b6787ed640ff.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-f070b9041d14864c.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-0111fcff984fae8f.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/gobject/binding_group.rs`."><title>binding_group.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-b0742ba02757f159.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.84.0-nightly (798fb83f7 2024-10-16)" data-channel="nightly" data-search-js="search-e056c65ede92db13.js" data-settings-js="settings-805db61a62df4bd2.js" ><script src="../../../static.files/storage-1d39b6787ed640ff.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-f070b9041d14864c.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-0111fcff984fae8f.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -595,7 +595,7 @@
 </span><span class="kw">use </span>std::{<a href="https://doc.rust-lang.org/nightly/alloc/fmt/index.html">fmt</a>, <a href="https://doc.rust-lang.org/nightly/core/ptr/index.html">ptr</a>};
 
 <span class="kw">use crate</span>::{
-    <a href="../../../glib_sys/index.html">ffi</a>, <a href="../../../gobject_sys/index.html">gobject_ffi</a>, <a href="../object.rs.html#375-377">object::ObjectRef</a>, <a href="../lib.rs.html#158">prelude</a>::<span class="kw-2">*</span>, <a href="../lib.rs.html#163">translate</a>::<span class="kw-2">*</span>, <a href="auto/binding.rs.html#7-139">Binding</a>, <a href="auto/flags.rs.html#7-37">BindingFlags</a>,
+    ffi, <a href="../../../gobject_sys/index.html">gobject_ffi</a>, <a href="../object.rs.html#375-377">object::ObjectRef</a>, <a href="../lib.rs.html#158">prelude</a>::<span class="kw-2">*</span>, <a href="../lib.rs.html#163">translate</a>::<span class="kw-2">*</span>, <a href="auto/binding.rs.html#7-139">Binding</a>, <a href="auto/flags.rs.html#7-37">BindingFlags</a>,
     <a href="auto/binding_group.rs.html#14-40">BindingGroup</a>, <a href="../error.rs.html#243-251">BoolError</a>, <a href="../object.rs.html#1371-1374">Object</a>, <a href="../param_spec.rs.html#19-42">ParamSpec</a>, <a href="../value.rs.html#478-512">Value</a>,
 };
 
@@ -730,8 +730,8 @@
             binding: <span class="kw-2">*mut </span><a href="../../../gobject_sys/struct.GBinding.html">gobject_ffi::GBinding</a>,
             from_value: <span class="kw-2">*const </span><a href="../../../gobject_sys/struct.GValue.html">gobject_ffi::GValue</a>,
             to_value: <span class="kw-2">*mut </span><a href="../../../gobject_sys/struct.GValue.html">gobject_ffi::GValue</a>,
-            user_data: <a href="../../../glib_sys/type.gpointer.html">ffi::gpointer</a>,
-        ) -&gt; <a href="../../../glib_sys/type.gboolean.html">ffi::gboolean</a> {
+            user_data: ffi::gpointer,
+        ) -&gt; ffi::gboolean {
             <span class="kw">let </span>transform_data =
                 <span class="kw-2">&amp;*</span>(<a href="#141">user_data</a> <span class="kw">as </span><span class="kw-2">*const </span>(<a href="#36">TransformFn</a>, <a href="#36">TransformFn</a>, <a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>, <a href="../param_spec.rs.html#19-42">ParamSpec</a>));
 
@@ -759,8 +759,8 @@
             binding: <span class="kw-2">*mut </span><a href="../../../gobject_sys/struct.GBinding.html">gobject_ffi::GBinding</a>,
             from_value: <span class="kw-2">*const </span><a href="../../../gobject_sys/struct.GValue.html">gobject_ffi::GValue</a>,
             to_value: <span class="kw-2">*mut </span><a href="../../../gobject_sys/struct.GValue.html">gobject_ffi::GValue</a>,
-            user_data: <a href="../../../glib_sys/type.gpointer.html">ffi::gpointer</a>,
-        ) -&gt; <a href="../../../glib_sys/type.gboolean.html">ffi::gboolean</a> {
+            user_data: ffi::gpointer,
+        ) -&gt; ffi::gboolean {
             <span class="kw">let </span>transform_data =
                 <span class="kw-2">&amp;*</span>(<a href="#170">user_data</a> <span class="kw">as </span><span class="kw-2">*const </span>(<a href="#36">TransformFn</a>, <a href="#36">TransformFn</a>, <a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>, <a href="../param_spec.rs.html#19-42">ParamSpec</a>));
             <span class="kw">let </span>binding = <a href="../translate.rs.html#1643-1645">from_glib_borrow</a>(<a href="#167">binding</a>);
@@ -790,7 +790,7 @@
             .<a href="../translate.rs.html#334">into_glib</a>()
         }
 
-        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>free_transform_data(data: <a href="../../../glib_sys/type.gpointer.html">ffi::gpointer</a>) {
+        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>free_transform_data(data: ffi::gpointer) {
             <span class="kw">let _ </span>= <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.from_raw">Box::from_raw</a>(<a href="#201">data</a> <span class="kw">as </span><span class="kw-2">*mut </span>(<a href="#36">TransformFn</a>, <a href="#36">TransformFn</a>, <a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>, <a href="../param_spec.rs.html#19-42">ParamSpec</a>));
         }
 
@@ -857,7 +857,7 @@
                 } <span class="kw">else </span>{
                     <span class="prelude-val">None
                 </span>},
-                <a href="#241">transform_data</a> <span class="kw">as </span><a href="../../../glib_sys/type.gpointer.html">ffi::gpointer</a>,
+                <a href="#241">transform_data</a> <span class="kw">as </span>ffi::gpointer,
                 <span class="kw">if </span>transform_data.is_null() {
                     <span class="prelude-val">None
                 </span>} <span class="kw">else </span>{

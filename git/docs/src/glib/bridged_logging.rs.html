@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/bridged_logging.rs`."><title>bridged_logging.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-b0742ba02757f159.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.84.0-nightly (27861c429 2024-10-13)" data-channel="nightly" data-search-js="search-e056c65ede92db13.js" data-settings-js="settings-805db61a62df4bd2.js" ><script src="../../static.files/storage-1d39b6787ed640ff.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-f070b9041d14864c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-0111fcff984fae8f.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/bridged_logging.rs`."><title>bridged_logging.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-b0742ba02757f159.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.84.0-nightly (798fb83f7 2024-10-16)" data-channel="nightly" data-search-js="search-e056c65ede92db13.js" data-settings-js="settings-805db61a62df4bd2.js" ><script src="../../static.files/storage-1d39b6787ed640ff.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-f070b9041d14864c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-0111fcff984fae8f.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -456,9 +456,20 @@
 <a href="#382" id="382">382</a>
 <a href="#383" id="383">383</a>
 <a href="#384" id="384">384</a>
-<a href="#385" id="385">385</a></pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
+<a href="#385" id="385">385</a>
+<a href="#386" id="386">386</a>
+<a href="#387" id="387">387</a>
+<a href="#388" id="388">388</a>
+<a href="#389" id="389">389</a>
+<a href="#390" id="390">390</a>
+<a href="#391" id="391">391</a>
+<a href="#392" id="392">392</a>
+<a href="#393" id="393">393</a>
+<a href="#394" id="394">394</a>
+<a href="#395" id="395">395</a>
+<a href="#396" id="396">396</a></pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
-</span><span class="kw">use crate</span>::{<a href="lib.rs.html#199">log</a> <span class="kw">as </span>glib_log, <a href="lib.rs.html#163">translate</a>::<span class="kw-2">*</span>};
+</span><span class="kw">use crate</span>::{<a href="gstring.rs.html#382-386">gstr</a>, <a href="lib.rs.html#199">log</a> <span class="kw">as </span>glib_log, <a href="log.rs.html#949-957">log_structured_array</a>, <a href="lib.rs.html#163">translate</a>::<span class="kw-2">*</span>, <a href="log.rs.html#363">LogField</a>};
 
 <span class="comment">// rustdoc-stripper-ignore-next
 </span><span class="doccomment">/// Enumeration of the possible formatting behaviours for a
@@ -582,7 +593,7 @@
             }
             <span class="kw">let </span>message = <a href="#121">message_builder</a>.<a href="gstring_builder.rs.html#152-157">into_string</a>();
 
-            <a href="../../glib_sys/fn.g_log.html"><span class="kw">crate</span>::ffi::g_log</a>(
+            <span class="kw">crate</span>::ffi::g_log(
                 <a href="#117">domain</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
                 <a href="#104-114">GlibLogger::level_to_glib</a>(<a href="#117">level</a>).<a href="translate.rs.html#334">into_glib</a>(),
                 <span class="string">b"%s\0"</span>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
@@ -599,19 +610,36 @@
         func: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;,
         message: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
     ) {
-        <span class="kw">let </span>line = <a href="#140">line</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|l| <a href="#144">l</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html#tymethod.to_string">to_string</a>());
-        <span class="kw">let </span>line = <a href="#144">line</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_deref">as_deref</a>();
-
-        <a class="macro" href="log.rs.html#875-927">crate::log_structured!</a>(
-            domain.unwrap_or(<span class="string">"default"</span>),
-            GlibLogger::level_to_glib(level),
-            {
-                <span class="string">"CODE_FILE" </span>=&gt; file.unwrap_or(<span class="string">"&lt;unknown file&gt;"</span>);
-                <span class="string">"CODE_LINE" </span>=&gt; line.unwrap_or(<span class="string">"&lt;unknown line&gt;"</span>);
-                <span class="string">"CODE_FUNC" </span>=&gt; func.unwrap_or(<span class="string">"&lt;unknown module path&gt;"</span>);
-                <span class="string">"MESSAGE" </span>=&gt; message;
-            }
-        );
+        <span class="comment">// Write line number into a static array to avoid allocating its string
+        // representation. 16 bytes allow 10^15 lines, which should be more than
+        // sufficient.
+        </span><span class="kw">let </span><span class="kw-2">mut </span>line_buffer = [<span class="number">0u8</span>; <span class="number">16</span>];
+        <span class="kw">let </span>line = {
+            <span class="kw">use </span>std::io::{<a href="https://doc.rust-lang.org/nightly/std/io/cursor/struct.Cursor.html">Cursor</a>, <a href="https://doc.rust-lang.org/nightly/std/io/trait.Write.html">Write</a>};
+            <span class="kw">let </span><span class="kw-2">mut </span>c = <a href="https://doc.rust-lang.org/nightly/std/io/cursor/struct.Cursor.html#method.new">Cursor::new</a>(<a href="#147">line_buffer</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.array.html#method.as_mut_slice">as_mut_slice</a>());
+            <span class="kw">match </span><a href="#140">line</a> {
+                <span class="prelude-val">Some</span>(lineno) =&gt; <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.write.html">write!</a>(<span class="kw-2">&amp;mut </span><a href="#150">c</a>, <span class="string">"{lineno}"</span>).<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.ok">ok</a>(),
+                <span class="prelude-val">None </span>=&gt; <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.write.html">write!</a>(<span class="kw-2">&amp;mut </span><a href="#150">c</a>, <span class="string">"&lt;unknown line&gt;"</span>).<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.ok">ok</a>(),
+            };
+            <span class="kw">let </span>pos = <a href="#150">c</a>.<a href="https://doc.rust-lang.org/nightly/std/io/cursor/struct.Cursor.html#method.position">position</a>() <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>;
+            <span class="kw-2">&amp;</span><a href="#147">line_buffer</a>[..<a href="#155">pos</a>]
+        };
+        <span class="kw">let </span>glib_level = <a href="#104-114">GlibLogger::level_to_glib</a>(<a href="#138">level</a>);
+        <span class="kw">let </span>fields = [
+            <a href="log.rs.html#368-384">LogField::new</a>(<a class="macro" href="gstring.rs.html#382-386">gstr!</a>(<span class="string">"PRIORITY"</span>), <a href="#158">glib_level</a>.<a href="log.rs.html#90-99">priority</a>().<a href="https://doc.rust-lang.org/nightly/core/foreigntype.str.html#method.as_bytes">as_bytes</a>()),
+            <a href="log.rs.html#368-384">LogField::new</a>(
+                <a class="macro" href="gstring.rs.html#382-386">gstr!</a>(<span class="string">"CODE_FILE"</span>),
+                <a href="#139">file</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap_or">unwrap_or</a>(<span class="string">"&lt;unknown file&gt;"</span>).<a href="https://doc.rust-lang.org/nightly/core/foreigntype.str.html#method.as_bytes">as_bytes</a>(),
+            ),
+            <a href="log.rs.html#368-384">LogField::new</a>(<a class="macro" href="gstring.rs.html#382-386">gstr!</a>(<span class="string">"CODE_LINE"</span>), <a href="#148">line</a>),
+            <a href="log.rs.html#368-384">LogField::new</a>(
+                <a class="macro" href="gstring.rs.html#382-386">gstr!</a>(<span class="string">"CODE_FUNC"</span>),
+                <a href="#141">func</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap_or">unwrap_or</a>(<span class="string">"&lt;unknown module path&gt;"</span>).<a href="https://doc.rust-lang.org/nightly/core/foreigntype.str.html#method.as_bytes">as_bytes</a>(),
+            ),
+            <a href="log.rs.html#368-384">LogField::new</a>(<a class="macro" href="gstring.rs.html#382-386">gstr!</a>(<span class="string">"MESSAGE"</span>), <a href="#142">message</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.str.html#method.as_bytes">as_bytes</a>()),
+            <a href="log.rs.html#368-384">LogField::new</a>(<a class="macro" href="gstring.rs.html#382-386">gstr!</a>(<span class="string">"GLIB_DOMAIN"</span>), <a href="#137">domain</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap_or">unwrap_or</a>(<span class="string">"default"</span>).<a href="https://doc.rust-lang.org/nightly/core/foreigntype.str.html#method.as_bytes">as_bytes</a>()),
+        ];
+        <a href="log.rs.html#949-957">log_structured_array</a>(<a href="#158">glib_level</a>, <span class="kw-2">&amp;</span><a href="#159">fields</a>);
     }
 }
 
@@ -625,58 +653,52 @@
             <span class="kw">return</span>;
         }
 
-        <span class="kw">let </span>domain = <span class="kw">match </span><span class="kw-2">&amp;</span><a class="self" href="#165">self</a>.domain {
+        <span class="kw">let </span>domain = <span class="kw">match </span><span class="kw-2">&amp;</span><a class="self" href="#182">self</a>.domain {
             <a href="#34">GlibLoggerDomain::None</a> =&gt; <span class="prelude-val">None</span>,
-            <a href="#39">GlibLoggerDomain::CrateTarget</a> =&gt; <span class="prelude-val">Some</span>(<a href="#165">record</a>.<a href="https://docs.rs/log/0.4.22/log/struct.Record.html#method.metadata">metadata</a>().<a href="https://docs.rs/log/0.4.22/log/struct.Metadata.html#method.target">target</a>()),
-            <a href="#42">GlibLoggerDomain::CratePath</a> =&gt; <a href="#165">record</a>.<a href="https://docs.rs/log/0.4.22/log/struct.Record.html#method.module_path">module_path</a>(),
+            <a href="#39">GlibLoggerDomain::CrateTarget</a> =&gt; <span class="prelude-val">Some</span>(<a href="#182">record</a>.<a href="https://docs.rs/log/0.4.22/log/struct.Record.html#method.metadata">metadata</a>().<a href="https://docs.rs/log/0.4.22/log/struct.Metadata.html#method.target">target</a>()),
+            <a href="#42">GlibLoggerDomain::CratePath</a> =&gt; <a href="#182">record</a>.<a href="https://docs.rs/log/0.4.22/log/struct.Record.html#method.module_path">module_path</a>(),
         };
 
-        <span class="kw">match </span><a class="self" href="#165">self</a>.format {
+        <span class="kw">match </span><a class="self" href="#182">self</a>.format {
             <a href="#15">GlibLoggerFormat::Plain</a> =&gt; {
-                <a href="#117-134">GlibLogger::write_log</a>(<a href="#170">domain</a>, <a href="#165">record</a>.<a href="https://docs.rs/log/0.4.22/log/struct.Record.html#method.level">level</a>(), <a href="#165">record</a>.<a href="https://docs.rs/log/0.4.22/log/struct.Record.html#method.args">args</a>());
+                <a href="#117-134">GlibLogger::write_log</a>(<a href="#187">domain</a>, <a href="#182">record</a>.<a href="https://docs.rs/log/0.4.22/log/struct.Record.html#method.level">level</a>(), <a href="#182">record</a>.<a href="https://docs.rs/log/0.4.22/log/struct.Record.html#method.args">args</a>());
             }
             <a href="#18">GlibLoggerFormat::LineAndFile</a> =&gt; {
-                <span class="kw">match </span>(<a href="#165">record</a>.<a href="https://docs.rs/log/0.4.22/log/struct.Record.html#method.file">file</a>(), <a href="#165">record</a>.<a href="https://docs.rs/log/0.4.22/log/struct.Record.html#method.line">line</a>()) {
+                <span class="kw">match </span>(<a href="#182">record</a>.<a href="https://docs.rs/log/0.4.22/log/struct.Record.html#method.file">file</a>(), <a href="#182">record</a>.<a href="https://docs.rs/log/0.4.22/log/struct.Record.html#method.line">line</a>()) {
                     (<span class="prelude-val">Some</span>(file), <span class="prelude-val">Some</span>(line)) =&gt; {
                         <a href="#117-134">GlibLogger::write_log</a>(
-                            <a href="#170">domain</a>,
-                            <a href="#165">record</a>.<a href="https://docs.rs/log/0.4.22/log/struct.Record.html#method.level">level</a>(),
+                            <a href="#187">domain</a>,
+                            <a href="#182">record</a>.<a href="https://docs.rs/log/0.4.22/log/struct.Record.html#method.level">level</a>(),
                             <span class="kw-2">&amp;</span><a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.format_args.html">format_args!</a>(<span class="string">"{}:{}: {}"</span>, file, line, record.args()),
                         );
                     }
                     (<span class="prelude-val">Some</span>(file), <span class="prelude-val">None</span>) =&gt; {
                         <a href="#117-134">GlibLogger::write_log</a>(
-                            <a href="#170">domain</a>,
-                            <a href="#165">record</a>.<a href="https://docs.rs/log/0.4.22/log/struct.Record.html#method.level">level</a>(),
+                            <a href="#187">domain</a>,
+                            <a href="#182">record</a>.<a href="https://docs.rs/log/0.4.22/log/struct.Record.html#method.level">level</a>(),
                             <span class="kw-2">&amp;</span><a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.format_args.html">format_args!</a>(<span class="string">"{}: {}"</span>, file, record.args()),
                         );
                     }
                     <span class="kw">_ </span>=&gt; {
-                        <a href="#117-134">GlibLogger::write_log</a>(<a href="#170">domain</a>, <a href="#165">record</a>.<a href="https://docs.rs/log/0.4.22/log/struct.Record.html#method.level">level</a>(), <a href="#165">record</a>.<a href="https://docs.rs/log/0.4.22/log/struct.Record.html#method.args">args</a>());
+                        <a href="#117-134">GlibLogger::write_log</a>(<a href="#187">domain</a>, <a href="#182">record</a>.<a href="https://docs.rs/log/0.4.22/log/struct.Record.html#method.level">level</a>(), <a href="#182">record</a>.<a href="https://docs.rs/log/0.4.22/log/struct.Record.html#method.args">args</a>());
                     }
                 };
             }
             <a href="#21">GlibLoggerFormat::Structured</a> =&gt; {
-                <span class="kw">let </span>args = <a href="#165">record</a>.<a href="https://docs.rs/log/0.4.22/log/struct.Record.html#method.args">args</a>();
-                <span class="kw">if let </span><span class="prelude-val">Some</span>(s) = <a href="#202">args</a>.<a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Arguments.html#method.as_str">as_str</a>() {
-                    <a href="#136-157">GlibLogger::write_log_structured</a>(
-                        <a href="#170">domain</a>,
-                        <a href="#165">record</a>.<a href="https://docs.rs/log/0.4.22/log/struct.Record.html#method.level">level</a>(),
-                        <a href="#165">record</a>.<a href="https://docs.rs/log/0.4.22/log/struct.Record.html#method.file">file</a>(),
-                        <a href="#165">record</a>.<a href="https://docs.rs/log/0.4.22/log/struct.Record.html#method.line">line</a>(),
-                        <a href="#165">record</a>.<a href="https://docs.rs/log/0.4.22/log/struct.Record.html#method.module_path">module_path</a>(),
-                        <a href="#203">s</a>,
-                    );
+                <span class="kw">let </span>args = <a href="#182">record</a>.<a href="https://docs.rs/log/0.4.22/log/struct.Record.html#method.args">args</a>();
+                <span class="kw">let </span>message = <span class="kw">if let </span><span class="prelude-val">Some</span>(s) = <a href="#219">args</a>.<a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Arguments.html#method.as_str">as_str</a>() {
+                    <a href="#220">s</a>
                 } <span class="kw">else </span>{
-                    <a href="#136-157">GlibLogger::write_log_structured</a>(
-                        <a href="#170">domain</a>,
-                        <a href="#165">record</a>.<a href="https://docs.rs/log/0.4.22/log/struct.Record.html#method.level">level</a>(),
-                        <a href="#165">record</a>.<a href="https://docs.rs/log/0.4.22/log/struct.Record.html#method.file">file</a>(),
-                        <a href="#165">record</a>.<a href="https://docs.rs/log/0.4.22/log/struct.Record.html#method.line">line</a>(),
-                        <a href="#165">record</a>.<a href="https://docs.rs/log/0.4.22/log/struct.Record.html#method.module_path">module_path</a>(),
-                        <span class="kw-2">&amp;</span><a href="#202">args</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html#tymethod.to_string">to_string</a>(),
-                    );
-                }
+                    <span class="kw-2">&amp;</span><a href="#219">args</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html#tymethod.to_string">to_string</a>()
+                };
+                <a href="#136-174">GlibLogger::write_log_structured</a>(
+                    <a href="#187">domain</a>,
+                    <a href="#182">record</a>.<a href="https://docs.rs/log/0.4.22/log/struct.Record.html#method.level">level</a>(),
+                    <a href="#182">record</a>.<a href="https://docs.rs/log/0.4.22/log/struct.Record.html#method.file">file</a>(),
+                    <a href="#182">record</a>.<a href="https://docs.rs/log/0.4.22/log/struct.Record.html#method.line">line</a>(),
+                    <a href="#182">record</a>.<a href="https://docs.rs/log/0.4.22/log/struct.Record.html#method.module_path">module_path</a>(),
+                    <a href="#220">message</a>,
+                );
             }
         };
     }
@@ -702,7 +724,7 @@
 /// glib::log_set_default_handler(glib::rust_log_handler);
 /// ```
 </span><span class="kw">pub fn </span><a href="../../glib/fn.rust_log_handler.html">rust_log_handler</a>(domain: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;, level: <a href="log.rs.html#34-47">glib_log::LogLevel</a>, message: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) {
-    <span class="kw">let </span>level = <span class="kw">match </span><a href="#246">level</a> {
+    <span class="kw">let </span>level = <span class="kw">match </span><a href="#257">level</a> {
         <a href="log.rs.html#36">glib_log::LogLevel::Error</a> | <a href="log.rs.html#38">glib_log::LogLevel::Critical</a> =&gt; <a href="https://docs.rs/log/0.4.22/log/enum.Level.html#variant.Error">rs_log::Level::Error</a>,
         <a href="log.rs.html#40">glib_log::LogLevel::Warning</a> =&gt; <a href="https://docs.rs/log/0.4.22/log/enum.Level.html#variant.Warn">rs_log::Level::Warn</a>,
         <a href="log.rs.html#42">glib_log::LogLevel::Message</a> | <a href="log.rs.html#44">glib_log::LogLevel::Info</a> =&gt; <a href="https://docs.rs/log/0.4.22/log/enum.Level.html#variant.Info">rs_log::Level::Info</a>,
