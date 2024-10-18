@@ -67,6 +67,18 @@ impl Resource {
         }
     }
 
+    #[cfg(feature = "v2_84")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_84")))]
+    #[doc(alias = "g_resource_has_children")]
+    pub fn has_children(&self, path: &str) -> bool {
+        unsafe {
+            from_glib(ffi::g_resource_has_children(
+                self.to_glib_none().0,
+                path.to_glib_none().0,
+            ))
+        }
+    }
+
     #[doc(alias = "g_resource_lookup_data")]
     pub fn lookup_data(
         &self,

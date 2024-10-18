@@ -4150,6 +4150,9 @@ extern "C" {
     pub fn g_main_context_pop_thread_default(context: *mut GMainContext);
     pub fn g_main_context_prepare(context: *mut GMainContext, priority: *mut c_int) -> gboolean;
     pub fn g_main_context_push_thread_default(context: *mut GMainContext);
+    #[cfg(feature = "v2_64")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_64")))]
+    pub fn g_main_context_pusher_new(main_context: *mut GMainContext) -> *mut GMainContextPusher;
     pub fn g_main_context_query(
         context: *mut GMainContext,
         max_priority: c_int,
@@ -4170,6 +4173,9 @@ extern "C" {
     pub fn g_main_context_wakeup(context: *mut GMainContext);
     pub fn g_main_context_default() -> *mut GMainContext;
     pub fn g_main_context_get_thread_default() -> *mut GMainContext;
+    #[cfg(feature = "v2_64")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_64")))]
+    pub fn g_main_context_pusher_free(pusher: *mut GMainContextPusher);
     pub fn g_main_context_ref_thread_default() -> *mut GMainContext;
 
     //=========================================================================
@@ -6000,6 +6006,9 @@ extern "C" {
     pub fn g_variant_builder_close(builder: *mut GVariantBuilder);
     pub fn g_variant_builder_end(builder: *mut GVariantBuilder) -> *mut GVariant;
     pub fn g_variant_builder_init(builder: *mut GVariantBuilder, type_: *const GVariantType);
+    #[cfg(feature = "v2_84")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_84")))]
+    pub fn g_variant_builder_init_static(builder: *mut GVariantBuilder, type_: *const GVariantType);
     pub fn g_variant_builder_open(builder: *mut GVariantBuilder, type_: *const GVariantType);
     pub fn g_variant_builder_ref(builder: *mut GVariantBuilder) -> *mut GVariantBuilder;
     pub fn g_variant_builder_unref(builder: *mut GVariantBuilder);
@@ -6946,6 +6955,9 @@ extern "C" {
     #[cfg(feature = "v2_58")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_58")))]
     pub fn g_ref_string_acquire(str: *mut c_char) -> *mut c_char;
+    #[cfg(feature = "v2_84")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_84")))]
+    pub fn g_ref_string_equal(str1: *const c_char, str2: *const c_char) -> gboolean;
     #[cfg(feature = "v2_58")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_58")))]
     pub fn g_ref_string_length(str: *mut c_char) -> size_t;

@@ -547,6 +547,13 @@ pub fn resources_get_info(
     }
 }
 
+#[cfg(feature = "v2_84")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_84")))]
+#[doc(alias = "g_resources_has_children")]
+pub fn resources_has_children(path: &str) -> bool {
+    unsafe { from_glib(ffi::g_resources_has_children(path.to_glib_none().0)) }
+}
+
 #[doc(alias = "g_resources_lookup_data")]
 pub fn resources_lookup_data(
     path: &str,
