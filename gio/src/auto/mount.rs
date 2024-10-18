@@ -26,12 +26,7 @@ impl Mount {
     pub const NONE: Option<&'static Mount> = None;
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::Mount>> Sealed for T {}
-}
-
-pub trait MountExt: IsA<Mount> + sealed::Sealed + 'static {
+pub trait MountExt: IsA<Mount> + 'static {
     #[doc(alias = "g_mount_can_eject")]
     fn can_eject(&self) -> bool {
         unsafe { from_glib(ffi::g_mount_can_eject(self.as_ref().to_glib_none().0)) }

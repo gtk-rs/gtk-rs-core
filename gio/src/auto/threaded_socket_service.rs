@@ -23,12 +23,7 @@ impl ThreadedSocketService {
     pub const NONE: Option<&'static ThreadedSocketService> = None;
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::ThreadedSocketService>> Sealed for T {}
-}
-
-pub trait ThreadedSocketServiceExt: IsA<ThreadedSocketService> + sealed::Sealed + 'static {
+pub trait ThreadedSocketServiceExt: IsA<ThreadedSocketService> + 'static {
     #[doc(alias = "max-threads")]
     fn max_threads(&self) -> i32 {
         ObjectExt::property(self.as_ref(), "max-threads")

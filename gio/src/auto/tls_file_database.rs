@@ -36,12 +36,7 @@ impl TlsFileDatabase {
     }
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::TlsFileDatabase>> Sealed for T {}
-}
-
-pub trait TlsFileDatabaseExt: IsA<TlsFileDatabase> + sealed::Sealed + 'static {
+pub trait TlsFileDatabaseExt: IsA<TlsFileDatabase> + 'static {
     fn anchors(&self) -> Option<glib::GString> {
         ObjectExt::property(self.as_ref(), "anchors")
     }

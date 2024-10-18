@@ -18,12 +18,7 @@ impl Converter {
     pub const NONE: Option<&'static Converter> = None;
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::Converter>> Sealed for T {}
-}
-
-pub trait ConverterExt: IsA<Converter> + sealed::Sealed + 'static {
+pub trait ConverterExt: IsA<Converter> + 'static {
     #[cfg(feature = "v2_82")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_82")))]
     #[doc(alias = "g_converter_convert_bytes")]

@@ -26,12 +26,7 @@ impl Volume {
     pub const NONE: Option<&'static Volume> = None;
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::Volume>> Sealed for T {}
-}
-
-pub trait VolumeExt: IsA<Volume> + sealed::Sealed + 'static {
+pub trait VolumeExt: IsA<Volume> + 'static {
     #[doc(alias = "g_volume_can_eject")]
     fn can_eject(&self) -> bool {
         unsafe { from_glib(ffi::g_volume_can_eject(self.as_ref().to_glib_none().0)) }

@@ -30,12 +30,7 @@ impl NetworkMonitor {
     }
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::NetworkMonitor>> Sealed for T {}
-}
-
-pub trait NetworkMonitorExt: IsA<NetworkMonitor> + sealed::Sealed + 'static {
+pub trait NetworkMonitorExt: IsA<NetworkMonitor> + 'static {
     #[doc(alias = "g_network_monitor_can_reach")]
     fn can_reach(
         &self,

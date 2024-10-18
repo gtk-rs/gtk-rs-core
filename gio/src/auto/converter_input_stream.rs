@@ -94,12 +94,7 @@ impl ConverterInputStreamBuilder {
     }
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::ConverterInputStream>> Sealed for T {}
-}
-
-pub trait ConverterInputStreamExt: IsA<ConverterInputStream> + sealed::Sealed + 'static {
+pub trait ConverterInputStreamExt: IsA<ConverterInputStream> + 'static {
     #[doc(alias = "g_converter_input_stream_get_converter")]
     #[doc(alias = "get_converter")]
     fn converter(&self) -> Converter {

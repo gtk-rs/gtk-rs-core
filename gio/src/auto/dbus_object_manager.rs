@@ -23,12 +23,7 @@ impl DBusObjectManager {
     pub const NONE: Option<&'static DBusObjectManager> = None;
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::DBusObjectManager>> Sealed for T {}
-}
-
-pub trait DBusObjectManagerExt: IsA<DBusObjectManager> + sealed::Sealed + 'static {
+pub trait DBusObjectManagerExt: IsA<DBusObjectManager> + 'static {
     #[doc(alias = "g_dbus_object_manager_get_interface")]
     #[doc(alias = "get_interface")]
     fn interface(&self, object_path: &str, interface_name: &str) -> Option<DBusInterface> {

@@ -43,12 +43,7 @@ impl DebugControllerDBus {
     }
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::DebugControllerDBus>> Sealed for T {}
-}
-
-pub trait DebugControllerDBusExt: IsA<DebugControllerDBus> + sealed::Sealed + 'static {
+pub trait DebugControllerDBusExt: IsA<DebugControllerDBus> + 'static {
     #[doc(alias = "g_debug_controller_dbus_stop")]
     fn stop(&self) {
         unsafe {

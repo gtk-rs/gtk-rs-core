@@ -110,12 +110,7 @@ impl BufferedOutputStreamBuilder {
     }
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::BufferedOutputStream>> Sealed for T {}
-}
-
-pub trait BufferedOutputStreamExt: IsA<BufferedOutputStream> + sealed::Sealed + 'static {
+pub trait BufferedOutputStreamExt: IsA<BufferedOutputStream> + 'static {
     #[doc(alias = "g_buffered_output_stream_get_auto_grow")]
     #[doc(alias = "get_auto_grow")]
     #[doc(alias = "auto-grow")]

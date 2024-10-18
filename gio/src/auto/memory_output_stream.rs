@@ -30,12 +30,7 @@ impl MemoryOutputStream {
     }
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::MemoryOutputStream>> Sealed for T {}
-}
-
-pub trait MemoryOutputStreamExt: IsA<MemoryOutputStream> + sealed::Sealed + 'static {
+pub trait MemoryOutputStreamExt: IsA<MemoryOutputStream> + 'static {
     #[doc(alias = "g_memory_output_stream_get_data_size")]
     #[doc(alias = "get_data_size")]
     #[doc(alias = "data-size")]

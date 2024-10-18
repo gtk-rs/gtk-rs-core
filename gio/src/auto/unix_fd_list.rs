@@ -29,12 +29,7 @@ impl Default for UnixFDList {
     }
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::UnixFDList>> Sealed for T {}
-}
-
-pub trait UnixFDListExt: IsA<UnixFDList> + sealed::Sealed + 'static {
+pub trait UnixFDListExt: IsA<UnixFDList> + 'static {
     #[doc(alias = "g_unix_fd_list_get_length")]
     #[doc(alias = "get_length")]
     fn length(&self) -> i32 {

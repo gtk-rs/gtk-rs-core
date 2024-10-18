@@ -33,12 +33,7 @@ impl TlsPassword {
     }
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::TlsPassword>> Sealed for T {}
-}
-
-pub trait TlsPasswordExt: IsA<TlsPassword> + sealed::Sealed + 'static {
+pub trait TlsPasswordExt: IsA<TlsPassword> + 'static {
     #[doc(alias = "g_tls_password_get_description")]
     #[doc(alias = "get_description")]
     fn description(&self) -> glib::GString {

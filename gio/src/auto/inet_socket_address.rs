@@ -44,12 +44,7 @@ impl InetSocketAddress {
 unsafe impl Send for InetSocketAddress {}
 unsafe impl Sync for InetSocketAddress {}
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::InetSocketAddress>> Sealed for T {}
-}
-
-pub trait InetSocketAddressExt: IsA<InetSocketAddress> + sealed::Sealed + 'static {
+pub trait InetSocketAddressExt: IsA<InetSocketAddress> + 'static {
     #[doc(alias = "g_inet_socket_address_get_address")]
     #[doc(alias = "get_address")]
     fn address(&self) -> InetAddress {

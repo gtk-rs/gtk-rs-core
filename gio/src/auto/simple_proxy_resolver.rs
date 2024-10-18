@@ -23,12 +23,7 @@ impl SimpleProxyResolver {
     pub const NONE: Option<&'static SimpleProxyResolver> = None;
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::SimpleProxyResolver>> Sealed for T {}
-}
-
-pub trait SimpleProxyResolverExt: IsA<SimpleProxyResolver> + sealed::Sealed + 'static {
+pub trait SimpleProxyResolverExt: IsA<SimpleProxyResolver> + 'static {
     #[doc(alias = "g_simple_proxy_resolver_set_default_proxy")]
     #[doc(alias = "default-proxy")]
     fn set_default_proxy(&self, default_proxy: Option<&str>) {

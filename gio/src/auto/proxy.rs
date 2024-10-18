@@ -29,12 +29,7 @@ impl Proxy {
     }
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::Proxy>> Sealed for T {}
-}
-
-pub trait ProxyExt: IsA<Proxy> + sealed::Sealed + 'static {
+pub trait ProxyExt: IsA<Proxy> + 'static {
     #[doc(alias = "g_proxy_connect")]
     fn connect(
         &self,

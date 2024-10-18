@@ -26,12 +26,7 @@ impl Drive {
     pub const NONE: Option<&'static Drive> = None;
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::Drive>> Sealed for T {}
-}
-
-pub trait DriveExt: IsA<Drive> + sealed::Sealed + 'static {
+pub trait DriveExt: IsA<Drive> + 'static {
     #[doc(alias = "g_drive_can_eject")]
     fn can_eject(&self) -> bool {
         unsafe { from_glib(ffi::g_drive_can_eject(self.as_ref().to_glib_none().0)) }

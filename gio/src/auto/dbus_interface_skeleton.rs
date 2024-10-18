@@ -26,12 +26,7 @@ impl DBusInterfaceSkeleton {
     pub const NONE: Option<&'static DBusInterfaceSkeleton> = None;
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::DBusInterfaceSkeleton>> Sealed for T {}
-}
-
-pub trait DBusInterfaceSkeletonExt: IsA<DBusInterfaceSkeleton> + sealed::Sealed + 'static {
+pub trait DBusInterfaceSkeletonExt: IsA<DBusInterfaceSkeleton> + 'static {
     #[doc(alias = "g_dbus_interface_skeleton_export")]
     fn export(&self, connection: &DBusConnection, object_path: &str) -> Result<(), glib::Error> {
         unsafe {

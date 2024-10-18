@@ -25,12 +25,7 @@ impl FontMap {
     }
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::FontMap>> Sealed for T {}
-}
-
-pub trait PangoCairoFontMapExt: IsA<FontMap> + sealed::Sealed + 'static {
+pub trait PangoCairoFontMapExt: IsA<FontMap> + 'static {
     #[doc(alias = "pango_cairo_font_map_get_resolution")]
     #[doc(alias = "get_resolution")]
     fn resolution(&self) -> f64 {

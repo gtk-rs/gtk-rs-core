@@ -43,12 +43,7 @@ impl Resolver {
     }
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::Resolver>> Sealed for T {}
-}
-
-pub trait ResolverExt: IsA<Resolver> + sealed::Sealed + 'static {
+pub trait ResolverExt: IsA<Resolver> + 'static {
     #[cfg(feature = "v2_78")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_78")))]
     #[doc(alias = "g_resolver_get_timeout")]

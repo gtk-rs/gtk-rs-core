@@ -49,12 +49,7 @@ impl std::fmt::Display for InetAddress {
 unsafe impl Send for InetAddress {}
 unsafe impl Sync for InetAddress {}
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::InetAddress>> Sealed for T {}
-}
-
-pub trait InetAddressExt: IsA<InetAddress> + sealed::Sealed + 'static {
+pub trait InetAddressExt: IsA<InetAddress> + 'static {
     #[doc(alias = "g_inet_address_equal")]
     fn equal(&self, other_address: &impl IsA<InetAddress>) -> bool {
         unsafe {

@@ -22,12 +22,7 @@ impl TlsInteraction {
     pub const NONE: Option<&'static TlsInteraction> = None;
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::TlsInteraction>> Sealed for T {}
-}
-
-pub trait TlsInteractionExt: IsA<TlsInteraction> + sealed::Sealed + 'static {
+pub trait TlsInteractionExt: IsA<TlsInteraction> + 'static {
     #[doc(alias = "g_tls_interaction_ask_password")]
     fn ask_password(
         &self,

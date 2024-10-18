@@ -23,14 +23,7 @@ impl ApplicationCommandLine {
     pub const NONE: Option<&'static ApplicationCommandLine> = None;
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::ApplicationCommandLine>> Sealed for T {}
-}
-
-pub trait ApplicationCommandLineExt:
-    IsA<ApplicationCommandLine> + sealed::Sealed + 'static
-{
+pub trait ApplicationCommandLineExt: IsA<ApplicationCommandLine> + 'static {
     #[doc(alias = "g_application_command_line_create_file_for_arg")]
     fn create_file_for_arg(&self, arg: impl AsRef<std::ffi::OsStr>) -> File {
         unsafe {

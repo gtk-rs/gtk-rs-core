@@ -18,12 +18,7 @@ impl AsyncResult {
     pub const NONE: Option<&'static AsyncResult> = None;
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::AsyncResult>> Sealed for T {}
-}
-
-pub trait AsyncResultExt: IsA<AsyncResult> + sealed::Sealed + 'static {
+pub trait AsyncResultExt: IsA<AsyncResult> + 'static {
     #[doc(alias = "g_async_result_get_source_object")]
     #[doc(alias = "get_source_object")]
     fn source_object(&self) -> Option<glib::Object> {

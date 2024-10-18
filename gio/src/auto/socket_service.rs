@@ -34,12 +34,7 @@ impl Default for SocketService {
     }
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::SocketService>> Sealed for T {}
-}
-
-pub trait SocketServiceExt: IsA<SocketService> + sealed::Sealed + 'static {
+pub trait SocketServiceExt: IsA<SocketService> + 'static {
     #[doc(alias = "g_socket_service_is_active")]
     #[doc(alias = "active")]
     fn is_active(&self) -> bool {

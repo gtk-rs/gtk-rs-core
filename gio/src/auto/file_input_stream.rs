@@ -19,12 +19,7 @@ impl FileInputStream {
     pub const NONE: Option<&'static FileInputStream> = None;
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::FileInputStream>> Sealed for T {}
-}
-
-pub trait FileInputStreamExt: IsA<FileInputStream> + sealed::Sealed + 'static {
+pub trait FileInputStreamExt: IsA<FileInputStream> + 'static {
     #[doc(alias = "g_file_input_stream_query_info")]
     fn query_info(
         &self,

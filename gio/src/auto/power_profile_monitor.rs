@@ -29,12 +29,7 @@ impl PowerProfileMonitor {
     }
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::PowerProfileMonitor>> Sealed for T {}
-}
-
-pub trait PowerProfileMonitorExt: IsA<PowerProfileMonitor> + sealed::Sealed + 'static {
+pub trait PowerProfileMonitorExt: IsA<PowerProfileMonitor> + 'static {
     #[doc(alias = "g_power_profile_monitor_get_power_saver_enabled")]
     #[doc(alias = "get_power_saver_enabled")]
     #[doc(alias = "power-saver-enabled")]
