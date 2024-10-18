@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gdk-pixbuf/src/pixbuf_animation.rs`."><title>pixbuf_animation.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-b0742ba02757f159.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="gdk_pixbuf" data-themes="" data-resource-suffix="" data-rustdoc-version="1.84.0-nightly (798fb83f7 2024-10-16)" data-channel="nightly" data-search-js="search-e056c65ede92db13.js" data-settings-js="settings-805db61a62df4bd2.js" ><script src="../../static.files/storage-1d39b6787ed640ff.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-f070b9041d14864c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-0111fcff984fae8f.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gdk-pixbuf/src/pixbuf_animation.rs`."><title>pixbuf_animation.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-b0742ba02757f159.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="gdk_pixbuf" data-themes="" data-resource-suffix="" data-rustdoc-version="1.84.0-nightly (3ed6e3cc6 2024-10-17)" data-channel="nightly" data-search-js="search-e056c65ede92db13.js" data-settings-js="settings-805db61a62df4bd2.js" ><script src="../../static.files/storage-1d39b6787ed640ff.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-f070b9041d14864c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-0111fcff984fae8f.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -146,12 +146,7 @@
 <a href="#72" id="72">72</a>
 <a href="#73" id="73">73</a>
 <a href="#74" id="74">74</a>
-<a href="#75" id="75">75</a>
-<a href="#76" id="76">76</a>
-<a href="#77" id="77">77</a>
-<a href="#78" id="78">78</a>
-<a href="#79" id="79">79</a>
-<a href="#80" id="80">80</a></pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
+<a href="#75" id="75">75</a></pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
 </span><span class="kw">use </span>std::{<a href="https://doc.rust-lang.org/nightly/core/ptr/index.html">ptr</a>, <a href="https://doc.rust-lang.org/nightly/std/time/struct.SystemTime.html">time::SystemTime</a>};
 
@@ -159,12 +154,7 @@
 
 <span class="kw">use crate</span>::{<a href="../../gdk_pixbuf_sys/index.html">ffi</a>, <a href="auto/pixbuf_animation.rs.html#9-33">PixbufAnimation</a>, <a href="pixbuf_animation_iter.rs.html#9-18">PixbufAnimationIter</a>};
 
-<span class="kw">mod </span>sealed {
-    <span class="kw">pub trait </span>Sealed {}
-    <span class="kw">impl</span>&lt;T: <span class="kw">super</span>::IsA&lt;<a href="auto/pixbuf_animation.rs.html#9-33"><span class="kw">super</span>::PixbufAnimation</a>&gt;&gt; <a href="#10">Sealed</a> <span class="kw">for </span>T {}
-}
-
-<span class="kw">pub trait </span><a href="../../gdk_pixbuf/prelude/trait.PixbufAnimationExtManual.html">PixbufAnimationExtManual</a>: <a href="#10">sealed::Sealed</a> + IsA&lt;<a href="auto/pixbuf_animation.rs.html#9-33">PixbufAnimation</a>&gt; + <span class="lifetime">'static </span>{
+<span class="kw">pub trait </span><a href="../../gdk_pixbuf/prelude/trait.PixbufAnimationExtManual.html">PixbufAnimationExtManual</a>: IsA&lt;<a href="auto/pixbuf_animation.rs.html#9-33">PixbufAnimation</a>&gt; + <span class="lifetime">'static </span>{
     <span class="doccomment">/// Get an iterator for displaying an animation.
     ///
     /// The iterator provides the frames that should be displayed at a
@@ -208,27 +198,27 @@
     </span><span class="attr">#[doc(alias = <span class="string">"gdk_pixbuf_animation_get_iter"</span>)]
     #[doc(alias = <span class="string">"get_iter"</span>)]
     </span><span class="kw">fn </span>iter(<span class="kw-2">&amp;</span><span class="self">self</span>, start_time: <span class="prelude-ty">Option</span>&lt;<a href="https://doc.rust-lang.org/nightly/std/time/struct.SystemTime.html">SystemTime</a>&gt;) -&gt; <a href="pixbuf_animation_iter.rs.html#9-18">PixbufAnimationIter</a> {
-        <span class="kw">let </span>start_time = <a href="#57">start_time</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|s| {
-            <span class="kw">let </span>diff = <a href="#58">s</a>
+        <span class="kw">let </span>start_time = <a href="#52">start_time</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|s| {
+            <span class="kw">let </span>diff = <a href="#53">s</a>
                 .<a href="https://doc.rust-lang.org/nightly/std/time/struct.SystemTime.html#method.duration_since">duration_since</a>(SystemTime::UNIX_EPOCH)
                 .<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.expect">expect</a>(<span class="string">"failed to convert time"</span>);
             <a href="../../glib_sys/struct.GTimeVal.html">glib::ffi::GTimeVal</a> {
-                tv_sec: <a href="#59">diff</a>.<a href="https://doc.rust-lang.org/nightly/core/time/struct.Duration.html#method.as_secs">as_secs</a>() <span class="kw">as _</span>,
-                tv_usec: <a href="#59">diff</a>.<a href="https://doc.rust-lang.org/nightly/core/time/struct.Duration.html#method.subsec_micros">subsec_micros</a>() <span class="kw">as _</span>,
+                tv_sec: <a href="#54">diff</a>.<a href="https://doc.rust-lang.org/nightly/core/time/struct.Duration.html#method.as_secs">as_secs</a>() <span class="kw">as _</span>,
+                tv_usec: <a href="#54">diff</a>.<a href="https://doc.rust-lang.org/nightly/core/time/struct.Duration.html#method.subsec_micros">subsec_micros</a>() <span class="kw">as _</span>,
             }
         });
 
         <span class="kw">unsafe </span>{
             <a href="../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="../../gdk_pixbuf_sys/fn.gdk_pixbuf_animation_get_iter.html">ffi::gdk_pixbuf_animation_get_iter</a>(
-                <a class="self" href="#57">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#58">start_time</a>
+                <a class="self" href="#52">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#53">start_time</a>
                     .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_ref">as_ref</a>()
-                    .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|t| <a href="#73">t</a> <span class="kw">as </span><span class="kw-2">*const </span><a href="../../glib_sys/struct.GTimeVal.html">glib::ffi::GTimeVal</a>)
+                    .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|t| <a href="#68">t</a> <span class="kw">as </span><span class="kw-2">*const </span><a href="../../glib_sys/struct.GTimeVal.html">glib::ffi::GTimeVal</a>)
                     .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap_or">unwrap_or</a>(<a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null.html">ptr::null</a>()),
             ))
         }
     }
 }
 
-<span class="kw">impl</span>&lt;O: IsA&lt;<a href="auto/pixbuf_animation.rs.html#9-33">PixbufAnimation</a>&gt;&gt; <a href="#14-78">PixbufAnimationExtManual</a> <span class="kw">for </span>O {}
+<span class="kw">impl</span>&lt;O: IsA&lt;<a href="auto/pixbuf_animation.rs.html#9-33">PixbufAnimation</a>&gt;&gt; <a href="#9-73">PixbufAnimationExtManual</a> <span class="kw">for </span>O {}
 </code></pre></div></section></main></body></html>

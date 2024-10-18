@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/application.rs`."><title>application.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-b0742ba02757f159.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.84.0-nightly (798fb83f7 2024-10-16)" data-channel="nightly" data-search-js="search-e056c65ede92db13.js" data-settings-js="settings-805db61a62df4bd2.js" ><script src="../../static.files/storage-1d39b6787ed640ff.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-f070b9041d14864c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-0111fcff984fae8f.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/application.rs`."><title>application.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-b0742ba02757f159.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.84.0-nightly (3ed6e3cc6 2024-10-17)" data-channel="nightly" data-search-js="search-e056c65ede92db13.js" data-settings-js="settings-805db61a62df4bd2.js" ><script src="../../static.files/storage-1d39b6787ed640ff.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-f070b9041d14864c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-0111fcff984fae8f.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -284,12 +284,7 @@
 <a href="#210" id="210">210</a>
 <a href="#211" id="211">211</a>
 <a href="#212" id="212">212</a>
-<a href="#213" id="213">213</a>
-<a href="#214" id="214">214</a>
-<a href="#215" id="215">215</a>
-<a href="#216" id="216">216</a>
-<a href="#217" id="217">217</a>
-<a href="#218" id="218">218</a></pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
+<a href="#213" id="213">213</a></pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
 </span><span class="kw">use </span>std::{<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">boxed::Box</a> <span class="kw">as </span>Box_, <a href="https://doc.rust-lang.org/nightly/core/intrinsics/fn.transmute.html">mem::transmute</a>};
 
@@ -302,12 +297,7 @@
 
 <span class="kw">use crate</span>::{<a href="../../gio_sys/index.html">ffi</a>, <a href="auto/application.rs.html#16-333">Application</a>, <a href="auto/file.rs.html#14-116">File</a>};
 
-<span class="kw">mod </span>sealed {
-    <span class="kw">pub trait </span>Sealed {}
-    <span class="kw">impl</span>&lt;T: <span class="kw">super</span>::IsA&lt;<a href="auto/application.rs.html#16-333"><span class="kw">super</span>::Application</a>&gt;&gt; <a href="#15">Sealed</a> <span class="kw">for </span>T {}
-}
-
-<span class="kw">pub trait </span><a href="../../gio/prelude/trait.ApplicationExtManual.html">ApplicationExtManual</a>: <a href="#15">sealed::Sealed</a> + IsA&lt;<a href="auto/application.rs.html#16-333">Application</a>&gt; {
+<span class="kw">pub trait </span><a href="../../gio/prelude/trait.ApplicationExtManual.html">ApplicationExtManual</a>: IsA&lt;<a href="auto/application.rs.html#16-333">Application</a>&gt; {
     <span class="doccomment">/// Runs the application.
     ///
     /// This function is intended to be run from main() and its return value
@@ -392,16 +382,16 @@
     /// the exit status
     </span><span class="attr">#[doc(alias = <span class="string">"g_application_run"</span>)]
     </span><span class="kw">fn </span>run(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="../../glib/exit_code/struct.ExitCode.html">ExitCode</a> {
-        <a class="self" href="#103">self</a>.<a href="#107-114">run_with_args</a>(<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/env/fn.args.html">std::env::args</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.collect">collect</a>::&lt;Vec&lt;<span class="kw">_</span>&gt;&gt;())
+        <a class="self" href="#98">self</a>.<a href="#102-109">run_with_args</a>(<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/env/fn.args.html">std::env::args</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.collect">collect</a>::&lt;Vec&lt;<span class="kw">_</span>&gt;&gt;())
     }
     <span class="attr">#[doc(alias = <span class="string">"g_application_run"</span>)]
     </span><span class="kw">fn </span>run_with_args&lt;S: AsRef&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, args: <span class="kw-2">&amp;</span>[S]) -&gt; <a href="../../glib/exit_code/struct.ExitCode.html">ExitCode</a> {
-        <span class="kw">let </span>argv: Vec&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt; = <a href="#107">args</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|a| <a href="#108">a</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>()).<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.collect">collect</a>();
-        <span class="kw">let </span>argc = <a href="#108">argv</a>.<a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.len">len</a>() <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>;
+        <span class="kw">let </span>argv: Vec&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt; = <a href="#102">args</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|a| <a href="#103">a</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>()).<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.collect">collect</a>();
+        <span class="kw">let </span>argc = <a href="#103">argv</a>.<a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.len">len</a>() <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>;
         <span class="kw">let </span>exit_code = <span class="kw">unsafe </span>{
-            <a href="../../gio_sys/fn.g_application_run.html">ffi::g_application_run</a>(<a class="self" href="#107">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#109">argc</a>, <a href="#108">argv</a>.<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>)
+            <a href="../../gio_sys/fn.g_application_run.html">ffi::g_application_run</a>(<a class="self" href="#102">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#104">argc</a>, <a href="#103">argv</a>.<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>)
         };
-        <a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html#tymethod.from">ExitCode::from</a>(<a href="#110">exit_code</a>)
+        <a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html#tymethod.from">ExitCode::from</a>(<a href="#105">exit_code</a>)
     }
     <span class="doccomment">/// The ::open signal is emitted on the primary instance when there are
     /// files to open. See g_application_open() for more information.
@@ -419,23 +409,23 @@
         ) <span class="kw">where
             </span>P: IsA&lt;<a href="auto/application.rs.html#16-333">Application</a>&gt;,
         {
-            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#127">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
-            <span class="kw">let </span>files: Vec&lt;<a href="auto/file.rs.html#14-116">File</a>&gt; = <a href="../../glib/translate/trait.FromGlibContainer.html#tymethod.from_glib_none_num">FromGlibContainer::from_glib_none_num</a>(<a href="#124">files</a>, <a href="#125">n_files</a> <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>);
-            <a href="#131">f</a>(
-                <a href="../../glib/translate/trait.FromGlibPtrBorrow.html#tymethod.from_glib_borrow">Application::from_glib_borrow</a>(<a href="#123">this</a>).<a href="../../glib/object/trait.Cast.html#tymethod.unsafe_cast_ref">unsafe_cast_ref</a>(),
-                <span class="kw-2">&amp;</span><a href="#132">files</a>,
-                <span class="kw-2">&amp;</span><a href="../../glib/translate/trait.FromGlibPtrBorrow.html#tymethod.from_glib_borrow">GString::from_glib_borrow</a>(<a href="#126">hint</a>),
+            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#122">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
+            <span class="kw">let </span>files: Vec&lt;<a href="auto/file.rs.html#14-116">File</a>&gt; = <a href="../../glib/translate/trait.FromGlibContainer.html#tymethod.from_glib_none_num">FromGlibContainer::from_glib_none_num</a>(<a href="#119">files</a>, <a href="#120">n_files</a> <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>);
+            <a href="#126">f</a>(
+                <a href="../../glib/translate/trait.FromGlibPtrBorrow.html#tymethod.from_glib_borrow">Application::from_glib_borrow</a>(<a href="#118">this</a>).<a href="../../glib/object/trait.Cast.html#tymethod.unsafe_cast_ref">unsafe_cast_ref</a>(),
+                <span class="kw-2">&amp;</span><a href="#127">files</a>,
+                <span class="kw-2">&amp;</span><a href="../../glib/translate/trait.FromGlibPtrBorrow.html#tymethod.from_glib_borrow">GString::from_glib_borrow</a>(<a href="#121">hint</a>),
             )
         }
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>f: Box_&lt;F&gt; = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">Box_::new</a>(<a href="#121">f</a>);
+            <span class="kw">let </span>f: Box_&lt;F&gt; = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">Box_::new</a>(<a href="#116">f</a>);
             <a href="../../glib/signal/fn.connect_raw.html">connect_raw</a>(
-                <a class="self" href="#121">self</a>.<a href="../../glib/object/trait.ObjectType.html#tymethod.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <a class="self" href="#116">self</a>.<a href="../../glib/object/trait.ObjectType.html#tymethod.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
                 <span class="string">b"open\0"</span>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
                 <span class="prelude-val">Some</span>(transmute::&lt;<span class="kw-2">*const </span>(), <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>()&gt;(
                     open_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
                 )),
-                <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.into_raw">Box_::into_raw</a>(<a href="#140">f</a>),
+                <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.into_raw">Box_::into_raw</a>(<a href="#135">f</a>),
             )
         }
     }
@@ -448,11 +438,11 @@
     ///
     /// To cancel the hold, call g_application_release().
     </span><span class="attr">#[doc(alias = <span class="string">"g_application_hold"</span>)]
-    </span><span class="kw">fn </span>hold(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="#192">ApplicationHoldGuard</a> {
+    </span><span class="kw">fn </span>hold(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="#187">ApplicationHoldGuard</a> {
         <span class="kw">unsafe </span>{
-            <a href="../../gio_sys/fn.g_application_hold.html">ffi::g_application_hold</a>(<a class="self" href="#160">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>);
+            <a href="../../gio_sys/fn.g_application_hold.html">ffi::g_application_hold</a>(<a class="self" href="#155">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>);
         }
-        <a href="#192">ApplicationHoldGuard</a>(<a class="self" href="#160">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../glib/object/trait.ObjectExt.html#tymethod.downgrade">downgrade</a>())
+        <a href="#187">ApplicationHoldGuard</a>(<a class="self" href="#155">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../glib/object/trait.ObjectExt.html#tymethod.downgrade">downgrade</a>())
     }
 
     <span class="doccomment">/// Increases the busy count of @self.
@@ -468,26 +458,26 @@
     ///
     /// The application must be registered before calling this function.
     </span><span class="attr">#[doc(alias = <span class="string">"g_application_mark_busy"</span>)]
-    </span><span class="kw">fn </span>mark_busy(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="#207">ApplicationBusyGuard</a> {
+    </span><span class="kw">fn </span>mark_busy(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="#202">ApplicationBusyGuard</a> {
         <span class="kw">unsafe </span>{
-            <a href="../../gio_sys/fn.g_application_mark_busy.html">ffi::g_application_mark_busy</a>(<a class="self" href="#180">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>);
+            <a href="../../gio_sys/fn.g_application_mark_busy.html">ffi::g_application_mark_busy</a>(<a class="self" href="#175">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>);
         }
-        <a href="#207">ApplicationBusyGuard</a>(<a class="self" href="#180">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../glib/object/trait.ObjectExt.html#tymethod.downgrade">downgrade</a>())
+        <a href="#202">ApplicationBusyGuard</a>(<a class="self" href="#175">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../glib/object/trait.ObjectExt.html#tymethod.downgrade">downgrade</a>())
     }
 }
 
-<span class="kw">impl</span>&lt;O: IsA&lt;<a href="auto/application.rs.html#16-333">Application</a>&gt;&gt; <a href="#19-186">ApplicationExtManual</a> <span class="kw">for </span>O {}
+<span class="kw">impl</span>&lt;O: IsA&lt;<a href="auto/application.rs.html#16-333">Application</a>&gt;&gt; <a href="#14-181">ApplicationExtManual</a> <span class="kw">for </span>O {}
 
 <span class="attr">#[derive(Debug)]
 #[must_use = <span class="string">"if unused the Application will immediately be released"</span>]
 </span><span class="kw">pub struct </span><a href="../../gio/struct.ApplicationHoldGuard.html">ApplicationHoldGuard</a>(glib::WeakRef&lt;<a href="auto/application.rs.html#16-333">Application</a>&gt;);
 
-<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/ops/drop/trait.Drop.html">Drop</a> <span class="kw">for </span><a href="#192">ApplicationHoldGuard</a> {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/ops/drop/trait.Drop.html">Drop</a> <span class="kw">for </span><a href="#187">ApplicationHoldGuard</a> {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(application) = <a class="self" href="#196">self</a>.<span class="number">0</span>.<a href="../../glib/object/struct.WeakRef.html#method.upgrade">upgrade</a>() {
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(application) = <a class="self" href="#191">self</a>.<span class="number">0</span>.<a href="../../glib/object/struct.WeakRef.html#method.upgrade">upgrade</a>() {
             <span class="kw">unsafe </span>{
-                <a href="../../gio_sys/fn.g_application_release.html">ffi::g_application_release</a>(<a href="#197">application</a>.<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>);
+                <a href="../../gio_sys/fn.g_application_release.html">ffi::g_application_release</a>(<a href="#192">application</a>.<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>);
             }
         }
     }
@@ -497,12 +487,12 @@
 #[must_use = <span class="string">"if unused the Application will immediately be unmarked busy"</span>]
 </span><span class="kw">pub struct </span><a href="../../gio/struct.ApplicationBusyGuard.html">ApplicationBusyGuard</a>(glib::WeakRef&lt;<a href="auto/application.rs.html#16-333">Application</a>&gt;);
 
-<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/ops/drop/trait.Drop.html">Drop</a> <span class="kw">for </span><a href="#207">ApplicationBusyGuard</a> {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/ops/drop/trait.Drop.html">Drop</a> <span class="kw">for </span><a href="#202">ApplicationBusyGuard</a> {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(application) = <a class="self" href="#211">self</a>.<span class="number">0</span>.<a href="../../glib/object/struct.WeakRef.html#method.upgrade">upgrade</a>() {
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(application) = <a class="self" href="#206">self</a>.<span class="number">0</span>.<a href="../../glib/object/struct.WeakRef.html#method.upgrade">upgrade</a>() {
             <span class="kw">unsafe </span>{
-                <a href="../../gio_sys/fn.g_application_unmark_busy.html">ffi::g_application_unmark_busy</a>(<a href="#212">application</a>.<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>);
+                <a href="../../gio_sys/fn.g_application_unmark_busy.html">ffi::g_application_unmark_busy</a>(<a href="#207">application</a>.<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>);
             }
         }
     }

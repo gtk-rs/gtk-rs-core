@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/pollable_output_stream.rs`."><title>pollable_output_stream.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-b0742ba02757f159.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.84.0-nightly (798fb83f7 2024-10-16)" data-channel="nightly" data-search-js="search-e056c65ede92db13.js" data-settings-js="settings-805db61a62df4bd2.js" ><script src="../../static.files/storage-1d39b6787ed640ff.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-f070b9041d14864c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-0111fcff984fae8f.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/pollable_output_stream.rs`."><title>pollable_output_stream.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-b0742ba02757f159.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.84.0-nightly (3ed6e3cc6 2024-10-17)" data-channel="nightly" data-search-js="search-e056c65ede92db13.js" data-settings-js="settings-805db61a62df4bd2.js" ><script src="../../static.files/storage-1d39b6787ed640ff.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-f070b9041d14864c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-0111fcff984fae8f.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -439,12 +439,7 @@
 <a href="#365" id="365">365</a>
 <a href="#366" id="366">366</a>
 <a href="#367" id="367">367</a>
-<a href="#368" id="368">368</a>
-<a href="#369" id="369">369</a>
-<a href="#370" id="370">370</a>
-<a href="#371" id="371">371</a>
-<a href="#372" id="372">372</a>
-<a href="#373" id="373">373</a></pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
+<a href="#368" id="368">368</a></pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
 </span><span class="kw">use </span>std::{<a href="https://doc.rust-lang.org/nightly/core/cell/struct.RefCell.html">cell::RefCell</a>, <a href="https://doc.rust-lang.org/nightly/std/io/index.html">io</a>, <a href="https://doc.rust-lang.org/nightly/core/intrinsics/fn.transmute.html">mem::transmute</a>, <a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html">pin::Pin</a>};
 
@@ -461,12 +456,7 @@
 <span class="attr">#[cfg(feature = <span class="string">"v2_60"</span>)]
 </span><span class="kw">use crate</span>::{<a href="socket.rs.html#254-257">OutputVector</a>, <a href="auto/enums.rs.html#2597-2609">PollableReturn</a>};
 
-<span class="kw">mod </span>sealed {
-    <span class="kw">pub trait </span>Sealed {}
-    <span class="kw">impl</span>&lt;T: <span class="kw">super</span>::IsA&lt;<a href="auto/pollable_output_stream.rs.html#8-28"><span class="kw">super</span>::PollableOutputStream</a>&gt;&gt; <a href="#19">Sealed</a> <span class="kw">for </span>T {}
-}
-
-<span class="kw">pub trait </span><a href="../../gio/prelude/trait.PollableOutputStreamExtManual.html">PollableOutputStreamExtManual</a>: <a href="#19">sealed::Sealed</a> + IsA&lt;<a href="auto/pollable_output_stream.rs.html#8-28">PollableOutputStream</a>&gt; {
+<span class="kw">pub trait </span><a href="../../gio/prelude/trait.PollableOutputStreamExtManual.html">PollableOutputStreamExtManual</a>: IsA&lt;<a href="auto/pollable_output_stream.rs.html#8-28">PollableOutputStream</a>&gt; {
     <span class="doccomment">/// Creates a #GSource that triggers when @self can be written, or
     /// @cancellable is triggered or an error occurs. The callback on the
     /// source is of the #GPollableSourceFunc type.
@@ -503,38 +493,38 @@
             stream: <span class="kw-2">*mut </span><a href="../../gio_sys/struct.GPollableOutputStream.html">ffi::GPollableOutputStream</a>,
             func: <a href="../../glib_sys/type.gpointer.html">glib::ffi::gpointer</a>,
         ) -&gt; <a href="../../glib_sys/type.gboolean.html">glib::ffi::gboolean</a> {
-            <span class="kw">let </span>func: <span class="kw-2">&amp;</span>RefCell&lt;F&gt; = <span class="kw-2">&amp;*</span>(<a href="#58">func</a> <span class="kw">as </span><span class="kw-2">*const </span>RefCell&lt;F&gt;);
-            <span class="kw">let </span><span class="kw-2">mut </span>func = <a href="#60">func</a>.<a href="https://doc.rust-lang.org/nightly/core/cell/struct.RefCell.html#method.borrow_mut">borrow_mut</a>();
-            (<span class="kw-2">*</span><a href="#61">func</a>)(<a href="../../glib/translate/trait.FromGlibPtrBorrow.html#tymethod.from_glib_borrow">PollableOutputStream::from_glib_borrow</a>(<a href="#57">stream</a>).<a href="../../glib/object/trait.Cast.html#tymethod.unsafe_cast_ref">unsafe_cast_ref</a>()).<a href="../../glib/translate/trait.IntoGlib.html#tymethod.into_glib">into_glib</a>()
+            <span class="kw">let </span>func: <span class="kw-2">&amp;</span>RefCell&lt;F&gt; = <span class="kw-2">&amp;*</span>(<a href="#53">func</a> <span class="kw">as </span><span class="kw-2">*const </span>RefCell&lt;F&gt;);
+            <span class="kw">let </span><span class="kw-2">mut </span>func = <a href="#55">func</a>.<a href="https://doc.rust-lang.org/nightly/core/cell/struct.RefCell.html#method.borrow_mut">borrow_mut</a>();
+            (<span class="kw-2">*</span><a href="#56">func</a>)(<a href="../../glib/translate/trait.FromGlibPtrBorrow.html#tymethod.from_glib_borrow">PollableOutputStream::from_glib_borrow</a>(<a href="#52">stream</a>).<a href="../../glib/object/trait.Cast.html#tymethod.unsafe_cast_ref">unsafe_cast_ref</a>()).<a href="../../glib/translate/trait.IntoGlib.html#tymethod.into_glib">into_glib</a>()
         }
         <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>destroy_closure&lt;F&gt;(ptr: <a href="../../glib_sys/type.gpointer.html">glib::ffi::gpointer</a>) {
-            <span class="kw">let _ </span>= Box::&lt;RefCell&lt;F&gt;&gt;::from_raw(<a href="#64">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
+            <span class="kw">let _ </span>= Box::&lt;RefCell&lt;F&gt;&gt;::from_raw(<a href="#59">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
         }
-        <span class="kw">let </span>cancellable = <a href="#44">cancellable</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|c| <a href="#67">c</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>());
-        <span class="kw">let </span>gcancellable = <a href="#67">cancellable</a>.<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>();
+        <span class="kw">let </span>cancellable = <a href="#39">cancellable</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|c| <a href="#62">c</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>());
+        <span class="kw">let </span>gcancellable = <a href="#62">cancellable</a>.<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>();
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>source = <a href="../../gio_sys/fn.g_pollable_output_stream_create_source.html">ffi::g_pollable_output_stream_create_source</a>(
-                <a class="self" href="#43">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#68">gcancellable</a>.<span class="number">0</span>,
+                <a class="self" href="#38">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#63">gcancellable</a>.<span class="number">0</span>,
             );
 
             <span class="kw">let </span>trampoline = trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><a href="../../glib_sys/type.gpointer.html">glib::ffi::gpointer</a>;
             <a href="../../glib_sys/fn.g_source_set_callback.html">glib::ffi::g_source_set_callback</a>(
-                <a href="#70">source</a>,
+                <a href="#65">source</a>,
                 <span class="prelude-val">Some</span>(transmute::&lt;
                     <a href="../../glib_sys/type.gpointer.html">glib::ffi::gpointer</a>,
                     <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>(<a href="../../glib_sys/type.gpointer.html">glib::ffi::gpointer</a>) -&gt; <a href="../../glib_sys/type.gboolean.html">glib::ffi::gboolean</a>,
-                &gt;(<a href="#75">trampoline</a>)),
-                <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.into_raw">Box::into_raw</a>(<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">Box::new</a>(<a href="https://doc.rust-lang.org/nightly/core/cell/struct.RefCell.html#method.new">RefCell::new</a>(<a href="#47">func</a>))) <span class="kw">as </span><a href="../../glib_sys/type.gpointer.html">glib::ffi::gpointer</a>,
+                &gt;(<a href="#70">trampoline</a>)),
+                <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.into_raw">Box::into_raw</a>(<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">Box::new</a>(<a href="https://doc.rust-lang.org/nightly/core/cell/struct.RefCell.html#method.new">RefCell::new</a>(<a href="#42">func</a>))) <span class="kw">as </span><a href="../../glib_sys/type.gpointer.html">glib::ffi::gpointer</a>,
                 <span class="prelude-val">Some</span>(destroy_closure::&lt;F&gt;),
             );
-            <a href="../../glib_sys/fn.g_source_set_priority.html">glib::ffi::g_source_set_priority</a>(<a href="#70">source</a>, <a href="#46">priority</a>.<a href="../../glib/translate/trait.IntoGlib.html#tymethod.into_glib">into_glib</a>());
+            <a href="../../glib_sys/fn.g_source_set_priority.html">glib::ffi::g_source_set_priority</a>(<a href="#65">source</a>, <a href="#41">priority</a>.<a href="../../glib/translate/trait.IntoGlib.html#tymethod.into_glib">into_glib</a>());
 
-            <span class="kw">if let </span><span class="prelude-val">Some</span>(name) = <a href="#45">name</a> {
-                <a href="../../glib_sys/fn.g_source_set_name.html">glib::ffi::g_source_set_name</a>(<a href="#70">source</a>, <a href="#87">name</a>.<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>);
+            <span class="kw">if let </span><span class="prelude-val">Some</span>(name) = <a href="#40">name</a> {
+                <a href="../../glib_sys/fn.g_source_set_name.html">glib::ffi::g_source_set_name</a>(<a href="#65">source</a>, <a href="#82">name</a>.<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>);
             }
 
-            <a href="../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#70">source</a>)
+            <a href="../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#65">source</a>)
         }
     }
 
@@ -543,13 +533,13 @@
         cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>C&gt;,
         priority: <a href="../../glib/source/struct.Priority.html">glib::Priority</a>,
     ) -&gt; Pin&lt;Box&lt;<span class="kw">dyn </span>std::future::Future&lt;Output = ()&gt; + <span class="lifetime">'static</span>&gt;&gt; {
-        <span class="kw">let </span>cancellable: <span class="prelude-ty">Option</span>&lt;<a href="auto/cancellable.rs.html#8-86">Cancellable</a>&gt; = <a href="#97">cancellable</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|c| <a href="#100">c</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>()).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.cloned">cloned</a>();
+        <span class="kw">let </span>cancellable: <span class="prelude-ty">Option</span>&lt;<a href="auto/cancellable.rs.html#8-86">Cancellable</a>&gt; = <a href="#92">cancellable</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|c| <a href="#95">c</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>()).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.cloned">cloned</a>();
 
-        <span class="kw">let </span>obj = <a class="self" href="#96">self</a>.<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">clone</a>();
+        <span class="kw">let </span>obj = <a class="self" href="#91">self</a>.<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">clone</a>();
         <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.pin">Box::pin</a>(<a href="../../glib/source_futures/struct.SourceFuture.html#method.new">glib::SourceFuture::new</a>(<span class="kw">move </span>|send| {
-            <span class="kw">let </span><span class="kw-2">mut </span>send = <span class="prelude-val">Some</span>(<a href="#103">send</a>);
-            <a href="#102">obj</a>.<a href="#42-93">create_source</a>(<a href="#100">cancellable</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_ref">as_ref</a>(), <span class="prelude-val">None</span>, <a href="#98">priority</a>, <span class="kw">move </span>|<span class="kw">_</span>| {
-                <span class="kw">let _ </span>= <a href="#104">send</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.take">take</a>().<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap">unwrap</a>().send(());
+            <span class="kw">let </span><span class="kw-2">mut </span>send = <span class="prelude-val">Some</span>(<a href="#98">send</a>);
+            <a href="#97">obj</a>.<a href="#37-88">create_source</a>(<a href="#95">cancellable</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_ref">as_ref</a>(), <span class="prelude-val">None</span>, <a href="#93">priority</a>, <span class="kw">move </span>|<span class="kw">_</span>| {
+                <span class="kw">let _ </span>= <a href="#99">send</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.take">take</a>().<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap">unwrap</a>().send(());
                 <a href="../../glib/control_flow/enum.ControlFlow.html#variant.Break">glib::ControlFlow::Break</a>
             })
         }))
@@ -560,12 +550,12 @@
         cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>C&gt;,
         priority: <a href="../../glib/source/struct.Priority.html">glib::Priority</a>,
     ) -&gt; Pin&lt;Box&lt;<span class="kw">dyn </span>Stream&lt;Item = ()&gt; + <span class="lifetime">'static</span>&gt;&gt; {
-        <span class="kw">let </span>cancellable: <span class="prelude-ty">Option</span>&lt;<a href="auto/cancellable.rs.html#8-86">Cancellable</a>&gt; = <a href="#114">cancellable</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|c| <a href="#117">c</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>()).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.cloned">cloned</a>();
+        <span class="kw">let </span>cancellable: <span class="prelude-ty">Option</span>&lt;<a href="auto/cancellable.rs.html#8-86">Cancellable</a>&gt; = <a href="#109">cancellable</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|c| <a href="#112">c</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>()).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.cloned">cloned</a>();
 
-        <span class="kw">let </span>obj = <a class="self" href="#113">self</a>.<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">clone</a>();
+        <span class="kw">let </span>obj = <a class="self" href="#108">self</a>.<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">clone</a>();
         <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.pin">Box::pin</a>(<a href="../../glib/source_futures/struct.SourceStream.html#method.new">glib::SourceStream::new</a>(<span class="kw">move </span>|send| {
-            <span class="kw">let </span>send = <span class="prelude-val">Some</span>(<a href="#120">send</a>);
-            <a href="#119">obj</a>.<a href="#42-93">create_source</a>(<a href="#117">cancellable</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_ref">as_ref</a>(), <span class="prelude-val">None</span>, <a href="#115">priority</a>, <span class="kw">move </span>|<span class="kw">_</span>| {
+            <span class="kw">let </span>send = <span class="prelude-val">Some</span>(<a href="#115">send</a>);
+            <a href="#114">obj</a>.<a href="#37-88">create_source</a>(<a href="#112">cancellable</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_ref">as_ref</a>(), <span class="prelude-val">None</span>, <a href="#110">priority</a>, <span class="kw">move </span>|<span class="kw">_</span>| {
                 <span class="kw">if </span>send.as_ref().unwrap().unbounded_send(()).is_err() {
                     <a href="../../glib/control_flow/enum.ControlFlow.html#variant.Break">glib::ControlFlow::Break</a>
                 } <span class="kw">else </span>{
@@ -622,17 +612,17 @@
             <span class="kw">let </span><span class="kw-2">mut </span>bytes_written = <span class="number">0</span>;
 
             <span class="kw">let </span>ret = <a href="../../gio_sys/fn.g_pollable_output_stream_writev_nonblocking.html">ffi::g_pollable_output_stream_writev_nonblocking</a>(
-                <a class="self" href="#170">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#171">vectors</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
-                <a href="#171">vectors</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.len">len</a>(),
-                <span class="kw-2">&amp;mut </span><a href="#176">bytes_written</a>,
-                <a href="#172">cancellable</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|p| <a href="#183">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>()).<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
-                <span class="kw-2">&amp;mut </span><a href="#175">error</a>,
+                <a class="self" href="#165">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#166">vectors</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+                <a href="#166">vectors</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.len">len</a>(),
+                <span class="kw-2">&amp;mut </span><a href="#171">bytes_written</a>,
+                <a href="#167">cancellable</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|p| <a href="#178">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>()).<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+                <span class="kw-2">&amp;mut </span><a href="#170">error</a>,
             );
             <span class="kw">if </span>error.is_null() {
-                <span class="prelude-val">Ok</span>((<a href="../../glib/translate/fn.from_glib.html">from_glib</a>(<a href="#178">ret</a>), <a href="#176">bytes_written</a>))
+                <span class="prelude-val">Ok</span>((<a href="../../glib/translate/fn.from_glib.html">from_glib</a>(<a href="#173">ret</a>), <a href="#171">bytes_written</a>))
             } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(<a href="../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#175">error</a>))
+                <span class="prelude-val">Err</span>(<a href="../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#170">error</a>))
             }
         }
     }
@@ -642,14 +632,14 @@
         </span><span class="self">Self</span>: IsA&lt;<a href="auto/pollable_output_stream.rs.html#8-28">PollableOutputStream</a>&gt;,
     {
         <span class="kw">if </span><span class="self">self</span>.can_poll() {
-            <span class="prelude-val">Ok</span>(<a href="#209-212">OutputStreamAsyncWrite</a>(<a class="self" href="#194">self</a>, <span class="prelude-val">None</span>))
+            <span class="prelude-val">Ok</span>(<a href="#204-207">OutputStreamAsyncWrite</a>(<a class="self" href="#189">self</a>, <span class="prelude-val">None</span>))
         } <span class="kw">else </span>{
-            <span class="prelude-val">Err</span>(<a class="self" href="#194">self</a>)
+            <span class="prelude-val">Err</span>(<a class="self" href="#189">self</a>)
         }
     }
 }
 
-<span class="kw">impl</span>&lt;O: IsA&lt;<a href="auto/pollable_output_stream.rs.html#8-28">PollableOutputStream</a>&gt;&gt; <a href="#23-204">PollableOutputStreamExtManual</a> <span class="kw">for </span>O {}
+<span class="kw">impl</span>&lt;O: IsA&lt;<a href="auto/pollable_output_stream.rs.html#8-28">PollableOutputStream</a>&gt;&gt; <a href="#18-199">PollableOutputStreamExtManual</a> <span class="kw">for </span>O {}
 
 <span class="attr">#[derive(Debug)]
 </span><span class="kw">pub struct </span><a href="../../gio/struct.OutputStreamAsyncWrite.html">OutputStreamAsyncWrite</a>&lt;T: IsA&lt;<a href="auto/pollable_output_stream.rs.html#8-28">PollableOutputStream</a>&gt;&gt;(
@@ -659,47 +649,47 @@
 
 <span class="kw">impl</span>&lt;T: IsA&lt;<a href="auto/pollable_output_stream.rs.html#8-28">PollableOutputStream</a>&gt;&gt; OutputStreamAsyncWrite&lt;T&gt; {
     <span class="kw">pub fn </span>into_output_stream(<span class="self">self</span>) -&gt; T {
-        <a class="self" href="#215">self</a>.<span class="number">0
+        <a class="self" href="#210">self</a>.<span class="number">0
     </span>}
 
     <span class="kw">pub fn </span>output_stream(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>T {
-        <span class="kw-2">&amp;</span><a class="self" href="#219">self</a>.<span class="number">0
+        <span class="kw-2">&amp;</span><a class="self" href="#214">self</a>.<span class="number">0
     </span>}
 }
 
 <span class="kw">impl</span>&lt;T: IsA&lt;<a href="auto/pollable_output_stream.rs.html#8-28">PollableOutputStream</a>&gt;&gt; AsyncWrite <span class="kw">for </span>OutputStreamAsyncWrite&lt;T&gt; {
     <span class="kw">fn </span>poll_write(<span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;, cx: <span class="kw-2">&amp;mut </span><a href="https://doc.rust-lang.org/nightly/core/task/wake/struct.Context.html">Context</a>, buf: <span class="kw-2">&amp;</span>[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]) -&gt; Poll&lt;io::Result&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>&gt;&gt; {
-        <span class="kw">let </span>stream = <a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html#method.get_ref">Pin::get_ref</a>(<a class="self" href="#225">self</a>.<a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html#method.as_ref">as_ref</a>());
-        <span class="kw">let </span>gio_result = <a href="#226">stream</a>
+        <span class="kw">let </span>stream = <a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html#method.get_ref">Pin::get_ref</a>(<a class="self" href="#220">self</a>.<a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html#method.as_ref">as_ref</a>());
+        <span class="kw">let </span>gio_result = <a href="#221">stream</a>
             .<span class="number">0
             </span>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>()
-            .<a href="auto/pollable_output_stream.rs.html#121-142">write_nonblocking</a>(<a href="#225">buf</a>, <span class="kw">crate</span>::Cancellable::NONE);
+            .<a href="auto/pollable_output_stream.rs.html#116-137">write_nonblocking</a>(<a href="#220">buf</a>, <span class="kw">crate</span>::Cancellable::NONE);
 
-        <span class="kw">match </span><a href="#227">gio_result</a> {
-            <span class="prelude-val">Ok</span>(size) =&gt; <a href="https://doc.rust-lang.org/nightly/core/task/poll/enum.Poll.html#variant.Ready">Poll::Ready</a>(<span class="prelude-val">Ok</span>(<a href="#233">size</a> <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>)),
+        <span class="kw">match </span><a href="#222">gio_result</a> {
+            <span class="prelude-val">Ok</span>(size) =&gt; <a href="https://doc.rust-lang.org/nightly/core/task/poll/enum.Poll.html#variant.Ready">Poll::Ready</a>(<span class="prelude-val">Ok</span>(<a href="#228">size</a> <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>)),
             <span class="prelude-val">Err</span>(err) =&gt; {
-                <span class="kw">let </span>kind = <a href="#234">err</a>
+                <span class="kw">let </span>kind = <a href="#229">err</a>
                     .<a href="../../glib/error/struct.Error.html#method.kind">kind</a>::&lt;<a href="auto/enums.rs.html#1655-1818"><span class="kw">crate</span>::IOErrorEnum</a>&gt;()
                     .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap_or">unwrap_or</a>(<a href="auto/enums.rs.html#1659"><span class="kw">crate</span>::IOErrorEnum::Failed</a>);
                 <span class="kw">if </span>kind == <span class="kw">crate</span>::IOErrorEnum::WouldBlock {
-                    <span class="kw">let </span><span class="kw-2">mut </span>waker = <span class="prelude-val">Some</span>(<a href="#225">cx</a>.<a href="https://doc.rust-lang.org/nightly/core/task/wake/struct.Context.html#method.waker">waker</a>().<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">clone</a>());
-                    <span class="kw">let </span>source = <a href="#226">stream</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="#42-93">create_source</a>(
+                    <span class="kw">let </span><span class="kw-2">mut </span>waker = <span class="prelude-val">Some</span>(<a href="#220">cx</a>.<a href="https://doc.rust-lang.org/nightly/core/task/wake/struct.Context.html#method.waker">waker</a>().<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">clone</a>());
+                    <span class="kw">let </span>source = <a href="#221">stream</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="#37-88">create_source</a>(
                         <span class="kw">crate</span>::Cancellable::NONE,
                         <span class="prelude-val">None</span>,
                         <a href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html#tymethod.default">glib::Priority::default</a>(),
                         <span class="kw">move </span>|<span class="kw">_</span>| {
-                            <span class="kw">if let </span><span class="prelude-val">Some</span>(waker) = <a href="#239">waker</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.take">take</a>() {
-                                <a href="#245">waker</a>.<a href="https://doc.rust-lang.org/nightly/core/task/wake/struct.Waker.html#method.wake">wake</a>();
+                            <span class="kw">if let </span><span class="prelude-val">Some</span>(waker) = <a href="#234">waker</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.take">take</a>() {
+                                <a href="#240">waker</a>.<a href="https://doc.rust-lang.org/nightly/core/task/wake/struct.Waker.html#method.wake">wake</a>();
                             }
                             <a href="../../glib/control_flow/enum.ControlFlow.html#variant.Break">glib::ControlFlow::Break</a>
                         },
                     );
                     <span class="kw">let </span>main_context = <a href="../../glib/auto/main_context/struct.MainContext.html#method.ref_thread_default">glib::MainContext::ref_thread_default</a>();
-                    <a href="#240">source</a>.<a href="../../glib/auto/source/struct.Source.html#method.attach">attach</a>(<span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><a href="#251">main_context</a>));
+                    <a href="#235">source</a>.<a href="../../glib/auto/source/struct.Source.html#method.attach">attach</a>(<span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><a href="#246">main_context</a>));
 
                     <a href="https://doc.rust-lang.org/nightly/core/task/poll/enum.Poll.html#variant.Pending">Poll::Pending</a>
                 } <span class="kw">else </span>{
-                    <a href="https://doc.rust-lang.org/nightly/core/task/poll/enum.Poll.html#variant.Ready">Poll::Ready</a>(<span class="prelude-val">Err</span>(<a href="https://doc.rust-lang.org/nightly/std/io/error/struct.Error.html#method.new">io::Error::new</a>(<a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html#tymethod.from">io::ErrorKind::from</a>(<a href="#235">kind</a>), <a href="#234">err</a>)))
+                    <a href="https://doc.rust-lang.org/nightly/core/task/poll/enum.Poll.html#variant.Ready">Poll::Ready</a>(<span class="prelude-val">Err</span>(<a href="https://doc.rust-lang.org/nightly/std/io/error/struct.Error.html#method.new">io::Error::new</a>(<a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html#tymethod.from">io::ErrorKind::from</a>(<a href="#230">kind</a>), <a href="#229">err</a>)))
                 }
             }
         }
@@ -712,73 +702,73 @@
         cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">'_</span>&gt;,
         bufs: <span class="kw-2">&amp;</span>[io::IoSlice&lt;<span class="lifetime">'_</span>&gt;],
     ) -&gt; Poll&lt;io::Result&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>&gt;&gt; {
-        <span class="kw">let </span>stream = <a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html#method.get_ref">Pin::get_ref</a>(<a class="self" href="#265">self</a>.<a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html#method.as_ref">as_ref</a>());
-        <span class="kw">let </span>vectors = <a href="#267">bufs</a>
+        <span class="kw">let </span>stream = <a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html#method.get_ref">Pin::get_ref</a>(<a class="self" href="#260">self</a>.<a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html#method.as_ref">as_ref</a>());
+        <span class="kw">let </span>vectors = <a href="#262">bufs</a>
             .<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.iter">iter</a>()
-            .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|v| <a href="socket.rs.html#261-269">OutputVector::new</a>(<a href="#272">v</a>))
+            .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|v| <a href="socket.rs.html#261-269">OutputVector::new</a>(<a href="#267">v</a>))
             .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.collect">collect</a>::&lt;smallvec::SmallVec&lt;[<span class="kw">_</span>; <span class="number">2</span>]&gt;&gt;();
-        <span class="kw">let </span>gio_result = <a href="#269">stream</a>
+        <span class="kw">let </span>gio_result = <a href="#264">stream</a>
             .<span class="number">0
             </span>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>()
-            .<a href="#169-192">writev_nonblocking</a>(<span class="kw-2">&amp;</span><a href="#270">vectors</a>, <span class="kw">crate</span>::Cancellable::NONE);
+            .<a href="#164-187">writev_nonblocking</a>(<span class="kw-2">&amp;</span><a href="#265">vectors</a>, <span class="kw">crate</span>::Cancellable::NONE);
 
-        <span class="kw">match </span><a href="#274">gio_result</a> {
-            <span class="prelude-val">Ok</span>((<a href="auto/enums.rs.html#2603">PollableReturn::Ok</a>, size)) =&gt; <a href="https://doc.rust-lang.org/nightly/core/task/poll/enum.Poll.html#variant.Ready">Poll::Ready</a>(<span class="prelude-val">Ok</span>(<a href="#280">size</a>)),
+        <span class="kw">match </span><a href="#269">gio_result</a> {
+            <span class="prelude-val">Ok</span>((<a href="auto/enums.rs.html#2603">PollableReturn::Ok</a>, size)) =&gt; <a href="https://doc.rust-lang.org/nightly/core/task/poll/enum.Poll.html#variant.Ready">Poll::Ready</a>(<span class="prelude-val">Ok</span>(<a href="#275">size</a>)),
             <span class="prelude-val">Ok</span>((<a href="auto/enums.rs.html#2606">PollableReturn::WouldBlock</a>, <span class="kw">_</span>)) =&gt; {
-                <span class="kw">let </span><span class="kw-2">mut </span>waker = <span class="prelude-val">Some</span>(<a href="#266">cx</a>.<a href="https://doc.rust-lang.org/nightly/core/task/wake/struct.Context.html#method.waker">waker</a>().<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">clone</a>());
-                <span class="kw">let </span>source = <a href="#269">stream</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="#42-93">create_source</a>(
+                <span class="kw">let </span><span class="kw-2">mut </span>waker = <span class="prelude-val">Some</span>(<a href="#261">cx</a>.<a href="https://doc.rust-lang.org/nightly/core/task/wake/struct.Context.html#method.waker">waker</a>().<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">clone</a>());
+                <span class="kw">let </span>source = <a href="#264">stream</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="#37-88">create_source</a>(
                     <span class="kw">crate</span>::Cancellable::NONE,
                     <span class="prelude-val">None</span>,
                     <a href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html#tymethod.default">glib::Priority::default</a>(),
                     <span class="kw">move </span>|<span class="kw">_</span>| {
-                        <span class="kw">if let </span><span class="prelude-val">Some</span>(waker) = <a href="#282">waker</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.take">take</a>() {
-                            <a href="#288">waker</a>.<a href="https://doc.rust-lang.org/nightly/core/task/wake/struct.Waker.html#method.wake">wake</a>();
+                        <span class="kw">if let </span><span class="prelude-val">Some</span>(waker) = <a href="#277">waker</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.take">take</a>() {
+                            <a href="#283">waker</a>.<a href="https://doc.rust-lang.org/nightly/core/task/wake/struct.Waker.html#method.wake">wake</a>();
                         }
                         <a href="../../glib/control_flow/enum.ControlFlow.html#variant.Break">glib::ControlFlow::Break</a>
                     },
                 );
                 <span class="kw">let </span>main_context = <a href="../../glib/auto/main_context/struct.MainContext.html#method.ref_thread_default">glib::MainContext::ref_thread_default</a>();
-                <a href="#283">source</a>.<a href="../../glib/auto/source/struct.Source.html#method.attach">attach</a>(<span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><a href="#294">main_context</a>));
+                <a href="#278">source</a>.<a href="../../glib/auto/source/struct.Source.html#method.attach">attach</a>(<span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><a href="#289">main_context</a>));
 
                 <a href="https://doc.rust-lang.org/nightly/core/task/poll/enum.Poll.html#variant.Pending">Poll::Pending</a>
             }
             <span class="prelude-val">Ok</span>((<span class="kw">_</span>, <span class="kw">_</span>)) =&gt; <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.unreachable.html">unreachable!</a>(),
             <span class="prelude-val">Err</span>(err) =&gt; <a href="https://doc.rust-lang.org/nightly/core/task/poll/enum.Poll.html#variant.Ready">Poll::Ready</a>(<span class="prelude-val">Err</span>(<a href="https://doc.rust-lang.org/nightly/std/io/error/struct.Error.html#method.new">io::Error::new</a>(
                 <a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html#tymethod.from">io::ErrorKind::from</a>(
-                    <a href="#300">err</a>.<a href="../../glib/error/struct.Error.html#method.kind">kind</a>::&lt;<a href="auto/enums.rs.html#1655-1818"><span class="kw">crate</span>::IOErrorEnum</a>&gt;()
+                    <a href="#295">err</a>.<a href="../../glib/error/struct.Error.html#method.kind">kind</a>::&lt;<a href="auto/enums.rs.html#1655-1818"><span class="kw">crate</span>::IOErrorEnum</a>&gt;()
                         .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap_or">unwrap_or</a>(<a href="auto/enums.rs.html#1659"><span class="kw">crate</span>::IOErrorEnum::Failed</a>),
                 ),
-                <a href="#300">err</a>,
+                <a href="#295">err</a>,
             ))),
         }
     }
 
     <span class="kw">fn </span>poll_flush(<span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;, cx: <span class="kw-2">&amp;mut </span><a href="https://doc.rust-lang.org/nightly/core/task/wake/struct.Context.html">Context</a>) -&gt; Poll&lt;io::Result&lt;()&gt;&gt; {
-        <span class="kw">let </span>stream = <span class="kw">unsafe </span>{ <a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html#method.get_unchecked_mut">Pin::get_unchecked_mut</a>(<a class="self" href="#310">self</a>) };
+        <span class="kw">let </span>stream = <span class="kw">unsafe </span>{ <a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html#method.get_unchecked_mut">Pin::get_unchecked_mut</a>(<a class="self" href="#305">self</a>) };
 
-        <span class="kw">let </span>rx = <span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="kw-2">ref mut </span>rx) = <a href="#311">stream</a>.<span class="number">1 </span>{
-            <a href="#313">rx</a>
+        <span class="kw">let </span>rx = <span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="kw-2">ref mut </span>rx) = <a href="#306">stream</a>.<span class="number">1 </span>{
+            <a href="#308">rx</a>
         } <span class="kw">else </span>{
             <span class="kw">let </span>(tx, rx) = oneshot::channel();
-            <a href="#311">stream</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="auto/output_stream.rs.html#246-293">flush_async</a>(
+            <a href="#306">stream</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="auto/output_stream.rs.html#241-288">flush_async</a>(
                 <a href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html#tymethod.default">glib::Priority::default</a>(),
                 <span class="kw">crate</span>::Cancellable::NONE,
                 <span class="kw">move </span>|res| {
-                    <span class="kw">let _ </span>= <a href="#316">tx</a>.send(<a href="#320">res</a>);
+                    <span class="kw">let _ </span>= <a href="#311">tx</a>.send(<a href="#315">res</a>);
                 },
             );
 
-            <a href="#311">stream</a>.<span class="number">1 </span>= <span class="prelude-val">Some</span>(<a href="#316">rx</a>);
-            <a href="#311">stream</a>.<span class="number">1</span>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_mut">as_mut</a>().<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap">unwrap</a>()
+            <a href="#306">stream</a>.<span class="number">1 </span>= <span class="prelude-val">Some</span>(<a href="#311">rx</a>);
+            <a href="#306">stream</a>.<span class="number">1</span>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_mut">as_mut</a>().<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap">unwrap</a>()
         };
 
-        <span class="kw">match </span><a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html#method.new">Pin::new</a>(<a href="#313">rx</a>).<a href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html#tymethod.poll">poll</a>(<a href="#310">cx</a>) {
+        <span class="kw">match </span><a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html#method.new">Pin::new</a>(<a href="#308">rx</a>).<a href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html#tymethod.poll">poll</a>(<a href="#305">cx</a>) {
             <a href="https://doc.rust-lang.org/nightly/core/task/poll/enum.Poll.html#variant.Ready">Poll::Ready</a>(<span class="prelude-val">Ok</span>(res)) =&gt; {
-                <span class="kw">let _ </span>= <a href="#311">stream</a>.<span class="number">1</span>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.take">take</a>();
-                <a href="https://doc.rust-lang.org/nightly/core/task/poll/enum.Poll.html#variant.Ready">Poll::Ready</a>(<a href="error.rs.html#31-36">to_std_io_result</a>(<a href="#330">res</a>))
+                <span class="kw">let _ </span>= <a href="#306">stream</a>.<span class="number">1</span>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.take">take</a>();
+                <a href="https://doc.rust-lang.org/nightly/core/task/poll/enum.Poll.html#variant.Ready">Poll::Ready</a>(<a href="error.rs.html#31-36">to_std_io_result</a>(<a href="#325">res</a>))
             }
             <a href="https://doc.rust-lang.org/nightly/core/task/poll/enum.Poll.html#variant.Ready">Poll::Ready</a>(<span class="prelude-val">Err</span>(<span class="kw">_</span>)) =&gt; {
-                <span class="kw">let _ </span>= <a href="#311">stream</a>.<span class="number">1</span>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.take">take</a>();
+                <span class="kw">let _ </span>= <a href="#306">stream</a>.<span class="number">1</span>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.take">take</a>();
                 <a href="https://doc.rust-lang.org/nightly/core/task/poll/enum.Poll.html#variant.Ready">Poll::Ready</a>(<span class="prelude-val">Ok</span>(()))
             }
             <a href="https://doc.rust-lang.org/nightly/core/task/poll/enum.Poll.html#variant.Pending">Poll::Pending</a> =&gt; <a href="https://doc.rust-lang.org/nightly/core/task/poll/enum.Poll.html#variant.Pending">Poll::Pending</a>,
@@ -786,31 +776,31 @@
     }
 
     <span class="kw">fn </span>poll_close(<span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;, cx: <span class="kw-2">&amp;mut </span><a href="https://doc.rust-lang.org/nightly/core/task/wake/struct.Context.html">Context</a>) -&gt; Poll&lt;io::Result&lt;()&gt;&gt; {
-        <span class="kw">let </span>stream = <span class="kw">unsafe </span>{ <a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html#method.get_unchecked_mut">Pin::get_unchecked_mut</a>(<a class="self" href="#342">self</a>) };
+        <span class="kw">let </span>stream = <span class="kw">unsafe </span>{ <a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html#method.get_unchecked_mut">Pin::get_unchecked_mut</a>(<a class="self" href="#337">self</a>) };
 
-        <span class="kw">let </span>rx = <span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="kw-2">ref mut </span>rx) = <a href="#343">stream</a>.<span class="number">1 </span>{
-            <a href="#345">rx</a>
+        <span class="kw">let </span>rx = <span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="kw-2">ref mut </span>rx) = <a href="#338">stream</a>.<span class="number">1 </span>{
+            <a href="#340">rx</a>
         } <span class="kw">else </span>{
             <span class="kw">let </span>(tx, rx) = oneshot::channel();
-            <a href="#343">stream</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="auto/output_stream.rs.html#135-182">close_async</a>(
+            <a href="#338">stream</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="auto/output_stream.rs.html#130-177">close_async</a>(
                 <a href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html#tymethod.default">glib::Priority::default</a>(),
                 <span class="kw">crate</span>::Cancellable::NONE,
                 <span class="kw">move </span>|res| {
-                    <span class="kw">let _ </span>= <a href="#348">tx</a>.send(<a href="#352">res</a>);
+                    <span class="kw">let _ </span>= <a href="#343">tx</a>.send(<a href="#347">res</a>);
                 },
             );
 
-            <a href="#343">stream</a>.<span class="number">1 </span>= <span class="prelude-val">Some</span>(<a href="#348">rx</a>);
-            <a href="#343">stream</a>.<span class="number">1</span>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_mut">as_mut</a>().<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap">unwrap</a>()
+            <a href="#338">stream</a>.<span class="number">1 </span>= <span class="prelude-val">Some</span>(<a href="#343">rx</a>);
+            <a href="#338">stream</a>.<span class="number">1</span>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_mut">as_mut</a>().<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap">unwrap</a>()
         };
 
-        <span class="kw">match </span><a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html#method.new">Pin::new</a>(<a href="#345">rx</a>).<a href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html#tymethod.poll">poll</a>(<a href="#342">cx</a>) {
+        <span class="kw">match </span><a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html#method.new">Pin::new</a>(<a href="#340">rx</a>).<a href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html#tymethod.poll">poll</a>(<a href="#337">cx</a>) {
             <a href="https://doc.rust-lang.org/nightly/core/task/poll/enum.Poll.html#variant.Ready">Poll::Ready</a>(<span class="prelude-val">Ok</span>(res)) =&gt; {
-                <span class="kw">let _ </span>= <a href="#343">stream</a>.<span class="number">1</span>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.take">take</a>();
-                <a href="https://doc.rust-lang.org/nightly/core/task/poll/enum.Poll.html#variant.Ready">Poll::Ready</a>(<a href="error.rs.html#31-36">to_std_io_result</a>(<a href="#362">res</a>))
+                <span class="kw">let _ </span>= <a href="#338">stream</a>.<span class="number">1</span>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.take">take</a>();
+                <a href="https://doc.rust-lang.org/nightly/core/task/poll/enum.Poll.html#variant.Ready">Poll::Ready</a>(<a href="error.rs.html#31-36">to_std_io_result</a>(<a href="#357">res</a>))
             }
             <a href="https://doc.rust-lang.org/nightly/core/task/poll/enum.Poll.html#variant.Ready">Poll::Ready</a>(<span class="prelude-val">Err</span>(<span class="kw">_</span>)) =&gt; {
-                <span class="kw">let _ </span>= <a href="#343">stream</a>.<span class="number">1</span>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.take">take</a>();
+                <span class="kw">let _ </span>= <a href="#338">stream</a>.<span class="number">1</span>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.take">take</a>();
                 <a href="https://doc.rust-lang.org/nightly/core/task/poll/enum.Poll.html#variant.Ready">Poll::Ready</a>(<span class="prelude-val">Ok</span>(()))
             }
             <a href="https://doc.rust-lang.org/nightly/core/task/poll/enum.Poll.html#variant.Pending">Poll::Pending</a> =&gt; <a href="https://doc.rust-lang.org/nightly/core/task/poll/enum.Poll.html#variant.Pending">Poll::Pending</a>,

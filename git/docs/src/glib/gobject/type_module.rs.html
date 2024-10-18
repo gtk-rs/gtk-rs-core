@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/gobject/type_module.rs`."><title>type_module.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-b0742ba02757f159.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.84.0-nightly (798fb83f7 2024-10-16)" data-channel="nightly" data-search-js="search-e056c65ede92db13.js" data-settings-js="settings-805db61a62df4bd2.js" ><script src="../../../static.files/storage-1d39b6787ed640ff.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-f070b9041d14864c.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-0111fcff984fae8f.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/gobject/type_module.rs`."><title>type_module.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-b0742ba02757f159.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.84.0-nightly (3ed6e3cc6 2024-10-17)" data-channel="nightly" data-search-js="search-e056c65ede92db13.js" data-settings-js="settings-805db61a62df4bd2.js" ><script src="../../../static.files/storage-1d39b6787ed640ff.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-f070b9041d14864c.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-0111fcff984fae8f.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -227,12 +227,7 @@
 <a href="#153" id="153">153</a>
 <a href="#154" id="154">154</a>
 <a href="#155" id="155">155</a>
-<a href="#156" id="156">156</a>
-<a href="#157" id="157">157</a>
-<a href="#158" id="158">158</a>
-<a href="#159" id="159">159</a>
-<a href="#160" id="160">160</a>
-<a href="#161" id="161">161</a></pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
+<a href="#156" id="156">156</a></pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
 </span><span class="kw">use crate</span>::{
     enums::{<a href="../enums.rs.html#380">EnumValues</a>, <a href="../enums.rs.html#959">FlagsValues</a>},
@@ -292,12 +287,7 @@
     <span class="kw">pub const </span>NONE: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'static </span><a href="#11-55">TypeModule</a>&gt; = <span class="prelude-val">None</span>;
 }
 
-<span class="kw">mod </span>sealed {
-    <span class="kw">pub trait </span>Sealed {}
-    <span class="kw">impl</span>&lt;T: <span class="kw">super</span>::IsA&lt;<a href="#11-55"><span class="kw">super</span>::TypeModule</a>&gt;&gt; <a href="#62">Sealed</a> <span class="kw">for </span>T {}
-}
-
-<span class="kw">pub trait </span><a href="../../../glib/prelude/trait.TypeModuleExt.html">TypeModuleExt</a>: IsA&lt;<a href="#11-55">TypeModule</a>&gt; + <a href="#62">sealed::Sealed</a> + <span class="lifetime">'static </span>{
+<span class="kw">pub trait </span><a href="../../../glib/prelude/trait.TypeModuleExt.html">TypeModuleExt</a>: IsA&lt;<a href="#11-55">TypeModule</a>&gt; + <span class="lifetime">'static </span>{
     <span class="attr">#[doc(alias = <span class="string">"g_type_module_add_interface"</span>)]
     </span><span class="kw">fn </span>add_interface(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
@@ -307,10 +297,10 @@
     ) {
         <span class="kw">unsafe </span>{
             <a href="../../../gobject_sys/fn.g_type_module_add_interface.html">gobject_ffi::g_type_module_add_interface</a>(
-                <a class="self" href="#69">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#70">instance_type</a>.<a href="../translate.rs.html#334">into_glib</a>(),
-                <a href="#71">interface_type</a>.<a href="../translate.rs.html#334">into_glib</a>(),
-                <a href="#72">interface_info</a>.<a href="interface_info.rs.html#17-19">as_ptr</a>(),
+                <a class="self" href="#64">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#65">instance_type</a>.<a href="../translate.rs.html#334">into_glib</a>(),
+                <a href="#66">interface_type</a>.<a href="../translate.rs.html#334">into_glib</a>(),
+                <a href="#67">interface_info</a>.<a href="interface_info.rs.html#17-19">as_ptr</a>(),
             );
         }
     }
@@ -323,9 +313,9 @@
     ) -&gt; <a href="../types.rs.html#22"><span class="kw">crate</span>::types::Type</a> {
         <span class="kw">unsafe </span>{
             <a href="../translate.rs.html#1417-1419">from_glib</a>(<a href="../../../gobject_sys/fn.g_type_module_register_enum.html">gobject_ffi::g_type_module_register_enum</a>(
-                <a class="self" href="#86">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#87">name</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#88">const_static_values</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+                <a class="self" href="#81">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#82">name</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#83">const_static_values</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
             ))
         }
     }
@@ -338,9 +328,9 @@
     ) -&gt; <a href="../types.rs.html#22"><span class="kw">crate</span>::types::Type</a> {
         <span class="kw">unsafe </span>{
             <a href="../translate.rs.html#1417-1419">from_glib</a>(<a href="../../../gobject_sys/fn.g_type_module_register_flags.html">gobject_ffi::g_type_module_register_flags</a>(
-                <a class="self" href="#101">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#102">name</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#103">const_static_values</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+                <a class="self" href="#96">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#97">name</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#98">const_static_values</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
             ))
         }
     }
@@ -355,11 +345,11 @@
     ) -&gt; <a href="../types.rs.html#22"><span class="kw">crate</span>::types::Type</a> {
         <span class="kw">unsafe </span>{
             <a href="../translate.rs.html#1417-1419">from_glib</a>(<a href="../../../gobject_sys/fn.g_type_module_register_type.html">gobject_ffi::g_type_module_register_type</a>(
-                <a class="self" href="#116">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#117">parent_type</a>.<a href="../translate.rs.html#334">into_glib</a>(),
-                <a href="#118">type_name</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#119">type_info</a>.<a href="type_info.rs.html#24-26">as_ptr</a>(),
-                <a href="#120">flags</a>.<a href="../translate.rs.html#334">into_glib</a>(),
+                <a class="self" href="#111">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#112">parent_type</a>.<a href="../translate.rs.html#334">into_glib</a>(),
+                <a href="#113">type_name</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#114">type_info</a>.<a href="type_info.rs.html#24-26">as_ptr</a>(),
+                <a href="#115">flags</a>.<a href="../translate.rs.html#334">into_glib</a>(),
             ))
         }
     }
@@ -368,8 +358,8 @@
     </span><span class="kw">fn </span>set_name(<span class="kw-2">&amp;</span><span class="self">self</span>, name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) {
         <span class="kw">unsafe </span>{
             <a href="../../../gobject_sys/fn.g_type_module_set_name.html">gobject_ffi::g_type_module_set_name</a>(
-                <a class="self" href="#134">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#134">name</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+                <a class="self" href="#129">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#129">name</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
             );
         }
     }
@@ -377,7 +367,7 @@
     <span class="attr">#[doc(alias = <span class="string">"g_type_module_unuse"</span>)]
     </span><span class="kw">fn </span>unuse(<span class="kw-2">&amp;</span><span class="self">self</span>) {
         <span class="kw">unsafe </span>{
-            <a href="../../../gobject_sys/fn.g_type_module_unuse.html">gobject_ffi::g_type_module_unuse</a>(<a class="self" href="#144">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>);
+            <a href="../../../gobject_sys/fn.g_type_module_unuse.html">gobject_ffi::g_type_module_unuse</a>(<a class="self" href="#139">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>);
         }
     }
 
@@ -386,11 +376,11 @@
     </span><span class="kw">fn </span>use_(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
         <span class="kw">unsafe </span>{
             <a href="../translate.rs.html#1417-1419">from_glib</a>(<a href="../../../gobject_sys/fn.g_type_module_use.html">gobject_ffi::g_type_module_use</a>(
-                <a class="self" href="#152">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+                <a class="self" href="#147">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
             ))
         }
     }
 }
 
-<span class="kw">impl</span>&lt;O: IsA&lt;<a href="#11-55">TypeModule</a>&gt;&gt; <a href="#66-159">TypeModuleExt</a> <span class="kw">for </span>O {}
+<span class="kw">impl</span>&lt;O: IsA&lt;<a href="#11-55">TypeModule</a>&gt;&gt; <a href="#61-154">TypeModuleExt</a> <span class="kw">for </span>O {}
 </code></pre></div></section></main></body></html>
