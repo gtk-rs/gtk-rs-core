@@ -37,12 +37,7 @@ impl Icon {
     }
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::Icon>> Sealed for T {}
-}
-
-pub trait IconExt: IsA<Icon> + sealed::Sealed + 'static {
+pub trait IconExt: IsA<Icon> + 'static {
     #[doc(alias = "g_icon_equal")]
     fn equal(&self, icon2: Option<&impl IsA<Icon>>) -> bool {
         unsafe {

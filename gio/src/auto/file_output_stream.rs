@@ -19,12 +19,7 @@ impl FileOutputStream {
     pub const NONE: Option<&'static FileOutputStream> = None;
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::FileOutputStream>> Sealed for T {}
-}
-
-pub trait FileOutputStreamExt: IsA<FileOutputStream> + sealed::Sealed + 'static {
+pub trait FileOutputStreamExt: IsA<FileOutputStream> + 'static {
     #[doc(alias = "g_file_output_stream_get_etag")]
     #[doc(alias = "get_etag")]
     fn etag(&self) -> Option<glib::GString> {

@@ -34,12 +34,7 @@ impl Default for MountOperation {
     }
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::MountOperation>> Sealed for T {}
-}
-
-pub trait MountOperationExt: IsA<MountOperation> + sealed::Sealed + 'static {
+pub trait MountOperationExt: IsA<MountOperation> + 'static {
     #[doc(alias = "g_mount_operation_get_anonymous")]
     #[doc(alias = "get_anonymous")]
     #[doc(alias = "anonymous")]

@@ -98,12 +98,7 @@ impl Settings {
     }
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::Settings>> Sealed for T {}
-}
-
-pub trait SettingsExt: IsA<Settings> + sealed::Sealed + 'static {
+pub trait SettingsExt: IsA<Settings> + 'static {
     #[doc(alias = "g_settings_apply")]
     fn apply(&self) {
         unsafe {

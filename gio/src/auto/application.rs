@@ -128,12 +128,7 @@ impl ApplicationBuilder {
     }
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::Application>> Sealed for T {}
-}
-
-pub trait ApplicationExt: IsA<Application> + sealed::Sealed + 'static {
+pub trait ApplicationExt: IsA<Application> + 'static {
     #[doc(alias = "g_application_activate")]
     fn activate(&self) {
         unsafe {

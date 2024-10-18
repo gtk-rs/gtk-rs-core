@@ -64,12 +64,7 @@ impl Action {
     }
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::Action>> Sealed for T {}
-}
-
-pub trait ActionExt: IsA<Action> + sealed::Sealed + 'static {
+pub trait ActionExt: IsA<Action> + 'static {
     #[doc(alias = "g_action_activate")]
     fn activate(&self, parameter: Option<&glib::Variant>) {
         unsafe {

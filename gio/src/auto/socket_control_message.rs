@@ -31,12 +31,7 @@ impl SocketControlMessage {
     }
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::SocketControlMessage>> Sealed for T {}
-}
-
-pub trait SocketControlMessageExt: IsA<SocketControlMessage> + sealed::Sealed + 'static {
+pub trait SocketControlMessageExt: IsA<SocketControlMessage> + 'static {
     #[doc(alias = "g_socket_control_message_get_level")]
     #[doc(alias = "get_level")]
     fn level(&self) -> i32 {

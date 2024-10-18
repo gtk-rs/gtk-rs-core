@@ -137,12 +137,7 @@ impl PixbufAnimation {
     }
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::PixbufAnimation>> Sealed for T {}
-}
-
-pub trait PixbufAnimationExt: IsA<PixbufAnimation> + sealed::Sealed + 'static {
+pub trait PixbufAnimationExt: IsA<PixbufAnimation> + 'static {
     #[doc(alias = "gdk_pixbuf_animation_get_height")]
     #[doc(alias = "get_height")]
     fn height(&self) -> i32 {

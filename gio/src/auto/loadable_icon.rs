@@ -19,12 +19,7 @@ impl LoadableIcon {
     pub const NONE: Option<&'static LoadableIcon> = None;
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::LoadableIcon>> Sealed for T {}
-}
-
-pub trait LoadableIconExt: IsA<LoadableIcon> + sealed::Sealed + 'static {
+pub trait LoadableIconExt: IsA<LoadableIcon> + 'static {
     #[doc(alias = "g_loadable_icon_load")]
     fn load(
         &self,

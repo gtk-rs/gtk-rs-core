@@ -23,12 +23,7 @@ impl TcpConnection {
     pub const NONE: Option<&'static TcpConnection> = None;
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::TcpConnection>> Sealed for T {}
-}
-
-pub trait TcpConnectionExt: IsA<TcpConnection> + sealed::Sealed + 'static {
+pub trait TcpConnectionExt: IsA<TcpConnection> + 'static {
     #[doc(alias = "g_tcp_connection_get_graceful_disconnect")]
     #[doc(alias = "get_graceful_disconnect")]
     #[doc(alias = "graceful-disconnect")]

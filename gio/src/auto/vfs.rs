@@ -35,12 +35,7 @@ impl Vfs {
 unsafe impl Send for Vfs {}
 unsafe impl Sync for Vfs {}
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::Vfs>> Sealed for T {}
-}
-
-pub trait VfsExt: IsA<Vfs> + sealed::Sealed + 'static {
+pub trait VfsExt: IsA<Vfs> + 'static {
     #[doc(alias = "g_vfs_get_file_for_path")]
     #[doc(alias = "get_file_for_path")]
     fn file_for_path(&self, path: &str) -> File {

@@ -38,12 +38,7 @@ impl Default for Cancellable {
 unsafe impl Send for Cancellable {}
 unsafe impl Sync for Cancellable {}
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::Cancellable>> Sealed for T {}
-}
-
-pub trait CancellableExt: IsA<Cancellable> + sealed::Sealed + 'static {
+pub trait CancellableExt: IsA<Cancellable> + 'static {
     #[doc(alias = "g_cancellable_cancel")]
     fn cancel(&self) {
         unsafe {

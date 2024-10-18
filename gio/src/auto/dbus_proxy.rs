@@ -271,12 +271,7 @@ impl DBusProxy {
 unsafe impl Send for DBusProxy {}
 unsafe impl Sync for DBusProxy {}
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::DBusProxy>> Sealed for T {}
-}
-
-pub trait DBusProxyExt: IsA<DBusProxy> + sealed::Sealed + 'static {
+pub trait DBusProxyExt: IsA<DBusProxy> + 'static {
     #[doc(alias = "g_dbus_proxy_call")]
     fn call<P: FnOnce(Result<glib::Variant, glib::Error>) + 'static>(
         &self,

@@ -34,12 +34,7 @@ impl NetworkService {
     }
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::NetworkService>> Sealed for T {}
-}
-
-pub trait NetworkServiceExt: IsA<NetworkService> + sealed::Sealed + 'static {
+pub trait NetworkServiceExt: IsA<NetworkService> + 'static {
     #[doc(alias = "g_network_service_get_domain")]
     #[doc(alias = "get_domain")]
     fn domain(&self) -> glib::GString {

@@ -107,12 +107,7 @@ impl DataInputStreamBuilder {
     }
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::DataInputStream>> Sealed for T {}
-}
-
-pub trait DataInputStreamExt: IsA<DataInputStream> + sealed::Sealed + 'static {
+pub trait DataInputStreamExt: IsA<DataInputStream> + 'static {
     #[doc(alias = "g_data_input_stream_get_byte_order")]
     #[doc(alias = "get_byte_order")]
     #[doc(alias = "byte-order")]

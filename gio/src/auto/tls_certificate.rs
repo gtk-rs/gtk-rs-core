@@ -165,12 +165,7 @@ impl TlsCertificate {
     }
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::TlsCertificate>> Sealed for T {}
-}
-
-pub trait TlsCertificateExt: IsA<TlsCertificate> + sealed::Sealed + 'static {
+pub trait TlsCertificateExt: IsA<TlsCertificate> + 'static {
     #[cfg(feature = "v2_70")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
     #[doc(alias = "g_tls_certificate_get_dns_names")]

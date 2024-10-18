@@ -40,12 +40,7 @@ impl Default for UnixFDMessage {
     }
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::UnixFDMessage>> Sealed for T {}
-}
-
-pub trait UnixFDMessageExt: IsA<UnixFDMessage> + sealed::Sealed + 'static {
+pub trait UnixFDMessageExt: IsA<UnixFDMessage> + 'static {
     #[doc(alias = "g_unix_fd_message_get_fd_list")]
     #[doc(alias = "get_fd_list")]
     #[doc(alias = "fd-list")]

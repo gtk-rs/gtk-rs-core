@@ -25,12 +25,7 @@ impl TlsBackend {
     }
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::TlsBackend>> Sealed for T {}
-}
-
-pub trait TlsBackendExt: IsA<TlsBackend> + sealed::Sealed + 'static {
+pub trait TlsBackendExt: IsA<TlsBackend> + 'static {
     #[doc(alias = "g_tls_backend_get_certificate_type")]
     #[doc(alias = "get_certificate_type")]
     fn certificate_type(&self) -> glib::types::Type {

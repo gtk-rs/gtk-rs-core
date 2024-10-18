@@ -19,12 +19,7 @@ impl AsyncInitable {
     pub const NONE: Option<&'static AsyncInitable> = None;
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::AsyncInitable>> Sealed for T {}
-}
-
-pub trait AsyncInitableExt: IsA<AsyncInitable> + sealed::Sealed + 'static {
+pub trait AsyncInitableExt: IsA<AsyncInitable> + 'static {
     #[doc(alias = "g_async_initable_init_async")]
     unsafe fn init_async<P: FnOnce(Result<(), glib::Error>) + 'static>(
         &self,

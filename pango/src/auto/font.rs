@@ -46,12 +46,7 @@ impl Font {
     }
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::Font>> Sealed for T {}
-}
-
-pub trait FontExt: IsA<Font> + sealed::Sealed + 'static {
+pub trait FontExt: IsA<Font> + 'static {
     #[doc(alias = "pango_font_describe")]
     fn describe(&self) -> FontDescription {
         unsafe { from_glib_full(ffi::pango_font_describe(self.as_ref().to_glib_none().0)) }

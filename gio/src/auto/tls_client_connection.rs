@@ -44,12 +44,7 @@ impl TlsClientConnection {
     }
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::TlsClientConnection>> Sealed for T {}
-}
-
-pub trait TlsClientConnectionExt: IsA<TlsClientConnection> + sealed::Sealed + 'static {
+pub trait TlsClientConnectionExt: IsA<TlsClientConnection> + 'static {
     #[doc(alias = "g_tls_client_connection_copy_session_state")]
     fn copy_session_state(&self, source: &impl IsA<TlsClientConnection>) {
         unsafe {

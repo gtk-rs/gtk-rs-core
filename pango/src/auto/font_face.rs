@@ -21,12 +21,7 @@ impl FontFace {
     pub const NONE: Option<&'static FontFace> = None;
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::FontFace>> Sealed for T {}
-}
-
-pub trait FontFaceExt: IsA<FontFace> + sealed::Sealed + 'static {
+pub trait FontFaceExt: IsA<FontFace> + 'static {
     #[doc(alias = "pango_font_face_describe")]
     fn describe(&self) -> FontDescription {
         unsafe {

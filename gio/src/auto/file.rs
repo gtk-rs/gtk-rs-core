@@ -101,12 +101,7 @@ impl File {
 unsafe impl Send for File {}
 unsafe impl Sync for File {}
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::File>> Sealed for T {}
-}
-
-pub trait FileExt: IsA<File> + sealed::Sealed + 'static {
+pub trait FileExt: IsA<File> + 'static {
     #[doc(alias = "g_file_append_to")]
     fn append_to(
         &self,

@@ -18,12 +18,7 @@ impl MenuLinkIter {
     pub const NONE: Option<&'static MenuLinkIter> = None;
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::MenuLinkIter>> Sealed for T {}
-}
-
-pub trait MenuLinkIterExt: IsA<MenuLinkIter> + sealed::Sealed + 'static {
+pub trait MenuLinkIterExt: IsA<MenuLinkIter> + 'static {
     #[doc(alias = "g_menu_link_iter_get_next")]
     #[doc(alias = "get_next")]
     fn next(&self) -> Option<(glib::GString, MenuModel)> {

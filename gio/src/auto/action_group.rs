@@ -23,12 +23,7 @@ impl ActionGroup {
     pub const NONE: Option<&'static ActionGroup> = None;
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::ActionGroup>> Sealed for T {}
-}
-
-pub trait ActionGroupExt: IsA<ActionGroup> + sealed::Sealed + 'static {
+pub trait ActionGroupExt: IsA<ActionGroup> + 'static {
     #[doc(alias = "g_action_group_action_added")]
     fn action_added(&self, action_name: &str) {
         unsafe {

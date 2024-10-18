@@ -23,12 +23,7 @@ impl IOStream {
     pub const NONE: Option<&'static IOStream> = None;
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::IOStream>> Sealed for T {}
-}
-
-pub trait IOStreamExt: IsA<IOStream> + sealed::Sealed + 'static {
+pub trait IOStreamExt: IsA<IOStream> + 'static {
     #[doc(alias = "g_io_stream_clear_pending")]
     fn clear_pending(&self) {
         unsafe {
