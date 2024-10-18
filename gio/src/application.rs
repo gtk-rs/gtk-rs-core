@@ -11,12 +11,7 @@ use glib::{
 
 use crate::{ffi, Application, File};
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::Application>> Sealed for T {}
-}
-
-pub trait ApplicationExtManual: sealed::Sealed + IsA<Application> {
+pub trait ApplicationExtManual: IsA<Application> {
     #[doc(alias = "g_application_run")]
     fn run(&self) -> ExitCode {
         self.run_with_args(&std::env::args().collect::<Vec<_>>())

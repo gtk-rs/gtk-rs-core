@@ -21,12 +21,7 @@ impl TypeModule {
     pub const NONE: Option<&'static TypeModule> = None;
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::TypeModule>> Sealed for T {}
-}
-
-pub trait TypeModuleExt: IsA<TypeModule> + sealed::Sealed + 'static {
+pub trait TypeModuleExt: IsA<TypeModule> + 'static {
     #[doc(alias = "g_type_module_add_interface")]
     fn add_interface(
         &self,

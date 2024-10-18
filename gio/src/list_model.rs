@@ -6,12 +6,7 @@ use glib::SignalHandlerId;
 
 use crate::{prelude::*, ListModel};
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::ListModel>> Sealed for T {}
-}
-
-pub trait ListModelExtManual: sealed::Sealed + IsA<ListModel> + Sized {
+pub trait ListModelExtManual: IsA<ListModel> + Sized {
     // rustdoc-stripper-ignore-next
     /// Get an immutable snapshot of the container inside the `ListModel`.
     /// Any modification done to the returned container `Vec` will not be

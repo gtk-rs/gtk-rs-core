@@ -15,12 +15,7 @@ use crate::{error::to_std_io_result, ffi, prelude::*, Cancellable, PollableOutpu
 #[cfg(feature = "v2_60")]
 use crate::{OutputVector, PollableReturn};
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::PollableOutputStream>> Sealed for T {}
-}
-
-pub trait PollableOutputStreamExtManual: sealed::Sealed + IsA<PollableOutputStream> {
+pub trait PollableOutputStreamExtManual: IsA<PollableOutputStream> {
     #[doc(alias = "g_pollable_output_stream_create_source")]
     fn create_source<F, C>(
         &self,

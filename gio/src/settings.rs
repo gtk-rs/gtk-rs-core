@@ -167,12 +167,7 @@ impl<'a> BindingBuilder<'a> {
     }
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::Settings>> Sealed for T {}
-}
-
-pub trait SettingsExtManual: sealed::Sealed + IsA<Settings> {
+pub trait SettingsExtManual: IsA<Settings> {
     fn get<U: FromVariant>(&self, key: &str) -> U {
         let val = self.value(key);
         FromVariant::from_variant(&val).unwrap_or_else(|| {

@@ -11,12 +11,7 @@ use glib::translate::*;
 use crate::TlsChannelBindingType;
 use crate::TlsConnection;
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::TlsConnection>> Sealed for T {}
-}
-
-pub trait TlsConnectionExtManual: sealed::Sealed + IsA<TlsConnection> {
+pub trait TlsConnectionExtManual: IsA<TlsConnection> {
     #[cfg(feature = "v2_66")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
     #[doc(alias = "g_tls_connection_get_channel_binding_data")]

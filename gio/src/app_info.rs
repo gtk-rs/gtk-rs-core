@@ -9,12 +9,7 @@ use glib::translate::*;
 
 use crate::{ffi, AppInfo, AppLaunchContext, Cancellable};
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::AppInfo>> Sealed for T {}
-}
-
-pub trait AppInfoExtManual: sealed::Sealed + IsA<AppInfo> + 'static {
+pub trait AppInfoExtManual: IsA<AppInfo> + 'static {
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     #[doc(alias = "g_app_info_launch_uris_async")]
     fn launch_uris_async<

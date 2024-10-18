@@ -52,12 +52,7 @@ impl AsRawHandle for Win32OutputStream {
     }
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::Win32OutputStream>> Sealed for T {}
-}
-
-pub trait Win32OutputStreamExt: sealed::Sealed + IsA<Win32OutputStream> + Sized {
+pub trait Win32OutputStreamExt: IsA<Win32OutputStream> + Sized {
     #[doc(alias = "g_win32_output_stream_get_close_handle")]
     #[doc(alias = "get_close_handle")]
     fn closes_handle(&self) -> bool {

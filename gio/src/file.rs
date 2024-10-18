@@ -163,12 +163,7 @@ impl File {
     }
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::File>> Sealed for T {}
-}
-
-pub trait FileExtManual: sealed::Sealed + IsA<File> + Sized {
+pub trait FileExtManual: IsA<File> + Sized {
     #[doc(alias = "g_file_replace_contents_async")]
     fn replace_contents_async<
         B: AsRef<[u8]> + Send + 'static,

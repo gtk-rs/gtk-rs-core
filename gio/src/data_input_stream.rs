@@ -6,12 +6,7 @@ use glib::{prelude::*, translate::*, GString};
 
 use crate::{ffi, Cancellable, DataInputStream};
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::DataInputStream>> Sealed for T {}
-}
-
-pub trait DataInputStreamExtManual: sealed::Sealed + IsA<DataInputStream> + 'static {
+pub trait DataInputStreamExtManual: IsA<DataInputStream> + 'static {
     #[doc(alias = "g_data_input_stream_read_line")]
     fn read_line<P: IsA<Cancellable>>(
         &self,

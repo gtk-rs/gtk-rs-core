@@ -6,12 +6,7 @@ use glib::{prelude::*, signal::connect_raw, translate::*, SignalHandlerId};
 
 use crate::{ffi, DBusProxy};
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::DBusProxy>> Sealed for T {}
-}
-
-pub trait DBusProxyExtManual: sealed::Sealed + IsA<DBusProxy> + 'static {
+pub trait DBusProxyExtManual: IsA<DBusProxy> + 'static {
     #[cfg(feature = "v2_72")]
     #[doc(alias = "g-signal")]
     fn connect_g_signal<

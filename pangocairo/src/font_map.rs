@@ -4,12 +4,7 @@ use glib::{prelude::*, translate::*};
 
 use crate::{ffi, FontMap};
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::FontMap>> Sealed for T {}
-}
-
-pub trait PangoCairoFontMapExtManual: sealed::Sealed + IsA<FontMap> + 'static {
+pub trait PangoCairoFontMapExtManual: IsA<FontMap> + 'static {
     #[doc(alias = "pango_cairo_font_map_get_font_type")]
     #[doc(alias = "get_font_type")]
     fn font_type(&self) -> cairo::FontType {
