@@ -23,12 +23,7 @@ impl UnixFDList {
     }
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::UnixFDList>> Sealed for T {}
-}
-
-pub trait UnixFDListExtManual: sealed::Sealed + IsA<UnixFDList> + Sized {
+pub trait UnixFDListExtManual: IsA<UnixFDList> + Sized {
     #[doc(alias = "g_unix_fd_list_append")]
     fn append<T: AsRawFd>(&self, fd: T) -> Result<i32, glib::Error> {
         unsafe {

@@ -19,14 +19,7 @@ impl SimpleProxyResolver {
     }
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::SimpleProxyResolver>> Sealed for T {}
-}
-
-pub trait SimpleProxyResolverExtManual:
-    sealed::Sealed + IsA<SimpleProxyResolver> + 'static
-{
+pub trait SimpleProxyResolverExtManual: IsA<SimpleProxyResolver> + 'static {
     #[doc(alias = "g_simple_proxy_resolver_set_ignore_hosts")]
     fn set_ignore_hosts(&self, ignore_hosts: impl IntoStrV) {
         unsafe {

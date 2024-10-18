@@ -15,12 +15,7 @@ impl TypePlugin {
     pub const NONE: Option<&'static TypePlugin> = None;
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::TypePlugin>> Sealed for T {}
-}
-
-pub trait TypePluginExt: IsA<TypePlugin> + sealed::Sealed + 'static {
+pub trait TypePluginExt: IsA<TypePlugin> + 'static {
     #[doc(alias = "g_type_plugin_complete_interface_info")]
     fn complete_interface_info(
         &self,

@@ -7,12 +7,7 @@ use crate::{
     InterfaceInfo, Object, TypeFlags, TypeInfo, TypeModule, TypePlugin,
 };
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::TypePlugin>> Sealed for T {}
-}
-
-pub trait DynamicObjectRegisterExt: AsRef<TypePlugin> + sealed::Sealed + 'static {
+pub trait DynamicObjectRegisterExt: AsRef<TypePlugin> + 'static {
     fn add_dynamic_interface(
         &self,
         instance_type: crate::types::Type,

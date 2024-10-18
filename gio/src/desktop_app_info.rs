@@ -45,13 +45,7 @@ impl DesktopAppInfo {
 }
 
 #[cfg(all(feature = "v2_58", unix))]
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::DesktopAppInfo>> Sealed for T {}
-}
-
-#[cfg(all(feature = "v2_58", unix))]
-pub trait DesktopAppInfoExtManual: sealed::Sealed + IsA<DesktopAppInfo> {
+pub trait DesktopAppInfoExtManual: IsA<DesktopAppInfo> {
     #[cfg_attr(docsrs, doc(cfg(all(feature = "v2_58", unix))))]
     #[doc(alias = "g_desktop_app_info_launch_uris_as_manager_with_fds")]
     fn launch_uris_as_manager_with_fds<

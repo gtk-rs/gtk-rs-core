@@ -43,12 +43,7 @@ impl AsRawFd for UnixInputStream {
     }
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::UnixInputStream>> Sealed for T {}
-}
-
-pub trait UnixInputStreamExtManual: sealed::Sealed + IsA<UnixInputStream> + Sized {
+pub trait UnixInputStreamExtManual: IsA<UnixInputStream> + Sized {
     // rustdoc-stripper-ignore-next
     /// Sets whether the fd of this stream will be closed when the stream is closed.
     ///

@@ -8,12 +8,7 @@ use glib::{prelude::*, translate::*, Priority};
 
 use crate::{error::to_std_io_result, ffi, prelude::*, Cancellable, InputStream, Seekable};
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::InputStream>> Sealed for T {}
-}
-
-pub trait InputStreamExtManual: sealed::Sealed + IsA<InputStream> + Sized {
+pub trait InputStreamExtManual: IsA<InputStream> + Sized {
     #[doc(alias = "g_input_stream_read")]
     fn read<B: AsMut<[u8]>, C: IsA<Cancellable>>(
         &self,

@@ -289,12 +289,7 @@ impl<'m> OutputMessage<'m> {
     }
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::Socket>> Sealed for T {}
-}
-
-pub trait SocketExtManual: sealed::Sealed + IsA<Socket> + Sized {
+pub trait SocketExtManual: IsA<Socket> + Sized {
     #[doc(alias = "g_socket_receive")]
     fn receive<B: AsMut<[u8]>, C: IsA<Cancellable>>(
         &self,

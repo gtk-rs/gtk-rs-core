@@ -6,12 +6,7 @@ use glib::{prelude::*, translate::*};
 
 use crate::{ffi, Converter, ConverterFlags, ConverterResult};
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::Converter>> Sealed for T {}
-}
-
-pub trait ConverterExtManual: sealed::Sealed + IsA<Converter> + 'static {
+pub trait ConverterExtManual: IsA<Converter> + 'static {
     #[doc(alias = "g_converter_convert")]
     fn convert<IN: AsRef<[u8]>, OUT: AsMut<[u8]>>(
         &self,

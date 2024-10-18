@@ -8,12 +8,7 @@ use glib::{prelude::*, translate::*, Priority};
 use crate::OutputVector;
 use crate::{error::to_std_io_result, ffi, prelude::*, Cancellable, OutputStream, Seekable};
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::OutputStream>> Sealed for T {}
-}
-
-pub trait OutputStreamExtManual: sealed::Sealed + IsA<OutputStream> + Sized {
+pub trait OutputStreamExtManual: IsA<OutputStream> + Sized {
     #[doc(alias = "g_output_stream_write_async")]
     fn write_async<
         B: AsRef<[u8]> + Send + 'static,

@@ -3,13 +3,7 @@
 use glib::{clone, prelude::*};
 
 use crate::{prelude::*, ActionEntry, ActionMap, SimpleAction};
-
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::ActionMap>> Sealed for T {}
-}
-
-pub trait ActionMapExtManual: sealed::Sealed + IsA<ActionMap> {
+pub trait ActionMapExtManual: IsA<ActionMap> {
     #[doc(alias = "g_action_map_add_action_entries")]
     fn add_action_entries(&self, entries: impl IntoIterator<Item = ActionEntry<Self>>) {
         for entry in entries.into_iter() {

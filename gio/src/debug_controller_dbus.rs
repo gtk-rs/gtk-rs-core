@@ -4,12 +4,7 @@ use glib::prelude::*;
 
 use crate::{DBusConnection, DebugControllerDBus};
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::DebugControllerDBus>> Sealed for T {}
-}
-
-pub trait DebugControllerDBusExtManual: sealed::Sealed + IsA<DebugControllerDBus> + Sized {
+pub trait DebugControllerDBusExtManual: IsA<DebugControllerDBus> + Sized {
     fn connection(&self) -> DBusConnection {
         ObjectExt::property(self.as_ref(), "connection")
     }
