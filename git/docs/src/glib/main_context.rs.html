@@ -427,7 +427,8 @@
 <a href="#353" id="353">353</a>
 <a href="#354" id="354">354</a>
 <a href="#355" id="355">355</a>
-<a href="#356" id="356">356</a></pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
+<a href="#356" id="356">356</a>
+<a href="#357" id="357">357</a></pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
 </span><span class="kw">use </span><a href="https://doc.rust-lang.org/nightly/core/mem/index.html">std::mem</a>;
 
@@ -437,10 +438,10 @@
 
 <span class="kw">impl </span><a href="auto/main_context.rs.html#10-21">MainContext</a> {
     <span class="doccomment">/// Prepares to poll sources within a main loop. The resulting information
-    /// for polling is determined by calling g_main_context_query ().
+    /// for polling is determined by calling `GLib::MainContext::query()`.
     ///
     /// You must have successfully acquired the context with
-    /// g_main_context_acquire() before you may call this function.
+    /// [`acquire()`][Self::acquire()] before you may call this function.
     ///
     /// # Returns
     ///
@@ -471,13 +472,13 @@
     /// More specifically: source IDs can be reissued after a source has been
     /// destroyed and therefore it is never valid to use this function with a
     /// source ID which may have already been removed.  An example is when
-    /// scheduling an idle to run in another thread with g_idle_add(): the
+    /// scheduling an idle to run in another thread with `idle_add()`: the
     /// idle may already have run and been removed by the time this function
     /// is called on its (now invalid) source ID.  This source ID may have
     /// been reissued, leading to the operation being performed against the
     /// wrong source.
     /// ## `source_id`
-    /// the source ID, as returned by g_source_get_id().
+    /// the source ID, as returned by `GLib::Source::get_id()`.
     ///
     /// # Returns
     ///
@@ -504,19 +505,19 @@
     /// invocation of @function.
     ///
     /// If @self is [`None`] then the global-default main context — as
-    /// returned by g_main_context_default() — is used.
+    /// returned by [`default()`][Self::default()] — is used.
     ///
     /// If @self is owned by the current thread, @function is called
     /// directly.  Otherwise, if @self is the thread-default main context
-    /// of the current thread and g_main_context_acquire() succeeds, then
-    /// @function is called and g_main_context_release() is called
+    /// of the current thread and [`acquire()`][Self::acquire()] succeeds, then
+    /// @function is called and [`release()`][Self::release()] is called
     /// afterwards.
     ///
     /// In any other case, an idle source is created to call @function and
     /// that source is attached to @self (presumably to be run in another
-    /// thread).  The idle source is attached with `G_PRIORITY_DEFAULT`
+    /// thread).  The idle source is attached with `GLib::PRIORITY_DEFAULT`
     /// priority.  If you want a different priority, use
-    /// g_main_context_invoke_full().
+    /// [`invoke_full()`][Self::invoke_full()].
     ///
     /// Note that, as with normal idle functions, @function should probably
     /// return [`false`].  If it returns [`true`], it will be continuously run in a
@@ -590,7 +591,7 @@
         // FIXME: Combine the first two cases somehow
         </span><span class="kw">if </span><span class="self">self</span>.is_owner() {
             <a href="#156">func</a>();
-        } <span class="kw">else if let </span><span class="prelude-val">Ok</span>(_acquire) = <a class="self" href="#156">self</a>.<a href="#239-248">acquire</a>() {
+        } <span class="kw">else if let </span><span class="prelude-val">Ok</span>(_acquire) = <a class="self" href="#156">self</a>.<a href="#240-249">acquire</a>() {
             <a href="#156">func</a>();
         } <span class="kw">else </span>{
             <a class="macro" href="https://doc.rust-lang.org/nightly/std/macro.panic.html">panic!</a>(<span class="string">"Must be called from a thread that owns the main context"</span>);
@@ -634,8 +635,8 @@
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         func: F,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;R, <a href="error.rs.html#243-251"><span class="kw">crate</span>::BoolError</a>&gt; {
-        <span class="kw">let </span>_acquire = <a class="self" href="#205">self</a>.<a href="#239-248">acquire</a>()<span class="question-mark">?</span>;
-        <span class="kw">let </span>_thread_default = <a href="#267-272">ThreadDefaultContext::new</a>(<a class="self" href="#205">self</a>);
+        <span class="kw">let </span>_acquire = <a class="self" href="#205">self</a>.<a href="#240-249">acquire</a>()<span class="question-mark">?</span>;
+        <span class="kw">let </span>_thread_default = <a href="#268-273">ThreadDefaultContext::new</a>(<a class="self" href="#205">self</a>);
         <span class="prelude-val">Ok</span>(<a href="#206">func</a>())
     }
 
@@ -650,12 +651,13 @@
     /// If some other thread is the owner of the context,
     /// returns [`false`] immediately. Ownership is properly
     /// recursive: the owner can require ownership again
-    /// and will release ownership when g_main_context_release()
-    /// is called as many times as g_main_context_acquire().
+    /// and will release ownership when [`release()`][Self::release()]
+    /// is called as many times as [`acquire()`][Self::acquire()].
     ///
     /// You must be the owner of a context before you
-    /// can call g_main_context_prepare(), g_main_context_query(),
-    /// g_main_context_check(), g_main_context_dispatch(), g_main_context_release().
+    /// can call [`prepare()`][Self::prepare()], `GLib::MainContext::query()`,
+    /// `GLib::MainContext::check()`, [`dispatch()`][Self::dispatch()],
+    /// [`release()`][Self::release()].
     ///
     /// Since 2.76 @self can be [`None`] to use the global-default
     /// main context.
@@ -665,11 +667,11 @@
     /// [`true`] if the operation succeeded, and
     ///   this thread is now the owner of @self.
     </span><span class="attr">#[doc(alias = <span class="string">"g_main_context_acquire"</span>)]
-    </span><span class="kw">pub fn </span>acquire(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#252">MainContextAcquireGuard</a>, <a href="error.rs.html#243-251"><span class="kw">crate</span>::BoolError</a>&gt; {
+    </span><span class="kw">pub fn </span>acquire(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#253">MainContextAcquireGuard</a>, <a href="error.rs.html#243-251"><span class="kw">crate</span>::BoolError</a>&gt; {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>ret: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> = <a href="translate.rs.html#1417-1419">from_glib</a>(<a href="../../glib_sys/fn.g_main_context_acquire.html">ffi::g_main_context_acquire</a>(<a class="self" href="#239">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>));
+            <span class="kw">let </span>ret: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> = <a href="translate.rs.html#1417-1419">from_glib</a>(<a href="../../glib_sys/fn.g_main_context_acquire.html">ffi::g_main_context_acquire</a>(<a class="self" href="#240">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>));
             <span class="kw">if </span>ret {
-                <span class="prelude-val">Ok</span>(<a href="#252">MainContextAcquireGuard</a>(<a class="self" href="#239">self</a>))
+                <span class="prelude-val">Ok</span>(<a href="#253">MainContextAcquireGuard</a>(<a class="self" href="#240">self</a>))
             } <span class="kw">else </span>{
                 <span class="prelude-val">Err</span>(<a class="macro" href="error.rs.html#189-211">bool_error!</a>(<span class="string">"Failed to acquire ownership of main context, already acquired by another thread"</span>))
             }
@@ -685,7 +687,7 @@
     #[inline]
     </span><span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
         <span class="kw">unsafe </span>{
-            <a href="../../glib_sys/fn.g_main_context_release.html">ffi::g_main_context_release</a>(<a class="self" href="#257">self</a>.<span class="number">0</span>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>);
+            <a href="../../glib_sys/fn.g_main_context_release.html">ffi::g_main_context_release</a>(<a class="self" href="#258">self</a>.<span class="number">0</span>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>);
         }
     }
 }
@@ -693,11 +695,11 @@
 <span class="kw">struct </span>ThreadDefaultContext&lt;<span class="lifetime">'a</span>&gt;(<span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="auto/main_context.rs.html#10-21">MainContext</a>);
 
 <span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; ThreadDefaultContext&lt;<span class="lifetime">'a</span>&gt; {
-    <span class="kw">fn </span>new(ctx: <span class="kw-2">&amp;</span><a href="auto/main_context.rs.html#10-21">MainContext</a>) -&gt; <a href="#264">ThreadDefaultContext</a> {
+    <span class="kw">fn </span>new(ctx: <span class="kw-2">&amp;</span><a href="auto/main_context.rs.html#10-21">MainContext</a>) -&gt; <a href="#265">ThreadDefaultContext</a> {
         <span class="kw">unsafe </span>{
-            <a href="../../glib_sys/fn.g_main_context_push_thread_default.html">ffi::g_main_context_push_thread_default</a>(<a href="#267">ctx</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>);
+            <a href="../../glib_sys/fn.g_main_context_push_thread_default.html">ffi::g_main_context_push_thread_default</a>(<a href="#268">ctx</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>);
         }
-        <a href="#264">ThreadDefaultContext</a>(<a href="#267">ctx</a>)
+        <a href="#265">ThreadDefaultContext</a>(<a href="#268">ctx</a>)
     }
 }
 
@@ -705,7 +707,7 @@
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
         <span class="kw">unsafe </span>{
-            <a href="../../glib_sys/fn.g_main_context_pop_thread_default.html">ffi::g_main_context_pop_thread_default</a>(<a class="self" href="#277">self</a>.<span class="number">0</span>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>);
+            <a href="../../glib_sys/fn.g_main_context_pop_thread_default.html">ffi::g_main_context_pop_thread_default</a>(<a class="self" href="#278">self</a>.<span class="number">0</span>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>);
         }
     }
 }

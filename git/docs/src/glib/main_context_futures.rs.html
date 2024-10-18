@@ -1238,7 +1238,7 @@
     </span><span class="doccomment">/// Aborts the task associated with the handle.
     </span><span class="attr">#[inline]
     </span><span class="kw">pub fn </span>abort(<span class="kw-2">&amp;</span><span class="self">self</span>) {
-        <a class="self" href="#313">self</a>.source.<a href="auto/source.rs.html#63-67">destroy</a>();
+        <a class="self" href="#313">self</a>.source.<a href="auto/source.rs.html#64-68">destroy</a>();
         <a class="self" href="#313">self</a>.id.<a href="https://doc.rust-lang.org/nightly/core/cell/struct.Cell.html#method.replace">replace</a>(<span class="prelude-val">None</span>);
     }
     <span class="comment">// rustdoc-stripper-ignore-next
@@ -1500,7 +1500,7 @@
         f: F,
     ) -&gt; JoinHandle&lt;R&gt; {
         <span class="kw">let </span>_acquire = <span class="self"><a href="#571">self</a>
-            </span>.<a href="main_context.rs.html#239-248">acquire</a>()
+            </span>.<a href="main_context.rs.html#240-249">acquire</a>()
             .<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.expect">expect</a>(<span class="string">"Spawning local futures only allowed on the thread owning the MainContext"</span>);
         <span class="kw">let </span>f = LocalFutureObj::new(<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">Box::new</a>(<span class="kw">async move </span>{
             <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">Box::new</a>(<a href="#573">f</a>.<span class="kw">await</span>) <span class="kw">as </span>Box&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/any/trait.Any.html">Any</a> + <span class="lifetime">'static</span>&gt;
@@ -1565,7 +1565,7 @@
 
         <span class="kw">let </span>f = <span class="kw">async </span>{
             <a href="#636">res</a> = <span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/core/panic/unwind_safe/struct.AssertUnwindSafe.html">panic::AssertUnwindSafe</a>(<a href="#635">f</a>).catch_unwind().<span class="kw">await</span>);
-            <a href="#637">l</a>.<a href="auto/main_loop.rs.html#70-74">quit</a>();
+            <a href="#637">l</a>.<a href="auto/main_loop.rs.html#71-75">quit</a>();
         };
 
         <span class="kw">let </span>f = <span class="kw">unsafe </span>{
@@ -1585,7 +1585,7 @@
         );
         <a href="#654">source</a>.<a href="source.rs.html#1189-1196">attach</a>(<span class="prelude-val">Some</span>(<a class="self" href="#635">self</a>));
 
-        <a href="#637">l</a>.<a href="auto/main_loop.rs.html#81-85">run</a>();
+        <a href="#637">l</a>.<a href="auto/main_loop.rs.html#82-86">run</a>();
 
         <span class="kw">match </span><a href="#636">res</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap">unwrap</a>() {
             <span class="prelude-val">Ok</span>(v) =&gt; <a href="#664">v</a>,

@@ -188,7 +188,8 @@
 <a href="#114" id="114">114</a>
 <a href="#115" id="115">115</a>
 <a href="#116" id="116">116</a>
-<a href="#117" id="117">117</a></pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
+<a href="#117" id="117">117</a>
+<a href="#118" id="118">118</a></pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
 </span><span class="kw">use </span><a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">std::boxed::Box</a> <span class="kw">as </span>Box_;
 <span class="kw">use </span><a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html">std::pin::Pin</a>;
@@ -197,27 +198,28 @@
 <span class="kw">use </span><a href="../../glib/prelude/index.html">glib::prelude</a>::<span class="kw-2">*</span>;
 <span class="kw">use </span><a href="../../glib/translate/index.html">glib::translate</a>::<span class="kw-2">*</span>;
 
-<span class="kw">use crate</span>::{<a href="../../gio_sys/index.html">ffi</a>, <a href="auto/app_info.rs.html#9-73">AppInfo</a>, <a href="auto/app_launch_context.rs.html#13-89">AppLaunchContext</a>, <a href="auto/cancellable.rs.html#8-86">Cancellable</a>};
+<span class="kw">use crate</span>::{<a href="../../gio_sys/index.html">ffi</a>, <a href="auto/app_info.rs.html#9-77">AppInfo</a>, <a href="auto/app_launch_context.rs.html#13-91">AppLaunchContext</a>, <a href="auto/cancellable.rs.html#8-86">Cancellable</a>};
 
-<span class="kw">pub trait </span><a href="../../gio/prelude/trait.AppInfoExtManual.html">AppInfoExtManual</a>: IsA&lt;<a href="auto/app_info.rs.html#9-73">AppInfo</a>&gt; + <span class="lifetime">'static </span>{
-    <span class="doccomment">/// Async version of g_app_info_launch_uris().
+<span class="kw">pub trait </span><a href="../../gio/prelude/trait.AppInfoExtManual.html">AppInfoExtManual</a>: IsA&lt;<a href="auto/app_info.rs.html#9-77">AppInfo</a>&gt; + <span class="lifetime">'static </span>{
+    <span class="doccomment">/// Async version of [`AppInfoExt::launch_uris()`][crate::prelude::AppInfoExt::launch_uris()].
     ///
     /// The @callback is invoked immediately after the application launch, but it
     /// waits for activation in case of D-Bus–activated applications and also provides
     /// extended error information for sandboxed applications, see notes for
-    /// g_app_info_launch_default_for_uri_async().
+    /// [`AppInfo::launch_default_for_uri_async()`][crate::AppInfo::launch_default_for_uri_async()].
     /// ## `uris`
-    /// a #GList containing URIs to launch.
+    /// a list of URIs to launch.
     /// ## `context`
-    /// a #GAppLaunchContext or [`None`]
+    /// the launch context
     /// ## `cancellable`
-    /// a #GCancellable
+    /// a [`Cancellable`][crate::Cancellable]
     /// ## `callback`
-    /// a #GAsyncReadyCallback to call when the request is done
+    /// a [type@Gio.AsyncReadyCallback] to call
+    ///   when the request is done
     </span><span class="attr">#[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"v2_60"</span>)))]
     #[doc(alias = <span class="string">"g_app_info_launch_uris_async"</span>)]
     </span><span class="kw">fn </span>launch_uris_async&lt;
-        P: IsA&lt;<a href="auto/app_launch_context.rs.html#13-89">AppLaunchContext</a>&gt;,
+        P: IsA&lt;<a href="auto/app_launch_context.rs.html#13-91">AppLaunchContext</a>&gt;,
         Q: IsA&lt;<a href="auto/cancellable.rs.html#8-86">Cancellable</a>&gt;,
         R: FnOnce(<span class="prelude-ty">Result</span>&lt;(), <a href="../../glib/error/struct.Error.html">glib::Error</a>&gt;) + <span class="lifetime">'static</span>,
     &gt;(
@@ -228,9 +230,9 @@
         callback: R,
     ) {
         <span class="kw">let </span>main_context = <a href="../../glib/auto/main_context/struct.MainContext.html#method.ref_thread_default">glib::MainContext::ref_thread_default</a>();
-        <span class="kw">let </span>is_main_context_owner = <a href="#40">main_context</a>.<a href="../../glib/auto/main_context/struct.MainContext.html#method.is_owner">is_owner</a>();
-        <span class="kw">let </span>has_acquired_main_context = (!<a href="#41">is_main_context_owner</a>)
-            .<a href="https://doc.rust-lang.org/nightly/core/foreigntype.bool.html#method.then">then</a>(|| <a href="#40">main_context</a>.<a href="../../glib/auto/main_context/struct.MainContext.html#method.acquire">acquire</a>().<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.ok">ok</a>())
+        <span class="kw">let </span>is_main_context_owner = <a href="#41">main_context</a>.<a href="../../glib/auto/main_context/struct.MainContext.html#method.is_owner">is_owner</a>();
+        <span class="kw">let </span>has_acquired_main_context = (!<a href="#42">is_main_context_owner</a>)
+            .<a href="https://doc.rust-lang.org/nightly/core/foreigntype.bool.html#method.then">then</a>(|| <a href="#41">main_context</a>.<a href="../../glib/auto/main_context/struct.MainContext.html#method.acquire">acquire</a>().<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.ok">ok</a>())
             .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.flatten">flatten</a>();
         <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.assert.html">assert!</a>(
             is_main_context_owner || has_acquired_main_context.is_some(),
@@ -239,8 +241,8 @@
 
         <span class="kw">let </span>user_data: Box_&lt;(glib::thread_guard::ThreadGuard&lt;R&gt;, <span class="kw-2">*mut *mut </span>libc::c_char)&gt; =
             <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">Box_::new</a>((
-                <a href="../../glib/thread_guard/struct.ThreadGuard.html#method.new">glib::thread_guard::ThreadGuard::new</a>(<a href="#38">callback</a>),
-                <a href="#35">uris</a>.<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_full">to_glib_full</a>(),
+                <a href="../../glib/thread_guard/struct.ThreadGuard.html#method.new">glib::thread_guard::ThreadGuard::new</a>(<a href="#39">callback</a>),
+                <a href="#36">uris</a>.<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_full">to_glib_full</a>(),
             ));
         <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>launch_uris_async_trampoline&lt;
             R: FnOnce(<span class="prelude-ty">Result</span>&lt;(), <a href="../../glib/error/struct.Error.html">glib::Error</a>&gt;) + <span class="lifetime">'static</span>,
@@ -250,53 +252,53 @@
             user_data: <a href="../../glib_sys/type.gpointer.html">glib::ffi::gpointer</a>,
         ) {
             <span class="kw">let </span><span class="kw-2">mut </span>error = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
-            <span class="kw">let _ </span>= <a href="../../gio_sys/fn.g_app_info_launch_uris_finish.html">ffi::g_app_info_launch_uris_finish</a>(<a href="#58">_source_object</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>, <a href="#59">res</a>, <span class="kw-2">&amp;mut </span><a href="#62">error</a>);
+            <span class="kw">let _ </span>= <a href="../../gio_sys/fn.g_app_info_launch_uris_finish.html">ffi::g_app_info_launch_uris_finish</a>(<a href="#59">_source_object</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>, <a href="#60">res</a>, <span class="kw-2">&amp;mut </span><a href="#63">error</a>);
             <span class="kw">let </span>result = <span class="kw">if </span>error.is_null() {
                 <span class="prelude-val">Ok</span>(())
             } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(<a href="../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#62">error</a>))
+                <span class="prelude-val">Err</span>(<a href="../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#63">error</a>))
             };
             <span class="kw">let </span>callback: Box_&lt;(glib::thread_guard::ThreadGuard&lt;R&gt;, <span class="kw-2">*mut *mut </span>libc::c_char)&gt; =
-                <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.from_raw">Box_::from_raw</a>(<a href="#60">user_data</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
-            <span class="kw">let </span>(callback, uris) = <span class="kw-2">*</span><a href="#69">callback</a>;
-            <span class="kw">let </span>callback = <a href="#71">callback</a>.<a href="../../glib/thread_guard/struct.ThreadGuard.html#method.into_inner">into_inner</a>();
-            <a href="#72">callback</a>(<a href="#64">result</a>);
-            <a href="../../glib_sys/fn.g_strfreev.html">glib::ffi::g_strfreev</a>(<a href="#71">uris</a>);
+                <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.from_raw">Box_::from_raw</a>(<a href="#61">user_data</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
+            <span class="kw">let </span>(callback, uris) = <span class="kw-2">*</span><a href="#70">callback</a>;
+            <span class="kw">let </span>callback = <a href="#72">callback</a>.<a href="../../glib/thread_guard/struct.ThreadGuard.html#method.into_inner">into_inner</a>();
+            <a href="#73">callback</a>(<a href="#65">result</a>);
+            <a href="../../glib_sys/fn.g_strfreev.html">glib::ffi::g_strfreev</a>(<a href="#72">uris</a>);
         }
         <span class="kw">let </span>callback = launch_uris_async_trampoline::&lt;R&gt;;
         <span class="kw">unsafe </span>{
             <a href="../../gio_sys/fn.g_app_info_launch_uris_async.html">ffi::g_app_info_launch_uris_async</a>(
-                <a class="self" href="#34">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#35">uris</a>.<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#36">context</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|p| <a href="#81">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>()).<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#37">cancellable</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|p| <a href="#82">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>()).<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
-                <span class="prelude-val">Some</span>(<a href="#76">callback</a>),
-                <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.into_raw">Box_::into_raw</a>(<a href="#50">user_data</a>) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <a class="self" href="#35">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#36">uris</a>.<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#37">context</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|p| <a href="#82">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>()).<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#38">cancellable</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|p| <a href="#83">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>()).<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+                <span class="prelude-val">Some</span>(<a href="#77">callback</a>),
+                <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.into_raw">Box_::into_raw</a>(<a href="#51">user_data</a>) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
             );
         }
     }
 
     <span class="attr">#[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"v2_60"</span>)))]
-    </span><span class="kw">fn </span>launch_uris_future&lt;P: IsA&lt;<a href="auto/app_launch_context.rs.html#13-89">AppLaunchContext</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">Clone</a> + <span class="lifetime">'static</span>&gt;(
+    </span><span class="kw">fn </span>launch_uris_future&lt;P: IsA&lt;<a href="auto/app_launch_context.rs.html#13-91">AppLaunchContext</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">Clone</a> + <span class="lifetime">'static</span>&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         uris: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>],
         context: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>P&gt;,
     ) -&gt; Pin&lt;Box_&lt;<span class="kw">dyn </span>std::future::Future&lt;Output = <span class="prelude-ty">Result</span>&lt;(), <a href="../../glib/error/struct.Error.html">glib::Error</a>&gt;&gt; + <span class="lifetime">'static</span>&gt;&gt; {
-        <span class="kw">let </span>uris = <a href="#92">uris</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.copied">copied</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(String::from).<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.collect">collect</a>::&lt;Vec&lt;<span class="kw">_</span>&gt;&gt;();
-        <span class="kw">let </span>context = <a href="#93">context</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(<a href="https://doc.rust-lang.org/nightly/alloc/borrow/trait.ToOwned.html#tymethod.to_owned">ToOwned::to_owned</a>);
+        <span class="kw">let </span>uris = <a href="#93">uris</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.copied">copied</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(String::from).<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.collect">collect</a>::&lt;Vec&lt;<span class="kw">_</span>&gt;&gt;();
+        <span class="kw">let </span>context = <a href="#94">context</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(<a href="https://doc.rust-lang.org/nightly/alloc/borrow/trait.ToOwned.html#tymethod.to_owned">ToOwned::to_owned</a>);
         <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.pin">Box_::pin</a>(<a href="gio_future.rs.html#38-45"><span class="kw">crate</span>::GioFuture::new</a>(
-            <a class="self" href="#91">self</a>,
+            <a class="self" href="#92">self</a>,
             <span class="kw">move </span>|obj, cancellable, send| {
-                <span class="kw">let </span>uris = <a href="#95">uris</a>
+                <span class="kw">let </span>uris = <a href="#96">uris</a>
                     .<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.iter">iter</a>()
                     .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(<a href="https://doc.rust-lang.org/nightly/core/borrow/trait.Borrow.html#tymethod.borrow">::std::borrow::Borrow::borrow</a>)
                     .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.collect">collect</a>::&lt;Vec&lt;<span class="kw">_</span>&gt;&gt;();
-                <a href="#99">obj</a>.<a href="#29-87">launch_uris_async</a>(
-                    <a href="#100">uris</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>(),
-                    <a href="#96">context</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_ref">as_ref</a>().<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(<a href="https://doc.rust-lang.org/nightly/core/borrow/trait.Borrow.html#tymethod.borrow">::std::borrow::Borrow::borrow</a>),
-                    <span class="prelude-val">Some</span>(<a href="#99">cancellable</a>),
+                <a href="#100">obj</a>.<a href="#30-88">launch_uris_async</a>(
+                    <a href="#101">uris</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>(),
+                    <a href="#97">context</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_ref">as_ref</a>().<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(<a href="https://doc.rust-lang.org/nightly/core/borrow/trait.Borrow.html#tymethod.borrow">::std::borrow::Borrow::borrow</a>),
+                    <span class="prelude-val">Some</span>(<a href="#100">cancellable</a>),
                     <span class="kw">move </span>|res| {
-                        <a href="#99">send</a>.<a href="gio_future.rs.html#28-30">resolve</a>(<a href="#108">res</a>);
+                        <a href="#100">send</a>.<a href="gio_future.rs.html#28-30">resolve</a>(<a href="#109">res</a>);
                     },
                 );
             },
@@ -304,5 +306,5 @@
     }
 }
 
-<span class="kw">impl</span>&lt;O: IsA&lt;<a href="auto/app_info.rs.html#9-73">AppInfo</a>&gt;&gt; <a href="#12-115">AppInfoExtManual</a> <span class="kw">for </span>O {}
+<span class="kw">impl</span>&lt;O: IsA&lt;<a href="auto/app_info.rs.html#9-77">AppInfo</a>&gt;&gt; <a href="#12-116">AppInfoExtManual</a> <span class="kw">for </span>O {}
 </code></pre></div></section></main></body></html>

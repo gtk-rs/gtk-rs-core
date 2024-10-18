@@ -367,7 +367,7 @@
     <a href="../lib.rs.html#158">prelude</a>::<span class="kw-2">*</span>,
     signal::{<a href="../signal.rs.html#67-89">connect_raw</a>, <a href="../signal.rs.html#49">SignalHandlerId</a>},
     <a href="../lib.rs.html#163">translate</a>::<span class="kw-2">*</span>,
-    <a href="../object.rs.html#1371-1374">Object</a>, <a href="../closure.rs.html#27">RustClosure</a>, <a href="auto/signal_group.rs.html#7-72">SignalGroup</a>, <a href="../value.rs.html#478-512">Value</a>,
+    <a href="../object.rs.html#1371-1374">Object</a>, <a href="../closure.rs.html#27">RustClosure</a>, <a href="auto/signal_group.rs.html#7-72">SignalGroup</a>, <a href="../value.rs.html#478-501">Value</a>,
 };
 
 <span class="kw">impl </span><a href="auto/signal_group.rs.html#7-72">SignalGroup</a> {
@@ -409,7 +409,7 @@
     #[inline]
     </span><span class="kw">pub fn </span>connect&lt;F&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, signal_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, after: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>, callback: F)
     <span class="kw">where
-        </span>F: Fn(<span class="kw-2">&amp;</span>[<a href="../value.rs.html#478-512">Value</a>]) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="../value.rs.html#478-512">Value</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>,
+        </span>F: Fn(<span class="kw-2">&amp;</span>[<a href="../value.rs.html#478-501">Value</a>]) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="../value.rs.html#478-501">Value</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>,
     {
         <a class="self" href="#50">self</a>.<a href="#29-38">connect_closure</a>(<a href="#50">signal_name</a>, <a href="#50">after</a>, <a href="../closure.rs.html#57-59">RustClosure::new</a>(<a href="#50">callback</a>));
     }
@@ -421,7 +421,7 @@
     </span><span class="attr">#[inline]
     </span><span class="kw">pub fn </span>connect_local&lt;F&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, signal_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, after: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>, callback: F)
     <span class="kw">where
-        </span>F: Fn(<span class="kw-2">&amp;</span>[<a href="../value.rs.html#478-512">Value</a>]) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="../value.rs.html#478-512">Value</a>&gt; + <span class="lifetime">'static</span>,
+        </span>F: Fn(<span class="kw-2">&amp;</span>[<a href="../value.rs.html#478-501">Value</a>]) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="../value.rs.html#478-501">Value</a>&gt; + <span class="lifetime">'static</span>,
     {
         <a class="self" href="#62">self</a>.<a href="#29-38">connect_closure</a>(<a href="#62">signal_name</a>, <a href="#62">after</a>, <a href="../closure.rs.html#74-76">RustClosure::new_local</a>(<a href="#62">callback</a>));
     }
@@ -438,8 +438,8 @@
         };
 
         <span class="kw">let </span>closure = <a href="../closure.rs.html#57-59"><span class="kw">crate</span>::RustClosure::new</a>(<span class="kw">move </span>|values| {
-            <span class="kw">let </span>obj = <a href="#80">values</a>[<span class="number">0</span>].<a href="../value.rs.html#585-593">get</a>().<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>();
-            <span class="kw">let </span>pspec = <a href="#80">values</a>[<span class="number">1</span>].<a href="../value.rs.html#585-593">get</a>().<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>();
+            <span class="kw">let </span>obj = <a href="#80">values</a>[<span class="number">0</span>].<a href="../value.rs.html#574-582">get</a>().<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>();
+            <span class="kw">let </span>pspec = <a href="#80">values</a>[<span class="number">1</span>].<a href="../value.rs.html#574-582">get</a>().<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>();
             <a href="#70">callback</a>(<a href="#81">obj</a>, <a href="#82">pspec</a>);
 
             <span class="prelude-val">None
@@ -460,8 +460,8 @@
         };
 
         <span class="kw">let </span>closure = <a href="../closure.rs.html#74-76"><span class="kw">crate</span>::RustClosure::new_local</a>(<span class="kw">move </span>|values| {
-            <span class="kw">let </span>obj = <a href="#102">values</a>[<span class="number">0</span>].<a href="../value.rs.html#585-593">get</a>().<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>();
-            <span class="kw">let </span>pspec = <a href="#102">values</a>[<span class="number">1</span>].<a href="../value.rs.html#585-593">get</a>().<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>();
+            <span class="kw">let </span>obj = <a href="#102">values</a>[<span class="number">0</span>].<a href="../value.rs.html#574-582">get</a>().<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>();
+            <span class="kw">let </span>pspec = <a href="#102">values</a>[<span class="number">1</span>].<a href="../value.rs.html#574-582">get</a>().<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>();
             <a href="#92">callback</a>(<a href="#103">obj</a>, <a href="#104">pspec</a>);
 
             <span class="prelude-val">None

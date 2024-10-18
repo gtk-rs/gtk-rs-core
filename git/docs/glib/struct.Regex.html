@@ -237,13 +237,13 @@ g_regex_new() and then use g_regex_match().</p>
     replacement: impl <a class="trait" href="translate/trait.IntoGStr.html" title="trait glib::translate::IntoGStr">IntoGStr</a>,
     match_options: <a class="struct" href="struct.RegexMatchFlags.html" title="struct glib::RegexMatchFlags">RegexMatchFlags</a>,
 ) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="struct.GString.html" title="struct glib::GString">GString</a>, <a class="struct" href="error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;</h4></section></summary><div class="docblock"><p>Replaces all occurrences of the pattern in @self with the
-replacement text. Backreferences of the form ‘\number’ or
-‘\g<number>’ in the replacement text are interpolated by the
-number-th captured subexpression of the match, ‘\g<name>’ refers
-to the captured subexpression with the given name. ‘\0’ refers
-to the complete match, but ‘\0’ followed by a number is the octal
-representation of a character. To include a literal ’' in the
-replacement, write ‘\\’.</p>
+replacement text. Backreferences of the form <code>\number</code> or
+<code>\g&lt;number&gt;</code> in the replacement text are interpolated by the
+number-th captured subexpression of the match, <code>\g&lt;name&gt;</code> refers
+to the captured subexpression with the given name. <code>\0</code> refers
+to the complete match, but <code>\0</code> followed by a number is the octal
+representation of a character. To include a literal <code>\</code> in the
+replacement, write <code>\\\\</code>.</p>
 <p>There are also escapes that changes the case of the following text:</p>
 <ul>
 <li>\l: Convert to lower case the next character</li>
@@ -302,14 +302,14 @@ the #GMatchInfo, or <a href="https://doc.rust-lang.org/nightly/core/option/enum.
 ) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="match_info/struct.MatchInfo.html" title="struct glib::match_info::MatchInfo">MatchInfo</a>&lt;'input&gt;, <a class="struct" href="error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;</h4></section></summary><div class="docblock"><p>Using the standard algorithm for regular expression matching only
 the longest match in the @string is retrieved, it is not possible
 to obtain all the available matches. For instance matching
-“<a> <b> <c>” against the pattern “&lt;.*&gt;”
-you get “<a> <b> <c>”.</p>
+<code>"&lt;a&gt; &lt;b&gt; &lt;c&gt;"</code> against the pattern <code>"&lt;.*&gt;"</code>
+you get <code>"&lt;a&gt; &lt;b&gt; &lt;c&gt;"</code>.</p>
 <p>This function uses a different algorithm (called DFA, i.e. deterministic
 finite automaton), so it can retrieve all the possible matches, all
 starting at the same point in the string. For instance matching
-“<a> <b> <c>” against the pattern “&lt;.*&gt;;”
-you would obtain three matches: “<a> <b> <c>”,
-“<a> <b>” and “<a>”.</p>
+<code>"&lt;a&gt; &lt;b&gt; &lt;c&gt;"</code> against the pattern <code>"&lt;.*&gt;"</code>
+you would obtain three matches: <code>"&lt;a&gt; &lt;b&gt; &lt;c&gt;"</code>,
+<code>"&lt;a&gt; &lt;b&gt;"</code> and <code>"&lt;a&gt;"</code>.</p>
 <p>The number of matched strings is retrieved using
 g_match_info_get_match_count(). To obtain the matched strings and
 their position you can use, respectively, g_match_info_fetch() and
