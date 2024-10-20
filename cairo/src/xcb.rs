@@ -7,6 +7,9 @@ use std::{ops::Deref, ptr};
 #[cfg(feature = "use_glib")]
 use glib::translate::*;
 
+#[cfg(not(feature = "use_glib"))]
+use crate::Borrowed;
+
 use crate::{ffi, Error, Surface, SurfaceType};
 
 #[derive(Debug)]
