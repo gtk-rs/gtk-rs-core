@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `cairo/src/xcb.rs`."><title>xcb.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-b0742ba02757f159.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="cairo" data-themes="" data-resource-suffix="" data-rustdoc-version="1.84.0-nightly (3ed6e3cc6 2024-10-17)" data-channel="nightly" data-search-js="search-e056c65ede92db13.js" data-settings-js="settings-805db61a62df4bd2.js" ><script src="../../static.files/storage-1d39b6787ed640ff.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-f070b9041d14864c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-0111fcff984fae8f.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `cairo/src/xcb.rs`."><title>xcb.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-a5dc3bae.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="cairo" data-themes="" data-resource-suffix="" data-rustdoc-version="1.84.0-nightly (da935398d 2024-10-19)" data-channel="nightly" data-search-js="search-c5a66128.js" data-settings-js="settings-0f613d39.js" ><script src="../../static.files/storage-59e33391.js"></script><script defer src="../../static.files/src-script-56102188.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -499,7 +499,10 @@
 <a href="#425" id="425">425</a>
 <a href="#426" id="426">426</a>
 <a href="#427" id="427">427</a>
-<a href="#428" id="428">428</a></pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
+<a href="#428" id="428">428</a>
+<a href="#429" id="429">429</a>
+<a href="#430" id="430">430</a>
+<a href="#431" id="431">431</a></pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
 </span><span class="attr">#[cfg(feature = <span class="string">"use_glib"</span>)]
 </span><span class="kw">use </span><a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">std::marker::PhantomData</a>;
@@ -508,25 +511,28 @@
 <span class="attr">#[cfg(feature = <span class="string">"use_glib"</span>)]
 </span><span class="kw">use </span><a href="../../glib/translate/index.html">glib::translate</a>::<span class="kw-2">*</span>;
 
+<span class="attr">#[cfg(not(feature = <span class="string">"use_glib"</span>))]
+</span><span class="kw">use </span><span class="kw">crate</span>::Borrowed;
+
 <span class="kw">use crate</span>::{<a href="../../cairo_sys/index.html">ffi</a>, <a href="error.rs.html#9-104">Error</a>, <a href="surface.rs.html#19">Surface</a>, <a href="enums.rs.html#951-1004">SurfaceType</a>};
 
 <span class="attr">#[derive(Debug)]
 </span><span class="kw">pub struct </span><a href="../../cairo/struct.XCBDrawable.html">XCBDrawable</a>(<span class="kw">pub </span><a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>);
 
-<span class="kw">impl </span><a href="#13">XCBDrawable</a> {
+<span class="kw">impl </span><a href="#16">XCBDrawable</a> {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>to_raw_none(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a> {
-        <a class="self" href="#17">self</a>.<span class="number">0
+        <a class="self" href="#20">self</a>.<span class="number">0
     </span>}
 }
 
 <span class="attr">#[derive(Debug)]
 </span><span class="kw">pub struct </span><a href="../../cairo/struct.XCBPixmap.html">XCBPixmap</a>(<span class="kw">pub </span><a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>);
 
-<span class="kw">impl </span><a href="#23">XCBPixmap</a> {
+<span class="kw">impl </span><a href="#26">XCBPixmap</a> {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>to_raw_none(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a> {
-        <a class="self" href="#27">self</a>.<span class="number">0
+        <a class="self" href="#30">self</a>.<span class="number">0
     </span>}
 }
 
@@ -534,69 +540,69 @@
 #[doc(alias = <span class="string">"xcb_connection_t"</span>)]
 </span><span class="kw">pub struct </span><a href="../../cairo/struct.XCBConnection.html">XCBConnection</a>(<span class="kw">pub </span>ptr::NonNull&lt;<a href="../../cairo_sys/struct.xcb_connection_t.html">ffi::xcb_connection_t</a>&gt;);
 
-<span class="kw">impl </span><a href="#34">XCBConnection</a> {
+<span class="kw">impl </span><a href="#37">XCBConnection</a> {
     <span class="attr">#[inline]
     </span><span class="kw">pub fn </span>to_raw_none(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.xcb_connection_t.html">ffi::xcb_connection_t</a> {
-        <a class="self" href="#38">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>()
+        <a class="self" href="#41">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>()
     }
 
     <span class="attr">#[inline]
-    </span><span class="kw">pub unsafe fn </span>from_raw_none(ptr: <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.xcb_connection_t.html">ffi::xcb_connection_t</a>) -&gt; <a href="#34">XCBConnection</a> {
+    </span><span class="kw">pub unsafe fn </span>from_raw_none(ptr: <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.xcb_connection_t.html">ffi::xcb_connection_t</a>) -&gt; <a href="#37">XCBConnection</a> {
         <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert.html">debug_assert!</a>(!ptr.is_null());
-        <a href="#34">XCBConnection</a>(<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.new_unchecked">ptr::NonNull::new_unchecked</a>(<a href="#43">ptr</a>))
+        <a href="#37">XCBConnection</a>(<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.new_unchecked">ptr::NonNull::new_unchecked</a>(<a href="#46">ptr</a>))
     }
 
     <span class="attr">#[inline]
-    </span><span class="kw">pub unsafe fn </span>from_raw_borrow(ptr: <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.xcb_connection_t.html">ffi::xcb_connection_t</a>) -&gt; Borrowed&lt;<a href="#34">XCBConnection</a>&gt; {
+    </span><span class="kw">pub unsafe fn </span>from_raw_borrow(ptr: <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.xcb_connection_t.html">ffi::xcb_connection_t</a>) -&gt; Borrowed&lt;<a href="#37">XCBConnection</a>&gt; {
         <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert.html">debug_assert!</a>(!ptr.is_null());
-        <a href="../../glib/translate/struct.Borrowed.html#method.new">Borrowed::new</a>(<a href="#34">XCBConnection</a>(<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.new_unchecked">ptr::NonNull::new_unchecked</a>(<a href="#49">ptr</a>)))
+        <a href="../../glib/translate/struct.Borrowed.html#method.new">Borrowed::new</a>(<a href="#37">XCBConnection</a>(<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.new_unchecked">ptr::NonNull::new_unchecked</a>(<a href="#52">ptr</a>)))
     }
 
     <span class="attr">#[inline]
-    </span><span class="kw">pub unsafe fn </span>from_raw_full(ptr: <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.xcb_connection_t.html">ffi::xcb_connection_t</a>) -&gt; <a href="#34">XCBConnection</a> {
+    </span><span class="kw">pub unsafe fn </span>from_raw_full(ptr: <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.xcb_connection_t.html">ffi::xcb_connection_t</a>) -&gt; <a href="#37">XCBConnection</a> {
         <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert.html">debug_assert!</a>(!ptr.is_null());
-        <a href="#34">XCBConnection</a>(<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.new_unchecked">ptr::NonNull::new_unchecked</a>(<a href="#55">ptr</a>))
+        <a href="#37">XCBConnection</a>(<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.new_unchecked">ptr::NonNull::new_unchecked</a>(<a href="#58">ptr</a>))
     }
 }
 
 <span class="attr">#[cfg(feature = <span class="string">"use_glib"</span>)]
-</span><span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; ToGlibPtr&lt;<span class="lifetime">'a</span>, <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.xcb_connection_t.html">ffi::xcb_connection_t</a>&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#34">XCBConnection</a> {
-    <span class="kw">type </span>Storage = PhantomData&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#34">XCBConnection</a>&gt;;
+</span><span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; ToGlibPtr&lt;<span class="lifetime">'a</span>, <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.xcb_connection_t.html">ffi::xcb_connection_t</a>&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#37">XCBConnection</a> {
+    <span class="kw">type </span>Storage = PhantomData&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#37">XCBConnection</a>&gt;;
 
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>to_glib_none(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Stash&lt;<span class="lifetime">'a</span>, <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.xcb_connection_t.html">ffi::xcb_connection_t</a>, <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#34">XCBConnection</a>&gt; {
-        <a href="../../glib/translate/struct.Stash.html">Stash</a>(<a class="self" href="#66">self</a>.<a href="#38-40">to_raw_none</a>(), <a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">PhantomData</a>)
+    </span><span class="kw">fn </span>to_glib_none(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Stash&lt;<span class="lifetime">'a</span>, <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.xcb_connection_t.html">ffi::xcb_connection_t</a>, <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#37">XCBConnection</a>&gt; {
+        <a href="../../glib/translate/struct.Stash.html">Stash</a>(<a class="self" href="#69">self</a>.<a href="#41-43">to_raw_none</a>(), <a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">PhantomData</a>)
     }
 }
 
 <span class="attr">#[cfg(feature = <span class="string">"use_glib"</span>)]
-</span><span class="kw">impl </span>FromGlibPtrNone&lt;<span class="kw-2">*mut </span><a href="../../cairo_sys/struct.xcb_connection_t.html">ffi::xcb_connection_t</a>&gt; <span class="kw">for </span><a href="#34">XCBConnection</a> {
+</span><span class="kw">impl </span>FromGlibPtrNone&lt;<span class="kw-2">*mut </span><a href="../../cairo_sys/struct.xcb_connection_t.html">ffi::xcb_connection_t</a>&gt; <span class="kw">for </span><a href="#37">XCBConnection</a> {
     <span class="attr">#[inline]
-    </span><span class="kw">unsafe fn </span>from_glib_none(ptr: <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.xcb_connection_t.html">ffi::xcb_connection_t</a>) -&gt; <a href="#34">XCBConnection</a> {
-        <a href="#43-46"><span class="self">Self</span>::from_raw_none</a>(<a href="#74">ptr</a>)
+    </span><span class="kw">unsafe fn </span>from_glib_none(ptr: <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.xcb_connection_t.html">ffi::xcb_connection_t</a>) -&gt; <a href="#37">XCBConnection</a> {
+        <a href="#46-49"><span class="self">Self</span>::from_raw_none</a>(<a href="#77">ptr</a>)
     }
 }
 
 <span class="attr">#[cfg(feature = <span class="string">"use_glib"</span>)]
-</span><span class="kw">impl </span>FromGlibPtrBorrow&lt;<span class="kw-2">*mut </span><a href="../../cairo_sys/struct.xcb_connection_t.html">ffi::xcb_connection_t</a>&gt; <span class="kw">for </span><a href="#34">XCBConnection</a> {
+</span><span class="kw">impl </span>FromGlibPtrBorrow&lt;<span class="kw-2">*mut </span><a href="../../cairo_sys/struct.xcb_connection_t.html">ffi::xcb_connection_t</a>&gt; <span class="kw">for </span><a href="#37">XCBConnection</a> {
     <span class="attr">#[inline]
-    </span><span class="kw">unsafe fn </span>from_glib_borrow(ptr: <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.xcb_connection_t.html">ffi::xcb_connection_t</a>) -&gt; Borrowed&lt;<a href="#34">XCBConnection</a>&gt; {
-        <a href="#49-52"><span class="self">Self</span>::from_raw_borrow</a>(<a href="#82">ptr</a>)
+    </span><span class="kw">unsafe fn </span>from_glib_borrow(ptr: <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.xcb_connection_t.html">ffi::xcb_connection_t</a>) -&gt; Borrowed&lt;<a href="#37">XCBConnection</a>&gt; {
+        <a href="#52-55"><span class="self">Self</span>::from_raw_borrow</a>(<a href="#85">ptr</a>)
     }
 }
 
 <span class="attr">#[cfg(feature = <span class="string">"use_glib"</span>)]
-</span><span class="kw">impl </span>FromGlibPtrFull&lt;<span class="kw-2">*mut </span><a href="../../cairo_sys/struct.xcb_connection_t.html">ffi::xcb_connection_t</a>&gt; <span class="kw">for </span><a href="#34">XCBConnection</a> {
+</span><span class="kw">impl </span>FromGlibPtrFull&lt;<span class="kw-2">*mut </span><a href="../../cairo_sys/struct.xcb_connection_t.html">ffi::xcb_connection_t</a>&gt; <span class="kw">for </span><a href="#37">XCBConnection</a> {
     <span class="attr">#[inline]
-    </span><span class="kw">unsafe fn </span>from_glib_full(ptr: <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.xcb_connection_t.html">ffi::xcb_connection_t</a>) -&gt; <a href="#34">XCBConnection</a> {
-        <a href="#55-58"><span class="self">Self</span>::from_raw_full</a>(<a href="#90">ptr</a>)
+    </span><span class="kw">unsafe fn </span>from_glib_full(ptr: <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.xcb_connection_t.html">ffi::xcb_connection_t</a>) -&gt; <a href="#37">XCBConnection</a> {
+        <a href="#58-61"><span class="self">Self</span>::from_raw_full</a>(<a href="#93">ptr</a>)
     }
 }
 
-<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">Clone</a> <span class="kw">for </span><a href="#34">XCBConnection</a> {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">Clone</a> <span class="kw">for </span><a href="#37">XCBConnection</a> {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>clone(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="#34">XCBConnection</a> {
-        <span class="kw">unsafe </span>{ <a href="#43-46"><span class="self">Self</span>::from_raw_none</a>(<a class="self" href="#97">self</a>.<a href="#38-40">to_raw_none</a>()) }
+    </span><span class="kw">fn </span>clone(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="#37">XCBConnection</a> {
+        <span class="kw">unsafe </span>{ <a href="#46-49"><span class="self">Self</span>::from_raw_none</a>(<a class="self" href="#100">self</a>.<a href="#41-43">to_raw_none</a>()) }
     }
 }
 
@@ -604,75 +610,75 @@
 #[doc(alias = <span class="string">"xcb_render_pictforminfo_t"</span>)]
 </span><span class="kw">pub struct </span><a href="../../cairo/struct.XCBRenderPictFormInfo.html">XCBRenderPictFormInfo</a>(<span class="kw">pub </span>ptr::NonNull&lt;<a href="../../cairo_sys/struct.xcb_render_pictforminfo_t.html">ffi::xcb_render_pictforminfo_t</a>&gt;);
 
-<span class="kw">impl </span><a href="#104">XCBRenderPictFormInfo</a> {
+<span class="kw">impl </span><a href="#107">XCBRenderPictFormInfo</a> {
     <span class="attr">#[inline]
     </span><span class="kw">pub fn </span>to_raw_none(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.xcb_render_pictforminfo_t.html">ffi::xcb_render_pictforminfo_t</a> {
-        <a class="self" href="#108">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>()
+        <a class="self" href="#111">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>()
     }
 
     <span class="attr">#[inline]
-    </span><span class="kw">pub unsafe fn </span>from_raw_none(ptr: <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.xcb_render_pictforminfo_t.html">ffi::xcb_render_pictforminfo_t</a>) -&gt; <a href="#104">XCBRenderPictFormInfo</a> {
+    </span><span class="kw">pub unsafe fn </span>from_raw_none(ptr: <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.xcb_render_pictforminfo_t.html">ffi::xcb_render_pictforminfo_t</a>) -&gt; <a href="#107">XCBRenderPictFormInfo</a> {
         <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert.html">debug_assert!</a>(!ptr.is_null());
-        <a href="#104">XCBRenderPictFormInfo</a>(<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.new_unchecked">ptr::NonNull::new_unchecked</a>(<a href="#113">ptr</a>))
+        <a href="#107">XCBRenderPictFormInfo</a>(<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.new_unchecked">ptr::NonNull::new_unchecked</a>(<a href="#116">ptr</a>))
     }
 
     <span class="attr">#[inline]
     </span><span class="kw">pub unsafe fn </span>from_raw_borrow(
         ptr: <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.xcb_render_pictforminfo_t.html">ffi::xcb_render_pictforminfo_t</a>,
-    ) -&gt; Borrowed&lt;<a href="#104">XCBRenderPictFormInfo</a>&gt; {
+    ) -&gt; Borrowed&lt;<a href="#107">XCBRenderPictFormInfo</a>&gt; {
         <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert.html">debug_assert!</a>(!ptr.is_null());
-        <a href="../../glib/translate/struct.Borrowed.html#method.new">Borrowed::new</a>(<a href="#104">XCBRenderPictFormInfo</a>(<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.new_unchecked">ptr::NonNull::new_unchecked</a>(<a href="#120">ptr</a>)))
+        <a href="../../glib/translate/struct.Borrowed.html#method.new">Borrowed::new</a>(<a href="#107">XCBRenderPictFormInfo</a>(<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.new_unchecked">ptr::NonNull::new_unchecked</a>(<a href="#123">ptr</a>)))
     }
 
     <span class="attr">#[inline]
-    </span><span class="kw">pub unsafe fn </span>from_raw_full(ptr: <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.xcb_render_pictforminfo_t.html">ffi::xcb_render_pictforminfo_t</a>) -&gt; <a href="#104">XCBRenderPictFormInfo</a> {
+    </span><span class="kw">pub unsafe fn </span>from_raw_full(ptr: <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.xcb_render_pictforminfo_t.html">ffi::xcb_render_pictforminfo_t</a>) -&gt; <a href="#107">XCBRenderPictFormInfo</a> {
         <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert.html">debug_assert!</a>(!ptr.is_null());
-        <a href="#104">XCBRenderPictFormInfo</a>(<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.new_unchecked">ptr::NonNull::new_unchecked</a>(<a href="#127">ptr</a>))
+        <a href="#107">XCBRenderPictFormInfo</a>(<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.new_unchecked">ptr::NonNull::new_unchecked</a>(<a href="#130">ptr</a>))
     }
 }
 
 <span class="attr">#[cfg(feature = <span class="string">"use_glib"</span>)]
-</span><span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; ToGlibPtr&lt;<span class="lifetime">'a</span>, <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.xcb_render_pictforminfo_t.html">ffi::xcb_render_pictforminfo_t</a>&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#104">XCBRenderPictFormInfo</a> {
-    <span class="kw">type </span>Storage = PhantomData&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#104">XCBRenderPictFormInfo</a>&gt;;
+</span><span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; ToGlibPtr&lt;<span class="lifetime">'a</span>, <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.xcb_render_pictforminfo_t.html">ffi::xcb_render_pictforminfo_t</a>&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#107">XCBRenderPictFormInfo</a> {
+    <span class="kw">type </span>Storage = PhantomData&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#107">XCBRenderPictFormInfo</a>&gt;;
 
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>to_glib_none(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-    ) -&gt; Stash&lt;<span class="lifetime">'a</span>, <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.xcb_render_pictforminfo_t.html">ffi::xcb_render_pictforminfo_t</a>, <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#104">XCBRenderPictFormInfo</a>&gt; {
-        <a href="../../glib/translate/struct.Stash.html">Stash</a>(<a class="self" href="#139">self</a>.<a href="#108-110">to_raw_none</a>(), <a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">PhantomData</a>)
+    ) -&gt; Stash&lt;<span class="lifetime">'a</span>, <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.xcb_render_pictforminfo_t.html">ffi::xcb_render_pictforminfo_t</a>, <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#107">XCBRenderPictFormInfo</a>&gt; {
+        <a href="../../glib/translate/struct.Stash.html">Stash</a>(<a class="self" href="#142">self</a>.<a href="#111-113">to_raw_none</a>(), <a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">PhantomData</a>)
     }
 }
 
 <span class="attr">#[cfg(feature = <span class="string">"use_glib"</span>)]
-</span><span class="kw">impl </span>FromGlibPtrNone&lt;<span class="kw-2">*mut </span><a href="../../cairo_sys/struct.xcb_render_pictforminfo_t.html">ffi::xcb_render_pictforminfo_t</a>&gt; <span class="kw">for </span><a href="#104">XCBRenderPictFormInfo</a> {
+</span><span class="kw">impl </span>FromGlibPtrNone&lt;<span class="kw-2">*mut </span><a href="../../cairo_sys/struct.xcb_render_pictforminfo_t.html">ffi::xcb_render_pictforminfo_t</a>&gt; <span class="kw">for </span><a href="#107">XCBRenderPictFormInfo</a> {
     <span class="attr">#[inline]
-    </span><span class="kw">unsafe fn </span>from_glib_none(ptr: <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.xcb_render_pictforminfo_t.html">ffi::xcb_render_pictforminfo_t</a>) -&gt; <a href="#104">XCBRenderPictFormInfo</a> {
-        <a href="#113-116"><span class="self">Self</span>::from_raw_none</a>(<a href="#148">ptr</a>)
+    </span><span class="kw">unsafe fn </span>from_glib_none(ptr: <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.xcb_render_pictforminfo_t.html">ffi::xcb_render_pictforminfo_t</a>) -&gt; <a href="#107">XCBRenderPictFormInfo</a> {
+        <a href="#116-119"><span class="self">Self</span>::from_raw_none</a>(<a href="#151">ptr</a>)
     }
 }
 
 <span class="attr">#[cfg(feature = <span class="string">"use_glib"</span>)]
-</span><span class="kw">impl </span>FromGlibPtrBorrow&lt;<span class="kw-2">*mut </span><a href="../../cairo_sys/struct.xcb_render_pictforminfo_t.html">ffi::xcb_render_pictforminfo_t</a>&gt; <span class="kw">for </span><a href="#104">XCBRenderPictFormInfo</a> {
+</span><span class="kw">impl </span>FromGlibPtrBorrow&lt;<span class="kw-2">*mut </span><a href="../../cairo_sys/struct.xcb_render_pictforminfo_t.html">ffi::xcb_render_pictforminfo_t</a>&gt; <span class="kw">for </span><a href="#107">XCBRenderPictFormInfo</a> {
     <span class="attr">#[inline]
     </span><span class="kw">unsafe fn </span>from_glib_borrow(
         ptr: <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.xcb_render_pictforminfo_t.html">ffi::xcb_render_pictforminfo_t</a>,
-    ) -&gt; Borrowed&lt;<a href="#104">XCBRenderPictFormInfo</a>&gt; {
-        <a href="#119-124"><span class="self">Self</span>::from_raw_borrow</a>(<a href="#157">ptr</a>)
+    ) -&gt; Borrowed&lt;<a href="#107">XCBRenderPictFormInfo</a>&gt; {
+        <a href="#122-127"><span class="self">Self</span>::from_raw_borrow</a>(<a href="#160">ptr</a>)
     }
 }
 
 <span class="attr">#[cfg(feature = <span class="string">"use_glib"</span>)]
-</span><span class="kw">impl </span>FromGlibPtrFull&lt;<span class="kw-2">*mut </span><a href="../../cairo_sys/struct.xcb_render_pictforminfo_t.html">ffi::xcb_render_pictforminfo_t</a>&gt; <span class="kw">for </span><a href="#104">XCBRenderPictFormInfo</a> {
+</span><span class="kw">impl </span>FromGlibPtrFull&lt;<span class="kw-2">*mut </span><a href="../../cairo_sys/struct.xcb_render_pictforminfo_t.html">ffi::xcb_render_pictforminfo_t</a>&gt; <span class="kw">for </span><a href="#107">XCBRenderPictFormInfo</a> {
     <span class="attr">#[inline]
-    </span><span class="kw">unsafe fn </span>from_glib_full(ptr: <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.xcb_render_pictforminfo_t.html">ffi::xcb_render_pictforminfo_t</a>) -&gt; <a href="#104">XCBRenderPictFormInfo</a> {
-        <a href="#127-130"><span class="self">Self</span>::from_raw_full</a>(<a href="#166">ptr</a>)
+    </span><span class="kw">unsafe fn </span>from_glib_full(ptr: <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.xcb_render_pictforminfo_t.html">ffi::xcb_render_pictforminfo_t</a>) -&gt; <a href="#107">XCBRenderPictFormInfo</a> {
+        <a href="#130-133"><span class="self">Self</span>::from_raw_full</a>(<a href="#169">ptr</a>)
     }
 }
 
-<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">Clone</a> <span class="kw">for </span><a href="#104">XCBRenderPictFormInfo</a> {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">Clone</a> <span class="kw">for </span><a href="#107">XCBRenderPictFormInfo</a> {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>clone(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="#104">XCBRenderPictFormInfo</a> {
-        <span class="kw">unsafe </span>{ <a href="#113-116"><span class="self">Self</span>::from_raw_none</a>(<a class="self" href="#173">self</a>.<a href="#108-110">to_raw_none</a>()) }
+    </span><span class="kw">fn </span>clone(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="#107">XCBRenderPictFormInfo</a> {
+        <span class="kw">unsafe </span>{ <a href="#116-119"><span class="self">Self</span>::from_raw_none</a>(<a class="self" href="#176">self</a>.<a href="#111-113">to_raw_none</a>()) }
     }
 }
 
@@ -680,110 +686,110 @@
 #[doc(alias = <span class="string">"xcb_screen_t"</span>)]
 </span><span class="kw">pub struct </span><a href="../../cairo/struct.XCBScreen.html">XCBScreen</a>(<span class="kw">pub </span>ptr::NonNull&lt;<a href="../../cairo_sys/struct.xcb_screen_t.html">ffi::xcb_screen_t</a>&gt;);
 
-<span class="kw">impl </span><a href="#180">XCBScreen</a> {
+<span class="kw">impl </span><a href="#183">XCBScreen</a> {
     <span class="attr">#[inline]
     </span><span class="kw">pub fn </span>to_raw_none(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.xcb_screen_t.html">ffi::xcb_screen_t</a> {
-        <a class="self" href="#184">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>()
+        <a class="self" href="#187">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>()
     }
 
     <span class="attr">#[inline]
-    </span><span class="kw">pub unsafe fn </span>from_raw_none(ptr: <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.xcb_screen_t.html">ffi::xcb_screen_t</a>) -&gt; <a href="#180">XCBScreen</a> {
+    </span><span class="kw">pub unsafe fn </span>from_raw_none(ptr: <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.xcb_screen_t.html">ffi::xcb_screen_t</a>) -&gt; <a href="#183">XCBScreen</a> {
         <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert.html">debug_assert!</a>(!ptr.is_null());
-        <a href="#180">XCBScreen</a>(<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.new_unchecked">ptr::NonNull::new_unchecked</a>(<a href="#189">ptr</a>))
+        <a href="#183">XCBScreen</a>(<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.new_unchecked">ptr::NonNull::new_unchecked</a>(<a href="#192">ptr</a>))
     }
 
     <span class="attr">#[inline]
-    </span><span class="kw">pub unsafe fn </span>from_raw_borrow(ptr: <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.xcb_screen_t.html">ffi::xcb_screen_t</a>) -&gt; Borrowed&lt;<a href="#180">XCBScreen</a>&gt; {
+    </span><span class="kw">pub unsafe fn </span>from_raw_borrow(ptr: <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.xcb_screen_t.html">ffi::xcb_screen_t</a>) -&gt; Borrowed&lt;<a href="#183">XCBScreen</a>&gt; {
         <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert.html">debug_assert!</a>(!ptr.is_null());
-        <a href="../../glib/translate/struct.Borrowed.html#method.new">Borrowed::new</a>(<a href="#180">XCBScreen</a>(<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.new_unchecked">ptr::NonNull::new_unchecked</a>(<a href="#195">ptr</a>)))
+        <a href="../../glib/translate/struct.Borrowed.html#method.new">Borrowed::new</a>(<a href="#183">XCBScreen</a>(<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.new_unchecked">ptr::NonNull::new_unchecked</a>(<a href="#198">ptr</a>)))
     }
 
     <span class="attr">#[inline]
-    </span><span class="kw">pub unsafe fn </span>from_raw_full(ptr: <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.xcb_screen_t.html">ffi::xcb_screen_t</a>) -&gt; <a href="#180">XCBScreen</a> {
+    </span><span class="kw">pub unsafe fn </span>from_raw_full(ptr: <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.xcb_screen_t.html">ffi::xcb_screen_t</a>) -&gt; <a href="#183">XCBScreen</a> {
         <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert.html">debug_assert!</a>(!ptr.is_null());
-        <a href="#180">XCBScreen</a>(<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.new_unchecked">ptr::NonNull::new_unchecked</a>(<a href="#201">ptr</a>))
+        <a href="#183">XCBScreen</a>(<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.new_unchecked">ptr::NonNull::new_unchecked</a>(<a href="#204">ptr</a>))
     }
 }
 
 <span class="attr">#[cfg(feature = <span class="string">"use_glib"</span>)]
-</span><span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; ToGlibPtr&lt;<span class="lifetime">'a</span>, <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.xcb_screen_t.html">ffi::xcb_screen_t</a>&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#180">XCBScreen</a> {
-    <span class="kw">type </span>Storage = PhantomData&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#180">XCBScreen</a>&gt;;
+</span><span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; ToGlibPtr&lt;<span class="lifetime">'a</span>, <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.xcb_screen_t.html">ffi::xcb_screen_t</a>&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#183">XCBScreen</a> {
+    <span class="kw">type </span>Storage = PhantomData&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#183">XCBScreen</a>&gt;;
 
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>to_glib_none(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Stash&lt;<span class="lifetime">'a</span>, <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.xcb_screen_t.html">ffi::xcb_screen_t</a>, <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#180">XCBScreen</a>&gt; {
-        <a href="../../glib/translate/struct.Stash.html">Stash</a>(<a class="self" href="#212">self</a>.<a href="#184-186">to_raw_none</a>(), <a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">PhantomData</a>)
+    </span><span class="kw">fn </span>to_glib_none(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Stash&lt;<span class="lifetime">'a</span>, <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.xcb_screen_t.html">ffi::xcb_screen_t</a>, <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#183">XCBScreen</a>&gt; {
+        <a href="../../glib/translate/struct.Stash.html">Stash</a>(<a class="self" href="#215">self</a>.<a href="#187-189">to_raw_none</a>(), <a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">PhantomData</a>)
     }
 }
 
 <span class="attr">#[cfg(feature = <span class="string">"use_glib"</span>)]
-</span><span class="kw">impl </span>FromGlibPtrNone&lt;<span class="kw-2">*mut </span><a href="../../cairo_sys/struct.xcb_screen_t.html">ffi::xcb_screen_t</a>&gt; <span class="kw">for </span><a href="#180">XCBScreen</a> {
+</span><span class="kw">impl </span>FromGlibPtrNone&lt;<span class="kw-2">*mut </span><a href="../../cairo_sys/struct.xcb_screen_t.html">ffi::xcb_screen_t</a>&gt; <span class="kw">for </span><a href="#183">XCBScreen</a> {
     <span class="attr">#[inline]
-    </span><span class="kw">unsafe fn </span>from_glib_none(ptr: <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.xcb_screen_t.html">ffi::xcb_screen_t</a>) -&gt; <a href="#180">XCBScreen</a> {
-        <a href="#189-192"><span class="self">Self</span>::from_raw_none</a>(<a href="#220">ptr</a>)
+    </span><span class="kw">unsafe fn </span>from_glib_none(ptr: <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.xcb_screen_t.html">ffi::xcb_screen_t</a>) -&gt; <a href="#183">XCBScreen</a> {
+        <a href="#192-195"><span class="self">Self</span>::from_raw_none</a>(<a href="#223">ptr</a>)
     }
 }
 
 <span class="attr">#[cfg(feature = <span class="string">"use_glib"</span>)]
-</span><span class="kw">impl </span>FromGlibPtrBorrow&lt;<span class="kw-2">*mut </span><a href="../../cairo_sys/struct.xcb_screen_t.html">ffi::xcb_screen_t</a>&gt; <span class="kw">for </span><a href="#180">XCBScreen</a> {
+</span><span class="kw">impl </span>FromGlibPtrBorrow&lt;<span class="kw-2">*mut </span><a href="../../cairo_sys/struct.xcb_screen_t.html">ffi::xcb_screen_t</a>&gt; <span class="kw">for </span><a href="#183">XCBScreen</a> {
     <span class="attr">#[inline]
-    </span><span class="kw">unsafe fn </span>from_glib_borrow(ptr: <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.xcb_screen_t.html">ffi::xcb_screen_t</a>) -&gt; Borrowed&lt;<a href="#180">XCBScreen</a>&gt; {
-        <a href="#195-198"><span class="self">Self</span>::from_raw_borrow</a>(<a href="#228">ptr</a>)
+    </span><span class="kw">unsafe fn </span>from_glib_borrow(ptr: <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.xcb_screen_t.html">ffi::xcb_screen_t</a>) -&gt; Borrowed&lt;<a href="#183">XCBScreen</a>&gt; {
+        <a href="#198-201"><span class="self">Self</span>::from_raw_borrow</a>(<a href="#231">ptr</a>)
     }
 }
 
 <span class="attr">#[cfg(feature = <span class="string">"use_glib"</span>)]
-</span><span class="kw">impl </span>FromGlibPtrFull&lt;<span class="kw-2">*mut </span><a href="../../cairo_sys/struct.xcb_screen_t.html">ffi::xcb_screen_t</a>&gt; <span class="kw">for </span><a href="#180">XCBScreen</a> {
+</span><span class="kw">impl </span>FromGlibPtrFull&lt;<span class="kw-2">*mut </span><a href="../../cairo_sys/struct.xcb_screen_t.html">ffi::xcb_screen_t</a>&gt; <span class="kw">for </span><a href="#183">XCBScreen</a> {
     <span class="attr">#[inline]
-    </span><span class="kw">unsafe fn </span>from_glib_full(ptr: <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.xcb_screen_t.html">ffi::xcb_screen_t</a>) -&gt; <a href="#180">XCBScreen</a> {
-        <a href="#201-204"><span class="self">Self</span>::from_raw_full</a>(<a href="#236">ptr</a>)
+    </span><span class="kw">unsafe fn </span>from_glib_full(ptr: <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.xcb_screen_t.html">ffi::xcb_screen_t</a>) -&gt; <a href="#183">XCBScreen</a> {
+        <a href="#204-207"><span class="self">Self</span>::from_raw_full</a>(<a href="#239">ptr</a>)
     }
 }
 
-<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">Clone</a> <span class="kw">for </span><a href="#180">XCBScreen</a> {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">Clone</a> <span class="kw">for </span><a href="#183">XCBScreen</a> {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>clone(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="#180">XCBScreen</a> {
-        <span class="kw">unsafe </span>{ <a href="#189-192"><span class="self">Self</span>::from_raw_none</a>(<a class="self" href="#243">self</a>.<a href="#184-186">to_raw_none</a>()) }
+    </span><span class="kw">fn </span>clone(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="#183">XCBScreen</a> {
+        <span class="kw">unsafe </span>{ <a href="#192-195"><span class="self">Self</span>::from_raw_none</a>(<a class="self" href="#246">self</a>.<a href="#187-189">to_raw_none</a>()) }
     }
 }
 
 <a class="macro" href="surface_macros.rs.html#4-125">declare_surface!</a>(<a href="../../cairo/struct.XCBSurface.html">XCBSurface</a>, SurfaceType::Xcb);
 
-<span class="kw">impl </span><a href="#248">XCBSurface</a> {
+<span class="kw">impl </span><a href="#251">XCBSurface</a> {
     <span class="attr">#[doc(alias = <span class="string">"cairo_xcb_surface_create"</span>)]
     </span><span class="kw">pub fn </span>create(
-        connection: <span class="kw-2">&amp;</span><a href="#34">XCBConnection</a>,
-        drawable: <span class="kw-2">&amp;</span><a href="#13">XCBDrawable</a>,
-        visual: <span class="kw-2">&amp;</span><a href="#341">XCBVisualType</a>,
+        connection: <span class="kw-2">&amp;</span><a href="#37">XCBConnection</a>,
+        drawable: <span class="kw-2">&amp;</span><a href="#16">XCBDrawable</a>,
+        visual: <span class="kw-2">&amp;</span><a href="#344">XCBVisualType</a>,
         width: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
         height: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, <a href="error.rs.html#9-104">Error</a>&gt; {
         <span class="kw">unsafe </span>{
-            <a href="#248"><span class="self">Self</span>::from_raw_full</a>(<a href="../../cairo_sys/fn.cairo_xcb_surface_create.html">ffi::cairo_xcb_surface_create</a>(
-                <a href="#253">connection</a>.<a href="#38-40">to_raw_none</a>(),
-                <a href="#254">drawable</a>.<a href="#17-19">to_raw_none</a>(),
-                <a href="#255">visual</a>.<a href="#345-347">to_raw_none</a>(),
-                <a href="#256">width</a>,
-                <a href="#257">height</a>,
+            <a href="#251"><span class="self">Self</span>::from_raw_full</a>(<a href="../../cairo_sys/fn.cairo_xcb_surface_create.html">ffi::cairo_xcb_surface_create</a>(
+                <a href="#256">connection</a>.<a href="#41-43">to_raw_none</a>(),
+                <a href="#257">drawable</a>.<a href="#20-22">to_raw_none</a>(),
+                <a href="#258">visual</a>.<a href="#348-350">to_raw_none</a>(),
+                <a href="#259">width</a>,
+                <a href="#260">height</a>,
             ))
         }
     }
 
     <span class="attr">#[doc(alias = <span class="string">"cairo_xcb_surface_create_for_bitmap"</span>)]
     </span><span class="kw">pub fn </span>create_for_bitmap(
-        connection: <span class="kw-2">&amp;</span><a href="#34">XCBConnection</a>,
-        screen: <span class="kw-2">&amp;</span><a href="#180">XCBScreen</a>,
-        bitmap: <span class="kw-2">&amp;</span><a href="#23">XCBPixmap</a>,
+        connection: <span class="kw-2">&amp;</span><a href="#37">XCBConnection</a>,
+        screen: <span class="kw-2">&amp;</span><a href="#183">XCBScreen</a>,
+        bitmap: <span class="kw-2">&amp;</span><a href="#26">XCBPixmap</a>,
         width: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
         height: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, <a href="error.rs.html#9-104">Error</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="prelude-val">Ok</span>(<span class="self">Self</span>(<a href="surface.rs.html#36-41">Surface::from_raw_full</a>(
                 <a href="../../cairo_sys/fn.cairo_xcb_surface_create_for_bitmap.html">ffi::cairo_xcb_surface_create_for_bitmap</a>(
-                    <a href="#272">connection</a>.<a href="#38-40">to_raw_none</a>(),
-                    <a href="#273">screen</a>.<a href="#184-186">to_raw_none</a>(),
-                    <a href="#274">bitmap</a>.<a href="#27-29">to_raw_none</a>(),
-                    <a href="#275">width</a>,
-                    <a href="#276">height</a>,
+                    <a href="#275">connection</a>.<a href="#41-43">to_raw_none</a>(),
+                    <a href="#276">screen</a>.<a href="#187-189">to_raw_none</a>(),
+                    <a href="#277">bitmap</a>.<a href="#30-32">to_raw_none</a>(),
+                    <a href="#278">width</a>,
+                    <a href="#279">height</a>,
                 ),
             )<span class="question-mark">?</span>))
         }
@@ -791,22 +797,22 @@
 
     <span class="attr">#[doc(alias = <span class="string">"cairo_xcb_surface_create_with_xrender_format"</span>)]
     </span><span class="kw">pub fn </span>create_with_xrender_format(
-        connection: <span class="kw-2">&amp;</span><a href="#34">XCBConnection</a>,
-        screen: <span class="kw-2">&amp;</span><a href="#180">XCBScreen</a>,
-        bitmap: <span class="kw-2">&amp;</span><a href="#23">XCBPixmap</a>,
-        format: <span class="kw-2">&amp;</span><a href="#104">XCBRenderPictFormInfo</a>,
+        connection: <span class="kw-2">&amp;</span><a href="#37">XCBConnection</a>,
+        screen: <span class="kw-2">&amp;</span><a href="#183">XCBScreen</a>,
+        bitmap: <span class="kw-2">&amp;</span><a href="#26">XCBPixmap</a>,
+        format: <span class="kw-2">&amp;</span><a href="#107">XCBRenderPictFormInfo</a>,
         width: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
         height: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, <a href="error.rs.html#9-104">Error</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="prelude-val">Ok</span>(<span class="self">Self</span>(<a href="surface.rs.html#36-41">Surface::from_raw_full</a>(
                 <a href="../../cairo_sys/fn.cairo_xcb_surface_create_with_xrender_format.html">ffi::cairo_xcb_surface_create_with_xrender_format</a>(
-                    <a href="#293">connection</a>.<a href="#38-40">to_raw_none</a>(),
-                    <a href="#294">screen</a>.<a href="#184-186">to_raw_none</a>(),
-                    <a href="#295">bitmap</a>.<a href="#27-29">to_raw_none</a>(),
-                    <a href="#296">format</a>.<a href="#108-110">to_raw_none</a>(),
-                    <a href="#297">width</a>,
-                    <a href="#298">height</a>,
+                    <a href="#296">connection</a>.<a href="#41-43">to_raw_none</a>(),
+                    <a href="#297">screen</a>.<a href="#187-189">to_raw_none</a>(),
+                    <a href="#298">bitmap</a>.<a href="#30-32">to_raw_none</a>(),
+                    <a href="#299">format</a>.<a href="#111-113">to_raw_none</a>(),
+                    <a href="#300">width</a>,
+                    <a href="#301">height</a>,
                 ),
             )<span class="question-mark">?</span>))
         }
@@ -814,26 +820,26 @@
 
     <span class="attr">#[doc(alias = <span class="string">"cairo_xcb_surface_set_size"</span>)]
     </span><span class="kw">pub fn </span>set_size(<span class="kw-2">&amp;</span><span class="self">self</span>, width: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>, height: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="error.rs.html#9-104">Error</a>&gt; {
-        <span class="kw">unsafe </span>{ <a href="../../cairo_sys/fn.cairo_xcb_surface_set_size.html">ffi::cairo_xcb_surface_set_size</a>(<a class="self" href="#315">self</a>.<a href="surface.rs.html#44-46">to_raw_none</a>(), <a href="#315">width</a>, <a href="#315">height</a>) }
-        <a class="self" href="#315">self</a>.<a href="surface.rs.html#281-284">status</a>()
+        <span class="kw">unsafe </span>{ <a href="../../cairo_sys/fn.cairo_xcb_surface_set_size.html">ffi::cairo_xcb_surface_set_size</a>(<a class="self" href="#318">self</a>.<a href="surface.rs.html#44-46">to_raw_none</a>(), <a href="#318">width</a>, <a href="#318">height</a>) }
+        <a class="self" href="#318">self</a>.<a href="surface.rs.html#281-284">status</a>()
     }
 
     <span class="attr">#[doc(alias = <span class="string">"cairo_xcb_surface_set_drawable"</span>)]
     </span><span class="kw">pub fn </span>set_drawable(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        drawable: <span class="kw-2">&amp;</span><a href="#13">XCBDrawable</a>,
+        drawable: <span class="kw-2">&amp;</span><a href="#16">XCBDrawable</a>,
         width: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
         height: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="error.rs.html#9-104">Error</a>&gt; {
         <span class="kw">unsafe </span>{
             <a href="../../cairo_sys/fn.cairo_xcb_surface_set_drawable.html">ffi::cairo_xcb_surface_set_drawable</a>(
-                <a class="self" href="#322">self</a>.<a href="surface.rs.html#44-46">to_raw_none</a>(),
-                <a href="#323">drawable</a>.<a href="#17-19">to_raw_none</a>(),
-                <a href="#324">width</a>,
-                <a href="#325">height</a>,
+                <a class="self" href="#325">self</a>.<a href="surface.rs.html#44-46">to_raw_none</a>(),
+                <a href="#326">drawable</a>.<a href="#20-22">to_raw_none</a>(),
+                <a href="#327">width</a>,
+                <a href="#328">height</a>,
             )
         }
-        <a class="self" href="#322">self</a>.<a href="surface.rs.html#281-284">status</a>()
+        <a class="self" href="#325">self</a>.<a href="surface.rs.html#281-284">status</a>()
     }
 }
 
@@ -841,78 +847,78 @@
 #[doc(alias = <span class="string">"xcb_visualtype_t"</span>)]
 </span><span class="kw">pub struct </span><a href="../../cairo/struct.XCBVisualType.html">XCBVisualType</a>(<span class="kw">pub </span>ptr::NonNull&lt;<a href="../../cairo_sys/struct.xcb_visualtype_t.html">ffi::xcb_visualtype_t</a>&gt;);
 
-<span class="kw">impl </span><a href="#341">XCBVisualType</a> {
+<span class="kw">impl </span><a href="#344">XCBVisualType</a> {
     <span class="attr">#[inline]
     </span><span class="kw">pub fn </span>to_raw_none(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.xcb_visualtype_t.html">ffi::xcb_visualtype_t</a> {
-        <a class="self" href="#345">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>()
+        <a class="self" href="#348">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>()
     }
 
     <span class="attr">#[inline]
-    </span><span class="kw">pub unsafe fn </span>from_raw_none(ptr: <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.xcb_visualtype_t.html">ffi::xcb_visualtype_t</a>) -&gt; <a href="#341">XCBVisualType</a> {
+    </span><span class="kw">pub unsafe fn </span>from_raw_none(ptr: <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.xcb_visualtype_t.html">ffi::xcb_visualtype_t</a>) -&gt; <a href="#344">XCBVisualType</a> {
         <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert.html">debug_assert!</a>(!ptr.is_null());
-        <a href="#341">XCBVisualType</a>(<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.new_unchecked">ptr::NonNull::new_unchecked</a>(<a href="#350">ptr</a>))
+        <a href="#344">XCBVisualType</a>(<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.new_unchecked">ptr::NonNull::new_unchecked</a>(<a href="#353">ptr</a>))
     }
 
     <span class="attr">#[inline]
-    </span><span class="kw">pub unsafe fn </span>from_raw_borrow(ptr: <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.xcb_visualtype_t.html">ffi::xcb_visualtype_t</a>) -&gt; Borrowed&lt;<a href="#341">XCBVisualType</a>&gt; {
+    </span><span class="kw">pub unsafe fn </span>from_raw_borrow(ptr: <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.xcb_visualtype_t.html">ffi::xcb_visualtype_t</a>) -&gt; Borrowed&lt;<a href="#344">XCBVisualType</a>&gt; {
         <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert.html">debug_assert!</a>(!ptr.is_null());
-        <a href="../../glib/translate/struct.Borrowed.html#method.new">Borrowed::new</a>(<a href="#341">XCBVisualType</a>(<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.new_unchecked">ptr::NonNull::new_unchecked</a>(<a href="#356">ptr</a>)))
+        <a href="../../glib/translate/struct.Borrowed.html#method.new">Borrowed::new</a>(<a href="#344">XCBVisualType</a>(<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.new_unchecked">ptr::NonNull::new_unchecked</a>(<a href="#359">ptr</a>)))
     }
 
     <span class="attr">#[inline]
-    </span><span class="kw">pub unsafe fn </span>from_raw_full(ptr: <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.xcb_visualtype_t.html">ffi::xcb_visualtype_t</a>) -&gt; <a href="#341">XCBVisualType</a> {
+    </span><span class="kw">pub unsafe fn </span>from_raw_full(ptr: <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.xcb_visualtype_t.html">ffi::xcb_visualtype_t</a>) -&gt; <a href="#344">XCBVisualType</a> {
         <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert.html">debug_assert!</a>(!ptr.is_null());
-        <a href="#341">XCBVisualType</a>(<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.new_unchecked">ptr::NonNull::new_unchecked</a>(<a href="#362">ptr</a>))
+        <a href="#344">XCBVisualType</a>(<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.new_unchecked">ptr::NonNull::new_unchecked</a>(<a href="#365">ptr</a>))
     }
 }
 
 <span class="attr">#[cfg(feature = <span class="string">"use_glib"</span>)]
-</span><span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; ToGlibPtr&lt;<span class="lifetime">'a</span>, <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.xcb_visualtype_t.html">ffi::xcb_visualtype_t</a>&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#341">XCBVisualType</a> {
-    <span class="kw">type </span>Storage = PhantomData&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#341">XCBVisualType</a>&gt;;
+</span><span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; ToGlibPtr&lt;<span class="lifetime">'a</span>, <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.xcb_visualtype_t.html">ffi::xcb_visualtype_t</a>&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#344">XCBVisualType</a> {
+    <span class="kw">type </span>Storage = PhantomData&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#344">XCBVisualType</a>&gt;;
 
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>to_glib_none(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Stash&lt;<span class="lifetime">'a</span>, <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.xcb_visualtype_t.html">ffi::xcb_visualtype_t</a>, <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#341">XCBVisualType</a>&gt; {
-        <a href="../../glib/translate/struct.Stash.html">Stash</a>(<a class="self" href="#373">self</a>.<a href="#345-347">to_raw_none</a>(), <a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">PhantomData</a>)
+    </span><span class="kw">fn </span>to_glib_none(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Stash&lt;<span class="lifetime">'a</span>, <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.xcb_visualtype_t.html">ffi::xcb_visualtype_t</a>, <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#344">XCBVisualType</a>&gt; {
+        <a href="../../glib/translate/struct.Stash.html">Stash</a>(<a class="self" href="#376">self</a>.<a href="#348-350">to_raw_none</a>(), <a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">PhantomData</a>)
     }
 }
 
 <span class="attr">#[cfg(feature = <span class="string">"use_glib"</span>)]
-</span><span class="kw">impl </span>FromGlibPtrNone&lt;<span class="kw-2">*mut </span><a href="../../cairo_sys/struct.xcb_visualtype_t.html">ffi::xcb_visualtype_t</a>&gt; <span class="kw">for </span><a href="#341">XCBVisualType</a> {
+</span><span class="kw">impl </span>FromGlibPtrNone&lt;<span class="kw-2">*mut </span><a href="../../cairo_sys/struct.xcb_visualtype_t.html">ffi::xcb_visualtype_t</a>&gt; <span class="kw">for </span><a href="#344">XCBVisualType</a> {
     <span class="attr">#[inline]
-    </span><span class="kw">unsafe fn </span>from_glib_none(ptr: <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.xcb_visualtype_t.html">ffi::xcb_visualtype_t</a>) -&gt; <a href="#341">XCBVisualType</a> {
-        <a href="#350-353"><span class="self">Self</span>::from_raw_none</a>(<a href="#381">ptr</a>)
+    </span><span class="kw">unsafe fn </span>from_glib_none(ptr: <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.xcb_visualtype_t.html">ffi::xcb_visualtype_t</a>) -&gt; <a href="#344">XCBVisualType</a> {
+        <a href="#353-356"><span class="self">Self</span>::from_raw_none</a>(<a href="#384">ptr</a>)
     }
 }
 
 <span class="attr">#[cfg(feature = <span class="string">"use_glib"</span>)]
-</span><span class="kw">impl </span>FromGlibPtrBorrow&lt;<span class="kw-2">*mut </span><a href="../../cairo_sys/struct.xcb_visualtype_t.html">ffi::xcb_visualtype_t</a>&gt; <span class="kw">for </span><a href="#341">XCBVisualType</a> {
+</span><span class="kw">impl </span>FromGlibPtrBorrow&lt;<span class="kw-2">*mut </span><a href="../../cairo_sys/struct.xcb_visualtype_t.html">ffi::xcb_visualtype_t</a>&gt; <span class="kw">for </span><a href="#344">XCBVisualType</a> {
     <span class="attr">#[inline]
-    </span><span class="kw">unsafe fn </span>from_glib_borrow(ptr: <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.xcb_visualtype_t.html">ffi::xcb_visualtype_t</a>) -&gt; Borrowed&lt;<a href="#341">XCBVisualType</a>&gt; {
-        <a href="#356-359"><span class="self">Self</span>::from_raw_borrow</a>(<a href="#389">ptr</a>)
+    </span><span class="kw">unsafe fn </span>from_glib_borrow(ptr: <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.xcb_visualtype_t.html">ffi::xcb_visualtype_t</a>) -&gt; Borrowed&lt;<a href="#344">XCBVisualType</a>&gt; {
+        <a href="#359-362"><span class="self">Self</span>::from_raw_borrow</a>(<a href="#392">ptr</a>)
     }
 }
 
 <span class="attr">#[cfg(feature = <span class="string">"use_glib"</span>)]
-</span><span class="kw">impl </span>FromGlibPtrFull&lt;<span class="kw-2">*mut </span><a href="../../cairo_sys/struct.xcb_visualtype_t.html">ffi::xcb_visualtype_t</a>&gt; <span class="kw">for </span><a href="#341">XCBVisualType</a> {
+</span><span class="kw">impl </span>FromGlibPtrFull&lt;<span class="kw-2">*mut </span><a href="../../cairo_sys/struct.xcb_visualtype_t.html">ffi::xcb_visualtype_t</a>&gt; <span class="kw">for </span><a href="#344">XCBVisualType</a> {
     <span class="attr">#[inline]
-    </span><span class="kw">unsafe fn </span>from_glib_full(ptr: <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.xcb_visualtype_t.html">ffi::xcb_visualtype_t</a>) -&gt; <a href="#341">XCBVisualType</a> {
-        <a href="#362-365"><span class="self">Self</span>::from_raw_full</a>(<a href="#397">ptr</a>)
+    </span><span class="kw">unsafe fn </span>from_glib_full(ptr: <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.xcb_visualtype_t.html">ffi::xcb_visualtype_t</a>) -&gt; <a href="#344">XCBVisualType</a> {
+        <a href="#365-368"><span class="self">Self</span>::from_raw_full</a>(<a href="#400">ptr</a>)
     }
 }
 
-<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">Clone</a> <span class="kw">for </span><a href="#341">XCBVisualType</a> {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">Clone</a> <span class="kw">for </span><a href="#344">XCBVisualType</a> {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>clone(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="#341">XCBVisualType</a> {
-        <span class="kw">unsafe </span>{ <a href="#350-353"><span class="self">Self</span>::from_raw_none</a>(<a class="self" href="#404">self</a>.<a href="#345-347">to_raw_none</a>()) }
+    </span><span class="kw">fn </span>clone(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="#344">XCBVisualType</a> {
+        <span class="kw">unsafe </span>{ <a href="#353-356"><span class="self">Self</span>::from_raw_none</a>(<a class="self" href="#407">self</a>.<a href="#348-350">to_raw_none</a>()) }
     }
 }
 
 <span class="kw">impl </span><a href="device.rs.html#32"><span class="kw">crate</span>::device::Device</a> {
     <span class="attr">#[doc(alias = <span class="string">"cairo_xcb_device_get_connection"</span>)]
     #[doc(alias = <span class="string">"get_connection"</span>)]
-    </span><span class="kw">pub fn </span>connection(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="#34">XCBConnection</a> {
+    </span><span class="kw">pub fn </span>connection(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="#37">XCBConnection</a> {
         <span class="kw">unsafe </span>{
-            <a href="#55-58">XCBConnection::from_raw_full</a>(<a href="../../cairo_sys/fn.cairo_xcb_device_get_connection.html">ffi::cairo_xcb_device_get_connection</a>(<a class="self" href="#412">self</a>.<a href="device.rs.html#55-57">to_raw_none</a>()))
+            <a href="#58-61">XCBConnection::from_raw_full</a>(<a href="../../cairo_sys/fn.cairo_xcb_device_get_connection.html">ffi::cairo_xcb_device_get_connection</a>(<a class="self" href="#415">self</a>.<a href="device.rs.html#55-57">to_raw_none</a>()))
         }
     }
 
@@ -920,9 +926,9 @@
     </span><span class="kw">pub fn </span>debug_cap_xshm_version(<span class="kw-2">&amp;</span><span class="self">self</span>, major_version: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>, minor_version: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>) {
         <span class="kw">unsafe </span>{
             <a href="../../cairo_sys/fn.cairo_xcb_device_debug_cap_xshm_version.html">ffi::cairo_xcb_device_debug_cap_xshm_version</a>(
-                <a class="self" href="#419">self</a>.<a href="device.rs.html#55-57">to_raw_none</a>(),
-                <a href="#419">major_version</a>,
-                <a href="#419">minor_version</a>,
+                <a class="self" href="#422">self</a>.<a href="device.rs.html#55-57">to_raw_none</a>(),
+                <a href="#422">major_version</a>,
+                <a href="#422">minor_version</a>,
             )
         }
     }
