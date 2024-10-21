@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib-macros/src/utils.rs`."><title>utils.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-a5dc3bae.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib_macros" data-themes="" data-resource-suffix="" data-rustdoc-version="1.84.0-nightly (da935398d 2024-10-19)" data-channel="nightly" data-search-js="search-c5a66128.js" data-settings-js="settings-0f613d39.js" ><script src="../../static.files/storage-59e33391.js"></script><script defer src="../../static.files/src-script-56102188.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib-macros/src/utils.rs`."><title>utils.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-a5dc3bae.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib_macros" data-themes="" data-resource-suffix="" data-rustdoc-version="1.84.0-nightly (662180b34 2024-10-20)" data-channel="nightly" data-search-js="search-c5a66128.js" data-settings-js="settings-0f613d39.js" ><script src="../../static.files/storage-59e33391.js"></script><script defer src="../../static.files/src-script-56102188.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -374,15 +374,15 @@
 <span class="kw">use </span>proc_macro_crate::crate_name;
 <span class="kw">use </span>quote::{<a href="https://docs.rs/quote/1.0.37/quote/macro.quote.html">quote</a>, <a href="https://docs.rs/quote/1.0.37/quote/macro.quote_spanned.html">quote_spanned</a>, <a href="https://docs.rs/quote/1.0.37/quote/to_tokens/trait.ToTokens.html">ToTokens</a>};
 <span class="kw">use </span>syn::{
-    <a href="https://docs.rs/syn/2.0.79/syn/meta/struct.ParseNestedMeta.html">meta::ParseNestedMeta</a>, <a href="https://docs.rs/syn/2.0.79/syn/parse/trait.Parse.html">parse::Parse</a>, <a href="https://docs.rs/syn/2.0.79/syn/punctuated/struct.Punctuated.html">punctuated::Punctuated</a>, <a href="https://docs.rs/syn/2.0.79/syn/spanned/trait.Spanned.html">spanned::Spanned</a>, token::Comma,
-    <a href="https://docs.rs/syn/2.0.79/syn/macro.Token.html">Token</a>, <a href="https://docs.rs/syn/2.0.79/syn/data/struct.Variant.html">Variant</a>,
+    <a href="https://docs.rs/syn/2.0.82/syn/meta/struct.ParseNestedMeta.html">meta::ParseNestedMeta</a>, <a href="https://docs.rs/syn/2.0.82/syn/parse/trait.Parse.html">parse::Parse</a>, <a href="https://docs.rs/syn/2.0.82/syn/punctuated/struct.Punctuated.html">punctuated::Punctuated</a>, <a href="https://docs.rs/syn/2.0.82/syn/spanned/trait.Spanned.html">spanned::Spanned</a>, token::Comma,
+    <a href="https://docs.rs/syn/2.0.82/syn/macro.Token.html">Token</a>, <a href="https://docs.rs/syn/2.0.82/syn/data/struct.Variant.html">Variant</a>,
 };
 
 <span class="kw">pub trait </span>ParseNestedMetaItem {
     <span class="kw">fn </span>get_name(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'static </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>;
     <span class="kw">fn </span>get_found(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>;
     <span class="kw">fn </span>get_required(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>;
-    <span class="kw">fn </span>parse_nested(<span class="kw-2">&amp;mut </span><span class="self">self</span>, meta: <span class="kw-2">&amp;</span><a href="https://docs.rs/syn/2.0.79/syn/meta/struct.ParseNestedMeta.html">ParseNestedMeta</a>) -&gt; <span class="prelude-ty">Option</span>&lt;syn::Result&lt;()&gt;&gt;;
+    <span class="kw">fn </span>parse_nested(<span class="kw-2">&amp;mut </span><span class="self">self</span>, meta: <span class="kw-2">&amp;</span><a href="https://docs.rs/syn/2.0.82/syn/meta/struct.ParseNestedMeta.html">ParseNestedMeta</a>) -&gt; <span class="prelude-ty">Option</span>&lt;syn::Result&lt;()&gt;&gt;;
 }
 
 <span class="attr">#[derive(Default)]
@@ -394,7 +394,7 @@
     <span class="kw">pub </span>value: <span class="prelude-ty">Option</span>&lt;T&gt;,
 }
 
-<span class="kw">impl</span>&lt;T: <a href="https://docs.rs/syn/2.0.79/syn/parse/trait.Parse.html">Parse</a> + <a href="https://docs.rs/quote/1.0.37/quote/to_tokens/trait.ToTokens.html">ToTokens</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html">std::fmt::Debug</a> <span class="kw">for </span>NestedMetaItem&lt;T&gt; {
+<span class="kw">impl</span>&lt;T: <a href="https://docs.rs/syn/2.0.82/syn/parse/trait.Parse.html">Parse</a> + <a href="https://docs.rs/quote/1.0.37/quote/to_tokens/trait.ToTokens.html">ToTokens</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html">std::fmt::Debug</a> <span class="kw">for </span>NestedMetaItem&lt;T&gt; {
     <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>std::fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; <a href="https://doc.rust-lang.org/nightly/core/fmt/type.Result.html">std::fmt::Result</a> {
         <a href="#28">f</a>.<a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html#method.debug_struct">debug_struct</a>(<span class="string">"NestedMetaItem"</span>)
             .<a href="https://doc.rust-lang.org/nightly/core/fmt/builders/struct.DebugStruct.html#method.field">field</a>(<span class="string">"name"</span>, <span class="kw-2">&amp;</span><a class="self" href="#28">self</a>.name)
@@ -406,7 +406,7 @@
     }
 }
 
-<span class="kw">impl</span>&lt;T: <a href="https://docs.rs/syn/2.0.79/syn/parse/trait.Parse.html">Parse</a>&gt; NestedMetaItem&lt;T&gt; {
+<span class="kw">impl</span>&lt;T: <a href="https://docs.rs/syn/2.0.82/syn/parse/trait.Parse.html">Parse</a>&gt; NestedMetaItem&lt;T&gt; {
     <span class="kw">pub const fn </span>new(name: <span class="kw-2">&amp;</span><span class="lifetime">'static </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
             required: <span class="bool-val">false</span>,
@@ -430,19 +430,19 @@
         <a class="self" href="#59">self</a>.value_required = <span class="bool-val">false</span>;
         <span class="self"><a href="#59">self</a>
     </span>}
-    <span class="kw">fn </span>parse_nested_forced(<span class="kw-2">&amp;mut </span><span class="self">self</span>, meta: <span class="kw-2">&amp;</span><a href="https://docs.rs/syn/2.0.79/syn/meta/struct.ParseNestedMeta.html">ParseNestedMeta</a>) -&gt; syn::Result&lt;()&gt; {
+    <span class="kw">fn </span>parse_nested_forced(<span class="kw-2">&amp;mut </span><span class="self">self</span>, meta: <span class="kw-2">&amp;</span><a href="https://docs.rs/syn/2.0.82/syn/meta/struct.ParseNestedMeta.html">ParseNestedMeta</a>) -&gt; syn::Result&lt;()&gt; {
         <span class="kw">if </span><span class="self">self</span>.value_required || meta.input.peek(<span class="macro">Token!</span>[=]) {
-            <span class="kw">let </span>_eq: <a class="macro" href="https://docs.rs/syn/2.0.79/syn/macro.Token.html">Token!</a>[=] = <a href="#63">meta</a>.input.<a href="https://docs.rs/syn/2.0.79/syn/parse/struct.ParseBuffer.html#method.parse">parse</a>()<span class="question-mark">?</span>;
-            <a class="self" href="#63">self</a>.value = <span class="prelude-val">Some</span>(<a href="#63">meta</a>.input.<a href="https://docs.rs/syn/2.0.79/syn/parse/struct.ParseBuffer.html#method.parse">parse</a>()<span class="question-mark">?</span>);
+            <span class="kw">let </span>_eq: <a class="macro" href="https://docs.rs/syn/2.0.82/syn/macro.Token.html">Token!</a>[=] = <a href="#63">meta</a>.input.<a href="https://docs.rs/syn/2.0.82/syn/parse/struct.ParseBuffer.html#method.parse">parse</a>()<span class="question-mark">?</span>;
+            <a class="self" href="#63">self</a>.value = <span class="prelude-val">Some</span>(<a href="#63">meta</a>.input.<a href="https://docs.rs/syn/2.0.82/syn/parse/struct.ParseBuffer.html#method.parse">parse</a>()<span class="question-mark">?</span>);
         }
         <span class="prelude-val">Ok</span>(())
     }
 }
-<span class="kw">impl</span>&lt;T: <a href="https://docs.rs/syn/2.0.79/syn/parse/trait.Parse.html">Parse</a>&gt; <a href="#11-16">ParseNestedMetaItem</a> <span class="kw">for </span>NestedMetaItem&lt;T&gt; {
+<span class="kw">impl</span>&lt;T: <a href="https://docs.rs/syn/2.0.82/syn/parse/trait.Parse.html">Parse</a>&gt; <a href="#11-16">ParseNestedMetaItem</a> <span class="kw">for </span>NestedMetaItem&lt;T&gt; {
     <span class="kw">fn </span>get_name(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'static </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a> {
         <a class="self" href="#72">self</a>.name
     }
-    <span class="kw">fn </span>parse_nested(<span class="kw-2">&amp;mut </span><span class="self">self</span>, meta: <span class="kw-2">&amp;</span><a href="https://docs.rs/syn/2.0.79/syn/meta/struct.ParseNestedMeta.html">ParseNestedMeta</a>) -&gt; <span class="prelude-ty">Option</span>&lt;syn::Result&lt;()&gt;&gt; {
+    <span class="kw">fn </span>parse_nested(<span class="kw-2">&amp;mut </span><span class="self">self</span>, meta: <span class="kw-2">&amp;</span><a href="https://docs.rs/syn/2.0.82/syn/meta/struct.ParseNestedMeta.html">ParseNestedMeta</a>) -&gt; <span class="prelude-ty">Option</span>&lt;syn::Result&lt;()&gt;&gt; {
         <span class="kw">if </span>meta.path.is_ident(<span class="self">self</span>.name) {
             <a class="self" href="#75">self</a>.found = <span class="bool-val">true</span>;
             <span class="prelude-val">Some</span>(<a class="self" href="#75">self</a>.<a href="#63-69">parse_nested_forced</a>(<a href="#75">meta</a>))
@@ -459,7 +459,7 @@
 }
 
 <span class="kw">pub fn </span>check_meta_items(span: <a href="https://docs.rs/proc-macro2/1.0.87/proc_macro2/struct.Span.html">Span</a>, items: <span class="kw-2">&amp;mut </span>[<span class="kw-2">&amp;mut </span><span class="kw">dyn </span><a href="#11-16">ParseNestedMetaItem</a>]) -&gt; syn::Result&lt;()&gt; {
-    <span class="kw">let </span><span class="kw-2">mut </span>err: <span class="prelude-ty">Option</span>&lt;<a href="https://docs.rs/syn/2.0.79/syn/error/struct.Error.html">syn::Error</a>&gt; = <span class="prelude-val">None</span>;
+    <span class="kw">let </span><span class="kw-2">mut </span>err: <span class="prelude-ty">Option</span>&lt;<a href="https://docs.rs/syn/2.0.82/syn/error/struct.Error.html">syn::Error</a>&gt; = <span class="prelude-val">None</span>;
     <span class="kw">for </span>item <span class="kw">in </span><span class="kw-2">&amp;mut *</span>items {
         <span class="kw">if </span>item.get_required() &amp;&amp; !item.get_found() {
             <span class="kw">let </span>nerr = syn::Error::new(
@@ -480,7 +480,7 @@
 }
 <span class="kw">fn </span>parse_nested_meta_items_from_fn(
     parse_nested_meta: <span class="kw">impl </span>FnOnce(
-        <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>FnMut(<a href="https://docs.rs/syn/2.0.79/syn/meta/struct.ParseNestedMeta.html">ParseNestedMeta</a>) -&gt; syn::Result&lt;()&gt;,
+        <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>FnMut(<a href="https://docs.rs/syn/2.0.82/syn/meta/struct.ParseNestedMeta.html">ParseNestedMeta</a>) -&gt; syn::Result&lt;()&gt;,
     ) -&gt; syn::Result&lt;()&gt;,
     items: <span class="kw-2">&amp;mut </span>[<span class="kw-2">&amp;mut </span><span class="kw">dyn </span><a href="#11-16">ParseNestedMetaItem</a>],
 ) -&gt; syn::Result&lt;()&gt; {
@@ -490,7 +490,7 @@
                 <span class="kw">return </span>res;
             }
         }
-        <span class="prelude-val">Err</span>(<a href="#117">meta</a>.<a href="https://docs.rs/syn/2.0.79/syn/meta/struct.ParseNestedMeta.html#method.error">error</a>(<a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.format.html">format!</a>(
+        <span class="prelude-val">Err</span>(<a href="#117">meta</a>.<a href="https://docs.rs/syn/2.0.82/syn/meta/struct.ParseNestedMeta.html#method.error">error</a>(<a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.format.html">format!</a>(
             <span class="string">"unknown attribute `{}`. Possible attributes are {}"</span>,
             meta.path.get_ident().unwrap(),
             items
@@ -509,8 +509,8 @@
 ) -&gt; syn::Result&lt;()&gt; {
     <a href="#111-134">parse_nested_meta_items_from_fn</a>(
         |f| {
-            <span class="kw">let </span>p = <a href="https://docs.rs/syn/2.0.79/syn/meta/fn.parser.html">syn::meta::parser</a>(<a href="#141">f</a>);
-            <a href="https://docs.rs/syn/2.0.79/syn/parse/trait.Parser.html#tymethod.parse">syn::parse::Parser::parse</a>(<a href="#142">p</a>, <a href="#137">input</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>())
+            <span class="kw">let </span>p = <a href="https://docs.rs/syn/2.0.82/syn/meta/fn.parser.html">syn::meta::parser</a>(<a href="#141">f</a>);
+            <a href="https://docs.rs/syn/2.0.82/syn/parse/trait.Parser.html#tymethod.parse">syn::parse::Parser::parse</a>(<a href="#142">p</a>, <a href="#137">input</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>())
         },
         <a href="#138">items</a>,
     )<span class="question-mark">?</span>;
@@ -518,16 +518,16 @@
 }
 
 <span class="kw">pub fn </span>parse_nested_meta_items&lt;<span class="lifetime">'a</span>&gt;(
-    attrs: <span class="kw">impl </span>IntoIterator&lt;Item = <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://docs.rs/syn/2.0.79/syn/attr/struct.Attribute.html">syn::Attribute</a>&gt;,
+    attrs: <span class="kw">impl </span>IntoIterator&lt;Item = <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://docs.rs/syn/2.0.82/syn/attr/struct.Attribute.html">syn::Attribute</a>&gt;,
     attr_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
     items: <span class="kw-2">&amp;mut </span>[<span class="kw-2">&amp;mut </span><span class="kw">dyn </span><a href="#11-16">ParseNestedMetaItem</a>],
-) -&gt; syn::Result&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://docs.rs/syn/2.0.79/syn/attr/struct.Attribute.html">syn::Attribute</a>&gt;&gt; {
+) -&gt; syn::Result&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://docs.rs/syn/2.0.82/syn/attr/struct.Attribute.html">syn::Attribute</a>&gt;&gt; {
     <span class="kw">let </span>attr = <a href="#151">attrs</a>
         .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.IntoIterator.html#tymethod.into_iter">into_iter</a>()
-        .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.find">find</a>(|attr| <a href="#157">attr</a>.<a href="https://docs.rs/syn/2.0.79/syn/attr/struct.Attribute.html#method.path">path</a>().<a href="https://docs.rs/syn/2.0.79/syn/path/struct.Path.html#method.is_ident">is_ident</a>(<a href="#152">attr_name</a>));
+        .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.find">find</a>(|attr| <a href="#157">attr</a>.<a href="https://docs.rs/syn/2.0.82/syn/attr/struct.Attribute.html#method.path">path</a>().<a href="https://docs.rs/syn/2.0.82/syn/path/struct.Path.html#method.is_ident">is_ident</a>(<a href="#152">attr_name</a>));
     <span class="kw">if let </span><span class="prelude-val">Some</span>(attr) = <a href="#155">attr</a> {
-        <a href="#111-134">parse_nested_meta_items_from_fn</a>(|x| <a href="#158">attr</a>.<a href="https://docs.rs/syn/2.0.79/syn/attr/struct.Attribute.html#method.parse_nested_meta">parse_nested_meta</a>(<a href="#159">x</a>), <a href="#153">items</a>)<span class="question-mark">?</span>;
-        <a href="#91-110">check_meta_items</a>(<a href="#158">attr</a>.<a href="https://docs.rs/syn/2.0.79/syn/spanned/trait.Spanned.html#tymethod.span">span</a>(), <a href="#153">items</a>)<span class="question-mark">?</span>;
+        <a href="#111-134">parse_nested_meta_items_from_fn</a>(|x| <a href="#158">attr</a>.<a href="https://docs.rs/syn/2.0.82/syn/attr/struct.Attribute.html#method.parse_nested_meta">parse_nested_meta</a>(<a href="#159">x</a>), <a href="#153">items</a>)<span class="question-mark">?</span>;
+        <a href="#91-110">check_meta_items</a>(<a href="#158">attr</a>.<a href="https://docs.rs/syn/2.0.82/syn/spanned/trait.Spanned.html#tymethod.span">span</a>(), <a href="#153">items</a>)<span class="question-mark">?</span>;
         <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(<a href="#158">attr</a>))
     } <span class="kw">else </span>{
         <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>)
@@ -535,19 +535,19 @@
 }
 
 <span class="kw">pub fn </span>parse_optional_nested_meta_items&lt;<span class="lifetime">'a</span>&gt;(
-    attrs: <span class="kw">impl </span>IntoIterator&lt;Item = <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://docs.rs/syn/2.0.79/syn/attr/struct.Attribute.html">syn::Attribute</a>&gt;,
+    attrs: <span class="kw">impl </span>IntoIterator&lt;Item = <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://docs.rs/syn/2.0.82/syn/attr/struct.Attribute.html">syn::Attribute</a>&gt;,
     attr_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
     items: <span class="kw-2">&amp;mut </span>[<span class="kw-2">&amp;mut </span><span class="kw">dyn </span><a href="#11-16">ParseNestedMetaItem</a>],
-) -&gt; syn::Result&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://docs.rs/syn/2.0.79/syn/attr/struct.Attribute.html">syn::Attribute</a>&gt;&gt; {
+) -&gt; syn::Result&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://docs.rs/syn/2.0.82/syn/attr/struct.Attribute.html">syn::Attribute</a>&gt;&gt; {
     <span class="kw">let </span>attr = <a href="#168">attrs</a>
         .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.IntoIterator.html#tymethod.into_iter">into_iter</a>()
-        .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.find">find</a>(|attr| <a href="#174">attr</a>.<a href="https://docs.rs/syn/2.0.79/syn/attr/struct.Attribute.html#method.path">path</a>().<a href="https://docs.rs/syn/2.0.79/syn/path/struct.Path.html#method.is_ident">is_ident</a>(<a href="#169">attr_name</a>));
+        .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.find">find</a>(|attr| <a href="#174">attr</a>.<a href="https://docs.rs/syn/2.0.82/syn/attr/struct.Attribute.html#method.path">path</a>().<a href="https://docs.rs/syn/2.0.82/syn/path/struct.Path.html#method.is_ident">is_ident</a>(<a href="#169">attr_name</a>));
     <span class="kw">if let </span><span class="prelude-val">Some</span>(attr) = <a href="#172">attr</a> {
-        <span class="kw">if let </span><a href="https://docs.rs/syn/2.0.79/syn/attr/enum.Meta.html#variant.Path">syn::Meta::Path</a>(<span class="kw">_</span>) = <a href="#175">attr</a>.meta {
+        <span class="kw">if let </span><a href="https://docs.rs/syn/2.0.82/syn/attr/enum.Meta.html#variant.Path">syn::Meta::Path</a>(<span class="kw">_</span>) = <a href="#175">attr</a>.meta {
             <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(<a href="#175">attr</a>))
         } <span class="kw">else </span>{
-            <a href="#111-134">parse_nested_meta_items_from_fn</a>(|x| <a href="#175">attr</a>.<a href="https://docs.rs/syn/2.0.79/syn/attr/struct.Attribute.html#method.parse_nested_meta">parse_nested_meta</a>(<a href="#179">x</a>), <a href="#170">items</a>)<span class="question-mark">?</span>;
-            <a href="#91-110">check_meta_items</a>(<a href="#175">attr</a>.<a href="https://docs.rs/syn/2.0.79/syn/spanned/trait.Spanned.html#tymethod.span">span</a>(), <a href="#170">items</a>)<span class="question-mark">?</span>;
+            <a href="#111-134">parse_nested_meta_items_from_fn</a>(|x| <a href="#175">attr</a>.<a href="https://docs.rs/syn/2.0.82/syn/attr/struct.Attribute.html#method.parse_nested_meta">parse_nested_meta</a>(<a href="#179">x</a>), <a href="#170">items</a>)<span class="question-mark">?</span>;
+            <a href="#91-110">check_meta_items</a>(<a href="#175">attr</a>.<a href="https://docs.rs/syn/2.0.82/syn/spanned/trait.Spanned.html#tymethod.span">span</a>(), <a href="#170">items</a>)<span class="question-mark">?</span>;
             <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(<a href="#175">attr</a>))
         }
     } <span class="kw">else </span>{
@@ -592,10 +592,10 @@
 //   }
 </span><span class="kw">pub fn </span>gen_enum_from_glib(
     enum_name: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.87/proc_macro2/struct.Ident.html">Ident</a>,
-    enum_variants: <span class="kw-2">&amp;</span>Punctuated&lt;<a href="https://docs.rs/syn/2.0.79/syn/data/struct.Variant.html">Variant</a>, <a href="https://docs.rs/syn/2.0.79/syn/token/struct.Comma.html">Comma</a>&gt;,
+    enum_variants: <span class="kw-2">&amp;</span>Punctuated&lt;<a href="https://docs.rs/syn/2.0.82/syn/data/struct.Variant.html">Variant</a>, <a href="https://docs.rs/syn/2.0.82/syn/token/struct.Comma.html">Comma</a>&gt;,
 ) -&gt; <a href="https://docs.rs/proc-macro2/1.0.87/proc_macro2/struct.TokenStream.html">TokenStream</a> {
     <span class="comment">// FIXME: can we express this with a match()?
-    </span><span class="kw">let </span>recurse = <a href="#225">enum_variants</a>.<a href="https://docs.rs/syn/2.0.79/syn/punctuated/struct.Punctuated.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|v| {
+    </span><span class="kw">let </span>recurse = <a href="#225">enum_variants</a>.<a href="https://docs.rs/syn/2.0.82/syn/punctuated/struct.Punctuated.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|v| {
         <span class="kw">let </span>name = <span class="kw-2">&amp;</span><a href="#228">v</a>.ident;
         <a class="macro" href="https://docs.rs/quote/1.0.37/quote/macro.quote_spanned.html">quote_spanned!</a> { v.span() =&gt;
             <span class="kw">if </span>value == #enum_name::#name <span class="kw">as </span>i32 {

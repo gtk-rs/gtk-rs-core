@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/auto/checksum.rs`."><title>checksum.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-a5dc3bae.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.84.0-nightly (da935398d 2024-10-19)" data-channel="nightly" data-search-js="search-c5a66128.js" data-settings-js="settings-0f613d39.js" ><script src="../../../static.files/storage-59e33391.js"></script><script defer src="../../../static.files/src-script-56102188.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/auto/checksum.rs`."><title>checksum.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-a5dc3bae.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.84.0-nightly (662180b34 2024-10-20)" data-channel="nightly" data-search-js="search-c5a66128.js" data-settings-js="settings-0f613d39.js" ><script src="../../../static.files/storage-59e33391.js"></script><script defer src="../../../static.files/src-script-56102188.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -171,7 +171,7 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-</span><span class="kw">use crate</span>::{<a href="../../../glib_sys/index.html">ffi</a>, <a href="../lib.rs.html#163">translate</a>::<span class="kw-2">*</span>, <a href="enums.rs.html#15-33">ChecksumType</a>};
+</span><span class="kw">use crate</span>::{ffi, <a href="../lib.rs.html#163">translate</a>::<span class="kw-2">*</span>, <a href="enums.rs.html#15-33">ChecksumType</a>};
 
 <a class="macro" href="../wrapper.rs.html#277-444">crate::wrapper!</a> {
     <span class="doccomment">/// GLib provides a generic API for computing checksums (or ‘digests’)
@@ -191,7 +191,7 @@
     /// one go, use the convenience functions [`compute_checksum_for_data()`][crate::compute_checksum_for_data()]
     /// and `compute_checksum_for_string()`, respectively.
     </span><span class="attr">#[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
-    </span><span class="kw">pub struct </span><a href="../../../glib/struct.Checksum.html">Checksum</a>(Boxed&lt;<a href="../../../glib_sys/struct.GChecksum.html">ffi::GChecksum</a>&gt;);
+    </span><span class="kw">pub struct </span><a href="../../../glib/struct.Checksum.html">Checksum</a>(Boxed&lt;ffi::GChecksum&gt;);
 
     <span class="kw">match fn </span>{
         copy =&gt; |ptr| ffi::g_checksum_copy(ptr),
@@ -223,14 +223,14 @@
     ///   Use g_checksum_free() to free the memory allocated by it.
     </span><span class="attr">#[doc(alias = <span class="string">"g_checksum_new"</span>)]
     </span><span class="kw">pub fn </span>new(checksum_type: <a href="enums.rs.html#15-33">ChecksumType</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="#7-32">Checksum</a>&gt; {
-        <span class="kw">unsafe </span>{ <a href="../translate.rs.html#1634-1636">from_glib_full</a>(<a href="../../../glib_sys/fn.g_checksum_new.html">ffi::g_checksum_new</a>(<a href="#56">checksum_type</a>.<a href="../translate.rs.html#334">into_glib</a>())) }
+        <span class="kw">unsafe </span>{ <a href="../translate.rs.html#1634-1636">from_glib_full</a>(ffi::g_checksum_new(<a href="#56">checksum_type</a>.<a href="../translate.rs.html#334">into_glib</a>())) }
     }
 
     <span class="doccomment">/// Resets the state of the @self back to its initial state.
     </span><span class="attr">#[doc(alias = <span class="string">"g_checksum_reset"</span>)]
     </span><span class="kw">pub fn </span>reset(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
         <span class="kw">unsafe </span>{
-            <a href="../../../glib_sys/fn.g_checksum_reset.html">ffi::g_checksum_reset</a>(<a class="self" href="#62">self</a>.<a href="../translate.rs.html#471">to_glib_none_mut</a>().<span class="number">0</span>);
+            ffi::g_checksum_reset(<a class="self" href="#62">self</a>.<a href="../translate.rs.html#471">to_glib_none_mut</a>().<span class="number">0</span>);
         }
     }
 
@@ -243,7 +243,7 @@
     </span><span class="kw">pub fn </span>update(<span class="kw-2">&amp;mut </span><span class="self">self</span>, data: <span class="kw-2">&amp;</span>[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]) {
         <span class="kw">let </span>length = <a href="#74">data</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.len">len</a>() <span class="kw">as _</span>;
         <span class="kw">unsafe </span>{
-            <a href="../../../glib_sys/fn.g_checksum_update.html">ffi::g_checksum_update</a>(<a class="self" href="#74">self</a>.<a href="../translate.rs.html#471">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#74">data</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>, <a href="#75">length</a>);
+            ffi::g_checksum_update(<a class="self" href="#74">self</a>.<a href="../translate.rs.html#471">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#74">data</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>, <a href="#75">length</a>);
         }
     }
 
@@ -257,7 +257,7 @@
     /// not supported.
     </span><span class="attr">#[doc(alias = <span class="string">"g_checksum_type_get_length"</span>)]
     </span><span class="kw">pub fn </span>type_get_length(checksum_type: <a href="enums.rs.html#15-33">ChecksumType</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.isize.html">isize</a> {
-        <span class="kw">unsafe </span>{ <a href="../../../glib_sys/fn.g_checksum_type_get_length.html">ffi::g_checksum_type_get_length</a>(<a href="#90">checksum_type</a>.<a href="../translate.rs.html#334">into_glib</a>()) }
+        <span class="kw">unsafe </span>{ ffi::g_checksum_type_get_length(<a href="#90">checksum_type</a>.<a href="../translate.rs.html#334">into_glib</a>()) }
     }
 }
 
