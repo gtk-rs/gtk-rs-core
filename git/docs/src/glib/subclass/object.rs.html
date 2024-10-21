@@ -999,11 +999,11 @@
 </span><span class="kw">use </span>std::{<a href="https://doc.rust-lang.org/nightly/core/mem/index.html">mem</a>, <a href="https://doc.rust-lang.org/nightly/core/ptr/index.html">ptr</a>};
 
 <span class="kw">use crate</span>::{
-    ffi, <a href="../../../gobject_sys/index.html">gobject_ffi</a>,
+    <a href="../../../glib_sys/index.html">ffi</a>, <a href="../../../gobject_sys/index.html">gobject_ffi</a>,
     <a href="../lib.rs.html#158">prelude</a>::<span class="kw-2">*</span>,
     subclass::{<a href="mod.rs.html#442-458">prelude</a>::<span class="kw-2">*</span>, <a href="signal.rs.html#29-35">Signal</a>},
     <a href="../lib.rs.html#163">translate</a>::<span class="kw-2">*</span>,
-    <a href="../object.rs.html#1371-1374">Object</a>, <a href="../param_spec.rs.html#19-42">ParamSpec</a>, <a href="../collections/slice.rs.html#15-19">Slice</a>, <a href="../value.rs.html#478-512">Value</a>,
+    <a href="../object.rs.html#1371-1374">Object</a>, <a href="../param_spec.rs.html#19-28">ParamSpec</a>, <a href="../collections/slice.rs.html#15-19">Slice</a>, <a href="../value.rs.html#478-512">Value</a>,
 };
 
 <span class="comment">// rustdoc-stripper-ignore-next
@@ -1014,7 +1014,7 @@
 </span><span class="kw">pub trait </span><a href="../../../glib/subclass/object/trait.ObjectImpl.html">ObjectImpl</a>: ObjectSubclass&lt;Type: IsA&lt;<a href="../object.rs.html#1371-1374">Object</a>&gt;&gt; {
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Properties installed for this type.
-    </span><span class="kw">fn </span>properties() -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'static </span>[<a href="../param_spec.rs.html#19-42">ParamSpec</a>] {
+    </span><span class="kw">fn </span>properties() -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'static </span>[<a href="../param_spec.rs.html#19-28">ParamSpec</a>] {
         <span class="kw-2">&amp;</span>[]
     }
 
@@ -1037,7 +1037,7 @@
     ///  `set_property` don't emit property change notification explicitly, this will
     ///  be done implicitly by the type system. However, if the notify signal is
     ///  emitted explicitly, the type system will not emit it a second time.
-    </span><span class="kw">fn </span>set_property(<span class="kw-2">&amp;</span><span class="self">self</span>, _id: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>, _value: <span class="kw-2">&amp;</span><a href="../value.rs.html#478-512">Value</a>, _pspec: <span class="kw-2">&amp;</span><a href="../param_spec.rs.html#19-42">ParamSpec</a>) {
+    </span><span class="kw">fn </span>set_property(<span class="kw-2">&amp;</span><span class="self">self</span>, _id: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>, _value: <span class="kw-2">&amp;</span><a href="../value.rs.html#478-512">Value</a>, _pspec: <span class="kw-2">&amp;</span><a href="../param_spec.rs.html#19-28">ParamSpec</a>) {
         <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.unimplemented.html">unimplemented!</a>()
     }
 
@@ -1052,7 +1052,7 @@
     </span><span class="doccomment">/// the generic getter for all properties of this type. Should be
     ///  overridden for every type with properties.
     </span><span class="attr">#[doc(alias = <span class="string">"get_property"</span>)]
-    </span><span class="kw">fn </span>property(<span class="kw-2">&amp;</span><span class="self">self</span>, _id: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>, _pspec: <span class="kw-2">&amp;</span><a href="../param_spec.rs.html#19-42">ParamSpec</a>) -&gt; <a href="../value.rs.html#478-512">Value</a> {
+    </span><span class="kw">fn </span>property(<span class="kw-2">&amp;</span><span class="self">self</span>, _id: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>, _pspec: <span class="kw-2">&amp;</span><a href="../param_spec.rs.html#19-28">ParamSpec</a>) -&gt; <a href="../value.rs.html#478-512">Value</a> {
         <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.unimplemented.html">unimplemented!</a>()
     }
 
@@ -1103,14 +1103,14 @@
     /// [`ObjectExt::freeze_notify()`][crate::prelude::ObjectExt::freeze_notify()]. In this case, the signal emissions are queued
     /// and will be emitted (in reverse order) when [`ObjectExt::thaw_notify()`][crate::prelude::ObjectExt::thaw_notify()] is
     /// called.
-    </span><span class="kw">fn </span>notify(<span class="kw-2">&amp;</span><span class="self">self</span>, pspec: <span class="kw-2">&amp;</span><a href="../param_spec.rs.html#19-42">ParamSpec</a>) {
+    </span><span class="kw">fn </span>notify(<span class="kw-2">&amp;</span><span class="self">self</span>, pspec: <span class="kw-2">&amp;</span><a href="../param_spec.rs.html#19-28">ParamSpec</a>) {
         <a class="self" href="#114">self</a>.<a href="#311-323">parent_notify</a>(<a href="#114">pspec</a>)
     }
 
     <span class="doccomment">/// emits property change notification for a bunch
     ///  of properties. Overriding `dispatch_properties_changed` should be rarely
     ///  needed.
-    </span><span class="kw">fn </span>dispatch_properties_changed(<span class="kw-2">&amp;</span><span class="self">self</span>, pspecs: <span class="kw-2">&amp;</span>[<a href="../param_spec.rs.html#19-42">ParamSpec</a>]) {
+    </span><span class="kw">fn </span>dispatch_properties_changed(<span class="kw-2">&amp;</span><span class="self">self</span>, pspecs: <span class="kw-2">&amp;</span>[<a href="../param_spec.rs.html#19-28">ParamSpec</a>]) {
         <a class="self" href="#121">self</a>.<a href="#328-341">parent_dispatch_properties_changed</a>(<a href="#121">pspecs</a>)
     }
 }
@@ -1202,21 +1202,21 @@
 </span><span class="kw">pub trait </span><a href="../../../glib/subclass/object/trait.DerivedObjectProperties.html">DerivedObjectProperties</a>: <a href="types.rs.html#601-736">ObjectSubclass</a> {
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Properties installed for this type.
-    </span><span class="kw">fn </span>derived_properties() -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'static </span>[<a href="../param_spec.rs.html#19-42">ParamSpec</a>] {
+    </span><span class="kw">fn </span>derived_properties() -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'static </span>[<a href="../param_spec.rs.html#19-28">ParamSpec</a>] {
         <span class="kw-2">&amp;</span>[]
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Similar to [`ObjectImpl`](trait.ObjectImpl.html) but auto-generated by the [`Properties`](crate::Properties) macro
     /// to allow handling more complex use-cases.
-    </span><span class="kw">fn </span>derived_set_property(<span class="kw-2">&amp;</span><span class="self">self</span>, _id: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>, _value: <span class="kw-2">&amp;</span><a href="../value.rs.html#478-512">Value</a>, _pspec: <span class="kw-2">&amp;</span><a href="../param_spec.rs.html#19-42">ParamSpec</a>) {
+    </span><span class="kw">fn </span>derived_set_property(<span class="kw-2">&amp;</span><span class="self">self</span>, _id: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>, _value: <span class="kw-2">&amp;</span><a href="../value.rs.html#478-512">Value</a>, _pspec: <span class="kw-2">&amp;</span><a href="../param_spec.rs.html#19-28">ParamSpec</a>) {
         <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.unimplemented.html">unimplemented!</a>()
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Similar to [`ObjectImpl`](trait.ObjectImpl.html) but auto-generated by the [`Properties`](crate::Properties) macro
     /// to allow handling more complex use-cases.
-    </span><span class="kw">fn </span>derived_property(<span class="kw-2">&amp;</span><span class="self">self</span>, _id: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>, _pspec: <span class="kw-2">&amp;</span><a href="../param_spec.rs.html#19-42">ParamSpec</a>) -&gt; <a href="../value.rs.html#478-512">Value</a> {
+    </span><span class="kw">fn </span>derived_property(<span class="kw-2">&amp;</span><span class="self">self</span>, _id: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>, _pspec: <span class="kw-2">&amp;</span><a href="../param_spec.rs.html#19-28">ParamSpec</a>) -&gt; <a href="../value.rs.html#478-512">Value</a> {
         <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.unimplemented.html">unimplemented!</a>()
     }
 }
@@ -1233,7 +1233,7 @@
         <span class="kw">unsafe </span>{
             <a href="types.rs.html#1189-1244"><span class="kw">super</span>::types::signal_override_class_handler</a>(
                 <a href="#237">name</a>,
-                <span class="kw-2">*</span>(<span class="self"><a href="#237">self</a> </span><span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_ as </span><span class="kw-2">*mut </span>ffi::GType),
+                <span class="kw-2">*</span>(<span class="self"><a href="#237">self</a> </span><span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_ as </span><span class="kw-2">*mut </span><a href="../../../glib_sys/manual/type.GType.html">ffi::GType</a>),
                 <a href="#237">class_handler</a>,
             );
         }
@@ -1300,7 +1300,7 @@
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Chain up to the parent class' implementation of `glib::Object::notify()`.
     </span><span class="attr">#[inline]
-    </span><span class="kw">fn </span>parent_notify(<span class="kw-2">&amp;</span><span class="self">self</span>, pspec: <span class="kw-2">&amp;</span><a href="../param_spec.rs.html#19-42">ParamSpec</a>) {
+    </span><span class="kw">fn </span>parent_notify(<span class="kw-2">&amp;</span><span class="self">self</span>, pspec: <span class="kw-2">&amp;</span><a href="../param_spec.rs.html#19-28">ParamSpec</a>) {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>data = <a href="types.rs.html#580"><span class="self">Self</span>::type_data</a>();
             <span class="kw">let </span>parent_class = <a href="#313">data</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().<a href="types.rs.html#478-481">parent_class</a>() <span class="kw">as </span><span class="kw-2">*mut </span><a href="../../../gobject_sys/struct.GObjectClass.html">gobject_ffi::GObjectClass</a>;
@@ -1317,7 +1317,7 @@
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Chain up to the parent class' implementation of `glib::Object::dispatch_properties_changed()`.
     </span><span class="attr">#[inline]
-    </span><span class="kw">fn </span>parent_dispatch_properties_changed(<span class="kw-2">&amp;</span><span class="self">self</span>, pspecs: <span class="kw-2">&amp;</span>[<a href="../param_spec.rs.html#19-42">ParamSpec</a>]) {
+    </span><span class="kw">fn </span>parent_dispatch_properties_changed(<span class="kw-2">&amp;</span><span class="self">self</span>, pspecs: <span class="kw-2">&amp;</span>[<a href="../param_spec.rs.html#19-28">ParamSpec</a>]) {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>data = <a href="types.rs.html#580"><span class="self">Self</span>::type_data</a>();
             <span class="kw">let </span>parent_class = <a href="#330">data</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().<a href="types.rs.html#478-481">parent_class</a>() <span class="kw">as </span><span class="kw-2">*mut </span><a href="../../../gobject_sys/struct.GObjectClass.html">gobject_ffi::GObjectClass</a>;
