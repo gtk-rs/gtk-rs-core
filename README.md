@@ -50,10 +50,10 @@ $ git submodule update --checkout
 
 ## Development
 
-This repository is mostly split into two branches: `master` and `crate`.
-`master` contains the not yet released code and is where new developments
-are happening. `crate` contains the last release source code and isn't supposed to
-be updated.
+This repository is mostly split into two branches: `main` and versioned
+branches, e.g. `0.20`. `main` contains the not yet released code and is where
+new developments are happening. `0.20` contains the last release source code
+of the 0.20 release branch.
 
 This repository is structured as follows:
 
