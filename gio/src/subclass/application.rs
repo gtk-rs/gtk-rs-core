@@ -5,7 +5,7 @@ use std::{ffi::OsString, fmt, ops::Deref, ptr};
 use glib::{prelude::*, subclass::prelude::*, translate::*, ExitCode, VariantDict};
 use libc::{c_char, c_int, c_void};
 
-use crate::{ffi, Application};
+use crate::{ffi, ActionGroup, ActionMap, Application};
 
 pub struct ArgumentList {
     pub(crate) ptr: *mut *mut *mut c_char,
@@ -64,7 +64,9 @@ impl From<ArgumentList> for Vec<OsString> {
     }
 }
 
-pub trait ApplicationImpl: ObjectImpl + ObjectSubclass<Type: IsA<Application>> {
+pub trait ApplicationImpl:
+    ObjectImpl + ObjectSubclass<Type: IsA<Application> + IsA<ActionGroup> + IsA<ActionMap>>
+{
     fn activate(&self) {
         self.parent_activate()
     }
@@ -449,7 +451,7 @@ mod tests {
 
     glib::wrapper! {
         pub struct SimpleApplication(ObjectSubclass<imp::SimpleApplication>)
-        @implements crate::Application;
+        @implements Application, ActionMap, ActionGroup;
     }
 
     #[test]
