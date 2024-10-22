@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib-macros/src/object_impl_attributes/subclass.rs`."><title>subclass.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-a5dc3bae.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="glib_macros" data-themes="" data-resource-suffix="" data-rustdoc-version="1.84.0-nightly (662180b34 2024-10-20)" data-channel="nightly" data-search-js="search-c5a66128.js" data-settings-js="settings-0f613d39.js" ><script src="../../../static.files/storage-59e33391.js"></script><script defer src="../../../static.files/src-script-56102188.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib-macros/src/object_impl_attributes/subclass.rs`."><title>subclass.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-a5dc3bae.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="glib_macros" data-themes="" data-resource-suffix="" data-rustdoc-version="1.84.0-nightly (439284741 2024-10-21)" data-channel="nightly" data-search-js="search-c5a66128.js" data-settings-js="settings-0f613d39.js" ><script src="../../../static.files/storage-59e33391.js"></script><script defer src="../../../static.files/src-script-56102188.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -50,7 +50,7 @@
             </section>
         ` };
 
-        if ("master" == "master") {
+        if ("main" == "main") {
             document.body.insertAdjacentHTML(
                 'beforeend',
                 popup("This is the development version. Go to latest stable version.", "stable/latest")
@@ -59,7 +59,7 @@
             fetch('https://gtk-rs.org/gtk-rs-core/LATEST_RELEASE_BRANCH')
                 .then(response => response.text())
                 .then(latest_branch => {
-                    if (latest_branch.trim() != "master") {
+                    if (latest_branch.trim() != "main") {
                         document.body.insertAdjacentHTML(
                             'beforeend',
                             popup("This version is outdated. Go to latest version.", "stable/latest")
@@ -387,10 +387,10 @@
 <a href="#313" id="313">313</a></pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
 </span><span class="kw">use </span>heck::ToShoutySnakeCase;
-<span class="kw">use </span><a href="https://docs.rs/proc-macro2/1.0.87/proc_macro2/struct.TokenStream.html">proc_macro2::TokenStream</a>;
+<span class="kw">use </span><a href="https://docs.rs/proc-macro2/1.0.88/proc_macro2/struct.TokenStream.html">proc_macro2::TokenStream</a>;
 <span class="kw">use </span>quote::{<a href="https://docs.rs/quote/1.0.37/quote/macro.format_ident.html">format_ident</a>, <a href="https://docs.rs/quote/1.0.37/quote/macro.quote.html">quote</a>, <a href="https://docs.rs/quote/1.0.37/quote/to_tokens/trait.ToTokens.html">ToTokens</a>};
 
-<span class="kw">pub fn </span>impl_object_subclass(input: <a href="../object_impl_attributes.rs.html#19-27"><span class="kw">super</span>::Input</a>) -&gt; <a href="https://docs.rs/proc-macro2/1.0.87/proc_macro2/struct.TokenStream.html">TokenStream</a> {
+<span class="kw">pub fn </span>impl_object_subclass(input: <a href="../object_impl_attributes.rs.html#19-27"><span class="kw">super</span>::Input</a>) -&gt; <a href="https://docs.rs/proc-macro2/1.0.88/proc_macro2/struct.TokenStream.html">TokenStream</a> {
     <span class="kw">let </span>crate_ident = <a href="../utils.rs.html#188-215"><span class="kw">crate</span>::utils::crate_ident_new</a>();
     <span class="kw">let </span><a href="../object_impl_attributes.rs.html#19-27"><span class="kw">super</span>::Input</a> {
         attrs,
@@ -556,9 +556,9 @@
 
 <span class="comment">// Registers the object subclass as a static type.
 </span><span class="kw">fn </span>register_object_subclass_as_static(
-    crate_ident: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.87/proc_macro2/struct.TokenStream.html">TokenStream</a>,
-    self_ty: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.87/proc_macro2/struct.Ident.html">syn::Ident</a>,
-) -&gt; <a href="https://docs.rs/proc-macro2/1.0.87/proc_macro2/struct.TokenStream.html">TokenStream</a> {
+    crate_ident: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.88/proc_macro2/struct.TokenStream.html">TokenStream</a>,
+    self_ty: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.88/proc_macro2/struct.Ident.html">syn::Ident</a>,
+) -&gt; <a href="https://docs.rs/proc-macro2/1.0.88/proc_macro2/struct.TokenStream.html">TokenStream</a> {
     <span class="comment">// registers the object subclass on first use (lazy registration).
     </span><a class="macro" href="https://docs.rs/quote/1.0.37/quote/macro.quote.html">quote!</a> {
         <span class="kw">impl </span>#self_ty {
@@ -578,11 +578,11 @@
 <span class="comment">// The following implementations follows the lifecycle of plugins and of dynamic types (see [`TypePluginExt`] and [`TypeModuleExt`]).
 // An object subclass can be reregistered as a dynamic type.
 </span><span class="kw">fn </span>register_object_subclass_as_dynamic(
-    crate_ident: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.87/proc_macro2/struct.TokenStream.html">TokenStream</a>,
-    self_ty: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.87/proc_macro2/struct.Ident.html">syn::Ident</a>,
-    plugin_ty: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.87/proc_macro2/struct.TokenStream.html">TokenStream</a>,
+    crate_ident: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.88/proc_macro2/struct.TokenStream.html">TokenStream</a>,
+    self_ty: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.88/proc_macro2/struct.Ident.html">syn::Ident</a>,
+    plugin_ty: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.88/proc_macro2/struct.TokenStream.html">TokenStream</a>,
     lazy_registration: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>,
-) -&gt; <a href="https://docs.rs/proc-macro2/1.0.87/proc_macro2/struct.TokenStream.html">TokenStream</a> {
+) -&gt; <a href="https://docs.rs/proc-macro2/1.0.88/proc_macro2/struct.TokenStream.html">TokenStream</a> {
     <span class="comment">// The following implementations follows the lifecycle of plugins and of dynamic types (see [`TypePluginExt`] and [`TypeModuleExt`]).
     // An object subclass can be reregistered as a dynamic type.
     </span><span class="kw">if </span>lazy_registration {
