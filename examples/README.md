@@ -1,6 +1,6 @@
 # Examples
 
-Consists of various examples of how to use the `gtk-rs-core` libraries. Note that there are other examples in [gtk3-rs](https://github.com/gtk-rs/gtk3-rs/tree/master/examples) & [gtk4-rs](https://github.com/gtk-rs/gtk4-rs/tree/master/examples) if you want GTK specific ones.
+Consists of various examples of how to use the `gtk-rs-core` libraries. Note that there are other examples in [gtk3-rs](https://github.com/gtk-rs/gtk3-rs/tree/master/examples) & [gtk4-rs](https://github.com/gtk-rs/gtk4-rs/tree/main/examples) if you want GTK specific ones.
 
 - [GIO Async TLS](./gio_async_tls/)
 - [GIO Futures](./gio_futures/)
