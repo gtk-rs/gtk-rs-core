@@ -63,6 +63,11 @@ pub unsafe trait ObjectType:
 ///
 /// The trait can only be implemented if the appropriate `ToGlibPtr`
 /// implementations exist.
+#[diagnostic::on_unimplemented(
+    message = "the trait `glib::object::IsA<{T}>` is not implemented for `{Self}`",
+    label = "requires `{Self}` to be a GObject that can be statically cast to `{T}`",
+    note = "if this is your own object, use the `glib::wrapper!` macro to implement this trait: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/macro.wrapper.html"
+)]
 pub unsafe trait IsA<T: ObjectType>:
     ObjectType + Into<T> + AsRef<T> + std::borrow::Borrow<T>
 {
