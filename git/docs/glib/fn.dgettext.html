@@ -71,7 +71,7 @@
 </script>
 
 
-<nav class="mobile-topbar"><button class="sidebar-menu-toggle" title="show sidebar"></button></nav><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../glib/index.html">glib</a><span class="version">0.21.0</span></h2></div><div class="sidebar-elems"><section id="rustdoc-toc"><h2 class="location"><a href="#">dgettext</a></h2><h3><a href="#">Sections</a></h3><ul class="block top-toc"><li><a href="#domain" title="`domain`"><code>domain</code></a></li><li><a href="#msgid" title="`msgid`"><code>msgid</code></a></li><li><a href="#returns" title="Returns">Returns</a></li></ul></section><div id="rustdoc-modnav"><h2 class="in-crate"><a href="index.html">In crate glib</a></h2></div></div></nav><div class="sidebar-resizer"></div><main><div class="width-limiter"><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><span class="rustdoc-breadcrumbs"><a href="index.html">glib</a></span><h1>Function <span class="fn">dgettext</span><button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><rustdoc-toolbar></rustdoc-toolbar><span class="sub-heading"><a class="src" href="../src/glib/auto/functions.rs.html#335-342">source</a> </span></div><pre class="rust item-decl"><code>pub fn dgettext(domain: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;, msgid: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a class="struct" href="struct.GString.html" title="struct glib::GString">GString</a></code></pre><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>This function is a wrapper of dgettext() which does not translate
+<nav class="mobile-topbar"><button class="sidebar-menu-toggle" title="show sidebar"></button></nav><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../glib/index.html">glib</a><span class="version">0.21.0</span></h2></div><div class="sidebar-elems"><section id="rustdoc-toc"><h2 class="location"><a href="#">dgettext</a></h2><h3><a href="#">Sections</a></h3><ul class="block top-toc"><li><a href="#object_type" title="`object_type`"><code>object_type</code></a></li><li><a href="#first_property_name" title="`first_property_name`"><code>first_property_name</code></a></li><li><a href="#returns" title="Returns">Returns</a><ul><li><a href="#object_type-1" title="`object_type`"><code>object_type</code></a></li><li><a href="#first_property_name-1" title="`first_property_name`"><code>first_property_name</code></a></li></ul></li><li><a href="#returns-1" title="Returns">Returns</a></li></ul></section><div id="rustdoc-modnav"><h2 class="in-crate"><a href="index.html">In crate glib</a></h2></div></div></nav><div class="sidebar-resizer"></div><main><div class="width-limiter"><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><span class="rustdoc-breadcrumbs"><a href="index.html">glib</a></span><h1>Function <span class="fn">dgettext</span><button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><rustdoc-toolbar></rustdoc-toolbar><span class="sub-heading"><a class="src" href="../src/glib/auto/functions.rs.html#566-573">source</a> </span></div><pre class="rust item-decl"><code>pub fn dgettext(domain: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;, msgid: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a class="struct" href="struct.GString.html" title="struct glib::GString">GString</a></code></pre><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>This function is a wrapper of dgettext() which does not translate
 the message if the default domain as set with textdomain() has no
 translations for the current locale.</p>
 <p>The advantage of using this function over dgettext() proper is that
@@ -92,24 +92,85 @@ call all the following conditions hold:</p>
 <p>textdomain() has been called to set a default text domain</p>
 </li>
 <li>
-<p>there is no translations available for the default text domain
-and the current locale</p>
-</li>
-<li>
-<p>current locale is not “C” or any English locales (those
-starting with “en_”)</p>
+<p>there is no translations available for the default text domCreates a new instance of a <a href="object/struct.Object.html" title="struct glib::object::Object"><code>Object</code></a> subtype and sets its properties.</p>
 </li>
 </ul>
-<p>Note that this behavior may not be desired for example if an application
-has its untranslated messages in a language other than English. In those
-cases the application should call textdomain() after initializing GTK.</p>
-<p>Applications should normally not use this function directly,
-but use the _() macro for translations.</p>
-<h3 id="domain"><a class="doc-anchor" href="#domain">§</a><code>domain</code></h3>
-<p>the translation domain to use, or <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a> to use
-the domain set with textdomain()</p>
-<h3 id="msgid"><a class="doc-anchor" href="#msgid">§</a><code>msgid</code></h3>
-<p>message to translate</p>
+<p>Construction parameters (see <a href="struct.ParamFlags.html#associatedconstant.CONSTRUCT" title="associated constant glib::ParamFlags::CONSTRUCT"><code>ParamFlags::CONSTRUCT</code></a>, <a href="struct.ParamFlags.html#associatedconstant.CONSTRUCT_ONLY" title="associated constant glib::ParamFlags::CONSTRUCT_ONLY"><code>ParamFlags::CONSTRUCT_ONLY</code></a>)
+which are not explicitly specified are set to their default values. Any
+private data for the object is guaranteed to be initialized with zeros, as
+per <code>g_type_create_instance()</code>.</p>
+<p>Note that in C, small integer types in variable argument lists are promoted
+up to <code>gint</code> or <code>guint</code> as appropriate, and read back accordingly. <code>gint</code> is
+32 bits on every platform on which GLib is currently supported. This means that
+you can use C expressions of type <code>gint</code> with [<code>new()</code>][Self::new()] and properties of
+type <code>gint</code> or <code>guint</code> or smaller. Specifically, you can use integer literals
+with these property types.</p>
+<p>When using property types of <code>gint64</code> or <code>guint64</code>, you must ensure that the
+value that you provide is 64 bit. This means that you should use a cast or
+make use of the <code>G_GINT64_CONSTANT</code> or <code>G_GUINT64_CONSTANT</code> macros.</p>
+<p>Similarly, <code>gfloat</code> is promoted to <code>gdouble</code>, so you must ensure that the value
+you provide is a <code>gdouble</code>, even for a property of type <code>gfloat</code>.</p>
+<p>Since GLib 2.72, all <code>GObjects</code> are guaranteed to be aligned to at least the
+alignment of the largest basic GLib type (typically this is <code>guint64</code> or
+<code>gdouble</code>). If you need larger alignment for an element in a <a href="object/struct.Object.html" title="struct glib::object::Object"><code>Object</code></a>, you
+should allocate it on the heap (aligned), or arrange for your <a href="object/struct.Object.html" title="struct glib::object::Object"><code>Object</code></a> to be
+appropriately padded.</p>
+<h3 id="object_type"><a class="doc-anchor" href="#object_type">§</a><code>object_type</code></h3>
+<p>the type id of the <a href="object/struct.Object.html" title="struct glib::object::Object"><code>Object</code></a> subtype to instantiate</p>
+<h3 id="first_property_name"><a class="doc-anchor" href="#first_property_name">§</a><code>first_property_name</code></h3>
+<p>the name of the first property</p>
 <h2 id="returns"><a class="doc-anchor" href="#returns">§</a>Returns</h2>
-<p>The translated string</p>
+<p>a new instance of
+<code>object_type</code>
+This function is a wrapper of dgettext() which does not translate
+the message if the default domain as set with textdomain() has no
+translations for the current locale.</p>
+<p>The advantage of using this function over dgettext() proper is that
+libraries using this function (like GTK) will not use translations
+if the application using the library does not have translations for
+the current locale.  This results in a consistent English-only
+interface instead of one having partial translations.  For this
+feature to work, the call to textdomain() and setlocale() should
+precede any g_dgettext() invocations.  For GTK, it means calling
+textdomain() before gtk_init or its variants.</p>
+<p>This function disables translations if and only if upon its first
+call all the following conditions hold:</p>
+<ul>
+<li>
+<p>@domain is not <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a></p>
+</li>
+<li>
+<p>textdomain() has been called to set a default text domain</p>
+</li>
+<li>
+<p>there is no translations available for the default text domCreates a new instance of a <a href="object/struct.Object.html" title="struct glib::object::Object"><code>Object</code></a> subtype and sets its properties.</p>
+</li>
+</ul>
+<p>Construction parameters (see <a href="struct.ParamFlags.html#associatedconstant.CONSTRUCT" title="associated constant glib::ParamFlags::CONSTRUCT"><code>ParamFlags::CONSTRUCT</code></a>, <a href="struct.ParamFlags.html#associatedconstant.CONSTRUCT_ONLY" title="associated constant glib::ParamFlags::CONSTRUCT_ONLY"><code>ParamFlags::CONSTRUCT_ONLY</code></a>)
+which are not explicitly specified are set to their default values. Any
+private data for the object is guaranteed to be initialized with zeros, as
+per <code>g_type_create_instance()</code>.</p>
+<p>Note that in C, small integer types in variable argument lists are promoted
+up to <code>gint</code> or <code>guint</code> as appropriate, and read back accordingly. <code>gint</code> is
+32 bits on every platform on which GLib is currently supported. This means that
+you can use C expressions of type <code>gint</code> with [<code>new()</code>][Self::new()] and properties of
+type <code>gint</code> or <code>guint</code> or smaller. Specifically, you can use integer literals
+with these property types.</p>
+<p>When using property types of <code>gint64</code> or <code>guint64</code>, you must ensure that the
+value that you provide is 64 bit. This means that you should use a cast or
+make use of the <code>G_GINT64_CONSTANT</code> or <code>G_GUINT64_CONSTANT</code> macros.</p>
+<p>Similarly, <code>gfloat</code> is promoted to <code>gdouble</code>, so you must ensure that the value
+you provide is a <code>gdouble</code>, even for a property of type <code>gfloat</code>.</p>
+<p>Since GLib 2.72, all <code>GObjects</code> are guaranteed to be aligned to at least the
+alignment of the largest basic GLib type (typically this is <code>guint64</code> or
+<code>gdouble</code>). If you need larger alignment for an element in a <a href="object/struct.Object.html" title="struct glib::object::Object"><code>Object</code></a>, you
+should allocate it on the heap (aligned), or arrange for your <a href="object/struct.Object.html" title="struct glib::object::Object"><code>Object</code></a> to be
+appropriately padded.</p>
+<h3 id="object_type-1"><a class="doc-anchor" href="#object_type-1">§</a><code>object_type</code></h3>
+<p>the type id of the <a href="object/struct.Object.html" title="struct glib::object::Object"><code>Object</code></a> subtype to instantiate</p>
+<h3 id="first_property_name-1"><a class="doc-anchor" href="#first_property_name-1">§</a><code>first_property_name</code></h3>
+<p>the name of the first property</p>
+<h2 id="returns-1"><a class="doc-anchor" href="#returns-1">§</a>Returns</h2>
+<p>a new instance of
+<code>object_type</code></p>
 </div></details></section></div></main></body></html>

@@ -348,9 +348,9 @@
 <span class="kw">use </span><a href="https://doc.rust-lang.org/nightly/std/sync/rwlock/struct.RwLock.html">std::sync::RwLock</a>;
 
 <span class="kw">use </span><a href="lib.rs.html#158"><span class="kw">crate</span>::prelude</a>::<span class="kw-2">*</span>;
-<span class="kw">use </span><a href="object.rs.html#1371-1374"><span class="kw">crate</span>::Object</a>;
-<span class="kw">use </span><a href="object.rs.html#3574"><span class="kw">crate</span>::SendWeakRef</a>;
-<span class="kw">use </span><a href="object.rs.html#3456"><span class="kw">crate</span>::WeakRef</a>;
+<span class="kw">use </span><a href="object.rs.html#1376-1379"><span class="kw">crate</span>::Object</a>;
+<span class="kw">use </span><a href="object.rs.html#3579"><span class="kw">crate</span>::SendWeakRef</a>;
+<span class="kw">use </span><a href="object.rs.html#3461"><span class="kw">crate</span>::WeakRef</a>;
 
 <span class="comment">// rustdoc-stripper-ignore-next
 </span><span class="doccomment">/// A type that can be used as a property. It covers every type which have an associated `ParamSpec`
@@ -358,9 +358,9 @@
 /// The definition is recursive, so you can nest many `Property`s together. The final `ParamSpec` will
 /// be the one of the innermost type
 </span><span class="kw">pub trait </span><a href="../../glib/property/trait.Property.html">Property</a> {
-    <span class="kw">type </span>Value: <a href="param_spec.rs.html#2167-2175">HasParamSpec</a>;
+    <span class="kw">type </span>Value: <a href="param_spec.rs.html#2381-2389">HasParamSpec</a>;
 }
-<span class="kw">impl</span>&lt;T: <a href="param_spec.rs.html#2167-2175">HasParamSpec</a>&gt; <a href="#22-24">Property</a> <span class="kw">for </span>T {
+<span class="kw">impl</span>&lt;T: <a href="param_spec.rs.html#2381-2389">HasParamSpec</a>&gt; <a href="#22-24">Property</a> <span class="kw">for </span>T {
     <span class="kw">type </span>Value = T;
 }
 <span class="kw">impl</span>&lt;T: <a href="#22-24">Property</a>&gt; <a href="#22-24">Property</a> <span class="kw">for </span>PhantomData&lt;T&gt; {
@@ -391,10 +391,10 @@
 <span class="kw">impl</span>&lt;T: <a href="#22-24">Property</a>&gt; <a href="#22-24">Property</a> <span class="kw">for </span>Arc&lt;T&gt; {
     <span class="kw">type </span>Value = T::Value;
 }
-<span class="kw">impl</span>&lt;T: IsA&lt;<a href="object.rs.html#1371-1374">Object</a>&gt; + <a href="param_spec.rs.html#2167-2175">HasParamSpec</a>&gt; <a href="#22-24">Property</a> <span class="kw">for </span>WeakRef&lt;T&gt; {
+<span class="kw">impl</span>&lt;T: IsA&lt;<a href="object.rs.html#1376-1379">Object</a>&gt; + <a href="param_spec.rs.html#2381-2389">HasParamSpec</a>&gt; <a href="#22-24">Property</a> <span class="kw">for </span>WeakRef&lt;T&gt; {
     <span class="kw">type </span>Value = <span class="prelude-ty">Option</span>&lt;T&gt;;
 }
-<span class="kw">impl</span>&lt;T: IsA&lt;<a href="object.rs.html#1371-1374">Object</a>&gt; + <a href="param_spec.rs.html#2167-2175">HasParamSpec</a>&gt; <a href="#22-24">Property</a> <span class="kw">for </span>SendWeakRef&lt;T&gt; {
+<span class="kw">impl</span>&lt;T: IsA&lt;<a href="object.rs.html#1376-1379">Object</a>&gt; + <a href="param_spec.rs.html#2381-2389">HasParamSpec</a>&gt; <a href="#22-24">Property</a> <span class="kw">for </span>SendWeakRef&lt;T&gt; {
     <span class="kw">type </span>Value = <span class="prelude-ty">Option</span>&lt;T&gt;;
 }
 
@@ -427,7 +427,7 @@
     }
 }
 
-<span class="kw">impl</span>&lt;T: <a href="param_spec.rs.html#2167-2175">HasParamSpec</a>&gt; <a href="#65-68">PropertyGet</a> <span class="kw">for </span>T {
+<span class="kw">impl</span>&lt;T: <a href="param_spec.rs.html#2381-2389">HasParamSpec</a>&gt; <a href="#65-68">PropertyGet</a> <span class="kw">for </span>T {
     <span class="kw">type </span>Value = T;
     <span class="kw">fn </span>get&lt;R, F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>::Value) -&gt; R&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; R {
         <a href="#94">f</a>(<a class="self" href="#94">self</a>)
@@ -516,32 +516,32 @@
     }
 }
 
-<span class="kw">impl</span>&lt;T: IsA&lt;<a href="object.rs.html#1371-1374">Object</a>&gt;&gt; <a href="#65-68">PropertyGet</a> <span class="kw">for </span>WeakRef&lt;T&gt; {
+<span class="kw">impl</span>&lt;T: IsA&lt;<a href="object.rs.html#1376-1379">Object</a>&gt;&gt; <a href="#65-68">PropertyGet</a> <span class="kw">for </span>WeakRef&lt;T&gt; {
     <span class="kw">type </span>Value = <span class="prelude-ty">Option</span>&lt;T&gt;;
 
     <span class="kw">fn </span>get&lt;R, F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>::Value) -&gt; R&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; R {
-        <a href="#184">f</a>(<span class="kw-2">&amp;</span><a class="self" href="#184">self</a>.<a href="object.rs.html#3496-3506">upgrade</a>())
+        <a href="#184">f</a>(<span class="kw-2">&amp;</span><a class="self" href="#184">self</a>.<a href="object.rs.html#3501-3511">upgrade</a>())
     }
 }
-<span class="kw">impl</span>&lt;T: IsA&lt;<a href="object.rs.html#1371-1374">Object</a>&gt;&gt; <a href="#81-84">PropertySet</a> <span class="kw">for </span>WeakRef&lt;T&gt; {
+<span class="kw">impl</span>&lt;T: IsA&lt;<a href="object.rs.html#1376-1379">Object</a>&gt;&gt; <a href="#81-84">PropertySet</a> <span class="kw">for </span>WeakRef&lt;T&gt; {
     <span class="kw">type </span>SetValue = <span class="prelude-ty">Option</span>&lt;T&gt;;
 
     <span class="kw">fn </span>set(<span class="kw-2">&amp;</span><span class="self">self</span>, v: <span class="self">Self</span>::SetValue) {
-        <a class="self" href="#191">self</a>.<a href="object.rs.html#3479-3488">set</a>(<a href="#191">v</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_ref">as_ref</a>())
+        <a class="self" href="#191">self</a>.<a href="object.rs.html#3484-3493">set</a>(<a href="#191">v</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_ref">as_ref</a>())
     }
 }
-<span class="kw">impl</span>&lt;T: IsA&lt;<a href="object.rs.html#1371-1374">Object</a>&gt;&gt; <a href="#65-68">PropertyGet</a> <span class="kw">for </span>SendWeakRef&lt;T&gt; {
+<span class="kw">impl</span>&lt;T: IsA&lt;<a href="object.rs.html#1376-1379">Object</a>&gt;&gt; <a href="#65-68">PropertyGet</a> <span class="kw">for </span>SendWeakRef&lt;T&gt; {
     <span class="kw">type </span>Value = <span class="prelude-ty">Option</span>&lt;T&gt;;
 
     <span class="kw">fn </span>get&lt;R, F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>::Value) -&gt; R&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; R {
-        <a href="#198">f</a>(<span class="kw-2">&amp;</span><a class="self" href="#198">self</a>.<a href="object.rs.html#3496-3506">upgrade</a>())
+        <a href="#198">f</a>(<span class="kw-2">&amp;</span><a class="self" href="#198">self</a>.<a href="object.rs.html#3501-3511">upgrade</a>())
     }
 }
-<span class="kw">impl</span>&lt;T: IsA&lt;<a href="object.rs.html#1371-1374">Object</a>&gt;&gt; <a href="#81-84">PropertySet</a> <span class="kw">for </span>SendWeakRef&lt;T&gt; {
+<span class="kw">impl</span>&lt;T: IsA&lt;<a href="object.rs.html#1376-1379">Object</a>&gt;&gt; <a href="#81-84">PropertySet</a> <span class="kw">for </span>SendWeakRef&lt;T&gt; {
     <span class="kw">type </span>SetValue = <span class="prelude-ty">Option</span>&lt;T&gt;;
 
     <span class="kw">fn </span>set(<span class="kw-2">&amp;</span><span class="self">self</span>, v: <span class="self">Self</span>::SetValue) {
-        <a href="object.rs.html#3479-3488">WeakRef::set</a>(<a class="self" href="#205">self</a>, <a href="#205">v</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_ref">as_ref</a>());
+        <a href="object.rs.html#3484-3493">WeakRef::set</a>(<a class="self" href="#205">self</a>, <a href="#205">v</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_ref">as_ref</a>());
     }
 }
 
