@@ -1,4 +1,4 @@
-use gio::prelude::*;
+use gio::{prelude::*, IOErrorEnum};
 use std::sync::mpsc::{channel, Receiver, Sender};
 
 const EXAMPLE_XML: &str = r#"
@@ -11,6 +11,26 @@ const EXAMPLE_XML: &str = r#"
     </interface>
   </node>
 "#;
+
+#[derive(Debug, glib::Variant)]
+struct Hello {
+    name: String,
+}
+
+#[derive(Debug)]
+enum Call {
+    Hello(Hello),
+}
+
+impl Call {
+    pub fn parse(method: &str, parameters: glib::Variant) -> Result<Call, glib::Error> {
+        match method {
+            "Hello" => Ok(parameters.get::<Hello>().map(Call::Hello)),
+            _ => Err(glib::Error::new(IOErrorEnum::Failed, "No such method")),
+        }
+        .and_then(|p| p.ok_or_else(|| glib::Error::new(IOErrorEnum::Failed, "Invalid parameters")))
+    }
+}
 
 fn on_startup(app: &gio::Application, tx: &Sender<gio::RegistrationId>) {
     let connection = app.dbus_connection().expect("connection");
@@ -26,21 +46,14 @@ fn on_startup(app: &gio::Application, tx: &Sender<gio::RegistrationId>) {
             #[strong]
             app,
             move |_, _, _, _, method, params, invocation| {
-                match method {
-                    "Hello" => {
-                        let result = <(String,)>::from_variant(&params)
-                            .ok_or_else(|| {
-                                glib::Error::new(gio::IOErrorEnum::Failed, "Invalid parameters")
-                            })
-                            .map(|(name,)| {
-                                let greet = format!("Hello {name}!");
-                                println!("{greet}");
-                                Some(greet.to_variant())
-                            });
-                        invocation.return_result(result);
+                let result = Call::parse(method, params).map(|call| match call {
+                    Call::Hello(Hello { name }) => {
+                        let greet = format!("Hello {name}!");
+                        println!("{greet}");
+                        Some(greet.to_variant())
                     }
-                    _ => unreachable!(),
-                }
+                });
+                invocation.return_result(result);
                 app.quit();
             }
         ))
