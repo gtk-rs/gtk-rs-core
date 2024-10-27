@@ -1,6 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use glib::{prelude::*, translate::*};
+use glib::{prelude::*, translate::*, VariantTy};
 
 use crate::{ffi, DBusMethodInvocation};
 
@@ -24,6 +24,25 @@ impl DBusMethodInvocation {
                 self.to_glib_full(),
                 error.to_glib_none().0,
             );
+        }
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Return a result for this invocation.
+    ///
+    /// If `Ok` return the contained value with [`return_value`].  If the return
+    /// value is not a tuple, automatically convert it to a one-element tuple, as
+    /// DBus return values must be tuples.
+    ///
+    /// If `Err` return the contained error with [`return_gerror`].
+    pub fn return_result(self, result: Result<Option<glib::Variant>, glib::Error>) {
+        match result {
+            Ok(Some(value)) if !value.is_type(VariantTy::TUPLE) => {
+                let tupled = glib::Variant::tuple_from_iter(std::iter::once(value));
+                self.return_value(Some(&tupled));
+            }
+            Ok(value) => self.return_value(value.as_ref()),
+            Err(error) => self.return_gerror(error),
         }
     }
 }

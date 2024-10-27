@@ -28,13 +28,16 @@ fn on_startup(app: &gio::Application, tx: &Sender<gio::RegistrationId>) {
             move |_, _, _, _, method, params, invocation| {
                 match method {
                     "Hello" => {
-                        if let Some((name,)) = <(String,)>::from_variant(&params) {
-                            let greet = format!("Hello {name}!");
-                            println!("{greet}");
-                            invocation.return_value(Some(&(greet,).to_variant()));
-                        } else {
-                            invocation.return_error(gio::IOErrorEnum::Failed, "Invalid parameters");
-                        }
+                        let result = <(String,)>::from_variant(&params)
+                            .ok_or_else(|| {
+                                glib::Error::new(gio::IOErrorEnum::Failed, "Invalid parameters")
+                            })
+                            .map(|(name,)| {
+                                let greet = format!("Hello {name}!");
+                                println!("{greet}");
+                                Some(greet.to_variant())
+                            });
+                        invocation.return_result(result);
                     }
                     _ => unreachable!(),
                 }
