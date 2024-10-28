@@ -1,11 +1,19 @@
 use gio::{prelude::*, IOErrorEnum};
-use std::sync::mpsc::{channel, Receiver, Sender};
+use std::{
+    sync::mpsc::{channel, Receiver, Sender},
+    time::Duration,
+};
 
 const EXAMPLE_XML: &str = r#"
   <node>
     <interface name='com.github.gtk_rs.examples.HelloWorld'>
       <method name='Hello'>
         <arg type='s' name='name' direction='in'/>
+        <arg type='s' name='greet' direction='out'/>
+      </method>
+      <method name='SlowHello'>
+        <arg type='s' name='name' direction='in'/>
+        <arg type='u' name='delay' direction='in'/>
         <arg type='s' name='greet' direction='out'/>
       </method>
     </interface>
@@ -17,15 +25,23 @@ struct Hello {
     name: String,
 }
 
+#[derive(Debug, glib::Variant)]
+struct SlowHello {
+    name: String,
+    delay: u32,
+}
+
 #[derive(Debug)]
 enum Call {
     Hello(Hello),
+    SlowHello(SlowHello),
 }
 
 impl Call {
     pub fn parse(method: &str, parameters: glib::Variant) -> Result<Call, glib::Error> {
         match method {
             "Hello" => Ok(parameters.get::<Hello>().map(Call::Hello)),
+            "SlowHello" => Ok(parameters.get::<SlowHello>().map(Call::SlowHello)),
             _ => Err(glib::Error::new(IOErrorEnum::Failed, "No such method")),
         }
         .and_then(|p| p.ok_or_else(|| glib::Error::new(IOErrorEnum::Failed, "Invalid parameters")))
@@ -42,21 +58,24 @@ fn on_startup(app: &gio::Application, tx: &Sender<gio::RegistrationId>) {
 
     if let Ok(id) = connection
         .register_object("/com/github/gtk_rs/examples/HelloWorld", &example)
-        .method_call(glib::clone!(
-            #[strong]
-            app,
-            move |_, _, _, _, method, params, invocation| {
-                let result = Call::parse(method, params).map(|call| match call {
+        .method_call(move |_, _, _, _, method, params, invocation| {
+            let call = Call::parse(method, params);
+            invocation.return_future_local(async move {
+                match call? {
                     Call::Hello(Hello { name }) => {
                         let greet = format!("Hello {name}!");
                         println!("{greet}");
-                        Some(greet.to_variant())
+                        Ok(Some(greet.to_variant()))
                     }
-                });
-                invocation.return_result(result);
-                app.quit();
-            }
-        ))
+                    Call::SlowHello(SlowHello { name, delay }) => {
+                        glib::timeout_future(Duration::from_secs(delay as u64)).await;
+                        let greet = format!("Hello {name} after {delay} seconds!");
+                        println!("{greet}");
+                        Ok(Some(greet.to_variant()))
+                    }
+                }
+            });
+        })
         .build()
     {
         println!("Registered object");
