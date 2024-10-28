@@ -1452,7 +1452,7 @@
 
 </span><span class="kw">use </span>std::{<a href="https://doc.rust-lang.org/nightly/alloc/fmt/index.html">fmt</a>, <a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">marker::PhantomData</a>, <a href="https://doc.rust-lang.org/nightly/core/mem/index.html">mem</a>, <a href="https://doc.rust-lang.org/nightly/core/ptr/index.html">ptr</a>};
 
-<span class="kw">use crate</span>::{ffi, <a href="../lib.rs.html#163">translate</a>::<span class="kw-2">*</span>};
+<span class="kw">use crate</span>::{<a href="../../../glib_sys/index.html">ffi</a>, <a href="../lib.rs.html#163">translate</a>::<span class="kw-2">*</span>};
 
 <span class="comment">// rustdoc-stripper-ignore-next
 </span><span class="doccomment">/// Minimum size of the `PtrSlice` allocation.
@@ -1540,7 +1540,7 @@
             }
 
             <span class="kw">if </span><span class="self">self</span>.capacity != <span class="number">0 </span>{
-                ffi::g_free(<a class="self" href="#84">self</a>.ptr.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span>ffi::gpointer);
+                <a href="../../../glib_sys/fn.g_free.html">ffi::g_free</a>(<a class="self" href="#84">self</a>.ptr.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><a href="../../../glib_sys/type.gpointer.html">ffi::gpointer</a>);
             }
         }
     }
@@ -1720,7 +1720,7 @@
             }
 
             <span class="kw">if </span>!<span class="self">self</span>.empty {
-                ffi::g_free(<a class="self" href="#264">self</a>.ptr.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span>ffi::gpointer);
+                <a href="../../../glib_sys/fn.g_free.html">ffi::g_free</a>(<a class="self" href="#264">self</a>.ptr.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><a href="../../../glib_sys/type.gpointer.html">ffi::gpointer</a>);
             }
         }
     }
@@ -1943,7 +1943,7 @@
         <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert.html">debug_assert!</a>(!ptr.is_null() || len == <span class="number">0</span>);
 
         <span class="kw">if </span>len == <span class="number">0 </span>{
-            ffi::g_free(<a href="#485">ptr</a> <span class="kw">as </span>ffi::gpointer);
+            <a href="../../../glib_sys/fn.g_free.html">ffi::g_free</a>(<a href="#485">ptr</a> <span class="kw">as </span><a href="../../../glib_sys/type.gpointer.html">ffi::gpointer</a>);
             <a href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html#tymethod.default">PtrSlice::default</a>()
         } <span class="kw">else </span>{
             <span class="comment">// Need to clone every item because we don't own it here
@@ -1973,7 +1973,7 @@
         <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert.html">debug_assert!</a>(!ptr.is_null() || len == <span class="number">0</span>);
 
         <span class="kw">if </span>len == <span class="number">0 </span>{
-            ffi::g_free(<a href="#515">ptr</a> <span class="kw">as </span>ffi::gpointer);
+            <a href="../../../glib_sys/fn.g_free.html">ffi::g_free</a>(<a href="#515">ptr</a> <span class="kw">as </span><a href="../../../glib_sys/type.gpointer.html">ffi::gpointer</a>);
             <a href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html#tymethod.default">PtrSlice::default</a>()
         } <span class="kw">else </span>{
             <span class="kw">if </span>null_terminated {
@@ -1987,7 +1987,7 @@
             <span class="comment">// Need to re-allocate here for adding the NULL-terminator
             </span><span class="kw">let </span>capacity = <a href="#516">len</a> + <span class="number">1</span>;
             <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.assert_ne.html">assert_ne!</a>(capacity, <span class="number">0</span>);
-            <span class="kw">let </span>ptr = ffi::g_realloc(
+            <span class="kw">let </span>ptr = <a href="../../../glib_sys/fn.g_realloc.html">ffi::g_realloc</a>(
                 <a href="#515">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
                 mem::size_of::&lt;T&gt;().<a href="https://doc.rust-lang.org/nightly/core/foreigntype.num.html#method.checked_mul">checked_mul</a>(<a href="#538">capacity</a>).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap">unwrap</a>(),
             ) <span class="kw">as </span><span class="kw-2">*mut </span>&lt;T <span class="kw">as </span>GlibPtrDefault&gt;::GlibType;
@@ -2166,7 +2166,7 @@
                 <a class="self" href="#701">self</a>.ptr.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_
             </span>};
             <span class="kw">let </span>new_ptr =
-                ffi::g_realloc(<a href="#713">ptr</a>, mem::size_of::&lt;T&gt;().<a href="https://doc.rust-lang.org/nightly/core/foreigntype.num.html#method.checked_mul">checked_mul</a>(<a href="#707">new_capacity</a>).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap">unwrap</a>())
+                <a href="../../../glib_sys/fn.g_realloc.html">ffi::g_realloc</a>(<a href="#713">ptr</a>, mem::size_of::&lt;T&gt;().<a href="https://doc.rust-lang.org/nightly/core/foreigntype.num.html#method.checked_mul">checked_mul</a>(<a href="#707">new_capacity</a>).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap">unwrap</a>())
                     <span class="kw">as </span><span class="kw-2">*mut </span>&lt;T <span class="kw">as </span>GlibPtrDefault&gt;::GlibType;
             <span class="kw">if </span><span class="self">self</span>.capacity == <span class="number">0 </span>{
                 <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.write.html">ptr::write</a>(
@@ -2458,7 +2458,7 @@
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>to_glib_container(<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="self">self</span>) -&gt; Stash&lt;<span class="lifetime">'a</span>, <span class="kw-2">*mut </span>&lt;T <span class="kw">as </span>GlibPtrDefault&gt;::GlibType, <span class="self">Self</span>&gt; {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>ptr = ffi::g_malloc(mem::size_of::&lt;T&gt;().<a href="https://doc.rust-lang.org/nightly/core/foreigntype.num.html#method.checked_mul">checked_mul</a>(<a class="self" href="#1009">self</a>.<a href="#668-670">len</a>() + <span class="number">1</span>).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap">unwrap</a>())
+            <span class="kw">let </span>ptr = <a href="../../../glib_sys/fn.g_malloc.html">ffi::g_malloc</a>(mem::size_of::&lt;T&gt;().<a href="https://doc.rust-lang.org/nightly/core/foreigntype.num.html#method.checked_mul">checked_mul</a>(<a class="self" href="#1009">self</a>.<a href="#668-670">len</a>() + <span class="number">1</span>).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap">unwrap</a>())
                 <span class="kw">as </span><span class="kw-2">*mut </span>&lt;T <span class="kw">as </span>GlibPtrDefault&gt;::GlibType;
             <a href="https://doc.rust-lang.org/nightly/core/intrinsics/fn.copy_nonoverlapping.html">ptr::copy_nonoverlapping</a>(<a class="self" href="#1009">self</a>.<a href="#625-633">as_ptr</a>(), <a href="#1011">ptr</a>, <a class="self" href="#1009">self</a>.<a href="#668-670">len</a>() + <span class="number">1</span>);
             <a href="../translate.rs.html#259-262">Stash</a>(<a href="#1011">ptr</a>, <a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">PhantomData</a>)
