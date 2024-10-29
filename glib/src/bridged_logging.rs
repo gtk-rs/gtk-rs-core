@@ -217,10 +217,12 @@ impl rs_log::Log for GlibLogger {
             }
             GlibLoggerFormat::Structured => {
                 let args = record.args();
+                let args_str;
                 let message = if let Some(s) = args.as_str() {
                     s
                 } else {
-                    &args.to_string()
+                    args_str = args.to_string();
+                    &args_str
                 };
                 GlibLogger::write_log_structured(
                     domain,
