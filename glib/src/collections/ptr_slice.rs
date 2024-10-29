@@ -601,6 +601,11 @@ impl<T: TransparentPtrType> PtrSlice<T> {
     /// Creates a new empty slice.
     #[inline]
     pub fn new() -> Self {
+        debug_assert_eq!(
+            mem::size_of::<T>(),
+            mem::size_of::<<T as GlibPtrDefault>::GlibType>()
+        );
+
         PtrSlice {
             ptr: ptr::NonNull::dangling(),
             len: 0,
