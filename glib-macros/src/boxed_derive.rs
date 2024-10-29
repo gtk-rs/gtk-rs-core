@@ -192,7 +192,9 @@ pub fn impl_boxed(input: &syn::DeriveInput) -> syn::Result<TokenStream> {
 
         #impl_from_value
 
-        unsafe impl #crate_ident::translate::TransparentPtrType for #name {}
+        unsafe impl #crate_ident::translate::TransparentType for #name {
+            type GlibType = #name;
+        }
 
         impl #crate_ident::translate::GlibPtrDefault for #name {
             type GlibType = *mut #name;
