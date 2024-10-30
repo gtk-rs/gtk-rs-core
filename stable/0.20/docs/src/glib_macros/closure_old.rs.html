@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib-macros/src/closure_old.rs`."><title>closure_old.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-42fa08075bb476ff.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib_macros" data-themes="" data-resource-suffix="" data-rustdoc-version="1.83.0-nightly (9e394f551 2024-09-25)" data-channel="nightly" data-search-js="search-e056c65ede92db13.js" data-settings-js="settings-805db61a62df4bd2.js" ><script src="../../static.files/storage-1d39b6787ed640ff.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-54bc299d2a5e4e43.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-0111fcff984fae8f.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib-macros/src/closure_old.rs`."><title>closure_old.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-590a400c.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib_macros" data-themes="" data-resource-suffix="" data-rustdoc-version="1.84.0-nightly (1e4f10ba6 2024-10-29)" data-channel="nightly" data-search-js="search-c5a66128.js" data-settings-js="settings-0f613d39.js" ><script src="../../static.files/storage-59e33391.js"></script><script defer src="../../static.files/src-script-56102188.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -50,7 +50,7 @@
             </section>
         ` };
 
-        if ("0.20" == "master") {
+        if ("0.20" == "main") {
             document.body.insertAdjacentHTML(
                 'beforeend',
                 popup("This is the development version. Go to latest stable version.", "stable/latest")
@@ -373,9 +373,9 @@
 <a href="#299" id="299">299</a>
 <a href="#300" id="300">300</a></pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
-</span><span class="kw">use </span>proc_macro2::{<a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.Ident.html">Ident</a>, <a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.Span.html">Span</a>, <a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.TokenStream.html">TokenStream</a>};
+</span><span class="kw">use </span>proc_macro2::{<a href="https://docs.rs/proc-macro2/1.0.89/proc_macro2/struct.Ident.html">Ident</a>, <a href="https://docs.rs/proc-macro2/1.0.89/proc_macro2/struct.Span.html">Span</a>, <a href="https://docs.rs/proc-macro2/1.0.89/proc_macro2/struct.TokenStream.html">TokenStream</a>};
 <span class="kw">use </span>quote::{<a href="https://docs.rs/quote/1.0.37/quote/macro.quote.html">quote</a>, <a href="https://docs.rs/quote/1.0.37/quote/to_tokens/trait.ToTokens.html">ToTokens</a>, <a href="https://docs.rs/quote/1.0.37/quote/ext/trait.TokenStreamExt.html">TokenStreamExt</a>};
-<span class="kw">use </span>syn::{<a href="https://docs.rs/syn/2.0.77/syn/ext/trait.IdentExt.html">ext::IdentExt</a>, <a href="https://docs.rs/syn/2.0.77/syn/spanned/trait.Spanned.html">spanned::Spanned</a>, <a href="https://docs.rs/syn/2.0.77/syn/macro.Token.html">Token</a>};
+<span class="kw">use </span>syn::{<a href="https://docs.rs/syn/2.0.85/syn/ext/trait.IdentExt.html">ext::IdentExt</a>, <a href="https://docs.rs/syn/2.0.85/syn/spanned/trait.Spanned.html">spanned::Spanned</a>, <a href="https://docs.rs/syn/2.0.85/syn/macro.Token.html">Token</a>};
 
 <span class="kw">use </span><a href="utils.rs.html#188-215"><span class="kw">crate</span>::utils::crate_ident_new</a>;
 
@@ -388,21 +388,21 @@
 }
 
 <span class="kw">struct </span>Capture {
-    name: <a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.TokenStream.html">TokenStream</a>,
-    alias: <span class="prelude-ty">Option</span>&lt;<a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.Ident.html">syn::Ident</a>&gt;,
+    name: <a href="https://docs.rs/proc-macro2/1.0.89/proc_macro2/struct.TokenStream.html">TokenStream</a>,
+    alias: <span class="prelude-ty">Option</span>&lt;<a href="https://docs.rs/proc-macro2/1.0.89/proc_macro2/struct.Ident.html">syn::Ident</a>&gt;,
     kind: <a href="#10-15">CaptureKind</a>,
-    start: <a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.Span.html">Span</a>,
+    start: <a href="https://docs.rs/proc-macro2/1.0.89/proc_macro2/struct.Span.html">Span</a>,
 }
 
 <span class="kw">impl </span><a href="#17-22">Capture</a> {
-    <span class="kw">fn </span>alias(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.TokenStream.html">TokenStream</a> {
+    <span class="kw">fn </span>alias(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://docs.rs/proc-macro2/1.0.89/proc_macro2/struct.TokenStream.html">TokenStream</a> {
         <span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="kw-2">ref </span>a) = <a class="self" href="#25">self</a>.alias {
             <a href="#26">a</a>.<a href="https://docs.rs/quote/1.0.37/quote/to_tokens/trait.ToTokens.html#tymethod.to_token_stream">to_token_stream</a>()
         } <span class="kw">else </span>{
             <a class="self" href="#25">self</a>.name.<a href="https://docs.rs/quote/1.0.37/quote/to_tokens/trait.ToTokens.html#tymethod.to_token_stream">to_token_stream</a>()
         }
     }
-    <span class="kw">fn </span>outer_before_tokens(<span class="kw-2">&amp;</span><span class="self">self</span>, crate_ident: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.TokenStream.html">TokenStream</a>) -&gt; <a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.TokenStream.html">TokenStream</a> {
+    <span class="kw">fn </span>outer_before_tokens(<span class="kw-2">&amp;</span><span class="self">self</span>, crate_ident: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.89/proc_macro2/struct.TokenStream.html">TokenStream</a>) -&gt; <a href="https://docs.rs/proc-macro2/1.0.89/proc_macro2/struct.TokenStream.html">TokenStream</a> {
         <span class="kw">let </span>alias = <a class="self" href="#32">self</a>.<a href="#25-31">alias</a>();
         <span class="kw">let </span>name = <span class="kw-2">&amp;</span><a class="self" href="#32">self</a>.name;
         <span class="kw">match </span><a class="self" href="#32">self</a>.kind {
@@ -421,7 +421,7 @@
         }
     }
 
-    <span class="kw">fn </span>outer_after_tokens(<span class="kw-2">&amp;</span><span class="self">self</span>, crate_ident: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.TokenStream.html">TokenStream</a>, closure_ident: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.Ident.html">Ident</a>) -&gt; <a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.TokenStream.html">TokenStream</a> {
+    <span class="kw">fn </span>outer_after_tokens(<span class="kw-2">&amp;</span><span class="self">self</span>, crate_ident: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.89/proc_macro2/struct.TokenStream.html">TokenStream</a>, closure_ident: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.89/proc_macro2/struct.Ident.html">Ident</a>) -&gt; <a href="https://docs.rs/proc-macro2/1.0.89/proc_macro2/struct.TokenStream.html">TokenStream</a> {
         <span class="kw">let </span>name = <span class="kw-2">&amp;</span><a class="self" href="#51">self</a>.name;
         <span class="kw">match </span><a class="self" href="#51">self</a>.kind {
             <a href="#11">CaptureKind::Watch</a> =&gt; <a class="macro" href="https://docs.rs/quote/1.0.37/quote/macro.quote.html">quote!</a> {
@@ -431,7 +431,7 @@
         }
     }
 
-    <span class="kw">fn </span>inner_before_tokens(<span class="kw-2">&amp;</span><span class="self">self</span>, crate_ident: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.TokenStream.html">TokenStream</a>) -&gt; <a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.TokenStream.html">TokenStream</a> {
+    <span class="kw">fn </span>inner_before_tokens(<span class="kw-2">&amp;</span><span class="self">self</span>, crate_ident: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.89/proc_macro2/struct.TokenStream.html">TokenStream</a>) -&gt; <a href="https://docs.rs/proc-macro2/1.0.89/proc_macro2/struct.TokenStream.html">TokenStream</a> {
         <span class="kw">let </span>alias = <a class="self" href="#61">self</a>.<a href="#25-31">alias</a>();
         <span class="kw">match </span><a class="self" href="#61">self</a>.kind {
             <a href="#11">CaptureKind::Watch</a> =&gt; {
@@ -448,11 +448,11 @@
     }
 }
 
-<span class="kw">impl </span><a href="https://docs.rs/syn/2.0.77/syn/parse/trait.Parse.html">syn::parse::Parse</a> <span class="kw">for </span><a href="#10-15">CaptureKind</a> {
-    <span class="kw">fn </span>parse(input: <a href="https://docs.rs/syn/2.0.77/syn/parse/type.ParseStream.html">syn::parse::ParseStream</a>) -&gt; syn::Result&lt;<span class="self">Self</span>&gt; {
-        <a href="#79">input</a>.<a href="https://docs.rs/syn/2.0.77/syn/parse/struct.ParseBuffer.html#method.parse">parse</a>::&lt;<a class="macro" href="https://docs.rs/syn/2.0.77/syn/macro.Token.html">Token!</a>[@]&gt;()<span class="question-mark">?</span>;
-        <span class="kw">let </span><span class="kw-2">mut </span>idents = <a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.TokenStream.html#method.new">TokenStream::new</a>();
-        <a href="#81">idents</a>.<a href="https://docs.rs/quote/1.0.37/quote/ext/trait.TokenStreamExt.html#tymethod.append">append</a>(<a href="#79">input</a>.<a href="https://docs.rs/syn/2.0.77/syn/parse/struct.ParseBuffer.html#method.call">call</a>(syn::Ident::parse_any)<span class="question-mark">?</span>);
+<span class="kw">impl </span><a href="https://docs.rs/syn/2.0.85/syn/parse/trait.Parse.html">syn::parse::Parse</a> <span class="kw">for </span><a href="#10-15">CaptureKind</a> {
+    <span class="kw">fn </span>parse(input: <a href="https://docs.rs/syn/2.0.85/syn/parse/type.ParseStream.html">syn::parse::ParseStream</a>) -&gt; syn::Result&lt;<span class="self">Self</span>&gt; {
+        <a href="#79">input</a>.<a href="https://docs.rs/syn/2.0.85/syn/parse/struct.ParseBuffer.html#method.parse">parse</a>::&lt;<a class="macro" href="https://docs.rs/syn/2.0.85/syn/macro.Token.html">Token!</a>[@]&gt;()<span class="question-mark">?</span>;
+        <span class="kw">let </span><span class="kw-2">mut </span>idents = <a href="https://docs.rs/proc-macro2/1.0.89/proc_macro2/struct.TokenStream.html#method.new">TokenStream::new</a>();
+        <a href="#81">idents</a>.<a href="https://docs.rs/quote/1.0.37/quote/ext/trait.TokenStreamExt.html#tymethod.append">append</a>(<a href="#79">input</a>.<a href="https://docs.rs/syn/2.0.85/syn/parse/struct.ParseBuffer.html#method.call">call</a>(syn::Ident::parse_any)<span class="question-mark">?</span>);
         <span class="kw">while </span>input.peek(<span class="macro">Token!</span>[-]) {
             input.parse::&lt;<span class="macro">Token!</span>[-]&gt;()<span class="question-mark">?</span>;
             idents.append(input.call(syn::Ident::parse_any)<span class="question-mark">?</span>);
@@ -468,8 +468,8 @@
             <span class="string">"watch" </span>=&gt; <span class="prelude-val">Ok</span>(<a href="#11">CaptureKind::Watch</a>),
             <span class="string">"weak-allow-none" </span>=&gt; <span class="prelude-val">Ok</span>(<a href="#12">CaptureKind::WeakAllowNone</a>),
             <span class="string">"to-owned" </span>=&gt; <span class="prelude-val">Ok</span>(<a href="#14">CaptureKind::ToOwned</a>),
-            k =&gt; <span class="prelude-val">Err</span>(<a href="https://docs.rs/syn/2.0.77/syn/error/struct.Error.html#method.new">syn::Error::new</a>(
-                <a href="#81">idents</a>.<a href="https://docs.rs/syn/2.0.77/syn/spanned/trait.Spanned.html#tymethod.span">span</a>(),
+            k =&gt; <span class="prelude-val">Err</span>(<a href="https://docs.rs/syn/2.0.85/syn/error/struct.Error.html#method.new">syn::Error::new</a>(
+                <a href="#81">idents</a>.<a href="https://docs.rs/syn/2.0.85/syn/spanned/trait.Spanned.html#tymethod.span">span</a>(),
                 <a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.format.html">format!</a>(<span class="string">"Unknown keyword `{}`, only `watch`, `weak-allow-none`, `to-owned` and `strong` are allowed"</span>,
                 k),
             )),
@@ -477,34 +477,34 @@
     }
 }
 
-<span class="kw">impl </span><a href="https://docs.rs/syn/2.0.77/syn/parse/trait.Parse.html">syn::parse::Parse</a> <span class="kw">for </span><a href="#17-22">Capture</a> {
-    <span class="kw">fn </span>parse(input: <a href="https://docs.rs/syn/2.0.77/syn/parse/type.ParseStream.html">syn::parse::ParseStream</a>) -&gt; syn::Result&lt;<span class="self">Self</span>&gt; {
-        <span class="kw">let </span>start = <a href="#108">input</a>.<a href="https://docs.rs/syn/2.0.77/syn/parse/struct.ParseBuffer.html#method.span">span</a>();
-        <span class="kw">let </span>kind = <a href="#108">input</a>.<a href="https://docs.rs/syn/2.0.77/syn/parse/struct.ParseBuffer.html#method.parse">parse</a>()<span class="question-mark">?</span>;
-        <span class="kw">let </span><span class="kw-2">mut </span>name = <a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.TokenStream.html#method.new">TokenStream::new</a>();
-        <a href="#111">name</a>.<a href="https://docs.rs/quote/1.0.37/quote/ext/trait.TokenStreamExt.html#tymethod.append">append</a>(<a href="#108">input</a>.<a href="https://docs.rs/syn/2.0.77/syn/parse/struct.ParseBuffer.html#method.call">call</a>(syn::Ident::parse_any)<span class="question-mark">?</span>);
+<span class="kw">impl </span><a href="https://docs.rs/syn/2.0.85/syn/parse/trait.Parse.html">syn::parse::Parse</a> <span class="kw">for </span><a href="#17-22">Capture</a> {
+    <span class="kw">fn </span>parse(input: <a href="https://docs.rs/syn/2.0.85/syn/parse/type.ParseStream.html">syn::parse::ParseStream</a>) -&gt; syn::Result&lt;<span class="self">Self</span>&gt; {
+        <span class="kw">let </span>start = <a href="#108">input</a>.<a href="https://docs.rs/syn/2.0.85/syn/parse/struct.ParseBuffer.html#method.span">span</a>();
+        <span class="kw">let </span>kind = <a href="#108">input</a>.<a href="https://docs.rs/syn/2.0.85/syn/parse/struct.ParseBuffer.html#method.parse">parse</a>()<span class="question-mark">?</span>;
+        <span class="kw">let </span><span class="kw-2">mut </span>name = <a href="https://docs.rs/proc-macro2/1.0.89/proc_macro2/struct.TokenStream.html#method.new">TokenStream::new</a>();
+        <a href="#111">name</a>.<a href="https://docs.rs/quote/1.0.37/quote/ext/trait.TokenStreamExt.html#tymethod.append">append</a>(<a href="#108">input</a>.<a href="https://docs.rs/syn/2.0.85/syn/parse/struct.ParseBuffer.html#method.call">call</a>(syn::Ident::parse_any)<span class="question-mark">?</span>);
         <span class="kw">while </span>input.peek(<span class="macro">Token!</span>[.]) {
             input.parse::&lt;<span class="macro">Token!</span>[.]&gt;()<span class="question-mark">?</span>;
             name.append(proc_macro2::Punct::new(<span class="string">'.'</span>, proc_macro2::Spacing::Alone));
             name.append(input.call(syn::Ident::parse_any)<span class="question-mark">?</span>);
         }
         <span class="kw">let </span>alias = <span class="kw">if </span>input.peek(<span class="macro">Token!</span>[<span class="kw">as</span>]) {
-            <a href="#108">input</a>.<a href="https://docs.rs/syn/2.0.77/syn/parse/struct.ParseBuffer.html#method.parse">parse</a>::&lt;<a class="macro" href="https://docs.rs/syn/2.0.77/syn/macro.Token.html">Token!</a>[<span class="kw">as</span>]&gt;()<span class="question-mark">?</span>;
-            <a href="#108">input</a>.<a href="https://docs.rs/syn/2.0.77/syn/parse/struct.ParseBuffer.html#method.parse">parse</a>()<span class="question-mark">?
+            <a href="#108">input</a>.<a href="https://docs.rs/syn/2.0.85/syn/parse/struct.ParseBuffer.html#method.parse">parse</a>::&lt;<a class="macro" href="https://docs.rs/syn/2.0.85/syn/macro.Token.html">Token!</a>[<span class="kw">as</span>]&gt;()<span class="question-mark">?</span>;
+            <a href="#108">input</a>.<a href="https://docs.rs/syn/2.0.85/syn/parse/struct.ParseBuffer.html#method.parse">parse</a>()<span class="question-mark">?
         </span>} <span class="kw">else </span>{
             <span class="prelude-val">None
         </span>};
         <span class="kw">if </span>alias.is_none() {
             <span class="kw">if </span>name.to_string() == <span class="string">"self" </span>{
-                <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="https://docs.rs/syn/2.0.77/syn/error/struct.Error.html#method.new_spanned">syn::Error::new_spanned</a>(
+                <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="https://docs.rs/syn/2.0.85/syn/error/struct.Error.html#method.new_spanned">syn::Error::new_spanned</a>(
                     <a href="#111">name</a>,
                     <span class="string">"Can't use `self` as variable name. Try storing it in a temporary variable or \
                     rename it using `as`."</span>,
                 ));
             }
             <span class="kw">if </span>name.to_string().contains(<span class="string">'.'</span>) {
-                <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="https://docs.rs/syn/2.0.77/syn/error/struct.Error.html#method.new">syn::Error::new</a>(
-                    <a href="#111">name</a>.<a href="https://docs.rs/syn/2.0.77/syn/spanned/trait.Spanned.html#tymethod.span">span</a>(),
+                <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="https://docs.rs/syn/2.0.85/syn/error/struct.Error.html#method.new">syn::Error::new</a>(
+                    <a href="#111">name</a>.<a href="https://docs.rs/syn/2.0.85/syn/spanned/trait.Spanned.html#tymethod.span">span</a>(),
                     <a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.format.html">format!</a>(
                         <span class="string">"`{}`: Field accesses are not allowed as is, you must rename it!"</span>,
                         name
@@ -523,20 +523,20 @@
 
 <span class="kw">struct </span>Closure {
     captures: Vec&lt;<a href="#17-22">Capture</a>&gt;,
-    args: Vec&lt;<a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.Ident.html">Ident</a>&gt;,
-    closure: <a href="https://docs.rs/syn/2.0.77/syn/expr/struct.ExprClosure.html">syn::ExprClosure</a>,
+    args: Vec&lt;<a href="https://docs.rs/proc-macro2/1.0.89/proc_macro2/struct.Ident.html">Ident</a>&gt;,
+    closure: <a href="https://docs.rs/syn/2.0.85/syn/expr/struct.ExprClosure.html">syn::ExprClosure</a>,
     constructor: <span class="kw-2">&amp;</span><span class="lifetime">'static </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
 }
 
-<span class="kw">impl </span><a href="https://docs.rs/syn/2.0.77/syn/parse/trait.Parse.html">syn::parse::Parse</a> <span class="kw">for </span><a href="#151-156">Closure</a> {
-    <span class="kw">fn </span>parse(input: <a href="https://docs.rs/syn/2.0.77/syn/parse/type.ParseStream.html">syn::parse::ParseStream</a>) -&gt; syn::Result&lt;<span class="self">Self</span>&gt; {
+<span class="kw">impl </span><a href="https://docs.rs/syn/2.0.85/syn/parse/trait.Parse.html">syn::parse::Parse</a> <span class="kw">for </span><a href="#151-156">Closure</a> {
+    <span class="kw">fn </span>parse(input: <a href="https://docs.rs/syn/2.0.85/syn/parse/type.ParseStream.html">syn::parse::ParseStream</a>) -&gt; syn::Result&lt;<span class="self">Self</span>&gt; {
         <span class="kw">let </span><span class="kw-2">mut </span>captures: Vec&lt;<a href="#17-22">Capture</a>&gt; = <a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.vec.html">vec!</a>[];
         <span class="kw">if </span>input.peek(<span class="macro">Token!</span>[@]) {
             <span class="kw">loop </span>{
-                <span class="kw">let </span>capture = <a href="#159">input</a>.<a href="https://docs.rs/syn/2.0.77/syn/parse/struct.ParseBuffer.html#method.parse">parse</a>::&lt;<a href="#17-22">Capture</a>&gt;()<span class="question-mark">?</span>;
+                <span class="kw">let </span>capture = <a href="#159">input</a>.<a href="https://docs.rs/syn/2.0.85/syn/parse/struct.ParseBuffer.html#method.parse">parse</a>::&lt;<a href="#17-22">Capture</a>&gt;()<span class="question-mark">?</span>;
                 <span class="kw">if </span>capture.kind == CaptureKind::Watch {
                     <span class="kw">if let </span><span class="prelude-val">Some</span>(existing) = <a href="#160">captures</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.find">find</a>(|c| <a href="#165">c</a>.kind == <a href="#11">CaptureKind::Watch</a>) {
-                        <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="https://docs.rs/syn/2.0.77/syn/error/struct.Error.html#method.new">syn::Error::new</a>(
+                        <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="https://docs.rs/syn/2.0.85/syn/error/struct.Error.html#method.new">syn::Error::new</a>(
                             <a href="#165">existing</a>.start,
                             <span class="string">"Only one `@watch` capture is allowed per closure"</span>,
                         ));
@@ -544,7 +544,7 @@
                 }
                 <a href="#160">captures</a>.<a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.push">push</a>(<a href="#163">capture</a>);
                 <span class="kw">if </span>input.peek(<span class="macro">Token!</span>[,]) {
-                    <a href="#159">input</a>.<a href="https://docs.rs/syn/2.0.77/syn/parse/struct.ParseBuffer.html#method.parse">parse</a>::&lt;<a class="macro" href="https://docs.rs/syn/2.0.77/syn/macro.Token.html">Token!</a>[,]&gt;()<span class="question-mark">?</span>;
+                    <a href="#159">input</a>.<a href="https://docs.rs/syn/2.0.85/syn/parse/struct.ParseBuffer.html#method.parse">parse</a>::&lt;<a class="macro" href="https://docs.rs/syn/2.0.85/syn/macro.Token.html">Token!</a>[,]&gt;()<span class="question-mark">?</span>;
                     <span class="kw">if </span>!input.peek(<span class="macro">Token!</span>[@]) {
                         <span class="kw">break</span>;
                     }
@@ -554,26 +554,26 @@
             }
         }
         <span class="kw">if </span>!captures.is_empty() {
-            <a href="#159">input</a>.<a href="https://docs.rs/syn/2.0.77/syn/parse/struct.ParseBuffer.html#method.parse">parse</a>::&lt;<a class="macro" href="https://docs.rs/syn/2.0.77/syn/macro.Token.html">Token!</a>[=&gt;]&gt;()<span class="question-mark">?</span>;
+            <a href="#159">input</a>.<a href="https://docs.rs/syn/2.0.85/syn/parse/struct.ParseBuffer.html#method.parse">parse</a>::&lt;<a class="macro" href="https://docs.rs/syn/2.0.85/syn/macro.Token.html">Token!</a>[=&gt;]&gt;()<span class="question-mark">?</span>;
         }
-        <span class="kw">let </span><span class="kw-2">mut </span>closure = <a href="#159">input</a>.<a href="https://docs.rs/syn/2.0.77/syn/parse/struct.ParseBuffer.html#method.parse">parse</a>::&lt;<a href="https://docs.rs/syn/2.0.77/syn/expr/struct.ExprClosure.html">syn::ExprClosure</a>&gt;()<span class="question-mark">?</span>;
+        <span class="kw">let </span><span class="kw-2">mut </span>closure = <a href="#159">input</a>.<a href="https://docs.rs/syn/2.0.85/syn/parse/struct.ParseBuffer.html#method.parse">parse</a>::&lt;<a href="https://docs.rs/syn/2.0.85/syn/expr/struct.ExprClosure.html">syn::ExprClosure</a>&gt;()<span class="question-mark">?</span>;
         <span class="kw">if </span>closure.asyncness.is_some() {
-            <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="https://docs.rs/syn/2.0.77/syn/error/struct.Error.html#method.new_spanned">syn::Error::new_spanned</a>(
+            <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="https://docs.rs/syn/2.0.85/syn/error/struct.Error.html#method.new_spanned">syn::Error::new_spanned</a>(
                 <a href="#186">closure</a>,
                 <span class="string">"Async closure not allowed"</span>,
             ));
         }
         <span class="kw">if </span>!captures.is_empty() &amp;&amp; closure.capture.is_none() {
-            <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="https://docs.rs/syn/2.0.77/syn/error/struct.Error.html#method.new_spanned">syn::Error::new_spanned</a>(
+            <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="https://docs.rs/syn/2.0.85/syn/error/struct.Error.html#method.new_spanned">syn::Error::new_spanned</a>(
                 <a href="#186">closure</a>,
                 <span class="string">"Closure with captures needs to be \"moved\" so please add `move` before closure"</span>,
             ));
         }
         <span class="kw">let </span>args = <a href="#186">closure</a>
             .inputs
-            .<a href="https://docs.rs/syn/2.0.77/syn/punctuated/struct.Punctuated.html#method.iter">iter</a>()
+            .<a href="https://docs.rs/syn/2.0.85/syn/punctuated/struct.Punctuated.html#method.iter">iter</a>()
             .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.enumerate">enumerate</a>()
-            .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|(i, <span class="kw">_</span>)| <a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.Ident.html#method.new">Ident::new</a>(<span class="kw-2">&amp;</span><a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.format.html">format!</a>(<span class="string">"____value{i}"</span>), <a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.Span.html#method.call_site">Span::call_site</a>()))
+            .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|(i, <span class="kw">_</span>)| <a href="https://docs.rs/proc-macro2/1.0.89/proc_macro2/struct.Ident.html#method.new">Ident::new</a>(<span class="kw-2">&amp;</span><a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.format.html">format!</a>(<span class="string">"____value{i}"</span>), <a href="https://docs.rs/proc-macro2/1.0.89/proc_macro2/struct.Span.html#method.call_site">Span::call_site</a>()))
             .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.collect">collect</a>();
         <a href="#186">closure</a>.capture = <span class="prelude-val">None</span>;
         <span class="prelude-val">Ok</span>(<a href="#151-156">Closure</a> {
@@ -586,9 +586,9 @@
 }
 
 <span class="kw">impl </span><a href="https://docs.rs/quote/1.0.37/quote/to_tokens/trait.ToTokens.html">ToTokens</a> <span class="kw">for </span><a href="#151-156">Closure</a> {
-    <span class="kw">fn </span>to_tokens(<span class="kw-2">&amp;</span><span class="self">self</span>, tokens: <span class="kw-2">&amp;mut </span><a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.TokenStream.html">TokenStream</a>) {
-        <span class="kw">let </span>closure_ident = <a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.Ident.html#method.new">Ident::new</a>(<span class="string">"____closure"</span>, <a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.Span.html#method.call_site">Span::call_site</a>());
-        <span class="kw">let </span>values_ident = <a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.Ident.html#method.new">Ident::new</a>(<span class="string">"____values"</span>, <a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.Span.html#method.call_site">Span::call_site</a>());
+    <span class="kw">fn </span>to_tokens(<span class="kw-2">&amp;</span><span class="self">self</span>, tokens: <span class="kw-2">&amp;mut </span><a href="https://docs.rs/proc-macro2/1.0.89/proc_macro2/struct.TokenStream.html">TokenStream</a>) {
+        <span class="kw">let </span>closure_ident = <a href="https://docs.rs/proc-macro2/1.0.89/proc_macro2/struct.Ident.html#method.new">Ident::new</a>(<span class="string">"____closure"</span>, <a href="https://docs.rs/proc-macro2/1.0.89/proc_macro2/struct.Span.html#method.call_site">Span::call_site</a>());
+        <span class="kw">let </span>values_ident = <a href="https://docs.rs/proc-macro2/1.0.89/proc_macro2/struct.Ident.html#method.new">Ident::new</a>(<span class="string">"____values"</span>, <a href="https://docs.rs/proc-macro2/1.0.89/proc_macro2/struct.Span.html#method.call_site">Span::call_site</a>());
         <span class="kw">let </span>crate_ident = <a href="utils.rs.html#188-215">crate_ident_new</a>();
 
         <span class="kw">let </span>outer_before = <span class="self"><a href="#216">self</a>
@@ -616,7 +616,7 @@
         <span class="kw">let </span>arg_names = <span class="kw-2">&amp;</span><a class="self" href="#216">self</a>.args;
         <span class="kw">let </span>args_len = <a class="self" href="#216">self</a>.args.<a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.len">len</a>();
         <span class="kw">let </span>closure = <span class="kw-2">&amp;</span><a class="self" href="#216">self</a>.closure;
-        <span class="kw">let </span>constructor = <a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.Ident.html#method.new">Ident::new</a>(<a class="self" href="#216">self</a>.constructor, <a href="https://docs.rs/proc-macro2/1.0.86/proc_macro2/struct.Span.html#method.call_site">Span::call_site</a>());
+        <span class="kw">let </span>constructor = <a href="https://docs.rs/proc-macro2/1.0.89/proc_macro2/struct.Ident.html#method.new">Ident::new</a>(<a class="self" href="#216">self</a>.constructor, <a href="https://docs.rs/proc-macro2/1.0.89/proc_macro2/struct.Span.html#method.call_site">Span::call_site</a>());
 
         <span class="kw">let </span>deprecated = <span class="kw">if </span><span class="self">self</span>.constructor == <span class="string">"new" </span>{
             <a class="macro" href="https://docs.rs/quote/1.0.37/quote/macro.quote.html">quote!</a> {
@@ -667,7 +667,7 @@
     input: <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">proc_macro::TokenStream</a>,
     constructor: <span class="kw-2">&amp;</span><span class="lifetime">'static </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
 ) -&gt; <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">proc_macro::TokenStream</a> {
-    <span class="kw">let </span><span class="kw-2">mut </span>closure = <a class="macro" href="https://docs.rs/syn/2.0.77/syn/macro.parse_macro_input.html">syn::parse_macro_input!</a>(input <span class="kw">as </span>Closure);
+    <span class="kw">let </span><span class="kw-2">mut </span>closure = <a class="macro" href="https://docs.rs/syn/2.0.85/syn/macro.parse_macro_input.html">syn::parse_macro_input!</a>(input <span class="kw">as </span>Closure);
     <a href="#297">closure</a>.constructor = <a href="#295">constructor</a>;
     <a href="#297">closure</a>.<a href="https://docs.rs/quote/1.0.37/quote/to_tokens/trait.ToTokens.html#tymethod.into_token_stream">into_token_stream</a>().<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>()
 }
