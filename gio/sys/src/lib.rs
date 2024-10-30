@@ -3404,6 +3404,7 @@ pub struct GFileIface {
             *mut *mut glib::GError,
         ) -> gboolean,
     >,
+    pub query_exists: Option<unsafe extern "C" fn(*mut GFile, *mut GCancellable) -> gboolean>,
 }
 
 impl ::std::fmt::Debug for GFileIface {
@@ -3555,6 +3556,7 @@ impl ::std::fmt::Debug for GFileIface {
             .field("measure_disk_usage", &self.measure_disk_usage)
             .field("measure_disk_usage_async", &self.measure_disk_usage_async)
             .field("measure_disk_usage_finish", &self.measure_disk_usage_finish)
+            .field("query_exists", &self.query_exists)
             .finish()
     }
 }
@@ -10043,6 +10045,9 @@ extern "C" {
         flags: *mut u32,
         error: *mut *mut glib::GError,
     ) -> gboolean;
+    #[cfg(feature = "v2_84")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_84")))]
+    pub fn g_resource_has_children(resource: *mut GResource, path: *const c_char) -> gboolean;
     pub fn g_resource_lookup_data(
         resource: *mut GResource,
         path: *const c_char,
@@ -17251,6 +17256,9 @@ extern "C" {
         flags: *mut u32,
         error: *mut *mut glib::GError,
     ) -> gboolean;
+    #[cfg(feature = "v2_84")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_84")))]
+    pub fn g_resources_has_children(path: *const c_char) -> gboolean;
     pub fn g_resources_lookup_data(
         path: *const c_char,
         lookup_flags: GResourceLookupFlags,
@@ -17313,7 +17321,21 @@ extern "C" {
     pub fn g_unix_mount_is_system_internal(mount_entry: *mut GUnixMountEntry) -> gboolean;
     pub fn g_unix_mount_points_changed_since(time: u64) -> gboolean;
     pub fn g_unix_mount_points_get(time_read: *mut u64) -> *mut glib::GList;
+    #[cfg(feature = "v2_82")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_82")))]
+    pub fn g_unix_mount_points_get_from_file(
+        table_path: *const c_char,
+        time_read_out: *mut u64,
+        n_points_out: *mut size_t,
+    ) -> *mut *mut GUnixMountPoint;
     pub fn g_unix_mounts_changed_since(time: u64) -> gboolean;
     pub fn g_unix_mounts_get(time_read: *mut u64) -> *mut glib::GList;
+    #[cfg(feature = "v2_82")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_82")))]
+    pub fn g_unix_mounts_get_from_file(
+        table_path: *const c_char,
+        time_read_out: *mut u64,
+        n_entries_out: *mut size_t,
+    ) -> *mut *mut GUnixMountEntry;
 
 }

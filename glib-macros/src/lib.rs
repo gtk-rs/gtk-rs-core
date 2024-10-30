@@ -1,5 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
+mod async_test;
 mod boxed_derive;
 mod clone;
 mod clone_old;
@@ -1603,4 +1604,23 @@ pub fn derived_properties(_attr: TokenStream, item: TokenStream) -> TokenStream 
 pub fn derive_value_delegate(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as value_delegate_derive::ValueDelegateInput);
     value_delegate_derive::impl_value_delegate(input).unwrap()
+}
+
+/// An attribute macro for writing asynchronous test functions.
+///
+/// This macro is designed to wrap an asynchronous test function and ensure that
+/// it runs within a `glib::MainContext`. It helps in writing async tests that
+/// require the use of an event loop for the asynchronous execution.
+///
+/// # Example
+///
+/// ```
+/// #[glib::async_test]
+/// async fn my_async_test() {
+///     // Test code that runs asynchronously
+/// }
+/// ```
+#[proc_macro_attribute]
+pub fn async_test(args: TokenStream, item: TokenStream) -> TokenStream {
+    async_test::async_test(args, item)
 }

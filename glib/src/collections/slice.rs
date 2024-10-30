@@ -403,6 +403,7 @@ impl<T: TransparentType> Slice<T> {
     /// Borrows a C array.
     #[inline]
     pub unsafe fn from_glib_borrow_num<'a>(ptr: *const T::GlibType, len: usize) -> &'a [T] {
+        debug_assert_eq!(mem::size_of::<T>(), mem::size_of::<T::GlibType>());
         debug_assert!(!ptr.is_null() || len == 0);
 
         if len == 0 {
@@ -416,6 +417,7 @@ impl<T: TransparentType> Slice<T> {
     /// Borrows a mutable C array.
     #[inline]
     pub unsafe fn from_glib_borrow_num_mut<'a>(ptr: *mut T::GlibType, len: usize) -> &'a mut [T] {
+        debug_assert_eq!(mem::size_of::<T>(), mem::size_of::<T::GlibType>());
         debug_assert!(!ptr.is_null() || len == 0);
 
         if len == 0 {
@@ -432,6 +434,7 @@ impl<T: TransparentType> Slice<T> {
         ptr: *const *const T::GlibType,
         len: usize,
     ) -> &'a [&'a T] {
+        debug_assert_eq!(mem::size_of::<T>(), mem::size_of::<T::GlibType>());
         debug_assert!(!ptr.is_null() || len == 0);
 
         if len == 0 {
@@ -448,6 +451,7 @@ impl<T: TransparentType> Slice<T> {
         ptr: *mut *mut T::GlibType,
         len: usize,
     ) -> &'a mut [&'a mut T] {
+        debug_assert_eq!(mem::size_of::<T>(), mem::size_of::<T::GlibType>());
         debug_assert!(!ptr.is_null() || len == 0);
 
         if len == 0 {
@@ -522,6 +526,8 @@ impl<T: TransparentType> Slice<T> {
     /// Creates a new empty slice.
     #[inline]
     pub fn new() -> Self {
+        debug_assert_eq!(mem::size_of::<T>(), mem::size_of::<T::GlibType>());
+
         Slice {
             ptr: ptr::NonNull::dangling(),
             len: 0,

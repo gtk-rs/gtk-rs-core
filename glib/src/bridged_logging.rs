@@ -1,6 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::{log as glib_log, translate::*};
+use crate::{gstr, log as glib_log, log_structured_array, translate::*, LogField};
 
 // rustdoc-stripper-ignore-next
 /// Enumeration of the possible formatting behaviours for a
@@ -141,19 +141,36 @@ impl GlibLogger {
         func: Option<&str>,
         message: &str,
     ) {
-        let line = line.map(|l| l.to_string());
-        let line = line.as_deref();
-
-        crate::log_structured!(
-            domain.unwrap_or("default"),
-            GlibLogger::level_to_glib(level),
-            {
-                "CODE_FILE" => file.unwrap_or("<unknown file>");
-                "CODE_LINE" => line.unwrap_or("<unknown line>");
-                "CODE_FUNC" => func.unwrap_or("<unknown module path>");
-                "MESSAGE" => message;
-            }
-        );
+        // Write line number into a static array to avoid allocating its string
+        // representation. 16 bytes allow 10^15 lines, which should be more than
+        // sufficient.
+        let mut line_buffer = [0u8; 16];
+        let line = {
+            use std::io::{Cursor, Write};
+            let mut c = Cursor::new(line_buffer.as_mut_slice());
+            match line {
+                Some(lineno) => write!(&mut c, "{lineno}").ok(),
+                None => write!(&mut c, "<unknown line>").ok(),
+            };
+            let pos = c.position() as usize;
+            &line_buffer[..pos]
+        };
+        let glib_level = GlibLogger::level_to_glib(level);
+        let fields = [
+            LogField::new(gstr!("PRIORITY"), glib_level.priority().as_bytes()),
+            LogField::new(
+                gstr!("CODE_FILE"),
+                file.unwrap_or("<unknown file>").as_bytes(),
+            ),
+            LogField::new(gstr!("CODE_LINE"), line),
+            LogField::new(
+                gstr!("CODE_FUNC"),
+                func.unwrap_or("<unknown module path>").as_bytes(),
+            ),
+            LogField::new(gstr!("MESSAGE"), message.as_bytes()),
+            LogField::new(gstr!("GLIB_DOMAIN"), domain.unwrap_or("default").as_bytes()),
+        ];
+        log_structured_array(glib_level, &fields);
     }
 }
 
@@ -200,25 +217,21 @@ impl rs_log::Log for GlibLogger {
             }
             GlibLoggerFormat::Structured => {
                 let args = record.args();
-                if let Some(s) = args.as_str() {
-                    GlibLogger::write_log_structured(
-                        domain,
-                        record.level(),
-                        record.file(),
-                        record.line(),
-                        record.module_path(),
-                        s,
-                    );
+                let args_str;
+                let message = if let Some(s) = args.as_str() {
+                    s
                 } else {
-                    GlibLogger::write_log_structured(
-                        domain,
-                        record.level(),
-                        record.file(),
-                        record.line(),
-                        record.module_path(),
-                        &args.to_string(),
-                    );
-                }
+                    args_str = args.to_string();
+                    &args_str
+                };
+                GlibLogger::write_log_structured(
+                    domain,
+                    record.level(),
+                    record.file(),
+                    record.line(),
+                    record.module_path(),
+                    message,
+                );
             }
         };
     }
