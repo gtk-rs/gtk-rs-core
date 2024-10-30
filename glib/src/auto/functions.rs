@@ -695,6 +695,8 @@ pub fn shell_unquote(
     }
 }
 
+//#[cfg(feature = "v2_82")]
+//#[cfg_attr(docsrs, doc(cfg(feature = "v2_82")))]
 //#[doc(alias = "g_sort_array")]
 //pub fn sort_array(array: /*Unimplemented*/&[&Basic: Pointer], element_size: usize, compare_func: /*Unimplemented*/FnMut(/*Unimplemented*/Option<Basic: Pointer>, /*Unimplemented*/Option<Basic: Pointer>) -> i32, user_data: /*Unimplemented*/Option<Basic: Pointer>) {
 //    unsafe { TODO: call ffi:g_sort_array() }
