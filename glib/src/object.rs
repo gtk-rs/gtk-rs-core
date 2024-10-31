@@ -3198,7 +3198,7 @@ impl<T: ObjectType> Watchable<T> for T {
 }
 
 #[doc(hidden)]
-impl<'a, T: ObjectType> Watchable<T> for BorrowedObject<'a, T> {
+impl<T: ObjectType> Watchable<T> for BorrowedObject<'_, T> {
     fn watched_object(&self) -> WatchedObject<T> {
         WatchedObject::new(self)
     }
@@ -3650,7 +3650,7 @@ pub struct BindingBuilder<'a, 'f, 't> {
     transform_to: TransformFn<'t>,
 }
 
-impl<'a, 'f, 't> fmt::Debug for BindingBuilder<'a, 'f, 't> {
+impl fmt::Debug for BindingBuilder<'_, '_, '_> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         f.debug_struct("BindingBuilder")
             .field("source", &self.source)
@@ -4073,7 +4073,7 @@ impl<T: IsClass> AsMut<T::GlibClassType> for Class<T> {
 #[derive(Debug)]
 pub struct ClassRef<'a, T: IsClass>(ptr::NonNull<Class<T>>, bool, PhantomData<&'a ()>);
 
-impl<'a, T: IsClass> ops::Deref for ClassRef<'a, T> {
+impl<T: IsClass> ops::Deref for ClassRef<'_, T> {
     type Target = Class<T>;
 
     #[inline]
@@ -4082,7 +4082,7 @@ impl<'a, T: IsClass> ops::Deref for ClassRef<'a, T> {
     }
 }
 
-impl<'a, T: IsClass> Drop for ClassRef<'a, T> {
+impl<T: IsClass> Drop for ClassRef<'_, T> {
     #[inline]
     fn drop(&mut self) {
         if self.1 {
@@ -4093,8 +4093,8 @@ impl<'a, T: IsClass> Drop for ClassRef<'a, T> {
     }
 }
 
-unsafe impl<'a, T: IsClass> Send for ClassRef<'a, T> {}
-unsafe impl<'a, T: IsClass> Sync for ClassRef<'a, T> {}
+unsafe impl<T: IsClass> Send for ClassRef<'_, T> {}
+unsafe impl<T: IsClass> Sync for ClassRef<'_, T> {}
 
 // This should require Self: IsA<Self::Super>, but that seems to cause a cycle error
 pub unsafe trait ParentClassIs: IsClass {
@@ -4339,7 +4339,7 @@ impl<T: IsInterface> AsMut<T::GlibClassType> for Interface<T> {
 #[derive(Debug)]
 pub struct InterfaceRef<'a, T: IsInterface>(ptr::NonNull<Interface<T>>, bool, PhantomData<&'a ()>);
 
-impl<'a, T: IsInterface> Drop for InterfaceRef<'a, T> {
+impl<T: IsInterface> Drop for InterfaceRef<'_, T> {
     #[inline]
     fn drop(&mut self) {
         if self.1 {
@@ -4350,7 +4350,7 @@ impl<'a, T: IsInterface> Drop for InterfaceRef<'a, T> {
     }
 }
 
-impl<'a, T: IsInterface> ops::Deref for InterfaceRef<'a, T> {
+impl<T: IsInterface> ops::Deref for InterfaceRef<'_, T> {
     type Target = Interface<T>;
 
     #[inline]
@@ -4359,8 +4359,8 @@ impl<'a, T: IsInterface> ops::Deref for InterfaceRef<'a, T> {
     }
 }
 
-unsafe impl<'a, T: IsInterface> Send for InterfaceRef<'a, T> {}
-unsafe impl<'a, T: IsInterface> Sync for InterfaceRef<'a, T> {}
+unsafe impl<T: IsInterface> Send for InterfaceRef<'_, T> {}
+unsafe impl<T: IsInterface> Sync for InterfaceRef<'_, T> {}
 
 // rustdoc-stripper-ignore-next
 /// Trait implemented by interface types.
@@ -4435,8 +4435,8 @@ pub struct BorrowedObject<'a, T> {
     phantom: PhantomData<&'a T>,
 }
 
-unsafe impl<'a, T: Send + Sync> Send for BorrowedObject<'a, T> {}
-unsafe impl<'a, T: Send + Sync> Sync for BorrowedObject<'a, T> {}
+unsafe impl<T: Send + Sync> Send for BorrowedObject<'_, T> {}
+unsafe impl<T: Send + Sync> Sync for BorrowedObject<'_, T> {}
 
 impl<'a, T: ObjectType> BorrowedObject<'a, T> {
     // rustdoc-stripper-ignore-next
@@ -4464,7 +4464,7 @@ impl<'a, T: ObjectType> BorrowedObject<'a, T> {
     }
 }
 
-impl<'a, T> ops::Deref for BorrowedObject<'a, T> {
+impl<T> ops::Deref for BorrowedObject<'_, T> {
     type Target = T;
 
     #[inline]
@@ -4473,30 +4473,28 @@ impl<'a, T> ops::Deref for BorrowedObject<'a, T> {
     }
 }
 
-impl<'a, T> AsRef<T> for BorrowedObject<'a, T> {
+impl<T> AsRef<T> for BorrowedObject<'_, T> {
     #[inline]
     fn as_ref(&self) -> &T {
         unsafe { &*(&self.ptr as *const _ as *const T) }
     }
 }
 
-impl<'a, T: PartialEq> PartialEq<T> for BorrowedObject<'a, T> {
+impl<T: PartialEq> PartialEq<T> for BorrowedObject<'_, T> {
     #[inline]
     fn eq(&self, other: &T) -> bool {
         <T as PartialEq>::eq(self, other)
     }
 }
 
-impl<'a, T: PartialOrd> PartialOrd<T> for BorrowedObject<'a, T> {
+impl<T: PartialOrd> PartialOrd<T> for BorrowedObject<'_, T> {
     #[inline]
     fn partial_cmp(&self, other: &T) -> Option<cmp::Ordering> {
         <T as PartialOrd>::partial_cmp(self, other)
     }
 }
 
-impl<'a, T: crate::clone::Downgrade + ObjectType> crate::clone::Downgrade
-    for BorrowedObject<'a, T>
-{
+impl<T: crate::clone::Downgrade + ObjectType> crate::clone::Downgrade for BorrowedObject<'_, T> {
     type Weak = <T as crate::clone::Downgrade>::Weak;
 
     #[inline]

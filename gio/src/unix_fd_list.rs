@@ -55,7 +55,6 @@ pub trait UnixFDListExtManual: IsA<UnixFDList> + Sized {
     }
 
     #[doc(alias = "g_unix_fd_list_peek_fds")]
-
     fn peek_fds(&self) -> Vec<RawFd> {
         unsafe {
             let mut length = mem::MaybeUninit::uninit();
@@ -66,6 +65,7 @@ pub trait UnixFDListExtManual: IsA<UnixFDList> + Sized {
             ret
         }
     }
+
     #[doc(alias = "g_unix_fd_list_steal_fds")]
     fn steal_fds(&self) -> Vec<RawFd> {
         unsafe {

@@ -1988,7 +1988,7 @@ impl<'a> From<&'a GString> for Cow<'a, GStr> {
     }
 }
 
-impl<'a> From<GString> for Cow<'a, GStr> {
+impl From<GString> for Cow<'_, GStr> {
     #[inline]
     fn from(v: GString) -> Self {
         Cow::Owned(v)

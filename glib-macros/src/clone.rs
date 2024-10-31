@@ -19,7 +19,7 @@ pub(crate) enum CaptureKind {
     ToOwned,
 }
 
-impl<'a> TryFrom<&'a Ident> for CaptureKind {
+impl TryFrom<&'_ Ident> for CaptureKind {
     type Error = syn::Error;
 
     fn try_from(s: &Ident) -> Result<Self, Self::Error> {

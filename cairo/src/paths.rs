@@ -65,7 +65,7 @@ pub struct PathSegments<'a> {
     num_data: usize,
 }
 
-impl<'a> Iterator for PathSegments<'a> {
+impl Iterator for PathSegments<'_> {
     type Item = PathSegment;
 
     fn next(&mut self) -> Option<PathSegment> {
@@ -93,7 +93,7 @@ impl<'a> Iterator for PathSegments<'a> {
     }
 }
 
-impl<'a> FusedIterator for PathSegments<'a> {}
+impl FusedIterator for PathSegments<'_> {}
 
 fn to_tuple(pair: &[f64; 2]) -> (f64, f64) {
     (pair[0], pair[1])

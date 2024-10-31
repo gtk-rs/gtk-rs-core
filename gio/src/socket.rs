@@ -81,10 +81,10 @@ impl<'v> InputVector<'v> {
     }
 }
 
-unsafe impl<'v> Send for InputVector<'v> {}
-unsafe impl<'v> Sync for InputVector<'v> {}
+unsafe impl Send for InputVector<'_> {}
+unsafe impl Sync for InputVector<'_> {}
 
-impl<'v> std::ops::Deref for InputVector<'v> {
+impl std::ops::Deref for InputVector<'_> {
     type Target = [u8];
 
     #[inline]
@@ -93,7 +93,7 @@ impl<'v> std::ops::Deref for InputVector<'v> {
     }
 }
 
-impl<'v> std::ops::DerefMut for InputVector<'v> {
+impl std::ops::DerefMut for InputVector<'_> {
     #[inline]
     fn deref_mut(&mut self) -> &mut Self::Target {
         unsafe { std::slice::from_raw_parts_mut(self.vector.buffer as *mut _, self.vector.size) }
@@ -230,10 +230,10 @@ impl<'v> OutputVector<'v> {
     }
 }
 
-unsafe impl<'v> Send for OutputVector<'v> {}
-unsafe impl<'v> Sync for OutputVector<'v> {}
+unsafe impl Send for OutputVector<'_> {}
+unsafe impl Sync for OutputVector<'_> {}
 
-impl<'v> std::ops::Deref for OutputVector<'v> {
+impl std::ops::Deref for OutputVector<'_> {
     type Target = [u8];
 
     #[inline]

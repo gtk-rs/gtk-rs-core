@@ -571,7 +571,9 @@ impl Value {
     ///
     /// Returns `Ok` if the type is correct.
     #[inline]
-    pub fn get<'a, T>(&'a self) -> Result<T, <<T as FromValue>::Checker as ValueTypeChecker>::Error>
+    pub fn get<'a, T>(
+        &'a self,
+    ) -> Result<T, <<T as FromValue<'a>>::Checker as ValueTypeChecker>::Error>
     where
         T: FromValue<'a>,
     {
@@ -727,7 +729,7 @@ impl ToValue for Value {
     }
 }
 
-impl<'a> ToValue for &'a Value {
+impl ToValue for &Value {
     #[inline]
     fn to_value(&self) -> Value {
         (*self).clone()
@@ -780,7 +782,7 @@ impl ToValue for SendValue {
     }
 }
 
-impl<'a> ToValue for &'a SendValue {
+impl ToValue for &SendValue {
     #[inline]
     fn to_value(&self) -> Value {
         unsafe { from_glib_none(self.to_glib_none().0) }
@@ -1034,7 +1036,7 @@ impl From<Vec<String>> for Value {
     }
 }
 
-impl<'a> ToValue for [&'a str] {
+impl ToValue for [&'_ str] {
     fn to_value(&self) -> Value {
         unsafe {
             let mut value = Value::for_value_type::<Vec<String>>();
@@ -1049,7 +1051,7 @@ impl<'a> ToValue for [&'a str] {
     }
 }
 
-impl<'a> ToValue for &'a [&'a str] {
+impl ToValue for &'_ [&'_ str] {
     fn to_value(&self) -> Value {
         unsafe {
             let mut value = Value::for_value_type::<Vec<String>>();

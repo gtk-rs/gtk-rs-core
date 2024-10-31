@@ -998,7 +998,7 @@ impl StaticVariantType for Variant {
     }
 }
 
-impl<'a, T: ?Sized + ToVariant> ToVariant for &'a T {
+impl<T: ?Sized + ToVariant> ToVariant for &T {
     fn to_variant(&self) -> Variant {
         <T as ToVariant>::to_variant(self)
     }
@@ -1011,7 +1011,7 @@ impl<'a, T: Into<Variant> + Clone> From<&'a T> for Variant {
     }
 }
 
-impl<'a, T: ?Sized + StaticVariantType> StaticVariantType for &'a T {
+impl<T: ?Sized + StaticVariantType> StaticVariantType for &T {
     fn static_variant_type() -> Cow<'static, VariantTy> {
         <T as StaticVariantType>::static_variant_type()
     }

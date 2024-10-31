@@ -38,7 +38,7 @@ pub struct RegistrationBuilder<'a> {
         Option<Box_<dyn Fn(DBusConnection, &str, &str, &str, &str, glib::Variant) -> bool>>,
 }
 
-impl<'a> RegistrationBuilder<'a> {
+impl RegistrationBuilder<'_> {
     pub fn method_call<
         F: Fn(DBusConnection, &str, &str, &str, &str, glib::Variant, DBusMethodInvocation) + 'static,
     >(

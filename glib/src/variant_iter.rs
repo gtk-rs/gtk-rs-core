@@ -196,9 +196,9 @@ impl<'a> DoubleEndedIterator for VariantStrIter<'a> {
     }
 }
 
-impl<'a> ExactSizeIterator for VariantStrIter<'a> {}
+impl ExactSizeIterator for VariantStrIter<'_> {}
 
-impl<'a> FusedIterator for VariantStrIter<'a> {}
+impl FusedIterator for VariantStrIter<'_> {}
 
 #[cfg(test)]
 mod tests {
