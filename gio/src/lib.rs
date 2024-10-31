@@ -4,6 +4,7 @@
 #![allow(clippy::type_complexity)]
 #![allow(clippy::too_many_arguments)]
 #![allow(clippy::missing_safety_doc)]
+#![allow(clippy::manual_c_str_literals)]
 #![doc = include_str!("../README.md")]
 
 pub use gio_sys as ffi;
