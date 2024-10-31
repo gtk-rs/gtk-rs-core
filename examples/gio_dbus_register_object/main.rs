@@ -32,16 +32,21 @@ struct SlowHello {
 }
 
 #[derive(Debug)]
-enum Call {
+enum HelloMethod {
     Hello(Hello),
     SlowHello(SlowHello),
 }
 
-impl Call {
-    pub fn parse(method: &str, parameters: glib::Variant) -> Result<Call, glib::Error> {
+impl DBusMethodCall for HelloMethod {
+    fn parse_call(
+        _obj_path: &str,
+        _interface: &str,
+        method: &str,
+        params: glib::Variant,
+    ) -> Result<Self, glib::Error> {
         match method {
-            "Hello" => Ok(parameters.get::<Hello>().map(Call::Hello)),
-            "SlowHello" => Ok(parameters.get::<SlowHello>().map(Call::SlowHello)),
+            "Hello" => Ok(params.get::<Hello>().map(Self::Hello)),
+            "SlowHello" => Ok(params.get::<SlowHello>().map(Self::SlowHello)),
             _ => Err(glib::Error::new(IOErrorEnum::Failed, "No such method")),
         }
         .and_then(|p| p.ok_or_else(|| glib::Error::new(IOErrorEnum::Failed, "Invalid parameters")))
@@ -58,23 +63,24 @@ fn on_startup(app: &gio::Application, tx: &Sender<gio::RegistrationId>) {
 
     if let Ok(id) = connection
         .register_object("/com/github/gtk_rs/examples/HelloWorld", &example)
-        .method_call(move |_, _, _, _, method, params, invocation| {
-            let call = Call::parse(method, params);
-            invocation.return_future_local(async move {
-                match call? {
-                    Call::Hello(Hello { name }) => {
+        .typed_method_call::<HelloMethod>()
+        .invoke_and_return_future_local(|_, sender, call| {
+            println!("Method call from {sender}");
+            async {
+                match call {
+                    HelloMethod::Hello(Hello { name }) => {
                         let greet = format!("Hello {name}!");
                         println!("{greet}");
                         Ok(Some(greet.to_variant()))
                     }
-                    Call::SlowHello(SlowHello { name, delay }) => {
+                    HelloMethod::SlowHello(SlowHello { name, delay }) => {
                         glib::timeout_future(Duration::from_secs(delay as u64)).await;
                         let greet = format!("Hello {name} after {delay} seconds!");
                         println!("{greet}");
                         Ok(Some(greet.to_variant()))
                     }
                 }
-            });
+            }
         })
         .build()
     {
