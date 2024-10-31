@@ -8,6 +8,7 @@ pub use gio;
 pub use glib;
 
 #[allow(clippy::too_many_arguments)]
+#[allow(clippy::manual_c_str_literals)]
 mod auto;
 
 pub mod subclass;
