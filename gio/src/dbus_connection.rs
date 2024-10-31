@@ -1,13 +1,110 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use std::{boxed::Box as Box_, num::NonZeroU32};
-
-use glib::{prelude::*, translate::*};
+use std::{boxed::Box as Box_, future::Future, marker::PhantomData, num::NonZeroU32};
 
 use crate::{
     ffi, ActionGroup, DBusConnection, DBusInterfaceInfo, DBusMessage, DBusMethodInvocation,
     DBusSignalFlags, MenuModel,
 };
+use glib::{prelude::*, translate::*};
+
+pub trait DBusMethodCall: Sized {
+    fn parse_call(
+        obj_path: &str,
+        interface: &str,
+        method: &str,
+        params: glib::Variant,
+    ) -> Result<Self, glib::Error>;
+}
+
+// rustdoc-stripper-ignore-next
+/// Handle method invocations.
+pub struct MethodCallBuilder<'a, T> {
+    registration: RegistrationBuilder<'a>,
+    capture_type: PhantomData<T>,
+}
+
+impl<'a, T: DBusMethodCall> MethodCallBuilder<'a, T> {
+    // rustdoc-stripper-ignore-next
+    /// Handle invocation of a parsed method call.
+    ///
+    /// For each DBus method call parse the call, and then invoke the given closure
+    /// with
+    ///
+    /// 1. the DBus connection object,
+    /// 2. the name of the sender of the method call,
+    /// 3. the parsed call, and
+    /// 4. the method invocation object.
+    ///
+    /// The closure **must** return a value through the invocation object in all
+    /// code paths, using any of its `return_` functions, such as
+    /// [`DBusMethodInvocation::return_result`] or
+    /// [`DBusMethodInvocation::return_future_local`], to finish the call.
+    ///
+    /// If direct access to the invocation object is not needed,
+    /// [`invoke_and_return`] and [`invoke_and_return_future_local`] provide a
+    /// safer interface where the callback returns a result directly.
+    pub fn invoke<F>(self, f: F) -> RegistrationBuilder<'a>
+    where
+        F: Fn(DBusConnection, &str, T, DBusMethodInvocation) + 'static,
+    {
+        self.registration.method_call(
+            move |connection, sender, obj_path, interface, method, params, invocation| {
+                match T::parse_call(obj_path, interface, method, params) {
+                    Ok(call) => f(connection, sender, call, invocation),
+                    Err(error) => invocation.return_gerror(error),
+                }
+            },
+        )
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Handle invocation of a parsed method call.
+    ///
+    /// For each DBus method call parse the call, and then invoke the given closure
+    /// with
+    ///
+    /// 1. the DBus connection object,
+    /// 2. the name of the sender of the method call, and
+    /// 3. the parsed call.
+    ///
+    /// The return value of the closure is then returned on the method call.
+    /// If the returned variant value is not a tuple, it is automatically wrapped
+    /// in a single element tuple, as DBus methods must always return tuples.
+    /// See [`DBusMethodInvocation::return_result`] for details.
+    pub fn invoke_and_return<F>(self, f: F) -> RegistrationBuilder<'a>
+    where
+        F: Fn(DBusConnection, &str, T) -> Result<Option<glib::Variant>, glib::Error> + 'static,
+    {
+        self.invoke(move |connection, sender, call, invocation| {
+            invocation.return_result(f(connection, sender, call))
+        })
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Handle an async invocation of a parsed method call.
+    ///
+    /// For each DBus method call parse the call, and then invoke the given closure
+    /// with
+    ///
+    /// 1. the DBus connection object,
+    /// 2. the name of the sender of the method call, and
+    /// 3. the parsed call.
+    ///
+    /// The output of the future is then returned on the method call.
+    /// If the returned variant value is not a tuple, it is automatically wrapped
+    /// in a single element tuple, as DBus methods must always return tuples.
+    /// See [`DBusMethodInvocation::return_future_local`] for details.
+    pub fn invoke_and_return_future_local<F, Fut>(self, f: F) -> RegistrationBuilder<'a>
+    where
+        F: Fn(DBusConnection, &str, T) -> Fut + 'static,
+        Fut: Future<Output = Result<Option<glib::Variant>, glib::Error>> + 'static,
+    {
+        self.invoke(move |connection, sender, call, invocation| {
+            invocation.return_future_local(f(connection, sender, call));
+        })
+    }
+}
 
 #[derive(Debug, Eq, PartialEq)]
 pub struct RegistrationId(NonZeroU32);
@@ -22,6 +119,8 @@ pub struct FilterId(NonZeroU32);
 #[derive(Debug, Eq, PartialEq)]
 pub struct SignalSubscriptionId(NonZeroU32);
 
+// rustdoc-stripper-ignore-next
+/// Build a registered DBus object, by handling different parts of DBus.
 #[must_use = "The builder must be built to be used"]
 pub struct RegistrationBuilder<'a> {
     connection: &'a DBusConnection,
@@ -47,6 +146,19 @@ impl<'a> RegistrationBuilder<'a> {
     ) -> Self {
         self.method_call = Some(Box_::new(f));
         self
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Handle method calls on this object.
+    ///
+    /// Return a builder for method calls which parses method names and
+    /// parameters with the given [`DBusMethodCall`] and then allows to dispatch
+    /// the parsed call either synchronously or asynchronously.
+    pub fn typed_method_call<T: DBusMethodCall>(self) -> MethodCallBuilder<'a, T> {
+        MethodCallBuilder {
+            registration: self,
+            capture_type: Default::default(),
+        }
     }
 
     #[doc(alias = "get_property")]
