@@ -19,7 +19,7 @@ pub enum UnixSocketAddressPath<'a> {
     AbstractPadded(&'a [u8]),
 }
 
-impl<'a> UnixSocketAddressPath<'a> {
+impl UnixSocketAddressPath<'_> {
     fn to_type(&self) -> UnixSocketAddressType {
         use self::UnixSocketAddressPath::*;
 

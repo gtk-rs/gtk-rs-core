@@ -234,8 +234,8 @@ pub struct ImageSurfaceData<'a> {
     dirty: bool,
 }
 
-unsafe impl<'a> Send for ImageSurfaceData<'a> {}
-unsafe impl<'a> Sync for ImageSurfaceData<'a> {}
+unsafe impl Send for ImageSurfaceData<'_> {}
+unsafe impl Sync for ImageSurfaceData<'_> {}
 
 impl<'a> ImageSurfaceData<'a> {
     fn new(surface: &'a mut ImageSurface) -> ImageSurfaceData<'a> {
@@ -255,7 +255,7 @@ impl<'a> ImageSurfaceData<'a> {
     }
 }
 
-impl<'a> Drop for ImageSurfaceData<'a> {
+impl Drop for ImageSurfaceData<'_> {
     #[inline]
     fn drop(&mut self) {
         if self.dirty {
@@ -264,7 +264,7 @@ impl<'a> Drop for ImageSurfaceData<'a> {
     }
 }
 
-impl<'a> Deref for ImageSurfaceData<'a> {
+impl Deref for ImageSurfaceData<'_> {
     type Target = [u8];
 
     #[inline]
@@ -273,7 +273,7 @@ impl<'a> Deref for ImageSurfaceData<'a> {
     }
 }
 
-impl<'a> DerefMut for ImageSurfaceData<'a> {
+impl DerefMut for ImageSurfaceData<'_> {
     #[inline]
     fn deref_mut(&mut self) -> &mut [u8] {
         self.dirty = true;

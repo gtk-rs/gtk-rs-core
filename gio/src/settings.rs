@@ -17,7 +17,7 @@ pub struct BindingBuilder<'a> {
     set_mapping: Option<Box<dyn Fn(&glib::Value, glib::VariantType) -> Option<glib::Variant>>>,
 }
 
-impl<'a> BindingBuilder<'a> {
+impl BindingBuilder<'_> {
     pub fn flags(mut self, flags: SettingsBindFlags) -> Self {
         self.flags = flags;
         self

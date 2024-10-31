@@ -666,7 +666,7 @@ impl<'a, T: TransparentPtrType> Iterator for Iter<'a, T> {
     }
 }
 
-impl<'a, T: TransparentPtrType> FusedIterator for Iter<'a, T> {}
+impl<T: TransparentPtrType> FusedIterator for Iter<'_, T> {}
 
 // rustdoc-stripper-ignore-next
 /// A non-destructive iterator over a [`List`].
@@ -708,7 +708,7 @@ impl<'a, T: TransparentPtrType> Iterator for IterMut<'a, T> {
     }
 }
 
-impl<'a, T: TransparentPtrType> FusedIterator for IterMut<'a, T> {}
+impl<T: TransparentPtrType> FusedIterator for IterMut<'_, T> {}
 
 // rustdoc-stripper-ignore-next
 /// A destructive iterator over a [`List`].
