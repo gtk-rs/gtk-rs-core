@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/lib.rs`."><title>lib.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-198729e5.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.84.0-nightly (3f1be1ec7 2024-10-28)" data-channel="nightly" data-search-js="search-c5a66128.js" data-settings-js="settings-0f613d39.js" ><script src="../../static.files/storage-59e33391.js"></script><script defer src="../../static.files/src-script-56102188.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/lib.rs`."><title>lib.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-590a400c.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.84.0-nightly (759e07f06 2024-10-30)" data-channel="nightly" data-search-js="search-c5a66128.js" data-settings-js="settings-0f613d39.js" ><script src="../../static.files/storage-59e33391.js"></script><script defer src="../../static.files/src-script-56102188.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -228,12 +228,14 @@
 <a href="#154" id="154">154</a>
 <a href="#155" id="155">155</a>
 <a href="#156" id="156">156</a>
-<a href="#157" id="157">157</a></pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
+<a href="#157" id="157">157</a>
+<a href="#158" id="158">158</a></pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
 </span><span class="attr">#![cfg_attr(docsrs, feature(doc_cfg))]
 #![allow(clippy::type_complexity)]
 #![allow(clippy::too_many_arguments)]
 #![allow(clippy::missing_safety_doc)]
+#![allow(clippy::manual_c_str_literals)]
 #![doc = <span class="macro">include_str!</span>(<span class="string">"../README.md"</span>)]
 
 </span><span class="kw">pub use </span><a href="../../gio_sys/index.html">gio_sys</a> <span class="kw">as </span>ffi;
@@ -255,7 +257,7 @@
 <span class="kw">mod </span><a href="data_input_stream.rs.html#3-431">data_input_stream</a>;
 <span class="kw">mod </span><a href="datagram_based.rs.html#3-374">datagram_based</a>;
 <span class="kw">mod </span><a href="dbus.rs.html#3-322">dbus</a>;
-<span class="kw">pub use </span><a href="#27"><span class="self">self</span>::dbus</a>::<span class="kw-2">*</span>;
+<span class="kw">pub use </span><a href="#28"><span class="self">self</span>::dbus</a>::<span class="kw-2">*</span>;
 <span class="kw">mod </span><a href="dbus_connection.rs.html#3-630">dbus_connection</a>;
 <span class="kw">pub use </span><span class="self">self</span>::dbus_connection::{
     <a href="dbus_connection.rs.html#17">ActionGroupExportId</a>, <a href="dbus_connection.rs.html#21">FilterId</a>, <a href="dbus_connection.rs.html#19">MenuModelExportId</a>, <a href="dbus_connection.rs.html#13">RegistrationId</a>, <a href="dbus_connection.rs.html#23">SignalSubscriptionId</a>,
@@ -292,7 +294,7 @@
 <span class="kw">mod </span><a href="initable.rs.html#3-158">initable</a>;
 <span class="kw">mod </span><a href="input_stream.rs.html#3-819">input_stream</a>;
 <span class="kw">pub use </span><span class="kw">crate</span>::input_stream::{<a href="input_stream.rs.html#480-483">InputStreamAsyncBufRead</a>, <a href="input_stream.rs.html#403">InputStreamRead</a>};
-<span class="kw">mod </span><a href="list_model.rs.html#3-317">list_model</a>;
+<span class="kw">mod </span><a href="list_model.rs.html#3-316">list_model</a>;
 <span class="kw">mod </span><a href="list_store.rs.html#3-388">list_store</a>;
 <span class="attr">#[cfg(test)]
 </span><span class="kw">mod </span>memory_input_stream;
@@ -346,8 +348,8 @@
     <span class="kw">pub use </span><a href="auto/mod.rs.html#576"><span class="kw">super</span>::auto::functions</a>::<span class="kw-2">*</span>;
 }
 
-<span class="kw">pub use </span><a href="#126"><span class="kw">crate</span>::auto</a>::<span class="kw-2">*</span>;
-<span class="kw">pub use </span><a href="#115-117"><span class="kw">crate</span>::functions</a>::<span class="kw-2">*</span>;
+<span class="kw">pub use </span><a href="#127"><span class="kw">crate</span>::auto</a>::<span class="kw-2">*</span>;
+<span class="kw">pub use </span><a href="#116-118"><span class="kw">crate</span>::functions</a>::<span class="kw-2">*</span>;
 <span class="kw">pub mod </span><a href="prelude.rs.html#4-46">prelude</a>;
 
 <span class="attr">#[allow(clippy::missing_safety_doc)]
@@ -356,16 +358,16 @@
 </span><span class="kw">mod </span><a href="auto/mod.rs.html#5-881">auto</a>;
 
 <span class="kw">mod </span><a href="gio_future.rs.html#3-131">gio_future</a>;
-<span class="kw">pub use </span><a href="#128"><span class="kw">crate</span>::gio_future</a>::<span class="kw-2">*</span>;
+<span class="kw">pub use </span><a href="#129"><span class="kw">crate</span>::gio_future</a>::<span class="kw-2">*</span>;
 
 <span class="kw">mod </span><a href="io_extension.rs.html#3-77">io_extension</a>;
-<span class="kw">pub use </span><a href="#131"><span class="kw">crate</span>::io_extension</a>::<span class="kw-2">*</span>;
+<span class="kw">pub use </span><a href="#132"><span class="kw">crate</span>::io_extension</a>::<span class="kw-2">*</span>;
 
 <span class="kw">mod </span><a href="io_extension_point.rs.html#3-290">io_extension_point</a>;
-<span class="kw">pub use </span><a href="#134"><span class="kw">crate</span>::io_extension_point</a>::<span class="kw-2">*</span>;
+<span class="kw">pub use </span><a href="#135"><span class="kw">crate</span>::io_extension_point</a>::<span class="kw-2">*</span>;
 
 <span class="kw">mod </span><a href="task.rs.html#3-1159">task</a>;
-<span class="kw">pub use </span><a href="#137"><span class="kw">crate</span>::task</a>::<span class="kw-2">*</span>;
+<span class="kw">pub use </span><a href="#138"><span class="kw">crate</span>::task</a>::<span class="kw-2">*</span>;
 
 <span class="attr">#[macro_use]
 </span><span class="kw">pub mod </span><a href="subclass/mod.rs.html#3-34">subclass</a>;

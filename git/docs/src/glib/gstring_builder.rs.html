@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/gstring_builder.rs`."><title>gstring_builder.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-198729e5.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.84.0-nightly (3f1be1ec7 2024-10-28)" data-channel="nightly" data-search-js="search-c5a66128.js" data-settings-js="settings-0f613d39.js" ><script src="../../static.files/storage-59e33391.js"></script><script defer src="../../static.files/src-script-56102188.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/gstring_builder.rs`."><title>gstring_builder.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-590a400c.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.84.0-nightly (759e07f06 2024-10-30)" data-channel="nightly" data-search-js="search-c5a66128.js" data-settings-js="settings-0f613d39.js" ><script src="../../static.files/storage-59e33391.js"></script><script defer src="../../static.files/src-script-56102188.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -442,14 +442,14 @@
 
 </span><span class="kw">use </span>std::{<a href="https://doc.rust-lang.org/nightly/core/cmp/index.html">cmp</a>, <a href="https://doc.rust-lang.org/nightly/alloc/fmt/index.html">fmt</a>, <a href="https://doc.rust-lang.org/nightly/std/hash/index.html">hash</a>, <a href="https://doc.rust-lang.org/nightly/core/mem/index.html">mem</a>, <a href="https://doc.rust-lang.org/nightly/core/ops/index.html">ops</a>, <a href="https://doc.rust-lang.org/nightly/core/ptr/index.html">ptr</a>, <a href="https://doc.rust-lang.org/nightly/alloc/slice/index.html">slice</a>, <a href="https://doc.rust-lang.org/nightly/alloc/str/index.html">str</a>};
 
-<span class="kw">use crate</span>::{<a href="../../glib_sys/index.html">ffi</a>, <a href="lib.rs.html#163">translate</a>::<span class="kw-2">*</span>, <a href="gstring.rs.html#24">GStr</a>};
+<span class="kw">use crate</span>::{ffi, <a href="lib.rs.html#163">translate</a>::<span class="kw-2">*</span>, <a href="gstring.rs.html#24">GStr</a>};
 
-<a class="macro" href="wrapper.rs.html#277-444">wrapper!</a> {
+<a class="macro" href="wrapper.rs.html#276-443">wrapper!</a> {
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// A mutable text buffer that grows automatically.
     </span><span class="attr">#[doc(alias = <span class="string">"GString"</span>)]
     #[must_use = <span class="string">"The builder must be built to be used"</span>]
-    </span><span class="kw">pub struct </span><a href="../../glib/struct.GStringBuilder.html">GStringBuilder</a>(BoxedInline&lt;<a href="../../glib_sys/struct.GString.html">ffi::GString</a>&gt;);
+    </span><span class="kw">pub struct </span><a href="../../glib/struct.GStringBuilder.html">GStringBuilder</a>(BoxedInline&lt;ffi::GString&gt;);
 
     <span class="kw">match fn </span>{
         copy =&gt; |ptr| ffi::g_string_new_len((<span class="kw-2">*</span>ptr).str, (<span class="kw-2">*</span>ptr).len <span class="kw">as </span>isize),
@@ -496,8 +496,8 @@
             <span class="kw">let </span>allocated_len = <a href="https://doc.rust-lang.org/nightly/core/foreigntype.num.html#method.next_power_of_two">usize::next_power_of_two</a>(<a href="https://doc.rust-lang.org/nightly/core/cmp/fn.max.html">std::cmp::max</a>(<a href="#53">data</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.str.html#method.len">len</a>(), <span class="number">64</span>) + <span class="number">1</span>);
             <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.assert_ne.html">assert_ne!</a>(allocated_len, <span class="number">0</span>);
 
-            <span class="kw">let </span>inner = <a href="../../glib_sys/struct.GString.html">ffi::GString</a> {
-                str: <a href="../../glib_sys/fn.g_malloc.html">ffi::g_malloc</a>(<a href="#56">allocated_len</a>) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+            <span class="kw">let </span>inner = ffi::GString {
+                str: ffi::g_malloc(<a href="#56">allocated_len</a>) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
                 len: <a href="#53">data</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.str.html#method.len">len</a>(),
                 <a href="#56">allocated_len</a>,
             };
@@ -516,7 +516,7 @@
     #[inline]
     </span><span class="kw">pub fn </span>append(<span class="kw-2">&amp;mut </span><span class="self">self</span>, val: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) {
         <span class="kw">unsafe </span>{
-            <a href="../../glib_sys/fn.g_string_append_len.html">ffi::g_string_append_len</a>(
+            ffi::g_string_append_len(
                 <a class="self" href="#77">self</a>.<a href="translate.rs.html#471">to_glib_none_mut</a>().<span class="number">0</span>,
                 <a href="#77">val</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.str.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
                 <a href="#77">val</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.str.html#method.len">len</a>() <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.isize.html">isize</a>,
@@ -529,7 +529,7 @@
     #[inline]
     </span><span class="kw">pub fn </span>prepend(<span class="kw-2">&amp;mut </span><span class="self">self</span>, val: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) {
         <span class="kw">unsafe </span>{
-            <a href="../../glib_sys/fn.g_string_prepend_len.html">ffi::g_string_prepend_len</a>(
+            ffi::g_string_prepend_len(
                 <a class="self" href="#90">self</a>.<a href="translate.rs.html#471">to_glib_none_mut</a>().<span class="number">0</span>,
                 <a href="#90">val</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.str.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
                 <a href="#90">val</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.str.html#method.len">len</a>() <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.isize.html">isize</a>,
@@ -542,7 +542,7 @@
     #[inline]
     </span><span class="kw">pub fn </span>append_c(<span class="kw-2">&amp;mut </span><span class="self">self</span>, val: <a href="https://doc.rust-lang.org/nightly/std/primitive.char.html">char</a>) {
         <span class="kw">unsafe </span>{
-            <a href="../../glib_sys/fn.g_string_append_unichar.html">ffi::g_string_append_unichar</a>(<a class="self" href="#103">self</a>.<a href="translate.rs.html#471">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#103">val</a>.<a href="translate.rs.html#334">into_glib</a>());
+            ffi::g_string_append_unichar(<a class="self" href="#103">self</a>.<a href="translate.rs.html#471">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#103">val</a>.<a href="translate.rs.html#334">into_glib</a>());
         }
     }
 
@@ -551,7 +551,7 @@
     #[inline]
     </span><span class="kw">pub fn </span>prepend_c(<span class="kw-2">&amp;mut </span><span class="self">self</span>, val: <a href="https://doc.rust-lang.org/nightly/std/primitive.char.html">char</a>) {
         <span class="kw">unsafe </span>{
-            <a href="../../glib_sys/fn.g_string_prepend_unichar.html">ffi::g_string_prepend_unichar</a>(<a class="self" href="#112">self</a>.<a href="translate.rs.html#471">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#112">val</a>.<a href="translate.rs.html#334">into_glib</a>());
+            ffi::g_string_prepend_unichar(<a class="self" href="#112">self</a>.<a href="translate.rs.html#471">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#112">val</a>.<a href="translate.rs.html#334">into_glib</a>());
         }
     }
 
