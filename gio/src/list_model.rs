@@ -31,7 +31,6 @@ pub trait ListModelExtManual: sealed::Sealed + IsA<ListModel> + Sized {
     /// # Panics
     ///
     /// Panics if `T::static_type().is_a(self.item_type())` is not true.
-
     fn iter<LT: IsA<glib::Object>>(&self) -> ListModelIter<LT> {
         assert!(self.item_type().is_a(LT::static_type()));
 
@@ -85,7 +84,7 @@ pub struct ListModelIter<'a, T: IsA<glib::Object>> {
     changed: Rc<Cell<bool>>,
     signal_id: Option<SignalHandlerId>,
 }
-impl<'a, T: IsA<glib::Object>> Iterator for ListModelIter<'a, T> {
+impl<T: IsA<glib::Object>> Iterator for ListModelIter<'_, T> {
     type Item = Result<T, ListModelMutatedDuringIter>;
 
     fn next(&mut self) -> Option<Self::Item> {
@@ -144,11 +143,11 @@ impl<'a, T: IsA<glib::Object>> Iterator for ListModelIter<'a, T> {
     }
 }
 
-impl<'a, T: IsA<glib::Object>> FusedIterator for ListModelIter<'a, T> {}
+impl<T: IsA<glib::Object>> FusedIterator for ListModelIter<'_, T> {}
 
-impl<'a, T: IsA<glib::Object>> ExactSizeIterator for ListModelIter<'a, T> {}
+impl<T: IsA<glib::Object>> ExactSizeIterator for ListModelIter<'_, T> {}
 
-impl<'a, T: IsA<glib::Object>> DoubleEndedIterator for ListModelIter<'a, T> {
+impl<T: IsA<glib::Object>> DoubleEndedIterator for ListModelIter<'_, T> {
     fn next_back(&mut self) -> Option<Self::Item> {
         if self.reverse_pos == self.i {
             return None;
@@ -183,7 +182,7 @@ impl<'a, T: IsA<glib::Object>> DoubleEndedIterator for ListModelIter<'a, T> {
         }
     }
 }
-impl<'a, T: IsA<glib::Object>> Drop for ListModelIter<'a, T> {
+impl<T: IsA<glib::Object>> Drop for ListModelIter<'_, T> {
     #[inline]
     fn drop(&mut self) {
         self.model.disconnect(self.signal_id.take().unwrap());

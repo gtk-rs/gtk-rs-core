@@ -19,7 +19,7 @@ use crate::{Content, RecordingSurface, ScriptMode, Surface};
 #[must_use = "if unused the Device will immediately be released"]
 pub struct DeviceAcquireGuard<'a>(&'a Device);
 
-impl<'a> Drop for DeviceAcquireGuard<'a> {
+impl Drop for DeviceAcquireGuard<'_> {
     #[inline]
     fn drop(&mut self) {
         self.0.release();

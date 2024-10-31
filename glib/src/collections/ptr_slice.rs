@@ -1097,7 +1097,7 @@ impl<T: TransparentPtrType> IntoPtrSlice<T> for PtrSlice<T> {
     }
 }
 
-impl<'a, T: TransparentPtrType> IntoPtrSlice<T> for &'a PtrSlice<T> {
+impl<T: TransparentPtrType> IntoPtrSlice<T> for &'_ PtrSlice<T> {
     #[inline]
     fn run_with_ptr_slice<R, F: FnOnce(&[<T as GlibPtrDefault>::GlibType]) -> R>(self, f: F) -> R {
         f(unsafe { std::slice::from_raw_parts(self.as_ptr() as *mut _, self.len() + 1) })
@@ -1160,7 +1160,7 @@ impl<T: TransparentPtrType, const N: usize> IntoPtrSlice<T> for [T; N] {
     }
 }
 
-impl<'a, T: TransparentPtrType> IntoPtrSlice<T> for &'a [T] {
+impl<T: TransparentPtrType> IntoPtrSlice<T> for &'_ [T] {
     #[inline]
     fn run_with_ptr_slice<R, F: FnOnce(&[<T as GlibPtrDefault>::GlibType]) -> R>(self, f: F) -> R {
         if self.len() < MAX_STACK_ALLOCATION {

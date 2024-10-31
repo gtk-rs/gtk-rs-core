@@ -12,7 +12,7 @@ pub enum InetAddressBytes<'a> {
     V6(&'a [u8; 16]),
 }
 
-impl<'a> InetAddressBytes<'a> {
+impl InetAddressBytes<'_> {
     #[inline]
     fn deref(&self) -> &[u8] {
         use self::InetAddressBytes::*;
