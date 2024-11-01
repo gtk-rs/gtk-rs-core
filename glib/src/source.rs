@@ -53,7 +53,7 @@ impl FromGlib<u32> for SourceId {
 }
 
 // rustdoc-stripper-ignore-next
-/// Process identificator
+/// Process identifier
 #[derive(Copy, Clone, Debug, Eq, PartialEq)]
 #[doc(alias = "GPid")]
 pub struct Pid(pub ffi::GPid);
