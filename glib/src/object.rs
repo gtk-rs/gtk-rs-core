@@ -3328,10 +3328,11 @@ pub unsafe trait ObjectClassExt {
     }
 
     // rustdoc-stripper-ignore-next
-    /// Check if the object class has a property `property_name` of the given `type_`.
+    /// Check if the object class has a property `property_name` of the given `type_`
+    /// or a subtype of it.
     fn has_property_with_type(&self, property_name: &str, type_: Type) -> bool {
         self.property_type(property_name)
-            .is_some_and(|ptype| ptype == type_)
+            .is_some_and(|ptype| ptype.is_a(type_))
     }
 
     // rustdoc-stripper-ignore-next
@@ -4274,10 +4275,11 @@ impl<T: IsA<Object> + IsInterface> Interface<T> {
     }
 
     // rustdoc-stripper-ignore-next
-    /// Check if the interface has a property `property_name` of the given `type_`.
+    /// Check if the interface has a property `property_name` of the given `type_`
+    /// or a subtype of it.
     pub fn has_property_with_type(&self, property_name: &str, type_: Type) -> bool {
         self.property_type(property_name)
-            .is_some_and(|ptype| ptype == type_)
+            .is_some_and(|ptype| ptype.is_a(type_))
     }
 
     // rustdoc-stripper-ignore-next
