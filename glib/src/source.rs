@@ -1092,9 +1092,9 @@ where
         ffi::g_source_set_callback(
             source,
             Some(transmute::<
-                *const (),
+                *mut (),
                 unsafe extern "C" fn(ffi::gpointer) -> ffi::gboolean,
-            >(trampoline_child_watch::<F> as *const ())),
+            >(trampoline_child_watch::<F> as *mut ())),
             into_raw_child_watch(func),
             Some(destroy_closure_child_watch::<F>),
         );
