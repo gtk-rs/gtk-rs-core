@@ -31,7 +31,7 @@ impl AttrList {
     #[doc(alias = "pango_attr_list_filter")]
     #[must_use]
     pub fn filter<P: FnMut(&Attribute) -> bool>(&self, func: P) -> Option<AttrList> {
-        let func_data: P = func;
+        let mut func_data: P = func;
         unsafe extern "C" fn func_func<P: FnMut(&Attribute) -> bool>(
             attribute: *mut ffi::PangoAttribute,
             user_data: glib::ffi::gpointer,
@@ -41,12 +41,12 @@ impl AttrList {
             (*callback)(&attribute).into_glib()
         }
         let func = Some(func_func::<P> as _);
-        let super_callback0: &P = &func_data;
+        let super_callback0: &mut P = &mut func_data;
         unsafe {
             from_glib_full(ffi::pango_attr_list_filter(
                 self.to_glib_none().0,
                 func,
-                super_callback0 as *const _ as *mut _,
+                super_callback0 as *mut _ as *mut _,
             ))
         }
     }

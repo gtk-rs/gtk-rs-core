@@ -26,7 +26,7 @@ mod sealed {
 pub trait FontsetExt: IsA<Fontset> + sealed::Sealed + 'static {
     #[doc(alias = "pango_fontset_foreach")]
     fn foreach<P: FnMut(&Fontset, &Font) -> bool>(&self, func: P) {
-        let func_data: P = func;
+        let mut func_data: P = func;
         unsafe extern "C" fn func_func<P: FnMut(&Fontset, &Font) -> bool>(
             fontset: *mut ffi::PangoFontset,
             font: *mut ffi::PangoFont,
@@ -38,12 +38,12 @@ pub trait FontsetExt: IsA<Fontset> + sealed::Sealed + 'static {
             (*callback)(&fontset, &font).into_glib()
         }
         let func = Some(func_func::<P> as _);
-        let super_callback0: &P = &func_data;
+        let super_callback0: &mut P = &mut func_data;
         unsafe {
             ffi::pango_fontset_foreach(
                 self.as_ref().to_glib_none().0,
                 func,
-                super_callback0 as *const _ as *mut _,
+                super_callback0 as *mut _ as *mut _,
             );
         }
     }
