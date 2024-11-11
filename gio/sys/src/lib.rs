@@ -17361,6 +17361,8 @@ extern "C" {
         mount2: *mut GUnixMountEntry,
     ) -> c_int;
     pub fn g_unix_mount_copy(mount_entry: *mut GUnixMountEntry) -> *mut GUnixMountEntry;
+    #[cfg(feature = "v2_84")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_84")))]
     pub fn g_unix_mount_entries_changed_since(time: u64) -> gboolean;
     #[cfg(feature = "v2_84")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_84")))]
