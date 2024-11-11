@@ -1514,6 +1514,20 @@ pub enum UnicodeScript {
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
     #[doc(alias = "G_UNICODE_SCRIPT_NAG_MUNDARI")]
     NagMundari,
+    #[doc(alias = "G_UNICODE_SCRIPT_TODHRI")]
+    Todhri,
+    #[doc(alias = "G_UNICODE_SCRIPT_GARAY")]
+    Garay,
+    #[doc(alias = "G_UNICODE_SCRIPT_TULU_TIGALARI")]
+    TuluTigalari,
+    #[doc(alias = "G_UNICODE_SCRIPT_SUNUWAR")]
+    Sunuwar,
+    #[doc(alias = "G_UNICODE_SCRIPT_GURUNG_KHEMA")]
+    GurungKhema,
+    #[doc(alias = "G_UNICODE_SCRIPT_KIRAT_RAI")]
+    KiratRai,
+    #[doc(alias = "G_UNICODE_SCRIPT_OL_ONAL")]
+    OlOnal,
     #[doc(hidden)]
     __Unknown(i32),
 }
@@ -1710,6 +1724,13 @@ impl IntoGlib for UnicodeScript {
             Self::Kawi => ffi::G_UNICODE_SCRIPT_KAWI,
             #[cfg(feature = "v2_74")]
             Self::NagMundari => ffi::G_UNICODE_SCRIPT_NAG_MUNDARI,
+            Self::Todhri => ffi::G_UNICODE_SCRIPT_TODHRI,
+            Self::Garay => ffi::G_UNICODE_SCRIPT_GARAY,
+            Self::TuluTigalari => ffi::G_UNICODE_SCRIPT_TULU_TIGALARI,
+            Self::Sunuwar => ffi::G_UNICODE_SCRIPT_SUNUWAR,
+            Self::GurungKhema => ffi::G_UNICODE_SCRIPT_GURUNG_KHEMA,
+            Self::KiratRai => ffi::G_UNICODE_SCRIPT_KIRAT_RAI,
+            Self::OlOnal => ffi::G_UNICODE_SCRIPT_OL_ONAL,
             Self::__Unknown(value) => value,
         }
     }
@@ -1893,6 +1914,13 @@ impl FromGlib<ffi::GUnicodeScript> for UnicodeScript {
             ffi::G_UNICODE_SCRIPT_KAWI => Self::Kawi,
             #[cfg(feature = "v2_74")]
             ffi::G_UNICODE_SCRIPT_NAG_MUNDARI => Self::NagMundari,
+            ffi::G_UNICODE_SCRIPT_TODHRI => Self::Todhri,
+            ffi::G_UNICODE_SCRIPT_GARAY => Self::Garay,
+            ffi::G_UNICODE_SCRIPT_TULU_TIGALARI => Self::TuluTigalari,
+            ffi::G_UNICODE_SCRIPT_SUNUWAR => Self::Sunuwar,
+            ffi::G_UNICODE_SCRIPT_GURUNG_KHEMA => Self::GurungKhema,
+            ffi::G_UNICODE_SCRIPT_KIRAT_RAI => Self::KiratRai,
+            ffi::G_UNICODE_SCRIPT_OL_ONAL => Self::OlOnal,
             value => Self::__Unknown(value),
         }
     }
