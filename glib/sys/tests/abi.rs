@@ -1883,6 +1883,4 @@ const RUST_CONSTANTS: &[(&str, &str)] = &[
     ),
     ("(gint) G_VARIANT_PARSE_ERROR_VALUE_EXPECTED", "17"),
     ("G_WIN32_MSG_HANDLE", "19981206"),
-    ("g_macro__has_attribute_ifunc", "0"),
-    ("g_macro__has_attribute_no_sanitize_address", "0"),
 ];

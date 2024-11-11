@@ -804,8 +804,6 @@ pub const G_URI_RESERVED_CHARS_GENERIC_DELIMITERS: &[u8] = b":/?#[]@\0";
 pub const G_URI_RESERVED_CHARS_SUBCOMPONENT_DELIMITERS: &[u8] = b"!$&'()*+,;=\0";
 pub const G_USEC_PER_SEC: c_int = 1000000;
 pub const G_WIN32_MSG_HANDLE: c_int = 19981206;
-pub const g_macro__has_attribute_ifunc: c_int = 0;
-pub const g_macro__has_attribute_no_sanitize_address: c_int = 0;
 
 // Flags
 pub type GAsciiType = c_uint;

@@ -858,7 +858,5 @@ int main() {
     PRINT_CONSTANT((gint) G_VARIANT_PARSE_ERROR_UNTERMINATED_STRING_CONSTANT);
     PRINT_CONSTANT((gint) G_VARIANT_PARSE_ERROR_VALUE_EXPECTED);
     PRINT_CONSTANT(G_WIN32_MSG_HANDLE);
-    PRINT_CONSTANT(g_macro__has_attribute_ifunc);
-    PRINT_CONSTANT(g_macro__has_attribute_no_sanitize_address);
     return 0;
 }
