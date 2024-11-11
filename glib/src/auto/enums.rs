@@ -1514,18 +1514,32 @@ pub enum UnicodeScript {
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
     #[doc(alias = "G_UNICODE_SCRIPT_NAG_MUNDARI")]
     NagMundari,
+    #[cfg(feature = "v2_84")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_84")))]
     #[doc(alias = "G_UNICODE_SCRIPT_TODHRI")]
     Todhri,
+    #[cfg(feature = "v2_84")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_84")))]
     #[doc(alias = "G_UNICODE_SCRIPT_GARAY")]
     Garay,
+    #[cfg(feature = "v2_84")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_84")))]
     #[doc(alias = "G_UNICODE_SCRIPT_TULU_TIGALARI")]
     TuluTigalari,
+    #[cfg(feature = "v2_84")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_84")))]
     #[doc(alias = "G_UNICODE_SCRIPT_SUNUWAR")]
     Sunuwar,
+    #[cfg(feature = "v2_84")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_84")))]
     #[doc(alias = "G_UNICODE_SCRIPT_GURUNG_KHEMA")]
     GurungKhema,
+    #[cfg(feature = "v2_84")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_84")))]
     #[doc(alias = "G_UNICODE_SCRIPT_KIRAT_RAI")]
     KiratRai,
+    #[cfg(feature = "v2_84")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_84")))]
     #[doc(alias = "G_UNICODE_SCRIPT_OL_ONAL")]
     OlOnal,
     #[doc(hidden)]
@@ -1724,12 +1738,19 @@ impl IntoGlib for UnicodeScript {
             Self::Kawi => ffi::G_UNICODE_SCRIPT_KAWI,
             #[cfg(feature = "v2_74")]
             Self::NagMundari => ffi::G_UNICODE_SCRIPT_NAG_MUNDARI,
+            #[cfg(feature = "v2_84")]
             Self::Todhri => ffi::G_UNICODE_SCRIPT_TODHRI,
+            #[cfg(feature = "v2_84")]
             Self::Garay => ffi::G_UNICODE_SCRIPT_GARAY,
+            #[cfg(feature = "v2_84")]
             Self::TuluTigalari => ffi::G_UNICODE_SCRIPT_TULU_TIGALARI,
+            #[cfg(feature = "v2_84")]
             Self::Sunuwar => ffi::G_UNICODE_SCRIPT_SUNUWAR,
+            #[cfg(feature = "v2_84")]
             Self::GurungKhema => ffi::G_UNICODE_SCRIPT_GURUNG_KHEMA,
+            #[cfg(feature = "v2_84")]
             Self::KiratRai => ffi::G_UNICODE_SCRIPT_KIRAT_RAI,
+            #[cfg(feature = "v2_84")]
             Self::OlOnal => ffi::G_UNICODE_SCRIPT_OL_ONAL,
             Self::__Unknown(value) => value,
         }
@@ -1914,12 +1935,19 @@ impl FromGlib<ffi::GUnicodeScript> for UnicodeScript {
             ffi::G_UNICODE_SCRIPT_KAWI => Self::Kawi,
             #[cfg(feature = "v2_74")]
             ffi::G_UNICODE_SCRIPT_NAG_MUNDARI => Self::NagMundari,
+            #[cfg(feature = "v2_84")]
             ffi::G_UNICODE_SCRIPT_TODHRI => Self::Todhri,
+            #[cfg(feature = "v2_84")]
             ffi::G_UNICODE_SCRIPT_GARAY => Self::Garay,
+            #[cfg(feature = "v2_84")]
             ffi::G_UNICODE_SCRIPT_TULU_TIGALARI => Self::TuluTigalari,
+            #[cfg(feature = "v2_84")]
             ffi::G_UNICODE_SCRIPT_SUNUWAR => Self::Sunuwar,
+            #[cfg(feature = "v2_84")]
             ffi::G_UNICODE_SCRIPT_GURUNG_KHEMA => Self::GurungKhema,
+            #[cfg(feature = "v2_84")]
             ffi::G_UNICODE_SCRIPT_KIRAT_RAI => Self::KiratRai,
+            #[cfg(feature = "v2_84")]
             ffi::G_UNICODE_SCRIPT_OL_ONAL => Self::OlOnal,
             value => Self::__Unknown(value),
         }
