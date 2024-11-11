@@ -2,12 +2,7 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::ffi;
-#[cfg(feature = "v2_84")]
-#[cfg_attr(docsrs, doc(cfg(feature = "v2_84")))]
-use crate::Icon;
-#[cfg(feature = "v2_84")]
-#[cfg_attr(docsrs, doc(cfg(feature = "v2_84")))]
+use crate::{ffi, Icon};
 use glib::translate::*;
 
 glib::wrapper! {
@@ -22,156 +17,138 @@ glib::wrapper! {
 }
 
 impl UnixMountEntry {
-    #[cfg(feature = "v2_84")]
-    #[cfg_attr(docsrs, doc(cfg(feature = "v2_84")))]
     #[doc(alias = "g_unix_mount_entry_compare")]
-    fn compare(&mut self, mount2: &mut UnixMountEntry) -> i32 {
+    fn compare(&self, mount2: &UnixMountEntry) -> i32 {
         unsafe {
-            ffi::g_unix_mount_entry_compare(self.to_glib_none_mut().0, mount2.to_glib_none_mut().0)
+            ffi::g_unix_mount_entry_compare(
+                mut_override(self.to_glib_none().0),
+                mut_override(mount2.to_glib_none().0),
+            )
         }
     }
 
-    #[cfg(feature = "v2_84")]
-    #[cfg_attr(docsrs, doc(cfg(feature = "v2_84")))]
     #[doc(alias = "g_unix_mount_entry_get_device_path")]
     #[doc(alias = "get_device_path")]
-    pub fn device_path(&mut self) -> std::path::PathBuf {
+    pub fn device_path(&self) -> std::path::PathBuf {
         unsafe {
-            from_glib_none(ffi::g_unix_mount_entry_get_device_path(
-                self.to_glib_none_mut().0,
-            ))
+            from_glib_none(ffi::g_unix_mount_entry_get_device_path(mut_override(
+                self.to_glib_none().0,
+            )))
         }
     }
 
-    #[cfg(feature = "v2_84")]
-    #[cfg_attr(docsrs, doc(cfg(feature = "v2_84")))]
     #[doc(alias = "g_unix_mount_entry_get_fs_type")]
     #[doc(alias = "get_fs_type")]
-    pub fn fs_type(&mut self) -> glib::GString {
+    pub fn fs_type(&self) -> glib::GString {
         unsafe {
-            from_glib_none(ffi::g_unix_mount_entry_get_fs_type(
-                self.to_glib_none_mut().0,
-            ))
+            from_glib_none(ffi::g_unix_mount_entry_get_fs_type(mut_override(
+                self.to_glib_none().0,
+            )))
         }
     }
 
-    #[cfg(feature = "v2_84")]
-    #[cfg_attr(docsrs, doc(cfg(feature = "v2_84")))]
     #[doc(alias = "g_unix_mount_entry_get_mount_path")]
     #[doc(alias = "get_mount_path")]
-    pub fn mount_path(&mut self) -> std::path::PathBuf {
+    pub fn mount_path(&self) -> std::path::PathBuf {
         unsafe {
-            from_glib_none(ffi::g_unix_mount_entry_get_mount_path(
-                self.to_glib_none_mut().0,
-            ))
+            from_glib_none(ffi::g_unix_mount_entry_get_mount_path(mut_override(
+                self.to_glib_none().0,
+            )))
         }
     }
 
-    #[cfg(feature = "v2_84")]
-    #[cfg_attr(docsrs, doc(cfg(feature = "v2_84")))]
+    #[cfg(feature = "v2_58")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_58")))]
     #[doc(alias = "g_unix_mount_entry_get_options")]
     #[doc(alias = "get_options")]
-    pub fn options(&mut self) -> Option<glib::GString> {
+    pub fn options(&self) -> Option<glib::GString> {
         unsafe {
-            from_glib_none(ffi::g_unix_mount_entry_get_options(
-                self.to_glib_none_mut().0,
-            ))
+            from_glib_none(ffi::g_unix_mount_entry_get_options(mut_override(
+                self.to_glib_none().0,
+            )))
         }
     }
 
-    #[cfg(feature = "v2_84")]
-    #[cfg_attr(docsrs, doc(cfg(feature = "v2_84")))]
+    #[cfg(feature = "v2_60")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     #[doc(alias = "g_unix_mount_entry_get_root_path")]
     #[doc(alias = "get_root_path")]
-    pub fn root_path(&mut self) -> Option<glib::GString> {
+    pub fn root_path(&self) -> Option<glib::GString> {
         unsafe {
-            from_glib_none(ffi::g_unix_mount_entry_get_root_path(
-                self.to_glib_none_mut().0,
-            ))
+            from_glib_none(ffi::g_unix_mount_entry_get_root_path(mut_override(
+                self.to_glib_none().0,
+            )))
         }
     }
 
-    #[cfg(feature = "v2_84")]
-    #[cfg_attr(docsrs, doc(cfg(feature = "v2_84")))]
     #[doc(alias = "g_unix_mount_entry_guess_can_eject")]
-    pub fn guess_can_eject(&mut self) -> bool {
+    pub fn guess_can_eject(&self) -> bool {
         unsafe {
-            from_glib(ffi::g_unix_mount_entry_guess_can_eject(
-                self.to_glib_none_mut().0,
-            ))
+            from_glib(ffi::g_unix_mount_entry_guess_can_eject(mut_override(
+                self.to_glib_none().0,
+            )))
         }
     }
 
-    #[cfg(feature = "v2_84")]
-    #[cfg_attr(docsrs, doc(cfg(feature = "v2_84")))]
     #[doc(alias = "g_unix_mount_entry_guess_icon")]
-    pub fn guess_icon(&mut self) -> Icon {
+    pub fn guess_icon(&self) -> Icon {
         unsafe {
-            from_glib_full(ffi::g_unix_mount_entry_guess_icon(
-                self.to_glib_none_mut().0,
-            ))
+            from_glib_full(ffi::g_unix_mount_entry_guess_icon(mut_override(
+                self.to_glib_none().0,
+            )))
         }
     }
 
-    #[cfg(feature = "v2_84")]
-    #[cfg_attr(docsrs, doc(cfg(feature = "v2_84")))]
     #[doc(alias = "g_unix_mount_entry_guess_name")]
-    pub fn guess_name(&mut self) -> glib::GString {
+    pub fn guess_name(&self) -> glib::GString {
         unsafe {
-            from_glib_full(ffi::g_unix_mount_entry_guess_name(
-                self.to_glib_none_mut().0,
-            ))
+            from_glib_full(ffi::g_unix_mount_entry_guess_name(mut_override(
+                self.to_glib_none().0,
+            )))
         }
     }
 
-    #[cfg(feature = "v2_84")]
-    #[cfg_attr(docsrs, doc(cfg(feature = "v2_84")))]
     #[doc(alias = "g_unix_mount_entry_guess_should_display")]
-    pub fn guess_should_display(&mut self) -> bool {
+    pub fn guess_should_display(&self) -> bool {
         unsafe {
-            from_glib(ffi::g_unix_mount_entry_guess_should_display(
-                self.to_glib_none_mut().0,
-            ))
+            from_glib(ffi::g_unix_mount_entry_guess_should_display(mut_override(
+                self.to_glib_none().0,
+            )))
         }
     }
 
-    #[cfg(feature = "v2_84")]
-    #[cfg_attr(docsrs, doc(cfg(feature = "v2_84")))]
     #[doc(alias = "g_unix_mount_entry_guess_symbolic_icon")]
-    pub fn guess_symbolic_icon(&mut self) -> Icon {
+    pub fn guess_symbolic_icon(&self) -> Icon {
         unsafe {
-            from_glib_full(ffi::g_unix_mount_entry_guess_symbolic_icon(
-                self.to_glib_none_mut().0,
-            ))
+            from_glib_full(ffi::g_unix_mount_entry_guess_symbolic_icon(mut_override(
+                self.to_glib_none().0,
+            )))
         }
     }
 
-    #[cfg(feature = "v2_84")]
-    #[cfg_attr(docsrs, doc(cfg(feature = "v2_84")))]
     #[doc(alias = "g_unix_mount_entry_is_readonly")]
-    pub fn is_readonly(&mut self) -> bool {
+    pub fn is_readonly(&self) -> bool {
         unsafe {
-            from_glib(ffi::g_unix_mount_entry_is_readonly(
-                self.to_glib_none_mut().0,
-            ))
+            from_glib(ffi::g_unix_mount_entry_is_readonly(mut_override(
+                self.to_glib_none().0,
+            )))
         }
     }
 
-    #[cfg(feature = "v2_84")]
-    #[cfg_attr(docsrs, doc(cfg(feature = "v2_84")))]
     #[doc(alias = "g_unix_mount_entry_is_system_internal")]
-    pub fn is_system_internal(&mut self) -> bool {
+    pub fn is_system_internal(&self) -> bool {
         unsafe {
-            from_glib(ffi::g_unix_mount_entry_is_system_internal(
-                self.to_glib_none_mut().0,
-            ))
+            from_glib(ffi::g_unix_mount_entry_is_system_internal(mut_override(
+                self.to_glib_none().0,
+            )))
         }
     }
 
-    #[cfg(feature = "v2_84")]
-    #[cfg_attr(docsrs, doc(cfg(feature = "v2_84")))]
     #[doc(alias = "g_unix_mount_entry_at")]
-    pub fn at(mount_path: impl AsRef<std::path::Path>) -> (Option<UnixMountEntry>, u64) {
+    #[doc(alias = "at")]
+    pub fn for_mount_path(
+        mount_path: impl AsRef<std::path::Path>,
+    ) -> (Option<UnixMountEntry>, u64) {
         unsafe {
             let mut time_read = std::mem::MaybeUninit::uninit();
             let ret = from_glib_full(ffi::g_unix_mount_entry_at(
@@ -182,11 +159,9 @@ impl UnixMountEntry {
         }
     }
 
-    #[cfg(feature = "v2_84")]
-    #[cfg_attr(docsrs, doc(cfg(feature = "v2_84")))]
     #[doc(alias = "g_unix_mount_entry_for")]
     #[doc(alias = "for")]
-    pub fn for_(file_path: impl AsRef<std::path::Path>) -> (Option<UnixMountEntry>, u64) {
+    pub fn for_file_path(file_path: impl AsRef<std::path::Path>) -> (Option<UnixMountEntry>, u64) {
         unsafe {
             let mut time_read = std::mem::MaybeUninit::uninit();
             let ret = from_glib_full(ffi::g_unix_mount_entry_for(
@@ -198,8 +173,6 @@ impl UnixMountEntry {
     }
 }
 
-#[cfg(feature = "v2_84")]
-#[cfg_attr(docsrs, doc(cfg(feature = "v2_84")))]
 impl PartialEq for UnixMountEntry {
     #[inline]
     fn eq(&self, other: &Self) -> bool {
@@ -209,8 +182,6 @@ impl PartialEq for UnixMountEntry {
 
 impl Eq for UnixMountEntry {}
 
-#[cfg(feature = "v2_84")]
-#[cfg_attr(docsrs, doc(cfg(feature = "v2_84")))]
 impl PartialOrd for UnixMountEntry {
     #[inline]
     fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
