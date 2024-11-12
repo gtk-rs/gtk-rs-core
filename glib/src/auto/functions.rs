@@ -559,7 +559,7 @@ pub fn on_error_query(prg_name: &str) {
 }
 
 #[doc(alias = "g_on_error_stack_trace")]
-pub fn on_error_stack_trace(prg_name: &str) {
+pub fn on_error_stack_trace(prg_name: Option<&str>) {
     unsafe {
         ffi::g_on_error_stack_trace(prg_name.to_glib_none().0);
     }
