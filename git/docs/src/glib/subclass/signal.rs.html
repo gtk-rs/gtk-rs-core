@@ -781,8 +781,8 @@
 </span><span class="kw">use </span>std::{<a href="https://doc.rust-lang.org/nightly/alloc/fmt/index.html">fmt</a>, <a href="https://doc.rust-lang.org/nightly/core/num/nonzero/type.NonZeroU32.html">num::NonZeroU32</a>, <a href="https://doc.rust-lang.org/nightly/core/ptr/index.html">ptr</a>, <a href="https://doc.rust-lang.org/nightly/std/sync/mutex/struct.Mutex.html">sync::Mutex</a>};
 
 <span class="kw">use crate</span>::{
-    <a href="../../../glib_sys/index.html">ffi</a>, <a href="../../../gobject_sys/index.html">gobject_ffi</a>, <a href="../lib.rs.html#158">prelude</a>::<span class="kw-2">*</span>, <a href="../lib.rs.html#163">translate</a>::<span class="kw-2">*</span>, <a href="../utils.rs.html#261-267">utils::is_canonical_pspec_name</a>, <a href="../closure.rs.html#11-24">Closure</a>,
-    <a href="../gobject/auto/flags.rs.html#96-121">SignalFlags</a>, <a href="../types.rs.html#22">Type</a>, <a href="../value.rs.html#478-512">Value</a>,
+    <a href="../../../glib_sys/index.html">ffi</a>, <a href="../../../gobject_sys/index.html">gobject_ffi</a>, <a href="../lib.rs.html#158">prelude</a>::<span class="kw-2">*</span>, <a href="../lib.rs.html#163">translate</a>::<span class="kw-2">*</span>, <a href="../utils.rs.html#240-246">utils::is_canonical_pspec_name</a>, <a href="../closure.rs.html#11-24">Closure</a>,
+    <a href="../gobject/auto/flags.rs.html#113-162">SignalFlags</a>, <a href="../types.rs.html#22">Type</a>, <a href="../value.rs.html#478-512">Value</a>,
 };
 
 <span class="comment">// rustdoc-stripper-ignore-next
@@ -791,7 +791,7 @@
 #[must_use = <span class="string">"The builder must be built to be used"</span>]
 </span><span class="kw">pub struct </span><a href="../../../glib/subclass/signal/struct.SignalBuilder.html">SignalBuilder</a> {
     name: <a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>,
-    flags: <a href="../gobject/auto/flags.rs.html#96-121">SignalFlags</a>,
+    flags: <a href="../gobject/auto/flags.rs.html#113-162">SignalFlags</a>,
     param_types: Vec&lt;<a href="#281">SignalType</a>&gt;,
     return_type: <a href="#281">SignalType</a>,
     class_handler: <span class="prelude-ty">Option</span>&lt;
@@ -806,7 +806,7 @@
 </span><span class="doccomment">/// Signal metadata.
 </span><span class="kw">pub struct </span><a href="../../../glib/subclass/signal/struct.Signal.html">Signal</a> {
     name: <a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>,
-    flags: <a href="../gobject/auto/flags.rs.html#96-121">SignalFlags</a>,
+    flags: <a href="../gobject/auto/flags.rs.html#113-162">SignalFlags</a>,
     param_types: Vec&lt;<a href="#281">SignalType</a>&gt;,
     return_type: <a href="#281">SignalType</a>,
     registration: Mutex&lt;<a href="#353-368">SignalRegistration</a>&gt;,
@@ -848,7 +848,7 @@
     }
 
     <span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>run_type(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="../gobject/auto/flags.rs.html#96-121">SignalFlags</a> {
+    </span><span class="kw">pub fn </span>run_type(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="../gobject/auto/flags.rs.html#113-162">SignalFlags</a> {
         <span class="kw">unsafe </span>{ <a href="../translate.rs.html#1417-1419">from_glib</a>(<a class="self" href="#73">self</a>.<span class="number">0</span>.run_type) }
     }
 }
@@ -897,7 +897,7 @@
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// The signal flags.
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>flags(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="../gobject/auto/flags.rs.html#96-121">SignalFlags</a> {
+    </span><span class="kw">pub fn </span>flags(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="../gobject/auto/flags.rs.html#113-162">SignalFlags</a> {
         <span class="kw">unsafe </span>{ <a href="../translate.rs.html#1417-1419">from_glib</a>(<a class="self" href="#122">self</a>.<span class="number">0</span>.signal_flags) }
     }
 
@@ -1243,7 +1243,7 @@
     </span><span class="doccomment">/// Explicitly set all flags.
     ///
     /// This overrides previously set flags on this builder.
-    </span><span class="kw">pub fn </span>flags(<span class="kw-2">mut </span><span class="self">self</span>, flags: <a href="../gobject/auto/flags.rs.html#96-121">SignalFlags</a>) -&gt; <span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>flags(<span class="kw-2">mut </span><span class="self">self</span>, flags: <a href="../gobject/auto/flags.rs.html#113-162">SignalFlags</a>) -&gt; <span class="self">Self </span>{
         <a class="self" href="#468">self</a>.flags = <a href="#468">flags</a>;
         <span class="self"><a href="#468">self</a>
     </span>}
@@ -1316,7 +1316,7 @@
             name: <a href="#532">name</a>.<a href="https://doc.rust-lang.org/nightly/alloc/borrow/trait.ToOwned.html#tymethod.to_owned">to_owned</a>(),
             param_types: <a href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html#tymethod.default">Vec::default</a>(),
             return_type: &lt;()&gt;::static_type().<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>(),
-            flags: <a href="../gobject/auto/flags.rs.html#96-121">SignalFlags::empty</a>(),
+            flags: <a href="../gobject/auto/flags.rs.html#113-162">SignalFlags::empty</a>(),
             class_handler: <span class="prelude-val">None</span>,
             accumulator: <span class="prelude-val">None</span>,
         }
@@ -1332,7 +1332,7 @@
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Flags of the signal.
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>flags(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="../gobject/auto/flags.rs.html#96-121">SignalFlags</a> {
+    </span><span class="kw">pub fn </span>flags(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="../gobject/auto/flags.rs.html#113-162">SignalFlags</a> {
         <a class="self" href="#557">self</a>.flags
     }
 
