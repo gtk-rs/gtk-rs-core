@@ -607,6 +607,13 @@ pub const G_UNICODE_SCRIPT_VITHKUQI: GUnicodeScript = 161;
 pub const G_UNICODE_SCRIPT_MATH: GUnicodeScript = 162;
 pub const G_UNICODE_SCRIPT_KAWI: GUnicodeScript = 163;
 pub const G_UNICODE_SCRIPT_NAG_MUNDARI: GUnicodeScript = 164;
+pub const G_UNICODE_SCRIPT_TODHRI: GUnicodeScript = 165;
+pub const G_UNICODE_SCRIPT_GARAY: GUnicodeScript = 166;
+pub const G_UNICODE_SCRIPT_TULU_TIGALARI: GUnicodeScript = 167;
+pub const G_UNICODE_SCRIPT_SUNUWAR: GUnicodeScript = 168;
+pub const G_UNICODE_SCRIPT_GURUNG_KHEMA: GUnicodeScript = 169;
+pub const G_UNICODE_SCRIPT_KIRAT_RAI: GUnicodeScript = 170;
+pub const G_UNICODE_SCRIPT_OL_ONAL: GUnicodeScript = 171;
 
 pub type GUnicodeType = c_int;
 pub const G_UNICODE_CONTROL: GUnicodeType = 0;
@@ -4585,7 +4592,7 @@ extern "C" {
         index_: *mut c_uint,
     ) -> gboolean;
     pub fn g_ptr_array_foreach(array: *mut GPtrArray, func: GFunc, user_data: gpointer);
-    pub fn g_ptr_array_free(array: *mut GPtrArray, free_seg: gboolean) -> *mut gpointer;
+    pub fn g_ptr_array_free(array: *mut GPtrArray, free_segment: gboolean) -> *mut gpointer;
     pub fn g_ptr_array_insert(array: *mut GPtrArray, index_: c_int, data: gpointer);
     #[cfg(feature = "v2_74")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]

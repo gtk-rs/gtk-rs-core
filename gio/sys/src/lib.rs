@@ -10161,6 +10161,66 @@ extern "C" {
     // GUnixMountEntry
     //=========================================================================
     pub fn g_unix_mount_entry_get_type() -> GType;
+    #[cfg(feature = "v2_84")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_84")))]
+    pub fn g_unix_mount_entry_compare(
+        mount1: *mut GUnixMountEntry,
+        mount2: *mut GUnixMountEntry,
+    ) -> c_int;
+    #[cfg(feature = "v2_84")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_84")))]
+    pub fn g_unix_mount_entry_copy(mount_entry: *mut GUnixMountEntry) -> *mut GUnixMountEntry;
+    #[cfg(feature = "v2_84")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_84")))]
+    pub fn g_unix_mount_entry_free(mount_entry: *mut GUnixMountEntry);
+    #[cfg(feature = "v2_84")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_84")))]
+    pub fn g_unix_mount_entry_get_device_path(mount_entry: *mut GUnixMountEntry) -> *const c_char;
+    #[cfg(feature = "v2_84")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_84")))]
+    pub fn g_unix_mount_entry_get_fs_type(mount_entry: *mut GUnixMountEntry) -> *const c_char;
+    #[cfg(feature = "v2_84")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_84")))]
+    pub fn g_unix_mount_entry_get_mount_path(mount_entry: *mut GUnixMountEntry) -> *const c_char;
+    #[cfg(feature = "v2_84")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_84")))]
+    pub fn g_unix_mount_entry_get_options(mount_entry: *mut GUnixMountEntry) -> *const c_char;
+    #[cfg(feature = "v2_84")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_84")))]
+    pub fn g_unix_mount_entry_get_root_path(mount_entry: *mut GUnixMountEntry) -> *const c_char;
+    #[cfg(feature = "v2_84")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_84")))]
+    pub fn g_unix_mount_entry_guess_can_eject(mount_entry: *mut GUnixMountEntry) -> gboolean;
+    #[cfg(feature = "v2_84")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_84")))]
+    pub fn g_unix_mount_entry_guess_icon(mount_entry: *mut GUnixMountEntry) -> *mut GIcon;
+    #[cfg(feature = "v2_84")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_84")))]
+    pub fn g_unix_mount_entry_guess_name(mount_entry: *mut GUnixMountEntry) -> *mut c_char;
+    #[cfg(feature = "v2_84")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_84")))]
+    pub fn g_unix_mount_entry_guess_should_display(mount_entry: *mut GUnixMountEntry) -> gboolean;
+    #[cfg(feature = "v2_84")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_84")))]
+    pub fn g_unix_mount_entry_guess_symbolic_icon(mount_entry: *mut GUnixMountEntry) -> *mut GIcon;
+    #[cfg(feature = "v2_84")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_84")))]
+    pub fn g_unix_mount_entry_is_readonly(mount_entry: *mut GUnixMountEntry) -> gboolean;
+    #[cfg(feature = "v2_84")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_84")))]
+    pub fn g_unix_mount_entry_is_system_internal(mount_entry: *mut GUnixMountEntry) -> gboolean;
+    #[cfg(feature = "v2_84")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_84")))]
+    pub fn g_unix_mount_entry_at(
+        mount_path: *const c_char,
+        time_read: *mut u64,
+    ) -> *mut GUnixMountEntry;
+    #[cfg(feature = "v2_84")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_84")))]
+    pub fn g_unix_mount_entry_for(
+        file_path: *const c_char,
+        time_read: *mut u64,
+    ) -> *mut GUnixMountEntry;
 
     //=========================================================================
     // GUnixMountPoint
@@ -17301,6 +17361,19 @@ extern "C" {
         mount2: *mut GUnixMountEntry,
     ) -> c_int;
     pub fn g_unix_mount_copy(mount_entry: *mut GUnixMountEntry) -> *mut GUnixMountEntry;
+    #[cfg(feature = "v2_84")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_84")))]
+    pub fn g_unix_mount_entries_changed_since(time: u64) -> gboolean;
+    #[cfg(feature = "v2_84")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_84")))]
+    pub fn g_unix_mount_entries_get(time_read: *mut u64) -> *mut glib::GList;
+    #[cfg(feature = "v2_84")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_84")))]
+    pub fn g_unix_mount_entries_get_from_file(
+        table_path: *const c_char,
+        time_read_out: *mut u64,
+        n_entries_out: *mut size_t,
+    ) -> *mut *mut GUnixMountEntry;
     pub fn g_unix_mount_for(file_path: *const c_char, time_read: *mut u64) -> *mut GUnixMountEntry;
     pub fn g_unix_mount_free(mount_entry: *mut GUnixMountEntry);
     pub fn g_unix_mount_get_device_path(mount_entry: *mut GUnixMountEntry) -> *const c_char;
