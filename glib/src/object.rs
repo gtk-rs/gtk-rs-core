@@ -1751,10 +1751,12 @@ pub trait ObjectExt: ObjectType {
     fn property_value(&self, property_name: &str) -> Value;
 
     // rustdoc-stripper-ignore-next
+    /// Check if the object has a property `property_name`.
+    fn has_property(&self, property_name: &str) -> bool;
+
+    // rustdoc-stripper-ignore-next
     /// Check if the object has a property `property_name` of the given `type_`.
-    ///
-    /// If no type is provided then only the existence of the property is checked.
-    fn has_property(&self, property_name: &str, type_: Option<Type>) -> bool;
+    fn has_property_with_type(&self, property_name: &str, type_: Type) -> bool;
 
     // rustdoc-stripper-ignore-next
     /// Get the type of the property `property_name` of this object.
@@ -2455,8 +2457,13 @@ impl<T: ObjectType> ObjectExt for T {
         }
     }
 
-    fn has_property(&self, property_name: &str, type_: Option<Type>) -> bool {
-        self.object_class().has_property(property_name, type_)
+    fn has_property(&self, property_name: &str) -> bool {
+        self.object_class().has_property(property_name)
+    }
+
+    fn has_property_with_type(&self, property_name: &str, type_: Type) -> bool {
+        self.object_class()
+            .has_property_with_type(property_name, type_)
     }
 
     fn property_type(&self, property_name: &str) -> Option<Type> {
@@ -3316,16 +3323,16 @@ fn validate_signal_arguments(type_: Type, signal_query: &SignalQuery, args: &mut
 pub unsafe trait ObjectClassExt {
     // rustdoc-stripper-ignore-next
     /// Check if the object class has a property `property_name` of the given `type_`.
-    ///
-    /// If no type is provided then only the existence of the property is checked.
-    fn has_property(&self, property_name: &str, type_: Option<Type>) -> bool {
-        let ptype = self.property_type(property_name);
+    fn has_property(&self, property_name: &str) -> bool {
+        self.find_property(property_name).is_some()
+    }
 
-        match (ptype, type_) {
-            (None, _) => false,
-            (Some(_), None) => true,
-            (Some(ptype), Some(type_)) => ptype == type_,
-        }
+    // rustdoc-stripper-ignore-next
+    /// Check if the object class has a property `property_name` of the given `type_`
+    /// or a subtype of it.
+    fn has_property_with_type(&self, property_name: &str, type_: Type) -> bool {
+        self.property_type(property_name)
+            .is_some_and(|ptype| ptype.is_a(type_))
     }
 
     // rustdoc-stripper-ignore-next
@@ -4262,17 +4269,17 @@ impl<T: IsInterface> Interface<T> {
 
 impl<T: IsA<Object> + IsInterface> Interface<T> {
     // rustdoc-stripper-ignore-next
-    /// Check if this interface has a property `property_name` of the given `type_`.
-    ///
-    /// If no type is provided then only the existence of the property is checked.
-    pub fn has_property(&self, property_name: &str, type_: Option<Type>) -> bool {
-        let ptype = self.property_type(property_name);
+    /// Check if the interface has a property `property_name` of the given `type_`.
+    pub fn has_property(&self, property_name: &str) -> bool {
+        self.find_property(property_name).is_some()
+    }
 
-        match (ptype, type_) {
-            (None, _) => false,
-            (Some(_), None) => true,
-            (Some(ptype), Some(type_)) => ptype == type_,
-        }
+    // rustdoc-stripper-ignore-next
+    /// Check if the interface has a property `property_name` of the given `type_`
+    /// or a subtype of it.
+    pub fn has_property_with_type(&self, property_name: &str, type_: Type) -> bool {
+        self.property_type(property_name)
+            .is_some_and(|ptype| ptype.is_a(type_))
     }
 
     // rustdoc-stripper-ignore-next
