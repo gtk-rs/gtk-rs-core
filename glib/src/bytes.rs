@@ -5,7 +5,8 @@ use std::{
     cmp::Ordering,
     fmt,
     hash::{Hash, Hasher},
-    ops::Deref,
+    mem,
+    ops::{Bound, Deref, RangeBounds},
     slice,
 };
 
@@ -64,6 +65,7 @@ impl Bytes {
 
     // rustdoc-stripper-ignore-next
     /// Takes ownership of `data` and creates a new `Bytes` without copying.
+    #[doc(alias = "g_bytes_new")]
     pub fn from_owned<T: AsRef<[u8]> + Send + 'static>(data: T) -> Bytes {
         let data: Box<T> = Box::new(data);
         let (size, data_ptr) = {
@@ -81,6 +83,56 @@ impl Bytes {
                 size,
                 Some(drop_box::<T>),
                 Box::into_raw(data) as *mut _,
+            ))
+        }
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Returns the underlying data of the `Bytes`.
+    ///
+    /// If there is no other reference to `self` then this does not copy the data, otherwise
+    /// it is copied into newly allocated heap memory.
+    #[doc(alias = "g_bytes_unref_to_data")]
+    pub fn into_data(self) -> crate::collections::Slice<u8> {
+        unsafe {
+            let mut size = mem::MaybeUninit::uninit();
+            let ret = ffi::g_bytes_unref_to_data(self.into_glib_ptr(), size.as_mut_ptr());
+            crate::collections::Slice::from_glib_full_num(ret as *mut u8, size.assume_init())
+        }
+    }
+
+    fn calculate_offset_size(&self, range: impl RangeBounds<usize>) -> (usize, usize) {
+        let len = self.len();
+
+        let start_offset = match range.start_bound() {
+            Bound::Included(v) => *v,
+            Bound::Excluded(v) => v.checked_add(1).expect("Invalid start offset"),
+            Bound::Unbounded => 0,
+        };
+        assert!(start_offset < len, "Start offset after valid range");
+
+        let end_offset = match range.end_bound() {
+            Bound::Included(v) => v.checked_add(1).expect("Invalid end offset"),
+            Bound::Excluded(v) => *v,
+            Bound::Unbounded => len,
+        };
+        assert!(end_offset <= len, "End offset after valid range");
+
+        let size = end_offset.saturating_sub(start_offset);
+
+        (start_offset, size)
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Creates a new `Bytes` that references the given `range` of `bytes`.
+    #[doc(alias = "g_bytes_new_from_bytes")]
+    pub fn from_bytes(bytes: &Self, range: impl RangeBounds<usize>) -> Self {
+        let (offset, size) = bytes.calculate_offset_size(range);
+        unsafe {
+            from_glib_full(ffi::g_bytes_new_from_bytes(
+                bytes.to_glib_none().0,
+                offset,
+                size,
             ))
         }
     }
@@ -273,5 +325,25 @@ mod tests {
     fn from_owned() {
         let b = Bytes::from_owned(vec![1, 2, 3]);
         assert_eq!(b, [1u8, 2u8, 3u8].as_ref());
+    }
+
+    #[test]
+    fn from_bytes() {
+        let b1 = Bytes::from_owned(vec![1, 2, 3]);
+        let b2 = Bytes::from_bytes(&b1, 1..=1);
+        assert_eq!(b2, [2u8].as_ref());
+        let b2 = Bytes::from_bytes(&b1, 1..);
+        assert_eq!(b2, [2u8, 3u8].as_ref());
+        let b2 = Bytes::from_bytes(&b1, ..2);
+        assert_eq!(b2, [1u8, 2u8].as_ref());
+        let b2 = Bytes::from_bytes(&b1, ..);
+        assert_eq!(b2, [1u8, 2u8, 3u8].as_ref());
+    }
+
+    #[test]
+    pub fn into_data() {
+        let b = Bytes::from(b"this is a test");
+        let d = b.into_data();
+        assert_eq!(d.as_slice(), b"this is a test");
     }
 }
