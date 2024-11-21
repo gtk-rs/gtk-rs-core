@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gdk-pixbuf/src/pixbuf.rs`."><title>pixbuf.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-42caa33d.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="gdk_pixbuf" data-themes="" data-resource-suffix="" data-rustdoc-version="1.84.0-nightly (03ee48451 2024-11-18)" data-channel="nightly" data-search-js="search-53f21e11.js" data-settings-js="settings-0f613d39.js" ><script src="../../static.files/storage-59e33391.js"></script><script defer src="../../static.files/src-script-56102188.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gdk-pixbuf/src/pixbuf.rs`."><title>pixbuf.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-42caa33d.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="gdk_pixbuf" data-themes="" data-resource-suffix="" data-rustdoc-version="1.84.0-nightly (3fee0f12e 2024-11-20)" data-channel="nightly" data-search-js="search-92e6798f.js" data-settings-js="settings-0f613d39.js" ><script src="../../static.files/storage-59e33391.js"></script><script defer src="../../static.files/src-script-56102188.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -749,7 +749,7 @@
 
 <span class="kw">impl </span><a href="auto/pixbuf.rs.html#8-222">Pixbuf</a> {
     <span class="attr">#[doc(alias = <span class="string">"gdk_pixbuf_new_from_data"</span>)]
-    </span><span class="kw">pub fn </span>from_mut_slice&lt;T: AsMut&lt;[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]&gt;&gt;(
+    </span><span class="kw">pub fn </span>from_mut_slice&lt;T: <a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsMut.html">AsMut</a>&lt;[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]&gt;&gt;(
         data: T,
         colorspace: <a href="auto/enums.rs.html#15-21">Colorspace</a>,
         has_alpha: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>,
@@ -758,8 +758,8 @@
         height: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
         row_stride: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
     ) -&gt; <a href="auto/pixbuf.rs.html#8-222">Pixbuf</a> {
-        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>destroy&lt;T: AsMut&lt;[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]&gt;&gt;(<span class="kw">_</span>: <span class="kw-2">*mut </span>c_uchar, data: <span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/enum.c_void.html">c_void</a>) {
-            <span class="kw">let </span>_data: Box&lt;T&gt; = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.from_raw">Box::from_raw</a>(<a href="#21">data</a> <span class="kw">as </span><span class="kw-2">*mut </span>T); <span class="comment">// the data will be destroyed now
+        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>destroy&lt;T: <a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsMut.html">AsMut</a>&lt;[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]&gt;&gt;(<span class="kw">_</span>: <span class="kw-2">*mut </span>c_uchar, data: <span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/enum.c_void.html">c_void</a>) {
+            <span class="kw">let </span>_data: <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box</a>&lt;T&gt; = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.from_raw">Box::from_raw</a>(<a href="#21">data</a> <span class="kw">as </span><span class="kw-2">*mut </span>T); <span class="comment">// the data will be destroyed now
         </span>}
         <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.assert.html">assert!</a>(width &gt; <span class="number">0</span>, <span class="string">"width must be greater than 0"</span>);
         <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.assert.html">assert!</a>(height &gt; <span class="number">0</span>, <span class="string">"height must be greater than 0"</span>);
@@ -777,7 +777,7 @@
         <span class="kw">let </span>n_channels = <span class="kw">if </span>has_alpha { <span class="number">4 </span>} <span class="kw">else </span>{ <span class="number">3 </span>};
         <span class="kw">let </span>last_row_len = <a href="#32">width</a> * ((<a href="#37">n_channels</a> * <a href="#35">bits_per_sample</a> + <span class="number">7</span>) / <span class="number">8</span>);
 
-        <span class="kw">let </span><span class="kw-2">mut </span>data: Box&lt;T&gt; = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">Box::new</a>(<a href="#13">data</a>);
+        <span class="kw">let </span><span class="kw-2">mut </span>data: <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box</a>&lt;T&gt; = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">Box::new</a>(<a href="#13">data</a>);
 
         <span class="kw">let </span>ptr = {
             <span class="kw">let </span>data: <span class="kw-2">&amp;mut </span>[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>] = (<span class="kw-2">*</span><a href="#40">data</a>).<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsMut.html#tymethod.as_mut">as_mut</a>();
@@ -797,7 +797,7 @@
                 <a href="#32">width</a> <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
                 <a href="#33">height</a> <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
                 <a href="#34">row_stride</a> <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
-                <span class="prelude-val">Some</span>(destroy::&lt;T&gt;),
+                <span class="prelude-val">Some</span>(<a href="#21-23">destroy</a>::&lt;T&gt;),
                 <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.into_raw">Box::into_raw</a>(<a href="#40">data</a>) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
             ))
         }
@@ -819,9 +819,9 @@
 
     <span class="attr">#[doc(alias = <span class="string">"gdk_pixbuf_new_from_stream_async"</span>)]
     </span><span class="kw">pub fn </span>from_stream_async&lt;
-        P: IsA&lt;<a href="../../gio/auto/input_stream/struct.InputStream.html">gio::InputStream</a>&gt;,
-        Q: IsA&lt;<a href="../../gio/auto/cancellable/struct.Cancellable.html">gio::Cancellable</a>&gt;,
-        R: FnOnce(<span class="prelude-ty">Result</span>&lt;<a href="auto/pixbuf.rs.html#8-222">Pixbuf</a>, <a href="../../glib/error/struct.Error.html">Error</a>&gt;) + <span class="lifetime">'static</span>,
+        P: <a href="../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="../../gio/auto/input_stream/struct.InputStream.html">gio::InputStream</a>&gt;,
+        Q: <a href="../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="../../gio/auto/cancellable/struct.Cancellable.html">gio::Cancellable</a>&gt;,
+        R: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>(<span class="prelude-ty">Result</span>&lt;<a href="auto/pixbuf.rs.html#8-222">Pixbuf</a>, <a href="../../glib/error/struct.Error.html">Error</a>&gt;) + <span class="lifetime">'static</span>,
     &gt;(
         stream: <span class="kw-2">&amp;</span>P,
         cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Q&gt;,
@@ -838,10 +838,10 @@
         </span>);
 
         <span class="kw">let </span>cancellable = <a href="#87">cancellable</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|p| <a href="#100">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>());
-        <span class="kw">let </span>user_data: Box&lt;glib::thread_guard::ThreadGuard&lt;R&gt;&gt; =
+        <span class="kw">let </span>user_data: <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box</a>&lt;<a href="../../glib/thread_guard/struct.ThreadGuard.html">glib::thread_guard::ThreadGuard</a>&lt;R&gt;&gt; =
             <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">Box::new</a>(<a href="../../glib/thread_guard/struct.ThreadGuard.html#method.new">glib::thread_guard::ThreadGuard::new</a>(<a href="#88">callback</a>));
         <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>from_stream_async_trampoline&lt;
-            R: FnOnce(<span class="prelude-ty">Result</span>&lt;<a href="auto/pixbuf.rs.html#8-222">Pixbuf</a>, <a href="../../glib/error/struct.Error.html">Error</a>&gt;) + <span class="lifetime">'static</span>,
+            R: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>(<span class="prelude-ty">Result</span>&lt;<a href="auto/pixbuf.rs.html#8-222">Pixbuf</a>, <a href="../../glib/error/struct.Error.html">Error</a>&gt;) + <span class="lifetime">'static</span>,
         &gt;(
             _source_object: <span class="kw-2">*mut </span><a href="../../gobject_sys/struct.GObject.html">glib::gobject_ffi::GObject</a>,
             res: <span class="kw-2">*mut </span><a href="../../gio_sys/struct.GAsyncResult.html">gio::ffi::GAsyncResult</a>,
@@ -854,12 +854,12 @@
             } <span class="kw">else </span>{
                 <span class="prelude-val">Err</span>(<a href="../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#110">error</a>))
             };
-            <span class="kw">let </span>callback: Box&lt;glib::thread_guard::ThreadGuard&lt;R&gt;&gt; =
+            <span class="kw">let </span>callback: <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box</a>&lt;<a href="../../glib/thread_guard/struct.ThreadGuard.html">glib::thread_guard::ThreadGuard</a>&lt;R&gt;&gt; =
                 <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.from_raw">Box::from_raw</a>(<a href="#108">user_data</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
             <span class="kw">let </span>callback = <a href="#117">callback</a>.<a href="../../glib/thread_guard/struct.ThreadGuard.html#method.into_inner">into_inner</a>();
             <a href="#119">callback</a>(<a href="#112">result</a>);
         }
-        <span class="kw">let </span>callback = from_stream_async_trampoline::&lt;R&gt;;
+        <span class="kw">let </span>callback = <a href="#103-121">from_stream_async_trampoline</a>::&lt;R&gt;;
         <span class="kw">unsafe </span>{
             <a href="../../gdk_pixbuf_sys/fn.gdk_pixbuf_new_from_stream_async.html">ffi::gdk_pixbuf_new_from_stream_async</a>(
                 <a href="#86">stream</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
@@ -870,9 +870,9 @@
         }
     }
 
-    <span class="kw">pub fn </span>from_stream_future&lt;P: IsA&lt;<a href="../../gio/auto/input_stream/struct.InputStream.html">gio::InputStream</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">Clone</a> + <span class="lifetime">'static</span>&gt;(
+    <span class="kw">pub fn </span>from_stream_future&lt;P: <a href="../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="../../gio/auto/input_stream/struct.InputStream.html">gio::InputStream</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">Clone</a> + <span class="lifetime">'static</span>&gt;(
         stream: <span class="kw-2">&amp;</span>P,
-    ) -&gt; Pin&lt;Box&lt;<span class="kw">dyn </span>Future&lt;Output = <span class="prelude-ty">Result</span>&lt;<a href="auto/pixbuf.rs.html#8-222">Pixbuf</a>, <a href="../../glib/error/struct.Error.html">Error</a>&gt;&gt; + <span class="lifetime">'static</span>&gt;&gt; {
+    ) -&gt; <a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html">Pin</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box</a>&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html">Future</a>&lt;Output = <span class="prelude-ty">Result</span>&lt;<a href="auto/pixbuf.rs.html#8-222">Pixbuf</a>, <a href="../../glib/error/struct.Error.html">Error</a>&gt;&gt; + <span class="lifetime">'static</span>&gt;&gt; {
         <span class="kw">let </span>stream = <a href="#134">stream</a>.<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">clone</a>();
         <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.pin">Box::pin</a>(<a href="../../gio/gio_future/struct.GioFuture.html#method.new">gio::GioFuture::new</a>(<span class="kw-2">&amp;</span>(), <span class="kw">move </span>|_obj, cancellable, send| {
             <a href="#81-131"><span class="self">Self</span>::from_stream_async</a>(<span class="kw-2">&amp;</span><a href="#136">stream</a>, <span class="prelude-val">Some</span>(<a href="#137">cancellable</a>), <span class="kw">move </span>|res| {
@@ -883,9 +883,9 @@
 
     <span class="attr">#[doc(alias = <span class="string">"gdk_pixbuf_new_from_stream_at_scale_async"</span>)]
     </span><span class="kw">pub fn </span>from_stream_at_scale_async&lt;
-        P: IsA&lt;<a href="../../gio/auto/input_stream/struct.InputStream.html">gio::InputStream</a>&gt;,
-        Q: IsA&lt;<a href="../../gio/auto/cancellable/struct.Cancellable.html">gio::Cancellable</a>&gt;,
-        R: FnOnce(<span class="prelude-ty">Result</span>&lt;<a href="auto/pixbuf.rs.html#8-222">Pixbuf</a>, <a href="../../glib/error/struct.Error.html">Error</a>&gt;) + <span class="lifetime">'static</span>,
+        P: <a href="../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="../../gio/auto/input_stream/struct.InputStream.html">gio::InputStream</a>&gt;,
+        Q: <a href="../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="../../gio/auto/cancellable/struct.Cancellable.html">gio::Cancellable</a>&gt;,
+        R: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>(<span class="prelude-ty">Result</span>&lt;<a href="auto/pixbuf.rs.html#8-222">Pixbuf</a>, <a href="../../glib/error/struct.Error.html">Error</a>&gt;) + <span class="lifetime">'static</span>,
     &gt;(
         stream: <span class="kw-2">&amp;</span>P,
         width: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
@@ -905,10 +905,10 @@
         </span>);
 
         <span class="kw">let </span>cancellable = <a href="#154">cancellable</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|p| <a href="#167">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>());
-        <span class="kw">let </span>user_data: Box&lt;glib::thread_guard::ThreadGuard&lt;R&gt;&gt; =
+        <span class="kw">let </span>user_data: <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box</a>&lt;<a href="../../glib/thread_guard/struct.ThreadGuard.html">glib::thread_guard::ThreadGuard</a>&lt;R&gt;&gt; =
             <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">Box::new</a>(<a href="../../glib/thread_guard/struct.ThreadGuard.html#method.new">glib::thread_guard::ThreadGuard::new</a>(<a href="#155">callback</a>));
         <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>from_stream_at_scale_async_trampoline&lt;
-            R: FnOnce(<span class="prelude-ty">Result</span>&lt;<a href="auto/pixbuf.rs.html#8-222">Pixbuf</a>, <a href="../../glib/error/struct.Error.html">Error</a>&gt;) + <span class="lifetime">'static</span>,
+            R: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>(<span class="prelude-ty">Result</span>&lt;<a href="auto/pixbuf.rs.html#8-222">Pixbuf</a>, <a href="../../glib/error/struct.Error.html">Error</a>&gt;) + <span class="lifetime">'static</span>,
         &gt;(
             _source_object: <span class="kw-2">*mut </span><a href="../../gobject_sys/struct.GObject.html">glib::gobject_ffi::GObject</a>,
             res: <span class="kw-2">*mut </span><a href="../../gio_sys/struct.GAsyncResult.html">gio::ffi::GAsyncResult</a>,
@@ -921,12 +921,12 @@
             } <span class="kw">else </span>{
                 <span class="prelude-val">Err</span>(<a href="../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#177">error</a>))
             };
-            <span class="kw">let </span>callback: Box&lt;glib::thread_guard::ThreadGuard&lt;R&gt;&gt; =
+            <span class="kw">let </span>callback: <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box</a>&lt;<a href="../../glib/thread_guard/struct.ThreadGuard.html">glib::thread_guard::ThreadGuard</a>&lt;R&gt;&gt; =
                 <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.from_raw">Box::from_raw</a>(<a href="#175">user_data</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
             <span class="kw">let </span>callback = <a href="#184">callback</a>.<a href="../../glib/thread_guard/struct.ThreadGuard.html#method.into_inner">into_inner</a>();
             <a href="#186">callback</a>(<a href="#179">result</a>);
         }
-        <span class="kw">let </span>callback = from_stream_at_scale_async_trampoline::&lt;R&gt;;
+        <span class="kw">let </span>callback = <a href="#170-188">from_stream_at_scale_async_trampoline</a>::&lt;R&gt;;
         <span class="kw">unsafe </span>{
             <a href="../../gdk_pixbuf_sys/fn.gdk_pixbuf_new_from_stream_at_scale_async.html">ffi::gdk_pixbuf_new_from_stream_at_scale_async</a>(
                 <a href="#150">stream</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
@@ -940,12 +940,12 @@
         }
     }
 
-    <span class="kw">pub fn </span>from_stream_at_scale_future&lt;P: IsA&lt;<a href="../../gio/auto/input_stream/struct.InputStream.html">gio::InputStream</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">Clone</a> + <span class="lifetime">'static</span>&gt;(
+    <span class="kw">pub fn </span>from_stream_at_scale_future&lt;P: <a href="../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="../../gio/auto/input_stream/struct.InputStream.html">gio::InputStream</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">Clone</a> + <span class="lifetime">'static</span>&gt;(
         stream: <span class="kw-2">&amp;</span>P,
         width: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
         height: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
         preserve_aspect_ratio: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>,
-    ) -&gt; Pin&lt;Box&lt;<span class="kw">dyn </span>Future&lt;Output = <span class="prelude-ty">Result</span>&lt;<a href="auto/pixbuf.rs.html#8-222">Pixbuf</a>, <a href="../../glib/error/struct.Error.html">Error</a>&gt;&gt; + <span class="lifetime">'static</span>&gt;&gt; {
+    ) -&gt; <a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html">Pin</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box</a>&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html">Future</a>&lt;Output = <span class="prelude-ty">Result</span>&lt;<a href="auto/pixbuf.rs.html#8-222">Pixbuf</a>, <a href="../../glib/error/struct.Error.html">Error</a>&gt;&gt; + <span class="lifetime">'static</span>&gt;&gt; {
         <span class="kw">let </span>stream = <a href="#204">stream</a>.<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">clone</a>();
         <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.pin">Box::pin</a>(<a href="../../gio/gio_future/struct.GioFuture.html#method.new">gio::GioFuture::new</a>(<span class="kw-2">&amp;</span>(), <span class="kw">move </span>|_obj, cancellable, send| {
             <a href="#145-201"><span class="self">Self</span>::from_stream_at_scale_async</a>(
@@ -1031,7 +1031,7 @@
     /// Return location for the height of the image
     </span><span class="attr">#[doc(alias = <span class="string">"gdk_pixbuf_get_file_info"</span>)]
     #[doc(alias = <span class="string">"get_file_info"</span>)]
-    </span><span class="kw">pub fn </span>file_info&lt;T: AsRef&lt;<a href="https://doc.rust-lang.org/nightly/std/path/struct.Path.html">Path</a>&gt;&gt;(filename: T) -&gt; <span class="prelude-ty">Option</span>&lt;(<a href="auto/pixbuf_format.rs.html#8-22">PixbufFormat</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>)&gt; {
+    </span><span class="kw">pub fn </span>file_info&lt;T: <a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">AsRef</a>&lt;<a href="https://doc.rust-lang.org/nightly/std/path/struct.Path.html">Path</a>&gt;&gt;(filename: T) -&gt; <span class="prelude-ty">Option</span>&lt;(<a href="auto/pixbuf_format.rs.html#8-22">PixbufFormat</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>)&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>width = <a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.uninit">mem::MaybeUninit::uninit</a>();
             <span class="kw">let </span><span class="kw-2">mut </span>height = <a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.uninit">mem::MaybeUninit::uninit</a>();
@@ -1070,9 +1070,9 @@
     </span><span class="attr">#[doc(alias = <span class="string">"gdk_pixbuf_get_file_info_async"</span>)]
     #[doc(alias = <span class="string">"get_file_info_async"</span>)]
     </span><span class="kw">pub fn </span>file_info_async&lt;
-        P: IsA&lt;<a href="../../gio/auto/cancellable/struct.Cancellable.html">gio::Cancellable</a>&gt;,
-        Q: FnOnce(<span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;(<a href="auto/pixbuf_format.rs.html#8-22">PixbufFormat</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>)&gt;, <a href="../../glib/error/struct.Error.html">Error</a>&gt;) + <span class="lifetime">'static</span>,
-        T: AsRef&lt;<a href="https://doc.rust-lang.org/nightly/std/path/struct.Path.html">Path</a>&gt;,
+        P: <a href="../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="../../gio/auto/cancellable/struct.Cancellable.html">gio::Cancellable</a>&gt;,
+        Q: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>(<span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;(<a href="auto/pixbuf_format.rs.html#8-22">PixbufFormat</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>)&gt;, <a href="../../glib/error/struct.Error.html">Error</a>&gt;) + <span class="lifetime">'static</span>,
+        T: <a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">AsRef</a>&lt;<a href="https://doc.rust-lang.org/nightly/std/path/struct.Path.html">Path</a>&gt;,
     &gt;(
         filename: T,
         cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>P&gt;,
@@ -1089,10 +1089,10 @@
         </span>);
 
         <span class="kw">let </span>cancellable = <a href="#338">cancellable</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|p| <a href="#351">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>());
-        <span class="kw">let </span>user_data: Box&lt;glib::thread_guard::ThreadGuard&lt;Q&gt;&gt; =
+        <span class="kw">let </span>user_data: <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box</a>&lt;<a href="../../glib/thread_guard/struct.ThreadGuard.html">glib::thread_guard::ThreadGuard</a>&lt;Q&gt;&gt; =
             <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">Box::new</a>(<a href="../../glib/thread_guard/struct.ThreadGuard.html#method.new">glib::thread_guard::ThreadGuard::new</a>(<a href="#339">callback</a>));
         <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>get_file_info_async_trampoline&lt;
-            Q: FnOnce(<span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;(<a href="auto/pixbuf_format.rs.html#8-22">PixbufFormat</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>)&gt;, <a href="../../glib/error/struct.Error.html">Error</a>&gt;) + <span class="lifetime">'static</span>,
+            Q: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>(<span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;(<a href="auto/pixbuf_format.rs.html#8-22">PixbufFormat</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>)&gt;, <a href="../../glib/error/struct.Error.html">Error</a>&gt;) + <span class="lifetime">'static</span>,
         &gt;(
             _source_object: <span class="kw-2">*mut </span><a href="../../gobject_sys/struct.GObject.html">glib::gobject_ffi::GObject</a>,
             res: <span class="kw-2">*mut </span><a href="../../gio_sys/struct.GAsyncResult.html">gio::ffi::GAsyncResult</a>,
@@ -1118,12 +1118,12 @@
                     <a href="#363">height</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.assume_init">assume_init</a>(),
                 )))
             };
-            <span class="kw">let </span>callback: Box&lt;glib::thread_guard::ThreadGuard&lt;Q&gt;&gt; =
+            <span class="kw">let </span>callback: <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box</a>&lt;<a href="../../glib/thread_guard/struct.ThreadGuard.html">glib::thread_guard::ThreadGuard</a>&lt;Q&gt;&gt; =
                 <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.from_raw">Box::from_raw</a>(<a href="#359">user_data</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
             <span class="kw">let </span>callback = <a href="#381">callback</a>.<a href="../../glib/thread_guard/struct.ThreadGuard.html#method.into_inner">into_inner</a>();
             <a href="#383">callback</a>(<a href="#370">result</a>);
         }
-        <span class="kw">let </span>callback = get_file_info_async_trampoline::&lt;Q&gt;;
+        <span class="kw">let </span>callback = <a href="#354-385">get_file_info_async_trampoline</a>::&lt;Q&gt;;
         <span class="kw">unsafe </span>{
             <a href="../../gdk_pixbuf_sys/fn.gdk_pixbuf_get_file_info_async.html">ffi::gdk_pixbuf_get_file_info_async</a>(
                 <a href="#337">filename</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
@@ -1136,9 +1136,9 @@
 
     <span class="attr">#[allow(clippy::type_complexity)]
     #[doc(alias = <span class="string">"get_file_info_async"</span>)]
-    </span><span class="kw">pub fn </span>file_info_future&lt;T: AsRef&lt;<a href="https://doc.rust-lang.org/nightly/std/path/struct.Path.html">Path</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">Clone</a> + <span class="lifetime">'static</span>&gt;(
+    </span><span class="kw">pub fn </span>file_info_future&lt;T: <a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">AsRef</a>&lt;<a href="https://doc.rust-lang.org/nightly/std/path/struct.Path.html">Path</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">Clone</a> + <span class="lifetime">'static</span>&gt;(
         filename: T,
-    ) -&gt; Pin&lt;Box&lt;<span class="kw">dyn </span>Future&lt;Output = <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;(<a href="auto/pixbuf_format.rs.html#8-22">PixbufFormat</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>)&gt;, <a href="../../glib/error/struct.Error.html">Error</a>&gt;&gt; + <span class="lifetime">'static</span>&gt;&gt;
+    ) -&gt; <a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html">Pin</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box</a>&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html">Future</a>&lt;Output = <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;(<a href="auto/pixbuf_format.rs.html#8-22">PixbufFormat</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>)&gt;, <a href="../../glib/error/struct.Error.html">Error</a>&gt;&gt; + <span class="lifetime">'static</span>&gt;&gt;
     {
         <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.pin">Box::pin</a>(<a href="../../gio/gio_future/struct.GioFuture.html#method.new">gio::GioFuture::new</a>(<span class="kw-2">&amp;</span>(), <span class="kw">move </span>|_obj, cancellable, send| {
             <a href="#332-395"><span class="self">Self</span>::file_info_async</a>(<a href="#400">filename</a>, <span class="prelude-val">Some</span>(<a href="#403">cancellable</a>), <span class="kw">move </span>|res| {
@@ -1168,13 +1168,13 @@
     ///
     ///   location to receive a pointer to the new buffer.
     </span><span class="attr">#[doc(alias = <span class="string">"gdk_pixbuf_save_to_bufferv"</span>)]
-    </span><span class="kw">pub fn </span>save_to_bufferv(<span class="kw-2">&amp;</span><span class="self">self</span>, type_: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, options: <span class="kw-2">&amp;</span>[(<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>)]) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>&gt;, <a href="../../glib/error/struct.Error.html">Error</a>&gt; {
+    </span><span class="kw">pub fn </span>save_to_bufferv(<span class="kw-2">&amp;</span><span class="self">self</span>, type_: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, options: <span class="kw-2">&amp;</span>[(<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>)]) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html">Vec</a>&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>&gt;, <a href="../../glib/error/struct.Error.html">Error</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>buffer = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
             <span class="kw">let </span><span class="kw-2">mut </span>buffer_size = <a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.uninit">mem::MaybeUninit::uninit</a>();
             <span class="kw">let </span><span class="kw-2">mut </span>error = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
-            <span class="kw">let </span>option_keys: Vec&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt; = <a href="#431">options</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|o| <a href="#436">o</a>.<span class="number">0</span>).<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.collect">collect</a>();
-            <span class="kw">let </span>option_values: Vec&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt; = <a href="#431">options</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|o| <a href="#437">o</a>.<span class="number">1</span>).<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.collect">collect</a>();
+            <span class="kw">let </span>option_keys: <a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html">Vec</a>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt; = <a href="#431">options</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|o| <a href="#436">o</a>.<span class="number">0</span>).<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.collect">collect</a>();
+            <span class="kw">let </span>option_values: <a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html">Vec</a>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt; = <a href="#431">options</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|o| <a href="#437">o</a>.<span class="number">1</span>).<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.collect">collect</a>();
             <span class="kw">let _ </span>= <a href="../../gdk_pixbuf_sys/fn.gdk_pixbuf_save_to_bufferv.html">ffi::gdk_pixbuf_save_to_bufferv</a>(
                 <a class="self" href="#431">self</a>.<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
                 <span class="kw-2">&amp;mut </span><a href="#433">buffer</a>,
@@ -1217,7 +1217,7 @@
     /// `TRUE` if the pixbuf was saved successfully, `FALSE` if an
     ///   error was set.
     </span><span class="attr">#[doc(alias = <span class="string">"gdk_pixbuf_save_to_streamv"</span>)]
-    </span><span class="kw">pub fn </span>save_to_streamv&lt;P: IsA&lt;<a href="../../gio/auto/output_stream/struct.OutputStream.html">gio::OutputStream</a>&gt;, Q: IsA&lt;<a href="../../gio/auto/cancellable/struct.Cancellable.html">gio::Cancellable</a>&gt;&gt;(
+    </span><span class="kw">pub fn </span>save_to_streamv&lt;P: <a href="../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="../../gio/auto/output_stream/struct.OutputStream.html">gio::OutputStream</a>&gt;, Q: <a href="../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="../../gio/auto/cancellable/struct.Cancellable.html">gio::Cancellable</a>&gt;&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         stream: <span class="kw-2">&amp;</span>P,
         type_: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
@@ -1227,8 +1227,8 @@
         <span class="kw">let </span>cancellable = <a href="#485">cancellable</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|p| <a href="#487">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>());
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>error = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
-            <span class="kw">let </span>option_keys: Vec&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt; = <a href="#484">options</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|o| <a href="#490">o</a>.<span class="number">0</span>).<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.collect">collect</a>();
-            <span class="kw">let </span>option_values: Vec&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt; = <a href="#484">options</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|o| <a href="#491">o</a>.<span class="number">1</span>).<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.collect">collect</a>();
+            <span class="kw">let </span>option_keys: <a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html">Vec</a>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt; = <a href="#484">options</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|o| <a href="#490">o</a>.<span class="number">0</span>).<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.collect">collect</a>();
+            <span class="kw">let </span>option_values: <a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html">Vec</a>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt; = <a href="#484">options</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|o| <a href="#491">o</a>.<span class="number">1</span>).<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.collect">collect</a>();
             <span class="kw">let _ </span>= <a href="../../gdk_pixbuf_sys/fn.gdk_pixbuf_save_to_streamv.html">ffi::gdk_pixbuf_save_to_streamv</a>(
                 <a class="self" href="#481">self</a>.<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
                 <a href="#482">stream</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
@@ -1269,9 +1269,9 @@
     /// a `GAsyncReadyCallback` to call when the pixbuf is saved
     </span><span class="attr">#[doc(alias = <span class="string">"gdk_pixbuf_save_to_streamv_async"</span>)]
     </span><span class="kw">pub fn </span>save_to_streamv_async&lt;
-        P: IsA&lt;<a href="../../gio/auto/output_stream/struct.OutputStream.html">gio::OutputStream</a>&gt;,
-        Q: IsA&lt;<a href="../../gio/auto/cancellable/struct.Cancellable.html">gio::Cancellable</a>&gt;,
-        R: FnOnce(<span class="prelude-ty">Result</span>&lt;(), <a href="../../glib/error/struct.Error.html">Error</a>&gt;) + <span class="lifetime">'static</span>,
+        P: <a href="../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="../../gio/auto/output_stream/struct.OutputStream.html">gio::OutputStream</a>&gt;,
+        Q: <a href="../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="../../gio/auto/cancellable/struct.Cancellable.html">gio::Cancellable</a>&gt;,
+        R: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>(<span class="prelude-ty">Result</span>&lt;(), <a href="../../glib/error/struct.Error.html">Error</a>&gt;) + <span class="lifetime">'static</span>,
     &gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         stream: <span class="kw-2">&amp;</span>P,
@@ -1291,10 +1291,10 @@
         </span>);
 
         <span class="kw">let </span>cancellable = <a href="#540">cancellable</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|p| <a href="#553">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>());
-        <span class="kw">let </span>user_data: Box&lt;glib::thread_guard::ThreadGuard&lt;R&gt;&gt; =
+        <span class="kw">let </span>user_data: <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box</a>&lt;<a href="../../glib/thread_guard/struct.ThreadGuard.html">glib::thread_guard::ThreadGuard</a>&lt;R&gt;&gt; =
             <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">Box::new</a>(<a href="../../glib/thread_guard/struct.ThreadGuard.html#method.new">glib::thread_guard::ThreadGuard::new</a>(<a href="#541">callback</a>));
         <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>save_to_streamv_async_trampoline&lt;
-            R: FnOnce(<span class="prelude-ty">Result</span>&lt;(), <a href="../../glib/error/struct.Error.html">Error</a>&gt;) + <span class="lifetime">'static</span>,
+            R: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>(<span class="prelude-ty">Result</span>&lt;(), <a href="../../glib/error/struct.Error.html">Error</a>&gt;) + <span class="lifetime">'static</span>,
         &gt;(
             _source_object: <span class="kw-2">*mut </span><a href="../../gobject_sys/struct.GObject.html">glib::gobject_ffi::GObject</a>,
             res: <span class="kw-2">*mut </span><a href="../../gio_sys/struct.GAsyncResult.html">gio::ffi::GAsyncResult</a>,
@@ -1307,15 +1307,15 @@
             } <span class="kw">else </span>{
                 <span class="prelude-val">Err</span>(<a href="../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#563">error</a>))
             };
-            <span class="kw">let </span>callback: Box&lt;glib::thread_guard::ThreadGuard&lt;R&gt;&gt; =
+            <span class="kw">let </span>callback: <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box</a>&lt;<a href="../../glib/thread_guard/struct.ThreadGuard.html">glib::thread_guard::ThreadGuard</a>&lt;R&gt;&gt; =
                 <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.from_raw">Box::from_raw</a>(<a href="#561">user_data</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
             <span class="kw">let </span>callback = <a href="#570">callback</a>.<a href="../../glib/thread_guard/struct.ThreadGuard.html#method.into_inner">into_inner</a>();
             <a href="#572">callback</a>(<a href="#565">result</a>);
         }
-        <span class="kw">let </span>callback = save_to_streamv_async_trampoline::&lt;R&gt;;
+        <span class="kw">let </span>callback = <a href="#556-574">save_to_streamv_async_trampoline</a>::&lt;R&gt;;
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>option_keys: Vec&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt; = <a href="#539">options</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|o| <a href="#577">o</a>.<span class="number">0</span>).<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.collect">collect</a>();
-            <span class="kw">let </span>option_values: Vec&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt; = <a href="#539">options</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|o| <a href="#578">o</a>.<span class="number">1</span>).<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.collect">collect</a>();
+            <span class="kw">let </span>option_keys: <a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html">Vec</a>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt; = <a href="#539">options</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|o| <a href="#577">o</a>.<span class="number">0</span>).<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.collect">collect</a>();
+            <span class="kw">let </span>option_values: <a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html">Vec</a>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt; = <a href="#539">options</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|o| <a href="#578">o</a>.<span class="number">1</span>).<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.collect">collect</a>();
             <a href="../../gdk_pixbuf_sys/fn.gdk_pixbuf_save_to_streamv_async.html">ffi::gdk_pixbuf_save_to_streamv_async</a>(
                 <a class="self" href="#536">self</a>.<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
                 <a href="#537">stream</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
@@ -1329,23 +1329,23 @@
         }
     }
 
-    <span class="kw">pub fn </span>save_to_streamv_future&lt;P: IsA&lt;<a href="../../gio/auto/output_stream/struct.OutputStream.html">gio::OutputStream</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">Clone</a> + <span class="lifetime">'static</span>&gt;(
+    <span class="kw">pub fn </span>save_to_streamv_future&lt;P: <a href="../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="../../gio/auto/output_stream/struct.OutputStream.html">gio::OutputStream</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">Clone</a> + <span class="lifetime">'static</span>&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         stream: <span class="kw-2">&amp;</span>P,
         type_: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
         options: <span class="kw-2">&amp;</span>[(<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>)],
-    ) -&gt; Pin&lt;Box&lt;<span class="kw">dyn </span>Future&lt;Output = <span class="prelude-ty">Result</span>&lt;(), <a href="../../glib/error/struct.Error.html">Error</a>&gt;&gt; + <span class="lifetime">'static</span>&gt;&gt; {
+    ) -&gt; <a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html">Pin</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box</a>&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html">Future</a>&lt;Output = <span class="prelude-ty">Result</span>&lt;(), <a href="../../glib/error/struct.Error.html">Error</a>&gt;&gt; + <span class="lifetime">'static</span>&gt;&gt; {
         <span class="kw">let </span>stream = <a href="#594">stream</a>.<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">clone</a>();
         <span class="kw">let </span>type_ = <a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html#tymethod.from">String::from</a>(<a href="#595">type_</a>);
         <span class="kw">let </span>options = <a href="#596">options</a>
             .<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.iter">iter</a>()
             .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|<span class="kw-2">&amp;</span>(k, v)| (<a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html#tymethod.from">String::from</a>(<a href="#602">k</a>), <a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html#tymethod.from">String::from</a>(<a href="#602">v</a>)))
-            .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.collect">collect</a>::&lt;Vec&lt;(<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>, <a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>)&gt;&gt;();
+            .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.collect">collect</a>::&lt;<a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html">Vec</a>&lt;(<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>, <a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>)&gt;&gt;();
         <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.pin">Box::pin</a>(<a href="../../gio/gio_future/struct.GioFuture.html#method.new">gio::GioFuture::new</a>(<a class="self" href="#593">self</a>, <span class="kw">move </span>|obj, cancellable, send| {
             <span class="kw">let </span>options = <a href="#600">options</a>
                 .<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.iter">iter</a>()
                 .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|(k, v)| (<a href="#607">k</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html#method.as_str">as_str</a>(), <a href="#607">v</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html#method.as_str">as_str</a>()))
-                .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.collect">collect</a>::&lt;Vec&lt;(<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>)&gt;&gt;();
+                .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.collect">collect</a>::&lt;<a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html">Vec</a>&lt;(<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>)&gt;&gt;();
 
             <a href="#604">obj</a>.<a href="#531-590">save_to_streamv_async</a>(
                 <span class="kw-2">&amp;</span><a href="#598">stream</a>,
@@ -1379,7 +1379,7 @@
     ///
     /// whether an error was set
     </span><span class="attr">#[doc(alias = <span class="string">"gdk_pixbuf_savev"</span>)]
-    </span><span class="kw">pub fn </span>savev&lt;T: AsRef&lt;<a href="https://doc.rust-lang.org/nightly/std/path/struct.Path.html">Path</a>&gt;&gt;(
+    </span><span class="kw">pub fn </span>savev&lt;T: <a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">AsRef</a>&lt;<a href="https://doc.rust-lang.org/nightly/std/path/struct.Path.html">Path</a>&gt;&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         filename: T,
         type_: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
@@ -1387,8 +1387,8 @@
     ) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="../../glib/error/struct.Error.html">Error</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>error = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
-            <span class="kw">let </span>option_keys: Vec&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt; = <a href="#646">options</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|o| <a href="#650">o</a>.<span class="number">0</span>).<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.collect">collect</a>();
-            <span class="kw">let </span>option_values: Vec&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt; = <a href="#646">options</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|o| <a href="#651">o</a>.<span class="number">1</span>).<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.collect">collect</a>();
+            <span class="kw">let </span>option_keys: <a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html">Vec</a>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt; = <a href="#646">options</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|o| <a href="#650">o</a>.<span class="number">0</span>).<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.collect">collect</a>();
+            <span class="kw">let </span>option_values: <a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html">Vec</a>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt; = <a href="#646">options</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|o| <a href="#651">o</a>.<span class="number">1</span>).<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.collect">collect</a>();
             <span class="kw">let _ </span>= <a href="../../gdk_pixbuf_sys/fn.gdk_pixbuf_savev.html">ffi::gdk_pixbuf_savev</a>(
                 <a class="self" href="#643">self</a>.<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
                 <a href="#644">filename</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,

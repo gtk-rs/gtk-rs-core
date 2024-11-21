@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `cairo/src/surface.rs`."><title>surface.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-42caa33d.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="cairo" data-themes="" data-resource-suffix="" data-rustdoc-version="1.84.0-nightly (03ee48451 2024-11-18)" data-channel="nightly" data-search-js="search-53f21e11.js" data-settings-js="settings-0f613d39.js" ><script src="../../static.files/storage-59e33391.js"></script><script defer src="../../static.files/src-script-56102188.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `cairo/src/surface.rs`."><title>surface.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-42caa33d.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="cairo" data-themes="" data-resource-suffix="" data-rustdoc-version="1.84.0-nightly (3fee0f12e 2024-11-20)" data-channel="nightly" data-search-js="search-92e6798f.js" data-settings-js="settings-0f613d39.js" ><script src="../../static.files/storage-59e33391.js"></script><script defer src="../../static.files/src-script-56102188.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -529,7 +529,7 @@
 <span class="attr">#[derive(Debug)]
 #[doc(alias = <span class="string">"cairo_surface_t"</span>)]
 #[repr(transparent)]
-</span><span class="kw">pub struct </span><a href="../../cairo/struct.Surface.html">Surface</a>(ptr::NonNull&lt;<a href="../../cairo_sys/struct.cairo_surface_t.html">ffi::cairo_surface_t</a>&gt;);
+</span><span class="kw">pub struct </span><a href="../../cairo/struct.Surface.html">Surface</a>(<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html">ptr::NonNull</a>&lt;<a href="../../cairo_sys/struct.cairo_surface_t.html">ffi::cairo_surface_t</a>&gt;);
 
 <span class="kw">impl </span><a href="#19">Surface</a> {
     <span class="attr">#[inline]
@@ -540,7 +540,7 @@
     }
 
     <span class="attr">#[inline]
-    </span><span class="kw">pub unsafe fn </span>from_raw_borrow(ptr: <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.cairo_surface_t.html">ffi::cairo_surface_t</a>) -&gt; <span class="kw">crate</span>::Borrowed&lt;<a href="#19">Surface</a>&gt; {
+    </span><span class="kw">pub unsafe fn </span>from_raw_borrow(ptr: <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.cairo_surface_t.html">ffi::cairo_surface_t</a>) -&gt; <a href="../../glib/translate/struct.Borrowed.html"><span class="kw">crate</span>::Borrowed</a>&lt;<a href="#19">Surface</a>&gt; {
         <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert.html">debug_assert!</a>(!ptr.is_null());
         <a href="../../glib/translate/struct.Borrowed.html#method.new"><span class="kw">crate</span>::Borrowed::new</a>(<a href="#19">Surface</a>(<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.new_unchecked">ptr::NonNull::new_unchecked</a>(<a href="#30">ptr</a>)))
     }
@@ -590,7 +590,7 @@
 
     <span class="attr">#[doc(alias = <span class="string">"cairo_surface_get_mime_data"</span>)]
     #[doc(alias = <span class="string">"get_mime_data"</span>)]
-    </span><span class="kw">pub fn </span>mime_data(<span class="kw-2">&amp;</span><span class="self">self</span>, mime_type: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Option</span>&lt;Vec&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>&gt;&gt; {
+    </span><span class="kw">pub fn </span>mime_data(<span class="kw-2">&amp;</span><span class="self">self</span>, mime_type: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html">Vec</a>&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>&gt;&gt; {
         <span class="kw">let </span>data_ptr: <span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a> = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
         <span class="kw">let </span><span class="kw-2">mut </span>length: c_ulong = <span class="number">0</span>;
         <span class="kw">unsafe </span>{
@@ -632,7 +632,7 @@
     }
 
     <span class="attr">#[doc(alias = <span class="string">"cairo_surface_set_mime_data"</span>)]
-    </span><span class="kw">pub fn </span>set_mime_data&lt;T: AsRef&lt;[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]&gt; + <span class="lifetime">'static</span>&gt;(
+    </span><span class="kw">pub fn </span>set_mime_data&lt;T: <a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">AsRef</a>&lt;[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]&gt; + <span class="lifetime">'static</span>&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         mime_type: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
         slice: T,
@@ -646,7 +646,7 @@
         <span class="kw">let </span>user_data = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.into_raw">Box::into_raw</a>(<a href="#127">b</a>);
 
         <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>unbox&lt;T&gt;(data: <span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/enum.c_void.html">c_void</a>) {
-            <span class="kw">let </span>data: Box&lt;T&gt; = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.from_raw">Box::from_raw</a>(<a href="#135">data</a> <span class="kw">as </span><span class="kw-2">*mut </span>T);
+            <span class="kw">let </span>data: <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box</a>&lt;T&gt; = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.from_raw">Box::from_raw</a>(<a href="#135">data</a> <span class="kw">as </span><span class="kw-2">*mut </span>T);
             <a href="https://doc.rust-lang.org/nightly/core/mem/fn.drop.html">drop</a>(<a href="#136">data</a>);
         }
 
@@ -657,7 +657,7 @@
                 <a href="#141">mime_type</a>.<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.as_ptr">as_ptr</a>(),
                 <a href="#128">data</a>,
                 <a href="#128">size</a> <span class="kw">as </span>c_ulong,
-                <span class="prelude-val">Some</span>(unbox::&lt;T&gt;),
+                <span class="prelude-val">Some</span>(<a href="#135-138">unbox</a>::&lt;T&gt;),
                 <a href="#133">user_data</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
             )
         };
@@ -803,7 +803,7 @@
 }
 
 <span class="attr">#[cfg(feature = <span class="string">"use_glib"</span>)]
-</span><span class="kw">impl </span>IntoGlibPtr&lt;<span class="kw-2">*mut </span><a href="../../cairo_sys/struct.cairo_surface_t.html">ffi::cairo_surface_t</a>&gt; <span class="kw">for </span><a href="#19">Surface</a> {
+</span><span class="kw">impl </span><a href="../../glib/translate/trait.IntoGlibPtr.html">IntoGlibPtr</a>&lt;<span class="kw-2">*mut </span><a href="../../cairo_sys/struct.cairo_surface_t.html">ffi::cairo_surface_t</a>&gt; <span class="kw">for </span><a href="#19">Surface</a> {
     <span class="attr">#[inline]
     </span><span class="kw">unsafe fn </span>into_glib_ptr(<span class="self">self</span>) -&gt; <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.cairo_surface_t.html">ffi::cairo_surface_t</a> {
         <a href="https://doc.rust-lang.org/nightly/core/mem/manually_drop/struct.ManuallyDrop.html#method.new">std::mem::ManuallyDrop::new</a>(<a class="self" href="#295">self</a>).<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0
@@ -811,11 +811,11 @@
 }
 
 <span class="attr">#[cfg(feature = <span class="string">"use_glib"</span>)]
-</span><span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; ToGlibPtr&lt;<span class="lifetime">'a</span>, <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.cairo_surface_t.html">ffi::cairo_surface_t</a>&gt; <span class="kw">for </span><a href="#19">Surface</a> {
-    <span class="kw">type </span>Storage = PhantomData&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#19">Surface</a>&gt;;
+</span><span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; <a href="../../glib/translate/trait.ToGlibPtr.html">ToGlibPtr</a>&lt;<span class="lifetime">'a</span>, <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.cairo_surface_t.html">ffi::cairo_surface_t</a>&gt; <span class="kw">for </span><a href="#19">Surface</a> {
+    <span class="kw">type </span>Storage = <a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">PhantomData</a>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#19">Surface</a>&gt;;
 
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>to_glib_none(<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="self">self</span>) -&gt; Stash&lt;<span class="lifetime">'a</span>, <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.cairo_surface_t.html">ffi::cairo_surface_t</a>, <span class="self">Self</span>&gt; {
+    </span><span class="kw">fn </span>to_glib_none(<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="self">self</span>) -&gt; <a href="../../glib/translate/struct.Stash.html">Stash</a>&lt;<span class="lifetime">'a</span>, <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.cairo_surface_t.html">ffi::cairo_surface_t</a>, <span class="self">Self</span>&gt; {
         <a href="../../glib/translate/struct.Stash.html">Stash</a>(<a class="self" href="#305">self</a>.<a href="#44-46">to_raw_none</a>(), <a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">PhantomData</a>)
     }
 
@@ -826,7 +826,7 @@
 }
 
 <span class="attr">#[cfg(feature = <span class="string">"use_glib"</span>)]
-</span><span class="kw">impl </span>FromGlibPtrNone&lt;<span class="kw-2">*mut </span><a href="../../cairo_sys/struct.cairo_surface_t.html">ffi::cairo_surface_t</a>&gt; <span class="kw">for </span><a href="#19">Surface</a> {
+</span><span class="kw">impl </span><a href="../../glib/translate/trait.FromGlibPtrNone.html">FromGlibPtrNone</a>&lt;<span class="kw-2">*mut </span><a href="../../cairo_sys/struct.cairo_surface_t.html">ffi::cairo_surface_t</a>&gt; <span class="kw">for </span><a href="#19">Surface</a> {
     <span class="attr">#[inline]
     </span><span class="kw">unsafe fn </span>from_glib_none(ptr: <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.cairo_surface_t.html">ffi::cairo_surface_t</a>) -&gt; <a href="#19">Surface</a> {
         <a href="#23-27"><span class="self">Self</span>::from_raw_none</a>(<a href="#318">ptr</a>)
@@ -834,15 +834,15 @@
 }
 
 <span class="attr">#[cfg(feature = <span class="string">"use_glib"</span>)]
-</span><span class="kw">impl </span>FromGlibPtrBorrow&lt;<span class="kw-2">*mut </span><a href="../../cairo_sys/struct.cairo_surface_t.html">ffi::cairo_surface_t</a>&gt; <span class="kw">for </span><a href="#19">Surface</a> {
+</span><span class="kw">impl </span><a href="../../glib/translate/trait.FromGlibPtrBorrow.html">FromGlibPtrBorrow</a>&lt;<span class="kw-2">*mut </span><a href="../../cairo_sys/struct.cairo_surface_t.html">ffi::cairo_surface_t</a>&gt; <span class="kw">for </span><a href="#19">Surface</a> {
     <span class="attr">#[inline]
-    </span><span class="kw">unsafe fn </span>from_glib_borrow(ptr: <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.cairo_surface_t.html">ffi::cairo_surface_t</a>) -&gt; <span class="kw">crate</span>::Borrowed&lt;<a href="#19">Surface</a>&gt; {
+    </span><span class="kw">unsafe fn </span>from_glib_borrow(ptr: <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.cairo_surface_t.html">ffi::cairo_surface_t</a>) -&gt; <a href="../../glib/translate/struct.Borrowed.html"><span class="kw">crate</span>::Borrowed</a>&lt;<a href="#19">Surface</a>&gt; {
         <a href="#30-33"><span class="self">Self</span>::from_raw_borrow</a>(<a href="#326">ptr</a>)
     }
 }
 
 <span class="attr">#[cfg(feature = <span class="string">"use_glib"</span>)]
-</span><span class="kw">impl </span>FromGlibPtrFull&lt;<span class="kw-2">*mut </span><a href="../../cairo_sys/struct.cairo_surface_t.html">ffi::cairo_surface_t</a>&gt; <span class="kw">for </span><a href="#19">Surface</a> {
+</span><span class="kw">impl </span><a href="../../glib/translate/trait.FromGlibPtrFull.html">FromGlibPtrFull</a>&lt;<span class="kw-2">*mut </span><a href="../../cairo_sys/struct.cairo_surface_t.html">ffi::cairo_surface_t</a>&gt; <span class="kw">for </span><a href="#19">Surface</a> {
     <span class="attr">#[inline]
     </span><span class="kw">unsafe fn </span>from_glib_full(ptr: <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.cairo_surface_t.html">ffi::cairo_surface_t</a>) -&gt; <a href="#19">Surface</a> {
         <a href="#36-41"><span class="self">Self</span>::from_raw_full</a>(<a href="#334">ptr</a>).<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>()
@@ -872,7 +872,7 @@
     }
 }
 
-<span class="kw">impl </span>AsRef&lt;<a href="#19">Surface</a>&gt; <span class="kw">for </span><a href="#19">Surface</a> {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">AsRef</a>&lt;<a href="#19">Surface</a>&gt; <span class="kw">for </span><a href="#19">Surface</a> {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>as_ref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><a href="#19">Surface</a> {
         <span class="self"><a href="#364">self</a>
@@ -916,7 +916,7 @@
     }
 }
 
-<span class="kw">impl </span>AsRef&lt;<a href="image_surface.rs.html#14">ImageSurface</a>&gt; <span class="kw">for </span><a href="#392-395">MappedImageSurface</a> {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">AsRef</a>&lt;<a href="image_surface.rs.html#14">ImageSurface</a>&gt; <span class="kw">for </span><a href="#392-395">MappedImageSurface</a> {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>as_ref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><a href="image_surface.rs.html#14">ImageSurface</a> {
         <span class="kw-2">&amp;</span><a class="self" href="#408">self</a>.image_surface

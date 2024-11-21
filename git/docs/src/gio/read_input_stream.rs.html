@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/read_input_stream.rs`."><title>read_input_stream.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-42caa33d.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.84.0-nightly (03ee48451 2024-11-18)" data-channel="nightly" data-search-js="search-53f21e11.js" data-settings-js="settings-0f613d39.js" ><script src="../../static.files/storage-59e33391.js"></script><script defer src="../../static.files/src-script-56102188.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/read_input_stream.rs`."><title>read_input_stream.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-42caa33d.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.84.0-nightly (3fee0f12e 2024-11-20)" data-channel="nightly" data-search-js="search-92e6798f.js" data-settings-js="settings-0f613d39.js" ><script src="../../static.files/storage-59e33391.js"></script><script defer src="../../static.files/src-script-56102188.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -466,7 +466,7 @@
 
     <span class="attr">#[derive(Default)]
     </span><span class="kw">pub struct </span>ReadInputStream {
-        <span class="kw">pub</span>(<span class="kw">super</span>) read: RefCell&lt;<span class="prelude-ty">Option</span>&lt;<a href="#15-18">Reader</a>&gt;&gt;,
+        <span class="kw">pub</span>(<span class="kw">super</span>) read: <a href="https://doc.rust-lang.org/nightly/core/cell/struct.RefCell.html">RefCell</a>&lt;<span class="prelude-ty">Option</span>&lt;<a href="#15-18">Reader</a>&gt;&gt;,
     }
 
     <span class="attr">#[glib::object_subclass]
@@ -609,7 +609,7 @@
         <a href="#158">obj</a>
     }
 
-    <span class="kw">pub fn </span>close_and_take(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Box&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/any/trait.Any.html">Any</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static</span>&gt; {
+    <span class="kw">pub fn </span>close_and_take(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box</a>&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/any/trait.Any.html">Any</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static</span>&gt; {
         <span class="kw">let </span>inner = <a class="self" href="#165">self</a>.<a href="../../glib/subclass/types/trait.ObjectSubclassIsExt.html#tymethod.imp">imp</a>().read.<a href="https://doc.rust-lang.org/nightly/core/cell/struct.RefCell.html#method.take">take</a>();
 
         <span class="kw">let </span>ret = <span class="kw">match </span><a href="#166">inner</a> {
@@ -630,16 +630,16 @@
 }
 
 <span class="kw">enum </span>AnyOrPanic {
-    Any(Box&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/any/trait.Any.html">Any</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static</span>&gt;),
-    Panic(Box&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/any/trait.Any.html">Any</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static</span>&gt;),
+    Any(<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box</a>&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/any/trait.Any.html">Any</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static</span>&gt;),
+    Panic(<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box</a>&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/any/trait.Any.html">Any</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static</span>&gt;),
 }
 
 <span class="comment">// Helper struct for dynamically dispatching to any kind of Reader and
 // catching panics along the way
 </span><span class="kw">struct </span>AnyReader {
     reader: <a href="#185-188">AnyOrPanic</a>,
-    read_fn: <span class="kw">fn</span>(s: <span class="kw-2">&amp;mut </span><a href="#192-196">AnyReader</a>, buffer: <span class="kw-2">&amp;mut </span>[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]) -&gt; std::io::Result&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>&gt;,
-    seek_fn: <span class="prelude-ty">Option</span>&lt;<span class="kw">fn</span>(s: <span class="kw-2">&amp;mut </span><a href="#192-196">AnyReader</a>, pos: <a href="https://doc.rust-lang.org/nightly/std/io/enum.SeekFrom.html">std::io::SeekFrom</a>) -&gt; std::io::Result&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a>&gt;&gt;,
+    read_fn: <span class="kw">fn</span>(s: <span class="kw-2">&amp;mut </span><a href="#192-196">AnyReader</a>, buffer: <span class="kw-2">&amp;mut </span>[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]) -&gt; <a href="https://doc.rust-lang.org/nightly/std/io/error/type.Result.html">std::io::Result</a>&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>&gt;,
+    seek_fn: <span class="prelude-ty">Option</span>&lt;<span class="kw">fn</span>(s: <span class="kw-2">&amp;mut </span><a href="#192-196">AnyReader</a>, pos: <a href="https://doc.rust-lang.org/nightly/std/io/enum.SeekFrom.html">std::io::SeekFrom</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/io/error/type.Result.html">std::io::Result</a>&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a>&gt;&gt;,
 }
 
 <span class="kw">impl </span><a href="#192-196">AnyReader</a> {
@@ -659,21 +659,21 @@
         }
     }
 
-    <span class="kw">fn </span>read_fn&lt;R: <a href="https://doc.rust-lang.org/nightly/std/io/trait.Read.html">Read</a> + <span class="lifetime">'static</span>&gt;(s: <span class="kw-2">&amp;mut </span><a href="#192-196">AnyReader</a>, buffer: <span class="kw-2">&amp;mut </span>[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]) -&gt; std::io::Result&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>&gt; {
+    <span class="kw">fn </span>read_fn&lt;R: <a href="https://doc.rust-lang.org/nightly/std/io/trait.Read.html">Read</a> + <span class="lifetime">'static</span>&gt;(s: <span class="kw-2">&amp;mut </span><a href="#192-196">AnyReader</a>, buffer: <span class="kw-2">&amp;mut </span>[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]) -&gt; <a href="https://doc.rust-lang.org/nightly/std/io/error/type.Result.html">std::io::Result</a>&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>&gt; {
         <a href="#215">s</a>.<a href="#226-246">with_inner</a>(|r: <span class="kw-2">&amp;mut </span>R| <a href="#216">r</a>.<a href="https://doc.rust-lang.org/nightly/std/io/trait.Read.html#tymethod.read">read</a>(<a href="#215">buffer</a>))
     }
 
     <span class="kw">fn </span>seek_fn&lt;R: <a href="https://doc.rust-lang.org/nightly/std/io/trait.Seek.html">Seek</a> + <span class="lifetime">'static</span>&gt;(
         s: <span class="kw-2">&amp;mut </span><a href="#192-196">AnyReader</a>,
         pos: <a href="https://doc.rust-lang.org/nightly/std/io/enum.SeekFrom.html">std::io::SeekFrom</a>,
-    ) -&gt; std::io::Result&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a>&gt; {
+    ) -&gt; <a href="https://doc.rust-lang.org/nightly/std/io/error/type.Result.html">std::io::Result</a>&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a>&gt; {
         <a href="#220">s</a>.<a href="#226-246">with_inner</a>(|r: <span class="kw-2">&amp;mut </span>R| <a href="#223">r</a>.<a href="https://doc.rust-lang.org/nightly/std/io/trait.Seek.html#tymethod.seek">seek</a>(<a href="#221">pos</a>))
     }
 
-    <span class="kw">fn </span>with_inner&lt;R: <span class="lifetime">'static</span>, T, F: FnOnce(<span class="kw-2">&amp;mut </span>R) -&gt; std::io::Result&lt;T&gt;&gt;(
+    <span class="kw">fn </span>with_inner&lt;R: <span class="lifetime">'static</span>, T, F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>(<span class="kw-2">&amp;mut </span>R) -&gt; <a href="https://doc.rust-lang.org/nightly/std/io/error/type.Result.html">std::io::Result</a>&lt;T&gt;&gt;(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
         func: F,
-    ) -&gt; std::io::Result&lt;T&gt; {
+    ) -&gt; <a href="https://doc.rust-lang.org/nightly/std/io/error/type.Result.html">std::io::Result</a>&lt;T&gt; {
         <span class="kw">match </span><a class="self" href="#227">self</a>.reader {
             <a href="#186">AnyOrPanic::Any</a>(<span class="kw-2">ref mut </span>reader) =&gt; {
                 <span class="kw">let </span>r = <a href="#231">reader</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.any.html#method.downcast_mut">downcast_mut</a>::&lt;R&gt;().<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap">unwrap</a>();
@@ -692,11 +692,11 @@
         }
     }
 
-    <span class="kw">fn </span>read(<span class="kw-2">&amp;mut </span><span class="self">self</span>, buffer: <span class="kw-2">&amp;mut </span>[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]) -&gt; std::io::Result&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>&gt; {
+    <span class="kw">fn </span>read(<span class="kw-2">&amp;mut </span><span class="self">self</span>, buffer: <span class="kw-2">&amp;mut </span>[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]) -&gt; <a href="https://doc.rust-lang.org/nightly/std/io/error/type.Result.html">std::io::Result</a>&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>&gt; {
         (<a class="self" href="#248">self</a>.read_fn)(<a class="self" href="#248">self</a>, <a href="#248">buffer</a>)
     }
 
-    <span class="kw">fn </span>seek(<span class="kw-2">&amp;mut </span><span class="self">self</span>, pos: <a href="https://doc.rust-lang.org/nightly/std/io/enum.SeekFrom.html">std::io::SeekFrom</a>) -&gt; std::io::Result&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a>&gt; {
+    <span class="kw">fn </span>seek(<span class="kw-2">&amp;mut </span><span class="self">self</span>, pos: <a href="https://doc.rust-lang.org/nightly/std/io/enum.SeekFrom.html">std::io::SeekFrom</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/io/error/type.Result.html">std::io::Result</a>&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a>&gt; {
         <span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="kw-2">ref </span>seek_fn) = <a class="self" href="#252">self</a>.seek_fn {
             <a href="#253">seek_fn</a>(<a class="self" href="#252">self</a>, <a href="#252">pos</a>)
         } <span class="kw">else </span>{

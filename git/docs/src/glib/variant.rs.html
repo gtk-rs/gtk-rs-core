@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/variant.rs`."><title>variant.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-42caa33d.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.84.0-nightly (03ee48451 2024-11-18)" data-channel="nightly" data-search-js="search-53f21e11.js" data-settings-js="settings-0f613d39.js" ><script src="../../static.files/storage-59e33391.js"></script><script defer src="../../static.files/src-script-56102188.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/variant.rs`."><title>variant.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-42caa33d.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.84.0-nightly (3fee0f12e 2024-11-20)" data-channel="nightly" data-search-js="search-92e6798f.js" data-settings-js="settings-0f613d39.js" ><script src="../../static.files/storage-59e33391.js"></script><script defer src="../../static.files/src-script-56102188.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -3594,8 +3594,8 @@
 </span><span class="kw">impl </span><a href="value.rs.html#81-84"><span class="kw">crate</span>::value::ValueTypeOptional</a> <span class="kw">for </span><a href="#118-377">Variant</a> {}
 
 <span class="attr">#[doc(hidden)]
-</span><span class="kw">unsafe impl</span>&lt;<span class="lifetime">'a</span>&gt; <span class="kw">crate</span>::value::FromValue&lt;<span class="lifetime">'a</span>&gt; <span class="kw">for </span><a href="#118-377">Variant</a> {
-    <span class="kw">type </span>Checker = <span class="kw">crate</span>::value::GenericValueTypeOrNoneChecker&lt;<span class="self">Self</span>&gt;;
+</span><span class="kw">unsafe impl</span>&lt;<span class="lifetime">'a</span>&gt; <a href="value.rs.html#272-283"><span class="kw">crate</span>::value::FromValue</a>&lt;<span class="lifetime">'a</span>&gt; <span class="kw">for </span><a href="#118-377">Variant</a> {
+    <span class="kw">type </span>Checker = <a href="value.rs.html#246"><span class="kw">crate</span>::value::GenericValueTypeOrNoneChecker</a>&lt;<span class="self">Self</span>&gt;;
 
     <span class="kw">unsafe fn </span>from_value(value: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="value.rs.html#478-512"><span class="kw">crate</span>::Value</a>) -&gt; <span class="self">Self </span>{
         <span class="kw">let </span>ptr = <a href="../../gobject_sys/fn.g_value_dup_variant.html">gobject_ffi::g_value_dup_variant</a>(<a href="#398">value</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>);
@@ -3620,7 +3620,7 @@
 }
 
 <span class="attr">#[doc(hidden)]
-</span><span class="kw">impl </span>From&lt;<a href="#118-377">Variant</a>&gt; <span class="kw">for </span><a href="value.rs.html#478-512"><span class="kw">crate</span>::Value</a> {
+</span><span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html">From</a>&lt;<a href="#118-377">Variant</a>&gt; <span class="kw">for </span><a href="value.rs.html#478-512"><span class="kw">crate</span>::Value</a> {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>from(v: <a href="#118-377">Variant</a>) -&gt; <span class="self">Self </span>{
         <span class="kw">unsafe </span>{
@@ -3659,7 +3659,7 @@
 }
 
 <span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Display.html">fmt::Display</a> <span class="kw">for </span><a href="#448-451">VariantTypeMismatchError</a> {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; <a href="https://doc.rust-lang.org/nightly/core/fmt/type.Result.html">fmt::Result</a> {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span><a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html">fmt::Formatter</a>&lt;<span class="lifetime">'_</span>&gt;) -&gt; <a href="https://doc.rust-lang.org/nightly/core/fmt/type.Result.html">fmt::Result</a> {
         <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.write.html">write!</a>(
             <a href="#460">f</a>,
             <span class="string">"Type mismatch: Expected '{}' got '{}'"</span>,
@@ -3951,7 +3951,7 @@
             <span class="kw">let </span>ptr = <a href="../../glib_sys/fn.g_variant_get_fixed_array.html">ffi::g_variant_get_fixed_array</a>(
                 <a class="self" href="#738">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
                 <a href="#748">n_elements</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.as_mut_ptr">as_mut_ptr</a>(),
-                mem::size_of::&lt;T&gt;(),
+                <a href="https://doc.rust-lang.org/nightly/core/mem/fn.size_of.html">mem::size_of</a>::&lt;T&gt;(),
             );
 
             <span class="kw">let </span>n_elements = <a href="#748">n_elements</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.assume_init">assume_init</a>();
@@ -3972,7 +3972,7 @@
     /// This function panics if not all variants are of type `T`.
     </span><span class="attr">#[doc(alias = <span class="string">"g_variant_new_array"</span>)]
     </span><span class="kw">pub fn </span>array_from_iter&lt;T: <a href="#1598-1602">StaticVariantType</a>&gt;(
-        children: <span class="kw">impl </span>IntoIterator&lt;Item = <a href="#118-377">Variant</a>&gt;,
+        children: <span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.IntoIterator.html">IntoIterator</a>&lt;Item = <a href="#118-377">Variant</a>&gt;,
     ) -&gt; <span class="self">Self </span>{
         <a href="#785-806"><span class="self">Self</span>::array_from_iter_with_type</a>(<span class="kw-2">&amp;</span><a href="#1601">T::static_variant_type</a>(), <a href="#773">children</a>)
     }
@@ -3986,7 +3986,7 @@
     </span><span class="attr">#[doc(alias = <span class="string">"g_variant_new_array"</span>)]
     </span><span class="kw">pub fn </span>array_from_iter_with_type(
         type_: <span class="kw-2">&amp;</span><a href="variant_type.rs.html#490-492">VariantTy</a>,
-        children: <span class="kw">impl </span>IntoIterator&lt;Item = <span class="kw">impl </span>AsRef&lt;<a href="#118-377">Variant</a>&gt;&gt;,
+        children: <span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.IntoIterator.html">IntoIterator</a>&lt;Item = <span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">AsRef</a>&lt;<a href="#118-377">Variant</a>&gt;&gt;,
     ) -&gt; <span class="self">Self </span>{
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>builder = <a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.uninit">mem::MaybeUninit::uninit</a>();
@@ -4018,7 +4018,7 @@
                 <a href="#812">type_</a>.<a href="variant_type.rs.html#708-710">as_ptr</a>(),
                 <a href="#811">array</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><a href="../../glib_sys/type.gconstpointer.html">ffi::gconstpointer</a>,
                 <a href="#811">array</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.len">len</a>(),
-                mem::size_of::&lt;T&gt;(),
+                <a href="https://doc.rust-lang.org/nightly/core/mem/fn.size_of.html">mem::size_of</a>::&lt;T&gt;(),
             ))
         }
     }
@@ -4026,7 +4026,7 @@
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Creates a new Variant tuple from children.
     </span><span class="attr">#[doc(alias = <span class="string">"g_variant_new_tuple"</span>)]
-    </span><span class="kw">pub fn </span>tuple_from_iter(children: <span class="kw">impl </span>IntoIterator&lt;Item = <span class="kw">impl </span>AsRef&lt;<a href="#118-377">Variant</a>&gt;&gt;) -&gt; <span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>tuple_from_iter(children: <span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.IntoIterator.html">IntoIterator</a>&lt;Item = <span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">AsRef</a>&lt;<a href="#118-377">Variant</a>&gt;&gt;) -&gt; <span class="self">Self </span>{
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>builder = <a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.uninit">mem::MaybeUninit::uninit</a>();
             <a href="../../glib_sys/fn.g_variant_builder_init.html">ffi::g_variant_builder_init</a>(<a href="#829">builder</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.as_mut_ptr">as_mut_ptr</a>(), VariantTy::TUPLE.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>);
@@ -4247,7 +4247,7 @@
     ///
     /// a new floating #GVariant of type @type_
     </span><span class="attr">#[doc(alias = <span class="string">"g_variant_new_from_data"</span>)]
-    </span><span class="kw">pub fn </span>from_data&lt;T: <a href="#1598-1602">StaticVariantType</a>, A: AsRef&lt;[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]&gt;&gt;(data: A) -&gt; <span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>from_data&lt;T: <a href="#1598-1602">StaticVariantType</a>, A: <a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">AsRef</a>&lt;[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]&gt;&gt;(data: A) -&gt; <span class="self">Self </span>{
         <a href="#1106-1127">Variant::from_data_with_type</a>(<a href="#1048">data</a>, <span class="kw-2">&amp;</span><a href="#1601">T::static_variant_type</a>())
     }
 
@@ -4264,7 +4264,7 @@
     /// Since the data is not validated, this is potentially dangerous if called
     /// on bytes which are not guaranteed to have come from serialising another
     /// Variant.  The caller is responsible for ensuring bad data is not passed in.
-    </span><span class="kw">pub unsafe fn </span>from_data_trusted&lt;T: <a href="#1598-1602">StaticVariantType</a>, A: AsRef&lt;[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]&gt;&gt;(data: A) -&gt; <span class="self">Self </span>{
+    </span><span class="kw">pub unsafe fn </span>from_data_trusted&lt;T: <a href="#1598-1602">StaticVariantType</a>, A: <a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">AsRef</a>&lt;[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]&gt;&gt;(data: A) -&gt; <span class="self">Self </span>{
         <a href="#1142-1161">Variant::from_data_with_type_trusted</a>(<a href="#1065">data</a>, <span class="kw-2">&amp;</span><a href="#1601">T::static_variant_type</a>())
     }
 
@@ -4305,7 +4305,7 @@
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Constructs a new serialized-mode GVariant instance with a given type.
     </span><span class="attr">#[doc(alias = <span class="string">"g_variant_new_from_data"</span>)]
-    </span><span class="kw">pub fn </span>from_data_with_type&lt;A: AsRef&lt;[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]&gt;&gt;(data: A, type_: <span class="kw-2">&amp;</span><a href="variant_type.rs.html#490-492">VariantTy</a>) -&gt; <span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>from_data_with_type&lt;A: <a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">AsRef</a>&lt;[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]&gt;&gt;(data: A, type_: <span class="kw-2">&amp;</span><a href="variant_type.rs.html#490-492">VariantTy</a>) -&gt; <span class="self">Self </span>{
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>data = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">Box::new</a>(<a href="#1106">data</a>);
             <span class="kw">let </span>(data_ptr, len) = {
@@ -4313,7 +4313,7 @@
                 (<a href="#1110">data</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.as_ptr">as_ptr</a>(), <a href="#1110">data</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.len">len</a>())
             };
 
-            <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>free_data&lt;A: AsRef&lt;[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]&gt;&gt;(ptr: <a href="../../glib_sys/type.gpointer.html">ffi::gpointer</a>) {
+            <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>free_data&lt;A: <a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">AsRef</a>&lt;[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]&gt;&gt;(ptr: <a href="../../glib_sys/type.gpointer.html">ffi::gpointer</a>) {
                 <span class="kw">let _ </span>= <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.from_raw">Box::from_raw</a>(<a href="#1114">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span>A);
             }
 
@@ -4322,7 +4322,7 @@
                 <a href="#1109">data_ptr</a> <span class="kw">as </span><a href="../../glib_sys/type.gconstpointer.html">ffi::gconstpointer</a>,
                 <a href="#1109">len</a>,
                 <span class="bool-val">false</span>.<a href="translate.rs.html#334">into_glib</a>(),
-                <span class="prelude-val">Some</span>(free_data::&lt;A&gt;),
+                <span class="prelude-val">Some</span>(<a href="#1114-1116">free_data</a>::&lt;A&gt;),
                 <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.into_raw">Box::into_raw</a>(<a href="#1108">data</a>) <span class="kw">as </span><a href="../../glib_sys/type.gpointer.html">ffi::gpointer</a>,
             ))
         }
@@ -4341,14 +4341,14 @@
     /// Since the data is not validated, this is potentially dangerous if called
     /// on bytes which are not guaranteed to have come from serialising another
     /// Variant.  The caller is responsible for ensuring bad data is not passed in.
-    </span><span class="kw">pub unsafe fn </span>from_data_with_type_trusted&lt;A: AsRef&lt;[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]&gt;&gt;(data: A, type_: <span class="kw-2">&amp;</span><a href="variant_type.rs.html#490-492">VariantTy</a>) -&gt; <span class="self">Self </span>{
+    </span><span class="kw">pub unsafe fn </span>from_data_with_type_trusted&lt;A: <a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">AsRef</a>&lt;[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]&gt;&gt;(data: A, type_: <span class="kw-2">&amp;</span><a href="variant_type.rs.html#490-492">VariantTy</a>) -&gt; <span class="self">Self </span>{
         <span class="kw">let </span>data = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">Box::new</a>(<a href="#1142">data</a>);
         <span class="kw">let </span>(data_ptr, len) = {
             <span class="kw">let </span>data = (<span class="kw-2">*</span><a href="#1143">data</a>).<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>();
             (<a href="#1145">data</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.as_ptr">as_ptr</a>(), <a href="#1145">data</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.len">len</a>())
         };
 
-        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>free_data&lt;A: AsRef&lt;[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]&gt;&gt;(ptr: <a href="../../glib_sys/type.gpointer.html">ffi::gpointer</a>) {
+        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>free_data&lt;A: <a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">AsRef</a>&lt;[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]&gt;&gt;(ptr: <a href="../../glib_sys/type.gpointer.html">ffi::gpointer</a>) {
             <span class="kw">let _ </span>= <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.from_raw">Box::from_raw</a>(<a href="#1149">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span>A);
         }
 
@@ -4357,7 +4357,7 @@
             <a href="#1144">data_ptr</a> <span class="kw">as </span><a href="../../glib_sys/type.gconstpointer.html">ffi::gconstpointer</a>,
             <a href="#1144">len</a>,
             <span class="bool-val">true</span>.<a href="translate.rs.html#334">into_glib</a>(),
-            <span class="prelude-val">Some</span>(free_data::&lt;A&gt;),
+            <span class="prelude-val">Some</span>(<a href="#1149-1151">free_data</a>::&lt;A&gt;),
             <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.into_raw">Box::into_raw</a>(<a href="#1143">data</a>) <span class="kw">as </span><a href="../../glib_sys/type.gpointer.html">ffi::gpointer</a>,
         ))
     }
@@ -4770,7 +4770,7 @@
     }
 }
 
-<span class="kw">impl </span>AsRef&lt;<a href="#118-377">Variant</a>&gt; <span class="kw">for </span><a href="#118-377">Variant</a> {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">AsRef</a>&lt;<a href="#118-377">Variant</a>&gt; <span class="kw">for </span><a href="#118-377">Variant</a> {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>as_ref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="self">Self </span>{
         <span class="self"><a href="#1573">self</a>
@@ -4800,11 +4800,11 @@
 </span><span class="kw">pub trait </span><a href="../../glib/variant/trait.StaticVariantType.html">StaticVariantType</a> {
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Returns the `VariantType` corresponding to `Self`.
-    </span><span class="kw">fn </span>static_variant_type() -&gt; Cow&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#490-492">VariantTy</a>&gt;;
+    </span><span class="kw">fn </span>static_variant_type() -&gt; <a href="https://doc.rust-lang.org/nightly/alloc/borrow/enum.Cow.html">Cow</a>&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#490-492">VariantTy</a>&gt;;
 }
 
 <span class="kw">impl </span><a href="#1598-1602">StaticVariantType</a> <span class="kw">for </span><a href="#118-377">Variant</a> {
-    <span class="kw">fn </span>static_variant_type() -&gt; Cow&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#490-492">VariantTy</a>&gt; {
+    <span class="kw">fn </span>static_variant_type() -&gt; <a href="https://doc.rust-lang.org/nightly/alloc/borrow/enum.Cow.html">Cow</a>&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#490-492">VariantTy</a>&gt; {
         <a href="https://doc.rust-lang.org/nightly/alloc/borrow/enum.Cow.html#variant.Borrowed">Cow::Borrowed</a>(VariantTy::VARIANT)
     }
 }
@@ -4815,7 +4815,7 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T: Into&lt;<a href="#118-377">Variant</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">Clone</a>&gt; From&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>T&gt; <span class="kw">for </span><a href="#118-377">Variant</a> {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T: <a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html">Into</a>&lt;<a href="#118-377">Variant</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">Clone</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html">From</a>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>T&gt; <span class="kw">for </span><a href="#118-377">Variant</a> {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>from(v: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>T) -&gt; <span class="self">Self </span>{
         <a href="#1618">v</a>.<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">clone</a>().<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>()
@@ -4823,7 +4823,7 @@
 }
 
 <span class="kw">impl</span>&lt;T: <span class="question-mark">?</span><a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sized.html">Sized</a> + <a href="#1598-1602">StaticVariantType</a>&gt; <a href="#1598-1602">StaticVariantType</a> <span class="kw">for </span><span class="kw-2">&amp;</span>T {
-    <span class="kw">fn </span>static_variant_type() -&gt; Cow&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#490-492">VariantTy</a>&gt; {
+    <span class="kw">fn </span>static_variant_type() -&gt; <a href="https://doc.rust-lang.org/nightly/alloc/borrow/enum.Cow.html">Cow</a>&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#490-492">VariantTy</a>&gt; {
         &lt;T <span class="kw">as </span>StaticVariantType&gt;::static_variant_type()
     }
 }
@@ -4908,7 +4908,7 @@
 );
 
 <span class="kw">impl </span><a href="#1598-1602">StaticVariantType</a> <span class="kw">for </span>() {
-    <span class="kw">fn </span>static_variant_type() -&gt; Cow&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#490-492">VariantTy</a>&gt; {
+    <span class="kw">fn </span>static_variant_type() -&gt; <a href="https://doc.rust-lang.org/nightly/alloc/borrow/enum.Cow.html">Cow</a>&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#490-492">VariantTy</a>&gt; {
         <a href="https://doc.rust-lang.org/nightly/alloc/borrow/enum.Cow.html#variant.Borrowed">Cow::Borrowed</a>(VariantTy::UNIT)
     }
 }
@@ -4919,7 +4919,7 @@
     }
 }
 
-<span class="kw">impl </span>From&lt;()&gt; <span class="kw">for </span><a href="#118-377">Variant</a> {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html">From</a>&lt;()&gt; <span class="kw">for </span><a href="#118-377">Variant</a> {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>from(<span class="kw">_</span>: ()) -&gt; <span class="self">Self </span>{
         ().<a href="#1583">to_variant</a>()
@@ -4937,7 +4937,7 @@
 }
 
 <span class="kw">impl </span><a href="#1598-1602">StaticVariantType</a> <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
-    <span class="kw">fn </span>static_variant_type() -&gt; Cow&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#490-492">VariantTy</a>&gt; {
+    <span class="kw">fn </span>static_variant_type() -&gt; <a href="https://doc.rust-lang.org/nightly/alloc/borrow/enum.Cow.html">Cow</a>&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#490-492">VariantTy</a>&gt; {
         <a href="https://doc.rust-lang.org/nightly/alloc/borrow/enum.Cow.html#variant.Borrowed">Cow::Borrowed</a>(VariantTy::BOOLEAN)
     }
 }
@@ -4948,7 +4948,7 @@
     }
 }
 
-<span class="kw">impl </span>From&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>&gt; <span class="kw">for </span><a href="#118-377">Variant</a> {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html">From</a>&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>&gt; <span class="kw">for </span><a href="#118-377">Variant</a> {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>from(v: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>) -&gt; <span class="self">Self </span>{
         <a href="#1751">v</a>.<a href="#1583">to_variant</a>()
@@ -4970,7 +4970,7 @@
 }
 
 <span class="kw">impl </span><a href="#1598-1602">StaticVariantType</a> <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a> {
-    <span class="kw">fn </span>static_variant_type() -&gt; Cow&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#490-492">VariantTy</a>&gt; {
+    <span class="kw">fn </span>static_variant_type() -&gt; <a href="https://doc.rust-lang.org/nightly/alloc/borrow/enum.Cow.html">Cow</a>&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#490-492">VariantTy</a>&gt; {
         <a href="https://doc.rust-lang.org/nightly/alloc/borrow/enum.Cow.html#variant.Borrowed">Cow::Borrowed</a>(VariantTy::STRING)
     }
 }
@@ -4981,7 +4981,7 @@
     }
 }
 
-<span class="kw">impl </span>From&lt;<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>&gt; <span class="kw">for </span><a href="#118-377">Variant</a> {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html">From</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>&gt; <span class="kw">for </span><a href="#118-377">Variant</a> {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>from(s: <a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>) -&gt; <span class="self">Self </span>{
         <a href="#1784">s</a>.<a href="#1583">to_variant</a>()
@@ -4995,7 +4995,7 @@
 }
 
 <span class="kw">impl </span><a href="#1598-1602">StaticVariantType</a> <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a> {
-    <span class="kw">fn </span>static_variant_type() -&gt; Cow&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#490-492">VariantTy</a>&gt; {
+    <span class="kw">fn </span>static_variant_type() -&gt; <a href="https://doc.rust-lang.org/nightly/alloc/borrow/enum.Cow.html">Cow</a>&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#490-492">VariantTy</a>&gt; {
         <a href="#1601">String::static_variant_type</a>()
     }
 }
@@ -5006,7 +5006,7 @@
     }
 }
 
-<span class="kw">impl </span>From&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt; <span class="kw">for </span><a href="#118-377">Variant</a> {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html">From</a>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt; <span class="kw">for </span><a href="#118-377">Variant</a> {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>from(s: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="self">Self </span>{
         <a href="#1809">s</a>.<a href="#1583">to_variant</a>()
@@ -5014,7 +5014,7 @@
 }
 
 <span class="kw">impl </span><a href="#1598-1602">StaticVariantType</a> <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/std/path/struct.PathBuf.html">std::path::PathBuf</a> {
-    <span class="kw">fn </span>static_variant_type() -&gt; Cow&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#490-492">VariantTy</a>&gt; {
+    <span class="kw">fn </span>static_variant_type() -&gt; <a href="https://doc.rust-lang.org/nightly/alloc/borrow/enum.Cow.html">Cow</a>&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#490-492">VariantTy</a>&gt; {
         <a href="#1601">std::path::Path::static_variant_type</a>()
     }
 }
@@ -5025,7 +5025,7 @@
     }
 }
 
-<span class="kw">impl </span>From&lt;<a href="https://doc.rust-lang.org/nightly/std/path/struct.PathBuf.html">std::path::PathBuf</a>&gt; <span class="kw">for </span><a href="#118-377">Variant</a> {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html">From</a>&lt;<a href="https://doc.rust-lang.org/nightly/std/path/struct.PathBuf.html">std::path::PathBuf</a>&gt; <span class="kw">for </span><a href="#118-377">Variant</a> {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>from(p: <a href="https://doc.rust-lang.org/nightly/std/path/struct.PathBuf.html">std::path::PathBuf</a>) -&gt; <span class="self">Self </span>{
         <a href="#1828">p</a>.<a href="#1583">to_variant</a>()
@@ -5042,7 +5042,7 @@
 }
 
 <span class="kw">impl </span><a href="#1598-1602">StaticVariantType</a> <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/std/path/struct.Path.html">std::path::Path</a> {
-    <span class="kw">fn </span>static_variant_type() -&gt; Cow&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#490-492">VariantTy</a>&gt; {
+    <span class="kw">fn </span>static_variant_type() -&gt; <a href="https://doc.rust-lang.org/nightly/alloc/borrow/enum.Cow.html">Cow</a>&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#490-492">VariantTy</a>&gt; {
         &lt;<span class="kw-2">&amp;</span>[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]&gt;::static_variant_type()
     }
 }
@@ -5054,7 +5054,7 @@
     }
 }
 
-<span class="kw">impl </span>From&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/path/struct.Path.html">std::path::Path</a>&gt; <span class="kw">for </span><a href="#118-377">Variant</a> {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html">From</a>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/path/struct.Path.html">std::path::Path</a>&gt; <span class="kw">for </span><a href="#118-377">Variant</a> {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>from(p: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/path/struct.Path.html">std::path::Path</a>) -&gt; <span class="self">Self </span>{
         <a href="#1857">p</a>.<a href="#1583">to_variant</a>()
@@ -5062,7 +5062,7 @@
 }
 
 <span class="kw">impl </span><a href="#1598-1602">StaticVariantType</a> <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/std/ffi/os_str/struct.OsString.html">std::ffi::OsString</a> {
-    <span class="kw">fn </span>static_variant_type() -&gt; Cow&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#490-492">VariantTy</a>&gt; {
+    <span class="kw">fn </span>static_variant_type() -&gt; <a href="https://doc.rust-lang.org/nightly/alloc/borrow/enum.Cow.html">Cow</a>&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#490-492">VariantTy</a>&gt; {
         <a href="#1601">std::ffi::OsStr::static_variant_type</a>()
     }
 }
@@ -5073,7 +5073,7 @@
     }
 }
 
-<span class="kw">impl </span>From&lt;<a href="https://doc.rust-lang.org/nightly/std/ffi/os_str/struct.OsString.html">std::ffi::OsString</a>&gt; <span class="kw">for </span><a href="#118-377">Variant</a> {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html">From</a>&lt;<a href="https://doc.rust-lang.org/nightly/std/ffi/os_str/struct.OsString.html">std::ffi::OsString</a>&gt; <span class="kw">for </span><a href="#118-377">Variant</a> {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>from(s: <a href="https://doc.rust-lang.org/nightly/std/ffi/os_str/struct.OsString.html">std::ffi::OsString</a>) -&gt; <span class="self">Self </span>{
         <a href="#1876">s</a>.<a href="#1583">to_variant</a>()
@@ -5090,7 +5090,7 @@
 }
 
 <span class="kw">impl </span><a href="#1598-1602">StaticVariantType</a> <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/std/ffi/os_str/struct.OsStr.html">std::ffi::OsStr</a> {
-    <span class="kw">fn </span>static_variant_type() -&gt; Cow&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#490-492">VariantTy</a>&gt; {
+    <span class="kw">fn </span>static_variant_type() -&gt; <a href="https://doc.rust-lang.org/nightly/alloc/borrow/enum.Cow.html">Cow</a>&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#490-492">VariantTy</a>&gt; {
         &lt;<span class="kw-2">&amp;</span>[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]&gt;::static_variant_type()
     }
 }
@@ -5102,7 +5102,7 @@
     }
 }
 
-<span class="kw">impl </span>From&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/ffi/os_str/struct.OsStr.html">std::ffi::OsStr</a>&gt; <span class="kw">for </span><a href="#118-377">Variant</a> {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html">From</a>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/ffi/os_str/struct.OsStr.html">std::ffi::OsStr</a>&gt; <span class="kw">for </span><a href="#118-377">Variant</a> {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>from(s: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/ffi/os_str/struct.OsStr.html">std::ffi::OsStr</a>) -&gt; <span class="self">Self </span>{
         <a href="#1905">s</a>.<a href="#1583">to_variant</a>()
@@ -5110,7 +5110,7 @@
 }
 
 <span class="kw">impl</span>&lt;T: <a href="#1598-1602">StaticVariantType</a>&gt; <a href="#1598-1602">StaticVariantType</a> <span class="kw">for </span><span class="prelude-ty">Option</span>&lt;T&gt; {
-    <span class="kw">fn </span>static_variant_type() -&gt; Cow&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#490-492">VariantTy</a>&gt; {
+    <span class="kw">fn </span>static_variant_type() -&gt; <a href="https://doc.rust-lang.org/nightly/alloc/borrow/enum.Cow.html">Cow</a>&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#490-492">VariantTy</a>&gt; {
         <a href="https://doc.rust-lang.org/nightly/alloc/borrow/enum.Cow.html#variant.Owned">Cow::Owned</a>(<a href="variant_type.rs.html#268-270">VariantType::new_maybe</a>(<span class="kw-2">&amp;</span><a href="#1601">T::static_variant_type</a>()))
     }
 }
@@ -5121,7 +5121,7 @@
     }
 }
 
-<span class="kw">impl</span>&lt;T: <a href="#1598-1602">StaticVariantType</a> + Into&lt;<a href="#118-377">Variant</a>&gt;&gt; From&lt;<span class="prelude-ty">Option</span>&lt;T&gt;&gt; <span class="kw">for </span><a href="#118-377">Variant</a> {
+<span class="kw">impl</span>&lt;T: <a href="#1598-1602">StaticVariantType</a> + <a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html">Into</a>&lt;<a href="#118-377">Variant</a>&gt;&gt; <a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html">From</a>&lt;<span class="prelude-ty">Option</span>&lt;T&gt;&gt; <span class="kw">for </span><a href="#118-377">Variant</a> {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>from(v: <span class="prelude-ty">Option</span>&lt;T&gt;) -&gt; <span class="self">Self </span>{
         Variant::from_maybe::&lt;T&gt;(<a href="#1924">v</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|v| <a href="#1925">v</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>()).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_ref">as_ref</a>())
@@ -5148,7 +5148,7 @@
 }
 
 <span class="kw">impl</span>&lt;T: <a href="#1598-1602">StaticVariantType</a>&gt; <a href="#1598-1602">StaticVariantType</a> <span class="kw">for </span>[T] {
-    <span class="kw">fn </span>static_variant_type() -&gt; Cow&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#490-492">VariantTy</a>&gt; {
+    <span class="kw">fn </span>static_variant_type() -&gt; <a href="https://doc.rust-lang.org/nightly/alloc/borrow/enum.Cow.html">Cow</a>&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#490-492">VariantTy</a>&gt; {
         <a href="#1601">T::static_variant_type</a>().<a href="variant_type.rs.html#888-902">as_array</a>()
     }
 }
@@ -5176,14 +5176,14 @@
     }
 }
 
-<span class="kw">impl</span>&lt;T: <a href="#1598-1602">StaticVariantType</a> + <a href="#1580-1584">ToVariant</a>&gt; From&lt;<span class="kw-2">&amp;</span>[T]&gt; <span class="kw">for </span><a href="#118-377">Variant</a> {
+<span class="kw">impl</span>&lt;T: <a href="#1598-1602">StaticVariantType</a> + <a href="#1580-1584">ToVariant</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html">From</a>&lt;<span class="kw-2">&amp;</span>[T]&gt; <span class="kw">for </span><a href="#118-377">Variant</a> {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>from(s: <span class="kw-2">&amp;</span>[T]) -&gt; <span class="self">Self </span>{
         <a href="#1979">s</a>.<a href="#1583">to_variant</a>()
     }
 }
 
-<span class="kw">impl</span>&lt;T: <a href="#1588-1594">FromVariant</a>&gt; <a href="#1588-1594">FromVariant</a> <span class="kw">for </span>Vec&lt;T&gt; {
+<span class="kw">impl</span>&lt;T: <a href="#1588-1594">FromVariant</a>&gt; <a href="#1588-1594">FromVariant</a> <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html">Vec</a>&lt;T&gt; {
     <span class="kw">fn </span>from_variant(variant: <span class="kw-2">&amp;</span><a href="#118-377">Variant</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt; {
         <span class="kw">if </span>!variant.is_container() {
             <span class="kw">return </span><span class="prelude-val">None</span>;
@@ -5202,14 +5202,14 @@
     }
 }
 
-<span class="kw">impl</span>&lt;T: <a href="#1598-1602">StaticVariantType</a> + <a href="#1580-1584">ToVariant</a>&gt; <a href="#1580-1584">ToVariant</a> <span class="kw">for </span>Vec&lt;T&gt; {
+<span class="kw">impl</span>&lt;T: <a href="#1598-1602">StaticVariantType</a> + <a href="#1580-1584">ToVariant</a>&gt; <a href="#1580-1584">ToVariant</a> <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html">Vec</a>&lt;T&gt; {
     <span class="kw">fn </span>to_variant(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="#118-377">Variant</a> {
         <a class="self" href="#2004">self</a>.<a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.as_slice">as_slice</a>().<a href="#1583">to_variant</a>()
     }
 }
 
-<span class="kw">impl</span>&lt;T: <a href="#1598-1602">StaticVariantType</a> + Into&lt;<a href="#118-377">Variant</a>&gt;&gt; From&lt;Vec&lt;T&gt;&gt; <span class="kw">for </span><a href="#118-377">Variant</a> {
-    <span class="kw">fn </span>from(v: Vec&lt;T&gt;) -&gt; <span class="self">Self </span>{
+<span class="kw">impl</span>&lt;T: <a href="#1598-1602">StaticVariantType</a> + <a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html">Into</a>&lt;<a href="#118-377">Variant</a>&gt;&gt; <a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html">From</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html">Vec</a>&lt;T&gt;&gt; <span class="kw">for </span><a href="#118-377">Variant</a> {
+    <span class="kw">fn </span>from(v: <a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html">Vec</a>&lt;T&gt;) -&gt; <span class="self">Self </span>{
         <span class="kw">unsafe </span>{
             <span class="kw">if </span>v.is_empty() {
                 <span class="kw">return </span><a href="translate.rs.html#1625-1627">from_glib_none</a>(<a href="../../glib_sys/fn.g_variant_new_array.html">ffi::g_variant_new_array</a>(
@@ -5231,13 +5231,13 @@
     }
 }
 
-<span class="kw">impl</span>&lt;T: <a href="#1598-1602">StaticVariantType</a>&gt; <a href="#1598-1602">StaticVariantType</a> <span class="kw">for </span>Vec&lt;T&gt; {
-    <span class="kw">fn </span>static_variant_type() -&gt; Cow&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#490-492">VariantTy</a>&gt; {
+<span class="kw">impl</span>&lt;T: <a href="#1598-1602">StaticVariantType</a>&gt; <a href="#1598-1602">StaticVariantType</a> <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html">Vec</a>&lt;T&gt; {
+    <span class="kw">fn </span>static_variant_type() -&gt; <a href="https://doc.rust-lang.org/nightly/alloc/borrow/enum.Cow.html">Cow</a>&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#490-492">VariantTy</a>&gt; {
         &lt;[T]&gt;::static_variant_type()
     }
 }
 
-<span class="kw">impl</span>&lt;K, V, H&gt; <a href="#1588-1594">FromVariant</a> <span class="kw">for </span>HashMap&lt;K, V, H&gt;
+<span class="kw">impl</span>&lt;K, V, H&gt; <a href="#1588-1594">FromVariant</a> <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/std/collections/hash/map/struct.HashMap.html">HashMap</a>&lt;K, V, H&gt;
 <span class="kw">where
     </span>K: <a href="#1588-1594">FromVariant</a> + <a href="https://doc.rust-lang.org/nightly/core/cmp/trait.Eq.html">Eq</a> + <a href="https://doc.rust-lang.org/nightly/core/hash/trait.Hash.html">Hash</a>,
     V: <a href="#1588-1594">FromVariant</a>,
@@ -5268,7 +5268,7 @@
     }
 }
 
-<span class="kw">impl</span>&lt;K, V&gt; <a href="#1588-1594">FromVariant</a> <span class="kw">for </span>BTreeMap&lt;K, V&gt;
+<span class="kw">impl</span>&lt;K, V&gt; <a href="#1588-1594">FromVariant</a> <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/alloc/collections/btree/map/struct.BTreeMap.html">BTreeMap</a>&lt;K, V&gt;
 <span class="kw">where
     </span>K: <a href="#1588-1594">FromVariant</a> + <a href="https://doc.rust-lang.org/nightly/core/cmp/trait.Eq.html">Eq</a> + <a href="https://doc.rust-lang.org/nightly/core/cmp/trait.Ord.html">Ord</a>,
     V: <a href="#1588-1594">FromVariant</a>,
@@ -5298,7 +5298,7 @@
     }
 }
 
-<span class="kw">impl</span>&lt;K, V&gt; <a href="#1580-1584">ToVariant</a> <span class="kw">for </span>HashMap&lt;K, V&gt;
+<span class="kw">impl</span>&lt;K, V&gt; <a href="#1580-1584">ToVariant</a> <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/std/collections/hash/map/struct.HashMap.html">HashMap</a>&lt;K, V&gt;
 <span class="kw">where
     </span>K: <a href="#1598-1602">StaticVariantType</a> + <a href="#1580-1584">ToVariant</a> + <a href="https://doc.rust-lang.org/nightly/core/cmp/trait.Eq.html">Eq</a> + <a href="https://doc.rust-lang.org/nightly/core/hash/trait.Hash.html">Hash</a>,
     V: <a href="#1598-1602">StaticVariantType</a> + <a href="#1580-1584">ToVariant</a>,
@@ -5307,7 +5307,7 @@
         <span class="kw">unsafe </span>{
             <span class="kw">if </span><span class="self">self</span>.is_empty() {
                 <span class="kw">return </span><a href="translate.rs.html#1625-1627">from_glib_none</a>(<a href="../../glib_sys/fn.g_variant_new_array.html">ffi::g_variant_new_array</a>(
-                    DictEntry::&lt;K, V&gt;::static_variant_type().<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+                    <a href="#2225-2228">DictEntry</a>::&lt;K, V&gt;::static_variant_type().<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
                     <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null.html">ptr::null</a>(),
                     <span class="number">0</span>,
                 ));
@@ -5325,16 +5325,16 @@
     }
 }
 
-<span class="kw">impl</span>&lt;K, V&gt; From&lt;HashMap&lt;K, V&gt;&gt; <span class="kw">for </span><a href="#118-377">Variant</a>
+<span class="kw">impl</span>&lt;K, V&gt; <a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html">From</a>&lt;<a href="https://doc.rust-lang.org/nightly/std/collections/hash/map/struct.HashMap.html">HashMap</a>&lt;K, V&gt;&gt; <span class="kw">for </span><a href="#118-377">Variant</a>
 <span class="kw">where
-    </span>K: <a href="#1598-1602">StaticVariantType</a> + Into&lt;<a href="#118-377">Variant</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/cmp/trait.Eq.html">Eq</a> + <a href="https://doc.rust-lang.org/nightly/core/hash/trait.Hash.html">Hash</a>,
-    V: <a href="#1598-1602">StaticVariantType</a> + Into&lt;<a href="#118-377">Variant</a>&gt;,
+    </span>K: <a href="#1598-1602">StaticVariantType</a> + <a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html">Into</a>&lt;<a href="#118-377">Variant</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/cmp/trait.Eq.html">Eq</a> + <a href="https://doc.rust-lang.org/nightly/core/hash/trait.Hash.html">Hash</a>,
+    V: <a href="#1598-1602">StaticVariantType</a> + <a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html">Into</a>&lt;<a href="#118-377">Variant</a>&gt;,
 {
-    <span class="kw">fn </span>from(m: HashMap&lt;K, V&gt;) -&gt; <span class="self">Self </span>{
+    <span class="kw">fn </span>from(m: <a href="https://doc.rust-lang.org/nightly/std/collections/hash/map/struct.HashMap.html">HashMap</a>&lt;K, V&gt;) -&gt; <span class="self">Self </span>{
         <span class="kw">unsafe </span>{
             <span class="kw">if </span>m.is_empty() {
                 <span class="kw">return </span><a href="translate.rs.html#1625-1627">from_glib_none</a>(<a href="../../glib_sys/fn.g_variant_new_array.html">ffi::g_variant_new_array</a>(
-                    DictEntry::&lt;K, V&gt;::static_variant_type().<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+                    <a href="#2225-2228">DictEntry</a>::&lt;K, V&gt;::static_variant_type().<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
                     <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null.html">ptr::null</a>(),
                     <span class="number">0</span>,
                 ));
@@ -5352,7 +5352,7 @@
     }
 }
 
-<span class="kw">impl</span>&lt;K, V&gt; <a href="#1580-1584">ToVariant</a> <span class="kw">for </span>BTreeMap&lt;K, V&gt;
+<span class="kw">impl</span>&lt;K, V&gt; <a href="#1580-1584">ToVariant</a> <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/alloc/collections/btree/map/struct.BTreeMap.html">BTreeMap</a>&lt;K, V&gt;
 <span class="kw">where
     </span>K: <a href="#1598-1602">StaticVariantType</a> + <a href="#1580-1584">ToVariant</a> + <a href="https://doc.rust-lang.org/nightly/core/cmp/trait.Eq.html">Eq</a> + <a href="https://doc.rust-lang.org/nightly/core/hash/trait.Hash.html">Hash</a>,
     V: <a href="#1598-1602">StaticVariantType</a> + <a href="#1580-1584">ToVariant</a>,
@@ -5361,7 +5361,7 @@
         <span class="kw">unsafe </span>{
             <span class="kw">if </span><span class="self">self</span>.is_empty() {
                 <span class="kw">return </span><a href="translate.rs.html#1625-1627">from_glib_none</a>(<a href="../../glib_sys/fn.g_variant_new_array.html">ffi::g_variant_new_array</a>(
-                    DictEntry::&lt;K, V&gt;::static_variant_type().<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+                    <a href="#2225-2228">DictEntry</a>::&lt;K, V&gt;::static_variant_type().<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
                     <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null.html">ptr::null</a>(),
                     <span class="number">0</span>,
                 ));
@@ -5379,16 +5379,16 @@
     }
 }
 
-<span class="kw">impl</span>&lt;K, V&gt; From&lt;BTreeMap&lt;K, V&gt;&gt; <span class="kw">for </span><a href="#118-377">Variant</a>
+<span class="kw">impl</span>&lt;K, V&gt; <a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html">From</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/collections/btree/map/struct.BTreeMap.html">BTreeMap</a>&lt;K, V&gt;&gt; <span class="kw">for </span><a href="#118-377">Variant</a>
 <span class="kw">where
-    </span>K: <a href="#1598-1602">StaticVariantType</a> + Into&lt;<a href="#118-377">Variant</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/cmp/trait.Eq.html">Eq</a> + <a href="https://doc.rust-lang.org/nightly/core/hash/trait.Hash.html">Hash</a>,
-    V: <a href="#1598-1602">StaticVariantType</a> + Into&lt;<a href="#118-377">Variant</a>&gt;,
+    </span>K: <a href="#1598-1602">StaticVariantType</a> + <a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html">Into</a>&lt;<a href="#118-377">Variant</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/cmp/trait.Eq.html">Eq</a> + <a href="https://doc.rust-lang.org/nightly/core/hash/trait.Hash.html">Hash</a>,
+    V: <a href="#1598-1602">StaticVariantType</a> + <a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html">Into</a>&lt;<a href="#118-377">Variant</a>&gt;,
 {
-    <span class="kw">fn </span>from(m: BTreeMap&lt;K, V&gt;) -&gt; <span class="self">Self </span>{
+    <span class="kw">fn </span>from(m: <a href="https://doc.rust-lang.org/nightly/alloc/collections/btree/map/struct.BTreeMap.html">BTreeMap</a>&lt;K, V&gt;) -&gt; <span class="self">Self </span>{
         <span class="kw">unsafe </span>{
             <span class="kw">if </span>m.is_empty() {
                 <span class="kw">return </span><a href="translate.rs.html#1625-1627">from_glib_none</a>(<a href="../../glib_sys/fn.g_variant_new_array.html">ffi::g_variant_new_array</a>(
-                    DictEntry::&lt;K, V&gt;::static_variant_type().<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+                    <a href="#2225-2228">DictEntry</a>::&lt;K, V&gt;::static_variant_type().<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
                     <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null.html">ptr::null</a>(),
                     <span class="number">0</span>,
                 ));
@@ -5429,7 +5429,7 @@
     value: V,
 }
 
-<span class="kw">impl</span>&lt;K, V&gt; DictEntry&lt;K, V&gt;
+<span class="kw">impl</span>&lt;K, V&gt; <a href="#2225-2228">DictEntry</a>&lt;K, V&gt;
 <span class="kw">where
     </span>K: <a href="#1598-1602">StaticVariantType</a>,
     V: <a href="#1598-1602">StaticVariantType</a>,
@@ -5447,7 +5447,7 @@
     }
 }
 
-<span class="kw">impl</span>&lt;K, V&gt; <a href="#1588-1594">FromVariant</a> <span class="kw">for </span>DictEntry&lt;K, V&gt;
+<span class="kw">impl</span>&lt;K, V&gt; <a href="#1588-1594">FromVariant</a> <span class="kw">for </span><a href="#2225-2228">DictEntry</a>&lt;K, V&gt;
 <span class="kw">where
     </span>K: <a href="#1588-1594">FromVariant</a>,
     V: <a href="#1588-1594">FromVariant</a>,
@@ -5470,7 +5470,7 @@
     }
 }
 
-<span class="kw">impl</span>&lt;K, V&gt; <a href="#1580-1584">ToVariant</a> <span class="kw">for </span>DictEntry&lt;K, V&gt;
+<span class="kw">impl</span>&lt;K, V&gt; <a href="#1580-1584">ToVariant</a> <span class="kw">for </span><a href="#2225-2228">DictEntry</a>&lt;K, V&gt;
 <span class="kw">where
     </span>K: <a href="#1598-1602">StaticVariantType</a> + <a href="#1580-1584">ToVariant</a>,
     V: <a href="#1598-1602">StaticVariantType</a> + <a href="#1580-1584">ToVariant</a>,
@@ -5480,12 +5480,12 @@
     }
 }
 
-<span class="kw">impl</span>&lt;K, V&gt; From&lt;DictEntry&lt;K, V&gt;&gt; <span class="kw">for </span><a href="#118-377">Variant</a>
+<span class="kw">impl</span>&lt;K, V&gt; <a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html">From</a>&lt;<a href="#2225-2228">DictEntry</a>&lt;K, V&gt;&gt; <span class="kw">for </span><a href="#118-377">Variant</a>
 <span class="kw">where
-    </span>K: <a href="#1598-1602">StaticVariantType</a> + Into&lt;<a href="#118-377">Variant</a>&gt;,
-    V: <a href="#1598-1602">StaticVariantType</a> + Into&lt;<a href="#118-377">Variant</a>&gt;,
+    </span>K: <a href="#1598-1602">StaticVariantType</a> + <a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html">Into</a>&lt;<a href="#118-377">Variant</a>&gt;,
+    V: <a href="#1598-1602">StaticVariantType</a> + <a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html">Into</a>&lt;<a href="#118-377">Variant</a>&gt;,
 {
-    <span class="kw">fn </span>from(e: DictEntry&lt;K, V&gt;) -&gt; <span class="self">Self </span>{
+    <span class="kw">fn </span>from(e: <a href="#2225-2228">DictEntry</a>&lt;K, V&gt;) -&gt; <span class="self">Self </span>{
         <a href="#844-851">Variant::from_dict_entry</a>(<span class="kw-2">&amp;</span><a href="#2286">e</a>.key.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>(), <span class="kw-2">&amp;</span><a href="#2286">e</a>.value.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>())
     }
 }
@@ -5502,8 +5502,8 @@
     }
 }
 
-<span class="kw">impl</span>&lt;K: <a href="#1598-1602">StaticVariantType</a>, V: <a href="#1598-1602">StaticVariantType</a>&gt; <a href="#1598-1602">StaticVariantType</a> <span class="kw">for </span>DictEntry&lt;K, V&gt; {
-    <span class="kw">fn </span>static_variant_type() -&gt; Cow&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#490-492">VariantTy</a>&gt; {
+<span class="kw">impl</span>&lt;K: <a href="#1598-1602">StaticVariantType</a>, V: <a href="#1598-1602">StaticVariantType</a>&gt; <a href="#1598-1602">StaticVariantType</a> <span class="kw">for </span><a href="#2225-2228">DictEntry</a>&lt;K, V&gt; {
+    <span class="kw">fn </span>static_variant_type() -&gt; <a href="https://doc.rust-lang.org/nightly/alloc/borrow/enum.Cow.html">Cow</a>&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#490-492">VariantTy</a>&gt; {
         <a href="https://doc.rust-lang.org/nightly/alloc/borrow/enum.Cow.html#variant.Owned">Cow::Owned</a>(<a href="variant_type.rs.html#225-232">VariantType::new_dict_entry</a>(
             <span class="kw-2">&amp;</span><a href="#1601">K::static_variant_type</a>(),
             <span class="kw-2">&amp;</span><a href="#1601">V::static_variant_type</a>(),
@@ -5511,7 +5511,7 @@
     }
 }
 
-<span class="kw">fn </span>static_variant_mapping&lt;K, V&gt;() -&gt; Cow&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#490-492">VariantTy</a>&gt;
+<span class="kw">fn </span>static_variant_mapping&lt;K, V&gt;() -&gt; <a href="https://doc.rust-lang.org/nightly/alloc/borrow/enum.Cow.html">Cow</a>&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#490-492">VariantTy</a>&gt;
 <span class="kw">where
     </span>K: <a href="#1598-1602">StaticVariantType</a>,
     V: <a href="#1598-1602">StaticVariantType</a>,
@@ -5531,24 +5531,24 @@
     <a href="https://doc.rust-lang.org/nightly/alloc/borrow/enum.Cow.html#variant.Owned">Cow::Owned</a>(<a href="variant_type.rs.html#305-318">VariantType::from_string</a>(<a href="#2326">builder</a>.<a href="gstring_builder.rs.html#152-157">into_string</a>()).<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>())
 }
 
-<span class="kw">impl</span>&lt;K, V, H&gt; <a href="#1598-1602">StaticVariantType</a> <span class="kw">for </span>HashMap&lt;K, V, H&gt;
+<span class="kw">impl</span>&lt;K, V, H&gt; <a href="#1598-1602">StaticVariantType</a> <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/std/collections/hash/map/struct.HashMap.html">HashMap</a>&lt;K, V, H&gt;
 <span class="kw">where
     </span>K: <a href="#1598-1602">StaticVariantType</a>,
     V: <a href="#1598-1602">StaticVariantType</a>,
     H: <a href="https://doc.rust-lang.org/nightly/core/hash/trait.BuildHasher.html">BuildHasher</a> + <a href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html">Default</a>,
 {
-    <span class="kw">fn </span>static_variant_type() -&gt; Cow&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#490-492">VariantTy</a>&gt; {
-        static_variant_mapping::&lt;K, V&gt;()
+    <span class="kw">fn </span>static_variant_type() -&gt; <a href="https://doc.rust-lang.org/nightly/alloc/borrow/enum.Cow.html">Cow</a>&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#490-492">VariantTy</a>&gt; {
+        <a href="#2312-2330">static_variant_mapping</a>::&lt;K, V&gt;()
     }
 }
 
-<span class="kw">impl</span>&lt;K, V&gt; <a href="#1598-1602">StaticVariantType</a> <span class="kw">for </span>BTreeMap&lt;K, V&gt;
+<span class="kw">impl</span>&lt;K, V&gt; <a href="#1598-1602">StaticVariantType</a> <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/alloc/collections/btree/map/struct.BTreeMap.html">BTreeMap</a>&lt;K, V&gt;
 <span class="kw">where
     </span>K: <a href="#1598-1602">StaticVariantType</a>,
     V: <a href="#1598-1602">StaticVariantType</a>,
 {
-    <span class="kw">fn </span>static_variant_type() -&gt; Cow&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#490-492">VariantTy</a>&gt; {
-        static_variant_mapping::&lt;K, V&gt;()
+    <span class="kw">fn </span>static_variant_type() -&gt; <a href="https://doc.rust-lang.org/nightly/alloc/borrow/enum.Cow.html">Cow</a>&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#490-492">VariantTy</a>&gt; {
+        <a href="#2312-2330">static_variant_mapping</a>::&lt;K, V&gt;()
     }
 }
 
@@ -5650,8 +5650,8 @@
     <span class="number">16 </span>=&gt; (<span class="number">0 </span>T0 <span class="number">1 </span>T1 <span class="number">2 </span>T2 <span class="number">3 </span>T3 <span class="number">4 </span>T4 <span class="number">5 </span>T5 <span class="number">6 </span>T6 <span class="number">7 </span>T7 <span class="number">8 </span>T8 <span class="number">9 </span>T9 <span class="number">10 </span>T10 <span class="number">11 </span>T11 <span class="number">12 </span>T12 <span class="number">13 </span>T13 <span class="number">14 </span>T14 <span class="number">15 </span>T15)
 }
 
-<span class="kw">impl</span>&lt;T: Into&lt;<a href="#118-377">Variant</a>&gt; + <a href="#1598-1602">StaticVariantType</a>&gt; FromIterator&lt;T&gt; <span class="kw">for </span><a href="#118-377">Variant</a> {
-    <span class="kw">fn </span>from_iter&lt;I: IntoIterator&lt;Item = T&gt;&gt;(iter: I) -&gt; <span class="self">Self </span>{
+<span class="kw">impl</span>&lt;T: <a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html">Into</a>&lt;<a href="#118-377">Variant</a>&gt; + <a href="#1598-1602">StaticVariantType</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.FromIterator.html">FromIterator</a>&lt;T&gt; <span class="kw">for </span><a href="#118-377">Variant</a> {
+    <span class="kw">fn </span>from_iter&lt;I: <a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.IntoIterator.html">IntoIterator</a>&lt;Item = T&gt;&gt;(iter: I) -&gt; <span class="self">Self </span>{
         Variant::array_from_iter::&lt;T&gt;(<a href="#2452">iter</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.IntoIterator.html#tymethod.into_iter">into_iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|v| <a href="#2453">v</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>()))
     }
 }
@@ -5676,24 +5676,24 @@
 ///
 /// This wrapper type can hold for example `Vec&lt;u8&gt;`, `Box&lt;[u8]&gt;` and similar types.
 </span><span class="attr">#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
-</span><span class="kw">pub struct </span><a href="../../glib/variant/struct.FixedSizeVariantArray.html">FixedSizeVariantArray</a>&lt;A, T&gt;(A, std::marker::PhantomData&lt;T&gt;)
+</span><span class="kw">pub struct </span><a href="../../glib/variant/struct.FixedSizeVariantArray.html">FixedSizeVariantArray</a>&lt;A, T&gt;(A, <a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">std::marker::PhantomData</a>&lt;T&gt;)
 <span class="kw">where
-    </span>A: AsRef&lt;[T]&gt;,
+    </span>A: <a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">AsRef</a>&lt;[T]&gt;,
     T: <a href="#2458">FixedSizeVariantType</a>;
 
-<span class="kw">impl</span>&lt;A: AsRef&lt;[T]&gt;, T: <a href="#2458">FixedSizeVariantType</a>&gt; From&lt;A&gt; <span class="kw">for </span>FixedSizeVariantArray&lt;A, T&gt; {
+<span class="kw">impl</span>&lt;A: <a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">AsRef</a>&lt;[T]&gt;, T: <a href="#2458">FixedSizeVariantType</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html">From</a>&lt;A&gt; <span class="kw">for </span><a href="#2477-2480">FixedSizeVariantArray</a>&lt;A, T&gt; {
     <span class="kw">fn </span>from(array: A) -&gt; <span class="self">Self </span>{
         <a href="#2477-2480">FixedSizeVariantArray</a>(<a href="#2483">array</a>, <a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">std::marker::PhantomData</a>)
     }
 }
 
-<span class="kw">impl</span>&lt;A: AsRef&lt;[T]&gt;, T: <a href="#2458">FixedSizeVariantType</a>&gt; FixedSizeVariantArray&lt;A, T&gt; {
+<span class="kw">impl</span>&lt;A: <a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">AsRef</a>&lt;[T]&gt;, T: <a href="#2458">FixedSizeVariantType</a>&gt; <a href="#2477-2480">FixedSizeVariantArray</a>&lt;A, T&gt; {
     <span class="kw">pub fn </span>into_inner(<span class="self">self</span>) -&gt; A {
         <a class="self" href="#2489">self</a>.<span class="number">0
     </span>}
 }
 
-<span class="kw">impl</span>&lt;A: AsRef&lt;[T]&gt;, T: <a href="#2458">FixedSizeVariantType</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/ops/deref/trait.Deref.html">std::ops::Deref</a> <span class="kw">for </span>FixedSizeVariantArray&lt;A, T&gt; {
+<span class="kw">impl</span>&lt;A: <a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">AsRef</a>&lt;[T]&gt;, T: <a href="#2458">FixedSizeVariantType</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/ops/deref/trait.Deref.html">std::ops::Deref</a> <span class="kw">for </span><a href="#2477-2480">FixedSizeVariantArray</a>&lt;A, T&gt; {
     <span class="kw">type </span>Target = A;
 
     <span class="attr">#[inline]
@@ -5702,36 +5702,36 @@
     </span>}
 }
 
-<span class="kw">impl</span>&lt;A: AsRef&lt;[T]&gt;, T: <a href="#2458">FixedSizeVariantType</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/ops/deref/trait.DerefMut.html">std::ops::DerefMut</a> <span class="kw">for </span>FixedSizeVariantArray&lt;A, T&gt; {
+<span class="kw">impl</span>&lt;A: <a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">AsRef</a>&lt;[T]&gt;, T: <a href="#2458">FixedSizeVariantType</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/ops/deref/trait.DerefMut.html">std::ops::DerefMut</a> <span class="kw">for </span><a href="#2477-2480">FixedSizeVariantArray</a>&lt;A, T&gt; {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>deref_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self</span>::Target {
         <span class="kw-2">&amp;mut </span><a class="self" href="#2505">self</a>.<span class="number">0
     </span>}
 }
 
-<span class="kw">impl</span>&lt;A: AsRef&lt;[T]&gt;, T: <a href="#2458">FixedSizeVariantType</a>&gt; AsRef&lt;A&gt; <span class="kw">for </span>FixedSizeVariantArray&lt;A, T&gt; {
+<span class="kw">impl</span>&lt;A: <a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">AsRef</a>&lt;[T]&gt;, T: <a href="#2458">FixedSizeVariantType</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">AsRef</a>&lt;A&gt; <span class="kw">for </span><a href="#2477-2480">FixedSizeVariantArray</a>&lt;A, T&gt; {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>as_ref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>A {
         <span class="kw-2">&amp;</span><a class="self" href="#2512">self</a>.<span class="number">0
     </span>}
 }
 
-<span class="kw">impl</span>&lt;A: AsRef&lt;[T]&gt;, T: <a href="#2458">FixedSizeVariantType</a>&gt; AsMut&lt;A&gt; <span class="kw">for </span>FixedSizeVariantArray&lt;A, T&gt; {
+<span class="kw">impl</span>&lt;A: <a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">AsRef</a>&lt;[T]&gt;, T: <a href="#2458">FixedSizeVariantType</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsMut.html">AsMut</a>&lt;A&gt; <span class="kw">for </span><a href="#2477-2480">FixedSizeVariantArray</a>&lt;A, T&gt; {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>as_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span>A {
         <span class="kw-2">&amp;mut </span><a class="self" href="#2519">self</a>.<span class="number">0
     </span>}
 }
 
-<span class="kw">impl</span>&lt;A: AsRef&lt;[T]&gt;, T: <a href="#2458">FixedSizeVariantType</a>&gt; AsRef&lt;[T]&gt; <span class="kw">for </span>FixedSizeVariantArray&lt;A, T&gt; {
+<span class="kw">impl</span>&lt;A: <a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">AsRef</a>&lt;[T]&gt;, T: <a href="#2458">FixedSizeVariantType</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">AsRef</a>&lt;[T]&gt; <span class="kw">for </span><a href="#2477-2480">FixedSizeVariantArray</a>&lt;A, T&gt; {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>as_ref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[T] {
         <a class="self" href="#2526">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>()
     }
 }
 
-<span class="kw">impl</span>&lt;A: AsRef&lt;[T]&gt; + AsMut&lt;[T]&gt;, T: <a href="#2458">FixedSizeVariantType</a>&gt; AsMut&lt;[T]&gt;
-    <span class="kw">for </span>FixedSizeVariantArray&lt;A, T&gt;
+<span class="kw">impl</span>&lt;A: <a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">AsRef</a>&lt;[T]&gt; + <a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsMut.html">AsMut</a>&lt;[T]&gt;, T: <a href="#2458">FixedSizeVariantType</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsMut.html">AsMut</a>&lt;[T]&gt;
+    <span class="kw">for </span><a href="#2477-2480">FixedSizeVariantArray</a>&lt;A, T&gt;
 {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>as_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span>[T] {
@@ -5739,14 +5739,14 @@
     }
 }
 
-<span class="kw">impl</span>&lt;A: AsRef&lt;[T]&gt;, T: <a href="#2458">FixedSizeVariantType</a>&gt; <a href="#1598-1602">StaticVariantType</a> <span class="kw">for </span>FixedSizeVariantArray&lt;A, T&gt; {
-    <span class="kw">fn </span>static_variant_type() -&gt; Cow&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#490-492">VariantTy</a>&gt; {
+<span class="kw">impl</span>&lt;A: <a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">AsRef</a>&lt;[T]&gt;, T: <a href="#2458">FixedSizeVariantType</a>&gt; <a href="#1598-1602">StaticVariantType</a> <span class="kw">for </span><a href="#2477-2480">FixedSizeVariantArray</a>&lt;A, T&gt; {
+    <span class="kw">fn </span>static_variant_type() -&gt; <a href="https://doc.rust-lang.org/nightly/alloc/borrow/enum.Cow.html">Cow</a>&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#490-492">VariantTy</a>&gt; {
         &lt;[T]&gt;::static_variant_type()
     }
 }
 
-<span class="kw">impl</span>&lt;A: AsRef&lt;[T]&gt; + <span class="kw">for</span>&lt;<span class="lifetime">'a</span>&gt; From&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>[T]&gt;, T: <a href="#2458">FixedSizeVariantType</a>&gt; <a href="#1588-1594">FromVariant</a>
-    <span class="kw">for </span>FixedSizeVariantArray&lt;A, T&gt;
+<span class="kw">impl</span>&lt;A: <a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">AsRef</a>&lt;[T]&gt; + <span class="kw">for</span>&lt;<span class="lifetime">'a</span>&gt; <a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html">From</a>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>[T]&gt;, T: <a href="#2458">FixedSizeVariantType</a>&gt; <a href="#1588-1594">FromVariant</a>
+    <span class="kw">for </span><a href="#2477-2480">FixedSizeVariantArray</a>&lt;A, T&gt;
 {
     <span class="kw">fn </span>from_variant(variant: <span class="kw-2">&amp;</span><a href="#118-377">Variant</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt; {
         <span class="prelude-val">Some</span>(<a href="#2477-2480">FixedSizeVariantArray</a>(
@@ -5756,15 +5756,15 @@
     }
 }
 
-<span class="kw">impl</span>&lt;A: AsRef&lt;[T]&gt;, T: <a href="#2458">FixedSizeVariantType</a>&gt; <a href="#1580-1584">ToVariant</a> <span class="kw">for </span>FixedSizeVariantArray&lt;A, T&gt; {
+<span class="kw">impl</span>&lt;A: <a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">AsRef</a>&lt;[T]&gt;, T: <a href="#2458">FixedSizeVariantType</a>&gt; <a href="#1580-1584">ToVariant</a> <span class="kw">for </span><a href="#2477-2480">FixedSizeVariantArray</a>&lt;A, T&gt; {
     <span class="kw">fn </span>to_variant(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="#118-377">Variant</a> {
         <a href="#811-822">Variant::array_from_fixed_array</a>(<a class="self" href="#2558">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>())
     }
 }
 
-<span class="kw">impl</span>&lt;A: AsRef&lt;[T]&gt;, T: <a href="#2458">FixedSizeVariantType</a>&gt; From&lt;FixedSizeVariantArray&lt;A, T&gt;&gt; <span class="kw">for </span><a href="#118-377">Variant</a> {
+<span class="kw">impl</span>&lt;A: <a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">AsRef</a>&lt;[T]&gt;, T: <a href="#2458">FixedSizeVariantType</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html">From</a>&lt;<a href="#2477-2480">FixedSizeVariantArray</a>&lt;A, T&gt;&gt; <span class="kw">for </span><a href="#118-377">Variant</a> {
     <span class="attr">#[doc(alias = <span class="string">"g_variant_new_from_data"</span>)]
-    </span><span class="kw">fn </span>from(a: FixedSizeVariantArray&lt;A, T&gt;) -&gt; <span class="self">Self </span>{
+    </span><span class="kw">fn </span>from(a: <a href="#2477-2480">FixedSizeVariantArray</a>&lt;A, T&gt;) -&gt; <span class="self">Self </span>{
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>data = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">Box::new</a>(<a href="#2565">a</a>.<span class="number">0</span>);
             <span class="kw">let </span>(data_ptr, len) = {
@@ -5772,7 +5772,7 @@
                 (<a href="#2569">data</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.as_ptr">as_ptr</a>(), <a href="https://doc.rust-lang.org/nightly/core/mem/fn.size_of_val.html">mem::size_of_val</a>(<a href="#2569">data</a>))
             };
 
-            <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>free_data&lt;A: AsRef&lt;[T]&gt;, T: <a href="#2458">FixedSizeVariantType</a>&gt;(
+            <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>free_data&lt;A: <a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">AsRef</a>&lt;[T]&gt;, T: <a href="#2458">FixedSizeVariantType</a>&gt;(
                 ptr: <a href="../../glib_sys/type.gpointer.html">ffi::gpointer</a>,
             ) {
                 <span class="kw">let _ </span>= <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.from_raw">Box::from_raw</a>(<a href="#2574">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span>A);
@@ -5783,7 +5783,7 @@
                 <a href="#2568">data_ptr</a> <span class="kw">as </span><a href="../../glib_sys/type.gconstpointer.html">ffi::gconstpointer</a>,
                 <a href="#2568">len</a>,
                 <span class="bool-val">false</span>.<a href="translate.rs.html#334">into_glib</a>(),
-                <span class="prelude-val">Some</span>(free_data::&lt;A, T&gt;),
+                <span class="prelude-val">Some</span>(<a href="#2573-2577">free_data</a>::&lt;A, T&gt;),
                 <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.into_raw">Box::into_raw</a>(<a href="#2567">data</a>) <span class="kw">as </span><a href="../../glib_sys/type.gpointer.html">ffi::gpointer</a>,
             ))
         }
@@ -5794,20 +5794,20 @@
 </span><span class="attr">#[derive(Debug, Copy, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
 </span><span class="kw">pub struct </span><a href="../../glib/variant/struct.Handle.html">Handle</a>(<span class="kw">pub </span><a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>);
 
-<span class="kw">impl </span>From&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>&gt; <span class="kw">for </span><a href="#2593">Handle</a> {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html">From</a>&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>&gt; <span class="kw">for </span><a href="#2593">Handle</a> {
     <span class="kw">fn </span>from(v: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>) -&gt; <span class="self">Self </span>{
         <a href="#2593">Handle</a>(<a href="#2596">v</a>)
     }
 }
 
-<span class="kw">impl </span>From&lt;<a href="#2593">Handle</a>&gt; <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a> {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html">From</a>&lt;<a href="#2593">Handle</a>&gt; <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a> {
     <span class="kw">fn </span>from(v: <a href="#2593">Handle</a>) -&gt; <span class="self">Self </span>{
         <a href="#2602">v</a>.<span class="number">0
     </span>}
 }
 
 <span class="kw">impl </span><a href="#1598-1602">StaticVariantType</a> <span class="kw">for </span><a href="#2593">Handle</a> {
-    <span class="kw">fn </span>static_variant_type() -&gt; Cow&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#490-492">VariantTy</a>&gt; {
+    <span class="kw">fn </span>static_variant_type() -&gt; <a href="https://doc.rust-lang.org/nightly/alloc/borrow/enum.Cow.html">Cow</a>&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#490-492">VariantTy</a>&gt; {
         <a href="https://doc.rust-lang.org/nightly/alloc/borrow/enum.Cow.html#variant.Borrowed">Cow::Borrowed</a>(VariantTy::HANDLE)
     }
 }
@@ -5818,7 +5818,7 @@
     }
 }
 
-<span class="kw">impl </span>From&lt;<a href="#2593">Handle</a>&gt; <span class="kw">for </span><a href="#118-377">Variant</a> {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html">From</a>&lt;<a href="#2593">Handle</a>&gt; <span class="kw">for </span><a href="#118-377">Variant</a> {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>from(h: <a href="#2593">Handle</a>) -&gt; <span class="self">Self </span>{
         <a href="#2621">h</a>.<a href="#1583">to_variant</a>()
@@ -5858,7 +5858,7 @@
     </span>}
 }
 
-<span class="kw">impl </span>TryFrom&lt;<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>&gt; <span class="kw">for </span><a href="#2642">ObjectPath</a> {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/convert/trait.TryFrom.html">TryFrom</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>&gt; <span class="kw">for </span><a href="#2642">ObjectPath</a> {
     <span class="kw">type </span>Error = <a href="error.rs.html#243-251"><span class="kw">crate</span>::BoolError</a>;
 
     <span class="kw">fn </span>try_from(v: <a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, <span class="self">Self</span>::Error&gt; {
@@ -5870,7 +5870,7 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; TryFrom&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt; <span class="kw">for </span><a href="#2642">ObjectPath</a> {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; <a href="https://doc.rust-lang.org/nightly/core/convert/trait.TryFrom.html">TryFrom</a>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt; <span class="kw">for </span><a href="#2642">ObjectPath</a> {
     <span class="kw">type </span>Error = <a href="error.rs.html#243-251"><span class="kw">crate</span>::BoolError</a>;
 
     <span class="kw">fn </span>try_from(v: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, <span class="self">Self</span>::Error&gt; {
@@ -5878,14 +5878,14 @@
     }
 }
 
-<span class="kw">impl </span>From&lt;<a href="#2642">ObjectPath</a>&gt; <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a> {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html">From</a>&lt;<a href="#2642">ObjectPath</a>&gt; <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a> {
     <span class="kw">fn </span>from(v: <a href="#2642">ObjectPath</a>) -&gt; <span class="self">Self </span>{
         <a href="#2680">v</a>.<span class="number">0
     </span>}
 }
 
 <span class="kw">impl </span><a href="#1598-1602">StaticVariantType</a> <span class="kw">for </span><a href="#2642">ObjectPath</a> {
-    <span class="kw">fn </span>static_variant_type() -&gt; Cow&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#490-492">VariantTy</a>&gt; {
+    <span class="kw">fn </span>static_variant_type() -&gt; <a href="https://doc.rust-lang.org/nightly/alloc/borrow/enum.Cow.html">Cow</a>&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#490-492">VariantTy</a>&gt; {
         <a href="https://doc.rust-lang.org/nightly/alloc/borrow/enum.Cow.html#variant.Borrowed">Cow::Borrowed</a>(VariantTy::OBJECT_PATH)
     }
 }
@@ -5896,7 +5896,7 @@
     }
 }
 
-<span class="kw">impl </span>From&lt;<a href="#2642">ObjectPath</a>&gt; <span class="kw">for </span><a href="#118-377">Variant</a> {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html">From</a>&lt;<a href="#2642">ObjectPath</a>&gt; <span class="kw">for </span><a href="#118-377">Variant</a> {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>from(p: <a href="#2642">ObjectPath</a>) -&gt; <span class="self">Self </span>{
         <span class="kw">let </span><span class="kw-2">mut </span>s = <a href="#2699">p</a>.<span class="number">0</span>;
@@ -5939,7 +5939,7 @@
     </span>}
 }
 
-<span class="kw">impl </span>TryFrom&lt;<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>&gt; <span class="kw">for </span><a href="#2723">Signature</a> {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/convert/trait.TryFrom.html">TryFrom</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>&gt; <span class="kw">for </span><a href="#2723">Signature</a> {
     <span class="kw">type </span>Error = <a href="error.rs.html#243-251"><span class="kw">crate</span>::BoolError</a>;
 
     <span class="kw">fn </span>try_from(v: <a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, <span class="self">Self</span>::Error&gt; {
@@ -5951,7 +5951,7 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; TryFrom&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt; <span class="kw">for </span><a href="#2723">Signature</a> {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; <a href="https://doc.rust-lang.org/nightly/core/convert/trait.TryFrom.html">TryFrom</a>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt; <span class="kw">for </span><a href="#2723">Signature</a> {
     <span class="kw">type </span>Error = <a href="error.rs.html#243-251"><span class="kw">crate</span>::BoolError</a>;
 
     <span class="kw">fn </span>try_from(v: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, <span class="self">Self</span>::Error&gt; {
@@ -5959,14 +5959,14 @@
     }
 }
 
-<span class="kw">impl </span>From&lt;<a href="#2723">Signature</a>&gt; <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a> {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html">From</a>&lt;<a href="#2723">Signature</a>&gt; <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a> {
     <span class="kw">fn </span>from(v: <a href="#2723">Signature</a>) -&gt; <span class="self">Self </span>{
         <a href="#2761">v</a>.<span class="number">0
     </span>}
 }
 
 <span class="kw">impl </span><a href="#1598-1602">StaticVariantType</a> <span class="kw">for </span><a href="#2723">Signature</a> {
-    <span class="kw">fn </span>static_variant_type() -&gt; Cow&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#490-492">VariantTy</a>&gt; {
+    <span class="kw">fn </span>static_variant_type() -&gt; <a href="https://doc.rust-lang.org/nightly/alloc/borrow/enum.Cow.html">Cow</a>&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#490-492">VariantTy</a>&gt; {
         <a href="https://doc.rust-lang.org/nightly/alloc/borrow/enum.Cow.html#variant.Borrowed">Cow::Borrowed</a>(VariantTy::SIGNATURE)
     }
 }
@@ -5977,7 +5977,7 @@
     }
 }
 
-<span class="kw">impl </span>From&lt;<a href="#2723">Signature</a>&gt; <span class="kw">for </span><a href="#118-377">Variant</a> {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html">From</a>&lt;<a href="#2723">Signature</a>&gt; <span class="kw">for </span><a href="#118-377">Variant</a> {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>from(s: <a href="#2723">Signature</a>) -&gt; <span class="self">Self </span>{
         <span class="kw">let </span><span class="kw-2">mut </span>s = <a href="#2780">s</a>.<span class="number">0</span>;
