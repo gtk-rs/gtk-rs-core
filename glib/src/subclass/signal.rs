@@ -16,9 +16,7 @@ pub struct SignalBuilder {
     flags: SignalFlags,
     param_types: Vec<SignalType>,
     return_type: SignalType,
-    class_handler: Option<
-        Box<dyn Fn(&SignalClassHandlerToken, &[Value]) -> Option<Value> + Send + Sync + 'static>,
-    >,
+    class_handler: Option<Box<dyn Fn(&[Value]) -> Option<Value> + Send + Sync + 'static>>,
     accumulator: Option<
         Box<dyn Fn(&SignalInvocationHint, &mut Value, &Value) -> bool + Send + Sync + 'static>,
     >,
@@ -352,11 +350,7 @@ impl IntoGlib for SignalType {
 #[allow(clippy::type_complexity)]
 enum SignalRegistration {
     Unregistered {
-        class_handler: Option<
-            Box<
-                dyn Fn(&SignalClassHandlerToken, &[Value]) -> Option<Value> + Send + Sync + 'static,
-            >,
-        >,
+        class_handler: Option<Box<dyn Fn(&[Value]) -> Option<Value> + Send + Sync + 'static>>,
         accumulator: Option<
             Box<dyn Fn(&SignalInvocationHint, &mut Value, &Value) -> bool + Send + Sync + 'static>,
         >,
@@ -472,9 +466,7 @@ impl SignalBuilder {
 
     // rustdoc-stripper-ignore-next
     /// Class handler for this signal.
-    pub fn class_handler<
-        F: Fn(&SignalClassHandlerToken, &[Value]) -> Option<Value> + Send + Sync + 'static,
-    >(
+    pub fn class_handler<F: Fn(&[Value]) -> Option<Value> + Send + Sync + 'static>(
         mut self,
         func: F,
     ) -> Self {
@@ -610,9 +602,8 @@ impl Signal {
         let return_type = self.return_type;
 
         let class_handler = class_handler.map(|class_handler| {
-            Closure::new(move |values| unsafe {
-                let instance = gobject_ffi::g_value_get_object(values[0].to_glib_none().0);
-                let res = class_handler(&SignalClassHandlerToken(instance as *mut _, return_type.into(), values.as_ptr()), values);
+            Closure::new(move |values| {
+                let res = class_handler(values);
 
                 if return_type == Type::UNIT {
                     if let Some(ref v) = res {
