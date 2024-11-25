@@ -1155,7 +1155,7 @@
     sync::{<a href="https://doc.rust-lang.org/nightly/alloc/sync/struct.Arc.html">Arc</a>, <a href="https://doc.rust-lang.org/nightly/std/sync/mutex/struct.Mutex.html">Mutex</a>, <a href="https://doc.rust-lang.org/nightly/std/sync/once_lock/struct.OnceLock.html">OnceLock</a>},
 };
 
-<span class="kw">use crate</span>::{<a href="../../glib_sys/index.html">ffi</a>, <a href="lib.rs.html#163">translate</a>::<span class="kw-2">*</span>, <a href="gstring.rs.html#24">GStr</a>, <a href="gstring.rs.html#1028">GString</a>, <a href="auto/enums.rs.html#650-659">LogWriterOutput</a>};
+<span class="kw">use crate</span>::{<a href="../../glib_sys/index.html">ffi</a>, <a href="lib.rs.html#163">translate</a>::<span class="kw-2">*</span>, <a href="gstring.rs.html#24">GStr</a>, <a href="gstring.rs.html#1028">GString</a>, <a href="auto/enums.rs.html#508-515">LogWriterOutput</a>};
 
 <span class="attr">#[derive(Debug)]
 </span><span class="kw">pub struct </span><a href="../../glib/struct.LogHandlerId.html">LogHandlerId</a>(<a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>);
@@ -1584,13 +1584,13 @@
     }
 }
 
-<span class="kw">type </span>WriterCallback = <span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<a href="#34-47">LogLevel</a>, <span class="kw-2">&amp;</span>[<a href="#363">LogField</a>&lt;<span class="lifetime">'_</span>&gt;]) -&gt; <a href="auto/enums.rs.html#650-659">LogWriterOutput</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>;
+<span class="kw">type </span>WriterCallback = <span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<a href="#34-47">LogLevel</a>, <span class="kw-2">&amp;</span>[<a href="#363">LogField</a>&lt;<span class="lifetime">'_</span>&gt;]) -&gt; <a href="auto/enums.rs.html#508-515">LogWriterOutput</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>;
 
 <span class="kw">static </span>WRITER_FUNC: <a href="https://doc.rust-lang.org/nightly/std/sync/once_lock/struct.OnceLock.html">OnceLock</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box</a>&lt;<a href="#439">WriterCallback</a>&gt;&gt; = <a href="https://doc.rust-lang.org/nightly/std/sync/once_lock/struct.OnceLock.html#method.new">OnceLock::new</a>();
 
 <span class="attr">#[doc(alias = <span class="string">"g_log_set_writer_func"</span>)]
 </span><span class="kw">pub fn </span><a href="../../glib/fn.log_set_writer_func.html">log_set_writer_func</a>&lt;
-    P: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<a href="#34-47">LogLevel</a>, <span class="kw-2">&amp;</span>[<a href="#363">LogField</a>&lt;<span class="lifetime">'_</span>&gt;]) -&gt; <a href="auto/enums.rs.html#650-659">LogWriterOutput</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>,
+    P: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<a href="#34-47">LogLevel</a>, <span class="kw-2">&amp;</span>[<a href="#363">LogField</a>&lt;<span class="lifetime">'_</span>&gt;]) -&gt; <a href="auto/enums.rs.html#508-515">LogWriterOutput</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>,
 &gt;(
     writer_func: P,
 ) {
@@ -2106,7 +2106,7 @@
 
 <span class="attr">#[doc(alias = <span class="string">"g_log_variant"</span>)]
 #[inline]
-</span><span class="kw">pub fn </span><a href="../../glib/fn.log_variant.html">log_variant</a>(log_domain: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;, log_level: <a href="#34-47">LogLevel</a>, fields: <span class="kw-2">&amp;</span><a href="variant.rs.html#118-377"><span class="kw">crate</span>::Variant</a>) {
+</span><span class="kw">pub fn </span><a href="../../glib/fn.log_variant.html">log_variant</a>(log_domain: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;, log_level: <a href="#34-47">LogLevel</a>, fields: <span class="kw-2">&amp;</span><a href="variant.rs.html#118-624"><span class="kw">crate</span>::Variant</a>) {
     <span class="kw">unsafe </span>{
         <a href="../../glib_sys/fn.g_log_variant.html">ffi::g_log_variant</a>(
             <a href="#961">log_domain</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
@@ -2151,7 +2151,7 @@
 
 <span class="attr">#[doc(alias = <span class="string">"g_log_writer_journald"</span>)]
 #[inline]
-</span><span class="kw">pub fn </span><a href="../../glib/fn.log_writer_journald.html">log_writer_journald</a>(log_level: <a href="#34-47">LogLevel</a>, fields: <span class="kw-2">&amp;</span>[<a href="#363">LogField</a>&lt;<span class="lifetime">'_</span>&gt;]) -&gt; <a href="auto/enums.rs.html#650-659">LogWriterOutput</a> {
+</span><span class="kw">pub fn </span><a href="../../glib/fn.log_writer_journald.html">log_writer_journald</a>(log_level: <a href="#34-47">LogLevel</a>, fields: <span class="kw-2">&amp;</span>[<a href="#363">LogField</a>&lt;<span class="lifetime">'_</span>&gt;]) -&gt; <a href="auto/enums.rs.html#508-515">LogWriterOutput</a> {
     <span class="kw">unsafe </span>{
         <a href="translate.rs.html#1417-1419">from_glib</a>(<a href="../../glib_sys/fn.g_log_writer_journald.html">ffi::g_log_writer_journald</a>(
             <a href="#1006">log_level</a>.<a href="translate.rs.html#334">into_glib</a>(),
@@ -2167,7 +2167,7 @@
 </span><span class="kw">pub fn </span><a href="../../glib/fn.log_writer_standard_streams.html">log_writer_standard_streams</a>(
     log_level: <a href="#34-47">LogLevel</a>,
     fields: <span class="kw-2">&amp;</span>[<a href="#363">LogField</a>&lt;<span class="lifetime">'_</span>&gt;],
-) -&gt; <a href="auto/enums.rs.html#650-659">LogWriterOutput</a> {
+) -&gt; <a href="auto/enums.rs.html#508-515">LogWriterOutput</a> {
     <span class="kw">unsafe </span>{
         <a href="translate.rs.html#1417-1419">from_glib</a>(<a href="../../glib_sys/fn.g_log_writer_standard_streams.html">ffi::g_log_writer_standard_streams</a>(
             <a href="#1020">log_level</a>.<a href="translate.rs.html#334">into_glib</a>(),
@@ -2180,7 +2180,7 @@
 
 <span class="attr">#[doc(alias = <span class="string">"g_log_writer_default"</span>)]
 #[inline]
-</span><span class="kw">pub fn </span><a href="../../glib/fn.log_writer_default.html">log_writer_default</a>(log_level: <a href="#34-47">LogLevel</a>, fields: <span class="kw-2">&amp;</span>[<a href="#363">LogField</a>&lt;<span class="lifetime">'_</span>&gt;]) -&gt; <a href="auto/enums.rs.html#650-659">LogWriterOutput</a> {
+</span><span class="kw">pub fn </span><a href="../../glib/fn.log_writer_default.html">log_writer_default</a>(log_level: <a href="#34-47">LogLevel</a>, fields: <span class="kw-2">&amp;</span>[<a href="#363">LogField</a>&lt;<span class="lifetime">'_</span>&gt;]) -&gt; <a href="auto/enums.rs.html#508-515">LogWriterOutput</a> {
     <span class="kw">unsafe </span>{
         <a href="translate.rs.html#1417-1419">from_glib</a>(<a href="../../glib_sys/fn.g_log_writer_default.html">ffi::g_log_writer_default</a>(
             <a href="#1035">log_level</a>.<a href="translate.rs.html#334">into_glib</a>(),
