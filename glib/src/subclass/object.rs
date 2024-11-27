@@ -422,6 +422,19 @@ mod test {
                             .build(),
                         super::Signal::builder("create-string")
                             .return_type::<String>()
+                            .accumulator(|_hint, acc, val| {
+                                // join all strings from signal handlers by newline
+                                let mut acc = acc
+                                    .get_owned::<Option<String>>()
+                                    .unwrap()
+                                    .map(|mut acc| {
+                                        acc.push('\n');
+                                        acc
+                                    })
+                                    .unwrap_or_default();
+                                acc.push_str(val.get::<&str>().unwrap());
+                                std::ops::ControlFlow::Continue(acc.to_value())
+                            })
                             .build(),
                         super::Signal::builder("create-child-object")
                             .return_type::<super::ChildObject>()
@@ -891,13 +904,17 @@ mod test {
         let obj = Object::with_type(SimpleObject::static_type());
 
         obj.connect("create-string", false, move |_args| {
-            Some("return value".to_value())
+            Some("return value 1".to_value())
+        });
+
+        obj.connect("create-string", false, move |_args| {
+            Some("return value 2".to_value())
         });
 
         let signal_id = imp::SimpleObject::signals()[2].signal_id();
 
         let value = obj.emit::<String>(signal_id, &[]);
-        assert_eq!(value, "return value");
+        assert_eq!(value, "return value 1\nreturn value 2");
     }
 
     #[test]
