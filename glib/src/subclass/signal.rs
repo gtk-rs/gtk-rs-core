@@ -1,6 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use std::{fmt, num::NonZeroU32, ptr, sync::Mutex};
+use std::{fmt, num::NonZeroU32, ops::ControlFlow, ptr, sync::Mutex};
 
 use crate::{
     ffi, gobject_ffi, prelude::*, translate::*, utils::is_canonical_pspec_name, Closure,
@@ -18,7 +18,12 @@ pub struct SignalBuilder {
     return_type: SignalType,
     class_handler: Option<Box<dyn Fn(&[Value]) -> Option<Value> + Send + Sync + 'static>>,
     accumulator: Option<
-        Box<dyn Fn(&SignalInvocationHint, &mut Value, &Value) -> bool + Send + Sync + 'static>,
+        Box<
+            dyn Fn(&SignalInvocationHint, Value, &Value) -> ControlFlow<Value, Value>
+                + Send
+                + Sync
+                + 'static,
+        >,
     >,
 }
 
@@ -352,7 +357,12 @@ enum SignalRegistration {
     Unregistered {
         class_handler: Option<Box<dyn Fn(&[Value]) -> Option<Value> + Send + Sync + 'static>>,
         accumulator: Option<
-            Box<dyn Fn(&SignalInvocationHint, &mut Value, &Value) -> bool + Send + Sync + 'static>,
+            Box<
+                dyn Fn(&SignalInvocationHint, Value, &Value) -> ControlFlow<Value, Value>
+                    + Send
+                    + Sync
+                    + 'static,
+            >,
         >,
     },
     Registered {
@@ -480,7 +490,10 @@ impl SignalBuilder {
     /// This is called if multiple signal handlers are connected to the signal for accumulating the
     /// return values into a single value.
     pub fn accumulator<
-        F: Fn(&SignalInvocationHint, &mut Value, &Value) -> bool + Send + Sync + 'static,
+        F: Fn(&SignalInvocationHint, Value, &Value) -> ControlFlow<Value, Value>
+            + Send
+            + Sync
+            + 'static,
     >(
         mut self,
         func: F,
@@ -633,7 +646,7 @@ impl Signal {
             let accumulator = &*(data as *const (
                 SignalType,
                 Box<
-                    dyn Fn(&SignalInvocationHint, &mut Value, &Value) -> bool
+                    dyn Fn(&SignalInvocationHint, Value, &Value) -> ControlFlow<Value, Value>
                         + Send
                         + Sync
                         + 'static,
@@ -651,8 +664,23 @@ impl Signal {
                 handler_return.type_()
             );
 
-            let res = (accumulator.1)(&SignalInvocationHint(*ihint), return_accu, handler_return)
-                .into_glib();
+            let control_flow = (accumulator.1)(
+                &SignalInvocationHint(*ihint),
+                std::mem::replace(return_accu, Value::uninitialized()),
+                handler_return,
+            );
+
+            let res = match control_flow {
+                ControlFlow::Continue(val) => {
+                    *return_accu = val;
+                    true.into_glib()
+                }
+
+                ControlFlow::Break(val) => {
+                    *return_accu = val;
+                    false.into_glib()
+                }
+            };
 
             assert!(
                 return_accu.type_().is_a(return_type.into()),
