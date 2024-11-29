@@ -2,6 +2,7 @@
 
 #![cfg_attr(docsrs, feature(doc_cfg))]
 #![allow(clippy::missing_safety_doc)]
+#![allow(clippy::manual_c_str_literals)]
 #![allow(renamed_and_removed_lints)]
 // Override docs references to point to locally generated docs
 // rustdoc-stripper-ignore-next
