@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/translate.rs`."><title>translate.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-42caa33d.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.85.0-nightly (28fc2ba71 2024-11-24)" data-channel="nightly" data-search-js="search-92e6798f.js" data-settings-js="settings-0f613d39.js" ><script src="../../static.files/storage-59e33391.js"></script><script defer src="../../static.files/src-script-56102188.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/translate.rs`."><title>translate.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-42caa33d.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.85.0-nightly (a2545fd6f 2024-11-28)" data-channel="nightly" data-search-js="search-92e6798f.js" data-settings-js="settings-0f613d39.js" ><script src="../../static.files/storage-59e33391.js"></script><script defer src="../../static.files/src-script-56102188.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -3406,7 +3406,7 @@
     <span class="kw">type </span>GlibType = <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>;
 }
 
-<span class="kw">impl </span><a href="#331-335">IntoGlib</a> <span class="kw">for </span><span class="prelude-ty">Option</span>&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.char.html">char</a>&gt; {
+<span class="kw">impl </span><a href="#331-335">IntoGlib</a> <span class="kw">for </span><a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.char.html">char</a>&gt; {
     <span class="kw">type </span>GlibType = <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>;
 
     <span class="attr">#[inline]
@@ -3428,7 +3428,7 @@
     }
 }
 
-<span class="kw">impl</span>&lt;O, E, G&gt; <a href="#331-335">IntoGlib</a> <span class="kw">for </span><span class="prelude-ty">Result</span>&lt;O, E&gt;
+<span class="kw">impl</span>&lt;O, E, G&gt; <a href="#331-335">IntoGlib</a> <span class="kw">for </span><a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;O, E&gt;
 <span class="kw">where
     </span>G: <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Copy.html">Copy</a>,
     O: <a href="#331-335">IntoGlib</a>&lt;GlibType = G&gt; + <a href="#1437-1440">TryFromGlib</a>&lt;G, Error = E&gt;,
@@ -3451,7 +3451,7 @@
     <span class="kw">const </span>GLIB_NONE: <span class="self">Self</span>::GlibType;
 }
 
-<span class="kw">impl</span>&lt;T: <a href="#404-406">OptionIntoGlib</a>&gt; <a href="#331-335">IntoGlib</a> <span class="kw">for </span><span class="prelude-ty">Option</span>&lt;T&gt; {
+<span class="kw">impl</span>&lt;T: <a href="#404-406">OptionIntoGlib</a>&gt; <a href="#331-335">IntoGlib</a> <span class="kw">for </span><a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;T&gt; {
     <span class="kw">type </span>GlibType = T::GlibType;
 
     <span class="attr">#[inline]
@@ -3517,11 +3517,11 @@
     </span><span class="kw">fn </span>to_glib_none_mut(<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span><span class="self">self</span>) -&gt; <a href="#264-266">StashMut</a>&lt;<span class="lifetime">'a</span>, P, <span class="self">Self</span>&gt;;
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, P: <a href="#157-161">Ptr</a>, T: <a href="#434-459">ToGlibPtr</a>&lt;<span class="lifetime">'a</span>, P&gt;&gt; <a href="#434-459">ToGlibPtr</a>&lt;<span class="lifetime">'a</span>, P&gt; <span class="kw">for </span><span class="prelude-ty">Option</span>&lt;T&gt; {
-    <span class="kw">type </span>Storage = <span class="prelude-ty">Option</span>&lt;&lt;T <span class="kw">as </span>ToGlibPtr&lt;<span class="lifetime">'a</span>, P&gt;&gt;::Storage&gt;;
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, P: <a href="#157-161">Ptr</a>, T: <a href="#434-459">ToGlibPtr</a>&lt;<span class="lifetime">'a</span>, P&gt;&gt; <a href="#434-459">ToGlibPtr</a>&lt;<span class="lifetime">'a</span>, P&gt; <span class="kw">for </span><a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;T&gt; {
+    <span class="kw">type </span>Storage = <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;&lt;T <span class="kw">as </span>ToGlibPtr&lt;<span class="lifetime">'a</span>, P&gt;&gt;::Storage&gt;;
 
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>to_glib_none(<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="self">self</span>) -&gt; <a href="#259-262">Stash</a>&lt;<span class="lifetime">'a</span>, P, <span class="prelude-ty">Option</span>&lt;T&gt;&gt; {
+    </span><span class="kw">fn </span>to_glib_none(<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="self">self</span>) -&gt; <a href="#259-262">Stash</a>&lt;<span class="lifetime">'a</span>, P, <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;T&gt;&gt; {
         <a class="self" href="#478">self</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_ref">as_ref</a>()
             .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map_or">map_or</a>(<a href="#259-262">Stash</a>(<a href="#159">Ptr::from</a>::&lt;()&gt;(<a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>()), <span class="prelude-val">None</span>), |s| {
                 <span class="kw">let </span>s = <a href="#480">s</a>.<a href="#441">to_glib_none</a>();
@@ -3536,11 +3536,11 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, <span class="lifetime">'opt</span>: <span class="lifetime">'a</span>, P: <a href="#157-161">Ptr</a>, T: <a href="#463-472">ToGlibPtrMut</a>&lt;<span class="lifetime">'a</span>, P&gt;&gt; <a href="#463-472">ToGlibPtrMut</a>&lt;<span class="lifetime">'a</span>, P&gt; <span class="kw">for </span><span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'opt </span><span class="kw-2">mut </span>T&gt; {
-    <span class="kw">type </span>Storage = <span class="prelude-ty">Option</span>&lt;&lt;T <span class="kw">as </span>ToGlibPtrMut&lt;<span class="lifetime">'a</span>, P&gt;&gt;::Storage&gt;;
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, <span class="lifetime">'opt</span>: <span class="lifetime">'a</span>, P: <a href="#157-161">Ptr</a>, T: <a href="#463-472">ToGlibPtrMut</a>&lt;<span class="lifetime">'a</span>, P&gt;&gt; <a href="#463-472">ToGlibPtrMut</a>&lt;<span class="lifetime">'a</span>, P&gt; <span class="kw">for </span><a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'opt </span><span class="kw-2">mut </span>T&gt; {
+    <span class="kw">type </span>Storage = <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;&lt;T <span class="kw">as </span>ToGlibPtrMut&lt;<span class="lifetime">'a</span>, P&gt;&gt;::Storage&gt;;
 
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>to_glib_none_mut(<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span><span class="self">self</span>) -&gt; <a href="#264-266">StashMut</a>&lt;<span class="lifetime">'a</span>, P, <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'opt </span><span class="kw-2">mut </span>T&gt;&gt; {
+    </span><span class="kw">fn </span>to_glib_none_mut(<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span><span class="self">self</span>) -&gt; <a href="#264-266">StashMut</a>&lt;<span class="lifetime">'a</span>, P, <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'opt </span><span class="kw-2">mut </span>T&gt;&gt; {
         <a class="self" href="#497">self</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_mut">as_mut</a>()
             .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map_or">map_or</a>(<a href="#264-266">StashMut</a>(<a href="#159">Ptr::from</a>::&lt;()&gt;(<a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>()), <span class="prelude-val">None</span>), |s| {
                 <span class="kw">let </span>s = <a href="#499">s</a>.<a href="#471">to_glib_none_mut</a>();
@@ -3765,7 +3765,7 @@
     </span><span class="kw">unsafe fn </span>into_glib_ptr(<span class="self">self</span>) -&gt; P;
 }
 
-<span class="kw">impl</span>&lt;P: <a href="#157-161">Ptr</a>, T: <a href="#715-720">IntoGlibPtr</a>&lt;P&gt;&gt; <a href="#715-720">IntoGlibPtr</a>&lt;P&gt; <span class="kw">for </span><span class="prelude-ty">Option</span>&lt;T&gt; {
+<span class="kw">impl</span>&lt;P: <a href="#157-161">Ptr</a>, T: <a href="#715-720">IntoGlibPtr</a>&lt;P&gt;&gt; <a href="#715-720">IntoGlibPtr</a>&lt;P&gt; <span class="kw">for </span><a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;T&gt; {
     <span class="attr">#[inline]
     </span><span class="kw">unsafe fn </span>into_glib_ptr(<span class="self">self</span>) -&gt; P {
         <a class="self" href="#724">self</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map_or">map_or</a>(<a href="#159">Ptr::from</a>::&lt;()&gt;(<a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>()), |s| {
@@ -4139,7 +4139,7 @@
     </span>T: <a href="#424-426">GlibPtrDefault</a> + <a href="#434-459">ToGlibPtr</a>&lt;<span class="lifetime">'a</span>, &lt;T <span class="kw">as </span>GlibPtrDefault&gt;::GlibType&gt;,
 {
     <span class="kw">type </span>Storage = (
-        <span class="prelude-ty">Option</span>&lt;<a href="#1164">List</a>&gt;,
+        <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="#1164">List</a>&gt;,
         <a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html">Vec</a>&lt;<a href="#259-262">Stash</a>&lt;<span class="lifetime">'a</span>, &lt;T <span class="kw">as </span>GlibPtrDefault&gt;::GlibType, T&gt;&gt;,
     );
 
@@ -4185,7 +4185,7 @@
     </span>T: <a href="#424-426">GlibPtrDefault</a> + <a href="#434-459">ToGlibPtr</a>&lt;<span class="lifetime">'a</span>, &lt;T <span class="kw">as </span>GlibPtrDefault&gt;::GlibType&gt;,
 {
     <span class="kw">type </span>Storage = (
-        <span class="prelude-ty">Option</span>&lt;<a href="#1164">List</a>&gt;,
+        <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="#1164">List</a>&gt;,
         <a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html">Vec</a>&lt;<a href="#259-262">Stash</a>&lt;<span class="lifetime">'a</span>, &lt;T <span class="kw">as </span>GlibPtrDefault&gt;::GlibType, T&gt;&gt;,
     );
 
@@ -4221,7 +4221,7 @@
     </span>T: <a href="#424-426">GlibPtrDefault</a> + <a href="#434-459">ToGlibPtr</a>&lt;<span class="lifetime">'a</span>, &lt;T <span class="kw">as </span>GlibPtrDefault&gt;::GlibType&gt;,
 {
     <span class="kw">type </span>Storage = (
-        <span class="prelude-ty">Option</span>&lt;<a href="#1248">SList</a>&gt;,
+        <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="#1248">SList</a>&gt;,
         <a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html">Vec</a>&lt;<a href="#259-262">Stash</a>&lt;<span class="lifetime">'a</span>, &lt;T <span class="kw">as </span>GlibPtrDefault&gt;::GlibType, <span class="kw-2">&amp;</span><span class="lifetime">'a </span>T&gt;&gt;,
     );
 
@@ -4268,7 +4268,7 @@
     </span>T: <a href="#424-426">GlibPtrDefault</a> + <a href="#434-459">ToGlibPtr</a>&lt;<span class="lifetime">'a</span>, &lt;T <span class="kw">as </span>GlibPtrDefault&gt;::GlibType&gt;,
 {
     <span class="kw">type </span>Storage = (
-        <span class="prelude-ty">Option</span>&lt;<a href="#1248">SList</a>&gt;,
+        <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="#1248">SList</a>&gt;,
         <a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html">Vec</a>&lt;<a href="#259-262">Stash</a>&lt;<span class="lifetime">'a</span>, &lt;T <span class="kw">as </span>GlibPtrDefault&gt;::GlibType, <span class="kw-2">&amp;</span><span class="lifetime">'a </span>T&gt;&gt;,
     );
 
@@ -4377,7 +4377,7 @@
     </span>T: <a href="#424-426">GlibPtrDefault</a> + <a href="#434-459">ToGlibPtr</a>&lt;<span class="lifetime">'a</span>, &lt;T <span class="kw">as </span>GlibPtrDefault&gt;::GlibType&gt;,
 {
     <span class="kw">type </span>Storage = (
-        <span class="prelude-ty">Option</span>&lt;<a href="#1318">PtrArray</a>&gt;,
+        <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="#1318">PtrArray</a>&gt;,
         <a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html">Vec</a>&lt;<a href="#259-262">Stash</a>&lt;<span class="lifetime">'a</span>, &lt;T <span class="kw">as </span>GlibPtrDefault&gt;::GlibType, T&gt;&gt;,
     );
 
@@ -4429,7 +4429,7 @@
     </span>T: <a href="#424-426">GlibPtrDefault</a> + <a href="#434-459">ToGlibPtr</a>&lt;<span class="lifetime">'a</span>, &lt;T <span class="kw">as </span>GlibPtrDefault&gt;::GlibType&gt;,
 {
     <span class="kw">type </span>Storage = (
-        <span class="prelude-ty">Option</span>&lt;<a href="#1318">PtrArray</a>&gt;,
+        <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="#1318">PtrArray</a>&gt;,
         <a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html">Vec</a>&lt;<a href="#259-262">Stash</a>&lt;<span class="lifetime">'a</span>, &lt;T <span class="kw">as </span>GlibPtrDefault&gt;::GlibType, T&gt;&gt;,
     );
 
@@ -4482,7 +4482,7 @@
 </span><span class="doccomment">/// Translate from a Glib type which can result in an undefined and/or invalid value.
 </span><span class="kw">pub trait </span><a href="../../glib/translate/trait.TryFromGlib.html">TryFromGlib</a>&lt;G: <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Copy.html">Copy</a>&gt;: <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sized.html">Sized</a> {
     <span class="kw">type </span>Error;
-    <span class="kw">unsafe fn </span>try_from_glib(val: G) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, <span class="self">Self</span>::Error&gt;;
+    <span class="kw">unsafe fn </span>try_from_glib(val: G) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<span class="self">Self</span>, <span class="self">Self</span>::Error&gt;;
 }
 
 <span class="comment">// rustdoc-stripper-ignore-next
@@ -4490,7 +4490,7 @@
 </span><span class="attr">#[inline]
 </span><span class="kw">pub unsafe fn </span><a href="../../glib/translate/fn.try_from_glib.html">try_from_glib</a>&lt;G: <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Copy.html">Copy</a>, T: <a href="#1437-1440">TryFromGlib</a>&lt;G&gt;&gt;(
     val: G,
-) -&gt; <span class="prelude-ty">Result</span>&lt;T, &lt;T <span class="kw">as </span>TryFromGlib&lt;G&gt;&gt;::Error&gt; {
+) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;T, &lt;T <span class="kw">as </span>TryFromGlib&lt;G&gt;&gt;::Error&gt; {
     <a href="#1439">TryFromGlib::try_from_glib</a>(<a href="#1446">val</a>)
 }
 
@@ -4507,7 +4507,7 @@
 
 <span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/error/trait.Error.html">std::error::Error</a> <span class="kw">for </span><a href="#1454">GlibNoneError</a> {}
 
-<span class="kw">impl</span>&lt;G: <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Copy.html">Copy</a>, T: <a href="#1437-1440">TryFromGlib</a>&lt;G, Error = <a href="#1454">GlibNoneError</a>&gt;&gt; <a href="#1410-1412">FromGlib</a>&lt;G&gt; <span class="kw">for </span><span class="prelude-ty">Option</span>&lt;T&gt; {
+<span class="kw">impl</span>&lt;G: <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Copy.html">Copy</a>, T: <a href="#1437-1440">TryFromGlib</a>&lt;G, Error = <a href="#1454">GlibNoneError</a>&gt;&gt; <a href="#1410-1412">FromGlib</a>&lt;G&gt; <span class="kw">for </span><a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;T&gt; {
     <span class="attr">#[inline]
     </span><span class="kw">unsafe fn </span>from_glib(val: G) -&gt; <span class="self">Self </span>{
         <a href="#1439">T::try_from_glib</a>(<a href="#1466">val</a>).<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.ok">ok</a>()
@@ -4567,7 +4567,7 @@
 <span class="kw">impl</span>&lt;I: <a href="https://doc.rust-lang.org/nightly/core/error/trait.Error.html">Error</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/error/trait.Error.html">Error</a> <span class="kw">for </span><a href="#1474-1477">GlibNoneOrInvalidError</a>&lt;I&gt; {}
 
 <span class="kw">impl</span>&lt;G: <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Copy.html">Copy</a>, I: <a href="https://doc.rust-lang.org/nightly/core/error/trait.Error.html">Error</a>, T: <a href="#1437-1440">TryFromGlib</a>&lt;G, Error = <a href="#1474-1477">GlibNoneOrInvalidError</a>&lt;I&gt;&gt;&gt; <a href="#1410-1412">FromGlib</a>&lt;G&gt;
-    <span class="kw">for </span><span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;T&gt;, I&gt;
+    <span class="kw">for </span><a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;T&gt;, I&gt;
 {
     <span class="attr">#[inline]
     </span><span class="kw">unsafe fn </span>from_glib(val: G) -&gt; <span class="self">Self </span>{
@@ -4690,9 +4690,9 @@
     <a href="#1615-1617">FromGlibPtrBorrow::from_glib_borrow</a>(<a href="#1643">ptr</a>)
 }
 
-<span class="kw">impl</span>&lt;P: <a href="#157-161">Ptr</a>, T: <a href="#1553-1559">FromGlibPtrNone</a>&lt;P&gt;&gt; <a href="#1553-1559">FromGlibPtrNone</a>&lt;P&gt; <span class="kw">for </span><span class="prelude-ty">Option</span>&lt;T&gt; {
+<span class="kw">impl</span>&lt;P: <a href="#157-161">Ptr</a>, T: <a href="#1553-1559">FromGlibPtrNone</a>&lt;P&gt;&gt; <a href="#1553-1559">FromGlibPtrNone</a>&lt;P&gt; <span class="kw">for </span><a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;T&gt; {
     <span class="attr">#[inline]
-    </span><span class="kw">unsafe fn </span>from_glib_none(ptr: P) -&gt; <span class="prelude-ty">Option</span>&lt;T&gt; {
+    </span><span class="kw">unsafe fn </span>from_glib_none(ptr: P) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;T&gt; {
         <span class="kw">if </span>ptr.is_null() {
             <span class="prelude-val">None
         </span>} <span class="kw">else </span>{
@@ -4701,9 +4701,9 @@
     }
 }
 
-<span class="kw">impl</span>&lt;P: <a href="#157-161">Ptr</a>, T: <a href="#1610-1618">FromGlibPtrBorrow</a>&lt;P&gt;&gt; <a href="#1610-1618">FromGlibPtrBorrow</a>&lt;P&gt; <span class="kw">for </span><span class="prelude-ty">Option</span>&lt;T&gt; {
+<span class="kw">impl</span>&lt;P: <a href="#157-161">Ptr</a>, T: <a href="#1610-1618">FromGlibPtrBorrow</a>&lt;P&gt;&gt; <a href="#1610-1618">FromGlibPtrBorrow</a>&lt;P&gt; <span class="kw">for </span><a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;T&gt; {
     <span class="attr">#[inline]
-    </span><span class="kw">unsafe fn </span>from_glib_borrow(ptr: P) -&gt; <a href="#277">Borrowed</a>&lt;<span class="prelude-ty">Option</span>&lt;T&gt;&gt; {
+    </span><span class="kw">unsafe fn </span>from_glib_borrow(ptr: P) -&gt; <a href="#277">Borrowed</a>&lt;<a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;T&gt;&gt; {
         <span class="kw">if </span>ptr.is_null() {
             <a href="#283-285">Borrowed::new</a>(<span class="prelude-val">None</span>)
         } <span class="kw">else </span>{
@@ -4713,9 +4713,9 @@
     }
 }
 
-<span class="kw">impl</span>&lt;P: <a href="#157-161">Ptr</a>, T: <a href="#1577-1583">FromGlibPtrFull</a>&lt;P&gt;&gt; <a href="#1577-1583">FromGlibPtrFull</a>&lt;P&gt; <span class="kw">for </span><span class="prelude-ty">Option</span>&lt;T&gt; {
+<span class="kw">impl</span>&lt;P: <a href="#157-161">Ptr</a>, T: <a href="#1577-1583">FromGlibPtrFull</a>&lt;P&gt;&gt; <a href="#1577-1583">FromGlibPtrFull</a>&lt;P&gt; <span class="kw">for </span><a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;T&gt; {
     <span class="attr">#[inline]
-    </span><span class="kw">unsafe fn </span>from_glib_full(ptr: P) -&gt; <span class="prelude-ty">Option</span>&lt;T&gt; {
+    </span><span class="kw">unsafe fn </span>from_glib_full(ptr: P) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;T&gt; {
         <span class="kw">if </span>ptr.is_null() {
             <span class="prelude-val">None
         </span>} <span class="kw">else </span>{
