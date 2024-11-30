@@ -40,7 +40,7 @@ enum HelloMethod {
 impl DBusMethodCall for HelloMethod {
     fn parse_call(
         _obj_path: &str,
-        _interface: &str,
+        _interface: Option<&str>,
         method: &str,
         params: glib::Variant,
     ) -> Result<Self, glib::Error> {
@@ -65,7 +65,7 @@ fn on_startup(app: &gio::Application, tx: &Sender<gio::RegistrationId>) {
         .register_object("/com/github/gtk_rs/examples/HelloWorld", &example)
         .typed_method_call::<HelloMethod>()
         .invoke_and_return_future_local(|_, sender, call| {
-            println!("Method call from {sender}");
+            println!("Method call from {sender:?}");
             async {
                 match call {
                     HelloMethod::Hello(Hello { name }) => {
