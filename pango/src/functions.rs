@@ -5,7 +5,51 @@ use glib::translate::*;
 pub use crate::auto::functions::*;
 #[cfg(feature = "v1_44")]
 use crate::ShapeFlags;
-use crate::{ffi, Analysis, GlyphString, Item};
+use crate::{ffi, Analysis, AttrIterator, AttrList, Context, Direction, GlyphString, Item};
+
+#[doc(alias = "pango_itemize")]
+pub fn itemize<'a>(
+    context: &Context,
+    text: &str,
+    start_index: i32,
+    length: i32,
+    attrs: &AttrList,
+    cached_iter: impl Into<Option<&'a AttrIterator<'a>>>,
+) -> Vec<Item> {
+    unsafe {
+        FromGlibPtrContainer::from_glib_full(ffi::pango_itemize(
+            context.to_glib_none().0,
+            text.to_glib_none().0,
+            start_index,
+            length,
+            attrs.to_glib_none().0,
+            mut_override(cached_iter.into().to_glib_none().0),
+        ))
+    }
+}
+
+#[doc(alias = "pango_itemize_with_base_dir")]
+pub fn itemize_with_base_dir<'a>(
+    context: &Context,
+    base_dir: Direction,
+    text: &str,
+    start_index: i32,
+    length: i32,
+    attrs: &AttrList,
+    cached_iter: impl Into<Option<&'a AttrIterator<'a>>>,
+) -> Vec<Item> {
+    unsafe {
+        FromGlibPtrContainer::from_glib_full(ffi::pango_itemize_with_base_dir(
+            context.to_glib_none().0,
+            base_dir.into_glib(),
+            text.to_glib_none().0,
+            start_index,
+            length,
+            attrs.to_glib_none().0,
+            mut_override(cached_iter.into().to_glib_none().0),
+        ))
+    }
+}
 
 #[doc(alias = "pango_reorder_items")]
 pub fn reorder_items(logical_items: &glib::List<Item>) -> glib::List<Item> {
