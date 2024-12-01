@@ -28,12 +28,20 @@ pub trait OutputStreamExt: IsA<OutputStream> + 'static {
     }
 
     #[doc(alias = "g_output_stream_close")]
-    fn close(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<(), glib::Error> {
+    fn close<'a, P: IsA<Cancellable>>(
+        &self,
+        cancellable: impl Into<Option<&'a P>>,
+    ) -> Result<(), glib::Error> {
         unsafe {
             let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_output_stream_close(
                 self.as_ref().to_glib_none().0,
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                cancellable
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 &mut error,
             );
             debug_assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
@@ -46,11 +54,11 @@ pub trait OutputStreamExt: IsA<OutputStream> + 'static {
     }
 
     #[doc(alias = "g_output_stream_close_async")]
-    fn close_async<P: FnOnce(Result<(), glib::Error>) + 'static>(
+    fn close_async<'a, P: IsA<Cancellable>, Q: FnOnce(Result<(), glib::Error>) + 'static>(
         &self,
         io_priority: glib::Priority,
-        cancellable: Option<&impl IsA<Cancellable>>,
-        callback: P,
+        cancellable: impl Into<Option<&'a P>>,
+        callback: Q,
     ) {
         let main_context = glib::MainContext::ref_thread_default();
         let is_main_context_owner = main_context.is_owner();
@@ -62,10 +70,10 @@ pub trait OutputStreamExt: IsA<OutputStream> + 'static {
             "Async operations only allowed if the thread is owning the MainContext"
         );
 
-        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+        let user_data: Box_<glib::thread_guard::ThreadGuard<Q>> =
             Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn close_async_trampoline<
-            P: FnOnce(Result<(), glib::Error>) + 'static,
+            Q: FnOnce(Result<(), glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -78,17 +86,22 @@ pub trait OutputStreamExt: IsA<OutputStream> + 'static {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+            let callback: Box_<glib::thread_guard::ThreadGuard<Q>> =
                 Box_::from_raw(user_data as *mut _);
-            let callback: P = callback.into_inner();
+            let callback: Q = callback.into_inner();
             callback(result);
         }
-        let callback = close_async_trampoline::<P>;
+        let callback = close_async_trampoline::<Q>;
         unsafe {
             ffi::g_output_stream_close_async(
                 self.as_ref().to_glib_none().0,
                 io_priority.into_glib(),
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                cancellable
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 Some(callback),
                 Box_::into_raw(user_data) as *mut _,
             );
@@ -110,12 +123,20 @@ pub trait OutputStreamExt: IsA<OutputStream> + 'static {
     }
 
     #[doc(alias = "g_output_stream_flush")]
-    fn flush(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<(), glib::Error> {
+    fn flush<'a, P: IsA<Cancellable>>(
+        &self,
+        cancellable: impl Into<Option<&'a P>>,
+    ) -> Result<(), glib::Error> {
         unsafe {
             let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_output_stream_flush(
                 self.as_ref().to_glib_none().0,
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                cancellable
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 &mut error,
             );
             debug_assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
@@ -128,11 +149,11 @@ pub trait OutputStreamExt: IsA<OutputStream> + 'static {
     }
 
     #[doc(alias = "g_output_stream_flush_async")]
-    fn flush_async<P: FnOnce(Result<(), glib::Error>) + 'static>(
+    fn flush_async<'a, P: IsA<Cancellable>, Q: FnOnce(Result<(), glib::Error>) + 'static>(
         &self,
         io_priority: glib::Priority,
-        cancellable: Option<&impl IsA<Cancellable>>,
-        callback: P,
+        cancellable: impl Into<Option<&'a P>>,
+        callback: Q,
     ) {
         let main_context = glib::MainContext::ref_thread_default();
         let is_main_context_owner = main_context.is_owner();
@@ -144,10 +165,10 @@ pub trait OutputStreamExt: IsA<OutputStream> + 'static {
             "Async operations only allowed if the thread is owning the MainContext"
         );
 
-        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+        let user_data: Box_<glib::thread_guard::ThreadGuard<Q>> =
             Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn flush_async_trampoline<
-            P: FnOnce(Result<(), glib::Error>) + 'static,
+            Q: FnOnce(Result<(), glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -160,17 +181,22 @@ pub trait OutputStreamExt: IsA<OutputStream> + 'static {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+            let callback: Box_<glib::thread_guard::ThreadGuard<Q>> =
                 Box_::from_raw(user_data as *mut _);
-            let callback: P = callback.into_inner();
+            let callback: Q = callback.into_inner();
             callback(result);
         }
-        let callback = flush_async_trampoline::<P>;
+        let callback = flush_async_trampoline::<Q>;
         unsafe {
             ffi::g_output_stream_flush_async(
                 self.as_ref().to_glib_none().0,
                 io_priority.into_glib(),
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                cancellable
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 Some(callback),
                 Box_::into_raw(user_data) as *mut _,
             );
@@ -219,7 +245,7 @@ pub trait OutputStreamExt: IsA<OutputStream> + 'static {
     }
 
     //#[doc(alias = "g_output_stream_printf")]
-    //fn printf(&self, cancellable: Option<&impl IsA<Cancellable>>, error: &mut glib::Error, format: &str, : /*Unimplemented*/Basic: VarArgs) -> Option<usize> {
+    //fn printf<'a, P: IsA<Cancellable>>(&self, cancellable: impl Into<Option<&'a P>>, error: &mut glib::Error, format: &str, : /*Unimplemented*/Basic: VarArgs) -> Option<usize> {
     //    unsafe { TODO: call ffi:g_output_stream_printf() }
     //}
 
@@ -239,11 +265,11 @@ pub trait OutputStreamExt: IsA<OutputStream> + 'static {
     }
 
     #[doc(alias = "g_output_stream_splice")]
-    fn splice(
+    fn splice<'a, P: IsA<Cancellable>>(
         &self,
         source: &impl IsA<InputStream>,
         flags: OutputStreamSpliceFlags,
-        cancellable: Option<&impl IsA<Cancellable>>,
+        cancellable: impl Into<Option<&'a P>>,
     ) -> Result<isize, glib::Error> {
         unsafe {
             let mut error = std::ptr::null_mut();
@@ -251,7 +277,12 @@ pub trait OutputStreamExt: IsA<OutputStream> + 'static {
                 self.as_ref().to_glib_none().0,
                 source.as_ref().to_glib_none().0,
                 flags.into_glib(),
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                cancellable
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 &mut error,
             );
             if error.is_null() {
@@ -263,13 +294,13 @@ pub trait OutputStreamExt: IsA<OutputStream> + 'static {
     }
 
     #[doc(alias = "g_output_stream_splice_async")]
-    fn splice_async<P: FnOnce(Result<isize, glib::Error>) + 'static>(
+    fn splice_async<'a, P: IsA<Cancellable>, Q: FnOnce(Result<isize, glib::Error>) + 'static>(
         &self,
         source: &impl IsA<InputStream>,
         flags: OutputStreamSpliceFlags,
         io_priority: glib::Priority,
-        cancellable: Option<&impl IsA<Cancellable>>,
-        callback: P,
+        cancellable: impl Into<Option<&'a P>>,
+        callback: Q,
     ) {
         let main_context = glib::MainContext::ref_thread_default();
         let is_main_context_owner = main_context.is_owner();
@@ -281,10 +312,10 @@ pub trait OutputStreamExt: IsA<OutputStream> + 'static {
             "Async operations only allowed if the thread is owning the MainContext"
         );
 
-        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+        let user_data: Box_<glib::thread_guard::ThreadGuard<Q>> =
             Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn splice_async_trampoline<
-            P: FnOnce(Result<isize, glib::Error>) + 'static,
+            Q: FnOnce(Result<isize, glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -297,19 +328,24 @@ pub trait OutputStreamExt: IsA<OutputStream> + 'static {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+            let callback: Box_<glib::thread_guard::ThreadGuard<Q>> =
                 Box_::from_raw(user_data as *mut _);
-            let callback: P = callback.into_inner();
+            let callback: Q = callback.into_inner();
             callback(result);
         }
-        let callback = splice_async_trampoline::<P>;
+        let callback = splice_async_trampoline::<Q>;
         unsafe {
             ffi::g_output_stream_splice_async(
                 self.as_ref().to_glib_none().0,
                 source.as_ref().to_glib_none().0,
                 flags.into_glib(),
                 io_priority.into_glib(),
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                cancellable
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 Some(callback),
                 Box_::into_raw(user_data) as *mut _,
             );
@@ -334,15 +370,15 @@ pub trait OutputStreamExt: IsA<OutputStream> + 'static {
     }
 
     //#[doc(alias = "g_output_stream_vprintf")]
-    //fn vprintf(&self, cancellable: Option<&impl IsA<Cancellable>>, error: &mut glib::Error, format: &str, args: /*Unimplemented*/Unsupported) -> Option<usize> {
+    //fn vprintf<'a, P: IsA<Cancellable>>(&self, cancellable: impl Into<Option<&'a P>>, error: &mut glib::Error, format: &str, args: /*Unimplemented*/Unsupported) -> Option<usize> {
     //    unsafe { TODO: call ffi:g_output_stream_vprintf() }
     //}
 
     #[doc(alias = "g_output_stream_write")]
-    fn write(
+    fn write<'a, P: IsA<Cancellable>>(
         &self,
         buffer: &[u8],
-        cancellable: Option<&impl IsA<Cancellable>>,
+        cancellable: impl Into<Option<&'a P>>,
     ) -> Result<isize, glib::Error> {
         let count = buffer.len() as _;
         unsafe {
@@ -351,7 +387,12 @@ pub trait OutputStreamExt: IsA<OutputStream> + 'static {
                 self.as_ref().to_glib_none().0,
                 buffer.to_glib_none().0,
                 count,
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                cancellable
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 &mut error,
             );
             if error.is_null() {
@@ -363,17 +404,22 @@ pub trait OutputStreamExt: IsA<OutputStream> + 'static {
     }
 
     #[doc(alias = "g_output_stream_write_bytes")]
-    fn write_bytes(
+    fn write_bytes<'a, P: IsA<Cancellable>>(
         &self,
         bytes: &glib::Bytes,
-        cancellable: Option<&impl IsA<Cancellable>>,
+        cancellable: impl Into<Option<&'a P>>,
     ) -> Result<isize, glib::Error> {
         unsafe {
             let mut error = std::ptr::null_mut();
             let ret = ffi::g_output_stream_write_bytes(
                 self.as_ref().to_glib_none().0,
                 bytes.to_glib_none().0,
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                cancellable
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 &mut error,
             );
             if error.is_null() {
@@ -385,12 +431,16 @@ pub trait OutputStreamExt: IsA<OutputStream> + 'static {
     }
 
     #[doc(alias = "g_output_stream_write_bytes_async")]
-    fn write_bytes_async<P: FnOnce(Result<isize, glib::Error>) + 'static>(
+    fn write_bytes_async<
+        'a,
+        P: IsA<Cancellable>,
+        Q: FnOnce(Result<isize, glib::Error>) + 'static,
+    >(
         &self,
         bytes: &glib::Bytes,
         io_priority: glib::Priority,
-        cancellable: Option<&impl IsA<Cancellable>>,
-        callback: P,
+        cancellable: impl Into<Option<&'a P>>,
+        callback: Q,
     ) {
         let main_context = glib::MainContext::ref_thread_default();
         let is_main_context_owner = main_context.is_owner();
@@ -402,10 +452,10 @@ pub trait OutputStreamExt: IsA<OutputStream> + 'static {
             "Async operations only allowed if the thread is owning the MainContext"
         );
 
-        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+        let user_data: Box_<glib::thread_guard::ThreadGuard<Q>> =
             Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn write_bytes_async_trampoline<
-            P: FnOnce(Result<isize, glib::Error>) + 'static,
+            Q: FnOnce(Result<isize, glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -419,18 +469,23 @@ pub trait OutputStreamExt: IsA<OutputStream> + 'static {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+            let callback: Box_<glib::thread_guard::ThreadGuard<Q>> =
                 Box_::from_raw(user_data as *mut _);
-            let callback: P = callback.into_inner();
+            let callback: Q = callback.into_inner();
             callback(result);
         }
-        let callback = write_bytes_async_trampoline::<P>;
+        let callback = write_bytes_async_trampoline::<Q>;
         unsafe {
             ffi::g_output_stream_write_bytes_async(
                 self.as_ref().to_glib_none().0,
                 bytes.to_glib_none().0,
                 io_priority.into_glib(),
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                cancellable
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 Some(callback),
                 Box_::into_raw(user_data) as *mut _,
             );

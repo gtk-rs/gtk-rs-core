@@ -38,12 +38,17 @@ pub trait MountExt: IsA<Mount> + 'static {
     }
 
     #[doc(alias = "g_mount_eject_with_operation")]
-    fn eject_with_operation<P: FnOnce(Result<(), glib::Error>) + 'static>(
+    fn eject_with_operation<
+        'a,
+        P: IsA<MountOperation>,
+        Q: IsA<Cancellable>,
+        R: FnOnce(Result<(), glib::Error>) + 'static,
+    >(
         &self,
         flags: MountUnmountFlags,
-        mount_operation: Option<&impl IsA<MountOperation>>,
-        cancellable: Option<&impl IsA<Cancellable>>,
-        callback: P,
+        mount_operation: impl Into<Option<&'a P>>,
+        cancellable: impl Into<Option<&'a Q>>,
+        callback: R,
     ) {
         let main_context = glib::MainContext::ref_thread_default();
         let is_main_context_owner = main_context.is_owner();
@@ -55,10 +60,10 @@ pub trait MountExt: IsA<Mount> + 'static {
             "Async operations only allowed if the thread is owning the MainContext"
         );
 
-        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+        let user_data: Box_<glib::thread_guard::ThreadGuard<R>> =
             Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn eject_with_operation_trampoline<
-            P: FnOnce(Result<(), glib::Error>) + 'static,
+            R: FnOnce(Result<(), glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -72,30 +77,40 @@ pub trait MountExt: IsA<Mount> + 'static {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+            let callback: Box_<glib::thread_guard::ThreadGuard<R>> =
                 Box_::from_raw(user_data as *mut _);
-            let callback: P = callback.into_inner();
+            let callback: R = callback.into_inner();
             callback(result);
         }
-        let callback = eject_with_operation_trampoline::<P>;
+        let callback = eject_with_operation_trampoline::<R>;
         unsafe {
             ffi::g_mount_eject_with_operation(
                 self.as_ref().to_glib_none().0,
                 flags.into_glib(),
-                mount_operation.map(|p| p.as_ref()).to_glib_none().0,
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                mount_operation
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
+                cancellable
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 Some(callback),
                 Box_::into_raw(user_data) as *mut _,
             );
         }
     }
 
-    fn eject_with_operation_future(
+    fn eject_with_operation_future<'a, P: IsA<MountOperation> + Clone + 'static>(
         &self,
         flags: MountUnmountFlags,
-        mount_operation: Option<&(impl IsA<MountOperation> + Clone + 'static)>,
+        mount_operation: impl Into<Option<&'a P>>,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>> {
-        let mount_operation = mount_operation.map(ToOwned::to_owned);
+        let mount_operation = mount_operation.into().map(ToOwned::to_owned);
         Box_::pin(crate::GioFuture::new(
             self,
             move |obj, cancellable, send| {
@@ -174,11 +189,15 @@ pub trait MountExt: IsA<Mount> + 'static {
     }
 
     #[doc(alias = "g_mount_guess_content_type")]
-    fn guess_content_type<P: FnOnce(Result<Vec<glib::GString>, glib::Error>) + 'static>(
+    fn guess_content_type<
+        'a,
+        P: IsA<Cancellable>,
+        Q: FnOnce(Result<Vec<glib::GString>, glib::Error>) + 'static,
+    >(
         &self,
         force_rescan: bool,
-        cancellable: Option<&impl IsA<Cancellable>>,
-        callback: P,
+        cancellable: impl Into<Option<&'a P>>,
+        callback: Q,
     ) {
         let main_context = glib::MainContext::ref_thread_default();
         let is_main_context_owner = main_context.is_owner();
@@ -190,10 +209,10 @@ pub trait MountExt: IsA<Mount> + 'static {
             "Async operations only allowed if the thread is owning the MainContext"
         );
 
-        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+        let user_data: Box_<glib::thread_guard::ThreadGuard<Q>> =
             Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn guess_content_type_trampoline<
-            P: FnOnce(Result<Vec<glib::GString>, glib::Error>) + 'static,
+            Q: FnOnce(Result<Vec<glib::GString>, glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -207,17 +226,22 @@ pub trait MountExt: IsA<Mount> + 'static {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+            let callback: Box_<glib::thread_guard::ThreadGuard<Q>> =
                 Box_::from_raw(user_data as *mut _);
-            let callback: P = callback.into_inner();
+            let callback: Q = callback.into_inner();
             callback(result);
         }
-        let callback = guess_content_type_trampoline::<P>;
+        let callback = guess_content_type_trampoline::<Q>;
         unsafe {
             ffi::g_mount_guess_content_type(
                 self.as_ref().to_glib_none().0,
                 force_rescan.into_glib(),
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                cancellable
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 Some(callback),
                 Box_::into_raw(user_data) as *mut _,
             );
@@ -241,17 +265,22 @@ pub trait MountExt: IsA<Mount> + 'static {
     }
 
     #[doc(alias = "g_mount_guess_content_type_sync")]
-    fn guess_content_type_sync(
+    fn guess_content_type_sync<'a, P: IsA<Cancellable>>(
         &self,
         force_rescan: bool,
-        cancellable: Option<&impl IsA<Cancellable>>,
+        cancellable: impl Into<Option<&'a P>>,
     ) -> Result<Vec<glib::GString>, glib::Error> {
         unsafe {
             let mut error = std::ptr::null_mut();
             let ret = ffi::g_mount_guess_content_type_sync(
                 self.as_ref().to_glib_none().0,
                 force_rescan.into_glib(),
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                cancellable
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 &mut error,
             );
             if error.is_null() {
@@ -268,12 +297,17 @@ pub trait MountExt: IsA<Mount> + 'static {
     }
 
     #[doc(alias = "g_mount_remount")]
-    fn remount<P: FnOnce(Result<(), glib::Error>) + 'static>(
+    fn remount<
+        'a,
+        P: IsA<MountOperation>,
+        Q: IsA<Cancellable>,
+        R: FnOnce(Result<(), glib::Error>) + 'static,
+    >(
         &self,
         flags: MountMountFlags,
-        mount_operation: Option<&impl IsA<MountOperation>>,
-        cancellable: Option<&impl IsA<Cancellable>>,
-        callback: P,
+        mount_operation: impl Into<Option<&'a P>>,
+        cancellable: impl Into<Option<&'a Q>>,
+        callback: R,
     ) {
         let main_context = glib::MainContext::ref_thread_default();
         let is_main_context_owner = main_context.is_owner();
@@ -285,9 +319,9 @@ pub trait MountExt: IsA<Mount> + 'static {
             "Async operations only allowed if the thread is owning the MainContext"
         );
 
-        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+        let user_data: Box_<glib::thread_guard::ThreadGuard<R>> =
             Box_::new(glib::thread_guard::ThreadGuard::new(callback));
-        unsafe extern "C" fn remount_trampoline<P: FnOnce(Result<(), glib::Error>) + 'static>(
+        unsafe extern "C" fn remount_trampoline<R: FnOnce(Result<(), glib::Error>) + 'static>(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
@@ -299,30 +333,40 @@ pub trait MountExt: IsA<Mount> + 'static {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+            let callback: Box_<glib::thread_guard::ThreadGuard<R>> =
                 Box_::from_raw(user_data as *mut _);
-            let callback: P = callback.into_inner();
+            let callback: R = callback.into_inner();
             callback(result);
         }
-        let callback = remount_trampoline::<P>;
+        let callback = remount_trampoline::<R>;
         unsafe {
             ffi::g_mount_remount(
                 self.as_ref().to_glib_none().0,
                 flags.into_glib(),
-                mount_operation.map(|p| p.as_ref()).to_glib_none().0,
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                mount_operation
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
+                cancellable
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 Some(callback),
                 Box_::into_raw(user_data) as *mut _,
             );
         }
     }
 
-    fn remount_future(
+    fn remount_future<'a, P: IsA<MountOperation> + Clone + 'static>(
         &self,
         flags: MountMountFlags,
-        mount_operation: Option<&(impl IsA<MountOperation> + Clone + 'static)>,
+        mount_operation: impl Into<Option<&'a P>>,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>> {
-        let mount_operation = mount_operation.map(ToOwned::to_owned);
+        let mount_operation = mount_operation.into().map(ToOwned::to_owned);
         Box_::pin(crate::GioFuture::new(
             self,
             move |obj, cancellable, send| {
@@ -346,12 +390,17 @@ pub trait MountExt: IsA<Mount> + 'static {
     }
 
     #[doc(alias = "g_mount_unmount_with_operation")]
-    fn unmount_with_operation<P: FnOnce(Result<(), glib::Error>) + 'static>(
+    fn unmount_with_operation<
+        'a,
+        P: IsA<MountOperation>,
+        Q: IsA<Cancellable>,
+        R: FnOnce(Result<(), glib::Error>) + 'static,
+    >(
         &self,
         flags: MountUnmountFlags,
-        mount_operation: Option<&impl IsA<MountOperation>>,
-        cancellable: Option<&impl IsA<Cancellable>>,
-        callback: P,
+        mount_operation: impl Into<Option<&'a P>>,
+        cancellable: impl Into<Option<&'a Q>>,
+        callback: R,
     ) {
         let main_context = glib::MainContext::ref_thread_default();
         let is_main_context_owner = main_context.is_owner();
@@ -363,10 +412,10 @@ pub trait MountExt: IsA<Mount> + 'static {
             "Async operations only allowed if the thread is owning the MainContext"
         );
 
-        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+        let user_data: Box_<glib::thread_guard::ThreadGuard<R>> =
             Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn unmount_with_operation_trampoline<
-            P: FnOnce(Result<(), glib::Error>) + 'static,
+            R: FnOnce(Result<(), glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -383,30 +432,40 @@ pub trait MountExt: IsA<Mount> + 'static {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+            let callback: Box_<glib::thread_guard::ThreadGuard<R>> =
                 Box_::from_raw(user_data as *mut _);
-            let callback: P = callback.into_inner();
+            let callback: R = callback.into_inner();
             callback(result);
         }
-        let callback = unmount_with_operation_trampoline::<P>;
+        let callback = unmount_with_operation_trampoline::<R>;
         unsafe {
             ffi::g_mount_unmount_with_operation(
                 self.as_ref().to_glib_none().0,
                 flags.into_glib(),
-                mount_operation.map(|p| p.as_ref()).to_glib_none().0,
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                mount_operation
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
+                cancellable
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 Some(callback),
                 Box_::into_raw(user_data) as *mut _,
             );
         }
     }
 
-    fn unmount_with_operation_future(
+    fn unmount_with_operation_future<'a, P: IsA<MountOperation> + Clone + 'static>(
         &self,
         flags: MountUnmountFlags,
-        mount_operation: Option<&(impl IsA<MountOperation> + Clone + 'static)>,
+        mount_operation: impl Into<Option<&'a P>>,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>> {
-        let mount_operation = mount_operation.map(ToOwned::to_owned);
+        let mount_operation = mount_operation.into().map(ToOwned::to_owned);
         Box_::pin(crate::GioFuture::new(
             self,
             move |obj, cancellable, send| {

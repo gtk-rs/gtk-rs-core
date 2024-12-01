@@ -84,16 +84,16 @@ impl Context {
 
     #[doc(alias = "pango_context_get_metrics")]
     #[doc(alias = "get_metrics")]
-    pub fn metrics(
+    pub fn metrics<'a>(
         &self,
-        desc: Option<&FontDescription>,
-        language: Option<&Language>,
+        desc: impl Into<Option<&'a FontDescription>>,
+        language: impl Into<Option<&'a Language>>,
     ) -> FontMetrics {
         unsafe {
             from_glib_full(ffi::pango_context_get_metrics(
                 self.to_glib_none().0,
-                desc.to_glib_none().0,
-                mut_override(language.to_glib_none().0),
+                desc.into().to_glib_none().0,
+                mut_override(language.into().to_glib_none().0),
             ))
         }
     }
@@ -166,18 +166,26 @@ impl Context {
     }
 
     #[doc(alias = "pango_context_set_font_description")]
-    pub fn set_font_description(&self, desc: Option<&FontDescription>) {
+    pub fn set_font_description<'a>(&self, desc: impl Into<Option<&'a FontDescription>>) {
         unsafe {
-            ffi::pango_context_set_font_description(self.to_glib_none().0, desc.to_glib_none().0);
+            ffi::pango_context_set_font_description(
+                self.to_glib_none().0,
+                desc.into().to_glib_none().0,
+            );
         }
     }
 
     #[doc(alias = "pango_context_set_font_map")]
-    pub fn set_font_map(&self, font_map: Option<&impl IsA<FontMap>>) {
+    pub fn set_font_map<'a, P: IsA<FontMap>>(&self, font_map: impl Into<Option<&'a P>>) {
         unsafe {
             ffi::pango_context_set_font_map(
                 self.to_glib_none().0,
-                font_map.map(|p| p.as_ref()).to_glib_none().0,
+                font_map
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
             );
         }
     }
@@ -190,19 +198,19 @@ impl Context {
     }
 
     #[doc(alias = "pango_context_set_language")]
-    pub fn set_language(&self, language: Option<&Language>) {
+    pub fn set_language<'a>(&self, language: impl Into<Option<&'a Language>>) {
         unsafe {
             ffi::pango_context_set_language(
                 self.to_glib_none().0,
-                mut_override(language.to_glib_none().0),
+                mut_override(language.into().to_glib_none().0),
             );
         }
     }
 
     #[doc(alias = "pango_context_set_matrix")]
-    pub fn set_matrix(&self, matrix: Option<&Matrix>) {
+    pub fn set_matrix<'a>(&self, matrix: impl Into<Option<&'a Matrix>>) {
         unsafe {
-            ffi::pango_context_set_matrix(self.to_glib_none().0, matrix.to_glib_none().0);
+            ffi::pango_context_set_matrix(self.to_glib_none().0, matrix.into().to_glib_none().0);
         }
     }
 

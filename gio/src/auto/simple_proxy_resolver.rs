@@ -26,11 +26,11 @@ impl SimpleProxyResolver {
 pub trait SimpleProxyResolverExt: IsA<SimpleProxyResolver> + 'static {
     #[doc(alias = "g_simple_proxy_resolver_set_default_proxy")]
     #[doc(alias = "default-proxy")]
-    fn set_default_proxy(&self, default_proxy: Option<&str>) {
+    fn set_default_proxy<'a>(&self, default_proxy: impl Into<Option<&'a str>>) {
         unsafe {
             ffi::g_simple_proxy_resolver_set_default_proxy(
                 self.as_ref().to_glib_none().0,
-                default_proxy.to_glib_none().0,
+                default_proxy.into().to_glib_none().0,
             );
         }
     }

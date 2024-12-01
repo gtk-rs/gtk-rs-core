@@ -17,10 +17,10 @@ crate::wrapper! {
 
 impl MainLoop {
     #[doc(alias = "g_main_loop_new")]
-    pub fn new(context: Option<&MainContext>, is_running: bool) -> MainLoop {
+    pub fn new<'a>(context: impl Into<Option<&'a MainContext>>, is_running: bool) -> MainLoop {
         unsafe {
             from_glib_full(ffi::g_main_loop_new(
-                context.to_glib_none().0,
+                context.into().to_glib_none().0,
                 is_running.into_glib(),
             ))
         }

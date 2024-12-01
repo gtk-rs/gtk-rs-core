@@ -55,17 +55,17 @@ impl DBusMessage {
     }
 
     #[doc(alias = "g_dbus_message_new_method_call")]
-    pub fn new_method_call(
-        name: Option<&str>,
+    pub fn new_method_call<'a>(
+        name: impl Into<Option<&'a str>>,
         path: &str,
-        interface_: Option<&str>,
+        interface_: impl Into<Option<&'a str>>,
         method: &str,
     ) -> DBusMessage {
         unsafe {
             from_glib_full(ffi::g_dbus_message_new_method_call(
-                name.to_glib_none().0,
+                name.into().to_glib_none().0,
                 path.to_glib_none().0,
-                interface_.to_glib_none().0,
+                interface_.into().to_glib_none().0,
                 method.to_glib_none().0,
             ))
         }
@@ -278,9 +278,12 @@ impl DBusMessage {
     }
 
     #[doc(alias = "g_dbus_message_set_destination")]
-    pub fn set_destination(&self, value: Option<&str>) {
+    pub fn set_destination<'a>(&self, value: impl Into<Option<&'a str>>) {
         unsafe {
-            ffi::g_dbus_message_set_destination(self.to_glib_none().0, value.to_glib_none().0);
+            ffi::g_dbus_message_set_destination(
+                self.to_glib_none().0,
+                value.into().to_glib_none().0,
+            );
         }
     }
 
@@ -299,27 +302,31 @@ impl DBusMessage {
     }
 
     #[doc(alias = "g_dbus_message_set_header")]
-    pub fn set_header(&self, header_field: DBusMessageHeaderField, value: Option<&glib::Variant>) {
+    pub fn set_header<'a>(
+        &self,
+        header_field: DBusMessageHeaderField,
+        value: impl Into<Option<&'a glib::Variant>>,
+    ) {
         unsafe {
             ffi::g_dbus_message_set_header(
                 self.to_glib_none().0,
                 header_field.into_glib(),
-                value.to_glib_none().0,
+                value.into().to_glib_none().0,
             );
         }
     }
 
     #[doc(alias = "g_dbus_message_set_interface")]
-    pub fn set_interface(&self, value: Option<&str>) {
+    pub fn set_interface<'a>(&self, value: impl Into<Option<&'a str>>) {
         unsafe {
-            ffi::g_dbus_message_set_interface(self.to_glib_none().0, value.to_glib_none().0);
+            ffi::g_dbus_message_set_interface(self.to_glib_none().0, value.into().to_glib_none().0);
         }
     }
 
     #[doc(alias = "g_dbus_message_set_member")]
-    pub fn set_member(&self, value: Option<&str>) {
+    pub fn set_member<'a>(&self, value: impl Into<Option<&'a str>>) {
         unsafe {
-            ffi::g_dbus_message_set_member(self.to_glib_none().0, value.to_glib_none().0);
+            ffi::g_dbus_message_set_member(self.to_glib_none().0, value.into().to_glib_none().0);
         }
     }
 
@@ -340,9 +347,9 @@ impl DBusMessage {
     }
 
     #[doc(alias = "g_dbus_message_set_path")]
-    pub fn set_path(&self, value: Option<&str>) {
+    pub fn set_path<'a>(&self, value: impl Into<Option<&'a str>>) {
         unsafe {
-            ffi::g_dbus_message_set_path(self.to_glib_none().0, value.to_glib_none().0);
+            ffi::g_dbus_message_set_path(self.to_glib_none().0, value.into().to_glib_none().0);
         }
     }
 
@@ -354,9 +361,9 @@ impl DBusMessage {
     }
 
     #[doc(alias = "g_dbus_message_set_sender")]
-    pub fn set_sender(&self, value: Option<&str>) {
+    pub fn set_sender<'a>(&self, value: impl Into<Option<&'a str>>) {
         unsafe {
-            ffi::g_dbus_message_set_sender(self.to_glib_none().0, value.to_glib_none().0);
+            ffi::g_dbus_message_set_sender(self.to_glib_none().0, value.into().to_glib_none().0);
         }
     }
 
@@ -368,20 +375,20 @@ impl DBusMessage {
     }
 
     #[doc(alias = "g_dbus_message_set_signature")]
-    pub fn set_signature(&self, value: Option<&str>) {
+    pub fn set_signature<'a>(&self, value: impl Into<Option<&'a str>>) {
         unsafe {
-            ffi::g_dbus_message_set_signature(self.to_glib_none().0, value.to_glib_none().0);
+            ffi::g_dbus_message_set_signature(self.to_glib_none().0, value.into().to_glib_none().0);
         }
     }
 
     #[cfg(unix)]
     #[cfg_attr(docsrs, doc(cfg(unix)))]
     #[doc(alias = "g_dbus_message_set_unix_fd_list")]
-    pub fn set_unix_fd_list(&self, fd_list: Option<&impl IsA<UnixFDList>>) {
+    pub fn set_unix_fd_list<'a, P: IsA<UnixFDList>>(&self, fd_list: impl Into<Option<&'a P>>) {
         unsafe {
             ffi::g_dbus_message_set_unix_fd_list(
                 self.to_glib_none().0,
-                fd_list.map(|p| p.as_ref()).to_glib_none().0,
+                fd_list.into().as_ref().map(|p| p.as_ref()).to_glib_none().0,
             );
         }
     }

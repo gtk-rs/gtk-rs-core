@@ -24,15 +24,20 @@ impl TlsClientConnection {
     pub const NONE: Option<&'static TlsClientConnection> = None;
 
     #[doc(alias = "g_tls_client_connection_new")]
-    pub fn new(
+    pub fn new<'a, P: IsA<SocketConnectable>>(
         base_io_stream: &impl IsA<IOStream>,
-        server_identity: Option<&impl IsA<SocketConnectable>>,
+        server_identity: impl Into<Option<&'a P>>,
     ) -> Result<TlsClientConnection, glib::Error> {
         unsafe {
             let mut error = std::ptr::null_mut();
             let ret = ffi::g_tls_client_connection_new(
                 base_io_stream.as_ref().to_glib_none().0,
-                server_identity.map(|p| p.as_ref()).to_glib_none().0,
+                server_identity
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 &mut error,
             );
             if error.is_null() {

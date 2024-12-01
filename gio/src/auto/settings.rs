@@ -31,16 +31,16 @@ impl Settings {
     }
 
     #[doc(alias = "g_settings_new_full")]
-    pub fn new_full(
+    pub fn new_full<'a, P: IsA<SettingsBackend>>(
         schema: &SettingsSchema,
-        backend: Option<&impl IsA<SettingsBackend>>,
-        path: Option<&str>,
+        backend: impl Into<Option<&'a P>>,
+        path: impl Into<Option<&'a str>>,
     ) -> Settings {
         unsafe {
             from_glib_full(ffi::g_settings_new_full(
                 schema.to_glib_none().0,
-                backend.map(|p| p.as_ref()).to_glib_none().0,
-                path.to_glib_none().0,
+                backend.into().as_ref().map(|p| p.as_ref()).to_glib_none().0,
+                path.into().to_glib_none().0,
             ))
         }
     }
@@ -109,14 +109,14 @@ pub trait SettingsExt: IsA<Settings> + 'static {
     #[cfg(feature = "v2_82")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_82")))]
     #[doc(alias = "g_settings_bind_with_mapping_closures")]
-    fn bind_with_mapping_closures(
+    fn bind_with_mapping_closures<'a>(
         &self,
         key: &str,
         object: &impl IsA<glib::Object>,
         property: &str,
         flags: SettingsBindFlags,
-        get_mapping: Option<&glib::Closure>,
-        set_mapping: Option<&glib::Closure>,
+        get_mapping: impl Into<Option<&'a glib::Closure>>,
+        set_mapping: impl Into<Option<&'a glib::Closure>>,
     ) {
         unsafe {
             ffi::g_settings_bind_with_mapping_closures(
@@ -125,8 +125,8 @@ pub trait SettingsExt: IsA<Settings> + 'static {
                 object.as_ref().to_glib_none().0,
                 property.to_glib_none().0,
                 flags.into_glib(),
-                get_mapping.to_glib_none().0,
-                set_mapping.to_glib_none().0,
+                get_mapping.into().to_glib_none().0,
+                set_mapping.into().to_glib_none().0,
             );
         }
     }

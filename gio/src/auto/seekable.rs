@@ -30,11 +30,11 @@ pub trait SeekableExt: IsA<Seekable> + 'static {
     }
 
     #[doc(alias = "g_seekable_seek")]
-    fn seek(
+    fn seek<'a, P: IsA<Cancellable>>(
         &self,
         offset: i64,
         type_: glib::SeekType,
-        cancellable: Option<&impl IsA<Cancellable>>,
+        cancellable: impl Into<Option<&'a P>>,
     ) -> Result<(), glib::Error> {
         unsafe {
             let mut error = std::ptr::null_mut();
@@ -42,7 +42,12 @@ pub trait SeekableExt: IsA<Seekable> + 'static {
                 self.as_ref().to_glib_none().0,
                 offset,
                 type_.into_glib(),
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                cancellable
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 &mut error,
             );
             debug_assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
@@ -60,17 +65,22 @@ pub trait SeekableExt: IsA<Seekable> + 'static {
     }
 
     #[doc(alias = "g_seekable_truncate")]
-    fn truncate(
+    fn truncate<'a, P: IsA<Cancellable>>(
         &self,
         offset: i64,
-        cancellable: Option<&impl IsA<Cancellable>>,
+        cancellable: impl Into<Option<&'a P>>,
     ) -> Result<(), glib::Error> {
         unsafe {
             let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_seekable_truncate(
                 self.as_ref().to_glib_none().0,
                 offset,
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                cancellable
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 &mut error,
             );
             debug_assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());

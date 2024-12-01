@@ -24,17 +24,22 @@ impl TlsInteraction {
 
 pub trait TlsInteractionExt: IsA<TlsInteraction> + 'static {
     #[doc(alias = "g_tls_interaction_ask_password")]
-    fn ask_password(
+    fn ask_password<'a, P: IsA<Cancellable>>(
         &self,
         password: &impl IsA<TlsPassword>,
-        cancellable: Option<&impl IsA<Cancellable>>,
+        cancellable: impl Into<Option<&'a P>>,
     ) -> Result<TlsInteractionResult, glib::Error> {
         unsafe {
             let mut error = std::ptr::null_mut();
             let ret = ffi::g_tls_interaction_ask_password(
                 self.as_ref().to_glib_none().0,
                 password.as_ref().to_glib_none().0,
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                cancellable
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 &mut error,
             );
             if error.is_null() {
@@ -46,11 +51,15 @@ pub trait TlsInteractionExt: IsA<TlsInteraction> + 'static {
     }
 
     #[doc(alias = "g_tls_interaction_ask_password_async")]
-    fn ask_password_async<P: FnOnce(Result<TlsInteractionResult, glib::Error>) + 'static>(
+    fn ask_password_async<
+        'a,
+        P: IsA<Cancellable>,
+        Q: FnOnce(Result<TlsInteractionResult, glib::Error>) + 'static,
+    >(
         &self,
         password: &impl IsA<TlsPassword>,
-        cancellable: Option<&impl IsA<Cancellable>>,
-        callback: P,
+        cancellable: impl Into<Option<&'a P>>,
+        callback: Q,
     ) {
         let main_context = glib::MainContext::ref_thread_default();
         let is_main_context_owner = main_context.is_owner();
@@ -62,10 +71,10 @@ pub trait TlsInteractionExt: IsA<TlsInteraction> + 'static {
             "Async operations only allowed if the thread is owning the MainContext"
         );
 
-        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+        let user_data: Box_<glib::thread_guard::ThreadGuard<Q>> =
             Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn ask_password_async_trampoline<
-            P: FnOnce(Result<TlsInteractionResult, glib::Error>) + 'static,
+            Q: FnOnce(Result<TlsInteractionResult, glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -82,17 +91,22 @@ pub trait TlsInteractionExt: IsA<TlsInteraction> + 'static {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+            let callback: Box_<glib::thread_guard::ThreadGuard<Q>> =
                 Box_::from_raw(user_data as *mut _);
-            let callback: P = callback.into_inner();
+            let callback: Q = callback.into_inner();
             callback(result);
         }
-        let callback = ask_password_async_trampoline::<P>;
+        let callback = ask_password_async_trampoline::<Q>;
         unsafe {
             ffi::g_tls_interaction_ask_password_async(
                 self.as_ref().to_glib_none().0,
                 password.as_ref().to_glib_none().0,
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                cancellable
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 Some(callback),
                 Box_::into_raw(user_data) as *mut _,
             );
@@ -117,17 +131,22 @@ pub trait TlsInteractionExt: IsA<TlsInteraction> + 'static {
     }
 
     #[doc(alias = "g_tls_interaction_invoke_ask_password")]
-    fn invoke_ask_password(
+    fn invoke_ask_password<'a, P: IsA<Cancellable>>(
         &self,
         password: &impl IsA<TlsPassword>,
-        cancellable: Option<&impl IsA<Cancellable>>,
+        cancellable: impl Into<Option<&'a P>>,
     ) -> Result<TlsInteractionResult, glib::Error> {
         unsafe {
             let mut error = std::ptr::null_mut();
             let ret = ffi::g_tls_interaction_invoke_ask_password(
                 self.as_ref().to_glib_none().0,
                 password.as_ref().to_glib_none().0,
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                cancellable
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 &mut error,
             );
             if error.is_null() {
@@ -139,11 +158,11 @@ pub trait TlsInteractionExt: IsA<TlsInteraction> + 'static {
     }
 
     #[doc(alias = "g_tls_interaction_invoke_request_certificate")]
-    fn invoke_request_certificate(
+    fn invoke_request_certificate<'a, P: IsA<Cancellable>>(
         &self,
         connection: &impl IsA<TlsConnection>,
         flags: TlsCertificateRequestFlags,
-        cancellable: Option<&impl IsA<Cancellable>>,
+        cancellable: impl Into<Option<&'a P>>,
     ) -> Result<TlsInteractionResult, glib::Error> {
         unsafe {
             let mut error = std::ptr::null_mut();
@@ -151,7 +170,12 @@ pub trait TlsInteractionExt: IsA<TlsInteraction> + 'static {
                 self.as_ref().to_glib_none().0,
                 connection.as_ref().to_glib_none().0,
                 flags.into_glib(),
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                cancellable
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 &mut error,
             );
             if error.is_null() {
@@ -163,11 +187,11 @@ pub trait TlsInteractionExt: IsA<TlsInteraction> + 'static {
     }
 
     #[doc(alias = "g_tls_interaction_request_certificate")]
-    fn request_certificate(
+    fn request_certificate<'a, P: IsA<Cancellable>>(
         &self,
         connection: &impl IsA<TlsConnection>,
         flags: TlsCertificateRequestFlags,
-        cancellable: Option<&impl IsA<Cancellable>>,
+        cancellable: impl Into<Option<&'a P>>,
     ) -> Result<TlsInteractionResult, glib::Error> {
         unsafe {
             let mut error = std::ptr::null_mut();
@@ -175,7 +199,12 @@ pub trait TlsInteractionExt: IsA<TlsInteraction> + 'static {
                 self.as_ref().to_glib_none().0,
                 connection.as_ref().to_glib_none().0,
                 flags.into_glib(),
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                cancellable
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 &mut error,
             );
             if error.is_null() {
@@ -187,12 +216,16 @@ pub trait TlsInteractionExt: IsA<TlsInteraction> + 'static {
     }
 
     #[doc(alias = "g_tls_interaction_request_certificate_async")]
-    fn request_certificate_async<P: FnOnce(Result<TlsInteractionResult, glib::Error>) + 'static>(
+    fn request_certificate_async<
+        'a,
+        P: IsA<Cancellable>,
+        Q: FnOnce(Result<TlsInteractionResult, glib::Error>) + 'static,
+    >(
         &self,
         connection: &impl IsA<TlsConnection>,
         flags: TlsCertificateRequestFlags,
-        cancellable: Option<&impl IsA<Cancellable>>,
-        callback: P,
+        cancellable: impl Into<Option<&'a P>>,
+        callback: Q,
     ) {
         let main_context = glib::MainContext::ref_thread_default();
         let is_main_context_owner = main_context.is_owner();
@@ -204,10 +237,10 @@ pub trait TlsInteractionExt: IsA<TlsInteraction> + 'static {
             "Async operations only allowed if the thread is owning the MainContext"
         );
 
-        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+        let user_data: Box_<glib::thread_guard::ThreadGuard<Q>> =
             Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn request_certificate_async_trampoline<
-            P: FnOnce(Result<TlsInteractionResult, glib::Error>) + 'static,
+            Q: FnOnce(Result<TlsInteractionResult, glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -224,18 +257,23 @@ pub trait TlsInteractionExt: IsA<TlsInteraction> + 'static {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+            let callback: Box_<glib::thread_guard::ThreadGuard<Q>> =
                 Box_::from_raw(user_data as *mut _);
-            let callback: P = callback.into_inner();
+            let callback: Q = callback.into_inner();
             callback(result);
         }
-        let callback = request_certificate_async_trampoline::<P>;
+        let callback = request_certificate_async_trampoline::<Q>;
         unsafe {
             ffi::g_tls_interaction_request_certificate_async(
                 self.as_ref().to_glib_none().0,
                 connection.as_ref().to_glib_none().0,
                 flags.into_glib(),
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                cancellable
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 Some(callback),
                 Box_::into_raw(user_data) as *mut _,
             );

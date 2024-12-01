@@ -18,14 +18,14 @@ impl ProxyAddress {
     pub const NONE: Option<&'static ProxyAddress> = None;
 
     #[doc(alias = "g_proxy_address_new")]
-    pub fn new(
+    pub fn new<'a>(
         inetaddr: &impl IsA<InetAddress>,
         port: u16,
         protocol: &str,
         dest_hostname: &str,
         dest_port: u16,
-        username: Option<&str>,
-        password: Option<&str>,
+        username: impl Into<Option<&'a str>>,
+        password: impl Into<Option<&'a str>>,
     ) -> ProxyAddress {
         unsafe {
             SocketAddress::from_glib_full(ffi::g_proxy_address_new(
@@ -34,8 +34,8 @@ impl ProxyAddress {
                 protocol.to_glib_none().0,
                 dest_hostname.to_glib_none().0,
                 dest_port,
-                username.to_glib_none().0,
-                password.to_glib_none().0,
+                username.into().to_glib_none().0,
+                password.into().to_glib_none().0,
             ))
             .unsafe_cast()
         }

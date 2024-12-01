@@ -58,14 +58,14 @@ impl FileAttributeMatcher {
 
     #[doc(alias = "g_file_attribute_matcher_subtract")]
     #[must_use]
-    pub fn subtract(
+    pub fn subtract<'a>(
         &self,
-        subtract: Option<&FileAttributeMatcher>,
+        subtract: impl Into<Option<&'a FileAttributeMatcher>>,
     ) -> Option<FileAttributeMatcher> {
         unsafe {
             from_glib_full(ffi::g_file_attribute_matcher_subtract(
                 self.to_glib_none().0,
-                subtract.to_glib_none().0,
+                subtract.into().to_glib_none().0,
             ))
         }
     }

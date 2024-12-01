@@ -21,11 +21,11 @@ impl AsyncInitable {
 
 pub trait AsyncInitableExt: IsA<AsyncInitable> + 'static {
     #[doc(alias = "g_async_initable_init_async")]
-    unsafe fn init_async<P: FnOnce(Result<(), glib::Error>) + 'static>(
+    unsafe fn init_async<'a, P: IsA<Cancellable>, Q: FnOnce(Result<(), glib::Error>) + 'static>(
         &self,
         io_priority: glib::Priority,
-        cancellable: Option<&impl IsA<Cancellable>>,
-        callback: P,
+        cancellable: impl Into<Option<&'a P>>,
+        callback: Q,
     ) {
         let main_context = glib::MainContext::ref_thread_default();
         let is_main_context_owner = main_context.is_owner();
@@ -37,9 +37,9 @@ pub trait AsyncInitableExt: IsA<AsyncInitable> + 'static {
             "Async operations only allowed if the thread is owning the MainContext"
         );
 
-        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+        let user_data: Box_<glib::thread_guard::ThreadGuard<Q>> =
             Box_::new(glib::thread_guard::ThreadGuard::new(callback));
-        unsafe extern "C" fn init_async_trampoline<P: FnOnce(Result<(), glib::Error>) + 'static>(
+        unsafe extern "C" fn init_async_trampoline<Q: FnOnce(Result<(), glib::Error>) + 'static>(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
@@ -51,16 +51,21 @@ pub trait AsyncInitableExt: IsA<AsyncInitable> + 'static {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+            let callback: Box_<glib::thread_guard::ThreadGuard<Q>> =
                 Box_::from_raw(user_data as *mut _);
-            let callback: P = callback.into_inner();
+            let callback: Q = callback.into_inner();
             callback(result);
         }
-        let callback = init_async_trampoline::<P>;
+        let callback = init_async_trampoline::<Q>;
         ffi::g_async_initable_init_async(
             self.as_ref().to_glib_none().0,
             io_priority.into_glib(),
-            cancellable.map(|p| p.as_ref()).to_glib_none().0,
+            cancellable
+                .into()
+                .as_ref()
+                .map(|p| p.as_ref())
+                .to_glib_none()
+                .0,
             Some(callback),
             Box_::into_raw(user_data) as *mut _,
         );

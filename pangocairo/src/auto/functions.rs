@@ -16,11 +16,14 @@ pub fn context_get_resolution(context: &pango::Context) -> f64 {
 //}
 
 #[doc(alias = "pango_cairo_context_set_font_options")]
-pub fn context_set_font_options(context: &pango::Context, options: Option<&cairo::FontOptions>) {
+pub fn context_set_font_options<'a>(
+    context: &pango::Context,
+    options: impl Into<Option<&'a cairo::FontOptions>>,
+) {
     unsafe {
         ffi::pango_cairo_context_set_font_options(
             context.to_glib_none().0,
-            options.to_glib_none().0,
+            options.into().to_glib_none().0,
         );
     }
 }

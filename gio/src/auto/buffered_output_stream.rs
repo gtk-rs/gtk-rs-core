@@ -86,11 +86,15 @@ impl BufferedOutputStreamBuilder {
         }
     }
 
-    pub fn base_stream(self, base_stream: &impl IsA<OutputStream>) -> Self {
+    pub fn base_stream<'a, P: IsA<OutputStream>>(
+        self,
+        base_stream: impl Into<Option<&'a P>>,
+    ) -> Self {
         Self {
-            builder: self
-                .builder
-                .property("base-stream", base_stream.clone().upcast()),
+            builder: self.builder.property(
+                "base-stream",
+                base_stream.into().as_ref().map(|p| p.as_ref()),
+            ),
         }
     }
 

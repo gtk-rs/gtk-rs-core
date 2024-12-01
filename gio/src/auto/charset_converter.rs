@@ -129,13 +129,13 @@ impl CharsetConverterBuilder {
         }
     }
 
-    pub fn from_charset(self, from_charset: impl Into<glib::GString>) -> Self {
+    pub fn from_charset<'a>(self, from_charset: impl Into<Option<&'a str>>) -> Self {
         Self {
             builder: self.builder.property("from-charset", from_charset.into()),
         }
     }
 
-    pub fn to_charset(self, to_charset: impl Into<glib::GString>) -> Self {
+    pub fn to_charset<'a>(self, to_charset: impl Into<Option<&'a str>>) -> Self {
         Self {
             builder: self.builder.property("to-charset", to_charset.into()),
         }

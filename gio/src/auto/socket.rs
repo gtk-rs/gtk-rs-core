@@ -50,12 +50,20 @@ impl Socket {
 
 pub trait SocketExt: IsA<Socket> + 'static {
     #[doc(alias = "g_socket_accept")]
-    fn accept(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<Socket, glib::Error> {
+    fn accept<'a, P: IsA<Cancellable>>(
+        &self,
+        cancellable: impl Into<Option<&'a P>>,
+    ) -> Result<Socket, glib::Error> {
         unsafe {
             let mut error = std::ptr::null_mut();
             let ret = ffi::g_socket_accept(
                 self.as_ref().to_glib_none().0,
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                cancellable
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 &mut error,
             );
             if error.is_null() {
@@ -129,11 +137,11 @@ pub trait SocketExt: IsA<Socket> + 'static {
     }
 
     #[doc(alias = "g_socket_condition_timed_wait")]
-    fn condition_timed_wait(
+    fn condition_timed_wait<'a, P: IsA<Cancellable>>(
         &self,
         condition: glib::IOCondition,
         timeout_us: i64,
-        cancellable: Option<&impl IsA<Cancellable>>,
+        cancellable: impl Into<Option<&'a P>>,
     ) -> Result<(), glib::Error> {
         unsafe {
             let mut error = std::ptr::null_mut();
@@ -141,7 +149,12 @@ pub trait SocketExt: IsA<Socket> + 'static {
                 self.as_ref().to_glib_none().0,
                 condition.into_glib(),
                 timeout_us,
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                cancellable
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 &mut error,
             );
             debug_assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
@@ -154,17 +167,22 @@ pub trait SocketExt: IsA<Socket> + 'static {
     }
 
     #[doc(alias = "g_socket_condition_wait")]
-    fn condition_wait(
+    fn condition_wait<'a, P: IsA<Cancellable>>(
         &self,
         condition: glib::IOCondition,
-        cancellable: Option<&impl IsA<Cancellable>>,
+        cancellable: impl Into<Option<&'a P>>,
     ) -> Result<(), glib::Error> {
         unsafe {
             let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_socket_condition_wait(
                 self.as_ref().to_glib_none().0,
                 condition.into_glib(),
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                cancellable
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 &mut error,
             );
             debug_assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
@@ -177,17 +195,22 @@ pub trait SocketExt: IsA<Socket> + 'static {
     }
 
     #[doc(alias = "g_socket_connect")]
-    fn connect(
+    fn connect<'a, P: IsA<Cancellable>>(
         &self,
         address: &impl IsA<SocketAddress>,
-        cancellable: Option<&impl IsA<Cancellable>>,
+        cancellable: impl Into<Option<&'a P>>,
     ) -> Result<(), glib::Error> {
         unsafe {
             let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_socket_connect(
                 self.as_ref().to_glib_none().0,
                 address.as_ref().to_glib_none().0,
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                cancellable
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 &mut error,
             );
             debug_assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
@@ -371,11 +394,11 @@ pub trait SocketExt: IsA<Socket> + 'static {
     }
 
     #[doc(alias = "g_socket_join_multicast_group")]
-    fn join_multicast_group(
+    fn join_multicast_group<'a>(
         &self,
         group: &impl IsA<InetAddress>,
         source_specific: bool,
-        iface: Option<&str>,
+        iface: impl Into<Option<&'a str>>,
     ) -> Result<(), glib::Error> {
         unsafe {
             let mut error = std::ptr::null_mut();
@@ -383,7 +406,7 @@ pub trait SocketExt: IsA<Socket> + 'static {
                 self.as_ref().to_glib_none().0,
                 group.as_ref().to_glib_none().0,
                 source_specific.into_glib(),
-                iface.to_glib_none().0,
+                iface.into().to_glib_none().0,
                 &mut error,
             );
             debug_assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
@@ -396,19 +419,24 @@ pub trait SocketExt: IsA<Socket> + 'static {
     }
 
     #[doc(alias = "g_socket_join_multicast_group_ssm")]
-    fn join_multicast_group_ssm(
+    fn join_multicast_group_ssm<'a, P: IsA<InetAddress>>(
         &self,
         group: &impl IsA<InetAddress>,
-        source_specific: Option<&impl IsA<InetAddress>>,
-        iface: Option<&str>,
+        source_specific: impl Into<Option<&'a P>>,
+        iface: impl Into<Option<&'a str>>,
     ) -> Result<(), glib::Error> {
         unsafe {
             let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_socket_join_multicast_group_ssm(
                 self.as_ref().to_glib_none().0,
                 group.as_ref().to_glib_none().0,
-                source_specific.map(|p| p.as_ref()).to_glib_none().0,
-                iface.to_glib_none().0,
+                source_specific
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
+                iface.into().to_glib_none().0,
                 &mut error,
             );
             debug_assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
@@ -421,11 +449,11 @@ pub trait SocketExt: IsA<Socket> + 'static {
     }
 
     #[doc(alias = "g_socket_leave_multicast_group")]
-    fn leave_multicast_group(
+    fn leave_multicast_group<'a>(
         &self,
         group: &impl IsA<InetAddress>,
         source_specific: bool,
-        iface: Option<&str>,
+        iface: impl Into<Option<&'a str>>,
     ) -> Result<(), glib::Error> {
         unsafe {
             let mut error = std::ptr::null_mut();
@@ -433,7 +461,7 @@ pub trait SocketExt: IsA<Socket> + 'static {
                 self.as_ref().to_glib_none().0,
                 group.as_ref().to_glib_none().0,
                 source_specific.into_glib(),
-                iface.to_glib_none().0,
+                iface.into().to_glib_none().0,
                 &mut error,
             );
             debug_assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
@@ -446,19 +474,24 @@ pub trait SocketExt: IsA<Socket> + 'static {
     }
 
     #[doc(alias = "g_socket_leave_multicast_group_ssm")]
-    fn leave_multicast_group_ssm(
+    fn leave_multicast_group_ssm<'a, P: IsA<InetAddress>>(
         &self,
         group: &impl IsA<InetAddress>,
-        source_specific: Option<&impl IsA<InetAddress>>,
-        iface: Option<&str>,
+        source_specific: impl Into<Option<&'a P>>,
+        iface: impl Into<Option<&'a str>>,
     ) -> Result<(), glib::Error> {
         unsafe {
             let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_socket_leave_multicast_group_ssm(
                 self.as_ref().to_glib_none().0,
                 group.as_ref().to_glib_none().0,
-                source_specific.map(|p| p.as_ref()).to_glib_none().0,
-                iface.to_glib_none().0,
+                source_specific
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
+                iface.into().to_glib_none().0,
                 &mut error,
             );
             debug_assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());

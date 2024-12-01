@@ -21,12 +21,12 @@ glib::wrapper! {
 
 impl DBusServer {
     #[doc(alias = "g_dbus_server_new_sync")]
-    pub fn new_sync(
+    pub fn new_sync<'a, P: IsA<Cancellable>>(
         address: &str,
         flags: DBusServerFlags,
         guid: &str,
-        observer: Option<&DBusAuthObserver>,
-        cancellable: Option<&impl IsA<Cancellable>>,
+        observer: impl Into<Option<&'a DBusAuthObserver>>,
+        cancellable: impl Into<Option<&'a P>>,
     ) -> Result<DBusServer, glib::Error> {
         unsafe {
             let mut error = std::ptr::null_mut();
@@ -34,8 +34,13 @@ impl DBusServer {
                 address.to_glib_none().0,
                 flags.into_glib(),
                 guid.to_glib_none().0,
-                observer.to_glib_none().0,
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                observer.into().to_glib_none().0,
+                cancellable
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 &mut error,
             );
             if error.is_null() {

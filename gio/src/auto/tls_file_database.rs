@@ -41,8 +41,8 @@ pub trait TlsFileDatabaseExt: IsA<TlsFileDatabase> + 'static {
         ObjectExt::property(self.as_ref(), "anchors")
     }
 
-    fn set_anchors(&self, anchors: Option<&str>) {
-        ObjectExt::set_property(self.as_ref(), "anchors", anchors)
+    fn set_anchors<'a>(&self, anchors: impl Into<Option<&'a str>>) {
+        ObjectExt::set_property(self.as_ref(), "anchors", anchors.into())
     }
 
     #[doc(alias = "anchors")]

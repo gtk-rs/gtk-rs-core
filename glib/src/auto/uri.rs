@@ -117,81 +117,84 @@ impl Uri {
     }
 
     #[doc(alias = "g_uri_build")]
-    pub fn build(
+    pub fn build<'a>(
         flags: UriFlags,
         scheme: &str,
-        userinfo: Option<&str>,
-        host: Option<&str>,
+        userinfo: impl Into<Option<&'a str>>,
+        host: impl Into<Option<&'a str>>,
         port: i32,
         path: &str,
-        query: Option<&str>,
-        fragment: Option<&str>,
+        query: impl Into<Option<&'a str>>,
+        fragment: impl Into<Option<&'a str>>,
     ) -> Uri {
         unsafe {
             from_glib_full(ffi::g_uri_build(
                 flags.into_glib(),
                 scheme.to_glib_none().0,
-                userinfo.to_glib_none().0,
-                host.to_glib_none().0,
+                userinfo.into().to_glib_none().0,
+                host.into().to_glib_none().0,
                 port,
                 path.to_glib_none().0,
-                query.to_glib_none().0,
-                fragment.to_glib_none().0,
+                query.into().to_glib_none().0,
+                fragment.into().to_glib_none().0,
             ))
         }
     }
 
     #[doc(alias = "g_uri_build_with_user")]
-    pub fn build_with_user(
+    pub fn build_with_user<'a>(
         flags: UriFlags,
         scheme: &str,
-        user: Option<&str>,
-        password: Option<&str>,
-        auth_params: Option<&str>,
-        host: Option<&str>,
+        user: impl Into<Option<&'a str>>,
+        password: impl Into<Option<&'a str>>,
+        auth_params: impl Into<Option<&'a str>>,
+        host: impl Into<Option<&'a str>>,
         port: i32,
         path: &str,
-        query: Option<&str>,
-        fragment: Option<&str>,
+        query: impl Into<Option<&'a str>>,
+        fragment: impl Into<Option<&'a str>>,
     ) -> Uri {
         unsafe {
             from_glib_full(ffi::g_uri_build_with_user(
                 flags.into_glib(),
                 scheme.to_glib_none().0,
-                user.to_glib_none().0,
-                password.to_glib_none().0,
-                auth_params.to_glib_none().0,
-                host.to_glib_none().0,
+                user.into().to_glib_none().0,
+                password.into().to_glib_none().0,
+                auth_params.into().to_glib_none().0,
+                host.into().to_glib_none().0,
                 port,
                 path.to_glib_none().0,
-                query.to_glib_none().0,
-                fragment.to_glib_none().0,
+                query.into().to_glib_none().0,
+                fragment.into().to_glib_none().0,
             ))
         }
     }
 
     #[doc(alias = "g_uri_escape_bytes")]
-    pub fn escape_bytes(unescaped: &[u8], reserved_chars_allowed: Option<&str>) -> crate::GString {
+    pub fn escape_bytes<'a>(
+        unescaped: &[u8],
+        reserved_chars_allowed: impl Into<Option<&'a str>>,
+    ) -> crate::GString {
         let length = unescaped.len() as _;
         unsafe {
             from_glib_full(ffi::g_uri_escape_bytes(
                 unescaped.to_glib_none().0,
                 length,
-                reserved_chars_allowed.to_glib_none().0,
+                reserved_chars_allowed.into().to_glib_none().0,
             ))
         }
     }
 
     #[doc(alias = "g_uri_escape_string")]
-    pub fn escape_string(
+    pub fn escape_string<'a>(
         unescaped: &str,
-        reserved_chars_allowed: Option<&str>,
+        reserved_chars_allowed: impl Into<Option<&'a str>>,
         allow_utf8: bool,
     ) -> crate::GString {
         unsafe {
             from_glib_full(ffi::g_uri_escape_string(
                 unescaped.to_glib_none().0,
-                reserved_chars_allowed.to_glib_none().0,
+                reserved_chars_allowed.into().to_glib_none().0,
                 allow_utf8.into_glib(),
             ))
         }
@@ -213,55 +216,55 @@ impl Uri {
     }
 
     #[doc(alias = "g_uri_join")]
-    pub fn join(
+    pub fn join<'a>(
         flags: UriFlags,
-        scheme: Option<&str>,
-        userinfo: Option<&str>,
-        host: Option<&str>,
+        scheme: impl Into<Option<&'a str>>,
+        userinfo: impl Into<Option<&'a str>>,
+        host: impl Into<Option<&'a str>>,
         port: i32,
         path: &str,
-        query: Option<&str>,
-        fragment: Option<&str>,
+        query: impl Into<Option<&'a str>>,
+        fragment: impl Into<Option<&'a str>>,
     ) -> crate::GString {
         unsafe {
             from_glib_full(ffi::g_uri_join(
                 flags.into_glib(),
-                scheme.to_glib_none().0,
-                userinfo.to_glib_none().0,
-                host.to_glib_none().0,
+                scheme.into().to_glib_none().0,
+                userinfo.into().to_glib_none().0,
+                host.into().to_glib_none().0,
                 port,
                 path.to_glib_none().0,
-                query.to_glib_none().0,
-                fragment.to_glib_none().0,
+                query.into().to_glib_none().0,
+                fragment.into().to_glib_none().0,
             ))
         }
     }
 
     #[doc(alias = "g_uri_join_with_user")]
-    pub fn join_with_user(
+    pub fn join_with_user<'a>(
         flags: UriFlags,
-        scheme: Option<&str>,
-        user: Option<&str>,
-        password: Option<&str>,
-        auth_params: Option<&str>,
-        host: Option<&str>,
+        scheme: impl Into<Option<&'a str>>,
+        user: impl Into<Option<&'a str>>,
+        password: impl Into<Option<&'a str>>,
+        auth_params: impl Into<Option<&'a str>>,
+        host: impl Into<Option<&'a str>>,
         port: i32,
         path: &str,
-        query: Option<&str>,
-        fragment: Option<&str>,
+        query: impl Into<Option<&'a str>>,
+        fragment: impl Into<Option<&'a str>>,
     ) -> crate::GString {
         unsafe {
             from_glib_full(ffi::g_uri_join_with_user(
                 flags.into_glib(),
-                scheme.to_glib_none().0,
-                user.to_glib_none().0,
-                password.to_glib_none().0,
-                auth_params.to_glib_none().0,
-                host.to_glib_none().0,
+                scheme.into().to_glib_none().0,
+                user.into().to_glib_none().0,
+                password.into().to_glib_none().0,
+                auth_params.into().to_glib_none().0,
+                host.into().to_glib_none().0,
                 port,
                 path.to_glib_none().0,
-                query.to_glib_none().0,
-                fragment.to_glib_none().0,
+                query.into().to_glib_none().0,
+                fragment.into().to_glib_none().0,
             ))
         }
     }
@@ -304,15 +307,15 @@ impl Uri {
     }
 
     #[doc(alias = "g_uri_resolve_relative")]
-    pub fn resolve_relative(
-        base_uri_string: Option<&str>,
+    pub fn resolve_relative<'a>(
+        base_uri_string: impl Into<Option<&'a str>>,
         uri_ref: &str,
         flags: UriFlags,
     ) -> Result<crate::GString, crate::Error> {
         unsafe {
             let mut error = std::ptr::null_mut();
             let ret = ffi::g_uri_resolve_relative(
-                base_uri_string.to_glib_none().0,
+                base_uri_string.into().to_glib_none().0,
                 uri_ref.to_glib_none().0,
                 flags.into_glib(),
                 &mut error,
@@ -473,9 +476,9 @@ impl Uri {
     }
 
     #[doc(alias = "g_uri_unescape_bytes")]
-    pub fn unescape_bytes(
+    pub fn unescape_bytes<'a>(
         escaped_string: &str,
-        illegal_characters: Option<&str>,
+        illegal_characters: impl Into<Option<&'a str>>,
     ) -> Result<Bytes, crate::Error> {
         let length = escaped_string.len() as _;
         unsafe {
@@ -483,7 +486,7 @@ impl Uri {
             let ret = ffi::g_uri_unescape_bytes(
                 escaped_string.to_glib_none().0,
                 length,
-                illegal_characters.to_glib_none().0,
+                illegal_characters.into().to_glib_none().0,
                 &mut error,
             );
             if error.is_null() {
@@ -495,29 +498,29 @@ impl Uri {
     }
 
     #[doc(alias = "g_uri_unescape_segment")]
-    pub fn unescape_segment(
-        escaped_string: Option<&str>,
-        escaped_string_end: Option<&str>,
-        illegal_characters: Option<&str>,
+    pub fn unescape_segment<'a>(
+        escaped_string: impl Into<Option<&'a str>>,
+        escaped_string_end: impl Into<Option<&'a str>>,
+        illegal_characters: impl Into<Option<&'a str>>,
     ) -> Option<crate::GString> {
         unsafe {
             from_glib_full(ffi::g_uri_unescape_segment(
-                escaped_string.to_glib_none().0,
-                escaped_string_end.to_glib_none().0,
-                illegal_characters.to_glib_none().0,
+                escaped_string.into().to_glib_none().0,
+                escaped_string_end.into().to_glib_none().0,
+                illegal_characters.into().to_glib_none().0,
             ))
         }
     }
 
     #[doc(alias = "g_uri_unescape_string")]
-    pub fn unescape_string(
+    pub fn unescape_string<'a>(
         escaped_string: &str,
-        illegal_characters: Option<&str>,
+        illegal_characters: impl Into<Option<&'a str>>,
     ) -> Option<crate::GString> {
         unsafe {
             from_glib_full(ffi::g_uri_unescape_string(
                 escaped_string.to_glib_none().0,
-                illegal_characters.to_glib_none().0,
+                illegal_characters.into().to_glib_none().0,
             ))
         }
     }

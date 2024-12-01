@@ -62,11 +62,17 @@ pub trait RendererExt: IsA<Renderer> + 'static {
     }
 
     #[doc(alias = "pango_renderer_draw_glyph_item")]
-    fn draw_glyph_item(&self, text: Option<&str>, glyph_item: &mut GlyphItem, x: i32, y: i32) {
+    fn draw_glyph_item<'a>(
+        &self,
+        text: impl Into<Option<&'a str>>,
+        glyph_item: &mut GlyphItem,
+        x: i32,
+        y: i32,
+    ) {
         unsafe {
             ffi::pango_renderer_draw_glyph_item(
                 self.as_ref().to_glib_none().0,
-                text.to_glib_none().0,
+                text.into().to_glib_none().0,
                 glyph_item.to_glib_none_mut().0,
                 x,
                 y,
@@ -212,20 +218,23 @@ pub trait RendererExt: IsA<Renderer> + 'static {
     }
 
     #[doc(alias = "pango_renderer_set_color")]
-    fn set_color(&self, part: RenderPart, color: Option<&Color>) {
+    fn set_color<'a>(&self, part: RenderPart, color: impl Into<Option<&'a Color>>) {
         unsafe {
             ffi::pango_renderer_set_color(
                 self.as_ref().to_glib_none().0,
                 part.into_glib(),
-                color.to_glib_none().0,
+                color.into().to_glib_none().0,
             );
         }
     }
 
     #[doc(alias = "pango_renderer_set_matrix")]
-    fn set_matrix(&self, matrix: Option<&Matrix>) {
+    fn set_matrix<'a>(&self, matrix: impl Into<Option<&'a Matrix>>) {
         unsafe {
-            ffi::pango_renderer_set_matrix(self.as_ref().to_glib_none().0, matrix.to_glib_none().0);
+            ffi::pango_renderer_set_matrix(
+                self.as_ref().to_glib_none().0,
+                matrix.into().to_glib_none().0,
+            );
         }
     }
 }

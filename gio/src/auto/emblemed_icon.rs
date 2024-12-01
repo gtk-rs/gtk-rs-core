@@ -18,11 +18,11 @@ impl EmblemedIcon {
     pub const NONE: Option<&'static EmblemedIcon> = None;
 
     #[doc(alias = "g_emblemed_icon_new")]
-    pub fn new(icon: &impl IsA<Icon>, emblem: Option<&Emblem>) -> EmblemedIcon {
+    pub fn new<'a>(icon: &impl IsA<Icon>, emblem: impl Into<Option<&'a Emblem>>) -> EmblemedIcon {
         unsafe {
             from_glib_full(ffi::g_emblemed_icon_new(
                 icon.as_ref().to_glib_none().0,
-                emblem.to_glib_none().0,
+                emblem.into().to_glib_none().0,
             ))
         }
     }

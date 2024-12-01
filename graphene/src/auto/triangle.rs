@@ -34,12 +34,12 @@ impl Triangle {
 
     #[doc(alias = "graphene_triangle_get_barycoords")]
     #[doc(alias = "get_barycoords")]
-    pub fn barycoords(&self, p: Option<&Point3D>) -> Option<Vec2> {
+    pub fn barycoords<'a>(&self, p: impl Into<Option<&'a Point3D>>) -> Option<Vec2> {
         unsafe {
             let mut res = Vec2::uninitialized();
             let ret = ffi::graphene_triangle_get_barycoords(
                 self.to_glib_none().0,
-                p.to_glib_none().0,
+                p.into().to_glib_none().0,
                 res.to_glib_none_mut().0,
             );
             if ret {
@@ -112,12 +112,18 @@ impl Triangle {
 
     #[doc(alias = "graphene_triangle_get_uv")]
     #[doc(alias = "get_uv")]
-    pub fn uv(&self, p: Option<&Point3D>, uv_a: &Vec2, uv_b: &Vec2, uv_c: &Vec2) -> Option<Vec2> {
+    pub fn uv<'a>(
+        &self,
+        p: impl Into<Option<&'a Point3D>>,
+        uv_a: &Vec2,
+        uv_b: &Vec2,
+        uv_c: &Vec2,
+    ) -> Option<Vec2> {
         unsafe {
             let mut res = Vec2::uninitialized();
             let ret = ffi::graphene_triangle_get_uv(
                 self.to_glib_none().0,
-                p.to_glib_none().0,
+                p.into().to_glib_none().0,
                 uv_a.to_glib_none().0,
                 uv_b.to_glib_none().0,
                 uv_c.to_glib_none().0,

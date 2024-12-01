@@ -1127,8 +1127,12 @@ pub enum Gravity {
 impl Gravity {
     #[doc(alias = "pango_gravity_get_for_matrix")]
     #[doc(alias = "get_for_matrix")]
-    pub fn for_matrix(matrix: Option<&Matrix>) -> Gravity {
-        unsafe { from_glib(ffi::pango_gravity_get_for_matrix(matrix.to_glib_none().0)) }
+    pub fn for_matrix<'a>(matrix: impl Into<Option<&'a Matrix>>) -> Gravity {
+        unsafe {
+            from_glib(ffi::pango_gravity_get_for_matrix(
+                matrix.into().to_glib_none().0,
+            ))
+        }
     }
 
     #[doc(alias = "pango_gravity_get_for_script")]

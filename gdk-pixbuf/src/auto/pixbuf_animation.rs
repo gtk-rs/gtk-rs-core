@@ -56,15 +56,20 @@ impl PixbufAnimation {
 
     #[doc(alias = "gdk_pixbuf_animation_new_from_stream")]
     #[doc(alias = "new_from_stream")]
-    pub fn from_stream(
+    pub fn from_stream<'a, P: IsA<gio::Cancellable>>(
         stream: &impl IsA<gio::InputStream>,
-        cancellable: Option<&impl IsA<gio::Cancellable>>,
+        cancellable: impl Into<Option<&'a P>>,
     ) -> Result<PixbufAnimation, glib::Error> {
         unsafe {
             let mut error = std::ptr::null_mut();
             let ret = ffi::gdk_pixbuf_animation_new_from_stream(
                 stream.as_ref().to_glib_none().0,
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                cancellable
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 &mut error,
             );
             if error.is_null() {
@@ -77,10 +82,14 @@ impl PixbufAnimation {
 
     #[doc(alias = "gdk_pixbuf_animation_new_from_stream_async")]
     #[doc(alias = "new_from_stream_async")]
-    pub fn from_stream_async<P: FnOnce(Result<PixbufAnimation, glib::Error>) + 'static>(
+    pub fn from_stream_async<
+        'a,
+        P: IsA<gio::Cancellable>,
+        Q: FnOnce(Result<PixbufAnimation, glib::Error>) + 'static,
+    >(
         stream: &impl IsA<gio::InputStream>,
-        cancellable: Option<&impl IsA<gio::Cancellable>>,
-        callback: P,
+        cancellable: impl Into<Option<&'a P>>,
+        callback: Q,
     ) {
         let main_context = glib::MainContext::ref_thread_default();
         let is_main_context_owner = main_context.is_owner();
@@ -92,10 +101,10 @@ impl PixbufAnimation {
             "Async operations only allowed if the thread is owning the MainContext"
         );
 
-        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+        let user_data: Box_<glib::thread_guard::ThreadGuard<Q>> =
             Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn from_stream_async_trampoline<
-            P: FnOnce(Result<PixbufAnimation, glib::Error>) + 'static,
+            Q: FnOnce(Result<PixbufAnimation, glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut gio::ffi::GAsyncResult,
@@ -108,16 +117,21 @@ impl PixbufAnimation {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+            let callback: Box_<glib::thread_guard::ThreadGuard<Q>> =
                 Box_::from_raw(user_data as *mut _);
-            let callback: P = callback.into_inner();
+            let callback: Q = callback.into_inner();
             callback(result);
         }
-        let callback = from_stream_async_trampoline::<P>;
+        let callback = from_stream_async_trampoline::<Q>;
         unsafe {
             ffi::gdk_pixbuf_animation_new_from_stream_async(
                 stream.as_ref().to_glib_none().0,
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                cancellable
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 Some(callback),
                 Box_::into_raw(user_data) as *mut _,
             );

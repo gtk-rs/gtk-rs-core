@@ -155,11 +155,11 @@ pub trait MountOperationExt: IsA<MountOperation> + 'static {
 
     #[doc(alias = "g_mount_operation_set_domain")]
     #[doc(alias = "domain")]
-    fn set_domain(&self, domain: Option<&str>) {
+    fn set_domain<'a>(&self, domain: impl Into<Option<&'a str>>) {
         unsafe {
             ffi::g_mount_operation_set_domain(
                 self.as_ref().to_glib_none().0,
-                domain.to_glib_none().0,
+                domain.into().to_glib_none().0,
             );
         }
     }
@@ -192,11 +192,11 @@ pub trait MountOperationExt: IsA<MountOperation> + 'static {
 
     #[doc(alias = "g_mount_operation_set_password")]
     #[doc(alias = "password")]
-    fn set_password(&self, password: Option<&str>) {
+    fn set_password<'a>(&self, password: impl Into<Option<&'a str>>) {
         unsafe {
             ffi::g_mount_operation_set_password(
                 self.as_ref().to_glib_none().0,
-                password.to_glib_none().0,
+                password.into().to_glib_none().0,
             );
         }
     }
@@ -224,11 +224,11 @@ pub trait MountOperationExt: IsA<MountOperation> + 'static {
 
     #[doc(alias = "g_mount_operation_set_username")]
     #[doc(alias = "username")]
-    fn set_username(&self, username: Option<&str>) {
+    fn set_username<'a>(&self, username: impl Into<Option<&'a str>>) {
         unsafe {
             ffi::g_mount_operation_set_username(
                 self.as_ref().to_glib_none().0,
-                username.to_glib_none().0,
+                username.into().to_glib_none().0,
             );
         }
     }

@@ -20,11 +20,19 @@ impl Initable {
 
 pub trait InitableExt: IsA<Initable> + 'static {
     #[doc(alias = "g_initable_init")]
-    unsafe fn init(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<(), glib::Error> {
+    unsafe fn init<'a, P: IsA<Cancellable>>(
+        &self,
+        cancellable: impl Into<Option<&'a P>>,
+    ) -> Result<(), glib::Error> {
         let mut error = std::ptr::null_mut();
         let is_ok = ffi::g_initable_init(
             self.as_ref().to_glib_none().0,
-            cancellable.map(|p| p.as_ref()).to_glib_none().0,
+            cancellable
+                .into()
+                .as_ref()
+                .map(|p| p.as_ref())
+                .to_glib_none()
+                .0,
             &mut error,
         );
         debug_assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());

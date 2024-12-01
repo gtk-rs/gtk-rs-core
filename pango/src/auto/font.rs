@@ -120,11 +120,11 @@ pub trait FontExt: IsA<Font> + 'static {
 
     #[doc(alias = "pango_font_get_metrics")]
     #[doc(alias = "get_metrics")]
-    fn metrics(&self, language: Option<&Language>) -> FontMetrics {
+    fn metrics<'a>(&self, language: impl Into<Option<&'a Language>>) -> FontMetrics {
         unsafe {
             from_glib_full(ffi::pango_font_get_metrics(
                 self.as_ref().to_glib_none().0,
-                mut_override(language.to_glib_none().0),
+                mut_override(language.into().to_glib_none().0),
             ))
         }
     }

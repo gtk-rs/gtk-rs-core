@@ -37,17 +37,22 @@ pub trait ProxyResolverExt: IsA<ProxyResolver> + 'static {
     }
 
     #[doc(alias = "g_proxy_resolver_lookup")]
-    fn lookup(
+    fn lookup<'a, P: IsA<Cancellable>>(
         &self,
         uri: &str,
-        cancellable: Option<&impl IsA<Cancellable>>,
+        cancellable: impl Into<Option<&'a P>>,
     ) -> Result<Vec<glib::GString>, glib::Error> {
         unsafe {
             let mut error = std::ptr::null_mut();
             let ret = ffi::g_proxy_resolver_lookup(
                 self.as_ref().to_glib_none().0,
                 uri.to_glib_none().0,
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                cancellable
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 &mut error,
             );
             if error.is_null() {
@@ -59,11 +64,15 @@ pub trait ProxyResolverExt: IsA<ProxyResolver> + 'static {
     }
 
     #[doc(alias = "g_proxy_resolver_lookup_async")]
-    fn lookup_async<P: FnOnce(Result<Vec<glib::GString>, glib::Error>) + 'static>(
+    fn lookup_async<
+        'a,
+        P: IsA<Cancellable>,
+        Q: FnOnce(Result<Vec<glib::GString>, glib::Error>) + 'static,
+    >(
         &self,
         uri: &str,
-        cancellable: Option<&impl IsA<Cancellable>>,
-        callback: P,
+        cancellable: impl Into<Option<&'a P>>,
+        callback: Q,
     ) {
         let main_context = glib::MainContext::ref_thread_default();
         let is_main_context_owner = main_context.is_owner();
@@ -75,10 +84,10 @@ pub trait ProxyResolverExt: IsA<ProxyResolver> + 'static {
             "Async operations only allowed if the thread is owning the MainContext"
         );
 
-        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+        let user_data: Box_<glib::thread_guard::ThreadGuard<Q>> =
             Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn lookup_async_trampoline<
-            P: FnOnce(Result<Vec<glib::GString>, glib::Error>) + 'static,
+            Q: FnOnce(Result<Vec<glib::GString>, glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -92,17 +101,22 @@ pub trait ProxyResolverExt: IsA<ProxyResolver> + 'static {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+            let callback: Box_<glib::thread_guard::ThreadGuard<Q>> =
                 Box_::from_raw(user_data as *mut _);
-            let callback: P = callback.into_inner();
+            let callback: Q = callback.into_inner();
             callback(result);
         }
-        let callback = lookup_async_trampoline::<P>;
+        let callback = lookup_async_trampoline::<Q>;
         unsafe {
             ffi::g_proxy_resolver_lookup_async(
                 self.as_ref().to_glib_none().0,
                 uri.to_glib_none().0,
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                cancellable
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 Some(callback),
                 Box_::into_raw(user_data) as *mut _,
             );

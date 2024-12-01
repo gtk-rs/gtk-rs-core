@@ -40,11 +40,11 @@ pub trait DBusInterfaceExt: IsA<DBusInterface> + 'static {
     }
 
     #[doc(alias = "g_dbus_interface_set_object")]
-    fn set_object(&self, object: Option<&impl IsA<DBusObject>>) {
+    fn set_object<'a, P: IsA<DBusObject>>(&self, object: impl Into<Option<&'a P>>) {
         unsafe {
             ffi::g_dbus_interface_set_object(
                 self.as_ref().to_glib_none().0,
-                object.map(|p| p.as_ref()).to_glib_none().0,
+                object.into().as_ref().map(|p| p.as_ref()).to_glib_none().0,
             );
         }
     }

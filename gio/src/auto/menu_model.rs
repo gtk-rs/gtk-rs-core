@@ -32,18 +32,18 @@ pub trait MenuModelExt: IsA<MenuModel> + 'static {
 
     #[doc(alias = "g_menu_model_get_item_attribute_value")]
     #[doc(alias = "get_item_attribute_value")]
-    fn item_attribute_value(
+    fn item_attribute_value<'a>(
         &self,
         item_index: i32,
         attribute: &str,
-        expected_type: Option<&glib::VariantTy>,
+        expected_type: impl Into<Option<&'a glib::VariantTy>>,
     ) -> Option<glib::Variant> {
         unsafe {
             from_glib_full(ffi::g_menu_model_get_item_attribute_value(
                 self.as_ref().to_glib_none().0,
                 item_index,
                 attribute.to_glib_none().0,
-                expected_type.to_glib_none().0,
+                expected_type.into().to_glib_none().0,
             ))
         }
     }

@@ -23,15 +23,20 @@ impl TlsServerConnection {
     pub const NONE: Option<&'static TlsServerConnection> = None;
 
     #[doc(alias = "g_tls_server_connection_new")]
-    pub fn new(
+    pub fn new<'a, P: IsA<TlsCertificate>>(
         base_io_stream: &impl IsA<IOStream>,
-        certificate: Option<&impl IsA<TlsCertificate>>,
+        certificate: impl Into<Option<&'a P>>,
     ) -> Result<TlsServerConnection, glib::Error> {
         unsafe {
             let mut error = std::ptr::null_mut();
             let ret = ffi::g_tls_server_connection_new(
                 base_io_stream.as_ref().to_glib_none().0,
-                certificate.map(|p| p.as_ref()).to_glib_none().0,
+                certificate
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 &mut error,
             );
             if error.is_null() {

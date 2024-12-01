@@ -39,9 +39,9 @@ impl Default for SocketListener {
 
 pub trait SocketListenerExt: IsA<SocketListener> + 'static {
     #[doc(alias = "g_socket_listener_accept")]
-    fn accept(
+    fn accept<'a, P: IsA<Cancellable>>(
         &self,
-        cancellable: Option<&impl IsA<Cancellable>>,
+        cancellable: impl Into<Option<&'a P>>,
     ) -> Result<(SocketConnection, Option<glib::Object>), glib::Error> {
         unsafe {
             let mut source_object = std::ptr::null_mut();
@@ -49,7 +49,12 @@ pub trait SocketListenerExt: IsA<SocketListener> + 'static {
             let ret = ffi::g_socket_listener_accept(
                 self.as_ref().to_glib_none().0,
                 &mut source_object,
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                cancellable
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 &mut error,
             );
             if error.is_null() {
@@ -62,11 +67,13 @@ pub trait SocketListenerExt: IsA<SocketListener> + 'static {
 
     #[doc(alias = "g_socket_listener_accept_async")]
     fn accept_async<
-        P: FnOnce(Result<(SocketConnection, Option<glib::Object>), glib::Error>) + 'static,
+        'a,
+        P: IsA<Cancellable>,
+        Q: FnOnce(Result<(SocketConnection, Option<glib::Object>), glib::Error>) + 'static,
     >(
         &self,
-        cancellable: Option<&impl IsA<Cancellable>>,
-        callback: P,
+        cancellable: impl Into<Option<&'a P>>,
+        callback: Q,
     ) {
         let main_context = glib::MainContext::ref_thread_default();
         let is_main_context_owner = main_context.is_owner();
@@ -78,10 +85,10 @@ pub trait SocketListenerExt: IsA<SocketListener> + 'static {
             "Async operations only allowed if the thread is owning the MainContext"
         );
 
-        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+        let user_data: Box_<glib::thread_guard::ThreadGuard<Q>> =
             Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn accept_async_trampoline<
-            P: FnOnce(Result<(SocketConnection, Option<glib::Object>), glib::Error>) + 'static,
+            Q: FnOnce(Result<(SocketConnection, Option<glib::Object>), glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -100,16 +107,21 @@ pub trait SocketListenerExt: IsA<SocketListener> + 'static {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+            let callback: Box_<glib::thread_guard::ThreadGuard<Q>> =
                 Box_::from_raw(user_data as *mut _);
-            let callback: P = callback.into_inner();
+            let callback: Q = callback.into_inner();
             callback(result);
         }
-        let callback = accept_async_trampoline::<P>;
+        let callback = accept_async_trampoline::<Q>;
         unsafe {
             ffi::g_socket_listener_accept_async(
                 self.as_ref().to_glib_none().0,
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                cancellable
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 Some(callback),
                 Box_::into_raw(user_data) as *mut _,
             );
@@ -136,9 +148,9 @@ pub trait SocketListenerExt: IsA<SocketListener> + 'static {
     }
 
     #[doc(alias = "g_socket_listener_accept_socket")]
-    fn accept_socket(
+    fn accept_socket<'a, P: IsA<Cancellable>>(
         &self,
-        cancellable: Option<&impl IsA<Cancellable>>,
+        cancellable: impl Into<Option<&'a P>>,
     ) -> Result<(Socket, Option<glib::Object>), glib::Error> {
         unsafe {
             let mut source_object = std::ptr::null_mut();
@@ -146,7 +158,12 @@ pub trait SocketListenerExt: IsA<SocketListener> + 'static {
             let ret = ffi::g_socket_listener_accept_socket(
                 self.as_ref().to_glib_none().0,
                 &mut source_object,
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                cancellable
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 &mut error,
             );
             if error.is_null() {
@@ -159,11 +176,13 @@ pub trait SocketListenerExt: IsA<SocketListener> + 'static {
 
     #[doc(alias = "g_socket_listener_accept_socket_async")]
     fn accept_socket_async<
-        P: FnOnce(Result<(Socket, Option<glib::Object>), glib::Error>) + 'static,
+        'a,
+        P: IsA<Cancellable>,
+        Q: FnOnce(Result<(Socket, Option<glib::Object>), glib::Error>) + 'static,
     >(
         &self,
-        cancellable: Option<&impl IsA<Cancellable>>,
-        callback: P,
+        cancellable: impl Into<Option<&'a P>>,
+        callback: Q,
     ) {
         let main_context = glib::MainContext::ref_thread_default();
         let is_main_context_owner = main_context.is_owner();
@@ -175,10 +194,10 @@ pub trait SocketListenerExt: IsA<SocketListener> + 'static {
             "Async operations only allowed if the thread is owning the MainContext"
         );
 
-        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+        let user_data: Box_<glib::thread_guard::ThreadGuard<Q>> =
             Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn accept_socket_async_trampoline<
-            P: FnOnce(Result<(Socket, Option<glib::Object>), glib::Error>) + 'static,
+            Q: FnOnce(Result<(Socket, Option<glib::Object>), glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -197,16 +216,21 @@ pub trait SocketListenerExt: IsA<SocketListener> + 'static {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+            let callback: Box_<glib::thread_guard::ThreadGuard<Q>> =
                 Box_::from_raw(user_data as *mut _);
-            let callback: P = callback.into_inner();
+            let callback: Q = callback.into_inner();
             callback(result);
         }
-        let callback = accept_socket_async_trampoline::<P>;
+        let callback = accept_socket_async_trampoline::<Q>;
         unsafe {
             ffi::g_socket_listener_accept_socket_async(
                 self.as_ref().to_glib_none().0,
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                cancellable
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 Some(callback),
                 Box_::into_raw(user_data) as *mut _,
             );
@@ -232,12 +256,12 @@ pub trait SocketListenerExt: IsA<SocketListener> + 'static {
     }
 
     #[doc(alias = "g_socket_listener_add_address")]
-    fn add_address(
+    fn add_address<'a, P: IsA<glib::Object>>(
         &self,
         address: &impl IsA<SocketAddress>,
         type_: SocketType,
         protocol: SocketProtocol,
-        source_object: Option<&impl IsA<glib::Object>>,
+        source_object: impl Into<Option<&'a P>>,
     ) -> Result<SocketAddress, glib::Error> {
         unsafe {
             let mut effective_address = std::ptr::null_mut();
@@ -247,7 +271,12 @@ pub trait SocketListenerExt: IsA<SocketListener> + 'static {
                 address.as_ref().to_glib_none().0,
                 type_.into_glib(),
                 protocol.into_glib(),
-                source_object.map(|p| p.as_ref()).to_glib_none().0,
+                source_object
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 &mut effective_address,
                 &mut error,
             );
@@ -261,15 +290,20 @@ pub trait SocketListenerExt: IsA<SocketListener> + 'static {
     }
 
     #[doc(alias = "g_socket_listener_add_any_inet_port")]
-    fn add_any_inet_port(
+    fn add_any_inet_port<'a, P: IsA<glib::Object>>(
         &self,
-        source_object: Option<&impl IsA<glib::Object>>,
+        source_object: impl Into<Option<&'a P>>,
     ) -> Result<u16, glib::Error> {
         unsafe {
             let mut error = std::ptr::null_mut();
             let ret = ffi::g_socket_listener_add_any_inet_port(
                 self.as_ref().to_glib_none().0,
-                source_object.map(|p| p.as_ref()).to_glib_none().0,
+                source_object
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 &mut error,
             );
             if error.is_null() {
@@ -281,17 +315,22 @@ pub trait SocketListenerExt: IsA<SocketListener> + 'static {
     }
 
     #[doc(alias = "g_socket_listener_add_inet_port")]
-    fn add_inet_port(
+    fn add_inet_port<'a, P: IsA<glib::Object>>(
         &self,
         port: u16,
-        source_object: Option<&impl IsA<glib::Object>>,
+        source_object: impl Into<Option<&'a P>>,
     ) -> Result<(), glib::Error> {
         unsafe {
             let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_socket_listener_add_inet_port(
                 self.as_ref().to_glib_none().0,
                 port,
-                source_object.map(|p| p.as_ref()).to_glib_none().0,
+                source_object
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 &mut error,
             );
             debug_assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
@@ -304,17 +343,22 @@ pub trait SocketListenerExt: IsA<SocketListener> + 'static {
     }
 
     #[doc(alias = "g_socket_listener_add_socket")]
-    fn add_socket(
+    fn add_socket<'a, P: IsA<glib::Object>>(
         &self,
         socket: &impl IsA<Socket>,
-        source_object: Option<&impl IsA<glib::Object>>,
+        source_object: impl Into<Option<&'a P>>,
     ) -> Result<(), glib::Error> {
         unsafe {
             let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_socket_listener_add_socket(
                 self.as_ref().to_glib_none().0,
                 socket.as_ref().to_glib_none().0,
-                source_object.map(|p| p.as_ref()).to_glib_none().0,
+                source_object
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 &mut error,
             );
             debug_assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());

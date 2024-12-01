@@ -64,13 +64,17 @@ impl Plane {
 
     #[doc(alias = "graphene_plane_transform")]
     #[must_use]
-    pub fn transform(&self, matrix: &Matrix, normal_matrix: Option<&Matrix>) -> Plane {
+    pub fn transform<'a>(
+        &self,
+        matrix: &Matrix,
+        normal_matrix: impl Into<Option<&'a Matrix>>,
+    ) -> Plane {
         unsafe {
             let mut res = Plane::uninitialized();
             ffi::graphene_plane_transform(
                 self.to_glib_none().0,
                 matrix.to_glib_none().0,
-                normal_matrix.to_glib_none().0,
+                normal_matrix.into().to_glib_none().0,
                 res.to_glib_none_mut().0,
             );
             res

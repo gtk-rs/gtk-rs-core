@@ -53,17 +53,22 @@ pub trait ResolverExt: IsA<Resolver> + 'static {
     }
 
     #[doc(alias = "g_resolver_lookup_by_address")]
-    fn lookup_by_address(
+    fn lookup_by_address<'a, P: IsA<Cancellable>>(
         &self,
         address: &impl IsA<InetAddress>,
-        cancellable: Option<&impl IsA<Cancellable>>,
+        cancellable: impl Into<Option<&'a P>>,
     ) -> Result<glib::GString, glib::Error> {
         unsafe {
             let mut error = std::ptr::null_mut();
             let ret = ffi::g_resolver_lookup_by_address(
                 self.as_ref().to_glib_none().0,
                 address.as_ref().to_glib_none().0,
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                cancellable
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 &mut error,
             );
             if error.is_null() {
@@ -75,11 +80,15 @@ pub trait ResolverExt: IsA<Resolver> + 'static {
     }
 
     #[doc(alias = "g_resolver_lookup_by_address_async")]
-    fn lookup_by_address_async<P: FnOnce(Result<glib::GString, glib::Error>) + 'static>(
+    fn lookup_by_address_async<
+        'a,
+        P: IsA<Cancellable>,
+        Q: FnOnce(Result<glib::GString, glib::Error>) + 'static,
+    >(
         &self,
         address: &impl IsA<InetAddress>,
-        cancellable: Option<&impl IsA<Cancellable>>,
-        callback: P,
+        cancellable: impl Into<Option<&'a P>>,
+        callback: Q,
     ) {
         let main_context = glib::MainContext::ref_thread_default();
         let is_main_context_owner = main_context.is_owner();
@@ -91,10 +100,10 @@ pub trait ResolverExt: IsA<Resolver> + 'static {
             "Async operations only allowed if the thread is owning the MainContext"
         );
 
-        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+        let user_data: Box_<glib::thread_guard::ThreadGuard<Q>> =
             Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn lookup_by_address_async_trampoline<
-            P: FnOnce(Result<glib::GString, glib::Error>) + 'static,
+            Q: FnOnce(Result<glib::GString, glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -108,17 +117,22 @@ pub trait ResolverExt: IsA<Resolver> + 'static {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+            let callback: Box_<glib::thread_guard::ThreadGuard<Q>> =
                 Box_::from_raw(user_data as *mut _);
-            let callback: P = callback.into_inner();
+            let callback: Q = callback.into_inner();
             callback(result);
         }
-        let callback = lookup_by_address_async_trampoline::<P>;
+        let callback = lookup_by_address_async_trampoline::<Q>;
         unsafe {
             ffi::g_resolver_lookup_by_address_async(
                 self.as_ref().to_glib_none().0,
                 address.as_ref().to_glib_none().0,
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                cancellable
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 Some(callback),
                 Box_::into_raw(user_data) as *mut _,
             );
@@ -142,17 +156,22 @@ pub trait ResolverExt: IsA<Resolver> + 'static {
     }
 
     #[doc(alias = "g_resolver_lookup_by_name")]
-    fn lookup_by_name(
+    fn lookup_by_name<'a, P: IsA<Cancellable>>(
         &self,
         hostname: &str,
-        cancellable: Option<&impl IsA<Cancellable>>,
+        cancellable: impl Into<Option<&'a P>>,
     ) -> Result<Vec<InetAddress>, glib::Error> {
         unsafe {
             let mut error = std::ptr::null_mut();
             let ret = ffi::g_resolver_lookup_by_name(
                 self.as_ref().to_glib_none().0,
                 hostname.to_glib_none().0,
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                cancellable
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 &mut error,
             );
             if error.is_null() {
@@ -164,11 +183,15 @@ pub trait ResolverExt: IsA<Resolver> + 'static {
     }
 
     #[doc(alias = "g_resolver_lookup_by_name_async")]
-    fn lookup_by_name_async<P: FnOnce(Result<Vec<InetAddress>, glib::Error>) + 'static>(
+    fn lookup_by_name_async<
+        'a,
+        P: IsA<Cancellable>,
+        Q: FnOnce(Result<Vec<InetAddress>, glib::Error>) + 'static,
+    >(
         &self,
         hostname: &str,
-        cancellable: Option<&impl IsA<Cancellable>>,
-        callback: P,
+        cancellable: impl Into<Option<&'a P>>,
+        callback: Q,
     ) {
         let main_context = glib::MainContext::ref_thread_default();
         let is_main_context_owner = main_context.is_owner();
@@ -180,10 +203,10 @@ pub trait ResolverExt: IsA<Resolver> + 'static {
             "Async operations only allowed if the thread is owning the MainContext"
         );
 
-        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+        let user_data: Box_<glib::thread_guard::ThreadGuard<Q>> =
             Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn lookup_by_name_async_trampoline<
-            P: FnOnce(Result<Vec<InetAddress>, glib::Error>) + 'static,
+            Q: FnOnce(Result<Vec<InetAddress>, glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -197,17 +220,22 @@ pub trait ResolverExt: IsA<Resolver> + 'static {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+            let callback: Box_<glib::thread_guard::ThreadGuard<Q>> =
                 Box_::from_raw(user_data as *mut _);
-            let callback: P = callback.into_inner();
+            let callback: Q = callback.into_inner();
             callback(result);
         }
-        let callback = lookup_by_name_async_trampoline::<P>;
+        let callback = lookup_by_name_async_trampoline::<Q>;
         unsafe {
             ffi::g_resolver_lookup_by_name_async(
                 self.as_ref().to_glib_none().0,
                 hostname.to_glib_none().0,
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                cancellable
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 Some(callback),
                 Box_::into_raw(user_data) as *mut _,
             );
@@ -233,11 +261,11 @@ pub trait ResolverExt: IsA<Resolver> + 'static {
     #[cfg(feature = "v2_60")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     #[doc(alias = "g_resolver_lookup_by_name_with_flags")]
-    fn lookup_by_name_with_flags(
+    fn lookup_by_name_with_flags<'a, P: IsA<Cancellable>>(
         &self,
         hostname: &str,
         flags: ResolverNameLookupFlags,
-        cancellable: Option<&impl IsA<Cancellable>>,
+        cancellable: impl Into<Option<&'a P>>,
     ) -> Result<Vec<InetAddress>, glib::Error> {
         unsafe {
             let mut error = std::ptr::null_mut();
@@ -245,7 +273,12 @@ pub trait ResolverExt: IsA<Resolver> + 'static {
                 self.as_ref().to_glib_none().0,
                 hostname.to_glib_none().0,
                 flags.into_glib(),
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                cancellable
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 &mut error,
             );
             if error.is_null() {
@@ -260,13 +293,15 @@ pub trait ResolverExt: IsA<Resolver> + 'static {
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     #[doc(alias = "g_resolver_lookup_by_name_with_flags_async")]
     fn lookup_by_name_with_flags_async<
-        P: FnOnce(Result<Vec<InetAddress>, glib::Error>) + 'static,
+        'a,
+        P: IsA<Cancellable>,
+        Q: FnOnce(Result<Vec<InetAddress>, glib::Error>) + 'static,
     >(
         &self,
         hostname: &str,
         flags: ResolverNameLookupFlags,
-        cancellable: Option<&impl IsA<Cancellable>>,
-        callback: P,
+        cancellable: impl Into<Option<&'a P>>,
+        callback: Q,
     ) {
         let main_context = glib::MainContext::ref_thread_default();
         let is_main_context_owner = main_context.is_owner();
@@ -278,10 +313,10 @@ pub trait ResolverExt: IsA<Resolver> + 'static {
             "Async operations only allowed if the thread is owning the MainContext"
         );
 
-        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+        let user_data: Box_<glib::thread_guard::ThreadGuard<Q>> =
             Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn lookup_by_name_with_flags_async_trampoline<
-            P: FnOnce(Result<Vec<InetAddress>, glib::Error>) + 'static,
+            Q: FnOnce(Result<Vec<InetAddress>, glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -298,18 +333,23 @@ pub trait ResolverExt: IsA<Resolver> + 'static {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+            let callback: Box_<glib::thread_guard::ThreadGuard<Q>> =
                 Box_::from_raw(user_data as *mut _);
-            let callback: P = callback.into_inner();
+            let callback: Q = callback.into_inner();
             callback(result);
         }
-        let callback = lookup_by_name_with_flags_async_trampoline::<P>;
+        let callback = lookup_by_name_with_flags_async_trampoline::<Q>;
         unsafe {
             ffi::g_resolver_lookup_by_name_with_flags_async(
                 self.as_ref().to_glib_none().0,
                 hostname.to_glib_none().0,
                 flags.into_glib(),
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                cancellable
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 Some(callback),
                 Box_::into_raw(user_data) as *mut _,
             );
@@ -341,11 +381,11 @@ pub trait ResolverExt: IsA<Resolver> + 'static {
     }
 
     #[doc(alias = "g_resolver_lookup_records")]
-    fn lookup_records(
+    fn lookup_records<'a, P: IsA<Cancellable>>(
         &self,
         rrname: &str,
         record_type: ResolverRecordType,
-        cancellable: Option<&impl IsA<Cancellable>>,
+        cancellable: impl Into<Option<&'a P>>,
     ) -> Result<Vec<glib::Variant>, glib::Error> {
         unsafe {
             let mut error = std::ptr::null_mut();
@@ -353,7 +393,12 @@ pub trait ResolverExt: IsA<Resolver> + 'static {
                 self.as_ref().to_glib_none().0,
                 rrname.to_glib_none().0,
                 record_type.into_glib(),
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                cancellable
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 &mut error,
             );
             if error.is_null() {
@@ -365,12 +410,16 @@ pub trait ResolverExt: IsA<Resolver> + 'static {
     }
 
     #[doc(alias = "g_resolver_lookup_records_async")]
-    fn lookup_records_async<P: FnOnce(Result<Vec<glib::Variant>, glib::Error>) + 'static>(
+    fn lookup_records_async<
+        'a,
+        P: IsA<Cancellable>,
+        Q: FnOnce(Result<Vec<glib::Variant>, glib::Error>) + 'static,
+    >(
         &self,
         rrname: &str,
         record_type: ResolverRecordType,
-        cancellable: Option<&impl IsA<Cancellable>>,
-        callback: P,
+        cancellable: impl Into<Option<&'a P>>,
+        callback: Q,
     ) {
         let main_context = glib::MainContext::ref_thread_default();
         let is_main_context_owner = main_context.is_owner();
@@ -382,10 +431,10 @@ pub trait ResolverExt: IsA<Resolver> + 'static {
             "Async operations only allowed if the thread is owning the MainContext"
         );
 
-        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+        let user_data: Box_<glib::thread_guard::ThreadGuard<Q>> =
             Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn lookup_records_async_trampoline<
-            P: FnOnce(Result<Vec<glib::Variant>, glib::Error>) + 'static,
+            Q: FnOnce(Result<Vec<glib::Variant>, glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -399,18 +448,23 @@ pub trait ResolverExt: IsA<Resolver> + 'static {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+            let callback: Box_<glib::thread_guard::ThreadGuard<Q>> =
                 Box_::from_raw(user_data as *mut _);
-            let callback: P = callback.into_inner();
+            let callback: Q = callback.into_inner();
             callback(result);
         }
-        let callback = lookup_records_async_trampoline::<P>;
+        let callback = lookup_records_async_trampoline::<Q>;
         unsafe {
             ffi::g_resolver_lookup_records_async(
                 self.as_ref().to_glib_none().0,
                 rrname.to_glib_none().0,
                 record_type.into_glib(),
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                cancellable
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 Some(callback),
                 Box_::into_raw(user_data) as *mut _,
             );
@@ -436,12 +490,12 @@ pub trait ResolverExt: IsA<Resolver> + 'static {
     }
 
     #[doc(alias = "g_resolver_lookup_service")]
-    fn lookup_service(
+    fn lookup_service<'a, P: IsA<Cancellable>>(
         &self,
         service: &str,
         protocol: &str,
         domain: &str,
-        cancellable: Option<&impl IsA<Cancellable>>,
+        cancellable: impl Into<Option<&'a P>>,
     ) -> Result<Vec<SrvTarget>, glib::Error> {
         unsafe {
             let mut error = std::ptr::null_mut();
@@ -450,7 +504,12 @@ pub trait ResolverExt: IsA<Resolver> + 'static {
                 service.to_glib_none().0,
                 protocol.to_glib_none().0,
                 domain.to_glib_none().0,
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                cancellable
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 &mut error,
             );
             if error.is_null() {
@@ -462,13 +521,17 @@ pub trait ResolverExt: IsA<Resolver> + 'static {
     }
 
     #[doc(alias = "g_resolver_lookup_service_async")]
-    fn lookup_service_async<P: FnOnce(Result<Vec<SrvTarget>, glib::Error>) + 'static>(
+    fn lookup_service_async<
+        'a,
+        P: IsA<Cancellable>,
+        Q: FnOnce(Result<Vec<SrvTarget>, glib::Error>) + 'static,
+    >(
         &self,
         service: &str,
         protocol: &str,
         domain: &str,
-        cancellable: Option<&impl IsA<Cancellable>>,
-        callback: P,
+        cancellable: impl Into<Option<&'a P>>,
+        callback: Q,
     ) {
         let main_context = glib::MainContext::ref_thread_default();
         let is_main_context_owner = main_context.is_owner();
@@ -480,10 +543,10 @@ pub trait ResolverExt: IsA<Resolver> + 'static {
             "Async operations only allowed if the thread is owning the MainContext"
         );
 
-        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+        let user_data: Box_<glib::thread_guard::ThreadGuard<Q>> =
             Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn lookup_service_async_trampoline<
-            P: FnOnce(Result<Vec<SrvTarget>, glib::Error>) + 'static,
+            Q: FnOnce(Result<Vec<SrvTarget>, glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -497,19 +560,24 @@ pub trait ResolverExt: IsA<Resolver> + 'static {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+            let callback: Box_<glib::thread_guard::ThreadGuard<Q>> =
                 Box_::from_raw(user_data as *mut _);
-            let callback: P = callback.into_inner();
+            let callback: Q = callback.into_inner();
             callback(result);
         }
-        let callback = lookup_service_async_trampoline::<P>;
+        let callback = lookup_service_async_trampoline::<Q>;
         unsafe {
             ffi::g_resolver_lookup_service_async(
                 self.as_ref().to_glib_none().0,
                 service.to_glib_none().0,
                 protocol.to_glib_none().0,
                 domain.to_glib_none().0,
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                cancellable
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 Some(callback),
                 Box_::into_raw(user_data) as *mut _,
             );

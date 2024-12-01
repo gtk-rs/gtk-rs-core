@@ -17,7 +17,7 @@ use glib::translate::*;
 //}
 
 //#[doc(alias = "pango_default_break")]
-//pub fn default_break(text: &str, analysis: Option<&mut Analysis>, attrs: /*Ignored*/&mut LogAttr, attrs_len: i32) {
+//pub fn default_break<'a>(text: &str, analysis: impl Into<Option<&'a mut  Analysis>>, attrs: /*Ignored*/&mut LogAttr, attrs_len: i32) {
 //    unsafe { TODO: call ffi:pango_default_break() }
 //}
 
@@ -58,13 +58,13 @@ pub fn is_zero_width(ch: char) -> bool {
 }
 
 #[doc(alias = "pango_itemize")]
-pub fn itemize(
+pub fn itemize<'a>(
     context: &Context,
     text: &str,
     start_index: i32,
     length: i32,
     attrs: &AttrList,
-    cached_iter: Option<&AttrIterator>,
+    cached_iter: impl Into<Option<&'a AttrIterator>>,
 ) -> Vec<Item> {
     unsafe {
         FromGlibPtrContainer::from_glib_full(ffi::pango_itemize(
@@ -73,20 +73,20 @@ pub fn itemize(
             start_index,
             length,
             attrs.to_glib_none().0,
-            mut_override(cached_iter.to_glib_none().0),
+            mut_override(cached_iter.into().to_glib_none().0),
         ))
     }
 }
 
 #[doc(alias = "pango_itemize_with_base_dir")]
-pub fn itemize_with_base_dir(
+pub fn itemize_with_base_dir<'a>(
     context: &Context,
     base_dir: Direction,
     text: &str,
     start_index: i32,
     length: i32,
     attrs: &AttrList,
-    cached_iter: Option<&AttrIterator>,
+    cached_iter: impl Into<Option<&'a AttrIterator>>,
 ) -> Vec<Item> {
     unsafe {
         FromGlibPtrContainer::from_glib_full(ffi::pango_itemize_with_base_dir(
@@ -96,7 +96,7 @@ pub fn itemize_with_base_dir(
             start_index,
             length,
             attrs.to_glib_none().0,
-            mut_override(cached_iter.to_glib_none().0),
+            mut_override(cached_iter.into().to_glib_none().0),
         ))
     }
 }
@@ -261,7 +261,7 @@ pub fn shape(text: &str, analysis: &Analysis, glyphs: &mut GlyphString) {
 //#[cfg(feature = "v1_50")]
 //#[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
 //#[doc(alias = "pango_shape_item")]
-//pub fn shape_item(item: &mut Item, paragraph_text: Option<&str>, log_attrs: /*Ignored*/Option<&mut LogAttr>, glyphs: &mut GlyphString, flags: ShapeFlags) {
+//pub fn shape_item<'a>(item: &mut Item, paragraph_text: impl Into<Option<&'a str>>, log_attrs: /*Ignored*/Option<&mut LogAttr>, glyphs: &mut GlyphString, flags: ShapeFlags) {
 //    unsafe { TODO: call ffi:pango_shape_item() }
 //}
 
