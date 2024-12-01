@@ -243,7 +243,7 @@ impl Layout {
 
     //#[doc(alias = "pango_layout_get_log_attrs")]
     //#[doc(alias = "get_log_attrs")]
-    //pub fn log_attrs(&self, attrs: /*Ignored*/Vec<LogAttr>) -> i32 {
+    //pub fn log_attrs(&self, attrs: /*Ignored*/&mut Vec<LogAttr>) -> i32 {
     //    unsafe { TODO: call ffi:pango_layout_get_log_attrs() }
     //}
 

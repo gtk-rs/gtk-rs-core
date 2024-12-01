@@ -34,7 +34,7 @@ pub fn base64_decode(text: &str) -> Vec<u8> {
 //}
 
 //#[doc(alias = "g_base64_decode_step")]
-//pub fn base64_decode_step(in_: &[u8], out: Vec<u8>, state: &mut i32, save: &mut u32) -> usize {
+//pub fn base64_decode_step(in_: &[u8], out: &mut Vec<u8>, state: &mut i32, save: &mut u32) -> usize {
 //    unsafe { TODO: call ffi:g_base64_decode_step() }
 //}
 
@@ -45,12 +45,12 @@ pub fn base64_encode(data: &[u8]) -> crate::GString {
 }
 
 //#[doc(alias = "g_base64_encode_close")]
-//pub fn base64_encode_close(break_lines: bool, out: Vec<u8>, state: &mut i32, save: &mut i32) -> usize {
+//pub fn base64_encode_close(break_lines: bool, out: &mut Vec<u8>, state: &mut i32, save: &mut i32) -> usize {
 //    unsafe { TODO: call ffi:g_base64_encode_close() }
 //}
 
 //#[doc(alias = "g_base64_encode_step")]
-//pub fn base64_encode_step(in_: &[u8], break_lines: bool, out: Vec<u8>, state: &mut i32, save: &mut i32) -> usize {
+//pub fn base64_encode_step(in_: &[u8], break_lines: bool, out: &mut Vec<u8>, state: &mut i32, save: &mut i32) -> usize {
 //    unsafe { TODO: call ffi:g_base64_encode_step() }
 //}
 
@@ -812,12 +812,12 @@ pub fn spawn_command_line_async(
 }
 
 //#[doc(alias = "g_spawn_command_line_sync")]
-//pub fn spawn_command_line_sync(command_line: impl AsRef<std::path::Path>, standard_output: Vec<u8>, standard_error: Vec<u8>) -> Result<i32, crate::Error> {
+//pub fn spawn_command_line_sync(command_line: impl AsRef<std::path::Path>, standard_output: &mut Vec<u8>, standard_error: &mut Vec<u8>) -> Result<i32, crate::Error> {
 //    unsafe { TODO: call ffi:g_spawn_command_line_sync() }
 //}
 
 //#[doc(alias = "g_spawn_sync")]
-//pub fn spawn_sync(working_directory: Option<impl AsRef<std::path::Path>>, argv: &[&std::path::Path], envp: &[&std::path::Path], flags: SpawnFlags, child_setup: Option<&mut dyn (FnMut())>, standard_output: Vec<u8>, standard_error: Vec<u8>) -> Result<i32, crate::Error> {
+//pub fn spawn_sync(working_directory: Option<impl AsRef<std::path::Path>>, argv: &[&std::path::Path], envp: &[&std::path::Path], flags: SpawnFlags, child_setup: Option<&mut dyn (FnMut())>, standard_output: &mut Vec<u8>, standard_error: &mut Vec<u8>) -> Result<i32, crate::Error> {
 //    unsafe { TODO: call ffi:g_spawn_sync() }
 //}
 

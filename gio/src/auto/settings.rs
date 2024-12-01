@@ -168,7 +168,7 @@ pub trait SettingsExt: IsA<Settings> + 'static {
     }
 
     //#[doc(alias = "g_settings_get")]
-    //fn get(&self, key: &str, format: &str, : /*Unknown conversion*//*Unimplemented*/Basic: VarArgs) {
+    //fn get(&self, key: &str, format: &str, : /*Unimplemented*/Basic: VarArgs) {
     //    unsafe { TODO: call ffi:g_settings_get() }
     //}
 
@@ -332,7 +332,7 @@ pub trait SettingsExt: IsA<Settings> + 'static {
     }
 
     //#[doc(alias = "g_settings_set")]
-    //fn set(&self, key: &str, format: &str, : /*Unknown conversion*//*Unimplemented*/Basic: VarArgs) -> bool {
+    //fn set(&self, key: &str, format: &str, : /*Unimplemented*/Basic: VarArgs) -> bool {
     //    unsafe { TODO: call ffi:g_settings_set() }
     //}
 

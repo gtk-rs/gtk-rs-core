@@ -29,7 +29,7 @@ impl TabArray {
 
     //#[doc(alias = "pango_tab_array_new_with_positions")]
     //#[doc(alias = "new_with_positions")]
-    //pub fn with_positions(size: i32, positions_in_pixels: bool, first_alignment: TabAlign, first_position: i32, : /*Unknown conversion*//*Unimplemented*/Basic: VarArgs) -> TabArray {
+    //pub fn with_positions(size: i32, positions_in_pixels: bool, first_alignment: TabAlign, first_position: i32, : /*Unimplemented*/Basic: VarArgs) -> TabArray {
     //    unsafe { TODO: call ffi:pango_tab_array_new_with_positions() }
     //}
 

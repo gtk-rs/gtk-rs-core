@@ -289,7 +289,7 @@ impl Uri {
     }
 
     //#[doc(alias = "g_uri_parse_params")]
-    //pub fn parse_params(params: &str, separators: &str, flags: UriParamsFlags) -> Result</*Unknown conversion*//*Unimplemented*/HashTable TypeId { ns_id: 0, id: 28 }/TypeId { ns_id: 0, id: 28 }, crate::Error> {
+    //pub fn parse_params(params: &str, separators: &str, flags: UriParamsFlags) -> Result</*Unimplemented*/HashTable TypeId { ns_id: 0, id: 28 }/TypeId { ns_id: 0, id: 28 }, crate::Error> {
     //    unsafe { TODO: call ffi:g_uri_parse_params() }
     //}
 

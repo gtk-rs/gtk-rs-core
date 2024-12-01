@@ -17,7 +17,7 @@ glib::wrapper! {
 
 impl Subprocess {
     //#[doc(alias = "g_subprocess_new")]
-    //pub fn new(flags: SubprocessFlags, error: Option<&mut glib::Error>, argv0: &str, : /*Unknown conversion*//*Unimplemented*/Basic: VarArgs) -> Subprocess {
+    //pub fn new(flags: SubprocessFlags, error: Option<&mut glib::Error>, argv0: &str, : /*Unimplemented*/Basic: VarArgs) -> Subprocess {
     //    unsafe { TODO: call ffi:g_subprocess_new() }
     //}
 

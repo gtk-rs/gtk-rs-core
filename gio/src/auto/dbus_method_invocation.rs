@@ -129,12 +129,12 @@ impl DBusMethodInvocation {
     }
 
     //#[doc(alias = "g_dbus_method_invocation_return_error")]
-    //pub fn return_error(self, domain: glib::Quark, code: i32, format: &str, : /*Unknown conversion*//*Unimplemented*/Basic: VarArgs) {
+    //pub fn return_error(self, domain: glib::Quark, code: i32, format: &str, : /*Unimplemented*/Basic: VarArgs) {
     //    unsafe { TODO: call ffi:g_dbus_method_invocation_return_error() }
     //}
 
     //#[doc(alias = "g_dbus_method_invocation_return_error_valist")]
-    //pub fn return_error_valist(self, domain: glib::Quark, code: i32, format: &str, var_args: /*Unknown conversion*//*Unimplemented*/Unsupported) {
+    //pub fn return_error_valist(self, domain: glib::Quark, code: i32, format: &str, var_args: /*Unimplemented*/Unsupported) {
     //    unsafe { TODO: call ffi:g_dbus_method_invocation_return_error_valist() }
     //}
 

@@ -24,7 +24,7 @@ impl File {
     pub const NONE: Option<&'static File> = None;
 
     //#[doc(alias = "g_file_new_build_filename")]
-    //pub fn new_build_filename(first_element: impl AsRef<std::path::Path>, : /*Unknown conversion*//*Unimplemented*/Basic: VarArgs) -> File {
+    //pub fn new_build_filename(first_element: impl AsRef<std::path::Path>, : /*Unimplemented*/Basic: VarArgs) -> File {
     //    unsafe { TODO: call ffi:g_file_new_build_filename() }
     //}
 

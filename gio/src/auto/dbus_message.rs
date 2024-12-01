@@ -230,7 +230,7 @@ impl DBusMessage {
 
     //#[doc(alias = "g_dbus_message_new_method_error")]
     //#[must_use]
-    //pub fn new_method_error(&self, error_name: &str, error_message_format: &str, : /*Unknown conversion*//*Unimplemented*/Basic: VarArgs) -> DBusMessage {
+    //pub fn new_method_error(&self, error_name: &str, error_message_format: &str, : /*Unimplemented*/Basic: VarArgs) -> DBusMessage {
     //    unsafe { TODO: call ffi:g_dbus_message_new_method_error() }
     //}
 
@@ -248,7 +248,7 @@ impl DBusMessage {
 
     //#[doc(alias = "g_dbus_message_new_method_error_valist")]
     //#[must_use]
-    //pub fn new_method_error_valist(&self, error_name: &str, error_message_format: &str, var_args: /*Unknown conversion*//*Unimplemented*/Unsupported) -> DBusMessage {
+    //pub fn new_method_error_valist(&self, error_name: &str, error_message_format: &str, var_args: /*Unimplemented*/Unsupported) -> DBusMessage {
     //    unsafe { TODO: call ffi:g_dbus_message_new_method_error_valist() }
     //}
 
