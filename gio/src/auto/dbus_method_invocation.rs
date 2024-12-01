@@ -33,7 +33,7 @@ impl DBusMethodInvocation {
 
     #[doc(alias = "g_dbus_method_invocation_get_interface_name")]
     #[doc(alias = "get_interface_name")]
-    pub fn interface_name(&self) -> glib::GString {
+    pub fn interface_name(&self) -> Option<glib::GString> {
         unsafe {
             from_glib_none(ffi::g_dbus_method_invocation_get_interface_name(
                 self.to_glib_none().0,
@@ -103,7 +103,7 @@ impl DBusMethodInvocation {
 
     #[doc(alias = "g_dbus_method_invocation_get_sender")]
     #[doc(alias = "get_sender")]
-    pub fn sender(&self) -> glib::GString {
+    pub fn sender(&self) -> Option<glib::GString> {
         unsafe {
             from_glib_none(ffi::g_dbus_method_invocation_get_sender(
                 self.to_glib_none().0,
