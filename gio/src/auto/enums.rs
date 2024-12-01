@@ -327,6 +327,375 @@ impl From<CredentialsType> for glib::Value {
 
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
+#[doc(alias = "GDBusError")]
+pub enum DBusError {
+    #[doc(alias = "G_DBUS_ERROR_FAILED")]
+    Failed,
+    #[doc(alias = "G_DBUS_ERROR_NO_MEMORY")]
+    NoMemory,
+    #[doc(alias = "G_DBUS_ERROR_SERVICE_UNKNOWN")]
+    ServiceUnknown,
+    #[doc(alias = "G_DBUS_ERROR_NAME_HAS_NO_OWNER")]
+    NameHasNoOwner,
+    #[doc(alias = "G_DBUS_ERROR_NO_REPLY")]
+    NoReply,
+    #[doc(alias = "G_DBUS_ERROR_IO_ERROR")]
+    IoError,
+    #[doc(alias = "G_DBUS_ERROR_BAD_ADDRESS")]
+    BadAddress,
+    #[doc(alias = "G_DBUS_ERROR_NOT_SUPPORTED")]
+    NotSupported,
+    #[doc(alias = "G_DBUS_ERROR_LIMITS_EXCEEDED")]
+    LimitsExceeded,
+    #[doc(alias = "G_DBUS_ERROR_ACCESS_DENIED")]
+    AccessDenied,
+    #[doc(alias = "G_DBUS_ERROR_AUTH_FAILED")]
+    AuthFailed,
+    #[doc(alias = "G_DBUS_ERROR_NO_SERVER")]
+    NoServer,
+    #[doc(alias = "G_DBUS_ERROR_TIMEOUT")]
+    Timeout,
+    #[doc(alias = "G_DBUS_ERROR_NO_NETWORK")]
+    NoNetwork,
+    #[doc(alias = "G_DBUS_ERROR_ADDRESS_IN_USE")]
+    AddressInUse,
+    #[doc(alias = "G_DBUS_ERROR_DISCONNECTED")]
+    Disconnected,
+    #[doc(alias = "G_DBUS_ERROR_INVALID_ARGS")]
+    InvalidArgs,
+    #[doc(alias = "G_DBUS_ERROR_FILE_NOT_FOUND")]
+    FileNotFound,
+    #[doc(alias = "G_DBUS_ERROR_FILE_EXISTS")]
+    FileExists,
+    #[doc(alias = "G_DBUS_ERROR_UNKNOWN_METHOD")]
+    UnknownMethod,
+    #[doc(alias = "G_DBUS_ERROR_TIMED_OUT")]
+    TimedOut,
+    #[doc(alias = "G_DBUS_ERROR_MATCH_RULE_NOT_FOUND")]
+    MatchRuleNotFound,
+    #[doc(alias = "G_DBUS_ERROR_MATCH_RULE_INVALID")]
+    MatchRuleInvalid,
+    #[doc(alias = "G_DBUS_ERROR_SPAWN_EXEC_FAILED")]
+    SpawnExecFailed,
+    #[doc(alias = "G_DBUS_ERROR_SPAWN_FORK_FAILED")]
+    SpawnForkFailed,
+    #[doc(alias = "G_DBUS_ERROR_SPAWN_CHILD_EXITED")]
+    SpawnChildExited,
+    #[doc(alias = "G_DBUS_ERROR_SPAWN_CHILD_SIGNALED")]
+    SpawnChildSignaled,
+    #[doc(alias = "G_DBUS_ERROR_SPAWN_FAILED")]
+    SpawnFailed,
+    #[doc(alias = "G_DBUS_ERROR_SPAWN_SETUP_FAILED")]
+    SpawnSetupFailed,
+    #[doc(alias = "G_DBUS_ERROR_SPAWN_CONFIG_INVALID")]
+    SpawnConfigInvalid,
+    #[doc(alias = "G_DBUS_ERROR_SPAWN_SERVICE_INVALID")]
+    SpawnServiceInvalid,
+    #[doc(alias = "G_DBUS_ERROR_SPAWN_SERVICE_NOT_FOUND")]
+    SpawnServiceNotFound,
+    #[doc(alias = "G_DBUS_ERROR_SPAWN_PERMISSIONS_INVALID")]
+    SpawnPermissionsInvalid,
+    #[doc(alias = "G_DBUS_ERROR_SPAWN_FILE_INVALID")]
+    SpawnFileInvalid,
+    #[doc(alias = "G_DBUS_ERROR_SPAWN_NO_MEMORY")]
+    SpawnNoMemory,
+    #[doc(alias = "G_DBUS_ERROR_UNIX_PROCESS_ID_UNKNOWN")]
+    UnixProcessIdUnknown,
+    #[doc(alias = "G_DBUS_ERROR_INVALID_SIGNATURE")]
+    InvalidSignature,
+    #[doc(alias = "G_DBUS_ERROR_INVALID_FILE_CONTENT")]
+    InvalidFileContent,
+    #[doc(alias = "G_DBUS_ERROR_SELINUX_SECURITY_CONTEXT_UNKNOWN")]
+    SelinuxSecurityContextUnknown,
+    #[doc(alias = "G_DBUS_ERROR_ADT_AUDIT_DATA_UNKNOWN")]
+    AdtAuditDataUnknown,
+    #[doc(alias = "G_DBUS_ERROR_OBJECT_PATH_IN_USE")]
+    ObjectPathInUse,
+    #[doc(alias = "G_DBUS_ERROR_UNKNOWN_OBJECT")]
+    UnknownObject,
+    #[doc(alias = "G_DBUS_ERROR_UNKNOWN_INTERFACE")]
+    UnknownInterface,
+    #[doc(alias = "G_DBUS_ERROR_UNKNOWN_PROPERTY")]
+    UnknownProperty,
+    #[doc(alias = "G_DBUS_ERROR_PROPERTY_READ_ONLY")]
+    PropertyReadOnly,
+    #[doc(hidden)]
+    __Unknown(i32),
+}
+
+impl DBusError {
+    #[doc(alias = "g_dbus_error_encode_gerror")]
+    pub fn encode_gerror(error: &glib::Error) -> glib::GString {
+        unsafe { from_glib_full(ffi::g_dbus_error_encode_gerror(error.to_glib_none().0)) }
+    }
+
+    #[doc(alias = "g_dbus_error_get_remote_error")]
+    #[doc(alias = "get_remote_error")]
+    pub fn remote_error(error: &glib::Error) -> Option<glib::GString> {
+        unsafe { from_glib_full(ffi::g_dbus_error_get_remote_error(error.to_glib_none().0)) }
+    }
+
+    #[doc(alias = "g_dbus_error_is_remote_error")]
+    pub fn is_remote_error(error: &glib::Error) -> bool {
+        unsafe { from_glib(ffi::g_dbus_error_is_remote_error(error.to_glib_none().0)) }
+    }
+
+    #[doc(alias = "g_dbus_error_new_for_dbus_error")]
+    pub fn new_for_dbus_error(dbus_error_name: &str, dbus_error_message: &str) -> glib::Error {
+        unsafe {
+            from_glib_full(ffi::g_dbus_error_new_for_dbus_error(
+                dbus_error_name.to_glib_none().0,
+                dbus_error_message.to_glib_none().0,
+            ))
+        }
+    }
+
+    #[doc(alias = "g_dbus_error_register_error")]
+    pub fn register_error(
+        error_domain: glib::Quark,
+        error_code: i32,
+        dbus_error_name: &str,
+    ) -> bool {
+        unsafe {
+            from_glib(ffi::g_dbus_error_register_error(
+                error_domain.into_glib(),
+                error_code,
+                dbus_error_name.to_glib_none().0,
+            ))
+        }
+    }
+
+    //#[doc(alias = "g_dbus_error_register_error_domain")]
+    //pub fn register_error_domain(error_domain_quark_name: &str, quark_volatile: usize, entries: /*Ignored*/&[DBusErrorEntry]) {
+    //    unsafe { TODO: call ffi:g_dbus_error_register_error_domain() }
+    //}
+
+    //#[doc(alias = "g_dbus_error_set_dbus_error")]
+    //pub fn set_dbus_error(error: &mut glib::Error, dbus_error_name: &str, dbus_error_message: &str, format: Option<&str>, : /*Unknown conversion*//*Unimplemented*/Basic: VarArgs) {
+    //    unsafe { TODO: call ffi:g_dbus_error_set_dbus_error() }
+    //}
+
+    //#[doc(alias = "g_dbus_error_set_dbus_error_valist")]
+    //pub fn set_dbus_error_valist(error: &mut glib::Error, dbus_error_name: &str, dbus_error_message: &str, format: Option<&str>, var_args: /*Unknown conversion*//*Unimplemented*/Unsupported) {
+    //    unsafe { TODO: call ffi:g_dbus_error_set_dbus_error_valist() }
+    //}
+
+    #[doc(alias = "g_dbus_error_strip_remote_error")]
+    pub fn strip_remote_error(error: &mut glib::Error) -> bool {
+        unsafe {
+            from_glib(ffi::g_dbus_error_strip_remote_error(
+                error.to_glib_none_mut().0,
+            ))
+        }
+    }
+
+    #[doc(alias = "g_dbus_error_unregister_error")]
+    pub fn unregister_error(
+        error_domain: glib::Quark,
+        error_code: i32,
+        dbus_error_name: &str,
+    ) -> bool {
+        unsafe {
+            from_glib(ffi::g_dbus_error_unregister_error(
+                error_domain.into_glib(),
+                error_code,
+                dbus_error_name.to_glib_none().0,
+            ))
+        }
+    }
+}
+
+#[doc(hidden)]
+impl IntoGlib for DBusError {
+    type GlibType = ffi::GDBusError;
+
+    fn into_glib(self) -> ffi::GDBusError {
+        match self {
+            Self::Failed => ffi::G_DBUS_ERROR_FAILED,
+            Self::NoMemory => ffi::G_DBUS_ERROR_NO_MEMORY,
+            Self::ServiceUnknown => ffi::G_DBUS_ERROR_SERVICE_UNKNOWN,
+            Self::NameHasNoOwner => ffi::G_DBUS_ERROR_NAME_HAS_NO_OWNER,
+            Self::NoReply => ffi::G_DBUS_ERROR_NO_REPLY,
+            Self::IoError => ffi::G_DBUS_ERROR_IO_ERROR,
+            Self::BadAddress => ffi::G_DBUS_ERROR_BAD_ADDRESS,
+            Self::NotSupported => ffi::G_DBUS_ERROR_NOT_SUPPORTED,
+            Self::LimitsExceeded => ffi::G_DBUS_ERROR_LIMITS_EXCEEDED,
+            Self::AccessDenied => ffi::G_DBUS_ERROR_ACCESS_DENIED,
+            Self::AuthFailed => ffi::G_DBUS_ERROR_AUTH_FAILED,
+            Self::NoServer => ffi::G_DBUS_ERROR_NO_SERVER,
+            Self::Timeout => ffi::G_DBUS_ERROR_TIMEOUT,
+            Self::NoNetwork => ffi::G_DBUS_ERROR_NO_NETWORK,
+            Self::AddressInUse => ffi::G_DBUS_ERROR_ADDRESS_IN_USE,
+            Self::Disconnected => ffi::G_DBUS_ERROR_DISCONNECTED,
+            Self::InvalidArgs => ffi::G_DBUS_ERROR_INVALID_ARGS,
+            Self::FileNotFound => ffi::G_DBUS_ERROR_FILE_NOT_FOUND,
+            Self::FileExists => ffi::G_DBUS_ERROR_FILE_EXISTS,
+            Self::UnknownMethod => ffi::G_DBUS_ERROR_UNKNOWN_METHOD,
+            Self::TimedOut => ffi::G_DBUS_ERROR_TIMED_OUT,
+            Self::MatchRuleNotFound => ffi::G_DBUS_ERROR_MATCH_RULE_NOT_FOUND,
+            Self::MatchRuleInvalid => ffi::G_DBUS_ERROR_MATCH_RULE_INVALID,
+            Self::SpawnExecFailed => ffi::G_DBUS_ERROR_SPAWN_EXEC_FAILED,
+            Self::SpawnForkFailed => ffi::G_DBUS_ERROR_SPAWN_FORK_FAILED,
+            Self::SpawnChildExited => ffi::G_DBUS_ERROR_SPAWN_CHILD_EXITED,
+            Self::SpawnChildSignaled => ffi::G_DBUS_ERROR_SPAWN_CHILD_SIGNALED,
+            Self::SpawnFailed => ffi::G_DBUS_ERROR_SPAWN_FAILED,
+            Self::SpawnSetupFailed => ffi::G_DBUS_ERROR_SPAWN_SETUP_FAILED,
+            Self::SpawnConfigInvalid => ffi::G_DBUS_ERROR_SPAWN_CONFIG_INVALID,
+            Self::SpawnServiceInvalid => ffi::G_DBUS_ERROR_SPAWN_SERVICE_INVALID,
+            Self::SpawnServiceNotFound => ffi::G_DBUS_ERROR_SPAWN_SERVICE_NOT_FOUND,
+            Self::SpawnPermissionsInvalid => ffi::G_DBUS_ERROR_SPAWN_PERMISSIONS_INVALID,
+            Self::SpawnFileInvalid => ffi::G_DBUS_ERROR_SPAWN_FILE_INVALID,
+            Self::SpawnNoMemory => ffi::G_DBUS_ERROR_SPAWN_NO_MEMORY,
+            Self::UnixProcessIdUnknown => ffi::G_DBUS_ERROR_UNIX_PROCESS_ID_UNKNOWN,
+            Self::InvalidSignature => ffi::G_DBUS_ERROR_INVALID_SIGNATURE,
+            Self::InvalidFileContent => ffi::G_DBUS_ERROR_INVALID_FILE_CONTENT,
+            Self::SelinuxSecurityContextUnknown => {
+                ffi::G_DBUS_ERROR_SELINUX_SECURITY_CONTEXT_UNKNOWN
+            }
+            Self::AdtAuditDataUnknown => ffi::G_DBUS_ERROR_ADT_AUDIT_DATA_UNKNOWN,
+            Self::ObjectPathInUse => ffi::G_DBUS_ERROR_OBJECT_PATH_IN_USE,
+            Self::UnknownObject => ffi::G_DBUS_ERROR_UNKNOWN_OBJECT,
+            Self::UnknownInterface => ffi::G_DBUS_ERROR_UNKNOWN_INTERFACE,
+            Self::UnknownProperty => ffi::G_DBUS_ERROR_UNKNOWN_PROPERTY,
+            Self::PropertyReadOnly => ffi::G_DBUS_ERROR_PROPERTY_READ_ONLY,
+            Self::__Unknown(value) => value,
+        }
+    }
+}
+
+#[doc(hidden)]
+impl FromGlib<ffi::GDBusError> for DBusError {
+    unsafe fn from_glib(value: ffi::GDBusError) -> Self {
+        match value {
+            ffi::G_DBUS_ERROR_FAILED => Self::Failed,
+            ffi::G_DBUS_ERROR_NO_MEMORY => Self::NoMemory,
+            ffi::G_DBUS_ERROR_SERVICE_UNKNOWN => Self::ServiceUnknown,
+            ffi::G_DBUS_ERROR_NAME_HAS_NO_OWNER => Self::NameHasNoOwner,
+            ffi::G_DBUS_ERROR_NO_REPLY => Self::NoReply,
+            ffi::G_DBUS_ERROR_IO_ERROR => Self::IoError,
+            ffi::G_DBUS_ERROR_BAD_ADDRESS => Self::BadAddress,
+            ffi::G_DBUS_ERROR_NOT_SUPPORTED => Self::NotSupported,
+            ffi::G_DBUS_ERROR_LIMITS_EXCEEDED => Self::LimitsExceeded,
+            ffi::G_DBUS_ERROR_ACCESS_DENIED => Self::AccessDenied,
+            ffi::G_DBUS_ERROR_AUTH_FAILED => Self::AuthFailed,
+            ffi::G_DBUS_ERROR_NO_SERVER => Self::NoServer,
+            ffi::G_DBUS_ERROR_TIMEOUT => Self::Timeout,
+            ffi::G_DBUS_ERROR_NO_NETWORK => Self::NoNetwork,
+            ffi::G_DBUS_ERROR_ADDRESS_IN_USE => Self::AddressInUse,
+            ffi::G_DBUS_ERROR_DISCONNECTED => Self::Disconnected,
+            ffi::G_DBUS_ERROR_INVALID_ARGS => Self::InvalidArgs,
+            ffi::G_DBUS_ERROR_FILE_NOT_FOUND => Self::FileNotFound,
+            ffi::G_DBUS_ERROR_FILE_EXISTS => Self::FileExists,
+            ffi::G_DBUS_ERROR_UNKNOWN_METHOD => Self::UnknownMethod,
+            ffi::G_DBUS_ERROR_TIMED_OUT => Self::TimedOut,
+            ffi::G_DBUS_ERROR_MATCH_RULE_NOT_FOUND => Self::MatchRuleNotFound,
+            ffi::G_DBUS_ERROR_MATCH_RULE_INVALID => Self::MatchRuleInvalid,
+            ffi::G_DBUS_ERROR_SPAWN_EXEC_FAILED => Self::SpawnExecFailed,
+            ffi::G_DBUS_ERROR_SPAWN_FORK_FAILED => Self::SpawnForkFailed,
+            ffi::G_DBUS_ERROR_SPAWN_CHILD_EXITED => Self::SpawnChildExited,
+            ffi::G_DBUS_ERROR_SPAWN_CHILD_SIGNALED => Self::SpawnChildSignaled,
+            ffi::G_DBUS_ERROR_SPAWN_FAILED => Self::SpawnFailed,
+            ffi::G_DBUS_ERROR_SPAWN_SETUP_FAILED => Self::SpawnSetupFailed,
+            ffi::G_DBUS_ERROR_SPAWN_CONFIG_INVALID => Self::SpawnConfigInvalid,
+            ffi::G_DBUS_ERROR_SPAWN_SERVICE_INVALID => Self::SpawnServiceInvalid,
+            ffi::G_DBUS_ERROR_SPAWN_SERVICE_NOT_FOUND => Self::SpawnServiceNotFound,
+            ffi::G_DBUS_ERROR_SPAWN_PERMISSIONS_INVALID => Self::SpawnPermissionsInvalid,
+            ffi::G_DBUS_ERROR_SPAWN_FILE_INVALID => Self::SpawnFileInvalid,
+            ffi::G_DBUS_ERROR_SPAWN_NO_MEMORY => Self::SpawnNoMemory,
+            ffi::G_DBUS_ERROR_UNIX_PROCESS_ID_UNKNOWN => Self::UnixProcessIdUnknown,
+            ffi::G_DBUS_ERROR_INVALID_SIGNATURE => Self::InvalidSignature,
+            ffi::G_DBUS_ERROR_INVALID_FILE_CONTENT => Self::InvalidFileContent,
+            ffi::G_DBUS_ERROR_SELINUX_SECURITY_CONTEXT_UNKNOWN => {
+                Self::SelinuxSecurityContextUnknown
+            }
+            ffi::G_DBUS_ERROR_ADT_AUDIT_DATA_UNKNOWN => Self::AdtAuditDataUnknown,
+            ffi::G_DBUS_ERROR_OBJECT_PATH_IN_USE => Self::ObjectPathInUse,
+            ffi::G_DBUS_ERROR_UNKNOWN_OBJECT => Self::UnknownObject,
+            ffi::G_DBUS_ERROR_UNKNOWN_INTERFACE => Self::UnknownInterface,
+            ffi::G_DBUS_ERROR_UNKNOWN_PROPERTY => Self::UnknownProperty,
+            ffi::G_DBUS_ERROR_PROPERTY_READ_ONLY => Self::PropertyReadOnly,
+            value => Self::__Unknown(value),
+        }
+    }
+}
+
+impl glib::error::ErrorDomain for DBusError {
+    #[inline]
+    fn domain() -> glib::Quark {
+        unsafe { from_glib(ffi::g_dbus_error_quark()) }
+    }
+
+    #[inline]
+    fn code(self) -> i32 {
+        self.into_glib()
+    }
+
+    #[inline]
+    #[allow(clippy::match_single_binding)]
+    fn from(code: i32) -> Option<Self> {
+        match unsafe { from_glib(code) } {
+            Self::__Unknown(_) => Some(Self::Failed),
+            value => Some(value),
+        }
+    }
+}
+
+impl StaticType for DBusError {
+    #[inline]
+    #[doc(alias = "g_dbus_error_get_type")]
+    fn static_type() -> glib::Type {
+        unsafe { from_glib(ffi::g_dbus_error_get_type()) }
+    }
+}
+
+impl glib::HasParamSpec for DBusError {
+    type ParamSpec = glib::ParamSpecEnum;
+    type SetValue = Self;
+    type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
+
+    fn param_spec_builder() -> Self::BuilderFn {
+        Self::ParamSpec::builder_with_default
+    }
+}
+
+impl glib::value::ValueType for DBusError {
+    type Type = Self;
+}
+
+unsafe impl<'a> glib::value::FromValue<'a> for DBusError {
+    type Checker = glib::value::GenericValueTypeChecker<Self>;
+
+    #[inline]
+    unsafe fn from_value(value: &'a glib::Value) -> Self {
+        from_glib(glib::gobject_ffi::g_value_get_enum(value.to_glib_none().0))
+    }
+}
+
+impl ToValue for DBusError {
+    #[inline]
+    fn to_value(&self) -> glib::Value {
+        let mut value = glib::Value::for_value_type::<Self>();
+        unsafe {
+            glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, self.into_glib());
+        }
+        value
+    }
+
+    #[inline]
+    fn value_type(&self) -> glib::Type {
+        Self::static_type()
+    }
+}
+
+impl From<DBusError> for glib::Value {
+    #[inline]
+    fn from(v: DBusError) -> Self {
+        ToValue::to_value(&v)
+    }
+}
+
+#[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
+#[non_exhaustive]
 #[doc(alias = "GDBusMessageByteOrder")]
 pub enum DBusMessageByteOrder {
     #[doc(alias = "G_DBUS_MESSAGE_BYTE_ORDER_BIG_ENDIAN")]
@@ -1507,6 +1876,102 @@ impl From<FileType> for glib::Value {
 
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
+#[doc(alias = "GFilesystemPreviewType")]
+pub enum FilesystemPreviewType {
+    #[doc(alias = "G_FILESYSTEM_PREVIEW_TYPE_IF_ALWAYS")]
+    IfAlways,
+    #[doc(alias = "G_FILESYSTEM_PREVIEW_TYPE_IF_LOCAL")]
+    IfLocal,
+    #[doc(alias = "G_FILESYSTEM_PREVIEW_TYPE_NEVER")]
+    Never,
+    #[doc(hidden)]
+    __Unknown(i32),
+}
+
+#[doc(hidden)]
+impl IntoGlib for FilesystemPreviewType {
+    type GlibType = ffi::GFilesystemPreviewType;
+
+    #[inline]
+    fn into_glib(self) -> ffi::GFilesystemPreviewType {
+        match self {
+            Self::IfAlways => ffi::G_FILESYSTEM_PREVIEW_TYPE_IF_ALWAYS,
+            Self::IfLocal => ffi::G_FILESYSTEM_PREVIEW_TYPE_IF_LOCAL,
+            Self::Never => ffi::G_FILESYSTEM_PREVIEW_TYPE_NEVER,
+            Self::__Unknown(value) => value,
+        }
+    }
+}
+
+#[doc(hidden)]
+impl FromGlib<ffi::GFilesystemPreviewType> for FilesystemPreviewType {
+    #[inline]
+    unsafe fn from_glib(value: ffi::GFilesystemPreviewType) -> Self {
+        match value {
+            ffi::G_FILESYSTEM_PREVIEW_TYPE_IF_ALWAYS => Self::IfAlways,
+            ffi::G_FILESYSTEM_PREVIEW_TYPE_IF_LOCAL => Self::IfLocal,
+            ffi::G_FILESYSTEM_PREVIEW_TYPE_NEVER => Self::Never,
+            value => Self::__Unknown(value),
+        }
+    }
+}
+
+impl StaticType for FilesystemPreviewType {
+    #[inline]
+    #[doc(alias = "g_filesystem_preview_type_get_type")]
+    fn static_type() -> glib::Type {
+        unsafe { from_glib(ffi::g_filesystem_preview_type_get_type()) }
+    }
+}
+
+impl glib::HasParamSpec for FilesystemPreviewType {
+    type ParamSpec = glib::ParamSpecEnum;
+    type SetValue = Self;
+    type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
+
+    fn param_spec_builder() -> Self::BuilderFn {
+        Self::ParamSpec::builder_with_default
+    }
+}
+
+impl glib::value::ValueType for FilesystemPreviewType {
+    type Type = Self;
+}
+
+unsafe impl<'a> glib::value::FromValue<'a> for FilesystemPreviewType {
+    type Checker = glib::value::GenericValueTypeChecker<Self>;
+
+    #[inline]
+    unsafe fn from_value(value: &'a glib::Value) -> Self {
+        from_glib(glib::gobject_ffi::g_value_get_enum(value.to_glib_none().0))
+    }
+}
+
+impl ToValue for FilesystemPreviewType {
+    #[inline]
+    fn to_value(&self) -> glib::Value {
+        let mut value = glib::Value::for_value_type::<Self>();
+        unsafe {
+            glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, self.into_glib());
+        }
+        value
+    }
+
+    #[inline]
+    fn value_type(&self) -> glib::Type {
+        Self::static_type()
+    }
+}
+
+impl From<FilesystemPreviewType> for glib::Value {
+    #[inline]
+    fn from(v: FilesystemPreviewType) -> Self {
+        ToValue::to_value(&v)
+    }
+}
+
+#[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
+#[non_exhaustive]
 #[doc(alias = "GIOErrorEnum")]
 pub enum IOErrorEnum {
     #[doc(alias = "G_IO_ERROR_FAILED")]
@@ -1808,6 +2273,98 @@ impl ToValue for IOErrorEnum {
 impl From<IOErrorEnum> for glib::Value {
     #[inline]
     fn from(v: IOErrorEnum) -> Self {
+        ToValue::to_value(&v)
+    }
+}
+
+#[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
+#[non_exhaustive]
+#[doc(alias = "GIOModuleScopeFlags")]
+pub enum IOModuleScopeFlags {
+    #[doc(alias = "G_IO_MODULE_SCOPE_NONE")]
+    None,
+    #[doc(alias = "G_IO_MODULE_SCOPE_BLOCK_DUPLICATES")]
+    BlockDuplicates,
+    #[doc(hidden)]
+    __Unknown(i32),
+}
+
+#[doc(hidden)]
+impl IntoGlib for IOModuleScopeFlags {
+    type GlibType = ffi::GIOModuleScopeFlags;
+
+    #[inline]
+    fn into_glib(self) -> ffi::GIOModuleScopeFlags {
+        match self {
+            Self::None => ffi::G_IO_MODULE_SCOPE_NONE,
+            Self::BlockDuplicates => ffi::G_IO_MODULE_SCOPE_BLOCK_DUPLICATES,
+            Self::__Unknown(value) => value,
+        }
+    }
+}
+
+#[doc(hidden)]
+impl FromGlib<ffi::GIOModuleScopeFlags> for IOModuleScopeFlags {
+    #[inline]
+    unsafe fn from_glib(value: ffi::GIOModuleScopeFlags) -> Self {
+        match value {
+            ffi::G_IO_MODULE_SCOPE_NONE => Self::None,
+            ffi::G_IO_MODULE_SCOPE_BLOCK_DUPLICATES => Self::BlockDuplicates,
+            value => Self::__Unknown(value),
+        }
+    }
+}
+
+impl StaticType for IOModuleScopeFlags {
+    #[inline]
+    #[doc(alias = "g_io_module_scope_flags_get_type")]
+    fn static_type() -> glib::Type {
+        unsafe { from_glib(ffi::g_io_module_scope_flags_get_type()) }
+    }
+}
+
+impl glib::HasParamSpec for IOModuleScopeFlags {
+    type ParamSpec = glib::ParamSpecEnum;
+    type SetValue = Self;
+    type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
+
+    fn param_spec_builder() -> Self::BuilderFn {
+        Self::ParamSpec::builder_with_default
+    }
+}
+
+impl glib::value::ValueType for IOModuleScopeFlags {
+    type Type = Self;
+}
+
+unsafe impl<'a> glib::value::FromValue<'a> for IOModuleScopeFlags {
+    type Checker = glib::value::GenericValueTypeChecker<Self>;
+
+    #[inline]
+    unsafe fn from_value(value: &'a glib::Value) -> Self {
+        from_glib(glib::gobject_ffi::g_value_get_enum(value.to_glib_none().0))
+    }
+}
+
+impl ToValue for IOModuleScopeFlags {
+    #[inline]
+    fn to_value(&self) -> glib::Value {
+        let mut value = glib::Value::for_value_type::<Self>();
+        unsafe {
+            glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, self.into_glib());
+        }
+        value
+    }
+
+    #[inline]
+    fn value_type(&self) -> glib::Type {
+        Self::static_type()
+    }
+}
+
+impl From<IOModuleScopeFlags> for glib::Value {
+    #[inline]
+    fn from(v: IOModuleScopeFlags) -> Self {
         ToValue::to_value(&v)
     }
 }
@@ -3468,6 +4025,150 @@ impl ToValue for TlsCertificateRequestFlags {
 impl From<TlsCertificateRequestFlags> for glib::Value {
     #[inline]
     fn from(v: TlsCertificateRequestFlags) -> Self {
+        ToValue::to_value(&v)
+    }
+}
+
+#[cfg(feature = "v2_66")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
+#[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
+#[non_exhaustive]
+#[doc(alias = "GTlsChannelBindingError")]
+pub enum TlsChannelBindingError {
+    #[doc(alias = "G_TLS_CHANNEL_BINDING_ERROR_NOT_IMPLEMENTED")]
+    NotImplemented,
+    #[doc(alias = "G_TLS_CHANNEL_BINDING_ERROR_INVALID_STATE")]
+    InvalidState,
+    #[doc(alias = "G_TLS_CHANNEL_BINDING_ERROR_NOT_AVAILABLE")]
+    NotAvailable,
+    #[doc(alias = "G_TLS_CHANNEL_BINDING_ERROR_NOT_SUPPORTED")]
+    NotSupported,
+    #[doc(alias = "G_TLS_CHANNEL_BINDING_ERROR_GENERAL_ERROR")]
+    GeneralError,
+    #[doc(hidden)]
+    __Unknown(i32),
+}
+
+#[cfg(feature = "v2_66")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
+#[doc(hidden)]
+impl IntoGlib for TlsChannelBindingError {
+    type GlibType = ffi::GTlsChannelBindingError;
+
+    #[inline]
+    fn into_glib(self) -> ffi::GTlsChannelBindingError {
+        match self {
+            Self::NotImplemented => ffi::G_TLS_CHANNEL_BINDING_ERROR_NOT_IMPLEMENTED,
+            Self::InvalidState => ffi::G_TLS_CHANNEL_BINDING_ERROR_INVALID_STATE,
+            Self::NotAvailable => ffi::G_TLS_CHANNEL_BINDING_ERROR_NOT_AVAILABLE,
+            Self::NotSupported => ffi::G_TLS_CHANNEL_BINDING_ERROR_NOT_SUPPORTED,
+            Self::GeneralError => ffi::G_TLS_CHANNEL_BINDING_ERROR_GENERAL_ERROR,
+            Self::__Unknown(value) => value,
+        }
+    }
+}
+
+#[cfg(feature = "v2_66")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
+#[doc(hidden)]
+impl FromGlib<ffi::GTlsChannelBindingError> for TlsChannelBindingError {
+    #[inline]
+    unsafe fn from_glib(value: ffi::GTlsChannelBindingError) -> Self {
+        match value {
+            ffi::G_TLS_CHANNEL_BINDING_ERROR_NOT_IMPLEMENTED => Self::NotImplemented,
+            ffi::G_TLS_CHANNEL_BINDING_ERROR_INVALID_STATE => Self::InvalidState,
+            ffi::G_TLS_CHANNEL_BINDING_ERROR_NOT_AVAILABLE => Self::NotAvailable,
+            ffi::G_TLS_CHANNEL_BINDING_ERROR_NOT_SUPPORTED => Self::NotSupported,
+            ffi::G_TLS_CHANNEL_BINDING_ERROR_GENERAL_ERROR => Self::GeneralError,
+            value => Self::__Unknown(value),
+        }
+    }
+}
+
+#[cfg(feature = "v2_66")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
+impl glib::error::ErrorDomain for TlsChannelBindingError {
+    #[inline]
+    fn domain() -> glib::Quark {
+        unsafe { from_glib(ffi::g_tls_channel_binding_error_quark()) }
+    }
+
+    #[inline]
+    fn code(self) -> i32 {
+        self.into_glib()
+    }
+
+    #[inline]
+    #[allow(clippy::match_single_binding)]
+    fn from(code: i32) -> Option<Self> {
+        match unsafe { from_glib(code) } {
+            value => Some(value),
+        }
+    }
+}
+
+#[cfg(feature = "v2_66")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
+impl StaticType for TlsChannelBindingError {
+    #[inline]
+    #[doc(alias = "g_tls_channel_binding_error_get_type")]
+    fn static_type() -> glib::Type {
+        unsafe { from_glib(ffi::g_tls_channel_binding_error_get_type()) }
+    }
+}
+
+#[cfg(feature = "v2_66")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
+impl glib::HasParamSpec for TlsChannelBindingError {
+    type ParamSpec = glib::ParamSpecEnum;
+    type SetValue = Self;
+    type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
+
+    fn param_spec_builder() -> Self::BuilderFn {
+        Self::ParamSpec::builder_with_default
+    }
+}
+
+#[cfg(feature = "v2_66")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
+impl glib::value::ValueType for TlsChannelBindingError {
+    type Type = Self;
+}
+
+#[cfg(feature = "v2_66")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
+unsafe impl<'a> glib::value::FromValue<'a> for TlsChannelBindingError {
+    type Checker = glib::value::GenericValueTypeChecker<Self>;
+
+    #[inline]
+    unsafe fn from_value(value: &'a glib::Value) -> Self {
+        from_glib(glib::gobject_ffi::g_value_get_enum(value.to_glib_none().0))
+    }
+}
+
+#[cfg(feature = "v2_66")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
+impl ToValue for TlsChannelBindingError {
+    #[inline]
+    fn to_value(&self) -> glib::Value {
+        let mut value = glib::Value::for_value_type::<Self>();
+        unsafe {
+            glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, self.into_glib());
+        }
+        value
+    }
+
+    #[inline]
+    fn value_type(&self) -> glib::Type {
+        Self::static_type()
+    }
+}
+
+#[cfg(feature = "v2_66")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
+impl From<TlsChannelBindingError> for glib::Value {
+    #[inline]
+    fn from(v: TlsChannelBindingError) -> Self {
         ToValue::to_value(&v)
     }
 }

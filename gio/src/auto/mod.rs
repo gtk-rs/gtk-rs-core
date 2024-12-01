@@ -89,6 +89,15 @@ pub use self::dbus_object::DBusObject;
 mod dbus_object_manager;
 pub use self::dbus_object_manager::DBusObjectManager;
 
+mod dbus_object_manager_server;
+pub use self::dbus_object_manager_server::DBusObjectManagerServer;
+
+mod dbus_object_proxy;
+pub use self::dbus_object_proxy::DBusObjectProxy;
+
+mod dbus_object_skeleton;
+pub use self::dbus_object_skeleton::DBusObjectSkeleton;
+
 mod dbus_proxy;
 pub use self::dbus_proxy::DBusProxy;
 
@@ -127,6 +136,15 @@ pub use self::desktop_app_info::DesktopAppInfo;
 
 mod drive;
 pub use self::drive::Drive;
+
+mod dtls_client_connection;
+pub use self::dtls_client_connection::DtlsClientConnection;
+
+mod dtls_connection;
+pub use self::dtls_connection::DtlsConnection;
+
+mod dtls_server_connection;
+pub use self::dtls_server_connection::DtlsServerConnection;
 
 mod emblem;
 pub use self::emblem::Emblem;
@@ -231,6 +249,12 @@ pub use self::mount::Mount;
 mod mount_operation;
 pub use self::mount_operation::MountOperation;
 
+mod native_socket_address;
+pub use self::native_socket_address::NativeSocketAddress;
+
+mod native_volume_monitor;
+pub use self::native_volume_monitor::NativeVolumeMonitor;
+
 mod network_address;
 pub use self::network_address::NetworkAddress;
 
@@ -270,6 +294,9 @@ pub use self::proxy::Proxy;
 
 mod proxy_address;
 pub use self::proxy_address::ProxyAddress;
+
+mod proxy_address_enumerator;
+pub use self::proxy_address_enumerator::ProxyAddressEnumerator;
 
 mod proxy_resolver;
 pub use self::proxy_resolver::ProxyResolver;
@@ -340,6 +367,12 @@ pub use self::subprocess_launcher::SubprocessLauncher;
 mod tcp_connection;
 pub use self::tcp_connection::TcpConnection;
 
+mod tcp_wrapper_connection;
+pub use self::tcp_wrapper_connection::TcpWrapperConnection;
+
+mod test_dbus;
+pub use self::test_dbus::TestDBus;
+
 mod themed_icon;
 pub use self::themed_icon::ThemedIcon;
 
@@ -375,6 +408,13 @@ pub use self::tls_server_connection::TlsServerConnection;
 
 #[cfg(unix)]
 #[cfg_attr(docsrs, doc(cfg(unix)))]
+mod unix_connection;
+#[cfg(unix)]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
+pub use self::unix_connection::UnixConnection;
+
+#[cfg(unix)]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
 mod unix_credentials_message;
 #[cfg(unix)]
 #[cfg_attr(docsrs, doc(cfg(unix)))]
@@ -400,6 +440,13 @@ mod unix_input_stream;
 #[cfg(unix)]
 #[cfg_attr(docsrs, doc(cfg(unix)))]
 pub use self::unix_input_stream::UnixInputStream;
+
+#[cfg(unix)]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
+mod unix_mount_monitor;
+#[cfg(unix)]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
+pub use self::unix_mount_monitor::UnixMountMonitor;
 
 #[cfg(unix)]
 #[cfg_attr(docsrs, doc(cfg(unix)))]
@@ -487,6 +534,7 @@ mod enums;
 pub use self::enums::BusType;
 pub use self::enums::ConverterResult;
 pub use self::enums::CredentialsType;
+pub use self::enums::DBusError;
 pub use self::enums::DBusMessageByteOrder;
 pub use self::enums::DBusMessageHeaderField;
 pub use self::enums::DBusMessageType;
@@ -498,7 +546,9 @@ pub use self::enums::FileAttributeStatus;
 pub use self::enums::FileAttributeType;
 pub use self::enums::FileMonitorEvent;
 pub use self::enums::FileType;
+pub use self::enums::FilesystemPreviewType;
 pub use self::enums::IOErrorEnum;
+pub use self::enums::IOModuleScopeFlags;
 #[cfg(feature = "v2_64")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_64")))]
 pub use self::enums::MemoryMonitorWarningLevel;
@@ -519,6 +569,9 @@ pub use self::enums::SocketProtocol;
 pub use self::enums::SocketType;
 pub use self::enums::TlsAuthenticationMode;
 pub use self::enums::TlsCertificateRequestFlags;
+#[cfg(feature = "v2_66")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
+pub use self::enums::TlsChannelBindingError;
 #[cfg(feature = "v2_66")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
 pub use self::enums::TlsChannelBindingType;
@@ -548,10 +601,12 @@ pub use self::flags::DBusConnectionFlags;
 pub use self::flags::DBusInterfaceSkeletonFlags;
 pub use self::flags::DBusMessageFlags;
 pub use self::flags::DBusObjectManagerClientFlags;
+pub use self::flags::DBusPropertyInfoFlags;
 pub use self::flags::DBusProxyFlags;
 pub use self::flags::DBusSendMessageFlags;
 pub use self::flags::DBusServerFlags;
 pub use self::flags::DBusSignalFlags;
+pub use self::flags::DBusSubtreeFlags;
 pub use self::flags::DriveStartFlags;
 pub use self::flags::FileAttributeInfoFlags;
 pub use self::flags::FileCopyFlags;
@@ -566,9 +621,11 @@ pub use self::flags::OutputStreamSpliceFlags;
 #[cfg(feature = "v2_60")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
 pub use self::flags::ResolverNameLookupFlags;
+pub use self::flags::ResourceFlags;
 pub use self::flags::ResourceLookupFlags;
 pub use self::flags::SettingsBindFlags;
 pub use self::flags::SubprocessFlags;
+pub use self::flags::TestDBusFlags;
 pub use self::flags::TlsCertificateFlags;
 pub use self::flags::TlsDatabaseVerifyFlags;
 pub use self::flags::TlsPasswordFlags;
@@ -771,6 +828,9 @@ pub(crate) mod traits {
     pub use super::dbus_interface_skeleton::DBusInterfaceSkeletonExt;
     pub use super::dbus_object::DBusObjectExt;
     pub use super::dbus_object_manager::DBusObjectManagerExt;
+    pub use super::dbus_object_manager_server::DBusObjectManagerServerExt;
+    pub use super::dbus_object_proxy::DBusObjectProxyExt;
+    pub use super::dbus_object_skeleton::DBusObjectSkeletonExt;
     pub use super::dbus_proxy::DBusProxyExt;
     #[cfg(feature = "v2_72")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
@@ -779,6 +839,9 @@ pub(crate) mod traits {
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
     pub use super::debug_controller_dbus::DebugControllerDBusExt;
     pub use super::drive::DriveExt;
+    pub use super::dtls_client_connection::DtlsClientConnectionExt;
+    pub use super::dtls_connection::DtlsConnectionExt;
+    pub use super::dtls_server_connection::DtlsServerConnectionExt;
     pub use super::emblemed_icon::EmblemedIconExt;
     pub use super::file::FileExt;
     pub use super::file_enumerator::FileEnumeratorExt;
@@ -819,6 +882,7 @@ pub(crate) mod traits {
     pub use super::power_profile_monitor::PowerProfileMonitorExt;
     pub use super::proxy::ProxyExt;
     pub use super::proxy_address::ProxyAddressExt;
+    pub use super::proxy_address_enumerator::ProxyAddressEnumeratorExt;
     pub use super::proxy_resolver::ProxyResolverExt;
     pub use super::remote_action_group::RemoteActionGroupExt;
     pub use super::resolver::ResolverExt;
@@ -836,6 +900,7 @@ pub(crate) mod traits {
     pub use super::socket_listener::SocketListenerExt;
     pub use super::socket_service::SocketServiceExt;
     pub use super::tcp_connection::TcpConnectionExt;
+    pub use super::tcp_wrapper_connection::TcpWrapperConnectionExt;
     pub use super::threaded_socket_service::ThreadedSocketServiceExt;
     pub use super::tls_backend::TlsBackendExt;
     pub use super::tls_certificate::TlsCertificateExt;
@@ -846,6 +911,9 @@ pub(crate) mod traits {
     pub use super::tls_interaction::TlsInteractionExt;
     pub use super::tls_password::TlsPasswordExt;
     pub use super::tls_server_connection::TlsServerConnectionExt;
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
+    pub use super::unix_connection::UnixConnectionExt;
     #[cfg(unix)]
     #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub use super::unix_credentials_message::UnixCredentialsMessageExt;
