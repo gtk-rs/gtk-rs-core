@@ -1057,6 +1057,91 @@ impl From<DBusObjectManagerClientFlags> for glib::Value {
 
 bitflags! {
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
+    #[doc(alias = "GDBusPropertyInfoFlags")]
+    pub struct DBusPropertyInfoFlags: u32 {
+        #[doc(alias = "G_DBUS_PROPERTY_INFO_FLAGS_NONE")]
+        const NONE = ffi::G_DBUS_PROPERTY_INFO_FLAGS_NONE as _;
+        #[doc(alias = "G_DBUS_PROPERTY_INFO_FLAGS_READABLE")]
+        const READABLE = ffi::G_DBUS_PROPERTY_INFO_FLAGS_READABLE as _;
+        #[doc(alias = "G_DBUS_PROPERTY_INFO_FLAGS_WRITABLE")]
+        const WRITABLE = ffi::G_DBUS_PROPERTY_INFO_FLAGS_WRITABLE as _;
+    }
+}
+
+#[doc(hidden)]
+impl IntoGlib for DBusPropertyInfoFlags {
+    type GlibType = ffi::GDBusPropertyInfoFlags;
+
+    #[inline]
+    fn into_glib(self) -> ffi::GDBusPropertyInfoFlags {
+        self.bits()
+    }
+}
+
+#[doc(hidden)]
+impl FromGlib<ffi::GDBusPropertyInfoFlags> for DBusPropertyInfoFlags {
+    #[inline]
+    unsafe fn from_glib(value: ffi::GDBusPropertyInfoFlags) -> Self {
+        Self::from_bits_truncate(value)
+    }
+}
+
+impl StaticType for DBusPropertyInfoFlags {
+    #[inline]
+    #[doc(alias = "g_dbus_property_info_flags_get_type")]
+    fn static_type() -> glib::Type {
+        unsafe { from_glib(ffi::g_dbus_property_info_flags_get_type()) }
+    }
+}
+
+impl glib::HasParamSpec for DBusPropertyInfoFlags {
+    type ParamSpec = glib::ParamSpecFlags;
+    type SetValue = Self;
+    type BuilderFn = fn(&str) -> glib::ParamSpecFlagsBuilder<Self>;
+
+    fn param_spec_builder() -> Self::BuilderFn {
+        Self::ParamSpec::builder
+    }
+}
+
+impl glib::value::ValueType for DBusPropertyInfoFlags {
+    type Type = Self;
+}
+
+unsafe impl<'a> glib::value::FromValue<'a> for DBusPropertyInfoFlags {
+    type Checker = glib::value::GenericValueTypeChecker<Self>;
+
+    #[inline]
+    unsafe fn from_value(value: &'a glib::Value) -> Self {
+        from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0))
+    }
+}
+
+impl ToValue for DBusPropertyInfoFlags {
+    #[inline]
+    fn to_value(&self) -> glib::Value {
+        let mut value = glib::Value::for_value_type::<Self>();
+        unsafe {
+            glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, self.into_glib());
+        }
+        value
+    }
+
+    #[inline]
+    fn value_type(&self) -> glib::Type {
+        Self::static_type()
+    }
+}
+
+impl From<DBusPropertyInfoFlags> for glib::Value {
+    #[inline]
+    fn from(v: DBusPropertyInfoFlags) -> Self {
+        ToValue::to_value(&v)
+    }
+}
+
+bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GDBusProxyFlags")]
     pub struct DBusProxyFlags: u32 {
         #[doc(alias = "G_DBUS_PROXY_FLAGS_NONE")]
@@ -1403,6 +1488,89 @@ impl ToValue for DBusSignalFlags {
 impl From<DBusSignalFlags> for glib::Value {
     #[inline]
     fn from(v: DBusSignalFlags) -> Self {
+        ToValue::to_value(&v)
+    }
+}
+
+bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
+    #[doc(alias = "GDBusSubtreeFlags")]
+    pub struct DBusSubtreeFlags: u32 {
+        #[doc(alias = "G_DBUS_SUBTREE_FLAGS_NONE")]
+        const NONE = ffi::G_DBUS_SUBTREE_FLAGS_NONE as _;
+        #[doc(alias = "G_DBUS_SUBTREE_FLAGS_DISPATCH_TO_UNENUMERATED_NODES")]
+        const DISPATCH_TO_UNENUMERATED_NODES = ffi::G_DBUS_SUBTREE_FLAGS_DISPATCH_TO_UNENUMERATED_NODES as _;
+    }
+}
+
+#[doc(hidden)]
+impl IntoGlib for DBusSubtreeFlags {
+    type GlibType = ffi::GDBusSubtreeFlags;
+
+    #[inline]
+    fn into_glib(self) -> ffi::GDBusSubtreeFlags {
+        self.bits()
+    }
+}
+
+#[doc(hidden)]
+impl FromGlib<ffi::GDBusSubtreeFlags> for DBusSubtreeFlags {
+    #[inline]
+    unsafe fn from_glib(value: ffi::GDBusSubtreeFlags) -> Self {
+        Self::from_bits_truncate(value)
+    }
+}
+
+impl StaticType for DBusSubtreeFlags {
+    #[inline]
+    #[doc(alias = "g_dbus_subtree_flags_get_type")]
+    fn static_type() -> glib::Type {
+        unsafe { from_glib(ffi::g_dbus_subtree_flags_get_type()) }
+    }
+}
+
+impl glib::HasParamSpec for DBusSubtreeFlags {
+    type ParamSpec = glib::ParamSpecFlags;
+    type SetValue = Self;
+    type BuilderFn = fn(&str) -> glib::ParamSpecFlagsBuilder<Self>;
+
+    fn param_spec_builder() -> Self::BuilderFn {
+        Self::ParamSpec::builder
+    }
+}
+
+impl glib::value::ValueType for DBusSubtreeFlags {
+    type Type = Self;
+}
+
+unsafe impl<'a> glib::value::FromValue<'a> for DBusSubtreeFlags {
+    type Checker = glib::value::GenericValueTypeChecker<Self>;
+
+    #[inline]
+    unsafe fn from_value(value: &'a glib::Value) -> Self {
+        from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0))
+    }
+}
+
+impl ToValue for DBusSubtreeFlags {
+    #[inline]
+    fn to_value(&self) -> glib::Value {
+        let mut value = glib::Value::for_value_type::<Self>();
+        unsafe {
+            glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, self.into_glib());
+        }
+        value
+    }
+
+    #[inline]
+    fn value_type(&self) -> glib::Type {
+        Self::static_type()
+    }
+}
+
+impl From<DBusSubtreeFlags> for glib::Value {
+    #[inline]
+    fn from(v: DBusSubtreeFlags) -> Self {
         ToValue::to_value(&v)
     }
 }
@@ -2455,6 +2623,89 @@ impl From<ResolverNameLookupFlags> for glib::Value {
 
 bitflags! {
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
+    #[doc(alias = "GResourceFlags")]
+    pub struct ResourceFlags: u32 {
+        #[doc(alias = "G_RESOURCE_FLAGS_NONE")]
+        const NONE = ffi::G_RESOURCE_FLAGS_NONE as _;
+        #[doc(alias = "G_RESOURCE_FLAGS_COMPRESSED")]
+        const COMPRESSED = ffi::G_RESOURCE_FLAGS_COMPRESSED as _;
+    }
+}
+
+#[doc(hidden)]
+impl IntoGlib for ResourceFlags {
+    type GlibType = ffi::GResourceFlags;
+
+    #[inline]
+    fn into_glib(self) -> ffi::GResourceFlags {
+        self.bits()
+    }
+}
+
+#[doc(hidden)]
+impl FromGlib<ffi::GResourceFlags> for ResourceFlags {
+    #[inline]
+    unsafe fn from_glib(value: ffi::GResourceFlags) -> Self {
+        Self::from_bits_truncate(value)
+    }
+}
+
+impl StaticType for ResourceFlags {
+    #[inline]
+    #[doc(alias = "g_resource_flags_get_type")]
+    fn static_type() -> glib::Type {
+        unsafe { from_glib(ffi::g_resource_flags_get_type()) }
+    }
+}
+
+impl glib::HasParamSpec for ResourceFlags {
+    type ParamSpec = glib::ParamSpecFlags;
+    type SetValue = Self;
+    type BuilderFn = fn(&str) -> glib::ParamSpecFlagsBuilder<Self>;
+
+    fn param_spec_builder() -> Self::BuilderFn {
+        Self::ParamSpec::builder
+    }
+}
+
+impl glib::value::ValueType for ResourceFlags {
+    type Type = Self;
+}
+
+unsafe impl<'a> glib::value::FromValue<'a> for ResourceFlags {
+    type Checker = glib::value::GenericValueTypeChecker<Self>;
+
+    #[inline]
+    unsafe fn from_value(value: &'a glib::Value) -> Self {
+        from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0))
+    }
+}
+
+impl ToValue for ResourceFlags {
+    #[inline]
+    fn to_value(&self) -> glib::Value {
+        let mut value = glib::Value::for_value_type::<Self>();
+        unsafe {
+            glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, self.into_glib());
+        }
+        value
+    }
+
+    #[inline]
+    fn value_type(&self) -> glib::Type {
+        Self::static_type()
+    }
+}
+
+impl From<ResourceFlags> for glib::Value {
+    #[inline]
+    fn from(v: ResourceFlags) -> Self {
+        ToValue::to_value(&v)
+    }
+}
+
+bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GResourceLookupFlags")]
     pub struct ResourceLookupFlags: u32 {
         #[doc(alias = "G_RESOURCE_LOOKUP_FLAGS_NONE")]
@@ -2722,6 +2973,87 @@ impl ToValue for SubprocessFlags {
 impl From<SubprocessFlags> for glib::Value {
     #[inline]
     fn from(v: SubprocessFlags) -> Self {
+        ToValue::to_value(&v)
+    }
+}
+
+bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
+    #[doc(alias = "GTestDBusFlags")]
+    pub struct TestDBusFlags: u32 {
+        #[doc(alias = "G_TEST_DBUS_NONE")]
+        const NONE = ffi::G_TEST_DBUS_NONE as _;
+    }
+}
+
+#[doc(hidden)]
+impl IntoGlib for TestDBusFlags {
+    type GlibType = ffi::GTestDBusFlags;
+
+    #[inline]
+    fn into_glib(self) -> ffi::GTestDBusFlags {
+        self.bits()
+    }
+}
+
+#[doc(hidden)]
+impl FromGlib<ffi::GTestDBusFlags> for TestDBusFlags {
+    #[inline]
+    unsafe fn from_glib(value: ffi::GTestDBusFlags) -> Self {
+        Self::from_bits_truncate(value)
+    }
+}
+
+impl StaticType for TestDBusFlags {
+    #[inline]
+    #[doc(alias = "g_test_dbus_flags_get_type")]
+    fn static_type() -> glib::Type {
+        unsafe { from_glib(ffi::g_test_dbus_flags_get_type()) }
+    }
+}
+
+impl glib::HasParamSpec for TestDBusFlags {
+    type ParamSpec = glib::ParamSpecFlags;
+    type SetValue = Self;
+    type BuilderFn = fn(&str) -> glib::ParamSpecFlagsBuilder<Self>;
+
+    fn param_spec_builder() -> Self::BuilderFn {
+        Self::ParamSpec::builder
+    }
+}
+
+impl glib::value::ValueType for TestDBusFlags {
+    type Type = Self;
+}
+
+unsafe impl<'a> glib::value::FromValue<'a> for TestDBusFlags {
+    type Checker = glib::value::GenericValueTypeChecker<Self>;
+
+    #[inline]
+    unsafe fn from_value(value: &'a glib::Value) -> Self {
+        from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0))
+    }
+}
+
+impl ToValue for TestDBusFlags {
+    #[inline]
+    fn to_value(&self) -> glib::Value {
+        let mut value = glib::Value::for_value_type::<Self>();
+        unsafe {
+            glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, self.into_glib());
+        }
+        value
+    }
+
+    #[inline]
+    fn value_type(&self) -> glib::Type {
+        Self::static_type()
+    }
+}
+
+impl From<TestDBusFlags> for glib::Value {
+    #[inline]
+    fn from(v: TestDBusFlags) -> Self {
         ToValue::to_value(&v)
     }
 }
