@@ -226,28 +226,28 @@
 ///
 /// This is used for both the `#[object_subclass]` and `#[object_interface]` attributes.
 </span><span class="kw">pub struct </span>Input {
-    attrs: <a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html">Vec</a>&lt;<a href="https://docs.rs/syn/2.0.89/syn/attr/struct.Attribute.html">syn::Attribute</a>&gt;,
-    generics: <a href="https://docs.rs/syn/2.0.89/syn/generics/struct.Generics.html">syn::Generics</a>,
-    trait_path: <a href="https://docs.rs/syn/2.0.89/syn/path/struct.Path.html">syn::Path</a>,
+    attrs: <a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html">Vec</a>&lt;<a href="https://docs.rs/syn/2.0.90/syn/attr/struct.Attribute.html">syn::Attribute</a>&gt;,
+    generics: <a href="https://docs.rs/syn/2.0.90/syn/generics/struct.Generics.html">syn::Generics</a>,
+    trait_path: <a href="https://docs.rs/syn/2.0.90/syn/path/struct.Path.html">syn::Path</a>,
     self_ty: <a href="https://docs.rs/proc-macro2/1.0.92/proc_macro2/struct.Ident.html">syn::Ident</a>,
-    unsafety: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="https://docs.rs/syn/2.0.89/syn/token/struct.Unsafe.html">syn::token::Unsafe</a>&gt;,
-    items: <a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html">Vec</a>&lt;<a href="https://docs.rs/syn/2.0.89/syn/item/enum.ImplItem.html">syn::ImplItem</a>&gt;,
+    unsafety: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="https://docs.rs/syn/2.0.90/syn/token/struct.Unsafe.html">syn::token::Unsafe</a>&gt;,
+    items: <a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html">Vec</a>&lt;<a href="https://docs.rs/syn/2.0.90/syn/item/enum.ImplItem.html">syn::ImplItem</a>&gt;,
     meta_dynamic: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="#97-100">MetaDynamic</a>&gt;,
 }
 
 <span class="kw">impl </span><a href="#19-27">Input</a> {
     <span class="doccomment">/// Parse an `#[object_interface]` attribute.
-    </span><span class="kw">pub fn </span>parse_interface(input: <a href="https://docs.rs/syn/2.0.89/syn/parse/type.ParseStream.html">syn::parse::ParseStream</a>) -&gt; <a href="https://docs.rs/syn/2.0.89/syn/error/type.Result.html">syn::Result</a>&lt;<span class="self">Self</span>&gt; {
+    </span><span class="kw">pub fn </span>parse_interface(input: <a href="https://docs.rs/syn/2.0.90/syn/parse/type.ParseStream.html">syn::parse::ParseStream</a>) -&gt; <a href="https://docs.rs/syn/2.0.90/syn/error/type.Result.html">syn::Result</a>&lt;<span class="self">Self</span>&gt; {
         <a href="#41-89"><span class="self">Self</span>::parse</a>(<a href="#12">AttrKind::Interface</a>, <a href="#31">input</a>)
     }
 
     <span class="doccomment">/// Parse an `#[object_subclass]` attribute.
-    </span><span class="kw">pub fn </span>parse_subclass(input: <a href="https://docs.rs/syn/2.0.89/syn/parse/type.ParseStream.html">syn::parse::ParseStream</a>) -&gt; <a href="https://docs.rs/syn/2.0.89/syn/error/type.Result.html">syn::Result</a>&lt;<span class="self">Self</span>&gt; {
+    </span><span class="kw">pub fn </span>parse_subclass(input: <a href="https://docs.rs/syn/2.0.90/syn/parse/type.ParseStream.html">syn::parse::ParseStream</a>) -&gt; <a href="https://docs.rs/syn/2.0.90/syn/error/type.Result.html">syn::Result</a>&lt;<span class="self">Self</span>&gt; {
         <a href="#41-89"><span class="self">Self</span>::parse</a>(<a href="#13">AttrKind::Subclass</a>, <a href="#36">input</a>)
     }
 
     <span class="doccomment">/// Parse an `#[object_subclass]` or `#[object_interface]` depending on the attribute kind.
-    </span><span class="kw">fn </span>parse(kind: <a href="#11-14">AttrKind</a>, input: <a href="https://docs.rs/syn/2.0.89/syn/parse/type.ParseStream.html">syn::parse::ParseStream</a>) -&gt; <a href="https://docs.rs/syn/2.0.89/syn/error/type.Result.html">syn::Result</a>&lt;<span class="self">Self</span>&gt; {
+    </span><span class="kw">fn </span>parse(kind: <a href="#11-14">AttrKind</a>, input: <a href="https://docs.rs/syn/2.0.90/syn/parse/type.ParseStream.html">syn::parse::ParseStream</a>) -&gt; <a href="https://docs.rs/syn/2.0.90/syn/error/type.Result.html">syn::Result</a>&lt;<span class="self">Self</span>&gt; {
         <span class="kw">let </span>wrong_place_msg = <span class="kw">match </span><a href="#41">kind</a> {
             <a href="#12">AttrKind::Interface</a> =&gt; {
                 <span class="string">"This macro should be used on `impl` block for `glib::ObjectInterface` trait"
@@ -257,7 +257,7 @@
             </span>}
         };
 
-        <span class="kw">let </span><a href="https://docs.rs/syn/2.0.89/syn/item/struct.ItemImpl.html">syn::ItemImpl</a> {
+        <span class="kw">let </span><a href="https://docs.rs/syn/2.0.90/syn/item/struct.ItemImpl.html">syn::ItemImpl</a> {
             <span class="kw-2">mut </span>attrs,
             generics,
             trait_,
@@ -266,14 +266,14 @@
             items,
             ..
         } = <a href="#41">input</a>
-            .<a href="https://docs.rs/syn/2.0.89/syn/parse/struct.ParseBuffer.html#method.parse">parse</a>()
-            .<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.map_err">map_err</a>(|<span class="kw">_</span>| <a href="https://docs.rs/syn/2.0.89/syn/error/struct.Error.html#method.new">syn::Error::new</a>(<a href="https://docs.rs/proc-macro2/1.0.92/proc_macro2/struct.Span.html#method.call_site">Span::call_site</a>(), <a href="#42">wrong_place_msg</a>))<span class="question-mark">?</span>;
+            .<a href="https://docs.rs/syn/2.0.90/syn/parse/struct.ParseBuffer.html#method.parse">parse</a>()
+            .<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.map_err">map_err</a>(|<span class="kw">_</span>| <a href="https://docs.rs/syn/2.0.90/syn/error/struct.Error.html#method.new">syn::Error::new</a>(<a href="https://docs.rs/proc-macro2/1.0.92/proc_macro2/struct.Span.html#method.call_site">Span::call_site</a>(), <a href="#42">wrong_place_msg</a>))<span class="question-mark">?</span>;
 
         <span class="comment">// The type must be a path
         </span><span class="kw">let </span>self_ty = <span class="kw">match </span><span class="kw-2">*</span><a href="#55">self_ty</a> {
-            <a href="https://docs.rs/syn/2.0.89/syn/ty/enum.Type.html#variant.Path">syn::Type::Path</a>(<a href="https://docs.rs/syn/2.0.89/syn/ty/struct.TypePath.html">syn::TypePath</a> { path, .. }) =&gt; <a href="#65">path</a>.<a href="https://docs.rs/syn/2.0.89/syn/path/struct.Path.html#method.require_ident">require_ident</a>().<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.cloned">cloned</a>(),
-            <span class="kw">_ </span>=&gt; <span class="prelude-val">Err</span>(<a href="https://docs.rs/syn/2.0.89/syn/error/struct.Error.html#method.new">syn::Error::new</a>(
-                <a href="https://docs.rs/syn/2.0.89/syn/spanned/trait.Spanned.html#tymethod.span">syn::spanned::Spanned::span</a>(<span class="kw-2">&amp;</span><a href="#55">self_ty</a>),
+            <a href="https://docs.rs/syn/2.0.90/syn/ty/enum.Type.html#variant.Path">syn::Type::Path</a>(<a href="https://docs.rs/syn/2.0.90/syn/ty/struct.TypePath.html">syn::TypePath</a> { path, .. }) =&gt; <a href="#65">path</a>.<a href="https://docs.rs/syn/2.0.90/syn/path/struct.Path.html#method.require_ident">require_ident</a>().<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.cloned">cloned</a>(),
+            <span class="kw">_ </span>=&gt; <span class="prelude-val">Err</span>(<a href="https://docs.rs/syn/2.0.90/syn/error/struct.Error.html#method.new">syn::Error::new</a>(
+                <a href="https://docs.rs/syn/2.0.90/syn/spanned/trait.Spanned.html#tymethod.span">syn::spanned::Spanned::span</a>(<span class="kw-2">&amp;</span><a href="#55">self_ty</a>),
                 <span class="string">"expected this path to be an identifier"</span>,
             )),
         }<span class="question-mark">?</span>;
@@ -282,7 +282,7 @@
 
         <span class="kw">let </span>trait_path = <a href="#54">trait_</a>
             .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_ref">as_ref</a>()
-            .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.ok_or_else">ok_or_else</a>(|| <a href="https://docs.rs/syn/2.0.89/syn/error/struct.Error.html#method.new">syn::Error::new</a>(<a href="https://docs.rs/proc-macro2/1.0.92/proc_macro2/struct.Span.html#method.call_site">Span::call_site</a>(), <a href="#42">wrong_place_msg</a>))<span class="question-mark">?
+            .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.ok_or_else">ok_or_else</a>(|| <a href="https://docs.rs/syn/2.0.90/syn/error/struct.Error.html#method.new">syn::Error::new</a>(<a href="https://docs.rs/proc-macro2/1.0.92/proc_macro2/struct.Span.html#method.call_site">Span::call_site</a>(), <a href="#42">wrong_place_msg</a>))<span class="question-mark">?
             </span>.<span class="number">1
             </span>.<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">clone</a>();
 
@@ -304,7 +304,7 @@
 /// - `#[object_subclass_dynamic]`
 /// - `#[object_interface_dynamic]`
 </span><span class="kw">struct </span>MetaDynamic {
-    plugin_type: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="https://docs.rs/syn/2.0.89/syn/path/struct.Path.html">syn::Path</a>&gt;,
+    plugin_type: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="https://docs.rs/syn/2.0.90/syn/path/struct.Path.html">syn::Path</a>&gt;,
     lazy_registration: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>,
 }
 
@@ -312,16 +312,16 @@
     <span class="doccomment">/// Parse `#[object_subclass_dynamic]` / `#[object_interface_dynamic]`
     </span><span class="kw">fn </span>parse_and_remove(
         kind: <a href="#11-14">AttrKind</a>,
-        attrs: <span class="kw-2">&amp;mut </span><a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html">Vec</a>&lt;<a href="https://docs.rs/syn/2.0.89/syn/attr/struct.Attribute.html">syn::Attribute</a>&gt;,
-    ) -&gt; <a href="https://docs.rs/syn/2.0.89/syn/error/type.Result.html">syn::Result</a>&lt;<a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="self">Self</span>&gt;&gt; {
+        attrs: <span class="kw-2">&amp;mut </span><a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html">Vec</a>&lt;<a href="https://docs.rs/syn/2.0.90/syn/attr/struct.Attribute.html">syn::Attribute</a>&gt;,
+    ) -&gt; <a href="https://docs.rs/syn/2.0.90/syn/error/type.Result.html">syn::Result</a>&lt;<a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="self">Self</span>&gt;&gt; {
         <span class="kw">let </span>attr_name = <span class="kw">match </span><a href="#105">kind</a> {
             <a href="#12">AttrKind::Interface</a> =&gt; <span class="string">"object_interface_dynamic"</span>,
             <a href="#13">AttrKind::Subclass</a> =&gt; <span class="string">"object_subclass_dynamic"</span>,
         };
 
-        <span class="kw">let </span><span class="kw-2">mut </span>plugin_type = <a href="utils.rs.html#19-25">NestedMetaItem</a>::&lt;<a href="https://docs.rs/syn/2.0.89/syn/path/struct.Path.html">syn::Path</a>&gt;::new(<span class="string">"plugin_type"</span>).<a href="utils.rs.html#55-58">value_required</a>();
+        <span class="kw">let </span><span class="kw-2">mut </span>plugin_type = <a href="utils.rs.html#19-25">NestedMetaItem</a>::&lt;<a href="https://docs.rs/syn/2.0.90/syn/path/struct.Path.html">syn::Path</a>&gt;::new(<span class="string">"plugin_type"</span>).<a href="utils.rs.html#55-58">value_required</a>();
         <span class="kw">let </span><span class="kw-2">mut </span>lazy_registration =
-            <a href="utils.rs.html#19-25">NestedMetaItem</a>::&lt;<a href="https://docs.rs/syn/2.0.89/syn/lit/struct.LitBool.html">syn::LitBool</a>&gt;::new(<span class="string">"lazy_registration"</span>).<a href="utils.rs.html#55-58">value_required</a>();
+            <a href="utils.rs.html#19-25">NestedMetaItem</a>::&lt;<a href="https://docs.rs/syn/2.0.90/syn/lit/struct.LitBool.html">syn::LitBool</a>&gt;::new(<span class="string">"lazy_registration"</span>).<a href="utils.rs.html#55-58">value_required</a>();
 
         <span class="kw">let </span>found = <a href="utils.rs.html#167-186">parse_optional_nested_meta_items</a>(
             <span class="kw-2">&amp;*</span><a href="#106">attrs</a>,
@@ -332,7 +332,7 @@
 
         <span class="kw">if </span>found {
             <span class="comment">// remove attribute from the attribute list because it is not a real proc_macro_attribute
-            </span><a href="#106">attrs</a>.<a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.retain">retain</a>(|attr| !<a href="#126">attr</a>.<a href="https://docs.rs/syn/2.0.89/syn/attr/struct.Attribute.html#method.path">path</a>().<a href="https://docs.rs/syn/2.0.89/syn/path/struct.Path.html#method.is_ident">is_ident</a>(<a href="#108">attr_name</a>));
+            </span><a href="#106">attrs</a>.<a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.retain">retain</a>(|attr| !<a href="#126">attr</a>.<a href="https://docs.rs/syn/2.0.90/syn/attr/struct.Attribute.html#method.path">path</a>().<a href="https://docs.rs/syn/2.0.90/syn/path/struct.Path.html#method.is_ident">is_ident</a>(<a href="#108">attr_name</a>));
 
             <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(<span class="self">Self </span>{
                 plugin_type: <a href="#113">plugin_type</a>.value,
