@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/auto/socket_client.rs`."><title>socket_client.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-dbdb5eec.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.85.0-nightly (7442931d4 2024-11-30)" data-channel="nightly" data-search-js="search-92e6798f.js" data-settings-js="settings-0f613d39.js" ><script src="../../../static.files/storage-59e33391.js"></script><script defer src="../../../static.files/src-script-56102188.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/auto/socket_client.rs`."><title>socket_client.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-dbdb5eec.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.85.0-nightly (5e1440ae5 2024-12-01)" data-channel="nightly" data-search-js="search-92e6798f.js" data-settings-js="settings-0f613d39.js" ><script src="../../../static.files/storage-59e33391.js"></script><script defer src="../../../static.files/src-script-56102188.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -1538,9 +1538,9 @@
 </span><span class="attr">#![allow(deprecated)]
 
 </span><span class="kw">use crate</span>::{
-    <a href="../../../gio_sys/index.html">ffi</a>, <a href="async_result.rs.html#8-106">AsyncResult</a>, <a href="cancellable.rs.html#8-86">Cancellable</a>, <a href="io_stream.rs.html#13-94">IOStream</a>, <a href="proxy_resolver.rs.html#9-28">ProxyResolver</a>, <a href="socket_address.rs.html#13-38">SocketAddress</a>, <a href="enums.rs.html#3094-3131">SocketClientEvent</a>,
-    <a href="socket_connectable.rs.html#8-78">SocketConnectable</a>, <a href="socket_connection.rs.html#11-66">SocketConnection</a>, <a href="enums.rs.html#3233-3248">SocketFamily</a>, <a href="enums.rs.html#3454-3472">SocketProtocol</a>, <a href="enums.rs.html#3565-3582">SocketType</a>,
-    <a href="flags.rs.html#3024-3071">TlsCertificateFlags</a>,
+    <a href="../../../gio_sys/index.html">ffi</a>, <a href="async_result.rs.html#8-106">AsyncResult</a>, <a href="cancellable.rs.html#8-86">Cancellable</a>, <a href="io_stream.rs.html#13-94">IOStream</a>, <a href="proxy_resolver.rs.html#9-28">ProxyResolver</a>, <a href="socket_address.rs.html#13-38">SocketAddress</a>, <a href="enums.rs.html#3718-3755">SocketClientEvent</a>,
+    <a href="socket_connectable.rs.html#8-78">SocketConnectable</a>, <a href="socket_connection.rs.html#11-66">SocketConnection</a>, <a href="enums.rs.html#3857-3872">SocketFamily</a>, <a href="enums.rs.html#4078-4096">SocketProtocol</a>, <a href="enums.rs.html#4189-4206">SocketType</a>,
+    <a href="flags.rs.html#3371-3418">TlsCertificateFlags</a>,
 };
 <span class="kw">use </span>glib::{
     <a href="../../../glib/prelude/index.html">prelude</a>::<span class="kw-2">*</span>,
@@ -2348,7 +2348,7 @@
     /// a #GSocketFamily
     </span><span class="attr">#[doc(alias = <span class="string">"g_socket_client_get_family"</span>)]
     #[doc(alias = <span class="string">"get_family"</span>)]
-    </span><span class="kw">fn </span>family(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="enums.rs.html#3233-3248">SocketFamily</a> {
+    </span><span class="kw">fn </span>family(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="enums.rs.html#3857-3872">SocketFamily</a> {
         <span class="kw">unsafe </span>{
             <a href="../../../glib/translate/fn.from_glib.html">from_glib</a>(<a href="../../../gio_sys/fn.g_socket_client_get_family.html">ffi::g_socket_client_get_family</a>(
                 <a class="self" href="#817">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
@@ -2383,7 +2383,7 @@
     /// a #GSocketProtocol
     </span><span class="attr">#[doc(alias = <span class="string">"g_socket_client_get_protocol"</span>)]
     #[doc(alias = <span class="string">"get_protocol"</span>)]
-    </span><span class="kw">fn </span>protocol(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="enums.rs.html#3454-3472">SocketProtocol</a> {
+    </span><span class="kw">fn </span>protocol(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="enums.rs.html#4078-4096">SocketProtocol</a> {
         <span class="kw">unsafe </span>{
             <a href="../../../glib/translate/fn.from_glib.html">from_glib</a>(<a href="../../../gio_sys/fn.g_socket_client_get_protocol.html">ffi::g_socket_client_get_protocol</a>(
                 <a class="self" href="#852">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
@@ -2419,7 +2419,7 @@
     /// a #GSocketFamily
     </span><span class="attr">#[doc(alias = <span class="string">"g_socket_client_get_socket_type"</span>)]
     #[doc(alias = <span class="string">"get_socket_type"</span>)]
-    </span><span class="kw">fn </span>socket_type(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="enums.rs.html#3565-3582">SocketType</a> {
+    </span><span class="kw">fn </span>socket_type(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="enums.rs.html#4189-4206">SocketType</a> {
         <span class="kw">unsafe </span>{
             <a href="../../../glib/translate/fn.from_glib.html">from_glib</a>(<a href="../../../gio_sys/fn.g_socket_client_get_socket_type.html">ffi::g_socket_client_get_socket_type</a>(
                 <a class="self" href="#888">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
@@ -2472,7 +2472,7 @@
     #[doc(alias = <span class="string">"g_socket_client_get_tls_validation_flags"</span>)]
     #[doc(alias = <span class="string">"get_tls_validation_flags"</span>)]
     #[doc(alias = <span class="string">"tls-validation-flags"</span>)]
-    </span><span class="kw">fn </span>tls_validation_flags(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="flags.rs.html#3024-3071">TlsCertificateFlags</a> {
+    </span><span class="kw">fn </span>tls_validation_flags(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="flags.rs.html#3371-3418">TlsCertificateFlags</a> {
         <span class="kw">unsafe </span>{
             <a href="../../../glib/translate/fn.from_glib.html">from_glib</a>(<a href="../../../gio_sys/fn.g_socket_client_get_tls_validation_flags.html">ffi::g_socket_client_get_tls_validation_flags</a>(
                 <a class="self" href="#941">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
@@ -2511,7 +2511,7 @@
     /// a #GSocketFamily
     </span><span class="attr">#[doc(alias = <span class="string">"g_socket_client_set_family"</span>)]
     #[doc(alias = <span class="string">"family"</span>)]
-    </span><span class="kw">fn </span>set_family(<span class="kw-2">&amp;</span><span class="self">self</span>, family: <a href="enums.rs.html#3233-3248">SocketFamily</a>) {
+    </span><span class="kw">fn </span>set_family(<span class="kw-2">&amp;</span><span class="self">self</span>, family: <a href="enums.rs.html#3857-3872">SocketFamily</a>) {
         <span class="kw">unsafe </span>{
             <a href="../../../gio_sys/fn.g_socket_client_set_family.html">ffi::g_socket_client_set_family</a>(<a class="self" href="#980">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#980">family</a>.<a href="../../../glib/translate/trait.IntoGlib.html#tymethod.into_glib">into_glib</a>());
         }
@@ -2547,7 +2547,7 @@
     /// a #GSocketProtocol
     </span><span class="attr">#[doc(alias = <span class="string">"g_socket_client_set_protocol"</span>)]
     #[doc(alias = <span class="string">"protocol"</span>)]
-    </span><span class="kw">fn </span>set_protocol(<span class="kw-2">&amp;</span><span class="self">self</span>, protocol: <a href="enums.rs.html#3454-3472">SocketProtocol</a>) {
+    </span><span class="kw">fn </span>set_protocol(<span class="kw-2">&amp;</span><span class="self">self</span>, protocol: <a href="enums.rs.html#4078-4096">SocketProtocol</a>) {
         <span class="kw">unsafe </span>{
             <a href="../../../gio_sys/fn.g_socket_client_set_protocol.html">ffi::g_socket_client_set_protocol</a>(<a class="self" href="#1016">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#1016">protocol</a>.<a href="../../../glib/translate/trait.IntoGlib.html#tymethod.into_glib">into_glib</a>());
         }
@@ -2583,7 +2583,7 @@
     /// ## `type_`
     /// a #GSocketType
     </span><span class="attr">#[doc(alias = <span class="string">"g_socket_client_set_socket_type"</span>)]
-    </span><span class="kw">fn </span>set_socket_type(<span class="kw-2">&amp;</span><span class="self">self</span>, type_: <a href="enums.rs.html#3565-3582">SocketType</a>) {
+    </span><span class="kw">fn </span>set_socket_type(<span class="kw-2">&amp;</span><span class="self">self</span>, type_: <a href="enums.rs.html#4189-4206">SocketType</a>) {
         <span class="kw">unsafe </span>{
             <a href="../../../gio_sys/fn.g_socket_client_set_socket_type.html">ffi::g_socket_client_set_socket_type</a>(<a class="self" href="#1052">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#1052">type_</a>.<a href="../../../glib/translate/trait.IntoGlib.html#tymethod.into_glib">into_glib</a>());
         }
@@ -2649,7 +2649,7 @@
     #[allow(deprecated)]
     #[doc(alias = <span class="string">"g_socket_client_set_tls_validation_flags"</span>)]
     #[doc(alias = <span class="string">"tls-validation-flags"</span>)]
-    </span><span class="kw">fn </span>set_tls_validation_flags(<span class="kw-2">&amp;</span><span class="self">self</span>, flags: <a href="flags.rs.html#3024-3071">TlsCertificateFlags</a>) {
+    </span><span class="kw">fn </span>set_tls_validation_flags(<span class="kw-2">&amp;</span><span class="self">self</span>, flags: <a href="flags.rs.html#3371-3418">TlsCertificateFlags</a>) {
         <span class="kw">unsafe </span>{
             <a href="../../../gio_sys/fn.g_socket_client_set_tls_validation_flags.html">ffi::g_socket_client_set_tls_validation_flags</a>(
                 <a class="self" href="#1118">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
@@ -2660,13 +2660,13 @@
 
     <span class="doccomment">/// The type to use for socket construction.
     </span><span class="attr">#[doc(alias = <span class="string">"type"</span>)]
-    </span><span class="kw">fn </span>type_(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="enums.rs.html#3565-3582">SocketType</a> {
+    </span><span class="kw">fn </span>type_(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="enums.rs.html#4189-4206">SocketType</a> {
         <a href="../../../glib/object/trait.ObjectExt.html#tymethod.property">ObjectExt::property</a>(<a class="self" href="#1129">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>(), <span class="string">"type"</span>)
     }
 
     <span class="doccomment">/// The type to use for socket construction.
     </span><span class="attr">#[doc(alias = <span class="string">"type"</span>)]
-    </span><span class="kw">fn </span>set_type(<span class="kw-2">&amp;</span><span class="self">self</span>, type_: <a href="enums.rs.html#3565-3582">SocketType</a>) {
+    </span><span class="kw">fn </span>set_type(<span class="kw-2">&amp;</span><span class="self">self</span>, type_: <a href="enums.rs.html#4189-4206">SocketType</a>) {
         <a href="../../../glib/object/trait.ObjectExt.html#tymethod.set_property">ObjectExt::set_property</a>(<a class="self" href="#1135">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>(), <span class="string">"type"</span>, <a href="#1135">type_</a>)
     }
 
@@ -2727,14 +2727,14 @@
     /// the current representation of the connection
     </span><span class="attr">#[doc(alias = <span class="string">"event"</span>)]
     </span><span class="kw">fn </span>connect_event&lt;
-        F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><span class="self">Self</span>, <a href="enums.rs.html#3094-3131">SocketClientEvent</a>, <span class="kw-2">&amp;</span><a href="socket_connectable.rs.html#8-78">SocketConnectable</a>, <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="io_stream.rs.html#13-94">IOStream</a>&gt;) + <span class="lifetime">'static</span>,
+        F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><span class="self">Self</span>, <a href="enums.rs.html#3718-3755">SocketClientEvent</a>, <span class="kw-2">&amp;</span><a href="socket_connectable.rs.html#8-78">SocketConnectable</a>, <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="io_stream.rs.html#13-94">IOStream</a>&gt;) + <span class="lifetime">'static</span>,
     &gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         f: F,
     ) -&gt; <a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a> {
         <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>event_trampoline&lt;
             P: <a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="#18-169">SocketClient</a>&gt;,
-            F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span>P, <a href="enums.rs.html#3094-3131">SocketClientEvent</a>, <span class="kw-2">&amp;</span><a href="socket_connectable.rs.html#8-78">SocketConnectable</a>, <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="io_stream.rs.html#13-94">IOStream</a>&gt;) + <span class="lifetime">'static</span>,
+            F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span>P, <a href="enums.rs.html#3718-3755">SocketClientEvent</a>, <span class="kw-2">&amp;</span><a href="socket_connectable.rs.html#8-78">SocketConnectable</a>, <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="io_stream.rs.html#13-94">IOStream</a>&gt;) + <span class="lifetime">'static</span>,
         &gt;(
             this: <span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GSocketClient.html">ffi::GSocketClient</a>,
             event: <a href="../../../gio_sys/type.GSocketClientEvent.html">ffi::GSocketClientEvent</a>,
