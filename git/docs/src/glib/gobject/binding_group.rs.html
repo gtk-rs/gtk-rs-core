@@ -576,94 +576,66 @@
 <a href="#502" id="502">502</a>
 <a href="#503" id="503">503</a>
 <a href="#504" id="504">504</a>
-<a href="#505" id="505">505</a>
-<a href="#506" id="506">506</a>
-<a href="#507" id="507">507</a>
-<a href="#508" id="508">508</a>
-<a href="#509" id="509">509</a>
-<a href="#510" id="510">510</a>
-<a href="#511" id="511">511</a>
-<a href="#512" id="512">512</a>
-<a href="#513" id="513">513</a>
-<a href="#514" id="514">514</a>
-<a href="#515" id="515">515</a>
-<a href="#516" id="516">516</a>
-<a href="#517" id="517">517</a>
-<a href="#518" id="518">518</a>
-<a href="#519" id="519">519</a></pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
+<a href="#505" id="505">505</a></pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
 </span><span class="kw">use </span>std::{<a href="https://doc.rust-lang.org/nightly/alloc/fmt/index.html">fmt</a>, <a href="https://doc.rust-lang.org/nightly/core/ptr/index.html">ptr</a>};
 
 <span class="kw">use crate</span>::{
-    <a href="../../../glib_sys/index.html">ffi</a>, <a href="../../../gobject_sys/index.html">gobject_ffi</a>, <a href="../object.rs.html#380-382">object::ObjectRef</a>, <a href="../lib.rs.html#159">prelude</a>::<span class="kw-2">*</span>, <a href="../lib.rs.html#164">translate</a>::<span class="kw-2">*</span>, <a href="auto/binding.rs.html#7-139">Binding</a>, <a href="auto/flags.rs.html#7-37">BindingFlags</a>,
-    <a href="auto/binding_group.rs.html#14-40">BindingGroup</a>, <a href="../error.rs.html#243-251">BoolError</a>, <a href="../object.rs.html#1376-1379">Object</a>, <a href="../param_spec.rs.html#19-42">ParamSpec</a>, <a href="../value.rs.html#478-512">Value</a>,
+    <a href="../../../glib_sys/index.html">ffi</a>, <a href="../../../gobject_sys/index.html">gobject_ffi</a>, <a href="../object.rs.html#380-382">object::ObjectRef</a>, <a href="../lib.rs.html#159">prelude</a>::<span class="kw-2">*</span>, <a href="../lib.rs.html#164">translate</a>::<span class="kw-2">*</span>, <a href="auto/binding.rs.html#7-14">Binding</a>, <a href="auto/flags.rs.html#7-20">BindingFlags</a>,
+    <a href="auto/binding_group.rs.html#14-21">BindingGroup</a>, <a href="../error.rs.html#278-286">BoolError</a>, <a href="../object.rs.html#1376-1379">Object</a>, <a href="../param_spec.rs.html#19-28">ParamSpec</a>, <a href="../value.rs.html#478-523">Value</a>,
 };
 
-<span class="kw">impl </span><a href="auto/binding_group.rs.html#14-40">BindingGroup</a> {
-    <span class="doccomment">/// Creates a binding between `source_property` on the source object
-    /// and `target_property` on `target`. Whenever the `source_property`
-    /// is changed the `target_property` is updated using the same value.
-    /// The binding flag [`BindingFlags::SYNC_CREATE`][crate::BindingFlags::SYNC_CREATE] is automatically specified.
-    ///
-    /// See [`ObjectExt::bind_property()`][crate::prelude::ObjectExt::bind_property()] for more information.
-    /// ## `source_property`
-    /// the property on the source to bind
-    /// ## `target`
-    /// the target [`Object`][crate::Object]
-    /// ## `target_property`
-    /// the property on `target` to bind
-    /// ## `flags`
-    /// the flags used to create the [`Binding`][crate::Binding]
-    </span><span class="attr">#[doc(alias = <span class="string">"bind_with_closures"</span>)]
+<span class="kw">impl </span><a href="auto/binding_group.rs.html#14-21">BindingGroup</a> {
+    <span class="attr">#[doc(alias = <span class="string">"bind_with_closures"</span>)]
     </span><span class="kw">pub fn </span>bind&lt;<span class="lifetime">'a</span>, O: <a href="../object.rs.html#22-52">ObjectType</a>&gt;(
         <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="self">self</span>,
         source_property: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
         target: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>O,
         target_property: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
-    ) -&gt; <a href="#41-49">BindingGroupBuilder</a>&lt;<span class="lifetime">'a</span>&gt; {
-        <a href="#64-79">BindingGroupBuilder::new</a>(<a class="self" href="#27">self</a>, <a href="#28">source_property</a>, <a href="#29">target</a>, <a href="#30">target_property</a>)
+    ) -&gt; <a href="#27-35">BindingGroupBuilder</a>&lt;<span class="lifetime">'a</span>&gt; {
+        <a href="#50-65">BindingGroupBuilder::new</a>(<a class="self" href="#13">self</a>, <a href="#14">source_property</a>, <a href="#15">target</a>, <a href="#16">target_property</a>)
     }
 }
 
-<span class="kw">type </span>TransformFn = <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box</a>&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><a href="auto/binding.rs.html#7-139">Binding</a>, <span class="kw-2">&amp;</span><a href="../value.rs.html#478-512">Value</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="../value.rs.html#478-512">Value</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>&gt;&gt;;
+<span class="kw">type </span>TransformFn = <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box</a>&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><a href="auto/binding.rs.html#7-14">Binding</a>, <span class="kw-2">&amp;</span><a href="../value.rs.html#478-523">Value</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="../value.rs.html#478-523">Value</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>&gt;&gt;;
 
 <span class="comment">// rustdoc-stripper-ignore-next
 </span><span class="doccomment">/// Builder for binding group bindings.
 </span><span class="attr">#[must_use = <span class="string">"The builder must be built to be used"</span>]
 </span><span class="kw">pub struct </span><a href="../../../glib/struct.BindingGroupBuilder.html">BindingGroupBuilder</a>&lt;<span class="lifetime">'a</span>&gt; {
-    group: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="auto/binding_group.rs.html#14-40">BindingGroup</a>,
+    group: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="auto/binding_group.rs.html#14-21">BindingGroup</a>,
     source_property: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
     target: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="../object.rs.html#380-382">ObjectRef</a>,
     target_property: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
-    flags: <a href="auto/flags.rs.html#7-37">BindingFlags</a>,
-    transform_to: <a href="#36">TransformFn</a>,
-    transform_from: <a href="#36">TransformFn</a>,
+    flags: <a href="auto/flags.rs.html#7-20">BindingFlags</a>,
+    transform_to: <a href="#22">TransformFn</a>,
+    transform_from: <a href="#22">TransformFn</a>,
 }
 
-<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html">fmt::Debug</a> <span class="kw">for </span><a href="#41-49">BindingGroupBuilder</a>&lt;<span class="lifetime">'_</span>&gt; {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html">fmt::Debug</a> <span class="kw">for </span><a href="#27-35">BindingGroupBuilder</a>&lt;<span class="lifetime">'_</span>&gt; {
     <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span><a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html">fmt::Formatter</a>&lt;<span class="lifetime">'_</span>&gt;) -&gt; <a href="https://doc.rust-lang.org/nightly/core/fmt/type.Result.html">fmt::Result</a> {
-        <a href="#52">f</a>.<a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html#method.debug_struct">debug_struct</a>(<span class="string">"BindingGroupBuilder"</span>)
-            .<a href="https://doc.rust-lang.org/nightly/core/fmt/builders/struct.DebugStruct.html#method.field">field</a>(<span class="string">"group"</span>, <span class="kw-2">&amp;</span><a class="self" href="#52">self</a>.group)
-            .<a href="https://doc.rust-lang.org/nightly/core/fmt/builders/struct.DebugStruct.html#method.field">field</a>(<span class="string">"source_property"</span>, <span class="kw-2">&amp;</span><a class="self" href="#52">self</a>.source_property)
-            .<a href="https://doc.rust-lang.org/nightly/core/fmt/builders/struct.DebugStruct.html#method.field">field</a>(<span class="string">"target"</span>, <span class="kw-2">&amp;</span><a class="self" href="#52">self</a>.target)
-            .<a href="https://doc.rust-lang.org/nightly/core/fmt/builders/struct.DebugStruct.html#method.field">field</a>(<span class="string">"target_property"</span>, <span class="kw-2">&amp;</span><a class="self" href="#52">self</a>.target_property)
-            .<a href="https://doc.rust-lang.org/nightly/core/fmt/builders/struct.DebugStruct.html#method.field">field</a>(<span class="string">"flags"</span>, <span class="kw-2">&amp;</span><a class="self" href="#52">self</a>.flags)
+        <a href="#38">f</a>.<a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html#method.debug_struct">debug_struct</a>(<span class="string">"BindingGroupBuilder"</span>)
+            .<a href="https://doc.rust-lang.org/nightly/core/fmt/builders/struct.DebugStruct.html#method.field">field</a>(<span class="string">"group"</span>, <span class="kw-2">&amp;</span><a class="self" href="#38">self</a>.group)
+            .<a href="https://doc.rust-lang.org/nightly/core/fmt/builders/struct.DebugStruct.html#method.field">field</a>(<span class="string">"source_property"</span>, <span class="kw-2">&amp;</span><a class="self" href="#38">self</a>.source_property)
+            .<a href="https://doc.rust-lang.org/nightly/core/fmt/builders/struct.DebugStruct.html#method.field">field</a>(<span class="string">"target"</span>, <span class="kw-2">&amp;</span><a class="self" href="#38">self</a>.target)
+            .<a href="https://doc.rust-lang.org/nightly/core/fmt/builders/struct.DebugStruct.html#method.field">field</a>(<span class="string">"target_property"</span>, <span class="kw-2">&amp;</span><a class="self" href="#38">self</a>.target_property)
+            .<a href="https://doc.rust-lang.org/nightly/core/fmt/builders/struct.DebugStruct.html#method.field">field</a>(<span class="string">"flags"</span>, <span class="kw-2">&amp;</span><a class="self" href="#38">self</a>.flags)
             .<a href="https://doc.rust-lang.org/nightly/core/fmt/builders/struct.DebugStruct.html#method.finish">finish</a>()
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; <a href="#41-49">BindingGroupBuilder</a>&lt;<span class="lifetime">'a</span>&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; <a href="#27-35">BindingGroupBuilder</a>&lt;<span class="lifetime">'a</span>&gt; {
     <span class="kw">fn </span>new(
-        group: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="auto/binding_group.rs.html#14-40">BindingGroup</a>,
+        group: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="auto/binding_group.rs.html#14-21">BindingGroup</a>,
         source_property: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
         target: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw">impl </span><a href="../object.rs.html#22-52">ObjectType</a>,
         target_property: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
     ) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
-            <a href="#65">group</a>,
-            <a href="#66">source_property</a>,
-            target: <a href="#67">target</a>.<a href="../object.rs.html#48">as_object_ref</a>(),
-            <a href="#68">target_property</a>,
+            <a href="#51">group</a>,
+            <a href="#52">source_property</a>,
+            target: <a href="#53">target</a>.<a href="../object.rs.html#48">as_object_ref</a>(),
+            <a href="#54">target_property</a>,
             flags: BindingFlags::DEFAULT,
             transform_to: <span class="prelude-val">None</span>,
             transform_from: <span class="prelude-val">None</span>,
@@ -672,60 +644,60 @@
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Transform changed property values from the target object to the source object with the given closure.
-    </span><span class="kw">pub fn </span>transform_from&lt;F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><a href="auto/binding.rs.html#7-139">Binding</a>, <span class="kw-2">&amp;</span><a href="../value.rs.html#478-512">Value</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="../value.rs.html#478-512">Value</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>&gt;(
+    </span><span class="kw">pub fn </span>transform_from&lt;F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><a href="auto/binding.rs.html#7-14">Binding</a>, <span class="kw-2">&amp;</span><a href="../value.rs.html#478-523">Value</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="../value.rs.html#478-523">Value</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>&gt;(
         <span class="self">self</span>,
         func: F,
     ) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
-            transform_from: <span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">Box::new</a>(<a href="#85">func</a>)),
-            ..<span class="self"><a href="#84">self</a>
+            transform_from: <span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">Box::new</a>(<a href="#71">func</a>)),
+            ..<span class="self"><a href="#70">self</a>
         </span>}
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Transform changed property values from the source object to the target object with the given closure.
-    </span><span class="kw">pub fn </span>transform_to&lt;F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><a href="auto/binding.rs.html#7-139">Binding</a>, <span class="kw-2">&amp;</span><a href="../value.rs.html#478-512">Value</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="../value.rs.html#478-512">Value</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>&gt;(
+    </span><span class="kw">pub fn </span>transform_to&lt;F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><a href="auto/binding.rs.html#7-14">Binding</a>, <span class="kw-2">&amp;</span><a href="../value.rs.html#478-523">Value</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="../value.rs.html#478-523">Value</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>&gt;(
         <span class="self">self</span>,
         func: F,
     ) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
-            transform_to: <span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">Box::new</a>(<a href="#97">func</a>)),
-            ..<span class="self"><a href="#96">self</a>
+            transform_to: <span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">Box::new</a>(<a href="#83">func</a>)),
+            ..<span class="self"><a href="#82">self</a>
         </span>}
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Bind the properties with the given flags.
-    </span><span class="kw">pub fn </span>flags(<span class="self">self</span>, flags: <a href="auto/flags.rs.html#7-37">BindingFlags</a>) -&gt; <span class="self">Self </span>{
-        <span class="self">Self </span>{ <a href="#107">flags</a>, ..<span class="self"><a href="#107">self</a> </span>}
+    </span><span class="kw">pub fn </span>flags(<span class="self">self</span>, flags: <a href="auto/flags.rs.html#7-20">BindingFlags</a>) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{ <a href="#93">flags</a>, ..<span class="self"><a href="#93">self</a> </span>}
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Set the binding flags to [`BIDIRECTIONAL`][crate::BindingFlags::BIDIRECTIONAL].
     </span><span class="kw">pub fn </span>bidirectional(<span class="kw-2">mut </span><span class="self">self</span>) -&gt; <span class="self">Self </span>{
-        <a class="self" href="#113">self</a>.flags |= <span class="kw">crate</span>::BindingFlags::BIDIRECTIONAL;
-        <span class="self"><a href="#113">self</a>
+        <a class="self" href="#99">self</a>.flags |= <span class="kw">crate</span>::BindingFlags::BIDIRECTIONAL;
+        <span class="self"><a href="#99">self</a>
     </span>}
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Set the binding flags to [`SYNC_CREATE`][crate::BindingFlags::SYNC_CREATE].
     </span><span class="kw">pub fn </span>sync_create(<span class="kw-2">mut </span><span class="self">self</span>) -&gt; <span class="self">Self </span>{
-        <a class="self" href="#120">self</a>.flags |= <span class="kw">crate</span>::BindingFlags::SYNC_CREATE;
-        <span class="self"><a href="#120">self</a>
+        <a class="self" href="#106">self</a>.flags |= <span class="kw">crate</span>::BindingFlags::SYNC_CREATE;
+        <span class="self"><a href="#106">self</a>
     </span>}
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Set the binding flags to [`INVERT_BOOLEAN`][crate::BindingFlags::INVERT_BOOLEAN].
     </span><span class="kw">pub fn </span>invert_boolean(<span class="kw-2">mut </span><span class="self">self</span>) -&gt; <span class="self">Self </span>{
-        <a class="self" href="#127">self</a>.flags |= <span class="kw">crate</span>::BindingFlags::INVERT_BOOLEAN;
-        <span class="self"><a href="#127">self</a>
+        <a class="self" href="#113">self</a>.flags |= <span class="kw">crate</span>::BindingFlags::INVERT_BOOLEAN;
+        <span class="self"><a href="#113">self</a>
     </span>}
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Establish the property binding.
     ///
     /// This fails if the provided properties do not exist.
-    </span><span class="kw">pub fn </span>try_build(<span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(), <a href="../error.rs.html#243-251">BoolError</a>&gt; {
+    </span><span class="kw">pub fn </span>try_build(<span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(), <a href="../error.rs.html#278-286">BoolError</a>&gt; {
         <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>transform_to_trampoline(
             binding: <span class="kw-2">*mut </span><a href="../../../gobject_sys/struct.GBinding.html">gobject_ffi::GBinding</a>,
             from_value: <span class="kw-2">*const </span><a href="../../../gobject_sys/struct.GValue.html">gobject_ffi::GValue</a>,
@@ -733,11 +705,11 @@
             user_data: <a href="../../../glib_sys/type.gpointer.html">ffi::gpointer</a>,
         ) -&gt; <a href="../../../glib_sys/type.gboolean.html">ffi::gboolean</a> {
             <span class="kw">let </span>transform_data =
-                <span class="kw-2">&amp;*</span>(<a href="#141">user_data</a> <span class="kw">as </span><span class="kw-2">*const </span>(<a href="#36">TransformFn</a>, <a href="#36">TransformFn</a>, <a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>, <a href="../param_spec.rs.html#19-42">ParamSpec</a>));
+                <span class="kw-2">&amp;*</span>(<a href="#127">user_data</a> <span class="kw">as </span><span class="kw-2">*const </span>(<a href="#22">TransformFn</a>, <a href="#22">TransformFn</a>, <a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>, <a href="../param_spec.rs.html#19-28">ParamSpec</a>));
 
-            <span class="kw">match </span>(<a href="#143">transform_data</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_ref">as_ref</a>().<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap">unwrap</a>())(
-                <span class="kw-2">&amp;</span><a href="../translate.rs.html#1643-1645">from_glib_borrow</a>(<a href="#138">binding</a>),
-                <span class="kw-2">&amp;*</span>(<a href="#139">from_value</a> <span class="kw">as </span><span class="kw-2">*const </span><a href="../value.rs.html#478-512">Value</a>),
+            <span class="kw">match </span>(<a href="#129">transform_data</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_ref">as_ref</a>().<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap">unwrap</a>())(
+                <span class="kw-2">&amp;</span><a href="../translate.rs.html#1643-1645">from_glib_borrow</a>(<a href="#124">binding</a>),
+                <span class="kw-2">&amp;*</span>(<a href="#125">from_value</a> <span class="kw">as </span><span class="kw-2">*const </span><a href="../value.rs.html#478-523">Value</a>),
             ) {
                 <span class="prelude-val">None </span>=&gt; <span class="bool-val">false</span>,
                 <span class="prelude-val">Some</span>(res) =&gt; {
@@ -748,7 +720,7 @@
                         transform_data.<span class="number">3</span>.value_type(),
                         res.type_()
                     );
-                    <span class="kw-2">*</span><a href="#140">to_value</a> = <a href="#151">res</a>.<a href="../value.rs.html#704-709">into_raw</a>();
+                    <span class="kw-2">*</span><a href="#126">to_value</a> = <a href="#137">res</a>.<a href="../value.rs.html#837-842">into_raw</a>();
                     <span class="bool-val">true
                 </span>}
             }
@@ -762,20 +734,20 @@
             user_data: <a href="../../../glib_sys/type.gpointer.html">ffi::gpointer</a>,
         ) -&gt; <a href="../../../glib_sys/type.gboolean.html">ffi::gboolean</a> {
             <span class="kw">let </span>transform_data =
-                <span class="kw-2">&amp;*</span>(<a href="#170">user_data</a> <span class="kw">as </span><span class="kw-2">*const </span>(<a href="#36">TransformFn</a>, <a href="#36">TransformFn</a>, <a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>, <a href="../param_spec.rs.html#19-42">ParamSpec</a>));
-            <span class="kw">let </span>binding = <a href="../translate.rs.html#1643-1645">from_glib_borrow</a>(<a href="#167">binding</a>);
+                <span class="kw-2">&amp;*</span>(<a href="#156">user_data</a> <span class="kw">as </span><span class="kw-2">*const </span>(<a href="#22">TransformFn</a>, <a href="#22">TransformFn</a>, <a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>, <a href="../param_spec.rs.html#19-28">ParamSpec</a>));
+            <span class="kw">let </span>binding = <a href="../translate.rs.html#1643-1645">from_glib_borrow</a>(<a href="#153">binding</a>);
 
-            <span class="kw">match </span>(<a href="#172">transform_data</a>.<span class="number">1</span>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_ref">as_ref</a>().<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap">unwrap</a>())(
-                <span class="kw-2">&amp;</span><a href="#174">binding</a>,
-                <span class="kw-2">&amp;*</span>(<a href="#168">from_value</a> <span class="kw">as </span><span class="kw-2">*const </span><a href="../value.rs.html#478-512">Value</a>),
+            <span class="kw">match </span>(<a href="#158">transform_data</a>.<span class="number">1</span>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_ref">as_ref</a>().<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap">unwrap</a>())(
+                <span class="kw-2">&amp;</span><a href="#160">binding</a>,
+                <span class="kw-2">&amp;*</span>(<a href="#154">from_value</a> <span class="kw">as </span><span class="kw-2">*const </span><a href="../value.rs.html#478-523">Value</a>),
             ) {
                 <span class="prelude-val">None </span>=&gt; <span class="bool-val">false</span>,
                 <span class="prelude-val">Some</span>(res) =&gt; {
-                    <span class="kw">let </span>pspec_name = <a href="#172">transform_data</a>.<span class="number">2</span>.<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">clone</a>();
-                    <span class="kw">let </span>source = <a href="#174">binding</a>.<a href="binding.rs.html#7-9">source</a>().<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap">unwrap</a>();
-                    <span class="kw">let </span>pspec = <a href="#183">source</a>.<a href="../object.rs.html#1770">find_property</a>(<span class="kw-2">&amp;</span><a href="#182">pspec_name</a>);
+                    <span class="kw">let </span>pspec_name = <a href="#158">transform_data</a>.<span class="number">2</span>.<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">clone</a>();
+                    <span class="kw">let </span>source = <a href="#160">binding</a>.<a href="binding.rs.html#7-9">source</a>().<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap">unwrap</a>();
+                    <span class="kw">let </span>pspec = <a href="#169">source</a>.<a href="../object.rs.html#1770">find_property</a>(<span class="kw-2">&amp;</span><a href="#168">pspec_name</a>);
                     <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.assert.html">assert!</a>(pspec.is_some(), <span class="string">"Source object does not have a property {pspec_name}"</span>);
-                    <span class="kw">let </span>pspec = <a href="#184">pspec</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap">unwrap</a>();
+                    <span class="kw">let </span>pspec = <a href="#170">pspec</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap">unwrap</a>();
 
                     <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.assert.html">assert!</a>(
                         res.type_().is_a(pspec.value_type()),
@@ -783,7 +755,7 @@
                         pspec.value_type(),
                         res.type_()
                     );
-                    <span class="kw-2">*</span><a href="#169">to_value</a> = <a href="#181">res</a>.<a href="../value.rs.html#704-709">into_raw</a>();
+                    <span class="kw-2">*</span><a href="#155">to_value</a> = <a href="#167">res</a>.<a href="../value.rs.html#837-842">into_raw</a>();
                     <span class="bool-val">true
                 </span>}
             }
@@ -791,13 +763,13 @@
         }
 
         <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>free_transform_data(data: <a href="../../../glib_sys/type.gpointer.html">ffi::gpointer</a>) {
-            <span class="kw">let _ </span>= <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.from_raw">Box::from_raw</a>(<a href="#201">data</a> <span class="kw">as </span><span class="kw-2">*mut </span>(<a href="#36">TransformFn</a>, <a href="#36">TransformFn</a>, <a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>, <a href="../param_spec.rs.html#19-42">ParamSpec</a>));
+            <span class="kw">let _ </span>= <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.from_raw">Box::from_raw</a>(<a href="#187">data</a> <span class="kw">as </span><span class="kw-2">*mut </span>(<a href="#22">TransformFn</a>, <a href="#22">TransformFn</a>, <a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>, <a href="../param_spec.rs.html#19-28">ParamSpec</a>));
         }
 
         <span class="kw">let </span><span class="kw-2">mut </span>_source_property_name_cstr = <span class="prelude-val">None</span>;
-        <span class="kw">let </span>source_property_name = <span class="kw">if let </span><span class="prelude-val">Some</span>(source) = <a class="self" href="#136">self</a>.group.<a href="auto/binding_group.rs.html#60-66">source</a>() {
-            <span class="kw">let </span>source_property = <a href="#206">source</a>.<a href="../object.rs.html#1770">find_property</a>(<a class="self" href="#136">self</a>.source_property).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.ok_or_else">ok_or_else</a>(|| {
-                <a class="macro" href="../error.rs.html#189-211">bool_error!</a>(
+        <span class="kw">let </span>source_property_name = <span class="kw">if let </span><span class="prelude-val">Some</span>(source) = <a class="self" href="#122">self</a>.group.<a href="auto/binding_group.rs.html#31-37">source</a>() {
+            <span class="kw">let </span>source_property = <a href="#192">source</a>.<a href="../object.rs.html#1770">find_property</a>(<a class="self" href="#122">self</a>.source_property).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.ok_or_else">ok_or_else</a>(|| {
+                <a class="macro" href="../error.rs.html#224-246">bool_error!</a>(
                     <span class="string">"Source property {} on type {} not found"</span>,
                     <span class="self">self</span>.source_property,
                     source.type_()
@@ -805,63 +777,63 @@
             })<span class="question-mark">?</span>;
 
             <span class="comment">// This is NUL-terminated from the C side
-            </span><a href="#207">source_property</a>.<a href="../param_spec.rs.html#253-259">name</a>().<a href="https://doc.rust-lang.org/nightly/core/foreigntype.str.html#method.as_ptr">as_ptr</a>()
+            </span><a href="#193">source_property</a>.<a href="../param_spec.rs.html#219-225">name</a>().<a href="https://doc.rust-lang.org/nightly/core/foreigntype.str.html#method.as_ptr">as_ptr</a>()
         } <span class="kw">else </span>{
             <span class="comment">// This is a Rust &amp;str and needs to be NUL-terminated first
-            </span><span class="kw">let </span>source_property_name = <a href="https://doc.rust-lang.org/nightly/alloc/ffi/c_str/struct.CString.html#method.new">std::ffi::CString::new</a>(<a class="self" href="#136">self</a>.source_property).<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>();
-            <span class="kw">let </span>source_property_name_ptr = <a href="#219">source_property_name</a>.<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span><a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>;
-            <a href="#205">_source_property_name_cstr</a> = <span class="prelude-val">Some</span>(<a href="#219">source_property_name</a>);
+            </span><span class="kw">let </span>source_property_name = <a href="https://doc.rust-lang.org/nightly/alloc/ffi/c_str/struct.CString.html#method.new">std::ffi::CString::new</a>(<a class="self" href="#122">self</a>.source_property).<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>();
+            <span class="kw">let </span>source_property_name_ptr = <a href="#205">source_property_name</a>.<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span><a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>;
+            <a href="#191">_source_property_name_cstr</a> = <span class="prelude-val">Some</span>(<a href="#205">source_property_name</a>);
 
-            <a href="#220">source_property_name_ptr</a>
+            <a href="#206">source_property_name_ptr</a>
         };
 
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>target: <a href="../object.rs.html#1376-1379">Object</a> = <a href="../translate.rs.html#1625-1627">from_glib_none</a>(<a class="self" href="#136">self</a>.target.<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">clone</a>().<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>);
+            <span class="kw">let </span>target: <a href="../object.rs.html#1376-1379">Object</a> = <a href="../translate.rs.html#1625-1627">from_glib_none</a>(<a class="self" href="#122">self</a>.target.<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">clone</a>().<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>);
 
-            <span class="kw">let </span>target_property = <a href="#227">target</a>.<a href="../object.rs.html#1770">find_property</a>(<a class="self" href="#136">self</a>.target_property).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.ok_or_else">ok_or_else</a>(|| {
-                <a class="macro" href="../error.rs.html#189-211">bool_error!</a>(
+            <span class="kw">let </span>target_property = <a href="#213">target</a>.<a href="../object.rs.html#1770">find_property</a>(<a class="self" href="#122">self</a>.target_property).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.ok_or_else">ok_or_else</a>(|| {
+                <a class="macro" href="../error.rs.html#224-246">bool_error!</a>(
                     <span class="string">"Target property {} on type {} not found"</span>,
                     <span class="self">self</span>.target_property,
                     target.type_()
                 )
             })<span class="question-mark">?</span>;
 
-            <span class="kw">let </span>target_property_name = <a href="#229">target_property</a>.<a href="../param_spec.rs.html#253-259">name</a>().<a href="https://doc.rust-lang.org/nightly/core/foreigntype.str.html#method.as_ptr">as_ptr</a>();
+            <span class="kw">let </span>target_property_name = <a href="#215">target_property</a>.<a href="../param_spec.rs.html#219-225">name</a>().<a href="https://doc.rust-lang.org/nightly/core/foreigntype.str.html#method.as_ptr">as_ptr</a>();
 
-            <span class="kw">let </span>have_transform_to = <a class="self" href="#136">self</a>.transform_to.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.is_some">is_some</a>();
-            <span class="kw">let </span>have_transform_from = <a class="self" href="#136">self</a>.transform_from.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.is_some">is_some</a>();
+            <span class="kw">let </span>have_transform_to = <a class="self" href="#122">self</a>.transform_to.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.is_some">is_some</a>();
+            <span class="kw">let </span>have_transform_from = <a class="self" href="#122">self</a>.transform_from.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.is_some">is_some</a>();
             <span class="kw">let </span>transform_data = <span class="kw">if </span>have_transform_to || have_transform_from {
                 <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.into_raw">Box::into_raw</a>(<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">Box::new</a>((
-                    <a class="self" href="#136">self</a>.transform_to,
-                    <a class="self" href="#136">self</a>.transform_from,
-                    <a href="../translate.rs.html#1558">String::from_glib_none</a>(<a href="#206">source_property_name</a> <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>),
-                    <a href="#229">target_property</a>,
+                    <a class="self" href="#122">self</a>.transform_to,
+                    <a class="self" href="#122">self</a>.transform_from,
+                    <a href="../translate.rs.html#1558">String::from_glib_none</a>(<a href="#192">source_property_name</a> <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>),
+                    <a href="#215">target_property</a>,
                 )))
             } <span class="kw">else </span>{
                 <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>()
             };
 
             <a href="../../../gobject_sys/fn.g_binding_group_bind_full.html">gobject_ffi::g_binding_group_bind_full</a>(
-                <a class="self" href="#136">self</a>.group.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#206">source_property_name</a> <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
-                <a href="#227">target</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#237">target_property_name</a> <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
-                <a class="self" href="#136">self</a>.flags.<a href="../translate.rs.html#334">into_glib</a>(),
+                <a class="self" href="#122">self</a>.group.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#192">source_property_name</a> <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+                <a href="#213">target</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#223">target_property_name</a> <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+                <a class="self" href="#122">self</a>.flags.<a href="../translate.rs.html#334">into_glib</a>(),
                 <span class="kw">if </span>have_transform_to {
-                    <span class="prelude-val">Some</span>(<a href="#137-164">transform_to_trampoline</a>)
+                    <span class="prelude-val">Some</span>(<a href="#123-150">transform_to_trampoline</a>)
                 } <span class="kw">else </span>{
                     <span class="prelude-val">None
                 </span>},
                 <span class="kw">if </span>have_transform_from {
-                    <span class="prelude-val">Some</span>(<a href="#166-199">transform_from_trampoline</a>)
+                    <span class="prelude-val">Some</span>(<a href="#152-185">transform_from_trampoline</a>)
                 } <span class="kw">else </span>{
                     <span class="prelude-val">None
                 </span>},
-                <a href="#241">transform_data</a> <span class="kw">as </span><a href="../../../glib_sys/type.gpointer.html">ffi::gpointer</a>,
+                <a href="#227">transform_data</a> <span class="kw">as </span><a href="../../../glib_sys/type.gpointer.html">ffi::gpointer</a>,
                 <span class="kw">if </span>transform_data.is_null() {
                     <span class="prelude-val">None
                 </span>} <span class="kw">else </span>{
-                    <span class="prelude-val">Some</span>(<a href="#201-203">free_transform_data</a>)
+                    <span class="prelude-val">Some</span>(<a href="#187-189">free_transform_data</a>)
                 },
             );
         }
@@ -872,7 +844,7 @@
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Similar to `try_build` but panics instead of failing.
     </span><span class="kw">pub fn </span>build(<span class="self">self</span>) {
-        <a class="self" href="#282">self</a>.<a href="#136-278">try_build</a>().<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>()
+        <a class="self" href="#268">self</a>.<a href="#122-264">try_build</a>().<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>()
     }
 }
 
