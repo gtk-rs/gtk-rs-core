@@ -243,7 +243,7 @@ impl Layout {
 
     //#[doc(alias = "pango_layout_get_log_attrs")]
     //#[doc(alias = "get_log_attrs")]
-    //pub fn log_attrs(&self, attrs: /*Ignored*/Vec<LogAttr>) -> i32 {
+    //pub fn log_attrs(&self, attrs: /*Ignored*/&mut Vec<LogAttr>) -> i32 {
     //    unsafe { TODO: call ffi:pango_layout_get_log_attrs() }
     //}
 
@@ -429,9 +429,9 @@ impl Layout {
     }
 
     #[doc(alias = "pango_layout_set_attributes")]
-    pub fn set_attributes(&self, attrs: Option<&AttrList>) {
+    pub fn set_attributes<'a>(&self, attrs: impl Into<Option<&'a AttrList>>) {
         unsafe {
-            ffi::pango_layout_set_attributes(self.to_glib_none().0, attrs.to_glib_none().0);
+            ffi::pango_layout_set_attributes(self.to_glib_none().0, attrs.into().to_glib_none().0);
         }
     }
 
@@ -450,9 +450,12 @@ impl Layout {
     }
 
     #[doc(alias = "pango_layout_set_font_description")]
-    pub fn set_font_description(&self, desc: Option<&FontDescription>) {
+    pub fn set_font_description<'a>(&self, desc: impl Into<Option<&'a FontDescription>>) {
         unsafe {
-            ffi::pango_layout_set_font_description(self.to_glib_none().0, desc.to_glib_none().0);
+            ffi::pango_layout_set_font_description(
+                self.to_glib_none().0,
+                desc.into().to_glib_none().0,
+            );
         }
     }
 
@@ -535,9 +538,12 @@ impl Layout {
     }
 
     #[doc(alias = "pango_layout_set_tabs")]
-    pub fn set_tabs(&self, tabs: Option<&TabArray>) {
+    pub fn set_tabs<'a>(&self, tabs: impl Into<Option<&'a TabArray>>) {
         unsafe {
-            ffi::pango_layout_set_tabs(self.to_glib_none().0, mut_override(tabs.to_glib_none().0));
+            ffi::pango_layout_set_tabs(
+                self.to_glib_none().0,
+                mut_override(tabs.into().to_glib_none().0),
+            );
         }
     }
 

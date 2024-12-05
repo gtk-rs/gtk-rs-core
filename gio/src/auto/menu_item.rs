@@ -16,11 +16,14 @@ glib::wrapper! {
 
 impl MenuItem {
     #[doc(alias = "g_menu_item_new")]
-    pub fn new(label: Option<&str>, detailed_action: Option<&str>) -> MenuItem {
+    pub fn new<'a>(
+        label: impl Into<Option<&'a str>>,
+        detailed_action: impl Into<Option<&'a str>>,
+    ) -> MenuItem {
         unsafe {
             from_glib_full(ffi::g_menu_item_new(
-                label.to_glib_none().0,
-                detailed_action.to_glib_none().0,
+                label.into().to_glib_none().0,
+                detailed_action.into().to_glib_none().0,
             ))
         }
     }
@@ -37,20 +40,26 @@ impl MenuItem {
     }
 
     #[doc(alias = "g_menu_item_new_section")]
-    pub fn new_section(label: Option<&str>, section: &impl IsA<MenuModel>) -> MenuItem {
+    pub fn new_section<'a>(
+        label: impl Into<Option<&'a str>>,
+        section: &impl IsA<MenuModel>,
+    ) -> MenuItem {
         unsafe {
             from_glib_full(ffi::g_menu_item_new_section(
-                label.to_glib_none().0,
+                label.into().to_glib_none().0,
                 section.as_ref().to_glib_none().0,
             ))
         }
     }
 
     #[doc(alias = "g_menu_item_new_submenu")]
-    pub fn new_submenu(label: Option<&str>, submenu: &impl IsA<MenuModel>) -> MenuItem {
+    pub fn new_submenu<'a>(
+        label: impl Into<Option<&'a str>>,
+        submenu: &impl IsA<MenuModel>,
+    ) -> MenuItem {
         unsafe {
             from_glib_full(ffi::g_menu_item_new_submenu(
-                label.to_glib_none().0,
+                label.into().to_glib_none().0,
                 submenu.as_ref().to_glib_none().0,
             ))
         }
@@ -58,22 +67,22 @@ impl MenuItem {
 
     //#[doc(alias = "g_menu_item_get_attribute")]
     //#[doc(alias = "get_attribute")]
-    //pub fn is_attribute(&self, attribute: &str, format_string: &str, : /*Unknown conversion*//*Unimplemented*/Basic: VarArgs) -> bool {
+    //pub fn is_attribute(&self, attribute: &str, format_string: &str, : /*Unimplemented*/Basic: VarArgs) -> bool {
     //    unsafe { TODO: call ffi:g_menu_item_get_attribute() }
     //}
 
     #[doc(alias = "g_menu_item_get_attribute_value")]
     #[doc(alias = "get_attribute_value")]
-    pub fn attribute_value(
+    pub fn attribute_value<'a>(
         &self,
         attribute: &str,
-        expected_type: Option<&glib::VariantTy>,
+        expected_type: impl Into<Option<&'a glib::VariantTy>>,
     ) -> Option<glib::Variant> {
         unsafe {
             from_glib_full(ffi::g_menu_item_get_attribute_value(
                 self.to_glib_none().0,
                 attribute.to_glib_none().0,
-                expected_type.to_glib_none().0,
+                expected_type.into().to_glib_none().0,
             ))
         }
     }
@@ -90,37 +99,41 @@ impl MenuItem {
     }
 
     //#[doc(alias = "g_menu_item_set_action_and_target")]
-    //pub fn set_action_and_target(&self, action: Option<&str>, format_string: Option<&str>, : /*Unknown conversion*//*Unimplemented*/Basic: VarArgs) {
+    //pub fn set_action_and_target<'a>(&self, action: impl Into<Option<&'a str>>, format_string: impl Into<Option<&'a str>>, : /*Unimplemented*/Basic: VarArgs) {
     //    unsafe { TODO: call ffi:g_menu_item_set_action_and_target() }
     //}
 
     #[doc(alias = "g_menu_item_set_action_and_target_value")]
-    pub fn set_action_and_target_value(
+    pub fn set_action_and_target_value<'a>(
         &self,
-        action: Option<&str>,
-        target_value: Option<&glib::Variant>,
+        action: impl Into<Option<&'a str>>,
+        target_value: impl Into<Option<&'a glib::Variant>>,
     ) {
         unsafe {
             ffi::g_menu_item_set_action_and_target_value(
                 self.to_glib_none().0,
-                action.to_glib_none().0,
-                target_value.to_glib_none().0,
+                action.into().to_glib_none().0,
+                target_value.into().to_glib_none().0,
             );
         }
     }
 
     //#[doc(alias = "g_menu_item_set_attribute")]
-    //pub fn set_attribute(&self, attribute: &str, format_string: Option<&str>, : /*Unknown conversion*//*Unimplemented*/Basic: VarArgs) {
+    //pub fn set_attribute<'a>(&self, attribute: &str, format_string: impl Into<Option<&'a str>>, : /*Unimplemented*/Basic: VarArgs) {
     //    unsafe { TODO: call ffi:g_menu_item_set_attribute() }
     //}
 
     #[doc(alias = "g_menu_item_set_attribute_value")]
-    pub fn set_attribute_value(&self, attribute: &str, value: Option<&glib::Variant>) {
+    pub fn set_attribute_value<'a>(
+        &self,
+        attribute: &str,
+        value: impl Into<Option<&'a glib::Variant>>,
+    ) {
         unsafe {
             ffi::g_menu_item_set_attribute_value(
                 self.to_glib_none().0,
                 attribute.to_glib_none().0,
-                value.to_glib_none().0,
+                value.into().to_glib_none().0,
             );
         }
     }
@@ -143,39 +156,39 @@ impl MenuItem {
     }
 
     #[doc(alias = "g_menu_item_set_label")]
-    pub fn set_label(&self, label: Option<&str>) {
+    pub fn set_label<'a>(&self, label: impl Into<Option<&'a str>>) {
         unsafe {
-            ffi::g_menu_item_set_label(self.to_glib_none().0, label.to_glib_none().0);
+            ffi::g_menu_item_set_label(self.to_glib_none().0, label.into().to_glib_none().0);
         }
     }
 
     #[doc(alias = "g_menu_item_set_link")]
-    pub fn set_link(&self, link: &str, model: Option<&impl IsA<MenuModel>>) {
+    pub fn set_link<'a, P: IsA<MenuModel>>(&self, link: &str, model: impl Into<Option<&'a P>>) {
         unsafe {
             ffi::g_menu_item_set_link(
                 self.to_glib_none().0,
                 link.to_glib_none().0,
-                model.map(|p| p.as_ref()).to_glib_none().0,
+                model.into().as_ref().map(|p| p.as_ref()).to_glib_none().0,
             );
         }
     }
 
     #[doc(alias = "g_menu_item_set_section")]
-    pub fn set_section(&self, section: Option<&impl IsA<MenuModel>>) {
+    pub fn set_section<'a, P: IsA<MenuModel>>(&self, section: impl Into<Option<&'a P>>) {
         unsafe {
             ffi::g_menu_item_set_section(
                 self.to_glib_none().0,
-                section.map(|p| p.as_ref()).to_glib_none().0,
+                section.into().as_ref().map(|p| p.as_ref()).to_glib_none().0,
             );
         }
     }
 
     #[doc(alias = "g_menu_item_set_submenu")]
-    pub fn set_submenu(&self, submenu: Option<&impl IsA<MenuModel>>) {
+    pub fn set_submenu<'a, P: IsA<MenuModel>>(&self, submenu: impl Into<Option<&'a P>>) {
         unsafe {
             ffi::g_menu_item_set_submenu(
                 self.to_glib_none().0,
-                submenu.map(|p| p.as_ref()).to_glib_none().0,
+                submenu.into().as_ref().map(|p| p.as_ref()).to_glib_none().0,
             );
         }
     }

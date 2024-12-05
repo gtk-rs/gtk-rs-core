@@ -36,11 +36,11 @@ pub trait FontFamilyExt: IsA<FontFamily> + 'static {
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_46")))]
     #[doc(alias = "pango_font_family_get_face")]
     #[doc(alias = "get_face")]
-    fn face(&self, name: Option<&str>) -> Option<FontFace> {
+    fn face<'a>(&self, name: impl Into<Option<&'a str>>) -> Option<FontFace> {
         unsafe {
             from_glib_none(ffi::pango_font_family_get_face(
                 self.as_ref().to_glib_none().0,
-                name.to_glib_none().0,
+                name.into().to_glib_none().0,
             ))
         }
     }

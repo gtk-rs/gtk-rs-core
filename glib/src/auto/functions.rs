@@ -34,7 +34,7 @@ pub fn base64_decode(text: &str) -> Vec<u8> {
 //}
 
 //#[doc(alias = "g_base64_decode_step")]
-//pub fn base64_decode_step(in_: &[u8], out: Vec<u8>, state: &mut i32, save: &mut u32) -> usize {
+//pub fn base64_decode_step(in_: &[u8], out: &mut Vec<u8>, state: &mut i32, save: &mut u32) -> usize {
 //    unsafe { TODO: call ffi:g_base64_decode_step() }
 //}
 
@@ -45,12 +45,12 @@ pub fn base64_encode(data: &[u8]) -> crate::GString {
 }
 
 //#[doc(alias = "g_base64_encode_close")]
-//pub fn base64_encode_close(break_lines: bool, out: Vec<u8>, state: &mut i32, save: &mut i32) -> usize {
+//pub fn base64_encode_close(break_lines: bool, out: &mut Vec<u8>, state: &mut i32, save: &mut i32) -> usize {
 //    unsafe { TODO: call ffi:g_base64_encode_close() }
 //}
 
 //#[doc(alias = "g_base64_encode_step")]
-//pub fn base64_encode_step(in_: &[u8], break_lines: bool, out: Vec<u8>, state: &mut i32, save: &mut i32) -> usize {
+//pub fn base64_encode_step(in_: &[u8], break_lines: bool, out: &mut Vec<u8>, state: &mut i32, save: &mut i32) -> usize {
 //    unsafe { TODO: call ffi:g_base64_encode_step() }
 //}
 
@@ -128,10 +128,14 @@ pub fn compute_hmac_for_data(digest_type: ChecksumType, key: &[u8], data: &[u8])
 }
 
 #[doc(alias = "g_dcgettext")]
-pub fn dcgettext(domain: Option<&str>, msgid: &str, category: i32) -> crate::GString {
+pub fn dcgettext<'a>(
+    domain: impl Into<Option<&'a str>>,
+    msgid: &str,
+    category: i32,
+) -> crate::GString {
     unsafe {
         from_glib_none(ffi::g_dcgettext(
-            domain.to_glib_none().0,
+            domain.into().to_glib_none().0,
             msgid.to_glib_none().0,
             category,
         ))
@@ -139,25 +143,25 @@ pub fn dcgettext(domain: Option<&str>, msgid: &str, category: i32) -> crate::GSt
 }
 
 #[doc(alias = "g_dgettext")]
-pub fn dgettext(domain: Option<&str>, msgid: &str) -> crate::GString {
+pub fn dgettext<'a>(domain: impl Into<Option<&'a str>>, msgid: &str) -> crate::GString {
     unsafe {
         from_glib_none(ffi::g_dgettext(
-            domain.to_glib_none().0,
+            domain.into().to_glib_none().0,
             msgid.to_glib_none().0,
         ))
     }
 }
 
 #[doc(alias = "g_dngettext")]
-pub fn dngettext(
-    domain: Option<&str>,
+pub fn dngettext<'a>(
+    domain: impl Into<Option<&'a str>>,
     msgid: &str,
     msgid_plural: &str,
     n: libc::c_ulong,
 ) -> crate::GString {
     unsafe {
         from_glib_none(ffi::g_dngettext(
-            domain.to_glib_none().0,
+            domain.into().to_glib_none().0,
             msgid.to_glib_none().0,
             msgid_plural.to_glib_none().0,
             n,
@@ -166,10 +170,14 @@ pub fn dngettext(
 }
 
 #[doc(alias = "g_dpgettext")]
-pub fn dpgettext(domain: Option<&str>, msgctxtid: &str, msgidoffset: usize) -> crate::GString {
+pub fn dpgettext<'a>(
+    domain: impl Into<Option<&'a str>>,
+    msgctxtid: &str,
+    msgidoffset: usize,
+) -> crate::GString {
     unsafe {
         from_glib_none(ffi::g_dpgettext(
-            domain.to_glib_none().0,
+            domain.into().to_glib_none().0,
             msgctxtid.to_glib_none().0,
             msgidoffset,
         ))
@@ -177,10 +185,14 @@ pub fn dpgettext(domain: Option<&str>, msgctxtid: &str, msgidoffset: usize) -> c
 }
 
 #[doc(alias = "g_dpgettext2")]
-pub fn dpgettext2(domain: Option<&str>, context: &str, msgid: &str) -> crate::GString {
+pub fn dpgettext2<'a>(
+    domain: impl Into<Option<&'a str>>,
+    context: &str,
+    msgid: &str,
+) -> crate::GString {
     unsafe {
         from_glib_none(ffi::g_dpgettext2(
-            domain.to_glib_none().0,
+            domain.into().to_glib_none().0,
             context.to_glib_none().0,
             msgid.to_glib_none().0,
         ))
@@ -285,15 +297,15 @@ pub fn filename_from_uri(
 }
 
 #[doc(alias = "g_filename_to_uri")]
-pub fn filename_to_uri(
+pub fn filename_to_uri<'a>(
     filename: impl AsRef<std::path::Path>,
-    hostname: Option<&str>,
+    hostname: impl Into<Option<&'a str>>,
 ) -> Result<crate::GString, crate::Error> {
     unsafe {
         let mut error = std::ptr::null_mut();
         let ret = ffi::g_filename_to_uri(
             filename.as_ref().to_glib_none().0,
-            hostname.to_glib_none().0,
+            hostname.into().to_glib_none().0,
             &mut error,
         );
         if error.is_null() {
@@ -559,9 +571,9 @@ pub fn on_error_query(prg_name: &str) {
 }
 
 #[doc(alias = "g_on_error_stack_trace")]
-pub fn on_error_stack_trace(prg_name: Option<&str>) {
+pub fn on_error_stack_trace<'a>(prg_name: impl Into<Option<&'a str>>) {
     unsafe {
-        ffi::g_on_error_stack_trace(prg_name.to_glib_none().0);
+        ffi::g_on_error_stack_trace(prg_name.into().to_glib_none().0);
     }
 }
 
@@ -812,12 +824,12 @@ pub fn spawn_command_line_async(
 }
 
 //#[doc(alias = "g_spawn_command_line_sync")]
-//pub fn spawn_command_line_sync(command_line: impl AsRef<std::path::Path>, standard_output: Vec<u8>, standard_error: Vec<u8>) -> Result<i32, crate::Error> {
+//pub fn spawn_command_line_sync(command_line: impl AsRef<std::path::Path>, standard_output: &mut Vec<u8>, standard_error: &mut Vec<u8>) -> Result<i32, crate::Error> {
 //    unsafe { TODO: call ffi:g_spawn_command_line_sync() }
 //}
 
 //#[doc(alias = "g_spawn_sync")]
-//pub fn spawn_sync(working_directory: Option<impl AsRef<std::path::Path>>, argv: &[&std::path::Path], envp: &[&std::path::Path], flags: SpawnFlags, child_setup: Option<&mut dyn (FnMut())>, standard_output: Vec<u8>, standard_error: Vec<u8>) -> Result<i32, crate::Error> {
+//pub fn spawn_sync(working_directory: Option<impl AsRef<std::path::Path>>, argv: &[&std::path::Path], envp: &[&std::path::Path], flags: SpawnFlags, child_setup: Option<&mut dyn (FnMut())>, standard_output: &mut Vec<u8>, standard_error: &mut Vec<u8>) -> Result<i32, crate::Error> {
 //    unsafe { TODO: call ffi:g_spawn_sync() }
 //}
 

@@ -42,11 +42,14 @@ impl DateTime {
 
     #[doc(alias = "g_date_time_new_from_iso8601")]
     #[doc(alias = "new_from_iso8601")]
-    pub fn from_iso8601(text: &str, default_tz: Option<&TimeZone>) -> Result<DateTime, BoolError> {
+    pub fn from_iso8601<'a>(
+        text: &str,
+        default_tz: impl Into<Option<&'a TimeZone>>,
+    ) -> Result<DateTime, BoolError> {
         unsafe {
             Option::<_>::from_glib_full(ffi::g_date_time_new_from_iso8601(
                 text.to_glib_none().0,
-                default_tz.to_glib_none().0,
+                default_tz.into().to_glib_none().0,
             ))
             .ok_or_else(|| crate::bool_error!("Invalid date"))
         }

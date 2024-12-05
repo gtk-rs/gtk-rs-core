@@ -10,10 +10,14 @@ use glib::{prelude::*, translate::*};
 use std::{boxed::Box as Box_, pin::Pin};
 
 #[doc(alias = "g_bus_get")]
-pub fn bus_get<P: FnOnce(Result<DBusConnection, glib::Error>) + 'static>(
+pub fn bus_get<
+    'a,
+    P: IsA<Cancellable>,
+    Q: FnOnce(Result<DBusConnection, glib::Error>) + 'static,
+>(
     bus_type: BusType,
-    cancellable: Option<&impl IsA<Cancellable>>,
-    callback: P,
+    cancellable: impl Into<Option<&'a P>>,
+    callback: Q,
 ) {
     let main_context = glib::MainContext::ref_thread_default();
     let is_main_context_owner = main_context.is_owner();
@@ -25,10 +29,10 @@ pub fn bus_get<P: FnOnce(Result<DBusConnection, glib::Error>) + 'static>(
         "Async operations only allowed if the thread is owning the MainContext"
     );
 
-    let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+    let user_data: Box_<glib::thread_guard::ThreadGuard<Q>> =
         Box_::new(glib::thread_guard::ThreadGuard::new(callback));
     unsafe extern "C" fn bus_get_trampoline<
-        P: FnOnce(Result<DBusConnection, glib::Error>) + 'static,
+        Q: FnOnce(Result<DBusConnection, glib::Error>) + 'static,
     >(
         _source_object: *mut glib::gobject_ffi::GObject,
         res: *mut crate::ffi::GAsyncResult,
@@ -41,16 +45,21 @@ pub fn bus_get<P: FnOnce(Result<DBusConnection, glib::Error>) + 'static>(
         } else {
             Err(from_glib_full(error))
         };
-        let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+        let callback: Box_<glib::thread_guard::ThreadGuard<Q>> =
             Box_::from_raw(user_data as *mut _);
-        let callback: P = callback.into_inner();
+        let callback: Q = callback.into_inner();
         callback(result);
     }
-    let callback = bus_get_trampoline::<P>;
+    let callback = bus_get_trampoline::<Q>;
     unsafe {
         ffi::g_bus_get(
             bus_type.into_glib(),
-            cancellable.map(|p| p.as_ref()).to_glib_none().0,
+            cancellable
+                .into()
+                .as_ref()
+                .map(|p| p.as_ref())
+                .to_glib_none()
+                .0,
             Some(callback),
             Box_::into_raw(user_data) as *mut _,
         );
@@ -71,15 +80,20 @@ pub fn bus_get_future(
 }
 
 #[doc(alias = "g_bus_get_sync")]
-pub fn bus_get_sync(
+pub fn bus_get_sync<'a, P: IsA<Cancellable>>(
     bus_type: BusType,
-    cancellable: Option<&impl IsA<Cancellable>>,
+    cancellable: impl Into<Option<&'a P>>,
 ) -> Result<DBusConnection, glib::Error> {
     unsafe {
         let mut error = std::ptr::null_mut();
         let ret = ffi::g_bus_get_sync(
             bus_type.into_glib(),
-            cancellable.map(|p| p.as_ref()).to_glib_none().0,
+            cancellable
+                .into()
+                .as_ref()
+                .map(|p| p.as_ref())
+                .to_glib_none()
+                .0,
             &mut error,
         );
         if error.is_null() {
@@ -250,15 +264,20 @@ pub fn dbus_address_escape_value(string: &str) -> glib::GString {
 }
 
 #[doc(alias = "g_dbus_address_get_for_bus_sync")]
-pub fn dbus_address_get_for_bus_sync(
+pub fn dbus_address_get_for_bus_sync<'a, P: IsA<Cancellable>>(
     bus_type: BusType,
-    cancellable: Option<&impl IsA<Cancellable>>,
+    cancellable: impl Into<Option<&'a P>>,
 ) -> Result<glib::GString, glib::Error> {
     unsafe {
         let mut error = std::ptr::null_mut();
         let ret = ffi::g_dbus_address_get_for_bus_sync(
             bus_type.into_glib(),
-            cancellable.map(|p| p.as_ref()).to_glib_none().0,
+            cancellable
+                .into()
+                .as_ref()
+                .map(|p| p.as_ref())
+                .to_glib_none()
+                .0,
             &mut error,
         );
         if error.is_null() {
@@ -271,11 +290,13 @@ pub fn dbus_address_get_for_bus_sync(
 
 #[doc(alias = "g_dbus_address_get_stream")]
 pub fn dbus_address_get_stream<
-    P: FnOnce(Result<(IOStream, Option<glib::GString>), glib::Error>) + 'static,
+    'a,
+    P: IsA<Cancellable>,
+    Q: FnOnce(Result<(IOStream, Option<glib::GString>), glib::Error>) + 'static,
 >(
     address: &str,
-    cancellable: Option<&impl IsA<Cancellable>>,
-    callback: P,
+    cancellable: impl Into<Option<&'a P>>,
+    callback: Q,
 ) {
     let main_context = glib::MainContext::ref_thread_default();
     let is_main_context_owner = main_context.is_owner();
@@ -287,10 +308,10 @@ pub fn dbus_address_get_stream<
         "Async operations only allowed if the thread is owning the MainContext"
     );
 
-    let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+    let user_data: Box_<glib::thread_guard::ThreadGuard<Q>> =
         Box_::new(glib::thread_guard::ThreadGuard::new(callback));
     unsafe extern "C" fn dbus_address_get_stream_trampoline<
-        P: FnOnce(Result<(IOStream, Option<glib::GString>), glib::Error>) + 'static,
+        Q: FnOnce(Result<(IOStream, Option<glib::GString>), glib::Error>) + 'static,
     >(
         _source_object: *mut glib::gobject_ffi::GObject,
         res: *mut crate::ffi::GAsyncResult,
@@ -304,16 +325,21 @@ pub fn dbus_address_get_stream<
         } else {
             Err(from_glib_full(error))
         };
-        let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+        let callback: Box_<glib::thread_guard::ThreadGuard<Q>> =
             Box_::from_raw(user_data as *mut _);
-        let callback: P = callback.into_inner();
+        let callback: Q = callback.into_inner();
         callback(result);
     }
-    let callback = dbus_address_get_stream_trampoline::<P>;
+    let callback = dbus_address_get_stream_trampoline::<Q>;
     unsafe {
         ffi::g_dbus_address_get_stream(
             address.to_glib_none().0,
-            cancellable.map(|p| p.as_ref()).to_glib_none().0,
+            cancellable
+                .into()
+                .as_ref()
+                .map(|p| p.as_ref())
+                .to_glib_none()
+                .0,
             Some(callback),
             Box_::into_raw(user_data) as *mut _,
         );
@@ -340,9 +366,9 @@ pub fn dbus_address_get_stream_future(
 }
 
 #[doc(alias = "g_dbus_address_get_stream_sync")]
-pub fn dbus_address_get_stream_sync(
+pub fn dbus_address_get_stream_sync<'a, P: IsA<Cancellable>>(
     address: &str,
-    cancellable: Option<&impl IsA<Cancellable>>,
+    cancellable: impl Into<Option<&'a P>>,
 ) -> Result<(IOStream, Option<glib::GString>), glib::Error> {
     unsafe {
         let mut out_guid = std::ptr::null_mut();
@@ -350,7 +376,12 @@ pub fn dbus_address_get_stream_sync(
         let ret = ffi::g_dbus_address_get_stream_sync(
             address.to_glib_none().0,
             &mut out_guid,
-            cancellable.map(|p| p.as_ref()).to_glib_none().0,
+            cancellable
+                .into()
+                .as_ref()
+                .map(|p| p.as_ref())
+                .to_glib_none()
+                .0,
             &mut error,
         );
         if error.is_null() {
@@ -478,16 +509,16 @@ pub fn io_modules_scan_all_in_directory(dirname: impl AsRef<std::path::Path>) {
 //}
 
 #[doc(alias = "g_keyfile_settings_backend_new")]
-pub fn keyfile_settings_backend_new(
+pub fn keyfile_settings_backend_new<'a>(
     filename: &str,
     root_path: &str,
-    root_group: Option<&str>,
+    root_group: impl Into<Option<&'a str>>,
 ) -> SettingsBackend {
     unsafe {
         from_glib_full(ffi::g_keyfile_settings_backend_new(
             filename.to_glib_none().0,
             root_path.to_glib_none().0,
-            root_group.to_glib_none().0,
+            root_group.into().to_glib_none().0,
         ))
     }
 }

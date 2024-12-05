@@ -31,17 +31,22 @@ pub trait FileOutputStreamExt: IsA<FileOutputStream> + 'static {
     }
 
     #[doc(alias = "g_file_output_stream_query_info")]
-    fn query_info(
+    fn query_info<'a, P: IsA<Cancellable>>(
         &self,
         attributes: &str,
-        cancellable: Option<&impl IsA<Cancellable>>,
+        cancellable: impl Into<Option<&'a P>>,
     ) -> Result<FileInfo, glib::Error> {
         unsafe {
             let mut error = std::ptr::null_mut();
             let ret = ffi::g_file_output_stream_query_info(
                 self.as_ref().to_glib_none().0,
                 attributes.to_glib_none().0,
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                cancellable
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 &mut error,
             );
             if error.is_null() {
@@ -53,12 +58,16 @@ pub trait FileOutputStreamExt: IsA<FileOutputStream> + 'static {
     }
 
     #[doc(alias = "g_file_output_stream_query_info_async")]
-    fn query_info_async<P: FnOnce(Result<FileInfo, glib::Error>) + 'static>(
+    fn query_info_async<
+        'a,
+        P: IsA<Cancellable>,
+        Q: FnOnce(Result<FileInfo, glib::Error>) + 'static,
+    >(
         &self,
         attributes: &str,
         io_priority: glib::Priority,
-        cancellable: Option<&impl IsA<Cancellable>>,
-        callback: P,
+        cancellable: impl Into<Option<&'a P>>,
+        callback: Q,
     ) {
         let main_context = glib::MainContext::ref_thread_default();
         let is_main_context_owner = main_context.is_owner();
@@ -70,10 +79,10 @@ pub trait FileOutputStreamExt: IsA<FileOutputStream> + 'static {
             "Async operations only allowed if the thread is owning the MainContext"
         );
 
-        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+        let user_data: Box_<glib::thread_guard::ThreadGuard<Q>> =
             Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn query_info_async_trampoline<
-            P: FnOnce(Result<FileInfo, glib::Error>) + 'static,
+            Q: FnOnce(Result<FileInfo, glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -90,18 +99,23 @@ pub trait FileOutputStreamExt: IsA<FileOutputStream> + 'static {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+            let callback: Box_<glib::thread_guard::ThreadGuard<Q>> =
                 Box_::from_raw(user_data as *mut _);
-            let callback: P = callback.into_inner();
+            let callback: Q = callback.into_inner();
             callback(result);
         }
-        let callback = query_info_async_trampoline::<P>;
+        let callback = query_info_async_trampoline::<Q>;
         unsafe {
             ffi::g_file_output_stream_query_info_async(
                 self.as_ref().to_glib_none().0,
                 attributes.to_glib_none().0,
                 io_priority.into_glib(),
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                cancellable
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 Some(callback),
                 Box_::into_raw(user_data) as *mut _,
             );

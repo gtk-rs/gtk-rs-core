@@ -129,21 +129,21 @@ impl DBusMethodInvocation {
     }
 
     //#[doc(alias = "g_dbus_method_invocation_return_error")]
-    //pub fn return_error(self, domain: glib::Quark, code: i32, format: &str, : /*Unknown conversion*//*Unimplemented*/Basic: VarArgs) {
+    //pub fn return_error(self, domain: glib::Quark, code: i32, format: &str, : /*Unimplemented*/Basic: VarArgs) {
     //    unsafe { TODO: call ffi:g_dbus_method_invocation_return_error() }
     //}
 
     //#[doc(alias = "g_dbus_method_invocation_return_error_valist")]
-    //pub fn return_error_valist(self, domain: glib::Quark, code: i32, format: &str, var_args: /*Unknown conversion*//*Unimplemented*/Unsupported) {
+    //pub fn return_error_valist(self, domain: glib::Quark, code: i32, format: &str, var_args: /*Unimplemented*/Unsupported) {
     //    unsafe { TODO: call ffi:g_dbus_method_invocation_return_error_valist() }
     //}
 
     #[doc(alias = "g_dbus_method_invocation_return_value")]
-    pub fn return_value(self, parameters: Option<&glib::Variant>) {
+    pub fn return_value<'a>(self, parameters: impl Into<Option<&'a glib::Variant>>) {
         unsafe {
             ffi::g_dbus_method_invocation_return_value(
                 self.into_glib_ptr(),
-                parameters.to_glib_none().0,
+                parameters.into().to_glib_none().0,
             );
         }
     }
@@ -151,16 +151,16 @@ impl DBusMethodInvocation {
     #[cfg(unix)]
     #[cfg_attr(docsrs, doc(cfg(unix)))]
     #[doc(alias = "g_dbus_method_invocation_return_value_with_unix_fd_list")]
-    pub fn return_value_with_unix_fd_list(
+    pub fn return_value_with_unix_fd_list<'a, P: IsA<UnixFDList>>(
         self,
-        parameters: Option<&glib::Variant>,
-        fd_list: Option<&impl IsA<UnixFDList>>,
+        parameters: impl Into<Option<&'a glib::Variant>>,
+        fd_list: impl Into<Option<&'a P>>,
     ) {
         unsafe {
             ffi::g_dbus_method_invocation_return_value_with_unix_fd_list(
                 self.into_glib_ptr(),
-                parameters.to_glib_none().0,
-                fd_list.map(|p| p.as_ref()).to_glib_none().0,
+                parameters.into().to_glib_none().0,
+                fd_list.into().as_ref().map(|p| p.as_ref()).to_glib_none().0,
             );
         }
     }

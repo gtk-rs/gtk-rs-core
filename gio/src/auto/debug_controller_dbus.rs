@@ -23,15 +23,20 @@ impl DebugControllerDBus {
     pub const NONE: Option<&'static DebugControllerDBus> = None;
 
     #[doc(alias = "g_debug_controller_dbus_new")]
-    pub fn new(
+    pub fn new<'a, P: IsA<Cancellable>>(
         connection: &DBusConnection,
-        cancellable: Option<&impl IsA<Cancellable>>,
+        cancellable: impl Into<Option<&'a P>>,
     ) -> Result<Option<DebugControllerDBus>, glib::Error> {
         unsafe {
             let mut error = std::ptr::null_mut();
             let ret = ffi::g_debug_controller_dbus_new(
                 connection.to_glib_none().0,
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                cancellable
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 &mut error,
             );
             if error.is_null() {

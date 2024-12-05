@@ -67,12 +67,16 @@ pub trait ActionGroupExt: IsA<ActionGroup> + 'static {
     }
 
     #[doc(alias = "g_action_group_activate_action")]
-    fn activate_action(&self, action_name: &str, parameter: Option<&glib::Variant>) {
+    fn activate_action<'a>(
+        &self,
+        action_name: &str,
+        parameter: impl Into<Option<&'a glib::Variant>>,
+    ) {
         unsafe {
             ffi::g_action_group_activate_action(
                 self.as_ref().to_glib_none().0,
                 action_name.to_glib_none().0,
-                parameter.to_glib_none().0,
+                parameter.into().to_glib_none().0,
             );
         }
     }

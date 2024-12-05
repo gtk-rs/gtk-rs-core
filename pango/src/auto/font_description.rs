@@ -23,15 +23,15 @@ impl FontDescription {
     }
 
     #[doc(alias = "pango_font_description_better_match")]
-    pub fn better_match(
+    pub fn better_match<'a>(
         &self,
-        old_match: Option<&FontDescription>,
+        old_match: impl Into<Option<&'a FontDescription>>,
         new_match: &FontDescription,
     ) -> bool {
         unsafe {
             from_glib(ffi::pango_font_description_better_match(
                 self.to_glib_none().0,
-                old_match.to_glib_none().0,
+                old_match.into().to_glib_none().0,
                 new_match.to_glib_none().0,
             ))
         }
@@ -147,11 +147,15 @@ impl FontDescription {
     }
 
     #[doc(alias = "pango_font_description_merge")]
-    pub fn merge(&mut self, desc_to_merge: Option<&FontDescription>, replace_existing: bool) {
+    pub fn merge<'a>(
+        &mut self,
+        desc_to_merge: impl Into<Option<&'a FontDescription>>,
+        replace_existing: bool,
+    ) {
         unsafe {
             ffi::pango_font_description_merge(
                 self.to_glib_none_mut().0,
-                desc_to_merge.to_glib_none().0,
+                desc_to_merge.into().to_glib_none().0,
                 replace_existing.into_glib(),
             );
         }
@@ -212,11 +216,11 @@ impl FontDescription {
     #[cfg(feature = "v1_42")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_42")))]
     #[doc(alias = "pango_font_description_set_variations")]
-    pub fn set_variations(&mut self, variations: Option<&str>) {
+    pub fn set_variations<'a>(&mut self, variations: impl Into<Option<&'a str>>) {
         unsafe {
             ffi::pango_font_description_set_variations(
                 self.to_glib_none_mut().0,
-                variations.to_glib_none().0,
+                variations.into().to_glib_none().0,
             );
         }
     }

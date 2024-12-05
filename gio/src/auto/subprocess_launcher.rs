@@ -147,7 +147,7 @@ impl SubprocessLauncher {
     }
 
     //#[doc(alias = "g_subprocess_launcher_spawn")]
-    //pub fn spawn(&self, error: &mut glib::Error, argv0: &str, : /*Unknown conversion*//*Unimplemented*/Basic: VarArgs) -> Subprocess {
+    //pub fn spawn(&self, error: &mut glib::Error, argv0: &str, : /*Unimplemented*/Basic: VarArgs) -> Subprocess {
     //    unsafe { TODO: call ffi:g_subprocess_launcher_spawn() }
     //}
 

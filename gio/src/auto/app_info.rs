@@ -19,16 +19,16 @@ impl AppInfo {
     pub const NONE: Option<&'static AppInfo> = None;
 
     #[doc(alias = "g_app_info_create_from_commandline")]
-    pub fn create_from_commandline(
+    pub fn create_from_commandline<'a>(
         commandline: impl AsRef<std::ffi::OsStr>,
-        application_name: Option<&str>,
+        application_name: impl Into<Option<&'a str>>,
         flags: AppInfoCreateFlags,
     ) -> Result<AppInfo, glib::Error> {
         unsafe {
             let mut error = std::ptr::null_mut();
             let ret = ffi::g_app_info_create_from_commandline(
                 commandline.as_ref().to_glib_none().0,
-                application_name.to_glib_none().0,
+                application_name.into().to_glib_none().0,
                 flags.into_glib(),
                 &mut error,
             );
@@ -71,11 +71,15 @@ impl AppInfo {
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
     #[doc(alias = "g_app_info_get_default_for_type_async")]
     #[doc(alias = "get_default_for_type_async")]
-    pub fn default_for_type_async<P: FnOnce(Result<AppInfo, glib::Error>) + 'static>(
+    pub fn default_for_type_async<
+        'a,
+        P: IsA<Cancellable>,
+        Q: FnOnce(Result<AppInfo, glib::Error>) + 'static,
+    >(
         content_type: &str,
         must_support_uris: bool,
-        cancellable: Option<&impl IsA<Cancellable>>,
-        callback: P,
+        cancellable: impl Into<Option<&'a P>>,
+        callback: Q,
     ) {
         let main_context = glib::MainContext::ref_thread_default();
         let is_main_context_owner = main_context.is_owner();
@@ -87,10 +91,10 @@ impl AppInfo {
             "Async operations only allowed if the thread is owning the MainContext"
         );
 
-        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+        let user_data: Box_<glib::thread_guard::ThreadGuard<Q>> =
             Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn default_for_type_async_trampoline<
-            P: FnOnce(Result<AppInfo, glib::Error>) + 'static,
+            Q: FnOnce(Result<AppInfo, glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -103,17 +107,22 @@ impl AppInfo {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+            let callback: Box_<glib::thread_guard::ThreadGuard<Q>> =
                 Box_::from_raw(user_data as *mut _);
-            let callback: P = callback.into_inner();
+            let callback: Q = callback.into_inner();
             callback(result);
         }
-        let callback = default_for_type_async_trampoline::<P>;
+        let callback = default_for_type_async_trampoline::<Q>;
         unsafe {
             ffi::g_app_info_get_default_for_type_async(
                 content_type.to_glib_none().0,
                 must_support_uris.into_glib(),
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                cancellable
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 Some(callback),
                 Box_::into_raw(user_data) as *mut _,
             );
@@ -156,10 +165,14 @@ impl AppInfo {
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
     #[doc(alias = "g_app_info_get_default_for_uri_scheme_async")]
     #[doc(alias = "get_default_for_uri_scheme_async")]
-    pub fn default_for_uri_scheme_async<P: FnOnce(Result<AppInfo, glib::Error>) + 'static>(
+    pub fn default_for_uri_scheme_async<
+        'a,
+        P: IsA<Cancellable>,
+        Q: FnOnce(Result<AppInfo, glib::Error>) + 'static,
+    >(
         uri_scheme: &str,
-        cancellable: Option<&impl IsA<Cancellable>>,
-        callback: P,
+        cancellable: impl Into<Option<&'a P>>,
+        callback: Q,
     ) {
         let main_context = glib::MainContext::ref_thread_default();
         let is_main_context_owner = main_context.is_owner();
@@ -171,10 +184,10 @@ impl AppInfo {
             "Async operations only allowed if the thread is owning the MainContext"
         );
 
-        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+        let user_data: Box_<glib::thread_guard::ThreadGuard<Q>> =
             Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn default_for_uri_scheme_async_trampoline<
-            P: FnOnce(Result<AppInfo, glib::Error>) + 'static,
+            Q: FnOnce(Result<AppInfo, glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -187,16 +200,21 @@ impl AppInfo {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+            let callback: Box_<glib::thread_guard::ThreadGuard<Q>> =
                 Box_::from_raw(user_data as *mut _);
-            let callback: P = callback.into_inner();
+            let callback: Q = callback.into_inner();
             callback(result);
         }
-        let callback = default_for_uri_scheme_async_trampoline::<P>;
+        let callback = default_for_uri_scheme_async_trampoline::<Q>;
         unsafe {
             ffi::g_app_info_get_default_for_uri_scheme_async(
                 uri_scheme.to_glib_none().0,
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                cancellable
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 Some(callback),
                 Box_::into_raw(user_data) as *mut _,
             );
@@ -240,15 +258,15 @@ impl AppInfo {
     }
 
     #[doc(alias = "g_app_info_launch_default_for_uri")]
-    pub fn launch_default_for_uri(
+    pub fn launch_default_for_uri<'a, P: IsA<AppLaunchContext>>(
         uri: &str,
-        context: Option<&impl IsA<AppLaunchContext>>,
+        context: impl Into<Option<&'a P>>,
     ) -> Result<(), glib::Error> {
         unsafe {
             let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_app_info_launch_default_for_uri(
                 uri.to_glib_none().0,
-                context.map(|p| p.as_ref()).to_glib_none().0,
+                context.into().as_ref().map(|p| p.as_ref()).to_glib_none().0,
                 &mut error,
             );
             debug_assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
@@ -261,11 +279,16 @@ impl AppInfo {
     }
 
     #[doc(alias = "g_app_info_launch_default_for_uri_async")]
-    pub fn launch_default_for_uri_async<P: FnOnce(Result<(), glib::Error>) + 'static>(
+    pub fn launch_default_for_uri_async<
+        'a,
+        P: IsA<AppLaunchContext>,
+        Q: IsA<Cancellable>,
+        R: FnOnce(Result<(), glib::Error>) + 'static,
+    >(
         uri: &str,
-        context: Option<&impl IsA<AppLaunchContext>>,
-        cancellable: Option<&impl IsA<Cancellable>>,
-        callback: P,
+        context: impl Into<Option<&'a P>>,
+        cancellable: impl Into<Option<&'a Q>>,
+        callback: R,
     ) {
         let main_context = glib::MainContext::ref_thread_default();
         let is_main_context_owner = main_context.is_owner();
@@ -277,10 +300,10 @@ impl AppInfo {
             "Async operations only allowed if the thread is owning the MainContext"
         );
 
-        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+        let user_data: Box_<glib::thread_guard::ThreadGuard<R>> =
             Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn launch_default_for_uri_async_trampoline<
-            P: FnOnce(Result<(), glib::Error>) + 'static,
+            R: FnOnce(Result<(), glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -293,29 +316,34 @@ impl AppInfo {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+            let callback: Box_<glib::thread_guard::ThreadGuard<R>> =
                 Box_::from_raw(user_data as *mut _);
-            let callback: P = callback.into_inner();
+            let callback: R = callback.into_inner();
             callback(result);
         }
-        let callback = launch_default_for_uri_async_trampoline::<P>;
+        let callback = launch_default_for_uri_async_trampoline::<R>;
         unsafe {
             ffi::g_app_info_launch_default_for_uri_async(
                 uri.to_glib_none().0,
-                context.map(|p| p.as_ref()).to_glib_none().0,
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                context.into().as_ref().map(|p| p.as_ref()).to_glib_none().0,
+                cancellable
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 Some(callback),
                 Box_::into_raw(user_data) as *mut _,
             );
         }
     }
 
-    pub fn launch_default_for_uri_future(
+    pub fn launch_default_for_uri_future<'a, P: IsA<AppLaunchContext> + Clone + 'static>(
         uri: &str,
-        context: Option<&(impl IsA<AppLaunchContext> + Clone + 'static)>,
+        context: impl Into<Option<&'a P>>,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>> {
         let uri = String::from(uri);
-        let context = context.map(ToOwned::to_owned);
+        let context = context.into().map(ToOwned::to_owned);
         Box_::pin(crate::GioFuture::new(
             &(),
             move |_obj, cancellable, send| {
@@ -462,17 +490,17 @@ pub trait AppInfoExt: IsA<AppInfo> + 'static {
     }
 
     #[doc(alias = "g_app_info_launch")]
-    fn launch(
+    fn launch<'a, P: IsA<AppLaunchContext>>(
         &self,
         files: &[File],
-        context: Option<&impl IsA<AppLaunchContext>>,
+        context: impl Into<Option<&'a P>>,
     ) -> Result<(), glib::Error> {
         unsafe {
             let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_app_info_launch(
                 self.as_ref().to_glib_none().0,
                 files.to_glib_none().0,
-                context.map(|p| p.as_ref()).to_glib_none().0,
+                context.into().as_ref().map(|p| p.as_ref()).to_glib_none().0,
                 &mut error,
             );
             debug_assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
@@ -485,17 +513,17 @@ pub trait AppInfoExt: IsA<AppInfo> + 'static {
     }
 
     #[doc(alias = "g_app_info_launch_uris")]
-    fn launch_uris(
+    fn launch_uris<'a, P: IsA<AppLaunchContext>>(
         &self,
         uris: &[&str],
-        context: Option<&impl IsA<AppLaunchContext>>,
+        context: impl Into<Option<&'a P>>,
     ) -> Result<(), glib::Error> {
         unsafe {
             let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_app_info_launch_uris(
                 self.as_ref().to_glib_none().0,
                 uris.to_glib_none().0,
-                context.map(|p| p.as_ref()).to_glib_none().0,
+                context.into().as_ref().map(|p| p.as_ref()).to_glib_none().0,
                 &mut error,
             );
             debug_assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());

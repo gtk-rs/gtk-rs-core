@@ -26,10 +26,13 @@ impl Application {
     pub const NONE: Option<&'static Application> = None;
 
     #[doc(alias = "g_application_new")]
-    pub fn new(application_id: Option<&str>, flags: ApplicationFlags) -> Application {
+    pub fn new<'a>(
+        application_id: impl Into<Option<&'a str>>,
+        flags: ApplicationFlags,
+    ) -> Application {
         unsafe {
             from_glib_full(ffi::g_application_new(
-                application_id.to_glib_none().0,
+                application_id.into().to_glib_none().0,
                 flags.into_glib(),
             ))
         }
@@ -82,7 +85,7 @@ impl ApplicationBuilder {
         }
     }
 
-    pub fn application_id(self, application_id: impl Into<glib::GString>) -> Self {
+    pub fn application_id<'a>(self, application_id: impl Into<Option<&'a str>>) -> Self {
         Self {
             builder: self
                 .builder
@@ -104,7 +107,7 @@ impl ApplicationBuilder {
         }
     }
 
-    pub fn resource_base_path(self, resource_base_path: impl Into<glib::GString>) -> Self {
+    pub fn resource_base_path<'a>(self, resource_base_path: impl Into<Option<&'a str>>) -> Self {
         Self {
             builder: self
                 .builder
@@ -114,7 +117,7 @@ impl ApplicationBuilder {
 
     #[cfg(feature = "v2_80")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_80")))]
-    pub fn version(self, version: impl Into<glib::GString>) -> Self {
+    pub fn version<'a>(self, version: impl Into<Option<&'a str>>) -> Self {
         Self {
             builder: self.builder.property("version", version.into()),
         }
@@ -137,14 +140,14 @@ pub trait ApplicationExt: IsA<Application> + 'static {
     }
 
     #[doc(alias = "g_application_add_main_option")]
-    fn add_main_option(
+    fn add_main_option<'a>(
         &self,
         long_name: &str,
         short_name: glib::Char,
         flags: glib::OptionFlags,
         arg: glib::OptionArg,
         description: &str,
-        arg_description: Option<&str>,
+        arg_description: impl Into<Option<&'a str>>,
     ) {
         unsafe {
             ffi::g_application_add_main_option(
@@ -154,7 +157,7 @@ pub trait ApplicationExt: IsA<Application> + 'static {
                 flags.into_glib(),
                 arg.into_glib(),
                 description.to_glib_none().0,
-                arg_description.to_glib_none().0,
+                arg_description.into().to_glib_none().0,
             );
         }
     }
@@ -301,12 +304,20 @@ pub trait ApplicationExt: IsA<Application> + 'static {
     }
 
     #[doc(alias = "g_application_register")]
-    fn register(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<(), glib::Error> {
+    fn register<'a, P: IsA<Cancellable>>(
+        &self,
+        cancellable: impl Into<Option<&'a P>>,
+    ) -> Result<(), glib::Error> {
         unsafe {
             let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_application_register(
                 self.as_ref().to_glib_none().0,
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                cancellable
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 &mut error,
             );
             debug_assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
@@ -319,11 +330,11 @@ pub trait ApplicationExt: IsA<Application> + 'static {
     }
 
     #[doc(alias = "g_application_send_notification")]
-    fn send_notification(&self, id: Option<&str>, notification: &Notification) {
+    fn send_notification<'a>(&self, id: impl Into<Option<&'a str>>, notification: &Notification) {
         unsafe {
             ffi::g_application_send_notification(
                 self.as_ref().to_glib_none().0,
-                id.to_glib_none().0,
+                id.into().to_glib_none().0,
                 notification.to_glib_none().0,
             );
         }
@@ -331,11 +342,11 @@ pub trait ApplicationExt: IsA<Application> + 'static {
 
     #[doc(alias = "g_application_set_application_id")]
     #[doc(alias = "application-id")]
-    fn set_application_id(&self, application_id: Option<&str>) {
+    fn set_application_id<'a>(&self, application_id: impl Into<Option<&'a str>>) {
         unsafe {
             ffi::g_application_set_application_id(
                 self.as_ref().to_glib_none().0,
-                application_id.to_glib_none().0,
+                application_id.into().to_glib_none().0,
             );
         }
     }
@@ -367,42 +378,45 @@ pub trait ApplicationExt: IsA<Application> + 'static {
     }
 
     #[doc(alias = "g_application_set_option_context_description")]
-    fn set_option_context_description(&self, description: Option<&str>) {
+    fn set_option_context_description<'a>(&self, description: impl Into<Option<&'a str>>) {
         unsafe {
             ffi::g_application_set_option_context_description(
                 self.as_ref().to_glib_none().0,
-                description.to_glib_none().0,
+                description.into().to_glib_none().0,
             );
         }
     }
 
     #[doc(alias = "g_application_set_option_context_parameter_string")]
-    fn set_option_context_parameter_string(&self, parameter_string: Option<&str>) {
+    fn set_option_context_parameter_string<'a>(
+        &self,
+        parameter_string: impl Into<Option<&'a str>>,
+    ) {
         unsafe {
             ffi::g_application_set_option_context_parameter_string(
                 self.as_ref().to_glib_none().0,
-                parameter_string.to_glib_none().0,
+                parameter_string.into().to_glib_none().0,
             );
         }
     }
 
     #[doc(alias = "g_application_set_option_context_summary")]
-    fn set_option_context_summary(&self, summary: Option<&str>) {
+    fn set_option_context_summary<'a>(&self, summary: impl Into<Option<&'a str>>) {
         unsafe {
             ffi::g_application_set_option_context_summary(
                 self.as_ref().to_glib_none().0,
-                summary.to_glib_none().0,
+                summary.into().to_glib_none().0,
             );
         }
     }
 
     #[doc(alias = "g_application_set_resource_base_path")]
     #[doc(alias = "resource-base-path")]
-    fn set_resource_base_path(&self, resource_path: Option<&str>) {
+    fn set_resource_base_path<'a>(&self, resource_path: impl Into<Option<&'a str>>) {
         unsafe {
             ffi::g_application_set_resource_base_path(
                 self.as_ref().to_glib_none().0,
-                resource_path.to_glib_none().0,
+                resource_path.into().to_glib_none().0,
             );
         }
     }

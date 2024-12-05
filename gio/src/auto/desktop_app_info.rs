@@ -124,11 +124,11 @@ impl DesktopAppInfo {
 
     #[doc(alias = "g_desktop_app_info_get_show_in")]
     #[doc(alias = "get_show_in")]
-    pub fn shows_in(&self, desktop_env: Option<&str>) -> bool {
+    pub fn shows_in<'a>(&self, desktop_env: impl Into<Option<&'a str>>) -> bool {
         unsafe {
             from_glib(ffi::g_desktop_app_info_get_show_in(
                 self.to_glib_none().0,
-                desktop_env.to_glib_none().0,
+                desktop_env.into().to_glib_none().0,
             ))
         }
     }
@@ -184,25 +184,30 @@ impl DesktopAppInfo {
     }
 
     #[doc(alias = "g_desktop_app_info_launch_action")]
-    pub fn launch_action(
+    pub fn launch_action<'a, P: IsA<AppLaunchContext>>(
         &self,
         action_name: &str,
-        launch_context: Option<&impl IsA<AppLaunchContext>>,
+        launch_context: impl Into<Option<&'a P>>,
     ) {
         unsafe {
             ffi::g_desktop_app_info_launch_action(
                 self.to_glib_none().0,
                 action_name.to_glib_none().0,
-                launch_context.map(|p| p.as_ref()).to_glib_none().0,
+                launch_context
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
             );
         }
     }
 
     #[doc(alias = "g_desktop_app_info_launch_uris_as_manager")]
-    pub fn launch_uris_as_manager(
+    pub fn launch_uris_as_manager<'a, P: IsA<AppLaunchContext>>(
         &self,
         uris: &[&str],
-        launch_context: Option<&impl IsA<AppLaunchContext>>,
+        launch_context: impl Into<Option<&'a P>>,
         spawn_flags: glib::SpawnFlags,
         user_setup: Option<Box_<dyn FnOnce() + 'static>>,
         pid_callback: Option<&mut dyn (FnMut(&DesktopAppInfo, glib::Pid))>,
@@ -247,7 +252,12 @@ impl DesktopAppInfo {
             let is_ok = ffi::g_desktop_app_info_launch_uris_as_manager(
                 self.to_glib_none().0,
                 uris.to_glib_none().0,
-                launch_context.map(|p| p.as_ref()).to_glib_none().0,
+                launch_context
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 spawn_flags.into_glib(),
                 user_setup,
                 Box_::into_raw(super_callback0) as *mut _,

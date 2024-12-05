@@ -119,8 +119,12 @@ pub trait InetAddressMaskExt: IsA<InetAddressMask> + 'static {
         }
     }
 
-    fn set_address<P: IsA<InetAddress>>(&self, address: Option<&P>) {
-        ObjectExt::set_property(self.as_ref(), "address", address)
+    fn set_address<'a, P: IsA<InetAddress>>(&self, address: impl Into<Option<&'a P>>) {
+        ObjectExt::set_property(
+            self.as_ref(),
+            "address",
+            address.into().as_ref().map(|p| p.as_ref()),
+        )
     }
 
     fn set_length(&self, length: u32) {

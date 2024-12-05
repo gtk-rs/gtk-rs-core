@@ -51,14 +51,14 @@ impl Action {
     }
 
     #[doc(alias = "g_action_print_detailed_name")]
-    pub fn print_detailed_name(
+    pub fn print_detailed_name<'a>(
         action_name: &str,
-        target_value: Option<&glib::Variant>,
+        target_value: impl Into<Option<&'a glib::Variant>>,
     ) -> glib::GString {
         unsafe {
             from_glib_full(ffi::g_action_print_detailed_name(
                 action_name.to_glib_none().0,
-                target_value.to_glib_none().0,
+                target_value.into().to_glib_none().0,
             ))
         }
     }
@@ -66,9 +66,12 @@ impl Action {
 
 pub trait ActionExt: IsA<Action> + 'static {
     #[doc(alias = "g_action_activate")]
-    fn activate(&self, parameter: Option<&glib::Variant>) {
+    fn activate<'a>(&self, parameter: impl Into<Option<&'a glib::Variant>>) {
         unsafe {
-            ffi::g_action_activate(self.as_ref().to_glib_none().0, parameter.to_glib_none().0);
+            ffi::g_action_activate(
+                self.as_ref().to_glib_none().0,
+                parameter.into().to_glib_none().0,
+            );
         }
     }
 

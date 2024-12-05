@@ -17,7 +17,7 @@ glib::wrapper! {
 
 impl Subprocess {
     //#[doc(alias = "g_subprocess_new")]
-    //pub fn new(flags: SubprocessFlags, error: Option<&mut glib::Error>, argv0: &str, : /*Unknown conversion*//*Unimplemented*/Basic: VarArgs) -> Subprocess {
+    //pub fn new<'a>(flags: SubprocessFlags, error: impl Into<Option<&'a mut  glib::Error>>, argv0: &str, : /*Unimplemented*/Basic: VarArgs) -> Subprocess {
     //    unsafe { TODO: call ffi:g_subprocess_new() }
     //}
 
@@ -38,10 +38,10 @@ impl Subprocess {
     }
 
     #[doc(alias = "g_subprocess_communicate")]
-    pub fn communicate(
+    pub fn communicate<'a, P: IsA<Cancellable>>(
         &self,
-        stdin_buf: Option<&glib::Bytes>,
-        cancellable: Option<&impl IsA<Cancellable>>,
+        stdin_buf: impl Into<Option<&'a glib::Bytes>>,
+        cancellable: impl Into<Option<&'a P>>,
     ) -> Result<(Option<glib::Bytes>, Option<glib::Bytes>), glib::Error> {
         unsafe {
             let mut stdout_buf = std::ptr::null_mut();
@@ -49,8 +49,13 @@ impl Subprocess {
             let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_subprocess_communicate(
                 self.to_glib_none().0,
-                stdin_buf.to_glib_none().0,
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                stdin_buf.into().to_glib_none().0,
+                cancellable
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 &mut stdout_buf,
                 &mut stderr_buf,
                 &mut error,
@@ -66,12 +71,14 @@ impl Subprocess {
 
     #[doc(alias = "g_subprocess_communicate_async")]
     pub fn communicate_async<
-        P: FnOnce(Result<(Option<glib::Bytes>, Option<glib::Bytes>), glib::Error>) + 'static,
+        'a,
+        P: IsA<Cancellable>,
+        Q: FnOnce(Result<(Option<glib::Bytes>, Option<glib::Bytes>), glib::Error>) + 'static,
     >(
         &self,
-        stdin_buf: Option<&glib::Bytes>,
-        cancellable: Option<&impl IsA<Cancellable>>,
-        callback: P,
+        stdin_buf: impl Into<Option<&'a glib::Bytes>>,
+        cancellable: impl Into<Option<&'a P>>,
+        callback: Q,
     ) {
         let main_context = glib::MainContext::ref_thread_default();
         let is_main_context_owner = main_context.is_owner();
@@ -83,10 +90,10 @@ impl Subprocess {
             "Async operations only allowed if the thread is owning the MainContext"
         );
 
-        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+        let user_data: Box_<glib::thread_guard::ThreadGuard<Q>> =
             Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn communicate_async_trampoline<
-            P: FnOnce(Result<(Option<glib::Bytes>, Option<glib::Bytes>), glib::Error>) + 'static,
+            Q: FnOnce(Result<(Option<glib::Bytes>, Option<glib::Bytes>), glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -107,26 +114,31 @@ impl Subprocess {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+            let callback: Box_<glib::thread_guard::ThreadGuard<Q>> =
                 Box_::from_raw(user_data as *mut _);
-            let callback: P = callback.into_inner();
+            let callback: Q = callback.into_inner();
             callback(result);
         }
-        let callback = communicate_async_trampoline::<P>;
+        let callback = communicate_async_trampoline::<Q>;
         unsafe {
             ffi::g_subprocess_communicate_async(
                 self.to_glib_none().0,
-                stdin_buf.to_glib_none().0,
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                stdin_buf.into().to_glib_none().0,
+                cancellable
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 Some(callback),
                 Box_::into_raw(user_data) as *mut _,
             );
         }
     }
 
-    pub fn communicate_future(
+    pub fn communicate_future<'a>(
         &self,
-        stdin_buf: Option<&glib::Bytes>,
+        stdin_buf: impl Into<Option<&'a glib::Bytes>>,
     ) -> Pin<
         Box_<
             dyn std::future::Future<
@@ -134,7 +146,7 @@ impl Subprocess {
                 > + 'static,
         >,
     > {
-        let stdin_buf = stdin_buf.map(ToOwned::to_owned);
+        let stdin_buf = stdin_buf.into().map(ToOwned::to_owned);
         Box_::pin(crate::GioFuture::new(
             self,
             move |obj, cancellable, send| {
@@ -150,10 +162,10 @@ impl Subprocess {
     }
 
     #[doc(alias = "g_subprocess_communicate_utf8")]
-    pub fn communicate_utf8(
+    pub fn communicate_utf8<'a, P: IsA<Cancellable>>(
         &self,
-        stdin_buf: Option<&str>,
-        cancellable: Option<&impl IsA<Cancellable>>,
+        stdin_buf: impl Into<Option<&'a str>>,
+        cancellable: impl Into<Option<&'a P>>,
     ) -> Result<(Option<glib::GString>, Option<glib::GString>), glib::Error> {
         unsafe {
             let mut stdout_buf = std::ptr::null_mut();
@@ -161,8 +173,13 @@ impl Subprocess {
             let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_subprocess_communicate_utf8(
                 self.to_glib_none().0,
-                stdin_buf.to_glib_none().0,
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                stdin_buf.into().to_glib_none().0,
+                cancellable
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 &mut stdout_buf,
                 &mut stderr_buf,
                 &mut error,
@@ -253,12 +270,20 @@ impl Subprocess {
     }
 
     #[doc(alias = "g_subprocess_wait")]
-    pub fn wait(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<(), glib::Error> {
+    pub fn wait<'a, P: IsA<Cancellable>>(
+        &self,
+        cancellable: impl Into<Option<&'a P>>,
+    ) -> Result<(), glib::Error> {
         unsafe {
             let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_subprocess_wait(
                 self.to_glib_none().0,
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                cancellable
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 &mut error,
             );
             debug_assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
@@ -271,10 +296,10 @@ impl Subprocess {
     }
 
     #[doc(alias = "g_subprocess_wait_async")]
-    pub fn wait_async<P: FnOnce(Result<(), glib::Error>) + 'static>(
+    pub fn wait_async<'a, P: IsA<Cancellable>, Q: FnOnce(Result<(), glib::Error>) + 'static>(
         &self,
-        cancellable: Option<&impl IsA<Cancellable>>,
-        callback: P,
+        cancellable: impl Into<Option<&'a P>>,
+        callback: Q,
     ) {
         let main_context = glib::MainContext::ref_thread_default();
         let is_main_context_owner = main_context.is_owner();
@@ -286,9 +311,9 @@ impl Subprocess {
             "Async operations only allowed if the thread is owning the MainContext"
         );
 
-        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+        let user_data: Box_<glib::thread_guard::ThreadGuard<Q>> =
             Box_::new(glib::thread_guard::ThreadGuard::new(callback));
-        unsafe extern "C" fn wait_async_trampoline<P: FnOnce(Result<(), glib::Error>) + 'static>(
+        unsafe extern "C" fn wait_async_trampoline<Q: FnOnce(Result<(), glib::Error>) + 'static>(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
@@ -300,16 +325,21 @@ impl Subprocess {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+            let callback: Box_<glib::thread_guard::ThreadGuard<Q>> =
                 Box_::from_raw(user_data as *mut _);
-            let callback: P = callback.into_inner();
+            let callback: Q = callback.into_inner();
             callback(result);
         }
-        let callback = wait_async_trampoline::<P>;
+        let callback = wait_async_trampoline::<Q>;
         unsafe {
             ffi::g_subprocess_wait_async(
                 self.to_glib_none().0,
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                cancellable
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 Some(callback),
                 Box_::into_raw(user_data) as *mut _,
             );
@@ -330,15 +360,20 @@ impl Subprocess {
     }
 
     #[doc(alias = "g_subprocess_wait_check")]
-    pub fn wait_check(
+    pub fn wait_check<'a, P: IsA<Cancellable>>(
         &self,
-        cancellable: Option<&impl IsA<Cancellable>>,
+        cancellable: impl Into<Option<&'a P>>,
     ) -> Result<(), glib::Error> {
         unsafe {
             let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_subprocess_wait_check(
                 self.to_glib_none().0,
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                cancellable
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 &mut error,
             );
             debug_assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
@@ -351,10 +386,14 @@ impl Subprocess {
     }
 
     #[doc(alias = "g_subprocess_wait_check_async")]
-    pub fn wait_check_async<P: FnOnce(Result<(), glib::Error>) + 'static>(
+    pub fn wait_check_async<
+        'a,
+        P: IsA<Cancellable>,
+        Q: FnOnce(Result<(), glib::Error>) + 'static,
+    >(
         &self,
-        cancellable: Option<&impl IsA<Cancellable>>,
-        callback: P,
+        cancellable: impl Into<Option<&'a P>>,
+        callback: Q,
     ) {
         let main_context = glib::MainContext::ref_thread_default();
         let is_main_context_owner = main_context.is_owner();
@@ -366,10 +405,10 @@ impl Subprocess {
             "Async operations only allowed if the thread is owning the MainContext"
         );
 
-        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+        let user_data: Box_<glib::thread_guard::ThreadGuard<Q>> =
             Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn wait_check_async_trampoline<
-            P: FnOnce(Result<(), glib::Error>) + 'static,
+            Q: FnOnce(Result<(), glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -382,16 +421,21 @@ impl Subprocess {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+            let callback: Box_<glib::thread_guard::ThreadGuard<Q>> =
                 Box_::from_raw(user_data as *mut _);
-            let callback: P = callback.into_inner();
+            let callback: Q = callback.into_inner();
             callback(result);
         }
-        let callback = wait_check_async_trampoline::<P>;
+        let callback = wait_check_async_trampoline::<Q>;
         unsafe {
             ffi::g_subprocess_wait_check_async(
                 self.to_glib_none().0,
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                cancellable
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 Some(callback),
                 Box_::into_raw(user_data) as *mut _,
             );

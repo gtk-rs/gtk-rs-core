@@ -21,25 +21,28 @@ glib::wrapper! {
 
 impl SimpleAction {
     #[doc(alias = "g_simple_action_new")]
-    pub fn new(name: &str, parameter_type: Option<&glib::VariantTy>) -> SimpleAction {
+    pub fn new<'a>(
+        name: &str,
+        parameter_type: impl Into<Option<&'a glib::VariantTy>>,
+    ) -> SimpleAction {
         unsafe {
             from_glib_full(ffi::g_simple_action_new(
                 name.to_glib_none().0,
-                parameter_type.to_glib_none().0,
+                parameter_type.into().to_glib_none().0,
             ))
         }
     }
 
     #[doc(alias = "g_simple_action_new_stateful")]
-    pub fn new_stateful(
+    pub fn new_stateful<'a>(
         name: &str,
-        parameter_type: Option<&glib::VariantTy>,
+        parameter_type: impl Into<Option<&'a glib::VariantTy>>,
         state: &glib::Variant,
     ) -> SimpleAction {
         unsafe {
             from_glib_full(ffi::g_simple_action_new_stateful(
                 name.to_glib_none().0,
-                parameter_type.to_glib_none().0,
+                parameter_type.into().to_glib_none().0,
                 state.to_glib_none().0,
             ))
         }
@@ -62,9 +65,12 @@ impl SimpleAction {
     }
 
     #[doc(alias = "g_simple_action_set_state_hint")]
-    pub fn set_state_hint(&self, state_hint: Option<&glib::Variant>) {
+    pub fn set_state_hint<'a>(&self, state_hint: impl Into<Option<&'a glib::Variant>>) {
         unsafe {
-            ffi::g_simple_action_set_state_hint(self.to_glib_none().0, state_hint.to_glib_none().0);
+            ffi::g_simple_action_set_state_hint(
+                self.to_glib_none().0,
+                state_hint.into().to_glib_none().0,
+            );
         }
     }
 

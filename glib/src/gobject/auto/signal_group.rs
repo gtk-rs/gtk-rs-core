@@ -43,11 +43,11 @@ impl SignalGroup {
 
     #[doc(alias = "g_signal_group_set_target")]
     #[doc(alias = "target")]
-    pub fn set_target(&self, target: Option<&impl IsA<Object>>) {
+    pub fn set_target<'a, P: IsA<Object>>(&self, target: impl Into<Option<&'a P>>) {
         unsafe {
             crate::gobject_ffi::g_signal_group_set_target(
                 self.to_glib_none().0,
-                target.map(|p| p.as_ref()).to_glib_none().0,
+                target.into().as_ref().map(|p| p.as_ref()).to_glib_none().0,
             );
         }
     }

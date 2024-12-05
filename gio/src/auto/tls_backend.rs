@@ -99,11 +99,16 @@ pub trait TlsBackendExt: IsA<TlsBackend> + 'static {
     #[cfg(feature = "v2_60")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     #[doc(alias = "g_tls_backend_set_default_database")]
-    fn set_default_database(&self, database: Option<&impl IsA<TlsDatabase>>) {
+    fn set_default_database<'a, P: IsA<TlsDatabase>>(&self, database: impl Into<Option<&'a P>>) {
         unsafe {
             ffi::g_tls_backend_set_default_database(
                 self.as_ref().to_glib_none().0,
-                database.map(|p| p.as_ref()).to_glib_none().0,
+                database
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
             );
         }
     }

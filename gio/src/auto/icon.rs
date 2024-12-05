@@ -39,11 +39,11 @@ impl Icon {
 
 pub trait IconExt: IsA<Icon> + 'static {
     #[doc(alias = "g_icon_equal")]
-    fn equal(&self, icon2: Option<&impl IsA<Icon>>) -> bool {
+    fn equal<'a, P: IsA<Icon>>(&self, icon2: impl Into<Option<&'a P>>) -> bool {
         unsafe {
             from_glib(ffi::g_icon_equal(
                 self.as_ref().to_glib_none().0,
-                icon2.map(|p| p.as_ref()).to_glib_none().0,
+                icon2.into().as_ref().map(|p| p.as_ref()).to_glib_none().0,
             ))
         }
     }

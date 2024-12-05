@@ -16,15 +16,15 @@ glib::wrapper! {
 
 impl DBusMenuModel {
     #[doc(alias = "g_dbus_menu_model_get")]
-    pub fn get(
+    pub fn get<'a>(
         connection: &DBusConnection,
-        bus_name: Option<&str>,
+        bus_name: impl Into<Option<&'a str>>,
         object_path: &str,
     ) -> DBusMenuModel {
         unsafe {
             from_glib_full(ffi::g_dbus_menu_model_get(
                 connection.to_glib_none().0,
-                bus_name.to_glib_none().0,
+                bus_name.into().to_glib_none().0,
                 object_path.to_glib_none().0,
             ))
         }

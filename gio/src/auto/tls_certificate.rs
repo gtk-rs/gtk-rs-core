@@ -105,15 +105,15 @@ impl TlsCertificate {
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_68")))]
     #[doc(alias = "g_tls_certificate_new_from_pkcs11_uris")]
     #[doc(alias = "new_from_pkcs11_uris")]
-    pub fn from_pkcs11_uris(
+    pub fn from_pkcs11_uris<'a>(
         pkcs11_uri: &str,
-        private_key_pkcs11_uri: Option<&str>,
+        private_key_pkcs11_uri: impl Into<Option<&'a str>>,
     ) -> Result<TlsCertificate, glib::Error> {
         unsafe {
             let mut error = std::ptr::null_mut();
             let ret = ffi::g_tls_certificate_new_from_pkcs11_uris(
                 pkcs11_uri.to_glib_none().0,
-                private_key_pkcs11_uri.to_glib_none().0,
+                private_key_pkcs11_uri.into().to_glib_none().0,
                 &mut error,
             );
             if error.is_null() {
@@ -128,14 +128,17 @@ impl TlsCertificate {
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
     #[doc(alias = "g_tls_certificate_new_from_pkcs12")]
     #[doc(alias = "new_from_pkcs12")]
-    pub fn from_pkcs12(data: &[u8], password: Option<&str>) -> Result<TlsCertificate, glib::Error> {
+    pub fn from_pkcs12<'a>(
+        data: &[u8],
+        password: impl Into<Option<&'a str>>,
+    ) -> Result<TlsCertificate, glib::Error> {
         let length = data.len() as _;
         unsafe {
             let mut error = std::ptr::null_mut();
             let ret = ffi::g_tls_certificate_new_from_pkcs12(
                 data.to_glib_none().0,
                 length,
-                password.to_glib_none().0,
+                password.into().to_glib_none().0,
                 &mut error,
             );
             if error.is_null() {
@@ -266,16 +269,26 @@ pub trait TlsCertificateExt: IsA<TlsCertificate> + 'static {
     }
 
     #[doc(alias = "g_tls_certificate_verify")]
-    fn verify(
+    fn verify<'a, P: IsA<SocketConnectable>, Q: IsA<TlsCertificate>>(
         &self,
-        identity: Option<&impl IsA<SocketConnectable>>,
-        trusted_ca: Option<&impl IsA<TlsCertificate>>,
+        identity: impl Into<Option<&'a P>>,
+        trusted_ca: impl Into<Option<&'a Q>>,
     ) -> TlsCertificateFlags {
         unsafe {
             from_glib(ffi::g_tls_certificate_verify(
                 self.as_ref().to_glib_none().0,
-                identity.map(|p| p.as_ref()).to_glib_none().0,
-                trusted_ca.map(|p| p.as_ref()).to_glib_none().0,
+                identity
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
+                trusted_ca
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
             ))
         }
     }

@@ -19,16 +19,16 @@ glib::wrapper! {
 impl SettingsSchemaSource {
     #[doc(alias = "g_settings_schema_source_new_from_directory")]
     #[doc(alias = "new_from_directory")]
-    pub fn from_directory(
+    pub fn from_directory<'a>(
         directory: impl AsRef<std::path::Path>,
-        parent: Option<&SettingsSchemaSource>,
+        parent: impl Into<Option<&'a SettingsSchemaSource>>,
         trusted: bool,
     ) -> Result<SettingsSchemaSource, glib::Error> {
         unsafe {
             let mut error = std::ptr::null_mut();
             let ret = ffi::g_settings_schema_source_new_from_directory(
                 directory.as_ref().to_glib_none().0,
-                parent.to_glib_none().0,
+                parent.into().to_glib_none().0,
                 trusted.into_glib(),
                 &mut error,
             );

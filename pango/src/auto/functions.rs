@@ -2,10 +2,7 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{
-    ffi, Analysis, AttrIterator, AttrList, Context, Direction, GlyphString, Item, Stretch, Style,
-    Variant, Weight,
-};
+use crate::{ffi, Analysis, AttrList, Direction, GlyphString, Stretch, Style, Variant, Weight};
 use glib::translate::*;
 
 //#[cfg_attr(feature = "v1_44", deprecated = "Since 1.44")]
@@ -17,7 +14,7 @@ use glib::translate::*;
 //}
 
 //#[doc(alias = "pango_default_break")]
-//pub fn default_break(text: &str, analysis: Option<&mut Analysis>, attrs: /*Ignored*/&mut LogAttr, attrs_len: i32) {
+//pub fn default_break<'a>(text: &str, analysis: impl Into<Option<&'a mut  Analysis>>, attrs: /*Ignored*/&mut LogAttr, attrs_len: i32) {
 //    unsafe { TODO: call ffi:pango_default_break() }
 //}
 
@@ -55,50 +52,6 @@ pub fn find_paragraph_boundary(text: &str) -> (i32, i32) {
 #[doc(alias = "pango_is_zero_width")]
 pub fn is_zero_width(ch: char) -> bool {
     unsafe { from_glib(ffi::pango_is_zero_width(ch.into_glib())) }
-}
-
-#[doc(alias = "pango_itemize")]
-pub fn itemize(
-    context: &Context,
-    text: &str,
-    start_index: i32,
-    length: i32,
-    attrs: &AttrList,
-    cached_iter: Option<&AttrIterator>,
-) -> Vec<Item> {
-    unsafe {
-        FromGlibPtrContainer::from_glib_full(ffi::pango_itemize(
-            context.to_glib_none().0,
-            text.to_glib_none().0,
-            start_index,
-            length,
-            attrs.to_glib_none().0,
-            mut_override(cached_iter.to_glib_none().0),
-        ))
-    }
-}
-
-#[doc(alias = "pango_itemize_with_base_dir")]
-pub fn itemize_with_base_dir(
-    context: &Context,
-    base_dir: Direction,
-    text: &str,
-    start_index: i32,
-    length: i32,
-    attrs: &AttrList,
-    cached_iter: Option<&AttrIterator>,
-) -> Vec<Item> {
-    unsafe {
-        FromGlibPtrContainer::from_glib_full(ffi::pango_itemize_with_base_dir(
-            context.to_glib_none().0,
-            base_dir.into_glib(),
-            text.to_glib_none().0,
-            start_index,
-            length,
-            attrs.to_glib_none().0,
-            mut_override(cached_iter.to_glib_none().0),
-        ))
-    }
 }
 
 #[doc(alias = "pango_markup_parser_finish")]
@@ -261,7 +214,7 @@ pub fn shape(text: &str, analysis: &Analysis, glyphs: &mut GlyphString) {
 //#[cfg(feature = "v1_50")]
 //#[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
 //#[doc(alias = "pango_shape_item")]
-//pub fn shape_item(item: &mut Item, paragraph_text: Option<&str>, log_attrs: /*Ignored*/Option<&mut LogAttr>, glyphs: &mut GlyphString, flags: ShapeFlags) {
+//pub fn shape_item<'a>(item: &mut Item, paragraph_text: impl Into<Option<&'a str>>, log_attrs: /*Ignored*/Option<&mut LogAttr>, glyphs: &mut GlyphString, flags: ShapeFlags) {
 //    unsafe { TODO: call ffi:pango_shape_item() }
 //}
 

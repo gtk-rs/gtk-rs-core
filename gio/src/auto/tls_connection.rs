@@ -162,12 +162,20 @@ pub trait TlsConnectionExt: IsA<TlsConnection> + 'static {
     }
 
     #[doc(alias = "g_tls_connection_handshake")]
-    fn handshake(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<(), glib::Error> {
+    fn handshake<'a, P: IsA<Cancellable>>(
+        &self,
+        cancellable: impl Into<Option<&'a P>>,
+    ) -> Result<(), glib::Error> {
         unsafe {
             let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_tls_connection_handshake(
                 self.as_ref().to_glib_none().0,
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                cancellable
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 &mut error,
             );
             debug_assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
@@ -180,11 +188,11 @@ pub trait TlsConnectionExt: IsA<TlsConnection> + 'static {
     }
 
     #[doc(alias = "g_tls_connection_handshake_async")]
-    fn handshake_async<P: FnOnce(Result<(), glib::Error>) + 'static>(
+    fn handshake_async<'a, P: IsA<Cancellable>, Q: FnOnce(Result<(), glib::Error>) + 'static>(
         &self,
         io_priority: glib::Priority,
-        cancellable: Option<&impl IsA<Cancellable>>,
-        callback: P,
+        cancellable: impl Into<Option<&'a P>>,
+        callback: Q,
     ) {
         let main_context = glib::MainContext::ref_thread_default();
         let is_main_context_owner = main_context.is_owner();
@@ -196,10 +204,10 @@ pub trait TlsConnectionExt: IsA<TlsConnection> + 'static {
             "Async operations only allowed if the thread is owning the MainContext"
         );
 
-        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+        let user_data: Box_<glib::thread_guard::ThreadGuard<Q>> =
             Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn handshake_async_trampoline<
-            P: FnOnce(Result<(), glib::Error>) + 'static,
+            Q: FnOnce(Result<(), glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -213,17 +221,22 @@ pub trait TlsConnectionExt: IsA<TlsConnection> + 'static {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+            let callback: Box_<glib::thread_guard::ThreadGuard<Q>> =
                 Box_::from_raw(user_data as *mut _);
-            let callback: P = callback.into_inner();
+            let callback: Q = callback.into_inner();
             callback(result);
         }
-        let callback = handshake_async_trampoline::<P>;
+        let callback = handshake_async_trampoline::<Q>;
         unsafe {
             ffi::g_tls_connection_handshake_async(
                 self.as_ref().to_glib_none().0,
                 io_priority.into_glib(),
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                cancellable
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 Some(callback),
                 Box_::into_raw(user_data) as *mut _,
             );
@@ -257,22 +270,32 @@ pub trait TlsConnectionExt: IsA<TlsConnection> + 'static {
 
     #[doc(alias = "g_tls_connection_set_database")]
     #[doc(alias = "database")]
-    fn set_database(&self, database: Option<&impl IsA<TlsDatabase>>) {
+    fn set_database<'a, P: IsA<TlsDatabase>>(&self, database: impl Into<Option<&'a P>>) {
         unsafe {
             ffi::g_tls_connection_set_database(
                 self.as_ref().to_glib_none().0,
-                database.map(|p| p.as_ref()).to_glib_none().0,
+                database
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
             );
         }
     }
 
     #[doc(alias = "g_tls_connection_set_interaction")]
     #[doc(alias = "interaction")]
-    fn set_interaction(&self, interaction: Option<&impl IsA<TlsInteraction>>) {
+    fn set_interaction<'a, P: IsA<TlsInteraction>>(&self, interaction: impl Into<Option<&'a P>>) {
         unsafe {
             ffi::g_tls_connection_set_interaction(
                 self.as_ref().to_glib_none().0,
-                interaction.map(|p| p.as_ref()).to_glib_none().0,
+                interaction
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
             );
         }
     }

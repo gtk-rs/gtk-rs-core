@@ -30,25 +30,30 @@ impl DBusProxy {
 
     #[doc(alias = "g_dbus_proxy_new_for_bus_sync")]
     #[doc(alias = "new_for_bus_sync")]
-    pub fn for_bus_sync(
+    pub fn for_bus_sync<'a, P: IsA<Cancellable>>(
         bus_type: BusType,
         flags: DBusProxyFlags,
-        info: Option<&DBusInterfaceInfo>,
+        info: impl Into<Option<&'a DBusInterfaceInfo>>,
         name: &str,
         object_path: &str,
         interface_name: &str,
-        cancellable: Option<&impl IsA<Cancellable>>,
+        cancellable: impl Into<Option<&'a P>>,
     ) -> Result<DBusProxy, glib::Error> {
         unsafe {
             let mut error = std::ptr::null_mut();
             let ret = ffi::g_dbus_proxy_new_for_bus_sync(
                 bus_type.into_glib(),
                 flags.into_glib(),
-                info.to_glib_none().0,
+                info.into().to_glib_none().0,
                 name.to_glib_none().0,
                 object_path.to_glib_none().0,
                 interface_name.to_glib_none().0,
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                cancellable
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 &mut error,
             );
             if error.is_null() {
@@ -60,25 +65,30 @@ impl DBusProxy {
     }
 
     #[doc(alias = "g_dbus_proxy_new_sync")]
-    pub fn new_sync(
+    pub fn new_sync<'a, P: IsA<Cancellable>>(
         connection: &DBusConnection,
         flags: DBusProxyFlags,
-        info: Option<&DBusInterfaceInfo>,
-        name: Option<&str>,
+        info: impl Into<Option<&'a DBusInterfaceInfo>>,
+        name: impl Into<Option<&'a str>>,
         object_path: &str,
         interface_name: &str,
-        cancellable: Option<&impl IsA<Cancellable>>,
+        cancellable: impl Into<Option<&'a P>>,
     ) -> Result<DBusProxy, glib::Error> {
         unsafe {
             let mut error = std::ptr::null_mut();
             let ret = ffi::g_dbus_proxy_new_sync(
                 connection.to_glib_none().0,
                 flags.into_glib(),
-                info.to_glib_none().0,
-                name.to_glib_none().0,
+                info.into().to_glib_none().0,
+                name.into().to_glib_none().0,
                 object_path.to_glib_none().0,
                 interface_name.to_glib_none().0,
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                cancellable
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 &mut error,
             );
             if error.is_null() {
@@ -90,15 +100,15 @@ impl DBusProxy {
     }
 
     #[doc(alias = "g_dbus_proxy_new")]
-    pub fn new<P: FnOnce(Result<DBusProxy, glib::Error>) + 'static>(
+    pub fn new<'a, P: IsA<Cancellable>, Q: FnOnce(Result<DBusProxy, glib::Error>) + 'static>(
         connection: &DBusConnection,
         flags: DBusProxyFlags,
-        info: Option<&DBusInterfaceInfo>,
-        name: Option<&str>,
+        info: impl Into<Option<&'a DBusInterfaceInfo>>,
+        name: impl Into<Option<&'a str>>,
         object_path: &str,
         interface_name: &str,
-        cancellable: Option<&impl IsA<Cancellable>>,
-        callback: P,
+        cancellable: impl Into<Option<&'a P>>,
+        callback: Q,
     ) {
         let main_context = glib::MainContext::ref_thread_default();
         let is_main_context_owner = main_context.is_owner();
@@ -110,9 +120,9 @@ impl DBusProxy {
             "Async operations only allowed if the thread is owning the MainContext"
         );
 
-        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+        let user_data: Box_<glib::thread_guard::ThreadGuard<Q>> =
             Box_::new(glib::thread_guard::ThreadGuard::new(callback));
-        unsafe extern "C" fn new_trampoline<P: FnOnce(Result<DBusProxy, glib::Error>) + 'static>(
+        unsafe extern "C" fn new_trampoline<Q: FnOnce(Result<DBusProxy, glib::Error>) + 'static>(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
@@ -124,38 +134,43 @@ impl DBusProxy {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+            let callback: Box_<glib::thread_guard::ThreadGuard<Q>> =
                 Box_::from_raw(user_data as *mut _);
-            let callback: P = callback.into_inner();
+            let callback: Q = callback.into_inner();
             callback(result);
         }
-        let callback = new_trampoline::<P>;
+        let callback = new_trampoline::<Q>;
         unsafe {
             ffi::g_dbus_proxy_new(
                 connection.to_glib_none().0,
                 flags.into_glib(),
-                info.to_glib_none().0,
-                name.to_glib_none().0,
+                info.into().to_glib_none().0,
+                name.into().to_glib_none().0,
                 object_path.to_glib_none().0,
                 interface_name.to_glib_none().0,
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                cancellable
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 Some(callback),
                 Box_::into_raw(user_data) as *mut _,
             );
         }
     }
 
-    pub fn new_future(
+    pub fn new_future<'a>(
         connection: &DBusConnection,
         flags: DBusProxyFlags,
-        info: Option<&DBusInterfaceInfo>,
-        name: Option<&str>,
+        info: impl Into<Option<&'a DBusInterfaceInfo>>,
+        name: impl Into<Option<&'a str>>,
         object_path: &str,
         interface_name: &str,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<DBusProxy, glib::Error>> + 'static>> {
         let connection = connection.clone();
-        let info = info.map(ToOwned::to_owned);
-        let name = name.map(ToOwned::to_owned);
+        let info = info.into().map(ToOwned::to_owned);
+        let name = name.into().map(ToOwned::to_owned);
         let object_path = String::from(object_path);
         let interface_name = String::from(interface_name);
         Box_::pin(crate::GioFuture::new(
@@ -179,15 +194,15 @@ impl DBusProxy {
 
     #[doc(alias = "g_dbus_proxy_new_for_bus")]
     #[doc(alias = "new_for_bus")]
-    pub fn for_bus<P: FnOnce(Result<DBusProxy, glib::Error>) + 'static>(
+    pub fn for_bus<'a, P: IsA<Cancellable>, Q: FnOnce(Result<DBusProxy, glib::Error>) + 'static>(
         bus_type: BusType,
         flags: DBusProxyFlags,
-        info: Option<&DBusInterfaceInfo>,
+        info: impl Into<Option<&'a DBusInterfaceInfo>>,
         name: &str,
         object_path: &str,
         interface_name: &str,
-        cancellable: Option<&impl IsA<Cancellable>>,
-        callback: P,
+        cancellable: impl Into<Option<&'a P>>,
+        callback: Q,
     ) {
         let main_context = glib::MainContext::ref_thread_default();
         let is_main_context_owner = main_context.is_owner();
@@ -199,10 +214,10 @@ impl DBusProxy {
             "Async operations only allowed if the thread is owning the MainContext"
         );
 
-        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+        let user_data: Box_<glib::thread_guard::ThreadGuard<Q>> =
             Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn for_bus_trampoline<
-            P: FnOnce(Result<DBusProxy, glib::Error>) + 'static,
+            Q: FnOnce(Result<DBusProxy, glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -215,36 +230,41 @@ impl DBusProxy {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+            let callback: Box_<glib::thread_guard::ThreadGuard<Q>> =
                 Box_::from_raw(user_data as *mut _);
-            let callback: P = callback.into_inner();
+            let callback: Q = callback.into_inner();
             callback(result);
         }
-        let callback = for_bus_trampoline::<P>;
+        let callback = for_bus_trampoline::<Q>;
         unsafe {
             ffi::g_dbus_proxy_new_for_bus(
                 bus_type.into_glib(),
                 flags.into_glib(),
-                info.to_glib_none().0,
+                info.into().to_glib_none().0,
                 name.to_glib_none().0,
                 object_path.to_glib_none().0,
                 interface_name.to_glib_none().0,
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                cancellable
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 Some(callback),
                 Box_::into_raw(user_data) as *mut _,
             );
         }
     }
 
-    pub fn for_bus_future(
+    pub fn for_bus_future<'a>(
         bus_type: BusType,
         flags: DBusProxyFlags,
-        info: Option<&DBusInterfaceInfo>,
+        info: impl Into<Option<&'a DBusInterfaceInfo>>,
         name: &str,
         object_path: &str,
         interface_name: &str,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<DBusProxy, glib::Error>> + 'static>> {
-        let info = info.map(ToOwned::to_owned);
+        let info = info.into().map(ToOwned::to_owned);
         let name = String::from(name);
         let object_path = String::from(object_path);
         let interface_name = String::from(interface_name);
@@ -273,14 +293,14 @@ unsafe impl Sync for DBusProxy {}
 
 pub trait DBusProxyExt: IsA<DBusProxy> + 'static {
     #[doc(alias = "g_dbus_proxy_call")]
-    fn call<P: FnOnce(Result<glib::Variant, glib::Error>) + 'static>(
+    fn call<'a, P: IsA<Cancellable>, Q: FnOnce(Result<glib::Variant, glib::Error>) + 'static>(
         &self,
         method_name: &str,
-        parameters: Option<&glib::Variant>,
+        parameters: impl Into<Option<&'a glib::Variant>>,
         flags: DBusCallFlags,
         timeout_msec: i32,
-        cancellable: Option<&impl IsA<Cancellable>>,
-        callback: P,
+        cancellable: impl Into<Option<&'a P>>,
+        callback: Q,
     ) {
         let main_context = glib::MainContext::ref_thread_default();
         let is_main_context_owner = main_context.is_owner();
@@ -292,10 +312,10 @@ pub trait DBusProxyExt: IsA<DBusProxy> + 'static {
             "Async operations only allowed if the thread is owning the MainContext"
         );
 
-        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+        let user_data: Box_<glib::thread_guard::ThreadGuard<Q>> =
             Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn call_trampoline<
-            P: FnOnce(Result<glib::Variant, glib::Error>) + 'static,
+            Q: FnOnce(Result<glib::Variant, glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -308,36 +328,41 @@ pub trait DBusProxyExt: IsA<DBusProxy> + 'static {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+            let callback: Box_<glib::thread_guard::ThreadGuard<Q>> =
                 Box_::from_raw(user_data as *mut _);
-            let callback: P = callback.into_inner();
+            let callback: Q = callback.into_inner();
             callback(result);
         }
-        let callback = call_trampoline::<P>;
+        let callback = call_trampoline::<Q>;
         unsafe {
             ffi::g_dbus_proxy_call(
                 self.as_ref().to_glib_none().0,
                 method_name.to_glib_none().0,
-                parameters.to_glib_none().0,
+                parameters.into().to_glib_none().0,
                 flags.into_glib(),
                 timeout_msec,
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                cancellable
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 Some(callback),
                 Box_::into_raw(user_data) as *mut _,
             );
         }
     }
 
-    fn call_future(
+    fn call_future<'a>(
         &self,
         method_name: &str,
-        parameters: Option<&glib::Variant>,
+        parameters: impl Into<Option<&'a glib::Variant>>,
         flags: DBusCallFlags,
         timeout_msec: i32,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<glib::Variant, glib::Error>> + 'static>>
     {
         let method_name = String::from(method_name);
-        let parameters = parameters.map(ToOwned::to_owned);
+        let parameters = parameters.into().map(ToOwned::to_owned);
         Box_::pin(crate::GioFuture::new(
             self,
             move |obj, cancellable, send| {
@@ -356,23 +381,28 @@ pub trait DBusProxyExt: IsA<DBusProxy> + 'static {
     }
 
     #[doc(alias = "g_dbus_proxy_call_sync")]
-    fn call_sync(
+    fn call_sync<'a, P: IsA<Cancellable>>(
         &self,
         method_name: &str,
-        parameters: Option<&glib::Variant>,
+        parameters: impl Into<Option<&'a glib::Variant>>,
         flags: DBusCallFlags,
         timeout_msec: i32,
-        cancellable: Option<&impl IsA<Cancellable>>,
+        cancellable: impl Into<Option<&'a P>>,
     ) -> Result<glib::Variant, glib::Error> {
         unsafe {
             let mut error = std::ptr::null_mut();
             let ret = ffi::g_dbus_proxy_call_sync(
                 self.as_ref().to_glib_none().0,
                 method_name.to_glib_none().0,
-                parameters.to_glib_none().0,
+                parameters.into().to_glib_none().0,
                 flags.into_glib(),
                 timeout_msec,
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                cancellable
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 &mut error,
             );
             if error.is_null() {
@@ -387,16 +417,19 @@ pub trait DBusProxyExt: IsA<DBusProxy> + 'static {
     #[cfg_attr(docsrs, doc(cfg(unix)))]
     #[doc(alias = "g_dbus_proxy_call_with_unix_fd_list")]
     fn call_with_unix_fd_list<
-        P: FnOnce(Result<(glib::Variant, UnixFDList), glib::Error>) + 'static,
+        'a,
+        P: IsA<UnixFDList>,
+        Q: IsA<Cancellable>,
+        R: FnOnce(Result<(glib::Variant, UnixFDList), glib::Error>) + 'static,
     >(
         &self,
         method_name: &str,
-        parameters: Option<&glib::Variant>,
+        parameters: impl Into<Option<&'a glib::Variant>>,
         flags: DBusCallFlags,
         timeout_msec: i32,
-        fd_list: Option<&impl IsA<UnixFDList>>,
-        cancellable: Option<&impl IsA<Cancellable>>,
-        callback: P,
+        fd_list: impl Into<Option<&'a P>>,
+        cancellable: impl Into<Option<&'a Q>>,
+        callback: R,
     ) {
         let main_context = glib::MainContext::ref_thread_default();
         let is_main_context_owner = main_context.is_owner();
@@ -408,10 +441,10 @@ pub trait DBusProxyExt: IsA<DBusProxy> + 'static {
             "Async operations only allowed if the thread is owning the MainContext"
         );
 
-        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+        let user_data: Box_<glib::thread_guard::ThreadGuard<R>> =
             Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn call_with_unix_fd_list_trampoline<
-            P: FnOnce(Result<(glib::Variant, UnixFDList), glib::Error>) + 'static,
+            R: FnOnce(Result<(glib::Variant, UnixFDList), glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -430,21 +463,26 @@ pub trait DBusProxyExt: IsA<DBusProxy> + 'static {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+            let callback: Box_<glib::thread_guard::ThreadGuard<R>> =
                 Box_::from_raw(user_data as *mut _);
-            let callback: P = callback.into_inner();
+            let callback: R = callback.into_inner();
             callback(result);
         }
-        let callback = call_with_unix_fd_list_trampoline::<P>;
+        let callback = call_with_unix_fd_list_trampoline::<R>;
         unsafe {
             ffi::g_dbus_proxy_call_with_unix_fd_list(
                 self.as_ref().to_glib_none().0,
                 method_name.to_glib_none().0,
-                parameters.to_glib_none().0,
+                parameters.into().to_glib_none().0,
                 flags.into_glib(),
                 timeout_msec,
-                fd_list.map(|p| p.as_ref()).to_glib_none().0,
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                fd_list.into().as_ref().map(|p| p.as_ref()).to_glib_none().0,
+                cancellable
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 Some(callback),
                 Box_::into_raw(user_data) as *mut _,
             );
@@ -453,13 +491,13 @@ pub trait DBusProxyExt: IsA<DBusProxy> + 'static {
 
     #[cfg(unix)]
     #[cfg_attr(docsrs, doc(cfg(unix)))]
-    fn call_with_unix_fd_list_future(
+    fn call_with_unix_fd_list_future<'a, P: IsA<UnixFDList> + Clone + 'static>(
         &self,
         method_name: &str,
-        parameters: Option<&glib::Variant>,
+        parameters: impl Into<Option<&'a glib::Variant>>,
         flags: DBusCallFlags,
         timeout_msec: i32,
-        fd_list: Option<&(impl IsA<UnixFDList> + Clone + 'static)>,
+        fd_list: impl Into<Option<&'a P>>,
     ) -> Pin<
         Box_<
             dyn std::future::Future<Output = Result<(glib::Variant, UnixFDList), glib::Error>>
@@ -467,8 +505,8 @@ pub trait DBusProxyExt: IsA<DBusProxy> + 'static {
         >,
     > {
         let method_name = String::from(method_name);
-        let parameters = parameters.map(ToOwned::to_owned);
-        let fd_list = fd_list.map(ToOwned::to_owned);
+        let parameters = parameters.into().map(ToOwned::to_owned);
+        let fd_list = fd_list.into().map(ToOwned::to_owned);
         Box_::pin(crate::GioFuture::new(
             self,
             move |obj, cancellable, send| {
@@ -490,14 +528,14 @@ pub trait DBusProxyExt: IsA<DBusProxy> + 'static {
     #[cfg(unix)]
     #[cfg_attr(docsrs, doc(cfg(unix)))]
     #[doc(alias = "g_dbus_proxy_call_with_unix_fd_list_sync")]
-    fn call_with_unix_fd_list_sync(
+    fn call_with_unix_fd_list_sync<'a, P: IsA<UnixFDList>, Q: IsA<Cancellable>>(
         &self,
         method_name: &str,
-        parameters: Option<&glib::Variant>,
+        parameters: impl Into<Option<&'a glib::Variant>>,
         flags: DBusCallFlags,
         timeout_msec: i32,
-        fd_list: Option<&impl IsA<UnixFDList>>,
-        cancellable: Option<&impl IsA<Cancellable>>,
+        fd_list: impl Into<Option<&'a P>>,
+        cancellable: impl Into<Option<&'a Q>>,
     ) -> Result<(glib::Variant, UnixFDList), glib::Error> {
         unsafe {
             let mut out_fd_list = std::ptr::null_mut();
@@ -505,12 +543,17 @@ pub trait DBusProxyExt: IsA<DBusProxy> + 'static {
             let ret = ffi::g_dbus_proxy_call_with_unix_fd_list_sync(
                 self.as_ref().to_glib_none().0,
                 method_name.to_glib_none().0,
-                parameters.to_glib_none().0,
+                parameters.into().to_glib_none().0,
                 flags.into_glib(),
                 timeout_msec,
-                fd_list.map(|p| p.as_ref()).to_glib_none().0,
+                fd_list.into().as_ref().map(|p| p.as_ref()).to_glib_none().0,
                 &mut out_fd_list,
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                cancellable
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 &mut error,
             );
             if error.is_null() {
@@ -611,12 +654,16 @@ pub trait DBusProxyExt: IsA<DBusProxy> + 'static {
     }
 
     #[doc(alias = "g_dbus_proxy_set_cached_property")]
-    fn set_cached_property(&self, property_name: &str, value: Option<&glib::Variant>) {
+    fn set_cached_property<'a>(
+        &self,
+        property_name: &str,
+        value: impl Into<Option<&'a glib::Variant>>,
+    ) {
         unsafe {
             ffi::g_dbus_proxy_set_cached_property(
                 self.as_ref().to_glib_none().0,
                 property_name.to_glib_none().0,
-                value.to_glib_none().0,
+                value.into().to_glib_none().0,
             );
         }
     }
@@ -629,11 +676,11 @@ pub trait DBusProxyExt: IsA<DBusProxy> + 'static {
     }
 
     #[doc(alias = "g_dbus_proxy_set_interface_info")]
-    fn set_interface_info(&self, info: Option<&DBusInterfaceInfo>) {
+    fn set_interface_info<'a>(&self, info: impl Into<Option<&'a DBusInterfaceInfo>>) {
         unsafe {
             ffi::g_dbus_proxy_set_interface_info(
                 self.as_ref().to_glib_none().0,
-                info.to_glib_none().0,
+                info.into().to_glib_none().0,
             );
         }
     }
@@ -664,8 +711,8 @@ pub trait DBusProxyExt: IsA<DBusProxy> + 'static {
     }
 
     #[doc(alias = "g-interface-info")]
-    fn set_g_interface_info(&self, g_interface_info: Option<&DBusInterfaceInfo>) {
-        ObjectExt::set_property(self.as_ref(), "g-interface-info", g_interface_info)
+    fn set_g_interface_info<'a>(&self, g_interface_info: impl Into<Option<&'a DBusInterfaceInfo>>) {
+        ObjectExt::set_property(self.as_ref(), "g-interface-info", g_interface_info.into())
     }
 
     #[doc(alias = "g-interface-name")]

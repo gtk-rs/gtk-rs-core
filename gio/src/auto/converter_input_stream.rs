@@ -62,19 +62,23 @@ impl ConverterInputStreamBuilder {
         }
     }
 
-    pub fn converter(self, converter: &impl IsA<Converter>) -> Self {
+    pub fn converter<'a, P: IsA<Converter>>(self, converter: impl Into<Option<&'a P>>) -> Self {
         Self {
             builder: self
                 .builder
-                .property("converter", converter.clone().upcast()),
+                .property("converter", converter.into().as_ref().map(|p| p.as_ref())),
         }
     }
 
-    pub fn base_stream(self, base_stream: &impl IsA<InputStream>) -> Self {
+    pub fn base_stream<'a, P: IsA<InputStream>>(
+        self,
+        base_stream: impl Into<Option<&'a P>>,
+    ) -> Self {
         Self {
-            builder: self
-                .builder
-                .property("base-stream", base_stream.clone().upcast()),
+            builder: self.builder.property(
+                "base-stream",
+                base_stream.into().as_ref().map(|p| p.as_ref()),
+            ),
         }
     }
 

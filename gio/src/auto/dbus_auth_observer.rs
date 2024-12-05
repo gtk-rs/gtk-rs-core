@@ -36,16 +36,16 @@ impl DBusAuthObserver {
     }
 
     #[doc(alias = "g_dbus_auth_observer_authorize_authenticated_peer")]
-    pub fn authorize_authenticated_peer(
+    pub fn authorize_authenticated_peer<'a>(
         &self,
         stream: &impl IsA<IOStream>,
-        credentials: Option<&Credentials>,
+        credentials: impl Into<Option<&'a Credentials>>,
     ) -> bool {
         unsafe {
             from_glib(ffi::g_dbus_auth_observer_authorize_authenticated_peer(
                 self.to_glib_none().0,
                 stream.as_ref().to_glib_none().0,
-                credentials.to_glib_none().0,
+                credentials.into().to_glib_none().0,
             ))
         }
     }

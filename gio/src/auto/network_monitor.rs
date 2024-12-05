@@ -32,17 +32,22 @@ impl NetworkMonitor {
 
 pub trait NetworkMonitorExt: IsA<NetworkMonitor> + 'static {
     #[doc(alias = "g_network_monitor_can_reach")]
-    fn can_reach(
+    fn can_reach<'a, P: IsA<Cancellable>>(
         &self,
         connectable: &impl IsA<SocketConnectable>,
-        cancellable: Option<&impl IsA<Cancellable>>,
+        cancellable: impl Into<Option<&'a P>>,
     ) -> Result<(), glib::Error> {
         unsafe {
             let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_network_monitor_can_reach(
                 self.as_ref().to_glib_none().0,
                 connectable.as_ref().to_glib_none().0,
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                cancellable
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 &mut error,
             );
             debug_assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
@@ -55,11 +60,11 @@ pub trait NetworkMonitorExt: IsA<NetworkMonitor> + 'static {
     }
 
     #[doc(alias = "g_network_monitor_can_reach_async")]
-    fn can_reach_async<P: FnOnce(Result<(), glib::Error>) + 'static>(
+    fn can_reach_async<'a, P: IsA<Cancellable>, Q: FnOnce(Result<(), glib::Error>) + 'static>(
         &self,
         connectable: &impl IsA<SocketConnectable>,
-        cancellable: Option<&impl IsA<Cancellable>>,
-        callback: P,
+        cancellable: impl Into<Option<&'a P>>,
+        callback: Q,
     ) {
         let main_context = glib::MainContext::ref_thread_default();
         let is_main_context_owner = main_context.is_owner();
@@ -71,10 +76,10 @@ pub trait NetworkMonitorExt: IsA<NetworkMonitor> + 'static {
             "Async operations only allowed if the thread is owning the MainContext"
         );
 
-        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+        let user_data: Box_<glib::thread_guard::ThreadGuard<Q>> =
             Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn can_reach_async_trampoline<
-            P: FnOnce(Result<(), glib::Error>) + 'static,
+            Q: FnOnce(Result<(), glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -88,17 +93,22 @@ pub trait NetworkMonitorExt: IsA<NetworkMonitor> + 'static {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+            let callback: Box_<glib::thread_guard::ThreadGuard<Q>> =
                 Box_::from_raw(user_data as *mut _);
-            let callback: P = callback.into_inner();
+            let callback: Q = callback.into_inner();
             callback(result);
         }
-        let callback = can_reach_async_trampoline::<P>;
+        let callback = can_reach_async_trampoline::<Q>;
         unsafe {
             ffi::g_network_monitor_can_reach_async(
                 self.as_ref().to_glib_none().0,
                 connectable.as_ref().to_glib_none().0,
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                cancellable
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 Some(callback),
                 Box_::into_raw(user_data) as *mut _,
             );

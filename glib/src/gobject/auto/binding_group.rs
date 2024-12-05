@@ -38,11 +38,11 @@ impl BindingGroup {
 
     #[doc(alias = "g_binding_group_set_source")]
     #[doc(alias = "source")]
-    pub fn set_source(&self, source: Option<&impl IsA<Object>>) {
+    pub fn set_source<'a, P: IsA<Object>>(&self, source: impl Into<Option<&'a P>>) {
         unsafe {
             crate::gobject_ffi::g_binding_group_set_source(
                 self.to_glib_none().0,
-                source.map(|p| p.as_ref()).to_glib_none().0,
+                source.into().as_ref().map(|p| p.as_ref()).to_glib_none().0,
             );
         }
     }

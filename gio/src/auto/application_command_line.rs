@@ -137,7 +137,7 @@ pub trait ApplicationCommandLineExt: IsA<ApplicationCommandLine> + 'static {
     }
 
     //#[doc(alias = "g_application_command_line_print")]
-    //fn print(&self, format: &str, : /*Unknown conversion*//*Unimplemented*/Basic: VarArgs) {
+    //fn print(&self, format: &str, : /*Unimplemented*/Basic: VarArgs) {
     //    unsafe { TODO: call ffi:g_application_command_line_print() }
     //}
 
@@ -154,7 +154,7 @@ pub trait ApplicationCommandLineExt: IsA<ApplicationCommandLine> + 'static {
     }
 
     //#[doc(alias = "g_application_command_line_printerr")]
-    //fn printerr(&self, format: &str, : /*Unknown conversion*//*Unimplemented*/Basic: VarArgs) {
+    //fn printerr(&self, format: &str, : /*Unimplemented*/Basic: VarArgs) {
     //    unsafe { TODO: call ffi:g_application_command_line_printerr() }
     //}
 

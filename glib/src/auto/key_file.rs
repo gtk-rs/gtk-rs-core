@@ -23,17 +23,17 @@ impl KeyFile {
 
     #[doc(alias = "g_key_file_get_comment")]
     #[doc(alias = "get_comment")]
-    pub fn comment(
+    pub fn comment<'a>(
         &self,
-        group_name: Option<&str>,
-        key: Option<&str>,
+        group_name: impl Into<Option<&'a str>>,
+        key: impl Into<Option<&'a str>>,
     ) -> Result<crate::GString, crate::Error> {
         unsafe {
             let mut error = std::ptr::null_mut();
             let ret = ffi::g_key_file_get_comment(
                 self.to_glib_none().0,
-                group_name.to_glib_none().0,
-                key.to_glib_none().0,
+                group_name.into().to_glib_none().0,
+                key.into().to_glib_none().0,
                 &mut error,
             );
             if error.is_null() {
@@ -151,18 +151,18 @@ impl KeyFile {
 
     #[doc(alias = "g_key_file_get_locale_for_key")]
     #[doc(alias = "get_locale_for_key")]
-    pub fn locale_for_key(
+    pub fn locale_for_key<'a>(
         &self,
         group_name: &str,
         key: &str,
-        locale: Option<&str>,
+        locale: impl Into<Option<&'a str>>,
     ) -> Option<crate::GString> {
         unsafe {
             from_glib_full(ffi::g_key_file_get_locale_for_key(
                 self.to_glib_none().0,
                 group_name.to_glib_none().0,
                 key.to_glib_none().0,
-                locale.to_glib_none().0,
+                locale.into().to_glib_none().0,
             ))
         }
     }
@@ -285,17 +285,17 @@ impl KeyFile {
     }
 
     #[doc(alias = "g_key_file_remove_comment")]
-    pub fn remove_comment(
+    pub fn remove_comment<'a>(
         &self,
-        group_name: Option<&str>,
-        key: Option<&str>,
+        group_name: impl Into<Option<&'a str>>,
+        key: impl Into<Option<&'a str>>,
     ) -> Result<(), crate::Error> {
         unsafe {
             let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_key_file_remove_comment(
                 self.to_glib_none().0,
-                group_name.to_glib_none().0,
-                key.to_glib_none().0,
+                group_name.into().to_glib_none().0,
+                key.into().to_glib_none().0,
                 &mut error,
             );
             debug_assert_eq!(is_ok == crate::ffi::GFALSE, !error.is_null());
@@ -362,18 +362,18 @@ impl KeyFile {
     //}
 
     #[doc(alias = "g_key_file_set_comment")]
-    pub fn set_comment(
+    pub fn set_comment<'a>(
         &self,
-        group_name: Option<&str>,
-        key: Option<&str>,
+        group_name: impl Into<Option<&'a str>>,
+        key: impl Into<Option<&'a str>>,
         comment: &str,
     ) -> Result<(), crate::Error> {
         unsafe {
             let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_key_file_set_comment(
                 self.to_glib_none().0,
-                group_name.to_glib_none().0,
-                key.to_glib_none().0,
+                group_name.into().to_glib_none().0,
+                key.into().to_glib_none().0,
                 comment.to_glib_none().0,
                 &mut error,
             );

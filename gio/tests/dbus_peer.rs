@@ -31,7 +31,7 @@ fn test_gdbus_peer_connection() {
 
         let connection = DBusConnection::new_future(
             &socket_connection,
-            Some(&guid),
+            guid.as_str(),
             DBusConnectionFlags::AUTHENTICATION_SERVER
                 .union(DBusConnectionFlags::DELAY_MESSAGE_PROCESSING),
             None,

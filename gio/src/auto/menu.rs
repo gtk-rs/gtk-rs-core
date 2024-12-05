@@ -21,12 +21,16 @@ impl Menu {
     }
 
     #[doc(alias = "g_menu_append")]
-    pub fn append(&self, label: Option<&str>, detailed_action: Option<&str>) {
+    pub fn append<'a>(
+        &self,
+        label: impl Into<Option<&'a str>>,
+        detailed_action: impl Into<Option<&'a str>>,
+    ) {
         unsafe {
             ffi::g_menu_append(
                 self.to_glib_none().0,
-                label.to_glib_none().0,
-                detailed_action.to_glib_none().0,
+                label.into().to_glib_none().0,
+                detailed_action.into().to_glib_none().0,
             );
         }
     }
@@ -39,22 +43,30 @@ impl Menu {
     }
 
     #[doc(alias = "g_menu_append_section")]
-    pub fn append_section(&self, label: Option<&str>, section: &impl IsA<MenuModel>) {
+    pub fn append_section<'a>(
+        &self,
+        label: impl Into<Option<&'a str>>,
+        section: &impl IsA<MenuModel>,
+    ) {
         unsafe {
             ffi::g_menu_append_section(
                 self.to_glib_none().0,
-                label.to_glib_none().0,
+                label.into().to_glib_none().0,
                 section.as_ref().to_glib_none().0,
             );
         }
     }
 
     #[doc(alias = "g_menu_append_submenu")]
-    pub fn append_submenu(&self, label: Option<&str>, submenu: &impl IsA<MenuModel>) {
+    pub fn append_submenu<'a>(
+        &self,
+        label: impl Into<Option<&'a str>>,
+        submenu: &impl IsA<MenuModel>,
+    ) {
         unsafe {
             ffi::g_menu_append_submenu(
                 self.to_glib_none().0,
-                label.to_glib_none().0,
+                label.into().to_glib_none().0,
                 submenu.as_ref().to_glib_none().0,
             );
         }
@@ -68,13 +80,18 @@ impl Menu {
     }
 
     #[doc(alias = "g_menu_insert")]
-    pub fn insert(&self, position: i32, label: Option<&str>, detailed_action: Option<&str>) {
+    pub fn insert<'a>(
+        &self,
+        position: i32,
+        label: impl Into<Option<&'a str>>,
+        detailed_action: impl Into<Option<&'a str>>,
+    ) {
         unsafe {
             ffi::g_menu_insert(
                 self.to_glib_none().0,
                 position,
-                label.to_glib_none().0,
-                detailed_action.to_glib_none().0,
+                label.into().to_glib_none().0,
+                detailed_action.into().to_glib_none().0,
             );
         }
     }
@@ -87,46 +104,50 @@ impl Menu {
     }
 
     #[doc(alias = "g_menu_insert_section")]
-    pub fn insert_section(
+    pub fn insert_section<'a>(
         &self,
         position: i32,
-        label: Option<&str>,
+        label: impl Into<Option<&'a str>>,
         section: &impl IsA<MenuModel>,
     ) {
         unsafe {
             ffi::g_menu_insert_section(
                 self.to_glib_none().0,
                 position,
-                label.to_glib_none().0,
+                label.into().to_glib_none().0,
                 section.as_ref().to_glib_none().0,
             );
         }
     }
 
     #[doc(alias = "g_menu_insert_submenu")]
-    pub fn insert_submenu(
+    pub fn insert_submenu<'a>(
         &self,
         position: i32,
-        label: Option<&str>,
+        label: impl Into<Option<&'a str>>,
         submenu: &impl IsA<MenuModel>,
     ) {
         unsafe {
             ffi::g_menu_insert_submenu(
                 self.to_glib_none().0,
                 position,
-                label.to_glib_none().0,
+                label.into().to_glib_none().0,
                 submenu.as_ref().to_glib_none().0,
             );
         }
     }
 
     #[doc(alias = "g_menu_prepend")]
-    pub fn prepend(&self, label: Option<&str>, detailed_action: Option<&str>) {
+    pub fn prepend<'a>(
+        &self,
+        label: impl Into<Option<&'a str>>,
+        detailed_action: impl Into<Option<&'a str>>,
+    ) {
         unsafe {
             ffi::g_menu_prepend(
                 self.to_glib_none().0,
-                label.to_glib_none().0,
-                detailed_action.to_glib_none().0,
+                label.into().to_glib_none().0,
+                detailed_action.into().to_glib_none().0,
             );
         }
     }
@@ -139,22 +160,30 @@ impl Menu {
     }
 
     #[doc(alias = "g_menu_prepend_section")]
-    pub fn prepend_section(&self, label: Option<&str>, section: &impl IsA<MenuModel>) {
+    pub fn prepend_section<'a>(
+        &self,
+        label: impl Into<Option<&'a str>>,
+        section: &impl IsA<MenuModel>,
+    ) {
         unsafe {
             ffi::g_menu_prepend_section(
                 self.to_glib_none().0,
-                label.to_glib_none().0,
+                label.into().to_glib_none().0,
                 section.as_ref().to_glib_none().0,
             );
         }
     }
 
     #[doc(alias = "g_menu_prepend_submenu")]
-    pub fn prepend_submenu(&self, label: Option<&str>, submenu: &impl IsA<MenuModel>) {
+    pub fn prepend_submenu<'a>(
+        &self,
+        label: impl Into<Option<&'a str>>,
+        submenu: &impl IsA<MenuModel>,
+    ) {
         unsafe {
             ffi::g_menu_prepend_submenu(
                 self.to_glib_none().0,
-                label.to_glib_none().0,
+                label.into().to_glib_none().0,
                 submenu.as_ref().to_glib_none().0,
             );
         }

@@ -68,11 +68,15 @@ impl DataOutputStreamBuilder {
         }
     }
 
-    pub fn base_stream(self, base_stream: &impl IsA<OutputStream>) -> Self {
+    pub fn base_stream<'a, P: IsA<OutputStream>>(
+        self,
+        base_stream: impl Into<Option<&'a P>>,
+    ) -> Self {
         Self {
-            builder: self
-                .builder
-                .property("base-stream", base_stream.clone().upcast()),
+            builder: self.builder.property(
+                "base-stream",
+                base_stream.into().as_ref().map(|p| p.as_ref()),
+            ),
         }
     }
 
@@ -105,17 +109,22 @@ pub trait DataOutputStreamExt: IsA<DataOutputStream> + 'static {
     }
 
     #[doc(alias = "g_data_output_stream_put_byte")]
-    fn put_byte(
+    fn put_byte<'a, P: IsA<Cancellable>>(
         &self,
         data: u8,
-        cancellable: Option<&impl IsA<Cancellable>>,
+        cancellable: impl Into<Option<&'a P>>,
     ) -> Result<(), glib::Error> {
         unsafe {
             let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_data_output_stream_put_byte(
                 self.as_ref().to_glib_none().0,
                 data,
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                cancellable
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 &mut error,
             );
             debug_assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
@@ -128,17 +137,22 @@ pub trait DataOutputStreamExt: IsA<DataOutputStream> + 'static {
     }
 
     #[doc(alias = "g_data_output_stream_put_int16")]
-    fn put_int16(
+    fn put_int16<'a, P: IsA<Cancellable>>(
         &self,
         data: i16,
-        cancellable: Option<&impl IsA<Cancellable>>,
+        cancellable: impl Into<Option<&'a P>>,
     ) -> Result<(), glib::Error> {
         unsafe {
             let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_data_output_stream_put_int16(
                 self.as_ref().to_glib_none().0,
                 data,
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                cancellable
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 &mut error,
             );
             debug_assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
@@ -151,17 +165,22 @@ pub trait DataOutputStreamExt: IsA<DataOutputStream> + 'static {
     }
 
     #[doc(alias = "g_data_output_stream_put_int32")]
-    fn put_int32(
+    fn put_int32<'a, P: IsA<Cancellable>>(
         &self,
         data: i32,
-        cancellable: Option<&impl IsA<Cancellable>>,
+        cancellable: impl Into<Option<&'a P>>,
     ) -> Result<(), glib::Error> {
         unsafe {
             let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_data_output_stream_put_int32(
                 self.as_ref().to_glib_none().0,
                 data,
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                cancellable
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 &mut error,
             );
             debug_assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
@@ -174,17 +193,22 @@ pub trait DataOutputStreamExt: IsA<DataOutputStream> + 'static {
     }
 
     #[doc(alias = "g_data_output_stream_put_int64")]
-    fn put_int64(
+    fn put_int64<'a, P: IsA<Cancellable>>(
         &self,
         data: i64,
-        cancellable: Option<&impl IsA<Cancellable>>,
+        cancellable: impl Into<Option<&'a P>>,
     ) -> Result<(), glib::Error> {
         unsafe {
             let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_data_output_stream_put_int64(
                 self.as_ref().to_glib_none().0,
                 data,
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                cancellable
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 &mut error,
             );
             debug_assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
@@ -197,17 +221,22 @@ pub trait DataOutputStreamExt: IsA<DataOutputStream> + 'static {
     }
 
     #[doc(alias = "g_data_output_stream_put_string")]
-    fn put_string(
+    fn put_string<'a, P: IsA<Cancellable>>(
         &self,
         str: &str,
-        cancellable: Option<&impl IsA<Cancellable>>,
+        cancellable: impl Into<Option<&'a P>>,
     ) -> Result<(), glib::Error> {
         unsafe {
             let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_data_output_stream_put_string(
                 self.as_ref().to_glib_none().0,
                 str.to_glib_none().0,
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                cancellable
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 &mut error,
             );
             debug_assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
@@ -220,17 +249,22 @@ pub trait DataOutputStreamExt: IsA<DataOutputStream> + 'static {
     }
 
     #[doc(alias = "g_data_output_stream_put_uint16")]
-    fn put_uint16(
+    fn put_uint16<'a, P: IsA<Cancellable>>(
         &self,
         data: u16,
-        cancellable: Option<&impl IsA<Cancellable>>,
+        cancellable: impl Into<Option<&'a P>>,
     ) -> Result<(), glib::Error> {
         unsafe {
             let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_data_output_stream_put_uint16(
                 self.as_ref().to_glib_none().0,
                 data,
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                cancellable
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 &mut error,
             );
             debug_assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
@@ -243,17 +277,22 @@ pub trait DataOutputStreamExt: IsA<DataOutputStream> + 'static {
     }
 
     #[doc(alias = "g_data_output_stream_put_uint32")]
-    fn put_uint32(
+    fn put_uint32<'a, P: IsA<Cancellable>>(
         &self,
         data: u32,
-        cancellable: Option<&impl IsA<Cancellable>>,
+        cancellable: impl Into<Option<&'a P>>,
     ) -> Result<(), glib::Error> {
         unsafe {
             let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_data_output_stream_put_uint32(
                 self.as_ref().to_glib_none().0,
                 data,
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                cancellable
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 &mut error,
             );
             debug_assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
@@ -266,17 +305,22 @@ pub trait DataOutputStreamExt: IsA<DataOutputStream> + 'static {
     }
 
     #[doc(alias = "g_data_output_stream_put_uint64")]
-    fn put_uint64(
+    fn put_uint64<'a, P: IsA<Cancellable>>(
         &self,
         data: u64,
-        cancellable: Option<&impl IsA<Cancellable>>,
+        cancellable: impl Into<Option<&'a P>>,
     ) -> Result<(), glib::Error> {
         unsafe {
             let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_data_output_stream_put_uint64(
                 self.as_ref().to_glib_none().0,
                 data,
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                cancellable
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 &mut error,
             );
             debug_assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());

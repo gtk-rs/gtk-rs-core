@@ -20,17 +20,17 @@ impl RemoteActionGroup {
 
 pub trait RemoteActionGroupExt: IsA<RemoteActionGroup> + 'static {
     #[doc(alias = "g_remote_action_group_activate_action_full")]
-    fn activate_action_full(
+    fn activate_action_full<'a>(
         &self,
         action_name: &str,
-        parameter: Option<&glib::Variant>,
+        parameter: impl Into<Option<&'a glib::Variant>>,
         platform_data: &glib::Variant,
     ) {
         unsafe {
             ffi::g_remote_action_group_activate_action_full(
                 self.as_ref().to_glib_none().0,
                 action_name.to_glib_none().0,
-                parameter.to_glib_none().0,
+                parameter.into().to_glib_none().0,
                 platform_data.to_glib_none().0,
             );
         }

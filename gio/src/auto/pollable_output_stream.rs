@@ -38,10 +38,10 @@ pub trait PollableOutputStreamExt: IsA<PollableOutputStream> + 'static {
     }
 
     #[doc(alias = "g_pollable_output_stream_write_nonblocking")]
-    fn write_nonblocking(
+    fn write_nonblocking<'a, P: IsA<Cancellable>>(
         &self,
         buffer: &[u8],
-        cancellable: Option<&impl IsA<Cancellable>>,
+        cancellable: impl Into<Option<&'a P>>,
     ) -> Result<isize, glib::Error> {
         let count = buffer.len() as _;
         unsafe {
@@ -50,7 +50,12 @@ pub trait PollableOutputStreamExt: IsA<PollableOutputStream> + 'static {
                 self.as_ref().to_glib_none().0,
                 buffer.to_glib_none().0,
                 count,
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                cancellable
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 &mut error,
             );
             if error.is_null() {

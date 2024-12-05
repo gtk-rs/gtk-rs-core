@@ -51,17 +51,22 @@ pub trait SocketClientExt: IsA<SocketClient> + 'static {
     }
 
     #[doc(alias = "g_socket_client_connect")]
-    fn connect(
+    fn connect<'a, P: IsA<Cancellable>>(
         &self,
         connectable: &impl IsA<SocketConnectable>,
-        cancellable: Option<&impl IsA<Cancellable>>,
+        cancellable: impl Into<Option<&'a P>>,
     ) -> Result<SocketConnection, glib::Error> {
         unsafe {
             let mut error = std::ptr::null_mut();
             let ret = ffi::g_socket_client_connect(
                 self.as_ref().to_glib_none().0,
                 connectable.as_ref().to_glib_none().0,
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                cancellable
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 &mut error,
             );
             if error.is_null() {
@@ -73,11 +78,15 @@ pub trait SocketClientExt: IsA<SocketClient> + 'static {
     }
 
     #[doc(alias = "g_socket_client_connect_async")]
-    fn connect_async<P: FnOnce(Result<SocketConnection, glib::Error>) + 'static>(
+    fn connect_async<
+        'a,
+        P: IsA<Cancellable>,
+        Q: FnOnce(Result<SocketConnection, glib::Error>) + 'static,
+    >(
         &self,
         connectable: &impl IsA<SocketConnectable>,
-        cancellable: Option<&impl IsA<Cancellable>>,
-        callback: P,
+        cancellable: impl Into<Option<&'a P>>,
+        callback: Q,
     ) {
         let main_context = glib::MainContext::ref_thread_default();
         let is_main_context_owner = main_context.is_owner();
@@ -89,10 +98,10 @@ pub trait SocketClientExt: IsA<SocketClient> + 'static {
             "Async operations only allowed if the thread is owning the MainContext"
         );
 
-        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+        let user_data: Box_<glib::thread_guard::ThreadGuard<Q>> =
             Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn connect_async_trampoline<
-            P: FnOnce(Result<SocketConnection, glib::Error>) + 'static,
+            Q: FnOnce(Result<SocketConnection, glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -106,17 +115,22 @@ pub trait SocketClientExt: IsA<SocketClient> + 'static {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+            let callback: Box_<glib::thread_guard::ThreadGuard<Q>> =
                 Box_::from_raw(user_data as *mut _);
-            let callback: P = callback.into_inner();
+            let callback: Q = callback.into_inner();
             callback(result);
         }
-        let callback = connect_async_trampoline::<P>;
+        let callback = connect_async_trampoline::<Q>;
         unsafe {
             ffi::g_socket_client_connect_async(
                 self.as_ref().to_glib_none().0,
                 connectable.as_ref().to_glib_none().0,
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                cancellable
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 Some(callback),
                 Box_::into_raw(user_data) as *mut _,
             );
@@ -140,11 +154,11 @@ pub trait SocketClientExt: IsA<SocketClient> + 'static {
     }
 
     #[doc(alias = "g_socket_client_connect_to_host")]
-    fn connect_to_host(
+    fn connect_to_host<'a, P: IsA<Cancellable>>(
         &self,
         host_and_port: &str,
         default_port: u16,
-        cancellable: Option<&impl IsA<Cancellable>>,
+        cancellable: impl Into<Option<&'a P>>,
     ) -> Result<SocketConnection, glib::Error> {
         unsafe {
             let mut error = std::ptr::null_mut();
@@ -152,7 +166,12 @@ pub trait SocketClientExt: IsA<SocketClient> + 'static {
                 self.as_ref().to_glib_none().0,
                 host_and_port.to_glib_none().0,
                 default_port,
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                cancellable
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 &mut error,
             );
             if error.is_null() {
@@ -164,12 +183,16 @@ pub trait SocketClientExt: IsA<SocketClient> + 'static {
     }
 
     #[doc(alias = "g_socket_client_connect_to_host_async")]
-    fn connect_to_host_async<P: FnOnce(Result<SocketConnection, glib::Error>) + 'static>(
+    fn connect_to_host_async<
+        'a,
+        P: IsA<Cancellable>,
+        Q: FnOnce(Result<SocketConnection, glib::Error>) + 'static,
+    >(
         &self,
         host_and_port: &str,
         default_port: u16,
-        cancellable: Option<&impl IsA<Cancellable>>,
-        callback: P,
+        cancellable: impl Into<Option<&'a P>>,
+        callback: Q,
     ) {
         let main_context = glib::MainContext::ref_thread_default();
         let is_main_context_owner = main_context.is_owner();
@@ -181,10 +204,10 @@ pub trait SocketClientExt: IsA<SocketClient> + 'static {
             "Async operations only allowed if the thread is owning the MainContext"
         );
 
-        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+        let user_data: Box_<glib::thread_guard::ThreadGuard<Q>> =
             Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn connect_to_host_async_trampoline<
-            P: FnOnce(Result<SocketConnection, glib::Error>) + 'static,
+            Q: FnOnce(Result<SocketConnection, glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -201,18 +224,23 @@ pub trait SocketClientExt: IsA<SocketClient> + 'static {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+            let callback: Box_<glib::thread_guard::ThreadGuard<Q>> =
                 Box_::from_raw(user_data as *mut _);
-            let callback: P = callback.into_inner();
+            let callback: Q = callback.into_inner();
             callback(result);
         }
-        let callback = connect_to_host_async_trampoline::<P>;
+        let callback = connect_to_host_async_trampoline::<Q>;
         unsafe {
             ffi::g_socket_client_connect_to_host_async(
                 self.as_ref().to_glib_none().0,
                 host_and_port.to_glib_none().0,
                 default_port,
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                cancellable
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 Some(callback),
                 Box_::into_raw(user_data) as *mut _,
             );
@@ -242,11 +270,11 @@ pub trait SocketClientExt: IsA<SocketClient> + 'static {
     }
 
     #[doc(alias = "g_socket_client_connect_to_service")]
-    fn connect_to_service(
+    fn connect_to_service<'a, P: IsA<Cancellable>>(
         &self,
         domain: &str,
         service: &str,
-        cancellable: Option<&impl IsA<Cancellable>>,
+        cancellable: impl Into<Option<&'a P>>,
     ) -> Result<SocketConnection, glib::Error> {
         unsafe {
             let mut error = std::ptr::null_mut();
@@ -254,7 +282,12 @@ pub trait SocketClientExt: IsA<SocketClient> + 'static {
                 self.as_ref().to_glib_none().0,
                 domain.to_glib_none().0,
                 service.to_glib_none().0,
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                cancellable
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 &mut error,
             );
             if error.is_null() {
@@ -266,12 +299,16 @@ pub trait SocketClientExt: IsA<SocketClient> + 'static {
     }
 
     #[doc(alias = "g_socket_client_connect_to_service_async")]
-    fn connect_to_service_async<P: FnOnce(Result<SocketConnection, glib::Error>) + 'static>(
+    fn connect_to_service_async<
+        'a,
+        P: IsA<Cancellable>,
+        Q: FnOnce(Result<SocketConnection, glib::Error>) + 'static,
+    >(
         &self,
         domain: &str,
         service: &str,
-        cancellable: Option<&impl IsA<Cancellable>>,
-        callback: P,
+        cancellable: impl Into<Option<&'a P>>,
+        callback: Q,
     ) {
         let main_context = glib::MainContext::ref_thread_default();
         let is_main_context_owner = main_context.is_owner();
@@ -283,10 +320,10 @@ pub trait SocketClientExt: IsA<SocketClient> + 'static {
             "Async operations only allowed if the thread is owning the MainContext"
         );
 
-        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+        let user_data: Box_<glib::thread_guard::ThreadGuard<Q>> =
             Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn connect_to_service_async_trampoline<
-            P: FnOnce(Result<SocketConnection, glib::Error>) + 'static,
+            Q: FnOnce(Result<SocketConnection, glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -303,18 +340,23 @@ pub trait SocketClientExt: IsA<SocketClient> + 'static {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+            let callback: Box_<glib::thread_guard::ThreadGuard<Q>> =
                 Box_::from_raw(user_data as *mut _);
-            let callback: P = callback.into_inner();
+            let callback: Q = callback.into_inner();
             callback(result);
         }
-        let callback = connect_to_service_async_trampoline::<P>;
+        let callback = connect_to_service_async_trampoline::<Q>;
         unsafe {
             ffi::g_socket_client_connect_to_service_async(
                 self.as_ref().to_glib_none().0,
                 domain.to_glib_none().0,
                 service.to_glib_none().0,
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                cancellable
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 Some(callback),
                 Box_::into_raw(user_data) as *mut _,
             );
@@ -340,11 +382,11 @@ pub trait SocketClientExt: IsA<SocketClient> + 'static {
     }
 
     #[doc(alias = "g_socket_client_connect_to_uri")]
-    fn connect_to_uri(
+    fn connect_to_uri<'a, P: IsA<Cancellable>>(
         &self,
         uri: &str,
         default_port: u16,
-        cancellable: Option<&impl IsA<Cancellable>>,
+        cancellable: impl Into<Option<&'a P>>,
     ) -> Result<SocketConnection, glib::Error> {
         unsafe {
             let mut error = std::ptr::null_mut();
@@ -352,7 +394,12 @@ pub trait SocketClientExt: IsA<SocketClient> + 'static {
                 self.as_ref().to_glib_none().0,
                 uri.to_glib_none().0,
                 default_port,
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                cancellable
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 &mut error,
             );
             if error.is_null() {
@@ -364,12 +411,16 @@ pub trait SocketClientExt: IsA<SocketClient> + 'static {
     }
 
     #[doc(alias = "g_socket_client_connect_to_uri_async")]
-    fn connect_to_uri_async<P: FnOnce(Result<SocketConnection, glib::Error>) + 'static>(
+    fn connect_to_uri_async<
+        'a,
+        P: IsA<Cancellable>,
+        Q: FnOnce(Result<SocketConnection, glib::Error>) + 'static,
+    >(
         &self,
         uri: &str,
         default_port: u16,
-        cancellable: Option<&impl IsA<Cancellable>>,
-        callback: P,
+        cancellable: impl Into<Option<&'a P>>,
+        callback: Q,
     ) {
         let main_context = glib::MainContext::ref_thread_default();
         let is_main_context_owner = main_context.is_owner();
@@ -381,10 +432,10 @@ pub trait SocketClientExt: IsA<SocketClient> + 'static {
             "Async operations only allowed if the thread is owning the MainContext"
         );
 
-        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+        let user_data: Box_<glib::thread_guard::ThreadGuard<Q>> =
             Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn connect_to_uri_async_trampoline<
-            P: FnOnce(Result<SocketConnection, glib::Error>) + 'static,
+            Q: FnOnce(Result<SocketConnection, glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -401,18 +452,23 @@ pub trait SocketClientExt: IsA<SocketClient> + 'static {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+            let callback: Box_<glib::thread_guard::ThreadGuard<Q>> =
                 Box_::from_raw(user_data as *mut _);
-            let callback: P = callback.into_inner();
+            let callback: Q = callback.into_inner();
             callback(result);
         }
-        let callback = connect_to_uri_async_trampoline::<P>;
+        let callback = connect_to_uri_async_trampoline::<Q>;
         unsafe {
             ffi::g_socket_client_connect_to_uri_async(
                 self.as_ref().to_glib_none().0,
                 uri.to_glib_none().0,
                 default_port,
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                cancellable
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
                 Some(callback),
                 Box_::into_raw(user_data) as *mut _,
             );
@@ -546,11 +602,11 @@ pub trait SocketClientExt: IsA<SocketClient> + 'static {
 
     #[doc(alias = "g_socket_client_set_local_address")]
     #[doc(alias = "local-address")]
-    fn set_local_address(&self, address: Option<&impl IsA<SocketAddress>>) {
+    fn set_local_address<'a, P: IsA<SocketAddress>>(&self, address: impl Into<Option<&'a P>>) {
         unsafe {
             ffi::g_socket_client_set_local_address(
                 self.as_ref().to_glib_none().0,
-                address.map(|p| p.as_ref()).to_glib_none().0,
+                address.into().as_ref().map(|p| p.as_ref()).to_glib_none().0,
             );
         }
     }
@@ -565,11 +621,19 @@ pub trait SocketClientExt: IsA<SocketClient> + 'static {
 
     #[doc(alias = "g_socket_client_set_proxy_resolver")]
     #[doc(alias = "proxy-resolver")]
-    fn set_proxy_resolver(&self, proxy_resolver: Option<&impl IsA<ProxyResolver>>) {
+    fn set_proxy_resolver<'a, P: IsA<ProxyResolver>>(
+        &self,
+        proxy_resolver: impl Into<Option<&'a P>>,
+    ) {
         unsafe {
             ffi::g_socket_client_set_proxy_resolver(
                 self.as_ref().to_glib_none().0,
-                proxy_resolver.map(|p| p.as_ref()).to_glib_none().0,
+                proxy_resolver
+                    .into()
+                    .as_ref()
+                    .map(|p| p.as_ref())
+                    .to_glib_none()
+                    .0,
             );
         }
     }
