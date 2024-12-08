@@ -21,6 +21,7 @@ mod async_initable;
 mod cancellable;
 mod cancellable_future;
 pub use crate::cancellable_future::{CancellableFuture, Cancelled};
+mod content_type;
 mod converter;
 mod credentials;
 mod data_input_stream;
@@ -115,6 +116,7 @@ pub mod builders {
 
 pub mod functions {
     pub use super::auto::functions::*;
+    pub use super::content_type::content_type_guess;
 }
 
 pub use crate::auto::*;
