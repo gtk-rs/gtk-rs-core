@@ -413,7 +413,7 @@
 // rustdoc-stripper-ignore-next
 </span><span class="doccomment">//! Module for registering shared types for Rust types.
 
-</span><span class="kw">use crate</span>::{<a href="../../../glib_sys/index.html">ffi</a>, <a href="../../../gobject_sys/index.html">gobject_ffi</a>, <a href="../lib.rs.html#159">prelude</a>::<span class="kw-2">*</span>, <a href="../lib.rs.html#164">translate</a>::<span class="kw-2">*</span>};
+</span><span class="kw">use crate</span>::{ffi, <a href="../../../gobject_sys/index.html">gobject_ffi</a>, <a href="../lib.rs.html#159">prelude</a>::<span class="kw-2">*</span>, <a href="../lib.rs.html#164">translate</a>::<span class="kw-2">*</span>};
 
 <span class="kw">pub unsafe trait </span><a href="../../../glib/subclass/shared/trait.RefCounted.html">RefCounted</a>: <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">Clone</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sized.html">Sized</a> + <span class="lifetime">'static </span>{
     <span class="comment">// rustdoc-stripper-ignore-next
@@ -550,11 +550,11 @@
 </span><span class="kw">pub fn </span><a href="../../../glib/subclass/shared/fn.register_shared_type.html">register_shared_type</a>&lt;T: <a href="#96-129">SharedType</a>&gt;() -&gt; <a href="../types.rs.html#22"><span class="kw">crate</span>::Type</a> {
     <span class="kw">unsafe </span>{
         <span class="kw">use </span><a href="https://doc.rust-lang.org/nightly/alloc/ffi/c_str/struct.CString.html">std::ffi::CString</a>;
-        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>shared_ref&lt;T: <a href="#96-129">SharedType</a>&gt;(v: <a href="../../../glib_sys/type.gpointer.html">ffi::gpointer</a>) -&gt; <a href="../../../glib_sys/type.gpointer.html">ffi::gpointer</a> {
+        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>shared_ref&lt;T: <a href="#96-129">SharedType</a>&gt;(v: ffi::gpointer) -&gt; ffi::gpointer {
             <a href="#15">T::RefCountedType::ref_</a>(<a href="#143">v</a> <span class="kw">as </span><span class="kw-2">*const </span>&lt;T::RefCountedType <span class="kw">as </span>RefCounted&gt;::InnerType)
-                <span class="kw">as </span><a href="../../../glib_sys/type.gpointer.html">ffi::gpointer</a>
+                <span class="kw">as </span>ffi::gpointer
         }
-        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>shared_unref&lt;T: <a href="#96-129">SharedType</a>&gt;(v: <a href="../../../glib_sys/type.gpointer.html">ffi::gpointer</a>) {
+        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>shared_unref&lt;T: <a href="#96-129">SharedType</a>&gt;(v: ffi::gpointer) {
             <span class="kw">let _ </span>= <a href="#27">T::RefCountedType::from_raw</a>(
                 <a href="#147">v</a> <span class="kw">as </span><span class="kw-2">*const </span>&lt;T::RefCountedType <span class="kw">as </span>RefCounted&gt;::InnerType,
             );
