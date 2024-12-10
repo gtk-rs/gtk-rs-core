@@ -28,8 +28,8 @@ mod dbus;
 pub use self::dbus::*;
 mod dbus_connection;
 pub use self::dbus_connection::{
-    ActionGroupExportId, FilterId, MenuModelExportId, RegistrationId, SignalSubscriptionId,
-    WatcherId,
+    ActionGroupExportId, FilterId, MenuModelExportId, RegistrationBuilder, RegistrationId,
+    SignalSubscriptionId, WatcherId,
 };
 mod dbus_message;
 mod dbus_method_invocation;
