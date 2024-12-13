@@ -218,7 +218,19 @@ impl<'a> RegistrationBuilder<'a> {
                             let interface_name = args[3].get::<Option<&str>>().unwrap();
                             let method_name = args[4].get::<&str>().unwrap();
                             let parameters = args[5].get::<glib::Variant>().unwrap();
-                            let invocation = args[6].get::<DBusMethodInvocation>().unwrap();
+
+                            // Work around GLib memory leak: Assume that the invocation is passed
+                            // as `transfer full` into the closure.
+                            //
+                            // This workaround is not going to break with future versions of
+                            // GLib as fixing the bug was considered a breaking API change.
+                            //
+                            // See https://gitlab.gnome.org/GNOME/glib/-/merge_requests/4427
+                            let invocation = from_glib_full(glib::gobject_ffi::g_value_get_object(
+                                args[6].as_ptr(),
+                            )
+                                as *mut ffi::GDBusMethodInvocation);
+
                             f(
                                 conn,
                                 sender,
