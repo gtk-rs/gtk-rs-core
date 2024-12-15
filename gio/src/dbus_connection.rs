@@ -11,7 +11,7 @@ use glib::{prelude::*, translate::*};
 pub trait DBusMethodCall: Sized {
     fn parse_call(
         obj_path: &str,
-        interface: &str,
+        interface: Option<&str>,
         method: &str,
         params: glib::Variant,
     ) -> Result<Self, glib::Error>;
@@ -46,7 +46,7 @@ impl<'a, T: DBusMethodCall> MethodCallBuilder<'a, T> {
     /// safer interface where the callback returns a result directly.
     pub fn invoke<F>(self, f: F) -> RegistrationBuilder<'a>
     where
-        F: Fn(DBusConnection, &str, T, DBusMethodInvocation) + 'static,
+        F: Fn(DBusConnection, Option<&str>, T, DBusMethodInvocation) + 'static,
     {
         self.registration.method_call(
             move |connection, sender, obj_path, interface, method, params, invocation| {
@@ -74,7 +74,8 @@ impl<'a, T: DBusMethodCall> MethodCallBuilder<'a, T> {
     /// See [`DBusMethodInvocation::return_result`] for details.
     pub fn invoke_and_return<F>(self, f: F) -> RegistrationBuilder<'a>
     where
-        F: Fn(DBusConnection, &str, T) -> Result<Option<glib::Variant>, glib::Error> + 'static,
+        F: Fn(DBusConnection, Option<&str>, T) -> Result<Option<glib::Variant>, glib::Error>
+            + 'static,
     {
         self.invoke(move |connection, sender, call, invocation| {
             invocation.return_result(f(connection, sender, call))
@@ -97,7 +98,7 @@ impl<'a, T: DBusMethodCall> MethodCallBuilder<'a, T> {
     /// See [`DBusMethodInvocation::return_future_local`] for details.
     pub fn invoke_and_return_future_local<F, Fut>(self, f: F) -> RegistrationBuilder<'a>
     where
-        F: Fn(DBusConnection, &str, T) -> Fut + 'static,
+        F: Fn(DBusConnection, Option<&str>, T) -> Fut + 'static,
         Fut: Future<Output = Result<Option<glib::Variant>, glib::Error>> + 'static,
     {
         self.invoke(move |connection, sender, call, invocation| {
@@ -128,18 +129,37 @@ pub struct RegistrationBuilder<'a> {
     interface_info: &'a DBusInterfaceInfo,
     #[allow(clippy::type_complexity)]
     method_call: Option<
-        Box_<dyn Fn(DBusConnection, &str, &str, &str, &str, glib::Variant, DBusMethodInvocation)>,
+        Box_<
+            dyn Fn(
+                DBusConnection,
+                Option<&str>,
+                &str,
+                Option<&str>,
+                &str,
+                glib::Variant,
+                DBusMethodInvocation,
+            ),
+        >,
     >,
     #[allow(clippy::type_complexity)]
-    get_property: Option<Box_<dyn Fn(DBusConnection, &str, &str, &str, &str) -> glib::Variant>>,
+    get_property:
+        Option<Box_<dyn Fn(DBusConnection, Option<&str>, &str, &str, &str) -> glib::Variant>>,
     #[allow(clippy::type_complexity)]
     set_property:
-        Option<Box_<dyn Fn(DBusConnection, &str, &str, &str, &str, glib::Variant) -> bool>>,
+        Option<Box_<dyn Fn(DBusConnection, Option<&str>, &str, &str, &str, glib::Variant) -> bool>>,
 }
 
 impl<'a> RegistrationBuilder<'a> {
     pub fn method_call<
-        F: Fn(DBusConnection, &str, &str, &str, &str, glib::Variant, DBusMethodInvocation) + 'static,
+        F: Fn(
+                DBusConnection,
+                Option<&str>,
+                &str,
+                Option<&str>,
+                &str,
+                glib::Variant,
+                DBusMethodInvocation,
+            ) + 'static,
     >(
         mut self,
         f: F,
@@ -162,7 +182,9 @@ impl<'a> RegistrationBuilder<'a> {
     }
 
     #[doc(alias = "get_property")]
-    pub fn property<F: Fn(DBusConnection, &str, &str, &str, &str) -> glib::Variant + 'static>(
+    pub fn property<
+        F: Fn(DBusConnection, Option<&str>, &str, &str, &str) -> glib::Variant + 'static,
+    >(
         mut self,
         f: F,
     ) -> Self {
@@ -171,7 +193,7 @@ impl<'a> RegistrationBuilder<'a> {
     }
 
     pub fn set_property<
-        F: Fn(DBusConnection, &str, &str, &str, &str, glib::Variant) -> bool + 'static,
+        F: Fn(DBusConnection, Option<&str>, &str, &str, &str, glib::Variant) -> bool + 'static,
     >(
         mut self,
         f: F,
@@ -191,12 +213,24 @@ impl<'a> RegistrationBuilder<'a> {
                     .map(|f| {
                         glib::Closure::new_local(move |args| {
                             let conn = args[0].get::<DBusConnection>().unwrap();
-                            let sender = args[1].get::<&str>().unwrap();
+                            let sender = args[1].get::<Option<&str>>().unwrap();
                             let object_path = args[2].get::<&str>().unwrap();
-                            let interface_name = args[3].get::<&str>().unwrap();
+                            let interface_name = args[3].get::<Option<&str>>().unwrap();
                             let method_name = args[4].get::<&str>().unwrap();
                             let parameters = args[5].get::<glib::Variant>().unwrap();
-                            let invocation = args[6].get::<DBusMethodInvocation>().unwrap();
+
+                            // Work around GLib memory leak: Assume that the invocation is passed
+                            // as `transfer full` into the closure.
+                            //
+                            // This workaround is not going to break with future versions of
+                            // GLib as fixing the bug was considered a breaking API change.
+                            //
+                            // See https://gitlab.gnome.org/GNOME/glib/-/merge_requests/4427
+                            let invocation = from_glib_full(glib::gobject_ffi::g_value_get_object(
+                                args[6].as_ptr(),
+                            )
+                                as *mut ffi::GDBusMethodInvocation);
+
                             f(
                                 conn,
                                 sender,
@@ -215,7 +249,7 @@ impl<'a> RegistrationBuilder<'a> {
                     .map(|f| {
                         glib::Closure::new_local(move |args| {
                             let conn = args[0].get::<DBusConnection>().unwrap();
-                            let sender = args[1].get::<&str>().unwrap();
+                            let sender = args[1].get::<Option<&str>>().unwrap();
                             let object_path = args[2].get::<&str>().unwrap();
                             let interface_name = args[3].get::<&str>().unwrap();
                             let property_name = args[4].get::<&str>().unwrap();
@@ -237,7 +271,7 @@ impl<'a> RegistrationBuilder<'a> {
                     .map(|f| {
                         glib::Closure::new_local(move |args| {
                             let conn = args[0].get::<DBusConnection>().unwrap();
-                            let sender = args[1].get::<&str>().unwrap();
+                            let sender = args[1].get::<Option<&str>>().unwrap();
                             let object_path = args[2].get::<&str>().unwrap();
                             let interface_name = args[3].get::<&str>().unwrap();
                             let property_name = args[4].get::<&str>().unwrap();

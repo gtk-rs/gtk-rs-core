@@ -404,7 +404,7 @@ mod test {
                             .param_types([String::static_type()])
                             .return_type::<String>()
                             .action()
-                            .class_handler(|_, args| {
+                            .class_handler(|args| {
                                 let obj = args[0]
                                     .get::<super::SimpleObject>()
                                     .expect("Failed to get Object from args[0]");
@@ -422,9 +422,32 @@ mod test {
                             .build(),
                         super::Signal::builder("create-string")
                             .return_type::<String>()
+                            .accumulator(|_hint, acc, val| {
+                                // join all strings from signal handlers by newline
+                                let mut acc = acc
+                                    .get_owned::<Option<String>>()
+                                    .unwrap()
+                                    .map(|mut acc| {
+                                        acc.push('\n');
+                                        acc
+                                    })
+                                    .unwrap_or_default();
+                                acc.push_str(val.get::<&str>().unwrap());
+                                std::ops::ControlFlow::Continue(acc.to_value())
+                            })
                             .build(),
                         super::Signal::builder("create-child-object")
                             .return_type::<super::ChildObject>()
+                            .build(),
+                        super::Signal::builder("return-string")
+                            .return_type::<String>()
+                            .action()
+                            .class_handler(|args| {
+                                let _obj = args[0]
+                                    .get::<super::SimpleObject>()
+                                    .expect("Failed to get Object from args[0]");
+                                Some("base".to_value())
+                            })
                             .build(),
                     ]
                 })
@@ -487,6 +510,33 @@ mod test {
             }
         }
 
+        #[derive(Default)]
+        pub struct SimpleSubObject;
+
+        #[glib::object_subclass]
+        impl ObjectSubclass for SimpleSubObject {
+            const NAME: &'static str = "SimpleSubObject";
+            type Type = super::SimpleSubObject;
+            type ParentType = super::SimpleObject;
+
+            fn class_init(class: &mut Self::Class) {
+                class.override_signal_class_handler("return-string", |token, args| {
+                    let obj = args[0]
+                        .get::<super::SimpleSubObject>()
+                        .expect("Failed to get Object from args[0]");
+
+                    let res = obj.imp().signal_chain_from_overridden(token, args);
+                    assert_eq!(res.unwrap().get::<&str>().unwrap(), "base");
+
+                    Some("sub".to_value())
+                });
+            }
+        }
+
+        impl ObjectImpl for SimpleSubObject {}
+
+        impl SimpleObjectImpl for SimpleSubObject {}
+
         #[derive(Clone, Copy)]
         #[repr(C)]
         pub struct DummyInterface {
@@ -512,6 +562,14 @@ mod test {
 
     wrapper! {
         pub struct SimpleObject(ObjectSubclass<imp::SimpleObject>);
+    }
+
+    pub trait SimpleObjectImpl: ObjectImpl {}
+
+    unsafe impl<Obj: SimpleObjectImpl> IsSubclassable<Obj> for SimpleObject {}
+
+    wrapper! {
+        pub struct SimpleSubObject(ObjectSubclass<imp::SimpleSubObject>) @extends SimpleObject;
     }
 
     wrapper! {
@@ -541,6 +599,14 @@ mod test {
         let weak = obj.downgrade();
         drop(obj);
         assert!(weak.upgrade().is_none());
+    }
+
+    #[test]
+    fn test_sub_create() {
+        let obj = Object::builder::<SimpleSubObject>().build();
+        assert!(obj.type_().is_a(SimpleObject::static_type()));
+        assert_eq!(obj.type_(), SimpleSubObject::static_type());
+        assert!(obj.property::<bool>("constructed"));
     }
 
     #[test]
@@ -829,6 +895,8 @@ mod test {
             "old-name"
         );
         assert!(name_changed_triggered.load(Ordering::Relaxed));
+
+        assert_eq!(obj.emit_by_name::<String>("return-string", &[]), "base");
     }
 
     #[test]
@@ -836,13 +904,24 @@ mod test {
         let obj = Object::with_type(SimpleObject::static_type());
 
         obj.connect("create-string", false, move |_args| {
-            Some("return value".to_value())
+            Some("return value 1".to_value())
+        });
+
+        obj.connect("create-string", false, move |_args| {
+            Some("return value 2".to_value())
         });
 
         let signal_id = imp::SimpleObject::signals()[2].signal_id();
 
         let value = obj.emit::<String>(signal_id, &[]);
-        assert_eq!(value, "return value");
+        assert_eq!(value, "return value 1\nreturn value 2");
+    }
+
+    #[test]
+    fn test_signal_override() {
+        let obj = Object::builder::<SimpleSubObject>().build();
+
+        assert_eq!(obj.emit_by_name::<String>("return-string", &[]), "sub");
     }
 
     #[test]

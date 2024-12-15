@@ -96,6 +96,16 @@ pub static STR_DELIMITERS: &GStr =
 #[doc(alias = "G_TEST_OPTION_ISOLATE_DIRS")]
 pub static TEST_OPTION_ISOLATE_DIRS: &GStr =
     unsafe { GStr::from_utf8_with_nul_unchecked(ffi::G_TEST_OPTION_ISOLATE_DIRS) };
+#[cfg(feature = "v2_84")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_84")))]
+#[doc(alias = "G_TEST_OPTION_NONFATAL_ASSERTIONS")]
+pub static TEST_OPTION_NONFATAL_ASSERTIONS: &GStr =
+    unsafe { GStr::from_utf8_with_nul_unchecked(ffi::G_TEST_OPTION_NONFATAL_ASSERTIONS) };
+#[cfg(feature = "v2_84")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_84")))]
+#[doc(alias = "G_TEST_OPTION_NO_PRGNAME")]
+pub static TEST_OPTION_NO_PRGNAME: &GStr =
+    unsafe { GStr::from_utf8_with_nul_unchecked(ffi::G_TEST_OPTION_NO_PRGNAME) };
 #[doc(alias = "G_URI_RESERVED_CHARS_GENERIC_DELIMITERS")]
 pub static URI_RESERVED_CHARS_GENERIC_DELIMITERS: &GStr =
     unsafe { GStr::from_utf8_with_nul_unchecked(ffi::G_URI_RESERVED_CHARS_GENERIC_DELIMITERS) };

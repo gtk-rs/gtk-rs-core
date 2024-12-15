@@ -7,7 +7,7 @@ fn init() {
     // Make sure that all tests below are running with the system
     // locale and not the "C" locale.
     ONCE.call_once(|| unsafe {
-        libc::setlocale(libc::LC_ALL, b"\0".as_ptr() as *const _);
+        libc::setlocale(libc::LC_ALL, c"".as_ptr() as *const _);
     });
 }
 

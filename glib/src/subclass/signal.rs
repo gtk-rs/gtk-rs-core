@@ -1,6 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use std::{fmt, num::NonZeroU32, ptr, sync::Mutex};
+use std::{fmt, num::NonZeroU32, ops::ControlFlow, ptr, sync::Mutex};
 
 use crate::{
     ffi, gobject_ffi, prelude::*, translate::*, utils::is_canonical_pspec_name, Closure,
@@ -16,11 +16,14 @@ pub struct SignalBuilder {
     flags: SignalFlags,
     param_types: Vec<SignalType>,
     return_type: SignalType,
-    class_handler: Option<
-        Box<dyn Fn(&SignalClassHandlerToken, &[Value]) -> Option<Value> + Send + Sync + 'static>,
-    >,
+    class_handler: Option<Box<dyn Fn(&[Value]) -> Option<Value> + Send + Sync + 'static>>,
     accumulator: Option<
-        Box<dyn Fn(&SignalInvocationHint, &mut Value, &Value) -> bool + Send + Sync + 'static>,
+        Box<
+            dyn Fn(&SignalInvocationHint, Value, &Value) -> ControlFlow<Value, Value>
+                + Send
+                + Sync
+                + 'static,
+        >,
     >,
 }
 
@@ -352,13 +355,14 @@ impl IntoGlib for SignalType {
 #[allow(clippy::type_complexity)]
 enum SignalRegistration {
     Unregistered {
-        class_handler: Option<
-            Box<
-                dyn Fn(&SignalClassHandlerToken, &[Value]) -> Option<Value> + Send + Sync + 'static,
-            >,
-        >,
+        class_handler: Option<Box<dyn Fn(&[Value]) -> Option<Value> + Send + Sync + 'static>>,
         accumulator: Option<
-            Box<dyn Fn(&SignalInvocationHint, &mut Value, &Value) -> bool + Send + Sync + 'static>,
+            Box<
+                dyn Fn(&SignalInvocationHint, Value, &Value) -> ControlFlow<Value, Value>
+                    + Send
+                    + Sync
+                    + 'static,
+            >,
         >,
     },
     Registered {
@@ -472,9 +476,7 @@ impl SignalBuilder {
 
     // rustdoc-stripper-ignore-next
     /// Class handler for this signal.
-    pub fn class_handler<
-        F: Fn(&SignalClassHandlerToken, &[Value]) -> Option<Value> + Send + Sync + 'static,
-    >(
+    pub fn class_handler<F: Fn(&[Value]) -> Option<Value> + Send + Sync + 'static>(
         mut self,
         func: F,
     ) -> Self {
@@ -488,7 +490,10 @@ impl SignalBuilder {
     /// This is called if multiple signal handlers are connected to the signal for accumulating the
     /// return values into a single value.
     pub fn accumulator<
-        F: Fn(&SignalInvocationHint, &mut Value, &Value) -> bool + Send + Sync + 'static,
+        F: Fn(&SignalInvocationHint, Value, &Value) -> ControlFlow<Value, Value>
+            + Send
+            + Sync
+            + 'static,
     >(
         mut self,
         func: F,
@@ -610,9 +615,8 @@ impl Signal {
         let return_type = self.return_type;
 
         let class_handler = class_handler.map(|class_handler| {
-            Closure::new(move |values| unsafe {
-                let instance = gobject_ffi::g_value_get_object(values[0].to_glib_none().0);
-                let res = class_handler(&SignalClassHandlerToken(instance as *mut _, return_type.into(), values.as_ptr()), values);
+            Closure::new(move |values| {
+                let res = class_handler(values);
 
                 if return_type == Type::UNIT {
                     if let Some(ref v) = res {
@@ -642,7 +646,7 @@ impl Signal {
             let accumulator = &*(data as *const (
                 SignalType,
                 Box<
-                    dyn Fn(&SignalInvocationHint, &mut Value, &Value) -> bool
+                    dyn Fn(&SignalInvocationHint, Value, &Value) -> ControlFlow<Value, Value>
                         + Send
                         + Sync
                         + 'static,
@@ -660,8 +664,23 @@ impl Signal {
                 handler_return.type_()
             );
 
-            let res = (accumulator.1)(&SignalInvocationHint(*ihint), return_accu, handler_return)
-                .into_glib();
+            let control_flow = (accumulator.1)(
+                &SignalInvocationHint(*ihint),
+                std::mem::replace(return_accu, Value::uninitialized()),
+                handler_return,
+            );
+
+            let res = match control_flow {
+                ControlFlow::Continue(val) => {
+                    *return_accu = val;
+                    true.into_glib()
+                }
+
+                ControlFlow::Break(val) => {
+                    *return_accu = val;
+                    false.into_glib()
+                }
+            };
 
             assert!(
                 return_accu.type_().is_a(return_type.into()),

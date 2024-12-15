@@ -29,6 +29,7 @@ generate = [
     "Gio.DBusAuthObserver",
     "Gio.DBusCallFlags",
     "Gio.DBusCapabilityFlags",
+    "Gio.DBusError",
     "Gio.DBusInterfaceGetPropertyFunc",
     "Gio.DBusInterfaceMethodCallFunc",
     "Gio.DBusInterfaceSetPropertyFunc",
@@ -45,16 +46,23 @@ generate = [
     "Gio.DBusObject",
     "Gio.DBusObjectManager",
     "Gio.DBusObjectManagerClientFlags",
+    "Gio.DBusObjectManagerServer",
+    "Gio.DBusObjectProxy",
+    "Gio.DBusObjectSkeleton",
     "Gio.DBusPropertyInfo",
+    "Gio.DBusPropertyInfoFlags",
     "Gio.DBusSendMessageFlags",
     "Gio.DBusServer",
     "Gio.DBusServerFlags",
     "Gio.DBusSignalFlags",
     "Gio.DBusSignalInfo",
+    "Gio.DBusSubtreeFlags",
     "Gio.DebugController",
     "Gio.Drive",
     "Gio.DriveStartFlags",
     "Gio.DriveStartStopType",
+    "Gio.DtlsClientConnection",
+    "Gio.DtlsServerConnection",
     "Gio.Emblem",
     "Gio.EmblemedIcon",
     "Gio.EmblemOrigin",
@@ -72,8 +80,10 @@ generate = [
     "Gio.FilenameCompleter",
     "Gio.FileOutputStream",
     "Gio.FileQueryInfoFlags",
+    "Gio.FilesystemPreviewType",
     "Gio.FileType",
     "Gio.FilterInputStream",
+    "Gio.IOModuleScopeFlags",
     "Gio.IOStreamSpliceFlags",
     "Gio.LoadableIcon",
     "Gio.MemoryMonitor",
@@ -85,6 +95,8 @@ generate = [
     "Gio.MountOperation",
     "Gio.MountOperationResult",
     "Gio.MountUnmountFlags",
+    "Gio.NativeSocketAddress",
+    "Gio.NativeVolumeMonitor",
     "Gio.NetworkConnectivity",
     "Gio.NetworkMonitor",
     "Gio.NetworkService",
@@ -96,11 +108,13 @@ generate = [
     "Gio.PollableReturn",
     "Gio.PropertyAction",
     "Gio.Proxy",
+    "Gio.ProxyAddressEnumerator",
     "Gio.ProxyResolver",
     "Gio.RemoteActionGroup",
     "Gio.ResolverError",
     "Gio.ResolverNameLookupFlags",
     "Gio.ResourceError",
+    "Gio.ResourceFlags",
     "Gio.ResourceLookupFlags",
     "Gio.Seekable",
     "Gio.SettingsBackend",
@@ -124,10 +138,14 @@ generate = [
     "Gio.SocketType",
     "Gio.SrvTarget",
     "Gio.TcpConnection",
+    "Gio.TcpWrapperConnection",
+    "Gio.TestDBus",
+    "Gio.TestDBusFlags",
     "Gio.TlsAuthenticationMode",
     "Gio.TlsBackend",
     "Gio.TlsCertificate",
     "Gio.TlsCertificateRequestFlags",
+    "Gio.TlsChannelBindingError",
     "Gio.TlsClientConnection",
     "Gio.TlsDatabase",
     "Gio.TlsDatabaseLookupFlags",
@@ -146,6 +164,7 @@ generate = [
 ]
 
 ignore = [
+    "Gio.ThreadedResolver", # Same as sys class, not sure if this needs to be exposed
 ]
 
 manual = [
@@ -155,6 +174,7 @@ manual = [
     "Gio.IOExtension",
     "Gio.IOExtensionPoint",
     "Gio.OutputMessage",
+    "Gio.SocketMsgFlags",
     "Gio.Task",
     "GLib.ByteArray",
     "GLib.Bytes",
@@ -644,7 +664,16 @@ status = "generate"
     name = "return_error_literal"
     # glib::ErrorDomain
     manual = true
-
+    [[object.function]]
+    name = "get_sender"
+        [object.function.return]
+        # https://gitlab.gnome.org/GNOME/glib/-/merge_requests/4414
+        nullable = true
+    [[object.function]]
+    name = "get_interface_name"
+        [object.function.return]
+        # https://gitlab.gnome.org/GNOME/glib/-/merge_requests/4414
+        nullable = true
 
 [[object]]
 name = "Gio.DBusProxy"
@@ -698,6 +727,13 @@ cfg_condition = "all(not(windows),not(target_os = \"macos\"))"
     name = "launch_uris_as_manager_with_fds"
     # has to use RawFd / SOCKET
     manual = true
+
+[[object]]
+name = "Gio.DtlsConnection"
+status = "generate"
+    [[object.function]]
+    name = "get_channel_binding_data"
+    ignore = true # needs manual implementation
 
 [[object]]
 name = "Gio.File"
@@ -1472,6 +1508,11 @@ status = "generate"
     ignore = true
 
 [[object]]
+name = "Gio.UnixConnection"
+status = "generate"
+cfg_condition = "unix"
+
+[[object]]
 name = "Gio.UnixCredentialsMessage"
 status = "generate"
 cfg_condition = "unix"
@@ -1591,6 +1632,11 @@ cfg_condition = "unix"
     name = "for"
     version = "2.0"
     rename = "for_file_path"
+
+[[object]]
+name = "Gio.UnixMountMonitor"
+status = "generate"
+cfg_condition = "unix"
 
 [[object]]
 name = "Gio.UnixMountPoint"
