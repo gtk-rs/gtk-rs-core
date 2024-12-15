@@ -19,11 +19,9 @@ use crate::{ffi, PathDataType};
 ///
 /// ```
 /// # fn main() -> Result<(), cairo::Error> {
-/// use cairo::{Context, Format, ImageSurface};
-///
-/// let surface = ImageSurface::create(Format::ARgb32, 100, 100).unwrap();
-/// let ctx = Context::new(&surface).unwrap();
-///
+/// # use cairo::{Context, Format, ImageSurface};
+/// # let surface = ImageSurface::create(Format::ARgb32, 100, 100)?;
+/// # let ctx = Context::new(&surface)?;
 /// // paint the background black
 /// ctx.paint()?;
 ///
