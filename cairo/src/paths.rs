@@ -122,7 +122,7 @@ pub enum PathSegment {
     /// Draw a straight line from the current point to the given point.
     LineTo((f64, f64)),
 
-    /// Draw a cubic Bezier curve from the current point to the given point, using the two control
+    /// Draw a cubic Bézier curve from the current point to the given point, using the two control
     /// points to define the curve.
     ///
     /// The first and second points are the control points, and the third point is the end point.

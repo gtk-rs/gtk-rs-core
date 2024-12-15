@@ -1076,6 +1076,8 @@ impl Context {
     /// If there is no current point before the call to [`Context::close_path`], this function will
     /// have no effect.
     ///
+    /// This function maps to [`PathSegment::ClosePath`].
+    ///
     /// **Note**: Calls to [`Context::close_path`] now (as of `cairo 1.2.4`) place an explicit
     /// [`MoveTo`] element into the path immediately after the [`ClosePath`] element. This can
     /// simplify path processing in some cases. See below for an example of this case.
@@ -1126,6 +1128,7 @@ impl Context {
     /// # }
     /// ```
     ///
+    /// [`PathSegment::ClosePath`]: crate::PathSegment::ClosePath
     /// [`MoveTo`]: crate::PathSegment::MoveTo
     /// [`ClosePath`]: crate::PathSegment::ClosePath
     #[doc(alias = "cairo_close_path")]
@@ -1143,16 +1146,104 @@ impl Context {
         unsafe { ffi::cairo_arc_negative(self.0.as_ptr(), xc, yc, radius, angle1, angle2) }
     }
 
+    /// Adds a cubic Bézier spline from the current point to position `(x3, y3)` in user-space
+    /// coordinates to the path, using `(x1, y1)` and `(x2, y2)` as the control points. After this
+    /// call, the current point will be `(x3, y3)`.
+    ///
+    /// If there is no current point before the call to [`Context::curve_to`], this function will
+    /// behave as if preceded by a call to [`Context::move_to(&ctx, x1, y1)`].
+    ///
+    /// This function maps to [`PathSegment::CurveTo`].
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # fn main() -> Result<(), cairo::Error> {
+    /// use cairo::{Context, Format, ImageSurface};
+    ///
+    /// let surface = ImageSurface::create(Format::ARgb32, 100, 100).unwrap();
+    /// let ctx = Context::new(&surface).unwrap();
+    ///
+    /// // paint the background black
+    /// ctx.paint()?;
+    ///
+    /// // draw an infinity symbol with a white stroke like how a human would
+    /// ctx.set_source_rgb(1.0, 1.0, 1.0);
+    /// ctx.move_to(20.0, 50.0);
+    /// ctx.curve_to( // left loop, going up
+    ///     20.0, 33.0,
+    ///     40.0, 33.0,
+    ///     50.0, 50.0,
+    /// );
+    /// ctx.curve_to( // right loop, going down
+    ///     60.0, 67.0,
+    ///     80.0, 67.0,
+    ///     80.0, 50.0,
+    /// );
+    /// ctx.curve_to( // right loop, going up
+    ///     80.0, 33.0,
+    ///     60.0, 33.0,
+    ///     50.0, 50.0,
+    /// );
+    /// ctx.curve_to( // left loop, going down
+    ///     40.0, 67.0,
+    ///     20.0, 67.0,
+    ///     20.0, 50.0,
+    /// );
+    ///
+    /// // print the path details before stroking (will clear the path)
+    /// let path = ctx.copy_path()?;
+    /// for element in path.iter() {
+    ///     println!("{:?}", element);
+    /// }
+    ///
+    /// ctx.stroke()?;
+    ///
+    /// // output:
+    /// // MoveTo((20.0, 50.0))
+    /// // CurveTo((20.0, 33.0), (40.0, 33.0), (50.0, 50.0))
+    /// // CurveTo((60.0, 67.0), (80.0, 67.0), (80.0, 50.0))
+    /// // CurveTo((80.0, 33.0), (60.0, 33.0), (50.0, 50.0))
+    /// // CurveTo((40.0, 67.0), (20.0, 67.0), (20.0, 50.0))
+    ///
+    /// # Ok(())
+    /// # }
+    /// ```
+    ///
+    /// [`Context::move_to(&ctx, x1, y1)`]: crate::Context::move_to
+    /// [`PathSegment::CurveTo`]: crate::PathSegment::CurveTo
     #[doc(alias = "cairo_curve_to")]
     pub fn curve_to(&self, x1: f64, y1: f64, x2: f64, y2: f64, x3: f64, y3: f64) {
         unsafe { ffi::cairo_curve_to(self.0.as_ptr(), x1, y1, x2, y2, x3, y3) }
     }
 
+    /// Adds a line segment from the current point to the given point `(x, y)`, to the path. After
+    /// this call, the current point will be `(x, y)`.
+    ///
+    /// If there is no current point before the call to [`Context::line_to`], this function will
+    /// behave as [`Context::move_to`].
+    ///
+    /// This function maps to [`PathSegment::LineTo`].
+    ///
+    /// # Examples
+    ///
+    /// See [`Context::close_path`] for an example of using [`Context::line_to`].
+    ///
+    /// [`PathSegment::LineTo`]: crate::PathSegment::LineTo
     #[doc(alias = "cairo_line_to")]
     pub fn line_to(&self, x: f64, y: f64) {
         unsafe { ffi::cairo_line_to(self.0.as_ptr(), x, y) }
     }
 
+    /// Begins a new sub-path. After this call, the current point will be `(x, y)`.
+    ///
+    /// This function maps to [`PathSegment::MoveTo`].
+    ///
+    /// # Examples
+    ///
+    /// See [`Context::close_path`] for an example of using [`Context::move_to`].
+    ///
+    /// [`PathSegment::MoveTo`]: crate::PathSegment::MoveTo
     #[doc(alias = "cairo_move_to")]
     pub fn move_to(&self, x: f64, y: f64) {
         unsafe { ffi::cairo_move_to(self.0.as_ptr(), x, y) }
