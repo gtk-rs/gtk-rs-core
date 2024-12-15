@@ -1064,6 +1064,70 @@ impl Context {
         unsafe { ffi::cairo_new_sub_path(self.0.as_ptr()) }
     }
 
+    /// Adds a line segment from the current point to the beginning of the current sub-path (the
+    /// most recent point passed to [`Context::move_to`]) to the path, and closes this sub-path.
+    /// After this call, the current point will be at the **joined endpoint of the sub-path**.
+    ///
+    /// The behavior of [`Context::close_path`] is distinct from simply calling
+    /// [`Context::line_to`] with the equivalent coordinate in the case of stroking. When a closed
+    /// sub-path is stroked, there are no caps on the ends of the sub-path. Instead, there is a
+    /// line join connecting the final and initial segments of the sub-path.
+    ///
+    /// If there is no current point before the call to [`Context::close_path`], this function will
+    /// have no effect.
+    ///
+    /// **Note**: Calls to [`Context::close_path`] now (as of `cairo 1.2.4`) place an explicit
+    /// [`MoveTo`] element into the path immediately after the [`ClosePath`] element. This can
+    /// simplify path processing in some cases. See below for an example of this case.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # fn main() -> Result<(), cairo::Error> {
+    /// use cairo::{Context, Format, ImageSurface};
+    ///
+    /// let surface = ImageSurface::create(Format::ARgb32, 100, 100).unwrap();
+    /// let ctx = Context::new(&surface).unwrap();
+    ///
+    /// // paint the background black
+    /// ctx.paint()?;
+    ///
+    /// // draw a 5-pointed star with a white fill, in similar manner to how a human would
+    /// let angle = std::f64::consts::TAU / 2.5;
+    /// ctx.set_source_rgb(1.0, 1.0, 1.0);
+    /// for i in 0..5 {
+    ///     let x = 50.0 + 40.0 * (i as f64 * angle).cos();
+    ///     let y = 50.0 + 40.0 * (i as f64 * angle).sin();
+    ///     if i == 0 {
+    ///         ctx.move_to(x, y);
+    ///     } else {
+    ///         ctx.line_to(x, y);
+    ///     }
+    /// }
+    /// ctx.close_path();
+    ///
+    /// // print the path details before filling (will clear the context path)
+    /// let path = ctx.copy_path()?;
+    /// for element in path.iter() {
+    ///     println!("{:?}", element);
+    /// }
+    ///
+    /// ctx.fill()?;
+    ///
+    /// // output:
+    /// // MoveTo((90.0, 50.0))
+    /// // LineTo((17.640625, 73.51171875))
+    /// // LineTo((62.359375, 11.95703125))
+    /// // LineTo((62.359375, 88.04296875))
+    /// // LineTo((17.640625, 26.48828125))
+    /// // ClosePath
+    /// // MoveTo((90.0, 50.0))
+    /// # Ok(())
+    /// # }
+    /// ```
+    ///
+    /// [`MoveTo`]: crate::PathSegment::MoveTo
+    /// [`ClosePath`]: crate::PathSegment::ClosePath
     #[doc(alias = "cairo_close_path")]
     pub fn close_path(&self) {
         unsafe { ffi::cairo_close_path(self.0.as_ptr()) }
