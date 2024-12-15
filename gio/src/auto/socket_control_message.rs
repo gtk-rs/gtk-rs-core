@@ -2,8 +2,8 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
+use crate::ffi;
 use glib::{prelude::*, translate::*};
-use std::fmt;
 
 glib::wrapper! {
     #[doc(alias = "GSocketControlMessage")]
@@ -31,12 +31,7 @@ impl SocketControlMessage {
     }
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::SocketControlMessage>> Sealed for T {}
-}
-
-pub trait SocketControlMessageExt: IsA<SocketControlMessage> + sealed::Sealed + 'static {
+pub trait SocketControlMessageExt: IsA<SocketControlMessage> + 'static {
     #[doc(alias = "g_socket_control_message_get_level")]
     #[doc(alias = "get_level")]
     fn level(&self) -> i32 {
@@ -57,9 +52,3 @@ pub trait SocketControlMessageExt: IsA<SocketControlMessage> + sealed::Sealed + 
 }
 
 impl<O: IsA<SocketControlMessage>> SocketControlMessageExt for O {}
-
-impl fmt::Display for SocketControlMessage {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("SocketControlMessage")
-    }
-}

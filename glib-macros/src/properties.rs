@@ -332,6 +332,9 @@ impl PropDesc {
             is_construct_only,
         })
     }
+    fn is_overriding(&self) -> bool {
+        self.override_class.is_some() || self.override_interface.is_some()
+    }
 }
 
 fn expand_param_spec(prop: &PropDesc) -> TokenStream2 {
@@ -380,7 +383,7 @@ fn expand_param_spec(prop: &PropDesc) -> TokenStream2 {
 
     let span = prop.attrs_span;
     quote_spanned! {span=>
-        <<#ty as #crate_ident::Property>::Value as #crate_ident::HasParamSpec>
+        <<#ty as #crate_ident::property::Property>::Value as #crate_ident::prelude::HasParamSpec>
             ::param_spec_builder() #builder_call
             #rw_flags
             #(#builder_fields)*
@@ -394,12 +397,11 @@ fn expand_properties_fn(props: &[PropDesc]) -> TokenStream2 {
     let param_specs = props.iter().map(expand_param_spec);
     quote!(
         fn derived_properties() -> &'static [#crate_ident::ParamSpec] {
-            use #crate_ident::ParamSpecBuilderExt;
-            use #crate_ident::once_cell::sync::Lazy;
-            static PROPERTIES: Lazy<[#crate_ident::ParamSpec; #n_props]> = Lazy::new(|| [
+            use #crate_ident::prelude::ParamSpecBuilderExt;
+            static PROPERTIES: ::std::sync::OnceLock<[#crate_ident::ParamSpec; #n_props]> = ::std::sync::OnceLock::new();
+            PROPERTIES.get_or_init(|| [
                 #(#param_specs,)*
-            ]);
-            PROPERTIES.as_ref()
+            ])
         }
     )
 }
@@ -422,18 +424,18 @@ fn expand_property_fn(props: &[PropDesc]) -> TokenStream2 {
             let body = match (member, get) {
                 (_, MaybeCustomFn::Custom(expr)) => quote!(
                     DerivedPropertiesEnum::#enum_ident => {
-                        let value: <#ty as #crate_ident::Property>::Value = (#expr)(&self);
+                        let value: <#ty as #crate_ident::property::Property>::Value = (#expr)(&self);
                         ::std::convert::From::from(value)
                     }
                 ),
                 (None, MaybeCustomFn::Default) => quote!(
                     DerivedPropertiesEnum::#enum_ident =>
-                        #crate_ident::PropertyGet::get(&self.#field_ident, |v| ::std::convert::From::from(v))
+                        #crate_ident::property::PropertyGet::get(&self.#field_ident, |v| ::std::convert::From::from(v))
 
                 ),
                 (Some(member), MaybeCustomFn::Default) => quote!(
                     DerivedPropertiesEnum::#enum_ident =>
-                        #crate_ident::PropertyGet::get(&self.#field_ident, |v| ::std::convert::From::from(&v.#member))
+                        #crate_ident::property::PropertyGet::get(&self.#field_ident, |v| ::std::convert::From::from(&v.#member))
 
                 ),
             };
@@ -474,7 +476,7 @@ fn expand_set_property_fn(props: &[PropDesc]) -> TokenStream2 {
         let expect = quote!(.unwrap_or_else(
             |err| panic!(
                 "Invalid conversion from `glib::value::Value` to `{}` inside setter for property `{}`: {:?}",
-                ::std::any::type_name::<<#ty as #crate_ident::Property>::Value>(), #stripped_name, err
+                ::std::any::type_name::<<#ty as #crate_ident::property::Property>::Value>(), #stripped_name, err
             )
         ));
         set.as_ref().map(|set| {
@@ -486,7 +488,7 @@ fn expand_set_property_fn(props: &[PropDesc]) -> TokenStream2 {
                 ),
                 (None, MaybeCustomFn::Default) => quote!(
                     DerivedPropertiesEnum::#enum_ident => {
-                        #crate_ident::PropertySet::set(
+                        #crate_ident::property::PropertySet::set(
                             &self.#field_ident,
                             #crate_ident::Value::get(value)#expect
                         );
@@ -494,7 +496,7 @@ fn expand_set_property_fn(props: &[PropDesc]) -> TokenStream2 {
                 ),
                 (Some(member), MaybeCustomFn::Default) => quote!(
                     DerivedPropertiesEnum::#enum_ident => {
-                        #crate_ident::PropertySetNested::set_nested(
+                        #crate_ident::property::PropertySetNested::set_nested(
                             &self.#field_ident,
                             move |v| v.#member = #crate_ident::Value::get(value)#expect
                         );
@@ -505,6 +507,7 @@ fn expand_set_property_fn(props: &[PropDesc]) -> TokenStream2 {
         })
     });
     quote!(
+        #[allow(unreachable_code)]
         fn derived_set_property(&self,
             id: usize,
             value: &#crate_ident::Value,
@@ -558,7 +561,7 @@ fn strip_raw_prefix_from_name(name: &LitStr) -> LitStr {
 
 fn expand_impl_getset_properties(props: &[PropDesc]) -> Vec<syn::ImplItemFn> {
     let crate_ident = crate_ident_new();
-    let defs = props.iter().map(|p| {
+    let defs = props.iter().filter(|p| !p.is_overriding()).map(|p| {
         let name = &p.name;
         let stripped_name = strip_raw_prefix_from_name(name);
         let ident = name_to_ident(name);
@@ -568,14 +571,16 @@ fn expand_impl_getset_properties(props: &[PropDesc]) -> Vec<syn::ImplItemFn> {
             let span = p.attrs_span;
             parse_quote_spanned!(span=>
                 #[must_use]
-                pub fn #ident(&self) -> <#ty as #crate_ident::Property>::Value {
-                    self.property::<<#ty as #crate_ident::Property>::Value>(#stripped_name)
-                })
+                #[allow(dead_code)]
+                pub fn #ident(&self) -> <#ty as #crate_ident::property::Property>::Value {
+                    self.property::<<#ty as #crate_ident::property::Property>::Value>(#stripped_name)
+                }
+            )
         });
 
         let setter = (p.set.is_some() && !p.is_construct_only).then(|| {
             let ident = format_ident!("set_{}", ident);
-            let target_ty = quote!(<<#ty as #crate_ident::Property>::Value as #crate_ident::HasParamSpec>::SetValue);
+            let target_ty = quote!(<<#ty as #crate_ident::property::Property>::Value as #crate_ident::prelude::HasParamSpec>::SetValue);
             let set_ty = if p.nullable {
                quote!(::core::option::Option<impl std::borrow::Borrow<#target_ty>>)
             } else {
@@ -591,9 +596,12 @@ fn expand_impl_getset_properties(props: &[PropDesc]) -> Vec<syn::ImplItemFn> {
                 )
             };
             let span = p.attrs_span;
-            parse_quote_spanned!(span=> pub fn #ident<'a>(&self, value: #set_ty) {
-                self.set_property_from_value(#stripped_name, &::std::convert::From::from(#upcasted_borrowed_value))
-            })
+            parse_quote_spanned!(span=>
+                #[allow(dead_code)]
+                pub fn #ident<'a>(&self, value: #set_ty) {
+                    self.set_property_from_value(#stripped_name, &::std::convert::From::from(#upcasted_borrowed_value))
+                }
+            )
         });
         [getter, setter]
     });
@@ -604,34 +612,40 @@ fn expand_impl_getset_properties(props: &[PropDesc]) -> Vec<syn::ImplItemFn> {
 
 fn expand_impl_connect_prop_notify(props: &[PropDesc]) -> Vec<syn::ImplItemFn> {
     let crate_ident = crate_ident_new();
-    let connection_fns = props.iter().map(|p| -> syn::ImplItemFn {
+    let connection_fns = props.iter().filter(|p| !p.is_overriding()).map(|p| -> syn::ImplItemFn {
         let name = &p.name;
         let stripped_name = strip_raw_prefix_from_name(name);
         let fn_ident = format_ident!("connect_{}_notify", name_to_ident(name));
         let span = p.attrs_span;
-        parse_quote_spanned!(span=> pub fn #fn_ident<F: Fn(&Self) + 'static>(&self, f: F) -> #crate_ident::SignalHandlerId {
-            self.connect_notify_local(::core::option::Option::Some(#stripped_name), move |this, _| {
-                f(this)
-            })
-        })
+        parse_quote_spanned!(span=>
+            #[allow(dead_code)]
+            pub fn #fn_ident<F: Fn(&Self) + 'static>(&self, f: F) -> #crate_ident::SignalHandlerId {
+                self.connect_notify_local(::core::option::Option::Some(#stripped_name), move |this, _| {
+                    f(this)
+                })
+            }
+        )
     });
     connection_fns.collect::<Vec<_>>()
 }
 
-fn expand_impl_notify_prop(props: &[PropDesc]) -> Vec<syn::ImplItemFn> {
+fn expand_impl_notify_prop(wrapper_type: &syn::Path, props: &[PropDesc]) -> Vec<syn::ImplItemFn> {
     let crate_ident = crate_ident_new();
-    let emit_fns = props.iter().map(|p| -> syn::ImplItemFn {
+    let emit_fns = props.iter().filter(|p| !p.is_overriding()).map(|p| -> syn::ImplItemFn {
         let name = strip_raw_prefix_from_name(&p.name);
         let fn_ident = format_ident!("notify_{}", name_to_ident(&name));
         let span = p.attrs_span;
         let enum_ident = name_to_enum_ident(name.value());
-        parse_quote_spanned!(span=> pub fn #fn_ident(&self) {
-            self.notify_by_pspec(
-                &<<Self as #crate_ident::object::ObjectSubclassIs>::Subclass
-                    as #crate_ident::subclass::object::DerivedObjectProperties>::derived_properties()
-                [DerivedPropertiesEnum::#enum_ident as usize]
-            );
-        })
+        parse_quote_spanned!(span=>
+            #[allow(dead_code)]
+            pub fn #fn_ident(&self) {
+                self.notify_by_pspec(
+                    &<<#wrapper_type as #crate_ident::object::ObjectSubclassIs>::Subclass
+                        as #crate_ident::subclass::object::DerivedObjectProperties>::derived_properties()
+                    [DerivedPropertiesEnum::#enum_ident as usize]
+                );
+            }
+        )
     });
     emit_fns.collect::<Vec<_>>()
 }
@@ -654,29 +668,43 @@ fn name_to_enum_ident(name: String) -> syn::Ident {
 }
 
 fn expand_properties_enum(props: &[PropDesc]) -> TokenStream2 {
-    let properties: Vec<syn::Ident> = props
-        .iter()
-        .map(|p| {
-            let name: String = p.name.value();
+    if props.is_empty() {
+        quote! {
+            #[derive(Debug, Copy, Clone)]
+            enum DerivedPropertiesEnum {}
+            impl std::convert::TryFrom<usize> for DerivedPropertiesEnum {
+                type Error = usize;
 
-            name_to_enum_ident(name)
-        })
-        .collect();
-    let props = properties.iter();
-    let indices = 0..properties.len();
-    quote! {
-        #[repr(usize)]
-        #[derive(Debug, Copy, Clone)]
-        enum DerivedPropertiesEnum {
-            #(#props,)*
+                fn try_from(item: usize) -> ::core::result::Result<Self, <Self as std::convert::TryFrom<usize>>::Error> {
+                    ::core::result::Result::Err(item)
+                }
+            }
         }
-        impl std::convert::TryFrom<usize> for DerivedPropertiesEnum {
-            type Error = usize;
+    } else {
+        let properties: Vec<syn::Ident> = props
+            .iter()
+            .map(|p| {
+                let name: String = p.name.value();
 
-            fn try_from(item: usize) -> ::core::result::Result<Self, <Self as std::convert::TryFrom<usize>>::Error> {
-                match item {
-                    #(#indices => ::core::result::Result::Ok(Self::#properties),)*
-                    _ => ::core::result::Result::Err(item)
+                name_to_enum_ident(name)
+            })
+            .collect();
+        let props = properties.iter();
+        let indices = 0..properties.len();
+        quote! {
+            #[repr(usize)]
+            #[derive(Debug, Copy, Clone)]
+            enum DerivedPropertiesEnum {
+                #(#props,)*
+            }
+            impl std::convert::TryFrom<usize> for DerivedPropertiesEnum {
+                type Error = usize;
+
+                fn try_from(item: usize) -> ::core::result::Result<Self, <Self as std::convert::TryFrom<usize>>::Error> {
+                    match item {
+                        #(#indices => ::core::result::Result::Ok(Self::#properties),)*
+                        _ => ::core::result::Result::Err(item)
+                    }
                 }
             }
         }
@@ -692,7 +720,7 @@ pub fn impl_derive_props(input: PropsMacroInput) -> TokenStream {
     let fn_set_property = expand_set_property_fn(&input.props);
     let getset_properties = expand_impl_getset_properties(&input.props);
     let connect_prop_notify = expand_impl_connect_prop_notify(&input.props);
-    let notify_prop = expand_impl_notify_prop(&input.props);
+    let notify_prop = expand_impl_notify_prop(&wrapper_type, &input.props);
     let properties_enum = expand_properties_enum(&input.props);
 
     let rust_interface = if let Some(ext_trait) = input.ext_trait {
@@ -704,17 +732,7 @@ pub fn impl_derive_props(input: PropsMacroInput) -> TokenStream {
                 wrapper_type.segments.last().unwrap().ident
             )
         };
-        let signatures = getset_properties
-            .iter()
-            .chain(connect_prop_notify.iter())
-            .chain(notify_prop.iter())
-            .map(|item| &item.sig);
-        let trait_def = quote! {
-            pub trait #trait_ident {
-                #(#signatures;)*
-            }
-        };
-        let impls = getset_properties
+        let fns_without_visibility_modifier = getset_properties
             .into_iter()
             .chain(connect_prop_notify)
             .chain(notify_prop)
@@ -723,10 +741,10 @@ pub fn impl_derive_props(input: PropsMacroInput) -> TokenStream {
                 item
             });
         quote! {
-            #trait_def
-            impl #trait_ident for #wrapper_type {
-                #(#impls)*
+            pub trait #trait_ident: #crate_ident::prelude::IsA<#wrapper_type> {
+                #(#fns_without_visibility_modifier)*
             }
+            impl<T: #crate_ident::prelude::IsA<#wrapper_type>> #trait_ident for T {}
         }
     } else {
         quote! {
@@ -740,8 +758,6 @@ pub fn impl_derive_props(input: PropsMacroInput) -> TokenStream {
     };
 
     let expanded = quote! {
-        use #crate_ident::{PropertyGet, PropertySet, ToValue};
-
         #properties_enum
 
         impl #crate_ident::subclass::object::DerivedObjectProperties for #struct_ident {

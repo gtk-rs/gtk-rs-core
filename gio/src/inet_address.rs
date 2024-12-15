@@ -1,10 +1,10 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use std::net::{IpAddr, Ipv4Addr, Ipv6Addr};
+use std::net::IpAddr;
 
 use glib::{prelude::*, translate::*};
 
-use crate::{prelude::*, InetAddress, SocketFamily};
+use crate::{ffi, prelude::*, InetAddress, SocketFamily};
 
 #[derive(Debug)]
 pub enum InetAddressBytes<'a> {
@@ -12,7 +12,7 @@ pub enum InetAddressBytes<'a> {
     V6(&'a [u8; 16]),
 }
 
-impl<'a> InetAddressBytes<'a> {
+impl InetAddressBytes<'_> {
     #[inline]
     fn deref(&self) -> &[u8] {
         use self::InetAddressBytes::*;
@@ -42,12 +42,7 @@ impl InetAddress {
     }
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::InetAddress>> Sealed for T {}
-}
-
-pub trait InetAddressExtManual: sealed::Sealed + IsA<InetAddress> + 'static {
+pub trait InetAddressExtManual: IsA<InetAddress> + 'static {
     // rustdoc-stripper-ignore-next
     /// Returns `None` in case the address has a native size different than 4 and 16.
     #[doc(alias = "g_inet_address_to_bytes")]
@@ -80,16 +75,33 @@ impl From<IpAddr> for InetAddress {
 
 impl From<InetAddress> for IpAddr {
     fn from(addr: InetAddress) -> Self {
-        let size = addr.native_size();
-        unsafe {
-            let bytes = ffi::g_inet_address_to_bytes(addr.to_glib_none().0);
-            if size == 4 {
-                Self::V4(Ipv4Addr::from(*(bytes as *const [u8; 4])))
-            } else if size == 16 {
-                Self::V6(Ipv6Addr::from(*(bytes as *const [u16; 8])))
-            } else {
-                panic!("Unknown IP kind");
-            }
+        match addr.to_bytes() {
+            Some(InetAddressBytes::V4(bytes)) => IpAddr::from(*bytes),
+            Some(InetAddressBytes::V6(bytes)) => IpAddr::from(*bytes),
+            None => panic!("Unknown IP kind"),
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use std::net::IpAddr;
+
+    use crate::InetAddress;
+
+    #[test]
+    fn test_ipv6_to_rust() {
+        let rust_addr = "2606:50c0:8000::153".parse::<IpAddr>().unwrap();
+        assert!(rust_addr.is_ipv6());
+        let gio_addr = InetAddress::from(rust_addr);
+        assert_eq!(rust_addr, IpAddr::from(gio_addr));
+    }
+
+    #[test]
+    fn test_ipv4_to_rust() {
+        let rust_addr = "185.199.108.153".parse::<IpAddr>().unwrap();
+        assert!(rust_addr.is_ipv4());
+        let gio_addr = InetAddress::from(rust_addr);
+        assert_eq!(rust_addr, IpAddr::from(gio_addr));
     }
 }

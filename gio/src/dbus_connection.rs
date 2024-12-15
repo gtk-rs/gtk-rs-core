@@ -1,13 +1,110 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use std::{boxed::Box as Box_, num::NonZeroU32};
-
-use glib::{prelude::*, translate::*};
+use std::{boxed::Box as Box_, future::Future, marker::PhantomData, num::NonZeroU32};
 
 use crate::{
-    ActionGroup, DBusConnection, DBusInterfaceInfo, DBusMessage, DBusMethodInvocation,
+    ffi, ActionGroup, DBusConnection, DBusInterfaceInfo, DBusMessage, DBusMethodInvocation,
     DBusSignalFlags, MenuModel,
 };
+use glib::{prelude::*, translate::*};
+
+pub trait DBusMethodCall: Sized {
+    fn parse_call(
+        obj_path: &str,
+        interface: &str,
+        method: &str,
+        params: glib::Variant,
+    ) -> Result<Self, glib::Error>;
+}
+
+// rustdoc-stripper-ignore-next
+/// Handle method invocations.
+pub struct MethodCallBuilder<'a, T> {
+    registration: RegistrationBuilder<'a>,
+    capture_type: PhantomData<T>,
+}
+
+impl<'a, T: DBusMethodCall> MethodCallBuilder<'a, T> {
+    // rustdoc-stripper-ignore-next
+    /// Handle invocation of a parsed method call.
+    ///
+    /// For each DBus method call parse the call, and then invoke the given closure
+    /// with
+    ///
+    /// 1. the DBus connection object,
+    /// 2. the name of the sender of the method call,
+    /// 3. the parsed call, and
+    /// 4. the method invocation object.
+    ///
+    /// The closure **must** return a value through the invocation object in all
+    /// code paths, using any of its `return_` functions, such as
+    /// [`DBusMethodInvocation::return_result`] or
+    /// [`DBusMethodInvocation::return_future_local`], to finish the call.
+    ///
+    /// If direct access to the invocation object is not needed,
+    /// [`invoke_and_return`] and [`invoke_and_return_future_local`] provide a
+    /// safer interface where the callback returns a result directly.
+    pub fn invoke<F>(self, f: F) -> RegistrationBuilder<'a>
+    where
+        F: Fn(DBusConnection, &str, T, DBusMethodInvocation) + 'static,
+    {
+        self.registration.method_call(
+            move |connection, sender, obj_path, interface, method, params, invocation| {
+                match T::parse_call(obj_path, interface, method, params) {
+                    Ok(call) => f(connection, sender, call, invocation),
+                    Err(error) => invocation.return_gerror(error),
+                }
+            },
+        )
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Handle invocation of a parsed method call.
+    ///
+    /// For each DBus method call parse the call, and then invoke the given closure
+    /// with
+    ///
+    /// 1. the DBus connection object,
+    /// 2. the name of the sender of the method call, and
+    /// 3. the parsed call.
+    ///
+    /// The return value of the closure is then returned on the method call.
+    /// If the returned variant value is not a tuple, it is automatically wrapped
+    /// in a single element tuple, as DBus methods must always return tuples.
+    /// See [`DBusMethodInvocation::return_result`] for details.
+    pub fn invoke_and_return<F>(self, f: F) -> RegistrationBuilder<'a>
+    where
+        F: Fn(DBusConnection, &str, T) -> Result<Option<glib::Variant>, glib::Error> + 'static,
+    {
+        self.invoke(move |connection, sender, call, invocation| {
+            invocation.return_result(f(connection, sender, call))
+        })
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Handle an async invocation of a parsed method call.
+    ///
+    /// For each DBus method call parse the call, and then invoke the given closure
+    /// with
+    ///
+    /// 1. the DBus connection object,
+    /// 2. the name of the sender of the method call, and
+    /// 3. the parsed call.
+    ///
+    /// The output of the future is then returned on the method call.
+    /// If the returned variant value is not a tuple, it is automatically wrapped
+    /// in a single element tuple, as DBus methods must always return tuples.
+    /// See [`DBusMethodInvocation::return_future_local`] for details.
+    pub fn invoke_and_return_future_local<F, Fut>(self, f: F) -> RegistrationBuilder<'a>
+    where
+        F: Fn(DBusConnection, &str, T) -> Fut + 'static,
+        Fut: Future<Output = Result<Option<glib::Variant>, glib::Error>> + 'static,
+    {
+        self.invoke(move |connection, sender, call, invocation| {
+            invocation.return_future_local(f(connection, sender, call));
+        })
+    }
+}
 
 #[derive(Debug, Eq, PartialEq)]
 pub struct RegistrationId(NonZeroU32);
@@ -22,93 +119,162 @@ pub struct FilterId(NonZeroU32);
 #[derive(Debug, Eq, PartialEq)]
 pub struct SignalSubscriptionId(NonZeroU32);
 
-impl DBusConnection {
-    #[doc(alias = "g_dbus_connection_register_object_with_closures")]
-    pub fn register_object<MethodCall, SetProperty, GetProperty>(
-        &self,
-        object_path: &str,
-        interface_info: &DBusInterfaceInfo,
-        method_call: MethodCall,
-        get_property: GetProperty,
-        set_property: SetProperty,
-    ) -> Result<RegistrationId, glib::Error>
-    where
-        MethodCall: Fn(DBusConnection, &str, &str, &str, &str, glib::Variant, DBusMethodInvocation)
-            + Send
-            + Sync
-            + 'static,
-        GetProperty:
-            Fn(DBusConnection, &str, &str, &str, &str) -> glib::Variant + Send + Sync + 'static,
-        SetProperty: Fn(DBusConnection, &str, &str, &str, &str, glib::Variant) -> bool
-            + Send
-            + Sync
-            + 'static,
-    {
+// rustdoc-stripper-ignore-next
+/// Build a registered DBus object, by handling different parts of DBus.
+#[must_use = "The builder must be built to be used"]
+pub struct RegistrationBuilder<'a> {
+    connection: &'a DBusConnection,
+    object_path: &'a str,
+    interface_info: &'a DBusInterfaceInfo,
+    #[allow(clippy::type_complexity)]
+    method_call: Option<
+        Box_<dyn Fn(DBusConnection, &str, &str, &str, &str, glib::Variant, DBusMethodInvocation)>,
+    >,
+    #[allow(clippy::type_complexity)]
+    get_property: Option<Box_<dyn Fn(DBusConnection, &str, &str, &str, &str) -> glib::Variant>>,
+    #[allow(clippy::type_complexity)]
+    set_property:
+        Option<Box_<dyn Fn(DBusConnection, &str, &str, &str, &str, glib::Variant) -> bool>>,
+}
+
+impl<'a> RegistrationBuilder<'a> {
+    pub fn method_call<
+        F: Fn(DBusConnection, &str, &str, &str, &str, glib::Variant, DBusMethodInvocation) + 'static,
+    >(
+        mut self,
+        f: F,
+    ) -> Self {
+        self.method_call = Some(Box_::new(f));
+        self
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Handle method calls on this object.
+    ///
+    /// Return a builder for method calls which parses method names and
+    /// parameters with the given [`DBusMethodCall`] and then allows to dispatch
+    /// the parsed call either synchronously or asynchronously.
+    pub fn typed_method_call<T: DBusMethodCall>(self) -> MethodCallBuilder<'a, T> {
+        MethodCallBuilder {
+            registration: self,
+            capture_type: Default::default(),
+        }
+    }
+
+    #[doc(alias = "get_property")]
+    pub fn property<F: Fn(DBusConnection, &str, &str, &str, &str) -> glib::Variant + 'static>(
+        mut self,
+        f: F,
+    ) -> Self {
+        self.get_property = Some(Box_::new(f));
+        self
+    }
+
+    pub fn set_property<
+        F: Fn(DBusConnection, &str, &str, &str, &str, glib::Variant) -> bool + 'static,
+    >(
+        mut self,
+        f: F,
+    ) -> Self {
+        self.set_property = Some(Box_::new(f));
+        self
+    }
+
+    pub fn build(self) -> Result<RegistrationId, glib::Error> {
         unsafe {
             let mut error = std::ptr::null_mut();
             let id = ffi::g_dbus_connection_register_object_with_closures(
-                self.to_glib_none().0,
-                object_path.to_glib_none().0,
-                interface_info.to_glib_none().0,
-                glib::Closure::new(move |args| {
-                    let conn = args[0].get::<DBusConnection>().unwrap();
-                    let sender = args[1].get::<&str>().unwrap();
-                    let object_path = args[2].get::<&str>().unwrap();
-                    let interface_name = args[3].get::<&str>().unwrap();
-                    let method_name = args[4].get::<&str>().unwrap();
-                    let parameters = args[5].get::<glib::Variant>().unwrap();
-                    let invocation = args[6].get::<DBusMethodInvocation>().unwrap();
-                    method_call(
-                        conn,
-                        sender,
-                        object_path,
-                        interface_name,
-                        method_name,
-                        parameters,
-                        invocation,
-                    );
-                    None
-                })
-                .to_glib_none()
-                .0,
-                glib::Closure::new(move |args| {
-                    let conn = args[0].get::<DBusConnection>().unwrap();
-                    let sender = args[1].get::<&str>().unwrap();
-                    let object_path = args[2].get::<&str>().unwrap();
-                    let interface_name = args[3].get::<&str>().unwrap();
-                    let property_name = args[4].get::<&str>().unwrap();
-                    let result =
-                        get_property(conn, sender, object_path, interface_name, property_name);
-                    Some(result.to_value())
-                })
-                .to_glib_none()
-                .0,
-                glib::Closure::new(move |args| {
-                    let conn = args[0].get::<DBusConnection>().unwrap();
-                    let sender = args[1].get::<&str>().unwrap();
-                    let object_path = args[2].get::<&str>().unwrap();
-                    let interface_name = args[3].get::<&str>().unwrap();
-                    let property_name = args[4].get::<&str>().unwrap();
-                    let value = args[5].get::<glib::Variant>().unwrap();
-                    let result = set_property(
-                        conn,
-                        sender,
-                        object_path,
-                        interface_name,
-                        property_name,
-                        value,
-                    );
-                    Some(result.to_value())
-                })
-                .to_glib_none()
-                .0,
+                self.connection.to_glib_none().0,
+                self.object_path.to_glib_none().0,
+                self.interface_info.to_glib_none().0,
+                self.method_call
+                    .map(|f| {
+                        glib::Closure::new_local(move |args| {
+                            let conn = args[0].get::<DBusConnection>().unwrap();
+                            let sender = args[1].get::<&str>().unwrap();
+                            let object_path = args[2].get::<&str>().unwrap();
+                            let interface_name = args[3].get::<&str>().unwrap();
+                            let method_name = args[4].get::<&str>().unwrap();
+                            let parameters = args[5].get::<glib::Variant>().unwrap();
+                            let invocation = args[6].get::<DBusMethodInvocation>().unwrap();
+                            f(
+                                conn,
+                                sender,
+                                object_path,
+                                interface_name,
+                                method_name,
+                                parameters,
+                                invocation,
+                            );
+                            None
+                        })
+                    })
+                    .to_glib_none()
+                    .0,
+                self.set_property
+                    .map(|f| {
+                        glib::Closure::new_local(move |args| {
+                            let conn = args[0].get::<DBusConnection>().unwrap();
+                            let sender = args[1].get::<&str>().unwrap();
+                            let object_path = args[2].get::<&str>().unwrap();
+                            let interface_name = args[3].get::<&str>().unwrap();
+                            let property_name = args[4].get::<&str>().unwrap();
+                            let value = args[5].get::<glib::Variant>().unwrap();
+                            let result = f(
+                                conn,
+                                sender,
+                                object_path,
+                                interface_name,
+                                property_name,
+                                value,
+                            );
+                            Some(result.to_value())
+                        })
+                    })
+                    .to_glib_none()
+                    .0,
+                self.get_property
+                    .map(|f| {
+                        glib::Closure::new_local(move |args| {
+                            let conn = args[0].get::<DBusConnection>().unwrap();
+                            let sender = args[1].get::<&str>().unwrap();
+                            let object_path = args[2].get::<&str>().unwrap();
+                            let interface_name = args[3].get::<&str>().unwrap();
+                            let property_name = args[4].get::<&str>().unwrap();
+                            let result =
+                                f(conn, sender, object_path, interface_name, property_name);
+                            Some(result.to_value())
+                        })
+                    })
+                    .to_glib_none()
+                    .0,
                 &mut error,
             );
+
             if error.is_null() {
                 Ok(RegistrationId(NonZeroU32::new_unchecked(id)))
             } else {
                 Err(from_glib_full(error))
             }
+        }
+    }
+}
+
+impl DBusConnection {
+    #[doc(alias = "g_dbus_connection_register_object")]
+    #[doc(alias = "g_dbus_connection_register_object_with_closures")]
+    pub fn register_object<'a>(
+        &'a self,
+        object_path: &'a str,
+        interface_info: &'a DBusInterfaceInfo,
+    ) -> RegistrationBuilder<'a> {
+        RegistrationBuilder {
+            connection: self,
+            object_path,
+            interface_info,
+            method_call: None,
+            get_property: None,
+            set_property: None,
         }
     }
 

@@ -11,10 +11,18 @@
 )]
 #![cfg_attr(docsrs, feature(doc_cfg))]
 
+use cairo_sys as cairo;
+use glib_sys as glib;
+use pango_sys as pango;
+
+#[cfg(unix)]
 #[allow(unused_imports)]
-use libc::{
+use libc::{dev_t, gid_t, pid_t, socklen_t, uid_t};
+#[allow(unused_imports)]
+use libc::{intptr_t, off_t, size_t, ssize_t, time_t, uintptr_t, FILE};
+#[allow(unused_imports)]
+use std::ffi::{
     c_char, c_double, c_float, c_int, c_long, c_short, c_uchar, c_uint, c_ulong, c_ushort, c_void,
-    intptr_t, size_t, ssize_t, uintptr_t, FILE,
 };
 
 #[allow(unused_imports)]
@@ -27,6 +35,7 @@ pub type PangoCairoShapeRendererFunc = Option<
 
 // Interfaces
 #[repr(C)]
+#[allow(dead_code)]
 pub struct PangoCairoFont {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -39,6 +48,7 @@ impl ::std::fmt::Debug for PangoCairoFont {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct PangoCairoFontMap {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -50,7 +60,6 @@ impl ::std::fmt::Debug for PangoCairoFontMap {
     }
 }
 
-#[link(name = "pangocairo-1.0")]
 extern "C" {
 
     //=========================================================================

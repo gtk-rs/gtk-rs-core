@@ -2,12 +2,13 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
+use crate::ffi;
 use glib::{
     prelude::*,
     signal::{connect_raw, SignalHandlerId},
     translate::*,
 };
-use std::{boxed::Box as Box_, fmt, mem::transmute};
+use std::boxed::Box as Box_;
 
 glib::wrapper! {
     #[doc(alias = "GListModel")]
@@ -22,12 +23,7 @@ impl ListModel {
     pub const NONE: Option<&'static ListModel> = None;
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::ListModel>> Sealed for T {}
-}
-
-pub trait ListModelExt: IsA<ListModel> + sealed::Sealed + 'static {
+pub trait ListModelExt: IsA<ListModel> + 'static {
     #[doc(alias = "g_list_model_get_item_type")]
     #[doc(alias = "get_item_type")]
     fn item_type(&self) -> glib::types::Type {
@@ -77,9 +73,9 @@ pub trait ListModelExt: IsA<ListModel> + sealed::Sealed + 'static {
             F: Fn(&P, u32, u32, u32) + 'static,
         >(
             this: *mut ffi::GListModel,
-            position: libc::c_uint,
-            removed: libc::c_uint,
-            added: libc::c_uint,
+            position: std::ffi::c_uint,
+            removed: std::ffi::c_uint,
+            added: std::ffi::c_uint,
             f: glib::ffi::gpointer,
         ) {
             let f: &F = &*(f as *const F);
@@ -95,7 +91,7 @@ pub trait ListModelExt: IsA<ListModel> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"items-changed\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     items_changed_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -105,9 +101,3 @@ pub trait ListModelExt: IsA<ListModel> + sealed::Sealed + 'static {
 }
 
 impl<O: IsA<ListModel>> ListModelExt for O {}
-
-impl fmt::Display for ListModel {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("ListModel")
-    }
-}

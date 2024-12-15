@@ -1,69 +1,63 @@
 [package]
 name = "glib"
 documentation = "https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/"
-homepage = "https://gtk-rs.org/"
-authors = ["The gtk-rs Project Developers"]
 description = "Rust bindings for the GLib library"
 readme = "README.md"
-version = "0.19.0"
 keywords = ["glib", "gtk-rs", "gnome", "GUI"]
-repository = "https://github.com/gtk-rs/gtk-rs-core"
-license = "MIT"
-exclude = [
-    "gir-files/*",
-]
-edition = "2021"
-rust-version = "1.70"
+authors.workspace = true
+edition.workspace = true
+exclude.workspace = true
+homepage.workspace = true
+license.workspace = true
+repository.workspace = true
+rust-version.workspace = true
+version.workspace = true
 
 [lib]
 name = "glib"
 
 [dependencies]
-once_cell = "1.0"
-libc = "0.2"
-bitflags = "2.3"
+libc.workspace = true
+bitflags.workspace = true
 futures-core = { version = "0.3", default-features = false }
 futures-task = { version = "0.3", default-features = false }
 futures-executor = "0.3"
 futures-channel = "0.3"
 futures-util = "0.3"
-ffi = { package = "glib-sys", path = "sys" }
-gobject_ffi = { package = "gobject-sys", path = "gobject-sys" }
-glib-macros = { path = "../glib-macros" }
+glib-sys.workspace = true
+gobject-sys.workspace = true
+glib-macros.workspace = true
 rs-log = { package = "log", version = "0.4", optional = true }
-smallvec = { version = "1.0", features = ["union", "const_generics", "const_new"] }
-thiserror = "1"
-gio_ffi = { package = "gio-sys", path = "../gio/sys", optional = true }
-memchr = "2.5.0"
+smallvec = { version = "1.13", features = ["union", "const_generics", "const_new"] }
+gio-sys = { workspace = true, optional = true }
+memchr = "2.7.4"
 
 [dev-dependencies]
 tempfile = "3"
-gir-format-check = "^0.1"
+gir-format-check.workspace = true
 trybuild2 = "1"
 criterion = "0.5.1"
 
 [features]
 default = ["gio"]
-v2_58 = ["ffi/v2_58", "gobject_ffi/v2_58"]
-v2_60 = ["v2_58", "ffi/v2_60"]
-v2_62 = ["v2_60", "ffi/v2_62", "gobject_ffi/v2_62"]
-v2_64 = ["v2_62", "ffi/v2_64"]
-v2_66 = ["v2_64", "ffi/v2_66", "gobject_ffi/v2_66"]
-v2_68 = ["v2_66", "ffi/v2_68", "gobject_ffi/v2_68"]
-v2_70 = ["v2_68", "ffi/v2_70", "gobject_ffi/v2_70"]
-v2_72 = ["v2_70", "ffi/v2_72", "gobject_ffi/v2_72"]
-v2_74 = ["v2_72", "ffi/v2_74", "gobject_ffi/v2_74"]
-v2_76 = ["v2_74", "ffi/v2_76", "gobject_ffi/v2_76"]
-v2_78 = ["v2_76", "ffi/v2_78", "gobject_ffi/v2_78"]
+v2_58 = ["glib-sys/v2_58", "gobject-sys/v2_58"]
+v2_60 = ["v2_58", "glib-sys/v2_60"]
+v2_62 = ["v2_60", "glib-sys/v2_62", "gobject-sys/v2_62"]
+v2_64 = ["v2_62", "glib-sys/v2_64"]
+v2_66 = ["v2_64", "glib-sys/v2_66", "gobject-sys/v2_66"]
+v2_68 = ["v2_66", "glib-sys/v2_68", "gobject-sys/v2_68"]
+v2_70 = ["v2_68", "glib-sys/v2_70", "gobject-sys/v2_70"]
+v2_72 = ["v2_70", "glib-sys/v2_72", "gobject-sys/v2_72"]
+v2_74 = ["v2_72", "glib-sys/v2_74", "gobject-sys/v2_74"]
+v2_76 = ["v2_74", "glib-sys/v2_76", "gobject-sys/v2_76"]
+v2_78 = ["v2_76", "glib-sys/v2_78", "gobject-sys/v2_78"]
+v2_80 = ["v2_78", "glib-sys/v2_80", "gobject-sys/v2_80"]
+v2_82 = ["v2_80", "glib-sys/v2_82", "gobject-sys/v2_82"]
+v2_84 = ["v2_82", "glib-sys/v2_84"]
 log = ["rs-log"]
 log_macros = ["log"]
 compiletests = []
-gio = ["gio_ffi"]
-
-[package.metadata.docs.rs]
-all-features = true
-rustc-args = ["--cfg", "docsrs"]
-rustdoc-args = ["--cfg", "docsrs", "--generate-link-to-definition"]
+gio = ["gio-sys"]
 
 [[test]]
 name = "subclass_compiletest"
@@ -72,3 +66,8 @@ required-features = ["compiletests"]
 [[bench]]
 name = "gstring"
 harness = false
+
+[package.metadata.docs.rs]
+all-features = true
+rustc-args = ["--cfg", "docsrs"]
+rustdoc-args = ["--cfg", "docsrs", "--generate-link-to-definition"]

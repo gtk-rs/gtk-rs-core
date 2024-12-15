@@ -5,12 +5,11 @@
 #[cfg(unix)]
 #[cfg_attr(docsrs, doc(cfg(unix)))]
 use crate::UnixFDList;
-use crate::{DBusConnection, DBusMessage, DBusMethodInfo, DBusPropertyInfo};
+use crate::{ffi, DBusConnection, DBusMessage, DBusMethodInfo, DBusPropertyInfo};
 #[cfg(unix)]
 #[cfg_attr(docsrs, doc(cfg(unix)))]
 use glib::prelude::*;
 use glib::translate::*;
-use std::fmt;
 
 glib::wrapper! {
     #[doc(alias = "GDBusMethodInvocation")]
@@ -164,11 +163,5 @@ impl DBusMethodInvocation {
                 fd_list.map(|p| p.as_ref()).to_glib_none().0,
             );
         }
-    }
-}
-
-impl fmt::Display for DBusMethodInvocation {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("DBusMethodInvocation")
     }
 }

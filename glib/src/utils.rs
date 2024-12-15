@@ -5,7 +5,7 @@ use std::{
     mem, ptr,
 };
 
-use crate::{translate::*, GString, IntoGStr, IntoOptionalGStr};
+use crate::{ffi, translate::*, GString};
 
 // rustdoc-stripper-ignore-next
 /// Same as [`get_prgname()`].
@@ -192,15 +192,18 @@ pub fn uri_unescape_segment(
 
 #[cfg(test)]
 mod tests {
-    use std::{env, sync::Mutex};
+    use std::{env, sync::Mutex, sync::OnceLock};
 
     //Mutex to prevent run environment tests parallel
-    static LOCK: once_cell::sync::Lazy<Mutex<()>> = once_cell::sync::Lazy::new(|| Mutex::new(()));
+    fn lock() -> &'static Mutex<()> {
+        static LOCK: OnceLock<Mutex<()>> = OnceLock::new();
+        LOCK.get_or_init(|| Mutex::new(()))
+    }
 
     const VAR_NAME: &str = "function_environment_test";
 
     fn check_getenv(val: &str) {
-        let _data = LOCK.lock().unwrap();
+        let _data = lock().lock().unwrap();
 
         env::set_var(VAR_NAME, val);
         assert_eq!(env::var_os(VAR_NAME), Some(val.into()));
@@ -211,7 +214,7 @@ mod tests {
     }
 
     fn check_setenv(val: &str) {
-        let _data = LOCK.lock().unwrap();
+        let _data = lock().lock().unwrap();
 
         crate::setenv(VAR_NAME, val, true).unwrap();
         assert_eq!(env::var_os(VAR_NAME), Some(val.into()));

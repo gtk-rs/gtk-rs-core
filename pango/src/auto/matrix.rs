@@ -2,8 +2,8 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
+use crate::ffi;
 use glib::translate::*;
-use std::mem;
 
 glib::wrapper! {
     pub struct Matrix(BoxedInline<ffi::PangoMatrix>);
@@ -33,8 +33,8 @@ impl Matrix {
     #[doc(alias = "get_font_scale_factors")]
     pub fn font_scale_factors(&self) -> (f64, f64) {
         unsafe {
-            let mut xscale = mem::MaybeUninit::uninit();
-            let mut yscale = mem::MaybeUninit::uninit();
+            let mut xscale = std::mem::MaybeUninit::uninit();
+            let mut yscale = std::mem::MaybeUninit::uninit();
             ffi::pango_matrix_get_font_scale_factors(
                 self.to_glib_none().0,
                 xscale.as_mut_ptr(),

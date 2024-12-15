@@ -2,18 +2,39 @@
 
 #![cfg_attr(docsrs, feature(doc_cfg))]
 #![allow(clippy::missing_safety_doc)]
+#![allow(renamed_and_removed_lints)]
+// Override docs references to point to locally generated docs
+// rustdoc-stripper-ignore-next
+//! [`Type`]: struct@Type
+//! [`StaticType`]: trait@types::StaticType
+//! [`Value`]: struct@Value
+//! [`Variant``]: struct@Variant
+//! [`StaticVariantType`]: trait@variant::StaticVariantType
+//! [`Error`]: struct@Error
+//! [`FileError`]: enum@FileError
+//! [`Object`]: struct@Object
+//! [`Rc<RefCell<T>>`]: mod@std::cell#introducing-mutability-inside-of-something-immutable
+//! [`IsA`]: trait@object::IsA
+//! [`Cast`]: trait@object::Cast
+//! [`ObjectExt`]: trait@object::ObjectExt
+//! [`wrapper!`]: macro@wrapper
+//! [`wrapper`]: mod@wrapper
+//! [`boxed`]: mod@boxed
+//! [`shared`]: mod@shared
+//! [mod@object]: mod@object
+//! [`translate`]: mod@translate
 #![doc = include_str!("../README.md")]
 
 pub use bitflags;
-pub use ffi;
 #[doc(hidden)]
 pub use glib_macros::cstr_bytes;
 pub use glib_macros::{
-    clone, closure, closure_local, derived_properties, flags, object_interface, object_subclass,
-    Boxed, Downgrade, Enum, ErrorDomain, Properties, SharedBoxed, ValueDelegate, Variant,
+    async_test, clone, closure, closure_local, derived_properties, flags, object_interface,
+    object_subclass, Boxed, Downgrade, Enum, ErrorDomain, Properties, SharedBoxed, ValueDelegate,
+    Variant,
 };
-pub use gobject_ffi;
-pub use once_cell;
+pub use glib_sys as ffi;
+pub use gobject_sys as gobject_ffi;
 
 pub use self::{
     byte_array::ByteArray,
@@ -21,20 +42,14 @@ pub use self::{
     closure::{Closure, RustClosure},
     enums::{EnumClass, EnumValue, FlagsBuilder, FlagsClass, FlagsValue, UserDirectory},
     error::{BoolError, Error},
-    object::{
-        BorrowedObject, Cast, CastNone, Class, InitiallyUnowned, Interface, IsA, Object, ObjectExt,
-        ObjectType, SendWeakRef, WeakRef,
-    },
+    object::{BorrowedObject, Class, InitiallyUnowned, Interface, Object, SendWeakRef, WeakRef},
     signal::{
         signal_handler_block, signal_handler_disconnect, signal_handler_unblock,
         signal_stop_emission_by_name, Propagation, SignalHandlerId,
     },
-    types::{ILong, Pointer, StaticType, StaticTypeExt, Type, ULong},
-    value::{BoxedValue, SendValue, ToSendValue, ToValue, Value},
-    variant::{
-        FixedSizeVariantArray, FixedSizeVariantType, FromVariant, StaticVariantType, ToVariant,
-        Variant,
-    },
+    types::{ILong, Pointer, Type, ULong},
+    value::{BoxedValue, SendValue, Value},
+    variant::{FixedSizeVariantArray, Variant},
     variant_dict::VariantDict,
     variant_iter::{VariantIter, VariantStrIter},
     variant_type::{VariantTy, VariantTyIterator, VariantType},
@@ -104,18 +119,26 @@ mod exit_code;
 pub use exit_code::ExitCode;
 
 pub mod collections;
-pub use collections::{
-    ptr_slice::IntoPtrSlice, strv::IntoStrV, List, PtrSlice, SList, Slice, StrV,
-};
+pub use collections::{List, PtrSlice, SList, Slice, StrV};
 
-pub use self::auto::{functions::*, *};
+pub use self::auto::*;
 #[allow(clippy::too_many_arguments)]
 #[allow(clippy::type_complexity)]
 #[allow(unused_imports)]
 #[allow(non_upper_case_globals)]
 mod auto;
 
-pub use self::gobject::*;
+#[cfg(feature = "v2_74")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
+pub use self::gobject::SignalGroup;
+pub use self::gobject::{
+    Binding, BindingFlags, InterfaceInfo, ParamFlags, SignalFlags, TypeFlags, TypeInfo, TypeModule,
+    TypePlugin, TypeValueTable,
+};
+#[cfg(feature = "v2_72")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
+pub use self::gobject::{BindingGroup, BindingGroupBuilder};
+
 mod gobject;
 
 mod byte_array;
@@ -123,14 +146,14 @@ mod bytes;
 mod control_flow;
 pub use self::control_flow::ControlFlow;
 pub mod char;
-pub use self::char::*;
+pub use self::char::{Char, UChar};
 mod checksum;
 pub mod closure;
 mod convert;
 pub use self::convert::*;
-mod enums;
-mod manual_functions;
-pub use self::manual_functions::*;
+pub mod enums;
+mod functions;
+pub use self::functions::*;
 mod key_file;
 pub mod prelude;
 pub mod signal;
@@ -150,16 +173,12 @@ pub use self::utils::*;
 mod unichar;
 pub use self::unichar::*;
 mod main_context;
-mod main_context_channel;
-pub use self::{
-    main_context::MainContextAcquireGuard,
-    main_context_channel::{Receiver, Sender, SyncSender},
-};
+pub use self::main_context::MainContextAcquireGuard;
 mod date;
 mod date_time;
 mod time_span;
 mod time_zone;
-pub use self::time_span::*;
+pub use self::time_span::TimeSpan;
 pub mod value;
 pub mod variant;
 mod variant_dict;
@@ -170,10 +189,12 @@ mod value_array;
 pub use self::value_array::ValueArray;
 mod param_spec;
 pub use self::param_spec::*;
-mod property;
-pub use self::property::*;
+pub mod property;
 mod quark;
 pub use self::quark::Quark;
+pub mod match_info;
+pub use self::match_info::MatchInfo;
+pub mod regex;
 #[macro_use]
 mod log;
 #[doc(hidden)]

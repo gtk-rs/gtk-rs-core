@@ -8,10 +8,9 @@ pub use self::font::Font;
 mod font_map;
 pub use self::font_map::FontMap;
 
-pub mod functions;
+pub(crate) mod functions;
 
-#[doc(hidden)]
-pub mod traits {
+pub(crate) mod traits {
     pub use super::font::PangoCairoFontExt;
     pub use super::font_map::PangoCairoFontMapExt;
 }

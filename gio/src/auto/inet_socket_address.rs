@@ -2,9 +2,8 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{InetAddress, SocketAddress, SocketConnectable};
+use crate::{ffi, InetAddress, SocketAddress, SocketConnectable};
 use glib::{prelude::*, translate::*};
-use std::fmt;
 
 glib::wrapper! {
     #[doc(alias = "GInetSocketAddress")]
@@ -45,12 +44,7 @@ impl InetSocketAddress {
 unsafe impl Send for InetSocketAddress {}
 unsafe impl Sync for InetSocketAddress {}
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::InetSocketAddress>> Sealed for T {}
-}
-
-pub trait InetSocketAddressExt: IsA<InetSocketAddress> + sealed::Sealed + 'static {
+pub trait InetSocketAddressExt: IsA<InetSocketAddress> + 'static {
     #[doc(alias = "g_inet_socket_address_get_address")]
     #[doc(alias = "get_address")]
     fn address(&self) -> InetAddress {
@@ -75,15 +69,10 @@ pub trait InetSocketAddressExt: IsA<InetSocketAddress> + sealed::Sealed + 'stati
 
     #[doc(alias = "g_inet_socket_address_get_scope_id")]
     #[doc(alias = "get_scope_id")]
+    #[doc(alias = "scope-id")]
     fn scope_id(&self) -> u32 {
         unsafe { ffi::g_inet_socket_address_get_scope_id(self.as_ref().to_glib_none().0) }
     }
 }
 
 impl<O: IsA<InetSocketAddress>> InetSocketAddressExt for O {}
-
-impl fmt::Display for InetSocketAddress {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("InetSocketAddress")
-    }
-}

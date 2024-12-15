@@ -2,7 +2,7 @@ mod file_size;
 
 use file_size::FileSize;
 use futures_channel::oneshot;
-use glib::{self, clone, translate::*};
+use glib::{clone, translate::*};
 
 fn main() {
     let main_context = glib::MainContext::default();
@@ -21,12 +21,16 @@ fn main() {
         run_in_thread(send_threaded);
     });
 
-    main_context.spawn_local(clone!(@strong main_loop => async move {
-        recv_safe.await.unwrap();
-        recv_unsafe.await.unwrap();
-        recv_threaded.await.unwrap();
-        main_loop.quit();
-    }));
+    main_context.spawn_local(clone!(
+        #[strong]
+        main_loop,
+        async move {
+            recv_safe.await.unwrap();
+            recv_unsafe.await.unwrap();
+            recv_threaded.await.unwrap();
+            main_loop.quit();
+        }
+    ));
 
     main_loop.run();
 }

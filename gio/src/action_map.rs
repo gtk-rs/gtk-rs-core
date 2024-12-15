@@ -3,13 +3,7 @@
 use glib::{clone, prelude::*};
 
 use crate::{prelude::*, ActionEntry, ActionMap, SimpleAction};
-
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::ActionMap>> Sealed for T {}
-}
-
-pub trait ActionMapExtManual: sealed::Sealed + IsA<ActionMap> {
+pub trait ActionMapExtManual: IsA<ActionMap> {
     #[doc(alias = "g_action_map_add_action_entries")]
     fn add_action_entries(&self, entries: impl IntoIterator<Item = ActionEntry<Self>>) {
         for entry in entries.into_iter() {
@@ -20,16 +14,24 @@ pub trait ActionMapExtManual: sealed::Sealed + IsA<ActionMap> {
             };
             let action_map = self.as_ref();
             if let Some(callback) = entry.activate {
-                action.connect_activate(clone!(@strong action_map =>  move |action, state| {
-                    // safe to unwrap as O: IsA<ActionMap>
-                    callback(action_map.downcast_ref::<Self>().unwrap(), action, state);
-                }));
+                action.connect_activate(clone!(
+                    #[weak]
+                    action_map,
+                    move |action, state| {
+                        // safe to unwrap as O: IsA<ActionMap>
+                        callback(action_map.downcast_ref::<Self>().unwrap(), action, state);
+                    }
+                ));
             }
             if let Some(callback) = entry.change_state {
-                action.connect_change_state(clone!(@strong action_map => move |action, state| {
-                    // safe to unwrap as O: IsA<ActionMap>
-                    callback(action_map.downcast_ref::<Self>().unwrap(), action, state);
-                }));
+                action.connect_change_state(clone!(
+                    #[weak]
+                    action_map,
+                    move |action, state| {
+                        // safe to unwrap as O: IsA<ActionMap>
+                        callback(action_map.downcast_ref::<Self>().unwrap(), action, state);
+                    }
+                ));
             }
             self.as_ref().add_action(&action);
         }

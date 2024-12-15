@@ -2,7 +2,7 @@
 
 use std::{cmp, fmt, hash, mem, ops, ptr, slice, str};
 
-use crate::{translate::*, GStr};
+use crate::{ffi, translate::*, GStr};
 
 wrapper! {
     // rustdoc-stripper-ignore-next
@@ -146,7 +146,7 @@ impl GStringBuilder {
     }
 
     // rustdoc-stripper-ignore-next
-    /// Finalizes the builder, converting it to a [`GString`].
+    /// Finalizes the builder, converting it to a [`GString`](crate::GString).
     #[must_use = "String returned from the builder should probably be used"]
     #[inline]
     pub fn into_string(self) -> crate::GString {

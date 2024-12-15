@@ -4,12 +4,10 @@
 use std::os::unix::io::AsRawFd;
 use std::{
     boxed::Box as Box_,
-    sync::{Arc, Mutex},
+    sync::{Arc, Mutex, OnceLock},
 };
 
-use once_cell::sync::Lazy;
-
-use crate::{translate::*, GStr, GString, LogWriterOutput};
+use crate::{ffi, translate::*, GStr, GString, LogWriterOutput};
 
 #[derive(Debug)]
 pub struct LogHandlerId(u32);
@@ -218,14 +216,17 @@ pub fn log_set_fatal_mask(log_domain: Option<&str>, fatal_levels: LogLevels) -> 
 
 type PrintCallback = dyn Fn(&str) + Send + Sync + 'static;
 
-static PRINT_HANDLER: Lazy<Mutex<Option<Arc<PrintCallback>>>> = Lazy::new(|| Mutex::new(None));
+fn print_handler() -> &'static Mutex<Option<Arc<PrintCallback>>> {
+    static MUTEX: OnceLock<Mutex<Option<Arc<PrintCallback>>>> = OnceLock::new();
+    MUTEX.get_or_init(|| Mutex::new(None))
+}
 
 // rustdoc-stripper-ignore-next
 /// To set back the default print handler, use the [`unset_print_handler`] function.
 #[doc(alias = "g_set_print_handler")]
 pub fn set_print_handler<P: Fn(&str) + Send + Sync + 'static>(func: P) {
     unsafe extern "C" fn func_func(string: *const libc::c_char) {
-        if let Some(callback) = PRINT_HANDLER
+        if let Some(callback) = print_handler()
             .lock()
             .expect("Failed to lock PRINT_HANDLER")
             .as_ref()
@@ -235,7 +236,7 @@ pub fn set_print_handler<P: Fn(&str) + Send + Sync + 'static>(func: P) {
             (*callback)(string.as_str())
         }
     }
-    *PRINT_HANDLER
+    *print_handler()
         .lock()
         .expect("Failed to lock PRINT_HANDLER to change callback") = Some(Arc::new(func));
     unsafe { ffi::g_set_print_handler(Some(func_func as _)) };
@@ -244,20 +245,23 @@ pub fn set_print_handler<P: Fn(&str) + Send + Sync + 'static>(func: P) {
 // rustdoc-stripper-ignore-next
 /// To set the default print handler, use the [`set_print_handler`] function.
 pub fn unset_print_handler() {
-    *PRINT_HANDLER
+    *print_handler()
         .lock()
         .expect("Failed to lock PRINT_HANDLER to remove callback") = None;
     unsafe { ffi::g_set_print_handler(None) };
 }
 
-static PRINTERR_HANDLER: Lazy<Mutex<Option<Arc<PrintCallback>>>> = Lazy::new(|| Mutex::new(None));
+fn printerr_handler() -> &'static Mutex<Option<Arc<PrintCallback>>> {
+    static MUTEX: OnceLock<Mutex<Option<Arc<PrintCallback>>>> = OnceLock::new();
+    MUTEX.get_or_init(|| Mutex::new(None))
+}
 
 // rustdoc-stripper-ignore-next
 /// To set back the default print handler, use the [`unset_printerr_handler`] function.
 #[doc(alias = "g_set_printerr_handler")]
 pub fn set_printerr_handler<P: Fn(&str) + Send + Sync + 'static>(func: P) {
     unsafe extern "C" fn func_func(string: *const libc::c_char) {
-        if let Some(callback) = PRINTERR_HANDLER
+        if let Some(callback) = printerr_handler()
             .lock()
             .expect("Failed to lock PRINTERR_HANDLER")
             .as_ref()
@@ -267,7 +271,7 @@ pub fn set_printerr_handler<P: Fn(&str) + Send + Sync + 'static>(func: P) {
             (*callback)(string.as_str())
         }
     }
-    *PRINTERR_HANDLER
+    *printerr_handler()
         .lock()
         .expect("Failed to lock PRINTERR_HANDLER to change callback") = Some(Arc::new(func));
     unsafe { ffi::g_set_printerr_handler(Some(func_func as _)) };
@@ -276,7 +280,7 @@ pub fn set_printerr_handler<P: Fn(&str) + Send + Sync + 'static>(func: P) {
 // rustdoc-stripper-ignore-next
 /// To set the default print handler, use the [`set_printerr_handler`] function.
 pub fn unset_printerr_handler() {
-    *PRINTERR_HANDLER
+    *printerr_handler()
         .lock()
         .expect("Failed to lock PRINTERR_HANDLER to remove callback") = None;
     unsafe { ffi::g_set_printerr_handler(None) };
@@ -284,7 +288,10 @@ pub fn unset_printerr_handler() {
 
 type LogCallback = dyn Fn(Option<&str>, LogLevel, &str) + Send + Sync + 'static;
 
-static DEFAULT_HANDLER: Lazy<Mutex<Option<Arc<LogCallback>>>> = Lazy::new(|| Mutex::new(None));
+fn default_handler() -> &'static Mutex<Option<Arc<LogCallback>>> {
+    static MUTEX: OnceLock<Mutex<Option<Arc<LogCallback>>>> = OnceLock::new();
+    MUTEX.get_or_init(|| Mutex::new(None))
+}
 
 // rustdoc-stripper-ignore-next
 /// To set back the default print handler, use the [`log_unset_default_handler`] function.
@@ -298,7 +305,7 @@ pub fn log_set_default_handler<P: Fn(Option<&str>, LogLevel, &str) + Send + Sync
         message: *const libc::c_char,
         _user_data: ffi::gpointer,
     ) {
-        if let Some(callback) = DEFAULT_HANDLER
+        if let Some(callback) = default_handler()
             .lock()
             .expect("Failed to lock DEFAULT_HANDLER")
             .as_ref()
@@ -313,7 +320,7 @@ pub fn log_set_default_handler<P: Fn(Option<&str>, LogLevel, &str) + Send + Sync
             );
         }
     }
-    *DEFAULT_HANDLER
+    *default_handler()
         .lock()
         .expect("Failed to lock DEFAULT_HANDLER to change callback") = Some(Arc::new(log_func));
     unsafe { ffi::g_log_set_default_handler(Some(func_func as _), std::ptr::null_mut()) };
@@ -323,7 +330,7 @@ pub fn log_set_default_handler<P: Fn(Option<&str>, LogLevel, &str) + Send + Sync
 /// To set the default print handler, use the [`log_set_default_handler`] function.
 #[doc(alias = "g_log_set_default_handler")]
 pub fn log_unset_default_handler() {
-    *DEFAULT_HANDLER
+    *default_handler()
         .lock()
         .expect("Failed to lock DEFAULT_HANDLER to remove callback") = None;
     unsafe {
@@ -431,8 +438,7 @@ impl<'a> LogField<'a> {
 
 type WriterCallback = dyn Fn(LogLevel, &[LogField<'_>]) -> LogWriterOutput + Send + Sync + 'static;
 
-static WRITER_FUNC: once_cell::sync::OnceCell<Box<WriterCallback>> =
-    once_cell::sync::OnceCell::new();
+static WRITER_FUNC: OnceLock<Box<WriterCallback>> = OnceLock::new();
 
 #[doc(alias = "g_log_set_writer_func")]
 pub fn log_set_writer_func<
@@ -538,7 +544,7 @@ macro_rules! g_log {
 ///
 /// [g_log]: https://docs.gtk.org/glib/func.log.html
 ///
-/// It is the same as calling the [`g_log!`] macro with [`LogLevel::Error`].
+/// It is the same as calling the [`g_log!`](crate::g_log!) macro with [`LogLevel::Error`].
 ///
 /// Example:
 ///
@@ -575,7 +581,7 @@ macro_rules! g_error {
 ///
 /// [g_log]: https://docs.gtk.org/glib/func.log.html
 ///
-/// It is the same as calling the [`g_log!`] macro with [`LogLevel::Critical`].
+/// It is the same as calling the [`g_log!`](crate::g_log!) macro with [`LogLevel::Critical`].
 ///
 /// Example:
 ///
@@ -612,7 +618,7 @@ macro_rules! g_critical {
 ///
 /// [g_log]: https://docs.gtk.org/glib/func.log.html
 ///
-/// It is the same as calling the [`g_log!`] macro with [`LogLevel::Warning`].
+/// It is the same as calling the [`g_log!`](crate::g_log!) macro with [`LogLevel::Warning`].
 ///
 /// Example:
 ///
@@ -649,7 +655,7 @@ macro_rules! g_warning {
 ///
 /// [g_log]: https://docs.gtk.org/glib/func.log.html
 ///
-/// It is the same as calling the [`g_log!`] macro with [`LogLevel::Message`].
+/// It is the same as calling the [`g_log!`](crate::g_log!) macro with [`LogLevel::Message`].
 ///
 /// Example:
 ///
@@ -686,7 +692,7 @@ macro_rules! g_message {
 ///
 /// [g_log]: https://docs.gtk.org/glib/func.log.html
 ///
-/// It is the same as calling the [`g_log!`] macro with [`LogLevel::Info`].
+/// It is the same as calling the [`g_log!`](crate::g_log!) macro with [`LogLevel::Info`].
 ///
 /// Example:
 ///
@@ -723,7 +729,7 @@ macro_rules! g_info {
 ///
 /// [g_log]: https://docs.gtk.org/glib/func.log.html
 ///
-/// It is the same as calling the [`g_log!`] macro with [`LogLevel::Debug`].
+/// It is the same as calling the [`g_log!`](crate::g_log!) macro with [`LogLevel::Debug`].
 ///
 /// Example:
 ///

@@ -3,13 +3,13 @@
 // DO NOT EDIT
 
 use crate::{
-    AppInfo, AsyncResult, Cancellable, DriveStartFlags, FileAttributeInfoList, FileCopyFlags,
+    ffi, AppInfo, AsyncResult, Cancellable, DriveStartFlags, FileAttributeInfoList, FileCopyFlags,
     FileCreateFlags, FileEnumerator, FileIOStream, FileInfo, FileInputStream, FileMonitor,
     FileMonitorFlags, FileOutputStream, FileQueryInfoFlags, FileType, Mount, MountMountFlags,
     MountOperation, MountUnmountFlags,
 };
 use glib::{prelude::*, translate::*};
-use std::{boxed::Box as Box_, fmt, mem, pin::Pin, ptr};
+use std::{boxed::Box as Box_, pin::Pin};
 
 glib::wrapper! {
     #[doc(alias = "GFile")]
@@ -76,8 +76,8 @@ impl File {
         tmpl: Option<impl AsRef<std::path::Path>>,
     ) -> Result<(File, FileIOStream), glib::Error> {
         unsafe {
-            let mut iostream = ptr::null_mut();
-            let mut error = ptr::null_mut();
+            let mut iostream = std::ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_file_new_tmp(
                 tmpl.as_ref().map(|p| p.as_ref()).to_glib_none().0,
                 &mut iostream,
@@ -101,12 +101,7 @@ impl File {
 unsafe impl Send for File {}
 unsafe impl Sync for File {}
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::File>> Sealed for T {}
-}
-
-pub trait FileExt: IsA<File> + sealed::Sealed + 'static {
+pub trait FileExt: IsA<File> + 'static {
     #[doc(alias = "g_file_append_to")]
     fn append_to(
         &self,
@@ -114,7 +109,7 @@ pub trait FileExt: IsA<File> + sealed::Sealed + 'static {
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<FileOutputStream, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_file_append_to(
                 self.as_ref().to_glib_none().0,
                 flags.into_glib(),
@@ -156,7 +151,7 @@ pub trait FileExt: IsA<File> + sealed::Sealed + 'static {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_file_append_to_finish(_source_object as *mut _, res, &mut error);
             let result = if error.is_null() {
                 Ok(from_glib_full(ret))
@@ -206,7 +201,7 @@ pub trait FileExt: IsA<File> + sealed::Sealed + 'static {
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<glib::GString, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_file_build_attribute_list_for_copy(
                 self.as_ref().to_glib_none().0,
                 flags.into_glib(),
@@ -229,14 +224,13 @@ pub trait FileExt: IsA<File> + sealed::Sealed + 'static {
         cancellable: Option<&impl IsA<Cancellable>>,
         progress_callback: Option<&mut dyn (FnMut(i64, i64))>,
     ) -> Result<(), glib::Error> {
-        let progress_callback_data: Option<&mut dyn (FnMut(i64, i64))> = progress_callback;
+        let mut progress_callback_data: Option<&mut dyn (FnMut(i64, i64))> = progress_callback;
         unsafe extern "C" fn progress_callback_func(
             current_num_bytes: i64,
             total_num_bytes: i64,
             data: glib::ffi::gpointer,
         ) {
-            let callback: *mut Option<&mut dyn (FnMut(i64, i64))> =
-                data as *const _ as usize as *mut Option<&mut dyn (FnMut(i64, i64))>;
+            let callback = data as *mut Option<&mut dyn (FnMut(i64, i64))>;
             if let Some(ref mut callback) = *callback {
                 callback(current_num_bytes, total_num_bytes)
             } else {
@@ -248,16 +242,16 @@ pub trait FileExt: IsA<File> + sealed::Sealed + 'static {
         } else {
             None
         };
-        let super_callback0: &Option<&mut dyn (FnMut(i64, i64))> = &progress_callback_data;
+        let super_callback0: &mut Option<&mut dyn (FnMut(i64, i64))> = &mut progress_callback_data;
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_file_copy(
                 self.as_ref().to_glib_none().0,
                 destination.as_ref().to_glib_none().0,
                 flags.into_glib(),
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
                 progress_callback,
-                super_callback0 as *const _ as usize as *mut _,
+                super_callback0 as *mut _ as *mut _,
                 &mut error,
             );
             debug_assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
@@ -277,7 +271,7 @@ pub trait FileExt: IsA<File> + sealed::Sealed + 'static {
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<(), glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_file_copy_attributes(
                 self.as_ref().to_glib_none().0,
                 destination.as_ref().to_glib_none().0,
@@ -301,7 +295,7 @@ pub trait FileExt: IsA<File> + sealed::Sealed + 'static {
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<FileOutputStream, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_file_create(
                 self.as_ref().to_glib_none().0,
                 flags.into_glib(),
@@ -343,7 +337,7 @@ pub trait FileExt: IsA<File> + sealed::Sealed + 'static {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_file_create_finish(_source_object as *mut _, res, &mut error);
             let result = if error.is_null() {
                 Ok(from_glib_full(ret))
@@ -391,7 +385,7 @@ pub trait FileExt: IsA<File> + sealed::Sealed + 'static {
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<FileIOStream, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_file_create_readwrite(
                 self.as_ref().to_glib_none().0,
                 flags.into_glib(),
@@ -433,7 +427,7 @@ pub trait FileExt: IsA<File> + sealed::Sealed + 'static {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret =
                 ffi::g_file_create_readwrite_finish(_source_object as *mut _, res, &mut error);
             let result = if error.is_null() {
@@ -478,7 +472,7 @@ pub trait FileExt: IsA<File> + sealed::Sealed + 'static {
     #[doc(alias = "g_file_delete")]
     fn delete(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<(), glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_file_delete(
                 self.as_ref().to_glib_none().0,
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
@@ -519,7 +513,7 @@ pub trait FileExt: IsA<File> + sealed::Sealed + 'static {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let _ = ffi::g_file_delete_finish(_source_object as *mut _, res, &mut error);
             let result = if error.is_null() {
                 Ok(())
@@ -590,7 +584,7 @@ pub trait FileExt: IsA<File> + sealed::Sealed + 'static {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let _ = ffi::g_file_eject_mountable_with_operation_finish(
                 _source_object as *mut _,
                 res,
@@ -648,7 +642,7 @@ pub trait FileExt: IsA<File> + sealed::Sealed + 'static {
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<FileEnumerator, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_file_enumerate_children(
                 self.as_ref().to_glib_none().0,
                 attributes.to_glib_none().0,
@@ -680,7 +674,7 @@ pub trait FileExt: IsA<File> + sealed::Sealed + 'static {
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<Mount, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_file_find_enclosing_mount(
                 self.as_ref().to_glib_none().0,
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
@@ -716,7 +710,7 @@ pub trait FileExt: IsA<File> + sealed::Sealed + 'static {
     #[doc(alias = "get_child_for_display_name")]
     fn child_for_display_name(&self, display_name: &str) -> Result<File, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_file_get_child_for_display_name(
                 self.as_ref().to_glib_none().0,
                 display_name.to_glib_none().0,
@@ -813,8 +807,8 @@ pub trait FileExt: IsA<File> + sealed::Sealed + 'static {
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<(glib::Bytes, Option<glib::GString>), glib::Error> {
         unsafe {
-            let mut etag_out = ptr::null_mut();
-            let mut error = ptr::null_mut();
+            let mut etag_out = std::ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_file_load_bytes(
                 self.as_ref().to_glib_none().0,
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
@@ -856,8 +850,8 @@ pub trait FileExt: IsA<File> + sealed::Sealed + 'static {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
-            let mut etag_out = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
+            let mut etag_out = std::ptr::null_mut();
             let ret = ffi::g_file_load_bytes_finish(
                 _source_object as *mut _,
                 res,
@@ -904,124 +898,13 @@ pub trait FileExt: IsA<File> + sealed::Sealed + 'static {
         ))
     }
 
-    #[doc(alias = "g_file_load_contents")]
-    fn load_contents(
-        &self,
-        cancellable: Option<&impl IsA<Cancellable>>,
-    ) -> Result<(Vec<u8>, Option<glib::GString>), glib::Error> {
-        unsafe {
-            let mut contents = ptr::null_mut();
-            let mut length = mem::MaybeUninit::uninit();
-            let mut etag_out = ptr::null_mut();
-            let mut error = ptr::null_mut();
-            let is_ok = ffi::g_file_load_contents(
-                self.as_ref().to_glib_none().0,
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
-                &mut contents,
-                length.as_mut_ptr(),
-                &mut etag_out,
-                &mut error,
-            );
-            debug_assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
-            if error.is_null() {
-                Ok((
-                    FromGlibContainer::from_glib_full_num(contents, length.assume_init() as _),
-                    from_glib_full(etag_out),
-                ))
-            } else {
-                Err(from_glib_full(error))
-            }
-        }
-    }
-
-    #[doc(alias = "g_file_load_contents_async")]
-    fn load_contents_async<
-        P: FnOnce(Result<(Vec<u8>, Option<glib::GString>), glib::Error>) + 'static,
-    >(
-        &self,
-        cancellable: Option<&impl IsA<Cancellable>>,
-        callback: P,
-    ) {
-        let main_context = glib::MainContext::ref_thread_default();
-        let is_main_context_owner = main_context.is_owner();
-        let has_acquired_main_context = (!is_main_context_owner)
-            .then(|| main_context.acquire().ok())
-            .flatten();
-        assert!(
-            is_main_context_owner || has_acquired_main_context.is_some(),
-            "Async operations only allowed if the thread is owning the MainContext"
-        );
-
-        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
-            Box_::new(glib::thread_guard::ThreadGuard::new(callback));
-        unsafe extern "C" fn load_contents_async_trampoline<
-            P: FnOnce(Result<(Vec<u8>, Option<glib::GString>), glib::Error>) + 'static,
-        >(
-            _source_object: *mut glib::gobject_ffi::GObject,
-            res: *mut crate::ffi::GAsyncResult,
-            user_data: glib::ffi::gpointer,
-        ) {
-            let mut error = ptr::null_mut();
-            let mut contents = ptr::null_mut();
-            let mut length = mem::MaybeUninit::uninit();
-            let mut etag_out = ptr::null_mut();
-            let _ = ffi::g_file_load_contents_finish(
-                _source_object as *mut _,
-                res,
-                &mut contents,
-                length.as_mut_ptr(),
-                &mut etag_out,
-                &mut error,
-            );
-            let result = if error.is_null() {
-                Ok((
-                    FromGlibContainer::from_glib_full_num(contents, length.assume_init() as _),
-                    from_glib_full(etag_out),
-                ))
-            } else {
-                Err(from_glib_full(error))
-            };
-            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
-                Box_::from_raw(user_data as *mut _);
-            let callback: P = callback.into_inner();
-            callback(result);
-        }
-        let callback = load_contents_async_trampoline::<P>;
-        unsafe {
-            ffi::g_file_load_contents_async(
-                self.as_ref().to_glib_none().0,
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
-                Some(callback),
-                Box_::into_raw(user_data) as *mut _,
-            );
-        }
-    }
-
-    fn load_contents_future(
-        &self,
-    ) -> Pin<
-        Box_<
-            dyn std::future::Future<Output = Result<(Vec<u8>, Option<glib::GString>), glib::Error>>
-                + 'static,
-        >,
-    > {
-        Box_::pin(crate::GioFuture::new(
-            self,
-            move |obj, cancellable, send| {
-                obj.load_contents_async(Some(cancellable), move |res| {
-                    send.resolve(res);
-                });
-            },
-        ))
-    }
-
     #[doc(alias = "g_file_make_directory")]
     fn make_directory(
         &self,
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<(), glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_file_make_directory(
                 self.as_ref().to_glib_none().0,
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
@@ -1062,7 +945,7 @@ pub trait FileExt: IsA<File> + sealed::Sealed + 'static {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let _ = ffi::g_file_make_directory_finish(_source_object as *mut _, res, &mut error);
             let result = if error.is_null() {
                 Ok(())
@@ -1106,7 +989,7 @@ pub trait FileExt: IsA<File> + sealed::Sealed + 'static {
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<(), glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_file_make_directory_with_parents(
                 self.as_ref().to_glib_none().0,
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
@@ -1128,7 +1011,7 @@ pub trait FileExt: IsA<File> + sealed::Sealed + 'static {
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<(), glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_file_make_symbolic_link(
                 self.as_ref().to_glib_none().0,
                 symlink_value.as_ref().to_glib_none().0,
@@ -1151,7 +1034,7 @@ pub trait FileExt: IsA<File> + sealed::Sealed + 'static {
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<FileMonitor, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_file_monitor(
                 self.as_ref().to_glib_none().0,
                 flags.into_glib(),
@@ -1173,7 +1056,7 @@ pub trait FileExt: IsA<File> + sealed::Sealed + 'static {
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<FileMonitor, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_file_monitor_directory(
                 self.as_ref().to_glib_none().0,
                 flags.into_glib(),
@@ -1195,7 +1078,7 @@ pub trait FileExt: IsA<File> + sealed::Sealed + 'static {
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<FileMonitor, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_file_monitor_file(
                 self.as_ref().to_glib_none().0,
                 flags.into_glib(),
@@ -1237,7 +1120,7 @@ pub trait FileExt: IsA<File> + sealed::Sealed + 'static {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let _ = ffi::g_file_mount_enclosing_volume_finish(
                 _source_object as *mut _,
                 res,
@@ -1314,7 +1197,7 @@ pub trait FileExt: IsA<File> + sealed::Sealed + 'static {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_file_mount_mountable_finish(_source_object as *mut _, res, &mut error);
             let result = if error.is_null() {
                 Ok(from_glib_full(ret))
@@ -1369,14 +1252,13 @@ pub trait FileExt: IsA<File> + sealed::Sealed + 'static {
         cancellable: Option<&impl IsA<Cancellable>>,
         progress_callback: Option<&mut dyn (FnMut(i64, i64))>,
     ) -> Result<(), glib::Error> {
-        let progress_callback_data: Option<&mut dyn (FnMut(i64, i64))> = progress_callback;
+        let mut progress_callback_data: Option<&mut dyn (FnMut(i64, i64))> = progress_callback;
         unsafe extern "C" fn progress_callback_func(
             current_num_bytes: i64,
             total_num_bytes: i64,
             data: glib::ffi::gpointer,
         ) {
-            let callback: *mut Option<&mut dyn (FnMut(i64, i64))> =
-                data as *const _ as usize as *mut Option<&mut dyn (FnMut(i64, i64))>;
+            let callback = data as *mut Option<&mut dyn (FnMut(i64, i64))>;
             if let Some(ref mut callback) = *callback {
                 callback(current_num_bytes, total_num_bytes)
             } else {
@@ -1388,16 +1270,16 @@ pub trait FileExt: IsA<File> + sealed::Sealed + 'static {
         } else {
             None
         };
-        let super_callback0: &Option<&mut dyn (FnMut(i64, i64))> = &progress_callback_data;
+        let super_callback0: &mut Option<&mut dyn (FnMut(i64, i64))> = &mut progress_callback_data;
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_file_move(
                 self.as_ref().to_glib_none().0,
                 destination.as_ref().to_glib_none().0,
                 flags.into_glib(),
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
                 progress_callback,
-                super_callback0 as *const _ as usize as *mut _,
+                super_callback0 as *mut _ as *mut _,
                 &mut error,
             );
             debug_assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
@@ -1415,7 +1297,7 @@ pub trait FileExt: IsA<File> + sealed::Sealed + 'static {
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<FileIOStream, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_file_open_readwrite(
                 self.as_ref().to_glib_none().0,
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
@@ -1455,7 +1337,7 @@ pub trait FileExt: IsA<File> + sealed::Sealed + 'static {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_file_open_readwrite_finish(_source_object as *mut _, res, &mut error);
             let result = if error.is_null() {
                 Ok(from_glib_full(ret))
@@ -1524,7 +1406,7 @@ pub trait FileExt: IsA<File> + sealed::Sealed + 'static {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let _ = ffi::g_file_poll_mountable_finish(_source_object as *mut _, res, &mut error);
             let result = if error.is_null() {
                 Ok(())
@@ -1566,7 +1448,7 @@ pub trait FileExt: IsA<File> + sealed::Sealed + 'static {
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<AppInfo, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_file_query_default_handler(
                 self.as_ref().to_glib_none().0,
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
@@ -1608,7 +1490,7 @@ pub trait FileExt: IsA<File> + sealed::Sealed + 'static {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret =
                 ffi::g_file_query_default_handler_finish(_source_object as *mut _, res, &mut error);
             let result = if error.is_null() {
@@ -1681,7 +1563,7 @@ pub trait FileExt: IsA<File> + sealed::Sealed + 'static {
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<FileInfo, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_file_query_filesystem_info(
                 self.as_ref().to_glib_none().0,
                 attributes.to_glib_none().0,
@@ -1723,7 +1605,7 @@ pub trait FileExt: IsA<File> + sealed::Sealed + 'static {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret =
                 ffi::g_file_query_filesystem_info_finish(_source_object as *mut _, res, &mut error);
             let result = if error.is_null() {
@@ -1778,7 +1660,7 @@ pub trait FileExt: IsA<File> + sealed::Sealed + 'static {
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<FileInfo, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_file_query_info(
                 self.as_ref().to_glib_none().0,
                 attributes.to_glib_none().0,
@@ -1822,7 +1704,7 @@ pub trait FileExt: IsA<File> + sealed::Sealed + 'static {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_file_query_info_finish(_source_object as *mut _, res, &mut error);
             let result = if error.is_null() {
                 Ok(from_glib_full(ret))
@@ -1877,7 +1759,7 @@ pub trait FileExt: IsA<File> + sealed::Sealed + 'static {
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<FileAttributeInfoList, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_file_query_settable_attributes(
                 self.as_ref().to_glib_none().0,
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
@@ -1897,7 +1779,7 @@ pub trait FileExt: IsA<File> + sealed::Sealed + 'static {
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<FileAttributeInfoList, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_file_query_writable_namespaces(
                 self.as_ref().to_glib_none().0,
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
@@ -1917,7 +1799,7 @@ pub trait FileExt: IsA<File> + sealed::Sealed + 'static {
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<FileInputStream, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_file_read(
                 self.as_ref().to_glib_none().0,
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
@@ -1957,7 +1839,7 @@ pub trait FileExt: IsA<File> + sealed::Sealed + 'static {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_file_read_finish(_source_object as *mut _, res, &mut error);
             let result = if error.is_null() {
                 Ok(from_glib_full(ret))
@@ -2005,7 +1887,7 @@ pub trait FileExt: IsA<File> + sealed::Sealed + 'static {
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<FileOutputStream, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_file_replace(
                 self.as_ref().to_glib_none().0,
                 etag.to_glib_none().0,
@@ -2051,7 +1933,7 @@ pub trait FileExt: IsA<File> + sealed::Sealed + 'static {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_file_replace_finish(_source_object as *mut _, res, &mut error);
             let result = if error.is_null() {
                 Ok(from_glib_full(ret))
@@ -2115,8 +1997,8 @@ pub trait FileExt: IsA<File> + sealed::Sealed + 'static {
     ) -> Result<Option<glib::GString>, glib::Error> {
         let length = contents.len() as _;
         unsafe {
-            let mut new_etag = ptr::null_mut();
-            let mut error = ptr::null_mut();
+            let mut new_etag = std::ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_file_replace_contents(
                 self.as_ref().to_glib_none().0,
                 contents.to_glib_none().0,
@@ -2151,7 +2033,7 @@ pub trait FileExt: IsA<File> + sealed::Sealed + 'static {
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<FileIOStream, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_file_replace_readwrite(
                 self.as_ref().to_glib_none().0,
                 etag.to_glib_none().0,
@@ -2197,7 +2079,7 @@ pub trait FileExt: IsA<File> + sealed::Sealed + 'static {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret =
                 ffi::g_file_replace_readwrite_finish(_source_object as *mut _, res, &mut error);
             let result = if error.is_null() {
@@ -2276,7 +2158,7 @@ pub trait FileExt: IsA<File> + sealed::Sealed + 'static {
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<(), glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_file_set_attribute_byte_string(
                 self.as_ref().to_glib_none().0,
                 attribute.to_glib_none().0,
@@ -2303,7 +2185,7 @@ pub trait FileExt: IsA<File> + sealed::Sealed + 'static {
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<(), glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_file_set_attribute_int32(
                 self.as_ref().to_glib_none().0,
                 attribute.to_glib_none().0,
@@ -2330,7 +2212,7 @@ pub trait FileExt: IsA<File> + sealed::Sealed + 'static {
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<(), glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_file_set_attribute_int64(
                 self.as_ref().to_glib_none().0,
                 attribute.to_glib_none().0,
@@ -2357,7 +2239,7 @@ pub trait FileExt: IsA<File> + sealed::Sealed + 'static {
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<(), glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_file_set_attribute_string(
                 self.as_ref().to_glib_none().0,
                 attribute.to_glib_none().0,
@@ -2384,7 +2266,7 @@ pub trait FileExt: IsA<File> + sealed::Sealed + 'static {
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<(), glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_file_set_attribute_uint32(
                 self.as_ref().to_glib_none().0,
                 attribute.to_glib_none().0,
@@ -2411,7 +2293,7 @@ pub trait FileExt: IsA<File> + sealed::Sealed + 'static {
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<(), glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_file_set_attribute_uint64(
                 self.as_ref().to_glib_none().0,
                 attribute.to_glib_none().0,
@@ -2457,8 +2339,8 @@ pub trait FileExt: IsA<File> + sealed::Sealed + 'static {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
-            let mut info = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
+            let mut info = std::ptr::null_mut();
             let _ = ffi::g_file_set_attributes_finish(
                 _source_object as *mut _,
                 res,
@@ -2520,7 +2402,7 @@ pub trait FileExt: IsA<File> + sealed::Sealed + 'static {
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<(), glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_file_set_attributes_from_info(
                 self.as_ref().to_glib_none().0,
                 info.to_glib_none().0,
@@ -2544,7 +2426,7 @@ pub trait FileExt: IsA<File> + sealed::Sealed + 'static {
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<File, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_file_set_display_name(
                 self.as_ref().to_glib_none().0,
                 display_name.to_glib_none().0,
@@ -2586,7 +2468,7 @@ pub trait FileExt: IsA<File> + sealed::Sealed + 'static {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret =
                 ffi::g_file_set_display_name_finish(_source_object as *mut _, res, &mut error);
             let result = if error.is_null() {
@@ -2660,7 +2542,7 @@ pub trait FileExt: IsA<File> + sealed::Sealed + 'static {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let _ = ffi::g_file_start_mountable_finish(_source_object as *mut _, res, &mut error);
             let result = if error.is_null() {
                 Ok(())
@@ -2733,7 +2615,7 @@ pub trait FileExt: IsA<File> + sealed::Sealed + 'static {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let _ = ffi::g_file_stop_mountable_finish(_source_object as *mut _, res, &mut error);
             let result = if error.is_null() {
                 Ok(())
@@ -2791,7 +2673,7 @@ pub trait FileExt: IsA<File> + sealed::Sealed + 'static {
     #[doc(alias = "g_file_trash")]
     fn trash(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<(), glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_file_trash(
                 self.as_ref().to_glib_none().0,
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
@@ -2832,7 +2714,7 @@ pub trait FileExt: IsA<File> + sealed::Sealed + 'static {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let _ = ffi::g_file_trash_finish(_source_object as *mut _, res, &mut error);
             let result = if error.is_null() {
                 Ok(())
@@ -2897,7 +2779,7 @@ pub trait FileExt: IsA<File> + sealed::Sealed + 'static {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let _ = ffi::g_file_unmount_mountable_with_operation_finish(
                 _source_object as *mut _,
                 res,
@@ -2949,9 +2831,3 @@ pub trait FileExt: IsA<File> + sealed::Sealed + 'static {
 }
 
 impl<O: IsA<File>> FileExt for O {}
-
-impl fmt::Display for File {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("File")
-    }
-}

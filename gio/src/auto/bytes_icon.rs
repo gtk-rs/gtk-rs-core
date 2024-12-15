@@ -2,9 +2,8 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{Icon, LoadableIcon};
+use crate::{ffi, Icon, LoadableIcon};
 use glib::translate::*;
-use std::fmt;
 
 glib::wrapper! {
     #[doc(alias = "GBytesIcon")]
@@ -25,11 +24,5 @@ impl BytesIcon {
     #[doc(alias = "get_bytes")]
     pub fn bytes(&self) -> glib::Bytes {
         unsafe { from_glib_none(ffi::g_bytes_icon_get_bytes(self.to_glib_none().0)) }
-    }
-}
-
-impl fmt::Display for BytesIcon {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("BytesIcon")
     }
 }

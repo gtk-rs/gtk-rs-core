@@ -2,9 +2,8 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::ActionGroup;
+use crate::{ffi, ActionGroup};
 use glib::{prelude::*, translate::*};
-use std::fmt;
 
 glib::wrapper! {
     #[doc(alias = "GRemoteActionGroup")]
@@ -19,12 +18,7 @@ impl RemoteActionGroup {
     pub const NONE: Option<&'static RemoteActionGroup> = None;
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::RemoteActionGroup>> Sealed for T {}
-}
-
-pub trait RemoteActionGroupExt: IsA<RemoteActionGroup> + sealed::Sealed + 'static {
+pub trait RemoteActionGroupExt: IsA<RemoteActionGroup> + 'static {
     #[doc(alias = "g_remote_action_group_activate_action_full")]
     fn activate_action_full(
         &self,
@@ -61,9 +55,3 @@ pub trait RemoteActionGroupExt: IsA<RemoteActionGroup> + sealed::Sealed + 'stati
 }
 
 impl<O: IsA<RemoteActionGroup>> RemoteActionGroupExt for O {}
-
-impl fmt::Display for RemoteActionGroup {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("RemoteActionGroup")
-    }
-}

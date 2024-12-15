@@ -7,7 +7,7 @@ use std::{
     slice,
 };
 
-use ffi::cairo_status_t;
+use crate::ffi;
 use libc::{c_uint, c_void};
 
 use crate::{utils::status_to_result, Error, ImageSurface, IoError, Surface};
@@ -22,7 +22,7 @@ unsafe extern "C" fn read_func<R: Read>(
     closure: *mut c_void,
     data: *mut u8,
     len: c_uint,
-) -> cairo_status_t {
+) -> crate::ffi::cairo_status_t {
     let read_env: &mut ReadEnv<R> = &mut *(closure as *mut ReadEnv<R>);
 
     // Don’t attempt another read, if a previous one errored or panicked:
@@ -59,7 +59,7 @@ unsafe extern "C" fn write_func<W: Write>(
     closure: *mut c_void,
     data: *mut u8,
     len: c_uint,
-) -> cairo_status_t {
+) -> crate::ffi::cairo_status_t {
     let write_env: &mut WriteEnv<W> = &mut *(closure as *mut WriteEnv<W>);
 
     // Don’t attempt another write, if a previous one errored or panicked:

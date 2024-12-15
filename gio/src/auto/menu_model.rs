@@ -2,13 +2,13 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{MenuAttributeIter, MenuLinkIter};
+use crate::{ffi, MenuAttributeIter, MenuLinkIter};
 use glib::{
     prelude::*,
     signal::{connect_raw, SignalHandlerId},
     translate::*,
 };
-use std::{boxed::Box as Box_, fmt, mem::transmute};
+use std::boxed::Box as Box_;
 
 glib::wrapper! {
     #[doc(alias = "GMenuModel")]
@@ -23,12 +23,7 @@ impl MenuModel {
     pub const NONE: Option<&'static MenuModel> = None;
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::MenuModel>> Sealed for T {}
-}
-
-pub trait MenuModelExt: IsA<MenuModel> + sealed::Sealed + 'static {
+pub trait MenuModelExt: IsA<MenuModel> + 'static {
     //#[doc(alias = "g_menu_model_get_item_attribute")]
     //#[doc(alias = "get_item_attribute")]
     //fn is_item_attribute(&self, item_index: i32, attribute: &str, format_string: &str, : /*Unknown conversion*//*Unimplemented*/Basic: VarArgs) -> bool {
@@ -119,9 +114,9 @@ pub trait MenuModelExt: IsA<MenuModel> + sealed::Sealed + 'static {
             F: Fn(&P, i32, i32, i32) + 'static,
         >(
             this: *mut ffi::GMenuModel,
-            position: libc::c_int,
-            removed: libc::c_int,
-            added: libc::c_int,
+            position: std::ffi::c_int,
+            removed: std::ffi::c_int,
+            added: std::ffi::c_int,
             f: glib::ffi::gpointer,
         ) {
             let f: &F = &*(f as *const F);
@@ -137,7 +132,7 @@ pub trait MenuModelExt: IsA<MenuModel> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"items-changed\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     items_changed_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -147,9 +142,3 @@ pub trait MenuModelExt: IsA<MenuModel> + sealed::Sealed + 'static {
 }
 
 impl<O: IsA<MenuModel>> MenuModelExt for O {}
-
-impl fmt::Display for MenuModel {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("MenuModel")
-    }
-}

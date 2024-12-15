@@ -1,6 +1,7 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
 use glib::{
+    collections::Slice,
     prelude::*,
     translate::{FromGlib, IntoGlib},
 };
@@ -184,6 +185,19 @@ fn derive_boxed_nullable() {
 }
 
 #[test]
+fn boxed_transparent() {
+    #[derive(Clone, Debug, PartialEq, Eq, glib::Boxed)]
+    #[boxed_type(name = "MyBoxed")]
+    struct MyBoxed(String);
+
+    let vec = vec![MyBoxed(String::from("abc")), MyBoxed(String::from("dfg"))];
+
+    // Slice requires TransparentType trait
+    let slice = Slice::from(vec);
+    assert_eq!(slice.last(), Some(MyBoxed(String::from("dfg"))).as_ref());
+}
+
+#[test]
 fn attr_flags() {
     #[glib::flags(name = "MyFlags")]
     enum MyFlags {
@@ -245,6 +259,23 @@ fn attr_flags() {
 }
 
 #[test]
+fn attr_flags_with_default() {
+    #[glib::flags(name = "MyFlags")]
+    enum MyFlags {
+        #[flags_value(name = "Flag A", nick = "nick-a")]
+        A = 0b00000001,
+        #[default]
+        #[flags_value(name = "Flag B")]
+        B = 0b00000010,
+    }
+
+    assert_eq!(MyFlags::A.bits(), 1);
+    assert_eq!(MyFlags::B.bits(), 2);
+    assert_eq!(MyFlags::default(), MyFlags::B);
+    assert_eq!(MyFlags::default().into_glib(), 2);
+}
+
+#[test]
 fn subclassable() {
     mod foo {
         use glib::subclass::prelude::*;
@@ -264,12 +295,16 @@ fn subclassable() {
             }
 
             impl ObjectImpl for Foo {}
+
+            impl Foo {
+                pub(super) fn test(&self) {}
+            }
         }
 
         pub trait FooExt: IsA<Foo> + 'static {
             fn test(&self) {
-                let _self = self.as_ref().downcast_ref::<Foo>().unwrap().imp();
-                unimplemented!()
+                let imp = self.as_ref().upcast_ref::<Foo>().imp();
+                imp.test();
             }
         }
 
@@ -279,6 +314,11 @@ fn subclassable() {
             pub struct Foo(ObjectSubclass<imp::Foo>);
         }
     }
+
+    use foo::FooExt;
+
+    let obj = glib::Object::new::<foo::Foo>();
+    obj.test();
 }
 
 #[test]
@@ -519,7 +559,11 @@ fn closure() {
         let obj = glib::Object::new::<glib::Object>();
 
         assert_eq!(obj.ref_count(), 1);
-        let weak_test = glib::closure_local!(@watch obj => move || obj.ref_count());
+        let weak_test = glib::closure_local!(
+            #[watch]
+            obj,
+            move || obj.ref_count()
+        );
         assert_eq!(obj.ref_count(), 1);
         assert_eq!(weak_test.invoke::<u32>(&[]), 2);
         assert_eq!(obj.ref_count(), 1);
@@ -535,7 +579,11 @@ fn closure() {
 
         impl TestExt for glib::Object {
             fn ref_count_in_closure(&self) -> u32 {
-                let closure = glib::closure_local!(@watch self as obj => move || obj.ref_count());
+                let closure = glib::closure_local!(
+                    #[watch(rename_to = obj)]
+                    self,
+                    move || obj.ref_count()
+                );
                 closure.invoke::<u32>(&[])
             }
         }
@@ -551,8 +599,11 @@ fn closure() {
 
         impl A {
             fn ref_count_in_closure(&self) -> u32 {
-                let closure =
-                    glib::closure_local!(@watch self.obj as obj => move || obj.ref_count());
+                let closure = glib::closure_local!(
+                    #[watch(rename_to = obj)]
+                    self.obj,
+                    move || obj.ref_count()
+                );
                 closure.invoke::<u32>(&[])
             }
         }
@@ -566,7 +617,11 @@ fn closure() {
     let strong_test = {
         let obj = glib::Object::new::<glib::Object>();
 
-        let strong_test = glib::closure_local!(@strong obj => move || obj.ref_count());
+        let strong_test = glib::closure_local!(
+            #[strong]
+            obj,
+            move || obj.ref_count()
+        );
         assert_eq!(strong_test.invoke::<u32>(&[]), 2);
 
         strong_test
@@ -576,14 +631,88 @@ fn closure() {
     let weak_none_test = {
         let obj = glib::Object::new::<glib::Object>();
 
-        let weak_none_test = glib::closure_local!(@weak-allow-none obj => move || {
-            obj.map(|o| o.ref_count()).unwrap_or_default()
-        });
+        let weak_none_test = glib::closure_local!(
+            #[weak_allow_none]
+            obj,
+            move || { obj.map(|o| o.ref_count()).unwrap_or_default() }
+        );
         assert_eq!(weak_none_test.invoke::<u32>(&[]), 2);
 
         weak_none_test
     };
     assert_eq!(weak_none_test.invoke::<u32>(&[]), 0);
+
+    let weak_test_or_else = {
+        let obj = glib::Object::new::<glib::Object>();
+
+        let weak_test = glib::closure_local!(
+            #[weak]
+            obj,
+            #[upgrade_or_else]
+            || 0,
+            move || obj.ref_count()
+        );
+        assert_eq!(weak_test.invoke::<u32>(&[]), 2);
+
+        weak_test
+    };
+    assert_eq!(weak_test_or_else.invoke::<u32>(&[]), 0);
+
+    let weak_test_or = {
+        let obj = glib::Object::new::<glib::Object>();
+
+        let weak_test = glib::closure_local!(
+            #[weak]
+            obj,
+            #[upgrade_or]
+            0,
+            move || obj.ref_count()
+        );
+        assert_eq!(weak_test.invoke::<u32>(&[]), 2);
+
+        weak_test
+    };
+    assert_eq!(weak_test_or.invoke::<u32>(&[]), 0);
+
+    let weak_test_or_default = {
+        let obj = glib::Object::new::<glib::Object>();
+
+        let weak_test = glib::closure_local!(
+            #[weak]
+            obj,
+            #[upgrade_or_default]
+            move || obj.ref_count()
+        );
+        assert_eq!(weak_test.invoke::<u32>(&[]), 2);
+
+        weak_test
+    };
+    assert_eq!(weak_test_or_default.invoke::<u32>(&[]), 0);
+
+    {
+        let ret = std::rc::Rc::new(std::cell::Cell::new(0));
+        let weak_test_or_unit = {
+            let obj = glib::Object::new::<glib::Object>();
+
+            let weak_test = glib::closure_local!(
+                #[weak]
+                obj,
+                #[strong]
+                ret,
+                move || {
+                    ret.set(obj.ref_count());
+                }
+            );
+            weak_test.invoke::<()>(&[]);
+            assert_eq!(ret.get(), 2);
+            ret.set(0);
+
+            weak_test
+        };
+        weak_test_or_unit.invoke::<()>(&[]);
+
+        assert_eq!(ret.get(), 0);
+    }
 
     {
         let obj1 = glib::Object::new::<glib::Object>();
@@ -594,9 +723,13 @@ fn closure() {
         let rc = obj_arg_test.invoke::<u32>(&[&obj1, &obj2]);
         assert_eq!(rc, 6);
 
-        let alias_test = glib::closure_local!(@strong obj1 as a, @strong obj2 => move || {
-            a.ref_count() + obj2.ref_count()
-        });
+        let alias_test = glib::closure_local!(
+            #[strong(rename_to = a)]
+            obj1,
+            #[strong]
+            obj2,
+            move || { a.ref_count() + obj2.ref_count() }
+        );
         assert_eq!(alias_test.invoke::<u32>(&[]), 4);
     }
 
@@ -607,9 +740,11 @@ fn closure() {
 
         let a = glib::Object::new::<glib::Object>();
         let a_struct = A { a };
-        let struct_test = glib::closure_local!(@strong a_struct.a as a => move || {
-            a.ref_count()
-        });
+        let struct_test = glib::closure_local!(
+            #[strong(rename_to = a)]
+            a_struct.a,
+            move || { a.ref_count() }
+        );
         assert_eq!(struct_test.invoke::<u32>(&[]), 2);
     }
 
@@ -641,13 +776,21 @@ fn closure() {
             let f = glib::Object::new::<Foo>();
 
             assert_eq!(f.my_ref_count(), 1);
-            let cast_test = glib::closure_local!(@watch f => move || f.my_ref_count());
+            let cast_test = glib::closure_local!(
+                #[watch]
+                f,
+                move || f.my_ref_count()
+            );
             assert_eq!(f.my_ref_count(), 1);
             assert_eq!(cast_test.invoke::<u32>(&[]), 2);
             assert_eq!(f.my_ref_count(), 1);
 
             let f_ref = &f;
-            let _ = glib::closure_local!(@watch f_ref => move || f_ref.my_ref_count());
+            let _ = glib::closure_local!(
+                #[watch]
+                f_ref,
+                move || f_ref.my_ref_count()
+            );
 
             cast_test
         };
@@ -685,11 +828,15 @@ fn closure() {
         let inc_by = {
             let obj = glib::Object::new::<SendObject>();
             let obj = obj.imp().obj();
-            let inc_by = glib::closure!(@watch obj => move |x: i32| {
-                let old = obj.value();
-                obj.set_value(x + old);
-                old
-            });
+            let inc_by = glib::closure!(
+                #[watch]
+                obj,
+                move |x: i32| {
+                    let old = obj.value();
+                    obj.set_value(x + old);
+                    old
+                }
+            );
             obj.set_value(42);
             assert_eq!(obj.value(), 42);
             assert_eq!(inc_by.invoke::<i32>(&[&24i32]), 42);

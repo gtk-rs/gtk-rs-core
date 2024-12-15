@@ -3,42 +3,44 @@
 // DO NOT EDIT
 
 use crate::{
+    ffi,
     prelude::*,
     signal::{connect_raw, SignalHandlerId},
     translate::*,
     Object,
 };
-use std::{boxed::Box as Box_, fmt, mem::transmute};
+use std::boxed::Box as Box_;
 
 crate::wrapper! {
     #[doc(alias = "GBindingGroup")]
-    pub struct BindingGroup(Object<gobject_ffi::GBindingGroup>);
+    pub struct BindingGroup(Object<crate::gobject_ffi::GBindingGroup>);
 
     match fn {
-        type_ => || gobject_ffi::g_binding_group_get_type(),
+        type_ => || crate::gobject_ffi::g_binding_group_get_type(),
     }
 }
 
 impl BindingGroup {
     #[doc(alias = "g_binding_group_new")]
     pub fn new() -> BindingGroup {
-        unsafe { from_glib_full(gobject_ffi::g_binding_group_new()) }
+        unsafe { from_glib_full(crate::gobject_ffi::g_binding_group_new()) }
     }
 
     #[doc(alias = "g_binding_group_dup_source")]
     #[doc(alias = "dup_source")]
     pub fn source(&self) -> Option<Object> {
         unsafe {
-            from_glib_none(gobject_ffi::g_binding_group_dup_source(
+            from_glib_none(crate::gobject_ffi::g_binding_group_dup_source(
                 self.to_glib_none().0,
             ))
         }
     }
 
     #[doc(alias = "g_binding_group_set_source")]
+    #[doc(alias = "source")]
     pub fn set_source(&self, source: Option<&impl IsA<Object>>) {
         unsafe {
-            gobject_ffi::g_binding_group_set_source(
+            crate::gobject_ffi::g_binding_group_set_source(
                 self.to_glib_none().0,
                 source.map(|p| p.as_ref()).to_glib_none().0,
             );
@@ -67,7 +69,7 @@ impl BindingGroup {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::source\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_source_trampoline::<F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -86,9 +88,3 @@ impl Default for BindingGroup {
 
 unsafe impl Send for BindingGroup {}
 unsafe impl Sync for BindingGroup {}
-
-impl fmt::Display for BindingGroup {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("BindingGroup")
-    }
-}

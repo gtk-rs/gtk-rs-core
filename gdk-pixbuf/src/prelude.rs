@@ -4,8 +4,9 @@
 //! Traits intended for blanket imports.
 
 #[doc(hidden)]
-pub use gio::prelude::*;
-#[doc(hidden)]
 pub use glib::prelude::*;
+
+#[doc(hidden)]
+pub use gio::prelude::*;
 
 pub use crate::{auto::traits::*, pixbuf_animation::PixbufAnimationExtManual};

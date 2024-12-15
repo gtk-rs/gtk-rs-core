@@ -2,12 +2,13 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
+use crate::ffi;
 use glib::{
     prelude::*,
     signal::{connect_raw, SignalHandlerId},
     translate::*,
 };
-use std::{boxed::Box as Box_, fmt, mem::transmute};
+use std::boxed::Box as Box_;
 
 glib::wrapper! {
     #[doc(alias = "GFilenameCompleter")]
@@ -67,7 +68,7 @@ impl FilenameCompleter {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"got-completion-data\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     got_completion_data_trampoline::<F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -79,11 +80,5 @@ impl FilenameCompleter {
 impl Default for FilenameCompleter {
     fn default() -> Self {
         Self::new()
-    }
-}
-
-impl fmt::Display for FilenameCompleter {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("FilenameCompleter")
     }
 }

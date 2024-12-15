@@ -4,14 +4,9 @@ use std::{boxed::Box as Box_, mem::transmute};
 
 use glib::{prelude::*, signal::connect_raw, translate::*, SignalHandlerId};
 
-use crate::DBusProxy;
+use crate::{ffi, DBusProxy};
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::DBusProxy>> Sealed for T {}
-}
-
-pub trait DBusProxyExtManual: sealed::Sealed + IsA<DBusProxy> + 'static {
+pub trait DBusProxyExtManual: IsA<DBusProxy> + 'static {
     #[cfg(feature = "v2_72")]
     #[doc(alias = "g-signal")]
     fn connect_g_signal<
@@ -50,7 +45,7 @@ pub trait DBusProxyExtManual: sealed::Sealed + IsA<DBusProxy> + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 signal_name.as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(transmute::<*const (), unsafe extern "C" fn()>(
                     g_signal_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -91,7 +86,7 @@ pub trait DBusProxyExtManual: sealed::Sealed + IsA<DBusProxy> + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"g-signal\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(transmute::<*const (), unsafe extern "C" fn()>(
                     g_signal_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),

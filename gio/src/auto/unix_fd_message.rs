@@ -2,9 +2,8 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{SocketControlMessage, UnixFDList};
+use crate::{ffi, SocketControlMessage, UnixFDList};
 use glib::{prelude::*, translate::*};
-use std::fmt;
 
 glib::wrapper! {
     #[doc(alias = "GUnixFDMessage")]
@@ -41,14 +40,10 @@ impl Default for UnixFDMessage {
     }
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::UnixFDMessage>> Sealed for T {}
-}
-
-pub trait UnixFDMessageExt: IsA<UnixFDMessage> + sealed::Sealed + 'static {
+pub trait UnixFDMessageExt: IsA<UnixFDMessage> + 'static {
     #[doc(alias = "g_unix_fd_message_get_fd_list")]
     #[doc(alias = "get_fd_list")]
+    #[doc(alias = "fd-list")]
     fn fd_list(&self) -> UnixFDList {
         unsafe {
             from_glib_none(ffi::g_unix_fd_message_get_fd_list(
@@ -59,9 +54,3 @@ pub trait UnixFDMessageExt: IsA<UnixFDMessage> + sealed::Sealed + 'static {
 }
 
 impl<O: IsA<UnixFDMessage>> UnixFDMessageExt for O {}
-
-impl fmt::Display for UnixFDMessage {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("UnixFDMessage")
-    }
-}

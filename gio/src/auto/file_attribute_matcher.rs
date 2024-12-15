@@ -2,8 +2,8 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
+use crate::ffi;
 use glib::translate::*;
-use std::fmt;
 
 glib::wrapper! {
     #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
@@ -81,9 +81,9 @@ impl FileAttributeMatcher {
     }
 }
 
-impl fmt::Display for FileAttributeMatcher {
+impl std::fmt::Display for FileAttributeMatcher {
     #[inline]
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         f.write_str(&self.to_str())
     }
 }

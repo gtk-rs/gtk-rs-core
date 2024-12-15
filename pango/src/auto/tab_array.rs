@@ -2,12 +2,8 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::TabAlign;
+use crate::{ffi, TabAlign};
 use glib::translate::*;
-#[cfg(feature = "v1_50")]
-#[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
-use std::fmt;
-use std::mem;
 
 glib::wrapper! {
     #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
@@ -71,8 +67,8 @@ impl TabArray {
     #[doc(alias = "get_tab")]
     pub fn tab(&self, tab_index: i32) -> (TabAlign, i32) {
         unsafe {
-            let mut alignment = mem::MaybeUninit::uninit();
-            let mut location = mem::MaybeUninit::uninit();
+            let mut alignment = std::mem::MaybeUninit::uninit();
+            let mut location = std::mem::MaybeUninit::uninit();
             ffi::pango_tab_array_get_tab(
                 mut_override(self.to_glib_none().0),
                 tab_index,
@@ -161,9 +157,9 @@ impl TabArray {
 
 #[cfg(feature = "v1_50")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
-impl fmt::Display for TabArray {
+impl std::fmt::Display for TabArray {
     #[inline]
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         f.write_str(&self.to_str())
     }
 }

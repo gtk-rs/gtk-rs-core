@@ -1,7 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
 use proc_macro2::{Ident, TokenStream};
-use proc_macro_error::abort_call_site;
 use quote::quote;
 
 use crate::utils::{crate_ident_new, parse_nested_meta_items, NestedMetaItem};
@@ -91,32 +90,36 @@ fn gen_impl_to_value_optional(name: &Ident, crate_ident: &TokenStream) -> TokenS
     }
 }
 
-pub fn impl_boxed(input: &syn::DeriveInput) -> TokenStream {
+pub fn impl_boxed(input: &syn::DeriveInput) -> syn::Result<TokenStream> {
     let name = &input.ident;
 
     let mut gtype_name = NestedMetaItem::<syn::LitStr>::new("name")
         .required()
         .value_required();
     let mut nullable = NestedMetaItem::<syn::LitBool>::new("nullable").value_optional();
+    let mut allow_name_conflict =
+        NestedMetaItem::<syn::LitBool>::new("allow_name_conflict").value_optional();
 
     let found = parse_nested_meta_items(
         &input.attrs,
         "boxed_type",
-        &mut [&mut gtype_name, &mut nullable],
-    );
+        &mut [&mut gtype_name, &mut nullable, &mut allow_name_conflict],
+    )?;
 
-    match found {
-        Ok(None) => {
-            abort_call_site!(
-                "#[derive(glib::Boxed)] requires #[boxed_type(name = \"BoxedTypeName\")]"
-            )
-        }
-        Err(e) => return e.to_compile_error(),
-        Ok(_) => {}
-    };
+    if found.is_none() {
+        return Err(syn::Error::new_spanned(
+            input,
+            "#[derive(glib::Boxed)] requires #[boxed_type(name = \"BoxedTypeName\")]",
+        ));
+    }
 
     let gtype_name = gtype_name.value.unwrap();
     let nullable = nullable.found || nullable.value.map(|b| b.value()).unwrap_or(false);
+    let allow_name_conflict = allow_name_conflict.found
+        || allow_name_conflict
+            .value
+            .map(|b| b.value())
+            .unwrap_or(false);
 
     let crate_ident = crate_ident_new();
 
@@ -131,27 +134,19 @@ pub fn impl_boxed(input: &syn::DeriveInput) -> TokenStream {
         quote! {}
     };
 
-    quote! {
+    Ok(quote! {
         impl #crate_ident::subclass::boxed::BoxedType for #name {
             const NAME: &'static ::core::primitive::str = #gtype_name;
+            const ALLOW_NAME_CONFLICT: bool = #allow_name_conflict;
         }
 
-        impl #crate_ident::StaticType for #name {
+        impl #crate_ident::prelude::StaticType for #name {
             #[inline]
             fn static_type() -> #crate_ident::Type {
-                static ONCE: ::std::sync::Once = ::std::sync::Once::new();
-                static mut TYPE_: #crate_ident::Type = #crate_ident::Type::INVALID;
-
-                ONCE.call_once(|| {
-                    let type_ = #crate_ident::subclass::register_boxed_type::<#name>();
-                    unsafe {
-                        TYPE_ = type_;
-                    }
-                });
-
-                unsafe {
-                    TYPE_
-                }
+                static TYPE: ::std::sync::OnceLock<#crate_ident::Type> = ::std::sync::OnceLock::new();
+                *TYPE.get_or_init(|| {
+                    #crate_ident::subclass::register_boxed_type::<#name>()
+                })
             }
         }
 
@@ -164,7 +159,7 @@ pub fn impl_boxed(input: &syn::DeriveInput) -> TokenStream {
             fn to_value(&self) -> #crate_ident::Value {
                 unsafe {
                     let ptr: *mut #name = ::std::boxed::Box::into_raw(::std::boxed::Box::new(self.clone()));
-                    let mut value = #crate_ident::Value::from_type_unchecked(<#name as #crate_ident::StaticType>::static_type());
+                    let mut value = #crate_ident::Value::from_type_unchecked(<#name as #crate_ident::prelude::StaticType>::static_type());
                     #crate_ident::gobject_ffi::g_value_take_boxed(
                         #crate_ident::translate::ToGlibPtrMut::to_glib_none_mut(&mut value).0,
                         ptr as *mut _
@@ -175,7 +170,7 @@ pub fn impl_boxed(input: &syn::DeriveInput) -> TokenStream {
 
             #[inline]
             fn value_type(&self) -> #crate_ident::Type {
-                <#name as #crate_ident::StaticType>::static_type()
+                <#name as #crate_ident::prelude::StaticType>::static_type()
             }
         }
 
@@ -183,7 +178,7 @@ pub fn impl_boxed(input: &syn::DeriveInput) -> TokenStream {
             #[inline]
             fn from(v: #name) -> Self {
                 unsafe {
-                    let mut value = #crate_ident::Value::from_type_unchecked(<#name as #crate_ident::StaticType>::static_type());
+                    let mut value = #crate_ident::Value::from_type_unchecked(<#name as #crate_ident::prelude::StaticType>::static_type());
                     #crate_ident::gobject_ffi::g_value_take_boxed(
                         #crate_ident::translate::ToGlibPtrMut::to_glib_none_mut(&mut value).0,
                         #crate_ident::translate::IntoGlibPtr::<*mut #name>::into_glib_ptr(v) as *mut _,
@@ -196,6 +191,14 @@ pub fn impl_boxed(input: &syn::DeriveInput) -> TokenStream {
         #impl_to_value_optional
 
         #impl_from_value
+
+        unsafe impl #crate_ident::translate::TransparentType for #name {
+            type GlibType = #name;
+        }
+
+        impl #crate_ident::translate::GlibPtrDefault for #name {
+            type GlibType = *mut #name;
+        }
 
         impl #crate_ident::translate::FromGlibPtrBorrow<*const #name> for #name {
             #[inline]
@@ -271,7 +274,7 @@ pub fn impl_boxed(input: &syn::DeriveInput) -> TokenStream {
             }
         }
 
-        impl #crate_ident::HasParamSpec for #name {
+        impl #crate_ident::prelude::HasParamSpec for #name {
             type ParamSpec = #crate_ident::ParamSpecBoxed;
             type SetValue = Self;
             type BuilderFn = fn(&::core::primitive::str) -> #crate_ident::ParamSpecBoxedBuilder<Self>;
@@ -280,5 +283,5 @@ pub fn impl_boxed(input: &syn::DeriveInput) -> TokenStream {
                 |name| Self::ParamSpec::builder(name)
             }
         }
-    }
+    })
 }

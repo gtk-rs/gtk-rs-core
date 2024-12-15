@@ -4,7 +4,7 @@ use std::marker::PhantomData;
 
 use glib::translate::*;
 
-use crate::AttrType;
+use crate::{ffi, AttrType};
 
 #[doc(hidden)]
 impl<'a> ToGlibPtr<'a, *mut ffi::PangoAttrClass> for &'a AttrClass {

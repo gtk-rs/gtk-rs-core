@@ -20,3 +20,27 @@ pub use binding_group::BindingGroupBuilder;
 
 pub use self::{auto::*, flags::*};
 //pub use self::auto::functions::*;
+
+mod interface_info;
+pub use interface_info::InterfaceInfo;
+
+mod type_info;
+pub use type_info::TypeInfo;
+
+mod type_value_table;
+pub use type_value_table::TypeValueTable;
+
+mod type_module;
+pub use self::type_module::TypeModule;
+
+mod type_plugin;
+pub use self::type_plugin::TypePlugin;
+
+mod dynamic_object;
+
+#[doc(hidden)]
+pub mod traits {
+    pub use super::dynamic_object::DynamicObjectRegisterExt;
+    pub use super::type_module::TypeModuleExt;
+    pub use super::type_plugin::TypePluginExt;
+}

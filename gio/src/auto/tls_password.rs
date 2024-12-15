@@ -2,13 +2,13 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::TlsPasswordFlags;
+use crate::{ffi, TlsPasswordFlags};
 use glib::{
     prelude::*,
     signal::{connect_raw, SignalHandlerId},
     translate::*,
 };
-use std::{boxed::Box as Box_, fmt, mem::transmute};
+use std::boxed::Box as Box_;
 
 glib::wrapper! {
     #[doc(alias = "GTlsPassword")]
@@ -33,12 +33,7 @@ impl TlsPassword {
     }
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::TlsPassword>> Sealed for T {}
-}
-
-pub trait TlsPasswordExt: IsA<TlsPassword> + sealed::Sealed + 'static {
+pub trait TlsPasswordExt: IsA<TlsPassword> + 'static {
     #[doc(alias = "g_tls_password_get_description")]
     #[doc(alias = "get_description")]
     fn description(&self) -> glib::GString {
@@ -70,6 +65,7 @@ pub trait TlsPasswordExt: IsA<TlsPassword> + sealed::Sealed + 'static {
     }
 
     #[doc(alias = "g_tls_password_set_description")]
+    #[doc(alias = "description")]
     fn set_description(&self, description: &str) {
         unsafe {
             ffi::g_tls_password_set_description(
@@ -80,6 +76,7 @@ pub trait TlsPasswordExt: IsA<TlsPassword> + sealed::Sealed + 'static {
     }
 
     #[doc(alias = "g_tls_password_set_flags")]
+    #[doc(alias = "flags")]
     fn set_flags(&self, flags: TlsPasswordFlags) {
         unsafe {
             ffi::g_tls_password_set_flags(self.as_ref().to_glib_none().0, flags.into_glib());
@@ -92,6 +89,7 @@ pub trait TlsPasswordExt: IsA<TlsPassword> + sealed::Sealed + 'static {
     //}
 
     #[doc(alias = "g_tls_password_set_warning")]
+    #[doc(alias = "warning")]
     fn set_warning(&self, warning: &str) {
         unsafe {
             ffi::g_tls_password_set_warning(
@@ -119,7 +117,7 @@ pub trait TlsPasswordExt: IsA<TlsPassword> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::description\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_description_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -142,7 +140,7 @@ pub trait TlsPasswordExt: IsA<TlsPassword> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::flags\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_flags_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -165,7 +163,7 @@ pub trait TlsPasswordExt: IsA<TlsPassword> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::warning\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_warning_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -175,9 +173,3 @@ pub trait TlsPasswordExt: IsA<TlsPassword> + sealed::Sealed + 'static {
 }
 
 impl<O: IsA<TlsPassword>> TlsPasswordExt for O {}
-
-impl fmt::Display for TlsPassword {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("TlsPassword")
-    }
-}

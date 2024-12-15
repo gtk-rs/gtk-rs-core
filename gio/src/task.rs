@@ -6,12 +6,11 @@ use glib::{
     prelude::*,
     signal::{connect_raw, SignalHandlerId},
     translate::*,
-    value::ValueType,
 };
 
 use futures_channel::oneshot;
 
-use crate::{AsyncResult, Cancellable};
+use crate::{ffi, AsyncResult, Cancellable};
 
 glib::wrapper! {
     // rustdoc-stripper-ignore-next
@@ -221,7 +220,7 @@ macro_rules! task_impl {
                     connect_raw(
                         self.as_ptr() as *mut _,
                         b"notify::completed\0".as_ptr() as *const _,
-                        Some(transmute::<_, unsafe extern "C" fn()>(
+                        Some(transmute::<*const (), unsafe extern "C" fn()>(
                             notify_completed_trampoline::<V, F> as *const (),
                         )),
                         Box_::into_raw(f),
@@ -313,12 +312,6 @@ macro_rules! task_impl {
                         }
                     }
                 }
-            }
-        }
-
-        impl <V: ValueType $(+ $bound)?> std::fmt::Display for $name<V> {
-            fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-                f.write_str(stringify!($name))
             }
         }
     }
@@ -439,9 +432,10 @@ where
     // use Cancellable::NONE as source obj to fulfill `Send` requirement
     let task = unsafe { Task::<bool>::new(Cancellable::NONE, Cancellable::NONE, |_, _| {}) };
     let (join, tx) = JoinHandle::new();
-    task.run_in_thread(move |_, _: Option<&Cancellable>, _| {
+    task.run_in_thread(move |task, _: Option<&Cancellable>, _| {
         let res = panic::catch_unwind(panic::AssertUnwindSafe(func));
         let _ = tx.send(res);
+        unsafe { ffi::g_task_return_pointer(task.to_glib_none().0, ptr::null_mut(), None) }
     });
 
     join
@@ -454,7 +448,7 @@ mod test {
 
     #[test]
     fn test_int_async_result() {
-        match run_async_local(|tx, l| {
+        let fut = run_async_local(|tx, l| {
             let cancellable = crate::Cancellable::new();
             let task = unsafe {
                 crate::LocalTask::new(
@@ -467,7 +461,9 @@ mod test {
                 )
             };
             task.return_result(Ok(100_i32));
-        }) {
+        });
+
+        match fut {
             Err(_) => panic!(),
             Ok(i) => assert_eq!(i, 100),
         }
@@ -519,7 +515,7 @@ mod test {
             }
         }
 
-        match run_async_local(|tx, l| {
+        let fut = run_async_local(|tx, l| {
             let cancellable = crate::Cancellable::new();
             let task = unsafe {
                 crate::LocalTask::new(
@@ -534,7 +530,9 @@ mod test {
             let my_object = MySimpleObject::new();
             my_object.set_size(100);
             task.return_result(Ok(my_object.upcast::<glib::Object>()));
-        }) {
+        });
+
+        match fut {
             Err(_) => panic!(),
             Ok(o) => {
                 let o = o.downcast::<MySimpleObject>().unwrap();
@@ -545,7 +543,7 @@ mod test {
 
     #[test]
     fn test_error() {
-        match run_async_local(|tx, l| {
+        let fut = run_async_local(|tx, l| {
             let cancellable = crate::Cancellable::new();
             let task = unsafe {
                 crate::LocalTask::new(
@@ -561,7 +559,9 @@ mod test {
                 crate::IOErrorEnum::WouldBlock,
                 "WouldBlock",
             )));
-        }) {
+        });
+
+        match fut {
             Err(e) => match e.kind().unwrap() {
                 crate::IOErrorEnum::WouldBlock => {}
                 _ => panic!(),
@@ -572,7 +572,7 @@ mod test {
 
     #[test]
     fn test_cancelled() {
-        match run_async_local(|tx, l| {
+        let fut = run_async_local(|tx, l| {
             let cancellable = crate::Cancellable::new();
             let task = unsafe {
                 crate::LocalTask::new(
@@ -586,7 +586,9 @@ mod test {
             };
             cancellable.cancel();
             task.return_error_if_cancelled();
-        }) {
+        });
+
+        match fut {
             Err(e) => match e.kind().unwrap() {
                 crate::IOErrorEnum::Cancelled => {}
                 _ => panic!(),

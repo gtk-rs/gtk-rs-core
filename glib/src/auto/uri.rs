@@ -2,8 +2,7 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{translate::*, Bytes, Error, UriFlags, UriHideFlags};
-use std::{fmt, mem, ptr};
+use crate::{ffi, translate::*, Bytes, Error, UriFlags, UriHideFlags};
 
 crate::wrapper! {
     #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
@@ -86,7 +85,7 @@ impl Uri {
     #[doc(alias = "g_uri_parse_relative")]
     pub fn parse_relative(&self, uri_ref: &str, flags: UriFlags) -> Result<Uri, crate::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_uri_parse_relative(
                 self.to_glib_none().0,
                 uri_ref.to_glib_none().0,
@@ -201,7 +200,7 @@ impl Uri {
     #[doc(alias = "g_uri_is_valid")]
     pub fn is_valid(uri_string: &str, flags: UriFlags) -> Result<(), crate::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let is_ok =
                 ffi::g_uri_is_valid(uri_string.to_glib_none().0, flags.into_glib(), &mut error);
             debug_assert_eq!(is_ok == crate::ffi::GFALSE, !error.is_null());
@@ -279,7 +278,7 @@ impl Uri {
     #[doc(alias = "g_uri_parse")]
     pub fn parse(uri_string: &str, flags: UriFlags) -> Result<Uri, crate::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_uri_parse(uri_string.to_glib_none().0, flags.into_glib(), &mut error);
             if error.is_null() {
                 Ok(from_glib_full(ret))
@@ -311,7 +310,7 @@ impl Uri {
         flags: UriFlags,
     ) -> Result<crate::GString, crate::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_uri_resolve_relative(
                 base_uri_string.to_glib_none().0,
                 uri_ref.to_glib_none().0,
@@ -343,14 +342,14 @@ impl Uri {
         crate::Error,
     > {
         unsafe {
-            let mut scheme = ptr::null_mut();
-            let mut userinfo = ptr::null_mut();
-            let mut host = ptr::null_mut();
-            let mut port = mem::MaybeUninit::uninit();
-            let mut path = ptr::null_mut();
-            let mut query = ptr::null_mut();
-            let mut fragment = ptr::null_mut();
-            let mut error = ptr::null_mut();
+            let mut scheme = std::ptr::null_mut();
+            let mut userinfo = std::ptr::null_mut();
+            let mut host = std::ptr::null_mut();
+            let mut port = std::mem::MaybeUninit::uninit();
+            let mut path = std::ptr::null_mut();
+            let mut query = std::ptr::null_mut();
+            let mut fragment = std::ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_uri_split(
                 uri_ref.to_glib_none().0,
                 flags.into_glib(),
@@ -386,10 +385,10 @@ impl Uri {
         flags: UriFlags,
     ) -> Result<(Option<crate::GString>, Option<crate::GString>, i32), crate::Error> {
         unsafe {
-            let mut scheme = ptr::null_mut();
-            let mut host = ptr::null_mut();
-            let mut port = mem::MaybeUninit::uninit();
-            let mut error = ptr::null_mut();
+            let mut scheme = std::ptr::null_mut();
+            let mut host = std::ptr::null_mut();
+            let mut port = std::mem::MaybeUninit::uninit();
+            let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_uri_split_network(
                 uri_string.to_glib_none().0,
                 flags.into_glib(),
@@ -430,16 +429,16 @@ impl Uri {
         crate::Error,
     > {
         unsafe {
-            let mut scheme = ptr::null_mut();
-            let mut user = ptr::null_mut();
-            let mut password = ptr::null_mut();
-            let mut auth_params = ptr::null_mut();
-            let mut host = ptr::null_mut();
-            let mut port = mem::MaybeUninit::uninit();
-            let mut path = ptr::null_mut();
-            let mut query = ptr::null_mut();
-            let mut fragment = ptr::null_mut();
-            let mut error = ptr::null_mut();
+            let mut scheme = std::ptr::null_mut();
+            let mut user = std::ptr::null_mut();
+            let mut password = std::ptr::null_mut();
+            let mut auth_params = std::ptr::null_mut();
+            let mut host = std::ptr::null_mut();
+            let mut port = std::mem::MaybeUninit::uninit();
+            let mut path = std::ptr::null_mut();
+            let mut query = std::ptr::null_mut();
+            let mut fragment = std::ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_uri_split_with_user(
                 uri_ref.to_glib_none().0,
                 flags.into_glib(),
@@ -480,7 +479,7 @@ impl Uri {
     ) -> Result<Bytes, crate::Error> {
         let length = escaped_string.len() as _;
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_uri_unescape_bytes(
                 escaped_string.to_glib_none().0,
                 length,
@@ -524,9 +523,9 @@ impl Uri {
     }
 }
 
-impl fmt::Display for Uri {
+impl std::fmt::Display for Uri {
     #[inline]
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         f.write_str(&self.to_str())
     }
 }

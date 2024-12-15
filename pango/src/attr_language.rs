@@ -2,7 +2,7 @@
 
 use glib::translate::*;
 
-use crate::{AttrType, Language};
+use crate::{ffi, AttrType, Language};
 
 define_attribute_struct!(AttrLanguage, ffi::PangoAttrLanguage, &[AttrType::Language]);
 

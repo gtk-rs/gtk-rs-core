@@ -2,8 +2,8 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
+use crate::ffi;
 use glib::{prelude::*, translate::*};
-use std::fmt;
 
 glib::wrapper! {
     #[doc(alias = "GSettingsBackend")]
@@ -30,12 +30,7 @@ impl SettingsBackend {
     }
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::SettingsBackend>> Sealed for T {}
-}
-
-pub trait SettingsBackendExt: IsA<SettingsBackend> + sealed::Sealed + 'static {
+pub trait SettingsBackendExt: IsA<SettingsBackend> + 'static {
     //#[doc(alias = "g_settings_backend_changed")]
     //fn changed(&self, key: &str, origin_tag: /*Unimplemented*/Option<Basic: Pointer>) {
     //    unsafe { TODO: call ffi:g_settings_backend_changed() }
@@ -78,9 +73,3 @@ pub trait SettingsBackendExt: IsA<SettingsBackend> + sealed::Sealed + 'static {
 }
 
 impl<O: IsA<SettingsBackend>> SettingsBackendExt for O {}
-
-impl fmt::Display for SettingsBackend {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("SettingsBackend")
-    }
-}

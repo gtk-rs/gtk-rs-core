@@ -3,6 +3,7 @@ girs_directories = ["../gir-files"]
 library = "GLib"
 version = "2.0"
 min_cfg_version = "2.56"
+use_gi_docgen = true
 target_path = "."
 work_mode = "normal"
 single_version_file = true
@@ -27,6 +28,8 @@ generate = [
     "GLib.NormalizeMode",
     "GLib.OptionArg",
     "GLib.OptionFlags",
+    "GLib.RegexCompileFlags",
+    "GLib.RegexMatchFlags",
     "GLib.SeekType",
     "GLib.SpawnFlags",
     "GLib.Time",
@@ -43,10 +46,34 @@ manual = [
     "GLib.ByteArray",
     "GLib.Bytes",
     "GLib.Error",
+    "GLib.ParamSpecBoolean",
+    "GLib.ParamSpecBoxed",
+    "GLib.ParamSpecChar",
+    "GLib.ParamSpecDouble",
+    "GLib.ParamSpecEnum",
+    "GLib.ParamSpecFlags",
+    "GLib.ParamSpecFloat",
+    "GLib.ParamSpecGType",
+    "GLib.ParamSpecInt",
+    "GLib.ParamSpecInt64",
+    "GLib.ParamSpecLong",
+    "GLib.ParamSpecObject",
+    "GLib.ParamSpecOverride",
+    "GLib.ParamSpecParam",
+    "GLib.ParamSpecPointer",
+    "GLib.ParamSpecString",
+    "GLib.ParamSpecUChar",
+    "GLib.ParamSpecUInt",
+    "GLib.ParamSpecUInt64",
+    "GLib.ParamSpecULong",
+    "GLib.ParamSpecUnichar",
+    "GLib.ParamSpecValueArray",
+    "GLib.ParamSpecVariant",
     "GLib.UserDirectory",
     "GLib.Variant",
     "GLib.VariantType",
     "GObject.Object",
+    "GObject.ObjectClass",
 ]
 
 [[object]]
@@ -74,6 +101,9 @@ status = "generate"
     pattern = "(clear_handle_id|clear_list|clear_pointer|clear_slist|clear_error|nullify_pointer)"
     ignore = true # Not useful freeing functions
     [[object.function]]
+    pattern = "(fdwalk_set_cloexec|closefrom)"
+    ignore = true # unsafe
+    [[object.function]]
     pattern = "(datalist_.*|dataset_.*)"
     ignore = true # Not useful GData related functions
     [[object.function]]
@@ -94,6 +124,9 @@ status = "generate"
     [[object.function]]
     pattern = "(idle_remove_by_data|qsort_with_data)"
     ignore = true # Unsafe functions
+    [[object.function]]
+    pattern = "(fopen|creat|chmod|blow_chunks|utime|slice_debug_tree_statistics|rename|remove|open|mkdir|lstat|fsync|freopen|set_prgname_once)"
+    ignore = true # see https://gitlab.gnome.org/GNOME/glib/-/issues/3231
     [[object.function]]
     pattern = "iconv"
     doc_struct_name = "IConv"
@@ -714,6 +747,72 @@ status = "generate"
     ignore = true # unsafe pointer
 
 [[object]]
+name = "GLib.MatchInfo"
+status = "manual"
+
+[[object]]
+name = "GLib.Regex"
+status = "generate"
+    [[object.function]]
+    name = "check_replacement"
+    # impl IntoGStr for parameters instead of &str
+    manual = true
+    [[object.function]]
+    name = "escape_nul"
+    # impl IntoGStr for parameters instead of &str
+    manual = true
+    [[object.function]]
+    name = "escape_string"
+    # impl IntoGStr for parameters instead of &str
+    manual = true
+    [[object.function]]
+    name = "match"
+    # implement in terms of match_full
+    manual = true
+    [[object.function]]
+    name = "match_all"
+    # implement in terms of match_all_full
+    manual = true
+    [[object.function]]
+    name = "match_all_full"
+    # impl IntoGStr for parameters instead of &str
+    manual = true
+    [[object.function]]
+    name = "match_simple"
+    # impl IntoGStr for parameters instead of &str
+    manual = true
+    [[object.function]]
+    name = "match_full"
+    # impl IntoGStr for parameters instead of &str
+    manual = true
+    [[object.function]]
+    name = "replace"
+    # impl IntoGStr for parameters instead of &str
+    manual = true
+    [[object.function]]
+    name = "replace_literal"
+    # impl IntoGStr for parameters instead of &str
+    manual = true
+    [[object.function]]
+    name = "split"
+    # implement in terms of split_full
+    manual = true
+    [[object.function]]
+    name = "split_full"
+    # impl IntoGStr for parameters instead of &str
+    # return slice of str pointers
+    manual = true
+    [[object.function]]
+    name = "split_simple"
+    # impl IntoGStr for parameters instead of &str
+    # return slice of str pointers
+    manual = true
+    [[object.function]]
+    name = "get_string_number"
+    # impl IntoGStr for parameters instead of &str
+    manual = true
+
+[[object]]
 name = "GLib.Source"
 status = "generate"
 concurrency = "send+sync"
@@ -781,34 +880,22 @@ status = "generate"
     [[object.member]]
     name = "close_paranthesis"
     ignore = true
+    [[object.member]]
+    pattern = "(aksara|aksara_pre_base|aksara_start|virama_final|virama)"
+    version = "2.80"
 
 [[object]]
 name = "GLib.UnicodeScript"
 status = "generate"
     [[object.member]]
-    name = "cypro_minoan"
+    pattern = "cypro_minoan|old_uyghur|tangsa|toto|vithkuqi|math"
     version = "2.72"
     [[object.member]]
-    name = "old_uyghur"
-    version = "2.72"
-    [[object.member]]
-    name = "tangsa"
-    version = "2.72"
-    [[object.member]]
-    name = "toto"
-    version = "2.72"
-    [[object.member]]
-    name = "vithkuqi"
-    version = "2.72"
-    [[object.member]]
-    name = "math"
-    version = "2.72"
-    [[object.member]]
-    name = "kawi"
+    pattern = "kawi|nag_mundari"
     version = "2.74"
     [[object.member]]
-    name = "nag_mundari"
-    version = "2.74"
+    pattern = "todhri|garay|tulu_tigalari|sunuwar|gurung_khema|kirat_rai|ol_onal"
+    version = "2.84"
 
 [[object]]
 name = "GLib.Uri"

@@ -95,8 +95,9 @@
 //!     impl ObjectImpl for SimpleObject {
 //!         // Called once in the very beginning to list all properties of this class.
 //!         fn properties() -> &'static [glib::ParamSpec] {
-//!             use once_cell::sync::Lazy;
-//!             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
+//!             use std::sync::OnceLock;
+//!             static PROPERTIES: OnceLock<Vec<glib::ParamSpec>> = OnceLock::new();
+//!             PROPERTIES.get_or_init(|| {
 //!                 vec![
 //!                     glib::ParamSpecString::builder("name")
 //!                         .build(),
@@ -107,9 +108,7 @@
 //!                     glib::ParamSpecVariant::builder("variant", glib::VariantTy::ANY)
 //!                         .build(),
 //!                 ]
-//!             });
-//!
-//!             PROPERTIES.as_ref()
+//!             })
 //!         }
 //!
 //!         // Called whenever a property is set on this instance. The id
@@ -197,7 +196,202 @@
 //! }
 //! ```
 //!
-//! # Example for registering a boxed type for a Rust struct
+//! # Example for registering a `glib::Object` subclass within a module
+//!
+//! The following code implements a subclass of `glib::Object` and registers it as
+//! a dynamic type.
+//!
+//! ```rust
+//! use glib::prelude::*;
+//! use glib::subclass::prelude::*;
+//!
+//! pub mod imp {
+//!     use super::*;
+//!
+//!     // SimpleModuleObject is a dynamic type.
+//!     #[derive(Default)]
+//!     pub struct SimpleModuleObject;
+//!
+//!     #[glib::object_subclass]
+//!     #[object_subclass_dynamic]
+//!     impl ObjectSubclass for SimpleModuleObject {
+//!         const NAME: &'static str = "SimpleModuleObject";
+//!         type Type = super::SimpleModuleObject;
+//!     }
+//!
+//!     impl ObjectImpl for SimpleModuleObject {}
+//!
+//!     // SimpleTypeModule is the type module within the object subclass is registered as a dynamic type.
+//!     #[derive(Default)]
+//!     pub struct SimpleTypeModule;
+//!
+//!     #[glib::object_subclass]
+//!     impl ObjectSubclass for SimpleTypeModule {
+//!         const NAME: &'static str = "SimpleTypeModule";
+//!         type Type = super::SimpleTypeModule;
+//!         type ParentType = glib::TypeModule;
+//!         type Interfaces = (glib::TypePlugin,);
+//!     }
+//!
+//!     impl ObjectImpl for SimpleTypeModule {}
+//!
+//!     impl TypeModuleImpl for SimpleTypeModule {
+//!         /// Loads the module and registers the object subclass as a dynamic type.
+//!         fn load(&self) -> bool {
+//!             SimpleModuleObject::on_implementation_load(self.obj().upcast_ref::<glib::TypeModule>())
+//!         }
+//!
+//!         /// Unloads the module.
+//!         fn unload(&self) {
+//!             SimpleModuleObject::on_implementation_unload(self.obj().upcast_ref::<glib::TypeModule>());
+//!         }
+//!     }
+//!
+//!     impl TypePluginImpl for SimpleTypeModule {}
+//! }
+//!
+//! // Optionally, defines a wrapper type to make SimpleModuleObject more ergonomic to use from Rust.
+//! glib::wrapper! {
+//!     pub struct SimpleModuleObject(ObjectSubclass<imp::SimpleModuleObject>);
+//! }
+//!
+//! // Optionally, defines a wrapper type to make SimpleTypeModule more ergonomic to use from Rust.
+//! glib::wrapper! {
+//!     pub struct SimpleTypeModule(ObjectSubclass<imp::SimpleTypeModule>)
+//!     @extends glib::TypeModule, @implements glib::TypePlugin;
+//! }
+//!
+//! impl SimpleTypeModule {
+//!     // Creates an object instance of the new type.
+//!     pub fn new() -> Self {
+//!         glib::Object::new()
+//!     }
+//! }
+//!
+//! pub fn main() {
+//!     let simple_type_module = SimpleTypeModule::new();
+//!     // at this step, SimpleTypeModule has not been loaded therefore
+//!     // SimpleModuleObject must not be registered yet.
+//!     let simple_module_object_type = imp::SimpleModuleObject::type_();
+//!     assert!(!simple_module_object_type.is_valid());
+//!
+//!     // simulates the GLib type system to load the module.
+//!     TypeModuleExt::use_(&simple_type_module);
+//!
+//!     // at this step, SimpleModuleObject must have been registered.
+//!     let simple_module_object_type = imp::SimpleModuleObject::type_();
+//!     assert!(simple_module_object_type.is_valid());
+//! }
+//! ```
+//!
+//! # Example for registering a `glib::Object` subclass within a plugin
+//!
+//! The following code implements a subclass of `glib::Object` and registers it as
+//! a dynamic type.
+//!
+//! ```rust
+//! use glib::prelude::*;
+//! use glib::subclass::prelude::*;
+//!
+//! pub mod imp {
+//!     use super::*;
+//!
+//!     // SimplePluginObject is a dynamic type.
+//!     #[derive(Default)]
+//!     pub struct SimplePluginObject;
+//!
+//!     #[glib::object_subclass]
+//!     #[object_subclass_dynamic(plugin_type = super::SimpleTypePlugin)]
+//!     impl ObjectSubclass for SimplePluginObject {
+//!         const NAME: &'static str = "SimplePluginObject";
+//!         type Type = super::SimplePluginObject;
+//!     }
+//!
+//!     impl ObjectImpl for SimplePluginObject {}
+//!
+//!     // SimpleTypePlugin is the type plugin within the object subclass is registered as a dynamic type.
+//!     #[derive(Default)]
+//!     pub struct SimpleTypePlugin {
+//!         type_info: std::cell::Cell<Option<glib::TypeInfo>>
+//!     }
+//!
+//!     #[glib::object_subclass]
+//!     impl ObjectSubclass for SimpleTypePlugin {
+//!         const NAME: &'static str = "SimpleTypePlugin";
+//!         type Type = super::SimpleTypePlugin;
+//!         type Interfaces = (glib::TypePlugin,);
+//!     }
+//!
+//!     impl ObjectImpl for SimpleTypePlugin {}
+//!
+//!     impl TypePluginImpl for SimpleTypePlugin {
+//!         /// Uses the plugin and registers the object subclass as a dynamic type.
+//!         fn use_plugin(&self) {
+//!             SimplePluginObject::on_implementation_load(self.obj().as_ref());
+//!         }
+//!
+//!         /// Unuses the plugin.
+//!         fn unuse_plugin(&self) {
+//!             SimplePluginObject::on_implementation_unload(self.obj().as_ref());
+//!         }
+//!
+//!         /// Returns type information about the object subclass registered as a dynamic type.
+//!         fn complete_type_info(&self, _type_: glib::Type) -> (glib::TypeInfo, glib::TypeValueTable) {
+//!             assert!(self.type_info.get().is_some());
+//!             // returns type info.
+//!             (self.type_info.get().unwrap(), glib::TypeValueTable::default())
+//!         }
+//!     }
+//!
+//!     impl TypePluginRegisterImpl for SimpleTypePlugin {
+//!         fn register_dynamic_type(&self, parent_type: glib::Type, type_name: &str, type_info: &glib::TypeInfo, flags: glib::TypeFlags) -> glib::Type {
+//!             let type_ = glib::Type::from_name(type_name).unwrap_or_else(|| {
+//!                 glib::Type::register_dynamic(parent_type, type_name, self.obj().upcast_ref::<glib::TypePlugin>(), flags)
+//!             });
+//!             if type_.is_valid() {
+//!                 // saves type info.
+//!                 self.type_info.set(Some(*type_info));
+//!             }
+//!             type_
+//!         }
+//!     }
+//! }
+//!
+//! // Optionally, defines a wrapper type to make SimplePluginObject more ergonomic to use from Rust.
+//! glib::wrapper! {
+//!     pub struct SimplePluginObject(ObjectSubclass<imp::SimplePluginObject>);
+//! }
+//!
+//! // Optionally, defines a wrapper type to make SimpleTypePlugin more ergonomic to use from Rust.
+//! glib::wrapper! {
+//!     pub struct SimpleTypePlugin(ObjectSubclass<imp::SimpleTypePlugin>)
+//!     @implements glib::TypePlugin;
+//! }
+//!
+//! impl SimpleTypePlugin {
+//!     // Creates an object instance of the new type.
+//!     pub fn new() -> Self {
+//!         glib::Object::new()
+//!     }
+//! }
+//!
+//! pub fn main() {
+//!     let simple_type_plugin = SimpleTypePlugin::new();
+//!     // at this step, SimpleTypePlugin has not been used therefore
+//!     // SimplePluginObject must not be registered yet.
+//!     let simple_plugin_object_type = imp::SimplePluginObject::type_();
+//!     assert!(!simple_plugin_object_type.is_valid());
+//!
+//!     // simulates the GLib type system to use the plugin.
+//!     TypePluginExt::use_(&simple_type_plugin);
+//!
+//!     // at this step, SimplePluginObject must have been registered.
+//!     let simple_plugin_object_type = imp::SimplePluginObject::type_();
+//!     assert!(simple_plugin_object_type.is_valid());
+//! }
+//! ```
+//!
+//!//! # Example for registering a boxed type for a Rust struct
 //!
 //! The following code boxed type for a tuple struct around `String` and uses it in combination
 //! with `glib::Value`.
@@ -241,6 +435,10 @@ pub mod signal;
 mod object_impl_ref;
 pub use object_impl_ref::{ObjectImplRef, ObjectImplWeakRef};
 
+pub mod type_module;
+
+pub mod type_plugin;
+
 pub mod prelude {
     // rustdoc-stripper-ignore-next
     //! Prelude that re-exports all important traits from this crate.
@@ -249,19 +447,21 @@ pub mod prelude {
         interface::{ObjectInterface, ObjectInterfaceExt, ObjectInterfaceType},
         object::{DerivedObjectProperties, ObjectClassSubclassExt, ObjectImpl, ObjectImplExt},
         shared::{RefCounted, SharedType},
+        type_module::{TypeModuleImpl, TypeModuleImplExt},
+        type_plugin::{TypePluginImpl, TypePluginImplExt, TypePluginRegisterImpl},
         types::{
-            ClassStruct, InstanceStruct, InstanceStructExt, IsImplementable, IsSubclassable,
-            IsSubclassableExt, ObjectSubclass, ObjectSubclassExt, ObjectSubclassIsExt,
-            ObjectSubclassType,
+            ClassStruct, InstanceStruct, InstanceStructExt, InterfaceStruct, IsImplementable,
+            IsSubclassable, IsSubclassableExt, ObjectSubclass, ObjectSubclassExt,
+            ObjectSubclassIsExt, ObjectSubclassType,
         },
     };
 }
 
 pub use self::{
     boxed::register_boxed_type,
-    interface::register_interface,
+    interface::{register_dynamic_interface, register_interface},
     signal::{
         Signal, SignalClassHandlerToken, SignalId, SignalInvocationHint, SignalQuery, SignalType,
     },
-    types::{register_type, InitializingObject, InitializingType, TypeData},
+    types::{register_dynamic_type, register_type, InitializingObject, InitializingType, TypeData},
 };

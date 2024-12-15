@@ -4,19 +4,14 @@ use std::{boxed::Box as Box_, mem, pin::Pin, ptr};
 
 use glib::{prelude::*, translate::*, GString};
 
-use crate::{Cancellable, DataInputStream};
+use crate::{ffi, Cancellable, DataInputStream};
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::DataInputStream>> Sealed for T {}
-}
-
-pub trait DataInputStreamExtManual: sealed::Sealed + IsA<DataInputStream> + 'static {
+pub trait DataInputStreamExtManual: IsA<DataInputStream> + 'static {
     #[doc(alias = "g_data_input_stream_read_line")]
     fn read_line<P: IsA<Cancellable>>(
         &self,
         cancellable: Option<&P>,
-    ) -> Result<Vec<u8>, glib::Error> {
+    ) -> Result<glib::collections::Slice<u8>, glib::Error> {
         unsafe {
             let mut length = mem::MaybeUninit::uninit();
             let mut error = ptr::null_mut();
@@ -36,7 +31,10 @@ pub trait DataInputStreamExtManual: sealed::Sealed + IsA<DataInputStream> + 'sta
     }
 
     #[doc(alias = "g_data_input_stream_read_line_async")]
-    fn read_line_async<P: IsA<Cancellable>, Q: FnOnce(Result<Vec<u8>, glib::Error>) + 'static>(
+    fn read_line_async<
+        P: IsA<Cancellable>,
+        Q: FnOnce(Result<glib::collections::Slice<u8>, glib::Error>) + 'static,
+    >(
         &self,
         io_priority: glib::Priority,
         cancellable: Option<&P>,
@@ -55,7 +53,7 @@ pub trait DataInputStreamExtManual: sealed::Sealed + IsA<DataInputStream> + 'sta
         let user_data: Box_<glib::thread_guard::ThreadGuard<Q>> =
             Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn read_line_async_trampoline<
-            Q: FnOnce(Result<Vec<u8>, glib::Error>) + 'static,
+            Q: FnOnce(Result<glib::collections::Slice<u8>, glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut ffi::GAsyncResult,
@@ -95,7 +93,12 @@ pub trait DataInputStreamExtManual: sealed::Sealed + IsA<DataInputStream> + 'sta
     fn read_line_future(
         &self,
         io_priority: glib::Priority,
-    ) -> Pin<Box_<dyn std::future::Future<Output = Result<Vec<u8>, glib::Error>> + 'static>> {
+    ) -> Pin<
+        Box_<
+            dyn std::future::Future<Output = Result<glib::collections::Slice<u8>, glib::Error>>
+                + 'static,
+        >,
+    > {
         Box_::pin(crate::GioFuture::new(
             self,
             move |obj, cancellable, send| {
@@ -204,7 +207,7 @@ pub trait DataInputStreamExtManual: sealed::Sealed + IsA<DataInputStream> + 'sta
         &self,
         stop_chars: &[u8],
         cancellable: Option<&P>,
-    ) -> Result<Vec<u8>, glib::Error> {
+    ) -> Result<glib::collections::Slice<u8>, glib::Error> {
         let stop_chars_len = stop_chars.len() as isize;
         unsafe {
             let mut error = ptr::null_mut();
@@ -220,7 +223,7 @@ pub trait DataInputStreamExtManual: sealed::Sealed + IsA<DataInputStream> + 'sta
             if error.is_null() {
                 let length = length.assume_init();
                 Ok(FromGlibContainer::from_glib_full_num(
-                    ret as *const _,
+                    ret as *mut u8,
                     length,
                 ))
             } else {
@@ -230,7 +233,10 @@ pub trait DataInputStreamExtManual: sealed::Sealed + IsA<DataInputStream> + 'sta
     }
 
     #[doc(alias = "g_data_input_stream_read_upto_async")]
-    fn read_upto_async<P: IsA<Cancellable>, Q: FnOnce(Result<Vec<u8>, glib::Error>) + 'static>(
+    fn read_upto_async<
+        P: IsA<Cancellable>,
+        Q: FnOnce(Result<glib::collections::Slice<u8>, glib::Error>) + 'static,
+    >(
         &self,
         stop_chars: &[u8],
         io_priority: glib::Priority,
@@ -251,7 +257,7 @@ pub trait DataInputStreamExtManual: sealed::Sealed + IsA<DataInputStream> + 'sta
         let user_data: Box_<glib::thread_guard::ThreadGuard<Q>> =
             Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn read_upto_async_trampoline<
-            Q: FnOnce(Result<Vec<u8>, glib::Error>) + 'static,
+            Q: FnOnce(Result<glib::collections::Slice<u8>, glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut ffi::GAsyncResult,
@@ -268,7 +274,7 @@ pub trait DataInputStreamExtManual: sealed::Sealed + IsA<DataInputStream> + 'sta
             let result = if error.is_null() {
                 let length = length.assume_init();
                 Ok(FromGlibContainer::from_glib_full_num(
-                    ret as *const _,
+                    ret as *mut u8,
                     length,
                 ))
             } else {
@@ -297,7 +303,12 @@ pub trait DataInputStreamExtManual: sealed::Sealed + IsA<DataInputStream> + 'sta
         &self,
         stop_chars: &[u8],
         io_priority: glib::Priority,
-    ) -> Pin<Box_<dyn std::future::Future<Output = Result<Vec<u8>, glib::Error>> + 'static>> {
+    ) -> Pin<
+        Box_<
+            dyn std::future::Future<Output = Result<glib::collections::Slice<u8>, glib::Error>>
+                + 'static,
+        >,
+    > {
         let stop_chars = Vec::from(stop_chars);
         Box_::pin(crate::GioFuture::new(
             self,

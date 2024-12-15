@@ -2,9 +2,8 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{InetAddress, InetSocketAddress, SocketAddress, SocketConnectable};
+use crate::{ffi, InetAddress, InetSocketAddress, SocketAddress, SocketConnectable};
 use glib::{prelude::*, translate::*};
-use std::fmt;
 
 glib::wrapper! {
     #[doc(alias = "GProxyAddress")]
@@ -46,14 +45,10 @@ impl ProxyAddress {
 unsafe impl Send for ProxyAddress {}
 unsafe impl Sync for ProxyAddress {}
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::ProxyAddress>> Sealed for T {}
-}
-
-pub trait ProxyAddressExt: IsA<ProxyAddress> + sealed::Sealed + 'static {
+pub trait ProxyAddressExt: IsA<ProxyAddress> + 'static {
     #[doc(alias = "g_proxy_address_get_destination_hostname")]
     #[doc(alias = "get_destination_hostname")]
+    #[doc(alias = "destination-hostname")]
     fn destination_hostname(&self) -> glib::GString {
         unsafe {
             from_glib_none(ffi::g_proxy_address_get_destination_hostname(
@@ -64,12 +59,14 @@ pub trait ProxyAddressExt: IsA<ProxyAddress> + sealed::Sealed + 'static {
 
     #[doc(alias = "g_proxy_address_get_destination_port")]
     #[doc(alias = "get_destination_port")]
+    #[doc(alias = "destination-port")]
     fn destination_port(&self) -> u16 {
         unsafe { ffi::g_proxy_address_get_destination_port(self.as_ref().to_glib_none().0) }
     }
 
     #[doc(alias = "g_proxy_address_get_destination_protocol")]
     #[doc(alias = "get_destination_protocol")]
+    #[doc(alias = "destination-protocol")]
     fn destination_protocol(&self) -> glib::GString {
         unsafe {
             from_glib_none(ffi::g_proxy_address_get_destination_protocol(
@@ -116,9 +113,3 @@ pub trait ProxyAddressExt: IsA<ProxyAddress> + sealed::Sealed + 'static {
 }
 
 impl<O: IsA<ProxyAddress>> ProxyAddressExt for O {}
-
-impl fmt::Display for ProxyAddress {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("ProxyAddress")
-    }
-}

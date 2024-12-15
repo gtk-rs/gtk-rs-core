@@ -2,9 +2,8 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{Credentials, SocketControlMessage};
+use crate::{ffi, Credentials, SocketControlMessage};
 use glib::{prelude::*, translate::*};
-use std::fmt;
 
 glib::wrapper! {
     #[doc(alias = "GUnixCredentialsMessage")]
@@ -49,14 +48,7 @@ impl Default for UnixCredentialsMessage {
     }
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::UnixCredentialsMessage>> Sealed for T {}
-}
-
-pub trait UnixCredentialsMessageExt:
-    IsA<UnixCredentialsMessage> + sealed::Sealed + 'static
-{
+pub trait UnixCredentialsMessageExt: IsA<UnixCredentialsMessage> + 'static {
     #[doc(alias = "g_unix_credentials_message_get_credentials")]
     #[doc(alias = "get_credentials")]
     fn credentials(&self) -> Credentials {
@@ -69,9 +61,3 @@ pub trait UnixCredentialsMessageExt:
 }
 
 impl<O: IsA<UnixCredentialsMessage>> UnixCredentialsMessageExt for O {}
-
-impl fmt::Display for UnixCredentialsMessage {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("UnixCredentialsMessage")
-    }
-}

@@ -3,17 +3,14 @@
 #![cfg_attr(docsrs, feature(doc_cfg))]
 #![doc = include_str!("../README.md")]
 
-pub use ffi;
 pub use glib;
+pub use pango_sys as ffi;
 
 #[allow(clippy::too_many_arguments)]
 #[allow(clippy::derived_hash_with_manual_eq)]
 #[allow(clippy::missing_safety_doc)]
 mod auto;
-pub use crate::{
-    auto::{functions::*, *},
-    manual_functions::*,
-};
+pub use crate::{auto::*, functions::*};
 
 #[doc(alias = "PANGO_SCALE")]
 pub const SCALE: i32 = ffi::PANGO_SCALE;
@@ -97,8 +94,8 @@ mod color;
 mod coverage;
 pub use coverage::Coverage;
 mod enums;
+mod functions;
 mod glyph_geometry;
-mod manual_functions;
 pub use glyph_geometry::GlyphGeometry;
 mod glyph_info;
 pub use glyph_info::GlyphInfo;

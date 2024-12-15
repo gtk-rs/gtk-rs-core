@@ -4,7 +4,7 @@ use std::fmt;
 #[cfg(feature = "use_glib")]
 use std::marker::PhantomData;
 
-use crate::{utils::status_to_result, Error};
+use crate::{ffi, utils::status_to_result, Error};
 
 #[repr(transparent)]
 #[derive(Clone, Copy, PartialEq)]

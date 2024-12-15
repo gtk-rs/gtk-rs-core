@@ -2,11 +2,11 @@
 
 use std::ptr;
 
-use glib::{subclass::prelude::*, translate::*, Cast, Error};
+use glib::{prelude::*, subclass::prelude::*, translate::*, Error};
 
-use crate::{Cancellable, InputStream, OutputStream, OutputStreamSpliceFlags};
+use crate::{ffi, Cancellable, InputStream, OutputStream, OutputStreamSpliceFlags};
 
-pub trait OutputStreamImpl: ObjectImpl + OutputStreamImplExt + Send {
+pub trait OutputStreamImpl: Send + ObjectImpl + ObjectSubclass<Type: IsA<OutputStream>> {
     fn write(&self, buffer: &[u8], cancellable: Option<&Cancellable>) -> Result<usize, Error> {
         self.parent_write(buffer, cancellable)
     }
@@ -29,12 +29,7 @@ pub trait OutputStreamImpl: ObjectImpl + OutputStreamImplExt + Send {
     }
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::OutputStreamImplExt> Sealed for T {}
-}
-
-pub trait OutputStreamImplExt: sealed::Sealed + ObjectSubclass {
+pub trait OutputStreamImplExt: OutputStreamImpl {
     fn parent_write(
         &self,
         buffer: &[u8],
@@ -171,8 +166,6 @@ unsafe extern "C" fn stream_write<T: OutputStreamImpl>(
     cancellable: *mut ffi::GCancellable,
     err: *mut *mut glib::ffi::GError,
 ) -> isize {
-    use std::{isize, slice};
-
     debug_assert!(count <= isize::MAX as usize);
 
     let instance = &*(ptr as *mut T::Instance);
@@ -182,7 +175,7 @@ unsafe extern "C" fn stream_write<T: OutputStreamImpl>(
         if count == 0 {
             &[]
         } else {
-            slice::from_raw_parts(buffer as *const u8, count)
+            std::slice::from_raw_parts(buffer as *const u8, count)
         },
         Option::<Cancellable>::from_glib_borrow(cancellable)
             .as_ref()
@@ -266,7 +259,6 @@ unsafe extern "C" fn stream_splice<T: OutputStreamImpl>(
             .as_ref(),
     ) {
         Ok(res) => {
-            use std::isize;
             assert!(res <= isize::MAX as usize);
             res as isize
         }

@@ -4,20 +4,15 @@ use std::ptr;
 
 use glib::{prelude::*, subclass::prelude::*, translate::*, Error};
 
-use crate::{Cancellable, Initable};
+use crate::{ffi, Cancellable, Initable};
 
-pub trait InitableImpl: ObjectImpl {
+pub trait InitableImpl: ObjectImpl + ObjectSubclass<Type: IsA<Initable>> {
     fn init(&self, cancellable: Option<&Cancellable>) -> Result<(), Error> {
         self.parent_init(cancellable)
     }
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::InitableImplExt> Sealed for T {}
-}
-
-pub trait InitableImplExt: sealed::Sealed + ObjectSubclass {
+pub trait InitableImplExt: InitableImpl {
     fn parent_init(&self, cancellable: Option<&Cancellable>) -> Result<(), Error> {
         unsafe {
             let type_data = Self::type_data();

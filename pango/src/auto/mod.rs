@@ -120,10 +120,9 @@ pub use self::alias::Glyph;
 pub use self::alias::GlyphUnit;
 pub use self::alias::LayoutRun;
 
-pub mod functions;
+pub(crate) mod functions;
 
-#[doc(hidden)]
-pub mod traits {
+pub(crate) mod traits {
     pub use super::font::FontExt;
     pub use super::font_face::FontFaceExt;
     pub use super::font_family::FontFamilyExt;

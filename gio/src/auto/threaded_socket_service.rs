@@ -2,13 +2,13 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{SocketConnection, SocketListener, SocketService};
+use crate::{ffi, SocketConnection, SocketListener, SocketService};
 use glib::{
     prelude::*,
     signal::{connect_raw, SignalHandlerId},
     translate::*,
 };
-use std::{boxed::Box as Box_, fmt, mem::transmute};
+use std::boxed::Box as Box_;
 
 glib::wrapper! {
     #[doc(alias = "GThreadedSocketService")]
@@ -23,12 +23,7 @@ impl ThreadedSocketService {
     pub const NONE: Option<&'static ThreadedSocketService> = None;
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::ThreadedSocketService>> Sealed for T {}
-}
-
-pub trait ThreadedSocketServiceExt: IsA<ThreadedSocketService> + sealed::Sealed + 'static {
+pub trait ThreadedSocketServiceExt: IsA<ThreadedSocketService> + 'static {
     #[doc(alias = "max-threads")]
     fn max_threads(&self) -> i32 {
         ObjectExt::property(self.as_ref(), "max-threads")
@@ -63,7 +58,7 @@ pub trait ThreadedSocketServiceExt: IsA<ThreadedSocketService> + sealed::Sealed 
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"run\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     run_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -73,9 +68,3 @@ pub trait ThreadedSocketServiceExt: IsA<ThreadedSocketService> + sealed::Sealed 
 }
 
 impl<O: IsA<ThreadedSocketService>> ThreadedSocketServiceExt for O {}
-
-impl fmt::Display for ThreadedSocketService {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("ThreadedSocketService")
-    }
-}

@@ -1,10 +1,10 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use std::{fmt, marker::PhantomData, ptr};
+use std::{marker::PhantomData, ptr};
 
-use glib::{translate::*, GString, IntoGStr, Type};
+use glib::{translate::*, GString, Type};
 
-use crate::IOExtension;
+use crate::{ffi, IOExtension};
 
 // rustdoc-stripper-ignore-next
 /// Builder for extension points.
@@ -52,12 +52,6 @@ impl IOExtensionPointBuilder {
 #[doc(alias = "GIOExtensionPoint")]
 #[derive(Debug, Copy, Clone, Eq, PartialEq)]
 pub struct IOExtensionPoint(ptr::NonNull<ffi::GIOExtensionPoint>);
-
-impl fmt::Display for IOExtensionPoint {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "IOExtensionPoint")
-    }
-}
 
 impl FromGlibPtrNone<*mut ffi::GIOExtensionPoint> for IOExtensionPoint {
     #[inline]

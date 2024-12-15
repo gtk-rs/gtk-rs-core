@@ -9,7 +9,7 @@ use std::{path, ptr, slice};
 
 use glib::translate::*;
 
-use crate::{prelude::*, SocketAddress, UnixSocketAddress, UnixSocketAddressType};
+use crate::{ffi, prelude::*, SocketAddress, UnixSocketAddress, UnixSocketAddressType};
 
 #[derive(Debug)]
 pub enum UnixSocketAddressPath<'a> {
@@ -19,7 +19,7 @@ pub enum UnixSocketAddressPath<'a> {
     AbstractPadded(&'a [u8]),
 }
 
-impl<'a> UnixSocketAddressPath<'a> {
+impl UnixSocketAddressPath<'_> {
     fn to_type(&self) -> UnixSocketAddressType {
         use self::UnixSocketAddressPath::*;
 
@@ -46,30 +46,26 @@ impl UnixSocketAddress {
         use self::UnixSocketAddressPath::*;
 
         let type_ = address_type.to_type();
-        let (path, len) = match address_type {
-            Path(path) => (path.to_glib_none().0, path.as_os_str().len()),
-            Abstract(path) | AbstractPadded(path) => {
-                (path.to_glib_none().0 as *mut libc::c_char, path.len())
-            }
-            Anonymous => (ptr::null_mut(), 0),
-        };
-        unsafe {
+        let new = |ptr, len| unsafe {
             SocketAddress::from_glib_full(ffi::g_unix_socket_address_new_with_type(
-                path,
-                len as i32,
+                ptr,
+                len,
                 type_.into_glib(),
             ))
             .unsafe_cast()
+        };
+        match address_type {
+            Path(path) => new(path.to_glib_none().0, -1),
+            Abstract(path) | AbstractPadded(path) => new(
+                path.to_glib_none().0 as *mut libc::c_char,
+                path.len() as i32,
+            ),
+            Anonymous => new(ptr::null_mut(), 0),
         }
     }
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::UnixSocketAddress>> Sealed for T {}
-}
-
-pub trait UnixSocketAddressExtManual: sealed::Sealed + IsA<UnixSocketAddress> + 'static {
+pub trait UnixSocketAddressExtManual: IsA<UnixSocketAddress> + 'static {
     #[doc(alias = "g_unix_socket_address_get_path")]
     #[doc(alias = "get_path")]
     fn path(&self) -> Option<UnixSocketAddressPath> {
@@ -97,3 +93,24 @@ pub trait UnixSocketAddressExtManual: sealed::Sealed + IsA<UnixSocketAddress> + 
 }
 
 impl<O: IsA<UnixSocketAddress>> UnixSocketAddressExtManual for O {}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    // Check the actual path and len are correct and are not the underlying OsString
+    #[test]
+    fn check_path() {
+        let mut os_string = std::ffi::OsString::with_capacity(100);
+        os_string.push("/tmp/foo");
+        let path = os_string.as_ref();
+
+        let addr = UnixSocketAddress::new(path);
+        assert_eq!(addr.path_len(), 8);
+        assert_eq!(addr.path_as_array().unwrap().as_ref(), b"/tmp/foo");
+
+        let addr = UnixSocketAddress::with_type(UnixSocketAddressPath::Path(path));
+        assert_eq!(addr.path_len(), 8);
+        assert_eq!(addr.path_as_array().unwrap().as_ref(), b"/tmp/foo");
+    }
+}

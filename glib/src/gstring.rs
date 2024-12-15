@@ -13,7 +13,7 @@ use std::{
     ptr, slice,
 };
 
-use crate::{prelude::*, translate::*, value::FromValue, Type, Value};
+use crate::{ffi, gobject_ffi, prelude::*, translate::*, Type, Value};
 
 // rustdoc-stripper-ignore-next
 /// Representation of a borrowed [`GString`].
@@ -33,7 +33,7 @@ impl GStr {
     pub fn from_utf8_with_nul(bytes: &[u8]) -> Result<&Self, GStrError> {
         Self::check_trailing_nul(bytes)?;
         std::str::from_utf8(bytes)?;
-        Ok(unsafe { mem::transmute(bytes) })
+        Ok(unsafe { mem::transmute::<&[u8], &GStr>(bytes) })
     }
     // rustdoc-stripper-ignore-next
     /// Creates a GLib string wrapper from a byte slice, checking for interior nul-bytes.
@@ -44,7 +44,7 @@ impl GStr {
     pub fn from_utf8_with_nul_checked(bytes: &[u8]) -> Result<&Self, GStrError> {
         Self::check_nuls(bytes)?;
         std::str::from_utf8(bytes)?;
-        Ok(unsafe { mem::transmute(bytes) })
+        Ok(unsafe { mem::transmute::<&[u8], &GStr>(bytes) })
     }
     // rustdoc-stripper-ignore-next
     /// Unsafely creates a GLib string wrapper from a byte slice.
@@ -60,7 +60,7 @@ impl GStr {
     pub const unsafe fn from_utf8_with_nul_unchecked(bytes: &[u8]) -> &Self {
         debug_assert!(!bytes.is_empty() && bytes[bytes.len() - 1] == 0);
         debug_assert!(std::str::from_utf8(bytes).is_ok());
-        mem::transmute(bytes)
+        mem::transmute::<&[u8], &GStr>(bytes)
     }
     // rustdoc-stripper-ignore-next
     /// Creates a GLib string wrapper from a byte slice, truncating it at the first nul-byte.
@@ -72,7 +72,7 @@ impl GStr {
         let nul_pos = memchr::memchr(0, bytes).ok_or(GStrError::NoTrailingNul)?;
         let bytes = unsafe { bytes.get_unchecked(..nul_pos + 1) };
         std::str::from_utf8(bytes)?;
-        Ok(unsafe { mem::transmute(bytes) })
+        Ok(unsafe { mem::transmute::<&[u8], &GStr>(bytes) })
     }
     // rustdoc-stripper-ignore-next
     /// Creates a GLib string wrapper from a string slice.
@@ -84,7 +84,7 @@ impl GStr {
     #[inline]
     pub fn from_str_with_nul(s: &str) -> Result<&Self, GStrError> {
         Self::check_trailing_nul(s)?;
-        Ok(unsafe { mem::transmute(s) })
+        Ok(unsafe { mem::transmute::<&str, &GStr>(s) })
     }
     // rustdoc-stripper-ignore-next
     /// Creates a GLib string wrapper from a string slice, checking for interior nul-bytes.
@@ -96,7 +96,7 @@ impl GStr {
     #[inline]
     pub fn from_str_with_nul_checked(s: &str) -> Result<&Self, GStrError> {
         Self::check_nuls(s)?;
-        Ok(unsafe { mem::transmute(s) })
+        Ok(unsafe { mem::transmute::<&str, &GStr>(s) })
     }
     // rustdoc-stripper-ignore-next
     /// Unsafely creates a GLib string wrapper from a string slice. The string slice must be
@@ -112,7 +112,7 @@ impl GStr {
     #[inline]
     pub const unsafe fn from_str_with_nul_unchecked(s: &str) -> &Self {
         debug_assert!(!s.is_empty() && s.as_bytes()[s.len() - 1] == 0);
-        mem::transmute(s)
+        mem::transmute::<&str, &GStr>(s)
     }
     // rustdoc-stripper-ignore-next
     /// Creates a GLib string wrapper from a string slice, truncating it at the first nul-byte.
@@ -126,7 +126,7 @@ impl GStr {
         let b = s.as_bytes();
         let nul_pos = memchr::memchr(0, b).ok_or(GStrError::NoTrailingNul)?;
         let s = unsafe { std::str::from_utf8_unchecked(b.get_unchecked(..nul_pos + 1)) };
-        Ok(unsafe { mem::transmute(s) })
+        Ok(unsafe { mem::transmute::<&str, &GStr>(s) })
     }
     // rustdoc-stripper-ignore-next
     /// Wraps a raw C string with a safe GLib string wrapper. The provided C string **must** be
@@ -134,7 +134,7 @@ impl GStr {
     ///
     /// # Safety
     ///
-    /// See [`CStr::from_ptr`](CStr::from_ptr#safety).
+    /// See [`CStr::from_ptr`](std::ffi::CStr#safety).
     #[inline]
     pub unsafe fn from_ptr<'a>(ptr: *const c_char) -> &'a Self {
         let cstr = CStr::from_ptr(ptr);
@@ -177,7 +177,7 @@ impl GStr {
     // rustdoc-stripper-ignore-next
     /// Converts this GLib string to a byte slice containing the trailing 0 byte.
     ///
-    /// This function is the equivalent of [`GStr::to_bytes`] except that it will retain the
+    /// This function is the equivalent of [`GStr::as_bytes`] except that it will retain the
     /// trailing nul terminator instead of chopping it off.
     #[inline]
     pub const fn as_bytes_with_nul(&self) -> &[u8] {
@@ -293,21 +293,61 @@ impl GStr {
 
 // rustdoc-stripper-ignore-next
 /// Error type holding all possible failures when creating a [`GStr`] reference.
-#[derive(thiserror::Error, Debug)]
+#[derive(Debug)]
 pub enum GStrError {
-    #[error(transparent)]
-    InvalidUtf8(#[from] std::str::Utf8Error),
-    #[error(transparent)]
-    InteriorNul(#[from] GStrInteriorNulError),
-    #[error("data provided is not nul terminated")]
+    InvalidUtf8(std::str::Utf8Error),
+    InteriorNul(GStrInteriorNulError),
     NoTrailingNul,
+}
+
+impl std::error::Error for GStrError {
+    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
+        match self {
+            Self::InvalidUtf8(err) => std::error::Error::source(err),
+            Self::InteriorNul(err) => std::error::Error::source(err),
+            Self::NoTrailingNul => None,
+        }
+    }
+}
+
+impl fmt::Display for GStrError {
+    fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            Self::InvalidUtf8(err) => fmt::Display::fmt(err, fmt),
+            Self::InteriorNul(err) => fmt::Display::fmt(err, fmt),
+            Self::NoTrailingNul => fmt.write_str("data provided is not nul terminated"),
+        }
+    }
+}
+
+impl std::convert::From<std::str::Utf8Error> for GStrError {
+    fn from(err: std::str::Utf8Error) -> Self {
+        Self::InvalidUtf8(err)
+    }
+}
+
+impl std::convert::From<GStrInteriorNulError> for GStrError {
+    fn from(err: GStrInteriorNulError) -> Self {
+        Self::InteriorNul(err)
+    }
 }
 
 // rustdoc-stripper-ignore-next
 /// Error type indicating that a buffer had unexpected nul-bytes.
-#[derive(thiserror::Error, Copy, Clone, PartialEq, Eq, Debug)]
-#[error("data provided contains an interior nul-byte at byte pos {0}")]
+#[derive(Copy, Clone, PartialEq, Eq, Debug)]
 pub struct GStrInteriorNulError(usize);
+
+impl std::error::Error for GStrInteriorNulError {}
+
+impl fmt::Display for GStrInteriorNulError {
+    fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
+        write!(
+            fmt,
+            "data provided contains an interior nul-byte at byte pos {}",
+            self.0
+        )
+    }
+}
 
 impl GStrInteriorNulError {
     // rustdoc-stripper-ignore-next
@@ -364,7 +404,7 @@ impl Eq for GStr {}
 impl PartialOrd for GStr {
     #[inline]
     fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
-        self.as_str().partial_cmp(other.as_str())
+        Some(self.cmp(other))
     }
 }
 
@@ -592,7 +632,7 @@ impl FromGlibPtrNone<*mut i8> for &GStr {
     }
 }
 
-unsafe impl<'a> FromValue<'a> for &'a GStr {
+unsafe impl<'a> crate::value::FromValue<'a> for &'a GStr {
     type Checker = crate::value::GenericValueTypeOrNoneChecker<Self>;
 
     #[inline]
@@ -669,9 +709,9 @@ impl<'a> ToGlibPtr<'a, *mut c_char> for GStr {
 }
 
 // rustdoc-stripper-ignore-next
-/// `NULL`-terminated UTF-8 string as stored in [`StrV`].
+/// `NULL`-terminated UTF-8 string as stored in [`StrV`](crate::StrV).
 ///
-/// Unlike [`&GStr`] this does not have its length stored.
+/// Unlike [`&GStr`](crate::GStr) this does not have its length stored.
 #[repr(transparent)]
 pub struct GStringPtr(ptr::NonNull<c_char>);
 
@@ -685,7 +725,7 @@ impl GlibPtrDefault for GStringPtr {
 
 impl GStringPtr {
     // rustdoc-stripper-ignore-next
-    /// Returns the corresponding [`&GStr`].
+    /// Returns the corresponding [`&GStr`](crate::GStr).
     #[inline]
     pub fn to_gstr(&self) -> &GStr {
         unsafe { GStr::from_ptr(self.0.as_ptr()) }
@@ -694,7 +734,7 @@ impl GStringPtr {
     // rustdoc-stripper-ignore-next
     /// Returns the corresponding [`&str`].
     #[inline]
-    pub fn to_str(&self) -> &str {
+    pub fn as_str(&self) -> &str {
         self.to_gstr().as_str()
     }
 
@@ -724,6 +764,15 @@ impl Clone for GStringPtr {
     }
 }
 
+impl Deref for GStringPtr {
+    type Target = str;
+
+    #[inline]
+    fn deref(&self) -> &str {
+        self.as_str()
+    }
+}
+
 impl IntoGlibPtr<*mut c_char> for GStringPtr {
     #[inline]
     unsafe fn into_glib_ptr(self) -> *mut c_char {
@@ -749,7 +798,7 @@ impl fmt::Debug for GStringPtr {
 impl fmt::Display for GStringPtr {
     #[inline]
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str(self.to_str())
+        f.write_str(self.as_str())
     }
 }
 
@@ -849,7 +898,7 @@ impl PartialEq<GStringPtr> for GStr {
 impl PartialOrd<GStringPtr> for GStringPtr {
     #[inline]
     fn partial_cmp(&self, other: &GStringPtr) -> Option<std::cmp::Ordering> {
-        Some(unsafe { GStringPtr::strcmp(self.as_ptr(), other.as_ptr()) })
+        Some(self.cmp(other))
     }
 }
 
@@ -863,7 +912,7 @@ impl Ord for GStringPtr {
 impl PartialOrd<GStringPtr> for String {
     #[inline]
     fn partial_cmp(&self, other: &GStringPtr) -> Option<std::cmp::Ordering> {
-        Some(self.as_str().cmp(other.to_str()))
+        Some(self.as_str().cmp(other))
     }
 }
 
@@ -877,7 +926,7 @@ impl PartialOrd<GStringPtr> for GString {
 impl PartialOrd<String> for GStringPtr {
     #[inline]
     fn partial_cmp(&self, other: &String) -> Option<std::cmp::Ordering> {
-        Some(self.to_str().cmp(other))
+        Some(self.as_str().cmp(other))
     }
 }
 
@@ -891,7 +940,7 @@ impl PartialOrd<GString> for GStringPtr {
 impl PartialOrd<GStringPtr> for str {
     #[inline]
     fn partial_cmp(&self, other: &GStringPtr) -> Option<std::cmp::Ordering> {
-        Some(self.cmp(other.to_str()))
+        Some(self.cmp(other.as_str()))
     }
 }
 
@@ -905,14 +954,14 @@ impl PartialOrd<GStringPtr> for GStr {
 impl PartialOrd<str> for GStringPtr {
     #[inline]
     fn partial_cmp(&self, other: &str) -> Option<std::cmp::Ordering> {
-        Some(self.to_str().cmp(other))
+        Some(self.as_str().cmp(other))
     }
 }
 
 impl PartialOrd<&str> for GStringPtr {
     #[inline]
     fn partial_cmp(&self, other: &&str) -> Option<std::cmp::Ordering> {
-        Some(self.to_str().cmp(other))
+        Some(self.as_str().cmp(other))
     }
 }
 
@@ -933,7 +982,7 @@ impl PartialOrd<&GStr> for GStringPtr {
 impl PartialOrd<GStringPtr> for &str {
     #[inline]
     fn partial_cmp(&self, other: &GStringPtr) -> Option<std::cmp::Ordering> {
-        Some(self.cmp(&other.to_str()))
+        Some(self.cmp(&other.as_str()))
     }
 }
 
@@ -954,7 +1003,7 @@ impl AsRef<GStringPtr> for GStringPtr {
 impl std::hash::Hash for GStringPtr {
     #[inline]
     fn hash<H: std::hash::Hasher>(&self, state: &mut H) {
-        self.to_str().hash(state);
+        self.as_str().hash(state);
     }
 }
 
@@ -974,7 +1023,7 @@ const INLINE_LEN: usize =
 /// that contain interior nul-bytes will simply end at first nul-byte when converting to a C
 /// string.
 ///
-/// The constructors beginning with `from_utf8` `and `from_string` can also be used to further
+/// The constructors beginning with `from_utf8` and `from_string` can also be used to further
 /// control how interior nul-bytes are handled.
 pub struct GString(Inner);
 
@@ -1012,7 +1061,7 @@ impl GString {
     /// [`Arguments`](std::fmt::Arguments) instance can be created with the
     /// [`format_args!`](std::format_args) macro.
     ///
-    /// Please note that using [`gformat!`] might be preferable.
+    /// Please note that using [`gformat!`](crate::gformat) might be preferable.
     pub fn format(args: fmt::Arguments) -> Self {
         if let Some(s) = args.as_str() {
             return Self::from(s);
@@ -1223,7 +1272,7 @@ impl GString {
     pub fn as_gstr(&self) -> &GStr {
         let bytes = match self.0 {
             Inner::Native(ref s) => s.as_bytes(),
-            Inner::Foreign { len, .. } if len == 0 => &[0],
+            Inner::Foreign { len: 0, .. } => &[0],
             Inner::Foreign { ptr, len } => unsafe {
                 slice::from_raw_parts(ptr.as_ptr() as *const _, len + 1)
             },
@@ -1297,9 +1346,16 @@ macro_rules! gformat {
 /// Error type indicating that a buffer did not have a trailing nul-byte.
 ///
 /// `T` is the type of the value the conversion was attempted from.
-#[derive(thiserror::Error, Clone, PartialEq, Eq, Debug)]
-#[error("data provided is not nul terminated")]
+#[derive(Clone, PartialEq, Eq, Debug)]
 pub struct GStringNoTrailingNulError<T>(T);
+
+impl<T> std::error::Error for GStringNoTrailingNulError<T> where T: fmt::Debug {}
+
+impl<T> fmt::Display for GStringNoTrailingNulError<T> {
+    fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
+        fmt.write_str("data provided is not nul terminated")
+    }
+}
 
 impl<T> GStringNoTrailingNulError<T> {
     // rustdoc-stripper-ignore-next
@@ -1314,9 +1370,16 @@ impl<T> GStringNoTrailingNulError<T> {
 /// Error type indicating that a buffer had unexpected nul-bytes.
 ///
 /// `T` is the type of the value the conversion was attempted from.
-#[derive(thiserror::Error, Clone, PartialEq, Eq, Debug)]
-#[error("{1}")]
+#[derive(Clone, PartialEq, Eq, Debug)]
 pub struct GStringInteriorNulError<T>(T, GStrInteriorNulError);
+
+impl<T> std::error::Error for GStringInteriorNulError<T> where T: fmt::Debug {}
+
+impl<T> fmt::Display for GStringInteriorNulError<T> {
+    fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
+        fmt::Display::fmt(&self.1, fmt)
+    }
+}
 
 impl<T> GStringInteriorNulError<T> {
     // rustdoc-stripper-ignore-next
@@ -1337,9 +1400,16 @@ impl<T> GStringInteriorNulError<T> {
 /// Error type indicating that a buffer had invalid UTF-8.
 ///
 /// `T` is the type of the value the conversion was attempted from.
-#[derive(thiserror::Error, Clone, PartialEq, Eq, Debug)]
-#[error("{1}")]
+#[derive(Clone, PartialEq, Eq, Debug)]
 pub struct GStringUtf8Error<T>(T, std::str::Utf8Error);
+
+impl<T> std::error::Error for GStringUtf8Error<T> where T: fmt::Debug {}
+
+impl<T> fmt::Display for GStringUtf8Error<T> {
+    fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
+        fmt::Display::fmt(&self.1, fmt)
+    }
+}
 
 impl<T> GStringUtf8Error<T> {
     // rustdoc-stripper-ignore-next
@@ -1359,16 +1429,55 @@ impl<T> GStringUtf8Error<T> {
 
 // rustdoc-stripper-ignore-next
 /// Error type holding all possible failures when creating a [`GString`].
-#[derive(thiserror::Error, Debug)]
+#[derive(Debug)]
 pub enum GStringFromError<T> {
-    #[error(transparent)]
-    NoTrailingNul(#[from] GStringNoTrailingNulError<T>),
-    #[error(transparent)]
-    InteriorNul(#[from] GStringInteriorNulError<T>),
-    #[error(transparent)]
-    InvalidUtf8(#[from] GStringUtf8Error<T>),
-    #[error("unable to convert")]
+    NoTrailingNul(GStringNoTrailingNulError<T>),
+    InteriorNul(GStringInteriorNulError<T>),
+    InvalidUtf8(GStringUtf8Error<T>),
     Unspecified(T),
+}
+
+impl<T> std::error::Error for GStringFromError<T>
+where
+    T: fmt::Debug,
+{
+    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
+        match self {
+            Self::NoTrailingNul(err) => std::error::Error::source(err),
+            Self::InteriorNul(err) => std::error::Error::source(err),
+            Self::InvalidUtf8(err) => std::error::Error::source(err),
+            Self::Unspecified { .. } => None,
+        }
+    }
+}
+
+impl<T> fmt::Display for GStringFromError<T> {
+    fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            Self::NoTrailingNul(err) => fmt::Display::fmt(err, fmt),
+            Self::InteriorNul(err) => fmt::Display::fmt(err, fmt),
+            Self::InvalidUtf8(err) => fmt::Display::fmt(err, fmt),
+            Self::Unspecified(_) => fmt.write_str("unable to convert"),
+        }
+    }
+}
+
+impl<T> std::convert::From<GStringNoTrailingNulError<T>> for GStringFromError<T> {
+    fn from(err: GStringNoTrailingNulError<T>) -> Self {
+        GStringFromError::NoTrailingNul(err)
+    }
+}
+
+impl<T> std::convert::From<GStringInteriorNulError<T>> for GStringFromError<T> {
+    fn from(err: GStringInteriorNulError<T>) -> Self {
+        GStringFromError::InteriorNul(err)
+    }
+}
+
+impl<T> std::convert::From<GStringUtf8Error<T>> for GStringFromError<T> {
+    fn from(err: GStringUtf8Error<T>) -> Self {
+        GStringFromError::InvalidUtf8(err)
+    }
 }
 
 impl<T> GStringFromError<T> {
@@ -1879,7 +1988,7 @@ impl<'a> From<&'a GString> for Cow<'a, GStr> {
     }
 }
 
-impl<'a> From<GString> for Cow<'a, GStr> {
+impl From<GString> for Cow<'_, GStr> {
     #[inline]
     fn from(v: GString) -> Self {
         Cow::Owned(v)
@@ -2232,7 +2341,7 @@ impl crate::value::ValueType for Vec<GString> {
     type Type = Vec<GString>;
 }
 
-unsafe impl<'a> FromValue<'a> for Vec<GString> {
+unsafe impl<'a> crate::value::FromValue<'a> for Vec<GString> {
     type Checker = crate::value::GenericValueTypeChecker<Self>;
 
     #[inline]

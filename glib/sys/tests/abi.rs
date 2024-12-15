@@ -10,7 +10,7 @@ use std::error::Error;
 use std::ffi::OsString;
 use std::mem::{align_of, size_of};
 use std::path::Path;
-use std::process::Command;
+use std::process::{Command, Stdio};
 use std::str;
 use tempfile::Builder;
 
@@ -70,9 +70,11 @@ fn pkg_config_cflags(packages: &[&str]) -> Result<Vec<String>, Box<dyn Error>> {
     let mut cmd = Command::new(pkg_config);
     cmd.arg("--cflags");
     cmd.args(packages);
+    cmd.stderr(Stdio::inherit());
     let out = cmd.output()?;
     if !out.status.success() {
-        return Err(format!("command {cmd:?} returned {}", out.status).into());
+        let (status, stdout) = (out.status, String::from_utf8_lossy(&out.stdout));
+        return Err(format!("command {cmd:?} failed, {status:?}\nstdout: {stdout}").into());
     }
     let stdout = str::from_utf8(&out.stdout)?;
     Ok(shell_words::split(stdout.trim())?)
@@ -187,13 +189,15 @@ fn get_c_output(name: &str) -> Result<String, Box<dyn Error>> {
     let cc = Compiler::new().expect("configured compiler");
     cc.compile(&c_file, &exe)?;
 
-    let mut abi_cmd = Command::new(exe);
-    let output = abi_cmd.output()?;
-    if !output.status.success() {
-        return Err(format!("command {abi_cmd:?} failed, {output:?}").into());
+    let mut cmd = Command::new(exe);
+    cmd.stderr(Stdio::inherit());
+    let out = cmd.output()?;
+    if !out.status.success() {
+        let (status, stdout) = (out.status, String::from_utf8_lossy(&out.stdout));
+        return Err(format!("command {cmd:?} failed, {status:?}\nstdout: {stdout}").into());
     }
 
-    Ok(String::from_utf8(output.stdout)?)
+    Ok(String::from_utf8(out.stdout)?)
 }
 
 const RUST_LAYOUTS: &[(&str, Layout)] = &[
@@ -230,6 +234,13 @@ const RUST_LAYOUTS: &[(&str, Layout)] = &[
         Layout {
             size: size_of::<GChecksumType>(),
             alignment: align_of::<GChecksumType>(),
+        },
+    ),
+    (
+        "GCompletion",
+        Layout {
+            size: size_of::<GCompletion>(),
+            alignment: align_of::<GCompletion>(),
         },
     ),
     (
@@ -786,6 +797,13 @@ const RUST_LAYOUTS: &[(&str, Layout)] = &[
         },
     ),
     (
+        "GThread",
+        Layout {
+            size: size_of::<GThread>(),
+            alignment: align_of::<GThread>(),
+        },
+    ),
+    (
         "GThreadError",
         Layout {
             size: size_of::<GThreadError>(),
@@ -793,10 +811,24 @@ const RUST_LAYOUTS: &[(&str, Layout)] = &[
         },
     ),
     (
+        "GThreadFunctions",
+        Layout {
+            size: size_of::<GThreadFunctions>(),
+            alignment: align_of::<GThreadFunctions>(),
+        },
+    ),
+    (
         "GThreadPool",
         Layout {
             size: size_of::<GThreadPool>(),
             alignment: align_of::<GThreadPool>(),
+        },
+    ),
+    (
+        "GThreadPriority",
+        Layout {
+            size: size_of::<GThreadPriority>(),
+            alignment: align_of::<GThreadPriority>(),
         },
     ),
     (
@@ -863,10 +895,10 @@ const RUST_LAYOUTS: &[(&str, Layout)] = &[
         },
     ),
     (
-        "GType",
+        "GTuples",
         Layout {
-            size: size_of::<GType>(),
-            alignment: align_of::<GType>(),
+            size: size_of::<GTuples>(),
+            alignment: align_of::<GTuples>(),
         },
     ),
     (
@@ -888,6 +920,24 @@ const RUST_LAYOUTS: &[(&str, Layout)] = &[
         Layout {
             size: size_of::<GUnicodeType>(),
             alignment: align_of::<GUnicodeType>(),
+        },
+    ),
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
+    (
+        "GUnixPipe",
+        Layout {
+            size: size_of::<GUnixPipe>(),
+            alignment: align_of::<GUnixPipe>(),
+        },
+    ),
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
+    (
+        "GUnixPipeEnd",
+        Layout {
+            size: size_of::<GUnixPipeEnd>(),
+            alignment: align_of::<GUnixPipeEnd>(),
         },
     ),
     (
@@ -976,6 +1026,11 @@ const RUST_CONSTANTS: &[(&str, &str)] = &[
     ("GLIB_SYSDEF_MSG_DONTROUTE", "4"),
     ("GLIB_SYSDEF_MSG_OOB", "1"),
     ("GLIB_SYSDEF_MSG_PEEK", "2"),
+    ("G_ALLOCATOR_LIST", "1"),
+    ("G_ALLOCATOR_NODE", "3"),
+    ("G_ALLOCATOR_SLIST", "2"),
+    ("G_ALLOC_AND_FREE", "2"),
+    ("G_ALLOC_ONLY", "1"),
     ("(guint) G_ASCII_ALNUM", "1"),
     ("(guint) G_ASCII_ALPHA", "2"),
     ("(guint) G_ASCII_CNTRL", "4"),
@@ -1446,6 +1501,10 @@ const RUST_CONSTANTS: &[(&str, &str)] = &[
     ("(guint) G_TEST_TRAP_SILENCE_STDERR", "256"),
     ("(guint) G_TEST_TRAP_SILENCE_STDOUT", "128"),
     ("(gint) G_THREAD_ERROR_AGAIN", "0"),
+    ("(gint) G_THREAD_PRIORITY_HIGH", "2"),
+    ("(gint) G_THREAD_PRIORITY_LOW", "0"),
+    ("(gint) G_THREAD_PRIORITY_NORMAL", "1"),
+    ("(gint) G_THREAD_PRIORITY_URGENT", "3"),
     ("G_TIME_SPAN_DAY", "86400000000"),
     ("G_TIME_SPAN_HOUR", "3600000000"),
     ("G_TIME_SPAN_MILLISECOND", "1000"),
@@ -1485,6 +1544,9 @@ const RUST_CONSTANTS: &[(&str, &str)] = &[
     ("(guint) G_TRAVERSE_NON_LEAVES", "2"),
     ("G_UNICHAR_MAX_DECOMPOSITION_LENGTH", "18"),
     ("(gint) G_UNICODE_BREAK_AFTER", "10"),
+    ("(gint) G_UNICODE_BREAK_AKSARA", "43"),
+    ("(gint) G_UNICODE_BREAK_AKSARA_PRE_BASE", "44"),
+    ("(gint) G_UNICODE_BREAK_AKSARA_START", "45"),
     ("(gint) G_UNICODE_BREAK_ALPHABETIC", "23"),
     ("(gint) G_UNICODE_BREAK_AMBIGUOUS", "27"),
     ("(gint) G_UNICODE_BREAK_BEFORE", "11"),
@@ -1525,6 +1587,8 @@ const RUST_CONSTANTS: &[(&str, &str)] = &[
     ("(gint) G_UNICODE_BREAK_SURROGATE", "4"),
     ("(gint) G_UNICODE_BREAK_SYMBOL", "22"),
     ("(gint) G_UNICODE_BREAK_UNKNOWN", "28"),
+    ("(gint) G_UNICODE_BREAK_VIRAMA", "47"),
+    ("(gint) G_UNICODE_BREAK_VIRAMA_FINAL", "46"),
     ("(gint) G_UNICODE_BREAK_WORD_JOINER", "30"),
     ("(gint) G_UNICODE_BREAK_ZERO_WIDTH_JOINER", "42"),
     ("(gint) G_UNICODE_BREAK_ZERO_WIDTH_SPACE", "5"),
@@ -1591,6 +1655,7 @@ const RUST_CONSTANTS: &[(&str, &str)] = &[
     ("(gint) G_UNICODE_SCRIPT_ELBASAN", "106"),
     ("(gint) G_UNICODE_SCRIPT_ELYMAIC", "149"),
     ("(gint) G_UNICODE_SCRIPT_ETHIOPIC", "11"),
+    ("(gint) G_UNICODE_SCRIPT_GARAY", "166"),
     ("(gint) G_UNICODE_SCRIPT_GEORGIAN", "12"),
     ("(gint) G_UNICODE_SCRIPT_GLAGOLITIC", "56"),
     ("(gint) G_UNICODE_SCRIPT_GOTHIC", "13"),
@@ -1599,6 +1664,7 @@ const RUST_CONSTANTS: &[(&str, &str)] = &[
     ("(gint) G_UNICODE_SCRIPT_GUJARATI", "15"),
     ("(gint) G_UNICODE_SCRIPT_GUNJALA_GONDI", "143"),
     ("(gint) G_UNICODE_SCRIPT_GURMUKHI", "16"),
+    ("(gint) G_UNICODE_SCRIPT_GURUNG_KHEMA", "169"),
     ("(gint) G_UNICODE_SCRIPT_HAN", "17"),
     ("(gint) G_UNICODE_SCRIPT_HANGUL", "18"),
     ("(gint) G_UNICODE_SCRIPT_HANIFI_ROHINGYA", "144"),
@@ -1622,6 +1688,7 @@ const RUST_CONSTANTS: &[(&str, &str)] = &[
     ("(gint) G_UNICODE_SCRIPT_KHMER", "23"),
     ("(gint) G_UNICODE_SCRIPT_KHOJKI", "108"),
     ("(gint) G_UNICODE_SCRIPT_KHUDAWADI", "109"),
+    ("(gint) G_UNICODE_SCRIPT_KIRAT_RAI", "170"),
     ("(gint) G_UNICODE_SCRIPT_LAO", "24"),
     ("(gint) G_UNICODE_SCRIPT_LATIN", "25"),
     ("(gint) G_UNICODE_SCRIPT_LEPCHA", "68"),
@@ -1669,6 +1736,7 @@ const RUST_CONSTANTS: &[(&str, &str)] = &[
     ("(gint) G_UNICODE_SCRIPT_OLD_TURKIC", "89"),
     ("(gint) G_UNICODE_SCRIPT_OLD_UYGHUR", "158"),
     ("(gint) G_UNICODE_SCRIPT_OL_CHIKI", "73"),
+    ("(gint) G_UNICODE_SCRIPT_OL_ONAL", "171"),
     ("(gint) G_UNICODE_SCRIPT_ORIYA", "31"),
     ("(gint) G_UNICODE_SCRIPT_OSAGE", "136"),
     ("(gint) G_UNICODE_SCRIPT_OSMANYA", "49"),
@@ -1691,6 +1759,7 @@ const RUST_CONSTANTS: &[(&str, &str)] = &[
     ("(gint) G_UNICODE_SCRIPT_SORA_SOMPENG", "101"),
     ("(gint) G_UNICODE_SCRIPT_SOYOMBO", "140"),
     ("(gint) G_UNICODE_SCRIPT_SUNDANESE", "70"),
+    ("(gint) G_UNICODE_SCRIPT_SUNUWAR", "168"),
     ("(gint) G_UNICODE_SCRIPT_SYLOTI_NAGRI", "58"),
     ("(gint) G_UNICODE_SCRIPT_SYRIAC", "34"),
     ("(gint) G_UNICODE_SCRIPT_TAGALOG", "42"),
@@ -1708,7 +1777,9 @@ const RUST_CONSTANTS: &[(&str, &str)] = &[
     ("(gint) G_UNICODE_SCRIPT_TIBETAN", "39"),
     ("(gint) G_UNICODE_SCRIPT_TIFINAGH", "57"),
     ("(gint) G_UNICODE_SCRIPT_TIRHUTA", "124"),
+    ("(gint) G_UNICODE_SCRIPT_TODHRI", "165"),
     ("(gint) G_UNICODE_SCRIPT_TOTO", "160"),
+    ("(gint) G_UNICODE_SCRIPT_TULU_TIGALARI", "167"),
     ("(gint) G_UNICODE_SCRIPT_UGARITIC", "53"),
     ("(gint) G_UNICODE_SCRIPT_UNKNOWN", "61"),
     ("(gint) G_UNICODE_SCRIPT_VAI", "74"),
@@ -1724,6 +1795,8 @@ const RUST_CONSTANTS: &[(&str, &str)] = &[
     ("(gint) G_UNICODE_TITLECASE_LETTER", "8"),
     ("(gint) G_UNICODE_UNASSIGNED", "2"),
     ("(gint) G_UNICODE_UPPERCASE_LETTER", "9"),
+    ("(gint) G_UNIX_PIPE_END_READ", "0"),
+    ("(gint) G_UNIX_PIPE_END_WRITE", "1"),
     ("(gint) G_URI_ERROR_BAD_AUTH_PARAMS", "4"),
     ("(gint) G_URI_ERROR_BAD_FRAGMENT", "9"),
     ("(gint) G_URI_ERROR_BAD_HOST", "5"),

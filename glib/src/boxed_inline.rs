@@ -10,6 +10,7 @@ macro_rules! glib_boxed_inline_wrapper {
     ([$($attr:meta)*] $visibility:vis $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)?, $ffi_name:ty
      $(, @type_ $get_type_expr:expr)?) => {
         $(#[$attr])*
+        #[doc = "\n\nGLib type: Inline allocated boxed type with stack copy semantics."]
         #[repr(transparent)]
         $visibility struct $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? {
             pub(crate) inner: $ffi_name,
@@ -18,6 +19,7 @@ macro_rules! glib_boxed_inline_wrapper {
 
         #[allow(clippy::incorrect_clone_impl_on_copy_type)]
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? std::clone::Clone for $name $(<$($generic),+>)? {
+            #[doc = "Copies the inline boxed type by value with the type-specific copy function."]
             #[inline]
             fn clone(&self) -> Self {
                 Self {
@@ -43,6 +45,7 @@ macro_rules! glib_boxed_inline_wrapper {
      @copy $copy_arg:ident $copy_expr:expr, @free $free_arg:ident $free_expr:expr
      $(, @type_ $get_type_expr:expr)?) => {
         $(#[$attr])*
+        #[doc = "\n\nGLib type: Inline allocated boxed type with stack copy semantics."]
         #[repr(transparent)]
         $visibility struct $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? {
             pub(crate) inner: $ffi_name,
@@ -50,7 +53,9 @@ macro_rules! glib_boxed_inline_wrapper {
         }
 
         #[allow(clippy::incorrect_clone_impl_on_copy_type)]
+        #[allow(clippy::non_canonical_clone_impl)]
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? std::clone::Clone for $name $(<$($generic),+>)? {
+            #[doc = "Copies the inline boxed type by value with the type-specific copy function."]
             #[inline]
             fn clone(&self) -> Self {
                 Self {
@@ -75,6 +80,7 @@ macro_rules! glib_boxed_inline_wrapper {
      @init $init_arg:ident $init_expr:expr, @copy_into $copy_into_arg_dest:ident $copy_into_arg_src:ident $copy_into_expr:expr, @clear $clear_arg:ident $clear_expr:expr
      $(, @type_ $get_type_expr:expr)?) => {
         $(#[$attr])*
+        #[doc = "\n\nGLib type: Inline allocated boxed type with stack copy semantics."]
         #[repr(transparent)]
         $visibility struct $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? {
             pub(crate) inner: $ffi_name,
@@ -82,6 +88,7 @@ macro_rules! glib_boxed_inline_wrapper {
         }
 
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? std::clone::Clone for $name $(<$($generic),+>)? {
+            #[doc = "Copies the inline boxed type by value with the type-specific copy function."]
             #[inline]
             fn clone(&self) -> Self {
                 unsafe {
@@ -116,6 +123,7 @@ macro_rules! glib_boxed_inline_wrapper {
      @init $init_arg:ident $init_expr:expr, @copy_into $copy_into_arg_dest:ident $copy_into_arg_src:ident $copy_into_expr:expr, @clear $clear_arg:ident $clear_expr:expr
      $(, @type_ $get_type_expr:expr)?) => {
         $(#[$attr])*
+        #[doc = "\n\nGLib type: Inline allocated boxed type with stack copy semantics."]
         #[repr(transparent)]
         $visibility struct $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? {
             pub(crate) inner: $ffi_name,
@@ -123,6 +131,7 @@ macro_rules! glib_boxed_inline_wrapper {
         }
 
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? std::clone::Clone for $name $(<$($generic),+>)? {
+            #[doc = "Copies the inline boxed type by value with the type-specific copy function."]
             #[inline]
             fn clone(&self) -> Self {
                 unsafe {
@@ -163,12 +172,14 @@ macro_rules! glib_boxed_inline_wrapper {
             #[doc = "Borrows the underlying C value."]
             #[inline]
             pub unsafe fn from_glib_ptr_borrow<'a>(ptr: *const $ffi_name) -> &'a Self {
+                debug_assert!(!ptr.is_null());
                 &*(ptr as *const Self)
             }
 
             #[doc = "Borrows the underlying C value mutably."]
             #[inline]
             pub unsafe fn from_glib_ptr_borrow_mut<'a>(ptr: *mut $ffi_name) -> &'a mut Self {
+                debug_assert!(!ptr.is_null());
                 &mut *(ptr as *mut Self)
             }
         }
@@ -545,10 +556,11 @@ macro_rules! glib_boxed_inline_wrapper {
     (@value_impl $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)?, $ffi_name:ty) => { };
 
     (@value_impl $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)?, $ffi_name:ty, @type_ $get_type_expr:expr) => {
-        impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::types::StaticType for $name $(<$($generic),+>)? {
+        impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::prelude::StaticType for $name $(<$($generic),+>)? {
             #[inline]
             fn static_type() -> $crate::types::Type {
                 #[allow(unused_unsafe)]
+                #[allow(clippy::macro_metavars_in_unsafe)]
                 unsafe { $crate::translate::from_glib($get_type_expr) }
             }
         }
@@ -590,7 +602,7 @@ macro_rules! glib_boxed_inline_wrapper {
             #[inline]
             fn to_value(&self) -> $crate::Value {
                 unsafe {
-                    let mut value = $crate::Value::from_type_unchecked(<Self as $crate::StaticType>::static_type());
+                    let mut value = $crate::Value::from_type_unchecked(<Self as $crate::prelude::StaticType>::static_type());
                     $crate::gobject_ffi::g_value_set_boxed(
                         $crate::translate::ToGlibPtrMut::to_glib_none_mut(&mut value).0,
                         $crate::translate::ToGlibPtr::<*const $ffi_name>::to_glib_none(self).0 as *mut _,
@@ -601,7 +613,7 @@ macro_rules! glib_boxed_inline_wrapper {
 
             #[inline]
             fn value_type(&self) -> $crate::Type {
-                <Self as $crate::StaticType>::static_type()
+                <Self as $crate::prelude::StaticType>::static_type()
             }
         }
 
@@ -629,7 +641,7 @@ macro_rules! glib_boxed_inline_wrapper {
             }
         }
 
-        impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::HasParamSpec for $name $(<$($generic),+>)? {
+        impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::prelude::HasParamSpec for $name $(<$($generic),+>)? {
             type ParamSpec = $crate::ParamSpecBoxed;
             type SetValue = Self;
             type BuilderFn = fn(&str) -> $crate::ParamSpecBoxedBuilder<Self>;

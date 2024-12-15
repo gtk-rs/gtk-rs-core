@@ -6,7 +6,7 @@ use std::{mem, ptr, slice};
 
 use libc::{c_uint, c_void};
 
-use crate::{prelude::*, translate::*, value::FromValue, Type, Value};
+use crate::{gobject_ffi, prelude::*, translate::*, Type, Value};
 
 wrapper! {
     #[derive(PartialEq, Eq, PartialOrd, Ord, Debug, Hash)]
@@ -370,7 +370,9 @@ impl TryFromClosureReturnValue for () {
     }
 }
 
-impl<T: for<'a> FromValue<'a> + StaticType + 'static> TryFromClosureReturnValue for T {
+impl<T: for<'a> crate::value::FromValue<'a> + StaticType + 'static> TryFromClosureReturnValue
+    for T
+{
     #[inline]
     fn try_from_closure_return_value(v: Option<Value>) -> Result<Self, crate::BoolError> {
         v.ok_or_else(|| {

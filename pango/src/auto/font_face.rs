@@ -2,12 +2,11 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::FontDescription;
 #[cfg(feature = "v1_46")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_46")))]
 use crate::FontFamily;
+use crate::{ffi, FontDescription};
 use glib::{prelude::*, translate::*};
-use std::{fmt, mem, ptr};
 
 glib::wrapper! {
     #[doc(alias = "PangoFontFace")]
@@ -22,12 +21,7 @@ impl FontFace {
     pub const NONE: Option<&'static FontFace> = None;
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::FontFace>> Sealed for T {}
-}
-
-pub trait FontFaceExt: IsA<FontFace> + sealed::Sealed + 'static {
+pub trait FontFaceExt: IsA<FontFace> + 'static {
     #[doc(alias = "pango_font_face_describe")]
     fn describe(&self) -> FontDescription {
         unsafe {
@@ -71,8 +65,8 @@ pub trait FontFaceExt: IsA<FontFace> + sealed::Sealed + 'static {
     #[doc(alias = "pango_font_face_list_sizes")]
     fn list_sizes(&self) -> Vec<i32> {
         unsafe {
-            let mut sizes = ptr::null_mut();
-            let mut n_sizes = mem::MaybeUninit::uninit();
+            let mut sizes = std::ptr::null_mut();
+            let mut n_sizes = std::mem::MaybeUninit::uninit();
             ffi::pango_font_face_list_sizes(
                 self.as_ref().to_glib_none().0,
                 &mut sizes,
@@ -84,9 +78,3 @@ pub trait FontFaceExt: IsA<FontFace> + sealed::Sealed + 'static {
 }
 
 impl<O: IsA<FontFace>> FontFaceExt for O {}
-
-impl fmt::Display for FontFace {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("FontFace")
-    }
-}

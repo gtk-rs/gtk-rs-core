@@ -2,8 +2,8 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
+use crate::ffi;
 use glib::{prelude::*, translate::*};
-use std::fmt;
 
 glib::wrapper! {
     #[doc(alias = "PangoCairoFont")]
@@ -18,12 +18,7 @@ impl Font {
     pub const NONE: Option<&'static Font> = None;
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::Font>> Sealed for T {}
-}
-
-pub trait PangoCairoFontExt: IsA<Font> + sealed::Sealed + 'static {
+pub trait PangoCairoFontExt: IsA<Font> + 'static {
     #[doc(alias = "pango_cairo_font_get_scaled_font")]
     #[doc(alias = "get_scaled_font")]
     fn scaled_font(&self) -> Option<cairo::ScaledFont> {
@@ -36,9 +31,3 @@ pub trait PangoCairoFontExt: IsA<Font> + sealed::Sealed + 'static {
 }
 
 impl<O: IsA<Font>> PangoCairoFontExt for O {}
-
-impl fmt::Display for Font {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("Font")
-    }
-}

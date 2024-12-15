@@ -2,9 +2,8 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::SettingsSchema;
+use crate::{ffi, SettingsSchema};
 use glib::translate::*;
-use std::ptr;
 
 glib::wrapper! {
     #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
@@ -26,7 +25,7 @@ impl SettingsSchemaSource {
         trusted: bool,
     ) -> Result<SettingsSchemaSource, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_settings_schema_source_new_from_directory(
                 directory.as_ref().to_glib_none().0,
                 parent.to_glib_none().0,
@@ -44,8 +43,8 @@ impl SettingsSchemaSource {
     #[doc(alias = "g_settings_schema_source_list_schemas")]
     pub fn list_schemas(&self, recursive: bool) -> (Vec<glib::GString>, Vec<glib::GString>) {
         unsafe {
-            let mut non_relocatable = ptr::null_mut();
-            let mut relocatable = ptr::null_mut();
+            let mut non_relocatable = std::ptr::null_mut();
+            let mut relocatable = std::ptr::null_mut();
             ffi::g_settings_schema_source_list_schemas(
                 self.to_glib_none().0,
                 recursive.into_glib(),

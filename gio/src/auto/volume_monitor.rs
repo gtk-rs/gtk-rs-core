@@ -2,13 +2,13 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{Drive, Mount, Volume};
+use crate::{ffi, Drive, Mount, Volume};
 use glib::{
     prelude::*,
     signal::{connect_raw, SignalHandlerId},
     translate::*,
 };
-use std::{boxed::Box as Box_, fmt, mem::transmute};
+use std::boxed::Box as Box_;
 
 glib::wrapper! {
     #[doc(alias = "GVolumeMonitor")]
@@ -28,12 +28,7 @@ impl VolumeMonitor {
     }
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::VolumeMonitor>> Sealed for T {}
-}
-
-pub trait VolumeMonitorExt: IsA<VolumeMonitor> + sealed::Sealed + 'static {
+pub trait VolumeMonitorExt: IsA<VolumeMonitor> + 'static {
     #[doc(alias = "g_volume_monitor_get_connected_drives")]
     #[doc(alias = "get_connected_drives")]
     fn connected_drives(&self) -> Vec<Drive> {
@@ -107,7 +102,7 @@ pub trait VolumeMonitorExt: IsA<VolumeMonitor> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"drive-changed\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     drive_changed_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -136,7 +131,7 @@ pub trait VolumeMonitorExt: IsA<VolumeMonitor> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"drive-connected\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     drive_connected_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -165,7 +160,7 @@ pub trait VolumeMonitorExt: IsA<VolumeMonitor> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"drive-disconnected\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     drive_disconnected_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -194,7 +189,7 @@ pub trait VolumeMonitorExt: IsA<VolumeMonitor> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"drive-eject-button\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     drive_eject_button_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -223,7 +218,7 @@ pub trait VolumeMonitorExt: IsA<VolumeMonitor> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"drive-stop-button\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     drive_stop_button_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -252,7 +247,7 @@ pub trait VolumeMonitorExt: IsA<VolumeMonitor> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"mount-added\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     mount_added_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -281,7 +276,7 @@ pub trait VolumeMonitorExt: IsA<VolumeMonitor> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"mount-changed\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     mount_changed_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -310,7 +305,7 @@ pub trait VolumeMonitorExt: IsA<VolumeMonitor> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"mount-pre-unmount\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     mount_pre_unmount_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -339,7 +334,7 @@ pub trait VolumeMonitorExt: IsA<VolumeMonitor> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"mount-removed\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     mount_removed_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -368,7 +363,7 @@ pub trait VolumeMonitorExt: IsA<VolumeMonitor> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"volume-added\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     volume_added_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -397,7 +392,7 @@ pub trait VolumeMonitorExt: IsA<VolumeMonitor> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"volume-changed\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     volume_changed_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -426,7 +421,7 @@ pub trait VolumeMonitorExt: IsA<VolumeMonitor> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"volume-removed\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     volume_removed_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -436,9 +431,3 @@ pub trait VolumeMonitorExt: IsA<VolumeMonitor> + sealed::Sealed + 'static {
 }
 
 impl<O: IsA<VolumeMonitor>> VolumeMonitorExt for O {}
-
-impl fmt::Display for VolumeMonitor {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("VolumeMonitor")
-    }
-}

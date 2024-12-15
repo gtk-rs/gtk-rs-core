@@ -11,16 +11,11 @@ use futures_core::{
 use futures_io::AsyncWrite;
 use glib::{prelude::*, translate::*};
 
-use crate::{error::to_std_io_result, prelude::*, Cancellable, PollableOutputStream};
+use crate::{error::to_std_io_result, ffi, prelude::*, Cancellable, PollableOutputStream};
 #[cfg(feature = "v2_60")]
 use crate::{OutputVector, PollableReturn};
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::PollableOutputStream>> Sealed for T {}
-}
-
-pub trait PollableOutputStreamExtManual: sealed::Sealed + IsA<PollableOutputStream> {
+pub trait PollableOutputStreamExtManual: IsA<PollableOutputStream> {
     #[doc(alias = "g_pollable_output_stream_create_source")]
     fn create_source<F, C>(
         &self,
@@ -59,7 +54,7 @@ pub trait PollableOutputStreamExtManual: sealed::Sealed + IsA<PollableOutputStre
             glib::ffi::g_source_set_callback(
                 source,
                 Some(transmute::<
-                    _,
+                    glib::ffi::gpointer,
                     unsafe extern "C" fn(glib::ffi::gpointer) -> glib::ffi::gboolean,
                 >(trampoline)),
                 Box::into_raw(Box::new(RefCell::new(func))) as glib::ffi::gpointer,

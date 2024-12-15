@@ -2,9 +2,8 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::DBusInterfaceInfo;
+use crate::{ffi, DBusInterfaceInfo};
 use glib::translate::*;
-use std::ptr;
 
 glib::wrapper! {
     #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
@@ -22,7 +21,7 @@ impl DBusNodeInfo {
     #[doc(alias = "new_for_xml")]
     pub fn for_xml(xml_data: &str) -> Result<DBusNodeInfo, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_dbus_node_info_new_for_xml(xml_data.to_glib_none().0, &mut error);
             if error.is_null() {
                 Ok(from_glib_full(ret))

@@ -3,6 +3,7 @@ girs_directories = ["../gir-files"]
 library = "Gio"
 version = "2.0"
 min_cfg_version = "2.56"
+use_gi_docgen = true
 target_path = "."
 work_mode = "normal"
 single_version_file = true
@@ -60,7 +61,6 @@ generate = [
     "Gio.FileAttributeInfoFlags",
     "Gio.FileAttributeStatus",
     "Gio.FileAttributeType",
-    "Gio.FileCopyFlags",
     "Gio.FileCreateFlags",
     "Gio.FileIcon",
     "Gio.FileInputStream",
@@ -98,10 +98,8 @@ generate = [
     "Gio.Proxy",
     "Gio.ProxyResolver",
     "Gio.RemoteActionGroup",
-    "Gio.Resolver",
     "Gio.ResolverError",
     "Gio.ResolverNameLookupFlags",
-    "Gio.ResolverRecordType",
     "Gio.ResourceError",
     "Gio.ResourceLookupFlags",
     "Gio.Seekable",
@@ -120,7 +118,6 @@ generate = [
     "Gio.SocketConnectable",
     "Gio.SocketConnection",
     "Gio.SocketFamily",
-    "Gio.SocketListener",
     "Gio.SocketListenerEvent",
     "Gio.SocketProtocol",
     "Gio.SocketService",
@@ -440,14 +437,27 @@ status = "generate"
     [[object.function]]
     name = "get_unix_pid"
     cfg_condition = "unix"
+    # Use correct libc type
+    # https://gitlab.gnome.org/GNOME/glib/-/issues/3311
+    manual = true
     [[object.function]]
     name = "get_unix_user"
     cfg_condition = "unix"
+    # Use correct libc type
+    # https://gitlab.gnome.org/GNOME/glib/-/issues/3311
+    manual = true
         [object.function.return]
         use_return_for_result = true
     [[object.function]]
     name = "set_unix_user"
     cfg_condition = "unix"
+    # Use correct libc type
+    # https://gitlab.gnome.org/GNOME/glib/-/issues/3311
+    manual = true
+    [[object.function]]
+    pattern = "[gs]et_native"
+    # Unsafe and using raw pointers
+    manual = true
 
 [[object]]
 name = "Gio.CredentialsType"
@@ -549,6 +559,10 @@ status = "generate"
     pattern = ".*subtree.*"
     # no closure based way to create subtrees
     ignore = true
+    [[object.function]]
+    pattern = "register_object"
+    #wrapped with proper types manually
+    manual = true
     [[object.function]]
     pattern = "register_object_with_closures"
     #wrapped with proper types manually
@@ -738,10 +752,18 @@ manual_traits = ["FileExtManual"]
     manual = true
     doc_trait_name = "FileExtManual"
     [[object.function]]
+    name = "copy_async_with_closures"
+    # Manually implemented above
+    ignore = true
+    [[object.function]]
     name = "move_async"
     # Multiple callbacks
     manual = true
     doc_trait_name = "FileExtManual"
+    [[object.function]]
+    name = "move_async_with_closures"
+    # Manually implemented above
+    ignore = true
     [[object.function]]
     name = "load_partial_contents_async"
     # Multiple callbacks
@@ -772,6 +794,16 @@ manual_traits = ["FileExtManual"]
     name = "new_tmp_dir_async"
     manual = true
     doc_trait_name = "FileExtManual"
+    [[object.function]]
+    name = "load_contents"
+    # Use `Slice<u8>`
+    manual = true
+    doc_trait_name = "FileExtManual"
+    [[object.function]]
+    name = "load_contents_async"
+    # Use `Slice<u8>`
+    manual = true
+    doc_trait_name = "FileExtManual"
 
 [[object]]
 name = "Gio.FileAttributeInfoList"
@@ -788,6 +820,13 @@ status = "generate"
     name = "enumerate_next"
     # Better API with `IntoIter`
     ignore = true
+
+[[object]]
+name = "Gio.FileCopyFlags"
+status = "generate"
+    [[object.member]]
+    name = "target_default_modified_time"
+    version = "2.80"
 
 [[object]]
 name = "Gio.FileDescriptorBased"
@@ -827,18 +866,6 @@ status = "generate"
     name = "set_attribute_stringv"
     # use strv
     manual = true
-    [[object.function]]
-    name = "get_attribute_file_path"
-    version = "2.78"
-        [object.function.return]
-        nullable = true
-        type = "filename"
-    [[object.function]]
-    name = "set_attribute_file_path"
-    version = "2.78"
-        [[object.function.parameter]]
-        name = "attr_value"
-        string_type = "filename"
 
 [[object]]
 name = "Gio.FilterOutputStream"
@@ -912,6 +939,9 @@ status = "generate"
     [[object.member]]
     name = "no_such_device"
     version = "2.72"
+    [[object.member]]
+    name = "destination_unset"
+    version = "2.80"
 
 [[object]]
 name = "Gio.IOStream"
@@ -1132,6 +1162,22 @@ status = "generate"
 concurrency = "send+sync"
 
 [[object]]
+name = "Gio.Resolver"
+status = "generate"
+    [[object.function]]
+    # see https://gitlab.gnome.org/GNOME/glib/-/issues/3231
+    name = "records_from_res_query"
+    ignore = true
+
+[[object]]
+name = "Gio.ResolverRecordType"
+status = "generate"
+    [[object.function]]
+    # see https://gitlab.gnome.org/GNOME/glib/-/issues/3231
+    name = "to_rrtype"
+    ignore = true
+
+[[object]]
 name = "Gio.Resource"
 status = "generate"
     [[object.function]]
@@ -1285,6 +1331,11 @@ manual_traits = ["SocketControlMessageExtManual"]
     # writes to a void pointer
     manual = true
     doc_trait_name = "SocketControlMessageExtManual"
+
+[[object]]
+name = "Gio.SocketListener"
+status = "generate"
+manual_traits = ["SocketListenerExtManual"]
 
 [[object]]
 name = "Gio.Subprocess"
@@ -1510,16 +1561,40 @@ manual_traits = ["UnixInputStreamExtManual"]
 [[object]]
 name = "Gio.UnixMountEntry"
 status = "generate"
-version = "2.54"
 concurrency = "send+sync"
 cfg_condition = "unix"
     [[object.derive]]
     name = "Debug"
+    [[object.function]]
+    pattern = "compare|get_device_path|get_fs_type|get_mount_path|guess_can_eject|guess_name|guess_icon|guess_should_display|guess_symbolic_icon|is_readonly|is_system_internal"
+    version = "2.0"
+        [[object.function.parameter]]
+        pattern = ".+"
+        const = true
+    [[object.function]]
+    name = "get_options"
+    version = "2.58"
+        [[object.function.parameter]]
+        pattern = ".+"
+        const = true
+    [[object.function]]
+    name = "get_root_path"
+    version = "2.60"
+        [[object.function.parameter]]
+        pattern = ".+"
+        const = true
+    [[object.function]]
+    name = "at"
+    version = "2.0"
+    rename = "for_mount_path"
+    [[object.function]]
+    name = "for"
+    version = "2.0"
+    rename = "for_file_path"
 
 [[object]]
 name = "Gio.UnixMountPoint"
 status = "generate"
-version = "2.54"
 concurrency = "send+sync"
 cfg_condition = "unix"
     [[object.derive]]
@@ -1616,10 +1691,10 @@ status = "generate"
 name = "Gio.Win32InputStream"
 status = "manual"
 cfg_condition = "windows"
-manual_traits = ["Win32InputStreamExtManual"]
+manual_traits = ["Win32InputStreamExt"]
 
 [[object]]
 name = "Gio.Win32OutputStream"
 status = "manual"
 cfg_condition = "windows"
-manual_traits = ["Win32OutputStreamExtManual"]
+manual_traits = ["Win32OutputStreamExt"]

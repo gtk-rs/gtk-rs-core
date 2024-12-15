@@ -2,7 +2,7 @@
 
 use glib::translate::*;
 
-use crate::{LayoutLine, LayoutRun};
+use crate::{ffi, LayoutLine, LayoutRun};
 
 // rustdoc-stripper-ignore-next
 /// The result of [`LayoutLine::x_to_index`].
@@ -88,6 +88,23 @@ impl LayoutLine {
             index,
             trailing,
             is_inside,
+        }
+    }
+
+    #[doc(alias = "pango_layout_line_get_x_ranges")]
+    #[doc(alias = "get_x_ranges")]
+    pub fn x_ranges(&self, start_index: i32, end_index: i32) -> Vec<i32> {
+        unsafe {
+            let mut ranges = std::ptr::null_mut();
+            let mut n_ranges = std::mem::MaybeUninit::uninit();
+            ffi::pango_layout_line_get_x_ranges(
+                self.to_glib_none().0,
+                start_index,
+                end_index,
+                &mut ranges,
+                n_ranges.as_mut_ptr(),
+            );
+            FromGlibContainer::from_glib_full_num(ranges, 2 * n_ranges.assume_init() as usize)
         }
     }
 }

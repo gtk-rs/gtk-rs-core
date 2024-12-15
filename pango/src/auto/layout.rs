@@ -9,14 +9,10 @@ use crate::Direction;
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
 use crate::LayoutSerializeFlags;
 use crate::{
-    Alignment, AttrList, Context, EllipsizeMode, FontDescription, LayoutIter, LayoutLine,
+    ffi, Alignment, AttrList, Context, EllipsizeMode, FontDescription, LayoutIter, LayoutLine,
     Rectangle, TabArray, WrapMode,
 };
 use glib::translate::*;
-#[cfg(feature = "v1_50")]
-#[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
-use std::ptr;
-use std::{fmt, mem};
 
 glib::wrapper! {
     #[doc(alias = "PangoLayout")]
@@ -276,8 +272,8 @@ impl Layout {
     #[doc(alias = "get_pixel_size")]
     pub fn pixel_size(&self) -> (i32, i32) {
         unsafe {
-            let mut width = mem::MaybeUninit::uninit();
-            let mut height = mem::MaybeUninit::uninit();
+            let mut width = std::mem::MaybeUninit::uninit();
+            let mut height = std::mem::MaybeUninit::uninit();
             ffi::pango_layout_get_pixel_size(
                 self.to_glib_none().0,
                 width.as_mut_ptr(),
@@ -307,8 +303,8 @@ impl Layout {
     #[doc(alias = "get_size")]
     pub fn size(&self) -> (i32, i32) {
         unsafe {
-            let mut width = mem::MaybeUninit::uninit();
-            let mut height = mem::MaybeUninit::uninit();
+            let mut width = std::mem::MaybeUninit::uninit();
+            let mut height = std::mem::MaybeUninit::uninit();
             ffi::pango_layout_get_size(
                 self.to_glib_none().0,
                 width.as_mut_ptr(),
@@ -357,8 +353,8 @@ impl Layout {
     #[doc(alias = "pango_layout_index_to_line_x")]
     pub fn index_to_line_x(&self, index_: i32, trailing: bool) -> (i32, i32) {
         unsafe {
-            let mut line = mem::MaybeUninit::uninit();
-            let mut x_pos = mem::MaybeUninit::uninit();
+            let mut line = std::mem::MaybeUninit::uninit();
+            let mut x_pos = std::mem::MaybeUninit::uninit();
             ffi::pango_layout_index_to_line_x(
                 self.to_glib_none().0,
                 index_,
@@ -398,8 +394,8 @@ impl Layout {
         direction: i32,
     ) -> (i32, i32) {
         unsafe {
-            let mut new_index = mem::MaybeUninit::uninit();
-            let mut new_trailing = mem::MaybeUninit::uninit();
+            let mut new_index = std::mem::MaybeUninit::uninit();
+            let mut new_trailing = std::mem::MaybeUninit::uninit();
             ffi::pango_layout_move_cursor_visually(
                 self.to_glib_none().0,
                 strong.into_glib(),
@@ -511,7 +507,7 @@ impl Layout {
     pub fn set_markup_with_accel(&self, markup: &str, accel_marker: char) -> char {
         let length = markup.len() as _;
         unsafe {
-            let mut accel_char = mem::MaybeUninit::uninit();
+            let mut accel_char = std::mem::MaybeUninit::uninit();
             ffi::pango_layout_set_markup_with_accel(
                 self.to_glib_none().0,
                 markup.to_glib_none().0,
@@ -576,7 +572,7 @@ impl Layout {
         filename: impl AsRef<std::path::Path>,
     ) -> Result<(), glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let is_ok = ffi::pango_layout_write_to_file(
                 self.to_glib_none().0,
                 flags.into_glib(),
@@ -595,8 +591,8 @@ impl Layout {
     #[doc(alias = "pango_layout_xy_to_index")]
     pub fn xy_to_index(&self, x: i32, y: i32) -> (bool, i32, i32) {
         unsafe {
-            let mut index_ = mem::MaybeUninit::uninit();
-            let mut trailing = mem::MaybeUninit::uninit();
+            let mut index_ = std::mem::MaybeUninit::uninit();
+            let mut trailing = std::mem::MaybeUninit::uninit();
             let ret = from_glib(ffi::pango_layout_xy_to_index(
                 self.to_glib_none().0,
                 x,
@@ -606,11 +602,5 @@ impl Layout {
             ));
             (ret, index_.assume_init(), trailing.assume_init())
         }
-    }
-}
-
-impl fmt::Display for Layout {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("Layout")
     }
 }

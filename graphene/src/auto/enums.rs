@@ -2,8 +2,8 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
+use crate::ffi;
 use glib::translate::*;
-use std::fmt;
 
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
@@ -73,49 +73,6 @@ pub enum EulerOrder {
     Rzyz,
     #[doc(hidden)]
     __Unknown(i32),
-}
-
-impl fmt::Display for EulerOrder {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(
-            f,
-            "EulerOrder::{}",
-            match *self {
-                Self::Default => "Default",
-                Self::Xyz => "Xyz",
-                Self::Yzx => "Yzx",
-                Self::Zxy => "Zxy",
-                Self::Xzy => "Xzy",
-                Self::Yxz => "Yxz",
-                Self::Zyx => "Zyx",
-                Self::Sxyz => "Sxyz",
-                Self::Sxyx => "Sxyx",
-                Self::Sxzy => "Sxzy",
-                Self::Sxzx => "Sxzx",
-                Self::Syzx => "Syzx",
-                Self::Syzy => "Syzy",
-                Self::Syxz => "Syxz",
-                Self::Syxy => "Syxy",
-                Self::Szxy => "Szxy",
-                Self::Szxz => "Szxz",
-                Self::Szyx => "Szyx",
-                Self::Szyz => "Szyz",
-                Self::Rzyx => "Rzyx",
-                Self::Rxyx => "Rxyx",
-                Self::Ryzx => "Ryzx",
-                Self::Rxzx => "Rxzx",
-                Self::Rxzy => "Rxzy",
-                Self::Ryzy => "Ryzy",
-                Self::Rzxy => "Rzxy",
-                Self::Ryxy => "Ryxy",
-                Self::Ryxz => "Ryxz",
-                Self::Rzxz => "Rzxz",
-                Self::Rxyz => "Rxyz",
-                Self::Rzyz => "Rzyz",
-                _ => "Unknown",
-            }
-        )
-    }
 }
 
 #[doc(hidden)]
@@ -214,21 +171,6 @@ pub enum RayIntersectionKind {
     Leave,
     #[doc(hidden)]
     __Unknown(i32),
-}
-
-impl fmt::Display for RayIntersectionKind {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(
-            f,
-            "RayIntersectionKind::{}",
-            match *self {
-                Self::None => "None",
-                Self::Enter => "Enter",
-                Self::Leave => "Leave",
-                _ => "Unknown",
-            }
-        )
-    }
 }
 
 #[doc(hidden)]

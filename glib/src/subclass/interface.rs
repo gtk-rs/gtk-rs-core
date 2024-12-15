@@ -2,26 +2,28 @@
 
 use std::{marker, mem};
 
-use super::{InitializingType, Signal};
-use crate::{prelude::*, translate::*, Object, ParamSpec, Type};
+use super::{types::InterfaceStruct, InitializingType, Signal};
+use crate::{
+    ffi, gobject_ffi, prelude::*, translate::*, Object, ParamSpec, Type, TypeFlags, TypeInfo,
+};
 
 // rustdoc-stripper-ignore-next
 /// Trait for a type list of prerequisite object types.
 pub trait PrerequisiteList {
     // rustdoc-stripper-ignore-next
     /// Returns the list of types for this list.
-    fn types() -> Vec<ffi::GType>;
+    fn types() -> Vec<Type>;
 }
 
 impl PrerequisiteList for () {
-    fn types() -> Vec<ffi::GType> {
+    fn types() -> Vec<Type> {
         vec![]
     }
 }
 
-impl<T: crate::ObjectType> PrerequisiteList for (T,) {
-    fn types() -> Vec<ffi::GType> {
-        vec![T::static_type().into_glib()]
+impl<T: ObjectType> PrerequisiteList for (T,) {
+    fn types() -> Vec<Type> {
+        vec![T::static_type()]
     }
 }
 
@@ -46,9 +48,9 @@ macro_rules! prerequisite_list_trait(
 // and then implements the trait on (A, B, C).
 macro_rules! prerequisite_list_trait_impl(
     ($($name:ident),+) => (
-        impl<$($name: crate::ObjectType),+> PrerequisiteList for ( $($name),+ ) {
-            fn types() -> Vec<ffi::GType> {
-                vec![$($name::static_type().into_glib()),+]
+        impl<$($name: ObjectType),+> PrerequisiteList for ( $($name),+ ) {
+            fn types() -> Vec<Type> {
+                vec![$($name::static_type()),+]
             }
         }
     );
@@ -69,27 +71,54 @@ pub unsafe trait ObjectInterfaceType {
 
 /// The central trait for defining a `GObject` interface.
 ///
-/// Links together the type name, and the interface struct for type registration and allows hooking
-/// into various steps of the type registration and initialization.
-///
-/// This must only be implemented on `#[repr(C)]` structs and have `gobject_ffi::GTypeInterface` as
-/// the first field.
+/// Links together the type name, the empty instance and class structs for type
+/// registration and allows hooking into various steps of the type registration
+/// and initialization.
 ///
 /// See [`register_interface`] for registering an implementation of this trait
 /// with the type system.
 ///
 /// [`register_interface`]: fn.register_interface.html
-pub unsafe trait ObjectInterface: ObjectInterfaceType + Sized + 'static {
+pub trait ObjectInterface: ObjectInterfaceType + Sized + 'static {
     /// `GObject` type name.
     ///
     /// This must be unique in the whole process.
     const NAME: &'static str;
+
+    // rustdoc-stripper-ignore-next
+    /// Allow name conflicts for this class.
+    ///
+    /// By default, trying to register a type with a name that was registered before will panic. If
+    /// this is set to `true` then a new name will be selected by appending a counter.
+    ///
+    /// This is useful for defining new types in Rust library crates that might be linked multiple
+    /// times in the same process.
+    ///
+    /// A consequence of setting this to `true` is that it's not guaranteed that
+    /// `glib::Type::from_name(Self::NAME).unwrap() == Self::type_()`.
+    ///
+    /// Note that this is not allowed for dynamic types. If a dynamic type is registered and a type
+    /// with that name exists already, it is assumed that they're the same.
+    ///
+    /// Optional.
+    const ALLOW_NAME_CONFLICT: bool = false;
 
     /// Prerequisites for this interface.
     ///
     /// Any implementer of the interface must be a subclass of the prerequisites or implement them
     /// in case of interfaces.
     type Prerequisites: PrerequisiteList;
+
+    // rustdoc-stripper-ignore-next
+    /// The C instance struct. This is usually either `std::ffi::c_void` or a newtype wrapper
+    /// around it.
+    ///
+    /// Optional
+    type Instance;
+
+    // rustdoc-stripper-ignore-next
+    /// The C class struct.
+    type Interface: InterfaceStruct<Type = Self>;
 
     /// Additional type initialization.
     ///
@@ -107,7 +136,7 @@ pub unsafe trait ObjectInterface: ObjectInterfaceType + Sized + 'static {
     /// and for setting default implementations of interface functions.
     ///
     /// Optional
-    fn interface_init(&mut self) {}
+    fn interface_init(_klass: &mut Self::Interface) {}
 
     /// Properties installed for this interface.
     ///
@@ -123,15 +152,6 @@ pub unsafe trait ObjectInterface: ObjectInterfaceType + Sized + 'static {
 }
 
 pub trait ObjectInterfaceExt: ObjectInterface {
-    /// Get interface from an instance.
-    ///
-    /// This will panic if `obj` does not implement the interface.
-    #[inline]
-    #[deprecated = "Use from_obj() instead"]
-    fn from_instance<T: IsA<Object>>(obj: &T) -> &Self {
-        Self::from_obj(obj)
-    }
-
     /// Get interface from an instance.
     ///
     /// This will panic if `obj` does not implement the interface.
@@ -155,12 +175,12 @@ unsafe extern "C" fn interface_init<T: ObjectInterface>(
     klass: ffi::gpointer,
     _klass_data: ffi::gpointer,
 ) {
-    let iface = &mut *(klass as *mut T);
+    let iface = &mut *(klass as *mut T::Interface);
 
     let pspecs = <T as ObjectInterface>::properties();
     for pspec in pspecs {
         gobject_ffi::g_object_interface_install_property(
-            iface as *mut T as *mut _,
+            iface as *mut T::Interface as *mut _,
             pspec.to_glib_none().0,
         );
     }
@@ -171,10 +191,10 @@ unsafe extern "C" fn interface_init<T: ObjectInterface>(
         signal.register(type_);
     }
 
-    iface.interface_init();
+    T::interface_init(iface);
 }
 
-/// Register a `glib::Type` ID for `T`.
+/// Register a `glib::Type` ID for `T::Class`.
 ///
 /// This must be called only once and will panic on a second call.
 ///
@@ -183,19 +203,42 @@ unsafe extern "C" fn interface_init<T: ObjectInterface>(
 ///
 /// [`object_interface!`]: ../../macro.object_interface.html
 pub fn register_interface<T: ObjectInterface>() -> Type {
+    assert_eq!(mem::size_of::<T>(), 0);
+
     unsafe {
         use std::ffi::CString;
 
-        let type_name = CString::new(T::NAME).unwrap();
-        assert_eq!(
-            gobject_ffi::g_type_from_name(type_name.as_ptr()),
-            gobject_ffi::G_TYPE_INVALID
-        );
+        let type_name = if T::ALLOW_NAME_CONFLICT {
+            let mut i = 0;
+            loop {
+                let type_name = CString::new(if i == 0 {
+                    T::NAME.to_string()
+                } else {
+                    format!("{}-{}", T::NAME, i)
+                })
+                .unwrap();
+                if gobject_ffi::g_type_from_name(type_name.as_ptr()) == gobject_ffi::G_TYPE_INVALID
+                {
+                    break type_name;
+                }
+                i += 1;
+            }
+        } else {
+            let type_name = CString::new(T::NAME).unwrap();
+            assert_eq!(
+                gobject_ffi::g_type_from_name(type_name.as_ptr()),
+                gobject_ffi::G_TYPE_INVALID,
+                "Type {} has already been registered",
+                type_name.to_str().unwrap()
+            );
+
+            type_name
+        };
 
         let type_ = gobject_ffi::g_type_register_static_simple(
             Type::INTERFACE.into_glib(),
             type_name.as_ptr(),
-            mem::size_of::<T>() as u32,
+            mem::size_of::<T::Interface>() as u32,
             Some(interface_init::<T>),
             0,
             None,
@@ -204,10 +247,71 @@ pub fn register_interface<T: ObjectInterface>() -> Type {
 
         let prerequisites = T::Prerequisites::types();
         for prerequisite in prerequisites {
-            gobject_ffi::g_type_interface_add_prerequisite(type_, prerequisite);
+            gobject_ffi::g_type_interface_add_prerequisite(type_, prerequisite.into_glib());
         }
 
         let type_ = Type::from_glib(type_);
+        assert!(type_.is_valid());
+
+        T::type_init(&mut InitializingType::<T>(type_, marker::PhantomData));
+
+        type_
+    }
+}
+
+/// Registers a `glib::Type` ID for `T::Class` as a dynamic type.
+///
+/// An object interface must be explicitly registered as a dynamic type when
+/// the system loads the implementation by calling [`TypePluginImpl::use_`] or
+/// more specifically [`TypeModuleImpl::load`]. Therefore, unlike for object
+/// interfaces registered as static types, object interfaces registered as
+/// dynamic types can be registered several times.
+///
+/// The [`object_interface_dynamic!`] macro helper attribute will create
+/// `register_interface()` and `on_implementation_load()` functions around this,
+/// which will ensure that the function is called when necessary.
+///
+/// [`object_interface_dynamic!`]: ../../../glib_macros/attr.object_interface.html
+/// [`TypePluginImpl::use_`]: ../type_plugin/trait.TypePluginImpl.html#method.use_
+/// [`TypeModuleImpl::load`]: ../type_module/trait.TypeModuleImpl.html#method.load
+pub fn register_dynamic_interface<P: DynamicObjectRegisterExt, T: ObjectInterface>(
+    type_plugin: &P,
+) -> Type {
+    assert_eq!(mem::size_of::<T>(), 0);
+
+    unsafe {
+        use std::ffi::CString;
+
+        let type_name = CString::new(T::NAME).unwrap();
+
+        let already_registered =
+            gobject_ffi::g_type_from_name(type_name.as_ptr()) != gobject_ffi::G_TYPE_INVALID;
+
+        let type_info = TypeInfo(gobject_ffi::GTypeInfo {
+            class_size: mem::size_of::<T::Interface>() as u16,
+            class_init: Some(interface_init::<T>),
+            ..TypeInfo::default().0
+        });
+
+        // registers the interface within the `type_plugin`
+        let type_ = type_plugin.register_dynamic_type(
+            Type::INTERFACE,
+            type_name.to_str().unwrap(),
+            &type_info,
+            TypeFlags::ABSTRACT,
+        );
+
+        let prerequisites = T::Prerequisites::types();
+        for prerequisite in prerequisites {
+            // adding prerequisite interface can be done only once
+            if !already_registered {
+                gobject_ffi::g_type_interface_add_prerequisite(
+                    type_.into_glib(),
+                    prerequisite.into_glib(),
+                );
+            }
+        }
+
         assert!(type_.is_valid());
 
         T::type_init(&mut InitializingType::<T>(type_, marker::PhantomData));

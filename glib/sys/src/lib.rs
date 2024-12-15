@@ -15,10 +15,14 @@ mod manual;
 
 pub use manual::*;
 
+#[cfg(unix)]
 #[allow(unused_imports)]
-use libc::{
+use libc::{dev_t, gid_t, pid_t, socklen_t, uid_t};
+#[allow(unused_imports)]
+use libc::{intptr_t, off_t, size_t, ssize_t, time_t, uintptr_t, FILE};
+#[allow(unused_imports)]
+use std::ffi::{
     c_char, c_double, c_float, c_int, c_long, c_short, c_uchar, c_uint, c_ulong, c_ushort, c_void,
-    intptr_t, size_t, ssize_t, uintptr_t, FILE,
 };
 
 pub type gboolean = c_int;
@@ -41,7 +45,6 @@ pub type GRefString = c_char;
 pub type GStrv = *mut *mut c_char;
 pub type GTime = i32;
 pub type GTimeSpan = i64;
-pub type GType = size_t;
 
 // Enums
 pub type GBookmarkFileError = c_int;
@@ -344,6 +347,12 @@ pub const G_TEST_RUN_INCOMPLETE: GTestResult = 3;
 pub type GThreadError = c_int;
 pub const G_THREAD_ERROR_AGAIN: GThreadError = 0;
 
+pub type GThreadPriority = c_int;
+pub const G_THREAD_PRIORITY_LOW: GThreadPriority = 0;
+pub const G_THREAD_PRIORITY_NORMAL: GThreadPriority = 1;
+pub const G_THREAD_PRIORITY_HIGH: GThreadPriority = 2;
+pub const G_THREAD_PRIORITY_URGENT: GThreadPriority = 3;
+
 pub type GTimeType = c_int;
 pub const G_TIME_TYPE_STANDARD: GTimeType = 0;
 pub const G_TIME_TYPE_DAYLIGHT: GTimeType = 1;
@@ -425,6 +434,11 @@ pub const G_UNICODE_BREAK_REGIONAL_INDICATOR: GUnicodeBreakType = 39;
 pub const G_UNICODE_BREAK_EMOJI_BASE: GUnicodeBreakType = 40;
 pub const G_UNICODE_BREAK_EMOJI_MODIFIER: GUnicodeBreakType = 41;
 pub const G_UNICODE_BREAK_ZERO_WIDTH_JOINER: GUnicodeBreakType = 42;
+pub const G_UNICODE_BREAK_AKSARA: GUnicodeBreakType = 43;
+pub const G_UNICODE_BREAK_AKSARA_PRE_BASE: GUnicodeBreakType = 44;
+pub const G_UNICODE_BREAK_AKSARA_START: GUnicodeBreakType = 45;
+pub const G_UNICODE_BREAK_VIRAMA_FINAL: GUnicodeBreakType = 46;
+pub const G_UNICODE_BREAK_VIRAMA: GUnicodeBreakType = 47;
 
 pub type GUnicodeScript = c_int;
 pub const G_UNICODE_SCRIPT_INVALID_CODE: GUnicodeScript = -1;
@@ -593,6 +607,13 @@ pub const G_UNICODE_SCRIPT_VITHKUQI: GUnicodeScript = 161;
 pub const G_UNICODE_SCRIPT_MATH: GUnicodeScript = 162;
 pub const G_UNICODE_SCRIPT_KAWI: GUnicodeScript = 163;
 pub const G_UNICODE_SCRIPT_NAG_MUNDARI: GUnicodeScript = 164;
+pub const G_UNICODE_SCRIPT_TODHRI: GUnicodeScript = 165;
+pub const G_UNICODE_SCRIPT_GARAY: GUnicodeScript = 166;
+pub const G_UNICODE_SCRIPT_TULU_TIGALARI: GUnicodeScript = 167;
+pub const G_UNICODE_SCRIPT_SUNUWAR: GUnicodeScript = 168;
+pub const G_UNICODE_SCRIPT_GURUNG_KHEMA: GUnicodeScript = 169;
+pub const G_UNICODE_SCRIPT_KIRAT_RAI: GUnicodeScript = 170;
+pub const G_UNICODE_SCRIPT_OL_ONAL: GUnicodeScript = 171;
 
 pub type GUnicodeType = c_int;
 pub const G_UNICODE_CONTROL: GUnicodeType = 0;
@@ -625,6 +646,16 @@ pub const G_UNICODE_OTHER_SYMBOL: GUnicodeType = 26;
 pub const G_UNICODE_LINE_SEPARATOR: GUnicodeType = 27;
 pub const G_UNICODE_PARAGRAPH_SEPARATOR: GUnicodeType = 28;
 pub const G_UNICODE_SPACE_SEPARATOR: GUnicodeType = 29;
+
+#[cfg(unix)]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
+pub type GUnixPipeEnd = c_int;
+#[cfg(unix)]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
+pub const G_UNIX_PIPE_END_READ: GUnixPipeEnd = 0;
+#[cfg(unix)]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
+pub const G_UNIX_PIPE_END_WRITE: GUnixPipeEnd = 1;
 
 pub type GUriError = c_int;
 pub const G_URI_ERROR_FAILED: GUriError = 0;
@@ -691,6 +722,11 @@ pub const G_VARIANT_PARSE_ERROR_VALUE_EXPECTED: GVariantParseError = 17;
 pub const G_VARIANT_PARSE_ERROR_RECURSION: GVariantParseError = 18;
 
 // Constants
+pub const G_ALLOCATOR_LIST: c_int = 1;
+pub const G_ALLOCATOR_NODE: c_int = 3;
+pub const G_ALLOCATOR_SLIST: c_int = 2;
+pub const G_ALLOC_AND_FREE: c_int = 2;
+pub const G_ALLOC_ONLY: c_int = 1;
 pub const G_ASCII_DTOSTR_BUF_SIZE: c_int = 39;
 pub const G_ATOMIC_REF_COUNT_INIT: c_int = 1;
 pub const G_BIG_ENDIAN: c_int = 4321;
@@ -982,6 +1018,7 @@ pub const G_URI_PARAMS_PARSE_RELAXED: GUriParamsFlags = 4;
 
 // Unions
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GDoubleIEEE754 {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -995,6 +1032,7 @@ impl ::std::fmt::Debug for GDoubleIEEE754 {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GFloatIEEE754 {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -1089,11 +1127,17 @@ impl ::std::fmt::Debug for GVariantDict_u {
 }
 
 // Callbacks
+pub type GCacheDestroyFunc = Option<unsafe extern "C" fn(gpointer)>;
+pub type GCacheDupFunc = Option<unsafe extern "C" fn(gpointer) -> gpointer>;
+pub type GCacheNewFunc = Option<unsafe extern "C" fn(gpointer) -> gpointer>;
 pub type GChildWatchFunc = Option<unsafe extern "C" fn(GPid, c_int, gpointer)>;
 pub type GClearHandleFunc = Option<unsafe extern "C" fn(c_uint)>;
 pub type GCompareDataFunc =
     Option<unsafe extern "C" fn(gconstpointer, gconstpointer, gpointer) -> c_int>;
 pub type GCompareFunc = Option<unsafe extern "C" fn(gconstpointer, gconstpointer) -> c_int>;
+pub type GCompletionFunc = Option<unsafe extern "C" fn(gpointer) -> *mut c_char>;
+pub type GCompletionStrncmpFunc =
+    Option<unsafe extern "C" fn(*const c_char, *const c_char, size_t) -> c_int>;
 pub type GCopyFunc = Option<unsafe extern "C" fn(gconstpointer, gpointer) -> gpointer>;
 pub type GDataForeachFunc = Option<unsafe extern "C" fn(GQuark, gpointer, gpointer)>;
 pub type GDestroyNotify = Option<unsafe extern "C" fn(gpointer)>;
@@ -1149,6 +1193,12 @@ pub type GSequenceIterCompareFunc =
 pub type GSourceDisposeFunc = Option<unsafe extern "C" fn(*mut GSource)>;
 pub type GSourceDummyMarshal = Option<unsafe extern "C" fn()>;
 pub type GSourceFunc = Option<unsafe extern "C" fn(gpointer) -> gboolean>;
+pub type GSourceFuncsCheckFunc = Option<unsafe extern "C" fn(*mut GSource) -> gboolean>;
+pub type GSourceFuncsDispatchFunc =
+    Option<unsafe extern "C" fn(*mut GSource, GSourceFunc, gpointer) -> gboolean>;
+pub type GSourceFuncsFinalizeFunc = Option<unsafe extern "C" fn(*mut GSource)>;
+pub type GSourceFuncsPrepareFunc =
+    Option<unsafe extern "C" fn(*mut GSource, *mut c_int) -> gboolean>;
 pub type GSourceOnceFunc = Option<unsafe extern "C" fn(gpointer)>;
 pub type GSpawnChildSetupFunc = Option<unsafe extern "C" fn(gpointer)>;
 pub type GTestDataFunc = Option<unsafe extern "C" fn(gconstpointer)>;
@@ -1166,6 +1216,15 @@ pub type GUnixFDSourceFunc =
 pub type GVoidFunc = Option<unsafe extern "C" fn()>;
 
 // Records
+#[repr(C)]
+#[allow(dead_code)]
+pub struct _GAllocator {
+    _data: [u8; 0],
+    _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
+}
+
+pub type GAllocator = _GAllocator;
+
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct GArray {
@@ -1183,14 +1242,16 @@ impl ::std::fmt::Debug for GArray {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GAsyncQueue {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GAsyncQueue = *mut _GAsyncQueue;
+pub type GAsyncQueue = _GAsyncQueue;
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GBookmarkFile {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -1220,6 +1281,7 @@ impl ::std::fmt::Debug for GByteArray {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GBytes {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -1232,6 +1294,16 @@ impl ::std::fmt::Debug for GBytes {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
+pub struct _GCache {
+    _data: [u8; 0],
+    _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
+}
+
+pub type GCache = _GCache;
+
+#[repr(C)]
+#[allow(dead_code)]
 pub struct GChecksum {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -1240,6 +1312,28 @@ pub struct GChecksum {
 impl ::std::fmt::Debug for GChecksum {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("GChecksum @ {self:p}")).finish()
+    }
+}
+
+#[derive(Copy, Clone)]
+#[repr(C)]
+pub struct GCompletion {
+    pub items: *mut GList,
+    pub func: GCompletionFunc,
+    pub prefix: *mut c_char,
+    pub cache: *mut GList,
+    pub strncmp_func: GCompletionStrncmpFunc,
+}
+
+impl ::std::fmt::Debug for GCompletion {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+        f.debug_struct(&format!("GCompletion @ {self:p}"))
+            .field("items", &self.items)
+            .field("func", &self.func)
+            .field("prefix", &self.prefix)
+            .field("cache", &self.cache)
+            .field("strncmp_func", &self.strncmp_func)
+            .finish()
     }
 }
 
@@ -1257,12 +1351,13 @@ impl ::std::fmt::Debug for GCond {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GData {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GData = *mut _GData;
+pub type GData = _GData;
 
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -1281,6 +1376,7 @@ impl ::std::fmt::Debug for GDate {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GDateTime {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -1309,14 +1405,20 @@ impl ::std::fmt::Debug for GDebugKey {
 }
 
 #[repr(C)]
-pub struct _GDir {
+#[allow(dead_code)]
+pub struct GDir {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GDir = *mut _GDir;
+impl ::std::fmt::Debug for GDir {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+        f.debug_struct(&format!("GDir @ {self:p}")).finish()
+    }
+}
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GDoubleIEEE754_mpn {
     pub mantissa_low: c_uint,
     _truncated_record_marker: c_void,
@@ -1350,6 +1452,7 @@ impl ::std::fmt::Debug for GError {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GFloatIEEE754_mpn {
     pub mantissa: c_uint,
     _truncated_record_marker: c_void,
@@ -1365,6 +1468,7 @@ impl ::std::fmt::Debug for GFloatIEEE754_mpn {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GHashTable {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -1395,12 +1499,17 @@ impl ::std::fmt::Debug for GHashTableIter {
 }
 
 #[repr(C)]
-pub struct _GHmac {
+#[allow(dead_code)]
+pub struct GHmac {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GHmac = *mut _GHmac;
+impl ::std::fmt::Debug for GHmac {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+        f.debug_struct(&format!("GHmac @ {self:p}")).finish()
+    }
+}
 
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -1451,6 +1560,7 @@ impl ::std::fmt::Debug for GHookList {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GIConv {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -1459,6 +1569,7 @@ pub struct _GIConv {
 pub type GIConv = *mut _GIConv;
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GIOChannel {
     pub ref_count: c_int,
     pub funcs: *mut GIOFuncs,
@@ -1532,6 +1643,7 @@ impl ::std::fmt::Debug for GIOFuncs {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GKeyFile {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -1580,6 +1692,7 @@ impl ::std::fmt::Debug for GLogField {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GMainContext {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -1592,6 +1705,7 @@ impl ::std::fmt::Debug for GMainContext {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GMainLoop {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -1604,6 +1718,7 @@ impl ::std::fmt::Debug for GMainLoop {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GMappedFile {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -1616,6 +1731,7 @@ impl ::std::fmt::Debug for GMappedFile {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GMarkupParseContext {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -1678,6 +1794,7 @@ impl ::std::fmt::Debug for GMarkupParser {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GMatchInfo {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -1688,6 +1805,15 @@ impl ::std::fmt::Debug for GMatchInfo {
         f.debug_struct(&format!("GMatchInfo @ {self:p}")).finish()
     }
 }
+
+#[repr(C)]
+#[allow(dead_code)]
+pub struct _GMemChunk {
+    _data: [u8; 0],
+    _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
+}
+
+pub type GMemChunk = _GMemChunk;
 
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -1749,12 +1875,13 @@ impl ::std::fmt::Debug for GOnce {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GOptionContext {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GOptionContext = *mut _GOptionContext;
+pub type GOptionContext = _GOptionContext;
 
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -1783,6 +1910,7 @@ impl ::std::fmt::Debug for GOptionEntry {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GOptionGroup {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -1807,6 +1935,7 @@ impl ::std::fmt::Debug for GPathBuf {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GPatternSpec {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -1880,12 +2009,17 @@ impl ::std::fmt::Debug for GRWLock {
 }
 
 #[repr(C)]
-pub struct _GRand {
+#[allow(dead_code)]
+pub struct GRand {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GRand = *mut _GRand;
+impl ::std::fmt::Debug for GRand {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+        f.debug_struct(&format!("GRand @ {self:p}")).finish()
+    }
+}
 
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -1901,6 +2035,7 @@ impl ::std::fmt::Debug for GRecMutex {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GRegex {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -1911,6 +2046,15 @@ impl ::std::fmt::Debug for GRegex {
         f.debug_struct(&format!("GRegex @ {self:p}")).finish()
     }
 }
+
+#[repr(C)]
+#[allow(dead_code)]
+pub struct _GRelation {
+    _data: [u8; 0],
+    _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
+}
+
+pub type GRelation = _GRelation;
 
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -1977,6 +2121,7 @@ impl ::std::fmt::Debug for GScanner {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GScannerConfig {
     pub cset_skip_characters: *mut c_char,
     pub cset_identifier_first: *mut c_char,
@@ -2000,20 +2145,22 @@ impl ::std::fmt::Debug for GScannerConfig {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GSequence {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GSequence = *mut _GSequence;
+pub type GSequence = _GSequence;
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GSequenceIter {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GSequenceIter = *mut _GSequenceIter;
+pub type GSequenceIter = _GSequenceIter;
 
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -2060,10 +2207,10 @@ impl ::std::fmt::Debug for GSourceCallbackFuncs {
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct GSourceFuncs {
-    pub prepare: Option<unsafe extern "C" fn(*mut GSource, *mut c_int) -> gboolean>,
-    pub check: Option<unsafe extern "C" fn(*mut GSource) -> gboolean>,
-    pub dispatch: Option<unsafe extern "C" fn(*mut GSource, GSourceFunc, gpointer) -> gboolean>,
-    pub finalize: Option<unsafe extern "C" fn(*mut GSource)>,
+    pub prepare: GSourceFuncsPrepareFunc,
+    pub check: GSourceFuncsCheckFunc,
+    pub dispatch: GSourceFuncsDispatchFunc,
+    pub finalize: GSourceFuncsFinalizeFunc,
     pub closure_callback: GSourceFunc,
     pub closure_marshal: GSourceDummyMarshal,
 }
@@ -2080,20 +2227,22 @@ impl ::std::fmt::Debug for GSourceFuncs {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GSourcePrivate {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GSourcePrivate = *mut _GSourcePrivate;
+pub type GSourcePrivate = _GSourcePrivate;
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GStatBuf {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GStatBuf = *mut _GStatBuf;
+pub type GStatBuf = _GStatBuf;
 
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -2114,28 +2263,35 @@ impl ::std::fmt::Debug for GString {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GStringChunk {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GStringChunk = *mut _GStringChunk;
+pub type GStringChunk = _GStringChunk;
 
 #[repr(C)]
-pub struct _GStrvBuilder {
+#[allow(dead_code)]
+pub struct GStrvBuilder {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GStrvBuilder = *mut _GStrvBuilder;
+impl ::std::fmt::Debug for GStrvBuilder {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+        f.debug_struct(&format!("GStrvBuilder @ {self:p}")).finish()
+    }
+}
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GTestCase {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GTestCase = *mut _GTestCase;
+pub type GTestCase = _GTestCase;
 
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -2176,22 +2332,92 @@ impl ::std::fmt::Debug for GTestLogBuffer {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GTestSuite {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GTestSuite = *mut _GTestSuite;
+pub type GTestSuite = _GTestSuite;
 
+#[derive(Copy, Clone)]
 #[repr(C)]
 pub struct GThread {
-    _data: [u8; 0],
-    _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
+    pub func: GThreadFunc,
+    pub data: gpointer,
+    pub joinable: gboolean,
+    pub priority: GThreadPriority,
 }
 
 impl ::std::fmt::Debug for GThread {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("GThread @ {self:p}")).finish()
+    }
+}
+
+#[derive(Copy, Clone)]
+#[repr(C)]
+pub struct GThreadFunctions {
+    pub mutex_new: Option<unsafe extern "C" fn() -> *mut GMutex>,
+    pub mutex_lock: Option<unsafe extern "C" fn(*mut GMutex)>,
+    pub mutex_trylock: Option<unsafe extern "C" fn(*mut GMutex) -> gboolean>,
+    pub mutex_unlock: Option<unsafe extern "C" fn(*mut GMutex)>,
+    pub mutex_free: Option<unsafe extern "C" fn(*mut GMutex)>,
+    pub cond_new: Option<unsafe extern "C" fn() -> *mut GCond>,
+    pub cond_signal: Option<unsafe extern "C" fn(*mut GCond)>,
+    pub cond_broadcast: Option<unsafe extern "C" fn(*mut GCond)>,
+    pub cond_wait: Option<unsafe extern "C" fn(*mut GCond, *mut GMutex)>,
+    pub cond_timed_wait:
+        Option<unsafe extern "C" fn(*mut GCond, *mut GMutex, *mut GTimeVal) -> gboolean>,
+    pub cond_free: Option<unsafe extern "C" fn(*mut GCond)>,
+    pub private_new: Option<unsafe extern "C" fn(GDestroyNotify) -> *mut GPrivate>,
+    pub private_get: Option<unsafe extern "C" fn(*mut GPrivate) -> gpointer>,
+    pub private_set: Option<unsafe extern "C" fn(*mut GPrivate, gpointer)>,
+    pub thread_create: Option<
+        unsafe extern "C" fn(
+            GThreadFunc,
+            gpointer,
+            c_ulong,
+            gboolean,
+            gboolean,
+            GThreadPriority,
+            gpointer,
+            *mut *mut GError,
+        ),
+    >,
+    pub thread_yield: Option<unsafe extern "C" fn()>,
+    pub thread_join: Option<unsafe extern "C" fn(gpointer)>,
+    pub thread_exit: Option<unsafe extern "C" fn()>,
+    pub thread_set_priority: Option<unsafe extern "C" fn(gpointer, GThreadPriority)>,
+    pub thread_self: Option<unsafe extern "C" fn(gpointer)>,
+    pub thread_equal: Option<unsafe extern "C" fn(gpointer, gpointer) -> gboolean>,
+}
+
+impl ::std::fmt::Debug for GThreadFunctions {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+        f.debug_struct(&format!("GThreadFunctions @ {self:p}"))
+            .field("mutex_new", &self.mutex_new)
+            .field("mutex_lock", &self.mutex_lock)
+            .field("mutex_trylock", &self.mutex_trylock)
+            .field("mutex_unlock", &self.mutex_unlock)
+            .field("mutex_free", &self.mutex_free)
+            .field("cond_new", &self.cond_new)
+            .field("cond_signal", &self.cond_signal)
+            .field("cond_broadcast", &self.cond_broadcast)
+            .field("cond_wait", &self.cond_wait)
+            .field("cond_timed_wait", &self.cond_timed_wait)
+            .field("cond_free", &self.cond_free)
+            .field("private_new", &self.private_new)
+            .field("private_get", &self.private_get)
+            .field("private_set", &self.private_set)
+            .field("thread_create", &self.thread_create)
+            .field("thread_yield", &self.thread_yield)
+            .field("thread_join", &self.thread_join)
+            .field("thread_exit", &self.thread_exit)
+            .field("thread_set_priority", &self.thread_set_priority)
+            .field("thread_self", &self.thread_self)
+            .field("thread_equal", &self.thread_equal)
+            .finish()
     }
 }
 
@@ -2230,6 +2456,7 @@ impl ::std::fmt::Debug for GTimeVal {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GTimeZone {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -2242,12 +2469,13 @@ impl ::std::fmt::Debug for GTimeZone {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GTimer {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GTimer = *mut _GTimer;
+pub type GTimer = _GTimer;
 
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -2264,6 +2492,7 @@ impl ::std::fmt::Debug for GTrashStack {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GTree {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -2276,14 +2505,48 @@ impl ::std::fmt::Debug for GTree {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct _GTreeNode {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GTreeNode = *mut _GTreeNode;
+pub type GTreeNode = _GTreeNode;
+
+#[derive(Copy, Clone)]
+#[repr(C)]
+pub struct GTuples {
+    pub len: c_uint,
+}
+
+impl ::std::fmt::Debug for GTuples {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+        f.debug_struct(&format!("GTuples @ {self:p}"))
+            .field("len", &self.len)
+            .finish()
+    }
+}
+
+#[cfg(unix)]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
+#[derive(Copy, Clone)]
+#[repr(C)]
+pub struct GUnixPipe {
+    pub fds: [c_int; 2],
+}
+
+#[cfg(unix)]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
+impl ::std::fmt::Debug for GUnixPipe {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+        f.debug_struct(&format!("GUnixPipe @ {self:p}"))
+            .field("fds", &self.fds)
+            .finish()
+    }
+}
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GUri {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -2312,6 +2575,7 @@ impl ::std::fmt::Debug for GUriParamsIter {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GVariant {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -2400,6 +2664,7 @@ impl ::std::fmt::Debug for GVariantIter {
 }
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct GVariantType {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
@@ -2411,9 +2676,29 @@ impl ::std::fmt::Debug for GVariantType {
     }
 }
 
-#[link(name = "gobject-2.0")]
-#[link(name = "glib-2.0")]
 extern "C" {
+
+    //=========================================================================
+    // GNormalizeMode
+    //=========================================================================
+    pub fn g_normalize_mode_get_type() -> GType;
+
+    //=========================================================================
+    // GUnicodeBreakType
+    //=========================================================================
+    pub fn g_unicode_break_type_get_type() -> GType;
+
+    //=========================================================================
+    // GUnicodeScript
+    //=========================================================================
+    pub fn g_unicode_script_get_type() -> GType;
+    pub fn g_unicode_script_from_iso15924(iso15924: u32) -> GUnicodeScript;
+    pub fn g_unicode_script_to_iso15924(script: GUnicodeScript) -> u32;
+
+    //=========================================================================
+    // GUnicodeType
+    //=========================================================================
+    pub fn g_unicode_type_get_type() -> GType;
 
     //=========================================================================
     // GIOCondition
@@ -2424,10 +2709,18 @@ extern "C" {
     // GMutex
     //=========================================================================
     pub fn g_mutex_clear(mutex: *mut GMutex);
+    pub fn g_mutex_free(mutex: *mut GMutex);
     pub fn g_mutex_init(mutex: *mut GMutex);
     pub fn g_mutex_lock(mutex: *mut GMutex);
     pub fn g_mutex_trylock(mutex: *mut GMutex) -> gboolean;
     pub fn g_mutex_unlock(mutex: *mut GMutex);
+    pub fn g_mutex_new() -> *mut GMutex;
+
+    //=========================================================================
+    // GAllocator
+    //=========================================================================
+    pub fn g_allocator_free(allocator: *mut GAllocator);
+    pub fn g_allocator_new(name: *const c_char, n_preallocs: c_uint) -> *mut GAllocator;
 
     //=========================================================================
     // GArray
@@ -2575,7 +2868,7 @@ extern "C" {
         bookmark: *mut GBookmarkFile,
         uri: *const c_char,
         error: *mut *mut GError,
-    ) -> c_long;
+    ) -> time_t;
     #[cfg(feature = "v2_66")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
     pub fn g_bookmark_file_get_added_date_time(
@@ -2589,7 +2882,7 @@ extern "C" {
         name: *const c_char,
         exec: *mut *mut c_char,
         count: *mut c_uint,
-        stamp: *mut c_long,
+        stamp: *mut time_t,
         error: *mut *mut GError,
     ) -> gboolean;
     #[cfg(feature = "v2_66")]
@@ -2641,7 +2934,7 @@ extern "C" {
         bookmark: *mut GBookmarkFile,
         uri: *const c_char,
         error: *mut *mut GError,
-    ) -> c_long;
+    ) -> time_t;
     #[cfg(feature = "v2_66")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
     pub fn g_bookmark_file_get_modified_date_time(
@@ -2663,7 +2956,7 @@ extern "C" {
         bookmark: *mut GBookmarkFile,
         uri: *const c_char,
         error: *mut *mut GError,
-    ) -> c_long;
+    ) -> time_t;
     #[cfg(feature = "v2_66")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
     pub fn g_bookmark_file_get_visited_date_time(
@@ -2727,7 +3020,7 @@ extern "C" {
     pub fn g_bookmark_file_set_added(
         bookmark: *mut GBookmarkFile,
         uri: *const c_char,
-        added: c_long,
+        added: time_t,
     );
     #[cfg(feature = "v2_66")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
@@ -2742,7 +3035,7 @@ extern "C" {
         name: *const c_char,
         exec: *const c_char,
         count: c_int,
-        stamp: c_long,
+        stamp: time_t,
         error: *mut *mut GError,
     ) -> gboolean;
     #[cfg(feature = "v2_66")]
@@ -2786,7 +3079,7 @@ extern "C" {
     pub fn g_bookmark_file_set_modified(
         bookmark: *mut GBookmarkFile,
         uri: *const c_char,
-        modified: c_long,
+        modified: time_t,
     );
     #[cfg(feature = "v2_66")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
@@ -2803,7 +3096,7 @@ extern "C" {
     pub fn g_bookmark_file_set_visited(
         bookmark: *mut GBookmarkFile,
         uri: *const c_char,
-        visited: c_long,
+        visited: time_t,
     );
     #[cfg(feature = "v2_66")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
@@ -2903,6 +3196,24 @@ extern "C" {
     pub fn g_bytes_unref_to_data(bytes: *mut GBytes, size: *mut size_t) -> gpointer;
 
     //=========================================================================
+    // GCache
+    //=========================================================================
+    pub fn g_cache_destroy(cache: *mut GCache);
+    pub fn g_cache_insert(cache: *mut GCache, key: gpointer) -> gpointer;
+    pub fn g_cache_key_foreach(cache: *mut GCache, func: GHFunc, user_data: gpointer);
+    pub fn g_cache_remove(cache: *mut GCache, value: gconstpointer);
+    pub fn g_cache_value_foreach(cache: *mut GCache, func: GHFunc, user_data: gpointer);
+    pub fn g_cache_new(
+        value_new_func: GCacheNewFunc,
+        value_destroy_func: GCacheDestroyFunc,
+        key_dup_func: GCacheDupFunc,
+        key_destroy_func: GCacheDestroyFunc,
+        hash_key_func: GHashFunc,
+        hash_value_func: GHashFunc,
+        key_equal_func: GEqualFunc,
+    ) -> *mut GCache;
+
+    //=========================================================================
     // GChecksum
     //=========================================================================
     pub fn g_checksum_get_type() -> GType;
@@ -2920,14 +3231,41 @@ extern "C" {
     pub fn g_checksum_type_get_length(checksum_type: GChecksumType) -> ssize_t;
 
     //=========================================================================
+    // GCompletion
+    //=========================================================================
+    pub fn g_completion_add_items(cmp: *mut GCompletion, items: *mut GList);
+    pub fn g_completion_clear_items(cmp: *mut GCompletion);
+    pub fn g_completion_complete(
+        cmp: *mut GCompletion,
+        prefix: *const c_char,
+        new_prefix: *mut *mut c_char,
+    ) -> *mut GList;
+    pub fn g_completion_complete_utf8(
+        cmp: *mut GCompletion,
+        prefix: *const c_char,
+        new_prefix: *mut *mut c_char,
+    ) -> *mut GList;
+    pub fn g_completion_free(cmp: *mut GCompletion);
+    pub fn g_completion_remove_items(cmp: *mut GCompletion, items: *mut GList);
+    pub fn g_completion_set_compare(cmp: *mut GCompletion, strncmp_func: GCompletionStrncmpFunc);
+    pub fn g_completion_new(func: GCompletionFunc) -> *mut GCompletion;
+
+    //=========================================================================
     // GCond
     //=========================================================================
     pub fn g_cond_broadcast(cond: *mut GCond);
     pub fn g_cond_clear(cond: *mut GCond);
+    pub fn g_cond_free(cond: *mut GCond);
     pub fn g_cond_init(cond: *mut GCond);
     pub fn g_cond_signal(cond: *mut GCond);
+    pub fn g_cond_timed_wait(
+        cond: *mut GCond,
+        mutex: *mut GMutex,
+        abs_time: *mut GTimeVal,
+    ) -> gboolean;
     pub fn g_cond_wait(cond: *mut GCond, mutex: *mut GMutex);
     pub fn g_cond_wait_until(cond: *mut GCond, mutex: *mut GMutex, end_time: i64) -> gboolean;
+    pub fn g_cond_new() -> *mut GCond;
 
     //=========================================================================
     // GDate
@@ -2963,7 +3301,7 @@ extern "C" {
     pub fn g_date_set_month(date: *mut GDate, month: GDateMonth);
     pub fn g_date_set_parse(date: *mut GDate, str: *const c_char);
     pub fn g_date_set_time(date: *mut GDate, time_: GTime);
-    pub fn g_date_set_time_t(date: *mut GDate, timet: c_long);
+    pub fn g_date_set_time_t(date: *mut GDate, timet: time_t);
     pub fn g_date_set_time_val(date: *mut GDate, timeval: *mut GTimeVal);
     pub fn g_date_set_year(date: *mut GDate, year: GDateYear);
     pub fn g_date_subtract_days(date: *mut GDate, n_days: c_uint);
@@ -3008,7 +3346,13 @@ extern "C" {
     pub fn g_date_time_new_from_timeval_local(tv: *const GTimeVal) -> *mut GDateTime;
     pub fn g_date_time_new_from_timeval_utc(tv: *const GTimeVal) -> *mut GDateTime;
     pub fn g_date_time_new_from_unix_local(t: i64) -> *mut GDateTime;
+    #[cfg(feature = "v2_80")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_80")))]
+    pub fn g_date_time_new_from_unix_local_usec(usecs: i64) -> *mut GDateTime;
     pub fn g_date_time_new_from_unix_utc(t: i64) -> *mut GDateTime;
+    #[cfg(feature = "v2_80")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_80")))]
+    pub fn g_date_time_new_from_unix_utc_usec(usecs: i64) -> *mut GDateTime;
     pub fn g_date_time_new_local(
         year: c_int,
         month: c_int,
@@ -3082,17 +3426,27 @@ extern "C" {
     pub fn g_date_time_to_timeval(datetime: *mut GDateTime, tv: *mut GTimeVal) -> gboolean;
     pub fn g_date_time_to_timezone(datetime: *mut GDateTime, tz: *mut GTimeZone) -> *mut GDateTime;
     pub fn g_date_time_to_unix(datetime: *mut GDateTime) -> i64;
+    #[cfg(feature = "v2_80")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_80")))]
+    pub fn g_date_time_to_unix_usec(datetime: *mut GDateTime) -> i64;
     pub fn g_date_time_to_utc(datetime: *mut GDateTime) -> *mut GDateTime;
     pub fn g_date_time_unref(datetime: *mut GDateTime);
 
     //=========================================================================
     // GDir
     //=========================================================================
+    pub fn g_dir_get_type() -> GType;
+    pub fn g_dir_open(path: *const c_char, flags: c_uint, error: *mut *mut GError) -> *mut GDir;
     pub fn g_dir_close(dir: *mut GDir);
     pub fn g_dir_read_name(dir: *mut GDir) -> *const c_char;
+    #[cfg(feature = "v2_80")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_80")))]
+    pub fn g_dir_ref(dir: *mut GDir) -> *mut GDir;
     pub fn g_dir_rewind(dir: *mut GDir);
+    #[cfg(feature = "v2_80")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_80")))]
+    pub fn g_dir_unref(dir: *mut GDir);
     pub fn g_dir_make_tmp(tmpl: *const c_char, error: *mut *mut GError) -> *mut c_char;
-    pub fn g_dir_open(path: *const c_char, flags: c_uint, error: *mut *mut GError) -> *mut GDir;
 
     //=========================================================================
     // GError
@@ -3224,13 +3578,14 @@ extern "C" {
     //=========================================================================
     // GHmac
     //=========================================================================
+    pub fn g_hmac_get_type() -> GType;
+    pub fn g_hmac_new(digest_type: GChecksumType, key: *const u8, key_len: size_t) -> *mut GHmac;
     pub fn g_hmac_copy(hmac: *const GHmac) -> *mut GHmac;
     pub fn g_hmac_get_digest(hmac: *mut GHmac, buffer: *mut u8, digest_len: *mut size_t);
     pub fn g_hmac_get_string(hmac: *mut GHmac) -> *const c_char;
     pub fn g_hmac_ref(hmac: *mut GHmac) -> *mut GHmac;
     pub fn g_hmac_unref(hmac: *mut GHmac);
     pub fn g_hmac_update(hmac: *mut GHmac, data: *const u8, length: ssize_t);
-    pub fn g_hmac_new(digest_type: GChecksumType, key: *const u8, key_len: size_t) -> *mut GHmac;
 
     //=========================================================================
     // GHook
@@ -3742,8 +4097,10 @@ extern "C" {
     pub fn g_list_nth(list: *mut GList, n: c_uint) -> *mut GList;
     pub fn g_list_nth_data(list: *mut GList, n: c_uint) -> gpointer;
     pub fn g_list_nth_prev(list: *mut GList, n: c_uint) -> *mut GList;
+    pub fn g_list_pop_allocator();
     pub fn g_list_position(list: *mut GList, llink: *mut GList) -> c_int;
     pub fn g_list_prepend(list: *mut GList, data: gpointer) -> *mut GList;
+    pub fn g_list_push_allocator(allocator: *mut GAllocator);
     pub fn g_list_remove(list: *mut GList, data: gconstpointer) -> *mut GList;
     pub fn g_list_remove_all(list: *mut GList, data: gconstpointer) -> *mut GList;
     pub fn g_list_remove_link(list: *mut GList, llink: *mut GList) -> *mut GList;
@@ -3800,6 +4157,9 @@ extern "C" {
     pub fn g_main_context_pop_thread_default(context: *mut GMainContext);
     pub fn g_main_context_prepare(context: *mut GMainContext, priority: *mut c_int) -> gboolean;
     pub fn g_main_context_push_thread_default(context: *mut GMainContext);
+    #[cfg(feature = "v2_64")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_64")))]
+    pub fn g_main_context_pusher_new(main_context: *mut GMainContext) -> *mut GMainContextPusher;
     pub fn g_main_context_query(
         context: *mut GMainContext,
         max_priority: c_int,
@@ -3820,6 +4180,9 @@ extern "C" {
     pub fn g_main_context_wakeup(context: *mut GMainContext);
     pub fn g_main_context_default() -> *mut GMainContext;
     pub fn g_main_context_get_thread_default() -> *mut GMainContext;
+    #[cfg(feature = "v2_64")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_64")))]
+    pub fn g_main_context_pusher_free(pusher: *mut GMainContextPusher);
     pub fn g_main_context_ref_thread_default() -> *mut GMainContext;
 
     //=========================================================================
@@ -3935,6 +4298,24 @@ extern "C" {
     pub fn g_match_info_unref(match_info: *mut GMatchInfo);
 
     //=========================================================================
+    // GMemChunk
+    //=========================================================================
+    pub fn g_mem_chunk_alloc(mem_chunk: *mut GMemChunk) -> gpointer;
+    pub fn g_mem_chunk_alloc0(mem_chunk: *mut GMemChunk) -> gpointer;
+    pub fn g_mem_chunk_clean(mem_chunk: *mut GMemChunk);
+    pub fn g_mem_chunk_destroy(mem_chunk: *mut GMemChunk);
+    pub fn g_mem_chunk_free(mem_chunk: *mut GMemChunk, mem: gpointer);
+    pub fn g_mem_chunk_print(mem_chunk: *mut GMemChunk);
+    pub fn g_mem_chunk_reset(mem_chunk: *mut GMemChunk);
+    pub fn g_mem_chunk_info();
+    pub fn g_mem_chunk_new(
+        name: *const c_char,
+        atom_size: c_int,
+        area_size: size_t,
+        type_: c_int,
+    ) -> *mut GMemChunk;
+
+    //=========================================================================
     // GNode
     //=========================================================================
     pub fn g_node_child_index(node: *mut GNode, data: gpointer) -> c_int;
@@ -3989,13 +4370,22 @@ extern "C" {
     );
     pub fn g_node_unlink(node: *mut GNode);
     pub fn g_node_new(data: gpointer) -> *mut GNode;
+    pub fn g_node_pop_allocator();
+    pub fn g_node_push_allocator(allocator: *mut GAllocator);
 
     //=========================================================================
     // GOnce
     //=========================================================================
     pub fn g_once_impl(once: *mut GOnce, func: GThreadFunc, arg: gpointer) -> gpointer;
     pub fn g_once_init_enter(location: *mut c_void) -> gboolean;
+    pub fn g_once_init_enter_impl(location: *mut size_t) -> gboolean;
+    #[cfg(feature = "v2_80")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_80")))]
+    pub fn g_once_init_enter_pointer(location: *mut c_void) -> gboolean;
     pub fn g_once_init_leave(location: *mut c_void, result: size_t);
+    #[cfg(feature = "v2_80")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_80")))]
+    pub fn g_once_init_leave_pointer(location: *mut c_void, result: gpointer);
 
     //=========================================================================
     // GOptionContext
@@ -4165,6 +4555,7 @@ extern "C" {
     pub fn g_private_get(key: *mut GPrivate) -> gpointer;
     pub fn g_private_replace(key: *mut GPrivate, value: gpointer);
     pub fn g_private_set(key: *mut GPrivate, value: gpointer);
+    pub fn g_private_new(notify: GDestroyNotify) -> *mut GPrivate;
 
     //=========================================================================
     // GPtrArray
@@ -4201,7 +4592,7 @@ extern "C" {
         index_: *mut c_uint,
     ) -> gboolean;
     pub fn g_ptr_array_foreach(array: *mut GPtrArray, func: GFunc, user_data: gpointer);
-    pub fn g_ptr_array_free(array: *mut GPtrArray, free_seg: gboolean) -> *mut gpointer;
+    pub fn g_ptr_array_free(array: *mut GPtrArray, free_segment: gboolean) -> *mut gpointer;
     pub fn g_ptr_array_insert(array: *mut GPtrArray, index_: c_int, data: gpointer);
     #[cfg(feature = "v2_74")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
@@ -4366,6 +4757,10 @@ extern "C" {
     //=========================================================================
     // GRand
     //=========================================================================
+    pub fn g_rand_get_type() -> GType;
+    pub fn g_rand_new() -> *mut GRand;
+    pub fn g_rand_new_with_seed(seed: u32) -> *mut GRand;
+    pub fn g_rand_new_with_seed_array(seed: *const u32, seed_length: c_uint) -> *mut GRand;
     pub fn g_rand_copy(rand_: *mut GRand) -> *mut GRand;
     pub fn g_rand_double(rand_: *mut GRand) -> c_double;
     pub fn g_rand_double_range(rand_: *mut GRand, begin: c_double, end: c_double) -> c_double;
@@ -4374,9 +4769,6 @@ extern "C" {
     pub fn g_rand_int_range(rand_: *mut GRand, begin: i32, end: i32) -> i32;
     pub fn g_rand_set_seed(rand_: *mut GRand, seed: u32);
     pub fn g_rand_set_seed_array(rand_: *mut GRand, seed: *const u32, seed_length: c_uint);
-    pub fn g_rand_new() -> *mut GRand;
-    pub fn g_rand_new_with_seed(seed: u32) -> *mut GRand;
-    pub fn g_rand_new_with_seed_array(seed: *const u32, seed_length: c_uint) -> *mut GRand;
 
     //=========================================================================
     // GRecMutex
@@ -4501,6 +4893,28 @@ extern "C" {
     ) -> *mut *mut c_char;
 
     //=========================================================================
+    // GRelation
+    //=========================================================================
+    pub fn g_relation_count(relation: *mut GRelation, key: gconstpointer, field: c_int) -> c_int;
+    pub fn g_relation_delete(relation: *mut GRelation, key: gconstpointer, field: c_int) -> c_int;
+    pub fn g_relation_destroy(relation: *mut GRelation);
+    pub fn g_relation_exists(relation: *mut GRelation, ...) -> gboolean;
+    pub fn g_relation_index(
+        relation: *mut GRelation,
+        field: c_int,
+        hash_func: GHashFunc,
+        key_equal_func: GEqualFunc,
+    );
+    pub fn g_relation_insert(relation: *mut GRelation, ...);
+    pub fn g_relation_print(relation: *mut GRelation);
+    pub fn g_relation_select(
+        relation: *mut GRelation,
+        key: gconstpointer,
+        field: c_int,
+    ) -> *mut GTuples;
+    pub fn g_relation_new(fields: c_int) -> *mut GRelation;
+
+    //=========================================================================
     // GSList
     //=========================================================================
     pub fn g_slist_alloc() -> *mut GSList;
@@ -4545,8 +4959,10 @@ extern "C" {
     pub fn g_slist_length(list: *mut GSList) -> c_uint;
     pub fn g_slist_nth(list: *mut GSList, n: c_uint) -> *mut GSList;
     pub fn g_slist_nth_data(list: *mut GSList, n: c_uint) -> gpointer;
+    pub fn g_slist_pop_allocator();
     pub fn g_slist_position(list: *mut GSList, llink: *mut GSList) -> c_int;
     pub fn g_slist_prepend(list: *mut GSList, data: gpointer) -> *mut GSList;
+    pub fn g_slist_push_allocator(allocator: *mut GAllocator);
     pub fn g_slist_remove(list: *mut GSList, data: gconstpointer) -> *mut GSList;
     pub fn g_slist_remove_all(list: *mut GSList, data: gconstpointer) -> *mut GSList;
     pub fn g_slist_remove_link(list: *mut GSList, link_: *mut GSList) -> *mut GSList;
@@ -4767,6 +5183,22 @@ extern "C" {
     pub fn g_source_set_name_by_id(tag: c_uint, name: *const c_char);
 
     //=========================================================================
+    // GStaticMutex
+    //=========================================================================
+
+    //=========================================================================
+    // GStaticPrivate
+    //=========================================================================
+
+    //=========================================================================
+    // GStaticRWLock
+    //=========================================================================
+
+    //=========================================================================
+    // GStaticRecMutex
+    //=========================================================================
+
+    //=========================================================================
     // GString
     //=========================================================================
     pub fn g_gstring_get_type() -> GType;
@@ -4868,6 +5300,12 @@ extern "C" {
     //=========================================================================
     #[cfg(feature = "v2_68")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_68")))]
+    pub fn g_strv_builder_get_type() -> GType;
+    #[cfg(feature = "v2_68")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_68")))]
+    pub fn g_strv_builder_new() -> *mut GStrvBuilder;
+    #[cfg(feature = "v2_68")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_68")))]
     pub fn g_strv_builder_add(builder: *mut GStrvBuilder, value: *const c_char);
     #[cfg(feature = "v2_68")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_68")))]
@@ -4883,10 +5321,13 @@ extern "C" {
     pub fn g_strv_builder_ref(builder: *mut GStrvBuilder) -> *mut GStrvBuilder;
     #[cfg(feature = "v2_68")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_68")))]
-    pub fn g_strv_builder_unref(builder: *mut GStrvBuilder);
+    pub fn g_strv_builder_take(builder: *mut GStrvBuilder, value: *mut c_char);
     #[cfg(feature = "v2_68")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_68")))]
-    pub fn g_strv_builder_new() -> *mut GStrvBuilder;
+    pub fn g_strv_builder_unref(builder: *mut GStrvBuilder);
+    #[cfg(feature = "v2_82")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_82")))]
+    pub fn g_strv_builder_unref_to_strv(builder: *mut GStrvBuilder) -> c_char;
 
     //=========================================================================
     // GTestCase
@@ -4930,9 +5371,29 @@ extern "C" {
     ) -> *mut GThread;
     pub fn g_thread_join(thread: *mut GThread) -> gpointer;
     pub fn g_thread_ref(thread: *mut GThread) -> *mut GThread;
+    pub fn g_thread_set_priority(thread: *mut GThread, priority: GThreadPriority);
     pub fn g_thread_unref(thread: *mut GThread);
+    pub fn g_thread_create(
+        func: GThreadFunc,
+        data: gpointer,
+        joinable: gboolean,
+        error: *mut *mut GError,
+    ) -> *mut GThread;
+    pub fn g_thread_create_full(
+        func: GThreadFunc,
+        data: gpointer,
+        stack_size: c_ulong,
+        joinable: gboolean,
+        bound: gboolean,
+        priority: GThreadPriority,
+        error: *mut *mut GError,
+    ) -> *mut GThread;
     pub fn g_thread_error_quark() -> GQuark;
     pub fn g_thread_exit(retval: gpointer);
+    pub fn g_thread_foreach(thread_func: GFunc, user_data: gpointer);
+    pub fn g_thread_get_initialized() -> gboolean;
+    pub fn g_thread_init(vtable: gpointer);
+    pub fn g_thread_init_with_errorcheck_mutexes(vtable: gpointer);
     pub fn g_thread_self() -> *mut GThread;
     pub fn g_thread_yield();
 
@@ -5129,6 +5590,12 @@ extern "C" {
     #[cfg(feature = "v2_68")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_68")))]
     pub fn g_tree_node_value(node: *mut GTreeNode) -> gpointer;
+
+    //=========================================================================
+    // GTuples
+    //=========================================================================
+    pub fn g_tuples_destroy(tuples: *mut GTuples);
+    pub fn g_tuples_index(tuples: *mut GTuples, index_: c_int, field: c_int) -> gpointer;
 
     //=========================================================================
     // GUri
@@ -5546,6 +6013,9 @@ extern "C" {
     pub fn g_variant_builder_close(builder: *mut GVariantBuilder);
     pub fn g_variant_builder_end(builder: *mut GVariantBuilder) -> *mut GVariant;
     pub fn g_variant_builder_init(builder: *mut GVariantBuilder, type_: *const GVariantType);
+    #[cfg(feature = "v2_84")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_84")))]
+    pub fn g_variant_builder_init_static(builder: *mut GVariantBuilder, type_: *const GVariantType);
     pub fn g_variant_builder_open(builder: *mut GVariantBuilder, type_: *const GVariantType);
     pub fn g_variant_builder_ref(builder: *mut GVariantBuilder) -> *mut GVariantBuilder;
     pub fn g_variant_builder_unref(builder: *mut GVariantBuilder);
@@ -5644,7 +6114,7 @@ extern "C" {
     pub fn g_variant_type_next(type_: *const GVariantType) -> *const GVariantType;
     pub fn g_variant_type_peek_string(type_: *const GVariantType) -> *const c_char;
     pub fn g_variant_type_value(type_: *const GVariantType) -> *const GVariantType;
-    pub fn g_variant_type_checked_(arg0: *const c_char) -> *const GVariantType;
+    pub fn g_variant_type_checked_(type_string: *const c_char) -> *const GVariantType;
     pub fn g_variant_type_string_get_depth_(type_string: *const c_char) -> size_t;
     pub fn g_variant_type_string_is_valid(type_string: *const c_char) -> gboolean;
     pub fn g_variant_type_string_scan(
@@ -5795,8 +6265,8 @@ extern "C" {
     pub fn g_atomic_int_or(atomic: *mut c_uint, val: c_uint) -> c_uint;
     pub fn g_atomic_int_set(atomic: *mut c_int, newval: c_int);
     pub fn g_atomic_int_xor(atomic: *mut c_uint, val: c_uint) -> c_uint;
-    pub fn g_atomic_pointer_add(atomic: *mut c_void, val: ssize_t) -> ssize_t;
-    pub fn g_atomic_pointer_and(atomic: *mut c_void, val: size_t) -> size_t;
+    pub fn g_atomic_pointer_add(atomic: *mut c_void, val: ssize_t) -> intptr_t;
+    pub fn g_atomic_pointer_and(atomic: *mut c_void, val: size_t) -> uintptr_t;
     pub fn g_atomic_pointer_compare_and_exchange(
         atomic: *mut c_void,
         oldval: gpointer,
@@ -5814,9 +6284,9 @@ extern "C" {
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
     pub fn g_atomic_pointer_exchange(atomic: *mut c_void, newval: gpointer) -> gpointer;
     pub fn g_atomic_pointer_get(atomic: *mut c_void) -> gpointer;
-    pub fn g_atomic_pointer_or(atomic: *mut c_void, val: size_t) -> size_t;
+    pub fn g_atomic_pointer_or(atomic: *mut c_void, val: size_t) -> uintptr_t;
     pub fn g_atomic_pointer_set(atomic: *mut c_void, newval: gpointer);
-    pub fn g_atomic_pointer_xor(atomic: *mut c_void, val: size_t) -> size_t;
+    pub fn g_atomic_pointer_xor(atomic: *mut c_void, val: size_t) -> uintptr_t;
     #[cfg(feature = "v2_58")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_58")))]
     pub fn g_atomic_rc_box_acquire(mem_block: gpointer) -> gpointer;
@@ -5918,6 +6388,9 @@ extern "C" {
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_64")))]
     pub fn g_clear_slist(slist_ptr: *mut *mut GSList, destroy: GDestroyNotify);
     pub fn g_close(fd: c_int, error: *mut *mut GError) -> gboolean;
+    #[cfg(feature = "v2_80")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_80")))]
+    pub fn g_closefrom(lowfd: c_int) -> c_int;
     pub fn g_compute_checksum_for_bytes(
         checksum_type: GChecksumType,
         data: *mut GBytes,
@@ -6070,6 +6543,9 @@ extern "C" {
         overwrite: gboolean,
     ) -> *mut *mut c_char;
     pub fn g_environ_unsetenv(envp: *mut *mut c_char, variable: *const c_char) -> *mut *mut c_char;
+    #[cfg(feature = "v2_80")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_80")))]
+    pub fn g_fdwalk_set_cloexec(lowfd: c_int) -> c_int;
     pub fn g_file_error_from_errno(err_no: c_int) -> GFileError;
     pub fn g_file_error_quark() -> GQuark;
     pub fn g_file_get_contents(
@@ -6299,6 +6775,9 @@ extern "C" {
         n_fields: size_t,
         user_data: gpointer,
     ) -> GLogWriterOutput;
+    #[cfg(feature = "v2_80")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_80")))]
+    pub fn g_log_writer_default_set_debug_domains(domains: *const *const c_char);
     #[cfg(feature = "v2_68")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_68")))]
     pub fn g_log_writer_default_set_use_stderr(use_stderr: gboolean);
@@ -6328,6 +6807,14 @@ extern "C" {
         user_data: gpointer,
     ) -> GLogWriterOutput;
     pub fn g_log_writer_supports_color(output_fd: c_int) -> gboolean;
+    #[cfg(feature = "v2_80")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_80")))]
+    pub fn g_log_writer_syslog(
+        log_level: GLogLevelFlags,
+        fields: *const GLogField,
+        n_fields: size_t,
+        user_data: gpointer,
+    ) -> GLogWriterOutput;
     //pub fn g_logv(log_domain: *const c_char, log_level: GLogLevelFlags, format: *const c_char, args: /*Unimplemented*/va_list);
     pub fn g_main_current_source() -> *mut GSource;
     pub fn g_main_depth() -> c_int;
@@ -6383,8 +6870,28 @@ extern "C" {
     pub fn g_pattern_match_simple(pattern: *const c_char, string: *const c_char) -> gboolean;
     pub fn g_pattern_match_string(pspec: *mut GPatternSpec, string: *const c_char) -> gboolean;
     pub fn g_pointer_bit_lock(address: *mut c_void, lock_bit: c_int);
+    #[cfg(feature = "v2_80")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_80")))]
+    pub fn g_pointer_bit_lock_and_get(address: gpointer, lock_bit: c_uint, out_ptr: *mut uintptr_t);
+    #[cfg(feature = "v2_80")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_80")))]
+    pub fn g_pointer_bit_lock_mask_ptr(
+        ptr: gpointer,
+        lock_bit: c_uint,
+        set: gboolean,
+        preserve_mask: uintptr_t,
+        preserve_ptr: gpointer,
+    ) -> gpointer;
     pub fn g_pointer_bit_trylock(address: *mut c_void, lock_bit: c_int) -> gboolean;
     pub fn g_pointer_bit_unlock(address: *mut c_void, lock_bit: c_int);
+    #[cfg(feature = "v2_80")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_80")))]
+    pub fn g_pointer_bit_unlock_and_set(
+        address: *mut c_void,
+        lock_bit: c_uint,
+        ptr: gpointer,
+        preserve_mask: uintptr_t,
+    );
     pub fn g_poll(fds: *mut GPollFD, nfds: c_uint, timeout: c_int) -> c_int;
     pub fn g_prefix_error(err: *mut *mut GError, format: *const c_char, ...);
     #[cfg(feature = "v2_70")]
@@ -6455,6 +6962,9 @@ extern "C" {
     #[cfg(feature = "v2_58")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_58")))]
     pub fn g_ref_string_acquire(str: *mut c_char) -> *mut c_char;
+    #[cfg(feature = "v2_84")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_84")))]
+    pub fn g_ref_string_equal(str1: *const c_char, str2: *const c_char) -> gboolean;
     #[cfg(feature = "v2_58")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_58")))]
     pub fn g_ref_string_length(str: *mut c_char) -> size_t;
@@ -6522,6 +7032,15 @@ extern "C" {
     ) -> *mut i64;
     pub fn g_slice_set_config(ckey: GSliceConfig, value: i64);
     pub fn g_snprintf(string: *mut c_char, n: c_ulong, format: *const c_char, ...) -> c_int;
+    #[cfg(feature = "v2_82")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_82")))]
+    pub fn g_sort_array(
+        array: *mut c_void,
+        n_elements: size_t,
+        element_size: size_t,
+        compare_func: GCompareDataFunc,
+        user_data: *mut c_void,
+    );
     pub fn g_spaced_primes_closest(num: c_uint) -> c_uint;
     pub fn g_spawn_async(
         working_directory: *const c_char,
@@ -6613,6 +7132,7 @@ extern "C" {
         error: *mut *mut GError,
     ) -> gboolean;
     pub fn g_sprintf(string: *mut c_char, format: *const c_char, ...) -> c_int;
+    pub fn g_stat(filename: *const c_char, buf: *mut GStatBuf) -> c_int;
     pub fn g_stpcpy(dest: *mut c_char, src: *const c_char) -> *mut c_char;
     pub fn g_str_equal(v1: gconstpointer, v2: gconstpointer) -> gboolean;
     pub fn g_str_has_prefix(str: *const c_char, prefix: *const c_char) -> gboolean;
@@ -6804,6 +7324,14 @@ extern "C" {
         usec_timeout: u64,
         test_flags: GTestSubprocessFlags,
     );
+    #[cfg(feature = "v2_80")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_80")))]
+    pub fn g_test_trap_subprocess_with_envp(
+        test_path: *const c_char,
+        envp: *const *const c_char,
+        usec_timeout: u64,
+        test_flags: GTestSubprocessFlags,
+    );
     pub fn g_timeout_add(interval: c_uint, function: GSourceFunc, data: gpointer) -> c_uint;
     pub fn g_timeout_add_full(
         priority: c_int,
@@ -6896,8 +7424,6 @@ extern "C" {
     pub fn g_unichar_xdigit_value(c: u32) -> c_int;
     pub fn g_unicode_canonical_decomposition(ch: u32, result_len: *mut size_t) -> *mut u32;
     pub fn g_unicode_canonical_ordering(string: *mut u32, len: size_t);
-    pub fn g_unicode_script_from_iso15924(iso15924: u32) -> GUnicodeScript;
-    pub fn g_unicode_script_to_iso15924(script: GUnicodeScript) -> u32;
     pub fn g_unix_error_quark() -> GQuark;
     pub fn g_unix_fd_add(
         fd: c_int,

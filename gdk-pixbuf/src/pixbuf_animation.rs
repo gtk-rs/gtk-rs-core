@@ -2,16 +2,11 @@
 
 use std::{ptr, time::SystemTime};
 
-use glib::{object::IsA, translate::*};
+use glib::{prelude::*, translate::*};
 
-use crate::{PixbufAnimation, PixbufAnimationIter};
+use crate::{ffi, PixbufAnimation, PixbufAnimationIter};
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::PixbufAnimation>> Sealed for T {}
-}
-
-pub trait PixbufAnimationExtManual: sealed::Sealed + IsA<PixbufAnimation> + 'static {
+pub trait PixbufAnimationExtManual: IsA<PixbufAnimation> + 'static {
     #[doc(alias = "gdk_pixbuf_animation_get_iter")]
     #[doc(alias = "get_iter")]
     fn iter(&self, start_time: Option<SystemTime>) -> PixbufAnimationIter {

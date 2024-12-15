@@ -9,14 +9,9 @@ use futures_core::{
 use futures_io::AsyncRead;
 use glib::{prelude::*, translate::*};
 
-use crate::{prelude::*, Cancellable, PollableInputStream};
+use crate::{ffi, prelude::*, Cancellable, PollableInputStream};
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::PollableInputStream>> Sealed for T {}
-}
-
-pub trait PollableInputStreamExtManual: sealed::Sealed + IsA<PollableInputStream> + Sized {
+pub trait PollableInputStreamExtManual: IsA<PollableInputStream> + Sized {
     #[doc(alias = "g_pollable_input_stream_create_source")]
     fn create_source<F, C>(
         &self,
@@ -55,7 +50,7 @@ pub trait PollableInputStreamExtManual: sealed::Sealed + IsA<PollableInputStream
             glib::ffi::g_source_set_callback(
                 source,
                 Some(transmute::<
-                    _,
+                    glib::ffi::gpointer,
                     unsafe extern "C" fn(glib::ffi::gpointer) -> glib::ffi::gboolean,
                 >(trampoline)),
                 Box::into_raw(Box::new(RefCell::new(func))) as glib::ffi::gpointer,

@@ -2,13 +2,13 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{Pixbuf, PixbufAnimation, PixbufFormat};
+use crate::{ffi, Pixbuf, PixbufAnimation, PixbufFormat};
 use glib::{
     prelude::*,
     signal::{connect_raw, SignalHandlerId},
     translate::*,
 };
-use std::{boxed::Box as Box_, fmt, mem::transmute, ptr};
+use std::boxed::Box as Box_;
 
 glib::wrapper! {
     #[doc(alias = "GdkPixbufLoader")]
@@ -31,7 +31,7 @@ impl PixbufLoader {
     #[doc(alias = "new_with_mime_type")]
     pub fn with_mime_type(mime_type: &str) -> Result<PixbufLoader, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret =
                 ffi::gdk_pixbuf_loader_new_with_mime_type(mime_type.to_glib_none().0, &mut error);
             if error.is_null() {
@@ -46,7 +46,7 @@ impl PixbufLoader {
     #[doc(alias = "new_with_type")]
     pub fn with_type(image_type: &str) -> Result<PixbufLoader, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::gdk_pixbuf_loader_new_with_type(image_type.to_glib_none().0, &mut error);
             if error.is_null() {
                 Ok(from_glib_full(ret))
@@ -63,16 +63,11 @@ impl Default for PixbufLoader {
     }
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::PixbufLoader>> Sealed for T {}
-}
-
-pub trait PixbufLoaderExt: IsA<PixbufLoader> + sealed::Sealed + 'static {
+pub trait PixbufLoaderExt: IsA<PixbufLoader> + 'static {
     #[doc(alias = "gdk_pixbuf_loader_close")]
     fn close(&self) -> Result<(), glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let is_ok = ffi::gdk_pixbuf_loader_close(self.as_ref().to_glib_none().0, &mut error);
             debug_assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
             if error.is_null() {
@@ -124,7 +119,7 @@ pub trait PixbufLoaderExt: IsA<PixbufLoader> + sealed::Sealed + 'static {
     fn write(&self, buf: &[u8]) -> Result<(), glib::Error> {
         let count = buf.len() as _;
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let is_ok = ffi::gdk_pixbuf_loader_write(
                 self.as_ref().to_glib_none().0,
                 buf.to_glib_none().0,
@@ -143,7 +138,7 @@ pub trait PixbufLoaderExt: IsA<PixbufLoader> + sealed::Sealed + 'static {
     #[doc(alias = "gdk_pixbuf_loader_write_bytes")]
     fn write_bytes(&self, buffer: &glib::Bytes) -> Result<(), glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let is_ok = ffi::gdk_pixbuf_loader_write_bytes(
                 self.as_ref().to_glib_none().0,
                 buffer.to_glib_none().0,
@@ -172,7 +167,7 @@ pub trait PixbufLoaderExt: IsA<PixbufLoader> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"area-prepared\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     area_prepared_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -190,10 +185,10 @@ pub trait PixbufLoaderExt: IsA<PixbufLoader> + sealed::Sealed + 'static {
             F: Fn(&P, i32, i32, i32, i32) + 'static,
         >(
             this: *mut ffi::GdkPixbufLoader,
-            x: libc::c_int,
-            y: libc::c_int,
-            width: libc::c_int,
-            height: libc::c_int,
+            x: std::ffi::c_int,
+            y: std::ffi::c_int,
+            width: std::ffi::c_int,
+            height: std::ffi::c_int,
             f: glib::ffi::gpointer,
         ) {
             let f: &F = &*(f as *const F);
@@ -210,7 +205,7 @@ pub trait PixbufLoaderExt: IsA<PixbufLoader> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"area-updated\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     area_updated_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -232,7 +227,7 @@ pub trait PixbufLoaderExt: IsA<PixbufLoader> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"closed\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     closed_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -247,8 +242,8 @@ pub trait PixbufLoaderExt: IsA<PixbufLoader> + sealed::Sealed + 'static {
             F: Fn(&P, i32, i32) + 'static,
         >(
             this: *mut ffi::GdkPixbufLoader,
-            width: libc::c_int,
-            height: libc::c_int,
+            width: std::ffi::c_int,
+            height: std::ffi::c_int,
             f: glib::ffi::gpointer,
         ) {
             let f: &F = &*(f as *const F);
@@ -263,7 +258,7 @@ pub trait PixbufLoaderExt: IsA<PixbufLoader> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"size-prepared\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     size_prepared_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -273,9 +268,3 @@ pub trait PixbufLoaderExt: IsA<PixbufLoader> + sealed::Sealed + 'static {
 }
 
 impl<O: IsA<PixbufLoader>> PixbufLoaderExt for O {}
-
-impl fmt::Display for PixbufLoader {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("PixbufLoader")
-    }
-}

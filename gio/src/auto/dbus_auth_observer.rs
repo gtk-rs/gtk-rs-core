@@ -2,13 +2,13 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{Credentials, IOStream};
+use crate::{ffi, Credentials, IOStream};
 use glib::{
     prelude::*,
     signal::{connect_raw, SignalHandlerId},
     translate::*,
 };
-use std::{boxed::Box as Box_, fmt, mem::transmute};
+use std::boxed::Box as Box_;
 
 glib::wrapper! {
     #[doc(alias = "GDBusAuthObserver")]
@@ -59,7 +59,7 @@ impl DBusAuthObserver {
             F: Fn(&DBusAuthObserver, &str) -> bool + 'static,
         >(
             this: *mut ffi::GDBusAuthObserver,
-            mechanism: *mut libc::c_char,
+            mechanism: *mut std::ffi::c_char,
             f: glib::ffi::gpointer,
         ) -> glib::ffi::gboolean {
             let f: &F = &*(f as *const F);
@@ -74,7 +74,7 @@ impl DBusAuthObserver {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"allow-mechanism\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     allow_mechanism_trampoline::<F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -112,7 +112,7 @@ impl DBusAuthObserver {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"authorize-authenticated-peer\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     authorize_authenticated_peer_trampoline::<F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -124,11 +124,5 @@ impl DBusAuthObserver {
 impl Default for DBusAuthObserver {
     fn default() -> Self {
         Self::new()
-    }
-}
-
-impl fmt::Display for DBusAuthObserver {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("DBusAuthObserver")
     }
 }

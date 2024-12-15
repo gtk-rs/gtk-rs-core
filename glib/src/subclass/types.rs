@@ -5,12 +5,13 @@
 
 use std::{any::Any, collections::BTreeMap, marker, mem, ptr};
 
-use super::SignalId;
+use super::{interface::ObjectInterface, SignalId};
 use crate::{
+    ffi, gobject_ffi,
     object::{IsClass, IsInterface, ObjectSubclassIs, ParentClassIs},
     prelude::*,
     translate::*,
-    Closure, Object, Type, Value,
+    Closure, InterfaceInfo, Object, Type, TypeFlags, TypeInfo, Value,
 };
 
 // rustdoc-stripper-ignore-next
@@ -280,11 +281,29 @@ impl<U: IsClass + ParentClassIs> IsSubclassableExt for U {
 }
 
 // rustdoc-stripper-ignore-next
-/// Trait for implementable interfaces.
-pub unsafe trait IsImplementable<T: ObjectSubclass>: IsInterface
+/// Trait implemented by structs that implement a `GTypeInterface` C class struct.
+///
+/// This must only be implemented on `#[repr(C)]` structs and have an interface
+/// that inherits from `gobject_ffi::GTypeInterface` as the first field.
+pub unsafe trait InterfaceStruct: Sized + 'static
 where
-    <Self as ObjectType>::GlibClassType: Copy,
+    Self: Copy,
 {
+    // rustdoc-stripper-ignore-next
+    /// Corresponding object interface type for this class struct.
+    type Type: ObjectInterface;
+
+    // rustdoc-stripper-ignore-next
+    /// Set up default implementations for interface vfuncs.
+    ///
+    /// This is automatically called during type initialization.
+    #[inline]
+    fn interface_init(&mut self) {}
+}
+
+// rustdoc-stripper-ignore-next
+/// Trait for implementable interfaces.
+pub unsafe trait IsImplementable<T: ObjectSubclass>: IsInterface {
     // rustdoc-stripper-ignore-next
     /// Override the virtual methods of this interface for the given subclass and do other
     /// interface initialization.
@@ -328,7 +347,7 @@ unsafe extern "C" fn interface_init<T: ObjectSubclass, A: IsImplementable<T>>(
 pub trait InterfaceList<T: ObjectSubclass> {
     // rustdoc-stripper-ignore-next
     /// Returns the list of types and corresponding interface infos for this list.
-    fn iface_infos() -> Vec<(ffi::GType, gobject_ffi::GInterfaceInfo)>;
+    fn iface_infos() -> Vec<(Type, InterfaceInfo)>;
 
     // rustdoc-stripper-ignore-next
     /// Runs `instance_init` on each of the `IsImplementable` items.
@@ -336,7 +355,7 @@ pub trait InterfaceList<T: ObjectSubclass> {
 }
 
 impl<T: ObjectSubclass> InterfaceList<T> for () {
-    fn iface_infos() -> Vec<(ffi::GType, gobject_ffi::GInterfaceInfo)> {
+    fn iface_infos() -> Vec<(Type, InterfaceInfo)> {
         vec![]
     }
 
@@ -348,14 +367,13 @@ impl<T: ObjectSubclass, A: IsImplementable<T>> InterfaceList<T> for (A,)
 where
     <A as ObjectType>::GlibClassType: Copy,
 {
-    fn iface_infos() -> Vec<(ffi::GType, gobject_ffi::GInterfaceInfo)> {
+    fn iface_infos() -> Vec<(Type, InterfaceInfo)> {
         vec![(
-            A::static_type().into_glib(),
-            gobject_ffi::GInterfaceInfo {
+            A::static_type(),
+            InterfaceInfo(gobject_ffi::GInterfaceInfo {
                 interface_init: Some(interface_init::<T, A>),
-                interface_finalize: None,
-                interface_data: ptr::null_mut(),
-            },
+                ..InterfaceInfo::default().0
+            }),
         )]
     }
 
@@ -390,16 +408,16 @@ macro_rules! interface_list_trait_impl(
         where
             $(<$name as ObjectType>::GlibClassType: Copy),+
         {
-            fn iface_infos() -> Vec<(ffi::GType, gobject_ffi::GInterfaceInfo)> {
+            fn iface_infos() -> Vec<(Type, InterfaceInfo)> {
                 vec![
                     $(
                         (
-                            $name::static_type().into_glib(),
-                            gobject_ffi::GInterfaceInfo {
+                            $name::static_type(),
+                            InterfaceInfo(gobject_ffi::GInterfaceInfo {
                                 interface_init: Some(interface_init::<T, $name>),
                                 interface_finalize: None,
                                 interface_data: ptr::null_mut(),
-                            },
+                            }),
                         )
                     ),+
                 ]
@@ -418,28 +436,30 @@ macro_rules! interface_list_trait_impl(
 interface_list_trait!(A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S);
 
 /// Type-specific data that is filled in during type creation.
-// FIXME: Once trait bounds other than `Sized` on const fn parameters are stable
-// the content of `TypeData` can be made private, and we can add a `const fn new`
-// for initialization by the `object_subclass_internal!` macro.
 pub struct TypeData {
-    #[doc(hidden)]
-    pub type_: Type,
-    #[doc(hidden)]
-    pub parent_class: ffi::gpointer,
-    #[doc(hidden)]
-    pub parent_ifaces: Option<BTreeMap<Type, ffi::gpointer>>,
-    #[doc(hidden)]
-    pub class_data: Option<BTreeMap<Type, Box<dyn Any + Send + Sync>>>,
-    #[doc(hidden)]
-    pub private_offset: isize,
-    #[doc(hidden)]
-    pub private_imp_offset: isize,
+    type_: Type,
+    parent_class: ffi::gpointer,
+    parent_ifaces: Option<BTreeMap<Type, ffi::gpointer>>,
+    class_data: Option<BTreeMap<Type, Box<dyn Any + Send + Sync>>>,
+    private_offset: isize,
+    private_imp_offset: isize,
 }
 
 unsafe impl Send for TypeData {}
 unsafe impl Sync for TypeData {}
 
 impl TypeData {
+    pub const fn new() -> Self {
+        Self {
+            type_: Type::INVALID,
+            parent_class: ::std::ptr::null_mut(),
+            parent_ifaces: None,
+            class_data: None,
+            private_offset: 0,
+            private_imp_offset: 0,
+        }
+    }
+
     // rustdoc-stripper-ignore-next
     /// Returns the type ID.
     #[inline]
@@ -544,6 +564,12 @@ impl TypeData {
     }
 }
 
+impl Default for TypeData {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 // rustdoc-stripper-ignore-next
 /// Type methods required for an [`ObjectSubclass`] implementation.
 ///
@@ -560,15 +586,6 @@ pub unsafe trait ObjectSubclassType {
     #[doc(alias = "get_type")]
     fn type_() -> Type;
 }
-
-pub const INIT_TYPE_DATA: TypeData = TypeData {
-    type_: Type::INVALID,
-    parent_class: ::std::ptr::null_mut(),
-    parent_ifaces: None,
-    class_data: None,
-    private_offset: 0,
-    private_imp_offset: 0,
-};
 
 // rustdoc-stripper-ignore-next
 /// The central trait for subclassing a `GObject` type.
@@ -598,6 +615,24 @@ pub trait ObjectSubclass: ObjectSubclassType + Sized + 'static {
     ///
     /// Optional.
     const ABSTRACT: bool = false;
+
+    // rustdoc-stripper-ignore-next
+    /// Allow name conflicts for this class.
+    ///
+    /// By default, trying to register a type with a name that was registered before will panic. If
+    /// this is set to `true` then a new name will be selected by appending a counter.
+    ///
+    /// This is useful for defining new types in Rust library crates that might be linked multiple
+    /// times in the same process.
+    ///
+    /// A consequence of setting this to `true` is that it's not guaranteed that
+    /// `glib::Type::from_name(Self::NAME).unwrap() == Self::type_()`.
+    ///
+    /// Note that this is not allowed for dynamic types. If a dynamic type is registered and a type
+    /// with that name exists already, it is assumed that they're the same.
+    ///
+    /// Optional.
+    const ALLOW_NAME_CONFLICT: bool = false;
 
     // rustdoc-stripper-ignore-next
     /// Wrapper around this subclass defined with `wrapper!`
@@ -632,7 +667,7 @@ pub trait ObjectSubclass: ObjectSubclassType + Sized + 'static {
     // rustdoc-stripper-ignore-next
     /// The C class struct.
     ///
-    /// See [`basic::ClassStruct`] for an basic instance struct that should be
+    /// See [`basic::ClassStruct`] for an basic class struct that should be
     /// used in most cases.
     ///
     /// [`basic::ClassStruct`]: ../basic/struct.ClassStruct.html
@@ -705,17 +740,6 @@ pub trait ObjectSubclass: ObjectSubclassType + Sized + 'static {
 pub trait ObjectSubclassExt: ObjectSubclass {
     // rustdoc-stripper-ignore-next
     /// Returns the corresponding object instance.
-    #[doc(alias = "get_instance")]
-    #[deprecated = "Use obj() instead"]
-    fn instance(&self) -> crate::BorrowedObject<Self::Type>;
-
-    // rustdoc-stripper-ignore-next
-    /// Returns the implementation from an instance.
-    #[deprecated = "Use from_obj() instead"]
-    fn from_instance(obj: &Self::Type) -> &Self;
-
-    // rustdoc-stripper-ignore-next
-    /// Returns the corresponding object instance.
     ///
     /// Shorter alias for `instance()`.
     #[doc(alias = "get_instance")]
@@ -740,16 +764,6 @@ pub trait ObjectSubclassExt: ObjectSubclass {
 }
 
 impl<T: ObjectSubclass> ObjectSubclassExt for T {
-    #[inline]
-    fn instance(&self) -> crate::BorrowedObject<Self::Type> {
-        self.obj()
-    }
-
-    #[inline]
-    fn from_instance(obj: &Self::Type) -> &Self {
-        Self::from_obj(obj)
-    }
-
     #[inline]
     fn obj(&self) -> crate::BorrowedObject<Self::Type> {
         unsafe {
@@ -996,13 +1010,32 @@ pub fn register_type<T: ObjectSubclass>() -> Type {
     unsafe {
         use std::ffi::CString;
 
-        let type_name = CString::new(T::NAME).unwrap();
-        assert_eq!(
-            gobject_ffi::g_type_from_name(type_name.as_ptr()),
-            gobject_ffi::G_TYPE_INVALID,
-            "Type {} has already been registered",
-            type_name.to_str().unwrap()
-        );
+        let type_name = if T::ALLOW_NAME_CONFLICT {
+            let mut i = 0;
+            loop {
+                let type_name = CString::new(if i == 0 {
+                    T::NAME.to_string()
+                } else {
+                    format!("{}-{}", T::NAME, i)
+                })
+                .unwrap();
+                if gobject_ffi::g_type_from_name(type_name.as_ptr()) == gobject_ffi::G_TYPE_INVALID
+                {
+                    break type_name;
+                }
+                i += 1;
+            }
+        } else {
+            let type_name = CString::new(T::NAME).unwrap();
+            assert_eq!(
+                gobject_ffi::g_type_from_name(type_name.as_ptr()),
+                gobject_ffi::G_TYPE_INVALID,
+                "Type {} has already been registered",
+                type_name.to_str().unwrap()
+            );
+
+            type_name
+        };
 
         let type_ = Type::from_glib(gobject_ffi::g_type_register_static_simple(
             <T::ParentType as StaticType>::static_type().into_glib(),
@@ -1040,7 +1073,111 @@ pub fn register_type<T: ObjectSubclass>() -> Type {
 
         let iface_types = T::Interfaces::iface_infos();
         for (iface_type, iface_info) in iface_types {
-            gobject_ffi::g_type_add_interface_static(type_.into_glib(), iface_type, &iface_info);
+            gobject_ffi::g_type_add_interface_static(
+                type_.into_glib(),
+                iface_type.into_glib(),
+                iface_info.as_ptr(),
+            );
+        }
+
+        T::type_init(&mut InitializingType::<T>(type_, marker::PhantomData));
+
+        type_
+    }
+}
+
+// rustdoc-stripper-ignore-next
+/// Registers a `glib::Type` ID for `T` as a dynamic type.
+///
+/// An object subclass must be explicitly registered as a dynamic type when the
+/// system loads the implementation by calling [`TypePluginImpl::use_`] or more
+/// specifically [`TypeModuleImpl::load`]. Therefore, unlike for object
+/// subclasses registered as static types, object subclasses registered as
+/// dynamic types can be registered several times.
+///
+/// The [`object_subclass_dynamic!`] macro helper attribute will create
+/// `register_type()` and `on_implementation_load()` functions around this,
+/// which will ensure that the function is called when necessary.
+///
+/// [`object_subclass_dynamic!`]: ../../../glib_macros/attr.object_subclass.html
+/// [`TypePluginImpl::use_`]: ../type_plugin/trait.TypePluginImpl.html#method.use_
+/// [`TypeModuleImpl::load`]: ../type_module/trait.TypeModuleImpl.html#method.load
+pub fn register_dynamic_type<P: DynamicObjectRegisterExt, T: ObjectSubclass>(
+    type_plugin: &P,
+) -> Type {
+    // GLib aligns the type private data to two gsizes, so we can't safely store any type there that
+    // requires a bigger alignment.
+    assert!(
+        mem::align_of::<T>() <= 2 * mem::size_of::<usize>(),
+        "Alignment {} of type not supported, bigger than {}",
+        mem::align_of::<T>(),
+        2 * mem::size_of::<usize>(),
+    );
+
+    unsafe {
+        use std::ffi::CString;
+
+        let type_name = CString::new(T::NAME).unwrap();
+
+        let already_registered =
+            gobject_ffi::g_type_from_name(type_name.as_ptr()) != gobject_ffi::G_TYPE_INVALID;
+
+        let type_info = TypeInfo(gobject_ffi::GTypeInfo {
+            class_size: mem::size_of::<T::Class>() as u16,
+            class_init: Some(class_init::<T>),
+            instance_size: mem::size_of::<T::Instance>() as u16,
+            instance_init: Some(instance_init::<T>),
+            ..TypeInfo::default().0
+        });
+
+        // registers the type within the `type_plugin`
+        let type_ = type_plugin.register_dynamic_type(
+            <T::ParentType as StaticType>::static_type(),
+            type_name.to_str().unwrap(),
+            &type_info,
+            if T::ABSTRACT {
+                TypeFlags::ABSTRACT
+            } else {
+                TypeFlags::NONE
+            },
+        );
+        assert!(type_.is_valid());
+
+        let mut data = T::type_data();
+        data.as_mut().type_ = type_;
+
+        let private_offset = mem::size_of::<PrivateStruct<T>>();
+        data.as_mut().private_offset = private_offset as isize;
+
+        // gets the offset from PrivateStruct<T> to the imp field in it. This has to go through
+        // some hoops because Rust doesn't have an offsetof operator yet.
+        data.as_mut().private_imp_offset = {
+            // Must not be a dangling pointer so let's create some uninitialized memory
+            let priv_ = mem::MaybeUninit::<PrivateStruct<T>>::uninit();
+            let ptr = priv_.as_ptr();
+            let imp_ptr = ptr::addr_of!((*ptr).imp);
+            (imp_ptr as isize) - (ptr as isize)
+        };
+
+        let plugin_ptr = type_plugin.as_ref().to_glib_none().0;
+        let iface_types = T::Interfaces::iface_infos();
+        for (iface_type, iface_info) in iface_types {
+            match gobject_ffi::g_type_get_plugin(iface_type.into_glib()) {
+                // if interface type's plugin is null or is different to the `type_plugin`,
+                // then interface can only be added as if the type was static
+                iface_plugin if iface_plugin != plugin_ptr => {
+                    // but adding interface to a static type can be done only once
+                    if !already_registered {
+                        gobject_ffi::g_type_add_interface_static(
+                            type_.into_glib(),
+                            iface_type.into_glib(),
+                            iface_info.as_ptr(),
+                        );
+                    }
+                }
+                // else interface can be added and registered to live in the `type_plugin`
+                _ => type_plugin.add_dynamic_interface(type_, iface_type, &iface_info),
+            }
         }
 
         T::type_init(&mut InitializingType::<T>(type_, marker::PhantomData));

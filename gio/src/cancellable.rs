@@ -6,7 +6,7 @@ use futures_channel::oneshot;
 use futures_core::Future;
 use glib::{prelude::*, translate::*};
 
-use crate::Cancellable;
+use crate::{ffi, Cancellable};
 
 // rustdoc-stripper-ignore-next
 /// The id of a cancelled handler that is returned by `CancellableExtManual::connect`. This type is
@@ -32,12 +32,7 @@ impl TryFromGlib<libc::c_ulong> for CancelledHandlerId {
     }
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::Cancellable>> Sealed for T {}
-}
-
-pub trait CancellableExtManual: sealed::Sealed + IsA<Cancellable> {
+pub trait CancellableExtManual: IsA<Cancellable> {
     // rustdoc-stripper-ignore-next
     /// Convenience function to connect to the `signal::Cancellable::cancelled` signal. Also
     /// handles the race condition that may happen if the cancellable is cancelled right before
@@ -80,7 +75,7 @@ pub trait CancellableExtManual: sealed::Sealed + IsA<Cancellable> {
         unsafe {
             from_glib(ffi::g_cancellable_connect(
                 self.as_ptr() as *mut _,
-                Some(std::mem::transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     connect_trampoline::<Self, F> as *const (),
                 )),
                 Box::into_raw(callback) as *mut _,

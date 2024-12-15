@@ -1,5 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
+use crate::ffi;
 use std::fmt;
 #[cfg(feature = "use_glib")]
 use std::{marker::PhantomData, mem};
@@ -141,14 +142,7 @@ gvalue_impl_inline!(
 impl Rectangle {
     #[inline]
     pub fn to_raw_none(&self) -> *mut ffi::cairo_rectangle_t {
-        let ptr = self as *const Rectangle as usize;
-        ptr as *mut ffi::cairo_rectangle_t
-    }
-}
-
-impl fmt::Display for Rectangle {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "Rectangle")
+        &self.0 as *const ffi::cairo_rectangle_t as *mut ffi::cairo_rectangle_t
     }
 }
 

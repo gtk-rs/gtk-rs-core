@@ -2,8 +2,7 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{prelude::*, translate::*};
-use std::fmt;
+use crate::{ffi, prelude::*, translate::*};
 
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
@@ -21,23 +20,6 @@ pub enum ChecksumType {
     Sha384,
     #[doc(hidden)]
     __Unknown(i32),
-}
-
-impl fmt::Display for ChecksumType {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(
-            f,
-            "ChecksumType::{}",
-            match *self {
-                Self::Md5 => "Md5",
-                Self::Sha1 => "Sha1",
-                Self::Sha256 => "Sha256",
-                Self::Sha512 => "Sha512",
-                Self::Sha384 => "Sha384",
-                _ => "Unknown",
-            }
-        )
-    }
 }
 
 #[doc(hidden)]
@@ -94,26 +76,6 @@ pub enum ConvertError {
     EmbeddedNul,
     #[doc(hidden)]
     __Unknown(i32),
-}
-
-impl fmt::Display for ConvertError {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(
-            f,
-            "ConvertError::{}",
-            match *self {
-                Self::NoConversion => "NoConversion",
-                Self::IllegalSequence => "IllegalSequence",
-                Self::Failed => "Failed",
-                Self::PartialInput => "PartialInput",
-                Self::BadUri => "BadUri",
-                Self::NotAbsolutePath => "NotAbsolutePath",
-                Self::NoMemory => "NoMemory",
-                Self::EmbeddedNul => "EmbeddedNul",
-                _ => "Unknown",
-            }
-        )
-    }
 }
 
 #[doc(hidden)]
@@ -209,31 +171,6 @@ pub enum DateMonth {
     __Unknown(i32),
 }
 
-impl fmt::Display for DateMonth {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(
-            f,
-            "DateMonth::{}",
-            match *self {
-                Self::BadMonth => "BadMonth",
-                Self::January => "January",
-                Self::February => "February",
-                Self::March => "March",
-                Self::April => "April",
-                Self::May => "May",
-                Self::June => "June",
-                Self::July => "July",
-                Self::August => "August",
-                Self::September => "September",
-                Self::October => "October",
-                Self::November => "November",
-                Self::December => "December",
-                _ => "Unknown",
-            }
-        )
-    }
-}
-
 #[doc(hidden)]
 impl IntoGlib for DateMonth {
     type GlibType = ffi::GDateMonth;
@@ -302,26 +239,6 @@ pub enum DateWeekday {
     Sunday,
     #[doc(hidden)]
     __Unknown(i32),
-}
-
-impl fmt::Display for DateWeekday {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(
-            f,
-            "DateWeekday::{}",
-            match *self {
-                Self::BadWeekday => "BadWeekday",
-                Self::Monday => "Monday",
-                Self::Tuesday => "Tuesday",
-                Self::Wednesday => "Wednesday",
-                Self::Thursday => "Thursday",
-                Self::Friday => "Friday",
-                Self::Saturday => "Saturday",
-                Self::Sunday => "Sunday",
-                _ => "Unknown",
-            }
-        )
-    }
 }
 
 #[doc(hidden)]
@@ -418,43 +335,6 @@ pub enum FileError {
     Failed,
     #[doc(hidden)]
     __Unknown(i32),
-}
-
-impl fmt::Display for FileError {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(
-            f,
-            "FileError::{}",
-            match *self {
-                Self::Exist => "Exist",
-                Self::Isdir => "Isdir",
-                Self::Acces => "Acces",
-                Self::Nametoolong => "Nametoolong",
-                Self::Noent => "Noent",
-                Self::Notdir => "Notdir",
-                Self::Nxio => "Nxio",
-                Self::Nodev => "Nodev",
-                Self::Rofs => "Rofs",
-                Self::Txtbsy => "Txtbsy",
-                Self::Fault => "Fault",
-                Self::Loop => "Loop",
-                Self::Nospc => "Nospc",
-                Self::Nomem => "Nomem",
-                Self::Mfile => "Mfile",
-                Self::Nfile => "Nfile",
-                Self::Badf => "Badf",
-                Self::Inval => "Inval",
-                Self::Pipe => "Pipe",
-                Self::Again => "Again",
-                Self::Intr => "Intr",
-                Self::Io => "Io",
-                Self::Perm => "Perm",
-                Self::Nosys => "Nosys",
-                Self::Failed => "Failed",
-                _ => "Unknown",
-            }
-        )
-    }
 }
 
 #[doc(hidden)]
@@ -568,24 +448,6 @@ pub enum KeyFileError {
     __Unknown(i32),
 }
 
-impl fmt::Display for KeyFileError {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(
-            f,
-            "KeyFileError::{}",
-            match *self {
-                Self::UnknownEncoding => "UnknownEncoding",
-                Self::Parse => "Parse",
-                Self::NotFound => "NotFound",
-                Self::KeyNotFound => "KeyNotFound",
-                Self::GroupNotFound => "GroupNotFound",
-                Self::InvalidValue => "InvalidValue",
-                _ => "Unknown",
-            }
-        )
-    }
-}
-
 #[doc(hidden)]
 impl IntoGlib for KeyFileError {
     type GlibType = ffi::GKeyFileError;
@@ -652,20 +514,6 @@ pub enum LogWriterOutput {
     __Unknown(i32),
 }
 
-impl fmt::Display for LogWriterOutput {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(
-            f,
-            "LogWriterOutput::{}",
-            match *self {
-                Self::Handled => "Handled",
-                Self::Unhandled => "Unhandled",
-                _ => "Unknown",
-            }
-        )
-    }
-}
-
 #[doc(hidden)]
 impl IntoGlib for LogWriterOutput {
     type GlibType = ffi::GLogWriterOutput;
@@ -712,25 +560,6 @@ pub enum MarkupError {
     MissingAttribute,
     #[doc(hidden)]
     __Unknown(i32),
-}
-
-impl fmt::Display for MarkupError {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(
-            f,
-            "MarkupError::{}",
-            match *self {
-                Self::BadUtf8 => "BadUtf8",
-                Self::Empty => "Empty",
-                Self::Parse => "Parse",
-                Self::UnknownElement => "UnknownElement",
-                Self::UnknownAttribute => "UnknownAttribute",
-                Self::InvalidContent => "InvalidContent",
-                Self::MissingAttribute => "MissingAttribute",
-                _ => "Unknown",
-            }
-        )
-    }
 }
 
 #[doc(hidden)]
@@ -805,22 +634,6 @@ pub enum NormalizeMode {
     __Unknown(i32),
 }
 
-impl fmt::Display for NormalizeMode {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(
-            f,
-            "NormalizeMode::{}",
-            match *self {
-                Self::Default => "Default",
-                Self::DefaultCompose => "DefaultCompose",
-                Self::All => "All",
-                Self::AllCompose => "AllCompose",
-                _ => "Unknown",
-            }
-        )
-    }
-}
-
 #[doc(hidden)]
 impl IntoGlib for NormalizeMode {
     type GlibType = ffi::GNormalizeMode;
@@ -851,6 +664,60 @@ impl FromGlib<ffi::GNormalizeMode> for NormalizeMode {
     }
 }
 
+impl StaticType for NormalizeMode {
+    #[inline]
+    #[doc(alias = "g_normalize_mode_get_type")]
+    fn static_type() -> crate::Type {
+        unsafe { from_glib(ffi::g_normalize_mode_get_type()) }
+    }
+}
+
+impl crate::HasParamSpec for NormalizeMode {
+    type ParamSpec = crate::ParamSpecEnum;
+    type SetValue = Self;
+    type BuilderFn = fn(&str, Self) -> crate::ParamSpecEnumBuilder<Self>;
+
+    fn param_spec_builder() -> Self::BuilderFn {
+        Self::ParamSpec::builder_with_default
+    }
+}
+
+impl crate::value::ValueType for NormalizeMode {
+    type Type = Self;
+}
+
+unsafe impl<'a> crate::value::FromValue<'a> for NormalizeMode {
+    type Checker = crate::value::GenericValueTypeChecker<Self>;
+
+    #[inline]
+    unsafe fn from_value(value: &'a crate::Value) -> Self {
+        from_glib(crate::gobject_ffi::g_value_get_enum(value.to_glib_none().0))
+    }
+}
+
+impl ToValue for NormalizeMode {
+    #[inline]
+    fn to_value(&self) -> crate::Value {
+        let mut value = crate::Value::for_value_type::<Self>();
+        unsafe {
+            crate::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, self.into_glib());
+        }
+        value
+    }
+
+    #[inline]
+    fn value_type(&self) -> crate::Type {
+        Self::static_type()
+    }
+}
+
+impl From<NormalizeMode> for crate::Value {
+    #[inline]
+    fn from(v: NormalizeMode) -> Self {
+        ToValue::to_value(&v)
+    }
+}
+
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GOptionArg")]
@@ -875,27 +742,6 @@ pub enum OptionArg {
     Int64,
     #[doc(hidden)]
     __Unknown(i32),
-}
-
-impl fmt::Display for OptionArg {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(
-            f,
-            "OptionArg::{}",
-            match *self {
-                Self::None => "None",
-                Self::String => "String",
-                Self::Int => "Int",
-                Self::Callback => "Callback",
-                Self::Filename => "Filename",
-                Self::StringArray => "StringArray",
-                Self::FilenameArray => "FilenameArray",
-                Self::Double => "Double",
-                Self::Int64 => "Int64",
-                _ => "Unknown",
-            }
-        )
-    }
 }
 
 #[doc(hidden)]
@@ -952,21 +798,6 @@ pub enum SeekType {
     __Unknown(i32),
 }
 
-impl fmt::Display for SeekType {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(
-            f,
-            "SeekType::{}",
-            match *self {
-                Self::Cur => "Cur",
-                Self::Set => "Set",
-                Self::End => "End",
-                _ => "Unknown",
-            }
-        )
-    }
-}
-
 #[doc(hidden)]
 impl IntoGlib for SeekType {
     type GlibType = ffi::GSeekType;
@@ -1007,21 +838,6 @@ pub enum TimeType {
     Universal,
     #[doc(hidden)]
     __Unknown(i32),
-}
-
-impl fmt::Display for TimeType {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(
-            f,
-            "TimeType::{}",
-            match *self {
-                Self::Standard => "Standard",
-                Self::Daylight => "Daylight",
-                Self::Universal => "Universal",
-                _ => "Unknown",
-            }
-        )
-    }
 }
 
 #[doc(hidden)]
@@ -1142,63 +958,28 @@ pub enum UnicodeBreakType {
     EmojiModifier,
     #[doc(alias = "G_UNICODE_BREAK_ZERO_WIDTH_JOINER")]
     ZeroWidthJoiner,
+    #[cfg(feature = "v2_80")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_80")))]
+    #[doc(alias = "G_UNICODE_BREAK_AKSARA")]
+    Aksara,
+    #[cfg(feature = "v2_80")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_80")))]
+    #[doc(alias = "G_UNICODE_BREAK_AKSARA_PRE_BASE")]
+    AksaraPreBase,
+    #[cfg(feature = "v2_80")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_80")))]
+    #[doc(alias = "G_UNICODE_BREAK_AKSARA_START")]
+    AksaraStart,
+    #[cfg(feature = "v2_80")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_80")))]
+    #[doc(alias = "G_UNICODE_BREAK_VIRAMA_FINAL")]
+    ViramaFinal,
+    #[cfg(feature = "v2_80")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_80")))]
+    #[doc(alias = "G_UNICODE_BREAK_VIRAMA")]
+    Virama,
     #[doc(hidden)]
     __Unknown(i32),
-}
-
-impl fmt::Display for UnicodeBreakType {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(
-            f,
-            "UnicodeBreakType::{}",
-            match *self {
-                Self::Mandatory => "Mandatory",
-                Self::CarriageReturn => "CarriageReturn",
-                Self::LineFeed => "LineFeed",
-                Self::CombiningMark => "CombiningMark",
-                Self::Surrogate => "Surrogate",
-                Self::ZeroWidthSpace => "ZeroWidthSpace",
-                Self::Inseparable => "Inseparable",
-                Self::NonBreakingGlue => "NonBreakingGlue",
-                Self::Contingent => "Contingent",
-                Self::Space => "Space",
-                Self::After => "After",
-                Self::Before => "Before",
-                Self::BeforeAndAfter => "BeforeAndAfter",
-                Self::Hyphen => "Hyphen",
-                Self::NonStarter => "NonStarter",
-                Self::OpenPunctuation => "OpenPunctuation",
-                Self::ClosePunctuation => "ClosePunctuation",
-                Self::Quotation => "Quotation",
-                Self::Exclamation => "Exclamation",
-                Self::Ideographic => "Ideographic",
-                Self::Numeric => "Numeric",
-                Self::InfixSeparator => "InfixSeparator",
-                Self::Symbol => "Symbol",
-                Self::Alphabetic => "Alphabetic",
-                Self::Prefix => "Prefix",
-                Self::Postfix => "Postfix",
-                Self::ComplexContext => "ComplexContext",
-                Self::Ambiguous => "Ambiguous",
-                Self::Unknown => "Unknown",
-                Self::NextLine => "NextLine",
-                Self::WordJoiner => "WordJoiner",
-                Self::HangulLJamo => "HangulLJamo",
-                Self::HangulVJamo => "HangulVJamo",
-                Self::HangulTJamo => "HangulTJamo",
-                Self::HangulLvSyllable => "HangulLvSyllable",
-                Self::HangulLvtSyllable => "HangulLvtSyllable",
-                Self::CloseParenthesis => "CloseParenthesis",
-                Self::ConditionalJapaneseStarter => "ConditionalJapaneseStarter",
-                Self::HebrewLetter => "HebrewLetter",
-                Self::RegionalIndicator => "RegionalIndicator",
-                Self::EmojiBase => "EmojiBase",
-                Self::EmojiModifier => "EmojiModifier",
-                Self::ZeroWidthJoiner => "ZeroWidthJoiner",
-                _ => "Unknown",
-            }
-        )
-    }
 }
 
 #[doc(hidden)]
@@ -1250,6 +1031,16 @@ impl IntoGlib for UnicodeBreakType {
             Self::EmojiBase => ffi::G_UNICODE_BREAK_EMOJI_BASE,
             Self::EmojiModifier => ffi::G_UNICODE_BREAK_EMOJI_MODIFIER,
             Self::ZeroWidthJoiner => ffi::G_UNICODE_BREAK_ZERO_WIDTH_JOINER,
+            #[cfg(feature = "v2_80")]
+            Self::Aksara => ffi::G_UNICODE_BREAK_AKSARA,
+            #[cfg(feature = "v2_80")]
+            Self::AksaraPreBase => ffi::G_UNICODE_BREAK_AKSARA_PRE_BASE,
+            #[cfg(feature = "v2_80")]
+            Self::AksaraStart => ffi::G_UNICODE_BREAK_AKSARA_START,
+            #[cfg(feature = "v2_80")]
+            Self::ViramaFinal => ffi::G_UNICODE_BREAK_VIRAMA_FINAL,
+            #[cfg(feature = "v2_80")]
+            Self::Virama => ffi::G_UNICODE_BREAK_VIRAMA,
             Self::__Unknown(value) => value,
         }
     }
@@ -1302,8 +1093,72 @@ impl FromGlib<ffi::GUnicodeBreakType> for UnicodeBreakType {
             ffi::G_UNICODE_BREAK_EMOJI_BASE => Self::EmojiBase,
             ffi::G_UNICODE_BREAK_EMOJI_MODIFIER => Self::EmojiModifier,
             ffi::G_UNICODE_BREAK_ZERO_WIDTH_JOINER => Self::ZeroWidthJoiner,
+            #[cfg(feature = "v2_80")]
+            ffi::G_UNICODE_BREAK_AKSARA => Self::Aksara,
+            #[cfg(feature = "v2_80")]
+            ffi::G_UNICODE_BREAK_AKSARA_PRE_BASE => Self::AksaraPreBase,
+            #[cfg(feature = "v2_80")]
+            ffi::G_UNICODE_BREAK_AKSARA_START => Self::AksaraStart,
+            #[cfg(feature = "v2_80")]
+            ffi::G_UNICODE_BREAK_VIRAMA_FINAL => Self::ViramaFinal,
+            #[cfg(feature = "v2_80")]
+            ffi::G_UNICODE_BREAK_VIRAMA => Self::Virama,
             value => Self::__Unknown(value),
         }
+    }
+}
+
+impl StaticType for UnicodeBreakType {
+    #[inline]
+    #[doc(alias = "g_unicode_break_type_get_type")]
+    fn static_type() -> crate::Type {
+        unsafe { from_glib(ffi::g_unicode_break_type_get_type()) }
+    }
+}
+
+impl crate::HasParamSpec for UnicodeBreakType {
+    type ParamSpec = crate::ParamSpecEnum;
+    type SetValue = Self;
+    type BuilderFn = fn(&str, Self) -> crate::ParamSpecEnumBuilder<Self>;
+
+    fn param_spec_builder() -> Self::BuilderFn {
+        Self::ParamSpec::builder_with_default
+    }
+}
+
+impl crate::value::ValueType for UnicodeBreakType {
+    type Type = Self;
+}
+
+unsafe impl<'a> crate::value::FromValue<'a> for UnicodeBreakType {
+    type Checker = crate::value::GenericValueTypeChecker<Self>;
+
+    #[inline]
+    unsafe fn from_value(value: &'a crate::Value) -> Self {
+        from_glib(crate::gobject_ffi::g_value_get_enum(value.to_glib_none().0))
+    }
+}
+
+impl ToValue for UnicodeBreakType {
+    #[inline]
+    fn to_value(&self) -> crate::Value {
+        let mut value = crate::Value::for_value_type::<Self>();
+        unsafe {
+            crate::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, self.into_glib());
+        }
+        value
+    }
+
+    #[inline]
+    fn value_type(&self) -> crate::Type {
+        Self::static_type()
+    }
+}
+
+impl From<UnicodeBreakType> for crate::Value {
+    #[inline]
+    fn from(v: UnicodeBreakType) -> Self {
+        ToValue::to_value(&v)
     }
 }
 
@@ -1659,193 +1514,47 @@ pub enum UnicodeScript {
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
     #[doc(alias = "G_UNICODE_SCRIPT_NAG_MUNDARI")]
     NagMundari,
+    #[cfg(feature = "v2_84")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_84")))]
+    #[doc(alias = "G_UNICODE_SCRIPT_TODHRI")]
+    Todhri,
+    #[cfg(feature = "v2_84")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_84")))]
+    #[doc(alias = "G_UNICODE_SCRIPT_GARAY")]
+    Garay,
+    #[cfg(feature = "v2_84")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_84")))]
+    #[doc(alias = "G_UNICODE_SCRIPT_TULU_TIGALARI")]
+    TuluTigalari,
+    #[cfg(feature = "v2_84")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_84")))]
+    #[doc(alias = "G_UNICODE_SCRIPT_SUNUWAR")]
+    Sunuwar,
+    #[cfg(feature = "v2_84")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_84")))]
+    #[doc(alias = "G_UNICODE_SCRIPT_GURUNG_KHEMA")]
+    GurungKhema,
+    #[cfg(feature = "v2_84")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_84")))]
+    #[doc(alias = "G_UNICODE_SCRIPT_KIRAT_RAI")]
+    KiratRai,
+    #[cfg(feature = "v2_84")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_84")))]
+    #[doc(alias = "G_UNICODE_SCRIPT_OL_ONAL")]
+    OlOnal,
     #[doc(hidden)]
     __Unknown(i32),
 }
 
-impl fmt::Display for UnicodeScript {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(
-            f,
-            "UnicodeScript::{}",
-            match *self {
-                Self::InvalidCode => "InvalidCode",
-                Self::Common => "Common",
-                Self::Inherited => "Inherited",
-                Self::Arabic => "Arabic",
-                Self::Armenian => "Armenian",
-                Self::Bengali => "Bengali",
-                Self::Bopomofo => "Bopomofo",
-                Self::Cherokee => "Cherokee",
-                Self::Coptic => "Coptic",
-                Self::Cyrillic => "Cyrillic",
-                Self::Deseret => "Deseret",
-                Self::Devanagari => "Devanagari",
-                Self::Ethiopic => "Ethiopic",
-                Self::Georgian => "Georgian",
-                Self::Gothic => "Gothic",
-                Self::Greek => "Greek",
-                Self::Gujarati => "Gujarati",
-                Self::Gurmukhi => "Gurmukhi",
-                Self::Han => "Han",
-                Self::Hangul => "Hangul",
-                Self::Hebrew => "Hebrew",
-                Self::Hiragana => "Hiragana",
-                Self::Kannada => "Kannada",
-                Self::Katakana => "Katakana",
-                Self::Khmer => "Khmer",
-                Self::Lao => "Lao",
-                Self::Latin => "Latin",
-                Self::Malayalam => "Malayalam",
-                Self::Mongolian => "Mongolian",
-                Self::Myanmar => "Myanmar",
-                Self::Ogham => "Ogham",
-                Self::OldItalic => "OldItalic",
-                Self::Oriya => "Oriya",
-                Self::Runic => "Runic",
-                Self::Sinhala => "Sinhala",
-                Self::Syriac => "Syriac",
-                Self::Tamil => "Tamil",
-                Self::Telugu => "Telugu",
-                Self::Thaana => "Thaana",
-                Self::Thai => "Thai",
-                Self::Tibetan => "Tibetan",
-                Self::CanadianAboriginal => "CanadianAboriginal",
-                Self::Yi => "Yi",
-                Self::Tagalog => "Tagalog",
-                Self::Hanunoo => "Hanunoo",
-                Self::Buhid => "Buhid",
-                Self::Tagbanwa => "Tagbanwa",
-                Self::Braille => "Braille",
-                Self::Cypriot => "Cypriot",
-                Self::Limbu => "Limbu",
-                Self::Osmanya => "Osmanya",
-                Self::Shavian => "Shavian",
-                Self::LinearB => "LinearB",
-                Self::TaiLe => "TaiLe",
-                Self::Ugaritic => "Ugaritic",
-                Self::NewTaiLue => "NewTaiLue",
-                Self::Buginese => "Buginese",
-                Self::Glagolitic => "Glagolitic",
-                Self::Tifinagh => "Tifinagh",
-                Self::SylotiNagri => "SylotiNagri",
-                Self::OldPersian => "OldPersian",
-                Self::Kharoshthi => "Kharoshthi",
-                Self::Unknown => "Unknown",
-                Self::Balinese => "Balinese",
-                Self::Cuneiform => "Cuneiform",
-                Self::Phoenician => "Phoenician",
-                Self::PhagsPa => "PhagsPa",
-                Self::Nko => "Nko",
-                Self::KayahLi => "KayahLi",
-                Self::Lepcha => "Lepcha",
-                Self::Rejang => "Rejang",
-                Self::Sundanese => "Sundanese",
-                Self::Saurashtra => "Saurashtra",
-                Self::Cham => "Cham",
-                Self::OlChiki => "OlChiki",
-                Self::Vai => "Vai",
-                Self::Carian => "Carian",
-                Self::Lycian => "Lycian",
-                Self::Lydian => "Lydian",
-                Self::Avestan => "Avestan",
-                Self::Bamum => "Bamum",
-                Self::EgyptianHieroglyphs => "EgyptianHieroglyphs",
-                Self::ImperialAramaic => "ImperialAramaic",
-                Self::InscriptionalPahlavi => "InscriptionalPahlavi",
-                Self::InscriptionalParthian => "InscriptionalParthian",
-                Self::Javanese => "Javanese",
-                Self::Kaithi => "Kaithi",
-                Self::Lisu => "Lisu",
-                Self::MeeteiMayek => "MeeteiMayek",
-                Self::OldSouthArabian => "OldSouthArabian",
-                Self::OldTurkic => "OldTurkic",
-                Self::Samaritan => "Samaritan",
-                Self::TaiTham => "TaiTham",
-                Self::TaiViet => "TaiViet",
-                Self::Batak => "Batak",
-                Self::Brahmi => "Brahmi",
-                Self::Mandaic => "Mandaic",
-                Self::Chakma => "Chakma",
-                Self::MeroiticCursive => "MeroiticCursive",
-                Self::MeroiticHieroglyphs => "MeroiticHieroglyphs",
-                Self::Miao => "Miao",
-                Self::Sharada => "Sharada",
-                Self::SoraSompeng => "SoraSompeng",
-                Self::Takri => "Takri",
-                Self::BassaVah => "BassaVah",
-                Self::CaucasianAlbanian => "CaucasianAlbanian",
-                Self::Duployan => "Duployan",
-                Self::Elbasan => "Elbasan",
-                Self::Grantha => "Grantha",
-                Self::Khojki => "Khojki",
-                Self::Khudawadi => "Khudawadi",
-                Self::LinearA => "LinearA",
-                Self::Mahajani => "Mahajani",
-                Self::Manichaean => "Manichaean",
-                Self::MendeKikakui => "MendeKikakui",
-                Self::Modi => "Modi",
-                Self::Mro => "Mro",
-                Self::Nabataean => "Nabataean",
-                Self::OldNorthArabian => "OldNorthArabian",
-                Self::OldPermic => "OldPermic",
-                Self::PahawhHmong => "PahawhHmong",
-                Self::Palmyrene => "Palmyrene",
-                Self::PauCinHau => "PauCinHau",
-                Self::PsalterPahlavi => "PsalterPahlavi",
-                Self::Siddham => "Siddham",
-                Self::Tirhuta => "Tirhuta",
-                Self::WarangCiti => "WarangCiti",
-                Self::Ahom => "Ahom",
-                Self::AnatolianHieroglyphs => "AnatolianHieroglyphs",
-                Self::Hatran => "Hatran",
-                Self::Multani => "Multani",
-                Self::OldHungarian => "OldHungarian",
-                Self::Signwriting => "Signwriting",
-                Self::Adlam => "Adlam",
-                Self::Bhaiksuki => "Bhaiksuki",
-                Self::Marchen => "Marchen",
-                Self::Newa => "Newa",
-                Self::Osage => "Osage",
-                Self::Tangut => "Tangut",
-                Self::MasaramGondi => "MasaramGondi",
-                Self::Nushu => "Nushu",
-                Self::Soyombo => "Soyombo",
-                Self::ZanabazarSquare => "ZanabazarSquare",
-                Self::Dogra => "Dogra",
-                Self::GunjalaGondi => "GunjalaGondi",
-                Self::HanifiRohingya => "HanifiRohingya",
-                Self::Makasar => "Makasar",
-                Self::Medefaidrin => "Medefaidrin",
-                Self::OldSogdian => "OldSogdian",
-                Self::Sogdian => "Sogdian",
-                Self::Elymaic => "Elymaic",
-                Self::Nandinagari => "Nandinagari",
-                Self::NyiakengPuachueHmong => "NyiakengPuachueHmong",
-                Self::Wancho => "Wancho",
-                Self::Chorasmian => "Chorasmian",
-                Self::DivesAkuru => "DivesAkuru",
-                Self::KhitanSmallScript => "KhitanSmallScript",
-                Self::Yezidi => "Yezidi",
-                #[cfg(feature = "v2_72")]
-                Self::CyproMinoan => "CyproMinoan",
-                #[cfg(feature = "v2_72")]
-                Self::OldUyghur => "OldUyghur",
-                #[cfg(feature = "v2_72")]
-                Self::Tangsa => "Tangsa",
-                #[cfg(feature = "v2_72")]
-                Self::Toto => "Toto",
-                #[cfg(feature = "v2_72")]
-                Self::Vithkuqi => "Vithkuqi",
-                #[cfg(feature = "v2_72")]
-                Self::Math => "Math",
-                #[cfg(feature = "v2_74")]
-                Self::Kawi => "Kawi",
-                #[cfg(feature = "v2_74")]
-                Self::NagMundari => "NagMundari",
-                _ => "Unknown",
-            }
-        )
+impl UnicodeScript {
+    #[doc(alias = "g_unicode_script_from_iso15924")]
+    pub fn from_iso15924(iso15924: u32) -> UnicodeScript {
+        unsafe { from_glib(ffi::g_unicode_script_from_iso15924(iso15924)) }
+    }
+
+    #[doc(alias = "g_unicode_script_to_iso15924")]
+    pub fn to_iso15924(self) -> u32 {
+        unsafe { ffi::g_unicode_script_to_iso15924(self.into_glib()) }
     }
 }
 
@@ -2029,6 +1738,20 @@ impl IntoGlib for UnicodeScript {
             Self::Kawi => ffi::G_UNICODE_SCRIPT_KAWI,
             #[cfg(feature = "v2_74")]
             Self::NagMundari => ffi::G_UNICODE_SCRIPT_NAG_MUNDARI,
+            #[cfg(feature = "v2_84")]
+            Self::Todhri => ffi::G_UNICODE_SCRIPT_TODHRI,
+            #[cfg(feature = "v2_84")]
+            Self::Garay => ffi::G_UNICODE_SCRIPT_GARAY,
+            #[cfg(feature = "v2_84")]
+            Self::TuluTigalari => ffi::G_UNICODE_SCRIPT_TULU_TIGALARI,
+            #[cfg(feature = "v2_84")]
+            Self::Sunuwar => ffi::G_UNICODE_SCRIPT_SUNUWAR,
+            #[cfg(feature = "v2_84")]
+            Self::GurungKhema => ffi::G_UNICODE_SCRIPT_GURUNG_KHEMA,
+            #[cfg(feature = "v2_84")]
+            Self::KiratRai => ffi::G_UNICODE_SCRIPT_KIRAT_RAI,
+            #[cfg(feature = "v2_84")]
+            Self::OlOnal => ffi::G_UNICODE_SCRIPT_OL_ONAL,
             Self::__Unknown(value) => value,
         }
     }
@@ -2212,8 +1935,76 @@ impl FromGlib<ffi::GUnicodeScript> for UnicodeScript {
             ffi::G_UNICODE_SCRIPT_KAWI => Self::Kawi,
             #[cfg(feature = "v2_74")]
             ffi::G_UNICODE_SCRIPT_NAG_MUNDARI => Self::NagMundari,
+            #[cfg(feature = "v2_84")]
+            ffi::G_UNICODE_SCRIPT_TODHRI => Self::Todhri,
+            #[cfg(feature = "v2_84")]
+            ffi::G_UNICODE_SCRIPT_GARAY => Self::Garay,
+            #[cfg(feature = "v2_84")]
+            ffi::G_UNICODE_SCRIPT_TULU_TIGALARI => Self::TuluTigalari,
+            #[cfg(feature = "v2_84")]
+            ffi::G_UNICODE_SCRIPT_SUNUWAR => Self::Sunuwar,
+            #[cfg(feature = "v2_84")]
+            ffi::G_UNICODE_SCRIPT_GURUNG_KHEMA => Self::GurungKhema,
+            #[cfg(feature = "v2_84")]
+            ffi::G_UNICODE_SCRIPT_KIRAT_RAI => Self::KiratRai,
+            #[cfg(feature = "v2_84")]
+            ffi::G_UNICODE_SCRIPT_OL_ONAL => Self::OlOnal,
             value => Self::__Unknown(value),
         }
+    }
+}
+
+impl StaticType for UnicodeScript {
+    #[inline]
+    #[doc(alias = "g_unicode_script_get_type")]
+    fn static_type() -> crate::Type {
+        unsafe { from_glib(ffi::g_unicode_script_get_type()) }
+    }
+}
+
+impl crate::HasParamSpec for UnicodeScript {
+    type ParamSpec = crate::ParamSpecEnum;
+    type SetValue = Self;
+    type BuilderFn = fn(&str, Self) -> crate::ParamSpecEnumBuilder<Self>;
+
+    fn param_spec_builder() -> Self::BuilderFn {
+        Self::ParamSpec::builder_with_default
+    }
+}
+
+impl crate::value::ValueType for UnicodeScript {
+    type Type = Self;
+}
+
+unsafe impl<'a> crate::value::FromValue<'a> for UnicodeScript {
+    type Checker = crate::value::GenericValueTypeChecker<Self>;
+
+    #[inline]
+    unsafe fn from_value(value: &'a crate::Value) -> Self {
+        from_glib(crate::gobject_ffi::g_value_get_enum(value.to_glib_none().0))
+    }
+}
+
+impl ToValue for UnicodeScript {
+    #[inline]
+    fn to_value(&self) -> crate::Value {
+        let mut value = crate::Value::for_value_type::<Self>();
+        unsafe {
+            crate::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, self.into_glib());
+        }
+        value
+    }
+
+    #[inline]
+    fn value_type(&self) -> crate::Type {
+        Self::static_type()
+    }
+}
+
+impl From<UnicodeScript> for crate::Value {
+    #[inline]
+    fn from(v: UnicodeScript) -> Self {
+        ToValue::to_value(&v)
     }
 }
 
@@ -2283,48 +2074,6 @@ pub enum UnicodeType {
     SpaceSeparator,
     #[doc(hidden)]
     __Unknown(i32),
-}
-
-impl fmt::Display for UnicodeType {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(
-            f,
-            "UnicodeType::{}",
-            match *self {
-                Self::Control => "Control",
-                Self::Format => "Format",
-                Self::Unassigned => "Unassigned",
-                Self::PrivateUse => "PrivateUse",
-                Self::Surrogate => "Surrogate",
-                Self::LowercaseLetter => "LowercaseLetter",
-                Self::ModifierLetter => "ModifierLetter",
-                Self::OtherLetter => "OtherLetter",
-                Self::TitlecaseLetter => "TitlecaseLetter",
-                Self::UppercaseLetter => "UppercaseLetter",
-                Self::SpacingMark => "SpacingMark",
-                Self::EnclosingMark => "EnclosingMark",
-                Self::NonSpacingMark => "NonSpacingMark",
-                Self::DecimalNumber => "DecimalNumber",
-                Self::LetterNumber => "LetterNumber",
-                Self::OtherNumber => "OtherNumber",
-                Self::ConnectPunctuation => "ConnectPunctuation",
-                Self::DashPunctuation => "DashPunctuation",
-                Self::ClosePunctuation => "ClosePunctuation",
-                Self::FinalPunctuation => "FinalPunctuation",
-                Self::InitialPunctuation => "InitialPunctuation",
-                Self::OtherPunctuation => "OtherPunctuation",
-                Self::OpenPunctuation => "OpenPunctuation",
-                Self::CurrencySymbol => "CurrencySymbol",
-                Self::ModifierSymbol => "ModifierSymbol",
-                Self::MathSymbol => "MathSymbol",
-                Self::OtherSymbol => "OtherSymbol",
-                Self::LineSeparator => "LineSeparator",
-                Self::ParagraphSeparator => "ParagraphSeparator",
-                Self::SpaceSeparator => "SpaceSeparator",
-                _ => "Unknown",
-            }
-        )
-    }
 }
 
 #[doc(hidden)]
@@ -2407,6 +2156,60 @@ impl FromGlib<ffi::GUnicodeType> for UnicodeType {
     }
 }
 
+impl StaticType for UnicodeType {
+    #[inline]
+    #[doc(alias = "g_unicode_type_get_type")]
+    fn static_type() -> crate::Type {
+        unsafe { from_glib(ffi::g_unicode_type_get_type()) }
+    }
+}
+
+impl crate::HasParamSpec for UnicodeType {
+    type ParamSpec = crate::ParamSpecEnum;
+    type SetValue = Self;
+    type BuilderFn = fn(&str, Self) -> crate::ParamSpecEnumBuilder<Self>;
+
+    fn param_spec_builder() -> Self::BuilderFn {
+        Self::ParamSpec::builder_with_default
+    }
+}
+
+impl crate::value::ValueType for UnicodeType {
+    type Type = Self;
+}
+
+unsafe impl<'a> crate::value::FromValue<'a> for UnicodeType {
+    type Checker = crate::value::GenericValueTypeChecker<Self>;
+
+    #[inline]
+    unsafe fn from_value(value: &'a crate::Value) -> Self {
+        from_glib(crate::gobject_ffi::g_value_get_enum(value.to_glib_none().0))
+    }
+}
+
+impl ToValue for UnicodeType {
+    #[inline]
+    fn to_value(&self) -> crate::Value {
+        let mut value = crate::Value::for_value_type::<Self>();
+        unsafe {
+            crate::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, self.into_glib());
+        }
+        value
+    }
+
+    #[inline]
+    fn value_type(&self) -> crate::Type {
+        Self::static_type()
+    }
+}
+
+impl From<UnicodeType> for crate::Value {
+    #[inline]
+    fn from(v: UnicodeType) -> Self {
+        ToValue::to_value(&v)
+    }
+}
+
 #[cfg(feature = "v2_66")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
@@ -2435,30 +2238,6 @@ pub enum UriError {
     BadFragment,
     #[doc(hidden)]
     __Unknown(i32),
-}
-
-#[cfg(feature = "v2_66")]
-#[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
-impl fmt::Display for UriError {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(
-            f,
-            "UriError::{}",
-            match *self {
-                Self::Failed => "Failed",
-                Self::BadScheme => "BadScheme",
-                Self::BadUser => "BadUser",
-                Self::BadPassword => "BadPassword",
-                Self::BadAuthParams => "BadAuthParams",
-                Self::BadHost => "BadHost",
-                Self::BadPort => "BadPort",
-                Self::BadPath => "BadPath",
-                Self::BadQuery => "BadQuery",
-                Self::BadFragment => "BadFragment",
-                _ => "Unknown",
-            }
-        )
-    }
 }
 
 #[cfg(feature = "v2_66")]
@@ -2572,36 +2351,6 @@ pub enum VariantClass {
     DictEntry,
     #[doc(hidden)]
     __Unknown(i32),
-}
-
-impl fmt::Display for VariantClass {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(
-            f,
-            "VariantClass::{}",
-            match *self {
-                Self::Boolean => "Boolean",
-                Self::Byte => "Byte",
-                Self::Int16 => "Int16",
-                Self::Uint16 => "Uint16",
-                Self::Int32 => "Int32",
-                Self::Uint32 => "Uint32",
-                Self::Int64 => "Int64",
-                Self::Uint64 => "Uint64",
-                Self::Handle => "Handle",
-                Self::Double => "Double",
-                Self::String => "String",
-                Self::ObjectPath => "ObjectPath",
-                Self::Signature => "Signature",
-                Self::Variant => "Variant",
-                Self::Maybe => "Maybe",
-                Self::Array => "Array",
-                Self::Tuple => "Tuple",
-                Self::DictEntry => "DictEntry",
-                _ => "Unknown",
-            }
-        )
-    }
 }
 
 #[doc(hidden)]

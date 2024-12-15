@@ -2,9 +2,8 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{Matrix, Vec3, Vec4};
+use crate::{ffi, Matrix, Vec3, Vec4};
 use glib::translate::*;
-use std::mem;
 
 glib::wrapper! {
     pub struct Quaternion(BoxedInline<ffi::graphene_quaternion_t>);
@@ -103,7 +102,7 @@ impl Quaternion {
     #[doc(alias = "graphene_quaternion_to_angle_vec3")]
     pub fn to_angle_vec3(&self) -> (f32, Vec3) {
         unsafe {
-            let mut angle = mem::MaybeUninit::uninit();
+            let mut angle = std::mem::MaybeUninit::uninit();
             let mut axis = Vec3::uninitialized();
             ffi::graphene_quaternion_to_angle_vec3(
                 self.to_glib_none().0,
@@ -117,9 +116,9 @@ impl Quaternion {
     #[doc(alias = "graphene_quaternion_to_angles")]
     pub fn to_angles(&self) -> (f32, f32, f32) {
         unsafe {
-            let mut deg_x = mem::MaybeUninit::uninit();
-            let mut deg_y = mem::MaybeUninit::uninit();
-            let mut deg_z = mem::MaybeUninit::uninit();
+            let mut deg_x = std::mem::MaybeUninit::uninit();
+            let mut deg_y = std::mem::MaybeUninit::uninit();
+            let mut deg_z = std::mem::MaybeUninit::uninit();
             ffi::graphene_quaternion_to_angles(
                 self.to_glib_none().0,
                 deg_x.as_mut_ptr(),
@@ -146,9 +145,9 @@ impl Quaternion {
     #[doc(alias = "graphene_quaternion_to_radians")]
     pub fn to_radians(&self) -> (f32, f32, f32) {
         unsafe {
-            let mut rad_x = mem::MaybeUninit::uninit();
-            let mut rad_y = mem::MaybeUninit::uninit();
-            let mut rad_z = mem::MaybeUninit::uninit();
+            let mut rad_x = std::mem::MaybeUninit::uninit();
+            let mut rad_y = std::mem::MaybeUninit::uninit();
+            let mut rad_z = std::mem::MaybeUninit::uninit();
             ffi::graphene_quaternion_to_radians(
                 self.to_glib_none().0,
                 rad_x.as_mut_ptr(),

@@ -4,7 +4,7 @@ use std::{marker::PhantomData, mem, ptr};
 
 use glib::{translate::*, SList};
 
-use crate::{AttrType, Attribute, FontDescription, Language};
+use crate::{ffi, AttrType, Attribute, FontDescription, Language};
 
 #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct AttrIterator<'list> {
@@ -12,7 +12,7 @@ pub struct AttrIterator<'list> {
     list: PhantomData<&'list crate::AttrList>,
 }
 
-impl<'list> Clone for AttrIterator<'list> {
+impl Clone for AttrIterator<'_> {
     #[inline]
     fn clone(&self) -> Self {
         let ptr = unsafe {
@@ -25,7 +25,7 @@ impl<'list> Clone for AttrIterator<'list> {
     }
 }
 
-impl<'list> Drop for AttrIterator<'list> {
+impl Drop for AttrIterator<'_> {
     #[inline]
     fn drop(&mut self) {
         unsafe {
@@ -36,14 +36,14 @@ impl<'list> Drop for AttrIterator<'list> {
 
 #[cfg(feature = "v1_44")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
-impl<'list> glib::StaticType for AttrIterator<'list> {
+impl glib::prelude::StaticType for AttrIterator<'_> {
     #[inline]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::pango_attr_iterator_get_type()) }
     }
 }
 
-impl<'list> AttrIterator<'list> {
+impl AttrIterator<'_> {
     #[doc(alias = "pango_attr_iterator_get")]
     pub fn get(&self, type_: AttrType) -> Option<Attribute> {
         unsafe {
@@ -121,7 +121,7 @@ impl<'list> IntoIterator for AttrIterator<'list> {
 #[repr(transparent)]
 pub struct AttrIntoIter<'list>(Option<AttrIterator<'list>>);
 
-impl<'list> Iterator for AttrIntoIter<'list> {
+impl Iterator for AttrIntoIter<'_> {
     type Item = SList<Attribute>;
     #[inline]
     fn next(&mut self) -> Option<Self::Item> {
@@ -137,7 +137,7 @@ impl<'list> Iterator for AttrIntoIter<'list> {
     }
 }
 
-impl<'list> std::iter::FusedIterator for AttrIntoIter<'list> {}
+impl std::iter::FusedIterator for AttrIntoIter<'_> {}
 
 #[doc(hidden)]
 impl<'a, 'list> ToGlibPtr<'a, *const ffi::PangoAttrIterator> for AttrIterator<'list>
@@ -164,7 +164,7 @@ where
 }
 
 #[doc(hidden)]
-impl<'list> FromGlibPtrFull<*mut ffi::PangoAttrIterator> for AttrIterator<'list> {
+impl FromGlibPtrFull<*mut ffi::PangoAttrIterator> for AttrIterator<'_> {
     #[inline]
     unsafe fn from_glib_full(ptr: *mut ffi::PangoAttrIterator) -> Self {
         Self {

@@ -2,9 +2,8 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::Action;
+use crate::{ffi, Action};
 use glib::{prelude::*, translate::*};
-use std::fmt;
 
 glib::wrapper! {
     #[doc(alias = "GPropertyAction")]
@@ -30,11 +29,5 @@ impl PropertyAction {
     #[doc(alias = "invert-boolean")]
     pub fn inverts_boolean(&self) -> bool {
         ObjectExt::property(self, "invert-boolean")
-    }
-}
-
-impl fmt::Display for PropertyAction {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("PropertyAction")
     }
 }

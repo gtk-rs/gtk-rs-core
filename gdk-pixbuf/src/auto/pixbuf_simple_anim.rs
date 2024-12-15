@@ -2,13 +2,13 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{Pixbuf, PixbufAnimation};
+use crate::{ffi, Pixbuf, PixbufAnimation};
 use glib::{
     prelude::*,
     signal::{connect_raw, SignalHandlerId},
     translate::*,
 };
-use std::{boxed::Box as Box_, fmt, mem::transmute};
+use std::boxed::Box as Box_;
 
 glib::wrapper! {
     #[doc(alias = "GdkPixbufSimpleAnim")]
@@ -34,11 +34,13 @@ impl PixbufSimpleAnim {
 
     #[doc(alias = "gdk_pixbuf_simple_anim_get_loop")]
     #[doc(alias = "get_loop")]
+    #[doc(alias = "loop")]
     pub fn is_loop(&self) -> bool {
         unsafe { from_glib(ffi::gdk_pixbuf_simple_anim_get_loop(self.to_glib_none().0)) }
     }
 
     #[doc(alias = "gdk_pixbuf_simple_anim_set_loop")]
+    #[doc(alias = "loop")]
     pub fn set_loop(&self, loop_: bool) {
         unsafe {
             ffi::gdk_pixbuf_simple_anim_set_loop(self.to_glib_none().0, loop_.into_glib());
@@ -60,17 +62,11 @@ impl PixbufSimpleAnim {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::loop\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_loop_trampoline::<F> as *const (),
                 )),
                 Box_::into_raw(f),
             )
         }
-    }
-}
-
-impl fmt::Display for PixbufSimpleAnim {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("PixbufSimpleAnim")
     }
 }

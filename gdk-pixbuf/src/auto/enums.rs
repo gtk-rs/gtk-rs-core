@@ -2,8 +2,8 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
+use crate::ffi;
 use glib::{prelude::*, translate::*};
-use std::fmt;
 
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
@@ -13,19 +13,6 @@ pub enum Colorspace {
     Rgb,
     #[doc(hidden)]
     __Unknown(i32),
-}
-
-impl fmt::Display for Colorspace {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(
-            f,
-            "Colorspace::{}",
-            match *self {
-                Self::Rgb => "Rgb",
-                _ => "Unknown",
-            }
-        )
-    }
 }
 
 #[doc(hidden)]
@@ -54,6 +41,7 @@ impl FromGlib<ffi::GdkColorspace> for Colorspace {
 
 impl StaticType for Colorspace {
     #[inline]
+    #[doc(alias = "gdk_colorspace_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::gdk_colorspace_get_type()) }
     }
@@ -65,7 +53,7 @@ impl glib::HasParamSpec for Colorspace {
     type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+        Self::ParamSpec::builder_with_default
     }
 }
 
@@ -121,22 +109,6 @@ pub enum InterpType {
     __Unknown(i32),
 }
 
-impl fmt::Display for InterpType {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(
-            f,
-            "InterpType::{}",
-            match *self {
-                Self::Nearest => "Nearest",
-                Self::Tiles => "Tiles",
-                Self::Bilinear => "Bilinear",
-                Self::Hyper => "Hyper",
-                _ => "Unknown",
-            }
-        )
-    }
-}
-
 #[doc(hidden)]
 impl IntoGlib for InterpType {
     type GlibType = ffi::GdkInterpType;
@@ -169,6 +141,7 @@ impl FromGlib<ffi::GdkInterpType> for InterpType {
 
 impl StaticType for InterpType {
     #[inline]
+    #[doc(alias = "gdk_interp_type_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::gdk_interp_type_get_type()) }
     }
@@ -180,7 +153,7 @@ impl glib::HasParamSpec for InterpType {
     type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+        Self::ParamSpec::builder_with_default
     }
 }
 
@@ -234,21 +207,6 @@ pub enum PixbufAlphaMode {
 }
 
 #[allow(deprecated)]
-impl fmt::Display for PixbufAlphaMode {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(
-            f,
-            "PixbufAlphaMode::{}",
-            match *self {
-                Self::Bilevel => "Bilevel",
-                Self::Full => "Full",
-                _ => "Unknown",
-            }
-        )
-    }
-}
-
-#[allow(deprecated)]
 #[doc(hidden)]
 impl IntoGlib for PixbufAlphaMode {
     type GlibType = ffi::GdkPixbufAlphaMode;
@@ -279,6 +237,7 @@ impl FromGlib<ffi::GdkPixbufAlphaMode> for PixbufAlphaMode {
 #[allow(deprecated)]
 impl StaticType for PixbufAlphaMode {
     #[inline]
+    #[doc(alias = "gdk_pixbuf_alpha_mode_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::gdk_pixbuf_alpha_mode_get_type()) }
     }
@@ -291,7 +250,7 @@ impl glib::HasParamSpec for PixbufAlphaMode {
     type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+        Self::ParamSpec::builder_with_default
     }
 }
 
@@ -357,25 +316,6 @@ pub enum PixbufError {
     __Unknown(i32),
 }
 
-impl fmt::Display for PixbufError {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(
-            f,
-            "PixbufError::{}",
-            match *self {
-                Self::CorruptImage => "CorruptImage",
-                Self::InsufficientMemory => "InsufficientMemory",
-                Self::BadOption => "BadOption",
-                Self::UnknownType => "UnknownType",
-                Self::UnsupportedOperation => "UnsupportedOperation",
-                Self::Failed => "Failed",
-                Self::IncompleteAnimation => "IncompleteAnimation",
-                _ => "Unknown",
-            }
-        )
-    }
-}
-
 #[doc(hidden)]
 impl IntoGlib for PixbufError {
     type GlibType = ffi::GdkPixbufError;
@@ -435,6 +375,7 @@ impl glib::error::ErrorDomain for PixbufError {
 
 impl StaticType for PixbufError {
     #[inline]
+    #[doc(alias = "gdk_pixbuf_error_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::gdk_pixbuf_error_get_type()) }
     }
@@ -446,7 +387,7 @@ impl glib::HasParamSpec for PixbufError {
     type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+        Self::ParamSpec::builder_with_default
     }
 }
 
@@ -502,22 +443,6 @@ pub enum PixbufRotation {
     __Unknown(i32),
 }
 
-impl fmt::Display for PixbufRotation {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(
-            f,
-            "PixbufRotation::{}",
-            match *self {
-                Self::None => "None",
-                Self::Counterclockwise => "Counterclockwise",
-                Self::Upsidedown => "Upsidedown",
-                Self::Clockwise => "Clockwise",
-                _ => "Unknown",
-            }
-        )
-    }
-}
-
 #[doc(hidden)]
 impl IntoGlib for PixbufRotation {
     type GlibType = ffi::GdkPixbufRotation;
@@ -550,6 +475,7 @@ impl FromGlib<ffi::GdkPixbufRotation> for PixbufRotation {
 
 impl StaticType for PixbufRotation {
     #[inline]
+    #[doc(alias = "gdk_pixbuf_rotation_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::gdk_pixbuf_rotation_get_type()) }
     }
@@ -561,7 +487,7 @@ impl glib::HasParamSpec for PixbufRotation {
     type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+        Self::ParamSpec::builder_with_default
     }
 }
 

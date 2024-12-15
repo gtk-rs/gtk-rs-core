@@ -2,9 +2,8 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{MenuItem, MenuModel};
+use crate::{ffi, MenuItem, MenuModel};
 use glib::{prelude::*, translate::*};
-use std::fmt;
 
 glib::wrapper! {
     #[doc(alias = "GMenu")]
@@ -179,11 +178,5 @@ impl Menu {
 impl Default for Menu {
     fn default() -> Self {
         Self::new()
-    }
-}
-
-impl fmt::Display for Menu {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("Menu")
     }
 }

@@ -2,10 +2,10 @@
 
 use std::{future::Future, io::Read, mem, path::Path, pin::Pin, ptr, slice};
 
-use glib::{object::IsA, translate::*, Error};
+use glib::{prelude::*, translate::*, Error};
 use libc::{c_uchar, c_void};
 
-use crate::{Colorspace, Pixbuf, PixbufFormat};
+use crate::{ffi, Colorspace, Pixbuf, PixbufFormat};
 
 impl Pixbuf {
     #[doc(alias = "gdk_pixbuf_new_from_data")]

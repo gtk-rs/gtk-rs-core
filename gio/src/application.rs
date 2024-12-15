@@ -9,14 +9,9 @@ use glib::{
     ExitCode, GString,
 };
 
-use crate::{Application, File};
+use crate::{ffi, Application, File};
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::Application>> Sealed for T {}
-}
-
-pub trait ApplicationExtManual: sealed::Sealed + IsA<Application> {
+pub trait ApplicationExtManual: IsA<Application> {
     #[doc(alias = "g_application_run")]
     fn run(&self) -> ExitCode {
         self.run_with_args(&std::env::args().collect::<Vec<_>>())
@@ -53,7 +48,7 @@ pub trait ApplicationExtManual: sealed::Sealed + IsA<Application> {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"open\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(transmute::<*const (), unsafe extern "C" fn()>(
                     open_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),

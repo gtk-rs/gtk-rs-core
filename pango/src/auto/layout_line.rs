@@ -5,9 +5,8 @@
 #[cfg(feature = "v1_50")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
 use crate::Direction;
-use crate::Rectangle;
+use crate::{ffi, Rectangle};
 use glib::translate::*;
-use std::{mem, ptr};
 
 glib::wrapper! {
     #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
@@ -42,7 +41,7 @@ impl LayoutLine {
     #[doc(alias = "get_height")]
     pub fn height(&self) -> i32 {
         unsafe {
-            let mut height = mem::MaybeUninit::uninit();
+            let mut height = std::mem::MaybeUninit::uninit();
             ffi::pango_layout_line_get_height(self.to_glib_none().0, height.as_mut_ptr());
             height.assume_init()
         }
@@ -91,27 +90,10 @@ impl LayoutLine {
         unsafe { ffi::pango_layout_line_get_start_index(self.to_glib_none().0) }
     }
 
-    #[doc(alias = "pango_layout_line_get_x_ranges")]
-    #[doc(alias = "get_x_ranges")]
-    pub fn x_ranges(&self, start_index: i32, end_index: i32) -> Vec<i32> {
-        unsafe {
-            let mut ranges = ptr::null_mut();
-            let mut n_ranges = mem::MaybeUninit::uninit();
-            ffi::pango_layout_line_get_x_ranges(
-                self.to_glib_none().0,
-                start_index,
-                end_index,
-                &mut ranges,
-                n_ranges.as_mut_ptr(),
-            );
-            FromGlibContainer::from_glib_full_num(ranges, n_ranges.assume_init() as _)
-        }
-    }
-
     #[doc(alias = "pango_layout_line_index_to_x")]
     pub fn index_to_x(&self, index_: i32, trailing: bool) -> i32 {
         unsafe {
-            let mut x_pos = mem::MaybeUninit::uninit();
+            let mut x_pos = std::mem::MaybeUninit::uninit();
             ffi::pango_layout_line_index_to_x(
                 self.to_glib_none().0,
                 index_,

@@ -2,7 +2,7 @@
 
 use std::{fmt, num::NonZeroU32};
 
-use crate::{translate::*, GStr, IntoGStr};
+use crate::{ffi, translate::*, GStr};
 
 #[derive(Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[repr(transparent)]
@@ -12,8 +12,14 @@ pub struct Quark(NonZeroU32);
 impl Quark {
     #[doc(alias = "g_quark_from_string")]
     #[allow(clippy::should_implement_trait)]
-    pub fn from_str(s: impl IntoGStr) -> Quark {
+    pub fn from_str(s: impl IntoGStr) -> Self {
         unsafe { s.run_with_gstr(|s| from_glib(ffi::g_quark_from_string(s.as_ptr()))) }
+    }
+
+    #[doc(alias = "g_quark_from_static_string")]
+    #[allow(clippy::should_implement_trait)]
+    pub fn from_static_str(s: &'static GStr) -> Self {
+        unsafe { from_glib(ffi::g_quark_from_static_string(s.as_ptr())) }
     }
 
     #[allow(clippy::trivially_copy_pass_by_ref)]
@@ -23,7 +29,7 @@ impl Quark {
     }
 
     #[doc(alias = "g_quark_try_string")]
-    pub fn try_from_str(s: &str) -> Option<Quark> {
+    pub fn try_from_str(s: &str) -> Option<Self> {
         unsafe { Self::try_from_glib(ffi::g_quark_try_string(s.to_glib_none().0)).ok() }
     }
 }

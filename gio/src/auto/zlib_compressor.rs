@@ -2,13 +2,13 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{Converter, FileInfo, ZlibCompressorFormat};
+use crate::{ffi, Converter, FileInfo, ZlibCompressorFormat};
 use glib::{
     prelude::*,
     signal::{connect_raw, SignalHandlerId},
     translate::*,
 };
-use std::{boxed::Box as Box_, fmt, mem::transmute};
+use std::boxed::Box as Box_;
 
 glib::wrapper! {
     #[doc(alias = "GZlibCompressor")]
@@ -27,11 +27,13 @@ impl ZlibCompressor {
 
     #[doc(alias = "g_zlib_compressor_get_file_info")]
     #[doc(alias = "get_file_info")]
+    #[doc(alias = "file-info")]
     pub fn file_info(&self) -> Option<FileInfo> {
         unsafe { from_glib_none(ffi::g_zlib_compressor_get_file_info(self.to_glib_none().0)) }
     }
 
     #[doc(alias = "g_zlib_compressor_set_file_info")]
+    #[doc(alias = "file-info")]
     pub fn set_file_info(&self, file_info: Option<&FileInfo>) {
         unsafe {
             ffi::g_zlib_compressor_set_file_info(self.to_glib_none().0, file_info.to_glib_none().0);
@@ -61,17 +63,11 @@ impl ZlibCompressor {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::file-info\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_file_info_trampoline::<F> as *const (),
                 )),
                 Box_::into_raw(f),
             )
         }
-    }
-}
-
-impl fmt::Display for ZlibCompressor {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("ZlibCompressor")
     }
 }

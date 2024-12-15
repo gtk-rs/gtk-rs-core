@@ -2,9 +2,8 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::Cancellable;
+use crate::{ffi, Cancellable};
 use glib::{prelude::*, translate::*};
-use std::{fmt, ptr};
 
 glib::wrapper! {
     #[doc(alias = "GInitable")]
@@ -19,15 +18,10 @@ impl Initable {
     pub const NONE: Option<&'static Initable> = None;
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::Initable>> Sealed for T {}
-}
-
-pub trait InitableExt: IsA<Initable> + sealed::Sealed + 'static {
+pub trait InitableExt: IsA<Initable> + 'static {
     #[doc(alias = "g_initable_init")]
     unsafe fn init(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<(), glib::Error> {
-        let mut error = ptr::null_mut();
+        let mut error = std::ptr::null_mut();
         let is_ok = ffi::g_initable_init(
             self.as_ref().to_glib_none().0,
             cancellable.map(|p| p.as_ref()).to_glib_none().0,
@@ -43,9 +37,3 @@ pub trait InitableExt: IsA<Initable> + sealed::Sealed + 'static {
 }
 
 impl<O: IsA<Initable>> InitableExt for O {}
-
-impl fmt::Display for Initable {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("Initable")
-    }
-}

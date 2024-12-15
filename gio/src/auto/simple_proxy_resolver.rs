@@ -2,13 +2,13 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::ProxyResolver;
+use crate::{ffi, ProxyResolver};
 use glib::{
     prelude::*,
     signal::{connect_raw, SignalHandlerId},
     translate::*,
 };
-use std::{boxed::Box as Box_, fmt, mem::transmute};
+use std::boxed::Box as Box_;
 
 glib::wrapper! {
     #[doc(alias = "GSimpleProxyResolver")]
@@ -23,13 +23,9 @@ impl SimpleProxyResolver {
     pub const NONE: Option<&'static SimpleProxyResolver> = None;
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::SimpleProxyResolver>> Sealed for T {}
-}
-
-pub trait SimpleProxyResolverExt: IsA<SimpleProxyResolver> + sealed::Sealed + 'static {
+pub trait SimpleProxyResolverExt: IsA<SimpleProxyResolver> + 'static {
     #[doc(alias = "g_simple_proxy_resolver_set_default_proxy")]
+    #[doc(alias = "default-proxy")]
     fn set_default_proxy(&self, default_proxy: Option<&str>) {
         unsafe {
             ffi::g_simple_proxy_resolver_set_default_proxy(
@@ -78,7 +74,7 @@ pub trait SimpleProxyResolverExt: IsA<SimpleProxyResolver> + sealed::Sealed + 's
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::default-proxy\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_default_proxy_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -104,7 +100,7 @@ pub trait SimpleProxyResolverExt: IsA<SimpleProxyResolver> + sealed::Sealed + 's
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::ignore-hosts\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_ignore_hosts_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -114,9 +110,3 @@ pub trait SimpleProxyResolverExt: IsA<SimpleProxyResolver> + sealed::Sealed + 's
 }
 
 impl<O: IsA<SimpleProxyResolver>> SimpleProxyResolverExt for O {}
-
-impl fmt::Display for SimpleProxyResolver {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("SimpleProxyResolver")
-    }
-}

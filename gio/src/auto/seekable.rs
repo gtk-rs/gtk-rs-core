@@ -2,9 +2,8 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::Cancellable;
+use crate::{ffi, Cancellable};
 use glib::{prelude::*, translate::*};
-use std::{fmt, ptr};
 
 glib::wrapper! {
     #[doc(alias = "GSeekable")]
@@ -19,12 +18,7 @@ impl Seekable {
     pub const NONE: Option<&'static Seekable> = None;
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::Seekable>> Sealed for T {}
-}
-
-pub trait SeekableExt: IsA<Seekable> + sealed::Sealed + 'static {
+pub trait SeekableExt: IsA<Seekable> + 'static {
     #[doc(alias = "g_seekable_can_seek")]
     fn can_seek(&self) -> bool {
         unsafe { from_glib(ffi::g_seekable_can_seek(self.as_ref().to_glib_none().0)) }
@@ -43,7 +37,7 @@ pub trait SeekableExt: IsA<Seekable> + sealed::Sealed + 'static {
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<(), glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_seekable_seek(
                 self.as_ref().to_glib_none().0,
                 offset,
@@ -72,7 +66,7 @@ pub trait SeekableExt: IsA<Seekable> + sealed::Sealed + 'static {
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<(), glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_seekable_truncate(
                 self.as_ref().to_glib_none().0,
                 offset,
@@ -90,9 +84,3 @@ pub trait SeekableExt: IsA<Seekable> + sealed::Sealed + 'static {
 }
 
 impl<O: IsA<Seekable>> SeekableExt for O {}
-
-impl fmt::Display for Seekable {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("Seekable")
-    }
-}

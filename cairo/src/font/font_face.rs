@@ -11,7 +11,7 @@ use glib::translate::*;
 
 #[cfg(feature = "freetype")]
 use crate::FtSynthesize;
-use crate::{utils::status_to_result, Error, FontSlant, FontType, FontWeight};
+use crate::{ffi, utils::status_to_result, Error, FontSlant, FontType, FontWeight};
 
 #[cfg(feature = "freetype")]
 static FT_FACE_KEY: crate::UserDataKey<freetype::face::Face> = crate::UserDataKey::new();

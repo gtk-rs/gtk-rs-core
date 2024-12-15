@@ -2,12 +2,8 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::ListModel;
+use crate::{ffi, ListModel};
 use glib::{prelude::*, translate::*};
-use std::fmt;
-#[cfg(feature = "v2_64")]
-#[cfg_attr(docsrs, doc(cfg(feature = "v2_64")))]
-use std::mem;
 
 glib::wrapper! {
     #[doc(alias = "GListStore")]
@@ -39,7 +35,7 @@ impl ListStore {
     #[doc(alias = "g_list_store_find")]
     pub fn find(&self, item: &impl IsA<glib::Object>) -> Option<u32> {
         unsafe {
-            let mut position = mem::MaybeUninit::uninit();
+            let mut position = std::mem::MaybeUninit::uninit();
             let ret = from_glib(ffi::g_list_store_find(
                 self.to_glib_none().0,
                 item.as_ref().to_glib_none().0,
@@ -106,11 +102,5 @@ impl ListStoreBuilder {
     #[must_use = "Building the object from the builder is usually expensive and is not expected to have side effects"]
     pub fn build(self) -> ListStore {
         self.builder.build()
-    }
-}
-
-impl fmt::Display for ListStore {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("ListStore")
     }
 }

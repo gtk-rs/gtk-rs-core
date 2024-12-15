@@ -1,15 +1,16 @@
 [package]
 name = "cairo-sys-rs"
-license = "MIT"
-authors = ["The gtk-rs Project Developers"]
-homepage = "https://gtk-rs.org/"
 description = "FFI bindings to libcairo"
-version = "0.19.0"
 keywords = ["cairo", "ffi", "gtk-rs", "gnome"]
-repository = "https://github.com/gtk-rs/gtk-rs-core"
 build = "build.rs"
-edition = "2021"
-rust-version = "1.70"
+authors.workspace = true
+edition.workspace = true
+exclude.workspace = true
+homepage.workspace = true
+license.workspace = true
+repository.workspace = true
+rust-version.workspace = true
+version.workspace = true
 
 [package.metadata.system-deps.cairo]
 name = "cairo"
@@ -19,7 +20,7 @@ version = "1.14"
 version = "1.16"
 
 [package.metadata.system-deps.cairo.v1_18]
-version = "1.17"
+version = "1.18"
 
 [package.metadata.system-deps."cairo-gobject"]
 name = "cairo-gobject"
@@ -30,7 +31,7 @@ feature = "use_glib"
 version = "1.16"
 
 [package.metadata.system-deps."cairo-gobject".v1_18]
-version = "1.17"
+version = "1.18"
 
 [lib]
 name = "cairo_sys"
@@ -46,16 +47,15 @@ ps = []
 freetype = []
 script = []
 xcb = []
-use_glib = ["glib"]
-win32-surface = ["winapi"]
+use_glib = ["glib-sys"]
+win32-surface = ["windows-sys"]
 
 [dependencies]
 libc = "0.2"
 
-[dependencies.glib]
-package = "glib-sys"
+[dependencies.glib-sys]
 optional = true
-path = "../../glib/sys"
+workspace = true
 
 [dependencies.x11]
 optional = true
@@ -63,13 +63,12 @@ version = "2.16"
 features = ["xlib"]
 
 [target.'cfg(windows)'.dependencies]
-winapi = { version = "0.3.2", features = ["windef"], optional = true }
+windows-sys = { version = "0.59", features = ["Win32_Graphics_Gdi"], optional = true }
 
 [build-dependencies]
-system-deps = "6"
+system-deps = "7"
 
 [package.metadata.docs.rs]
 all-features = true
 rustc-args = ["--cfg", "docsrs"]
-rustdoc-args = ["--cfg", "docsrs"]
-features = []
+rustdoc-args = ["--cfg", "docsrs", "--generate-link-to-definition"]

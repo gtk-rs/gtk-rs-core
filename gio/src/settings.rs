@@ -1,8 +1,8 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use glib::{prelude::*, translate::*, variant::FromVariant, BoolError, IntoStrV, StrV, Variant};
+use glib::{prelude::*, translate::*, BoolError, StrV, Variant};
 
-use crate::{prelude::*, Settings, SettingsBindFlags};
+use crate::{ffi, prelude::*, Settings, SettingsBindFlags};
 
 #[must_use = "The builder must be built to be used"]
 pub struct BindingBuilder<'a> {
@@ -17,7 +17,7 @@ pub struct BindingBuilder<'a> {
     set_mapping: Option<Box<dyn Fn(&glib::Value, glib::VariantType) -> Option<glib::Variant>>>,
 }
 
-impl<'a> BindingBuilder<'a> {
+impl BindingBuilder<'_> {
     pub fn flags(mut self, flags: SettingsBindFlags) -> Self {
         self.flags = flags;
         self
@@ -167,12 +167,7 @@ impl<'a> BindingBuilder<'a> {
     }
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::Settings>> Sealed for T {}
-}
-
-pub trait SettingsExtManual: sealed::Sealed + IsA<Settings> {
+pub trait SettingsExtManual: IsA<Settings> {
     fn get<U: FromVariant>(&self, key: &str) -> U {
         let val = self.value(key);
         FromVariant::from_variant(&val).unwrap_or_else(|| {

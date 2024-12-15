@@ -2,9 +2,8 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::SocketConnectable;
+use crate::{ffi, SocketConnectable};
 use glib::{prelude::*, translate::*};
-use std::{fmt, ptr};
 
 glib::wrapper! {
     #[doc(alias = "GNetworkAddress")]
@@ -31,7 +30,7 @@ impl NetworkAddress {
     #[doc(alias = "g_network_address_parse")]
     pub fn parse(host_and_port: &str, default_port: u16) -> Result<NetworkAddress, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_network_address_parse(
                 host_and_port.to_glib_none().0,
                 default_port,
@@ -48,7 +47,7 @@ impl NetworkAddress {
     #[doc(alias = "g_network_address_parse_uri")]
     pub fn parse_uri(uri: &str, default_port: u16) -> Result<NetworkAddress, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret =
                 ffi::g_network_address_parse_uri(uri.to_glib_none().0, default_port, &mut error);
             if error.is_null() {
@@ -63,12 +62,7 @@ impl NetworkAddress {
 unsafe impl Send for NetworkAddress {}
 unsafe impl Sync for NetworkAddress {}
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::NetworkAddress>> Sealed for T {}
-}
-
-pub trait NetworkAddressExt: IsA<NetworkAddress> + sealed::Sealed + 'static {
+pub trait NetworkAddressExt: IsA<NetworkAddress> + 'static {
     #[doc(alias = "g_network_address_get_hostname")]
     #[doc(alias = "get_hostname")]
     fn hostname(&self) -> glib::GString {
@@ -97,9 +91,3 @@ pub trait NetworkAddressExt: IsA<NetworkAddress> + sealed::Sealed + 'static {
 }
 
 impl<O: IsA<NetworkAddress>> NetworkAddressExt for O {}
-
-impl fmt::Display for NetworkAddress {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("NetworkAddress")
-    }
-}

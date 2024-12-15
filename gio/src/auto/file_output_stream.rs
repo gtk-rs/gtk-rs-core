@@ -2,9 +2,9 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{AsyncResult, Cancellable, FileInfo, OutputStream, Seekable};
+use crate::{ffi, AsyncResult, Cancellable, FileInfo, OutputStream, Seekable};
 use glib::{prelude::*, translate::*};
-use std::{boxed::Box as Box_, fmt, pin::Pin, ptr};
+use std::{boxed::Box as Box_, pin::Pin};
 
 glib::wrapper! {
     #[doc(alias = "GFileOutputStream")]
@@ -19,12 +19,7 @@ impl FileOutputStream {
     pub const NONE: Option<&'static FileOutputStream> = None;
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::FileOutputStream>> Sealed for T {}
-}
-
-pub trait FileOutputStreamExt: IsA<FileOutputStream> + sealed::Sealed + 'static {
+pub trait FileOutputStreamExt: IsA<FileOutputStream> + 'static {
     #[doc(alias = "g_file_output_stream_get_etag")]
     #[doc(alias = "get_etag")]
     fn etag(&self) -> Option<glib::GString> {
@@ -42,7 +37,7 @@ pub trait FileOutputStreamExt: IsA<FileOutputStream> + sealed::Sealed + 'static 
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<FileInfo, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_file_output_stream_query_info(
                 self.as_ref().to_glib_none().0,
                 attributes.to_glib_none().0,
@@ -84,7 +79,7 @@ pub trait FileOutputStreamExt: IsA<FileOutputStream> + sealed::Sealed + 'static 
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_file_output_stream_query_info_finish(
                 _source_object as *mut _,
                 res,
@@ -131,9 +126,3 @@ pub trait FileOutputStreamExt: IsA<FileOutputStream> + sealed::Sealed + 'static 
 }
 
 impl<O: IsA<FileOutputStream>> FileOutputStreamExt for O {}
-
-impl fmt::Display for FileOutputStream {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("FileOutputStream")
-    }
-}

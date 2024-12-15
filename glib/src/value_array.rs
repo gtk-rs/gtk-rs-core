@@ -3,12 +3,8 @@
 use std::{cmp::Ordering, ops, slice};
 
 use crate::{
-    prelude::*,
-    translate::*,
-    value::{
-        FromValue, GenericValueTypeOrNoneChecker, ToValueOptional, ValueType, ValueTypeOptional,
-    },
-    HasParamSpec, ParamSpecValueArray, ParamSpecValueArrayBuilder, Type, Value,
+    ffi, gobject_ffi, prelude::*, translate::*, ParamSpecValueArray, ParamSpecValueArrayBuilder,
+    Type, Value,
 };
 
 wrapper! {
@@ -23,17 +19,28 @@ wrapper! {
 }
 
 impl ValueArray {
-    #[doc(alias = "g_value_array_new")]
-    pub fn new(n_prealloced: u32) -> ValueArray {
-        unsafe { from_glib_full(gobject_ffi::g_value_array_new(n_prealloced)) }
+    #[inline]
+    pub fn new(values: impl IntoIterator<Item = impl ToValue>) -> Self {
+        let iter = values.into_iter();
+        let mut array = Self::with_capacity(iter.size_hint().0);
+        for v in iter {
+            array.append(v.to_value());
+        }
+
+        array
     }
 
-    #[doc(alias = "g_value_array_append")]
-    pub fn append(&mut self, value: &Value) {
-        let value = value.to_glib_none();
-        unsafe {
-            gobject_ffi::g_value_array_append(self.to_glib_none_mut().0, value.0);
-        }
+    #[inline]
+    pub fn from_values(values: impl IntoIterator<Item = Value>) -> Self {
+        Self::new(values)
+    }
+
+    #[doc(alias = "g_value_array_new")]
+    #[inline]
+    pub fn with_capacity(capacity: usize) -> ValueArray {
+        assert!(capacity <= u32::MAX as usize);
+
+        unsafe { from_glib_full(gobject_ffi::g_value_array_new(capacity as u32)) }
     }
 
     #[inline]
@@ -46,37 +53,61 @@ impl ValueArray {
         self.inner.n_values as usize
     }
 
-    #[doc(alias = "get_nth")]
-    #[doc(alias = "g_value_array_get_nth")]
-    pub fn nth(&self, index_: u32) -> Option<Value> {
+    #[doc(alias = "g_value_array_append")]
+    #[inline]
+    pub fn append(&mut self, value: impl ToValue) {
+        self.append_value(&value.to_value());
+    }
+
+    #[doc(alias = "g_value_array_append")]
+    #[inline]
+    pub fn append_value(&mut self, value: &Value) {
         unsafe {
-            from_glib_none(gobject_ffi::g_value_array_get_nth(
-                mut_override(self.to_glib_none().0),
-                index_,
-            ))
+            gobject_ffi::g_value_array_append(self.to_glib_none_mut().0, value.to_glib_none().0);
         }
     }
 
     #[doc(alias = "g_value_array_insert")]
-    pub fn insert(&mut self, index_: u32, value: &Value) {
-        let value = value.to_glib_none();
+    #[inline]
+    pub fn insert(&mut self, index_: usize, value: impl ToValue) {
+        self.insert_value(index_, &value.to_value());
+    }
+
+    #[doc(alias = "g_value_array_insert")]
+    #[inline]
+    pub fn insert_value(&mut self, index_: usize, value: &Value) {
+        assert!(index_ <= self.len());
+
         unsafe {
-            gobject_ffi::g_value_array_insert(self.to_glib_none_mut().0, index_, value.0);
+            gobject_ffi::g_value_array_insert(
+                self.to_glib_none_mut().0,
+                index_ as u32,
+                value.to_glib_none().0,
+            );
         }
     }
 
     #[doc(alias = "g_value_array_prepend")]
-    pub fn prepend(&mut self, value: &Value) {
-        let value = value.to_glib_none();
+    #[inline]
+    pub fn prepend(&mut self, value: impl ToValue) {
+        self.prepend_value(&value.to_value());
+    }
+
+    #[doc(alias = "g_value_array_prepend")]
+    #[inline]
+    pub fn prepend_value(&mut self, value: &Value) {
         unsafe {
-            gobject_ffi::g_value_array_prepend(self.to_glib_none_mut().0, value.0);
+            gobject_ffi::g_value_array_prepend(self.to_glib_none_mut().0, value.to_glib_none().0);
         }
     }
 
     #[doc(alias = "g_value_array_remove")]
-    pub fn remove(&mut self, index_: u32) {
+    #[inline]
+    pub fn remove(&mut self, index_: usize) {
+        assert!(index_ < self.len());
+
         unsafe {
-            gobject_ffi::g_value_array_remove(self.to_glib_none_mut().0, index_);
+            gobject_ffi::g_value_array_remove(self.to_glib_none_mut().0, index_ as u32);
         }
     }
 
@@ -107,13 +138,9 @@ impl ValueArray {
             );
         }
     }
-}
-
-impl ops::Deref for ValueArray {
-    type Target = [Value];
 
     #[inline]
-    fn deref(&self) -> &[Value] {
+    pub fn as_slice(&self) -> &[Value] {
         if self.is_empty() {
             return &[];
         }
@@ -125,11 +152,9 @@ impl ops::Deref for ValueArray {
             )
         }
     }
-}
 
-impl ops::DerefMut for ValueArray {
     #[inline]
-    fn deref_mut(&mut self) -> &mut [Value] {
+    pub fn as_mut_slice(&mut self) -> &mut [Value] {
         if self.is_empty() {
             return &mut [];
         }
@@ -139,6 +164,42 @@ impl ops::DerefMut for ValueArray {
                 (*self.as_ptr()).values as *mut Value,
                 (*self.as_ptr()).n_values as usize,
             )
+        }
+    }
+}
+
+impl ops::Deref for ValueArray {
+    type Target = [Value];
+
+    #[inline]
+    fn deref(&self) -> &[Value] {
+        self.as_slice()
+    }
+}
+
+impl ops::DerefMut for ValueArray {
+    #[inline]
+    fn deref_mut(&mut self) -> &mut [Value] {
+        self.as_mut_slice()
+    }
+}
+
+impl Default for ValueArray {
+    fn default() -> Self {
+        Self::with_capacity(8)
+    }
+}
+
+impl std::iter::FromIterator<Value> for ValueArray {
+    fn from_iter<T: IntoIterator<Item = Value>>(iter: T) -> Self {
+        Self::from_values(iter)
+    }
+}
+
+impl std::iter::Extend<Value> for ValueArray {
+    fn extend<T: IntoIterator<Item = Value>>(&mut self, iter: T) {
+        for v in iter.into_iter() {
+            self.append_value(&v);
         }
     }
 }
@@ -157,11 +218,11 @@ impl ValueType for ValueArray {
 }
 
 #[doc(hidden)]
-impl ValueTypeOptional for ValueArray {}
+impl crate::value::ValueTypeOptional for ValueArray {}
 
 #[doc(hidden)]
-unsafe impl<'a> FromValue<'a> for ValueArray {
-    type Checker = GenericValueTypeOrNoneChecker<Self>;
+unsafe impl<'a> crate::value::FromValue<'a> for ValueArray {
+    type Checker = crate::value::GenericValueTypeOrNoneChecker<Self>;
 
     #[inline]
     unsafe fn from_value(value: &'a Value) -> Self {
@@ -172,8 +233,8 @@ unsafe impl<'a> FromValue<'a> for ValueArray {
 }
 
 #[doc(hidden)]
-unsafe impl<'a> FromValue<'a> for &'a ValueArray {
-    type Checker = GenericValueTypeOrNoneChecker<Self>;
+unsafe impl<'a> crate::value::FromValue<'a> for &'a ValueArray {
+    type Checker = crate::value::GenericValueTypeOrNoneChecker<Self>;
 
     #[inline]
     unsafe fn from_value(value: &'a Value) -> Self {
@@ -184,8 +245,8 @@ unsafe impl<'a> FromValue<'a> for &'a ValueArray {
         let value = &*(value as *const Value as *const gobject_ffi::GValue);
         debug_assert!(!value.data[0].v_pointer.is_null());
         <ValueArray>::from_glib_ptr_borrow(
-            &value.data[0].v_pointer as *const ffi::gpointer
-                as *const *const gobject_ffi::GValueArray,
+            &*(&value.data[0].v_pointer as *const ffi::gpointer
+                as *const *mut gobject_ffi::GValueArray),
         )
     }
 }
@@ -225,7 +286,7 @@ impl std::convert::From<ValueArray> for Value {
 }
 
 #[doc(hidden)]
-impl ToValueOptional for ValueArray {
+impl crate::value::ToValueOptional for ValueArray {
     #[inline]
     fn to_value_optional(s: Option<&Self>) -> Value {
         let mut value = Value::for_value_type::<Self>();
@@ -247,5 +308,38 @@ impl HasParamSpec for ValueArray {
 
     fn param_spec_builder() -> Self::BuilderFn {
         Self::ParamSpec::builder
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_new() {
+        let arr = ValueArray::new(["123", "456"]);
+        assert_eq!(
+            arr.first().and_then(|v| v.get::<String>().ok()),
+            Some(String::from("123"))
+        );
+        assert_eq!(
+            arr.get(1).and_then(|v| v.get::<String>().ok()),
+            Some(String::from("456"))
+        );
+    }
+
+    #[test]
+    fn test_append() {
+        let mut arr = ValueArray::default();
+        arr.append("123");
+        arr.append(123u32);
+        arr.append_value(&Value::from(456u64));
+
+        assert_eq!(
+            arr.first().and_then(|v| v.get::<String>().ok()),
+            Some(String::from("123"))
+        );
+        assert_eq!(arr.get(1).and_then(|v| v.get::<u32>().ok()), Some(123));
+        assert_eq!(arr.get(2).and_then(|v| v.get::<u64>().ok()), Some(456));
     }
 }

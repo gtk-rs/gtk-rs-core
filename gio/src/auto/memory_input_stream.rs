@@ -2,9 +2,8 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{InputStream, PollableInputStream, Seekable};
+use crate::{ffi, InputStream, PollableInputStream, Seekable};
 use glib::{prelude::*, translate::*};
-use std::fmt;
 
 glib::wrapper! {
     #[doc(alias = "GMemoryInputStream")]
@@ -41,12 +40,7 @@ impl Default for MemoryInputStream {
     }
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::MemoryInputStream>> Sealed for T {}
-}
-
-pub trait MemoryInputStreamExt: IsA<MemoryInputStream> + sealed::Sealed + 'static {
+pub trait MemoryInputStreamExt: IsA<MemoryInputStream> + 'static {
     #[doc(alias = "g_memory_input_stream_add_bytes")]
     fn add_bytes(&self, bytes: &glib::Bytes) {
         unsafe {
@@ -59,9 +53,3 @@ pub trait MemoryInputStreamExt: IsA<MemoryInputStream> + sealed::Sealed + 'stati
 }
 
 impl<O: IsA<MemoryInputStream>> MemoryInputStreamExt for O {}
-
-impl fmt::Display for MemoryInputStream {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("MemoryInputStream")
-    }
-}

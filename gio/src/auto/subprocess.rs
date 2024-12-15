@@ -2,9 +2,9 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{AsyncResult, Cancellable, Initable, InputStream, OutputStream, SubprocessFlags};
+use crate::{ffi, AsyncResult, Cancellable, Initable, InputStream, OutputStream, SubprocessFlags};
 use glib::{prelude::*, translate::*};
-use std::{boxed::Box as Box_, fmt, pin::Pin, ptr};
+use std::{boxed::Box as Box_, pin::Pin};
 
 glib::wrapper! {
     #[doc(alias = "GSubprocess")]
@@ -27,7 +27,7 @@ impl Subprocess {
         flags: SubprocessFlags,
     ) -> Result<Subprocess, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_subprocess_newv(argv.to_glib_none().0, flags.into_glib(), &mut error);
             if error.is_null() {
                 Ok(from_glib_full(ret))
@@ -44,9 +44,9 @@ impl Subprocess {
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<(Option<glib::Bytes>, Option<glib::Bytes>), glib::Error> {
         unsafe {
-            let mut stdout_buf = ptr::null_mut();
-            let mut stderr_buf = ptr::null_mut();
-            let mut error = ptr::null_mut();
+            let mut stdout_buf = std::ptr::null_mut();
+            let mut stderr_buf = std::ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_subprocess_communicate(
                 self.to_glib_none().0,
                 stdin_buf.to_glib_none().0,
@@ -92,9 +92,9 @@ impl Subprocess {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
-            let mut stdout_buf = ptr::null_mut();
-            let mut stderr_buf = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
+            let mut stdout_buf = std::ptr::null_mut();
+            let mut stderr_buf = std::ptr::null_mut();
             let _ = ffi::g_subprocess_communicate_finish(
                 _source_object as *mut _,
                 res,
@@ -156,9 +156,9 @@ impl Subprocess {
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<(Option<glib::GString>, Option<glib::GString>), glib::Error> {
         unsafe {
-            let mut stdout_buf = ptr::null_mut();
-            let mut stderr_buf = ptr::null_mut();
-            let mut error = ptr::null_mut();
+            let mut stdout_buf = std::ptr::null_mut();
+            let mut stderr_buf = std::ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_subprocess_communicate_utf8(
                 self.to_glib_none().0,
                 stdin_buf.to_glib_none().0,
@@ -255,7 +255,7 @@ impl Subprocess {
     #[doc(alias = "g_subprocess_wait")]
     pub fn wait(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<(), glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_subprocess_wait(
                 self.to_glib_none().0,
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
@@ -293,7 +293,7 @@ impl Subprocess {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let _ = ffi::g_subprocess_wait_finish(_source_object as *mut _, res, &mut error);
             let result = if error.is_null() {
                 Ok(())
@@ -335,7 +335,7 @@ impl Subprocess {
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<(), glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_subprocess_wait_check(
                 self.to_glib_none().0,
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
@@ -375,7 +375,7 @@ impl Subprocess {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let _ = ffi::g_subprocess_wait_check_finish(_source_object as *mut _, res, &mut error);
             let result = if error.is_null() {
                 Ok(())
@@ -409,11 +409,5 @@ impl Subprocess {
                 });
             },
         ))
-    }
-}
-
-impl fmt::Display for Subprocess {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("Subprocess")
     }
 }

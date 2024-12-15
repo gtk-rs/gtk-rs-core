@@ -1,19 +1,14 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use std::{future::Future, io, mem, pin::Pin, ptr};
+use std::{fmt, future::Future, io, mem, pin::Pin, ptr};
 
 use futures_core::task::{Context, Poll};
 use futures_io::{AsyncBufRead, AsyncRead};
 use glib::{prelude::*, translate::*, Priority};
 
-use crate::{error::to_std_io_result, prelude::*, Cancellable, InputStream, Seekable};
+use crate::{error::to_std_io_result, ffi, prelude::*, Cancellable, InputStream, Seekable};
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::InputStream>> Sealed for T {}
-}
-
-pub trait InputStreamExtManual: sealed::Sealed + IsA<InputStream> + Sized {
+pub trait InputStreamExtManual: IsA<InputStream> + Sized {
     #[doc(alias = "g_input_stream_read")]
     fn read<B: AsMut<[u8]>, C: IsA<Cancellable>>(
         &self,
@@ -491,10 +486,19 @@ impl<T: IsA<InputStream>> InputStreamAsyncBufRead<T> {
     }
 }
 
-#[derive(thiserror::Error, Debug)]
+#[derive(Debug)]
 enum BufReadError {
-    #[error("Previous read operation failed")]
     Failed,
+}
+
+impl std::error::Error for BufReadError {}
+
+impl fmt::Display for BufReadError {
+    fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            Self::Failed => fmt.write_str("Previous read operation failed"),
+        }
+    }
 }
 
 impl<T: IsA<InputStream>> AsyncRead for InputStreamAsyncBufRead<T> {

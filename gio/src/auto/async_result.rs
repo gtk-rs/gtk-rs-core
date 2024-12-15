@@ -2,8 +2,8 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
+use crate::ffi;
 use glib::{prelude::*, translate::*};
-use std::{fmt, ptr};
 
 glib::wrapper! {
     #[doc(alias = "GAsyncResult")]
@@ -18,12 +18,7 @@ impl AsyncResult {
     pub const NONE: Option<&'static AsyncResult> = None;
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::AsyncResult>> Sealed for T {}
-}
-
-pub trait AsyncResultExt: IsA<AsyncResult> + sealed::Sealed + 'static {
+pub trait AsyncResultExt: IsA<AsyncResult> + 'static {
     #[doc(alias = "g_async_result_get_source_object")]
     #[doc(alias = "get_source_object")]
     fn source_object(&self) -> Option<glib::Object> {
@@ -48,7 +43,7 @@ pub trait AsyncResultExt: IsA<AsyncResult> + sealed::Sealed + 'static {
     #[doc(alias = "g_async_result_legacy_propagate_error")]
     fn legacy_propagate_error(&self) -> Result<(), glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_async_result_legacy_propagate_error(
                 self.as_ref().to_glib_none().0,
                 &mut error,
@@ -64,9 +59,3 @@ pub trait AsyncResultExt: IsA<AsyncResult> + sealed::Sealed + 'static {
 }
 
 impl<O: IsA<AsyncResult>> AsyncResultExt for O {}
-
-impl fmt::Display for AsyncResult {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("AsyncResult")
-    }
-}

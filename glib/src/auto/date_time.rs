@@ -2,8 +2,7 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{translate::*, BoolError, TimeSpan, TimeZone};
-use std::{cmp, hash, mem};
+use crate::{ffi, translate::*, BoolError, TimeSpan, TimeZone};
 
 crate::wrapper! {
     #[derive(Debug)]
@@ -78,11 +77,33 @@ impl DateTime {
         }
     }
 
+    #[cfg(feature = "v2_80")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_80")))]
+    #[doc(alias = "g_date_time_new_from_unix_local_usec")]
+    #[doc(alias = "new_from_unix_local_usec")]
+    pub fn from_unix_local_usec(usecs: i64) -> Result<DateTime, BoolError> {
+        unsafe {
+            Option::<_>::from_glib_full(ffi::g_date_time_new_from_unix_local_usec(usecs))
+                .ok_or_else(|| crate::bool_error!("Invalid date"))
+        }
+    }
+
     #[doc(alias = "g_date_time_new_from_unix_utc")]
     #[doc(alias = "new_from_unix_utc")]
     pub fn from_unix_utc(t: i64) -> Result<DateTime, BoolError> {
         unsafe {
             Option::<_>::from_glib_full(ffi::g_date_time_new_from_unix_utc(t))
+                .ok_or_else(|| crate::bool_error!("Invalid date"))
+        }
+    }
+
+    #[cfg(feature = "v2_80")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_80")))]
+    #[doc(alias = "g_date_time_new_from_unix_utc_usec")]
+    #[doc(alias = "new_from_unix_utc_usec")]
+    pub fn from_unix_utc_usec(usecs: i64) -> Result<DateTime, BoolError> {
+        unsafe {
+            Option::<_>::from_glib_full(ffi::g_date_time_new_from_unix_utc_usec(usecs))
                 .ok_or_else(|| crate::bool_error!("Invalid date"))
         }
     }
@@ -398,9 +419,9 @@ impl DateTime {
     #[doc(alias = "get_ymd")]
     pub fn ymd(&self) -> (i32, i32, i32) {
         unsafe {
-            let mut year = mem::MaybeUninit::uninit();
-            let mut month = mem::MaybeUninit::uninit();
-            let mut day = mem::MaybeUninit::uninit();
+            let mut year = std::mem::MaybeUninit::uninit();
+            let mut month = std::mem::MaybeUninit::uninit();
+            let mut day = std::mem::MaybeUninit::uninit();
             ffi::g_date_time_get_ymd(
                 self.to_glib_none().0,
                 year.as_mut_ptr(),
@@ -456,6 +477,13 @@ impl DateTime {
         unsafe { ffi::g_date_time_to_unix(self.to_glib_none().0) }
     }
 
+    #[cfg(feature = "v2_80")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_80")))]
+    #[doc(alias = "g_date_time_to_unix_usec")]
+    pub fn to_unix_usec(&self) -> i64 {
+        unsafe { ffi::g_date_time_to_unix_usec(self.to_glib_none().0) }
+    }
+
     #[doc(alias = "g_date_time_to_utc")]
     pub fn to_utc(&self) -> Result<DateTime, BoolError> {
         unsafe {
@@ -467,14 +495,14 @@ impl DateTime {
 
 impl PartialOrd for DateTime {
     #[inline]
-    fn partial_cmp(&self, other: &Self) -> Option<cmp::Ordering> {
-        self.compare(other).partial_cmp(&0)
+    fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
+        Some(self.cmp(other))
     }
 }
 
 impl Ord for DateTime {
     #[inline]
-    fn cmp(&self, other: &Self) -> cmp::Ordering {
+    fn cmp(&self, other: &Self) -> std::cmp::Ordering {
         self.compare(other).cmp(&0)
     }
 }
@@ -488,13 +516,13 @@ impl PartialEq for DateTime {
 
 impl Eq for DateTime {}
 
-impl hash::Hash for DateTime {
+impl std::hash::Hash for DateTime {
     #[inline]
     fn hash<H>(&self, state: &mut H)
     where
-        H: hash::Hasher,
+        H: std::hash::Hasher,
     {
-        hash::Hash::hash(&self.hash(), state)
+        std::hash::Hash::hash(&self.hash(), state)
     }
 }
 

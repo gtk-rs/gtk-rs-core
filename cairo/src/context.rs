@@ -8,15 +8,13 @@ use std::{ffi::CString, fmt, mem::MaybeUninit, ops, ptr, slice};
 use glib::translate::*;
 
 use crate::{
-    ffi::{cairo_rectangle_list_t, cairo_t},
-    utils::status_to_result,
-    Antialias, Content, Error, FillRule, FontExtents, FontFace, FontOptions, FontSlant, FontWeight,
-    Glyph, LineCap, LineJoin, Matrix, Operator, Path, Pattern, Rectangle, ScaledFont, Surface,
-    TextCluster, TextClusterFlags, TextExtents,
+    ffi, utils::status_to_result, Antialias, Content, Error, FillRule, FontExtents, FontFace,
+    FontOptions, FontSlant, FontWeight, Glyph, LineCap, LineJoin, Matrix, Operator, Path, Pattern,
+    Rectangle, ScaledFont, Surface, TextCluster, TextClusterFlags, TextExtents,
 };
 
 pub struct RectangleList {
-    ptr: *mut cairo_rectangle_list_t,
+    ptr: *mut ffi::cairo_rectangle_list_t,
 }
 
 impl ops::Deref for RectangleList {
@@ -53,12 +51,6 @@ impl fmt::Debug for RectangleList {
     }
 }
 
-impl fmt::Display for RectangleList {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "RectangleList")
-    }
-}
-
 /// A drawing context, used to draw on [`Surface`]s.
 ///
 /// [`Context`] is the main entry point for all drawing operations. To acquire a [`Context`], you
@@ -82,7 +74,8 @@ impl fmt::Display for RectangleList {
 /// [`PdfSurface`]: crate::PdfSurface
 #[derive(Debug)]
 #[repr(transparent)]
-pub struct Context(ptr::NonNull<cairo_t>);
+#[doc(alias = "cairo_t")]
+pub struct Context(ptr::NonNull<ffi::cairo_t>);
 
 #[cfg(feature = "use_glib")]
 #[cfg_attr(docsrs, doc(cfg(feature = "use_glib")))]
@@ -139,7 +132,7 @@ impl FromGlibPtrFull<*mut ffi::cairo_t> for Context {
 #[cfg(feature = "use_glib")]
 gvalue_impl!(
     Context,
-    cairo_t,
+    ffi::cairo_t,
     ffi::gobject::cairo_gobject_context_get_type
 );
 
@@ -1175,12 +1168,6 @@ impl Context {
     }
 }
 
-impl fmt::Display for Context {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "Context")
-    }
-}
-
 #[cfg(test)]
 mod tests {
     use float_eq::float_eq;
@@ -1234,6 +1221,5 @@ mod tests {
         assert!(float_eq!(first_rect.y(), 0.0, abs <= 0.000_1));
         assert!(float_eq!(first_rect.width(), 10.0, abs <= 0.000_1));
         assert!(float_eq!(first_rect.height(), 10.0, abs <= 0.000_1));
-        assert_eq!(rect.to_string(), "RectangleList");
     }
 }

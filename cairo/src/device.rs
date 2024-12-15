@@ -6,12 +6,12 @@ use std::ffi::CString;
 use std::marker::PhantomData;
 #[cfg(feature = "script")]
 use std::path::Path;
-use std::{fmt, ptr};
+use std::ptr;
 
 #[cfg(feature = "use_glib")]
 use glib::translate::*;
 
-use crate::{utils::status_to_result, DeviceType, Error};
+use crate::{ffi, utils::status_to_result, DeviceType, Error};
 #[cfg(feature = "script")]
 use crate::{Content, RecordingSurface, ScriptMode, Surface};
 
@@ -19,7 +19,7 @@ use crate::{Content, RecordingSurface, ScriptMode, Surface};
 #[must_use = "if unused the Device will immediately be released"]
 pub struct DeviceAcquireGuard<'a>(&'a Device);
 
-impl<'a> Drop for DeviceAcquireGuard<'a> {
+impl Drop for DeviceAcquireGuard<'_> {
     #[inline]
     fn drop(&mut self) {
         self.0.release();
@@ -236,7 +236,7 @@ impl Device {
                     panic!("you need to enable \"xcb\" feature")
                 }
             }
-            d => panic!("invalid device type: {}", d),
+            d => panic!("invalid device type: {:#?}", d),
         }
     }
 
@@ -266,7 +266,7 @@ impl Device {
                     panic!("you need to enable \"xcb\" feature")
                 }
             }
-            d => panic!("invalid device type: {}", d),
+            d => panic!("invalid device type: {:#?}", d),
         }
     }
 
@@ -296,7 +296,7 @@ impl Device {
                     panic!("you need to enable \"xcb\" feature")
                 }
             }
-            d => panic!("invalid device type: {}", d),
+            d => panic!("invalid device type: {:#?}", d),
         }
     }
 
@@ -385,11 +385,5 @@ impl Drop for Device {
         unsafe {
             ffi::cairo_device_destroy(self.0.as_ptr());
         }
-    }
-}
-
-impl fmt::Display for Device {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "Device")
     }
 }

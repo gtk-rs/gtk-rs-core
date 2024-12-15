@@ -2,9 +2,8 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{ActionGroup, DBusConnection, RemoteActionGroup};
+use crate::{ffi, ActionGroup, DBusConnection, RemoteActionGroup};
 use glib::translate::*;
-use std::fmt;
 
 glib::wrapper! {
     #[doc(alias = "GDBusActionGroup")]
@@ -29,11 +28,5 @@ impl DBusActionGroup {
                 object_path.to_glib_none().0,
             ))
         }
-    }
-}
-
-impl fmt::Display for DBusActionGroup {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("DBusActionGroup")
     }
 }

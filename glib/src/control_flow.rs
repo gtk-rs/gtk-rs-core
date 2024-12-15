@@ -1,6 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::translate::*;
+use crate::{ffi, prelude::*, translate::*};
 
 // rustdoc-stripper-ignore-next
 /// Continue calling the closure in the future iterations or drop it.
@@ -10,9 +10,14 @@ use crate::translate::*;
 /// `ControlFlow::Continue` keeps the closure assigned, to be rerun when appropriate.
 ///
 /// `ControlFlow::Break` disconnects and drops it.
+///
+/// `Continue` and `Break` map to `G_SOURCE_CONTINUE` (`true`) and
+/// `G_SOURCE_REMOVE` (`false`), respectively.
 #[derive(Copy, Clone, Debug, PartialEq, Eq)]
 pub enum ControlFlow {
+    #[doc(alias = "G_SOURCE_CONTINUE")]
     Continue,
+    #[doc(alias = "G_SOURCE_REMOVE")]
     Break,
 }
 
@@ -85,13 +90,13 @@ impl FromGlib<ffi::gboolean> for ControlFlow {
     }
 }
 
-impl crate::ToValue for ControlFlow {
+impl crate::value::ToValue for ControlFlow {
     fn to_value(&self) -> crate::Value {
         bool::from(*self).to_value()
     }
 
     fn value_type(&self) -> crate::Type {
-        <bool as crate::StaticType>::static_type()
+        <bool as StaticType>::static_type()
     }
 }
 

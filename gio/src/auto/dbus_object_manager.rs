@@ -2,13 +2,13 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{DBusInterface, DBusObject};
+use crate::{ffi, DBusInterface, DBusObject};
 use glib::{
     prelude::*,
     signal::{connect_raw, SignalHandlerId},
     translate::*,
 };
-use std::{boxed::Box as Box_, fmt, mem::transmute};
+use std::boxed::Box as Box_;
 
 glib::wrapper! {
     #[doc(alias = "GDBusObjectManager")]
@@ -23,12 +23,7 @@ impl DBusObjectManager {
     pub const NONE: Option<&'static DBusObjectManager> = None;
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::DBusObjectManager>> Sealed for T {}
-}
-
-pub trait DBusObjectManagerExt: IsA<DBusObjectManager> + sealed::Sealed + 'static {
+pub trait DBusObjectManagerExt: IsA<DBusObjectManager> + 'static {
     #[doc(alias = "g_dbus_object_manager_get_interface")]
     #[doc(alias = "get_interface")]
     fn interface(&self, object_path: &str, interface_name: &str) -> Option<DBusInterface> {
@@ -98,7 +93,7 @@ pub trait DBusObjectManagerExt: IsA<DBusObjectManager> + sealed::Sealed + 'stati
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"interface-added\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     interface_added_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -132,7 +127,7 @@ pub trait DBusObjectManagerExt: IsA<DBusObjectManager> + sealed::Sealed + 'stati
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"interface-removed\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     interface_removed_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -161,7 +156,7 @@ pub trait DBusObjectManagerExt: IsA<DBusObjectManager> + sealed::Sealed + 'stati
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"object-added\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     object_added_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -190,7 +185,7 @@ pub trait DBusObjectManagerExt: IsA<DBusObjectManager> + sealed::Sealed + 'stati
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"object-removed\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     object_removed_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -200,9 +195,3 @@ pub trait DBusObjectManagerExt: IsA<DBusObjectManager> + sealed::Sealed + 'stati
 }
 
 impl<O: IsA<DBusObjectManager>> DBusObjectManagerExt for O {}
-
-impl fmt::Display for DBusObjectManager {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("DBusObjectManager")
-    }
-}

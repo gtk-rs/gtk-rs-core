@@ -3,11 +3,10 @@
 // DO NOT EDIT
 
 use crate::{
-    Analysis, AttrIterator, AttrList, Context, Direction, GlyphString, Item, Stretch, Style,
+    ffi, Analysis, AttrIterator, AttrList, Context, Direction, GlyphString, Item, Stretch, Style,
     Variant, Weight,
 };
 use glib::translate::*;
-use std::{mem, ptr};
 
 //#[cfg_attr(feature = "v1_44", deprecated = "Since 1.44")]
 //#[allow(deprecated)]
@@ -32,8 +31,8 @@ pub fn find_base_dir(text: &str) -> Direction {
 pub fn find_paragraph_boundary(text: &str) -> (i32, i32) {
     let length = text.len() as _;
     unsafe {
-        let mut paragraph_delimiter_index = mem::MaybeUninit::uninit();
-        let mut next_paragraph_start = mem::MaybeUninit::uninit();
+        let mut paragraph_delimiter_index = std::mem::MaybeUninit::uninit();
+        let mut next_paragraph_start = std::mem::MaybeUninit::uninit();
         ffi::pango_find_paragraph_boundary(
             text.to_glib_none().0,
             length,
@@ -107,10 +106,10 @@ pub fn markup_parser_finish(
     context: &glib::MarkupParseContext,
 ) -> Result<(AttrList, glib::GString, char), glib::Error> {
     unsafe {
-        let mut attr_list = ptr::null_mut();
-        let mut text = ptr::null_mut();
-        let mut accel_char = mem::MaybeUninit::uninit();
-        let mut error = ptr::null_mut();
+        let mut attr_list = std::ptr::null_mut();
+        let mut text = std::ptr::null_mut();
+        let mut accel_char = std::mem::MaybeUninit::uninit();
+        let mut error = std::ptr::null_mut();
         let is_ok = ffi::pango_markup_parser_finish(
             context.to_glib_none().0,
             &mut attr_list,
@@ -144,10 +143,10 @@ pub fn parse_markup(
 ) -> Result<(AttrList, glib::GString, char), glib::Error> {
     let length = markup_text.len() as _;
     unsafe {
-        let mut attr_list = ptr::null_mut();
-        let mut text = ptr::null_mut();
-        let mut accel_char = mem::MaybeUninit::uninit();
-        let mut error = ptr::null_mut();
+        let mut attr_list = std::ptr::null_mut();
+        let mut text = std::ptr::null_mut();
+        let mut accel_char = std::mem::MaybeUninit::uninit();
+        let mut error = std::ptr::null_mut();
         let is_ok = ffi::pango_parse_markup(
             markup_text.to_glib_none().0,
             length,
@@ -174,7 +173,7 @@ pub fn parse_markup(
 #[doc(alias = "pango_parse_stretch")]
 pub fn parse_stretch(str: &str, warn: bool) -> Option<Stretch> {
     unsafe {
-        let mut stretch = mem::MaybeUninit::uninit();
+        let mut stretch = std::mem::MaybeUninit::uninit();
         let ret = from_glib(ffi::pango_parse_stretch(
             str.to_glib_none().0,
             stretch.as_mut_ptr(),
@@ -191,7 +190,7 @@ pub fn parse_stretch(str: &str, warn: bool) -> Option<Stretch> {
 #[doc(alias = "pango_parse_style")]
 pub fn parse_style(str: &str, warn: bool) -> Option<Style> {
     unsafe {
-        let mut style = mem::MaybeUninit::uninit();
+        let mut style = std::mem::MaybeUninit::uninit();
         let ret = from_glib(ffi::pango_parse_style(
             str.to_glib_none().0,
             style.as_mut_ptr(),
@@ -208,7 +207,7 @@ pub fn parse_style(str: &str, warn: bool) -> Option<Style> {
 #[doc(alias = "pango_parse_variant")]
 pub fn parse_variant(str: &str, warn: bool) -> Option<Variant> {
     unsafe {
-        let mut variant = mem::MaybeUninit::uninit();
+        let mut variant = std::mem::MaybeUninit::uninit();
         let ret = from_glib(ffi::pango_parse_variant(
             str.to_glib_none().0,
             variant.as_mut_ptr(),
@@ -225,7 +224,7 @@ pub fn parse_variant(str: &str, warn: bool) -> Option<Variant> {
 #[doc(alias = "pango_parse_weight")]
 pub fn parse_weight(str: &str, warn: bool) -> Option<Weight> {
     unsafe {
-        let mut weight = mem::MaybeUninit::uninit();
+        let mut weight = std::mem::MaybeUninit::uninit();
         let ret = from_glib(ffi::pango_parse_weight(
             str.to_glib_none().0,
             weight.as_mut_ptr(),

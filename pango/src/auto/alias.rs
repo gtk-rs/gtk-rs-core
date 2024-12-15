@@ -5,6 +5,9 @@
 #[allow(unused_imports)]
 use crate::auto::*;
 
+#[doc(alias = "PangoGlyph")]
 pub type Glyph = u32;
+#[doc(alias = "PangoGlyphUnit")]
 pub type GlyphUnit = i32;
+#[doc(alias = "PangoLayoutRun")]
 pub type LayoutRun = GlyphItem;

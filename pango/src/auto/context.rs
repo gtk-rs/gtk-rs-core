@@ -3,11 +3,10 @@
 // DO NOT EDIT
 
 use crate::{
-    Direction, Font, FontDescription, FontFamily, FontMap, FontMetrics, Fontset, Gravity,
+    ffi, Direction, Font, FontDescription, FontFamily, FontMap, FontMetrics, Fontset, Gravity,
     GravityHint, Language, Matrix,
 };
 use glib::{prelude::*, translate::*};
-use std::{fmt, mem, ptr};
 
 glib::wrapper! {
     #[doc(alias = "PangoContext")]
@@ -120,8 +119,8 @@ impl Context {
     #[doc(alias = "pango_context_list_families")]
     pub fn list_families(&self) -> Vec<FontFamily> {
         unsafe {
-            let mut families = ptr::null_mut();
-            let mut n_families = mem::MaybeUninit::uninit();
+            let mut families = std::ptr::null_mut();
+            let mut n_families = std::mem::MaybeUninit::uninit();
             ffi::pango_context_list_families(
                 self.to_glib_none().0,
                 &mut families,
@@ -223,11 +222,5 @@ impl Context {
 impl Default for Context {
     fn default() -> Self {
         Self::new()
-    }
-}
-
-impl fmt::Display for Context {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("Context")
     }
 }

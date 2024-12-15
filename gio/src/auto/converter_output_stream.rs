@@ -2,9 +2,8 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{Converter, FilterOutputStream, OutputStream, PollableOutputStream};
+use crate::{ffi, Converter, FilterOutputStream, OutputStream, PollableOutputStream};
 use glib::{prelude::*, translate::*};
-use std::fmt;
 
 glib::wrapper! {
     #[doc(alias = "GConverterOutputStream")]
@@ -95,12 +94,7 @@ impl ConverterOutputStreamBuilder {
     }
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::ConverterOutputStream>> Sealed for T {}
-}
-
-pub trait ConverterOutputStreamExt: IsA<ConverterOutputStream> + sealed::Sealed + 'static {
+pub trait ConverterOutputStreamExt: IsA<ConverterOutputStream> + 'static {
     #[doc(alias = "g_converter_output_stream_get_converter")]
     #[doc(alias = "get_converter")]
     fn converter(&self) -> Converter {
@@ -113,9 +107,3 @@ pub trait ConverterOutputStreamExt: IsA<ConverterOutputStream> + sealed::Sealed 
 }
 
 impl<O: IsA<ConverterOutputStream>> ConverterOutputStreamExt for O {}
-
-impl fmt::Display for ConverterOutputStream {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("ConverterOutputStream")
-    }
-}

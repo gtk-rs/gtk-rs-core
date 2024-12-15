@@ -2,9 +2,8 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{Icon, NotificationPriority};
+use crate::{ffi, Icon, NotificationPriority};
 use glib::{prelude::*, translate::*};
-use std::fmt;
 
 glib::wrapper! {
     #[doc(alias = "GNotification")]
@@ -119,11 +118,5 @@ impl Notification {
         unsafe {
             ffi::g_notification_set_title(self.to_glib_none().0, title.to_glib_none().0);
         }
-    }
-}
-
-impl fmt::Display for Notification {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("Notification")
     }
 }

@@ -2,15 +2,15 @@
 
 #[cfg(feature = "use_glib")]
 use std::marker::PhantomData;
-use std::{ffi::CString, fmt, ops::Deref, ptr, slice};
+use std::{ffi::CString, ops::Deref, ptr, slice};
 
 #[cfg(feature = "use_glib")]
 use glib::translate::*;
 use libc::{c_ulong, c_void};
 
 use crate::{
-    utils::status_to_result, Content, Device, Error, Format, ImageSurface, Rectangle, RectangleInt,
-    SurfaceType,
+    ffi, utils::status_to_result, Content, Device, Error, Format, ImageSurface, Rectangle,
+    RectangleInt, SurfaceType,
 };
 
 #[derive(Debug)]
@@ -366,12 +366,6 @@ impl AsRef<Surface> for Surface {
     }
 }
 
-impl fmt::Display for Surface {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "Surface")
-    }
-}
-
 impl Surface {
     #[doc(alias = "cairo_surface_flush")]
     pub fn flush(&self) {
@@ -425,12 +419,6 @@ impl Drop for MappedImageSurface {
                 self.image_surface.to_raw_none(),
             );
         }
-    }
-}
-
-impl fmt::Display for MappedImageSurface {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "MappedImageSurface")
     }
 }
 

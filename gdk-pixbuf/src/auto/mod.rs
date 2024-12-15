@@ -31,8 +31,7 @@ pub use self::enums::PixbufRotation;
 mod flags;
 pub use self::flags::PixbufFormatFlags;
 
-#[doc(hidden)]
-pub mod traits {
+pub(crate) mod traits {
     pub use super::pixbuf_animation::PixbufAnimationExt;
     pub use super::pixbuf_loader::PixbufLoaderExt;
 }

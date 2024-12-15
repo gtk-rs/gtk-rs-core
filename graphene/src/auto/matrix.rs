@@ -2,9 +2,8 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{Box, Euler, Point, Point3D, Quad, Quaternion, Ray, Rect, Sphere, Vec3, Vec4};
+use crate::{ffi, Box, Euler, Point, Point3D, Quad, Quaternion, Ray, Rect, Sphere, Vec3, Vec4};
 use glib::translate::*;
-use std::mem;
 
 glib::wrapper! {
     pub struct Matrix(BoxedInline<ffi::graphene_matrix_t>);
@@ -318,12 +317,12 @@ impl Matrix {
     #[doc(alias = "graphene_matrix_to_2d")]
     pub fn to_2d(&self) -> Option<(f64, f64, f64, f64, f64, f64)> {
         unsafe {
-            let mut xx = mem::MaybeUninit::uninit();
-            let mut yx = mem::MaybeUninit::uninit();
-            let mut xy = mem::MaybeUninit::uninit();
-            let mut yy = mem::MaybeUninit::uninit();
-            let mut x_0 = mem::MaybeUninit::uninit();
-            let mut y_0 = mem::MaybeUninit::uninit();
+            let mut xx = std::mem::MaybeUninit::uninit();
+            let mut yx = std::mem::MaybeUninit::uninit();
+            let mut xy = std::mem::MaybeUninit::uninit();
+            let mut yy = std::mem::MaybeUninit::uninit();
+            let mut x_0 = std::mem::MaybeUninit::uninit();
+            let mut y_0 = std::mem::MaybeUninit::uninit();
             let ret = ffi::graphene_matrix_to_2d(
                 self.to_glib_none().0,
                 xx.as_mut_ptr(),

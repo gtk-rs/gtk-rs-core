@@ -4,7 +4,7 @@
 #![allow(deprecated)]
 
 use crate::{
-    AsyncResult, Cancellable, IOStream, ProxyResolver, SocketAddress, SocketClientEvent,
+    ffi, AsyncResult, Cancellable, IOStream, ProxyResolver, SocketAddress, SocketClientEvent,
     SocketConnectable, SocketConnection, SocketFamily, SocketProtocol, SocketType,
     TlsCertificateFlags,
 };
@@ -13,7 +13,7 @@ use glib::{
     signal::{connect_raw, SignalHandlerId},
     translate::*,
 };
-use std::{boxed::Box as Box_, fmt, mem::transmute, pin::Pin, ptr};
+use std::{boxed::Box as Box_, pin::Pin};
 
 glib::wrapper! {
     #[doc(alias = "GSocketClient")]
@@ -39,12 +39,7 @@ impl Default for SocketClient {
     }
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::SocketClient>> Sealed for T {}
-}
-
-pub trait SocketClientExt: IsA<SocketClient> + sealed::Sealed + 'static {
+pub trait SocketClientExt: IsA<SocketClient> + 'static {
     #[doc(alias = "g_socket_client_add_application_proxy")]
     fn add_application_proxy(&self, protocol: &str) {
         unsafe {
@@ -62,7 +57,7 @@ pub trait SocketClientExt: IsA<SocketClient> + sealed::Sealed + 'static {
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<SocketConnection, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_socket_client_connect(
                 self.as_ref().to_glib_none().0,
                 connectable.as_ref().to_glib_none().0,
@@ -103,7 +98,7 @@ pub trait SocketClientExt: IsA<SocketClient> + sealed::Sealed + 'static {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret =
                 ffi::g_socket_client_connect_finish(_source_object as *mut _, res, &mut error);
             let result = if error.is_null() {
@@ -152,7 +147,7 @@ pub trait SocketClientExt: IsA<SocketClient> + sealed::Sealed + 'static {
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<SocketConnection, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_socket_client_connect_to_host(
                 self.as_ref().to_glib_none().0,
                 host_and_port.to_glib_none().0,
@@ -195,7 +190,7 @@ pub trait SocketClientExt: IsA<SocketClient> + sealed::Sealed + 'static {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_socket_client_connect_to_host_finish(
                 _source_object as *mut _,
                 res,
@@ -254,7 +249,7 @@ pub trait SocketClientExt: IsA<SocketClient> + sealed::Sealed + 'static {
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<SocketConnection, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_socket_client_connect_to_service(
                 self.as_ref().to_glib_none().0,
                 domain.to_glib_none().0,
@@ -297,7 +292,7 @@ pub trait SocketClientExt: IsA<SocketClient> + sealed::Sealed + 'static {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_socket_client_connect_to_service_finish(
                 _source_object as *mut _,
                 res,
@@ -352,7 +347,7 @@ pub trait SocketClientExt: IsA<SocketClient> + sealed::Sealed + 'static {
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<SocketConnection, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_socket_client_connect_to_uri(
                 self.as_ref().to_glib_none().0,
                 uri.to_glib_none().0,
@@ -395,7 +390,7 @@ pub trait SocketClientExt: IsA<SocketClient> + sealed::Sealed + 'static {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_socket_client_connect_to_uri_finish(
                 _source_object as *mut _,
                 res,
@@ -443,6 +438,7 @@ pub trait SocketClientExt: IsA<SocketClient> + sealed::Sealed + 'static {
 
     #[doc(alias = "g_socket_client_get_enable_proxy")]
     #[doc(alias = "get_enable_proxy")]
+    #[doc(alias = "enable-proxy")]
     fn enables_proxy(&self) -> bool {
         unsafe {
             from_glib(ffi::g_socket_client_get_enable_proxy(
@@ -463,6 +459,7 @@ pub trait SocketClientExt: IsA<SocketClient> + sealed::Sealed + 'static {
 
     #[doc(alias = "g_socket_client_get_local_address")]
     #[doc(alias = "get_local_address")]
+    #[doc(alias = "local-address")]
     fn local_address(&self) -> Option<SocketAddress> {
         unsafe {
             from_glib_none(ffi::g_socket_client_get_local_address(
@@ -483,6 +480,7 @@ pub trait SocketClientExt: IsA<SocketClient> + sealed::Sealed + 'static {
 
     #[doc(alias = "g_socket_client_get_proxy_resolver")]
     #[doc(alias = "get_proxy_resolver")]
+    #[doc(alias = "proxy-resolver")]
     fn proxy_resolver(&self) -> ProxyResolver {
         unsafe {
             from_glib_none(ffi::g_socket_client_get_proxy_resolver(
@@ -509,6 +507,7 @@ pub trait SocketClientExt: IsA<SocketClient> + sealed::Sealed + 'static {
 
     #[doc(alias = "g_socket_client_get_tls")]
     #[doc(alias = "get_tls")]
+    #[doc(alias = "tls")]
     fn is_tls(&self) -> bool {
         unsafe { from_glib(ffi::g_socket_client_get_tls(self.as_ref().to_glib_none().0)) }
     }
@@ -517,6 +516,7 @@ pub trait SocketClientExt: IsA<SocketClient> + sealed::Sealed + 'static {
     #[allow(deprecated)]
     #[doc(alias = "g_socket_client_get_tls_validation_flags")]
     #[doc(alias = "get_tls_validation_flags")]
+    #[doc(alias = "tls-validation-flags")]
     fn tls_validation_flags(&self) -> TlsCertificateFlags {
         unsafe {
             from_glib(ffi::g_socket_client_get_tls_validation_flags(
@@ -526,6 +526,7 @@ pub trait SocketClientExt: IsA<SocketClient> + sealed::Sealed + 'static {
     }
 
     #[doc(alias = "g_socket_client_set_enable_proxy")]
+    #[doc(alias = "enable-proxy")]
     fn set_enable_proxy(&self, enable: bool) {
         unsafe {
             ffi::g_socket_client_set_enable_proxy(
@@ -536,6 +537,7 @@ pub trait SocketClientExt: IsA<SocketClient> + sealed::Sealed + 'static {
     }
 
     #[doc(alias = "g_socket_client_set_family")]
+    #[doc(alias = "family")]
     fn set_family(&self, family: SocketFamily) {
         unsafe {
             ffi::g_socket_client_set_family(self.as_ref().to_glib_none().0, family.into_glib());
@@ -543,6 +545,7 @@ pub trait SocketClientExt: IsA<SocketClient> + sealed::Sealed + 'static {
     }
 
     #[doc(alias = "g_socket_client_set_local_address")]
+    #[doc(alias = "local-address")]
     fn set_local_address(&self, address: Option<&impl IsA<SocketAddress>>) {
         unsafe {
             ffi::g_socket_client_set_local_address(
@@ -553,6 +556,7 @@ pub trait SocketClientExt: IsA<SocketClient> + sealed::Sealed + 'static {
     }
 
     #[doc(alias = "g_socket_client_set_protocol")]
+    #[doc(alias = "protocol")]
     fn set_protocol(&self, protocol: SocketProtocol) {
         unsafe {
             ffi::g_socket_client_set_protocol(self.as_ref().to_glib_none().0, protocol.into_glib());
@@ -560,6 +564,7 @@ pub trait SocketClientExt: IsA<SocketClient> + sealed::Sealed + 'static {
     }
 
     #[doc(alias = "g_socket_client_set_proxy_resolver")]
+    #[doc(alias = "proxy-resolver")]
     fn set_proxy_resolver(&self, proxy_resolver: Option<&impl IsA<ProxyResolver>>) {
         unsafe {
             ffi::g_socket_client_set_proxy_resolver(
@@ -577,6 +582,7 @@ pub trait SocketClientExt: IsA<SocketClient> + sealed::Sealed + 'static {
     }
 
     #[doc(alias = "g_socket_client_set_timeout")]
+    #[doc(alias = "timeout")]
     fn set_timeout(&self, timeout: u32) {
         unsafe {
             ffi::g_socket_client_set_timeout(self.as_ref().to_glib_none().0, timeout);
@@ -584,6 +590,7 @@ pub trait SocketClientExt: IsA<SocketClient> + sealed::Sealed + 'static {
     }
 
     #[doc(alias = "g_socket_client_set_tls")]
+    #[doc(alias = "tls")]
     fn set_tls(&self, tls: bool) {
         unsafe {
             ffi::g_socket_client_set_tls(self.as_ref().to_glib_none().0, tls.into_glib());
@@ -593,6 +600,7 @@ pub trait SocketClientExt: IsA<SocketClient> + sealed::Sealed + 'static {
     #[cfg_attr(feature = "v2_72", deprecated = "Since 2.72")]
     #[allow(deprecated)]
     #[doc(alias = "g_socket_client_set_tls_validation_flags")]
+    #[doc(alias = "tls-validation-flags")]
     fn set_tls_validation_flags(&self, flags: TlsCertificateFlags) {
         unsafe {
             ffi::g_socket_client_set_tls_validation_flags(
@@ -644,7 +652,7 @@ pub trait SocketClientExt: IsA<SocketClient> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"event\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     event_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -670,7 +678,7 @@ pub trait SocketClientExt: IsA<SocketClient> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::enable-proxy\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_enable_proxy_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -693,7 +701,7 @@ pub trait SocketClientExt: IsA<SocketClient> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::family\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_family_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -719,7 +727,7 @@ pub trait SocketClientExt: IsA<SocketClient> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::local-address\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_local_address_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -745,7 +753,7 @@ pub trait SocketClientExt: IsA<SocketClient> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::protocol\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_protocol_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -771,7 +779,7 @@ pub trait SocketClientExt: IsA<SocketClient> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::proxy-resolver\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_proxy_resolver_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -797,7 +805,7 @@ pub trait SocketClientExt: IsA<SocketClient> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::timeout\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_timeout_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -820,7 +828,7 @@ pub trait SocketClientExt: IsA<SocketClient> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::tls\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_tls_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -847,7 +855,7 @@ pub trait SocketClientExt: IsA<SocketClient> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::tls-validation-flags\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_tls_validation_flags_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -870,7 +878,7 @@ pub trait SocketClientExt: IsA<SocketClient> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::type\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_type_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -880,9 +888,3 @@ pub trait SocketClientExt: IsA<SocketClient> + sealed::Sealed + 'static {
 }
 
 impl<O: IsA<SocketClient>> SocketClientExt for O {}
-
-impl fmt::Display for SocketClient {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("SocketClient")
-    }
-}

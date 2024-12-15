@@ -2,13 +2,13 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{SocketConnection, SocketListener};
+use crate::{ffi, SocketConnection, SocketListener};
 use glib::{
     prelude::*,
     signal::{connect_raw, SignalHandlerId},
     translate::*,
 };
-use std::{boxed::Box as Box_, fmt, mem::transmute};
+use std::boxed::Box as Box_;
 
 glib::wrapper! {
     #[doc(alias = "GSocketService")]
@@ -34,13 +34,9 @@ impl Default for SocketService {
     }
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::SocketService>> Sealed for T {}
-}
-
-pub trait SocketServiceExt: IsA<SocketService> + sealed::Sealed + 'static {
+pub trait SocketServiceExt: IsA<SocketService> + 'static {
     #[doc(alias = "g_socket_service_is_active")]
+    #[doc(alias = "active")]
     fn is_active(&self) -> bool {
         unsafe {
             from_glib(ffi::g_socket_service_is_active(
@@ -98,7 +94,7 @@ pub trait SocketServiceExt: IsA<SocketService> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"incoming\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     incoming_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -124,7 +120,7 @@ pub trait SocketServiceExt: IsA<SocketService> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::active\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_active_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -134,9 +130,3 @@ pub trait SocketServiceExt: IsA<SocketService> + sealed::Sealed + 'static {
 }
 
 impl<O: IsA<SocketService>> SocketServiceExt for O {}
-
-impl fmt::Display for SocketService {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("SocketService")
-    }
-}

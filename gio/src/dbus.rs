@@ -4,7 +4,7 @@ use std::num::NonZeroU32;
 
 use glib::translate::*;
 
-use crate::{BusNameOwnerFlags, BusNameWatcherFlags, BusType, DBusConnection};
+use crate::{ffi, BusNameOwnerFlags, BusNameWatcherFlags, BusType, DBusConnection};
 
 #[derive(Debug, Eq, PartialEq)]
 pub struct OwnerId(NonZeroU32);
@@ -13,9 +13,9 @@ pub struct WatcherId(NonZeroU32);
 
 fn own_closure<F>(f: F) -> glib::Closure
 where
-    F: Fn(DBusConnection, &str) + Send + Sync + 'static,
+    F: Fn(DBusConnection, &str) + 'static,
 {
-    glib::Closure::new(move |args| {
+    glib::Closure::new_local(move |args| {
         let conn = args[0].get::<DBusConnection>().unwrap();
         let name = args[1].get::<&str>().unwrap();
         f(conn, name);
@@ -25,9 +25,9 @@ where
 
 fn appeared_closure<F>(f: F) -> glib::Closure
 where
-    F: Fn(DBusConnection, &str, &str) + Send + Sync + 'static,
+    F: Fn(DBusConnection, &str, &str) + 'static,
 {
-    glib::Closure::new(move |args| {
+    glib::Closure::new_local(move |args| {
         let conn = args[0].get::<DBusConnection>().unwrap();
         let name = args[1].get::<&str>().unwrap();
         let name_owner = args[2].get::<&str>().unwrap();
@@ -38,9 +38,9 @@ where
 
 fn vanished_closure<F>(f: F) -> glib::Closure
 where
-    F: Fn(DBusConnection, &str) + Send + Sync + 'static,
+    F: Fn(DBusConnection, &str) + 'static,
 {
-    glib::Closure::new(move |args| {
+    glib::Closure::new_local(move |args| {
         let conn = args[0].get::<DBusConnection>().unwrap();
         let name = args[1].get::<&str>().unwrap();
         f(conn, name);
@@ -57,8 +57,8 @@ pub fn bus_own_name_on_connection<NameAcquired, NameLost>(
     name_lost: NameLost,
 ) -> OwnerId
 where
-    NameAcquired: Fn(DBusConnection, &str) + Send + Sync + 'static,
-    NameLost: Fn(DBusConnection, &str) + Send + Sync + 'static,
+    NameAcquired: Fn(DBusConnection, &str) + 'static,
+    NameLost: Fn(DBusConnection, &str) + 'static,
 {
     unsafe {
         let id = ffi::g_bus_own_name_on_connection_with_closures(
@@ -82,9 +82,9 @@ pub fn bus_own_name<BusAcquired, NameAcquired, NameLost>(
     name_lost: NameLost,
 ) -> OwnerId
 where
-    BusAcquired: Fn(DBusConnection, &str) + Send + Sync + 'static,
-    NameAcquired: Fn(DBusConnection, &str) + Send + Sync + 'static,
-    NameLost: Fn(Option<DBusConnection>, &str) + Send + Sync + 'static,
+    BusAcquired: Fn(DBusConnection, &str) + 'static,
+    NameAcquired: Fn(DBusConnection, &str) + 'static,
+    NameLost: Fn(Option<DBusConnection>, &str) + 'static,
 {
     unsafe {
         let id = ffi::g_bus_own_name_with_closures(
@@ -93,7 +93,7 @@ where
             flags.into_glib(),
             own_closure(bus_acquired).to_glib_none().0,
             own_closure(name_acquired).to_glib_none().0,
-            glib::Closure::new(move |args| {
+            glib::Closure::new_local(move |args| {
                 let conn = args[0].get::<Option<DBusConnection>>().unwrap();
                 let name = args[1].get::<&str>().unwrap();
                 name_lost(conn, name);
@@ -122,8 +122,8 @@ pub fn bus_watch_name_on_connection<NameAppeared, NameVanished>(
     name_vanished: NameVanished,
 ) -> WatcherId
 where
-    NameAppeared: Fn(DBusConnection, &str, &str) + Send + Sync + 'static,
-    NameVanished: Fn(DBusConnection, &str) + Send + Sync + 'static,
+    NameAppeared: Fn(DBusConnection, &str, &str) + 'static,
+    NameVanished: Fn(DBusConnection, &str) + 'static,
 {
     unsafe {
         let id = ffi::g_bus_watch_name_on_connection_with_closures(
@@ -146,8 +146,8 @@ pub fn bus_watch_name<NameAppeared, NameVanished>(
     name_vanished: NameVanished,
 ) -> WatcherId
 where
-    NameAppeared: Fn(DBusConnection, &str, &str) + Send + Sync + 'static,
-    NameVanished: Fn(DBusConnection, &str) + Send + Sync + 'static,
+    NameAppeared: Fn(DBusConnection, &str, &str) + 'static,
+    NameVanished: Fn(DBusConnection, &str) + 'static,
 {
     unsafe {
         let id = ffi::g_bus_watch_name_with_closures(

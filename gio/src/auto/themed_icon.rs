@@ -2,13 +2,13 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::Icon;
+use crate::{ffi, Icon};
 use glib::{
     prelude::*,
     signal::{connect_raw, SignalHandlerId},
     translate::*,
 };
-use std::{boxed::Box as Box_, fmt, mem::transmute};
+use std::boxed::Box as Box_;
 
 glib::wrapper! {
     #[doc(alias = "GThemedIcon")]
@@ -91,17 +91,11 @@ impl ThemedIcon {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::names\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_names_trampoline::<F> as *const (),
                 )),
                 Box_::into_raw(f),
             )
         }
-    }
-}
-
-impl fmt::Display for ThemedIcon {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("ThemedIcon")
     }
 }

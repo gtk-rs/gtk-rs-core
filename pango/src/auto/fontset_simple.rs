@@ -2,9 +2,8 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{Font, Fontset, Language};
+use crate::{ffi, Font, Fontset, Language};
 use glib::{prelude::*, translate::*};
-use std::fmt;
 
 glib::wrapper! {
     #[doc(alias = "PangoFontsetSimple")]
@@ -31,11 +30,5 @@ impl FontsetSimple {
     #[doc(alias = "pango_fontset_simple_size")]
     pub fn size(&self) -> i32 {
         unsafe { ffi::pango_fontset_simple_size(self.to_glib_none().0) }
-    }
-}
-
-impl fmt::Display for FontsetSimple {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("FontsetSimple")
     }
 }

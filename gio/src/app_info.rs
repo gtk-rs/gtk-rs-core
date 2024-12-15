@@ -1,29 +1,15 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-#[cfg(feature = "v2_60")]
 use std::boxed::Box as Box_;
-#[cfg(feature = "v2_60")]
 use std::pin::Pin;
-#[cfg(feature = "v2_60")]
 use std::ptr;
 
 use glib::prelude::*;
-#[cfg(feature = "v2_60")]
 use glib::translate::*;
 
-use crate::AppInfo;
-#[cfg(feature = "v2_60")]
-use crate::AppLaunchContext;
-#[cfg(feature = "v2_60")]
-use crate::Cancellable;
+use crate::{ffi, AppInfo, AppLaunchContext, Cancellable};
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::AppInfo>> Sealed for T {}
-}
-
-pub trait AppInfoExtManual: sealed::Sealed + IsA<AppInfo> + 'static {
-    #[cfg(feature = "v2_60")]
+pub trait AppInfoExtManual: IsA<AppInfo> + 'static {
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     #[doc(alias = "g_app_info_launch_uris_async")]
     fn launch_uris_async<
@@ -86,7 +72,6 @@ pub trait AppInfoExtManual: sealed::Sealed + IsA<AppInfo> + 'static {
         }
     }
 
-    #[cfg(feature = "v2_60")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     fn launch_uris_future<P: IsA<AppLaunchContext> + Clone + 'static>(
         &self,

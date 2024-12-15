@@ -2,7 +2,7 @@
 
 use std::mem;
 
-use ffi::{self, gboolean, gpointer};
+use crate::ffi::{self, gboolean, gpointer};
 
 use crate::{source::Priority, translate::*, MainContext, Source, SourceId};
 
@@ -145,10 +145,10 @@ impl MainContext {
     ///
     /// This will fail if the main context is owned already by another thread.
     #[doc(alias = "g_main_context_push_thread_default")]
-    pub fn with_thread_default<R, F: Sized>(&self, func: F) -> Result<R, crate::BoolError>
-    where
-        F: FnOnce() -> R,
-    {
+    pub fn with_thread_default<R, F: FnOnce() -> R + Sized>(
+        &self,
+        func: F,
+    ) -> Result<R, crate::BoolError> {
         let _acquire = self.acquire()?;
         let _thread_default = ThreadDefaultContext::new(self);
         Ok(func())
@@ -176,7 +176,7 @@ impl MainContext {
 #[must_use = "if unused the main context will be released immediately"]
 pub struct MainContextAcquireGuard<'a>(&'a MainContext);
 
-impl<'a> Drop for MainContextAcquireGuard<'a> {
+impl Drop for MainContextAcquireGuard<'_> {
     #[doc(alias = "g_main_context_release")]
     #[inline]
     fn drop(&mut self) {
@@ -188,7 +188,7 @@ impl<'a> Drop for MainContextAcquireGuard<'a> {
 
 struct ThreadDefaultContext<'a>(&'a MainContext);
 
-impl<'a> ThreadDefaultContext<'a> {
+impl ThreadDefaultContext<'_> {
     fn new(ctx: &MainContext) -> ThreadDefaultContext {
         unsafe {
             ffi::g_main_context_push_thread_default(ctx.to_glib_none().0);
@@ -197,7 +197,7 @@ impl<'a> ThreadDefaultContext<'a> {
     }
 }
 
-impl<'a> Drop for ThreadDefaultContext<'a> {
+impl Drop for ThreadDefaultContext<'_> {
     #[inline]
     fn drop(&mut self) {
         unsafe {
@@ -218,11 +218,13 @@ mod tests {
         let l = crate::MainLoop::new(Some(&c), false);
 
         let l_clone = l.clone();
-        thread::spawn(move || {
+        let join_handle = thread::spawn(move || {
             c.invoke(move || l_clone.quit());
         });
 
         l.run();
+
+        join_handle.join().unwrap();
     }
 
     fn is_same_context(a: &MainContext, b: &MainContext) -> bool {

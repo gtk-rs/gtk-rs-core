@@ -2,13 +2,13 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{File, InputStream};
+use crate::{ffi, File, InputStream};
 use glib::{
     prelude::*,
     signal::{connect_raw, SignalHandlerId},
     translate::*,
 };
-use std::{boxed::Box as Box_, fmt, mem, mem::transmute};
+use std::boxed::Box as Box_;
 
 glib::wrapper! {
     #[doc(alias = "GApplicationCommandLine")]
@@ -23,14 +23,7 @@ impl ApplicationCommandLine {
     pub const NONE: Option<&'static ApplicationCommandLine> = None;
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::ApplicationCommandLine>> Sealed for T {}
-}
-
-pub trait ApplicationCommandLineExt:
-    IsA<ApplicationCommandLine> + sealed::Sealed + 'static
-{
+pub trait ApplicationCommandLineExt: IsA<ApplicationCommandLine> + 'static {
     #[doc(alias = "g_application_command_line_create_file_for_arg")]
     fn create_file_for_arg(&self, arg: impl AsRef<std::ffi::OsStr>) -> File {
         unsafe {
@@ -41,11 +34,20 @@ pub trait ApplicationCommandLineExt:
         }
     }
 
+    #[cfg(feature = "v2_80")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_80")))]
+    #[doc(alias = "g_application_command_line_done")]
+    fn done(&self) {
+        unsafe {
+            ffi::g_application_command_line_done(self.as_ref().to_glib_none().0);
+        }
+    }
+
     #[doc(alias = "g_application_command_line_get_arguments")]
     #[doc(alias = "get_arguments")]
     fn arguments(&self) -> Vec<std::ffi::OsString> {
         unsafe {
-            let mut argc = mem::MaybeUninit::uninit();
+            let mut argc = std::mem::MaybeUninit::uninit();
             let ret = FromGlibContainer::from_glib_full_num(
                 ffi::g_application_command_line_get_arguments(
                     self.as_ref().to_glib_none().0,
@@ -85,6 +87,7 @@ pub trait ApplicationCommandLineExt:
 
     #[doc(alias = "g_application_command_line_get_is_remote")]
     #[doc(alias = "get_is_remote")]
+    #[doc(alias = "is-remote")]
     fn is_remote(&self) -> bool {
         unsafe {
             from_glib(ffi::g_application_command_line_get_is_remote(
@@ -138,10 +141,34 @@ pub trait ApplicationCommandLineExt:
     //    unsafe { TODO: call ffi:g_application_command_line_print() }
     //}
 
+    #[cfg(feature = "v2_80")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_80")))]
+    #[doc(alias = "g_application_command_line_print_literal")]
+    fn print_literal(&self, message: &str) {
+        unsafe {
+            ffi::g_application_command_line_print_literal(
+                self.as_ref().to_glib_none().0,
+                message.to_glib_none().0,
+            );
+        }
+    }
+
     //#[doc(alias = "g_application_command_line_printerr")]
     //fn printerr(&self, format: &str, : /*Unknown conversion*//*Unimplemented*/Basic: VarArgs) {
     //    unsafe { TODO: call ffi:g_application_command_line_printerr() }
     //}
+
+    #[cfg(feature = "v2_80")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_80")))]
+    #[doc(alias = "g_application_command_line_printerr_literal")]
+    fn printerr_literal(&self, message: &str) {
+        unsafe {
+            ffi::g_application_command_line_printerr_literal(
+                self.as_ref().to_glib_none().0,
+                message.to_glib_none().0,
+            );
+        }
+    }
 
     #[doc(alias = "g_application_command_line_set_exit_status")]
     fn set_exit_status(&self, exit_status: i32) {
@@ -171,7 +198,7 @@ pub trait ApplicationCommandLineExt:
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::is-remote\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_is_remote_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -181,9 +208,3 @@ pub trait ApplicationCommandLineExt:
 }
 
 impl<O: IsA<ApplicationCommandLine>> ApplicationCommandLineExt for O {}
-
-impl fmt::Display for ApplicationCommandLine {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("ApplicationCommandLine")
-    }
-}

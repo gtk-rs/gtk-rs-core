@@ -1,10 +1,8 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use std::vec::Vec;
-
 use libc::size_t;
 
-use crate::{translate::*, Checksum};
+use crate::{ffi, translate::*, Checksum};
 
 impl Checksum {
     #[doc(alias = "g_checksum_get_digest")]

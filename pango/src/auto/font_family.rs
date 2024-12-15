@@ -2,9 +2,14 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::FontFace;
+use crate::{ffi, FontFace};
+#[cfg(feature = "v1_52")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v1_52")))]
+use glib::signal::{connect_raw, SignalHandlerId};
 use glib::{prelude::*, translate::*};
-use std::{fmt, mem, ptr};
+#[cfg(feature = "v1_52")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v1_52")))]
+use std::boxed::Box as Box_;
 
 glib::wrapper! {
     #[doc(alias = "PangoFontFamily")]
@@ -19,19 +24,14 @@ impl FontFamily {
     pub const NONE: Option<&'static FontFamily> = None;
 }
 
-impl fmt::Display for FontFamily {
+impl std::fmt::Display for FontFamily {
     #[inline]
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         f.write_str(&FontFamilyExt::name(self))
     }
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::FontFamily>> Sealed for T {}
-}
-
-pub trait FontFamilyExt: IsA<FontFamily> + sealed::Sealed + 'static {
+pub trait FontFamilyExt: IsA<FontFamily> + 'static {
     #[cfg(feature = "v1_46")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_46")))]
     #[doc(alias = "pango_font_family_get_face")]
@@ -56,6 +56,7 @@ pub trait FontFamilyExt: IsA<FontFamily> + sealed::Sealed + 'static {
     }
 
     #[doc(alias = "pango_font_family_is_monospace")]
+    #[doc(alias = "is-monospace")]
     fn is_monospace(&self) -> bool {
         unsafe {
             from_glib(ffi::pango_font_family_is_monospace(
@@ -67,6 +68,7 @@ pub trait FontFamilyExt: IsA<FontFamily> + sealed::Sealed + 'static {
     #[cfg(feature = "v1_44")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
     #[doc(alias = "pango_font_family_is_variable")]
+    #[doc(alias = "is-variable")]
     fn is_variable(&self) -> bool {
         unsafe {
             from_glib(ffi::pango_font_family_is_variable(
@@ -78,14 +80,95 @@ pub trait FontFamilyExt: IsA<FontFamily> + sealed::Sealed + 'static {
     #[doc(alias = "pango_font_family_list_faces")]
     fn list_faces(&self) -> Vec<FontFace> {
         unsafe {
-            let mut faces = ptr::null_mut();
-            let mut n_faces = mem::MaybeUninit::uninit();
+            let mut faces = std::ptr::null_mut();
+            let mut n_faces = std::mem::MaybeUninit::uninit();
             ffi::pango_font_family_list_faces(
                 self.as_ref().to_glib_none().0,
                 &mut faces,
                 n_faces.as_mut_ptr(),
             );
             FromGlibContainer::from_glib_container_num(faces, n_faces.assume_init() as _)
+        }
+    }
+
+    #[cfg(feature = "v1_52")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v1_52")))]
+    #[doc(alias = "is-monospace")]
+    fn connect_is_monospace_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+        unsafe extern "C" fn notify_is_monospace_trampoline<
+            P: IsA<FontFamily>,
+            F: Fn(&P) + 'static,
+        >(
+            this: *mut ffi::PangoFontFamily,
+            _param_spec: glib::ffi::gpointer,
+            f: glib::ffi::gpointer,
+        ) {
+            let f: &F = &*(f as *const F);
+            f(FontFamily::from_glib_borrow(this).unsafe_cast_ref())
+        }
+        unsafe {
+            let f: Box_<F> = Box_::new(f);
+            connect_raw(
+                self.as_ptr() as *mut _,
+                b"notify::is-monospace\0".as_ptr() as *const _,
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
+                    notify_is_monospace_trampoline::<Self, F> as *const (),
+                )),
+                Box_::into_raw(f),
+            )
+        }
+    }
+
+    #[cfg(feature = "v1_52")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v1_52")))]
+    #[doc(alias = "is-variable")]
+    fn connect_is_variable_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+        unsafe extern "C" fn notify_is_variable_trampoline<
+            P: IsA<FontFamily>,
+            F: Fn(&P) + 'static,
+        >(
+            this: *mut ffi::PangoFontFamily,
+            _param_spec: glib::ffi::gpointer,
+            f: glib::ffi::gpointer,
+        ) {
+            let f: &F = &*(f as *const F);
+            f(FontFamily::from_glib_borrow(this).unsafe_cast_ref())
+        }
+        unsafe {
+            let f: Box_<F> = Box_::new(f);
+            connect_raw(
+                self.as_ptr() as *mut _,
+                b"notify::is-variable\0".as_ptr() as *const _,
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
+                    notify_is_variable_trampoline::<Self, F> as *const (),
+                )),
+                Box_::into_raw(f),
+            )
+        }
+    }
+
+    #[cfg(feature = "v1_52")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v1_52")))]
+    #[doc(alias = "name")]
+    fn connect_name_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+        unsafe extern "C" fn notify_name_trampoline<P: IsA<FontFamily>, F: Fn(&P) + 'static>(
+            this: *mut ffi::PangoFontFamily,
+            _param_spec: glib::ffi::gpointer,
+            f: glib::ffi::gpointer,
+        ) {
+            let f: &F = &*(f as *const F);
+            f(FontFamily::from_glib_borrow(this).unsafe_cast_ref())
+        }
+        unsafe {
+            let f: Box_<F> = Box_::new(f);
+            connect_raw(
+                self.as_ptr() as *mut _,
+                b"notify::name\0".as_ptr() as *const _,
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
+                    notify_name_trampoline::<Self, F> as *const (),
+                )),
+                Box_::into_raw(f),
+            )
         }
     }
 }

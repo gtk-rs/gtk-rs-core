@@ -1,8 +1,7 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
 use std::{
-    borrow::{Borrow, Cow, ToOwned},
-    cmp::{Eq, PartialEq},
+    borrow::{Borrow, Cow},
     fmt,
     hash::{Hash, Hasher},
     iter,
@@ -12,7 +11,7 @@ use std::{
     str::FromStr,
 };
 
-use crate::{prelude::*, translate::*, BoolError, Type};
+use crate::{ffi, gobject_ffi, prelude::*, translate::*, BoolError, Type};
 
 // rustdoc-stripper-ignore-next
 /// Describes `Variant` types.
@@ -968,7 +967,7 @@ impl<'a> Iterator for VariantTyIterator<'a> {
     }
 }
 
-impl<'a> iter::FusedIterator for VariantTyIterator<'a> {}
+impl iter::FusedIterator for VariantTyIterator<'_> {}
 
 #[cfg(test)]
 mod tests {

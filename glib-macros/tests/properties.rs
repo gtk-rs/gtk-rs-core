@@ -14,7 +14,7 @@ mod base {
         use super::*;
 
         #[derive(Properties, Default)]
-        #[properties(wrapper_type = super::Base)]
+        #[properties(wrapper_type = super::Base, ext_trait)]
         pub struct Base {
             #[property(get = Self::not_overridden)]
             overridden: PhantomData<u32>,
@@ -50,7 +50,6 @@ mod foo {
     use glib::prelude::*;
     use glib::subclass::prelude::*;
     use glib_macros::{Properties, ValueDelegate};
-    use once_cell::sync::OnceCell;
     use std::cell::Cell;
     use std::cell::RefCell;
     use std::marker::PhantomData;
@@ -79,7 +78,7 @@ mod foo {
     }
 
     pub mod imp {
-        use std::rc::Rc;
+        use std::{cell::OnceCell, rc::Rc};
 
         use super::*;
 
@@ -94,6 +93,8 @@ mod foo {
             string_vec: RefCell<Vec<String>>,
             #[property(get, set, builder(glib::VariantTy::DOUBLE))]
             variant: RefCell<Option<glib::Variant>>,
+            #[property(get, set, builder(&<Option<i32>>::static_variant_type()))]
+            variant2: RefCell<Option<glib::Variant>>,
             #[property(get = |_| 42.0, set)]
             infer_inline_type: RefCell<f64>,
             // The following property doesn't store any data. The value of the property is calculated
@@ -182,6 +183,19 @@ mod foo {
                     .set(value.map(|v| format!("custom set: {}", v)))
                     .expect("Setter to be only called once");
             }
+        }
+
+        /// Checks that `Properties` does not pollute the scope with
+        /// trait imports, as it did in older versions.
+        #[test]
+        fn no_import_leaks() {
+            // `vec.get` can match these methods (in order of precedence):
+            // (1) `<Vec<String> as PropertyGet>::get`
+            // (2) `<[String]>::get` through deref of `Vec<String>`
+            // Had the macro introduced `PropertyGet` into the scope, it would
+            // resolve to (1), which we do not want.
+            let vec: Vec<String> = vec![String::new(); 2];
+            assert_eq!(vec.get(1), Some(&String::new()));
         }
     }
 
@@ -388,59 +402,15 @@ fn props() {
     );
 }
 
-mod ext_trait {
-    use glib::subclass::object::DerivedObjectProperties;
-    use glib::ObjectExt;
-
-    use glib::subclass::{prelude::ObjectImpl, types::ObjectSubclass};
-    use glib_macros::Properties;
-    use std::cell::RefCell;
-
-    pub mod imp {
-        use super::*;
-
-        #[derive(Properties, Default)]
-        #[properties(wrapper_type = super::Author, ext_trait)]
-        pub struct Author {
-            #[property(get, set)]
-            firstname: RefCell<String>,
-            #[property(get, set)]
-            lastname: RefCell<String>,
-        }
-
-        #[glib::derived_properties]
-        impl ObjectImpl for Author {}
-
-        #[glib::object_subclass]
-        impl ObjectSubclass for Author {
-            const NAME: &'static str = "Author";
-            type Type = super::Author;
-        }
-    }
-
-    glib::wrapper! {
-        pub struct Author(ObjectSubclass<imp::Author>);
-    }
-    impl Author {
-        pub fn new() -> Self {
-            glib::Object::builder().build()
-        }
-    }
-    impl Default for Author {
-        fn default() -> Self {
-            Self::new()
-        }
-    }
-}
-
 #[test]
 fn ext_trait() {
-    use ext_trait::imp::AuthorPropertiesExt;
-    let author = ext_trait::Author::new();
-    AuthorPropertiesExt::set_firstname(&author, "John");
-    AuthorPropertiesExt::set_lastname(&author, "Doe");
-    assert_eq!(AuthorPropertiesExt::firstname(&author), "John");
-    assert_eq!(AuthorPropertiesExt::lastname(&author), "Doe");
+    use base::imp::BasePropertiesExt;
+    let base: base::Base = glib::object::Object::builder().build();
+    assert_eq!(BasePropertiesExt::overridden(&base), 42);
+
+    let foo_obj: foo::Foo = glib::object::Object::builder().build();
+    assert_eq!(BasePropertiesExt::overridden(&foo_obj), 43);
+    assert_eq!(foo_obj.overridden(), 43);
 }
 
 #[test]
@@ -448,11 +418,9 @@ fn keyword_propnames() {
     mod kw_names {
         mod imp {
 
-            use glib::subclass::object::DerivedObjectProperties;
-            use glib::ObjectExt;
             use std::cell::Cell;
 
-            use glib::subclass::{prelude::ObjectImpl, types::ObjectSubclass};
+            use glib::{prelude::*, subclass::prelude::*};
             use glib_macros::Properties;
 
             #[derive(Properties, Default)]
@@ -550,4 +518,36 @@ fn keyword_propnames() {
     assert_eq!(mykwnames.r#await(), 255_u8);
     mykwnames.set_property("try", 255_u8);
     assert_eq!(mykwnames.r#try(), 255_u8);
+}
+
+/// This struct is intentionally left empty.
+///
+/// Ensure the code compiles even when no properties are specified at all.
+/// This is useful for refactoring.
+#[test]
+#[allow(unreachable_code)]
+fn empty_struct() {
+    mod empty {
+        mod imp {
+            use glib::subclass::prelude::*;
+            use glib_macros::Properties;
+
+            #[derive(Properties, Default)]
+            #[properties(wrapper_type = super::Empty)]
+            pub struct Empty {}
+
+            #[glib::object_subclass]
+            impl ObjectSubclass for Empty {
+                const NAME: &'static str = "Empty";
+                type Type = super::Empty;
+            }
+
+            #[glib::derived_properties]
+            impl ObjectImpl for Empty {}
+        }
+
+        glib::wrapper! {
+            pub struct Empty(ObjectSubclass<imp::Empty>);
+        }
+    }
 }

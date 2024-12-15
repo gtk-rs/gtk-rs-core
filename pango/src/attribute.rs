@@ -2,7 +2,7 @@
 
 use glib::translate::*;
 
-use crate::{AttrClass, AttrType, Attribute};
+use crate::{ffi, AttrClass, AttrType, Attribute};
 
 impl Attribute {
     #[doc(alias = "get_attr_class")]

@@ -2,13 +2,13 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::DBusInterface;
+use crate::{ffi, DBusInterface};
 use glib::{
     prelude::*,
     signal::{connect_raw, SignalHandlerId},
     translate::*,
 };
-use std::{boxed::Box as Box_, fmt, mem::transmute};
+use std::boxed::Box as Box_;
 
 glib::wrapper! {
     #[doc(alias = "GDBusObject")]
@@ -23,12 +23,7 @@ impl DBusObject {
     pub const NONE: Option<&'static DBusObject> = None;
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::DBusObject>> Sealed for T {}
-}
-
-pub trait DBusObjectExt: IsA<DBusObject> + sealed::Sealed + 'static {
+pub trait DBusObjectExt: IsA<DBusObject> + 'static {
     #[doc(alias = "g_dbus_object_get_interface")]
     #[doc(alias = "get_interface")]
     fn interface(&self, interface_name: &str) -> Option<DBusInterface> {
@@ -84,7 +79,7 @@ pub trait DBusObjectExt: IsA<DBusObject> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"interface-added\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     interface_added_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -116,7 +111,7 @@ pub trait DBusObjectExt: IsA<DBusObject> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"interface-removed\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     interface_removed_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -126,9 +121,3 @@ pub trait DBusObjectExt: IsA<DBusObject> + sealed::Sealed + 'static {
 }
 
 impl<O: IsA<DBusObject>> DBusObjectExt for O {}
-
-impl fmt::Display for DBusObject {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("DBusObject")
-    }
-}

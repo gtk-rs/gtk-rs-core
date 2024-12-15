@@ -3,8 +3,8 @@
 use std::{fmt, ptr};
 
 use crate::{
-    object::ObjectRef, prelude::*, translate::*, Binding, BindingFlags, BindingGroup, BoolError,
-    Object, ParamSpec, Value,
+    ffi, gobject_ffi, object::ObjectRef, prelude::*, translate::*, Binding, BindingFlags,
+    BindingGroup, BoolError, Object, ParamSpec, Value,
 };
 
 impl BindingGroup {
@@ -419,9 +419,7 @@ mod test {
     }
 
     mod imp {
-        use std::cell::RefCell;
-
-        use once_cell::sync::Lazy;
+        use std::{cell::RefCell, sync::OnceLock};
 
         use super::*;
         use crate as glib;
@@ -440,7 +438,8 @@ mod test {
 
         impl ObjectImpl for TestObject {
             fn properties() -> &'static [crate::ParamSpec] {
-                static PROPERTIES: Lazy<Vec<crate::ParamSpec>> = Lazy::new(|| {
+                static PROPERTIES: OnceLock<Vec<crate::ParamSpec>> = OnceLock::new();
+                PROPERTIES.get_or_init(|| {
                     vec![
                         crate::ParamSpecString::builder("name")
                             .explicit_notify()
@@ -449,8 +448,7 @@ mod test {
                             .explicit_notify()
                             .build(),
                     ]
-                });
-                PROPERTIES.as_ref()
+                })
             }
 
             fn property(&self, _id: usize, pspec: &crate::ParamSpec) -> crate::Value {

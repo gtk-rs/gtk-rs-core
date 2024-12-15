@@ -23,7 +23,7 @@ pin_project! {
     ///
     /// ```
     /// # use futures::FutureExt;
-    /// # use gio::traits::CancellableExt;
+    /// # use gio::prelude::*;
     /// # use gio::CancellableFuture;
     /// let l = glib::MainLoop::new(None, false);
     /// let c = gio::Cancellable::new();

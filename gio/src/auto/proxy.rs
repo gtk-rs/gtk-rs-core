@@ -2,9 +2,9 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{AsyncResult, Cancellable, IOStream, ProxyAddress};
+use crate::{ffi, AsyncResult, Cancellable, IOStream, ProxyAddress};
 use glib::{prelude::*, translate::*};
-use std::{boxed::Box as Box_, fmt, pin::Pin, ptr};
+use std::{boxed::Box as Box_, pin::Pin};
 
 glib::wrapper! {
     #[doc(alias = "GProxy")]
@@ -29,12 +29,7 @@ impl Proxy {
     }
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::Proxy>> Sealed for T {}
-}
-
-pub trait ProxyExt: IsA<Proxy> + sealed::Sealed + 'static {
+pub trait ProxyExt: IsA<Proxy> + 'static {
     #[doc(alias = "g_proxy_connect")]
     fn connect(
         &self,
@@ -43,7 +38,7 @@ pub trait ProxyExt: IsA<Proxy> + sealed::Sealed + 'static {
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<IOStream, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_proxy_connect(
                 self.as_ref().to_glib_none().0,
                 connection.as_ref().to_glib_none().0,
@@ -86,7 +81,7 @@ pub trait ProxyExt: IsA<Proxy> + sealed::Sealed + 'static {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_proxy_connect_finish(_source_object as *mut _, res, &mut error);
             let result = if error.is_null() {
                 Ok(from_glib_full(ret))
@@ -139,9 +134,3 @@ pub trait ProxyExt: IsA<Proxy> + sealed::Sealed + 'static {
 }
 
 impl<O: IsA<Proxy>> ProxyExt for O {}
-
-impl fmt::Display for Proxy {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("Proxy")
-    }
-}

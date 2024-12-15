@@ -3,7 +3,7 @@
 // DO NOT EDIT
 
 use crate::{
-    Cancellable, Credentials, DatagramBased, InetAddress, Initable, SocketAddress,
+    ffi, Cancellable, Credentials, DatagramBased, InetAddress, Initable, SocketAddress,
     SocketConnection, SocketFamily, SocketProtocol, SocketType,
 };
 use glib::{
@@ -11,7 +11,7 @@ use glib::{
     signal::{connect_raw, SignalHandlerId},
     translate::*,
 };
-use std::{boxed::Box as Box_, fmt, mem, mem::transmute, ptr};
+use std::boxed::Box as Box_;
 
 glib::wrapper! {
     #[doc(alias = "GSocket")]
@@ -32,7 +32,7 @@ impl Socket {
         protocol: SocketProtocol,
     ) -> Result<Socket, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_socket_new(
                 family.into_glib(),
                 type_.into_glib(),
@@ -48,16 +48,11 @@ impl Socket {
     }
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::Socket>> Sealed for T {}
-}
-
-pub trait SocketExt: IsA<Socket> + sealed::Sealed + 'static {
+pub trait SocketExt: IsA<Socket> + 'static {
     #[doc(alias = "g_socket_accept")]
     fn accept(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<Socket, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_socket_accept(
                 self.as_ref().to_glib_none().0,
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
@@ -78,7 +73,7 @@ pub trait SocketExt: IsA<Socket> + sealed::Sealed + 'static {
         allow_reuse: bool,
     ) -> Result<(), glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_socket_bind(
                 self.as_ref().to_glib_none().0,
                 address.as_ref().to_glib_none().0,
@@ -97,7 +92,7 @@ pub trait SocketExt: IsA<Socket> + sealed::Sealed + 'static {
     #[doc(alias = "g_socket_check_connect_result")]
     fn check_connect_result(&self) -> Result<(), glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let is_ok =
                 ffi::g_socket_check_connect_result(self.as_ref().to_glib_none().0, &mut error);
             debug_assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
@@ -112,7 +107,7 @@ pub trait SocketExt: IsA<Socket> + sealed::Sealed + 'static {
     #[doc(alias = "g_socket_close")]
     fn close(&self) -> Result<(), glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_socket_close(self.as_ref().to_glib_none().0, &mut error);
             debug_assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
             if error.is_null() {
@@ -141,7 +136,7 @@ pub trait SocketExt: IsA<Socket> + sealed::Sealed + 'static {
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<(), glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_socket_condition_timed_wait(
                 self.as_ref().to_glib_none().0,
                 condition.into_glib(),
@@ -165,7 +160,7 @@ pub trait SocketExt: IsA<Socket> + sealed::Sealed + 'static {
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<(), glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_socket_condition_wait(
                 self.as_ref().to_glib_none().0,
                 condition.into_glib(),
@@ -188,7 +183,7 @@ pub trait SocketExt: IsA<Socket> + sealed::Sealed + 'static {
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<(), glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_socket_connect(
                 self.as_ref().to_glib_none().0,
                 address.as_ref().to_glib_none().0,
@@ -221,12 +216,14 @@ pub trait SocketExt: IsA<Socket> + sealed::Sealed + 'static {
 
     #[doc(alias = "g_socket_get_blocking")]
     #[doc(alias = "get_blocking")]
+    #[doc(alias = "blocking")]
     fn is_blocking(&self) -> bool {
         unsafe { from_glib(ffi::g_socket_get_blocking(self.as_ref().to_glib_none().0)) }
     }
 
     #[doc(alias = "g_socket_get_broadcast")]
     #[doc(alias = "get_broadcast")]
+    #[doc(alias = "broadcast")]
     fn is_broadcast(&self) -> bool {
         unsafe { from_glib(ffi::g_socket_get_broadcast(self.as_ref().to_glib_none().0)) }
     }
@@ -235,7 +232,7 @@ pub trait SocketExt: IsA<Socket> + sealed::Sealed + 'static {
     #[doc(alias = "get_credentials")]
     fn credentials(&self) -> Result<Credentials, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_socket_get_credentials(self.as_ref().to_glib_none().0, &mut error);
             if error.is_null() {
                 Ok(from_glib_full(ret))
@@ -253,21 +250,24 @@ pub trait SocketExt: IsA<Socket> + sealed::Sealed + 'static {
 
     #[doc(alias = "g_socket_get_keepalive")]
     #[doc(alias = "get_keepalive")]
+    #[doc(alias = "keepalive")]
     fn is_keepalive(&self) -> bool {
         unsafe { from_glib(ffi::g_socket_get_keepalive(self.as_ref().to_glib_none().0)) }
     }
 
     #[doc(alias = "g_socket_get_listen_backlog")]
     #[doc(alias = "get_listen_backlog")]
+    #[doc(alias = "listen-backlog")]
     fn listen_backlog(&self) -> i32 {
         unsafe { ffi::g_socket_get_listen_backlog(self.as_ref().to_glib_none().0) }
     }
 
     #[doc(alias = "g_socket_get_local_address")]
     #[doc(alias = "get_local_address")]
+    #[doc(alias = "local-address")]
     fn local_address(&self) -> Result<SocketAddress, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_socket_get_local_address(self.as_ref().to_glib_none().0, &mut error);
             if error.is_null() {
                 Ok(from_glib_full(ret))
@@ -279,6 +279,7 @@ pub trait SocketExt: IsA<Socket> + sealed::Sealed + 'static {
 
     #[doc(alias = "g_socket_get_multicast_loopback")]
     #[doc(alias = "get_multicast_loopback")]
+    #[doc(alias = "multicast-loopback")]
     fn is_multicast_loopback(&self) -> bool {
         unsafe {
             from_glib(ffi::g_socket_get_multicast_loopback(
@@ -289,6 +290,7 @@ pub trait SocketExt: IsA<Socket> + sealed::Sealed + 'static {
 
     #[doc(alias = "g_socket_get_multicast_ttl")]
     #[doc(alias = "get_multicast_ttl")]
+    #[doc(alias = "multicast-ttl")]
     fn multicast_ttl(&self) -> u32 {
         unsafe { ffi::g_socket_get_multicast_ttl(self.as_ref().to_glib_none().0) }
     }
@@ -297,8 +299,8 @@ pub trait SocketExt: IsA<Socket> + sealed::Sealed + 'static {
     #[doc(alias = "get_option")]
     fn option(&self, level: i32, optname: i32) -> Result<i32, glib::Error> {
         unsafe {
-            let mut value = mem::MaybeUninit::uninit();
-            let mut error = ptr::null_mut();
+            let mut value = std::mem::MaybeUninit::uninit();
+            let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_socket_get_option(
                 self.as_ref().to_glib_none().0,
                 level,
@@ -323,9 +325,10 @@ pub trait SocketExt: IsA<Socket> + sealed::Sealed + 'static {
 
     #[doc(alias = "g_socket_get_remote_address")]
     #[doc(alias = "get_remote_address")]
+    #[doc(alias = "remote-address")]
     fn remote_address(&self) -> Result<SocketAddress, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_socket_get_remote_address(self.as_ref().to_glib_none().0, &mut error);
             if error.is_null() {
                 Ok(from_glib_full(ret))
@@ -375,7 +378,7 @@ pub trait SocketExt: IsA<Socket> + sealed::Sealed + 'static {
         iface: Option<&str>,
     ) -> Result<(), glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_socket_join_multicast_group(
                 self.as_ref().to_glib_none().0,
                 group.as_ref().to_glib_none().0,
@@ -400,7 +403,7 @@ pub trait SocketExt: IsA<Socket> + sealed::Sealed + 'static {
         iface: Option<&str>,
     ) -> Result<(), glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_socket_join_multicast_group_ssm(
                 self.as_ref().to_glib_none().0,
                 group.as_ref().to_glib_none().0,
@@ -425,7 +428,7 @@ pub trait SocketExt: IsA<Socket> + sealed::Sealed + 'static {
         iface: Option<&str>,
     ) -> Result<(), glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_socket_leave_multicast_group(
                 self.as_ref().to_glib_none().0,
                 group.as_ref().to_glib_none().0,
@@ -450,7 +453,7 @@ pub trait SocketExt: IsA<Socket> + sealed::Sealed + 'static {
         iface: Option<&str>,
     ) -> Result<(), glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_socket_leave_multicast_group_ssm(
                 self.as_ref().to_glib_none().0,
                 group.as_ref().to_glib_none().0,
@@ -470,7 +473,7 @@ pub trait SocketExt: IsA<Socket> + sealed::Sealed + 'static {
     #[doc(alias = "g_socket_listen")]
     fn listen(&self) -> Result<(), glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_socket_listen(self.as_ref().to_glib_none().0, &mut error);
             debug_assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
             if error.is_null() {
@@ -482,6 +485,7 @@ pub trait SocketExt: IsA<Socket> + sealed::Sealed + 'static {
     }
 
     #[doc(alias = "g_socket_set_blocking")]
+    #[doc(alias = "blocking")]
     fn set_blocking(&self, blocking: bool) {
         unsafe {
             ffi::g_socket_set_blocking(self.as_ref().to_glib_none().0, blocking.into_glib());
@@ -489,6 +493,7 @@ pub trait SocketExt: IsA<Socket> + sealed::Sealed + 'static {
     }
 
     #[doc(alias = "g_socket_set_broadcast")]
+    #[doc(alias = "broadcast")]
     fn set_broadcast(&self, broadcast: bool) {
         unsafe {
             ffi::g_socket_set_broadcast(self.as_ref().to_glib_none().0, broadcast.into_glib());
@@ -496,6 +501,7 @@ pub trait SocketExt: IsA<Socket> + sealed::Sealed + 'static {
     }
 
     #[doc(alias = "g_socket_set_keepalive")]
+    #[doc(alias = "keepalive")]
     fn set_keepalive(&self, keepalive: bool) {
         unsafe {
             ffi::g_socket_set_keepalive(self.as_ref().to_glib_none().0, keepalive.into_glib());
@@ -503,6 +509,7 @@ pub trait SocketExt: IsA<Socket> + sealed::Sealed + 'static {
     }
 
     #[doc(alias = "g_socket_set_listen_backlog")]
+    #[doc(alias = "listen-backlog")]
     fn set_listen_backlog(&self, backlog: i32) {
         unsafe {
             ffi::g_socket_set_listen_backlog(self.as_ref().to_glib_none().0, backlog);
@@ -510,6 +517,7 @@ pub trait SocketExt: IsA<Socket> + sealed::Sealed + 'static {
     }
 
     #[doc(alias = "g_socket_set_multicast_loopback")]
+    #[doc(alias = "multicast-loopback")]
     fn set_multicast_loopback(&self, loopback: bool) {
         unsafe {
             ffi::g_socket_set_multicast_loopback(
@@ -520,6 +528,7 @@ pub trait SocketExt: IsA<Socket> + sealed::Sealed + 'static {
     }
 
     #[doc(alias = "g_socket_set_multicast_ttl")]
+    #[doc(alias = "multicast-ttl")]
     fn set_multicast_ttl(&self, ttl: u32) {
         unsafe {
             ffi::g_socket_set_multicast_ttl(self.as_ref().to_glib_none().0, ttl);
@@ -529,7 +538,7 @@ pub trait SocketExt: IsA<Socket> + sealed::Sealed + 'static {
     #[doc(alias = "g_socket_set_option")]
     fn set_option(&self, level: i32, optname: i32, value: i32) -> Result<(), glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_socket_set_option(
                 self.as_ref().to_glib_none().0,
                 level,
@@ -547,6 +556,7 @@ pub trait SocketExt: IsA<Socket> + sealed::Sealed + 'static {
     }
 
     #[doc(alias = "g_socket_set_timeout")]
+    #[doc(alias = "timeout")]
     fn set_timeout(&self, timeout: u32) {
         unsafe {
             ffi::g_socket_set_timeout(self.as_ref().to_glib_none().0, timeout);
@@ -554,6 +564,7 @@ pub trait SocketExt: IsA<Socket> + sealed::Sealed + 'static {
     }
 
     #[doc(alias = "g_socket_set_ttl")]
+    #[doc(alias = "ttl")]
     fn set_ttl(&self, ttl: u32) {
         unsafe {
             ffi::g_socket_set_ttl(self.as_ref().to_glib_none().0, ttl);
@@ -563,7 +574,7 @@ pub trait SocketExt: IsA<Socket> + sealed::Sealed + 'static {
     #[doc(alias = "g_socket_shutdown")]
     fn shutdown(&self, shutdown_read: bool, shutdown_write: bool) -> Result<(), glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_socket_shutdown(
                 self.as_ref().to_glib_none().0,
                 shutdown_read.into_glib(),
@@ -604,7 +615,7 @@ pub trait SocketExt: IsA<Socket> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::blocking\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_blocking_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -627,7 +638,7 @@ pub trait SocketExt: IsA<Socket> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::broadcast\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_broadcast_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -650,7 +661,7 @@ pub trait SocketExt: IsA<Socket> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::keepalive\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_keepalive_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -676,7 +687,7 @@ pub trait SocketExt: IsA<Socket> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::listen-backlog\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_listen_backlog_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -702,7 +713,7 @@ pub trait SocketExt: IsA<Socket> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::local-address\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_local_address_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -728,7 +739,7 @@ pub trait SocketExt: IsA<Socket> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::multicast-loopback\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_multicast_loopback_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -754,7 +765,7 @@ pub trait SocketExt: IsA<Socket> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::multicast-ttl\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_multicast_ttl_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -780,7 +791,7 @@ pub trait SocketExt: IsA<Socket> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::remote-address\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_remote_address_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -803,7 +814,7 @@ pub trait SocketExt: IsA<Socket> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::timeout\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_timeout_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -826,7 +837,7 @@ pub trait SocketExt: IsA<Socket> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::ttl\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_ttl_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -836,9 +847,3 @@ pub trait SocketExt: IsA<Socket> + sealed::Sealed + 'static {
 }
 
 impl<O: IsA<Socket>> SocketExt for O {}
-
-impl fmt::Display for Socket {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("Socket")
-    }
-}

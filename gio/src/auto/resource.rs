@@ -2,9 +2,8 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{InputStream, ResourceLookupFlags};
+use crate::{ffi, InputStream, ResourceLookupFlags};
 use glib::translate::*;
-use std::{mem, ptr};
 
 glib::wrapper! {
     #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
@@ -25,7 +24,7 @@ impl Resource {
         lookup_flags: ResourceLookupFlags,
     ) -> Result<Vec<glib::GString>, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_resource_enumerate_children(
                 self.to_glib_none().0,
                 path.to_glib_none().0,
@@ -48,9 +47,9 @@ impl Resource {
         lookup_flags: ResourceLookupFlags,
     ) -> Result<(usize, u32), glib::Error> {
         unsafe {
-            let mut size = mem::MaybeUninit::uninit();
-            let mut flags = mem::MaybeUninit::uninit();
-            let mut error = ptr::null_mut();
+            let mut size = std::mem::MaybeUninit::uninit();
+            let mut flags = std::mem::MaybeUninit::uninit();
+            let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_resource_get_info(
                 self.to_glib_none().0,
                 path.to_glib_none().0,
@@ -68,6 +67,18 @@ impl Resource {
         }
     }
 
+    #[cfg(feature = "v2_84")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_84")))]
+    #[doc(alias = "g_resource_has_children")]
+    pub fn has_children(&self, path: &str) -> bool {
+        unsafe {
+            from_glib(ffi::g_resource_has_children(
+                self.to_glib_none().0,
+                path.to_glib_none().0,
+            ))
+        }
+    }
+
     #[doc(alias = "g_resource_lookup_data")]
     pub fn lookup_data(
         &self,
@@ -75,7 +86,7 @@ impl Resource {
         lookup_flags: ResourceLookupFlags,
     ) -> Result<glib::Bytes, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_resource_lookup_data(
                 self.to_glib_none().0,
                 path.to_glib_none().0,
@@ -97,7 +108,7 @@ impl Resource {
         lookup_flags: ResourceLookupFlags,
     ) -> Result<InputStream, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_resource_open_stream(
                 self.to_glib_none().0,
                 path.to_glib_none().0,
@@ -115,7 +126,7 @@ impl Resource {
     #[doc(alias = "g_resource_load")]
     pub fn load(filename: impl AsRef<std::path::Path>) -> Result<Resource, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_resource_load(filename.as_ref().to_glib_none().0, &mut error);
             if error.is_null() {
                 Ok(from_glib_full(ret))

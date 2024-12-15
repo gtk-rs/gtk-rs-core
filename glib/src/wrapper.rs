@@ -272,7 +272,6 @@
 /// [#shared]: #shared
 /// [#object]: #object
 /// [#non-derivable-classes]: #non-derivable-classes
-
 #[macro_export]
 macro_rules! wrapper {
     // Boxed
@@ -436,8 +435,7 @@ macro_rules! wrapper {
         $visibility:vis struct $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)? (ObjectInterface<$iface_name:ty>) $(@requires $($requires:path),+)?;
     ) => {
         $crate::glib_object_wrapper!(
-            @interface [$($attr)*] $visibility $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?, *mut std::os::raw::c_void, std::os::raw::c_void,
-            @ffi_class $iface_name,
+            @object_interface [$($attr)*] $visibility $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?, $iface_name,
             @type_ $crate::translate::IntoGlib::into_glib(<$iface_name as $crate::subclass::interface::ObjectInterfaceType>::type_()),
             @requires [$( $($requires),+ )?]
         );

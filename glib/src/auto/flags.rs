@@ -2,8 +2,7 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{bitflags::bitflags, prelude::*, translate::*};
-use std::fmt;
+use crate::{bitflags::bitflags, ffi, prelude::*, translate::*};
 
 #[cfg(feature = "v2_66")]
 bitflags! {
@@ -19,14 +18,6 @@ bitflags! {
         const DURABLE = ffi::G_FILE_SET_CONTENTS_DURABLE as _;
         #[doc(alias = "G_FILE_SET_CONTENTS_ONLY_EXISTING")]
         const ONLY_EXISTING = ffi::G_FILE_SET_CONTENTS_ONLY_EXISTING as _;
-    }
-}
-
-#[cfg(feature = "v2_66")]
-#[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
-impl fmt::Display for FileSetContentsFlags {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        <Self as fmt::Debug>::fmt(self, f)
     }
 }
 
@@ -66,12 +57,6 @@ bitflags! {
         const IS_EXECUTABLE = ffi::G_FILE_TEST_IS_EXECUTABLE as _;
         #[doc(alias = "G_FILE_TEST_EXISTS")]
         const EXISTS = ffi::G_FILE_TEST_EXISTS as _;
-    }
-}
-
-impl fmt::Display for FileTest {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        <Self as fmt::Debug>::fmt(self, f)
     }
 }
 
@@ -116,12 +101,6 @@ bitflags! {
     }
 }
 
-impl fmt::Display for FormatSizeFlags {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        <Self as fmt::Debug>::fmt(self, f)
-    }
-}
-
 #[doc(hidden)]
 impl IntoGlib for FormatSizeFlags {
     type GlibType = ffi::GFormatSizeFlags;
@@ -159,12 +138,6 @@ bitflags! {
     }
 }
 
-impl fmt::Display for IOCondition {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        <Self as fmt::Debug>::fmt(self, f)
-    }
-}
-
 #[doc(hidden)]
 impl IntoGlib for IOCondition {
     type GlibType = ffi::GIOCondition;
@@ -185,6 +158,7 @@ impl FromGlib<ffi::GIOCondition> for IOCondition {
 
 impl StaticType for IOCondition {
     #[inline]
+    #[doc(alias = "g_io_condition_get_type")]
     fn static_type() -> crate::Type {
         unsafe { from_glib(ffi::g_io_condition_get_type()) }
     }
@@ -196,7 +170,7 @@ impl crate::HasParamSpec for IOCondition {
     type BuilderFn = fn(&str) -> crate::ParamSpecFlagsBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name| Self::ParamSpec::builder(name)
+        Self::ParamSpec::builder
     }
 }
 
@@ -251,12 +225,6 @@ bitflags! {
     }
 }
 
-impl fmt::Display for KeyFileFlags {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        <Self as fmt::Debug>::fmt(self, f)
-    }
-}
-
 #[doc(hidden)]
 impl IntoGlib for KeyFileFlags {
     type GlibType = ffi::GKeyFileFlags;
@@ -300,12 +268,6 @@ bitflags! {
     }
 }
 
-impl fmt::Display for LogLevelFlags {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        <Self as fmt::Debug>::fmt(self, f)
-    }
-}
-
 #[doc(hidden)]
 impl IntoGlib for LogLevelFlags {
     type GlibType = ffi::GLogLevelFlags;
@@ -334,14 +296,6 @@ bitflags! {
         const NONE = ffi::G_MAIN_CONTEXT_FLAGS_NONE as _;
         #[doc(alias = "G_MAIN_CONTEXT_FLAGS_OWNERLESS_POLLING")]
         const OWNERLESS_POLLING = ffi::G_MAIN_CONTEXT_FLAGS_OWNERLESS_POLLING as _;
-    }
-}
-
-#[cfg(feature = "v2_72")]
-#[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
-impl fmt::Display for MainContextFlags {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        <Self as fmt::Debug>::fmt(self, f)
     }
 }
 
@@ -390,12 +344,6 @@ bitflags! {
     }
 }
 
-impl fmt::Display for OptionFlags {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        <Self as fmt::Debug>::fmt(self, f)
-    }
-}
-
 #[doc(hidden)]
 impl IntoGlib for OptionFlags {
     type GlibType = ffi::GOptionFlags;
@@ -410,6 +358,126 @@ impl IntoGlib for OptionFlags {
 impl FromGlib<ffi::GOptionFlags> for OptionFlags {
     #[inline]
     unsafe fn from_glib(value: ffi::GOptionFlags) -> Self {
+        Self::from_bits_truncate(value)
+    }
+}
+
+bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
+    #[doc(alias = "GRegexCompileFlags")]
+    pub struct RegexCompileFlags: u32 {
+        #[doc(alias = "G_REGEX_DEFAULT")]
+        const DEFAULT = ffi::G_REGEX_DEFAULT as _;
+        #[doc(alias = "G_REGEX_CASELESS")]
+        const CASELESS = ffi::G_REGEX_CASELESS as _;
+        #[doc(alias = "G_REGEX_MULTILINE")]
+        const MULTILINE = ffi::G_REGEX_MULTILINE as _;
+        #[doc(alias = "G_REGEX_DOTALL")]
+        const DOTALL = ffi::G_REGEX_DOTALL as _;
+        #[doc(alias = "G_REGEX_EXTENDED")]
+        const EXTENDED = ffi::G_REGEX_EXTENDED as _;
+        #[doc(alias = "G_REGEX_ANCHORED")]
+        const ANCHORED = ffi::G_REGEX_ANCHORED as _;
+        #[doc(alias = "G_REGEX_DOLLAR_ENDONLY")]
+        const DOLLAR_ENDONLY = ffi::G_REGEX_DOLLAR_ENDONLY as _;
+        #[doc(alias = "G_REGEX_UNGREEDY")]
+        const UNGREEDY = ffi::G_REGEX_UNGREEDY as _;
+        #[doc(alias = "G_REGEX_RAW")]
+        const RAW = ffi::G_REGEX_RAW as _;
+        #[doc(alias = "G_REGEX_NO_AUTO_CAPTURE")]
+        const NO_AUTO_CAPTURE = ffi::G_REGEX_NO_AUTO_CAPTURE as _;
+        #[doc(alias = "G_REGEX_OPTIMIZE")]
+        const OPTIMIZE = ffi::G_REGEX_OPTIMIZE as _;
+        #[doc(alias = "G_REGEX_FIRSTLINE")]
+        const FIRSTLINE = ffi::G_REGEX_FIRSTLINE as _;
+        #[doc(alias = "G_REGEX_DUPNAMES")]
+        const DUPNAMES = ffi::G_REGEX_DUPNAMES as _;
+        #[doc(alias = "G_REGEX_NEWLINE_CR")]
+        const NEWLINE_CR = ffi::G_REGEX_NEWLINE_CR as _;
+        #[doc(alias = "G_REGEX_NEWLINE_LF")]
+        const NEWLINE_LF = ffi::G_REGEX_NEWLINE_LF as _;
+        #[doc(alias = "G_REGEX_NEWLINE_CRLF")]
+        const NEWLINE_CRLF = ffi::G_REGEX_NEWLINE_CRLF as _;
+        #[doc(alias = "G_REGEX_NEWLINE_ANYCRLF")]
+        const NEWLINE_ANYCRLF = ffi::G_REGEX_NEWLINE_ANYCRLF as _;
+        #[doc(alias = "G_REGEX_BSR_ANYCRLF")]
+        const BSR_ANYCRLF = ffi::G_REGEX_BSR_ANYCRLF as _;
+        #[doc(alias = "G_REGEX_JAVASCRIPT_COMPAT")]
+        const JAVASCRIPT_COMPAT = ffi::G_REGEX_JAVASCRIPT_COMPAT as _;
+    }
+}
+
+#[doc(hidden)]
+impl IntoGlib for RegexCompileFlags {
+    type GlibType = ffi::GRegexCompileFlags;
+
+    #[inline]
+    fn into_glib(self) -> ffi::GRegexCompileFlags {
+        self.bits()
+    }
+}
+
+#[doc(hidden)]
+impl FromGlib<ffi::GRegexCompileFlags> for RegexCompileFlags {
+    #[inline]
+    unsafe fn from_glib(value: ffi::GRegexCompileFlags) -> Self {
+        Self::from_bits_truncate(value)
+    }
+}
+
+bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
+    #[doc(alias = "GRegexMatchFlags")]
+    pub struct RegexMatchFlags: u32 {
+        #[doc(alias = "G_REGEX_MATCH_DEFAULT")]
+        const DEFAULT = ffi::G_REGEX_MATCH_DEFAULT as _;
+        #[doc(alias = "G_REGEX_MATCH_ANCHORED")]
+        const ANCHORED = ffi::G_REGEX_MATCH_ANCHORED as _;
+        #[doc(alias = "G_REGEX_MATCH_NOTBOL")]
+        const NOTBOL = ffi::G_REGEX_MATCH_NOTBOL as _;
+        #[doc(alias = "G_REGEX_MATCH_NOTEOL")]
+        const NOTEOL = ffi::G_REGEX_MATCH_NOTEOL as _;
+        #[doc(alias = "G_REGEX_MATCH_NOTEMPTY")]
+        const NOTEMPTY = ffi::G_REGEX_MATCH_NOTEMPTY as _;
+        #[doc(alias = "G_REGEX_MATCH_PARTIAL")]
+        const PARTIAL = ffi::G_REGEX_MATCH_PARTIAL as _;
+        #[doc(alias = "G_REGEX_MATCH_NEWLINE_CR")]
+        const NEWLINE_CR = ffi::G_REGEX_MATCH_NEWLINE_CR as _;
+        #[doc(alias = "G_REGEX_MATCH_NEWLINE_LF")]
+        const NEWLINE_LF = ffi::G_REGEX_MATCH_NEWLINE_LF as _;
+        #[doc(alias = "G_REGEX_MATCH_NEWLINE_CRLF")]
+        const NEWLINE_CRLF = ffi::G_REGEX_MATCH_NEWLINE_CRLF as _;
+        #[doc(alias = "G_REGEX_MATCH_NEWLINE_ANY")]
+        const NEWLINE_ANY = ffi::G_REGEX_MATCH_NEWLINE_ANY as _;
+        #[doc(alias = "G_REGEX_MATCH_NEWLINE_ANYCRLF")]
+        const NEWLINE_ANYCRLF = ffi::G_REGEX_MATCH_NEWLINE_ANYCRLF as _;
+        #[doc(alias = "G_REGEX_MATCH_BSR_ANYCRLF")]
+        const BSR_ANYCRLF = ffi::G_REGEX_MATCH_BSR_ANYCRLF as _;
+        #[doc(alias = "G_REGEX_MATCH_BSR_ANY")]
+        const BSR_ANY = ffi::G_REGEX_MATCH_BSR_ANY as _;
+        #[doc(alias = "G_REGEX_MATCH_PARTIAL_SOFT")]
+        const PARTIAL_SOFT = ffi::G_REGEX_MATCH_PARTIAL_SOFT as _;
+        #[doc(alias = "G_REGEX_MATCH_PARTIAL_HARD")]
+        const PARTIAL_HARD = ffi::G_REGEX_MATCH_PARTIAL_HARD as _;
+        #[doc(alias = "G_REGEX_MATCH_NOTEMPTY_ATSTART")]
+        const NOTEMPTY_ATSTART = ffi::G_REGEX_MATCH_NOTEMPTY_ATSTART as _;
+    }
+}
+
+#[doc(hidden)]
+impl IntoGlib for RegexMatchFlags {
+    type GlibType = ffi::GRegexMatchFlags;
+
+    #[inline]
+    fn into_glib(self) -> ffi::GRegexMatchFlags {
+        self.bits()
+    }
+}
+
+#[doc(hidden)]
+impl FromGlib<ffi::GRegexMatchFlags> for RegexMatchFlags {
+    #[inline]
+    unsafe fn from_glib(value: ffi::GRegexMatchFlags) -> Self {
         Self::from_bits_truncate(value)
     }
 }
@@ -450,12 +518,6 @@ bitflags! {
         #[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
         #[doc(alias = "G_SPAWN_STDIN_FROM_DEV_NULL")]
         const STDIN_FROM_DEV_NULL = ffi::G_SPAWN_STDIN_FROM_DEV_NULL as _;
-    }
-}
-
-impl fmt::Display for SpawnFlags {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        <Self as fmt::Debug>::fmt(self, f)
     }
 }
 
@@ -508,14 +570,6 @@ bitflags! {
 
 #[cfg(feature = "v2_66")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
-impl fmt::Display for UriFlags {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        <Self as fmt::Debug>::fmt(self, f)
-    }
-}
-
-#[cfg(feature = "v2_66")]
-#[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
 #[doc(hidden)]
 impl IntoGlib for UriFlags {
     type GlibType = ffi::GUriFlags;
@@ -559,14 +613,6 @@ bitflags! {
 
 #[cfg(feature = "v2_66")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
-impl fmt::Display for UriHideFlags {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        <Self as fmt::Debug>::fmt(self, f)
-    }
-}
-
-#[cfg(feature = "v2_66")]
-#[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
 #[doc(hidden)]
 impl IntoGlib for UriHideFlags {
     type GlibType = ffi::GUriHideFlags;
@@ -601,14 +647,6 @@ bitflags! {
         const WWW_FORM = ffi::G_URI_PARAMS_WWW_FORM as _;
         #[doc(alias = "G_URI_PARAMS_PARSE_RELAXED")]
         const PARSE_RELAXED = ffi::G_URI_PARAMS_PARSE_RELAXED as _;
-    }
-}
-
-#[cfg(feature = "v2_66")]
-#[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
-impl fmt::Display for UriParamsFlags {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        <Self as fmt::Debug>::fmt(self, f)
     }
 }
 

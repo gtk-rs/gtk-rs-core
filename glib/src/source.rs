@@ -4,7 +4,7 @@
 use std::os::unix::io::RawFd;
 use std::{cell::RefCell, mem::transmute, num::NonZeroU32, time::Duration};
 
-use ffi::{self, gboolean, gpointer};
+use crate::ffi::{self, gboolean, gpointer};
 #[cfg(all(not(unix), docsrs))]
 use libc::c_int as RawFd;
 
@@ -53,7 +53,7 @@ impl FromGlib<u32> for SourceId {
 }
 
 // rustdoc-stripper-ignore-next
-/// Process identificator
+/// Process identifier
 #[derive(Copy, Clone, Debug, Eq, PartialEq)]
 #[doc(alias = "GPid")]
 pub struct Pid(pub ffi::GPid);
@@ -281,6 +281,29 @@ where
 // rustdoc-stripper-ignore-next
 /// Adds a closure to be called by the default main loop when it's idle.
 ///
+/// `func` will be called repeatedly with `priority` until it returns
+/// `ControlFlow::Break`.
+///
+/// The default main loop almost always is the main loop of the main thread.
+/// Thus, the closure is called on the main thread.
+#[doc(alias = "g_idle_add_full")]
+pub fn idle_add_full<F>(priority: Priority, func: F) -> SourceId
+where
+    F: FnMut() -> ControlFlow + Send + 'static,
+{
+    unsafe {
+        from_glib(ffi::g_idle_add_full(
+            priority.into_glib(),
+            Some(trampoline::<F>),
+            into_raw(func),
+            Some(destroy_closure::<F>),
+        ))
+    }
+}
+
+// rustdoc-stripper-ignore-next
+/// Adds a closure to be called by the default main loop when it's idle.
+///
 /// `func` will be called repeatedly until it returns `ControlFlow::Break`.
 ///
 /// The default main loop almost always is the main loop of the main thread.
@@ -322,6 +345,39 @@ where
             .expect("default main context already acquired by another thread");
         from_glib(ffi::g_idle_add_full(
             ffi::G_PRIORITY_DEFAULT_IDLE,
+            Some(trampoline_local::<F>),
+            into_raw_local(func),
+            Some(destroy_closure_local::<F>),
+        ))
+    }
+}
+
+// rustdoc-stripper-ignore-next
+/// Adds a closure to be called by the default main loop when it's idle.
+///
+/// `func` will be called repeatedly with `priority` until it returns
+/// `ControlFlow::Break`.
+///
+/// The default main loop almost always is the main loop of the main thread.
+/// Thus, the closure is called on the main thread.
+///
+/// Different to `idle_add()`, this does not require `func` to be
+/// `Send` but can only be called from the thread that owns the main context.
+///
+/// This function panics if called from a different thread than the one that
+/// owns the default main context.
+#[doc(alias = "g_idle_add_full")]
+pub fn idle_add_local_full<F>(priority: Priority, func: F) -> SourceId
+where
+    F: FnMut() -> ControlFlow + 'static,
+{
+    unsafe {
+        let context = MainContext::default();
+        let _acquire = context
+            .acquire()
+            .expect("default main context already acquired by another thread");
+        from_glib(ffi::g_idle_add_full(
+            priority.into_glib(),
             Some(trampoline_local::<F>),
             into_raw_local(func),
             Some(destroy_closure_local::<F>),
@@ -384,6 +440,33 @@ where
 /// Adds a closure to be called by the default main loop at regular intervals
 /// with millisecond granularity.
 ///
+/// `func` will be called repeatedly every `interval` milliseconds with `priority`
+/// until it returns `ControlFlow::Break`. Precise timing is not guaranteed, the
+/// timeout may be delayed by other events. Prefer `timeout_add_seconds` when
+/// millisecond precision is not necessary.
+///
+/// The default main loop almost always is the main loop of the main thread.
+/// Thus, the closure is called on the main thread.
+#[doc(alias = "g_timeout_add_full")]
+pub fn timeout_add_full<F>(interval: Duration, priority: Priority, func: F) -> SourceId
+where
+    F: FnMut() -> ControlFlow + Send + 'static,
+{
+    unsafe {
+        from_glib(ffi::g_timeout_add_full(
+            priority.into_glib(),
+            interval.as_millis() as _,
+            Some(trampoline::<F>),
+            into_raw(func),
+            Some(destroy_closure::<F>),
+        ))
+    }
+}
+
+// rustdoc-stripper-ignore-next
+/// Adds a closure to be called by the default main loop at regular intervals
+/// with millisecond granularity.
+///
 /// `func` will be called repeatedly every `interval` milliseconds until it
 /// returns `ControlFlow::Break`. Precise timing is not guaranteed, the timeout may
 /// be delayed by other events. Prefer `timeout_add_seconds` when millisecond
@@ -432,6 +515,43 @@ where
             .expect("default main context already acquired by another thread");
         from_glib(ffi::g_timeout_add_full(
             ffi::G_PRIORITY_DEFAULT,
+            interval.as_millis() as _,
+            Some(trampoline_local::<F>),
+            into_raw_local(func),
+            Some(destroy_closure_local::<F>),
+        ))
+    }
+}
+
+// rustdoc-stripper-ignore-next
+/// Adds a closure to be called by the default main loop at regular intervals
+/// with millisecond granularity.
+///
+/// `func` will be called repeatedly every `interval` milliseconds with `priority`
+/// until it returns `ControlFlow::Break`. Precise timing is not guaranteed, the
+/// timeout may be delayed by other events. Prefer `timeout_add_seconds` when
+/// millisecond precision is not necessary.
+///
+/// The default main loop almost always is the main loop of the main thread.
+/// Thus, the closure is called on the main thread.
+///
+/// Different to `timeout_add()`, this does not require `func` to be
+/// `Send` but can only be called from the thread that owns the main context.
+///
+/// This function panics if called from a different thread than the one that
+/// owns the main context.
+#[doc(alias = "g_timeout_add_full")]
+pub fn timeout_add_local_full<F>(interval: Duration, priority: Priority, func: F) -> SourceId
+where
+    F: FnMut() -> ControlFlow + 'static,
+{
+    unsafe {
+        let context = MainContext::default();
+        let _acquire = context
+            .acquire()
+            .expect("default main context already acquired by another thread");
+        from_glib(ffi::g_timeout_add_full(
+            priority.into_glib(),
             interval.as_millis() as _,
             Some(trampoline_local::<F>),
             into_raw_local(func),
@@ -972,9 +1092,9 @@ where
         ffi::g_source_set_callback(
             source,
             Some(transmute::<
-                _,
+                *mut (),
                 unsafe extern "C" fn(ffi::gpointer) -> ffi::gboolean,
-            >(trampoline_child_watch::<F> as *const ())),
+            >(trampoline_child_watch::<F> as *mut ())),
             into_raw_child_watch(func),
             Some(destroy_closure_child_watch::<F>),
         );
@@ -1048,7 +1168,7 @@ where
         ffi::g_source_set_callback(
             source,
             Some(transmute::<
-                _,
+                *const (),
                 unsafe extern "C" fn(ffi::gpointer) -> ffi::gboolean,
             >(trampoline_unix_fd::<F> as *const ())),
             into_raw_unix_fd(func),

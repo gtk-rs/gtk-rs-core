@@ -2,9 +2,9 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{AsyncResult, Cancellable};
+use crate::{ffi, AsyncResult, Cancellable};
 use glib::{prelude::*, translate::*};
-use std::{boxed::Box as Box_, fmt, pin::Pin, ptr};
+use std::{boxed::Box as Box_, pin::Pin};
 
 glib::wrapper! {
     #[doc(alias = "GProxyResolver")]
@@ -26,12 +26,7 @@ impl ProxyResolver {
     }
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::ProxyResolver>> Sealed for T {}
-}
-
-pub trait ProxyResolverExt: IsA<ProxyResolver> + sealed::Sealed + 'static {
+pub trait ProxyResolverExt: IsA<ProxyResolver> + 'static {
     #[doc(alias = "g_proxy_resolver_is_supported")]
     fn is_supported(&self) -> bool {
         unsafe {
@@ -48,7 +43,7 @@ pub trait ProxyResolverExt: IsA<ProxyResolver> + sealed::Sealed + 'static {
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<Vec<glib::GString>, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_proxy_resolver_lookup(
                 self.as_ref().to_glib_none().0,
                 uri.to_glib_none().0,
@@ -89,7 +84,7 @@ pub trait ProxyResolverExt: IsA<ProxyResolver> + sealed::Sealed + 'static {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret =
                 ffi::g_proxy_resolver_lookup_finish(_source_object as *mut _, res, &mut error);
             let result = if error.is_null() {
@@ -133,9 +128,3 @@ pub trait ProxyResolverExt: IsA<ProxyResolver> + sealed::Sealed + 'static {
 }
 
 impl<O: IsA<ProxyResolver>> ProxyResolverExt for O {}
-
-impl fmt::Display for ProxyResolver {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("ProxyResolver")
-    }
-}

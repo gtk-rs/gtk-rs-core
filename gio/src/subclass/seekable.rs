@@ -2,11 +2,11 @@
 
 use std::ptr;
 
-use glib::{subclass::prelude::*, translate::*, Cast, Error, SeekType};
+use glib::{prelude::*, subclass::prelude::*, translate::*, Error, SeekType};
 
-use crate::{Cancellable, Seekable};
+use crate::{ffi, Cancellable, Seekable};
 
-pub trait SeekableImpl: ObjectImpl + Send {
+pub trait SeekableImpl: Send + ObjectImpl + ObjectSubclass<Type: IsA<Seekable>> {
     fn tell(&self) -> i64;
     fn can_seek(&self) -> bool;
     fn seek(
@@ -19,12 +19,7 @@ pub trait SeekableImpl: ObjectImpl + Send {
     fn truncate(&self, offset: i64, cancellable: Option<&Cancellable>) -> Result<(), Error>;
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::SeekableImplExt> Sealed for T {}
-}
-
-pub trait SeekableImplExt: sealed::Sealed + ObjectSubclass {
+pub trait SeekableImplExt: SeekableImpl {
     fn parent_tell(&self) -> i64 {
         unsafe {
             let type_data = Self::type_data();

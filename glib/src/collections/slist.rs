@@ -2,7 +2,7 @@
 
 use std::{iter::FusedIterator, marker::PhantomData, mem, ptr};
 
-use crate::translate::*;
+use crate::{ffi, translate::*};
 
 // rustdoc-stripper-ignore-next
 /// A list of items of type `T`.
@@ -480,6 +480,25 @@ impl<T: TransparentPtrType> std::iter::IntoIterator for SList<T> {
     }
 }
 
+impl<T: TransparentPtrType> std::iter::Extend<T> for SList<T> {
+    #[inline]
+    fn extend<I: IntoIterator<Item = T>>(&mut self, iter: I) {
+        let list = iter.into_iter().collect::<Self>();
+        if list.is_empty() {
+            return;
+        }
+        match self.ptr.map(|p| p.as_ptr()) {
+            Some(ptr1) => {
+                let ptr2 = list.into_raw();
+                let _ = unsafe { ffi::g_slist_concat(ptr1, ptr2) };
+            }
+            None => {
+                self.ptr = ptr::NonNull::new(list.into_raw());
+            }
+        }
+    }
+}
+
 impl<T: TransparentPtrType> FromGlibContainer<<T as GlibPtrDefault>::GlibType, *mut ffi::GSList>
     for SList<T>
 {
@@ -641,7 +660,7 @@ impl<'a, T: TransparentPtrType> Iterator for Iter<'a, T> {
     }
 }
 
-impl<'a, T: TransparentPtrType> FusedIterator for Iter<'a, T> {}
+impl<T: TransparentPtrType> FusedIterator for Iter<'_, T> {}
 
 // rustdoc-stripper-ignore-next
 /// A non-destructive iterator over a [`SList`].
@@ -683,7 +702,7 @@ impl<'a, T: TransparentPtrType> Iterator for IterMut<'a, T> {
     }
 }
 
-impl<'a, T: TransparentPtrType> FusedIterator for IterMut<'a, T> {}
+impl<T: TransparentPtrType> FusedIterator for IterMut<'_, T> {}
 
 // rustdoc-stripper-ignore-next
 /// A destructive iterator over a [`SList`].
@@ -883,5 +902,60 @@ mod test {
         let mut list_items = list2.iter().cloned().collect::<Vec<_>>();
         list_items.reverse();
         assert_eq!(&items[1..], &list_items);
+    }
+
+    #[test]
+    fn extend() {
+        let mut list = SList::<crate::DateTime>::new();
+        list.push_back(crate::DateTime::from_unix_utc(11).unwrap());
+        list.push_back(crate::DateTime::from_unix_utc(12).unwrap());
+        list.push_back(crate::DateTime::from_unix_utc(13).unwrap());
+
+        list.extend(vec![
+            crate::DateTime::from_unix_utc(21).unwrap(),
+            crate::DateTime::from_unix_utc(22).unwrap(),
+        ]);
+
+        assert_eq!(
+            list.iter().map(|dt| dt.to_unix()).collect::<Vec<_>>(),
+            vec![11, 12, 13, 21, 22]
+        );
+    }
+
+    #[test]
+    fn extend_empty_with_empty() {
+        let mut list1 = SList::<crate::DateTime>::new();
+        list1.extend(vec![]);
+        assert!(list1.is_empty());
+    }
+
+    #[test]
+    fn extend_with_empty() {
+        let mut list = SList::<crate::DateTime>::new();
+        list.push_back(crate::DateTime::from_unix_utc(11).unwrap());
+        list.push_back(crate::DateTime::from_unix_utc(12).unwrap());
+        list.push_back(crate::DateTime::from_unix_utc(13).unwrap());
+
+        list.extend(vec![]);
+
+        assert_eq!(
+            list.iter().map(|dt| dt.to_unix()).collect::<Vec<_>>(),
+            vec![11, 12, 13]
+        );
+    }
+
+    #[test]
+    fn extend_empty() {
+        let mut list = SList::<crate::DateTime>::new();
+
+        list.extend(vec![
+            crate::DateTime::from_unix_utc(21).unwrap(),
+            crate::DateTime::from_unix_utc(22).unwrap(),
+        ]);
+
+        assert_eq!(
+            list.iter().map(|dt| dt.to_unix()).collect::<Vec<_>>(),
+            vec![21, 22]
+        );
     }
 }

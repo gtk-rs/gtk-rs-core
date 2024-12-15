@@ -2,10 +2,10 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::translate::*;
 #[cfg(feature = "v2_72")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
 use crate::MainContextFlags;
+use crate::{ffi, translate::*};
 
 crate::wrapper! {
     #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
@@ -85,6 +85,13 @@ impl MainContext {
         unsafe { from_glib(ffi::g_main_context_pending(self.to_glib_none().0)) }
     }
 
+    //#[cfg(feature = "v2_64")]
+    //#[cfg_attr(docsrs, doc(cfg(feature = "v2_64")))]
+    //#[doc(alias = "g_main_context_pusher_new")]
+    //pub fn pusher_new(&self) -> /*Unknown conversion*//*Unimplemented*/MainContextPusher {
+    //    unsafe { TODO: call ffi:g_main_context_pusher_new() }
+    //}
+
     //#[doc(alias = "g_main_context_query")]
     //pub fn query(&self, max_priority: i32, fds: /*Ignored*/Vec<PollFD>) -> (i32, i32) {
     //    unsafe { TODO: call ffi:g_main_context_query() }
@@ -125,6 +132,13 @@ impl MainContext {
     pub fn thread_default() -> Option<MainContext> {
         unsafe { from_glib_none(ffi::g_main_context_get_thread_default()) }
     }
+
+    //#[cfg(feature = "v2_64")]
+    //#[cfg_attr(docsrs, doc(cfg(feature = "v2_64")))]
+    //#[doc(alias = "g_main_context_pusher_free")]
+    //pub fn pusher_free(pusher: /*Unknown conversion*//*Unimplemented*/MainContextPusher) {
+    //    unsafe { TODO: call ffi:g_main_context_pusher_free() }
+    //}
 
     #[doc(alias = "g_main_context_ref_thread_default")]
     pub fn ref_thread_default() -> MainContext {

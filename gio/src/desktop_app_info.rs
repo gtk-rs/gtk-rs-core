@@ -8,12 +8,12 @@ use std::os::unix::io::AsRawFd;
 use std::ptr;
 
 #[cfg(all(feature = "v2_58", unix))]
-use glib::Error;
-use glib::{prelude::*, translate::*, GString};
+use glib::{prelude::*, Error};
+use glib::{translate::*, GString};
 
 #[cfg(all(feature = "v2_58", unix))]
 use crate::AppLaunchContext;
-use crate::DesktopAppInfo;
+use crate::{ffi, DesktopAppInfo};
 
 impl DesktopAppInfo {
     #[doc(alias = "g_desktop_app_info_search")]
@@ -44,13 +44,8 @@ impl DesktopAppInfo {
     }
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::DesktopAppInfo>> Sealed for T {}
-}
-
-pub trait DesktopAppInfoExtManual: sealed::Sealed + IsA<DesktopAppInfo> {
-    #[cfg(all(feature = "v2_58", unix))]
+#[cfg(all(feature = "v2_58", unix))]
+pub trait DesktopAppInfoExtManual: IsA<DesktopAppInfo> {
     #[cfg_attr(docsrs, doc(cfg(all(feature = "v2_58", unix))))]
     #[doc(alias = "g_desktop_app_info_launch_uris_as_manager_with_fds")]
     fn launch_uris_as_manager_with_fds<
@@ -89,9 +84,7 @@ pub trait DesktopAppInfoExtManual: sealed::Sealed + IsA<DesktopAppInfo> {
         ) {
             let appinfo = from_glib_borrow(appinfo);
             let pid = from_glib(pid);
-            let callback: *mut Option<&mut dyn (FnMut(&DesktopAppInfo, glib::Pid))> =
-                user_data as *const _ as usize
-                    as *mut Option<&mut dyn (FnMut(&DesktopAppInfo, glib::Pid))>;
+            let callback = user_data as *mut Option<&mut dyn (FnMut(&DesktopAppInfo, glib::Pid))>;
             if let Some(ref mut callback) = *callback {
                 callback(&appinfo, pid)
             } else {
@@ -116,7 +109,7 @@ pub trait DesktopAppInfoExtManual: sealed::Sealed + IsA<DesktopAppInfo> {
                 user_setup,
                 Box_::into_raw(super_callback0) as *mut _,
                 pid_callback,
-                super_callback1 as *const _ as usize as *mut _,
+                super_callback1 as *const _ as *mut _,
                 stdin_fd.as_raw_fd(),
                 stdout_fd.as_raw_fd(),
                 stderr_fd.as_raw_fd(),
@@ -131,4 +124,5 @@ pub trait DesktopAppInfoExtManual: sealed::Sealed + IsA<DesktopAppInfo> {
     }
 }
 
+#[cfg(all(feature = "v2_58", unix))]
 impl<O: IsA<DesktopAppInfo>> DesktopAppInfoExtManual for O {}

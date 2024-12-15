@@ -4,13 +4,16 @@
 #![doc = include_str!("../README.md")]
 
 pub use cairo;
-pub use ffi;
 pub use glib;
 pub use pango;
+pub use pango_cairo_sys as ffi;
 
 mod auto;
 
-pub use crate::auto::{functions::*, *};
+pub use crate::auto::*;
 pub mod prelude;
+pub mod functions {
+    pub use super::auto::functions::*;
+}
 
 mod font_map;

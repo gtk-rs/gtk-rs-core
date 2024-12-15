@@ -3,7 +3,7 @@
 // rustdoc-stripper-ignore-next
 //! Module for registering boxed types for Rust types.
 
-use crate::{prelude::*, translate::*};
+use crate::{ffi, gobject_ffi, prelude::*, translate::*};
 
 // rustdoc-stripper-ignore-next
 /// Trait for defining boxed types.
@@ -20,6 +20,21 @@ pub trait BoxedType: StaticType + Clone + Sized + 'static {
     ///
     /// This must be unique in the whole process.
     const NAME: &'static str;
+
+    // rustdoc-stripper-ignore-next
+    /// Allow name conflicts for this boxed type.
+    ///
+    /// By default, trying to register a type with a name that was registered before will panic. If
+    /// this is set to `true` then a new name will be selected by appending a counter.
+    ///
+    /// This is useful for defining new types in Rust library crates that might be linked multiple
+    /// times in the same process.
+    ///
+    /// A consequence of setting this to `true` is that it's not guaranteed that
+    /// `glib::Type::from_name(Self::NAME).unwrap() == Self::static_type()`.
+    ///
+    /// Optional.
+    const ALLOW_NAME_CONFLICT: bool = false;
 }
 
 // rustdoc-stripper-ignore-next
@@ -45,13 +60,32 @@ pub fn register_boxed_type<T: BoxedType>() -> crate::Type {
     unsafe {
         use std::ffi::CString;
 
-        let type_name = CString::new(T::NAME).unwrap();
-        assert_eq!(
-            gobject_ffi::g_type_from_name(type_name.as_ptr()),
-            gobject_ffi::G_TYPE_INVALID,
-            "Type {} has already been registered",
-            type_name.to_str().unwrap()
-        );
+        let type_name = if T::ALLOW_NAME_CONFLICT {
+            let mut i = 0;
+            loop {
+                let type_name = CString::new(if i == 0 {
+                    T::NAME.to_string()
+                } else {
+                    format!("{}-{}", T::NAME, i)
+                })
+                .unwrap();
+                if gobject_ffi::g_type_from_name(type_name.as_ptr()) == gobject_ffi::G_TYPE_INVALID
+                {
+                    break type_name;
+                }
+                i += 1;
+            }
+        } else {
+            let type_name = CString::new(T::NAME).unwrap();
+            assert_eq!(
+                gobject_ffi::g_type_from_name(type_name.as_ptr()),
+                gobject_ffi::G_TYPE_INVALID,
+                "Type {} has already been registered",
+                type_name.to_str().unwrap()
+            );
+
+            type_name
+        };
 
         let type_ = crate::Type::from_glib(gobject_ffi::g_boxed_type_register_static(
             type_name.as_ptr(),

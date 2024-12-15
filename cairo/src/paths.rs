@@ -1,20 +1,21 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use std::{fmt, iter::FusedIterator, ptr};
+use std::{iter::FusedIterator, ptr};
 
-use crate::{ffi::cairo_path_t, PathDataType};
+use crate::{ffi, PathDataType};
 
 #[derive(Debug)]
-pub struct Path(ptr::NonNull<cairo_path_t>);
+#[doc(alias = "cairo_path_t")]
+pub struct Path(ptr::NonNull<ffi::cairo_path_t>);
 
 impl Path {
     #[inline]
-    pub fn as_ptr(&self) -> *mut cairo_path_t {
+    pub fn as_ptr(&self) -> *mut ffi::cairo_path_t {
         self.0.as_ptr()
     }
 
     #[inline]
-    pub unsafe fn from_raw_full(pointer: *mut cairo_path_t) -> Path {
+    pub unsafe fn from_raw_full(pointer: *mut ffi::cairo_path_t) -> Path {
         debug_assert!(!pointer.is_null());
         Path(ptr::NonNull::new_unchecked(pointer))
     }
@@ -23,7 +24,7 @@ impl Path {
         use std::slice;
 
         unsafe {
-            let ptr: *mut cairo_path_t = self.as_ptr();
+            let ptr: *mut ffi::cairo_path_t = self.as_ptr();
             let length = (*ptr).num_data as usize;
             let data_ptr = (*ptr).data;
             let data_vec = if length != 0 && !data_ptr.is_null() {
@@ -50,12 +51,6 @@ impl Drop for Path {
     }
 }
 
-impl fmt::Display for Path {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "Path")
-    }
-}
-
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub enum PathSegment {
     MoveTo((f64, f64)),
@@ -64,28 +59,13 @@ pub enum PathSegment {
     ClosePath,
 }
 
-impl fmt::Display for PathSegment {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(
-            f,
-            "Self::{}",
-            match *self {
-                Self::MoveTo(_) => "MoveTo",
-                Self::LineTo(_) => "LineTo",
-                Self::CurveTo(_, _, _) => "CurveTo",
-                Self::ClosePath => "ClosePath",
-            }
-        )
-    }
-}
-
 pub struct PathSegments<'a> {
     data: &'a [ffi::cairo_path_data],
     i: usize,
     num_data: usize,
 }
 
-impl<'a> Iterator for PathSegments<'a> {
+impl Iterator for PathSegments<'_> {
     type Item = PathSegment;
 
     fn next(&mut self) -> Option<PathSegment> {
@@ -113,13 +93,7 @@ impl<'a> Iterator for PathSegments<'a> {
     }
 }
 
-impl<'a> FusedIterator for PathSegments<'a> {}
-
-impl<'a> fmt::Display for PathSegments<'a> {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "PathSegments")
-    }
-}
+impl FusedIterator for PathSegments<'_> {}
 
 fn to_tuple(pair: &[f64; 2]) -> (f64, f64) {
     (pair[0], pair[1])

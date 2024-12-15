@@ -10,7 +10,7 @@ use std::error::Error;
 use std::ffi::OsString;
 use std::mem::{align_of, size_of};
 use std::path::Path;
-use std::process::Command;
+use std::process::{Command, Stdio};
 use std::str;
 use tempfile::Builder;
 
@@ -70,9 +70,11 @@ fn pkg_config_cflags(packages: &[&str]) -> Result<Vec<String>, Box<dyn Error>> {
     let mut cmd = Command::new(pkg_config);
     cmd.arg("--cflags");
     cmd.args(packages);
+    cmd.stderr(Stdio::inherit());
     let out = cmd.output()?;
     if !out.status.success() {
-        return Err(format!("command {cmd:?} returned {}", out.status).into());
+        let (status, stdout) = (out.status, String::from_utf8_lossy(&out.stdout));
+        return Err(format!("command {cmd:?} failed, {status:?}\nstdout: {stdout}").into());
     }
     let stdout = str::from_utf8(&out.stdout)?;
     Ok(shell_words::split(stdout.trim())?)
@@ -187,13 +189,15 @@ fn get_c_output(name: &str) -> Result<String, Box<dyn Error>> {
     let cc = Compiler::new().expect("configured compiler");
     cc.compile(&c_file, &exe)?;
 
-    let mut abi_cmd = Command::new(exe);
-    let output = abi_cmd.output()?;
-    if !output.status.success() {
-        return Err(format!("command {abi_cmd:?} failed, {output:?}").into());
+    let mut cmd = Command::new(exe);
+    cmd.stderr(Stdio::inherit());
+    let out = cmd.output()?;
+    if !out.status.success() {
+        let (status, stdout) = (out.status, String::from_utf8_lossy(&out.stdout));
+        return Err(format!("command {cmd:?} failed, {status:?}\nstdout: {stdout}").into());
     }
 
-    Ok(String::from_utf8(output.stdout)?)
+    Ok(String::from_utf8(out.stdout)?)
 }
 
 const RUST_LAYOUTS: &[(&str, Layout)] = &[
@@ -244,6 +248,13 @@ const RUST_LAYOUTS: &[(&str, Layout)] = &[
         Layout {
             size: size_of::<GFlagsValue>(),
             alignment: align_of::<GFlagsValue>(),
+        },
+    ),
+    (
+        "GIOCondition",
+        Layout {
+            size: size_of::<GIOCondition>(),
+            alignment: align_of::<GIOCondition>(),
         },
     ),
     (
@@ -513,6 +524,13 @@ const RUST_LAYOUTS: &[(&str, Layout)] = &[
         },
     ),
     (
+        "GTypeCValue",
+        Layout {
+            size: size_of::<GTypeCValue>(),
+            alignment: align_of::<GTypeCValue>(),
+        },
+    ),
+    (
         "GTypeClass",
         Layout {
             size: size_of::<GTypeClass>(),
@@ -634,6 +652,12 @@ const RUST_CONSTANTS: &[(&str, &str)] = &[
     ("(guint) G_CONNECT_AFTER", "1"),
     ("(guint) G_CONNECT_DEFAULT", "0"),
     ("(guint) G_CONNECT_SWAPPED", "2"),
+    ("(guint) G_IO_ERR", "8"),
+    ("(guint) G_IO_HUP", "16"),
+    ("(guint) G_IO_IN", "1"),
+    ("(guint) G_IO_NVAL", "32"),
+    ("(guint) G_IO_OUT", "4"),
+    ("(guint) G_IO_PRI", "2"),
     ("(guint) G_PARAM_CONSTRUCT", "4"),
     ("(guint) G_PARAM_CONSTRUCT_ONLY", "8"),
     ("(guint) G_PARAM_DEPRECATED", "2147483648"),
@@ -682,13 +706,14 @@ const RUST_CONSTANTS: &[(&str, &str)] = &[
     ("(guint) G_TYPE_FLAG_NONE", "0"),
     ("G_TYPE_FLAG_RESERVED_ID_BIT", "1"),
     ("(guint) G_TYPE_FLAG_VALUE_ABSTRACT", "32"),
-    ("G_TYPE_FUNDAMENTAL_MAX", "255"),
+    ("G_TYPE_FUNDAMENTAL_MAX", "1020"),
     ("G_TYPE_FUNDAMENTAL_SHIFT", "2"),
     ("G_TYPE_RESERVED_BSE_FIRST", "32"),
     ("G_TYPE_RESERVED_BSE_LAST", "48"),
     ("G_TYPE_RESERVED_GLIB_FIRST", "22"),
     ("G_TYPE_RESERVED_GLIB_LAST", "31"),
     ("G_TYPE_RESERVED_USER_FIRST", "49"),
+    ("G_VALUE_COLLECT_FORMAT_MAX_LENGTH", "8"),
     ("G_VALUE_INTERNED_STRING", "268435456"),
     ("G_VALUE_NOCOPY_CONTENTS", "134217728"),
 ];

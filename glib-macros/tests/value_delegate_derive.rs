@@ -1,4 +1,4 @@
-use glib::{value::FromValue, StaticType, ToValue, Value, ValueDelegate};
+use glib::{prelude::*, value::FromValue, Value, ValueDelegate};
 
 #[test]
 fn into_value() {
@@ -31,10 +31,10 @@ fn into_value() {
         }
     }
 
-    test_func(&Test(123));
+    test_func(Test(123));
     test_func(Test(123));
 
-    test_func(&TestManualFrom(123));
+    test_func(TestManualFrom(123));
     test_func(TestManualFrom(123));
 
     test_func(TestNullable("foo".to_string()));

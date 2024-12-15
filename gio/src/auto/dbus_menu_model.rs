@@ -2,9 +2,8 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{DBusConnection, MenuModel};
+use crate::{ffi, DBusConnection, MenuModel};
 use glib::translate::*;
-use std::fmt;
 
 glib::wrapper! {
     #[doc(alias = "GDBusMenuModel")]
@@ -29,11 +28,5 @@ impl DBusMenuModel {
                 object_path.to_glib_none().0,
             ))
         }
-    }
-}
-
-impl fmt::Display for DBusMenuModel {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("DBusMenuModel")
     }
 }

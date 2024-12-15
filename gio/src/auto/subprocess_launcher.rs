@@ -2,12 +2,11 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{Subprocess, SubprocessFlags};
+use crate::{ffi, Subprocess, SubprocessFlags};
 use glib::translate::*;
 #[cfg(unix)]
 #[cfg_attr(docsrs, doc(cfg(unix)))]
 use std::boxed::Box as Box_;
-use std::{fmt, ptr};
 
 glib::wrapper! {
     #[doc(alias = "GSubprocessLauncher")]
@@ -51,12 +50,12 @@ impl SubprocessLauncher {
     pub fn set_child_setup<P: Fn() + 'static>(&self, child_setup: P) {
         let child_setup_data: Box_<P> = Box_::new(child_setup);
         unsafe extern "C" fn child_setup_func<P: Fn() + 'static>(data: glib::ffi::gpointer) {
-            let callback: &P = &*(data as *mut _);
+            let callback = &*(data as *mut P);
             (*callback)()
         }
         let child_setup = Some(child_setup_func::<P> as _);
         unsafe extern "C" fn destroy_notify_func<P: Fn() + 'static>(data: glib::ffi::gpointer) {
-            let _callback: Box_<P> = Box_::from_raw(data as *mut _);
+            let _callback = Box_::from_raw(data as *mut P);
         }
         let destroy_call3 = Some(destroy_notify_func::<P> as _);
         let super_callback0: Box_<P> = child_setup_data;
@@ -109,11 +108,11 @@ impl SubprocessLauncher {
     #[cfg(unix)]
     #[cfg_attr(docsrs, doc(cfg(unix)))]
     #[doc(alias = "g_subprocess_launcher_set_stdin_file_path")]
-    pub fn set_stdin_file_path(&self, path: &str) {
+    pub fn set_stdin_file_path(&self, path: Option<impl AsRef<std::path::Path>>) {
         unsafe {
             ffi::g_subprocess_launcher_set_stdin_file_path(
                 self.to_glib_none().0,
-                path.to_glib_none().0,
+                path.as_ref().map(|p| p.as_ref()).to_glib_none().0,
             );
         }
     }
@@ -156,7 +155,7 @@ impl SubprocessLauncher {
     #[doc(alias = "spawnv")]
     pub fn spawn(&self, argv: &[&std::ffi::OsStr]) -> Result<Subprocess, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_subprocess_launcher_spawnv(
                 self.to_glib_none().0,
                 argv.to_glib_none().0,
@@ -178,11 +177,5 @@ impl SubprocessLauncher {
                 variable.as_ref().to_glib_none().0,
             );
         }
-    }
-}
-
-impl fmt::Display for SubprocessLauncher {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("SubprocessLauncher")
     }
 }

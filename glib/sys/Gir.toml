@@ -62,47 +62,26 @@ ignore = [
     "GLib.SIZEOF_VOID_P",
     "GLib.VA_COPY_AS_ARRAY",
     "GLib.VERSION_MIN_REQUIRED",
+    "GLib.macro__has_attribute_ifunc",
+    "GLib.macro__has_attribute_no_sanitize_address",
 ]
 
 [[object]]
 name = "GLib.*"
 status = "generate"
     [[object.function]]
+    pattern = "(fopen|creat|chmod|blow_chunks|utime|slice_debug_tree_statistics|rename|remove|open|mkdir|lstat|fsync|freopen|set_prgname_once)"
+    # see https://gitlab.gnome.org/GNOME/glib/-/issues/3231 + majority of those are available through std
+    ignore = true
+    [[object.function]]
     name = "unix_get_passwd_entry"
     cfg_condition = "unix"
-    [[object.function]]
-    name = "get_user_state_dir"
-    version = "2.72"
-    [[object.function]]
-    name = "check_windows_version"
-    manual = true
-    cfg_condition = "windows"
-    [[object.function]]
-    name = "get_command_line"
-    manual = true
-    cfg_condition = "windows"
-    [[object.function]]
-    name = "error_message"
-    manual = true
-    cfg_condition = "windows"
-    [[object.function]]
-    name = "getlocale"
-    manual = true
-    cfg_condition = "windows"
-    [[object.function]]
-    name = "get_package_installation_directory_of_module"
-    manual = true
-    cfg_condition = "windows"
-    [[object.function]]
-    name = "locale_filename_from_utf8"
-    manual = true
-    cfg_condition = "windows"
     [[object.function]]
     name = "assertion_message_cmpint"
     version = "2.78"
     [[object.function]]
-    name = "test_disable_crash_reporting"
-    version = "2.78"
+    name = "sort_array"
+    version = "2.82"
 
 [[object]]
 name = "GLib.LOG_DOMAIN"
@@ -118,6 +97,16 @@ name = "GLib.PollFD"
 status = "manual"
 
 [[object]]
+name = "GLib.UnixPipe"
+status = "generate"
+cfg_condition = "unix"
+
+[[object]]
+name = "GLib.UnixPipeEnd"
+status = "generate"
+cfg_condition = "unix"
+
+[[object]]
 name = "GLib.TestLogMsg"
 # layout is broken due to rust having no long double
 status = "ignore"
@@ -126,3 +115,34 @@ status = "ignore"
 name = "GLib.macro__has_attribute___noreturn__"
 # C-only macro
 status = "ignore"
+
+[[object]]
+name = "GLib.StaticMutex"
+# deprecated type and also the layout is broken due to mismatching gir data
+status = "ignore"
+    [[object.function]]
+    pattern = ".+"
+    ignore = true
+
+[[object]]
+name = "GLib.StaticPrivate"
+# deprecated type, no longer needed
+    [[object.function]]
+    pattern = ".+"
+    ignore = true
+
+[[object]]
+name = "GLib.StaticRecMutex"
+# deprecated type and also the layout is broken due to mismatching gir data
+status = "ignore"
+    [[object.function]]
+    pattern = ".+"
+    ignore = true
+
+[[object]]
+name = "GLib.StaticRWLock"
+# deprecated type and also the layout is broken due to mismatching gir data
+status = "ignore"
+    [[object.function]]
+    pattern = ".+"
+    ignore = true

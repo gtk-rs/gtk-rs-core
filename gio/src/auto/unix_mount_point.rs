@@ -2,12 +2,8 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::Icon;
+use crate::{ffi, Icon};
 use glib::translate::*;
-use std::cmp;
-#[cfg(feature = "v2_66")]
-#[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
-use std::mem;
 
 glib::wrapper! {
     #[derive(Debug)]
@@ -139,7 +135,7 @@ impl UnixMountPoint {
     #[doc(alias = "g_unix_mount_point_at")]
     pub fn at(mount_path: impl AsRef<std::path::Path>) -> (Option<UnixMountPoint>, u64) {
         unsafe {
-            let mut time_read = mem::MaybeUninit::uninit();
+            let mut time_read = std::mem::MaybeUninit::uninit();
             let ret = from_glib_full(ffi::g_unix_mount_point_at(
                 mount_path.as_ref().to_glib_none().0,
                 time_read.as_mut_ptr(),
@@ -160,14 +156,14 @@ impl Eq for UnixMountPoint {}
 
 impl PartialOrd for UnixMountPoint {
     #[inline]
-    fn partial_cmp(&self, other: &Self) -> Option<cmp::Ordering> {
-        self.compare(other).partial_cmp(&0)
+    fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
+        Some(self.cmp(other))
     }
 }
 
 impl Ord for UnixMountPoint {
     #[inline]
-    fn cmp(&self, other: &Self) -> cmp::Ordering {
+    fn cmp(&self, other: &Self) -> std::cmp::Ordering {
         self.compare(other).cmp(&0)
     }
 }

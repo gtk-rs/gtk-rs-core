@@ -2,13 +2,13 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::Initable;
+use crate::{ffi, Initable};
 use glib::{
     prelude::*,
     signal::{connect_raw, SignalHandlerId},
     translate::*,
 };
-use std::{boxed::Box as Box_, fmt, mem::transmute};
+use std::boxed::Box as Box_;
 
 glib::wrapper! {
     #[doc(alias = "GDebugController")]
@@ -23,14 +23,10 @@ impl DebugController {
     pub const NONE: Option<&'static DebugController> = None;
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::DebugController>> Sealed for T {}
-}
-
-pub trait DebugControllerExt: IsA<DebugController> + sealed::Sealed + 'static {
+pub trait DebugControllerExt: IsA<DebugController> + 'static {
     #[doc(alias = "g_debug_controller_get_debug_enabled")]
     #[doc(alias = "get_debug_enabled")]
+    #[doc(alias = "debug-enabled")]
     fn is_debug_enabled(&self) -> bool {
         unsafe {
             from_glib(ffi::g_debug_controller_get_debug_enabled(
@@ -40,6 +36,7 @@ pub trait DebugControllerExt: IsA<DebugController> + sealed::Sealed + 'static {
     }
 
     #[doc(alias = "g_debug_controller_set_debug_enabled")]
+    #[doc(alias = "debug-enabled")]
     fn set_debug_enabled(&self, debug_enabled: bool) {
         unsafe {
             ffi::g_debug_controller_set_debug_enabled(
@@ -69,7 +66,7 @@ pub trait DebugControllerExt: IsA<DebugController> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::debug-enabled\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_debug_enabled_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -79,9 +76,3 @@ pub trait DebugControllerExt: IsA<DebugController> + sealed::Sealed + 'static {
 }
 
 impl<O: IsA<DebugController>> DebugControllerExt for O {}
-
-impl fmt::Display for DebugController {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("DebugController")
-    }
-}

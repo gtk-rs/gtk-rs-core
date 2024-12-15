@@ -2,13 +2,13 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::OutputStream;
+use crate::{ffi, OutputStream};
 use glib::{
     prelude::*,
     signal::{connect_raw, SignalHandlerId},
     translate::*,
 };
-use std::{boxed::Box as Box_, fmt, mem::transmute};
+use std::boxed::Box as Box_;
 
 glib::wrapper! {
     #[doc(alias = "GFilterOutputStream")]
@@ -23,14 +23,10 @@ impl FilterOutputStream {
     pub const NONE: Option<&'static FilterOutputStream> = None;
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::FilterOutputStream>> Sealed for T {}
-}
-
-pub trait FilterOutputStreamExt: IsA<FilterOutputStream> + sealed::Sealed + 'static {
+pub trait FilterOutputStreamExt: IsA<FilterOutputStream> + 'static {
     #[doc(alias = "g_filter_output_stream_get_base_stream")]
     #[doc(alias = "get_base_stream")]
+    #[doc(alias = "base-stream")]
     fn base_stream(&self) -> OutputStream {
         unsafe {
             from_glib_none(ffi::g_filter_output_stream_get_base_stream(
@@ -41,6 +37,7 @@ pub trait FilterOutputStreamExt: IsA<FilterOutputStream> + sealed::Sealed + 'sta
 
     #[doc(alias = "g_filter_output_stream_get_close_base_stream")]
     #[doc(alias = "get_close_base_stream")]
+    #[doc(alias = "close-base-stream")]
     fn closes_base_stream(&self) -> bool {
         unsafe {
             from_glib(ffi::g_filter_output_stream_get_close_base_stream(
@@ -77,7 +74,7 @@ pub trait FilterOutputStreamExt: IsA<FilterOutputStream> + sealed::Sealed + 'sta
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::close-base-stream\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_close_base_stream_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -87,9 +84,3 @@ pub trait FilterOutputStreamExt: IsA<FilterOutputStream> + sealed::Sealed + 'sta
 }
 
 impl<O: IsA<FilterOutputStream>> FilterOutputStreamExt for O {}
-
-impl fmt::Display for FilterOutputStream {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("FilterOutputStream")
-    }
-}

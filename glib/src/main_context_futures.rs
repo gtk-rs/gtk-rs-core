@@ -1,7 +1,8 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
 use std::{
-    any::Any, cell::Cell, marker::PhantomData, mem, num::NonZeroU32, panic, pin::Pin, ptr, thread,
+    any::Any, cell::Cell, fmt, marker::PhantomData, mem, num::NonZeroU32, panic, pin::Pin, ptr,
+    thread,
 };
 
 use futures_channel::oneshot;
@@ -13,7 +14,7 @@ use futures_task::{FutureObj, LocalFutureObj, LocalSpawn, Spawn, SpawnError};
 use futures_util::FutureExt;
 
 use crate::{
-    thread_guard::ThreadGuard, translate::*, MainContext, MainLoop, Priority, Source, SourceId,
+    ffi, thread_guard::ThreadGuard, translate::*, MainContext, MainLoop, Priority, Source, SourceId,
 };
 
 // Wrapper around Send Futures and non-Send Futures that will panic
@@ -108,6 +109,8 @@ impl TaskSource {
                 }
             }
         }
+
+        ptr::drop_in_place(&mut (*source).return_tx);
 
         // Drop the waker to unref the underlying GSource
         ptr::drop_in_place(&mut (*source).waker);
@@ -353,7 +356,10 @@ impl<T: 'static> futures_core::FusedFuture for JoinHandle<T> {
     }
 }
 
-unsafe impl<T> Send for JoinHandle<T> {}
+// Safety: We can't rely on the auto implementation because we are retrieving
+// the result as a `Box<dyn Any + 'static>` from the [`Source`]. We need to
+// rely on type erasure here, so we have to manually assert the Send bound too.
+unsafe impl<T: Send> Send for JoinHandle<T> {}
 
 // rustdoc-stripper-ignore-next
 /// Variant of [`JoinHandle`] that is returned from [`MainContext::spawn_from_within`].
@@ -486,11 +492,9 @@ impl std::fmt::Display for JoinError {
     }
 }
 
-#[derive(thiserror::Error, Debug)]
+#[derive(Debug)]
 enum JoinErrorInner {
-    #[error("task cancelled")]
     Cancelled,
-    #[error("task panicked")]
     Panic(Box<dyn Any + Send + 'static>),
 }
 
@@ -498,6 +502,17 @@ impl From<JoinErrorInner> for JoinError {
     #[inline]
     fn from(e: JoinErrorInner) -> Self {
         Self(e)
+    }
+}
+
+impl std::error::Error for JoinErrorInner {}
+
+impl fmt::Display for JoinErrorInner {
+    fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            Self::Cancelled => fmt.write_str("task cancelled"),
+            Self::Panic(_) => fmt.write_str("task panicked"),
+        }
     }
 }
 
@@ -578,7 +593,7 @@ impl MainContext {
     /// The given `Future` does not have to be `Send` but the closure to spawn it has to be.
     ///
     /// This can be called only from any thread.
-    pub fn spawn_from_within<R: 'static, F: Future<Output = R> + 'static>(
+    pub fn spawn_from_within<R: Send + 'static, F: Future<Output = R> + 'static>(
         &self,
         func: impl FnOnce() -> F + Send + 'static,
     ) -> SpawnWithinJoinHandle<R> {
@@ -591,7 +606,7 @@ impl MainContext {
     /// The given `Future` does not have to be `Send` but the closure to spawn it has to be.
     ///
     /// This can be called only from any thread.
-    pub fn spawn_from_within_with_priority<R: 'static, F: Future<Output = R> + 'static>(
+    pub fn spawn_from_within_with_priority<R: Send + 'static, F: Future<Output = R> + 'static>(
         &self,
         priority: Priority,
         func: impl FnOnce() -> F + Send + 'static,
@@ -718,13 +733,15 @@ mod tests {
                 }),
         );
 
-        thread::spawn(move || {
+        let join_handle = thread::spawn(move || {
             l.run();
         });
 
         o_sender.send(()).unwrap();
 
         receiver.recv().unwrap();
+
+        join_handle.join().unwrap();
     }
 
     #[test]
@@ -748,16 +765,21 @@ mod tests {
         let c = MainContext::new();
         let l = crate::MainLoop::new(Some(&c), false);
 
-        std::thread::spawn({
+        let join_handle = std::thread::spawn({
             let l_clone = l.clone();
             move || {
                 c.spawn_from_within(move || async move {
+                    let rc = std::rc::Rc::new(123);
+                    futures_util::future::ready(()).await;
+                    assert_eq!(std::rc::Rc::strong_count(&rc), 1);
                     l_clone.quit();
                 });
             }
         });
 
         l.run();
+
+        join_handle.join().unwrap();
     }
 
     #[test]
@@ -806,5 +828,27 @@ mod tests {
                 "failed"
             );
         });
+    }
+
+    #[test]
+    fn test_spawn_abort() {
+        let c = MainContext::new();
+        let v = std::sync::Arc::new(1);
+        let v_clone = v.clone();
+        let c_ref = &c;
+        c.block_on(async move {
+            let handle = c_ref.spawn(async move {
+                let _v = v_clone;
+                let test: u128 = std::future::pending().await;
+                println!("{test}");
+                unreachable!();
+            });
+
+            handle.abort();
+        });
+        drop(c);
+
+        // Make sure the inner future is actually freed.
+        assert_eq!(std::sync::Arc::strong_count(&v), 1);
     }
 }

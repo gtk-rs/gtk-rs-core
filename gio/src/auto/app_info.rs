@@ -2,9 +2,9 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{AppInfoCreateFlags, AppLaunchContext, AsyncResult, Cancellable, File, Icon};
+use crate::{ffi, AppInfoCreateFlags, AppLaunchContext, AsyncResult, Cancellable, File, Icon};
 use glib::{prelude::*, translate::*};
-use std::{boxed::Box as Box_, fmt, pin::Pin, ptr};
+use std::{boxed::Box as Box_, pin::Pin};
 
 glib::wrapper! {
     #[doc(alias = "GAppInfo")]
@@ -25,7 +25,7 @@ impl AppInfo {
         flags: AppInfoCreateFlags,
     ) -> Result<AppInfo, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_app_info_create_from_commandline(
                 commandline.as_ref().to_glib_none().0,
                 application_name.to_glib_none().0,
@@ -96,7 +96,7 @@ impl AppInfo {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_app_info_get_default_for_type_finish(res, &mut error);
             let result = if error.is_null() {
                 Ok(from_glib_full(ret))
@@ -180,7 +180,7 @@ impl AppInfo {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_app_info_get_default_for_uri_scheme_finish(res, &mut error);
             let result = if error.is_null() {
                 Ok(from_glib_full(ret))
@@ -245,7 +245,7 @@ impl AppInfo {
         context: Option<&impl IsA<AppLaunchContext>>,
     ) -> Result<(), glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_app_info_launch_default_for_uri(
                 uri.to_glib_none().0,
                 context.map(|p| p.as_ref()).to_glib_none().0,
@@ -286,7 +286,7 @@ impl AppInfo {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let _ = ffi::g_app_info_launch_default_for_uri_finish(res, &mut error);
             let result = if error.is_null() {
                 Ok(())
@@ -339,16 +339,11 @@ impl AppInfo {
     }
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::AppInfo>> Sealed for T {}
-}
-
-pub trait AppInfoExt: IsA<AppInfo> + sealed::Sealed + 'static {
+pub trait AppInfoExt: IsA<AppInfo> + 'static {
     #[doc(alias = "g_app_info_add_supports_type")]
     fn add_supports_type(&self, content_type: &str) -> Result<(), glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_app_info_add_supports_type(
                 self.as_ref().to_glib_none().0,
                 content_type.to_glib_none().0,
@@ -473,7 +468,7 @@ pub trait AppInfoExt: IsA<AppInfo> + sealed::Sealed + 'static {
         context: Option<&impl IsA<AppLaunchContext>>,
     ) -> Result<(), glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_app_info_launch(
                 self.as_ref().to_glib_none().0,
                 files.to_glib_none().0,
@@ -496,7 +491,7 @@ pub trait AppInfoExt: IsA<AppInfo> + sealed::Sealed + 'static {
         context: Option<&impl IsA<AppLaunchContext>>,
     ) -> Result<(), glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_app_info_launch_uris(
                 self.as_ref().to_glib_none().0,
                 uris.to_glib_none().0,
@@ -515,7 +510,7 @@ pub trait AppInfoExt: IsA<AppInfo> + sealed::Sealed + 'static {
     #[doc(alias = "g_app_info_remove_supports_type")]
     fn remove_supports_type(&self, content_type: &str) -> Result<(), glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_app_info_remove_supports_type(
                 self.as_ref().to_glib_none().0,
                 content_type.to_glib_none().0,
@@ -536,7 +531,7 @@ pub trait AppInfoExt: IsA<AppInfo> + sealed::Sealed + 'static {
         extension: impl AsRef<std::path::Path>,
     ) -> Result<(), glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_app_info_set_as_default_for_extension(
                 self.as_ref().to_glib_none().0,
                 extension.as_ref().to_glib_none().0,
@@ -554,7 +549,7 @@ pub trait AppInfoExt: IsA<AppInfo> + sealed::Sealed + 'static {
     #[doc(alias = "g_app_info_set_as_default_for_type")]
     fn set_as_default_for_type(&self, content_type: &str) -> Result<(), glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_app_info_set_as_default_for_type(
                 self.as_ref().to_glib_none().0,
                 content_type.to_glib_none().0,
@@ -572,7 +567,7 @@ pub trait AppInfoExt: IsA<AppInfo> + sealed::Sealed + 'static {
     #[doc(alias = "g_app_info_set_as_last_used_for_type")]
     fn set_as_last_used_for_type(&self, content_type: &str) -> Result<(), glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_app_info_set_as_last_used_for_type(
                 self.as_ref().to_glib_none().0,
                 content_type.to_glib_none().0,
@@ -612,9 +607,3 @@ pub trait AppInfoExt: IsA<AppInfo> + sealed::Sealed + 'static {
 }
 
 impl<O: IsA<AppInfo>> AppInfoExt for O {}
-
-impl fmt::Display for AppInfo {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("AppInfo")
-    }
-}

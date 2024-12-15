@@ -2,9 +2,8 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{FontMask, Gravity, Stretch, Style, Variant, Weight};
+use crate::{ffi, FontMask, Gravity, Stretch, Style, Variant, Weight};
 use glib::translate::*;
-use std::{fmt, hash};
 
 glib::wrapper! {
     #[derive(Debug, PartialOrd, Ord)]
@@ -291,20 +290,20 @@ impl PartialEq for FontDescription {
 
 impl Eq for FontDescription {}
 
-impl fmt::Display for FontDescription {
+impl std::fmt::Display for FontDescription {
     #[inline]
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         f.write_str(&self.to_str())
     }
 }
 
-impl hash::Hash for FontDescription {
+impl std::hash::Hash for FontDescription {
     #[inline]
     fn hash<H>(&self, state: &mut H)
     where
-        H: hash::Hasher,
+        H: std::hash::Hasher,
     {
-        hash::Hash::hash(&self.hash(), state)
+        std::hash::Hash::hash(&self.hash(), state)
     }
 }
 

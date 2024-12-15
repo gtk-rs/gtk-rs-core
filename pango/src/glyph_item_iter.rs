@@ -2,9 +2,9 @@
 
 use std::{marker::PhantomData, mem};
 
-use glib::{translate::*, GStr, GString};
+use glib::{prelude::*, translate::*, GStr, GString};
 
-use crate::GlyphItem;
+use crate::{ffi, GlyphItem};
 
 #[derive(Clone, Debug)]
 pub struct GlyphItemIter<'item> {
@@ -13,7 +13,7 @@ pub struct GlyphItemIter<'item> {
     item: PhantomData<&'item GlyphItem>,
 }
 
-impl<'item> glib::StaticType for GlyphItemIter<'item> {
+impl StaticType for GlyphItemIter<'_> {
     #[inline]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::pango_glyph_item_iter_get_type()) }
@@ -132,7 +132,7 @@ impl<'item> IntoIterator for GlyphItemIter<'item> {
 #[repr(transparent)]
 pub struct GlyphItemIntoIter<'item>(Option<GlyphItemIter<'item>>);
 
-impl<'item> Iterator for GlyphItemIntoIter<'item> {
+impl Iterator for GlyphItemIntoIter<'_> {
     type Item = (i32, i32, i32, i32, i32, i32);
     fn next(&mut self) -> Option<Self::Item> {
         if let Some(iter) = &mut self.0 {
@@ -154,7 +154,7 @@ impl<'item> Iterator for GlyphItemIntoIter<'item> {
     }
 }
 
-impl<'item> std::iter::FusedIterator for GlyphItemIntoIter<'item> {}
+impl std::iter::FusedIterator for GlyphItemIntoIter<'_> {}
 
 #[doc(hidden)]
 impl<'a, 'item> ToGlibPtr<'a, *const ffi::PangoGlyphItemIter> for GlyphItemIter<'item>

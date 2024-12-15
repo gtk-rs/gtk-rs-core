@@ -4,7 +4,7 @@ use std::mem;
 
 use glib::translate::*;
 
-use crate::{AttrList, Attribute};
+use crate::{ffi, AttrList, Attribute};
 
 impl AttrList {
     #[doc(alias = "pango_attr_list_change")]

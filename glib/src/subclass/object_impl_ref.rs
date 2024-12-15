@@ -71,7 +71,7 @@ impl<T: ObjectSubclass> Downgrade for ObjectImplRef<T> {
 impl<T: ObjectSubclass> PartialOrd for ObjectImplRef<T> {
     #[inline]
     fn partial_cmp(&self, other: &Self) -> Option<cmp::Ordering> {
-        self.0.partial_cmp(&other.0)
+        Some(self.cmp(other))
     }
 }
 

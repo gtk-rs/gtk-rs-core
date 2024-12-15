@@ -5,18 +5,13 @@ use std::ptr;
 
 use glib::prelude::*;
 #[cfg(feature = "v2_60")]
-use glib::{translate::*, IntoStrV};
+use glib::translate::*;
 
 #[cfg(feature = "v2_66")]
 use crate::TlsChannelBindingType;
 use crate::TlsConnection;
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::TlsConnection>> Sealed for T {}
-}
-
-pub trait TlsConnectionExtManual: sealed::Sealed + IsA<TlsConnection> {
+pub trait TlsConnectionExtManual: IsA<TlsConnection> {
     #[cfg(feature = "v2_66")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
     #[doc(alias = "g_tls_connection_get_channel_binding_data")]
@@ -28,7 +23,7 @@ pub trait TlsConnectionExtManual: sealed::Sealed + IsA<TlsConnection> {
         unsafe {
             let data = ptr::null_mut();
             let mut error = ptr::null_mut();
-            let _ = ffi::g_tls_connection_get_channel_binding_data(
+            let _ = crate::ffi::g_tls_connection_get_channel_binding_data(
                 self.as_ptr() as *mut _,
                 type_.into_glib(),
                 data,
@@ -48,7 +43,7 @@ pub trait TlsConnectionExtManual: sealed::Sealed + IsA<TlsConnection> {
     fn set_advertised_protocols(&self, protocols: impl IntoStrV) {
         unsafe {
             protocols.run_with_strv(|protocols| {
-                ffi::g_tls_connection_set_advertised_protocols(
+                crate::ffi::g_tls_connection_set_advertised_protocols(
                     self.as_ref().to_glib_none().0,
                     protocols.as_ptr() as *mut _,
                 );

@@ -2,9 +2,8 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{Colorspace, InterpType, PixbufFormat, PixbufRotation};
+use crate::{ffi, Colorspace, InterpType, PixbufFormat, PixbufRotation};
 use glib::{prelude::*, translate::*};
-use std::{fmt, ptr};
 
 glib::wrapper! {
     #[doc(alias = "GdkPixbuf")]
@@ -69,7 +68,7 @@ impl Pixbuf {
     #[doc(alias = "new_from_file")]
     pub fn from_file(filename: impl AsRef<std::path::Path>) -> Result<Pixbuf, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::gdk_pixbuf_new_from_file(filename.as_ref().to_glib_none().0, &mut error);
             if error.is_null() {
                 Ok(from_glib_full(ret))
@@ -88,7 +87,7 @@ impl Pixbuf {
         preserve_aspect_ratio: bool,
     ) -> Result<Pixbuf, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::gdk_pixbuf_new_from_file_at_scale(
                 filename.as_ref().to_glib_none().0,
                 width,
@@ -112,7 +111,7 @@ impl Pixbuf {
         height: i32,
     ) -> Result<Pixbuf, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::gdk_pixbuf_new_from_file_at_size(
                 filename.as_ref().to_glib_none().0,
                 width,
@@ -131,7 +130,7 @@ impl Pixbuf {
     #[doc(alias = "new_from_resource")]
     pub fn from_resource(resource_path: &str) -> Result<Pixbuf, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::gdk_pixbuf_new_from_resource(resource_path.to_glib_none().0, &mut error);
             if error.is_null() {
                 Ok(from_glib_full(ret))
@@ -150,7 +149,7 @@ impl Pixbuf {
         preserve_aspect_ratio: bool,
     ) -> Result<Pixbuf, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::gdk_pixbuf_new_from_resource_at_scale(
                 resource_path.to_glib_none().0,
                 width,
@@ -173,7 +172,7 @@ impl Pixbuf {
         cancellable: Option<&impl IsA<gio::Cancellable>>,
     ) -> Result<Pixbuf, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::gdk_pixbuf_new_from_stream(
                 stream.as_ref().to_glib_none().0,
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
@@ -197,7 +196,7 @@ impl Pixbuf {
         cancellable: Option<&impl IsA<gio::Cancellable>>,
     ) -> Result<Pixbuf, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::gdk_pixbuf_new_from_stream_at_scale(
                 stream.as_ref().to_glib_none().0,
                 width,
@@ -416,6 +415,7 @@ impl Pixbuf {
 
     #[doc(alias = "gdk_pixbuf_get_bits_per_sample")]
     #[doc(alias = "get_bits_per_sample")]
+    #[doc(alias = "bits-per-sample")]
     pub fn bits_per_sample(&self) -> i32 {
         unsafe { ffi::gdk_pixbuf_get_bits_per_sample(self.to_glib_none().0) }
     }
@@ -434,6 +434,7 @@ impl Pixbuf {
 
     #[doc(alias = "gdk_pixbuf_get_has_alpha")]
     #[doc(alias = "get_has_alpha")]
+    #[doc(alias = "has-alpha")]
     pub fn has_alpha(&self) -> bool {
         unsafe { from_glib(ffi::gdk_pixbuf_get_has_alpha(self.to_glib_none().0)) }
     }
@@ -446,6 +447,7 @@ impl Pixbuf {
 
     #[doc(alias = "gdk_pixbuf_get_n_channels")]
     #[doc(alias = "get_n_channels")]
+    #[doc(alias = "n-channels")]
     pub fn n_channels(&self) -> i32 {
         unsafe { ffi::gdk_pixbuf_get_n_channels(self.to_glib_none().0) }
     }
@@ -674,7 +676,7 @@ impl Pixbuf {
     #[doc(alias = "gdk_pixbuf_init_modules")]
     pub fn init_modules(path: &str) -> Result<(), glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let is_ok = ffi::gdk_pixbuf_init_modules(path.to_glib_none().0, &mut error);
             debug_assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
             if error.is_null() {
@@ -683,11 +685,5 @@ impl Pixbuf {
                 Err(from_glib_full(error))
             }
         }
-    }
-}
-
-impl fmt::Display for Pixbuf {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("Pixbuf")
     }
 }

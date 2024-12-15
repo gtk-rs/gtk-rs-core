@@ -2,9 +2,8 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{Pixbuf, PixbufAnimation};
+use crate::{ffi, Pixbuf, PixbufAnimation};
 use glib::{prelude::*, translate::*};
-use std::fmt;
 
 glib::wrapper! {
     #[doc(alias = "GdkPixbufNonAnim")]
@@ -22,11 +21,5 @@ impl PixbufNonAnim {
             PixbufAnimation::from_glib_full(ffi::gdk_pixbuf_non_anim_new(pixbuf.to_glib_none().0))
                 .unsafe_cast()
         }
-    }
-}
-
-impl fmt::Display for PixbufNonAnim {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("PixbufNonAnim")
     }
 }

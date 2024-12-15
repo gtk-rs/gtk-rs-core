@@ -2,9 +2,8 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{FileDescriptorBased, OutputStream, PollableOutputStream};
+use crate::{ffi, FileDescriptorBased, OutputStream, PollableOutputStream};
 use glib::{prelude::*, translate::*};
-use std::fmt;
 
 glib::wrapper! {
     #[doc(alias = "GUnixOutputStream")]
@@ -19,14 +18,10 @@ impl UnixOutputStream {
     pub const NONE: Option<&'static UnixOutputStream> = None;
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::UnixOutputStream>> Sealed for T {}
-}
-
-pub trait UnixOutputStreamExt: IsA<UnixOutputStream> + sealed::Sealed + 'static {
+pub trait UnixOutputStreamExt: IsA<UnixOutputStream> + 'static {
     #[doc(alias = "g_unix_output_stream_get_close_fd")]
     #[doc(alias = "get_close_fd")]
+    #[doc(alias = "close-fd")]
     fn closes_fd(&self) -> bool {
         unsafe {
             from_glib(ffi::g_unix_output_stream_get_close_fd(
@@ -37,9 +32,3 @@ pub trait UnixOutputStreamExt: IsA<UnixOutputStream> + sealed::Sealed + 'static 
 }
 
 impl<O: IsA<UnixOutputStream>> UnixOutputStreamExt for O {}
-
-impl fmt::Display for UnixOutputStream {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("UnixOutputStream")
-    }
-}

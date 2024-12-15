@@ -11,10 +11,16 @@
 )]
 #![cfg_attr(docsrs, feature(doc_cfg))]
 
+use glib_sys as glib;
+
+#[cfg(unix)]
 #[allow(unused_imports)]
-use libc::{
+use libc::{dev_t, gid_t, pid_t, socklen_t, uid_t};
+#[allow(unused_imports)]
+use libc::{intptr_t, off_t, size_t, ssize_t, time_t, uintptr_t, FILE};
+#[allow(unused_imports)]
+use std::ffi::{
     c_char, c_double, c_float, c_int, c_long, c_short, c_uchar, c_uint, c_ulong, c_ushort, c_void,
-    intptr_t, size_t, ssize_t, uintptr_t, FILE,
 };
 
 #[allow(unused_imports)]
@@ -348,7 +354,6 @@ impl ::std::fmt::Debug for graphene_vec4_t {
     }
 }
 
-#[link(name = "graphene-1.0")]
 extern "C" {
 
     //=========================================================================
@@ -921,12 +926,6 @@ extern "C" {
         b: *const graphene_point_t,
         d_x: *mut c_float,
         d_y: *mut c_float,
-    ) -> c_float;
-    #[cfg(feature = "v1_12")]
-    #[cfg_attr(docsrs, doc(cfg(feature = "v1_12")))]
-    pub fn graphene_point_distance_squared(
-        a: *const graphene_point_t,
-        b: *const graphene_point_t,
     ) -> c_float;
     pub fn graphene_point_equal(a: *const graphene_point_t, b: *const graphene_point_t) -> bool;
     pub fn graphene_point_free(p: *mut graphene_point_t);

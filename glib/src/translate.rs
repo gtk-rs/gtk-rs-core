@@ -135,7 +135,7 @@ use std::os::unix::prelude::*;
 use std::{
     borrow::Cow,
     char,
-    cmp::{Eq, Ordering, PartialEq},
+    cmp::Ordering,
     collections::HashMap,
     error::Error,
     ffi::{CStr, CString, OsStr, OsString},
@@ -145,6 +145,10 @@ use std::{
     path::{Path, PathBuf},
     ptr,
 };
+
+pub use crate::collections::{ptr_slice::IntoPtrSlice, strv::IntoStrV};
+use crate::ffi;
+pub use crate::gstring::{IntoGStr, IntoOptionalGStr};
 
 use libc::{c_char, size_t};
 
@@ -421,7 +425,7 @@ pub trait GlibPtrDefault {
     type GlibType: Ptr;
 }
 
-impl<'a, T: ?Sized + GlibPtrDefault> GlibPtrDefault for &'a T {
+impl<T: ?Sized + GlibPtrDefault> GlibPtrDefault for &T {
     type GlibType = <T as GlibPtrDefault>::GlibType;
 }
 
@@ -464,7 +468,7 @@ pub trait ToGlibPtrMut<'a, P: Copy> {
     ///
     /// The pointer in the `Stash` is only valid for the lifetime of the `Stash`.
     #[allow(clippy::wrong_self_convention)]
-    fn to_glib_none_mut(&'a mut self) -> StashMut<P, Self>;
+    fn to_glib_none_mut(&'a mut self) -> StashMut<'a, P, Self>;
 }
 
 impl<'a, P: Ptr, T: ToGlibPtr<'a, P>> ToGlibPtr<'a, P> for Option<T> {
@@ -2888,7 +2892,7 @@ mod tests {
 
     #[test]
     fn invalid_value() {
-        use std::{convert::TryFrom, num::TryFromIntError};
+        use std::num::TryFromIntError;
 
         #[derive(Debug, PartialEq, Eq)]
         struct U32(u32);
@@ -2908,7 +2912,7 @@ mod tests {
 
     #[test]
     fn none_or_invalid_value() {
-        use std::{convert::TryFrom, num::TryFromIntError};
+        use std::num::TryFromIntError;
 
         #[derive(Debug, PartialEq, Eq)]
         struct SpecialU32(u32);

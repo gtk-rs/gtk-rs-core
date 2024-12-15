@@ -2,8 +2,8 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
+use crate::ffi;
 use glib::{prelude::*, translate::*};
-use std::fmt;
 
 glib::wrapper! {
     #[doc(alias = "GDatagramBased")]
@@ -18,12 +18,7 @@ impl DatagramBased {
     pub const NONE: Option<&'static DatagramBased> = None;
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::DatagramBased>> Sealed for T {}
-}
-
-pub trait DatagramBasedExt: IsA<DatagramBased> + sealed::Sealed + 'static {
+pub trait DatagramBasedExt: IsA<DatagramBased> + 'static {
     #[doc(alias = "g_datagram_based_condition_check")]
     fn condition_check(&self, condition: glib::IOCondition) -> glib::IOCondition {
         unsafe {
@@ -36,9 +31,3 @@ pub trait DatagramBasedExt: IsA<DatagramBased> + sealed::Sealed + 'static {
 }
 
 impl<O: IsA<DatagramBased>> DatagramBasedExt for O {}
-
-impl fmt::Display for DatagramBased {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("DatagramBased")
-    }
-}

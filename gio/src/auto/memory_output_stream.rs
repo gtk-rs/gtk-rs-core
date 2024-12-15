@@ -2,13 +2,13 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{OutputStream, PollableOutputStream, Seekable};
+use crate::{ffi, OutputStream, PollableOutputStream, Seekable};
 use glib::{
     prelude::*,
     signal::{connect_raw, SignalHandlerId},
     translate::*,
 };
-use std::{boxed::Box as Box_, fmt, mem::transmute};
+use std::boxed::Box as Box_;
 
 glib::wrapper! {
     #[doc(alias = "GMemoryOutputStream")]
@@ -30,14 +30,10 @@ impl MemoryOutputStream {
     }
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::MemoryOutputStream>> Sealed for T {}
-}
-
-pub trait MemoryOutputStreamExt: IsA<MemoryOutputStream> + sealed::Sealed + 'static {
+pub trait MemoryOutputStreamExt: IsA<MemoryOutputStream> + 'static {
     #[doc(alias = "g_memory_output_stream_get_data_size")]
     #[doc(alias = "get_data_size")]
+    #[doc(alias = "data-size")]
     fn data_size(&self) -> usize {
         unsafe { ffi::g_memory_output_stream_get_data_size(self.as_ref().to_glib_none().0) }
     }
@@ -69,7 +65,7 @@ pub trait MemoryOutputStreamExt: IsA<MemoryOutputStream> + sealed::Sealed + 'sta
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::data-size\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_data_size_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -79,9 +75,3 @@ pub trait MemoryOutputStreamExt: IsA<MemoryOutputStream> + sealed::Sealed + 'sta
 }
 
 impl<O: IsA<MemoryOutputStream>> MemoryOutputStreamExt for O {}
-
-impl fmt::Display for MemoryOutputStream {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("MemoryOutputStream")
-    }
-}

@@ -6,7 +6,7 @@ use crate::GlyphGeometry;
 
 glib::wrapper! {
     #[doc(alias = "PangoGlyphInfo")]
-    pub struct GlyphInfo(BoxedInline<ffi::PangoGlyphInfo>);
+    pub struct GlyphInfo(BoxedInline<crate::ffi::PangoGlyphInfo>);
 }
 
 impl GlyphInfo {

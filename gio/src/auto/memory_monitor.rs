@@ -2,13 +2,13 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{Initable, MemoryMonitorWarningLevel};
+use crate::{ffi, Initable, MemoryMonitorWarningLevel};
 use glib::{
     prelude::*,
     signal::{connect_raw, SignalHandlerId},
     translate::*,
 };
-use std::{boxed::Box as Box_, fmt, mem::transmute};
+use std::boxed::Box as Box_;
 
 glib::wrapper! {
     #[doc(alias = "GMemoryMonitor")]
@@ -28,12 +28,7 @@ impl MemoryMonitor {
     }
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::MemoryMonitor>> Sealed for T {}
-}
-
-pub trait MemoryMonitorExt: IsA<MemoryMonitor> + sealed::Sealed + 'static {
+pub trait MemoryMonitorExt: IsA<MemoryMonitor> + 'static {
     #[cfg(feature = "v2_64")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_64")))]
     #[doc(alias = "low-memory-warning")]
@@ -60,7 +55,7 @@ pub trait MemoryMonitorExt: IsA<MemoryMonitor> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"low-memory-warning\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     low_memory_warning_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -70,9 +65,3 @@ pub trait MemoryMonitorExt: IsA<MemoryMonitor> + sealed::Sealed + 'static {
 }
 
 impl<O: IsA<MemoryMonitor>> MemoryMonitorExt for O {}
-
-impl fmt::Display for MemoryMonitor {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("MemoryMonitor")
-    }
-}

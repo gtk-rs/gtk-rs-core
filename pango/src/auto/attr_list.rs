@@ -2,11 +2,8 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{AttrIterator, Attribute};
+use crate::{ffi, AttrIterator, Attribute};
 use glib::translate::*;
-#[cfg(feature = "v1_50")]
-#[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
-use std::fmt;
 
 glib::wrapper! {
     #[derive(Debug)]
@@ -34,22 +31,22 @@ impl AttrList {
     #[doc(alias = "pango_attr_list_filter")]
     #[must_use]
     pub fn filter<P: FnMut(&Attribute) -> bool>(&self, func: P) -> Option<AttrList> {
-        let func_data: P = func;
+        let mut func_data: P = func;
         unsafe extern "C" fn func_func<P: FnMut(&Attribute) -> bool>(
             attribute: *mut ffi::PangoAttribute,
             user_data: glib::ffi::gpointer,
         ) -> glib::ffi::gboolean {
             let attribute = from_glib_borrow(attribute);
-            let callback: *mut P = user_data as *const _ as usize as *mut P;
+            let callback = user_data as *mut P;
             (*callback)(&attribute).into_glib()
         }
         let func = Some(func_func::<P> as _);
-        let super_callback0: &P = &func_data;
+        let super_callback0: &mut P = &mut func_data;
         unsafe {
             from_glib_full(ffi::pango_attr_list_filter(
                 self.to_glib_none().0,
                 func,
-                super_callback0 as *const _ as usize as *mut _,
+                super_callback0 as *mut _ as *mut _,
             ))
         }
     }
@@ -115,9 +112,9 @@ impl Default for AttrList {
 
 #[cfg(feature = "v1_50")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
-impl fmt::Display for AttrList {
+impl std::fmt::Display for AttrList {
     #[inline]
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         f.write_str(&self.to_str())
     }
 }

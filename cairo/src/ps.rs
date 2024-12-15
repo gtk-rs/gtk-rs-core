@@ -1,9 +1,8 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
 use std::{
-    convert::TryFrom,
     ffi::{CStr, CString},
-    fmt, io, mem,
+    io, mem,
     ops::Deref,
     path::Path,
     ptr,
@@ -12,7 +11,7 @@ use std::{
 #[cfg(feature = "use_glib")]
 use glib::translate::*;
 
-use crate::{Error, PsLevel, Surface, SurfaceType};
+use crate::{ffi, Error, PsLevel, Surface, SurfaceType};
 
 impl PsLevel {
     pub fn as_str(self) -> Option<&'static str> {

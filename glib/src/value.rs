@@ -54,10 +54,12 @@ use std::{
 use libc::{c_char, c_void};
 
 use crate::{
+    ffi, gobject_ffi,
     gstring::GString,
     prelude::*,
     translate::*,
     types::{Pointee, Pointer, Type},
+    GStr,
 };
 
 // rustdoc-stripper-ignore-next
@@ -538,11 +540,40 @@ impl Value {
     }
 
     // rustdoc-stripper-ignore-next
+    /// Creates a new `String`-typed `Value` from a `'static` string.
+    #[inline]
+    #[doc(alias = "g_value_set_static_string")]
+    pub fn from_static_str(s: &'static GStr) -> Self {
+        unsafe {
+            let mut v = Self::from_type_unchecked(Type::STRING);
+            gobject_ffi::g_value_set_static_string(v.to_glib_none_mut().0, s.as_ptr());
+            v
+        }
+    }
+
+    #[cfg(feature = "v2_66")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
+    // rustdoc-stripper-ignore-next
+    /// Creates a new `String`-typed `Value` from a `'static` string that is also assumed to be
+    /// interned.
+    #[inline]
+    #[doc(alias = "g_value_set_interned_string")]
+    pub fn from_interned_str(s: &'static GStr) -> Self {
+        unsafe {
+            let mut v = Self::from_type_unchecked(Type::STRING);
+            gobject_ffi::g_value_set_interned_string(v.to_glib_none_mut().0, s.as_ptr());
+            v
+        }
+    }
+
+    // rustdoc-stripper-ignore-next
     /// Tries to get a value of type `T`.
     ///
     /// Returns `Ok` if the type is correct.
     #[inline]
-    pub fn get<'a, T>(&'a self) -> Result<T, <<T as FromValue>::Checker as ValueTypeChecker>::Error>
+    pub fn get<'a, T>(
+        &'a self,
+    ) -> Result<T, <<T as FromValue<'a>>::Checker as ValueTypeChecker>::Error>
     where
         T: FromValue<'a>,
     {
@@ -638,6 +669,9 @@ impl Value {
         }
     }
 
+    // rustdoc-stripper-ignore-next
+    /// Converts a `Value` into a `SendValue`. This fails if `self` does not store a value of type
+    /// `T`. It is required for `T` to be `Send` to call this function.
     #[inline]
     pub fn try_into_send_value<T: Send + StaticType>(self) -> Result<SendValue, Self> {
         if self.type_().is_a(T::static_type()) {
@@ -645,6 +679,17 @@ impl Value {
         } else {
             Err(self)
         }
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Converts a `Value` into a `SendValue`.
+    ///
+    /// # Safety
+    ///
+    /// The type of the value contained in `self` must be `Send`.
+    #[inline]
+    pub unsafe fn into_send_value(self) -> SendValue {
+        SendValue::unsafe_from(self.into_raw())
     }
 
     fn content_debug_string(&self) -> GString {
@@ -684,7 +729,7 @@ impl ToValue for Value {
     }
 }
 
-impl<'a> ToValue for &'a Value {
+impl ToValue for &Value {
     #[inline]
     fn to_value(&self) -> Value {
         (*self).clone()
@@ -737,7 +782,7 @@ impl ToValue for SendValue {
     }
 }
 
-impl<'a> ToValue for &'a SendValue {
+impl ToValue for &SendValue {
     #[inline]
     fn to_value(&self) -> Value {
         unsafe { from_glib_none(self.to_glib_none().0) }
@@ -787,7 +832,7 @@ impl SendValue {
         }
     }
     #[inline]
-    pub fn from_owned<T: Send + Into<Value> + ?Sized>(t: T) -> Self {
+    pub fn from_owned<T: Send + Into<Value>>(t: T) -> Self {
         unsafe { Self::unsafe_from(t.into().into_raw()) }
     }
 }
@@ -991,7 +1036,7 @@ impl From<Vec<String>> for Value {
     }
 }
 
-impl<'a> ToValue for [&'a str] {
+impl ToValue for [&'_ str] {
     fn to_value(&self) -> Value {
         unsafe {
             let mut value = Value::for_value_type::<Vec<String>>();
@@ -1006,7 +1051,7 @@ impl<'a> ToValue for [&'a str] {
     }
 }
 
-impl<'a> ToValue for &'a [&'a str] {
+impl ToValue for &'_ [&'_ str] {
     fn to_value(&self) -> Value {
         unsafe {
             let mut value = Value::for_value_type::<Vec<String>>();

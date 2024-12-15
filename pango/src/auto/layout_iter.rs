@@ -2,9 +2,8 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{Layout, LayoutLine, LayoutRun, Rectangle};
+use crate::{ffi, Layout, LayoutLine, LayoutRun, Rectangle};
 use glib::translate::*;
-use std::mem;
 
 glib::wrapper! {
     #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
@@ -123,8 +122,8 @@ impl LayoutIter {
     #[doc(alias = "get_line_yrange")]
     pub fn line_yrange(&mut self) -> (i32, i32) {
         unsafe {
-            let mut y0_ = mem::MaybeUninit::uninit();
-            let mut y1_ = mem::MaybeUninit::uninit();
+            let mut y0_ = std::mem::MaybeUninit::uninit();
+            let mut y1_ = std::mem::MaybeUninit::uninit();
             ffi::pango_layout_iter_get_line_yrange(
                 self.to_glib_none_mut().0,
                 y0_.as_mut_ptr(),

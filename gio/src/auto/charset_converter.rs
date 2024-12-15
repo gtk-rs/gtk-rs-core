@@ -2,13 +2,13 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{Converter, Initable};
+use crate::{ffi, Converter, Initable};
 use glib::{
     prelude::*,
     signal::{connect_raw, SignalHandlerId},
     translate::*,
 };
-use std::{boxed::Box as Box_, fmt, mem::transmute, ptr};
+use std::boxed::Box as Box_;
 
 glib::wrapper! {
     #[doc(alias = "GCharsetConverter")]
@@ -23,7 +23,7 @@ impl CharsetConverter {
     #[doc(alias = "g_charset_converter_new")]
     pub fn new(to_charset: &str, from_charset: &str) -> Result<CharsetConverter, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_charset_converter_new(
                 to_charset.to_glib_none().0,
                 from_charset.to_glib_none().0,
@@ -53,6 +53,7 @@ impl CharsetConverter {
 
     #[doc(alias = "g_charset_converter_get_use_fallback")]
     #[doc(alias = "get_use_fallback")]
+    #[doc(alias = "use-fallback")]
     pub fn uses_fallback(&self) -> bool {
         unsafe {
             from_glib(ffi::g_charset_converter_get_use_fallback(
@@ -62,6 +63,7 @@ impl CharsetConverter {
     }
 
     #[doc(alias = "g_charset_converter_set_use_fallback")]
+    #[doc(alias = "use-fallback")]
     pub fn set_use_fallback(&self, use_fallback: bool) {
         unsafe {
             ffi::g_charset_converter_set_use_fallback(
@@ -96,7 +98,7 @@ impl CharsetConverter {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::use-fallback\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_use_fallback_trampoline::<F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -150,11 +152,5 @@ impl CharsetConverterBuilder {
     #[must_use = "Building the object from the builder is usually expensive and is not expected to have side effects"]
     pub fn build(self) -> CharsetConverter {
         self.builder.build()
-    }
-}
-
-impl fmt::Display for CharsetConverter {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("CharsetConverter")
     }
 }

@@ -1,13 +1,12 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use proc_macro2::TokenStream;
-use proc_macro_error::abort_call_site;
+use proc_macro2::{Span, TokenStream};
 use quote::quote;
 
 pub const WRONG_PLACE_MSG: &str =
     "This macro should be used on `impl` block for `glib::ObjectImpl` trait";
 
-pub fn impl_derived_properties(input: &syn::ItemImpl) -> TokenStream {
+pub fn impl_derived_properties(input: &syn::ItemImpl) -> syn::Result<TokenStream> {
     let syn::ItemImpl {
         attrs,
         generics,
@@ -17,10 +16,10 @@ pub fn impl_derived_properties(input: &syn::ItemImpl) -> TokenStream {
         ..
     } = input;
 
-    let trait_path = match &trait_ {
-        Some(path) => &path.1,
-        None => abort_call_site!(WRONG_PLACE_MSG),
-    };
+    let trait_path = &trait_
+        .as_ref()
+        .ok_or_else(|| syn::Error::new(Span::call_site(), WRONG_PLACE_MSG))?
+        .1;
 
     let mut has_property = false;
     let mut has_properties = false;
@@ -66,11 +65,11 @@ pub fn impl_derived_properties(input: &syn::ItemImpl) -> TokenStream {
         (!has_property).then_some(property),
     ];
 
-    quote!(
+    Ok(quote!(
         #(#attrs)*
         impl #generics #trait_path for #self_ty {
             #(#items)*
             #(#generated)*
         }
-    )
+    ))
 }

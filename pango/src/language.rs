@@ -4,7 +4,7 @@ use std::str::FromStr;
 
 use glib::translate::*;
 
-use crate::{Language, Script};
+use crate::{ffi, Language, Script};
 
 unsafe impl Send for Language {}
 unsafe impl Sync for Language {}

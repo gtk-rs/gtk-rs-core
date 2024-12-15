@@ -4,7 +4,7 @@
 #![allow(clippy::missing_safety_doc)]
 #![doc = include_str!("../README.md")]
 
-pub use ffi;
+pub use cairo_sys as ffi;
 #[cfg(feature = "freetype")]
 #[cfg_attr(docsrs, doc(cfg(feature = "freetype")))]
 pub use freetype;
@@ -20,7 +20,7 @@ macro_rules! gvalue_impl_inner {
         #[allow(unused_imports)]
         use glib::translate::*;
 
-        impl glib::types::StaticType for $name {
+        impl glib::prelude::StaticType for $name {
             #[inline]
             fn static_type() -> glib::types::Type {
                 unsafe { from_glib($get_type()) }
@@ -75,7 +75,7 @@ macro_rules! gvalue_impl {
             fn to_value(&self) -> glib::Value {
                 unsafe {
                     let mut value = glib::Value::from_type_unchecked(
-                        <$name as glib::StaticType>::static_type(),
+                        <$name as glib::prelude::StaticType>::static_type(),
                     );
                     glib::gobject_ffi::g_value_take_boxed(
                         value.to_glib_none_mut().0,
@@ -86,7 +86,7 @@ macro_rules! gvalue_impl {
             }
 
             fn value_type(&self) -> glib::Type {
-                <$name as glib::StaticType>::static_type()
+                <$name as glib::prelude::StaticType>::static_type()
             }
         }
 
@@ -94,7 +94,7 @@ macro_rules! gvalue_impl {
             fn from(v: $name) -> Self {
                 unsafe {
                     let mut value = glib::Value::from_type_unchecked(
-                        <$name as glib::StaticType>::static_type(),
+                        <$name as glib::prelude::StaticType>::static_type(),
                     );
                     glib::gobject_ffi::g_value_take_boxed(
                         value.to_glib_none_mut().0,
@@ -160,7 +160,7 @@ macro_rules! gvalue_impl_inline {
                         glib::ffi::g_malloc0(std::mem::size_of::<$ffi_name>()) as *mut $ffi_name;
                     ptr.write(self.0);
                     let mut value = glib::Value::from_type_unchecked(
-                        <$name as glib::StaticType>::static_type(),
+                        <$name as glib::prelude::StaticType>::static_type(),
                     );
                     glib::gobject_ffi::g_value_take_boxed(
                         value.to_glib_none_mut().0,
@@ -171,7 +171,7 @@ macro_rules! gvalue_impl_inline {
             }
 
             fn value_type(&self) -> glib::Type {
-                <$name as glib::StaticType>::static_type()
+                <$name as glib::prelude::StaticType>::static_type()
             }
         }
 
@@ -228,8 +228,8 @@ pub use crate::{
     enums::*,
     error::{BorrowError, Error, IoError, Result},
     font::{
-        FontExtents, FontFace, FontOptions, FontSlant, FontType, FontWeight, Glyph, ScaledFont,
-        TextCluster, TextExtents, UserFontFace,
+        Antialias, FontExtents, FontFace, FontOptions, FontSlant, FontType, FontWeight, Glyph,
+        HintMetrics, HintStyle, ScaledFont, SubpixelOrder, TextCluster, TextExtents, UserFontFace,
     },
     image_surface::{ImageSurface, ImageSurfaceData, ImageSurfaceDataOwned},
     matrices::Matrix,

@@ -1,24 +1,18 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use std::collections::HashMap;
+use std::{collections::HashMap, sync::OnceLock};
 
 use glib::{prelude::*, subclass::prelude::*, translate::*, GString, Quark};
-use once_cell::sync::Lazy;
 
-use crate::{Action, ActionMap};
+use crate::{ffi, Action, ActionMap};
 
-pub trait ActionMapImpl: ObjectImpl {
+pub trait ActionMapImpl: ObjectImpl + ObjectSubclass<Type: IsA<ActionMap>> {
     fn lookup_action(&self, action_name: &str) -> Option<Action>;
     fn add_action(&self, action: &Action);
     fn remove_action(&self, action_name: &str);
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::ActionMapImplExt> Sealed for T {}
-}
-
-pub trait ActionMapImplExt: sealed::Sealed + ObjectSubclass {
+pub trait ActionMapImplExt: ActionMapImpl {
     fn parent_lookup_action(&self, name: &str) -> Option<Action> {
         unsafe {
             let type_data = Self::type_data();
@@ -71,10 +65,7 @@ pub trait ActionMapImplExt: sealed::Sealed + ObjectSubclass {
 
 impl<T: ActionMapImpl> ActionMapImplExt for T {}
 
-unsafe impl<T: ActionMapImpl> IsImplementable<T> for ActionMap
-where
-    <T as ObjectSubclass>::Type: IsA<glib::Object>,
-{
+unsafe impl<T: ActionMapImpl> IsImplementable<T> for ActionMap {
     fn interface_init(iface: &mut glib::Interface<Self>) {
         let iface = iface.as_mut();
 
@@ -83,9 +74,6 @@ where
         iface.remove_action = Some(action_map_remove_action::<T>);
     }
 }
-
-static ACTION_MAP_LOOKUP_ACTION_QUARK: Lazy<Quark> =
-    Lazy::new(|| Quark::from_str("gtk-rs-subclass-action-map-lookup-action"));
 
 unsafe extern "C" fn action_map_lookup_action<T: ActionMapImpl>(
     action_map: *mut ffi::GActionMap,
@@ -100,11 +88,16 @@ unsafe extern "C" fn action_map_lookup_action<T: ActionMapImpl>(
         let instance = imp.obj();
         let actionptr = action.to_glib_none().0;
 
+        let action_map_quark = {
+            static QUARK: OnceLock<Quark> = OnceLock::new();
+            *QUARK.get_or_init(|| Quark::from_str("gtk-rs-subclass-action-map-lookup-action"))
+        };
+
         let mut map = instance
-            .steal_qdata::<HashMap<String, Action>>(*ACTION_MAP_LOOKUP_ACTION_QUARK)
+            .steal_qdata::<HashMap<String, Action>>(action_map_quark)
             .unwrap_or_default();
         map.insert(action_name.to_string(), action);
-        instance.set_qdata(*ACTION_MAP_LOOKUP_ACTION_QUARK, map);
+        instance.set_qdata(action_map_quark, map);
 
         actionptr
     } else {

@@ -2,7 +2,7 @@
 
 use glib::translate::*;
 
-use crate::{AttrType, FontDescription};
+use crate::{ffi, AttrType, FontDescription};
 
 define_attribute_struct!(AttrFontDesc, ffi::PangoAttrFontDesc, &[AttrType::FontDesc]);
 

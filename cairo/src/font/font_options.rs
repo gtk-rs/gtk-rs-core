@@ -2,16 +2,18 @@
 
 #[cfg(feature = "v1_16")]
 use std::ffi::CString;
+use std::hash;
 #[cfg(not(feature = "use_glib"))]
 use std::ptr;
-use std::{cmp::PartialEq, hash};
 
 #[cfg(feature = "use_glib")]
 use glib::translate::*;
 
 #[cfg(feature = "v1_16")]
 use crate::font::font_face::to_optional_string;
-use crate::{utils::status_to_result, Antialias, Error, HintMetrics, HintStyle, SubpixelOrder};
+use crate::{
+    ffi, utils::status_to_result, Antialias, Error, HintMetrics, HintStyle, SubpixelOrder,
+};
 
 #[cfg(feature = "use_glib")]
 glib::wrapper! {

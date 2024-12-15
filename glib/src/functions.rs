@@ -1,5 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
+pub use crate::auto::functions::*;
 #[cfg(not(windows))]
 use std::boxed::Box as Box_;
 #[cfg(not(windows))]
@@ -14,7 +15,7 @@ use std::ptr;
 // #[cfg(windows)]
 // #[cfg(feature = "v2_58")]
 // use std::os::windows::io::AsRawHandle;
-use crate::{translate::*, GStr};
+use crate::{ffi, translate::*, ChecksumType, GStr};
 #[cfg(not(windows))]
 use crate::{Error, Pid, SpawnFlags};
 
@@ -221,6 +222,20 @@ pub fn charset() -> (bool, Option<&'static GStr>) {
     }
 }
 
+#[doc(alias = "g_compute_checksum_for_string")]
+pub fn compute_checksum_for_string(
+    checksum_type: ChecksumType,
+    str: impl IntoGStr,
+) -> Option<crate::GString> {
+    str.run_with_gstr(|str| unsafe {
+        from_glib_full(ffi::g_compute_checksum_for_string(
+            checksum_type.into_glib(),
+            str.as_ptr(),
+            str.len() as _,
+        ))
+    })
+}
+
 #[cfg(unix)]
 #[doc(alias = "g_unix_open_pipe")]
 pub fn unix_open_pipe(flags: i32) -> Result<(RawFd, RawFd), Error> {
@@ -258,4 +273,31 @@ pub fn file_open_tmp(
             Err(from_glib_full(error))
         }
     }
+}
+
+// rustdoc-stripper-ignore-next
+/// Spawn a new infallible `Future` on the thread-default main context.
+///
+/// This can be called from any thread and will execute the future from the thread
+/// where main context is running, e.g. via a `MainLoop`.
+pub fn spawn_future<R: Send + 'static, F: std::future::Future<Output = R> + Send + 'static>(
+    f: F,
+) -> crate::JoinHandle<R> {
+    let ctx = crate::MainContext::ref_thread_default();
+    ctx.spawn(f)
+}
+
+// rustdoc-stripper-ignore-next
+/// Spawn a new infallible `Future` on the thread-default main context.
+///
+/// The given `Future` does not have to be `Send`.
+///
+/// This can be called only from the thread where the main context is running, e.g.
+/// from any other `Future` that is executed on this main context, or after calling
+/// `with_thread_default` or `acquire` on the main context.
+pub fn spawn_future_local<R: 'static, F: std::future::Future<Output = R> + 'static>(
+    f: F,
+) -> crate::JoinHandle<R> {
+    let ctx = crate::MainContext::ref_thread_default();
+    ctx.spawn_local(f)
 }

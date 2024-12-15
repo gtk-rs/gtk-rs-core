@@ -2,9 +2,8 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{EmblemOrigin, Icon};
+use crate::{ffi, EmblemOrigin, Icon};
 use glib::{prelude::*, translate::*};
-use std::fmt;
 
 glib::wrapper! {
     #[doc(alias = "GEmblem")]
@@ -42,11 +41,5 @@ impl Emblem {
     #[doc(alias = "get_origin")]
     pub fn origin(&self) -> EmblemOrigin {
         unsafe { from_glib(ffi::g_emblem_get_origin(self.to_glib_none().0)) }
-    }
-}
-
-impl fmt::Display for Emblem {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("Emblem")
     }
 }

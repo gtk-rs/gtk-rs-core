@@ -2,13 +2,13 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{AskPasswordFlags, MountOperationResult, PasswordSave};
+use crate::{ffi, AskPasswordFlags, MountOperationResult, PasswordSave};
 use glib::{
     prelude::*,
     signal::{connect_raw, SignalHandlerId},
     translate::*,
 };
-use std::{boxed::Box as Box_, fmt, mem::transmute};
+use std::boxed::Box as Box_;
 
 glib::wrapper! {
     #[doc(alias = "GMountOperation")]
@@ -34,14 +34,10 @@ impl Default for MountOperation {
     }
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::MountOperation>> Sealed for T {}
-}
-
-pub trait MountOperationExt: IsA<MountOperation> + sealed::Sealed + 'static {
+pub trait MountOperationExt: IsA<MountOperation> + 'static {
     #[doc(alias = "g_mount_operation_get_anonymous")]
     #[doc(alias = "get_anonymous")]
+    #[doc(alias = "anonymous")]
     fn is_anonymous(&self) -> bool {
         unsafe {
             from_glib(ffi::g_mount_operation_get_anonymous(
@@ -70,6 +66,7 @@ pub trait MountOperationExt: IsA<MountOperation> + sealed::Sealed + 'static {
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_58")))]
     #[doc(alias = "g_mount_operation_get_is_tcrypt_hidden_volume")]
     #[doc(alias = "get_is_tcrypt_hidden_volume")]
+    #[doc(alias = "is-tcrypt-hidden-volume")]
     fn is_tcrypt_hidden_volume(&self) -> bool {
         unsafe {
             from_glib(ffi::g_mount_operation_get_is_tcrypt_hidden_volume(
@@ -82,6 +79,7 @@ pub trait MountOperationExt: IsA<MountOperation> + sealed::Sealed + 'static {
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_58")))]
     #[doc(alias = "g_mount_operation_get_is_tcrypt_system_volume")]
     #[doc(alias = "get_is_tcrypt_system_volume")]
+    #[doc(alias = "is-tcrypt-system-volume")]
     fn is_tcrypt_system_volume(&self) -> bool {
         unsafe {
             from_glib(ffi::g_mount_operation_get_is_tcrypt_system_volume(
@@ -102,6 +100,7 @@ pub trait MountOperationExt: IsA<MountOperation> + sealed::Sealed + 'static {
 
     #[doc(alias = "g_mount_operation_get_password_save")]
     #[doc(alias = "get_password_save")]
+    #[doc(alias = "password-save")]
     fn password_save(&self) -> PasswordSave {
         unsafe {
             from_glib(ffi::g_mount_operation_get_password_save(
@@ -136,6 +135,7 @@ pub trait MountOperationExt: IsA<MountOperation> + sealed::Sealed + 'static {
     }
 
     #[doc(alias = "g_mount_operation_set_anonymous")]
+    #[doc(alias = "anonymous")]
     fn set_anonymous(&self, anonymous: bool) {
         unsafe {
             ffi::g_mount_operation_set_anonymous(
@@ -146,6 +146,7 @@ pub trait MountOperationExt: IsA<MountOperation> + sealed::Sealed + 'static {
     }
 
     #[doc(alias = "g_mount_operation_set_choice")]
+    #[doc(alias = "choice")]
     fn set_choice(&self, choice: i32) {
         unsafe {
             ffi::g_mount_operation_set_choice(self.as_ref().to_glib_none().0, choice);
@@ -153,6 +154,7 @@ pub trait MountOperationExt: IsA<MountOperation> + sealed::Sealed + 'static {
     }
 
     #[doc(alias = "g_mount_operation_set_domain")]
+    #[doc(alias = "domain")]
     fn set_domain(&self, domain: Option<&str>) {
         unsafe {
             ffi::g_mount_operation_set_domain(
@@ -165,6 +167,7 @@ pub trait MountOperationExt: IsA<MountOperation> + sealed::Sealed + 'static {
     #[cfg(feature = "v2_58")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_58")))]
     #[doc(alias = "g_mount_operation_set_is_tcrypt_hidden_volume")]
+    #[doc(alias = "is-tcrypt-hidden-volume")]
     fn set_is_tcrypt_hidden_volume(&self, hidden_volume: bool) {
         unsafe {
             ffi::g_mount_operation_set_is_tcrypt_hidden_volume(
@@ -177,6 +180,7 @@ pub trait MountOperationExt: IsA<MountOperation> + sealed::Sealed + 'static {
     #[cfg(feature = "v2_58")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_58")))]
     #[doc(alias = "g_mount_operation_set_is_tcrypt_system_volume")]
+    #[doc(alias = "is-tcrypt-system-volume")]
     fn set_is_tcrypt_system_volume(&self, system_volume: bool) {
         unsafe {
             ffi::g_mount_operation_set_is_tcrypt_system_volume(
@@ -187,6 +191,7 @@ pub trait MountOperationExt: IsA<MountOperation> + sealed::Sealed + 'static {
     }
 
     #[doc(alias = "g_mount_operation_set_password")]
+    #[doc(alias = "password")]
     fn set_password(&self, password: Option<&str>) {
         unsafe {
             ffi::g_mount_operation_set_password(
@@ -197,6 +202,7 @@ pub trait MountOperationExt: IsA<MountOperation> + sealed::Sealed + 'static {
     }
 
     #[doc(alias = "g_mount_operation_set_password_save")]
+    #[doc(alias = "password-save")]
     fn set_password_save(&self, save: PasswordSave) {
         unsafe {
             ffi::g_mount_operation_set_password_save(
@@ -209,6 +215,7 @@ pub trait MountOperationExt: IsA<MountOperation> + sealed::Sealed + 'static {
     #[cfg(feature = "v2_58")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_58")))]
     #[doc(alias = "g_mount_operation_set_pim")]
+    #[doc(alias = "pim")]
     fn set_pim(&self, pim: u32) {
         unsafe {
             ffi::g_mount_operation_set_pim(self.as_ref().to_glib_none().0, pim);
@@ -216,6 +223,7 @@ pub trait MountOperationExt: IsA<MountOperation> + sealed::Sealed + 'static {
     }
 
     #[doc(alias = "g_mount_operation_set_username")]
+    #[doc(alias = "username")]
     fn set_username(&self, username: Option<&str>) {
         unsafe {
             ffi::g_mount_operation_set_username(
@@ -239,7 +247,7 @@ pub trait MountOperationExt: IsA<MountOperation> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"aborted\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     aborted_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -257,9 +265,9 @@ pub trait MountOperationExt: IsA<MountOperation> + sealed::Sealed + 'static {
             F: Fn(&P, &str, &str, &str, AskPasswordFlags) + 'static,
         >(
             this: *mut ffi::GMountOperation,
-            message: *mut libc::c_char,
-            default_user: *mut libc::c_char,
-            default_domain: *mut libc::c_char,
+            message: *mut std::ffi::c_char,
+            default_user: *mut std::ffi::c_char,
+            default_domain: *mut std::ffi::c_char,
             flags: ffi::GAskPasswordFlags,
             f: glib::ffi::gpointer,
         ) {
@@ -277,7 +285,7 @@ pub trait MountOperationExt: IsA<MountOperation> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"ask-password\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     ask_password_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -311,7 +319,7 @@ pub trait MountOperationExt: IsA<MountOperation> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"reply\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     reply_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -335,7 +343,7 @@ pub trait MountOperationExt: IsA<MountOperation> + sealed::Sealed + 'static {
             F: Fn(&P, &str, i64, i64) + 'static,
         >(
             this: *mut ffi::GMountOperation,
-            message: *mut libc::c_char,
+            message: *mut std::ffi::c_char,
             time_left: i64,
             bytes_left: i64,
             f: glib::ffi::gpointer,
@@ -353,7 +361,7 @@ pub trait MountOperationExt: IsA<MountOperation> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"show-unmount-progress\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     show_unmount_progress_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -379,7 +387,7 @@ pub trait MountOperationExt: IsA<MountOperation> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::anonymous\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_anonymous_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -405,7 +413,7 @@ pub trait MountOperationExt: IsA<MountOperation> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::choice\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_choice_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -431,7 +439,7 @@ pub trait MountOperationExt: IsA<MountOperation> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::domain\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_domain_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -462,7 +470,7 @@ pub trait MountOperationExt: IsA<MountOperation> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::is-tcrypt-hidden-volume\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_is_tcrypt_hidden_volume_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -493,7 +501,7 @@ pub trait MountOperationExt: IsA<MountOperation> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::is-tcrypt-system-volume\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_is_tcrypt_system_volume_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -519,7 +527,7 @@ pub trait MountOperationExt: IsA<MountOperation> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::password\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_password_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -545,7 +553,7 @@ pub trait MountOperationExt: IsA<MountOperation> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::password-save\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_password_save_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -570,7 +578,7 @@ pub trait MountOperationExt: IsA<MountOperation> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::pim\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_pim_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -596,7 +604,7 @@ pub trait MountOperationExt: IsA<MountOperation> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::username\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_username_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -606,9 +614,3 @@ pub trait MountOperationExt: IsA<MountOperation> + sealed::Sealed + 'static {
 }
 
 impl<O: IsA<MountOperation>> MountOperationExt for O {}
-
-impl fmt::Display for MountOperation {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("MountOperation")
-    }
-}

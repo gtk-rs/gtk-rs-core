@@ -18,7 +18,7 @@
 //!
 //! ```
 //! use glib::prelude::*; // or `use gtk::prelude::*;`
-//! use glib::{Variant, FromVariant, ToVariant};
+//! use glib::variant::{Variant, FromVariant};
 //! use std::collections::HashMap;
 //!
 //! // Using the `ToVariant` trait.
@@ -103,7 +103,7 @@
 
 use std::{
     borrow::Cow,
-    cmp::{Eq, Ordering, PartialEq, PartialOrd},
+    cmp::Ordering,
     collections::{BTreeMap, HashMap},
     fmt,
     hash::{BuildHasher, Hash, Hasher},
@@ -111,7 +111,8 @@ use std::{
 };
 
 use crate::{
-    prelude::*, translate::*, Bytes, Type, VariantIter, VariantStrIter, VariantTy, VariantType,
+    ffi, gobject_ffi, prelude::*, translate::*, Bytes, Type, VariantIter, VariantStrIter,
+    VariantTy, VariantType,
 };
 
 wrapper! {
@@ -997,20 +998,20 @@ impl StaticVariantType for Variant {
     }
 }
 
-impl<'a, T: ?Sized + ToVariant> ToVariant for &'a T {
+impl<T: ?Sized + ToVariant> ToVariant for &T {
     fn to_variant(&self) -> Variant {
         <T as ToVariant>::to_variant(self)
     }
 }
 
-impl<'a, T: ?Sized + Into<Variant> + Clone> From<&'a T> for Variant {
+impl<'a, T: Into<Variant> + Clone> From<&'a T> for Variant {
     #[inline]
     fn from(v: &'a T) -> Self {
         v.clone().into()
     }
 }
 
-impl<'a, T: ?Sized + StaticVariantType> StaticVariantType for &'a T {
+impl<T: ?Sized + StaticVariantType> StaticVariantType for &T {
     fn static_variant_type() -> Cow<'static, VariantTy> {
         <T as StaticVariantType>::static_variant_type()
     }
@@ -1602,8 +1603,7 @@ where
 ///
 /// ```
 ///# use glib::prelude::*; // or `use gtk::prelude::*;`
-/// use glib::{Variant, FromVariant, ToVariant};
-/// use glib::variant::DictEntry;
+/// use glib::variant::{Variant, FromVariant, DictEntry};
 ///
 /// let entries = [
 ///     DictEntry::new("uuid", 1000u32),
@@ -2198,7 +2198,7 @@ mod tests {
         ($name:ident, $ty:ident) => {
             #[test]
             fn $name() {
-                let mut n = $ty::max_value();
+                let mut n = $ty::MAX;
                 while n > 0 {
                     let v = n.to_variant();
                     assert_eq!(v.get(), Some(n));
@@ -2212,7 +2212,7 @@ mod tests {
         ($name:ident, $ty:ident) => {
             #[test]
             fn $name() {
-                let mut n = $ty::max_value();
+                let mut n = $ty::MAX;
                 while n > 0 {
                     let v = n.to_variant();
                     assert_eq!(v.get(), Some(n));

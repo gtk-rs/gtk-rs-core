@@ -1,6 +1,6 @@
 on:
   push:
-    branches: [master]
+    branches: [main]
   pull_request:
   workflow_dispatch:
   release:
@@ -11,14 +11,17 @@ name: docs
 jobs:
   docs:
     runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/gtk-rs/gtk-rs-core/core:latest
     name: build
     env:
       RELEASES: |
+        0.20=0.20
+        0.19=0.19
         0.18=0.18
         0.17=0.17
         0.16=0.16
         0.15=0.15
-        0.14=0.14
       RUSTFLAGS: --cfg docsrs
       RUSTDOCFLAGS: --cfg docsrs -Zunstable-options --generate-link-to-definition
     steps:
@@ -32,11 +35,12 @@ jobs:
           toolchain: nightly
           override: true
           components: rustfmt
+      - run: git config --global --add safe.directory /__w/gtk-rs-core/gtk-rs-core
       - run: git submodule update --checkout
       - run: cargo install rustdoc-stripper
       - run: python3 ./generator.py --embed-docs --yes ./
       - run: git clone https://gitlab.gnome.org/World/Rust/gir-rustdoc/ # checkout action doesn't support random urls
-      - run: echo "RUSTDOCFLAGS=$(eval python3 ./gir-rustdoc/gir-rustdoc.py --pages-url 'https://gtk-rs.org/gtk-rs-core/' --default-branch 'master' pre-docs | xargs)" >> ${GITHUB_ENV}
+      - run: echo "RUSTDOCFLAGS=$(eval python3 ./gir-rustdoc/gir-rustdoc.py --pages-url 'https://gtk-rs.org/gtk-rs-core/' --default-branch 'main' pre-docs | xargs)" >> ${GITHUB_ENV}
       - uses: actions-rs/cargo@v1
         with:
           command: doc
@@ -60,20 +64,20 @@ jobs:
             -p pangocairo-sys
             --no-deps
             --all-features
-      - run: echo "RELEASE=$(echo '${{ github.event.release.tag_name }}' | grep -Po '(\d+)\.(\d+)')" >> ${GITHUB_ENV}
+      - run: echo "RELEASE=$(echo '${{ github.event.release.tag_name }}' | grep -Po '(\d+)\.(\d+)' | head -n1)" >> ${GITHUB_ENV}
       - run: echo "DEST=$(if [ "$GITHUB_EVENT_NAME" == "release" ]; then echo 'stable/${{ env.RELEASE }}'; else echo 'git'; fi)" >> ${GITHUB_ENV}
       - name: Grab gtk-rs LOGO
-        if: ${{ (github.event_name == 'push' && github.ref == 'refs/heads/master') || github.event_name == 'release' }}
+        if: ${{ (github.event_name == 'push' && github.ref == 'refs/heads/main') || github.event_name == 'release' }}
         run: |
-          wget https://raw.githubusercontent.com/gtk-rs/gtk-rs.github.io/master/logo/gtk-rs-16.png -O ./target/doc/favicon-16x16.png
-          wget https://raw.githubusercontent.com/gtk-rs/gtk-rs.github.io/master/logo/gtk-rs-32.png -O ./target/doc/favicon-32x32.png
-          wget https://raw.githubusercontent.com/gtk-rs/gtk-rs.github.io/master/logo/gtk-rs-256.png -O ./target/doc/rust-logo.png
-          wget https://raw.githubusercontent.com/gtk-rs/gtk-rs.github.io/master/logo/gtk-rs.svg -O ./target/doc/rust-logo.svg
-          wget https://raw.githubusercontent.com/gtk-rs/gtk-rs.github.io/master/logo/gtk-rs.svg -O ./target/doc/favicon.svg
+          wget https://raw.githubusercontent.com/gtk-rs/gtk-rs.github.io/main/logo/gtk-rs-16.png -O ./target/doc/favicon-16x16.png
+          wget https://raw.githubusercontent.com/gtk-rs/gtk-rs.github.io/main/logo/gtk-rs-32.png -O ./target/doc/favicon-32x32.png
+          wget https://raw.githubusercontent.com/gtk-rs/gtk-rs.github.io/main/logo/gtk-rs-256.png -O ./target/doc/rust-logo.png
+          wget https://raw.githubusercontent.com/gtk-rs/gtk-rs.github.io/main/logo/gtk-rs.svg -O ./target/doc/rust-logo.svg
+          wget https://raw.githubusercontent.com/gtk-rs/gtk-rs.github.io/main/logo/gtk-rs.svg -O ./target/doc/favicon.svg
 
       - name: deploy
-        if: ${{ (github.event_name == 'push' && github.ref == 'refs/heads/master') || github.event_name == 'release' }}
-        uses: peaceiris/actions-gh-pages@v3
+        if: ${{ (github.event_name == 'push' && github.ref == 'refs/heads/main') || github.event_name == 'release' }}
+        uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./target/doc/
@@ -82,8 +86,8 @@ jobs:
 
       - run: python3 ./gir-rustdoc/gir-rustdoc.py --project-title 'GTK Core Rust bindings' html-index
       - name: deploy index page
-        uses: peaceiris/actions-gh-pages@v3
-        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
+        uses: peaceiris/actions-gh-pages@v4
+        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./public/

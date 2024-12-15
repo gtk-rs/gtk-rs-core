@@ -2,9 +2,8 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::Action;
+use crate::{ffi, Action};
 use glib::{prelude::*, translate::*};
-use std::fmt;
 
 glib::wrapper! {
     #[doc(alias = "GActionMap")]
@@ -19,12 +18,7 @@ impl ActionMap {
     pub const NONE: Option<&'static ActionMap> = None;
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::ActionMap>> Sealed for T {}
-}
-
-pub trait ActionMapExt: IsA<ActionMap> + sealed::Sealed + 'static {
+pub trait ActionMapExt: IsA<ActionMap> + 'static {
     #[doc(alias = "g_action_map_add_action")]
     fn add_action(&self, action: &impl IsA<Action>) {
         unsafe {
@@ -57,9 +51,3 @@ pub trait ActionMapExt: IsA<ActionMap> + sealed::Sealed + 'static {
 }
 
 impl<O: IsA<ActionMap>> ActionMapExt for O {}
-
-impl fmt::Display for ActionMap {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("ActionMap")
-    }
-}

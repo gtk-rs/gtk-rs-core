@@ -10,15 +10,22 @@ pub type GSocketMsgFlags = libc::c_int;
 
 #[cfg(target_family = "windows")]
 mod windows_constants {
-    pub const G_SOCKET_FAMILY_INVALID: super::GSocketFamily = winapi::shared::ws2def::AF_UNSPEC;
-    pub const G_SOCKET_FAMILY_UNIX: super::GSocketFamily = winapi::shared::ws2def::AF_UNIX;
-    pub const G_SOCKET_FAMILY_IPV4: super::GSocketFamily = winapi::shared::ws2def::AF_INET;
-    pub const G_SOCKET_FAMILY_IPV6: super::GSocketFamily = winapi::shared::ws2def::AF_INET6;
+    pub const G_SOCKET_FAMILY_INVALID: super::GSocketFamily =
+        windows_sys::Win32::Networking::WinSock::AF_UNSPEC as super::GSocketFamily;
+    pub const G_SOCKET_FAMILY_UNIX: super::GSocketFamily =
+        windows_sys::Win32::Networking::WinSock::AF_UNIX as super::GSocketFamily;
+    pub const G_SOCKET_FAMILY_IPV4: super::GSocketFamily =
+        windows_sys::Win32::Networking::WinSock::AF_INET as super::GSocketFamily;
+    pub const G_SOCKET_FAMILY_IPV6: super::GSocketFamily =
+        windows_sys::Win32::Networking::WinSock::AF_INET6 as super::GSocketFamily;
 
     pub const G_SOCKET_MSG_NONE: super::GSocketMsgFlags = 0;
-    pub const G_SOCKET_MSG_OOB: super::GSocketMsgFlags = winapi::um::winsock2::MSG_OOB;
-    pub const G_SOCKET_MSG_PEEK: super::GSocketMsgFlags = winapi::um::winsock2::MSG_PEEK;
-    pub const G_SOCKET_MSG_DONTROUTE: super::GSocketMsgFlags = winapi::um::winsock2::MSG_DONTROUTE;
+    pub const G_SOCKET_MSG_OOB: super::GSocketMsgFlags =
+        windows_sys::Win32::Networking::WinSock::MSG_OOB;
+    pub const G_SOCKET_MSG_PEEK: super::GSocketMsgFlags =
+        windows_sys::Win32::Networking::WinSock::MSG_PEEK;
+    pub const G_SOCKET_MSG_DONTROUTE: super::GSocketMsgFlags =
+        windows_sys::Win32::Networking::WinSock::MSG_DONTROUTE;
 }
 
 #[cfg(not(target_family = "windows"))]
@@ -45,7 +52,6 @@ mod windows_streams {
         gboolean, GInputStream, GInputStreamClass, GOutputStream, GOutputStreamClass, GType,
     };
 
-    #[link(name = "gio-2.0")]
     extern "C" {
         //=========================================================================
         // GWin32InputStream
@@ -166,3 +172,116 @@ mod windows_streams {
         }
     }
 }
+
+#[cfg(not(feature = "v2_84"))]
+mod unix_mount_compat {
+    #![allow(clippy::missing_safety_doc)]
+
+    use crate::*;
+
+    pub unsafe fn g_unix_mount_entry_compare(
+        mount1: *mut GUnixMountEntry,
+        mount2: *mut GUnixMountEntry,
+    ) -> c_int {
+        g_unix_mount_compare(mount1, mount2)
+    }
+    pub unsafe fn g_unix_mount_entry_copy(
+        mount_entry: *mut GUnixMountEntry,
+    ) -> *mut GUnixMountEntry {
+        g_unix_mount_copy(mount_entry)
+    }
+    pub unsafe fn g_unix_mount_entry_free(mount_entry: *mut GUnixMountEntry) {
+        g_unix_mount_free(mount_entry);
+    }
+    pub unsafe fn g_unix_mount_entry_get_device_path(
+        mount_entry: *mut GUnixMountEntry,
+    ) -> *const c_char {
+        g_unix_mount_get_device_path(mount_entry)
+    }
+    pub unsafe fn g_unix_mount_entry_get_fs_type(
+        mount_entry: *mut GUnixMountEntry,
+    ) -> *const c_char {
+        g_unix_mount_get_fs_type(mount_entry)
+    }
+    pub unsafe fn g_unix_mount_entry_get_mount_path(
+        mount_entry: *mut GUnixMountEntry,
+    ) -> *const c_char {
+        g_unix_mount_get_mount_path(mount_entry)
+    }
+    #[cfg(feature = "v2_58")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_58")))]
+    pub unsafe fn g_unix_mount_entry_get_options(
+        mount_entry: *mut GUnixMountEntry,
+    ) -> *const c_char {
+        g_unix_mount_get_options(mount_entry)
+    }
+    #[cfg(feature = "v2_60")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
+    pub unsafe fn g_unix_mount_entry_get_root_path(
+        mount_entry: *mut GUnixMountEntry,
+    ) -> *const c_char {
+        g_unix_mount_get_root_path(mount_entry)
+    }
+    pub unsafe fn g_unix_mount_entry_guess_can_eject(
+        mount_entry: *mut GUnixMountEntry,
+    ) -> gboolean {
+        g_unix_mount_guess_can_eject(mount_entry)
+    }
+    pub unsafe fn g_unix_mount_entry_guess_icon(mount_entry: *mut GUnixMountEntry) -> *mut GIcon {
+        g_unix_mount_guess_icon(mount_entry)
+    }
+    pub unsafe fn g_unix_mount_entry_guess_name(mount_entry: *mut GUnixMountEntry) -> *mut c_char {
+        g_unix_mount_guess_name(mount_entry)
+    }
+    pub unsafe fn g_unix_mount_entry_guess_should_display(
+        mount_entry: *mut GUnixMountEntry,
+    ) -> gboolean {
+        g_unix_mount_guess_should_display(mount_entry)
+    }
+    pub unsafe fn g_unix_mount_entry_guess_symbolic_icon(
+        mount_entry: *mut GUnixMountEntry,
+    ) -> *mut GIcon {
+        g_unix_mount_guess_symbolic_icon(mount_entry)
+    }
+    pub unsafe fn g_unix_mount_entry_is_readonly(mount_entry: *mut GUnixMountEntry) -> gboolean {
+        g_unix_mount_is_readonly(mount_entry)
+    }
+    pub unsafe fn g_unix_mount_entry_is_system_internal(
+        mount_entry: *mut GUnixMountEntry,
+    ) -> gboolean {
+        g_unix_mount_is_system_internal(mount_entry)
+    }
+    pub unsafe fn g_unix_mount_entry_at(
+        mount_path: *const c_char,
+        time_read: *mut u64,
+    ) -> *mut GUnixMountEntry {
+        g_unix_mount_at(mount_path, time_read)
+    }
+    pub unsafe fn g_unix_mount_entry_for(
+        file_path: *const c_char,
+        time_read: *mut u64,
+    ) -> *mut GUnixMountEntry {
+        g_unix_mount_for(file_path, time_read)
+    }
+
+    #[cfg(feature = "v2_82")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_82")))]
+    pub unsafe fn g_unix_mount_entries_get_from_file(
+        table_path: *const c_char,
+        time_read_out: *mut u64,
+        n_entries_out: *mut size_t,
+    ) -> *mut *mut GUnixMountEntry {
+        g_unix_mounts_get_from_file(table_path, time_read_out, n_entries_out)
+    }
+
+    pub unsafe fn g_unix_mount_entries_get(time_read: *mut u64) -> *mut glib::GList {
+        g_unix_mounts_get(time_read)
+    }
+
+    pub unsafe fn g_unix_mount_entries_changed_since(time: u64) -> gboolean {
+        g_unix_mounts_changed_since(time)
+    }
+}
+
+#[cfg(not(feature = "v2_84"))]
+pub use unix_mount_compat::*;

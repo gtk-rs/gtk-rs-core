@@ -1,8 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
 use std::{
-    convert::TryFrom,
-    fmt,
     ops::{Deref, DerefMut},
     rc::Rc,
     slice,
@@ -11,7 +9,7 @@ use std::{
 #[cfg(feature = "use_glib")]
 use glib::translate::*;
 
-use crate::{utils::status_to_result, BorrowError, Error, Format, Surface, SurfaceType};
+use crate::{ffi, utils::status_to_result, BorrowError, Error, Format, Surface, SurfaceType};
 
 declare_surface!(ImageSurface, SurfaceType::Image);
 
@@ -236,8 +234,8 @@ pub struct ImageSurfaceData<'a> {
     dirty: bool,
 }
 
-unsafe impl<'a> Send for ImageSurfaceData<'a> {}
-unsafe impl<'a> Sync for ImageSurfaceData<'a> {}
+unsafe impl Send for ImageSurfaceData<'_> {}
+unsafe impl Sync for ImageSurfaceData<'_> {}
 
 impl<'a> ImageSurfaceData<'a> {
     fn new(surface: &'a mut ImageSurface) -> ImageSurfaceData<'a> {
@@ -257,7 +255,7 @@ impl<'a> ImageSurfaceData<'a> {
     }
 }
 
-impl<'a> Drop for ImageSurfaceData<'a> {
+impl Drop for ImageSurfaceData<'_> {
     #[inline]
     fn drop(&mut self) {
         if self.dirty {
@@ -266,7 +264,7 @@ impl<'a> Drop for ImageSurfaceData<'a> {
     }
 }
 
-impl<'a> Deref for ImageSurfaceData<'a> {
+impl Deref for ImageSurfaceData<'_> {
     type Target = [u8];
 
     #[inline]
@@ -275,17 +273,11 @@ impl<'a> Deref for ImageSurfaceData<'a> {
     }
 }
 
-impl<'a> DerefMut for ImageSurfaceData<'a> {
+impl DerefMut for ImageSurfaceData<'_> {
     #[inline]
     fn deref_mut(&mut self) -> &mut [u8] {
         self.dirty = true;
         self.slice
-    }
-}
-
-impl<'a> fmt::Display for ImageSurfaceData<'a> {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "ImageSurfaceData")
     }
 }
 

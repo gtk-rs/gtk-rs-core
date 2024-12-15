@@ -1,11 +1,10 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use std::{cmp, ffi::CStr, fmt, ptr};
+use std::{cmp, ffi::CStr, fmt, ops::Deref, ptr};
 
 use crate::{
-    translate::*,
-    value::{FromValue, ValueTypeChecker},
-    HasParamSpec, ParamSpecEnum, ParamSpecFlags, StaticType, Type, Value,
+    ffi, gobject_ffi, prelude::*, translate::*, ParamSpecEnum, ParamSpecFlags, Type, TypeInfo,
+    Value,
 };
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Hash)]
@@ -187,6 +186,39 @@ impl EnumClass {
     pub fn to_value_by_nick(&self, nick: &str) -> Option<Value> {
         self.value_by_nick(nick).map(|v| v.to_value(self))
     }
+
+    // rustdoc-stripper-ignore-next
+    /// Complete `TypeInfo` for an enum with values.
+    /// This is an associated function. A method would result in a stack overflow due to a recurvice call:
+    /// callers should first create an `EnumClass` instance by calling `EnumClass::with_type()` which indirectly
+    /// calls `TypePluginRegisterImpl::register_dynamic_enum()` and `TypePluginImpl::complete_type_info()`
+    /// and one of them should call `EnumClass::with_type()` before calling this method.
+    /// `const_static_values` is a reference on a wrapper of a slice of `EnumValue`.
+    /// It must be static to ensure enumeration values are never dropped, and ensures that slice is terminated
+    ///  by an `EnumValue` with all members being 0, as expected by GLib.
+    #[doc(alias = "g_enum_complete_type_info")]
+    pub fn complete_type_info(
+        type_: Type,
+        const_static_values: &'static EnumValues,
+    ) -> Option<TypeInfo> {
+        unsafe {
+            let is_enum: bool = from_glib(gobject_ffi::g_type_is_a(
+                type_.into_glib(),
+                gobject_ffi::G_TYPE_ENUM,
+            ));
+            if !is_enum {
+                return None;
+            }
+
+            let info = TypeInfo::default();
+            gobject_ffi::g_enum_complete_type_info(
+                type_.into_glib(),
+                info.as_ptr(),
+                const_static_values.to_glib_none().0,
+            );
+            Some(info)
+        }
+    }
 }
 
 impl Drop for EnumClass {
@@ -210,6 +242,7 @@ impl Clone for EnumClass {
 // rustdoc-stripper-ignore-next
 /// Representation of a single enum value of an `EnumClass`.
 #[doc(alias = "GEnumValue")]
+#[derive(Copy, Clone)]
 #[repr(transparent)]
 pub struct EnumValue(gobject_ffi::GEnumValue);
 
@@ -227,6 +260,15 @@ impl fmt::Debug for EnumValue {
 }
 
 impl EnumValue {
+    // rustdoc-stripper-ignore-next
+    /// # Safety
+    ///
+    /// It is the responsibility of the caller to ensure `GEnumValue` is
+    /// valid.
+    pub const unsafe fn unsafe_from(g_value: gobject_ffi::GEnumValue) -> Self {
+        Self(g_value)
+    }
+
     // rustdoc-stripper-ignore-next
     /// Get integer value corresponding to the value.
     #[doc(alias = "get_value")]
@@ -280,7 +322,7 @@ impl Eq for EnumValue {}
 
 impl PartialOrd for EnumValue {
     fn partial_cmp(&self, other: &Self) -> Option<cmp::Ordering> {
-        self.value().partial_cmp(&other.value())
+        Some(self.cmp(other))
     }
 }
 
@@ -290,7 +332,13 @@ impl Ord for EnumValue {
     }
 }
 
-unsafe impl<'a, 'b> FromValue<'a> for &'b EnumValue {
+impl UnsafeFrom<gobject_ffi::GEnumValue> for EnumValue {
+    unsafe fn unsafe_from(g_value: gobject_ffi::GEnumValue) -> Self {
+        Self::unsafe_from(g_value)
+    }
+}
+
+unsafe impl<'a> crate::value::FromValue<'a> for &EnumValue {
     type Checker = EnumTypeChecker;
 
     unsafe fn from_value(value: &'a Value) -> Self {
@@ -300,8 +348,29 @@ unsafe impl<'a, 'b> FromValue<'a> for &'b EnumValue {
     }
 }
 
+// rustdoc-stripper-ignore-next
+/// Define the zero value and the associated GLib type.
+impl EnumerationValue<EnumValue> for EnumValue {
+    type GlibType = gobject_ffi::GEnumValue;
+    const ZERO: EnumValue = unsafe {
+        EnumValue::unsafe_from(gobject_ffi::GEnumValue {
+            value: 0,
+            value_name: ptr::null(),
+            value_nick: ptr::null(),
+        })
+    };
+}
+
+// rustdoc-stripper-ignore-next
+/// Storage of enum values.
+pub type EnumValuesStorage<const N: usize> = EnumerationValuesStorage<EnumValue, N>;
+
+// rustdoc-stripper-ignore-next
+/// Representation of enum values wrapped by `EnumValuesStorage`
+pub type EnumValues = EnumerationValues<EnumValue>;
+
 pub struct EnumTypeChecker();
-unsafe impl ValueTypeChecker for EnumTypeChecker {
+unsafe impl crate::value::ValueTypeChecker for EnumTypeChecker {
     type Error = InvalidEnumError;
 
     fn check(value: &Value) -> Result<(), Self::Error> {
@@ -693,6 +762,39 @@ impl FlagsClass {
 
         Some(FlagsBuilder::with_value(self, value))
     }
+
+    // rustdoc-stripper-ignore-next
+    /// Complete `TypeInfo` for the flags with values.
+    /// This is an associated function. A method would result in a stack overflow due to a recurvice call:
+    /// callers should first create an `FlagsClass` instance by calling `FlagsClass::with_type()` which indirectly
+    /// calls `TypePluginRegisterImpl::register_dynamic_flags()` and `TypePluginImpl::complete_type_info()`
+    /// and one of them should call `FlagsClass::with_type()` before calling this method.
+    /// `const_static_values` is a reference on a wrapper of a slice of `FlagsValue`.
+    /// It must be static to ensure flags values are never dropped, and ensures that slice is terminated
+    ///  by an `FlagsValue` with all members being 0, as expected by GLib.
+    #[doc(alias = "g_flags_complete_type_info")]
+    pub fn complete_type_info(
+        type_: Type,
+        const_static_values: &'static FlagsValues,
+    ) -> Option<TypeInfo> {
+        unsafe {
+            let is_flags: bool = from_glib(gobject_ffi::g_type_is_a(
+                type_.into_glib(),
+                gobject_ffi::G_TYPE_FLAGS,
+            ));
+            if !is_flags {
+                return None;
+            }
+
+            let info = TypeInfo::default();
+            gobject_ffi::g_flags_complete_type_info(
+                type_.into_glib(),
+                info.as_ptr(),
+                const_static_values.to_glib_none().0,
+            );
+            Some(info)
+        }
+    }
 }
 
 impl Drop for FlagsClass {
@@ -733,6 +835,7 @@ impl ParseFlagsError {
 // rustdoc-stripper-ignore-next
 /// Representation of a single flags value of a `FlagsClass`.
 #[doc(alias = "GFlagsValue")]
+#[derive(Copy, Clone)]
 #[repr(transparent)]
 pub struct FlagsValue(gobject_ffi::GFlagsValue);
 
@@ -750,6 +853,15 @@ impl fmt::Debug for FlagsValue {
 }
 
 impl FlagsValue {
+    // rustdoc-stripper-ignore-next
+    /// # Safety
+    ///
+    /// It is the responsibility of the caller to ensure `GFlagsValue` is
+    /// valid.
+    pub const unsafe fn unsafe_from(g_value: gobject_ffi::GFlagsValue) -> Self {
+        Self(g_value)
+    }
+
     // rustdoc-stripper-ignore-next
     /// Get integer value corresponding to the value.
     #[doc(alias = "get_value")]
@@ -806,6 +918,33 @@ impl PartialEq for FlagsValue {
 
 impl Eq for FlagsValue {}
 
+impl UnsafeFrom<gobject_ffi::GFlagsValue> for FlagsValue {
+    unsafe fn unsafe_from(g_value: gobject_ffi::GFlagsValue) -> Self {
+        Self::unsafe_from(g_value)
+    }
+}
+
+// rustdoc-stripper-ignore-next
+/// Define the zero value and the associated GLib type.
+impl EnumerationValue<FlagsValue> for FlagsValue {
+    type GlibType = gobject_ffi::GFlagsValue;
+    const ZERO: FlagsValue = unsafe {
+        FlagsValue::unsafe_from(gobject_ffi::GFlagsValue {
+            value: 0,
+            value_name: ptr::null(),
+            value_nick: ptr::null(),
+        })
+    };
+}
+
+// rustdoc-stripper-ignore-next
+/// Storage of flags values.
+pub type FlagsValuesStorage<const N: usize> = EnumerationValuesStorage<FlagsValue, N>;
+
+// rustdoc-stripper-ignore-next
+/// Representation of flags values wrapped by `FlagsValuesStorage`
+pub type FlagsValues = EnumerationValues<FlagsValue>;
+
 // rustdoc-stripper-ignore-next
 /// Builder for conveniently setting/unsetting flags and returning a `Value`.
 ///
@@ -826,7 +965,7 @@ impl Eq for FlagsValue {}
 /// If setting/unsetting any value fails, `build()` returns `None`.
 #[must_use = "The builder must be built to be used"]
 pub struct FlagsBuilder<'a>(&'a FlagsClass, Option<Value>);
-impl<'a> FlagsBuilder<'a> {
+impl FlagsBuilder<'_> {
     fn new(flags_class: &FlagsClass) -> FlagsBuilder {
         let value = unsafe { Value::from_type_unchecked(flags_class.type_()) };
         FlagsBuilder(flags_class, Some(value))
@@ -904,7 +1043,7 @@ impl<'a> FlagsBuilder<'a> {
     }
 }
 
-unsafe impl<'a, 'b> FromValue<'a> for Vec<&'b FlagsValue> {
+unsafe impl<'a> crate::value::FromValue<'a> for Vec<&FlagsValue> {
     type Checker = FlagsTypeChecker;
 
     unsafe fn from_value(value: &'a Value) -> Self {
@@ -915,7 +1054,7 @@ unsafe impl<'a, 'b> FromValue<'a> for Vec<&'b FlagsValue> {
 }
 
 pub struct FlagsTypeChecker();
-unsafe impl ValueTypeChecker for FlagsTypeChecker {
+unsafe impl crate::value::ValueTypeChecker for FlagsTypeChecker {
     type Error = InvalidFlagsError;
 
     fn check(value: &Value) -> Result<(), Self::Error> {
@@ -941,6 +1080,94 @@ impl fmt::Display for InvalidFlagsError {
 }
 
 impl std::error::Error for InvalidFlagsError {}
+
+// rustdoc-stripper-ignore-next
+/// helper trait to define the zero value and the associated GLib type.
+pub trait EnumerationValue<E>: Copy {
+    type GlibType;
+    const ZERO: E;
+}
+
+// rustdoc-stripper-ignore-next
+/// Storage of enumeration values terminated by a zero value. Should be used
+/// only as a storage location for `EnumValue` or `FlagsValue` when registering
+/// an enum or flags as a dynamic type.
+/// see `TypePluginRegisterImpl::register_dynamic_enum()`, `TypePluginRegisterImpl::register_dynamic_flags()`
+/// and `TypePluginImpl::complete_type_info()`.
+/// Inner is intentionally private to ensure other modules will not access the
+/// enum (or flags) values by this way.
+/// Use `EnumClass::values()` or `EnumClass::value()` to get the enum values.
+/// Use `FlagsClass::values()` or `FlagsClass::value()` to get the flags values.
+#[repr(C)]
+pub struct EnumerationValuesStorage<E: EnumerationValue<E>, const S: usize>([E; S]);
+
+impl<E: EnumerationValue<E>, const S: usize> EnumerationValuesStorage<E, S> {
+    // rustdoc-stripper-ignore-next
+    /// creates a new `EnumerationValuesStorage` with the given values and a final zero value.
+    pub const fn new<const N: usize>(values: [E; N]) -> Self {
+        #[repr(C)]
+        #[derive(Copy, Clone)]
+        struct Both<E: Copy, const N: usize>([E; N], [E; 1]);
+
+        #[repr(C)]
+        union Transmute<E: Copy, const N: usize, const S: usize> {
+            from: Both<E, N>,
+            to: [E; S],
+        }
+
+        // SAFETY: Transmute is repr(C) and union fields are compatible in terms of size and alignment, so the access to union fields is safe.
+        unsafe {
+            // create an array with the values and terminated by a zero value.
+            let all = Transmute {
+                from: Both(values, [E::ZERO; 1]),
+            }
+            .to;
+            Self(all)
+        }
+    }
+}
+
+impl<E: EnumerationValue<E>, const S: usize> AsRef<EnumerationValues<E>>
+    for EnumerationValuesStorage<E, S>
+{
+    fn as_ref(&self) -> &EnumerationValues<E> {
+        // SAFETY: EnumerationStorage and EnumerationValues are repr(C) and their unique field are compatible (array and slice of the same type), so the cast is safe.
+        unsafe { &*(&self.0 as *const [E] as *const EnumerationValues<E>) }
+    }
+}
+
+// rustdoc-stripper-ignore-next
+/// Representation of enumeration values wrapped by `EnumerationValuesStorage`.
+/// Easier to use because don't have a size parameter to be specify. Should be
+/// used only to register an enum or flags as a dynamic type.
+/// see `TypePluginRegisterImpl::register_dynamic_enum()`, `TypePluginRegisterImpl::register_dynamic_flags()`
+/// and `TypePluginImpl::complete_type_info()`.
+/// Field is intentionally private to ensure other modules will not access the
+/// enum (or flags) values by this way.
+/// Use `EnumClass::values()` or `EnumClass::value()` to get the enum values.
+/// Use `FlagsClass::values()` or `FlagsClass::value()` to get the flags values.
+#[repr(C)]
+pub struct EnumerationValues<E: EnumerationValue<E>>([E]);
+
+impl<E: EnumerationValue<E>> Deref for EnumerationValues<E> {
+    type Target = [E];
+
+    // rustdoc-stripper-ignore-next
+    /// Dereferences the enumeration values as a slice, but excluding the last value which is zero.
+    fn deref(&self) -> &Self::Target {
+        // SAFETY: EnumerationValues contains at least the zero value which terminates the array.
+        unsafe { std::slice::from_raw_parts(self.0.as_ptr(), self.0.len() - 1) }
+    }
+}
+
+#[doc(hidden)]
+impl<'a, E: 'a + EnumerationValue<E>> ToGlibPtr<'a, *const E::GlibType> for EnumerationValues<E> {
+    type Storage = &'a Self;
+
+    fn to_glib_none(&'a self) -> Stash<'a, *const E::GlibType, Self> {
+        Stash(self.0.as_ptr() as *const E::GlibType, self)
+    }
+}
 
 #[cfg(test)]
 mod tests {

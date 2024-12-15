@@ -3,8 +3,8 @@
 use std::{fmt, num::NonZeroU32, ptr, sync::Mutex};
 
 use crate::{
-    prelude::*, translate::*, utils::is_canonical_pspec_name, Closure, IntoGStr, SignalFlags, Type,
-    Value,
+    ffi, gobject_ffi, prelude::*, translate::*, utils::is_canonical_pspec_name, Closure,
+    SignalFlags, Type, Value,
 };
 
 // rustdoc-stripper-ignore-next
@@ -322,16 +322,6 @@ impl PartialEq<Type> for SignalType {
 }
 
 impl std::fmt::Debug for SignalType {
-    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        let type_: Type = (*self).into();
-        f.debug_struct("SignalType")
-            .field("name", &type_.name())
-            .field("static_scope", &self.static_scope())
-            .finish()
-    }
-}
-
-impl std::fmt::Display for SignalType {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         let type_: Type = (*self).into();
         f.debug_struct("SignalType")

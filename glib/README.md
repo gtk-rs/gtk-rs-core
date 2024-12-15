@@ -16,15 +16,15 @@ crates.
 
 ## Minimum supported Rust version
 
-Currently, the minimum supported Rust version is `1.70.0`.
+Currently, the minimum supported Rust version is `1.80.0`.
 
 ## Dynamic typing
 
 Most types in the GLib family have [`Type`] identifiers.
 Their corresponding Rust types implement the [`StaticType`] trait.
 
-A dynamically typed [`Value`] can carry values of any [`StaticType`].
-[`Variant`](struct@Variant)s can carry values of [`StaticVariantType`].
+A dynamically typed [`Value`] can carry values of any `StaticType`.
+[Variants][`Variant`] can carry values of [`StaticVariantType`].
 
 ## Errors
 
@@ -35,10 +35,11 @@ carry values from various [error domains](error::ErrorDomain) such as
 ## Objects
 
 Each class and interface has a corresponding smart pointer struct
-representing an instance of that type (e.g. [`Object`] for `GObject` or
-`gtk::Widget` for `GtkWidget`). They are reference counted and feature
-interior mutability similarly to Rust's `Rc<RefCell<T>>` idiom.
-Consequently, cloning objects is cheap and their methods never require
+representing an instance of that type (e.g. [`Object`] for [`GObject`] or
+[`gtk4::Widget`] for [`GtkWidget`]). They are reference counted and feature
+interior mutability similarly to Rust's
+[`Rc<RefCell<T>>`]
+idiom. Consequently, cloning objects is cheap and their methods never require
 mutable borrows. Two smart pointers are equal if they point to the same
 object.
 
@@ -48,7 +49,7 @@ marker trait. The [`Cast`] trait enables upcasting
 and downcasting.
 
 Interfaces and non-leaf classes also have corresponding traits (e.g.
-[`ObjectExt`] or `gtk::WidgetExt`), which are blanketly implemented for all
+[`ObjectExt`] or [`WidgetExt`]), which are blanketly implemented for all
 their subtypes.
 
 You can create new subclasses of [`Object`] or other object types. Look at
@@ -60,11 +61,10 @@ GLib-based libraries largely operate on pointers to various boxed or
 reference counted structures so the bindings have to implement corresponding
 smart pointers (wrappers), which encapsulate resource management and safety
 checks. Such wrappers are defined via the
-[`wrapper`][`macro@wrapper`] macro, which uses abstractions
-defined in the [`wrapper`][`mod@wrapper`], [`boxed`][`mod@boxed`],
-[`shared`][`mod@shared`] and [`object`][`mod@object`] modules.
-
-The [`translate`][`mod@translate`] module defines and partly implements
+[`wrapper!`] macro, which uses abstractions
+defined in the [`wrapper`], [`boxed`],
+[`shared`] and [`object`][mod@object] modules.
+The [`translate`] module defines and partly implements
 conversions between high level Rust types (including the aforementioned
 wrappers) and their FFI counterparts.
 
@@ -99,3 +99,26 @@ glib = { git = "https://github.com/gtk-rs/gtk-rs-core.git", package = "glib" }
 ## License
 
 __glib__ is available under the MIT License, please refer to it.
+
+[`Type`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/types/struct.Type.html
+[`StaticType`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/types/trait.StaticType.html
+[`Value`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/value/struct.Value.html
+[`Variant`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/variant/struct.Variant.html
+[`StaticVariantType`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/variant/trait.StaticVariantType.html
+[`Error`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/error/struct.Error.html
+[`FileError`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/enum.FileError.html
+[`Object`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/object/struct.Object.html
+[`GObject`]: https://docs.gtk.org/gobject/class.Object.html
+[`gtk4::Widget`]: https://gtk-rs.org/gtk4-rs/stable/latest/docs/gtk4/struct.Widget.html
+[`GtkWidget`]: https://docs.gtk.org/gtk4/class.Widget.html
+[`Rc<RefCell<T>>`]: https://doc.rust-lang.org/stable/core/cell/index.html#introducing-mutability-inside-of-something-immutable
+[`IsA`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/object/trait.IsA.html
+[`Cast`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/object/trait.Cast.html
+[`ObjectExt`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/object/trait.ObjectExt.html
+[`WidgetExt`]: https://gtk-rs.org/gtk4-rs/stable/latest/docs/gtk4/prelude/trait.WidgetExt.html
+[`wrapper!`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/macro.wrapper.html
+[`wrapper`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/wrapper/index.html
+[`boxed`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/boxed/index.html
+[`shared`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/shared/index.html
+[mod@object]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/object/index.html
+[`translate`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/translate/index.html

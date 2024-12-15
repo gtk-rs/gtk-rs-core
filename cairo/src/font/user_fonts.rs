@@ -1,7 +1,9 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
+use std::sync::OnceLock;
+
 use super::{FontExtents, FontFace, ScaledFont, TextCluster, TextClusterFlags, TextExtents};
-use crate::{utils::status_to_result, Context, Error, Glyph};
+use crate::{ffi, utils::status_to_result, Context, Error, Glyph};
 
 type BoxInitFunc =
     Box<dyn Fn(&ScaledFont, &Context, &mut FontExtents) -> Result<(), Error> + Send + Sync>;
@@ -34,7 +36,7 @@ impl UserFontFace {
     where
         F: Fn(&ScaledFont, &Context, &mut FontExtents) -> Result<(), Error> + Send + Sync + 'static,
     {
-        static INIT_FUNC: once_cell::sync::OnceCell<BoxInitFunc> = once_cell::sync::OnceCell::new();
+        static INIT_FUNC: OnceLock<BoxInitFunc> = OnceLock::new();
         if INIT_FUNC.set(Box::new(func)).is_err() {
             panic!("Init func can only be set once")
         }
@@ -68,8 +70,7 @@ impl UserFontFace {
             + Sync
             + 'static,
     {
-        static RENDER_GLYPH_FUNC: once_cell::sync::OnceCell<BoxRenderGlyphFunc> =
-            once_cell::sync::OnceCell::new();
+        static RENDER_GLYPH_FUNC: OnceLock<BoxRenderGlyphFunc> = OnceLock::new();
         if RENDER_GLYPH_FUNC.set(Box::new(func)).is_err() {
             panic!("RenderGlyph func can only be set once")
         }
@@ -108,8 +109,7 @@ impl UserFontFace {
             + Sync
             + 'static,
     {
-        static RENDER_COLOR_GLYPH_FUNC: once_cell::sync::OnceCell<BoxRenderGlyphFunc> =
-            once_cell::sync::OnceCell::new();
+        static RENDER_COLOR_GLYPH_FUNC: OnceLock<BoxRenderGlyphFunc> = OnceLock::new();
         if RENDER_COLOR_GLYPH_FUNC.set(Box::new(func)).is_err() {
             panic!("RenderColorGlyph func can only be set once")
         }
@@ -145,8 +145,7 @@ impl UserFontFace {
     where
         F: Fn(&ScaledFont, libc::c_ulong) -> Result<libc::c_ulong, Error> + Send + Sync + 'static,
     {
-        static UNICODE_TO_GLYPH_FUNC: once_cell::sync::OnceCell<BoxUnicodeToGlyphFunc> =
-            once_cell::sync::OnceCell::new();
+        static UNICODE_TO_GLYPH_FUNC: OnceLock<BoxUnicodeToGlyphFunc> = OnceLock::new();
         if UNICODE_TO_GLYPH_FUNC.set(Box::new(func)).is_err() {
             panic!("UnicodeToGlyph func can only be set once")
         }
@@ -180,8 +179,7 @@ impl UserFontFace {
             + Sync
             + 'static,
     {
-        static TEXT_TO_GLYPHS_FUNC: once_cell::sync::OnceCell<BoxTextToGlyphsFunc> =
-            once_cell::sync::OnceCell::new();
+        static TEXT_TO_GLYPHS_FUNC: OnceLock<BoxTextToGlyphsFunc> = OnceLock::new();
         if TEXT_TO_GLYPHS_FUNC.set(Box::new(func)).is_err() {
             panic!("TextToGlyphs func can only be set once")
         }

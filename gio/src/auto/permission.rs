@@ -2,13 +2,13 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{AsyncResult, Cancellable};
+use crate::{ffi, AsyncResult, Cancellable};
 use glib::{
     prelude::*,
     signal::{connect_raw, SignalHandlerId},
     translate::*,
 };
-use std::{boxed::Box as Box_, fmt, mem::transmute, pin::Pin, ptr};
+use std::{boxed::Box as Box_, pin::Pin};
 
 glib::wrapper! {
     #[doc(alias = "GPermission")]
@@ -23,16 +23,11 @@ impl Permission {
     pub const NONE: Option<&'static Permission> = None;
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::Permission>> Sealed for T {}
-}
-
-pub trait PermissionExt: IsA<Permission> + sealed::Sealed + 'static {
+pub trait PermissionExt: IsA<Permission> + 'static {
     #[doc(alias = "g_permission_acquire")]
     fn acquire(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<(), glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_permission_acquire(
                 self.as_ref().to_glib_none().0,
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
@@ -72,7 +67,7 @@ pub trait PermissionExt: IsA<Permission> + sealed::Sealed + 'static {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let _ = ffi::g_permission_acquire_finish(_source_object as *mut _, res, &mut error);
             let result = if error.is_null() {
                 Ok(())
@@ -110,6 +105,7 @@ pub trait PermissionExt: IsA<Permission> + sealed::Sealed + 'static {
 
     #[doc(alias = "g_permission_get_allowed")]
     #[doc(alias = "get_allowed")]
+    #[doc(alias = "allowed")]
     fn is_allowed(&self) -> bool {
         unsafe {
             from_glib(ffi::g_permission_get_allowed(
@@ -120,6 +116,7 @@ pub trait PermissionExt: IsA<Permission> + sealed::Sealed + 'static {
 
     #[doc(alias = "g_permission_get_can_acquire")]
     #[doc(alias = "get_can_acquire")]
+    #[doc(alias = "can-acquire")]
     fn can_acquire(&self) -> bool {
         unsafe {
             from_glib(ffi::g_permission_get_can_acquire(
@@ -130,6 +127,7 @@ pub trait PermissionExt: IsA<Permission> + sealed::Sealed + 'static {
 
     #[doc(alias = "g_permission_get_can_release")]
     #[doc(alias = "get_can_release")]
+    #[doc(alias = "can-release")]
     fn can_release(&self) -> bool {
         unsafe {
             from_glib(ffi::g_permission_get_can_release(
@@ -153,7 +151,7 @@ pub trait PermissionExt: IsA<Permission> + sealed::Sealed + 'static {
     #[doc(alias = "g_permission_release")]
     fn release(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<(), glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_permission_release(
                 self.as_ref().to_glib_none().0,
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
@@ -193,7 +191,7 @@ pub trait PermissionExt: IsA<Permission> + sealed::Sealed + 'static {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let _ = ffi::g_permission_release_finish(_source_object as *mut _, res, &mut error);
             let result = if error.is_null() {
                 Ok(())
@@ -244,7 +242,7 @@ pub trait PermissionExt: IsA<Permission> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::allowed\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_allowed_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -270,7 +268,7 @@ pub trait PermissionExt: IsA<Permission> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::can-acquire\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_can_acquire_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -296,7 +294,7 @@ pub trait PermissionExt: IsA<Permission> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::can-release\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_can_release_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -306,9 +304,3 @@ pub trait PermissionExt: IsA<Permission> + sealed::Sealed + 'static {
 }
 
 impl<O: IsA<Permission>> PermissionExt for O {}
-
-impl fmt::Display for Permission {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("Permission")
-    }
-}

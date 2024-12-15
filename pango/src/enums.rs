@@ -1,10 +1,9 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
 #[cfg(feature = "v1_50")]
-use std::fmt;
-
+use crate::ffi;
 #[cfg(feature = "v1_50")]
-use glib::{error::ErrorDomain, prelude::*, translate::*, value::FromValue, Quark};
+use glib::{prelude::*, translate::*, Quark};
 
 #[cfg(feature = "v1_50")]
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
@@ -19,23 +18,6 @@ pub enum LayoutDeserializeError {
     MissingValue,
     #[doc(hidden)]
     __Unknown(i32),
-}
-
-#[cfg(feature = "v1_50")]
-#[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
-impl fmt::Display for LayoutDeserializeError {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(
-            f,
-            "LayoutDeserializeError::{}",
-            match *self {
-                Self::Invalid => "Invalid",
-                Self::InvalidValue => "InvalidValue",
-                Self::MissingValue => "MissingValue",
-                _ => "Unknown",
-            }
-        )
-    }
 }
 
 #[cfg(feature = "v1_50")]
@@ -110,7 +92,7 @@ impl glib::value::ValueType for LayoutDeserializeError {
 
 #[cfg(feature = "v1_50")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
-unsafe impl<'a> FromValue<'a> for LayoutDeserializeError {
+unsafe impl<'a> glib::value::FromValue<'a> for LayoutDeserializeError {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     unsafe fn from_value(value: &'a glib::Value) -> Self {

@@ -1,12 +1,12 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use std::{convert::TryFrom, fmt, ops::Deref};
+use std::{fmt, ops::Deref};
 
 use ffi::CGContextRef;
 #[cfg(feature = "use_glib")]
 use glib::translate::*;
 
-use crate::{Error, Format, Surface, SurfaceType};
+use crate::{ffi, Error, Format, Surface, SurfaceType};
 
 declare_surface!(QuartzSurface, SurfaceType::Quartz);
 

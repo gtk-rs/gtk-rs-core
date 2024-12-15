@@ -2,9 +2,8 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{Box, Plane, Point3D, RayIntersectionKind, Sphere, Triangle, Vec3};
+use crate::{ffi, Box, Plane, Point3D, RayIntersectionKind, Sphere, Triangle, Vec3};
 use glib::translate::*;
-use std::mem;
 
 glib::wrapper! {
     pub struct Ray(BoxedInline<ffi::graphene_ray_t>);
@@ -89,7 +88,7 @@ impl Ray {
     #[doc(alias = "graphene_ray_intersect_box")]
     pub fn intersect_box(&self, b: &Box) -> (RayIntersectionKind, f32) {
         unsafe {
-            let mut t_out = mem::MaybeUninit::uninit();
+            let mut t_out = std::mem::MaybeUninit::uninit();
             let ret = from_glib(ffi::graphene_ray_intersect_box(
                 self.to_glib_none().0,
                 b.to_glib_none().0,
@@ -102,7 +101,7 @@ impl Ray {
     #[doc(alias = "graphene_ray_intersect_sphere")]
     pub fn intersect_sphere(&self, s: &Sphere) -> (RayIntersectionKind, f32) {
         unsafe {
-            let mut t_out = mem::MaybeUninit::uninit();
+            let mut t_out = std::mem::MaybeUninit::uninit();
             let ret = from_glib(ffi::graphene_ray_intersect_sphere(
                 self.to_glib_none().0,
                 s.to_glib_none().0,
@@ -115,7 +114,7 @@ impl Ray {
     #[doc(alias = "graphene_ray_intersect_triangle")]
     pub fn intersect_triangle(&self, t: &Triangle) -> (RayIntersectionKind, f32) {
         unsafe {
-            let mut t_out = mem::MaybeUninit::uninit();
+            let mut t_out = std::mem::MaybeUninit::uninit();
             let ret = from_glib(ffi::graphene_ray_intersect_triangle(
                 self.to_glib_none().0,
                 t.to_glib_none().0,

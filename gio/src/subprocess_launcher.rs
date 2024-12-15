@@ -6,6 +6,9 @@ use std::os::unix::io::IntoRawFd;
 #[cfg(unix)]
 use glib::translate::*;
 
+#[cfg(unix)]
+use crate::ffi;
+
 use crate::SubprocessLauncher;
 
 #[cfg(all(docsrs, not(unix)))]

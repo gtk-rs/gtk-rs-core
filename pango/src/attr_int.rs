@@ -3,12 +3,16 @@
 use glib::translate::*;
 
 #[cfg(feature = "v1_50")]
+use crate::BaselineShift;
+#[cfg(feature = "v1_50")]
 use crate::FontScale;
 #[cfg(feature = "v1_46")]
 use crate::Overline;
 #[cfg(feature = "v1_44")]
 use crate::ShowFlags;
-use crate::{AttrType, Gravity, GravityHint, Stretch, Style, Underline, Variant, Weight};
+#[cfg(feature = "v1_50")]
+use crate::TextTransform;
+use crate::{ffi, AttrType, Gravity, GravityHint, Stretch, Style, Underline, Variant, Weight};
 
 define_attribute_struct!(
     AttrInt,
@@ -17,7 +21,15 @@ define_attribute_struct!(
         #[cfg(feature = "v1_50")]
         AttrType::AbsoluteLineHeight,
         #[cfg(feature = "v1_50")]
+        AttrType::BaselineShift,
+        #[cfg(feature = "v1_50")]
         AttrType::FontScale,
+        #[cfg(feature = "v1_50")]
+        AttrType::Sentence,
+        #[cfg(feature = "v1_50")]
+        AttrType::TextTransform,
+        #[cfg(feature = "v1_50")]
+        AttrType::Word,
         AttrType::AllowBreaks,
         AttrType::BackgroundAlpha,
         AttrType::Fallback,
@@ -48,9 +60,37 @@ impl AttrInt {
 
     #[cfg(feature = "v1_50")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
+    #[doc(alias = "pango_attr_baseline_shift_new")]
+    pub fn new_baseline_shift(shift: BaselineShift) -> Self {
+        unsafe { from_glib_full(ffi::pango_attr_baseline_shift_new(shift.into_glib())) }
+    }
+
+    #[cfg(feature = "v1_50")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     #[doc(alias = "pango_attr_font_scale_new")]
     pub fn new_font_scale(scale: FontScale) -> Self {
         unsafe { from_glib_full(ffi::pango_attr_font_scale_new(scale.into_glib())) }
+    }
+
+    #[cfg(feature = "v1_50")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
+    #[doc(alias = "pango_attr_sentence_new")]
+    pub fn new_sentence() -> Self {
+        unsafe { from_glib_full(ffi::pango_attr_sentence_new()) }
+    }
+
+    #[cfg(feature = "v1_50")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
+    #[doc(alias = "pango_attr_text_transform_new")]
+    pub fn new_text_transform(transform: TextTransform) -> Self {
+        unsafe { from_glib_full(ffi::pango_attr_text_transform_new(transform.into_glib())) }
+    }
+
+    #[cfg(feature = "v1_50")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
+    #[doc(alias = "pango_attr_word_new")]
+    pub fn new_word() -> Self {
+        unsafe { from_glib_full(ffi::pango_attr_word_new()) }
     }
 
     #[cfg(feature = "v1_44")]

@@ -2,9 +2,9 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{AsyncResult, Cancellable, File, FileInfo};
+use crate::{ffi, AsyncResult, Cancellable, File, FileInfo};
 use glib::{prelude::*, translate::*};
-use std::{boxed::Box as Box_, fmt, pin::Pin, ptr};
+use std::{boxed::Box as Box_, pin::Pin};
 
 glib::wrapper! {
     #[doc(alias = "GFileEnumerator")]
@@ -19,16 +19,11 @@ impl FileEnumerator {
     pub const NONE: Option<&'static FileEnumerator> = None;
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::FileEnumerator>> Sealed for T {}
-}
-
-pub trait FileEnumeratorExt: IsA<FileEnumerator> + sealed::Sealed + 'static {
+pub trait FileEnumeratorExt: IsA<FileEnumerator> + 'static {
     #[doc(alias = "g_file_enumerator_close")]
     fn close(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<(), glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_file_enumerator_close(
                 self.as_ref().to_glib_none().0,
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
@@ -69,7 +64,7 @@ pub trait FileEnumeratorExt: IsA<FileEnumerator> + sealed::Sealed + 'static {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let _ = ffi::g_file_enumerator_close_finish(_source_object as *mut _, res, &mut error);
             let result = if error.is_null() {
                 Ok(())
@@ -152,7 +147,7 @@ pub trait FileEnumeratorExt: IsA<FileEnumerator> + sealed::Sealed + 'static {
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<Option<FileInfo>, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_file_enumerator_next_file(
                 self.as_ref().to_glib_none().0,
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
@@ -193,7 +188,7 @@ pub trait FileEnumeratorExt: IsA<FileEnumerator> + sealed::Sealed + 'static {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret =
                 ffi::g_file_enumerator_next_files_finish(_source_object as *mut _, res, &mut error);
             let result = if error.is_null() {
@@ -244,9 +239,3 @@ pub trait FileEnumeratorExt: IsA<FileEnumerator> + sealed::Sealed + 'static {
 }
 
 impl<O: IsA<FileEnumerator>> FileEnumeratorExt for O {}
-
-impl fmt::Display for FileEnumerator {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("FileEnumerator")
-    }
-}

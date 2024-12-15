@@ -1,8 +1,8 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use glib::{error::ErrorDomain, translate::*};
+use glib::{prelude::*, translate::*, VariantTy};
 
-use crate::DBusMethodInvocation;
+use crate::{ffi, DBusMethodInvocation};
 
 impl DBusMethodInvocation {
     #[doc(alias = "g_dbus_method_invocation_return_error_literal")]
@@ -25,5 +25,45 @@ impl DBusMethodInvocation {
                 error.to_glib_none().0,
             );
         }
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Return a result for this invocation.
+    ///
+    /// If `Ok` return the contained value with [`return_value`].  If the return
+    /// value is not a tuple, automatically convert it to a one-element tuple, as
+    /// DBus return values must be tuples.
+    ///
+    /// If `Err` return the contained error with [`return_gerror`].
+    pub fn return_result(self, result: Result<Option<glib::Variant>, glib::Error>) {
+        match result {
+            Ok(Some(value)) if !value.is_type(VariantTy::TUPLE) => {
+                let tupled = glib::Variant::tuple_from_iter(std::iter::once(value));
+                self.return_value(Some(&tupled));
+            }
+            Ok(value) => self.return_value(value.as_ref()),
+            Err(error) => self.return_gerror(error),
+        }
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Return an async result for this invocation.
+    ///
+    /// Spawn the given future on the thread-default main context, and return the
+    /// the result with [`return_result`].  Specifically, if a variant is returned
+    /// that is not a tuple it is automatically wrapped into a tuple.
+    ///
+    /// The given `Future` does not have to be `Send`.
+    ///
+    /// This can be called only from the thread where the main context is running, e.g.
+    /// from any other `Future` that is executed on this main context, or after calling
+    /// `with_thread_default` or `acquire` on the main context.
+    pub fn return_future_local<F>(self, f: F) -> glib::JoinHandle<()>
+    where
+        F: std::future::Future<Output = Result<Option<glib::Variant>, glib::Error>> + 'static,
+    {
+        glib::spawn_future_local(async move {
+            self.return_result(f.await);
+        })
     }
 }

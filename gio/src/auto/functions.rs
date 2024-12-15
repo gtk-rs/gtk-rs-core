@@ -3,11 +3,11 @@
 // DO NOT EDIT
 
 use crate::{
-    AsyncResult, BusType, Cancellable, DBusConnection, File, IOErrorEnum, IOStream, Icon,
+    ffi, AsyncResult, BusType, Cancellable, DBusConnection, File, IOErrorEnum, IOStream, Icon,
     InputStream, Resource, ResourceLookupFlags, SettingsBackend,
 };
 use glib::{prelude::*, translate::*};
-use std::{boxed::Box as Box_, mem, pin::Pin, ptr};
+use std::{boxed::Box as Box_, pin::Pin};
 
 #[doc(alias = "g_bus_get")]
 pub fn bus_get<P: FnOnce(Result<DBusConnection, glib::Error>) + 'static>(
@@ -34,7 +34,7 @@ pub fn bus_get<P: FnOnce(Result<DBusConnection, glib::Error>) + 'static>(
         res: *mut crate::ffi::GAsyncResult,
         user_data: glib::ffi::gpointer,
     ) {
-        let mut error = ptr::null_mut();
+        let mut error = std::ptr::null_mut();
         let ret = ffi::g_bus_get_finish(res, &mut error);
         let result = if error.is_null() {
             Ok(from_glib_full(ret))
@@ -76,7 +76,7 @@ pub fn bus_get_sync(
     cancellable: Option<&impl IsA<Cancellable>>,
 ) -> Result<DBusConnection, glib::Error> {
     unsafe {
-        let mut error = ptr::null_mut();
+        let mut error = std::ptr::null_mut();
         let ret = ffi::g_bus_get_sync(
             bus_type.into_glib(),
             cancellable.map(|p| p.as_ref()).to_glib_none().0,
@@ -185,7 +185,7 @@ pub fn content_type_guess(
 ) -> (glib::GString, bool) {
     let data_size = data.len() as _;
     unsafe {
-        let mut result_uncertain = mem::MaybeUninit::uninit();
+        let mut result_uncertain = std::mem::MaybeUninit::uninit();
         let ret = from_glib_full(ffi::g_content_type_guess(
             filename.as_ref().map(|p| p.as_ref()).to_glib_none().0,
             data.to_glib_none().0,
@@ -255,7 +255,7 @@ pub fn dbus_address_get_for_bus_sync(
     cancellable: Option<&impl IsA<Cancellable>>,
 ) -> Result<glib::GString, glib::Error> {
     unsafe {
-        let mut error = ptr::null_mut();
+        let mut error = std::ptr::null_mut();
         let ret = ffi::g_dbus_address_get_for_bus_sync(
             bus_type.into_glib(),
             cancellable.map(|p| p.as_ref()).to_glib_none().0,
@@ -296,8 +296,8 @@ pub fn dbus_address_get_stream<
         res: *mut crate::ffi::GAsyncResult,
         user_data: glib::ffi::gpointer,
     ) {
-        let mut error = ptr::null_mut();
-        let mut out_guid = ptr::null_mut();
+        let mut error = std::ptr::null_mut();
+        let mut out_guid = std::ptr::null_mut();
         let ret = ffi::g_dbus_address_get_stream_finish(res, &mut out_guid, &mut error);
         let result = if error.is_null() {
             Ok((from_glib_full(ret), from_glib_full(out_guid)))
@@ -345,8 +345,8 @@ pub fn dbus_address_get_stream_sync(
     cancellable: Option<&impl IsA<Cancellable>>,
 ) -> Result<(IOStream, Option<glib::GString>), glib::Error> {
     unsafe {
-        let mut out_guid = ptr::null_mut();
-        let mut error = ptr::null_mut();
+        let mut out_guid = std::ptr::null_mut();
+        let mut error = std::ptr::null_mut();
         let ret = ffi::g_dbus_address_get_stream_sync(
             address.to_glib_none().0,
             &mut out_guid,
@@ -434,7 +434,7 @@ pub fn dbus_is_name(string: &str) -> bool {
 #[doc(alias = "g_dbus_is_supported_address")]
 pub fn dbus_is_supported_address(string: &str) -> Result<(), glib::Error> {
     unsafe {
-        let mut error = ptr::null_mut();
+        let mut error = std::ptr::null_mut();
         let is_ok = ffi::g_dbus_is_supported_address(string.to_glib_none().0, &mut error);
         debug_assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
         if error.is_null() {
@@ -508,7 +508,7 @@ pub fn resources_enumerate_children(
     lookup_flags: ResourceLookupFlags,
 ) -> Result<Vec<glib::GString>, glib::Error> {
     unsafe {
-        let mut error = ptr::null_mut();
+        let mut error = std::ptr::null_mut();
         let ret = ffi::g_resources_enumerate_children(
             path.to_glib_none().0,
             lookup_flags.into_glib(),
@@ -528,9 +528,9 @@ pub fn resources_get_info(
     lookup_flags: ResourceLookupFlags,
 ) -> Result<(usize, u32), glib::Error> {
     unsafe {
-        let mut size = mem::MaybeUninit::uninit();
-        let mut flags = mem::MaybeUninit::uninit();
-        let mut error = ptr::null_mut();
+        let mut size = std::mem::MaybeUninit::uninit();
+        let mut flags = std::mem::MaybeUninit::uninit();
+        let mut error = std::ptr::null_mut();
         let is_ok = ffi::g_resources_get_info(
             path.to_glib_none().0,
             lookup_flags.into_glib(),
@@ -547,13 +547,20 @@ pub fn resources_get_info(
     }
 }
 
+#[cfg(feature = "v2_84")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_84")))]
+#[doc(alias = "g_resources_has_children")]
+pub fn resources_has_children(path: &str) -> bool {
+    unsafe { from_glib(ffi::g_resources_has_children(path.to_glib_none().0)) }
+}
+
 #[doc(alias = "g_resources_lookup_data")]
 pub fn resources_lookup_data(
     path: &str,
     lookup_flags: ResourceLookupFlags,
 ) -> Result<glib::Bytes, glib::Error> {
     unsafe {
-        let mut error = ptr::null_mut();
+        let mut error = std::ptr::null_mut();
         let ret = ffi::g_resources_lookup_data(
             path.to_glib_none().0,
             lookup_flags.into_glib(),
@@ -573,7 +580,7 @@ pub fn resources_open_stream(
     lookup_flags: ResourceLookupFlags,
 ) -> Result<InputStream, glib::Error> {
     unsafe {
-        let mut error = ptr::null_mut();
+        let mut error = std::ptr::null_mut();
         let ret = ffi::g_resources_open_stream(
             path.to_glib_none().0,
             lookup_flags.into_glib(),

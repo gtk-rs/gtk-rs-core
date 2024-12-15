@@ -3,9 +3,11 @@
 use std::mem::transmute;
 
 use crate::{
+    ffi, gobject_ffi,
+    prelude::*,
     signal::{connect_raw, SignalHandlerId},
     translate::*,
-    IsA, Object, ObjectType, RustClosure, SignalGroup, Value,
+    Object, RustClosure, SignalGroup, Value,
 };
 
 impl SignalGroup {
@@ -103,7 +105,7 @@ impl SignalGroup {
         connect_raw(
             self.as_ptr() as *mut _,
             b"bind\0".as_ptr() as *const _,
-            Some(transmute::<_, unsafe extern "C" fn()>(
+            Some(transmute::<*const (), unsafe extern "C" fn()>(
                 bind_trampoline::<F> as *const (),
             )),
             Box::into_raw(f),
@@ -122,7 +124,7 @@ impl SignalGroup {
         connect_raw(
             self.as_ptr() as *mut _,
             b"unbind\0".as_ptr() as *const _,
-            Some(transmute::<_, unsafe extern "C" fn()>(
+            Some(transmute::<*const (), unsafe extern "C" fn()>(
                 unbind_trampoline::<F> as *const (),
             )),
             Box::into_raw(f),
@@ -173,11 +175,10 @@ impl SignalGroup {
 
 #[cfg(test)]
 mod tests {
-    use std::{cell::RefCell, rc::Rc};
+    use std::{cell::RefCell, rc::Rc, sync::OnceLock};
 
     use super::*;
     use crate as glib;
-    use crate::{ObjectExt, StaticType};
 
     mod imp {
         use super::*;
@@ -194,8 +195,8 @@ mod tests {
 
         impl ObjectImpl for SignalObject {
             fn signals() -> &'static [Signal] {
-                use once_cell::sync::Lazy;
-                static SIGNALS: Lazy<Vec<Signal>> = Lazy::new(|| {
+                static SIGNALS: OnceLock<Vec<Signal>> = OnceLock::new();
+                SIGNALS.get_or_init(|| {
                     vec![
                         Signal::builder("sig-with-args")
                             .param_types([u32::static_type(), String::static_type()])
@@ -204,8 +205,7 @@ mod tests {
                             .return_type::<String>()
                             .build(),
                     ]
-                });
-                SIGNALS.as_ref()
+                })
             }
         }
     }
@@ -223,18 +223,28 @@ mod tests {
         group.connect_closure(
             "sig-with-args",
             false,
-            glib::closure_local!(@watch obj, @strong store => move |o: &SignalObject, a: u32, b: &str| {
-                assert_eq!(o, obj);
-                store.replace(format!("a {a} b {b}"));
-            })
+            glib::closure_local!(
+                #[watch]
+                obj,
+                #[strong]
+                store,
+                move |o: &SignalObject, a: u32, b: &str| {
+                    assert_eq!(o, obj);
+                    store.replace(format!("a {a} b {b}"));
+                }
+            ),
         );
         group.connect_closure(
             "sig-with-ret",
             false,
-            glib::closure_local!(@watch obj => move |o: &SignalObject| -> &'static crate::GStr {
-                assert_eq!(o, obj);
-                crate::gstr!("Hello")
-            }),
+            glib::closure_local!(
+                #[watch]
+                obj,
+                move |o: &SignalObject| -> &'static crate::GStr {
+                    assert_eq!(o, obj);
+                    crate::gstr!("Hello")
+                }
+            ),
         );
         group.set_target(Some(&obj));
         obj.emit_by_name::<()>("sig-with-args", &[&5u32, &"World"]);

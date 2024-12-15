@@ -2,8 +2,8 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
+use crate::ffi;
 use glib::{bitflags::bitflags, translate::*};
-use std::fmt;
 
 bitflags! {
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
@@ -15,12 +15,6 @@ bitflags! {
         const SCALABLE = ffi::GDK_PIXBUF_FORMAT_SCALABLE as _;
         #[doc(alias = "GDK_PIXBUF_FORMAT_THREADSAFE")]
         const THREADSAFE = ffi::GDK_PIXBUF_FORMAT_THREADSAFE as _;
-    }
-}
-
-impl fmt::Display for PixbufFormatFlags {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        <Self as fmt::Debug>::fmt(self, f)
     }
 }
 

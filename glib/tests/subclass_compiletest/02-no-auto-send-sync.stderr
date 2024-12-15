@@ -6,9 +6,9 @@ error[E0277]: `RefCell<std::string::String>` cannot be shared between threads sa
    |     |
    |     required by a bound introduced by this call
    |
-   = help: within `imp::TestObject`, the trait `Sync` is not implemented for `RefCell<std::string::String>`
+   = help: within `imp::TestObject`, the trait `Sync` is not implemented for `RefCell<std::string::String>`, which is required by `TestObject: Send`
    = note: if you want to do aliasing and mutation between multiple threads, use `std::sync::RwLock` instead
-note: required because it appears within the type `TestObject`
+note: required because it appears within the type `imp::TestObject`
   --> tests/subclass_compiletest/02-no-auto-send-sync.rs:6:16
    |
 6  |     pub struct TestObject {

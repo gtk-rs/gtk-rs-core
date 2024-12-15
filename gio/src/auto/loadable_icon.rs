@@ -2,9 +2,9 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{AsyncResult, Cancellable, Icon, InputStream};
+use crate::{ffi, AsyncResult, Cancellable, Icon, InputStream};
 use glib::{prelude::*, translate::*};
-use std::{boxed::Box as Box_, fmt, pin::Pin, ptr};
+use std::{boxed::Box as Box_, pin::Pin};
 
 glib::wrapper! {
     #[doc(alias = "GLoadableIcon")]
@@ -19,12 +19,7 @@ impl LoadableIcon {
     pub const NONE: Option<&'static LoadableIcon> = None;
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::LoadableIcon>> Sealed for T {}
-}
-
-pub trait LoadableIconExt: IsA<LoadableIcon> + sealed::Sealed + 'static {
+pub trait LoadableIconExt: IsA<LoadableIcon> + 'static {
     #[doc(alias = "g_loadable_icon_load")]
     fn load(
         &self,
@@ -32,8 +27,8 @@ pub trait LoadableIconExt: IsA<LoadableIcon> + sealed::Sealed + 'static {
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<(InputStream, glib::GString), glib::Error> {
         unsafe {
-            let mut type_ = ptr::null_mut();
-            let mut error = ptr::null_mut();
+            let mut type_ = std::ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_loadable_icon_load(
                 self.as_ref().to_glib_none().0,
                 size,
@@ -75,8 +70,8 @@ pub trait LoadableIconExt: IsA<LoadableIcon> + sealed::Sealed + 'static {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
-            let mut type_ = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
+            let mut type_ = std::ptr::null_mut();
             let ret = ffi::g_loadable_icon_load_finish(
                 _source_object as *mut _,
                 res,
@@ -126,9 +121,3 @@ pub trait LoadableIconExt: IsA<LoadableIcon> + sealed::Sealed + 'static {
 }
 
 impl<O: IsA<LoadableIcon>> LoadableIconExt for O {}
-
-impl fmt::Display for LoadableIcon {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("LoadableIcon")
-    }
-}

@@ -3,9 +3,8 @@
 // DO NOT EDIT
 #![allow(deprecated)]
 
-use crate::{FileAttributeMatcher, FileAttributeStatus, FileAttributeType, FileType, Icon};
+use crate::{ffi, FileAttributeMatcher, FileAttributeStatus, FileAttributeType, FileType, Icon};
 use glib::{prelude::*, translate::*};
-use std::fmt;
 
 glib::wrapper! {
     #[doc(alias = "GFileInfo")]
@@ -591,11 +590,5 @@ impl FileInfo {
 impl Default for FileInfo {
     fn default() -> Self {
         Self::new()
-    }
-}
-
-impl fmt::Display for FileInfo {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("FileInfo")
     }
 }

@@ -2,9 +2,8 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{Emblem, Icon};
+use crate::{ffi, Emblem, Icon};
 use glib::{prelude::*, translate::*};
-use std::fmt;
 
 glib::wrapper! {
     #[doc(alias = "GEmblemedIcon")]
@@ -29,12 +28,7 @@ impl EmblemedIcon {
     }
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::EmblemedIcon>> Sealed for T {}
-}
-
-pub trait EmblemedIconExt: IsA<EmblemedIcon> + sealed::Sealed + 'static {
+pub trait EmblemedIconExt: IsA<EmblemedIcon> + 'static {
     #[doc(alias = "g_emblemed_icon_add_emblem")]
     fn add_emblem(&self, emblem: &Emblem) {
         unsafe {
@@ -78,9 +72,3 @@ pub trait EmblemedIconExt: IsA<EmblemedIcon> + sealed::Sealed + 'static {
 }
 
 impl<O: IsA<EmblemedIcon>> EmblemedIconExt for O {}
-
-impl fmt::Display for EmblemedIcon {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("EmblemedIcon")
-    }
-}

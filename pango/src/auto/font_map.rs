@@ -2,9 +2,8 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{Context, Font, FontDescription, FontFamily, Fontset, Language};
+use crate::{ffi, Context, Font, FontDescription, FontFamily, Fontset, Language};
 use glib::{prelude::*, translate::*};
-use std::{fmt, mem, ptr};
 
 glib::wrapper! {
     #[doc(alias = "PangoFontMap")]
@@ -19,12 +18,7 @@ impl FontMap {
     pub const NONE: Option<&'static FontMap> = None;
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::FontMap>> Sealed for T {}
-}
-
-pub trait FontMapExt: IsA<FontMap> + sealed::Sealed + 'static {
+pub trait FontMapExt: IsA<FontMap> + 'static {
     #[doc(alias = "pango_font_map_changed")]
     fn changed(&self) {
         unsafe {
@@ -63,8 +57,8 @@ pub trait FontMapExt: IsA<FontMap> + sealed::Sealed + 'static {
     #[doc(alias = "pango_font_map_list_families")]
     fn list_families(&self) -> Vec<FontFamily> {
         unsafe {
-            let mut families = ptr::null_mut();
-            let mut n_families = mem::MaybeUninit::uninit();
+            let mut families = std::ptr::null_mut();
+            let mut n_families = std::mem::MaybeUninit::uninit();
             ffi::pango_font_map_list_families(
                 self.as_ref().to_glib_none().0,
                 &mut families,
@@ -101,12 +95,27 @@ pub trait FontMapExt: IsA<FontMap> + sealed::Sealed + 'static {
             ))
         }
     }
+
+    #[cfg(feature = "v1_52")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v1_52")))]
+    #[doc(alias = "pango_font_map_reload_font")]
+    fn reload_font(
+        &self,
+        font: &impl IsA<Font>,
+        scale: f64,
+        context: Option<&Context>,
+        variations: Option<&str>,
+    ) -> Font {
+        unsafe {
+            from_glib_full(ffi::pango_font_map_reload_font(
+                self.as_ref().to_glib_none().0,
+                font.as_ref().to_glib_none().0,
+                scale,
+                context.to_glib_none().0,
+                variations.to_glib_none().0,
+            ))
+        }
+    }
 }
 
 impl<O: IsA<FontMap>> FontMapExt for O {}
-
-impl fmt::Display for FontMap {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("FontMap")
-    }
-}

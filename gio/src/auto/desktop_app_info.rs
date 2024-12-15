@@ -2,12 +2,9 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{AppInfo, AppLaunchContext};
+use crate::{ffi, AppInfo, AppLaunchContext};
 use glib::{prelude::*, translate::*};
-#[cfg(feature = "v2_60")]
-#[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
-use std::mem;
-use std::{boxed::Box as Box_, fmt, ptr};
+use std::boxed::Box as Box_;
 
 glib::wrapper! {
     #[doc(alias = "GDesktopAppInfo")]
@@ -163,7 +160,7 @@ impl DesktopAppInfo {
     #[doc(alias = "get_string_list")]
     pub fn string_list(&self, key: &str) -> Vec<glib::GString> {
         unsafe {
-            let mut length = mem::MaybeUninit::uninit();
+            let mut length = std::mem::MaybeUninit::uninit();
             let ret = FromGlibContainer::from_glib_full_num(
                 ffi::g_desktop_app_info_get_string_list(
                     self.to_glib_none().0,
@@ -212,8 +209,7 @@ impl DesktopAppInfo {
     ) -> Result<(), glib::Error> {
         let user_setup_data: Box_<Option<Box_<dyn FnOnce() + 'static>>> = Box_::new(user_setup);
         unsafe extern "C" fn user_setup_func(data: glib::ffi::gpointer) {
-            let callback: Box_<Option<Box_<dyn FnOnce() + 'static>>> =
-                Box_::from_raw(data as *mut _);
+            let callback = Box_::from_raw(data as *mut Option<Box_<dyn FnOnce() + 'static>>);
             let callback = (*callback).expect("cannot get closure...");
             callback()
         }
@@ -222,7 +218,8 @@ impl DesktopAppInfo {
         } else {
             None
         };
-        let pid_callback_data: Option<&mut dyn (FnMut(&DesktopAppInfo, glib::Pid))> = pid_callback;
+        let mut pid_callback_data: Option<&mut dyn (FnMut(&DesktopAppInfo, glib::Pid))> =
+            pid_callback;
         unsafe extern "C" fn pid_callback_func(
             appinfo: *mut ffi::GDesktopAppInfo,
             pid: glib::ffi::GPid,
@@ -230,9 +227,7 @@ impl DesktopAppInfo {
         ) {
             let appinfo = from_glib_borrow(appinfo);
             let pid = from_glib(pid);
-            let callback: *mut Option<&mut dyn (FnMut(&DesktopAppInfo, glib::Pid))> =
-                user_data as *const _ as usize
-                    as *mut Option<&mut dyn (FnMut(&DesktopAppInfo, glib::Pid))>;
+            let callback = user_data as *mut Option<&mut dyn (FnMut(&DesktopAppInfo, glib::Pid))>;
             if let Some(ref mut callback) = *callback {
                 callback(&appinfo, pid)
             } else {
@@ -245,10 +240,10 @@ impl DesktopAppInfo {
             None
         };
         let super_callback0: Box_<Option<Box_<dyn FnOnce() + 'static>>> = user_setup_data;
-        let super_callback1: &Option<&mut dyn (FnMut(&DesktopAppInfo, glib::Pid))> =
-            &pid_callback_data;
+        let super_callback1: &mut Option<&mut dyn (FnMut(&DesktopAppInfo, glib::Pid))> =
+            &mut pid_callback_data;
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_desktop_app_info_launch_uris_as_manager(
                 self.to_glib_none().0,
                 uris.to_glib_none().0,
@@ -257,7 +252,7 @@ impl DesktopAppInfo {
                 user_setup,
                 Box_::into_raw(super_callback0) as *mut _,
                 pid_callback,
-                super_callback1 as *const _ as usize as *mut _,
+                super_callback1 as *mut _ as *mut _,
                 &mut error,
             );
             debug_assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
@@ -286,11 +281,5 @@ impl DesktopAppInfo {
                 interface.to_glib_none().0,
             ))
         }
-    }
-}
-
-impl fmt::Display for DesktopAppInfo {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("DesktopAppInfo")
     }
 }

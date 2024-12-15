@@ -2,13 +2,13 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{Cancellable, DBusAuthObserver, DBusConnection, DBusServerFlags, Initable};
+use crate::{ffi, Cancellable, DBusAuthObserver, DBusConnection, DBusServerFlags, Initable};
 use glib::{
     prelude::*,
     signal::{connect_raw, SignalHandlerId},
     translate::*,
 };
-use std::{boxed::Box as Box_, fmt, mem::transmute, ptr};
+use std::boxed::Box as Box_;
 
 glib::wrapper! {
     #[doc(alias = "GDBusServer")]
@@ -29,7 +29,7 @@ impl DBusServer {
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<DBusServer, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_dbus_server_new_sync(
                 address.to_glib_none().0,
                 flags.into_glib(),
@@ -48,6 +48,7 @@ impl DBusServer {
 
     #[doc(alias = "g_dbus_server_get_client_address")]
     #[doc(alias = "get_client_address")]
+    #[doc(alias = "client-address")]
     pub fn client_address(&self) -> glib::GString {
         unsafe { from_glib_none(ffi::g_dbus_server_get_client_address(self.to_glib_none().0)) }
     }
@@ -65,6 +66,7 @@ impl DBusServer {
     }
 
     #[doc(alias = "g_dbus_server_is_active")]
+    #[doc(alias = "active")]
     pub fn is_active(&self) -> bool {
         unsafe { from_glib(ffi::g_dbus_server_is_active(self.to_glib_none().0)) }
     }
@@ -112,7 +114,7 @@ impl DBusServer {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"new-connection\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     new_connection_trampoline::<F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -135,7 +137,7 @@ impl DBusServer {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::active\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_active_trampoline::<F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -158,17 +160,11 @@ impl DBusServer {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::client-address\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_client_address_trampoline::<F> as *const (),
                 )),
                 Box_::into_raw(f),
             )
         }
-    }
-}
-
-impl fmt::Display for DBusServer {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("DBusServer")
     }
 }

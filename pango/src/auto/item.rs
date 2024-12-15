@@ -2,6 +2,7 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
+use crate::ffi;
 #[cfg(feature = "v1_44")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
 use crate::AttrIterator;
@@ -31,6 +32,14 @@ impl Item {
         unsafe {
             ffi::pango_item_apply_attrs(self.to_glib_none_mut().0, iter.to_glib_none_mut().0);
         }
+    }
+
+    #[cfg(feature = "v1_54")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v1_54")))]
+    #[doc(alias = "pango_item_get_char_offset")]
+    #[doc(alias = "get_char_offset")]
+    pub fn char_offset(&self) -> i32 {
+        unsafe { ffi::pango_item_get_char_offset(mut_override(self.to_glib_none().0)) }
     }
 
     #[doc(alias = "pango_item_split")]

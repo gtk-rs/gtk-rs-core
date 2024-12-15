@@ -1,8 +1,7 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use std::fmt;
-
-use glib::{bitflags, prelude::*, translate::*, value::FromValue, Type};
+use crate::ffi;
+use glib::{bitflags, prelude::*, translate::*, Type};
 
 bitflags::bitflags! {
     #[doc(alias = "GSocketMsgFlags")]
@@ -16,12 +15,6 @@ bitflags::bitflags! {
         const PEEK = ffi::G_SOCKET_MSG_PEEK as _;
         #[doc(alias = "G_SOCKET_MSG_DONTROUTE")]
         const DONTROUTE = ffi::G_SOCKET_MSG_DONTROUTE as _;
-    }
-}
-
-impl fmt::Display for SocketMsgFlags {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        <Self as fmt::Debug>::fmt(self, f)
     }
 }
 
@@ -54,7 +47,7 @@ impl glib::value::ValueType for SocketMsgFlags {
     type Type = Self;
 }
 
-unsafe impl<'a> FromValue<'a> for SocketMsgFlags {
+unsafe impl<'a> glib::value::FromValue<'a> for SocketMsgFlags {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     unsafe fn from_value(value: &'a glib::Value) -> Self {

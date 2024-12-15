@@ -2,11 +2,11 @@
 
 use std::ptr;
 
-use glib::{subclass::prelude::*, translate::*, Cast, Error};
+use glib::{prelude::*, subclass::prelude::*, translate::*, Error};
 
-use crate::{Cancellable, InputStream};
+use crate::{ffi, Cancellable, InputStream};
 
-pub trait InputStreamImpl: ObjectImpl + InputStreamImplExt + Send {
+pub trait InputStreamImpl: Send + ObjectImpl + ObjectSubclass<Type: IsA<InputStream>> {
     fn read(&self, buffer: &mut [u8], cancellable: Option<&Cancellable>) -> Result<usize, Error> {
         self.parent_read(buffer, cancellable)
     }
@@ -20,12 +20,7 @@ pub trait InputStreamImpl: ObjectImpl + InputStreamImplExt + Send {
     }
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::InputStreamImplExt> Sealed for T {}
-}
-
-pub trait InputStreamImplExt: sealed::Sealed + ObjectSubclass {
+pub trait InputStreamImplExt: InputStreamImpl {
     fn parent_read(
         &self,
         buffer: &mut [u8],
@@ -123,8 +118,6 @@ unsafe extern "C" fn stream_read<T: InputStreamImpl>(
     cancellable: *mut ffi::GCancellable,
     err: *mut *mut glib::ffi::GError,
 ) -> isize {
-    use std::{isize, slice};
-
     debug_assert!(count <= isize::MAX as usize);
 
     let instance = &*(ptr as *mut T::Instance);
@@ -134,7 +127,7 @@ unsafe extern "C" fn stream_read<T: InputStreamImpl>(
         if count == 0 {
             &mut []
         } else {
-            slice::from_raw_parts_mut(buffer as *mut u8, count)
+            std::slice::from_raw_parts_mut(buffer as *mut u8, count)
         },
         Option::<Cancellable>::from_glib_borrow(cancellable)
             .as_ref()
@@ -183,8 +176,6 @@ unsafe extern "C" fn stream_skip<T: InputStreamImpl>(
     cancellable: *mut ffi::GCancellable,
     err: *mut *mut glib::ffi::GError,
 ) -> isize {
-    use std::isize;
-
     debug_assert!(count <= isize::MAX as usize);
 
     let instance = &*(ptr as *mut T::Instance);
@@ -303,7 +294,8 @@ mod tests {
 
     glib::wrapper! {
         pub struct SimpleInputStream(ObjectSubclass<imp::SimpleInputStream>)
-            @extends InputStream;
+            @extends InputStream,
+            @implements crate::Seekable;
     }
 
     #[test]

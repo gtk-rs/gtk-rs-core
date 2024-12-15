@@ -2,8 +2,8 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
+use crate::ffi;
 use glib::{prelude::*, translate::*};
-use std::{fmt, ptr};
 
 glib::wrapper! {
     #[doc(alias = "GIcon")]
@@ -26,7 +26,7 @@ impl Icon {
     #[doc(alias = "new_for_string")]
     pub fn for_string(str: &str) -> Result<Icon, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_icon_new_for_string(str.to_glib_none().0, &mut error);
             if error.is_null() {
                 Ok(from_glib_full(ret))
@@ -37,12 +37,7 @@ impl Icon {
     }
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::Icon>> Sealed for T {}
-}
-
-pub trait IconExt: IsA<Icon> + sealed::Sealed + 'static {
+pub trait IconExt: IsA<Icon> + 'static {
     #[doc(alias = "g_icon_equal")]
     fn equal(&self, icon2: Option<&impl IsA<Icon>>) -> bool {
         unsafe {
@@ -75,9 +70,3 @@ pub trait IconExt: IsA<Icon> + sealed::Sealed + 'static {
 }
 
 impl<O: IsA<Icon>> IconExt for O {}
-
-impl fmt::Display for Icon {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("Icon")
-    }
-}

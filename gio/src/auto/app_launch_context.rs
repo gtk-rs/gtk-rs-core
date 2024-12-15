@@ -2,13 +2,13 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{AppInfo, File};
+use crate::{ffi, AppInfo, File};
 use glib::{
     prelude::*,
     signal::{connect_raw, SignalHandlerId},
     translate::*,
 };
-use std::{boxed::Box as Box_, fmt, mem::transmute};
+use std::boxed::Box as Box_;
 
 glib::wrapper! {
     #[doc(alias = "GAppLaunchContext")]
@@ -34,12 +34,7 @@ impl Default for AppLaunchContext {
     }
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::AppLaunchContext>> Sealed for T {}
-}
-
-pub trait AppLaunchContextExt: IsA<AppLaunchContext> + sealed::Sealed + 'static {
+pub trait AppLaunchContextExt: IsA<AppLaunchContext> + 'static {
     #[doc(alias = "g_app_launch_context_get_display")]
     #[doc(alias = "get_display")]
     fn display(&self, info: &impl IsA<AppInfo>, files: &[File]) -> Option<glib::GString> {
@@ -64,11 +59,15 @@ pub trait AppLaunchContextExt: IsA<AppLaunchContext> + sealed::Sealed + 'static 
 
     #[doc(alias = "g_app_launch_context_get_startup_notify_id")]
     #[doc(alias = "get_startup_notify_id")]
-    fn startup_notify_id(&self, info: &impl IsA<AppInfo>, files: &[File]) -> Option<glib::GString> {
+    fn startup_notify_id(
+        &self,
+        info: Option<&impl IsA<AppInfo>>,
+        files: &[File],
+    ) -> Option<glib::GString> {
         unsafe {
             from_glib_full(ffi::g_app_launch_context_get_startup_notify_id(
                 self.as_ref().to_glib_none().0,
-                info.as_ref().to_glib_none().0,
+                info.map(|p| p.as_ref()).to_glib_none().0,
                 files.to_glib_none().0,
             ))
         }
@@ -112,7 +111,7 @@ pub trait AppLaunchContextExt: IsA<AppLaunchContext> + sealed::Sealed + 'static 
             F: Fn(&P, &str) + 'static,
         >(
             this: *mut ffi::GAppLaunchContext,
-            startup_notify_id: *mut libc::c_char,
+            startup_notify_id: *mut std::ffi::c_char,
             f: glib::ffi::gpointer,
         ) {
             let f: &F = &*(f as *const F);
@@ -126,7 +125,7 @@ pub trait AppLaunchContextExt: IsA<AppLaunchContext> + sealed::Sealed + 'static 
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"launch-failed\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     launch_failed_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -164,7 +163,7 @@ pub trait AppLaunchContextExt: IsA<AppLaunchContext> + sealed::Sealed + 'static 
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"launch-started\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     launch_started_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -198,7 +197,7 @@ pub trait AppLaunchContextExt: IsA<AppLaunchContext> + sealed::Sealed + 'static 
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"launched\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     launched_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -208,9 +207,3 @@ pub trait AppLaunchContextExt: IsA<AppLaunchContext> + sealed::Sealed + 'static 
 }
 
 impl<O: IsA<AppLaunchContext>> AppLaunchContextExt for O {}
-
-impl fmt::Display for AppLaunchContext {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("AppLaunchContext")
-    }
-}

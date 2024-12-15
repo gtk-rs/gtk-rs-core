@@ -2,16 +2,17 @@
 
 #[cfg(feature = "use_glib")]
 use std::marker::PhantomData;
-use std::{fmt, ptr};
+use std::ptr;
 
 #[cfg(feature = "use_glib")]
 use glib::translate::*;
 
-use crate::{ffi::cairo_region_t, utils::status_to_result, Error, RectangleInt, RegionOverlap};
+use crate::{ffi, utils::status_to_result, Error, RectangleInt, RegionOverlap};
 
 #[derive(Debug)]
 #[repr(transparent)]
-pub struct Region(ptr::NonNull<cairo_region_t>);
+#[doc(alias = "cairo_region_t")]
+pub struct Region(ptr::NonNull<ffi::cairo_region_t>);
 
 #[cfg(feature = "use_glib")]
 impl IntoGlibPtr<*mut ffi::cairo_region_t> for Region {
@@ -163,7 +164,7 @@ impl Region {
 
     #[doc(alias = "get_extents")]
     #[doc(alias = "cairo_region_get_extents")]
-    pub fn extents(&self, rectangle: &mut RectangleInt) {
+    pub fn extents(&self, rectangle: &RectangleInt) {
         unsafe { ffi::cairo_region_get_extents(self.0.as_ptr(), rectangle.to_raw_none()) }
     }
 
@@ -278,11 +279,5 @@ impl Region {
     pub fn status(&self) -> Result<(), Error> {
         let status = unsafe { ffi::cairo_region_status(self.0.as_ptr()) };
         status_to_result(status)
-    }
-}
-
-impl fmt::Display for Region {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "Region")
     }
 }

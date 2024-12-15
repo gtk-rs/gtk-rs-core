@@ -2,13 +2,13 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{AsyncResult, Cancellable, FilterInputStream, InputStream, Seekable};
+use crate::{ffi, AsyncResult, Cancellable, FilterInputStream, InputStream, Seekable};
 use glib::{
     prelude::*,
     signal::{connect_raw, SignalHandlerId},
     translate::*,
 };
-use std::{boxed::Box as Box_, fmt, mem, mem::transmute, pin::Pin, ptr};
+use std::{boxed::Box as Box_, pin::Pin};
 
 glib::wrapper! {
     #[doc(alias = "GBufferedInputStream")]
@@ -104,12 +104,7 @@ impl BufferedInputStreamBuilder {
     }
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::BufferedInputStream>> Sealed for T {}
-}
-
-pub trait BufferedInputStreamExt: IsA<BufferedInputStream> + sealed::Sealed + 'static {
+pub trait BufferedInputStreamExt: IsA<BufferedInputStream> + 'static {
     #[doc(alias = "g_buffered_input_stream_fill")]
     fn fill(
         &self,
@@ -117,7 +112,7 @@ pub trait BufferedInputStreamExt: IsA<BufferedInputStream> + sealed::Sealed + 's
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<isize, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_buffered_input_stream_fill(
                 self.as_ref().to_glib_none().0,
                 count,
@@ -159,7 +154,7 @@ pub trait BufferedInputStreamExt: IsA<BufferedInputStream> + sealed::Sealed + 's
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret =
                 ffi::g_buffered_input_stream_fill_finish(_source_object as *mut _, res, &mut error);
             let result = if error.is_null() {
@@ -208,6 +203,7 @@ pub trait BufferedInputStreamExt: IsA<BufferedInputStream> + sealed::Sealed + 's
 
     #[doc(alias = "g_buffered_input_stream_get_buffer_size")]
     #[doc(alias = "get_buffer_size")]
+    #[doc(alias = "buffer-size")]
     fn buffer_size(&self) -> usize {
         unsafe { ffi::g_buffered_input_stream_get_buffer_size(self.as_ref().to_glib_none().0) }
     }
@@ -215,7 +211,7 @@ pub trait BufferedInputStreamExt: IsA<BufferedInputStream> + sealed::Sealed + 's
     #[doc(alias = "g_buffered_input_stream_peek_buffer")]
     fn peek_buffer(&self) -> Vec<u8> {
         unsafe {
-            let mut count = mem::MaybeUninit::uninit();
+            let mut count = std::mem::MaybeUninit::uninit();
             let ret = FromGlibContainer::from_glib_none_num(
                 ffi::g_buffered_input_stream_peek_buffer(
                     self.as_ref().to_glib_none().0,
@@ -230,7 +226,7 @@ pub trait BufferedInputStreamExt: IsA<BufferedInputStream> + sealed::Sealed + 's
     #[doc(alias = "g_buffered_input_stream_read_byte")]
     fn read_byte(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<i32, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_buffered_input_stream_read_byte(
                 self.as_ref().to_glib_none().0,
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
@@ -245,6 +241,7 @@ pub trait BufferedInputStreamExt: IsA<BufferedInputStream> + sealed::Sealed + 's
     }
 
     #[doc(alias = "g_buffered_input_stream_set_buffer_size")]
+    #[doc(alias = "buffer-size")]
     fn set_buffer_size(&self, size: usize) {
         unsafe {
             ffi::g_buffered_input_stream_set_buffer_size(self.as_ref().to_glib_none().0, size);
@@ -269,7 +266,7 @@ pub trait BufferedInputStreamExt: IsA<BufferedInputStream> + sealed::Sealed + 's
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::buffer-size\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_buffer_size_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -279,9 +276,3 @@ pub trait BufferedInputStreamExt: IsA<BufferedInputStream> + sealed::Sealed + 's
 }
 
 impl<O: IsA<BufferedInputStream>> BufferedInputStreamExt for O {}
-
-impl fmt::Display for BufferedInputStream {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("BufferedInputStream")
-    }
-}

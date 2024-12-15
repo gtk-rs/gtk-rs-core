@@ -1,8 +1,8 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use std::{borrow::Cow, default::Default};
+use std::borrow::Cow;
 
-use crate::{translate::*, variant::*, variant_type::*};
+use crate::{ffi, translate::*, variant::*, variant_type::*};
 
 wrapper! {
     // rustdoc-stripper-ignore-next
@@ -213,9 +213,15 @@ impl ToVariant for VariantDict {
 }
 
 impl From<VariantDict> for Variant {
+    // rustdoc-stripper-ignore-next
+    /// Consume a given `VariantDict` and call [`VariantDict::end`] on it.
+    ///
+    /// Note: While this method consumes the `VariantDict`, the underlying
+    /// object could still be accessed through other clones because of the
+    /// reference counted clone semantics.
     #[inline]
     fn from(d: VariantDict) -> Self {
-        unsafe { d.end_unsafe() }
+        d.end()
     }
 }
 
@@ -249,6 +255,28 @@ mod test {
         let dict = VariantDict::default();
         let var: Variant = dict.to_variant();
         let _dict2: VariantDict = var.into();
+    }
+
+    #[test]
+    fn into_variant_roundtrip() {
+        let dict1 = VariantDict::default();
+        let dict2 = dict1.clone();
+        dict1.insert_value("one", &(1u8.to_variant()));
+
+        assert_eq!(dict1.lookup::<u8>("one").unwrap(), Some(1u8));
+        assert_eq!(dict2.lookup::<u8>("one").unwrap(), Some(1u8));
+
+        // Convert it into `Variant`
+        let dict: Variant = dict1.into();
+
+        // While we can still access the `VariantDict` via `dict2`,
+        // it should be empty now
+        assert_eq!(dict2.lookup::<u8>("one").unwrap(), None);
+
+        // Convert it back
+        let dict3: VariantDict = dict.into();
+
+        assert_eq!(dict3.lookup::<u8>("one").unwrap(), Some(1u8));
     }
 
     #[test]

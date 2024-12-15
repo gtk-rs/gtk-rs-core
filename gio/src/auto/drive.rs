@@ -3,7 +3,7 @@
 // DO NOT EDIT
 
 use crate::{
-    AsyncResult, Cancellable, DriveStartFlags, DriveStartStopType, Icon, MountOperation,
+    ffi, AsyncResult, Cancellable, DriveStartFlags, DriveStartStopType, Icon, MountOperation,
     MountUnmountFlags, Volume,
 };
 use glib::{
@@ -11,7 +11,7 @@ use glib::{
     signal::{connect_raw, SignalHandlerId},
     translate::*,
 };
-use std::{boxed::Box as Box_, fmt, mem::transmute, pin::Pin, ptr};
+use std::{boxed::Box as Box_, pin::Pin};
 
 glib::wrapper! {
     #[doc(alias = "GDrive")]
@@ -26,12 +26,7 @@ impl Drive {
     pub const NONE: Option<&'static Drive> = None;
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::Drive>> Sealed for T {}
-}
-
-pub trait DriveExt: IsA<Drive> + sealed::Sealed + 'static {
+pub trait DriveExt: IsA<Drive> + 'static {
     #[doc(alias = "g_drive_can_eject")]
     fn can_eject(&self) -> bool {
         unsafe { from_glib(ffi::g_drive_can_eject(self.as_ref().to_glib_none().0)) }
@@ -92,7 +87,7 @@ pub trait DriveExt: IsA<Drive> + sealed::Sealed + 'static {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let _ =
                 ffi::g_drive_eject_with_operation_finish(_source_object as *mut _, res, &mut error);
             let result = if error.is_null() {
@@ -265,7 +260,7 @@ pub trait DriveExt: IsA<Drive> + sealed::Sealed + 'static {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let _ = ffi::g_drive_poll_for_media_finish(_source_object as *mut _, res, &mut error);
             let result = if error.is_null() {
                 Ok(())
@@ -326,7 +321,7 @@ pub trait DriveExt: IsA<Drive> + sealed::Sealed + 'static {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let _ = ffi::g_drive_start_finish(_source_object as *mut _, res, &mut error);
             let result = if error.is_null() {
                 Ok(())
@@ -397,7 +392,7 @@ pub trait DriveExt: IsA<Drive> + sealed::Sealed + 'static {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let _ = ffi::g_drive_stop_finish(_source_object as *mut _, res, &mut error);
             let result = if error.is_null() {
                 Ok(())
@@ -457,7 +452,7 @@ pub trait DriveExt: IsA<Drive> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"changed\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     changed_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -479,7 +474,7 @@ pub trait DriveExt: IsA<Drive> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"disconnected\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     disconnected_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -501,7 +496,7 @@ pub trait DriveExt: IsA<Drive> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"eject-button\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     eject_button_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -523,7 +518,7 @@ pub trait DriveExt: IsA<Drive> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"stop-button\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     stop_button_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -533,9 +528,3 @@ pub trait DriveExt: IsA<Drive> + sealed::Sealed + 'static {
 }
 
 impl<O: IsA<Drive>> DriveExt for O {}
-
-impl fmt::Display for Drive {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("Drive")
-    }
-}

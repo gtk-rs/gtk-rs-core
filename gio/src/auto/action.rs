@@ -2,12 +2,13 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
+use crate::ffi;
 use glib::{
     prelude::*,
     signal::{connect_raw, SignalHandlerId},
     translate::*,
 };
-use std::{boxed::Box as Box_, fmt, mem::transmute, ptr};
+use std::boxed::Box as Box_;
 
 glib::wrapper! {
     #[doc(alias = "GAction")]
@@ -31,9 +32,9 @@ impl Action {
         detailed_name: &str,
     ) -> Result<(glib::GString, Option<glib::Variant>), glib::Error> {
         unsafe {
-            let mut action_name = ptr::null_mut();
-            let mut target_value = ptr::null_mut();
-            let mut error = ptr::null_mut();
+            let mut action_name = std::ptr::null_mut();
+            let mut target_value = std::ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_action_parse_detailed_name(
                 detailed_name.to_glib_none().0,
                 &mut action_name,
@@ -63,12 +64,7 @@ impl Action {
     }
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::Action>> Sealed for T {}
-}
-
-pub trait ActionExt: IsA<Action> + sealed::Sealed + 'static {
+pub trait ActionExt: IsA<Action> + 'static {
     #[doc(alias = "g_action_activate")]
     fn activate(&self, parameter: Option<&glib::Variant>) {
         unsafe {
@@ -85,6 +81,7 @@ pub trait ActionExt: IsA<Action> + sealed::Sealed + 'static {
 
     #[doc(alias = "g_action_get_enabled")]
     #[doc(alias = "get_enabled")]
+    #[doc(alias = "enabled")]
     fn is_enabled(&self) -> bool {
         unsafe { from_glib(ffi::g_action_get_enabled(self.as_ref().to_glib_none().0)) }
     }
@@ -97,6 +94,7 @@ pub trait ActionExt: IsA<Action> + sealed::Sealed + 'static {
 
     #[doc(alias = "g_action_get_parameter_type")]
     #[doc(alias = "get_parameter_type")]
+    #[doc(alias = "parameter-type")]
     fn parameter_type(&self) -> Option<glib::VariantType> {
         unsafe {
             from_glib_none(ffi::g_action_get_parameter_type(
@@ -119,6 +117,7 @@ pub trait ActionExt: IsA<Action> + sealed::Sealed + 'static {
 
     #[doc(alias = "g_action_get_state_type")]
     #[doc(alias = "get_state_type")]
+    #[doc(alias = "state-type")]
     fn state_type(&self) -> Option<glib::VariantType> {
         unsafe { from_glib_none(ffi::g_action_get_state_type(self.as_ref().to_glib_none().0)) }
     }
@@ -138,7 +137,7 @@ pub trait ActionExt: IsA<Action> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::enabled\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_enabled_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -161,7 +160,7 @@ pub trait ActionExt: IsA<Action> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::name\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_name_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -187,7 +186,7 @@ pub trait ActionExt: IsA<Action> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::parameter-type\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_parameter_type_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -210,7 +209,7 @@ pub trait ActionExt: IsA<Action> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::state\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_state_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -233,7 +232,7 @@ pub trait ActionExt: IsA<Action> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::state-type\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_state_type_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -243,9 +242,3 @@ pub trait ActionExt: IsA<Action> + sealed::Sealed + 'static {
 }
 
 impl<O: IsA<Action>> ActionExt for O {}
-
-impl fmt::Display for Action {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("Action")
-    }
-}

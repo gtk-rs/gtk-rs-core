@@ -2,9 +2,10 @@
 
 use glib::translate::*;
 
+pub use crate::auto::functions::*;
 #[cfg(feature = "v1_44")]
 use crate::ShapeFlags;
-use crate::{Analysis, GlyphString, Item};
+use crate::{ffi, Analysis, GlyphString, Item};
 
 #[doc(alias = "pango_reorder_items")]
 pub fn reorder_items(logical_items: &glib::List<Item>) -> glib::List<Item> {

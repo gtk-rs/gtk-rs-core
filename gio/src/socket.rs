@@ -1,7 +1,5 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-#[cfg(not(unix))]
-use std::os::raw::c_int;
 #[cfg(unix)]
 use std::os::unix::io::{AsRawFd, FromRawFd, IntoRawFd, RawFd};
 #[cfg(windows)]
@@ -15,7 +13,7 @@ use glib::{prelude::*, translate::*, Slice};
 
 #[cfg(feature = "v2_60")]
 use crate::PollableReturn;
-use crate::{Cancellable, Socket, SocketAddress, SocketControlMessage};
+use crate::{ffi, Cancellable, Socket, SocketAddress, SocketControlMessage};
 
 impl Socket {
     #[cfg(unix)]
@@ -83,10 +81,10 @@ impl<'v> InputVector<'v> {
     }
 }
 
-unsafe impl<'v> Send for InputVector<'v> {}
-unsafe impl<'v> Sync for InputVector<'v> {}
+unsafe impl Send for InputVector<'_> {}
+unsafe impl Sync for InputVector<'_> {}
 
-impl<'v> std::ops::Deref for InputVector<'v> {
+impl std::ops::Deref for InputVector<'_> {
     type Target = [u8];
 
     #[inline]
@@ -95,7 +93,7 @@ impl<'v> std::ops::Deref for InputVector<'v> {
     }
 }
 
-impl<'v> std::ops::DerefMut for InputVector<'v> {
+impl std::ops::DerefMut for InputVector<'_> {
     #[inline]
     fn deref_mut(&mut self) -> &mut Self::Target {
         unsafe { std::slice::from_raw_parts_mut(self.vector.buffer as *mut _, self.vector.size) }
@@ -232,10 +230,10 @@ impl<'v> OutputVector<'v> {
     }
 }
 
-unsafe impl<'v> Send for OutputVector<'v> {}
-unsafe impl<'v> Sync for OutputVector<'v> {}
+unsafe impl Send for OutputVector<'_> {}
+unsafe impl Sync for OutputVector<'_> {}
 
-impl<'v> std::ops::Deref for OutputVector<'v> {
+impl std::ops::Deref for OutputVector<'_> {
     type Target = [u8];
 
     #[inline]
@@ -291,12 +289,7 @@ impl<'m> OutputMessage<'m> {
     }
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::Socket>> Sealed for T {}
-}
-
-pub trait SocketExtManual: sealed::Sealed + IsA<Socket> + Sized {
+pub trait SocketExtManual: IsA<Socket> + Sized {
     #[doc(alias = "g_socket_receive")]
     fn receive<B: AsMut<[u8]>, C: IsA<Cancellable>>(
         &self,
@@ -697,7 +690,7 @@ pub trait SocketExtManual: sealed::Sealed + IsA<Socket> + Sized {
             glib::ffi::g_source_set_callback(
                 source,
                 Some(transmute::<
-                    _,
+                    glib::ffi::gpointer,
                     unsafe extern "C" fn(glib::ffi::gpointer) -> glib::ffi::gboolean,
                 >(trampoline)),
                 Box::into_raw(Box::new(RefCell::new(func))) as glib::ffi::gpointer,
@@ -769,12 +762,12 @@ impl<O: IsA<Socket>> SocketExtManual for O {}
 
 #[cfg(all(docsrs, not(unix)))]
 pub trait IntoRawFd {
-    fn into_raw_fd(self) -> c_int;
+    fn into_raw_fd(self) -> libc::c_int;
 }
 
 #[cfg(all(docsrs, not(unix)))]
 pub trait FromRawFd {
-    unsafe fn from_raw_fd(fd: c_int) -> Self;
+    unsafe fn from_raw_fd(fd: libc::c_int) -> Self;
 }
 
 #[cfg(all(docsrs, not(unix)))]
@@ -783,7 +776,7 @@ pub trait AsRawFd {
 }
 
 #[cfg(all(docsrs, not(unix)))]
-pub type RawFd = c_int;
+pub type RawFd = libc::c_int;
 
 #[cfg(all(docsrs, not(windows)))]
 pub trait IntoRawSocket {

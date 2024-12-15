@@ -6,7 +6,7 @@
 #[cfg_attr(docsrs, doc(cfg(unix)))]
 use crate::UnixFDList;
 use crate::{
-    DBusCapabilityFlags, DBusMessageByteOrder, DBusMessageFlags, DBusMessageHeaderField,
+    ffi, DBusCapabilityFlags, DBusMessageByteOrder, DBusMessageFlags, DBusMessageHeaderField,
     DBusMessageType,
 };
 use glib::{
@@ -14,7 +14,7 @@ use glib::{
     signal::{connect_raw, SignalHandlerId},
     translate::*,
 };
-use std::{boxed::Box as Box_, mem, mem::transmute, ptr};
+use std::boxed::Box as Box_;
 
 glib::wrapper! {
     #[doc(alias = "GDBusMessage")]
@@ -39,7 +39,7 @@ impl DBusMessage {
     ) -> Result<DBusMessage, glib::Error> {
         let blob_len = blob.len() as _;
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_dbus_message_new_from_blob(
                 blob.to_glib_none().0,
                 blob_len,
@@ -85,7 +85,7 @@ impl DBusMessage {
     #[doc(alias = "g_dbus_message_copy")]
     pub fn copy(&self) -> Result<DBusMessage, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_dbus_message_copy(self.to_glib_none().0, &mut error);
             if error.is_null() {
                 Ok(from_glib_full(ret))
@@ -99,6 +99,14 @@ impl DBusMessage {
     #[doc(alias = "get_arg0")]
     pub fn arg0(&self) -> Option<glib::GString> {
         unsafe { from_glib_none(ffi::g_dbus_message_get_arg0(self.to_glib_none().0)) }
+    }
+
+    #[cfg(feature = "v2_80")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_80")))]
+    #[doc(alias = "g_dbus_message_get_arg0_path")]
+    #[doc(alias = "get_arg0_path")]
+    pub fn arg0_path(&self) -> Option<glib::GString> {
+        unsafe { from_glib_none(ffi::g_dbus_message_get_arg0_path(self.to_glib_none().0)) }
     }
 
     #[doc(alias = "g_dbus_message_get_body")]
@@ -150,6 +158,7 @@ impl DBusMessage {
 
     #[doc(alias = "g_dbus_message_get_locked")]
     #[doc(alias = "get_locked")]
+    #[doc(alias = "locked")]
     pub fn is_locked(&self) -> bool {
         unsafe { from_glib(ffi::g_dbus_message_get_locked(self.to_glib_none().0)) }
     }
@@ -380,8 +389,8 @@ impl DBusMessage {
     #[doc(alias = "g_dbus_message_to_blob")]
     pub fn to_blob(&self, capabilities: DBusCapabilityFlags) -> Result<Vec<u8>, glib::Error> {
         unsafe {
-            let mut out_size = mem::MaybeUninit::uninit();
-            let mut error = ptr::null_mut();
+            let mut out_size = std::mem::MaybeUninit::uninit();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_dbus_message_to_blob(
                 self.to_glib_none().0,
                 out_size.as_mut_ptr(),
@@ -402,7 +411,7 @@ impl DBusMessage {
     #[doc(alias = "g_dbus_message_to_gerror")]
     pub fn to_gerror(&self) -> Result<(), glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let is_ok = ffi::g_dbus_message_to_gerror(self.to_glib_none().0, &mut error);
             debug_assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
             if error.is_null() {
@@ -417,7 +426,7 @@ impl DBusMessage {
     pub fn bytes_needed(blob: &[u8]) -> Result<isize, glib::Error> {
         let blob_len = blob.len() as _;
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_dbus_message_bytes_needed(blob.to_glib_none().0, blob_len, &mut error);
             if error.is_null() {
                 Ok(ret)
@@ -442,7 +451,7 @@ impl DBusMessage {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::locked\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_locked_trampoline::<F> as *const (),
                 )),
                 Box_::into_raw(f),

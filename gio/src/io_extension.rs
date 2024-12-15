@@ -2,6 +2,7 @@
 
 use std::{fmt, marker::PhantomData, ptr};
 
+use crate::ffi;
 use glib::{translate::*, Type};
 
 // rustdoc-stripper-ignore-next
@@ -17,12 +18,6 @@ impl fmt::Debug for IOExtension {
             .field("priority", &self.priority())
             .field("type", &self.type_())
             .finish()
-    }
-}
-
-impl fmt::Display for IOExtension {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "IOExtension")
     }
 }
 

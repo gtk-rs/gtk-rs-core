@@ -2,13 +2,13 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::InputStream;
+use crate::{ffi, InputStream};
 use glib::{
     prelude::*,
     signal::{connect_raw, SignalHandlerId},
     translate::*,
 };
-use std::{boxed::Box as Box_, fmt, mem::transmute};
+use std::boxed::Box as Box_;
 
 glib::wrapper! {
     #[doc(alias = "GFilterInputStream")]
@@ -23,14 +23,10 @@ impl FilterInputStream {
     pub const NONE: Option<&'static FilterInputStream> = None;
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::FilterInputStream>> Sealed for T {}
-}
-
-pub trait FilterInputStreamExt: IsA<FilterInputStream> + sealed::Sealed + 'static {
+pub trait FilterInputStreamExt: IsA<FilterInputStream> + 'static {
     #[doc(alias = "g_filter_input_stream_get_base_stream")]
     #[doc(alias = "get_base_stream")]
+    #[doc(alias = "base-stream")]
     fn base_stream(&self) -> InputStream {
         unsafe {
             from_glib_none(ffi::g_filter_input_stream_get_base_stream(
@@ -41,6 +37,7 @@ pub trait FilterInputStreamExt: IsA<FilterInputStream> + sealed::Sealed + 'stati
 
     #[doc(alias = "g_filter_input_stream_get_close_base_stream")]
     #[doc(alias = "get_close_base_stream")]
+    #[doc(alias = "close-base-stream")]
     fn closes_base_stream(&self) -> bool {
         unsafe {
             from_glib(ffi::g_filter_input_stream_get_close_base_stream(
@@ -50,6 +47,7 @@ pub trait FilterInputStreamExt: IsA<FilterInputStream> + sealed::Sealed + 'stati
     }
 
     #[doc(alias = "g_filter_input_stream_set_close_base_stream")]
+    #[doc(alias = "close-base-stream")]
     fn set_close_base_stream(&self, close_base: bool) {
         unsafe {
             ffi::g_filter_input_stream_set_close_base_stream(
@@ -77,7 +75,7 @@ pub trait FilterInputStreamExt: IsA<FilterInputStream> + sealed::Sealed + 'stati
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::close-base-stream\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_close_base_stream_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -87,9 +85,3 @@ pub trait FilterInputStreamExt: IsA<FilterInputStream> + sealed::Sealed + 'stati
 }
 
 impl<O: IsA<FilterInputStream>> FilterInputStreamExt for O {}
-
-impl fmt::Display for FilterInputStream {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("FilterInputStream")
-    }
-}

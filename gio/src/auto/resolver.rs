@@ -5,13 +5,13 @@
 #[cfg(feature = "v2_60")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
 use crate::ResolverNameLookupFlags;
-use crate::{AsyncResult, Cancellable, InetAddress, ResolverRecordType, SrvTarget};
+use crate::{ffi, AsyncResult, Cancellable, InetAddress, ResolverRecordType, SrvTarget};
 use glib::{
     prelude::*,
     signal::{connect_raw, SignalHandlerId},
     translate::*,
 };
-use std::{boxed::Box as Box_, fmt, mem::transmute, pin::Pin, ptr};
+use std::{boxed::Box as Box_, pin::Pin};
 
 glib::wrapper! {
     #[doc(alias = "GResolver")]
@@ -43,12 +43,7 @@ impl Resolver {
     }
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::Resolver>> Sealed for T {}
-}
-
-pub trait ResolverExt: IsA<Resolver> + sealed::Sealed + 'static {
+pub trait ResolverExt: IsA<Resolver> + 'static {
     #[cfg(feature = "v2_78")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_78")))]
     #[doc(alias = "g_resolver_get_timeout")]
@@ -64,7 +59,7 @@ pub trait ResolverExt: IsA<Resolver> + sealed::Sealed + 'static {
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<glib::GString, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_resolver_lookup_by_address(
                 self.as_ref().to_glib_none().0,
                 address.as_ref().to_glib_none().0,
@@ -105,7 +100,7 @@ pub trait ResolverExt: IsA<Resolver> + sealed::Sealed + 'static {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret =
                 ffi::g_resolver_lookup_by_address_finish(_source_object as *mut _, res, &mut error);
             let result = if error.is_null() {
@@ -153,7 +148,7 @@ pub trait ResolverExt: IsA<Resolver> + sealed::Sealed + 'static {
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<Vec<InetAddress>, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_resolver_lookup_by_name(
                 self.as_ref().to_glib_none().0,
                 hostname.to_glib_none().0,
@@ -194,7 +189,7 @@ pub trait ResolverExt: IsA<Resolver> + sealed::Sealed + 'static {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret =
                 ffi::g_resolver_lookup_by_name_finish(_source_object as *mut _, res, &mut error);
             let result = if error.is_null() {
@@ -245,7 +240,7 @@ pub trait ResolverExt: IsA<Resolver> + sealed::Sealed + 'static {
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<Vec<InetAddress>, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_resolver_lookup_by_name_with_flags(
                 self.as_ref().to_glib_none().0,
                 hostname.to_glib_none().0,
@@ -292,7 +287,7 @@ pub trait ResolverExt: IsA<Resolver> + sealed::Sealed + 'static {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_resolver_lookup_by_name_with_flags_finish(
                 _source_object as *mut _,
                 res,
@@ -353,7 +348,7 @@ pub trait ResolverExt: IsA<Resolver> + sealed::Sealed + 'static {
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<Vec<glib::Variant>, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_resolver_lookup_records(
                 self.as_ref().to_glib_none().0,
                 rrname.to_glib_none().0,
@@ -396,7 +391,7 @@ pub trait ResolverExt: IsA<Resolver> + sealed::Sealed + 'static {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret =
                 ffi::g_resolver_lookup_records_finish(_source_object as *mut _, res, &mut error);
             let result = if error.is_null() {
@@ -449,7 +444,7 @@ pub trait ResolverExt: IsA<Resolver> + sealed::Sealed + 'static {
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<Vec<SrvTarget>, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_resolver_lookup_service(
                 self.as_ref().to_glib_none().0,
                 service.to_glib_none().0,
@@ -494,7 +489,7 @@ pub trait ResolverExt: IsA<Resolver> + sealed::Sealed + 'static {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret =
                 ffi::g_resolver_lookup_service_finish(_source_object as *mut _, res, &mut error);
             let result = if error.is_null() {
@@ -557,6 +552,7 @@ pub trait ResolverExt: IsA<Resolver> + sealed::Sealed + 'static {
     #[cfg(feature = "v2_78")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_78")))]
     #[doc(alias = "g_resolver_set_timeout")]
+    #[doc(alias = "timeout")]
     fn set_timeout(&self, timeout_ms: u32) {
         unsafe {
             ffi::g_resolver_set_timeout(self.as_ref().to_glib_none().0, timeout_ms);
@@ -577,7 +573,7 @@ pub trait ResolverExt: IsA<Resolver> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"reload\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     reload_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -602,7 +598,7 @@ pub trait ResolverExt: IsA<Resolver> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::timeout\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_timeout_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -612,9 +608,3 @@ pub trait ResolverExt: IsA<Resolver> + sealed::Sealed + 'static {
 }
 
 impl<O: IsA<Resolver>> ResolverExt for O {}
-
-impl fmt::Display for Resolver {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("Resolver")
-    }
-}

@@ -2,13 +2,13 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{InetAddress, Initable, SocketFamily};
+use crate::{ffi, InetAddress, Initable, SocketFamily};
 use glib::{
     prelude::*,
     signal::{connect_raw, SignalHandlerId},
     translate::*,
 };
-use std::{boxed::Box as Box_, fmt, mem::transmute, ptr};
+use std::boxed::Box as Box_;
 
 glib::wrapper! {
     #[doc(alias = "GInetAddressMask")]
@@ -25,7 +25,7 @@ impl InetAddressMask {
     #[doc(alias = "g_inet_address_mask_new")]
     pub fn new(addr: &impl IsA<InetAddress>, length: u32) -> Result<InetAddressMask, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret =
                 ffi::g_inet_address_mask_new(addr.as_ref().to_glib_none().0, length, &mut error);
             if error.is_null() {
@@ -40,7 +40,7 @@ impl InetAddressMask {
     #[doc(alias = "new_from_string")]
     pub fn from_string(mask_string: &str) -> Result<InetAddressMask, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret =
                 ffi::g_inet_address_mask_new_from_string(mask_string.to_glib_none().0, &mut error);
             if error.is_null() {
@@ -52,9 +52,9 @@ impl InetAddressMask {
     }
 }
 
-impl fmt::Display for InetAddressMask {
+impl std::fmt::Display for InetAddressMask {
     #[inline]
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         f.write_str(&InetAddressMaskExt::to_str(self))
     }
 }
@@ -62,12 +62,7 @@ impl fmt::Display for InetAddressMask {
 unsafe impl Send for InetAddressMask {}
 unsafe impl Sync for InetAddressMask {}
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::InetAddressMask>> Sealed for T {}
-}
-
-pub trait InetAddressMaskExt: IsA<InetAddressMask> + sealed::Sealed + 'static {
+pub trait InetAddressMaskExt: IsA<InetAddressMask> + 'static {
     #[doc(alias = "g_inet_address_mask_equal")]
     fn equal(&self, mask2: &impl IsA<InetAddressMask>) -> bool {
         unsafe {
@@ -153,7 +148,7 @@ pub trait InetAddressMaskExt: IsA<InetAddressMask> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::address\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_address_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -179,7 +174,7 @@ pub trait InetAddressMaskExt: IsA<InetAddressMask> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::family\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_family_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -205,7 +200,7 @@ pub trait InetAddressMaskExt: IsA<InetAddressMask> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::length\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_length_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),

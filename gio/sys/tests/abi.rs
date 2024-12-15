@@ -10,7 +10,7 @@ use std::error::Error;
 use std::ffi::OsString;
 use std::mem::{align_of, size_of};
 use std::path::Path;
-use std::process::Command;
+use std::process::{Command, Stdio};
 use std::str;
 use tempfile::Builder;
 
@@ -70,9 +70,11 @@ fn pkg_config_cflags(packages: &[&str]) -> Result<Vec<String>, Box<dyn Error>> {
     let mut cmd = Command::new(pkg_config);
     cmd.arg("--cflags");
     cmd.args(packages);
+    cmd.stderr(Stdio::inherit());
     let out = cmd.output()?;
     if !out.status.success() {
-        return Err(format!("command {cmd:?} returned {}", out.status).into());
+        let (status, stdout) = (out.status, String::from_utf8_lossy(&out.stdout));
+        return Err(format!("command {cmd:?} failed, {status:?}\nstdout: {stdout}").into());
     }
     let stdout = str::from_utf8(&out.stdout)?;
     Ok(shell_words::split(stdout.trim())?)
@@ -187,13 +189,15 @@ fn get_c_output(name: &str) -> Result<String, Box<dyn Error>> {
     let cc = Compiler::new().expect("configured compiler");
     cc.compile(&c_file, &exe)?;
 
-    let mut abi_cmd = Command::new(exe);
-    let output = abi_cmd.output()?;
-    if !output.status.success() {
-        return Err(format!("command {abi_cmd:?} failed, {output:?}").into());
+    let mut cmd = Command::new(exe);
+    cmd.stderr(Stdio::inherit());
+    let out = cmd.output()?;
+    if !out.status.success() {
+        let (status, stdout) = (out.status, String::from_utf8_lossy(&out.stdout));
+        return Err(format!("command {cmd:?} failed, {status:?}\nstdout: {stdout}").into());
     }
 
-    Ok(String::from_utf8(output.stdout)?)
+    Ok(String::from_utf8(out.stdout)?)
 }
 
 const RUST_LAYOUTS: &[(&str, Layout)] = &[
@@ -2704,6 +2708,7 @@ const RUST_CONSTANTS: &[(&str, &str)] = &[
     ("(guint) G_FILE_COPY_NONE", "0"),
     ("(guint) G_FILE_COPY_NO_FALLBACK_FOR_MOVE", "16"),
     ("(guint) G_FILE_COPY_OVERWRITE", "1"),
+    ("(guint) G_FILE_COPY_TARGET_DEFAULT_MODIFIED_TIME", "64"),
     ("(guint) G_FILE_COPY_TARGET_DEFAULT_PERMS", "32"),
     ("(guint) G_FILE_CREATE_NONE", "0"),
     ("(guint) G_FILE_CREATE_PRIVATE", "1"),
@@ -2747,6 +2752,7 @@ const RUST_CONSTANTS: &[(&str, &str)] = &[
     ("(gint) G_IO_ERROR_CONNECTION_CLOSED", "44"),
     ("(gint) G_IO_ERROR_CONNECTION_REFUSED", "39"),
     ("(gint) G_IO_ERROR_DBUS_ERROR", "36"),
+    ("(gint) G_IO_ERROR_DESTINATION_UNSET", "48"),
     ("(gint) G_IO_ERROR_EXISTS", "2"),
     ("(gint) G_IO_ERROR_FAILED", "0"),
     ("(gint) G_IO_ERROR_FAILED_HANDLED", "30"),

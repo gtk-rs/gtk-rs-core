@@ -1,10 +1,12 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use glib::{subclass::prelude::*, translate::*, Cast};
+use glib::{prelude::*, subclass::prelude::*, translate::*};
 
-use crate::SocketControlMessage;
+use crate::{ffi, SocketControlMessage};
 
-pub trait SocketControlMessageImpl: ObjectImpl + SocketControlMessageImplExt {
+pub trait SocketControlMessageImpl:
+    ObjectImpl + ObjectSubclass<Type: IsA<SocketControlMessage>>
+{
     fn level(&self) -> i32 {
         self.parent_level()
     }
@@ -26,12 +28,7 @@ pub trait SocketControlMessageImpl: ObjectImpl + SocketControlMessageImplExt {
     }
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::SocketControlMessageImplExt> Sealed for T {}
-}
-
-pub trait SocketControlMessageImplExt: sealed::Sealed + ObjectSubclass {
+pub trait SocketControlMessageImplExt: SocketControlMessageImpl {
     fn parent_level(&self) -> i32 {
         unsafe {
             let data = Self::type_data();
@@ -202,11 +199,11 @@ mod tests {
 
         impl SocketControlMessageImpl for TestSocketControlMessage {
             fn level(&self) -> i32 {
-                std::i32::MAX
+                i32::MAX
             }
 
             fn msg_type(&self) -> i32 {
-                std::i32::MAX
+                i32::MAX
             }
 
             fn size(&self) -> usize {
@@ -218,7 +215,7 @@ mod tests {
             }
 
             fn deserialize(level: i32, type_: i32, data: &[u8]) -> Option<SocketControlMessage> {
-                if level == std::i32::MAX && type_ == std::i32::MAX {
+                if level == i32::MAX && type_ == i32::MAX {
                     let obj = glib::Object::new::<super::TestSocketControlMessage>();
                     obj.imp().0.set(u64::from_ne_bytes(data.try_into().ok()?));
                     Some(obj.into())
@@ -238,8 +235,8 @@ mod tests {
     fn test_socket_control_message_subclassing() {
         let obj = glib::Object::new::<TestSocketControlMessage>();
 
-        assert_eq!(obj.level(), std::i32::MAX);
-        assert_eq!(obj.msg_type(), std::i32::MAX);
+        assert_eq!(obj.level(), i32::MAX);
+        assert_eq!(obj.msg_type(), i32::MAX);
         assert_eq!(obj.size(), size_of::<u64>());
 
         obj.imp().0.set(0x12345678abcdefu64);
@@ -247,7 +244,7 @@ mod tests {
         let mut data = [0; size_of::<u64>()];
         obj.serialize(&mut data);
 
-        let de = SocketControlMessage::deserialize(std::i32::MAX, std::i32::MAX, &data)
+        let de = SocketControlMessage::deserialize(i32::MAX, i32::MAX, &data)
             .expect("deserialize failed");
         let de = de
             .downcast::<TestSocketControlMessage>()

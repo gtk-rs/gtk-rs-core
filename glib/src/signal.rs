@@ -5,8 +5,7 @@
 
 use std::{mem, num::NonZeroU64};
 
-use ffi::gpointer;
-use gobject_ffi::{self, GCallback};
+use crate::{ffi, gobject_ffi};
 use libc::{c_char, c_ulong, c_void};
 
 use crate::{prelude::*, translate::*};
@@ -68,14 +67,14 @@ impl FromGlib<c_ulong> for SignalHandlerId {
 pub unsafe fn connect_raw<F>(
     receiver: *mut gobject_ffi::GObject,
     signal_name: *const c_char,
-    trampoline: GCallback,
+    trampoline: gobject_ffi::GCallback,
     closure: *mut F,
 ) -> SignalHandlerId {
     unsafe extern "C" fn destroy_closure<F>(ptr: *mut c_void, _: *mut gobject_ffi::GClosure) {
         // destroy
         let _ = Box::<F>::from_raw(ptr as *mut _);
     }
-    debug_assert_eq!(mem::size_of::<*mut F>(), mem::size_of::<gpointer>());
+    debug_assert_eq!(mem::size_of::<*mut F>(), mem::size_of::<ffi::gpointer>());
     debug_assert!(trampoline.is_some());
     let handle = gobject_ffi::g_signal_connect_data(
         receiver,
@@ -149,11 +148,16 @@ pub fn signal_has_handler_pending<T: ObjectType>(
 
 // rustdoc-stripper-ignore-next
 /// Whether to invoke the other event handlers.
+///
+/// `Stop` and `Proceed` map to `GDK_EVENT_STOP` (`true`) and
+/// `GDK_EVENT_PROPAGATE` (`false`), respectively.
 #[derive(Copy, Clone, Debug, PartialEq, Eq)]
 pub enum Propagation {
     // Stop other handlers from being invoked for the event.
+    #[doc(alias = "GDK_EVENT_STOP")]
     Stop,
     // Propagate the event further.
+    #[doc(alias = "GDK_EVENT_PROPAGATE")]
     Proceed,
 }
 
@@ -208,13 +212,13 @@ impl FromGlib<ffi::gboolean> for Propagation {
     }
 }
 
-impl crate::ToValue for Propagation {
+impl crate::value::ToValue for Propagation {
     fn to_value(&self) -> crate::Value {
         bool::from(*self).to_value()
     }
 
     fn value_type(&self) -> crate::Type {
-        <bool as crate::StaticType>::static_type()
+        <bool as StaticType>::static_type()
     }
 }
 

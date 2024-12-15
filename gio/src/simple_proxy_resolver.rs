@@ -1,8 +1,8 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use glib::{prelude::*, translate::*, IntoStrV};
+use glib::{prelude::*, translate::*};
 
-use crate::{ProxyResolver, SimpleProxyResolver};
+use crate::{ffi, ProxyResolver, SimpleProxyResolver};
 
 impl SimpleProxyResolver {
     #[doc(alias = "g_simple_proxy_resolver_new")]
@@ -19,14 +19,7 @@ impl SimpleProxyResolver {
     }
 }
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::SimpleProxyResolver>> Sealed for T {}
-}
-
-pub trait SimpleProxyResolverExtManual:
-    sealed::Sealed + IsA<SimpleProxyResolver> + 'static
-{
+pub trait SimpleProxyResolverExtManual: IsA<SimpleProxyResolver> + 'static {
     #[doc(alias = "g_simple_proxy_resolver_set_ignore_hosts")]
     fn set_ignore_hosts(&self, ignore_hosts: impl IntoStrV) {
         unsafe {

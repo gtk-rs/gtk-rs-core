@@ -2,9 +2,8 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{Language, Matrix};
+use crate::{ffi, Language, Matrix};
 use glib::{prelude::*, translate::*};
-use std::fmt;
 
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
@@ -18,21 +17,6 @@ pub enum Alignment {
     Right,
     #[doc(hidden)]
     __Unknown(i32),
-}
-
-impl fmt::Display for Alignment {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(
-            f,
-            "Alignment::{}",
-            match *self {
-                Self::Left => "Left",
-                Self::Center => "Center",
-                Self::Right => "Right",
-                _ => "Unknown",
-            }
-        )
-    }
 }
 
 #[doc(hidden)]
@@ -65,6 +49,7 @@ impl FromGlib<ffi::PangoAlignment> for Alignment {
 
 impl StaticType for Alignment {
     #[inline]
+    #[doc(alias = "pango_alignment_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::pango_alignment_get_type()) }
     }
@@ -76,7 +61,7 @@ impl glib::HasParamSpec for Alignment {
     type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+        Self::ParamSpec::builder_with_default
     }
 }
 
@@ -222,63 +207,6 @@ impl AttrType {
     }
 }
 
-impl fmt::Display for AttrType {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(
-            f,
-            "AttrType::{}",
-            match *self {
-                Self::Invalid => "Invalid",
-                Self::Language => "Language",
-                Self::Family => "Family",
-                Self::Style => "Style",
-                Self::Weight => "Weight",
-                Self::Variant => "Variant",
-                Self::Stretch => "Stretch",
-                Self::Size => "Size",
-                Self::FontDesc => "FontDesc",
-                Self::Foreground => "Foreground",
-                Self::Background => "Background",
-                Self::Underline => "Underline",
-                Self::Strikethrough => "Strikethrough",
-                Self::Rise => "Rise",
-                Self::Shape => "Shape",
-                Self::Scale => "Scale",
-                Self::Fallback => "Fallback",
-                Self::LetterSpacing => "LetterSpacing",
-                Self::UnderlineColor => "UnderlineColor",
-                Self::StrikethroughColor => "StrikethroughColor",
-                Self::AbsoluteSize => "AbsoluteSize",
-                Self::Gravity => "Gravity",
-                Self::GravityHint => "GravityHint",
-                Self::FontFeatures => "FontFeatures",
-                Self::ForegroundAlpha => "ForegroundAlpha",
-                Self::BackgroundAlpha => "BackgroundAlpha",
-                Self::AllowBreaks => "AllowBreaks",
-                Self::Show => "Show",
-                Self::InsertHyphens => "InsertHyphens",
-                Self::Overline => "Overline",
-                Self::OverlineColor => "OverlineColor",
-                #[cfg(feature = "v1_50")]
-                Self::LineHeight => "LineHeight",
-                #[cfg(feature = "v1_50")]
-                Self::AbsoluteLineHeight => "AbsoluteLineHeight",
-                #[cfg(feature = "v1_50")]
-                Self::TextTransform => "TextTransform",
-                #[cfg(feature = "v1_50")]
-                Self::Word => "Word",
-                #[cfg(feature = "v1_50")]
-                Self::Sentence => "Sentence",
-                #[cfg(feature = "v1_50")]
-                Self::BaselineShift => "BaselineShift",
-                #[cfg(feature = "v1_50")]
-                Self::FontScale => "FontScale",
-                _ => "Unknown",
-            }
-        )
-    }
-}
-
 #[doc(hidden)]
 impl IntoGlib for AttrType {
     type GlibType = ffi::PangoAttrType;
@@ -391,6 +319,7 @@ impl FromGlib<ffi::PangoAttrType> for AttrType {
 
 impl StaticType for AttrType {
     #[inline]
+    #[doc(alias = "pango_attr_type_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::pango_attr_type_get_type()) }
     }
@@ -402,7 +331,7 @@ impl glib::HasParamSpec for AttrType {
     type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+        Self::ParamSpec::builder_with_default
     }
 }
 
@@ -460,23 +389,6 @@ pub enum BaselineShift {
 
 #[cfg(feature = "v1_50")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
-impl fmt::Display for BaselineShift {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(
-            f,
-            "BaselineShift::{}",
-            match *self {
-                Self::None => "None",
-                Self::Superscript => "Superscript",
-                Self::Subscript => "Subscript",
-                _ => "Unknown",
-            }
-        )
-    }
-}
-
-#[cfg(feature = "v1_50")]
-#[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
 #[doc(hidden)]
 impl IntoGlib for BaselineShift {
     type GlibType = ffi::PangoBaselineShift;
@@ -511,6 +423,7 @@ impl FromGlib<ffi::PangoBaselineShift> for BaselineShift {
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
 impl StaticType for BaselineShift {
     #[inline]
+    #[doc(alias = "pango_baseline_shift_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::pango_baseline_shift_get_type()) }
     }
@@ -524,7 +437,7 @@ impl glib::HasParamSpec for BaselineShift {
     type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+        Self::ParamSpec::builder_with_default
     }
 }
 
@@ -636,42 +549,6 @@ impl BidiType {
 }
 
 #[allow(deprecated)]
-impl fmt::Display for BidiType {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(
-            f,
-            "BidiType::{}",
-            match *self {
-                Self::L => "L",
-                Self::Lre => "Lre",
-                Self::Lro => "Lro",
-                Self::R => "R",
-                Self::Al => "Al",
-                Self::Rle => "Rle",
-                Self::Rlo => "Rlo",
-                Self::Pdf => "Pdf",
-                Self::En => "En",
-                Self::Es => "Es",
-                Self::Et => "Et",
-                Self::An => "An",
-                Self::Cs => "Cs",
-                Self::Nsm => "Nsm",
-                Self::Bn => "Bn",
-                Self::B => "B",
-                Self::S => "S",
-                Self::Ws => "Ws",
-                Self::On => "On",
-                Self::Lri => "Lri",
-                Self::Rli => "Rli",
-                Self::Fsi => "Fsi",
-                Self::Pdi => "Pdi",
-                _ => "Unknown",
-            }
-        )
-    }
-}
-
-#[allow(deprecated)]
 #[doc(hidden)]
 impl IntoGlib for BidiType {
     type GlibType = ffi::PangoBidiType;
@@ -742,6 +619,7 @@ impl FromGlib<ffi::PangoBidiType> for BidiType {
 #[allow(deprecated)]
 impl StaticType for BidiType {
     #[inline]
+    #[doc(alias = "pango_bidi_type_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::pango_bidi_type_get_type()) }
     }
@@ -754,7 +632,7 @@ impl glib::HasParamSpec for BidiType {
     type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+        Self::ParamSpec::builder_with_default
     }
 }
 
@@ -814,22 +692,6 @@ pub enum CoverageLevel {
     __Unknown(i32),
 }
 
-impl fmt::Display for CoverageLevel {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(
-            f,
-            "CoverageLevel::{}",
-            match *self {
-                Self::None => "None",
-                Self::Fallback => "Fallback",
-                Self::Approximate => "Approximate",
-                Self::Exact => "Exact",
-                _ => "Unknown",
-            }
-        )
-    }
-}
-
 #[doc(hidden)]
 impl IntoGlib for CoverageLevel {
     type GlibType = ffi::PangoCoverageLevel;
@@ -862,6 +724,7 @@ impl FromGlib<ffi::PangoCoverageLevel> for CoverageLevel {
 
 impl StaticType for CoverageLevel {
     #[inline]
+    #[doc(alias = "pango_coverage_level_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::pango_coverage_level_get_type()) }
     }
@@ -873,7 +736,7 @@ impl glib::HasParamSpec for CoverageLevel {
     type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+        Self::ParamSpec::builder_with_default
     }
 }
 
@@ -935,25 +798,6 @@ pub enum Direction {
     __Unknown(i32),
 }
 
-impl fmt::Display for Direction {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(
-            f,
-            "Direction::{}",
-            match *self {
-                Self::Ltr => "Ltr",
-                Self::Rtl => "Rtl",
-                Self::TtbLtr => "TtbLtr",
-                Self::TtbRtl => "TtbRtl",
-                Self::WeakLtr => "WeakLtr",
-                Self::WeakRtl => "WeakRtl",
-                Self::Neutral => "Neutral",
-                _ => "Unknown",
-            }
-        )
-    }
-}
-
 #[doc(hidden)]
 impl IntoGlib for Direction {
     type GlibType = ffi::PangoDirection;
@@ -992,6 +836,7 @@ impl FromGlib<ffi::PangoDirection> for Direction {
 
 impl StaticType for Direction {
     #[inline]
+    #[doc(alias = "pango_direction_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::pango_direction_get_type()) }
     }
@@ -1003,7 +848,7 @@ impl glib::HasParamSpec for Direction {
     type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+        Self::ParamSpec::builder_with_default
     }
 }
 
@@ -1059,22 +904,6 @@ pub enum EllipsizeMode {
     __Unknown(i32),
 }
 
-impl fmt::Display for EllipsizeMode {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(
-            f,
-            "EllipsizeMode::{}",
-            match *self {
-                Self::None => "None",
-                Self::Start => "Start",
-                Self::Middle => "Middle",
-                Self::End => "End",
-                _ => "Unknown",
-            }
-        )
-    }
-}
-
 #[doc(hidden)]
 impl IntoGlib for EllipsizeMode {
     type GlibType = ffi::PangoEllipsizeMode;
@@ -1107,6 +936,7 @@ impl FromGlib<ffi::PangoEllipsizeMode> for EllipsizeMode {
 
 impl StaticType for EllipsizeMode {
     #[inline]
+    #[doc(alias = "pango_ellipsize_mode_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::pango_ellipsize_mode_get_type()) }
     }
@@ -1118,7 +948,7 @@ impl glib::HasParamSpec for EllipsizeMode {
     type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+        Self::ParamSpec::builder_with_default
     }
 }
 
@@ -1178,24 +1008,6 @@ pub enum FontScale {
 
 #[cfg(feature = "v1_50")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
-impl fmt::Display for FontScale {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(
-            f,
-            "FontScale::{}",
-            match *self {
-                Self::None => "None",
-                Self::Superscript => "Superscript",
-                Self::Subscript => "Subscript",
-                Self::SmallCaps => "SmallCaps",
-                _ => "Unknown",
-            }
-        )
-    }
-}
-
-#[cfg(feature = "v1_50")]
-#[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
 #[doc(hidden)]
 impl IntoGlib for FontScale {
     type GlibType = ffi::PangoFontScale;
@@ -1232,6 +1044,7 @@ impl FromGlib<ffi::PangoFontScale> for FontScale {
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
 impl StaticType for FontScale {
     #[inline]
+    #[doc(alias = "pango_font_scale_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::pango_font_scale_get_type()) }
     }
@@ -1245,7 +1058,7 @@ impl glib::HasParamSpec for FontScale {
     type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+        Self::ParamSpec::builder_with_default
     }
 }
 
@@ -1354,23 +1167,6 @@ impl Gravity {
     }
 }
 
-impl fmt::Display for Gravity {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(
-            f,
-            "Gravity::{}",
-            match *self {
-                Self::South => "South",
-                Self::East => "East",
-                Self::North => "North",
-                Self::West => "West",
-                Self::Auto => "Auto",
-                _ => "Unknown",
-            }
-        )
-    }
-}
-
 #[doc(hidden)]
 impl IntoGlib for Gravity {
     type GlibType = ffi::PangoGravity;
@@ -1405,6 +1201,7 @@ impl FromGlib<ffi::PangoGravity> for Gravity {
 
 impl StaticType for Gravity {
     #[inline]
+    #[doc(alias = "pango_gravity_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::pango_gravity_get_type()) }
     }
@@ -1416,7 +1213,7 @@ impl glib::HasParamSpec for Gravity {
     type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+        Self::ParamSpec::builder_with_default
     }
 }
 
@@ -1470,21 +1267,6 @@ pub enum GravityHint {
     __Unknown(i32),
 }
 
-impl fmt::Display for GravityHint {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(
-            f,
-            "GravityHint::{}",
-            match *self {
-                Self::Natural => "Natural",
-                Self::Strong => "Strong",
-                Self::Line => "Line",
-                _ => "Unknown",
-            }
-        )
-    }
-}
-
 #[doc(hidden)]
 impl IntoGlib for GravityHint {
     type GlibType = ffi::PangoGravityHint;
@@ -1515,6 +1297,7 @@ impl FromGlib<ffi::PangoGravityHint> for GravityHint {
 
 impl StaticType for GravityHint {
     #[inline]
+    #[doc(alias = "pango_gravity_hint_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::pango_gravity_hint_get_type()) }
     }
@@ -1526,7 +1309,7 @@ impl glib::HasParamSpec for GravityHint {
     type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+        Self::ParamSpec::builder_with_default
     }
 }
 
@@ -1582,22 +1365,6 @@ pub enum Overline {
 
 #[cfg(feature = "v1_46")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_46")))]
-impl fmt::Display for Overline {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(
-            f,
-            "Overline::{}",
-            match *self {
-                Self::None => "None",
-                Self::Single => "Single",
-                _ => "Unknown",
-            }
-        )
-    }
-}
-
-#[cfg(feature = "v1_46")]
-#[cfg_attr(docsrs, doc(cfg(feature = "v1_46")))]
 #[doc(hidden)]
 impl IntoGlib for Overline {
     type GlibType = ffi::PangoOverline;
@@ -1630,6 +1397,7 @@ impl FromGlib<ffi::PangoOverline> for Overline {
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_46")))]
 impl StaticType for Overline {
     #[inline]
+    #[doc(alias = "pango_overline_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::pango_overline_get_type()) }
     }
@@ -1643,7 +1411,7 @@ impl glib::HasParamSpec for Overline {
     type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+        Self::ParamSpec::builder_with_default
     }
 }
 
@@ -1709,23 +1477,6 @@ pub enum RenderPart {
     __Unknown(i32),
 }
 
-impl fmt::Display for RenderPart {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(
-            f,
-            "RenderPart::{}",
-            match *self {
-                Self::Foreground => "Foreground",
-                Self::Background => "Background",
-                Self::Underline => "Underline",
-                Self::Strikethrough => "Strikethrough",
-                Self::Overline => "Overline",
-                _ => "Unknown",
-            }
-        )
-    }
-}
-
 #[doc(hidden)]
 impl IntoGlib for RenderPart {
     type GlibType = ffi::PangoRenderPart;
@@ -1760,6 +1511,7 @@ impl FromGlib<ffi::PangoRenderPart> for RenderPart {
 
 impl StaticType for RenderPart {
     #[inline]
+    #[doc(alias = "pango_render_part_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::pango_render_part_get_type()) }
     }
@@ -1771,7 +1523,7 @@ impl glib::HasParamSpec for RenderPart {
     type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+        Self::ParamSpec::builder_with_default
     }
 }
 
@@ -2070,136 +1822,6 @@ impl Script {
     }
 }
 
-impl fmt::Display for Script {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(
-            f,
-            "Script::{}",
-            match *self {
-                Self::InvalidCode => "InvalidCode",
-                Self::Common => "Common",
-                Self::Inherited => "Inherited",
-                Self::Arabic => "Arabic",
-                Self::Armenian => "Armenian",
-                Self::Bengali => "Bengali",
-                Self::Bopomofo => "Bopomofo",
-                Self::Cherokee => "Cherokee",
-                Self::Coptic => "Coptic",
-                Self::Cyrillic => "Cyrillic",
-                Self::Deseret => "Deseret",
-                Self::Devanagari => "Devanagari",
-                Self::Ethiopic => "Ethiopic",
-                Self::Georgian => "Georgian",
-                Self::Gothic => "Gothic",
-                Self::Greek => "Greek",
-                Self::Gujarati => "Gujarati",
-                Self::Gurmukhi => "Gurmukhi",
-                Self::Han => "Han",
-                Self::Hangul => "Hangul",
-                Self::Hebrew => "Hebrew",
-                Self::Hiragana => "Hiragana",
-                Self::Kannada => "Kannada",
-                Self::Katakana => "Katakana",
-                Self::Khmer => "Khmer",
-                Self::Lao => "Lao",
-                Self::Latin => "Latin",
-                Self::Malayalam => "Malayalam",
-                Self::Mongolian => "Mongolian",
-                Self::Myanmar => "Myanmar",
-                Self::Ogham => "Ogham",
-                Self::OldItalic => "OldItalic",
-                Self::Oriya => "Oriya",
-                Self::Runic => "Runic",
-                Self::Sinhala => "Sinhala",
-                Self::Syriac => "Syriac",
-                Self::Tamil => "Tamil",
-                Self::Telugu => "Telugu",
-                Self::Thaana => "Thaana",
-                Self::Thai => "Thai",
-                Self::Tibetan => "Tibetan",
-                Self::CanadianAboriginal => "CanadianAboriginal",
-                Self::Yi => "Yi",
-                Self::Tagalog => "Tagalog",
-                Self::Hanunoo => "Hanunoo",
-                Self::Buhid => "Buhid",
-                Self::Tagbanwa => "Tagbanwa",
-                Self::Braille => "Braille",
-                Self::Cypriot => "Cypriot",
-                Self::Limbu => "Limbu",
-                Self::Osmanya => "Osmanya",
-                Self::Shavian => "Shavian",
-                Self::LinearB => "LinearB",
-                Self::TaiLe => "TaiLe",
-                Self::Ugaritic => "Ugaritic",
-                Self::NewTaiLue => "NewTaiLue",
-                Self::Buginese => "Buginese",
-                Self::Glagolitic => "Glagolitic",
-                Self::Tifinagh => "Tifinagh",
-                Self::SylotiNagri => "SylotiNagri",
-                Self::OldPersian => "OldPersian",
-                Self::Kharoshthi => "Kharoshthi",
-                Self::Unknown => "Unknown",
-                Self::Balinese => "Balinese",
-                Self::Cuneiform => "Cuneiform",
-                Self::Phoenician => "Phoenician",
-                Self::PhagsPa => "PhagsPa",
-                Self::Nko => "Nko",
-                Self::KayahLi => "KayahLi",
-                Self::Lepcha => "Lepcha",
-                Self::Rejang => "Rejang",
-                Self::Sundanese => "Sundanese",
-                Self::Saurashtra => "Saurashtra",
-                Self::Cham => "Cham",
-                Self::OlChiki => "OlChiki",
-                Self::Vai => "Vai",
-                Self::Carian => "Carian",
-                Self::Lycian => "Lycian",
-                Self::Lydian => "Lydian",
-                Self::Batak => "Batak",
-                Self::Brahmi => "Brahmi",
-                Self::Mandaic => "Mandaic",
-                Self::Chakma => "Chakma",
-                Self::MeroiticCursive => "MeroiticCursive",
-                Self::MeroiticHieroglyphs => "MeroiticHieroglyphs",
-                Self::Miao => "Miao",
-                Self::Sharada => "Sharada",
-                Self::SoraSompeng => "SoraSompeng",
-                Self::Takri => "Takri",
-                Self::BassaVah => "BassaVah",
-                Self::CaucasianAlbanian => "CaucasianAlbanian",
-                Self::Duployan => "Duployan",
-                Self::Elbasan => "Elbasan",
-                Self::Grantha => "Grantha",
-                Self::Khojki => "Khojki",
-                Self::Khudawadi => "Khudawadi",
-                Self::LinearA => "LinearA",
-                Self::Mahajani => "Mahajani",
-                Self::Manichaean => "Manichaean",
-                Self::MendeKikakui => "MendeKikakui",
-                Self::Modi => "Modi",
-                Self::Mro => "Mro",
-                Self::Nabataean => "Nabataean",
-                Self::OldNorthArabian => "OldNorthArabian",
-                Self::OldPermic => "OldPermic",
-                Self::PahawhHmong => "PahawhHmong",
-                Self::Palmyrene => "Palmyrene",
-                Self::PauCinHau => "PauCinHau",
-                Self::PsalterPahlavi => "PsalterPahlavi",
-                Self::Siddham => "Siddham",
-                Self::Tirhuta => "Tirhuta",
-                Self::WarangCiti => "WarangCiti",
-                Self::Ahom => "Ahom",
-                Self::AnatolianHieroglyphs => "AnatolianHieroglyphs",
-                Self::Hatran => "Hatran",
-                Self::Multani => "Multani",
-                Self::OldHungarian => "OldHungarian",
-                Self::Signwriting => "Signwriting",
-                _ => "Unknown",
-            }
-        )
-    }
-}
-
 #[doc(hidden)]
 impl IntoGlib for Script {
     type GlibType = ffi::PangoScript;
@@ -2458,6 +2080,7 @@ impl FromGlib<ffi::PangoScript> for Script {
 
 impl StaticType for Script {
     #[inline]
+    #[doc(alias = "pango_script_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::pango_script_get_type()) }
     }
@@ -2469,7 +2092,7 @@ impl glib::HasParamSpec for Script {
     type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+        Self::ParamSpec::builder_with_default
     }
 }
 
@@ -2535,27 +2158,6 @@ pub enum Stretch {
     __Unknown(i32),
 }
 
-impl fmt::Display for Stretch {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(
-            f,
-            "Stretch::{}",
-            match *self {
-                Self::UltraCondensed => "UltraCondensed",
-                Self::ExtraCondensed => "ExtraCondensed",
-                Self::Condensed => "Condensed",
-                Self::SemiCondensed => "SemiCondensed",
-                Self::Normal => "Normal",
-                Self::SemiExpanded => "SemiExpanded",
-                Self::Expanded => "Expanded",
-                Self::ExtraExpanded => "ExtraExpanded",
-                Self::UltraExpanded => "UltraExpanded",
-                _ => "Unknown",
-            }
-        )
-    }
-}
-
 #[doc(hidden)]
 impl IntoGlib for Stretch {
     type GlibType = ffi::PangoStretch;
@@ -2598,6 +2200,7 @@ impl FromGlib<ffi::PangoStretch> for Stretch {
 
 impl StaticType for Stretch {
     #[inline]
+    #[doc(alias = "pango_stretch_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::pango_stretch_get_type()) }
     }
@@ -2609,7 +2212,7 @@ impl glib::HasParamSpec for Stretch {
     type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+        Self::ParamSpec::builder_with_default
     }
 }
 
@@ -2663,21 +2266,6 @@ pub enum Style {
     __Unknown(i32),
 }
 
-impl fmt::Display for Style {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(
-            f,
-            "Style::{}",
-            match *self {
-                Self::Normal => "Normal",
-                Self::Oblique => "Oblique",
-                Self::Italic => "Italic",
-                _ => "Unknown",
-            }
-        )
-    }
-}
-
 #[doc(hidden)]
 impl IntoGlib for Style {
     type GlibType = ffi::PangoStyle;
@@ -2708,6 +2296,7 @@ impl FromGlib<ffi::PangoStyle> for Style {
 
 impl StaticType for Style {
     #[inline]
+    #[doc(alias = "pango_style_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::pango_style_get_type()) }
     }
@@ -2719,7 +2308,7 @@ impl glib::HasParamSpec for Style {
     type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+        Self::ParamSpec::builder_with_default
     }
 }
 
@@ -2781,25 +2370,6 @@ pub enum TabAlign {
     __Unknown(i32),
 }
 
-impl fmt::Display for TabAlign {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(
-            f,
-            "TabAlign::{}",
-            match *self {
-                Self::Left => "Left",
-                #[cfg(feature = "v1_50")]
-                Self::Right => "Right",
-                #[cfg(feature = "v1_50")]
-                Self::Center => "Center",
-                #[cfg(feature = "v1_50")]
-                Self::Decimal => "Decimal",
-                _ => "Unknown",
-            }
-        )
-    }
-}
-
 #[doc(hidden)]
 impl IntoGlib for TabAlign {
     type GlibType = ffi::PangoTabAlign;
@@ -2838,6 +2408,7 @@ impl FromGlib<ffi::PangoTabAlign> for TabAlign {
 
 impl StaticType for TabAlign {
     #[inline]
+    #[doc(alias = "pango_tab_align_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::pango_tab_align_get_type()) }
     }
@@ -2849,7 +2420,7 @@ impl glib::HasParamSpec for TabAlign {
     type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+        Self::ParamSpec::builder_with_default
     }
 }
 
@@ -2909,24 +2480,6 @@ pub enum TextTransform {
 
 #[cfg(feature = "v1_50")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
-impl fmt::Display for TextTransform {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(
-            f,
-            "TextTransform::{}",
-            match *self {
-                Self::None => "None",
-                Self::Lowercase => "Lowercase",
-                Self::Uppercase => "Uppercase",
-                Self::Capitalize => "Capitalize",
-                _ => "Unknown",
-            }
-        )
-    }
-}
-
-#[cfg(feature = "v1_50")]
-#[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
 #[doc(hidden)]
 impl IntoGlib for TextTransform {
     type GlibType = ffi::PangoTextTransform;
@@ -2963,6 +2516,7 @@ impl FromGlib<ffi::PangoTextTransform> for TextTransform {
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
 impl StaticType for TextTransform {
     #[inline]
+    #[doc(alias = "pango_text_transform_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::pango_text_transform_get_type()) }
     }
@@ -2976,7 +2530,7 @@ impl glib::HasParamSpec for TextTransform {
     type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+        Self::ParamSpec::builder_with_default
     }
 }
 
@@ -3048,26 +2602,6 @@ pub enum Underline {
     __Unknown(i32),
 }
 
-impl fmt::Display for Underline {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(
-            f,
-            "Underline::{}",
-            match *self {
-                Self::None => "None",
-                Self::Single => "Single",
-                Self::Double => "Double",
-                Self::Low => "Low",
-                Self::Error => "Error",
-                Self::SingleLine => "SingleLine",
-                Self::DoubleLine => "DoubleLine",
-                Self::ErrorLine => "ErrorLine",
-                _ => "Unknown",
-            }
-        )
-    }
-}
-
 #[doc(hidden)]
 impl IntoGlib for Underline {
     type GlibType = ffi::PangoUnderline;
@@ -3108,6 +2642,7 @@ impl FromGlib<ffi::PangoUnderline> for Underline {
 
 impl StaticType for Underline {
     #[inline]
+    #[doc(alias = "pango_underline_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::pango_underline_get_type()) }
     }
@@ -3119,7 +2654,7 @@ impl glib::HasParamSpec for Underline {
     type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+        Self::ParamSpec::builder_with_default
     }
 }
 
@@ -3191,30 +2726,6 @@ pub enum Variant {
     __Unknown(i32),
 }
 
-impl fmt::Display for Variant {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(
-            f,
-            "Variant::{}",
-            match *self {
-                Self::Normal => "Normal",
-                Self::SmallCaps => "SmallCaps",
-                #[cfg(feature = "v1_50")]
-                Self::AllSmallCaps => "AllSmallCaps",
-                #[cfg(feature = "v1_50")]
-                Self::PetiteCaps => "PetiteCaps",
-                #[cfg(feature = "v1_50")]
-                Self::AllPetiteCaps => "AllPetiteCaps",
-                #[cfg(feature = "v1_50")]
-                Self::Unicase => "Unicase",
-                #[cfg(feature = "v1_50")]
-                Self::TitleCaps => "TitleCaps",
-                _ => "Unknown",
-            }
-        )
-    }
-}
-
 #[doc(hidden)]
 impl IntoGlib for Variant {
     type GlibType = ffi::PangoVariant;
@@ -3263,6 +2774,7 @@ impl FromGlib<ffi::PangoVariant> for Variant {
 
 impl StaticType for Variant {
     #[inline]
+    #[doc(alias = "pango_variant_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::pango_variant_get_type()) }
     }
@@ -3274,7 +2786,7 @@ impl glib::HasParamSpec for Variant {
     type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+        Self::ParamSpec::builder_with_default
     }
 }
 
@@ -3346,30 +2858,6 @@ pub enum Weight {
     __Unknown(i32),
 }
 
-impl fmt::Display for Weight {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(
-            f,
-            "Weight::{}",
-            match *self {
-                Self::Thin => "Thin",
-                Self::Ultralight => "Ultralight",
-                Self::Light => "Light",
-                Self::Semilight => "Semilight",
-                Self::Book => "Book",
-                Self::Normal => "Normal",
-                Self::Medium => "Medium",
-                Self::Semibold => "Semibold",
-                Self::Bold => "Bold",
-                Self::Ultrabold => "Ultrabold",
-                Self::Heavy => "Heavy",
-                Self::Ultraheavy => "Ultraheavy",
-                _ => "Unknown",
-            }
-        )
-    }
-}
-
 #[doc(hidden)]
 impl IntoGlib for Weight {
     type GlibType = ffi::PangoWeight;
@@ -3418,6 +2906,7 @@ impl FromGlib<ffi::PangoWeight> for Weight {
 
 impl StaticType for Weight {
     #[inline]
+    #[doc(alias = "pango_weight_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::pango_weight_get_type()) }
     }
@@ -3429,7 +2918,7 @@ impl glib::HasParamSpec for Weight {
     type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+        Self::ParamSpec::builder_with_default
     }
 }
 
@@ -3483,21 +2972,6 @@ pub enum WrapMode {
     __Unknown(i32),
 }
 
-impl fmt::Display for WrapMode {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(
-            f,
-            "WrapMode::{}",
-            match *self {
-                Self::Word => "Word",
-                Self::Char => "Char",
-                Self::WordChar => "WordChar",
-                _ => "Unknown",
-            }
-        )
-    }
-}
-
 #[doc(hidden)]
 impl IntoGlib for WrapMode {
     type GlibType = ffi::PangoWrapMode;
@@ -3528,6 +3002,7 @@ impl FromGlib<ffi::PangoWrapMode> for WrapMode {
 
 impl StaticType for WrapMode {
     #[inline]
+    #[doc(alias = "pango_wrap_mode_get_type")]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::pango_wrap_mode_get_type()) }
     }
@@ -3539,7 +3014,7 @@ impl glib::HasParamSpec for WrapMode {
     type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
 
     fn param_spec_builder() -> Self::BuilderFn {
-        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+        Self::ParamSpec::builder_with_default
     }
 }
 

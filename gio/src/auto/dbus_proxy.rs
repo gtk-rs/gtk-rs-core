@@ -6,15 +6,15 @@
 #[cfg_attr(docsrs, doc(cfg(unix)))]
 use crate::UnixFDList;
 use crate::{
-    AsyncInitable, AsyncResult, BusType, Cancellable, DBusCallFlags, DBusConnection, DBusInterface,
-    DBusInterfaceInfo, DBusProxyFlags, Initable,
+    ffi, AsyncInitable, AsyncResult, BusType, Cancellable, DBusCallFlags, DBusConnection,
+    DBusInterface, DBusInterfaceInfo, DBusProxyFlags, Initable,
 };
 use glib::{
     prelude::*,
     signal::{connect_raw, SignalHandlerId},
     translate::*,
 };
-use std::{boxed::Box as Box_, fmt, mem::transmute, pin::Pin, ptr};
+use std::{boxed::Box as Box_, pin::Pin};
 
 glib::wrapper! {
     #[doc(alias = "GDBusProxy")]
@@ -40,7 +40,7 @@ impl DBusProxy {
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<DBusProxy, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_dbus_proxy_new_for_bus_sync(
                 bus_type.into_glib(),
                 flags.into_glib(),
@@ -70,7 +70,7 @@ impl DBusProxy {
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<DBusProxy, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_dbus_proxy_new_sync(
                 connection.to_glib_none().0,
                 flags.into_glib(),
@@ -117,7 +117,7 @@ impl DBusProxy {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_dbus_proxy_new_finish(res, &mut error);
             let result = if error.is_null() {
                 Ok(from_glib_full(ret))
@@ -208,7 +208,7 @@ impl DBusProxy {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_dbus_proxy_new_for_bus_finish(res, &mut error);
             let result = if error.is_null() {
                 Ok(from_glib_full(ret))
@@ -271,12 +271,7 @@ impl DBusProxy {
 unsafe impl Send for DBusProxy {}
 unsafe impl Sync for DBusProxy {}
 
-mod sealed {
-    pub trait Sealed {}
-    impl<T: super::IsA<super::DBusProxy>> Sealed for T {}
-}
-
-pub trait DBusProxyExt: IsA<DBusProxy> + sealed::Sealed + 'static {
+pub trait DBusProxyExt: IsA<DBusProxy> + 'static {
     #[doc(alias = "g_dbus_proxy_call")]
     fn call<P: FnOnce(Result<glib::Variant, glib::Error>) + 'static>(
         &self,
@@ -306,7 +301,7 @@ pub trait DBusProxyExt: IsA<DBusProxy> + sealed::Sealed + 'static {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_dbus_proxy_call_finish(_source_object as *mut _, res, &mut error);
             let result = if error.is_null() {
                 Ok(from_glib_full(ret))
@@ -370,7 +365,7 @@ pub trait DBusProxyExt: IsA<DBusProxy> + sealed::Sealed + 'static {
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<glib::Variant, glib::Error> {
         unsafe {
-            let mut error = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_dbus_proxy_call_sync(
                 self.as_ref().to_glib_none().0,
                 method_name.to_glib_none().0,
@@ -422,8 +417,8 @@ pub trait DBusProxyExt: IsA<DBusProxy> + sealed::Sealed + 'static {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
-            let mut out_fd_list = ptr::null_mut();
+            let mut error = std::ptr::null_mut();
+            let mut out_fd_list = std::ptr::null_mut();
             let ret = ffi::g_dbus_proxy_call_with_unix_fd_list_finish(
                 _source_object as *mut _,
                 &mut out_fd_list,
@@ -505,8 +500,8 @@ pub trait DBusProxyExt: IsA<DBusProxy> + sealed::Sealed + 'static {
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<(glib::Variant, UnixFDList), glib::Error> {
         unsafe {
-            let mut out_fd_list = ptr::null_mut();
-            let mut error = ptr::null_mut();
+            let mut out_fd_list = std::ptr::null_mut();
+            let mut error = std::ptr::null_mut();
             let ret = ffi::g_dbus_proxy_call_with_unix_fd_list_sync(
                 self.as_ref().to_glib_none().0,
                 method_name.to_glib_none().0,
@@ -714,7 +709,7 @@ pub trait DBusProxyExt: IsA<DBusProxy> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::g-default-timeout\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_g_default_timeout_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -743,7 +738,7 @@ pub trait DBusProxyExt: IsA<DBusProxy> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::g-interface-info\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_g_interface_info_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -772,7 +767,7 @@ pub trait DBusProxyExt: IsA<DBusProxy> + sealed::Sealed + 'static {
             connect_raw(
                 self.as_ptr() as *mut _,
                 b"notify::g-name-owner\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_g_name_owner_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
@@ -782,9 +777,3 @@ pub trait DBusProxyExt: IsA<DBusProxy> + sealed::Sealed + 'static {
 }
 
 impl<O: IsA<DBusProxy>> DBusProxyExt for O {}
-
-impl fmt::Display for DBusProxy {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("DBusProxy")
-    }
-}

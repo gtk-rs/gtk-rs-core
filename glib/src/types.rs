@@ -12,7 +12,7 @@ use std::{
     ptr,
 };
 
-use crate::{translate::*, IntoGStr, Slice};
+use crate::{ffi, gobject_ffi, prelude::*, translate::*, Slice, TypeFlags, TypePlugin};
 
 // rustdoc-stripper-ignore-next
 /// A GLib or GLib-based library type
@@ -223,6 +223,48 @@ impl Type {
         }
     }
 
+    #[doc(alias = "g_type_get_plugin")]
+    pub fn plugin(self) -> Option<TypePlugin> {
+        unsafe {
+            let plugin_ptr = gobject_ffi::g_type_get_plugin(self.into_glib());
+            if plugin_ptr.is_null() {
+                None
+            } else {
+                Some(TypePlugin::from_glib_none(plugin_ptr))
+            }
+        }
+    }
+
+    #[doc(alias = "g_type_register_dynamic")]
+    pub fn register_dynamic(
+        parent_type: Self,
+        name: impl IntoGStr,
+        plugin: &TypePlugin,
+        flags: TypeFlags,
+    ) -> Self {
+        unsafe {
+            name.run_with_gstr(|name| {
+                Self::from_glib(gobject_ffi::g_type_register_dynamic(
+                    parent_type.into_glib(),
+                    name.as_ptr(),
+                    plugin.as_ptr(),
+                    flags.into_glib(),
+                ))
+            })
+        }
+    }
+
+    #[doc(alias = "g_type_add_interface_dynamic")]
+    pub fn add_interface_dynamic(self, interface_type: Self, plugin: &TypePlugin) {
+        unsafe {
+            gobject_ffi::g_type_add_interface_dynamic(
+                self.into_glib(),
+                interface_type.into_glib(),
+                plugin.as_ptr(),
+            );
+        }
+    }
+
     // rustdoc-stripper-ignore-next
     /// Checks that the type is not [`INVALID`](Self::INVALID)
     #[inline]
@@ -313,14 +355,14 @@ impl From<Type> for crate::Value {
     }
 }
 
-impl<'a, T: ?Sized + StaticType> StaticType for &'a T {
+impl<T: ?Sized + StaticType> StaticType for &'_ T {
     #[inline]
     fn static_type() -> Type {
         T::static_type()
     }
 }
 
-impl<'a, T: ?Sized + StaticType> StaticType for &'a mut T {
+impl<T: ?Sized + StaticType> StaticType for &'_ mut T {
     #[inline]
     fn static_type() -> Type {
         T::static_type()
@@ -513,7 +555,7 @@ builtin!(PathBuf, STRING);
 builtin!(Path, STRING);
 builtin!(Pointer, POINTER);
 
-impl<'a> StaticType for [&'a str] {
+impl StaticType for [&'_ str] {
     #[inline]
     fn static_type() -> Type {
         unsafe { from_glib(ffi::g_strv_get_type()) }

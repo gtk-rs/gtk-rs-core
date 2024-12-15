@@ -25,6 +25,7 @@ mod imp {
     #[glib::object_subclass]
     impl ObjectSubclass for ReadInputStream {
         const NAME: &'static str = "ReadInputStream";
+        const ALLOW_NAME_CONFLICT: bool = true;
         type Type = super::ReadInputStream;
         type ParentType = InputStream;
         type Interfaces = (crate::Seekable,);

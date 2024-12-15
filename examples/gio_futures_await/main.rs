@@ -2,7 +2,7 @@ use std::str;
 
 use futures::prelude::*;
 use gio::prelude::*;
-use glib::{self, clone};
+use glib::clone;
 
 fn main() {
     let c = glib::MainContext::default();
@@ -10,13 +10,17 @@ fn main() {
 
     let file = gio::File::for_path("Cargo.toml");
 
-    let future = clone!(@strong l => async move {
-        match read_file(file).await {
-            Ok(()) => (),
-            Err(err) => eprintln!("Got error: {err}"),
+    let future = clone!(
+        #[strong]
+        l,
+        async move {
+            match read_file(file).await {
+                Ok(()) => (),
+                Err(err) => eprintln!("Got error: {err}"),
+            }
+            l.quit();
         }
-        l.quit();
-    });
+    );
 
     c.spawn_local(future);
 
