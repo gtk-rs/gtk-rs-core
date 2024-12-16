@@ -24,6 +24,26 @@ mod sealed {
 }
 
 pub trait FontMapExt: IsA<FontMap> + sealed::Sealed + 'static {
+    #[cfg(feature = "v1_56")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v1_56")))]
+    #[doc(alias = "pango_font_map_add_font_file")]
+    fn add_font_file(&self, filename: impl AsRef<std::path::Path>) -> Result<(), glib::Error> {
+        unsafe {
+            let mut error = std::ptr::null_mut();
+            let is_ok = ffi::pango_font_map_add_font_file(
+                self.as_ref().to_glib_none().0,
+                filename.as_ref().to_glib_none().0,
+                &mut error,
+            );
+            debug_assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
+            if error.is_null() {
+                Ok(())
+            } else {
+                Err(from_glib_full(error))
+            }
+        }
+    }
+
     #[doc(alias = "pango_font_map_changed")]
     fn changed(&self) {
         unsafe {

@@ -124,5 +124,11 @@ pub use self::constants::STR_DELIMITERS;
 #[cfg(feature = "v2_60")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
 pub use self::constants::TEST_OPTION_ISOLATE_DIRS;
+#[cfg(feature = "v2_84")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_84")))]
+pub use self::constants::TEST_OPTION_NONFATAL_ASSERTIONS;
+#[cfg(feature = "v2_84")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_84")))]
+pub use self::constants::TEST_OPTION_NO_PRGNAME;
 pub use self::constants::URI_RESERVED_CHARS_GENERIC_DELIMITERS;
 pub use self::constants::URI_RESERVED_CHARS_SUBCOMPONENT_DELIMITERS;

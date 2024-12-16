@@ -2399,6 +2399,13 @@ extern "C" {
     // PangoFontMap
     //=========================================================================
     pub fn pango_font_map_get_type() -> GType;
+    #[cfg(feature = "v1_56")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v1_56")))]
+    pub fn pango_font_map_add_font_file(
+        fontmap: *mut PangoFontMap,
+        filename: *const c_char,
+        error: *mut *mut glib::GError,
+    ) -> gboolean;
     pub fn pango_font_map_changed(fontmap: *mut PangoFontMap);
     pub fn pango_font_map_create_context(fontmap: *mut PangoFontMap) -> *mut PangoContext;
     #[cfg(feature = "v1_46")]
