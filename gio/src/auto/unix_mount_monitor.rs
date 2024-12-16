@@ -38,7 +38,7 @@ impl UnixMountMonitor {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                b"mountpoints-changed\0".as_ptr() as *const _,
+                c"mountpoints-changed".as_ptr() as *const _,
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     mountpoints_changed_trampoline::<F> as *const (),
                 )),
@@ -60,7 +60,7 @@ impl UnixMountMonitor {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                b"mounts-changed\0".as_ptr() as *const _,
+                c"mounts-changed".as_ptr() as *const _,
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     mounts_changed_trampoline::<F> as *const (),
                 )),

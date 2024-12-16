@@ -614,7 +614,7 @@ pub trait SocketExt: IsA<Socket> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                b"notify::blocking\0".as_ptr() as *const _,
+                c"notify::blocking".as_ptr() as *const _,
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_blocking_trampoline::<Self, F> as *const (),
                 )),
@@ -637,7 +637,7 @@ pub trait SocketExt: IsA<Socket> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                b"notify::broadcast\0".as_ptr() as *const _,
+                c"notify::broadcast".as_ptr() as *const _,
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_broadcast_trampoline::<Self, F> as *const (),
                 )),
@@ -660,7 +660,7 @@ pub trait SocketExt: IsA<Socket> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                b"notify::keepalive\0".as_ptr() as *const _,
+                c"notify::keepalive".as_ptr() as *const _,
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_keepalive_trampoline::<Self, F> as *const (),
                 )),
@@ -686,7 +686,7 @@ pub trait SocketExt: IsA<Socket> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                b"notify::listen-backlog\0".as_ptr() as *const _,
+                c"notify::listen-backlog".as_ptr() as *const _,
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_listen_backlog_trampoline::<Self, F> as *const (),
                 )),
@@ -712,7 +712,7 @@ pub trait SocketExt: IsA<Socket> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                b"notify::local-address\0".as_ptr() as *const _,
+                c"notify::local-address".as_ptr() as *const _,
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_local_address_trampoline::<Self, F> as *const (),
                 )),
@@ -738,7 +738,7 @@ pub trait SocketExt: IsA<Socket> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                b"notify::multicast-loopback\0".as_ptr() as *const _,
+                c"notify::multicast-loopback".as_ptr() as *const _,
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_multicast_loopback_trampoline::<Self, F> as *const (),
                 )),
@@ -764,7 +764,7 @@ pub trait SocketExt: IsA<Socket> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                b"notify::multicast-ttl\0".as_ptr() as *const _,
+                c"notify::multicast-ttl".as_ptr() as *const _,
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_multicast_ttl_trampoline::<Self, F> as *const (),
                 )),
@@ -790,7 +790,7 @@ pub trait SocketExt: IsA<Socket> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                b"notify::remote-address\0".as_ptr() as *const _,
+                c"notify::remote-address".as_ptr() as *const _,
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_remote_address_trampoline::<Self, F> as *const (),
                 )),
@@ -813,7 +813,7 @@ pub trait SocketExt: IsA<Socket> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                b"notify::timeout\0".as_ptr() as *const _,
+                c"notify::timeout".as_ptr() as *const _,
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_timeout_trampoline::<Self, F> as *const (),
                 )),
@@ -836,7 +836,7 @@ pub trait SocketExt: IsA<Socket> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                b"notify::ttl\0".as_ptr() as *const _,
+                c"notify::ttl".as_ptr() as *const _,
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_ttl_trampoline::<Self, F> as *const (),
                 )),

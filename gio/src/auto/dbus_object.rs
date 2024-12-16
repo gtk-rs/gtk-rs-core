@@ -78,7 +78,7 @@ pub trait DBusObjectExt: IsA<DBusObject> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                b"interface-added\0".as_ptr() as *const _,
+                c"interface-added".as_ptr() as *const _,
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     interface_added_trampoline::<Self, F> as *const (),
                 )),
@@ -110,7 +110,7 @@ pub trait DBusObjectExt: IsA<DBusObject> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                b"interface-removed\0".as_ptr() as *const _,
+                c"interface-removed".as_ptr() as *const _,
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     interface_removed_trampoline::<Self, F> as *const (),
                 )),

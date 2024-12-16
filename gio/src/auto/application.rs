@@ -454,7 +454,7 @@ pub trait ApplicationExt: IsA<Application> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                b"activate\0".as_ptr() as *const _,
+                c"activate".as_ptr() as *const _,
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     activate_trampoline::<Self, F> as *const (),
                 )),
@@ -486,7 +486,7 @@ pub trait ApplicationExt: IsA<Application> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                b"command-line\0".as_ptr() as *const _,
+                c"command-line".as_ptr() as *const _,
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     command_line_trampoline::<Self, F> as *const (),
                 )),
@@ -518,7 +518,7 @@ pub trait ApplicationExt: IsA<Application> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                b"handle-local-options\0".as_ptr() as *const _,
+                c"handle-local-options".as_ptr() as *const _,
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     handle_local_options_trampoline::<Self, F> as *const (),
                 )),
@@ -545,7 +545,7 @@ pub trait ApplicationExt: IsA<Application> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                b"name-lost\0".as_ptr() as *const _,
+                c"name-lost".as_ptr() as *const _,
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     name_lost_trampoline::<Self, F> as *const (),
                 )),
@@ -567,7 +567,7 @@ pub trait ApplicationExt: IsA<Application> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                b"shutdown\0".as_ptr() as *const _,
+                c"shutdown".as_ptr() as *const _,
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     shutdown_trampoline::<Self, F> as *const (),
                 )),
@@ -589,7 +589,7 @@ pub trait ApplicationExt: IsA<Application> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                b"startup\0".as_ptr() as *const _,
+                c"startup".as_ptr() as *const _,
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     startup_trampoline::<Self, F> as *const (),
                 )),
@@ -615,7 +615,7 @@ pub trait ApplicationExt: IsA<Application> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                b"notify::application-id\0".as_ptr() as *const _,
+                c"notify::application-id".as_ptr() as *const _,
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_application_id_trampoline::<Self, F> as *const (),
                 )),
@@ -638,7 +638,7 @@ pub trait ApplicationExt: IsA<Application> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                b"notify::flags\0".as_ptr() as *const _,
+                c"notify::flags".as_ptr() as *const _,
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_flags_trampoline::<Self, F> as *const (),
                 )),
@@ -664,7 +664,7 @@ pub trait ApplicationExt: IsA<Application> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                b"notify::inactivity-timeout\0".as_ptr() as *const _,
+                c"notify::inactivity-timeout".as_ptr() as *const _,
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_inactivity_timeout_trampoline::<Self, F> as *const (),
                 )),
@@ -687,7 +687,7 @@ pub trait ApplicationExt: IsA<Application> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                b"notify::is-busy\0".as_ptr() as *const _,
+                c"notify::is-busy".as_ptr() as *const _,
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_is_busy_trampoline::<Self, F> as *const (),
                 )),
@@ -713,7 +713,7 @@ pub trait ApplicationExt: IsA<Application> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                b"notify::is-registered\0".as_ptr() as *const _,
+                c"notify::is-registered".as_ptr() as *const _,
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_is_registered_trampoline::<Self, F> as *const (),
                 )),
@@ -739,7 +739,7 @@ pub trait ApplicationExt: IsA<Application> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                b"notify::is-remote\0".as_ptr() as *const _,
+                c"notify::is-remote".as_ptr() as *const _,
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_is_remote_trampoline::<Self, F> as *const (),
                 )),
@@ -765,7 +765,7 @@ pub trait ApplicationExt: IsA<Application> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                b"notify::resource-base-path\0".as_ptr() as *const _,
+                c"notify::resource-base-path".as_ptr() as *const _,
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_resource_base_path_trampoline::<Self, F> as *const (),
                 )),
@@ -790,7 +790,7 @@ pub trait ApplicationExt: IsA<Application> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                b"notify::version\0".as_ptr() as *const _,
+                c"notify::version".as_ptr() as *const _,
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_version_trampoline::<Self, F> as *const (),
                 )),

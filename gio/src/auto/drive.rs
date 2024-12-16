@@ -451,7 +451,7 @@ pub trait DriveExt: IsA<Drive> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                b"changed\0".as_ptr() as *const _,
+                c"changed".as_ptr() as *const _,
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     changed_trampoline::<Self, F> as *const (),
                 )),
@@ -473,7 +473,7 @@ pub trait DriveExt: IsA<Drive> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                b"disconnected\0".as_ptr() as *const _,
+                c"disconnected".as_ptr() as *const _,
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     disconnected_trampoline::<Self, F> as *const (),
                 )),
@@ -495,7 +495,7 @@ pub trait DriveExt: IsA<Drive> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                b"eject-button\0".as_ptr() as *const _,
+                c"eject-button".as_ptr() as *const _,
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     eject_button_trampoline::<Self, F> as *const (),
                 )),
@@ -517,7 +517,7 @@ pub trait DriveExt: IsA<Drive> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                b"stop-button\0".as_ptr() as *const _,
+                c"stop-button".as_ptr() as *const _,
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     stop_button_trampoline::<Self, F> as *const (),
                 )),

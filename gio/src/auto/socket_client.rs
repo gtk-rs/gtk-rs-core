@@ -651,7 +651,7 @@ pub trait SocketClientExt: IsA<SocketClient> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                b"event\0".as_ptr() as *const _,
+                c"event".as_ptr() as *const _,
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     event_trampoline::<Self, F> as *const (),
                 )),
@@ -677,7 +677,7 @@ pub trait SocketClientExt: IsA<SocketClient> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                b"notify::enable-proxy\0".as_ptr() as *const _,
+                c"notify::enable-proxy".as_ptr() as *const _,
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_enable_proxy_trampoline::<Self, F> as *const (),
                 )),
@@ -700,7 +700,7 @@ pub trait SocketClientExt: IsA<SocketClient> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                b"notify::family\0".as_ptr() as *const _,
+                c"notify::family".as_ptr() as *const _,
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_family_trampoline::<Self, F> as *const (),
                 )),
@@ -726,7 +726,7 @@ pub trait SocketClientExt: IsA<SocketClient> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                b"notify::local-address\0".as_ptr() as *const _,
+                c"notify::local-address".as_ptr() as *const _,
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_local_address_trampoline::<Self, F> as *const (),
                 )),
@@ -752,7 +752,7 @@ pub trait SocketClientExt: IsA<SocketClient> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                b"notify::protocol\0".as_ptr() as *const _,
+                c"notify::protocol".as_ptr() as *const _,
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_protocol_trampoline::<Self, F> as *const (),
                 )),
@@ -778,7 +778,7 @@ pub trait SocketClientExt: IsA<SocketClient> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                b"notify::proxy-resolver\0".as_ptr() as *const _,
+                c"notify::proxy-resolver".as_ptr() as *const _,
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_proxy_resolver_trampoline::<Self, F> as *const (),
                 )),
@@ -804,7 +804,7 @@ pub trait SocketClientExt: IsA<SocketClient> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                b"notify::timeout\0".as_ptr() as *const _,
+                c"notify::timeout".as_ptr() as *const _,
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_timeout_trampoline::<Self, F> as *const (),
                 )),
@@ -827,7 +827,7 @@ pub trait SocketClientExt: IsA<SocketClient> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                b"notify::tls\0".as_ptr() as *const _,
+                c"notify::tls".as_ptr() as *const _,
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_tls_trampoline::<Self, F> as *const (),
                 )),
@@ -854,7 +854,7 @@ pub trait SocketClientExt: IsA<SocketClient> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                b"notify::tls-validation-flags\0".as_ptr() as *const _,
+                c"notify::tls-validation-flags".as_ptr() as *const _,
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_tls_validation_flags_trampoline::<Self, F> as *const (),
                 )),
@@ -877,7 +877,7 @@ pub trait SocketClientExt: IsA<SocketClient> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                b"notify::type\0".as_ptr() as *const _,
+                c"notify::type".as_ptr() as *const _,
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_type_trampoline::<Self, F> as *const (),
                 )),
