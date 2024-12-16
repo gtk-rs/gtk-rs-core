@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `cairo/src/font/font_face.rs`."><title>font_face.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-42caa33d.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="cairo" data-themes="" data-resource-suffix="" data-rustdoc-version="1.84.0-nightly (81eef2d36 2024-11-11)" data-channel="nightly" data-search-js="search-853ef39b.js" data-settings-js="settings-0f613d39.js" ><script src="../../../static.files/storage-59e33391.js"></script><script defer src="../../../static.files/src-script-56102188.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `cairo/src/font/font_face.rs`."><title>font_face.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-46132b98.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="cairo" data-themes="" data-resource-suffix="" data-rustdoc-version="1.85.0-nightly (c26db435b 2024-12-15)" data-channel="nightly" data-search-js="search-92e6798f.js" data-settings-js="settings-0f613d39.js" ><script src="../../../static.files/storage-59e33391.js"></script><script defer src="../../../static.files/src-script-56102188.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -318,7 +318,7 @@
 <span class="kw">use crate</span>::{<a href="../../../cairo_sys/index.html">ffi</a>, <a href="../utils.rs.html#21-26">utils::status_to_result</a>, <a href="../error.rs.html#9-104">Error</a>, <a href="../enums.rs.html#631-640">FontSlant</a>, <a href="../enums.rs.html#749-766">FontType</a>, <a href="../enums.rs.html#672-679">FontWeight</a>};
 
 <span class="attr">#[cfg(feature = <span class="string">"freetype"</span>)]
-</span><span class="kw">static </span>FT_FACE_KEY: <span class="kw">crate</span>::UserDataKey&lt;freetype::face::Face&gt; = <a href="../user_data.rs.html#15-20"><span class="kw">crate</span>::UserDataKey::new</a>();
+</span><span class="kw">static </span>FT_FACE_KEY: <a href="../user_data.rs.html#7-10"><span class="kw">crate</span>::UserDataKey</a>&lt;freetype::face::Face&gt; = <a href="../user_data.rs.html#15-20"><span class="kw">crate</span>::UserDataKey::new</a>();
 
 <span class="attr">#[cfg(feature = <span class="string">"use_glib"</span>)]
 </span><a class="macro" href="../../../glib/macro.wrapper.html">glib::wrapper!</a> {
@@ -345,7 +345,7 @@
         family: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
         slant: <a href="../enums.rs.html#631-640">FontSlant</a>,
         weight: <a href="../enums.rs.html#672-679">FontWeight</a>,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#20-30">FontFace</a>, <a href="../error.rs.html#9-104">Error</a>&gt; {
+    ) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="#20-30">FontFace</a>, <a href="../error.rs.html#9-104">Error</a>&gt; {
         <span class="kw">let </span>font_face: <a href="#20-30">FontFace</a> = <span class="kw">unsafe </span>{
             <span class="kw">let </span>family = <a href="https://doc.rust-lang.org/nightly/alloc/ffi/c_str/struct.CString.html#method.new">CString::new</a>(<a href="#41">family</a>).<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>();
             <a href="#113-115">FontFace::from_raw_full</a>(<a href="../../../cairo_sys/fn.cairo_toy_font_face_create.html">ffi::cairo_toy_font_face_create</a>(
@@ -365,7 +365,7 @@
     </span><span class="attr">#[cfg(feature = <span class="string">"freetype"</span>)]
     #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"freetype"</span>)))]
     #[doc(alias = <span class="string">"cairo_ft_font_face_create_for_ft_face"</span>)]
-    </span><span class="kw">pub fn </span>create_from_ft(face: <span class="kw-2">&amp;</span>freetype::face::Face) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#20-30">FontFace</a>, <a href="../error.rs.html#9-104">Error</a>&gt; {
+    </span><span class="kw">pub fn </span>create_from_ft(face: <span class="kw-2">&amp;</span>freetype::face::Face) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="#20-30">FontFace</a>, <a href="../error.rs.html#9-104">Error</a>&gt; {
         <span class="comment">// Increase reference count of `FT_Face`.
         </span><span class="kw">let </span><span class="kw-2">mut </span>face = <a href="#64">face</a>.<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">clone</a>();
 
@@ -393,7 +393,7 @@
     </span><span class="kw">pub fn </span>create_from_ft_with_flags(
         face: <span class="kw-2">&amp;</span>freetype::face::Face,
         load_flags: libc::c_int,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#20-30">FontFace</a>, <a href="../error.rs.html#9-104">Error</a>&gt; {
+    ) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="#20-30">FontFace</a>, <a href="../error.rs.html#9-104">Error</a>&gt; {
         <span class="comment">// Increase reference count of `FT_Face`.
         </span><span class="kw">let </span><span class="kw-2">mut </span>face = <a href="#90">face</a>.<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">clone</a>();
 
@@ -451,7 +451,7 @@
     }
 
     <span class="attr">#[doc(alias = <span class="string">"cairo_toy_font_face_get_family"</span>)]
-    </span><span class="kw">pub fn </span>toy_get_family(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>&gt; {
+    </span><span class="kw">pub fn </span>toy_get_family(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>&gt; {
         <span class="kw">unsafe </span>{ <a href="#225-231">to_optional_string</a>(<a href="../../../cairo_sys/fn.cairo_toy_font_face_get_family.html">ffi::cairo_toy_font_face_get_family</a>(<a class="self" href="#150">self</a>.<a href="#139-141">to_raw_none</a>())) }
     }
 
@@ -497,7 +497,7 @@
     }
 
     <span class="attr">#[doc(alias = <span class="string">"cairo_font_face_status"</span>)]
-    </span><span class="kw">pub fn </span>status(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="../error.rs.html#9-104">Error</a>&gt; {
+    </span><span class="kw">pub fn </span>status(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(), <a href="../error.rs.html#9-104">Error</a>&gt; {
         <span class="kw">let </span>status = <span class="kw">unsafe </span>{ <a href="../../../cairo_sys/fn.cairo_font_face_status.html">ffi::cairo_font_face_status</a>(<a class="self" href="#196">self</a>.<a href="#139-141">to_raw_none</a>()) };
         <a href="../utils.rs.html#21-26">status_to_result</a>(<a href="#197">status</a>)
     }
@@ -526,7 +526,7 @@
     }
 }
 
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">unsafe fn </span>to_optional_string(str: <span class="kw-2">*const </span>libc::c_char) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>&gt; {
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">unsafe fn </span>to_optional_string(str: <span class="kw-2">*const </span>libc::c_char) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>&gt; {
     <span class="kw">if </span>str.is_null() {
         <span class="prelude-val">None
     </span>} <span class="kw">else </span>{

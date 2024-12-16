@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/io_stream.rs`."><title>io_stream.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-42caa33d.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.84.0-nightly (81eef2d36 2024-11-11)" data-channel="nightly" data-search-js="search-853ef39b.js" data-settings-js="settings-0f613d39.js" ><script src="../../static.files/storage-59e33391.js"></script><script defer src="../../static.files/src-script-56102188.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/io_stream.rs`."><title>io_stream.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-46132b98.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.85.0-nightly (c26db435b 2024-12-15)" data-channel="nightly" data-search-js="search-92e6798f.js" data-settings-js="settings-0f613d39.js" ><script src="../../static.files/storage-59e33391.js"></script><script defer src="../../static.files/src-script-56102188.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -179,17 +179,17 @@
 <span class="kw">use </span><a href="../../glib/prelude/index.html">glib::prelude</a>::<span class="kw-2">*</span>;
 
 <span class="kw">use crate</span>::{
-    <a href="lib.rs.html#121">prelude</a>::<span class="kw-2">*</span>, <a href="auto/io_stream.rs.html#13-94">IOStream</a>, <a href="pollable_input_stream.rs.html#193">InputStreamAsyncRead</a>, <a href="pollable_output_stream.rs.html#209-212">OutputStreamAsyncWrite</a>, <a href="auto/pollable_input_stream.rs.html#8-28">PollableInputStream</a>,
+    <a href="lib.rs.html#122">prelude</a>::<span class="kw-2">*</span>, <a href="auto/io_stream.rs.html#13-94">IOStream</a>, <a href="pollable_input_stream.rs.html#193">InputStreamAsyncRead</a>, <a href="pollable_output_stream.rs.html#209-212">OutputStreamAsyncWrite</a>, <a href="auto/pollable_input_stream.rs.html#8-28">PollableInputStream</a>,
     <a href="auto/pollable_output_stream.rs.html#8-28">PollableOutputStream</a>,
 };
 
 <span class="kw">mod </span>sealed {
     <span class="kw">pub trait </span>Sealed {}
-    <span class="kw">impl</span>&lt;T: <span class="kw">super</span>::IsA&lt;<a href="auto/io_stream.rs.html#13-94"><span class="kw">super</span>::IOStream</a>&gt;&gt; <a href="#15">Sealed</a> <span class="kw">for </span>T {}
+    <span class="kw">impl</span>&lt;T: <a href="../../glib/object/trait.IsA.html"><span class="kw">super</span>::IsA</a>&lt;<a href="auto/io_stream.rs.html#13-94"><span class="kw">super</span>::IOStream</a>&gt;&gt; <a href="#15">Sealed</a> <span class="kw">for </span>T {}
 }
 
-<span class="kw">pub trait </span><a href="../../gio/prelude/trait.IOStreamExtManual.html">IOStreamExtManual</a>: <a href="#15">sealed::Sealed</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sized.html">Sized</a> + IsA&lt;<a href="auto/io_stream.rs.html#13-94">IOStream</a>&gt; {
-    <span class="kw">fn </span>into_async_read_write(<span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;IOStreamAsyncReadWrite&lt;<span class="self">Self</span>&gt;, <span class="self">Self</span>&gt; {
+<span class="kw">pub trait </span><a href="../../gio/prelude/trait.IOStreamExtManual.html">IOStreamExtManual</a>: <a href="#15">sealed::Sealed</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sized.html">Sized</a> + <a href="../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="auto/io_stream.rs.html#13-94">IOStream</a>&gt; {
+    <span class="kw">fn </span>into_async_read_write(<span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="#49-53">IOStreamAsyncReadWrite</a>&lt;<span class="self">Self</span>&gt;, <span class="self">Self</span>&gt; {
         <span class="kw">let </span>write = <span class="self"><a href="#20">self</a>
             </span>.<a href="auto/io_stream.rs.html#285-291">output_stream</a>()
             .<a href="../../glib/object/trait.Cast.html#tymethod.dynamic_cast">dynamic_cast</a>::&lt;<a href="auto/pollable_output_stream.rs.html#8-28">PollableOutputStream</a>&gt;()
@@ -215,16 +215,16 @@
     }
 }
 
-<span class="kw">impl</span>&lt;O: IsA&lt;<a href="auto/io_stream.rs.html#13-94">IOStream</a>&gt;&gt; <a href="#19-44">IOStreamExtManual</a> <span class="kw">for </span>O {}
+<span class="kw">impl</span>&lt;O: <a href="../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="auto/io_stream.rs.html#13-94">IOStream</a>&gt;&gt; <a href="#19-44">IOStreamExtManual</a> <span class="kw">for </span>O {}
 
 <span class="attr">#[derive(Debug)]
 </span><span class="kw">pub struct </span><a href="../../gio/struct.IOStreamAsyncReadWrite.html">IOStreamAsyncReadWrite</a>&lt;T&gt; {
     io_stream: T,
-    read: InputStreamAsyncRead&lt;<a href="auto/pollable_input_stream.rs.html#8-28">PollableInputStream</a>&gt;,
-    write: OutputStreamAsyncWrite&lt;<a href="auto/pollable_output_stream.rs.html#8-28">PollableOutputStream</a>&gt;,
+    read: <a href="pollable_input_stream.rs.html#193">InputStreamAsyncRead</a>&lt;<a href="auto/pollable_input_stream.rs.html#8-28">PollableInputStream</a>&gt;,
+    write: <a href="pollable_output_stream.rs.html#209-212">OutputStreamAsyncWrite</a>&lt;<a href="auto/pollable_output_stream.rs.html#8-28">PollableOutputStream</a>&gt;,
 }
 
-<span class="kw">impl</span>&lt;T: IsA&lt;<a href="auto/io_stream.rs.html#13-94">IOStream</a>&gt;&gt; IOStreamAsyncReadWrite&lt;T&gt; {
+<span class="kw">impl</span>&lt;T: <a href="../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="auto/io_stream.rs.html#13-94">IOStream</a>&gt;&gt; <a href="#49-53">IOStreamAsyncReadWrite</a>&lt;T&gt; {
     <span class="kw">pub fn </span>input_stream(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><a href="auto/pollable_input_stream.rs.html#8-28">PollableInputStream</a> {
         <a class="self" href="#56">self</a>.read.<a href="pollable_input_stream.rs.html#200-202">input_stream</a>()
     }
@@ -242,30 +242,30 @@
     }
 }
 
-<span class="kw">impl</span>&lt;T: IsA&lt;<a href="auto/io_stream.rs.html#13-94">IOStream</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Unpin.html">std::marker::Unpin</a>&gt; AsyncRead <span class="kw">for </span>IOStreamAsyncReadWrite&lt;T&gt; {
+<span class="kw">impl</span>&lt;T: <a href="../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="auto/io_stream.rs.html#13-94">IOStream</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Unpin.html">std::marker::Unpin</a>&gt; AsyncRead <span class="kw">for </span><a href="#49-53">IOStreamAsyncReadWrite</a>&lt;T&gt; {
     <span class="kw">fn </span>poll_read(
-        <span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;,
-        cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">'_</span>&gt;,
+        <span class="self">self</span>: <a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html">Pin</a>&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;,
+        cx: <span class="kw-2">&amp;mut </span><a href="https://doc.rust-lang.org/nightly/core/task/wake/struct.Context.html">Context</a>&lt;<span class="lifetime">'_</span>&gt;,
         buf: <span class="kw-2">&amp;mut </span>[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>],
-    ) -&gt; Poll&lt;<span class="prelude-ty">Result</span>&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>, <a href="https://doc.rust-lang.org/nightly/std/io/error/struct.Error.html">io::Error</a>&gt;&gt; {
+    ) -&gt; <a href="https://doc.rust-lang.org/nightly/core/task/poll/enum.Poll.html">Poll</a>&lt;<a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>, <a href="https://doc.rust-lang.org/nightly/std/io/error/struct.Error.html">io::Error</a>&gt;&gt; {
         <a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html#method.new">Pin::new</a>(<span class="kw-2">&amp;mut </span><a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html#method.get_mut">Pin::get_mut</a>(<a class="self" href="#75">self</a>).read).poll_read(<a href="#76">cx</a>, <a href="#77">buf</a>)
     }
 }
 
-<span class="kw">impl</span>&lt;T: IsA&lt;<a href="auto/io_stream.rs.html#13-94">IOStream</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Unpin.html">std::marker::Unpin</a>&gt; AsyncWrite <span class="kw">for </span>IOStreamAsyncReadWrite&lt;T&gt; {
+<span class="kw">impl</span>&lt;T: <a href="../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="auto/io_stream.rs.html#13-94">IOStream</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Unpin.html">std::marker::Unpin</a>&gt; AsyncWrite <span class="kw">for </span><a href="#49-53">IOStreamAsyncReadWrite</a>&lt;T&gt; {
     <span class="kw">fn </span>poll_write(
-        <span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;,
-        cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">'_</span>&gt;,
+        <span class="self">self</span>: <a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html">Pin</a>&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;,
+        cx: <span class="kw-2">&amp;mut </span><a href="https://doc.rust-lang.org/nightly/core/task/wake/struct.Context.html">Context</a>&lt;<span class="lifetime">'_</span>&gt;,
         buf: <span class="kw-2">&amp;</span>[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>],
-    ) -&gt; Poll&lt;<span class="prelude-ty">Result</span>&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>, <a href="https://doc.rust-lang.org/nightly/std/io/error/struct.Error.html">io::Error</a>&gt;&gt; {
+    ) -&gt; <a href="https://doc.rust-lang.org/nightly/core/task/poll/enum.Poll.html">Poll</a>&lt;<a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>, <a href="https://doc.rust-lang.org/nightly/std/io/error/struct.Error.html">io::Error</a>&gt;&gt; {
         <a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html#method.new">Pin::new</a>(<span class="kw-2">&amp;mut </span><a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html#method.get_mut">Pin::get_mut</a>(<a class="self" href="#85">self</a>).write).poll_write(<a href="#86">cx</a>, <a href="#87">buf</a>)
     }
 
-    <span class="kw">fn </span>poll_flush(<span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;, cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">'_</span>&gt;) -&gt; Poll&lt;<span class="prelude-ty">Result</span>&lt;(), <a href="https://doc.rust-lang.org/nightly/std/io/error/struct.Error.html">io::Error</a>&gt;&gt; {
+    <span class="kw">fn </span>poll_flush(<span class="self">self</span>: <a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html">Pin</a>&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;, cx: <span class="kw-2">&amp;mut </span><a href="https://doc.rust-lang.org/nightly/core/task/wake/struct.Context.html">Context</a>&lt;<span class="lifetime">'_</span>&gt;) -&gt; <a href="https://doc.rust-lang.org/nightly/core/task/poll/enum.Poll.html">Poll</a>&lt;<a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(), <a href="https://doc.rust-lang.org/nightly/std/io/error/struct.Error.html">io::Error</a>&gt;&gt; {
         <a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html#method.new">Pin::new</a>(<span class="kw-2">&amp;mut </span><a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html#method.get_mut">Pin::get_mut</a>(<a class="self" href="#92">self</a>).write).poll_flush(<a href="#92">cx</a>)
     }
 
-    <span class="kw">fn </span>poll_close(<span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;, cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">'_</span>&gt;) -&gt; Poll&lt;<span class="prelude-ty">Result</span>&lt;(), <a href="https://doc.rust-lang.org/nightly/std/io/error/struct.Error.html">io::Error</a>&gt;&gt; {
+    <span class="kw">fn </span>poll_close(<span class="self">self</span>: <a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html">Pin</a>&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;, cx: <span class="kw-2">&amp;mut </span><a href="https://doc.rust-lang.org/nightly/core/task/wake/struct.Context.html">Context</a>&lt;<span class="lifetime">'_</span>&gt;) -&gt; <a href="https://doc.rust-lang.org/nightly/core/task/poll/enum.Poll.html">Poll</a>&lt;<a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(), <a href="https://doc.rust-lang.org/nightly/std/io/error/struct.Error.html">io::Error</a>&gt;&gt; {
         <a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html#method.new">Pin::new</a>(<span class="kw-2">&amp;mut </span><a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html#method.get_mut">Pin::get_mut</a>(<a class="self" href="#96">self</a>).write).poll_close(<a href="#96">cx</a>)
     }
 }

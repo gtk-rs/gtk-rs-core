@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/property.rs`."><title>property.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-42caa33d.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.84.0-nightly (81eef2d36 2024-11-11)" data-channel="nightly" data-search-js="search-853ef39b.js" data-settings-js="settings-0f613d39.js" ><script src="../../static.files/storage-59e33391.js"></script><script defer src="../../static.files/src-script-56102188.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/property.rs`."><title>property.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-46132b98.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.85.0-nightly (c26db435b 2024-12-15)" data-channel="nightly" data-search-js="search-92e6798f.js" data-settings-js="settings-0f613d39.js" ><script src="../../static.files/storage-59e33391.js"></script><script defer src="../../static.files/src-script-56102188.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -347,7 +347,7 @@
 <span class="kw">use </span><a href="https://doc.rust-lang.org/nightly/std/sync/mutex/struct.Mutex.html">std::sync::Mutex</a>;
 <span class="kw">use </span><a href="https://doc.rust-lang.org/nightly/std/sync/rwlock/struct.RwLock.html">std::sync::RwLock</a>;
 
-<span class="kw">use </span><a href="lib.rs.html#158"><span class="kw">crate</span>::prelude</a>::<span class="kw-2">*</span>;
+<span class="kw">use </span><a href="lib.rs.html#159"><span class="kw">crate</span>::prelude</a>::<span class="kw-2">*</span>;
 <span class="kw">use </span><a href="object.rs.html#1371-1374"><span class="kw">crate</span>::Object</a>;
 <span class="kw">use </span><a href="object.rs.html#3574"><span class="kw">crate</span>::SendWeakRef</a>;
 <span class="kw">use </span><a href="object.rs.html#3456"><span class="kw">crate</span>::WeakRef</a>;
@@ -358,51 +358,51 @@
 /// The definition is recursive, so you can nest many `Property`s together. The final `ParamSpec` will
 /// be the one of the innermost type
 </span><span class="kw">pub trait </span><a href="../../glib/property/trait.Property.html">Property</a> {
-    <span class="kw">type </span>Value: <a href="param_spec.rs.html#2167-2175">HasParamSpec</a>;
+    <span class="kw">type </span>Value: <a href="param_spec.rs.html#2381-2389">HasParamSpec</a>;
 }
-<span class="kw">impl</span>&lt;T: <a href="param_spec.rs.html#2167-2175">HasParamSpec</a>&gt; <a href="#22-24">Property</a> <span class="kw">for </span>T {
+<span class="kw">impl</span>&lt;T: <a href="param_spec.rs.html#2381-2389">HasParamSpec</a>&gt; <a href="#22-24">Property</a> <span class="kw">for </span>T {
     <span class="kw">type </span>Value = T;
 }
-<span class="kw">impl</span>&lt;T: <a href="#22-24">Property</a>&gt; <a href="#22-24">Property</a> <span class="kw">for </span>PhantomData&lt;T&gt; {
+<span class="kw">impl</span>&lt;T: <a href="#22-24">Property</a>&gt; <a href="#22-24">Property</a> <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">PhantomData</a>&lt;T&gt; {
     <span class="kw">type </span>Value = T::Value;
 }
-<span class="kw">impl</span>&lt;T: <a href="#22-24">Property</a>&gt; <a href="#22-24">Property</a> <span class="kw">for </span>RefCell&lt;T&gt; {
+<span class="kw">impl</span>&lt;T: <a href="#22-24">Property</a>&gt; <a href="#22-24">Property</a> <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/core/cell/struct.RefCell.html">RefCell</a>&lt;T&gt; {
     <span class="kw">type </span>Value = T::Value;
 }
-<span class="kw">impl</span>&lt;T: <a href="#22-24">Property</a>&gt; <a href="#22-24">Property</a> <span class="kw">for </span>Cell&lt;T&gt; {
+<span class="kw">impl</span>&lt;T: <a href="#22-24">Property</a>&gt; <a href="#22-24">Property</a> <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/core/cell/struct.Cell.html">Cell</a>&lt;T&gt; {
     <span class="kw">type </span>Value = T::Value;
 }
-<span class="kw">impl</span>&lt;T: <a href="#22-24">Property</a>&gt; <a href="#22-24">Property</a> <span class="kw">for </span>Mutex&lt;T&gt; {
+<span class="kw">impl</span>&lt;T: <a href="#22-24">Property</a>&gt; <a href="#22-24">Property</a> <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/std/sync/mutex/struct.Mutex.html">Mutex</a>&lt;T&gt; {
     <span class="kw">type </span>Value = T::Value;
 }
-<span class="kw">impl</span>&lt;T: <a href="#22-24">Property</a>&gt; <a href="#22-24">Property</a> <span class="kw">for </span>RwLock&lt;T&gt; {
+<span class="kw">impl</span>&lt;T: <a href="#22-24">Property</a>&gt; <a href="#22-24">Property</a> <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/std/sync/rwlock/struct.RwLock.html">RwLock</a>&lt;T&gt; {
     <span class="kw">type </span>Value = T::Value;
 }
-<span class="kw">impl</span>&lt;T: <a href="#22-24">Property</a>&gt; <a href="#22-24">Property</a> <span class="kw">for </span>std::cell::OnceCell&lt;T&gt; {
+<span class="kw">impl</span>&lt;T: <a href="#22-24">Property</a>&gt; <a href="#22-24">Property</a> <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/core/cell/once/struct.OnceCell.html">std::cell::OnceCell</a>&lt;T&gt; {
     <span class="kw">type </span>Value = T::Value;
 }
-<span class="kw">impl</span>&lt;T: <a href="#22-24">Property</a>&gt; <a href="#22-24">Property</a> <span class="kw">for </span>std::sync::OnceLock&lt;T&gt; {
+<span class="kw">impl</span>&lt;T: <a href="#22-24">Property</a>&gt; <a href="#22-24">Property</a> <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/std/sync/once_lock/struct.OnceLock.html">std::sync::OnceLock</a>&lt;T&gt; {
     <span class="kw">type </span>Value = T::Value;
 }
 <span class="comment">// Handle smart pointers transparently
-</span><span class="kw">impl</span>&lt;T: <a href="#22-24">Property</a>&gt; <a href="#22-24">Property</a> <span class="kw">for </span>Rc&lt;T&gt; {
+</span><span class="kw">impl</span>&lt;T: <a href="#22-24">Property</a>&gt; <a href="#22-24">Property</a> <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/alloc/rc/struct.Rc.html">Rc</a>&lt;T&gt; {
     <span class="kw">type </span>Value = T::Value;
 }
-<span class="kw">impl</span>&lt;T: <a href="#22-24">Property</a>&gt; <a href="#22-24">Property</a> <span class="kw">for </span>Arc&lt;T&gt; {
+<span class="kw">impl</span>&lt;T: <a href="#22-24">Property</a>&gt; <a href="#22-24">Property</a> <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/alloc/sync/struct.Arc.html">Arc</a>&lt;T&gt; {
     <span class="kw">type </span>Value = T::Value;
 }
-<span class="kw">impl</span>&lt;T: IsA&lt;<a href="object.rs.html#1371-1374">Object</a>&gt; + <a href="param_spec.rs.html#2167-2175">HasParamSpec</a>&gt; <a href="#22-24">Property</a> <span class="kw">for </span>WeakRef&lt;T&gt; {
-    <span class="kw">type </span>Value = <span class="prelude-ty">Option</span>&lt;T&gt;;
+<span class="kw">impl</span>&lt;T: <a href="object.rs.html#66-69">IsA</a>&lt;<a href="object.rs.html#1371-1374">Object</a>&gt; + <a href="param_spec.rs.html#2381-2389">HasParamSpec</a>&gt; <a href="#22-24">Property</a> <span class="kw">for </span><a href="object.rs.html#3456">WeakRef</a>&lt;T&gt; {
+    <span class="kw">type </span>Value = <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;T&gt;;
 }
-<span class="kw">impl</span>&lt;T: IsA&lt;<a href="object.rs.html#1371-1374">Object</a>&gt; + <a href="param_spec.rs.html#2167-2175">HasParamSpec</a>&gt; <a href="#22-24">Property</a> <span class="kw">for </span>SendWeakRef&lt;T&gt; {
-    <span class="kw">type </span>Value = <span class="prelude-ty">Option</span>&lt;T&gt;;
+<span class="kw">impl</span>&lt;T: <a href="object.rs.html#66-69">IsA</a>&lt;<a href="object.rs.html#1371-1374">Object</a>&gt; + <a href="param_spec.rs.html#2381-2389">HasParamSpec</a>&gt; <a href="#22-24">Property</a> <span class="kw">for </span><a href="object.rs.html#3574">SendWeakRef</a>&lt;T&gt; {
+    <span class="kw">type </span>Value = <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;T&gt;;
 }
 
 <span class="comment">// rustdoc-stripper-ignore-next
 </span><span class="doccomment">/// A container type implementing this trait can be read by the default getter generated by the [`Properties`](crate::Properties) macro.
 </span><span class="kw">pub trait </span><a href="../../glib/property/trait.PropertyGet.html">PropertyGet</a> {
     <span class="kw">type </span>Value;
-    <span class="kw">fn </span>get&lt;R, F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>::Value) -&gt; R&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; R;
+    <span class="kw">fn </span>get&lt;R, F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><span class="self">Self</span>::Value) -&gt; R&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; R;
 }
 
 <span class="comment">// rustdoc-stripper-ignore-next
@@ -411,7 +411,7 @@
 /// by doing `${Self::Value}.member`
 </span><span class="kw">pub trait </span><a href="../../glib/property/trait.PropertySetNested.html">PropertySetNested</a> {
     <span class="kw">type </span>SetNestedValue;
-    <span class="kw">fn </span>set_nested&lt;F: FnOnce(<span class="kw-2">&amp;mut </span><span class="self">Self</span>::SetNestedValue)&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F);
+    <span class="kw">fn </span>set_nested&lt;F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>(<span class="kw-2">&amp;mut </span><span class="self">Self</span>::SetNestedValue)&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F);
 }
 
 <span class="comment">// rustdoc-stripper-ignore-next
@@ -427,77 +427,77 @@
     }
 }
 
-<span class="kw">impl</span>&lt;T: <a href="param_spec.rs.html#2167-2175">HasParamSpec</a>&gt; <a href="#65-68">PropertyGet</a> <span class="kw">for </span>T {
+<span class="kw">impl</span>&lt;T: <a href="param_spec.rs.html#2381-2389">HasParamSpec</a>&gt; <a href="#65-68">PropertyGet</a> <span class="kw">for </span>T {
     <span class="kw">type </span>Value = T;
-    <span class="kw">fn </span>get&lt;R, F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>::Value) -&gt; R&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; R {
+    <span class="kw">fn </span>get&lt;R, F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><span class="self">Self</span>::Value) -&gt; R&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; R {
         <a href="#94">f</a>(<a class="self" href="#94">self</a>)
     }
 }
 
-<span class="kw">impl</span>&lt;T: <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Copy.html">Copy</a>&gt; <a href="#65-68">PropertyGet</a> <span class="kw">for </span>Cell&lt;T&gt; {
+<span class="kw">impl</span>&lt;T: <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Copy.html">Copy</a>&gt; <a href="#65-68">PropertyGet</a> <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/core/cell/struct.Cell.html">Cell</a>&lt;T&gt; {
     <span class="kw">type </span>Value = T;
-    <span class="kw">fn </span>get&lt;R, F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>::Value) -&gt; R&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; R {
+    <span class="kw">fn </span>get&lt;R, F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><span class="self">Self</span>::Value) -&gt; R&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; R {
         <a href="#101">f</a>(<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/core/cell/struct.Cell.html#method.get">Cell::get</a>(<a class="self" href="#101">self</a>))
     }
 }
-<span class="kw">impl</span>&lt;T&gt; <a href="#81-84">PropertySet</a> <span class="kw">for </span>Cell&lt;T&gt; {
+<span class="kw">impl</span>&lt;T&gt; <a href="#81-84">PropertySet</a> <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/core/cell/struct.Cell.html">Cell</a>&lt;T&gt; {
     <span class="kw">type </span>SetValue = T;
     <span class="kw">fn </span>set(<span class="kw-2">&amp;</span><span class="self">self</span>, v: <span class="self">Self</span>::SetValue) {
         <a class="self" href="#107">self</a>.<a href="https://doc.rust-lang.org/nightly/core/cell/struct.Cell.html#method.set">set</a>(<a href="#107">v</a>);
     }
 }
-<span class="kw">impl</span>&lt;T&gt; <a href="#65-68">PropertyGet</a> <span class="kw">for </span>RefCell&lt;T&gt; {
+<span class="kw">impl</span>&lt;T&gt; <a href="#65-68">PropertyGet</a> <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/core/cell/struct.RefCell.html">RefCell</a>&lt;T&gt; {
     <span class="kw">type </span>Value = T;
-    <span class="kw">fn </span>get&lt;R, F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>::Value) -&gt; R&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; R {
+    <span class="kw">fn </span>get&lt;R, F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><span class="self">Self</span>::Value) -&gt; R&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; R {
         <a href="#113">f</a>(<span class="kw-2">&amp;</span><a class="self" href="#113">self</a>.<a href="https://doc.rust-lang.org/nightly/core/cell/struct.RefCell.html#method.borrow">borrow</a>())
     }
 }
-<span class="kw">impl</span>&lt;T&gt; <a href="#74-77">PropertySetNested</a> <span class="kw">for </span>RefCell&lt;T&gt; {
+<span class="kw">impl</span>&lt;T&gt; <a href="#74-77">PropertySetNested</a> <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/core/cell/struct.RefCell.html">RefCell</a>&lt;T&gt; {
     <span class="kw">type </span>SetNestedValue = T;
-    <span class="kw">fn </span>set_nested&lt;F: FnOnce(<span class="kw-2">&amp;mut </span><span class="self">Self</span>::SetNestedValue)&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) {
+    <span class="kw">fn </span>set_nested&lt;F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>(<span class="kw-2">&amp;mut </span><span class="self">Self</span>::SetNestedValue)&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) {
         <a href="#119">f</a>(<span class="kw-2">&amp;mut </span><a class="self" href="#119">self</a>.<a href="https://doc.rust-lang.org/nightly/core/cell/struct.RefCell.html#method.borrow_mut">borrow_mut</a>());
     }
 }
 
-<span class="kw">impl</span>&lt;T&gt; <a href="#65-68">PropertyGet</a> <span class="kw">for </span>Mutex&lt;T&gt; {
+<span class="kw">impl</span>&lt;T&gt; <a href="#65-68">PropertyGet</a> <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/std/sync/mutex/struct.Mutex.html">Mutex</a>&lt;T&gt; {
     <span class="kw">type </span>Value = T;
-    <span class="kw">fn </span>get&lt;R, F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>::Value) -&gt; R&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; R {
+    <span class="kw">fn </span>get&lt;R, F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><span class="self">Self</span>::Value) -&gt; R&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; R {
         <a href="#126">f</a>(<span class="kw-2">&amp;</span><a class="self" href="#126">self</a>.<a href="https://doc.rust-lang.org/nightly/std/sync/mutex/struct.Mutex.html#method.lock">lock</a>().<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>())
     }
 }
-<span class="kw">impl</span>&lt;T&gt; <a href="#74-77">PropertySetNested</a> <span class="kw">for </span>Mutex&lt;T&gt; {
+<span class="kw">impl</span>&lt;T&gt; <a href="#74-77">PropertySetNested</a> <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/std/sync/mutex/struct.Mutex.html">Mutex</a>&lt;T&gt; {
     <span class="kw">type </span>SetNestedValue = T;
-    <span class="kw">fn </span>set_nested&lt;F: FnOnce(<span class="kw-2">&amp;mut </span><span class="self">Self</span>::SetNestedValue)&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) {
+    <span class="kw">fn </span>set_nested&lt;F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>(<span class="kw-2">&amp;mut </span><span class="self">Self</span>::SetNestedValue)&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) {
         <a href="#132">f</a>(<span class="kw-2">&amp;mut </span><a class="self" href="#132">self</a>.<a href="https://doc.rust-lang.org/nightly/std/sync/mutex/struct.Mutex.html#method.lock">lock</a>().<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>());
     }
 }
 
-<span class="kw">impl</span>&lt;T&gt; <a href="#65-68">PropertyGet</a> <span class="kw">for </span>RwLock&lt;T&gt; {
+<span class="kw">impl</span>&lt;T&gt; <a href="#65-68">PropertyGet</a> <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/std/sync/rwlock/struct.RwLock.html">RwLock</a>&lt;T&gt; {
     <span class="kw">type </span>Value = T;
-    <span class="kw">fn </span>get&lt;R, F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>::Value) -&gt; R&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; R {
+    <span class="kw">fn </span>get&lt;R, F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><span class="self">Self</span>::Value) -&gt; R&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; R {
         <a href="#139">f</a>(<span class="kw-2">&amp;</span><a class="self" href="#139">self</a>.<a href="https://doc.rust-lang.org/nightly/std/sync/rwlock/struct.RwLock.html#method.read">read</a>().<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>())
     }
 }
-<span class="kw">impl</span>&lt;T&gt; <a href="#74-77">PropertySetNested</a> <span class="kw">for </span>RwLock&lt;T&gt; {
+<span class="kw">impl</span>&lt;T&gt; <a href="#74-77">PropertySetNested</a> <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/std/sync/rwlock/struct.RwLock.html">RwLock</a>&lt;T&gt; {
     <span class="kw">type </span>SetNestedValue = T;
-    <span class="kw">fn </span>set_nested&lt;F: FnOnce(<span class="kw-2">&amp;mut </span><span class="self">Self</span>::SetNestedValue)&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) {
+    <span class="kw">fn </span>set_nested&lt;F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>(<span class="kw-2">&amp;mut </span><span class="self">Self</span>::SetNestedValue)&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) {
         <a href="#145">f</a>(<span class="kw-2">&amp;mut </span><a class="self" href="#145">self</a>.<a href="https://doc.rust-lang.org/nightly/std/sync/rwlock/struct.RwLock.html#method.write">write</a>().<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>());
     }
 }
 
-<span class="kw">impl</span>&lt;T&gt; <a href="#65-68">PropertyGet</a> <span class="kw">for </span>std::cell::OnceCell&lt;T&gt; {
+<span class="kw">impl</span>&lt;T&gt; <a href="#65-68">PropertyGet</a> <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/core/cell/once/struct.OnceCell.html">std::cell::OnceCell</a>&lt;T&gt; {
     <span class="kw">type </span>Value = T;
-    <span class="kw">fn </span>get&lt;R, F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>::Value) -&gt; R&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; R {
+    <span class="kw">fn </span>get&lt;R, F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><span class="self">Self</span>::Value) -&gt; R&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; R {
         <a href="#152">f</a>(<a class="self" href="#152">self</a>.<a href="https://doc.rust-lang.org/nightly/core/cell/once/struct.OnceCell.html#method.get">get</a>().<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap">unwrap</a>())
     }
 }
-<span class="kw">impl</span>&lt;T&gt; <a href="#65-68">PropertyGet</a> <span class="kw">for </span>std::sync::OnceLock&lt;T&gt; {
+<span class="kw">impl</span>&lt;T&gt; <a href="#65-68">PropertyGet</a> <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/std/sync/once_lock/struct.OnceLock.html">std::sync::OnceLock</a>&lt;T&gt; {
     <span class="kw">type </span>Value = T;
-    <span class="kw">fn </span>get&lt;R, F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>::Value) -&gt; R&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; R {
+    <span class="kw">fn </span>get&lt;R, F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><span class="self">Self</span>::Value) -&gt; R&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; R {
         <a href="#158">f</a>(<a class="self" href="#158">self</a>.<a href="https://doc.rust-lang.org/nightly/std/sync/once_lock/struct.OnceLock.html#method.get">get</a>().<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap">unwrap</a>())
     }
 }
-<span class="kw">impl</span>&lt;T&gt; <a href="#81-84">PropertySet</a> <span class="kw">for </span>std::cell::OnceCell&lt;T&gt; {
+<span class="kw">impl</span>&lt;T&gt; <a href="#81-84">PropertySet</a> <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/core/cell/once/struct.OnceCell.html">std::cell::OnceCell</a>&lt;T&gt; {
     <span class="kw">type </span>SetValue = T;
     <span class="kw">fn </span>set(<span class="kw-2">&amp;</span><span class="self">self</span>, v: <span class="self">Self</span>::SetValue) {
         <span class="comment">// I can't use `unwrap` because I would have to add a `Debug` bound to _v
@@ -506,7 +506,7 @@
         };
     }
 }
-<span class="kw">impl</span>&lt;T&gt; <a href="#81-84">PropertySet</a> <span class="kw">for </span>std::sync::OnceLock&lt;T&gt; {
+<span class="kw">impl</span>&lt;T&gt; <a href="#81-84">PropertySet</a> <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/std/sync/once_lock/struct.OnceLock.html">std::sync::OnceLock</a>&lt;T&gt; {
     <span class="kw">type </span>SetValue = T;
     <span class="kw">fn </span>set(<span class="kw-2">&amp;</span><span class="self">self</span>, v: <span class="self">Self</span>::SetValue) {
         <span class="comment">// I can't use `unwrap` because I would have to add a `Debug` bound to _v
@@ -516,29 +516,29 @@
     }
 }
 
-<span class="kw">impl</span>&lt;T: IsA&lt;<a href="object.rs.html#1371-1374">Object</a>&gt;&gt; <a href="#65-68">PropertyGet</a> <span class="kw">for </span>WeakRef&lt;T&gt; {
-    <span class="kw">type </span>Value = <span class="prelude-ty">Option</span>&lt;T&gt;;
+<span class="kw">impl</span>&lt;T: <a href="object.rs.html#66-69">IsA</a>&lt;<a href="object.rs.html#1371-1374">Object</a>&gt;&gt; <a href="#65-68">PropertyGet</a> <span class="kw">for </span><a href="object.rs.html#3456">WeakRef</a>&lt;T&gt; {
+    <span class="kw">type </span>Value = <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;T&gt;;
 
-    <span class="kw">fn </span>get&lt;R, F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>::Value) -&gt; R&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; R {
+    <span class="kw">fn </span>get&lt;R, F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><span class="self">Self</span>::Value) -&gt; R&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; R {
         <a href="#184">f</a>(<span class="kw-2">&amp;</span><a class="self" href="#184">self</a>.<a href="object.rs.html#3496-3506">upgrade</a>())
     }
 }
-<span class="kw">impl</span>&lt;T: IsA&lt;<a href="object.rs.html#1371-1374">Object</a>&gt;&gt; <a href="#81-84">PropertySet</a> <span class="kw">for </span>WeakRef&lt;T&gt; {
-    <span class="kw">type </span>SetValue = <span class="prelude-ty">Option</span>&lt;T&gt;;
+<span class="kw">impl</span>&lt;T: <a href="object.rs.html#66-69">IsA</a>&lt;<a href="object.rs.html#1371-1374">Object</a>&gt;&gt; <a href="#81-84">PropertySet</a> <span class="kw">for </span><a href="object.rs.html#3456">WeakRef</a>&lt;T&gt; {
+    <span class="kw">type </span>SetValue = <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;T&gt;;
 
     <span class="kw">fn </span>set(<span class="kw-2">&amp;</span><span class="self">self</span>, v: <span class="self">Self</span>::SetValue) {
         <a class="self" href="#191">self</a>.<a href="object.rs.html#3479-3488">set</a>(<a href="#191">v</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_ref">as_ref</a>())
     }
 }
-<span class="kw">impl</span>&lt;T: IsA&lt;<a href="object.rs.html#1371-1374">Object</a>&gt;&gt; <a href="#65-68">PropertyGet</a> <span class="kw">for </span>SendWeakRef&lt;T&gt; {
-    <span class="kw">type </span>Value = <span class="prelude-ty">Option</span>&lt;T&gt;;
+<span class="kw">impl</span>&lt;T: <a href="object.rs.html#66-69">IsA</a>&lt;<a href="object.rs.html#1371-1374">Object</a>&gt;&gt; <a href="#65-68">PropertyGet</a> <span class="kw">for </span><a href="object.rs.html#3574">SendWeakRef</a>&lt;T&gt; {
+    <span class="kw">type </span>Value = <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;T&gt;;
 
-    <span class="kw">fn </span>get&lt;R, F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>::Value) -&gt; R&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; R {
+    <span class="kw">fn </span>get&lt;R, F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><span class="self">Self</span>::Value) -&gt; R&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; R {
         <a href="#198">f</a>(<span class="kw-2">&amp;</span><a class="self" href="#198">self</a>.<a href="object.rs.html#3496-3506">upgrade</a>())
     }
 }
-<span class="kw">impl</span>&lt;T: IsA&lt;<a href="object.rs.html#1371-1374">Object</a>&gt;&gt; <a href="#81-84">PropertySet</a> <span class="kw">for </span>SendWeakRef&lt;T&gt; {
-    <span class="kw">type </span>SetValue = <span class="prelude-ty">Option</span>&lt;T&gt;;
+<span class="kw">impl</span>&lt;T: <a href="object.rs.html#66-69">IsA</a>&lt;<a href="object.rs.html#1371-1374">Object</a>&gt;&gt; <a href="#81-84">PropertySet</a> <span class="kw">for </span><a href="object.rs.html#3574">SendWeakRef</a>&lt;T&gt; {
+    <span class="kw">type </span>SetValue = <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;T&gt;;
 
     <span class="kw">fn </span>set(<span class="kw-2">&amp;</span><span class="self">self</span>, v: <span class="self">Self</span>::SetValue) {
         <a href="object.rs.html#3479-3488">WeakRef::set</a>(<a class="self" href="#205">self</a>, <a href="#205">v</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_ref">as_ref</a>());
@@ -546,28 +546,28 @@
 }
 
 <span class="comment">// Smart pointers wrapping a `PropertyRead`/`PropertyWrite`
-</span><span class="kw">impl</span>&lt;T: <a href="#65-68">PropertyGet</a>&gt; <a href="#65-68">PropertyGet</a> <span class="kw">for </span>Rc&lt;T&gt; {
+</span><span class="kw">impl</span>&lt;T: <a href="#65-68">PropertyGet</a>&gt; <a href="#65-68">PropertyGet</a> <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/alloc/rc/struct.Rc.html">Rc</a>&lt;T&gt; {
     <span class="kw">type </span>Value = T::Value;
-    <span class="kw">fn </span>get&lt;R, F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>::Value) -&gt; R&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; R {
+    <span class="kw">fn </span>get&lt;R, F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><span class="self">Self</span>::Value) -&gt; R&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; R {
         (<span class="kw-2">**</span><a class="self" href="#213">self</a>).<a href="#67">get</a>(<a href="#213">f</a>)
     }
 }
-<span class="kw">impl</span>&lt;T: <a href="#74-77">PropertySetNested</a>&gt; <a href="#74-77">PropertySetNested</a> <span class="kw">for </span>Rc&lt;T&gt; {
+<span class="kw">impl</span>&lt;T: <a href="#74-77">PropertySetNested</a>&gt; <a href="#74-77">PropertySetNested</a> <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/alloc/rc/struct.Rc.html">Rc</a>&lt;T&gt; {
     <span class="kw">type </span>SetNestedValue = T::SetNestedValue;
-    <span class="kw">fn </span>set_nested&lt;F: FnOnce(<span class="kw-2">&amp;mut </span><span class="self">Self</span>::SetNestedValue)&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) {
+    <span class="kw">fn </span>set_nested&lt;F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>(<span class="kw-2">&amp;mut </span><span class="self">Self</span>::SetNestedValue)&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) {
         (<span class="kw-2">**</span><a class="self" href="#219">self</a>).<a href="#76">set_nested</a>(<a href="#219">f</a>)
     }
 }
 
-<span class="kw">impl</span>&lt;T: <a href="#65-68">PropertyGet</a>&gt; <a href="#65-68">PropertyGet</a> <span class="kw">for </span>Arc&lt;T&gt; {
+<span class="kw">impl</span>&lt;T: <a href="#65-68">PropertyGet</a>&gt; <a href="#65-68">PropertyGet</a> <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/alloc/sync/struct.Arc.html">Arc</a>&lt;T&gt; {
     <span class="kw">type </span>Value = T::Value;
-    <span class="kw">fn </span>get&lt;R, F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>::Value) -&gt; R&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; R {
+    <span class="kw">fn </span>get&lt;R, F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><span class="self">Self</span>::Value) -&gt; R&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; R {
         (<span class="kw-2">**</span><a class="self" href="#226">self</a>).<a href="#67">get</a>(<a href="#226">f</a>)
     }
 }
-<span class="kw">impl</span>&lt;T: <a href="#74-77">PropertySetNested</a>&gt; <a href="#74-77">PropertySetNested</a> <span class="kw">for </span>Arc&lt;T&gt; {
+<span class="kw">impl</span>&lt;T: <a href="#74-77">PropertySetNested</a>&gt; <a href="#74-77">PropertySetNested</a> <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/alloc/sync/struct.Arc.html">Arc</a>&lt;T&gt; {
     <span class="kw">type </span>SetNestedValue = T::SetNestedValue;
-    <span class="kw">fn </span>set_nested&lt;F: FnOnce(<span class="kw-2">&amp;mut </span><span class="self">Self</span>::SetNestedValue)&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) {
+    <span class="kw">fn </span>set_nested&lt;F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>(<span class="kw-2">&amp;mut </span><span class="self">Self</span>::SetNestedValue)&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) {
         (<span class="kw-2">**</span><a class="self" href="#232">self</a>).<a href="#76">set_nested</a>(<a href="#232">f</a>)
     }
 }

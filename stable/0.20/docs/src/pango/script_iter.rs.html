@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `pango/src/script_iter.rs`."><title>script_iter.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-42caa33d.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="pango" data-themes="" data-resource-suffix="" data-rustdoc-version="1.84.0-nightly (81eef2d36 2024-11-11)" data-channel="nightly" data-search-js="search-853ef39b.js" data-settings-js="settings-0f613d39.js" ><script src="../../static.files/storage-59e33391.js"></script><script defer src="../../static.files/src-script-56102188.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `pango/src/script_iter.rs`."><title>script_iter.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-46132b98.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="pango" data-themes="" data-resource-suffix="" data-rustdoc-version="1.85.0-nightly (c26db435b 2024-12-15)" data-channel="nightly" data-search-js="search-92e6798f.js" data-settings-js="settings-0f613d39.js" ><script src="../../static.files/storage-59e33391.js"></script><script defer src="../../static.files/src-script-56102188.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -258,13 +258,13 @@
 /// and identify ranges in different scripts.
 </span><span class="attr">#[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
 </span><span class="kw">pub struct </span><a href="../../pango/struct.ScriptIter.html">ScriptIter</a>&lt;<span class="lifetime">'text</span>&gt; {
-    ptr: ptr::NonNull&lt;<a href="../../pango_sys/struct.PangoScriptIter.html">ffi::PangoScriptIter</a>&gt;,
-    text: PhantomData&lt;<span class="kw-2">&amp;</span><span class="lifetime">'text </span><a href="../../glib/gstring/struct.GStr.html">GStr</a>&gt;,
+    ptr: <a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html">ptr::NonNull</a>&lt;<a href="../../pango_sys/struct.PangoScriptIter.html">ffi::PangoScriptIter</a>&gt;,
+    text: <a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">PhantomData</a>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'text </span><a href="../../glib/gstring/struct.GStr.html">GStr</a>&gt;,
 }
 
 <span class="attr">#[cfg(feature = <span class="string">"v1_44"</span>)]
 #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"v1_44"</span>)))]
-</span><span class="kw">impl</span>&lt;<span class="lifetime">'text</span>&gt; <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">Clone</a> <span class="kw">for </span>ScriptIter&lt;<span class="lifetime">'text</span>&gt; {
+</span><span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">Clone</a> <span class="kw">for </span><a href="#12-15">ScriptIter</a>&lt;<span class="lifetime">'_</span>&gt; {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>clone(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self </span>{
         <span class="kw">let </span>ptr = <span class="kw">unsafe </span>{
@@ -280,7 +280,7 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">'text</span>&gt; <a href="https://doc.rust-lang.org/nightly/core/ops/drop/trait.Drop.html">Drop</a> <span class="kw">for </span>ScriptIter&lt;<span class="lifetime">'text</span>&gt; {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/ops/drop/trait.Drop.html">Drop</a> <span class="kw">for </span><a href="#12-15">ScriptIter</a>&lt;<span class="lifetime">'_</span>&gt; {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
         <span class="kw">unsafe </span>{
@@ -291,16 +291,16 @@
 
 <span class="attr">#[cfg(feature = <span class="string">"v1_44"</span>)]
 #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"v1_44"</span>)))]
-</span><span class="kw">impl</span>&lt;<span class="lifetime">'text</span>&gt; <a href="../../glib/types/trait.StaticType.html">glib::prelude::StaticType</a> <span class="kw">for </span>ScriptIter&lt;<span class="lifetime">'text</span>&gt; {
+</span><span class="kw">impl </span><a href="../../glib/types/trait.StaticType.html">glib::prelude::StaticType</a> <span class="kw">for </span><a href="#12-15">ScriptIter</a>&lt;<span class="lifetime">'_</span>&gt; {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>static_type() -&gt; <a href="../../glib/types/struct.Type.html">glib::Type</a> {
         <span class="kw">unsafe </span>{ <a href="../../glib/translate/fn.from_glib.html">from_glib</a>(<a href="../../pango_sys/fn.pango_script_iter_get_type.html">ffi::pango_script_iter_get_type</a>()) }
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">'text</span>&gt; ScriptIter&lt;<span class="lifetime">'text</span>&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'text</span>&gt; <a href="#12-15">ScriptIter</a>&lt;<span class="lifetime">'text</span>&gt; {
     <span class="attr">#[doc(alias = <span class="string">"pango_script_iter_new"</span>)]
-    </span><span class="kw">pub fn </span>new(text: <span class="kw">impl </span>AsRef&lt;<a href="../../glib/gstring/struct.GStr.html">GStr</a>&gt; + <span class="lifetime">'text</span>) -&gt; <span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>new(text: <span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">AsRef</a>&lt;<a href="../../glib/gstring/struct.GStr.html">GStr</a>&gt; + <span class="lifetime">'text</span>) -&gt; <span class="self">Self </span>{
         <span class="kw">let </span>text = <a href="#55">text</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>();
         <span class="kw">let </span>length = <a href="#56">text</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.str.html#method.len">len</a>() <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>;
         <span class="kw">unsafe </span>{ <a href="../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="../../pango_sys/fn.pango_script_iter_new.html">ffi::pango_script_iter_new</a>(<a href="#56">text</a>.<a href="../../glib/gstring/struct.GStr.html#method.as_ptr">as_ptr</a>(), <a href="#57">length</a>)) }
@@ -334,9 +334,9 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">'text</span>&gt; <a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.IntoIterator.html">IntoIterator</a> <span class="kw">for </span>ScriptIter&lt;<span class="lifetime">'text</span>&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'text</span>&gt; <a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.IntoIterator.html">IntoIterator</a> <span class="kw">for </span><a href="#12-15">ScriptIter</a>&lt;<span class="lifetime">'text</span>&gt; {
     <span class="kw">type </span>Item = (<span class="kw-2">&amp;</span><span class="lifetime">'text </span><a href="../../glib/gstring/struct.GStr.html">GStr</a>, <span class="kw-2">&amp;</span><span class="lifetime">'text </span><a href="../../glib/gstring/struct.GStr.html">GStr</a>, <a href="auto/enums.rs.html#1775-2133">Script</a>);
-    <span class="kw">type </span>IntoIter = ScriptIntoIter&lt;<span class="lifetime">'text</span>&gt;;
+    <span class="kw">type </span>IntoIter = <a href="#101">ScriptIntoIter</a>&lt;<span class="lifetime">'text</span>&gt;;
 
     <span class="kw">fn </span>into_iter(<span class="self">self</span>) -&gt; <span class="self">Self</span>::IntoIter {
         <a href="#101">ScriptIntoIter</a>(<span class="prelude-val">Some</span>(<a class="self" href="#93">self</a>))
@@ -346,12 +346,12 @@
 <span class="attr">#[cfg_attr(feature = <span class="string">"v1_44"</span>, derive(Clone))]
 #[derive(Debug)]
 #[repr(transparent)]
-</span><span class="kw">pub struct </span><a href="../../pango/struct.ScriptIntoIter.html">ScriptIntoIter</a>&lt;<span class="lifetime">'text</span>&gt;(<span class="prelude-ty">Option</span>&lt;ScriptIter&lt;<span class="lifetime">'text</span>&gt;&gt;);
+</span><span class="kw">pub struct </span><a href="../../pango/struct.ScriptIntoIter.html">ScriptIntoIter</a>&lt;<span class="lifetime">'text</span>&gt;(<a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="#12-15">ScriptIter</a>&lt;<span class="lifetime">'text</span>&gt;&gt;);
 
-<span class="kw">impl</span>&lt;<span class="lifetime">'text</span>&gt; <a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html">Iterator</a> <span class="kw">for </span>ScriptIntoIter&lt;<span class="lifetime">'text</span>&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'text</span>&gt; <a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html">Iterator</a> <span class="kw">for </span><a href="#101">ScriptIntoIter</a>&lt;<span class="lifetime">'text</span>&gt; {
     <span class="kw">type </span>Item = (<span class="kw-2">&amp;</span><span class="lifetime">'text </span><a href="../../glib/gstring/struct.GStr.html">GStr</a>, <span class="kw-2">&amp;</span><span class="lifetime">'text </span><a href="../../glib/gstring/struct.GStr.html">GStr</a>, <a href="auto/enums.rs.html#1775-2133">Script</a>);
 
-    <span class="kw">fn </span>next(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>::Item&gt; {
+    <span class="kw">fn </span>next(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="self">Self</span>::Item&gt; {
         <span class="kw">if let </span><span class="prelude-val">Some</span>(iter) = <span class="kw-2">&amp;mut </span><a class="self" href="#106">self</a>.<span class="number">0 </span>{
             <span class="kw">let </span>attrs = <a href="#107">iter</a>.<a href="#63-80">range</a>();
             <span class="kw">if </span>!iter.next_range() {
@@ -364,34 +364,34 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">'text</span>&gt; <a href="https://doc.rust-lang.org/nightly/core/iter/traits/marker/trait.FusedIterator.html">std::iter::FusedIterator</a> <span class="kw">for </span>ScriptIntoIter&lt;<span class="lifetime">'text</span>&gt; {}
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/iter/traits/marker/trait.FusedIterator.html">std::iter::FusedIterator</a> <span class="kw">for </span><a href="#101">ScriptIntoIter</a>&lt;<span class="lifetime">'_</span>&gt; {}
 
 <span class="attr">#[doc(hidden)]
-</span><span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, <span class="lifetime">'text</span>&gt; ToGlibPtr&lt;<span class="lifetime">'a</span>, <span class="kw-2">*const </span><a href="../../pango_sys/struct.PangoScriptIter.html">ffi::PangoScriptIter</a>&gt; <span class="kw">for </span>ScriptIter&lt;<span class="lifetime">'text</span>&gt;
+</span><span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, <span class="lifetime">'text</span>&gt; <a href="../../glib/translate/trait.ToGlibPtr.html">ToGlibPtr</a>&lt;<span class="lifetime">'a</span>, <span class="kw-2">*const </span><a href="../../pango_sys/struct.PangoScriptIter.html">ffi::PangoScriptIter</a>&gt; <span class="kw">for </span><a href="#12-15">ScriptIter</a>&lt;<span class="lifetime">'text</span>&gt;
 <span class="kw">where
     </span><span class="lifetime">'text</span>: <span class="lifetime">'a</span>,
 {
-    <span class="kw">type </span>Storage = PhantomData&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="self">Self</span>&gt;;
+    <span class="kw">type </span>Storage = <a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">PhantomData</a>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="self">Self</span>&gt;;
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>to_glib_none(<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="self">self</span>) -&gt; Stash&lt;<span class="lifetime">'a</span>, <span class="kw-2">*const </span><a href="../../pango_sys/struct.PangoScriptIter.html">ffi::PangoScriptIter</a>, <span class="self">Self</span>&gt; {
+    </span><span class="kw">fn </span>to_glib_none(<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="self">self</span>) -&gt; <a href="../../glib/translate/struct.Stash.html">Stash</a>&lt;<span class="lifetime">'a</span>, <span class="kw-2">*const </span><a href="../../pango_sys/struct.PangoScriptIter.html">ffi::PangoScriptIter</a>, <span class="self">Self</span>&gt; {
         <a href="../../glib/translate/struct.Stash.html">Stash</a>(<a class="self" href="#128">self</a>.ptr.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>, <a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">PhantomData</a>)
     }
 }
 
 <span class="attr">#[doc(hidden)]
-</span><span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, <span class="lifetime">'text</span>&gt; ToGlibPtrMut&lt;<span class="lifetime">'a</span>, <span class="kw-2">*mut </span><a href="../../pango_sys/struct.PangoScriptIter.html">ffi::PangoScriptIter</a>&gt; <span class="kw">for </span>ScriptIter&lt;<span class="lifetime">'text</span>&gt;
+</span><span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, <span class="lifetime">'text</span>&gt; <a href="../../glib/translate/trait.ToGlibPtrMut.html">ToGlibPtrMut</a>&lt;<span class="lifetime">'a</span>, <span class="kw-2">*mut </span><a href="../../pango_sys/struct.PangoScriptIter.html">ffi::PangoScriptIter</a>&gt; <span class="kw">for </span><a href="#12-15">ScriptIter</a>&lt;<span class="lifetime">'text</span>&gt;
 <span class="kw">where
     </span><span class="lifetime">'text</span>: <span class="lifetime">'a</span>,
 {
-    <span class="kw">type </span>Storage = PhantomData&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span><span class="self">Self</span>&gt;;
+    <span class="kw">type </span>Storage = <a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">PhantomData</a>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span><span class="self">Self</span>&gt;;
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>to_glib_none_mut(<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span><span class="self">self</span>) -&gt; StashMut&lt;<span class="lifetime">'a</span>, <span class="kw-2">*mut </span><a href="../../pango_sys/struct.PangoScriptIter.html">ffi::PangoScriptIter</a>, <span class="self">Self</span>&gt; {
+    </span><span class="kw">fn </span>to_glib_none_mut(<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span><span class="self">self</span>) -&gt; <a href="../../glib/translate/struct.StashMut.html">StashMut</a>&lt;<span class="lifetime">'a</span>, <span class="kw-2">*mut </span><a href="../../pango_sys/struct.PangoScriptIter.html">ffi::PangoScriptIter</a>, <span class="self">Self</span>&gt; {
         <a href="../../glib/translate/struct.StashMut.html">StashMut</a>(<a class="self" href="#140">self</a>.ptr.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>(), <a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">PhantomData</a>)
     }
 }
 
 <span class="attr">#[doc(hidden)]
-</span><span class="kw">impl</span>&lt;<span class="lifetime">'text</span>&gt; FromGlibPtrFull&lt;<span class="kw-2">*mut </span><a href="../../pango_sys/struct.PangoScriptIter.html">ffi::PangoScriptIter</a>&gt; <span class="kw">for </span>ScriptIter&lt;<span class="lifetime">'text</span>&gt; {
+</span><span class="kw">impl </span><a href="../../glib/translate/trait.FromGlibPtrFull.html">FromGlibPtrFull</a>&lt;<span class="kw-2">*mut </span><a href="../../pango_sys/struct.PangoScriptIter.html">ffi::PangoScriptIter</a>&gt; <span class="kw">for </span><a href="#12-15">ScriptIter</a>&lt;<span class="lifetime">'_</span>&gt; {
     <span class="attr">#[inline]
     </span><span class="kw">unsafe fn </span>from_glib_full(ptr: <span class="kw-2">*mut </span><a href="../../pango_sys/struct.PangoScriptIter.html">ffi::PangoScriptIter</a>) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{

@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/subclass/type_module.rs`."><title>type_module.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-42caa33d.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.84.0-nightly (81eef2d36 2024-11-11)" data-channel="nightly" data-search-js="search-853ef39b.js" data-settings-js="settings-0f613d39.js" ><script src="../../../static.files/storage-59e33391.js"></script><script defer src="../../../static.files/src-script-56102188.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/subclass/type_module.rs`."><title>type_module.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-46132b98.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.85.0-nightly (c26db435b 2024-12-15)" data-channel="nightly" data-search-js="search-92e6798f.js" data-settings-js="settings-0f613d39.js" ><script src="../../../static.files/storage-59e33391.js"></script><script defer src="../../../static.files/src-script-56102188.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -238,11 +238,20 @@
 <a href="#164" id="164">164</a>
 <a href="#165" id="165">165</a>
 <a href="#166" id="166">166</a>
-<a href="#167" id="167">167</a></pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
+<a href="#167" id="167">167</a>
+<a href="#168" id="168">168</a>
+<a href="#169" id="169">169</a>
+<a href="#170" id="170">170</a>
+<a href="#171" id="171">171</a>
+<a href="#172" id="172">172</a>
+<a href="#173" id="173">173</a>
+<a href="#174" id="174">174</a>
+<a href="#175" id="175">175</a>
+<a href="#176" id="176">176</a></pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
-</span><span class="kw">use crate</span>::{<a href="../../../glib_sys/index.html">ffi</a>, <a href="../../../gobject_sys/index.html">gobject_ffi</a>, <a href="../lib.rs.html#158">prelude</a>::<span class="kw-2">*</span>, <a href="mod.rs.html#442-458">subclass::prelude</a>::<span class="kw-2">*</span>, <a href="../lib.rs.html#163">translate</a>::<span class="kw-2">*</span>, <a href="../gobject/type_module.rs.html#11-18">TypeModule</a>};
+</span><span class="kw">use crate</span>::{<a href="../../../glib_sys/index.html">ffi</a>, <a href="../../../gobject_sys/index.html">gobject_ffi</a>, <a href="../lib.rs.html#159">prelude</a>::<span class="kw-2">*</span>, <a href="mod.rs.html#442-458">subclass::prelude</a>::<span class="kw-2">*</span>, <a href="../lib.rs.html#164">translate</a>::<span class="kw-2">*</span>, <a href="../gobject/type_module.rs.html#11-93">TypeModule</a>};
 
-<span class="kw">pub trait </span><a href="../../../glib/subclass/type_module/trait.TypeModuleImpl.html">TypeModuleImpl</a>: <a href="object.rs.html#22-87">ObjectImpl</a> + <a href="#24-27">TypeModuleImplExt</a> {
+<span class="kw">pub trait </span><a href="../../../glib/subclass/type_module/trait.TypeModuleImpl.html">TypeModuleImpl</a>: <a href="object.rs.html#22-162">ObjectImpl</a> + <a href="#33-36">TypeModuleImplExt</a> {
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Loads the module, registers one or more object subclasses using
     /// [`register_dynamic_type`] and registers one or more object interfaces
@@ -251,6 +260,12 @@
     /// [`register_dynamic_type`]: ../types/fn.register_dynamic_type.html
     /// [`register_dynamic_interface`]: ../interface/fn.register_dynamic_interface.html
     /// [`TypeModule`]: ../../gobject/auto/type_module/struct.TypeModule.html
+    </span><span class="comment">// rustdoc-stripper-ignore-next-stop
+    </span><span class="doccomment">/// loads the module and registers one or more types using
+    ///  [`TypeModuleExtManual::register_type()`][crate::prelude::TypeModuleExtManual::register_type()].
+    </span><span class="comment">// rustdoc-stripper-ignore-next-stop
+    </span><span class="doccomment">/// loads the module and registers one or more types using
+    ///  [`TypeModuleExtManual::register_type()`][crate::prelude::TypeModuleExtManual::register_type()].
     </span><span class="kw">fn </span>load(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>;
 
     <span class="comment">// rustdoc-stripper-ignore-next
@@ -258,6 +273,9 @@
     ///
     /// [`TypeModuleExt::unuse`]: ../../gobject/auto/type_module/trait.TypeModuleExt.html#method.unuse
     </span><span class="comment">// rustdoc-stripper-ignore-next-stop
+    </span><span class="doccomment">/// unloads the module
+    </span><span class="comment">// rustdoc-stripper-ignore-next-stop
+    </span><span class="doccomment">/// unloads the module
     </span><span class="kw">fn </span>unload(<span class="kw-2">&amp;</span><span class="self">self</span>);
 }
 
@@ -266,19 +284,19 @@
     <span class="kw">fn </span>parent_unload(<span class="kw-2">&amp;</span><span class="self">self</span>);
 }
 
-<span class="kw">impl</span>&lt;T: <a href="#5-22">TypeModuleImpl</a>&gt; <a href="#24-27">TypeModuleImplExt</a> <span class="kw">for </span>T {
+<span class="kw">impl</span>&lt;T: <a href="#5-31">TypeModuleImpl</a>&gt; <a href="#33-36">TypeModuleImplExt</a> <span class="kw">for </span>T {
     <span class="kw">fn </span>parent_load(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>data = <a href="types.rs.html#580">T::type_data</a>();
-            <span class="kw">let </span>parent_class = <a href="#32">data</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().<a href="types.rs.html#478-481">parent_class</a>() <span class="kw">as </span><span class="kw-2">*const </span><a href="../../../gobject_sys/struct.GTypeModuleClass.html">gobject_ffi::GTypeModuleClass</a>;
+            <span class="kw">let </span>parent_class = <a href="#41">data</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().<a href="types.rs.html#478-481">parent_class</a>() <span class="kw">as </span><span class="kw-2">*const </span><a href="../../../gobject_sys/struct.GTypeModuleClass.html">gobject_ffi::GTypeModuleClass</a>;
 
-            <span class="kw">let </span>f = (<span class="kw-2">*</span><a href="#33">parent_class</a>)
+            <span class="kw">let </span>f = (<span class="kw-2">*</span><a href="#42">parent_class</a>)
                 .load
                 .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.expect">expect</a>(<span class="string">"No parent class implementation for \"load\""</span>);
 
-            <a href="../translate.rs.html#1417-1419">from_glib</a>(<a href="#35">f</a>(<span class="self"><a href="#30">self</a>
+            <a href="../translate.rs.html#1417-1419">from_glib</a>(<a href="#44">f</a>(<span class="self"><a href="#39">self</a>
                 </span>.<a href="types.rs.html#757">obj</a>()
-                .<a href="../object.rs.html#273-280">unsafe_cast_ref</a>::&lt;<a href="../gobject/type_module.rs.html#11-18">TypeModule</a>&gt;()
+                .<a href="../object.rs.html#273-280">unsafe_cast_ref</a>::&lt;<a href="../gobject/type_module.rs.html#11-93">TypeModule</a>&gt;()
                 .<a href="../translate.rs.html#441">to_glib_none</a>()
                 .<span class="number">0</span>))
         }
@@ -287,34 +305,34 @@
     <span class="kw">fn </span>parent_unload(<span class="kw-2">&amp;</span><span class="self">self</span>) {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>data = <a href="types.rs.html#580">T::type_data</a>();
-            <span class="kw">let </span>parent_class = <a href="#49">data</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().<a href="types.rs.html#478-481">parent_class</a>() <span class="kw">as </span><span class="kw-2">*const </span><a href="../../../gobject_sys/struct.GTypeModuleClass.html">gobject_ffi::GTypeModuleClass</a>;
+            <span class="kw">let </span>parent_class = <a href="#58">data</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().<a href="types.rs.html#478-481">parent_class</a>() <span class="kw">as </span><span class="kw-2">*const </span><a href="../../../gobject_sys/struct.GTypeModuleClass.html">gobject_ffi::GTypeModuleClass</a>;
 
-            <span class="kw">let </span>f = (<span class="kw-2">*</span><a href="#50">parent_class</a>)
+            <span class="kw">let </span>f = (<span class="kw-2">*</span><a href="#59">parent_class</a>)
                 .unload
                 .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.expect">expect</a>(<span class="string">"No parent class implementation for \"unload\""</span>);
 
-            <a href="#52">f</a>(<a class="self" href="#47">self</a>.<a href="types.rs.html#757">obj</a>().<a href="../object.rs.html#273-280">unsafe_cast_ref</a>::&lt;<a href="../gobject/type_module.rs.html#11-18">TypeModule</a>&gt;().<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>);
+            <a href="#61">f</a>(<a class="self" href="#56">self</a>.<a href="types.rs.html#757">obj</a>().<a href="../object.rs.html#273-280">unsafe_cast_ref</a>::&lt;<a href="../gobject/type_module.rs.html#11-93">TypeModule</a>&gt;().<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>);
         }
     }
 }
 
-<span class="kw">unsafe impl</span>&lt;T: <a href="#5-22">TypeModuleImpl</a>&gt; IsSubclassable&lt;T&gt; <span class="kw">for </span><a href="../gobject/type_module.rs.html#11-18">TypeModule</a> {
-    <span class="kw">fn </span>class_init(class: <span class="kw-2">&amp;mut </span><span class="kw">crate</span>::Class&lt;<span class="self">Self</span>&gt;) {
-        <span class="self">Self</span>::parent_class_init::&lt;T&gt;(<a href="#62">class</a>);
+<span class="kw">unsafe impl</span>&lt;T: <a href="#5-31">TypeModuleImpl</a>&gt; <a href="types.rs.html#202-223">IsSubclassable</a>&lt;T&gt; <span class="kw">for </span><a href="../gobject/type_module.rs.html#11-93">TypeModule</a> {
+    <span class="kw">fn </span>class_init(class: <span class="kw-2">&amp;mut </span><a href="../object.rs.html#3929"><span class="kw">crate</span>::Class</a>&lt;<span class="self">Self</span>&gt;) {
+        <span class="self">Self</span>::parent_class_init::&lt;T&gt;(<a href="#71">class</a>);
 
-        <span class="kw">let </span>klass = <a href="#62">class</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsMut.html#tymethod.as_mut">as_mut</a>();
-        <a href="#65">klass</a>.load = <span class="prelude-val">Some</span>(load::&lt;T&gt;);
-        <a href="#65">klass</a>.unload = <span class="prelude-val">Some</span>(unload::&lt;T&gt;);
+        <span class="kw">let </span>klass = <a href="#71">class</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsMut.html#tymethod.as_mut">as_mut</a>();
+        <a href="#74">klass</a>.load = <span class="prelude-val">Some</span>(<a href="#80-100">load</a>::&lt;T&gt;);
+        <a href="#74">klass</a>.unload = <span class="prelude-val">Some</span>(<a href="#102-107">unload</a>::&lt;T&gt;);
     }
 }
 
-<span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>load&lt;T: <a href="#5-22">TypeModuleImpl</a>&gt;(
+<span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>load&lt;T: <a href="#5-31">TypeModuleImpl</a>&gt;(
     type_module: <span class="kw-2">*mut </span><a href="../../../gobject_sys/struct.GTypeModule.html">gobject_ffi::GTypeModule</a>,
 ) -&gt; <a href="../../../glib_sys/type.gboolean.html">ffi::gboolean</a> {
-    <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(<a href="#72">type_module</a> <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
-    <span class="kw">let </span>imp = <a href="#74">instance</a>.<a href="types.rs.html#84">imp</a>();
+    <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(<a href="#81">type_module</a> <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
+    <span class="kw">let </span>imp = <a href="#83">instance</a>.<a href="types.rs.html#84">imp</a>();
 
-    <span class="kw">let </span>res = <a href="#75">imp</a>.<a href="#14">load</a>();
+    <span class="kw">let </span>res = <a href="#84">imp</a>.<a href="#20">load</a>();
     <span class="comment">// GLib type system expects a module to never be disposed if types has been
     // successfully loaded.
     // The following code prevents the Rust wrapper (`glib::TypeModule` subclass)
@@ -323,18 +341,18 @@
     // and dispose the invalid module.
     </span><span class="kw">if </span>res &amp;&amp; (<span class="kw-2">*</span>(type_module <span class="kw">as </span><span class="kw-2">*const </span>gobject_ffi::GObject)).ref_count == <span class="number">1 </span>{
         <span class="kw">unsafe </span>{
-            <a href="../../../gobject_sys/fn.g_object_ref.html">gobject_ffi::g_object_ref</a>(<a href="#72">type_module</a> <span class="kw">as _</span>);
+            <a href="../../../gobject_sys/fn.g_object_ref.html">gobject_ffi::g_object_ref</a>(<a href="#81">type_module</a> <span class="kw">as _</span>);
         }
     }
 
-    <a href="#77">res</a>.<a href="../translate.rs.html#334">into_glib</a>()
+    <a href="#86">res</a>.<a href="../translate.rs.html#334">into_glib</a>()
 }
 
-<span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>unload&lt;T: <a href="#5-22">TypeModuleImpl</a>&gt;(type_module: <span class="kw-2">*mut </span><a href="../../../gobject_sys/struct.GTypeModule.html">gobject_ffi::GTypeModule</a>) {
-    <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(<a href="#93">type_module</a> <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
-    <span class="kw">let </span>imp = <a href="#94">instance</a>.<a href="types.rs.html#84">imp</a>();
+<span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>unload&lt;T: <a href="#5-31">TypeModuleImpl</a>&gt;(type_module: <span class="kw-2">*mut </span><a href="../../../gobject_sys/struct.GTypeModule.html">gobject_ffi::GTypeModule</a>) {
+    <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(<a href="#102">type_module</a> <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
+    <span class="kw">let </span>imp = <a href="#103">instance</a>.<a href="types.rs.html#84">imp</a>();
 
-    <a href="#95">imp</a>.<a href="#21">unload</a>();
+    <a href="#104">imp</a>.<a href="#30">unload</a>();
 }
 
 <span class="attr">#[cfg(test)]

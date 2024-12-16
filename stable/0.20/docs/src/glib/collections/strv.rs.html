@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/collections/strv.rs`."><title>strv.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-42caa33d.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.84.0-nightly (81eef2d36 2024-11-11)" data-channel="nightly" data-search-js="search-853ef39b.js" data-settings-js="settings-0f613d39.js" ><script src="../../../static.files/storage-59e33391.js"></script><script defer src="../../../static.files/src-script-56102188.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/collections/strv.rs`."><title>strv.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-46132b98.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.85.0-nightly (c26db435b 2024-12-15)" data-channel="nightly" data-search-js="search-92e6798f.js" data-settings-js="settings-0f613d39.js" ><script src="../../../static.files/storage-59e33391.js"></script><script defer src="../../../static.files/src-script-56102188.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -1638,7 +1638,7 @@
 
 </span><span class="kw">use </span>std::{<a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">ffi::c_char</a>, <a href="https://doc.rust-lang.org/nightly/alloc/fmt/index.html">fmt</a>, <a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">marker::PhantomData</a>, <a href="https://doc.rust-lang.org/nightly/core/mem/index.html">mem</a>, <a href="https://doc.rust-lang.org/nightly/core/ptr/index.html">ptr</a>};
 
-<span class="kw">use crate</span>::{<a href="../../../glib_sys/index.html">ffi</a>, <a href="../../../gobject_sys/index.html">gobject_ffi</a>, <a href="../lib.rs.html#158">prelude</a>::<span class="kw-2">*</span>, <a href="../lib.rs.html#163">translate</a>::<span class="kw-2">*</span>, <a href="../gstring.rs.html#24">GStr</a>, <a href="../gstring.rs.html#1036">GString</a>, <a href="../gstring.rs.html#716">GStringPtr</a>};
+<span class="kw">use crate</span>::{<a href="../../../glib_sys/index.html">ffi</a>, <a href="../../../gobject_sys/index.html">gobject_ffi</a>, <a href="../lib.rs.html#159">prelude</a>::<span class="kw-2">*</span>, <a href="../lib.rs.html#164">translate</a>::<span class="kw-2">*</span>, <a href="../gstring.rs.html#24">GStr</a>, <a href="../gstring.rs.html#1036">GString</a>, <a href="../gstring.rs.html#716">GStringPtr</a>};
 
 <span class="comment">// rustdoc-stripper-ignore-next
 </span><span class="doccomment">/// Minimum size of the `StrV` allocation.
@@ -1651,7 +1651,7 @@
 ///
 /// This can be used like a `&amp;[&amp;str]`, `&amp;mut [&amp;str]` and `Vec&lt;&amp;str&gt;`.
 </span><span class="kw">pub struct </span><a href="../../../glib/collections/strv/struct.StrV.html">StrV</a> {
-    ptr: ptr::NonNull&lt;<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>&gt;,
+    ptr: <a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html">ptr::NonNull</a>&lt;<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>&gt;,
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Length without the `NULL`-terminator.
     </span>len: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>,
@@ -1661,7 +1661,7 @@
 }
 
 <span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html">fmt::Debug</a> <span class="kw">for </span><a href="#17-25">StrV</a> {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; <a href="https://doc.rust-lang.org/nightly/core/fmt/type.Result.html">fmt::Result</a> {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span><a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html">fmt::Formatter</a>&lt;<span class="lifetime">'_</span>&gt;) -&gt; <a href="https://doc.rust-lang.org/nightly/core/fmt/type.Result.html">fmt::Result</a> {
         <a class="self" href="#28">self</a>.<a href="#728-736">as_slice</a>().<a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html#tymethod.fmt">fmt</a>(<a href="#28">f</a>)
     }
 }
@@ -1681,7 +1681,7 @@
 
 <span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/cmp/trait.PartialOrd.html">PartialOrd</a> <span class="kw">for </span><a href="#17-25">StrV</a> {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>partial_cmp(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="https://doc.rust-lang.org/nightly/core/cmp/enum.Ordering.html">std::cmp::Ordering</a>&gt; {
+    </span><span class="kw">fn </span>partial_cmp(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="https://doc.rust-lang.org/nightly/core/cmp/enum.Ordering.html">std::cmp::Ordering</a>&gt; {
         <span class="prelude-val">Some</span>(<a class="self" href="#48">self</a>.<a href="https://doc.rust-lang.org/nightly/core/cmp/trait.Ord.html#tymethod.cmp">cmp</a>(<a href="#48">other</a>))
     }
 }
@@ -1699,8 +1699,8 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; PartialEq&lt;[<span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>]&gt; <span class="kw">for </span><a href="#17-25">StrV</a> {
-    <span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>]) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html">PartialEq</a>&lt;[<span class="kw-2">&amp;</span><span class="lifetime">'_ </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>]&gt; <span class="kw">for </span><a href="#17-25">StrV</a> {
+    <span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><span class="lifetime">'_ </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>]) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
         <span class="kw">for </span>(a, b) <span class="kw">in </span>Iterator::zip(<span class="self">self</span>.iter(), other.iter()) {
             <span class="kw">if </span>a != b {
                 <span class="kw">return </span><span class="bool-val">false</span>;
@@ -1711,7 +1711,7 @@
     </span>}
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; PartialEq&lt;<a href="#17-25">StrV</a>&gt; <span class="kw">for </span>[<span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>] {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html">PartialEq</a>&lt;<a href="#17-25">StrV</a>&gt; <span class="kw">for </span>[<span class="kw-2">&amp;</span><span class="lifetime">'_ </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>] {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><a href="#17-25">StrV</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
         <a href="#80">other</a>.<a href="https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html#tymethod.eq">eq</a>(<a class="self" href="#80">self</a>)
@@ -1736,14 +1736,14 @@
     }
 }
 
-<span class="kw">impl </span>AsRef&lt;[<a href="../gstring.rs.html#716">GStringPtr</a>]&gt; <span class="kw">for </span><a href="#17-25">StrV</a> {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">AsRef</a>&lt;[<a href="../gstring.rs.html#716">GStringPtr</a>]&gt; <span class="kw">for </span><a href="#17-25">StrV</a> {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>as_ref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[<a href="../gstring.rs.html#716">GStringPtr</a>] {
         <a class="self" href="#105">self</a>.<a href="#728-736">as_slice</a>()
     }
 }
 
-<span class="kw">impl </span>std::borrow::Borrow&lt;[<a href="../gstring.rs.html#716">GStringPtr</a>]&gt; <span class="kw">for </span><a href="#17-25">StrV</a> {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/borrow/trait.Borrow.html">std::borrow::Borrow</a>&lt;[<a href="../gstring.rs.html#716">GStringPtr</a>]&gt; <span class="kw">for </span><a href="#17-25">StrV</a> {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>borrow(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[<a href="../gstring.rs.html#716">GStringPtr</a>] {
         <a class="self" href="#112">self</a>.<a href="#728-736">as_slice</a>()
@@ -1759,9 +1759,9 @@
     }
 }
 
-<span class="kw">impl </span>std::iter::Extend&lt;<a href="../gstring.rs.html#1036">GString</a>&gt; <span class="kw">for </span><a href="#17-25">StrV</a> {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.Extend.html">std::iter::Extend</a>&lt;<a href="../gstring.rs.html#1036">GString</a>&gt; <span class="kw">for </span><a href="#17-25">StrV</a> {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>extend&lt;I: IntoIterator&lt;Item = <a href="../gstring.rs.html#1036">GString</a>&gt;&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, iter: I) {
+    </span><span class="kw">fn </span>extend&lt;I: <a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.IntoIterator.html">IntoIterator</a>&lt;Item = <a href="../gstring.rs.html#1036">GString</a>&gt;&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, iter: I) {
         <span class="kw">let </span>iter = <a href="#128">iter</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.IntoIterator.html#tymethod.into_iter">into_iter</a>();
         <a class="self" href="#128">self</a>.<a href="#694-723">reserve</a>(<a href="#129">iter</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.size_hint">size_hint</a>().<span class="number">0</span>);
 
@@ -1771,9 +1771,9 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; std::iter::Extend&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt; <span class="kw">for </span><a href="#17-25">StrV</a> {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; <a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.Extend.html">std::iter::Extend</a>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt; <span class="kw">for </span><a href="#17-25">StrV</a> {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>extend&lt;I: IntoIterator&lt;Item = <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, iter: I) {
+    </span><span class="kw">fn </span>extend&lt;I: <a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.IntoIterator.html">IntoIterator</a>&lt;Item = <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, iter: I) {
         <span class="kw">let </span>iter = <a href="#140">iter</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.IntoIterator.html#tymethod.into_iter">into_iter</a>();
         <a class="self" href="#140">self</a>.<a href="#694-723">reserve</a>(<a href="#141">iter</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.size_hint">size_hint</a>().<span class="number">0</span>);
 
@@ -1783,9 +1783,9 @@
     }
 }
 
-<span class="kw">impl </span>std::iter::FromIterator&lt;<a href="../gstring.rs.html#1036">GString</a>&gt; <span class="kw">for </span><a href="#17-25">StrV</a> {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.FromIterator.html">std::iter::FromIterator</a>&lt;<a href="../gstring.rs.html#1036">GString</a>&gt; <span class="kw">for </span><a href="#17-25">StrV</a> {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>from_iter&lt;I: IntoIterator&lt;Item = <a href="../gstring.rs.html#1036">GString</a>&gt;&gt;(iter: I) -&gt; <span class="self">Self </span>{
+    </span><span class="kw">fn </span>from_iter&lt;I: <a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.IntoIterator.html">IntoIterator</a>&lt;Item = <a href="../gstring.rs.html#1036">GString</a>&gt;&gt;(iter: I) -&gt; <span class="self">Self </span>{
         <span class="kw">let </span>iter = <a href="#152">iter</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.IntoIterator.html#tymethod.into_iter">into_iter</a>();
         <span class="kw">let </span><span class="kw-2">mut </span>s = <a href="#622-626"><span class="self">Self</span>::with_capacity</a>(<a href="#153">iter</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.size_hint">size_hint</a>().<span class="number">0</span>);
         <span class="kw">for </span>item <span class="kw">in </span>iter {
@@ -1797,7 +1797,7 @@
 
 <span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; <a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.IntoIterator.html">std::iter::IntoIterator</a> <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#17-25">StrV</a> {
     <span class="kw">type </span>Item = <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="../gstring.rs.html#716">GStringPtr</a>;
-    <span class="kw">type </span>IntoIter = std::slice::Iter&lt;<span class="lifetime">'a</span>, <a href="../gstring.rs.html#716">GStringPtr</a>&gt;;
+    <span class="kw">type </span>IntoIter = <a href="https://doc.rust-lang.org/nightly/core/slice/iter/struct.Iter.html">std::slice::Iter</a>&lt;<span class="lifetime">'a</span>, <a href="../gstring.rs.html#716">GStringPtr</a>&gt;;
 
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>into_iter(<span class="self">self</span>) -&gt; <span class="self">Self</span>::IntoIter {
@@ -1816,8 +1816,8 @@
 }
 
 <span class="kw">pub struct </span><a href="../../../glib/collections/strv/struct.IntoIter.html">IntoIter</a> {
-    ptr: ptr::NonNull&lt;<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>&gt;,
-    idx: ptr::NonNull&lt;<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>&gt;,
+    ptr: <a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html">ptr::NonNull</a>&lt;<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>&gt;,
+    idx: <a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html">ptr::NonNull</a>&lt;<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>&gt;,
     len: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>,
     empty: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>,
 }
@@ -1867,7 +1867,7 @@
     <span class="kw">type </span>Item = <a href="../gstring.rs.html#1036">GString</a>;
 
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>next(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>::Item&gt; {
+    </span><span class="kw">fn </span>next(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="self">Self</span>::Item&gt; {
         <span class="kw">if </span><span class="self">self</span>.len == <span class="number">0 </span>{
             <span class="kw">return </span><span class="prelude-val">None</span>;
         }
@@ -1881,7 +1881,7 @@
     }
 
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>size_hint(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; (<a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>, <span class="prelude-ty">Option</span>&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>&gt;) {
+    </span><span class="kw">fn </span>size_hint(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; (<a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>, <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>&gt;) {
         (<a class="self" href="#248">self</a>.len, <span class="prelude-val">Some</span>(<a class="self" href="#248">self</a>.len))
     }
 
@@ -1891,7 +1891,7 @@
     }
 
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>last(<span class="kw-2">mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="../gstring.rs.html#1036">GString</a>&gt; {
+    </span><span class="kw">fn </span>last(<span class="kw-2">mut </span><span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="../gstring.rs.html#1036">GString</a>&gt; {
         <span class="kw">if </span><span class="self">self</span>.len == <span class="number">0 </span>{
             <span class="prelude-val">None
         </span>} <span class="kw">else </span>{
@@ -1903,7 +1903,7 @@
 
 <span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/iter/traits/double_ended/trait.DoubleEndedIterator.html">DoubleEndedIterator</a> <span class="kw">for </span><a href="#182-187">IntoIter</a> {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>next_back(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="../gstring.rs.html#1036">GString</a>&gt; {
+    </span><span class="kw">fn </span>next_back(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="../gstring.rs.html#1036">GString</a>&gt; {
         <span class="kw">if </span><span class="self">self</span>.len == <span class="number">0 </span>{
             <span class="prelude-val">None
         </span>} <span class="kw">else </span>{
@@ -1917,16 +1917,16 @@
 
 <span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/iter/traits/marker/trait.FusedIterator.html">std::iter::FusedIterator</a> <span class="kw">for </span><a href="#182-187">IntoIter</a> {}
 
-<span class="kw">impl </span>From&lt;<a href="#17-25">StrV</a>&gt; <span class="kw">for </span>Vec&lt;<a href="../gstring.rs.html#1036">GString</a>&gt; {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html">From</a>&lt;<a href="#17-25">StrV</a>&gt; <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html">Vec</a>&lt;<a href="../gstring.rs.html#1036">GString</a>&gt; {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>from(value: <a href="#17-25">StrV</a>) -&gt; <span class="self">Self </span>{
         <a href="#286">value</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.IntoIterator.html#tymethod.into_iter">into_iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.collect">collect</a>()
     }
 }
 
-<span class="kw">impl </span>From&lt;Vec&lt;<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>&gt;&gt; <span class="kw">for </span><a href="#17-25">StrV</a> {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html">From</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html">Vec</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>&gt;&gt; <span class="kw">for </span><a href="#17-25">StrV</a> {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>from(value: Vec&lt;<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>&gt;) -&gt; <span class="self">Self </span>{
+    </span><span class="kw">fn </span>from(value: <a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html">Vec</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>&gt;) -&gt; <span class="self">Self </span>{
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>len = <a href="#293">value</a>.<a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.len">len</a>();
             <span class="kw">let </span><span class="kw-2">mut </span>s = <a href="#622-626"><span class="self">Self</span>::with_capacity</a>(<a href="#295">len</a>);
@@ -1940,16 +1940,16 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; From&lt;Vec&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;&gt; <span class="kw">for </span><a href="#17-25">StrV</a> {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html">From</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html">Vec</a>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'_ </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;&gt; <span class="kw">for </span><a href="#17-25">StrV</a> {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>from(value: Vec&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;) -&gt; <span class="self">Self </span>{
+    </span><span class="kw">fn </span>from(value: <a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html">Vec</a>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'_ </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;) -&gt; <span class="self">Self </span>{
         <a href="#309">value</a>.<a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.as_slice">as_slice</a>().<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>()
     }
 }
 
-<span class="kw">impl </span>From&lt;Vec&lt;<a href="../gstring.rs.html#1036">GString</a>&gt;&gt; <span class="kw">for </span><a href="#17-25">StrV</a> {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html">From</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html">Vec</a>&lt;<a href="../gstring.rs.html#1036">GString</a>&gt;&gt; <span class="kw">for </span><a href="#17-25">StrV</a> {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>from(value: Vec&lt;<a href="../gstring.rs.html#1036">GString</a>&gt;) -&gt; <span class="self">Self </span>{
+    </span><span class="kw">fn </span>from(value: <a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html">Vec</a>&lt;<a href="../gstring.rs.html#1036">GString</a>&gt;) -&gt; <span class="self">Self </span>{
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>len = <a href="#316">value</a>.<a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.len">len</a>();
             <span class="kw">let </span><span class="kw-2">mut </span>s = <a href="#622-626"><span class="self">Self</span>::with_capacity</a>(<a href="#318">len</a>);
@@ -1963,7 +1963,7 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="kw">const </span>N: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>&gt; From&lt;[<a href="../gstring.rs.html#1036">GString</a>; <a href="#330">N</a>]&gt; <span class="kw">for </span><a href="#17-25">StrV</a> {
+<span class="kw">impl</span>&lt;<span class="kw">const </span>N: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html">From</a>&lt;[<a href="../gstring.rs.html#1036">GString</a>; <a href="#330">N</a>]&gt; <span class="kw">for </span><a href="#17-25">StrV</a> {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>from(value: [<a href="../gstring.rs.html#1036">GString</a>; <a href="#330">N</a>]) -&gt; <span class="self">Self </span>{
         <span class="kw">unsafe </span>{
@@ -1979,7 +1979,7 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="kw">const </span>N: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>&gt; From&lt;[<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>; <a href="#346">N</a>]&gt; <span class="kw">for </span><a href="#17-25">StrV</a> {
+<span class="kw">impl</span>&lt;<span class="kw">const </span>N: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html">From</a>&lt;[<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>; <a href="#346">N</a>]&gt; <span class="kw">for </span><a href="#17-25">StrV</a> {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>from(value: [<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>; <a href="#346">N</a>]) -&gt; <span class="self">Self </span>{
         <span class="kw">unsafe </span>{
@@ -1995,9 +1995,9 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, <span class="kw">const </span>N: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>&gt; From&lt;[<span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>; <a href="#362">N</a>]&gt; <span class="kw">for </span><a href="#17-25">StrV</a> {
+<span class="kw">impl</span>&lt;<span class="kw">const </span>N: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html">From</a>&lt;[<span class="kw-2">&amp;</span><span class="lifetime">'_ </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>; <a href="#362">N</a>]&gt; <span class="kw">for </span><a href="#17-25">StrV</a> {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>from(value: [<span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>; <a href="#362">N</a>]) -&gt; <span class="self">Self </span>{
+    </span><span class="kw">fn </span>from(value: [<span class="kw-2">&amp;</span><span class="lifetime">'_ </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>; <a href="#362">N</a>]) -&gt; <span class="self">Self </span>{
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>s = <a href="#622-626"><span class="self">Self</span>::with_capacity</a>(<a href="#364">value</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.len">len</a>());
             <span class="kw">for </span>(i, item) <span class="kw">in </span>value.iter().enumerate() {
@@ -2010,9 +2010,9 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, <span class="kw">const </span>N: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>&gt; From&lt;[<span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="../gstring.rs.html#24">GStr</a>; <a href="#377">N</a>]&gt; <span class="kw">for </span><a href="#17-25">StrV</a> {
+<span class="kw">impl</span>&lt;<span class="kw">const </span>N: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html">From</a>&lt;[<span class="kw-2">&amp;</span><span class="lifetime">'_ </span><a href="../gstring.rs.html#24">GStr</a>; <a href="#377">N</a>]&gt; <span class="kw">for </span><a href="#17-25">StrV</a> {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>from(value: [<span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="../gstring.rs.html#24">GStr</a>; <a href="#377">N</a>]) -&gt; <span class="self">Self </span>{
+    </span><span class="kw">fn </span>from(value: [<span class="kw-2">&amp;</span><span class="lifetime">'_ </span><a href="../gstring.rs.html#24">GStr</a>; <a href="#377">N</a>]) -&gt; <span class="self">Self </span>{
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>s = <a href="#622-626"><span class="self">Self</span>::with_capacity</a>(<a href="#379">value</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.len">len</a>());
             <span class="kw">for </span>(i, item) <span class="kw">in </span>value.iter().enumerate() {
@@ -2025,9 +2025,9 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; From&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>[<span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>]&gt; <span class="kw">for </span><a href="#17-25">StrV</a> {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html">From</a>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'_ </span>[<span class="kw-2">&amp;</span><span class="lifetime">'_ </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>]&gt; <span class="kw">for </span><a href="#17-25">StrV</a> {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>from(value: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>[<span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>]) -&gt; <span class="self">Self </span>{
+    </span><span class="kw">fn </span>from(value: <span class="kw-2">&amp;</span><span class="lifetime">'_ </span>[<span class="kw-2">&amp;</span><span class="lifetime">'_ </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>]) -&gt; <span class="self">Self </span>{
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>s = <a href="#622-626"><span class="self">Self</span>::with_capacity</a>(<a href="#394">value</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.len">len</a>());
             <span class="kw">for </span>(i, item) <span class="kw">in </span>value.iter().enumerate() {
@@ -2040,9 +2040,9 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; From&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>[<span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="../gstring.rs.html#24">GStr</a>]&gt; <span class="kw">for </span><a href="#17-25">StrV</a> {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html">From</a>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'_ </span>[<span class="kw-2">&amp;</span><span class="lifetime">'_ </span><a href="../gstring.rs.html#24">GStr</a>]&gt; <span class="kw">for </span><a href="#17-25">StrV</a> {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>from(value: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>[<span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="../gstring.rs.html#24">GStr</a>]) -&gt; <span class="self">Self </span>{
+    </span><span class="kw">fn </span>from(value: <span class="kw-2">&amp;</span><span class="lifetime">'_ </span>[<span class="kw-2">&amp;</span><span class="lifetime">'_ </span><a href="../gstring.rs.html#24">GStr</a>]) -&gt; <span class="self">Self </span>{
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>s = <a href="#622-626"><span class="self">Self</span>::with_capacity</a>(<a href="#409">value</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.len">len</a>());
             <span class="kw">for </span>(i, item) <span class="kw">in </span>value.iter().enumerate() {
@@ -2116,7 +2116,7 @@
             <span class="comment">// Allocate space for len + 1 pointers, one pointer for each string and a trailing
             // null pointer.
             </span><span class="kw">let </span>new_ptr =
-                <a href="../../../glib_sys/fn.g_malloc.html">ffi::g_malloc</a>(mem::size_of::&lt;<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>&gt;() * (<a href="#472">len</a> + <span class="number">1</span>)) <span class="kw">as </span><span class="kw-2">*mut *mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>;
+                <a href="../../../glib_sys/fn.g_malloc.html">ffi::g_malloc</a>(<a href="https://doc.rust-lang.org/nightly/core/mem/fn.size_of.html">mem::size_of</a>::&lt;<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>&gt;() * (<a href="#472">len</a> + <span class="number">1</span>)) <span class="kw">as </span><span class="kw-2">*mut *mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>;
 
             <span class="comment">// Need to clone every item because we don't own it here
             </span><span class="kw">for </span>i <span class="kw">in </span><span class="number">0</span>..len {
@@ -2187,7 +2187,7 @@
             <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.assert_ne.html">assert_ne!</a>(capacity, <span class="number">0</span>);
             <span class="kw">let </span>ptr = <a href="../../../glib_sys/fn.g_realloc.html">ffi::g_realloc</a>(
                 <a href="#531">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
-                mem::size_of::&lt;<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>&gt;().<a href="https://doc.rust-lang.org/nightly/core/foreigntype.num.html#method.checked_mul">checked_mul</a>(<a href="#550">capacity</a>).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap">unwrap</a>(),
+                <a href="https://doc.rust-lang.org/nightly/core/mem/fn.size_of.html">mem::size_of</a>::&lt;<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>&gt;().<a href="https://doc.rust-lang.org/nightly/core/foreigntype.num.html#method.checked_mul">checked_mul</a>(<a href="#550">capacity</a>).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap">unwrap</a>(),
             ) <span class="kw">as </span><span class="kw-2">*mut *mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>;
             <span class="kw-2">*</span><a href="#552">ptr</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/foreigntype.mut_ptr.html#method.add">add</a>(<a href="#532">len</a>) = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
 
@@ -2346,7 +2346,7 @@
             </span>};
             <span class="kw">let </span>new_ptr = <a href="../../../glib_sys/fn.g_realloc.html">ffi::g_realloc</a>(
                 <a href="#706">ptr</a>,
-                mem::size_of::&lt;<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>&gt;()
+                <a href="https://doc.rust-lang.org/nightly/core/mem/fn.size_of.html">mem::size_of</a>::&lt;<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>&gt;()
                     .<a href="https://doc.rust-lang.org/nightly/core/foreigntype.num.html#method.checked_mul">checked_mul</a>(<a href="#700">new_capacity</a>)
                     .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap">unwrap</a>(),
             ) <span class="kw">as </span><span class="kw-2">*mut *mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>;
@@ -2387,7 +2387,7 @@
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Clones and appends all elements in `slice` to the slice.
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>extend_from_slice&lt;S: AsRef&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, other: <span class="kw-2">&amp;</span>[S]) {
+    </span><span class="kw">pub fn </span>extend_from_slice&lt;S: <a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">AsRef</a>&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, other: <span class="kw-2">&amp;</span>[S]) {
         <span class="comment">// Nothing new to reserve as there's still enough space
         </span><span class="kw">if </span><span class="self">self</span>.len + other.len() + <span class="number">1 </span>&gt; <span class="self">self</span>.capacity {
             <a class="self" href="#754">self</a>.<a href="#694-723">reserve</a>(<a href="#754">other</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.len">len</a>());
@@ -2485,7 +2485,7 @@
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Removes the last item of the slice and returns it.
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>pop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="../gstring.rs.html#1036">GString</a>&gt; {
+    </span><span class="kw">pub fn </span>pop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="../gstring.rs.html#1036">GString</a>&gt; {
         <span class="kw">if </span><span class="self">self</span>.len == <span class="number">0 </span>{
             <span class="kw">return </span><span class="prelude-val">None</span>;
         }
@@ -2525,7 +2525,7 @@
     </span><span class="doccomment">/// Joins the strings into a longer string, with an optional separator
     </span><span class="attr">#[inline]
     #[doc(alias = <span class="string">"g_strjoinv"</span>)]
-    </span><span class="kw">pub fn </span>join(<span class="kw-2">&amp;</span><span class="self">self</span>, separator: <span class="prelude-ty">Option</span>&lt;<span class="kw">impl </span><a href="../gstring.rs.html#2401-2403">IntoGStr</a>&gt;) -&gt; <a href="../gstring.rs.html#1036">GString</a> {
+    </span><span class="kw">pub fn </span>join(<span class="kw-2">&amp;</span><span class="self">self</span>, separator: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw">impl </span><a href="../gstring.rs.html#2401-2403">IntoGStr</a>&gt;) -&gt; <a href="../gstring.rs.html#1036">GString</a> {
         <a href="#892">separator</a>.<a href="../gstring.rs.html#2478">run_with_gstr</a>(|separator| <span class="kw">unsafe </span>{
             <a href="../translate.rs.html#1634-1636">from_glib_full</a>(<a href="../../../glib_sys/fn.g_strjoinv.html">ffi::g_strjoinv</a>(
                 <a href="#893">separator</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
@@ -2548,7 +2548,7 @@
     }
 }
 
-<span class="kw">impl </span>FromGlibContainer&lt;<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>, <span class="kw-2">*mut *mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>&gt; <span class="kw">for </span><a href="#17-25">StrV</a> {
+<span class="kw">impl </span><a href="../translate.rs.html#1912-1927">FromGlibContainer</a>&lt;<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>, <span class="kw-2">*mut *mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>&gt; <span class="kw">for </span><a href="#17-25">StrV</a> {
     <span class="attr">#[inline]
     </span><span class="kw">unsafe fn </span>from_glib_none_num(ptr: <span class="kw-2">*mut *mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>, num: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; <span class="self">Self </span>{
         <a href="#470-500"><span class="self">Self</span>::from_glib_none_num</a>(<a href="#917">ptr</a> <span class="kw">as </span><span class="kw-2">*const *const </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>, <a href="#917">num</a>, <span class="bool-val">false</span>)
@@ -2565,7 +2565,7 @@
     }
 }
 
-<span class="kw">impl </span>FromGlibContainer&lt;<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>, <span class="kw-2">*const *mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>&gt; <span class="kw">for </span><a href="#17-25">StrV</a> {
+<span class="kw">impl </span><a href="../translate.rs.html#1912-1927">FromGlibContainer</a>&lt;<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>, <span class="kw-2">*const *mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>&gt; <span class="kw">for </span><a href="#17-25">StrV</a> {
     <span class="kw">unsafe fn </span>from_glib_none_num(ptr: <span class="kw-2">*const *mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>, num: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; <span class="self">Self </span>{
         <a href="#470-500"><span class="self">Self</span>::from_glib_none_num</a>(<a href="#933">ptr</a> <span class="kw">as </span><span class="kw-2">*const *const </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>, <a href="#933">num</a>, <span class="bool-val">false</span>)
     }
@@ -2579,7 +2579,7 @@
     }
 }
 
-<span class="kw">impl </span>FromGlibPtrContainer&lt;<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>, <span class="kw-2">*mut *mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>&gt; <span class="kw">for </span><a href="#17-25">StrV</a> {
+<span class="kw">impl </span><a href="../translate.rs.html#1930-1939">FromGlibPtrContainer</a>&lt;<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>, <span class="kw-2">*mut *mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>&gt; <span class="kw">for </span><a href="#17-25">StrV</a> {
     <span class="attr">#[inline]
     </span><span class="kw">unsafe fn </span>from_glib_none(ptr: <span class="kw-2">*mut *mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>) -&gt; <span class="self">Self </span>{
         <a href="#569-578"><span class="self">Self</span>::from_glib_none</a>(<a href="#948">ptr</a> <span class="kw">as </span><span class="kw-2">*const *const </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>)
@@ -2596,7 +2596,7 @@
     }
 }
 
-<span class="kw">impl </span>FromGlibPtrContainer&lt;<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>, <span class="kw-2">*const *mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>&gt; <span class="kw">for </span><a href="#17-25">StrV</a> {
+<span class="kw">impl </span><a href="../translate.rs.html#1930-1939">FromGlibPtrContainer</a>&lt;<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>, <span class="kw-2">*const *mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>&gt; <span class="kw">for </span><a href="#17-25">StrV</a> {
     <span class="attr">#[inline]
     </span><span class="kw">unsafe fn </span>from_glib_none(ptr: <span class="kw-2">*const *mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>) -&gt; <span class="self">Self </span>{
         <a href="#569-578"><span class="self">Self</span>::from_glib_none</a>(<a href="#965">ptr</a> <span class="kw">as </span><span class="kw-2">*const *const </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>)
@@ -2611,19 +2611,19 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; ToGlibPtr&lt;<span class="lifetime">'a</span>, <span class="kw-2">*mut *mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>&gt; <span class="kw">for </span><a href="#17-25">StrV</a> {
-    <span class="kw">type </span>Storage = PhantomData&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="self">Self</span>&gt;;
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; <a href="../translate.rs.html#434-459">ToGlibPtr</a>&lt;<span class="lifetime">'a</span>, <span class="kw-2">*mut *mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>&gt; <span class="kw">for </span><a href="#17-25">StrV</a> {
+    <span class="kw">type </span>Storage = <a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">PhantomData</a>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="self">Self</span>&gt;;
 
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>to_glib_none(<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="self">self</span>) -&gt; Stash&lt;<span class="lifetime">'a</span>, <span class="kw-2">*mut *mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>, <span class="self">Self</span>&gt; {
+    </span><span class="kw">fn </span>to_glib_none(<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="self">self</span>) -&gt; <a href="../translate.rs.html#259-262">Stash</a>&lt;<span class="lifetime">'a</span>, <span class="kw-2">*mut *mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>, <span class="self">Self</span>&gt; {
         <a href="../translate.rs.html#259-262">Stash</a>(<a class="self" href="#982">self</a>.<a href="#633-641">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>, <a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">PhantomData</a>)
     }
 
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>to_glib_container(<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="self">self</span>) -&gt; Stash&lt;<span class="lifetime">'a</span>, <span class="kw-2">*mut *mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>, <span class="self">Self</span>&gt; {
+    </span><span class="kw">fn </span>to_glib_container(<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="self">self</span>) -&gt; <a href="../translate.rs.html#259-262">Stash</a>&lt;<span class="lifetime">'a</span>, <span class="kw-2">*mut *mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>, <span class="self">Self</span>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>ptr =
-                <a href="../../../glib_sys/fn.g_malloc.html">ffi::g_malloc</a>(mem::size_of::&lt;<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>&gt;() * (<a class="self" href="#987">self</a>.<a href="#661-663">len</a>() + <span class="number">1</span>)) <span class="kw">as </span><span class="kw-2">*mut *mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>;
+                <a href="../../../glib_sys/fn.g_malloc.html">ffi::g_malloc</a>(<a href="https://doc.rust-lang.org/nightly/core/mem/fn.size_of.html">mem::size_of</a>::&lt;<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>&gt;() * (<a class="self" href="#987">self</a>.<a href="#661-663">len</a>() + <span class="number">1</span>)) <span class="kw">as </span><span class="kw-2">*mut *mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>;
             <a href="https://doc.rust-lang.org/nightly/core/intrinsics/fn.copy_nonoverlapping.html">ptr::copy_nonoverlapping</a>(<a class="self" href="#987">self</a>.<a href="#633-641">as_ptr</a>(), <a href="#989">ptr</a>, <a class="self" href="#987">self</a>.<a href="#661-663">len</a>() + <span class="number">1</span>);
             <a href="../translate.rs.html#259-262">Stash</a>(<a href="#989">ptr</a>, <a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">PhantomData</a>)
         }
@@ -2635,16 +2635,16 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; ToGlibPtr&lt;<span class="lifetime">'a</span>, <span class="kw-2">*const *mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>&gt; <span class="kw">for </span><a href="#17-25">StrV</a> {
-    <span class="kw">type </span>Storage = PhantomData&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="self">Self</span>&gt;;
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; <a href="../translate.rs.html#434-459">ToGlibPtr</a>&lt;<span class="lifetime">'a</span>, <span class="kw-2">*const *mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>&gt; <span class="kw">for </span><a href="#17-25">StrV</a> {
+    <span class="kw">type </span>Storage = <a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">PhantomData</a>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="self">Self</span>&gt;;
 
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>to_glib_none(<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="self">self</span>) -&gt; Stash&lt;<span class="lifetime">'a</span>, <span class="kw-2">*const *mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>, <span class="self">Self</span>&gt; {
+    </span><span class="kw">fn </span>to_glib_none(<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="self">self</span>) -&gt; <a href="../translate.rs.html#259-262">Stash</a>&lt;<span class="lifetime">'a</span>, <span class="kw-2">*const *mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>, <span class="self">Self</span>&gt; {
         <a href="../translate.rs.html#259-262">Stash</a>(<a class="self" href="#1006">self</a>.<a href="#633-641">as_ptr</a>(), <a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">PhantomData</a>)
     }
 }
 
-<span class="kw">impl </span>IntoGlibPtr&lt;<span class="kw-2">*mut *mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>&gt; <span class="kw">for </span><a href="#17-25">StrV</a> {
+<span class="kw">impl </span><a href="../translate.rs.html#715-720">IntoGlibPtr</a>&lt;<span class="kw-2">*mut *mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>&gt; <span class="kw">for </span><a href="#17-25">StrV</a> {
     <span class="attr">#[inline]
     </span><span class="kw">unsafe fn </span>into_glib_ptr(<span class="self">self</span>) -&gt; <span class="kw-2">*mut *mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a> {
         <a class="self" href="#1013">self</a>.<a href="#648-656">into_raw</a>()
@@ -2654,41 +2654,41 @@
 <span class="kw">impl </span><a href="../types.rs.html#290-294">StaticType</a> <span class="kw">for </span><a href="#17-25">StrV</a> {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>static_type() -&gt; <a href="../types.rs.html#22"><span class="kw">crate</span>::Type</a> {
-        &lt;Vec&lt;<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>&gt;&gt;::static_type()
+        &lt;<a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html">Vec</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>&gt;&gt;::static_type()
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; <a href="../types.rs.html#290-294">StaticType</a> <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span>[<a href="../gstring.rs.html#716">GStringPtr</a>] {
+<span class="kw">impl </span><a href="../types.rs.html#290-294">StaticType</a> <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'_ </span>[<a href="../gstring.rs.html#716">GStringPtr</a>] {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>static_type() -&gt; <a href="../types.rs.html#22"><span class="kw">crate</span>::Type</a> {
-        &lt;Vec&lt;<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>&gt;&gt;::static_type()
+        &lt;<a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html">Vec</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>&gt;&gt;::static_type()
     }
 }
 
 <span class="kw">impl </span><a href="../value.rs.html#67-75"><span class="kw">crate</span>::value::ValueType</a> <span class="kw">for </span><a href="#17-25">StrV</a> {
-    <span class="kw">type </span>Type = Vec&lt;<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>&gt;;
+    <span class="kw">type </span>Type = <a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html">Vec</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>&gt;;
 }
 
-<span class="kw">unsafe impl</span>&lt;<span class="lifetime">'a</span>&gt; <span class="kw">crate</span>::value::FromValue&lt;<span class="lifetime">'a</span>&gt; <span class="kw">for </span><a href="#17-25">StrV</a> {
-    <span class="kw">type </span>Checker = <span class="kw">crate</span>::value::GenericValueTypeChecker&lt;<span class="self">Self</span>&gt;;
+<span class="kw">unsafe impl</span>&lt;<span class="lifetime">'a</span>&gt; <a href="../value.rs.html#272-283"><span class="kw">crate</span>::value::FromValue</a>&lt;<span class="lifetime">'a</span>&gt; <span class="kw">for </span><a href="#17-25">StrV</a> {
+    <span class="kw">type </span>Checker = <a href="../value.rs.html#149"><span class="kw">crate</span>::value::GenericValueTypeChecker</a>&lt;<span class="self">Self</span>&gt;;
 
-    <span class="kw">unsafe fn </span>from_value(value: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="../value.rs.html#478-501"><span class="kw">crate</span>::value::Value</a>) -&gt; <span class="self">Self </span>{
+    <span class="kw">unsafe fn </span>from_value(value: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="../value.rs.html#478-523"><span class="kw">crate</span>::value::Value</a>) -&gt; <span class="self">Self </span>{
         <span class="kw">let </span>ptr = <a href="../../../gobject_sys/fn.g_value_dup_boxed.html">gobject_ffi::g_value_dup_boxed</a>(<a href="#1039">value</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>) <span class="kw">as </span><span class="kw-2">*mut *mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>;
         <a href="../translate.rs.html#1938">FromGlibPtrContainer::from_glib_full</a>(<a href="#1040">ptr</a>)
     }
 }
 
-<span class="kw">unsafe impl</span>&lt;<span class="lifetime">'a</span>&gt; <span class="kw">crate</span>::value::FromValue&lt;<span class="lifetime">'a</span>&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span>[<a href="../gstring.rs.html#716">GStringPtr</a>] {
-    <span class="kw">type </span>Checker = <span class="kw">crate</span>::value::GenericValueTypeChecker&lt;<span class="self">Self</span>&gt;;
+<span class="kw">unsafe impl</span>&lt;<span class="lifetime">'a</span>&gt; <a href="../value.rs.html#272-283"><span class="kw">crate</span>::value::FromValue</a>&lt;<span class="lifetime">'a</span>&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span>[<a href="../gstring.rs.html#716">GStringPtr</a>] {
+    <span class="kw">type </span>Checker = <a href="../value.rs.html#149"><span class="kw">crate</span>::value::GenericValueTypeChecker</a>&lt;<span class="self">Self</span>&gt;;
 
-    <span class="kw">unsafe fn </span>from_value(value: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="../value.rs.html#478-501"><span class="kw">crate</span>::value::Value</a>) -&gt; <span class="self">Self </span>{
+    <span class="kw">unsafe fn </span>from_value(value: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="../value.rs.html#478-523"><span class="kw">crate</span>::value::Value</a>) -&gt; <span class="self">Self </span>{
         <span class="kw">let </span>ptr = <a href="../../../gobject_sys/fn.g_value_get_boxed.html">gobject_ffi::g_value_get_boxed</a>(<a href="#1048">value</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>) <span class="kw">as </span><span class="kw-2">*const *const </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>;
         <a href="#441-449">StrV::from_glib_borrow</a>(<a href="#1049">ptr</a>)
     }
 }
 
 <span class="kw">impl </span><a href="../value.rs.html#371-381"><span class="kw">crate</span>::value::ToValue</a> <span class="kw">for </span><a href="#17-25">StrV</a> {
-    <span class="kw">fn </span>to_value(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="../value.rs.html#478-501"><span class="kw">crate</span>::value::Value</a> {
+    <span class="kw">fn </span>to_value(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="../value.rs.html#478-523"><span class="kw">crate</span>::value::Value</a> {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>value = <span class="kw">crate</span>::value::Value::for_value_type::&lt;<span class="self">Self</span>&gt;();
             <a href="../../../gobject_sys/fn.g_value_set_boxed.html">gobject_ffi::g_value_set_boxed</a>(
@@ -2704,7 +2704,7 @@
     }
 }
 
-<span class="kw">impl </span>From&lt;<a href="#17-25">StrV</a>&gt; <span class="kw">for </span><a href="../value.rs.html#478-501"><span class="kw">crate</span>::Value</a> {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html">From</a>&lt;<a href="#17-25">StrV</a>&gt; <span class="kw">for </span><a href="../value.rs.html#478-523"><span class="kw">crate</span>::Value</a> {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>from(s: <a href="#17-25">StrV</a>) -&gt; <span class="self">Self </span>{
         <span class="kw">unsafe </span>{
@@ -2723,19 +2723,19 @@
 </span><span class="kw">pub trait </span><a href="../../../glib/collections/strv/trait.IntoStrV.html">IntoStrV</a> {
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Runs the given closure with a `NULL`-terminated array.
-    </span><span class="kw">fn </span>run_with_strv&lt;R, F: FnOnce(<span class="kw-2">&amp;</span>[<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>]) -&gt; R&gt;(<span class="self">self</span>, f: F) -&gt; R;
+    </span><span class="kw">fn </span>run_with_strv&lt;R, F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>(<span class="kw-2">&amp;</span>[<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>]) -&gt; R&gt;(<span class="self">self</span>, f: F) -&gt; R;
 }
 
 <span class="kw">impl </span><a href="#1087-1091">IntoStrV</a> <span class="kw">for </span><a href="#17-25">StrV</a> {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>run_with_strv&lt;R, F: FnOnce(<span class="kw-2">&amp;</span>[<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>]) -&gt; R&gt;(<span class="self">self</span>, f: F) -&gt; R {
+    </span><span class="kw">fn </span>run_with_strv&lt;R, F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>(<span class="kw-2">&amp;</span>[<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>]) -&gt; R&gt;(<span class="self">self</span>, f: F) -&gt; R {
         &lt;<span class="kw-2">&amp;</span><span class="self">Self</span>&gt;::run_with_strv(<span class="kw-2">&amp;</span><a class="self" href="#1095">self</a>, <a href="#1095">f</a>)
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; <a href="#1087-1091">IntoStrV</a> <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#17-25">StrV</a> {
+<span class="kw">impl </span><a href="#1087-1091">IntoStrV</a> <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'_ </span><a href="#17-25">StrV</a> {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>run_with_strv&lt;R, F: FnOnce(<span class="kw-2">&amp;</span>[<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>]) -&gt; R&gt;(<span class="self">self</span>, f: F) -&gt; R {
+    </span><span class="kw">fn </span>run_with_strv&lt;R, F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>(<span class="kw-2">&amp;</span>[<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>]) -&gt; R&gt;(<span class="self">self</span>, f: F) -&gt; R {
         <a href="#1102">f</a>(<span class="kw">unsafe </span>{ <a href="https://doc.rust-lang.org/nightly/core/slice/raw/fn.from_raw_parts.html">std::slice::from_raw_parts</a>(<a class="self" href="#1102">self</a>.<a href="#633-641">as_ptr</a>(), <a class="self" href="#1102">self</a>.<a href="#661-663">len</a>()) })
     }
 }
@@ -2746,56 +2746,56 @@
 /// The beginning will be used for the pointers, the remainder for the actual string content.
 </span><span class="kw">const </span>MAX_STACK_ALLOCATION: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a> = <span class="number">16</span>;
 
-<span class="kw">impl </span><a href="#1087-1091">IntoStrV</a> <span class="kw">for </span>Vec&lt;<a href="../gstring.rs.html#1036">GString</a>&gt; {
+<span class="kw">impl </span><a href="#1087-1091">IntoStrV</a> <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html">Vec</a>&lt;<a href="../gstring.rs.html#1036">GString</a>&gt; {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>run_with_strv&lt;R, F: FnOnce(<span class="kw-2">&amp;</span>[<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>]) -&gt; R&gt;(<span class="self">self</span>, f: F) -&gt; R {
+    </span><span class="kw">fn </span>run_with_strv&lt;R, F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>(<span class="kw-2">&amp;</span>[<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>]) -&gt; R&gt;(<span class="self">self</span>, f: F) -&gt; R {
         <a class="self" href="#1115">self</a>.<a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.as_slice">as_slice</a>().<a href="#1090">run_with_strv</a>(<a href="#1115">f</a>)
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; <a href="#1087-1091">IntoStrV</a> <span class="kw">for </span>Vec&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="../gstring.rs.html#1036">GString</a>&gt; {
+<span class="kw">impl </span><a href="#1087-1091">IntoStrV</a> <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html">Vec</a>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'_ </span><a href="../gstring.rs.html#1036">GString</a>&gt; {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>run_with_strv&lt;R, F: FnOnce(<span class="kw-2">&amp;</span>[<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>]) -&gt; R&gt;(<span class="self">self</span>, f: F) -&gt; R {
+    </span><span class="kw">fn </span>run_with_strv&lt;R, F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>(<span class="kw-2">&amp;</span>[<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>]) -&gt; R&gt;(<span class="self">self</span>, f: F) -&gt; R {
         <a class="self" href="#1122">self</a>.<a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.as_slice">as_slice</a>().<a href="#1090">run_with_strv</a>(<a href="#1122">f</a>)
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; <a href="#1087-1091">IntoStrV</a> <span class="kw">for </span>Vec&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="../gstring.rs.html#24">GStr</a>&gt; {
+<span class="kw">impl </span><a href="#1087-1091">IntoStrV</a> <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html">Vec</a>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'_ </span><a href="../gstring.rs.html#24">GStr</a>&gt; {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>run_with_strv&lt;R, F: FnOnce(<span class="kw-2">&amp;</span>[<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>]) -&gt; R&gt;(<span class="self">self</span>, f: F) -&gt; R {
+    </span><span class="kw">fn </span>run_with_strv&lt;R, F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>(<span class="kw-2">&amp;</span>[<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>]) -&gt; R&gt;(<span class="self">self</span>, f: F) -&gt; R {
         <a class="self" href="#1129">self</a>.<a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.as_slice">as_slice</a>().<a href="#1090">run_with_strv</a>(<a href="#1129">f</a>)
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; <a href="#1087-1091">IntoStrV</a> <span class="kw">for </span>Vec&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt; {
+<span class="kw">impl </span><a href="#1087-1091">IntoStrV</a> <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html">Vec</a>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'_ </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt; {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>run_with_strv&lt;R, F: FnOnce(<span class="kw-2">&amp;</span>[<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>]) -&gt; R&gt;(<span class="self">self</span>, f: F) -&gt; R {
+    </span><span class="kw">fn </span>run_with_strv&lt;R, F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>(<span class="kw-2">&amp;</span>[<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>]) -&gt; R&gt;(<span class="self">self</span>, f: F) -&gt; R {
         <a class="self" href="#1136">self</a>.<a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.as_slice">as_slice</a>().<a href="#1090">run_with_strv</a>(<a href="#1136">f</a>)
     }
 }
 
-<span class="kw">impl </span><a href="#1087-1091">IntoStrV</a> <span class="kw">for </span>Vec&lt;<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>&gt; {
+<span class="kw">impl </span><a href="#1087-1091">IntoStrV</a> <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html">Vec</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>&gt; {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>run_with_strv&lt;R, F: FnOnce(<span class="kw-2">&amp;</span>[<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>]) -&gt; R&gt;(<span class="self">self</span>, f: F) -&gt; R {
+    </span><span class="kw">fn </span>run_with_strv&lt;R, F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>(<span class="kw-2">&amp;</span>[<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>]) -&gt; R&gt;(<span class="self">self</span>, f: F) -&gt; R {
         <a class="self" href="#1143">self</a>.<a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.as_slice">as_slice</a>().<a href="#1090">run_with_strv</a>(<a href="#1143">f</a>)
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; <a href="#1087-1091">IntoStrV</a> <span class="kw">for </span>Vec&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>&gt; {
+<span class="kw">impl </span><a href="#1087-1091">IntoStrV</a> <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html">Vec</a>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'_ </span><a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>&gt; {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>run_with_strv&lt;R, F: FnOnce(<span class="kw-2">&amp;</span>[<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>]) -&gt; R&gt;(<span class="self">self</span>, f: F) -&gt; R {
+    </span><span class="kw">fn </span>run_with_strv&lt;R, F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>(<span class="kw-2">&amp;</span>[<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>]) -&gt; R&gt;(<span class="self">self</span>, f: F) -&gt; R {
         <a class="self" href="#1150">self</a>.<a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.as_slice">as_slice</a>().<a href="#1090">run_with_strv</a>(<a href="#1150">f</a>)
     }
 }
 
 <span class="kw">impl </span><a href="#1087-1091">IntoStrV</a> <span class="kw">for </span><span class="kw-2">&amp;</span>[<a href="../gstring.rs.html#1036">GString</a>] {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>run_with_strv&lt;R, F: FnOnce(<span class="kw-2">&amp;</span>[<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>]) -&gt; R&gt;(<span class="self">self</span>, f: F) -&gt; R {
-        <span class="kw">let </span>required_len = (<a class="self" href="#1157">self</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.len">len</a>() + <span class="number">1</span>) * mem::size_of::&lt;<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>&gt;();
+    </span><span class="kw">fn </span>run_with_strv&lt;R, F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>(<span class="kw-2">&amp;</span>[<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>]) -&gt; R&gt;(<span class="self">self</span>, f: F) -&gt; R {
+        <span class="kw">let </span>required_len = (<a class="self" href="#1157">self</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.len">len</a>() + <span class="number">1</span>) * <a href="https://doc.rust-lang.org/nightly/core/mem/fn.size_of.html">mem::size_of</a>::&lt;<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>&gt;();
 
         <span class="kw">if </span>required_len &lt; MAX_STACK_ALLOCATION * mem::size_of::&lt;<span class="kw-2">*mut </span>c_char&gt;() {
             <span class="kw">unsafe </span>{
-                <span class="kw">let </span><span class="kw-2">mut </span>s = mem::MaybeUninit::&lt;[<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>; <a href="#1111">MAX_STACK_ALLOCATION</a>]&gt;::uninit();
+                <span class="kw">let </span><span class="kw-2">mut </span>s = <a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html">mem::MaybeUninit</a>::&lt;[<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>; <a href="#1111">MAX_STACK_ALLOCATION</a>]&gt;::uninit();
                 <span class="kw">let </span>ptrs = <a href="#1162">s</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.as_mut_ptr">as_mut_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut *mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>;
 
                 <span class="kw">for </span>(i, item) <span class="kw">in </span><span class="self">self</span>.iter().enumerate() {
@@ -2813,14 +2813,14 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; <a href="#1087-1091">IntoStrV</a> <span class="kw">for </span><span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="../gstring.rs.html#1036">GString</a>] {
+<span class="kw">impl </span><a href="#1087-1091">IntoStrV</a> <span class="kw">for </span><span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><a href="../gstring.rs.html#1036">GString</a>] {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>run_with_strv&lt;R, F: FnOnce(<span class="kw-2">&amp;</span>[<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>]) -&gt; R&gt;(<span class="self">self</span>, f: F) -&gt; R {
-        <span class="kw">let </span>required_len = (<a class="self" href="#1182">self</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.len">len</a>() + <span class="number">1</span>) * mem::size_of::&lt;<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>&gt;();
+    </span><span class="kw">fn </span>run_with_strv&lt;R, F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>(<span class="kw-2">&amp;</span>[<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>]) -&gt; R&gt;(<span class="self">self</span>, f: F) -&gt; R {
+        <span class="kw">let </span>required_len = (<a class="self" href="#1182">self</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.len">len</a>() + <span class="number">1</span>) * <a href="https://doc.rust-lang.org/nightly/core/mem/fn.size_of.html">mem::size_of</a>::&lt;<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>&gt;();
 
         <span class="kw">if </span>required_len &lt; MAX_STACK_ALLOCATION * mem::size_of::&lt;<span class="kw-2">*mut </span>c_char&gt;() {
             <span class="kw">unsafe </span>{
-                <span class="kw">let </span><span class="kw-2">mut </span>s = mem::MaybeUninit::&lt;[<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>; <a href="#1111">MAX_STACK_ALLOCATION</a>]&gt;::uninit();
+                <span class="kw">let </span><span class="kw-2">mut </span>s = <a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html">mem::MaybeUninit</a>::&lt;[<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>; <a href="#1111">MAX_STACK_ALLOCATION</a>]&gt;::uninit();
                 <span class="kw">let </span>ptrs = <a href="#1187">s</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.as_mut_ptr">as_mut_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut *mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>;
 
                 <span class="kw">for </span>(i, item) <span class="kw">in </span><span class="self">self</span>.iter().enumerate() {
@@ -2838,14 +2838,14 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; <a href="#1087-1091">IntoStrV</a> <span class="kw">for </span><span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="../gstring.rs.html#24">GStr</a>] {
+<span class="kw">impl </span><a href="#1087-1091">IntoStrV</a> <span class="kw">for </span><span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><a href="../gstring.rs.html#24">GStr</a>] {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>run_with_strv&lt;R, F: FnOnce(<span class="kw-2">&amp;</span>[<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>]) -&gt; R&gt;(<span class="self">self</span>, f: F) -&gt; R {
-        <span class="kw">let </span>required_len = (<a class="self" href="#1207">self</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.len">len</a>() + <span class="number">1</span>) * mem::size_of::&lt;<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>&gt;();
+    </span><span class="kw">fn </span>run_with_strv&lt;R, F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>(<span class="kw-2">&amp;</span>[<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>]) -&gt; R&gt;(<span class="self">self</span>, f: F) -&gt; R {
+        <span class="kw">let </span>required_len = (<a class="self" href="#1207">self</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.len">len</a>() + <span class="number">1</span>) * <a href="https://doc.rust-lang.org/nightly/core/mem/fn.size_of.html">mem::size_of</a>::&lt;<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>&gt;();
 
         <span class="kw">if </span>required_len &lt; MAX_STACK_ALLOCATION * mem::size_of::&lt;<span class="kw-2">*mut </span>c_char&gt;() {
             <span class="kw">unsafe </span>{
-                <span class="kw">let </span><span class="kw-2">mut </span>s = mem::MaybeUninit::&lt;[<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>; <a href="#1111">MAX_STACK_ALLOCATION</a>]&gt;::uninit();
+                <span class="kw">let </span><span class="kw-2">mut </span>s = <a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html">mem::MaybeUninit</a>::&lt;[<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>; <a href="#1111">MAX_STACK_ALLOCATION</a>]&gt;::uninit();
                 <span class="kw">let </span>ptrs = <a href="#1212">s</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.as_mut_ptr">as_mut_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut *mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>;
 
                 <span class="kw">for </span>(i, item) <span class="kw">in </span><span class="self">self</span>.iter().enumerate() {
@@ -2863,15 +2863,15 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; <a href="#1087-1091">IntoStrV</a> <span class="kw">for </span><span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>] {
+<span class="kw">impl </span><a href="#1087-1091">IntoStrV</a> <span class="kw">for </span><span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>] {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>run_with_strv&lt;R, F: FnOnce(<span class="kw-2">&amp;</span>[<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>]) -&gt; R&gt;(<span class="self">self</span>, f: F) -&gt; R {
-        <span class="kw">let </span>required_len = (<a class="self" href="#1232">self</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.len">len</a>() + <span class="number">1</span>) * mem::size_of::&lt;<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>&gt;()
+    </span><span class="kw">fn </span>run_with_strv&lt;R, F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>(<span class="kw-2">&amp;</span>[<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>]) -&gt; R&gt;(<span class="self">self</span>, f: F) -&gt; R {
+        <span class="kw">let </span>required_len = (<a class="self" href="#1232">self</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.len">len</a>() + <span class="number">1</span>) * <a href="https://doc.rust-lang.org/nightly/core/mem/fn.size_of.html">mem::size_of</a>::&lt;<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>&gt;()
             + <a class="self" href="#1232">self</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|s| <a href="#1234">s</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.str.html#method.len">len</a>() + <span class="number">1</span>).<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.sum">sum</a>::&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>&gt;();
 
         <span class="kw">if </span>required_len &lt; MAX_STACK_ALLOCATION * mem::size_of::&lt;<span class="kw-2">*mut </span>c_char&gt;() {
             <span class="kw">unsafe </span>{
-                <span class="kw">let </span><span class="kw-2">mut </span>s = mem::MaybeUninit::&lt;[<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>; <a href="#1111">MAX_STACK_ALLOCATION</a>]&gt;::uninit();
+                <span class="kw">let </span><span class="kw-2">mut </span>s = <a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html">mem::MaybeUninit</a>::&lt;[<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>; <a href="#1111">MAX_STACK_ALLOCATION</a>]&gt;::uninit();
                 <span class="kw">let </span>ptrs = <a href="#1238">s</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.as_mut_ptr">as_mut_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut *mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>;
                 <span class="kw">let </span><span class="kw-2">mut </span>strs = <a href="#1239">ptrs</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/foreigntype.mut_ptr.html#method.add">add</a>(<a class="self" href="#1232">self</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.len">len</a>() + <span class="number">1</span>) <span class="kw">as </span><span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>;
 
@@ -2895,13 +2895,13 @@
 
 <span class="kw">impl </span><a href="#1087-1091">IntoStrV</a> <span class="kw">for </span><span class="kw-2">&amp;</span>[<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>] {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>run_with_strv&lt;R, F: FnOnce(<span class="kw-2">&amp;</span>[<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>]) -&gt; R&gt;(<span class="self">self</span>, f: F) -&gt; R {
-        <span class="kw">let </span>required_len = (<a class="self" href="#1262">self</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.len">len</a>() + <span class="number">1</span>) * mem::size_of::&lt;<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>&gt;()
+    </span><span class="kw">fn </span>run_with_strv&lt;R, F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>(<span class="kw-2">&amp;</span>[<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>]) -&gt; R&gt;(<span class="self">self</span>, f: F) -&gt; R {
+        <span class="kw">let </span>required_len = (<a class="self" href="#1262">self</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.len">len</a>() + <span class="number">1</span>) * <a href="https://doc.rust-lang.org/nightly/core/mem/fn.size_of.html">mem::size_of</a>::&lt;<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>&gt;()
             + <a class="self" href="#1262">self</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|s| <a href="#1264">s</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html#method.len">len</a>() + <span class="number">1</span>).<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.sum">sum</a>::&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>&gt;();
 
         <span class="kw">if </span>required_len &lt; MAX_STACK_ALLOCATION * mem::size_of::&lt;<span class="kw-2">*mut </span>c_char&gt;() {
             <span class="kw">unsafe </span>{
-                <span class="kw">let </span><span class="kw-2">mut </span>s = mem::MaybeUninit::&lt;[<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>; <a href="#1111">MAX_STACK_ALLOCATION</a>]&gt;::uninit();
+                <span class="kw">let </span><span class="kw-2">mut </span>s = <a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html">mem::MaybeUninit</a>::&lt;[<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>; <a href="#1111">MAX_STACK_ALLOCATION</a>]&gt;::uninit();
                 <span class="kw">let </span>ptrs = <a href="#1268">s</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.as_mut_ptr">as_mut_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut *mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>;
                 <span class="kw">let </span><span class="kw-2">mut </span>strs = <a href="#1269">ptrs</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/foreigntype.mut_ptr.html#method.add">add</a>(<a class="self" href="#1262">self</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.len">len</a>() + <span class="number">1</span>) <span class="kw">as </span><span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>;
 
@@ -2923,15 +2923,15 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; <a href="#1087-1091">IntoStrV</a> <span class="kw">for </span><span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>] {
+<span class="kw">impl </span><a href="#1087-1091">IntoStrV</a> <span class="kw">for </span><span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>] {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>run_with_strv&lt;R, F: FnOnce(<span class="kw-2">&amp;</span>[<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>]) -&gt; R&gt;(<span class="self">self</span>, f: F) -&gt; R {
-        <span class="kw">let </span>required_len = (<a class="self" href="#1292">self</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.len">len</a>() + <span class="number">1</span>) * mem::size_of::&lt;<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>&gt;()
+    </span><span class="kw">fn </span>run_with_strv&lt;R, F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>(<span class="kw-2">&amp;</span>[<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>]) -&gt; R&gt;(<span class="self">self</span>, f: F) -&gt; R {
+        <span class="kw">let </span>required_len = (<a class="self" href="#1292">self</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.len">len</a>() + <span class="number">1</span>) * <a href="https://doc.rust-lang.org/nightly/core/mem/fn.size_of.html">mem::size_of</a>::&lt;<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>&gt;()
             + <a class="self" href="#1292">self</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|s| <a href="#1294">s</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html#method.len">len</a>() + <span class="number">1</span>).<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.sum">sum</a>::&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>&gt;();
 
         <span class="kw">if </span>required_len &lt; MAX_STACK_ALLOCATION * mem::size_of::&lt;<span class="kw-2">*mut </span>c_char&gt;() {
             <span class="kw">unsafe </span>{
-                <span class="kw">let </span><span class="kw-2">mut </span>s = mem::MaybeUninit::&lt;[<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>; <a href="#1111">MAX_STACK_ALLOCATION</a>]&gt;::uninit();
+                <span class="kw">let </span><span class="kw-2">mut </span>s = <a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html">mem::MaybeUninit</a>::&lt;[<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>; <a href="#1111">MAX_STACK_ALLOCATION</a>]&gt;::uninit();
                 <span class="kw">let </span>ptrs = <a href="#1298">s</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.as_mut_ptr">as_mut_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut *mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>;
                 <span class="kw">let </span><span class="kw-2">mut </span>strs = <a href="#1299">ptrs</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/foreigntype.mut_ptr.html#method.add">add</a>(<a class="self" href="#1292">self</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.len">len</a>() + <span class="number">1</span>) <span class="kw">as </span><span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>;
 
@@ -2955,42 +2955,42 @@
 
 <span class="kw">impl</span>&lt;<span class="kw">const </span>N: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>&gt; <a href="#1087-1091">IntoStrV</a> <span class="kw">for </span>[<a href="../gstring.rs.html#1036">GString</a>; <a href="#1320">N</a>] {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>run_with_strv&lt;R, F: FnOnce(<span class="kw-2">&amp;</span>[<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>]) -&gt; R&gt;(<span class="self">self</span>, f: F) -&gt; R {
+    </span><span class="kw">fn </span>run_with_strv&lt;R, F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>(<span class="kw-2">&amp;</span>[<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>]) -&gt; R&gt;(<span class="self">self</span>, f: F) -&gt; R {
         <a class="self" href="#1322">self</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.array.html#method.as_slice">as_slice</a>().<a href="#1090">run_with_strv</a>(<a href="#1322">f</a>)
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, <span class="kw">const </span>N: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>&gt; <a href="#1087-1091">IntoStrV</a> <span class="kw">for </span>[<span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="../gstring.rs.html#1036">GString</a>; <a href="#1327">N</a>] {
+<span class="kw">impl</span>&lt;<span class="kw">const </span>N: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>&gt; <a href="#1087-1091">IntoStrV</a> <span class="kw">for </span>[<span class="kw-2">&amp;</span><span class="lifetime">'_ </span><a href="../gstring.rs.html#1036">GString</a>; <a href="#1327">N</a>] {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>run_with_strv&lt;R, F: FnOnce(<span class="kw-2">&amp;</span>[<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>]) -&gt; R&gt;(<span class="self">self</span>, f: F) -&gt; R {
+    </span><span class="kw">fn </span>run_with_strv&lt;R, F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>(<span class="kw-2">&amp;</span>[<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>]) -&gt; R&gt;(<span class="self">self</span>, f: F) -&gt; R {
         <a class="self" href="#1329">self</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.array.html#method.as_slice">as_slice</a>().<a href="#1090">run_with_strv</a>(<a href="#1329">f</a>)
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, <span class="kw">const </span>N: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>&gt; <a href="#1087-1091">IntoStrV</a> <span class="kw">for </span>[<span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="../gstring.rs.html#24">GStr</a>; <a href="#1334">N</a>] {
+<span class="kw">impl</span>&lt;<span class="kw">const </span>N: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>&gt; <a href="#1087-1091">IntoStrV</a> <span class="kw">for </span>[<span class="kw-2">&amp;</span><span class="lifetime">'_ </span><a href="../gstring.rs.html#24">GStr</a>; <a href="#1334">N</a>] {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>run_with_strv&lt;R, F: FnOnce(<span class="kw-2">&amp;</span>[<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>]) -&gt; R&gt;(<span class="self">self</span>, f: F) -&gt; R {
+    </span><span class="kw">fn </span>run_with_strv&lt;R, F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>(<span class="kw-2">&amp;</span>[<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>]) -&gt; R&gt;(<span class="self">self</span>, f: F) -&gt; R {
         <a class="self" href="#1336">self</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.array.html#method.as_slice">as_slice</a>().<a href="#1090">run_with_strv</a>(<a href="#1336">f</a>)
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, <span class="kw">const </span>N: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>&gt; <a href="#1087-1091">IntoStrV</a> <span class="kw">for </span>[<span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>; <a href="#1341">N</a>] {
+<span class="kw">impl</span>&lt;<span class="kw">const </span>N: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>&gt; <a href="#1087-1091">IntoStrV</a> <span class="kw">for </span>[<span class="kw-2">&amp;</span><span class="lifetime">'_ </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>; <a href="#1341">N</a>] {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>run_with_strv&lt;R, F: FnOnce(<span class="kw-2">&amp;</span>[<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>]) -&gt; R&gt;(<span class="self">self</span>, f: F) -&gt; R {
+    </span><span class="kw">fn </span>run_with_strv&lt;R, F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>(<span class="kw-2">&amp;</span>[<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>]) -&gt; R&gt;(<span class="self">self</span>, f: F) -&gt; R {
         <a class="self" href="#1343">self</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.array.html#method.as_slice">as_slice</a>().<a href="#1090">run_with_strv</a>(<a href="#1343">f</a>)
     }
 }
 
 <span class="kw">impl</span>&lt;<span class="kw">const </span>N: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>&gt; <a href="#1087-1091">IntoStrV</a> <span class="kw">for </span>[<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>; <a href="#1348">N</a>] {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>run_with_strv&lt;R, F: FnOnce(<span class="kw-2">&amp;</span>[<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>]) -&gt; R&gt;(<span class="self">self</span>, f: F) -&gt; R {
+    </span><span class="kw">fn </span>run_with_strv&lt;R, F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>(<span class="kw-2">&amp;</span>[<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>]) -&gt; R&gt;(<span class="self">self</span>, f: F) -&gt; R {
         <a class="self" href="#1350">self</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.array.html#method.as_slice">as_slice</a>().<a href="#1090">run_with_strv</a>(<a href="#1350">f</a>)
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, <span class="kw">const </span>N: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>&gt; <a href="#1087-1091">IntoStrV</a> <span class="kw">for </span>[<span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>; <a href="#1355">N</a>] {
+<span class="kw">impl</span>&lt;<span class="kw">const </span>N: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>&gt; <a href="#1087-1091">IntoStrV</a> <span class="kw">for </span>[<span class="kw-2">&amp;</span><span class="lifetime">'_ </span><a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>; <a href="#1355">N</a>] {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>run_with_strv&lt;R, F: FnOnce(<span class="kw-2">&amp;</span>[<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>]) -&gt; R&gt;(<span class="self">self</span>, f: F) -&gt; R {
+    </span><span class="kw">fn </span>run_with_strv&lt;R, F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>(<span class="kw-2">&amp;</span>[<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/type.c_char.html">c_char</a>]) -&gt; R&gt;(<span class="self">self</span>, f: F) -&gt; R {
         <a class="self" href="#1357">self</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.array.html#method.as_slice">as_slice</a>().<a href="#1090">run_with_strv</a>(<a href="#1357">f</a>)
     }
 }

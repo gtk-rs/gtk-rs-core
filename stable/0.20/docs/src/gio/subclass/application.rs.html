@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/subclass/application.rs`."><title>application.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-42caa33d.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.84.0-nightly (81eef2d36 2024-11-11)" data-channel="nightly" data-search-js="search-853ef39b.js" data-settings-js="settings-0f613d39.js" ><script src="../../../static.files/storage-59e33391.js"></script><script defer src="../../../static.files/src-script-56102188.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/subclass/application.rs`."><title>application.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-46132b98.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.85.0-nightly (c26db435b 2024-12-15)" data-channel="nightly" data-search-js="search-92e6798f.js" data-settings-js="settings-0f613d39.js" ><script src="../../../static.files/storage-59e33391.js"></script><script defer src="../../../static.files/src-script-56102188.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -619,7 +619,7 @@
 
 <span class="kw">pub struct </span><a href="../../../gio/subclass/struct.ArgumentList.html">ArgumentList</a> {
     <span class="kw">pub</span>(<span class="kw">crate</span>) ptr: <span class="kw-2">*mut *mut *mut </span>c_char,
-    items: Vec&lt;<a href="https://doc.rust-lang.org/nightly/std/ffi/os_str/struct.OsString.html">OsString</a>&gt;,
+    items: <a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html">Vec</a>&lt;<a href="https://doc.rust-lang.org/nightly/std/ffi/os_str/struct.OsString.html">OsString</a>&gt;,
 }
 
 <span class="kw">impl </span><a href="#10-13">ArgumentList</a> {
@@ -663,13 +663,13 @@
 }
 
 <span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html">fmt::Debug</a> <span class="kw">for </span><a href="#10-13">ArgumentList</a> {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, formatter: <span class="kw-2">&amp;mut </span><a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html">fmt::Formatter</a>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Error.html">fmt::Error</a>&gt; {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, formatter: <span class="kw-2">&amp;mut </span><a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html">fmt::Formatter</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(), <a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Error.html">fmt::Error</a>&gt; {
         <a class="self" href="#56">self</a>.items.<a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html#tymethod.fmt">fmt</a>(<a href="#56">formatter</a>)
     }
 }
 
-<span class="kw">impl </span>From&lt;<a href="#10-13">ArgumentList</a>&gt; <span class="kw">for </span>Vec&lt;<a href="https://doc.rust-lang.org/nightly/std/ffi/os_str/struct.OsString.html">OsString</a>&gt; {
-    <span class="kw">fn </span>from(list: <a href="#10-13">ArgumentList</a>) -&gt; Vec&lt;<a href="https://doc.rust-lang.org/nightly/std/ffi/os_str/struct.OsString.html">OsString</a>&gt; {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html">From</a>&lt;<a href="#10-13">ArgumentList</a>&gt; <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html">Vec</a>&lt;<a href="https://doc.rust-lang.org/nightly/std/ffi/os_str/struct.OsString.html">OsString</a>&gt; {
+    <span class="kw">fn </span>from(list: <a href="#10-13">ArgumentList</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html">Vec</a>&lt;<a href="https://doc.rust-lang.org/nightly/std/ffi/os_str/struct.OsString.html">OsString</a>&gt; {
         <a href="#62">list</a>.items
     }
 }
@@ -724,7 +724,7 @@
     ///
     /// ## `exit_status`
     /// exit status to fill after processing the command line.
-    </span><span class="kw">fn </span>local_command_line(<span class="kw-2">&amp;</span><span class="self">self</span>, arguments: <span class="kw-2">&amp;mut </span><a href="#10-13">ArgumentList</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="../../../glib/exit_code/struct.ExitCode.html">ExitCode</a>&gt; {
+    </span><span class="kw">fn </span>local_command_line(<span class="kw-2">&amp;</span><span class="self">self</span>, arguments: <span class="kw-2">&amp;mut </span><a href="#10-13">ArgumentList</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="../../../glib/exit_code/struct.ExitCode.html">ExitCode</a>&gt; {
         <a class="self" href="#117">self</a>.<a href="#236-257">parent_local_command_line</a>(<a href="#117">arguments</a>)
     }
 
@@ -843,7 +843,7 @@
         }
     }
 
-    <span class="kw">fn </span>parent_local_command_line(<span class="kw-2">&amp;</span><span class="self">self</span>, arguments: <span class="kw-2">&amp;mut </span><a href="#10-13">ArgumentList</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="../../../glib/exit_code/struct.ExitCode.html">ExitCode</a>&gt; {
+    <span class="kw">fn </span>parent_local_command_line(<span class="kw-2">&amp;</span><span class="self">self</span>, arguments: <span class="kw-2">&amp;mut </span><a href="#10-13">ArgumentList</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="../../../glib/exit_code/struct.ExitCode.html">ExitCode</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>data = <a href="../../../glib/subclass/types/trait.ObjectSubclassType.html#tymethod.type_data"><span class="self">Self</span>::type_data</a>();
             <span class="kw">let </span>parent_class = <a href="#238">data</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().<a href="../../../glib/subclass/types/struct.TypeData.html#method.parent_class">parent_class</a>() <span class="kw">as </span><span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GApplicationClass.html">ffi::GApplicationClass</a>;
@@ -946,22 +946,22 @@
 
 <span class="kw">impl</span>&lt;T: <a href="#67-174">ApplicationImpl</a>&gt; <a href="#181-335">ApplicationImplExt</a> <span class="kw">for </span>T {}
 
-<span class="kw">unsafe impl</span>&lt;T: <a href="#67-174">ApplicationImpl</a>&gt; IsSubclassable&lt;T&gt; <span class="kw">for </span><a href="../auto/application.rs.html#16-333">Application</a> {
-    <span class="kw">fn </span>class_init(class: <span class="kw-2">&amp;mut </span>::glib::Class&lt;<span class="self">Self</span>&gt;) {
+<span class="kw">unsafe impl</span>&lt;T: <a href="#67-174">ApplicationImpl</a>&gt; <a href="../../../glib/subclass/types/trait.IsSubclassable.html">IsSubclassable</a>&lt;T&gt; <span class="kw">for </span><a href="../auto/application.rs.html#16-333">Application</a> {
+    <span class="kw">fn </span>class_init(class: <span class="kw-2">&amp;mut </span><a href="../../../glib/object/struct.Class.html">::glib::Class</a>&lt;<span class="self">Self</span>&gt;) {
         <span class="self">Self</span>::parent_class_init::&lt;T&gt;(<a href="#340">class</a>);
 
         <span class="kw">let </span>klass = <a href="#340">class</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsMut.html#tymethod.as_mut">as_mut</a>();
-        <a href="#343">klass</a>.activate = <span class="prelude-val">Some</span>(application_activate::&lt;T&gt;);
-        <a href="#343">klass</a>.after_emit = <span class="prelude-val">Some</span>(application_after_emit::&lt;T&gt;);
-        <a href="#343">klass</a>.before_emit = <span class="prelude-val">Some</span>(application_before_emit::&lt;T&gt;);
-        <a href="#343">klass</a>.command_line = <span class="prelude-val">Some</span>(application_command_line::&lt;T&gt;);
-        <a href="#343">klass</a>.local_command_line = <span class="prelude-val">Some</span>(application_local_command_line::&lt;T&gt;);
-        <a href="#343">klass</a>.open = <span class="prelude-val">Some</span>(application_open::&lt;T&gt;);
-        <a href="#343">klass</a>.quit_mainloop = <span class="prelude-val">Some</span>(application_quit_mainloop::&lt;T&gt;);
-        <a href="#343">klass</a>.run_mainloop = <span class="prelude-val">Some</span>(application_run_mainloop::&lt;T&gt;);
-        <a href="#343">klass</a>.shutdown = <span class="prelude-val">Some</span>(application_shutdown::&lt;T&gt;);
-        <a href="#343">klass</a>.startup = <span class="prelude-val">Some</span>(application_startup::&lt;T&gt;);
-        <a href="#343">klass</a>.handle_local_options = <span class="prelude-val">Some</span>(application_handle_local_options::&lt;T&gt;);
+        <a href="#343">klass</a>.activate = <span class="prelude-val">Some</span>(<a href="#358-363">application_activate</a>::&lt;T&gt;);
+        <a href="#343">klass</a>.after_emit = <span class="prelude-val">Some</span>(<a href="#365-373">application_after_emit</a>::&lt;T&gt;);
+        <a href="#343">klass</a>.before_emit = <span class="prelude-val">Some</span>(<a href="#374-382">application_before_emit</a>::&lt;T&gt;);
+        <a href="#343">klass</a>.command_line = <span class="prelude-val">Some</span>(<a href="#383-391">application_command_line</a>::&lt;T&gt;);
+        <a href="#343">klass</a>.local_command_line = <span class="prelude-val">Some</span>(<a href="#392-411">application_local_command_line</a>::&lt;T&gt;);
+        <a href="#343">klass</a>.open = <span class="prelude-val">Some</span>(<a href="#412-423">application_open</a>::&lt;T&gt;);
+        <a href="#343">klass</a>.quit_mainloop = <span class="prelude-val">Some</span>(<a href="#424-429">application_quit_mainloop</a>::&lt;T&gt;);
+        <a href="#343">klass</a>.run_mainloop = <span class="prelude-val">Some</span>(<a href="#430-435">application_run_mainloop</a>::&lt;T&gt;);
+        <a href="#343">klass</a>.shutdown = <span class="prelude-val">Some</span>(<a href="#436-441">application_shutdown</a>::&lt;T&gt;);
+        <a href="#343">klass</a>.startup = <span class="prelude-val">Some</span>(<a href="#442-447">application_startup</a>::&lt;T&gt;);
+        <a href="#343">klass</a>.handle_local_options = <span class="prelude-val">Some</span>(<a href="#449-457">application_handle_local_options</a>::&lt;T&gt;);
     }
 }
 
@@ -1028,7 +1028,7 @@
     <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(<a href="#413">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
     <span class="kw">let </span>imp = <a href="#418">instance</a>.<a href="../../../glib/subclass/types/trait.InstanceStructExt.html#tymethod.imp">imp</a>();
 
-    <span class="kw">let </span>files: Vec&lt;<a href="../auto/file.rs.html#14-116"><span class="kw">crate</span>::File</a>&gt; = <a href="../../../glib/translate/trait.FromGlibContainer.html#tymethod.from_glib_none_num">FromGlibContainer::from_glib_none_num</a>(<a href="#414">files</a>, <a href="#415">num_files</a> <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>);
+    <span class="kw">let </span>files: <a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html">Vec</a>&lt;<a href="../auto/file.rs.html#14-116"><span class="kw">crate</span>::File</a>&gt; = <a href="../../../glib/translate/trait.FromGlibContainer.html#tymethod.from_glib_none_num">FromGlibContainer::from_glib_none_num</a>(<a href="#414">files</a>, <a href="#415">num_files</a> <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>);
     <a href="#419">imp</a>.<a href="#139-141">open</a>(<a href="#421">files</a>.<a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.as_slice">as_slice</a>(), <span class="kw-2">&amp;</span><a href="../../../glib/translate/trait.FromGlibPtrBorrow.html#tymethod.from_glib_borrow">glib::GString::from_glib_borrow</a>(<a href="#416">hint</a>))
 }
 <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>application_quit_mainloop&lt;T: <a href="#67-174">ApplicationImpl</a>&gt;(ptr: <span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GApplication.html">ffi::GApplication</a>) {
