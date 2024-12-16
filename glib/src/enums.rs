@@ -338,7 +338,7 @@ impl UnsafeFrom<gobject_ffi::GEnumValue> for EnumValue {
     }
 }
 
-unsafe impl<'a, 'b> crate::value::FromValue<'a> for &'b EnumValue {
+unsafe impl<'a> crate::value::FromValue<'a> for &EnumValue {
     type Checker = EnumTypeChecker;
 
     unsafe fn from_value(value: &'a Value) -> Self {
@@ -965,7 +965,7 @@ pub type FlagsValues = EnumerationValues<FlagsValue>;
 /// If setting/unsetting any value fails, `build()` returns `None`.
 #[must_use = "The builder must be built to be used"]
 pub struct FlagsBuilder<'a>(&'a FlagsClass, Option<Value>);
-impl<'a> FlagsBuilder<'a> {
+impl FlagsBuilder<'_> {
     fn new(flags_class: &FlagsClass) -> FlagsBuilder {
         let value = unsafe { Value::from_type_unchecked(flags_class.type_()) };
         FlagsBuilder(flags_class, Some(value))
@@ -1043,7 +1043,7 @@ impl<'a> FlagsBuilder<'a> {
     }
 }
 
-unsafe impl<'a, 'b> crate::value::FromValue<'a> for Vec<&'b FlagsValue> {
+unsafe impl<'a> crate::value::FromValue<'a> for Vec<&FlagsValue> {
     type Checker = FlagsTypeChecker;
 
     unsafe fn from_value(value: &'a Value) -> Self {

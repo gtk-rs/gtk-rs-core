@@ -176,7 +176,7 @@ impl MainContext {
 #[must_use = "if unused the main context will be released immediately"]
 pub struct MainContextAcquireGuard<'a>(&'a MainContext);
 
-impl<'a> Drop for MainContextAcquireGuard<'a> {
+impl Drop for MainContextAcquireGuard<'_> {
     #[doc(alias = "g_main_context_release")]
     #[inline]
     fn drop(&mut self) {
@@ -188,7 +188,7 @@ impl<'a> Drop for MainContextAcquireGuard<'a> {
 
 struct ThreadDefaultContext<'a>(&'a MainContext);
 
-impl<'a> ThreadDefaultContext<'a> {
+impl ThreadDefaultContext<'_> {
     fn new(ctx: &MainContext) -> ThreadDefaultContext {
         unsafe {
             ffi::g_main_context_push_thread_default(ctx.to_glib_none().0);
@@ -197,7 +197,7 @@ impl<'a> ThreadDefaultContext<'a> {
     }
 }
 
-impl<'a> Drop for ThreadDefaultContext<'a> {
+impl Drop for ThreadDefaultContext<'_> {
     #[inline]
     fn drop(&mut self) {
         unsafe {

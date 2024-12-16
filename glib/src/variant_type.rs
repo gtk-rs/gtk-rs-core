@@ -967,7 +967,7 @@ impl<'a> Iterator for VariantTyIterator<'a> {
     }
 }
 
-impl<'a> iter::FusedIterator for VariantTyIterator<'a> {}
+impl iter::FusedIterator for VariantTyIterator<'_> {}
 
 #[cfg(test)]
 mod tests {

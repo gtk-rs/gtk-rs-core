@@ -272,7 +272,6 @@
 /// [#shared]: #shared
 /// [#object]: #object
 /// [#non-derivable-classes]: #non-derivable-classes
-
 #[macro_export]
 macro_rules! wrapper {
     // Boxed

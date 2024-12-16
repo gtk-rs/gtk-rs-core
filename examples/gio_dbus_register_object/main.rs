@@ -1,5 +1,8 @@
-use gio::prelude::*;
-use std::sync::mpsc::{channel, Receiver, Sender};
+use gio::{prelude::*, IOErrorEnum};
+use std::{
+    sync::mpsc::{channel, Receiver, Sender},
+    time::Duration,
+};
 
 const EXAMPLE_XML: &str = r#"
   <node>
@@ -8,9 +11,47 @@ const EXAMPLE_XML: &str = r#"
         <arg type='s' name='name' direction='in'/>
         <arg type='s' name='greet' direction='out'/>
       </method>
+      <method name='SlowHello'>
+        <arg type='s' name='name' direction='in'/>
+        <arg type='u' name='delay' direction='in'/>
+        <arg type='s' name='greet' direction='out'/>
+      </method>
     </interface>
   </node>
 "#;
+
+#[derive(Debug, glib::Variant)]
+struct Hello {
+    name: String,
+}
+
+#[derive(Debug, glib::Variant)]
+struct SlowHello {
+    name: String,
+    delay: u32,
+}
+
+#[derive(Debug)]
+enum HelloMethod {
+    Hello(Hello),
+    SlowHello(SlowHello),
+}
+
+impl DBusMethodCall for HelloMethod {
+    fn parse_call(
+        _obj_path: &str,
+        _interface: Option<&str>,
+        method: &str,
+        params: glib::Variant,
+    ) -> Result<Self, glib::Error> {
+        match method {
+            "Hello" => Ok(params.get::<Hello>().map(Self::Hello)),
+            "SlowHello" => Ok(params.get::<SlowHello>().map(Self::SlowHello)),
+            _ => Err(glib::Error::new(IOErrorEnum::Failed, "No such method")),
+        }
+        .and_then(|p| p.ok_or_else(|| glib::Error::new(IOErrorEnum::Failed, "Invalid parameters")))
+    }
+}
 
 fn on_startup(app: &gio::Application, tx: &Sender<gio::RegistrationId>) {
     let connection = app.dbus_connection().expect("connection");
@@ -22,25 +63,25 @@ fn on_startup(app: &gio::Application, tx: &Sender<gio::RegistrationId>) {
 
     if let Ok(id) = connection
         .register_object("/com/github/gtk_rs/examples/HelloWorld", &example)
-        .method_call(glib::clone!(
-            #[strong]
-            app,
-            move |_, _, _, _, method, params, invocation| {
-                match method {
-                    "Hello" => {
-                        if let Some((name,)) = <(String,)>::from_variant(&params) {
-                            let greet = format!("Hello {name}!");
-                            println!("{greet}");
-                            invocation.return_value(Some(&(greet,).to_variant()));
-                        } else {
-                            invocation.return_error(gio::IOErrorEnum::Failed, "Invalid parameters");
-                        }
+        .typed_method_call::<HelloMethod>()
+        .invoke_and_return_future_local(|_, sender, call| {
+            println!("Method call from {sender:?}");
+            async {
+                match call {
+                    HelloMethod::Hello(Hello { name }) => {
+                        let greet = format!("Hello {name}!");
+                        println!("{greet}");
+                        Ok(Some(greet.to_variant()))
                     }
-                    _ => unreachable!(),
+                    HelloMethod::SlowHello(SlowHello { name, delay }) => {
+                        glib::timeout_future(Duration::from_secs(delay as u64)).await;
+                        let greet = format!("Hello {name} after {delay} seconds!");
+                        println!("{greet}");
+                        Ok(Some(greet.to_variant()))
+                    }
                 }
-                app.quit();
             }
-        ))
+        })
         .build()
     {
         println!("Registered object");

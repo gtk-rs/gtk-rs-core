@@ -4,6 +4,7 @@
 #![allow(clippy::type_complexity)]
 #![allow(clippy::too_many_arguments)]
 #![allow(clippy::missing_safety_doc)]
+#![allow(clippy::manual_c_str_literals)]
 #![doc = include_str!("../README.md")]
 
 pub use gio_sys as ffi;
@@ -28,8 +29,8 @@ mod dbus;
 pub use self::dbus::*;
 mod dbus_connection;
 pub use self::dbus_connection::{
-    ActionGroupExportId, FilterId, MenuModelExportId, RegistrationId, SignalSubscriptionId,
-    WatcherId,
+    ActionGroupExportId, FilterId, MenuModelExportId, RegistrationBuilder, RegistrationId,
+    SignalSubscriptionId, WatcherId,
 };
 mod dbus_message;
 mod dbus_method_invocation;

@@ -221,7 +221,7 @@ impl DBusConnection {
     #[cfg_attr(docsrs, doc(cfg(unix)))]
     #[doc(alias = "g_dbus_connection_call_with_unix_fd_list")]
     pub fn call_with_unix_fd_list<
-        P: FnOnce(Result<(glib::Variant, UnixFDList), glib::Error>) + 'static,
+        P: FnOnce(Result<(glib::Variant, Option<UnixFDList>), glib::Error>) + 'static,
     >(
         &self,
         bus_name: Option<&str>,
@@ -249,7 +249,7 @@ impl DBusConnection {
         let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
             Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn call_with_unix_fd_list_trampoline<
-            P: FnOnce(Result<(glib::Variant, UnixFDList), glib::Error>) + 'static,
+            P: FnOnce(Result<(glib::Variant, Option<UnixFDList>), glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -308,8 +308,9 @@ impl DBusConnection {
         fd_list: Option<&(impl IsA<UnixFDList> + Clone + 'static)>,
     ) -> Pin<
         Box_<
-            dyn std::future::Future<Output = Result<(glib::Variant, UnixFDList), glib::Error>>
-                + 'static,
+            dyn std::future::Future<
+                    Output = Result<(glib::Variant, Option<UnixFDList>), glib::Error>,
+                > + 'static,
         >,
     > {
         let bus_name = bus_name.map(ToOwned::to_owned);
@@ -356,7 +357,7 @@ impl DBusConnection {
         timeout_msec: i32,
         fd_list: Option<&impl IsA<UnixFDList>>,
         cancellable: Option<&impl IsA<Cancellable>>,
-    ) -> Result<(glib::Variant, UnixFDList), glib::Error> {
+    ) -> Result<(glib::Variant, Option<UnixFDList>), glib::Error> {
         unsafe {
             let mut out_fd_list = std::ptr::null_mut();
             let mut error = std::ptr::null_mut();

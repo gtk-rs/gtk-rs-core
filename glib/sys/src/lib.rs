@@ -794,6 +794,8 @@ pub const GLIB_SYSDEF_MSG_DONTROUTE: c_int = 4;
 pub const GLIB_SYSDEF_MSG_OOB: c_int = 1;
 pub const GLIB_SYSDEF_MSG_PEEK: c_int = 2;
 pub const G_TEST_OPTION_ISOLATE_DIRS: &[u8] = b"isolate_dirs\0";
+pub const G_TEST_OPTION_NONFATAL_ASSERTIONS: &[u8] = b"nonfatal-assertions\0";
+pub const G_TEST_OPTION_NO_PRGNAME: &[u8] = b"no_g_set_prgname\0";
 pub const G_TIME_SPAN_DAY: i64 = 86400000000;
 pub const G_TIME_SPAN_HOUR: i64 = 3600000000;
 pub const G_TIME_SPAN_MILLISECOND: i64 = 1000;
@@ -5369,6 +5371,9 @@ extern "C" {
         data: gpointer,
         error: *mut *mut GError,
     ) -> *mut GThread;
+    #[cfg(feature = "v2_84")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_84")))]
+    pub fn g_thread_get_name(thread: *mut GThread) -> *const c_char;
     pub fn g_thread_join(thread: *mut GThread) -> gpointer;
     pub fn g_thread_ref(thread: *mut GThread) -> *mut GThread;
     pub fn g_thread_set_priority(thread: *mut GThread, priority: GThreadPriority);

@@ -392,7 +392,7 @@ pub trait DBusProxyExt: IsA<DBusProxy> + sealed::Sealed + 'static {
     #[cfg_attr(docsrs, doc(cfg(unix)))]
     #[doc(alias = "g_dbus_proxy_call_with_unix_fd_list")]
     fn call_with_unix_fd_list<
-        P: FnOnce(Result<(glib::Variant, UnixFDList), glib::Error>) + 'static,
+        P: FnOnce(Result<(glib::Variant, Option<UnixFDList>), glib::Error>) + 'static,
     >(
         &self,
         method_name: &str,
@@ -416,7 +416,7 @@ pub trait DBusProxyExt: IsA<DBusProxy> + sealed::Sealed + 'static {
         let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
             Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn call_with_unix_fd_list_trampoline<
-            P: FnOnce(Result<(glib::Variant, UnixFDList), glib::Error>) + 'static,
+            P: FnOnce(Result<(glib::Variant, Option<UnixFDList>), glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -467,8 +467,9 @@ pub trait DBusProxyExt: IsA<DBusProxy> + sealed::Sealed + 'static {
         fd_list: Option<&(impl IsA<UnixFDList> + Clone + 'static)>,
     ) -> Pin<
         Box_<
-            dyn std::future::Future<Output = Result<(glib::Variant, UnixFDList), glib::Error>>
-                + 'static,
+            dyn std::future::Future<
+                    Output = Result<(glib::Variant, Option<UnixFDList>), glib::Error>,
+                > + 'static,
         >,
     > {
         let method_name = String::from(method_name);
@@ -503,7 +504,7 @@ pub trait DBusProxyExt: IsA<DBusProxy> + sealed::Sealed + 'static {
         timeout_msec: i32,
         fd_list: Option<&impl IsA<UnixFDList>>,
         cancellable: Option<&impl IsA<Cancellable>>,
-    ) -> Result<(glib::Variant, UnixFDList), glib::Error> {
+    ) -> Result<(glib::Variant, Option<UnixFDList>), glib::Error> {
         unsafe {
             let mut out_fd_list = std::ptr::null_mut();
             let mut error = std::ptr::null_mut();

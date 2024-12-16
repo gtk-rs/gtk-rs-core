@@ -1929,10 +1929,10 @@ extern "C" {
     //=========================================================================
     // GWeakRef
     //=========================================================================
+    pub fn g_weak_ref_set(weak_ref: *mut GWeakRef, object: *mut GObject);
     pub fn g_weak_ref_clear(weak_ref: *mut GWeakRef);
     pub fn g_weak_ref_get(weak_ref: *mut GWeakRef) -> *mut GObject;
     pub fn g_weak_ref_init(weak_ref: *mut GWeakRef, object: *mut GObject);
-    pub fn g_weak_ref_set(weak_ref: *mut GWeakRef, object: *mut GObject);
 
     //=========================================================================
     // GBinding
