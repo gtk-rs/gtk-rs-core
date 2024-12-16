@@ -1,6 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use std::fmt;
+use std::{fmt, ops};
 
 use glib::translate::*;
 
@@ -74,5 +74,85 @@ impl fmt::Debug for Vec4 {
 impl Default for Vec4 {
     fn default() -> Self {
         Self::zero()
+    }
+}
+
+// addition/subtraction
+impl ops::Add<Vec4> for Vec4 {
+    type Output = Vec4;
+
+    fn add(self, rhs: Vec4) -> Self::Output {
+        (&self).add(&rhs)
+    }
+}
+impl ops::AddAssign<Vec4> for Vec4 {
+    fn add_assign(&mut self, rhs: Vec4) {
+        *self = *self + rhs;
+    }
+}
+impl ops::Sub<Vec4> for Vec4 {
+    type Output = Vec4;
+
+    fn sub(self, rhs: Vec4) -> Self::Output {
+        (&self).subtract(&rhs)
+    }
+}
+impl ops::SubAssign<Vec4> for Vec4 {
+    fn sub_assign(&mut self, rhs: Vec4) {
+        *self = *self - rhs;
+    }
+}
+impl ops::Neg for Vec4 {
+    type Output = Vec4;
+
+    fn neg(self) -> Self::Output {
+        (&self).negate()
+    }
+}
+
+// scalar multiplication
+impl ops::Mul<f32> for Vec4 {
+    type Output = Vec4;
+
+    fn mul(self, rhs: f32) -> Self::Output {
+        (&self).scale(rhs)
+    }
+} 
+impl ops::MulAssign<f32> for Vec4 {
+    fn mul_assign(&mut self, rhs: f32) {
+        *self = *self * rhs;
+    }
+}
+impl ops::Mul<Vec4> for f32 {
+    type Output = Vec4;
+
+    fn mul(self, rhs: Vec4) -> Self::Output {
+        rhs * self
+    }
+}
+
+// Component-wise multiplication/division
+impl ops::Mul<Vec4> for Vec4 {
+    type Output = Vec4;
+
+    fn mul(self, rhs: Vec4) -> Self::Output {
+        (&self).multiply(&rhs)
+    }
+}
+impl ops::MulAssign<Vec4> for Vec4 {
+    fn mul_assign(&mut self, rhs: Vec4) {
+        *self = *self * rhs;
+    }
+}
+impl ops::Div<Vec4> for Vec4 {
+    type Output = Vec4;
+
+    fn div(self, rhs: Vec4) -> Self::Output {
+        (&self).divide(&rhs)
+    }
+}
+impl ops::DivAssign<Vec4> for Vec4 {
+    fn div_assign(&mut self, rhs: Vec4) {
+        *self = *self / rhs;
     }
 }
