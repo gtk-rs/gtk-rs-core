@@ -241,7 +241,7 @@ pub trait PermissionExt: IsA<Permission> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                b"notify::allowed\0".as_ptr() as *const _,
+                c"notify::allowed".as_ptr() as *const _,
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_allowed_trampoline::<Self, F> as *const (),
                 )),
@@ -267,7 +267,7 @@ pub trait PermissionExt: IsA<Permission> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                b"notify::can-acquire\0".as_ptr() as *const _,
+                c"notify::can-acquire".as_ptr() as *const _,
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_can_acquire_trampoline::<Self, F> as *const (),
                 )),
@@ -293,7 +293,7 @@ pub trait PermissionExt: IsA<Permission> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                b"notify::can-release\0".as_ptr() as *const _,
+                c"notify::can-release".as_ptr() as *const _,
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_can_release_trampoline::<Self, F> as *const (),
                 )),

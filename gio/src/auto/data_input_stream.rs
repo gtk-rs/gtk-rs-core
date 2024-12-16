@@ -288,7 +288,7 @@ pub trait DataInputStreamExt: IsA<DataInputStream> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                b"notify::byte-order\0".as_ptr() as *const _,
+                c"notify::byte-order".as_ptr() as *const _,
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_byte_order_trampoline::<Self, F> as *const (),
                 )),
@@ -314,7 +314,7 @@ pub trait DataInputStreamExt: IsA<DataInputStream> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                b"notify::newline-type\0".as_ptr() as *const _,
+                c"notify::newline-type".as_ptr() as *const _,
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_newline_type_trampoline::<Self, F> as *const (),
                 )),

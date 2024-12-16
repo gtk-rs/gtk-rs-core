@@ -65,7 +65,7 @@ pub trait DebugControllerExt: IsA<DebugController> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                b"notify::debug-enabled\0".as_ptr() as *const _,
+                c"notify::debug-enabled".as_ptr() as *const _,
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_debug_enabled_trampoline::<Self, F> as *const (),
                 )),

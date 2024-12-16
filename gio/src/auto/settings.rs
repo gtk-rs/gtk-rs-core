@@ -558,7 +558,7 @@ pub trait SettingsExt: IsA<Settings> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                b"writable-change-event\0".as_ptr() as *const _,
+                c"writable-change-event".as_ptr() as *const _,
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     writable_change_event_trampoline::<Self, F> as *const (),
                 )),
@@ -621,7 +621,7 @@ pub trait SettingsExt: IsA<Settings> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                b"notify::delay-apply\0".as_ptr() as *const _,
+                c"notify::delay-apply".as_ptr() as *const _,
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_delay_apply_trampoline::<Self, F> as *const (),
                 )),
@@ -647,7 +647,7 @@ pub trait SettingsExt: IsA<Settings> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                b"notify::has-unapplied\0".as_ptr() as *const _,
+                c"notify::has-unapplied".as_ptr() as *const _,
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_has_unapplied_trampoline::<Self, F> as *const (),
                 )),

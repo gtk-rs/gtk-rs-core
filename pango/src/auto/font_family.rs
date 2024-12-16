@@ -110,7 +110,7 @@ pub trait FontFamilyExt: IsA<FontFamily> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                b"notify::is-monospace\0".as_ptr() as *const _,
+                c"notify::is-monospace".as_ptr() as *const _,
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_is_monospace_trampoline::<Self, F> as *const (),
                 )),
@@ -138,7 +138,7 @@ pub trait FontFamilyExt: IsA<FontFamily> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                b"notify::is-variable\0".as_ptr() as *const _,
+                c"notify::is-variable".as_ptr() as *const _,
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_is_variable_trampoline::<Self, F> as *const (),
                 )),
@@ -163,7 +163,7 @@ pub trait FontFamilyExt: IsA<FontFamily> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                b"notify::name\0".as_ptr() as *const _,
+                c"notify::name".as_ptr() as *const _,
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_name_trampoline::<Self, F> as *const (),
                 )),

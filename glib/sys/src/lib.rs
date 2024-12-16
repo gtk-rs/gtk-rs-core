@@ -5371,6 +5371,9 @@ extern "C" {
         data: gpointer,
         error: *mut *mut GError,
     ) -> *mut GThread;
+    #[cfg(feature = "v2_84")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_84")))]
+    pub fn g_thread_get_name(thread: *mut GThread) -> *const c_char;
     pub fn g_thread_join(thread: *mut GThread) -> gpointer;
     pub fn g_thread_ref(thread: *mut GThread) -> *mut GThread;
     pub fn g_thread_set_priority(thread: *mut GThread, priority: GThreadPriority);

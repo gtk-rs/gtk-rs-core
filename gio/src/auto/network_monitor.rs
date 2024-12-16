@@ -172,7 +172,7 @@ pub trait NetworkMonitorExt: IsA<NetworkMonitor> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                b"network-changed\0".as_ptr() as *const _,
+                c"network-changed".as_ptr() as *const _,
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     network_changed_trampoline::<Self, F> as *const (),
                 )),
@@ -198,7 +198,7 @@ pub trait NetworkMonitorExt: IsA<NetworkMonitor> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                b"notify::connectivity\0".as_ptr() as *const _,
+                c"notify::connectivity".as_ptr() as *const _,
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_connectivity_trampoline::<Self, F> as *const (),
                 )),
@@ -224,7 +224,7 @@ pub trait NetworkMonitorExt: IsA<NetworkMonitor> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                b"notify::network-available\0".as_ptr() as *const _,
+                c"notify::network-available".as_ptr() as *const _,
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_network_available_trampoline::<Self, F> as *const (),
                 )),
@@ -250,7 +250,7 @@ pub trait NetworkMonitorExt: IsA<NetworkMonitor> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                b"notify::network-metered\0".as_ptr() as *const _,
+                c"notify::network-metered".as_ptr() as *const _,
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_network_metered_trampoline::<Self, F> as *const (),
                 )),

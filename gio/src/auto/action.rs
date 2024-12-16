@@ -136,7 +136,7 @@ pub trait ActionExt: IsA<Action> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                b"notify::enabled\0".as_ptr() as *const _,
+                c"notify::enabled".as_ptr() as *const _,
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_enabled_trampoline::<Self, F> as *const (),
                 )),
@@ -159,7 +159,7 @@ pub trait ActionExt: IsA<Action> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                b"notify::name\0".as_ptr() as *const _,
+                c"notify::name".as_ptr() as *const _,
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_name_trampoline::<Self, F> as *const (),
                 )),
@@ -185,7 +185,7 @@ pub trait ActionExt: IsA<Action> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                b"notify::parameter-type\0".as_ptr() as *const _,
+                c"notify::parameter-type".as_ptr() as *const _,
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_parameter_type_trampoline::<Self, F> as *const (),
                 )),
@@ -208,7 +208,7 @@ pub trait ActionExt: IsA<Action> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                b"notify::state\0".as_ptr() as *const _,
+                c"notify::state".as_ptr() as *const _,
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_state_trampoline::<Self, F> as *const (),
                 )),
@@ -231,7 +231,7 @@ pub trait ActionExt: IsA<Action> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                b"notify::state-type\0".as_ptr() as *const _,
+                c"notify::state-type".as_ptr() as *const _,
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_state_type_trampoline::<Self, F> as *const (),
                 )),

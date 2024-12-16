@@ -54,7 +54,7 @@ pub trait MemoryMonitorExt: IsA<MemoryMonitor> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                b"low-memory-warning\0".as_ptr() as *const _,
+                c"low-memory-warning".as_ptr() as *const _,
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     low_memory_warning_trampoline::<Self, F> as *const (),
                 )),

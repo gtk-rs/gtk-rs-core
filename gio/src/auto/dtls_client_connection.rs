@@ -121,7 +121,7 @@ pub trait DtlsClientConnectionExt: IsA<DtlsClientConnection> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                b"notify::accepted-cas\0".as_ptr() as *const _,
+                c"notify::accepted-cas".as_ptr() as *const _,
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_accepted_cas_trampoline::<Self, F> as *const (),
                 )),
@@ -147,7 +147,7 @@ pub trait DtlsClientConnectionExt: IsA<DtlsClientConnection> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                b"notify::server-identity\0".as_ptr() as *const _,
+                c"notify::server-identity".as_ptr() as *const _,
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_server_identity_trampoline::<Self, F> as *const (),
                 )),
@@ -174,7 +174,7 @@ pub trait DtlsClientConnectionExt: IsA<DtlsClientConnection> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                b"notify::validation-flags\0".as_ptr() as *const _,
+                c"notify::validation-flags".as_ptr() as *const _,
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_validation_flags_trampoline::<Self, F> as *const (),
                 )),

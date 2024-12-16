@@ -73,7 +73,7 @@ impl DBusAuthObserver {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                b"allow-mechanism\0".as_ptr() as *const _,
+                c"allow-mechanism".as_ptr() as *const _,
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     allow_mechanism_trampoline::<F> as *const (),
                 )),
@@ -111,7 +111,7 @@ impl DBusAuthObserver {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                b"authorize-authenticated-peer\0".as_ptr() as *const _,
+                c"authorize-authenticated-peer".as_ptr() as *const _,
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     authorize_authenticated_peer_trampoline::<F> as *const (),
                 )),
