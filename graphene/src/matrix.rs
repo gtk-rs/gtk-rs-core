@@ -4,7 +4,7 @@ use std::fmt;
 
 use glib::translate::*;
 
-use crate::{ffi, Matrix, Point3D, Vec3, Vec4};
+use crate::{ffi, Matrix, Point, Point3D, Vec3, Vec4};
 
 impl Matrix {
     #[doc(alias = "graphene_matrix_init_from_2d")]
@@ -236,3 +236,45 @@ mod tests {
         );
     }
 }
+
+impl std::ops::Mul<Matrix> for Matrix {
+    type Output = Matrix;
+
+    fn mul(self, rhs: Matrix) -> Self::Output {
+        (&self).multiply(&rhs)
+    }
+}
+
+impl std::ops::Mul<Vec4> for Matrix {
+    type Output = Vec4;
+
+    fn mul(self, rhs: Vec4) -> Self::Output {
+        (&self).transform_vec4(&rhs)
+    }
+}
+
+impl std::ops::Mul<Vec3> for Matrix {
+    type Output = Vec3;
+
+    fn mul(self, rhs: Vec3) -> Self::Output {
+        (&self).transform_vec3(&rhs)
+    }
+}
+
+impl std::ops::Mul<Point> for Matrix {
+    type Output = Point;
+
+    fn mul(self, rhs: Point) -> Self::Output {
+        (&self).transform_point(&rhs)
+    }
+}
+
+
+impl std::ops::Mul<Point3D> for Matrix {
+    type Output = Point3D;
+
+    fn mul(self, rhs: Point3D) -> Self::Output {
+        (&self).transform_point3d(&rhs)
+    }
+}
+
