@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/value.rs`."><title>value.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-46132b98.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.85.0-nightly (d4025ee45 2024-12-12)" data-channel="nightly" data-search-js="search-92e6798f.js" data-settings-js="settings-0f613d39.js" ><script src="../../static.files/storage-59e33391.js"></script><script defer src="../../static.files/src-script-56102188.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/value.rs`."><title>value.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-46132b98.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.85.0-nightly (c26db435b 2024-12-15)" data-channel="nightly" data-search-js="search-92e6798f.js" data-settings-js="settings-0f613d39.js" ><script src="../../static.files/storage-59e33391.js"></script><script defer src="../../static.files/src-script-56102188.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -1876,7 +1876,7 @@
 <span class="kw">use </span>libc::{c_char, <a href="https://doc.rust-lang.org/nightly/core/ffi/enum.c_void.html">c_void</a>};
 
 <span class="kw">use crate</span>::{
-    ffi, <a href="../../gobject_sys/index.html">gobject_ffi</a>,
+    <a href="../../glib_sys/index.html">ffi</a>, <a href="../../gobject_sys/index.html">gobject_ffi</a>,
     <a href="gstring.rs.html#1028">gstring::GString</a>,
     <a href="lib.rs.html#159">prelude</a>::<span class="kw-2">*</span>,
     <a href="lib.rs.html#164">translate</a>::<span class="kw-2">*</span>,
@@ -2265,7 +2265,7 @@
 
 <span class="attr">#[inline]
 </span><span class="kw">unsafe fn </span>copy_value(value: <span class="kw-2">*const </span><a href="../../gobject_sys/struct.GValue.html">gobject_ffi::GValue</a>) -&gt; <span class="kw-2">*mut </span><a href="../../gobject_sys/struct.GValue.html">gobject_ffi::GValue</a> {
-    <span class="kw">let </span>copy = ffi::g_malloc0(<a href="https://doc.rust-lang.org/nightly/core/mem/fn.size_of.html">mem::size_of</a>::&lt;<a href="../../gobject_sys/struct.GValue.html">gobject_ffi::GValue</a>&gt;()) <span class="kw">as </span><span class="kw-2">*mut </span><a href="../../gobject_sys/struct.GValue.html">gobject_ffi::GValue</a>;
+    <span class="kw">let </span>copy = <a href="../../glib_sys/fn.g_malloc0.html">ffi::g_malloc0</a>(<a href="https://doc.rust-lang.org/nightly/core/mem/fn.size_of.html">mem::size_of</a>::&lt;<a href="../../gobject_sys/struct.GValue.html">gobject_ffi::GValue</a>&gt;()) <span class="kw">as </span><span class="kw-2">*mut </span><a href="../../gobject_sys/struct.GValue.html">gobject_ffi::GValue</a>;
     <a href="#463-466">copy_into_value</a>(<a href="#446">copy</a>, <a href="#445">value</a>);
     <a href="#446">copy</a>
 }
@@ -2273,7 +2273,7 @@
 <span class="attr">#[inline]
 </span><span class="kw">unsafe fn </span>free_value(value: <span class="kw-2">*mut </span><a href="../../gobject_sys/struct.GValue.html">gobject_ffi::GValue</a>) {
     <a href="#469-475">clear_value</a>(<a href="#452">value</a>);
-    ffi::g_free(<a href="#452">value</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
+    <a href="../../glib_sys/fn.g_free.html">ffi::g_free</a>(<a href="#452">value</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
 }
 
 <span class="attr">#[inline]
@@ -2495,14 +2495,14 @@
     /// Whether a transformation rule was found and could be applied.
     ///  Upon failing transformations, `dest_value` is left untouched.
     </span><span class="attr">#[doc(alias = <span class="string">"g_value_transform"</span>)]
-    </span><span class="kw">pub fn </span>transform&lt;T: <a href="#67-75">ValueType</a>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="#478-512">Value</a>, <a href="error.rs.html#208-216"><span class="kw">crate</span>::BoolError</a>&gt; {
+    </span><span class="kw">pub fn </span>transform&lt;T: <a href="#67-75">ValueType</a>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="#478-512">Value</a>, <a href="error.rs.html#243-251"><span class="kw">crate</span>::BoolError</a>&gt; {
         <a class="self" href="#676">self</a>.<a href="#683-699">transform_with_type</a>(<a href="types.rs.html#293">T::Type::static_type</a>())
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Tries to transform the value into a value of the target type
     </span><span class="attr">#[doc(alias = <span class="string">"g_value_transform"</span>)]
-    </span><span class="kw">pub fn </span>transform_with_type(<span class="kw-2">&amp;</span><span class="self">self</span>, type_: <a href="types.rs.html#22">Type</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="#478-512">Value</a>, <a href="error.rs.html#208-216"><span class="kw">crate</span>::BoolError</a>&gt; {
+    </span><span class="kw">pub fn </span>transform_with_type(<span class="kw-2">&amp;</span><span class="self">self</span>, type_: <a href="types.rs.html#22">Type</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="#478-512">Value</a>, <a href="error.rs.html#243-251"><span class="kw">crate</span>::BoolError</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>dest = <a href="#521-529">Value::from_type</a>(<a href="#683">type_</a>);
             <span class="kw">if </span>from_glib(gobject_ffi::g_value_transform(
@@ -2511,7 +2511,7 @@
             )) {
                 <span class="prelude-val">Ok</span>(<a href="#685">dest</a>)
             } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(<a class="macro" href="error.rs.html#154-176">crate::bool_error!</a>(
+                <span class="prelude-val">Err</span>(<a class="macro" href="error.rs.html#189-211">crate::bool_error!</a>(
                     <span class="string">"Can't transform value of type '{}' into '{}'"</span>,
                     <span class="self">self</span>.type_(),
                     type_
@@ -3333,7 +3333,7 @@
 
             <a href="../../gobject_sys/fn.g_value_set_boxed.html">gobject_ffi::g_value_set_boxed</a>(
                 <a href="#1510">value</a>.<a href="translate.rs.html#471">to_glib_none_mut</a>().<span class="number">0</span>,
-                <a class="self" href="#1508">self</a>.<span class="number">0</span>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0 </span><span class="kw">as </span>ffi::gconstpointer,
+                <a class="self" href="#1508">self</a>.<span class="number">0</span>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0 </span><span class="kw">as </span><a href="../../glib_sys/type.gconstpointer.html">ffi::gconstpointer</a>,
             );
 
             <a href="#1510">value</a>
@@ -3354,7 +3354,7 @@
 
             <a href="../../gobject_sys/fn.g_value_take_boxed.html">gobject_ffi::g_value_take_boxed</a>(
                 <a href="#1531">value</a>.<a href="translate.rs.html#471">to_glib_none_mut</a>().<span class="number">0</span>,
-                <a href="#1529">v</a>.<span class="number">0</span>.<a href="translate.rs.html#456-458">to_glib_full</a>() <span class="kw">as </span>ffi::gconstpointer,
+                <a href="#1529">v</a>.<span class="number">0</span>.<a href="translate.rs.html#456-458">to_glib_full</a>() <span class="kw">as </span><a href="../../glib_sys/type.gconstpointer.html">ffi::gconstpointer</a>,
             );
 
             <a href="#1531">value</a>
@@ -3369,7 +3369,7 @@
         <span class="kw">unsafe </span>{
             <a href="../../gobject_sys/fn.g_value_set_boxed.html">gobject_ffi::g_value_set_boxed</a>(
                 <a href="#1546">value</a>.<a href="translate.rs.html#471">to_glib_none_mut</a>().<span class="number">0</span>,
-                <a href="#1545">s</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|s| <span class="kw-2">&amp;</span><a href="#1550">s</a>.<span class="number">0</span>).<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0 </span><span class="kw">as </span>ffi::gconstpointer,
+                <a href="#1545">s</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|s| <span class="kw-2">&amp;</span><a href="#1550">s</a>.<span class="number">0</span>).<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0 </span><span class="kw">as </span><a href="../../glib_sys/type.gconstpointer.html">ffi::gconstpointer</a>,
             );
         }
 
