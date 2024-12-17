@@ -174,6 +174,7 @@ mod windows_streams {
 }
 
 #[cfg(not(feature = "v2_84"))]
+#[cfg(target_family = "unix")]
 mod unix_mount_compat {
     #![allow(clippy::missing_safety_doc)]
 
@@ -284,4 +285,5 @@ mod unix_mount_compat {
 }
 
 #[cfg(not(feature = "v2_84"))]
+#[cfg(target_family = "unix")]
 pub use unix_mount_compat::*;
