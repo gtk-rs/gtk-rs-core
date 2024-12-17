@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/closure.rs`."><title>closure.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-46132b98.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.85.0-nightly (c26db435b 2024-12-15)" data-channel="nightly" data-search-js="search-92e6798f.js" data-settings-js="settings-0f613d39.js" ><script src="../../static.files/storage-59e33391.js"></script><script defer src="../../static.files/src-script-56102188.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/closure.rs`."><title>closure.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-46132b98.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.85.0-nightly (6d9f6ae36 2024-12-16)" data-channel="nightly" data-search-js="search-036cda7a.js" data-settings-js="settings-0f613d39.js" ><script src="../../static.files/storage-59e33391.js"></script><script defer src="../../static.files/src-script-56102188.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -528,7 +528,7 @@
 
 <span class="kw">use </span>libc::{c_uint, <a href="https://doc.rust-lang.org/nightly/core/ffi/enum.c_void.html">c_void</a>};
 
-<span class="kw">use crate</span>::{<a href="../../gobject_sys/index.html">gobject_ffi</a>, <a href="lib.rs.html#159">prelude</a>::<span class="kw-2">*</span>, <a href="lib.rs.html#164">translate</a>::<span class="kw-2">*</span>, <a href="types.rs.html#22">Type</a>, <a href="value.rs.html#478-523">Value</a>};
+<span class="kw">use crate</span>::{<a href="../../gobject_sys/index.html">gobject_ffi</a>, <a href="lib.rs.html#159">prelude</a>::<span class="kw-2">*</span>, <a href="lib.rs.html#164">translate</a>::<span class="kw-2">*</span>, <a href="types.rs.html#22">Type</a>, <a href="value.rs.html#478-512">Value</a>};
 
 <a class="macro" href="wrapper.rs.html#276-443">wrapper!</a> {
     <span class="attr">#[derive(PartialEq, Eq, PartialOrd, Ord, Debug, Hash)]
@@ -576,7 +576,7 @@
     /// );
     /// ```
     </span><span class="attr">#[doc(alias = <span class="string">"g_closure_new"</span>)]
-    </span><span class="kw">pub fn </span>new&lt;F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span>[<a href="value.rs.html#478-523">Value</a>]) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="value.rs.html#478-523">Value</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>&gt;(callback: F) -&gt; <span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>new&lt;F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span>[<a href="value.rs.html#478-512">Value</a>]) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="value.rs.html#478-512">Value</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>&gt;(callback: F) -&gt; <span class="self">Self </span>{
         <span class="self">Self</span>(<a href="#181-183">Closure::new</a>(<a href="#57">callback</a>))
     }
 
@@ -593,7 +593,7 @@
     ///
     /// Invoking the closure from a different thread than this one will panic.
     </span><span class="attr">#[doc(alias = <span class="string">"g_closure_new"</span>)]
-    </span><span class="kw">pub fn </span>new_local&lt;F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span>[<a href="value.rs.html#478-523">Value</a>]) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="value.rs.html#478-523">Value</a>&gt; + <span class="lifetime">'static</span>&gt;(callback: F) -&gt; <span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>new_local&lt;F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span>[<a href="value.rs.html#478-512">Value</a>]) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="value.rs.html#478-512">Value</a>&gt; + <span class="lifetime">'static</span>&gt;(callback: F) -&gt; <span class="self">Self </span>{
         <span class="self">Self</span>(<a href="#198-202">Closure::new_local</a>(<a href="#74">callback</a>))
     }
 
@@ -630,7 +630,7 @@
     /// The argument types and return value type must match the ones expected by the closure or
     /// otherwise this function panics.
     </span><span class="attr">#[doc(alias = <span class="string">"g_closure_invoke"</span>)]
-    </span><span class="kw">pub fn </span>invoke_with_values(<span class="kw-2">&amp;</span><span class="self">self</span>, return_type: <a href="types.rs.html#22">Type</a>, values: <span class="kw-2">&amp;</span>[<a href="value.rs.html#478-523">Value</a>]) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="value.rs.html#478-523">Value</a>&gt; {
+    </span><span class="kw">pub fn </span>invoke_with_values(<span class="kw-2">&amp;</span><span class="self">self</span>, return_type: <a href="types.rs.html#22">Type</a>, values: <span class="kw-2">&amp;</span>[<a href="value.rs.html#478-512">Value</a>]) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="value.rs.html#478-512">Value</a>&gt; {
         <span class="kw">unsafe </span>{ <a class="self" href="#111">self</a>.<span class="number">0</span>.<a href="#299-324">invoke_with_values</a>(<a href="#111">return_type</a>, <a href="#111">values</a>) }
     }
 
@@ -700,7 +700,7 @@
     /// assert_eq!(res, 2);
     /// ```
     </span><span class="attr">#[doc(alias = <span class="string">"g_closure_new"</span>)]
-    </span><span class="kw">pub fn </span>new&lt;F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span>[<a href="value.rs.html#478-523">Value</a>]) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="value.rs.html#478-523">Value</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>&gt;(callback: F) -&gt; <span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>new&lt;F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span>[<a href="value.rs.html#478-512">Value</a>]) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="value.rs.html#478-512">Value</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>&gt;(callback: F) -&gt; <span class="self">Self </span>{
         <span class="kw">unsafe </span>{ <a href="#213-284"><span class="self">Self</span>::new_unsafe</a>(<a href="#181">callback</a>) }
     }
 
@@ -717,7 +717,7 @@
     ///
     /// Invoking the closure from a different thread than this one will panic.
     </span><span class="attr">#[doc(alias = <span class="string">"g_closure_new"</span>)]
-    </span><span class="kw">pub fn </span>new_local&lt;F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span>[<a href="value.rs.html#478-523">Value</a>]) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="value.rs.html#478-523">Value</a>&gt; + <span class="lifetime">'static</span>&gt;(callback: F) -&gt; <span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>new_local&lt;F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span>[<a href="value.rs.html#478-512">Value</a>]) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="value.rs.html#478-512">Value</a>&gt; + <span class="lifetime">'static</span>&gt;(callback: F) -&gt; <span class="self">Self </span>{
         <span class="kw">let </span>callback = <a href="thread_guard.rs.html#38-43"><span class="kw">crate</span>::thread_guard::ThreadGuard::new</a>(<a href="#198">callback</a>);
 
         <span class="kw">unsafe </span>{ <a href="#213-284"><span class="self">Self</span>::new_unsafe</a>(<span class="kw">move </span>|values| (<a href="#199">callback</a>.<a href="thread_guard.rs.html#53-60">get_ref</a>())(<a href="#201">values</a>)) }
@@ -732,7 +732,7 @@
     /// constructor does, and it must be valid to call the closure from any thread that is used by
     /// callers.
     </span><span class="attr">#[doc(alias = <span class="string">"g_closure_new"</span>)]
-    </span><span class="kw">pub unsafe fn </span>new_unsafe&lt;F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span>[<a href="value.rs.html#478-523">Value</a>]) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="value.rs.html#478-523">Value</a>&gt;&gt;(callback: F) -&gt; <span class="self">Self </span>{
+    </span><span class="kw">pub unsafe fn </span>new_unsafe&lt;F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span>[<a href="value.rs.html#478-512">Value</a>]) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="value.rs.html#478-512">Value</a>&gt;&gt;(callback: F) -&gt; <span class="self">Self </span>{
         <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>marshal&lt;F&gt;(
             _closure: <span class="kw-2">*mut </span><a href="../../gobject_sys/struct.GClosure.html">gobject_ffi::GClosure</a>,
             return_value: <span class="kw-2">*mut </span><a href="../../gobject_sys/struct.GValue.html">gobject_ffi::GValue</a>,
@@ -741,7 +741,7 @@
             _invocation_hint: <span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/enum.c_void.html">c_void</a>,
             marshal_data: <span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/enum.c_void.html">c_void</a>,
         ) <span class="kw">where
-            </span>F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span>[<a href="value.rs.html#478-523">Value</a>]) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="value.rs.html#478-523">Value</a>&gt;,
+            </span>F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span>[<a href="value.rs.html#478-512">Value</a>]) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="value.rs.html#478-512">Value</a>&gt;,
         {
             <span class="kw">let </span>values = <span class="kw">if </span>n_param_values == <span class="number">0 </span>{
                 <span class="kw-2">&amp;</span>[]
@@ -757,7 +757,7 @@
                     <span class="string">"Closure returned a return value but the caller did not expect one"
                 </span>);
             } <span class="kw">else </span>{
-                <span class="kw">let </span>return_value = <span class="kw-2">&amp;mut *</span>(<a href="#216">return_value</a> <span class="kw">as </span><span class="kw-2">*mut </span><a href="value.rs.html#478-523">Value</a>);
+                <span class="kw">let </span>return_value = <span class="kw-2">&amp;mut *</span>(<a href="#216">return_value</a> <span class="kw">as </span><span class="kw-2">*mut </span><a href="value.rs.html#478-512">Value</a>);
                 <span class="kw">match </span><a href="#230">result</a> {
                     <span class="prelude-val">Some</span>(result) =&gt; {
                         <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.assert.html">assert!</a>(
@@ -768,7 +768,7 @@
                         );
                         <span class="kw-2">*</span><a href="#238">return_value</a> = <a href="#240">result</a>;
                     }
-                    <span class="prelude-val">None </span><span class="kw">if </span><a href="#238">return_value</a>.<a href="value.rs.html#640-642">type_</a>() == Type::INVALID =&gt; (),
+                    <span class="prelude-val">None </span><span class="kw">if </span><a href="#238">return_value</a>.<a href="value.rs.html#629-631">type_</a>() == Type::INVALID =&gt; (),
                     <span class="prelude-val">None </span>=&gt; {
                         <a class="macro" href="https://doc.rust-lang.org/nightly/std/macro.panic.html">panic!</a>(
                             <span class="string">"Closure returned no value but the caller expected a value of type {}"</span>,
@@ -783,7 +783,7 @@
             notify_data: <span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/enum.c_void.html">c_void</a>,
             _closure: <span class="kw-2">*mut </span><a href="../../gobject_sys/struct.GClosure.html">gobject_ffi::GClosure</a>,
         ) <span class="kw">where
-            </span>F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span>[<a href="value.rs.html#478-523">Value</a>]) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="value.rs.html#478-523">Value</a>&gt;,
+            </span>F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span>[<a href="value.rs.html#478-512">Value</a>]) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="value.rs.html#478-512">Value</a>&gt;,
         {
             <span class="kw">let </span>_callback: <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box</a>&lt;F&gt; = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.from_raw">Box::from_raw</a>(<a href="#261">notify_data</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
             <span class="comment">// callback is dropped here.
@@ -818,11 +818,11 @@
     /// Closures created from Rust via e.g. [`Closure::new`] will panic on type mismatches but
     /// this is not guaranteed for closures created from other languages.
     </span><span class="attr">#[doc(alias = <span class="string">"g_closure_invoke"</span>)]
-    </span><span class="kw">pub unsafe fn </span>invoke_with_values(<span class="kw-2">&amp;</span><span class="self">self</span>, return_type: <a href="types.rs.html#22">Type</a>, values: <span class="kw-2">&amp;</span>[<a href="value.rs.html#478-523">Value</a>]) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="value.rs.html#478-523">Value</a>&gt; {
+    </span><span class="kw">pub unsafe fn </span>invoke_with_values(<span class="kw-2">&amp;</span><span class="self">self</span>, return_type: <a href="types.rs.html#22">Type</a>, values: <span class="kw-2">&amp;</span>[<a href="value.rs.html#478-512">Value</a>]) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="value.rs.html#478-512">Value</a>&gt; {
         <span class="kw">let </span><span class="kw-2">mut </span>result = <span class="kw">if </span>return_type == Type::UNIT {
             <a href="translate.rs.html#220">Value::uninitialized</a>()
         } <span class="kw">else </span>{
-            <a href="value.rs.html#532-540">Value::from_type</a>(<a href="#299">return_type</a>)
+            <a href="value.rs.html#521-529">Value::from_type</a>(<a href="#299">return_type</a>)
         };
         <span class="kw">let </span>result_ptr = <span class="kw">if </span>return_type == Type::UNIT {
             <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>()
@@ -858,33 +858,33 @@
 }
 
 <span class="kw">pub trait </span><a href="../../glib/closure/trait.IntoClosureReturnValue.html">IntoClosureReturnValue</a> {
-    <span class="kw">fn </span>into_closure_return_value(<span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="value.rs.html#478-523">Value</a>&gt;;
+    <span class="kw">fn </span>into_closure_return_value(<span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="value.rs.html#478-512">Value</a>&gt;;
 }
 
 <span class="kw">impl </span><a href="#338-340">IntoClosureReturnValue</a> <span class="kw">for </span>() {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>into_closure_return_value(<span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="value.rs.html#478-523">Value</a>&gt; {
+    </span><span class="kw">fn </span>into_closure_return_value(<span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="value.rs.html#478-512">Value</a>&gt; {
         <span class="prelude-val">None
     </span>}
 }
 
-<span class="kw">impl</span>&lt;T: <a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html">Into</a>&lt;<a href="value.rs.html#478-523">Value</a>&gt;&gt; <a href="#338-340">IntoClosureReturnValue</a> <span class="kw">for </span>T {
+<span class="kw">impl</span>&lt;T: <a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html">Into</a>&lt;<a href="value.rs.html#478-512">Value</a>&gt;&gt; <a href="#338-340">IntoClosureReturnValue</a> <span class="kw">for </span>T {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>into_closure_return_value(<span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="value.rs.html#478-523">Value</a>&gt; {
+    </span><span class="kw">fn </span>into_closure_return_value(<span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="value.rs.html#478-512">Value</a>&gt; {
         <span class="prelude-val">Some</span>(<a class="self" href="#351">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>())
     }
 }
 
 <span class="kw">pub trait </span><a href="../../glib/closure/trait.TryFromClosureReturnValue.html">TryFromClosureReturnValue</a>: <a href="types.rs.html#290-294">StaticType</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sized.html">Sized</a> + <span class="lifetime">'static </span>{
-    <span class="kw">fn </span>try_from_closure_return_value(v: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="value.rs.html#478-523">Value</a>&gt;) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<span class="self">Self</span>, <a href="error.rs.html#278-286"><span class="kw">crate</span>::BoolError</a>&gt;;
+    <span class="kw">fn </span>try_from_closure_return_value(v: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="value.rs.html#478-512">Value</a>&gt;) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<span class="self">Self</span>, <a href="error.rs.html#243-251"><span class="kw">crate</span>::BoolError</a>&gt;;
 }
 
 <span class="kw">impl </span><a href="#356-358">TryFromClosureReturnValue</a> <span class="kw">for </span>() {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>try_from_closure_return_value(v: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="value.rs.html#478-523">Value</a>&gt;) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<span class="self">Self</span>, <a href="error.rs.html#278-286"><span class="kw">crate</span>::BoolError</a>&gt; {
+    </span><span class="kw">fn </span>try_from_closure_return_value(v: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="value.rs.html#478-512">Value</a>&gt;) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<span class="self">Self</span>, <a href="error.rs.html#243-251"><span class="kw">crate</span>::BoolError</a>&gt; {
         <span class="kw">match </span><a href="#362">v</a> {
             <span class="prelude-val">None </span>=&gt; <span class="prelude-val">Ok</span>(()),
-            <span class="prelude-val">Some</span>(v) =&gt; <span class="prelude-val">Err</span>(<a class="macro" href="error.rs.html#224-246">bool_error!</a>(
+            <span class="prelude-val">Some</span>(v) =&gt; <span class="prelude-val">Err</span>(<a class="macro" href="error.rs.html#189-211">bool_error!</a>(
                 <span class="string">"Invalid return value: expected (), got {}"</span>,
                 v.type_()
             )),
@@ -896,16 +896,16 @@
     <span class="kw">for </span>T
 {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>try_from_closure_return_value(v: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="value.rs.html#478-523">Value</a>&gt;) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<span class="self">Self</span>, <a href="error.rs.html#278-286"><span class="kw">crate</span>::BoolError</a>&gt; {
+    </span><span class="kw">fn </span>try_from_closure_return_value(v: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="value.rs.html#478-512">Value</a>&gt;) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<span class="self">Self</span>, <a href="error.rs.html#243-251"><span class="kw">crate</span>::BoolError</a>&gt; {
         <a href="#377">v</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.ok_or_else">ok_or_else</a>(|| {
-            <a class="macro" href="error.rs.html#224-246">bool_error!</a>(
+            <a class="macro" href="error.rs.html#189-211">bool_error!</a>(
                 <span class="string">"Invalid return value: expected {}, got ()"</span>,
                 T::static_type()
             )
         })
         .<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.and_then">and_then</a>(|v| {
-            <a href="#384">v</a>.<a href="value.rs.html#611-619">get_owned</a>::&lt;T&gt;().<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.map_err">map_err</a>(|<span class="kw">_</span>| {
-                <a class="macro" href="error.rs.html#224-246">bool_error!</a>(
+            <a href="#384">v</a>.<a href="value.rs.html#600-608">get_owned</a>::&lt;T&gt;().<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.map_err">map_err</a>(|<span class="kw">_</span>| {
+                <a class="macro" href="error.rs.html#189-211">bool_error!</a>(
                     <span class="string">"Invalid return value: expected {}, got {}"</span>,
                     T::static_type(),
                     v.type_()
