@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/source_futures.rs`."><title>source_futures.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-46132b98.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.85.0-nightly (c26db435b 2024-12-15)" data-channel="nightly" data-search-js="search-92e6798f.js" data-settings-js="settings-0f613d39.js" ><script src="../../static.files/storage-59e33391.js"></script><script defer src="../../static.files/src-script-56102188.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/source_futures.rs`."><title>source_futures.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-46132b98.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.85.0-nightly (6d9f6ae36 2024-12-16)" data-channel="nightly" data-search-js="search-036cda7a.js" data-settings-js="settings-0f613d39.js" ><script src="../../static.files/storage-59e33391.js"></script><script defer src="../../static.files/src-script-56102188.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -565,19 +565,19 @@
     <a href="https://doc.rust-lang.org/nightly/core/task/poll/enum.Poll.html">task::Poll</a>,
 };
 
-<span class="kw">use crate</span>::{<a href="control_flow.rs.html#17-22">ControlFlow</a>, <a href="auto/main_context.rs.html#10-19">MainContext</a>, <a href="source.rs.html#932">Priority</a>, <a href="auto/source.rs.html#7-16">Source</a>};
+<span class="kw">use crate</span>::{<a href="control_flow.rs.html#17-22">ControlFlow</a>, <a href="auto/main_context.rs.html#10-21">MainContext</a>, <a href="source.rs.html#932">Priority</a>, <a href="auto/source.rs.html#7-18">Source</a>};
 
 <span class="comment">// rustdoc-stripper-ignore-next
 </span><span class="doccomment">/// Represents a `Future` around a `glib::Source`. The future will
 /// be resolved once the source has provided a value
 </span><span class="kw">pub struct </span><a href="../../glib/struct.SourceFuture.html">SourceFuture</a>&lt;F, T&gt; {
     create_source: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;F&gt;,
-    source: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;(<a href="auto/source.rs.html#7-16">Source</a>, oneshot::Receiver&lt;T&gt;)&gt;,
+    source: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;(<a href="auto/source.rs.html#7-18">Source</a>, oneshot::Receiver&lt;T&gt;)&gt;,
 }
 
 <span class="kw">impl</span>&lt;F, T: <span class="lifetime">'static</span>&gt; <a href="#18-21">SourceFuture</a>&lt;F, T&gt;
 <span class="kw">where
-    </span>F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>(oneshot::Sender&lt;T&gt;) -&gt; <a href="auto/source.rs.html#7-16">Source</a> + <span class="lifetime">'static</span>,
+    </span>F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>(oneshot::Sender&lt;T&gt;) -&gt; <a href="auto/source.rs.html#7-18">Source</a> + <span class="lifetime">'static</span>,
 {
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Create a new `SourceFuture`
@@ -597,7 +597,7 @@
 
 <span class="kw">impl</span>&lt;F, T&gt; <a href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html">Future</a> <span class="kw">for </span><a href="#18-21">SourceFuture</a>&lt;F, T&gt;
 <span class="kw">where
-    </span>F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>(oneshot::Sender&lt;T&gt;) -&gt; <a href="auto/source.rs.html#7-16">Source</a> + <span class="lifetime">'static</span>,
+    </span>F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>(oneshot::Sender&lt;T&gt;) -&gt; <a href="auto/source.rs.html#7-18">Source</a> + <span class="lifetime">'static</span>,
 {
     <span class="kw">type </span>Output = T;
 
@@ -609,7 +609,7 @@
         } = <span class="kw-2">*</span><a class="self" href="#49">self</a>;
 
         <span class="kw">if let </span><span class="prelude-val">Some</span>(create_source) = <a href="#51">create_source</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.take">take</a>() {
-            <span class="kw">let </span>main_context = <a href="auto/main_context.rs.html#144-146">MainContext::ref_thread_default</a>();
+            <span class="kw">let </span>main_context = <a href="auto/main_context.rs.html#269-271">MainContext::ref_thread_default</a>();
             <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.assert.html">assert!</a>(
                 main_context.is_owner(),
                 <span class="string">"Spawning futures only allowed if the thread is owning the MainContext"
@@ -649,7 +649,7 @@
 
 <span class="kw">impl</span>&lt;F, T&gt; FusedFuture <span class="kw">for </span><a href="#18-21">SourceFuture</a>&lt;F, T&gt;
 <span class="kw">where
-    </span>F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>(oneshot::Sender&lt;T&gt;) -&gt; <a href="auto/source.rs.html#7-16">Source</a> + <span class="lifetime">'static</span>,
+    </span>F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>(oneshot::Sender&lt;T&gt;) -&gt; <a href="auto/source.rs.html#7-18">Source</a> + <span class="lifetime">'static</span>,
 {
     <span class="kw">fn </span>is_terminated(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
         <a class="self" href="#99">self</a>.create_source.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.is_none">is_none</a>()
@@ -664,7 +664,7 @@
     <span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
         <span class="comment">// Get rid of the source, we don't care anymore if it still triggers
         </span><span class="kw">if let </span><span class="prelude-val">Some</span>((source, <span class="kw">_</span>)) = <a class="self" href="#109">self</a>.source.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.take">take</a>() {
-            <a href="#111">source</a>.<a href="auto/source.rs.html#42-46">destroy</a>();
+            <a href="#111">source</a>.<a href="auto/source.rs.html#64-68">destroy</a>();
         }
     }
 }
@@ -783,14 +783,14 @@
 /// be provide all values that are provided by the source
 </span><span class="kw">pub struct </span><a href="../../glib/struct.SourceStream.html">SourceStream</a>&lt;F, T&gt; {
     create_source: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;F&gt;,
-    source: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;(<a href="auto/source.rs.html#7-16">Source</a>, mpsc::UnboundedReceiver&lt;T&gt;)&gt;,
+    source: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;(<a href="auto/source.rs.html#7-18">Source</a>, mpsc::UnboundedReceiver&lt;T&gt;)&gt;,
 }
 
 <span class="kw">impl</span>&lt;F, T&gt; <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Unpin.html">Unpin</a> <span class="kw">for </span><a href="#229-232">SourceStream</a>&lt;F, T&gt; {}
 
 <span class="kw">impl</span>&lt;F, T: <span class="lifetime">'static</span>&gt; <a href="#229-232">SourceStream</a>&lt;F, T&gt;
 <span class="kw">where
-    </span>F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>(mpsc::UnboundedSender&lt;T&gt;) -&gt; <a href="auto/source.rs.html#7-16">Source</a> + <span class="lifetime">'static</span>,
+    </span>F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>(mpsc::UnboundedSender&lt;T&gt;) -&gt; <a href="auto/source.rs.html#7-18">Source</a> + <span class="lifetime">'static</span>,
 {
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Create a new `SourceStream`
@@ -808,7 +808,7 @@
 
 <span class="kw">impl</span>&lt;F, T&gt; Stream <span class="kw">for </span><a href="#229-232">SourceStream</a>&lt;F, T&gt;
 <span class="kw">where
-    </span>F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>(mpsc::UnboundedSender&lt;T&gt;) -&gt; <a href="auto/source.rs.html#7-16">Source</a> + <span class="lifetime">'static</span>,
+    </span>F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>(mpsc::UnboundedSender&lt;T&gt;) -&gt; <a href="auto/source.rs.html#7-18">Source</a> + <span class="lifetime">'static</span>,
 {
     <span class="kw">type </span>Item = T;
 
@@ -820,7 +820,7 @@
         } = <span class="kw-2">*</span><a class="self" href="#260">self</a>;
 
         <span class="kw">if let </span><span class="prelude-val">Some</span>(create_source) = <a href="#262">create_source</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.take">take</a>() {
-            <span class="kw">let </span>main_context = <a href="auto/main_context.rs.html#144-146">MainContext::ref_thread_default</a>();
+            <span class="kw">let </span>main_context = <a href="auto/main_context.rs.html#269-271">MainContext::ref_thread_default</a>();
             <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.assert.html">assert!</a>(
                 main_context.is_owner(),
                 <span class="string">"Spawning futures only allowed if the thread is owning the MainContext"
@@ -861,7 +861,7 @@
 
 <span class="kw">impl</span>&lt;F, T&gt; FusedStream <span class="kw">for </span><a href="#229-232">SourceStream</a>&lt;F, T&gt;
 <span class="kw">where
-    </span>F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>(mpsc::UnboundedSender&lt;T&gt;) -&gt; <a href="auto/source.rs.html#7-16">Source</a> + <span class="lifetime">'static</span>,
+    </span>F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>(mpsc::UnboundedSender&lt;T&gt;) -&gt; <a href="auto/source.rs.html#7-18">Source</a> + <span class="lifetime">'static</span>,
 {
     <span class="kw">fn </span>is_terminated(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
         <a class="self" href="#311">self</a>.create_source.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.is_none">is_none</a>()
@@ -876,7 +876,7 @@
     <span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
         <span class="comment">// Get rid of the source, we don't care anymore if it still triggers
         </span><span class="kw">if let </span><span class="prelude-val">Some</span>((source, <span class="kw">_</span>)) = <a class="self" href="#321">self</a>.source.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.take">take</a>() {
-            <a href="#323">source</a>.<a href="auto/source.rs.html#42-46">destroy</a>();
+            <a href="#323">source</a>.<a href="auto/source.rs.html#64-68">destroy</a>();
         }
     }
 }
