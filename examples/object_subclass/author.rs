@@ -21,6 +21,13 @@ mod imp {
         /// A helpful name-surname combination.
         #[property(name = "name-surname", get = |author: &Self| format!("{} {}", author.name.borrow(), author.surname.borrow()))]
         name: RefCell<String>,
+        /// # Getter
+        ///
+        /// This is how you can get the surname of the author.
+        ///
+        /// # Setter
+        ///
+        /// You can change the surname of the author too if you want.
         #[property(get, set)]
         surname: RefCell<String>,
     }

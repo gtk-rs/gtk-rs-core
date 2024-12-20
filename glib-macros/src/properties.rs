@@ -569,6 +569,50 @@ fn strip_raw_prefix_from_name(name: &LitStr) -> LitStr {
     )
 }
 
+/// Splits the comments for a property between the getter and setter
+///
+/// The return tuple is the attributes to copy over into the getter and setter
+/// respectively.
+fn arrange_property_comments(comments: &[Attribute]) -> (Vec<&Attribute>, Vec<&Attribute>) {
+    let mut untagged = vec![];
+    let mut getter = vec![];
+    let mut setter = vec![];
+    let mut saw_section = false;
+
+    // We start with no tags so if the programmer doesn't split the comments we can still arrange them.
+    let mut current_section = &mut untagged;
+    for attr in comments {
+        if let syn::Meta::NameValue(meta) = &attr.meta {
+            if let syn::Expr::Lit(expr) = &meta.value {
+                if let syn::Lit::Str(lit_str) = &expr.lit {
+                    // Now that we have the one line of comment, see if we need
+                    // to switch a particular section to be the active one (via
+                    // the header syntax) or add the current line to the active
+                    // section.
+                    match lit_str.value().trim() {
+                        "# Getter" => {
+                            current_section = &mut getter;
+                            saw_section = true;
+                        }
+                        "# Setter" => {
+                            current_section = &mut setter;
+                            saw_section = true;
+                        }
+                        _ => current_section.push(attr),
+                    }
+                }
+            }
+        }
+    }
+
+    // If no sections were defined then we put the same in both
+    if !saw_section {
+        return (untagged.clone(), untagged);
+    }
+
+    (getter, setter)
+}
+
 fn expand_impl_getset_properties(props: &[PropDesc]) -> Vec<syn::ImplItemFn> {
     let crate_ident = crate_ident_new();
     let defs = props.iter().filter(|p| !p.is_overriding()).map(|p| {
@@ -576,6 +620,8 @@ fn expand_impl_getset_properties(props: &[PropDesc]) -> Vec<syn::ImplItemFn> {
         let stripped_name = strip_raw_prefix_from_name(name);
         let ident = name_to_ident(name);
         let ty = &p.ty;
+
+        let (getter_docs, setter_docs) = arrange_property_comments(&p.comments);
 
         let mut getter: Option<syn::ImplItemFn> = p.get.is_some().then(|| {
             let span = p.attrs_span;
@@ -589,12 +635,12 @@ fn expand_impl_getset_properties(props: &[PropDesc]) -> Vec<syn::ImplItemFn> {
         });
 
         if let Some(ref mut getter) = getter {
-            for lit in &p.comments {
-                getter.attrs.push(lit.clone());
+            for attr in getter_docs {
+                getter.attrs.push(attr.clone());
             }
         }
 
-        let setter = (p.set.is_some() && !p.is_construct_only).then(|| {
+        let mut setter: Option<syn::ImplItemFn> = (p.set.is_some() && !p.is_construct_only).then(|| {
             let ident = format_ident!("set_{}", ident);
             let target_ty = quote!(<<#ty as #crate_ident::property::Property>::Value as #crate_ident::prelude::HasParamSpec>::SetValue);
             let set_ty = if p.nullable {
@@ -619,6 +665,13 @@ fn expand_impl_getset_properties(props: &[PropDesc]) -> Vec<syn::ImplItemFn> {
                 }
             )
         });
+
+        if let Some(ref mut setter) = setter {
+            for attr in setter_docs {
+                setter.attrs.push(attr.clone());
+            }
+        }
+
         [getter, setter]
     });
     defs.flatten() // flattens []
