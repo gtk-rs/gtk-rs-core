@@ -623,9 +623,10 @@ fn expand_impl_getset_properties(props: &[PropDesc]) -> Vec<syn::ImplItemFn> {
 
         let (getter_docs, setter_docs) = arrange_property_comments(&p.comments);
 
-        let mut getter: Option<syn::ImplItemFn> = p.get.is_some().then(|| {
+        let getter = p.get.is_some().then(|| {
             let span = p.attrs_span;
             parse_quote_spanned!(span=>
+                #(#getter_docs)*
                 #[must_use]
                 #[allow(dead_code)]
                 pub fn #ident(&self) -> <#ty as #crate_ident::property::Property>::Value {
@@ -634,13 +635,7 @@ fn expand_impl_getset_properties(props: &[PropDesc]) -> Vec<syn::ImplItemFn> {
             )
         });
 
-        if let Some(ref mut getter) = getter {
-            for attr in getter_docs {
-                getter.attrs.push(attr.clone());
-            }
-        }
-
-        let mut setter: Option<syn::ImplItemFn> = (p.set.is_some() && !p.is_construct_only).then(|| {
+        let setter = (p.set.is_some() && !p.is_construct_only).then(|| {
             let ident = format_ident!("set_{}", ident);
             let target_ty = quote!(<<#ty as #crate_ident::property::Property>::Value as #crate_ident::prelude::HasParamSpec>::SetValue);
             let set_ty = if p.nullable {
@@ -659,18 +654,13 @@ fn expand_impl_getset_properties(props: &[PropDesc]) -> Vec<syn::ImplItemFn> {
             };
             let span = p.attrs_span;
             parse_quote_spanned!(span=>
+                #(#setter_docs)*
                 #[allow(dead_code)]
                 pub fn #ident<'a>(&self, value: #set_ty) {
                     self.set_property_from_value(#stripped_name, &::std::convert::From::from(#upcasted_borrowed_value))
                 }
             )
         });
-
-        if let Some(ref mut setter) = setter {
-            for attr in setter_docs {
-                setter.attrs.push(attr.clone());
-            }
-        }
 
         [getter, setter]
     });
