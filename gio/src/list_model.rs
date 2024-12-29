@@ -21,7 +21,7 @@ pub trait ListModelExtManual: IsA<ListModel> + Sized {
 
     // rustdoc-stripper-ignore-next
     /// If `T::static_type().is_a(self.item_type())` then it returns an iterator over the `ListModel` elements,
-    /// else the types are not compatible and returns an `Err(...)`.
+    /// else the types are not compatible and it panics.
     ///
     /// # Panics
     ///
