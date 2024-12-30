@@ -396,7 +396,7 @@
 
 </span><span class="kw">use </span><a href="https://doc.rust-lang.org/nightly/alloc/borrow/enum.Cow.html">std::borrow::Cow</a>;
 
-<span class="kw">use crate</span>::{<a href="../../glib_sys/index.html">ffi</a>, <a href="lib.rs.html#164">translate</a>::<span class="kw-2">*</span>, <a href="lib.rs.html#184">variant</a>::<span class="kw-2">*</span>, <a href="lib.rs.html#187">variant_type</a>::<span class="kw-2">*</span>};
+<span class="kw">use crate</span>::{ffi, <a href="lib.rs.html#164">translate</a>::<span class="kw-2">*</span>, <a href="lib.rs.html#184">variant</a>::<span class="kw-2">*</span>, <a href="lib.rs.html#187">variant_type</a>::<span class="kw-2">*</span>};
 
 <a class="macro" href="wrapper.rs.html#276-443">wrapper!</a> {
     <span class="comment">// rustdoc-stripper-ignore-next
@@ -411,7 +411,7 @@
     /// Note, pretty much all methods on this struct will panic if the
     /// [`end_unsafe()`](#method.end_unsafe) method was called on the instance.
     </span><span class="attr">#[doc(alias = <span class="string">"GVariantDict"</span>)]
-    </span><span class="kw">pub struct </span><a href="../../glib/struct.VariantDict.html">VariantDict</a>(Shared&lt;<a href="../../glib_sys/struct.GVariantDict.html">ffi::GVariantDict</a>&gt;);
+    </span><span class="kw">pub struct </span><a href="../../glib/struct.VariantDict.html">VariantDict</a>(Shared&lt;ffi::GVariantDict&gt;);
 
     <span class="kw">match fn </span>{
         <span class="kw-2">ref </span>=&gt; |ptr| ffi::g_variant_dict_ref(ptr),
@@ -431,11 +431,11 @@
     ///
     /// This function will panic if the given `Variant` is not of the correct type.
     </span><span class="attr">#[doc(alias = <span class="string">"g_variant_dict_new"</span>)]
-    </span><span class="kw">pub fn </span>new(from_asv: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="variant.rs.html#118-130">Variant</a>&gt;) -&gt; <span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>new(from_asv: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="variant.rs.html#118-377">Variant</a>&gt;) -&gt; <span class="self">Self </span>{
         <span class="kw">if let </span><span class="prelude-val">Some</span>(var) = <a href="#40">from_asv</a> {
             <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.assert_eq.html">assert_eq!</a>(var.type_(), VariantDict::static_variant_type());
         }
-        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1634-1636">from_glib_full</a>(<a href="../../glib_sys/fn.g_variant_dict_new.html">ffi::g_variant_dict_new</a>(<a href="#40">from_asv</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>)) }
+        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1634-1636">from_glib_full</a>(ffi::g_variant_dict_new(<a href="#40">from_asv</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>)) }
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
@@ -446,7 +446,7 @@
     </span><span class="attr">#[doc(alias = <span class="string">"g_variant_dict_contains"</span>)]
     </span><span class="kw">pub fn </span>contains(<span class="kw-2">&amp;</span><span class="self">self</span>, key: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
         <span class="kw">unsafe </span>{
-            <a href="translate.rs.html#1417-1419">from_glib</a>(<a href="../../glib_sys/fn.g_variant_dict_contains.html">ffi::g_variant_dict_contains</a>(
+            <a href="translate.rs.html#1417-1419">from_glib</a>(ffi::g_variant_dict_contains(
                 <a class="self" href="#53">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
                 <a href="#53">key</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
             ))
@@ -461,9 +461,9 @@
     /// This will return `None` if the `key` is not present in the dictionary,
     /// and an error if the key is present but with the wrong type.
     </span><span class="attr">#[doc(alias = <span class="string">"g_variant_dict_lookup"</span>)]
-    </span><span class="kw">pub fn </span>lookup&lt;T: <a href="variant.rs.html#979-985">FromVariant</a>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, key: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;T&gt;, <a href="variant.rs.html#201-204">VariantTypeMismatchError</a>&gt; {
+    </span><span class="kw">pub fn </span>lookup&lt;T: <a href="variant.rs.html#1588-1594">FromVariant</a>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, key: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;T&gt;, <a href="variant.rs.html#448-451">VariantTypeMismatchError</a>&gt; {
         <a class="self" href="#70">self</a>.<a href="#87-95">lookup_value</a>(<a href="#70">key</a>, <span class="prelude-val">None</span>)
-            .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|v| <a href="variant.rs.html#273-280">Variant::try_get</a>(<span class="kw-2">&amp;</span><a href="#72">v</a>))
+            .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|v| <a href="variant.rs.html#554-561">Variant::try_get</a>(<span class="kw-2">&amp;</span><a href="#72">v</a>))
             .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.transpose">transpose</a>()
     }
 
@@ -478,9 +478,9 @@
     /// `expected_type`.  Otherwise, `Some(value)` will be returned where
     /// the `value` is an instance of [`Variant`](variant/struct.Variant.html).
     </span><span class="attr">#[doc(alias = <span class="string">"g_variant_dict_lookup_value"</span>)]
-    </span><span class="kw">pub fn </span>lookup_value(<span class="kw-2">&amp;</span><span class="self">self</span>, key: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, expected_type: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="variant_type.rs.html#272-274">VariantTy</a>&gt;) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="variant.rs.html#118-130">Variant</a>&gt; {
+    </span><span class="kw">pub fn </span>lookup_value(<span class="kw-2">&amp;</span><span class="self">self</span>, key: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, expected_type: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="variant_type.rs.html#490-492">VariantTy</a>&gt;) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="variant.rs.html#118-377">Variant</a>&gt; {
         <span class="kw">unsafe </span>{
-            <a href="translate.rs.html#1634-1636">from_glib_full</a>(<a href="../../glib_sys/fn.g_variant_dict_lookup_value.html">ffi::g_variant_dict_lookup_value</a>(
+            <a href="translate.rs.html#1634-1636">from_glib_full</a>(ffi::g_variant_dict_lookup_value(
                 <a class="self" href="#87">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
                 <a href="#87">key</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
                 <a href="#87">expected_type</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
@@ -497,9 +497,9 @@
     /// For convenience, you may use the [`insert()`](#method.insert) if
     /// you have a value which implements [`ToVariant`](variant/trait.ToVariant.html).
     </span><span class="attr">#[doc(alias = <span class="string">"g_variant_dict_insert_value"</span>)]
-    </span><span class="kw">pub fn </span>insert_value(<span class="kw-2">&amp;</span><span class="self">self</span>, key: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, value: <span class="kw-2">&amp;</span><a href="variant.rs.html#118-130">Variant</a>) {
+    </span><span class="kw">pub fn </span>insert_value(<span class="kw-2">&amp;</span><span class="self">self</span>, key: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, value: <span class="kw-2">&amp;</span><a href="variant.rs.html#118-377">Variant</a>) {
         <span class="kw">unsafe </span>{
-            <a href="../../glib_sys/fn.g_variant_dict_insert_value.html">ffi::g_variant_dict_insert_value</a>(
+            ffi::g_variant_dict_insert_value(
                 <a class="self" href="#106">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
                 <a href="#106">key</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
                 <a href="#106">value</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
@@ -521,9 +521,9 @@
     /// instance already, you should use the [`insert_value()`](#method.insert_value)
     /// method instead.
     </span><span class="attr">#[doc(alias = <span class="string">"g_variant_dict_insert_value"</span>)]
-    </span><span class="kw">pub fn </span>insert(<span class="kw-2">&amp;</span><span class="self">self</span>, key: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, value: <span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html">Into</a>&lt;<a href="variant.rs.html#118-130">Variant</a>&gt;) {
+    </span><span class="kw">pub fn </span>insert(<span class="kw-2">&amp;</span><span class="self">self</span>, key: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, value: <span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html">Into</a>&lt;<a href="variant.rs.html#118-377">Variant</a>&gt;) {
         <span class="kw">unsafe </span>{
-            <a href="../../glib_sys/fn.g_variant_dict_insert_value.html">ffi::g_variant_dict_insert_value</a>(
+            ffi::g_variant_dict_insert_value(
                 <a class="self" href="#130">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
                 <a href="#130">key</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
                 <a href="#130">value</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>().<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
@@ -542,7 +542,7 @@
     </span><span class="attr">#[doc(alias = <span class="string">"g_variant_dict_remove"</span>)]
     </span><span class="kw">pub fn </span>remove(<span class="kw-2">&amp;</span><span class="self">self</span>, key: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
         <span class="kw">unsafe </span>{
-            <a href="translate.rs.html#1417-1419">from_glib</a>(<a href="../../glib_sys/fn.g_variant_dict_remove.html">ffi::g_variant_dict_remove</a>(
+            <a href="translate.rs.html#1417-1419">from_glib</a>(ffi::g_variant_dict_remove(
                 <a class="self" href="#149">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
                 <a href="#149">key</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
             ))
@@ -564,8 +564,8 @@
     ///
     /// You should only use this function if the extra cost of the safe function
     /// is too much for your performance critical codepaths
-    </span><span class="kw">pub unsafe fn </span>end_unsafe(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="variant.rs.html#118-130">Variant</a> {
-        <a href="translate.rs.html#1625-1627">from_glib_none</a>(<a href="../../glib_sys/fn.g_variant_dict_end.html">ffi::g_variant_dict_end</a>(<a class="self" href="#173">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>))
+    </span><span class="kw">pub unsafe fn </span>end_unsafe(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="variant.rs.html#118-377">Variant</a> {
+        <a href="translate.rs.html#1625-1627">from_glib_none</a>(ffi::g_variant_dict_end(<a class="self" href="#173">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>))
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
@@ -578,11 +578,11 @@
     /// be done after ending the instance, you can call the
     /// [`end_unsafe()`](#method.end_unsafe) method instead to avoid the unnecessary
     /// reinitialisation of the dictionary.
-    </span><span class="kw">pub fn </span>end(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="variant.rs.html#118-130">Variant</a> {
+    </span><span class="kw">pub fn </span>end(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="variant.rs.html#118-377">Variant</a> {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>ret = <a class="self" href="#187">self</a>.<a href="#173-175">end_unsafe</a>();
             <span class="comment">// Reinitialise the dict so that we can continue safely
-            </span><a href="../../glib_sys/fn.g_variant_dict_init.html">ffi::g_variant_dict_init</a>(<a class="self" href="#187">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>, <span class="prelude-val">None</span>::&lt;<a href="variant.rs.html#118-130">Variant</a>&gt;.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>);
+            </span>ffi::g_variant_dict_init(<a class="self" href="#187">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>, <span class="prelude-val">None</span>::&lt;<a href="variant.rs.html#118-377">Variant</a>&gt;.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>);
             <a href="#189">ret</a>
         }
     }
@@ -594,19 +594,19 @@
     }
 }
 
-<span class="kw">impl </span><a href="variant.rs.html#989-993">StaticVariantType</a> <span class="kw">for </span><a href="#7-27">VariantDict</a> {
-    <span class="kw">fn </span>static_variant_type() -&gt; <a href="https://doc.rust-lang.org/nightly/alloc/borrow/enum.Cow.html">Cow</a>&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#272-274">VariantTy</a>&gt; {
+<span class="kw">impl </span><a href="variant.rs.html#1598-1602">StaticVariantType</a> <span class="kw">for </span><a href="#7-27">VariantDict</a> {
+    <span class="kw">fn </span>static_variant_type() -&gt; <a href="https://doc.rust-lang.org/nightly/alloc/borrow/enum.Cow.html">Cow</a>&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#490-492">VariantTy</a>&gt; {
         <a href="https://doc.rust-lang.org/nightly/alloc/borrow/enum.Cow.html#variant.Borrowed">Cow::Borrowed</a>(VariantTy::VARDICT)
     }
 }
 
-<span class="kw">impl </span><a href="variant.rs.html#971-975">ToVariant</a> <span class="kw">for </span><a href="#7-27">VariantDict</a> {
-    <span class="kw">fn </span>to_variant(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="variant.rs.html#118-130">Variant</a> {
+<span class="kw">impl </span><a href="variant.rs.html#1580-1584">ToVariant</a> <span class="kw">for </span><a href="#7-27">VariantDict</a> {
+    <span class="kw">fn </span>to_variant(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="variant.rs.html#118-377">Variant</a> {
         <a class="self" href="#210">self</a>.<a href="#187-194">end</a>()
     }
 }
 
-<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html">From</a>&lt;<a href="#7-27">VariantDict</a>&gt; <span class="kw">for </span><a href="variant.rs.html#118-130">Variant</a> {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html">From</a>&lt;<a href="#7-27">VariantDict</a>&gt; <span class="kw">for </span><a href="variant.rs.html#118-377">Variant</a> {
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Consume a given `VariantDict` and call [`VariantDict::end`] on it.
     ///
@@ -619,8 +619,8 @@
     }
 }
 
-<span class="kw">impl </span><a href="variant.rs.html#979-985">FromVariant</a> <span class="kw">for </span><a href="#7-27">VariantDict</a> {
-    <span class="kw">fn </span>from_variant(variant: <span class="kw-2">&amp;</span><a href="variant.rs.html#118-130">Variant</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="self">Self</span>&gt; {
+<span class="kw">impl </span><a href="variant.rs.html#1588-1594">FromVariant</a> <span class="kw">for </span><a href="#7-27">VariantDict</a> {
+    <span class="kw">fn </span>from_variant(variant: <span class="kw-2">&amp;</span><a href="variant.rs.html#118-377">Variant</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="self">Self</span>&gt; {
         <span class="kw">if </span>variant.type_() == VariantDict::static_variant_type() {
             <span class="prelude-val">Some</span>(<a href="#40-45"><span class="self">Self</span>::new</a>(<span class="prelude-val">Some</span>(<a href="#229">variant</a>)))
         } <span class="kw">else </span>{
@@ -629,8 +629,8 @@
     }
 }
 
-<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html">From</a>&lt;<a href="variant.rs.html#118-130">Variant</a>&gt; <span class="kw">for </span><a href="#7-27">VariantDict</a> {
-    <span class="kw">fn </span>from(other: <a href="variant.rs.html#118-130">Variant</a>) -&gt; <span class="self">Self </span>{
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html">From</a>&lt;<a href="variant.rs.html#118-377">Variant</a>&gt; <span class="kw">for </span><a href="#7-27">VariantDict</a> {
+    <span class="kw">fn </span>from(other: <a href="variant.rs.html#118-377">Variant</a>) -&gt; <span class="self">Self </span>{
         <a href="#40-45"><span class="self">Self</span>::new</a>(<span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><a href="#239">other</a>))
     }
 }
