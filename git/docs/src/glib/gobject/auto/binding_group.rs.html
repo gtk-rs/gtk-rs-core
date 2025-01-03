@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/gobject/auto/binding_group.rs`."><title>binding_group.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-46132b98.css"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.85.0-nightly (14ee63a3c 2024-12-29)" data-channel="nightly" data-search-js="search-036cda7a.js" data-settings-js="settings-0f613d39.js" ><script src="../../../../static.files/storage-59e33391.js"></script><script defer src="../../../../static.files/src-script-56102188.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/gobject/auto/binding_group.rs`."><title>binding_group.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-46132b98.css"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.85.0-nightly (4363f9b6f 2025-01-02)" data-channel="nightly" data-search-js="search-75f5ac3e.js" data-settings-js="settings-0f613d39.js" ><script src="../../../../static.files/storage-59e33391.js"></script><script defer src="../../../../static.files/src-script-56102188.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -161,49 +161,12 @@
 <a href="#87" id="87">87</a>
 <a href="#88" id="88">88</a>
 <a href="#89" id="89">89</a>
-<a href="#90" id="90">90</a>
-<a href="#91" id="91">91</a>
-<a href="#92" id="92">92</a>
-<a href="#93" id="93">93</a>
-<a href="#94" id="94">94</a>
-<a href="#95" id="95">95</a>
-<a href="#96" id="96">96</a>
-<a href="#97" id="97">97</a>
-<a href="#98" id="98">98</a>
-<a href="#99" id="99">99</a>
-<a href="#100" id="100">100</a>
-<a href="#101" id="101">101</a>
-<a href="#102" id="102">102</a>
-<a href="#103" id="103">103</a>
-<a href="#104" id="104">104</a>
-<a href="#105" id="105">105</a>
-<a href="#106" id="106">106</a>
-<a href="#107" id="107">107</a>
-<a href="#108" id="108">108</a>
-<a href="#109" id="109">109</a>
-<a href="#110" id="110">110</a>
-<a href="#111" id="111">111</a>
-<a href="#112" id="112">112</a>
-<a href="#113" id="113">113</a>
-<a href="#114" id="114">114</a>
-<a href="#115" id="115">115</a>
-<a href="#116" id="116">116</a>
-<a href="#117" id="117">117</a>
-<a href="#118" id="118">118</a>
-<a href="#119" id="119">119</a>
-<a href="#120" id="120">120</a>
-<a href="#121" id="121">121</a>
-<a href="#122" id="122">122</a>
-<a href="#123" id="123">123</a>
-<a href="#124" id="124">124</a>
-<a href="#125" id="125">125</a>
-<a href="#126" id="126">126</a>
-<a href="#127" id="127">127</a></pre></div><pre class="rust"><code><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)
+<a href="#90" id="90">90</a></pre></div><pre class="rust"><code><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
 </span><span class="kw">use crate</span>::{
-    ffi,
+    <a href="../../../../glib_sys/index.html">ffi</a>,
     <a href="../../lib.rs.html#159">prelude</a>::<span class="kw-2">*</span>,
     signal::{<a href="../../signal.rs.html#67-89">connect_raw</a>, <a href="../../signal.rs.html#49">SignalHandlerId</a>},
     <a href="../../lib.rs.html#164">translate</a>::<span class="kw-2">*</span>,
@@ -212,26 +175,7 @@
 <span class="kw">use </span><a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">std::boxed::Box</a> <span class="kw">as </span>Box_;
 
 <a class="macro" href="../../wrapper.rs.html#276-443">crate::wrapper!</a> {
-    <span class="doccomment">/// `GBindingGroup` can be used to bind multiple properties
-    /// from an object collectively.
-    ///
-    /// Use the various methods to bind properties from a single source
-    /// object to multiple destination objects. Properties can be bound
-    /// bidirectionally and are connected when the source object is set
-    /// with [method[`Object`][crate::Object].set_source].
-    ///
-    /// ## Properties
-    ///
-    ///
-    /// #### `source`
-    ///  The source object used for binding properties.
-    ///
-    /// Readable | Writeable
-    ///
-    /// # Implements
-    ///
-    /// [`ObjectExt`][trait@crate::prelude::ObjectExt]
-    </span><span class="attr">#[doc(alias = <span class="string">"GBindingGroup"</span>)]
+    <span class="attr">#[doc(alias = <span class="string">"GBindingGroup"</span>)]
     </span><span class="kw">pub struct </span><a href="../../../../glib/struct.BindingGroup.html">BindingGroup</a>(Object&lt;<a href="../../../../gobject_sys/struct.GBindingGroup.html"><span class="kw">crate</span>::gobject_ffi::GBindingGroup</a>&gt;);
 
     <span class="kw">match fn </span>{
@@ -239,47 +183,29 @@
     }
 }
 
-<span class="kw">impl </span><a href="#14-40">BindingGroup</a> {
-    <span class="doccomment">/// Creates a new [`BindingGroup`][crate::BindingGroup].
-    ///
-    /// # Returns
-    ///
-    /// a new [`BindingGroup`][crate::BindingGroup]
-    </span><span class="attr">#[doc(alias = <span class="string">"g_binding_group_new"</span>)]
-    </span><span class="kw">pub fn </span>new() -&gt; <a href="#14-40">BindingGroup</a> {
+<span class="kw">impl </span><a href="#14-21">BindingGroup</a> {
+    <span class="attr">#[doc(alias = <span class="string">"g_binding_group_new"</span>)]
+    </span><span class="kw">pub fn </span>new() -&gt; <a href="#14-21">BindingGroup</a> {
         <span class="kw">unsafe </span>{ <a href="../../translate.rs.html#1634-1636">from_glib_full</a>(<a href="../../../../gobject_sys/fn.g_binding_group_new.html"><span class="kw">crate</span>::gobject_ffi::g_binding_group_new</a>()) }
     }
 
-    <span class="doccomment">/// Gets the source object used for binding properties.
-    ///
-    /// # Returns
-    ///
-    /// a [`Object`][crate::Object] or [`None`].
-    </span><span class="attr">#[doc(alias = <span class="string">"g_binding_group_dup_source"</span>)]
+    <span class="attr">#[doc(alias = <span class="string">"g_binding_group_dup_source"</span>)]
     #[doc(alias = <span class="string">"dup_source"</span>)]
     </span><span class="kw">pub fn </span>source(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="../../object.rs.html#1376-1379">Object</a>&gt; {
         <span class="kw">unsafe </span>{
             <a href="../../translate.rs.html#1625-1627">from_glib_none</a>(<a href="../../../../gobject_sys/fn.g_binding_group_dup_source.html"><span class="kw">crate</span>::gobject_ffi::g_binding_group_dup_source</a>(
-                <a class="self" href="#60">self</a>.<a href="../../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+                <a class="self" href="#31">self</a>.<a href="../../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
             ))
         }
     }
 
-    <span class="doccomment">/// Sets `source` as the source object used for creating property
-    /// bindings. If there is already a source object all bindings from it
-    /// will be removed.
-    ///
-    /// Note that all properties that have been bound must exist on `source`.
-    /// ## `source`
-    /// the source [`Object`][crate::Object],
-    ///  or [`None`] to clear it
-    </span><span class="attr">#[doc(alias = <span class="string">"g_binding_group_set_source"</span>)]
+    <span class="attr">#[doc(alias = <span class="string">"g_binding_group_set_source"</span>)]
     #[doc(alias = <span class="string">"source"</span>)]
     </span><span class="kw">pub fn </span>set_source(<span class="kw-2">&amp;</span><span class="self">self</span>, source: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span><a href="../../object.rs.html#71-74">IsA</a>&lt;<a href="../../object.rs.html#1376-1379">Object</a>&gt;&gt;) {
         <span class="kw">unsafe </span>{
             <a href="../../../../gobject_sys/fn.g_binding_group_set_source.html"><span class="kw">crate</span>::gobject_ffi::g_binding_group_set_source</a>(
-                <a class="self" href="#78">self</a>.<a href="../../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#78">source</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|p| <a href="#82">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>()).<a href="../../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+                <a class="self" href="#41">self</a>.<a href="../../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#41">source</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|p| <a href="#45">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>()).<a href="../../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
             );
         }
     }
@@ -292,24 +218,24 @@
         f: F,
     ) -&gt; <a href="../../signal.rs.html#49">SignalHandlerId</a> {
         <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>notify_source_trampoline&lt;
-            F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><a href="#14-40">BindingGroup</a>) + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>,
+            F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><a href="#14-21">BindingGroup</a>) + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>,
         &gt;(
             this: <span class="kw-2">*mut </span><a href="../../../../gobject_sys/struct.GBindingGroup.html"><span class="kw">crate</span>::gobject_ffi::GBindingGroup</a>,
-            _param_spec: ffi::gpointer,
-            f: ffi::gpointer,
+            _param_spec: <a href="../../../../glib_sys/type.gpointer.html">ffi::gpointer</a>,
+            f: <a href="../../../../glib_sys/type.gpointer.html">ffi::gpointer</a>,
         ) {
-            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#99">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
-            <a href="#101">f</a>(<span class="kw-2">&amp;</span><a href="../../translate.rs.html#1643-1645">from_glib_borrow</a>(<a href="#97">this</a>))
+            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#62">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
+            <a href="#64">f</a>(<span class="kw-2">&amp;</span><a href="../../translate.rs.html#1643-1645">from_glib_borrow</a>(<a href="#60">this</a>))
         }
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>f: <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;F&gt; = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">Box_::new</a>(<a href="#92">f</a>);
+            <span class="kw">let </span>f: <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;F&gt; = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">Box_::new</a>(<a href="#55">f</a>);
             <a href="../../signal.rs.html#67-89">connect_raw</a>(
-                <a class="self" href="#91">self</a>.<a href="../../object.rs.html#49">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <a class="self" href="#54">self</a>.<a href="../../object.rs.html#49">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
                 <span class="string">c"notify::source"</span>.<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
                 <span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/core/intrinsics/fn.transmute.html">std::mem::transmute</a>::&lt;<span class="kw-2">*const </span>(), <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>()&gt;(
-                    <a href="#94-103">notify_source_trampoline</a>::&lt;F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
+                    <a href="#57-66">notify_source_trampoline</a>::&lt;F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
                 )),
-                <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.into_raw">Box_::into_raw</a>(<a href="#105">f</a>),
+                <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.into_raw">Box_::into_raw</a>(<a href="#68">f</a>),
             )
         }
     }
@@ -317,12 +243,12 @@
 
 <span class="attr">#[cfg(feature = <span class="string">"v2_72"</span>)]
 #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"v2_72"</span>)))]
-</span><span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html">Default</a> <span class="kw">for </span><a href="#14-40">BindingGroup</a> {
+</span><span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html">Default</a> <span class="kw">for </span><a href="#14-21">BindingGroup</a> {
     <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
-        <a href="#49-51"><span class="self">Self</span>::new</a>()
+        <a href="#25-27"><span class="self">Self</span>::new</a>()
     }
 }
 
-<span class="kw">unsafe impl </span><a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> <span class="kw">for </span><a href="#14-40">BindingGroup</a> {}
-<span class="kw">unsafe impl </span><a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> <span class="kw">for </span><a href="#14-40">BindingGroup</a> {}
+<span class="kw">unsafe impl </span><a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> <span class="kw">for </span><a href="#14-21">BindingGroup</a> {}
+<span class="kw">unsafe impl </span><a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> <span class="kw">for </span><a href="#14-21">BindingGroup</a> {}
 </code></pre></div></section></main></body></html>

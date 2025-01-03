@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/date.rs`."><title>date.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-46132b98.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.85.0-nightly (14ee63a3c 2024-12-29)" data-channel="nightly" data-search-js="search-036cda7a.js" data-settings-js="settings-0f613d39.js" ><script src="../../static.files/storage-59e33391.js"></script><script defer src="../../static.files/src-script-56102188.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/date.rs`."><title>date.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-46132b98.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.85.0-nightly (4363f9b6f 2025-01-02)" data-channel="nightly" data-search-js="search-75f5ac3e.js" data-settings-js="settings-0f613d39.js" ><script src="../../static.files/storage-59e33391.js"></script><script defer src="../../static.files/src-script-56102188.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -518,11 +518,11 @@
 
 </span><span class="kw">use </span>std::{<a href="https://doc.rust-lang.org/nightly/core/cmp/index.html">cmp</a>, <a href="https://doc.rust-lang.org/nightly/alloc/fmt/index.html">fmt</a>, <a href="https://doc.rust-lang.org/nightly/std/hash/index.html">hash</a>};
 
-<span class="kw">use crate</span>::{ffi, <a href="../../gobject_sys/index.html">gobject_ffi</a>, <a href="lib.rs.html#164">translate</a>::<span class="kw-2">*</span>, <a href="error.rs.html#243-251">BoolError</a>, <a href="auto/alias.rs.html#9">DateDay</a>, <a href="auto/enums.rs.html#169-211">DateMonth</a>, <a href="auto/enums.rs.html#264-291">DateWeekday</a>, <a href="auto/alias.rs.html#11">DateYear</a>};
+<span class="kw">use crate</span>::{<a href="../../glib_sys/index.html">ffi</a>, <a href="../../gobject_sys/index.html">gobject_ffi</a>, <a href="lib.rs.html#164">translate</a>::<span class="kw-2">*</span>, <a href="error.rs.html#278-286">BoolError</a>, <a href="auto/alias.rs.html#9">DateDay</a>, <a href="auto/enums.rs.html#211-279">DateMonth</a>, <a href="auto/enums.rs.html#335-378">DateWeekday</a>, <a href="auto/alias.rs.html#11">DateYear</a>};
 
 <a class="macro" href="wrapper.rs.html#276-443">wrapper!</a> {
     <span class="attr">#[doc(alias = <span class="string">"GDate"</span>)]
-    </span><span class="kw">pub struct </span><a href="../../glib/struct.Date.html">Date</a>(BoxedInline&lt;ffi::GDate&gt;);
+    </span><span class="kw">pub struct </span><a href="../../glib/struct.Date.html">Date</a>(BoxedInline&lt;<a href="../../glib_sys/struct.GDate.html">ffi::GDate</a>&gt;);
 
     <span class="kw">match fn </span>{
         copy =&gt; |ptr| gobject_ffi::g_boxed_copy(ffi::g_date_get_type(), ptr <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
@@ -536,70 +536,70 @@
 
 <span class="kw">impl </span><a href="#7-16">Date</a> {
     <span class="attr">#[doc(alias = <span class="string">"g_date_new_dmy"</span>)]
-    </span><span class="kw">pub fn </span>from_dmy(day: <a href="auto/alias.rs.html#9">DateDay</a>, month: <a href="auto/enums.rs.html#169-211">DateMonth</a>, year: <a href="auto/alias.rs.html#11">DateYear</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="#7-16">Date</a>, <a href="error.rs.html#243-251">BoolError</a>&gt; {
+    </span><span class="kw">pub fn </span>from_dmy(day: <a href="auto/alias.rs.html#9">DateDay</a>, month: <a href="auto/enums.rs.html#211-279">DateMonth</a>, year: <a href="auto/alias.rs.html#11">DateYear</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="#7-16">Date</a>, <a href="error.rs.html#278-286">BoolError</a>&gt; {
         <span class="kw">let </span>month = <a href="#23">month</a>.<a href="translate.rs.html#334">into_glib</a>();
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>check: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> = <a href="translate.rs.html#1417-1419">from_glib</a>(ffi::g_date_valid_dmy(<a href="#23">day</a>, <a href="#24">month</a>, <a href="#23">year</a>));
+            <span class="kw">let </span>check: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> = <a href="translate.rs.html#1417-1419">from_glib</a>(<a href="../../glib_sys/fn.g_date_valid_dmy.html">ffi::g_date_valid_dmy</a>(<a href="#23">day</a>, <a href="#24">month</a>, <a href="#23">year</a>));
             <span class="kw">if </span>!check {
-                <span class="prelude-val">Err</span>(<a class="macro" href="error.rs.html#189-211">bool_error!</a>(<span class="string">"Invalid date"</span>))
+                <span class="prelude-val">Err</span>(<a class="macro" href="error.rs.html#224-246">bool_error!</a>(<span class="string">"Invalid date"</span>))
             } <span class="kw">else </span>{
-                <span class="prelude-val">Ok</span>(<a href="translate.rs.html#1634-1636">from_glib_full</a>(ffi::g_date_new_dmy(<a href="#23">day</a>, <a href="#24">month</a>, <a href="#23">year</a>)))
+                <span class="prelude-val">Ok</span>(<a href="translate.rs.html#1634-1636">from_glib_full</a>(<a href="../../glib_sys/fn.g_date_new_dmy.html">ffi::g_date_new_dmy</a>(<a href="#23">day</a>, <a href="#24">month</a>, <a href="#23">year</a>)))
             }
         }
     }
 
     <span class="attr">#[doc(alias = <span class="string">"g_date_new_julian"</span>)]
-    </span><span class="kw">pub fn </span>from_julian(julian_day: <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="#7-16">Date</a>, <a href="error.rs.html#243-251">BoolError</a>&gt; {
+    </span><span class="kw">pub fn </span>from_julian(julian_day: <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="#7-16">Date</a>, <a href="error.rs.html#278-286">BoolError</a>&gt; {
         <span class="kw">if </span>!<span class="self">Self</span>::valid_julian(julian_day) {
-            <span class="prelude-val">Err</span>(<a class="macro" href="error.rs.html#189-211">bool_error!</a>(<span class="string">"Invalid date"</span>))
+            <span class="prelude-val">Err</span>(<a class="macro" href="error.rs.html#224-246">bool_error!</a>(<span class="string">"Invalid date"</span>))
         } <span class="kw">else </span>{
-            <span class="kw">unsafe </span>{ <span class="prelude-val">Ok</span>(<a href="translate.rs.html#1634-1636">from_glib_full</a>(ffi::g_date_new_julian(<a href="#36">julian_day</a>))) }
+            <span class="kw">unsafe </span>{ <span class="prelude-val">Ok</span>(<a href="translate.rs.html#1634-1636">from_glib_full</a>(<a href="../../glib_sys/fn.g_date_new_julian.html">ffi::g_date_new_julian</a>(<a href="#36">julian_day</a>))) }
         }
     }
 
     <span class="attr">#[doc(alias = <span class="string">"g_date_add_days"</span>)]
-    </span><span class="kw">pub fn </span>add_days(<span class="kw-2">&amp;mut </span><span class="self">self</span>, n_days: <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(), <a href="error.rs.html#243-251">BoolError</a>&gt; {
+    </span><span class="kw">pub fn </span>add_days(<span class="kw-2">&amp;mut </span><span class="self">self</span>, n_days: <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(), <a href="error.rs.html#278-286">BoolError</a>&gt; {
         <span class="kw">let </span>julian_days = <a class="self" href="#45">self</a>.<a href="#126-128">julian</a>();
         <span class="kw">if </span>julian_days == <span class="number">0 </span>|| n_days &gt; u32::MAX - julian_days {
-            <span class="prelude-val">Err</span>(<a class="macro" href="error.rs.html#189-211">bool_error!</a>(<span class="string">"Invalid date"</span>))
+            <span class="prelude-val">Err</span>(<a class="macro" href="error.rs.html#224-246">bool_error!</a>(<span class="string">"Invalid date"</span>))
         } <span class="kw">else </span>{
             <span class="kw">unsafe </span>{
-                ffi::g_date_add_days(<a class="self" href="#45">self</a>.<a href="translate.rs.html#471">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#45">n_days</a>);
+                <a href="../../glib_sys/fn.g_date_add_days.html">ffi::g_date_add_days</a>(<a class="self" href="#45">self</a>.<a href="translate.rs.html#471">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#45">n_days</a>);
             }
             <span class="prelude-val">Ok</span>(())
         }
     }
 
     <span class="attr">#[doc(alias = <span class="string">"g_date_add_months"</span>)]
-    </span><span class="kw">pub fn </span>add_months(<span class="kw-2">&amp;mut </span><span class="self">self</span>, n_months: <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(), <a href="error.rs.html#243-251">BoolError</a>&gt; {
+    </span><span class="kw">pub fn </span>add_months(<span class="kw-2">&amp;mut </span><span class="self">self</span>, n_months: <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(), <a href="error.rs.html#278-286">BoolError</a>&gt; {
         <span class="comment">// The checks for this function are just a mess in the C code, allowing intermediate
         // unknown state. So for now, nothing can be done...
         </span><span class="kw">unsafe </span>{
-            ffi::g_date_add_months(<a class="self" href="#58">self</a>.<a href="translate.rs.html#471">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#58">n_months</a>);
+            <a href="../../glib_sys/fn.g_date_add_months.html">ffi::g_date_add_months</a>(<a class="self" href="#58">self</a>.<a href="translate.rs.html#471">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#58">n_months</a>);
         }
         <span class="prelude-val">Ok</span>(())
     }
 
     <span class="attr">#[doc(alias = <span class="string">"g_date_add_years"</span>)]
-    </span><span class="kw">pub fn </span>add_years(<span class="kw-2">&amp;mut </span><span class="self">self</span>, n_years: <a href="https://doc.rust-lang.org/nightly/std/primitive.u16.html">u16</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(), <a href="error.rs.html#243-251">BoolError</a>&gt; {
+    </span><span class="kw">pub fn </span>add_years(<span class="kw-2">&amp;mut </span><span class="self">self</span>, n_years: <a href="https://doc.rust-lang.org/nightly/std/primitive.u16.html">u16</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(), <a href="error.rs.html#278-286">BoolError</a>&gt; {
         <span class="kw">let </span>year = <a class="self" href="#68">self</a>.<a href="#156-158">year</a>();
         <span class="kw">if </span>n_years &gt; u16::MAX - year {
-            <span class="prelude-val">Err</span>(<a class="macro" href="error.rs.html#189-211">bool_error!</a>(<span class="string">"Invalid date"</span>))
+            <span class="prelude-val">Err</span>(<a class="macro" href="error.rs.html#224-246">bool_error!</a>(<span class="string">"Invalid date"</span>))
         } <span class="kw">else </span>{
             <span class="kw">unsafe </span>{
-                ffi::g_date_add_years(<a class="self" href="#68">self</a>.<a href="translate.rs.html#471">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#68">n_years</a> <span class="kw">as _</span>);
+                <a href="../../glib_sys/fn.g_date_add_years.html">ffi::g_date_add_years</a>(<a class="self" href="#68">self</a>.<a href="translate.rs.html#471">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#68">n_years</a> <span class="kw">as _</span>);
             }
             <span class="prelude-val">Ok</span>(())
         }
     }
 
     <span class="attr">#[doc(alias = <span class="string">"g_date_clamp"</span>)]
-    </span><span class="kw">pub fn </span>clamp(<span class="kw-2">&amp;mut </span><span class="self">self</span>, min_date: <span class="kw-2">&amp;</span><a href="#7-16">Date</a>, max_date: <span class="kw-2">&amp;</span><a href="#7-16">Date</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(), <a href="error.rs.html#243-251">BoolError</a>&gt; {
+    </span><span class="kw">pub fn </span>clamp(<span class="kw-2">&amp;mut </span><span class="self">self</span>, min_date: <span class="kw-2">&amp;</span><a href="#7-16">Date</a>, max_date: <span class="kw-2">&amp;</span><a href="#7-16">Date</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(), <a href="error.rs.html#278-286">BoolError</a>&gt; {
         <span class="kw">if </span>min_date &gt;= max_date {
-            <span class="prelude-val">Err</span>(<a class="macro" href="error.rs.html#189-211">bool_error!</a>(<span class="string">"`min_date` must be before `max_date`"</span>))
+            <span class="prelude-val">Err</span>(<a class="macro" href="error.rs.html#224-246">bool_error!</a>(<span class="string">"`min_date` must be before `max_date`"</span>))
         } <span class="kw">else </span>{
             <span class="kw">unsafe </span>{
-                ffi::g_date_clamp(
+                <a href="../../glib_sys/fn.g_date_clamp.html">ffi::g_date_clamp</a>(
                     <a class="self" href="#81">self</a>.<a href="translate.rs.html#471">to_glib_none_mut</a>().<span class="number">0</span>,
                     <a href="#81">min_date</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
                     <a href="#81">max_date</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
@@ -611,92 +611,92 @@
 
     <span class="attr">#[doc(alias = <span class="string">"g_date_compare"</span>)]
     </span><span class="kw">fn </span>compare(<span class="kw-2">&amp;</span><span class="self">self</span>, rhs: <span class="kw-2">&amp;</span><a href="#7-16">Date</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a> {
-        <span class="kw">unsafe </span>{ ffi::g_date_compare(<a class="self" href="#97">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>, <a href="#97">rhs</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>) }
+        <span class="kw">unsafe </span>{ <a href="../../glib_sys/fn.g_date_compare.html">ffi::g_date_compare</a>(<a class="self" href="#97">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>, <a href="#97">rhs</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">"g_date_days_between"</span>)]
     </span><span class="kw">pub fn </span>days_between(<span class="kw-2">&amp;</span><span class="self">self</span>, date2: <span class="kw-2">&amp;</span><a href="#7-16">Date</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a> {
-        <span class="kw">unsafe </span>{ ffi::g_date_days_between(<a class="self" href="#102">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>, <a href="#102">date2</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>) }
+        <span class="kw">unsafe </span>{ <a href="../../glib_sys/fn.g_date_days_between.html">ffi::g_date_days_between</a>(<a class="self" href="#102">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>, <a href="#102">date2</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">"g_date_get_day"</span>)]
     #[doc(alias = <span class="string">"get_day"</span>)]
     </span><span class="kw">pub fn </span>day(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="auto/alias.rs.html#9">DateDay</a> {
-        <span class="kw">unsafe </span>{ ffi::g_date_get_day(<a class="self" href="#108">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>) }
+        <span class="kw">unsafe </span>{ <a href="../../glib_sys/fn.g_date_get_day.html">ffi::g_date_get_day</a>(<a class="self" href="#108">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">"g_date_get_day_of_year"</span>)]
     #[doc(alias = <span class="string">"get_day_of_year"</span>)]
     </span><span class="kw">pub fn </span>day_of_year(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a> {
-        <span class="kw">unsafe </span>{ ffi::g_date_get_day_of_year(<a class="self" href="#114">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>) }
+        <span class="kw">unsafe </span>{ <a href="../../glib_sys/fn.g_date_get_day_of_year.html">ffi::g_date_get_day_of_year</a>(<a class="self" href="#114">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">"g_date_get_iso8601_week_of_year"</span>)]
     #[doc(alias = <span class="string">"get_iso8601_week_of_year"</span>)]
     </span><span class="kw">pub fn </span>iso8601_week_of_year(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a> {
-        <span class="kw">unsafe </span>{ ffi::g_date_get_iso8601_week_of_year(<a class="self" href="#120">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>) }
+        <span class="kw">unsafe </span>{ <a href="../../glib_sys/fn.g_date_get_iso8601_week_of_year.html">ffi::g_date_get_iso8601_week_of_year</a>(<a class="self" href="#120">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">"g_date_get_julian"</span>)]
     #[doc(alias = <span class="string">"get_julian"</span>)]
     </span><span class="kw">pub fn </span>julian(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a> {
-        <span class="kw">unsafe </span>{ ffi::g_date_get_julian(<a class="self" href="#126">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>) }
+        <span class="kw">unsafe </span>{ <a href="../../glib_sys/fn.g_date_get_julian.html">ffi::g_date_get_julian</a>(<a class="self" href="#126">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">"g_date_get_monday_week_of_year"</span>)]
     #[doc(alias = <span class="string">"get_monday_week_of_year"</span>)]
     </span><span class="kw">pub fn </span>monday_week_of_year(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a> {
-        <span class="kw">unsafe </span>{ ffi::g_date_get_monday_week_of_year(<a class="self" href="#132">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>) }
+        <span class="kw">unsafe </span>{ <a href="../../glib_sys/fn.g_date_get_monday_week_of_year.html">ffi::g_date_get_monday_week_of_year</a>(<a class="self" href="#132">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">"g_date_get_month"</span>)]
     #[doc(alias = <span class="string">"get_month"</span>)]
-    </span><span class="kw">pub fn </span>month(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="auto/enums.rs.html#169-211">DateMonth</a> {
-        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1417-1419">from_glib</a>(ffi::g_date_get_month(<a class="self" href="#138">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>)) }
+    </span><span class="kw">pub fn </span>month(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="auto/enums.rs.html#211-279">DateMonth</a> {
+        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1417-1419">from_glib</a>(<a href="../../glib_sys/fn.g_date_get_month.html">ffi::g_date_get_month</a>(<a class="self" href="#138">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>)) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">"g_date_get_sunday_week_of_year"</span>)]
     #[doc(alias = <span class="string">"get_sunday_week_of_year"</span>)]
     </span><span class="kw">pub fn </span>sunday_week_of_year(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a> {
-        <span class="kw">unsafe </span>{ ffi::g_date_get_sunday_week_of_year(<a class="self" href="#144">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>) }
+        <span class="kw">unsafe </span>{ <a href="../../glib_sys/fn.g_date_get_sunday_week_of_year.html">ffi::g_date_get_sunday_week_of_year</a>(<a class="self" href="#144">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">"g_date_get_weekday"</span>)]
     #[doc(alias = <span class="string">"get_weekday"</span>)]
-    </span><span class="kw">pub fn </span>weekday(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="auto/enums.rs.html#264-291">DateWeekday</a> {
-        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1417-1419">from_glib</a>(ffi::g_date_get_weekday(<a class="self" href="#150">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>)) }
+    </span><span class="kw">pub fn </span>weekday(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="auto/enums.rs.html#335-378">DateWeekday</a> {
+        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1417-1419">from_glib</a>(<a href="../../glib_sys/fn.g_date_get_weekday.html">ffi::g_date_get_weekday</a>(<a class="self" href="#150">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>)) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">"g_date_get_year"</span>)]
     #[doc(alias = <span class="string">"get_year"</span>)]
     </span><span class="kw">pub fn </span>year(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="auto/alias.rs.html#11">DateYear</a> {
-        <span class="kw">unsafe </span>{ ffi::g_date_get_year(<a class="self" href="#156">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>) }
+        <span class="kw">unsafe </span>{ <a href="../../glib_sys/fn.g_date_get_year.html">ffi::g_date_get_year</a>(<a class="self" href="#156">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">"g_date_is_first_of_month"</span>)]
     </span><span class="kw">pub fn </span>is_first_of_month(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
-        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1417-1419">from_glib</a>(ffi::g_date_is_first_of_month(<a class="self" href="#161">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>)) }
+        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1417-1419">from_glib</a>(<a href="../../glib_sys/fn.g_date_is_first_of_month.html">ffi::g_date_is_first_of_month</a>(<a class="self" href="#161">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>)) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">"g_date_is_last_of_month"</span>)]
     </span><span class="kw">pub fn </span>is_last_of_month(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
-        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1417-1419">from_glib</a>(ffi::g_date_is_last_of_month(<a class="self" href="#166">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>)) }
+        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1417-1419">from_glib</a>(<a href="../../glib_sys/fn.g_date_is_last_of_month.html">ffi::g_date_is_last_of_month</a>(<a class="self" href="#166">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>)) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">"g_date_order"</span>)]
     </span><span class="kw">pub fn </span>order(<span class="kw-2">&amp;mut </span><span class="self">self</span>, date2: <span class="kw-2">&amp;mut </span><a href="#7-16">Date</a>) {
         <span class="kw">unsafe </span>{
-            ffi::g_date_order(<a class="self" href="#171">self</a>.<a href="translate.rs.html#471">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#171">date2</a>.<a href="translate.rs.html#471">to_glib_none_mut</a>().<span class="number">0</span>);
+            <a href="../../glib_sys/fn.g_date_order.html">ffi::g_date_order</a>(<a class="self" href="#171">self</a>.<a href="translate.rs.html#471">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#171">date2</a>.<a href="translate.rs.html#471">to_glib_none_mut</a>().<span class="number">0</span>);
         }
     }
 
     <span class="attr">#[doc(alias = <span class="string">"g_date_set_day"</span>)]
-    </span><span class="kw">pub fn </span>set_day(<span class="kw-2">&amp;mut </span><span class="self">self</span>, day: <a href="auto/alias.rs.html#9">DateDay</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(), <a href="error.rs.html#243-251">BoolError</a>&gt; {
+    </span><span class="kw">pub fn </span>set_day(<span class="kw-2">&amp;mut </span><span class="self">self</span>, day: <a href="auto/alias.rs.html#9">DateDay</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(), <a href="error.rs.html#278-286">BoolError</a>&gt; {
         <span class="kw">if </span>!<span class="self">Self</span>::valid_dmy(day, <span class="self">self</span>.month(), <span class="self">self</span>.year()) {
-            <span class="prelude-val">Err</span>(<a class="macro" href="error.rs.html#189-211">bool_error!</a>(<span class="string">"invalid day"</span>))
+            <span class="prelude-val">Err</span>(<a class="macro" href="error.rs.html#224-246">bool_error!</a>(<span class="string">"invalid day"</span>))
         } <span class="kw">else </span>{
             <span class="kw">unsafe </span>{
-                ffi::g_date_set_day(<a class="self" href="#178">self</a>.<a href="translate.rs.html#471">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#178">day</a>);
+                <a href="../../glib_sys/fn.g_date_set_day.html">ffi::g_date_set_day</a>(<a class="self" href="#178">self</a>.<a href="translate.rs.html#471">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#178">day</a>);
             }
             <span class="prelude-val">Ok</span>(())
         }
@@ -706,51 +706,51 @@
     </span><span class="kw">pub fn </span>set_dmy(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
         day: <a href="auto/alias.rs.html#9">DateDay</a>,
-        month: <a href="auto/enums.rs.html#169-211">DateMonth</a>,
+        month: <a href="auto/enums.rs.html#211-279">DateMonth</a>,
         y: <a href="auto/alias.rs.html#11">DateYear</a>,
-    ) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(), <a href="error.rs.html#243-251">BoolError</a>&gt; {
+    ) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(), <a href="error.rs.html#278-286">BoolError</a>&gt; {
         <span class="kw">if </span>!<span class="self">Self</span>::valid_dmy(day, month, y) {
-            <span class="prelude-val">Err</span>(<a class="macro" href="error.rs.html#189-211">bool_error!</a>(<span class="string">"invalid date"</span>))
+            <span class="prelude-val">Err</span>(<a class="macro" href="error.rs.html#224-246">bool_error!</a>(<span class="string">"invalid date"</span>))
         } <span class="kw">else </span>{
             <span class="kw">unsafe </span>{
-                ffi::g_date_set_dmy(<a class="self" href="#191">self</a>.<a href="translate.rs.html#471">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#192">day</a>, <a href="#193">month</a>.<a href="translate.rs.html#334">into_glib</a>(), <a href="#194">y</a>);
+                <a href="../../glib_sys/fn.g_date_set_dmy.html">ffi::g_date_set_dmy</a>(<a class="self" href="#191">self</a>.<a href="translate.rs.html#471">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#192">day</a>, <a href="#193">month</a>.<a href="translate.rs.html#334">into_glib</a>(), <a href="#194">y</a>);
             }
             <span class="prelude-val">Ok</span>(())
         }
     }
 
     <span class="attr">#[doc(alias = <span class="string">"g_date_set_julian"</span>)]
-    </span><span class="kw">pub fn </span>set_julian(<span class="kw-2">&amp;mut </span><span class="self">self</span>, julian_date: <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(), <a href="error.rs.html#243-251">BoolError</a>&gt; {
+    </span><span class="kw">pub fn </span>set_julian(<span class="kw-2">&amp;mut </span><span class="self">self</span>, julian_date: <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(), <a href="error.rs.html#278-286">BoolError</a>&gt; {
         <span class="kw">if </span>!<span class="self">Self</span>::valid_julian(julian_date) {
-            <span class="prelude-val">Err</span>(<a class="macro" href="error.rs.html#189-211">bool_error!</a>(<span class="string">"invalid date"</span>))
+            <span class="prelude-val">Err</span>(<a class="macro" href="error.rs.html#224-246">bool_error!</a>(<span class="string">"invalid date"</span>))
         } <span class="kw">else </span>{
             <span class="kw">unsafe </span>{
-                ffi::g_date_set_julian(<a class="self" href="#207">self</a>.<a href="translate.rs.html#471">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#207">julian_date</a>);
+                <a href="../../glib_sys/fn.g_date_set_julian.html">ffi::g_date_set_julian</a>(<a class="self" href="#207">self</a>.<a href="translate.rs.html#471">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#207">julian_date</a>);
             }
             <span class="prelude-val">Ok</span>(())
         }
     }
 
     <span class="attr">#[doc(alias = <span class="string">"g_date_set_month"</span>)]
-    </span><span class="kw">pub fn </span>set_month(<span class="kw-2">&amp;mut </span><span class="self">self</span>, month: <a href="auto/enums.rs.html#169-211">DateMonth</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(), <a href="error.rs.html#243-251">BoolError</a>&gt; {
+    </span><span class="kw">pub fn </span>set_month(<span class="kw-2">&amp;mut </span><span class="self">self</span>, month: <a href="auto/enums.rs.html#211-279">DateMonth</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(), <a href="error.rs.html#278-286">BoolError</a>&gt; {
         <span class="kw">if </span>!<span class="self">Self</span>::valid_dmy(<span class="self">self</span>.day(), month, <span class="self">self</span>.year()) {
-            <span class="prelude-val">Err</span>(<a class="macro" href="error.rs.html#189-211">bool_error!</a>(<span class="string">"invalid month"</span>))
+            <span class="prelude-val">Err</span>(<a class="macro" href="error.rs.html#224-246">bool_error!</a>(<span class="string">"invalid month"</span>))
         } <span class="kw">else </span>{
             <span class="kw">unsafe </span>{
-                ffi::g_date_set_month(<a class="self" href="#219">self</a>.<a href="translate.rs.html#471">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#219">month</a>.<a href="translate.rs.html#334">into_glib</a>());
+                <a href="../../glib_sys/fn.g_date_set_month.html">ffi::g_date_set_month</a>(<a class="self" href="#219">self</a>.<a href="translate.rs.html#471">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#219">month</a>.<a href="translate.rs.html#334">into_glib</a>());
             }
             <span class="prelude-val">Ok</span>(())
         }
     }
 
     <span class="attr">#[doc(alias = <span class="string">"g_date_set_parse"</span>)]
-    </span><span class="kw">pub fn </span>set_parse(<span class="kw-2">&amp;mut </span><span class="self">self</span>, str: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(), <a href="error.rs.html#243-251">BoolError</a>&gt; {
+    </span><span class="kw">pub fn </span>set_parse(<span class="kw-2">&amp;mut </span><span class="self">self</span>, str: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(), <a href="error.rs.html#278-286">BoolError</a>&gt; {
         <span class="kw">let </span><span class="kw-2">mut </span>c = <span class="kw-2">*</span><a class="self" href="#231">self</a>;
         <span class="kw">if </span>!<span class="kw">unsafe </span>{
             ffi::g_date_set_parse(c.to_glib_none_mut().<span class="number">0</span>, str.to_glib_none().<span class="number">0</span>);
             ffi::g_date_valid(c.to_glib_none().<span class="number">0</span>) == <span class="number">0
         </span>} {
-            <span class="prelude-val">Err</span>(<a class="macro" href="error.rs.html#189-211">bool_error!</a>(<span class="string">"invalid parse string"</span>))
+            <span class="prelude-val">Err</span>(<a class="macro" href="error.rs.html#224-246">bool_error!</a>(<span class="string">"invalid parse string"</span>))
         } <span class="kw">else </span>{
             <span class="kw-2">*</span><span class="self"><a href="#231">self</a> </span>= <a href="#232">c</a>;
             <span class="prelude-val">Ok</span>(())
@@ -758,13 +758,13 @@
     }
 
     <span class="attr">#[doc(alias = <span class="string">"g_date_set_time_t"</span>)]
-    </span><span class="kw">pub fn </span>set_time(<span class="kw-2">&amp;mut </span><span class="self">self</span>, time_: libc::time_t) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(), <a href="error.rs.html#243-251">BoolError</a>&gt; {
+    </span><span class="kw">pub fn </span>set_time(<span class="kw-2">&amp;mut </span><span class="self">self</span>, time_: libc::time_t) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(), <a href="error.rs.html#278-286">BoolError</a>&gt; {
         <span class="kw">let </span><span class="kw-2">mut </span>c = <span class="kw-2">*</span><a class="self" href="#245">self</a>;
         <span class="kw">unsafe </span>{
-            ffi::g_date_set_time_t(<a href="#246">c</a>.<a href="translate.rs.html#471">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#245">time_</a> <span class="kw">as _</span>);
+            <a href="../../glib_sys/fn.g_date_set_time_t.html">ffi::g_date_set_time_t</a>(<a href="#246">c</a>.<a href="translate.rs.html#471">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#245">time_</a> <span class="kw">as _</span>);
         }
         <span class="kw">if </span>!<span class="self">Self</span>::valid_dmy(c.day(), c.month(), c.year()) {
-            <span class="prelude-val">Err</span>(<a class="macro" href="error.rs.html#189-211">bool_error!</a>(<span class="string">"invalid time"</span>))
+            <span class="prelude-val">Err</span>(<a class="macro" href="error.rs.html#224-246">bool_error!</a>(<span class="string">"invalid time"</span>))
         } <span class="kw">else </span>{
             <span class="kw-2">*</span><span class="self"><a href="#245">self</a> </span>= <a href="#246">c</a>;
             <span class="prelude-val">Ok</span>(())
@@ -776,47 +776,47 @@
     //}
 
     </span><span class="attr">#[doc(alias = <span class="string">"g_date_set_year"</span>)]
-    </span><span class="kw">pub fn </span>set_year(<span class="kw-2">&amp;mut </span><span class="self">self</span>, year: <a href="auto/alias.rs.html#11">DateYear</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(), <a href="error.rs.html#243-251">BoolError</a>&gt; {
+    </span><span class="kw">pub fn </span>set_year(<span class="kw-2">&amp;mut </span><span class="self">self</span>, year: <a href="auto/alias.rs.html#11">DateYear</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(), <a href="error.rs.html#278-286">BoolError</a>&gt; {
         <span class="kw">if </span>!<span class="self">Self</span>::valid_dmy(<span class="self">self</span>.day(), <span class="self">self</span>.month(), year) {
-            <span class="prelude-val">Err</span>(<a class="macro" href="error.rs.html#189-211">bool_error!</a>(<span class="string">"invalid year"</span>))
+            <span class="prelude-val">Err</span>(<a class="macro" href="error.rs.html#224-246">bool_error!</a>(<span class="string">"invalid year"</span>))
         } <span class="kw">else </span>{
             <span class="kw">unsafe </span>{
-                ffi::g_date_set_year(<a class="self" href="#263">self</a>.<a href="translate.rs.html#471">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#263">year</a>);
+                <a href="../../glib_sys/fn.g_date_set_year.html">ffi::g_date_set_year</a>(<a class="self" href="#263">self</a>.<a href="translate.rs.html#471">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#263">year</a>);
             }
             <span class="prelude-val">Ok</span>(())
         }
     }
 
     <span class="attr">#[doc(alias = <span class="string">"g_date_subtract_days"</span>)]
-    </span><span class="kw">pub fn </span>subtract_days(<span class="kw-2">&amp;mut </span><span class="self">self</span>, n_days: <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(), <a href="error.rs.html#243-251">BoolError</a>&gt; {
+    </span><span class="kw">pub fn </span>subtract_days(<span class="kw-2">&amp;mut </span><span class="self">self</span>, n_days: <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(), <a href="error.rs.html#278-286">BoolError</a>&gt; {
         <span class="kw">let </span>julian = <a class="self" href="#275">self</a>.<a href="#126-128">julian</a>();
         <span class="kw">if </span>julian &gt; n_days {
-            <span class="prelude-val">Err</span>(<a class="macro" href="error.rs.html#189-211">bool_error!</a>(<span class="string">"invalid number of days"</span>))
+            <span class="prelude-val">Err</span>(<a class="macro" href="error.rs.html#224-246">bool_error!</a>(<span class="string">"invalid number of days"</span>))
         } <span class="kw">else </span>{
             <span class="kw">unsafe </span>{
-                ffi::g_date_subtract_days(<a class="self" href="#275">self</a>.<a href="translate.rs.html#471">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#275">n_days</a>);
+                <a href="../../glib_sys/fn.g_date_subtract_days.html">ffi::g_date_subtract_days</a>(<a class="self" href="#275">self</a>.<a href="translate.rs.html#471">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#275">n_days</a>);
             }
             <span class="prelude-val">Ok</span>(())
         }
     }
 
     <span class="attr">#[doc(alias = <span class="string">"g_date_subtract_months"</span>)]
-    </span><span class="kw">pub fn </span>subtract_months(<span class="kw-2">&amp;mut </span><span class="self">self</span>, n_months: <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(), <a href="error.rs.html#243-251">BoolError</a>&gt; {
+    </span><span class="kw">pub fn </span>subtract_months(<span class="kw-2">&amp;mut </span><span class="self">self</span>, n_months: <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(), <a href="error.rs.html#278-286">BoolError</a>&gt; {
         <span class="comment">// The checks for this function are just a mess in the C code, allowing intermediate
         // unknown state. So for now, nothing can be done...
         </span><span class="kw">unsafe </span>{
-            ffi::g_date_subtract_months(<a class="self" href="#288">self</a>.<a href="translate.rs.html#471">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#288">n_months</a>);
+            <a href="../../glib_sys/fn.g_date_subtract_months.html">ffi::g_date_subtract_months</a>(<a class="self" href="#288">self</a>.<a href="translate.rs.html#471">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#288">n_months</a>);
         }
         <span class="prelude-val">Ok</span>(())
     }
 
     <span class="attr">#[doc(alias = <span class="string">"g_date_subtract_years"</span>)]
-    </span><span class="kw">pub fn </span>subtract_years(<span class="kw-2">&amp;mut </span><span class="self">self</span>, n_years: <a href="https://doc.rust-lang.org/nightly/std/primitive.u16.html">u16</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(), <a href="error.rs.html#243-251">BoolError</a>&gt; {
+    </span><span class="kw">pub fn </span>subtract_years(<span class="kw-2">&amp;mut </span><span class="self">self</span>, n_years: <a href="https://doc.rust-lang.org/nightly/std/primitive.u16.html">u16</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(), <a href="error.rs.html#278-286">BoolError</a>&gt; {
         <span class="kw">if </span><span class="self">self</span>.year() &lt; n_years {
-            <span class="prelude-val">Err</span>(<a class="macro" href="error.rs.html#189-211">bool_error!</a>(<span class="string">"invalid number of years"</span>))
+            <span class="prelude-val">Err</span>(<a class="macro" href="error.rs.html#224-246">bool_error!</a>(<span class="string">"invalid number of years"</span>))
         } <span class="kw">else </span>{
             <span class="kw">unsafe </span>{
-                ffi::g_date_subtract_years(<a class="self" href="#298">self</a>.<a href="translate.rs.html#471">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#298">n_years</a> <span class="kw">as _</span>);
+                <a href="../../glib_sys/fn.g_date_subtract_years.html">ffi::g_date_subtract_years</a>(<a class="self" href="#298">self</a>.<a href="translate.rs.html#471">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#298">n_years</a> <span class="kw">as _</span>);
             }
             <span class="prelude-val">Ok</span>(())
         }
@@ -829,37 +829,37 @@
 
     </span><span class="attr">#[doc(alias = <span class="string">"g_date_valid"</span>)]
     </span><span class="kw">pub fn </span>valid(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
-        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1417-1419">from_glib</a>(ffi::g_date_valid(<a class="self" href="#315">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>)) }
+        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1417-1419">from_glib</a>(<a href="../../glib_sys/fn.g_date_valid.html">ffi::g_date_valid</a>(<a class="self" href="#315">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>)) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">"g_date_get_days_in_month"</span>)]
     #[doc(alias = <span class="string">"get_days_in_month"</span>)]
-    </span><span class="kw">pub fn </span>days_in_month(month: <a href="auto/enums.rs.html#169-211">DateMonth</a>, year: <a href="auto/alias.rs.html#11">DateYear</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a> {
-        <span class="kw">unsafe </span>{ ffi::g_date_get_days_in_month(<a href="#321">month</a>.<a href="translate.rs.html#334">into_glib</a>(), <a href="#321">year</a>) }
+    </span><span class="kw">pub fn </span>days_in_month(month: <a href="auto/enums.rs.html#211-279">DateMonth</a>, year: <a href="auto/alias.rs.html#11">DateYear</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a> {
+        <span class="kw">unsafe </span>{ <a href="../../glib_sys/fn.g_date_get_days_in_month.html">ffi::g_date_get_days_in_month</a>(<a href="#321">month</a>.<a href="translate.rs.html#334">into_glib</a>(), <a href="#321">year</a>) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">"g_date_get_monday_weeks_in_year"</span>)]
     #[doc(alias = <span class="string">"get_monday_weeks_in_year"</span>)]
     </span><span class="kw">pub fn </span>monday_weeks_in_year(year: <a href="auto/alias.rs.html#11">DateYear</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a> {
-        <span class="kw">unsafe </span>{ ffi::g_date_get_monday_weeks_in_year(<a href="#327">year</a>) }
+        <span class="kw">unsafe </span>{ <a href="../../glib_sys/fn.g_date_get_monday_weeks_in_year.html">ffi::g_date_get_monday_weeks_in_year</a>(<a href="#327">year</a>) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">"g_date_get_sunday_weeks_in_year"</span>)]
     #[doc(alias = <span class="string">"get_sunday_weeks_in_year"</span>)]
     </span><span class="kw">pub fn </span>sunday_weeks_in_year(year: <a href="auto/alias.rs.html#11">DateYear</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a> {
-        <span class="kw">unsafe </span>{ ffi::g_date_get_sunday_weeks_in_year(<a href="#333">year</a>) }
+        <span class="kw">unsafe </span>{ <a href="../../glib_sys/fn.g_date_get_sunday_weeks_in_year.html">ffi::g_date_get_sunday_weeks_in_year</a>(<a href="#333">year</a>) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">"g_date_is_leap_year"</span>)]
     </span><span class="kw">pub fn </span>is_leap_year(year: <a href="auto/alias.rs.html#11">DateYear</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
-        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1417-1419">from_glib</a>(ffi::g_date_is_leap_year(<a href="#338">year</a>)) }
+        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1417-1419">from_glib</a>(<a href="../../glib_sys/fn.g_date_is_leap_year.html">ffi::g_date_is_leap_year</a>(<a href="#338">year</a>)) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">"g_date_strftime"</span>)]
     </span><span class="kw">pub fn </span>strftime(s: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, format: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, date: <span class="kw-2">&amp;</span><a href="#7-16">Date</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a> {
         <span class="kw">let </span>slen = <a href="#343">s</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.str.html#method.len">len</a>() <span class="kw">as _</span>;
         <span class="kw">unsafe </span>{
-            ffi::g_date_strftime(
+            <a href="../../glib_sys/fn.g_date_strftime.html">ffi::g_date_strftime</a>(
                 <a href="#343">s</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
                 <a href="#344">slen</a>,
                 <a href="#343">format</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
@@ -870,32 +870,32 @@
 
     <span class="attr">#[doc(alias = <span class="string">"g_date_valid_day"</span>)]
     </span><span class="kw">pub fn </span>valid_day(day: <a href="auto/alias.rs.html#9">DateDay</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
-        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1417-1419">from_glib</a>(ffi::g_date_valid_day(<a href="#356">day</a>)) }
+        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1417-1419">from_glib</a>(<a href="../../glib_sys/fn.g_date_valid_day.html">ffi::g_date_valid_day</a>(<a href="#356">day</a>)) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">"g_date_valid_dmy"</span>)]
-    </span><span class="kw">pub fn </span>valid_dmy(day: <a href="auto/alias.rs.html#9">DateDay</a>, month: <a href="auto/enums.rs.html#169-211">DateMonth</a>, year: <a href="auto/alias.rs.html#11">DateYear</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
-        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1417-1419">from_glib</a>(ffi::g_date_valid_dmy(<a href="#361">day</a>, <a href="#361">month</a>.<a href="translate.rs.html#334">into_glib</a>(), <a href="#361">year</a>)) }
+    </span><span class="kw">pub fn </span>valid_dmy(day: <a href="auto/alias.rs.html#9">DateDay</a>, month: <a href="auto/enums.rs.html#211-279">DateMonth</a>, year: <a href="auto/alias.rs.html#11">DateYear</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
+        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1417-1419">from_glib</a>(<a href="../../glib_sys/fn.g_date_valid_dmy.html">ffi::g_date_valid_dmy</a>(<a href="#361">day</a>, <a href="#361">month</a>.<a href="translate.rs.html#334">into_glib</a>(), <a href="#361">year</a>)) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">"g_date_valid_julian"</span>)]
     </span><span class="kw">pub fn </span>valid_julian(julian_date: <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
-        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1417-1419">from_glib</a>(ffi::g_date_valid_julian(<a href="#366">julian_date</a>)) }
+        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1417-1419">from_glib</a>(<a href="../../glib_sys/fn.g_date_valid_julian.html">ffi::g_date_valid_julian</a>(<a href="#366">julian_date</a>)) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">"g_date_valid_month"</span>)]
-    </span><span class="kw">pub fn </span>valid_month(month: <a href="auto/enums.rs.html#169-211">DateMonth</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
-        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1417-1419">from_glib</a>(ffi::g_date_valid_month(<a href="#371">month</a>.<a href="translate.rs.html#334">into_glib</a>())) }
+    </span><span class="kw">pub fn </span>valid_month(month: <a href="auto/enums.rs.html#211-279">DateMonth</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
+        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1417-1419">from_glib</a>(<a href="../../glib_sys/fn.g_date_valid_month.html">ffi::g_date_valid_month</a>(<a href="#371">month</a>.<a href="translate.rs.html#334">into_glib</a>())) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">"g_date_valid_weekday"</span>)]
-    </span><span class="kw">pub fn </span>valid_weekday(weekday: <a href="auto/enums.rs.html#264-291">DateWeekday</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
-        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1417-1419">from_glib</a>(ffi::g_date_valid_weekday(<a href="#376">weekday</a>.<a href="translate.rs.html#334">into_glib</a>())) }
+    </span><span class="kw">pub fn </span>valid_weekday(weekday: <a href="auto/enums.rs.html#335-378">DateWeekday</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
+        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1417-1419">from_glib</a>(<a href="../../glib_sys/fn.g_date_valid_weekday.html">ffi::g_date_valid_weekday</a>(<a href="#376">weekday</a>.<a href="translate.rs.html#334">into_glib</a>())) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">"g_date_valid_year"</span>)]
     </span><span class="kw">pub fn </span>valid_year(year: <a href="auto/alias.rs.html#11">DateYear</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
-        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1417-1419">from_glib</a>(ffi::g_date_valid_year(<a href="#381">year</a>)) }
+        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1417-1419">from_glib</a>(<a href="../../glib_sys/fn.g_date_valid_year.html">ffi::g_date_valid_year</a>(<a href="#381">year</a>)) }
     }
 }
 

@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/auto/regex.rs`."><title>regex.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-46132b98.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.85.0-nightly (14ee63a3c 2024-12-29)" data-channel="nightly" data-search-js="search-036cda7a.js" data-settings-js="settings-0f613d39.js" ><script src="../../../static.files/storage-59e33391.js"></script><script defer src="../../../static.files/src-script-56102188.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/auto/regex.rs`."><title>regex.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-46132b98.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.85.0-nightly (4363f9b6f 2025-01-02)" data-channel="nightly" data-search-js="search-75f5ac3e.js" data-settings-js="settings-0f613d39.js" ><script src="../../../static.files/storage-59e33391.js"></script><script defer src="../../../static.files/src-script-56102188.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -272,7 +272,7 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-</span><span class="kw">use crate</span>::{ffi, <a href="../lib.rs.html#164">translate</a>::<span class="kw-2">*</span>, <a href="../error.rs.html#10-25">Error</a>, <a href="flags.rs.html#474-593">RegexCompileFlags</a>, <a href="flags.rs.html#613-711">RegexMatchFlags</a>};
+</span><span class="kw">use crate</span>::{<a href="../../../glib_sys/index.html">ffi</a>, <a href="../lib.rs.html#164">translate</a>::<span class="kw-2">*</span>, <a href="../error.rs.html#10-28">Error</a>, <a href="flags.rs.html#551-670">RegexCompileFlags</a>, <a href="flags.rs.html#690-788">RegexMatchFlags</a>};
 
 <a class="macro" href="../wrapper.rs.html#276-443">crate::wrapper!</a> {
     <span class="doccomment">/// A `GRegex` is the "compiled" form of a regular expression pattern.
@@ -329,7 +329,7 @@
     /// The regular expressions low-level functionalities are obtained through
     /// the excellent [PCRE](http://www.pcre.org/) library written by Philip Hazel.
     </span><span class="attr">#[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
-    </span><span class="kw">pub struct </span><a href="../../../glib/struct.Regex.html">Regex</a>(Shared&lt;ffi::GRegex&gt;);
+    </span><span class="kw">pub struct </span><a href="../../../glib/struct.Regex.html">Regex</a>(Shared&lt;<a href="../../../glib_sys/struct.GRegex.html">ffi::GRegex</a>&gt;);
 
     <span class="kw">match fn </span>{
         <span class="kw-2">ref </span>=&gt; |ptr| ffi::g_regex_ref(ptr),
@@ -355,12 +355,12 @@
     </span><span class="attr">#[doc(alias = <span class="string">"g_regex_new"</span>)]
     </span><span class="kw">pub fn </span>new(
         pattern: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
-        compile_options: <a href="flags.rs.html#474-593">RegexCompileFlags</a>,
-        match_options: <a href="flags.rs.html#613-711">RegexMatchFlags</a>,
-    ) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="#7-69">Regex</a>&gt;, <a href="../error.rs.html#10-25"><span class="kw">crate</span>::Error</a>&gt; {
+        compile_options: <a href="flags.rs.html#551-670">RegexCompileFlags</a>,
+        match_options: <a href="flags.rs.html#690-788">RegexMatchFlags</a>,
+    ) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="#7-69">Regex</a>&gt;, <a href="../error.rs.html#10-28"><span class="kw">crate</span>::Error</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>error = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">std::ptr::null_mut</a>();
-            <span class="kw">let </span>ret = ffi::g_regex_new(
+            <span class="kw">let </span>ret = <a href="../../../glib_sys/fn.g_regex_new.html">ffi::g_regex_new</a>(
                 <a href="#87">pattern</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
                 <a href="#88">compile_options</a>.<a href="../translate.rs.html#334">into_glib</a>(),
                 <a href="#89">match_options</a>.<a href="../translate.rs.html#334">into_glib</a>(),
@@ -382,7 +382,7 @@
     </span><span class="attr">#[doc(alias = <span class="string">"g_regex_get_capture_count"</span>)]
     #[doc(alias = <span class="string">"get_capture_count"</span>)]
     </span><span class="kw">pub fn </span>capture_count(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a> {
-        <span class="kw">unsafe </span>{ ffi::g_regex_get_capture_count(<a class="self" href="#114">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>) }
+        <span class="kw">unsafe </span>{ <a href="../../../glib_sys/fn.g_regex_get_capture_count.html">ffi::g_regex_get_capture_count</a>(<a class="self" href="#114">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>) }
     }
 
     <span class="doccomment">/// Returns the compile options that @self was created with.
@@ -396,8 +396,8 @@
     /// flags from #GRegexCompileFlags
     </span><span class="attr">#[doc(alias = <span class="string">"g_regex_get_compile_flags"</span>)]
     #[doc(alias = <span class="string">"get_compile_flags"</span>)]
-    </span><span class="kw">pub fn </span>compile_flags(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="flags.rs.html#474-593">RegexCompileFlags</a> {
-        <span class="kw">unsafe </span>{ <a href="../translate.rs.html#1417-1419">from_glib</a>(ffi::g_regex_get_compile_flags(<a class="self" href="#129">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>)) }
+    </span><span class="kw">pub fn </span>compile_flags(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="flags.rs.html#551-670">RegexCompileFlags</a> {
+        <span class="kw">unsafe </span>{ <a href="../translate.rs.html#1417-1419">from_glib</a>(<a href="../../../glib_sys/fn.g_regex_get_compile_flags.html">ffi::g_regex_get_compile_flags</a>(<a class="self" href="#129">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>)) }
     }
 
     <span class="doccomment">/// Checks whether the pattern contains explicit CR or LF references.
@@ -408,7 +408,7 @@
     </span><span class="attr">#[doc(alias = <span class="string">"g_regex_get_has_cr_or_lf"</span>)]
     #[doc(alias = <span class="string">"get_has_cr_or_lf"</span>)]
     </span><span class="kw">pub fn </span>has_cr_or_lf(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
-        <span class="kw">unsafe </span>{ <a href="../translate.rs.html#1417-1419">from_glib</a>(ffi::g_regex_get_has_cr_or_lf(<a class="self" href="#140">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>)) }
+        <span class="kw">unsafe </span>{ <a href="../translate.rs.html#1417-1419">from_glib</a>(<a href="../../../glib_sys/fn.g_regex_get_has_cr_or_lf.html">ffi::g_regex_get_has_cr_or_lf</a>(<a class="self" href="#140">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>)) }
     }
 
     <span class="doccomment">/// Returns the match options that @self was created with.
@@ -418,8 +418,8 @@
     /// flags from #GRegexMatchFlags
     </span><span class="attr">#[doc(alias = <span class="string">"g_regex_get_match_flags"</span>)]
     #[doc(alias = <span class="string">"get_match_flags"</span>)]
-    </span><span class="kw">pub fn </span>match_flags(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="flags.rs.html#613-711">RegexMatchFlags</a> {
-        <span class="kw">unsafe </span>{ <a href="../translate.rs.html#1417-1419">from_glib</a>(ffi::g_regex_get_match_flags(<a class="self" href="#151">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>)) }
+    </span><span class="kw">pub fn </span>match_flags(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="flags.rs.html#690-788">RegexMatchFlags</a> {
+        <span class="kw">unsafe </span>{ <a href="../translate.rs.html#1417-1419">from_glib</a>(<a href="../../../glib_sys/fn.g_regex_get_match_flags.html">ffi::g_regex_get_match_flags</a>(<a class="self" href="#151">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>)) }
     }
 
     <span class="doccomment">/// Returns the number of the highest back reference
@@ -432,7 +432,7 @@
     </span><span class="attr">#[doc(alias = <span class="string">"g_regex_get_max_backref"</span>)]
     #[doc(alias = <span class="string">"get_max_backref"</span>)]
     </span><span class="kw">pub fn </span>max_backref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a> {
-        <span class="kw">unsafe </span>{ ffi::g_regex_get_max_backref(<a class="self" href="#164">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>) }
+        <span class="kw">unsafe </span>{ <a href="../../../glib_sys/fn.g_regex_get_max_backref.html">ffi::g_regex_get_max_backref</a>(<a class="self" href="#164">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>) }
     }
 
     <span class="doccomment">/// Gets the number of characters in the longest lookbehind assertion in the
@@ -445,7 +445,7 @@
     </span><span class="attr">#[doc(alias = <span class="string">"g_regex_get_max_lookbehind"</span>)]
     #[doc(alias = <span class="string">"get_max_lookbehind"</span>)]
     </span><span class="kw">pub fn </span>max_lookbehind(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a> {
-        <span class="kw">unsafe </span>{ ffi::g_regex_get_max_lookbehind(<a class="self" href="#177">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>) }
+        <span class="kw">unsafe </span>{ <a href="../../../glib_sys/fn.g_regex_get_max_lookbehind.html">ffi::g_regex_get_max_lookbehind</a>(<a class="self" href="#177">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>) }
     }
 
     <span class="doccomment">/// Gets the pattern string associated with @self, i.e. a copy of
@@ -457,7 +457,7 @@
     </span><span class="attr">#[doc(alias = <span class="string">"g_regex_get_pattern"</span>)]
     #[doc(alias = <span class="string">"get_pattern"</span>)]
     </span><span class="kw">pub fn </span>pattern(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="../gstring.rs.html#1028"><span class="kw">crate</span>::GString</a> {
-        <span class="kw">unsafe </span>{ <a href="../translate.rs.html#1625-1627">from_glib_none</a>(ffi::g_regex_get_pattern(<a class="self" href="#189">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>)) }
+        <span class="kw">unsafe </span>{ <a href="../translate.rs.html#1625-1627">from_glib_none</a>(<a href="../../../glib_sys/fn.g_regex_get_pattern.html">ffi::g_regex_get_pattern</a>(<a class="self" href="#189">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>)) }
     }
 
     <span class="comment">//#[doc(alias = "g_regex_replace_eval")]
