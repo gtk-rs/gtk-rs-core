@@ -245,6 +245,21 @@ impl<'a> RegistrationBuilder<'a> {
                     })
                     .to_glib_none()
                     .0,
+                self.get_property
+                    .map(|f| {
+                        glib::Closure::new_local(move |args| {
+                            let conn = args[0].get::<DBusConnection>().unwrap();
+                            let sender = args[1].get::<Option<&str>>().unwrap();
+                            let object_path = args[2].get::<&str>().unwrap();
+                            let interface_name = args[3].get::<&str>().unwrap();
+                            let property_name = args[4].get::<&str>().unwrap();
+                            let result =
+                                f(conn, sender, object_path, interface_name, property_name);
+                            Some(result.to_value())
+                        })
+                    })
+                    .to_glib_none()
+                    .0,
                 self.set_property
                     .map(|f| {
                         glib::Closure::new_local(move |args| {
@@ -262,21 +277,6 @@ impl<'a> RegistrationBuilder<'a> {
                                 property_name,
                                 value,
                             );
-                            Some(result.to_value())
-                        })
-                    })
-                    .to_glib_none()
-                    .0,
-                self.get_property
-                    .map(|f| {
-                        glib::Closure::new_local(move |args| {
-                            let conn = args[0].get::<DBusConnection>().unwrap();
-                            let sender = args[1].get::<Option<&str>>().unwrap();
-                            let object_path = args[2].get::<&str>().unwrap();
-                            let interface_name = args[3].get::<&str>().unwrap();
-                            let property_name = args[4].get::<&str>().unwrap();
-                            let result =
-                                f(conn, sender, object_path, interface_name, property_name);
                             Some(result.to_value())
                         })
                     })
