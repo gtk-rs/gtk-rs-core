@@ -894,6 +894,39 @@ where
 /// Adds a closure to be called by the main loop the returned `Source` is attached to whenever a
 /// UNIX file descriptor reaches the given IO condition.
 ///
+/// `func` will be called repeatedly with `priority` while the file descriptor matches the given IO condition
+/// until it returns `ControlFlow::Break`.
+///
+/// The default main loop almost always is the main loop of the main thread.
+/// Thus, the closure is called on the main thread.
+#[doc(alias = "g_unix_fd_add_full")]
+pub fn unix_fd_add_full<F>(
+    fd: RawFd,
+    priority: Priority,
+    condition: IOCondition,
+    func: F,
+) -> SourceId
+where
+    F: FnMut(RawFd, IOCondition) -> ControlFlow + Send + 'static,
+{
+    unsafe {
+        from_glib(ffi::g_unix_fd_add_full(
+            priority.into_glib(),
+            fd,
+            condition.into_glib(),
+            Some(trampoline_unix_fd::<F>),
+            into_raw_unix_fd(func),
+            Some(destroy_closure_unix_fd::<F>),
+        ))
+    }
+}
+
+#[cfg(unix)]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
+// rustdoc-stripper-ignore-next
+/// Adds a closure to be called by the main loop the returned `Source` is attached to whenever a
+/// UNIX file descriptor reaches the given IO condition.
+///
 /// `func` will be called repeatedly while the file descriptor matches the given IO condition
 /// until it returns `ControlFlow::Break`.
 ///
@@ -917,6 +950,49 @@ where
             .expect("default main context already acquired by another thread");
         from_glib(ffi::g_unix_fd_add_full(
             ffi::G_PRIORITY_DEFAULT,
+            fd,
+            condition.into_glib(),
+            Some(trampoline_unix_fd_local::<F>),
+            into_raw_unix_fd_local(func),
+            Some(destroy_closure_unix_fd_local::<F>),
+        ))
+    }
+}
+
+#[cfg(unix)]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
+// rustdoc-stripper-ignore-next
+/// Adds a closure to be called by the main loop the returned `Source` is attached to whenever a
+/// UNIX file descriptor reaches the given IO condition.
+///
+/// `func` will be called repeatedly with `priority` while the file descriptor matches the given IO condition
+/// until it returns `ControlFlow::Break`.
+///
+/// The default main loop almost always is the main loop of the main thread.
+/// Thus, the closure is called on the main thread.
+///
+/// Different to `unix_fd_add()`, this does not require `func` to be
+/// `Send` but can only be called from the thread that owns the main context.
+///
+/// This function panics if called from a different thread than the one that
+/// owns the main context.
+#[doc(alias = "g_unix_fd_add_full")]
+pub fn unix_fd_add_local_full<F>(
+    fd: RawFd,
+    priority: Priority,
+    condition: IOCondition,
+    func: F,
+) -> SourceId
+where
+    F: FnMut(RawFd, IOCondition) -> ControlFlow + 'static,
+{
+    unsafe {
+        let context = MainContext::default();
+        let _acquire = context
+            .acquire()
+            .expect("default main context already acquired by another thread");
+        from_glib(ffi::g_unix_fd_add_full(
+            priority.into_glib(),
             fd,
             condition.into_glib(),
             Some(trampoline_unix_fd_local::<F>),
