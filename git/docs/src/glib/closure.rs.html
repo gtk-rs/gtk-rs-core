@@ -876,15 +876,15 @@
 }
 
 <span class="kw">pub trait </span><a href="../../glib/closure/trait.TryFromClosureReturnValue.html">TryFromClosureReturnValue</a>: <a href="types.rs.html#290-294">StaticType</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sized.html">Sized</a> + <span class="lifetime">'static </span>{
-    <span class="kw">fn </span>try_from_closure_return_value(v: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="value.rs.html#478-512">Value</a>&gt;) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<span class="self">Self</span>, <a href="error.rs.html#243-251"><span class="kw">crate</span>::BoolError</a>&gt;;
+    <span class="kw">fn </span>try_from_closure_return_value(v: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="value.rs.html#478-512">Value</a>&gt;) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<span class="self">Self</span>, <a href="error.rs.html#208-216"><span class="kw">crate</span>::BoolError</a>&gt;;
 }
 
 <span class="kw">impl </span><a href="#356-358">TryFromClosureReturnValue</a> <span class="kw">for </span>() {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>try_from_closure_return_value(v: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="value.rs.html#478-512">Value</a>&gt;) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<span class="self">Self</span>, <a href="error.rs.html#243-251"><span class="kw">crate</span>::BoolError</a>&gt; {
+    </span><span class="kw">fn </span>try_from_closure_return_value(v: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="value.rs.html#478-512">Value</a>&gt;) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<span class="self">Self</span>, <a href="error.rs.html#208-216"><span class="kw">crate</span>::BoolError</a>&gt; {
         <span class="kw">match </span><a href="#362">v</a> {
             <span class="prelude-val">None </span>=&gt; <span class="prelude-val">Ok</span>(()),
-            <span class="prelude-val">Some</span>(v) =&gt; <span class="prelude-val">Err</span>(<a class="macro" href="error.rs.html#189-211">bool_error!</a>(
+            <span class="prelude-val">Some</span>(v) =&gt; <span class="prelude-val">Err</span>(<a class="macro" href="error.rs.html#154-176">bool_error!</a>(
                 <span class="string">"Invalid return value: expected (), got {}"</span>,
                 v.type_()
             )),
@@ -896,16 +896,16 @@
     <span class="kw">for </span>T
 {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>try_from_closure_return_value(v: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="value.rs.html#478-512">Value</a>&gt;) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<span class="self">Self</span>, <a href="error.rs.html#243-251"><span class="kw">crate</span>::BoolError</a>&gt; {
+    </span><span class="kw">fn </span>try_from_closure_return_value(v: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="value.rs.html#478-512">Value</a>&gt;) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<span class="self">Self</span>, <a href="error.rs.html#208-216"><span class="kw">crate</span>::BoolError</a>&gt; {
         <a href="#377">v</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.ok_or_else">ok_or_else</a>(|| {
-            <a class="macro" href="error.rs.html#189-211">bool_error!</a>(
+            <a class="macro" href="error.rs.html#154-176">bool_error!</a>(
                 <span class="string">"Invalid return value: expected {}, got ()"</span>,
                 T::static_type()
             )
         })
         .<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.and_then">and_then</a>(|v| {
             <a href="#384">v</a>.<a href="value.rs.html#600-608">get_owned</a>::&lt;T&gt;().<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.map_err">map_err</a>(|<span class="kw">_</span>| {
-                <a class="macro" href="error.rs.html#189-211">bool_error!</a>(
+                <a class="macro" href="error.rs.html#154-176">bool_error!</a>(
                     <span class="string">"Invalid return value: expected {}, got {}"</span>,
                     T::static_type(),
                     v.type_()

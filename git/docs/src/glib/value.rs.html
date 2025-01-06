@@ -2495,14 +2495,14 @@
     /// Whether a transformation rule was found and could be applied.
     ///  Upon failing transformations, `dest_value` is left untouched.
     </span><span class="attr">#[doc(alias = <span class="string">"g_value_transform"</span>)]
-    </span><span class="kw">pub fn </span>transform&lt;T: <a href="#67-75">ValueType</a>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="#478-512">Value</a>, <a href="error.rs.html#243-251"><span class="kw">crate</span>::BoolError</a>&gt; {
+    </span><span class="kw">pub fn </span>transform&lt;T: <a href="#67-75">ValueType</a>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="#478-512">Value</a>, <a href="error.rs.html#208-216"><span class="kw">crate</span>::BoolError</a>&gt; {
         <a class="self" href="#676">self</a>.<a href="#683-699">transform_with_type</a>(<a href="types.rs.html#293">T::Type::static_type</a>())
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Tries to transform the value into a value of the target type
     </span><span class="attr">#[doc(alias = <span class="string">"g_value_transform"</span>)]
-    </span><span class="kw">pub fn </span>transform_with_type(<span class="kw-2">&amp;</span><span class="self">self</span>, type_: <a href="types.rs.html#22">Type</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="#478-512">Value</a>, <a href="error.rs.html#243-251"><span class="kw">crate</span>::BoolError</a>&gt; {
+    </span><span class="kw">pub fn </span>transform_with_type(<span class="kw-2">&amp;</span><span class="self">self</span>, type_: <a href="types.rs.html#22">Type</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="#478-512">Value</a>, <a href="error.rs.html#208-216"><span class="kw">crate</span>::BoolError</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>dest = <a href="#521-529">Value::from_type</a>(<a href="#683">type_</a>);
             <span class="kw">if </span>from_glib(gobject_ffi::g_value_transform(
@@ -2511,7 +2511,7 @@
             )) {
                 <span class="prelude-val">Ok</span>(<a href="#685">dest</a>)
             } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(<a class="macro" href="error.rs.html#189-211">crate::bool_error!</a>(
+                <span class="prelude-val">Err</span>(<a class="macro" href="error.rs.html#154-176">crate::bool_error!</a>(
                     <span class="string">"Can't transform value of type '{}' into '{}'"</span>,
                     <span class="self">self</span>.type_(),
                     type_

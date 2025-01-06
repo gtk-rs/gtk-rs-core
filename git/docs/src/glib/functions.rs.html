@@ -450,7 +450,7 @@
 // use std::os::windows::io::AsRawHandle;
 </span><span class="kw">use crate</span>::{<a href="../../glib_sys/index.html">ffi</a>, <a href="lib.rs.html#164">translate</a>::<span class="kw-2">*</span>, <a href="auto/enums.rs.html#15-33">ChecksumType</a>, <a href="gstring.rs.html#24">GStr</a>};
 <span class="attr">#[cfg(not(windows))]
-</span><span class="kw">use crate</span>::{<a href="error.rs.html#10-25">Error</a>, <a href="source.rs.html#59">Pid</a>, <a href="auto/flags.rs.html#731-795">SpawnFlags</a>};
+</span><span class="kw">use crate</span>::{<a href="error.rs.html#10-22">Error</a>, <a href="source.rs.html#59">Pid</a>, <a href="auto/flags.rs.html#485-522">SpawnFlags</a>};
 
 <span class="attr">#[cfg(feature = <span class="string">"v2_58"</span>)]
 #[cfg(not(windows))]
@@ -461,12 +461,12 @@
     working_directory: P,
     argv: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>],
     envp: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>],
-    flags: <a href="auto/flags.rs.html#731-795">SpawnFlags</a>,
+    flags: <a href="auto/flags.rs.html#485-522">SpawnFlags</a>,
     child_setup: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>() + <span class="lifetime">'static</span>&gt;&gt;,
     stdin_fd: T,
     stdout_fd: U,
     stderr_fd: V,
-) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="source.rs.html#59">Pid</a>, <a href="error.rs.html#10-25">Error</a>&gt; {
+) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="source.rs.html#59">Pid</a>, <a href="error.rs.html#10-22">Error</a>&gt; {
     <span class="kw">let </span>child_setup_data: <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;<a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>() + <span class="lifetime">'static</span>&gt;&gt;&gt; = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">Box_::new</a>(<a href="#32">child_setup</a>);
     <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>child_setup_func(user_data: <a href="../../glib_sys/type.gpointer.html">ffi::gpointer</a>) {
         <span class="kw">let </span>callback: <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;<a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>() + <span class="lifetime">'static</span>&gt;&gt;&gt; =
@@ -574,9 +574,9 @@
     working_directory: P,
     argv: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/path/struct.Path.html">std::path::Path</a>],
     envp: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/path/struct.Path.html">std::path::Path</a>],
-    flags: <a href="auto/flags.rs.html#731-795">SpawnFlags</a>,
+    flags: <a href="auto/flags.rs.html#485-522">SpawnFlags</a>,
     child_setup: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>() + <span class="lifetime">'static</span>&gt;&gt;,
-) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(<a href="source.rs.html#59">Pid</a>, T, U, V), <a href="error.rs.html#10-25">Error</a>&gt; {
+) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(<a href="source.rs.html#59">Pid</a>, T, U, V), <a href="error.rs.html#10-22">Error</a>&gt; {
     <span class="kw">let </span>child_setup_data: <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;<a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>() + <span class="lifetime">'static</span>&gt;&gt;&gt; = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">Box_::new</a>(<a href="#145">child_setup</a>);
     <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>child_setup_func(user_data: <a href="../../glib_sys/type.gpointer.html">ffi::gpointer</a>) {
         <span class="kw">let </span>callback: <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;<a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>() + <span class="lifetime">'static</span>&gt;&gt;&gt; =
@@ -698,7 +698,7 @@
 /// [`true`] on success, [`false`] if not (and errno will be set).
 </span><span class="attr">#[cfg(unix)]
 #[doc(alias = <span class="string">"g_unix_open_pipe"</span>)]
-</span><span class="kw">pub fn </span><a href="../../glib/fn.unix_open_pipe.html">unix_open_pipe</a>(flags: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(<a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/type.RawFd.html">RawFd</a>, <a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/type.RawFd.html">RawFd</a>), <a href="error.rs.html#10-25">Error</a>&gt; {
+</span><span class="kw">pub fn </span><a href="../../glib/fn.unix_open_pipe.html">unix_open_pipe</a>(flags: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(<a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/type.RawFd.html">RawFd</a>, <a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/type.RawFd.html">RawFd</a>), <a href="error.rs.html#10-22">Error</a>&gt; {
     <span class="kw">unsafe </span>{
         <span class="kw">let </span><span class="kw-2">mut </span>fds = [<span class="number">0</span>, <span class="number">2</span>];
         <span class="kw">let </span><span class="kw-2">mut </span>error = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
@@ -748,7 +748,7 @@
 #[doc(alias = <span class="string">"g_file_open_tmp"</span>)]
 </span><span class="kw">pub fn </span><a href="../../glib/fn.file_open_tmp.html">file_open_tmp</a>(
     tmpl: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">AsRef</a>&lt;<a href="https://doc.rust-lang.org/nightly/std/path/struct.Path.html">std::path::Path</a>&gt;&gt;,
-) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(<a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/type.RawFd.html">RawFd</a>, <a href="https://doc.rust-lang.org/nightly/std/path/struct.PathBuf.html">std::path::PathBuf</a>), <a href="error.rs.html#10-25"><span class="kw">crate</span>::Error</a>&gt; {
+) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(<a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/type.RawFd.html">RawFd</a>, <a href="https://doc.rust-lang.org/nightly/std/path/struct.PathBuf.html">std::path::PathBuf</a>), <a href="error.rs.html#10-22"><span class="kw">crate</span>::Error</a>&gt; {
     <span class="kw">unsafe </span>{
         <span class="kw">let </span><span class="kw-2">mut </span>name_used = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
         <span class="kw">let </span><span class="kw-2">mut </span>error = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
@@ -773,7 +773,7 @@
 </span><span class="kw">pub fn </span><a href="../../glib/fn.spawn_future.html">spawn_future</a>&lt;R: <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static</span>, F: <a href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html">std::future::Future</a>&lt;Output = R&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static</span>&gt;(
     f: F,
 ) -&gt; <a href="main_context_futures.rs.html#279-284"><span class="kw">crate</span>::JoinHandle</a>&lt;R&gt; {
-    <span class="kw">let </span>ctx = <a href="auto/main_context.rs.html#269-271"><span class="kw">crate</span>::MainContext::ref_thread_default</a>();
+    <span class="kw">let </span>ctx = <a href="auto/main_context.rs.html#144-146"><span class="kw">crate</span>::MainContext::ref_thread_default</a>();
     <a href="#343">ctx</a>.<a href="main_context_futures.rs.html#525-530">spawn</a>(<a href="#341">f</a>)
 }
 
@@ -788,7 +788,7 @@
 </span><span class="kw">pub fn </span><a href="../../glib/fn.spawn_future_local.html">spawn_future_local</a>&lt;R: <span class="lifetime">'static</span>, F: <a href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html">std::future::Future</a>&lt;Output = R&gt; + <span class="lifetime">'static</span>&gt;(
     f: F,
 ) -&gt; <a href="main_context_futures.rs.html#279-284"><span class="kw">crate</span>::JoinHandle</a>&lt;R&gt; {
-    <span class="kw">let </span>ctx = <a href="auto/main_context.rs.html#269-271"><span class="kw">crate</span>::MainContext::ref_thread_default</a>();
+    <span class="kw">let </span>ctx = <a href="auto/main_context.rs.html#144-146"><span class="kw">crate</span>::MainContext::ref_thread_default</a>();
     <a href="#358">ctx</a>.<a href="main_context_futures.rs.html#540-542">spawn_local</a>(<a href="#356">f</a>)
 }
 </code></pre></div></section></main></body></html>
