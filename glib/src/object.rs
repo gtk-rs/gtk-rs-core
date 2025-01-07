@@ -3575,6 +3575,7 @@ pub struct SendWeakRef<T: ObjectType>(WeakRef<T>, Option<usize>);
 
 impl<T: ObjectType> SendWeakRef<T> {
     #[inline]
+    #[deprecated = "Use from() instead. See https://github.com/gtk-rs/gtk-rs-core/issues/1617"]
     pub fn new() -> SendWeakRef<T> {
         SendWeakRef(WeakRef::new(), None)
     }
@@ -3615,6 +3616,7 @@ impl<T: ObjectType> Clone for SendWeakRef<T> {
 impl<T: ObjectType> Default for SendWeakRef<T> {
     #[inline]
     fn default() -> Self {
+        #[allow(deprecated)]
         Self::new()
     }
 }
