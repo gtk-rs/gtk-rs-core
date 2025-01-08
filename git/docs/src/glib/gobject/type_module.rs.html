@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/gobject/type_module.rs`."><title>type_module.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-46132b98.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.86.0-nightly (b3b368a18 2025-01-05)" data-channel="nightly" data-search-js="search-75f5ac3e.js" data-settings-js="settings-0f613d39.js" ><script src="../../../static.files/storage-59e33391.js"></script><script defer src="../../../static.files/src-script-56102188.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/gobject/type_module.rs`."><title>type_module.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-46132b98.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.86.0-nightly (ad211ced8 2025-01-07)" data-channel="nightly" data-search-js="search-75f5ac3e.js" data-settings-js="settings-0f613d39.js" ><script src="../../../static.files/storage-59e33391.js"></script><script defer src="../../../static.files/src-script-56102188.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -230,7 +230,7 @@
 <a href="#156" id="156">156</a></pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
 </span><span class="kw">use crate</span>::{
-    enums::{<a href="../enums.rs.html#373">EnumValues</a>, <a href="../enums.rs.html#952">FlagsValues</a>},
+    enums::{<a href="../enums.rs.html#380">EnumValues</a>, <a href="../enums.rs.html#959">FlagsValues</a>},
     <a href="../../../gobject_sys/index.html">gobject_ffi</a>,
     <a href="../lib.rs.html#159">prelude</a>::<span class="kw-2">*</span>,
     <a href="../lib.rs.html#164">translate</a>::<span class="kw-2">*</span>,
@@ -309,7 +309,7 @@
     </span><span class="kw">fn </span>register_enum(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
-        const_static_values: <span class="kw-2">&amp;</span><span class="lifetime">'static </span><a href="../enums.rs.html#373">EnumValues</a>,
+        const_static_values: <span class="kw-2">&amp;</span><span class="lifetime">'static </span><a href="../enums.rs.html#380">EnumValues</a>,
     ) -&gt; <a href="../types.rs.html#22"><span class="kw">crate</span>::types::Type</a> {
         <span class="kw">unsafe </span>{
             <a href="../translate.rs.html#1417-1419">from_glib</a>(<a href="../../../gobject_sys/fn.g_type_module_register_enum.html">gobject_ffi::g_type_module_register_enum</a>(
@@ -324,7 +324,7 @@
     </span><span class="kw">fn </span>register_flags(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
-        const_static_values: <span class="kw-2">&amp;</span><span class="lifetime">'static </span><a href="../enums.rs.html#952">FlagsValues</a>,
+        const_static_values: <span class="kw-2">&amp;</span><span class="lifetime">'static </span><a href="../enums.rs.html#959">FlagsValues</a>,
     ) -&gt; <a href="../types.rs.html#22"><span class="kw">crate</span>::types::Type</a> {
         <span class="kw">unsafe </span>{
             <a href="../translate.rs.html#1417-1419">from_glib</a>(<a href="../../../gobject_sys/fn.g_type_module_register_flags.html">gobject_ffi::g_type_module_register_flags</a>(

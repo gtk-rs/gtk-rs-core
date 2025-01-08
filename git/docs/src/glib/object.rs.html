@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/object.rs`."><title>object.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-46132b98.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.86.0-nightly (b3b368a18 2025-01-05)" data-channel="nightly" data-search-js="search-75f5ac3e.js" data-settings-js="settings-0f613d39.js" ><script src="../../static.files/storage-59e33391.js"></script><script defer src="../../static.files/src-script-56102188.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/object.rs`."><title>object.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-46132b98.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.86.0-nightly (ad211ced8 2025-01-07)" data-channel="nightly" data-search-js="search-75f5ac3e.js" data-settings-js="settings-0f613d39.js" ><script src="../../static.files/storage-59e33391.js"></script><script defer src="../../static.files/src-script-56102188.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -4690,12 +4690,7 @@
 <a href="#4616" id="4616">4616</a>
 <a href="#4617" id="4617">4617</a>
 <a href="#4618" id="4618">4618</a>
-<a href="#4619" id="4619">4619</a>
-<a href="#4620" id="4620">4620</a>
-<a href="#4621" id="4621">4621</a>
-<a href="#4622" id="4622">4622</a>
-<a href="#4623" id="4623">4623</a>
-<a href="#4624" id="4624">4624</a></pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
+<a href="#4619" id="4619">4619</a></pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
 // rustdoc-stripper-ignore-next
 </span><span class="doccomment">//! `IMPL` Object wrapper implementation and `Object` binding.
@@ -5102,7 +5097,7 @@
     <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span><a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html">fmt::Formatter</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/core/fmt/type.Result.html">fmt::Result</a> {
         <span class="kw">let </span>type_ = <span class="kw">unsafe </span>{
             <span class="kw">let </span>klass = (<span class="kw-2">*</span><a class="self" href="#405">self</a>.inner.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>()).g_type_instance.g_class <span class="kw">as </span><span class="kw-2">*const </span><a href="#1380">ObjectClass</a>;
-            (<span class="kw-2">*</span><a href="#407">klass</a>).<a href="#3951-3958">type_</a>()
+            (<span class="kw-2">*</span><a href="#407">klass</a>).<a href="#3946-3953">type_</a>()
         };
 
         <a href="#405">f</a>.<a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html#method.debug_struct">debug_struct</a>(<span class="string">"ObjectRef"</span>)
@@ -5269,7 +5264,7 @@
     <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span><a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html">fmt::Formatter</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/core/fmt/type.Result.html">fmt::Result</a> {
         <span class="kw">let </span>type_ = <span class="kw">unsafe </span>{
             <span class="kw">let </span>klass = (<span class="kw-2">*</span><a class="self" href="#572">self</a>.inner.inner.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>()).g_type_instance.g_class <span class="kw">as </span><span class="kw-2">*const </span><a href="#1380">ObjectClass</a>;
-            (<span class="kw-2">*</span><a href="#574">klass</a>).<a href="#3951-3958">type_</a>()
+            (<span class="kw-2">*</span><a href="#574">klass</a>).<a href="#3946-3953">type_</a>()
         };
 
         <a href="#572">f</a>.<a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html#method.debug_struct">debug_struct</a>(<span class="string">"TypedObjectRef"</span>)
@@ -6074,7 +6069,7 @@
     [doc = <span class="string">"The base class in the object hierarchy."</span>]
     <span class="kw">pub </span><a href="../../glib/object/struct.Object.html">Object</a>, <span class="kw-2">*mut </span>std::os::raw::c_void, (), <a href="../../gobject_sys/struct.GObject.html">gobject_ffi::GObject</a>, @ffi_class <a href="../../gobject_sys/struct.GObjectClass.html">gobject_ffi::GObjectClass</a>, @type_ gobject_ffi::g_object_get_type()
 );
-<span class="kw">pub type </span><a href="../../glib/object/type.ObjectClass.html">ObjectClass</a> = <a href="#3941">Class</a>&lt;<a href="#1376-1379">Object</a>&gt;;
+<span class="kw">pub type </span><a href="../../glib/object/type.ObjectClass.html">ObjectClass</a> = <a href="#3936">Class</a>&lt;<a href="#1376-1379">Object</a>&gt;;
 
 <span class="kw">impl </span><a href="#1376-1379">Object</a> {
     <span class="kw">pub const </span>NONE: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'static </span><a href="#1376-1379">Object</a>&gt; = <span class="prelude-val">None</span>;
@@ -6087,7 +6082,7 @@
     /// This panics if the object is not instantiable.
     </span><span class="attr">#[track_caller]
     #[allow(clippy::new_ret_no_self)]
-    </span><span class="kw">pub fn </span>new&lt;T: <a href="#71-74">IsA</a>&lt;<a href="#1376-1379">Object</a>&gt; + <a href="#4142">IsClass</a>&gt;() -&gt; T {
+    </span><span class="kw">pub fn </span>new&lt;T: <a href="#71-74">IsA</a>&lt;<a href="#1376-1379">Object</a>&gt; + <a href="#4137">IsClass</a>&gt;() -&gt; T {
         <span class="kw">let </span>object = <a href="#1405-1407">Object::with_type</a>(<a href="types.rs.html#293">T::static_type</a>());
         <span class="kw">unsafe </span>{ <a href="#1394">object</a>.<a href="#260-263">unsafe_cast</a>() }
     }
@@ -6163,7 +6158,7 @@
         <span class="kw">let </span><span class="kw-2">mut </span>property_values = smallvec::SmallVec::&lt;[<span class="kw">_</span>; <span class="number">16</span>]&gt;::with_capacity(<a href="#1446">properties</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.len">len</a>());
 
         <span class="kw">if </span>!properties.is_empty() {
-            <span class="kw">let </span>klass = <a href="#4022-4039">ObjectClass::from_type</a>(<a href="#1446">type_</a>)
+            <span class="kw">let </span>klass = <a href="#4017-4034">ObjectClass::from_type</a>(<a href="#1446">type_</a>)
                 .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap_or_else">unwrap_or_else</a>(|| <a class="macro" href="https://doc.rust-lang.org/nightly/std/macro.panic.html">panic!</a>(<span class="string">"Can't retrieve class for type '{type_}'"</span>));
 
             <span class="kw">for </span>(idx, (name, value)) <span class="kw">in </span>properties.iter_mut().enumerate() {
@@ -6209,7 +6204,7 @@
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Create a new object builder for a specific type.
-    </span><span class="kw">pub fn </span>builder&lt;<span class="lifetime">'a</span>, O: <a href="#71-74">IsA</a>&lt;<a href="#1376-1379">Object</a>&gt; + <a href="#4142">IsClass</a>&gt;() -&gt; <a href="#1527-1531">ObjectBuilder</a>&lt;<span class="lifetime">'a</span>, O&gt; {
+    </span><span class="kw">pub fn </span>builder&lt;<span class="lifetime">'a</span>, O: <a href="#71-74">IsA</a>&lt;<a href="#1376-1379">Object</a>&gt; + <a href="#4137">IsClass</a>&gt;() -&gt; <a href="#1527-1531">ObjectBuilder</a>&lt;<span class="lifetime">'a</span>, O&gt; {
         <a href="#1535-1541">ObjectBuilder::new</a>(<a href="types.rs.html#293">O::static_type</a>())
     }
 
@@ -6227,7 +6222,7 @@
     phantom: <a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">PhantomData</a>&lt;O&gt;,
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, O: <a href="#71-74">IsA</a>&lt;<a href="#1376-1379">Object</a>&gt; + <a href="#4142">IsClass</a>&gt; <a href="#1527-1531">ObjectBuilder</a>&lt;<span class="lifetime">'a</span>, O&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, O: <a href="#71-74">IsA</a>&lt;<a href="#1376-1379">Object</a>&gt; + <a href="#4137">IsClass</a>&gt; <a href="#1527-1531">ObjectBuilder</a>&lt;<span class="lifetime">'a</span>, O&gt; {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>new(type_: <a href="types.rs.html#22">Type</a>) -&gt; <span class="self">Self </span>{
         <a href="#1527-1531">ObjectBuilder</a> {
@@ -6369,23 +6364,23 @@
 
     <span class="doccomment">/// Returns the class of the object.
     </span><span class="attr">#[doc(alias = <span class="string">"get_class"</span>)]
-    </span><span class="kw">fn </span>class(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><a href="#3941">Class</a>&lt;<span class="self">Self</span>&gt;
+    </span><span class="kw">fn </span>class(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><a href="#3936">Class</a>&lt;<span class="self">Self</span>&gt;
     <span class="kw">where
-        </span><span class="self">Self</span>: <a href="#4142">IsClass</a>;
+        </span><span class="self">Self</span>: <a href="#4137">IsClass</a>;
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Returns the class of the object in the given type `T`.
     ///
     /// `None` is returned if the object is not a subclass of `T`.
     </span><span class="attr">#[doc(alias = <span class="string">"get_class_of"</span>)]
-    </span><span class="kw">fn </span>class_of&lt;T: <a href="#4142">IsClass</a>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="#3941">Class</a>&lt;T&gt;&gt;;
+    </span><span class="kw">fn </span>class_of&lt;T: <a href="#4137">IsClass</a>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="#3936">Class</a>&lt;T&gt;&gt;;
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Returns the interface `T` of the object.
     ///
     /// `None` is returned if the object does not implement the interface `T`.
     </span><span class="attr">#[doc(alias = <span class="string">"get_interface"</span>)]
-    </span><span class="kw">fn </span>interface&lt;T: <a href="#4374">IsInterface</a>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="#4347">InterfaceRef</a>&lt;T&gt;&gt;;
+    </span><span class="kw">fn </span>interface&lt;T: <a href="#4369">IsInterface</a>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="#4342">InterfaceRef</a>&lt;T&gt;&gt;;
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Sets the property `property_name` of the object to value `value`.
@@ -6937,7 +6932,7 @@
         source_property: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
         target: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>O,
         target_property: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
-    ) -&gt; <a href="#3650-3658">BindingBuilder</a>&lt;<span class="lifetime">'a</span>, <span class="lifetime">'f</span>, <span class="lifetime">'t</span>&gt;;
+    ) -&gt; <a href="#3645-3653">BindingBuilder</a>&lt;<span class="lifetime">'a</span>, <span class="lifetime">'f</span>, <span class="lifetime">'t</span>&gt;;
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Returns the strong reference count of this object.
@@ -6966,7 +6961,7 @@
 
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>type_(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="types.rs.html#22">Type</a> {
-        <a class="self" href="#2271">self</a>.<a href="#1671">object_class</a>().<a href="#3951-3958">type_</a>()
+        <a class="self" href="#2271">self</a>.<a href="#1671">object_class</a>().<a href="#3946-3953">type_</a>()
     }
 
     <span class="attr">#[inline]
@@ -6979,33 +6974,33 @@
     }
 
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>class(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><a href="#3941">Class</a>&lt;<span class="self">Self</span>&gt;
+    </span><span class="kw">fn </span>class(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><a href="#3936">Class</a>&lt;<span class="self">Self</span>&gt;
     <span class="kw">where
-        </span><span class="self">Self</span>: <a href="#4142">IsClass</a>,
+        </span><span class="self">Self</span>: <a href="#4137">IsClass</a>,
     {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>obj: <span class="kw-2">*mut </span><a href="../../gobject_sys/struct.GObject.html">gobject_ffi::GObject</a> = <a class="self" href="#2285">self</a>.<a href="#48">as_object_ref</a>().<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>;
-            <span class="kw">let </span>klass = (<span class="kw-2">*</span><a href="#2290">obj</a>).g_type_instance.g_class <span class="kw">as </span><span class="kw-2">*const </span><a href="#3941">Class</a>&lt;<span class="self">Self</span>&gt;;
+            <span class="kw">let </span>klass = (<span class="kw-2">*</span><a href="#2290">obj</a>).g_type_instance.g_class <span class="kw">as </span><span class="kw-2">*const </span><a href="#3936">Class</a>&lt;<span class="self">Self</span>&gt;;
             <span class="kw-2">&amp;*</span><a href="#2291">klass</a>
         }
     }
 
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>class_of&lt;U: <a href="#4142">IsClass</a>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="#3941">Class</a>&lt;U&gt;&gt; {
+    </span><span class="kw">fn </span>class_of&lt;U: <a href="#4137">IsClass</a>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="#3936">Class</a>&lt;U&gt;&gt; {
         <span class="kw">if </span>!<span class="self">self</span>.is::&lt;U&gt;() {
             <span class="kw">return </span><span class="prelude-val">None</span>;
         }
 
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>obj: <span class="kw-2">*mut </span><a href="../../gobject_sys/struct.GObject.html">gobject_ffi::GObject</a> = <a class="self" href="#2297">self</a>.<a href="#48">as_object_ref</a>().<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>;
-            <span class="kw">let </span>klass = (<span class="kw-2">*</span><a href="#2303">obj</a>).g_type_instance.g_class <span class="kw">as </span><span class="kw-2">*const </span><a href="#3941">Class</a>&lt;U&gt;;
+            <span class="kw">let </span>klass = (<span class="kw-2">*</span><a href="#2303">obj</a>).g_type_instance.g_class <span class="kw">as </span><span class="kw-2">*const </span><a href="#3936">Class</a>&lt;U&gt;;
             <span class="prelude-val">Some</span>(<span class="kw-2">&amp;*</span><a href="#2304">klass</a>)
         }
     }
 
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>interface&lt;U: <a href="#4374">IsInterface</a>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="#4347">InterfaceRef</a>&lt;U&gt;&gt; {
-        <a href="#4184-4204">Interface::from_class</a>(<a class="self" href="#2310">self</a>.<a href="#1671">object_class</a>())
+    </span><span class="kw">fn </span>interface&lt;U: <a href="#4369">IsInterface</a>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="#4342">InterfaceRef</a>&lt;U&gt;&gt; {
+        <a href="#4179-4199">Interface::from_class</a>(<a class="self" href="#2310">self</a>.<a href="#1671">object_class</a>())
     }
 
     <span class="attr">#[track_caller]
@@ -7837,8 +7832,8 @@
         source_property: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
         target: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>O,
         target_property: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
-    ) -&gt; <a href="#3650-3658">BindingBuilder</a>&lt;<span class="lifetime">'a</span>, <span class="lifetime">'f</span>, <span class="lifetime">'t</span>&gt; {
-        <a href="#3673-3688">BindingBuilder::new</a>(<a class="self" href="#3139">self</a>, <a href="#3140">source_property</a>, <a href="#3141">target</a>, <a href="#3142">target_property</a>)
+    ) -&gt; <a href="#3645-3653">BindingBuilder</a>&lt;<span class="lifetime">'a</span>, <span class="lifetime">'f</span>, <span class="lifetime">'t</span>&gt; {
+        <a href="#3668-3683">BindingBuilder::new</a>(<a class="self" href="#3139">self</a>, <a href="#3140">source_property</a>, <a href="#3141">target</a>, <a href="#3142">target_property</a>)
     }
 
     <span class="attr">#[inline]
@@ -7902,7 +7897,7 @@
 }
 
 <span class="attr">#[doc(hidden)]
-</span><span class="kw">impl</span>&lt;T: <a href="#22-52">ObjectType</a>&gt; <a href="#3192-3195">Watchable</a>&lt;T&gt; <span class="kw">for </span><a href="#4440-4443">BorrowedObject</a>&lt;<span class="lifetime">'_</span>, T&gt; {
+</span><span class="kw">impl</span>&lt;T: <a href="#22-52">ObjectType</a>&gt; <a href="#3192-3195">Watchable</a>&lt;T&gt; <span class="kw">for </span><a href="#4435-4438">BorrowedObject</a>&lt;<span class="lifetime">'_</span>, T&gt; {
     <span class="kw">fn </span>watched_object(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="#3164">WatchedObject</a>&lt;T&gt; {
         <a href="#3174-3176">WatchedObject::new</a>(<a class="self" href="#3209">self</a>)
     }
@@ -8074,7 +8069,7 @@
     }
 }
 
-<span class="kw">unsafe impl</span>&lt;T: <a href="#22-52">ObjectType</a> + <a href="#4142">IsClass</a>&gt; <a href="#3323-3378">ObjectClassExt</a> <span class="kw">for </span><a href="#3941">Class</a>&lt;T&gt; {}
+<span class="kw">unsafe impl</span>&lt;T: <a href="#22-52">ObjectType</a> + <a href="#4137">IsClass</a>&gt; <a href="#3323-3378">ObjectClassExt</a> <span class="kw">for </span><a href="#3936">Class</a>&lt;T&gt; {}
 
 <a class="macro" href="wrapper.rs.html#276-443">wrapper!</a> {
     <span class="attr">#[doc(alias = <span class="string">"GInitiallyUnowned"</span>)]
@@ -8280,22 +8275,17 @@
 /// where it was created on will panic but dropping or cloning can be done
 /// safely from any thread.
 </span><span class="attr">#[derive(Debug)]
-</span><span class="kw">pub struct </span><a href="../../glib/object/struct.SendWeakRef.html">SendWeakRef</a>&lt;T: <a href="#22-52">ObjectType</a>&gt;(<a href="#3468">WeakRef</a>&lt;T&gt;, <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>&gt;);
+</span><span class="kw">pub struct </span><a href="../../glib/object/struct.SendWeakRef.html">SendWeakRef</a>&lt;T: <a href="#22-52">ObjectType</a>&gt;(<a href="#3468">WeakRef</a>&lt;T&gt;, <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>);
 
 <span class="kw">impl</span>&lt;T: <a href="#22-52">ObjectType</a>&gt; <a href="#3586">SendWeakRef</a>&lt;T&gt; {
     <span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>new() -&gt; <a href="#3586">SendWeakRef</a>&lt;T&gt; {
-        <a href="#3586">SendWeakRef</a>(<a href="#3476-3485">WeakRef::new</a>(), <span class="prelude-val">None</span>)
-    }
-
-    <span class="attr">#[inline]
     </span><span class="kw">pub fn </span>into_weak_ref(<span class="self">self</span>) -&gt; <a href="#3468">WeakRef</a>&lt;T&gt; {
         <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.assert.html">assert!</a>(
-            <span class="self">self</span>.<span class="number">1</span>.is_none() || <span class="self">self</span>.<span class="number">1 </span>== <span class="prelude-val">Some</span>(thread_id()),
+            <span class="self">self</span>.<span class="number">1 </span>== thread_id(),
             <span class="string">"SendWeakRef dereferenced on a different thread"</span>,
         );
 
-        <a class="self" href="#3595">self</a>.<span class="number">0
+        <a class="self" href="#3590">self</a>.<span class="number">0
     </span>}
 }
 
@@ -8305,11 +8295,11 @@
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>deref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><a href="#3468">WeakRef</a>&lt;T&gt; {
         <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.assert.html">assert!</a>(
-            <span class="self">self</span>.<span class="number">1</span>.is_none() || <span class="self">self</span>.<span class="number">1 </span>== <span class="prelude-val">Some</span>(thread_id()),
+            <span class="self">self</span>.<span class="number">1 </span>== thread_id(),
             <span class="string">"SendWeakRef dereferenced on a different thread"
         </span>);
 
-        <span class="kw-2">&amp;</span><a class="self" href="#3609">self</a>.<span class="number">0
+        <span class="kw-2">&amp;</span><a class="self" href="#3604">self</a>.<span class="number">0
     </span>}
 }
 
@@ -8317,21 +8307,21 @@
 </span><span class="kw">impl</span>&lt;T: <a href="#22-52">ObjectType</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">Clone</a> <span class="kw">for </span><a href="#3586">SendWeakRef</a>&lt;T&gt; {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>clone(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self </span>{
-        <span class="self">Self</span>(<a class="self" href="#3622">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">clone</a>(), <a class="self" href="#3622">self</a>.<span class="number">1</span>)
+        <span class="self">Self</span>(<a class="self" href="#3617">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">clone</a>(), <a class="self" href="#3617">self</a>.<span class="number">1</span>)
     }
 }
 
 <span class="kw">impl</span>&lt;T: <a href="#22-52">ObjectType</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html">Default</a> <span class="kw">for </span><a href="#3586">SendWeakRef</a>&lt;T&gt; {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
-        <a href="#3590-3592"><span class="self">Self</span>::new</a>()
+        <a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html#tymethod.from"><span class="self">Self</span>::from</a>(<a href="#3476-3485">WeakRef::new</a>())
     }
 }
 
 <span class="kw">impl</span>&lt;T: <a href="#22-52">ObjectType</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html">From</a>&lt;<a href="#3468">WeakRef</a>&lt;T&gt;&gt; <span class="kw">for </span><a href="#3586">SendWeakRef</a>&lt;T&gt; {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>from(v: <a href="#3468">WeakRef</a>&lt;T&gt;) -&gt; <a href="#3586">SendWeakRef</a>&lt;T&gt; {
-        <a href="#3586">SendWeakRef</a>(<a href="#3636">v</a>, <span class="prelude-val">Some</span>(<a href="thread_guard.rs.html#17-20">thread_id</a>()))
+        <a href="#3586">SendWeakRef</a>(<a href="#3631">v</a>, <a href="thread_guard.rs.html#17-20">thread_id</a>())
     }
 }
 
@@ -8350,23 +8340,23 @@
     target: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#380-382">ObjectRef</a>,
     target_property: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
     flags: <a href="gobject/auto/flags.rs.html#7-37"><span class="kw">crate</span>::BindingFlags</a>,
-    transform_from: <a href="#3644-3645">TransformFn</a>&lt;<span class="lifetime">'f</span>&gt;,
-    transform_to: <a href="#3644-3645">TransformFn</a>&lt;<span class="lifetime">'t</span>&gt;,
+    transform_from: <a href="#3639-3640">TransformFn</a>&lt;<span class="lifetime">'f</span>&gt;,
+    transform_to: <a href="#3639-3640">TransformFn</a>&lt;<span class="lifetime">'t</span>&gt;,
 }
 
-<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html">fmt::Debug</a> <span class="kw">for </span><a href="#3650-3658">BindingBuilder</a>&lt;<span class="lifetime">'_</span>, <span class="lifetime">'_</span>, <span class="lifetime">'_</span>&gt; {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html">fmt::Debug</a> <span class="kw">for </span><a href="#3645-3653">BindingBuilder</a>&lt;<span class="lifetime">'_</span>, <span class="lifetime">'_</span>, <span class="lifetime">'_</span>&gt; {
     <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span><a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html">fmt::Formatter</a>&lt;<span class="lifetime">'_</span>&gt;) -&gt; <a href="https://doc.rust-lang.org/nightly/core/fmt/type.Result.html">fmt::Result</a> {
-        <a href="#3661">f</a>.<a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html#method.debug_struct">debug_struct</a>(<span class="string">"BindingBuilder"</span>)
-            .<a href="https://doc.rust-lang.org/nightly/core/fmt/builders/struct.DebugStruct.html#method.field">field</a>(<span class="string">"source"</span>, <span class="kw-2">&amp;</span><a class="self" href="#3661">self</a>.source)
-            .<a href="https://doc.rust-lang.org/nightly/core/fmt/builders/struct.DebugStruct.html#method.field">field</a>(<span class="string">"source_property"</span>, <span class="kw-2">&amp;</span><a class="self" href="#3661">self</a>.source_property)
-            .<a href="https://doc.rust-lang.org/nightly/core/fmt/builders/struct.DebugStruct.html#method.field">field</a>(<span class="string">"target"</span>, <span class="kw-2">&amp;</span><a class="self" href="#3661">self</a>.target)
-            .<a href="https://doc.rust-lang.org/nightly/core/fmt/builders/struct.DebugStruct.html#method.field">field</a>(<span class="string">"target_property"</span>, <span class="kw-2">&amp;</span><a class="self" href="#3661">self</a>.target_property)
-            .<a href="https://doc.rust-lang.org/nightly/core/fmt/builders/struct.DebugStruct.html#method.field">field</a>(<span class="string">"flags"</span>, <span class="kw-2">&amp;</span><a class="self" href="#3661">self</a>.flags)
+        <a href="#3656">f</a>.<a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html#method.debug_struct">debug_struct</a>(<span class="string">"BindingBuilder"</span>)
+            .<a href="https://doc.rust-lang.org/nightly/core/fmt/builders/struct.DebugStruct.html#method.field">field</a>(<span class="string">"source"</span>, <span class="kw-2">&amp;</span><a class="self" href="#3656">self</a>.source)
+            .<a href="https://doc.rust-lang.org/nightly/core/fmt/builders/struct.DebugStruct.html#method.field">field</a>(<span class="string">"source_property"</span>, <span class="kw-2">&amp;</span><a class="self" href="#3656">self</a>.source_property)
+            .<a href="https://doc.rust-lang.org/nightly/core/fmt/builders/struct.DebugStruct.html#method.field">field</a>(<span class="string">"target"</span>, <span class="kw-2">&amp;</span><a class="self" href="#3656">self</a>.target)
+            .<a href="https://doc.rust-lang.org/nightly/core/fmt/builders/struct.DebugStruct.html#method.field">field</a>(<span class="string">"target_property"</span>, <span class="kw-2">&amp;</span><a class="self" href="#3656">self</a>.target_property)
+            .<a href="https://doc.rust-lang.org/nightly/core/fmt/builders/struct.DebugStruct.html#method.field">field</a>(<span class="string">"flags"</span>, <span class="kw-2">&amp;</span><a class="self" href="#3656">self</a>.flags)
             .<a href="https://doc.rust-lang.org/nightly/core/fmt/builders/struct.DebugStruct.html#method.finish">finish</a>()
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, <span class="lifetime">'f</span>, <span class="lifetime">'t</span>&gt; <a href="#3650-3658">BindingBuilder</a>&lt;<span class="lifetime">'a</span>, <span class="lifetime">'f</span>, <span class="lifetime">'t</span>&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, <span class="lifetime">'f</span>, <span class="lifetime">'t</span>&gt; <a href="#3645-3653">BindingBuilder</a>&lt;<span class="lifetime">'a</span>, <span class="lifetime">'f</span>, <span class="lifetime">'t</span>&gt; {
     <span class="kw">fn </span>new(
         source: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw">impl </span><a href="#22-52">ObjectType</a>,
         source_property: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
@@ -8374,10 +8364,10 @@
         target_property: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
     ) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
-            source: <a href="#3674">source</a>.<a href="#48">as_object_ref</a>(),
-            <a href="#3675">source_property</a>,
-            target: <a href="#3676">target</a>.<a href="#48">as_object_ref</a>(),
-            <a href="#3677">target_property</a>,
+            source: <a href="#3669">source</a>.<a href="#48">as_object_ref</a>(),
+            <a href="#3670">source_property</a>,
+            target: <a href="#3671">target</a>.<a href="#48">as_object_ref</a>(),
+            <a href="#3672">target_property</a>,
             flags: <span class="kw">crate</span>::BindingFlags::DEFAULT,
             transform_to: <span class="prelude-val">None</span>,
             transform_from: <span class="prelude-val">None</span>,
@@ -8396,8 +8386,8 @@
         func: F,
     ) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
-            transform_from: <span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">Box::new</a>(<a href="#3699">func</a>)),
-            ..<span class="self"><a href="#3698">self</a>
+            transform_from: <span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">Box::new</a>(<a href="#3694">func</a>)),
+            ..<span class="self"><a href="#3693">self</a>
         </span>}
     }
 
@@ -8416,10 +8406,10 @@
     ) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
             transform_from: <span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">Box::new</a>(<span class="kw">move </span>|binding, from_value| {
-                <span class="kw">let </span>from_value = <a href="#3721">from_value</a>.<a href="value.rs.html#585-595">get</a>().<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.expect">expect</a>(<span class="string">"Wrong value type"</span>);
-                <a href="#3718">func</a>(<a href="#3721">binding</a>, <a href="#3722">from_value</a>).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|r| <a href="#3723">r</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>())
+                <span class="kw">let </span>from_value = <a href="#3716">from_value</a>.<a href="value.rs.html#585-595">get</a>().<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.expect">expect</a>(<span class="string">"Wrong value type"</span>);
+                <a href="#3713">func</a>(<a href="#3716">binding</a>, <a href="#3717">from_value</a>).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|r| <a href="#3718">r</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>())
             })),
-            ..<span class="self"><a href="#3717">self</a>
+            ..<span class="self"><a href="#3712">self</a>
         </span>}
     }
 
@@ -8435,8 +8425,8 @@
         func: F,
     ) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
-            transform_to: <span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">Box::new</a>(<a href="#3738">func</a>)),
-            ..<span class="self"><a href="#3737">self</a>
+            transform_to: <span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">Box::new</a>(<a href="#3733">func</a>)),
+            ..<span class="self"><a href="#3732">self</a>
         </span>}
     }
 
@@ -8455,38 +8445,38 @@
     ) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
             transform_to: <span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">Box::new</a>(<span class="kw">move </span>|binding, from_value| {
-                <span class="kw">let </span>from_value = <a href="#3760">from_value</a>.<a href="value.rs.html#585-595">get</a>().<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.expect">expect</a>(<span class="string">"Wrong value type"</span>);
-                <a href="#3757">func</a>(<a href="#3760">binding</a>, <a href="#3761">from_value</a>).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|r| <a href="#3762">r</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>())
+                <span class="kw">let </span>from_value = <a href="#3755">from_value</a>.<a href="value.rs.html#585-595">get</a>().<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.expect">expect</a>(<span class="string">"Wrong value type"</span>);
+                <a href="#3752">func</a>(<a href="#3755">binding</a>, <a href="#3756">from_value</a>).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|r| <a href="#3757">r</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>())
             })),
-            ..<span class="self"><a href="#3756">self</a>
+            ..<span class="self"><a href="#3751">self</a>
         </span>}
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Bind the properties with the given flags.
     </span><span class="kw">pub fn </span>flags(<span class="self">self</span>, flags: <a href="gobject/auto/flags.rs.html#7-37"><span class="kw">crate</span>::BindingFlags</a>) -&gt; <span class="self">Self </span>{
-        <span class="self">Self </span>{ <a href="#3770">flags</a>, ..<span class="self"><a href="#3770">self</a> </span>}
+        <span class="self">Self </span>{ <a href="#3765">flags</a>, ..<span class="self"><a href="#3765">self</a> </span>}
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Set the binding flags to [`BIDIRECTIONAL`][crate::BindingFlags::BIDIRECTIONAL].
     </span><span class="kw">pub fn </span>bidirectional(<span class="kw-2">mut </span><span class="self">self</span>) -&gt; <span class="self">Self </span>{
-        <a class="self" href="#3776">self</a>.flags |= <span class="kw">crate</span>::BindingFlags::BIDIRECTIONAL;
-        <span class="self"><a href="#3776">self</a>
+        <a class="self" href="#3771">self</a>.flags |= <span class="kw">crate</span>::BindingFlags::BIDIRECTIONAL;
+        <span class="self"><a href="#3771">self</a>
     </span>}
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Set the binding flags to [`SYNC_CREATE`][crate::BindingFlags::SYNC_CREATE].
     </span><span class="kw">pub fn </span>sync_create(<span class="kw-2">mut </span><span class="self">self</span>) -&gt; <span class="self">Self </span>{
-        <a class="self" href="#3783">self</a>.flags |= <span class="kw">crate</span>::BindingFlags::SYNC_CREATE;
-        <span class="self"><a href="#3783">self</a>
+        <a class="self" href="#3778">self</a>.flags |= <span class="kw">crate</span>::BindingFlags::SYNC_CREATE;
+        <span class="self"><a href="#3778">self</a>
     </span>}
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Set the binding flags to [`INVERT_BOOLEAN`][crate::BindingFlags::INVERT_BOOLEAN].
     </span><span class="kw">pub fn </span>invert_boolean(<span class="kw-2">mut </span><span class="self">self</span>) -&gt; <span class="self">Self </span>{
-        <a class="self" href="#3790">self</a>.flags |= <span class="kw">crate</span>::BindingFlags::INVERT_BOOLEAN;
-        <span class="self"><a href="#3790">self</a>
+        <a class="self" href="#3785">self</a>.flags |= <span class="kw">crate</span>::BindingFlags::INVERT_BOOLEAN;
+        <span class="self"><a href="#3785">self</a>
     </span>}
 
     <span class="comment">// rustdoc-stripper-ignore-next
@@ -8502,12 +8492,12 @@
             to_value: <span class="kw-2">*mut </span><a href="../../gobject_sys/struct.GValue.html">gobject_ffi::GValue</a>,
             user_data: <a href="../../glib_sys/type.gpointer.html">ffi::gpointer</a>,
         ) -&gt; <a href="../../glib_sys/type.gboolean.html">ffi::gboolean</a> {
-            <span class="kw">let </span>transform_data = <span class="kw-2">&amp;*</span>(<a href="#3806">user_data</a>
-                <span class="kw">as </span><span class="kw-2">*const </span>(<a href="#3644-3645">TransformFn</a>, <a href="#3644-3645">TransformFn</a>, <a href="param_spec.rs.html#19-42"><span class="kw">crate</span>::ParamSpec</a>, <a href="param_spec.rs.html#19-42"><span class="kw">crate</span>::ParamSpec</a>));
+            <span class="kw">let </span>transform_data = <span class="kw-2">&amp;*</span>(<a href="#3801">user_data</a>
+                <span class="kw">as </span><span class="kw-2">*const </span>(<a href="#3639-3640">TransformFn</a>, <a href="#3639-3640">TransformFn</a>, <a href="param_spec.rs.html#19-42"><span class="kw">crate</span>::ParamSpec</a>, <a href="param_spec.rs.html#19-42"><span class="kw">crate</span>::ParamSpec</a>));
 
-            <span class="kw">match </span>(<a href="#3808">transform_data</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_ref">as_ref</a>().<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap">unwrap</a>())(
-                <span class="kw-2">&amp;</span><a href="translate.rs.html#1643-1645">from_glib_borrow</a>(<a href="#3803">binding</a>),
-                <span class="kw-2">&amp;*</span>(<a href="#3804">from_value</a> <span class="kw">as </span><span class="kw-2">*const </span><a href="value.rs.html#478-512">Value</a>),
+            <span class="kw">match </span>(<a href="#3803">transform_data</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_ref">as_ref</a>().<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap">unwrap</a>())(
+                <span class="kw-2">&amp;</span><a href="translate.rs.html#1643-1645">from_glib_borrow</a>(<a href="#3798">binding</a>),
+                <span class="kw-2">&amp;*</span>(<a href="#3799">from_value</a> <span class="kw">as </span><span class="kw-2">*const </span><a href="value.rs.html#478-512">Value</a>),
             ) {
                 <span class="prelude-val">None </span>=&gt; <span class="bool-val">false</span>,
                 <span class="prelude-val">Some</span>(res) =&gt; {
@@ -8518,7 +8508,7 @@
                         transform_data.<span class="number">3</span>.value_type(),
                         res.type_()
                     );
-                    <span class="kw-2">*</span><a href="#3805">to_value</a> = <a href="#3816">res</a>.<a href="value.rs.html#704-709">into_raw</a>();
+                    <span class="kw-2">*</span><a href="#3800">to_value</a> = <a href="#3811">res</a>.<a href="value.rs.html#704-709">into_raw</a>();
                     <span class="bool-val">true
                 </span>}
             }
@@ -8531,12 +8521,12 @@
             to_value: <span class="kw-2">*mut </span><a href="../../gobject_sys/struct.GValue.html">gobject_ffi::GValue</a>,
             user_data: <a href="../../glib_sys/type.gpointer.html">ffi::gpointer</a>,
         ) -&gt; <a href="../../glib_sys/type.gboolean.html">ffi::gboolean</a> {
-            <span class="kw">let </span>transform_data = <span class="kw-2">&amp;*</span>(<a href="#3835">user_data</a>
-                <span class="kw">as </span><span class="kw-2">*const </span>(<a href="#3644-3645">TransformFn</a>, <a href="#3644-3645">TransformFn</a>, <a href="param_spec.rs.html#19-42"><span class="kw">crate</span>::ParamSpec</a>, <a href="param_spec.rs.html#19-42"><span class="kw">crate</span>::ParamSpec</a>));
+            <span class="kw">let </span>transform_data = <span class="kw-2">&amp;*</span>(<a href="#3830">user_data</a>
+                <span class="kw">as </span><span class="kw-2">*const </span>(<a href="#3639-3640">TransformFn</a>, <a href="#3639-3640">TransformFn</a>, <a href="param_spec.rs.html#19-42"><span class="kw">crate</span>::ParamSpec</a>, <a href="param_spec.rs.html#19-42"><span class="kw">crate</span>::ParamSpec</a>));
 
-            <span class="kw">match </span>(<a href="#3837">transform_data</a>.<span class="number">1</span>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_ref">as_ref</a>().<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap">unwrap</a>())(
-                <span class="kw-2">&amp;</span><a href="translate.rs.html#1643-1645">from_glib_borrow</a>(<a href="#3832">binding</a>),
-                <span class="kw-2">&amp;*</span>(<a href="#3833">from_value</a> <span class="kw">as </span><span class="kw-2">*const </span><a href="value.rs.html#478-512">Value</a>),
+            <span class="kw">match </span>(<a href="#3832">transform_data</a>.<span class="number">1</span>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_ref">as_ref</a>().<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap">unwrap</a>())(
+                <span class="kw-2">&amp;</span><a href="translate.rs.html#1643-1645">from_glib_borrow</a>(<a href="#3827">binding</a>),
+                <span class="kw-2">&amp;*</span>(<a href="#3828">from_value</a> <span class="kw">as </span><span class="kw-2">*const </span><a href="value.rs.html#478-512">Value</a>),
             ) {
                 <span class="prelude-val">None </span>=&gt; <span class="bool-val">false</span>,
                 <span class="prelude-val">Some</span>(res) =&gt; {
@@ -8547,7 +8537,7 @@
                         transform_data.<span class="number">2</span>.value_type(),
                         res.type_()
                     );
-                    <span class="kw-2">*</span><a href="#3834">to_value</a> = <a href="#3845">res</a>.<a href="value.rs.html#704-709">into_raw</a>();
+                    <span class="kw-2">*</span><a href="#3829">to_value</a> = <a href="#3840">res</a>.<a href="value.rs.html#704-709">into_raw</a>();
                     <span class="bool-val">true
                 </span>}
             }
@@ -8556,22 +8546,22 @@
 
         <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>free_transform_data(data: <a href="../../glib_sys/type.gpointer.html">ffi::gpointer</a>) {
             <span class="kw">let _ </span>= <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.from_raw">Box::from_raw</a>(
-                <a href="#3860">data</a> <span class="kw">as </span><span class="kw-2">*mut </span>(<a href="#3644-3645">TransformFn</a>, <a href="#3644-3645">TransformFn</a>, <a href="param_spec.rs.html#19-42"><span class="kw">crate</span>::ParamSpec</a>, <a href="param_spec.rs.html#19-42"><span class="kw">crate</span>::ParamSpec</a>),
+                <a href="#3855">data</a> <span class="kw">as </span><span class="kw-2">*mut </span>(<a href="#3639-3640">TransformFn</a>, <a href="#3639-3640">TransformFn</a>, <a href="param_spec.rs.html#19-42"><span class="kw">crate</span>::ParamSpec</a>, <a href="param_spec.rs.html#19-42"><span class="kw">crate</span>::ParamSpec</a>),
             );
         }
 
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>source = <a href="#1376-1379">Object</a> {
-                inner: <a href="#537-543">TypedObjectRef::new</a>(<a class="self" href="#3801">self</a>.source.<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">clone</a>()),
+                inner: <a href="#537-543">TypedObjectRef::new</a>(<a class="self" href="#3796">self</a>.source.<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">clone</a>()),
                 phantom: <a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">std::marker::PhantomData</a>,
             };
             <span class="kw">let </span>target = <a href="#1376-1379">Object</a> {
-                inner: <a href="#537-543">TypedObjectRef::new</a>(<a class="self" href="#3801">self</a>.target.<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">clone</a>()),
+                inner: <a href="#537-543">TypedObjectRef::new</a>(<a class="self" href="#3796">self</a>.target.<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">clone</a>()),
                 phantom: <a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">std::marker::PhantomData</a>,
             };
 
-            <span class="kw">let </span>source_property = <a href="#3867">source</a>
-                .<a href="#1770">find_property</a>(<a class="self" href="#3801">self</a>.source_property)
+            <span class="kw">let </span>source_property = <a href="#3862">source</a>
+                .<a href="#1770">find_property</a>(<a class="self" href="#3796">self</a>.source_property)
                 .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap_or_else">unwrap_or_else</a>(|| {
                     <a class="macro" href="https://doc.rust-lang.org/nightly/std/macro.panic.html">panic!</a>(
                         <span class="string">"Source property {} on type {} not found"</span>,
@@ -8579,8 +8569,8 @@
                         source.type_()
                     );
                 });
-            <span class="kw">let </span>target_property = <a href="#3871">target</a>
-                .<a href="#1770">find_property</a>(<a class="self" href="#3801">self</a>.target_property)
+            <span class="kw">let </span>target_property = <a href="#3866">target</a>
+                .<a href="#1770">find_property</a>(<a class="self" href="#3796">self</a>.target_property)
                 .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap_or_else">unwrap_or_else</a>(|| {
                     <a class="macro" href="https://doc.rust-lang.org/nightly/std/macro.panic.html">panic!</a>(
                         <span class="string">"Target property {} on type {} not found"</span>,
@@ -8589,43 +8579,43 @@
                     );
                 });
 
-            <span class="kw">let </span>source_property_name = <a href="#3876">source_property</a>.<a href="param_spec.rs.html#253-259">name</a>().<a href="https://doc.rust-lang.org/nightly/core/foreigntype.str.html#method.as_ptr">as_ptr</a>();
-            <span class="kw">let </span>target_property_name = <a href="#3885">target_property</a>.<a href="param_spec.rs.html#253-259">name</a>().<a href="https://doc.rust-lang.org/nightly/core/foreigntype.str.html#method.as_ptr">as_ptr</a>();
+            <span class="kw">let </span>source_property_name = <a href="#3871">source_property</a>.<a href="param_spec.rs.html#253-259">name</a>().<a href="https://doc.rust-lang.org/nightly/core/foreigntype.str.html#method.as_ptr">as_ptr</a>();
+            <span class="kw">let </span>target_property_name = <a href="#3880">target_property</a>.<a href="param_spec.rs.html#253-259">name</a>().<a href="https://doc.rust-lang.org/nightly/core/foreigntype.str.html#method.as_ptr">as_ptr</a>();
 
-            <span class="kw">let </span>have_transform_to = <a class="self" href="#3801">self</a>.transform_to.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.is_some">is_some</a>();
-            <span class="kw">let </span>have_transform_from = <a class="self" href="#3801">self</a>.transform_from.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.is_some">is_some</a>();
+            <span class="kw">let </span>have_transform_to = <a class="self" href="#3796">self</a>.transform_to.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.is_some">is_some</a>();
+            <span class="kw">let </span>have_transform_from = <a class="self" href="#3796">self</a>.transform_from.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.is_some">is_some</a>();
             <span class="kw">let </span>transform_data = <span class="kw">if </span>have_transform_to || have_transform_from {
                 <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.into_raw">Box::into_raw</a>(<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">Box::new</a>((
-                    <a class="self" href="#3801">self</a>.transform_to,
-                    <a class="self" href="#3801">self</a>.transform_from,
-                    <a href="#3876">source_property</a>,
-                    <a href="#3885">target_property</a>,
+                    <a class="self" href="#3796">self</a>.transform_to,
+                    <a class="self" href="#3796">self</a>.transform_from,
+                    <a href="#3871">source_property</a>,
+                    <a href="#3880">target_property</a>,
                 )))
             } <span class="kw">else </span>{
                 <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>()
             };
 
             <a href="translate.rs.html#1625-1627">from_glib_none</a>(<a href="../../gobject_sys/fn.g_object_bind_property_full.html">gobject_ffi::g_object_bind_property_full</a>(
-                <a href="#3867">source</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#3895">source_property_name</a> <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
-                <a href="#3871">target</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#3896">target_property_name</a> <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
-                <a class="self" href="#3801">self</a>.flags.<a href="translate.rs.html#334">into_glib</a>(),
+                <a href="#3862">source</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#3890">source_property_name</a> <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+                <a href="#3866">target</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#3891">target_property_name</a> <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+                <a class="self" href="#3796">self</a>.flags.<a href="translate.rs.html#334">into_glib</a>(),
                 <span class="kw">if </span>have_transform_to {
-                    <span class="prelude-val">Some</span>(<a href="#3802-3829">transform_to_trampoline</a>)
+                    <span class="prelude-val">Some</span>(<a href="#3797-3824">transform_to_trampoline</a>)
                 } <span class="kw">else </span>{
                     <span class="prelude-val">None
                 </span>},
                 <span class="kw">if </span>have_transform_from {
-                    <span class="prelude-val">Some</span>(<a href="#3831-3858">transform_from_trampoline</a>)
+                    <span class="prelude-val">Some</span>(<a href="#3826-3853">transform_from_trampoline</a>)
                 } <span class="kw">else </span>{
                     <span class="prelude-val">None
                 </span>},
-                <a href="#3900">transform_data</a> <span class="kw">as </span><a href="../../glib_sys/type.gpointer.html">ffi::gpointer</a>,
+                <a href="#3895">transform_data</a> <span class="kw">as </span><a href="../../glib_sys/type.gpointer.html">ffi::gpointer</a>,
                 <span class="kw">if </span>transform_data.is_null() {
                     <span class="prelude-val">None
                 </span>} <span class="kw">else </span>{
-                    <span class="prelude-val">Some</span>(<a href="#3860-3864">free_transform_data</a>)
+                    <span class="prelude-val">Some</span>(<a href="#3855-3859">free_transform_data</a>)
                 },
             ))
         }
@@ -8635,9 +8625,9 @@
 <span class="comment">// rustdoc-stripper-ignore-next
 </span><span class="doccomment">/// Class struct of type `T`.
 </span><span class="attr">#[repr(transparent)]
-</span><span class="kw">pub struct </span><a href="../../glib/object/struct.Class.html">Class</a>&lt;T: <a href="#4142">IsClass</a>&gt;(T::GlibClassType);
+</span><span class="kw">pub struct </span><a href="../../glib/object/struct.Class.html">Class</a>&lt;T: <a href="#4137">IsClass</a>&gt;(T::GlibClassType);
 
-<span class="kw">impl</span>&lt;T: <a href="#4142">IsClass</a>&gt; <a href="#3941">Class</a>&lt;T&gt; {
+<span class="kw">impl</span>&lt;T: <a href="#4137">IsClass</a>&gt; <a href="#3936">Class</a>&lt;T&gt; {
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Get the type id for this class.
     ///
@@ -8649,34 +8639,34 @@
         <span class="kw">unsafe </span>{
             <span class="comment">// This also works for interfaces because they also have the type
             // as the first struct field.
-            </span><span class="kw">let </span>klass = <span class="self"><a href="#3951">self</a> </span><span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_ as </span><span class="kw-2">*const </span><a href="../../gobject_sys/struct.GTypeClass.html">gobject_ffi::GTypeClass</a>;
-            <a href="translate.rs.html#1417-1419">from_glib</a>((<span class="kw-2">*</span><a href="#3955">klass</a>).g_type)
+            </span><span class="kw">let </span>klass = <span class="self"><a href="#3946">self</a> </span><span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_ as </span><span class="kw-2">*const </span><a href="../../gobject_sys/struct.GTypeClass.html">gobject_ffi::GTypeClass</a>;
+            <a href="translate.rs.html#1417-1419">from_glib</a>((<span class="kw-2">*</span><a href="#3950">klass</a>).g_type)
         }
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Casts this class to a reference to a parent type's class.
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>upcast_ref&lt;U: <a href="#4142">IsClass</a>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><a href="#3941">Class</a>&lt;U&gt;
+    </span><span class="kw">pub fn </span>upcast_ref&lt;U: <a href="#4137">IsClass</a>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><a href="#3936">Class</a>&lt;U&gt;
     <span class="kw">where
         </span>T: <a href="#71-74">IsA</a>&lt;U&gt;,
     {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>klass = <span class="self"><a href="#3963">self</a> </span><span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_ as </span><span class="kw-2">*const </span><a href="#3941">Class</a>&lt;U&gt;;
-            <span class="kw-2">&amp;*</span><a href="#3968">klass</a>
+            <span class="kw">let </span>klass = <span class="self"><a href="#3958">self</a> </span><span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_ as </span><span class="kw-2">*const </span><a href="#3936">Class</a>&lt;U&gt;;
+            <span class="kw-2">&amp;*</span><a href="#3963">klass</a>
         }
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Casts this class to a mutable reference to a parent type's class.
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>upcast_ref_mut&lt;U: <a href="#4142">IsClass</a>&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span><a href="#3941">Class</a>&lt;U&gt;
+    </span><span class="kw">pub fn </span>upcast_ref_mut&lt;U: <a href="#4137">IsClass</a>&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span><a href="#3936">Class</a>&lt;U&gt;
     <span class="kw">where
         </span>T: <a href="#71-74">IsA</a>&lt;U&gt;,
     {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>klass = <span class="self"><a href="#3976">self</a> </span><span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_ as </span><span class="kw-2">*mut </span><a href="#3941">Class</a>&lt;U&gt;;
-            <span class="kw-2">&amp;mut *</span><a href="#3981">klass</a>
+            <span class="kw">let </span>klass = <span class="self"><a href="#3971">self</a> </span><span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_ as </span><span class="kw-2">*mut </span><a href="#3936">Class</a>&lt;U&gt;;
+            <span class="kw-2">&amp;mut *</span><a href="#3976">klass</a>
         }
     }
 
@@ -8684,14 +8674,14 @@
     </span><span class="doccomment">/// Casts this class to a reference to a child type's class or
     /// fails if this class is not implementing the child class.
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>downcast_ref&lt;U: <a href="#4142">IsClass</a> + <a href="#71-74">IsA</a>&lt;T&gt;&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="#3941">Class</a>&lt;U&gt;&gt; {
+    </span><span class="kw">pub fn </span>downcast_ref&lt;U: <a href="#4137">IsClass</a> + <a href="#71-74">IsA</a>&lt;T&gt;&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="#3936">Class</a>&lt;U&gt;&gt; {
         <span class="kw">if </span>!<span class="self">self</span>.type_().is_a(U::static_type()) {
             <span class="kw">return </span><span class="prelude-val">None</span>;
         }
 
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>klass = <span class="self"><a href="#3990">self</a> </span><span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_ as </span><span class="kw-2">*const </span><a href="#3941">Class</a>&lt;U&gt;;
-            <span class="prelude-val">Some</span>(<span class="kw-2">&amp;*</span><a href="#3996">klass</a>)
+            <span class="kw">let </span>klass = <span class="self"><a href="#3985">self</a> </span><span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_ as </span><span class="kw-2">*const </span><a href="#3936">Class</a>&lt;U&gt;;
+            <span class="prelude-val">Some</span>(<span class="kw-2">&amp;*</span><a href="#3991">klass</a>)
         }
     }
 
@@ -8699,14 +8689,14 @@
     </span><span class="doccomment">/// Casts this class to a mutable reference to a child type's class or
     /// fails if this class is not implementing the child class.
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>downcast_ref_mut&lt;U: <a href="#4142">IsClass</a> + <a href="#71-74">IsA</a>&lt;T&gt;&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;mut </span><a href="#3941">Class</a>&lt;U&gt;&gt; {
+    </span><span class="kw">pub fn </span>downcast_ref_mut&lt;U: <a href="#4137">IsClass</a> + <a href="#71-74">IsA</a>&lt;T&gt;&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;mut </span><a href="#3936">Class</a>&lt;U&gt;&gt; {
         <span class="kw">if </span>!<span class="self">self</span>.type_().is_a(U::static_type()) {
             <span class="kw">return </span><span class="prelude-val">None</span>;
         }
 
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>klass = <span class="self"><a href="#4005">self</a> </span><span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_ as </span><span class="kw-2">*mut </span><a href="#3941">Class</a>&lt;U&gt;;
-            <span class="prelude-val">Some</span>(<span class="kw-2">&amp;mut *</span><a href="#4011">klass</a>)
+            <span class="kw">let </span>klass = <span class="self"><a href="#4000">self</a> </span><span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_ as </span><span class="kw-2">*mut </span><a href="#3936">Class</a>&lt;U&gt;;
+            <span class="prelude-val">Some</span>(<span class="kw-2">&amp;mut *</span><a href="#4006">klass</a>)
         }
     }
 
@@ -8716,18 +8706,18 @@
     /// This will return `None` if `type_` is not a subclass of `Self`.
     </span><span class="attr">#[doc(alias = <span class="string">"g_type_class_ref"</span>)]
     #[inline]
-    </span><span class="kw">pub fn </span>from_type(type_: <a href="types.rs.html#22">Type</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="#4081">ClassRef</a>&lt;<span class="lifetime">'static</span>, T&gt;&gt; {
+    </span><span class="kw">pub fn </span>from_type(type_: <a href="types.rs.html#22">Type</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="#4076">ClassRef</a>&lt;<span class="lifetime">'static</span>, T&gt;&gt; {
         <span class="kw">if </span>!type_.is_a(T::static_type()) {
             <span class="kw">return </span><span class="prelude-val">None</span>;
         }
 
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>ptr = <a href="../../gobject_sys/fn.g_type_class_ref.html">gobject_ffi::g_type_class_ref</a>(<a href="#4022">type_</a>.<a href="translate.rs.html#334">into_glib</a>());
+            <span class="kw">let </span>ptr = <a href="../../gobject_sys/fn.g_type_class_ref.html">gobject_ffi::g_type_class_ref</a>(<a href="#4017">type_</a>.<a href="translate.rs.html#334">into_glib</a>());
             <span class="kw">if </span>ptr.is_null() {
                 <span class="prelude-val">None
             </span>} <span class="kw">else </span>{
-                <span class="prelude-val">Some</span>(<a href="#4081">ClassRef</a>(
-                    <a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.new_unchecked">ptr::NonNull::new_unchecked</a>(<a href="#4028">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="self">Self</span>),
+                <span class="prelude-val">Some</span>(<a href="#4076">ClassRef</a>(
+                    <a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.new_unchecked">ptr::NonNull::new_unchecked</a>(<a href="#4023">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="self">Self</span>),
                     <span class="bool-val">true</span>,
                     <a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">PhantomData</a>,
                 ))
@@ -8739,14 +8729,14 @@
     </span><span class="doccomment">/// Gets the parent class struct, if any.
     </span><span class="attr">#[doc(alias = <span class="string">"g_type_class_peek_parent"</span>)]
     #[inline]
-    </span><span class="kw">pub fn </span>parent(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="#4081">ClassRef</a>&lt;T&gt;&gt; {
+    </span><span class="kw">pub fn </span>parent(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="#4076">ClassRef</a>&lt;T&gt;&gt; {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>ptr = <a href="../../gobject_sys/fn.g_type_class_peek_parent.html">gobject_ffi::g_type_class_peek_parent</a>(<span class="kw-2">&amp;</span><a class="self" href="#4045">self</a>.<span class="number">0 </span><span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_ as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
+            <span class="kw">let </span>ptr = <a href="../../gobject_sys/fn.g_type_class_peek_parent.html">gobject_ffi::g_type_class_peek_parent</a>(<span class="kw-2">&amp;</span><a class="self" href="#4040">self</a>.<span class="number">0 </span><span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_ as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
             <span class="kw">if </span>ptr.is_null() {
                 <span class="prelude-val">None
             </span>} <span class="kw">else </span>{
-                <span class="prelude-val">Some</span>(<a href="#4081">ClassRef</a>(
-                    <a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.new_unchecked">ptr::NonNull::new_unchecked</a>(<a href="#4047">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="self">Self</span>),
+                <span class="prelude-val">Some</span>(<a href="#4076">ClassRef</a>(
+                    <a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.new_unchecked">ptr::NonNull::new_unchecked</a>(<a href="#4042">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="self">Self</span>),
                     <span class="bool-val">false</span>,
                     <a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">PhantomData</a>,
                 ))
@@ -8755,81 +8745,81 @@
     }
 }
 
-<span class="kw">unsafe impl</span>&lt;T: <a href="#4142">IsClass</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> <span class="kw">for </span><a href="#3941">Class</a>&lt;T&gt; {}
-<span class="kw">unsafe impl</span>&lt;T: <a href="#4142">IsClass</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> <span class="kw">for </span><a href="#3941">Class</a>&lt;T&gt; {}
+<span class="kw">unsafe impl</span>&lt;T: <a href="#4137">IsClass</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> <span class="kw">for </span><a href="#3936">Class</a>&lt;T&gt; {}
+<span class="kw">unsafe impl</span>&lt;T: <a href="#4137">IsClass</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> <span class="kw">for </span><a href="#3936">Class</a>&lt;T&gt; {}
 
-<span class="kw">impl</span>&lt;T: <a href="#4142">IsClass</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">AsRef</a>&lt;T::GlibClassType&gt; <span class="kw">for </span><a href="#3941">Class</a>&lt;T&gt; {
+<span class="kw">impl</span>&lt;T: <a href="#4137">IsClass</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">AsRef</a>&lt;T::GlibClassType&gt; <span class="kw">for </span><a href="#3936">Class</a>&lt;T&gt; {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>as_ref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>T::GlibClassType {
-        <span class="kw-2">&amp;</span><a class="self" href="#4066">self</a>.<span class="number">0
+        <span class="kw-2">&amp;</span><a class="self" href="#4061">self</a>.<span class="number">0
     </span>}
 }
 
-<span class="kw">impl</span>&lt;T: <a href="#4142">IsClass</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsMut.html">AsMut</a>&lt;T::GlibClassType&gt; <span class="kw">for </span><a href="#3941">Class</a>&lt;T&gt; {
+<span class="kw">impl</span>&lt;T: <a href="#4137">IsClass</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsMut.html">AsMut</a>&lt;T::GlibClassType&gt; <span class="kw">for </span><a href="#3936">Class</a>&lt;T&gt; {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>as_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span>T::GlibClassType {
-        <span class="kw-2">&amp;mut </span><a class="self" href="#4073">self</a>.<span class="number">0
+        <span class="kw-2">&amp;mut </span><a class="self" href="#4068">self</a>.<span class="number">0
     </span>}
 }
 
 <span class="comment">// rustdoc-stripper-ignore-next
 </span><span class="doccomment">/// Reference to the class struct of type `T`.
 </span><span class="attr">#[derive(Debug)]
-</span><span class="kw">pub struct </span><a href="../../glib/object/struct.ClassRef.html">ClassRef</a>&lt;<span class="lifetime">'a</span>, T: <a href="#4142">IsClass</a>&gt;(<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html">ptr::NonNull</a>&lt;<a href="#3941">Class</a>&lt;T&gt;&gt;, <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>, <a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">PhantomData</a>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>()&gt;);
+</span><span class="kw">pub struct </span><a href="../../glib/object/struct.ClassRef.html">ClassRef</a>&lt;<span class="lifetime">'a</span>, T: <a href="#4137">IsClass</a>&gt;(<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html">ptr::NonNull</a>&lt;<a href="#3936">Class</a>&lt;T&gt;&gt;, <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>, <a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">PhantomData</a>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>()&gt;);
 
-<span class="kw">impl</span>&lt;T: <a href="#4142">IsClass</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/ops/deref/trait.Deref.html">ops::Deref</a> <span class="kw">for </span><a href="#4081">ClassRef</a>&lt;<span class="lifetime">'_</span>, T&gt; {
-    <span class="kw">type </span>Target = <a href="#3941">Class</a>&lt;T&gt;;
+<span class="kw">impl</span>&lt;T: <a href="#4137">IsClass</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/ops/deref/trait.Deref.html">ops::Deref</a> <span class="kw">for </span><a href="#4076">ClassRef</a>&lt;<span class="lifetime">'_</span>, T&gt; {
+    <span class="kw">type </span>Target = <a href="#3936">Class</a>&lt;T&gt;;
 
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>deref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><a href="#3941">Class</a>&lt;T&gt; {
-        <span class="kw">unsafe </span>{ <a class="self" href="#4087">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>() }
+    </span><span class="kw">fn </span>deref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><a href="#3936">Class</a>&lt;T&gt; {
+        <span class="kw">unsafe </span>{ <a class="self" href="#4082">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>() }
     }
 }
 
-<span class="kw">impl</span>&lt;T: <a href="#4142">IsClass</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/ops/drop/trait.Drop.html">Drop</a> <span class="kw">for </span><a href="#4081">ClassRef</a>&lt;<span class="lifetime">'_</span>, T&gt; {
+<span class="kw">impl</span>&lt;T: <a href="#4137">IsClass</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/ops/drop/trait.Drop.html">Drop</a> <span class="kw">for </span><a href="#4076">ClassRef</a>&lt;<span class="lifetime">'_</span>, T&gt; {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
         <span class="kw">if </span><span class="self">self</span>.<span class="number">1 </span>{
             <span class="kw">unsafe </span>{
-                <a href="../../gobject_sys/fn.g_type_class_unref.html">gobject_ffi::g_type_class_unref</a>(<a class="self" href="#4094">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
+                <a href="../../gobject_sys/fn.g_type_class_unref.html">gobject_ffi::g_type_class_unref</a>(<a class="self" href="#4089">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
             }
         }
     }
 }
 
-<span class="kw">unsafe impl</span>&lt;T: <a href="#4142">IsClass</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> <span class="kw">for </span><a href="#4081">ClassRef</a>&lt;<span class="lifetime">'_</span>, T&gt; {}
-<span class="kw">unsafe impl</span>&lt;T: <a href="#4142">IsClass</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> <span class="kw">for </span><a href="#4081">ClassRef</a>&lt;<span class="lifetime">'_</span>, T&gt; {}
+<span class="kw">unsafe impl</span>&lt;T: <a href="#4137">IsClass</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> <span class="kw">for </span><a href="#4076">ClassRef</a>&lt;<span class="lifetime">'_</span>, T&gt; {}
+<span class="kw">unsafe impl</span>&lt;T: <a href="#4137">IsClass</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> <span class="kw">for </span><a href="#4076">ClassRef</a>&lt;<span class="lifetime">'_</span>, T&gt; {}
 
 <span class="comment">// This should require Self: IsA&lt;Self::Super&gt;, but that seems to cause a cycle error
-</span><span class="kw">pub unsafe trait </span><a href="../../glib/object/trait.ParentClassIs.html">ParentClassIs</a>: <a href="#4142">IsClass</a> {
-    <span class="kw">type </span>Parent: <a href="#4142">IsClass</a>;
+</span><span class="kw">pub unsafe trait </span><a href="../../glib/object/trait.ParentClassIs.html">ParentClassIs</a>: <a href="#4137">IsClass</a> {
+    <span class="kw">type </span>Parent: <a href="#4137">IsClass</a>;
 }
 
 <span class="comment">// rustdoc-stripper-ignore-next
 </span><span class="doccomment">/// Automatically implemented by `ObjectSubclass` variants of
 /// [`wrapper!`][crate::wrapper!]
-</span><span class="kw">pub unsafe trait </span><a href="../../glib/object/trait.ObjectSubclassIs.html">ObjectSubclassIs</a>: <a href="#4142">IsClass</a> {
+</span><span class="kw">pub unsafe trait </span><a href="../../glib/object/trait.ObjectSubclassIs.html">ObjectSubclassIs</a>: <a href="#4137">IsClass</a> {
     <span class="kw">type </span>Subclass: <a href="subclass/types.rs.html#601-736">ObjectSubclass</a>;
 }
 
-<span class="kw">impl</span>&lt;T: <a href="#4107-4109">ParentClassIs</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/ops/deref/trait.Deref.html">ops::Deref</a> <span class="kw">for </span><a href="#3941">Class</a>&lt;T&gt; {
-    <span class="kw">type </span>Target = <a href="#3941">Class</a>&lt;T::Parent&gt;;
+<span class="kw">impl</span>&lt;T: <a href="#4102-4104">ParentClassIs</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/ops/deref/trait.Deref.html">ops::Deref</a> <span class="kw">for </span><a href="#3936">Class</a>&lt;T&gt; {
+    <span class="kw">type </span>Target = <a href="#3936">Class</a>&lt;T::Parent&gt;;
 
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>deref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="self">Self</span>::Target {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>klass = <span class="self"><a href="#4122">self</a> </span><span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_ as </span><span class="kw-2">*const </span><span class="self">Self</span>::Target;
-            <span class="kw-2">&amp;*</span><a href="#4124">klass</a>
+            <span class="kw">let </span>klass = <span class="self"><a href="#4117">self</a> </span><span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_ as </span><span class="kw-2">*const </span><span class="self">Self</span>::Target;
+            <span class="kw-2">&amp;*</span><a href="#4119">klass</a>
         }
     }
 }
 
-<span class="kw">impl</span>&lt;T: <a href="#4107-4109">ParentClassIs</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/ops/deref/trait.DerefMut.html">ops::DerefMut</a> <span class="kw">for </span><a href="#3941">Class</a>&lt;T&gt; {
+<span class="kw">impl</span>&lt;T: <a href="#4102-4104">ParentClassIs</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/ops/deref/trait.DerefMut.html">ops::DerefMut</a> <span class="kw">for </span><a href="#3936">Class</a>&lt;T&gt; {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>deref_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self</span>::Target {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>klass = <span class="self"><a href="#4132">self</a> </span><span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_ as </span><span class="kw-2">*mut </span><span class="self">Self</span>::Target;
-            <span class="kw-2">&amp;mut *</span><a href="#4134">klass</a>
+            <span class="kw">let </span>klass = <span class="self"><a href="#4127">self</a> </span><span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_ as </span><span class="kw-2">*mut </span><span class="self">Self</span>::Target;
+            <span class="kw-2">&amp;mut *</span><a href="#4129">klass</a>
         }
     }
 }
@@ -8841,9 +8831,9 @@
 <span class="comment">// rustdoc-stripper-ignore-next
 </span><span class="doccomment">/// Interface struct of type `T` for some type.
 </span><span class="attr">#[repr(transparent)]
-</span><span class="kw">pub struct </span><a href="../../glib/object/struct.Interface.html">Interface</a>&lt;T: <a href="#4374">IsInterface</a>&gt;(T::GlibClassType);
+</span><span class="kw">pub struct </span><a href="../../glib/object/struct.Interface.html">Interface</a>&lt;T: <a href="#4369">IsInterface</a>&gt;(T::GlibClassType);
 
-<span class="kw">impl</span>&lt;T: <a href="#4374">IsInterface</a>&gt; <a href="#4147">Interface</a>&lt;T&gt; {
+<span class="kw">impl</span>&lt;T: <a href="#4369">IsInterface</a>&gt; <a href="#4142">Interface</a>&lt;T&gt; {
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Get the type id for this interface.
     ///
@@ -8852,8 +8842,8 @@
     #[inline]
     </span><span class="kw">pub fn </span>type_(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="types.rs.html#22">Type</a> {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>klass = <span class="self"><a href="#4156">self</a> </span><span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_ as </span><span class="kw-2">*const </span><a href="../../gobject_sys/struct.GTypeInterface.html">gobject_ffi::GTypeInterface</a>;
-            <a href="translate.rs.html#1417-1419">from_glib</a>((<span class="kw-2">*</span><a href="#4158">klass</a>).g_type)
+            <span class="kw">let </span>klass = <span class="self"><a href="#4151">self</a> </span><span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_ as </span><span class="kw-2">*const </span><a href="../../gobject_sys/struct.GTypeInterface.html">gobject_ffi::GTypeInterface</a>;
+            <a href="translate.rs.html#1417-1419">from_glib</a>((<span class="kw-2">*</span><a href="#4153">klass</a>).g_type)
         }
     }
 
@@ -8868,8 +8858,8 @@
         <span class="kw">unsafe </span>{
             <span class="comment">// This also works for interfaces because they also have the type
             // as the first struct field.
-            </span><span class="kw">let </span>klass = <span class="self"><a href="#4170">self</a> </span><span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_ as </span><span class="kw-2">*const </span><a href="../../gobject_sys/struct.GTypeInterface.html">gobject_ffi::GTypeInterface</a>;
-            <a href="translate.rs.html#1417-1419">from_glib</a>((<span class="kw-2">*</span><a href="#4174">klass</a>).g_instance_type)
+            </span><span class="kw">let </span>klass = <span class="self"><a href="#4165">self</a> </span><span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_ as </span><span class="kw-2">*const </span><a href="../../gobject_sys/struct.GTypeInterface.html">gobject_ffi::GTypeInterface</a>;
+            <a href="translate.rs.html#1417-1419">from_glib</a>((<span class="kw-2">*</span><a href="#4169">klass</a>).g_instance_type)
         }
     }
 
@@ -8878,21 +8868,21 @@
     ///
     /// This will return `None` if `klass` is not implementing `Self`.
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>from_class&lt;U: <a href="#4142">IsClass</a>&gt;(klass: <span class="kw-2">&amp;</span><a href="#3941">Class</a>&lt;U&gt;) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="#4347">InterfaceRef</a>&lt;T&gt;&gt; {
+    </span><span class="kw">pub fn </span>from_class&lt;U: <a href="#4137">IsClass</a>&gt;(klass: <span class="kw-2">&amp;</span><a href="#3936">Class</a>&lt;U&gt;) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="#4342">InterfaceRef</a>&lt;T&gt;&gt; {
         <span class="kw">if </span>!klass.type_().is_a(T::static_type()) {
             <span class="kw">return </span><span class="prelude-val">None</span>;
         }
 
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>ptr = <a href="../../gobject_sys/fn.g_type_interface_peek.html">gobject_ffi::g_type_interface_peek</a>(
-                <span class="kw-2">&amp;</span><a href="#4184">klass</a>.<span class="number">0 </span><span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_ as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <span class="kw-2">&amp;</span><a href="#4179">klass</a>.<span class="number">0 </span><span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_ as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
                 <a href="types.rs.html#293">T::static_type</a>().<a href="translate.rs.html#334">into_glib</a>(),
             );
             <span class="kw">if </span>ptr.is_null() {
                 <span class="prelude-val">None
             </span>} <span class="kw">else </span>{
-                <span class="prelude-val">Some</span>(<a href="#4347">InterfaceRef</a>(
-                    <a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.new_unchecked">ptr::NonNull::new_unchecked</a>(<a href="#4190">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="self">Self</span>),
+                <span class="prelude-val">Some</span>(<a href="#4342">InterfaceRef</a>(
+                    <a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.new_unchecked">ptr::NonNull::new_unchecked</a>(<a href="#4185">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="self">Self</span>),
                     <span class="bool-val">false</span>,
                     <a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">PhantomData</a>,
                 ))
@@ -8905,7 +8895,7 @@
     ///
     /// This will return `None` if `type_` is not an interface.
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>from_type(type_: <a href="types.rs.html#22">Type</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="#4347">InterfaceRef</a>&lt;<span class="lifetime">'static</span>, T&gt;&gt; {
+    </span><span class="kw">pub fn </span>from_type(type_: <a href="types.rs.html#22">Type</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="#4342">InterfaceRef</a>&lt;<span class="lifetime">'static</span>, T&gt;&gt; {
         <span class="kw">if </span>!type_.is_a(Type::INTERFACE) {
             <span class="kw">return </span><span class="prelude-val">None</span>;
         }
@@ -8915,8 +8905,8 @@
             <span class="kw">if </span>ptr.is_null() {
                 <span class="prelude-val">None
             </span>} <span class="kw">else </span>{
-                <span class="prelude-val">Some</span>(<a href="#4347">InterfaceRef</a>(
-                    <a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.new_unchecked">ptr::NonNull::new_unchecked</a>(<a href="#4217">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="self">Self</span>),
+                <span class="prelude-val">Some</span>(<a href="#4342">InterfaceRef</a>(
+                    <a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.new_unchecked">ptr::NonNull::new_unchecked</a>(<a href="#4212">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="self">Self</span>),
                     <span class="bool-val">true</span>,
                     <a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">PhantomData</a>,
                 ))
@@ -8929,12 +8919,12 @@
     </span><span class="attr">#[doc(alias = <span class="string">"g_type_default_interface_ref"</span>)]
     #[allow(clippy::should_implement_trait)]
     #[inline]
-    </span><span class="kw">pub fn </span>default() -&gt; <a href="#4347">InterfaceRef</a>&lt;<span class="lifetime">'static</span>, T&gt; {
+    </span><span class="kw">pub fn </span>default() -&gt; <a href="#4342">InterfaceRef</a>&lt;<span class="lifetime">'static</span>, T&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>ptr = <a href="../../gobject_sys/fn.g_type_default_interface_ref.html">gobject_ffi::g_type_default_interface_ref</a>(<a href="types.rs.html#293">T::static_type</a>().<a href="translate.rs.html#334">into_glib</a>());
             <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert.html">debug_assert!</a>(!ptr.is_null());
-            <a href="#4347">InterfaceRef</a>(
-                <a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.new_unchecked">ptr::NonNull::new_unchecked</a>(<a href="#4237">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="self">Self</span>),
+            <a href="#4342">InterfaceRef</a>(
+                <a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.new_unchecked">ptr::NonNull::new_unchecked</a>(<a href="#4232">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="self">Self</span>),
                 <span class="bool-val">true</span>,
                 <a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">PhantomData</a>,
             )
@@ -8948,14 +8938,14 @@
     /// interface.
     </span><span class="attr">#[doc(alias = <span class="string">"g_type_interface_peek_parent"</span>)]
     #[inline]
-    </span><span class="kw">pub fn </span>parent(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="#4347">InterfaceRef</a>&lt;T&gt;&gt; {
+    </span><span class="kw">pub fn </span>parent(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="#4342">InterfaceRef</a>&lt;T&gt;&gt; {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>ptr = <a href="../../gobject_sys/fn.g_type_interface_peek_parent.html">gobject_ffi::g_type_interface_peek_parent</a>(<span class="kw-2">&amp;</span><a class="self" href="#4254">self</a>.<span class="number">0 </span><span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_ as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
+            <span class="kw">let </span>ptr = <a href="../../gobject_sys/fn.g_type_interface_peek_parent.html">gobject_ffi::g_type_interface_peek_parent</a>(<span class="kw-2">&amp;</span><a class="self" href="#4249">self</a>.<span class="number">0 </span><span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_ as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
             <span class="kw">if </span>ptr.is_null() {
                 <span class="prelude-val">None
             </span>} <span class="kw">else </span>{
-                <span class="prelude-val">Some</span>(<a href="#4347">InterfaceRef</a>(
-                    <a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.new_unchecked">ptr::NonNull::new_unchecked</a>(<a href="#4256">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="self">Self</span>),
+                <span class="prelude-val">Some</span>(<a href="#4342">InterfaceRef</a>(
+                    <a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.new_unchecked">ptr::NonNull::new_unchecked</a>(<a href="#4251">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="self">Self</span>),
                     <span class="bool-val">false</span>,
                     <a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">PhantomData</a>,
                 ))
@@ -8964,19 +8954,19 @@
     }
 }
 
-<span class="kw">impl</span>&lt;T: <a href="#71-74">IsA</a>&lt;<a href="#1376-1379">Object</a>&gt; + <a href="#4374">IsInterface</a>&gt; <a href="#4147">Interface</a>&lt;T&gt; {
+<span class="kw">impl</span>&lt;T: <a href="#71-74">IsA</a>&lt;<a href="#1376-1379">Object</a>&gt; + <a href="#4369">IsInterface</a>&gt; <a href="#4142">Interface</a>&lt;T&gt; {
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Check if the interface has a property `property_name` of the given `type_`.
     </span><span class="kw">pub fn </span>has_property(<span class="kw-2">&amp;</span><span class="self">self</span>, property_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
-        <a class="self" href="#4273">self</a>.<a href="#4298-4307">find_property</a>(<a href="#4273">property_name</a>).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.is_some">is_some</a>()
+        <a class="self" href="#4268">self</a>.<a href="#4293-4302">find_property</a>(<a href="#4268">property_name</a>).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.is_some">is_some</a>()
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Check if the interface has a property `property_name` of the given `type_`
     /// or a subtype of it.
     </span><span class="kw">pub fn </span>has_property_with_type(<span class="kw-2">&amp;</span><span class="self">self</span>, property_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, type_: <a href="types.rs.html#22">Type</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
-        <a class="self" href="#4280">self</a>.<a href="#4290-4293">property_type</a>(<a href="#4280">property_name</a>)
-            .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.is_some_and">is_some_and</a>(|ptype| <a href="#4282">ptype</a>.<a href="types.rs.html#160-167">is_a</a>(<a href="#4280">type_</a>))
+        <a class="self" href="#4275">self</a>.<a href="#4285-4288">property_type</a>(<a href="#4275">property_name</a>)
+            .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.is_some_and">is_some_and</a>(|ptype| <a href="#4277">ptype</a>.<a href="types.rs.html#160-167">is_a</a>(<a href="#4275">type_</a>))
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
@@ -8985,8 +8975,8 @@
     /// This returns `None` if the property does not exist.
     </span><span class="attr">#[doc(alias = <span class="string">"get_property_type"</span>)]
     </span><span class="kw">pub fn </span>property_type(<span class="kw-2">&amp;</span><span class="self">self</span>, property_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="types.rs.html#22">Type</a>&gt; {
-        <a class="self" href="#4290">self</a>.<a href="#4298-4307">find_property</a>(<a href="#4290">property_name</a>)
-            .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|pspec| <a href="#4292">pspec</a>.<a href="param_spec.rs.html#177-179">value_type</a>())
+        <a class="self" href="#4285">self</a>.<a href="#4293-4302">find_property</a>(<a href="#4285">property_name</a>)
+            .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|pspec| <a href="#4287">pspec</a>.<a href="param_spec.rs.html#177-179">value_type</a>())
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
@@ -8994,11 +8984,11 @@
     </span><span class="attr">#[doc(alias = <span class="string">"g_object_interface_find_property"</span>)]
     </span><span class="kw">pub fn </span>find_property(<span class="kw-2">&amp;</span><span class="self">self</span>, property_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="param_spec.rs.html#19-42"><span class="kw">crate</span>::ParamSpec</a>&gt; {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>interface = <span class="self"><a href="#4298">self</a> </span><span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_ as </span><span class="kw-2">*const </span><a href="../../gobject_sys/struct.GTypeInterface.html">gobject_ffi::GTypeInterface</a>;
+            <span class="kw">let </span>interface = <span class="self"><a href="#4293">self</a> </span><span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_ as </span><span class="kw-2">*const </span><a href="../../gobject_sys/struct.GTypeInterface.html">gobject_ffi::GTypeInterface</a>;
 
             <a href="translate.rs.html#1625-1627">from_glib_none</a>(<a href="../../gobject_sys/fn.g_object_interface_find_property.html">gobject_ffi::g_object_interface_find_property</a>(
-                <a href="#4300">interface</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
-                <a href="#4298">property_name</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#4295">interface</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <a href="#4293">property_name</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
             ))
         }
     }
@@ -9008,63 +8998,63 @@
     </span><span class="attr">#[doc(alias = <span class="string">"g_object_interface_list_properties"</span>)]
     </span><span class="kw">pub fn </span>list_properties(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="collections/ptr_slice.rs.html#18-26">PtrSlice</a>&lt;<a href="param_spec.rs.html#19-42"><span class="kw">crate</span>::ParamSpec</a>&gt; {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>interface = <span class="self"><a href="#4312">self</a> </span><span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_ as </span><span class="kw-2">*const </span><a href="../../gobject_sys/struct.GTypeInterface.html">gobject_ffi::GTypeInterface</a>;
+            <span class="kw">let </span>interface = <span class="self"><a href="#4307">self</a> </span><span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_ as </span><span class="kw-2">*const </span><a href="../../gobject_sys/struct.GTypeInterface.html">gobject_ffi::GTypeInterface</a>;
 
             <span class="kw">let </span><span class="kw-2">mut </span>n_properties = <span class="number">0</span>;
 
             <span class="kw">let </span>props = <a href="../../gobject_sys/fn.g_object_interface_list_properties.html">gobject_ffi::g_object_interface_list_properties</a>(
-                <a href="#4314">interface</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
-                <span class="kw-2">&amp;mut </span><a href="#4316">n_properties</a>,
+                <a href="#4309">interface</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <span class="kw-2">&amp;mut </span><a href="#4311">n_properties</a>,
             );
-            <a href="collections/ptr_slice.rs.html#484-509">PtrSlice::from_glib_container_num</a>(<a href="#4318">props</a>, <a href="#4316">n_properties</a> <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>, <span class="bool-val">true</span>)
+            <a href="collections/ptr_slice.rs.html#484-509">PtrSlice::from_glib_container_num</a>(<a href="#4313">props</a>, <a href="#4311">n_properties</a> <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>, <span class="bool-val">true</span>)
         }
     }
 }
 
-<span class="kw">unsafe impl</span>&lt;T: <a href="#4374">IsInterface</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> <span class="kw">for </span><a href="#4147">Interface</a>&lt;T&gt; {}
-<span class="kw">unsafe impl</span>&lt;T: <a href="#4374">IsInterface</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> <span class="kw">for </span><a href="#4147">Interface</a>&lt;T&gt; {}
+<span class="kw">unsafe impl</span>&lt;T: <a href="#4369">IsInterface</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> <span class="kw">for </span><a href="#4142">Interface</a>&lt;T&gt; {}
+<span class="kw">unsafe impl</span>&lt;T: <a href="#4369">IsInterface</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> <span class="kw">for </span><a href="#4142">Interface</a>&lt;T&gt; {}
 
-<span class="kw">impl</span>&lt;T: <a href="#4374">IsInterface</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">AsRef</a>&lt;T::GlibClassType&gt; <span class="kw">for </span><a href="#4147">Interface</a>&lt;T&gt; {
+<span class="kw">impl</span>&lt;T: <a href="#4369">IsInterface</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">AsRef</a>&lt;T::GlibClassType&gt; <span class="kw">for </span><a href="#4142">Interface</a>&lt;T&gt; {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>as_ref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>T::GlibClassType {
-        <span class="kw-2">&amp;</span><a class="self" href="#4332">self</a>.<span class="number">0
+        <span class="kw-2">&amp;</span><a class="self" href="#4327">self</a>.<span class="number">0
     </span>}
 }
 
-<span class="kw">impl</span>&lt;T: <a href="#4374">IsInterface</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsMut.html">AsMut</a>&lt;T::GlibClassType&gt; <span class="kw">for </span><a href="#4147">Interface</a>&lt;T&gt; {
+<span class="kw">impl</span>&lt;T: <a href="#4369">IsInterface</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsMut.html">AsMut</a>&lt;T::GlibClassType&gt; <span class="kw">for </span><a href="#4142">Interface</a>&lt;T&gt; {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>as_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span>T::GlibClassType {
-        <span class="kw-2">&amp;mut </span><a class="self" href="#4339">self</a>.<span class="number">0
+        <span class="kw-2">&amp;mut </span><a class="self" href="#4334">self</a>.<span class="number">0
     </span>}
 }
 
 <span class="comment">// rustdoc-stripper-ignore-next
 </span><span class="doccomment">/// Reference to a class struct of type `T`.
 </span><span class="attr">#[derive(Debug)]
-</span><span class="kw">pub struct </span><a href="../../glib/object/struct.InterfaceRef.html">InterfaceRef</a>&lt;<span class="lifetime">'a</span>, T: <a href="#4374">IsInterface</a>&gt;(<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html">ptr::NonNull</a>&lt;<a href="#4147">Interface</a>&lt;T&gt;&gt;, <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>, <a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">PhantomData</a>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>()&gt;);
+</span><span class="kw">pub struct </span><a href="../../glib/object/struct.InterfaceRef.html">InterfaceRef</a>&lt;<span class="lifetime">'a</span>, T: <a href="#4369">IsInterface</a>&gt;(<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html">ptr::NonNull</a>&lt;<a href="#4142">Interface</a>&lt;T&gt;&gt;, <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>, <a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">PhantomData</a>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>()&gt;);
 
-<span class="kw">impl</span>&lt;T: <a href="#4374">IsInterface</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/ops/drop/trait.Drop.html">Drop</a> <span class="kw">for </span><a href="#4347">InterfaceRef</a>&lt;<span class="lifetime">'_</span>, T&gt; {
+<span class="kw">impl</span>&lt;T: <a href="#4369">IsInterface</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/ops/drop/trait.Drop.html">Drop</a> <span class="kw">for </span><a href="#4342">InterfaceRef</a>&lt;<span class="lifetime">'_</span>, T&gt; {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
         <span class="kw">if </span><span class="self">self</span>.<span class="number">1 </span>{
             <span class="kw">unsafe </span>{
-                <a href="../../gobject_sys/fn.g_type_default_interface_unref.html">gobject_ffi::g_type_default_interface_unref</a>(<a class="self" href="#4351">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
+                <a href="../../gobject_sys/fn.g_type_default_interface_unref.html">gobject_ffi::g_type_default_interface_unref</a>(<a class="self" href="#4346">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
             }
         }
     }
 }
 
-<span class="kw">impl</span>&lt;T: <a href="#4374">IsInterface</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/ops/deref/trait.Deref.html">ops::Deref</a> <span class="kw">for </span><a href="#4347">InterfaceRef</a>&lt;<span class="lifetime">'_</span>, T&gt; {
-    <span class="kw">type </span>Target = <a href="#4147">Interface</a>&lt;T&gt;;
+<span class="kw">impl</span>&lt;T: <a href="#4369">IsInterface</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/ops/deref/trait.Deref.html">ops::Deref</a> <span class="kw">for </span><a href="#4342">InterfaceRef</a>&lt;<span class="lifetime">'_</span>, T&gt; {
+    <span class="kw">type </span>Target = <a href="#4142">Interface</a>&lt;T&gt;;
 
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>deref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><a href="#4147">Interface</a>&lt;T&gt; {
-        <span class="kw">unsafe </span>{ <a class="self" href="#4364">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>() }
+    </span><span class="kw">fn </span>deref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><a href="#4142">Interface</a>&lt;T&gt; {
+        <span class="kw">unsafe </span>{ <a class="self" href="#4359">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>() }
     }
 }
 
-<span class="kw">unsafe impl</span>&lt;T: <a href="#4374">IsInterface</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> <span class="kw">for </span><a href="#4347">InterfaceRef</a>&lt;<span class="lifetime">'_</span>, T&gt; {}
-<span class="kw">unsafe impl</span>&lt;T: <a href="#4374">IsInterface</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> <span class="kw">for </span><a href="#4347">InterfaceRef</a>&lt;<span class="lifetime">'_</span>, T&gt; {}
+<span class="kw">unsafe impl</span>&lt;T: <a href="#4369">IsInterface</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> <span class="kw">for </span><a href="#4342">InterfaceRef</a>&lt;<span class="lifetime">'_</span>, T&gt; {}
+<span class="kw">unsafe impl</span>&lt;T: <a href="#4369">IsInterface</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> <span class="kw">for </span><a href="#4342">InterfaceRef</a>&lt;<span class="lifetime">'_</span>, T&gt; {}
 
 <span class="comment">// rustdoc-stripper-ignore-next
 </span><span class="doccomment">/// Trait implemented by interface types.
@@ -9074,7 +9064,7 @@
 </span><span class="doccomment">/// `Value` type checker for object types.
 </span><span class="kw">pub struct </span><a href="../../glib/object/struct.ObjectValueTypeChecker.html">ObjectValueTypeChecker</a>&lt;T&gt;(<a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">std::marker::PhantomData</a>&lt;T&gt;);
 
-<span class="kw">unsafe impl</span>&lt;T: <a href="types.rs.html#290-294">StaticType</a>&gt; <a href="value.rs.html#97-101"><span class="kw">crate</span>::value::ValueTypeChecker</a> <span class="kw">for </span><a href="#4378">ObjectValueTypeChecker</a>&lt;T&gt; {
+<span class="kw">unsafe impl</span>&lt;T: <a href="types.rs.html#290-294">StaticType</a>&gt; <a href="value.rs.html#97-101"><span class="kw">crate</span>::value::ValueTypeChecker</a> <span class="kw">for </span><a href="#4373">ObjectValueTypeChecker</a>&lt;T&gt; {
     <span class="kw">type </span>Error = <a href="value.rs.html#222-225"><span class="kw">crate</span>::value::ValueTypeMismatchOrNoneError</a>&lt;<a href="value.rs.html#107-110"><span class="kw">crate</span>::value::ValueTypeMismatchError</a>&gt;;
 
     <span class="kw">fn </span>check(value: <span class="kw-2">&amp;</span><a href="value.rs.html#478-512">Value</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(), <span class="self">Self</span>::Error&gt; {
@@ -9084,11 +9074,11 @@
 
         </span><span class="kw">unsafe </span>{
             <span class="kw">let </span>requested_type = <a href="types.rs.html#293">T::static_type</a>().<a href="translate.rs.html#334">into_glib</a>();
-            <span class="kw">let </span>type_ = <a href="#4383">value</a>.inner.g_type;
+            <span class="kw">let </span>type_ = <a href="#4378">value</a>.inner.g_type;
 
             <span class="comment">// Direct match or value type is a subtype of the requested type.
             </span><span class="kw">if </span>gobject_ffi::g_type_is_a(type_, requested_type) != ffi::GFALSE {
-                <span class="kw">let </span>obj = <a href="../../gobject_sys/fn.g_value_get_object.html">gobject_ffi::g_value_get_object</a>(<span class="kw-2">&amp;</span><a href="#4383">value</a>.inner);
+                <span class="kw">let </span>obj = <a href="../../gobject_sys/fn.g_value_get_object.html">gobject_ffi::g_value_get_object</a>(<span class="kw-2">&amp;</span><a href="#4378">value</a>.inner);
                 <span class="kw">if </span>obj.is_null() {
                     <span class="kw">return </span><span class="prelude-val">Err</span>(<span class="self">Self</span>::Error::UnexpectedNone);
                 } <span class="kw">else </span>{
@@ -9099,27 +9089,27 @@
             <span class="comment">// If the value type is not a GObject or subtype of GObject then there's a mismatch.
             </span><span class="kw">if </span>gobject_ffi::g_type_is_a(type_, gobject_ffi::G_TYPE_OBJECT) == ffi::GFALSE {
                 <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="value.rs.html#113-115"><span class="kw">crate</span>::value::ValueTypeMismatchError::new</a>(
-                    <a href="translate.rs.html#1411">Type::from_glib</a>(<a href="#4390">type_</a>),
+                    <a href="translate.rs.html#1411">Type::from_glib</a>(<a href="#4385">type_</a>),
                     <a href="types.rs.html#293">T::static_type</a>(),
                 )
                 .<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>());
             }
 
             <span class="comment">// Otherwise peek at the actual object and its concrete type.
-            </span><span class="kw">let </span>obj = <a href="../../gobject_sys/fn.g_value_get_object.html">gobject_ffi::g_value_get_object</a>(<span class="kw-2">&amp;</span><a href="#4383">value</a>.inner);
+            </span><span class="kw">let </span>obj = <a href="../../gobject_sys/fn.g_value_get_object.html">gobject_ffi::g_value_get_object</a>(<span class="kw-2">&amp;</span><a href="#4378">value</a>.inner);
 
             <span class="comment">// Allow any types if the object is NULL.
             </span><span class="kw">if </span>obj.is_null() {
                 <span class="kw">return </span><span class="prelude-val">Err</span>(<span class="self">Self</span>::Error::UnexpectedNone);
             }
 
-            <span class="kw">let </span>type_ = (<span class="kw-2">*</span>(<span class="kw-2">*</span><a href="#4412">obj</a>).g_type_instance.g_class).g_type;
+            <span class="kw">let </span>type_ = (<span class="kw-2">*</span>(<span class="kw-2">*</span><a href="#4407">obj</a>).g_type_instance.g_class).g_type;
             <span class="comment">// Direct match or concrete type is a subtype of the requested type.
             </span><span class="kw">if </span>gobject_ffi::g_type_is_a(type_, requested_type) != ffi::GFALSE {
                 <span class="prelude-val">Ok</span>(())
             } <span class="kw">else </span>{
                 <span class="prelude-val">Err</span>(<a href="value.rs.html#113-115"><span class="kw">crate</span>::value::ValueTypeMismatchError::new</a>(
-                    <a href="translate.rs.html#1411">Type::from_glib</a>(<a href="#4419">type_</a>),
+                    <a href="translate.rs.html#1411">Type::from_glib</a>(<a href="#4414">type_</a>),
                     <a href="types.rs.html#293">T::static_type</a>(),
                 )
                 .<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>())
@@ -9139,10 +9129,10 @@
     phantom: <a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">PhantomData</a>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>T&gt;,
 }
 
-<span class="kw">unsafe impl</span>&lt;T: <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> <span class="kw">for </span><a href="#4440-4443">BorrowedObject</a>&lt;<span class="lifetime">'_</span>, T&gt; {}
-<span class="kw">unsafe impl</span>&lt;T: <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> <span class="kw">for </span><a href="#4440-4443">BorrowedObject</a>&lt;<span class="lifetime">'_</span>, T&gt; {}
+<span class="kw">unsafe impl</span>&lt;T: <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> <span class="kw">for </span><a href="#4435-4438">BorrowedObject</a>&lt;<span class="lifetime">'_</span>, T&gt; {}
+<span class="kw">unsafe impl</span>&lt;T: <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> <span class="kw">for </span><a href="#4435-4438">BorrowedObject</a>&lt;<span class="lifetime">'_</span>, T&gt; {}
 
-<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T: <a href="#22-52">ObjectType</a>&gt; <a href="#4440-4443">BorrowedObject</a>&lt;<span class="lifetime">'a</span>, T&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T: <a href="#22-52">ObjectType</a>&gt; <a href="#4435-4438">BorrowedObject</a>&lt;<span class="lifetime">'a</span>, T&gt; {
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Creates a new borrowed object reference.
     ///
@@ -9150,9 +9140,9 @@
     ///
     /// The pointer needs to be valid for at least the lifetime `'a`.
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub unsafe fn </span>new(ptr: <span class="kw-2">*mut </span>T::GlibType) -&gt; <a href="#4440-4443">BorrowedObject</a>&lt;<span class="lifetime">'a</span>, T&gt; {
-        <a href="#4440-4443">BorrowedObject</a> {
-            ptr: <a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.new_unchecked">ptr::NonNull::new_unchecked</a>(<a href="#4456">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>),
+    </span><span class="kw">pub unsafe fn </span>new(ptr: <span class="kw-2">*mut </span>T::GlibType) -&gt; <a href="#4435-4438">BorrowedObject</a>&lt;<span class="lifetime">'a</span>, T&gt; {
+        <a href="#4435-4438">BorrowedObject</a> {
+            ptr: <a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.new_unchecked">ptr::NonNull::new_unchecked</a>(<a href="#4451">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>),
             phantom: <a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">PhantomData</a>,
         }
     }
@@ -9164,46 +9154,46 @@
     <span class="kw">where
         </span>T: <a href="clone.rs.html#12-23"><span class="kw">crate</span>::clone::Downgrade</a>,
     {
-        &lt;T <span class="kw">as </span><span class="kw">crate</span>::clone::Downgrade&gt;::downgrade(<a class="self" href="#4466">self</a>)
+        &lt;T <span class="kw">as </span><span class="kw">crate</span>::clone::Downgrade&gt;::downgrade(<a class="self" href="#4461">self</a>)
     }
 }
 
-<span class="kw">impl</span>&lt;T&gt; <a href="https://doc.rust-lang.org/nightly/core/ops/deref/trait.Deref.html">ops::Deref</a> <span class="kw">for </span><a href="#4440-4443">BorrowedObject</a>&lt;<span class="lifetime">'_</span>, T&gt; {
+<span class="kw">impl</span>&lt;T&gt; <a href="https://doc.rust-lang.org/nightly/core/ops/deref/trait.Deref.html">ops::Deref</a> <span class="kw">for </span><a href="#4435-4438">BorrowedObject</a>&lt;<span class="lifetime">'_</span>, T&gt; {
     <span class="kw">type </span>Target = T;
 
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>deref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>T {
-        <span class="kw">unsafe </span>{ <span class="kw-2">&amp;*</span>(<span class="kw-2">&amp;</span><a class="self" href="#4478">self</a>.ptr <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_ as </span><span class="kw-2">*const </span>T) }
+        <span class="kw">unsafe </span>{ <span class="kw-2">&amp;*</span>(<span class="kw-2">&amp;</span><a class="self" href="#4473">self</a>.ptr <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_ as </span><span class="kw-2">*const </span>T) }
     }
 }
 
-<span class="kw">impl</span>&lt;T&gt; <a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">AsRef</a>&lt;T&gt; <span class="kw">for </span><a href="#4440-4443">BorrowedObject</a>&lt;<span class="lifetime">'_</span>, T&gt; {
+<span class="kw">impl</span>&lt;T&gt; <a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">AsRef</a>&lt;T&gt; <span class="kw">for </span><a href="#4435-4438">BorrowedObject</a>&lt;<span class="lifetime">'_</span>, T&gt; {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>as_ref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>T {
-        <span class="kw">unsafe </span>{ <span class="kw-2">&amp;*</span>(<span class="kw-2">&amp;</span><a class="self" href="#4485">self</a>.ptr <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_ as </span><span class="kw-2">*const </span>T) }
+        <span class="kw">unsafe </span>{ <span class="kw-2">&amp;*</span>(<span class="kw-2">&amp;</span><a class="self" href="#4480">self</a>.ptr <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_ as </span><span class="kw-2">*const </span>T) }
     }
 }
 
-<span class="kw">impl</span>&lt;T: <a href="https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html">PartialEq</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html">PartialEq</a>&lt;T&gt; <span class="kw">for </span><a href="#4440-4443">BorrowedObject</a>&lt;<span class="lifetime">'_</span>, T&gt; {
+<span class="kw">impl</span>&lt;T: <a href="https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html">PartialEq</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html">PartialEq</a>&lt;T&gt; <span class="kw">for </span><a href="#4435-4438">BorrowedObject</a>&lt;<span class="lifetime">'_</span>, T&gt; {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span>T) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
-        &lt;T <span class="kw">as </span>PartialEq&gt;::eq(<a class="self" href="#4492">self</a>, <a href="#4492">other</a>)
+        &lt;T <span class="kw">as </span>PartialEq&gt;::eq(<a class="self" href="#4487">self</a>, <a href="#4487">other</a>)
     }
 }
 
-<span class="kw">impl</span>&lt;T: <a href="https://doc.rust-lang.org/nightly/core/cmp/trait.PartialOrd.html">PartialOrd</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/cmp/trait.PartialOrd.html">PartialOrd</a>&lt;T&gt; <span class="kw">for </span><a href="#4440-4443">BorrowedObject</a>&lt;<span class="lifetime">'_</span>, T&gt; {
+<span class="kw">impl</span>&lt;T: <a href="https://doc.rust-lang.org/nightly/core/cmp/trait.PartialOrd.html">PartialOrd</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/cmp/trait.PartialOrd.html">PartialOrd</a>&lt;T&gt; <span class="kw">for </span><a href="#4435-4438">BorrowedObject</a>&lt;<span class="lifetime">'_</span>, T&gt; {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>partial_cmp(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span>T) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="https://doc.rust-lang.org/nightly/core/cmp/enum.Ordering.html">cmp::Ordering</a>&gt; {
-        &lt;T <span class="kw">as </span>PartialOrd&gt;::partial_cmp(<a class="self" href="#4499">self</a>, <a href="#4499">other</a>)
+        &lt;T <span class="kw">as </span>PartialOrd&gt;::partial_cmp(<a class="self" href="#4494">self</a>, <a href="#4494">other</a>)
     }
 }
 
-<span class="kw">impl</span>&lt;T: <a href="clone.rs.html#12-23"><span class="kw">crate</span>::clone::Downgrade</a> + <a href="#22-52">ObjectType</a>&gt; <a href="clone.rs.html#12-23"><span class="kw">crate</span>::clone::Downgrade</a> <span class="kw">for </span><a href="#4440-4443">BorrowedObject</a>&lt;<span class="lifetime">'_</span>, T&gt; {
+<span class="kw">impl</span>&lt;T: <a href="clone.rs.html#12-23"><span class="kw">crate</span>::clone::Downgrade</a> + <a href="#22-52">ObjectType</a>&gt; <a href="clone.rs.html#12-23"><span class="kw">crate</span>::clone::Downgrade</a> <span class="kw">for </span><a href="#4435-4438">BorrowedObject</a>&lt;<span class="lifetime">'_</span>, T&gt; {
     <span class="kw">type </span>Weak = &lt;T <span class="kw">as </span><span class="kw">crate</span>::clone::Downgrade&gt;::Weak;
 
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>downgrade(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self</span>::Weak {
-        &lt;T <span class="kw">as </span><span class="kw">crate</span>::clone::Downgrade&gt;::downgrade(<a class="self" href="#4508">self</a>)
+        &lt;T <span class="kw">as </span><span class="kw">crate</span>::clone::Downgrade&gt;::downgrade(<a class="self" href="#4503">self</a>)
     }
 }
 
