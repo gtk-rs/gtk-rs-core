@@ -124,21 +124,21 @@
 <span class="kw">use </span><a href="https://docs.rs/quote/1.0.38/quote/to_tokens/trait.ToTokens.html">quote::ToTokens</a>;
 
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>async_test(_args: <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a>, <span class="kw-2">mut </span>item: <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a> {
-    <span class="kw">let </span><span class="kw-2">mut </span>item_fn: <a href="https://docs.rs/syn/2.0.95/syn/item/struct.ItemFn.html">syn::ItemFn</a> = <span class="kw">match </span><a href="https://docs.rs/syn/2.0.95/syn/fn.parse.html">syn::parse</a>(<a href="#6">item</a>.<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">clone</a>()) {
+    <span class="kw">let </span><span class="kw-2">mut </span>item_fn: <a href="https://docs.rs/syn/2.0.96/syn/item/struct.ItemFn.html">syn::ItemFn</a> = <span class="kw">match </span><a href="https://docs.rs/syn/2.0.96/syn/fn.parse.html">syn::parse</a>(<a href="#6">item</a>.<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">clone</a>()) {
         <span class="prelude-val">Ok</span>(it) =&gt; <a href="#8">it</a>,
         <span class="prelude-val">Err</span>(e) =&gt; {
-            <a href="#6">item</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.Extend.html#tymethod.extend">extend</a>(<a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html#tymethod.from">TokenStream::from</a>(<a href="#9">e</a>.<a href="https://docs.rs/syn/2.0.95/syn/error/struct.Error.html#method.into_compile_error">into_compile_error</a>()));
+            <a href="#6">item</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.Extend.html#tymethod.extend">extend</a>(<a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html#tymethod.from">TokenStream::from</a>(<a href="#9">e</a>.<a href="https://docs.rs/syn/2.0.96/syn/error/struct.Error.html#method.into_compile_error">into_compile_error</a>()));
             <span class="kw">return </span><a href="#6">item</a>;
         }
     };
 
     <span class="kw">if </span>item_fn.sig.asyncness.is_none() {
         <a href="#6">item</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.Extend.html#tymethod.extend">extend</a>(<a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html#tymethod.from">TokenStream::from</a>(
-            <a href="https://docs.rs/syn/2.0.95/syn/error/struct.Error.html#method.new_spanned">syn::Error::new_spanned</a>(
+            <a href="https://docs.rs/syn/2.0.96/syn/error/struct.Error.html#method.new_spanned">syn::Error::new_spanned</a>(
                 <a href="#7">item_fn</a>.sig.ident,
                 <span class="string">"The 'async' keyword is missing from the test function declaration"</span>,
             )
-            .<a href="https://docs.rs/syn/2.0.95/syn/error/struct.Error.html#method.into_compile_error">into_compile_error</a>(),
+            .<a href="https://docs.rs/syn/2.0.96/syn/error/struct.Error.html#method.into_compile_error">into_compile_error</a>(),
         ));
         <span class="kw">return </span><a href="#6">item</a>;
     }
@@ -151,7 +151,7 @@
 
     <span class="kw">let </span>body = <span class="kw-2">&amp;</span><a href="#7">item_fn</a>.block;
 
-    <a href="#7">item_fn</a>.block = <a href="https://docs.rs/syn/2.0.95/syn/fn.parse2.html">syn::parse2</a>(<a class="macro" href="https://docs.rs/quote/1.0.38/quote/macro.quote.html">quote::quote!</a> {
+    <a href="#7">item_fn</a>.block = <a href="https://docs.rs/syn/2.0.96/syn/fn.parse2.html">syn::parse2</a>(<a class="macro" href="https://docs.rs/quote/1.0.38/quote/macro.quote.html">quote::quote!</a> {
         {
             <span class="kw">let </span>main_ctx = glib::MainContext::new();
             main_ctx.block_on(<span class="kw">async </span>#body)
