@@ -548,7 +548,7 @@
 <a href="#474" id="474">474</a></pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
 </span><span class="kw">use </span>heck::{ToKebabCase, ToShoutySnakeCase, ToUpperCamelCase};
-<span class="kw">use </span><a href="https://docs.rs/proc-macro2/1.0.92/proc_macro2/struct.TokenStream.html">proc_macro2::TokenStream</a>;
+<span class="kw">use </span><a href="https://docs.rs/proc-macro2/1.0.93/proc_macro2/struct.TokenStream.html">proc_macro2::TokenStream</a>;
 <span class="kw">use </span>quote::{<a href="https://docs.rs/quote/1.0.38/quote/macro.format_ident.html">format_ident</a>, <a href="https://docs.rs/quote/1.0.38/quote/macro.quote.html">quote</a>, <a href="https://docs.rs/quote/1.0.38/quote/macro.quote_spanned.html">quote_spanned</a>, <a href="https://docs.rs/quote/1.0.38/quote/to_tokens/trait.ToTokens.html">ToTokens</a>};
 
 <span class="kw">use </span><span class="kw">crate</span>::utils::{
@@ -563,9 +563,9 @@
 //         value_nick: "goat\0" as *const _ as *const _,
 //     },
 </span><span class="kw">fn </span>gen_enum_values(
-    enum_name: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.92/proc_macro2/struct.Ident.html">syn::Ident</a>,
+    enum_name: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.93/proc_macro2/struct.Ident.html">syn::Ident</a>,
     enum_variants: <span class="kw-2">&amp;</span><a href="https://docs.rs/syn/2.0.95/syn/punctuated/struct.Punctuated.html">syn::punctuated::Punctuated</a>&lt;<a href="https://docs.rs/syn/2.0.95/syn/data/struct.Variant.html">syn::Variant</a>, <a href="https://docs.rs/syn/2.0.95/syn/token/struct.Comma.html">syn::token::Comma</a>&gt;,
-) -&gt; (<a href="https://docs.rs/proc-macro2/1.0.92/proc_macro2/struct.TokenStream.html">TokenStream</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) {
+) -&gt; (<a href="https://docs.rs/proc-macro2/1.0.93/proc_macro2/struct.TokenStream.html">TokenStream</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) {
     <span class="kw">let </span>crate_ident = <a href="utils.rs.html#188-215">crate_ident_new</a>();
 
     <span class="comment">// starts at one as GEnumValue array is null-terminated.
@@ -608,7 +608,7 @@
     )
 }
 
-<span class="kw">pub fn </span>impl_enum(input: <span class="kw-2">&amp;</span><a href="https://docs.rs/syn/2.0.95/syn/derive/struct.DeriveInput.html">syn::DeriveInput</a>) -&gt; <a href="https://docs.rs/syn/2.0.95/syn/error/type.Result.html">syn::Result</a>&lt;<a href="https://docs.rs/proc-macro2/1.0.92/proc_macro2/struct.TokenStream.html">TokenStream</a>&gt; {
+<span class="kw">pub fn </span>impl_enum(input: <span class="kw-2">&amp;</span><a href="https://docs.rs/syn/2.0.95/syn/derive/struct.DeriveInput.html">syn::DeriveInput</a>) -&gt; <a href="https://docs.rs/syn/2.0.95/syn/error/type.Result.html">syn::Result</a>&lt;<a href="https://docs.rs/proc-macro2/1.0.93/proc_macro2/struct.TokenStream.html">TokenStream</a>&gt; {
     <span class="kw">let </span>name = <span class="kw-2">&amp;</span><a href="#64">input</a>.ident;
 
     <span class="kw">let </span>enum_variants = <span class="kw">match </span><a href="#64">input</a>.data {
@@ -790,13 +790,13 @@
 
 <span class="comment">// Registers the enum as a static type.
 </span><span class="kw">fn </span>register_enum_as_static(
-    crate_ident: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.92/proc_macro2/struct.TokenStream.html">TokenStream</a>,
-    name: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.92/proc_macro2/struct.Ident.html">syn::Ident</a>,
+    crate_ident: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.93/proc_macro2/struct.TokenStream.html">TokenStream</a>,
+    name: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.93/proc_macro2/struct.Ident.html">syn::Ident</a>,
     gtype_name: <a href="https://docs.rs/syn/2.0.95/syn/lit/struct.LitStr.html">syn::LitStr</a>,
     allow_name_conflict: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>,
-    g_enum_values: <a href="https://docs.rs/proc-macro2/1.0.92/proc_macro2/struct.TokenStream.html">TokenStream</a>,
+    g_enum_values: <a href="https://docs.rs/proc-macro2/1.0.93/proc_macro2/struct.TokenStream.html">TokenStream</a>,
     nb_enum_values: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>,
-) -&gt; <a href="https://docs.rs/proc-macro2/1.0.92/proc_macro2/struct.TokenStream.html">TokenStream</a> {
+) -&gt; <a href="https://docs.rs/proc-macro2/1.0.93/proc_macro2/struct.TokenStream.html">TokenStream</a> {
     <span class="kw">let </span>type_name_snippet = <span class="kw">if </span>allow_name_conflict {
         <a class="macro" href="https://docs.rs/quote/1.0.38/quote/macro.quote.html">quote!</a> {
             <span class="kw">unsafe </span>{
@@ -864,14 +864,14 @@
 <span class="comment">// The following implementations follows the lifecycle of plugins and of dynamic types (see [`TypePluginExt`] and [`TypeModuleExt`]).
 // An enum can be reregistered as a dynamic type.
 </span><span class="kw">fn </span>register_enum_as_dynamic(
-    crate_ident: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.92/proc_macro2/struct.TokenStream.html">TokenStream</a>,
-    plugin_ty: <a href="https://docs.rs/proc-macro2/1.0.92/proc_macro2/struct.TokenStream.html">TokenStream</a>,
+    crate_ident: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.93/proc_macro2/struct.TokenStream.html">TokenStream</a>,
+    plugin_ty: <a href="https://docs.rs/proc-macro2/1.0.93/proc_macro2/struct.TokenStream.html">TokenStream</a>,
     lazy_registration: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>,
-    name: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.92/proc_macro2/struct.Ident.html">syn::Ident</a>,
+    name: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.93/proc_macro2/struct.Ident.html">syn::Ident</a>,
     gtype_name: <a href="https://docs.rs/syn/2.0.95/syn/lit/struct.LitStr.html">syn::LitStr</a>,
-    g_enum_values: <a href="https://docs.rs/proc-macro2/1.0.92/proc_macro2/struct.TokenStream.html">TokenStream</a>,
+    g_enum_values: <a href="https://docs.rs/proc-macro2/1.0.93/proc_macro2/struct.TokenStream.html">TokenStream</a>,
     nb_enum_values: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>,
-) -&gt; <a href="https://docs.rs/proc-macro2/1.0.92/proc_macro2/struct.TokenStream.html">TokenStream</a> {
+) -&gt; <a href="https://docs.rs/proc-macro2/1.0.93/proc_macro2/struct.TokenStream.html">TokenStream</a> {
     <span class="comment">// Wrap each GEnumValue to EnumValue
     </span><span class="kw">let </span>g_enum_values_expr: <a href="https://docs.rs/syn/2.0.95/syn/expr/struct.ExprArray.html">syn::ExprArray</a> = <a class="macro" href="https://docs.rs/syn/2.0.95/syn/macro.parse_quote.html">syn::parse_quote!</a> { [#g_enum_values] };
     <span class="kw">let </span>enum_values_iter = <a href="#329">g_enum_values_expr</a>.elems.<a href="https://docs.rs/syn/2.0.95/syn/punctuated/struct.Punctuated.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|v| {

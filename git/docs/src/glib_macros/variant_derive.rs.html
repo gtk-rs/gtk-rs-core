@@ -766,13 +766,13 @@
 <a href="#692" id="692">692</a></pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
 </span><span class="kw">use </span>heck::ToKebabCase;
-<span class="kw">use </span><a href="https://docs.rs/proc-macro2/1.0.92/proc_macro2/struct.TokenStream.html">proc_macro2::TokenStream</a>;
+<span class="kw">use </span><a href="https://docs.rs/proc-macro2/1.0.93/proc_macro2/struct.TokenStream.html">proc_macro2::TokenStream</a>;
 <span class="kw">use </span>quote::{<a href="https://docs.rs/quote/1.0.38/quote/macro.format_ident.html">format_ident</a>, <a href="https://docs.rs/quote/1.0.38/quote/macro.quote.html">quote</a>};
 <span class="kw">use </span>syn::{<a href="https://docs.rs/syn/2.0.95/syn/derive/enum.Data.html">Data</a>, <a href="https://docs.rs/syn/2.0.95/syn/derive/struct.DeriveInput.html">DeriveInput</a>, <a href="https://docs.rs/syn/2.0.95/syn/data/enum.Fields.html">Fields</a>, <a href="https://docs.rs/syn/2.0.95/syn/data/struct.FieldsNamed.html">FieldsNamed</a>, <a href="https://docs.rs/syn/2.0.95/syn/data/struct.FieldsUnnamed.html">FieldsUnnamed</a>, <a href="https://docs.rs/syn/2.0.95/syn/generics/struct.Generics.html">Generics</a>, Ident, <a href="https://docs.rs/syn/2.0.95/syn/ty/enum.Type.html">Type</a>};
 
 <span class="kw">use </span><a href="utils.rs.html#188-215"><span class="kw">crate</span>::utils::crate_ident_new</a>;
 
-<span class="kw">pub fn </span>impl_variant(input: <a href="https://docs.rs/syn/2.0.95/syn/derive/struct.DeriveInput.html">DeriveInput</a>) -&gt; <a href="https://docs.rs/syn/2.0.95/syn/error/type.Result.html">syn::Result</a>&lt;<a href="https://docs.rs/proc-macro2/1.0.92/proc_macro2/struct.TokenStream.html">TokenStream</a>&gt; {
+<span class="kw">pub fn </span>impl_variant(input: <a href="https://docs.rs/syn/2.0.95/syn/derive/struct.DeriveInput.html">DeriveInput</a>) -&gt; <a href="https://docs.rs/syn/2.0.95/syn/error/type.Result.html">syn::Result</a>&lt;<a href="https://docs.rs/proc-macro2/1.0.93/proc_macro2/struct.TokenStream.html">TokenStream</a>&gt; {
     <span class="kw">match </span><a href="#10">input</a>.data {
         <a href="https://docs.rs/syn/2.0.95/syn/derive/enum.Data.html#variant.Struct">Data::Struct</a>(data_struct) =&gt; <span class="prelude-val">Ok</span>(<a href="#41-251">derive_variant_for_struct</a>(
             <a href="#10">input</a>.ident,
@@ -804,10 +804,10 @@
 }
 
 <span class="kw">fn </span>derive_variant_for_struct(
-    ident: <a href="https://docs.rs/proc-macro2/1.0.92/proc_macro2/struct.Ident.html">Ident</a>,
+    ident: <a href="https://docs.rs/proc-macro2/1.0.93/proc_macro2/struct.Ident.html">Ident</a>,
     generics: <a href="https://docs.rs/syn/2.0.95/syn/generics/struct.Generics.html">Generics</a>,
     data_struct: <a href="https://docs.rs/syn/2.0.95/syn/derive/struct.DataStruct.html">syn::DataStruct</a>,
-) -&gt; <a href="https://docs.rs/proc-macro2/1.0.92/proc_macro2/struct.TokenStream.html">TokenStream</a> {
+) -&gt; <a href="https://docs.rs/proc-macro2/1.0.93/proc_macro2/struct.TokenStream.html">TokenStream</a> {
     <span class="kw">let </span>glib = <a href="utils.rs.html#188-215">crate_ident_new</a>();
     <span class="kw">let </span>(impl_generics, type_generics, where_clause) = <a href="#43">generics</a>.<a href="https://docs.rs/syn/2.0.95/syn/generics/struct.Generics.html#method.split_for_impl">split_for_impl</a>();
     <span class="kw">let </span>(static_variant_type, to_variant, from_variant) = <span class="kw">match </span><a href="#44">data_struct</a>.fields {
@@ -887,7 +887,7 @@
             (<a href="#59">static_variant_type</a>, <a href="#82">to_variant</a>, <a href="#104">from_variant</a>)
         }
         <a href="https://docs.rs/syn/2.0.95/syn/data/enum.Fields.html#variant.Named">Fields::Named</a>(<a href="https://docs.rs/syn/2.0.95/syn/data/struct.FieldsNamed.html">FieldsNamed</a> { named, .. }) =&gt; {
-            <span class="kw">let </span>fields: <a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html">Vec</a>&lt;(<a href="https://docs.rs/proc-macro2/1.0.92/proc_macro2/struct.Ident.html">Ident</a>, <a href="https://docs.rs/syn/2.0.95/syn/ty/enum.Type.html">Type</a>)&gt; = <a href="#124">named</a>
+            <span class="kw">let </span>fields: <a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html">Vec</a>&lt;(<a href="https://docs.rs/proc-macro2/1.0.93/proc_macro2/struct.Ident.html">Ident</a>, <a href="https://docs.rs/syn/2.0.95/syn/ty/enum.Type.html">Type</a>)&gt; = <a href="#124">named</a>
                 .<a href="https://docs.rs/syn/2.0.95/syn/punctuated/struct.Punctuated.html#method.into_pairs">into_pairs</a>()
                 .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|pair| <a href="#127">pair</a>.<a href="https://docs.rs/syn/2.0.95/syn/punctuated/enum.Pair.html#method.into_value">into_value</a>())
                 .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|field| (<a href="#128">field</a>.ident.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.expect">expect</a>(<span class="string">"Field ident is specified"</span>), <a href="#128">field</a>.ty))
@@ -1017,7 +1017,7 @@
 
 <span class="kw">enum </span>EnumMode {
     String,
-    Repr(<a href="https://docs.rs/proc-macro2/1.0.92/proc_macro2/struct.Ident.html">Ident</a>),
+    Repr(<a href="https://docs.rs/proc-macro2/1.0.93/proc_macro2/struct.Ident.html">Ident</a>),
     Enum { repr: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> },
     Flags { repr: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> },
 }
@@ -1055,11 +1055,11 @@
 }
 
 <span class="kw">fn </span>derive_variant_for_enum(
-    ident: <a href="https://docs.rs/proc-macro2/1.0.92/proc_macro2/struct.Ident.html">Ident</a>,
+    ident: <a href="https://docs.rs/proc-macro2/1.0.93/proc_macro2/struct.Ident.html">Ident</a>,
     generics: <a href="https://docs.rs/syn/2.0.95/syn/generics/struct.Generics.html">Generics</a>,
     data_enum: <a href="https://docs.rs/syn/2.0.95/syn/derive/struct.DataEnum.html">syn::DataEnum</a>,
     mode: <a href="#253-258">EnumMode</a>,
-) -&gt; <a href="https://docs.rs/syn/2.0.95/syn/error/type.Result.html">syn::Result</a>&lt;<a href="https://docs.rs/proc-macro2/1.0.92/proc_macro2/struct.TokenStream.html">TokenStream</a>&gt; {
+) -&gt; <a href="https://docs.rs/syn/2.0.95/syn/error/type.Result.html">syn::Result</a>&lt;<a href="https://docs.rs/proc-macro2/1.0.93/proc_macro2/struct.TokenStream.html">TokenStream</a>&gt; {
     <span class="kw">let </span>glib = <a href="utils.rs.html#188-215">crate_ident_new</a>();
     <span class="kw">let </span>static_variant_type = <a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.format.html">format!</a>(<span class="string">"({}v)"</span>, mode.tag_type());
     <span class="kw">let </span>(impl_generics, type_generics, where_clause) = <a href="#294">generics</a>.<a href="https://docs.rs/syn/2.0.95/syn/generics/struct.Generics.html#method.split_for_impl">split_for_impl</a>();
@@ -1260,11 +1260,11 @@
 }
 
 <span class="kw">fn </span>derive_variant_for_c_enum(
-    ident: <a href="https://docs.rs/proc-macro2/1.0.92/proc_macro2/struct.Ident.html">Ident</a>,
+    ident: <a href="https://docs.rs/proc-macro2/1.0.93/proc_macro2/struct.Ident.html">Ident</a>,
     generics: <a href="https://docs.rs/syn/2.0.95/syn/generics/struct.Generics.html">Generics</a>,
     data_enum: <a href="https://docs.rs/syn/2.0.95/syn/derive/struct.DataEnum.html">syn::DataEnum</a>,
     mode: <a href="#253-258">EnumMode</a>,
-) -&gt; <a href="https://docs.rs/proc-macro2/1.0.92/proc_macro2/struct.TokenStream.html">TokenStream</a> {
+) -&gt; <a href="https://docs.rs/proc-macro2/1.0.93/proc_macro2/struct.TokenStream.html">TokenStream</a> {
     <span class="kw">let </span>glib = <a href="utils.rs.html#188-215">crate_ident_new</a>();
     <span class="kw">let </span>static_variant_type = <a href="#501">mode</a>.<a href="#261-289">tag_type</a>().<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html#tymethod.to_string">to_string</a>();
     <span class="kw">let </span>(impl_generics, type_generics, where_clause) = <a href="#499">generics</a>.<a href="https://docs.rs/syn/2.0.95/syn/generics/struct.Generics.html#method.split_for_impl">split_for_impl</a>();
@@ -1442,7 +1442,7 @@
     })
 }
 
-<span class="kw">fn </span>get_repr(attrs: <span class="kw-2">&amp;</span>[<a href="https://docs.rs/syn/2.0.95/syn/attr/struct.Attribute.html">syn::Attribute</a>]) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="https://docs.rs/proc-macro2/1.0.92/proc_macro2/struct.Ident.html">Ident</a>&gt; {
+<span class="kw">fn </span>get_repr(attrs: <span class="kw-2">&amp;</span>[<a href="https://docs.rs/syn/2.0.95/syn/attr/struct.Attribute.html">syn::Attribute</a>]) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="https://docs.rs/proc-macro2/1.0.93/proc_macro2/struct.Ident.html">Ident</a>&gt; {
     <span class="kw">let </span>attr = <a href="#680">attrs</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.find">find</a>(|a| <a href="#681">a</a>.<a href="https://docs.rs/syn/2.0.95/syn/attr/struct.Attribute.html#method.path">path</a>().<a href="https://docs.rs/syn/2.0.95/syn/path/struct.Path.html#method.is_ident">is_ident</a>(<span class="string">"repr"</span>))<span class="question-mark">?</span>;
     <span class="kw">let </span><span class="kw-2">mut </span>repr_ty = <span class="prelude-val">None</span>;
     <a href="#681">attr</a>.<a href="https://docs.rs/syn/2.0.95/syn/attr/struct.Attribute.html#method.parse_nested_meta">parse_nested_meta</a>(|meta| {

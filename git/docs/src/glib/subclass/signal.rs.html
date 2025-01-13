@@ -800,7 +800,7 @@
 </span><span class="kw">use </span>std::{<a href="https://doc.rust-lang.org/nightly/alloc/fmt/index.html">fmt</a>, <a href="https://doc.rust-lang.org/nightly/core/num/nonzero/type.NonZeroU32.html">num::NonZeroU32</a>, <a href="https://doc.rust-lang.org/nightly/core/ops/control_flow/enum.ControlFlow.html">ops::ControlFlow</a>, <a href="https://doc.rust-lang.org/nightly/core/ptr/index.html">ptr</a>, <a href="https://doc.rust-lang.org/nightly/std/sync/poison/mutex/struct.Mutex.html">sync::Mutex</a>};
 
 <span class="kw">use crate</span>::{
-    <a href="../../../glib_sys/index.html">ffi</a>, <a href="../../../gobject_sys/index.html">gobject_ffi</a>, <a href="../lib.rs.html#159">prelude</a>::<span class="kw-2">*</span>, <a href="../lib.rs.html#164">translate</a>::<span class="kw-2">*</span>, <a href="../utils.rs.html#240-246">utils::is_canonical_pspec_name</a>, <a href="../closure.rs.html#11-24">Closure</a>,
+    ffi, <a href="../../../gobject_sys/index.html">gobject_ffi</a>, <a href="../lib.rs.html#159">prelude</a>::<span class="kw-2">*</span>, <a href="../lib.rs.html#164">translate</a>::<span class="kw-2">*</span>, <a href="../utils.rs.html#240-246">utils::is_canonical_pspec_name</a>, <a href="../closure.rs.html#11-24">Closure</a>,
     <a href="../gobject/auto/flags.rs.html#113-162">SignalFlags</a>, <a href="../types.rs.html#22">Type</a>, <a href="../value.rs.html#478-512">Value</a>,
 };
 
@@ -1078,7 +1078,7 @@
 
 <span class="attr">#[derive(Copy, Clone, Hash)]
 #[repr(transparent)]
-</span><span class="kw">pub struct </span><a href="../../../glib/subclass/signal/struct.SignalType.html">SignalType</a>(<a href="../../../glib_sys/manual/type.GType.html">ffi::GType</a>);
+</span><span class="kw">pub struct </span><a href="../../../glib/subclass/signal/struct.SignalType.html">SignalType</a>(ffi::GType);
 
 <span class="kw">impl </span><a href="#284">SignalType</a> {
     <span class="attr">#[inline]
@@ -1132,19 +1132,19 @@
 }
 
 <span class="attr">#[doc(hidden)]
-</span><span class="kw">impl </span><a href="../translate.rs.html#1410-1412">FromGlib</a>&lt;<a href="../../../glib_sys/manual/type.GType.html">ffi::GType</a>&gt; <span class="kw">for </span><a href="#284">SignalType</a> {
+</span><span class="kw">impl </span><a href="../translate.rs.html#1410-1412">FromGlib</a>&lt;ffi::GType&gt; <span class="kw">for </span><a href="#284">SignalType</a> {
     <span class="attr">#[inline]
-    </span><span class="kw">unsafe fn </span>from_glib(type_: <a href="../../../glib_sys/manual/type.GType.html">ffi::GType</a>) -&gt; <span class="self">Self </span>{
+    </span><span class="kw">unsafe fn </span>from_glib(type_: ffi::GType) -&gt; <span class="self">Self </span>{
         <span class="self">Self</span>(<a href="#340">type_</a>)
     }
 }
 
 <span class="attr">#[doc(hidden)]
 </span><span class="kw">impl </span><a href="../translate.rs.html#331-335">IntoGlib</a> <span class="kw">for </span><a href="#284">SignalType</a> {
-    <span class="kw">type </span>GlibType = <a href="../../../glib_sys/manual/type.GType.html">ffi::GType</a>;
+    <span class="kw">type </span>GlibType = ffi::GType;
 
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>into_glib(<span class="self">self</span>) -&gt; <a href="../../../glib_sys/manual/type.GType.html">ffi::GType</a> {
+    </span><span class="kw">fn </span>into_glib(<span class="self">self</span>) -&gt; ffi::GType {
         <a class="self" href="#350">self</a>.<span class="number">0
     </span>}
 }
@@ -1438,8 +1438,8 @@
             ihint: <span class="kw-2">*mut </span><a href="../../../gobject_sys/struct.GSignalInvocationHint.html">gobject_ffi::GSignalInvocationHint</a>,
             return_accu: <span class="kw-2">*mut </span><a href="../../../gobject_sys/struct.GValue.html">gobject_ffi::GValue</a>,
             handler_return: <span class="kw-2">*const </span><a href="../../../gobject_sys/struct.GValue.html">gobject_ffi::GValue</a>,
-            data: <a href="../../../glib_sys/type.gpointer.html">ffi::gpointer</a>,
-        ) -&gt; <a href="../../../glib_sys/type.gboolean.html">ffi::gboolean</a> {
+            data: ffi::gpointer,
+        ) -&gt; ffi::gboolean {
             <span class="kw">let </span>accumulator = <span class="kw-2">&amp;*</span>(<a href="#644">data</a> <span class="kw">as </span><span class="kw-2">*const </span>(
                 <a href="#284">SignalType</a>,
                 <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box</a>&lt;
@@ -1506,7 +1506,7 @@
                 <a class="self" href="#604">self</a>.flags.<a href="../translate.rs.html#334">into_glib</a>(),
                 <a href="#617">class_handler</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
                 <a href="#695">accumulator_trampoline</a>,
-                <a href="#695">accumulator</a> <span class="kw">as </span><a href="../../../glib_sys/type.gpointer.html">ffi::gpointer</a>,
+                <a href="#695">accumulator</a> <span class="kw">as </span>ffi::gpointer,
                 <span class="prelude-val">None</span>,
                 <a href="#615">return_type</a>.<a href="../translate.rs.html#334">into_glib</a>(),
                 <a class="self" href="#604">self</a>.param_types.<a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.len">len</a>() <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>,
