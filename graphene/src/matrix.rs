@@ -253,7 +253,7 @@ impl ops::Mul<Vec4> for Matrix {
 
 impl ops::Mul<Vec3> for Matrix {
     type Output = Vec3;
-    
+
     fn mul(self, rhs: Vec3) -> Self::Output {
         (&self).transform_vec3(&rhs)
     }
@@ -267,7 +267,6 @@ impl ops::Mul<Point> for Matrix {
     }
 }
 
-
 impl ops::Mul<Point3D> for Matrix {
     type Output = Point3D;
 
@@ -275,7 +274,6 @@ impl ops::Mul<Point3D> for Matrix {
         (&self).transform_point3d(&rhs)
     }
 }
-
 
 #[cfg(test)]
 mod tests {
