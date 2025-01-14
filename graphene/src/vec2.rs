@@ -93,7 +93,7 @@ impl ops::Mul<f32> for Vec2 {
     fn mul(self, rhs: f32) -> Self::Output {
         (&self).scale(rhs)
     }
-} 
+}
 impl ops::MulAssign<f32> for Vec2 {
     fn mul_assign(&mut self, rhs: f32) {
         *self = *self * rhs;
