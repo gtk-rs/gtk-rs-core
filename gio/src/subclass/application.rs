@@ -2,10 +2,10 @@
 
 use std::{ffi::OsString, fmt, ops::Deref, ptr};
 
-use glib::{prelude::*, subclass::prelude::*, translate::*, ExitCode, VariantDict};
+use glib::{prelude::*, subclass::prelude::*, translate::*, Error, ExitCode, VariantDict};
 use libc::{c_char, c_int, c_void};
 
-use crate::{ffi, ActionGroup, ActionMap, Application};
+use crate::{ffi, ActionGroup, ActionMap, Application, DBusConnection};
 
 pub struct ArgumentList {
     pub(crate) ptr: *mut *mut *mut c_char,
@@ -109,6 +109,10 @@ pub trait ApplicationImpl:
 
     fn handle_local_options(&self, options: &VariantDict) -> ExitCode {
         self.parent_handle_local_options(options)
+    }
+
+    fn dbus_register(&self, connection: &DBusConnection, object_path: &str) -> Result<bool, Error> {
+        self.parent_dbus_register(connection, object_path)
     }
 }
 
@@ -266,6 +270,36 @@ pub trait ApplicationImplExt: ApplicationImpl {
             }
         }
     }
+
+    fn parent_dbus_register(
+        &self,
+        connection: &DBusConnection,
+        object_path: &str,
+    ) -> Result<bool, glib::Error> {
+        unsafe {
+            let data = Self::type_data();
+            let parent_class = data.as_ref().parent_class() as *mut ffi::GApplicationClass;
+            let f = (*parent_class)
+                .dbus_register
+                .expect("No parent class implementation for \"dbus_register\"");
+            let mut err = ptr::null_mut();
+            let res = f(
+                self.obj().unsafe_cast_ref::<Application>().to_glib_none().0,
+                connection.to_glib_none().0,
+                object_path.to_glib_none().0,
+                &mut err,
+            );
+            if res != glib::ffi::GTRUE {
+                if err.is_null() {
+                    Ok(false)
+                } else {
+                    Err(from_glib_full(err))
+                }
+            } else {
+                Ok(true)
+            }
+        }
+    }
 }
 
 impl<T: ApplicationImpl> ApplicationImplExt for T {}
@@ -286,6 +320,7 @@ unsafe impl<T: ApplicationImpl> IsSubclassable<T> for Application {
         klass.shutdown = Some(application_shutdown::<T>);
         klass.startup = Some(application_startup::<T>);
         klass.handle_local_options = Some(application_handle_local_options::<T>);
+        klass.dbus_register = Some(application_dbus_register::<T>)
     }
 }
 
@@ -388,6 +423,30 @@ unsafe extern "C" fn application_handle_local_options<T: ApplicationImpl>(
     let imp = instance.imp();
 
     imp.handle_local_options(&from_glib_borrow(options)).into()
+}
+
+unsafe extern "C" fn application_dbus_register<T: ApplicationImpl>(
+    ptr: *mut ffi::GApplication,
+    connection: *mut ffi::GDBusConnection,
+    object_path: *const c_char,
+    error: *mut *mut glib::ffi::GError,
+) -> glib::ffi::gboolean {
+    let instance = &*(ptr as *mut T::Instance);
+    let imp = instance.imp();
+
+    match imp.dbus_register(
+        &from_glib_borrow(connection),
+        &glib::GString::from_glib_borrow(object_path),
+    ) {
+        Ok(true) => glib::ffi::GTRUE,
+        Ok(false) => glib::ffi::GFALSE,
+        Err(e) => {
+            if !error.is_null() {
+                *error = e.into_glib_ptr();
+            }
+            glib::ffi::GFALSE
+        }
+    }
 }
 
 #[cfg(test)]
