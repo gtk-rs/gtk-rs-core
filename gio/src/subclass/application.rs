@@ -114,6 +114,10 @@ pub trait ApplicationImpl:
     fn dbus_register(&self, connection: &DBusConnection, object_path: &str) -> Result<(), Error> {
         self.parent_dbus_register(connection, object_path)
     }
+
+    fn dbus_unregister(&self, connection: &DBusConnection, object_path: &str) {
+        self.parent_dbus_unregister(connection, object_path)
+    }
 }
 
 pub trait ApplicationImplExt: ApplicationImpl {
@@ -297,6 +301,21 @@ pub trait ApplicationImplExt: ApplicationImpl {
             }
         }
     }
+
+    fn parent_dbus_unregister(&self, connection: &DBusConnection, object_path: &str) {
+        unsafe {
+            let data = Self::type_data();
+            let parent_class = data.as_ref().parent_class() as *mut ffi::GApplicationClass;
+            let f = (*parent_class)
+                .dbus_unregister
+                .expect("No parent class implementation for \"dbus_unregister\"");
+            f(
+                self.obj().unsafe_cast_ref::<Application>().to_glib_none().0,
+                connection.to_glib_none().0,
+                object_path.to_glib_none().0,
+            );
+        }
+    }
 }
 
 impl<T: ApplicationImpl> ApplicationImplExt for T {}
@@ -317,7 +336,8 @@ unsafe impl<T: ApplicationImpl> IsSubclassable<T> for Application {
         klass.shutdown = Some(application_shutdown::<T>);
         klass.startup = Some(application_startup::<T>);
         klass.handle_local_options = Some(application_handle_local_options::<T>);
-        klass.dbus_register = Some(application_dbus_register::<T>)
+        klass.dbus_register = Some(application_dbus_register::<T>);
+        klass.dbus_unregister = Some(application_dbus_unregister::<T>);
     }
 }
 
@@ -443,6 +463,19 @@ unsafe extern "C" fn application_dbus_register<T: ApplicationImpl>(
             glib::ffi::GFALSE
         }
     }
+}
+
+unsafe extern "C" fn application_dbus_unregister<T: ApplicationImpl>(
+    ptr: *mut ffi::GApplication,
+    connection: *mut ffi::GDBusConnection,
+    object_path: *const c_char,
+) {
+    let instance = &*(ptr as *mut T::Instance);
+    let imp = instance.imp();
+    imp.dbus_unregister(
+        &from_glib_borrow(connection),
+        &glib::GString::from_glib_borrow(object_path),
+    );
 }
 
 #[cfg(test)]
