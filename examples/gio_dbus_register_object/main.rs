@@ -82,13 +82,16 @@ mod imp {
     }
 
     impl SampleApplication {
-        fn register_object(&self, connection: &DBusConnection) {
+        fn register_object(
+            &self,
+            connection: &DBusConnection,
+        ) -> Result<gio::RegistrationId, glib::Error> {
             let example = gio::DBusNodeInfo::for_xml(EXAMPLE_XML)
                 .ok()
                 .and_then(|e| e.lookup_interface("com.github.gtk_rs.examples.HelloWorld"))
                 .expect("Example interface");
 
-            if let Ok(id) = connection
+            connection
                 .register_object("/com/github/gtk_rs/examples/HelloWorld", &example)
                 .typed_method_call::<HelloMethod>()
                 .invoke_and_return_future_local(|_, sender, call| {
@@ -110,12 +113,6 @@ mod imp {
                     }
                 })
                 .build()
-            {
-                println!("Registered object");
-                self.registration_id.replace(Some(id));
-            } else {
-                eprintln!("Could not register object");
-            }
         }
     }
 
@@ -131,10 +128,16 @@ mod imp {
     impl ObjectImpl for SampleApplication {}
 
     impl ApplicationImpl for SampleApplication {
-        fn startup(&self) {
-            self.parent_startup();
-            let connection = self.obj().dbus_connection().expect("connection");
-            self.register_object(&connection);
+        fn dbus_register(
+            &self,
+            connection: &DBusConnection,
+            object_path: &str,
+        ) -> Result<(), glib::Error> {
+            self.parent_dbus_register(connection, object_path)?;
+            self.registration_id
+                .replace(Some(self.register_object(connection)?));
+            println!("registered object on session bus");
+            Ok(())
         }
 
         fn shutdown(&self) {
