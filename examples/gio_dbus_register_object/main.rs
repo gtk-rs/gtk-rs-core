@@ -37,6 +37,7 @@ mod imp {
       <arg type='u' name='delay' direction='in'/>
       <arg type='s' name='greet' direction='out'/>
     </method>
+    <method name='GoodBye'></method>
   </interface>
 </node>
 "#;
@@ -56,6 +57,7 @@ mod imp {
     enum HelloMethod {
         Hello(Hello),
         SlowHello(SlowHello),
+        GoodBye,
     }
 
     impl DBusMethodCall for HelloMethod {
@@ -68,6 +70,7 @@ mod imp {
             match method {
                 "Hello" => Ok(params.get::<Hello>().map(Self::Hello)),
                 "SlowHello" => Ok(params.get::<SlowHello>().map(Self::SlowHello)),
+                "GoodBye" => Ok(Some(Self::GoodBye)),
                 _ => Err(glib::Error::new(IOErrorEnum::Failed, "No such method")),
             }
             .and_then(|p| {
@@ -94,24 +97,35 @@ mod imp {
             connection
                 .register_object("/com/github/gtk_rs/examples/HelloWorld", &example)
                 .typed_method_call::<HelloMethod>()
-                .invoke_and_return_future_local(|_, sender, call| {
-                    println!("Method call from {sender:?}");
-                    async {
-                        match call {
-                            HelloMethod::Hello(Hello { name }) => {
-                                let greet = format!("Hello {name}!");
-                                println!("{greet}");
-                                Ok(Some(greet.to_variant()))
-                            }
-                            HelloMethod::SlowHello(SlowHello { name, delay }) => {
-                                glib::timeout_future(Duration::from_secs(delay as u64)).await;
-                                let greet = format!("Hello {name} after {delay} seconds!");
-                                println!("{greet}");
-                                Ok(Some(greet.to_variant()))
+                .invoke_and_return_future_local(glib::clone!(
+                    #[weak_allow_none(rename_to = app)]
+                    self.obj(),
+                    move |_, sender, call| {
+                        println!("Method call from {sender:?}");
+                        let app = app.clone();
+                        async move {
+                            match call {
+                                HelloMethod::Hello(Hello { name }) => {
+                                    let greet = format!("Hello {name}!");
+                                    println!("{greet}");
+                                    Ok(Some(greet.to_variant()))
+                                }
+                                HelloMethod::SlowHello(SlowHello { name, delay }) => {
+                                    glib::timeout_future(Duration::from_secs(delay as u64)).await;
+                                    let greet = format!("Hello {name} after {delay} seconds!");
+                                    println!("{greet}");
+                                    Ok(Some(greet.to_variant()))
+                                }
+                                HelloMethod::GoodBye => {
+                                    if let Some(app) = app {
+                                        app.quit();
+                                    }
+                                    Ok(None)
+                                }
                             }
                         }
                     }
-                })
+                ))
                 .build()
         }
     }
@@ -140,9 +154,9 @@ mod imp {
             Ok(())
         }
 
-        fn shutdown(&self) {
+        fn dbus_unregister(&self, connection: &DBusConnection, object_path: &str) {
+            self.parent_dbus_unregister(connection, object_path);
             if let Some(id) = self.registration_id.take() {
-                let connection = self.obj().dbus_connection().expect("connection");
                 if connection.unregister_object(id).is_ok() {
                     println!("Unregistered object");
                 } else {
@@ -151,9 +165,16 @@ mod imp {
             }
         }
 
+        fn shutdown(&self) {
+            self.parent_shutdown();
+            println!("Good bye!");
+        }
+
         fn activate(&self) {
             println!("Waiting for DBus Hello method to be called. Call the following command from another terminal:");
             println!("dbus-send --print-reply --dest=com.github.gtk-rs.examples.RegisterDBusObject /com/github/gtk_rs/examples/HelloWorld com.github.gtk_rs.examples.HelloWorld.Hello string:YourName");
+            println!("Quit with the following command:");
+            println!("dbus-send --print-reply --dest=com.github.gtk-rs.examples.RegisterDBusObject /com/github/gtk_rs/examples/HelloWorld com.github.gtk_rs.examples.HelloWorld.GoodBye");
         }
     }
 }
