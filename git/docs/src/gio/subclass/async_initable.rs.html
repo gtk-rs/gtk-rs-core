@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/subclass/async_initable.rs`."><title>async_initable.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-46132b98.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.86.0-nightly (48a426eca 2025-01-12)" data-channel="nightly" data-search-js="search-75f5ac3e.js" data-settings-js="settings-0f613d39.js" ><script src="../../../static.files/storage-59e33391.js"></script><script defer src="../../../static.files/src-script-56102188.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/subclass/async_initable.rs`."><title>async_initable.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-5d1d17d0.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.86.0-nightly (9a1d156f3 2025-01-19)" data-channel="nightly" data-search-js="search-ccb196c1.js" data-settings-js="settings-0f613d39.js" ><script src="../../../static.files/storage-59e33391.js"></script><script defer src="../../../static.files/src-script-56102188.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -495,9 +495,9 @@
                 <span class="kw">let </span><span class="kw-2">mut </span>error = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
                 <a href="#44">init_finish</a>(<a href="#37">source_object</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>, <a href="#38">res</a>, <span class="kw-2">&amp;mut </span><a href="#52">error</a>);
                 <span class="kw">let </span>result = <span class="kw">if </span>error.is_null() {
-                    <span class="prelude-val">Ok</span>(())
+                    <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(())
                 } <span class="kw">else </span>{
-                    <span class="prelude-val">Err</span>(<a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#52">error</a>))
+                    <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#52">error</a>))
                 };
                 <a href="#50">r</a>.<a href="../gio_future.rs.html#28-30">resolve</a>(<a href="#54">result</a>);
             }
@@ -512,7 +512,7 @@
                         <a href="#64">obj</a>.<a href="../../../glib/object/trait.Cast.html#tymethod.unsafe_cast_ref">unsafe_cast_ref</a>::&lt;<a href="../auto/async_initable.rs.html#9-123">AsyncInitable</a>&gt;().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
                         <a href="#23">io_priority</a>.<a href="../../../glib/translate/trait.IntoGlib.html#tymethod.into_glib">into_glib</a>(),
                         <a href="#64">cancellable</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
-                        <span class="prelude-val">Some</span>(<a href="#34-60">parent_init_future_callback</a>::&lt;<span class="self">Self</span>&gt;),
+                        <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#34-60">parent_init_future_callback</a>::&lt;<span class="self">Self</span>&gt;),
                         <a href="#67">user_data</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
                     );
                 },
@@ -526,8 +526,8 @@
 <span class="kw">unsafe impl</span>&lt;T: <a href="#11-18">AsyncInitableImpl</a>&gt; <a href="../../../glib/subclass/types/trait.IsImplementable.html">IsImplementable</a>&lt;T&gt; <span class="kw">for </span><a href="../auto/async_initable.rs.html#9-123">AsyncInitable</a> {
     <span class="kw">fn </span>interface_init(iface: <span class="kw-2">&amp;mut </span><a href="../../../glib/object/struct.Interface.html">glib::Interface</a>&lt;<span class="self">Self</span>&gt;) {
         <span class="kw">let </span>iface = <a href="#84">iface</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsMut.html#tymethod.as_mut">as_mut</a>();
-        <a href="#85">iface</a>.init_async = <span class="prelude-val">Some</span>(<a href="#91-132">async_initable_init_async</a>::&lt;T&gt;);
-        <a href="#85">iface</a>.init_finish = <span class="prelude-val">Some</span>(<a href="#134-163">async_initable_init_finish</a>);
+        <a href="#85">iface</a>.init_async = <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#91-132">async_initable_init_async</a>::&lt;T&gt;);
+        <a href="#85">iface</a>.init_finish = <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#134-163">async_initable_init_finish</a>);
     }
 }
 
@@ -544,7 +544,7 @@
 
     <span class="kw">let </span>task = <a href="#95">callback</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|callback| {
         <span class="kw">let </span>task = <a href="../task.rs.html#880">LocalTask::new</a>(
-            <span class="prelude-val">Some</span>(<a href="#99">imp</a>.<a href="../../../glib/subclass/types/trait.ObjectSubclassExt.html#tymethod.obj">obj</a>().<a href="../../../glib/object/trait.Cast.html#tymethod.unsafe_cast_ref">unsafe_cast_ref</a>::&lt;<a href="../../../glib/object/struct.Object.html">glib::Object</a>&gt;()),
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#99">imp</a>.<a href="../../../glib/subclass/types/trait.ObjectSubclassExt.html#tymethod.obj">obj</a>().<a href="../../../glib/object/trait.Cast.html#tymethod.unsafe_cast_ref">unsafe_cast_ref</a>::&lt;<a href="../../../glib/object/struct.Object.html">glib::Object</a>&gt;()),
             <a href="#100">cancellable</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_ref">as_ref</a>(),
             <span class="kw">move </span>|task, obj| {
                 <span class="kw">let </span>result: <span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GAsyncResult.html"><span class="kw">crate</span>::ffi::GAsyncResult</a> =
@@ -560,7 +560,7 @@
 
     <a href="../../../glib/auto/main_context/struct.MainContext.html#method.ref_thread_default">glib::MainContext::ref_thread_default</a>().<a href="../../../glib/auto/main_context/struct.MainContext.html#method.spawn_local">spawn_local</a>(<span class="kw">async move </span>{
         <span class="kw">let </span>io_priority = <a href="../../../glib/translate/fn.from_glib.html">from_glib</a>(<a href="#93">io_priority</a>);
-        <span class="kw">let </span>res = <span class="kw">if let </span><span class="prelude-val">Some</span>(cancellable) = <a href="#100">cancellable</a> {
+        <span class="kw">let </span>res = <span class="kw">if let </span><a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(cancellable) = <a href="#100">cancellable</a> {
             <a href="../cancellable_future.rs.html#53-59">CancellableFuture::new</a>(<a href="#99">imp</a>.<a href="#12-17">init_future</a>(<a href="#119">io_priority</a>), <a href="#120">cancellable</a>)
                 .<span class="kw">await
                 </span>.<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.map_err">map_err</a>(|cancelled| <a href="#123">cancelled</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>())
@@ -568,7 +568,7 @@
         } <span class="kw">else </span>{
             <a href="#99">imp</a>.<a href="#12-17">init_future</a>(<a href="#119">io_priority</a>).<span class="kw">await
         </span>};
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(task) = <a href="#102">task</a> {
+        <span class="kw">if let </span><a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(task) = <a href="#102">task</a> {
             <a href="#128">task</a>.<a href="../task.rs.html#880">return_result</a>(<a href="#120">res</a>.<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.map">map</a>(|_t| <span class="bool-val">true</span>));
         }
     });
@@ -592,11 +592,11 @@
     }
 
     <span class="kw">match </span><a href="#141">task</a>.<a href="../task.rs.html#880">propagate</a>() {
-        <span class="prelude-val">Ok</span>(v) =&gt; {
+        <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(v) =&gt; {
             <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert.html">debug_assert!</a>(v);
             <span class="bool-val">true</span>.<a href="../../../glib/translate/trait.IntoGlib.html#tymethod.into_glib">into_glib</a>()
         }
-        <span class="prelude-val">Err</span>(e) =&gt; {
+        <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(e) =&gt; {
             <span class="kw">if </span>!error.is_null() {
                 <span class="kw-2">*</span><a href="#137">error</a> = <a href="#156">e</a>.<a href="../../../glib/translate/trait.IntoGlibPtr.html#tymethod.into_glib_ptr">into_glib_ptr</a>();
             }

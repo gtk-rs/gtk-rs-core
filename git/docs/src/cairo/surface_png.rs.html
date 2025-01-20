@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `cairo/src/surface_png.rs`."><title>surface_png.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-46132b98.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="cairo" data-themes="" data-resource-suffix="" data-rustdoc-version="1.86.0-nightly (48a426eca 2025-01-12)" data-channel="nightly" data-search-js="search-75f5ac3e.js" data-settings-js="settings-0f613d39.js" ><script src="../../static.files/storage-59e33391.js"></script><script defer src="../../static.files/src-script-56102188.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `cairo/src/surface_png.rs`."><title>surface_png.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-5d1d17d0.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="cairo" data-themes="" data-resource-suffix="" data-rustdoc-version="1.86.0-nightly (9a1d156f3 2025-01-19)" data-channel="nightly" data-search-js="search-ccb196c1.js" data-settings-js="settings-0f613d39.js" ><script src="../../static.files/storage-59e33391.js"></script><script defer src="../../static.files/src-script-56102188.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -335,13 +335,13 @@
     };
     <span class="kw">let </span>result = <a href="https://doc.rust-lang.org/nightly/std/panic/fn.catch_unwind.html">std::panic::catch_unwind</a>(<a href="https://doc.rust-lang.org/nightly/core/panic/unwind_safe/struct.AssertUnwindSafe.html">AssertUnwindSafe</a>(|| <a href="#26">read_env</a>.reader.<a href="https://doc.rust-lang.org/nightly/std/io/trait.Read.html#tymethod.read_exact">read_exact</a>(<a href="#33">buffer</a>)));
     <span class="kw">match </span><a href="#38">result</a> {
-        <span class="prelude-val">Ok</span>(<span class="prelude-val">Ok</span>(())) =&gt; <a href="../../cairo_sys/constant.STATUS_SUCCESS.html">ffi::STATUS_SUCCESS</a>,
-        <span class="prelude-val">Ok</span>(<span class="prelude-val">Err</span>(error)) =&gt; {
-            <a href="#26">read_env</a>.io_error = <span class="prelude-val">Some</span>(<a href="#41">error</a>);
+        <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(<span class="prelude-val">Ok</span>(())) =&gt; <a href="../../cairo_sys/constant.STATUS_SUCCESS.html">ffi::STATUS_SUCCESS</a>,
+        <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(<span class="prelude-val">Err</span>(error)) =&gt; {
+            <a href="#26">read_env</a>.io_error = <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#41">error</a>);
             <a href="error.rs.html#29">Error::ReadError</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>()
         }
-        <span class="prelude-val">Err</span>(payload) =&gt; {
-            <a href="#26">read_env</a>.unwind_payload = <span class="prelude-val">Some</span>(<a href="#45">payload</a>);
+        <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(payload) =&gt; {
+            <a href="#26">read_env</a>.unwind_payload = <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#45">payload</a>);
             <a href="error.rs.html#29">Error::ReadError</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>()
         }
     }
@@ -372,13 +372,13 @@
     };
     <span class="kw">let </span>result = <a href="https://doc.rust-lang.org/nightly/std/panic/fn.catch_unwind.html">std::panic::catch_unwind</a>(<a href="https://doc.rust-lang.org/nightly/core/panic/unwind_safe/struct.AssertUnwindSafe.html">AssertUnwindSafe</a>(|| <a href="#63">write_env</a>.writer.<a href="https://doc.rust-lang.org/nightly/std/io/trait.Write.html#tymethod.write_all">write_all</a>(<a href="#70">buffer</a>)));
     <span class="kw">match </span><a href="#75">result</a> {
-        <span class="prelude-val">Ok</span>(<span class="prelude-val">Ok</span>(())) =&gt; <a href="../../cairo_sys/constant.STATUS_SUCCESS.html">ffi::STATUS_SUCCESS</a>,
-        <span class="prelude-val">Ok</span>(<span class="prelude-val">Err</span>(error)) =&gt; {
-            <a href="#63">write_env</a>.io_error = <span class="prelude-val">Some</span>(<a href="#78">error</a>);
+        <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(<span class="prelude-val">Ok</span>(())) =&gt; <a href="../../cairo_sys/constant.STATUS_SUCCESS.html">ffi::STATUS_SUCCESS</a>,
+        <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(<span class="prelude-val">Err</span>(error)) =&gt; {
+            <a href="#63">write_env</a>.io_error = <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#78">error</a>);
             <a href="error.rs.html#31">Error::WriteError</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>()
         }
-        <span class="prelude-val">Err</span>(payload) =&gt; {
-            <a href="#63">write_env</a>.unwind_payload = <span class="prelude-val">Some</span>(<a href="#82">payload</a>);
+        <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(payload) =&gt; {
+            <a href="#63">write_env</a>.unwind_payload = <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#82">payload</a>);
             <a href="error.rs.html#31">Error::WriteError</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>()
         }
     }
@@ -389,24 +389,24 @@
     </span><span class="kw">pub fn </span>create_from_png&lt;R: <a href="https://doc.rust-lang.org/nightly/std/io/trait.Read.html">Read</a>&gt;(stream: <span class="kw-2">&amp;mut </span>R) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="image_surface.rs.html#14">ImageSurface</a>, <a href="error.rs.html#273-276">IoError</a>&gt; {
         <span class="kw">let </span><span class="kw-2">mut </span>env = <a href="#15-19">ReadEnv</a> {
             reader: <a href="#91">stream</a>,
-            io_error: <span class="prelude-val">None</span>,
-            unwind_payload: <span class="prelude-val">None</span>,
+            io_error: <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a>,
+            unwind_payload: <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a>,
         };
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>raw_surface = <a href="../../cairo_sys/fn.cairo_image_surface_create_from_png_stream.html">ffi::cairo_image_surface_create_from_png_stream</a>(
-                <span class="prelude-val">Some</span>(<a href="#21-50">read_func</a>::&lt;R&gt;),
+                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#21-50">read_func</a>::&lt;R&gt;),
                 <span class="kw-2">&amp;mut </span><a href="#92">env</a> <span class="kw">as </span><span class="kw-2">*mut </span><a href="#15-19">ReadEnv</a>&lt;R&gt; <span class="kw">as </span><span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/enum.c_void.html">c_void</a>,
             );
 
             <span class="kw">let </span>surface = <a href="image_surface.rs.html#14">ImageSurface::from_raw_full</a>(<a href="#98">raw_surface</a>)<span class="question-mark">?</span>;
 
-            <span class="kw">if let </span><span class="prelude-val">Some</span>(payload) = <a href="#92">env</a>.unwind_payload {
+            <span class="kw">if let </span><a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(payload) = <a href="#92">env</a>.unwind_payload {
                 <a href="https://doc.rust-lang.org/nightly/std/panic/fn.resume_unwind.html">std::panic::resume_unwind</a>(<a href="#105">payload</a>)
             }
 
             <span class="kw">match </span><a href="#92">env</a>.io_error {
-                <span class="prelude-val">None </span>=&gt; <span class="prelude-val">Ok</span>(<a href="#103">surface</a>),
-                <span class="prelude-val">Some</span>(err) =&gt; <span class="prelude-val">Err</span>(<a href="error.rs.html#275">IoError::Io</a>(<a href="#111">err</a>)),
+                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None"><a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a> </a>=&gt; <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(<a href="#103">surface</a>),
+                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(err) =&gt; <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="error.rs.html#275">IoError::Io</a>(<a href="#111">err</a>)),
             }
         }
     }
@@ -423,27 +423,27 @@
     </span><span class="kw">pub fn </span>write_to_png&lt;W: <a href="https://doc.rust-lang.org/nightly/std/io/trait.Write.html">Write</a>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, stream: <span class="kw-2">&amp;mut </span>W) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(), <a href="error.rs.html#273-276">IoError</a>&gt; {
         <span class="kw">let </span><span class="kw-2">mut </span>env = <a href="#52-56">WriteEnv</a> {
             writer: <a href="#125">stream</a>,
-            io_error: <span class="prelude-val">None</span>,
-            unwind_payload: <span class="prelude-val">None</span>,
+            io_error: <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a>,
+            unwind_payload: <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a>,
         };
         <span class="kw">let </span>status = <span class="kw">unsafe </span>{
             <a href="../../cairo_sys/fn.cairo_surface_write_to_png_stream.html">ffi::cairo_surface_write_to_png_stream</a>(
                 <a class="self" href="#125">self</a>.<a href="surface.rs.html#44-46">to_raw_none</a>(),
-                <span class="prelude-val">Some</span>(<a href="#58-87">write_func</a>::&lt;W&gt;),
+                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#58-87">write_func</a>::&lt;W&gt;),
                 <span class="kw-2">&amp;mut </span><a href="#126">env</a> <span class="kw">as </span><span class="kw-2">*mut </span><a href="#52-56">WriteEnv</a>&lt;W&gt; <span class="kw">as </span><span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/enum.c_void.html">c_void</a>,
             )
         };
 
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(payload) = <a href="#126">env</a>.unwind_payload {
+        <span class="kw">if let </span><a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(payload) = <a href="#126">env</a>.unwind_payload {
             <a href="https://doc.rust-lang.org/nightly/std/panic/fn.resume_unwind.html">std::panic::resume_unwind</a>(<a href="#139">payload</a>)
         }
 
         <span class="kw">match </span><a href="#126">env</a>.io_error {
-            <span class="prelude-val">None </span>=&gt; <span class="kw">match </span><a href="utils.rs.html#21-26">status_to_result</a>(<a href="#131">status</a>) {
-                <span class="prelude-val">Err</span>(err) =&gt; <span class="prelude-val">Err</span>(<a href="error.rs.html#274">IoError::Cairo</a>(<a href="#145">err</a>)),
-                <span class="prelude-val">Ok</span>(<span class="kw">_</span>) =&gt; <span class="prelude-val">Ok</span>(()),
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None"><a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a> </a>=&gt; <span class="kw">match </span><a href="utils.rs.html#21-26">status_to_result</a>(<a href="#131">status</a>) {
+                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(err) =&gt; <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="error.rs.html#274">IoError::Cairo</a>(<a href="#145">err</a>)),
+                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(<span class="kw">_</span>) =&gt; <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(()),
             },
-            <span class="prelude-val">Some</span>(err) =&gt; <span class="prelude-val">Err</span>(<a href="error.rs.html#275">IoError::Io</a>(<a href="#148">err</a>)),
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(err) =&gt; <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="error.rs.html#275">IoError::Io</a>(<a href="#148">err</a>)),
         }
     }
 }

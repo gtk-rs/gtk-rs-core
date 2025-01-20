@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/source.rs`."><title>source.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-46132b98.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.86.0-nightly (48a426eca 2025-01-12)" data-channel="nightly" data-search-js="search-75f5ac3e.js" data-settings-js="settings-0f613d39.js" ><script src="../../static.files/storage-59e33391.js"></script><script defer src="../../static.files/src-script-56102188.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/source.rs`."><title>source.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-5d1d17d0.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.86.0-nightly (9a1d156f3 2025-01-19)" data-channel="nightly" data-search-js="search-ccb196c1.js" data-settings-js="settings-0f613d39.js" ><script src="../../static.files/storage-59e33391.js"></script><script defer src="../../static.files/src-script-56102188.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -1356,7 +1356,7 @@
 
 <span class="attr">#[cfg(unix)]
 </span><span class="kw">use </span><a href="auto/flags.rs.html#165-191"><span class="kw">crate</span>::IOCondition</a>;
-<span class="kw">use crate</span>::{<a href="thread_guard.rs.html#24-27">thread_guard::ThreadGuard</a>, <a href="lib.rs.html#164">translate</a>::<span class="kw-2">*</span>, <a href="control_flow.rs.html#17-22">ControlFlow</a>, <a href="auto/main_context.rs.html#10-24">MainContext</a>, <a href="auto/source.rs.html#7-21">Source</a>};
+<span class="kw">use crate</span>::{<a href="thread_guard.rs.html#24-27">thread_guard::ThreadGuard</a>, <a href="lib.rs.html#164">translate</a>::<span class="kw-2">*</span>, <a href="control_flow.rs.html#17-22">ControlFlow</a>, <a href="auto/main_context.rs.html#10-21">MainContext</a>, <a href="auto/source.rs.html#7-18">Source</a>};
 
 <span class="comment">// rustdoc-stripper-ignore-next
 </span><span class="doccomment">/// The id of a source that is returned by `idle_add` and `timeout_add`.
@@ -1380,7 +1380,7 @@
     </span><span class="attr">#[doc(alias = <span class="string">"g_source_remove"</span>)]
     </span><span class="kw">pub fn </span>remove(<span class="self">self</span>) {
         <span class="kw">unsafe </span>{
-            <a class="macro" href="error.rs.html#249-275">result_from_gboolean!</a>(
+            <a class="macro" href="error.rs.html#214-240">result_from_gboolean!</a>(
                 ffi::g_source_remove(<span class="self">self</span>.as_raw()),
                 <span class="string">"Failed to remove source"
             </span>)
@@ -1570,7 +1570,7 @@
 </span><span class="kw">fn </span>fnmut_callback_wrapper(
     func: <span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>() + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static</span>,
 ) -&gt; <span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnMut.html">FnMut</a>() -&gt; <a href="control_flow.rs.html#17-22">ControlFlow</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static </span>{
-    <span class="kw">let </span><span class="kw-2">mut </span>func = <span class="prelude-val">Some</span>(<a href="#225">func</a>);
+    <span class="kw">let </span><span class="kw-2">mut </span>func = <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#225">func</a>);
     <span class="kw">move </span>|| {
         <span class="kw">let </span>func = <a href="#227">func</a>
             .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.take">take</a>()
@@ -1592,7 +1592,7 @@
 </span><span class="kw">fn </span>fnmut_callback_wrapper_local(
     func: <span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>() + <span class="lifetime">'static</span>,
 ) -&gt; <span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnMut.html">FnMut</a>() -&gt; <a href="control_flow.rs.html#17-22">ControlFlow</a> + <span class="lifetime">'static </span>{
-    <span class="kw">let </span><span class="kw-2">mut </span>func = <span class="prelude-val">Some</span>(<a href="#247">func</a>);
+    <span class="kw">let </span><span class="kw-2">mut </span>func = <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#247">func</a>);
     <span class="kw">move </span>|| {
         <span class="kw">let </span>func = <a href="#249">func</a>
             .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.take">take</a>()
@@ -1617,9 +1617,9 @@
     <span class="kw">unsafe </span>{
         <a href="translate.rs.html#1417-1419">from_glib</a>(ffi::g_idle_add_full(
             ffi::G_PRIORITY_DEFAULT_IDLE,
-            <span class="prelude-val">Some</span>(<a href="#82-87">trampoline</a>::&lt;F&gt;),
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#82-87">trampoline</a>::&lt;F&gt;),
             <a href="#104-107">into_raw</a>(<a href="#267">func</a>),
-            <span class="prelude-val">Some</span>(<a href="#96-98">destroy_closure</a>::&lt;F&gt;),
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#96-98">destroy_closure</a>::&lt;F&gt;),
         ))
     }
 }
@@ -1640,9 +1640,9 @@
     <span class="kw">unsafe </span>{
         <a href="translate.rs.html#1417-1419">from_glib</a>(ffi::g_idle_add_full(
             <a href="#290">priority</a>.<a href="translate.rs.html#334">into_glib</a>(),
-            <span class="prelude-val">Some</span>(<a href="#82-87">trampoline</a>::&lt;F&gt;),
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#82-87">trampoline</a>::&lt;F&gt;),
             <a href="#104-107">into_raw</a>(<a href="#290">func</a>),
-            <span class="prelude-val">Some</span>(<a href="#96-98">destroy_closure</a>::&lt;F&gt;),
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#96-98">destroy_closure</a>::&lt;F&gt;),
         ))
     }
 }
@@ -1685,15 +1685,15 @@
     </span>F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnMut.html">FnMut</a>() -&gt; <a href="control_flow.rs.html#17-22">ControlFlow</a> + <span class="lifetime">'static</span>,
 {
     <span class="kw">unsafe </span>{
-        <span class="kw">let </span>context = <a href="auto/main_context.rs.html#329-331">MainContext::default</a>();
+        <span class="kw">let </span>context = <a href="auto/main_context.rs.html#223-225">MainContext::default</a>();
         <span class="kw">let </span>_acquire = <a href="#342">context</a>
-            .<a href="main_context.rs.html#318-327">acquire</a>()
+            .<a href="main_context.rs.html#240-249">acquire</a>()
             .<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.expect">expect</a>(<span class="string">"default main context already acquired by another thread"</span>);
         <a href="translate.rs.html#1417-1419">from_glib</a>(ffi::g_idle_add_full(
             ffi::G_PRIORITY_DEFAULT_IDLE,
-            <span class="prelude-val">Some</span>(<a href="#89-94">trampoline_local</a>::&lt;F&gt;),
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#89-94">trampoline_local</a>::&lt;F&gt;),
             <a href="#109-112">into_raw_local</a>(<a href="#337">func</a>),
-            <span class="prelude-val">Some</span>(<a href="#100-102">destroy_closure_local</a>::&lt;F&gt;),
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#100-102">destroy_closure_local</a>::&lt;F&gt;),
         ))
     }
 }
@@ -1718,15 +1718,15 @@
     </span>F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnMut.html">FnMut</a>() -&gt; <a href="control_flow.rs.html#17-22">ControlFlow</a> + <span class="lifetime">'static</span>,
 {
     <span class="kw">unsafe </span>{
-        <span class="kw">let </span>context = <a href="auto/main_context.rs.html#329-331">MainContext::default</a>();
+        <span class="kw">let </span>context = <a href="auto/main_context.rs.html#223-225">MainContext::default</a>();
         <span class="kw">let </span>_acquire = <a href="#375">context</a>
-            .<a href="main_context.rs.html#318-327">acquire</a>()
+            .<a href="main_context.rs.html#240-249">acquire</a>()
             .<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.expect">expect</a>(<span class="string">"default main context already acquired by another thread"</span>);
         <a href="translate.rs.html#1417-1419">from_glib</a>(ffi::g_idle_add_full(
             <a href="#370">priority</a>.<a href="translate.rs.html#334">into_glib</a>(),
-            <span class="prelude-val">Some</span>(<a href="#89-94">trampoline_local</a>::&lt;F&gt;),
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#89-94">trampoline_local</a>::&lt;F&gt;),
             <a href="#109-112">into_raw_local</a>(<a href="#370">func</a>),
-            <span class="prelude-val">Some</span>(<a href="#100-102">destroy_closure_local</a>::&lt;F&gt;),
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#100-102">destroy_closure_local</a>::&lt;F&gt;),
         ))
     }
 }
@@ -1775,9 +1775,9 @@
         <a href="translate.rs.html#1417-1419">from_glib</a>(ffi::g_timeout_add_full(
             ffi::G_PRIORITY_DEFAULT,
             <a href="#424">interval</a>.<a href="https://doc.rust-lang.org/nightly/core/time/struct.Duration.html#method.as_millis">as_millis</a>() <span class="kw">as _</span>,
-            <span class="prelude-val">Some</span>(<a href="#82-87">trampoline</a>::&lt;F&gt;),
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#82-87">trampoline</a>::&lt;F&gt;),
             <a href="#104-107">into_raw</a>(<a href="#424">func</a>),
-            <span class="prelude-val">Some</span>(<a href="#96-98">destroy_closure</a>::&lt;F&gt;),
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#96-98">destroy_closure</a>::&lt;F&gt;),
         ))
     }
 }
@@ -1802,9 +1802,9 @@
         <a href="translate.rs.html#1417-1419">from_glib</a>(ffi::g_timeout_add_full(
             <a href="#451">priority</a>.<a href="translate.rs.html#334">into_glib</a>(),
             <a href="#451">interval</a>.<a href="https://doc.rust-lang.org/nightly/core/time/struct.Duration.html#method.as_millis">as_millis</a>() <span class="kw">as _</span>,
-            <span class="prelude-val">Some</span>(<a href="#82-87">trampoline</a>::&lt;F&gt;),
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#82-87">trampoline</a>::&lt;F&gt;),
             <a href="#104-107">into_raw</a>(<a href="#451">func</a>),
-            <span class="prelude-val">Some</span>(<a href="#96-98">destroy_closure</a>::&lt;F&gt;),
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#96-98">destroy_closure</a>::&lt;F&gt;),
         ))
     }
 }
@@ -1855,16 +1855,16 @@
     </span>F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnMut.html">FnMut</a>() -&gt; <a href="control_flow.rs.html#17-22">ControlFlow</a> + <span class="lifetime">'static</span>,
 {
     <span class="kw">unsafe </span>{
-        <span class="kw">let </span>context = <a href="auto/main_context.rs.html#329-331">MainContext::default</a>();
+        <span class="kw">let </span>context = <a href="auto/main_context.rs.html#223-225">MainContext::default</a>();
         <span class="kw">let </span>_acquire = <a href="#512">context</a>
-            .<a href="main_context.rs.html#318-327">acquire</a>()
+            .<a href="main_context.rs.html#240-249">acquire</a>()
             .<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.expect">expect</a>(<span class="string">"default main context already acquired by another thread"</span>);
         <a href="translate.rs.html#1417-1419">from_glib</a>(ffi::g_timeout_add_full(
             ffi::G_PRIORITY_DEFAULT,
             <a href="#507">interval</a>.<a href="https://doc.rust-lang.org/nightly/core/time/struct.Duration.html#method.as_millis">as_millis</a>() <span class="kw">as _</span>,
-            <span class="prelude-val">Some</span>(<a href="#89-94">trampoline_local</a>::&lt;F&gt;),
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#89-94">trampoline_local</a>::&lt;F&gt;),
             <a href="#109-112">into_raw_local</a>(<a href="#507">func</a>),
-            <span class="prelude-val">Some</span>(<a href="#100-102">destroy_closure_local</a>::&lt;F&gt;),
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#100-102">destroy_closure_local</a>::&lt;F&gt;),
         ))
     }
 }
@@ -1892,16 +1892,16 @@
     </span>F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnMut.html">FnMut</a>() -&gt; <a href="control_flow.rs.html#17-22">ControlFlow</a> + <span class="lifetime">'static</span>,
 {
     <span class="kw">unsafe </span>{
-        <span class="kw">let </span>context = <a href="auto/main_context.rs.html#329-331">MainContext::default</a>();
+        <span class="kw">let </span>context = <a href="auto/main_context.rs.html#223-225">MainContext::default</a>();
         <span class="kw">let </span>_acquire = <a href="#549">context</a>
-            .<a href="main_context.rs.html#318-327">acquire</a>()
+            .<a href="main_context.rs.html#240-249">acquire</a>()
             .<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.expect">expect</a>(<span class="string">"default main context already acquired by another thread"</span>);
         <a href="translate.rs.html#1417-1419">from_glib</a>(ffi::g_timeout_add_full(
             <a href="#544">priority</a>.<a href="translate.rs.html#334">into_glib</a>(),
             <a href="#544">interval</a>.<a href="https://doc.rust-lang.org/nightly/core/time/struct.Duration.html#method.as_millis">as_millis</a>() <span class="kw">as _</span>,
-            <span class="prelude-val">Some</span>(<a href="#89-94">trampoline_local</a>::&lt;F&gt;),
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#89-94">trampoline_local</a>::&lt;F&gt;),
             <a href="#109-112">into_raw_local</a>(<a href="#544">func</a>),
-            <span class="prelude-val">Some</span>(<a href="#100-102">destroy_closure_local</a>::&lt;F&gt;),
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#100-102">destroy_closure_local</a>::&lt;F&gt;),
         ))
     }
 }
@@ -1953,9 +1953,9 @@
         <a href="translate.rs.html#1417-1419">from_glib</a>(ffi::g_timeout_add_seconds_full(
             ffi::G_PRIORITY_DEFAULT,
             <a href="#602">interval</a>,
-            <span class="prelude-val">Some</span>(<a href="#82-87">trampoline</a>::&lt;F&gt;),
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#82-87">trampoline</a>::&lt;F&gt;),
             <a href="#104-107">into_raw</a>(<a href="#602">func</a>),
-            <span class="prelude-val">Some</span>(<a href="#96-98">destroy_closure</a>::&lt;F&gt;),
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#96-98">destroy_closure</a>::&lt;F&gt;),
         ))
     }
 }
@@ -2003,16 +2003,16 @@
     </span>F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnMut.html">FnMut</a>() -&gt; <a href="control_flow.rs.html#17-22">ControlFlow</a> + <span class="lifetime">'static</span>,
 {
     <span class="kw">unsafe </span>{
-        <span class="kw">let </span>context = <a href="auto/main_context.rs.html#329-331">MainContext::default</a>();
+        <span class="kw">let </span>context = <a href="auto/main_context.rs.html#223-225">MainContext::default</a>();
         <span class="kw">let </span>_acquire = <a href="#660">context</a>
-            .<a href="main_context.rs.html#318-327">acquire</a>()
+            .<a href="main_context.rs.html#240-249">acquire</a>()
             .<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.expect">expect</a>(<span class="string">"default main context already acquired by another thread"</span>);
         <a href="translate.rs.html#1417-1419">from_glib</a>(ffi::g_timeout_add_seconds_full(
             ffi::G_PRIORITY_DEFAULT,
             <a href="#655">interval</a>,
-            <span class="prelude-val">Some</span>(<a href="#89-94">trampoline_local</a>::&lt;F&gt;),
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#89-94">trampoline_local</a>::&lt;F&gt;),
             <a href="#109-112">into_raw_local</a>(<a href="#655">func</a>),
-            <span class="prelude-val">Some</span>(<a href="#100-102">destroy_closure_local</a>::&lt;F&gt;),
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#100-102">destroy_closure_local</a>::&lt;F&gt;),
         ))
     }
 }
@@ -2058,9 +2058,9 @@
         <a href="translate.rs.html#1417-1419">from_glib</a>(ffi::g_child_watch_add_full(
             ffi::G_PRIORITY_DEFAULT,
             <a href="#707">pid</a>.<span class="number">0</span>,
-            <span class="prelude-val">Some</span>(<a href="#114-121">trampoline_child_watch</a>::&lt;F&gt;),
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#114-121">trampoline_child_watch</a>::&lt;F&gt;),
             <a href="#144-147">into_raw_child_watch</a>(<a href="#707">func</a>),
-            <span class="prelude-val">Some</span>(<a href="#132-136">destroy_closure_child_watch</a>::&lt;F&gt;),
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#132-136">destroy_closure_child_watch</a>::&lt;F&gt;),
         ))
     }
 }
@@ -2082,16 +2082,16 @@
     </span>F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnMut.html">FnMut</a>(<a href="#59">Pid</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>) + <span class="lifetime">'static</span>,
 {
     <span class="kw">unsafe </span>{
-        <span class="kw">let </span>context = <a href="auto/main_context.rs.html#329-331">MainContext::default</a>();
+        <span class="kw">let </span>context = <a href="auto/main_context.rs.html#223-225">MainContext::default</a>();
         <span class="kw">let </span>_acquire = <a href="#739">context</a>
-            .<a href="main_context.rs.html#318-327">acquire</a>()
+            .<a href="main_context.rs.html#240-249">acquire</a>()
             .<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.expect">expect</a>(<span class="string">"default main context already acquired by another thread"</span>);
         <a href="translate.rs.html#1417-1419">from_glib</a>(ffi::g_child_watch_add_full(
             ffi::G_PRIORITY_DEFAULT,
             <a href="#734">pid</a>.<span class="number">0</span>,
-            <span class="prelude-val">Some</span>(<a href="#123-130">trampoline_child_watch_local</a>::&lt;F&gt;),
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#123-130">trampoline_child_watch_local</a>::&lt;F&gt;),
             <a href="#149-152">into_raw_child_watch_local</a>(<a href="#734">func</a>),
-            <span class="prelude-val">Some</span>(<a href="#138-142">destroy_closure_child_watch_local</a>::&lt;F&gt;),
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#138-142">destroy_closure_child_watch_local</a>::&lt;F&gt;),
         ))
     }
 }
@@ -2115,9 +2115,9 @@
         <a href="translate.rs.html#1417-1419">from_glib</a>(ffi::g_unix_signal_add_full(
             ffi::G_PRIORITY_DEFAULT,
             <a href="#764">signum</a>,
-            <span class="prelude-val">Some</span>(<a href="#82-87">trampoline</a>::&lt;F&gt;),
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#82-87">trampoline</a>::&lt;F&gt;),
             <a href="#104-107">into_raw</a>(<a href="#764">func</a>),
-            <span class="prelude-val">Some</span>(<a href="#96-98">destroy_closure</a>::&lt;F&gt;),
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#96-98">destroy_closure</a>::&lt;F&gt;),
         ))
     }
 }
@@ -2165,16 +2165,16 @@
     </span>F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnMut.html">FnMut</a>() -&gt; <a href="control_flow.rs.html#17-22">ControlFlow</a> + <span class="lifetime">'static</span>,
 {
     <span class="kw">unsafe </span>{
-        <span class="kw">let </span>context = <a href="auto/main_context.rs.html#329-331">MainContext::default</a>();
+        <span class="kw">let </span>context = <a href="auto/main_context.rs.html#223-225">MainContext::default</a>();
         <span class="kw">let </span>_acquire = <a href="#822">context</a>
-            .<a href="main_context.rs.html#318-327">acquire</a>()
+            .<a href="main_context.rs.html#240-249">acquire</a>()
             .<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.expect">expect</a>(<span class="string">"default main context already acquired by another thread"</span>);
         <a href="translate.rs.html#1417-1419">from_glib</a>(ffi::g_unix_signal_add_full(
             ffi::G_PRIORITY_DEFAULT,
             <a href="#817">signum</a>,
-            <span class="prelude-val">Some</span>(<a href="#89-94">trampoline_local</a>::&lt;F&gt;),
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#89-94">trampoline_local</a>::&lt;F&gt;),
             <a href="#109-112">into_raw_local</a>(<a href="#817">func</a>),
-            <span class="prelude-val">Some</span>(<a href="#100-102">destroy_closure_local</a>::&lt;F&gt;),
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#100-102">destroy_closure_local</a>::&lt;F&gt;),
         ))
     }
 }
@@ -2227,9 +2227,9 @@
             ffi::G_PRIORITY_DEFAULT,
             <a href="#875">fd</a>,
             <a href="#875">condition</a>.<a href="translate.rs.html#334">into_glib</a>(),
-            <span class="prelude-val">Some</span>(<a href="#156-165">trampoline_unix_fd</a>::&lt;F&gt;),
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#156-165">trampoline_unix_fd</a>::&lt;F&gt;),
             <a href="#202-207">into_raw_unix_fd</a>(<a href="#875">func</a>),
-            <span class="prelude-val">Some</span>(<a href="#182-188">destroy_closure_unix_fd</a>::&lt;F&gt;),
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#182-188">destroy_closure_unix_fd</a>::&lt;F&gt;),
         ))
     }
 }
@@ -2260,9 +2260,9 @@
             <a href="#905">priority</a>.<a href="translate.rs.html#334">into_glib</a>(),
             <a href="#904">fd</a>,
             <a href="#906">condition</a>.<a href="translate.rs.html#334">into_glib</a>(),
-            <span class="prelude-val">Some</span>(<a href="#156-165">trampoline_unix_fd</a>::&lt;F&gt;),
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#156-165">trampoline_unix_fd</a>::&lt;F&gt;),
             <a href="#202-207">into_raw_unix_fd</a>(<a href="#907">func</a>),
-            <span class="prelude-val">Some</span>(<a href="#182-188">destroy_closure_unix_fd</a>::&lt;F&gt;),
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#182-188">destroy_closure_unix_fd</a>::&lt;F&gt;),
         ))
     }
 }
@@ -2290,17 +2290,17 @@
     </span>F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnMut.html">FnMut</a>(<a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/type.RawFd.html">RawFd</a>, <a href="auto/flags.rs.html#165-191">IOCondition</a>) -&gt; <a href="control_flow.rs.html#17-22">ControlFlow</a> + <span class="lifetime">'static</span>,
 {
     <span class="kw">unsafe </span>{
-        <span class="kw">let </span>context = <a href="auto/main_context.rs.html#329-331">MainContext::default</a>();
+        <span class="kw">let </span>context = <a href="auto/main_context.rs.html#223-225">MainContext::default</a>();
         <span class="kw">let </span>_acquire = <a href="#947">context</a>
-            .<a href="main_context.rs.html#318-327">acquire</a>()
+            .<a href="main_context.rs.html#240-249">acquire</a>()
             .<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.expect">expect</a>(<span class="string">"default main context already acquired by another thread"</span>);
         <a href="translate.rs.html#1417-1419">from_glib</a>(ffi::g_unix_fd_add_full(
             ffi::G_PRIORITY_DEFAULT,
             <a href="#942">fd</a>,
             <a href="#942">condition</a>.<a href="translate.rs.html#334">into_glib</a>(),
-            <span class="prelude-val">Some</span>(<a href="#169-178">trampoline_unix_fd_local</a>::&lt;F&gt;),
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#169-178">trampoline_unix_fd_local</a>::&lt;F&gt;),
             <a href="#211-216">into_raw_unix_fd_local</a>(<a href="#942">func</a>),
-            <span class="prelude-val">Some</span>(<a href="#192-198">destroy_closure_unix_fd_local</a>::&lt;F&gt;),
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#192-198">destroy_closure_unix_fd_local</a>::&lt;F&gt;),
         ))
     }
 }
@@ -2333,17 +2333,17 @@
     </span>F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnMut.html">FnMut</a>(<a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/type.RawFd.html">RawFd</a>, <a href="auto/flags.rs.html#165-191">IOCondition</a>) -&gt; <a href="control_flow.rs.html#17-22">ControlFlow</a> + <span class="lifetime">'static</span>,
 {
     <span class="kw">unsafe </span>{
-        <span class="kw">let </span>context = <a href="auto/main_context.rs.html#329-331">MainContext::default</a>();
+        <span class="kw">let </span>context = <a href="auto/main_context.rs.html#223-225">MainContext::default</a>();
         <span class="kw">let </span>_acquire = <a href="#990">context</a>
-            .<a href="main_context.rs.html#318-327">acquire</a>()
+            .<a href="main_context.rs.html#240-249">acquire</a>()
             .<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.expect">expect</a>(<span class="string">"default main context already acquired by another thread"</span>);
         <a href="translate.rs.html#1417-1419">from_glib</a>(ffi::g_unix_fd_add_full(
             <a href="#982">priority</a>.<a href="translate.rs.html#334">into_glib</a>(),
             <a href="#981">fd</a>,
             <a href="#983">condition</a>.<a href="translate.rs.html#334">into_glib</a>(),
-            <span class="prelude-val">Some</span>(<a href="#169-178">trampoline_unix_fd_local</a>::&lt;F&gt;),
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#169-178">trampoline_unix_fd_local</a>::&lt;F&gt;),
             <a href="#211-216">into_raw_unix_fd_local</a>(<a href="#984">func</a>),
-            <span class="prelude-val">Some</span>(<a href="#192-198">destroy_closure_unix_fd_local</a>::&lt;F&gt;),
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#192-198">destroy_closure_unix_fd_local</a>::&lt;F&gt;),
         ))
     }
 }
@@ -2401,7 +2401,7 @@
 ///
 /// `func` will be called repeatedly until it returns `ControlFlow::Break`.
 </span><span class="attr">#[doc(alias = <span class="string">"g_idle_source_new"</span>)]
-</span><span class="kw">pub fn </span><a href="../../glib/source/fn.idle_source_new.html">idle_source_new</a>&lt;F&gt;(name: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;, priority: <a href="#1008">Priority</a>, func: F) -&gt; <a href="auto/source.rs.html#7-21">Source</a>
+</span><span class="kw">pub fn </span><a href="../../glib/source/fn.idle_source_new.html">idle_source_new</a>&lt;F&gt;(name: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;, priority: <a href="#1008">Priority</a>, func: F) -&gt; <a href="auto/source.rs.html#7-18">Source</a>
 <span class="kw">where
     </span>F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnMut.html">FnMut</a>() -&gt; <a href="control_flow.rs.html#17-22">ControlFlow</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static</span>,
 {
@@ -2409,13 +2409,13 @@
         <span class="kw">let </span>source = ffi::g_idle_source_new();
         ffi::g_source_set_callback(
             <a href="#1063">source</a>,
-            <span class="prelude-val">Some</span>(<a href="#82-87">trampoline</a>::&lt;F&gt;),
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#82-87">trampoline</a>::&lt;F&gt;),
             <a href="#104-107">into_raw</a>(<a href="#1058">func</a>),
-            <span class="prelude-val">Some</span>(<a href="#96-98">destroy_closure</a>::&lt;F&gt;),
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#96-98">destroy_closure</a>::&lt;F&gt;),
         );
         ffi::g_source_set_priority(<a href="#1063">source</a>, <a href="#1058">priority</a>.<a href="translate.rs.html#334">into_glib</a>());
 
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(name) = <a href="#1058">name</a> {
+        <span class="kw">if let </span><a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(name) = <a href="#1058">name</a> {
             ffi::g_source_set_name(<a href="#1063">source</a>, <a href="#1072">name</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>);
         }
 
@@ -2437,7 +2437,7 @@
     name: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;,
     priority: <a href="#1008">Priority</a>,
     func: F,
-) -&gt; <a href="auto/source.rs.html#7-21">Source</a>
+) -&gt; <a href="auto/source.rs.html#7-18">Source</a>
 <span class="kw">where
     </span>F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnMut.html">FnMut</a>() -&gt; <a href="control_flow.rs.html#17-22">ControlFlow</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static</span>,
 {
@@ -2445,13 +2445,13 @@
         <span class="kw">let </span>source = ffi::g_timeout_source_new(<a href="#1090">interval</a>.<a href="https://doc.rust-lang.org/nightly/core/time/struct.Duration.html#method.as_millis">as_millis</a>() <span class="kw">as _</span>);
         ffi::g_source_set_callback(
             <a href="#1099">source</a>,
-            <span class="prelude-val">Some</span>(<a href="#82-87">trampoline</a>::&lt;F&gt;),
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#82-87">trampoline</a>::&lt;F&gt;),
             <a href="#104-107">into_raw</a>(<a href="#1093">func</a>),
-            <span class="prelude-val">Some</span>(<a href="#96-98">destroy_closure</a>::&lt;F&gt;),
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#96-98">destroy_closure</a>::&lt;F&gt;),
         );
         ffi::g_source_set_priority(<a href="#1099">source</a>, <a href="#1092">priority</a>.<a href="translate.rs.html#334">into_glib</a>());
 
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(name) = <a href="#1091">name</a> {
+        <span class="kw">if let </span><a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(name) = <a href="#1091">name</a> {
             ffi::g_source_set_name(<a href="#1099">source</a>, <a href="#1108">name</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>);
         }
 
@@ -2472,7 +2472,7 @@
     name: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;,
     priority: <a href="#1008">Priority</a>,
     func: F,
-) -&gt; <a href="auto/source.rs.html#7-21">Source</a>
+) -&gt; <a href="auto/source.rs.html#7-18">Source</a>
 <span class="kw">where
     </span>F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnMut.html">FnMut</a>() -&gt; <a href="control_flow.rs.html#17-22">ControlFlow</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static</span>,
 {
@@ -2480,13 +2480,13 @@
         <span class="kw">let </span>source = ffi::g_timeout_source_new_seconds(<a href="#1125">interval</a>);
         ffi::g_source_set_callback(
             <a href="#1134">source</a>,
-            <span class="prelude-val">Some</span>(<a href="#82-87">trampoline</a>::&lt;F&gt;),
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#82-87">trampoline</a>::&lt;F&gt;),
             <a href="#104-107">into_raw</a>(<a href="#1128">func</a>),
-            <span class="prelude-val">Some</span>(<a href="#96-98">destroy_closure</a>::&lt;F&gt;),
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#96-98">destroy_closure</a>::&lt;F&gt;),
         );
         ffi::g_source_set_priority(<a href="#1134">source</a>, <a href="#1127">priority</a>.<a href="translate.rs.html#334">into_glib</a>());
 
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(name) = <a href="#1126">name</a> {
+        <span class="kw">if let </span><a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(name) = <a href="#1126">name</a> {
             ffi::g_source_set_name(<a href="#1134">source</a>, <a href="#1143">name</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>);
         }
 
@@ -2505,7 +2505,7 @@
     name: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;,
     priority: <a href="#1008">Priority</a>,
     func: F,
-) -&gt; <a href="auto/source.rs.html#7-21">Source</a>
+) -&gt; <a href="auto/source.rs.html#7-18">Source</a>
 <span class="kw">where
     </span>F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnMut.html">FnMut</a>(<a href="#59">Pid</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>) + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static</span>,
 {
@@ -2513,16 +2513,16 @@
         <span class="kw">let </span>source = ffi::g_child_watch_source_new(<a href="#1158">pid</a>.<span class="number">0</span>);
         ffi::g_source_set_callback(
             <a href="#1167">source</a>,
-            <span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/core/intrinsics/fn.transmute.html">transmute</a>::&lt;
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="https://doc.rust-lang.org/nightly/core/intrinsics/fn.transmute.html">transmute</a>::&lt;
                 <span class="kw-2">*mut </span>(),
                 <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>(ffi::gpointer) -&gt; ffi::gboolean,
             &gt;(<a href="#114-121">trampoline_child_watch</a>::&lt;F&gt; <span class="kw">as </span><span class="kw-2">*mut </span>())),
             <a href="#144-147">into_raw_child_watch</a>(<a href="#1161">func</a>),
-            <span class="prelude-val">Some</span>(<a href="#132-136">destroy_closure_child_watch</a>::&lt;F&gt;),
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#132-136">destroy_closure_child_watch</a>::&lt;F&gt;),
         );
         ffi::g_source_set_priority(<a href="#1167">source</a>, <a href="#1160">priority</a>.<a href="translate.rs.html#334">into_glib</a>());
 
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(name) = <a href="#1159">name</a> {
+        <span class="kw">if let </span><a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(name) = <a href="#1159">name</a> {
             ffi::g_source_set_name(<a href="#1167">source</a>, <a href="#1179">name</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>);
         }
 
@@ -2544,7 +2544,7 @@
     name: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;,
     priority: <a href="#1008">Priority</a>,
     func: F,
-) -&gt; <a href="auto/source.rs.html#7-21">Source</a>
+) -&gt; <a href="auto/source.rs.html#7-18">Source</a>
 <span class="kw">where
     </span>F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnMut.html">FnMut</a>() -&gt; <a href="control_flow.rs.html#17-22">ControlFlow</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static</span>,
 {
@@ -2552,13 +2552,13 @@
         <span class="kw">let </span>source = ffi::g_unix_signal_source_new(<a href="#1197">signum</a>);
         ffi::g_source_set_callback(
             <a href="#1206">source</a>,
-            <span class="prelude-val">Some</span>(<a href="#82-87">trampoline</a>::&lt;F&gt;),
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#82-87">trampoline</a>::&lt;F&gt;),
             <a href="#104-107">into_raw</a>(<a href="#1200">func</a>),
-            <span class="prelude-val">Some</span>(<a href="#96-98">destroy_closure</a>::&lt;F&gt;),
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#96-98">destroy_closure</a>::&lt;F&gt;),
         );
         ffi::g_source_set_priority(<a href="#1206">source</a>, <a href="#1199">priority</a>.<a href="translate.rs.html#334">into_glib</a>());
 
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(name) = <a href="#1198">name</a> {
+        <span class="kw">if let </span><a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(name) = <a href="#1198">name</a> {
             ffi::g_source_set_name(<a href="#1206">source</a>, <a href="#1215">name</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>);
         }
 
@@ -2581,7 +2581,7 @@
     name: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;,
     priority: <a href="#1008">Priority</a>,
     func: F,
-) -&gt; <a href="auto/source.rs.html#7-21">Source</a>
+) -&gt; <a href="auto/source.rs.html#7-18">Source</a>
 <span class="kw">where
     </span>F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnMut.html">FnMut</a>(<a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/type.RawFd.html">RawFd</a>, <a href="auto/flags.rs.html#165-191">IOCondition</a>) -&gt; <a href="control_flow.rs.html#17-22">ControlFlow</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static</span>,
 {
@@ -2589,16 +2589,16 @@
         <span class="kw">let </span>source = ffi::g_unix_fd_source_new(<a href="#1233">fd</a>, <a href="#1234">condition</a>.<a href="translate.rs.html#334">into_glib</a>());
         ffi::g_source_set_callback(
             <a href="#1243">source</a>,
-            <span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/core/intrinsics/fn.transmute.html">transmute</a>::&lt;
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="https://doc.rust-lang.org/nightly/core/intrinsics/fn.transmute.html">transmute</a>::&lt;
                 <span class="kw-2">*const </span>(),
                 <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>(ffi::gpointer) -&gt; ffi::gboolean,
             &gt;(<a href="#156-165">trampoline_unix_fd</a>::&lt;F&gt; <span class="kw">as </span><span class="kw-2">*const </span>())),
             <a href="#202-207">into_raw_unix_fd</a>(<a href="#1237">func</a>),
-            <span class="prelude-val">Some</span>(<a href="#182-188">destroy_closure_unix_fd</a>::&lt;F&gt;),
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#182-188">destroy_closure_unix_fd</a>::&lt;F&gt;),
         );
         ffi::g_source_set_priority(<a href="#1243">source</a>, <a href="#1236">priority</a>.<a href="translate.rs.html#334">into_glib</a>());
 
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(name) = <a href="#1235">name</a> {
+        <span class="kw">if let </span><a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(name) = <a href="#1235">name</a> {
             ffi::g_source_set_name(<a href="#1243">source</a>, <a href="#1255">name</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>);
         }
 
@@ -2606,9 +2606,9 @@
     }
 }
 
-<span class="kw">impl </span><a href="auto/source.rs.html#7-21">Source</a> {
+<span class="kw">impl </span><a href="auto/source.rs.html#7-18">Source</a> {
     <span class="attr">#[doc(alias = <span class="string">"g_source_attach"</span>)]
-    </span><span class="kw">pub fn </span>attach(<span class="kw-2">&amp;</span><span class="self">self</span>, context: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="auto/main_context.rs.html#10-24">MainContext</a>&gt;) -&gt; <a href="#21">SourceId</a> {
+    </span><span class="kw">pub fn </span>attach(<span class="kw-2">&amp;</span><span class="self">self</span>, context: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="auto/main_context.rs.html#10-21">MainContext</a>&gt;) -&gt; <a href="#21">SourceId</a> {
         <span class="kw">unsafe </span>{
             <a href="translate.rs.html#1417-1419">from_glib</a>(ffi::g_source_attach(
                 <a class="self" href="#1265">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,

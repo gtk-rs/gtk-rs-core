@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `cairo/src/surface.rs`."><title>surface.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-46132b98.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="cairo" data-themes="" data-resource-suffix="" data-rustdoc-version="1.86.0-nightly (48a426eca 2025-01-12)" data-channel="nightly" data-search-js="search-75f5ac3e.js" data-settings-js="settings-0f613d39.js" ><script src="../../static.files/storage-59e33391.js"></script><script defer src="../../static.files/src-script-56102188.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `cairo/src/surface.rs`."><title>surface.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-5d1d17d0.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="cairo" data-themes="" data-resource-suffix="" data-rustdoc-version="1.86.0-nightly (9a1d156f3 2025-01-19)" data-channel="nightly" data-search-js="search-ccb196c1.js" data-settings-js="settings-0f613d39.js" ><script src="../../static.files/storage-59e33391.js"></script><script defer src="../../static.files/src-script-56102188.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -550,7 +550,7 @@
         <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert.html">debug_assert!</a>(!ptr.is_null());
         <span class="kw">let </span>status = <a href="../../cairo_sys/fn.cairo_surface_status.html">ffi::cairo_surface_status</a>(<a href="#36">ptr</a>);
         <a href="utils.rs.html#21-26">status_to_result</a>(<a href="#38">status</a>)<span class="question-mark">?</span>;
-        <span class="prelude-val">Ok</span>(<a href="#19">Surface</a>(<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.new_unchecked">ptr::NonNull::new_unchecked</a>(<a href="#36">ptr</a>)))
+        <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(<a href="#19">Surface</a>(<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.new_unchecked">ptr::NonNull::new_unchecked</a>(<a href="#36">ptr</a>)))
     }
 
     <span class="attr">#[inline]
@@ -602,10 +602,10 @@
                 <span class="kw-2">&amp;mut </span><a href="#82">length</a>,
             );
             <span class="kw">if </span>!data_ptr.is_null() &amp;&amp; length != <span class="number">0 </span>{
-                <span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/core/slice/raw/fn.from_raw_parts.html">slice::from_raw_parts</a>(<a href="#81">data_ptr</a> <span class="kw">as </span><span class="kw-2">*const </span><a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>, <a href="#82">length</a> <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>).<a href="https://doc.rust-lang.org/nightly/alloc/foreigntype.slice.html#method.to_vec">to_vec</a>())
+                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="https://doc.rust-lang.org/nightly/core/slice/raw/fn.from_raw_parts.html">slice::from_raw_parts</a>(<a href="#81">data_ptr</a> <span class="kw">as </span><span class="kw-2">*const </span><a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>, <a href="#82">length</a> <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>).<a href="https://doc.rust-lang.org/nightly/alloc/foreigntype.slice.html#method.to_vec">to_vec</a>())
             } <span class="kw">else </span>{
-                <span class="prelude-val">None
-            </span>}
+                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None"><a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a>
+            </a>}
         }
     }
 
@@ -622,13 +622,13 @@
             <span class="kw-2">&amp;mut </span><a href="#103">length</a>,
         );
         <span class="kw">if </span>!data_ptr.is_null() &amp;&amp; length != <span class="number">0 </span>{
-            <span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/core/slice/raw/fn.from_raw_parts.html">slice::from_raw_parts</a>(
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="https://doc.rust-lang.org/nightly/core/slice/raw/fn.from_raw_parts.html">slice::from_raw_parts</a>(
                 <a href="#102">data_ptr</a> <span class="kw">as </span><span class="kw-2">*const </span><a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>,
                 <a href="#103">length</a> <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>,
             ))
         } <span class="kw">else </span>{
-            <span class="prelude-val">None
-        </span>}
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None"><a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a>
+        </a>}
     }
 
     <span class="attr">#[doc(alias = <span class="string">"cairo_surface_set_mime_data"</span>)]
@@ -657,7 +657,7 @@
                 <a href="#141">mime_type</a>.<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.as_ptr">as_ptr</a>(),
                 <a href="#128">data</a>,
                 <a href="#128">size</a> <span class="kw">as </span>c_ulong,
-                <span class="prelude-val">Some</span>(<a href="#135-138">unbox</a>::&lt;T&gt;),
+                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#135-138">unbox</a>::&lt;T&gt;),
                 <a href="#133">user_data</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
             )
         };
@@ -678,9 +678,9 @@
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>device = <a href="../../cairo_sys/fn.cairo_surface_get_device.html">ffi::cairo_surface_get_device</a>(<a class="self" href="#164">self</a>.<a href="#44-46">to_raw_none</a>());
             <span class="kw">if </span>device.is_null() {
-                <span class="prelude-val">None
-            </span>} <span class="kw">else </span>{
-                <span class="prelude-val">Some</span>(<a href="device.rs.html#36-40">Device::from_raw_none</a>(<a href="#166">device</a>))
+                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None"><a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a>
+            </a>} <span class="kw">else </span>{
+                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="device.rs.html#36-40">Device::from_raw_none</a>(<a href="#166">device</a>))
             }
         }
     }
@@ -769,8 +769,8 @@
     </span><span class="kw">pub fn </span>map_to_image(<span class="kw-2">&amp;</span><span class="self">self</span>, extents: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="rectangle_int.rs.html#15">RectangleInt</a>&gt;) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="#392-395">MappedImageSurface</a>, <a href="error.rs.html#9-104">Error</a>&gt; {
         <span class="kw">unsafe </span>{
             <a href="image_surface.rs.html#14">ImageSurface::from_raw_none</a>(<span class="kw">match </span><a href="#256">extents</a> {
-                <span class="prelude-val">Some</span>(<span class="kw-2">ref </span>e) =&gt; <a href="../../cairo_sys/fn.cairo_surface_map_to_image.html">ffi::cairo_surface_map_to_image</a>(<a class="self" href="#256">self</a>.<a href="#44-46">to_raw_none</a>(), <a href="#259">e</a>.<a href="rectangle_int.rs.html#145-147">to_raw_none</a>()),
-                <span class="prelude-val">None </span>=&gt; <a href="../../cairo_sys/fn.cairo_surface_map_to_image.html">ffi::cairo_surface_map_to_image</a>(<a class="self" href="#256">self</a>.<a href="#44-46">to_raw_none</a>(), <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null.html">std::ptr::null</a>()),
+                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<span class="kw-2">ref </span>e) =&gt; <a href="../../cairo_sys/fn.cairo_surface_map_to_image.html">ffi::cairo_surface_map_to_image</a>(<a class="self" href="#256">self</a>.<a href="#44-46">to_raw_none</a>(), <a href="#259">e</a>.<a href="rectangle_int.rs.html#145-147">to_raw_none</a>()),
+                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None"><a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a> </a>=&gt; <a href="../../cairo_sys/fn.cairo_surface_map_to_image.html">ffi::cairo_surface_map_to_image</a>(<a class="self" href="#256">self</a>.<a href="#44-46">to_raw_none</a>(), <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null.html">std::ptr::null</a>()),
             })
             .<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.map">map</a>(|s| <a href="#392-395">MappedImageSurface</a> {
                 original_surface: <a class="self" href="#256">self</a>.<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">clone</a>(),

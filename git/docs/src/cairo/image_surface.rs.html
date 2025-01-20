@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `cairo/src/image_surface.rs`."><title>image_surface.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-46132b98.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="cairo" data-themes="" data-resource-suffix="" data-rustdoc-version="1.86.0-nightly (48a426eca 2025-01-12)" data-channel="nightly" data-search-js="search-75f5ac3e.js" data-settings-js="settings-0f613d39.js" ><script src="../../static.files/storage-59e33391.js"></script><script defer src="../../static.files/src-script-56102188.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `cairo/src/image_surface.rs`."><title>image_surface.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-5d1d17d0.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="cairo" data-themes="" data-resource-suffix="" data-rustdoc-version="1.86.0-nightly (9a1d156f3 2025-01-19)" data-channel="nightly" data-search-js="search-ccb196c1.js" data-settings-js="settings-0f613d39.js" ><script src="../../static.files/storage-59e33391.js"></script><script defer src="../../static.files/src-script-56102188.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -510,7 +510,7 @@
                 <a href="#57">stride</a>,
             ))
         };
-        <span class="kw">if let </span><span class="prelude-val">Ok</span>(surface) = <span class="kw-2">&amp;</span><a href="#68">result</a> {
+        <span class="kw">if let </span><a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(surface) = <span class="kw-2">&amp;</span><a href="#68">result</a> {
             <span class="kw">static </span>IMAGE_SURFACE_DATA: <a href="user_data.rs.html#7-10"><span class="kw">crate</span>::UserDataKey</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box</a>&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsMut.html">AsMut</a>&lt;[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]&gt;&gt;&gt; =
                 <a href="user_data.rs.html#15-20"><span class="kw">crate</span>::UserDataKey::new</a>();
             <a href="#77">surface</a>.<a href="surface.rs.html#286-289">set_user_data</a>(<span class="kw-2">&amp;</span><a href="#78-79">IMAGE_SURFACE_DATA</a>, <a href="https://doc.rust-lang.org/nightly/alloc/rc/struct.Rc.html#method.new">Rc::new</a>(<a href="#59">data</a>))<span class="question-mark">?</span>;
@@ -523,38 +523,38 @@
     </span><span class="kw">pub fn </span>data(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="#231-235">ImageSurfaceData</a>, <a href="error.rs.html#309-312">BorrowError</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">if </span>ffi::cairo_surface_get_reference_count(<span class="self">self</span>.to_raw_none()) &gt; <span class="number">1 </span>{
-                <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="error.rs.html#311">BorrowError::NonExclusive</a>);
+                <span class="kw">return </span><a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="error.rs.html#311">BorrowError::NonExclusive</a>);
             }
 
             <a class="self" href="#87">self</a>.<a href="surface.rs.html#371-375">flush</a>();
             <span class="kw">let </span>status = <a href="../../cairo_sys/fn.cairo_surface_status.html">ffi::cairo_surface_status</a>(<a class="self" href="#87">self</a>.<a href="surface.rs.html#44-46">to_raw_none</a>());
-            <span class="kw">if let </span><span class="prelude-val">Some</span>(err) = <a href="utils.rs.html#21-26">status_to_result</a>(<a href="#94">status</a>).<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.err">err</a>() {
-                <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html#tymethod.from">BorrowError::from</a>(<a href="#95">err</a>));
+            <span class="kw">if let </span><a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(err) = <a href="utils.rs.html#21-26">status_to_result</a>(<a href="#94">status</a>).<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.err">err</a>() {
+                <span class="kw">return </span><a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html#tymethod.from">BorrowError::from</a>(<a href="#95">err</a>));
             }
             <span class="kw">if </span>ffi::cairo_image_surface_get_data(<span class="self">self</span>.to_raw_none()).is_null() || is_finished(<span class="self">self</span>)
             {
-                <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html#tymethod.from">BorrowError::from</a>(<a href="error.rs.html#33">Error::SurfaceFinished</a>));
+                <span class="kw">return </span><a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html#tymethod.from">BorrowError::from</a>(<a href="error.rs.html#33">Error::SurfaceFinished</a>));
             }
-            <span class="prelude-val">Ok</span>(<a href="#241-255">ImageSurfaceData::new</a>(<a class="self" href="#87">self</a>))
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(<a href="#241-255">ImageSurfaceData::new</a>(<a class="self" href="#87">self</a>))
         }
     }
 
     <span class="kw">pub fn </span>take_data(<span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="#172-174">ImageSurfaceDataOwned</a>, <a href="error.rs.html#309-312">BorrowError</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">if </span>ffi::cairo_surface_get_reference_count(<span class="self">self</span>.to_raw_none()) &gt; <span class="number">1 </span>{
-                <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="error.rs.html#311">BorrowError::NonExclusive</a>);
+                <span class="kw">return </span><a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="error.rs.html#311">BorrowError::NonExclusive</a>);
             }
 
             <a class="self" href="#106">self</a>.<a href="surface.rs.html#371-375">flush</a>();
             <span class="kw">let </span>status = <a href="../../cairo_sys/fn.cairo_surface_status.html">ffi::cairo_surface_status</a>(<a class="self" href="#106">self</a>.<a href="surface.rs.html#44-46">to_raw_none</a>());
-            <span class="kw">if let </span><span class="prelude-val">Some</span>(err) = <a href="utils.rs.html#21-26">status_to_result</a>(<a href="#113">status</a>).<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.err">err</a>() {
-                <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html#tymethod.from">BorrowError::from</a>(<a href="#114">err</a>));
+            <span class="kw">if let </span><a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(err) = <a href="utils.rs.html#21-26">status_to_result</a>(<a href="#113">status</a>).<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.err">err</a>() {
+                <span class="kw">return </span><a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html#tymethod.from">BorrowError::from</a>(<a href="#114">err</a>));
             }
             <span class="kw">if </span>ffi::cairo_image_surface_get_data(<span class="self">self</span>.to_raw_none()).is_null() || is_finished(<span class="kw-2">&amp;</span><span class="self">self</span>)
             {
-                <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html#tymethod.from">BorrowError::from</a>(<a href="error.rs.html#33">Error::SurfaceFinished</a>));
+                <span class="kw">return </span><a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html#tymethod.from">BorrowError::from</a>(<a href="error.rs.html#33">Error::SurfaceFinished</a>));
             }
-            <span class="prelude-val">Ok</span>(<a href="#172-174">ImageSurfaceDataOwned</a> { surface: <span class="self"><a href="#106">self</a> </span>})
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(<a href="#172-174">ImageSurfaceDataOwned</a> { surface: <span class="self"><a href="#106">self</a> </span>})
         }
     }
 
@@ -562,12 +562,12 @@
         <a class="self" href="#125">self</a>.<a href="surface.rs.html#371-375">flush</a>();
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>status = <a href="../../cairo_sys/fn.cairo_surface_status.html">ffi::cairo_surface_status</a>(<a class="self" href="#125">self</a>.<a href="surface.rs.html#44-46">to_raw_none</a>());
-            <span class="kw">if let </span><span class="prelude-val">Some</span>(err) = <a href="utils.rs.html#21-26">status_to_result</a>(<a href="#128">status</a>).<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.err">err</a>() {
-                <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html#tymethod.from">BorrowError::from</a>(<a href="#129">err</a>));
+            <span class="kw">if let </span><a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(err) = <a href="utils.rs.html#21-26">status_to_result</a>(<a href="#128">status</a>).<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.err">err</a>() {
+                <span class="kw">return </span><a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html#tymethod.from">BorrowError::from</a>(<a href="#129">err</a>));
             }
             <span class="kw">let </span>ptr = <a href="../../cairo_sys/fn.cairo_image_surface_get_data.html">ffi::cairo_image_surface_get_data</a>(<a class="self" href="#125">self</a>.<a href="surface.rs.html#44-46">to_raw_none</a>());
             <span class="kw">if </span>ptr.is_null() || is_finished(<span class="self">self</span>) {
-                <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html#tymethod.from">BorrowError::from</a>(<a href="error.rs.html#33">Error::SurfaceFinished</a>));
+                <span class="kw">return </span><a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html#tymethod.from">BorrowError::from</a>(<a href="error.rs.html#33">Error::SurfaceFinished</a>));
             }
             <span class="kw">let </span>len = <a class="self" href="#125">self</a>.<a href="#155-157">height</a>() <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a> * <a class="self" href="#125">self</a>.<a href="#161-163">stride</a>() <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>;
             <span class="kw">let </span>data = <span class="kw">if </span>len == <span class="number">0 </span>{
@@ -577,7 +577,7 @@
             };
             <a href="#125">f</a>(<a href="#137">data</a>);
         }
-        <span class="prelude-val">Ok</span>(())
+        <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(())
     }
 
     <span class="attr">#[doc(alias = <span class="string">"cairo_image_surface_get_format"</span>)]

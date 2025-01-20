@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/pollable_output_stream.rs`."><title>pollable_output_stream.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-46132b98.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.86.0-nightly (48a426eca 2025-01-12)" data-channel="nightly" data-search-js="search-75f5ac3e.js" data-settings-js="settings-0f613d39.js" ><script src="../../static.files/storage-59e33391.js"></script><script defer src="../../static.files/src-script-56102188.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/pollable_output_stream.rs`."><title>pollable_output_stream.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-5d1d17d0.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.86.0-nightly (9a1d156f3 2025-01-19)" data-channel="nightly" data-search-js="search-ccb196c1.js" data-settings-js="settings-0f613d39.js" ><script src="../../static.files/storage-59e33391.js"></script><script defer src="../../static.files/src-script-56102188.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -511,16 +511,16 @@
             <span class="kw">let </span>trampoline = <a href="#48-58">trampoline</a>::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><a href="../../glib_sys/type.gpointer.html">glib::ffi::gpointer</a>;
             <a href="../../glib_sys/fn.g_source_set_callback.html">glib::ffi::g_source_set_callback</a>(
                 <a href="#65">source</a>,
-                <span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/core/intrinsics/fn.transmute.html">transmute</a>::&lt;
+                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="https://doc.rust-lang.org/nightly/core/intrinsics/fn.transmute.html">transmute</a>::&lt;
                     <a href="../../glib_sys/type.gpointer.html">glib::ffi::gpointer</a>,
                     <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>(<a href="../../glib_sys/type.gpointer.html">glib::ffi::gpointer</a>) -&gt; <a href="../../glib_sys/type.gboolean.html">glib::ffi::gboolean</a>,
                 &gt;(<a href="#70">trampoline</a>)),
                 <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.into_raw">Box::into_raw</a>(<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">Box::new</a>(<a href="https://doc.rust-lang.org/nightly/core/cell/struct.RefCell.html#method.new">RefCell::new</a>(<a href="#42">func</a>))) <span class="kw">as </span><a href="../../glib_sys/type.gpointer.html">glib::ffi::gpointer</a>,
-                <span class="prelude-val">Some</span>(<a href="#59-61">destroy_closure</a>::&lt;F&gt;),
+                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#59-61">destroy_closure</a>::&lt;F&gt;),
             );
             <a href="../../glib_sys/fn.g_source_set_priority.html">glib::ffi::g_source_set_priority</a>(<a href="#65">source</a>, <a href="#41">priority</a>.<a href="../../glib/translate/trait.IntoGlib.html#tymethod.into_glib">into_glib</a>());
 
-            <span class="kw">if let </span><span class="prelude-val">Some</span>(name) = <a href="#40">name</a> {
+            <span class="kw">if let </span><a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(name) = <a href="#40">name</a> {
                 <a href="../../glib_sys/fn.g_source_set_name.html">glib::ffi::g_source_set_name</a>(<a href="#65">source</a>, <a href="#82">name</a>.<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>);
             }
 
@@ -537,8 +537,8 @@
 
         <span class="kw">let </span>obj = <a class="self" href="#91">self</a>.<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">clone</a>();
         <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.pin">Box::pin</a>(<a href="../../glib/source_futures/struct.SourceFuture.html#method.new">glib::SourceFuture::new</a>(<span class="kw">move </span>|send| {
-            <span class="kw">let </span><span class="kw-2">mut </span>send = <span class="prelude-val">Some</span>(<a href="#98">send</a>);
-            <a href="#97">obj</a>.<a href="#37-88">create_source</a>(<a href="#95">cancellable</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_ref">as_ref</a>(), <span class="prelude-val">None</span>, <a href="#93">priority</a>, <span class="kw">move </span>|<span class="kw">_</span>| {
+            <span class="kw">let </span><span class="kw-2">mut </span>send = <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#98">send</a>);
+            <a href="#97">obj</a>.<a href="#37-88">create_source</a>(<a href="#95">cancellable</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_ref">as_ref</a>(), <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a>, <a href="#93">priority</a>, <span class="kw">move </span>|<span class="kw">_</span>| {
                 <span class="kw">let _ </span>= <a href="#99">send</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.take">take</a>().<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap">unwrap</a>().send(());
                 <a href="../../glib/control_flow/enum.ControlFlow.html#variant.Break">glib::ControlFlow::Break</a>
             })
@@ -554,8 +554,8 @@
 
         <span class="kw">let </span>obj = <a class="self" href="#108">self</a>.<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">clone</a>();
         <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.pin">Box::pin</a>(<a href="../../glib/source_futures/struct.SourceStream.html#method.new">glib::SourceStream::new</a>(<span class="kw">move </span>|send| {
-            <span class="kw">let </span>send = <span class="prelude-val">Some</span>(<a href="#115">send</a>);
-            <a href="#114">obj</a>.<a href="#37-88">create_source</a>(<a href="#112">cancellable</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_ref">as_ref</a>(), <span class="prelude-val">None</span>, <a href="#110">priority</a>, <span class="kw">move </span>|<span class="kw">_</span>| {
+            <span class="kw">let </span>send = <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#115">send</a>);
+            <a href="#114">obj</a>.<a href="#37-88">create_source</a>(<a href="#112">cancellable</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_ref">as_ref</a>(), <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a>, <a href="#110">priority</a>, <span class="kw">move </span>|<span class="kw">_</span>| {
                 <span class="kw">if </span>send.as_ref().unwrap().unbounded_send(()).is_err() {
                     <a href="../../glib/control_flow/enum.ControlFlow.html#variant.Break">glib::ControlFlow::Break</a>
                 } <span class="kw">else </span>{
@@ -620,9 +620,9 @@
                 <span class="kw-2">&amp;mut </span><a href="#170">error</a>,
             );
             <span class="kw">if </span>error.is_null() {
-                <span class="prelude-val">Ok</span>((<a href="../../glib/translate/fn.from_glib.html">from_glib</a>(<a href="#173">ret</a>), <a href="#171">bytes_written</a>))
+                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>((<a href="../../glib/translate/fn.from_glib.html">from_glib</a>(<a href="#173">ret</a>), <a href="#171">bytes_written</a>))
             } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(<a href="../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#170">error</a>))
+                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#170">error</a>))
             }
         }
     }
@@ -632,9 +632,9 @@
         </span><span class="self">Self</span>: <a href="../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="auto/pollable_output_stream.rs.html#8-28">PollableOutputStream</a>&gt;,
     {
         <span class="kw">if </span><span class="self">self</span>.can_poll() {
-            <span class="prelude-val">Ok</span>(<a href="#204-207">OutputStreamAsyncWrite</a>(<a class="self" href="#189">self</a>, <span class="prelude-val">None</span>))
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(<a href="#204-207">OutputStreamAsyncWrite</a>(<a class="self" href="#189">self</a>, <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a>))
         } <span class="kw">else </span>{
-            <span class="prelude-val">Err</span>(<a class="self" href="#189">self</a>)
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a class="self" href="#189">self</a>)
         }
     }
 }
@@ -666,30 +666,30 @@
             .<a href="auto/pollable_output_stream.rs.html#116-137">write_nonblocking</a>(<a href="#220">buf</a>, <span class="kw">crate</span>::Cancellable::NONE);
 
         <span class="kw">match </span><a href="#222">gio_result</a> {
-            <span class="prelude-val">Ok</span>(size) =&gt; <a href="https://doc.rust-lang.org/nightly/core/task/poll/enum.Poll.html#variant.Ready">Poll::Ready</a>(<span class="prelude-val">Ok</span>(<a href="#228">size</a> <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>)),
-            <span class="prelude-val">Err</span>(err) =&gt; {
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(size) =&gt; <a href="https://doc.rust-lang.org/nightly/core/task/poll/enum.Poll.html#variant.Ready">Poll::Ready</a>(<a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(<a href="#228">size</a> <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>)),
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(err) =&gt; {
                 <span class="kw">let </span>kind = <a href="#229">err</a>
                     .<a href="../../glib/error/struct.Error.html#method.kind">kind</a>::&lt;<a href="auto/enums.rs.html#2182-2345"><span class="kw">crate</span>::IOErrorEnum</a>&gt;()
                     .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap_or">unwrap_or</a>(<a href="auto/enums.rs.html#2186"><span class="kw">crate</span>::IOErrorEnum::Failed</a>);
                 <span class="kw">if </span>kind == <span class="kw">crate</span>::IOErrorEnum::WouldBlock {
-                    <span class="kw">let </span><span class="kw-2">mut </span>waker = <span class="prelude-val">Some</span>(<a href="#220">cx</a>.<a href="https://doc.rust-lang.org/nightly/core/task/wake/struct.Context.html#method.waker">waker</a>().<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">clone</a>());
+                    <span class="kw">let </span><span class="kw-2">mut </span>waker = <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#220">cx</a>.<a href="https://doc.rust-lang.org/nightly/core/task/wake/struct.Context.html#method.waker">waker</a>().<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">clone</a>());
                     <span class="kw">let </span>source = <a href="#221">stream</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="#37-88">create_source</a>(
                         <span class="kw">crate</span>::Cancellable::NONE,
-                        <span class="prelude-val">None</span>,
+                        <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a>,
                         <a href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html#tymethod.default">glib::Priority::default</a>(),
                         <span class="kw">move </span>|<span class="kw">_</span>| {
-                            <span class="kw">if let </span><span class="prelude-val">Some</span>(waker) = <a href="#234">waker</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.take">take</a>() {
+                            <span class="kw">if let </span><a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(waker) = <a href="#234">waker</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.take">take</a>() {
                                 <a href="#240">waker</a>.<a href="https://doc.rust-lang.org/nightly/core/task/wake/struct.Waker.html#method.wake">wake</a>();
                             }
                             <a href="../../glib/control_flow/enum.ControlFlow.html#variant.Break">glib::ControlFlow::Break</a>
                         },
                     );
                     <span class="kw">let </span>main_context = <a href="../../glib/auto/main_context/struct.MainContext.html#method.ref_thread_default">glib::MainContext::ref_thread_default</a>();
-                    <a href="#235">source</a>.<a href="../../glib/auto/source/struct.Source.html#method.attach">attach</a>(<span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><a href="#246">main_context</a>));
+                    <a href="#235">source</a>.<a href="../../glib/auto/source/struct.Source.html#method.attach">attach</a>(<a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<span class="kw-2">&amp;</span><a href="#246">main_context</a>));
 
                     <a href="https://doc.rust-lang.org/nightly/core/task/poll/enum.Poll.html#variant.Pending">Poll::Pending</a>
                 } <span class="kw">else </span>{
-                    <a href="https://doc.rust-lang.org/nightly/core/task/poll/enum.Poll.html#variant.Ready">Poll::Ready</a>(<span class="prelude-val">Err</span>(<a href="https://doc.rust-lang.org/nightly/std/io/error/struct.Error.html#method.new">io::Error::new</a>(<a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html#tymethod.from">io::ErrorKind::from</a>(<a href="#230">kind</a>), <a href="#229">err</a>)))
+                    <a href="https://doc.rust-lang.org/nightly/core/task/poll/enum.Poll.html#variant.Ready">Poll::Ready</a>(<a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="https://doc.rust-lang.org/nightly/std/io/error/struct.Error.html#method.new">io::Error::new</a>(<a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html#tymethod.from">io::ErrorKind::from</a>(<a href="#230">kind</a>), <a href="#229">err</a>)))
                 }
             }
         }
@@ -713,27 +713,27 @@
             .<a href="#164-187">writev_nonblocking</a>(<span class="kw-2">&amp;</span><a href="#265">vectors</a>, <span class="kw">crate</span>::Cancellable::NONE);
 
         <span class="kw">match </span><a href="#269">gio_result</a> {
-            <span class="prelude-val">Ok</span>((<a href="auto/enums.rs.html#3227">PollableReturn::Ok</a>, size)) =&gt; <a href="https://doc.rust-lang.org/nightly/core/task/poll/enum.Poll.html#variant.Ready">Poll::Ready</a>(<span class="prelude-val">Ok</span>(<a href="#275">size</a>)),
-            <span class="prelude-val">Ok</span>((<a href="auto/enums.rs.html#3230">PollableReturn::WouldBlock</a>, <span class="kw">_</span>)) =&gt; {
-                <span class="kw">let </span><span class="kw-2">mut </span>waker = <span class="prelude-val">Some</span>(<a href="#261">cx</a>.<a href="https://doc.rust-lang.org/nightly/core/task/wake/struct.Context.html#method.waker">waker</a>().<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">clone</a>());
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>((PollableReturn::Ok, size)) =&gt; <a href="https://doc.rust-lang.org/nightly/core/task/poll/enum.Poll.html#variant.Ready">Poll::Ready</a>(<a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(<a href="#275">size</a>)),
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>((PollableReturn::WouldBlock, <span class="kw">_</span>)) =&gt; {
+                <span class="kw">let </span><span class="kw-2">mut </span>waker = <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#261">cx</a>.<a href="https://doc.rust-lang.org/nightly/core/task/wake/struct.Context.html#method.waker">waker</a>().<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">clone</a>());
                 <span class="kw">let </span>source = <a href="#264">stream</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="#37-88">create_source</a>(
                     <span class="kw">crate</span>::Cancellable::NONE,
-                    <span class="prelude-val">None</span>,
+                    <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a>,
                     <a href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html#tymethod.default">glib::Priority::default</a>(),
                     <span class="kw">move </span>|<span class="kw">_</span>| {
-                        <span class="kw">if let </span><span class="prelude-val">Some</span>(waker) = <a href="#277">waker</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.take">take</a>() {
+                        <span class="kw">if let </span><a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(waker) = <a href="#277">waker</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.take">take</a>() {
                             <a href="#283">waker</a>.<a href="https://doc.rust-lang.org/nightly/core/task/wake/struct.Waker.html#method.wake">wake</a>();
                         }
                         <a href="../../glib/control_flow/enum.ControlFlow.html#variant.Break">glib::ControlFlow::Break</a>
                     },
                 );
                 <span class="kw">let </span>main_context = <a href="../../glib/auto/main_context/struct.MainContext.html#method.ref_thread_default">glib::MainContext::ref_thread_default</a>();
-                <a href="#278">source</a>.<a href="../../glib/auto/source/struct.Source.html#method.attach">attach</a>(<span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><a href="#289">main_context</a>));
+                <a href="#278">source</a>.<a href="../../glib/auto/source/struct.Source.html#method.attach">attach</a>(<a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<span class="kw-2">&amp;</span><a href="#289">main_context</a>));
 
                 <a href="https://doc.rust-lang.org/nightly/core/task/poll/enum.Poll.html#variant.Pending">Poll::Pending</a>
             }
-            <span class="prelude-val">Ok</span>((<span class="kw">_</span>, <span class="kw">_</span>)) =&gt; <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.unreachable.html">unreachable!</a>(),
-            <span class="prelude-val">Err</span>(err) =&gt; <a href="https://doc.rust-lang.org/nightly/core/task/poll/enum.Poll.html#variant.Ready">Poll::Ready</a>(<span class="prelude-val">Err</span>(<a href="https://doc.rust-lang.org/nightly/std/io/error/struct.Error.html#method.new">io::Error::new</a>(
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>((<span class="kw">_</span>, <span class="kw">_</span>)) =&gt; <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.unreachable.html">unreachable!</a>(),
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(err) =&gt; <a href="https://doc.rust-lang.org/nightly/core/task/poll/enum.Poll.html#variant.Ready">Poll::Ready</a>(<a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="https://doc.rust-lang.org/nightly/std/io/error/struct.Error.html#method.new">io::Error::new</a>(
                 <a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html#tymethod.from">io::ErrorKind::from</a>(
                     <a href="#295">err</a>.<a href="../../glib/error/struct.Error.html#method.kind">kind</a>::&lt;<a href="auto/enums.rs.html#2182-2345"><span class="kw">crate</span>::IOErrorEnum</a>&gt;()
                         .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap_or">unwrap_or</a>(<a href="auto/enums.rs.html#2186"><span class="kw">crate</span>::IOErrorEnum::Failed</a>),
@@ -746,7 +746,7 @@
     <span class="kw">fn </span>poll_flush(<span class="self">self</span>: <a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html">Pin</a>&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;, cx: <span class="kw-2">&amp;mut </span><a href="https://doc.rust-lang.org/nightly/core/task/wake/struct.Context.html">Context</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/core/task/poll/enum.Poll.html">Poll</a>&lt;<a href="https://doc.rust-lang.org/nightly/std/io/error/type.Result.html">io::Result</a>&lt;()&gt;&gt; {
         <span class="kw">let </span>stream = <span class="kw">unsafe </span>{ <a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html#method.get_unchecked_mut">Pin::get_unchecked_mut</a>(<a class="self" href="#305">self</a>) };
 
-        <span class="kw">let </span>rx = <span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="kw-2">ref mut </span>rx) = <a href="#306">stream</a>.<span class="number">1 </span>{
+        <span class="kw">let </span>rx = <span class="kw">if let </span><a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<span class="kw-2">ref mut </span>rx) = <a href="#306">stream</a>.<span class="number">1 </span>{
             <a href="#308">rx</a>
         } <span class="kw">else </span>{
             <span class="kw">let </span>(tx, rx) = oneshot::channel();
@@ -758,7 +758,7 @@
                 },
             );
 
-            <a href="#306">stream</a>.<span class="number">1 </span>= <span class="prelude-val">Some</span>(<a href="#311">rx</a>);
+            <a href="#306">stream</a>.<span class="number">1 </span>= <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#311">rx</a>);
             <a href="#306">stream</a>.<span class="number">1</span>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_mut">as_mut</a>().<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap">unwrap</a>()
         };
 
@@ -769,7 +769,7 @@
             }
             <a href="https://doc.rust-lang.org/nightly/core/task/poll/enum.Poll.html#variant.Ready">Poll::Ready</a>(<span class="prelude-val">Err</span>(<span class="kw">_</span>)) =&gt; {
                 <span class="kw">let _ </span>= <a href="#306">stream</a>.<span class="number">1</span>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.take">take</a>();
-                <a href="https://doc.rust-lang.org/nightly/core/task/poll/enum.Poll.html#variant.Ready">Poll::Ready</a>(<span class="prelude-val">Ok</span>(()))
+                <a href="https://doc.rust-lang.org/nightly/core/task/poll/enum.Poll.html#variant.Ready">Poll::Ready</a>(<a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(()))
             }
             <a href="https://doc.rust-lang.org/nightly/core/task/poll/enum.Poll.html#variant.Pending">Poll::Pending</a> =&gt; <a href="https://doc.rust-lang.org/nightly/core/task/poll/enum.Poll.html#variant.Pending">Poll::Pending</a>,
         }
@@ -778,7 +778,7 @@
     <span class="kw">fn </span>poll_close(<span class="self">self</span>: <a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html">Pin</a>&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;, cx: <span class="kw-2">&amp;mut </span><a href="https://doc.rust-lang.org/nightly/core/task/wake/struct.Context.html">Context</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/core/task/poll/enum.Poll.html">Poll</a>&lt;<a href="https://doc.rust-lang.org/nightly/std/io/error/type.Result.html">io::Result</a>&lt;()&gt;&gt; {
         <span class="kw">let </span>stream = <span class="kw">unsafe </span>{ <a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html#method.get_unchecked_mut">Pin::get_unchecked_mut</a>(<a class="self" href="#337">self</a>) };
 
-        <span class="kw">let </span>rx = <span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="kw-2">ref mut </span>rx) = <a href="#338">stream</a>.<span class="number">1 </span>{
+        <span class="kw">let </span>rx = <span class="kw">if let </span><a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<span class="kw-2">ref mut </span>rx) = <a href="#338">stream</a>.<span class="number">1 </span>{
             <a href="#340">rx</a>
         } <span class="kw">else </span>{
             <span class="kw">let </span>(tx, rx) = oneshot::channel();
@@ -790,7 +790,7 @@
                 },
             );
 
-            <a href="#338">stream</a>.<span class="number">1 </span>= <span class="prelude-val">Some</span>(<a href="#343">rx</a>);
+            <a href="#338">stream</a>.<span class="number">1 </span>= <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#343">rx</a>);
             <a href="#338">stream</a>.<span class="number">1</span>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_mut">as_mut</a>().<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap">unwrap</a>()
         };
 
@@ -801,7 +801,7 @@
             }
             <a href="https://doc.rust-lang.org/nightly/core/task/poll/enum.Poll.html#variant.Ready">Poll::Ready</a>(<span class="prelude-val">Err</span>(<span class="kw">_</span>)) =&gt; {
                 <span class="kw">let _ </span>= <a href="#338">stream</a>.<span class="number">1</span>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.take">take</a>();
-                <a href="https://doc.rust-lang.org/nightly/core/task/poll/enum.Poll.html#variant.Ready">Poll::Ready</a>(<span class="prelude-val">Ok</span>(()))
+                <a href="https://doc.rust-lang.org/nightly/core/task/poll/enum.Poll.html#variant.Ready">Poll::Ready</a>(<a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(()))
             }
             <a href="https://doc.rust-lang.org/nightly/core/task/poll/enum.Poll.html#variant.Pending">Poll::Pending</a> =&gt; <a href="https://doc.rust-lang.org/nightly/core/task/poll/enum.Poll.html#variant.Pending">Poll::Pending</a>,
         }

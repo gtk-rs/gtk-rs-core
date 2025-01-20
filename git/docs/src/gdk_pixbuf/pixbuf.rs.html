@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gdk-pixbuf/src/pixbuf.rs`."><title>pixbuf.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-46132b98.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="gdk_pixbuf" data-themes="" data-resource-suffix="" data-rustdoc-version="1.86.0-nightly (48a426eca 2025-01-12)" data-channel="nightly" data-search-js="search-75f5ac3e.js" data-settings-js="settings-0f613d39.js" ><script src="../../static.files/storage-59e33391.js"></script><script defer src="../../static.files/src-script-56102188.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gdk-pixbuf/src/pixbuf.rs`."><title>pixbuf.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-5d1d17d0.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="gdk_pixbuf" data-themes="" data-resource-suffix="" data-rustdoc-version="1.86.0-nightly (9a1d156f3 2025-01-19)" data-channel="nightly" data-search-js="search-ccb196c1.js" data-settings-js="settings-0f613d39.js" ><script src="../../static.files/storage-59e33391.js"></script><script defer src="../../static.files/src-script-56102188.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -797,7 +797,7 @@
                 <a href="#32">width</a> <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
                 <a href="#33">height</a> <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
                 <a href="#34">row_stride</a> <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
-                <span class="prelude-val">Some</span>(<a href="#21-23">destroy</a>::&lt;T&gt;),
+                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#21-23">destroy</a>::&lt;T&gt;),
                 <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.into_raw">Box::into_raw</a>(<a href="#40">data</a>) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
             ))
         }
@@ -814,7 +814,7 @@
     /// let pixbuf = Pixbuf::from_read(f).expect("failed to load image");
     /// ```
     </span><span class="kw">pub fn </span>from_read&lt;R: <a href="https://doc.rust-lang.org/nightly/std/io/trait.Read.html">Read</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static</span>&gt;(r: R) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="auto/pixbuf.rs.html#8-222">Pixbuf</a>, <a href="../../glib/error/struct.Error.html">Error</a>&gt; {
-        <a href="auto/pixbuf.rs.html#559-576">Pixbuf::from_stream</a>(<span class="kw-2">&amp;</span><a href="../../gio/read_input_stream/struct.ReadInputStream.html#method.new">gio::ReadInputStream::new</a>(<a href="#76">r</a>), <span class="prelude-val">None</span>::&lt;<span class="kw-2">&amp;</span><a href="../../gio/auto/cancellable/struct.Cancellable.html">gio::Cancellable</a>&gt;)
+        <a href="auto/pixbuf.rs.html#559-576">Pixbuf::from_stream</a>(<span class="kw-2">&amp;</span><a href="../../gio/read_input_stream/struct.ReadInputStream.html#method.new">gio::ReadInputStream::new</a>(<a href="#76">r</a>), <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a>::&lt;<span class="kw-2">&amp;</span><a href="../../gio/auto/cancellable/struct.Cancellable.html">gio::Cancellable</a>&gt;)
     }
 
     <span class="attr">#[doc(alias = <span class="string">"gdk_pixbuf_new_from_stream_async"</span>)]
@@ -850,9 +850,9 @@
             <span class="kw">let </span><span class="kw-2">mut </span>error = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
             <span class="kw">let </span>ptr = <a href="../../gdk_pixbuf_sys/fn.gdk_pixbuf_new_from_stream_finish.html">ffi::gdk_pixbuf_new_from_stream_finish</a>(<a href="#107">res</a>, <span class="kw-2">&amp;mut </span><a href="#110">error</a>);
             <span class="kw">let </span>result = <span class="kw">if </span>error.is_null() {
-                <span class="prelude-val">Ok</span>(<a href="../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#111">ptr</a>))
+                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(<a href="../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#111">ptr</a>))
             } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(<a href="../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#110">error</a>))
+                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#110">error</a>))
             };
             <span class="kw">let </span>callback: <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box</a>&lt;<a href="../../glib/thread_guard/struct.ThreadGuard.html">glib::thread_guard::ThreadGuard</a>&lt;R&gt;&gt; =
                 <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.from_raw">Box::from_raw</a>(<a href="#108">user_data</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
@@ -864,7 +864,7 @@
             <a href="../../gdk_pixbuf_sys/fn.gdk_pixbuf_new_from_stream_async.html">ffi::gdk_pixbuf_new_from_stream_async</a>(
                 <a href="#86">stream</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
                 <a href="#100">cancellable</a>.<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
-                <span class="prelude-val">Some</span>(<a href="#122">callback</a>),
+                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#122">callback</a>),
                 <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.into_raw">Box::into_raw</a>(<a href="#101">user_data</a>) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
             );
         }
@@ -875,7 +875,7 @@
     ) -&gt; <a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html">Pin</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box</a>&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html">Future</a>&lt;Output = <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="auto/pixbuf.rs.html#8-222">Pixbuf</a>, <a href="../../glib/error/struct.Error.html">Error</a>&gt;&gt; + <span class="lifetime">'static</span>&gt;&gt; {
         <span class="kw">let </span>stream = <a href="#134">stream</a>.<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">clone</a>();
         <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.pin">Box::pin</a>(<a href="../../gio/gio_future/struct.GioFuture.html#method.new">gio::GioFuture::new</a>(<span class="kw-2">&amp;</span>(), <span class="kw">move </span>|_obj, cancellable, send| {
-            <a href="#81-131"><span class="self">Self</span>::from_stream_async</a>(<span class="kw-2">&amp;</span><a href="#136">stream</a>, <span class="prelude-val">Some</span>(<a href="#137">cancellable</a>), <span class="kw">move </span>|res| {
+            <a href="#81-131"><span class="self">Self</span>::from_stream_async</a>(<span class="kw-2">&amp;</span><a href="#136">stream</a>, <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#137">cancellable</a>), <span class="kw">move </span>|res| {
                 <a href="#137">send</a>.<a href="../../gio/gio_future/struct.GioFutureResult.html#method.resolve">resolve</a>(<a href="#138">res</a>);
             });
         }))
@@ -917,9 +917,9 @@
             <span class="kw">let </span><span class="kw-2">mut </span>error = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
             <span class="kw">let </span>ptr = <a href="../../gdk_pixbuf_sys/fn.gdk_pixbuf_new_from_stream_finish.html">ffi::gdk_pixbuf_new_from_stream_finish</a>(<a href="#174">res</a>, <span class="kw-2">&amp;mut </span><a href="#177">error</a>);
             <span class="kw">let </span>result = <span class="kw">if </span>error.is_null() {
-                <span class="prelude-val">Ok</span>(<a href="../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#178">ptr</a>))
+                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(<a href="../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#178">ptr</a>))
             } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(<a href="../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#177">error</a>))
+                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#177">error</a>))
             };
             <span class="kw">let </span>callback: <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box</a>&lt;<a href="../../glib/thread_guard/struct.ThreadGuard.html">glib::thread_guard::ThreadGuard</a>&lt;R&gt;&gt; =
                 <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.from_raw">Box::from_raw</a>(<a href="#175">user_data</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
@@ -934,7 +934,7 @@
                 <a href="#152">height</a>,
                 <a href="#153">preserve_aspect_ratio</a>.<a href="../../glib/translate/trait.IntoGlib.html#tymethod.into_glib">into_glib</a>(),
                 <a href="#167">cancellable</a>.<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
-                <span class="prelude-val">Some</span>(<a href="#189">callback</a>),
+                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#189">callback</a>),
                 <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.into_raw">Box::into_raw</a>(<a href="#168">user_data</a>) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
             );
         }
@@ -953,7 +953,7 @@
                 <a href="#205">width</a>,
                 <a href="#206">height</a>,
                 <a href="#207">preserve_aspect_ratio</a>,
-                <span class="prelude-val">Some</span>(<a href="#210">cancellable</a>),
+                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#210">cancellable</a>),
                 <span class="kw">move </span>|res| {
                     <a href="#210">send</a>.<a href="../../gio/gio_future/struct.GioFutureResult.html#method.resolve">resolve</a>(<a href="#217">res</a>);
                 },
@@ -1041,14 +1041,14 @@
                 <a href="#297">height</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.as_mut_ptr">as_mut_ptr</a>(),
             );
             <span class="kw">if </span>!ret.is_null() {
-                <span class="prelude-val">Some</span>((
+                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>((
                     <a href="../../glib/translate/fn.from_glib_none.html">from_glib_none</a>(<a href="#298">ret</a>),
                     <a href="#296">width</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.assume_init">assume_init</a>(),
                     <a href="#297">height</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.assume_init">assume_init</a>(),
                 ))
             } <span class="kw">else </span>{
-                <span class="prelude-val">None
-            </span>}
+                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None"><a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a>
+            </a>}
         }
     }
 
@@ -1108,11 +1108,11 @@
                 <span class="kw-2">&amp;mut </span><a href="#361">error</a>,
             );
             <span class="kw">let </span>result = <span class="kw">if </span>!error.is_null() {
-                <span class="prelude-val">Err</span>(<a href="../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#361">error</a>))
+                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#361">error</a>))
             } <span class="kw">else if </span>ret.is_null() {
-                <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>)
+                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(<a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a>)
             } <span class="kw">else </span>{
-                <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>((
+                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(<a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>((
                     <a href="../../glib/translate/fn.from_glib_none.html">from_glib_none</a>(<a href="#364">ret</a>),
                     <a href="#362">width</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.assume_init">assume_init</a>(),
                     <a href="#363">height</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.assume_init">assume_init</a>(),
@@ -1128,7 +1128,7 @@
             <a href="../../gdk_pixbuf_sys/fn.gdk_pixbuf_get_file_info_async.html">ffi::gdk_pixbuf_get_file_info_async</a>(
                 <a href="#337">filename</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
                 <a href="#351">cancellable</a>.<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
-                <span class="prelude-val">Some</span>(<a href="#386">callback</a>),
+                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#386">callback</a>),
                 <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.into_raw">Box::into_raw</a>(<a href="#352">user_data</a>) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
             );
         }
@@ -1141,7 +1141,7 @@
     ) -&gt; <a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html">Pin</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box</a>&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html">Future</a>&lt;Output = <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;(<a href="auto/pixbuf_format.rs.html#8-22">PixbufFormat</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>)&gt;, <a href="../../glib/error/struct.Error.html">Error</a>&gt;&gt; + <span class="lifetime">'static</span>&gt;&gt;
     {
         <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.pin">Box::pin</a>(<a href="../../gio/gio_future/struct.GioFuture.html#method.new">gio::GioFuture::new</a>(<span class="kw-2">&amp;</span>(), <span class="kw">move </span>|_obj, cancellable, send| {
-            <a href="#332-395"><span class="self">Self</span>::file_info_async</a>(<a href="#400">filename</a>, <span class="prelude-val">Some</span>(<a href="#403">cancellable</a>), <span class="kw">move </span>|res| {
+            <a href="#332-395"><span class="self">Self</span>::file_info_async</a>(<a href="#400">filename</a>, <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#403">cancellable</a>), <span class="kw">move </span>|res| {
                 <a href="#403">send</a>.<a href="../../gio/gio_future/struct.GioFutureResult.html#method.resolve">resolve</a>(<a href="#404">res</a>);
             });
         }))
@@ -1185,12 +1185,12 @@
                 <span class="kw-2">&amp;mut </span><a href="#435">error</a>,
             );
             <span class="kw">if </span>error.is_null() {
-                <span class="prelude-val">Ok</span>(<a href="../../glib/translate/trait.FromGlibContainer.html#tymethod.from_glib_full_num">FromGlibContainer::from_glib_full_num</a>(
+                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(<a href="../../glib/translate/trait.FromGlibContainer.html#tymethod.from_glib_full_num">FromGlibContainer::from_glib_full_num</a>(
                     <a href="#433">buffer</a>,
                     <a href="#434">buffer_size</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.assume_init">assume_init</a>() <span class="kw">as _</span>,
                 ))
             } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(<a href="../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#435">error</a>))
+                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#435">error</a>))
             }
         }
     }
@@ -1239,9 +1239,9 @@
                 <span class="kw-2">&amp;mut </span><a href="#489">error</a>,
             );
             <span class="kw">if </span>error.is_null() {
-                <span class="prelude-val">Ok</span>(())
+                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(())
             } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(<a href="../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#489">error</a>))
+                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#489">error</a>))
             }
         }
     }
@@ -1303,9 +1303,9 @@
             <span class="kw">let </span><span class="kw-2">mut </span>error = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
             <span class="kw">let _ </span>= <a href="../../gdk_pixbuf_sys/fn.gdk_pixbuf_save_to_stream_finish.html">ffi::gdk_pixbuf_save_to_stream_finish</a>(<a href="#560">res</a>, <span class="kw-2">&amp;mut </span><a href="#563">error</a>);
             <span class="kw">let </span>result = <span class="kw">if </span>error.is_null() {
-                <span class="prelude-val">Ok</span>(())
+                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(())
             } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(<a href="../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#563">error</a>))
+                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#563">error</a>))
             };
             <span class="kw">let </span>callback: <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box</a>&lt;<a href="../../glib/thread_guard/struct.ThreadGuard.html">glib::thread_guard::ThreadGuard</a>&lt;R&gt;&gt; =
                 <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.from_raw">Box::from_raw</a>(<a href="#561">user_data</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
@@ -1323,7 +1323,7 @@
                 <a href="#577">option_keys</a>.<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
                 <a href="#578">option_values</a>.<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
                 <a href="#553">cancellable</a>.<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
-                <span class="prelude-val">Some</span>(<a href="#575">callback</a>),
+                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#575">callback</a>),
                 <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.into_raw">Box::into_raw</a>(<a href="#554">user_data</a>) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
             );
         }
@@ -1351,7 +1351,7 @@
                 <span class="kw-2">&amp;</span><a href="#598">stream</a>,
                 <span class="kw-2">&amp;</span><a href="#599">type_</a>,
                 <a href="#605">options</a>.<a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.as_slice">as_slice</a>(),
-                <span class="prelude-val">Some</span>(<a href="#604">cancellable</a>),
+                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#604">cancellable</a>),
                 <span class="kw">move </span>|res| {
                     <a href="#604">send</a>.<a href="../../gio/gio_future/struct.GioFutureResult.html#method.resolve">resolve</a>(<a href="#615">res</a>);
                 },
@@ -1398,9 +1398,9 @@
                 <span class="kw-2">&amp;mut </span><a href="#649">error</a>,
             );
             <span class="kw">if </span>error.is_null() {
-                <span class="prelude-val">Ok</span>(())
+                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(())
             } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(<a href="../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#649">error</a>))
+                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#649">error</a>))
             }
         }
     }

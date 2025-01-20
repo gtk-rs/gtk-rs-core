@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/subclass/list_model.rs`."><title>list_model.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-46132b98.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.86.0-nightly (48a426eca 2025-01-12)" data-channel="nightly" data-search-js="search-75f5ac3e.js" data-settings-js="settings-0f613d39.js" ><script src="../../../static.files/storage-59e33391.js"></script><script defer src="../../../static.files/src-script-56102188.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/subclass/list_model.rs`."><title>list_model.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-5d1d17d0.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.86.0-nightly (9a1d156f3 2025-01-19)" data-channel="nightly" data-search-js="search-ccb196c1.js" data-settings-js="settings-0f613d39.js" ><script src="../../../static.files/storage-59e33391.js"></script><script defer src="../../../static.files/src-script-56102188.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -272,9 +272,9 @@
     <span class="kw">fn </span>interface_init(iface: <span class="kw-2">&amp;mut </span><a href="../../../glib/object/struct.Interface.html">glib::Interface</a>&lt;<span class="self">Self</span>&gt;) {
         <span class="kw">let </span>iface = <a href="#67">iface</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsMut.html#tymethod.as_mut">as_mut</a>();
 
-        <a href="#68">iface</a>.get_item_type = <span class="prelude-val">Some</span>(<a href="#76-103">list_model_get_item_type</a>::&lt;T&gt;);
-        <a href="#68">iface</a>.get_n_items = <span class="prelude-val">Some</span>(<a href="#105-112">list_model_get_n_items</a>::&lt;T&gt;);
-        <a href="#68">iface</a>.get_item = <span class="prelude-val">Some</span>(<a href="#114-132">list_model_get_item</a>::&lt;T&gt;);
+        <a href="#68">iface</a>.get_item_type = <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#76-103">list_model_get_item_type</a>::&lt;T&gt;);
+        <a href="#68">iface</a>.get_n_items = <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#105-112">list_model_get_n_items</a>::&lt;T&gt;);
+        <a href="#68">iface</a>.get_item = <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#114-132">list_model_get_item</a>::&lt;T&gt;);
     }
 }
 
@@ -293,14 +293,14 @@
         <span class="kw-2">*</span><a href="#87">QUARK</a>.<a href="https://doc.rust-lang.org/nightly/std/sync/once_lock/struct.OnceLock.html#method.get_or_init">get_or_init</a>(|| <a href="../../../glib/quark/struct.Quark.html#method.from_str">glib::Quark::from_str</a>(<span class="string">"gtk-rs-subclass-list-model-item-type"</span>))
     };
     <span class="kw">match </span><a href="#85">instance</a>.<a href="../../../glib/object/trait.ObjectExt.html#tymethod.qdata">qdata</a>(<a href="#86">type_quark</a>) {
-        <span class="prelude-val">Some</span>(old_type) =&gt; {
+        <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(old_type) =&gt; {
             <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.assert_eq.html">assert_eq!</a>(
                 type_,
                 <span class="kw-2">*</span>old_type.as_ref(),
                 <span class="string">"ListModel's get_item_type cannot be changed"
             </span>);
         }
-        <span class="prelude-val">None </span>=&gt; {
+        <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None"><a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a> </a>=&gt; {
             <a href="#85">instance</a>.<a href="../../../glib/object/trait.ObjectExt.html#tymethod.set_qdata">set_qdata</a>(<a href="#86">type_quark</a>, <a href="#82">type_</a>);
         }
     }
@@ -325,7 +325,7 @@
 
     <span class="kw">let </span>item = <a href="#119">imp</a>.<a href="#15">item</a>(<a href="#116">position</a>);
 
-    <span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="kw-2">ref </span>i) = <a href="#121">item</a> {
+    <span class="kw">if let </span><a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<span class="kw-2">ref </span>i) = <a href="#121">item</a> {
         <span class="kw">let </span>type_ = <a href="#119">imp</a>.<a href="#11">item_type</a>();
         <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.assert.html">assert!</a>(
             i.type_().is_a(type_),

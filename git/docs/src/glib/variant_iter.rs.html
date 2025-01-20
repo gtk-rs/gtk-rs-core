@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/variant_iter.rs`."><title>variant_iter.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-46132b98.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.86.0-nightly (48a426eca 2025-01-12)" data-channel="nightly" data-search-js="search-75f5ac3e.js" data-settings-js="settings-0f613d39.js" ><script src="../../static.files/storage-59e33391.js"></script><script defer src="../../static.files/src-script-56102188.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/variant_iter.rs`."><title>variant_iter.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-5d1d17d0.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.86.0-nightly (9a1d156f3 2025-01-19)" data-channel="nightly" data-search-js="search-ccb196c1.js" data-settings-js="settings-0f613d39.js" ><script src="../../static.files/storage-59e33391.js"></script><script defer src="../../static.files/src-script-56102188.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -456,14 +456,14 @@
 </span><span class="doccomment">/// Iterator over items in a variant.
 </span><span class="attr">#[derive(Debug)]
 </span><span class="kw">pub struct </span><a href="../../glib/struct.VariantIter.html">VariantIter</a> {
-    variant: <a href="variant.rs.html#118-624">Variant</a>,
+    variant: <a href="variant.rs.html#118-377">Variant</a>,
     head: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>,
     tail: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>,
 }
 
 <span class="kw">impl </span><a href="#14-18">VariantIter</a> {
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>new(variant: <a href="variant.rs.html#118-624">Variant</a>) -&gt; <span class="self">Self </span>{
-        <span class="kw">let </span>tail = <a href="#21">variant</a>.<a href="variant.rs.html#1923-1927">n_children</a>();
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>new(variant: <a href="variant.rs.html#118-377">Variant</a>) -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span>tail = <a href="#21">variant</a>.<a href="variant.rs.html#1366-1370">n_children</a>();
         <span class="self">Self </span>{
             <a href="#21">variant</a>,
             head: <span class="number">0</span>,
@@ -473,65 +473,65 @@
 }
 
 <span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html">Iterator</a> <span class="kw">for </span><a href="#14-18">VariantIter</a> {
-    <span class="kw">type </span>Item = <a href="variant.rs.html#118-624">Variant</a>;
+    <span class="kw">type </span>Item = <a href="variant.rs.html#118-377">Variant</a>;
 
-    <span class="kw">fn </span>next(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="variant.rs.html#118-624">Variant</a>&gt; {
+    <span class="kw">fn </span>next(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="variant.rs.html#118-377">Variant</a>&gt; {
         <span class="kw">if </span><span class="self">self</span>.head == <span class="self">self</span>.tail {
-            <span class="prelude-val">None
-        </span>} <span class="kw">else </span>{
-            <span class="kw">let </span>value = <a class="self" href="#34">self</a>.variant.<a href="variant.rs.html#931-936">child_value</a>(<a class="self" href="#34">self</a>.head);
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None"><a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a>
+        </a>} <span class="kw">else </span>{
+            <span class="kw">let </span>value = <a class="self" href="#34">self</a>.variant.<a href="variant.rs.html#620-625">child_value</a>(<a class="self" href="#34">self</a>.head);
             <a class="self" href="#34">self</a>.head += <span class="number">1</span>;
-            <span class="prelude-val">Some</span>(<a href="#38">value</a>)
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#38">value</a>)
         }
     }
 
     <span class="kw">fn </span>size_hint(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; (<a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>, <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>&gt;) {
         <span class="kw">let </span>size = <a class="self" href="#44">self</a>.tail - <a class="self" href="#44">self</a>.head;
-        (<a href="#45">size</a>, <span class="prelude-val">Some</span>(<a href="#45">size</a>))
+        (<a href="#45">size</a>, <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#45">size</a>))
     }
 
     <span class="kw">fn </span>count(<span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a> {
         <a class="self" href="#49">self</a>.tail - <a class="self" href="#49">self</a>.head
     }
 
-    <span class="kw">fn </span>nth(<span class="kw-2">&amp;mut </span><span class="self">self</span>, n: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="variant.rs.html#118-624">Variant</a>&gt; {
+    <span class="kw">fn </span>nth(<span class="kw-2">&amp;mut </span><span class="self">self</span>, n: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="variant.rs.html#118-377">Variant</a>&gt; {
         <span class="kw">let </span>(end, overflow) = <a class="self" href="#53">self</a>.head.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.num.html#method.overflowing_add">overflowing_add</a>(<a href="#53">n</a>);
         <span class="kw">if </span>end &gt;= <span class="self">self</span>.tail || overflow {
             <a class="self" href="#53">self</a>.head = <a class="self" href="#53">self</a>.tail;
-            <span class="prelude-val">None
-        </span>} <span class="kw">else </span>{
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None"><a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a>
+        </a>} <span class="kw">else </span>{
             <a class="self" href="#53">self</a>.head = <a href="#54">end</a> + <span class="number">1</span>;
-            <span class="prelude-val">Some</span>(<a class="self" href="#53">self</a>.variant.<a href="variant.rs.html#931-936">child_value</a>(<a href="#54">end</a>))
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a class="self" href="#53">self</a>.variant.<a href="variant.rs.html#620-625">child_value</a>(<a href="#54">end</a>))
         }
     }
 
-    <span class="kw">fn </span>last(<span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="variant.rs.html#118-624">Variant</a>&gt; {
+    <span class="kw">fn </span>last(<span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="variant.rs.html#118-377">Variant</a>&gt; {
         <span class="kw">if </span><span class="self">self</span>.head == <span class="self">self</span>.tail {
-            <span class="prelude-val">None
-        </span>} <span class="kw">else </span>{
-            <span class="prelude-val">Some</span>(<a class="self" href="#64">self</a>.variant.<a href="variant.rs.html#931-936">child_value</a>(<a class="self" href="#64">self</a>.tail - <span class="number">1</span>))
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None"><a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a>
+        </a>} <span class="kw">else </span>{
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a class="self" href="#64">self</a>.variant.<a href="variant.rs.html#620-625">child_value</a>(<a class="self" href="#64">self</a>.tail - <span class="number">1</span>))
         }
     }
 }
 
 <span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/iter/traits/double_ended/trait.DoubleEndedIterator.html">DoubleEndedIterator</a> <span class="kw">for </span><a href="#14-18">VariantIter</a> {
-    <span class="kw">fn </span>next_back(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="variant.rs.html#118-624">Variant</a>&gt; {
+    <span class="kw">fn </span>next_back(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="variant.rs.html#118-377">Variant</a>&gt; {
         <span class="kw">if </span><span class="self">self</span>.head == <span class="self">self</span>.tail {
-            <span class="prelude-val">None
-        </span>} <span class="kw">else </span>{
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None"><a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a>
+        </a>} <span class="kw">else </span>{
             <a class="self" href="#74">self</a>.tail -= <span class="number">1</span>;
-            <span class="prelude-val">Some</span>(<a class="self" href="#74">self</a>.variant.<a href="variant.rs.html#931-936">child_value</a>(<a class="self" href="#74">self</a>.tail))
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a class="self" href="#74">self</a>.variant.<a href="variant.rs.html#620-625">child_value</a>(<a class="self" href="#74">self</a>.tail))
         }
     }
 
-    <span class="kw">fn </span>nth_back(<span class="kw-2">&amp;mut </span><span class="self">self</span>, n: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="variant.rs.html#118-624">Variant</a>&gt; {
+    <span class="kw">fn </span>nth_back(<span class="kw-2">&amp;mut </span><span class="self">self</span>, n: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="variant.rs.html#118-377">Variant</a>&gt; {
         <span class="kw">let </span>(end, overflow) = <a class="self" href="#83">self</a>.tail.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.num.html#method.overflowing_sub">overflowing_sub</a>(<a href="#83">n</a>);
         <span class="kw">if </span>end &lt;= <span class="self">self</span>.head || overflow {
             <a class="self" href="#83">self</a>.head = <a class="self" href="#83">self</a>.tail;
-            <span class="prelude-val">None
-        </span>} <span class="kw">else </span>{
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None"><a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a>
+        </a>} <span class="kw">else </span>{
             <a class="self" href="#83">self</a>.tail = <a href="#84">end</a> - <span class="number">1</span>;
-            <span class="prelude-val">Some</span>(<a class="self" href="#83">self</a>.variant.<a href="variant.rs.html#931-936">child_value</a>(<a href="#84">end</a> - <span class="number">1</span>))
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a class="self" href="#83">self</a>.variant.<a href="variant.rs.html#620-625">child_value</a>(<a href="#84">end</a> - <span class="number">1</span>))
         }
     }
 }
@@ -544,14 +544,14 @@
 </span><span class="doccomment">/// Iterator over items in a variant of type `as`.
 </span><span class="attr">#[derive(Debug)]
 </span><span class="kw">pub struct </span><a href="../../glib/struct.VariantStrIter.html">VariantStrIter</a>&lt;<span class="lifetime">'a</span>&gt; {
-    variant: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="variant.rs.html#118-624">Variant</a>,
+    variant: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="variant.rs.html#118-377">Variant</a>,
     head: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>,
     tail: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>,
 }
 
 <span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; <a href="#102-106">VariantStrIter</a>&lt;<span class="lifetime">'a</span>&gt; {
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>new(variant: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="variant.rs.html#118-624">Variant</a>) -&gt; <span class="self">Self </span>{
-        <span class="kw">let </span>tail = <a href="#109">variant</a>.<a href="variant.rs.html#1923-1927">n_children</a>();
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>new(variant: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="variant.rs.html#118-377">Variant</a>) -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span>tail = <a href="#109">variant</a>.<a href="variant.rs.html#1366-1370">n_children</a>();
         <span class="self">Self </span>{
             <a href="#109">variant</a>,
             head: <span class="number">0</span>,
@@ -581,17 +581,17 @@
 
     <span class="kw">fn </span>next(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt; {
         <span class="kw">if </span><span class="self">self</span>.head == <span class="self">self</span>.tail {
-            <span class="prelude-val">None
-        </span>} <span class="kw">else </span>{
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None"><a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a>
+        </a>} <span class="kw">else </span>{
             <span class="kw">let </span>v = <a class="self" href="#138">self</a>.<a href="#118-132">impl_get</a>(<a class="self" href="#138">self</a>.head);
             <a class="self" href="#138">self</a>.head += <span class="number">1</span>;
-            <span class="prelude-val">Some</span>(<a href="#142">v</a>)
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#142">v</a>)
         }
     }
 
     <span class="kw">fn </span>size_hint(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; (<a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>, <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>&gt;) {
         <span class="kw">let </span>size = <a class="self" href="#148">self</a>.tail - <a class="self" href="#148">self</a>.head;
-        (<a href="#149">size</a>, <span class="prelude-val">Some</span>(<a href="#149">size</a>))
+        (<a href="#149">size</a>, <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#149">size</a>))
     }
 
     <span class="kw">fn </span>count(<span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a> {
@@ -602,18 +602,18 @@
         <span class="kw">let </span>(end, overflow) = <a class="self" href="#157">self</a>.head.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.num.html#method.overflowing_add">overflowing_add</a>(<a href="#157">n</a>);
         <span class="kw">if </span>end &gt;= <span class="self">self</span>.tail || overflow {
             <a class="self" href="#157">self</a>.head = <a class="self" href="#157">self</a>.tail;
-            <span class="prelude-val">None
-        </span>} <span class="kw">else </span>{
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None"><a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a>
+        </a>} <span class="kw">else </span>{
             <a class="self" href="#157">self</a>.head = <a href="#158">end</a> + <span class="number">1</span>;
-            <span class="prelude-val">Some</span>(<a class="self" href="#157">self</a>.<a href="#118-132">impl_get</a>(<a href="#158">end</a>))
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a class="self" href="#157">self</a>.<a href="#118-132">impl_get</a>(<a href="#158">end</a>))
         }
     }
 
     <span class="kw">fn </span>last(<span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt; {
         <span class="kw">if </span><span class="self">self</span>.head == <span class="self">self</span>.tail {
-            <span class="prelude-val">None
-        </span>} <span class="kw">else </span>{
-            <span class="prelude-val">Some</span>(<a class="self" href="#168">self</a>.<a href="#118-132">impl_get</a>(<a class="self" href="#168">self</a>.tail - <span class="number">1</span>))
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None"><a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a>
+        </a>} <span class="kw">else </span>{
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a class="self" href="#168">self</a>.<a href="#118-132">impl_get</a>(<a class="self" href="#168">self</a>.tail - <span class="number">1</span>))
         }
     }
 }
@@ -621,10 +621,10 @@
 <span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; <a href="https://doc.rust-lang.org/nightly/core/iter/traits/double_ended/trait.DoubleEndedIterator.html">DoubleEndedIterator</a> <span class="kw">for </span><a href="#102-106">VariantStrIter</a>&lt;<span class="lifetime">'a</span>&gt; {
     <span class="kw">fn </span>next_back(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt; {
         <span class="kw">if </span><span class="self">self</span>.head == <span class="self">self</span>.tail {
-            <span class="prelude-val">None
-        </span>} <span class="kw">else </span>{
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None"><a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a>
+        </a>} <span class="kw">else </span>{
             <a class="self" href="#178">self</a>.tail -= <span class="number">1</span>;
-            <span class="prelude-val">Some</span>(<a class="self" href="#178">self</a>.<a href="#118-132">impl_get</a>(<a class="self" href="#178">self</a>.tail))
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a class="self" href="#178">self</a>.<a href="#118-132">impl_get</a>(<a class="self" href="#178">self</a>.tail))
         }
     }
 
@@ -632,10 +632,10 @@
         <span class="kw">let </span>(end, overflow) = <a class="self" href="#187">self</a>.tail.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.num.html#method.overflowing_sub">overflowing_sub</a>(<a href="#187">n</a>);
         <span class="kw">if </span>end &lt;= <span class="self">self</span>.head || overflow {
             <a class="self" href="#187">self</a>.head = <a class="self" href="#187">self</a>.tail;
-            <span class="prelude-val">None
-        </span>} <span class="kw">else </span>{
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None"><a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a>
+        </a>} <span class="kw">else </span>{
             <a class="self" href="#187">self</a>.tail = <a href="#188">end</a> - <span class="number">1</span>;
-            <span class="prelude-val">Some</span>(<a class="self" href="#187">self</a>.<a href="#118-132">impl_get</a>(<a href="#188">end</a> - <span class="number">1</span>))
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a class="self" href="#187">self</a>.<a href="#118-132">impl_get</a>(<a href="#188">end</a> - <span class="number">1</span>))
         }
     }
 }

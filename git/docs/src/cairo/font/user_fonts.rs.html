@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `cairo/src/font/user_fonts.rs`."><title>user_fonts.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-46132b98.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="cairo" data-themes="" data-resource-suffix="" data-rustdoc-version="1.86.0-nightly (48a426eca 2025-01-12)" data-channel="nightly" data-search-js="search-75f5ac3e.js" data-settings-js="settings-0f613d39.js" ><script src="../../../static.files/storage-59e33391.js"></script><script defer src="../../../static.files/src-script-56102188.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `cairo/src/font/user_fonts.rs`."><title>user_fonts.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-5d1d17d0.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="cairo" data-themes="" data-resource-suffix="" data-rustdoc-version="1.86.0-nightly (9a1d156f3 2025-01-19)" data-channel="nightly" data-search-js="search-ccb196c1.js" data-settings-js="settings-0f613d39.js" ><script src="../../../static.files/storage-59e33391.js"></script><script defer src="../../../static.files/src-script-56102188.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -347,7 +347,7 @@
         <span class="kw">let </span>font_face = <span class="kw">unsafe </span>{ <a href="font_face.rs.html#113-115">FontFace::from_raw_full</a>(<a href="../../../cairo_sys/fn.cairo_user_font_face_create.html">ffi::cairo_user_font_face_create</a>()) };
         <span class="kw">let </span>status = <span class="kw">unsafe </span>{ <a href="../../../cairo_sys/fn.cairo_font_face_status.html">ffi::cairo_font_face_status</a>(<a href="#28">font_face</a>.<a href="font_face.rs.html#139-141">to_raw_none</a>()) };
         <a href="../utils.rs.html#21-26">status_to_result</a>(<a href="#29">status</a>)<span class="question-mark">?</span>;
-        <span class="prelude-val">Ok</span>(<span class="self">Self</span>(<a href="#28">font_face</a>))
+        <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(<span class="self">Self</span>(<a href="#28">font_face</a>))
     }
 
     <span class="attr">#[doc(alias = <span class="string">"cairo_user_font_face_set_init_func"</span>)]
@@ -366,7 +366,7 @@
         ) -&gt; <a href="../../../cairo_sys/type.cairo_status_t.html">ffi::cairo_status_t</a> {
             <span class="kw">let </span>font_extents = <span class="kw-2">&amp;mut *</span>(<a href="#46">extents</a> <span class="kw">as </span><span class="kw-2">*mut </span><a href="font_extents.rs.html#9">FontExtents</a>);
             <span class="kw">let </span>init_func = <a href="#39">INIT_FUNC</a>.<a href="https://doc.rust-lang.org/nightly/std/sync/once_lock/struct.OnceLock.html#method.get">get</a>().<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap">unwrap</a>();
-            <span class="kw">if let </span><span class="prelude-val">Err</span>(err) = <a href="#49">init_func</a>(
+            <span class="kw">if let </span><a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(err) = <a href="#49">init_func</a>(
                 <span class="kw-2">&amp;</span><a href="scaled_font.rs.html#80-82">ScaledFont::from_raw_none</a>(<a href="#44">scaled_font</a>),
                 <span class="kw-2">&amp;</span><a href="../context.rs.html#136-140">Context::from_raw_none</a>(<a href="#45">cr</a>),
                 <a href="#48">font_extents</a>,
@@ -377,7 +377,7 @@
             }
         }
         <span class="kw">unsafe </span>{
-            <a href="../../../cairo_sys/fn.cairo_user_font_face_set_init_func.html">ffi::cairo_user_font_face_set_init_func</a>(<a class="self" href="#35">self</a>.<a href="font_face.rs.html#139-141">to_raw_none</a>(), <span class="prelude-val">Some</span>(<a href="#43-59">init_trampoline</a>));
+            <a href="../../../cairo_sys/fn.cairo_user_font_face_set_init_func.html">ffi::cairo_user_font_face_set_init_func</a>(<a class="self" href="#35">self</a>.<a href="font_face.rs.html#139-141">to_raw_none</a>(), <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#43-59">init_trampoline</a>));
         }
     }
 
@@ -401,7 +401,7 @@
         ) -&gt; <a href="../../../cairo_sys/type.cairo_status_t.html">ffi::cairo_status_t</a> {
             <span class="kw">let </span>text_extents = <span class="kw-2">&amp;mut *</span>(<a href="#81">extents</a> <span class="kw">as </span><span class="kw-2">*mut </span><a href="text_extents.rs.html#9">TextExtents</a>);
             <span class="kw">let </span>render_glyph_func = <a href="#73">RENDER_GLYPH_FUNC</a>.<a href="https://doc.rust-lang.org/nightly/std/sync/once_lock/struct.OnceLock.html#method.get">get</a>().<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap">unwrap</a>();
-            <span class="kw">if let </span><span class="prelude-val">Err</span>(err) = <a href="#84">render_glyph_func</a>(
+            <span class="kw">if let </span><a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(err) = <a href="#84">render_glyph_func</a>(
                 <span class="kw-2">&amp;</span><a href="scaled_font.rs.html#80-82">ScaledFont::from_raw_none</a>(<a href="#78">scaled_font</a>),
                 <a href="#79">glyph</a>,
                 <span class="kw-2">&amp;</span><a href="../context.rs.html#136-140">Context::from_raw_none</a>(<a href="#80">cr</a>),
@@ -415,7 +415,7 @@
         <span class="kw">unsafe </span>{
             <a href="../../../cairo_sys/fn.cairo_user_font_face_set_render_glyph_func.html">ffi::cairo_user_font_face_set_render_glyph_func</a>(
                 <a class="self" href="#66">self</a>.<a href="font_face.rs.html#139-141">to_raw_none</a>(),
-                <span class="prelude-val">Some</span>(<a href="#77-95">render_glyph_trampoline</a>),
+                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#77-95">render_glyph_trampoline</a>),
             );
         }
     }
@@ -440,7 +440,7 @@
         ) -&gt; <a href="../../../cairo_sys/type.cairo_status_t.html">ffi::cairo_status_t</a> {
             <span class="kw">let </span>text_extents = <span class="kw-2">&amp;mut *</span>(<a href="#120">extents</a> <span class="kw">as </span><span class="kw-2">*mut </span><a href="text_extents.rs.html#9">TextExtents</a>);
             <span class="kw">let </span>render_glyph_func = <a href="#112">RENDER_COLOR_GLYPH_FUNC</a>.<a href="https://doc.rust-lang.org/nightly/std/sync/once_lock/struct.OnceLock.html#method.get">get</a>().<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap">unwrap</a>();
-            <span class="kw">if let </span><span class="prelude-val">Err</span>(err) = <a href="#123">render_glyph_func</a>(
+            <span class="kw">if let </span><a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(err) = <a href="#123">render_glyph_func</a>(
                 <span class="kw-2">&amp;</span><a href="scaled_font.rs.html#80-82">ScaledFont::from_raw_none</a>(<a href="#117">scaled_font</a>),
                 <a href="#118">glyph</a>,
                 <span class="kw-2">&amp;</span><a href="../context.rs.html#136-140">Context::from_raw_none</a>(<a href="#119">cr</a>),
@@ -454,7 +454,7 @@
         <span class="kw">unsafe </span>{
             <a href="../../../cairo_sys/fn.cairo_user_font_face_set_render_glyph_func.html">ffi::cairo_user_font_face_set_render_glyph_func</a>(
                 <a class="self" href="#105">self</a>.<a href="font_face.rs.html#139-141">to_raw_none</a>(),
-                <span class="prelude-val">Some</span>(<a href="#116-134">render_glyph_trampoline</a>),
+                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#116-134">render_glyph_trampoline</a>),
             );
         }
     }
@@ -475,8 +475,8 @@
         ) -&gt; <a href="../../../cairo_sys/type.cairo_status_t.html">ffi::cairo_status_t</a> {
             <span class="kw">let </span>unicode_to_glyph_func = <a href="#148">UNICODE_TO_GLYPH_FUNC</a>.<a href="https://doc.rust-lang.org/nightly/std/sync/once_lock/struct.OnceLock.html#method.get">get</a>().<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap">unwrap</a>();
             <span class="kw">match </span><a href="#157">unicode_to_glyph_func</a>(<span class="kw-2">&amp;</span><a href="scaled_font.rs.html#80-82">ScaledFont::from_raw_none</a>(<a href="#153">scaled_font</a>), <a href="#154">unicode</a>) {
-                <span class="prelude-val">Err</span>(err) =&gt; <a href="#159">err</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>(),
-                <span class="prelude-val">Ok</span>(glyph) =&gt; {
+                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(err) =&gt; <a href="#159">err</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>(),
+                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(glyph) =&gt; {
                     <span class="kw-2">*</span><a href="#155">glyph_index</a> = <a href="#160">glyph</a>;
                     <a href="../../../cairo_sys/constant.STATUS_SUCCESS.html">ffi::STATUS_SUCCESS</a>
                 }
@@ -485,7 +485,7 @@
         <span class="kw">unsafe </span>{
             <a href="../../../cairo_sys/fn.cairo_user_font_face_set_unicode_to_glyph_func.html">ffi::cairo_user_font_face_set_unicode_to_glyph_func</a>(
                 <a class="self" href="#144">self</a>.<a href="font_face.rs.html#139-141">to_raw_none</a>(),
-                <span class="prelude-val">Some</span>(<a href="#152-165">unicode_to_glyph_trampoline</a>),
+                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#152-165">unicode_to_glyph_trampoline</a>),
             );
         }
     }
@@ -520,8 +520,8 @@
                 <a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.from_ptr">std::ffi::CStr::from_ptr</a>(<a href="#188">utf8</a>).<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.to_str">to_str</a>().<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>()
             };
             <span class="kw">match </span><a href="#196">text_to_glyphs_func</a>(<span class="kw-2">&amp;</span><a href="scaled_font.rs.html#80-82">ScaledFont::from_raw_none</a>(<a href="#187">scaled_font</a>), <a href="#197">text</a>) {
-                <span class="prelude-val">Err</span>(err) =&gt; <a href="#204">err</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>(),
-                <span class="prelude-val">Ok</span>((glyphs_, clusters_, flags)) =&gt; {
+                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(err) =&gt; <a href="#204">err</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>(),
+                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>((glyphs_, clusters_, flags)) =&gt; {
                     <span class="kw-2">*</span><a href="#191">num_glyphs</a> = <a href="#205">glyphs_</a>.<a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.len">len</a>() <span class="kw">as _</span>;
                     <span class="kw">let </span>c_glyphs = <a href="../../../cairo_sys/fn.cairo_glyph_allocate.html">ffi::cairo_glyph_allocate</a>(<span class="kw-2">*</span><a href="#191">num_glyphs</a>);
                     <a href="https://doc.rust-lang.org/nightly/core/intrinsics/fn.copy_nonoverlapping.html">std::ptr::copy_nonoverlapping</a>(
@@ -549,7 +549,7 @@
         <span class="kw">unsafe </span>{
             <a href="../../../cairo_sys/fn.cairo_user_font_face_set_text_to_glyphs_func.html">ffi::cairo_user_font_face_set_text_to_glyphs_func</a>(
                 <a class="self" href="#175">self</a>.<a href="font_face.rs.html#139-141">to_raw_none</a>(),
-                <span class="prelude-val">Some</span>(<a href="#186-229">text_to_glyphs_trampoline</a>),
+                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#186-229">text_to_glyphs_trampoline</a>),
             );
         }
     }

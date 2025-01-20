@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/collections/list.rs`."><title>list.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-46132b98.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.86.0-nightly (48a426eca 2025-01-12)" data-channel="nightly" data-search-js="search-75f5ac3e.js" data-settings-js="settings-0f613d39.js" ><script src="../../../static.files/storage-59e33391.js"></script><script defer src="../../../static.files/src-script-56102188.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/collections/list.rs`."><title>list.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-5d1d17d0.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.86.0-nightly (9a1d156f3 2025-01-19)" data-channel="nightly" data-search-js="search-ccb196c1.js" data-settings-js="settings-0f613d39.js" ><script src="../../../static.files/storage-59e33391.js"></script><script defer src="../../../static.files/src-script-56102188.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -1085,7 +1085,7 @@
                 <span class="kw-2">*</span>(<span class="kw-2">&amp;mut *</span><a href="#40">item</a> <span class="kw">as </span><span class="kw-2">*mut </span>T <span class="kw">as </span><span class="kw-2">*mut *mut </span>T::GlibType) <span class="kw">as </span>ffi::gpointer
             }
 
-            ffi::g_list_copy_deep(<a href="../translate.rs.html#202-204">mut_override</a>(<a href="#33">list</a>), <span class="prelude-val">Some</span>(<a href="#36-45">copy_item</a>::&lt;T&gt;), <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>())
+            ffi::g_list_copy_deep(<a href="../translate.rs.html#202-204">mut_override</a>(<a href="#33">list</a>), <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#36-45">copy_item</a>::&lt;T&gt;), <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>())
         } <span class="kw">else </span>{
             ffi::g_list_copy(<a href="../translate.rs.html#202-204">mut_override</a>(<a href="#33">list</a>))
         };
@@ -1110,7 +1110,7 @@
                 <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.write.html">ptr::write</a>(<a href="#65">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span>T, <a href="#68">item</a>);
             }
 
-            ffi::g_list_foreach(<a href="#61">list</a>, <span class="prelude-val">Some</span>(<a href="#64-70">copy_item</a>::&lt;T&gt;), <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>());
+            ffi::g_list_foreach(<a href="#61">list</a>, <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#64-70">copy_item</a>::&lt;T&gt;), <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>());
         }
 
         <a href="#12-15">List</a> {
@@ -1134,7 +1134,7 @@
     </span><span class="attr">#[inline]
     </span><span class="kw">pub fn </span>new() -&gt; <span class="self">Self </span>{
         <a href="#12-15">List</a> {
-            ptr: <span class="prelude-val">None</span>,
+            ptr: <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a>,
             phantom: <a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">PhantomData</a>,
         }
     }
@@ -1180,10 +1180,10 @@
     #[doc(alias = <span class="string">"g_list_first"</span>)]
     </span><span class="kw">pub fn </span>front(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span>T&gt; {
         <span class="kw">match </span><a class="self" href="#140">self</a>.ptr {
-            <span class="prelude-val">None </span>=&gt; <span class="prelude-val">None</span>,
-            <span class="prelude-val">Some</span>(cur) =&gt; <span class="kw">unsafe </span>{
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None"><a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a> </a>=&gt; <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a>,
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(cur) =&gt; <span class="kw">unsafe </span>{
                 <span class="kw">let </span>item = <span class="kw-2">&amp;*</span>(<span class="kw-2">&amp;</span><a href="#143">cur</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().data <span class="kw">as </span><span class="kw-2">*const </span>ffi::gpointer <span class="kw">as </span><span class="kw-2">*const </span>T);
-                <span class="prelude-val">Some</span>(<a href="#144">item</a>)
+                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#144">item</a>)
             },
         }
     }
@@ -1196,10 +1196,10 @@
     #[doc(alias = <span class="string">"g_list_first"</span>)]
     </span><span class="kw">pub fn </span>front_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;mut </span>T&gt; {
         <span class="kw">match </span><a class="self" href="#156">self</a>.ptr {
-            <span class="prelude-val">None </span>=&gt; <span class="prelude-val">None</span>,
-            <span class="prelude-val">Some</span>(<span class="kw-2">mut </span>cur) =&gt; <span class="kw">unsafe </span>{
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None"><a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a> </a>=&gt; <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a>,
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<span class="kw-2">mut </span>cur) =&gt; <span class="kw">unsafe </span>{
                 <span class="kw">let </span>item = <span class="kw-2">&amp;mut *</span>(<span class="kw-2">&amp;mut </span><a href="#159">cur</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_mut">as_mut</a>().data <span class="kw">as </span><span class="kw-2">*mut </span>ffi::gpointer <span class="kw">as </span><span class="kw-2">*mut </span>T);
-                <span class="prelude-val">Some</span>(<a href="#160">item</a>)
+                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#160">item</a>)
             },
         }
     }
@@ -1211,10 +1211,10 @@
     </span><span class="attr">#[inline]
     </span><span class="kw">pub fn </span>pop_front(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;T&gt; {
         <span class="kw">match </span><a class="self" href="#171">self</a>.ptr {
-            <span class="prelude-val">None </span>=&gt; <span class="prelude-val">None</span>,
-            <span class="prelude-val">Some</span>(<span class="kw-2">mut </span>cur) =&gt; <span class="kw">unsafe </span>{
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None"><a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a> </a>=&gt; <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a>,
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<span class="kw-2">mut </span>cur) =&gt; <span class="kw">unsafe </span>{
                 <a class="self" href="#171">self</a>.ptr = <a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.new">ptr::NonNull::new</a>(<a href="#174">cur</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().next);
-                <span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="kw-2">mut </span>next) = <a class="self" href="#171">self</a>.ptr {
+                <span class="kw">if let </span><a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<span class="kw-2">mut </span>next) = <a class="self" href="#171">self</a>.ptr {
                     <a href="#176">next</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_mut">as_mut</a>().prev = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
                 }
 
@@ -1222,7 +1222,7 @@
 
                 ffi::g_list_free_1(<a href="#174">cur</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>());
 
-                <span class="prelude-val">Some</span>(<a href="#180">item</a>)
+                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#180">item</a>)
             },
         }
     }
@@ -1236,7 +1236,7 @@
     </span><span class="kw">pub fn </span>push_front(<span class="kw-2">&amp;mut </span><span class="self">self</span>, item: T) {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>ptr = <a class="self" href="#195">self</a>.ptr.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|p| <a href="#197">p</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>()).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap_or">unwrap_or</a>(<a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>());
-            <a class="self" href="#195">self</a>.ptr = <span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.new_unchecked">ptr::NonNull::new_unchecked</a>(ffi::g_list_prepend(
+            <a class="self" href="#195">self</a>.ptr = <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.new_unchecked">ptr::NonNull::new_unchecked</a>(ffi::g_list_prepend(
                 <a href="#197">ptr</a>,
                 <span class="kw-2">*</span>(<span class="kw-2">&amp;mut *</span><a href="https://doc.rust-lang.org/nightly/core/mem/manually_drop/struct.ManuallyDrop.html#method.new">mem::ManuallyDrop::new</a>(<a href="#195">item</a>) <span class="kw">as </span><span class="kw-2">*mut </span>T <span class="kw">as </span><span class="kw-2">*mut *mut </span>T::GlibType)
                     <span class="kw">as </span>ffi::gpointer,
@@ -1253,12 +1253,12 @@
     </span><span class="kw">pub fn </span>back(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span>T&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>ptr = <span class="kw">match </span><a class="self" href="#212">self</a>.ptr {
-                <span class="prelude-val">None </span>=&gt; <span class="kw">return </span><span class="prelude-val">None</span>,
-                <span class="prelude-val">Some</span>(ptr) =&gt; <a href="#216">ptr</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>(),
+                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None"><a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a> </a>=&gt; <span class="kw">return </span><a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a>,
+                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(ptr) =&gt; <a href="#216">ptr</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>(),
             };
             <span class="kw">let </span>last_ptr = ffi::g_list_last(<a href="#214">ptr</a>);
             <span class="kw">let </span>item = <span class="kw-2">&amp;*</span>(<span class="kw-2">&amp;</span>(<span class="kw-2">*</span><a href="#218">last_ptr</a>).data <span class="kw">as </span><span class="kw-2">*const </span>ffi::gpointer <span class="kw">as </span><span class="kw-2">*const </span>T);
-            <span class="prelude-val">Some</span>(<a href="#219">item</a>)
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#219">item</a>)
         }
     }
 
@@ -1271,12 +1271,12 @@
     </span><span class="kw">pub fn </span>back_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;mut </span>T&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>ptr = <span class="kw">match </span><a class="self" href="#230">self</a>.ptr {
-                <span class="prelude-val">None </span>=&gt; <span class="kw">return </span><span class="prelude-val">None</span>,
-                <span class="prelude-val">Some</span>(ptr) =&gt; <a href="#234">ptr</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>(),
+                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None"><a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a> </a>=&gt; <span class="kw">return </span><a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a>,
+                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(ptr) =&gt; <a href="#234">ptr</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>(),
             };
             <span class="kw">let </span>last_ptr = ffi::g_list_last(<a href="#232">ptr</a>);
             <span class="kw">let </span>item = <span class="kw-2">&amp;mut *</span>(<span class="kw-2">&amp;mut </span>(<span class="kw-2">*</span><a href="#236">last_ptr</a>).data <span class="kw">as </span><span class="kw-2">*mut </span>ffi::gpointer <span class="kw">as </span><span class="kw-2">*mut </span>T);
-            <span class="prelude-val">Some</span>(<a href="#237">item</a>)
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#237">item</a>)
         }
     }
 
@@ -1288,14 +1288,14 @@
     </span><span class="kw">pub fn </span>pop_back(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;T&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>ptr = <span class="kw">match </span><a class="self" href="#247">self</a>.ptr {
-                <span class="prelude-val">None </span>=&gt; <span class="kw">return </span><span class="prelude-val">None</span>,
-                <span class="prelude-val">Some</span>(ptr) =&gt; <a href="#251">ptr</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>(),
+                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None"><a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a> </a>=&gt; <span class="kw">return </span><a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a>,
+                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(ptr) =&gt; <a href="#251">ptr</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>(),
             };
             <span class="kw">let </span>last_ptr = ffi::g_list_last(<a href="#249">ptr</a>);
             <span class="kw">let </span>item = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.read.html">ptr::read</a>(<span class="kw-2">&amp;mut </span>(<span class="kw-2">*</span><a href="#253">last_ptr</a>).data <span class="kw">as </span><span class="kw-2">*mut </span>ffi::gpointer <span class="kw">as </span><span class="kw-2">*mut </span>T);
             <a class="self" href="#247">self</a>.ptr = <a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.new">ptr::NonNull::new</a>(ffi::g_list_delete_link(<a href="#249">ptr</a>, <a href="#253">last_ptr</a>));
 
-            <span class="prelude-val">Some</span>(<a href="#254">item</a>)
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#254">item</a>)
         }
     }
 
@@ -1308,7 +1308,7 @@
     </span><span class="kw">pub fn </span>push_back(<span class="kw-2">&amp;mut </span><span class="self">self</span>, item: T) {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>ptr = <a class="self" href="#267">self</a>.ptr.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|p| <a href="#269">p</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>()).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap_or">unwrap_or</a>(<a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>());
-            <a class="self" href="#267">self</a>.ptr = <span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.new_unchecked">ptr::NonNull::new_unchecked</a>(ffi::g_list_append(
+            <a class="self" href="#267">self</a>.ptr = <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.new_unchecked">ptr::NonNull::new_unchecked</a>(ffi::g_list_append(
                 <a href="#269">ptr</a>,
                 <span class="kw-2">*</span>(<span class="kw-2">&amp;mut *</span><a href="https://doc.rust-lang.org/nightly/core/mem/manually_drop/struct.ManuallyDrop.html#method.new">mem::ManuallyDrop::new</a>(<a href="#267">item</a>) <span class="kw">as </span><span class="kw-2">*mut </span>T <span class="kw">as </span><span class="kw-2">*mut *mut </span>T::GlibType)
                     <span class="kw">as </span>ffi::gpointer,
@@ -1325,11 +1325,11 @@
     </span><span class="kw">pub fn </span>reverse(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>ptr = <span class="kw">match </span><a class="self" href="#284">self</a>.ptr {
-                <span class="prelude-val">None </span>=&gt; <span class="kw">return</span>,
-                <span class="prelude-val">Some</span>(ptr) =&gt; <a href="#288">ptr</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>(),
+                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None"><a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a> </a>=&gt; <span class="kw">return</span>,
+                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(ptr) =&gt; <a href="#288">ptr</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>(),
             };
 
-            <a class="self" href="#284">self</a>.ptr = <span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.new_unchecked">ptr::NonNull::new_unchecked</a>(ffi::g_list_reverse(<a href="#286">ptr</a>)));
+            <a class="self" href="#284">self</a>.ptr = <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.new_unchecked">ptr::NonNull::new_unchecked</a>(ffi::g_list_reverse(<a href="#286">ptr</a>)));
         }
     }
 
@@ -1355,8 +1355,8 @@
     </span><span class="kw">pub fn </span>sort_by&lt;F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnMut.html">FnMut</a>(<span class="kw-2">&amp;</span>T, <span class="kw-2">&amp;</span>T) -&gt; <a href="https://doc.rust-lang.org/nightly/core/cmp/enum.Ordering.html">std::cmp::Ordering</a>&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, <span class="kw-2">mut </span>f: F) {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>ptr = <span class="kw">match </span><a class="self" href="#314">self</a>.ptr {
-                <span class="prelude-val">None </span>=&gt; <span class="kw">return</span>,
-                <span class="prelude-val">Some</span>(ptr) =&gt; <a href="#318">ptr</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>(),
+                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None"><a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a> </a>=&gt; <span class="kw">return</span>,
+                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(ptr) =&gt; <a href="#318">ptr</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>(),
             };
 
             <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>func&lt;
@@ -1373,9 +1373,9 @@
                 <a href="#329">f</a>(<a href="#330">a</a>, <a href="#331">b</a>).<a href="../translate.rs.html#334">into_glib</a>()
             }
 
-            <a class="self" href="#314">self</a>.ptr = <span class="prelude-val">Some</span>(<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.new_unchecked">ptr::NonNull::new_unchecked</a>(ffi::g_list_sort_with_data(
+            <a class="self" href="#314">self</a>.ptr = <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.new_unchecked">ptr::NonNull::new_unchecked</a>(ffi::g_list_sort_with_data(
                 <a href="#316">ptr</a>,
-                <span class="prelude-val">Some</span>(<a href="#321-333">func</a>::&lt;T, F&gt;),
+                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#321-333">func</a>::&lt;T, F&gt;),
                 <span class="kw-2">&amp;mut </span><a href="#314">f</a> <span class="kw">as </span><span class="kw-2">*mut </span>F <span class="kw">as </span>ffi::gpointer,
             )));
         }
@@ -1392,7 +1392,7 @@
     </span><span class="doccomment">/// Only keeps the item in the list for which `f` returns `true`.
     </span><span class="attr">#[inline]
     </span><span class="kw">pub fn </span>retain(<span class="kw-2">&amp;mut </span><span class="self">self</span>, <span class="kw-2">mut </span>f: <span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnMut.html">FnMut</a>(<span class="kw-2">&amp;</span>T) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>) {
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(head) = <a class="self" href="#353">self</a>.ptr {
+        <span class="kw">if let </span><a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(head) = <a class="self" href="#353">self</a>.ptr {
             <span class="kw">unsafe </span>{
                 <span class="kw">let </span><span class="kw-2">mut </span>ptr = <a href="#354">head</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>();
                 <span class="kw">while </span>!ptr.is_null() {
@@ -1448,14 +1448,14 @@
 <span class="kw">impl</span>&lt;T: <a href="../translate.rs.html#2640">TransparentPtrType</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/ops/drop/trait.Drop.html">Drop</a> <span class="kw">for </span><a href="#12-15">List</a>&lt;T&gt; {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(ptr) = <a class="self" href="#409">self</a>.ptr {
+        <span class="kw">if let </span><a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(ptr) = <a class="self" href="#409">self</a>.ptr {
             <span class="kw">unsafe </span>{
                 <span class="kw">if </span>mem::needs_drop::&lt;T&gt;() {
                     <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>drop_item&lt;T: <a href="../translate.rs.html#2640">TransparentPtrType</a>&gt;(<span class="kw-2">mut </span>ptr: ffi::gpointer) {
                         <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.drop_in_place.html">ptr::drop_in_place</a>(<span class="kw-2">&amp;mut </span><a href="#413">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span>ffi::gpointer <span class="kw">as </span><span class="kw-2">*mut </span>T);
                     }
 
-                    ffi::g_list_free_full(<a href="#410">ptr</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>(), <span class="prelude-val">Some</span>(<a href="#413-415">drop_item</a>::&lt;T&gt;));
+                    ffi::g_list_free_full(<a href="#410">ptr</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>(), <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#413-415">drop_item</a>::&lt;T&gt;));
                 } <span class="kw">else </span>{
                     ffi::g_list_free(<a href="#410">ptr</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>());
                 }
@@ -1471,8 +1471,8 @@
             <span class="kw">let </span><span class="kw-2">mut </span>iter = <a href="#428">iter</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.IntoIterator.html#tymethod.into_iter">into_iter</a>();
 
             <span class="kw">let </span>first = <span class="kw">match </span><a href="#430">iter</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.next">next</a>() {
-                <span class="prelude-val">None </span>=&gt; <span class="kw">return </span><a href="#94-99"><span class="self">Self</span>::new</a>(),
-                <span class="prelude-val">Some</span>(first) =&gt; <a href="#434">first</a>,
+                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None"><a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a> </a>=&gt; <span class="kw">return </span><a href="#94-99"><span class="self">Self</span>::new</a>(),
+                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(first) =&gt; <a href="#434">first</a>,
             };
 
             <span class="kw">let </span>list = ffi::g_list_prepend(
@@ -1535,11 +1535,11 @@
             <span class="kw">return</span>;
         }
         <span class="kw">match </span><a class="self" href="#491">self</a>.ptr.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|p| <a href="#496">p</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>()) {
-            <span class="prelude-val">Some</span>(ptr1) =&gt; {
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(ptr1) =&gt; {
                 <span class="kw">let </span>ptr2 = <a href="#492">list</a>.<a href="#387-392">into_raw</a>();
                 <span class="kw">let _ </span>= <span class="kw">unsafe </span>{ ffi::g_list_concat(<a href="#497">ptr1</a>, <a href="#498">ptr2</a>) };
             }
-            <span class="prelude-val">None </span>=&gt; {
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None"><a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a> </a>=&gt; {
                 <a class="self" href="#491">self</a>.ptr = <a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.new">ptr::NonNull::new</a>(<a href="#492">list</a>.<a href="#387-392">into_raw</a>());
             }
         }
@@ -1695,13 +1695,13 @@
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>next(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>T&gt; {
         <span class="kw">match </span><a class="self" href="#655">self</a>.ptr {
-            <span class="prelude-val">None </span>=&gt; <span class="prelude-val">None</span>,
-            <span class="prelude-val">Some</span>(cur) =&gt; <span class="kw">unsafe </span>{
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None"><a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a> </a>=&gt; <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a>,
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(cur) =&gt; <span class="kw">unsafe </span>{
                 <a class="self" href="#655">self</a>.ptr = <a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.new">ptr::NonNull::new</a>(<a href="#658">cur</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().next);
 
                 <span class="kw">let </span>item = <span class="kw-2">&amp;*</span>(<span class="kw-2">&amp;</span><a href="#658">cur</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().data <span class="kw">as </span><span class="kw-2">*const </span>ffi::gpointer <span class="kw">as </span><span class="kw-2">*const </span>T);
 
-                <span class="prelude-val">Some</span>(<a href="#661">item</a>)
+                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#661">item</a>)
             },
         }
     }
@@ -1737,13 +1737,13 @@
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>next(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>T&gt; {
         <span class="kw">match </span><a class="self" href="#697">self</a>.ptr {
-            <span class="prelude-val">None </span>=&gt; <span class="prelude-val">None</span>,
-            <span class="prelude-val">Some</span>(<span class="kw-2">mut </span>cur) =&gt; <span class="kw">unsafe </span>{
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None"><a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a> </a>=&gt; <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a>,
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<span class="kw-2">mut </span>cur) =&gt; <span class="kw">unsafe </span>{
                 <a class="self" href="#697">self</a>.ptr = <a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.new">ptr::NonNull::new</a>(<a href="#700">cur</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().next);
 
                 <span class="kw">let </span>item = <span class="kw-2">&amp;mut *</span>(<span class="kw-2">&amp;mut </span><a href="#700">cur</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_mut">as_mut</a>().data <span class="kw">as </span><span class="kw-2">*mut </span>ffi::gpointer <span class="kw">as </span><span class="kw-2">*mut </span>T);
 
-                <span class="prelude-val">Some</span>(<a href="#703">item</a>)
+                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#703">item</a>)
             },
         }
     }
