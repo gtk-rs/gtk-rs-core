@@ -2,7 +2,9 @@
 
 use std::{ffi::OsString, fmt, ops::Deref, ptr};
 
-use glib::{prelude::*, subclass::prelude::*, translate::*, Error, ExitCode, VariantDict};
+use glib::{
+    prelude::*, subclass::prelude::*, translate::*, Error, ExitCode, Propagation, VariantDict,
+};
 use libc::{c_char, c_int, c_void};
 
 use crate::{ffi, ActionGroup, ActionMap, Application, DBusConnection};
@@ -117,6 +119,10 @@ pub trait ApplicationImpl:
 
     fn dbus_unregister(&self, connection: &DBusConnection, object_path: &str) {
         self.parent_dbus_unregister(connection, object_path)
+    }
+
+    fn name_lost(&self) -> Propagation {
+        self.parent_name_lost()
     }
 }
 
@@ -316,6 +322,21 @@ pub trait ApplicationImplExt: ApplicationImpl {
             );
         }
     }
+
+    fn parent_name_lost(&self) -> Propagation {
+        unsafe {
+            let data = Self::type_data();
+            let parent_class = data.as_ref().parent_class() as *mut ffi::GApplicationClass;
+            let f = (*parent_class)
+                .name_lost
+                .expect("No parent class implementation for \"name_lost\"");
+            Propagation::from_glib(f(self
+                .obj()
+                .unsafe_cast_ref::<Application>()
+                .to_glib_none()
+                .0))
+        }
+    }
 }
 
 impl<T: ApplicationImpl> ApplicationImplExt for T {}
@@ -338,6 +359,7 @@ unsafe impl<T: ApplicationImpl> IsSubclassable<T> for Application {
         klass.handle_local_options = Some(application_handle_local_options::<T>);
         klass.dbus_register = Some(application_dbus_register::<T>);
         klass.dbus_unregister = Some(application_dbus_unregister::<T>);
+        klass.name_lost = Some(application_name_lost::<T>);
     }
 }
 
@@ -476,6 +498,14 @@ unsafe extern "C" fn application_dbus_unregister<T: ApplicationImpl>(
         &from_glib_borrow(connection),
         &glib::GString::from_glib_borrow(object_path),
     );
+}
+
+unsafe extern "C" fn application_name_lost<T: ApplicationImpl>(
+    ptr: *mut ffi::GApplication,
+) -> glib::ffi::gboolean {
+    let instance = &*(ptr as *mut T::Instance);
+    let imp = instance.imp();
+    imp.name_lost().into_glib()
 }
 
 #[cfg(test)]
