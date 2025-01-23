@@ -150,7 +150,7 @@ impl ops::Add<Quaternion> for Quaternion {
     type Output = Quaternion;
 
     fn add(self, rhs: Quaternion) -> Self::Output {
-        (&self).add(&rhs)
+        Quaternion::add(&self, &rhs)
     }
 }
 
@@ -164,7 +164,7 @@ impl ops::Mul<Quaternion> for Quaternion {
     type Output = Quaternion;
 
     fn mul(self, rhs: Quaternion) -> Self::Output {
-        (&self).multiply(&rhs)
+        Quaternion::multiply(&self, &rhs)
     }
 }
 

@@ -58,7 +58,7 @@ impl ops::Add<Vec2> for Vec2 {
     type Output = Vec2;
 
     fn add(self, rhs: Vec2) -> Self::Output {
-        (&self).add(&rhs)
+        Vec2::add(&self, &rhs)
     }
 }
 impl ops::AddAssign<Vec2> for Vec2 {
@@ -70,7 +70,7 @@ impl ops::Sub<Vec2> for Vec2 {
     type Output = Vec2;
 
     fn sub(self, rhs: Vec2) -> Self::Output {
-        (&self).subtract(&rhs)
+        Vec2::subtract(&self, &rhs)
     }
 }
 impl ops::SubAssign<Vec2> for Vec2 {
@@ -82,7 +82,7 @@ impl ops::Neg for Vec2 {
     type Output = Vec2;
 
     fn neg(self) -> Self::Output {
-        (&self).negate()
+        Vec2::negate(&self)
     }
 }
 
@@ -91,7 +91,7 @@ impl ops::Mul<f32> for Vec2 {
     type Output = Vec2;
 
     fn mul(self, rhs: f32) -> Self::Output {
-        (&self).scale(rhs)
+        Vec2::scale(&self, rhs)
     }
 }
 impl ops::MulAssign<f32> for Vec2 {
@@ -112,7 +112,7 @@ impl ops::Mul<Vec2> for Vec2 {
     type Output = Vec2;
 
     fn mul(self, rhs: Vec2) -> Self::Output {
-        (&self).multiply(&rhs)
+        Vec2::multiply(&self, &rhs)
     }
 }
 impl ops::MulAssign<Vec2> for Vec2 {
@@ -124,7 +124,7 @@ impl ops::Div<Vec2> for Vec2 {
     type Output = Vec2;
 
     fn div(self, rhs: Vec2) -> Self::Output {
-        (&self).divide(&rhs)
+        Vec2::divide(&self, &rhs)
     }
 }
 impl ops::DivAssign<Vec2> for Vec2 {
