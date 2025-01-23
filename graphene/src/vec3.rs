@@ -59,7 +59,7 @@ impl ops::Add<Vec3> for Vec3 {
     type Output = Vec3;
 
     fn add(self, rhs: Vec3) -> Self::Output {
-        (&self).add(&rhs)
+        Vec3::add(&self, &rhs)
     }
 }
 impl ops::AddAssign<Vec3> for Vec3 {
@@ -71,7 +71,7 @@ impl ops::Sub<Vec3> for Vec3 {
     type Output = Vec3;
 
     fn sub(self, rhs: Vec3) -> Self::Output {
-        (&self).subtract(&rhs)
+        Vec3::subtract(&self, &rhs)
     }
 }
 impl ops::SubAssign<Vec3> for Vec3 {
@@ -83,7 +83,7 @@ impl ops::Neg for Vec3 {
     type Output = Vec3;
 
     fn neg(self) -> Self::Output {
-        (&self).negate()
+        Vec3::negate(&self)
     }
 }
 
@@ -92,7 +92,7 @@ impl ops::Mul<f32> for Vec3 {
     type Output = Vec3;
 
     fn mul(self, rhs: f32) -> Self::Output {
-        (&self).scale(rhs)
+        Vec3::scale(&self, rhs)
     }
 }
 impl ops::MulAssign<f32> for Vec3 {
@@ -113,7 +113,7 @@ impl ops::Mul<Vec3> for Vec3 {
     type Output = Vec3;
 
     fn mul(self, rhs: Vec3) -> Self::Output {
-        (&self).multiply(&rhs)
+        Vec3::multiply(&self, &rhs)
     }
 }
 impl ops::MulAssign<Vec3> for Vec3 {
@@ -125,7 +125,7 @@ impl ops::Div<Vec3> for Vec3 {
     type Output = Vec3;
 
     fn div(self, rhs: Vec3) -> Self::Output {
-        (&self).divide(&rhs)
+        Vec3::divide(&self, &rhs)
     }
 }
 impl ops::DivAssign<Vec3> for Vec3 {

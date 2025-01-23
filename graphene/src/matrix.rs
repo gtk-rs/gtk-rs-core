@@ -234,7 +234,7 @@ impl ops::Mul<Matrix> for Matrix {
     type Output = Matrix;
 
     fn mul(self, rhs: Matrix) -> Self::Output {
-        (&self).multiply(&rhs)
+        Matrix::multiply(&self, &rhs)
     }
 }
 impl ops::MulAssign<Matrix> for Matrix {
@@ -246,16 +246,20 @@ impl ops::MulAssign<Matrix> for Matrix {
 impl ops::Mul<Vec4> for Matrix {
     type Output = Vec4;
 
+    /// Transforms this `Vec4` using the provided matrix.
+    /// See [Matrix::transform_vec4].
     fn mul(self, rhs: Vec4) -> Self::Output {
-        (&self).transform_vec4(&rhs)
+        Matrix::transform_vec4(&self, &rhs)
     }
 }
 
 impl ops::Mul<Vec3> for Matrix {
     type Output = Vec3;
 
+    /// Transforms this `Vec3` using the provided matrix.
+    /// See [Matrix::transform_vec3].
     fn mul(self, rhs: Vec3) -> Self::Output {
-        (&self).transform_vec3(&rhs)
+        Matrix::transform_vec3(&self, &rhs)
     }
 }
 
@@ -263,15 +267,17 @@ impl ops::Mul<Point> for Matrix {
     type Output = Point;
 
     fn mul(self, rhs: Point) -> Self::Output {
-        (&self).transform_point(&rhs)
+        Matrix::transform_point(&self, &rhs)
     }
 }
 
 impl ops::Mul<Point3D> for Matrix {
     type Output = Point3D;
 
+    /// Transforms this point using the provided matrix.
+    /// See [Matrix::transform_point3d].
     fn mul(self, rhs: Point3D) -> Self::Output {
-        (&self).transform_point3d(&rhs)
+        Matrix::transform_point3d(&self, &rhs)
     }
 }
 
