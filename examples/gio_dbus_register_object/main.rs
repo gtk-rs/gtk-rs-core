@@ -23,7 +23,7 @@ mod imp {
 
     use gio::prelude::*;
     use gio::subclass::prelude::*;
-    use gio::{DBusConnection, IOErrorEnum};
+    use gio::{DBusConnection, DBusError};
 
     const EXAMPLE_XML: &str = r#"
 <node>
@@ -71,10 +71,10 @@ mod imp {
                 "Hello" => Ok(params.get::<Hello>().map(Self::Hello)),
                 "SlowHello" => Ok(params.get::<SlowHello>().map(Self::SlowHello)),
                 "GoodBye" => Ok(Some(Self::GoodBye)),
-                _ => Err(glib::Error::new(IOErrorEnum::Failed, "No such method")),
+                _ => Err(glib::Error::new(DBusError::UnknownMethod, "No such method")),
             }
             .and_then(|p| {
-                p.ok_or_else(|| glib::Error::new(IOErrorEnum::Failed, "Invalid parameters"))
+                p.ok_or_else(|| glib::Error::new(DBusError::InvalidArgs, "Invalid parameters"))
             })
         }
     }
