@@ -12,6 +12,7 @@ mod flags_attribute;
 mod object_impl_attributes;
 mod properties;
 mod shared_boxed_derive;
+mod signals;
 mod value_delegate_derive;
 mod variant_derive;
 
@@ -1497,6 +1498,20 @@ pub fn derived_properties(_attr: TokenStream, item: TokenStream) -> TokenStream 
             )
         })
         .and_then(|input| derived_properties_attribute::impl_derived_properties(&input))
+        .unwrap_or_else(syn::Error::into_compile_error)
+        .into()
+}
+
+/// This macro enables you to implement object signals in a quick way.
+#[proc_macro_attribute]
+pub fn signals(attr: TokenStream, item: TokenStream) -> TokenStream {
+    let attr_input = syn::parse_macro_input!(attr as signals::SignalAttrInput);
+
+    syn::parse::<syn::ItemImpl>(item)
+        .map_err(|_| {
+            syn::Error::new(Span::call_site(), signals::WRONG_PLACE_MSG)
+        })
+        .and_then(|item_input| signals::impl_signals(attr_input, item_input))
         .unwrap_or_else(syn::Error::into_compile_error)
         .into()
 }
