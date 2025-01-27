@@ -118,6 +118,18 @@ pub trait FontExt: IsA<Font> + 'static {
     //    unsafe { TODO: call ffi:pango_font_get_hb_font() }
     //}
 
+    #[cfg(feature = "v1_50")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
+    #[doc(alias = "pango_font_get_languages")]
+    #[doc(alias = "get_languages")]
+    fn languages(&self) -> Vec<Language> {
+        unsafe {
+            FromGlibPtrContainer::from_glib_none(ffi::pango_font_get_languages(
+                self.as_ref().to_glib_none().0,
+            ))
+        }
+    }
+
     #[doc(alias = "pango_font_get_metrics")]
     #[doc(alias = "get_metrics")]
     fn metrics(&self, language: Option<&Language>) -> FontMetrics {
