@@ -1505,7 +1505,7 @@ pub fn derived_properties(_attr: TokenStream, item: TokenStream) -> TokenStream 
 /// This macro enables you to implement object signals in a quick way.
 #[proc_macro_attribute]
 pub fn signals(attr: TokenStream, item: TokenStream) -> TokenStream {
-    let attr_input = syn::parse_macro_input!(attr as signals::SignalAttrInput);
+    let attr_input = syn::parse_macro_input!(attr as signals::Args);
 
     syn::parse::<syn::ItemImpl>(item)
         .map_err(|_| {

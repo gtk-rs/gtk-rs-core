@@ -30,7 +30,7 @@ pub use bitflags;
 #[doc(hidden)]
 pub use glib_macros::cstr_bytes;
 pub use glib_macros::{
-    async_test, clone, closure, closure_local, derived_properties, flags, object_interface,
+    async_test, clone, closure, closure_local, derived_properties, flags, signals, object_interface,
     object_subclass, Boxed, Downgrade, Enum, ErrorDomain, Properties, SharedBoxed, ValueDelegate,
     Variant,
 };
