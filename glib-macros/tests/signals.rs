@@ -4,6 +4,7 @@ mod base {
 
     pub mod imp {
         use super::*;
+        use glib::subclass::prelude::*;
 
         #[derive(Default)]
         pub struct Base {}
@@ -26,6 +27,7 @@ mod base {
             type Type = super::Base;
         }
 
+        #[glib::derived_signals]
         impl ObjectImpl for Base {
             fn constructed(&self) {
             }

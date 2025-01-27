@@ -1,5 +1,5 @@
 use bitflags::bitflags;
-use proc_macro2::{Literal, Punct, Span, TokenStream, TokenTree};
+use proc_macro2::{Literal, Span, TokenStream};
 use quote::ToTokens;
 use syn::{ext::IdentExt, parse::Parse, punctuated::Punctuated, Token};
 
@@ -8,6 +8,9 @@ use crate::utils::crate_ident_new;
 pub const WRONG_PLACE_MSG: &str =
     "This macro should be used on a plain `impl` block of the inner object type";
 
+/// An incomplete function in an impl block.
+/// This is used to declare a signal with no class handler.
+#[allow(unused)]
 struct ImplItemIncompleteFn {
     pub attrs: Vec<syn::Attribute>,
     pub vis: syn::Visibility,
@@ -416,4 +419,13 @@ fn impl_object_signals<'a>(
             }
         }
     }
+}
+
+fn impl_signal_wrapper<'a>(
+    args: Args, 
+    glib: &TokenStream,
+    ty: &syn::Type,
+    signals: impl IntoIterator<Item = &'a SignalDesc>
+) -> TokenStream {
+    todo!()
 }

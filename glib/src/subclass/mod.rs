@@ -445,7 +445,10 @@ pub mod prelude {
     pub use super::{
         boxed::BoxedType,
         interface::{ObjectInterface, ObjectInterfaceExt, ObjectInterfaceType},
-        object::{DerivedObjectProperties, ObjectClassSubclassExt, ObjectImpl, ObjectImplExt},
+        object::{
+            DerivedObjectProperties, DerivedObjectSignals, ObjectClassSubclassExt, ObjectImpl,
+            ObjectImplExt,
+        },
         shared::{RefCounted, SharedType},
         type_module::{TypeModuleImpl, TypeModuleImplExt},
         type_plugin::{TypePluginImpl, TypePluginImplExt, TypePluginRegisterImpl},
