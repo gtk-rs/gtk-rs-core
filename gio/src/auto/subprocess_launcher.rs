@@ -79,13 +79,6 @@ impl SubprocessLauncher {
         }
     }
 
-    #[doc(alias = "g_subprocess_launcher_set_environ")]
-    pub fn set_environ(&self, env: &[&std::path::Path]) {
-        unsafe {
-            ffi::g_subprocess_launcher_set_environ(self.to_glib_none().0, env.to_glib_none().0);
-        }
-    }
-
     #[doc(alias = "g_subprocess_launcher_set_flags")]
     pub fn set_flags(&self, flags: SubprocessFlags) {
         unsafe {
