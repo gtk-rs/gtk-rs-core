@@ -1,6 +1,7 @@
 use bitflags::bitflags;
-use proc_macro2::{Punct, Span, TokenStream, TokenTree};
-use syn::{ext::IdentExt, parse::Parse, Token};
+use proc_macro2::{Literal, Punct, Span, TokenStream, TokenTree};
+use quote::ToTokens;
+use syn::{ext::IdentExt, parse::Parse, punctuated::Punctuated, Token};
 
 use crate::utils::crate_ident_new;
 
@@ -70,13 +71,13 @@ impl Parse for Args {
 
 /// A single parameter in `#[signal(...)]`.
 pub enum SignalAttr {
-    RunFirst,
-    RunLast,
-    RunCleanup,
-    NoRecurse,
-    Detailed,
-    Action,
-    NoHooks,
+    RunFirst(syn::Ident),
+    RunLast(syn::Ident),
+    RunCleanup(syn::Ident),
+    NoRecurse(syn::Ident),
+    Detailed(syn::Ident),
+    Action(syn::Ident),
+    NoHooks(syn::Ident),
     Accum(syn::Expr),
 }
 impl Parse for SignalAttr {
@@ -98,13 +99,13 @@ impl Parse for SignalAttr {
             }
         } else {
             match &*name_str {
-                "run_first" => Self::RunFirst,
-                "run_last" => Self::RunLast,
-                "run_cleanup" => Self::RunCleanup,
-                "no_recurse" => Self::NoRecurse,
-                "detailed" => Self::Detailed,
-                "action" => Self::Action,
-                "no_hooks" => Self::NoHooks,
+                "run_first" => Self::RunFirst(name),
+                "run_last" => Self::RunLast(name),
+                "run_cleanup" => Self::RunCleanup(name),
+                "no_recurse" => Self::NoRecurse(name),
+                "detailed" => Self::Detailed(name),
+                "action" => Self::Action(name),
+                "no_hooks" => Self::NoHooks(name),
                 _ => {
                     return Err(syn::Error::new_spanned(
                         name,
@@ -115,6 +116,33 @@ impl Parse for SignalAttr {
         };
 
         Ok(result)
+    }
+}
+impl SignalAttr {
+    fn extract_items<'a>(
+        attrs: impl IntoIterator<Item = &'a syn::Attribute>,
+    ) -> syn::Result<Option<Vec<Self>>> {
+        let attr = match attrs
+            .into_iter()
+            .find(|attr| attr.path().is_ident("signal"))
+        {
+            Some(attr) => attr,
+            None => return Ok(None),
+        };
+        match &attr.meta {
+            syn::Meta::Path(_) => Ok(Some(Vec::new())),
+            syn::Meta::List(meta_list) => {
+                let attrs: Punctuated<SignalAttr, Token![,]> =
+                    meta_list.parse_args_with(Punctuated::parse_separated_nonempty)?;
+                Ok(Some(attrs.into_iter().collect()))
+            }
+            syn::Meta::NameValue(_) => {
+                return Err(syn::Error::new_spanned(
+                    attr,
+                    "expected #[signal] or #[signal(<arg1>, ...)]",
+                ))
+            }
+        }
     }
 }
 
@@ -131,75 +159,18 @@ bitflags! {
     }
 }
 
-/// Collected info from the #[signal(...)] attribute.
-#[derive(Default)]
-struct SignalTagInfo {
-    flags: SignalFlags,
-    accum: Option<syn::Expr>,
-}
-impl SignalTagInfo {
-    fn set_from_attr(&mut self, attr: SignalAttr) {
-        match attr {
-            SignalAttr::RunFirst => self.flags |= SignalFlags::RUN_FIRST,
-            SignalAttr::RunLast => self.flags |= SignalFlags::RUN_LAST,
-            SignalAttr::RunCleanup => self.flags |= SignalFlags::RUN_CLEANUP,
-            SignalAttr::NoRecurse => self.flags |= SignalFlags::NO_RECURSE,
-            SignalAttr::Detailed => self.flags |= SignalFlags::DETAILED,
-            SignalAttr::Action => self.flags |= SignalFlags::ACTION,
-            SignalAttr::NoHooks => self.flags |= SignalFlags::NO_HOOKS,
-            SignalAttr::Accum(expr) => self.accum = Some(expr),
-        }
-    }
-}
-impl SignalTagInfo {
-    fn extract_from<'a, I: IntoIterator<Item = &'a syn::Attribute>>(
-        attrs: I,
-    ) -> syn::Result<Option<Self>> {
-        let attribute = match attrs
-            .into_iter()
-            .find(|attr| attr.path().is_ident("signal"))
-        {
-            Some(attr) => attr,
-            None => return Ok(None),
-        };
-        match &attribute.meta {
-            syn::Meta::Path(_) => Ok(Some(Self::default())),
-            syn::Meta::List(meta_list) => Ok(Some(meta_list.parse_args::<Self>()?)),
-            syn::Meta::NameValue(meta_name_value) => {
-                return Err(syn::Error::new_spanned(
-                    meta_name_value,
-                    "Invalid #[signal] syntax",
-                ))
-            }
-        }
-    }
-}
-impl Parse for SignalTagInfo {
-    fn parse(input: syn::parse::ParseStream) -> syn::Result<Self> {
-        let attrs =
-            syn::punctuated::Punctuated::<SignalAttr, Token![,]>::parse_separated_nonempty(input)?;
-
-        let mut value = Self::default();
-        for attr in attrs {
-            value.set_from_attr(attr);
-        }
-        Ok(value)
-    }
-}
-
 /// Full description of an eventual signal, based on the provided
 /// method signature and signal tag info.
 struct SignalDesc {
     name: String,
     param_types: Vec<syn::Type>,
     return_type: Option<syn::Type>,
-    flags: SignalFlags,
+    flags: Vec<SignalAttr>,
     class_handler: Option<syn::Ident>,
-    accum: Option<syn::Expr>,
 }
 impl SignalDesc {
     fn new(
-        tag_info: SignalTagInfo,
+        flags: Vec<SignalAttr>,
         signature: &syn::Signature,
         complete: bool,
     ) -> syn::Result<Self> {
@@ -225,7 +196,7 @@ impl SignalDesc {
                 .iter()
                 .skip(1)
                 .map(|arg| match arg {
-                    syn::FnArg::Receiver(receiver) => panic!("unexpected receiver"),
+                    syn::FnArg::Receiver(_) => panic!("unexpected receiver"),
                     syn::FnArg::Typed(pat_type) => (&*pat_type.ty).clone(),
                 })
                 .collect()
@@ -241,11 +212,7 @@ impl SignalDesc {
             },
         };
 
-        let flags = tag_info.flags;
-
         let class_handler = complete.then(|| signature.ident.clone());
-
-        let accum = tag_info.accum;
 
         Ok(Self {
             name,
@@ -253,7 +220,6 @@ impl SignalDesc {
             return_type,
             flags,
             class_handler,
-            accum,
         })
     }
 }
@@ -272,14 +238,20 @@ pub fn impl_signals(attr: Args, input: syn::ItemImpl) -> syn::Result<TokenStream
     for item in &input.items {
         match item {
             item @ syn::ImplItem::Fn(method) => {
-                let attr_info = match SignalTagInfo::extract_from(&method.attrs)? {
-                    Some(attr_info) => attr_info,
+                let flags = match SignalAttr::extract_items(&method.attrs)? {
+                    Some(flags) => flags,
                     None => {
                         out_impl.items.push(item.clone());
                         continue;
                     }
                 };
-                let desc = SignalDesc::new(attr_info, &method.sig, true)?;
+                let mut out_method = method.clone();
+                out_method
+                    .attrs
+                    .retain(|item| !item.path().is_ident("signal"));
+                out_impl.items.push(syn::ImplItem::Fn(out_method));
+
+                let desc = SignalDesc::new(flags, &method.sig, true)?;
                 out_signals.push(desc);
             }
             item @ syn::ImplItem::Verbatim(tokens) => {
@@ -293,14 +265,14 @@ pub fn impl_signals(attr: Args, input: syn::ItemImpl) -> syn::Result<TokenStream
                 };
                 // if it has the signal attribute, it's a signal
                 // let the Rust compiler generate an error if not
-                let attr_info = match SignalTagInfo::extract_from(&method.attrs)? {
-                    Some(attr_info) => attr_info,
+                let flags = match SignalAttr::extract_items(&method.attrs)? {
+                    Some(flags) => flags,
                     None => {
                         out_impl.items.push(item.clone());
                         continue;
                     }
                 };
-                let desc = SignalDesc::new(attr_info, &method.sig, false)?;
+                let desc = SignalDesc::new(flags, &method.sig, false)?;
                 out_signals.push(desc);
             }
             item => out_impl.items.push(item.clone()),
@@ -327,50 +299,104 @@ fn impl_object_signals<'a>(
         .into_iter()
         .map(|signal| {
             let name = syn::LitStr::new(&signal.name, Span::call_site());
-            let run_first = signal.flags.contains(SignalFlags::RUN_FIRST).then(|| {
-                quote::quote! {
-                    .run_first()
-                }
-            });
-            let run_last = signal.flags.contains(SignalFlags::RUN_LAST).then(|| {
-                quote::quote! {
-                    .run_last()
-                }
-            });
-            let run_cleanup = signal.flags.contains(SignalFlags::RUN_CLEANUP).then(|| {
-                quote::quote! {
-                    .run_cleanup()
-                }
-            });
-            let no_recurse = signal.flags.contains(SignalFlags::NO_RECURSE).then(|| {
-                quote::quote! {
-                    .no_recurse()
-                }
-            });
-            let detailed = signal.flags.contains(SignalFlags::DETAILED).then(|| {
-                quote::quote! {
-                    .detailed()
-                }
-            });
-            let action = signal.flags.contains(SignalFlags::ACTION).then(|| {
-                quote::quote! {
-                    .action()
-                }
-            });
-            let no_hooks = signal.flags.contains(SignalFlags::NO_HOOKS).then(|| {
-                quote::quote! {
-                    .no_hooks()
-                }
-            });
+            let param_types = match signal.param_types.is_empty() {
+                true => None,
+                false => {
+                    let param_types = &signal.param_types;
+                    Some(quote::quote! {
+                        .param_types([#(<#param_types as #glib::types::StaticType>::static_type()),*])
+                    })
+                },
+            };
+            let return_type = match signal.return_type.as_ref() {
+                Some(rt) => {
+                    Some(quote::quote! {
+                        .return_type::<#rt>()
+                    })
+                },
+                None => None,
+            };
+            let flags = signal
+                .flags
+                .iter()
+                .map(|item| match item {
+                    SignalAttr::RunFirst(ident) => quote::quote! {
+                        .#ident()
+                    },
+                    SignalAttr::RunLast(ident) => quote::quote! {
+                        .#ident()
+                    },
+                    SignalAttr::RunCleanup(ident) => quote::quote! {
+                        .#ident()
+                    },
+                    SignalAttr::NoRecurse(ident) => quote::quote! {
+                        .#ident()
+                    },
+                    SignalAttr::Detailed(ident) => quote::quote! {
+                        .#ident()
+                    },
+                    SignalAttr::Action(ident) => quote::quote! {
+                        .#ident()
+                    },
+                    SignalAttr::NoHooks(ident) => quote::quote! {
+                        .#ident()
+                    },
+                    SignalAttr::Accum(expr) => quote::quote! {
+                        .accumulator(#expr)
+                    },
+                })
+                .fold(TokenStream::new(), |mut curr, next| {
+                    curr.extend(next);
+                    curr
+                });
+            let class_handler = match &signal.class_handler {
+                Some(handler_fn) => {
+                    let mut param_idents: Vec<syn::Ident> = Vec::with_capacity(signal.param_types.len());
+                    let mut param_stmts: Vec<TokenStream> = Vec::with_capacity(signal.param_types.len());
+
+                    for i in 0..signal.param_types.len() {
+                        let i_h = i + 1;
+                        let ty = &signal.param_types[i];
+                        let ident = quote::format_ident!("param{}", i);
+                        let err_msg = Literal::string(&format!(
+                            "Parameter {} for signal did not match ({})", 
+                            i_h, 
+                            ty.to_token_stream().to_string()
+                        ));
+
+                        let stmt = quote::quote! {
+                            let #ident = values[#i_h].get::<#ty>()
+                                .expect(#err_msg);
+                        };
+
+                        param_idents.push(ident);
+                        param_stmts.push(stmt);
+                    }
+
+                    Some(quote::quote! {
+                        .class_handler(|values| {
+                            let this = values[0].get::<
+                                <Self as #glib::subclass::types::ObjectSubclass>::Type
+                            >()
+                                .expect("`Self` parameter for signal did not match");
+                            #(#param_stmts)*
+                            let result = <
+                                <Self as #glib::subclass::types::ObjectSubclass>::Type 
+                                as #glib::subclass::types::ObjectSubclassIsExt
+                            >::imp(&this)
+                                .#handler_fn(#(#param_idents),*);
+                            None
+                        })
+                    })
+                },
+                None => None,
+            };
             quote::quote! {
                 #glib::subclass::signal::Signal::builder(#name)
-                    #run_first
-                    #run_last
-                    #run_cleanup
-                    #no_recurse
-                    #detailed
-                    #action
-                    #no_hooks
+                    #param_types
+                    #return_type
+                    #flags
+                    #class_handler
                     .build()
             }
         })

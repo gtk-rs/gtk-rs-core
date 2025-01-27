@@ -11,7 +11,13 @@ mod base {
         #[glib::signals(wrapper_type = super::Base)]
         impl Base {
             #[signal(run_first, no_recurse, no_hooks)]
-            fn void_signal(&self);
+            fn one(&self) -> ();
+            #[signal(run_last, action)]
+            fn two(&self, pi: i32, pf: f32, ps: &str) -> i32;
+            #[signal]
+            fn three(&self, pf: f32) {
+                println!("pf = {}", pf);
+            }
         }
 
         #[glib::object_subclass]
