@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/time_zone.rs`."><title>time_zone.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-e7950ecc.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.86.0-nightly (f85c6de55 2025-01-26)" data-channel="nightly" data-search-js="search-ccb196c1.js" data-settings-js="settings-0f613d39.js" ><script src="../../static.files/storage-59e33391.js"></script><script defer src="../../static.files/src-script-56102188.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/time_zone.rs`."><title>time_zone.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-e7950ecc.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.86.0-nightly (2f348cb7c 2025-01-27)" data-channel="nightly" data-search-js="search-ccb196c1.js" data-settings-js="settings-0f613d39.js" ><script src="../../static.files/storage-59e33391.js"></script><script defer src="../../static.files/src-script-56102188.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -89,69 +89,21 @@
 <a href="#15" id="15">15</a>
 <a href="#16" id="16">16</a>
 <a href="#17" id="17">17</a>
-<a href="#18" id="18">18</a>
-<a href="#19" id="19">19</a>
-<a href="#20" id="20">20</a>
-<a href="#21" id="21">21</a>
-<a href="#22" id="22">22</a>
-<a href="#23" id="23">23</a>
-<a href="#24" id="24">24</a>
-<a href="#25" id="25">25</a>
-<a href="#26" id="26">26</a>
-<a href="#27" id="27">27</a>
-<a href="#28" id="28">28</a>
-<a href="#29" id="29">29</a>
-<a href="#30" id="30">30</a>
-<a href="#31" id="31">31</a>
-<a href="#32" id="32">32</a>
-<a href="#33" id="33">33</a>
-<a href="#34" id="34">34</a>
-<a href="#35" id="35">35</a>
-<a href="#36" id="36">36</a>
-<a href="#37" id="37">37</a>
-<a href="#38" id="38">38</a>
-<a href="#39" id="39">39</a>
-<a href="#40" id="40">40</a>
-<a href="#41" id="41">41</a>
-<a href="#42" id="42">42</a></pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
+<a href="#18" id="18">18</a></pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
 </span><span class="kw">use </span><a href="lib.rs.html#164"><span class="kw">crate</span>::translate</a>::<span class="kw-2">*</span>;
-<span class="kw">use crate</span>::{<a href="auto/enums.rs.html#1039-1051">TimeType</a>, <a href="auto/time_zone.rs.html#7-42">TimeZone</a>};
+<span class="kw">use crate</span>::{<a href="auto/enums.rs.html#832-841">TimeType</a>, <a href="auto/time_zone.rs.html#7-16">TimeZone</a>};
 
-<span class="kw">impl </span><a href="auto/time_zone.rs.html#7-42">TimeZone</a> {
-    <span class="doccomment">/// Finds an interval within @self that corresponds to the given @time_,
-    /// possibly adjusting @time_ if required to fit into an interval.
-    /// The meaning of @time_ depends on @type_.
-    ///
-    /// This function is similar to g_time_zone_find_interval(), with the
-    /// difference that it always succeeds (by making the adjustments
-    /// described below).
-    ///
-    /// In any of the cases where g_time_zone_find_interval() succeeds then
-    /// this function returns the same value, without modifying @time_.
-    ///
-    /// This function may, however, modify @time_ in order to deal with
-    /// non-existent times.  If the non-existent local @time_ of 02:30 were
-    /// requested on March 14th 2010 in Toronto then this function would
-    /// adjust @time_ to be 03:00 and return the interval containing the
-    /// adjusted time.
-    /// ## `type_`
-    /// the #GTimeType of @time_
-    /// ## `time_`
-    /// a pointer to a number of seconds since January 1, 1970
-    ///
-    /// # Returns
-    ///
-    /// the interval containing @time_, never -1
-    </span><span class="attr">#[doc(alias = <span class="string">"g_time_zone_adjust_time"</span>)]
-    </span><span class="kw">pub fn </span>adjust_time(<span class="kw-2">&amp;</span><span class="self">self</span>, type_: <a href="auto/enums.rs.html#1039-1051">TimeType</a>, <span class="kw-2">mut </span>time: <a href="https://doc.rust-lang.org/nightly/std/primitive.i64.html">i64</a>) -&gt; (<a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.i64.html">i64</a>) {
+<span class="kw">impl </span><a href="auto/time_zone.rs.html#7-16">TimeZone</a> {
+    <span class="attr">#[doc(alias = <span class="string">"g_time_zone_adjust_time"</span>)]
+    </span><span class="kw">pub fn </span>adjust_time(<span class="kw-2">&amp;</span><span class="self">self</span>, type_: <a href="auto/enums.rs.html#832-841">TimeType</a>, <span class="kw-2">mut </span>time: <a href="https://doc.rust-lang.org/nightly/std/primitive.i64.html">i64</a>) -&gt; (<a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.i64.html">i64</a>) {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>res = <span class="kw">crate</span>::ffi::g_time_zone_adjust_time(
-                <a class="self" href="#32">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#32">type_</a>.<a href="translate.rs.html#334">into_glib</a>(),
-                <span class="kw-2">&amp;mut </span><a href="#32">time</a>,
+                <a class="self" href="#8">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#8">type_</a>.<a href="translate.rs.html#334">into_glib</a>(),
+                <span class="kw-2">&amp;mut </span><a href="#8">time</a>,
             );
-            (<a href="#34">res</a>, <a href="#32">time</a>)
+            (<a href="#10">res</a>, <a href="#8">time</a>)
         }
     }
 }

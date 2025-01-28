@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/log.rs`."><title>log.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-e7950ecc.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.86.0-nightly (f85c6de55 2025-01-26)" data-channel="nightly" data-search-js="search-ccb196c1.js" data-settings-js="settings-0f613d39.js" ><script src="../../static.files/storage-59e33391.js"></script><script defer src="../../static.files/src-script-56102188.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/log.rs`."><title>log.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-e7950ecc.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.86.0-nightly (2f348cb7c 2025-01-27)" data-channel="nightly" data-search-js="search-ccb196c1.js" data-settings-js="settings-0f613d39.js" ><script src="../../static.files/storage-59e33391.js"></script><script defer src="../../static.files/src-script-56102188.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -1155,13 +1155,13 @@
     sync::{<a href="https://doc.rust-lang.org/nightly/alloc/sync/struct.Arc.html">Arc</a>, <a href="https://doc.rust-lang.org/nightly/std/sync/poison/mutex/struct.Mutex.html">Mutex</a>, <a href="https://doc.rust-lang.org/nightly/std/sync/once_lock/struct.OnceLock.html">OnceLock</a>},
 };
 
-<span class="kw">use crate</span>::{ffi, <a href="lib.rs.html#164">translate</a>::<span class="kw-2">*</span>, <a href="gstring.rs.html#24">GStr</a>, <a href="gstring.rs.html#1028">GString</a>, <a href="auto/enums.rs.html#650-659">LogWriterOutput</a>};
+<span class="kw">use crate</span>::{ffi, <a href="lib.rs.html#164">translate</a>::<span class="kw-2">*</span>, <a href="gstring.rs.html#24">GStr</a>, <a href="gstring.rs.html#1028">GString</a>, <a href="auto/enums.rs.html#508-515">LogWriterOutput</a>};
 
 <span class="attr">#[derive(Debug)]
 </span><span class="kw">pub struct </span><a href="../../glib/struct.LogHandlerId.html">LogHandlerId</a>(<a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>);
 
 <span class="attr">#[doc(hidden)]
-</span><span class="kw">impl </span><a href="translate.rs.html#1410-1412">FromGlib</a>&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>&gt; <span class="kw">for </span><a href="#13">LogHandlerId</a> {
+</span><span class="kw">impl </span><a href="translate.rs.html#1414-1416">FromGlib</a>&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>&gt; <span class="kw">for </span><a href="#13">LogHandlerId</a> {
     <span class="attr">#[inline]
     </span><span class="kw">unsafe fn </span>from_glib(value: <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>) -&gt; <span class="self">Self </span>{
         <span class="self">Self</span>(<a href="#18">value</a>)
@@ -1212,7 +1212,7 @@
 }
 
 <span class="attr">#[doc(hidden)]
-</span><span class="kw">impl </span><a href="translate.rs.html#1410-1412">FromGlib</a>&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>&gt; <span class="kw">for </span><a href="#34-47">LogLevel</a> {
+</span><span class="kw">impl </span><a href="translate.rs.html#1414-1416">FromGlib</a>&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>&gt; <span class="kw">for </span><a href="#34-47">LogLevel</a> {
     <span class="attr">#[inline]
     </span><span class="kw">unsafe fn </span>from_glib(value: <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>) -&gt; <span class="self">Self </span>{
         <span class="kw">if </span>value &amp; ffi::G_LOG_LEVEL_ERROR != <span class="number">0 </span>{
@@ -1277,7 +1277,7 @@
 }
 
 <span class="attr">#[doc(hidden)]
-</span><span class="kw">impl </span><a href="translate.rs.html#1410-1412">FromGlib</a>&lt;ffi::GLogLevelFlags&gt; <span class="kw">for </span><a href="#102-119">LogLevels</a> {
+</span><span class="kw">impl </span><a href="translate.rs.html#1414-1416">FromGlib</a>&lt;ffi::GLogLevelFlags&gt; <span class="kw">for </span><a href="#102-119">LogLevels</a> {
     <span class="attr">#[inline]
     </span><span class="kw">unsafe fn </span>from_glib(value: ffi::GLogLevelFlags) -&gt; <span class="self">Self </span>{
         <a href="#102-119"><span class="self">Self</span>::from_bits_truncate</a>(<a href="#134">value</a>)
@@ -1310,12 +1310,12 @@
         message: <span class="kw-2">*const </span>libc::c_char,
         user_data: ffi::gpointer,
     ) {
-        <span class="kw">let </span>log_domain: <a href="translate.rs.html#277">Borrowed</a>&lt;<a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="gstring.rs.html#1028">GString</a>&gt;&gt; = <a href="translate.rs.html#1643-1645">from_glib_borrow</a>(<a href="#160">log_domain</a>);
-        <span class="kw">let </span>message: <a href="translate.rs.html#277">Borrowed</a>&lt;<a href="gstring.rs.html#1028">GString</a>&gt; = <a href="translate.rs.html#1643-1645">from_glib_borrow</a>(<a href="#162">message</a>);
+        <span class="kw">let </span>log_domain: <a href="translate.rs.html#277">Borrowed</a>&lt;<a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="gstring.rs.html#1028">GString</a>&gt;&gt; = <a href="translate.rs.html#1647-1649">from_glib_borrow</a>(<a href="#160">log_domain</a>);
+        <span class="kw">let </span>message: <a href="translate.rs.html#277">Borrowed</a>&lt;<a href="gstring.rs.html#1028">GString</a>&gt; = <a href="translate.rs.html#1647-1649">from_glib_borrow</a>(<a href="#162">message</a>);
         <span class="kw">let </span>callback: <span class="kw-2">&amp;</span>P = <span class="kw-2">&amp;*</span>(<a href="#163">user_data</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
         (<span class="kw-2">*</span><a href="#167">callback</a>)(
             (<span class="kw-2">*</span><a href="#165">log_domain</a>).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_ref">as_ref</a>().<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|s| <a href="#169">s</a>.<a href="gstring.rs.html#1253-1267">as_str</a>()),
-            <a href="translate.rs.html#1417-1419">from_glib</a>(<a href="#161">log_level</a>),
+            <a href="translate.rs.html#1421-1423">from_glib</a>(<a href="#161">log_level</a>),
             <a href="#166">message</a>.<a href="gstring.rs.html#1253-1267">as_str</a>(),
         );
     }
@@ -1330,7 +1330,7 @@
     <span class="kw">let </span>destroy_call4 = <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#175-181">destroy_func</a>::&lt;P&gt; <span class="kw">as _</span>);
     <span class="kw">let </span>super_callback0: <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;P&gt; = <a href="#156">log_func_data</a>;
     <span class="kw">unsafe </span>{
-        <a href="translate.rs.html#1417-1419">from_glib</a>(ffi::g_log_set_handler_full(
+        <a href="translate.rs.html#1421-1423">from_glib</a>(ffi::g_log_set_handler_full(
             <a href="#150">log_domain</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
             <a href="#151">log_levels</a>.<a href="translate.rs.html#334">into_glib</a>() | <a href="#139-146">to_log_flags</a>(<a href="#152">fatal</a>, <a href="#153">recursion</a>),
             <a href="#174">log_func</a>,
@@ -1349,13 +1349,13 @@
 
 <span class="attr">#[doc(alias = <span class="string">"g_log_set_always_fatal"</span>)]
 </span><span class="kw">pub fn </span><a href="../../glib/fn.log_set_always_fatal.html">log_set_always_fatal</a>(fatal_levels: <a href="#102-119">LogLevels</a>) -&gt; <a href="#102-119">LogLevels</a> {
-    <span class="kw">unsafe </span>{ <a href="translate.rs.html#1417-1419">from_glib</a>(ffi::g_log_set_always_fatal(<a href="#203">fatal_levels</a>.<a href="translate.rs.html#334">into_glib</a>())) }
+    <span class="kw">unsafe </span>{ <a href="translate.rs.html#1421-1423">from_glib</a>(ffi::g_log_set_always_fatal(<a href="#203">fatal_levels</a>.<a href="translate.rs.html#334">into_glib</a>())) }
 }
 
 <span class="attr">#[doc(alias = <span class="string">"g_log_set_fatal_mask"</span>)]
 </span><span class="kw">pub fn </span><a href="../../glib/fn.log_set_fatal_mask.html">log_set_fatal_mask</a>(log_domain: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;, fatal_levels: <a href="#102-119">LogLevels</a>) -&gt; <a href="#102-119">LogLevels</a> {
     <span class="kw">unsafe </span>{
-        <a href="translate.rs.html#1417-1419">from_glib</a>(ffi::g_log_set_fatal_mask(
+        <a href="translate.rs.html#1421-1423">from_glib</a>(ffi::g_log_set_fatal_mask(
             <a href="#208">log_domain</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
             <a href="#208">fatal_levels</a>.<a href="translate.rs.html#334">into_glib</a>(),
         ))
@@ -1380,7 +1380,7 @@
             .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_ref">as_ref</a>()
             .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(Arc::clone)
         {
-            <span class="kw">let </span>string: <a href="translate.rs.html#277">Borrowed</a>&lt;<a href="gstring.rs.html#1028">GString</a>&gt; = <a href="translate.rs.html#1643-1645">from_glib_borrow</a>(<a href="#228">string</a>);
+            <span class="kw">let </span>string: <a href="translate.rs.html#277">Borrowed</a>&lt;<a href="gstring.rs.html#1028">GString</a>&gt; = <a href="translate.rs.html#1647-1649">from_glib_borrow</a>(<a href="#228">string</a>);
             (<span class="kw-2">*</span><a href="#229">callback</a>)(<a href="#235">string</a>.<a href="gstring.rs.html#1253-1267">as_str</a>())
         }
     }
@@ -1415,7 +1415,7 @@
             .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_ref">as_ref</a>()
             .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(Arc::clone)
         {
-            <span class="kw">let </span>string: <a href="translate.rs.html#277">Borrowed</a>&lt;<a href="gstring.rs.html#1028">GString</a>&gt; = <a href="translate.rs.html#1643-1645">from_glib_borrow</a>(<a href="#263">string</a>);
+            <span class="kw">let </span>string: <a href="translate.rs.html#277">Borrowed</a>&lt;<a href="gstring.rs.html#1028">GString</a>&gt; = <a href="translate.rs.html#1647-1649">from_glib_borrow</a>(<a href="#263">string</a>);
             (<span class="kw-2">*</span><a href="#264">callback</a>)(<a href="#270">string</a>.<a href="gstring.rs.html#1253-1267">as_str</a>())
         }
     }
@@ -1459,11 +1459,11 @@
             .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_ref">as_ref</a>()
             .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(Arc::clone)
         {
-            <span class="kw">let </span>log_domain: <a href="translate.rs.html#277">Borrowed</a>&lt;<a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="gstring.rs.html#1028">GString</a>&gt;&gt; = <a href="translate.rs.html#1643-1645">from_glib_borrow</a>(<a href="#303">log_domain</a>);
-            <span class="kw">let </span>message: <a href="translate.rs.html#277">Borrowed</a>&lt;<a href="gstring.rs.html#1028">GString</a>&gt; = <a href="translate.rs.html#1643-1645">from_glib_borrow</a>(<a href="#305">message</a>);
+            <span class="kw">let </span>log_domain: <a href="translate.rs.html#277">Borrowed</a>&lt;<a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="gstring.rs.html#1028">GString</a>&gt;&gt; = <a href="translate.rs.html#1647-1649">from_glib_borrow</a>(<a href="#303">log_domain</a>);
+            <span class="kw">let </span>message: <a href="translate.rs.html#277">Borrowed</a>&lt;<a href="gstring.rs.html#1028">GString</a>&gt; = <a href="translate.rs.html#1647-1649">from_glib_borrow</a>(<a href="#305">message</a>);
             (<span class="kw-2">*</span><a href="#308">callback</a>)(
                 (<span class="kw-2">*</span><a href="#314">log_domain</a>).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_ref">as_ref</a>().<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|s| <a href="#317">s</a>.<a href="gstring.rs.html#1253-1267">as_str</a>()),
-                <a href="translate.rs.html#1417-1419">from_glib</a>(<a href="#304">log_levels</a>),
+                <a href="translate.rs.html#1421-1423">from_glib</a>(<a href="#304">log_levels</a>),
                 <a href="#315">message</a>.<a href="gstring.rs.html#1253-1267">as_str</a>(),
             );
         }
@@ -1584,13 +1584,13 @@
     }
 }
 
-<span class="kw">type </span>WriterCallback = <span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<a href="#34-47">LogLevel</a>, <span class="kw-2">&amp;</span>[<a href="#363">LogField</a>&lt;<span class="lifetime">'_</span>&gt;]) -&gt; <a href="auto/enums.rs.html#650-659">LogWriterOutput</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>;
+<span class="kw">type </span>WriterCallback = <span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<a href="#34-47">LogLevel</a>, <span class="kw-2">&amp;</span>[<a href="#363">LogField</a>&lt;<span class="lifetime">'_</span>&gt;]) -&gt; <a href="auto/enums.rs.html#508-515">LogWriterOutput</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>;
 
 <span class="kw">static </span>WRITER_FUNC: <a href="https://doc.rust-lang.org/nightly/std/sync/once_lock/struct.OnceLock.html">OnceLock</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box</a>&lt;<a href="#439">WriterCallback</a>&gt;&gt; = <a href="https://doc.rust-lang.org/nightly/std/sync/once_lock/struct.OnceLock.html#method.new">OnceLock::new</a>();
 
 <span class="attr">#[doc(alias = <span class="string">"g_log_set_writer_func"</span>)]
 </span><span class="kw">pub fn </span><a href="../../glib/fn.log_set_writer_func.html">log_set_writer_func</a>&lt;
-    P: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<a href="#34-47">LogLevel</a>, <span class="kw-2">&amp;</span>[<a href="#363">LogField</a>&lt;<span class="lifetime">'_</span>&gt;]) -&gt; <a href="auto/enums.rs.html#650-659">LogWriterOutput</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>,
+    P: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<a href="#34-47">LogLevel</a>, <span class="kw-2">&amp;</span>[<a href="#363">LogField</a>&lt;<span class="lifetime">'_</span>&gt;]) -&gt; <a href="auto/enums.rs.html#508-515">LogWriterOutput</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>,
 &gt;(
     writer_func: P,
 ) {
@@ -1605,7 +1605,7 @@
     ) -&gt; ffi::GLogWriterOutput {
         <span class="kw">let </span>writer_func = <a href="#441">WRITER_FUNC</a>.<a href="https://doc.rust-lang.org/nightly/std/sync/once_lock/struct.OnceLock.html#method.get">get</a>().<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap">unwrap</a>();
         <span class="kw">let </span>fields = <a href="https://doc.rust-lang.org/nightly/core/slice/raw/fn.from_raw_parts.html">std::slice::from_raw_parts</a>(<a href="#454">fields</a> <span class="kw">as </span><span class="kw-2">*const </span><a href="#363">LogField</a>&lt;<span class="lifetime">'_</span>&gt;, <a href="#455">n_fields</a>);
-        <a href="#458">writer_func</a>(<a href="translate.rs.html#1417-1419">from_glib</a>(<a href="#453">log_level</a>), <a href="#459">fields</a>).<a href="translate.rs.html#334">into_glib</a>()
+        <a href="#458">writer_func</a>(<a href="translate.rs.html#1421-1423">from_glib</a>(<a href="#453">log_level</a>), <a href="#459">fields</a>).<a href="translate.rs.html#334">into_glib</a>()
     }
     <span class="kw">unsafe </span>{
         ffi::g_log_set_writer_func(<a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#452-461">writer_trampoline</a>), <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">std::ptr::null_mut</a>(), <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a>);
@@ -2106,7 +2106,7 @@
 
 <span class="attr">#[doc(alias = <span class="string">"g_log_variant"</span>)]
 #[inline]
-</span><span class="kw">pub fn </span><a href="../../glib/fn.log_variant.html">log_variant</a>(log_domain: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;, log_level: <a href="#34-47">LogLevel</a>, fields: <span class="kw-2">&amp;</span><a href="variant.rs.html#118-377"><span class="kw">crate</span>::Variant</a>) {
+</span><span class="kw">pub fn </span><a href="../../glib/fn.log_variant.html">log_variant</a>(log_domain: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;, log_level: <a href="#34-47">LogLevel</a>, fields: <span class="kw-2">&amp;</span><a href="variant.rs.html#118-130"><span class="kw">crate</span>::Variant</a>) {
     <span class="kw">unsafe </span>{
         ffi::g_log_variant(
             <a href="#961">log_domain</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
@@ -2121,7 +2121,7 @@
 #[doc(alias = <span class="string">"g_log_writer_supports_color"</span>)]
 #[inline]
 </span><span class="kw">pub fn </span><a href="../../glib/fn.log_writer_supports_color.html">log_writer_supports_color</a>&lt;T: <a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/trait.AsRawFd.html">AsRawFd</a>&gt;(output_fd: T) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
-    <span class="kw">unsafe </span>{ <a href="translate.rs.html#1417-1419">from_glib</a>(ffi::g_log_writer_supports_color(<a href="#975">output_fd</a>.<a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/trait.AsRawFd.html#tymethod.as_raw_fd">as_raw_fd</a>())) }
+    <span class="kw">unsafe </span>{ <a href="translate.rs.html#1421-1423">from_glib</a>(ffi::g_log_writer_supports_color(<a href="#975">output_fd</a>.<a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/trait.AsRawFd.html#tymethod.as_raw_fd">as_raw_fd</a>())) }
 }
 
 <span class="attr">#[cfg(unix)]
@@ -2129,7 +2129,7 @@
 #[doc(alias = <span class="string">"g_log_writer_is_journald"</span>)]
 #[inline]
 </span><span class="kw">pub fn </span><a href="../../glib/fn.log_writer_is_journald.html">log_writer_is_journald</a>&lt;T: <a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/trait.AsRawFd.html">AsRawFd</a>&gt;(output_fd: T) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
-    <span class="kw">unsafe </span>{ <a href="translate.rs.html#1417-1419">from_glib</a>(ffi::g_log_writer_is_journald(<a href="#983">output_fd</a>.<a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/trait.AsRawFd.html#tymethod.as_raw_fd">as_raw_fd</a>())) }
+    <span class="kw">unsafe </span>{ <a href="translate.rs.html#1421-1423">from_glib</a>(ffi::g_log_writer_is_journald(<a href="#983">output_fd</a>.<a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/trait.AsRawFd.html#tymethod.as_raw_fd">as_raw_fd</a>())) }
 }
 
 <span class="attr">#[doc(alias = <span class="string">"g_log_writer_format_fields"</span>)]
@@ -2140,7 +2140,7 @@
     use_color: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>,
 ) -&gt; <a href="gstring.rs.html#1028">GString</a> {
     <span class="kw">unsafe </span>{
-        <a href="translate.rs.html#1634-1636">from_glib_full</a>(ffi::g_log_writer_format_fields(
+        <a href="translate.rs.html#1638-1640">from_glib_full</a>(ffi::g_log_writer_format_fields(
             <a href="#990">log_level</a>.<a href="translate.rs.html#334">into_glib</a>(),
             <a href="#991">fields</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span>ffi::GLogField,
             <a href="#991">fields</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.len">len</a>(),
@@ -2151,9 +2151,9 @@
 
 <span class="attr">#[doc(alias = <span class="string">"g_log_writer_journald"</span>)]
 #[inline]
-</span><span class="kw">pub fn </span><a href="../../glib/fn.log_writer_journald.html">log_writer_journald</a>(log_level: <a href="#34-47">LogLevel</a>, fields: <span class="kw-2">&amp;</span>[<a href="#363">LogField</a>&lt;<span class="lifetime">'_</span>&gt;]) -&gt; <a href="auto/enums.rs.html#650-659">LogWriterOutput</a> {
+</span><span class="kw">pub fn </span><a href="../../glib/fn.log_writer_journald.html">log_writer_journald</a>(log_level: <a href="#34-47">LogLevel</a>, fields: <span class="kw-2">&amp;</span>[<a href="#363">LogField</a>&lt;<span class="lifetime">'_</span>&gt;]) -&gt; <a href="auto/enums.rs.html#508-515">LogWriterOutput</a> {
     <span class="kw">unsafe </span>{
-        <a href="translate.rs.html#1417-1419">from_glib</a>(ffi::g_log_writer_journald(
+        <a href="translate.rs.html#1421-1423">from_glib</a>(ffi::g_log_writer_journald(
             <a href="#1006">log_level</a>.<a href="translate.rs.html#334">into_glib</a>(),
             <a href="#1006">fields</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span>ffi::GLogField,
             <a href="#1006">fields</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.len">len</a>(),
@@ -2167,9 +2167,9 @@
 </span><span class="kw">pub fn </span><a href="../../glib/fn.log_writer_standard_streams.html">log_writer_standard_streams</a>(
     log_level: <a href="#34-47">LogLevel</a>,
     fields: <span class="kw-2">&amp;</span>[<a href="#363">LogField</a>&lt;<span class="lifetime">'_</span>&gt;],
-) -&gt; <a href="auto/enums.rs.html#650-659">LogWriterOutput</a> {
+) -&gt; <a href="auto/enums.rs.html#508-515">LogWriterOutput</a> {
     <span class="kw">unsafe </span>{
-        <a href="translate.rs.html#1417-1419">from_glib</a>(ffi::g_log_writer_standard_streams(
+        <a href="translate.rs.html#1421-1423">from_glib</a>(ffi::g_log_writer_standard_streams(
             <a href="#1020">log_level</a>.<a href="translate.rs.html#334">into_glib</a>(),
             <a href="#1021">fields</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span>ffi::GLogField,
             <a href="#1021">fields</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.len">len</a>(),
@@ -2180,9 +2180,9 @@
 
 <span class="attr">#[doc(alias = <span class="string">"g_log_writer_default"</span>)]
 #[inline]
-</span><span class="kw">pub fn </span><a href="../../glib/fn.log_writer_default.html">log_writer_default</a>(log_level: <a href="#34-47">LogLevel</a>, fields: <span class="kw-2">&amp;</span>[<a href="#363">LogField</a>&lt;<span class="lifetime">'_</span>&gt;]) -&gt; <a href="auto/enums.rs.html#650-659">LogWriterOutput</a> {
+</span><span class="kw">pub fn </span><a href="../../glib/fn.log_writer_default.html">log_writer_default</a>(log_level: <a href="#34-47">LogLevel</a>, fields: <span class="kw-2">&amp;</span>[<a href="#363">LogField</a>&lt;<span class="lifetime">'_</span>&gt;]) -&gt; <a href="auto/enums.rs.html#508-515">LogWriterOutput</a> {
     <span class="kw">unsafe </span>{
-        <a href="translate.rs.html#1417-1419">from_glib</a>(ffi::g_log_writer_default(
+        <a href="translate.rs.html#1421-1423">from_glib</a>(ffi::g_log_writer_default(
             <a href="#1035">log_level</a>.<a href="translate.rs.html#334">into_glib</a>(),
             <a href="#1035">fields</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span>ffi::GLogField,
             <a href="#1035">fields</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.len">len</a>(),
@@ -2215,7 +2215,7 @@
 #[inline]
 </span><span class="kw">pub fn </span><a href="../../glib/fn.log_writer_default_would_drop.html">log_writer_default_would_drop</a>(log_level: <a href="#34-47">LogLevel</a>, log_domain: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
     <span class="kw">unsafe </span>{
-        <a href="translate.rs.html#1417-1419">from_glib</a>(ffi::g_log_writer_default_would_drop(
+        <a href="translate.rs.html#1421-1423">from_glib</a>(ffi::g_log_writer_default_would_drop(
             <a href="#1068">log_level</a>.<a href="translate.rs.html#334">into_glib</a>(),
             <a href="#1068">log_domain</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
         ))
