@@ -166,6 +166,7 @@ bitflags! {
 /// method signature and signal tag info.
 struct SignalDesc {
     name: String,
+    rs_name: String,
     param_types: Vec<syn::Type>,
     return_type: Option<syn::Type>,
     flags: Vec<SignalAttr>,
@@ -190,7 +191,8 @@ impl SignalDesc {
         }
 
         // for now, get name from signature
-        let name = signature.ident.to_string().replace('_', "-");
+        let rs_name = signature.ident.to_string();
+        let name = rs_name.replace('_', "-");
 
         // parameters are remaining signature types
         let param_types = if signature.inputs.len() >= 2 {
@@ -219,6 +221,7 @@ impl SignalDesc {
 
         Ok(Self {
             name,
+            rs_name,
             param_types,
             return_type,
             flags,
@@ -286,20 +289,26 @@ pub fn impl_signals(attr: Args, input: syn::ItemImpl) -> syn::Result<TokenStream
     let derive_signals = impl_object_signals(&crate_name, &*input.self_ty, &out_signals);
 
     // Implement wrapper type
+    let wrapper_impl = impl_signal_wrapper(attr, &crate_name, &out_signals);
 
     Ok(quote::quote! {
         #out_impl
         #derive_signals
+        #wrapper_impl
     })
 }
 
 fn impl_object_signals<'a>(
     glib: &TokenStream,
     ty: &syn::Type,
-    signals: impl IntoIterator<Item = &'a SignalDesc>,
+    signals: impl IntoIterator<
+        Item = &'a SignalDesc, 
+        IntoIter = impl Iterator<Item = &'a SignalDesc> + ExactSizeIterator
+    >,
 ) -> TokenStream {
-    let builders: Vec<_> = signals
-        .into_iter()
+    let signal_iter = signals.into_iter();
+    let count = signal_iter.len();
+    let builders = signal_iter
         .map(|signal| {
             let name = syn::LitStr::new(&signal.name, Span::call_site());
             let param_types = match signal.param_types.is_empty() {
@@ -347,10 +356,6 @@ fn impl_object_signals<'a>(
                     SignalAttr::Accum(expr) => quote::quote! {
                         .accumulator(#expr)
                     },
-                })
-                .fold(TokenStream::new(), |mut curr, next| {
-                    curr.extend(next);
-                    curr
                 });
             let class_handler = match &signal.class_handler {
                 Some(handler_fn) => {
@@ -398,13 +403,11 @@ fn impl_object_signals<'a>(
                 #glib::subclass::signal::Signal::builder(#name)
                     #param_types
                     #return_type
-                    #flags
+                    #(#flags)*
                     #class_handler
                     .build()
             }
-        })
-        .collect();
-    let count = builders.len();
+        });
     quote::quote! {
         #[automatically_derived]
         impl #glib::subclass::object::DerivedObjectSignals for #ty {
@@ -424,8 +427,83 @@ fn impl_object_signals<'a>(
 fn impl_signal_wrapper<'a>(
     args: Args, 
     glib: &TokenStream,
-    ty: &syn::Type,
     signals: impl IntoIterator<Item = &'a SignalDesc>
 ) -> TokenStream {
-    todo!()
+    let signal_iter = signals.into_iter();
+    let methods = signal_iter
+        .map(|signal| {
+            let connect_id = quote::format_ident!("connect_{}", &signal.rs_name);
+            let emit_id = quote::format_ident!("emit_{}", &signal.rs_name);
+
+            let signal_name = Literal::string(&signal.name);
+
+            let closure_bound = {
+                let param_types = &signal.param_types;
+                let return_type = signal
+                    .return_type
+                    .as_ref()
+                    .map_or_else(
+                        || quote::quote! { () }, 
+                        |value| value.to_token_stream()
+                );
+                quote::quote! {
+                    Fn(&Self, #(#param_types),*) -> #return_type + 'static
+                }
+            };
+
+            let param_types = &signal.param_types;
+
+            let return_type = signal
+                .return_type
+                .as_ref()
+                .map_or_else(
+                    || quote::quote! { () }, 
+                    |value| value.to_token_stream()
+                );
+
+            let closure_params: Vec<_> = (0..signal.param_types.len())
+                .map(|i| quote::format_ident!("param{}", i))
+                .collect();
+
+            let emit_coda = signal
+                .return_type
+                .as_ref()
+                .map_or_else(
+                    || quote::quote! { ; },
+                    |ty| quote::quote! {
+                        .unwrap().get::<#ty>().unwrap()
+                    }
+                );
+
+
+            quote::quote! {
+                pub fn #connect_id<F: #closure_bound>(&self, f: F) -> #glib::SignalHandlerId {
+                    <Self as #glib::object::ObjectExt>::connect_closure(
+                        self,
+                        #signal_name,
+                        false,
+                        #glib::closure_local!(|this: &Self, #(#closure_params: #param_types),*| -> #return_type {
+                            f(this, #(#closure_params),*) 
+                        })
+                    )
+                }
+                pub fn #emit_id(&self, #(#closure_params: #param_types),*) -> #return_type {
+                    <Self as #glib::object::ObjectExt>::emit_by_name_with_values(
+                        self,
+                        #signal_name,
+                        &[
+                            #(#glib::value::ToValue::to_value(&#closure_params)),*
+                        ]
+                    )
+                    #emit_coda
+                }
+            }
+        });
+    let ty = &args.wrapper_ty;
+
+    quote::quote! {
+        impl #ty {
+            #(#methods)*
+        }
+    }
 }

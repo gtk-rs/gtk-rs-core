@@ -1,24 +1,23 @@
 mod base {
+    use std::sync::LazyLock;
+
+    use glib::object::ObjectSubclassIs;
     use glib::prelude::*;
-    use glib::subclass::prelude::*;
+    use glib::subclass::{prelude::*, SignalId};
 
     pub mod imp {
         use super::*;
-        use glib::subclass::prelude::*;
 
         #[derive(Default)]
         pub struct Base {}
 
         #[glib::signals(wrapper_type = super::Base)]
         impl Base {
-            #[signal(run_first, no_recurse, no_hooks)]
-            fn one(&self) -> ();
-            #[signal(run_last, action)]
-            fn two(&self, pi: i32, pf: f32, ps: &str) -> i32;
+            #[signal(run_first, action)]
+            fn run_first(&self) -> ();
+
             #[signal]
-            fn three(&self, pf: f32) {
-                println!("pf = {}", pf);
-            }
+            fn has_params(&self, int: i32, float: f32) -> i32;
         }
 
         #[glib::object_subclass]
@@ -29,8 +28,7 @@ mod base {
 
         #[glib::derived_signals]
         impl ObjectImpl for Base {
-            fn constructed(&self) {
-            }
+            fn constructed(&self) {}
         }
     }
 
@@ -39,4 +37,8 @@ mod base {
     }
 }
 
-fn main() {}
+fn main() {
+    let foo = glib::Object::new::<base::Base>();
+
+    foo.emit_run_first();
+}
