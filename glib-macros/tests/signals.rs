@@ -1,3 +1,7 @@
+use std::{cell::Cell, rc::Rc};
+
+use glib::object::ObjectExt;
+
 mod base {
     use std::sync::LazyLock;
 
@@ -37,8 +41,27 @@ mod base {
     }
 }
 
-fn main() {
+#[test]
+fn basic_test() {
     let foo = glib::Object::new::<base::Base>();
 
+    let check: Rc<Cell<bool>> = Rc::new(Cell::new(false));
+
+    let h_id = foo.connect_run_first({
+        let check = Rc::clone(&check);
+        move |_| {
+            check.set(true);
+        }
+    });
+
     foo.emit_run_first();
+    assert_eq!(check.get(), true, "Signal handler should have run");
+
+    foo.disconnect(h_id);
+    check.set(false);
+
+    foo.emit_run_first();
+    assert_eq!(check.get(), false, "Signal handler should not have run");
+
+
 }
