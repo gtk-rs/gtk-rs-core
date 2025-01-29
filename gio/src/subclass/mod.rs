@@ -1,5 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
+mod action;
 mod action_group;
 mod action_map;
 mod application;
@@ -19,6 +20,7 @@ pub mod prelude {
     pub use glib::subclass::prelude::*;
 
     pub use super::{
+        action::{ActionImpl, ActionImplExt},
         action_group::{ActionGroupImpl, ActionGroupImplExt},
         action_map::{ActionMapImpl, ActionMapImplExt},
         application::{ApplicationImpl, ApplicationImplExt},
