@@ -1,3 +1,5 @@
+// Take a look at the license at the top of the repository in the LICENSE file.
+
 use bitflags::bitflags;
 use proc_macro2::{Literal, Span, TokenStream};
 use quote::ToTokens;
