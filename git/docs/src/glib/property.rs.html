@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/property.rs`."><title>property.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-e7950ecc.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.86.0-nightly (2f348cb7c 2025-01-27)" data-channel="nightly" data-search-js="search-ccb196c1.js" data-settings-js="settings-0f613d39.js" ><script src="../../static.files/storage-59e33391.js"></script><script defer src="../../static.files/src-script-56102188.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/property.rs`."><title>property.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-e7950ecc.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.86.0-nightly (bf1b174e7 2025-01-28)" data-channel="nightly" data-search-js="search-ccb196c1.js" data-settings-js="settings-0f613d39.js" ><script src="../../static.files/storage-59e33391.js"></script><script defer src="../../static.files/src-script-56102188.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -358,9 +358,9 @@
 /// The definition is recursive, so you can nest many `Property`s together. The final `ParamSpec` will
 /// be the one of the innermost type
 </span><span class="kw">pub trait </span><a href="../../glib/property/trait.Property.html">Property</a> {
-    <span class="kw">type </span>Value: <a href="param_spec.rs.html#2167-2175">HasParamSpec</a>;
+    <span class="kw">type </span>Value: <a href="param_spec.rs.html#2265-2273">HasParamSpec</a>;
 }
-<span class="kw">impl</span>&lt;T: <a href="param_spec.rs.html#2167-2175">HasParamSpec</a>&gt; <a href="#22-24">Property</a> <span class="kw">for </span>T {
+<span class="kw">impl</span>&lt;T: <a href="param_spec.rs.html#2265-2273">HasParamSpec</a>&gt; <a href="#22-24">Property</a> <span class="kw">for </span>T {
     <span class="kw">type </span>Value = T;
 }
 <span class="kw">impl</span>&lt;T: <a href="#22-24">Property</a>&gt; <a href="#22-24">Property</a> <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">PhantomData</a>&lt;T&gt; {
@@ -391,10 +391,10 @@
 <span class="kw">impl</span>&lt;T: <a href="#22-24">Property</a>&gt; <a href="#22-24">Property</a> <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/alloc/sync/struct.Arc.html">Arc</a>&lt;T&gt; {
     <span class="kw">type </span>Value = T::Value;
 }
-<span class="kw">impl</span>&lt;T: <a href="object.rs.html#71-74">IsA</a>&lt;<a href="object.rs.html#1376-1379">Object</a>&gt; + <a href="param_spec.rs.html#2167-2175">HasParamSpec</a>&gt; <a href="#22-24">Property</a> <span class="kw">for </span><a href="object.rs.html#3468">WeakRef</a>&lt;T&gt; {
+<span class="kw">impl</span>&lt;T: <a href="object.rs.html#71-74">IsA</a>&lt;<a href="object.rs.html#1376-1379">Object</a>&gt; + <a href="param_spec.rs.html#2265-2273">HasParamSpec</a>&gt; <a href="#22-24">Property</a> <span class="kw">for </span><a href="object.rs.html#3468">WeakRef</a>&lt;T&gt; {
     <span class="kw">type </span>Value = <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;T&gt;;
 }
-<span class="kw">impl</span>&lt;T: <a href="object.rs.html#71-74">IsA</a>&lt;<a href="object.rs.html#1376-1379">Object</a>&gt; + <a href="param_spec.rs.html#2167-2175">HasParamSpec</a>&gt; <a href="#22-24">Property</a> <span class="kw">for </span><a href="object.rs.html#3586">SendWeakRef</a>&lt;T&gt; {
+<span class="kw">impl</span>&lt;T: <a href="object.rs.html#71-74">IsA</a>&lt;<a href="object.rs.html#1376-1379">Object</a>&gt; + <a href="param_spec.rs.html#2265-2273">HasParamSpec</a>&gt; <a href="#22-24">Property</a> <span class="kw">for </span><a href="object.rs.html#3586">SendWeakRef</a>&lt;T&gt; {
     <span class="kw">type </span>Value = <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;T&gt;;
 }
 
@@ -427,7 +427,7 @@
     }
 }
 
-<span class="kw">impl</span>&lt;T: <a href="param_spec.rs.html#2167-2175">HasParamSpec</a>&gt; <a href="#65-68">PropertyGet</a> <span class="kw">for </span>T {
+<span class="kw">impl</span>&lt;T: <a href="param_spec.rs.html#2265-2273">HasParamSpec</a>&gt; <a href="#65-68">PropertyGet</a> <span class="kw">for </span>T {
     <span class="kw">type </span>Value = T;
     <span class="kw">fn </span>get&lt;R, F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><span class="self">Self</span>::Value) -&gt; R&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; R {
         <a href="#94">f</a>(<a class="self" href="#94">self</a>)

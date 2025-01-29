@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/subprocess_launcher.rs`."><title>subprocess_launcher.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-e7950ecc.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.86.0-nightly (2f348cb7c 2025-01-27)" data-channel="nightly" data-search-js="search-ccb196c1.js" data-settings-js="settings-0f613d39.js" ><script src="../../static.files/storage-59e33391.js"></script><script defer src="../../static.files/src-script-56102188.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/subprocess_launcher.rs`."><title>subprocess_launcher.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-e7950ecc.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.86.0-nightly (bf1b174e7 2025-01-28)" data-channel="nightly" data-search-js="search-ccb196c1.js" data-settings-js="settings-0f613d39.js" ><script src="../../static.files/storage-59e33391.js"></script><script defer src="../../static.files/src-script-56102188.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -205,17 +205,40 @@
 <a href="#131" id="131">131</a>
 <a href="#132" id="132">132</a>
 <a href="#133" id="133">133</a>
-<a href="#134" id="134">134</a></pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
+<a href="#134" id="134">134</a>
+<a href="#135" id="135">135</a>
+<a href="#136" id="136">136</a>
+<a href="#137" id="137">137</a>
+<a href="#138" id="138">138</a>
+<a href="#139" id="139">139</a>
+<a href="#140" id="140">140</a>
+<a href="#141" id="141">141</a>
+<a href="#142" id="142">142</a>
+<a href="#143" id="143">143</a>
+<a href="#144" id="144">144</a>
+<a href="#145" id="145">145</a>
+<a href="#146" id="146">146</a>
+<a href="#147" id="147">147</a>
+<a href="#148" id="148">148</a>
+<a href="#149" id="149">149</a>
+<a href="#150" id="150">150</a>
+<a href="#151" id="151">151</a>
+<a href="#152" id="152">152</a>
+<a href="#153" id="153">153</a>
+<a href="#154" id="154">154</a>
+<a href="#155" id="155">155</a>
+<a href="#156" id="156">156</a>
+<a href="#157" id="157">157</a>
+<a href="#158" id="158">158</a>
+<a href="#159" id="159">159</a>
+<a href="#160" id="160">160</a></pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
 </span><span class="attr">#[cfg(any(unix, all(docsrs, unix)))]
 </span><span class="kw">use </span><a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/trait.IntoRawFd.html">std::os::unix::io::IntoRawFd</a>;
 
-<span class="attr">#[cfg(unix)]
-</span><span class="kw">use </span><a href="../../glib/translate/index.html">glib::translate</a>::<span class="kw-2">*</span>;
+<span class="kw">use </span><a href="../../glib/translate/index.html">glib::translate</a>::<span class="kw-2">*</span>;
 
-<span class="attr">#[cfg(unix)]
-</span><span class="kw">use </span><a href="../../gio_sys/index.html"><span class="kw">crate</span>::ffi</a>;
-
+<span class="kw">use </span><a href="../../gio_sys/index.html"><span class="kw">crate</span>::ffi</a>;
 <span class="kw">use </span><a href="auto/subprocess_launcher.rs.html#11-38"><span class="kw">crate</span>::SubprocessLauncher</a>;
 
 <span class="attr">#[cfg(all(docsrs, not(unix)))]
@@ -226,6 +249,35 @@
 }
 
 <span class="kw">impl </span><a href="auto/subprocess_launcher.rs.html#11-38">SubprocessLauncher</a> {
+    <span class="doccomment">/// Replace the entire environment of processes launched from this
+    /// launcher with the given 'environ' variable.
+    ///
+    /// Typically you will build this variable by using g_listenv() to copy
+    /// the process 'environ' and using the functions g_environ_setenv(),
+    /// g_environ_unsetenv(), etc.
+    ///
+    /// As an alternative, you can use g_subprocess_launcher_setenv(),
+    /// g_subprocess_launcher_unsetenv(), etc.
+    ///
+    /// Pass an empty array to set an empty environment. Pass [`None`] to inherit the
+    /// parent process’ environment. As of GLib 2.54, the parent process’ environment
+    /// will be copied when g_subprocess_launcher_set_environ() is called.
+    /// Previously, it was copied when the subprocess was executed. This means the
+    /// copied environment may now be modified (using g_subprocess_launcher_setenv(),
+    /// etc.) before launching the subprocess.
+    ///
+    /// On UNIX, all strings in this array can be arbitrary byte strings.
+    /// On Windows, they should be in UTF-8.
+    /// ## `env`
+    ///
+    ///     the replacement environment
+    </span><span class="attr">#[doc(alias = <span class="string">"g_subprocess_launcher_set_environ"</span>)]
+    </span><span class="kw">pub fn </span>set_environ(<span class="kw-2">&amp;</span><span class="self">self</span>, env: <span class="kw-2">&amp;</span>[<a href="https://doc.rust-lang.org/nightly/std/ffi/os_str/struct.OsString.html">std::ffi::OsString</a>]) {
+        <span class="kw">unsafe </span>{
+            <a href="../../gio_sys/fn.g_subprocess_launcher_set_environ.html">ffi::g_subprocess_launcher_set_environ</a>(<a class="self" href="#42">self</a>.<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#42">env</a>.<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>);
+        }
+    }
+
     <span class="doccomment">/// Transfer an arbitrary file descriptor from parent process to the
     /// child.  This function takes ownership of the @source_fd; it will be closed
     /// in the parent when @self is freed.
@@ -248,9 +300,9 @@
     </span><span class="kw">pub fn </span>take_fd(<span class="kw-2">&amp;</span><span class="self">self</span>, source_fd: <span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/trait.IntoRawFd.html">IntoRawFd</a>, target_fd: <span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/trait.IntoRawFd.html">IntoRawFd</a>) {
         <span class="kw">unsafe </span>{
             <a href="../../gio_sys/fn.g_subprocess_launcher_take_fd.html">ffi::g_subprocess_launcher_take_fd</a>(
-                <a class="self" href="#41">self</a>.<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#41">source_fd</a>.<a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/trait.IntoRawFd.html#tymethod.into_raw_fd">into_raw_fd</a>(),
-                <a href="#41">target_fd</a>.<a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/trait.IntoRawFd.html#tymethod.into_raw_fd">into_raw_fd</a>(),
+                <a class="self" href="#67">self</a>.<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#67">source_fd</a>.<a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/trait.IntoRawFd.html#tymethod.into_raw_fd">into_raw_fd</a>(),
+                <a href="#67">target_fd</a>.<a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/trait.IntoRawFd.html#tymethod.into_raw_fd">into_raw_fd</a>(),
             );
         }
     }
@@ -278,7 +330,7 @@
     #[doc(alias = <span class="string">"g_subprocess_launcher_take_stderr_fd"</span>)]
     </span><span class="kw">pub fn </span>take_stderr_fd(<span class="kw-2">&amp;</span><span class="self">self</span>, fd: <span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/trait.IntoRawFd.html">IntoRawFd</a>) {
         <span class="kw">unsafe </span>{
-            <a href="../../gio_sys/fn.g_subprocess_launcher_take_stderr_fd.html">ffi::g_subprocess_launcher_take_stderr_fd</a>(<a class="self" href="#72">self</a>.<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#72">fd</a>.<a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/trait.IntoRawFd.html#tymethod.into_raw_fd">into_raw_fd</a>());
+            <a href="../../gio_sys/fn.g_subprocess_launcher_take_stderr_fd.html">ffi::g_subprocess_launcher_take_stderr_fd</a>(<a class="self" href="#98">self</a>.<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#98">fd</a>.<a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/trait.IntoRawFd.html#tymethod.into_raw_fd">into_raw_fd</a>());
         }
     }
 
@@ -307,7 +359,7 @@
     #[doc(alias = <span class="string">"g_subprocess_launcher_take_stdin_fd"</span>)]
     </span><span class="kw">pub fn </span>take_stdin_fd(<span class="kw-2">&amp;</span><span class="self">self</span>, fd: <span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/trait.IntoRawFd.html">IntoRawFd</a>) {
         <span class="kw">unsafe </span>{
-            <a href="../../gio_sys/fn.g_subprocess_launcher_take_stdin_fd.html">ffi::g_subprocess_launcher_take_stdin_fd</a>(<a class="self" href="#101">self</a>.<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#101">fd</a>.<a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/trait.IntoRawFd.html#tymethod.into_raw_fd">into_raw_fd</a>());
+            <a href="../../gio_sys/fn.g_subprocess_launcher_take_stdin_fd.html">ffi::g_subprocess_launcher_take_stdin_fd</a>(<a class="self" href="#127">self</a>.<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#127">fd</a>.<a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/trait.IntoRawFd.html#tymethod.into_raw_fd">into_raw_fd</a>());
         }
     }
 
@@ -335,7 +387,7 @@
     #[doc(alias = <span class="string">"g_subprocess_launcher_take_stdout_fd"</span>)]
     </span><span class="kw">pub fn </span>take_stdout_fd(<span class="kw-2">&amp;</span><span class="self">self</span>, fd: <span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/trait.IntoRawFd.html">IntoRawFd</a>) {
         <span class="kw">unsafe </span>{
-            <a href="../../gio_sys/fn.g_subprocess_launcher_take_stdout_fd.html">ffi::g_subprocess_launcher_take_stdout_fd</a>(<a class="self" href="#129">self</a>.<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#129">fd</a>.<a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/trait.IntoRawFd.html#tymethod.into_raw_fd">into_raw_fd</a>());
+            <a href="../../gio_sys/fn.g_subprocess_launcher_take_stdout_fd.html">ffi::g_subprocess_launcher_take_stdout_fd</a>(<a class="self" href="#155">self</a>.<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#155">fd</a>.<a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/trait.IntoRawFd.html#tymethod.into_raw_fd">into_raw_fd</a>());
         }
     }
 }
