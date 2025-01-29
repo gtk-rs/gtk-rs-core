@@ -41,9 +41,7 @@ pub fn impl_derived_signals(input: &syn::ItemImpl) -> syn::Result<TokenStream> {
         }
     );
 
-    let generated = [
-        (!has_signals).then_some(signals),
-    ];
+    let generated = [(!has_signals).then_some(signals)];
 
     Ok(quote!(
         #(#attrs)*

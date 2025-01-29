@@ -62,6 +62,4 @@ fn basic_test() {
 
     foo.emit_run_first();
     assert_eq!(check.get(), false, "Signal handler should not have run");
-
-
 }

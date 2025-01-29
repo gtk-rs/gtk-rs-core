@@ -302,112 +302,108 @@ fn impl_object_signals<'a>(
     glib: &TokenStream,
     ty: &syn::Type,
     signals: impl IntoIterator<
-        Item = &'a SignalDesc, 
-        IntoIter = impl Iterator<Item = &'a SignalDesc> + ExactSizeIterator
+        Item = &'a SignalDesc,
+        IntoIter = impl Iterator<Item = &'a SignalDesc> + ExactSizeIterator,
     >,
 ) -> TokenStream {
     let signal_iter = signals.into_iter();
     let count = signal_iter.len();
-    let builders = signal_iter
-        .map(|signal| {
-            let name = syn::LitStr::new(&signal.name, Span::call_site());
-            let param_types = match signal.param_types.is_empty() {
-                true => None,
-                false => {
-                    let param_types = &signal.param_types;
-                    Some(quote::quote! {
-                        .param_types([#(<#param_types as #glib::types::StaticType>::static_type()),*])
-                    })
-                },
-            };
-            let return_type = match signal.return_type.as_ref() {
-                Some(rt) => {
-                    Some(quote::quote! {
-                        .return_type::<#rt>()
-                    })
-                },
-                None => None,
-            };
-            let flags = signal
-                .flags
-                .iter()
-                .map(|item| match item {
-                    SignalAttr::RunFirst(ident) => quote::quote! {
-                        .#ident()
-                    },
-                    SignalAttr::RunLast(ident) => quote::quote! {
-                        .#ident()
-                    },
-                    SignalAttr::RunCleanup(ident) => quote::quote! {
-                        .#ident()
-                    },
-                    SignalAttr::NoRecurse(ident) => quote::quote! {
-                        .#ident()
-                    },
-                    SignalAttr::Detailed(ident) => quote::quote! {
-                        .#ident()
-                    },
-                    SignalAttr::Action(ident) => quote::quote! {
-                        .#ident()
-                    },
-                    SignalAttr::NoHooks(ident) => quote::quote! {
-                        .#ident()
-                    },
-                    SignalAttr::Accum(expr) => quote::quote! {
-                        .accumulator(#expr)
-                    },
-                });
-            let class_handler = match &signal.class_handler {
-                Some(handler_fn) => {
-                    let mut param_idents: Vec<syn::Ident> = Vec::with_capacity(signal.param_types.len());
-                    let mut param_stmts: Vec<TokenStream> = Vec::with_capacity(signal.param_types.len());
-
-                    for i in 0..signal.param_types.len() {
-                        let i_h = i + 1;
-                        let ty = &signal.param_types[i];
-                        let ident = quote::format_ident!("param{}", i);
-                        let err_msg = Literal::string(&format!(
-                            "Parameter {} for signal did not match ({})", 
-                            i_h, 
-                            ty.to_token_stream().to_string()
-                        ));
-
-                        let stmt = quote::quote! {
-                            let #ident = values[#i_h].get::<#ty>()
-                                .expect(#err_msg);
-                        };
-
-                        param_idents.push(ident);
-                        param_stmts.push(stmt);
-                    }
-
-                    Some(quote::quote! {
-                        .class_handler(|values| {
-                            let this = values[0].get::<
-                                <Self as #glib::subclass::types::ObjectSubclass>::Type
-                            >()
-                                .expect("`Self` parameter for signal did not match");
-                            #(#param_stmts)*
-                            let result = <
-                                <Self as #glib::subclass::types::ObjectSubclass>::Type 
-                                as #glib::subclass::types::ObjectSubclassIsExt
-                            >::imp(&this)
-                                .#handler_fn(#(#param_idents),*);
-                            None
-                        })
-                    })
-                },
-                None => None,
-            };
-            quote::quote! {
-                #glib::subclass::signal::Signal::builder(#name)
-                    #param_types
-                    #return_type
-                    #(#flags)*
-                    #class_handler
-                    .build()
+    let builders = signal_iter.map(|signal| {
+        let name = syn::LitStr::new(&signal.name, Span::call_site());
+        let param_types = match signal.param_types.is_empty() {
+            true => None,
+            false => {
+                let param_types = &signal.param_types;
+                Some(quote::quote! {
+                    .param_types([#(<#param_types as #glib::types::StaticType>::static_type()),*])
+                })
             }
+        };
+        let return_type = match signal.return_type.as_ref() {
+            Some(rt) => Some(quote::quote! {
+                .return_type::<#rt>()
+            }),
+            None => None,
+        };
+        let flags = signal.flags.iter().map(|item| match item {
+            SignalAttr::RunFirst(ident) => quote::quote! {
+                .#ident()
+            },
+            SignalAttr::RunLast(ident) => quote::quote! {
+                .#ident()
+            },
+            SignalAttr::RunCleanup(ident) => quote::quote! {
+                .#ident()
+            },
+            SignalAttr::NoRecurse(ident) => quote::quote! {
+                .#ident()
+            },
+            SignalAttr::Detailed(ident) => quote::quote! {
+                .#ident()
+            },
+            SignalAttr::Action(ident) => quote::quote! {
+                .#ident()
+            },
+            SignalAttr::NoHooks(ident) => quote::quote! {
+                .#ident()
+            },
+            SignalAttr::Accum(expr) => quote::quote! {
+                .accumulator(#expr)
+            },
         });
+        let class_handler = match &signal.class_handler {
+            Some(handler_fn) => {
+                let mut param_idents: Vec<syn::Ident> =
+                    Vec::with_capacity(signal.param_types.len());
+                let mut param_stmts: Vec<TokenStream> =
+                    Vec::with_capacity(signal.param_types.len());
+
+                for i in 0..signal.param_types.len() {
+                    let i_h = i + 1;
+                    let ty = &signal.param_types[i];
+                    let ident = quote::format_ident!("param{}", i);
+                    let err_msg = Literal::string(&format!(
+                        "Parameter {} for signal did not match ({})",
+                        i_h,
+                        ty.to_token_stream().to_string()
+                    ));
+
+                    let stmt = quote::quote! {
+                        let #ident = values[#i_h].get::<#ty>()
+                            .expect(#err_msg);
+                    };
+
+                    param_idents.push(ident);
+                    param_stmts.push(stmt);
+                }
+
+                Some(quote::quote! {
+                    .class_handler(|values| {
+                        let this = values[0].get::<
+                            <Self as #glib::subclass::types::ObjectSubclass>::Type
+                        >()
+                            .expect("`Self` parameter for signal did not match");
+                        #(#param_stmts)*
+                        let result = <
+                            <Self as #glib::subclass::types::ObjectSubclass>::Type
+                            as #glib::subclass::types::ObjectSubclassIsExt
+                        >::imp(&this)
+                            .#handler_fn(#(#param_idents),*);
+                        None
+                    })
+                })
+            }
+            None => None,
+        };
+        quote::quote! {
+            #glib::subclass::signal::Signal::builder(#name)
+                #param_types
+                #return_type
+                #(#flags)*
+                #class_handler
+                .build()
+        }
+    });
     quote::quote! {
         #[automatically_derived]
         impl #glib::subclass::object::DerivedObjectSignals for #ty {
@@ -425,9 +421,9 @@ fn impl_object_signals<'a>(
 }
 
 fn impl_signal_wrapper<'a>(
-    args: Args, 
+    args: Args,
     glib: &TokenStream,
-    signals: impl IntoIterator<Item = &'a SignalDesc>
+    signals: impl IntoIterator<Item = &'a SignalDesc>,
 ) -> TokenStream {
     let signal_iter = signals.into_iter();
     let methods = signal_iter
@@ -443,7 +439,7 @@ fn impl_signal_wrapper<'a>(
                     .return_type
                     .as_ref()
                     .map_or_else(
-                        || quote::quote! { () }, 
+                        || quote::quote! { () },
                         |value| value.to_token_stream()
                 );
                 quote::quote! {
@@ -457,7 +453,7 @@ fn impl_signal_wrapper<'a>(
                 .return_type
                 .as_ref()
                 .map_or_else(
-                    || quote::quote! { () }, 
+                    || quote::quote! { () },
                     |value| value.to_token_stream()
                 );
 
@@ -483,7 +479,7 @@ fn impl_signal_wrapper<'a>(
                         #signal_name,
                         false,
                         #glib::closure_local!(|this: &Self, #(#closure_params: #param_types),*| -> #return_type {
-                            f(this, #(#closure_params),*) 
+                            f(this, #(#closure_params),*)
                         })
                     )
                 }

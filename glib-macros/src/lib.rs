@@ -1509,9 +1509,7 @@ pub fn signals(attr: TokenStream, item: TokenStream) -> TokenStream {
     let attr_input = syn::parse_macro_input!(attr as signals_attribute::Args);
 
     syn::parse::<syn::ItemImpl>(item)
-        .map_err(|_| {
-            syn::Error::new(Span::call_site(), signals_attribute::WRONG_PLACE_MSG)
-        })
+        .map_err(|_| syn::Error::new(Span::call_site(), signals_attribute::WRONG_PLACE_MSG))
         .and_then(|item_input| signals_attribute::impl_signals(attr_input, item_input))
         .unwrap_or_else(syn::Error::into_compile_error)
         .into()
