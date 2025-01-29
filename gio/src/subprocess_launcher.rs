@@ -3,12 +3,9 @@
 #[cfg(any(unix, all(docsrs, unix)))]
 use std::os::unix::io::IntoRawFd;
 
-#[cfg(unix)]
 use glib::translate::*;
 
-#[cfg(unix)]
 use crate::ffi;
-
 use crate::SubprocessLauncher;
 
 #[cfg(all(docsrs, not(unix)))]
@@ -19,6 +16,13 @@ pub trait IntoRawFd: Sized {
 }
 
 impl SubprocessLauncher {
+    #[doc(alias = "g_subprocess_launcher_set_environ")]
+    pub fn set_environ(&self, env: &[std::ffi::OsString]) {
+        unsafe {
+            ffi::g_subprocess_launcher_set_environ(self.to_glib_none().0, env.to_glib_none().0);
+        }
+    }
+
     #[cfg(unix)]
     #[cfg_attr(docsrs, doc(cfg(unix)))]
     #[doc(alias = "g_subprocess_launcher_take_fd")]
