@@ -464,12 +464,18 @@
 <a href="#390" id="390">390</a>
 <a href="#391" id="391">391</a>
 <a href="#392" id="392">392</a>
-<a href="#393" id="393">393</a></pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
+<a href="#393" id="393">393</a>
+<a href="#394" id="394">394</a>
+<a href="#395" id="395">395</a>
+<a href="#396" id="396">396</a></pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
-</span><span class="kw">use crate</span>::{ffi, <a href="lib.rs.html#159">prelude</a>::<span class="kw-2">*</span>, <a href="lib.rs.html#164">translate</a>::<span class="kw-2">*</span>, <a href="gstring.rs.html#24">GStr</a>, <a href="auto/regex.rs.html#7-69">Regex</a>};
+</span><span class="kw">use crate</span>::{ffi, <a href="lib.rs.html#159">prelude</a>::<span class="kw-2">*</span>, <a href="lib.rs.html#164">translate</a>::<span class="kw-2">*</span>, <a href="gstring.rs.html#24">GStr</a>, <a href="auto/regex.rs.html#7-123">Regex</a>};
 <span class="kw">use </span>std::{<a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">marker::PhantomData</a>, <a href="https://doc.rust-lang.org/nightly/core/mem/index.html">mem</a>, <a href="https://doc.rust-lang.org/nightly/core/ptr/index.html">ptr</a>};
 
 <span class="doccomment">/// A GMatchInfo is an opaque struct used to return information about
+/// matches.
+</span><span class="comment">// rustdoc-stripper-ignore-next-stop
+</span><span class="doccomment">/// A GMatchInfo is an opaque struct used to return information about
 /// matches.
 </span><span class="attr">#[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
 #[repr(transparent)]
@@ -478,31 +484,31 @@
     _phantom: <a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">PhantomData</a>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'input </span><a href="gstring.rs.html#24">GStr</a>&gt;,
 }
 
-<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">Clone</a> <span class="kw">for </span><a href="#10-13">MatchInfo</a>&lt;<span class="lifetime">'_</span>&gt; {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">Clone</a> <span class="kw">for </span><a href="#13-16">MatchInfo</a>&lt;<span class="lifetime">'_</span>&gt; {
     <span class="kw">fn </span>clone(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self </span>{
         <span class="kw">unsafe </span>{
-            ffi::g_match_info_ref(<a class="self" href="#16">self</a>.inner.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>());
+            ffi::g_match_info_ref(<a class="self" href="#19">self</a>.inner.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>());
         }
         <span class="self">Self </span>{
-            inner: <a class="self" href="#16">self</a>.inner,
+            inner: <a class="self" href="#19">self</a>.inner,
             _phantom: <a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">PhantomData</a>,
         }
     }
 }
 
-<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/ops/drop/trait.Drop.html">Drop</a> <span class="kw">for </span><a href="#10-13">MatchInfo</a>&lt;<span class="lifetime">'_</span>&gt; {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/ops/drop/trait.Drop.html">Drop</a> <span class="kw">for </span><a href="#13-16">MatchInfo</a>&lt;<span class="lifetime">'_</span>&gt; {
     <span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
         <span class="kw">unsafe </span>{
-            ffi::g_match_info_unref(<a class="self" href="#28">self</a>.inner.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>());
+            ffi::g_match_info_unref(<a class="self" href="#31">self</a>.inner.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>());
         }
     }
 }
 
-<span class="kw">impl </span><a href="#10-13">MatchInfo</a>&lt;<span class="lifetime">'_</span>&gt; {
+<span class="kw">impl </span><a href="#13-16">MatchInfo</a>&lt;<span class="lifetime">'_</span>&gt; {
     <span class="attr">#[doc = <span class="string">"Return the inner pointer to the underlying C value."</span>]
     #[inline]
     </span><span class="kw">pub fn </span>as_ptr(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">*mut </span>ffi::GMatchInfo {
-        <a class="self" href="#38">self</a>.inner.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>()
+        <a class="self" href="#41">self</a>.inner.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>()
     }
     <span class="attr">#[doc = <span class="string">"Borrows the underlying C value."</span>]
     #[inline]
@@ -512,128 +518,128 @@
             std::mem::size_of::&lt;<span class="kw">crate</span>::ffi::gpointer&gt;()
         );
         <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert.html">debug_assert!</a>(!ptr.is_null());
-        <span class="kw-2">&amp;*</span>(<a href="#43">ptr</a> <span class="kw">as </span><span class="kw-2">*const *mut </span>ffi::GMatchInfo <span class="kw">as </span><span class="kw-2">*const </span><span class="self">Self</span>)
+        <span class="kw-2">&amp;*</span>(<a href="#46">ptr</a> <span class="kw">as </span><span class="kw-2">*const *mut </span>ffi::GMatchInfo <span class="kw">as </span><span class="kw-2">*const </span><span class="self">Self</span>)
     }
 }
 
 <span class="attr">#[doc(hidden)]
-</span><span class="kw">impl </span><a href="translate.rs.html#424-426">GlibPtrDefault</a> <span class="kw">for </span><a href="#10-13">MatchInfo</a>&lt;<span class="lifetime">'_</span>&gt; {
+</span><span class="kw">impl </span><a href="translate.rs.html#424-426">GlibPtrDefault</a> <span class="kw">for </span><a href="#13-16">MatchInfo</a>&lt;<span class="lifetime">'_</span>&gt; {
     <span class="kw">type </span>GlibType = <span class="kw-2">*mut </span>ffi::GMatchInfo;
 }
 <span class="attr">#[doc(hidden)]
-</span><span class="kw">unsafe impl </span><a href="translate.rs.html#2644">TransparentPtrType</a> <span class="kw">for </span><a href="#10-13">MatchInfo</a>&lt;<span class="lifetime">'_</span>&gt; {}
+</span><span class="kw">unsafe impl </span><a href="translate.rs.html#2644">TransparentPtrType</a> <span class="kw">for </span><a href="#13-16">MatchInfo</a>&lt;<span class="lifetime">'_</span>&gt; {}
 
 <span class="attr">#[doc(hidden)]
-</span><span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, <span class="lifetime">'input</span>&gt; <a href="translate.rs.html#434-459">ToGlibPtr</a>&lt;<span class="lifetime">'a</span>, <span class="kw-2">*mut </span>ffi::GMatchInfo&gt; <span class="kw">for </span><a href="#10-13">MatchInfo</a>&lt;<span class="lifetime">'input</span>&gt;
+</span><span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, <span class="lifetime">'input</span>&gt; <a href="translate.rs.html#434-459">ToGlibPtr</a>&lt;<span class="lifetime">'a</span>, <span class="kw-2">*mut </span>ffi::GMatchInfo&gt; <span class="kw">for </span><a href="#13-16">MatchInfo</a>&lt;<span class="lifetime">'input</span>&gt;
 <span class="kw">where
     </span><span class="lifetime">'input</span>: <span class="lifetime">'a</span>,
 {
     <span class="kw">type </span>Storage = <a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">PhantomData</a>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="self">Self</span>&gt;;
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>to_glib_none(<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="self">self</span>) -&gt; <a href="translate.rs.html#259-262">Stash</a>&lt;<span class="lifetime">'a</span>, <span class="kw-2">*mut </span>ffi::GMatchInfo, <span class="self">Self</span>&gt; {
-        <a href="translate.rs.html#259-262">Stash</a>(<a class="self" href="#67">self</a>.inner.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>(), <a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">PhantomData</a>)
+        <a href="translate.rs.html#259-262">Stash</a>(<a class="self" href="#70">self</a>.inner.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>(), <a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">PhantomData</a>)
     }
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>to_glib_full(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">*mut </span>ffi::GMatchInfo {
-        <span class="kw">let </span>ptr = <a class="self" href="#71">self</a>.inner.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>();
+        <span class="kw">let </span>ptr = <a class="self" href="#74">self</a>.inner.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>();
         <span class="kw">unsafe </span>{
-            ffi::g_match_info_ref(<a href="#72">ptr</a>);
+            ffi::g_match_info_ref(<a href="#75">ptr</a>);
         }
-        <a href="#72">ptr</a>
+        <a href="#75">ptr</a>
     }
 }
 <span class="attr">#[doc(hidden)]
-</span><span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, <span class="lifetime">'input</span>&gt; <a href="translate.rs.html#434-459">ToGlibPtr</a>&lt;<span class="lifetime">'a</span>, <span class="kw-2">*const </span>ffi::GMatchInfo&gt; <span class="kw">for </span><a href="#10-13">MatchInfo</a>&lt;<span class="lifetime">'input</span>&gt;
+</span><span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, <span class="lifetime">'input</span>&gt; <a href="translate.rs.html#434-459">ToGlibPtr</a>&lt;<span class="lifetime">'a</span>, <span class="kw-2">*const </span>ffi::GMatchInfo&gt; <span class="kw">for </span><a href="#13-16">MatchInfo</a>&lt;<span class="lifetime">'input</span>&gt;
 <span class="kw">where
     </span><span class="lifetime">'input</span>: <span class="lifetime">'a</span>,
 {
     <span class="kw">type </span>Storage = <a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">PhantomData</a>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="self">Self</span>&gt;;
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>to_glib_none(<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="self">self</span>) -&gt; <a href="translate.rs.html#259-262">Stash</a>&lt;<span class="lifetime">'a</span>, <span class="kw-2">*const </span>ffi::GMatchInfo, <span class="self">Self</span>&gt; {
-        <a href="translate.rs.html#259-262">Stash</a>(<a class="self" href="#86">self</a>.inner.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>(), <a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">PhantomData</a>)
+        <a href="translate.rs.html#259-262">Stash</a>(<a class="self" href="#89">self</a>.inner.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>(), <a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">PhantomData</a>)
     }
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>to_glib_full(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">*const </span>ffi::GMatchInfo {
-        <span class="kw">let </span>ptr = <a class="self" href="#90">self</a>.inner.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>();
+        <span class="kw">let </span>ptr = <a class="self" href="#93">self</a>.inner.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>();
         <span class="kw">unsafe </span>{
-            ffi::g_match_info_ref(<a href="#91">ptr</a>);
+            ffi::g_match_info_ref(<a href="#94">ptr</a>);
         }
-        <a href="#91">ptr</a>
+        <a href="#94">ptr</a>
     }
 }
 
 <span class="attr">#[doc(hidden)]
-</span><span class="kw">impl </span><a href="translate.rs.html#1557-1563">FromGlibPtrNone</a>&lt;<span class="kw-2">*mut </span>ffi::GMatchInfo&gt; <span class="kw">for </span><a href="#10-13">MatchInfo</a>&lt;<span class="lifetime">'_</span>&gt; {
+</span><span class="kw">impl </span><a href="translate.rs.html#1557-1563">FromGlibPtrNone</a>&lt;<span class="kw-2">*mut </span>ffi::GMatchInfo&gt; <span class="kw">for </span><a href="#13-16">MatchInfo</a>&lt;<span class="lifetime">'_</span>&gt; {
     <span class="attr">#[inline]
     </span><span class="kw">unsafe fn </span>from_glib_none(ptr: <span class="kw-2">*mut </span>ffi::GMatchInfo) -&gt; <span class="self">Self </span>{
         <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert.html">debug_assert!</a>(!ptr.is_null());
         <span class="kw">unsafe </span>{
-            ffi::g_match_info_ref(<a href="#102">ptr</a>);
+            ffi::g_match_info_ref(<a href="#105">ptr</a>);
             <span class="self">Self </span>{
-                inner: <a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.new_unchecked">ptr::NonNull::new_unchecked</a>(<a href="#102">ptr</a>),
+                inner: <a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.new_unchecked">ptr::NonNull::new_unchecked</a>(<a href="#105">ptr</a>),
                 _phantom: <a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">PhantomData</a>,
             }
         }
     }
 }
 <span class="attr">#[doc(hidden)]
-</span><span class="kw">impl </span><a href="translate.rs.html#1557-1563">FromGlibPtrNone</a>&lt;<span class="kw-2">*const </span>ffi::GMatchInfo&gt; <span class="kw">for </span><a href="#10-13">MatchInfo</a>&lt;<span class="lifetime">'_</span>&gt; {
+</span><span class="kw">impl </span><a href="translate.rs.html#1557-1563">FromGlibPtrNone</a>&lt;<span class="kw-2">*const </span>ffi::GMatchInfo&gt; <span class="kw">for </span><a href="#13-16">MatchInfo</a>&lt;<span class="lifetime">'_</span>&gt; {
     <span class="attr">#[inline]
     </span><span class="kw">unsafe fn </span>from_glib_none(ptr: <span class="kw-2">*const </span>ffi::GMatchInfo) -&gt; <span class="self">Self </span>{
-        <a href="translate.rs.html#1562"><span class="self">Self</span>::from_glib_none</a>(<a href="#116">ptr</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/foreigntype.const_ptr.html#method.cast_mut">cast_mut</a>())
+        <a href="translate.rs.html#1562"><span class="self">Self</span>::from_glib_none</a>(<a href="#119">ptr</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/foreigntype.const_ptr.html#method.cast_mut">cast_mut</a>())
     }
 }
 <span class="attr">#[doc(hidden)]
-</span><span class="kw">impl </span><a href="translate.rs.html#1581-1587">FromGlibPtrFull</a>&lt;<span class="kw-2">*mut </span>ffi::GMatchInfo&gt; <span class="kw">for </span><a href="#10-13">MatchInfo</a>&lt;<span class="lifetime">'_</span>&gt; {
+</span><span class="kw">impl </span><a href="translate.rs.html#1581-1587">FromGlibPtrFull</a>&lt;<span class="kw-2">*mut </span>ffi::GMatchInfo&gt; <span class="kw">for </span><a href="#13-16">MatchInfo</a>&lt;<span class="lifetime">'_</span>&gt; {
     <span class="attr">#[inline]
     </span><span class="kw">unsafe fn </span>from_glib_full(ptr: <span class="kw-2">*mut </span>ffi::GMatchInfo) -&gt; <span class="self">Self </span>{
         <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert.html">debug_assert!</a>(!ptr.is_null());
         <span class="kw">unsafe </span>{
             <span class="self">Self </span>{
-                inner: <a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.new_unchecked">ptr::NonNull::new_unchecked</a>(<a href="#123">ptr</a>),
+                inner: <a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.new_unchecked">ptr::NonNull::new_unchecked</a>(<a href="#126">ptr</a>),
                 _phantom: <a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">PhantomData</a>,
             }
         }
     }
 }
 <span class="attr">#[doc(hidden)]
-</span><span class="kw">impl </span><a href="translate.rs.html#1614-1622">FromGlibPtrBorrow</a>&lt;<span class="kw-2">*mut </span>ffi::GMatchInfo&gt; <span class="kw">for </span><a href="#10-13">MatchInfo</a>&lt;<span class="lifetime">'_</span>&gt; {
+</span><span class="kw">impl </span><a href="translate.rs.html#1614-1622">FromGlibPtrBorrow</a>&lt;<span class="kw-2">*mut </span>ffi::GMatchInfo&gt; <span class="kw">for </span><a href="#13-16">MatchInfo</a>&lt;<span class="lifetime">'_</span>&gt; {
     <span class="attr">#[inline]
     </span><span class="kw">unsafe fn </span>from_glib_borrow(ptr: <span class="kw-2">*mut </span>ffi::GMatchInfo) -&gt; <a href="translate.rs.html#277">Borrowed</a>&lt;<span class="self">Self</span>&gt; {
         <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert.html">debug_assert!</a>(!ptr.is_null());
         <span class="kw">unsafe </span>{
             <a href="translate.rs.html#283-285">Borrowed::new</a>(<span class="self">Self </span>{
-                inner: <a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.new_unchecked">ptr::NonNull::new_unchecked</a>(<a href="#136">ptr</a>),
+                inner: <a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.new_unchecked">ptr::NonNull::new_unchecked</a>(<a href="#139">ptr</a>),
                 _phantom: <a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">PhantomData</a>,
             })
         }
     }
 }
 <span class="attr">#[doc(hidden)]
-</span><span class="kw">impl </span><a href="translate.rs.html#1614-1622">FromGlibPtrBorrow</a>&lt;<span class="kw-2">*const </span>ffi::GMatchInfo&gt; <span class="kw">for </span><a href="#10-13">MatchInfo</a>&lt;<span class="lifetime">'_</span>&gt; {
+</span><span class="kw">impl </span><a href="translate.rs.html#1614-1622">FromGlibPtrBorrow</a>&lt;<span class="kw-2">*const </span>ffi::GMatchInfo&gt; <span class="kw">for </span><a href="#13-16">MatchInfo</a>&lt;<span class="lifetime">'_</span>&gt; {
     <span class="attr">#[inline]
     </span><span class="kw">unsafe fn </span>from_glib_borrow(ptr: <span class="kw-2">*const </span>ffi::GMatchInfo) -&gt; <a href="translate.rs.html#277">Borrowed</a>&lt;<span class="self">Self</span>&gt; {
-        <a href="translate.rs.html#1647-1649">from_glib_borrow</a>::&lt;<span class="kw">_</span>, <span class="self">Self</span>&gt;(<a href="#149">ptr</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/foreigntype.const_ptr.html#method.cast_mut">cast_mut</a>())
+        <a href="translate.rs.html#1647-1649">from_glib_borrow</a>::&lt;<span class="kw">_</span>, <span class="self">Self</span>&gt;(<a href="#152">ptr</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/foreigntype.const_ptr.html#method.cast_mut">cast_mut</a>())
     }
 }
 
 <span class="attr">#[doc(hidden)]
-</span><span class="kw">impl </span><a href="translate.rs.html#715-720">IntoGlibPtr</a>&lt;<span class="kw-2">*mut </span>ffi::GMatchInfo&gt; <span class="kw">for </span><a href="#10-13">MatchInfo</a>&lt;<span class="lifetime">'_</span>&gt; {
+</span><span class="kw">impl </span><a href="translate.rs.html#715-720">IntoGlibPtr</a>&lt;<span class="kw-2">*mut </span>ffi::GMatchInfo&gt; <span class="kw">for </span><a href="#13-16">MatchInfo</a>&lt;<span class="lifetime">'_</span>&gt; {
     <span class="attr">#[inline]
     </span><span class="kw">unsafe fn </span>into_glib_ptr(<span class="self">self</span>) -&gt; <span class="kw-2">*mut </span>ffi::GMatchInfo {
-        <span class="kw">let </span>s = <a href="https://doc.rust-lang.org/nightly/core/mem/manually_drop/struct.ManuallyDrop.html#method.new">std::mem::ManuallyDrop::new</a>(<a class="self" href="#157">self</a>);
-        ToGlibPtr::&lt;<span class="kw-2">*const </span>ffi::GMatchInfo&gt;::to_glib_none(<span class="kw-2">&amp;*</span><a href="#158">s</a>).<span class="number">0 </span><span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_
+        <span class="kw">let </span>s = <a href="https://doc.rust-lang.org/nightly/core/mem/manually_drop/struct.ManuallyDrop.html#method.new">std::mem::ManuallyDrop::new</a>(<a class="self" href="#160">self</a>);
+        ToGlibPtr::&lt;<span class="kw-2">*const </span>ffi::GMatchInfo&gt;::to_glib_none(<span class="kw-2">&amp;*</span><a href="#161">s</a>).<span class="number">0 </span><span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_
     </span>}
 }
 <span class="attr">#[doc(hidden)]
-</span><span class="kw">impl </span><a href="translate.rs.html#715-720">IntoGlibPtr</a>&lt;<span class="kw-2">*const </span>ffi::GMatchInfo&gt; <span class="kw">for </span><a href="#10-13">MatchInfo</a>&lt;<span class="lifetime">'_</span>&gt; {
+</span><span class="kw">impl </span><a href="translate.rs.html#715-720">IntoGlibPtr</a>&lt;<span class="kw-2">*const </span>ffi::GMatchInfo&gt; <span class="kw">for </span><a href="#13-16">MatchInfo</a>&lt;<span class="lifetime">'_</span>&gt; {
     <span class="attr">#[inline]
     </span><span class="kw">unsafe fn </span>into_glib_ptr(<span class="self">self</span>) -&gt; <span class="kw-2">*const </span>ffi::GMatchInfo {
-        <span class="kw">let </span>s = <a href="https://doc.rust-lang.org/nightly/core/mem/manually_drop/struct.ManuallyDrop.html#method.new">std::mem::ManuallyDrop::new</a>(<a class="self" href="#165">self</a>);
-        ToGlibPtr::&lt;<span class="kw-2">*const </span>ffi::GMatchInfo&gt;::to_glib_none(<span class="kw-2">&amp;*</span><a href="#166">s</a>).<span class="number">0 </span><span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_
+        <span class="kw">let </span>s = <a href="https://doc.rust-lang.org/nightly/core/mem/manually_drop/struct.ManuallyDrop.html#method.new">std::mem::ManuallyDrop::new</a>(<a class="self" href="#168">self</a>);
+        ToGlibPtr::&lt;<span class="kw-2">*const </span>ffi::GMatchInfo&gt;::to_glib_none(<span class="kw-2">&amp;*</span><a href="#169">s</a>).<span class="number">0 </span><span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_
     </span>}
 }
-<span class="kw">impl </span><a href="types.rs.html#290-294">StaticType</a> <span class="kw">for </span><a href="#10-13">MatchInfo</a>&lt;<span class="lifetime">'_</span>&gt; {
+<span class="kw">impl </span><a href="types.rs.html#290-294">StaticType</a> <span class="kw">for </span><a href="#13-16">MatchInfo</a>&lt;<span class="lifetime">'_</span>&gt; {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>static_type() -&gt; <a href="types.rs.html#22"><span class="kw">crate</span>::types::Type</a> {
         <span class="kw">unsafe </span>{ <a href="translate.rs.html#1421-1423">from_glib</a>(ffi::g_match_info_get_type()) }
@@ -641,49 +647,49 @@
 }
 
 <span class="attr">#[doc(hidden)]
-</span><span class="kw">impl </span><a href="value.rs.html#67-75">ValueType</a> <span class="kw">for </span><a href="#10-13">MatchInfo</a>&lt;<span class="lifetime">'static</span>&gt; {
+</span><span class="kw">impl </span><a href="value.rs.html#67-75">ValueType</a> <span class="kw">for </span><a href="#13-16">MatchInfo</a>&lt;<span class="lifetime">'static</span>&gt; {
     <span class="kw">type </span>Type = <span class="self">Self</span>;
 }
 
 <span class="attr">#[doc(hidden)]
-</span><span class="kw">impl </span><a href="value.rs.html#81-84"><span class="kw">crate</span>::value::ValueTypeOptional</a> <span class="kw">for </span><a href="#10-13">MatchInfo</a>&lt;<span class="lifetime">'static</span>&gt; {}
+</span><span class="kw">impl </span><a href="value.rs.html#81-84"><span class="kw">crate</span>::value::ValueTypeOptional</a> <span class="kw">for </span><a href="#13-16">MatchInfo</a>&lt;<span class="lifetime">'static</span>&gt; {}
 
-<span class="kw">unsafe impl</span>&lt;<span class="lifetime">'a</span>, <span class="lifetime">'input</span>: <span class="lifetime">'a</span>&gt; <a href="value.rs.html#272-283"><span class="kw">crate</span>::value::FromValue</a>&lt;<span class="lifetime">'a</span>&gt; <span class="kw">for </span><a href="#10-13">MatchInfo</a>&lt;<span class="lifetime">'input</span>&gt; {
+<span class="kw">unsafe impl</span>&lt;<span class="lifetime">'a</span>, <span class="lifetime">'input</span>: <span class="lifetime">'a</span>&gt; <a href="value.rs.html#272-283"><span class="kw">crate</span>::value::FromValue</a>&lt;<span class="lifetime">'a</span>&gt; <span class="kw">for </span><a href="#13-16">MatchInfo</a>&lt;<span class="lifetime">'input</span>&gt; {
     <span class="kw">type </span>Checker = <a href="value.rs.html#246"><span class="kw">crate</span>::value::GenericValueTypeOrNoneChecker</a>&lt;<span class="self">Self</span>&gt;;
 
-    <span class="kw">unsafe fn </span>from_value(value: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="value.rs.html#478-512"><span class="kw">crate</span>::Value</a>) -&gt; <span class="self">Self </span>{
-        <span class="kw">let </span>ptr = <span class="kw">crate</span>::gobject_ffi::g_value_dup_boxed(
-            <a href="translate.rs.html#441"><span class="kw">crate</span>::translate::ToGlibPtr::to_glib_none</a>(<a href="#188">value</a>).<span class="number">0</span>,
+    <span class="kw">unsafe fn </span>from_value(value: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="value.rs.html#478-523"><span class="kw">crate</span>::Value</a>) -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span>ptr = <a href="../../gobject_sys/fn.g_value_dup_boxed.html"><span class="kw">crate</span>::gobject_ffi::g_value_dup_boxed</a>(
+            <a href="translate.rs.html#441"><span class="kw">crate</span>::translate::ToGlibPtr::to_glib_none</a>(<a href="#191">value</a>).<span class="number">0</span>,
         );
         <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert.html">debug_assert!</a>(!ptr.is_null());
         &lt;<span class="self">Self </span><span class="kw">as </span><span class="kw">crate</span>::translate::FromGlibPtrFull&lt;<span class="kw-2">*mut </span>ffi::GMatchInfo&gt;&gt;::from_glib_full(
-            <a href="#189">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span>ffi::GMatchInfo,
+            <a href="#192">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span>ffi::GMatchInfo,
         )
     }
 }
 <span class="attr">#[doc(hidden)]
-</span><span class="kw">unsafe impl</span>&lt;<span class="lifetime">'a</span>, <span class="lifetime">'input</span>: <span class="lifetime">'a</span>&gt; <a href="value.rs.html#272-283"><span class="kw">crate</span>::value::FromValue</a>&lt;<span class="lifetime">'a</span>&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#10-13">MatchInfo</a>&lt;<span class="lifetime">'input</span>&gt; {
+</span><span class="kw">unsafe impl</span>&lt;<span class="lifetime">'a</span>, <span class="lifetime">'input</span>: <span class="lifetime">'a</span>&gt; <a href="value.rs.html#272-283"><span class="kw">crate</span>::value::FromValue</a>&lt;<span class="lifetime">'a</span>&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#13-16">MatchInfo</a>&lt;<span class="lifetime">'input</span>&gt; {
     <span class="kw">type </span>Checker = <a href="value.rs.html#246"><span class="kw">crate</span>::value::GenericValueTypeOrNoneChecker</a>&lt;<span class="self">Self</span>&gt;;
 
     <span class="attr">#[inline]
-    </span><span class="kw">unsafe fn </span>from_value(value: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="value.rs.html#478-512"><span class="kw">crate</span>::Value</a>) -&gt; <span class="self">Self </span>{
-        <span class="kw">let </span>value = <span class="kw-2">&amp;*</span>(<a href="#203">value</a> <span class="kw">as </span><span class="kw-2">*const </span><a href="value.rs.html#478-512"><span class="kw">crate</span>::Value</a> <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">crate</span>::gobject_ffi::GValue);
-        &lt;<a href="#10-13">MatchInfo</a>&lt;<span class="lifetime">'input</span>&gt;&gt;::from_glib_ptr_borrow(
-            <span class="kw-2">&amp;*</span>(<span class="kw-2">&amp;</span><a href="#204">value</a>.data[<span class="number">0</span>].v_pointer <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">crate</span>::ffi::gpointer
+    </span><span class="kw">unsafe fn </span>from_value(value: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="value.rs.html#478-523"><span class="kw">crate</span>::Value</a>) -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span>value = <span class="kw-2">&amp;*</span>(<a href="#206">value</a> <span class="kw">as </span><span class="kw-2">*const </span><a href="value.rs.html#478-523"><span class="kw">crate</span>::Value</a> <span class="kw">as </span><span class="kw-2">*const </span><a href="../../gobject_sys/struct.GValue.html"><span class="kw">crate</span>::gobject_ffi::GValue</a>);
+        &lt;<a href="#13-16">MatchInfo</a>&lt;<span class="lifetime">'input</span>&gt;&gt;::from_glib_ptr_borrow(
+            <span class="kw-2">&amp;*</span>(<span class="kw-2">&amp;</span><a href="#207">value</a>.data[<span class="number">0</span>].v_pointer <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">crate</span>::ffi::gpointer
                 <span class="kw">as </span><span class="kw-2">*const *mut </span>ffi::GMatchInfo),
         )
     }
 }
-<span class="kw">impl </span><a href="value.rs.html#371-381">ToValue</a> <span class="kw">for </span><a href="#10-13">MatchInfo</a>&lt;<span class="lifetime">'static</span>&gt; {
+<span class="kw">impl </span><a href="value.rs.html#371-381">ToValue</a> <span class="kw">for </span><a href="#13-16">MatchInfo</a>&lt;<span class="lifetime">'static</span>&gt; {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>to_value(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="value.rs.html#478-512"><span class="kw">crate</span>::Value</a> {
+    </span><span class="kw">fn </span>to_value(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="value.rs.html#478-523"><span class="kw">crate</span>::Value</a> {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span><span class="kw-2">mut </span>value = <a href="value.rs.html#538-544"><span class="kw">crate</span>::Value::from_type_unchecked</a>(&lt;<span class="self">Self </span><span class="kw">as </span>StaticType&gt;::static_type());
-            <span class="kw">crate</span>::gobject_ffi::g_value_take_boxed(
-                <a href="translate.rs.html#471"><span class="kw">crate</span>::translate::ToGlibPtrMut::to_glib_none_mut</a>(<span class="kw-2">&amp;mut </span><a href="#215">value</a>).<span class="number">0</span>,
-                <span class="kw">crate</span>::translate::ToGlibPtr::&lt;<span class="kw-2">*mut </span>ffi::GMatchInfo&gt;::to_glib_full(<a class="self" href="#213">self</a>) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+            <span class="kw">let </span><span class="kw-2">mut </span>value = <a href="value.rs.html#549-555"><span class="kw">crate</span>::Value::from_type_unchecked</a>(&lt;<span class="self">Self </span><span class="kw">as </span>StaticType&gt;::static_type());
+            <a href="../../gobject_sys/fn.g_value_take_boxed.html"><span class="kw">crate</span>::gobject_ffi::g_value_take_boxed</a>(
+                <a href="translate.rs.html#471"><span class="kw">crate</span>::translate::ToGlibPtrMut::to_glib_none_mut</a>(<span class="kw-2">&amp;mut </span><a href="#218">value</a>).<span class="number">0</span>,
+                <span class="kw">crate</span>::translate::ToGlibPtr::&lt;<span class="kw-2">*mut </span>ffi::GMatchInfo&gt;::to_glib_full(<a class="self" href="#216">self</a>) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
             );
-            <a href="#215">value</a>
+            <a href="#218">value</a>
         }
     }
 
@@ -693,58 +699,58 @@
     }
 }
 
-<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html">From</a>&lt;<a href="#10-13">MatchInfo</a>&lt;<span class="lifetime">'static</span>&gt;&gt; <span class="kw">for </span><a href="value.rs.html#478-512"><span class="kw">crate</span>::Value</a> {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html">From</a>&lt;<a href="#13-16">MatchInfo</a>&lt;<span class="lifetime">'static</span>&gt;&gt; <span class="kw">for </span><a href="value.rs.html#478-523"><span class="kw">crate</span>::Value</a> {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>from(s: <a href="#10-13">MatchInfo</a>&lt;<span class="lifetime">'static</span>&gt;) -&gt; <span class="self">Self </span>{
+    </span><span class="kw">fn </span>from(s: <a href="#13-16">MatchInfo</a>&lt;<span class="lifetime">'static</span>&gt;) -&gt; <span class="self">Self </span>{
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span><span class="kw-2">mut </span>value = <a href="value.rs.html#538-544"><span class="kw">crate</span>::Value::from_type_unchecked</a>(
-                &lt;<a href="#10-13">MatchInfo</a>&lt;<span class="lifetime">'static</span>&gt; <span class="kw">as </span>StaticType&gt;::static_type(),
+            <span class="kw">let </span><span class="kw-2">mut </span>value = <a href="value.rs.html#549-555"><span class="kw">crate</span>::Value::from_type_unchecked</a>(
+                &lt;<a href="#13-16">MatchInfo</a>&lt;<span class="lifetime">'static</span>&gt; <span class="kw">as </span>StaticType&gt;::static_type(),
             );
-            <span class="kw">crate</span>::gobject_ffi::g_value_take_boxed(
-                <a href="translate.rs.html#471"><span class="kw">crate</span>::translate::ToGlibPtrMut::to_glib_none_mut</a>(<span class="kw-2">&amp;mut </span><a href="#234">value</a>).<span class="number">0</span>,
-                <span class="kw">crate</span>::translate::IntoGlibPtr::&lt;<span class="kw-2">*mut </span>ffi::GMatchInfo&gt;::into_glib_ptr(<a href="#232">s</a>) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+            <a href="../../gobject_sys/fn.g_value_take_boxed.html"><span class="kw">crate</span>::gobject_ffi::g_value_take_boxed</a>(
+                <a href="translate.rs.html#471"><span class="kw">crate</span>::translate::ToGlibPtrMut::to_glib_none_mut</a>(<span class="kw-2">&amp;mut </span><a href="#237">value</a>).<span class="number">0</span>,
+                <span class="kw">crate</span>::translate::IntoGlibPtr::&lt;<span class="kw-2">*mut </span>ffi::GMatchInfo&gt;::into_glib_ptr(<a href="#235">s</a>) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
             );
-            <a href="#234">value</a>
+            <a href="#237">value</a>
         }
     }
 }
 
 <span class="attr">#[doc(hidden)]
-</span><span class="kw">impl </span><a href="value.rs.html#399-404"><span class="kw">crate</span>::value::ToValueOptional</a> <span class="kw">for </span><a href="#10-13">MatchInfo</a>&lt;<span class="lifetime">'static</span>&gt; {
+</span><span class="kw">impl </span><a href="value.rs.html#399-404"><span class="kw">crate</span>::value::ToValueOptional</a> <span class="kw">for </span><a href="#13-16">MatchInfo</a>&lt;<span class="lifetime">'static</span>&gt; {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>to_value_optional(s: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="self">Self</span>&gt;) -&gt; <a href="value.rs.html#478-512"><span class="kw">crate</span>::Value</a> {
+    </span><span class="kw">fn </span>to_value_optional(s: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="self">Self</span>&gt;) -&gt; <a href="value.rs.html#478-523"><span class="kw">crate</span>::Value</a> {
         <span class="kw">let </span><span class="kw-2">mut </span>value = <span class="kw">crate</span>::Value::for_value_type::&lt;<span class="self">Self</span>&gt;();
         <span class="kw">unsafe </span>{
-            <span class="kw">crate</span>::gobject_ffi::g_value_take_boxed(
-                <a href="translate.rs.html#471"><span class="kw">crate</span>::translate::ToGlibPtrMut::to_glib_none_mut</a>(<span class="kw-2">&amp;mut </span><a href="#250">value</a>).<span class="number">0</span>,
-                <span class="kw">crate</span>::translate::ToGlibPtr::&lt;<span class="kw-2">*mut </span>ffi::GMatchInfo&gt;::to_glib_full(<span class="kw-2">&amp;</span><a href="#249">s</a>) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+            <a href="../../gobject_sys/fn.g_value_take_boxed.html"><span class="kw">crate</span>::gobject_ffi::g_value_take_boxed</a>(
+                <a href="translate.rs.html#471"><span class="kw">crate</span>::translate::ToGlibPtrMut::to_glib_none_mut</a>(<span class="kw-2">&amp;mut </span><a href="#253">value</a>).<span class="number">0</span>,
+                <span class="kw">crate</span>::translate::ToGlibPtr::&lt;<span class="kw-2">*mut </span>ffi::GMatchInfo&gt;::to_glib_full(<span class="kw-2">&amp;</span><a href="#252">s</a>) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
             );
         }
 
-        <a href="#250">value</a>
+        <a href="#253">value</a>
     }
 }
 
-<span class="kw">impl </span><a href="param_spec.rs.html#2265-2273">HasParamSpec</a> <span class="kw">for </span><a href="#10-13">MatchInfo</a>&lt;<span class="lifetime">'static</span>&gt; {
-    <span class="kw">type </span>ParamSpec = <a href="param_spec.rs.html#1623-1633"><span class="kw">crate</span>::ParamSpecBoxed</a>;
+<span class="kw">impl </span><a href="param_spec.rs.html#2381-2389">HasParamSpec</a> <span class="kw">for </span><a href="#13-16">MatchInfo</a>&lt;<span class="lifetime">'static</span>&gt; {
+    <span class="kw">type </span>ParamSpec = <a href="param_spec.rs.html#1709-1721"><span class="kw">crate</span>::ParamSpecBoxed</a>;
     <span class="kw">type </span>SetValue = <span class="self">Self</span>;
-    <span class="kw">type </span>BuilderFn = <span class="kw">fn</span>(<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a href="param_spec.rs.html#1662-1668"><span class="kw">crate</span>::ParamSpecBoxedBuilder</a>&lt;<span class="self">Self</span>&gt;;
+    <span class="kw">type </span>BuilderFn = <span class="kw">fn</span>(<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a href="param_spec.rs.html#1750-1756"><span class="kw">crate</span>::ParamSpecBoxedBuilder</a>&lt;<span class="self">Self</span>&gt;;
 
     <span class="kw">fn </span>param_spec_builder() -&gt; <span class="self">Self</span>::BuilderFn {
         <span class="self">Self</span>::ParamSpec::builder
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">'input</span>&gt; <a href="#10-13">MatchInfo</a>&lt;<span class="lifetime">'input</span>&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'input</span>&gt; <a href="#13-16">MatchInfo</a>&lt;<span class="lifetime">'input</span>&gt; {
     <span class="attr">#[doc(alias = <span class="string">"g_match_info_fetch"</span>)]
     </span><span class="kw">pub fn </span>fetch(<span class="kw-2">&amp;</span><span class="self">self</span>, match_num: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="gstring.rs.html#1028"><span class="kw">crate</span>::GString</a>&gt; {
-        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1638-1640">from_glib_full</a>(ffi::g_match_info_fetch(<a class="self" href="#274">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>, <a href="#274">match_num</a>)) }
+        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1638-1640">from_glib_full</a>(ffi::g_match_info_fetch(<a class="self" href="#277">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>, <a href="#277">match_num</a>)) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">"g_match_info_fetch_all"</span>)]
     </span><span class="kw">pub fn </span>fetch_all(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html">Vec</a>&lt;<a href="gstring.rs.html#1028"><span class="kw">crate</span>::GString</a>&gt; {
         <span class="kw">unsafe </span>{
-            <a href="translate.rs.html#1942">FromGlibPtrContainer::from_glib_full</a>(ffi::g_match_info_fetch_all(<a class="self" href="#279">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>))
+            <a href="translate.rs.html#1942">FromGlibPtrContainer::from_glib_full</a>(ffi::g_match_info_fetch_all(<a class="self" href="#282">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>))
         }
     }
 
@@ -754,13 +760,13 @@
             <span class="kw">let </span><span class="kw-2">mut </span>start_pos = <a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.uninit">std::mem::MaybeUninit::uninit</a>();
             <span class="kw">let </span><span class="kw-2">mut </span>end_pos = <a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.uninit">std::mem::MaybeUninit::uninit</a>();
             <span class="kw">let </span>ret = <a href="translate.rs.html#1421-1423">from_glib</a>(ffi::g_match_info_fetch_pos(
-                <a class="self" href="#286">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#286">match_num</a>,
-                <a href="#288">start_pos</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.as_mut_ptr">as_mut_ptr</a>(),
-                <a href="#289">end_pos</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.as_mut_ptr">as_mut_ptr</a>(),
+                <a class="self" href="#289">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#289">match_num</a>,
+                <a href="#291">start_pos</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.as_mut_ptr">as_mut_ptr</a>(),
+                <a href="#292">end_pos</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.as_mut_ptr">as_mut_ptr</a>(),
             ));
             <span class="kw">if </span>ret {
-                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>((<a href="#288">start_pos</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.assume_init">assume_init</a>(), <a href="#289">end_pos</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.assume_init">assume_init</a>()))
+                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>((<a href="#291">start_pos</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.assume_init">assume_init</a>(), <a href="#292">end_pos</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.assume_init">assume_init</a>()))
             } <span class="kw">else </span>{
                 <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None"><a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a>
             </a>}
@@ -770,40 +776,40 @@
     <span class="attr">#[doc(alias = <span class="string">"g_match_info_get_match_count"</span>)]
     #[doc(alias = <span class="string">"get_match_count"</span>)]
     </span><span class="kw">pub fn </span>match_count(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a> {
-        <span class="kw">unsafe </span>{ ffi::g_match_info_get_match_count(<a class="self" href="#306">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>) }
+        <span class="kw">unsafe </span>{ ffi::g_match_info_get_match_count(<a class="self" href="#309">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">"g_match_info_get_regex"</span>)]
     #[doc(alias = <span class="string">"get_regex"</span>)]
-    </span><span class="kw">pub fn </span>regex(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="auto/regex.rs.html#7-69">Regex</a> {
-        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1629-1631">from_glib_none</a>(ffi::g_match_info_get_regex(<a class="self" href="#312">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>)) }
+    </span><span class="kw">pub fn </span>regex(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="auto/regex.rs.html#7-123">Regex</a> {
+        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1629-1631">from_glib_none</a>(ffi::g_match_info_get_regex(<a class="self" href="#315">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>)) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">"g_match_info_get_string"</span>)]
     #[doc(alias = <span class="string">"get_string"</span>)]
     </span><span class="kw">pub fn </span>string(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'input </span><a href="gstring.rs.html#24"><span class="kw">crate</span>::GStr</a> {
-        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1629-1631">from_glib_none</a>(ffi::g_match_info_get_string(<a class="self" href="#318">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>)) }
+        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1629-1631">from_glib_none</a>(ffi::g_match_info_get_string(<a class="self" href="#321">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>)) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">"g_match_info_is_partial_match"</span>)]
     </span><span class="kw">pub fn </span>is_partial_match(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
-        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1421-1423">from_glib</a>(ffi::g_match_info_is_partial_match(<a class="self" href="#323">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>)) }
+        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1421-1423">from_glib</a>(ffi::g_match_info_is_partial_match(<a class="self" href="#326">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>)) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">"g_match_info_matches"</span>)]
     </span><span class="kw">pub fn </span>matches(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
-        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1421-1423">from_glib</a>(ffi::g_match_info_matches(<a class="self" href="#328">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>)) }
+        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1421-1423">from_glib</a>(ffi::g_match_info_matches(<a class="self" href="#331">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>)) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">"g_match_info_next"</span>)]
-    </span><span class="kw">pub fn </span>next(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>, <a href="error.rs.html#10-25"><span class="kw">crate</span>::Error</a>&gt; {
+    </span><span class="kw">pub fn </span>next(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>, <a href="error.rs.html#10-28"><span class="kw">crate</span>::Error</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>error = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">std::ptr::null_mut</a>();
-            <span class="kw">let </span>is_ok = ffi::g_match_info_next(<a class="self" href="#333">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>, <span class="kw-2">&amp;mut </span><a href="#335">error</a>);
+            <span class="kw">let </span>is_ok = ffi::g_match_info_next(<a class="self" href="#336">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>, <span class="kw-2">&amp;mut </span><a href="#338">error</a>);
             <span class="kw">if </span>!error.is_null() {
-                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="translate.rs.html#1638-1640">from_glib_full</a>(<a href="#335">error</a>))
+                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="translate.rs.html#1638-1640">from_glib_full</a>(<a href="#338">error</a>))
             } <span class="kw">else </span>{
-                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(<a href="translate.rs.html#1421-1423">from_glib</a>(<a href="#336">is_ok</a>))
+                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(<a href="translate.rs.html#1421-1423">from_glib</a>(<a href="#339">is_ok</a>))
             }
         }
     }
@@ -812,45 +818,45 @@
     </span><span class="kw">pub fn </span>expand_references(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         string_to_expand: <span class="kw">impl </span><a href="gstring.rs.html#2393-2395">IntoGStr</a>,
-    ) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="gstring.rs.html#1028"><span class="kw">crate</span>::GString</a>&gt;, <a href="error.rs.html#10-25"><span class="kw">crate</span>::Error</a>&gt; {
-        <a href="#348">string_to_expand</a>.<a href="gstring.rs.html#2394">run_with_gstr</a>(|string_to_expand| <span class="kw">unsafe </span>{
+    ) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="gstring.rs.html#1028"><span class="kw">crate</span>::GString</a>&gt;, <a href="error.rs.html#10-28"><span class="kw">crate</span>::Error</a>&gt; {
+        <a href="#351">string_to_expand</a>.<a href="gstring.rs.html#2394">run_with_gstr</a>(|string_to_expand| <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>error = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
             <span class="kw">let </span>ret = ffi::g_match_info_expand_references(
-                <a class="self" href="#347">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#350">string_to_expand</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-                <span class="kw-2">&amp;mut </span><a href="#351">error</a>,
+                <a class="self" href="#350">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#353">string_to_expand</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+                <span class="kw-2">&amp;mut </span><a href="#354">error</a>,
             );
             <span class="kw">if </span>error.is_null() {
-                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(<a href="translate.rs.html#1638-1640">from_glib_full</a>(<a href="#352">ret</a>))
+                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(<a href="translate.rs.html#1638-1640">from_glib_full</a>(<a href="#355">ret</a>))
             } <span class="kw">else </span>{
-                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="translate.rs.html#1638-1640">from_glib_full</a>(<a href="#351">error</a>))
+                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="translate.rs.html#1638-1640">from_glib_full</a>(<a href="#354">error</a>))
             }
         })
     }
 
     <span class="attr">#[doc(alias = <span class="string">"g_match_info_fetch_named"</span>)]
     </span><span class="kw">pub fn </span>fetch_named(<span class="kw-2">&amp;</span><span class="self">self</span>, name: <span class="kw">impl </span><a href="gstring.rs.html#2393-2395">IntoGStr</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="gstring.rs.html#1028"><span class="kw">crate</span>::GString</a>&gt; {
-        <a href="#366">name</a>.<a href="gstring.rs.html#2394">run_with_gstr</a>(|name| <span class="kw">unsafe </span>{
+        <a href="#369">name</a>.<a href="gstring.rs.html#2394">run_with_gstr</a>(|name| <span class="kw">unsafe </span>{
             <a href="translate.rs.html#1638-1640">from_glib_full</a>(ffi::g_match_info_fetch_named(
-                <a class="self" href="#366">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#367">name</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+                <a class="self" href="#369">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#370">name</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
             ))
         })
     }
 
     <span class="attr">#[doc(alias = <span class="string">"g_match_info_fetch_named_pos"</span>)]
     </span><span class="kw">pub fn </span>fetch_named_pos(<span class="kw-2">&amp;</span><span class="self">self</span>, name: <span class="kw">impl </span><a href="gstring.rs.html#2393-2395">IntoGStr</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;(<a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>)&gt; {
-        <a href="#376">name</a>.<a href="gstring.rs.html#2394">run_with_gstr</a>(|name| <span class="kw">unsafe </span>{
+        <a href="#379">name</a>.<a href="gstring.rs.html#2394">run_with_gstr</a>(|name| <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>start_pos = <a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.uninit">mem::MaybeUninit::uninit</a>();
             <span class="kw">let </span><span class="kw-2">mut </span>end_pos = <a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.uninit">mem::MaybeUninit::uninit</a>();
             <span class="kw">let </span>ret = <a href="translate.rs.html#1421-1423">from_glib</a>(ffi::g_match_info_fetch_named_pos(
-                <a class="self" href="#376">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#377">name</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#378">start_pos</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.as_mut_ptr">as_mut_ptr</a>(),
-                <a href="#379">end_pos</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.as_mut_ptr">as_mut_ptr</a>(),
+                <a class="self" href="#379">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#380">name</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#381">start_pos</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.as_mut_ptr">as_mut_ptr</a>(),
+                <a href="#382">end_pos</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.as_mut_ptr">as_mut_ptr</a>(),
             ));
             <span class="kw">if </span>ret {
-                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>((<a href="#378">start_pos</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.assume_init">assume_init</a>(), <a href="#379">end_pos</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.assume_init">assume_init</a>()))
+                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>((<a href="#381">start_pos</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.assume_init">assume_init</a>(), <a href="#382">end_pos</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.assume_init">assume_init</a>()))
             } <span class="kw">else </span>{
                 <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None"><a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a>
             </a>}

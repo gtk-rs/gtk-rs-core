@@ -71,7 +71,7 @@
 </script>
 
 
-<nav class="mobile-topbar"><button class="sidebar-menu-toggle" title="show sidebar"></button></nav><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../glib/index.html">glib</a><span class="version">0.21.0</span></h2></div><div class="sidebar-elems"><section id="rustdoc-toc"><h2 class="location"><a href="#">unsetenv</a></h2><h3><a href="#">Sections</a></h3><ul class="block top-toc"><li><a href="#variable" title="`variable`"><code>variable</code></a></li></ul></section><div id="rustdoc-modnav"><h2 class="in-crate"><a href="index.html">In crate glib</a></h2></div></div></nav><div class="sidebar-resizer"></div><main><div class="width-limiter"><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><div class="rustdoc-breadcrumbs"><a href="index.html">glib</a></div><h1>Function <span class="fn">unsetenv</span><button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><rustdoc-toolbar></rustdoc-toolbar><span class="sub-heading"><a class="src" href="../src/glib/auto/functions.rs.html#2506-2510">Source</a> </span></div><pre class="rust item-decl"><code>pub fn unsetenv(variable: impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html" title="trait core::convert::AsRef">AsRef</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/std/ffi/os_str/struct.OsStr.html" title="struct std::ffi::os_str::OsStr">OsStr</a>&gt;)</code></pre><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>Removes an environment variable from the environment.</p>
+<nav class="mobile-topbar"><button class="sidebar-menu-toggle" title="show sidebar"></button></nav><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../glib/index.html">glib</a><span class="version">0.21.0</span></h2></div><div class="sidebar-elems"><section id="rustdoc-toc"><h2 class="location"><a href="#">unsetenv</a></h2><h3><a href="#">Sections</a></h3><ul class="block top-toc"><li><a href="#variable" title="`variable`"><code>variable</code></a></li><li><a href="#variable-1" title="`variable`"><code>variable</code></a></li></ul></section><div id="rustdoc-modnav"><h2 class="in-crate"><a href="index.html">In crate glib</a></h2></div></div></nav><div class="sidebar-resizer"></div><main><div class="width-limiter"><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><div class="rustdoc-breadcrumbs"><a href="index.html">glib</a></div><h1>Function <span class="fn">unsetenv</span><button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><rustdoc-toolbar></rustdoc-toolbar><span class="sub-heading"><a class="src" href="../src/glib/auto/functions.rs.html#1016-1020">Source</a> </span></div><pre class="rust item-decl"><code>pub fn unsetenv(variable: impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html" title="trait core::convert::AsRef">AsRef</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/std/ffi/os_str/struct.OsStr.html" title="struct std::ffi::os_str::OsStr">OsStr</a>&gt;)</code></pre><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>Removes an environment variable from the environment.</p>
 <p>Note that on some systems, when variables are overwritten, the
 memory used for the previous variables and its value isn’t reclaimed.</p>
 <p>You should be mindful of the fact that environment variable handling
@@ -86,6 +86,23 @@ use g_get_environ() to get an environment array, modify that with
 g_environ_setenv() and g_environ_unsetenv(), and then pass that
 array directly to execvpe(), g_spawn_async(), or the like.</p>
 <h3 id="variable"><a class="doc-anchor" href="#variable">§</a><code>variable</code></h3>
+<p>the environment variable to remove, must
+not contain ‘=’
+Removes an environment variable from the environment.</p>
+<p>Note that on some systems, when variables are overwritten, the
+memory used for the previous variables and its value isn’t reclaimed.</p>
+<p>You should be mindful of the fact that environment variable handling
+in UNIX is not thread-safe, and your program may crash if one thread
+calls g_unsetenv() while another thread is calling getenv(). (And note
+that many functions, such as gettext(), call getenv() internally.) This
+function is only safe to use at the very start of your program, before
+creating any other threads (or creating objects that create worker
+threads of their own).</p>
+<p>If you need to set up the environment for a child process, you can
+use g_get_environ() to get an environment array, modify that with
+g_environ_setenv() and g_environ_unsetenv(), and then pass that
+array directly to execvpe(), g_spawn_async(), or the like.</p>
+<h3 id="variable-1"><a class="doc-anchor" href="#variable-1">§</a><code>variable</code></h3>
 <p>the environment variable to remove, must
 not contain ‘=’</p>
 </div></details></section></div></main></body></html>
