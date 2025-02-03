@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/param_spec.rs`."><title>param_spec.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-e7950ecc.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.86.0-nightly (bf1b174e7 2025-01-28)" data-channel="nightly" data-search-js="search-ccb196c1.js" data-settings-js="settings-0f613d39.js" ><script src="../../static.files/storage-59e33391.js"></script><script defer src="../../static.files/src-script-56102188.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/param_spec.rs`."><title>param_spec.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-cf3c48c1.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.86.0-nightly (4a4309466 2025-02-02)" data-channel="nightly" data-search-js="search-2d513d54.js" data-settings-js="settings-6dad6058.js" ><script src="../../static.files/storage-302de22f.js"></script><script defer src="../../static.files/src-script-8fee9dc5.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-9b5d7e41.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -2591,7 +2591,7 @@
 };
 
 <span class="kw">use crate</span>::{
-    <a href="../../glib_sys/index.html">ffi</a>, <a href="../../gobject_sys/index.html">gobject_ffi</a>,
+    ffi, gobject_ffi,
     object::{<a href="object.rs.html#4142">Interface</a>, <a href="object.rs.html#4342">InterfaceRef</a>, <a href="object.rs.html#4137">IsClass</a>, <a href="object.rs.html#4369">IsInterface</a>, <a href="object.rs.html#1380">ObjectClass</a>},
     <a href="lib.rs.html#159">prelude</a>::<span class="kw-2">*</span>,
     <a href="lib.rs.html#164">translate</a>::<span class="kw-2">*</span>,
@@ -2616,7 +2616,7 @@
     /// This is an Abstract Base Class, you cannot instantiate it.
     </span><span class="attr">#[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     #[doc(alias = <span class="string">"GParamSpec"</span>)]
-    </span><span class="kw">pub struct </span><a href="../../glib/struct.ParamSpec.html">ParamSpec</a>(Shared&lt;<a href="../../gobject_sys/struct.GParamSpec.html">gobject_ffi::GParamSpec</a>&gt;);
+    </span><span class="kw">pub struct </span><a href="../../glib/struct.ParamSpec.html">ParamSpec</a>(Shared&lt;gobject_ffi::GParamSpec&gt;);
 
     <span class="kw">match fn </span>{
         <span class="kw-2">ref </span>=&gt; |ptr| gobject_ffi::g_param_spec_ref_sink(ptr),
@@ -2627,7 +2627,7 @@
 <span class="kw">impl </span><a href="types.rs.html#290-294">StaticType</a> <span class="kw">for </span><a href="#19-42">ParamSpec</a> {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>static_type() -&gt; <a href="types.rs.html#22">Type</a> {
-        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1421-1423">from_glib</a>(<a href="../../gobject_sys/constant.G_TYPE_PARAM.html">gobject_ffi::G_TYPE_PARAM</a>) }
+        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1421-1423">from_glib</a>(gobject_ffi::G_TYPE_PARAM) }
     }
 }
 
@@ -2644,7 +2644,7 @@
     <span class="kw">type </span>Checker = <a href="value.rs.html#246"><span class="kw">crate</span>::value::GenericValueTypeOrNoneChecker</a>&lt;<span class="self">Self</span>&gt;;
 
     <span class="kw">unsafe fn </span>from_value(value: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="value.rs.html#478-512"><span class="kw">crate</span>::Value</a>) -&gt; <span class="self">Self </span>{
-        <span class="kw">let </span>ptr = <a href="../../gobject_sys/fn.g_value_dup_param.html">gobject_ffi::g_value_dup_param</a>(<a href="#63">value</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>);
+        <span class="kw">let </span>ptr = gobject_ffi::g_value_dup_param(<a href="#63">value</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>);
         <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert.html">debug_assert!</a>(!ptr.is_null());
         <a href="translate.rs.html#1638-1640">from_glib_full</a>(<a href="#64">ptr</a>)
     }
@@ -2659,9 +2659,9 @@
             std::mem::size_of::&lt;<span class="self">Self</span>&gt;(),
             std::mem::size_of::&lt;<span class="kw">crate</span>::ffi::gpointer&gt;()
         );
-        <span class="kw">let </span>value = <span class="kw-2">&amp;*</span>(<a href="#74">value</a> <span class="kw">as </span><span class="kw-2">*const </span><a href="value.rs.html#478-512"><span class="kw">crate</span>::Value</a> <span class="kw">as </span><span class="kw-2">*const </span><a href="../../gobject_sys/struct.GValue.html"><span class="kw">crate</span>::gobject_ffi::GValue</a>);
-        <span class="kw">let </span>ptr = <span class="kw-2">&amp;</span><a href="#79">value</a>.data[<span class="number">0</span>].v_pointer <span class="kw">as </span><span class="kw-2">*const </span><a href="../../glib_sys/type.gpointer.html"><span class="kw">crate</span>::ffi::gpointer</a>
-            <span class="kw">as </span><span class="kw-2">*const *const </span><a href="../../gobject_sys/struct.GParamSpec.html">gobject_ffi::GParamSpec</a>;
+        <span class="kw">let </span>value = <span class="kw-2">&amp;*</span>(<a href="#74">value</a> <span class="kw">as </span><span class="kw-2">*const </span><a href="value.rs.html#478-512"><span class="kw">crate</span>::Value</a> <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">crate</span>::gobject_ffi::GValue);
+        <span class="kw">let </span>ptr = <span class="kw-2">&amp;</span><a href="#79">value</a>.data[<span class="number">0</span>].v_pointer <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">crate</span>::ffi::gpointer
+            <span class="kw">as </span><span class="kw-2">*const *const </span>gobject_ffi::GParamSpec;
         <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert.html">debug_assert!</a>(!(<span class="kw-2">*</span>ptr).is_null());
         <span class="kw-2">&amp;*</span>(<a href="#80">ptr</a> <span class="kw">as </span><span class="kw-2">*const </span><a href="#19-42">ParamSpec</a>)
     }
@@ -2672,7 +2672,7 @@
     <span class="kw">fn </span>to_value(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="value.rs.html#478-512"><span class="kw">crate</span>::Value</a> {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>value = <a href="value.rs.html#538-544"><span class="kw">crate</span>::Value::from_type_unchecked</a>(<a href="types.rs.html#293">ParamSpec::static_type</a>());
-            <a href="../../gobject_sys/fn.g_value_take_param.html">gobject_ffi::g_value_take_param</a>(<a href="#91">value</a>.<a href="translate.rs.html#471">to_glib_none_mut</a>().<span class="number">0</span>, <a class="self" href="#89">self</a>.<a href="translate.rs.html#456-458">to_glib_full</a>());
+            gobject_ffi::g_value_take_param(<a href="#91">value</a>.<a href="translate.rs.html#471">to_glib_none_mut</a>().<span class="number">0</span>, <a class="self" href="#89">self</a>.<a href="translate.rs.html#456-458">to_glib_full</a>());
             <a href="#91">value</a>
         }
     }
@@ -2688,7 +2688,7 @@
     </span><span class="kw">fn </span>from(s: <a href="#19-42">ParamSpec</a>) -&gt; <span class="self">Self </span>{
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>value = <a href="value.rs.html#538-544"><span class="kw">crate</span>::Value::from_type_unchecked</a>(<a href="types.rs.html#293">ParamSpec::static_type</a>());
-            <a href="../../gobject_sys/fn.g_value_take_param.html">gobject_ffi::g_value_take_param</a>(<a href="#107">value</a>.<a href="translate.rs.html#471">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#105">s</a>.<a href="translate.rs.html#719">into_glib_ptr</a>());
+            gobject_ffi::g_value_take_param(<a href="#107">value</a>.<a href="translate.rs.html#471">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#105">s</a>.<a href="translate.rs.html#719">into_glib_ptr</a>());
             <a href="#107">value</a>
         }
     }
@@ -2699,7 +2699,7 @@
     <span class="kw">fn </span>to_value_optional(s: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="self">Self</span>&gt;) -&gt; <a href="value.rs.html#478-512"><span class="kw">crate</span>::Value</a> {
         <span class="kw">let </span><span class="kw-2">mut </span>value = <span class="kw">crate</span>::Value::for_value_type::&lt;<span class="self">Self</span>&gt;();
         <span class="kw">unsafe </span>{
-            <a href="../../gobject_sys/fn.g_value_take_param.html">gobject_ffi::g_value_take_param</a>(<a href="#117">value</a>.<a href="translate.rs.html#471">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#116">s</a>.<a href="translate.rs.html#456-458">to_glib_full</a>());
+            gobject_ffi::g_value_take_param(<a href="#117">value</a>.<a href="translate.rs.html#471">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#116">s</a>.<a href="translate.rs.html#456-458">to_glib_full</a>());
         }
 
         <a href="#117">value</a>
@@ -2767,7 +2767,7 @@
     #[inline]
     </span><span class="kw">pub fn </span>value_is_valid(<span class="kw-2">&amp;</span><span class="self">self</span>, value: <span class="kw-2">&amp;</span><a href="value.rs.html#478-512">Value</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
         <span class="kw">unsafe </span>{
-            <a href="translate.rs.html#1421-1423">from_glib</a>(<a href="../../gobject_sys/fn.g_param_value_is_valid.html">gobject_ffi::g_param_value_is_valid</a>(
+            <a href="translate.rs.html#1421-1423">from_glib</a>(gobject_ffi::g_param_value_is_valid(
                 <a class="self" href="#185">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
                 <a href="#185">value</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
             ))
@@ -2796,7 +2796,7 @@
     #[inline]
     </span><span class="kw">pub fn </span>blurb(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt; {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>ptr = <a href="../../gobject_sys/fn.g_param_spec_get_blurb.html">gobject_ffi::g_param_spec_get_blurb</a>(<a class="self" href="#214">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>);
+            <span class="kw">let </span>ptr = gobject_ffi::g_param_spec_get_blurb(<a class="self" href="#214">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>);
             <span class="kw">if </span>ptr.is_null() {
                 <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None"><a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a>
             </a>} <span class="kw">else </span>{
@@ -2817,7 +2817,7 @@
     #[inline]
     </span><span class="kw">pub fn </span>default_value(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><a href="value.rs.html#478-512">Value</a> {
         <span class="kw">unsafe </span>{
-            <span class="kw-2">&amp;*</span>(<a href="../../gobject_sys/fn.g_param_spec_get_default_value.html">gobject_ffi::g_param_spec_get_default_value</a>(<a class="self" href="#235">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>)
+            <span class="kw-2">&amp;*</span>(gobject_ffi::g_param_spec_get_default_value(<a class="self" href="#235">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>)
                 <span class="kw">as </span><span class="kw-2">*const </span><a href="value.rs.html#478-512"><span class="kw">crate</span>::Value</a>)
         }
     }
@@ -2835,7 +2835,7 @@
     #[inline]
     </span><span class="kw">pub fn </span>name&lt;<span class="lifetime">'a</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a> {
         <span class="kw">unsafe </span>{
-            <a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.from_ptr">CStr::from_ptr</a>(<a href="../../gobject_sys/fn.g_param_spec_get_name.html">gobject_ffi::g_param_spec_get_name</a>(<a class="self" href="#253">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>))
+            <a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.from_ptr">CStr::from_ptr</a>(gobject_ffi::g_param_spec_get_name(<a class="self" href="#253">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>))
                 .<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.to_str">to_str</a>()
                 .<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>()
         }
@@ -2851,7 +2851,7 @@
     #[inline]
     </span><span class="kw">pub fn </span>name_quark(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="quark.rs.html#10"><span class="kw">crate</span>::Quark</a> {
         <span class="kw">unsafe </span>{
-            <a href="translate.rs.html#1421-1423">from_glib</a>(<a href="../../gobject_sys/fn.g_param_spec_get_name_quark.html">gobject_ffi::g_param_spec_get_name_quark</a>(
+            <a href="translate.rs.html#1421-1423">from_glib</a>(gobject_ffi::g_param_spec_get_name_quark(
                 <a class="self" href="#269">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
             ))
         }
@@ -2873,7 +2873,7 @@
     #[inline]
     </span><span class="kw">pub fn </span>nick(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a> {
         <span class="kw">unsafe </span>{
-            <a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.from_ptr">CStr::from_ptr</a>(<a href="../../gobject_sys/fn.g_param_spec_get_nick.html">gobject_ffi::g_param_spec_get_nick</a>(<a class="self" href="#291">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>))
+            <a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.from_ptr">CStr::from_ptr</a>(gobject_ffi::g_param_spec_get_nick(<a class="self" href="#291">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>))
                 .<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.to_str">to_str</a>()
                 .<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>()
         }
@@ -2900,7 +2900,7 @@
     #[inline]
     </span><span class="kw">pub fn </span>redirect_target(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="#19-42">ParamSpec</a>&gt; {
         <span class="kw">unsafe </span>{
-            <a href="translate.rs.html#1629-1631">from_glib_none</a>(<a href="../../gobject_sys/fn.g_param_spec_get_redirect_target.html">gobject_ffi::g_param_spec_get_redirect_target</a>(
+            <a href="translate.rs.html#1629-1631">from_glib_none</a>(gobject_ffi::g_param_spec_get_redirect_target(
                 <a class="self" href="#318">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
             ))
         }
@@ -2936,7 +2936,7 @@
     #[inline]
     </span><span class="kw">pub fn </span>is_valid_name(name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
         <span class="kw">unsafe </span>{
-            <a href="translate.rs.html#1421-1423">from_glib</a>(<a href="../../gobject_sys/fn.g_param_spec_is_valid_name.html">gobject_ffi::g_param_spec_is_valid_name</a>(
+            <a href="translate.rs.html#1421-1423">from_glib</a>(gobject_ffi::g_param_spec_is_valid_name(
                 <a href="#354">name</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
             ))
         }
@@ -2944,7 +2944,7 @@
 }
 
 <span class="kw">pub unsafe trait </span><a href="../../glib/trait.ParamSpecType.html">ParamSpecType</a>:
-    <a href="types.rs.html#290-294">StaticType</a> + <a href="translate.rs.html#1581-1587">FromGlibPtrFull</a>&lt;<span class="kw-2">*mut </span><a href="../../gobject_sys/struct.GParamSpec.html">gobject_ffi::GParamSpec</a>&gt; + <span class="lifetime">'static
+    <a href="types.rs.html#290-294">StaticType</a> + <a href="translate.rs.html#1581-1587">FromGlibPtrFull</a>&lt;<span class="kw-2">*mut </span>gobject_ffi::GParamSpec&gt; + <span class="lifetime">'static
 </span>{
 }
 
@@ -3425,7 +3425,7 @@
 <a class="macro" href="wrapper.rs.html#276-443">wrapper!</a> {
     <span class="attr">#[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     #[doc(alias = <span class="string">"GParamSpecChar"</span>)]
-    </span><span class="kw">pub struct </span><a href="../../glib/struct.ParamSpecChar.html">ParamSpecChar</a>(Shared&lt;<a href="../../gobject_sys/struct.GParamSpecChar.html">gobject_ffi::GParamSpecChar</a>&gt;);
+    </span><span class="kw">pub struct </span><a href="../../glib/struct.ParamSpecChar.html">ParamSpecChar</a>(Shared&lt;gobject_ffi::GParamSpecChar&gt;);
 
     <span class="kw">match fn </span>{
         <span class="kw-2">ref </span>=&gt; |ptr| gobject_ffi::g_param_spec_ref_sink(ptr <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpec) <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpecChar,
@@ -3445,7 +3445,7 @@
 <a class="macro" href="wrapper.rs.html#276-443">wrapper!</a> {
     <span class="attr">#[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     #[doc(alias = <span class="string">"GParamSpecUChar"</span>)]
-    </span><span class="kw">pub struct </span><a href="../../glib/struct.ParamSpecUChar.html">ParamSpecUChar</a>(Shared&lt;<a href="../../gobject_sys/struct.GParamSpecUChar.html">gobject_ffi::GParamSpecUChar</a>&gt;);
+    </span><span class="kw">pub struct </span><a href="../../glib/struct.ParamSpecUChar.html">ParamSpecUChar</a>(Shared&lt;gobject_ffi::GParamSpecUChar&gt;);
 
     <span class="kw">match fn </span>{
         <span class="kw-2">ref </span>=&gt; |ptr| gobject_ffi::g_param_spec_ref_sink(ptr <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpec) <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpecUChar,
@@ -3470,7 +3470,7 @@
 <a class="macro" href="wrapper.rs.html#276-443">wrapper!</a> {
     <span class="attr">#[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     #[doc(alias = <span class="string">"GParamSpecBoolean"</span>)]
-    </span><span class="kw">pub struct </span><a href="../../glib/struct.ParamSpecBoolean.html">ParamSpecBoolean</a>(Shared&lt;<a href="../../gobject_sys/struct.GParamSpecBoolean.html">gobject_ffi::GParamSpecBoolean</a>&gt;);
+    </span><span class="kw">pub struct </span><a href="../../glib/struct.ParamSpecBoolean.html">ParamSpecBoolean</a>(Shared&lt;gobject_ffi::GParamSpecBoolean&gt;);
 
     <span class="kw">match fn </span>{
         <span class="kw-2">ref </span>=&gt; |ptr| gobject_ffi::g_param_spec_ref_sink(ptr <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpec) <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpecBoolean,
@@ -3499,7 +3499,7 @@
         flags: <a href="gobject/flags.rs.html#5-56">ParamFlags</a>,
     ) -&gt; <a href="#19-42">ParamSpec</a> {
         <span class="kw">unsafe </span>{
-            <a href="translate.rs.html#1629-1631">from_glib_none</a>(<a href="../../gobject_sys/fn.g_param_spec_boolean.html">gobject_ffi::g_param_spec_boolean</a>(
+            <a href="translate.rs.html#1629-1631">from_glib_none</a>(gobject_ffi::g_param_spec_boolean(
                 <a href="#912">name</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
                 <a href="#913">nick</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>().<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
                 <a href="#914">blurb</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>().<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
@@ -3521,7 +3521,7 @@
 <a class="macro" href="wrapper.rs.html#276-443">wrapper!</a> {
     <span class="attr">#[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     #[doc(alias = <span class="string">"GParamSpecInt"</span>)]
-    </span><span class="kw">pub struct </span><a href="../../glib/struct.ParamSpecInt.html">ParamSpecInt</a>(Shared&lt;<a href="../../gobject_sys/struct.GParamSpecInt.html">gobject_ffi::GParamSpecInt</a>&gt;);
+    </span><span class="kw">pub struct </span><a href="../../glib/struct.ParamSpecInt.html">ParamSpecInt</a>(Shared&lt;gobject_ffi::GParamSpecInt&gt;);
 
     <span class="kw">match fn </span>{
         <span class="kw-2">ref </span>=&gt; |ptr| gobject_ffi::g_param_spec_ref_sink(ptr <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpec) <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpecInt,
@@ -3541,7 +3541,7 @@
 <a class="macro" href="wrapper.rs.html#276-443">wrapper!</a> {
     <span class="attr">#[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     #[doc(alias = <span class="string">"GParamSpecUInt"</span>)]
-    </span><span class="kw">pub struct </span><a href="../../glib/struct.ParamSpecUInt.html">ParamSpecUInt</a>(Shared&lt;<a href="../../gobject_sys/struct.GParamSpecUInt.html">gobject_ffi::GParamSpecUInt</a>&gt;);
+    </span><span class="kw">pub struct </span><a href="../../glib/struct.ParamSpecUInt.html">ParamSpecUInt</a>(Shared&lt;gobject_ffi::GParamSpecUInt&gt;);
 
     <span class="kw">match fn </span>{
         <span class="kw-2">ref </span>=&gt; |ptr| gobject_ffi::g_param_spec_ref_sink(ptr <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpec) <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpecUInt,
@@ -3566,7 +3566,7 @@
 <a class="macro" href="wrapper.rs.html#276-443">wrapper!</a> {
     <span class="attr">#[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     #[doc(alias = <span class="string">"GParamSpecLong"</span>)]
-    </span><span class="kw">pub struct </span><a href="../../glib/struct.ParamSpecLong.html">ParamSpecLong</a>(Shared&lt;<a href="../../gobject_sys/struct.GParamSpecLong.html">gobject_ffi::GParamSpecLong</a>&gt;);
+    </span><span class="kw">pub struct </span><a href="../../glib/struct.ParamSpecLong.html">ParamSpecLong</a>(Shared&lt;gobject_ffi::GParamSpecLong&gt;);
 
     <span class="kw">match fn </span>{
         <span class="kw-2">ref </span>=&gt; |ptr| gobject_ffi::g_param_spec_ref_sink(ptr <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpec) <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpecLong,
@@ -3591,7 +3591,7 @@
 <a class="macro" href="wrapper.rs.html#276-443">wrapper!</a> {
     <span class="attr">#[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     #[doc(alias = <span class="string">"GParamSpecULong"</span>)]
-    </span><span class="kw">pub struct </span><a href="../../glib/struct.ParamSpecULong.html">ParamSpecULong</a>(Shared&lt;<a href="../../gobject_sys/struct.GParamSpecULong.html">gobject_ffi::GParamSpecULong</a>&gt;);
+    </span><span class="kw">pub struct </span><a href="../../glib/struct.ParamSpecULong.html">ParamSpecULong</a>(Shared&lt;gobject_ffi::GParamSpecULong&gt;);
 
     <span class="kw">match fn </span>{
         <span class="kw-2">ref </span>=&gt; |ptr| gobject_ffi::g_param_spec_ref_sink(ptr <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpec) <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpecULong,
@@ -3616,7 +3616,7 @@
 <a class="macro" href="wrapper.rs.html#276-443">wrapper!</a> {
     <span class="attr">#[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     #[doc(alias = <span class="string">"GParamSpecInt64"</span>)]
-    </span><span class="kw">pub struct </span><a href="../../glib/struct.ParamSpecInt64.html">ParamSpecInt64</a>(Shared&lt;<a href="../../gobject_sys/struct.GParamSpecInt64.html">gobject_ffi::GParamSpecInt64</a>&gt;);
+    </span><span class="kw">pub struct </span><a href="../../glib/struct.ParamSpecInt64.html">ParamSpecInt64</a>(Shared&lt;gobject_ffi::GParamSpecInt64&gt;);
 
     <span class="kw">match fn </span>{
         <span class="kw-2">ref </span>=&gt; |ptr| gobject_ffi::g_param_spec_ref_sink(ptr <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpec) <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpecInt64,
@@ -3641,7 +3641,7 @@
 <a class="macro" href="wrapper.rs.html#276-443">wrapper!</a> {
     <span class="attr">#[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     #[doc(alias = <span class="string">"GParamSpecUInt64"</span>)]
-    </span><span class="kw">pub struct </span><a href="../../glib/struct.ParamSpecUInt64.html">ParamSpecUInt64</a>(Shared&lt;<a href="../../gobject_sys/struct.GParamSpecUInt64.html">gobject_ffi::GParamSpecUInt64</a>&gt;);
+    </span><span class="kw">pub struct </span><a href="../../glib/struct.ParamSpecUInt64.html">ParamSpecUInt64</a>(Shared&lt;gobject_ffi::GParamSpecUInt64&gt;);
 
     <span class="kw">match fn </span>{
         <span class="kw-2">ref </span>=&gt; |ptr| gobject_ffi::g_param_spec_ref_sink(ptr <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpec) <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpecUInt64,
@@ -3666,7 +3666,7 @@
 <a class="macro" href="wrapper.rs.html#276-443">wrapper!</a> {
     <span class="attr">#[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     #[doc(alias = <span class="string">"GParamSpecUnichar"</span>)]
-    </span><span class="kw">pub struct </span><a href="../../glib/struct.ParamSpecUnichar.html">ParamSpecUnichar</a>(Shared&lt;<a href="../../gobject_sys/struct.GParamSpecUnichar.html">gobject_ffi::GParamSpecUnichar</a>&gt;);
+    </span><span class="kw">pub struct </span><a href="../../glib/struct.ParamSpecUnichar.html">ParamSpecUnichar</a>(Shared&lt;gobject_ffi::GParamSpecUnichar&gt;);
 
     <span class="kw">match fn </span>{
         <span class="kw-2">ref </span>=&gt; |ptr| gobject_ffi::g_param_spec_ref_sink(ptr <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpec) <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpecUnichar,
@@ -3689,7 +3689,7 @@
         flags: <a href="gobject/flags.rs.html#5-56">ParamFlags</a>,
     ) -&gt; <a href="#19-42">ParamSpec</a> {
         <span class="kw">unsafe </span>{
-            <a href="translate.rs.html#1629-1631">from_glib_none</a>(<a href="../../gobject_sys/fn.g_param_spec_unichar.html">gobject_ffi::g_param_spec_unichar</a>(
+            <a href="translate.rs.html#1629-1631">from_glib_none</a>(gobject_ffi::g_param_spec_unichar(
                 <a href="#1102">name</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
                 <a href="#1103">nick</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>().<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
                 <a href="#1104">blurb</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>().<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
@@ -3712,7 +3712,7 @@
 <a class="macro" href="wrapper.rs.html#276-443">wrapper!</a> {
     <span class="attr">#[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     #[doc(alias = <span class="string">"GParamSpecEnum"</span>)]
-    </span><span class="kw">pub struct </span><a href="../../glib/struct.ParamSpecEnum.html">ParamSpecEnum</a>(Shared&lt;<a href="../../gobject_sys/struct.GParamSpecEnum.html">gobject_ffi::GParamSpecEnum</a>&gt;);
+    </span><span class="kw">pub struct </span><a href="../../glib/struct.ParamSpecEnum.html">ParamSpecEnum</a>(Shared&lt;gobject_ffi::GParamSpecEnum&gt;);
 
     <span class="kw">match fn </span>{
         <span class="kw-2">ref </span>=&gt; |ptr| gobject_ffi::g_param_spec_ref_sink(ptr <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpec) <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpecEnum,
@@ -3731,7 +3731,7 @@
         flags: <a href="gobject/flags.rs.html#5-56">ParamFlags</a>,
     ) -&gt; <a href="#19-42">ParamSpec</a> {
         <span class="kw">unsafe </span>{
-            <a href="translate.rs.html#1629-1631">from_glib_none</a>(<a href="../../gobject_sys/fn.g_param_spec_enum.html">gobject_ffi::g_param_spec_enum</a>(
+            <a href="translate.rs.html#1629-1631">from_glib_none</a>(gobject_ffi::g_param_spec_enum(
                 <a href="#1143">name</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
                 <a href="#1144">nick</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>().<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
                 <a href="#1145">blurb</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>().<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
@@ -3746,7 +3746,7 @@
     #[inline]
     </span><span class="kw">pub fn </span>enum_class(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="enums.rs.html#61"><span class="kw">crate</span>::EnumClass</a> {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>ptr = ToGlibPtr::&lt;<span class="kw-2">*const </span><a href="../../gobject_sys/struct.GParamSpecEnum.html">gobject_ffi::GParamSpecEnum</a>&gt;::to_glib_none(<a class="self" href="#1164">self</a>).<span class="number">0</span>;
+            <span class="kw">let </span>ptr = ToGlibPtr::&lt;<span class="kw-2">*const </span>gobject_ffi::GParamSpecEnum&gt;::to_glib_none(<a class="self" href="#1164">self</a>).<span class="number">0</span>;
 
             <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert.html">debug_assert!</a>(!(<span class="kw-2">*</span>ptr).enum_class.is_null());
 
@@ -3772,7 +3772,7 @@
     <span class="attr">#[inline]
     </span><span class="kw">pub fn </span>default_value_as_i32(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a> {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>ptr = ToGlibPtr::&lt;<span class="kw-2">*const </span><a href="../../gobject_sys/struct.GParamSpecEnum.html">gobject_ffi::GParamSpecEnum</a>&gt;::to_glib_none(<a class="self" href="#1190">self</a>).<span class="number">0</span>;
+            <span class="kw">let </span>ptr = ToGlibPtr::&lt;<span class="kw-2">*const </span>gobject_ffi::GParamSpecEnum&gt;::to_glib_none(<a class="self" href="#1190">self</a>).<span class="number">0</span>;
             (<span class="kw-2">*</span><a href="#1192">ptr</a>).default_value
         }
     }
@@ -3856,7 +3856,7 @@
 <a class="macro" href="wrapper.rs.html#276-443">wrapper!</a> {
     <span class="attr">#[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     #[doc(alias = <span class="string">"GParamSpecFlags"</span>)]
-    </span><span class="kw">pub struct </span><a href="../../glib/struct.ParamSpecFlags.html">ParamSpecFlags</a>(Shared&lt;<a href="../../gobject_sys/struct.GParamSpecFlags.html">gobject_ffi::GParamSpecFlags</a>&gt;);
+    </span><span class="kw">pub struct </span><a href="../../glib/struct.ParamSpecFlags.html">ParamSpecFlags</a>(Shared&lt;gobject_ffi::GParamSpecFlags&gt;);
 
     <span class="kw">match fn </span>{
         <span class="kw-2">ref </span>=&gt; |ptr| gobject_ffi::g_param_spec_ref_sink(ptr <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpec) <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpecFlags,
@@ -3875,7 +3875,7 @@
         flags: <a href="gobject/flags.rs.html#5-56">ParamFlags</a>,
     ) -&gt; <a href="#19-42">ParamSpec</a> {
         <span class="kw">unsafe </span>{
-            <a href="translate.rs.html#1629-1631">from_glib_none</a>(<a href="../../gobject_sys/fn.g_param_spec_flags.html">gobject_ffi::g_param_spec_flags</a>(
+            <a href="translate.rs.html#1629-1631">from_glib_none</a>(gobject_ffi::g_param_spec_flags(
                 <a href="#1287">name</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
                 <a href="#1288">nick</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>().<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
                 <a href="#1289">blurb</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>().<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
@@ -3890,7 +3890,7 @@
     #[inline]
     </span><span class="kw">pub fn </span>flags_class(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="enums.rs.html#415"><span class="kw">crate</span>::FlagsClass</a> {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>ptr = ToGlibPtr::&lt;<span class="kw-2">*const </span><a href="../../gobject_sys/struct.GParamSpecFlags.html">gobject_ffi::GParamSpecFlags</a>&gt;::to_glib_none(<a class="self" href="#1308">self</a>).<span class="number">0</span>;
+            <span class="kw">let </span>ptr = ToGlibPtr::&lt;<span class="kw-2">*const </span>gobject_ffi::GParamSpecFlags&gt;::to_glib_none(<a class="self" href="#1308">self</a>).<span class="number">0</span>;
 
             <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert.html">debug_assert!</a>(!(<span class="kw-2">*</span>ptr).flags_class.is_null());
 
@@ -3916,7 +3916,7 @@
     <span class="attr">#[inline]
     </span><span class="kw">pub fn </span>default_value_as_u32(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a> {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>ptr = ToGlibPtr::&lt;<span class="kw-2">*const </span><a href="../../gobject_sys/struct.GParamSpecFlags.html">gobject_ffi::GParamSpecFlags</a>&gt;::to_glib_none(<a class="self" href="#1334">self</a>).<span class="number">0</span>;
+            <span class="kw">let </span>ptr = ToGlibPtr::&lt;<span class="kw-2">*const </span>gobject_ffi::GParamSpecFlags&gt;::to_glib_none(<a class="self" href="#1334">self</a>).<span class="number">0</span>;
             (<span class="kw-2">*</span><a href="#1336">ptr</a>).default_value
         }
     }
@@ -3996,7 +3996,7 @@
     <span class="doccomment">/// A [`ParamSpec`][crate::ParamSpec] derived structure that contains the meta data for float properties.
     </span><span class="attr">#[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     #[doc(alias = <span class="string">"GParamSpecFloat"</span>)]
-    </span><span class="kw">pub struct </span><a href="../../glib/struct.ParamSpecFloat.html">ParamSpecFloat</a>(Shared&lt;<a href="../../gobject_sys/struct.GParamSpecFloat.html">gobject_ffi::GParamSpecFloat</a>&gt;);
+    </span><span class="kw">pub struct </span><a href="../../glib/struct.ParamSpecFloat.html">ParamSpecFloat</a>(Shared&lt;gobject_ffi::GParamSpecFloat&gt;);
 
     <span class="kw">match fn </span>{
         <span class="kw-2">ref </span>=&gt; |ptr| gobject_ffi::g_param_spec_ref_sink(ptr <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpec) <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpecFloat,
@@ -4022,7 +4022,7 @@
     <span class="doccomment">/// A [`ParamSpec`][crate::ParamSpec] derived structure that contains the meta data for double properties.
     </span><span class="attr">#[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     #[doc(alias = <span class="string">"GParamSpecDouble"</span>)]
-    </span><span class="kw">pub struct </span><a href="../../glib/struct.ParamSpecDouble.html">ParamSpecDouble</a>(Shared&lt;<a href="../../gobject_sys/struct.GParamSpecDouble.html">gobject_ffi::GParamSpecDouble</a>&gt;);
+    </span><span class="kw">pub struct </span><a href="../../glib/struct.ParamSpecDouble.html">ParamSpecDouble</a>(Shared&lt;gobject_ffi::GParamSpecDouble&gt;);
 
     <span class="kw">match fn </span>{
         <span class="kw-2">ref </span>=&gt; |ptr| gobject_ffi::g_param_spec_ref_sink(ptr <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpec) <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpecDouble,
@@ -4049,7 +4049,7 @@
     /// properties.
     </span><span class="attr">#[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     #[doc(alias = <span class="string">"GParamSpecString"</span>)]
-    </span><span class="kw">pub struct </span><a href="../../glib/struct.ParamSpecString.html">ParamSpecString</a>(Shared&lt;<a href="../../gobject_sys/struct.GParamSpecString.html">gobject_ffi::GParamSpecString</a>&gt;);
+    </span><span class="kw">pub struct </span><a href="../../glib/struct.ParamSpecString.html">ParamSpecString</a>(Shared&lt;gobject_ffi::GParamSpecString&gt;);
 
     <span class="kw">match fn </span>{
         <span class="kw-2">ref </span>=&gt; |ptr| gobject_ffi::g_param_spec_ref_sink(ptr <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpec) <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpecString,
@@ -4087,7 +4087,7 @@
     ) -&gt; <a href="#19-42">ParamSpec</a> {
         <span class="kw">let </span>default_value = <a href="#1502">default_value</a>.<a href="translate.rs.html#441">to_glib_none</a>();
         <span class="kw">unsafe </span>{
-            <a href="translate.rs.html#1629-1631">from_glib_none</a>(<a href="../../gobject_sys/fn.g_param_spec_string.html">gobject_ffi::g_param_spec_string</a>(
+            <a href="translate.rs.html#1629-1631">from_glib_none</a>(gobject_ffi::g_param_spec_string(
                 <a href="#1499">name</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
                 <a href="#1500">nick</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>().<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
                 <a href="#1501">blurb</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>().<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
@@ -4164,7 +4164,7 @@
     /// properties.
     </span><span class="attr">#[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     #[doc(alias = <span class="string">"GParamSpecParam"</span>)]
-    </span><span class="kw">pub struct </span><a href="../../glib/struct.ParamSpecParam.html">ParamSpecParam</a>(Shared&lt;<a href="../../gobject_sys/struct.GParamSpecParam.html">gobject_ffi::GParamSpecParam</a>&gt;);
+    </span><span class="kw">pub struct </span><a href="../../glib/struct.ParamSpecParam.html">ParamSpecParam</a>(Shared&lt;gobject_ffi::GParamSpecParam&gt;);
 
     <span class="kw">match fn </span>{
         <span class="kw-2">ref </span>=&gt; |ptr| gobject_ffi::g_param_spec_ref_sink(ptr <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpec) <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpecParam,
@@ -4183,7 +4183,7 @@
     ) -&gt; <a href="#19-42">ParamSpec</a> {
         <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.assert.html">assert!</a>(param_type.is_a(<span class="kw">crate</span>::Type::PARAM_SPEC));
         <span class="kw">unsafe </span>{
-            <a href="translate.rs.html#1629-1631">from_glib_none</a>(<a href="../../gobject_sys/fn.g_param_spec_param.html">gobject_ffi::g_param_spec_param</a>(
+            <a href="translate.rs.html#1629-1631">from_glib_none</a>(gobject_ffi::g_param_spec_param(
                 <a href="#1595">name</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
                 <a href="#1596">nick</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>().<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
                 <a href="#1597">blurb</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>().<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
@@ -4207,7 +4207,7 @@
     <span class="doccomment">/// A [`ParamSpec`][crate::ParamSpec] derived structure that contains the meta data for boxed properties.
     </span><span class="attr">#[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     #[doc(alias = <span class="string">"GParamSpecBoxed"</span>)]
-    </span><span class="kw">pub struct </span><a href="../../glib/struct.ParamSpecBoxed.html">ParamSpecBoxed</a>(Shared&lt;<a href="../../gobject_sys/struct.GParamSpecBoxed.html">gobject_ffi::GParamSpecBoxed</a>&gt;);
+    </span><span class="kw">pub struct </span><a href="../../glib/struct.ParamSpecBoxed.html">ParamSpecBoxed</a>(Shared&lt;gobject_ffi::GParamSpecBoxed&gt;);
 
     <span class="kw">match fn </span>{
         <span class="kw-2">ref </span>=&gt; |ptr| gobject_ffi::g_param_spec_ref_sink(ptr <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpec) <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpecBoxed,
@@ -4225,7 +4225,7 @@
         flags: <a href="gobject/flags.rs.html#5-56">ParamFlags</a>,
     ) -&gt; <a href="#19-42">ParamSpec</a> {
         <span class="kw">unsafe </span>{
-            <a href="translate.rs.html#1629-1631">from_glib_none</a>(<a href="../../gobject_sys/fn.g_param_spec_boxed.html">gobject_ffi::g_param_spec_boxed</a>(
+            <a href="translate.rs.html#1629-1631">from_glib_none</a>(gobject_ffi::g_param_spec_boxed(
                 <a href="#1638">name</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
                 <a href="#1639">nick</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>().<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
                 <a href="#1640">blurb</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>().<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
@@ -4296,7 +4296,7 @@
     <span class="doccomment">/// A [`ParamSpec`][crate::ParamSpec] derived structure that contains the meta data for pointer properties.
     </span><span class="attr">#[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     #[doc(alias = <span class="string">"GParamSpecPointer"</span>)]
-    </span><span class="kw">pub struct </span><a href="../../glib/struct.ParamSpecPointer.html">ParamSpecPointer</a>(Shared&lt;<a href="../../gobject_sys/struct.GParamSpecPointer.html">gobject_ffi::GParamSpecPointer</a>&gt;);
+    </span><span class="kw">pub struct </span><a href="../../glib/struct.ParamSpecPointer.html">ParamSpecPointer</a>(Shared&lt;gobject_ffi::GParamSpecPointer&gt;);
 
     <span class="kw">match fn </span>{
         <span class="kw-2">ref </span>=&gt; |ptr| gobject_ffi::g_param_spec_ref_sink(ptr <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpec) <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpecPointer,
@@ -4317,7 +4317,7 @@
         flags: <a href="gobject/flags.rs.html#5-56">ParamFlags</a>,
     ) -&gt; <a href="#19-42">ParamSpec</a> {
         <span class="kw">unsafe </span>{
-            <a href="translate.rs.html#1629-1631">from_glib_none</a>(<a href="../../gobject_sys/fn.g_param_spec_pointer.html">gobject_ffi::g_param_spec_pointer</a>(
+            <a href="translate.rs.html#1629-1631">from_glib_none</a>(gobject_ffi::g_param_spec_pointer(
                 <a href="#1731">name</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
                 <a href="#1732">nick</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>().<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
                 <a href="#1733">blurb</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>().<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
@@ -4337,7 +4337,7 @@
     <span class="doccomment">/// A [`ParamSpec`][crate::ParamSpec] derived structure that contains the meta data for `GValueArray` properties.
     </span><span class="attr">#[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     #[doc(alias = <span class="string">"GParamSpecValueArray"</span>)]
-    </span><span class="kw">pub struct </span><a href="../../glib/struct.ParamSpecValueArray.html">ParamSpecValueArray</a>(Shared&lt;<a href="../../gobject_sys/struct.GParamSpecValueArray.html">gobject_ffi::GParamSpecValueArray</a>&gt;);
+    </span><span class="kw">pub struct </span><a href="../../glib/struct.ParamSpecValueArray.html">ParamSpecValueArray</a>(Shared&lt;gobject_ffi::GParamSpecValueArray&gt;);
 
     <span class="kw">match fn </span>{
         <span class="kw-2">ref </span>=&gt; |ptr| gobject_ffi::g_param_spec_ref_sink(ptr <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpec) <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpecValueArray,
@@ -4359,7 +4359,7 @@
         flags: <a href="gobject/flags.rs.html#5-56">ParamFlags</a>,
     ) -&gt; <a href="#19-42">ParamSpec</a> {
         <span class="kw">unsafe </span>{
-            <a href="translate.rs.html#1629-1631">from_glib_none</a>(<a href="../../gobject_sys/fn.g_param_spec_value_array.html">gobject_ffi::g_param_spec_value_array</a>(
+            <a href="translate.rs.html#1629-1631">from_glib_none</a>(gobject_ffi::g_param_spec_value_array(
                 <a href="#1772">name</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
                 <a href="#1773">nick</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>().<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
                 <a href="#1774">blurb</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>().<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
@@ -4373,13 +4373,13 @@
     #[inline]
     </span><span class="kw">pub fn </span>element_spec(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="#19-42">ParamSpec</a>&gt; {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>ptr = ToGlibPtr::&lt;<span class="kw-2">*const </span><a href="../../gobject_sys/struct.GParamSpecValueArray.html">gobject_ffi::GParamSpecValueArray</a>&gt;::to_glib_none(<a class="self" href="#1791">self</a>).<span class="number">0</span>;
+            <span class="kw">let </span>ptr = ToGlibPtr::&lt;<span class="kw-2">*const </span>gobject_ffi::GParamSpecValueArray&gt;::to_glib_none(<a class="self" href="#1791">self</a>).<span class="number">0</span>;
 
             <span class="kw">if </span>(<span class="kw-2">*</span>ptr).element_spec.is_null() {
                 <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None"><a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a>
             </a>} <span class="kw">else </span>{
                 <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(
-                    <span class="kw-2">&amp;*</span>(<span class="kw-2">&amp;</span>(<span class="kw-2">*</span><a href="#1793">ptr</a>).element_spec <span class="kw">as </span><span class="kw-2">*const *mut </span><a href="../../gobject_sys/struct.GParamSpec.html">gobject_ffi::GParamSpec</a>
+                    <span class="kw-2">&amp;*</span>(<span class="kw-2">&amp;</span>(<span class="kw-2">*</span><a href="#1793">ptr</a>).element_spec <span class="kw">as </span><span class="kw-2">*const *mut </span>gobject_ffi::GParamSpec
                         <span class="kw">as </span><span class="kw-2">*const </span><a href="#19-42">ParamSpec</a>),
                 )
             }
@@ -4390,7 +4390,7 @@
     #[inline]
     </span><span class="kw">pub fn </span>fixed_n_elements(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a> {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>ptr = ToGlibPtr::&lt;<span class="kw-2">*const </span><a href="../../gobject_sys/struct.GParamSpecValueArray.html">gobject_ffi::GParamSpecValueArray</a>&gt;::to_glib_none(<a class="self" href="#1808">self</a>).<span class="number">0</span>;
+            <span class="kw">let </span>ptr = ToGlibPtr::&lt;<span class="kw-2">*const </span>gobject_ffi::GParamSpecValueArray&gt;::to_glib_none(<a class="self" href="#1808">self</a>).<span class="number">0</span>;
 
             (<span class="kw-2">*</span><a href="#1810">ptr</a>).fixed_n_elements
         }
@@ -4462,7 +4462,7 @@
     <span class="doccomment">/// A [`ParamSpec`][crate::ParamSpec] derived structure that contains the meta data for object properties.
     </span><span class="attr">#[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     #[doc(alias = <span class="string">"GParamSpecObject"</span>)]
-    </span><span class="kw">pub struct </span><a href="../../glib/struct.ParamSpecObject.html">ParamSpecObject</a>(Shared&lt;<a href="../../gobject_sys/struct.GParamSpecObject.html">gobject_ffi::GParamSpecObject</a>&gt;);
+    </span><span class="kw">pub struct </span><a href="../../glib/struct.ParamSpecObject.html">ParamSpecObject</a>(Shared&lt;gobject_ffi::GParamSpecObject&gt;);
 
     <span class="kw">match fn </span>{
         <span class="kw-2">ref </span>=&gt; |ptr| gobject_ffi::g_param_spec_ref_sink(ptr <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpec) <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpecObject,
@@ -4484,7 +4484,7 @@
         flags: <a href="gobject/flags.rs.html#5-56">ParamFlags</a>,
     ) -&gt; <a href="#19-42">ParamSpec</a> {
         <span class="kw">unsafe </span>{
-            <a href="translate.rs.html#1629-1631">from_glib_none</a>(<a href="../../gobject_sys/fn.g_param_spec_object.html">gobject_ffi::g_param_spec_object</a>(
+            <a href="translate.rs.html#1629-1631">from_glib_none</a>(gobject_ffi::g_param_spec_object(
                 <a href="#1897">name</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
                 <a href="#1898">nick</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>().<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
                 <a href="#1899">blurb</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>().<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
@@ -4565,7 +4565,7 @@
     /// unless you are implementing a new base type similar to GObject.
     </span><span class="attr">#[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     #[doc(alias = <span class="string">"GParamSpecOverride"</span>)]
-    </span><span class="kw">pub struct </span><a href="../../glib/struct.ParamSpecOverride.html">ParamSpecOverride</a>(Shared&lt;<a href="../../gobject_sys/struct.GParamSpecOverride.html">gobject_ffi::GParamSpecOverride</a>&gt;);
+    </span><span class="kw">pub struct </span><a href="../../glib/struct.ParamSpecOverride.html">ParamSpecOverride</a>(Shared&lt;gobject_ffi::GParamSpecOverride&gt;);
 
     <span class="kw">match fn </span>{
         <span class="kw-2">ref </span>=&gt; |ptr| gobject_ffi::g_param_spec_ref_sink(ptr <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpec) <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpecOverride,
@@ -4580,7 +4580,7 @@
 
 <span class="kw">impl </span><a href="#1971-1991">ParamSpecOverride</a> {
     <span class="kw">unsafe fn </span>new_unchecked(name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, overridden: <span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">AsRef</a>&lt;<a href="#19-42">ParamSpec</a>&gt;) -&gt; <a href="#19-42">ParamSpec</a> {
-        <a href="translate.rs.html#1629-1631">from_glib_none</a>(<a href="../../gobject_sys/fn.g_param_spec_override.html">gobject_ffi::g_param_spec_override</a>(
+        <a href="translate.rs.html#1629-1631">from_glib_none</a>(gobject_ffi::g_param_spec_override(
             <a href="#1999">name</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
             <a href="#1999">overridden</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
         ))
@@ -4639,7 +4639,7 @@
     #[inline]
     </span><span class="kw">pub fn </span>overridden(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="#19-42">ParamSpec</a> {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>ptr = ToGlibPtr::&lt;<span class="kw-2">*const </span><a href="../../gobject_sys/struct.GParamSpecOverride.html">gobject_ffi::GParamSpecOverride</a>&gt;::to_glib_none(<a class="self" href="#2057">self</a>).<span class="number">0</span>;
+            <span class="kw">let </span>ptr = ToGlibPtr::&lt;<span class="kw-2">*const </span>gobject_ffi::GParamSpecOverride&gt;::to_glib_none(<a class="self" href="#2057">self</a>).<span class="number">0</span>;
 
             <a href="translate.rs.html#1629-1631">from_glib_none</a>((<span class="kw-2">*</span><a href="#2059">ptr</a>).overridden)
         }
@@ -4678,7 +4678,7 @@
     <span class="doccomment">/// A [`ParamSpec`][crate::ParamSpec] derived structure that contains the meta data for `GType` properties.
     </span><span class="attr">#[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     #[doc(alias = <span class="string">"GParamSpecGType"</span>)]
-    </span><span class="kw">pub struct </span><a href="../../glib/struct.ParamSpecGType.html">ParamSpecGType</a>(Shared&lt;<a href="../../gobject_sys/struct.GParamSpecGType.html">gobject_ffi::GParamSpecGType</a>&gt;);
+    </span><span class="kw">pub struct </span><a href="../../glib/struct.ParamSpecGType.html">ParamSpecGType</a>(Shared&lt;gobject_ffi::GParamSpecGType&gt;);
 
     <span class="kw">match fn </span>{
         <span class="kw-2">ref </span>=&gt; |ptr| gobject_ffi::g_param_spec_ref_sink(ptr <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpec) <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpecGType,
@@ -4696,7 +4696,7 @@
         flags: <a href="gobject/flags.rs.html#5-56">ParamFlags</a>,
     ) -&gt; <a href="#19-42">ParamSpec</a> {
         <span class="kw">unsafe </span>{
-            <a href="translate.rs.html#1629-1631">from_glib_none</a>(<a href="../../gobject_sys/fn.g_param_spec_gtype.html">gobject_ffi::g_param_spec_gtype</a>(
+            <a href="translate.rs.html#1629-1631">from_glib_none</a>(gobject_ffi::g_param_spec_gtype(
                 <a href="#2109">name</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
                 <a href="#2110">nick</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>().<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
                 <a href="#2111">blurb</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>().<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
@@ -4725,7 +4725,7 @@
     /// values compare equal.
     </span><span class="attr">#[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     #[doc(alias = <span class="string">"GParamSpecVariant"</span>)]
-    </span><span class="kw">pub struct </span><a href="../../glib/struct.ParamSpecVariant.html">ParamSpecVariant</a>(Shared&lt;<a href="../../gobject_sys/struct.GParamSpecVariant.html">gobject_ffi::GParamSpecVariant</a>&gt;);
+    </span><span class="kw">pub struct </span><a href="../../glib/struct.ParamSpecVariant.html">ParamSpecVariant</a>(Shared&lt;gobject_ffi::GParamSpecVariant&gt;);
 
     <span class="kw">match fn </span>{
         <span class="kw-2">ref </span>=&gt; |ptr| gobject_ffi::g_param_spec_ref_sink(ptr <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpec) <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpecVariant,
@@ -4755,7 +4755,7 @@
         flags: <a href="gobject/flags.rs.html#5-56">ParamFlags</a>,
     ) -&gt; <a href="#19-42">ParamSpec</a> {
         <span class="kw">unsafe </span>{
-            <a href="translate.rs.html#1629-1631">from_glib_none</a>(<a href="../../gobject_sys/fn.g_param_spec_variant.html">gobject_ffi::g_param_spec_variant</a>(
+            <a href="translate.rs.html#1629-1631">from_glib_none</a>(gobject_ffi::g_param_spec_variant(
                 <a href="#2167">name</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
                 <a href="#2168">nick</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>().<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
                 <a href="#2169">blurb</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>().<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
@@ -4770,7 +4770,7 @@
     #[inline]
     </span><span class="kw">pub fn </span>type_(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="variant_type.rs.html#490-492"><span class="kw">crate</span>::VariantTy</a>&gt; {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>ptr = ToGlibPtr::&lt;<span class="kw-2">*const </span><a href="../../gobject_sys/struct.GParamSpecVariant.html">gobject_ffi::GParamSpecVariant</a>&gt;::to_glib_none(<a class="self" href="#2188">self</a>).<span class="number">0</span>;
+            <span class="kw">let </span>ptr = ToGlibPtr::&lt;<span class="kw-2">*const </span>gobject_ffi::GParamSpecVariant&gt;::to_glib_none(<a class="self" href="#2188">self</a>).<span class="number">0</span>;
 
             <span class="kw">if </span>(<span class="kw-2">*</span>ptr).type_.is_null() {
                 <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None"><a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a>

@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/bytes.rs`."><title>bytes.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-e7950ecc.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.86.0-nightly (bf1b174e7 2025-01-28)" data-channel="nightly" data-search-js="search-ccb196c1.js" data-settings-js="settings-0f613d39.js" ><script src="../../static.files/storage-59e33391.js"></script><script defer src="../../static.files/src-script-56102188.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/bytes.rs`."><title>bytes.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-cf3c48c1.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.86.0-nightly (4a4309466 2025-02-02)" data-channel="nightly" data-search-js="search-2d513d54.js" data-settings-js="settings-6dad6058.js" ><script src="../../static.files/storage-302de22f.js"></script><script defer src="../../static.files/src-script-8fee9dc5.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-9b5d7e41.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -475,7 +475,7 @@
     <a href="https://doc.rust-lang.org/nightly/alloc/slice/index.html">slice</a>,
 };
 
-<span class="kw">use crate</span>::{<a href="../../glib_sys/index.html">ffi</a>, <a href="lib.rs.html#164">translate</a>::<span class="kw-2">*</span>};
+<span class="kw">use crate</span>::{ffi, <a href="lib.rs.html#164">translate</a>::<span class="kw-2">*</span>};
 
 <a class="macro" href="wrapper.rs.html#276-443">wrapper!</a> {
     <span class="comment">// rustdoc-stripper-ignore-next
@@ -524,7 +524,7 @@
     /// [`ByteArray`][crate::ByteArray], use the [`ByteArray::free_to_bytes()`][crate::ByteArray::free_to_bytes()]
     /// function.
     </span><span class="attr">#[doc(alias = <span class="string">"GBytes"</span>)]
-    </span><span class="kw">pub struct </span><a href="../../glib/struct.Bytes.html">Bytes</a>(Shared&lt;<a href="../../glib_sys/struct.GBytes.html">ffi::GBytes</a>&gt;);
+    </span><span class="kw">pub struct </span><a href="../../glib/struct.Bytes.html">Bytes</a>(Shared&lt;ffi::GBytes&gt;);
 
     <span class="kw">match fn </span>{
         <span class="kw-2">ref </span>=&gt; |ptr| ffi::g_bytes_ref(ptr),
@@ -555,7 +555,7 @@
     #[inline]
     </span><span class="kw">fn </span>new&lt;T: <a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">AsRef</a>&lt;[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]&gt;&gt;(data: T) -&gt; <a href="#15-69">Bytes</a> {
         <span class="kw">let </span>data = <a href="#91">data</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>();
-        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1638-1640">from_glib_full</a>(<a href="../../glib_sys/fn.g_bytes_new.html">ffi::g_bytes_new</a>(<a href="#92">data</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>, <a href="#92">data</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.len">len</a>())) }
+        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1638-1640">from_glib_full</a>(ffi::g_bytes_new(<a href="#92">data</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>, <a href="#92">data</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.len">len</a>())) }
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
@@ -564,7 +564,7 @@
     #[inline]
     </span><span class="kw">pub fn </span>from_static(data: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]) -&gt; <a href="#15-69">Bytes</a> {
         <span class="kw">unsafe </span>{
-            <a href="translate.rs.html#1638-1640">from_glib_full</a>(<a href="../../glib_sys/fn.g_bytes_new_static.html">ffi::g_bytes_new_static</a>(
+            <a href="translate.rs.html#1638-1640">from_glib_full</a>(ffi::g_bytes_new_static(
                 <a href="#100">data</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
                 <a href="#100">data</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.len">len</a>(),
             ))
@@ -581,12 +581,12 @@
             (<a href="#115">data</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.len">len</a>(), <a href="#115">data</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.as_ptr">as_ptr</a>())
         };
 
-        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>drop_box&lt;T: <a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">AsRef</a>&lt;[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static</span>&gt;(b: <a href="../../glib_sys/type.gpointer.html">ffi::gpointer</a>) {
+        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>drop_box&lt;T: <a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">AsRef</a>&lt;[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static</span>&gt;(b: ffi::gpointer) {
             <span class="kw">let _</span>: <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box</a>&lt;T&gt; = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.from_raw">Box::from_raw</a>(<a href="#119">b</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
         }
 
         <span class="kw">unsafe </span>{
-            <a href="translate.rs.html#1638-1640">from_glib_full</a>(<a href="../../glib_sys/fn.g_bytes_new_with_free_func.html">ffi::g_bytes_new_with_free_func</a>(
+            <a href="translate.rs.html#1638-1640">from_glib_full</a>(ffi::g_bytes_new_with_free_func(
                 <a href="#114">data_ptr</a> <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
                 <a href="#114">size</a>,
                 <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#119-121">drop_box</a>::&lt;T&gt;),
@@ -604,7 +604,7 @@
     </span><span class="kw">pub fn </span>into_data(<span class="self">self</span>) -&gt; <a href="collections/slice.rs.html#15-19"><span class="kw">crate</span>::collections::Slice</a>&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>size = <a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.uninit">mem::MaybeUninit::uninit</a>();
-            <span class="kw">let </span>ret = <a href="../../glib_sys/fn.g_bytes_unref_to_data.html">ffi::g_bytes_unref_to_data</a>(<a class="self" href="#139">self</a>.<a href="translate.rs.html#719">into_glib_ptr</a>(), <a href="#141">size</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.as_mut_ptr">as_mut_ptr</a>());
+            <span class="kw">let </span>ret = ffi::g_bytes_unref_to_data(<a class="self" href="#139">self</a>.<a href="translate.rs.html#719">into_glib_ptr</a>(), <a href="#141">size</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.as_mut_ptr">as_mut_ptr</a>());
             <a href="collections/slice.rs.html#509-523"><span class="kw">crate</span>::collections::Slice::from_glib_full_num</a>(<a href="#142">ret</a> <span class="kw">as </span><span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>, <a href="#141">size</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.assume_init">assume_init</a>())
         }
     }
@@ -637,7 +637,7 @@
     </span><span class="kw">pub fn </span>from_bytes(bytes: <span class="kw-2">&amp;</span><span class="self">Self</span>, range: <span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/ops/range/trait.RangeBounds.html">RangeBounds</a>&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>&gt;) -&gt; <span class="self">Self </span>{
         <span class="kw">let </span>(offset, size) = <a href="#172">bytes</a>.<a href="#147-167">calculate_offset_size</a>(<a href="#172">range</a>);
         <span class="kw">unsafe </span>{
-            <a href="translate.rs.html#1638-1640">from_glib_full</a>(<a href="../../glib_sys/fn.g_bytes_new_from_bytes.html">ffi::g_bytes_new_from_bytes</a>(
+            <a href="translate.rs.html#1638-1640">from_glib_full</a>(ffi::g_bytes_new_from_bytes(
                 <a href="#172">bytes</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
                 <a href="#173">offset</a>,
                 <a href="#173">size</a>,
@@ -679,7 +679,7 @@
     </span><span class="kw">fn </span>deref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>] {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>len = <span class="number">0</span>;
-            <span class="kw">let </span>ptr = <a href="../../glib_sys/fn.g_bytes_get_data.html">ffi::g_bytes_get_data</a>(<a class="self" href="#214">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>, <span class="kw-2">&amp;mut </span><a href="#216">len</a>);
+            <span class="kw">let </span>ptr = ffi::g_bytes_get_data(<a class="self" href="#214">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>, <span class="kw-2">&amp;mut </span><a href="#216">len</a>);
             <span class="kw">if </span>ptr.is_null() || len == <span class="number">0 </span>{
                 <span class="kw-2">&amp;</span>[]
             } <span class="kw">else </span>{
@@ -694,7 +694,7 @@
     #[inline]
     </span><span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
         <span class="kw">unsafe </span>{
-            <a href="translate.rs.html#1421-1423">from_glib</a>(<a href="../../glib_sys/fn.g_bytes_equal.html">ffi::g_bytes_equal</a>(
+            <a href="translate.rs.html#1421-1423">from_glib</a>(ffi::g_bytes_equal(
                 ToGlibPtr::&lt;<span class="kw-2">*const </span><span class="kw">_</span>&gt;::to_glib_none(<a class="self" href="#230">self</a>).<span class="number">0 </span><span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
                 ToGlibPtr::&lt;<span class="kw-2">*const </span><span class="kw">_</span>&gt;::to_glib_none(<a href="#230">other</a>).<span class="number">0 </span><span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
             ))
@@ -715,7 +715,7 @@
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>cmp(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/core/cmp/enum.Ordering.html">Ordering</a> {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>ret = <a href="../../glib_sys/fn.g_bytes_compare.html">ffi::g_bytes_compare</a>(
+            <span class="kw">let </span>ret = ffi::g_bytes_compare(
                 ToGlibPtr::&lt;<span class="kw-2">*const </span><span class="kw">_</span>&gt;::to_glib_none(<a class="self" href="#251">self</a>).<span class="number">0 </span><span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
                 ToGlibPtr::&lt;<span class="kw-2">*const </span><span class="kw">_</span>&gt;::to_glib_none(<a href="#251">other</a>).<span class="number">0 </span><span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
             );
