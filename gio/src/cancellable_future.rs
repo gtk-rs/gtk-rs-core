@@ -9,7 +9,7 @@ use std::{
 
 use pin_project_lite::pin_project;
 
-use crate::{cancellable::CancelledHandlerId, prelude::*, Cancellable, IOErrorEnum};
+use crate::{prelude::*, Cancellable, CancelledHandlerId, IOErrorEnum};
 
 // rustdoc-stripper-ignore-next
 /// Indicator that the [`CancellableFuture`] was cancelled.
