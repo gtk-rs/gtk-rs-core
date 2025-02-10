@@ -4,6 +4,7 @@
 
 use crate::{ffi, AsyncResult, Cancellable, Initable, NetworkConnectivity, SocketConnectable};
 use glib::{
+    object::ObjectType as _,
     prelude::*,
     signal::{connect_raw, SignalHandlerId},
     translate::*,
