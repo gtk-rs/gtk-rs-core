@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/object.rs`."><title>object.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-cf3c48c1.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.86.0-nightly (4a4309466 2025-02-02)" data-channel="nightly" data-search-js="search-2d513d54.js" data-settings-js="settings-6dad6058.js" ><script src="../../static.files/storage-302de22f.js"></script><script defer src="../../static.files/src-script-8fee9dc5.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-9b5d7e41.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/object.rs`."><title>object.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-cf3c48c1.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.86.0-nightly (124cc9219 2025-02-09)" data-channel="nightly" data-search-js="search-581efc7a.js" data-settings-js="settings-6dad6058.js" ><script src="../../static.files/storage-3a5871a4.js"></script><script defer src="../../static.files/src-script-8fee9dc5.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-4d63596a.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -8329,7 +8329,7 @@
 <span class="kw">unsafe impl</span>&lt;T: <a href="#22-52">ObjectType</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> <span class="kw">for </span><a href="#3586">SendWeakRef</a>&lt;T&gt; {}
 
 <span class="kw">type </span>TransformFn&lt;<span class="lifetime">'b</span>&gt; =
-    <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box</a>&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><span class="lifetime">'b </span><a href="gobject/auto/binding.rs.html#7-265"><span class="kw">crate</span>::Binding</a>, <span class="kw-2">&amp;</span><span class="lifetime">'b </span><a href="value.rs.html#478-523">Value</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="value.rs.html#478-523">Value</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>&gt;&gt;;
+    <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box</a>&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><span class="lifetime">'b </span><a href="gobject/auto/binding.rs.html#7-14"><span class="kw">crate</span>::Binding</a>, <span class="kw-2">&amp;</span><span class="lifetime">'b </span><a href="value.rs.html#478-523">Value</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="value.rs.html#478-523">Value</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>&gt;&gt;;
 
 <span class="comment">// rustdoc-stripper-ignore-next
 </span><span class="doccomment">/// Builder for object property bindings.
@@ -8339,7 +8339,7 @@
     source_property: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
     target: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#380-382">ObjectRef</a>,
     target_property: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
-    flags: <a href="gobject/auto/flags.rs.html#7-59"><span class="kw">crate</span>::BindingFlags</a>,
+    flags: <a href="gobject/auto/flags.rs.html#7-50"><span class="kw">crate</span>::BindingFlags</a>,
     transform_from: <a href="#3639-3640">TransformFn</a>&lt;<span class="lifetime">'f</span>&gt;,
     transform_to: <a href="#3639-3640">TransformFn</a>&lt;<span class="lifetime">'t</span>&gt;,
 }
@@ -8380,7 +8380,7 @@
     /// This function operates on `glib::Value`s.
     /// See [`Self::transform_from`] for a version which operates on concrete argument and return types.
     </span><span class="kw">pub fn </span>transform_from_with_values&lt;
-        F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><a href="gobject/auto/binding.rs.html#7-265"><span class="kw">crate</span>::Binding</a>, <span class="kw-2">&amp;</span><a href="value.rs.html#478-523">Value</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="value.rs.html#478-523">Value</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>,
+        F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><a href="gobject/auto/binding.rs.html#7-14"><span class="kw">crate</span>::Binding</a>, <span class="kw-2">&amp;</span><a href="value.rs.html#478-523">Value</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="value.rs.html#478-523">Value</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>,
     &gt;(
         <span class="self">self</span>,
         func: F,
@@ -8399,7 +8399,7 @@
     </span><span class="kw">pub fn </span>transform_from&lt;
         S: <a href="value.rs.html#272-283">FromValue</a>&lt;<span class="lifetime">'f</span>&gt;,
         T: <a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html">Into</a>&lt;<a href="value.rs.html#478-523">Value</a>&gt;,
-        F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><span class="lifetime">'f </span><a href="gobject/auto/binding.rs.html#7-265"><span class="kw">crate</span>::Binding</a>, S) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;T&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>,
+        F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><span class="lifetime">'f </span><a href="gobject/auto/binding.rs.html#7-14"><span class="kw">crate</span>::Binding</a>, S) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;T&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>,
     &gt;(
         <span class="self">self</span>,
         func: F,
@@ -8419,7 +8419,7 @@
     /// This function operates on `glib::Value`s.
     /// See [`Self::transform_to`] for a version which operates on concrete argument and return types.
     </span><span class="kw">pub fn </span>transform_to_with_values&lt;
-        F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><a href="gobject/auto/binding.rs.html#7-265"><span class="kw">crate</span>::Binding</a>, <span class="kw-2">&amp;</span><a href="value.rs.html#478-523">Value</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="value.rs.html#478-523">Value</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>,
+        F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><a href="gobject/auto/binding.rs.html#7-14"><span class="kw">crate</span>::Binding</a>, <span class="kw-2">&amp;</span><a href="value.rs.html#478-523">Value</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="value.rs.html#478-523">Value</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>,
     &gt;(
         <span class="self">self</span>,
         func: F,
@@ -8438,7 +8438,7 @@
     </span><span class="kw">pub fn </span>transform_to&lt;
         S: <a href="value.rs.html#272-283">FromValue</a>&lt;<span class="lifetime">'t</span>&gt;,
         T: <a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html">Into</a>&lt;<a href="value.rs.html#478-523">Value</a>&gt;,
-        F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><span class="lifetime">'t </span><a href="gobject/auto/binding.rs.html#7-265"><span class="kw">crate</span>::Binding</a>, S) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;T&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>,
+        F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><span class="lifetime">'t </span><a href="gobject/auto/binding.rs.html#7-14"><span class="kw">crate</span>::Binding</a>, S) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;T&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>,
     &gt;(
         <span class="self">self</span>,
         func: F,
@@ -8454,7 +8454,7 @@
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Bind the properties with the given flags.
-    </span><span class="kw">pub fn </span>flags(<span class="self">self</span>, flags: <a href="gobject/auto/flags.rs.html#7-59"><span class="kw">crate</span>::BindingFlags</a>) -&gt; <span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>flags(<span class="self">self</span>, flags: <a href="gobject/auto/flags.rs.html#7-50"><span class="kw">crate</span>::BindingFlags</a>) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{ <a href="#3765">flags</a>, ..<span class="self"><a href="#3765">self</a> </span>}
     }
 
@@ -8485,7 +8485,7 @@
     /// # Panics
     /// This panics if the provided properties do not exist.
     </span><span class="attr">#[track_caller]
-    </span><span class="kw">pub fn </span>build(<span class="self">self</span>) -&gt; <a href="gobject/auto/binding.rs.html#7-265"><span class="kw">crate</span>::Binding</a> {
+    </span><span class="kw">pub fn </span>build(<span class="self">self</span>) -&gt; <a href="gobject/auto/binding.rs.html#7-14"><span class="kw">crate</span>::Binding</a> {
         <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>transform_to_trampoline(
             binding: <span class="kw-2">*mut </span><a href="../../gobject_sys/struct.GBinding.html">gobject_ffi::GBinding</a>,
             from_value: <span class="kw-2">*const </span><a href="../../gobject_sys/struct.GValue.html">gobject_ffi::GValue</a>,
@@ -8508,7 +8508,7 @@
                         transform_data.<span class="number">3</span>.value_type(),
                         res.type_()
                     );
-                    <span class="kw-2">*</span><a href="#3800">to_value</a> = <a href="#3811">res</a>.<a href="value.rs.html#760-765">into_raw</a>();
+                    <span class="kw-2">*</span><a href="#3800">to_value</a> = <a href="#3811">res</a>.<a href="value.rs.html#833-838">into_raw</a>();
                     <span class="bool-val">true
                 </span>}
             }
@@ -8537,7 +8537,7 @@
                         transform_data.<span class="number">2</span>.value_type(),
                         res.type_()
                     );
-                    <span class="kw-2">*</span><a href="#3829">to_value</a> = <a href="#3840">res</a>.<a href="value.rs.html#760-765">into_raw</a>();
+                    <span class="kw-2">*</span><a href="#3829">to_value</a> = <a href="#3840">res</a>.<a href="value.rs.html#833-838">into_raw</a>();
                     <span class="bool-val">true
                 </span>}
             }
