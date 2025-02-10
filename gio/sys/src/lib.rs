@@ -535,6 +535,8 @@ pub const G_APP_INFO_CREATE_SUPPORTS_STARTUP_NOTIFICATION: GAppInfoCreateFlags =
 
 pub type GApplicationFlags = c_uint;
 pub const G_APPLICATION_FLAGS_NONE: GApplicationFlags = 0;
+#[cfg(feature = "v2_74")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
 pub const G_APPLICATION_DEFAULT_FLAGS: GApplicationFlags = 0;
 pub const G_APPLICATION_IS_SERVICE: GApplicationFlags = 1;
 pub const G_APPLICATION_IS_LAUNCHER: GApplicationFlags = 2;
