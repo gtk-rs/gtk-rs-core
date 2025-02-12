@@ -461,9 +461,9 @@
     /// This will return `None` if the `key` is not present in the dictionary,
     /// and an error if the key is present but with the wrong type.
     </span><span class="attr">#[doc(alias = <span class="string">"g_variant_dict_lookup"</span>)]
-    </span><span class="kw">pub fn </span>lookup&lt;T: <a href="variant.rs.html#1468-1474">FromVariant</a>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, key: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;T&gt;, <a href="variant.rs.html#448-451">VariantTypeMismatchError</a>&gt; {
+    </span><span class="kw">pub fn </span>lookup&lt;T: <a href="variant.rs.html#1588-1594">FromVariant</a>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, key: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;T&gt;, <a href="variant.rs.html#448-451">VariantTypeMismatchError</a>&gt; {
         <a class="self" href="#70">self</a>.<a href="#87-95">lookup_value</a>(<a href="#70">key</a>, <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a>)
-            .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|v| <a href="variant.rs.html#545-552">Variant::try_get</a>(<span class="kw-2">&amp;</span><a href="#72">v</a>))
+            .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|v| <a href="variant.rs.html#554-561">Variant::try_get</a>(<span class="kw-2">&amp;</span><a href="#72">v</a>))
             .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.transpose">transpose</a>()
     }
 
@@ -478,7 +478,7 @@
     /// `expected_type`.  Otherwise, `Some(value)` will be returned where
     /// the `value` is an instance of [`Variant`](variant/struct.Variant.html).
     </span><span class="attr">#[doc(alias = <span class="string">"g_variant_dict_lookup_value"</span>)]
-    </span><span class="kw">pub fn </span>lookup_value(<span class="kw-2">&amp;</span><span class="self">self</span>, key: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, expected_type: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="variant_type.rs.html#272-274">VariantTy</a>&gt;) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="variant.rs.html#118-377">Variant</a>&gt; {
+    </span><span class="kw">pub fn </span>lookup_value(<span class="kw-2">&amp;</span><span class="self">self</span>, key: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, expected_type: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="variant_type.rs.html#490-492">VariantTy</a>&gt;) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="variant.rs.html#118-377">Variant</a>&gt; {
         <span class="kw">unsafe </span>{
             <a href="translate.rs.html#1638-1640">from_glib_full</a>(<a href="../../glib_sys/fn.g_variant_dict_lookup_value.html">ffi::g_variant_dict_lookup_value</a>(
                 <a class="self" href="#87">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
@@ -594,13 +594,13 @@
     }
 }
 
-<span class="kw">impl </span><a href="variant.rs.html#1478-1482">StaticVariantType</a> <span class="kw">for </span><a href="#7-27">VariantDict</a> {
-    <span class="kw">fn </span>static_variant_type() -&gt; <a href="https://doc.rust-lang.org/nightly/alloc/borrow/enum.Cow.html">Cow</a>&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#272-274">VariantTy</a>&gt; {
+<span class="kw">impl </span><a href="variant.rs.html#1598-1602">StaticVariantType</a> <span class="kw">for </span><a href="#7-27">VariantDict</a> {
+    <span class="kw">fn </span>static_variant_type() -&gt; <a href="https://doc.rust-lang.org/nightly/alloc/borrow/enum.Cow.html">Cow</a>&lt;<span class="lifetime">'static</span>, <a href="variant_type.rs.html#490-492">VariantTy</a>&gt; {
         <a href="https://doc.rust-lang.org/nightly/alloc/borrow/enum.Cow.html#variant.Borrowed">Cow::Borrowed</a>(VariantTy::VARDICT)
     }
 }
 
-<span class="kw">impl </span><a href="variant.rs.html#1460-1464">ToVariant</a> <span class="kw">for </span><a href="#7-27">VariantDict</a> {
+<span class="kw">impl </span><a href="variant.rs.html#1580-1584">ToVariant</a> <span class="kw">for </span><a href="#7-27">VariantDict</a> {
     <span class="kw">fn </span>to_variant(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="variant.rs.html#118-377">Variant</a> {
         <a class="self" href="#210">self</a>.<a href="#187-194">end</a>()
     }
@@ -619,7 +619,7 @@
     }
 }
 
-<span class="kw">impl </span><a href="variant.rs.html#1468-1474">FromVariant</a> <span class="kw">for </span><a href="#7-27">VariantDict</a> {
+<span class="kw">impl </span><a href="variant.rs.html#1588-1594">FromVariant</a> <span class="kw">for </span><a href="#7-27">VariantDict</a> {
     <span class="kw">fn </span>from_variant(variant: <span class="kw-2">&amp;</span><a href="variant.rs.html#118-377">Variant</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="self">Self</span>&gt; {
         <span class="kw">if </span>variant.type_() == VariantDict::static_variant_type() {
             <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#40-45"><span class="self">Self</span>::new</a>(<a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#229">variant</a>)))

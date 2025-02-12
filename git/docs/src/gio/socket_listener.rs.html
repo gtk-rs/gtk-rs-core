@@ -137,11 +137,11 @@
     <a href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html">Future</a>,
 };
 
-<span class="kw">use crate</span>::{<a href="auto/socket_listener.rs.html#90-636">prelude::SocketListenerExt</a>, <a href="auto/socket_connection.rs.html#11-66">SocketConnection</a>, <a href="auto/socket_listener.rs.html#16-61">SocketListener</a>};
+<span class="kw">use crate</span>::{<a href="auto/socket_listener.rs.html#91-637">prelude::SocketListenerExt</a>, <a href="auto/socket_connection.rs.html#11-66">SocketConnection</a>, <a href="auto/socket_listener.rs.html#17-62">SocketListener</a>};
 <span class="kw">use </span>glib::{<a href="../../glib/prelude/index.html">prelude</a>::<span class="kw-2">*</span>, <a href="../../glib/error/struct.Error.html">Error</a>, <a href="../../glib/object/struct.Object.html">Object</a>};
 
 <span class="kw">pub struct </span>Incoming {
-    listener: <a href="auto/socket_listener.rs.html#16-61">SocketListener</a>,
+    listener: <a href="auto/socket_listener.rs.html#17-62">SocketListener</a>,
     fut: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html">Pin</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box</a>&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html">Future</a>&lt;Output = <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(<a href="auto/socket_connection.rs.html#11-66">SocketConnection</a>, <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="../../glib/object/struct.Object.html">Object</a>&gt;), <a href="../../glib/error/struct.Error.html">Error</a>&gt;&gt;&gt;&gt;&gt;,
 }
 
@@ -150,7 +150,7 @@
 
     <span class="kw">fn </span>poll_next(<span class="kw-2">mut </span><span class="self">self</span>: <a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html">Pin</a>&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;, ctx: <span class="kw-2">&amp;mut </span><a href="https://doc.rust-lang.org/nightly/core/task/wake/struct.Context.html">Context</a>&lt;<span class="lifetime">'_</span>&gt;) -&gt; <a href="https://doc.rust-lang.org/nightly/core/task/poll/enum.Poll.html">Poll</a>&lt;<a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="self">Self</span>::Item&gt;&gt; {
         <span class="kw">if </span><span class="self">self</span>.fut.is_none() {
-            <a class="self" href="#22">self</a>.fut = <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a class="self" href="#22">self</a>.listener.<a href="auto/socket_listener.rs.html#198-215">accept_future</a>());
+            <a class="self" href="#22">self</a>.fut = <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a class="self" href="#22">self</a>.listener.<a href="auto/socket_listener.rs.html#199-216">accept_future</a>());
         }
 
         <span class="kw">let </span>fut = <a class="self" href="#22">self</a>.fut.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_mut">as_mut</a>().<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap">unwrap</a>();
@@ -161,7 +161,7 @@
     }
 }
 
-<span class="kw">pub trait </span><a href="../../gio/prelude/trait.SocketListenerExtManual.html">SocketListenerExtManual</a>: <a href="auto/socket_listener.rs.html#90-636">SocketListenerExt</a> {
+<span class="kw">pub trait </span><a href="../../gio/prelude/trait.SocketListenerExtManual.html">SocketListenerExtManual</a>: <a href="auto/socket_listener.rs.html#91-637">SocketListenerExt</a> {
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Returns a stream of incoming connections
     ///
@@ -173,7 +173,7 @@
     ) -&gt; <a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html">Pin</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box</a>&lt;<span class="kw">dyn </span>Stream&lt;Item = <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(<a href="auto/socket_connection.rs.html#11-66">SocketConnection</a>, <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="../../glib/object/struct.Object.html">Object</a>&gt;), <a href="../../glib/error/struct.Error.html">Error</a>&gt;&gt;&gt;&gt;;
 }
 
-<span class="kw">impl</span>&lt;O: <a href="../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="auto/socket_listener.rs.html#16-61">SocketListener</a>&gt;&gt; <a href="#35-45">SocketListenerExtManual</a> <span class="kw">for </span>O {
+<span class="kw">impl</span>&lt;O: <a href="../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="auto/socket_listener.rs.html#17-62">SocketListener</a>&gt;&gt; <a href="#35-45">SocketListenerExtManual</a> <span class="kw">for </span>O {
     <span class="kw">fn </span>incoming(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
     ) -&gt; <a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html">Pin</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box</a>&lt;<span class="kw">dyn </span>Stream&lt;Item = <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(<a href="auto/socket_connection.rs.html#11-66">SocketConnection</a>, <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="../../glib/object/struct.Object.html">Object</a>&gt;), <a href="../../glib/error/struct.Error.html">Error</a>&gt;&gt;&gt;&gt; {

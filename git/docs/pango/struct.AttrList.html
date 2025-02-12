@@ -135,10 +135,12 @@ be present at some subsection of this range)</p>
 </div></details><details class="toggle method-toggle" open><summary><section id="method.to_str" class="method"><a class="src rightside" href="../src/pango/auto/attr_list.rs.html#195-197">Source</a><h4 class="code-header">pub fn <a href="#method.to_str" class="fn">to_str</a>(&amp;self) -&gt; <a class="struct" href="../glib/gstring/struct.GString.html" title="struct glib::gstring::GString">GString</a></h4></section><span class="item-info"><div class="stab portability">Available on <strong>crate feature <code>v1_50</code></strong> only.</div></span></summary><div class="docblock"><p>Serializes a <a href="struct.AttrList.html" title="struct pango::AttrList"><code>AttrList</code></a> to a string.</p>
 <p>In the resulting string, serialized attributes are separated by newlines or commas.
 Individual attributes are serialized to a string of the form</p>
-<p>START END TYPE VALUE</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>[START END] TYPE VALUE</code></pre></div>
 <p>Where START and END are the indices (with -1 being accepted in place
 of MAXUINT), TYPE is the nickname of the attribute value type, e.g.
 <em>weight</em> or <em>stretch</em>, and the value is serialized according to its type:</p>
+<p>Optionally, START and END can be omitted to indicate unlimited extent.</p>
 <ul>
 <li>enum values as nick or numeric value</li>
 <li>boolean values as <em>true</em> or <em>false</em></li>
@@ -150,8 +152,13 @@ of MAXUINT), TYPE is the nickname of the attribute value type, e.g.
 <li>PangoColor as serialized by <a href="struct.Color.html#method.to_str" title="method pango::Color::to_str"><code>Color::to_str()</code></a></li>
 </ul>
 <p>Examples:</p>
-<div class="example-wrap"><pre class="language-text"><code>0 10 foreground red, 5 15 weight bold, 0 200 font-desc &quot;Sans 10&quot;</code></pre></div><div class="example-wrap"><pre class="language-text"><code>0 -1 weight 700
-0 100 family Times</code></pre></div>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="number">0 10 </span>foreground red, <span class="number">5 15 </span>weight bold, <span class="number">0 200 </span>font-desc <span class="string">"Sans 10"
+
+</span><span class="number">0 </span>-<span class="number">1 </span>weight <span class="number">700
+0 100 </span>family Times
+
+weight bold</code></pre></div>
 <p>To parse the returned value, use <a href="struct.AttrList.html#method.from_string" title="associated function pango::AttrList::from_string"><code>from_string()</code></a>.</p>
 <p>Note that shape attributes can not be serialized.</p>
 <h5 id="returns-4"><a class="doc-anchor" href="#returns-4">§</a>Returns</h5>

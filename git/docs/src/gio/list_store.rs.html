@@ -465,7 +465,7 @@
 
 <span class="kw">use </span>glib::{<a href="../../glib/prelude/index.html">prelude</a>::<span class="kw-2">*</span>, <a href="../../glib/translate/index.html">translate</a>::<span class="kw-2">*</span>, <a href="../../glib/object/struct.Object.html">Object</a>};
 
-<span class="kw">use crate</span>::{<a href="../../gio_sys/index.html">ffi</a>, <a href="lib.rs.html#123">prelude</a>::<span class="kw-2">*</span>, <a href="auto/list_model.rs.html#13-103">ListModel</a>, <a href="auto/list_store.rs.html#8-39">ListStore</a>};
+<span class="kw">use crate</span>::{<a href="../../gio_sys/index.html">ffi</a>, <a href="lib.rs.html#123">prelude</a>::<span class="kw-2">*</span>, <a href="auto/list_model.rs.html#14-104">ListModel</a>, <a href="auto/list_store.rs.html#8-39">ListStore</a>};
 
 <span class="kw">impl </span><a href="auto/list_store.rs.html#8-39">ListStore</a> {
     <span class="doccomment">/// Creates a new #GListStore with items of type @item_type. @item_type
@@ -580,7 +580,7 @@
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Appends all elements in a slice to the `ListStore`.
     </span><span class="kw">pub fn </span>extend_from_slice(<span class="kw-2">&amp;</span><span class="self">self</span>, additions: <span class="kw-2">&amp;</span>[<span class="kw">impl </span><a href="../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="../../glib/object/struct.Object.html">glib::Object</a>&gt;]) {
-        <a class="self" href="#121">self</a>.<a href="#104-117">splice</a>(<a class="self" href="#121">self</a>.<a href="auto/list_model.rs.html#148-150">n_items</a>(), <span class="number">0</span>, <a href="#121">additions</a>)
+        <a class="self" href="#121">self</a>.<a href="#104-117">splice</a>(<a class="self" href="#121">self</a>.<a href="auto/list_model.rs.html#149-151">n_items</a>(), <span class="number">0</span>, <a href="#121">additions</a>)
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
@@ -599,7 +599,7 @@
 
         </span><span class="kw">let </span>changed = <a href="https://doc.rust-lang.org/nightly/alloc/rc/struct.Rc.html#method.new">Rc::new</a>(<a href="https://doc.rust-lang.org/nightly/core/cell/struct.Cell.html#method.new">Cell::new</a>(<span class="bool-val">false</span>));
         <span class="kw">let </span>changed_clone = <a href="#139">changed</a>.<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">clone</a>();
-        <span class="kw">let </span>signal_id = <a class="self" href="#134">self</a>.<a href="auto/list_model.rs.html#232-265">connect_items_changed</a>(<span class="kw">move </span>|_list, <span class="kw">_</span>, <span class="kw">_</span>, <span class="kw">_</span>| <a href="#140">changed_clone</a>.<a href="https://doc.rust-lang.org/nightly/core/cell/struct.Cell.html#method.set">set</a>(<span class="bool-val">true</span>));
+        <span class="kw">let </span>signal_id = <a class="self" href="#134">self</a>.<a href="auto/list_model.rs.html#233-266">connect_items_changed</a>(<span class="kw">move </span>|_list, <span class="kw">_</span>, <span class="kw">_</span>, <span class="kw">_</span>| <a href="#140">changed_clone</a>.<a href="https://doc.rust-lang.org/nightly/core/cell/struct.Cell.html#method.set">set</a>(<span class="bool-val">true</span>));
 
         <span class="kw">let </span>_signal_guard = {
             <span class="kw">struct </span>Guard&lt;<span class="lifetime">'a</span>&gt; {
@@ -682,7 +682,7 @@
             // See https://gitlab.gnome.org/GNOME/glib/-/merge_requests/3284
             </span><span class="kw">let </span>item = <a href="../../gobject_sys/struct.GObject.html">glib::gobject_ffi::GObject</a> {
                 g_type_instance: <a href="../../gobject_sys/struct.GTypeInstance.html">glib::gobject_ffi::GTypeInstance</a> {
-                    g_class: <a href="../../gobject_sys/fn.g_type_class_peek.html">glib::gobject_ffi::g_type_class_peek</a>(<a class="self" href="#204">self</a>.<a href="auto/list_model.rs.html#129-135">item_type</a>().<a href="../../glib/translate/trait.IntoGlib.html#tymethod.into_glib">into_glib</a>())
+                    g_class: <a href="../../gobject_sys/fn.g_type_class_peek.html">glib::gobject_ffi::g_type_class_peek</a>(<a class="self" href="#204">self</a>.<a href="auto/list_model.rs.html#130-136">item_type</a>().<a href="../../glib/translate/trait.IntoGlib.html#tymethod.into_glib">into_glib</a>())
                         <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
                 },
                 ref_count: <span class="number">1</span>,
@@ -719,11 +719,11 @@
 }
 
 <span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; <a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.IntoIterator.html">std::iter::IntoIterator</a> <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="auto/list_store.rs.html#8-39">ListStore</a> {
-    <span class="kw">type </span>Item = &lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="auto/list_model.rs.html#13-103">ListModel</a> <span class="kw">as </span>IntoIterator&gt;::Item;
-    <span class="kw">type </span>IntoIter = &lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="auto/list_model.rs.html#13-103">ListModel</a> <span class="kw">as </span>IntoIterator&gt;::IntoIter;
+    <span class="kw">type </span>Item = &lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="auto/list_model.rs.html#14-104">ListModel</a> <span class="kw">as </span>IntoIterator&gt;::Item;
+    <span class="kw">type </span>IntoIter = &lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="auto/list_model.rs.html#14-104">ListModel</a> <span class="kw">as </span>IntoIterator&gt;::IntoIter;
 
     <span class="kw">fn </span>into_iter(<span class="self">self</span>) -&gt; <span class="self">Self</span>::IntoIter {
-        <a class="self" href="#264">self</a>.<a href="../../glib/object/trait.Cast.html#tymethod.upcast_ref">upcast_ref</a>::&lt;<a href="auto/list_model.rs.html#13-103">ListModel</a>&gt;().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.IntoIterator.html#tymethod.into_iter">into_iter</a>()
+        <a class="self" href="#264">self</a>.<a href="../../glib/object/trait.Cast.html#tymethod.upcast_ref">upcast_ref</a>::&lt;<a href="auto/list_model.rs.html#14-104">ListModel</a>&gt;().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.IntoIterator.html#tymethod.into_iter">into_iter</a>()
     }
 }
 
@@ -746,7 +746,7 @@
             .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.IntoIterator.html#tymethod.into_iter">into_iter</a>()
             .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|o| <a href="#286">o</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">clone</a>())
             .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.collect">collect</a>::&lt;<a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html">Vec</a>&lt;<span class="kw">_</span>&gt;&gt;();
-        <a class="self" href="#283">self</a>.<a href="#104-117">splice</a>(<a class="self" href="#283">self</a>.<a href="auto/list_model.rs.html#148-150">n_items</a>(), <span class="number">0</span>, <span class="kw-2">&amp;</span><a href="#284">additions</a>)
+        <a class="self" href="#283">self</a>.<a href="#104-117">splice</a>(<a class="self" href="#283">self</a>.<a href="auto/list_model.rs.html#149-151">n_items</a>(), <span class="number">0</span>, <span class="kw-2">&amp;</span><a href="#284">additions</a>)
     }
 }
 

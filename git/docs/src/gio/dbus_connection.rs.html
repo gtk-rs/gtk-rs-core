@@ -852,8 +852,8 @@
 </span><span class="kw">use </span>std::{<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">boxed::Box</a> <span class="kw">as </span>Box_, <a href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html">future::Future</a>, <a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">marker::PhantomData</a>, <a href="https://doc.rust-lang.org/nightly/core/num/nonzero/type.NonZeroU32.html">num::NonZeroU32</a>};
 
 <span class="kw">use crate</span>::{
-    <a href="../../gio_sys/index.html">ffi</a>, <a href="auto/action_group.rs.html#13-100">ActionGroup</a>, <a href="auto/dbus_connection.rs.html#20-198">DBusConnection</a>, <a href="auto/dbus_interface_info.rs.html#8-18">DBusInterfaceInfo</a>, <a href="auto/dbus_message.rs.html#19-38">DBusMessage</a>, <a href="auto/dbus_method_invocation.rs.html#14-33">DBusMethodInvocation</a>,
-    <a href="auto/flags.rs.html#1560-1583">DBusSignalFlags</a>, <a href="auto/menu_model.rs.html#13-172">MenuModel</a>,
+    <a href="../../gio_sys/index.html">ffi</a>, <a href="auto/action_group.rs.html#14-101">ActionGroup</a>, <a href="auto/dbus_connection.rs.html#21-199">DBusConnection</a>, <a href="auto/dbus_interface_info.rs.html#8-18">DBusInterfaceInfo</a>, <a href="auto/dbus_message.rs.html#19-38">DBusMessage</a>, <a href="auto/dbus_method_invocation.rs.html#14-33">DBusMethodInvocation</a>,
+    <a href="auto/flags.rs.html#1561-1584">DBusSignalFlags</a>, <a href="auto/menu_model.rs.html#14-173">MenuModel</a>,
 };
 <span class="kw">use </span>glib::{<a href="../../glib/prelude/index.html">prelude</a>::<span class="kw-2">*</span>, <a href="../../glib/translate/index.html">translate</a>::<span class="kw-2">*</span>};
 
@@ -895,7 +895,7 @@
     /// safer interface where the callback returns a result directly.
     </span><span class="kw">pub fn </span>invoke&lt;F&gt;(<span class="self">self</span>, f: F) -&gt; <a href="#126-150">RegistrationBuilder</a>&lt;<span class="lifetime">'a</span>&gt;
     <span class="kw">where
-        </span>F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<a href="auto/dbus_connection.rs.html#20-198">DBusConnection</a>, <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;, T, <a href="auto/dbus_method_invocation.rs.html#14-33">DBusMethodInvocation</a>) + <span class="lifetime">'static</span>,
+        </span>F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<a href="auto/dbus_connection.rs.html#21-199">DBusConnection</a>, <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;, T, <a href="auto/dbus_method_invocation.rs.html#14-33">DBusMethodInvocation</a>) + <span class="lifetime">'static</span>,
     {
         <a class="self" href="#47">self</a>.registration.<a href="#153-169">method_call</a>(
             <span class="kw">move </span>|connection, sender, obj_path, interface, method, params, invocation| {
@@ -923,7 +923,7 @@
     /// See [`DBusMethodInvocation::return_result`] for details.
     </span><span class="kw">pub fn </span>invoke_and_return&lt;F&gt;(<span class="self">self</span>, f: F) -&gt; <a href="#126-150">RegistrationBuilder</a>&lt;<span class="lifetime">'a</span>&gt;
     <span class="kw">where
-        </span>F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<a href="auto/dbus_connection.rs.html#20-198">DBusConnection</a>, <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;, T) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="../../glib/variant/struct.Variant.html">glib::Variant</a>&gt;, <a href="../../glib/error/struct.Error.html">glib::Error</a>&gt;
+        </span>F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<a href="auto/dbus_connection.rs.html#21-199">DBusConnection</a>, <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;, T) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="../../glib/variant/struct.Variant.html">glib::Variant</a>&gt;, <a href="../../glib/error/struct.Error.html">glib::Error</a>&gt;
             + <span class="lifetime">'static</span>,
     {
         <a class="self" href="#75">self</a>.<a href="#47-59">invoke</a>(<span class="kw">move </span>|connection, sender, call, invocation| {
@@ -947,7 +947,7 @@
     /// See [`DBusMethodInvocation::return_future_local`] for details.
     </span><span class="kw">pub fn </span>invoke_and_return_future_local&lt;F, Fut&gt;(<span class="self">self</span>, f: F) -&gt; <a href="#126-150">RegistrationBuilder</a>&lt;<span class="lifetime">'a</span>&gt;
     <span class="kw">where
-        </span>F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<a href="auto/dbus_connection.rs.html#20-198">DBusConnection</a>, <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;, T) -&gt; Fut + <span class="lifetime">'static</span>,
+        </span>F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<a href="auto/dbus_connection.rs.html#21-199">DBusConnection</a>, <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;, T) -&gt; Fut + <span class="lifetime">'static</span>,
         Fut: <a href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html">Future</a>&lt;Output = <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="../../glib/variant/struct.Variant.html">glib::Variant</a>&gt;, <a href="../../glib/error/struct.Error.html">glib::Error</a>&gt;&gt; + <span class="lifetime">'static</span>,
     {
         <a class="self" href="#99">self</a>.<a href="#47-59">invoke</a>(<span class="kw">move </span>|connection, sender, call, invocation| {
@@ -973,14 +973,14 @@
 </span><span class="doccomment">/// Build a registered DBus object, by handling different parts of DBus.
 </span><span class="attr">#[must_use = <span class="string">"The builder must be built to be used"</span>]
 </span><span class="kw">pub struct </span><a href="../../gio/struct.RegistrationBuilder.html">RegistrationBuilder</a>&lt;<span class="lifetime">'a</span>&gt; {
-    connection: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="auto/dbus_connection.rs.html#20-198">DBusConnection</a>,
+    connection: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="auto/dbus_connection.rs.html#21-199">DBusConnection</a>,
     object_path: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
     interface_info: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="auto/dbus_interface_info.rs.html#8-18">DBusInterfaceInfo</a>,
     <span class="attr">#[allow(clippy::type_complexity)]
     </span>method_call: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;
         <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;
             <span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(
-                <a href="auto/dbus_connection.rs.html#20-198">DBusConnection</a>,
+                <a href="auto/dbus_connection.rs.html#21-199">DBusConnection</a>,
                 <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;,
                 <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
                 <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;,
@@ -992,16 +992,16 @@
     &gt;,
     <span class="attr">#[allow(clippy::type_complexity)]
     </span>get_property:
-        <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<a href="auto/dbus_connection.rs.html#20-198">DBusConnection</a>, <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;, <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a href="../../glib/variant/struct.Variant.html">glib::Variant</a>&gt;&gt;,
+        <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<a href="auto/dbus_connection.rs.html#21-199">DBusConnection</a>, <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;, <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a href="../../glib/variant/struct.Variant.html">glib::Variant</a>&gt;&gt;,
     <span class="attr">#[allow(clippy::type_complexity)]
     </span>set_property:
-        <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<a href="auto/dbus_connection.rs.html#20-198">DBusConnection</a>, <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;, <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, <a href="../../glib/variant/struct.Variant.html">glib::Variant</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>&gt;&gt;,
+        <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<a href="auto/dbus_connection.rs.html#21-199">DBusConnection</a>, <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;, <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, <a href="../../glib/variant/struct.Variant.html">glib::Variant</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>&gt;&gt;,
 }
 
 <span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; <a href="#126-150">RegistrationBuilder</a>&lt;<span class="lifetime">'a</span>&gt; {
     <span class="kw">pub fn </span>method_call&lt;
         F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(
-                <a href="auto/dbus_connection.rs.html#20-198">DBusConnection</a>,
+                <a href="auto/dbus_connection.rs.html#21-199">DBusConnection</a>,
                 <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;,
                 <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
                 <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;,
@@ -1032,7 +1032,7 @@
 
     <span class="attr">#[doc(alias = <span class="string">"get_property"</span>)]
     </span><span class="kw">pub fn </span>property&lt;
-        F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<a href="auto/dbus_connection.rs.html#20-198">DBusConnection</a>, <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;, <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a href="../../glib/variant/struct.Variant.html">glib::Variant</a> + <span class="lifetime">'static</span>,
+        F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<a href="auto/dbus_connection.rs.html#21-199">DBusConnection</a>, <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;, <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a href="../../glib/variant/struct.Variant.html">glib::Variant</a> + <span class="lifetime">'static</span>,
     &gt;(
         <span class="kw-2">mut </span><span class="self">self</span>,
         f: F,
@@ -1042,7 +1042,7 @@
     </span>}
 
     <span class="kw">pub fn </span>set_property&lt;
-        F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<a href="auto/dbus_connection.rs.html#20-198">DBusConnection</a>, <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;, <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, <a href="../../glib/variant/struct.Variant.html">glib::Variant</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> + <span class="lifetime">'static</span>,
+        F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<a href="auto/dbus_connection.rs.html#21-199">DBusConnection</a>, <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;, <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, <a href="../../glib/variant/struct.Variant.html">glib::Variant</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> + <span class="lifetime">'static</span>,
     &gt;(
         <span class="kw-2">mut </span><span class="self">self</span>,
         f: F,
@@ -1061,7 +1061,7 @@
                 <a class="self" href="#205">self</a>.method_call
                     .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|f| {
                         <a href="../../glib/closure/struct.Closure.html#method.new_local">glib::Closure::new_local</a>(<span class="kw">move </span>|args| {
-                            <span class="kw">let </span>conn = <a href="#214">args</a>[<span class="number">0</span>].<a href="../../glib/value/struct.Value.html#method.get">get</a>::&lt;<a href="auto/dbus_connection.rs.html#20-198">DBusConnection</a>&gt;().<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>();
+                            <span class="kw">let </span>conn = <a href="#214">args</a>[<span class="number">0</span>].<a href="../../glib/value/struct.Value.html#method.get">get</a>::&lt;<a href="auto/dbus_connection.rs.html#21-199">DBusConnection</a>&gt;().<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>();
                             <span class="kw">let </span>sender = <a href="#214">args</a>[<span class="number">1</span>].<a href="../../glib/value/struct.Value.html#method.get">get</a>::&lt;<a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;&gt;().<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>();
                             <span class="kw">let </span>object_path = <a href="#214">args</a>[<span class="number">2</span>].<a href="../../glib/value/struct.Value.html#method.get">get</a>::&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;().<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>();
                             <span class="kw">let </span>interface_name = <a href="#214">args</a>[<span class="number">3</span>].<a href="../../glib/value/struct.Value.html#method.get">get</a>::&lt;<a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;&gt;().<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>();
@@ -1097,7 +1097,7 @@
                 <a class="self" href="#205">self</a>.get_property
                     .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|f| {
                         <a href="../../glib/closure/struct.Closure.html#method.new_local">glib::Closure::new_local</a>(<span class="kw">move </span>|args| {
-                            <span class="kw">let </span>conn = <a href="#250">args</a>[<span class="number">0</span>].<a href="../../glib/value/struct.Value.html#method.get">get</a>::&lt;<a href="auto/dbus_connection.rs.html#20-198">DBusConnection</a>&gt;().<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>();
+                            <span class="kw">let </span>conn = <a href="#250">args</a>[<span class="number">0</span>].<a href="../../glib/value/struct.Value.html#method.get">get</a>::&lt;<a href="auto/dbus_connection.rs.html#21-199">DBusConnection</a>&gt;().<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>();
                             <span class="kw">let </span>sender = <a href="#250">args</a>[<span class="number">1</span>].<a href="../../glib/value/struct.Value.html#method.get">get</a>::&lt;<a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;&gt;().<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>();
                             <span class="kw">let </span>object_path = <a href="#250">args</a>[<span class="number">2</span>].<a href="../../glib/value/struct.Value.html#method.get">get</a>::&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;().<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>();
                             <span class="kw">let </span>interface_name = <a href="#250">args</a>[<span class="number">3</span>].<a href="../../glib/value/struct.Value.html#method.get">get</a>::&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;().<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>();
@@ -1112,7 +1112,7 @@
                 <a class="self" href="#205">self</a>.set_property
                     .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|f| {
                         <a href="../../glib/closure/struct.Closure.html#method.new_local">glib::Closure::new_local</a>(<span class="kw">move </span>|args| {
-                            <span class="kw">let </span>conn = <a href="#265">args</a>[<span class="number">0</span>].<a href="../../glib/value/struct.Value.html#method.get">get</a>::&lt;<a href="auto/dbus_connection.rs.html#20-198">DBusConnection</a>&gt;().<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>();
+                            <span class="kw">let </span>conn = <a href="#265">args</a>[<span class="number">0</span>].<a href="../../glib/value/struct.Value.html#method.get">get</a>::&lt;<a href="auto/dbus_connection.rs.html#21-199">DBusConnection</a>&gt;().<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>();
                             <span class="kw">let </span>sender = <a href="#265">args</a>[<span class="number">1</span>].<a href="../../glib/value/struct.Value.html#method.get">get</a>::&lt;<a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;&gt;().<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>();
                             <span class="kw">let </span>object_path = <a href="#265">args</a>[<span class="number">2</span>].<a href="../../glib/value/struct.Value.html#method.get">get</a>::&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;().<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>();
                             <span class="kw">let </span>interface_name = <a href="#265">args</a>[<span class="number">3</span>].<a href="../../glib/value/struct.Value.html#method.get">get</a>::&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;().<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>();
@@ -1143,7 +1143,7 @@
     }
 }
 
-<span class="kw">impl </span><a href="auto/dbus_connection.rs.html#20-198">DBusConnection</a> {
+<span class="kw">impl </span><a href="auto/dbus_connection.rs.html#21-199">DBusConnection</a> {
     <span class="doccomment">/// Registers callbacks for exported objects at @object_path with the
     /// D-Bus interface that is described in @interface_info.
     ///
@@ -1264,7 +1264,7 @@
     ///
     /// the ID of the export (never zero), or 0 in case of failure
     </span><span class="attr">#[doc(alias = <span class="string">"g_dbus_connection_export_action_group"</span>)]
-    </span><span class="kw">pub fn </span>export_action_group&lt;P: <a href="../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="auto/action_group.rs.html#13-100">ActionGroup</a>&gt;&gt;(
+    </span><span class="kw">pub fn </span>export_action_group&lt;P: <a href="../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="auto/action_group.rs.html#14-101">ActionGroup</a>&gt;&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         object_path: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
         action_group: <span class="kw-2">&amp;</span>P,
@@ -1325,7 +1325,7 @@
     ///
     /// the ID of the export (never zero), or 0 in case of failure
     </span><span class="attr">#[doc(alias = <span class="string">"g_dbus_connection_export_menu_model"</span>)]
-    </span><span class="kw">pub fn </span>export_menu_model&lt;P: <a href="../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="auto/menu_model.rs.html#13-172">MenuModel</a>&gt;&gt;(
+    </span><span class="kw">pub fn </span>export_menu_model&lt;P: <a href="../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="auto/menu_model.rs.html#14-173">MenuModel</a>&gt;&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         object_path: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
         menu: <span class="kw-2">&amp;</span>P,
@@ -1397,14 +1397,14 @@
     ///     g_dbus_connection_remove_filter()
     </span><span class="attr">#[doc(alias = <span class="string">"g_dbus_connection_add_filter"</span>)]
     </span><span class="kw">pub fn </span>add_filter&lt;
-        P: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><a href="auto/dbus_connection.rs.html#20-198">DBusConnection</a>, <span class="kw-2">&amp;</span><a href="auto/dbus_message.rs.html#19-38">DBusMessage</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="auto/dbus_message.rs.html#19-38">DBusMessage</a>&gt; + <span class="lifetime">'static</span>,
+        P: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><a href="auto/dbus_connection.rs.html#21-199">DBusConnection</a>, <span class="kw-2">&amp;</span><a href="auto/dbus_message.rs.html#19-38">DBusMessage</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="auto/dbus_message.rs.html#19-38">DBusMessage</a>&gt; + <span class="lifetime">'static</span>,
     &gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         filter_function: P,
     ) -&gt; <a href="#119">FilterId</a> {
         <span class="kw">let </span>filter_function_data: <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;P&gt; = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">Box_::new</a>(<a href="#554">filter_function</a>);
         <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>filter_function_func&lt;
-            P: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><a href="auto/dbus_connection.rs.html#20-198">DBusConnection</a>, <span class="kw-2">&amp;</span><a href="auto/dbus_message.rs.html#19-38">DBusMessage</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="auto/dbus_message.rs.html#19-38">DBusMessage</a>&gt; + <span class="lifetime">'static</span>,
+            P: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><a href="auto/dbus_connection.rs.html#21-199">DBusConnection</a>, <span class="kw-2">&amp;</span><a href="auto/dbus_message.rs.html#19-38">DBusMessage</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="auto/dbus_message.rs.html#19-38">DBusMessage</a>&gt; + <span class="lifetime">'static</span>,
         &gt;(
             connection: <span class="kw-2">*mut </span><a href="../../gio_sys/struct.GDBusConnection.html">ffi::GDBusConnection</a>,
             message: <span class="kw-2">*mut </span><a href="../../gio_sys/struct.GDBusMessage.html">ffi::GDBusMessage</a>,
@@ -1420,7 +1420,7 @@
         }
         <span class="kw">let </span>filter_function = <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#557-571">filter_function_func</a>::&lt;P&gt; <span class="kw">as _</span>);
         <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>user_data_free_func_func&lt;
-            P: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><a href="auto/dbus_connection.rs.html#20-198">DBusConnection</a>, <span class="kw-2">&amp;</span><a href="auto/dbus_message.rs.html#19-38">DBusMessage</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="auto/dbus_message.rs.html#19-38">DBusMessage</a>&gt; + <span class="lifetime">'static</span>,
+            P: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><a href="auto/dbus_connection.rs.html#21-199">DBusConnection</a>, <span class="kw-2">&amp;</span><a href="auto/dbus_message.rs.html#19-38">DBusMessage</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="auto/dbus_message.rs.html#19-38">DBusMessage</a>&gt; + <span class="lifetime">'static</span>,
         &gt;(
             data: <a href="../../glib_sys/type.gpointer.html">glib::ffi::gpointer</a>,
         ) {
@@ -1532,7 +1532,7 @@
     </span><span class="attr">#[doc(alias = <span class="string">"g_dbus_connection_signal_subscribe"</span>)]
     #[allow(clippy::too_many_arguments)]
     </span><span class="kw">pub fn </span>signal_subscribe&lt;
-        P: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><a href="auto/dbus_connection.rs.html#20-198">DBusConnection</a>, <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, <span class="kw-2">&amp;</span><a href="../../glib/variant/struct.Variant.html">glib::Variant</a>) + <span class="lifetime">'static</span>,
+        P: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><a href="auto/dbus_connection.rs.html#21-199">DBusConnection</a>, <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, <span class="kw-2">&amp;</span><a href="../../glib/variant/struct.Variant.html">glib::Variant</a>) + <span class="lifetime">'static</span>,
     &gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         sender: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;,
@@ -1540,12 +1540,12 @@
         member: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;,
         object_path: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;,
         arg0: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;,
-        flags: <a href="auto/flags.rs.html#1560-1583">DBusSignalFlags</a>,
+        flags: <a href="auto/flags.rs.html#1561-1584">DBusSignalFlags</a>,
         callback: P,
     ) -&gt; <a href="#121">SignalSubscriptionId</a> {
         <span class="kw">let </span>callback_data: <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;P&gt; = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">Box_::new</a>(<a href="#695">callback</a>);
         <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>callback_func&lt;
-            P: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><a href="auto/dbus_connection.rs.html#20-198">DBusConnection</a>, <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, <span class="kw-2">&amp;</span><a href="../../glib/variant/struct.Variant.html">glib::Variant</a>) + <span class="lifetime">'static</span>,
+            P: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><a href="auto/dbus_connection.rs.html#21-199">DBusConnection</a>, <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, <span class="kw-2">&amp;</span><a href="../../glib/variant/struct.Variant.html">glib::Variant</a>) + <span class="lifetime">'static</span>,
         &gt;(
             connection: <span class="kw-2">*mut </span><a href="../../gio_sys/struct.GDBusConnection.html">ffi::GDBusConnection</a>,
             sender_name: <span class="kw-2">*const </span>libc::c_char,
@@ -1573,7 +1573,7 @@
         }
         <span class="kw">let </span>callback = <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#698-724">callback_func</a>::&lt;P&gt; <span class="kw">as _</span>);
         <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>user_data_free_func_func&lt;
-            P: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><a href="auto/dbus_connection.rs.html#20-198">DBusConnection</a>, <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, <span class="kw-2">&amp;</span><a href="../../glib/variant/struct.Variant.html">glib::Variant</a>) + <span class="lifetime">'static</span>,
+            P: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><a href="auto/dbus_connection.rs.html#21-199">DBusConnection</a>, <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, <span class="kw-2">&amp;</span><a href="../../glib/variant/struct.Variant.html">glib::Variant</a>) + <span class="lifetime">'static</span>,
         &gt;(
             data: <a href="../../glib_sys/type.gpointer.html">glib::ffi::gpointer</a>,
         ) {

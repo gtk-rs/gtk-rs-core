@@ -428,15 +428,15 @@
 
 </span><span class="kw">use </span>glib::{<a href="../../glib/prelude/index.html">prelude</a>::<span class="kw-2">*</span>, <a href="../../glib/translate/index.html">translate</a>::<span class="kw-2">*</span>, <a href="../../glib/error/struct.BoolError.html">BoolError</a>, <a href="../../glib/collections/strv/struct.StrV.html">StrV</a>, <a href="../../glib_macros/derive.Variant.html">Variant</a>};
 
-<span class="kw">use crate</span>::{<a href="../../gio_sys/index.html">ffi</a>, <a href="lib.rs.html#123">prelude</a>::<span class="kw-2">*</span>, <a href="auto/settings.rs.html#16-516">Settings</a>, <a href="auto/flags.rs.html#3047-3078">SettingsBindFlags</a>};
+<span class="kw">use crate</span>::{<a href="../../gio_sys/index.html">ffi</a>, <a href="lib.rs.html#123">prelude</a>::<span class="kw-2">*</span>, <a href="auto/settings.rs.html#17-517">Settings</a>, <a href="auto/flags.rs.html#3048-3079">SettingsBindFlags</a>};
 
 <span class="attr">#[must_use = <span class="string">"The builder must be built to be used"</span>]
 </span><span class="kw">pub struct </span><a href="../../gio/struct.BindingBuilder.html">BindingBuilder</a>&lt;<span class="lifetime">'a</span>&gt; {
-    settings: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="auto/settings.rs.html#16-516">Settings</a>,
+    settings: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="auto/settings.rs.html#17-517">Settings</a>,
     key: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
     object: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="../../glib/object/struct.Object.html">glib::Object</a>,
     property: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
-    flags: <a href="auto/flags.rs.html#3047-3078">SettingsBindFlags</a>,
+    flags: <a href="auto/flags.rs.html#3048-3079">SettingsBindFlags</a>,
     <span class="attr">#[allow(clippy::type_complexity)]
     </span>get_mapping: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box</a>&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><a href="../../glib/variant/struct.Variant.html">glib::Variant</a>, <a href="../../glib/types/struct.Type.html">glib::Type</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="../../glib/value/struct.Value.html">glib::Value</a>&gt;&gt;&gt;,
     <span class="attr">#[allow(clippy::type_complexity)]
@@ -444,7 +444,7 @@
 }
 
 <span class="kw">impl </span><a href="#8-18">BindingBuilder</a>&lt;<span class="lifetime">'_</span>&gt; {
-    <span class="kw">pub fn </span>flags(<span class="kw-2">mut </span><span class="self">self</span>, flags: <a href="auto/flags.rs.html#3047-3078">SettingsBindFlags</a>) -&gt; <span class="self">Self </span>{
+    <span class="kw">pub fn </span>flags(<span class="kw-2">mut </span><span class="self">self</span>, flags: <a href="auto/flags.rs.html#3048-3079">SettingsBindFlags</a>) -&gt; <span class="self">Self </span>{
         <a class="self" href="#21">self</a>.flags = <a href="#21">flags</a>;
         <span class="self"><a href="#21">self</a>
     </span>}
@@ -593,9 +593,9 @@
     }
 }
 
-<span class="kw">pub trait </span><a href="../../gio/prelude/trait.SettingsExtManual.html">SettingsExtManual</a>: <a href="../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="auto/settings.rs.html#16-516">Settings</a>&gt; {
+<span class="kw">pub trait </span><a href="../../gio/prelude/trait.SettingsExtManual.html">SettingsExtManual</a>: <a href="../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="auto/settings.rs.html#17-517">Settings</a>&gt; {
     <span class="kw">fn </span>get&lt;U: <a href="../../glib/variant/trait.FromVariant.html">FromVariant</a>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, key: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; U {
-        <span class="kw">let </span>val = <a class="self" href="#171">self</a>.<a href="auto/settings.rs.html#1185-1192">value</a>(<a href="#171">key</a>);
+        <span class="kw">let </span>val = <a class="self" href="#171">self</a>.<a href="auto/settings.rs.html#1186-1193">value</a>(<a href="#171">key</a>);
         <a href="../../glib/variant/trait.FromVariant.html#tymethod.from_variant">FromVariant::from_variant</a>(<span class="kw-2">&amp;</span><a href="#172">val</a>).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap_or_else">unwrap_or_else</a>(|| {
             <a class="macro" href="https://doc.rust-lang.org/nightly/std/macro.panic.html">panic!</a>(
                 <span class="string">"Type mismatch: Expected '{}' got '{}'"</span>,
@@ -606,7 +606,7 @@
     }
 
     <span class="kw">fn </span>set(<span class="kw-2">&amp;</span><span class="self">self</span>, key: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, value: <span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html">Into</a>&lt;<a href="../../glib/variant/struct.Variant.html">Variant</a>&gt;) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(), <a href="../../glib/error/struct.BoolError.html">BoolError</a>&gt; {
-        <a class="self" href="#182">self</a>.<a href="auto/settings.rs.html#1555-1566">set_value</a>(<a href="#182">key</a>, <span class="kw-2">&amp;</span><a href="#182">value</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>())
+        <a class="self" href="#182">self</a>.<a href="auto/settings.rs.html#1556-1567">set_value</a>(<a href="#182">key</a>, <span class="kw-2">&amp;</span><a href="#182">value</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>())
     }
 
     <span class="doccomment">/// A convenience variant of g_settings_get() for string arrays.
@@ -712,7 +712,7 @@
     }
 }
 
-<span class="kw">impl</span>&lt;O: <a href="../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="auto/settings.rs.html#16-516">Settings</a>&gt;&gt; <a href="#170-287">SettingsExtManual</a> <span class="kw">for </span>O {}
+<span class="kw">impl</span>&lt;O: <a href="../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="auto/settings.rs.html#17-517">Settings</a>&gt;&gt; <a href="#170-287">SettingsExtManual</a> <span class="kw">for </span>O {}
 
 <span class="attr">#[cfg(test)]
 </span><span class="kw">mod </span>test {
