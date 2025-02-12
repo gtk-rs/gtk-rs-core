@@ -911,6 +911,9 @@ pub const G_OPTION_FLAG_NO_ARG: GOptionFlags = 8;
 pub const G_OPTION_FLAG_FILENAME: GOptionFlags = 16;
 pub const G_OPTION_FLAG_OPTIONAL_ARG: GOptionFlags = 32;
 pub const G_OPTION_FLAG_NOALIAS: GOptionFlags = 64;
+#[cfg(feature = "v2_84")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_84")))]
+pub const G_OPTION_FLAG_DEPRECATED: GOptionFlags = 128;
 
 pub type GRegexCompileFlags = c_uint;
 pub const G_REGEX_DEFAULT: GRegexCompileFlags = 0;

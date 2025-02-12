@@ -96,6 +96,7 @@ bitflags! {
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GApplicationFlags")]
     pub struct ApplicationFlags: u32 {
+        #[cfg_attr(feature = "v2_74", deprecated = "Since 2.74")]
         #[doc(alias = "G_APPLICATION_FLAGS_NONE")]
         const FLAGS_NONE = ffi::G_APPLICATION_FLAGS_NONE as _;
         #[doc(alias = "G_APPLICATION_IS_SERVICE")]

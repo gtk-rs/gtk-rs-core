@@ -2968,6 +2968,10 @@ pub enum WrapMode {
     Char,
     #[doc(alias = "PANGO_WRAP_WORD_CHAR")]
     WordChar,
+    #[cfg(feature = "v1_56")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v1_56")))]
+    #[doc(alias = "PANGO_WRAP_NONE")]
+    None,
     #[doc(hidden)]
     __Unknown(i32),
 }
@@ -2982,6 +2986,8 @@ impl IntoGlib for WrapMode {
             Self::Word => ffi::PANGO_WRAP_WORD,
             Self::Char => ffi::PANGO_WRAP_CHAR,
             Self::WordChar => ffi::PANGO_WRAP_WORD_CHAR,
+            #[cfg(feature = "v1_56")]
+            Self::None => ffi::PANGO_WRAP_NONE,
             Self::__Unknown(value) => value,
         }
     }
@@ -2995,6 +3001,8 @@ impl FromGlib<ffi::PangoWrapMode> for WrapMode {
             ffi::PANGO_WRAP_WORD => Self::Word,
             ffi::PANGO_WRAP_CHAR => Self::Char,
             ffi::PANGO_WRAP_WORD_CHAR => Self::WordChar,
+            #[cfg(feature = "v1_56")]
+            ffi::PANGO_WRAP_NONE => Self::None,
             value => Self::__Unknown(value),
         }
     }

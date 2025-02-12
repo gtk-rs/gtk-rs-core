@@ -9,6 +9,7 @@ pub use gio;
 pub use glib;
 
 #[allow(clippy::too_many_arguments)]
+#[allow(unused_imports)]
 mod auto;
 
 pub mod subclass;

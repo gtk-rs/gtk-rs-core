@@ -4,6 +4,7 @@
 
 use crate::{ffi, Drive, Mount, Volume};
 use glib::{
+    object::ObjectType as _,
     prelude::*,
     signal::{connect_raw, SignalHandlerId},
     translate::*,

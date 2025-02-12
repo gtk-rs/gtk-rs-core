@@ -57,6 +57,18 @@ impl FontDescription {
         }
     }
 
+    #[cfg(feature = "v1_56")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v1_56")))]
+    #[doc(alias = "pango_font_description_get_features")]
+    #[doc(alias = "get_features")]
+    pub fn features(&self) -> Option<glib::GString> {
+        unsafe {
+            from_glib_none(ffi::pango_font_description_get_features(
+                self.to_glib_none().0,
+            ))
+        }
+    }
+
     #[doc(alias = "pango_font_description_get_gravity")]
     #[doc(alias = "get_gravity")]
     pub fn gravity(&self) -> Gravity {
@@ -174,6 +186,18 @@ impl FontDescription {
         }
     }
 
+    #[cfg(feature = "v1_56")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v1_56")))]
+    #[doc(alias = "pango_font_description_set_features")]
+    pub fn set_features(&mut self, features: Option<&str>) {
+        unsafe {
+            ffi::pango_font_description_set_features(
+                self.to_glib_none_mut().0,
+                features.to_glib_none().0,
+            );
+        }
+    }
+
     #[doc(alias = "pango_font_description_set_gravity")]
     pub fn set_gravity(&mut self, gravity: Gravity) {
         unsafe {
@@ -215,18 +239,6 @@ impl FontDescription {
     pub fn set_variations(&mut self, variations: Option<&str>) {
         unsafe {
             ffi::pango_font_description_set_variations(
-                self.to_glib_none_mut().0,
-                variations.to_glib_none().0,
-            );
-        }
-    }
-
-    #[cfg(feature = "v1_42")]
-    #[cfg_attr(docsrs, doc(cfg(feature = "v1_42")))]
-    #[doc(alias = "pango_font_description_set_variations_static")]
-    pub fn set_variations_static(&mut self, variations: &str) {
-        unsafe {
-            ffi::pango_font_description_set_variations_static(
                 self.to_glib_none_mut().0,
                 variations.to_glib_none().0,
             );
