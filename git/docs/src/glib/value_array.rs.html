@@ -421,7 +421,7 @@
 </span><span class="kw">use </span>std::{<a href="https://doc.rust-lang.org/nightly/core/cmp/enum.Ordering.html">cmp::Ordering</a>, <a href="https://doc.rust-lang.org/nightly/core/ops/index.html">ops</a>, <a href="https://doc.rust-lang.org/nightly/alloc/slice/index.html">slice</a>};
 
 <span class="kw">use crate</span>::{
-    <a href="../../glib_sys/index.html">ffi</a>, <a href="../../gobject_sys/index.html">gobject_ffi</a>, <a href="lib.rs.html#159">prelude</a>::<span class="kw-2">*</span>, <a href="lib.rs.html#164">translate</a>::<span class="kw-2">*</span>, <a href="param_spec.rs.html#1753-1763">ParamSpecValueArray</a>, <a href="param_spec.rs.html#1823-1829">ParamSpecValueArrayBuilder</a>,
+    ffi, <a href="../../gobject_sys/index.html">gobject_ffi</a>, <a href="lib.rs.html#159">prelude</a>::<span class="kw-2">*</span>, <a href="lib.rs.html#164">translate</a>::<span class="kw-2">*</span>, <a href="param_spec.rs.html#1753-1763">ParamSpecValueArray</a>, <a href="param_spec.rs.html#1823-1829">ParamSpecValueArrayBuilder</a>,
     <a href="types.rs.html#22">Type</a>, <a href="value.rs.html#478-512">Value</a>,
 };
 
@@ -532,9 +532,9 @@
     <span class="attr">#[doc(alias = <span class="string">"g_value_array_sort_with_data"</span>)]
     </span><span class="kw">pub fn </span>sort_with_data&lt;F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnMut.html">FnMut</a>(<span class="kw-2">&amp;</span><a href="value.rs.html#478-512">Value</a>, <span class="kw-2">&amp;</span><a href="value.rs.html#478-512">Value</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/core/cmp/enum.Ordering.html">Ordering</a>&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, compare_func: F) {
         <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>compare_func_trampoline(
-            a: <a href="../../glib_sys/type.gconstpointer.html">ffi::gconstpointer</a>,
-            b: <a href="../../glib_sys/type.gconstpointer.html">ffi::gconstpointer</a>,
-            func: <a href="../../glib_sys/type.gpointer.html">ffi::gpointer</a>,
+            a: ffi::gconstpointer,
+            b: ffi::gconstpointer,
+            func: ffi::gpointer,
         ) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a> {
             <span class="kw">let </span>func = <a href="#119">func</a> <span class="kw">as </span><span class="kw-2">*mut &amp;mut </span>(<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnMut.html">FnMut</a>(<span class="kw-2">&amp;</span><a href="value.rs.html#478-512">Value</a>, <span class="kw-2">&amp;</span><a href="value.rs.html#478-512">Value</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/core/cmp/enum.Ordering.html">Ordering</a>);
 
@@ -547,7 +547,7 @@
             <span class="kw">let </span><span class="kw-2">mut </span>func = <a href="#115">compare_func</a>;
             <span class="kw">let </span>func_obj: <span class="kw-2">&amp;mut </span>(<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnMut.html">FnMut</a>(<span class="kw-2">&amp;</span><a href="value.rs.html#478-512">Value</a>, <span class="kw-2">&amp;</span><a href="value.rs.html#478-512">Value</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/core/cmp/enum.Ordering.html">Ordering</a>) = <span class="kw-2">&amp;mut </span><a href="#129">func</a>;
             <span class="kw">let </span>func_ptr =
-                <span class="kw-2">&amp;</span><a href="#130">func_obj</a> <span class="kw">as </span><span class="kw-2">*const &amp;mut </span>(<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnMut.html">FnMut</a>(<span class="kw-2">&amp;</span><a href="value.rs.html#478-512">Value</a>, <span class="kw-2">&amp;</span><a href="value.rs.html#478-512">Value</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/core/cmp/enum.Ordering.html">Ordering</a>) <span class="kw">as </span><a href="../../glib_sys/type.gpointer.html">ffi::gpointer</a>;
+                <span class="kw-2">&amp;</span><a href="#130">func_obj</a> <span class="kw">as </span><span class="kw-2">*const &amp;mut </span>(<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnMut.html">FnMut</a>(<span class="kw-2">&amp;</span><a href="value.rs.html#478-512">Value</a>, <span class="kw-2">&amp;</span><a href="value.rs.html#478-512">Value</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/core/cmp/enum.Ordering.html">Ordering</a>) <span class="kw">as </span>ffi::gpointer;
 
             <a href="../../gobject_sys/fn.g_value_array_sort_with_data.html">gobject_ffi::g_value_array_sort_with_data</a>(
                 <a class="self" href="#115">self</a>.<a href="translate.rs.html#471">to_glib_none_mut</a>().<span class="number">0</span>,
@@ -663,7 +663,7 @@
         <span class="kw">let </span>value = <span class="kw-2">&amp;*</span>(<a href="#240">value</a> <span class="kw">as </span><span class="kw-2">*const </span><a href="value.rs.html#478-512">Value</a> <span class="kw">as </span><span class="kw-2">*const </span><a href="../../gobject_sys/struct.GValue.html">gobject_ffi::GValue</a>);
         <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert.html">debug_assert!</a>(!value.data[<span class="number">0</span>].v_pointer.is_null());
         &lt;<a href="#10-19">ValueArray</a>&gt;::from_glib_ptr_borrow(
-            <span class="kw-2">&amp;*</span>(<span class="kw-2">&amp;</span><a href="#245">value</a>.data[<span class="number">0</span>].v_pointer <span class="kw">as </span><span class="kw-2">*const </span><a href="../../glib_sys/type.gpointer.html">ffi::gpointer</a>
+            <span class="kw-2">&amp;*</span>(<span class="kw-2">&amp;</span><a href="#245">value</a>.data[<span class="number">0</span>].v_pointer <span class="kw">as </span><span class="kw-2">*const </span>ffi::gpointer
                 <span class="kw">as </span><span class="kw-2">*const *mut </span><a href="../../gobject_sys/struct.GValueArray.html">gobject_ffi::GValueArray</a>),
         )
     }

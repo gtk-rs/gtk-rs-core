@@ -232,7 +232,7 @@
 <a href="#158" id="158">158</a>
 <a href="#159" id="159">159</a></pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
-</span><span class="kw">use </span><a href="../../glib_sys/index.html"><span class="kw">crate</span>::ffi</a>;
+</span><span class="kw">use </span><span class="kw">crate</span>::ffi;
 
 <span class="comment">// rustdoc-stripper-ignore-next
 </span><span class="doccomment">/// A `CollationKey` allows ordering strings using the linguistically correct rules for the current locale.
@@ -247,7 +247,7 @@
     </span><span class="kw">fn </span>from(s: T) -&gt; <span class="self">Self </span>{
         <span class="kw">let </span>s = <a href="#15">s</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>();
         <span class="kw">let </span>key = <span class="kw">unsafe </span>{
-            <span class="kw">let </span>ptr = <a href="../../glib_sys/fn.g_utf8_collate_key.html">ffi::g_utf8_collate_key</a>(<a href="#16">s</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.str.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>, <a href="#16">s</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.str.html#method.len">len</a>() <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.isize.html">isize</a>);
+            <span class="kw">let </span>ptr = ffi::g_utf8_collate_key(<a href="#16">s</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.str.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>, <a href="#16">s</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.str.html#method.len">len</a>() <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.isize.html">isize</a>);
             <span class="kw">let </span>len = libc::strlen(<a href="#18">ptr</a>);
 
             <a href="collections/slice.rs.html#509-523"><span class="kw">crate</span>::Slice::from_glib_full_num</a>(<a href="#18">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>, <a href="#19">len</a>)
@@ -272,7 +272,7 @@
         <span class="kw">let </span>s = <a href="#39">s</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>();
         <span class="kw">let </span>key = <span class="kw">unsafe </span>{
             <span class="kw">let </span>ptr =
-                <a href="../../glib_sys/fn.g_utf8_collate_key_for_filename.html">ffi::g_utf8_collate_key_for_filename</a>(<a href="#40">s</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.str.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>, <a href="#40">s</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.str.html#method.len">len</a>() <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.isize.html">isize</a>);
+                ffi::g_utf8_collate_key_for_filename(<a href="#40">s</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.str.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>, <a href="#40">s</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.str.html#method.len">len</a>() <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.isize.html">isize</a>);
             <span class="kw">let </span>len = libc::strlen(<a href="#42">ptr</a>);
 
             <a href="collections/slice.rs.html#509-523"><span class="kw">crate</span>::Slice::from_glib_full_num</a>(<a href="#42">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>, <a href="#44">len</a>)

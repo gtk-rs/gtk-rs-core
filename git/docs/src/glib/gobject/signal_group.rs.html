@@ -358,24 +358,68 @@
 <a href="#284" id="284">284</a>
 <a href="#285" id="285">285</a>
 <a href="#286" id="286">286</a>
-<a href="#287" id="287">287</a></pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
+<a href="#287" id="287">287</a>
+<a href="#288" id="288">288</a>
+<a href="#289" id="289">289</a>
+<a href="#290" id="290">290</a>
+<a href="#291" id="291">291</a>
+<a href="#292" id="292">292</a>
+<a href="#293" id="293">293</a>
+<a href="#294" id="294">294</a>
+<a href="#295" id="295">295</a>
+<a href="#296" id="296">296</a>
+<a href="#297" id="297">297</a>
+<a href="#298" id="298">298</a>
+<a href="#299" id="299">299</a>
+<a href="#300" id="300">300</a>
+<a href="#301" id="301">301</a>
+<a href="#302" id="302">302</a>
+<a href="#303" id="303">303</a>
+<a href="#304" id="304">304</a>
+<a href="#305" id="305">305</a>
+<a href="#306" id="306">306</a>
+<a href="#307" id="307">307</a>
+<a href="#308" id="308">308</a>
+<a href="#309" id="309">309</a>
+<a href="#310" id="310">310</a>
+<a href="#311" id="311">311</a>
+<a href="#312" id="312">312</a>
+<a href="#313" id="313">313</a>
+<a href="#314" id="314">314</a>
+<a href="#315" id="315">315</a>
+<a href="#316" id="316">316</a>
+<a href="#317" id="317">317</a>
+<a href="#318" id="318">318</a>
+<a href="#319" id="319">319</a>
+<a href="#320" id="320">320</a></pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
 </span><span class="kw">use </span><a href="https://doc.rust-lang.org/nightly/core/intrinsics/fn.transmute.html">std::mem::transmute</a>;
 
 <span class="kw">use crate</span>::{
-    <a href="../../../glib_sys/index.html">ffi</a>, <a href="../../../gobject_sys/index.html">gobject_ffi</a>,
+    ffi, <a href="../../../gobject_sys/index.html">gobject_ffi</a>,
     <a href="../lib.rs.html#159">prelude</a>::<span class="kw-2">*</span>,
     signal::{<a href="../signal.rs.html#67-89">connect_raw</a>, <a href="../signal.rs.html#49">SignalHandlerId</a>},
     <a href="../lib.rs.html#164">translate</a>::<span class="kw-2">*</span>,
-    <a href="../object.rs.html#1376-1379">Object</a>, <a href="../closure.rs.html#27">RustClosure</a>, <a href="auto/signal_group.rs.html#7-72">SignalGroup</a>, <a href="../value.rs.html#478-512">Value</a>,
+    <a href="../object.rs.html#1376-1379">Object</a>, <a href="../closure.rs.html#27">RustClosure</a>, <a href="auto/signal_group.rs.html#7-131">SignalGroup</a>, <a href="../value.rs.html#478-512">Value</a>,
 };
 
-<span class="kw">impl </span><a href="auto/signal_group.rs.html#7-72">SignalGroup</a> {
+<span class="kw">impl </span><a href="auto/signal_group.rs.html#7-131">SignalGroup</a> {
     <span class="attr">#[doc(alias = <span class="string">"g_signal_group_new"</span>)]
     </span><span class="kw">pub fn </span>new&lt;T: <a href="../object.rs.html#71-74">IsA</a>&lt;<a href="../object.rs.html#1376-1379">Object</a>&gt;&gt;() -&gt; <span class="self">Self </span>{
-        <a href="auto/signal_group.rs.html#84-90"><span class="self">Self</span>::with_type</a>(<a href="../types.rs.html#293">T::static_type</a>())
+        <a href="auto/signal_group.rs.html#151-157"><span class="self">Self</span>::with_type</a>(<a href="../types.rs.html#293">T::static_type</a>())
     }
     <span class="doccomment">/// Connects `closure` to the signal `detailed_signal` on [`target`][struct@crate::SignalGroup#target].
+    ///
+    /// You cannot connect a signal handler after [`target`][struct@crate::SignalGroup#target] has been set.
+    /// ## `detailed_signal`
+    /// a string of the form `signal-name` with optional `::signal-detail`
+    /// ## `closure`
+    /// the closure to connect.
+    /// ## `after`
+    /// whether the handler should be called before or after the
+    ///  default handler of the signal.
+    </span><span class="comment">// rustdoc-stripper-ignore-next-stop
+    </span><span class="doccomment">/// Connects `closure` to the signal `detailed_signal` on [`target`][struct@crate::SignalGroup#target].
     ///
     /// You cannot connect a signal handler after [`target`][struct@crate::SignalGroup#target] has been set.
     /// ## `detailed_signal`
@@ -389,15 +433,24 @@
     </span><span class="kw">pub fn </span>connect_closure(<span class="kw-2">&amp;</span><span class="self">self</span>, signal_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, after: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>, closure: <a href="../closure.rs.html#27">RustClosure</a>) {
         <span class="kw">unsafe </span>{
             <a href="../../../gobject_sys/fn.g_signal_group_connect_closure.html">gobject_ffi::g_signal_group_connect_closure</a>(
-                <a class="self" href="#29">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#29">signal_name</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#29">closure</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#29">after</a>.<a href="../translate.rs.html#334">into_glib</a>(),
+                <a class="self" href="#40">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#40">signal_name</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#40">closure</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#40">after</a>.<a href="../translate.rs.html#334">into_glib</a>(),
             );
         }
     }
 
     <span class="doccomment">/// Connects `c_handler` to the signal `detailed_signal`
+    /// on the target instance of `self`.
+    ///
+    /// You cannot connect a signal handler after [`target`][struct@crate::SignalGroup#target] has been set.
+    /// ## `detailed_signal`
+    /// a string of the form "signal-name::detail"
+    /// ## `c_handler`
+    /// the `GCallback` to connect
+    </span><span class="comment">// rustdoc-stripper-ignore-next-stop
+    </span><span class="doccomment">/// Connects `c_handler` to the signal `detailed_signal`
     /// on the target instance of `self`.
     ///
     /// You cannot connect a signal handler after [`target`][struct@crate::SignalGroup#target] has been set.
@@ -411,7 +464,7 @@
     <span class="kw">where
         </span>F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span>[<a href="../value.rs.html#478-512">Value</a>]) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="../value.rs.html#478-512">Value</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>,
     {
-        <a class="self" href="#50">self</a>.<a href="#29-38">connect_closure</a>(<a href="#50">signal_name</a>, <a href="#50">after</a>, <a href="../closure.rs.html#57-59">RustClosure::new</a>(<a href="#50">callback</a>));
+        <a class="self" href="#70">self</a>.<a href="#40-49">connect_closure</a>(<a href="#70">signal_name</a>, <a href="#70">after</a>, <a href="../closure.rs.html#57-59">RustClosure::new</a>(<a href="#70">callback</a>));
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
@@ -423,7 +476,7 @@
     <span class="kw">where
         </span>F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span>[<a href="../value.rs.html#478-512">Value</a>]) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="../value.rs.html#478-512">Value</a>&gt; + <span class="lifetime">'static</span>,
     {
-        <a class="self" href="#62">self</a>.<a href="#29-38">connect_closure</a>(<a href="#62">signal_name</a>, <a href="#62">after</a>, <a href="../closure.rs.html#74-76">RustClosure::new_local</a>(<a href="#62">callback</a>));
+        <a class="self" href="#82">self</a>.<a href="#40-49">connect_closure</a>(<a href="#82">signal_name</a>, <a href="#82">after</a>, <a href="../closure.rs.html#74-76">RustClosure::new_local</a>(<a href="#82">callback</a>));
     }
 
     <span class="attr">#[inline]
@@ -431,21 +484,21 @@
     <span class="kw">where
         </span>F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><a href="../object.rs.html#1376-1379"><span class="kw">crate</span>::Object</a>, <span class="kw-2">&amp;</span><a href="../param_spec.rs.html#19-42"><span class="kw">crate</span>::ParamSpec</a>) + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>,
     {
-        <span class="kw">let </span>signal_name = <span class="kw">if let </span><a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(name) = <a href="#70">name</a> {
+        <span class="kw">let </span>signal_name = <span class="kw">if let </span><a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(name) = <a href="#90">name</a> {
             <a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.format.html">format!</a>(<span class="string">"notify::{name}"</span>)
         } <span class="kw">else </span>{
             <span class="string">"notify"</span>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>()
         };
 
         <span class="kw">let </span>closure = <a href="../closure.rs.html#57-59"><span class="kw">crate</span>::RustClosure::new</a>(<span class="kw">move </span>|values| {
-            <span class="kw">let </span>obj = <a href="#80">values</a>[<span class="number">0</span>].<a href="../value.rs.html#585-595">get</a>().<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>();
-            <span class="kw">let </span>pspec = <a href="#80">values</a>[<span class="number">1</span>].<a href="../value.rs.html#585-595">get</a>().<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>();
-            <a href="#70">callback</a>(<a href="#81">obj</a>, <a href="#82">pspec</a>);
+            <span class="kw">let </span>obj = <a href="#100">values</a>[<span class="number">0</span>].<a href="../value.rs.html#585-595">get</a>().<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>();
+            <span class="kw">let </span>pspec = <a href="#100">values</a>[<span class="number">1</span>].<a href="../value.rs.html#585-595">get</a>().<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>();
+            <a href="#90">callback</a>(<a href="#101">obj</a>, <a href="#102">pspec</a>);
 
             <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None"><a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a>
         </a>});
 
-        <a class="self" href="#70">self</a>.<a href="#29-38">connect_closure</a>(<span class="kw-2">&amp;</span><a href="#74">signal_name</a>, <span class="bool-val">false</span>, <a href="#80">closure</a>);
+        <a class="self" href="#90">self</a>.<a href="#40-49">connect_closure</a>(<span class="kw-2">&amp;</span><a href="#94">signal_name</a>, <span class="bool-val">false</span>, <a href="#100">closure</a>);
     }
 
     <span class="attr">#[inline]
@@ -453,63 +506,70 @@
     <span class="kw">where
         </span>F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><a href="../object.rs.html#1376-1379"><span class="kw">crate</span>::Object</a>, <span class="kw-2">&amp;</span><a href="../param_spec.rs.html#19-42"><span class="kw">crate</span>::ParamSpec</a>) + <span class="lifetime">'static</span>,
     {
-        <span class="kw">let </span>signal_name = <span class="kw">if let </span><a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(name) = <a href="#92">name</a> {
+        <span class="kw">let </span>signal_name = <span class="kw">if let </span><a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(name) = <a href="#112">name</a> {
             <a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.format.html">format!</a>(<span class="string">"notify::{name}"</span>)
         } <span class="kw">else </span>{
             <span class="string">"notify"</span>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>()
         };
 
         <span class="kw">let </span>closure = <a href="../closure.rs.html#74-76"><span class="kw">crate</span>::RustClosure::new_local</a>(<span class="kw">move </span>|values| {
-            <span class="kw">let </span>obj = <a href="#102">values</a>[<span class="number">0</span>].<a href="../value.rs.html#585-595">get</a>().<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>();
-            <span class="kw">let </span>pspec = <a href="#102">values</a>[<span class="number">1</span>].<a href="../value.rs.html#585-595">get</a>().<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>();
-            <a href="#92">callback</a>(<a href="#103">obj</a>, <a href="#104">pspec</a>);
+            <span class="kw">let </span>obj = <a href="#122">values</a>[<span class="number">0</span>].<a href="../value.rs.html#585-595">get</a>().<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>();
+            <span class="kw">let </span>pspec = <a href="#122">values</a>[<span class="number">1</span>].<a href="../value.rs.html#585-595">get</a>().<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>();
+            <a href="#112">callback</a>(<a href="#123">obj</a>, <a href="#124">pspec</a>);
 
             <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None"><a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a>
         </a>});
 
-        <a class="self" href="#92">self</a>.<a href="#29-38">connect_closure</a>(<span class="kw-2">&amp;</span><a href="#96">signal_name</a>, <span class="bool-val">false</span>, <a href="#102">closure</a>);
+        <a class="self" href="#112">self</a>.<a href="#40-49">connect_closure</a>(<span class="kw-2">&amp;</span><a href="#116">signal_name</a>, <span class="bool-val">false</span>, <a href="#122">closure</a>);
     }
 
     <span class="kw">unsafe fn </span>connect_bind_unsafe&lt;F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><span class="self">Self</span>, <span class="kw-2">&amp;</span><a href="../object.rs.html#1376-1379">Object</a>)&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; <a href="../signal.rs.html#49">SignalHandlerId</a> {
-        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>bind_trampoline&lt;F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><a href="auto/signal_group.rs.html#7-72">SignalGroup</a>, <span class="kw-2">&amp;</span><a href="../object.rs.html#1376-1379">Object</a>)&gt;(
+        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>bind_trampoline&lt;F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><a href="auto/signal_group.rs.html#7-131">SignalGroup</a>, <span class="kw-2">&amp;</span><a href="../object.rs.html#1376-1379">Object</a>)&gt;(
             this: <span class="kw-2">*mut </span><a href="../../../gobject_sys/struct.GSignalGroup.html"><span class="kw">crate</span>::gobject_ffi::GSignalGroup</a>,
             instance: <span class="kw-2">*mut </span><a href="../../../gobject_sys/struct.GObject.html"><span class="kw">crate</span>::gobject_ffi::GObject</a>,
-            f: <a href="../../../glib_sys/type.gpointer.html">ffi::gpointer</a>,
+            f: ffi::gpointer,
         ) {
-            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#117">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
-            <a href="#119">f</a>(<span class="kw-2">&amp;</span><a href="../translate.rs.html#1647-1649">from_glib_borrow</a>(<a href="#115">this</a>), <span class="kw-2">&amp;</span><a href="../translate.rs.html#1647-1649">from_glib_borrow</a>(<a href="#116">instance</a>))
-        }
-        <span class="kw">let </span>f: <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box</a>&lt;F&gt; = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">Box::new</a>(<a href="#113">f</a>);
-        <a href="../signal.rs.html#67-89">connect_raw</a>(
-            <a class="self" href="#113">self</a>.<a href="../object.rs.html#49">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
-            <span class="string">b"bind\0"</span>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
-            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="https://doc.rust-lang.org/nightly/core/intrinsics/fn.transmute.html">transmute</a>::&lt;<span class="kw-2">*const </span>(), <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>()&gt;(
-                <a href="#114-121">bind_trampoline</a>::&lt;F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
-            )),
-            <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.into_raw">Box::into_raw</a>(<a href="#122">f</a>),
-        )
-    }
-
-    <span class="kw">unsafe fn </span>connect_unbind_unsafe&lt;F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><span class="self">Self</span>)&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; <a href="../signal.rs.html#49">SignalHandlerId</a> {
-        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>unbind_trampoline&lt;F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><a href="auto/signal_group.rs.html#7-72">SignalGroup</a>)&gt;(
-            this: <span class="kw-2">*mut </span><a href="../../../gobject_sys/struct.GSignalGroup.html"><span class="kw">crate</span>::gobject_ffi::GSignalGroup</a>,
-            f: <a href="../../../glib_sys/type.gpointer.html">ffi::gpointer</a>,
-        ) {
-            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#136">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
-            <a href="#138">f</a>(<span class="kw-2">&amp;</span><a href="../translate.rs.html#1647-1649">from_glib_borrow</a>(<a href="#135">this</a>))
+            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#137">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
+            <a href="#139">f</a>(<span class="kw-2">&amp;</span><a href="../translate.rs.html#1647-1649">from_glib_borrow</a>(<a href="#135">this</a>), <span class="kw-2">&amp;</span><a href="../translate.rs.html#1647-1649">from_glib_borrow</a>(<a href="#136">instance</a>))
         }
         <span class="kw">let </span>f: <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box</a>&lt;F&gt; = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">Box::new</a>(<a href="#133">f</a>);
         <a href="../signal.rs.html#67-89">connect_raw</a>(
             <a class="self" href="#133">self</a>.<a href="../object.rs.html#49">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+            <span class="string">b"bind\0"</span>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="https://doc.rust-lang.org/nightly/core/intrinsics/fn.transmute.html">transmute</a>::&lt;<span class="kw-2">*const </span>(), <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>()&gt;(
+                <a href="#134-141">bind_trampoline</a>::&lt;F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
+            )),
+            <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.into_raw">Box::into_raw</a>(<a href="#142">f</a>),
+        )
+    }
+
+    <span class="kw">unsafe fn </span>connect_unbind_unsafe&lt;F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><span class="self">Self</span>)&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; <a href="../signal.rs.html#49">SignalHandlerId</a> {
+        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>unbind_trampoline&lt;F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><a href="auto/signal_group.rs.html#7-131">SignalGroup</a>)&gt;(
+            this: <span class="kw-2">*mut </span><a href="../../../gobject_sys/struct.GSignalGroup.html"><span class="kw">crate</span>::gobject_ffi::GSignalGroup</a>,
+            f: ffi::gpointer,
+        ) {
+            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#156">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
+            <a href="#158">f</a>(<span class="kw-2">&amp;</span><a href="../translate.rs.html#1647-1649">from_glib_borrow</a>(<a href="#155">this</a>))
+        }
+        <span class="kw">let </span>f: <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box</a>&lt;F&gt; = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">Box::new</a>(<a href="#153">f</a>);
+        <a href="../signal.rs.html#67-89">connect_raw</a>(
+            <a class="self" href="#153">self</a>.<a href="../object.rs.html#49">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
             <span class="string">b"unbind\0"</span>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
             <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="https://doc.rust-lang.org/nightly/core/intrinsics/fn.transmute.html">transmute</a>::&lt;<span class="kw-2">*const </span>(), <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>()&gt;(
-                <a href="#134-140">unbind_trampoline</a>::&lt;F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
+                <a href="#154-160">unbind_trampoline</a>::&lt;F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
             )),
-            <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.into_raw">Box::into_raw</a>(<a href="#141">f</a>),
+            <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.into_raw">Box::into_raw</a>(<a href="#161">f</a>),
         )
     }
 
     <span class="doccomment">/// This signal is emitted when [`target`][struct@crate::SignalGroup#target] is set to a new value
+    /// other than [`None`]. It is similar to [`notify`][struct@crate::Object#notify] on `target` except it
+    /// will not emit when [`target`][struct@crate::SignalGroup#target] is [`None`] and also allows for
+    /// receiving the [`Object`][crate::Object] without a data-race.
+    /// ## `instance`
+    /// a [`Object`][crate::Object] containing the new value for [`target`][struct@crate::SignalGroup#target]
+    </span><span class="comment">// rustdoc-stripper-ignore-next-stop
+    </span><span class="doccomment">/// This signal is emitted when [`target`][struct@crate::SignalGroup#target] is set to a new value
     /// other than [`None`]. It is similar to [`notify`][struct@crate::Object#notify] on `target` except it
     /// will not emit when [`target`][struct@crate::SignalGroup#target] is [`None`] and also allows for
     /// receiving the [`Object`][crate::Object] without a data-race.
@@ -520,7 +580,7 @@
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         f: F,
     ) -&gt; <a href="../signal.rs.html#49">SignalHandlerId</a> {
-        <span class="kw">unsafe </span>{ <a class="self" href="#160">self</a>.<a href="#113-131">connect_bind_unsafe</a>(<a href="#161">f</a>) }
+        <span class="kw">unsafe </span>{ <a class="self" href="#187">self</a>.<a href="#133-151">connect_bind_unsafe</a>(<a href="#188">f</a>) }
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
@@ -528,11 +588,11 @@
     /// panic if the signal is emitted from a different thread from the thread that connected the
     /// signal.
     </span><span class="kw">pub fn </span>connect_bind_local&lt;F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><span class="self">Self</span>, <span class="kw-2">&amp;</span><a href="../object.rs.html#1376-1379">Object</a>) + <span class="lifetime">'static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; <a href="../signal.rs.html#49">SignalHandlerId</a> {
-        <span class="kw">let </span>f = <a href="../thread_guard.rs.html#38-43"><span class="kw">crate</span>::thread_guard::ThreadGuard::new</a>(<a href="#170">f</a>);
+        <span class="kw">let </span>f = <a href="../thread_guard.rs.html#38-43"><span class="kw">crate</span>::thread_guard::ThreadGuard::new</a>(<a href="#197">f</a>);
 
         <span class="kw">unsafe </span>{
-            <a class="self" href="#170">self</a>.<a href="#113-131">connect_bind_unsafe</a>(<span class="kw">move </span>|s, o| {
-                (<a href="#171">f</a>.<a href="../thread_guard.rs.html#53-60">get_ref</a>())(<a href="#174">s</a>, <a href="#174">o</a>);
+            <a class="self" href="#197">self</a>.<a href="#133-151">connect_bind_unsafe</a>(<span class="kw">move </span>|s, o| {
+                (<a href="#198">f</a>.<a href="../thread_guard.rs.html#53-60">get_ref</a>())(<a href="#201">s</a>, <a href="#201">o</a>);
             })
         }
     }
@@ -542,9 +602,15 @@
     ///
     /// This signal will only be emitted if the previous target of `self_` is
     /// non-[`None`].
+    </span><span class="comment">// rustdoc-stripper-ignore-next-stop
+    </span><span class="doccomment">/// This signal is emitted when the target instance of `self_` is set to a
+    /// new [`Object`][crate::Object].
+    ///
+    /// This signal will only be emitted if the previous target of `self_` is
+    /// non-[`None`].
     </span><span class="attr">#[doc(alias = <span class="string">"unbind"</span>)]
     </span><span class="kw">pub fn </span>connect_unbind&lt;F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; <a href="../signal.rs.html#49">SignalHandlerId</a> {
-        <span class="kw">unsafe </span>{ <a class="self" href="#186">self</a>.<a href="#133-150">connect_unbind_unsafe</a>(<a href="#186">f</a>) }
+        <span class="kw">unsafe </span>{ <a class="self" href="#219">self</a>.<a href="#153-170">connect_unbind_unsafe</a>(<a href="#219">f</a>) }
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
@@ -552,11 +618,11 @@
     /// will panic if the signal is emitted from a different thread from the thread that connected
     /// the signal.
     </span><span class="kw">pub fn </span>connect_unbind_local&lt;F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">'static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; <a href="../signal.rs.html#49">SignalHandlerId</a> {
-        <span class="kw">let </span>f = <a href="../thread_guard.rs.html#38-43"><span class="kw">crate</span>::thread_guard::ThreadGuard::new</a>(<a href="#194">f</a>);
+        <span class="kw">let </span>f = <a href="../thread_guard.rs.html#38-43"><span class="kw">crate</span>::thread_guard::ThreadGuard::new</a>(<a href="#227">f</a>);
 
         <span class="kw">unsafe </span>{
-            <a class="self" href="#194">self</a>.<a href="#133-150">connect_unbind_unsafe</a>(<span class="kw">move </span>|s| {
-                (<a href="#195">f</a>.<a href="../thread_guard.rs.html#53-60">get_ref</a>())(<a href="#198">s</a>);
+            <a class="self" href="#227">self</a>.<a href="#153-170">connect_unbind_unsafe</a>(<span class="kw">move </span>|s| {
+                (<a href="#228">f</a>.<a href="../thread_guard.rs.html#53-60">get_ref</a>())(<a href="#231">s</a>);
             })
         }
     }
