@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/subclass/object.rs`."><title>object.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-cf3c48c1.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.86.0-nightly (124cc9219 2025-02-09)" data-channel="nightly" data-search-js="search-581efc7a.js" data-settings-js="settings-6dad6058.js" ><script src="../../../static.files/storage-3a5871a4.js"></script><script defer src="../../../static.files/src-script-8fee9dc5.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-4d63596a.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/subclass/object.rs`."><title>object.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-cf3c48c1.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.86.0-nightly (92bedea1c 2025-02-11)" data-channel="nightly" data-search-js="search-581efc7a.js" data-settings-js="settings-6dad6058.js" ><script src="../../../static.files/storage-3a5871a4.js"></script><script defer src="../../../static.files/src-script-8fee9dc5.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-4d63596a.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -1078,11 +1078,11 @@
 </span><span class="kw">use </span>std::{<a href="https://doc.rust-lang.org/nightly/core/mem/index.html">mem</a>, <a href="https://doc.rust-lang.org/nightly/core/ptr/index.html">ptr</a>};
 
 <span class="kw">use crate</span>::{
-    ffi, <a href="../../../gobject_sys/index.html">gobject_ffi</a>,
+    <a href="../../../glib_sys/index.html">ffi</a>, <a href="../../../gobject_sys/index.html">gobject_ffi</a>,
     <a href="../lib.rs.html#159">prelude</a>::<span class="kw-2">*</span>,
     subclass::{<a href="mod.rs.html#442-458">prelude</a>::<span class="kw-2">*</span>, <a href="signal.rs.html#32-38">Signal</a>},
     <a href="../lib.rs.html#164">translate</a>::<span class="kw-2">*</span>,
-    <a href="../object.rs.html#1376-1379">Object</a>, <a href="../param_spec.rs.html#19-57">ParamSpec</a>, <a href="../collections/slice.rs.html#15-19">Slice</a>, <a href="../value.rs.html#478-523">Value</a>,
+    <a href="../object.rs.html#1376-1379">Object</a>, <a href="../param_spec.rs.html#19-42">ParamSpec</a>, <a href="../collections/slice.rs.html#15-19">Slice</a>, <a href="../value.rs.html#478-512">Value</a>,
 };
 
 <span class="comment">// rustdoc-stripper-ignore-next
@@ -1093,7 +1093,7 @@
 </span><span class="kw">pub trait </span><a href="../../../glib/subclass/object/trait.ObjectImpl.html">ObjectImpl</a>: <a href="types.rs.html#601-736">ObjectSubclass</a>&lt;Type: <a href="../object.rs.html#71-74">IsA</a>&lt;<a href="../object.rs.html#1376-1379">Object</a>&gt;&gt; {
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Properties installed for this type.
-    </span><span class="kw">fn </span>properties() -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'static </span>[<a href="../param_spec.rs.html#19-57">ParamSpec</a>] {
+    </span><span class="kw">fn </span>properties() -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'static </span>[<a href="../param_spec.rs.html#19-42">ParamSpec</a>] {
         <span class="kw-2">&amp;</span>[]
     }
 
@@ -1116,7 +1116,7 @@
     ///  `set_property` don't emit property change notification explicitly, this will
     ///  be done implicitly by the type system. However, if the notify signal is
     ///  emitted explicitly, the type system will not emit it a second time.
-    </span><span class="kw">fn </span>set_property(<span class="kw-2">&amp;</span><span class="self">self</span>, _id: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>, _value: <span class="kw-2">&amp;</span><a href="../value.rs.html#478-523">Value</a>, _pspec: <span class="kw-2">&amp;</span><a href="../param_spec.rs.html#19-57">ParamSpec</a>) {
+    </span><span class="kw">fn </span>set_property(<span class="kw-2">&amp;</span><span class="self">self</span>, _id: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>, _value: <span class="kw-2">&amp;</span><a href="../value.rs.html#478-512">Value</a>, _pspec: <span class="kw-2">&amp;</span><a href="../param_spec.rs.html#19-42">ParamSpec</a>) {
         <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.unimplemented.html">unimplemented!</a>()
     }
 
@@ -1131,7 +1131,7 @@
     </span><span class="doccomment">/// the generic getter for all properties of this type. Should be
     ///  overridden for every type with properties.
     </span><span class="attr">#[doc(alias = <span class="string">"get_property"</span>)]
-    </span><span class="kw">fn </span>property(<span class="kw-2">&amp;</span><span class="self">self</span>, _id: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>, _pspec: <span class="kw-2">&amp;</span><a href="../param_spec.rs.html#19-57">ParamSpec</a>) -&gt; <a href="../value.rs.html#478-523">Value</a> {
+    </span><span class="kw">fn </span>property(<span class="kw-2">&amp;</span><span class="self">self</span>, _id: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>, _pspec: <span class="kw-2">&amp;</span><a href="../param_spec.rs.html#19-42">ParamSpec</a>) -&gt; <a href="../value.rs.html#478-512">Value</a> {
         <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.unimplemented.html">unimplemented!</a>()
     }
 
@@ -1182,14 +1182,14 @@
     /// [`ObjectExt::freeze_notify()`][crate::prelude::ObjectExt::freeze_notify()]. In this case, the signal emissions are queued
     /// and will be emitted (in reverse order) when [`ObjectExt::thaw_notify()`][crate::prelude::ObjectExt::thaw_notify()] is
     /// called.
-    </span><span class="kw">fn </span>notify(<span class="kw-2">&amp;</span><span class="self">self</span>, pspec: <span class="kw-2">&amp;</span><a href="../param_spec.rs.html#19-57">ParamSpec</a>) {
+    </span><span class="kw">fn </span>notify(<span class="kw-2">&amp;</span><span class="self">self</span>, pspec: <span class="kw-2">&amp;</span><a href="../param_spec.rs.html#19-42">ParamSpec</a>) {
         <a class="self" href="#114">self</a>.<a href="#311-323">parent_notify</a>(<a href="#114">pspec</a>)
     }
 
     <span class="doccomment">/// emits property change notification for a bunch
     ///  of properties. Overriding `dispatch_properties_changed` should be rarely
     ///  needed.
-    </span><span class="kw">fn </span>dispatch_properties_changed(<span class="kw-2">&amp;</span><span class="self">self</span>, pspecs: <span class="kw-2">&amp;</span>[<a href="../param_spec.rs.html#19-57">ParamSpec</a>]) {
+    </span><span class="kw">fn </span>dispatch_properties_changed(<span class="kw-2">&amp;</span><span class="self">self</span>, pspecs: <span class="kw-2">&amp;</span>[<a href="../param_spec.rs.html#19-42">ParamSpec</a>]) {
         <a class="self" href="#121">self</a>.<a href="#328-341">parent_dispatch_properties_changed</a>(<a href="#121">pspecs</a>)
     }
 }
@@ -1229,7 +1229,7 @@
     <span class="kw">let </span>imp = <a href="#157">instance</a>.<a href="types.rs.html#84">imp</a>();
     <a href="#158">imp</a>.<a href="#48-50">set_property</a>(
         <a href="#153">id</a> <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>,
-        <span class="kw-2">&amp;*</span>(<a href="#154">value</a> <span class="kw">as </span><span class="kw-2">*mut </span><a href="../value.rs.html#478-523">Value</a>),
+        <span class="kw-2">&amp;*</span>(<a href="#154">value</a> <span class="kw">as </span><span class="kw-2">*mut </span><a href="../value.rs.html#478-512">Value</a>),
         <span class="kw-2">&amp;</span><a href="../translate.rs.html#1647-1649">from_glib_borrow</a>(<a href="#155">pspec</a>),
     );
 }
@@ -1281,21 +1281,21 @@
 </span><span class="kw">pub trait </span><a href="../../../glib/subclass/object/trait.DerivedObjectProperties.html">DerivedObjectProperties</a>: <a href="types.rs.html#601-736">ObjectSubclass</a> {
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Properties installed for this type.
-    </span><span class="kw">fn </span>derived_properties() -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'static </span>[<a href="../param_spec.rs.html#19-57">ParamSpec</a>] {
+    </span><span class="kw">fn </span>derived_properties() -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'static </span>[<a href="../param_spec.rs.html#19-42">ParamSpec</a>] {
         <span class="kw-2">&amp;</span>[]
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Similar to [`ObjectImpl`](trait.ObjectImpl.html) but auto-generated by the [`Properties`](crate::Properties) macro
     /// to allow handling more complex use-cases.
-    </span><span class="kw">fn </span>derived_set_property(<span class="kw-2">&amp;</span><span class="self">self</span>, _id: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>, _value: <span class="kw-2">&amp;</span><a href="../value.rs.html#478-523">Value</a>, _pspec: <span class="kw-2">&amp;</span><a href="../param_spec.rs.html#19-57">ParamSpec</a>) {
+    </span><span class="kw">fn </span>derived_set_property(<span class="kw-2">&amp;</span><span class="self">self</span>, _id: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>, _value: <span class="kw-2">&amp;</span><a href="../value.rs.html#478-512">Value</a>, _pspec: <span class="kw-2">&amp;</span><a href="../param_spec.rs.html#19-42">ParamSpec</a>) {
         <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.unimplemented.html">unimplemented!</a>()
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Similar to [`ObjectImpl`](trait.ObjectImpl.html) but auto-generated by the [`Properties`](crate::Properties) macro
     /// to allow handling more complex use-cases.
-    </span><span class="kw">fn </span>derived_property(<span class="kw-2">&amp;</span><span class="self">self</span>, _id: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>, _pspec: <span class="kw-2">&amp;</span><a href="../param_spec.rs.html#19-57">ParamSpec</a>) -&gt; <a href="../value.rs.html#478-523">Value</a> {
+    </span><span class="kw">fn </span>derived_property(<span class="kw-2">&amp;</span><span class="self">self</span>, _id: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>, _pspec: <span class="kw-2">&amp;</span><a href="../param_spec.rs.html#19-42">ParamSpec</a>) -&gt; <a href="../value.rs.html#478-512">Value</a> {
         <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.unimplemented.html">unimplemented!</a>()
     }
 }
@@ -1307,12 +1307,12 @@
 </span><span class="kw">pub unsafe trait </span><a href="../../../glib/subclass/object/trait.ObjectClassSubclassExt.html">ObjectClassSubclassExt</a>: <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sized.html">Sized</a> + <span class="lifetime">'static </span>{
     <span class="kw">fn </span>override_signal_class_handler&lt;F&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, class_handler: F)
     <span class="kw">where
-        </span>F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><a href="signal.rs.html#42-52"><span class="kw">super</span>::SignalClassHandlerToken</a>, <span class="kw-2">&amp;</span>[<a href="../value.rs.html#478-523">Value</a>]) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="../value.rs.html#478-523">Value</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>,
+        </span>F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><a href="signal.rs.html#42-52"><span class="kw">super</span>::SignalClassHandlerToken</a>, <span class="kw-2">&amp;</span>[<a href="../value.rs.html#478-512">Value</a>]) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="../value.rs.html#478-512">Value</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>,
     {
         <span class="kw">unsafe </span>{
             <a href="types.rs.html#1189-1244"><span class="kw">super</span>::types::signal_override_class_handler</a>(
                 <a href="#237">name</a>,
-                <span class="kw-2">*</span>(<span class="self"><a href="#237">self</a> </span><span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_ as </span><span class="kw-2">*mut </span>ffi::GType),
+                <span class="kw-2">*</span>(<span class="self"><a href="#237">self</a> </span><span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_ as </span><span class="kw-2">*mut </span><a href="../../../glib_sys/manual/type.GType.html">ffi::GType</a>),
                 <a href="#237">class_handler</a>,
             );
         }
@@ -1379,7 +1379,7 @@
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Chain up to the parent class' implementation of `glib::Object::notify()`.
     </span><span class="attr">#[inline]
-    </span><span class="kw">fn </span>parent_notify(<span class="kw-2">&amp;</span><span class="self">self</span>, pspec: <span class="kw-2">&amp;</span><a href="../param_spec.rs.html#19-57">ParamSpec</a>) {
+    </span><span class="kw">fn </span>parent_notify(<span class="kw-2">&amp;</span><span class="self">self</span>, pspec: <span class="kw-2">&amp;</span><a href="../param_spec.rs.html#19-42">ParamSpec</a>) {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>data = <a href="types.rs.html#580"><span class="self">Self</span>::type_data</a>();
             <span class="kw">let </span>parent_class = <a href="#313">data</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().<a href="types.rs.html#478-481">parent_class</a>() <span class="kw">as </span><span class="kw-2">*mut </span><a href="../../../gobject_sys/struct.GObjectClass.html">gobject_ffi::GObjectClass</a>;
@@ -1396,7 +1396,7 @@
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Chain up to the parent class' implementation of `glib::Object::dispatch_properties_changed()`.
     </span><span class="attr">#[inline]
-    </span><span class="kw">fn </span>parent_dispatch_properties_changed(<span class="kw-2">&amp;</span><span class="self">self</span>, pspecs: <span class="kw-2">&amp;</span>[<a href="../param_spec.rs.html#19-57">ParamSpec</a>]) {
+    </span><span class="kw">fn </span>parent_dispatch_properties_changed(<span class="kw-2">&amp;</span><span class="self">self</span>, pspecs: <span class="kw-2">&amp;</span>[<a href="../param_spec.rs.html#19-42">ParamSpec</a>]) {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>data = <a href="types.rs.html#580"><span class="self">Self</span>::type_data</a>();
             <span class="kw">let </span>parent_class = <a href="#330">data</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().<a href="types.rs.html#478-481">parent_class</a>() <span class="kw">as </span><span class="kw-2">*mut </span><a href="../../../gobject_sys/struct.GObjectClass.html">gobject_ffi::GObjectClass</a>;
@@ -1416,8 +1416,8 @@
     </span><span class="kw">fn </span>signal_chain_from_overridden(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         token: <span class="kw-2">&amp;</span><a href="signal.rs.html#42-52"><span class="kw">super</span>::SignalClassHandlerToken</a>,
-        values: <span class="kw-2">&amp;</span>[<a href="../value.rs.html#478-523">Value</a>],
-    ) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="../value.rs.html#478-523">Value</a>&gt; {
+        values: <span class="kw-2">&amp;</span>[<a href="../value.rs.html#478-512">Value</a>],
+    ) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="../value.rs.html#478-512">Value</a>&gt; {
         <span class="kw">unsafe </span>{
             <a href="types.rs.html#1246-1264"><span class="kw">super</span>::types::signal_chain_from_overridden</a>(<a class="self" href="#346">self</a>.<a href="types.rs.html#746">obj</a>().<a href="../object.rs.html#49">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>, <a href="#347">token</a>, <a href="#348">values</a>)
         }

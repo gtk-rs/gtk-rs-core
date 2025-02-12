@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/collections/slice.rs`."><title>slice.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-cf3c48c1.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.86.0-nightly (124cc9219 2025-02-09)" data-channel="nightly" data-search-js="search-581efc7a.js" data-settings-js="settings-6dad6058.js" ><script src="../../../static.files/storage-3a5871a4.js"></script><script defer src="../../../static.files/src-script-8fee9dc5.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-4d63596a.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/collections/slice.rs`."><title>slice.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-cf3c48c1.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.86.0-nightly (92bedea1c 2025-02-11)" data-channel="nightly" data-search-js="search-581efc7a.js" data-settings-js="settings-6dad6058.js" ><script src="../../../static.files/storage-3a5871a4.js"></script><script defer src="../../../static.files/src-script-8fee9dc5.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-4d63596a.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -1072,7 +1072,7 @@
 
 </span><span class="kw">use </span>std::{<a href="https://doc.rust-lang.org/nightly/alloc/fmt/index.html">fmt</a>, <a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">marker::PhantomData</a>, <a href="https://doc.rust-lang.org/nightly/core/mem/index.html">mem</a>, <a href="https://doc.rust-lang.org/nightly/core/ptr/index.html">ptr</a>};
 
-<span class="kw">use crate</span>::{ffi, <a href="../lib.rs.html#164">translate</a>::<span class="kw-2">*</span>};
+<span class="kw">use crate</span>::{<a href="../../../glib_sys/index.html">ffi</a>, <a href="../lib.rs.html#164">translate</a>::<span class="kw-2">*</span>};
 
 <span class="comment">// rustdoc-stripper-ignore-next
 </span><span class="doccomment">/// Minimum size of the `Slice` allocation in bytes.
@@ -1153,7 +1153,7 @@
             }
 
             <span class="kw">if </span><span class="self">self</span>.capacity != <span class="number">0 </span>{
-                ffi::g_free(<a class="self" href="#77">self</a>.ptr.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span>ffi::gpointer);
+                <a href="../../../glib_sys/fn.g_free.html">ffi::g_free</a>(<a class="self" href="#77">self</a>.ptr.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><a href="../../../glib_sys/type.gpointer.html">ffi::gpointer</a>);
             }
         }
     }
@@ -1333,7 +1333,7 @@
             }
 
             <span class="kw">if </span>!<span class="self">self</span>.empty {
-                ffi::g_free(<a class="self" href="#257">self</a>.ptr.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span>ffi::gpointer);
+                <a href="../../../glib_sys/fn.g_free.html">ffi::g_free</a>(<a class="self" href="#257">self</a>.ptr.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><a href="../../../glib_sys/type.gpointer.html">ffi::gpointer</a>);
             }
         }
     }
@@ -1555,7 +1555,7 @@
         <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert.html">debug_assert!</a>(!ptr.is_null() || len == <span class="number">0</span>);
 
         <span class="kw">if </span>len == <span class="number">0 </span>{
-            ffi::g_free(<a href="#483">ptr</a> <span class="kw">as </span>ffi::gpointer);
+            <a href="../../../glib_sys/fn.g_free.html">ffi::g_free</a>(<a href="#483">ptr</a> <span class="kw">as </span><a href="../../../glib_sys/type.gpointer.html">ffi::gpointer</a>);
             <a href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html#tymethod.default">Slice::default</a>()
         } <span class="kw">else </span>{
             <span class="comment">// Need to clone every item because we don't own it here but only
@@ -1581,7 +1581,7 @@
         <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert.html">debug_assert!</a>(!ptr.is_null() || len == <span class="number">0</span>);
 
         <span class="kw">if </span>len == <span class="number">0 </span>{
-            ffi::g_free(<a href="#509">ptr</a> <span class="kw">as </span>ffi::gpointer);
+            <a href="../../../glib_sys/fn.g_free.html">ffi::g_free</a>(<a href="#509">ptr</a> <span class="kw">as </span><a href="../../../glib_sys/type.gpointer.html">ffi::gpointer</a>);
             <a href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html#tymethod.default">Slice::default</a>()
         } <span class="kw">else </span>{
             <a href="#15-19">Slice</a> {
@@ -1708,7 +1708,7 @@
                 <a class="self" href="#621">self</a>.ptr.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_
             </span>};
             <span class="kw">let </span>new_ptr =
-                ffi::g_realloc(<a href="#635">ptr</a>, <a href="https://doc.rust-lang.org/nightly/core/mem/fn.size_of.html">mem::size_of</a>::&lt;T&gt;().<a href="https://doc.rust-lang.org/nightly/core/foreigntype.num.html#method.checked_mul">checked_mul</a>(<a href="#627">new_capacity</a>).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap">unwrap</a>())
+                <a href="../../../glib_sys/fn.g_realloc.html">ffi::g_realloc</a>(<a href="#635">ptr</a>, <a href="https://doc.rust-lang.org/nightly/core/mem/fn.size_of.html">mem::size_of</a>::&lt;T&gt;().<a href="https://doc.rust-lang.org/nightly/core/foreigntype.num.html#method.checked_mul">checked_mul</a>(<a href="#627">new_capacity</a>).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap">unwrap</a>())
                     <span class="kw">as </span><span class="kw-2">*mut </span>T::GlibType;
             <a class="self" href="#621">self</a>.ptr = <a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.new_unchecked">ptr::NonNull::new_unchecked</a>(<a href="#640">new_ptr</a>);
             <a class="self" href="#621">self</a>.capacity = <a href="#627">new_capacity</a>;
@@ -1911,7 +1911,7 @@
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>to_glib_container(<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="self">self</span>) -&gt; <a href="../translate.rs.html#259-262">Stash</a>&lt;<span class="lifetime">'a</span>, <span class="kw-2">*mut </span>T::GlibType, <span class="self">Self</span>&gt; {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>ptr = ffi::g_malloc(<a href="https://doc.rust-lang.org/nightly/core/mem/fn.size_of.html">mem::size_of</a>::&lt;T&gt;().<a href="https://doc.rust-lang.org/nightly/core/foreigntype.num.html#method.checked_mul">checked_mul</a>(<a class="self" href="#842">self</a>.<a href="#591-593">len</a>()).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap">unwrap</a>())
+            <span class="kw">let </span>ptr = <a href="../../../glib_sys/fn.g_malloc.html">ffi::g_malloc</a>(<a href="https://doc.rust-lang.org/nightly/core/mem/fn.size_of.html">mem::size_of</a>::&lt;T&gt;().<a href="https://doc.rust-lang.org/nightly/core/foreigntype.num.html#method.checked_mul">checked_mul</a>(<a class="self" href="#842">self</a>.<a href="#591-593">len</a>()).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap">unwrap</a>())
                 <span class="kw">as </span><span class="kw-2">*mut </span>T::GlibType;
             <a href="https://doc.rust-lang.org/nightly/core/intrinsics/fn.copy_nonoverlapping.html">ptr::copy_nonoverlapping</a>(<a class="self" href="#842">self</a>.<a href="#552-558">as_ptr</a>(), <a href="#844">ptr</a>, <a class="self" href="#842">self</a>.<a href="#591-593">len</a>());
             <a href="../translate.rs.html#259-262">Stash</a>(<a href="#844">ptr</a>, <a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">PhantomData</a>)
