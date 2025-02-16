@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/gobject/type_plugin.rs`."><title>type_plugin.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-88e6a092.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.86.0-nightly (ef148cd7e 2025-02-12)" data-channel="nightly" data-search-js="search-581efc7a.js" data-settings-js="settings-6dad6058.js" ><script src="../../../static.files/storage-3a5871a4.js"></script><script defer src="../../../static.files/src-script-b8d3f215.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-4d63596a.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/gobject/type_plugin.rs`."><title>type_plugin.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-6c3ea77c.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.86.0-nightly (9cd60bd2c 2025-02-15)" data-channel="nightly" data-search-js="search-581efc7a.js" data-settings-js="settings-6dad6058.js" ><script src="../../../static.files/storage-3a5871a4.js"></script><script defer src="../../../static.files/src-script-b8d3f215.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-4d63596a.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -73,7 +73,7 @@
 
 <nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">glib/gobject/</div>type_plugin.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-3"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 <a href=#2 id=2 data-nosnippet>2</a>
-<a href=#3 id=3 data-nosnippet>3</a></span><span class="kw">use crate</span>::{gobject_ffi, <a href="../lib.rs.html#159">prelude</a>::<span class="kw-2">*</span>, <a href="../lib.rs.html#164">translate</a>::<span class="kw-2">*</span>, <a href="interface_info.rs.html#13">InterfaceInfo</a>, <a href="type_info.rs.html#27">TypeInfo</a>, <a href="type_value_table.rs.html#31">TypeValueTable</a>};
+<a href=#3 id=3 data-nosnippet>3</a></span><span class="kw">use crate</span>::{<a href="../../../gobject_sys/index.html">gobject_ffi</a>, <a href="../lib.rs.html#159">prelude</a>::<span class="kw-2">*</span>, <a href="../lib.rs.html#164">translate</a>::<span class="kw-2">*</span>, <a href="interface_info.rs.html#8">InterfaceInfo</a>, <a href="type_info.rs.html#27">TypeInfo</a>, <a href="type_value_table.rs.html#31">TypeValueTable</a>};
 <a href=#4 id=4 data-nosnippet>4</a>
 <a href=#5 id=5 data-nosnippet>5</a><a class="macro" href="../wrapper.rs.html#276-443">crate::wrapper!</a> {
 <a href=#6 id=6 data-nosnippet>6</a>    <span class="doccomment">/// An interface that handles the lifecycle of dynamically loaded types.
@@ -186,7 +186,7 @@
 <a href=#113 id=113 data-nosnippet>113</a>    ///
 <a href=#114 id=114 data-nosnippet>114</a>    /// [`TypePluginExt`][trait@crate::prelude::TypePluginExt]
 <a href=#115 id=115 data-nosnippet>115</a>    </span><span class="attr">#[doc(alias = <span class="string">"GTypePlugin"</span>)]
-<a href=#116 id=116 data-nosnippet>116</a>    </span><span class="kw">pub struct </span><a href="../../../glib/struct.TypePlugin.html">TypePlugin</a>(Interface&lt;gobject_ffi::GTypePlugin, gobject_ffi::GTypePluginClass&gt;);
+<a href=#116 id=116 data-nosnippet>116</a>    </span><span class="kw">pub struct </span><a href="../../../glib/struct.TypePlugin.html">TypePlugin</a>(Interface&lt;<a href="../../../gobject_sys/struct.GTypePlugin.html">gobject_ffi::GTypePlugin</a>, <a href="../../../gobject_sys/struct.GTypePluginClass.html">gobject_ffi::GTypePluginClass</a>&gt;);
 <a href=#117 id=117 data-nosnippet>117</a>
 <a href=#118 id=118 data-nosnippet>118</a>    <span class="kw">match fn </span>{
 <a href=#119 id=119 data-nosnippet>119</a>        type_ =&gt; || gobject_ffi::g_type_plugin_get_type(),
@@ -235,14 +235,14 @@
 <a href=#162 id=162 data-nosnippet>162</a>        <span class="kw-2">&amp;</span><span class="self">self</span>,
 <a href=#163 id=163 data-nosnippet>163</a>        instance_type: <a href="../types.rs.html#22"><span class="kw">crate</span>::types::Type</a>,
 <a href=#164 id=164 data-nosnippet>164</a>        interface_type: <a href="../types.rs.html#22"><span class="kw">crate</span>::types::Type</a>,
-<a href=#165 id=165 data-nosnippet>165</a>    ) -&gt; <a href="interface_info.rs.html#13">InterfaceInfo</a> {
+<a href=#165 id=165 data-nosnippet>165</a>    ) -&gt; <a href="interface_info.rs.html#8">InterfaceInfo</a> {
 <a href=#166 id=166 data-nosnippet>166</a>        <span class="kw">let </span>info = <a href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html#tymethod.default">InterfaceInfo::default</a>();
 <a href=#167 id=167 data-nosnippet>167</a>        <span class="kw">unsafe </span>{
-<a href=#168 id=168 data-nosnippet>168</a>            gobject_ffi::g_type_plugin_complete_interface_info(
+<a href=#168 id=168 data-nosnippet>168</a>            <a href="../../../gobject_sys/fn.g_type_plugin_complete_interface_info.html">gobject_ffi::g_type_plugin_complete_interface_info</a>(
 <a href=#169 id=169 data-nosnippet>169</a>                <a class="self" href="#162">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
 <a href=#170 id=170 data-nosnippet>170</a>                <a href="#163">instance_type</a>.<a href="../translate.rs.html#334">into_glib</a>(),
 <a href=#171 id=171 data-nosnippet>171</a>                <a href="#164">interface_type</a>.<a href="../translate.rs.html#334">into_glib</a>(),
-<a href=#172 id=172 data-nosnippet>172</a>                <a href="#166">info</a>.<a href="interface_info.rs.html#20-22">as_ptr</a>(),
+<a href=#172 id=172 data-nosnippet>172</a>                <a href="#166">info</a>.<a href="interface_info.rs.html#15-17">as_ptr</a>(),
 <a href=#173 id=173 data-nosnippet>173</a>            );
 <a href=#174 id=174 data-nosnippet>174</a>        }
 <a href=#175 id=175 data-nosnippet>175</a>        <a href="#166">info</a>
@@ -272,7 +272,7 @@
 <a href=#199 id=199 data-nosnippet>199</a>        <span class="kw">let </span>info = <a href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html#tymethod.default">TypeInfo::default</a>();
 <a href=#200 id=200 data-nosnippet>200</a>        <span class="kw">let </span>value_table = <a href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html#tymethod.default">TypeValueTable::default</a>();
 <a href=#201 id=201 data-nosnippet>201</a>        <span class="kw">unsafe </span>{
-<a href=#202 id=202 data-nosnippet>202</a>            gobject_ffi::g_type_plugin_complete_type_info(
+<a href=#202 id=202 data-nosnippet>202</a>            <a href="../../../gobject_sys/fn.g_type_plugin_complete_type_info.html">gobject_ffi::g_type_plugin_complete_type_info</a>(
 <a href=#203 id=203 data-nosnippet>203</a>                <a class="self" href="#198">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
 <a href=#204 id=204 data-nosnippet>204</a>                <a href="#198">g_type</a>.<a href="../translate.rs.html#334">into_glib</a>(),
 <a href=#205 id=205 data-nosnippet>205</a>                <a href="#199">info</a>.<a href="type_info.rs.html#34-36">as_ptr</a>(),
@@ -292,7 +292,7 @@
 <a href=#219 id=219 data-nosnippet>219</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_type_plugin_unuse"</span>)]
 <a href=#220 id=220 data-nosnippet>220</a>    </span><span class="kw">fn </span>unuse(<span class="kw-2">&amp;</span><span class="self">self</span>) {
 <a href=#221 id=221 data-nosnippet>221</a>        <span class="kw">unsafe </span>{
-<a href=#222 id=222 data-nosnippet>222</a>            gobject_ffi::g_type_plugin_unuse(<a class="self" href="#220">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>);
+<a href=#222 id=222 data-nosnippet>222</a>            <a href="../../../gobject_sys/fn.g_type_plugin_unuse.html">gobject_ffi::g_type_plugin_unuse</a>(<a class="self" href="#220">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>);
 <a href=#223 id=223 data-nosnippet>223</a>        }
 <a href=#224 id=224 data-nosnippet>224</a>    }
 <a href=#225 id=225 data-nosnippet>225</a>
@@ -307,7 +307,7 @@
 <a href=#234 id=234 data-nosnippet>234</a>    #[doc(alias = <span class="string">"use"</span>)]
 <a href=#235 id=235 data-nosnippet>235</a>    </span><span class="kw">fn </span>use_(<span class="kw-2">&amp;</span><span class="self">self</span>) {
 <a href=#236 id=236 data-nosnippet>236</a>        <span class="kw">unsafe </span>{
-<a href=#237 id=237 data-nosnippet>237</a>            gobject_ffi::g_type_plugin_use(<a class="self" href="#235">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>);
+<a href=#237 id=237 data-nosnippet>237</a>            <a href="../../../gobject_sys/fn.g_type_plugin_use.html">gobject_ffi::g_type_plugin_use</a>(<a class="self" href="#235">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>);
 <a href=#238 id=238 data-nosnippet>238</a>        }
 <a href=#239 id=239 data-nosnippet>239</a>    }
 <a href=#240 id=240 data-nosnippet>240</a>}
