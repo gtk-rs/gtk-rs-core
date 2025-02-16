@@ -1,5 +1,5 @@
 (function() {
-    var implementors = Object.fromEntries([["glib",[["impl <a class=\"trait\" href=\"https://docs.rs/log/0.4.22/log/trait.Log.html\" title=\"trait log::Log\">Log</a> for <a class=\"struct\" href=\"glib/struct.GlibLogger.html\" title=\"struct glib::GlibLogger\">GlibLogger</a>"]]]]);
+    var implementors = Object.fromEntries([["glib",[["impl <a class=\"trait\" href=\"https://docs.rs/log/0.4.25/log/trait.Log.html\" title=\"trait log::Log\">Log</a> for <a class=\"struct\" href=\"glib/struct.GlibLogger.html\" title=\"struct glib::GlibLogger\">GlibLogger</a>"]]]]);
     if (window.register_implementors) {
         window.register_implementors(implementors);
     } else {
