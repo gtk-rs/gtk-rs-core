@@ -4,6 +4,7 @@
 
 use crate::{ffi, Cancellable, DBusConnection, DBusMethodInvocation, DebugController, Initable};
 use glib::{
+    object::ObjectType as _,
     prelude::*,
     signal::{connect_raw, SignalHandlerId},
     translate::*,

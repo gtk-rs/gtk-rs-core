@@ -7,6 +7,7 @@
 use crate::SettingsBindFlags;
 use crate::{ffi, Action, SettingsBackend, SettingsSchema};
 use glib::{
+    object::ObjectType as _,
     prelude::*,
     signal::{connect_raw, SignalHandlerId},
     translate::*,
