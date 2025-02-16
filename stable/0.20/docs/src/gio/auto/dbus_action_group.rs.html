@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/auto/dbus_action_group.rs`."><title>dbus_action_group.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-46132b98.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.85.0-nightly (6d9f6ae36 2024-12-16)" data-channel="nightly" data-search-js="search-036cda7a.js" data-settings-js="settings-0f613d39.js" ><script src="../../../static.files/storage-59e33391.js"></script><script defer src="../../../static.files/src-script-56102188.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/auto/dbus_action_group.rs`."><title>dbus_action_group.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-6c3ea77c.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.86.0-nightly (9cd60bd2c 2025-02-15)" data-channel="nightly" data-search-js="search-581efc7a.js" data-settings-js="settings-6dad6058.js" ><script src="../../../static.files/storage-3a5871a4.js"></script><script defer src="../../../static.files/src-script-b8d3f215.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-4d63596a.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -71,134 +71,68 @@
 </script>
 
 
-<nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">gio/auto/</div>dbus_action_group.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers">
-<a href="#1" id="1">1</a>
-<a href="#2" id="2">2</a>
-<a href="#3" id="3">3</a>
-<a href="#4" id="4">4</a>
-<a href="#5" id="5">5</a>
-<a href="#6" id="6">6</a>
-<a href="#7" id="7">7</a>
-<a href="#8" id="8">8</a>
-<a href="#9" id="9">9</a>
-<a href="#10" id="10">10</a>
-<a href="#11" id="11">11</a>
-<a href="#12" id="12">12</a>
-<a href="#13" id="13">13</a>
-<a href="#14" id="14">14</a>
-<a href="#15" id="15">15</a>
-<a href="#16" id="16">16</a>
-<a href="#17" id="17">17</a>
-<a href="#18" id="18">18</a>
-<a href="#19" id="19">19</a>
-<a href="#20" id="20">20</a>
-<a href="#21" id="21">21</a>
-<a href="#22" id="22">22</a>
-<a href="#23" id="23">23</a>
-<a href="#24" id="24">24</a>
-<a href="#25" id="25">25</a>
-<a href="#26" id="26">26</a>
-<a href="#27" id="27">27</a>
-<a href="#28" id="28">28</a>
-<a href="#29" id="29">29</a>
-<a href="#30" id="30">30</a>
-<a href="#31" id="31">31</a>
-<a href="#32" id="32">32</a>
-<a href="#33" id="33">33</a>
-<a href="#34" id="34">34</a>
-<a href="#35" id="35">35</a>
-<a href="#36" id="36">36</a>
-<a href="#37" id="37">37</a>
-<a href="#38" id="38">38</a>
-<a href="#39" id="39">39</a>
-<a href="#40" id="40">40</a>
-<a href="#41" id="41">41</a>
-<a href="#42" id="42">42</a>
-<a href="#43" id="43">43</a>
-<a href="#44" id="44">44</a>
-<a href="#45" id="45">45</a>
-<a href="#46" id="46">46</a>
-<a href="#47" id="47">47</a>
-<a href="#48" id="48">48</a>
-<a href="#49" id="49">49</a>
-<a href="#50" id="50">50</a>
-<a href="#51" id="51">51</a>
-<a href="#52" id="52">52</a>
-<a href="#53" id="53">53</a>
-<a href="#54" id="54">54</a>
-<a href="#55" id="55">55</a>
-<a href="#56" id="56">56</a>
-<a href="#57" id="57">57</a>
-<a href="#58" id="58">58</a>
-<a href="#59" id="59">59</a>
-<a href="#60" id="60">60</a>
-<a href="#61" id="61">61</a>
-<a href="#62" id="62">62</a>
-<a href="#63" id="63">63</a>
-<a href="#64" id="64">64</a>
-<a href="#65" id="65">65</a></pre></div><pre class="rust"><code><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)
-// from gir-files (https://github.com/gtk-rs/gir-files)
-// DO NOT EDIT
-
-</span><span class="kw">use crate</span>::{<a href="../../../gio_sys/index.html">ffi</a>, <a href="action_group.rs.html#13-100">ActionGroup</a>, <a href="dbus_connection.rs.html#20-198">DBusConnection</a>, <a href="remote_action_group.rs.html#8-40">RemoteActionGroup</a>};
-<span class="kw">use </span><a href="../../../glib/translate/index.html">glib::translate</a>::<span class="kw-2">*</span>;
-
-<a class="macro" href="../../../glib/macro.wrapper.html">glib::wrapper!</a> {
-    <span class="doccomment">/// `GDBusActionGroup` is an implementation of the [`ActionGroup`][crate::ActionGroup]
-    /// interface.
-    ///
-    /// `GDBusActionGroup` can be used as a proxy for an action group
-    /// that is exported over D-Bus with [`DBusConnection::export_action_group()`][crate::DBusConnection::export_action_group()].
-    ///
-    /// # Implements
-    ///
-    /// [`trait@glib::ObjectExt`], [`ActionGroupExt`][trait@crate::prelude::ActionGroupExt], [`RemoteActionGroupExt`][trait@crate::prelude::RemoteActionGroupExt]
-    </span><span class="attr">#[doc(alias = <span class="string">"GDBusActionGroup"</span>)]
-    </span><span class="kw">pub struct </span><a href="../../../gio/struct.DBusActionGroup.html">DBusActionGroup</a>(Object&lt;<a href="../../../gio_sys/struct.GDBusActionGroup.html">ffi::GDBusActionGroup</a>&gt;) @implements <a href="action_group.rs.html#13-100">ActionGroup</a>, <a href="remote_action_group.rs.html#8-40">RemoteActionGroup</a>;
-
-    <span class="kw">match fn </span>{
-        type_ =&gt; || ffi::g_dbus_action_group_get_type(),
-    }
-}
-
-<span class="kw">impl </span><a href="#8-24">DBusActionGroup</a> {
-    <span class="doccomment">/// Obtains a #GDBusActionGroup for the action group which is exported at
-    /// the given @bus_name and @object_path.
-    ///
-    /// The thread default main context is taken at the time of this call.
-    /// All signals on the menu model (and any linked models) are reported
-    /// with respect to this context.  All calls on the returned menu model
-    /// (and linked models) must also originate from this same context, with
-    /// the thread default main context unchanged.
-    ///
-    /// This call is non-blocking.  The returned action group may or may not
-    /// already be filled in.  The correct thing to do is connect the signals
-    /// for the action group to monitor for changes and then to call
-    /// g_action_group_list_actions() to get the initial list.
-    /// ## `connection`
-    /// A #GDBusConnection
-    /// ## `bus_name`
-    /// the bus name which exports the action
-    ///     group or [`None`] if @connection is not a message bus connection
-    /// ## `object_path`
-    /// the object path at which the action group is exported
-    ///
-    /// # Returns
-    ///
-    /// a #GDBusActionGroup
-    </span><span class="attr">#[doc(alias = <span class="string">"g_dbus_action_group_get"</span>)]
-    </span><span class="kw">pub fn </span>get(
-        connection: <span class="kw-2">&amp;</span><a href="dbus_connection.rs.html#20-198">DBusConnection</a>,
-        bus_name: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;,
-        object_path: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
-    ) -&gt; <a href="#8-24">DBusActionGroup</a> {
-        <span class="kw">unsafe </span>{
-            <a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="../../../gio_sys/fn.g_dbus_action_group_get.html">ffi::g_dbus_action_group_get</a>(
-                <a href="#53">connection</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#54">bus_name</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#55">object_path</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
-            ))
-        }
-    }
-}
-</code></pre></div></section></main></body></html>
+<nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">gio/auto/</div>dbus_action_group.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-2"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)
+<a href=#2 id=2 data-nosnippet>2</a>// from gir-files (https://github.com/gtk-rs/gir-files)
+<a href=#3 id=3 data-nosnippet>3</a>// DO NOT EDIT
+<a href=#4 id=4 data-nosnippet>4</a>
+<a href=#5 id=5 data-nosnippet>5</a></span><span class="kw">use crate</span>::{<a href="../../../gio_sys/index.html">ffi</a>, <a href="action_group.rs.html#14-101">ActionGroup</a>, <a href="dbus_connection.rs.html#21-199">DBusConnection</a>, <a href="remote_action_group.rs.html#8-40">RemoteActionGroup</a>};
+<a href=#6 id=6 data-nosnippet>6</a><span class="kw">use </span><a href="../../../glib/translate/index.html">glib::translate</a>::<span class="kw-2">*</span>;
+<a href=#7 id=7 data-nosnippet>7</a>
+<a href=#8 id=8 data-nosnippet>8</a><a class="macro" href="../../../glib/macro.wrapper.html">glib::wrapper!</a> {
+<a href=#9 id=9 data-nosnippet>9</a>    <span class="doccomment">/// `GDBusActionGroup` is an implementation of the [`ActionGroup`][crate::ActionGroup]
+<a href=#10 id=10 data-nosnippet>10</a>    /// interface.
+<a href=#11 id=11 data-nosnippet>11</a>    ///
+<a href=#12 id=12 data-nosnippet>12</a>    /// `GDBusActionGroup` can be used as a proxy for an action group
+<a href=#13 id=13 data-nosnippet>13</a>    /// that is exported over D-Bus with [`DBusConnection::export_action_group()`][crate::DBusConnection::export_action_group()].
+<a href=#14 id=14 data-nosnippet>14</a>    ///
+<a href=#15 id=15 data-nosnippet>15</a>    /// # Implements
+<a href=#16 id=16 data-nosnippet>16</a>    ///
+<a href=#17 id=17 data-nosnippet>17</a>    /// [`trait@glib::ObjectExt`], [`ActionGroupExt`][trait@crate::prelude::ActionGroupExt], [`RemoteActionGroupExt`][trait@crate::prelude::RemoteActionGroupExt]
+<a href=#18 id=18 data-nosnippet>18</a>    </span><span class="attr">#[doc(alias = <span class="string">"GDBusActionGroup"</span>)]
+<a href=#19 id=19 data-nosnippet>19</a>    </span><span class="kw">pub struct </span><a href="../../../gio/struct.DBusActionGroup.html">DBusActionGroup</a>(Object&lt;<a href="../../../gio_sys/struct.GDBusActionGroup.html">ffi::GDBusActionGroup</a>&gt;) @implements <a href="action_group.rs.html#14-101">ActionGroup</a>, <a href="remote_action_group.rs.html#8-40">RemoteActionGroup</a>;
+<a href=#20 id=20 data-nosnippet>20</a>
+<a href=#21 id=21 data-nosnippet>21</a>    <span class="kw">match fn </span>{
+<a href=#22 id=22 data-nosnippet>22</a>        type_ =&gt; || ffi::g_dbus_action_group_get_type(),
+<a href=#23 id=23 data-nosnippet>23</a>    }
+<a href=#24 id=24 data-nosnippet>24</a>}
+<a href=#25 id=25 data-nosnippet>25</a>
+<a href=#26 id=26 data-nosnippet>26</a><span class="kw">impl </span><a href="#8-24">DBusActionGroup</a> {
+<a href=#27 id=27 data-nosnippet>27</a>    <span class="doccomment">/// Obtains a #GDBusActionGroup for the action group which is exported at
+<a href=#28 id=28 data-nosnippet>28</a>    /// the given @bus_name and @object_path.
+<a href=#29 id=29 data-nosnippet>29</a>    ///
+<a href=#30 id=30 data-nosnippet>30</a>    /// The thread default main context is taken at the time of this call.
+<a href=#31 id=31 data-nosnippet>31</a>    /// All signals on the menu model (and any linked models) are reported
+<a href=#32 id=32 data-nosnippet>32</a>    /// with respect to this context.  All calls on the returned menu model
+<a href=#33 id=33 data-nosnippet>33</a>    /// (and linked models) must also originate from this same context, with
+<a href=#34 id=34 data-nosnippet>34</a>    /// the thread default main context unchanged.
+<a href=#35 id=35 data-nosnippet>35</a>    ///
+<a href=#36 id=36 data-nosnippet>36</a>    /// This call is non-blocking.  The returned action group may or may not
+<a href=#37 id=37 data-nosnippet>37</a>    /// already be filled in.  The correct thing to do is connect the signals
+<a href=#38 id=38 data-nosnippet>38</a>    /// for the action group to monitor for changes and then to call
+<a href=#39 id=39 data-nosnippet>39</a>    /// g_action_group_list_actions() to get the initial list.
+<a href=#40 id=40 data-nosnippet>40</a>    /// ## `connection`
+<a href=#41 id=41 data-nosnippet>41</a>    /// A #GDBusConnection
+<a href=#42 id=42 data-nosnippet>42</a>    /// ## `bus_name`
+<a href=#43 id=43 data-nosnippet>43</a>    /// the bus name which exports the action
+<a href=#44 id=44 data-nosnippet>44</a>    ///     group or [`None`] if @connection is not a message bus connection
+<a href=#45 id=45 data-nosnippet>45</a>    /// ## `object_path`
+<a href=#46 id=46 data-nosnippet>46</a>    /// the object path at which the action group is exported
+<a href=#47 id=47 data-nosnippet>47</a>    ///
+<a href=#48 id=48 data-nosnippet>48</a>    /// # Returns
+<a href=#49 id=49 data-nosnippet>49</a>    ///
+<a href=#50 id=50 data-nosnippet>50</a>    /// a #GDBusActionGroup
+<a href=#51 id=51 data-nosnippet>51</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_dbus_action_group_get"</span>)]
+<a href=#52 id=52 data-nosnippet>52</a>    </span><span class="kw">pub fn </span>get(
+<a href=#53 id=53 data-nosnippet>53</a>        connection: <span class="kw-2">&amp;</span><a href="dbus_connection.rs.html#21-199">DBusConnection</a>,
+<a href=#54 id=54 data-nosnippet>54</a>        bus_name: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;,
+<a href=#55 id=55 data-nosnippet>55</a>        object_path: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+<a href=#56 id=56 data-nosnippet>56</a>    ) -&gt; <a href="#8-24">DBusActionGroup</a> {
+<a href=#57 id=57 data-nosnippet>57</a>        <span class="kw">unsafe </span>{
+<a href=#58 id=58 data-nosnippet>58</a>            <a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="../../../gio_sys/fn.g_dbus_action_group_get.html">ffi::g_dbus_action_group_get</a>(
+<a href=#59 id=59 data-nosnippet>59</a>                <a href="#53">connection</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+<a href=#60 id=60 data-nosnippet>60</a>                <a href="#54">bus_name</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+<a href=#61 id=61 data-nosnippet>61</a>                <a href="#55">object_path</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+<a href=#62 id=62 data-nosnippet>62</a>            ))
+<a href=#63 id=63 data-nosnippet>63</a>        }
+<a href=#64 id=64 data-nosnippet>64</a>    }
+<a href=#65 id=65 data-nosnippet>65</a>}</code></pre></div></section></main></body></html>

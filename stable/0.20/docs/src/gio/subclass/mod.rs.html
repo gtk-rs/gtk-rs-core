@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/subclass/mod.rs`."><title>mod.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-46132b98.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.85.0-nightly (6d9f6ae36 2024-12-16)" data-channel="nightly" data-search-js="search-036cda7a.js" data-settings-js="settings-0f613d39.js" ><script src="../../../static.files/storage-59e33391.js"></script><script defer src="../../../static.files/src-script-56102188.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/subclass/mod.rs`."><title>mod.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-6c3ea77c.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.86.0-nightly (9cd60bd2c 2025-02-15)" data-channel="nightly" data-search-js="search-581efc7a.js" data-settings-js="settings-6dad6058.js" ><script src="../../../static.files/storage-3a5871a4.js"></script><script defer src="../../../static.files/src-script-b8d3f215.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-4d63596a.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -71,72 +71,37 @@
 </script>
 
 
-<nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">gio/subclass/</div>mod.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers">
-<a href="#1" id="1">1</a>
-<a href="#2" id="2">2</a>
-<a href="#3" id="3">3</a>
-<a href="#4" id="4">4</a>
-<a href="#5" id="5">5</a>
-<a href="#6" id="6">6</a>
-<a href="#7" id="7">7</a>
-<a href="#8" id="8">8</a>
-<a href="#9" id="9">9</a>
-<a href="#10" id="10">10</a>
-<a href="#11" id="11">11</a>
-<a href="#12" id="12">12</a>
-<a href="#13" id="13">13</a>
-<a href="#14" id="14">14</a>
-<a href="#15" id="15">15</a>
-<a href="#16" id="16">16</a>
-<a href="#17" id="17">17</a>
-<a href="#18" id="18">18</a>
-<a href="#19" id="19">19</a>
-<a href="#20" id="20">20</a>
-<a href="#21" id="21">21</a>
-<a href="#22" id="22">22</a>
-<a href="#23" id="23">23</a>
-<a href="#24" id="24">24</a>
-<a href="#25" id="25">25</a>
-<a href="#26" id="26">26</a>
-<a href="#27" id="27">27</a>
-<a href="#28" id="28">28</a>
-<a href="#29" id="29">29</a>
-<a href="#30" id="30">30</a>
-<a href="#31" id="31">31</a>
-<a href="#32" id="32">32</a>
-<a href="#33" id="33">33</a>
-<a href="#34" id="34">34</a></pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
-
-</span><span class="kw">mod </span><a href="action_group.rs.html#3-701">action_group</a>;
-<span class="kw">mod </span><a href="action_map.rs.html#3-136">action_map</a>;
-<span class="kw">mod </span><a href="application.rs.html#3-537">application</a>;
-<span class="kw">mod </span><a href="async_initable.rs.html#3-375">async_initable</a>;
-<span class="kw">mod </span><a href="initable.rs.html#3-223">initable</a>;
-<span class="kw">mod </span><a href="input_stream.rs.html#3-364">input_stream</a>;
-<span class="kw">mod </span><a href="io_stream.rs.html#3-175">io_stream</a>;
-<span class="kw">mod </span><a href="list_model.rs.html#3-149">list_model</a>;
-<span class="kw">mod </span><a href="output_stream.rs.html#3-365">output_stream</a>;
-<span class="kw">mod </span><a href="seekable.rs.html#3-217">seekable</a>;
-<span class="kw">mod </span><a href="socket_control_message.rs.html#3-275">socket_control_message</a>;
-
-<span class="kw">pub use </span><a href="application.rs.html#10-13"><span class="self">self</span>::application::ArgumentList</a>;
-
-<span class="kw">pub mod </span><a href="../../../gio/subclass/prelude/index.html">prelude</a> {
-    <span class="attr">#[doc(hidden)]
-    </span><span class="kw">pub use </span><a href="../../../glib/subclass/prelude/index.html">glib::subclass::prelude</a>::<span class="kw-2">*</span>;
-
-    <span class="kw">pub use super</span>::{
-        action_group::{<a href="action_group.rs.html#9-74">ActionGroupImpl</a>, <a href="action_group.rs.html#81-342">ActionGroupImplExt</a>},
-        action_map::{<a href="action_map.rs.html#9-13">ActionMapImpl</a>, <a href="action_map.rs.html#20-69">ActionMapImplExt</a>},
-        application::{<a href="application.rs.html#67-174">ApplicationImpl</a>, <a href="application.rs.html#181-335">ApplicationImplExt</a>},
-        async_initable::{<a href="async_initable.rs.html#11-18">AsyncInitableImpl</a>, <a href="async_initable.rs.html#25-84">AsyncInitableImplExt</a>},
-        initable::{<a href="initable.rs.html#9-13">InitableImpl</a>, <a href="initable.rs.html#20-45">InitableImplExt</a>},
-        input_stream::{<a href="input_stream.rs.html#9-43">InputStreamImpl</a>, <a href="input_stream.rs.html#50-126">InputStreamImplExt</a>},
-        io_stream::{<a href="io_stream.rs.html#9-35">IOStreamImpl</a>, <a href="io_stream.rs.html#42-85">IOStreamImplExt</a>},
-        list_model::{<a href="list_model.rs.html#9-16">ListModelImpl</a>, <a href="list_model.rs.html#23-67">ListModelImplExt</a>},
-        output_stream::{<a href="output_stream.rs.html#9-60">OutputStreamImpl</a>, <a href="output_stream.rs.html#67-181">OutputStreamImplExt</a>},
-        seekable::{<a href="seekable.rs.html#9-20">SeekableImpl</a>, <a href="seekable.rs.html#27-126">SeekableImplExt</a>},
-        socket_control_message::{<a href="socket_control_message.rs.html#7-45">SocketControlMessageImpl</a>, <a href="socket_control_message.rs.html#52-132">SocketControlMessageImplExt</a>},
-    };
-}
-</code></pre></div></section></main></body></html>
+<nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">gio/subclass/</div>mod.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-2"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
+<a href=#2 id=2 data-nosnippet>2</a>
+<a href=#3 id=3 data-nosnippet>3</a></span><span class="kw">mod </span><a href="action_group.rs.html#3-701">action_group</a>;
+<a href=#4 id=4 data-nosnippet>4</a><span class="kw">mod </span><a href="action_map.rs.html#3-136">action_map</a>;
+<a href=#5 id=5 data-nosnippet>5</a><span class="kw">mod </span><a href="application.rs.html#3-666">application</a>;
+<a href=#6 id=6 data-nosnippet>6</a><span class="kw">mod </span><a href="async_initable.rs.html#3-375">async_initable</a>;
+<a href=#7 id=7 data-nosnippet>7</a><span class="kw">mod </span><a href="initable.rs.html#3-223">initable</a>;
+<a href=#8 id=8 data-nosnippet>8</a><span class="kw">mod </span><a href="input_stream.rs.html#3-364">input_stream</a>;
+<a href=#9 id=9 data-nosnippet>9</a><span class="kw">mod </span><a href="io_stream.rs.html#3-175">io_stream</a>;
+<a href=#10 id=10 data-nosnippet>10</a><span class="kw">mod </span><a href="list_model.rs.html#3-149">list_model</a>;
+<a href=#11 id=11 data-nosnippet>11</a><span class="kw">mod </span><a href="output_stream.rs.html#3-365">output_stream</a>;
+<a href=#12 id=12 data-nosnippet>12</a><span class="kw">mod </span><a href="seekable.rs.html#3-217">seekable</a>;
+<a href=#13 id=13 data-nosnippet>13</a><span class="kw">mod </span><a href="socket_control_message.rs.html#3-275">socket_control_message</a>;
+<a href=#14 id=14 data-nosnippet>14</a>
+<a href=#15 id=15 data-nosnippet>15</a><span class="kw">pub use </span><a href="application.rs.html#12-15"><span class="self">self</span>::application::ArgumentList</a>;
+<a href=#16 id=16 data-nosnippet>16</a>
+<a href=#17 id=17 data-nosnippet>17</a><span class="kw">pub mod </span><a href="../../../gio/subclass/prelude/index.html">prelude</a> {
+<a href=#18 id=18 data-nosnippet>18</a>    <span class="attr">#[doc(hidden)]
+<a href=#19 id=19 data-nosnippet>19</a>    </span><span class="kw">pub use </span><a href="../../../glib/subclass/prelude/index.html">glib::subclass::prelude</a>::<span class="kw-2">*</span>;
+<a href=#20 id=20 data-nosnippet>20</a>
+<a href=#21 id=21 data-nosnippet>21</a>    <span class="kw">pub use super</span>::{
+<a href=#22 id=22 data-nosnippet>22</a>        action_group::{<a href="action_group.rs.html#9-74">ActionGroupImpl</a>, <a href="action_group.rs.html#81-342">ActionGroupImplExt</a>},
+<a href=#23 id=23 data-nosnippet>23</a>        action_map::{<a href="action_map.rs.html#9-13">ActionMapImpl</a>, <a href="action_map.rs.html#20-69">ActionMapImplExt</a>},
+<a href=#24 id=24 data-nosnippet>24</a>        application::{<a href="application.rs.html#69-199">ApplicationImpl</a>, <a href="application.rs.html#206-417">ApplicationImplExt</a>},
+<a href=#25 id=25 data-nosnippet>25</a>        async_initable::{<a href="async_initable.rs.html#11-18">AsyncInitableImpl</a>, <a href="async_initable.rs.html#25-84">AsyncInitableImplExt</a>},
+<a href=#26 id=26 data-nosnippet>26</a>        initable::{<a href="initable.rs.html#9-13">InitableImpl</a>, <a href="initable.rs.html#20-45">InitableImplExt</a>},
+<a href=#27 id=27 data-nosnippet>27</a>        input_stream::{<a href="input_stream.rs.html#9-43">InputStreamImpl</a>, <a href="input_stream.rs.html#50-126">InputStreamImplExt</a>},
+<a href=#28 id=28 data-nosnippet>28</a>        io_stream::{<a href="io_stream.rs.html#9-35">IOStreamImpl</a>, <a href="io_stream.rs.html#42-85">IOStreamImplExt</a>},
+<a href=#29 id=29 data-nosnippet>29</a>        list_model::{<a href="list_model.rs.html#9-16">ListModelImpl</a>, <a href="list_model.rs.html#23-67">ListModelImplExt</a>},
+<a href=#30 id=30 data-nosnippet>30</a>        output_stream::{<a href="output_stream.rs.html#9-60">OutputStreamImpl</a>, <a href="output_stream.rs.html#67-181">OutputStreamImplExt</a>},
+<a href=#31 id=31 data-nosnippet>31</a>        seekable::{<a href="seekable.rs.html#9-20">SeekableImpl</a>, <a href="seekable.rs.html#27-126">SeekableImplExt</a>},
+<a href=#32 id=32 data-nosnippet>32</a>        socket_control_message::{<a href="socket_control_message.rs.html#7-45">SocketControlMessageImpl</a>, <a href="socket_control_message.rs.html#52-132">SocketControlMessageImplExt</a>},
+<a href=#33 id=33 data-nosnippet>33</a>    };
+<a href=#34 id=34 data-nosnippet>34</a>}</code></pre></div></section></main></body></html>
