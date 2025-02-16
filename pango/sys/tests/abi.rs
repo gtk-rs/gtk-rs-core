@@ -747,6 +747,7 @@ const RUST_CONSTANTS: &[(&str, &str)] = &[
     ("(gint) PANGO_ELLIPSIZE_NONE", "0"),
     ("(gint) PANGO_ELLIPSIZE_START", "1"),
     ("(guint) PANGO_FONT_MASK_FAMILY", "1"),
+    ("(guint) PANGO_FONT_MASK_FEATURES", "256"),
     ("(guint) PANGO_FONT_MASK_GRAVITY", "64"),
     ("(guint) PANGO_FONT_MASK_SIZE", "32"),
     ("(guint) PANGO_FONT_MASK_STRETCH", "16"),
@@ -957,6 +958,7 @@ const RUST_CONSTANTS: &[(&str, &str)] = &[
     ("(gint) PANGO_WEIGHT_ULTRAHEAVY", "1000"),
     ("(gint) PANGO_WEIGHT_ULTRALIGHT", "200"),
     ("(gint) PANGO_WRAP_CHAR", "1"),
+    ("(gint) PANGO_WRAP_NONE", "3"),
     ("(gint) PANGO_WRAP_WORD", "0"),
     ("(gint) PANGO_WRAP_WORD_CHAR", "2"),
 ];

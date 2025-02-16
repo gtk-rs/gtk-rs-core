@@ -1441,14 +1441,8 @@ where
 
         for i in 0..variant.n_children() {
             let entry = variant.child_value(i);
-            let key = match entry.child_value(0).get() {
-                Some(key) => key,
-                None => return None,
-            };
-            let val = match entry.child_value(1).get() {
-                Some(val) => val,
-                None => return None,
-            };
+            let key = entry.child_value(0).get()?;
+            let val = entry.child_value(1).get()?;
 
             map.insert(key, val);
         }
@@ -1471,14 +1465,8 @@ where
 
         for i in 0..variant.n_children() {
             let entry = variant.child_value(i);
-            let key = match entry.child_value(0).get() {
-                Some(key) => key,
-                None => return None,
-            };
-            let val = match entry.child_value(1).get() {
-                Some(val) => val,
-                None => return None,
-            };
+            let key = entry.child_value(0).get()?;
+            let val = entry.child_value(1).get()?;
 
             map.insert(key, val);
         }
@@ -1646,14 +1634,8 @@ where
             return None;
         }
 
-        let key = match variant.child_value(0).get() {
-            Some(key) => key,
-            None => return None,
-        };
-        let value = match variant.child_value(1).get() {
-            Some(value) => value,
-            None => return None,
-        };
+        let key = variant.child_value(0).get()?;
+        let value = variant.child_value(1).get()?;
 
         Some(Self { key, value })
     }

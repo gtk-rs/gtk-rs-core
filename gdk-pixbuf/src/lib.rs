@@ -10,6 +10,7 @@ pub use glib;
 
 #[allow(clippy::too_many_arguments)]
 #[allow(clippy::manual_c_str_literals)]
+#[allow(unused_imports)]
 mod auto;
 
 pub mod subclass;

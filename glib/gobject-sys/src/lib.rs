@@ -1774,6 +1774,9 @@ extern "C" {
         g_class: gpointer,
         private_size_or_offset: *mut c_int,
     );
+    #[cfg(feature = "v2_84")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_84")))]
+    pub fn g_type_class_get(type_: GType) -> gpointer;
     pub fn g_type_class_peek(type_: GType) -> gpointer;
     pub fn g_type_class_peek_static(type_: GType) -> gpointer;
     pub fn g_type_class_ref(type_: GType) -> gpointer;
@@ -1929,10 +1932,10 @@ extern "C" {
     //=========================================================================
     // GWeakRef
     //=========================================================================
-    pub fn g_weak_ref_set(weak_ref: *mut GWeakRef, object: *mut GObject);
     pub fn g_weak_ref_clear(weak_ref: *mut GWeakRef);
     pub fn g_weak_ref_get(weak_ref: *mut GWeakRef) -> *mut GObject;
     pub fn g_weak_ref_init(weak_ref: *mut GWeakRef, object: *mut GObject);
+    pub fn g_weak_ref_set(weak_ref: *mut GWeakRef, object: *mut GObject);
 
     //=========================================================================
     // GBinding
@@ -2779,6 +2782,9 @@ extern "C" {
     pub fn g_type_check_value_holds(value: *const GValue, type_: GType) -> gboolean;
     pub fn g_type_children(type_: GType, n_children: *mut c_uint) -> *mut GType;
     pub fn g_type_create_instance(type_: GType) -> *mut GTypeInstance;
+    #[cfg(feature = "v2_84")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_84")))]
+    pub fn g_type_default_interface_get(g_type: GType) -> gpointer;
     pub fn g_type_default_interface_peek(g_type: GType) -> gpointer;
     pub fn g_type_default_interface_ref(g_type: GType) -> gpointer;
     pub fn g_type_default_interface_unref(g_iface: gpointer);

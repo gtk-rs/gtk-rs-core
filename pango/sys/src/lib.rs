@@ -348,6 +348,9 @@ pub type PangoWrapMode = c_int;
 pub const PANGO_WRAP_WORD: PangoWrapMode = 0;
 pub const PANGO_WRAP_CHAR: PangoWrapMode = 1;
 pub const PANGO_WRAP_WORD_CHAR: PangoWrapMode = 2;
+#[cfg(feature = "v1_56")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v1_56")))]
+pub const PANGO_WRAP_NONE: PangoWrapMode = 3;
 
 // Constants
 pub const PANGO_ANALYSIS_FLAG_CENTERED_BASELINE: c_int = 1;
@@ -369,7 +372,12 @@ pub const PANGO_FONT_MASK_WEIGHT: PangoFontMask = 8;
 pub const PANGO_FONT_MASK_STRETCH: PangoFontMask = 16;
 pub const PANGO_FONT_MASK_SIZE: PangoFontMask = 32;
 pub const PANGO_FONT_MASK_GRAVITY: PangoFontMask = 64;
+#[cfg(feature = "v1_42")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v1_42")))]
 pub const PANGO_FONT_MASK_VARIATIONS: PangoFontMask = 128;
+#[cfg(feature = "v1_56")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v1_56")))]
+pub const PANGO_FONT_MASK_FEATURES: PangoFontMask = 256;
 
 pub type PangoLayoutDeserializeFlags = c_uint;
 pub const PANGO_LAYOUT_DESERIALIZE_DEFAULT: PangoLayoutDeserializeFlags = 0;
@@ -1760,6 +1768,9 @@ extern "C" {
     ) -> gboolean;
     pub fn pango_font_description_free(desc: *mut PangoFontDescription);
     pub fn pango_font_description_get_family(desc: *const PangoFontDescription) -> *const c_char;
+    #[cfg(feature = "v1_56")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v1_56")))]
+    pub fn pango_font_description_get_features(desc: *const PangoFontDescription) -> *const c_char;
     pub fn pango_font_description_get_gravity(desc: *const PangoFontDescription) -> PangoGravity;
     pub fn pango_font_description_get_set_fields(
         desc: *const PangoFontDescription,
@@ -1799,6 +1810,18 @@ extern "C" {
     pub fn pango_font_description_set_family_static(
         desc: *mut PangoFontDescription,
         family: *const c_char,
+    );
+    #[cfg(feature = "v1_56")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v1_56")))]
+    pub fn pango_font_description_set_features(
+        desc: *mut PangoFontDescription,
+        features: *const c_char,
+    );
+    #[cfg(feature = "v1_56")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v1_56")))]
+    pub fn pango_font_description_set_features_static(
+        desc: *mut PangoFontDescription,
+        features: *const c_char,
     );
     pub fn pango_font_description_set_gravity(
         desc: *mut PangoFontDescription,

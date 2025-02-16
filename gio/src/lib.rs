@@ -19,6 +19,7 @@ pub use action_entry::{ActionEntry, ActionEntryBuilder};
 pub use application::{ApplicationBusyGuard, ApplicationHoldGuard};
 mod async_initable;
 mod cancellable;
+pub use cancellable::CancelledHandlerId;
 mod cancellable_future;
 pub use crate::cancellable_future::{CancellableFuture, Cancelled};
 mod converter;

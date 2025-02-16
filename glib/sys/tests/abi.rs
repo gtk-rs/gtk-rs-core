@@ -1283,6 +1283,7 @@ const RUST_CONSTANTS: &[(&str, &str)] = &[
     ("(gint) G_OPTION_ERROR_BAD_VALUE", "1"),
     ("(gint) G_OPTION_ERROR_FAILED", "2"),
     ("(gint) G_OPTION_ERROR_UNKNOWN_OPTION", "0"),
+    ("(guint) G_OPTION_FLAG_DEPRECATED", "128"),
     ("(guint) G_OPTION_FLAG_FILENAME", "16"),
     ("(guint) G_OPTION_FLAG_HIDDEN", "1"),
     ("(guint) G_OPTION_FLAG_IN_MAIN", "2"),
