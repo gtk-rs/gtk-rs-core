@@ -1383,7 +1383,7 @@ pub fn cstr_bytes(item: TokenStream) -> TokenStream {
 ///
 /// # Documentation
 ///
-/// Doc comments preceding a `#[property]` attribute will be copied to the generated getter method.
+/// Doc comments preceding a `#[property]` attribute will be copied to the generated getter and setter methods. You can specify different comments by the getter and setter by using `# Getter` and `# Setter` headings. The text under the header will be copied to the respective method.
 ///
 /// ## Extension trait
 /// You can choose to move the method definitions to a trait by using `#[properties(wrapper_type = super::MyType, ext_trait = MyTypePropertiesExt)]`.
@@ -1463,6 +1463,15 @@ pub fn cstr_bytes(item: TokenStream) -> TokenStream {
 ///         optional: RefCell<Option<String>>,
 ///         #[property(get, set)]
 ///         smart_pointer: Rc<RefCell<String>>,
+///         /// # Getter
+///         ///
+///         /// Get the value of the property `extra_comments`
+///         ///
+///         /// # Setter
+///         ///
+///         /// This is the comment for the setter of the `extra_comments` field.
+///         #[property(get, set)]
+///         extra_comments: RefCell<bool>,
 ///     }
 ///     
 ///     #[glib::derived_properties]
