@@ -676,7 +676,9 @@ fn expand_impl_connect_prop_notify(props: &[PropDesc]) -> Vec<syn::ImplItemFn> {
         let stripped_name = strip_raw_prefix_from_name(name);
         let fn_ident = format_ident!("connect_{}_notify", name_to_ident(name));
         let span = p.attrs_span;
+        let doc = format!("Listen for notifications of a change in the `{}` property", name.value());
         parse_quote_spanned!(span=>
+            #[doc = #doc]
             #[allow(dead_code)]
             pub fn #fn_ident<F: Fn(&Self) + 'static>(&self, f: F) -> #crate_ident::SignalHandlerId {
                 self.connect_notify_local(::core::option::Option::Some(#stripped_name), move |this, _| {
@@ -695,7 +697,9 @@ fn expand_impl_notify_prop(wrapper_type: &syn::Path, props: &[PropDesc]) -> Vec<
         let fn_ident = format_ident!("notify_{}", name_to_ident(&name));
         let span = p.attrs_span;
         let enum_ident = name_to_enum_ident(name.value());
+        let doc = format!("Notify listeners of a change in the `{}` property", name.value());
         parse_quote_spanned!(span=>
+            #[doc = #doc]
             #[allow(dead_code)]
             pub fn #fn_ident(&self) {
                 self.notify_by_pspec(
