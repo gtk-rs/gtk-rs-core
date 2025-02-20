@@ -30,9 +30,9 @@ pub use bitflags;
 #[doc(hidden)]
 pub use glib_macros::cstr_bytes;
 pub use glib_macros::{
-    async_test, clone, closure, closure_local, derived_properties, flags, object_interface,
-    object_subclass, Boxed, Downgrade, Enum, ErrorDomain, Properties, SharedBoxed, ValueDelegate,
-    Variant,
+    async_test, clone, closure, closure_local, derived_properties, derived_signals, flags,
+    object_interface, object_subclass, signals, Boxed, Downgrade, Enum, ErrorDomain, Properties,
+    SharedBoxed, ValueDelegate, Variant,
 };
 pub use glib_sys as ffi;
 pub use gobject_sys as gobject_ffi;
