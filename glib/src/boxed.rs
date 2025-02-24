@@ -306,7 +306,7 @@ macro_rules! glib_boxed_wrapper {
         #[doc(hidden)]
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::translate::IntoGlibPtr<*mut $ffi_name> for $name $(<$($generic),+>)? {
             #[inline]
-            unsafe fn into_glib_ptr(self) -> *mut $ffi_name {
+            fn into_glib_ptr(self) -> *mut $ffi_name {
                 let s = std::mem::ManuallyDrop::new(self);
                 $crate::translate::ToGlibPtr::<*const $ffi_name>::to_glib_none(&*s).0 as *mut _
             }
@@ -315,7 +315,7 @@ macro_rules! glib_boxed_wrapper {
         #[doc(hidden)]
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::translate::IntoGlibPtr<*const $ffi_name> for $name $(<$($generic),+>)? {
             #[inline]
-            unsafe fn into_glib_ptr(self) -> *const $ffi_name {
+            fn into_glib_ptr(self) -> *const $ffi_name {
                 let s = std::mem::ManuallyDrop::new(self);
                 $crate::translate::ToGlibPtr::<*const $ffi_name>::to_glib_none(&*s).0 as *const _
             }

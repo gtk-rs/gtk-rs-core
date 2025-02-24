@@ -716,12 +716,12 @@ pub trait IntoGlibPtr<P: Ptr> {
     // rustdoc-stripper-ignore-next
     /// Transfer: full.
     #[allow(clippy::wrong_self_convention)]
-    unsafe fn into_glib_ptr(self) -> P;
+    fn into_glib_ptr(self) -> P;
 }
 
 impl<P: Ptr, T: IntoGlibPtr<P>> IntoGlibPtr<P> for Option<T> {
     #[inline]
-    unsafe fn into_glib_ptr(self) -> P {
+    fn into_glib_ptr(self) -> P {
         self.map_or(Ptr::from::<()>(ptr::null_mut()), |s| {
             IntoGlibPtr::into_glib_ptr(s)
         })

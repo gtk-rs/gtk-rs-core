@@ -152,7 +152,7 @@ impl FromGlibPtrBorrow<*const ffi::GMatchInfo> for MatchInfo<'_> {
 #[doc(hidden)]
 impl IntoGlibPtr<*mut ffi::GMatchInfo> for MatchInfo<'_> {
     #[inline]
-    unsafe fn into_glib_ptr(self) -> *mut ffi::GMatchInfo {
+    fn into_glib_ptr(self) -> *mut ffi::GMatchInfo {
         let s = std::mem::ManuallyDrop::new(self);
         ToGlibPtr::<*const ffi::GMatchInfo>::to_glib_none(&*s).0 as *mut _
     }
@@ -160,7 +160,7 @@ impl IntoGlibPtr<*mut ffi::GMatchInfo> for MatchInfo<'_> {
 #[doc(hidden)]
 impl IntoGlibPtr<*const ffi::GMatchInfo> for MatchInfo<'_> {
     #[inline]
-    unsafe fn into_glib_ptr(self) -> *const ffi::GMatchInfo {
+    fn into_glib_ptr(self) -> *const ffi::GMatchInfo {
         let s = std::mem::ManuallyDrop::new(self);
         ToGlibPtr::<*const ffi::GMatchInfo>::to_glib_none(&*s).0 as *const _
     }
