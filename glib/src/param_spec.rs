@@ -434,7 +434,7 @@ macro_rules! define_param_spec {
         #[doc(hidden)]
         impl IntoGlibPtr<*mut gobject_ffi::GParamSpec> for $rust_type {
             #[inline]
-            unsafe fn into_glib_ptr(self) -> *mut gobject_ffi::GParamSpec {
+            fn into_glib_ptr(self) -> *mut gobject_ffi::GParamSpec {
                 let s = std::mem::ManuallyDrop::new(self);
                 s.to_glib_none().0
             }
@@ -443,7 +443,7 @@ macro_rules! define_param_spec {
         #[doc(hidden)]
         impl IntoGlibPtr<*const gobject_ffi::GParamSpec> for $rust_type {
             #[inline]
-            unsafe fn into_glib_ptr(self) -> *const gobject_ffi::GParamSpec {
+            fn into_glib_ptr(self) -> *const gobject_ffi::GParamSpec {
                 let s = std::mem::ManuallyDrop::new(self);
                 s.to_glib_none().0
             }

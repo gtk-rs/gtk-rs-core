@@ -615,7 +615,7 @@ impl<'a, T: TransparentPtrType + 'a> ToGlibPtrMut<'a, *mut ffi::GSList> for SLis
 
 impl<T: TransparentPtrType> IntoGlibPtr<*mut ffi::GSList> for SList<T> {
     #[inline]
-    unsafe fn into_glib_ptr(self) -> *mut ffi::GSList {
+    fn into_glib_ptr(self) -> *mut ffi::GSList {
         self.into_raw()
     }
 }

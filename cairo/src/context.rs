@@ -60,7 +60,7 @@ pub struct Context(ptr::NonNull<ffi::cairo_t>);
 #[cfg_attr(docsrs, doc(cfg(feature = "use_glib")))]
 impl IntoGlibPtr<*mut ffi::cairo_t> for Context {
     #[inline]
-    unsafe fn into_glib_ptr(self) -> *mut ffi::cairo_t {
+    fn into_glib_ptr(self) -> *mut ffi::cairo_t {
         (&*std::mem::ManuallyDrop::new(self)).to_glib_none().0
     }
 }

@@ -775,7 +775,7 @@ impl Deref for GStringPtr {
 
 impl IntoGlibPtr<*mut c_char> for GStringPtr {
     #[inline]
-    unsafe fn into_glib_ptr(self) -> *mut c_char {
+    fn into_glib_ptr(self) -> *mut c_char {
         self.0.as_ptr()
     }
 }
@@ -1518,16 +1518,16 @@ impl IntoGlibPtr<*mut c_char> for GString {
     // rustdoc-stripper-ignore-next
     /// Transform into a nul-terminated raw C string pointer.
     #[inline]
-    unsafe fn into_glib_ptr(self) -> *mut c_char {
+    fn into_glib_ptr(self) -> *mut c_char {
         match self.0 {
-            Inner::Native(ref s) => ffi::g_strndup(s.as_ptr() as *const _, s.len()),
+            Inner::Native(ref s) => unsafe { ffi::g_strndup(s.as_ptr() as *const _, s.len()) },
             Inner::Foreign { ptr, .. } => {
                 let _s = mem::ManuallyDrop::new(self);
                 ptr.as_ptr()
             }
-            Inner::Inline { len, ref data } => {
+            Inner::Inline { len, ref data } => unsafe {
                 ffi::g_strndup(data.as_ptr() as *const _, len as usize)
-            }
+            },
         }
     }
 }
@@ -2127,7 +2127,7 @@ impl<'a> ToGlibPtr<'a, *const u8> for GString {
 
     #[inline]
     fn to_glib_full(&self) -> *const u8 {
-        unsafe { self.clone().into_glib_ptr() as *const u8 }
+        self.clone().into_glib_ptr() as *const u8
     }
 }
 
@@ -2143,7 +2143,7 @@ impl<'a> ToGlibPtr<'a, *const i8> for GString {
 
     #[inline]
     fn to_glib_full(&self) -> *const i8 {
-        unsafe { self.clone().into_glib_ptr() as *const i8 }
+        self.clone().into_glib_ptr() as *const i8
     }
 }
 
@@ -2159,7 +2159,7 @@ impl<'a> ToGlibPtr<'a, *mut u8> for GString {
 
     #[inline]
     fn to_glib_full(&self) -> *mut u8 {
-        unsafe { self.clone().into_glib_ptr() as *mut u8 }
+        self.clone().into_glib_ptr() as *mut u8
     }
 }
 
@@ -2175,7 +2175,7 @@ impl<'a> ToGlibPtr<'a, *mut i8> for GString {
 
     #[inline]
     fn to_glib_full(&self) -> *mut i8 {
-        unsafe { self.clone().into_glib_ptr() as *mut i8 }
+        self.clone().into_glib_ptr() as *mut i8
     }
 }
 

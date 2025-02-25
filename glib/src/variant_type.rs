@@ -186,7 +186,7 @@ impl<'a> From<VariantType> for Cow<'a, VariantTy> {
 #[doc(hidden)]
 impl IntoGlibPtr<*mut ffi::GVariantType> for VariantType {
     #[inline]
-    unsafe fn into_glib_ptr(self) -> *mut ffi::GVariantType {
+    fn into_glib_ptr(self) -> *mut ffi::GVariantType {
         std::mem::ManuallyDrop::new(self).to_glib_none().0
     }
 }

@@ -131,7 +131,7 @@ mod test {
         assert!(MyBoxed::static_type().is_valid());
 
         let b = MyBoxed(String::from("abc"));
-        let raw_ptr = unsafe { MyBoxed::into_glib_ptr(b) };
+        let raw_ptr = MyBoxed::into_glib_ptr(b);
 
         // test that the from_glib_borrow does not take ownership of the raw_ptr
         let _ = unsafe { MyBoxed::from_glib_borrow(raw_ptr) };

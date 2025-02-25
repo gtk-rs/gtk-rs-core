@@ -1010,7 +1010,7 @@ impl<'a> ToGlibPtr<'a, *const *mut c_char> for StrV {
 
 impl IntoGlibPtr<*mut *mut c_char> for StrV {
     #[inline]
-    unsafe fn into_glib_ptr(self) -> *mut *mut c_char {
+    fn into_glib_ptr(self) -> *mut *mut c_char {
         self.into_raw()
     }
 }

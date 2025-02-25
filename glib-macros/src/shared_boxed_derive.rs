@@ -262,7 +262,7 @@ pub fn impl_shared_boxed(input: &syn::DeriveInput) -> syn::Result<proc_macro2::T
 
         impl #crate_ident::translate::IntoGlibPtr<*mut #refcounted_type_prefix::InnerType> for #name {
             #[inline]
-            unsafe fn into_glib_ptr(self) -> *mut #refcounted_type_prefix::InnerType {
+            fn into_glib_ptr(self) -> *mut #refcounted_type_prefix::InnerType {
                 let r = <Self as #crate_ident::subclass::shared::SharedType>::into_refcounted(self);
                 #refcounted_type_prefix::into_raw(r) as *mut _
             }
