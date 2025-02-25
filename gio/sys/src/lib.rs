@@ -10880,6 +10880,17 @@ extern "C" {
         set_property_closure: *mut gobject::GClosure,
         error: *mut *mut glib::GError,
     ) -> c_uint;
+    #[cfg(feature = "v2_84")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_84")))]
+    pub fn g_dbus_connection_register_object_with_closures2(
+        connection: *mut GDBusConnection,
+        object_path: *const c_char,
+        interface_info: *mut GDBusInterfaceInfo,
+        method_call_closure: *mut gobject::GClosure,
+        get_property_closure: *mut gobject::GClosure,
+        set_property_closure: *mut gobject::GClosure,
+        error: *mut *mut glib::GError,
+    ) -> c_uint;
     pub fn g_dbus_connection_register_subtree(
         connection: *mut GDBusConnection,
         object_path: *const c_char,
