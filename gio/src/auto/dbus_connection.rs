@@ -3,9 +3,6 @@
 // DO NOT EDIT
 #![allow(deprecated)]
 
-#[cfg(feature = "v2_84")]
-#[cfg_attr(docsrs, doc(cfg(feature = "v2_84")))]
-use crate::DBusInterfaceInfo;
 #[cfg(unix)]
 #[cfg_attr(docsrs, doc(cfg(unix)))]
 use crate::UnixFDList;
@@ -650,37 +647,6 @@ impl DBusConnection {
     #[doc(alias = "closed")]
     pub fn is_closed(&self) -> bool {
         unsafe { from_glib(ffi::g_dbus_connection_is_closed(self.to_glib_none().0)) }
-    }
-
-    #[cfg(feature = "v2_84")]
-    #[cfg_attr(docsrs, doc(cfg(feature = "v2_84")))]
-    #[doc(alias = "g_dbus_connection_register_object_with_closures2")]
-    pub fn register_object_with_closures2(
-        &self,
-        object_path: &str,
-        interface_info: &DBusInterfaceInfo,
-        method_call_closure: Option<&glib::Closure>,
-        get_property_closure: Option<&glib::Closure>,
-        set_property_closure: Option<&glib::Closure>,
-    ) -> Result<(), glib::Error> {
-        unsafe {
-            let mut error = std::ptr::null_mut();
-            let is_ok = ffi::g_dbus_connection_register_object_with_closures2(
-                self.to_glib_none().0,
-                object_path.to_glib_none().0,
-                interface_info.to_glib_none().0,
-                method_call_closure.to_glib_none().0,
-                get_property_closure.to_glib_none().0,
-                set_property_closure.to_glib_none().0,
-                &mut error,
-            );
-            debug_assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
-            if error.is_null() {
-                Ok(())
-            } else {
-                Err(from_glib_full(error))
-            }
-        }
     }
 
     #[doc(alias = "g_dbus_connection_send_message")]
