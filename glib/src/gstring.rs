@@ -289,6 +289,39 @@ impl GStr {
         }
     }
     pub const NONE: Option<&'static GStr> = None;
+
+    // rustdoc-stripper-ignore-next
+    /// Interns the string and returns the canonical representation.
+    #[inline]
+    #[doc(alias = "g_intern_string")]
+    pub fn intern(&self) -> &'static GStr {
+        unsafe {
+            let s = ffi::g_intern_string(self.to_glib_none().0);
+            GStr::from_ptr(s)
+        }
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Interns the `'static` string and returns the canonical representation.
+    #[inline]
+    #[doc(alias = "g_intern_static_string")]
+    pub fn intern_static(&'static self) -> &'static GStr {
+        unsafe {
+            let s = ffi::g_intern_static_string(self.to_glib_none().0);
+            GStr::from_ptr(s)
+        }
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Interns the string and returns the canonical representation.
+    #[inline]
+    #[doc(alias = "g_intern_string")]
+    pub fn intern_from_str(s: impl AsRef<str>) -> &'static GStr {
+        unsafe {
+            let s = ffi::g_intern_string(s.as_ref().to_glib_none().0);
+            GStr::from_ptr(s)
+        }
+    }
 }
 
 // rustdoc-stripper-ignore-next
