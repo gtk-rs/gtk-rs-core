@@ -246,6 +246,7 @@ impl ops::MulAssign<Matrix> for Matrix {
 impl ops::Mul<Vec4> for Matrix {
     type Output = Vec4;
 
+    // rustdoc-stripper-ignore-next
     /// Transforms this `Vec4` using the provided matrix.
     /// See [Matrix::transform_vec4].
     fn mul(self, rhs: Vec4) -> Self::Output {
@@ -256,6 +257,7 @@ impl ops::Mul<Vec4> for Matrix {
 impl ops::Mul<Vec3> for Matrix {
     type Output = Vec3;
 
+    // rustdoc-stripper-ignore-next
     /// Transforms this `Vec3` using the provided matrix.
     /// See [Matrix::transform_vec3].
     fn mul(self, rhs: Vec3) -> Self::Output {
@@ -274,6 +276,7 @@ impl ops::Mul<Point> for Matrix {
 impl ops::Mul<Point3D> for Matrix {
     type Output = Point3D;
 
+    // rustdoc-stripper-ignore-next
     /// Transforms this point using the provided matrix.
     /// See [Matrix::transform_point3d].
     fn mul(self, rhs: Point3D) -> Self::Output {
