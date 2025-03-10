@@ -1,6 +1,7 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
 use glib::translate::*;
+use std::ffi::c_char;
 
 pub use crate::auto::functions::*;
 #[cfg(feature = "v1_44")]
@@ -27,13 +28,15 @@ pub fn shape_full(
         Some(s) => s.len(),
         None => 0,
     } as i32;
-    let paragraph_text = paragraph_text.to_glib_none();
     let item_length = item_text.len() as i32;
     unsafe {
+        // The function does not take null-terminated strings when a length is provided.
+        // It also requires item_text to point to a subsequence of paragraph_text.
+        // Using to_glib_none() on &str will copy the string and cause problems.
         ffi::pango_shape_full(
-            item_text.to_glib_none().0,
+            item_text.as_bytes().to_glib_none().0 as *const c_char,
             item_length,
-            paragraph_text.0,
+            paragraph_text.map(|t| t.as_bytes()).to_glib_none().0 as *const c_char,
             paragraph_length,
             analysis.to_glib_none().0,
             glyphs.to_glib_none_mut().0,
@@ -54,10 +57,11 @@ pub fn shape_with_flags(
     let item_length = item_text.len() as i32;
     let paragraph_length = paragraph_text.map(|t| t.len() as i32).unwrap_or_default();
     unsafe {
+        // See: shape_full
         ffi::pango_shape_with_flags(
-            item_text.to_glib_none().0,
+            item_text.as_bytes().to_glib_none().0 as *const c_char,
             item_length,
-            paragraph_text.to_glib_none().0,
+            paragraph_text.map(|t| t.as_bytes()).to_glib_none().0 as *const c_char,
             paragraph_length,
             analysis.to_glib_none().0,
             glyphs.to_glib_none_mut().0,
