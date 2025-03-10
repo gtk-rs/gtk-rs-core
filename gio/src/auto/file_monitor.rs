@@ -34,14 +34,14 @@ pub trait FileMonitorExt: IsA<FileMonitor> + 'static {
     fn emit_event(
         &self,
         child: &impl IsA<File>,
-        other_file: &impl IsA<File>,
+        other_file: Option<&impl IsA<File>>,
         event_type: FileMonitorEvent,
     ) {
         unsafe {
             ffi::g_file_monitor_emit_event(
                 self.as_ref().to_glib_none().0,
                 child.as_ref().to_glib_none().0,
-                other_file.as_ref().to_glib_none().0,
+                other_file.map(|p| p.as_ref()).to_glib_none().0,
                 event_type.into_glib(),
             );
         }
