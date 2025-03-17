@@ -82,8 +82,7 @@ pub trait NetworkMonitorExt: IsA<NetworkMonitor> + 'static {
             user_data: glib::ffi::gpointer,
         ) {
             let mut error = std::ptr::null_mut();
-            let _ =
-                ffi::g_network_monitor_can_reach_finish(_source_object as *mut _, res, &mut error);
+            ffi::g_network_monitor_can_reach_finish(_source_object as *mut _, res, &mut error);
             let result = if error.is_null() {
                 Ok(())
             } else {

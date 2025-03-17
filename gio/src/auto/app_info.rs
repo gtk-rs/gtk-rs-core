@@ -287,7 +287,7 @@ impl AppInfo {
             user_data: glib::ffi::gpointer,
         ) {
             let mut error = std::ptr::null_mut();
-            let _ = ffi::g_app_info_launch_default_for_uri_finish(res, &mut error);
+            ffi::g_app_info_launch_default_for_uri_finish(res, &mut error);
             let result = if error.is_null() {
                 Ok(())
             } else {
