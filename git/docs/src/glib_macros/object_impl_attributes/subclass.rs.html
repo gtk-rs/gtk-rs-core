@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib-macros/src/object_impl_attributes/subclass.rs`."><title>subclass.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-916cea96.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="glib_macros" data-themes="" data-resource-suffix="" data-rustdoc-version="1.87.0-nightly (9fb94b32d 2025-03-10)" data-channel="nightly" data-search-js="search-e7298875.js" data-settings-js="settings-d72f25bb.js" ><script src="../../../static.files/storage-d8ac8691.js"></script><script defer src="../../../static.files/src-script-b8d3f215.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-a7bf3405.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib-macros/src/object_impl_attributes/subclass.rs`."><title>subclass.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-916cea96.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="glib_macros" data-themes="" data-resource-suffix="" data-rustdoc-version="1.87.0-nightly (227690a25 2025-03-16)" data-channel="nightly" data-search-js="search-e7298875.js" data-settings-js="settings-d72f25bb.js" ><script src="../../../static.files/storage-d8ac8691.js"></script><script defer src="../../../static.files/src-script-b8d3f215.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-fb8c74a8.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -75,7 +75,7 @@
 <a href=#2 id=2 data-nosnippet>2</a>
 <a href=#3 id=3 data-nosnippet>3</a></span><span class="kw">use </span>heck::ToShoutySnakeCase;
 <a href=#4 id=4 data-nosnippet>4</a><span class="kw">use </span><a href="https://docs.rs/proc-macro2/1.0.94/proc_macro2/struct.TokenStream.html">proc_macro2::TokenStream</a>;
-<a href=#5 id=5 data-nosnippet>5</a><span class="kw">use </span>quote::{<a href="https://docs.rs/quote/1.0.39/quote/macro.format_ident.html">format_ident</a>, <a href="https://docs.rs/quote/1.0.39/quote/macro.quote.html">quote</a>, <a href="https://docs.rs/quote/1.0.39/quote/to_tokens/trait.ToTokens.html">ToTokens</a>};
+<a href=#5 id=5 data-nosnippet>5</a><span class="kw">use </span>quote::{<a href="https://docs.rs/quote/1.0.40/quote/macro.format_ident.html">format_ident</a>, <a href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote</a>, <a href="https://docs.rs/quote/1.0.40/quote/to_tokens/trait.ToTokens.html">ToTokens</a>};
 <a href=#6 id=6 data-nosnippet>6</a>
 <a href=#7 id=7 data-nosnippet>7</a><span class="kw">pub fn </span>impl_object_subclass(input: <a href="../object_impl_attributes.rs.html#19-27"><span class="kw">super</span>::Input</a>) -&gt; <a href="https://docs.rs/proc-macro2/1.0.94/proc_macro2/struct.TokenStream.html">TokenStream</a> {
 <a href=#8 id=8 data-nosnippet>8</a>    <span class="kw">let </span>crate_ident = <a href="../utils.rs.html#188-215"><span class="kw">crate</span>::utils::crate_ident_new</a>();
@@ -92,8 +92,8 @@
 <a href=#19 id=19 data-nosnippet>19</a>    <span class="kw">let </span>register_object_subclass = <span class="kw">if let </span><a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(dynamic) = <a href="#16">meta_dynamic</a> {
 <a href=#20 id=20 data-nosnippet>20</a>        <span class="kw">let </span>plugin_ty = <a href="#19">dynamic</a>
 <a href=#21 id=21 data-nosnippet>21</a>            .plugin_type
-<a href=#22 id=22 data-nosnippet>22</a>            .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|p| <a href="#22">p</a>.<a href="https://docs.rs/quote/1.0.39/quote/to_tokens/trait.ToTokens.html#tymethod.into_token_stream">into_token_stream</a>())
-<a href=#23 id=23 data-nosnippet>23</a>            .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap_or">unwrap_or</a>(<a class="macro" href="https://docs.rs/quote/1.0.39/quote/macro.quote.html">quote!</a>(#crate_ident::TypeModule));
+<a href=#22 id=22 data-nosnippet>22</a>            .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|p| <a href="#22">p</a>.<a href="https://docs.rs/quote/1.0.40/quote/to_tokens/trait.ToTokens.html#tymethod.into_token_stream">into_token_stream</a>())
+<a href=#23 id=23 data-nosnippet>23</a>            .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap_or">unwrap_or</a>(<a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a>(#crate_ident::TypeModule));
 <a href=#24 id=24 data-nosnippet>24</a>        <a href="#194-313">register_object_subclass_as_dynamic</a>(
 <a href=#25 id=25 data-nosnippet>25</a>            <span class="kw-2">&amp;</span><a href="#8">crate_ident</a>,
 <a href=#26 id=26 data-nosnippet>26</a>            <span class="kw-2">&amp;</span><a href="#13">self_ty</a>,
@@ -134,19 +134,19 @@
 <a href=#61 id=61 data-nosnippet>61</a>    }
 <a href=#62 id=62 data-nosnippet>62</a>
 <a href=#63 id=63 data-nosnippet>63</a>    <span class="kw">let </span>parent_type_opt = (!<a href="#35">has_parent_type</a>).<a href="https://doc.rust-lang.org/nightly/core/foreigntype.bool.html#method.then">then</a>(|| {
-<a href=#64 id=64 data-nosnippet>64</a>        <a class="macro" href="https://docs.rs/quote/1.0.39/quote/macro.quote.html">quote!</a>(
+<a href=#64 id=64 data-nosnippet>64</a>        <a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a>(
 <a href=#65 id=65 data-nosnippet>65</a>            <span class="kw">type </span>ParentType = #crate_ident::Object;
 <a href=#66 id=66 data-nosnippet>66</a>        )
 <a href=#67 id=67 data-nosnippet>67</a>    });
 <a href=#68 id=68 data-nosnippet>68</a>
 <a href=#69 id=69 data-nosnippet>69</a>    <span class="kw">let </span>interfaces_opt = (!<a href="#36">has_interfaces</a>).<a href="https://doc.rust-lang.org/nightly/core/foreigntype.bool.html#method.then">then</a>(|| {
-<a href=#70 id=70 data-nosnippet>70</a>        <a class="macro" href="https://docs.rs/quote/1.0.39/quote/macro.quote.html">quote!</a>(
+<a href=#70 id=70 data-nosnippet>70</a>        <a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a>(
 <a href=#71 id=71 data-nosnippet>71</a>            <span class="kw">type </span>Interfaces = ();
 <a href=#72 id=72 data-nosnippet>72</a>        )
 <a href=#73 id=73 data-nosnippet>73</a>    });
 <a href=#74 id=74 data-nosnippet>74</a>
 <a href=#75 id=75 data-nosnippet>75</a>    <span class="kw">let </span>new_opt = (!<a href="#34">has_new</a>).<a href="https://doc.rust-lang.org/nightly/core/foreigntype.bool.html#method.then">then</a>(|| {
-<a href=#76 id=76 data-nosnippet>76</a>        <a class="macro" href="https://docs.rs/quote/1.0.39/quote/macro.quote.html">quote!</a> {
+<a href=#76 id=76 data-nosnippet>76</a>        <a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a> {
 <a href=#77 id=77 data-nosnippet>77</a>            <span class="attr">#[inline]
 <a href=#78 id=78 data-nosnippet>78</a>            </span><span class="kw">fn </span>new() -&gt; <span class="self">Self </span>{
 <a href=#79 id=79 data-nosnippet>79</a>                ::std::default::Default::default()
@@ -155,12 +155,12 @@
 <a href=#82 id=82 data-nosnippet>82</a>    });
 <a href=#83 id=83 data-nosnippet>83</a>
 <a href=#84 id=84 data-nosnippet>84</a>    <span class="kw">let </span>class_opt = (!<a href="#38">has_class</a>)
-<a href=#85 id=85 data-nosnippet>85</a>        .<a href="https://doc.rust-lang.org/nightly/core/foreigntype.bool.html#method.then">then</a>(|| <a class="macro" href="https://docs.rs/quote/1.0.39/quote/macro.quote.html">quote!</a>(<span class="kw">type </span>Class = #crate_ident::subclass::basic::ClassStruct&lt;<span class="self">Self</span>&gt;;));
+<a href=#85 id=85 data-nosnippet>85</a>        .<a href="https://doc.rust-lang.org/nightly/core/foreigntype.bool.html#method.then">then</a>(|| <a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a>(<span class="kw">type </span>Class = #crate_ident::subclass::basic::ClassStruct&lt;<span class="self">Self</span>&gt;;));
 <a href=#86 id=86 data-nosnippet>86</a>
 <a href=#87 id=87 data-nosnippet>87</a>    <span class="kw">let </span>instance_opt = (!<a href="#37">has_instance</a>)
-<a href=#88 id=88 data-nosnippet>88</a>        .<a href="https://doc.rust-lang.org/nightly/core/foreigntype.bool.html#method.then">then</a>(|| <a class="macro" href="https://docs.rs/quote/1.0.39/quote/macro.quote.html">quote!</a>(<span class="kw">type </span>Instance = #crate_ident::subclass::basic::InstanceStruct&lt;<span class="self">Self</span>&gt;;));
+<a href=#88 id=88 data-nosnippet>88</a>        .<a href="https://doc.rust-lang.org/nightly/core/foreigntype.bool.html#method.then">then</a>(|| <a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a>(<span class="kw">type </span>Instance = #crate_ident::subclass::basic::InstanceStruct&lt;<span class="self">Self</span>&gt;;));
 <a href=#89 id=89 data-nosnippet>89</a>
-<a href=#90 id=90 data-nosnippet>90</a>    <a class="macro" href="https://docs.rs/quote/1.0.39/quote/macro.quote.html">quote!</a> {
+<a href=#90 id=90 data-nosnippet>90</a>    <a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a> {
 <a href=#91 id=91 data-nosnippet>91</a>        #(#attrs)*
 <a href=#92 id=92 data-nosnippet>92</a>        #unsafety <span class="kw">impl </span>#generics #trait_path <span class="kw">for </span>#self_ty {
 <a href=#93 id=93 data-nosnippet>93</a>            #parent_type_opt
@@ -247,7 +247,7 @@
 <a href=#174 id=174 data-nosnippet>174</a>    self_ty: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.94/proc_macro2/struct.Ident.html">syn::Ident</a>,
 <a href=#175 id=175 data-nosnippet>175</a>) -&gt; <a href="https://docs.rs/proc-macro2/1.0.94/proc_macro2/struct.TokenStream.html">TokenStream</a> {
 <a href=#176 id=176 data-nosnippet>176</a>    <span class="comment">// registers the object subclass on first use (lazy registration).
-<a href=#177 id=177 data-nosnippet>177</a>    </span><a class="macro" href="https://docs.rs/quote/1.0.39/quote/macro.quote.html">quote!</a> {
+<a href=#177 id=177 data-nosnippet>177</a>    </span><a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a> {
 <a href=#178 id=178 data-nosnippet>178</a>        <span class="kw">impl </span>#self_ty {
 <a href=#179 id=179 data-nosnippet>179</a>            <span class="doccomment">/// Registers the type only once.
 <a href=#180 id=180 data-nosnippet>180</a>            </span><span class="attr">#[inline]
@@ -278,14 +278,14 @@
 <a href=#205 id=205 data-nosnippet>205</a>        // this implementation relies on a static storage of a weak reference on the plugin and of the GLib type to know if the object subclass has been registered.
 <a href=#206 id=206 data-nosnippet>206</a>
 <a href=#207 id=207 data-nosnippet>207</a>        // the registration status type.
-<a href=#208 id=208 data-nosnippet>208</a>        </span><span class="kw">let </span>registration_status_type = <a class="macro" href="https://docs.rs/quote/1.0.39/quote/macro.format_ident.html">format_ident!</a>(<span class="string">"{}RegistrationStatus"</span>, self_ty);
+<a href=#208 id=208 data-nosnippet>208</a>        </span><span class="kw">let </span>registration_status_type = <a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.format_ident.html">format_ident!</a>(<span class="string">"{}RegistrationStatus"</span>, self_ty);
 <a href=#209 id=209 data-nosnippet>209</a>        <span class="comment">// name of the static variable to store the registration status.
-<a href=#210 id=210 data-nosnippet>210</a>        </span><span class="kw">let </span>registration_status = <a class="macro" href="https://docs.rs/quote/1.0.39/quote/macro.format_ident.html">format_ident!</a>(
+<a href=#210 id=210 data-nosnippet>210</a>        </span><span class="kw">let </span>registration_status = <a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.format_ident.html">format_ident!</a>(
 <a href=#211 id=211 data-nosnippet>211</a>            <span class="string">"{}"</span>,
 <a href=#212 id=212 data-nosnippet>212</a>            registration_status_type.to_string().to_shouty_snake_case()
 <a href=#213 id=213 data-nosnippet>213</a>        );
 <a href=#214 id=214 data-nosnippet>214</a>
-<a href=#215 id=215 data-nosnippet>215</a>        <a class="macro" href="https://docs.rs/quote/1.0.39/quote/macro.quote.html">quote!</a> {
+<a href=#215 id=215 data-nosnippet>215</a>        <a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a> {
 <a href=#216 id=216 data-nosnippet>216</a>            <span class="doccomment">/// The registration status type: a tuple of the weak reference on the plugin and of the GLib type.
 <a href=#217 id=217 data-nosnippet>217</a>            </span><span class="kw">struct </span>#registration_status_type(&lt;#plugin_ty <span class="kw">as </span>#crate_ident::clone::Downgrade&gt;::Weak, #crate_ident::Type);
 <a href=#218 id=218 data-nosnippet>218</a>            <span class="kw">unsafe impl </span>Send <span class="kw">for </span>#registration_status_type {}
@@ -361,7 +361,7 @@
 <a href=#288 id=288 data-nosnippet>288</a>    } <span class="kw">else </span>{
 <a href=#289 id=289 data-nosnippet>289</a>        <span class="comment">// registers immediately the object subclass as a dynamic type.
 <a href=#290 id=290 data-nosnippet>290</a>
-<a href=#291 id=291 data-nosnippet>291</a>        </span><a class="macro" href="https://docs.rs/quote/1.0.39/quote/macro.quote.html">quote!</a> {
+<a href=#291 id=291 data-nosnippet>291</a>        </span><a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a> {
 <a href=#292 id=292 data-nosnippet>292</a>            <span class="kw">impl </span>#self_ty {
 <a href=#293 id=293 data-nosnippet>293</a>                <span class="doccomment">/// Do nothing as the object subclass has been registered on implementation load.
 <a href=#294 id=294 data-nosnippet>294</a>                </span><span class="attr">#[inline]

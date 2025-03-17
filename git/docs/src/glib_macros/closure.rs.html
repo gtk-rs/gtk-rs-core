@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib-macros/src/closure.rs`."><title>closure.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-916cea96.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib_macros" data-themes="" data-resource-suffix="" data-rustdoc-version="1.87.0-nightly (9fb94b32d 2025-03-10)" data-channel="nightly" data-search-js="search-e7298875.js" data-settings-js="settings-d72f25bb.js" ><script src="../../static.files/storage-d8ac8691.js"></script><script defer src="../../static.files/src-script-b8d3f215.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-a7bf3405.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib-macros/src/closure.rs`."><title>closure.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-916cea96.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib_macros" data-themes="" data-resource-suffix="" data-rustdoc-version="1.87.0-nightly (227690a25 2025-03-16)" data-channel="nightly" data-search-js="search-e7298875.js" data-settings-js="settings-d72f25bb.js" ><script src="../../static.files/storage-d8ac8691.js"></script><script defer src="../../static.files/src-script-b8d3f215.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-fb8c74a8.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -74,7 +74,7 @@
 <nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">glib_macros/</div>closure.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-3"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 <a href=#2 id=2 data-nosnippet>2</a>
 <a href=#3 id=3 data-nosnippet>3</a></span><span class="kw">use </span>proc_macro2::{<a href="https://docs.rs/proc-macro2/1.0.94/proc_macro2/struct.Ident.html">Ident</a>, <a href="https://docs.rs/proc-macro2/1.0.94/proc_macro2/struct.Span.html">Span</a>, <a href="https://docs.rs/proc-macro2/1.0.94/proc_macro2/struct.TokenStream.html">TokenStream</a>};
-<a href=#4 id=4 data-nosnippet>4</a><span class="kw">use </span>quote::{<a href="https://docs.rs/quote/1.0.39/quote/macro.quote.html">quote</a>, <a href="https://docs.rs/quote/1.0.39/quote/to_tokens/trait.ToTokens.html">ToTokens</a>};
+<a href=#4 id=4 data-nosnippet>4</a><span class="kw">use </span>quote::{<a href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote</a>, <a href="https://docs.rs/quote/1.0.40/quote/to_tokens/trait.ToTokens.html">ToTokens</a>};
 <a href=#5 id=5 data-nosnippet>5</a><span class="kw">use </span>syn::{
 <a href=#6 id=6 data-nosnippet>6</a>    parse::{<a href="https://docs.rs/syn/2.0.100/syn/parse/trait.Parse.html">Parse</a>, <a href="https://docs.rs/syn/2.0.100/syn/parse/type.ParseStream.html">ParseStream</a>},
 <a href=#7 id=7 data-nosnippet>7</a>    <a href="https://docs.rs/syn/2.0.100/syn/spanned/trait.Spanned.html">spanned::Spanned</a>,
@@ -202,7 +202,7 @@
 <a href=#129 id=129 data-nosnippet>129</a>    }
 <a href=#130 id=130 data-nosnippet>130</a>}
 <a href=#131 id=131 data-nosnippet>131</a>
-<a href=#132 id=132 data-nosnippet>132</a><span class="kw">impl </span><a href="https://docs.rs/quote/1.0.39/quote/to_tokens/trait.ToTokens.html">ToTokens</a> <span class="kw">for </span><a href="#16-22">Closure</a> {
+<a href=#132 id=132 data-nosnippet>132</a><span class="kw">impl </span><a href="https://docs.rs/quote/1.0.40/quote/to_tokens/trait.ToTokens.html">ToTokens</a> <span class="kw">for </span><a href="#16-22">Closure</a> {
 <a href=#133 id=133 data-nosnippet>133</a>    <span class="kw">fn </span>to_tokens(<span class="kw-2">&amp;</span><span class="self">self</span>, tokens: <span class="kw-2">&amp;mut </span><a href="https://docs.rs/proc-macro2/1.0.94/proc_macro2/struct.TokenStream.html">TokenStream</a>) {
 <a href=#134 id=134 data-nosnippet>134</a>        <span class="kw">let </span>crate_ident = <a href="utils.rs.html#188-215">crate_ident_new</a>();
 <a href=#135 id=135 data-nosnippet>135</a>
@@ -222,7 +222,7 @@
 <a href=#149 id=149 data-nosnippet>149</a>                <span class="kw-2">&amp;</span><a href="#134">crate_ident</a>,
 <a href=#150 id=150 data-nosnippet>150</a>                <span class="kw-2">&amp;</span><a class="self" href="#133">self</a>.upgrade_behaviour,
 <a href=#151 id=151 data-nosnippet>151</a>                <span class="kw-2">&amp;</span><a href="#140">upgrade_failure_closure_wrapped_ident</a>,
-<a href=#152 id=152 data-nosnippet>152</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a class="macro" href="https://docs.rs/quote/1.0.39/quote/macro.quote.html">quote!</a> {
+<a href=#152 id=152 data-nosnippet>152</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a> {
 <a href=#153 id=153 data-nosnippet>153</a>                    <span class="kw">return </span>#crate_ident::closure::IntoClosureReturnValue::into_closure_return_value(());
 <a href=#154 id=154 data-nosnippet>154</a>                }),
 <a href=#155 id=155 data-nosnippet>155</a>            )
@@ -234,7 +234,7 @@
 <a href=#161 id=161 data-nosnippet>161</a>
 <a href=#162 id=162 data-nosnippet>162</a>        <span class="kw">let </span>arg_values = <a class="self" href="#133">self</a>.args.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.enumerate">enumerate</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|(index, arg)| {
 <a href=#163 id=163 data-nosnippet>163</a>            <span class="kw">let </span>err_msg = <a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.format.html">format!</a>(<span class="string">"Wrong type for argument {index}: {{:?}}"</span>);
-<a href=#164 id=164 data-nosnippet>164</a>            <a class="macro" href="https://docs.rs/quote/1.0.39/quote/macro.quote.html">quote!</a> {
+<a href=#164 id=164 data-nosnippet>164</a>            <a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a> {
 <a href=#165 id=165 data-nosnippet>165</a>                <span class="kw">let </span>#arg = ::core::result::Result::unwrap_or_else(
 <a href=#166 id=166 data-nosnippet>166</a>                    #crate_ident::Value::get(<span class="kw-2">&amp;</span>#values_ident[#index]),
 <a href=#167 id=167 data-nosnippet>167</a>                    |e| <span class="macro">panic!</span>(#err_msg, e),
@@ -247,14 +247,14 @@
 <a href=#174 id=174 data-nosnippet>174</a>        <span class="kw">let </span>constructor = <a href="https://docs.rs/proc-macro2/1.0.94/proc_macro2/struct.Ident.html#method.new">Ident::new</a>(<a class="self" href="#133">self</a>.constructor, <a href="https://docs.rs/proc-macro2/1.0.94/proc_macro2/struct.Span.html#method.call_site">Span::call_site</a>());
 <a href=#175 id=175 data-nosnippet>175</a>
 <a href=#176 id=176 data-nosnippet>176</a>        <span class="kw">let </span>upgrade_failure_closure = <span class="kw">match </span><a class="self" href="#133">self</a>.upgrade_behaviour {
-<a href=#177 id=177 data-nosnippet>177</a>            <a href="clone.rs.html#51">UpgradeBehaviour::Default</a> =&gt; <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a class="macro" href="https://docs.rs/quote/1.0.39/quote/macro.quote.html">quote!</a> {
+<a href=#177 id=177 data-nosnippet>177</a>            <a href="clone.rs.html#51">UpgradeBehaviour::Default</a> =&gt; <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a> {
 <a href=#178 id=178 data-nosnippet>178</a>                <span class="kw">let </span>#upgrade_failure_closure_ident = ::std::default::Default::default;
 <a href=#179 id=179 data-nosnippet>179</a>                <span class="kw">let </span>#upgrade_failure_closure_wrapped_ident = ||
 <a href=#180 id=180 data-nosnippet>180</a>                    #crate_ident::closure::IntoClosureReturnValue::into_closure_return_value(
 <a href=#181 id=181 data-nosnippet>181</a>                        (#upgrade_failure_closure_ident)()
 <a href=#182 id=182 data-nosnippet>182</a>                    );
 <a href=#183 id=183 data-nosnippet>183</a>            }),
-<a href=#184 id=184 data-nosnippet>184</a>            <a href="clone.rs.html#52">UpgradeBehaviour::Expression</a>(<span class="kw-2">ref </span>expr) =&gt; <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a class="macro" href="https://docs.rs/quote/1.0.39/quote/macro.quote.html">quote!</a> {
+<a href=#184 id=184 data-nosnippet>184</a>            <a href="clone.rs.html#52">UpgradeBehaviour::Expression</a>(<span class="kw-2">ref </span>expr) =&gt; <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a> {
 <a href=#185 id=185 data-nosnippet>185</a>                <span class="kw">let </span>#upgrade_failure_closure_ident = <span class="kw">move </span>|| {
 <a href=#186 id=186 data-nosnippet>186</a>                    #expr
 <a href=#187 id=187 data-nosnippet>187</a>                };
@@ -263,7 +263,7 @@
 <a href=#190 id=190 data-nosnippet>190</a>                        (#upgrade_failure_closure_ident)()
 <a href=#191 id=191 data-nosnippet>191</a>                    );
 <a href=#192 id=192 data-nosnippet>192</a>            }),
-<a href=#193 id=193 data-nosnippet>193</a>            <a href="clone.rs.html#53">UpgradeBehaviour::Closure</a>(<span class="kw-2">ref </span>closure_2) =&gt; <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a class="macro" href="https://docs.rs/quote/1.0.39/quote/macro.quote.html">quote!</a> {
+<a href=#193 id=193 data-nosnippet>193</a>            <a href="clone.rs.html#53">UpgradeBehaviour::Closure</a>(<span class="kw-2">ref </span>closure_2) =&gt; <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a> {
 <a href=#194 id=194 data-nosnippet>194</a>                    <span class="kw">let </span>#upgrade_failure_closure_ident = #closure_2;
 <a href=#195 id=195 data-nosnippet>195</a>                    <span class="kw">let </span>#upgrade_failure_closure_wrapped_ident = ||
 <a href=#196 id=196 data-nosnippet>196</a>                        #crate_ident::closure::IntoClosureReturnValue::into_closure_return_value(
@@ -274,13 +274,13 @@
 <a href=#201 id=201 data-nosnippet>201</a>        };
 <a href=#202 id=202 data-nosnippet>202</a>
 <a href=#203 id=203 data-nosnippet>203</a>        <span class="kw">let </span>assert_return_type = <a href="#176">upgrade_failure_closure</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.is_some">is_some</a>().<a href="https://doc.rust-lang.org/nightly/core/foreigntype.bool.html#method.then">then</a>(|| {
-<a href=#204 id=204 data-nosnippet>204</a>            <a class="macro" href="https://docs.rs/quote/1.0.39/quote/macro.quote.html">quote!</a> {
+<a href=#204 id=204 data-nosnippet>204</a>            <a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a> {
 <a href=#205 id=205 data-nosnippet>205</a>                <span class="kw">fn </span>____same&lt;T&gt;(_a: <span class="kw-2">&amp;</span>T, _b: <span class="kw">impl </span>Fn() -&gt; T) {}
 <a href=#206 id=206 data-nosnippet>206</a>                ____same(<span class="kw-2">&amp;</span>____res, #upgrade_failure_closure_ident);
 <a href=#207 id=207 data-nosnippet>207</a>            }
 <a href=#208 id=208 data-nosnippet>208</a>        });
 <a href=#209 id=209 data-nosnippet>209</a>
-<a href=#210 id=210 data-nosnippet>210</a>        <a href="#133">tokens</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.Extend.html#tymethod.extend">extend</a>(<a class="macro" href="https://docs.rs/quote/1.0.39/quote/macro.quote.html">quote!</a> {
+<a href=#210 id=210 data-nosnippet>210</a>        <a href="#133">tokens</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.Extend.html#tymethod.extend">extend</a>(<a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a> {
 <a href=#211 id=211 data-nosnippet>211</a>            {
 <a href=#212 id=212 data-nosnippet>212</a>                <span class="kw">let </span>#closure_ident = {
 <a href=#213 id=213 data-nosnippet>213</a>                    #(#outer_before)*
@@ -316,5 +316,5 @@
 <a href=#243 id=243 data-nosnippet>243</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">proc_macro::TokenStream</a> {
 <a href=#244 id=244 data-nosnippet>244</a>    <span class="kw">let </span><span class="kw-2">mut </span>closure = <a class="macro" href="https://docs.rs/syn/2.0.100/syn/macro.parse_macro_input.html">syn::parse_macro_input!</a>(input <span class="kw">as </span>Closure);
 <a href=#245 id=245 data-nosnippet>245</a>    <a href="#244">closure</a>.constructor = <a href="#242">constructor</a>;
-<a href=#246 id=246 data-nosnippet>246</a>    <a href="#244">closure</a>.<a href="https://docs.rs/quote/1.0.39/quote/to_tokens/trait.ToTokens.html#tymethod.into_token_stream">into_token_stream</a>().<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>()
+<a href=#246 id=246 data-nosnippet>246</a>    <a href="#244">closure</a>.<a href="https://docs.rs/quote/1.0.40/quote/to_tokens/trait.ToTokens.html#tymethod.into_token_stream">into_token_stream</a>().<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>()
 <a href=#247 id=247 data-nosnippet>247</a>}</code></pre></div></section></main></body></html>

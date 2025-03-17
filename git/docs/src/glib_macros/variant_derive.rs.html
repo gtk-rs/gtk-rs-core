@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib-macros/src/variant_derive.rs`."><title>variant_derive.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-916cea96.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib_macros" data-themes="" data-resource-suffix="" data-rustdoc-version="1.87.0-nightly (9fb94b32d 2025-03-10)" data-channel="nightly" data-search-js="search-e7298875.js" data-settings-js="settings-d72f25bb.js" ><script src="../../static.files/storage-d8ac8691.js"></script><script defer src="../../static.files/src-script-b8d3f215.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-a7bf3405.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib-macros/src/variant_derive.rs`."><title>variant_derive.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-916cea96.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib_macros" data-themes="" data-resource-suffix="" data-rustdoc-version="1.87.0-nightly (227690a25 2025-03-16)" data-channel="nightly" data-search-js="search-e7298875.js" data-settings-js="settings-d72f25bb.js" ><script src="../../static.files/storage-d8ac8691.js"></script><script defer src="../../static.files/src-script-b8d3f215.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-fb8c74a8.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -75,7 +75,7 @@
 <a href=#2 id=2 data-nosnippet>2</a>
 <a href=#3 id=3 data-nosnippet>3</a></span><span class="kw">use </span>heck::ToKebabCase;
 <a href=#4 id=4 data-nosnippet>4</a><span class="kw">use </span><a href="https://docs.rs/proc-macro2/1.0.94/proc_macro2/struct.TokenStream.html">proc_macro2::TokenStream</a>;
-<a href=#5 id=5 data-nosnippet>5</a><span class="kw">use </span>quote::{<a href="https://docs.rs/quote/1.0.39/quote/macro.format_ident.html">format_ident</a>, <a href="https://docs.rs/quote/1.0.39/quote/macro.quote.html">quote</a>};
+<a href=#5 id=5 data-nosnippet>5</a><span class="kw">use </span>quote::{<a href="https://docs.rs/quote/1.0.40/quote/macro.format_ident.html">format_ident</a>, <a href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote</a>};
 <a href=#6 id=6 data-nosnippet>6</a><span class="kw">use </span>syn::{<a href="https://docs.rs/syn/2.0.100/syn/derive/enum.Data.html">Data</a>, <a href="https://docs.rs/syn/2.0.100/syn/derive/struct.DeriveInput.html">DeriveInput</a>, <a href="https://docs.rs/syn/2.0.100/syn/data/enum.Fields.html">Fields</a>, <a href="https://docs.rs/syn/2.0.100/syn/data/struct.FieldsNamed.html">FieldsNamed</a>, <a href="https://docs.rs/syn/2.0.100/syn/data/struct.FieldsUnnamed.html">FieldsUnnamed</a>, <a href="https://docs.rs/syn/2.0.100/syn/generics/struct.Generics.html">Generics</a>, Ident, <a href="https://docs.rs/syn/2.0.100/syn/ty/enum.Type.html">Type</a>};
 <a href=#7 id=7 data-nosnippet>7</a>
 <a href=#8 id=8 data-nosnippet>8</a><span class="kw">use </span><a href="utils.rs.html#188-215"><span class="kw">crate</span>::utils::crate_ident_new</a>;
@@ -129,7 +129,7 @@
 <a href=#56 id=56 data-nosnippet>56</a>            <span class="kw">let </span>idents = (<span class="number">0</span>..<a href="#50">types</a>.<a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.len">len</a>()).<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(syn::Index::from).<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.collect">collect</a>::&lt;<a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html">Vec</a>&lt;<span class="kw">_</span>&gt;&gt;();
 <a href=#57 id=57 data-nosnippet>57</a>            <span class="kw">let </span>idents_len = <a href="#56">idents</a>.<a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.len">len</a>();
 <a href=#58 id=58 data-nosnippet>58</a>
-<a href=#59 id=59 data-nosnippet>59</a>            <span class="kw">let </span>static_variant_type = <a class="macro" href="https://docs.rs/quote/1.0.39/quote/macro.quote.html">quote!</a> {
+<a href=#59 id=59 data-nosnippet>59</a>            <span class="kw">let </span>static_variant_type = <a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a> {
 <a href=#60 id=60 data-nosnippet>60</a>                <span class="kw">impl </span>#impl_generics #glib::variant::StaticVariantType <span class="kw">for </span>#ident #type_generics #where_clause {
 <a href=#61 id=61 data-nosnippet>61</a>                    <span class="attr">#[inline]
 <a href=#62 id=62 data-nosnippet>62</a>                    </span><span class="kw">fn </span>static_variant_type() -&gt; ::std::borrow::Cow&lt;<span class="lifetime">'static</span>, #glib::VariantTy&gt; {
@@ -152,7 +152,7 @@
 <a href=#79 id=79 data-nosnippet>79</a>                }
 <a href=#80 id=80 data-nosnippet>80</a>            };
 <a href=#81 id=81 data-nosnippet>81</a>
-<a href=#82 id=82 data-nosnippet>82</a>            <span class="kw">let </span>to_variant = <a class="macro" href="https://docs.rs/quote/1.0.39/quote/macro.quote.html">quote!</a> {
+<a href=#82 id=82 data-nosnippet>82</a>            <span class="kw">let </span>to_variant = <a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a> {
 <a href=#83 id=83 data-nosnippet>83</a>                <span class="kw">impl </span>#impl_generics #glib::variant::ToVariant <span class="kw">for </span>#ident #type_generics #where_clause {
 <a href=#84 id=84 data-nosnippet>84</a>                    <span class="kw">fn </span>to_variant(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; #glib::Variant {
 <a href=#85 id=85 data-nosnippet>85</a>                        #glib::Variant::tuple_from_iter(::std::array::IntoIter::&lt;#glib::Variant, #idents_len&gt;::new([
@@ -174,7 +174,7 @@
 <a href=#101 id=101 data-nosnippet>101</a>                }
 <a href=#102 id=102 data-nosnippet>102</a>            };
 <a href=#103 id=103 data-nosnippet>103</a>
-<a href=#104 id=104 data-nosnippet>104</a>            <span class="kw">let </span>from_variant = <a class="macro" href="https://docs.rs/quote/1.0.39/quote/macro.quote.html">quote!</a> {
+<a href=#104 id=104 data-nosnippet>104</a>            <span class="kw">let </span>from_variant = <a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a> {
 <a href=#105 id=105 data-nosnippet>105</a>                <span class="kw">impl </span>#impl_generics #glib::variant::FromVariant <span class="kw">for </span>#ident #type_generics #where_clause {
 <a href=#106 id=106 data-nosnippet>106</a>                    <span class="kw">fn </span>from_variant(variant: <span class="kw-2">&amp;</span>#glib::Variant) -&gt; ::core::option::Option&lt;<span class="self">Self</span>&gt; {
 <a href=#107 id=107 data-nosnippet>107</a>                        <span class="kw">if </span>!variant.is_container() {
@@ -205,7 +205,7 @@
 <a href=#132 id=132 data-nosnippet>132</a>            <span class="kw">let </span>types: <a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html">Vec</a>&lt;<span class="kw">_</span>&gt; = <a href="#125">fields</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|(_ident, ty)| <a href="#132">ty</a>).<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.collect">collect</a>();
 <a href=#133 id=133 data-nosnippet>133</a>            <span class="kw">let </span>counts = (<span class="number">0</span>..<a href="#132">types</a>.<a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.len">len</a>()).<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(syn::Index::from).<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.collect">collect</a>::&lt;<a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html">Vec</a>&lt;<span class="kw">_</span>&gt;&gt;();
 <a href=#134 id=134 data-nosnippet>134</a>
-<a href=#135 id=135 data-nosnippet>135</a>            <span class="kw">let </span>static_variant_type = <a class="macro" href="https://docs.rs/quote/1.0.39/quote/macro.quote.html">quote!</a> {
+<a href=#135 id=135 data-nosnippet>135</a>            <span class="kw">let </span>static_variant_type = <a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a> {
 <a href=#136 id=136 data-nosnippet>136</a>                <span class="kw">impl </span>#impl_generics #glib::variant::StaticVariantType <span class="kw">for </span>#ident #type_generics #where_clause {
 <a href=#137 id=137 data-nosnippet>137</a>                    <span class="attr">#[inline]
 <a href=#138 id=138 data-nosnippet>138</a>                    </span><span class="kw">fn </span>static_variant_type() -&gt; ::std::borrow::Cow&lt;<span class="lifetime">'static</span>, #glib::VariantTy&gt; {
@@ -234,7 +234,7 @@
 <a href=#161 id=161 data-nosnippet>161</a>                }
 <a href=#162 id=162 data-nosnippet>162</a>            };
 <a href=#163 id=163 data-nosnippet>163</a>
-<a href=#164 id=164 data-nosnippet>164</a>            <span class="kw">let </span>to_variant = <a class="macro" href="https://docs.rs/quote/1.0.39/quote/macro.quote.html">quote!</a> {
+<a href=#164 id=164 data-nosnippet>164</a>            <span class="kw">let </span>to_variant = <a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a> {
 <a href=#165 id=165 data-nosnippet>165</a>                <span class="kw">impl </span>#impl_generics #glib::variant::ToVariant <span class="kw">for </span>#ident #type_generics #where_clause {
 <a href=#166 id=166 data-nosnippet>166</a>                    <span class="kw">fn </span>to_variant(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; #glib::Variant {
 <a href=#167 id=167 data-nosnippet>167</a>                        #glib::Variant::tuple_from_iter(::std::iter::IntoIterator::into_iter([
@@ -256,7 +256,7 @@
 <a href=#183 id=183 data-nosnippet>183</a>                }
 <a href=#184 id=184 data-nosnippet>184</a>            };
 <a href=#185 id=185 data-nosnippet>185</a>
-<a href=#186 id=186 data-nosnippet>186</a>            <span class="kw">let </span>from_variant = <a class="macro" href="https://docs.rs/quote/1.0.39/quote/macro.quote.html">quote!</a> {
+<a href=#186 id=186 data-nosnippet>186</a>            <span class="kw">let </span>from_variant = <a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a> {
 <a href=#187 id=187 data-nosnippet>187</a>                <span class="kw">impl </span>#impl_generics #glib::variant::FromVariant <span class="kw">for </span>#ident #type_generics #where_clause {
 <a href=#188 id=188 data-nosnippet>188</a>                    <span class="kw">fn </span>from_variant(variant: <span class="kw-2">&amp;</span>#glib::Variant) -&gt; ::core::option::Option&lt;<span class="self">Self</span>&gt; {
 <a href=#189 id=189 data-nosnippet>189</a>                        <span class="kw">if </span>!variant.is_container() {
@@ -277,7 +277,7 @@
 <a href=#204 id=204 data-nosnippet>204</a>            (<a href="#135">static_variant_type</a>, <a href="#164">to_variant</a>, <a href="#186">from_variant</a>)
 <a href=#205 id=205 data-nosnippet>205</a>        }
 <a href=#206 id=206 data-nosnippet>206</a>        <a href="https://docs.rs/syn/2.0.100/syn/data/enum.Fields.html#variant.Unit">Fields::Unit</a> =&gt; {
-<a href=#207 id=207 data-nosnippet>207</a>            <span class="kw">let </span>static_variant_type = <a class="macro" href="https://docs.rs/quote/1.0.39/quote/macro.quote.html">quote!</a> {
+<a href=#207 id=207 data-nosnippet>207</a>            <span class="kw">let </span>static_variant_type = <a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a> {
 <a href=#208 id=208 data-nosnippet>208</a>                <span class="kw">impl </span>#impl_generics #glib::variant::StaticVariantType <span class="kw">for </span>#ident #type_generics #where_clause {
 <a href=#209 id=209 data-nosnippet>209</a>                    <span class="attr">#[inline]
 <a href=#210 id=210 data-nosnippet>210</a>                    </span><span class="kw">fn </span>static_variant_type() -&gt; ::std::borrow::Cow&lt;<span class="lifetime">'static</span>, #glib::VariantTy&gt; {
@@ -286,7 +286,7 @@
 <a href=#213 id=213 data-nosnippet>213</a>                }
 <a href=#214 id=214 data-nosnippet>214</a>            };
 <a href=#215 id=215 data-nosnippet>215</a>
-<a href=#216 id=216 data-nosnippet>216</a>            <span class="kw">let </span>to_variant = <a class="macro" href="https://docs.rs/quote/1.0.39/quote/macro.quote.html">quote!</a> {
+<a href=#216 id=216 data-nosnippet>216</a>            <span class="kw">let </span>to_variant = <a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a> {
 <a href=#217 id=217 data-nosnippet>217</a>                <span class="kw">impl </span>#impl_generics #glib::variant::ToVariant <span class="kw">for </span>#ident #type_generics #where_clause {
 <a href=#218 id=218 data-nosnippet>218</a>                    <span class="attr">#[inline]
 <a href=#219 id=219 data-nosnippet>219</a>                    </span><span class="kw">fn </span>to_variant(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; #glib::Variant {
@@ -302,7 +302,7 @@
 <a href=#229 id=229 data-nosnippet>229</a>                }
 <a href=#230 id=230 data-nosnippet>230</a>            };
 <a href=#231 id=231 data-nosnippet>231</a>
-<a href=#232 id=232 data-nosnippet>232</a>            <span class="kw">let </span>from_variant = <a class="macro" href="https://docs.rs/quote/1.0.39/quote/macro.quote.html">quote!</a> {
+<a href=#232 id=232 data-nosnippet>232</a>            <span class="kw">let </span>from_variant = <a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a> {
 <a href=#233 id=233 data-nosnippet>233</a>                <span class="kw">impl </span>#impl_generics #glib::variant::FromVariant <span class="kw">for </span>#ident #type_generics #where_clause {
 <a href=#234 id=234 data-nosnippet>234</a>                    <span class="kw">fn </span>from_variant(variant: <span class="kw-2">&amp;</span>#glib::Variant) -&gt; ::core::option::Option&lt;<span class="self">Self</span>&gt; {
 <a href=#235 id=235 data-nosnippet>235</a>                        ::core::option::Option::Some(<span class="self">Self</span>)
@@ -314,7 +314,7 @@
 <a href=#241 id=241 data-nosnippet>241</a>        }
 <a href=#242 id=242 data-nosnippet>242</a>    };
 <a href=#243 id=243 data-nosnippet>243</a>
-<a href=#244 id=244 data-nosnippet>244</a>    <a class="macro" href="https://docs.rs/quote/1.0.39/quote/macro.quote.html">quote!</a> {
+<a href=#244 id=244 data-nosnippet>244</a>    <a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a> {
 <a href=#245 id=245 data-nosnippet>245</a>        #static_variant_type
 <a href=#246 id=246 data-nosnippet>246</a>
 <a href=#247 id=247 data-nosnippet>247</a>        #to_variant
@@ -377,9 +377,9 @@
 <a href=#304 id=304 data-nosnippet>304</a>        <span class="kw">let </span>tag = <span class="kw">match </span><span class="kw-2">&amp;</span><a href="#296">mode</a> {
 <a href=#305 id=305 data-nosnippet>305</a>            <a href="#254">EnumMode::String</a> =&gt; {
 <a href=#306 id=306 data-nosnippet>306</a>                <span class="kw">let </span>nick = ToKebabCase::to_kebab_case(<a href="#303">ident</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html#tymethod.to_string">to_string</a>().<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html#method.as_str">as_str</a>());
-<a href=#307 id=307 data-nosnippet>307</a>                <a class="macro" href="https://docs.rs/quote/1.0.39/quote/macro.quote.html">quote!</a> { #nick }
+<a href=#307 id=307 data-nosnippet>307</a>                <a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a> { #nick }
 <a href=#308 id=308 data-nosnippet>308</a>            },
-<a href=#309 id=309 data-nosnippet>309</a>            <a href="#255">EnumMode::Repr</a>(repr) =&gt; <a class="macro" href="https://docs.rs/quote/1.0.39/quote/macro.quote.html">quote!</a> { #index <span class="kw">as </span>#repr },
+<a href=#309 id=309 data-nosnippet>309</a>            <a href="#255">EnumMode::Repr</a>(repr) =&gt; <a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a> { #index <span class="kw">as </span>#repr },
 <a href=#310 id=310 data-nosnippet>310</a>            <span class="kw">_ </span>=&gt; <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.unimplemented.html">unimplemented!</a>(),
 <a href=#311 id=311 data-nosnippet>311</a>        };
 <a href=#312 id=312 data-nosnippet>312</a>        <span class="kw">if </span>!<span class="macro">matches!</span>(v.fields, syn::Fields::Unit) {
@@ -395,7 +395,7 @@
 <a href=#322 id=322 data-nosnippet>322</a>            <a href="https://docs.rs/syn/2.0.100/syn/data/enum.Fields.html#variant.Named">syn::Fields::Named</a>(FieldsNamed { named, .. }) =&gt; {
 <a href=#323 id=323 data-nosnippet>323</a>                <span class="kw">let </span>field_names = <a href="#322">named</a>.<a href="https://docs.rs/syn/2.0.100/syn/punctuated/struct.Punctuated.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|f| <a href="#323">f</a>.ident.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_ref">as_ref</a>().<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap">unwrap</a>());
 <a href=#324 id=324 data-nosnippet>324</a>                <span class="kw">let </span>field_names2 = <a href="#323">field_names</a>.<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">clone</a>();
-<a href=#325 id=325 data-nosnippet>325</a>                <a class="macro" href="https://docs.rs/quote/1.0.39/quote/macro.quote.html">quote!</a> {
+<a href=#325 id=325 data-nosnippet>325</a>                <a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a> {
 <a href=#326 id=326 data-nosnippet>326</a>                    <span class="self">Self</span>::#ident { #(#field_names),* } =&gt; #glib::variant::ToVariant::to_variant(<span class="kw-2">&amp;</span>(
 <a href=#327 id=327 data-nosnippet>327</a>                        #tag,
 <a href=#328 id=328 data-nosnippet>328</a>                        #glib::Variant::tuple_from_iter(::std::iter::IntoIterator::into_iter([
@@ -406,10 +406,10 @@
 <a href=#333 id=333 data-nosnippet>333</a>            },
 <a href=#334 id=334 data-nosnippet>334</a>            <a href="https://docs.rs/syn/2.0.100/syn/data/enum.Fields.html#variant.Unnamed">syn::Fields::Unnamed</a>(FieldsUnnamed  { unnamed, .. }) =&gt; {
 <a href=#335 id=335 data-nosnippet>335</a>                <span class="kw">let </span>field_names = <a href="#334">unnamed</a>.<a href="https://docs.rs/syn/2.0.100/syn/punctuated/struct.Punctuated.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.enumerate">enumerate</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|(i, <span class="kw">_</span>)| {
-<a href=#336 id=336 data-nosnippet>336</a>                    <a class="macro" href="https://docs.rs/quote/1.0.39/quote/macro.format_ident.html">format_ident!</a>(<span class="string">"field{}"</span>, i)
+<a href=#336 id=336 data-nosnippet>336</a>                    <a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.format_ident.html">format_ident!</a>(<span class="string">"field{}"</span>, i)
 <a href=#337 id=337 data-nosnippet>337</a>                });
 <a href=#338 id=338 data-nosnippet>338</a>                <span class="kw">let </span>field_names2 = <a href="#335">field_names</a>.<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">clone</a>();
-<a href=#339 id=339 data-nosnippet>339</a>                <a class="macro" href="https://docs.rs/quote/1.0.39/quote/macro.quote.html">quote!</a> {
+<a href=#339 id=339 data-nosnippet>339</a>                <a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a> {
 <a href=#340 id=340 data-nosnippet>340</a>                    <span class="self">Self</span>::#ident(#(#field_names),<span class="kw-2">*</span>) =&gt; #glib::variant::ToVariant::to_variant(<span class="kw-2">&amp;</span>(
 <a href=#341 id=341 data-nosnippet>341</a>                        #tag,
 <a href=#342 id=342 data-nosnippet>342</a>                        #glib::Variant::tuple_from_iter(::std::iter::IntoIterator::into_iter([
@@ -419,7 +419,7 @@
 <a href=#346 id=346 data-nosnippet>346</a>                }
 <a href=#347 id=347 data-nosnippet>347</a>            },
 <a href=#348 id=348 data-nosnippet>348</a>            <a href="https://docs.rs/syn/2.0.100/syn/data/enum.Fields.html#variant.Unit">syn::Fields::Unit</a> =&gt; {
-<a href=#349 id=349 data-nosnippet>349</a>                <a class="macro" href="https://docs.rs/quote/1.0.39/quote/macro.quote.html">quote!</a> {
+<a href=#349 id=349 data-nosnippet>349</a>                <a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a> {
 <a href=#350 id=350 data-nosnippet>350</a>                    <span class="self">Self</span>::#ident =&gt; #glib::variant::ToVariant::to_variant(<span class="kw-2">&amp;</span>(
 <a href=#351 id=351 data-nosnippet>351</a>                        #tag,
 <a href=#352 id=352 data-nosnippet>352</a>                        #glib::variant::ToVariant::to_variant(<span class="kw-2">&amp;</span>())
@@ -433,16 +433,16 @@
 <a href=#360 id=360 data-nosnippet>360</a>        <span class="kw">let </span>tag = <span class="kw">match </span><span class="kw-2">&amp;</span><a href="#296">mode</a> {
 <a href=#361 id=361 data-nosnippet>361</a>            <a href="#254">EnumMode::String</a> =&gt; {
 <a href=#362 id=362 data-nosnippet>362</a>                <span class="kw">let </span>nick = ToKebabCase::to_kebab_case(<a href="#359">field_ident</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html#tymethod.to_string">to_string</a>().<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html#method.as_str">as_str</a>());
-<a href=#363 id=363 data-nosnippet>363</a>                <a class="macro" href="https://docs.rs/quote/1.0.39/quote/macro.quote.html">quote!</a> { #nick }
+<a href=#363 id=363 data-nosnippet>363</a>                <a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a> { #nick }
 <a href=#364 id=364 data-nosnippet>364</a>            }
-<a href=#365 id=365 data-nosnippet>365</a>            <a href="#255">EnumMode::Repr</a>(repr) =&gt; <a class="macro" href="https://docs.rs/quote/1.0.39/quote/macro.quote.html">quote!</a> { #index <span class="kw">as </span>#repr },
+<a href=#365 id=365 data-nosnippet>365</a>            <a href="#255">EnumMode::Repr</a>(repr) =&gt; <a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a> { #index <span class="kw">as </span>#repr },
 <a href=#366 id=366 data-nosnippet>366</a>            <span class="kw">_ </span>=&gt; <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.unimplemented.html">unimplemented!</a>(),
 <a href=#367 id=367 data-nosnippet>367</a>        };
 <a href=#368 id=368 data-nosnippet>368</a>        <span class="kw">match </span><span class="kw-2">&amp;</span><a href="#358">v</a>.fields {
 <a href=#369 id=369 data-nosnippet>369</a>            <a href="https://docs.rs/syn/2.0.100/syn/data/enum.Fields.html#variant.Named">syn::Fields::Named</a>(FieldsNamed { named, .. }) =&gt; {
 <a href=#370 id=370 data-nosnippet>370</a>                <span class="kw">let </span>field_names = <a href="#369">named</a>.<a href="https://docs.rs/syn/2.0.100/syn/punctuated/struct.Punctuated.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|f| <a href="#370">f</a>.ident.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_ref">as_ref</a>().<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap">unwrap</a>());
 <a href=#371 id=371 data-nosnippet>371</a>                <span class="kw">let </span>field_names2 = <a href="#370">field_names</a>.<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">clone</a>();
-<a href=#372 id=372 data-nosnippet>372</a>                <a class="macro" href="https://docs.rs/quote/1.0.39/quote/macro.quote.html">quote!</a> {
+<a href=#372 id=372 data-nosnippet>372</a>                <a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a> {
 <a href=#373 id=373 data-nosnippet>373</a>                    #ident::#field_ident { #(#field_names),* } =&gt; #glib::variant::ToVariant::to_variant(<span class="kw-2">&amp;</span>(
 <a href=#374 id=374 data-nosnippet>374</a>                        #tag,
 <a href=#375 id=375 data-nosnippet>375</a>                        #glib::Variant::tuple_from_iter(::std::iter::IntoIterator::into_iter([
@@ -455,9 +455,9 @@
 <a href=#382 id=382 data-nosnippet>382</a>                <span class="kw">let </span>field_names = <a href="#381">unnamed</a>
 <a href=#383 id=383 data-nosnippet>383</a>                    .<a href="https://docs.rs/syn/2.0.100/syn/punctuated/struct.Punctuated.html#method.iter">iter</a>()
 <a href=#384 id=384 data-nosnippet>384</a>                    .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.enumerate">enumerate</a>()
-<a href=#385 id=385 data-nosnippet>385</a>                    .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|(i, <span class="kw">_</span>)| <a class="macro" href="https://docs.rs/quote/1.0.39/quote/macro.format_ident.html">format_ident!</a>(<span class="string">"field{}"</span>, i));
+<a href=#385 id=385 data-nosnippet>385</a>                    .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|(i, <span class="kw">_</span>)| <a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.format_ident.html">format_ident!</a>(<span class="string">"field{}"</span>, i));
 <a href=#386 id=386 data-nosnippet>386</a>                <span class="kw">let </span>field_names2 = <a href="#382">field_names</a>.<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">clone</a>();
-<a href=#387 id=387 data-nosnippet>387</a>                <a class="macro" href="https://docs.rs/quote/1.0.39/quote/macro.quote.html">quote!</a> {
+<a href=#387 id=387 data-nosnippet>387</a>                <a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a> {
 <a href=#388 id=388 data-nosnippet>388</a>                    #ident::#field_ident(#(#field_names),<span class="kw-2">*</span>) =&gt; #glib::variant::ToVariant::to_variant(<span class="kw-2">&amp;</span>(
 <a href=#389 id=389 data-nosnippet>389</a>                        #tag,
 <a href=#390 id=390 data-nosnippet>390</a>                        #glib::Variant::tuple_from_iter(::std::iter::IntoIterator::into_iter([
@@ -467,7 +467,7 @@
 <a href=#394 id=394 data-nosnippet>394</a>                }
 <a href=#395 id=395 data-nosnippet>395</a>            }
 <a href=#396 id=396 data-nosnippet>396</a>            <a href="https://docs.rs/syn/2.0.100/syn/data/enum.Fields.html#variant.Unit">syn::Fields::Unit</a> =&gt; {
-<a href=#397 id=397 data-nosnippet>397</a>                <a class="macro" href="https://docs.rs/quote/1.0.39/quote/macro.quote.html">quote!</a> {
+<a href=#397 id=397 data-nosnippet>397</a>                <a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a> {
 <a href=#398 id=398 data-nosnippet>398</a>                    #ident::#field_ident =&gt; #glib::variant::ToVariant::to_variant(<span class="kw-2">&amp;</span>(
 <a href=#399 id=399 data-nosnippet>399</a>                        #tag,
 <a href=#400 id=400 data-nosnippet>400</a>                        #glib::variant::ToVariant::to_variant(<span class="kw-2">&amp;</span>())
@@ -481,9 +481,9 @@
 <a href=#408 id=408 data-nosnippet>408</a>        <span class="kw">let </span>tag = <span class="kw">match </span><span class="kw-2">&amp;</span><a href="#296">mode</a> {
 <a href=#409 id=409 data-nosnippet>409</a>            <a href="#254">EnumMode::String</a> =&gt; {
 <a href=#410 id=410 data-nosnippet>410</a>                <span class="kw">let </span>nick = ToKebabCase::to_kebab_case(<a href="#407">ident</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html#tymethod.to_string">to_string</a>().<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html#method.as_str">as_str</a>());
-<a href=#411 id=411 data-nosnippet>411</a>                <a class="macro" href="https://docs.rs/quote/1.0.39/quote/macro.quote.html">quote!</a> { #nick }
+<a href=#411 id=411 data-nosnippet>411</a>                <a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a> { #nick }
 <a href=#412 id=412 data-nosnippet>412</a>            }
-<a href=#413 id=413 data-nosnippet>413</a>            <a href="#255">EnumMode::Repr</a>(<span class="kw">_</span>) =&gt; <a class="macro" href="https://docs.rs/quote/1.0.39/quote/macro.quote.html">quote!</a> { #index },
+<a href=#413 id=413 data-nosnippet>413</a>            <a href="#255">EnumMode::Repr</a>(<span class="kw">_</span>) =&gt; <a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a> { #index },
 <a href=#414 id=414 data-nosnippet>414</a>            <span class="kw">_ </span>=&gt; <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.unimplemented.html">unimplemented!</a>(),
 <a href=#415 id=415 data-nosnippet>415</a>        };
 <a href=#416 id=416 data-nosnippet>416</a>        <span class="kw">match </span><span class="kw-2">&amp;</span><a href="#406">v</a>.fields {
@@ -491,18 +491,18 @@
 <a href=#418 id=418 data-nosnippet>418</a>                <span class="kw">let </span>fields = <a href="#417">named</a>.<a href="https://docs.rs/syn/2.0.100/syn/punctuated/struct.Punctuated.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.enumerate">enumerate</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|(index, f)| {
 <a href=#419 id=419 data-nosnippet>419</a>                    <span class="kw">let </span>name = <a href="#418">f</a>.ident.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_ref">as_ref</a>().<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap">unwrap</a>();
 <a href=#420 id=420 data-nosnippet>420</a>                    <span class="kw">let </span>repr = <span class="kw-2">&amp;</span><a href="#418">f</a>.ty;
-<a href=#421 id=421 data-nosnippet>421</a>                    <a class="macro" href="https://docs.rs/quote/1.0.39/quote/macro.quote.html">quote!</a> {
+<a href=#421 id=421 data-nosnippet>421</a>                    <a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a> {
 <a href=#422 id=422 data-nosnippet>422</a>                        #name: &lt;#repr <span class="kw">as </span>#glib::variant::FromVariant&gt;::from_variant(
 <a href=#423 id=423 data-nosnippet>423</a>                            <span class="kw-2">&amp;</span>#glib::Variant::try_child_value(<span class="kw-2">&amp;</span>value, #index)<span class="question-mark">?
 <a href=#424 id=424 data-nosnippet>424</a>                        </span>)<span class="question-mark">?
 <a href=#425 id=425 data-nosnippet>425</a>                    </span>}
 <a href=#426 id=426 data-nosnippet>426</a>                });
-<a href=#427 id=427 data-nosnippet>427</a>                <a class="macro" href="https://docs.rs/quote/1.0.39/quote/macro.quote.html">quote!</a> { #tag =&gt; ::core::option::Option::Some(<span class="self">Self</span>::#ident { #(#fields),* }), }
+<a href=#427 id=427 data-nosnippet>427</a>                <a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a> { #tag =&gt; ::core::option::Option::Some(<span class="self">Self</span>::#ident { #(#fields),* }), }
 <a href=#428 id=428 data-nosnippet>428</a>            }
 <a href=#429 id=429 data-nosnippet>429</a>            <a href="https://docs.rs/syn/2.0.100/syn/data/enum.Fields.html#variant.Unnamed">syn::Fields::Unnamed</a>(FieldsUnnamed { unnamed, .. }) =&gt; {
 <a href=#430 id=430 data-nosnippet>430</a>                <span class="kw">let </span>indices = <span class="number">0</span>..<a href="#429">unnamed</a>.<a href="https://docs.rs/syn/2.0.100/syn/punctuated/struct.Punctuated.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.count">count</a>();
 <a href=#431 id=431 data-nosnippet>431</a>                <span class="kw">let </span>repr = <a href="#429">unnamed</a>.<a href="https://docs.rs/syn/2.0.100/syn/punctuated/struct.Punctuated.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|f| <span class="kw-2">&amp;</span><a href="#431">f</a>.ty);
-<a href=#432 id=432 data-nosnippet>432</a>                <a class="macro" href="https://docs.rs/quote/1.0.39/quote/macro.quote.html">quote!</a> {
+<a href=#432 id=432 data-nosnippet>432</a>                <a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a> {
 <a href=#433 id=433 data-nosnippet>433</a>                    #tag =&gt; ::core::option::Option::Some(<span class="self">Self</span>::#ident(
 <a href=#434 id=434 data-nosnippet>434</a>                        #(
 <a href=#435 id=435 data-nosnippet>435</a>                            &lt;#repr <span class="kw">as </span>#glib::variant::FromVariant&gt;::from_variant(
@@ -513,18 +513,18 @@
 <a href=#440 id=440 data-nosnippet>440</a>                }
 <a href=#441 id=441 data-nosnippet>441</a>            }
 <a href=#442 id=442 data-nosnippet>442</a>            <a href="https://docs.rs/syn/2.0.100/syn/data/enum.Fields.html#variant.Unit">syn::Fields::Unit</a> =&gt; {
-<a href=#443 id=443 data-nosnippet>443</a>                <a class="macro" href="https://docs.rs/quote/1.0.39/quote/macro.quote.html">quote!</a> { #tag =&gt; ::core::option::Option::Some(<span class="self">Self</span>::#ident), }
+<a href=#443 id=443 data-nosnippet>443</a>                <a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a> { #tag =&gt; ::core::option::Option::Some(<span class="self">Self</span>::#ident), }
 <a href=#444 id=444 data-nosnippet>444</a>            }
 <a href=#445 id=445 data-nosnippet>445</a>        }
 <a href=#446 id=446 data-nosnippet>446</a>    });
 <a href=#447 id=447 data-nosnippet>447</a>
 <a href=#448 id=448 data-nosnippet>448</a>    <span class="kw">let </span>(repr, tag_match) = <span class="kw">match </span><span class="kw-2">&amp;</span><a href="#296">mode</a> {
-<a href=#449 id=449 data-nosnippet>449</a>        <a href="#254">EnumMode::String</a> =&gt; (<a class="macro" href="https://docs.rs/quote/1.0.39/quote/macro.quote.html">quote!</a> { String }, <a class="macro" href="https://docs.rs/quote/1.0.39/quote/macro.quote.html">quote!</a> { tag.as_str() }),
-<a href=#450 id=450 data-nosnippet>450</a>        <a href="#255">EnumMode::Repr</a>(repr) =&gt; (<a class="macro" href="https://docs.rs/quote/1.0.39/quote/macro.quote.html">quote!</a> { #repr }, <a class="macro" href="https://docs.rs/quote/1.0.39/quote/macro.quote.html">quote!</a> { tag <span class="kw">as </span>usize }),
+<a href=#449 id=449 data-nosnippet>449</a>        <a href="#254">EnumMode::String</a> =&gt; (<a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a> { String }, <a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a> { tag.as_str() }),
+<a href=#450 id=450 data-nosnippet>450</a>        <a href="#255">EnumMode::Repr</a>(repr) =&gt; (<a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a> { #repr }, <a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a> { tag <span class="kw">as </span>usize }),
 <a href=#451 id=451 data-nosnippet>451</a>        <span class="kw">_ </span>=&gt; <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.unimplemented.html">unimplemented!</a>(),
 <a href=#452 id=452 data-nosnippet>452</a>    };
 <a href=#453 id=453 data-nosnippet>453</a>
-<a href=#454 id=454 data-nosnippet>454</a>    <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(<a class="macro" href="https://docs.rs/quote/1.0.39/quote/macro.quote.html">quote!</a> {
+<a href=#454 id=454 data-nosnippet>454</a>    <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(<a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a> {
 <a href=#455 id=455 data-nosnippet>455</a>        <span class="kw">impl </span>#impl_generics #glib::variant::StaticVariantType <span class="kw">for </span>#ident #type_generics #where_clause {
 <a href=#456 id=456 data-nosnippet>456</a>            <span class="attr">#[inline]
 <a href=#457 id=457 data-nosnippet>457</a>            </span><span class="kw">fn </span>static_variant_type() -&gt; ::std::borrow::Cow&lt;<span class="lifetime">'static</span>, #glib::VariantTy&gt; {
@@ -582,17 +582,17 @@
 <a href=#509 id=509 data-nosnippet>509</a>            <span class="kw">let </span>idents = <a href="#500">data_enum</a>.variants.<a href="https://docs.rs/syn/2.0.100/syn/punctuated/struct.Punctuated.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|v| <span class="kw-2">&amp;</span><a href="#509">v</a>.ident);
 <a href=#510 id=510 data-nosnippet>510</a>            <span class="kw">let </span>nicks = <a href="#500">data_enum</a>.variants.<a href="https://docs.rs/syn/2.0.100/syn/punctuated/struct.Punctuated.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|v| {
 <a href=#511 id=511 data-nosnippet>511</a>                <span class="kw">let </span>nick = ToKebabCase::to_kebab_case(<a href="#510">v</a>.ident.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html#tymethod.to_string">to_string</a>().<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html#method.as_str">as_str</a>());
-<a href=#512 id=512 data-nosnippet>512</a>                <a class="macro" href="https://docs.rs/quote/1.0.39/quote/macro.quote.html">quote!</a> { #nick }
+<a href=#512 id=512 data-nosnippet>512</a>                <a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a> { #nick }
 <a href=#513 id=513 data-nosnippet>513</a>            });
 <a href=#514 id=514 data-nosnippet>514</a>            <span class="kw">let </span>idents2 = <a href="#509">idents</a>.<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">clone</a>();
 <a href=#515 id=515 data-nosnippet>515</a>            <span class="kw">let </span>nicks2 = <a href="#510">nicks</a>.<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">clone</a>();
 <a href=#516 id=516 data-nosnippet>516</a>            (
-<a href=#517 id=517 data-nosnippet>517</a>                <a class="macro" href="https://docs.rs/quote/1.0.39/quote/macro.quote.html">quote!</a> {
+<a href=#517 id=517 data-nosnippet>517</a>                <a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a> {
 <a href=#518 id=518 data-nosnippet>518</a>                    #glib::variant::ToVariant::to_variant(<span class="kw">match </span><span class="self">self </span>{
 <a href=#519 id=519 data-nosnippet>519</a>                        #(<span class="self">Self</span>::#idents =&gt; #nicks),*
 <a href=#520 id=520 data-nosnippet>520</a>                    })
 <a href=#521 id=521 data-nosnippet>521</a>                },
-<a href=#522 id=522 data-nosnippet>522</a>                <a class="macro" href="https://docs.rs/quote/1.0.39/quote/macro.quote.html">quote!</a> {
+<a href=#522 id=522 data-nosnippet>522</a>                <a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a> {
 <a href=#523 id=523 data-nosnippet>523</a>                    <span class="kw">let </span>tag = #glib::Variant::str(<span class="kw-2">&amp;</span>variant)<span class="question-mark">?</span>;
 <a href=#524 id=524 data-nosnippet>524</a>                    <span class="kw">match </span>tag {
 <a href=#525 id=525 data-nosnippet>525</a>                        #(#nicks2 =&gt; ::core::option::Option::Some(<span class="self">Self</span>::#idents2),)*
@@ -604,10 +604,10 @@
 <a href=#531 id=531 data-nosnippet>531</a>        <a href="#255">EnumMode::Repr</a>(repr) =&gt; {
 <a href=#532 id=532 data-nosnippet>532</a>            <span class="kw">let </span>idents = <a href="#500">data_enum</a>.variants.<a href="https://docs.rs/syn/2.0.100/syn/punctuated/struct.Punctuated.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|v| <span class="kw-2">&amp;</span><a href="#532">v</a>.ident);
 <a href=#533 id=533 data-nosnippet>533</a>            (
-<a href=#534 id=534 data-nosnippet>534</a>                <a class="macro" href="https://docs.rs/quote/1.0.39/quote/macro.quote.html">quote!</a> {
+<a href=#534 id=534 data-nosnippet>534</a>                <a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a> {
 <a href=#535 id=535 data-nosnippet>535</a>                    #glib::variant::ToVariant::to_variant(<span class="kw-2">&amp;</span>(<span class="kw-2">*</span><span class="self">self </span><span class="kw">as </span>#repr))
 <a href=#536 id=536 data-nosnippet>536</a>                },
-<a href=#537 id=537 data-nosnippet>537</a>                <a class="macro" href="https://docs.rs/quote/1.0.39/quote/macro.quote.html">quote!</a> {
+<a href=#537 id=537 data-nosnippet>537</a>                <a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a> {
 <a href=#538 id=538 data-nosnippet>538</a>                    <span class="kw">let </span>value = &lt;#repr <span class="kw">as </span>#glib::variant::FromVariant&gt;::from_variant(<span class="kw-2">&amp;</span>variant)<span class="question-mark">?</span>;
 <a href=#539 id=539 data-nosnippet>539</a>                    #(<span class="kw">if </span>value == <span class="self">Self</span>::#idents <span class="kw">as </span>#repr {
 <a href=#540 id=540 data-nosnippet>540</a>                        <span class="kw">return </span>::core::option::Option::Some(<span class="self">Self</span>::#idents);
@@ -617,16 +617,16 @@
 <a href=#544 id=544 data-nosnippet>544</a>            )
 <a href=#545 id=545 data-nosnippet>545</a>        }
 <a href=#546 id=546 data-nosnippet>546</a>        <a href="#256">EnumMode::Enum</a> { repr: <span class="bool-val">true </span>} =&gt; (
-<a href=#547 id=547 data-nosnippet>547</a>            <a class="macro" href="https://docs.rs/quote/1.0.39/quote/macro.quote.html">quote!</a> {
+<a href=#547 id=547 data-nosnippet>547</a>            <a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a> {
 <a href=#548 id=548 data-nosnippet>548</a>                #glib::variant::ToVariant::to_variant(<span class="kw-2">&amp;</span>(<span class="kw-2">*</span><span class="self">self </span><span class="kw">as </span>i32))
 <a href=#549 id=549 data-nosnippet>549</a>            },
-<a href=#550 id=550 data-nosnippet>550</a>            <a class="macro" href="https://docs.rs/quote/1.0.39/quote/macro.quote.html">quote!</a> {
+<a href=#550 id=550 data-nosnippet>550</a>            <a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a> {
 <a href=#551 id=551 data-nosnippet>551</a>                <span class="kw">let </span>value = &lt;i32 <span class="kw">as </span>#glib::variant::FromVariant&gt;::from_variant(<span class="kw-2">&amp;</span>variant)<span class="question-mark">?</span>;
 <a href=#552 id=552 data-nosnippet>552</a>                <span class="kw">unsafe </span>{ #glib::translate::try_from_glib(value) }.ok()
 <a href=#553 id=553 data-nosnippet>553</a>            },
 <a href=#554 id=554 data-nosnippet>554</a>        ),
 <a href=#555 id=555 data-nosnippet>555</a>        <a href="#256">EnumMode::Enum</a> { repr: <span class="bool-val">false </span>} =&gt; (
-<a href=#556 id=556 data-nosnippet>556</a>            <a class="macro" href="https://docs.rs/quote/1.0.39/quote/macro.quote.html">quote!</a> {
+<a href=#556 id=556 data-nosnippet>556</a>            <a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a> {
 <a href=#557 id=557 data-nosnippet>557</a>                <span class="kw">let </span>enum_class = #glib::EnumClass::new::&lt;<span class="self">Self</span>&gt;();
 <a href=#558 id=558 data-nosnippet>558</a>                <span class="kw">let </span>value = &lt;<span class="self">Self </span><span class="kw">as </span>#glib::translate::IntoGlib&gt;::into_glib(<span class="kw-2">*</span><span class="self">self</span>);
 <a href=#559 id=559 data-nosnippet>559</a>                <span class="kw">let </span>value = #glib::EnumClass::value(<span class="kw-2">&amp;</span>enum_class, value);
@@ -634,7 +634,7 @@
 <a href=#561 id=561 data-nosnippet>561</a>                <span class="kw">let </span>nick = #glib::EnumValue::nick(<span class="kw-2">&amp;</span>value);
 <a href=#562 id=562 data-nosnippet>562</a>                #glib::variant::ToVariant::to_variant(nick)
 <a href=#563 id=563 data-nosnippet>563</a>            },
-<a href=#564 id=564 data-nosnippet>564</a>            <a class="macro" href="https://docs.rs/quote/1.0.39/quote/macro.quote.html">quote!</a> {
+<a href=#564 id=564 data-nosnippet>564</a>            <a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a> {
 <a href=#565 id=565 data-nosnippet>565</a>                <span class="kw">let </span>enum_class = #glib::EnumClass::new::&lt;<span class="self">Self</span>&gt;();
 <a href=#566 id=566 data-nosnippet>566</a>                <span class="kw">let </span>tag = #glib::Variant::str(<span class="kw-2">&amp;</span>variant)<span class="question-mark">?</span>;
 <a href=#567 id=567 data-nosnippet>567</a>                <span class="kw">let </span>value = #glib::EnumClass::value_by_nick(<span class="kw-2">&amp;</span>enum_class, tag)<span class="question-mark">?</span>;
@@ -643,22 +643,22 @@
 <a href=#570 id=570 data-nosnippet>570</a>            },
 <a href=#571 id=571 data-nosnippet>571</a>        ),
 <a href=#572 id=572 data-nosnippet>572</a>        <a href="#257">EnumMode::Flags</a> { repr: <span class="bool-val">true </span>} =&gt; (
-<a href=#573 id=573 data-nosnippet>573</a>            <a class="macro" href="https://docs.rs/quote/1.0.39/quote/macro.quote.html">quote!</a> {
+<a href=#573 id=573 data-nosnippet>573</a>            <a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a> {
 <a href=#574 id=574 data-nosnippet>574</a>                #glib::variant::ToVariant::to_variant(<span class="kw-2">&amp;</span><span class="self">self</span>.bits())
 <a href=#575 id=575 data-nosnippet>575</a>            },
-<a href=#576 id=576 data-nosnippet>576</a>            <a class="macro" href="https://docs.rs/quote/1.0.39/quote/macro.quote.html">quote!</a> {
+<a href=#576 id=576 data-nosnippet>576</a>            <a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a> {
 <a href=#577 id=577 data-nosnippet>577</a>                <span class="kw">let </span>value = &lt;u32 <span class="kw">as </span>#glib::variant::FromVariant&gt;::from_variant(<span class="kw-2">&amp;</span>variant)<span class="question-mark">?</span>;
 <a href=#578 id=578 data-nosnippet>578</a>                <span class="self">Self</span>::from_bits(value)
 <a href=#579 id=579 data-nosnippet>579</a>            },
 <a href=#580 id=580 data-nosnippet>580</a>        ),
 <a href=#581 id=581 data-nosnippet>581</a>        <a href="#257">EnumMode::Flags</a> { repr: <span class="bool-val">false </span>} =&gt; (
-<a href=#582 id=582 data-nosnippet>582</a>            <a class="macro" href="https://docs.rs/quote/1.0.39/quote/macro.quote.html">quote!</a> {
+<a href=#582 id=582 data-nosnippet>582</a>            <a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a> {
 <a href=#583 id=583 data-nosnippet>583</a>                <span class="kw">let </span>flags_class = #glib::FlagsClass::new::&lt;<span class="self">Self</span>&gt;();
 <a href=#584 id=584 data-nosnippet>584</a>                <span class="kw">let </span>value = &lt;<span class="self">Self </span><span class="kw">as </span>#glib::translate::IntoGlib&gt;::into_glib(<span class="kw-2">*</span><span class="self">self</span>);
 <a href=#585 id=585 data-nosnippet>585</a>                <span class="kw">let </span>s = #glib::FlagsClass::to_nick_string(<span class="kw-2">&amp;</span>flags_class, value);
 <a href=#586 id=586 data-nosnippet>586</a>                #glib::variant::ToVariant::to_variant(<span class="kw-2">&amp;</span>s)
 <a href=#587 id=587 data-nosnippet>587</a>            },
-<a href=#588 id=588 data-nosnippet>588</a>            <a class="macro" href="https://docs.rs/quote/1.0.39/quote/macro.quote.html">quote!</a> {
+<a href=#588 id=588 data-nosnippet>588</a>            <a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a> {
 <a href=#589 id=589 data-nosnippet>589</a>                <span class="kw">let </span>flags_class = #glib::FlagsClass::new::&lt;<span class="self">Self</span>&gt;();
 <a href=#590 id=590 data-nosnippet>590</a>                <span class="kw">let </span>s = #glib::Variant::str(<span class="kw-2">&amp;</span>variant)<span class="question-mark">?</span>;
 <a href=#591 id=591 data-nosnippet>591</a>                <span class="kw">let </span>value = #glib::FlagsClass::from_nick_string(<span class="kw-2">&amp;</span>flags_class, s).ok()<span class="question-mark">?</span>;
@@ -667,7 +667,7 @@
 <a href=#594 id=594 data-nosnippet>594</a>        ),
 <a href=#595 id=595 data-nosnippet>595</a>    };
 <a href=#596 id=596 data-nosnippet>596</a>
-<a href=#597 id=597 data-nosnippet>597</a>    <a class="macro" href="https://docs.rs/quote/1.0.39/quote/macro.quote.html">quote!</a> {
+<a href=#597 id=597 data-nosnippet>597</a>    <a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a> {
 <a href=#598 id=598 data-nosnippet>598</a>        <span class="kw">impl </span>#impl_generics #glib::variant::StaticVariantType <span class="kw">for </span>#ident #type_generics #where_clause {
 <a href=#599 id=599 data-nosnippet>599</a>            <span class="attr">#[inline]
 <a href=#600 id=600 data-nosnippet>600</a>            </span><span class="kw">fn </span>static_variant_type() -&gt; ::std::borrow::Cow&lt;<span class="lifetime">'static</span>, #glib::VariantTy&gt; {
