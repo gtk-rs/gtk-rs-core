@@ -1040,6 +1040,18 @@ impl std::hash::Hash for GStringPtr {
     }
 }
 
+impl<T: AsRef<str>> From<T> for GStringPtr {
+    fn from(value: T) -> Self {
+        unsafe {
+            let value = value.as_ref();
+            GStringPtr(ptr::NonNull::new_unchecked(ffi::g_strndup(
+                value.as_ptr() as *const _,
+                value.len(),
+            )))
+        }
+    }
+}
+
 // size_of::<Inner>() minus two bytes for length and enum discriminant
 const INLINE_LEN: usize =
     mem::size_of::<Option<Box<str>>>() + mem::size_of::<usize>() - mem::size_of::<u8>() * 2;
