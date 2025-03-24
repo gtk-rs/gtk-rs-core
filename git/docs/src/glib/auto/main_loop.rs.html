@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/auto/main_loop.rs`."><title>main_loop.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-916cea96.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.87.0-nightly (b48576b4d 2025-03-22)" data-channel="nightly" data-search-js="search-e7298875.js" data-settings-js="settings-d72f25bb.js" ><script src="../../../static.files/storage-d8ac8691.js"></script><script defer src="../../../static.files/src-script-b8d3f215.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-fb8c74a8.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/auto/main_loop.rs`."><title>main_loop.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-916cea96.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.87.0-nightly (aa8f0fd71 2025-03-23)" data-channel="nightly" data-search-js="search-e7298875.js" data-settings-js="settings-d72f25bb.js" ><script src="../../../static.files/storage-82c7156e.js"></script><script defer src="../../../static.files/src-script-63605ae7.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-fb8c74a8.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -75,7 +75,7 @@
 <a href=#2 id=2 data-nosnippet>2</a>// from gir-files (https://github.com/gtk-rs/gir-files)
 <a href=#3 id=3 data-nosnippet>3</a>// DO NOT EDIT
 <a href=#4 id=4 data-nosnippet>4</a>
-<a href=#5 id=5 data-nosnippet>5</a></span><span class="kw">use crate</span>::{<a href="../../../glib_sys/index.html">ffi</a>, <a href="../lib.rs.html#164">translate</a>::<span class="kw-2">*</span>, <a href="main_context.rs.html#10-24">MainContext</a>};
+<a href=#5 id=5 data-nosnippet>5</a></span><span class="kw">use crate</span>::{ffi, <a href="../lib.rs.html#164">translate</a>::<span class="kw-2">*</span>, <a href="main_context.rs.html#10-24">MainContext</a>};
 <a href=#6 id=6 data-nosnippet>6</a>
 <a href=#7 id=7 data-nosnippet>7</a><a class="macro" href="../wrapper.rs.html#276-443">crate::wrapper!</a> {
 <a href=#8 id=8 data-nosnippet>8</a>    <span class="doccomment">/// The `GMainLoop` struct is an opaque data type
@@ -84,7 +84,7 @@
 <a href=#11 id=11 data-nosnippet>11</a>    </span><span class="doccomment">/// The `GMainLoop` struct is an opaque data type
 <a href=#12 id=12 data-nosnippet>12</a>    /// representing the main event loop of a GLib or GTK application.
 <a href=#13 id=13 data-nosnippet>13</a>    </span><span class="attr">#[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
-<a href=#14 id=14 data-nosnippet>14</a>    </span><span class="kw">pub struct </span><a href="../../../glib/struct.MainLoop.html">MainLoop</a>(Shared&lt;<a href="../../../glib_sys/struct.GMainLoop.html">ffi::GMainLoop</a>&gt;);
+<a href=#14 id=14 data-nosnippet>14</a>    </span><span class="kw">pub struct </span><a href="../../../glib/struct.MainLoop.html">MainLoop</a>(Shared&lt;ffi::GMainLoop&gt;);
 <a href=#15 id=15 data-nosnippet>15</a>
 <a href=#16 id=16 data-nosnippet>16</a>    <span class="kw">match fn </span>{
 <a href=#17 id=17 data-nosnippet>17</a>        <span class="kw-2">ref </span>=&gt; |ptr| ffi::g_main_loop_ref(ptr),
@@ -122,7 +122,7 @@
 <a href=#49 id=49 data-nosnippet>49</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_main_loop_new"</span>)]
 <a href=#50 id=50 data-nosnippet>50</a>    </span><span class="kw">pub fn </span>new(context: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="main_context.rs.html#10-24">MainContext</a>&gt;, is_running: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>) -&gt; <a href="#7-21">MainLoop</a> {
 <a href=#51 id=51 data-nosnippet>51</a>        <span class="kw">unsafe </span>{
-<a href=#52 id=52 data-nosnippet>52</a>            <a href="../translate.rs.html#1638-1640">from_glib_full</a>(<a href="../../../glib_sys/fn.g_main_loop_new.html">ffi::g_main_loop_new</a>(
+<a href=#52 id=52 data-nosnippet>52</a>            <a href="../translate.rs.html#1638-1640">from_glib_full</a>(ffi::g_main_loop_new(
 <a href=#53 id=53 data-nosnippet>53</a>                <a href="#50">context</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
 <a href=#54 id=54 data-nosnippet>54</a>                <a href="#50">is_running</a>.<a href="../translate.rs.html#334">into_glib</a>(),
 <a href=#55 id=55 data-nosnippet>55</a>            ))
@@ -143,7 +143,7 @@
 <a href=#70 id=70 data-nosnippet>70</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_main_loop_get_context"</span>)]
 <a href=#71 id=71 data-nosnippet>71</a>    #[doc(alias = <span class="string">"get_context"</span>)]
 <a href=#72 id=72 data-nosnippet>72</a>    </span><span class="kw">pub fn </span>context(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="main_context.rs.html#10-24">MainContext</a> {
-<a href=#73 id=73 data-nosnippet>73</a>        <span class="kw">unsafe </span>{ <a href="../translate.rs.html#1629-1631">from_glib_none</a>(<a href="../../../glib_sys/fn.g_main_loop_get_context.html">ffi::g_main_loop_get_context</a>(<a class="self" href="#72">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>)) }
+<a href=#73 id=73 data-nosnippet>73</a>        <span class="kw">unsafe </span>{ <a href="../translate.rs.html#1629-1631">from_glib_none</a>(ffi::g_main_loop_get_context(<a class="self" href="#72">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>)) }
 <a href=#74 id=74 data-nosnippet>74</a>    }
 <a href=#75 id=75 data-nosnippet>75</a>
 <a href=#76 id=76 data-nosnippet>76</a>    <span class="doccomment">/// Checks to see if the main loop is currently being run via
@@ -161,7 +161,7 @@
 <a href=#88 id=88 data-nosnippet>88</a>    /// [`true`] if the mainloop is currently being run.
 <a href=#89 id=89 data-nosnippet>89</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_main_loop_is_running"</span>)]
 <a href=#90 id=90 data-nosnippet>90</a>    </span><span class="kw">pub fn </span>is_running(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
-<a href=#91 id=91 data-nosnippet>91</a>        <span class="kw">unsafe </span>{ <a href="../translate.rs.html#1421-1423">from_glib</a>(<a href="../../../glib_sys/fn.g_main_loop_is_running.html">ffi::g_main_loop_is_running</a>(<a class="self" href="#90">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>)) }
+<a href=#91 id=91 data-nosnippet>91</a>        <span class="kw">unsafe </span>{ <a href="../translate.rs.html#1421-1423">from_glib</a>(ffi::g_main_loop_is_running(<a class="self" href="#90">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>)) }
 <a href=#92 id=92 data-nosnippet>92</a>    }
 <a href=#93 id=93 data-nosnippet>93</a>
 <a href=#94 id=94 data-nosnippet>94</a>    <span class="doccomment">/// Stops a [`MainLoop`][crate::MainLoop] from running. Any calls to
@@ -178,7 +178,7 @@
 <a href=#105 id=105 data-nosnippet>105</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_main_loop_quit"</span>)]
 <a href=#106 id=106 data-nosnippet>106</a>    </span><span class="kw">pub fn </span>quit(<span class="kw-2">&amp;</span><span class="self">self</span>) {
 <a href=#107 id=107 data-nosnippet>107</a>        <span class="kw">unsafe </span>{
-<a href=#108 id=108 data-nosnippet>108</a>            <a href="../../../glib_sys/fn.g_main_loop_quit.html">ffi::g_main_loop_quit</a>(<a class="self" href="#106">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>);
+<a href=#108 id=108 data-nosnippet>108</a>            ffi::g_main_loop_quit(<a class="self" href="#106">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>);
 <a href=#109 id=109 data-nosnippet>109</a>        }
 <a href=#110 id=110 data-nosnippet>110</a>    }
 <a href=#111 id=111 data-nosnippet>111</a>
@@ -194,7 +194,7 @@
 <a href=#121 id=121 data-nosnippet>121</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_main_loop_run"</span>)]
 <a href=#122 id=122 data-nosnippet>122</a>    </span><span class="kw">pub fn </span>run(<span class="kw-2">&amp;</span><span class="self">self</span>) {
 <a href=#123 id=123 data-nosnippet>123</a>        <span class="kw">unsafe </span>{
-<a href=#124 id=124 data-nosnippet>124</a>            <a href="../../../glib_sys/fn.g_main_loop_run.html">ffi::g_main_loop_run</a>(<a class="self" href="#122">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>);
+<a href=#124 id=124 data-nosnippet>124</a>            ffi::g_main_loop_run(<a class="self" href="#122">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>);
 <a href=#125 id=125 data-nosnippet>125</a>        }
 <a href=#126 id=126 data-nosnippet>126</a>    }
 <a href=#127 id=127 data-nosnippet>127</a>}

@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/thread_pool.rs`."><title>thread_pool.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-916cea96.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.87.0-nightly (b48576b4d 2025-03-22)" data-channel="nightly" data-search-js="search-e7298875.js" data-settings-js="settings-d72f25bb.js" ><script src="../../static.files/storage-d8ac8691.js"></script><script defer src="../../static.files/src-script-b8d3f215.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-fb8c74a8.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/thread_pool.rs`."><title>thread_pool.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-916cea96.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.87.0-nightly (aa8f0fd71 2025-03-23)" data-channel="nightly" data-search-js="search-e7298875.js" data-settings-js="settings-d72f25bb.js" ><script src="../../static.files/storage-82c7156e.js"></script><script defer src="../../static.files/src-script-63605ae7.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-fb8c74a8.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -77,7 +77,7 @@
 <a href=#4 id=4 data-nosnippet>4</a>
 <a href=#5 id=5 data-nosnippet>5</a><span class="kw">use </span>futures_channel::oneshot;
 <a href=#6 id=6 data-nosnippet>6</a>
-<a href=#7 id=7 data-nosnippet>7</a><span class="kw">use crate</span>::{<a href="../../glib_sys/index.html">ffi</a>, <a href="lib.rs.html#164">translate</a>::<span class="kw-2">*</span>};
+<a href=#7 id=7 data-nosnippet>7</a><span class="kw">use crate</span>::{ffi, <a href="lib.rs.html#164">translate</a>::<span class="kw-2">*</span>};
 <a href=#8 id=8 data-nosnippet>8</a>
 <a href=#9 id=9 data-nosnippet>9</a><span class="doccomment">/// The `GThreadPool` struct represents a thread pool.
 <a href=#10 id=10 data-nosnippet>10</a>///
@@ -134,7 +134,7 @@
 <a href=#61 id=61 data-nosnippet>61</a>/// can be stopped by calling [`stop_unused_threads()`][Self::stop_unused_threads()].
 <a href=#62 id=62 data-nosnippet>62</a></span><span class="attr">#[derive(Debug)]
 <a href=#63 id=63 data-nosnippet>63</a>#[doc(alias = <span class="string">"GThreadPool"</span>)]
-<a href=#64 id=64 data-nosnippet>64</a></span><span class="kw">pub struct </span><a href="../../glib/struct.ThreadPool.html">ThreadPool</a>(<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html">ptr::NonNull</a>&lt;<a href="../../glib_sys/struct.GThreadPool.html">ffi::GThreadPool</a>&gt;);
+<a href=#64 id=64 data-nosnippet>64</a></span><span class="kw">pub struct </span><a href="../../glib/struct.ThreadPool.html">ThreadPool</a>(<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html">ptr::NonNull</a>&lt;ffi::GThreadPool&gt;);
 <a href=#65 id=65 data-nosnippet>65</a>
 <a href=#66 id=66 data-nosnippet>66</a><span class="kw">unsafe impl </span><a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> <span class="kw">for </span><a href="#64">ThreadPool</a> {}
 <a href=#67 id=67 data-nosnippet>67</a><span class="kw">unsafe impl </span><a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> <span class="kw">for </span><a href="#64">ThreadPool</a> {}
@@ -168,11 +168,11 @@
 <a href=#95 id=95 data-nosnippet>95</a>    </span><span class="kw">pub fn </span>shared(max_threads: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>&gt;) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<span class="self">Self</span>, <a href="error.rs.html#10-22"><span class="kw">crate</span>::Error</a>&gt; {
 <a href=#96 id=96 data-nosnippet>96</a>        <span class="kw">unsafe </span>{
 <a href=#97 id=97 data-nosnippet>97</a>            <span class="kw">let </span><span class="kw-2">mut </span>err = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
-<a href=#98 id=98 data-nosnippet>98</a>            <span class="kw">let </span>pool = <a href="../../glib_sys/fn.g_thread_pool_new.html">ffi::g_thread_pool_new</a>(
+<a href=#98 id=98 data-nosnippet>98</a>            <span class="kw">let </span>pool = ffi::g_thread_pool_new(
 <a href=#99 id=99 data-nosnippet>99</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#489-492">spawn_func</a>),
 <a href=#100 id=100 data-nosnippet>100</a>                <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>(),
 <a href=#101 id=101 data-nosnippet>101</a>                <a href="#95">max_threads</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|v| <a href="#101">v</a> <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap_or">unwrap_or</a>(-<span class="number">1</span>),
-<a href=#102 id=102 data-nosnippet>102</a>                <a href="../../glib_sys/constant.GFALSE.html">ffi::GFALSE</a>,
+<a href=#102 id=102 data-nosnippet>102</a>                ffi::GFALSE,
 <a href=#103 id=103 data-nosnippet>103</a>                <span class="kw-2">&amp;mut </span><a href="#97">err</a>,
 <a href=#104 id=104 data-nosnippet>104</a>            );
 <a href=#105 id=105 data-nosnippet>105</a>            <span class="kw">if </span>pool.is_null() {
@@ -187,11 +187,11 @@
 <a href=#114 id=114 data-nosnippet>114</a>    </span><span class="kw">pub fn </span>exclusive(max_threads: <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<span class="self">Self</span>, <a href="error.rs.html#10-22"><span class="kw">crate</span>::Error</a>&gt; {
 <a href=#115 id=115 data-nosnippet>115</a>        <span class="kw">unsafe </span>{
 <a href=#116 id=116 data-nosnippet>116</a>            <span class="kw">let </span><span class="kw-2">mut </span>err = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
-<a href=#117 id=117 data-nosnippet>117</a>            <span class="kw">let </span>pool = <a href="../../glib_sys/fn.g_thread_pool_new.html">ffi::g_thread_pool_new</a>(
+<a href=#117 id=117 data-nosnippet>117</a>            <span class="kw">let </span>pool = ffi::g_thread_pool_new(
 <a href=#118 id=118 data-nosnippet>118</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#489-492">spawn_func</a>),
 <a href=#119 id=119 data-nosnippet>119</a>                <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>(),
 <a href=#120 id=120 data-nosnippet>120</a>                <a href="#114">max_threads</a> <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
-<a href=#121 id=121 data-nosnippet>121</a>                <a href="../../glib_sys/constant.GTRUE.html">ffi::GTRUE</a>,
+<a href=#121 id=121 data-nosnippet>121</a>                ffi::GTRUE,
 <a href=#122 id=122 data-nosnippet>122</a>                <span class="kw-2">&amp;mut </span><a href="#116">err</a>,
 <a href=#123 id=123 data-nosnippet>123</a>            );
 <a href=#124 id=124 data-nosnippet>124</a>            <span class="kw">if </span>pool.is_null() {
@@ -253,7 +253,7 @@
 <a href=#180 id=180 data-nosnippet>180</a>            <span class="kw">let </span><span class="kw-2">mut </span>err = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
 <a href=#181 id=181 data-nosnippet>181</a>
 <a href=#182 id=182 data-nosnippet>182</a>            <span class="kw">let </span>func = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.into_raw">Box::into_raw</a>(<a href="#179">func</a>);
-<a href=#183 id=183 data-nosnippet>183</a>            <span class="kw">let </span>ret: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> = <a href="translate.rs.html#1421-1423">from_glib</a>(<a href="../../glib_sys/fn.g_thread_pool_push.html">ffi::g_thread_pool_push</a>(
+<a href=#183 id=183 data-nosnippet>183</a>            <span class="kw">let </span>ret: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> = <a href="translate.rs.html#1421-1423">from_glib</a>(ffi::g_thread_pool_push(
 <a href=#184 id=184 data-nosnippet>184</a>                <a class="self" href="#171">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>(),
 <a href=#185 id=185 data-nosnippet>185</a>                <a href="#182">func</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
 <a href=#186 id=186 data-nosnippet>186</a>                <span class="kw-2">&amp;mut </span><a href="#180">err</a>,
@@ -340,7 +340,7 @@
 <a href=#267 id=267 data-nosnippet>267</a>    </span><span class="kw">pub fn </span>set_max_threads(<span class="kw-2">&amp;</span><span class="self">self</span>, max_threads: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>&gt;) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(), <a href="error.rs.html#10-22"><span class="kw">crate</span>::Error</a>&gt; {
 <a href=#268 id=268 data-nosnippet>268</a>        <span class="kw">unsafe </span>{
 <a href=#269 id=269 data-nosnippet>269</a>            <span class="kw">let </span><span class="kw-2">mut </span>err = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
-<a href=#270 id=270 data-nosnippet>270</a>            <span class="kw">let </span>ret: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> = <a href="translate.rs.html#1421-1423">from_glib</a>(<a href="../../glib_sys/fn.g_thread_pool_set_max_threads.html">ffi::g_thread_pool_set_max_threads</a>(
+<a href=#270 id=270 data-nosnippet>270</a>            <span class="kw">let </span>ret: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> = <a href="translate.rs.html#1421-1423">from_glib</a>(ffi::g_thread_pool_set_max_threads(
 <a href=#271 id=271 data-nosnippet>271</a>                <a class="self" href="#267">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>(),
 <a href=#272 id=272 data-nosnippet>272</a>                <a href="#267">max_threads</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|v| <a href="#272">v</a> <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap_or">unwrap_or</a>(-<span class="number">1</span>),
 <a href=#273 id=273 data-nosnippet>273</a>                <span class="kw-2">&amp;mut </span><a href="#269">err</a>,
@@ -368,7 +368,7 @@
 <a href=#295 id=295 data-nosnippet>295</a>    #[doc(alias = <span class="string">"get_max_threads"</span>)]
 <a href=#296 id=296 data-nosnippet>296</a>    </span><span class="kw">pub fn </span>max_threads(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>&gt; {
 <a href=#297 id=297 data-nosnippet>297</a>        <span class="kw">unsafe </span>{
-<a href=#298 id=298 data-nosnippet>298</a>            <span class="kw">let </span>max_threads = <a href="../../glib_sys/fn.g_thread_pool_get_max_threads.html">ffi::g_thread_pool_get_max_threads</a>(<a class="self" href="#296">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>());
+<a href=#298 id=298 data-nosnippet>298</a>            <span class="kw">let </span>max_threads = ffi::g_thread_pool_get_max_threads(<a class="self" href="#296">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>());
 <a href=#299 id=299 data-nosnippet>299</a>            <span class="kw">if </span>max_threads == -<span class="number">1 </span>{
 <a href=#300 id=300 data-nosnippet>300</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None"><a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a>
 <a href=#301 id=301 data-nosnippet>301</a>            </a>} <span class="kw">else </span>{
@@ -391,7 +391,7 @@
 <a href=#318 id=318 data-nosnippet>318</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_thread_pool_get_num_threads"</span>)]
 <a href=#319 id=319 data-nosnippet>319</a>    #[doc(alias = <span class="string">"get_num_threads"</span>)]
 <a href=#320 id=320 data-nosnippet>320</a>    </span><span class="kw">pub fn </span>num_threads(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a> {
-<a href=#321 id=321 data-nosnippet>321</a>        <span class="kw">unsafe </span>{ <a href="../../glib_sys/fn.g_thread_pool_get_num_threads.html">ffi::g_thread_pool_get_num_threads</a>(<a class="self" href="#320">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>()) }
+<a href=#321 id=321 data-nosnippet>321</a>        <span class="kw">unsafe </span>{ ffi::g_thread_pool_get_num_threads(<a class="self" href="#320">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>()) }
 <a href=#322 id=322 data-nosnippet>322</a>    }
 <a href=#323 id=323 data-nosnippet>323</a>
 <a href=#324 id=324 data-nosnippet>324</a>    <span class="doccomment">/// Returns the number of tasks still unprocessed in @self.
@@ -408,7 +408,7 @@
 <a href=#335 id=335 data-nosnippet>335</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_thread_pool_unprocessed"</span>)]
 <a href=#336 id=336 data-nosnippet>336</a>    #[doc(alias = <span class="string">"get_unprocessed"</span>)]
 <a href=#337 id=337 data-nosnippet>337</a>    </span><span class="kw">pub fn </span>unprocessed(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a> {
-<a href=#338 id=338 data-nosnippet>338</a>        <span class="kw">unsafe </span>{ <a href="../../glib_sys/fn.g_thread_pool_unprocessed.html">ffi::g_thread_pool_unprocessed</a>(<a class="self" href="#337">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>()) }
+<a href=#338 id=338 data-nosnippet>338</a>        <span class="kw">unsafe </span>{ ffi::g_thread_pool_unprocessed(<a class="self" href="#337">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>()) }
 <a href=#339 id=339 data-nosnippet>339</a>    }
 <a href=#340 id=340 data-nosnippet>340</a>
 <a href=#341 id=341 data-nosnippet>341</a>    <span class="doccomment">/// Sets the maximal number of unused threads to @max_threads.
@@ -429,7 +429,7 @@
 <a href=#356 id=356 data-nosnippet>356</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_thread_pool_set_max_unused_threads"</span>)]
 <a href=#357 id=357 data-nosnippet>357</a>    </span><span class="kw">pub fn </span>set_max_unused_threads(max_threads: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>&gt;) {
 <a href=#358 id=358 data-nosnippet>358</a>        <span class="kw">unsafe </span>{
-<a href=#359 id=359 data-nosnippet>359</a>            <a href="../../glib_sys/fn.g_thread_pool_set_max_unused_threads.html">ffi::g_thread_pool_set_max_unused_threads</a>(<a href="#357">max_threads</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|v| <a href="#359">v</a> <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap_or">unwrap_or</a>(-<span class="number">1</span>))
+<a href=#359 id=359 data-nosnippet>359</a>            ffi::g_thread_pool_set_max_unused_threads(<a href="#357">max_threads</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|v| <a href="#359">v</a> <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap_or">unwrap_or</a>(-<span class="number">1</span>))
 <a href=#360 id=360 data-nosnippet>360</a>        }
 <a href=#361 id=361 data-nosnippet>361</a>    }
 <a href=#362 id=362 data-nosnippet>362</a>
@@ -448,7 +448,7 @@
 <a href=#375 id=375 data-nosnippet>375</a>    #[doc(alias = <span class="string">"get_max_unused_threads"</span>)]
 <a href=#376 id=376 data-nosnippet>376</a>    </span><span class="kw">pub fn </span>max_unused_threads() -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>&gt; {
 <a href=#377 id=377 data-nosnippet>377</a>        <span class="kw">unsafe </span>{
-<a href=#378 id=378 data-nosnippet>378</a>            <span class="kw">let </span>max_unused_threads = <a href="../../glib_sys/fn.g_thread_pool_get_max_unused_threads.html">ffi::g_thread_pool_get_max_unused_threads</a>();
+<a href=#378 id=378 data-nosnippet>378</a>            <span class="kw">let </span>max_unused_threads = ffi::g_thread_pool_get_max_unused_threads();
 <a href=#379 id=379 data-nosnippet>379</a>            <span class="kw">if </span>max_unused_threads == -<span class="number">1 </span>{
 <a href=#380 id=380 data-nosnippet>380</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None"><a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a>
 <a href=#381 id=381 data-nosnippet>381</a>            </a>} <span class="kw">else </span>{
@@ -471,7 +471,7 @@
 <a href=#398 id=398 data-nosnippet>398</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_thread_pool_get_num_unused_threads"</span>)]
 <a href=#399 id=399 data-nosnippet>399</a>    #[doc(alias = <span class="string">"get_num_unused_threads"</span>)]
 <a href=#400 id=400 data-nosnippet>400</a>    </span><span class="kw">pub fn </span>num_unused_threads() -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a> {
-<a href=#401 id=401 data-nosnippet>401</a>        <span class="kw">unsafe </span>{ <a href="../../glib_sys/fn.g_thread_pool_get_num_unused_threads.html">ffi::g_thread_pool_get_num_unused_threads</a>() }
+<a href=#401 id=401 data-nosnippet>401</a>        <span class="kw">unsafe </span>{ ffi::g_thread_pool_get_num_unused_threads() }
 <a href=#402 id=402 data-nosnippet>402</a>    }
 <a href=#403 id=403 data-nosnippet>403</a>
 <a href=#404 id=404 data-nosnippet>404</a>    <span class="doccomment">/// Stops all currently unused threads. This does not change the
@@ -484,7 +484,7 @@
 <a href=#411 id=411 data-nosnippet>411</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_thread_pool_stop_unused_threads"</span>)]
 <a href=#412 id=412 data-nosnippet>412</a>    </span><span class="kw">pub fn </span>stop_unused_threads() {
 <a href=#413 id=413 data-nosnippet>413</a>        <span class="kw">unsafe </span>{
-<a href=#414 id=414 data-nosnippet>414</a>            <a href="../../glib_sys/fn.g_thread_pool_stop_unused_threads.html">ffi::g_thread_pool_stop_unused_threads</a>();
+<a href=#414 id=414 data-nosnippet>414</a>            ffi::g_thread_pool_stop_unused_threads();
 <a href=#415 id=415 data-nosnippet>415</a>        }
 <a href=#416 id=416 data-nosnippet>416</a>    }
 <a href=#417 id=417 data-nosnippet>417</a>
@@ -515,7 +515,7 @@
 <a href=#442 id=442 data-nosnippet>442</a>    ///     a thread can be idle
 <a href=#443 id=443 data-nosnippet>443</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_thread_pool_set_max_idle_time"</span>)]
 <a href=#444 id=444 data-nosnippet>444</a>    </span><span class="kw">pub fn </span>set_max_idle_time(max_idle_time: <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>) {
-<a href=#445 id=445 data-nosnippet>445</a>        <span class="kw">unsafe </span>{ <a href="../../glib_sys/fn.g_thread_pool_set_max_idle_time.html">ffi::g_thread_pool_set_max_idle_time</a>(<a href="#444">max_idle_time</a>) }
+<a href=#445 id=445 data-nosnippet>445</a>        <span class="kw">unsafe </span>{ ffi::g_thread_pool_set_max_idle_time(<a href="#444">max_idle_time</a>) }
 <a href=#446 id=446 data-nosnippet>446</a>    }
 <a href=#447 id=447 data-nosnippet>447</a>
 <a href=#448 id=448 data-nosnippet>448</a>    <span class="doccomment">/// This function will return the maximum @interval that a
@@ -546,7 +546,7 @@
 <a href=#473 id=473 data-nosnippet>473</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_thread_pool_get_max_idle_time"</span>)]
 <a href=#474 id=474 data-nosnippet>474</a>    #[doc(alias = <span class="string">"get_max_idle_time"</span>)]
 <a href=#475 id=475 data-nosnippet>475</a>    </span><span class="kw">pub fn </span>max_idle_time() -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a> {
-<a href=#476 id=476 data-nosnippet>476</a>        <span class="kw">unsafe </span>{ <a href="../../glib_sys/fn.g_thread_pool_get_max_idle_time.html">ffi::g_thread_pool_get_max_idle_time</a>() }
+<a href=#476 id=476 data-nosnippet>476</a>        <span class="kw">unsafe </span>{ ffi::g_thread_pool_get_max_idle_time() }
 <a href=#477 id=477 data-nosnippet>477</a>    }
 <a href=#478 id=478 data-nosnippet>478</a>}
 <a href=#479 id=479 data-nosnippet>479</a>
@@ -554,12 +554,12 @@
 <a href=#481 id=481 data-nosnippet>481</a>    <span class="attr">#[inline]
 <a href=#482 id=482 data-nosnippet>482</a>    </span><span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
 <a href=#483 id=483 data-nosnippet>483</a>        <span class="kw">unsafe </span>{
-<a href=#484 id=484 data-nosnippet>484</a>            <a href="../../glib_sys/fn.g_thread_pool_free.html">ffi::g_thread_pool_free</a>(<a class="self" href="#482">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>(), <a href="../../glib_sys/constant.GFALSE.html">ffi::GFALSE</a>, <a href="../../glib_sys/constant.GTRUE.html">ffi::GTRUE</a>);
+<a href=#484 id=484 data-nosnippet>484</a>            ffi::g_thread_pool_free(<a class="self" href="#482">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>(), ffi::GFALSE, ffi::GTRUE);
 <a href=#485 id=485 data-nosnippet>485</a>        }
 <a href=#486 id=486 data-nosnippet>486</a>    }
 <a href=#487 id=487 data-nosnippet>487</a>}
 <a href=#488 id=488 data-nosnippet>488</a>
-<a href=#489 id=489 data-nosnippet>489</a><span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>spawn_func(func: <a href="../../glib_sys/type.gpointer.html">ffi::gpointer</a>, _data: <a href="../../glib_sys/type.gpointer.html">ffi::gpointer</a>) {
+<a href=#489 id=489 data-nosnippet>489</a><span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>spawn_func(func: ffi::gpointer, _data: ffi::gpointer) {
 <a href=#490 id=490 data-nosnippet>490</a>    <span class="kw">let </span>func: <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box</a>&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>()&gt;&gt; = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.from_raw">Box::from_raw</a>(<a href="#489">func</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
 <a href=#491 id=491 data-nosnippet>491</a>    <a href="#490">func</a>()
 <a href=#492 id=492 data-nosnippet>492</a>}
