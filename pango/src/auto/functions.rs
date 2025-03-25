@@ -12,12 +12,12 @@ use glib::translate::*;
 //#[allow(deprecated)]
 //#[doc(alias = "pango_break")]
 //#[doc(alias = "break")]
-//pub fn break_(text: &str, analysis: &mut Analysis, attrs: /*Ignored*/&[LogAttr]) {
+//pub fn break_(text: &str, analysis: &mut Analysis, attrs: /*Ignored*/Vec<LogAttr>) {
 //    unsafe { TODO: call ffi:pango_break() }
 //}
 
 //#[doc(alias = "pango_default_break")]
-//pub fn default_break(text: &str, analysis: Option<&mut Analysis>, attrs: /*Ignored*/&mut LogAttr, attrs_len: i32) {
+//pub fn default_break(text: &str, analysis: Option<&mut Analysis>, attrs: /*Ignored*/Vec<LogAttr>) {
 //    unsafe { TODO: call ffi:pango_default_break() }
 //}
 
@@ -48,7 +48,7 @@ pub fn find_paragraph_boundary(text: &str) -> (i32, i32) {
 
 //#[doc(alias = "pango_get_log_attrs")]
 //#[doc(alias = "get_log_attrs")]
-//pub fn log_attrs(text: &str, level: i32, language: &mut Language, attrs: /*Ignored*/&[LogAttr]) {
+//pub fn log_attrs(text: &str, level: i32, language: &mut Language, attrs: /*Ignored*/Vec<LogAttr>) {
 //    unsafe { TODO: call ffi:pango_get_log_attrs() }
 //}
 
@@ -246,29 +246,31 @@ pub fn quantize_line_geometry(thickness: &mut i32, position: &mut i32) {
 }
 
 #[doc(alias = "pango_shape")]
-pub fn shape(text: &str, analysis: &Analysis, glyphs: &mut GlyphString) {
+pub fn shape(text: &str, analysis: &Analysis) -> GlyphString {
     let length = text.len() as _;
     unsafe {
+        let mut glyphs = GlyphString::uninitialized();
         ffi::pango_shape(
             text.to_glib_none().0,
             length,
             analysis.to_glib_none().0,
             glyphs.to_glib_none_mut().0,
         );
+        glyphs
     }
 }
 
 //#[cfg(feature = "v1_50")]
 //#[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
 //#[doc(alias = "pango_shape_item")]
-//pub fn shape_item(item: &mut Item, paragraph_text: Option<&str>, log_attrs: /*Ignored*/Option<&mut LogAttr>, glyphs: &mut GlyphString, flags: ShapeFlags) {
+//pub fn shape_item(item: &mut Item, paragraph_text: Option<&str>, log_attrs: /*Ignored*/Option<&mut LogAttr>, flags: ShapeFlags) -> GlyphString {
 //    unsafe { TODO: call ffi:pango_shape_item() }
 //}
 
 //#[cfg(feature = "v1_44")]
 //#[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
 //#[doc(alias = "pango_tailor_break")]
-//pub fn tailor_break(text: &str, analysis: &mut Analysis, offset: i32, attrs: /*Ignored*/&[LogAttr]) {
+//pub fn tailor_break(text: &str, analysis: &mut Analysis, offset: i32, attrs: /*Ignored*/Vec<LogAttr>) {
 //    unsafe { TODO: call ffi:pango_tailor_break() }
 //}
 

@@ -250,7 +250,7 @@ pub trait SettingsExt: IsA<Settings> + 'static {
 
     //#[doc(alias = "g_settings_get_mapped")]
     //#[doc(alias = "get_mapped")]
-    //fn mapped(&self, key: &str, mapping: /*Unimplemented*/FnMut(&glib::Variant, /*Unimplemented*/Option<Basic: Pointer>) -> bool, user_data: /*Unimplemented*/Option<Basic: Pointer>) -> /*Unimplemented*/Option<Basic: Pointer> {
+    //fn mapped(&self, key: &str, mapping: /*Unimplemented*/FnMut(Option<&glib::Variant>, /*Unimplemented*/Option<Basic: Pointer>) -> bool, user_data: /*Unimplemented*/Option<Basic: Pointer>) -> /*Unimplemented*/Option<Basic: Pointer> {
     //    unsafe { TODO: call ffi:g_settings_get_mapped() }
     //}
 
