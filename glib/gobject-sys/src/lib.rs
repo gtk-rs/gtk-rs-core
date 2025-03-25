@@ -114,6 +114,8 @@ pub const G_SIGNAL_ACTION: GSignalFlags = 32;
 pub const G_SIGNAL_NO_HOOKS: GSignalFlags = 64;
 pub const G_SIGNAL_MUST_COLLECT: GSignalFlags = 128;
 pub const G_SIGNAL_DEPRECATED: GSignalFlags = 256;
+#[cfg(feature = "v2_68")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_68")))]
 pub const G_SIGNAL_ACCUMULATOR_FIRST_RUN: GSignalFlags = 131072;
 
 pub type GSignalMatchType = c_uint;

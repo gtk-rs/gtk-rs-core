@@ -18,10 +18,10 @@ glib::wrapper! {
 
 impl GlyphItem {
     #[doc(alias = "pango_glyph_item_apply_attrs")]
-    pub fn apply_attrs(&mut self, text: &str, list: &AttrList) -> Vec<GlyphItem> {
+    pub fn apply_attrs(self, text: &str, list: &AttrList) -> Vec<GlyphItem> {
         unsafe {
             FromGlibPtrContainer::from_glib_full(ffi::pango_glyph_item_apply_attrs(
-                self.to_glib_none_mut().0,
+                self.into_glib_ptr(),
                 text.to_glib_none().0,
                 list.to_glib_none().0,
             ))

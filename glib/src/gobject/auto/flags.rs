@@ -115,6 +115,8 @@ bitflags! {
         const MUST_COLLECT = crate::gobject_ffi::G_SIGNAL_MUST_COLLECT as _;
         #[doc(alias = "G_SIGNAL_DEPRECATED")]
         const DEPRECATED = crate::gobject_ffi::G_SIGNAL_DEPRECATED as _;
+        #[cfg(feature = "v2_68")]
+        #[cfg_attr(docsrs, doc(cfg(feature = "v2_68")))]
         #[doc(alias = "G_SIGNAL_ACCUMULATOR_FIRST_RUN")]
         const ACCUMULATOR_FIRST_RUN = crate::gobject_ffi::G_SIGNAL_ACCUMULATOR_FIRST_RUN as _;
     }
