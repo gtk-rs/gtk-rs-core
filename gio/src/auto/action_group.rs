@@ -188,7 +188,7 @@ pub trait ActionGroupExt: IsA<ActionGroup> + 'static {
             let detailed_signal_name = detail.map(|name| format!("action-added::{name}\0"));
             let signal_name: &[u8] = detailed_signal_name
                 .as_ref()
-                .map_or(&b"action-added\0"[..], |n| n.as_bytes());
+                .map_or(c"action-added".to_bytes(), |n| n.as_bytes());
             connect_raw(
                 self.as_ptr() as *mut _,
                 signal_name.as_ptr() as *const _,
@@ -228,7 +228,7 @@ pub trait ActionGroupExt: IsA<ActionGroup> + 'static {
                 detail.map(|name| format!("action-enabled-changed::{name}\0"));
             let signal_name: &[u8] = detailed_signal_name
                 .as_ref()
-                .map_or(&b"action-enabled-changed\0"[..], |n| n.as_bytes());
+                .map_or(c"action-enabled-changed".to_bytes(), |n| n.as_bytes());
             connect_raw(
                 self.as_ptr() as *mut _,
                 signal_name.as_ptr() as *const _,
@@ -265,7 +265,7 @@ pub trait ActionGroupExt: IsA<ActionGroup> + 'static {
             let detailed_signal_name = detail.map(|name| format!("action-removed::{name}\0"));
             let signal_name: &[u8] = detailed_signal_name
                 .as_ref()
-                .map_or(&b"action-removed\0"[..], |n| n.as_bytes());
+                .map_or(c"action-removed".to_bytes(), |n| n.as_bytes());
             connect_raw(
                 self.as_ptr() as *mut _,
                 signal_name.as_ptr() as *const _,
@@ -304,7 +304,7 @@ pub trait ActionGroupExt: IsA<ActionGroup> + 'static {
             let detailed_signal_name = detail.map(|name| format!("action-state-changed::{name}\0"));
             let signal_name: &[u8] = detailed_signal_name
                 .as_ref()
-                .map_or(&b"action-state-changed\0"[..], |n| n.as_bytes());
+                .map_or(c"action-state-changed".to_bytes(), |n| n.as_bytes());
             connect_raw(
                 self.as_ptr() as *mut _,
                 signal_name.as_ptr() as *const _,
