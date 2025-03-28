@@ -42,6 +42,21 @@ pub fn shape_full(
     }
 }
 
+#[doc(alias = "pango_shape")]
+pub fn shape(item_text: &str, analysis: &Analysis, glyphs: &mut GlyphString) {
+    let item_length = item_text.len() as i32;
+    unsafe {
+        // The function does not take null-terminated strings when a length is provided.
+        // Using to_glib_none() on &str will copy the string unnecessarily.
+        ffi::pango_shape(
+            item_text.as_ptr() as *const c_char,
+            item_length,
+            analysis.to_glib_none().0,
+            glyphs.to_glib_none_mut().0,
+        );
+    }
+}
+
 #[cfg(feature = "v1_44")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
 #[doc(alias = "pango_shape_with_flags")]
