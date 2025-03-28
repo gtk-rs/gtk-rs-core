@@ -3,8 +3,7 @@
 // DO NOT EDIT
 
 use crate::{
-    ffi, Analysis, AttrIterator, AttrList, Context, Direction, GlyphString, Item, Stretch, Style,
-    Variant, Weight,
+    ffi, AttrIterator, AttrList, Context, Direction, Item, Stretch, Style, Variant, Weight,
 };
 use glib::translate::*;
 
@@ -244,28 +243,6 @@ pub fn quantize_line_geometry(thickness: &mut i32, position: &mut i32) {
         ffi::pango_quantize_line_geometry(thickness, position);
     }
 }
-
-#[doc(alias = "pango_shape")]
-pub fn shape(text: &str, analysis: &Analysis) -> GlyphString {
-    let length = text.len() as _;
-    unsafe {
-        let mut glyphs = GlyphString::uninitialized();
-        ffi::pango_shape(
-            text.to_glib_none().0,
-            length,
-            analysis.to_glib_none().0,
-            glyphs.to_glib_none_mut().0,
-        );
-        glyphs
-    }
-}
-
-//#[cfg(feature = "v1_50")]
-//#[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
-//#[doc(alias = "pango_shape_item")]
-//pub fn shape_item(item: &mut Item, paragraph_text: Option<&str>, log_attrs: /*Ignored*/Option<&mut LogAttr>, flags: ShapeFlags) -> GlyphString {
-//    unsafe { TODO: call ffi:pango_shape_item() }
-//}
 
 //#[cfg(feature = "v1_44")]
 //#[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
