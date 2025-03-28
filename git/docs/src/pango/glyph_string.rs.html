@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `pango/src/glyph_string.rs`."><title>glyph_string.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-916cea96.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="pango" data-themes="" data-resource-suffix="" data-rustdoc-version="1.87.0-nightly (f8c27dfe1 2025-03-24)" data-channel="nightly" data-search-js="search-e7298875.js" data-settings-js="settings-d72f25bb.js" ><script src="../../static.files/storage-82c7156e.js"></script><script defer src="../../static.files/src-script-63605ae7.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-fb8c74a8.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `pango/src/glyph_string.rs`."><title>glyph_string.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-916cea96.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="pango" data-themes="" data-resource-suffix="" data-rustdoc-version="1.87.0-nightly (3f5502370 2025-03-27)" data-channel="nightly" data-search-js="search-e7298875.js" data-settings-js="settings-d72f25bb.js" ><script src="../../static.files/storage-82c7156e.js"></script><script defer src="../../static.files/src-script-63605ae7.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-fb8c74a8.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -71,7 +71,7 @@
 </script>
 
 
-<nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">pango/</div>glyph_string.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-2"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
+<nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">pango/</div>glyph_string.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-3"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 <a href=#2 id=2 data-nosnippet>2</a>
 <a href=#3 id=3 data-nosnippet>3</a></span><span class="kw">use </span>glib::{<a href="../../glib/translate/index.html">translate</a>::<span class="kw-2">*</span>, <a href="../../glib/collections/slice/struct.Slice.html">Slice</a>};
 <a href=#4 id=4 data-nosnippet>4</a>
@@ -128,42 +128,47 @@
 <a href=#55 id=55 data-nosnippet>55</a>    /// the length of @text, in bytes
 <a href=#56 id=56 data-nosnippet>56</a>    /// ## `embedding_level`
 <a href=#57 id=57 data-nosnippet>57</a>    /// the embedding level of the string
-<a href=#58 id=58 data-nosnippet>58</a>    /// ## `logical_widths`
-<a href=#59 id=59 data-nosnippet>59</a>    /// an array whose length is the number of
-<a href=#60 id=60 data-nosnippet>60</a>    ///   characters in text (equal to `g_utf8_strlen (text, length)` unless
-<a href=#61 id=61 data-nosnippet>61</a>    ///   text has `NUL` bytes) to be filled in with the resulting character widths.
-<a href=#62 id=62 data-nosnippet>62</a>    </span><span class="attr">#[doc(alias = <span class="string">"pango_glyph_string_get_logical_widths"</span>)]
-<a href=#63 id=63 data-nosnippet>63</a>    #[doc(alias = <span class="string">"get_logical_widths"</span>)]
-<a href=#64 id=64 data-nosnippet>64</a>    </span><span class="kw">pub fn </span>logical_widths(<span class="kw-2">&amp;</span><span class="self">self</span>, text: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, rtl: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html">Vec</a>&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>&gt; {
-<a href=#65 id=65 data-nosnippet>65</a>        <span class="kw">let </span>count = <a href="#64">text</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.str.html#method.chars">chars</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.count">count</a>();
-<a href=#66 id=66 data-nosnippet>66</a>        <span class="kw">unsafe </span>{
-<a href=#67 id=67 data-nosnippet>67</a>            <span class="kw">let </span><span class="kw-2">mut </span>logical_widths = <a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.with_capacity">Vec::with_capacity</a>(<a href="#65">count</a>);
-<a href=#68 id=68 data-nosnippet>68</a>            <a href="../../pango_sys/fn.pango_glyph_string_get_logical_widths.html">ffi::pango_glyph_string_get_logical_widths</a>(
-<a href=#69 id=69 data-nosnippet>69</a>                <a href="../../glib/translate/fn.mut_override.html">mut_override</a>(<a class="self" href="#64">self</a>.<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>),
-<a href=#70 id=70 data-nosnippet>70</a>                <a href="#64">text</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.str.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
-<a href=#71 id=71 data-nosnippet>71</a>                <a href="#64">text</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.str.html#method.len">len</a>().<a href="https://doc.rust-lang.org/nightly/core/convert/trait.TryInto.html#tymethod.try_into">try_into</a>().<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>(),
-<a href=#72 id=72 data-nosnippet>72</a>                <a href="#64">rtl</a> <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
-<a href=#73 id=73 data-nosnippet>73</a>                <a href="#67">logical_widths</a>.<a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.as_mut_ptr">as_mut_ptr</a>(),
-<a href=#74 id=74 data-nosnippet>74</a>            );
-<a href=#75 id=75 data-nosnippet>75</a>            <a href="#67">logical_widths</a>.<a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.set_len">set_len</a>(<a href="#65">count</a>);
-<a href=#76 id=76 data-nosnippet>76</a>            <a href="#67">logical_widths</a>
-<a href=#77 id=77 data-nosnippet>77</a>        }
-<a href=#78 id=78 data-nosnippet>78</a>    }
-<a href=#79 id=79 data-nosnippet>79</a>}
-<a href=#80 id=80 data-nosnippet>80</a>
-<a href=#81 id=81 data-nosnippet>81</a><span class="attr">#[cfg(test)]
-<a href=#82 id=82 data-nosnippet>82</a></span><span class="kw">mod </span>tests {
-<a href=#83 id=83 data-nosnippet>83</a>    <span class="attr">#[test]
-<a href=#84 id=84 data-nosnippet>84</a>    </span><span class="kw">fn </span>glyph_string_logical_widths() {
-<a href=#85 id=85 data-nosnippet>85</a>        <span class="kw">const </span>TXT: <span class="kw-2">&amp;</span>str = <span class="string">"abcdefghijklmnopqrstuv"</span>;
-<a href=#86 id=86 data-nosnippet>86</a>        <span class="kw">let </span><span class="kw-2">mut </span>s = <span class="kw">super</span>::GlyphString::new();
-<a href=#87 id=87 data-nosnippet>87</a>        s.set_size(TXT.len() <span class="kw">as </span>i32);
-<a href=#88 id=88 data-nosnippet>88</a>        <span class="kw">for </span>i <span class="kw">in </span><span class="number">0</span>..TXT.len() {
-<a href=#89 id=89 data-nosnippet>89</a>            s.glyph_info_mut()[i].set_glyph(TXT.as_bytes()[i] <span class="kw">as </span>u32);
-<a href=#90 id=90 data-nosnippet>90</a>            s.glyph_info_mut()[i].geometry_mut().set_width(<span class="number">12</span>);
-<a href=#91 id=91 data-nosnippet>91</a>            s.log_clusters_mut()[i] = i <span class="kw">as </span>i32;
-<a href=#92 id=92 data-nosnippet>92</a>        }
-<a href=#93 id=93 data-nosnippet>93</a>        <span class="kw">let </span>widths = s.logical_widths(TXT, <span class="bool-val">false</span>);
-<a href=#94 id=94 data-nosnippet>94</a>        <span class="macro">println!</span>(<span class="string">"{widths:?}"</span>);
-<a href=#95 id=95 data-nosnippet>95</a>    }
-<a href=#96 id=96 data-nosnippet>96</a>}</code></pre></div></section></main></body></html>
+<a href=#58 id=58 data-nosnippet>58</a>    ///
+<a href=#59 id=59 data-nosnippet>59</a>    /// # Returns
+<a href=#60 id=60 data-nosnippet>60</a>    ///
+<a href=#61 id=61 data-nosnippet>61</a>    ///
+<a href=#62 id=62 data-nosnippet>62</a>    /// ## `logical_widths`
+<a href=#63 id=63 data-nosnippet>63</a>    /// an array whose length is
+<a href=#64 id=64 data-nosnippet>64</a>    ///   the number of characters in text (equal to `g_utf8_strlen (text, length)`
+<a href=#65 id=65 data-nosnippet>65</a>    ///   unless text has `NUL` bytes) to be filled in with the resulting character
+<a href=#66 id=66 data-nosnippet>66</a>    ///   widths.
+<a href=#67 id=67 data-nosnippet>67</a>    </span><span class="attr">#[doc(alias = <span class="string">"pango_glyph_string_get_logical_widths"</span>)]
+<a href=#68 id=68 data-nosnippet>68</a>    #[doc(alias = <span class="string">"get_logical_widths"</span>)]
+<a href=#69 id=69 data-nosnippet>69</a>    </span><span class="kw">pub fn </span>logical_widths(<span class="kw-2">&amp;</span><span class="self">self</span>, text: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, rtl: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html">Vec</a>&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>&gt; {
+<a href=#70 id=70 data-nosnippet>70</a>        <span class="kw">let </span>count = <a href="#69">text</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.str.html#method.chars">chars</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.count">count</a>();
+<a href=#71 id=71 data-nosnippet>71</a>        <span class="kw">unsafe </span>{
+<a href=#72 id=72 data-nosnippet>72</a>            <span class="kw">let </span><span class="kw-2">mut </span>logical_widths = <a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.with_capacity">Vec::with_capacity</a>(<a href="#70">count</a>);
+<a href=#73 id=73 data-nosnippet>73</a>            <a href="../../pango_sys/fn.pango_glyph_string_get_logical_widths.html">ffi::pango_glyph_string_get_logical_widths</a>(
+<a href=#74 id=74 data-nosnippet>74</a>                <a href="../../glib/translate/fn.mut_override.html">mut_override</a>(<a class="self" href="#69">self</a>.<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>),
+<a href=#75 id=75 data-nosnippet>75</a>                <a href="#69">text</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.str.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+<a href=#76 id=76 data-nosnippet>76</a>                <a href="#69">text</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.str.html#method.len">len</a>().<a href="https://doc.rust-lang.org/nightly/core/convert/trait.TryInto.html#tymethod.try_into">try_into</a>().<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>(),
+<a href=#77 id=77 data-nosnippet>77</a>                <a href="#69">rtl</a> <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
+<a href=#78 id=78 data-nosnippet>78</a>                <a href="#72">logical_widths</a>.<a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.as_mut_ptr">as_mut_ptr</a>(),
+<a href=#79 id=79 data-nosnippet>79</a>            );
+<a href=#80 id=80 data-nosnippet>80</a>            <a href="#72">logical_widths</a>.<a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.set_len">set_len</a>(<a href="#70">count</a>);
+<a href=#81 id=81 data-nosnippet>81</a>            <a href="#72">logical_widths</a>
+<a href=#82 id=82 data-nosnippet>82</a>        }
+<a href=#83 id=83 data-nosnippet>83</a>    }
+<a href=#84 id=84 data-nosnippet>84</a>}
+<a href=#85 id=85 data-nosnippet>85</a>
+<a href=#86 id=86 data-nosnippet>86</a><span class="attr">#[cfg(test)]
+<a href=#87 id=87 data-nosnippet>87</a></span><span class="kw">mod </span>tests {
+<a href=#88 id=88 data-nosnippet>88</a>    <span class="attr">#[test]
+<a href=#89 id=89 data-nosnippet>89</a>    </span><span class="kw">fn </span>glyph_string_logical_widths() {
+<a href=#90 id=90 data-nosnippet>90</a>        <span class="kw">const </span>TXT: <span class="kw-2">&amp;</span>str = <span class="string">"abcdefghijklmnopqrstuv"</span>;
+<a href=#91 id=91 data-nosnippet>91</a>        <span class="kw">let </span><span class="kw-2">mut </span>s = <span class="kw">super</span>::GlyphString::new();
+<a href=#92 id=92 data-nosnippet>92</a>        s.set_size(TXT.len() <span class="kw">as </span>i32);
+<a href=#93 id=93 data-nosnippet>93</a>        <span class="kw">for </span>i <span class="kw">in </span><span class="number">0</span>..TXT.len() {
+<a href=#94 id=94 data-nosnippet>94</a>            s.glyph_info_mut()[i].set_glyph(TXT.as_bytes()[i] <span class="kw">as </span>u32);
+<a href=#95 id=95 data-nosnippet>95</a>            s.glyph_info_mut()[i].geometry_mut().set_width(<span class="number">12</span>);
+<a href=#96 id=96 data-nosnippet>96</a>            s.log_clusters_mut()[i] = i <span class="kw">as </span>i32;
+<a href=#97 id=97 data-nosnippet>97</a>        }
+<a href=#98 id=98 data-nosnippet>98</a>        <span class="kw">let </span>widths = s.logical_widths(TXT, <span class="bool-val">false</span>);
+<a href=#99 id=99 data-nosnippet>99</a>        <span class="macro">println!</span>(<span class="string">"{widths:?}"</span>);
+<a href=#100 id=100 data-nosnippet>100</a>    }
+<a href=#101 id=101 data-nosnippet>101</a>}</code></pre></div></section></main></body></html>
