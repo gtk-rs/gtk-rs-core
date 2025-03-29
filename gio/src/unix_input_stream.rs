@@ -1,27 +1,24 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
 #[cfg(unix)]
-use std::os::unix::io::{AsRawFd, IntoRawFd, RawFd};
+use std::os::unix::io::{AsFd, AsRawFd, BorrowedFd, IntoRawFd, OwnedFd, RawFd};
 
 use glib::{prelude::*, translate::*};
 #[cfg(all(not(unix), docsrs))]
-use socket::{AsRawFd, IntoRawFd, RawFd};
+use socket::{AsFd, AsRawFd, BorrowedFd, FromRawFd, IntoRawFd, OwnedFd, RawFd};
 
 use crate::{ffi, InputStream, UnixInputStream};
 
 impl UnixInputStream {
     // rustdoc-stripper-ignore-next
     /// Creates a new [`Self`] that takes ownership of the passed in fd.
-    ///
-    /// # Safety
-    /// You must not close the fd unless you've previously called [`UnixInputStreamExtManual::set_close_fd`]
-    /// with `true` on this stream. At which point you may only do so when all references to this
-    /// stream have been dropped.
     #[doc(alias = "g_unix_input_stream_new")]
-    pub unsafe fn take_fd(fd: impl IntoRawFd) -> UnixInputStream {
+    pub fn take_fd(fd: OwnedFd) -> UnixInputStream {
         let fd = fd.into_raw_fd();
         let close_fd = true.into_glib();
-        InputStream::from_glib_full(ffi::g_unix_input_stream_new(fd, close_fd)).unsafe_cast()
+        unsafe {
+            InputStream::from_glib_full(ffi::g_unix_input_stream_new(fd, close_fd)).unsafe_cast()
+        }
     }
 
     // rustdoc-stripper-ignore-next
@@ -40,6 +37,15 @@ impl UnixInputStream {
 impl AsRawFd for UnixInputStream {
     fn as_raw_fd(&self) -> RawFd {
         unsafe { ffi::g_unix_input_stream_get_fd(self.to_glib_none().0) as _ }
+    }
+}
+
+impl AsFd for UnixInputStream {
+    fn as_fd(&self) -> BorrowedFd<'_> {
+        unsafe {
+            let raw_fd = self.as_raw_fd();
+            BorrowedFd::borrow_raw(raw_fd)
+        }
     }
 }
 
