@@ -661,18 +661,16 @@ pub trait SocketExtManual: IsA<Socket> + Sized {
     #[cfg_attr(docsrs, doc(cfg(unix)))]
     #[doc(alias = "get_fd")]
     #[doc(alias = "g_socket_get_fd")]
-    fn fd<T: FromRawFd>(&self) -> T {
-        unsafe { FromRawFd::from_raw_fd(ffi::g_socket_get_fd(self.as_ref().to_glib_none().0)) }
+    fn fd(&self) -> BorrowedFd<'_> {
+        self.as_ref().as_fd()
     }
 
     #[cfg(windows)]
     #[cfg_attr(docsrs, doc(cfg(windows)))]
     #[doc(alias = "get_socket")]
     #[doc(alias = "g_socket_get_fd")]
-    fn socket<T: FromRawSocket>(&self) -> T {
-        unsafe {
-            FromRawSocket::from_raw_socket(ffi::g_socket_get_fd(self.as_ref().to_glib_none().0) as _)
-        }
+    fn socket(&self) -> BorrowedSocket<'_> {
+        self.as_ref().as_socket()
     }
 
     #[doc(alias = "g_socket_create_source")]
