@@ -35,7 +35,7 @@ impl Pixbuf {
         let bits_per_sample = bits_per_sample as usize;
 
         let n_channels = if has_alpha { 4 } else { 3 };
-        let last_row_len = width * ((n_channels * bits_per_sample + 7) / 8);
+        let last_row_len = width * (n_channels * bits_per_sample).div_ceil(8);
 
         let mut data: Box<T> = Box::new(data);
 

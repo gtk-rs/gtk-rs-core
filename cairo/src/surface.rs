@@ -78,14 +78,16 @@ impl Surface {
     #[doc(alias = "cairo_surface_get_mime_data")]
     #[doc(alias = "get_mime_data")]
     pub fn mime_data(&self, mime_type: &str) -> Option<Vec<u8>> {
-        let data_ptr: *mut u8 = ptr::null_mut();
+        let mut data_ptr: *mut u8 = ptr::null_mut();
         let mut length: c_ulong = 0;
+        // The function actually needs a mutable pointer
+        #[allow(clippy::unnecessary_mut_passed)]
         unsafe {
             let mime_type = CString::new(mime_type).unwrap();
             ffi::cairo_surface_get_mime_data(
                 self.to_raw_none(),
                 mime_type.as_ptr(),
-                &data_ptr,
+                &mut data_ptr,
                 &mut length,
             );
             if !data_ptr.is_null() && length != 0 {
@@ -99,15 +101,19 @@ impl Surface {
     #[doc(alias = "cairo_surface_get_mime_data")]
     #[doc(alias = "get_mime_data_raw")]
     pub unsafe fn mime_data_raw(&self, mime_type: &str) -> Option<&[u8]> {
-        let data_ptr: *mut u8 = ptr::null_mut();
+        let mut data_ptr: *mut u8 = ptr::null_mut();
         let mut length: c_ulong = 0;
         let mime_type = CString::new(mime_type).unwrap();
-        ffi::cairo_surface_get_mime_data(
-            self.to_raw_none(),
-            mime_type.as_ptr(),
-            &data_ptr,
-            &mut length,
-        );
+        // The function actually needs a mutable pointer
+        #[allow(clippy::unnecessary_mut_passed)]
+        {
+            ffi::cairo_surface_get_mime_data(
+                self.to_raw_none(),
+                mime_type.as_ptr(),
+                &mut data_ptr,
+                &mut length,
+            );
+        }
         if !data_ptr.is_null() && length != 0 {
             Some(slice::from_raw_parts(
                 data_ptr as *const u8,
