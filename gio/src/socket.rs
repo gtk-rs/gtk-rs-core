@@ -29,7 +29,7 @@ impl Socket {
             if error.is_null() {
                 Ok(from_glib_full(ret))
             } else {
-                libc::close(fd);
+                let _ = OwnedFd::from_raw_fd(fd);
                 Err(from_glib_full(error))
             }
         }
