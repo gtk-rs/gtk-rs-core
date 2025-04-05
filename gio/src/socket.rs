@@ -3,7 +3,9 @@
 #[cfg(unix)]
 use std::os::unix::io::{AsFd, AsRawFd, BorrowedFd, FromRawFd, IntoRawFd, OwnedFd, RawFd};
 #[cfg(windows)]
-use std::os::windows::io::{AsRawSocket, FromRawSocket, IntoRawSocket, RawSocket};
+use std::os::windows::io::{
+    AsRawSocket, AsSocket, BorrowedSocket, FromRawSocket, IntoRawSocket, OwnedSocket, RawSocket,
+};
 #[cfg(feature = "v2_60")]
 use std::time::Duration;
 use std::{cell::RefCell, marker::PhantomData, mem::transmute, pin::Pin, ptr};
@@ -34,15 +36,17 @@ impl Socket {
     }
     #[cfg(windows)]
     #[cfg_attr(docsrs, doc(cfg(windows)))]
-    #[allow(clippy::missing_safety_doc)]
-    pub unsafe fn from_socket(socket: impl IntoRawSocket) -> Result<Socket, glib::Error> {
+    pub fn from_socket(socket: OwnedSocket) -> Result<Socket, glib::Error> {
         let socket = socket.into_raw_socket();
         let mut error = ptr::null_mut();
-        let ret = ffi::g_socket_new_from_fd(socket as i32, &mut error);
-        if error.is_null() {
-            Ok(from_glib_full(ret))
-        } else {
-            Err(from_glib_full(error))
+        unsafe {
+            let ret = ffi::g_socket_new_from_fd(socket as i32, &mut error);
+            if error.is_null() {
+                Ok(from_glib_full(ret))
+            } else {
+                let _ = OwnedSocket::from_raw_socket(socket);
+                Err(from_glib_full(error))
+            }
         }
     }
 }
@@ -71,6 +75,17 @@ impl AsFd for Socket {
 impl AsRawSocket for Socket {
     fn as_raw_socket(&self) -> RawSocket {
         unsafe { ffi::g_socket_get_fd(self.to_glib_none().0) as _ }
+    }
+}
+
+#[cfg(windows)]
+#[cfg_attr(docsrs, doc(cfg(windows)))]
+impl AsSocket for Socket {
+    fn as_socket(&self) -> BorrowedSocket<'_> {
+        unsafe {
+            let raw_socket = self.as_raw_socket();
+            BorrowedSocket::borrow_raw(raw_socket)
+        }
     }
 }
 
