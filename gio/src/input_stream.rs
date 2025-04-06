@@ -417,7 +417,7 @@ impl<T: IsA<InputStream>> InputStreamAsyncBufRead<T> {
 
     fn set_has_data(&mut self, buffer: Vec<u8>, valid: (usize, usize)) {
         match self.state {
-            State::Reading { .. } | State::Transitioning { .. } => {
+            State::Reading { .. } | State::Transitioning => {
                 self.state = State::HasData { buffer, valid }
             }
             _ => panic!("Invalid state"),
