@@ -101,7 +101,7 @@ where
             && self
                 .source
                 .as_ref()
-                .map_or(true, |(_, receiver)| receiver.is_terminated())
+                .is_none_or(|(_, receiver)| receiver.is_terminated())
     }
 }
 
@@ -313,7 +313,7 @@ where
             && self
                 .source
                 .as_ref()
-                .map_or(true, |(_, receiver)| receiver.is_terminated())
+                .is_none_or(|(_, receiver)| receiver.is_terminated())
     }
 }
 
