@@ -74,12 +74,12 @@
 <nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">gio/</div>unix_fd_list.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-3"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 <a href=#2 id=2 data-nosnippet>2</a>
 <a href=#3 id=3 data-nosnippet>3</a></span><span class="attr">#[cfg(unix)]
-<a href=#4 id=4 data-nosnippet>4</a></span><span class="kw">use </span>std::os::unix::io::{<a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/trait.AsRawFd.html">AsRawFd</a>, <a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/trait.IntoRawFd.html">IntoRawFd</a>, <a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/type.RawFd.html">RawFd</a>};
+<a href=#4 id=4 data-nosnippet>4</a></span><span class="kw">use </span>std::os::unix::io::{<a href="https://doc.rust-lang.org/nightly/std/os/fd/owned/trait.AsFd.html">AsFd</a>, <a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/trait.AsRawFd.html">AsRawFd</a>, <a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/trait.FromRawFd.html">FromRawFd</a>, <a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/trait.IntoRawFd.html">IntoRawFd</a>, <a href="https://doc.rust-lang.org/nightly/std/os/fd/owned/struct.OwnedFd.html">OwnedFd</a>, <a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/type.RawFd.html">RawFd</a>};
 <a href=#5 id=5 data-nosnippet>5</a><span class="kw">use </span>std::{<a href="https://doc.rust-lang.org/nightly/core/mem/index.html">mem</a>, <a href="https://doc.rust-lang.org/nightly/core/ptr/index.html">ptr</a>};
 <a href=#6 id=6 data-nosnippet>6</a>
 <a href=#7 id=7 data-nosnippet>7</a><span class="kw">use </span>glib::{<a href="../../glib/prelude/index.html">prelude</a>::<span class="kw-2">*</span>, <a href="../../glib/translate/index.html">translate</a>::<span class="kw-2">*</span>};
 <a href=#8 id=8 data-nosnippet>8</a><span class="attr">#[cfg(all(not(unix), docsrs))]
-<a href=#9 id=9 data-nosnippet>9</a></span><span class="kw">use </span>socket::{AsRawFd, IntoRawFd, RawFd};
+<a href=#9 id=9 data-nosnippet>9</a></span><span class="kw">use </span>socket::{AsFd, AsRawFd, FromRawFd, IntoRawFd, OwnedFd, RawFd};
 <a href=#10 id=10 data-nosnippet>10</a>
 <a href=#11 id=11 data-nosnippet>11</a><span class="kw">use crate</span>::{<a href="../../gio_sys/index.html">ffi</a>, <a href="auto/unix_fd_list.rs.html#8-33">UnixFDList</a>};
 <a href=#12 id=12 data-nosnippet>12</a>
@@ -131,12 +131,12 @@
 <a href=#58 id=58 data-nosnippet>58</a>    /// the index of the appended fd in case of success, else -1
 <a href=#59 id=59 data-nosnippet>59</a>    ///          (and @error is set)
 <a href=#60 id=60 data-nosnippet>60</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_unix_fd_list_append"</span>)]
-<a href=#61 id=61 data-nosnippet>61</a>    </span><span class="kw">fn </span>append&lt;T: <a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/trait.AsRawFd.html">AsRawFd</a>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, fd: T) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>, <a href="../../glib/error/struct.Error.html">glib::Error</a>&gt; {
+<a href=#61 id=61 data-nosnippet>61</a>    </span><span class="kw">fn </span>append(<span class="kw-2">&amp;</span><span class="self">self</span>, fd: <span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/std/os/fd/owned/trait.AsFd.html">AsFd</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>, <a href="../../glib/error/struct.Error.html">glib::Error</a>&gt; {
 <a href=#62 id=62 data-nosnippet>62</a>        <span class="kw">unsafe </span>{
 <a href=#63 id=63 data-nosnippet>63</a>            <span class="kw">let </span><span class="kw-2">mut </span>error = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
 <a href=#64 id=64 data-nosnippet>64</a>            <span class="kw">let </span>ret = <a href="../../gio_sys/fn.g_unix_fd_list_append.html">ffi::g_unix_fd_list_append</a>(
 <a href=#65 id=65 data-nosnippet>65</a>                <a class="self" href="#61">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
-<a href=#66 id=66 data-nosnippet>66</a>                <a href="#61">fd</a>.<a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/trait.AsRawFd.html#tymethod.as_raw_fd">as_raw_fd</a>(),
+<a href=#66 id=66 data-nosnippet>66</a>                <a href="#61">fd</a>.<a href="https://doc.rust-lang.org/nightly/std/os/fd/owned/trait.AsFd.html#tymethod.as_fd">as_fd</a>().<a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/trait.AsRawFd.html#tymethod.as_raw_fd">as_raw_fd</a>(),
 <a href=#67 id=67 data-nosnippet>67</a>                <span class="kw-2">&amp;mut </span><a href="#63">error</a>,
 <a href=#68 id=68 data-nosnippet>68</a>            );
 <a href=#69 id=69 data-nosnippet>69</a>            <span class="kw">if </span>error.is_null() {
@@ -166,82 +166,84 @@
 <a href=#93 id=93 data-nosnippet>93</a>    ///
 <a href=#94 id=94 data-nosnippet>94</a>    /// the file descriptor, or -1 in case of error
 <a href=#95 id=95 data-nosnippet>95</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_unix_fd_list_get"</span>)]
-<a href=#96 id=96 data-nosnippet>96</a>    </span><span class="kw">fn </span>get(<span class="kw-2">&amp;</span><span class="self">self</span>, index_: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/type.RawFd.html">RawFd</a>, <a href="../../glib/error/struct.Error.html">glib::Error</a>&gt; {
+<a href=#96 id=96 data-nosnippet>96</a>    </span><span class="kw">fn </span>get(<span class="kw-2">&amp;</span><span class="self">self</span>, index_: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="https://doc.rust-lang.org/nightly/std/os/fd/owned/struct.OwnedFd.html">OwnedFd</a>, <a href="../../glib/error/struct.Error.html">glib::Error</a>&gt; {
 <a href=#97 id=97 data-nosnippet>97</a>        <span class="kw">unsafe </span>{
 <a href=#98 id=98 data-nosnippet>98</a>            <span class="kw">let </span><span class="kw-2">mut </span>error = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
-<a href=#99 id=99 data-nosnippet>99</a>            <span class="kw">let </span>ret = <a href="../../gio_sys/fn.g_unix_fd_list_get.html">ffi::g_unix_fd_list_get</a>(<a class="self" href="#96">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#96">index_</a>, <span class="kw-2">&amp;mut </span><a href="#98">error</a>);
-<a href=#100 id=100 data-nosnippet>100</a>            <span class="kw">if </span>error.is_null() {
-<a href=#101 id=101 data-nosnippet>101</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(<a href="#99">ret</a>)
-<a href=#102 id=102 data-nosnippet>102</a>            } <span class="kw">else </span>{
-<a href=#103 id=103 data-nosnippet>103</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#98">error</a>))
-<a href=#104 id=104 data-nosnippet>104</a>            }
-<a href=#105 id=105 data-nosnippet>105</a>        }
-<a href=#106 id=106 data-nosnippet>106</a>    }
-<a href=#107 id=107 data-nosnippet>107</a>
-<a href=#108 id=108 data-nosnippet>108</a>    <span class="doccomment">/// Returns the array of file descriptors that is contained in this
-<a href=#109 id=109 data-nosnippet>109</a>    /// object.
-<a href=#110 id=110 data-nosnippet>110</a>    ///
-<a href=#111 id=111 data-nosnippet>111</a>    /// After this call, the descriptors remain the property of @self.  The
-<a href=#112 id=112 data-nosnippet>112</a>    /// caller must not close them and must not free the array.  The array is
-<a href=#113 id=113 data-nosnippet>113</a>    /// valid only until @self is changed in any way.
-<a href=#114 id=114 data-nosnippet>114</a>    ///
-<a href=#115 id=115 data-nosnippet>115</a>    /// If @length is non-[`None`] then it is set to the number of file
-<a href=#116 id=116 data-nosnippet>116</a>    /// descriptors in the returned array. The returned array is also
-<a href=#117 id=117 data-nosnippet>117</a>    /// terminated with -1.
-<a href=#118 id=118 data-nosnippet>118</a>    ///
-<a href=#119 id=119 data-nosnippet>119</a>    /// This function never returns [`None`]. In case there are no file
-<a href=#120 id=120 data-nosnippet>120</a>    /// descriptors contained in @self, an empty array is returned.
-<a href=#121 id=121 data-nosnippet>121</a>    ///
-<a href=#122 id=122 data-nosnippet>122</a>    /// # Returns
+<a href=#99 id=99 data-nosnippet>99</a>            <span class="kw">let </span>raw_fd =
+<a href=#100 id=100 data-nosnippet>100</a>                <a href="../../gio_sys/fn.g_unix_fd_list_get.html">ffi::g_unix_fd_list_get</a>(<a class="self" href="#96">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#96">index_</a>, <span class="kw-2">&amp;mut </span><a href="#98">error</a>);
+<a href=#101 id=101 data-nosnippet>101</a>            <span class="kw">if </span>error.is_null() {
+<a href=#102 id=102 data-nosnippet>102</a>                <span class="kw">let </span>fd = <a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/trait.FromRawFd.html#tymethod.from_raw_fd">OwnedFd::from_raw_fd</a>(<a href="#99">raw_fd</a>);
+<a href=#103 id=103 data-nosnippet>103</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(<a href="#102">fd</a>)
+<a href=#104 id=104 data-nosnippet>104</a>            } <span class="kw">else </span>{
+<a href=#105 id=105 data-nosnippet>105</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#98">error</a>))
+<a href=#106 id=106 data-nosnippet>106</a>            }
+<a href=#107 id=107 data-nosnippet>107</a>        }
+<a href=#108 id=108 data-nosnippet>108</a>    }
+<a href=#109 id=109 data-nosnippet>109</a>
+<a href=#110 id=110 data-nosnippet>110</a>    <span class="doccomment">/// Returns the array of file descriptors that is contained in this
+<a href=#111 id=111 data-nosnippet>111</a>    /// object.
+<a href=#112 id=112 data-nosnippet>112</a>    ///
+<a href=#113 id=113 data-nosnippet>113</a>    /// After this call, the descriptors remain the property of @self.  The
+<a href=#114 id=114 data-nosnippet>114</a>    /// caller must not close them and must not free the array.  The array is
+<a href=#115 id=115 data-nosnippet>115</a>    /// valid only until @self is changed in any way.
+<a href=#116 id=116 data-nosnippet>116</a>    ///
+<a href=#117 id=117 data-nosnippet>117</a>    /// If @length is non-[`None`] then it is set to the number of file
+<a href=#118 id=118 data-nosnippet>118</a>    /// descriptors in the returned array. The returned array is also
+<a href=#119 id=119 data-nosnippet>119</a>    /// terminated with -1.
+<a href=#120 id=120 data-nosnippet>120</a>    ///
+<a href=#121 id=121 data-nosnippet>121</a>    /// This function never returns [`None`]. In case there are no file
+<a href=#122 id=122 data-nosnippet>122</a>    /// descriptors contained in @self, an empty array is returned.
 <a href=#123 id=123 data-nosnippet>123</a>    ///
-<a href=#124 id=124 data-nosnippet>124</a>    /// an array of file
-<a href=#125 id=125 data-nosnippet>125</a>    ///     descriptors
-<a href=#126 id=126 data-nosnippet>126</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_unix_fd_list_peek_fds"</span>)]
-<a href=#127 id=127 data-nosnippet>127</a>    </span><span class="kw">fn </span>peek_fds(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html">Vec</a>&lt;<a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/type.RawFd.html">RawFd</a>&gt; {
-<a href=#128 id=128 data-nosnippet>128</a>        <span class="kw">unsafe </span>{
-<a href=#129 id=129 data-nosnippet>129</a>            <span class="kw">let </span><span class="kw-2">mut </span>length = <a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.uninit">mem::MaybeUninit::uninit</a>();
-<a href=#130 id=130 data-nosnippet>130</a>            <span class="kw">let </span>ret = <a href="../../glib/translate/trait.FromGlibContainer.html#tymethod.from_glib_none_num">FromGlibContainer::from_glib_none_num</a>(
-<a href=#131 id=131 data-nosnippet>131</a>                <a href="../../gio_sys/fn.g_unix_fd_list_peek_fds.html">ffi::g_unix_fd_list_peek_fds</a>(<a class="self" href="#127">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#129">length</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.as_mut_ptr">as_mut_ptr</a>()),
-<a href=#132 id=132 data-nosnippet>132</a>                <a href="#129">length</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.assume_init">assume_init</a>() <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>,
-<a href=#133 id=133 data-nosnippet>133</a>            );
-<a href=#134 id=134 data-nosnippet>134</a>            <a href="#130">ret</a>
-<a href=#135 id=135 data-nosnippet>135</a>        }
-<a href=#136 id=136 data-nosnippet>136</a>    }
-<a href=#137 id=137 data-nosnippet>137</a>
-<a href=#138 id=138 data-nosnippet>138</a>    <span class="doccomment">/// Returns the array of file descriptors that is contained in this
-<a href=#139 id=139 data-nosnippet>139</a>    /// object.
-<a href=#140 id=140 data-nosnippet>140</a>    ///
-<a href=#141 id=141 data-nosnippet>141</a>    /// After this call, the descriptors are no longer contained in
-<a href=#142 id=142 data-nosnippet>142</a>    /// @self. Further calls will return an empty list (unless more
-<a href=#143 id=143 data-nosnippet>143</a>    /// descriptors have been added).
-<a href=#144 id=144 data-nosnippet>144</a>    ///
-<a href=#145 id=145 data-nosnippet>145</a>    /// The return result of this function must be freed with g_free().
-<a href=#146 id=146 data-nosnippet>146</a>    /// The caller is also responsible for closing all of the file
-<a href=#147 id=147 data-nosnippet>147</a>    /// descriptors.  The file descriptors in the array are set to
-<a href=#148 id=148 data-nosnippet>148</a>    /// close-on-exec.
-<a href=#149 id=149 data-nosnippet>149</a>    ///
-<a href=#150 id=150 data-nosnippet>150</a>    /// If @length is non-[`None`] then it is set to the number of file
-<a href=#151 id=151 data-nosnippet>151</a>    /// descriptors in the returned array. The returned array is also
-<a href=#152 id=152 data-nosnippet>152</a>    /// terminated with -1.
-<a href=#153 id=153 data-nosnippet>153</a>    ///
-<a href=#154 id=154 data-nosnippet>154</a>    /// This function never returns [`None`]. In case there are no file
-<a href=#155 id=155 data-nosnippet>155</a>    /// descriptors contained in @self, an empty array is returned.
-<a href=#156 id=156 data-nosnippet>156</a>    ///
-<a href=#157 id=157 data-nosnippet>157</a>    /// # Returns
+<a href=#124 id=124 data-nosnippet>124</a>    /// # Returns
+<a href=#125 id=125 data-nosnippet>125</a>    ///
+<a href=#126 id=126 data-nosnippet>126</a>    /// an array of file
+<a href=#127 id=127 data-nosnippet>127</a>    ///     descriptors
+<a href=#128 id=128 data-nosnippet>128</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_unix_fd_list_peek_fds"</span>)]
+<a href=#129 id=129 data-nosnippet>129</a>    </span><span class="kw">fn </span>peek_fds(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html">Vec</a>&lt;<a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/type.RawFd.html">RawFd</a>&gt; {
+<a href=#130 id=130 data-nosnippet>130</a>        <span class="kw">unsafe </span>{
+<a href=#131 id=131 data-nosnippet>131</a>            <span class="kw">let </span><span class="kw-2">mut </span>length = <a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.uninit">mem::MaybeUninit::uninit</a>();
+<a href=#132 id=132 data-nosnippet>132</a>            <span class="kw">let </span>ret = <a href="../../glib/translate/trait.FromGlibContainer.html#tymethod.from_glib_none_num">FromGlibContainer::from_glib_none_num</a>(
+<a href=#133 id=133 data-nosnippet>133</a>                <a href="../../gio_sys/fn.g_unix_fd_list_peek_fds.html">ffi::g_unix_fd_list_peek_fds</a>(<a class="self" href="#129">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#131">length</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.as_mut_ptr">as_mut_ptr</a>()),
+<a href=#134 id=134 data-nosnippet>134</a>                <a href="#131">length</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.assume_init">assume_init</a>() <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>,
+<a href=#135 id=135 data-nosnippet>135</a>            );
+<a href=#136 id=136 data-nosnippet>136</a>            <a href="#132">ret</a>
+<a href=#137 id=137 data-nosnippet>137</a>        }
+<a href=#138 id=138 data-nosnippet>138</a>    }
+<a href=#139 id=139 data-nosnippet>139</a>
+<a href=#140 id=140 data-nosnippet>140</a>    <span class="doccomment">/// Returns the array of file descriptors that is contained in this
+<a href=#141 id=141 data-nosnippet>141</a>    /// object.
+<a href=#142 id=142 data-nosnippet>142</a>    ///
+<a href=#143 id=143 data-nosnippet>143</a>    /// After this call, the descriptors are no longer contained in
+<a href=#144 id=144 data-nosnippet>144</a>    /// @self. Further calls will return an empty list (unless more
+<a href=#145 id=145 data-nosnippet>145</a>    /// descriptors have been added).
+<a href=#146 id=146 data-nosnippet>146</a>    ///
+<a href=#147 id=147 data-nosnippet>147</a>    /// The return result of this function must be freed with g_free().
+<a href=#148 id=148 data-nosnippet>148</a>    /// The caller is also responsible for closing all of the file
+<a href=#149 id=149 data-nosnippet>149</a>    /// descriptors.  The file descriptors in the array are set to
+<a href=#150 id=150 data-nosnippet>150</a>    /// close-on-exec.
+<a href=#151 id=151 data-nosnippet>151</a>    ///
+<a href=#152 id=152 data-nosnippet>152</a>    /// If @length is non-[`None`] then it is set to the number of file
+<a href=#153 id=153 data-nosnippet>153</a>    /// descriptors in the returned array. The returned array is also
+<a href=#154 id=154 data-nosnippet>154</a>    /// terminated with -1.
+<a href=#155 id=155 data-nosnippet>155</a>    ///
+<a href=#156 id=156 data-nosnippet>156</a>    /// This function never returns [`None`]. In case there are no file
+<a href=#157 id=157 data-nosnippet>157</a>    /// descriptors contained in @self, an empty array is returned.
 <a href=#158 id=158 data-nosnippet>158</a>    ///
-<a href=#159 id=159 data-nosnippet>159</a>    /// an array of file
-<a href=#160 id=160 data-nosnippet>160</a>    ///     descriptors
-<a href=#161 id=161 data-nosnippet>161</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_unix_fd_list_steal_fds"</span>)]
-<a href=#162 id=162 data-nosnippet>162</a>    </span><span class="kw">fn </span>steal_fds(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html">Vec</a>&lt;<a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/type.RawFd.html">RawFd</a>&gt; {
-<a href=#163 id=163 data-nosnippet>163</a>        <span class="kw">unsafe </span>{
-<a href=#164 id=164 data-nosnippet>164</a>            <span class="kw">let </span><span class="kw-2">mut </span>length = <a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.uninit">mem::MaybeUninit::uninit</a>();
-<a href=#165 id=165 data-nosnippet>165</a>            <span class="kw">let </span>ret = <a href="../../glib/translate/trait.FromGlibContainer.html#tymethod.from_glib_full_num">FromGlibContainer::from_glib_full_num</a>(
-<a href=#166 id=166 data-nosnippet>166</a>                <a href="../../gio_sys/fn.g_unix_fd_list_steal_fds.html">ffi::g_unix_fd_list_steal_fds</a>(<a class="self" href="#162">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#164">length</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.as_mut_ptr">as_mut_ptr</a>()),
-<a href=#167 id=167 data-nosnippet>167</a>                <a href="#164">length</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.assume_init">assume_init</a>() <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>,
-<a href=#168 id=168 data-nosnippet>168</a>            );
-<a href=#169 id=169 data-nosnippet>169</a>            <a href="#165">ret</a>
-<a href=#170 id=170 data-nosnippet>170</a>        }
-<a href=#171 id=171 data-nosnippet>171</a>    }
-<a href=#172 id=172 data-nosnippet>172</a>}
-<a href=#173 id=173 data-nosnippet>173</a>
-<a href=#174 id=174 data-nosnippet>174</a><span class="kw">impl</span>&lt;O: <a href="../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="auto/unix_fd_list.rs.html#8-33">UnixFDList</a>&gt;&gt; <a href="#40-172">UnixFDListExtManual</a> <span class="kw">for </span>O {}</code></pre></div></section></main></body></html>
+<a href=#159 id=159 data-nosnippet>159</a>    /// # Returns
+<a href=#160 id=160 data-nosnippet>160</a>    ///
+<a href=#161 id=161 data-nosnippet>161</a>    /// an array of file
+<a href=#162 id=162 data-nosnippet>162</a>    ///     descriptors
+<a href=#163 id=163 data-nosnippet>163</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_unix_fd_list_steal_fds"</span>)]
+<a href=#164 id=164 data-nosnippet>164</a>    </span><span class="kw">fn </span>steal_fds(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html">Vec</a>&lt;<a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/type.RawFd.html">RawFd</a>&gt; {
+<a href=#165 id=165 data-nosnippet>165</a>        <span class="kw">unsafe </span>{
+<a href=#166 id=166 data-nosnippet>166</a>            <span class="kw">let </span><span class="kw-2">mut </span>length = <a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.uninit">mem::MaybeUninit::uninit</a>();
+<a href=#167 id=167 data-nosnippet>167</a>            <span class="kw">let </span>ret = <a href="../../glib/translate/trait.FromGlibContainer.html#tymethod.from_glib_full_num">FromGlibContainer::from_glib_full_num</a>(
+<a href=#168 id=168 data-nosnippet>168</a>                <a href="../../gio_sys/fn.g_unix_fd_list_steal_fds.html">ffi::g_unix_fd_list_steal_fds</a>(<a class="self" href="#164">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#166">length</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.as_mut_ptr">as_mut_ptr</a>()),
+<a href=#169 id=169 data-nosnippet>169</a>                <a href="#166">length</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.assume_init">assume_init</a>() <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>,
+<a href=#170 id=170 data-nosnippet>170</a>            );
+<a href=#171 id=171 data-nosnippet>171</a>            <a href="#167">ret</a>
+<a href=#172 id=172 data-nosnippet>172</a>        }
+<a href=#173 id=173 data-nosnippet>173</a>    }
+<a href=#174 id=174 data-nosnippet>174</a>}
+<a href=#175 id=175 data-nosnippet>175</a>
+<a href=#176 id=176 data-nosnippet>176</a><span class="kw">impl</span>&lt;O: <a href="../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="auto/unix_fd_list.rs.html#8-33">UnixFDList</a>&gt;&gt; <a href="#40-174">UnixFDListExtManual</a> <span class="kw">for </span>O {}</code></pre></div></section></main></body></html>

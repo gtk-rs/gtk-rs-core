@@ -74,7 +74,7 @@
 <nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">gio/</div>subprocess_launcher.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-3"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 <a href=#2 id=2 data-nosnippet>2</a>
 <a href=#3 id=3 data-nosnippet>3</a></span><span class="attr">#[cfg(any(unix, all(docsrs, unix)))]
-<a href=#4 id=4 data-nosnippet>4</a></span><span class="kw">use </span><a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/trait.IntoRawFd.html">std::os::unix::io::IntoRawFd</a>;
+<a href=#4 id=4 data-nosnippet>4</a></span><span class="kw">use </span>std::os::unix::io::{<a href="https://doc.rust-lang.org/nightly/std/os/fd/owned/trait.AsFd.html">AsFd</a>, <a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/trait.AsRawFd.html">AsRawFd</a>, <a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/trait.IntoRawFd.html">IntoRawFd</a>, <a href="https://doc.rust-lang.org/nightly/std/os/fd/owned/struct.OwnedFd.html">OwnedFd</a>};
 <a href=#5 id=5 data-nosnippet>5</a>
 <a href=#6 id=6 data-nosnippet>6</a><span class="kw">use </span><a href="../../glib/translate/index.html">glib::translate</a>::<span class="kw-2">*</span>;
 <a href=#7 id=7 data-nosnippet>7</a>
@@ -137,69 +137,69 @@
 <a href=#64 id=64 data-nosnippet>64</a>    </span><span class="attr">#[cfg(unix)]
 <a href=#65 id=65 data-nosnippet>65</a>    #[cfg_attr(docsrs, doc(cfg(unix)))]
 <a href=#66 id=66 data-nosnippet>66</a>    #[doc(alias = <span class="string">"g_subprocess_launcher_take_fd"</span>)]
-<a href=#67 id=67 data-nosnippet>67</a>    </span><span class="kw">pub fn </span>take_fd(<span class="kw-2">&amp;</span><span class="self">self</span>, source_fd: <span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/trait.IntoRawFd.html">IntoRawFd</a>, target_fd: <span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/trait.IntoRawFd.html">IntoRawFd</a>) {
-<a href=#68 id=68 data-nosnippet>68</a>        <span class="kw">unsafe </span>{
-<a href=#69 id=69 data-nosnippet>69</a>            <a href="../../gio_sys/fn.g_subprocess_launcher_take_fd.html">ffi::g_subprocess_launcher_take_fd</a>(
-<a href=#70 id=70 data-nosnippet>70</a>                <a class="self" href="#67">self</a>.<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
-<a href=#71 id=71 data-nosnippet>71</a>                <a href="#67">source_fd</a>.<a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/trait.IntoRawFd.html#tymethod.into_raw_fd">into_raw_fd</a>(),
-<a href=#72 id=72 data-nosnippet>72</a>                <a href="#67">target_fd</a>.<a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/trait.IntoRawFd.html#tymethod.into_raw_fd">into_raw_fd</a>(),
-<a href=#73 id=73 data-nosnippet>73</a>            );
-<a href=#74 id=74 data-nosnippet>74</a>        }
-<a href=#75 id=75 data-nosnippet>75</a>    }
-<a href=#76 id=76 data-nosnippet>76</a>
-<a href=#77 id=77 data-nosnippet>77</a>    <span class="doccomment">/// Sets the file descriptor to use as the stderr for spawned processes.
+<a href=#67 id=67 data-nosnippet>67</a>    </span><span class="kw">pub fn </span>take_fd(<span class="kw-2">&amp;</span><span class="self">self</span>, source_fd: <a href="https://doc.rust-lang.org/nightly/std/os/fd/owned/struct.OwnedFd.html">OwnedFd</a>, target_fd: <span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/std/os/fd/owned/trait.AsFd.html">AsFd</a>) {
+<a href=#68 id=68 data-nosnippet>68</a>        <span class="kw">let </span>source_raw_fd = <a href="#67">source_fd</a>.<a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/trait.IntoRawFd.html#tymethod.into_raw_fd">into_raw_fd</a>();
+<a href=#69 id=69 data-nosnippet>69</a>        <span class="kw">let </span>target_raw_fd = <a href="#67">target_fd</a>.<a href="https://doc.rust-lang.org/nightly/std/os/fd/owned/trait.AsFd.html#tymethod.as_fd">as_fd</a>().<a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/trait.AsRawFd.html#tymethod.as_raw_fd">as_raw_fd</a>();
+<a href=#70 id=70 data-nosnippet>70</a>        <span class="kw">unsafe </span>{
+<a href=#71 id=71 data-nosnippet>71</a>            <a href="../../gio_sys/fn.g_subprocess_launcher_take_fd.html">ffi::g_subprocess_launcher_take_fd</a>(<a class="self" href="#67">self</a>.<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#68">source_raw_fd</a>, <a href="#69">target_raw_fd</a>);
+<a href=#72 id=72 data-nosnippet>72</a>        }
+<a href=#73 id=73 data-nosnippet>73</a>    }
+<a href=#74 id=74 data-nosnippet>74</a>
+<a href=#75 id=75 data-nosnippet>75</a>    <span class="doccomment">/// Sets the file descriptor to use as the stderr for spawned processes.
+<a href=#76 id=76 data-nosnippet>76</a>    ///
+<a href=#77 id=77 data-nosnippet>77</a>    /// If @fd is -1 then any previously given fd is unset.
 <a href=#78 id=78 data-nosnippet>78</a>    ///
-<a href=#79 id=79 data-nosnippet>79</a>    /// If @fd is -1 then any previously given fd is unset.
-<a href=#80 id=80 data-nosnippet>80</a>    ///
-<a href=#81 id=81 data-nosnippet>81</a>    /// Note that the default behaviour is to pass stderr through to the
-<a href=#82 id=82 data-nosnippet>82</a>    /// stderr of the parent process.
-<a href=#83 id=83 data-nosnippet>83</a>    ///
-<a href=#84 id=84 data-nosnippet>84</a>    /// The passed @fd belongs to the #GSubprocessLauncher.  It will be
-<a href=#85 id=85 data-nosnippet>85</a>    /// automatically closed when the launcher is finalized.  The file
-<a href=#86 id=86 data-nosnippet>86</a>    /// descriptor will also be closed on the child side when executing the
-<a href=#87 id=87 data-nosnippet>87</a>    /// spawned process.
-<a href=#88 id=88 data-nosnippet>88</a>    ///
-<a href=#89 id=89 data-nosnippet>89</a>    /// You may not set a stderr fd if a stderr file path is already set or
-<a href=#90 id=90 data-nosnippet>90</a>    /// if the launcher flags contain any flags directing stderr elsewhere.
-<a href=#91 id=91 data-nosnippet>91</a>    ///
-<a href=#92 id=92 data-nosnippet>92</a>    /// This feature is only available on UNIX.
-<a href=#93 id=93 data-nosnippet>93</a>    /// ## `fd`
-<a href=#94 id=94 data-nosnippet>94</a>    /// a file descriptor, or -1
-<a href=#95 id=95 data-nosnippet>95</a>    </span><span class="attr">#[cfg(unix)]
-<a href=#96 id=96 data-nosnippet>96</a>    #[cfg_attr(docsrs, doc(cfg(unix)))]
-<a href=#97 id=97 data-nosnippet>97</a>    #[doc(alias = <span class="string">"g_subprocess_launcher_take_stderr_fd"</span>)]
-<a href=#98 id=98 data-nosnippet>98</a>    </span><span class="kw">pub fn </span>take_stderr_fd(<span class="kw-2">&amp;</span><span class="self">self</span>, fd: <span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/trait.IntoRawFd.html">IntoRawFd</a>) {
-<a href=#99 id=99 data-nosnippet>99</a>        <span class="kw">unsafe </span>{
-<a href=#100 id=100 data-nosnippet>100</a>            <a href="../../gio_sys/fn.g_subprocess_launcher_take_stderr_fd.html">ffi::g_subprocess_launcher_take_stderr_fd</a>(<a class="self" href="#98">self</a>.<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#98">fd</a>.<a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/trait.IntoRawFd.html#tymethod.into_raw_fd">into_raw_fd</a>());
-<a href=#101 id=101 data-nosnippet>101</a>        }
-<a href=#102 id=102 data-nosnippet>102</a>    }
-<a href=#103 id=103 data-nosnippet>103</a>
-<a href=#104 id=104 data-nosnippet>104</a>    <span class="doccomment">/// Sets the file descriptor to use as the stdin for spawned processes.
-<a href=#105 id=105 data-nosnippet>105</a>    ///
-<a href=#106 id=106 data-nosnippet>106</a>    /// If @fd is -1 then any previously given fd is unset.
-<a href=#107 id=107 data-nosnippet>107</a>    ///
-<a href=#108 id=108 data-nosnippet>108</a>    /// Note that if your intention is to have the stdin of the calling
-<a href=#109 id=109 data-nosnippet>109</a>    /// process inherited by the child then [`SubprocessFlags::STDIN_INHERIT`][crate::SubprocessFlags::STDIN_INHERIT]
-<a href=#110 id=110 data-nosnippet>110</a>    /// is a better way to go about doing that.
-<a href=#111 id=111 data-nosnippet>111</a>    ///
-<a href=#112 id=112 data-nosnippet>112</a>    /// The passed @fd is noted but will not be touched in the current
-<a href=#113 id=113 data-nosnippet>113</a>    /// process.  It is therefore necessary that it be kept open by the
-<a href=#114 id=114 data-nosnippet>114</a>    /// caller until the subprocess is spawned.  The file descriptor will
-<a href=#115 id=115 data-nosnippet>115</a>    /// also not be explicitly closed on the child side, so it must be marked
-<a href=#116 id=116 data-nosnippet>116</a>    /// O_CLOEXEC if that's what you want.
-<a href=#117 id=117 data-nosnippet>117</a>    ///
-<a href=#118 id=118 data-nosnippet>118</a>    /// You may not set a stdin fd if a stdin file path is already set or if
-<a href=#119 id=119 data-nosnippet>119</a>    /// the launcher flags contain any flags directing stdin elsewhere.
-<a href=#120 id=120 data-nosnippet>120</a>    ///
-<a href=#121 id=121 data-nosnippet>121</a>    /// This feature is only available on UNIX.
-<a href=#122 id=122 data-nosnippet>122</a>    /// ## `fd`
-<a href=#123 id=123 data-nosnippet>123</a>    /// a file descriptor, or -1
-<a href=#124 id=124 data-nosnippet>124</a>    </span><span class="attr">#[cfg(unix)]
-<a href=#125 id=125 data-nosnippet>125</a>    #[cfg_attr(docsrs, doc(cfg(unix)))]
-<a href=#126 id=126 data-nosnippet>126</a>    #[doc(alias = <span class="string">"g_subprocess_launcher_take_stdin_fd"</span>)]
-<a href=#127 id=127 data-nosnippet>127</a>    </span><span class="kw">pub fn </span>take_stdin_fd(<span class="kw-2">&amp;</span><span class="self">self</span>, fd: <span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/trait.IntoRawFd.html">IntoRawFd</a>) {
+<a href=#79 id=79 data-nosnippet>79</a>    /// Note that the default behaviour is to pass stderr through to the
+<a href=#80 id=80 data-nosnippet>80</a>    /// stderr of the parent process.
+<a href=#81 id=81 data-nosnippet>81</a>    ///
+<a href=#82 id=82 data-nosnippet>82</a>    /// The passed @fd belongs to the #GSubprocessLauncher.  It will be
+<a href=#83 id=83 data-nosnippet>83</a>    /// automatically closed when the launcher is finalized.  The file
+<a href=#84 id=84 data-nosnippet>84</a>    /// descriptor will also be closed on the child side when executing the
+<a href=#85 id=85 data-nosnippet>85</a>    /// spawned process.
+<a href=#86 id=86 data-nosnippet>86</a>    ///
+<a href=#87 id=87 data-nosnippet>87</a>    /// You may not set a stderr fd if a stderr file path is already set or
+<a href=#88 id=88 data-nosnippet>88</a>    /// if the launcher flags contain any flags directing stderr elsewhere.
+<a href=#89 id=89 data-nosnippet>89</a>    ///
+<a href=#90 id=90 data-nosnippet>90</a>    /// This feature is only available on UNIX.
+<a href=#91 id=91 data-nosnippet>91</a>    /// ## `fd`
+<a href=#92 id=92 data-nosnippet>92</a>    /// a file descriptor, or -1
+<a href=#93 id=93 data-nosnippet>93</a>    </span><span class="attr">#[cfg(unix)]
+<a href=#94 id=94 data-nosnippet>94</a>    #[cfg_attr(docsrs, doc(cfg(unix)))]
+<a href=#95 id=95 data-nosnippet>95</a>    #[doc(alias = <span class="string">"g_subprocess_launcher_take_stderr_fd"</span>)]
+<a href=#96 id=96 data-nosnippet>96</a>    </span><span class="kw">pub fn </span>take_stderr_fd(<span class="kw-2">&amp;</span><span class="self">self</span>, fd: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="https://doc.rust-lang.org/nightly/std/os/fd/owned/struct.OwnedFd.html">OwnedFd</a>&gt;) {
+<a href=#97 id=97 data-nosnippet>97</a>        <span class="kw">unsafe </span>{
+<a href=#98 id=98 data-nosnippet>98</a>            <span class="kw">let </span>raw_fd = <a href="#96">fd</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map_or">map_or</a>(-<span class="number">1</span>, |fd| <a href="#98">fd</a>.<a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/trait.IntoRawFd.html#tymethod.into_raw_fd">into_raw_fd</a>());
+<a href=#99 id=99 data-nosnippet>99</a>            <a href="../../gio_sys/fn.g_subprocess_launcher_take_stderr_fd.html">ffi::g_subprocess_launcher_take_stderr_fd</a>(<a class="self" href="#96">self</a>.<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#98">raw_fd</a>);
+<a href=#100 id=100 data-nosnippet>100</a>        }
+<a href=#101 id=101 data-nosnippet>101</a>    }
+<a href=#102 id=102 data-nosnippet>102</a>
+<a href=#103 id=103 data-nosnippet>103</a>    <span class="doccomment">/// Sets the file descriptor to use as the stdin for spawned processes.
+<a href=#104 id=104 data-nosnippet>104</a>    ///
+<a href=#105 id=105 data-nosnippet>105</a>    /// If @fd is -1 then any previously given fd is unset.
+<a href=#106 id=106 data-nosnippet>106</a>    ///
+<a href=#107 id=107 data-nosnippet>107</a>    /// Note that if your intention is to have the stdin of the calling
+<a href=#108 id=108 data-nosnippet>108</a>    /// process inherited by the child then [`SubprocessFlags::STDIN_INHERIT`][crate::SubprocessFlags::STDIN_INHERIT]
+<a href=#109 id=109 data-nosnippet>109</a>    /// is a better way to go about doing that.
+<a href=#110 id=110 data-nosnippet>110</a>    ///
+<a href=#111 id=111 data-nosnippet>111</a>    /// The passed @fd is noted but will not be touched in the current
+<a href=#112 id=112 data-nosnippet>112</a>    /// process.  It is therefore necessary that it be kept open by the
+<a href=#113 id=113 data-nosnippet>113</a>    /// caller until the subprocess is spawned.  The file descriptor will
+<a href=#114 id=114 data-nosnippet>114</a>    /// also not be explicitly closed on the child side, so it must be marked
+<a href=#115 id=115 data-nosnippet>115</a>    /// O_CLOEXEC if that's what you want.
+<a href=#116 id=116 data-nosnippet>116</a>    ///
+<a href=#117 id=117 data-nosnippet>117</a>    /// You may not set a stdin fd if a stdin file path is already set or if
+<a href=#118 id=118 data-nosnippet>118</a>    /// the launcher flags contain any flags directing stdin elsewhere.
+<a href=#119 id=119 data-nosnippet>119</a>    ///
+<a href=#120 id=120 data-nosnippet>120</a>    /// This feature is only available on UNIX.
+<a href=#121 id=121 data-nosnippet>121</a>    /// ## `fd`
+<a href=#122 id=122 data-nosnippet>122</a>    /// a file descriptor, or -1
+<a href=#123 id=123 data-nosnippet>123</a>    </span><span class="attr">#[cfg(unix)]
+<a href=#124 id=124 data-nosnippet>124</a>    #[cfg_attr(docsrs, doc(cfg(unix)))]
+<a href=#125 id=125 data-nosnippet>125</a>    #[doc(alias = <span class="string">"g_subprocess_launcher_take_stdin_fd"</span>)]
+<a href=#126 id=126 data-nosnippet>126</a>    </span><span class="kw">pub fn </span>take_stdin_fd(<span class="kw-2">&amp;</span><span class="self">self</span>, fd: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="https://doc.rust-lang.org/nightly/std/os/fd/owned/struct.OwnedFd.html">OwnedFd</a>&gt;) {
+<a href=#127 id=127 data-nosnippet>127</a>        <span class="kw">let </span>raw_fd = <a href="#126">fd</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map_or">map_or</a>(-<span class="number">1</span>, |fd| <a href="#127">fd</a>.<a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/trait.IntoRawFd.html#tymethod.into_raw_fd">into_raw_fd</a>());
 <a href=#128 id=128 data-nosnippet>128</a>        <span class="kw">unsafe </span>{
-<a href=#129 id=129 data-nosnippet>129</a>            <a href="../../gio_sys/fn.g_subprocess_launcher_take_stdin_fd.html">ffi::g_subprocess_launcher_take_stdin_fd</a>(<a class="self" href="#127">self</a>.<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#127">fd</a>.<a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/trait.IntoRawFd.html#tymethod.into_raw_fd">into_raw_fd</a>());
+<a href=#129 id=129 data-nosnippet>129</a>            <a href="../../gio_sys/fn.g_subprocess_launcher_take_stdin_fd.html">ffi::g_subprocess_launcher_take_stdin_fd</a>(<a class="self" href="#126">self</a>.<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#127">raw_fd</a>);
 <a href=#130 id=130 data-nosnippet>130</a>        }
 <a href=#131 id=131 data-nosnippet>131</a>    }
 <a href=#132 id=132 data-nosnippet>132</a>
@@ -225,9 +225,10 @@
 <a href=#152 id=152 data-nosnippet>152</a>    </span><span class="attr">#[cfg(unix)]
 <a href=#153 id=153 data-nosnippet>153</a>    #[cfg_attr(docsrs, doc(cfg(unix)))]
 <a href=#154 id=154 data-nosnippet>154</a>    #[doc(alias = <span class="string">"g_subprocess_launcher_take_stdout_fd"</span>)]
-<a href=#155 id=155 data-nosnippet>155</a>    </span><span class="kw">pub fn </span>take_stdout_fd(<span class="kw-2">&amp;</span><span class="self">self</span>, fd: <span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/trait.IntoRawFd.html">IntoRawFd</a>) {
-<a href=#156 id=156 data-nosnippet>156</a>        <span class="kw">unsafe </span>{
-<a href=#157 id=157 data-nosnippet>157</a>            <a href="../../gio_sys/fn.g_subprocess_launcher_take_stdout_fd.html">ffi::g_subprocess_launcher_take_stdout_fd</a>(<a class="self" href="#155">self</a>.<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#155">fd</a>.<a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/trait.IntoRawFd.html#tymethod.into_raw_fd">into_raw_fd</a>());
-<a href=#158 id=158 data-nosnippet>158</a>        }
-<a href=#159 id=159 data-nosnippet>159</a>    }
-<a href=#160 id=160 data-nosnippet>160</a>}</code></pre></div></section></main></body></html>
+<a href=#155 id=155 data-nosnippet>155</a>    </span><span class="kw">pub fn </span>take_stdout_fd(<span class="kw-2">&amp;</span><span class="self">self</span>, fd: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="https://doc.rust-lang.org/nightly/std/os/fd/owned/struct.OwnedFd.html">OwnedFd</a>&gt;) {
+<a href=#156 id=156 data-nosnippet>156</a>        <span class="kw">let </span>raw_fd = <a href="#155">fd</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map_or">map_or</a>(-<span class="number">1</span>, |fd| <a href="#156">fd</a>.<a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/trait.IntoRawFd.html#tymethod.into_raw_fd">into_raw_fd</a>());
+<a href=#157 id=157 data-nosnippet>157</a>        <span class="kw">unsafe </span>{
+<a href=#158 id=158 data-nosnippet>158</a>            <a href="../../gio_sys/fn.g_subprocess_launcher_take_stdout_fd.html">ffi::g_subprocess_launcher_take_stdout_fd</a>(<a class="self" href="#155">self</a>.<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#156">raw_fd</a>);
+<a href=#159 id=159 data-nosnippet>159</a>        }
+<a href=#160 id=160 data-nosnippet>160</a>    }
+<a href=#161 id=161 data-nosnippet>161</a>}</code></pre></div></section></main></body></html>
