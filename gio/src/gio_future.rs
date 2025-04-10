@@ -115,7 +115,7 @@ where
             && self
                 .receiver
                 .as_ref()
-                .map_or(true, |receiver| receiver.is_terminated())
+                .is_none_or(|receiver| receiver.is_terminated())
     }
 }
 

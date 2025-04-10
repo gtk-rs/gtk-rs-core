@@ -3,8 +3,7 @@
 // DO NOT EDIT
 
 use crate::{
-    ffi, ActionGroup, ActionMap, ApplicationCommandLine, ApplicationFlags, Cancellable,
-    DBusConnection, File, Notification,
+    ffi, ActionGroup, ActionMap, ApplicationFlags, Cancellable, DBusConnection, File, Notification,
 };
 use glib::{
     object::ObjectType as _,
@@ -458,70 +457,6 @@ pub trait ApplicationExt: IsA<Application> + 'static {
                 c"activate".as_ptr() as *const _,
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     activate_trampoline::<Self, F> as *const (),
-                )),
-                Box_::into_raw(f),
-            )
-        }
-    }
-
-    #[doc(alias = "command-line")]
-    fn connect_command_line<F: Fn(&Self, &ApplicationCommandLine) -> i32 + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
-        unsafe extern "C" fn command_line_trampoline<
-            P: IsA<Application>,
-            F: Fn(&P, &ApplicationCommandLine) -> i32 + 'static,
-        >(
-            this: *mut ffi::GApplication,
-            command_line: *mut ffi::GApplicationCommandLine,
-            f: glib::ffi::gpointer,
-        ) -> std::ffi::c_int {
-            let f: &F = &*(f as *const F);
-            f(
-                Application::from_glib_borrow(this).unsafe_cast_ref(),
-                &from_glib_borrow(command_line),
-            )
-        }
-        unsafe {
-            let f: Box_<F> = Box_::new(f);
-            connect_raw(
-                self.as_ptr() as *mut _,
-                c"command-line".as_ptr() as *const _,
-                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
-                    command_line_trampoline::<Self, F> as *const (),
-                )),
-                Box_::into_raw(f),
-            )
-        }
-    }
-
-    #[doc(alias = "handle-local-options")]
-    fn connect_handle_local_options<F: Fn(&Self, &glib::VariantDict) -> i32 + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
-        unsafe extern "C" fn handle_local_options_trampoline<
-            P: IsA<Application>,
-            F: Fn(&P, &glib::VariantDict) -> i32 + 'static,
-        >(
-            this: *mut ffi::GApplication,
-            options: *mut glib::ffi::GVariantDict,
-            f: glib::ffi::gpointer,
-        ) -> std::ffi::c_int {
-            let f: &F = &*(f as *const F);
-            f(
-                Application::from_glib_borrow(this).unsafe_cast_ref(),
-                &from_glib_borrow(options),
-            )
-        }
-        unsafe {
-            let f: Box_<F> = Box_::new(f);
-            connect_raw(
-                self.as_ptr() as *mut _,
-                c"handle-local-options".as_ptr() as *const _,
-                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
-                    handle_local_options_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
             )

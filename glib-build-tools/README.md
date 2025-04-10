@@ -4,7 +4,7 @@ Crate containing helpers for building GIO-based applications.
 
 ## Minimum supported Rust version
 
-Currently, the minimum supported Rust version is `1.80.0`.
+Currently, the minimum supported Rust version is `1.83.0`.
 
 ## Documentation
 

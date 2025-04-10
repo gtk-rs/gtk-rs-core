@@ -117,7 +117,7 @@ pub mod object;
 mod boxed_any_object;
 pub use boxed_any_object::BoxedAnyObject;
 mod exit_code;
-pub use exit_code::ExitCode;
+pub use exit_code::{ExitCode, InvalidExitCode};
 
 pub mod collections;
 pub use collections::{List, PtrSlice, SList, Slice, StrV};
