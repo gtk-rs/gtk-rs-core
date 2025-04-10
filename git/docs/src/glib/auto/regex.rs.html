@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/auto/regex.rs`."><title>regex.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-de575e9a.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.88.0-nightly (2fa8b11f0 2025-04-06)" data-channel="nightly" data-search-js="search-f7877310.js" data-settings-js="settings-5514c975.js" ><script src="../../../static.files/storage-4e99c027.js"></script><script defer src="../../../static.files/src-script-63605ae7.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-7ef8a74a.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/auto/regex.rs`."><title>regex.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-de575e9a.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.88.0-nightly (934880f58 2025-04-09)" data-channel="nightly" data-search-js="search-f7877310.js" data-settings-js="settings-5514c975.js" ><script src="../../../static.files/storage-4e99c027.js"></script><script defer src="../../../static.files/src-script-63605ae7.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-7ef8a74a.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -75,7 +75,7 @@
 <a href=#2 id=2 data-nosnippet>2</a>// from gir-files (https://github.com/gtk-rs/gir-files)
 <a href=#3 id=3 data-nosnippet>3</a>// DO NOT EDIT
 <a href=#4 id=4 data-nosnippet>4</a>
-<a href=#5 id=5 data-nosnippet>5</a></span><span class="kw">use crate</span>::{ffi, <a href="../lib.rs.html#164">translate</a>::<span class="kw-2">*</span>, <a href="../error.rs.html#10-25">Error</a>, <a href="flags.rs.html#483-602">RegexCompileFlags</a>, <a href="flags.rs.html#622-720">RegexMatchFlags</a>};
+<a href=#5 id=5 data-nosnippet>5</a></span><span class="kw">use crate</span>::{ffi, <a href="../lib.rs.html#164">translate</a>::<span class="kw-2">*</span>, <a href="../error.rs.html#10-28">Error</a>, <a href="flags.rs.html#649-864">RegexCompileFlags</a>, <a href="flags.rs.html#884-1060">RegexMatchFlags</a>};
 <a href=#6 id=6 data-nosnippet>6</a>
 <a href=#7 id=7 data-nosnippet>7</a><a class="macro" href="../wrapper.rs.html#276-443">crate::wrapper!</a> {
 <a href=#8 id=8 data-nosnippet>8</a>    <span class="doccomment">/// A `GRegex` is the "compiled" form of a regular expression pattern.
@@ -131,140 +131,259 @@
 <a href=#58 id=58 data-nosnippet>58</a>    ///
 <a href=#59 id=59 data-nosnippet>59</a>    /// The regular expressions low-level functionalities are obtained through
 <a href=#60 id=60 data-nosnippet>60</a>    /// the excellent [PCRE](http://www.pcre.org/) library written by Philip Hazel.
-<a href=#61 id=61 data-nosnippet>61</a>    </span><span class="attr">#[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
-<a href=#62 id=62 data-nosnippet>62</a>    </span><span class="kw">pub struct </span><a href="../../../glib/struct.Regex.html">Regex</a>(Shared&lt;ffi::GRegex&gt;);
-<a href=#63 id=63 data-nosnippet>63</a>
-<a href=#64 id=64 data-nosnippet>64</a>    <span class="kw">match fn </span>{
-<a href=#65 id=65 data-nosnippet>65</a>        <span class="kw-2">ref </span>=&gt; |ptr| ffi::g_regex_ref(ptr),
-<a href=#66 id=66 data-nosnippet>66</a>        unref =&gt; |ptr| ffi::g_regex_unref(ptr),
-<a href=#67 id=67 data-nosnippet>67</a>        type_ =&gt; || ffi::g_regex_get_type(),
-<a href=#68 id=68 data-nosnippet>68</a>    }
-<a href=#69 id=69 data-nosnippet>69</a>}
-<a href=#70 id=70 data-nosnippet>70</a>
-<a href=#71 id=71 data-nosnippet>71</a><span class="kw">impl </span><a href="#7-69">Regex</a> {
-<a href=#72 id=72 data-nosnippet>72</a>    <span class="doccomment">/// Compiles the regular expression to an internal form, and does
-<a href=#73 id=73 data-nosnippet>73</a>    /// the initial setup of the #GRegex structure.
-<a href=#74 id=74 data-nosnippet>74</a>    /// ## `pattern`
-<a href=#75 id=75 data-nosnippet>75</a>    /// the regular expression
-<a href=#76 id=76 data-nosnippet>76</a>    /// ## `compile_options`
-<a href=#77 id=77 data-nosnippet>77</a>    /// compile options for the regular expression, or 0
-<a href=#78 id=78 data-nosnippet>78</a>    /// ## `match_options`
-<a href=#79 id=79 data-nosnippet>79</a>    /// match options for the regular expression, or 0
+<a href=#61 id=61 data-nosnippet>61</a>    </span><span class="comment">// rustdoc-stripper-ignore-next-stop
+<a href=#62 id=62 data-nosnippet>62</a>    </span><span class="doccomment">/// A `GRegex` is the "compiled" form of a regular expression pattern.
+<a href=#63 id=63 data-nosnippet>63</a>    ///
+<a href=#64 id=64 data-nosnippet>64</a>    /// `GRegex` implements regular expression pattern matching using syntax and
+<a href=#65 id=65 data-nosnippet>65</a>    /// semantics similar to Perl regular expression. See the
+<a href=#66 id=66 data-nosnippet>66</a>    /// [PCRE documentation](man:pcrepattern(3)) for the syntax definition.
+<a href=#67 id=67 data-nosnippet>67</a>    ///
+<a href=#68 id=68 data-nosnippet>68</a>    /// Some functions accept a @start_position argument, setting it differs
+<a href=#69 id=69 data-nosnippet>69</a>    /// from just passing over a shortened string and setting [`RegexMatchFlags::NOTBOL`][crate::RegexMatchFlags::NOTBOL]
+<a href=#70 id=70 data-nosnippet>70</a>    /// in the case of a pattern that begins with any kind of lookbehind assertion.
+<a href=#71 id=71 data-nosnippet>71</a>    /// For example, consider the pattern "\Biss\B" which finds occurrences of "iss"
+<a href=#72 id=72 data-nosnippet>72</a>    /// in the middle of words. ("\B" matches only if the current position in the
+<a href=#73 id=73 data-nosnippet>73</a>    /// subject is not a word boundary.) When applied to the string "Mississipi"
+<a href=#74 id=74 data-nosnippet>74</a>    /// from the fourth byte, namely "issipi", it does not match, because "\B" is
+<a href=#75 id=75 data-nosnippet>75</a>    /// always false at the start of the subject, which is deemed to be a word
+<a href=#76 id=76 data-nosnippet>76</a>    /// boundary. However, if the entire string is passed , but with
+<a href=#77 id=77 data-nosnippet>77</a>    /// @start_position set to 4, it finds the second occurrence of "iss" because
+<a href=#78 id=78 data-nosnippet>78</a>    /// it is able to look behind the starting point to discover that it is
+<a href=#79 id=79 data-nosnippet>79</a>    /// preceded by a letter.
 <a href=#80 id=80 data-nosnippet>80</a>    ///
-<a href=#81 id=81 data-nosnippet>81</a>    /// # Returns
-<a href=#82 id=82 data-nosnippet>82</a>    ///
-<a href=#83 id=83 data-nosnippet>83</a>    /// a #GRegex structure or [`None`] if an error occurred. Call
-<a href=#84 id=84 data-nosnippet>84</a>    ///   g_regex_unref() when you are done with it
-<a href=#85 id=85 data-nosnippet>85</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_regex_new"</span>)]
-<a href=#86 id=86 data-nosnippet>86</a>    </span><span class="kw">pub fn </span>new(
-<a href=#87 id=87 data-nosnippet>87</a>        pattern: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
-<a href=#88 id=88 data-nosnippet>88</a>        compile_options: <a href="flags.rs.html#483-602">RegexCompileFlags</a>,
-<a href=#89 id=89 data-nosnippet>89</a>        match_options: <a href="flags.rs.html#622-720">RegexMatchFlags</a>,
-<a href=#90 id=90 data-nosnippet>90</a>    ) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="#7-69">Regex</a>&gt;, <a href="../error.rs.html#10-25"><span class="kw">crate</span>::Error</a>&gt; {
-<a href=#91 id=91 data-nosnippet>91</a>        <span class="kw">unsafe </span>{
-<a href=#92 id=92 data-nosnippet>92</a>            <span class="kw">let </span><span class="kw-2">mut </span>error = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">std::ptr::null_mut</a>();
-<a href=#93 id=93 data-nosnippet>93</a>            <span class="kw">let </span>ret = ffi::g_regex_new(
-<a href=#94 id=94 data-nosnippet>94</a>                <a href="#87">pattern</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-<a href=#95 id=95 data-nosnippet>95</a>                <a href="#88">compile_options</a>.<a href="../translate.rs.html#334">into_glib</a>(),
-<a href=#96 id=96 data-nosnippet>96</a>                <a href="#89">match_options</a>.<a href="../translate.rs.html#334">into_glib</a>(),
-<a href=#97 id=97 data-nosnippet>97</a>                <span class="kw-2">&amp;mut </span><a href="#92">error</a>,
-<a href=#98 id=98 data-nosnippet>98</a>            );
-<a href=#99 id=99 data-nosnippet>99</a>            <span class="kw">if </span>error.is_null() {
-<a href=#100 id=100 data-nosnippet>100</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(<a href="../translate.rs.html#1638-1640">from_glib_full</a>(<a href="#93">ret</a>))
-<a href=#101 id=101 data-nosnippet>101</a>            } <span class="kw">else </span>{
-<a href=#102 id=102 data-nosnippet>102</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="../translate.rs.html#1638-1640">from_glib_full</a>(<a href="#92">error</a>))
-<a href=#103 id=103 data-nosnippet>103</a>            }
-<a href=#104 id=104 data-nosnippet>104</a>        }
-<a href=#105 id=105 data-nosnippet>105</a>    }
-<a href=#106 id=106 data-nosnippet>106</a>
-<a href=#107 id=107 data-nosnippet>107</a>    <span class="doccomment">/// Returns the number of capturing subpatterns in the pattern.
-<a href=#108 id=108 data-nosnippet>108</a>    ///
-<a href=#109 id=109 data-nosnippet>109</a>    /// # Returns
-<a href=#110 id=110 data-nosnippet>110</a>    ///
-<a href=#111 id=111 data-nosnippet>111</a>    /// the number of capturing subpatterns
-<a href=#112 id=112 data-nosnippet>112</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_regex_get_capture_count"</span>)]
-<a href=#113 id=113 data-nosnippet>113</a>    #[doc(alias = <span class="string">"get_capture_count"</span>)]
-<a href=#114 id=114 data-nosnippet>114</a>    </span><span class="kw">pub fn </span>capture_count(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a> {
-<a href=#115 id=115 data-nosnippet>115</a>        <span class="kw">unsafe </span>{ ffi::g_regex_get_capture_count(<a class="self" href="#114">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>) }
-<a href=#116 id=116 data-nosnippet>116</a>    }
+<a href=#81 id=81 data-nosnippet>81</a>    /// Note that, unless you set the [`RegexCompileFlags::RAW`][crate::RegexCompileFlags::RAW] flag, all the strings passed
+<a href=#82 id=82 data-nosnippet>82</a>    /// to these functions must be encoded in UTF-8. The lengths and the positions
+<a href=#83 id=83 data-nosnippet>83</a>    /// inside the strings are in bytes and not in characters, so, for instance,
+<a href=#84 id=84 data-nosnippet>84</a>    /// "\xc3\xa0" (i.e. "à") is two bytes long but it is treated as a
+<a href=#85 id=85 data-nosnippet>85</a>    /// single character. If you set [`RegexCompileFlags::RAW`][crate::RegexCompileFlags::RAW] the strings can be non-valid
+<a href=#86 id=86 data-nosnippet>86</a>    /// UTF-8 strings and a byte is treated as a character, so "\xc3\xa0" is two
+<a href=#87 id=87 data-nosnippet>87</a>    /// bytes and two characters long.
+<a href=#88 id=88 data-nosnippet>88</a>    ///
+<a href=#89 id=89 data-nosnippet>89</a>    /// When matching a pattern, "\n" matches only against a "\n" character in
+<a href=#90 id=90 data-nosnippet>90</a>    /// the string, and "\r" matches only a "\r" character. To match any newline
+<a href=#91 id=91 data-nosnippet>91</a>    /// sequence use "\R". This particular group matches either the two-character
+<a href=#92 id=92 data-nosnippet>92</a>    /// sequence CR + LF ("\r\n"), or one of the single characters LF (linefeed,
+<a href=#93 id=93 data-nosnippet>93</a>    /// U+000A, "\n"), VT vertical tab, U+000B, "\v"), FF (formfeed, U+000C, "\f"),
+<a href=#94 id=94 data-nosnippet>94</a>    /// CR (carriage return, U+000D, "\r"), NEL (next line, U+0085), LS (line
+<a href=#95 id=95 data-nosnippet>95</a>    /// separator, U+2028), or PS (paragraph separator, U+2029).
+<a href=#96 id=96 data-nosnippet>96</a>    ///
+<a href=#97 id=97 data-nosnippet>97</a>    /// The behaviour of the dot, circumflex, and dollar metacharacters are
+<a href=#98 id=98 data-nosnippet>98</a>    /// affected by newline characters, the default is to recognize any newline
+<a href=#99 id=99 data-nosnippet>99</a>    /// character (the same characters recognized by "\R"). This can be changed
+<a href=#100 id=100 data-nosnippet>100</a>    /// with `G_REGEX_NEWLINE_CR`, `G_REGEX_NEWLINE_LF` and `G_REGEX_NEWLINE_CRLF`
+<a href=#101 id=101 data-nosnippet>101</a>    /// compile options, and with `G_REGEX_MATCH_NEWLINE_ANY`,
+<a href=#102 id=102 data-nosnippet>102</a>    /// `G_REGEX_MATCH_NEWLINE_CR`, `G_REGEX_MATCH_NEWLINE_LF` and
+<a href=#103 id=103 data-nosnippet>103</a>    /// `G_REGEX_MATCH_NEWLINE_CRLF` match options. These settings are also
+<a href=#104 id=104 data-nosnippet>104</a>    /// relevant when compiling a pattern if `G_REGEX_EXTENDED` is set, and an
+<a href=#105 id=105 data-nosnippet>105</a>    /// unescaped "#" outside a character class is encountered. This indicates
+<a href=#106 id=106 data-nosnippet>106</a>    /// a comment that lasts until after the next newline.
+<a href=#107 id=107 data-nosnippet>107</a>    ///
+<a href=#108 id=108 data-nosnippet>108</a>    /// Creating and manipulating the same `GRegex` structure from different
+<a href=#109 id=109 data-nosnippet>109</a>    /// threads is not a problem as `GRegex` does not modify its internal
+<a href=#110 id=110 data-nosnippet>110</a>    /// state between creation and destruction, on the other hand `GMatchInfo`
+<a href=#111 id=111 data-nosnippet>111</a>    /// is not threadsafe.
+<a href=#112 id=112 data-nosnippet>112</a>    ///
+<a href=#113 id=113 data-nosnippet>113</a>    /// The regular expressions low-level functionalities are obtained through
+<a href=#114 id=114 data-nosnippet>114</a>    /// the excellent [PCRE](http://www.pcre.org/) library written by Philip Hazel.
+<a href=#115 id=115 data-nosnippet>115</a>    </span><span class="attr">#[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+<a href=#116 id=116 data-nosnippet>116</a>    </span><span class="kw">pub struct </span><a href="../../../glib/struct.Regex.html">Regex</a>(Shared&lt;ffi::GRegex&gt;);
 <a href=#117 id=117 data-nosnippet>117</a>
-<a href=#118 id=118 data-nosnippet>118</a>    <span class="doccomment">/// Returns the compile options that @self was created with.
-<a href=#119 id=119 data-nosnippet>119</a>    ///
-<a href=#120 id=120 data-nosnippet>120</a>    /// Depending on the version of PCRE that is used, this may or may not
-<a href=#121 id=121 data-nosnippet>121</a>    /// include flags set by option expressions such as `(?i)` found at the
-<a href=#122 id=122 data-nosnippet>122</a>    /// top-level within the compiled pattern.
-<a href=#123 id=123 data-nosnippet>123</a>    ///
-<a href=#124 id=124 data-nosnippet>124</a>    /// # Returns
-<a href=#125 id=125 data-nosnippet>125</a>    ///
-<a href=#126 id=126 data-nosnippet>126</a>    /// flags from #GRegexCompileFlags
-<a href=#127 id=127 data-nosnippet>127</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_regex_get_compile_flags"</span>)]
-<a href=#128 id=128 data-nosnippet>128</a>    #[doc(alias = <span class="string">"get_compile_flags"</span>)]
-<a href=#129 id=129 data-nosnippet>129</a>    </span><span class="kw">pub fn </span>compile_flags(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="flags.rs.html#483-602">RegexCompileFlags</a> {
-<a href=#130 id=130 data-nosnippet>130</a>        <span class="kw">unsafe </span>{ <a href="../translate.rs.html#1421-1423">from_glib</a>(ffi::g_regex_get_compile_flags(<a class="self" href="#129">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>)) }
-<a href=#131 id=131 data-nosnippet>131</a>    }
-<a href=#132 id=132 data-nosnippet>132</a>
-<a href=#133 id=133 data-nosnippet>133</a>    <span class="doccomment">/// Checks whether the pattern contains explicit CR or LF references.
+<a href=#118 id=118 data-nosnippet>118</a>    <span class="kw">match fn </span>{
+<a href=#119 id=119 data-nosnippet>119</a>        <span class="kw-2">ref </span>=&gt; |ptr| ffi::g_regex_ref(ptr),
+<a href=#120 id=120 data-nosnippet>120</a>        unref =&gt; |ptr| ffi::g_regex_unref(ptr),
+<a href=#121 id=121 data-nosnippet>121</a>        type_ =&gt; || ffi::g_regex_get_type(),
+<a href=#122 id=122 data-nosnippet>122</a>    }
+<a href=#123 id=123 data-nosnippet>123</a>}
+<a href=#124 id=124 data-nosnippet>124</a>
+<a href=#125 id=125 data-nosnippet>125</a><span class="kw">impl </span><a href="#7-123">Regex</a> {
+<a href=#126 id=126 data-nosnippet>126</a>    <span class="doccomment">/// Compiles the regular expression to an internal form, and does
+<a href=#127 id=127 data-nosnippet>127</a>    /// the initial setup of the #GRegex structure.
+<a href=#128 id=128 data-nosnippet>128</a>    /// ## `pattern`
+<a href=#129 id=129 data-nosnippet>129</a>    /// the regular expression
+<a href=#130 id=130 data-nosnippet>130</a>    /// ## `compile_options`
+<a href=#131 id=131 data-nosnippet>131</a>    /// compile options for the regular expression, or 0
+<a href=#132 id=132 data-nosnippet>132</a>    /// ## `match_options`
+<a href=#133 id=133 data-nosnippet>133</a>    /// match options for the regular expression, or 0
 <a href=#134 id=134 data-nosnippet>134</a>    ///
 <a href=#135 id=135 data-nosnippet>135</a>    /// # Returns
 <a href=#136 id=136 data-nosnippet>136</a>    ///
-<a href=#137 id=137 data-nosnippet>137</a>    /// [`true`] if the pattern contains explicit CR or LF references
-<a href=#138 id=138 data-nosnippet>138</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_regex_get_has_cr_or_lf"</span>)]
-<a href=#139 id=139 data-nosnippet>139</a>    #[doc(alias = <span class="string">"get_has_cr_or_lf"</span>)]
-<a href=#140 id=140 data-nosnippet>140</a>    </span><span class="kw">pub fn </span>has_cr_or_lf(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
-<a href=#141 id=141 data-nosnippet>141</a>        <span class="kw">unsafe </span>{ <a href="../translate.rs.html#1421-1423">from_glib</a>(ffi::g_regex_get_has_cr_or_lf(<a class="self" href="#140">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>)) }
-<a href=#142 id=142 data-nosnippet>142</a>    }
-<a href=#143 id=143 data-nosnippet>143</a>
-<a href=#144 id=144 data-nosnippet>144</a>    <span class="doccomment">/// Returns the match options that @self was created with.
-<a href=#145 id=145 data-nosnippet>145</a>    ///
-<a href=#146 id=146 data-nosnippet>146</a>    /// # Returns
-<a href=#147 id=147 data-nosnippet>147</a>    ///
-<a href=#148 id=148 data-nosnippet>148</a>    /// flags from #GRegexMatchFlags
-<a href=#149 id=149 data-nosnippet>149</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_regex_get_match_flags"</span>)]
-<a href=#150 id=150 data-nosnippet>150</a>    #[doc(alias = <span class="string">"get_match_flags"</span>)]
-<a href=#151 id=151 data-nosnippet>151</a>    </span><span class="kw">pub fn </span>match_flags(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="flags.rs.html#622-720">RegexMatchFlags</a> {
-<a href=#152 id=152 data-nosnippet>152</a>        <span class="kw">unsafe </span>{ <a href="../translate.rs.html#1421-1423">from_glib</a>(ffi::g_regex_get_match_flags(<a class="self" href="#151">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>)) }
-<a href=#153 id=153 data-nosnippet>153</a>    }
-<a href=#154 id=154 data-nosnippet>154</a>
-<a href=#155 id=155 data-nosnippet>155</a>    <span class="doccomment">/// Returns the number of the highest back reference
-<a href=#156 id=156 data-nosnippet>156</a>    /// in the pattern, or 0 if the pattern does not contain
-<a href=#157 id=157 data-nosnippet>157</a>    /// back references.
-<a href=#158 id=158 data-nosnippet>158</a>    ///
-<a href=#159 id=159 data-nosnippet>159</a>    /// # Returns
-<a href=#160 id=160 data-nosnippet>160</a>    ///
-<a href=#161 id=161 data-nosnippet>161</a>    /// the number of the highest back reference
-<a href=#162 id=162 data-nosnippet>162</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_regex_get_max_backref"</span>)]
-<a href=#163 id=163 data-nosnippet>163</a>    #[doc(alias = <span class="string">"get_max_backref"</span>)]
-<a href=#164 id=164 data-nosnippet>164</a>    </span><span class="kw">pub fn </span>max_backref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a> {
-<a href=#165 id=165 data-nosnippet>165</a>        <span class="kw">unsafe </span>{ ffi::g_regex_get_max_backref(<a class="self" href="#164">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>) }
-<a href=#166 id=166 data-nosnippet>166</a>    }
-<a href=#167 id=167 data-nosnippet>167</a>
-<a href=#168 id=168 data-nosnippet>168</a>    <span class="doccomment">/// Gets the number of characters in the longest lookbehind assertion in the
-<a href=#169 id=169 data-nosnippet>169</a>    /// pattern. This information is useful when doing multi-segment matching using
-<a href=#170 id=170 data-nosnippet>170</a>    /// the partial matching facilities.
-<a href=#171 id=171 data-nosnippet>171</a>    ///
-<a href=#172 id=172 data-nosnippet>172</a>    /// # Returns
-<a href=#173 id=173 data-nosnippet>173</a>    ///
-<a href=#174 id=174 data-nosnippet>174</a>    /// the number of characters in the longest lookbehind assertion.
-<a href=#175 id=175 data-nosnippet>175</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_regex_get_max_lookbehind"</span>)]
-<a href=#176 id=176 data-nosnippet>176</a>    #[doc(alias = <span class="string">"get_max_lookbehind"</span>)]
-<a href=#177 id=177 data-nosnippet>177</a>    </span><span class="kw">pub fn </span>max_lookbehind(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a> {
-<a href=#178 id=178 data-nosnippet>178</a>        <span class="kw">unsafe </span>{ ffi::g_regex_get_max_lookbehind(<a class="self" href="#177">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>) }
-<a href=#179 id=179 data-nosnippet>179</a>    }
-<a href=#180 id=180 data-nosnippet>180</a>
-<a href=#181 id=181 data-nosnippet>181</a>    <span class="doccomment">/// Gets the pattern string associated with @self, i.e. a copy of
-<a href=#182 id=182 data-nosnippet>182</a>    /// the string passed to g_regex_new().
-<a href=#183 id=183 data-nosnippet>183</a>    ///
-<a href=#184 id=184 data-nosnippet>184</a>    /// # Returns
-<a href=#185 id=185 data-nosnippet>185</a>    ///
-<a href=#186 id=186 data-nosnippet>186</a>    /// the pattern of @self
-<a href=#187 id=187 data-nosnippet>187</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_regex_get_pattern"</span>)]
-<a href=#188 id=188 data-nosnippet>188</a>    #[doc(alias = <span class="string">"get_pattern"</span>)]
-<a href=#189 id=189 data-nosnippet>189</a>    </span><span class="kw">pub fn </span>pattern(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="../gstring.rs.html#1073"><span class="kw">crate</span>::GString</a> {
-<a href=#190 id=190 data-nosnippet>190</a>        <span class="kw">unsafe </span>{ <a href="../translate.rs.html#1629-1631">from_glib_none</a>(ffi::g_regex_get_pattern(<a class="self" href="#189">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>)) }
-<a href=#191 id=191 data-nosnippet>191</a>    }
-<a href=#192 id=192 data-nosnippet>192</a>
-<a href=#193 id=193 data-nosnippet>193</a>    <span class="comment">//#[doc(alias = "g_regex_replace_eval")]
-<a href=#194 id=194 data-nosnippet>194</a>    //pub fn replace_eval(&amp;self, string: &amp;[&amp;str], start_position: i32, match_options: RegexMatchFlags, eval: /*Unimplemented*/FnMut(&amp;MatchInfo, /*Ignored*/String) -&gt; bool, user_data: /*Unimplemented*/Option&lt;Basic: Pointer&gt;) -&gt; Result&lt;crate::GString, crate::Error&gt; {
-<a href=#195 id=195 data-nosnippet>195</a>    //    unsafe { TODO: call ffi:g_regex_replace_eval() }
-<a href=#196 id=196 data-nosnippet>196</a>    //}
-<a href=#197 id=197 data-nosnippet>197</a></span>}</code></pre></div></section></main></body></html>
+<a href=#137 id=137 data-nosnippet>137</a>    /// a #GRegex structure or [`None`] if an error occurred. Call
+<a href=#138 id=138 data-nosnippet>138</a>    ///   g_regex_unref() when you are done with it
+<a href=#139 id=139 data-nosnippet>139</a>    </span><span class="comment">// rustdoc-stripper-ignore-next-stop
+<a href=#140 id=140 data-nosnippet>140</a>    </span><span class="doccomment">/// Compiles the regular expression to an internal form, and does
+<a href=#141 id=141 data-nosnippet>141</a>    /// the initial setup of the #GRegex structure.
+<a href=#142 id=142 data-nosnippet>142</a>    /// ## `pattern`
+<a href=#143 id=143 data-nosnippet>143</a>    /// the regular expression
+<a href=#144 id=144 data-nosnippet>144</a>    /// ## `compile_options`
+<a href=#145 id=145 data-nosnippet>145</a>    /// compile options for the regular expression, or 0
+<a href=#146 id=146 data-nosnippet>146</a>    /// ## `match_options`
+<a href=#147 id=147 data-nosnippet>147</a>    /// match options for the regular expression, or 0
+<a href=#148 id=148 data-nosnippet>148</a>    ///
+<a href=#149 id=149 data-nosnippet>149</a>    /// # Returns
+<a href=#150 id=150 data-nosnippet>150</a>    ///
+<a href=#151 id=151 data-nosnippet>151</a>    /// a #GRegex structure or [`None`] if an error occurred. Call
+<a href=#152 id=152 data-nosnippet>152</a>    ///   g_regex_unref() when you are done with it
+<a href=#153 id=153 data-nosnippet>153</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_regex_new"</span>)]
+<a href=#154 id=154 data-nosnippet>154</a>    </span><span class="kw">pub fn </span>new(
+<a href=#155 id=155 data-nosnippet>155</a>        pattern: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+<a href=#156 id=156 data-nosnippet>156</a>        compile_options: <a href="flags.rs.html#649-864">RegexCompileFlags</a>,
+<a href=#157 id=157 data-nosnippet>157</a>        match_options: <a href="flags.rs.html#884-1060">RegexMatchFlags</a>,
+<a href=#158 id=158 data-nosnippet>158</a>    ) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="#7-123">Regex</a>&gt;, <a href="../error.rs.html#10-28"><span class="kw">crate</span>::Error</a>&gt; {
+<a href=#159 id=159 data-nosnippet>159</a>        <span class="kw">unsafe </span>{
+<a href=#160 id=160 data-nosnippet>160</a>            <span class="kw">let </span><span class="kw-2">mut </span>error = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">std::ptr::null_mut</a>();
+<a href=#161 id=161 data-nosnippet>161</a>            <span class="kw">let </span>ret = ffi::g_regex_new(
+<a href=#162 id=162 data-nosnippet>162</a>                <a href="#155">pattern</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+<a href=#163 id=163 data-nosnippet>163</a>                <a href="#156">compile_options</a>.<a href="../translate.rs.html#334">into_glib</a>(),
+<a href=#164 id=164 data-nosnippet>164</a>                <a href="#157">match_options</a>.<a href="../translate.rs.html#334">into_glib</a>(),
+<a href=#165 id=165 data-nosnippet>165</a>                <span class="kw-2">&amp;mut </span><a href="#160">error</a>,
+<a href=#166 id=166 data-nosnippet>166</a>            );
+<a href=#167 id=167 data-nosnippet>167</a>            <span class="kw">if </span>error.is_null() {
+<a href=#168 id=168 data-nosnippet>168</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(<a href="../translate.rs.html#1638-1640">from_glib_full</a>(<a href="#161">ret</a>))
+<a href=#169 id=169 data-nosnippet>169</a>            } <span class="kw">else </span>{
+<a href=#170 id=170 data-nosnippet>170</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="../translate.rs.html#1638-1640">from_glib_full</a>(<a href="#160">error</a>))
+<a href=#171 id=171 data-nosnippet>171</a>            }
+<a href=#172 id=172 data-nosnippet>172</a>        }
+<a href=#173 id=173 data-nosnippet>173</a>    }
+<a href=#174 id=174 data-nosnippet>174</a>
+<a href=#175 id=175 data-nosnippet>175</a>    <span class="doccomment">/// Returns the number of capturing subpatterns in the pattern.
+<a href=#176 id=176 data-nosnippet>176</a>    ///
+<a href=#177 id=177 data-nosnippet>177</a>    /// # Returns
+<a href=#178 id=178 data-nosnippet>178</a>    ///
+<a href=#179 id=179 data-nosnippet>179</a>    /// the number of capturing subpatterns
+<a href=#180 id=180 data-nosnippet>180</a>    </span><span class="comment">// rustdoc-stripper-ignore-next-stop
+<a href=#181 id=181 data-nosnippet>181</a>    </span><span class="doccomment">/// Returns the number of capturing subpatterns in the pattern.
+<a href=#182 id=182 data-nosnippet>182</a>    ///
+<a href=#183 id=183 data-nosnippet>183</a>    /// # Returns
+<a href=#184 id=184 data-nosnippet>184</a>    ///
+<a href=#185 id=185 data-nosnippet>185</a>    /// the number of capturing subpatterns
+<a href=#186 id=186 data-nosnippet>186</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_regex_get_capture_count"</span>)]
+<a href=#187 id=187 data-nosnippet>187</a>    #[doc(alias = <span class="string">"get_capture_count"</span>)]
+<a href=#188 id=188 data-nosnippet>188</a>    </span><span class="kw">pub fn </span>capture_count(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a> {
+<a href=#189 id=189 data-nosnippet>189</a>        <span class="kw">unsafe </span>{ ffi::g_regex_get_capture_count(<a class="self" href="#188">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>) }
+<a href=#190 id=190 data-nosnippet>190</a>    }
+<a href=#191 id=191 data-nosnippet>191</a>
+<a href=#192 id=192 data-nosnippet>192</a>    <span class="doccomment">/// Returns the compile options that @self was created with.
+<a href=#193 id=193 data-nosnippet>193</a>    ///
+<a href=#194 id=194 data-nosnippet>194</a>    /// Depending on the version of PCRE that is used, this may or may not
+<a href=#195 id=195 data-nosnippet>195</a>    /// include flags set by option expressions such as `(?i)` found at the
+<a href=#196 id=196 data-nosnippet>196</a>    /// top-level within the compiled pattern.
+<a href=#197 id=197 data-nosnippet>197</a>    ///
+<a href=#198 id=198 data-nosnippet>198</a>    /// # Returns
+<a href=#199 id=199 data-nosnippet>199</a>    ///
+<a href=#200 id=200 data-nosnippet>200</a>    /// flags from #GRegexCompileFlags
+<a href=#201 id=201 data-nosnippet>201</a>    </span><span class="comment">// rustdoc-stripper-ignore-next-stop
+<a href=#202 id=202 data-nosnippet>202</a>    </span><span class="doccomment">/// Returns the compile options that @self was created with.
+<a href=#203 id=203 data-nosnippet>203</a>    ///
+<a href=#204 id=204 data-nosnippet>204</a>    /// Depending on the version of PCRE that is used, this may or may not
+<a href=#205 id=205 data-nosnippet>205</a>    /// include flags set by option expressions such as `(?i)` found at the
+<a href=#206 id=206 data-nosnippet>206</a>    /// top-level within the compiled pattern.
+<a href=#207 id=207 data-nosnippet>207</a>    ///
+<a href=#208 id=208 data-nosnippet>208</a>    /// # Returns
+<a href=#209 id=209 data-nosnippet>209</a>    ///
+<a href=#210 id=210 data-nosnippet>210</a>    /// flags from #GRegexCompileFlags
+<a href=#211 id=211 data-nosnippet>211</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_regex_get_compile_flags"</span>)]
+<a href=#212 id=212 data-nosnippet>212</a>    #[doc(alias = <span class="string">"get_compile_flags"</span>)]
+<a href=#213 id=213 data-nosnippet>213</a>    </span><span class="kw">pub fn </span>compile_flags(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="flags.rs.html#649-864">RegexCompileFlags</a> {
+<a href=#214 id=214 data-nosnippet>214</a>        <span class="kw">unsafe </span>{ <a href="../translate.rs.html#1421-1423">from_glib</a>(ffi::g_regex_get_compile_flags(<a class="self" href="#213">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>)) }
+<a href=#215 id=215 data-nosnippet>215</a>    }
+<a href=#216 id=216 data-nosnippet>216</a>
+<a href=#217 id=217 data-nosnippet>217</a>    <span class="doccomment">/// Checks whether the pattern contains explicit CR or LF references.
+<a href=#218 id=218 data-nosnippet>218</a>    ///
+<a href=#219 id=219 data-nosnippet>219</a>    /// # Returns
+<a href=#220 id=220 data-nosnippet>220</a>    ///
+<a href=#221 id=221 data-nosnippet>221</a>    /// [`true`] if the pattern contains explicit CR or LF references
+<a href=#222 id=222 data-nosnippet>222</a>    </span><span class="comment">// rustdoc-stripper-ignore-next-stop
+<a href=#223 id=223 data-nosnippet>223</a>    </span><span class="doccomment">/// Checks whether the pattern contains explicit CR or LF references.
+<a href=#224 id=224 data-nosnippet>224</a>    ///
+<a href=#225 id=225 data-nosnippet>225</a>    /// # Returns
+<a href=#226 id=226 data-nosnippet>226</a>    ///
+<a href=#227 id=227 data-nosnippet>227</a>    /// [`true`] if the pattern contains explicit CR or LF references
+<a href=#228 id=228 data-nosnippet>228</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_regex_get_has_cr_or_lf"</span>)]
+<a href=#229 id=229 data-nosnippet>229</a>    #[doc(alias = <span class="string">"get_has_cr_or_lf"</span>)]
+<a href=#230 id=230 data-nosnippet>230</a>    </span><span class="kw">pub fn </span>has_cr_or_lf(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
+<a href=#231 id=231 data-nosnippet>231</a>        <span class="kw">unsafe </span>{ <a href="../translate.rs.html#1421-1423">from_glib</a>(ffi::g_regex_get_has_cr_or_lf(<a class="self" href="#230">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>)) }
+<a href=#232 id=232 data-nosnippet>232</a>    }
+<a href=#233 id=233 data-nosnippet>233</a>
+<a href=#234 id=234 data-nosnippet>234</a>    <span class="doccomment">/// Returns the match options that @self was created with.
+<a href=#235 id=235 data-nosnippet>235</a>    ///
+<a href=#236 id=236 data-nosnippet>236</a>    /// # Returns
+<a href=#237 id=237 data-nosnippet>237</a>    ///
+<a href=#238 id=238 data-nosnippet>238</a>    /// flags from #GRegexMatchFlags
+<a href=#239 id=239 data-nosnippet>239</a>    </span><span class="comment">// rustdoc-stripper-ignore-next-stop
+<a href=#240 id=240 data-nosnippet>240</a>    </span><span class="doccomment">/// Returns the match options that @self was created with.
+<a href=#241 id=241 data-nosnippet>241</a>    ///
+<a href=#242 id=242 data-nosnippet>242</a>    /// # Returns
+<a href=#243 id=243 data-nosnippet>243</a>    ///
+<a href=#244 id=244 data-nosnippet>244</a>    /// flags from #GRegexMatchFlags
+<a href=#245 id=245 data-nosnippet>245</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_regex_get_match_flags"</span>)]
+<a href=#246 id=246 data-nosnippet>246</a>    #[doc(alias = <span class="string">"get_match_flags"</span>)]
+<a href=#247 id=247 data-nosnippet>247</a>    </span><span class="kw">pub fn </span>match_flags(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="flags.rs.html#884-1060">RegexMatchFlags</a> {
+<a href=#248 id=248 data-nosnippet>248</a>        <span class="kw">unsafe </span>{ <a href="../translate.rs.html#1421-1423">from_glib</a>(ffi::g_regex_get_match_flags(<a class="self" href="#247">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>)) }
+<a href=#249 id=249 data-nosnippet>249</a>    }
+<a href=#250 id=250 data-nosnippet>250</a>
+<a href=#251 id=251 data-nosnippet>251</a>    <span class="doccomment">/// Returns the number of the highest back reference
+<a href=#252 id=252 data-nosnippet>252</a>    /// in the pattern, or 0 if the pattern does not contain
+<a href=#253 id=253 data-nosnippet>253</a>    /// back references.
+<a href=#254 id=254 data-nosnippet>254</a>    ///
+<a href=#255 id=255 data-nosnippet>255</a>    /// # Returns
+<a href=#256 id=256 data-nosnippet>256</a>    ///
+<a href=#257 id=257 data-nosnippet>257</a>    /// the number of the highest back reference
+<a href=#258 id=258 data-nosnippet>258</a>    </span><span class="comment">// rustdoc-stripper-ignore-next-stop
+<a href=#259 id=259 data-nosnippet>259</a>    </span><span class="doccomment">/// Returns the number of the highest back reference
+<a href=#260 id=260 data-nosnippet>260</a>    /// in the pattern, or 0 if the pattern does not contain
+<a href=#261 id=261 data-nosnippet>261</a>    /// back references.
+<a href=#262 id=262 data-nosnippet>262</a>    ///
+<a href=#263 id=263 data-nosnippet>263</a>    /// # Returns
+<a href=#264 id=264 data-nosnippet>264</a>    ///
+<a href=#265 id=265 data-nosnippet>265</a>    /// the number of the highest back reference
+<a href=#266 id=266 data-nosnippet>266</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_regex_get_max_backref"</span>)]
+<a href=#267 id=267 data-nosnippet>267</a>    #[doc(alias = <span class="string">"get_max_backref"</span>)]
+<a href=#268 id=268 data-nosnippet>268</a>    </span><span class="kw">pub fn </span>max_backref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a> {
+<a href=#269 id=269 data-nosnippet>269</a>        <span class="kw">unsafe </span>{ ffi::g_regex_get_max_backref(<a class="self" href="#268">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>) }
+<a href=#270 id=270 data-nosnippet>270</a>    }
+<a href=#271 id=271 data-nosnippet>271</a>
+<a href=#272 id=272 data-nosnippet>272</a>    <span class="doccomment">/// Gets the number of characters in the longest lookbehind assertion in the
+<a href=#273 id=273 data-nosnippet>273</a>    /// pattern. This information is useful when doing multi-segment matching using
+<a href=#274 id=274 data-nosnippet>274</a>    /// the partial matching facilities.
+<a href=#275 id=275 data-nosnippet>275</a>    ///
+<a href=#276 id=276 data-nosnippet>276</a>    /// # Returns
+<a href=#277 id=277 data-nosnippet>277</a>    ///
+<a href=#278 id=278 data-nosnippet>278</a>    /// the number of characters in the longest lookbehind assertion.
+<a href=#279 id=279 data-nosnippet>279</a>    </span><span class="comment">// rustdoc-stripper-ignore-next-stop
+<a href=#280 id=280 data-nosnippet>280</a>    </span><span class="doccomment">/// Gets the number of characters in the longest lookbehind assertion in the
+<a href=#281 id=281 data-nosnippet>281</a>    /// pattern. This information is useful when doing multi-segment matching using
+<a href=#282 id=282 data-nosnippet>282</a>    /// the partial matching facilities.
+<a href=#283 id=283 data-nosnippet>283</a>    ///
+<a href=#284 id=284 data-nosnippet>284</a>    /// # Returns
+<a href=#285 id=285 data-nosnippet>285</a>    ///
+<a href=#286 id=286 data-nosnippet>286</a>    /// the number of characters in the longest lookbehind assertion.
+<a href=#287 id=287 data-nosnippet>287</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_regex_get_max_lookbehind"</span>)]
+<a href=#288 id=288 data-nosnippet>288</a>    #[doc(alias = <span class="string">"get_max_lookbehind"</span>)]
+<a href=#289 id=289 data-nosnippet>289</a>    </span><span class="kw">pub fn </span>max_lookbehind(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a> {
+<a href=#290 id=290 data-nosnippet>290</a>        <span class="kw">unsafe </span>{ ffi::g_regex_get_max_lookbehind(<a class="self" href="#289">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>) }
+<a href=#291 id=291 data-nosnippet>291</a>    }
+<a href=#292 id=292 data-nosnippet>292</a>
+<a href=#293 id=293 data-nosnippet>293</a>    <span class="doccomment">/// Gets the pattern string associated with @self, i.e. a copy of
+<a href=#294 id=294 data-nosnippet>294</a>    /// the string passed to g_regex_new().
+<a href=#295 id=295 data-nosnippet>295</a>    ///
+<a href=#296 id=296 data-nosnippet>296</a>    /// # Returns
+<a href=#297 id=297 data-nosnippet>297</a>    ///
+<a href=#298 id=298 data-nosnippet>298</a>    /// the pattern of @self
+<a href=#299 id=299 data-nosnippet>299</a>    </span><span class="comment">// rustdoc-stripper-ignore-next-stop
+<a href=#300 id=300 data-nosnippet>300</a>    </span><span class="doccomment">/// Gets the pattern string associated with @self, i.e. a copy of
+<a href=#301 id=301 data-nosnippet>301</a>    /// the string passed to g_regex_new().
+<a href=#302 id=302 data-nosnippet>302</a>    ///
+<a href=#303 id=303 data-nosnippet>303</a>    /// # Returns
+<a href=#304 id=304 data-nosnippet>304</a>    ///
+<a href=#305 id=305 data-nosnippet>305</a>    /// the pattern of @self
+<a href=#306 id=306 data-nosnippet>306</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_regex_get_pattern"</span>)]
+<a href=#307 id=307 data-nosnippet>307</a>    #[doc(alias = <span class="string">"get_pattern"</span>)]
+<a href=#308 id=308 data-nosnippet>308</a>    </span><span class="kw">pub fn </span>pattern(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="../gstring.rs.html#1073"><span class="kw">crate</span>::GString</a> {
+<a href=#309 id=309 data-nosnippet>309</a>        <span class="kw">unsafe </span>{ <a href="../translate.rs.html#1629-1631">from_glib_none</a>(ffi::g_regex_get_pattern(<a class="self" href="#308">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>)) }
+<a href=#310 id=310 data-nosnippet>310</a>    }
+<a href=#311 id=311 data-nosnippet>311</a>
+<a href=#312 id=312 data-nosnippet>312</a>    <span class="comment">//#[doc(alias = "g_regex_replace_eval")]
+<a href=#313 id=313 data-nosnippet>313</a>    //pub fn replace_eval(&amp;self, string: &amp;[&amp;str], start_position: i32, match_options: RegexMatchFlags, eval: /*Unimplemented*/FnMut(&amp;MatchInfo, /*Ignored*/String) -&gt; bool, user_data: /*Unimplemented*/Option&lt;Basic: Pointer&gt;) -&gt; Result&lt;crate::GString, crate::Error&gt; {
+<a href=#314 id=314 data-nosnippet>314</a>    //    unsafe { TODO: call ffi:g_regex_replace_eval() }
+<a href=#315 id=315 data-nosnippet>315</a>    //}
+<a href=#316 id=316 data-nosnippet>316</a></span>}</code></pre></div></section></main></body></html>
