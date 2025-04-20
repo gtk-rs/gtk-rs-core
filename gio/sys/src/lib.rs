@@ -535,6 +535,8 @@ pub const G_APP_INFO_CREATE_SUPPORTS_STARTUP_NOTIFICATION: GAppInfoCreateFlags =
 
 pub type GApplicationFlags = c_uint;
 pub const G_APPLICATION_FLAGS_NONE: GApplicationFlags = 0;
+#[cfg(feature = "v2_74")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
 pub const G_APPLICATION_DEFAULT_FLAGS: GApplicationFlags = 0;
 pub const G_APPLICATION_IS_SERVICE: GApplicationFlags = 1;
 pub const G_APPLICATION_IS_LAUNCHER: GApplicationFlags = 2;
@@ -10870,6 +10872,17 @@ extern "C" {
         error: *mut *mut glib::GError,
     ) -> c_uint;
     pub fn g_dbus_connection_register_object_with_closures(
+        connection: *mut GDBusConnection,
+        object_path: *const c_char,
+        interface_info: *mut GDBusInterfaceInfo,
+        method_call_closure: *mut gobject::GClosure,
+        get_property_closure: *mut gobject::GClosure,
+        set_property_closure: *mut gobject::GClosure,
+        error: *mut *mut glib::GError,
+    ) -> c_uint;
+    #[cfg(feature = "v2_84")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_84")))]
+    pub fn g_dbus_connection_register_object_with_closures2(
         connection: *mut GDBusConnection,
         object_path: *const c_char,
         interface_info: *mut GDBusInterfaceInfo,

@@ -41,7 +41,7 @@ macro_rules! declare_surface {
         #[cfg(feature = "use_glib")]
         impl IntoGlibPtr<*mut crate::ffi::cairo_surface_t> for $surf_name {
             #[inline]
-            unsafe fn into_glib_ptr(self) -> *mut crate::ffi::cairo_surface_t {
+            fn into_glib_ptr(self) -> *mut crate::ffi::cairo_surface_t {
                 std::mem::ManuallyDrop::new(self).to_glib_none().0
             }
         }

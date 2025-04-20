@@ -1,11 +1,18 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use std::{ffi::OsString, fmt, ops::Deref, ptr};
+use std::{
+    ffi::OsString,
+    fmt,
+    ops::{ControlFlow, Deref},
+    ptr,
+};
 
-use glib::{prelude::*, subclass::prelude::*, translate::*, ExitCode, VariantDict};
+use glib::{
+    prelude::*, subclass::prelude::*, translate::*, Error, ExitCode, Propagation, VariantDict,
+};
 use libc::{c_char, c_int, c_void};
 
-use crate::{ffi, ActionGroup, ActionMap, Application};
+use crate::{ffi, ActionGroup, ActionMap, Application, DBusConnection};
 
 pub struct ArgumentList {
     pub(crate) ptr: *mut *mut *mut c_char,
@@ -83,7 +90,7 @@ pub trait ApplicationImpl:
         self.parent_command_line(command_line)
     }
 
-    fn local_command_line(&self, arguments: &mut ArgumentList) -> Option<ExitCode> {
+    fn local_command_line(&self, arguments: &mut ArgumentList) -> ControlFlow<ExitCode> {
         self.parent_local_command_line(arguments)
     }
 
@@ -107,8 +114,20 @@ pub trait ApplicationImpl:
         self.parent_startup()
     }
 
-    fn handle_local_options(&self, options: &VariantDict) -> ExitCode {
+    fn handle_local_options(&self, options: &VariantDict) -> ControlFlow<ExitCode> {
         self.parent_handle_local_options(options)
+    }
+
+    fn dbus_register(&self, connection: &DBusConnection, object_path: &str) -> Result<(), Error> {
+        self.parent_dbus_register(connection, object_path)
+    }
+
+    fn dbus_unregister(&self, connection: &DBusConnection, object_path: &str) {
+        self.parent_dbus_unregister(connection, object_path)
+    }
+
+    fn name_lost(&self) -> Propagation {
+        self.parent_name_lost()
     }
 }
 
@@ -163,11 +182,12 @@ pub trait ApplicationImplExt: ApplicationImpl {
                 self.obj().unsafe_cast_ref::<Application>().to_glib_none().0,
                 command_line.to_glib_none().0,
             )
-            .into()
+            .try_into()
+            .unwrap()
         }
     }
 
-    fn parent_local_command_line(&self, arguments: &mut ArgumentList) -> Option<ExitCode> {
+    fn parent_local_command_line(&self, arguments: &mut ArgumentList) -> ControlFlow<ExitCode> {
         unsafe {
             let data = Self::type_data();
             let parent_class = data.as_ref().parent_class() as *mut ffi::GApplicationClass;
@@ -184,8 +204,8 @@ pub trait ApplicationImplExt: ApplicationImpl {
             arguments.refresh();
 
             match res {
-                glib::ffi::GFALSE => None,
-                _ => Some(exit_status.into()),
+                glib::ffi::GFALSE => ControlFlow::Continue(()),
+                _ => ControlFlow::Break(exit_status.try_into().unwrap()),
             }
         }
     }
@@ -250,20 +270,80 @@ pub trait ApplicationImplExt: ApplicationImpl {
         }
     }
 
-    fn parent_handle_local_options(&self, options: &VariantDict) -> ExitCode {
+    fn parent_handle_local_options(&self, options: &VariantDict) -> ControlFlow<ExitCode> {
         unsafe {
             let data = Self::type_data();
             let parent_class = data.as_ref().parent_class() as *mut ffi::GApplicationClass;
             if let Some(f) = (*parent_class).handle_local_options {
-                f(
+                let ret = f(
                     self.obj().unsafe_cast_ref::<Application>().to_glib_none().0,
                     options.to_glib_none().0,
-                )
-                .into()
+                );
+
+                match ret {
+                    -1 => ControlFlow::Continue(()),
+                    _ => ControlFlow::Break(ret.try_into().unwrap()),
+                }
             } else {
-                // Continue default handling
-                ExitCode::from(-1)
+                ControlFlow::Continue(())
             }
+        }
+    }
+
+    fn parent_dbus_register(
+        &self,
+        connection: &DBusConnection,
+        object_path: &str,
+    ) -> Result<(), glib::Error> {
+        unsafe {
+            let data = Self::type_data();
+            let parent_class = data.as_ref().parent_class() as *mut ffi::GApplicationClass;
+            let f = (*parent_class)
+                .dbus_register
+                .expect("No parent class implementation for \"dbus_register\"");
+            let mut err = ptr::null_mut();
+            let res = f(
+                self.obj().unsafe_cast_ref::<Application>().to_glib_none().0,
+                connection.to_glib_none().0,
+                object_path.to_glib_none().0,
+                &mut err,
+            );
+            if res == glib::ffi::GFALSE {
+                Err(from_glib_full(err))
+            } else {
+                debug_assert!(err.is_null());
+                Ok(())
+            }
+        }
+    }
+
+    fn parent_dbus_unregister(&self, connection: &DBusConnection, object_path: &str) {
+        unsafe {
+            let data = Self::type_data();
+            let parent_class = data.as_ref().parent_class() as *mut ffi::GApplicationClass;
+            let f = (*parent_class)
+                .dbus_unregister
+                .expect("No parent class implementation for \"dbus_unregister\"");
+            f(
+                self.obj().unsafe_cast_ref::<Application>().to_glib_none().0,
+                connection.to_glib_none().0,
+                object_path.to_glib_none().0,
+            );
+        }
+    }
+
+    fn parent_name_lost(&self) -> Propagation {
+        unsafe {
+            let data = Self::type_data();
+            let parent_class = data.as_ref().parent_class() as *mut ffi::GApplicationClass;
+            let f = (*parent_class)
+                .name_lost
+                .expect("No parent class implementation for \"name_lost\"");
+            Propagation::from_glib(f(self
+                .obj()
+                .unsafe_cast_ref::<Application>()
+                .to_glib_none()
+                .0))
         }
     }
 }
@@ -286,6 +366,9 @@ unsafe impl<T: ApplicationImpl> IsSubclassable<T> for Application {
         klass.shutdown = Some(application_shutdown::<T>);
         klass.startup = Some(application_startup::<T>);
         klass.handle_local_options = Some(application_handle_local_options::<T>);
+        klass.dbus_register = Some(application_dbus_register::<T>);
+        klass.dbus_unregister = Some(application_dbus_unregister::<T>);
+        klass.name_lost = Some(application_name_lost::<T>);
     }
 }
 
@@ -332,15 +415,15 @@ unsafe extern "C" fn application_local_command_line<T: ApplicationImpl>(
     let imp = instance.imp();
 
     let mut args = ArgumentList::new(arguments);
-    let res = imp.local_command_line(&mut args).map(i32::from);
+    let res = imp.local_command_line(&mut args);
     args.refresh();
 
     match res {
-        Some(ret) => {
-            *exit_status = ret;
+        ControlFlow::Break(ret) => {
+            *exit_status = ret.into();
             glib::ffi::GTRUE
         }
-        None => glib::ffi::GFALSE,
+        ControlFlow::Continue(()) => glib::ffi::GFALSE,
     }
 }
 unsafe extern "C" fn application_open<T: ApplicationImpl>(
@@ -387,7 +470,54 @@ unsafe extern "C" fn application_handle_local_options<T: ApplicationImpl>(
     let instance = &*(ptr as *mut T::Instance);
     let imp = instance.imp();
 
-    imp.handle_local_options(&from_glib_borrow(options)).into()
+    imp.handle_local_options(&from_glib_borrow(options))
+        .break_value()
+        .map(i32::from)
+        .unwrap_or(-1)
+}
+
+unsafe extern "C" fn application_dbus_register<T: ApplicationImpl>(
+    ptr: *mut ffi::GApplication,
+    connection: *mut ffi::GDBusConnection,
+    object_path: *const c_char,
+    error: *mut *mut glib::ffi::GError,
+) -> glib::ffi::gboolean {
+    let instance = &*(ptr as *mut T::Instance);
+    let imp = instance.imp();
+
+    match imp.dbus_register(
+        &from_glib_borrow(connection),
+        &glib::GString::from_glib_borrow(object_path),
+    ) {
+        Ok(()) => glib::ffi::GTRUE,
+        Err(e) => {
+            if !error.is_null() {
+                *error = e.into_glib_ptr();
+            }
+            glib::ffi::GFALSE
+        }
+    }
+}
+
+unsafe extern "C" fn application_dbus_unregister<T: ApplicationImpl>(
+    ptr: *mut ffi::GApplication,
+    connection: *mut ffi::GDBusConnection,
+    object_path: *const c_char,
+) {
+    let instance = &*(ptr as *mut T::Instance);
+    let imp = instance.imp();
+    imp.dbus_unregister(
+        &from_glib_borrow(connection),
+        &glib::GString::from_glib_borrow(object_path),
+    );
+}
+
+unsafe extern "C" fn application_name_lost<T: ApplicationImpl>(
+    ptr: *mut ffi::GApplication,
+) -> glib::ffi::gboolean {
+    let instance = &*(ptr as *mut T::Instance);
+    let imp = instance.imp();
+    imp.name_lost().into_glib()
 }
 
 #[cfg(test)]
@@ -395,7 +525,7 @@ mod tests {
     use super::*;
     use crate::prelude::*;
 
-    const EXIT_STATUS: i32 = 20;
+    const EXIT_STATUS: u8 = 20;
 
     mod imp {
         use super::*;
@@ -427,7 +557,7 @@ mod tests {
                 EXIT_STATUS.into()
             }
 
-            fn local_command_line(&self, arguments: &mut ArgumentList) -> Option<ExitCode> {
+            fn local_command_line(&self, arguments: &mut ArgumentList) -> ControlFlow<ExitCode> {
                 let mut rm = Vec::new();
 
                 for (i, line) in arguments.iter().enumerate() {
@@ -444,7 +574,7 @@ mod tests {
                     arguments.remove(*i);
                 }
 
-                None
+                ControlFlow::Continue(())
             }
         }
     }

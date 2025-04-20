@@ -7,6 +7,7 @@ use crate::{
     MountUnmountFlags, Volume,
 };
 use glib::{
+    object::ObjectType as _,
     prelude::*,
     signal::{connect_raw, SignalHandlerId},
     translate::*,
@@ -88,8 +89,7 @@ pub trait DriveExt: IsA<Drive> + 'static {
             user_data: glib::ffi::gpointer,
         ) {
             let mut error = std::ptr::null_mut();
-            let _ =
-                ffi::g_drive_eject_with_operation_finish(_source_object as *mut _, res, &mut error);
+            ffi::g_drive_eject_with_operation_finish(_source_object as *mut _, res, &mut error);
             let result = if error.is_null() {
                 Ok(())
             } else {
@@ -261,7 +261,7 @@ pub trait DriveExt: IsA<Drive> + 'static {
             user_data: glib::ffi::gpointer,
         ) {
             let mut error = std::ptr::null_mut();
-            let _ = ffi::g_drive_poll_for_media_finish(_source_object as *mut _, res, &mut error);
+            ffi::g_drive_poll_for_media_finish(_source_object as *mut _, res, &mut error);
             let result = if error.is_null() {
                 Ok(())
             } else {
@@ -322,7 +322,7 @@ pub trait DriveExt: IsA<Drive> + 'static {
             user_data: glib::ffi::gpointer,
         ) {
             let mut error = std::ptr::null_mut();
-            let _ = ffi::g_drive_start_finish(_source_object as *mut _, res, &mut error);
+            ffi::g_drive_start_finish(_source_object as *mut _, res, &mut error);
             let result = if error.is_null() {
                 Ok(())
             } else {
@@ -393,7 +393,7 @@ pub trait DriveExt: IsA<Drive> + 'static {
             user_data: glib::ffi::gpointer,
         ) {
             let mut error = std::ptr::null_mut();
-            let _ = ffi::g_drive_stop_finish(_source_object as *mut _, res, &mut error);
+            ffi::g_drive_stop_finish(_source_object as *mut _, res, &mut error);
             let result = if error.is_null() {
                 Ok(())
             } else {

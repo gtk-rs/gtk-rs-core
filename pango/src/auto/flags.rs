@@ -23,8 +23,14 @@ bitflags! {
         const SIZE = ffi::PANGO_FONT_MASK_SIZE as _;
         #[doc(alias = "PANGO_FONT_MASK_GRAVITY")]
         const GRAVITY = ffi::PANGO_FONT_MASK_GRAVITY as _;
+        #[cfg(feature = "v1_42")]
+        #[cfg_attr(docsrs, doc(cfg(feature = "v1_42")))]
         #[doc(alias = "PANGO_FONT_MASK_VARIATIONS")]
         const VARIATIONS = ffi::PANGO_FONT_MASK_VARIATIONS as _;
+        #[cfg(feature = "v1_56")]
+        #[cfg_attr(docsrs, doc(cfg(feature = "v1_56")))]
+        #[doc(alias = "PANGO_FONT_MASK_FEATURES")]
+        const FEATURES = ffi::PANGO_FONT_MASK_FEATURES as _;
     }
 }
 

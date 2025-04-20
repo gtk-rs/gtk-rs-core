@@ -7,6 +7,7 @@
 use crate::SettingsBindFlags;
 use crate::{ffi, Action, SettingsBackend, SettingsSchema};
 use glib::{
+    object::ObjectType as _,
     prelude::*,
     signal::{connect_raw, SignalHandlerId},
     translate::*,
@@ -249,7 +250,7 @@ pub trait SettingsExt: IsA<Settings> + 'static {
 
     //#[doc(alias = "g_settings_get_mapped")]
     //#[doc(alias = "get_mapped")]
-    //fn mapped(&self, key: &str, mapping: /*Unimplemented*/FnMut(&glib::Variant, /*Unimplemented*/Option<Basic: Pointer>) -> bool, user_data: /*Unimplemented*/Option<Basic: Pointer>) -> /*Unimplemented*/Option<Basic: Pointer> {
+    //fn mapped(&self, key: &str, mapping: /*Unimplemented*/FnMut(Option<&glib::Variant>, /*Unimplemented*/Option<Basic: Pointer>) -> bool, user_data: /*Unimplemented*/Option<Basic: Pointer>) -> /*Unimplemented*/Option<Basic: Pointer> {
     //    unsafe { TODO: call ffi:g_settings_get_mapped() }
     //}
 
@@ -526,7 +527,7 @@ pub trait SettingsExt: IsA<Settings> + 'static {
             let detailed_signal_name = detail.map(|name| format!("changed::{name}\0"));
             let signal_name: &[u8] = detailed_signal_name
                 .as_ref()
-                .map_or(&b"changed\0"[..], |n| n.as_bytes());
+                .map_or(c"changed".to_bytes(), |n| n.as_bytes());
             connect_raw(
                 self.as_ptr() as *mut _,
                 signal_name.as_ptr() as *const _,
@@ -592,7 +593,7 @@ pub trait SettingsExt: IsA<Settings> + 'static {
             let detailed_signal_name = detail.map(|name| format!("writable-changed::{name}\0"));
             let signal_name: &[u8] = detailed_signal_name
                 .as_ref()
-                .map_or(&b"writable-changed\0"[..], |n| n.as_bytes());
+                .map_or(c"writable-changed".to_bytes(), |n| n.as_bytes());
             connect_raw(
                 self.as_ptr() as *mut _,
                 signal_name.as_ptr() as *const _,

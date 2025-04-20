@@ -8,7 +8,7 @@ fn test_gdbus_peer_connection() {
         prelude::*,
         DBusConnection, DBusConnectionFlags, DBusNodeInfo, Socket,
     };
-    use std::os::{fd::IntoRawFd, unix::net::UnixStream};
+    use std::os::unix::net::UnixStream;
 
     const EXAMPLE_XML: &str = r#"
   <node>
@@ -23,7 +23,7 @@ fn test_gdbus_peer_connection() {
 "#;
 
     pub async fn spawn_server(fd: UnixStream) -> DBusConnection {
-        let socket = unsafe { Socket::from_fd(fd.into_raw_fd()) }.unwrap();
+        let socket = Socket::from_fd(fd.into()).unwrap();
         let socket_connection = socket.connection_factory_create_connection();
 
         let guid = gio::dbus_generate_guid();
@@ -112,7 +112,7 @@ fn test_gdbus_peer_connection() {
     }
 
     pub async fn spawn_client(fd: UnixStream) -> DBusConnection {
-        let socket_client = unsafe { Socket::from_fd(fd.into_raw_fd()) }.unwrap();
+        let socket_client = Socket::from_fd(fd.into()).unwrap();
         let socket_connection_client = socket_client.connection_factory_create_connection();
 
         dbg!("client connecting");

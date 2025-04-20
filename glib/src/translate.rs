@@ -716,12 +716,12 @@ pub trait IntoGlibPtr<P: Ptr> {
     // rustdoc-stripper-ignore-next
     /// Transfer: full.
     #[allow(clippy::wrong_self_convention)]
-    unsafe fn into_glib_ptr(self) -> P;
+    fn into_glib_ptr(self) -> P;
 }
 
 impl<P: Ptr, T: IntoGlibPtr<P>> IntoGlibPtr<P> for Option<T> {
     #[inline]
-    unsafe fn into_glib_ptr(self) -> P {
+    fn into_glib_ptr(self) -> P {
         self.map_or(Ptr::from::<()>(ptr::null_mut()), |s| {
             IntoGlibPtr::into_glib_ptr(s)
         })
@@ -1085,6 +1085,10 @@ impl_to_glib_container_from_slice_string!(&'a OsStr, *mut c_char);
 impl_to_glib_container_from_slice_string!(&'a OsStr, *const c_char);
 impl_to_glib_container_from_slice_string!(OsString, *mut c_char);
 impl_to_glib_container_from_slice_string!(OsString, *const c_char);
+impl_to_glib_container_from_slice_string!(&'a CStr, *mut c_char);
+impl_to_glib_container_from_slice_string!(&'a CStr, *const c_char);
+impl_to_glib_container_from_slice_string!(CString, *mut c_char);
+impl_to_glib_container_from_slice_string!(CString, *const c_char);
 impl_to_glib_container_from_slice_string!(crate::GString, *mut c_char);
 impl_to_glib_container_from_slice_string!(crate::GString, *const c_char);
 

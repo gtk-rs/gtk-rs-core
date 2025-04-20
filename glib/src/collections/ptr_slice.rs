@@ -1050,7 +1050,7 @@ impl<'a, T: TransparentPtrType + 'a> ToGlibPtrMut<'a, *mut <T as GlibPtrDefault>
 
 impl<T: TransparentPtrType> IntoGlibPtr<*mut <T as GlibPtrDefault>::GlibType> for PtrSlice<T> {
     #[inline]
-    unsafe fn into_glib_ptr(self) -> *mut <T as GlibPtrDefault>::GlibType {
+    fn into_glib_ptr(self) -> *mut <T as GlibPtrDefault>::GlibType {
         self.into_raw()
     }
 }

@@ -112,8 +112,17 @@ status = "generate"
     manual = true
     [[object.function]]
     name = "shape_with_flags"
-    # ivanlid length computation on a Option<str>, it should fallback to 0.
+    # invalid length computation on a Option<str>, it should fallback to 0.
     manual = true
+    [[object.function]]
+    name = "shape"
+    # invalid length computation on Stash instead of str
+    manual = true
+    [[object.function]]
+    name = "shape_item"
+    # invalid length computation on Stash instead of str
+    # Needs PangoLogAttr bindings
+    ignore = true
 
 [[object]]
 name = "Pango.Attribute"
@@ -253,10 +262,6 @@ status = "generate"
         [[object.function.parameter]]
         name = "language"
         const = true
-    [[object.function]]
-    name = "get_languages"
-    # TODO: requires FromGlibPtrArrayContainerAsVec implementation
-    ignore = true
 
 [[object]]
 name = "Pango.FontDescription"
@@ -273,6 +278,12 @@ concurrency = "send+sync"
     rename = "is_size_absolute"
     [[object.function]]
     name = "merge_static"
+    ignore = true
+    [[object.function]]
+    name = "set_features_static"
+    ignore = true
+    [[object.function]]
+    name = "set_variations_static"
     ignore = true
 
 [[object]]

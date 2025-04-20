@@ -874,7 +874,7 @@ impl<'a, T: TransparentType + 'a> ToGlibPtrMut<'a, *mut T::GlibType> for Slice<T
 
 impl<T: TransparentType + 'static> IntoGlibPtr<*mut T::GlibType> for Slice<T> {
     #[inline]
-    unsafe fn into_glib_ptr(self) -> *mut T::GlibType {
+    fn into_glib_ptr(self) -> *mut T::GlibType {
         self.into_raw()
     }
 }

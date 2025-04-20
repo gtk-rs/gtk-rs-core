@@ -76,7 +76,7 @@ pub trait IOStreamExt: IsA<IOStream> + 'static {
             user_data: glib::ffi::gpointer,
         ) {
             let mut error = std::ptr::null_mut();
-            let _ = ffi::g_io_stream_close_finish(_source_object as *mut _, res, &mut error);
+            ffi::g_io_stream_close_finish(_source_object as *mut _, res, &mut error);
             let result = if error.is_null() {
                 Ok(())
             } else {
