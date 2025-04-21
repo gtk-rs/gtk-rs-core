@@ -5,6 +5,7 @@ mod boxed_derive;
 mod clone;
 mod closure;
 mod derived_properties_attribute;
+mod derived_signals_attribute;
 mod downgrade_derive;
 mod enum_derive;
 mod error_domain_derive;
@@ -12,6 +13,7 @@ mod flags_attribute;
 mod object_impl_attributes;
 mod properties;
 mod shared_boxed_derive;
+mod signals_attribute;
 mod value_delegate_derive;
 mod variant_derive;
 
@@ -1497,6 +1499,32 @@ pub fn derived_properties(_attr: TokenStream, item: TokenStream) -> TokenStream 
             )
         })
         .and_then(|input| derived_properties_attribute::impl_derived_properties(&input))
+        .unwrap_or_else(syn::Error::into_compile_error)
+        .into()
+}
+
+/// This macro enables you to implement object signals in a quick way.
+#[proc_macro_attribute]
+pub fn signals(attr: TokenStream, item: TokenStream) -> TokenStream {
+    let attr_input = syn::parse_macro_input!(attr as signals_attribute::Args);
+
+    syn::parse::<syn::ItemImpl>(item)
+        .map_err(|_| syn::Error::new(Span::call_site(), signals_attribute::WRONG_PLACE_MSG))
+        .and_then(|item_input| signals_attribute::impl_signals(attr_input, item_input))
+        .unwrap_or_else(syn::Error::into_compile_error)
+        .into()
+}
+
+#[proc_macro_attribute]
+pub fn derived_signals(_attr: TokenStream, item: TokenStream) -> TokenStream {
+    syn::parse::<syn::ItemImpl>(item)
+        .map_err(|_| {
+            syn::Error::new(
+                Span::call_site(),
+                derived_signals_attribute::WRONG_PLACE_MSG,
+            )
+        })
+        .and_then(|input| derived_signals_attribute::impl_derived_signals(&input))
         .unwrap_or_else(syn::Error::into_compile_error)
         .into()
 }
