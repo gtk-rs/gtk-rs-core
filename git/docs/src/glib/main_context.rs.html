@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/main_context.rs`."><title>main_context.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-7dda4a46.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.88.0-nightly (9ffde4b08 2025-04-12)" data-channel="nightly" data-search-js="search-f7877310.js" data-settings-js="settings-5514c975.js" ><script src="../../static.files/storage-4e99c027.js"></script><script defer src="../../static.files/src-script-63605ae7.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-7ef8a74a.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/main_context.rs`."><title>main_context.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-7dda4a46.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.88.0-nightly (d6c1e454a 2025-04-21)" data-channel="nightly" data-search-js="search-f7877310.js" data-settings-js="settings-5514c975.js" ><script src="../../static.files/storage-4e99c027.js"></script><script defer src="../../static.files/src-script-63605ae7.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-7ef8a74a.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -75,7 +75,7 @@
 <a href=#2 id=2 data-nosnippet>2</a>
 <a href=#3 id=3 data-nosnippet>3</a></span><span class="kw">use </span><a href="https://doc.rust-lang.org/nightly/core/mem/index.html">std::mem</a>;
 <a href=#4 id=4 data-nosnippet>4</a>
-<a href=#5 id=5 data-nosnippet>5</a><span class="kw">use </span><span class="kw">crate</span>::ffi::{<span class="self">self</span>, gboolean, gpointer};
+<a href=#5 id=5 data-nosnippet>5</a><span class="kw">use </span><span class="kw">crate</span>::ffi::{<a class="self" href="../../glib_sys/index.html">self</a>, <a href="../../glib_sys/type.gboolean.html">gboolean</a>, <a href="../../glib_sys/type.gpointer.html">gpointer</a>};
 <a href=#6 id=6 data-nosnippet>6</a>
 <a href=#7 id=7 data-nosnippet>7</a><span class="kw">use crate</span>::{<a href="source.rs.html#1008">source::Priority</a>, <a href="lib.rs.html#164">translate</a>::<span class="kw-2">*</span>, <a href="auto/main_context.rs.html#10-21">MainContext</a>, <a href="auto/source.rs.html#7-18">Source</a>, <a href="source.rs.html#21">SourceId</a>};
 <a href=#8 id=8 data-nosnippet>8</a>
@@ -99,7 +99,7 @@
 <a href=#26 id=26 data-nosnippet>26</a>        <span class="kw">unsafe </span>{
 <a href=#27 id=27 data-nosnippet>27</a>            <span class="kw">let </span><span class="kw-2">mut </span>priority = <a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.uninit">mem::MaybeUninit::uninit</a>();
 <a href=#28 id=28 data-nosnippet>28</a>
-<a href=#29 id=29 data-nosnippet>29</a>            <span class="kw">let </span>res = <a href="translate.rs.html#1421-1423">from_glib</a>(ffi::g_main_context_prepare(
+<a href=#29 id=29 data-nosnippet>29</a>            <span class="kw">let </span>res = <a href="translate.rs.html#1421-1423">from_glib</a>(<a href="../../glib_sys/fn.g_main_context_prepare.html">ffi::g_main_context_prepare</a>(
 <a href=#30 id=30 data-nosnippet>30</a>                <a class="self" href="#25">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
 <a href=#31 id=31 data-nosnippet>31</a>                <a href="#27">priority</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.as_mut_ptr">as_mut_ptr</a>(),
 <a href=#32 id=32 data-nosnippet>32</a>            ));
@@ -129,7 +129,7 @@
 <a href=#56 id=56 data-nosnippet>56</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_main_context_find_source_by_id"</span>)]
 <a href=#57 id=57 data-nosnippet>57</a>    </span><span class="kw">pub fn </span>find_source_by_id(<span class="kw-2">&amp;</span><span class="self">self</span>, source_id: <span class="kw-2">&amp;</span><a href="source.rs.html#21">SourceId</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="auto/source.rs.html#7-18">Source</a>&gt; {
 <a href=#58 id=58 data-nosnippet>58</a>        <span class="kw">unsafe </span>{
-<a href=#59 id=59 data-nosnippet>59</a>            <a href="translate.rs.html#1629-1631">from_glib_none</a>(ffi::g_main_context_find_source_by_id(
+<a href=#59 id=59 data-nosnippet>59</a>            <a href="translate.rs.html#1629-1631">from_glib_none</a>(<a href="../../glib_sys/fn.g_main_context_find_source_by_id.html">ffi::g_main_context_find_source_by_id</a>(
 <a href=#60 id=60 data-nosnippet>60</a>                <a class="self" href="#57">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
 <a href=#61 id=61 data-nosnippet>61</a>                <a href="#57">source_id</a>.<a href="source.rs.html#26-28">as_raw</a>(),
 <a href=#62 id=62 data-nosnippet>62</a>            ))
@@ -245,23 +245,23 @@
 <a href=#172 id=172 data-nosnippet>172</a>    <span class="kw">where
 <a href=#173 id=173 data-nosnippet>173</a>        </span>F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>() + <span class="lifetime">'static</span>,
 <a href=#174 id=174 data-nosnippet>174</a>    {
-<a href=#175 id=175 data-nosnippet>175</a>        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>trampoline&lt;F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>() + <span class="lifetime">'static</span>&gt;(func: gpointer) -&gt; gboolean {
+<a href=#175 id=175 data-nosnippet>175</a>        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>trampoline&lt;F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>() + <span class="lifetime">'static</span>&gt;(func: <a href="../../glib_sys/type.gpointer.html">gpointer</a>) -&gt; <a href="../../glib_sys/type.gboolean.html">gboolean</a> {
 <a href=#176 id=176 data-nosnippet>176</a>            <span class="kw">let </span>func: <span class="kw-2">&amp;mut </span><a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;F&gt; = <span class="kw-2">&amp;mut *</span>(<a href="#175">func</a> <span class="kw">as </span><span class="kw-2">*mut </span><a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;F&gt;);
 <a href=#177 id=177 data-nosnippet>177</a>            <span class="kw">let </span>func = <a href="#176">func</a>
 <a href=#178 id=178 data-nosnippet>178</a>                .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.take">take</a>()
 <a href=#179 id=179 data-nosnippet>179</a>                .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.expect">expect</a>(<span class="string">"MainContext::invoke() closure called multiple times"</span>);
 <a href=#180 id=180 data-nosnippet>180</a>            <a href="#177">func</a>();
-<a href=#181 id=181 data-nosnippet>181</a>            ffi::G_SOURCE_REMOVE
+<a href=#181 id=181 data-nosnippet>181</a>            <a href="../../glib_sys/constant.G_SOURCE_REMOVE.html">ffi::G_SOURCE_REMOVE</a>
 <a href=#182 id=182 data-nosnippet>182</a>        }
-<a href=#183 id=183 data-nosnippet>183</a>        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>destroy_closure&lt;F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>() + <span class="lifetime">'static</span>&gt;(ptr: gpointer) {
+<a href=#183 id=183 data-nosnippet>183</a>        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>destroy_closure&lt;F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>() + <span class="lifetime">'static</span>&gt;(ptr: <a href="../../glib_sys/type.gpointer.html">gpointer</a>) {
 <a href=#184 id=184 data-nosnippet>184</a>            <span class="kw">let _ </span>= <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box</a>::&lt;<a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;F&gt;&gt;::from_raw(<a href="#183">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
 <a href=#185 id=185 data-nosnippet>185</a>        }
 <a href=#186 id=186 data-nosnippet>186</a>        <span class="kw">let </span>func = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.into_raw">Box::into_raw</a>(<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">Box::new</a>(<a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#171">func</a>)));
-<a href=#187 id=187 data-nosnippet>187</a>        ffi::g_main_context_invoke_full(
+<a href=#187 id=187 data-nosnippet>187</a>        <a href="../../glib_sys/fn.g_main_context_invoke_full.html">ffi::g_main_context_invoke_full</a>(
 <a href=#188 id=188 data-nosnippet>188</a>            <a class="self" href="#171">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
 <a href=#189 id=189 data-nosnippet>189</a>            <a href="#171">priority</a>.<a href="translate.rs.html#334">into_glib</a>(),
 <a href=#190 id=190 data-nosnippet>190</a>            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#175-182">trampoline</a>::&lt;F&gt;),
-<a href=#191 id=191 data-nosnippet>191</a>            <a href="#186">func</a> <span class="kw">as </span>gpointer,
+<a href=#191 id=191 data-nosnippet>191</a>            <a href="#186">func</a> <span class="kw">as </span><a href="../../glib_sys/type.gpointer.html">gpointer</a>,
 <a href=#192 id=192 data-nosnippet>192</a>            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#183-185">destroy_closure</a>::&lt;F&gt;),
 <a href=#193 id=193 data-nosnippet>193</a>        )
 <a href=#194 id=194 data-nosnippet>194</a>    }
@@ -312,7 +312,7 @@
 <a href=#239 id=239 data-nosnippet>239</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_main_context_acquire"</span>)]
 <a href=#240 id=240 data-nosnippet>240</a>    </span><span class="kw">pub fn </span>acquire(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="#253">MainContextAcquireGuard</a>, <a href="error.rs.html#243-251"><span class="kw">crate</span>::BoolError</a>&gt; {
 <a href=#241 id=241 data-nosnippet>241</a>        <span class="kw">unsafe </span>{
-<a href=#242 id=242 data-nosnippet>242</a>            <span class="kw">let </span>ret: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> = <a href="translate.rs.html#1421-1423">from_glib</a>(ffi::g_main_context_acquire(<a class="self" href="#240">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>));
+<a href=#242 id=242 data-nosnippet>242</a>            <span class="kw">let </span>ret: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> = <a href="translate.rs.html#1421-1423">from_glib</a>(<a href="../../glib_sys/fn.g_main_context_acquire.html">ffi::g_main_context_acquire</a>(<a class="self" href="#240">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>));
 <a href=#243 id=243 data-nosnippet>243</a>            <span class="kw">if </span>ret {
 <a href=#244 id=244 data-nosnippet>244</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(<a href="#253">MainContextAcquireGuard</a>(<a class="self" href="#240">self</a>))
 <a href=#245 id=245 data-nosnippet>245</a>            } <span class="kw">else </span>{
@@ -330,7 +330,7 @@
 <a href=#257 id=257 data-nosnippet>257</a>    #[inline]
 <a href=#258 id=258 data-nosnippet>258</a>    </span><span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
 <a href=#259 id=259 data-nosnippet>259</a>        <span class="kw">unsafe </span>{
-<a href=#260 id=260 data-nosnippet>260</a>            ffi::g_main_context_release(<a class="self" href="#258">self</a>.<span class="number">0</span>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>);
+<a href=#260 id=260 data-nosnippet>260</a>            <a href="../../glib_sys/fn.g_main_context_release.html">ffi::g_main_context_release</a>(<a class="self" href="#258">self</a>.<span class="number">0</span>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>);
 <a href=#261 id=261 data-nosnippet>261</a>        }
 <a href=#262 id=262 data-nosnippet>262</a>    }
 <a href=#263 id=263 data-nosnippet>263</a>}
@@ -340,7 +340,7 @@
 <a href=#267 id=267 data-nosnippet>267</a><span class="kw">impl </span><a href="#265">ThreadDefaultContext</a>&lt;<span class="lifetime">'_</span>&gt; {
 <a href=#268 id=268 data-nosnippet>268</a>    <span class="kw">fn </span>new(ctx: <span class="kw-2">&amp;</span><a href="auto/main_context.rs.html#10-21">MainContext</a>) -&gt; <a href="#265">ThreadDefaultContext</a> {
 <a href=#269 id=269 data-nosnippet>269</a>        <span class="kw">unsafe </span>{
-<a href=#270 id=270 data-nosnippet>270</a>            ffi::g_main_context_push_thread_default(<a href="#268">ctx</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>);
+<a href=#270 id=270 data-nosnippet>270</a>            <a href="../../glib_sys/fn.g_main_context_push_thread_default.html">ffi::g_main_context_push_thread_default</a>(<a href="#268">ctx</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>);
 <a href=#271 id=271 data-nosnippet>271</a>        }
 <a href=#272 id=272 data-nosnippet>272</a>        <a href="#265">ThreadDefaultContext</a>(<a href="#268">ctx</a>)
 <a href=#273 id=273 data-nosnippet>273</a>    }
@@ -350,7 +350,7 @@
 <a href=#277 id=277 data-nosnippet>277</a>    <span class="attr">#[inline]
 <a href=#278 id=278 data-nosnippet>278</a>    </span><span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
 <a href=#279 id=279 data-nosnippet>279</a>        <span class="kw">unsafe </span>{
-<a href=#280 id=280 data-nosnippet>280</a>            ffi::g_main_context_pop_thread_default(<a class="self" href="#278">self</a>.<span class="number">0</span>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>);
+<a href=#280 id=280 data-nosnippet>280</a>            <a href="../../glib_sys/fn.g_main_context_pop_thread_default.html">ffi::g_main_context_pop_thread_default</a>(<a class="self" href="#278">self</a>.<span class="number">0</span>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>);
 <a href=#281 id=281 data-nosnippet>281</a>        }
 <a href=#282 id=282 data-nosnippet>282</a>    }
 <a href=#283 id=283 data-nosnippet>283</a>}

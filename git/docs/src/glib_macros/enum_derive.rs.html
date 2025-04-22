@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib-macros/src/enum_derive.rs`."><title>enum_derive.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-7dda4a46.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib_macros" data-themes="" data-resource-suffix="" data-rustdoc-version="1.88.0-nightly (9ffde4b08 2025-04-12)" data-channel="nightly" data-search-js="search-f7877310.js" data-settings-js="settings-5514c975.js" ><script src="../../static.files/storage-4e99c027.js"></script><script defer src="../../static.files/src-script-63605ae7.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-7ef8a74a.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib-macros/src/enum_derive.rs`."><title>enum_derive.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-7dda4a46.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib_macros" data-themes="" data-resource-suffix="" data-rustdoc-version="1.88.0-nightly (d6c1e454a 2025-04-21)" data-channel="nightly" data-search-js="search-f7877310.js" data-settings-js="settings-5514c975.js" ><script src="../../static.files/storage-4e99c027.js"></script><script defer src="../../static.files/src-script-63605ae7.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-7ef8a74a.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -74,7 +74,7 @@
 <nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">glib_macros/</div>enum_derive.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-3"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 <a href=#2 id=2 data-nosnippet>2</a>
 <a href=#3 id=3 data-nosnippet>3</a></span><span class="kw">use </span>heck::{ToKebabCase, ToShoutySnakeCase, ToUpperCamelCase};
-<a href=#4 id=4 data-nosnippet>4</a><span class="kw">use </span><a href="https://docs.rs/proc-macro2/1.0.94/proc_macro2/struct.TokenStream.html">proc_macro2::TokenStream</a>;
+<a href=#4 id=4 data-nosnippet>4</a><span class="kw">use </span><a href="https://docs.rs/proc-macro2/1.0.95/proc_macro2/struct.TokenStream.html">proc_macro2::TokenStream</a>;
 <a href=#5 id=5 data-nosnippet>5</a><span class="kw">use </span>quote::{<a href="https://docs.rs/quote/1.0.40/quote/macro.format_ident.html">format_ident</a>, <a href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote</a>, <a href="https://docs.rs/quote/1.0.40/quote/macro.quote_spanned.html">quote_spanned</a>, <a href="https://docs.rs/quote/1.0.40/quote/to_tokens/trait.ToTokens.html">ToTokens</a>};
 <a href=#6 id=6 data-nosnippet>6</a>
 <a href=#7 id=7 data-nosnippet>7</a><span class="kw">use </span><span class="kw">crate</span>::utils::{
@@ -89,9 +89,9 @@
 <a href=#16 id=16 data-nosnippet>16</a>//         value_nick: "goat\0" as *const _ as *const _,
 <a href=#17 id=17 data-nosnippet>17</a>//     },
 <a href=#18 id=18 data-nosnippet>18</a></span><span class="kw">fn </span>gen_enum_values(
-<a href=#19 id=19 data-nosnippet>19</a>    enum_name: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.94/proc_macro2/struct.Ident.html">syn::Ident</a>,
+<a href=#19 id=19 data-nosnippet>19</a>    enum_name: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.95/proc_macro2/struct.Ident.html">syn::Ident</a>,
 <a href=#20 id=20 data-nosnippet>20</a>    enum_variants: <span class="kw-2">&amp;</span><a href="https://docs.rs/syn/2.0.100/syn/punctuated/struct.Punctuated.html">syn::punctuated::Punctuated</a>&lt;<a href="https://docs.rs/syn/2.0.100/syn/data/struct.Variant.html">syn::Variant</a>, <a href="https://docs.rs/syn/2.0.100/syn/token/struct.Comma.html">syn::token::Comma</a>&gt;,
-<a href=#21 id=21 data-nosnippet>21</a>) -&gt; (<a href="https://docs.rs/proc-macro2/1.0.94/proc_macro2/struct.TokenStream.html">TokenStream</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) {
+<a href=#21 id=21 data-nosnippet>21</a>) -&gt; (<a href="https://docs.rs/proc-macro2/1.0.95/proc_macro2/struct.TokenStream.html">TokenStream</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) {
 <a href=#22 id=22 data-nosnippet>22</a>    <span class="kw">let </span>crate_ident = <a href="utils.rs.html#188-215">crate_ident_new</a>();
 <a href=#23 id=23 data-nosnippet>23</a>
 <a href=#24 id=24 data-nosnippet>24</a>    <span class="comment">// starts at one as GEnumValue array is null-terminated.
@@ -134,7 +134,7 @@
 <a href=#61 id=61 data-nosnippet>61</a>    )
 <a href=#62 id=62 data-nosnippet>62</a>}
 <a href=#63 id=63 data-nosnippet>63</a>
-<a href=#64 id=64 data-nosnippet>64</a><span class="kw">pub fn </span>impl_enum(input: <span class="kw-2">&amp;</span><a href="https://docs.rs/syn/2.0.100/syn/derive/struct.DeriveInput.html">syn::DeriveInput</a>) -&gt; <a href="https://docs.rs/syn/2.0.100/syn/error/type.Result.html">syn::Result</a>&lt;<a href="https://docs.rs/proc-macro2/1.0.94/proc_macro2/struct.TokenStream.html">TokenStream</a>&gt; {
+<a href=#64 id=64 data-nosnippet>64</a><span class="kw">pub fn </span>impl_enum(input: <span class="kw-2">&amp;</span><a href="https://docs.rs/syn/2.0.100/syn/derive/struct.DeriveInput.html">syn::DeriveInput</a>) -&gt; <a href="https://docs.rs/syn/2.0.100/syn/error/type.Result.html">syn::Result</a>&lt;<a href="https://docs.rs/proc-macro2/1.0.95/proc_macro2/struct.TokenStream.html">TokenStream</a>&gt; {
 <a href=#65 id=65 data-nosnippet>65</a>    <span class="kw">let </span>name = <span class="kw-2">&amp;</span><a href="#64">input</a>.ident;
 <a href=#66 id=66 data-nosnippet>66</a>
 <a href=#67 id=67 data-nosnippet>67</a>    <span class="kw">let </span>enum_variants = <span class="kw">match </span><a href="#64">input</a>.data {
@@ -316,13 +316,13 @@
 <a href=#243 id=243 data-nosnippet>243</a>
 <a href=#244 id=244 data-nosnippet>244</a><span class="comment">// Registers the enum as a static type.
 <a href=#245 id=245 data-nosnippet>245</a></span><span class="kw">fn </span>register_enum_as_static(
-<a href=#246 id=246 data-nosnippet>246</a>    crate_ident: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.94/proc_macro2/struct.TokenStream.html">TokenStream</a>,
-<a href=#247 id=247 data-nosnippet>247</a>    name: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.94/proc_macro2/struct.Ident.html">syn::Ident</a>,
+<a href=#246 id=246 data-nosnippet>246</a>    crate_ident: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.95/proc_macro2/struct.TokenStream.html">TokenStream</a>,
+<a href=#247 id=247 data-nosnippet>247</a>    name: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.95/proc_macro2/struct.Ident.html">syn::Ident</a>,
 <a href=#248 id=248 data-nosnippet>248</a>    gtype_name: <a href="https://docs.rs/syn/2.0.100/syn/lit/struct.LitStr.html">syn::LitStr</a>,
 <a href=#249 id=249 data-nosnippet>249</a>    allow_name_conflict: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>,
-<a href=#250 id=250 data-nosnippet>250</a>    g_enum_values: <a href="https://docs.rs/proc-macro2/1.0.94/proc_macro2/struct.TokenStream.html">TokenStream</a>,
+<a href=#250 id=250 data-nosnippet>250</a>    g_enum_values: <a href="https://docs.rs/proc-macro2/1.0.95/proc_macro2/struct.TokenStream.html">TokenStream</a>,
 <a href=#251 id=251 data-nosnippet>251</a>    nb_enum_values: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>,
-<a href=#252 id=252 data-nosnippet>252</a>) -&gt; <a href="https://docs.rs/proc-macro2/1.0.94/proc_macro2/struct.TokenStream.html">TokenStream</a> {
+<a href=#252 id=252 data-nosnippet>252</a>) -&gt; <a href="https://docs.rs/proc-macro2/1.0.95/proc_macro2/struct.TokenStream.html">TokenStream</a> {
 <a href=#253 id=253 data-nosnippet>253</a>    <span class="kw">let </span>type_name_snippet = <span class="kw">if </span>allow_name_conflict {
 <a href=#254 id=254 data-nosnippet>254</a>        <a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a> {
 <a href=#255 id=255 data-nosnippet>255</a>            <span class="kw">unsafe </span>{
@@ -390,14 +390,14 @@
 <a href=#317 id=317 data-nosnippet>317</a><span class="comment">// The following implementations follows the lifecycle of plugins and of dynamic types (see [`TypePluginExt`] and [`TypeModuleExt`]).
 <a href=#318 id=318 data-nosnippet>318</a>// An enum can be reregistered as a dynamic type.
 <a href=#319 id=319 data-nosnippet>319</a></span><span class="kw">fn </span>register_enum_as_dynamic(
-<a href=#320 id=320 data-nosnippet>320</a>    crate_ident: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.94/proc_macro2/struct.TokenStream.html">TokenStream</a>,
-<a href=#321 id=321 data-nosnippet>321</a>    plugin_ty: <a href="https://docs.rs/proc-macro2/1.0.94/proc_macro2/struct.TokenStream.html">TokenStream</a>,
+<a href=#320 id=320 data-nosnippet>320</a>    crate_ident: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.95/proc_macro2/struct.TokenStream.html">TokenStream</a>,
+<a href=#321 id=321 data-nosnippet>321</a>    plugin_ty: <a href="https://docs.rs/proc-macro2/1.0.95/proc_macro2/struct.TokenStream.html">TokenStream</a>,
 <a href=#322 id=322 data-nosnippet>322</a>    lazy_registration: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>,
-<a href=#323 id=323 data-nosnippet>323</a>    name: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.94/proc_macro2/struct.Ident.html">syn::Ident</a>,
+<a href=#323 id=323 data-nosnippet>323</a>    name: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.95/proc_macro2/struct.Ident.html">syn::Ident</a>,
 <a href=#324 id=324 data-nosnippet>324</a>    gtype_name: <a href="https://docs.rs/syn/2.0.100/syn/lit/struct.LitStr.html">syn::LitStr</a>,
-<a href=#325 id=325 data-nosnippet>325</a>    g_enum_values: <a href="https://docs.rs/proc-macro2/1.0.94/proc_macro2/struct.TokenStream.html">TokenStream</a>,
+<a href=#325 id=325 data-nosnippet>325</a>    g_enum_values: <a href="https://docs.rs/proc-macro2/1.0.95/proc_macro2/struct.TokenStream.html">TokenStream</a>,
 <a href=#326 id=326 data-nosnippet>326</a>    nb_enum_values: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>,
-<a href=#327 id=327 data-nosnippet>327</a>) -&gt; <a href="https://docs.rs/proc-macro2/1.0.94/proc_macro2/struct.TokenStream.html">TokenStream</a> {
+<a href=#327 id=327 data-nosnippet>327</a>) -&gt; <a href="https://docs.rs/proc-macro2/1.0.95/proc_macro2/struct.TokenStream.html">TokenStream</a> {
 <a href=#328 id=328 data-nosnippet>328</a>    <span class="comment">// Wrap each GEnumValue to EnumValue
 <a href=#329 id=329 data-nosnippet>329</a>    </span><span class="kw">let </span>g_enum_values_expr: <a href="https://docs.rs/syn/2.0.100/syn/expr/struct.ExprArray.html">syn::ExprArray</a> = <a class="macro" href="https://docs.rs/syn/2.0.100/syn/macro.parse_quote.html">syn::parse_quote!</a> { [#g_enum_values] };
 <a href=#330 id=330 data-nosnippet>330</a>    <span class="kw">let </span>enum_values_iter = <a href="#329">g_enum_values_expr</a>.elems.<a href="https://docs.rs/syn/2.0.100/syn/punctuated/struct.Punctuated.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|v| {
