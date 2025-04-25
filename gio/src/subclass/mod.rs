@@ -4,6 +4,7 @@ mod action_group;
 mod action_map;
 mod application;
 mod async_initable;
+mod file_monitor;
 mod initable;
 mod input_stream;
 mod io_stream;
@@ -23,6 +24,7 @@ pub mod prelude {
         action_map::{ActionMapImpl, ActionMapImplExt},
         application::{ApplicationImpl, ApplicationImplExt},
         async_initable::{AsyncInitableImpl, AsyncInitableImplExt},
+        file_monitor::{FileMonitorImpl, FileMonitorImplExt},
         initable::{InitableImpl, InitableImplExt},
         input_stream::{InputStreamImpl, InputStreamImplExt},
         io_stream::{IOStreamImpl, IOStreamImplExt},
