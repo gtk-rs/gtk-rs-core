@@ -3295,6 +3295,9 @@ extern "C" {
     pub fn g_date_get_monday_week_of_year(date: *const GDate) -> c_uint;
     pub fn g_date_get_month(date: *const GDate) -> GDateMonth;
     pub fn g_date_get_sunday_week_of_year(date: *const GDate) -> c_uint;
+    #[cfg(feature = "v2_86")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_86")))]
+    pub fn g_date_get_week_of_year(date: *const GDate, first_day_of_week: GDateWeekday) -> c_uint;
     pub fn g_date_get_weekday(date: *const GDate) -> GDateWeekday;
     pub fn g_date_get_year(date: *const GDate) -> GDateYear;
     pub fn g_date_is_first_of_month(date: *const GDate) -> gboolean;
@@ -3317,6 +3320,9 @@ extern "C" {
     pub fn g_date_get_days_in_month(month: GDateMonth, year: GDateYear) -> u8;
     pub fn g_date_get_monday_weeks_in_year(year: GDateYear) -> u8;
     pub fn g_date_get_sunday_weeks_in_year(year: GDateYear) -> u8;
+    #[cfg(feature = "v2_86")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_86")))]
+    pub fn g_date_get_weeks_in_year(year: GDateYear, first_day_of_week: GDateWeekday) -> u8;
     pub fn g_date_is_leap_year(year: GDateYear) -> gboolean;
     pub fn g_date_strftime(
         s: *mut c_char,
@@ -5232,6 +5238,9 @@ extern "C" {
     pub fn g_string_ascii_down(string: *mut GString) -> *mut GString;
     pub fn g_string_ascii_up(string: *mut GString) -> *mut GString;
     pub fn g_string_assign(string: *mut GString, rval: *const c_char) -> *mut GString;
+    #[cfg(feature = "v2_86")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_86")))]
+    pub fn g_string_copy(string: *mut GString) -> *mut GString;
     pub fn g_string_down(string: *mut GString) -> *mut GString;
     pub fn g_string_equal(v: *const GString, v2: *const GString) -> gboolean;
     pub fn g_string_erase(string: *mut GString, pos: ssize_t, len: ssize_t) -> *mut GString;
@@ -6354,11 +6363,22 @@ extern "C" {
     ) -> size_t;
     pub fn g_basename(file_name: *const c_char) -> *const c_char;
     pub fn g_bit_lock(address: *mut c_int, lock_bit: c_int);
+    #[cfg(feature = "v2_86")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_86")))]
+    pub fn g_bit_lock_and_get(address: *mut c_int, lock_bit: c_uint, out_val: *mut c_int);
     pub fn g_bit_nth_lsf(mask: c_ulong, nth_bit: c_int) -> c_int;
     pub fn g_bit_nth_msf(mask: c_ulong, nth_bit: c_int) -> c_int;
     pub fn g_bit_storage(number: c_ulong) -> c_uint;
     pub fn g_bit_trylock(address: *mut c_int, lock_bit: c_int) -> gboolean;
     pub fn g_bit_unlock(address: *mut c_int, lock_bit: c_int);
+    #[cfg(feature = "v2_86")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_86")))]
+    pub fn g_bit_unlock_and_set(
+        address: *mut c_int,
+        lock_bit: c_uint,
+        new_val: c_int,
+        preserve_mask: c_int,
+    );
     pub fn g_build_filename(first_element: *const c_char, ...) -> *mut c_char;
     //pub fn g_build_filename_valist(first_element: *const c_char, args: /*Unimplemented*/*mut va_list) -> *mut c_char;
     pub fn g_build_filenamev(args: *mut *mut c_char) -> *mut c_char;
