@@ -88,9 +88,9 @@
 <a href=#15 id=15 data-nosnippet>15</a><span class="comment">// #[cfg(windows)]
 <a href=#16 id=16 data-nosnippet>16</a>// #[cfg(feature = "v2_58")]
 <a href=#17 id=17 data-nosnippet>17</a>// use std::os::windows::io::AsRawHandle;
-<a href=#18 id=18 data-nosnippet>18</a></span><span class="kw">use crate</span>::{ffi, <a href="lib.rs.html#164">translate</a>::<span class="kw-2">*</span>, <a href="auto/enums.rs.html#10-23">ChecksumType</a>, <a href="gstring.rs.html#24">GStr</a>};
+<a href=#18 id=18 data-nosnippet>18</a></span><span class="kw">use crate</span>::{ffi, <a href="lib.rs.html#164">translate</a>::<span class="kw-2">*</span>, <a href="auto/enums.rs.html#15-33">ChecksumType</a>, <a href="gstring.rs.html#24">GStr</a>};
 <a href=#19 id=19 data-nosnippet>19</a><span class="attr">#[cfg(not(windows))]
-<a href=#20 id=20 data-nosnippet>20</a></span><span class="kw">use crate</span>::{<a href="error.rs.html#10-22">Error</a>, <a href="source.rs.html#59">Pid</a>, <a href="auto/flags.rs.html#489-526">SpawnFlags</a>};
+<a href=#20 id=20 data-nosnippet>20</a></span><span class="kw">use crate</span>::{<a href="error.rs.html#10-25">Error</a>, <a href="source.rs.html#59">Pid</a>, <a href="auto/flags.rs.html#740-804">SpawnFlags</a>};
 <a href=#21 id=21 data-nosnippet>21</a>
 <a href=#22 id=22 data-nosnippet>22</a><span class="attr">#[cfg(feature = <span class="string">"v2_58"</span>)]
 <a href=#23 id=23 data-nosnippet>23</a>#[cfg(not(windows))]
@@ -101,12 +101,12 @@
 <a href=#28 id=28 data-nosnippet>28</a>    working_directory: P,
 <a href=#29 id=29 data-nosnippet>29</a>    argv: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>],
 <a href=#30 id=30 data-nosnippet>30</a>    envp: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>],
-<a href=#31 id=31 data-nosnippet>31</a>    flags: <a href="auto/flags.rs.html#489-526">SpawnFlags</a>,
+<a href=#31 id=31 data-nosnippet>31</a>    flags: <a href="auto/flags.rs.html#740-804">SpawnFlags</a>,
 <a href=#32 id=32 data-nosnippet>32</a>    child_setup: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>() + <span class="lifetime">'static</span>&gt;&gt;,
 <a href=#33 id=33 data-nosnippet>33</a>    stdin_fd: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/std/os/fd/owned/trait.AsFd.html">AsFd</a>&gt;,
 <a href=#34 id=34 data-nosnippet>34</a>    stdout_fd: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/std/os/fd/owned/trait.AsFd.html">AsFd</a>&gt;,
 <a href=#35 id=35 data-nosnippet>35</a>    stderr_fd: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/std/os/fd/owned/trait.AsFd.html">AsFd</a>&gt;,
-<a href=#36 id=36 data-nosnippet>36</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="source.rs.html#59">Pid</a>, <a href="error.rs.html#10-22">Error</a>&gt; {
+<a href=#36 id=36 data-nosnippet>36</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="source.rs.html#59">Pid</a>, <a href="error.rs.html#10-25">Error</a>&gt; {
 <a href=#37 id=37 data-nosnippet>37</a>    <span class="kw">let </span>child_setup_data: <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;<a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>() + <span class="lifetime">'static</span>&gt;&gt;&gt; = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">Box_::new</a>(<a href="#32">child_setup</a>);
 <a href=#38 id=38 data-nosnippet>38</a>    <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>child_setup_func(user_data: ffi::gpointer) {
 <a href=#39 id=39 data-nosnippet>39</a>        <span class="kw">let </span>callback: <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;<a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>() + <span class="lifetime">'static</span>&gt;&gt;&gt; =
@@ -217,9 +217,9 @@
 <a href=#144 id=144 data-nosnippet>144</a>    working_directory: P,
 <a href=#145 id=145 data-nosnippet>145</a>    argv: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/path/struct.Path.html">std::path::Path</a>],
 <a href=#146 id=146 data-nosnippet>146</a>    envp: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/path/struct.Path.html">std::path::Path</a>],
-<a href=#147 id=147 data-nosnippet>147</a>    flags: <a href="auto/flags.rs.html#489-526">SpawnFlags</a>,
+<a href=#147 id=147 data-nosnippet>147</a>    flags: <a href="auto/flags.rs.html#740-804">SpawnFlags</a>,
 <a href=#148 id=148 data-nosnippet>148</a>    child_setup: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>() + <span class="lifetime">'static</span>&gt;&gt;,
-<a href=#149 id=149 data-nosnippet>149</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(<a href="source.rs.html#59">Pid</a>, T, U, V), <a href="error.rs.html#10-22">Error</a>&gt; {
+<a href=#149 id=149 data-nosnippet>149</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(<a href="source.rs.html#59">Pid</a>, T, U, V), <a href="error.rs.html#10-25">Error</a>&gt; {
 <a href=#150 id=150 data-nosnippet>150</a>    <span class="kw">let </span>child_setup_data: <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;<a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>() + <span class="lifetime">'static</span>&gt;&gt;&gt; = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">Box_::new</a>(<a href="#148">child_setup</a>);
 <a href=#151 id=151 data-nosnippet>151</a>    <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>child_setup_func(user_data: ffi::gpointer) {
 <a href=#152 id=152 data-nosnippet>152</a>        <span class="kw">let </span>callback: <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;<a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>() + <span class="lifetime">'static</span>&gt;&gt;&gt; =
@@ -300,7 +300,7 @@
 <a href=#227 id=227 data-nosnippet>227</a>
 <a href=#228 id=228 data-nosnippet>228</a><span class="attr">#[doc(alias = <span class="string">"g_compute_checksum_for_string"</span>)]
 <a href=#229 id=229 data-nosnippet>229</a></span><span class="kw">pub fn </span><a href="../../glib/fn.compute_checksum_for_string.html">compute_checksum_for_string</a>(
-<a href=#230 id=230 data-nosnippet>230</a>    checksum_type: <a href="auto/enums.rs.html#10-23">ChecksumType</a>,
+<a href=#230 id=230 data-nosnippet>230</a>    checksum_type: <a href="auto/enums.rs.html#15-33">ChecksumType</a>,
 <a href=#231 id=231 data-nosnippet>231</a>    str: <span class="kw">impl </span><a href="gstring.rs.html#2438-2440">IntoGStr</a>,
 <a href=#232 id=232 data-nosnippet>232</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="gstring.rs.html#1073"><span class="kw">crate</span>::GString</a>&gt; {
 <a href=#233 id=233 data-nosnippet>233</a>    <a href="#231">str</a>.<a href="gstring.rs.html#2439">run_with_gstr</a>(|str| <span class="kw">unsafe </span>{
@@ -312,68 +312,125 @@
 <a href=#239 id=239 data-nosnippet>239</a>    })
 <a href=#240 id=240 data-nosnippet>240</a>}
 <a href=#241 id=241 data-nosnippet>241</a>
-<a href=#242 id=242 data-nosnippet>242</a><span class="attr">#[cfg(unix)]
-<a href=#243 id=243 data-nosnippet>243</a>#[doc(alias = <span class="string">"g_unix_open_pipe"</span>)]
-<a href=#244 id=244 data-nosnippet>244</a></span><span class="kw">pub fn </span><a href="../../glib/fn.unix_open_pipe.html">unix_open_pipe</a>(flags: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(<a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/type.RawFd.html">RawFd</a>, <a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/type.RawFd.html">RawFd</a>), <a href="error.rs.html#10-22">Error</a>&gt; {
-<a href=#245 id=245 data-nosnippet>245</a>    <span class="kw">unsafe </span>{
-<a href=#246 id=246 data-nosnippet>246</a>        <span class="kw">let </span><span class="kw-2">mut </span>fds = [<span class="number">0</span>, <span class="number">2</span>];
-<a href=#247 id=247 data-nosnippet>247</a>        <span class="kw">let </span><span class="kw-2">mut </span>error = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
-<a href=#248 id=248 data-nosnippet>248</a>        <span class="kw">let _ </span>= ffi::g_unix_open_pipe(<span class="kw-2">&amp;mut </span><a href="#246">fds</a>, <a href="#244">flags</a>, <span class="kw-2">&amp;mut </span><a href="#247">error</a>);
-<a href=#249 id=249 data-nosnippet>249</a>        <span class="kw">if </span>error.is_null() {
-<a href=#250 id=250 data-nosnippet>250</a>            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>((
-<a href=#251 id=251 data-nosnippet>251</a>                <a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/trait.FromRawFd.html#tymethod.from_raw_fd">FromRawFd::from_raw_fd</a>(<a href="#246">fds</a>[<span class="number">0</span>]),
-<a href=#252 id=252 data-nosnippet>252</a>                <a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/trait.FromRawFd.html#tymethod.from_raw_fd">FromRawFd::from_raw_fd</a>(<a href="#246">fds</a>[<span class="number">1</span>]),
-<a href=#253 id=253 data-nosnippet>253</a>            ))
-<a href=#254 id=254 data-nosnippet>254</a>        } <span class="kw">else </span>{
-<a href=#255 id=255 data-nosnippet>255</a>            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="translate.rs.html#1638-1640">from_glib_full</a>(<a href="#247">error</a>))
-<a href=#256 id=256 data-nosnippet>256</a>        }
-<a href=#257 id=257 data-nosnippet>257</a>    }
-<a href=#258 id=258 data-nosnippet>258</a>}
-<a href=#259 id=259 data-nosnippet>259</a>
-<a href=#260 id=260 data-nosnippet>260</a><span class="attr">#[cfg(unix)]
-<a href=#261 id=261 data-nosnippet>261</a>#[doc(alias = <span class="string">"g_file_open_tmp"</span>)]
-<a href=#262 id=262 data-nosnippet>262</a></span><span class="kw">pub fn </span><a href="../../glib/fn.file_open_tmp.html">file_open_tmp</a>(
-<a href=#263 id=263 data-nosnippet>263</a>    tmpl: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">AsRef</a>&lt;<a href="https://doc.rust-lang.org/nightly/std/path/struct.Path.html">std::path::Path</a>&gt;&gt;,
-<a href=#264 id=264 data-nosnippet>264</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(<a href="https://doc.rust-lang.org/nightly/std/os/fd/owned/struct.OwnedFd.html">OwnedFd</a>, <a href="https://doc.rust-lang.org/nightly/std/path/struct.PathBuf.html">std::path::PathBuf</a>), <a href="error.rs.html#10-22"><span class="kw">crate</span>::Error</a>&gt; {
-<a href=#265 id=265 data-nosnippet>265</a>    <span class="kw">unsafe </span>{
-<a href=#266 id=266 data-nosnippet>266</a>        <span class="kw">let </span><span class="kw-2">mut </span>name_used = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
-<a href=#267 id=267 data-nosnippet>267</a>        <span class="kw">let </span><span class="kw-2">mut </span>error = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
-<a href=#268 id=268 data-nosnippet>268</a>        <span class="kw">let </span>ret = ffi::g_file_open_tmp(
-<a href=#269 id=269 data-nosnippet>269</a>            <a href="#263">tmpl</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_ref">as_ref</a>().<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|p| <a href="#269">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>()).<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-<a href=#270 id=270 data-nosnippet>270</a>            <span class="kw-2">&amp;mut </span><a href="#266">name_used</a>,
-<a href=#271 id=271 data-nosnippet>271</a>            <span class="kw-2">&amp;mut </span><a href="#267">error</a>,
-<a href=#272 id=272 data-nosnippet>272</a>        );
-<a href=#273 id=273 data-nosnippet>273</a>        <span class="kw">if </span>error.is_null() {
-<a href=#274 id=274 data-nosnippet>274</a>            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>((<a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/trait.FromRawFd.html#tymethod.from_raw_fd">OwnedFd::from_raw_fd</a>(<a href="#268">ret</a>), <a href="translate.rs.html#1638-1640">from_glib_full</a>(<a href="#266">name_used</a>)))
-<a href=#275 id=275 data-nosnippet>275</a>        } <span class="kw">else </span>{
-<a href=#276 id=276 data-nosnippet>276</a>            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="translate.rs.html#1638-1640">from_glib_full</a>(<a href="#267">error</a>))
-<a href=#277 id=277 data-nosnippet>277</a>        }
-<a href=#278 id=278 data-nosnippet>278</a>    }
-<a href=#279 id=279 data-nosnippet>279</a>}
-<a href=#280 id=280 data-nosnippet>280</a>
-<a href=#281 id=281 data-nosnippet>281</a><span class="comment">// rustdoc-stripper-ignore-next
-<a href=#282 id=282 data-nosnippet>282</a></span><span class="doccomment">/// Spawn a new infallible `Future` on the thread-default main context.
-<a href=#283 id=283 data-nosnippet>283</a>///
-<a href=#284 id=284 data-nosnippet>284</a>/// This can be called from any thread and will execute the future from the thread
-<a href=#285 id=285 data-nosnippet>285</a>/// where main context is running, e.g. via a `MainLoop`.
-<a href=#286 id=286 data-nosnippet>286</a></span><span class="kw">pub fn </span><a href="../../glib/fn.spawn_future.html">spawn_future</a>&lt;R: <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static</span>, F: <a href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html">std::future::Future</a>&lt;Output = R&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static</span>&gt;(
-<a href=#287 id=287 data-nosnippet>287</a>    f: F,
-<a href=#288 id=288 data-nosnippet>288</a>) -&gt; <a href="main_context_futures.rs.html#279-284"><span class="kw">crate</span>::JoinHandle</a>&lt;R&gt; {
-<a href=#289 id=289 data-nosnippet>289</a>    <span class="kw">let </span>ctx = <a href="auto/main_context.rs.html#144-146"><span class="kw">crate</span>::MainContext::ref_thread_default</a>();
-<a href=#290 id=290 data-nosnippet>290</a>    <a href="#289">ctx</a>.<a href="main_context_futures.rs.html#525-530">spawn</a>(<a href="#287">f</a>)
-<a href=#291 id=291 data-nosnippet>291</a>}
-<a href=#292 id=292 data-nosnippet>292</a>
-<a href=#293 id=293 data-nosnippet>293</a><span class="comment">// rustdoc-stripper-ignore-next
-<a href=#294 id=294 data-nosnippet>294</a></span><span class="doccomment">/// Spawn a new infallible `Future` on the thread-default main context.
+<a href=#242 id=242 data-nosnippet>242</a><span class="doccomment">/// Similar to the UNIX pipe() call, but on modern systems like Linux
+<a href=#243 id=243 data-nosnippet>243</a>/// uses the pipe2() system call, which atomically creates a pipe with
+<a href=#244 id=244 data-nosnippet>244</a>/// the configured flags.
+<a href=#245 id=245 data-nosnippet>245</a>///
+<a href=#246 id=246 data-nosnippet>246</a>/// As of GLib 2.78, the supported flags are `O_CLOEXEC`/`FD_CLOEXEC` (see below)
+<a href=#247 id=247 data-nosnippet>247</a>/// and `O_NONBLOCK`. Prior to GLib 2.78, only `FD_CLOEXEC` was supported — if
+<a href=#248 id=248 data-nosnippet>248</a>/// you wanted to configure `O_NONBLOCK` then that had to be done separately with
+<a href=#249 id=249 data-nosnippet>249</a>/// `fcntl()`.
+<a href=#250 id=250 data-nosnippet>250</a>///
+<a href=#251 id=251 data-nosnippet>251</a>/// Since GLib 2.80, the constants `G_UNIX_PIPE_END_READ` and
+<a href=#252 id=252 data-nosnippet>252</a>/// `G_UNIX_PIPE_END_WRITE` can be used as mnemonic indexes in @fds.
+<a href=#253 id=253 data-nosnippet>253</a>///
+<a href=#254 id=254 data-nosnippet>254</a>/// It is a programmer error to call this function with unsupported flags, and a
+<a href=#255 id=255 data-nosnippet>255</a>/// critical warning will be raised.
+<a href=#256 id=256 data-nosnippet>256</a>///
+<a href=#257 id=257 data-nosnippet>257</a>/// As of GLib 2.78, it is preferred to pass `O_CLOEXEC` in, rather than
+<a href=#258 id=258 data-nosnippet>258</a>/// `FD_CLOEXEC`, as that matches the underlying `pipe()` API more closely. Prior
+<a href=#259 id=259 data-nosnippet>259</a>/// to 2.78, only `FD_CLOEXEC` was supported. Support for `FD_CLOEXEC` may be
+<a href=#260 id=260 data-nosnippet>260</a>/// deprecated and removed in future.
+<a href=#261 id=261 data-nosnippet>261</a>/// ## `fds`
+<a href=#262 id=262 data-nosnippet>262</a>/// Array of two integers
+<a href=#263 id=263 data-nosnippet>263</a>/// ## `flags`
+<a href=#264 id=264 data-nosnippet>264</a>/// Bitfield of file descriptor flags, as for fcntl()
+<a href=#265 id=265 data-nosnippet>265</a>///
+<a href=#266 id=266 data-nosnippet>266</a>/// # Returns
+<a href=#267 id=267 data-nosnippet>267</a>///
+<a href=#268 id=268 data-nosnippet>268</a>/// [`true`] on success, [`false`] if not (and errno will be set).
+<a href=#269 id=269 data-nosnippet>269</a></span><span class="attr">#[cfg(unix)]
+<a href=#270 id=270 data-nosnippet>270</a>#[doc(alias = <span class="string">"g_unix_open_pipe"</span>)]
+<a href=#271 id=271 data-nosnippet>271</a></span><span class="kw">pub fn </span><a href="../../glib/fn.unix_open_pipe.html">unix_open_pipe</a>(flags: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(<a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/type.RawFd.html">RawFd</a>, <a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/type.RawFd.html">RawFd</a>), <a href="error.rs.html#10-25">Error</a>&gt; {
+<a href=#272 id=272 data-nosnippet>272</a>    <span class="kw">unsafe </span>{
+<a href=#273 id=273 data-nosnippet>273</a>        <span class="kw">let </span><span class="kw-2">mut </span>fds = [<span class="number">0</span>, <span class="number">2</span>];
+<a href=#274 id=274 data-nosnippet>274</a>        <span class="kw">let </span><span class="kw-2">mut </span>error = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
+<a href=#275 id=275 data-nosnippet>275</a>        <span class="kw">let _ </span>= ffi::g_unix_open_pipe(<span class="kw-2">&amp;mut </span><a href="#273">fds</a>, <a href="#271">flags</a>, <span class="kw-2">&amp;mut </span><a href="#274">error</a>);
+<a href=#276 id=276 data-nosnippet>276</a>        <span class="kw">if </span>error.is_null() {
+<a href=#277 id=277 data-nosnippet>277</a>            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>((
+<a href=#278 id=278 data-nosnippet>278</a>                <a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/trait.FromRawFd.html#tymethod.from_raw_fd">FromRawFd::from_raw_fd</a>(<a href="#273">fds</a>[<span class="number">0</span>]),
+<a href=#279 id=279 data-nosnippet>279</a>                <a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/trait.FromRawFd.html#tymethod.from_raw_fd">FromRawFd::from_raw_fd</a>(<a href="#273">fds</a>[<span class="number">1</span>]),
+<a href=#280 id=280 data-nosnippet>280</a>            ))
+<a href=#281 id=281 data-nosnippet>281</a>        } <span class="kw">else </span>{
+<a href=#282 id=282 data-nosnippet>282</a>            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="translate.rs.html#1638-1640">from_glib_full</a>(<a href="#274">error</a>))
+<a href=#283 id=283 data-nosnippet>283</a>        }
+<a href=#284 id=284 data-nosnippet>284</a>    }
+<a href=#285 id=285 data-nosnippet>285</a>}
+<a href=#286 id=286 data-nosnippet>286</a>
+<a href=#287 id=287 data-nosnippet>287</a><span class="doccomment">/// Opens a file for writing in the preferred directory for temporary
+<a href=#288 id=288 data-nosnippet>288</a>/// files (as returned by g_get_tmp_dir()).
+<a href=#289 id=289 data-nosnippet>289</a>///
+<a href=#290 id=290 data-nosnippet>290</a>/// @tmpl should be a string in the GLib file name encoding containing
+<a href=#291 id=291 data-nosnippet>291</a>/// a sequence of six 'X' characters, as the parameter to g_mkstemp().
+<a href=#292 id=292 data-nosnippet>292</a>/// However, unlike these functions, the template should only be a
+<a href=#293 id=293 data-nosnippet>293</a>/// basename, no directory components are allowed. If template is
+<a href=#294 id=294 data-nosnippet>294</a>/// [`None`], a default template is used.
 <a href=#295 id=295 data-nosnippet>295</a>///
-<a href=#296 id=296 data-nosnippet>296</a>/// The given `Future` does not have to be `Send`.
-<a href=#297 id=297 data-nosnippet>297</a>///
-<a href=#298 id=298 data-nosnippet>298</a>/// This can be called only from the thread where the main context is running, e.g.
-<a href=#299 id=299 data-nosnippet>299</a>/// from any other `Future` that is executed on this main context, or after calling
-<a href=#300 id=300 data-nosnippet>300</a>/// `with_thread_default` or `acquire` on the main context.
-<a href=#301 id=301 data-nosnippet>301</a></span><span class="kw">pub fn </span><a href="../../glib/fn.spawn_future_local.html">spawn_future_local</a>&lt;R: <span class="lifetime">'static</span>, F: <a href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html">std::future::Future</a>&lt;Output = R&gt; + <span class="lifetime">'static</span>&gt;(
-<a href=#302 id=302 data-nosnippet>302</a>    f: F,
-<a href=#303 id=303 data-nosnippet>303</a>) -&gt; <a href="main_context_futures.rs.html#279-284"><span class="kw">crate</span>::JoinHandle</a>&lt;R&gt; {
-<a href=#304 id=304 data-nosnippet>304</a>    <span class="kw">let </span>ctx = <a href="auto/main_context.rs.html#144-146"><span class="kw">crate</span>::MainContext::ref_thread_default</a>();
-<a href=#305 id=305 data-nosnippet>305</a>    <a href="#304">ctx</a>.<a href="main_context_futures.rs.html#540-542">spawn_local</a>(<a href="#302">f</a>)
-<a href=#306 id=306 data-nosnippet>306</a>}</code></pre></div></section></main></body></html>
+<a href=#296 id=296 data-nosnippet>296</a>/// Note that in contrast to g_mkstemp() (and mkstemp()) @tmpl is not
+<a href=#297 id=297 data-nosnippet>297</a>/// modified, and might thus be a read-only literal string.
+<a href=#298 id=298 data-nosnippet>298</a>///
+<a href=#299 id=299 data-nosnippet>299</a>/// Upon success, and if @name_used is non-[`None`], the actual name used
+<a href=#300 id=300 data-nosnippet>300</a>/// is returned in @name_used. This string should be freed with g_free()
+<a href=#301 id=301 data-nosnippet>301</a>/// when not needed any longer. The returned name is in the GLib file
+<a href=#302 id=302 data-nosnippet>302</a>/// name encoding.
+<a href=#303 id=303 data-nosnippet>303</a>/// ## `tmpl`
+<a href=#304 id=304 data-nosnippet>304</a>/// Template for file name, as in
+<a href=#305 id=305 data-nosnippet>305</a>///   g_mkstemp(), basename only, or [`None`] for a default template
+<a href=#306 id=306 data-nosnippet>306</a>///
+<a href=#307 id=307 data-nosnippet>307</a>/// # Returns
+<a href=#308 id=308 data-nosnippet>308</a>///
+<a href=#309 id=309 data-nosnippet>309</a>/// A file handle (as from open()) to the file opened for
+<a href=#310 id=310 data-nosnippet>310</a>///   reading and writing. The file is opened in binary mode on platforms
+<a href=#311 id=311 data-nosnippet>311</a>///   where there is a difference. The file handle should be closed with
+<a href=#312 id=312 data-nosnippet>312</a>///   close(). In case of errors, -1 is returned and @error will be set.
+<a href=#313 id=313 data-nosnippet>313</a>///
+<a href=#314 id=314 data-nosnippet>314</a>/// ## `name_used`
+<a href=#315 id=315 data-nosnippet>315</a>/// location to store actual name used,
+<a href=#316 id=316 data-nosnippet>316</a>///   or [`None`]
+<a href=#317 id=317 data-nosnippet>317</a></span><span class="attr">#[cfg(unix)]
+<a href=#318 id=318 data-nosnippet>318</a>#[doc(alias = <span class="string">"g_file_open_tmp"</span>)]
+<a href=#319 id=319 data-nosnippet>319</a></span><span class="kw">pub fn </span><a href="../../glib/fn.file_open_tmp.html">file_open_tmp</a>(
+<a href=#320 id=320 data-nosnippet>320</a>    tmpl: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">AsRef</a>&lt;<a href="https://doc.rust-lang.org/nightly/std/path/struct.Path.html">std::path::Path</a>&gt;&gt;,
+<a href=#321 id=321 data-nosnippet>321</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(<a href="https://doc.rust-lang.org/nightly/std/os/fd/owned/struct.OwnedFd.html">OwnedFd</a>, <a href="https://doc.rust-lang.org/nightly/std/path/struct.PathBuf.html">std::path::PathBuf</a>), <a href="error.rs.html#10-25"><span class="kw">crate</span>::Error</a>&gt; {
+<a href=#322 id=322 data-nosnippet>322</a>    <span class="kw">unsafe </span>{
+<a href=#323 id=323 data-nosnippet>323</a>        <span class="kw">let </span><span class="kw-2">mut </span>name_used = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
+<a href=#324 id=324 data-nosnippet>324</a>        <span class="kw">let </span><span class="kw-2">mut </span>error = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
+<a href=#325 id=325 data-nosnippet>325</a>        <span class="kw">let </span>ret = ffi::g_file_open_tmp(
+<a href=#326 id=326 data-nosnippet>326</a>            <a href="#320">tmpl</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_ref">as_ref</a>().<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|p| <a href="#326">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>()).<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+<a href=#327 id=327 data-nosnippet>327</a>            <span class="kw-2">&amp;mut </span><a href="#323">name_used</a>,
+<a href=#328 id=328 data-nosnippet>328</a>            <span class="kw-2">&amp;mut </span><a href="#324">error</a>,
+<a href=#329 id=329 data-nosnippet>329</a>        );
+<a href=#330 id=330 data-nosnippet>330</a>        <span class="kw">if </span>error.is_null() {
+<a href=#331 id=331 data-nosnippet>331</a>            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>((<a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/trait.FromRawFd.html#tymethod.from_raw_fd">OwnedFd::from_raw_fd</a>(<a href="#325">ret</a>), <a href="translate.rs.html#1638-1640">from_glib_full</a>(<a href="#323">name_used</a>)))
+<a href=#332 id=332 data-nosnippet>332</a>        } <span class="kw">else </span>{
+<a href=#333 id=333 data-nosnippet>333</a>            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="translate.rs.html#1638-1640">from_glib_full</a>(<a href="#324">error</a>))
+<a href=#334 id=334 data-nosnippet>334</a>        }
+<a href=#335 id=335 data-nosnippet>335</a>    }
+<a href=#336 id=336 data-nosnippet>336</a>}
+<a href=#337 id=337 data-nosnippet>337</a>
+<a href=#338 id=338 data-nosnippet>338</a><span class="comment">// rustdoc-stripper-ignore-next
+<a href=#339 id=339 data-nosnippet>339</a></span><span class="doccomment">/// Spawn a new infallible `Future` on the thread-default main context.
+<a href=#340 id=340 data-nosnippet>340</a>///
+<a href=#341 id=341 data-nosnippet>341</a>/// This can be called from any thread and will execute the future from the thread
+<a href=#342 id=342 data-nosnippet>342</a>/// where main context is running, e.g. via a `MainLoop`.
+<a href=#343 id=343 data-nosnippet>343</a></span><span class="kw">pub fn </span><a href="../../glib/fn.spawn_future.html">spawn_future</a>&lt;R: <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static</span>, F: <a href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html">std::future::Future</a>&lt;Output = R&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static</span>&gt;(
+<a href=#344 id=344 data-nosnippet>344</a>    f: F,
+<a href=#345 id=345 data-nosnippet>345</a>) -&gt; <a href="main_context_futures.rs.html#279-284"><span class="kw">crate</span>::JoinHandle</a>&lt;R&gt; {
+<a href=#346 id=346 data-nosnippet>346</a>    <span class="kw">let </span>ctx = <a href="auto/main_context.rs.html#269-271"><span class="kw">crate</span>::MainContext::ref_thread_default</a>();
+<a href=#347 id=347 data-nosnippet>347</a>    <a href="#346">ctx</a>.<a href="main_context_futures.rs.html#525-530">spawn</a>(<a href="#344">f</a>)
+<a href=#348 id=348 data-nosnippet>348</a>}
+<a href=#349 id=349 data-nosnippet>349</a>
+<a href=#350 id=350 data-nosnippet>350</a><span class="comment">// rustdoc-stripper-ignore-next
+<a href=#351 id=351 data-nosnippet>351</a></span><span class="doccomment">/// Spawn a new infallible `Future` on the thread-default main context.
+<a href=#352 id=352 data-nosnippet>352</a>///
+<a href=#353 id=353 data-nosnippet>353</a>/// The given `Future` does not have to be `Send`.
+<a href=#354 id=354 data-nosnippet>354</a>///
+<a href=#355 id=355 data-nosnippet>355</a>/// This can be called only from the thread where the main context is running, e.g.
+<a href=#356 id=356 data-nosnippet>356</a>/// from any other `Future` that is executed on this main context, or after calling
+<a href=#357 id=357 data-nosnippet>357</a>/// `with_thread_default` or `acquire` on the main context.
+<a href=#358 id=358 data-nosnippet>358</a></span><span class="kw">pub fn </span><a href="../../glib/fn.spawn_future_local.html">spawn_future_local</a>&lt;R: <span class="lifetime">'static</span>, F: <a href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html">std::future::Future</a>&lt;Output = R&gt; + <span class="lifetime">'static</span>&gt;(
+<a href=#359 id=359 data-nosnippet>359</a>    f: F,
+<a href=#360 id=360 data-nosnippet>360</a>) -&gt; <a href="main_context_futures.rs.html#279-284"><span class="kw">crate</span>::JoinHandle</a>&lt;R&gt; {
+<a href=#361 id=361 data-nosnippet>361</a>    <span class="kw">let </span>ctx = <a href="auto/main_context.rs.html#269-271"><span class="kw">crate</span>::MainContext::ref_thread_default</a>();
+<a href=#362 id=362 data-nosnippet>362</a>    <a href="#361">ctx</a>.<a href="main_context_futures.rs.html#540-542">spawn_local</a>(<a href="#359">f</a>)
+<a href=#363 id=363 data-nosnippet>363</a>}</code></pre></div></section></main></body></html>
