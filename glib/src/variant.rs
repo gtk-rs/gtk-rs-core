@@ -1601,6 +1601,7 @@ where
 /// assert_eq!(dict.n_children(), 2);
 /// assert_eq!(dict.type_().as_str(), "a{su}");
 /// ```
+#[derive(Debug, Clone)]
 pub struct DictEntry<K, V> {
     key: K,
     value: V,
