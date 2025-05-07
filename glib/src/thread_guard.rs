@@ -113,3 +113,17 @@ impl<T> Drop for ThreadGuard<T> {
 
 unsafe impl<T> Send for ThreadGuard<T> {}
 unsafe impl<T> Sync for ThreadGuard<T> {}
+
+impl<T> std::ops::Deref for ThreadGuard<T> {
+    type Target = T;
+
+    fn deref(&self) -> &Self::Target {
+        self.get_ref()
+    }
+}
+
+impl<T> std::ops::DerefMut for ThreadGuard<T> {
+    fn deref_mut(&mut self) -> &mut Self::Target {
+        self.get_mut()
+    }
+}
