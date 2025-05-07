@@ -74,7 +74,6 @@ generate = [
     "Gio.FileInputStream",
     "Gio.FileIOStream",
     "Gio.FileMeasureFlags",
-    "Gio.FileMonitor",
     "Gio.FileMonitorEvent",
     "Gio.FileMonitorFlags",
     "Gio.FilenameCompleter",
@@ -915,6 +914,17 @@ status = "generate"
     name = "set_attribute_stringv"
     # use strv
     manual = true
+
+[[object]]
+name = "Gio.FileMonitor"
+status = "generate"
+    [[object.function]]
+    name = "emit_event"
+        [[object.function.parameter]]
+        name = "other_file"
+        # enforce nullable parameter, since parameter other_file
+        # is nullable in GFileMonitor::changed signal.
+        nullable = true
 
 [[object]]
 name = "Gio.FilterOutputStream"
