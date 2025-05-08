@@ -43,6 +43,7 @@ mod debug_controller_dbus;
 mod desktop_app_info;
 mod error;
 mod file;
+pub use file::FileAttributeValue;
 mod file_attribute_info;
 pub use crate::file_attribute_info::FileAttributeInfo;
 mod file_attribute_info_list;
