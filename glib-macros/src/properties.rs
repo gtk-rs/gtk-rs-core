@@ -12,7 +12,7 @@ use syn::parse::Parse;
 use syn::punctuated::Punctuated;
 use syn::spanned::Spanned;
 use syn::Token;
-use syn::{parse_quote_spanned, LitStr};
+use syn::{parse_quote_spanned, Attribute, LitStr};
 
 pub struct PropsMacroInput {
     wrapper_ty: syn::Path,
@@ -255,6 +255,7 @@ struct PropDesc {
     field_ident: syn::Ident,
     ty: syn::Type,
     name: syn::LitStr,
+    comments: Vec<Attribute>,
     override_class: Option<syn::Type>,
     override_interface: Option<syn::Type>,
     nullable: bool,
@@ -271,6 +272,7 @@ impl PropDesc {
         attrs_span: proc_macro2::Span,
         field_ident: syn::Ident,
         field_ty: syn::Type,
+        comments: Vec<Attribute>,
         attrs: ReceivedAttrs,
     ) -> syn::Result<Self> {
         let ReceivedAttrs {
@@ -321,6 +323,7 @@ impl PropDesc {
             field_ident,
             ty,
             name,
+            comments,
             override_class,
             override_interface,
             nullable,
@@ -524,26 +527,33 @@ fn expand_set_property_fn(props: &[PropDesc]) -> TokenStream2 {
 }
 
 fn parse_fields(fields: syn::Fields) -> syn::Result<Vec<PropDesc>> {
-    fields
-        .into_iter()
-        .flat_map(|field| {
-            let syn::Field {
-                ident, attrs, ty, ..
-            } = field;
-            attrs
-                .into_iter()
-                .filter(|a| a.path().is_ident("property"))
-                .map(move |prop_attrs| {
-                    let span = prop_attrs.span();
-                    PropDesc::new(
-                        span,
-                        ident.as_ref().unwrap().clone(),
-                        ty.clone(),
-                        prop_attrs.parse_args()?,
-                    )
-                })
-        })
-        .collect::<syn::Result<_>>()
+    let mut properties = vec![];
+
+    for field in fields.into_iter() {
+        let syn::Field {
+            ident, attrs, ty, ..
+        } = field;
+        // Store the comments until the next `#[property]` we see and then attach them to it.
+        let mut comments: Vec<Attribute> = vec![];
+        for prop_attr in attrs.iter() {
+            if prop_attr.path().is_ident("doc") {
+                comments.push(prop_attr.clone());
+            } else if prop_attr.path().is_ident("property") {
+                let span = prop_attr.span();
+                let existing_comments = comments;
+                comments = vec![];
+                properties.push(PropDesc::new(
+                    span,
+                    ident.as_ref().unwrap().clone(),
+                    ty.clone(),
+                    existing_comments,
+                    prop_attr.parse_args()?,
+                )?);
+            }
+        }
+    }
+
+    Ok(properties)
 }
 
 /// Converts a glib property name to a correct rust ident
@@ -559,6 +569,50 @@ fn strip_raw_prefix_from_name(name: &LitStr) -> LitStr {
     )
 }
 
+/// Splits the comments for a property between the getter and setter
+///
+/// The return tuple is the attributes to copy over into the getter and setter
+/// respectively.
+fn arrange_property_comments(comments: &[Attribute]) -> (Vec<&Attribute>, Vec<&Attribute>) {
+    let mut untagged = vec![];
+    let mut getter = vec![];
+    let mut setter = vec![];
+    let mut saw_section = false;
+
+    // We start with no tags so if the programmer doesn't split the comments we can still arrange them.
+    let mut current_section = &mut untagged;
+    for attr in comments {
+        if let syn::Meta::NameValue(meta) = &attr.meta {
+            if let syn::Expr::Lit(expr) = &meta.value {
+                if let syn::Lit::Str(lit_str) = &expr.lit {
+                    // Now that we have the one line of comment, see if we need
+                    // to switch a particular section to be the active one (via
+                    // the header syntax) or add the current line to the active
+                    // section.
+                    match lit_str.value().trim() {
+                        "# Getter" => {
+                            current_section = &mut getter;
+                            saw_section = true;
+                        }
+                        "# Setter" => {
+                            current_section = &mut setter;
+                            saw_section = true;
+                        }
+                        _ => current_section.push(attr),
+                    }
+                }
+            }
+        }
+    }
+
+    // If no sections were defined then we put the same in both
+    if !saw_section {
+        return (untagged.clone(), untagged);
+    }
+
+    (getter, setter)
+}
+
 fn expand_impl_getset_properties(props: &[PropDesc]) -> Vec<syn::ImplItemFn> {
     let crate_ident = crate_ident_new();
     let defs = props.iter().filter(|p| !p.is_overriding()).map(|p| {
@@ -567,9 +621,12 @@ fn expand_impl_getset_properties(props: &[PropDesc]) -> Vec<syn::ImplItemFn> {
         let ident = name_to_ident(name);
         let ty = &p.ty;
 
+        let (getter_docs, setter_docs) = arrange_property_comments(&p.comments);
+
         let getter = p.get.is_some().then(|| {
             let span = p.attrs_span;
             parse_quote_spanned!(span=>
+                #(#getter_docs)*
                 #[must_use]
                 #[allow(dead_code)]
                 pub fn #ident(&self) -> <#ty as #crate_ident::property::Property>::Value {
@@ -597,12 +654,14 @@ fn expand_impl_getset_properties(props: &[PropDesc]) -> Vec<syn::ImplItemFn> {
             };
             let span = p.attrs_span;
             parse_quote_spanned!(span=>
+                #(#setter_docs)*
                 #[allow(dead_code)]
                 pub fn #ident<'a>(&self, value: #set_ty) {
                     self.set_property_from_value(#stripped_name, &::std::convert::From::from(#upcasted_borrowed_value))
                 }
             )
         });
+
         [getter, setter]
     });
     defs.flatten() // flattens []
@@ -617,7 +676,9 @@ fn expand_impl_connect_prop_notify(props: &[PropDesc]) -> Vec<syn::ImplItemFn> {
         let stripped_name = strip_raw_prefix_from_name(name);
         let fn_ident = format_ident!("connect_{}_notify", name_to_ident(name));
         let span = p.attrs_span;
+        let doc = format!("Listen for notifications of a change in the `{}` property", name.value());
         parse_quote_spanned!(span=>
+            #[doc = #doc]
             #[allow(dead_code)]
             pub fn #fn_ident<F: Fn(&Self) + 'static>(&self, f: F) -> #crate_ident::SignalHandlerId {
                 self.connect_notify_local(::core::option::Option::Some(#stripped_name), move |this, _| {
@@ -636,7 +697,9 @@ fn expand_impl_notify_prop(wrapper_type: &syn::Path, props: &[PropDesc]) -> Vec<
         let fn_ident = format_ident!("notify_{}", name_to_ident(&name));
         let span = p.attrs_span;
         let enum_ident = name_to_enum_ident(name.value());
+        let doc = format!("Notify listeners of a change in the `{}` property", name.value());
         parse_quote_spanned!(span=>
+            #[doc = #doc]
             #[allow(dead_code)]
             pub fn #fn_ident(&self) {
                 self.notify_by_pspec(
