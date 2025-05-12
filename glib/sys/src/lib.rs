@@ -6746,6 +6746,9 @@ extern "C" {
         message: *const c_char,
         unused_data: gpointer,
     );
+    #[cfg(feature = "v2_86")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_86")))]
+    pub fn g_log_get_always_fatal() -> GLogLevelFlags;
     #[cfg(feature = "v2_72")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
     pub fn g_log_get_debug_enabled() -> gboolean;
