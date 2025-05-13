@@ -289,6 +289,39 @@ impl GStr {
         }
     }
     pub const NONE: Option<&'static GStr> = None;
+
+    // rustdoc-stripper-ignore-next
+    /// Interns the string and returns the canonical representation.
+    #[inline]
+    #[doc(alias = "g_intern_string")]
+    pub fn intern(&self) -> &'static GStr {
+        unsafe {
+            let s = ffi::g_intern_string(self.to_glib_none().0);
+            GStr::from_ptr(s)
+        }
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Interns the `'static` string and returns the canonical representation.
+    #[inline]
+    #[doc(alias = "g_intern_static_string")]
+    pub fn intern_static(&'static self) -> &'static GStr {
+        unsafe {
+            let s = ffi::g_intern_static_string(self.to_glib_none().0);
+            GStr::from_ptr(s)
+        }
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Interns the string and returns the canonical representation.
+    #[inline]
+    #[doc(alias = "g_intern_string")]
+    pub fn intern_from_str(s: impl AsRef<str>) -> &'static GStr {
+        unsafe {
+            let s = ffi::g_intern_string(s.as_ref().to_glib_none().0);
+            GStr::from_ptr(s)
+        }
+    }
 }
 
 // rustdoc-stripper-ignore-next
@@ -1012,6 +1045,18 @@ impl std::hash::Hash for GStringPtr {
     #[inline]
     fn hash<H: std::hash::Hasher>(&self, state: &mut H) {
         self.as_str().hash(state);
+    }
+}
+
+impl<T: AsRef<str>> From<T> for GStringPtr {
+    fn from(value: T) -> Self {
+        unsafe {
+            let value = value.as_ref();
+            GStringPtr(ptr::NonNull::new_unchecked(ffi::g_strndup(
+                value.as_ptr() as *const _,
+                value.len(),
+            )))
+        }
     }
 }
 

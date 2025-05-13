@@ -1,6 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use std::num::NonZeroU64;
+use std::{future::IntoFuture, num::NonZeroU64};
 
 use futures_channel::oneshot;
 use futures_core::Future;
@@ -150,6 +150,26 @@ pub trait CancellableExtManual: sealed::Sealed + IsA<Cancellable> {
 }
 
 impl<O: IsA<Cancellable>> CancellableExtManual for O {}
+
+impl IntoFuture for Cancellable {
+    type Output = ();
+
+    type IntoFuture = std::pin::Pin<Box<dyn Future<Output = ()> + Send + Sync + 'static>>;
+
+    fn into_future(self) -> Self::IntoFuture {
+        self.future()
+    }
+}
+
+impl IntoFuture for &Cancellable {
+    type Output = ();
+
+    type IntoFuture = std::pin::Pin<Box<dyn Future<Output = ()> + Send + Sync + 'static>>;
+
+    fn into_future(self) -> Self::IntoFuture {
+        self.future()
+    }
+}
 
 #[cfg(test)]
 mod tests {

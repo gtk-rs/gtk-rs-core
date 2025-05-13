@@ -519,7 +519,7 @@ pub trait FileExt: IsA<File> + sealed::Sealed + 'static {
             user_data: glib::ffi::gpointer,
         ) {
             let mut error = std::ptr::null_mut();
-            let _ = ffi::g_file_delete_finish(_source_object as *mut _, res, &mut error);
+            ffi::g_file_delete_finish(_source_object as *mut _, res, &mut error);
             let result = if error.is_null() {
                 Ok(())
             } else {
@@ -590,7 +590,7 @@ pub trait FileExt: IsA<File> + sealed::Sealed + 'static {
             user_data: glib::ffi::gpointer,
         ) {
             let mut error = std::ptr::null_mut();
-            let _ = ffi::g_file_eject_mountable_with_operation_finish(
+            ffi::g_file_eject_mountable_with_operation_finish(
                 _source_object as *mut _,
                 res,
                 &mut error,
@@ -951,7 +951,7 @@ pub trait FileExt: IsA<File> + sealed::Sealed + 'static {
             user_data: glib::ffi::gpointer,
         ) {
             let mut error = std::ptr::null_mut();
-            let _ = ffi::g_file_make_directory_finish(_source_object as *mut _, res, &mut error);
+            ffi::g_file_make_directory_finish(_source_object as *mut _, res, &mut error);
             let result = if error.is_null() {
                 Ok(())
             } else {
@@ -1126,11 +1126,7 @@ pub trait FileExt: IsA<File> + sealed::Sealed + 'static {
             user_data: glib::ffi::gpointer,
         ) {
             let mut error = std::ptr::null_mut();
-            let _ = ffi::g_file_mount_enclosing_volume_finish(
-                _source_object as *mut _,
-                res,
-                &mut error,
-            );
+            ffi::g_file_mount_enclosing_volume_finish(_source_object as *mut _, res, &mut error);
             let result = if error.is_null() {
                 Ok(())
             } else {
@@ -1412,7 +1408,7 @@ pub trait FileExt: IsA<File> + sealed::Sealed + 'static {
             user_data: glib::ffi::gpointer,
         ) {
             let mut error = std::ptr::null_mut();
-            let _ = ffi::g_file_poll_mountable_finish(_source_object as *mut _, res, &mut error);
+            ffi::g_file_poll_mountable_finish(_source_object as *mut _, res, &mut error);
             let result = if error.is_null() {
                 Ok(())
             } else {
@@ -2346,12 +2342,7 @@ pub trait FileExt: IsA<File> + sealed::Sealed + 'static {
         ) {
             let mut error = std::ptr::null_mut();
             let mut info = std::ptr::null_mut();
-            let _ = ffi::g_file_set_attributes_finish(
-                _source_object as *mut _,
-                res,
-                &mut info,
-                &mut error,
-            );
+            ffi::g_file_set_attributes_finish(_source_object as *mut _, res, &mut info, &mut error);
             let result = if error.is_null() {
                 Ok(from_glib_full(info))
             } else {
@@ -2548,7 +2539,7 @@ pub trait FileExt: IsA<File> + sealed::Sealed + 'static {
             user_data: glib::ffi::gpointer,
         ) {
             let mut error = std::ptr::null_mut();
-            let _ = ffi::g_file_start_mountable_finish(_source_object as *mut _, res, &mut error);
+            ffi::g_file_start_mountable_finish(_source_object as *mut _, res, &mut error);
             let result = if error.is_null() {
                 Ok(())
             } else {
@@ -2621,7 +2612,7 @@ pub trait FileExt: IsA<File> + sealed::Sealed + 'static {
             user_data: glib::ffi::gpointer,
         ) {
             let mut error = std::ptr::null_mut();
-            let _ = ffi::g_file_stop_mountable_finish(_source_object as *mut _, res, &mut error);
+            ffi::g_file_stop_mountable_finish(_source_object as *mut _, res, &mut error);
             let result = if error.is_null() {
                 Ok(())
             } else {
@@ -2720,7 +2711,7 @@ pub trait FileExt: IsA<File> + sealed::Sealed + 'static {
             user_data: glib::ffi::gpointer,
         ) {
             let mut error = std::ptr::null_mut();
-            let _ = ffi::g_file_trash_finish(_source_object as *mut _, res, &mut error);
+            ffi::g_file_trash_finish(_source_object as *mut _, res, &mut error);
             let result = if error.is_null() {
                 Ok(())
             } else {
@@ -2785,7 +2776,7 @@ pub trait FileExt: IsA<File> + sealed::Sealed + 'static {
             user_data: glib::ffi::gpointer,
         ) {
             let mut error = std::ptr::null_mut();
-            let _ = ffi::g_file_unmount_mountable_with_operation_finish(
+            ffi::g_file_unmount_mountable_with_operation_finish(
                 _source_object as *mut _,
                 res,
                 &mut error,

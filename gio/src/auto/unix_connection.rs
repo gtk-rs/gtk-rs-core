@@ -175,7 +175,7 @@ pub trait UnixConnectionExt: IsA<UnixConnection> + sealed::Sealed + 'static {
             user_data: glib::ffi::gpointer,
         ) {
             let mut error = std::ptr::null_mut();
-            let _ = ffi::g_unix_connection_send_credentials_finish(
+            ffi::g_unix_connection_send_credentials_finish(
                 _source_object as *mut _,
                 res,
                 &mut error,

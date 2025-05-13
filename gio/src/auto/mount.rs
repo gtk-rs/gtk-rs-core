@@ -71,8 +71,7 @@ pub trait MountExt: IsA<Mount> + sealed::Sealed + 'static {
             user_data: glib::ffi::gpointer,
         ) {
             let mut error = std::ptr::null_mut();
-            let _ =
-                ffi::g_mount_eject_with_operation_finish(_source_object as *mut _, res, &mut error);
+            ffi::g_mount_eject_with_operation_finish(_source_object as *mut _, res, &mut error);
             let result = if error.is_null() {
                 Ok(())
             } else {
@@ -299,7 +298,7 @@ pub trait MountExt: IsA<Mount> + sealed::Sealed + 'static {
             user_data: glib::ffi::gpointer,
         ) {
             let mut error = std::ptr::null_mut();
-            let _ = ffi::g_mount_remount_finish(_source_object as *mut _, res, &mut error);
+            ffi::g_mount_remount_finish(_source_object as *mut _, res, &mut error);
             let result = if error.is_null() {
                 Ok(())
             } else {
@@ -379,11 +378,7 @@ pub trait MountExt: IsA<Mount> + sealed::Sealed + 'static {
             user_data: glib::ffi::gpointer,
         ) {
             let mut error = std::ptr::null_mut();
-            let _ = ffi::g_mount_unmount_with_operation_finish(
-                _source_object as *mut _,
-                res,
-                &mut error,
-            );
+            ffi::g_mount_unmount_with_operation_finish(_source_object as *mut _, res, &mut error);
             let result = if error.is_null() {
                 Ok(())
             } else {

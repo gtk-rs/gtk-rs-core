@@ -249,9 +249,9 @@ status = "generate"
     ignore = true
     [[object.function]]
     name = "content_type_guess"
-        [[object.function.parameter]]
-        name = "filename"
-        string_type = "filename"
+    # implemented manually until gir generates nullable array parameters
+    # https://github.com/gtk-rs/gir/issues/1133
+    manual = true
 
 [[object]]
 name = "Gio.ActionGroup"
@@ -607,6 +607,11 @@ status = "generate"
     pattern = "signal_.*subscribe"
     #wrapped with newtype manually
     manual = true
+    [[object.function]]
+    name = "register_object_with_closures2"
+    #old version is wrapped correctly and we don't require
+    #the new version
+    ignore = true
 
 [[object]]
 name = "Gio.DBusConnectionFlags"
