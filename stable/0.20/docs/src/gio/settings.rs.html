@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/settings.rs`."><title>settings.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-6c3ea77c.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.86.0-nightly (9cd60bd2c 2025-02-15)" data-channel="nightly" data-search-js="search-581efc7a.js" data-settings-js="settings-6dad6058.js" ><script src="../../static.files/storage-3a5871a4.js"></script><script defer src="../../static.files/src-script-b8d3f215.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-4d63596a.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/settings.rs`."><title>settings.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-0ce1a80b.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.89.0-nightly (8405332bd 2025-05-12)" data-channel="nightly" data-search-js="search-f7877310.js" data-settings-js="settings-5514c975.js" ><script src="../../static.files/storage-4e99c027.js"></script><script defer src="../../static.files/src-script-63605ae7.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-7ef8a74a.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-32bb7600.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -71,19 +71,19 @@
 </script>
 
 
-<nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">gio/</div>settings.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-3"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
+<nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">gio/</div>settings.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-3"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 <a href=#2 id=2 data-nosnippet>2</a>
 <a href=#3 id=3 data-nosnippet>3</a></span><span class="kw">use </span>glib::{<a href="../../glib/prelude/index.html">prelude</a>::<span class="kw-2">*</span>, <a href="../../glib/translate/index.html">translate</a>::<span class="kw-2">*</span>, <a href="../../glib/error/struct.BoolError.html">BoolError</a>, <a href="../../glib/collections/strv/struct.StrV.html">StrV</a>, <a href="../../glib_macros/derive.Variant.html">Variant</a>};
 <a href=#4 id=4 data-nosnippet>4</a>
-<a href=#5 id=5 data-nosnippet>5</a><span class="kw">use crate</span>::{<a href="../../gio_sys/index.html">ffi</a>, <a href="lib.rs.html#123">prelude</a>::<span class="kw-2">*</span>, <a href="auto/settings.rs.html#17-517">Settings</a>, <a href="auto/flags.rs.html#3048-3079">SettingsBindFlags</a>};
+<a href=#5 id=5 data-nosnippet>5</a><span class="kw">use crate</span>::{<a href="../../gio_sys/index.html">ffi</a>, <a href="lib.rs.html#125">prelude</a>::<span class="kw-2">*</span>, <a href="auto/settings.rs.html#17-548">Settings</a>, <a href="auto/flags.rs.html#3048-3082">SettingsBindFlags</a>};
 <a href=#6 id=6 data-nosnippet>6</a>
 <a href=#7 id=7 data-nosnippet>7</a><span class="attr">#[must_use = <span class="string">"The builder must be built to be used"</span>]
 <a href=#8 id=8 data-nosnippet>8</a></span><span class="kw">pub struct </span><a href="../../gio/struct.BindingBuilder.html">BindingBuilder</a>&lt;<span class="lifetime">'a</span>&gt; {
-<a href=#9 id=9 data-nosnippet>9</a>    settings: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="auto/settings.rs.html#17-517">Settings</a>,
+<a href=#9 id=9 data-nosnippet>9</a>    settings: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="auto/settings.rs.html#17-548">Settings</a>,
 <a href=#10 id=10 data-nosnippet>10</a>    key: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
 <a href=#11 id=11 data-nosnippet>11</a>    object: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="../../glib/object/struct.Object.html">glib::Object</a>,
 <a href=#12 id=12 data-nosnippet>12</a>    property: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
-<a href=#13 id=13 data-nosnippet>13</a>    flags: <a href="auto/flags.rs.html#3048-3079">SettingsBindFlags</a>,
+<a href=#13 id=13 data-nosnippet>13</a>    flags: <a href="auto/flags.rs.html#3048-3082">SettingsBindFlags</a>,
 <a href=#14 id=14 data-nosnippet>14</a>    <span class="attr">#[allow(clippy::type_complexity)]
 <a href=#15 id=15 data-nosnippet>15</a>    </span>get_mapping: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box</a>&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><a href="../../glib/variant/struct.Variant.html">glib::Variant</a>, <a href="../../glib/types/struct.Type.html">glib::Type</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="../../glib/value/struct.Value.html">glib::Value</a>&gt;&gt;&gt;,
 <a href=#16 id=16 data-nosnippet>16</a>    <span class="attr">#[allow(clippy::type_complexity)]
@@ -91,7 +91,7 @@
 <a href=#18 id=18 data-nosnippet>18</a>}
 <a href=#19 id=19 data-nosnippet>19</a>
 <a href=#20 id=20 data-nosnippet>20</a><span class="kw">impl </span><a href="#8-18">BindingBuilder</a>&lt;<span class="lifetime">'_</span>&gt; {
-<a href=#21 id=21 data-nosnippet>21</a>    <span class="kw">pub fn </span>flags(<span class="kw-2">mut </span><span class="self">self</span>, flags: <a href="auto/flags.rs.html#3048-3079">SettingsBindFlags</a>) -&gt; <span class="self">Self </span>{
+<a href=#21 id=21 data-nosnippet>21</a>    <span class="kw">pub fn </span>flags(<span class="kw-2">mut </span><span class="self">self</span>, flags: <a href="auto/flags.rs.html#3048-3082">SettingsBindFlags</a>) -&gt; <span class="self">Self </span>{
 <a href=#22 id=22 data-nosnippet>22</a>        <a class="self" href="#21">self</a>.flags = <a href="#21">flags</a>;
 <a href=#23 id=23 data-nosnippet>23</a>        <span class="self"><a href="#21">self</a>
 <a href=#24 id=24 data-nosnippet>24</a>    </span>}
@@ -242,12 +242,12 @@
 <a href=#169 id=169 data-nosnippet>169</a>
 <a href=#170 id=170 data-nosnippet>170</a><span class="kw">mod </span>sealed {
 <a href=#171 id=171 data-nosnippet>171</a>    <span class="kw">pub trait </span>Sealed {}
-<a href=#172 id=172 data-nosnippet>172</a>    <span class="kw">impl</span>&lt;T: <a href="../../glib/object/trait.IsA.html"><span class="kw">super</span>::IsA</a>&lt;<a href="auto/settings.rs.html#17-517"><span class="kw">super</span>::Settings</a>&gt;&gt; <a href="#171">Sealed</a> <span class="kw">for </span>T {}
+<a href=#172 id=172 data-nosnippet>172</a>    <span class="kw">impl</span>&lt;T: <a href="../../glib/object/trait.IsA.html"><span class="kw">super</span>::IsA</a>&lt;<a href="auto/settings.rs.html#17-548"><span class="kw">super</span>::Settings</a>&gt;&gt; <a href="#171">Sealed</a> <span class="kw">for </span>T {}
 <a href=#173 id=173 data-nosnippet>173</a>}
 <a href=#174 id=174 data-nosnippet>174</a>
-<a href=#175 id=175 data-nosnippet>175</a><span class="kw">pub trait </span><a href="../../gio/prelude/trait.SettingsExtManual.html">SettingsExtManual</a>: <a href="#171">sealed::Sealed</a> + <a href="../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="auto/settings.rs.html#17-517">Settings</a>&gt; {
+<a href=#175 id=175 data-nosnippet>175</a><span class="kw">pub trait </span><a href="../../gio/prelude/trait.SettingsExtManual.html">SettingsExtManual</a>: <a href="#171">sealed::Sealed</a> + <a href="../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="auto/settings.rs.html#17-548">Settings</a>&gt; {
 <a href=#176 id=176 data-nosnippet>176</a>    <span class="kw">fn </span>get&lt;U: <a href="../../glib/variant/trait.FromVariant.html">FromVariant</a>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, key: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; U {
-<a href=#177 id=177 data-nosnippet>177</a>        <span class="kw">let </span>val = <a class="self" href="#176">self</a>.<a href="auto/settings.rs.html#1191-1198">value</a>(<a href="#176">key</a>);
+<a href=#177 id=177 data-nosnippet>177</a>        <span class="kw">let </span>val = <a class="self" href="#176">self</a>.<a href="auto/settings.rs.html#1230-1237">value</a>(<a href="#176">key</a>);
 <a href=#178 id=178 data-nosnippet>178</a>        <a href="../../glib/variant/trait.FromVariant.html#tymethod.from_variant">FromVariant::from_variant</a>(<span class="kw-2">&amp;</span><a href="#177">val</a>).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap_or_else">unwrap_or_else</a>(|| {
 <a href=#179 id=179 data-nosnippet>179</a>            <a class="macro" href="https://doc.rust-lang.org/nightly/std/macro.panic.html">panic!</a>(
 <a href=#180 id=180 data-nosnippet>180</a>                <span class="string">"Type mismatch: Expected '{}' got '{}'"</span>,
@@ -258,21 +258,21 @@
 <a href=#185 id=185 data-nosnippet>185</a>    }
 <a href=#186 id=186 data-nosnippet>186</a>
 <a href=#187 id=187 data-nosnippet>187</a>    <span class="kw">fn </span>set(<span class="kw-2">&amp;</span><span class="self">self</span>, key: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, value: <span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html">Into</a>&lt;<a href="../../glib/variant/struct.Variant.html">Variant</a>&gt;) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(), <a href="../../glib/error/struct.BoolError.html">BoolError</a>&gt; {
-<a href=#188 id=188 data-nosnippet>188</a>        <a class="self" href="#187">self</a>.<a href="auto/settings.rs.html#1561-1572">set_value</a>(<a href="#187">key</a>, <span class="kw-2">&amp;</span><a href="#187">value</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>())
+<a href=#188 id=188 data-nosnippet>188</a>        <a class="self" href="#187">self</a>.<a href="auto/settings.rs.html#1601-1612">set_value</a>(<a href="#187">key</a>, <span class="kw-2">&amp;</span><a href="#187">value</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>())
 <a href=#189 id=189 data-nosnippet>189</a>    }
 <a href=#190 id=190 data-nosnippet>190</a>
-<a href=#191 id=191 data-nosnippet>191</a>    <span class="doccomment">/// A convenience variant of g_settings_get() for string arrays.
+<a href=#191 id=191 data-nosnippet>191</a>    <span class="doccomment">/// A convenience variant of `Gio::Settings::get()` for string arrays.
 <a href=#192 id=192 data-nosnippet>192</a>    ///
-<a href=#193 id=193 data-nosnippet>193</a>    /// It is a programmer error to give a @key that isn't specified as
-<a href=#194 id=194 data-nosnippet>194</a>    /// having an array of strings type in the schema for @self.
+<a href=#193 id=193 data-nosnippet>193</a>    /// It is a programmer error to give a @key that isn’t specified as
+<a href=#194 id=194 data-nosnippet>194</a>    /// having an `as` type in the schema for @self (see [`glib::VariantType`][crate::glib::VariantType]).
 <a href=#195 id=195 data-nosnippet>195</a>    /// ## `key`
 <a href=#196 id=196 data-nosnippet>196</a>    /// the key to get the value for
 <a href=#197 id=197 data-nosnippet>197</a>    ///
 <a href=#198 id=198 data-nosnippet>198</a>    /// # Returns
 <a href=#199 id=199 data-nosnippet>199</a>    ///
 <a href=#200 id=200 data-nosnippet>200</a>    /// a
-<a href=#201 id=201 data-nosnippet>201</a>    /// newly-allocated, [`None`]-terminated array of strings, the value that
-<a href=#202 id=202 data-nosnippet>202</a>    /// is stored at @key in @self.
+<a href=#201 id=201 data-nosnippet>201</a>    ///   newly-allocated, `NULL`-terminated array of strings, the value that
+<a href=#202 id=202 data-nosnippet>202</a>    ///   is stored at @key in @self.
 <a href=#203 id=203 data-nosnippet>203</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_settings_get_strv"</span>)]
 <a href=#204 id=204 data-nosnippet>204</a>    #[doc(alias = <span class="string">"get_strv"</span>)]
 <a href=#205 id=205 data-nosnippet>205</a>    </span><span class="kw">fn </span>strv(<span class="kw-2">&amp;</span><span class="self">self</span>, key: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a href="../../glib/collections/strv/struct.StrV.html">StrV</a> {
@@ -286,20 +286,20 @@
 <a href=#213 id=213 data-nosnippet>213</a>
 <a href=#214 id=214 data-nosnippet>214</a>    <span class="doccomment">/// Sets @key in @self to @value.
 <a href=#215 id=215 data-nosnippet>215</a>    ///
-<a href=#216 id=216 data-nosnippet>216</a>    /// A convenience variant of g_settings_set() for string arrays.  If
-<a href=#217 id=217 data-nosnippet>217</a>    /// @value is [`None`], then @key is set to be the empty array.
+<a href=#216 id=216 data-nosnippet>216</a>    /// A convenience variant of `Gio::Settings::set()` for string arrays.  If
+<a href=#217 id=217 data-nosnippet>217</a>    /// @value is `NULL`, then @key is set to be the empty array.
 <a href=#218 id=218 data-nosnippet>218</a>    ///
-<a href=#219 id=219 data-nosnippet>219</a>    /// It is a programmer error to give a @key that isn't specified as
-<a href=#220 id=220 data-nosnippet>220</a>    /// having an array of strings type in the schema for @self.
+<a href=#219 id=219 data-nosnippet>219</a>    /// It is a programmer error to give a @key that isn’t specified as
+<a href=#220 id=220 data-nosnippet>220</a>    /// having an `as` type in the schema for @self (see [`glib::VariantType`][crate::glib::VariantType]).
 <a href=#221 id=221 data-nosnippet>221</a>    /// ## `key`
-<a href=#222 id=222 data-nosnippet>222</a>    /// the name of the key to set
+<a href=#222 id=222 data-nosnippet>222</a>    /// the key to set the value for
 <a href=#223 id=223 data-nosnippet>223</a>    /// ## `value`
-<a href=#224 id=224 data-nosnippet>224</a>    /// the value to set it to, or [`None`]
+<a href=#224 id=224 data-nosnippet>224</a>    /// the value to set it to
 <a href=#225 id=225 data-nosnippet>225</a>    ///
 <a href=#226 id=226 data-nosnippet>226</a>    /// # Returns
 <a href=#227 id=227 data-nosnippet>227</a>    ///
-<a href=#228 id=228 data-nosnippet>228</a>    /// [`true`] if setting the key succeeded,
-<a href=#229 id=229 data-nosnippet>229</a>    ///     [`false`] if the key was not writable
+<a href=#228 id=228 data-nosnippet>228</a>    /// true if setting the key succeeded,
+<a href=#229 id=229 data-nosnippet>229</a>    ///   false if the key was not writable
 <a href=#230 id=230 data-nosnippet>230</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_settings_set_strv"</span>)]
 <a href=#231 id=231 data-nosnippet>231</a>    </span><span class="kw">fn </span>set_strv(<span class="kw-2">&amp;</span><span class="self">self</span>, key: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, value: <span class="kw">impl </span><a href="../../glib/collections/strv/trait.IntoStrV.html">IntoStrV</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(), <a href="../../glib/error/struct.BoolError.html">glib::error::BoolError</a>&gt; {
 <a href=#232 id=232 data-nosnippet>232</a>        <span class="kw">unsafe </span>{
@@ -322,14 +322,14 @@
 <a href=#249 id=249 data-nosnippet>249</a>    /// The binding uses the default GIO mapping functions to map
 <a href=#250 id=250 data-nosnippet>250</a>    /// between the settings and property values. These functions
 <a href=#251 id=251 data-nosnippet>251</a>    /// handle booleans, numeric types and string types in a
-<a href=#252 id=252 data-nosnippet>252</a>    /// straightforward way. Use g_settings_bind_with_mapping() if
+<a href=#252 id=252 data-nosnippet>252</a>    /// straightforward way. Use [`bind_with_mapping()`][Self::bind_with_mapping()] if
 <a href=#253 id=253 data-nosnippet>253</a>    /// you need a custom mapping, or map between types that are not
 <a href=#254 id=254 data-nosnippet>254</a>    /// supported by the default mapping functions.
 <a href=#255 id=255 data-nosnippet>255</a>    ///
-<a href=#256 id=256 data-nosnippet>256</a>    /// Unless the @flags include [`SettingsBindFlags::NO_SENSITIVITY`][crate::SettingsBindFlags::NO_SENSITIVITY], this
+<a href=#256 id=256 data-nosnippet>256</a>    /// Unless the @flags include [flags@Gio.SettingsBindFlags.NO_SENSITIVITY], this
 <a href=#257 id=257 data-nosnippet>257</a>    /// function also establishes a binding between the writability of
-<a href=#258 id=258 data-nosnippet>258</a>    /// @key and the "sensitive" property of @object (if @object has
-<a href=#259 id=259 data-nosnippet>259</a>    /// a boolean property by that name). See g_settings_bind_writable()
+<a href=#258 id=258 data-nosnippet>258</a>    /// @key and the `sensitive` property of @object (if @object has
+<a href=#259 id=259 data-nosnippet>259</a>    /// a boolean property by that name). See [`SettingsExt::bind_writable()`][crate::prelude::SettingsExt::bind_writable()]
 <a href=#260 id=260 data-nosnippet>260</a>    /// for more details about writable bindings.
 <a href=#261 id=261 data-nosnippet>261</a>    ///
 <a href=#262 id=262 data-nosnippet>262</a>    /// Note that the lifecycle of the binding is tied to @object,
@@ -339,7 +339,7 @@
 <a href=#266 id=266 data-nosnippet>266</a>    /// ## `key`
 <a href=#267 id=267 data-nosnippet>267</a>    /// the key to bind
 <a href=#268 id=268 data-nosnippet>268</a>    /// ## `object`
-<a href=#269 id=269 data-nosnippet>269</a>    /// a #GObject
+<a href=#269 id=269 data-nosnippet>269</a>    /// the object with property to bind
 <a href=#270 id=270 data-nosnippet>270</a>    /// ## `property`
 <a href=#271 id=271 data-nosnippet>271</a>    /// the name of the property to bind
 <a href=#272 id=272 data-nosnippet>272</a>    /// ## `flags`
@@ -364,7 +364,7 @@
 <a href=#291 id=291 data-nosnippet>291</a>    }
 <a href=#292 id=292 data-nosnippet>292</a>}
 <a href=#293 id=293 data-nosnippet>293</a>
-<a href=#294 id=294 data-nosnippet>294</a><span class="kw">impl</span>&lt;O: <a href="../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="auto/settings.rs.html#17-517">Settings</a>&gt;&gt; <a href="#175-292">SettingsExtManual</a> <span class="kw">for </span>O {}
+<a href=#294 id=294 data-nosnippet>294</a><span class="kw">impl</span>&lt;O: <a href="../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="auto/settings.rs.html#17-548">Settings</a>&gt;&gt; <a href="#175-292">SettingsExtManual</a> <span class="kw">for </span>O {}
 <a href=#295 id=295 data-nosnippet>295</a>
 <a href=#296 id=296 data-nosnippet>296</a><span class="attr">#[cfg(test)]
 <a href=#297 id=297 data-nosnippet>297</a></span><span class="kw">mod </span>test {
