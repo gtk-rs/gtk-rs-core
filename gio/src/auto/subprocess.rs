@@ -95,7 +95,7 @@ impl Subprocess {
             let mut error = std::ptr::null_mut();
             let mut stdout_buf = std::ptr::null_mut();
             let mut stderr_buf = std::ptr::null_mut();
-            let _ = ffi::g_subprocess_communicate_finish(
+            ffi::g_subprocess_communicate_finish(
                 _source_object as *mut _,
                 res,
                 &mut stdout_buf,
@@ -294,7 +294,7 @@ impl Subprocess {
             user_data: glib::ffi::gpointer,
         ) {
             let mut error = std::ptr::null_mut();
-            let _ = ffi::g_subprocess_wait_finish(_source_object as *mut _, res, &mut error);
+            ffi::g_subprocess_wait_finish(_source_object as *mut _, res, &mut error);
             let result = if error.is_null() {
                 Ok(())
             } else {
@@ -376,7 +376,7 @@ impl Subprocess {
             user_data: glib::ffi::gpointer,
         ) {
             let mut error = std::ptr::null_mut();
-            let _ = ffi::g_subprocess_wait_check_finish(_source_object as *mut _, res, &mut error);
+            ffi::g_subprocess_wait_check_finish(_source_object as *mut _, res, &mut error);
             let result = if error.is_null() {
                 Ok(())
             } else {
