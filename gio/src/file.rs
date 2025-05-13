@@ -6,7 +6,9 @@ use glib::{prelude::*, translate::*};
 
 #[cfg(feature = "v2_74")]
 use crate::FileIOStream;
-use crate::{ffi, Cancellable, File, FileCreateFlags, FileEnumerator, FileQueryInfoFlags};
+use crate::{
+    ffi, Cancellable, File, FileAttributeType, FileCreateFlags, FileEnumerator, FileQueryInfoFlags,
+};
 
 impl File {
     #[cfg(feature = "v2_74")]
@@ -1111,6 +1113,99 @@ pub trait FileExtManual: IsA<File> + Sized {
 
         (fut, Box::pin(receiver))
     }
+
+    #[doc(alias = "g_file_set_attribute")]
+    fn set_attribute<T>(
+        &self,
+        attribute: &str,
+        type_: FileAttributeType,
+        value: FileAttributeTypeValue<T>,
+        flags: FileQueryInfoFlags,
+        cancellable: Option<&impl IsA<Cancellable>>,
+    ) -> Result<(), glib::Error> {
+        unsafe {
+            let mut error = std::ptr::null_mut();
+            let is_ok = ffi::g_file_set_attribute(
+                self.as_ref().to_glib_none().0,
+                attribute.to_glib_none().0,
+                type_.into_glib(),
+                value.0,
+                flags.into_glib(),
+                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                &mut error,
+            );
+            debug_assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
+            if error.is_null() {
+                Ok(())
+            } else {
+                Err(from_glib_full(error))
+            }
+        }
+    }
 }
 
 impl<O: IsA<File>> FileExtManual for O {}
+
+// checker-ignore-item
+pub struct FileAttributeTypeValue<T>(pub glib::ffi::gpointer, pub T);
+
+impl<T> From<*const T> for FileAttributeTypeValue<*const T> {
+    fn from(value: *const T) -> Self {
+        Self(value as _, value)
+    }
+}
+
+impl<T> From<*mut T> for FileAttributeTypeValue<*mut T> {
+    fn from(value: *mut T) -> Self {
+        Self(value as _, value)
+    }
+}
+
+impl<'a> From<&'a str>
+    for FileAttributeTypeValue<<&'a str as ToGlibPtr<'a, *mut libc::c_char>>::Storage>
+{
+    fn from(value: &'a str) -> Self {
+        let s = ToGlibPtr::<*mut libc::c_char>::to_glib_none(value);
+        Self(s.0 as _, s.1)
+    }
+}
+
+impl<T: Copy> From<&T> for FileAttributeTypeValue<T>
+where
+    FileAttributeTypeValue<T>: From<T>,
+{
+    fn from(value: &T) -> Self {
+        (*value).into()
+    }
+}
+
+impl From<bool> for FileAttributeTypeValue<glib::ffi::gboolean> {
+    fn from(value: bool) -> Self {
+        let b = value.into_glib();
+        Self(&b as *const _ as _, b)
+    }
+}
+
+impl From<u32> for FileAttributeTypeValue<u32> {
+    fn from(value: u32) -> Self {
+        Self(&value as *const _ as _, value)
+    }
+}
+
+impl From<i32> for FileAttributeTypeValue<i32> {
+    fn from(value: i32) -> Self {
+        Self(&value as *const _ as _, value)
+    }
+}
+
+impl From<u64> for FileAttributeTypeValue<u64> {
+    fn from(value: u64) -> Self {
+        Self(&value as *const _ as _, value)
+    }
+}
+
+impl From<i64> for FileAttributeTypeValue<i64> {
+    fn from(value: i64) -> Self {
+        Self(&value as *const _ as _, value)
+    }
+}
