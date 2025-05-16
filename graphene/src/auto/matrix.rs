@@ -24,14 +24,14 @@ impl Matrix {
             let mut rotate = Quaternion::uninitialized();
             let mut shear = Vec3::uninitialized();
             let mut perspective = Vec4::uninitialized();
-            let ret = ffi::graphene_matrix_decompose(
+            let ret = from_glib(ffi::graphene_matrix_decompose(
                 self.to_glib_none().0,
                 translate.to_glib_none_mut().0,
                 scale.to_glib_none_mut().0,
                 rotate.to_glib_none_mut().0,
                 shear.to_glib_none_mut().0,
                 perspective.to_glib_none_mut().0,
-            );
+            ));
             if ret {
                 Some((translate, scale, rotate, shear, perspective))
             } else {
@@ -47,12 +47,22 @@ impl Matrix {
 
     #[doc(alias = "graphene_matrix_equal")]
     fn equal(&self, b: &Matrix) -> bool {
-        unsafe { ffi::graphene_matrix_equal(self.to_glib_none().0, b.to_glib_none().0) }
+        unsafe {
+            from_glib(ffi::graphene_matrix_equal(
+                self.to_glib_none().0,
+                b.to_glib_none().0,
+            ))
+        }
     }
 
     #[doc(alias = "graphene_matrix_equal_fast")]
     pub fn equal_fast(&self, b: &Matrix) -> bool {
-        unsafe { ffi::graphene_matrix_equal_fast(self.to_glib_none().0, b.to_glib_none().0) }
+        unsafe {
+            from_glib(ffi::graphene_matrix_equal_fast(
+                self.to_glib_none().0,
+                b.to_glib_none().0,
+            ))
+        }
     }
 
     #[doc(alias = "graphene_matrix_get_row")]
@@ -126,7 +136,10 @@ impl Matrix {
     pub fn inverse(&self) -> Option<Matrix> {
         unsafe {
             let mut res = Matrix::uninitialized();
-            let ret = ffi::graphene_matrix_inverse(self.to_glib_none().0, res.to_glib_none_mut().0);
+            let ret = from_glib(ffi::graphene_matrix_inverse(
+                self.to_glib_none().0,
+                res.to_glib_none_mut().0,
+            ));
             if ret {
                 Some(res)
             } else {
@@ -137,22 +150,26 @@ impl Matrix {
 
     #[doc(alias = "graphene_matrix_is_2d")]
     pub fn is_2d(&self) -> bool {
-        unsafe { ffi::graphene_matrix_is_2d(self.to_glib_none().0) }
+        unsafe { from_glib(ffi::graphene_matrix_is_2d(self.to_glib_none().0)) }
     }
 
     #[doc(alias = "graphene_matrix_is_backface_visible")]
     pub fn is_backface_visible(&self) -> bool {
-        unsafe { ffi::graphene_matrix_is_backface_visible(self.to_glib_none().0) }
+        unsafe {
+            from_glib(ffi::graphene_matrix_is_backface_visible(
+                self.to_glib_none().0,
+            ))
+        }
     }
 
     #[doc(alias = "graphene_matrix_is_identity")]
     pub fn is_identity(&self) -> bool {
-        unsafe { ffi::graphene_matrix_is_identity(self.to_glib_none().0) }
+        unsafe { from_glib(ffi::graphene_matrix_is_identity(self.to_glib_none().0)) }
     }
 
     #[doc(alias = "graphene_matrix_is_singular")]
     pub fn is_singular(&self) -> bool {
-        unsafe { ffi::graphene_matrix_is_singular(self.to_glib_none().0) }
+        unsafe { from_glib(ffi::graphene_matrix_is_singular(self.to_glib_none().0)) }
     }
 
     #[doc(alias = "graphene_matrix_multiply")]
@@ -171,7 +188,13 @@ impl Matrix {
 
     #[doc(alias = "graphene_matrix_near")]
     pub fn near(&self, b: &Matrix, epsilon: f32) -> bool {
-        unsafe { ffi::graphene_matrix_near(self.to_glib_none().0, b.to_glib_none().0, epsilon) }
+        unsafe {
+            from_glib(ffi::graphene_matrix_near(
+                self.to_glib_none().0,
+                b.to_glib_none().0,
+                epsilon,
+            ))
+        }
     }
 
     #[doc(alias = "graphene_matrix_normalize")]
@@ -323,7 +346,7 @@ impl Matrix {
             let mut yy = std::mem::MaybeUninit::uninit();
             let mut x_0 = std::mem::MaybeUninit::uninit();
             let mut y_0 = std::mem::MaybeUninit::uninit();
-            let ret = ffi::graphene_matrix_to_2d(
+            let ret = from_glib(ffi::graphene_matrix_to_2d(
                 self.to_glib_none().0,
                 xx.as_mut_ptr(),
                 yx.as_mut_ptr(),
@@ -331,7 +354,7 @@ impl Matrix {
                 yy.as_mut_ptr(),
                 x_0.as_mut_ptr(),
                 y_0.as_mut_ptr(),
-            );
+            ));
             if ret {
                 Some((
                     xx.assume_init(),
@@ -513,12 +536,12 @@ impl Matrix {
     pub fn untransform_point(&self, p: &Point, bounds: &Rect) -> Option<Point> {
         unsafe {
             let mut res = Point::uninitialized();
-            let ret = ffi::graphene_matrix_untransform_point(
+            let ret = from_glib(ffi::graphene_matrix_untransform_point(
                 self.to_glib_none().0,
                 p.to_glib_none().0,
                 bounds.to_glib_none().0,
                 res.to_glib_none_mut().0,
-            );
+            ));
             if ret {
                 Some(res)
             } else {
