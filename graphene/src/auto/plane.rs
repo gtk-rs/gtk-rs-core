@@ -23,7 +23,12 @@ impl Plane {
 
     #[doc(alias = "graphene_plane_equal")]
     fn equal(&self, b: &Plane) -> bool {
-        unsafe { ffi::graphene_plane_equal(self.to_glib_none().0, b.to_glib_none().0) }
+        unsafe {
+            from_glib(ffi::graphene_plane_equal(
+                self.to_glib_none().0,
+                b.to_glib_none().0,
+            ))
+        }
     }
 
     #[doc(alias = "graphene_plane_get_constant")]

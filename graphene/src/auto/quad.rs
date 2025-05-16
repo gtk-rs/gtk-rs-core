@@ -27,6 +27,11 @@ impl Quad {
 
     #[doc(alias = "graphene_quad_contains")]
     pub fn contains(&self, p: &Point) -> bool {
-        unsafe { ffi::graphene_quad_contains(self.to_glib_none().0, p.to_glib_none().0) }
+        unsafe {
+            from_glib(ffi::graphene_quad_contains(
+                self.to_glib_none().0,
+                p.to_glib_none().0,
+            ))
+        }
     }
 }

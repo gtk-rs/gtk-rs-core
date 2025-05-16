@@ -5147,6 +5147,9 @@ extern "C" {
     pub fn g_source_add_unix_fd(source: *mut GSource, fd: c_int, events: GIOCondition) -> gpointer;
     pub fn g_source_attach(source: *mut GSource, context: *mut GMainContext) -> c_uint;
     pub fn g_source_destroy(source: *mut GSource);
+    #[cfg(feature = "v2_86")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_86")))]
+    pub fn g_source_dup_context(source: *mut GSource) -> *mut GMainContext;
     pub fn g_source_get_can_recurse(source: *mut GSource) -> gboolean;
     pub fn g_source_get_context(source: *mut GSource) -> *mut GMainContext;
     pub fn g_source_get_current_time(source: *mut GSource, timeval: *mut GTimeVal);

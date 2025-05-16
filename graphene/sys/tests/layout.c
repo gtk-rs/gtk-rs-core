@@ -7,6 +7,7 @@
 #include <stdio.h>
 
 int main() {
+    printf("%s;%zu;%zu\n", "graphene_box2d_t", sizeof(graphene_box2d_t), alignof(graphene_box2d_t));
     printf("%s;%zu;%zu\n", "graphene_box_t", sizeof(graphene_box_t), alignof(graphene_box_t));
     printf("%s;%zu;%zu\n", "graphene_euler_order_t", sizeof(graphene_euler_order_t), alignof(graphene_euler_order_t));
     printf("%s;%zu;%zu\n", "graphene_euler_t", sizeof(graphene_euler_t), alignof(graphene_euler_t));

@@ -31,9 +31,21 @@ impl Point {
         }
     }
 
+    #[cfg(feature = "v1_12")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v1_12")))]
+    #[doc(alias = "graphene_point_distance_squared")]
+    pub fn distance_squared(&self, b: &Point) -> f32 {
+        unsafe { ffi::graphene_point_distance_squared(self.to_glib_none().0, b.to_glib_none().0) }
+    }
+
     #[doc(alias = "graphene_point_equal")]
     fn equal(&self, b: &Point) -> bool {
-        unsafe { ffi::graphene_point_equal(self.to_glib_none().0, b.to_glib_none().0) }
+        unsafe {
+            from_glib(ffi::graphene_point_equal(
+                self.to_glib_none().0,
+                b.to_glib_none().0,
+            ))
+        }
     }
 
     #[doc(alias = "graphene_point_interpolate")]
@@ -53,7 +65,13 @@ impl Point {
 
     #[doc(alias = "graphene_point_near")]
     pub fn near(&self, b: &Point, epsilon: f32) -> bool {
-        unsafe { ffi::graphene_point_near(self.to_glib_none().0, b.to_glib_none().0, epsilon) }
+        unsafe {
+            from_glib(ffi::graphene_point_near(
+                self.to_glib_none().0,
+                b.to_glib_none().0,
+                epsilon,
+            ))
+        }
     }
 
     #[doc(alias = "graphene_point_to_vec2")]

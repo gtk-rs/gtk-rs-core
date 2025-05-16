@@ -50,7 +50,12 @@ impl Point3D {
 
     #[doc(alias = "graphene_point3d_equal")]
     fn equal(&self, b: &Point3D) -> bool {
-        unsafe { ffi::graphene_point3d_equal(self.to_glib_none().0, b.to_glib_none().0) }
+        unsafe {
+            from_glib(ffi::graphene_point3d_equal(
+                self.to_glib_none().0,
+                b.to_glib_none().0,
+            ))
+        }
     }
 
     #[doc(alias = "graphene_point3d_interpolate")]
@@ -75,7 +80,13 @@ impl Point3D {
 
     #[doc(alias = "graphene_point3d_near")]
     pub fn near(&self, b: &Point3D, epsilon: f32) -> bool {
-        unsafe { ffi::graphene_point3d_near(self.to_glib_none().0, b.to_glib_none().0, epsilon) }
+        unsafe {
+            from_glib(ffi::graphene_point3d_near(
+                self.to_glib_none().0,
+                b.to_glib_none().0,
+                epsilon,
+            ))
+        }
     }
 
     #[doc(alias = "graphene_point3d_normalize")]

@@ -202,6 +202,13 @@ fn get_c_output(name: &str) -> Result<String, Box<dyn Error>> {
 
 const RUST_LAYOUTS: &[(&str, Layout)] = &[
     (
+        "graphene_box2d_t",
+        Layout {
+            size: size_of::<graphene_box2d_t>(),
+            alignment: align_of::<graphene_box2d_t>(),
+        },
+    ),
+    (
         "graphene_box_t",
         Layout {
             size: size_of::<graphene_box_t>(),
