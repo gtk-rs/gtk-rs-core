@@ -178,6 +178,24 @@ pub fn content_type_get_symbolic_icon(type_: &str) -> Icon {
     }
 }
 
+#[doc(alias = "g_content_type_guess")]
+pub fn content_type_guess(
+    filename: Option<impl AsRef<std::path::Path>>,
+    data: &[u8],
+) -> (glib::GString, bool) {
+    let data_size = data.len() as _;
+    unsafe {
+        let mut result_uncertain = std::mem::MaybeUninit::uninit();
+        let ret = from_glib_full(ffi::g_content_type_guess(
+            filename.as_ref().map(|p| p.as_ref()).to_glib_none().0,
+            data.to_glib_none().0,
+            data_size,
+            result_uncertain.as_mut_ptr(),
+        ));
+        (ret, from_glib(result_uncertain.assume_init()))
+    }
+}
+
 #[doc(alias = "g_content_type_guess_for_tree")]
 pub fn content_type_guess_for_tree(root: &impl IsA<File>) -> Vec<glib::GString> {
     unsafe {
