@@ -4,6 +4,7 @@ mod action_group;
 mod action_map;
 mod application;
 mod async_initable;
+mod file;
 mod file_enumerator;
 mod file_monitor;
 mod initable;
@@ -25,6 +26,7 @@ pub mod prelude {
         action_map::{ActionMapImpl, ActionMapImplExt},
         application::{ApplicationImpl, ApplicationImplExt},
         async_initable::{AsyncInitableImpl, AsyncInitableImplExt},
+        file::{FileImpl, FileImplExt},
         file_enumerator::{FileEnumeratorImpl, FileEnumeratorImplExt},
         file_monitor::{FileMonitorImpl, FileMonitorImplExt},
         initable::{InitableImpl, InitableImplExt},
