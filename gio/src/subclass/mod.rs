@@ -14,6 +14,7 @@ mod list_model;
 mod output_stream;
 mod seekable;
 mod socket_control_message;
+mod vfs;
 
 pub use self::application::ArgumentList;
 
@@ -36,5 +37,6 @@ pub mod prelude {
         output_stream::{OutputStreamImpl, OutputStreamImplExt},
         seekable::{SeekableImpl, SeekableImplExt},
         socket_control_message::{SocketControlMessageImpl, SocketControlMessageImplExt},
+        vfs::{VfsImpl, VfsImplExt},
     };
 }
