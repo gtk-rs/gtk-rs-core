@@ -277,7 +277,7 @@
 <a href=#204 id=204 data-nosnippet>204</a>    </span><span class="kw">pub fn </span>with_thread_default&lt;R, F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>() -&gt; R + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sized.html">Sized</a>&gt;(
 <a href=#205 id=205 data-nosnippet>205</a>        <span class="kw-2">&amp;</span><span class="self">self</span>,
 <a href=#206 id=206 data-nosnippet>206</a>        func: F,
-<a href=#207 id=207 data-nosnippet>207</a>    ) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;R, <a href="error.rs.html#278-286"><span class="kw">crate</span>::BoolError</a>&gt; {
+<a href=#207 id=207 data-nosnippet>207</a>    ) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;R, <a href="error.rs.html#243-251"><span class="kw">crate</span>::BoolError</a>&gt; {
 <a href=#208 id=208 data-nosnippet>208</a>        <span class="kw">let </span>_acquire = <a class="self" href="#205">self</a>.<a href="#240-249">acquire</a>()<span class="question-mark">?</span>;
 <a href=#209 id=209 data-nosnippet>209</a>        <span class="kw">let </span>_thread_default = <a href="#268-273">ThreadDefaultContext::new</a>(<a class="self" href="#205">self</a>);
 <a href=#210 id=210 data-nosnippet>210</a>        <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(<a href="#206">func</a>())
@@ -310,13 +310,13 @@
 <a href=#237 id=237 data-nosnippet>237</a>    /// [`true`] if the operation succeeded, and
 <a href=#238 id=238 data-nosnippet>238</a>    ///   this thread is now the owner of @self.
 <a href=#239 id=239 data-nosnippet>239</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_main_context_acquire"</span>)]
-<a href=#240 id=240 data-nosnippet>240</a>    </span><span class="kw">pub fn </span>acquire(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="#253">MainContextAcquireGuard</a>, <a href="error.rs.html#278-286"><span class="kw">crate</span>::BoolError</a>&gt; {
+<a href=#240 id=240 data-nosnippet>240</a>    </span><span class="kw">pub fn </span>acquire(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="#253">MainContextAcquireGuard</a>, <a href="error.rs.html#243-251"><span class="kw">crate</span>::BoolError</a>&gt; {
 <a href=#241 id=241 data-nosnippet>241</a>        <span class="kw">unsafe </span>{
 <a href=#242 id=242 data-nosnippet>242</a>            <span class="kw">let </span>ret: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> = <a href="translate.rs.html#1421-1423">from_glib</a>(ffi::g_main_context_acquire(<a class="self" href="#240">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>));
 <a href=#243 id=243 data-nosnippet>243</a>            <span class="kw">if </span>ret {
 <a href=#244 id=244 data-nosnippet>244</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(<a href="#253">MainContextAcquireGuard</a>(<a class="self" href="#240">self</a>))
 <a href=#245 id=245 data-nosnippet>245</a>            } <span class="kw">else </span>{
-<a href=#246 id=246 data-nosnippet>246</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a class="macro" href="error.rs.html#224-246">bool_error!</a>(<span class="string">"Failed to acquire ownership of main context, already acquired by another thread"</span>))
+<a href=#246 id=246 data-nosnippet>246</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a class="macro" href="error.rs.html#189-211">bool_error!</a>(<span class="string">"Failed to acquire ownership of main context, already acquired by another thread"</span>))
 <a href=#247 id=247 data-nosnippet>247</a>            }
 <a href=#248 id=248 data-nosnippet>248</a>        }
 <a href=#249 id=249 data-nosnippet>249</a>    }
