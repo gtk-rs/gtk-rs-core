@@ -19,26 +19,40 @@ impl Frustum {
     #[doc(alias = "graphene_frustum_contains_point")]
     pub fn contains_point(&self, point: &Point3D) -> bool {
         unsafe {
-            ffi::graphene_frustum_contains_point(self.to_glib_none().0, point.to_glib_none().0)
+            from_glib(ffi::graphene_frustum_contains_point(
+                self.to_glib_none().0,
+                point.to_glib_none().0,
+            ))
         }
     }
 
     #[doc(alias = "graphene_frustum_equal")]
     fn equal(&self, b: &Frustum) -> bool {
-        unsafe { ffi::graphene_frustum_equal(self.to_glib_none().0, b.to_glib_none().0) }
+        unsafe {
+            from_glib(ffi::graphene_frustum_equal(
+                self.to_glib_none().0,
+                b.to_glib_none().0,
+            ))
+        }
     }
 
     #[doc(alias = "graphene_frustum_intersects_box")]
     pub fn intersects_box(&self, box_: &Box) -> bool {
         unsafe {
-            ffi::graphene_frustum_intersects_box(self.to_glib_none().0, box_.to_glib_none().0)
+            from_glib(ffi::graphene_frustum_intersects_box(
+                self.to_glib_none().0,
+                box_.to_glib_none().0,
+            ))
         }
     }
 
     #[doc(alias = "graphene_frustum_intersects_sphere")]
     pub fn intersects_sphere(&self, sphere: &Sphere) -> bool {
         unsafe {
-            ffi::graphene_frustum_intersects_sphere(self.to_glib_none().0, sphere.to_glib_none().0)
+            from_glib(ffi::graphene_frustum_intersects_sphere(
+                self.to_glib_none().0,
+                sphere.to_glib_none().0,
+            ))
         }
     }
 }

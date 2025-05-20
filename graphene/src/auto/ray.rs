@@ -18,7 +18,12 @@ glib::wrapper! {
 impl Ray {
     #[doc(alias = "graphene_ray_equal")]
     fn equal(&self, b: &Ray) -> bool {
-        unsafe { ffi::graphene_ray_equal(self.to_glib_none().0, b.to_glib_none().0) }
+        unsafe {
+            from_glib(ffi::graphene_ray_equal(
+                self.to_glib_none().0,
+                b.to_glib_none().0,
+            ))
+        }
     }
 
     #[doc(alias = "graphene_ray_get_closest_point_to_point")]
@@ -126,17 +131,32 @@ impl Ray {
 
     #[doc(alias = "graphene_ray_intersects_box")]
     pub fn intersects_box(&self, b: &Box) -> bool {
-        unsafe { ffi::graphene_ray_intersects_box(self.to_glib_none().0, b.to_glib_none().0) }
+        unsafe {
+            from_glib(ffi::graphene_ray_intersects_box(
+                self.to_glib_none().0,
+                b.to_glib_none().0,
+            ))
+        }
     }
 
     #[doc(alias = "graphene_ray_intersects_sphere")]
     pub fn intersects_sphere(&self, s: &Sphere) -> bool {
-        unsafe { ffi::graphene_ray_intersects_sphere(self.to_glib_none().0, s.to_glib_none().0) }
+        unsafe {
+            from_glib(ffi::graphene_ray_intersects_sphere(
+                self.to_glib_none().0,
+                s.to_glib_none().0,
+            ))
+        }
     }
 
     #[doc(alias = "graphene_ray_intersects_triangle")]
     pub fn intersects_triangle(&self, t: &Triangle) -> bool {
-        unsafe { ffi::graphene_ray_intersects_triangle(self.to_glib_none().0, t.to_glib_none().0) }
+        unsafe {
+            from_glib(ffi::graphene_ray_intersects_triangle(
+                self.to_glib_none().0,
+                t.to_glib_none().0,
+            ))
+        }
     }
 }
 

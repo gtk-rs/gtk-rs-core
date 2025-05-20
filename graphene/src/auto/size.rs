@@ -18,7 +18,12 @@ glib::wrapper! {
 impl Size {
     #[doc(alias = "graphene_size_equal")]
     fn equal(&self, b: &Size) -> bool {
-        unsafe { ffi::graphene_size_equal(self.to_glib_none().0, b.to_glib_none().0) }
+        unsafe {
+            from_glib(ffi::graphene_size_equal(
+                self.to_glib_none().0,
+                b.to_glib_none().0,
+            ))
+        }
     }
 
     #[doc(alias = "graphene_size_interpolate")]

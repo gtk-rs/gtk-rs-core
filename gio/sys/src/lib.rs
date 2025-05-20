@@ -15040,10 +15040,16 @@ extern "C" {
         level: c_int,
     ) -> *mut GZlibCompressor;
     pub fn g_zlib_compressor_get_file_info(compressor: *mut GZlibCompressor) -> *mut GFileInfo;
+    #[cfg(feature = "v2_86")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_86")))]
+    pub fn g_zlib_compressor_get_os(compressor: *mut GZlibCompressor) -> c_int;
     pub fn g_zlib_compressor_set_file_info(
         compressor: *mut GZlibCompressor,
         file_info: *mut GFileInfo,
     );
+    #[cfg(feature = "v2_86")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_86")))]
+    pub fn g_zlib_compressor_set_os(compressor: *mut GZlibCompressor, os: c_int);
 
     //=========================================================================
     // GZlibDecompressor

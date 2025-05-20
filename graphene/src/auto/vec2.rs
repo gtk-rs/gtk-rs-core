@@ -51,7 +51,12 @@ impl Vec2 {
 
     #[doc(alias = "graphene_vec2_equal")]
     fn equal(&self, v2: &Vec2) -> bool {
-        unsafe { ffi::graphene_vec2_equal(self.to_glib_none().0, v2.to_glib_none().0) }
+        unsafe {
+            from_glib(ffi::graphene_vec2_equal(
+                self.to_glib_none().0,
+                v2.to_glib_none().0,
+            ))
+        }
     }
 
     #[doc(alias = "graphene_vec2_get_x")]
@@ -130,7 +135,13 @@ impl Vec2 {
 
     #[doc(alias = "graphene_vec2_near")]
     pub fn near(&self, v2: &Vec2, epsilon: f32) -> bool {
-        unsafe { ffi::graphene_vec2_near(self.to_glib_none().0, v2.to_glib_none().0, epsilon) }
+        unsafe {
+            from_glib(ffi::graphene_vec2_near(
+                self.to_glib_none().0,
+                v2.to_glib_none().0,
+                epsilon,
+            ))
+        }
     }
 
     #[doc(alias = "graphene_vec2_negate")]

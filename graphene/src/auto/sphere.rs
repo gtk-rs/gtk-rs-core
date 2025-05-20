@@ -19,7 +19,10 @@ impl Sphere {
     #[doc(alias = "graphene_sphere_contains_point")]
     pub fn contains_point(&self, point: &Point3D) -> bool {
         unsafe {
-            ffi::graphene_sphere_contains_point(self.to_glib_none().0, point.to_glib_none().0)
+            from_glib(ffi::graphene_sphere_contains_point(
+                self.to_glib_none().0,
+                point.to_glib_none().0,
+            ))
         }
     }
 
@@ -30,7 +33,12 @@ impl Sphere {
 
     #[doc(alias = "graphene_sphere_equal")]
     fn equal(&self, b: &Sphere) -> bool {
-        unsafe { ffi::graphene_sphere_equal(self.to_glib_none().0, b.to_glib_none().0) }
+        unsafe {
+            from_glib(ffi::graphene_sphere_equal(
+                self.to_glib_none().0,
+                b.to_glib_none().0,
+            ))
+        }
     }
 
     #[doc(alias = "graphene_sphere_get_bounding_box")]
@@ -61,7 +69,7 @@ impl Sphere {
 
     #[doc(alias = "graphene_sphere_is_empty")]
     pub fn is_empty(&self) -> bool {
-        unsafe { ffi::graphene_sphere_is_empty(self.to_glib_none().0) }
+        unsafe { from_glib(ffi::graphene_sphere_is_empty(self.to_glib_none().0)) }
     }
 
     #[doc(alias = "graphene_sphere_translate")]

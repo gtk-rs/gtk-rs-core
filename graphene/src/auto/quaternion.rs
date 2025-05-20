@@ -37,7 +37,12 @@ impl Quaternion {
 
     #[doc(alias = "graphene_quaternion_equal")]
     fn equal(&self, b: &Quaternion) -> bool {
-        unsafe { ffi::graphene_quaternion_equal(self.to_glib_none().0, b.to_glib_none().0) }
+        unsafe {
+            from_glib(ffi::graphene_quaternion_equal(
+                self.to_glib_none().0,
+                b.to_glib_none().0,
+            ))
+        }
     }
 
     #[doc(alias = "graphene_quaternion_invert")]

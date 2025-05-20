@@ -32,11 +32,29 @@ impl ZlibCompressor {
         unsafe { from_glib_none(ffi::g_zlib_compressor_get_file_info(self.to_glib_none().0)) }
     }
 
+    #[cfg(feature = "v2_86")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_86")))]
+    #[doc(alias = "g_zlib_compressor_get_os")]
+    #[doc(alias = "get_os")]
+    pub fn os(&self) -> i32 {
+        unsafe { ffi::g_zlib_compressor_get_os(self.to_glib_none().0) }
+    }
+
     #[doc(alias = "g_zlib_compressor_set_file_info")]
     #[doc(alias = "file-info")]
     pub fn set_file_info(&self, file_info: Option<&FileInfo>) {
         unsafe {
             ffi::g_zlib_compressor_set_file_info(self.to_glib_none().0, file_info.to_glib_none().0);
+        }
+    }
+
+    #[cfg(feature = "v2_86")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_86")))]
+    #[doc(alias = "g_zlib_compressor_set_os")]
+    #[doc(alias = "os")]
+    pub fn set_os(&self, os: i32) {
+        unsafe {
+            ffi::g_zlib_compressor_set_os(self.to_glib_none().0, os);
         }
     }
 
@@ -65,6 +83,31 @@ impl ZlibCompressor {
                 c"notify::file-info".as_ptr() as *const _,
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_file_info_trampoline::<F> as *const (),
+                )),
+                Box_::into_raw(f),
+            )
+        }
+    }
+
+    #[cfg(feature = "v2_86")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_86")))]
+    #[doc(alias = "os")]
+    pub fn connect_os_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+        unsafe extern "C" fn notify_os_trampoline<F: Fn(&ZlibCompressor) + 'static>(
+            this: *mut ffi::GZlibCompressor,
+            _param_spec: glib::ffi::gpointer,
+            f: glib::ffi::gpointer,
+        ) {
+            let f: &F = &*(f as *const F);
+            f(&from_glib_borrow(this))
+        }
+        unsafe {
+            let f: Box_<F> = Box_::new(f);
+            connect_raw(
+                self.as_ptr() as *mut _,
+                c"notify::os".as_ptr() as *const _,
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
+                    notify_os_trampoline::<F> as *const (),
                 )),
                 Box_::into_raw(f),
             )
