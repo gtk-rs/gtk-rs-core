@@ -49,6 +49,8 @@ pub use crate::file_attribute_info::FileAttributeInfo;
 mod file_attribute_info_list;
 mod file_attribute_matcher;
 pub use crate::file_attribute_matcher::FileAttributematcherIter;
+mod file_attribute_value;
+pub use file_attribute_value::FileAttributeValue;
 #[cfg(unix)]
 mod file_descriptor_based;
 #[cfg(unix)]

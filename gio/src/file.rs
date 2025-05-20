@@ -6,7 +6,9 @@ use glib::{prelude::*, translate::*};
 
 #[cfg(feature = "v2_74")]
 use crate::FileIOStream;
-use crate::{ffi, Cancellable, File, FileCreateFlags, FileEnumerator, FileQueryInfoFlags};
+use crate::{
+    ffi, Cancellable, File, FileAttributeValue, FileCreateFlags, FileEnumerator, FileQueryInfoFlags,
+};
 
 impl File {
     #[cfg(feature = "v2_74")]
@@ -1110,6 +1112,35 @@ pub trait FileExtManual: IsA<File> + Sized {
         ));
 
         (fut, Box::pin(receiver))
+    }
+
+    #[doc(alias = "g_file_set_attribute")]
+    fn set_attribute<'a>(
+        &self,
+        attribute: &str,
+        value: impl Into<FileAttributeValue<'a>>,
+        flags: FileQueryInfoFlags,
+        cancellable: Option<&impl IsA<Cancellable>>,
+    ) -> Result<(), glib::Error> {
+        unsafe {
+            let mut error = std::ptr::null_mut();
+            let value: FileAttributeValue<'a> = value.into();
+            let is_ok = ffi::g_file_set_attribute(
+                self.as_ref().to_glib_none().0,
+                attribute.to_glib_none().0,
+                value.type_().into_glib(),
+                value.as_ptr(),
+                flags.into_glib(),
+                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                &mut error,
+            );
+            debug_assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
+            if error.is_null() {
+                Ok(())
+            } else {
+                Err(from_glib_full(error))
+            }
+        }
     }
 }
 
