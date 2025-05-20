@@ -234,14 +234,11 @@ impl AnyReader {
                     Ok(res) => res,
                     Err(panic) => {
                         self.reader = AnyOrPanic::Panic(panic);
-                        Err(std::io::Error::new(std::io::ErrorKind::Other, "Panicked"))
+                        Err(std::io::Error::other("Panicked"))
                     }
                 }
             }
-            AnyOrPanic::Panic(_) => Err(std::io::Error::new(
-                std::io::ErrorKind::Other,
-                "Panicked before",
-            )),
+            AnyOrPanic::Panic(_) => Err(std::io::Error::other("Panicked before")),
         }
     }
 

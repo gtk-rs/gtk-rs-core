@@ -152,8 +152,6 @@ impl Surface {
 
 #[cfg(test)]
 mod tests {
-    use std::io::ErrorKind;
-
     use super::*;
     use crate::enums::Format;
 
@@ -162,7 +160,7 @@ mod tests {
     // A reader that always returns an error
     impl Read for IoErrorReader {
         fn read(&mut self, _: &mut [u8]) -> Result<usize, io::Error> {
-            Err(io::Error::new(ErrorKind::Other, "yikes!"))
+            Err(io::Error::other("yikes!"))
         }
     }
 
