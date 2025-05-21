@@ -1270,4 +1270,18 @@ impl Source {
             ))
         }
     }
+
+    #[doc(alias = "g_source_get_context")]
+    #[doc(alias = "get_context")]
+    #[doc(alias = "g_source_dup_context")]
+    pub fn context(&self) -> Option<MainContext> {
+        #[cfg(feature = "v2_86")]
+        unsafe {
+            from_glib_full(ffi::g_source_dup_context(self.to_glib_none().0))
+        }
+        #[cfg(not(feature = "v2_86"))]
+        unsafe {
+            from_glib_none(ffi::g_source_get_context(self.to_glib_none().0))
+        }
+    }
 }

@@ -31,6 +31,13 @@ impl Point {
         }
     }
 
+    #[cfg(feature = "v1_12")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v1_12")))]
+    #[doc(alias = "graphene_point_distance_squared")]
+    pub fn distance_squared(&self, b: &Point) -> f32 {
+        unsafe { ffi::graphene_point_distance_squared(self.to_glib_none().0, b.to_glib_none().0) }
+    }
+
     #[doc(alias = "graphene_point_equal")]
     fn equal(&self, b: &Point) -> bool {
         unsafe { ffi::graphene_point_equal(self.to_glib_none().0, b.to_glib_none().0) }
