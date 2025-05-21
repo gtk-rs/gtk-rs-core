@@ -5,6 +5,13 @@
 mod box_;
 pub use self::box_::Box;
 
+#[cfg(feature = "v1_12")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v1_12")))]
+mod box2_d;
+#[cfg(feature = "v1_12")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v1_12")))]
+pub use self::box2_d::Box2D;
+
 mod euler;
 pub use self::euler::Euler;
 
