@@ -229,28 +229,36 @@
 <a href=#156 id=156 data-nosnippet>156</a>        }
 <a href=#157 id=157 data-nosnippet>157</a>    }
 <a href=#158 id=158 data-nosnippet>158</a>
-<a href=#159 id=159 data-nosnippet>159</a>    <span class="attr">#[doc(alias = <span class="string">"graphene_box2d_init_from_rect"</span>)]
-<a href=#160 id=160 data-nosnippet>160</a>    </span><span class="kw">pub fn </span>init_from_rect(src: <span class="kw-2">&amp;</span><a href="auto/rect.rs.html#8-28">Rect</a>) -&gt; <span class="self">Self </span>{
-<a href=#161 id=161 data-nosnippet>161</a>        <span class="macro">assert_initialized_main_thread!</span>();
-<a href=#162 id=162 data-nosnippet>162</a>        <span class="kw">unsafe </span>{
-<a href=#163 id=163 data-nosnippet>163</a>            <span class="kw">let </span><span class="kw-2">mut </span>b = <a href="../../glib/translate/trait.Uninitialized.html#tymethod.uninitialized"><span class="self">Self</span>::uninitialized</a>();
-<a href=#164 id=164 data-nosnippet>164</a>            <a href="../../graphene_sys/fn.graphene_box2d_init_from_rect.html">ffi::graphene_box2d_init_from_rect</a>(<a href="#163">b</a>.<a href="../../glib/translate/trait.ToGlibPtrMut.html#tymethod.to_glib_none_mut">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#160">src</a>.<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>);
-<a href=#165 id=165 data-nosnippet>165</a>            <a href="#163">b</a>
-<a href=#166 id=166 data-nosnippet>166</a>        }
-<a href=#167 id=167 data-nosnippet>167</a>    }
-<a href=#168 id=168 data-nosnippet>168</a>}
-<a href=#169 id=169 data-nosnippet>169</a>
-<a href=#170 id=170 data-nosnippet>170</a><span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html">Default</a> <span class="kw">for </span><a href="auto/box2_d.rs.html#8-18">Box2D</a> {
-<a href=#171 id=171 data-nosnippet>171</a>    <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
-<a href=#172 id=172 data-nosnippet>172</a>        <a href="auto/box2_d.rs.html#446-449"><span class="self">Self</span>::zero</a>()
-<a href=#173 id=173 data-nosnippet>173</a>    }
-<a href=#174 id=174 data-nosnippet>174</a>}
-<a href=#175 id=175 data-nosnippet>175</a>
-<a href=#176 id=176 data-nosnippet>176</a><span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html">fmt::Debug</a> <span class="kw">for </span><a href="auto/box2_d.rs.html#8-18">Box2D</a> {
-<a href=#177 id=177 data-nosnippet>177</a>    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span><a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html">fmt::Formatter</a>&lt;<span class="lifetime">'_</span>&gt;) -&gt; <a href="https://doc.rust-lang.org/nightly/core/fmt/type.Result.html">fmt::Result</a> {
-<a href=#178 id=178 data-nosnippet>178</a>        <a href="#177">f</a>.<a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html#method.debug_struct">debug_struct</a>(<span class="string">"Box2D"</span>)
-<a href=#179 id=179 data-nosnippet>179</a>            .<a href="https://doc.rust-lang.org/nightly/core/fmt/builders/struct.DebugStruct.html#method.field">field</a>(<span class="string">"min"</span>, <span class="kw-2">&amp;</span><a class="self" href="#177">self</a>.<a href="auto/box2_d.rs.html#193-199">min</a>())
-<a href=#180 id=180 data-nosnippet>180</a>            .<a href="https://doc.rust-lang.org/nightly/core/fmt/builders/struct.DebugStruct.html#method.field">field</a>(<span class="string">"max"</span>, <span class="kw-2">&amp;</span><a class="self" href="#177">self</a>.<a href="auto/box2_d.rs.html#175-181">max</a>())
-<a href=#181 id=181 data-nosnippet>181</a>            .<a href="https://doc.rust-lang.org/nightly/core/fmt/builders/struct.DebugStruct.html#method.finish">finish</a>()
-<a href=#182 id=182 data-nosnippet>182</a>    }
-<a href=#183 id=183 data-nosnippet>183</a>}</code></pre></div></section></main></body></html>
+<a href=#159 id=159 data-nosnippet>159</a>    <span class="doccomment">/// Initializes the given [`Box2D`][crate::Box2D] with the origin and
+<a href=#160 id=160 data-nosnippet>160</a>    /// size of a [`Rect`][crate::Rect].
+<a href=#161 id=161 data-nosnippet>161</a>    /// ## `src`
+<a href=#162 id=162 data-nosnippet>162</a>    /// a [`Rect`][crate::Rect]
+<a href=#163 id=163 data-nosnippet>163</a>    ///
+<a href=#164 id=164 data-nosnippet>164</a>    /// # Returns
+<a href=#165 id=165 data-nosnippet>165</a>    ///
+<a href=#166 id=166 data-nosnippet>166</a>    /// the initialized [`Box2D`][crate::Box2D]
+<a href=#167 id=167 data-nosnippet>167</a>    </span><span class="attr">#[doc(alias = <span class="string">"graphene_box2d_init_from_rect"</span>)]
+<a href=#168 id=168 data-nosnippet>168</a>    </span><span class="kw">pub fn </span>from_rect(src: <span class="kw-2">&amp;</span><a href="auto/rect.rs.html#8-28">Rect</a>) -&gt; <span class="self">Self </span>{
+<a href=#169 id=169 data-nosnippet>169</a>        <span class="macro">assert_initialized_main_thread!</span>();
+<a href=#170 id=170 data-nosnippet>170</a>        <span class="kw">unsafe </span>{
+<a href=#171 id=171 data-nosnippet>171</a>            <span class="kw">let </span><span class="kw-2">mut </span>b = <a href="../../glib/translate/trait.Uninitialized.html#tymethod.uninitialized"><span class="self">Self</span>::uninitialized</a>();
+<a href=#172 id=172 data-nosnippet>172</a>            <a href="../../graphene_sys/fn.graphene_box2d_init_from_rect.html">ffi::graphene_box2d_init_from_rect</a>(<a href="#171">b</a>.<a href="../../glib/translate/trait.ToGlibPtrMut.html#tymethod.to_glib_none_mut">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#168">src</a>.<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>);
+<a href=#173 id=173 data-nosnippet>173</a>            <a href="#171">b</a>
+<a href=#174 id=174 data-nosnippet>174</a>        }
+<a href=#175 id=175 data-nosnippet>175</a>    }
+<a href=#176 id=176 data-nosnippet>176</a>}
+<a href=#177 id=177 data-nosnippet>177</a>
+<a href=#178 id=178 data-nosnippet>178</a><span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html">Default</a> <span class="kw">for </span><a href="auto/box2_d.rs.html#8-18">Box2D</a> {
+<a href=#179 id=179 data-nosnippet>179</a>    <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
+<a href=#180 id=180 data-nosnippet>180</a>        <a href="auto/box2_d.rs.html#446-449"><span class="self">Self</span>::zero</a>()
+<a href=#181 id=181 data-nosnippet>181</a>    }
+<a href=#182 id=182 data-nosnippet>182</a>}
+<a href=#183 id=183 data-nosnippet>183</a>
+<a href=#184 id=184 data-nosnippet>184</a><span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html">fmt::Debug</a> <span class="kw">for </span><a href="auto/box2_d.rs.html#8-18">Box2D</a> {
+<a href=#185 id=185 data-nosnippet>185</a>    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span><a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html">fmt::Formatter</a>&lt;<span class="lifetime">'_</span>&gt;) -&gt; <a href="https://doc.rust-lang.org/nightly/core/fmt/type.Result.html">fmt::Result</a> {
+<a href=#186 id=186 data-nosnippet>186</a>        <a href="#185">f</a>.<a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html#method.debug_struct">debug_struct</a>(<span class="string">"Box2D"</span>)
+<a href=#187 id=187 data-nosnippet>187</a>            .<a href="https://doc.rust-lang.org/nightly/core/fmt/builders/struct.DebugStruct.html#method.field">field</a>(<span class="string">"min"</span>, <span class="kw-2">&amp;</span><a class="self" href="#185">self</a>.<a href="auto/box2_d.rs.html#193-199">min</a>())
+<a href=#188 id=188 data-nosnippet>188</a>            .<a href="https://doc.rust-lang.org/nightly/core/fmt/builders/struct.DebugStruct.html#method.field">field</a>(<span class="string">"max"</span>, <span class="kw-2">&amp;</span><a class="self" href="#185">self</a>.<a href="auto/box2_d.rs.html#175-181">max</a>())
+<a href=#189 id=189 data-nosnippet>189</a>            .<a href="https://doc.rust-lang.org/nightly/core/fmt/builders/struct.DebugStruct.html#method.finish">finish</a>()
+<a href=#190 id=190 data-nosnippet>190</a>    }
+<a href=#191 id=191 data-nosnippet>191</a>}</code></pre></div></section></main></body></html>
