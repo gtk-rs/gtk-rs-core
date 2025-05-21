@@ -51,12 +51,7 @@ impl Vec4 {
 
     #[doc(alias = "graphene_vec4_equal")]
     fn equal(&self, v2: &Vec4) -> bool {
-        unsafe {
-            from_glib(ffi::graphene_vec4_equal(
-                self.to_glib_none().0,
-                v2.to_glib_none().0,
-            ))
-        }
+        unsafe { ffi::graphene_vec4_equal(self.to_glib_none().0, v2.to_glib_none().0) }
     }
 
     #[doc(alias = "graphene_vec4_get_w")]
@@ -167,13 +162,7 @@ impl Vec4 {
 
     #[doc(alias = "graphene_vec4_near")]
     pub fn near(&self, v2: &Vec4, epsilon: f32) -> bool {
-        unsafe {
-            from_glib(ffi::graphene_vec4_near(
-                self.to_glib_none().0,
-                v2.to_glib_none().0,
-                epsilon,
-            ))
-        }
+        unsafe { ffi::graphene_vec4_near(self.to_glib_none().0, v2.to_glib_none().0, epsilon) }
     }
 
     #[doc(alias = "graphene_vec4_negate")]

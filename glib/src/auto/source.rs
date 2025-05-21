@@ -2,7 +2,7 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{ffi, translate::*, MainContext};
+use crate::{ffi, translate::*};
 
 crate::wrapper! {
     #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
@@ -45,23 +45,10 @@ impl Source {
         }
     }
 
-    #[cfg(feature = "v2_86")]
-    #[cfg_attr(docsrs, doc(cfg(feature = "v2_86")))]
-    #[doc(alias = "g_source_dup_context")]
-    pub fn dup_context(&self) -> Option<MainContext> {
-        unsafe { from_glib_full(ffi::g_source_dup_context(self.to_glib_none().0)) }
-    }
-
     #[doc(alias = "g_source_get_can_recurse")]
     #[doc(alias = "get_can_recurse")]
     pub fn can_recurse(&self) -> bool {
         unsafe { from_glib(ffi::g_source_get_can_recurse(self.to_glib_none().0)) }
-    }
-
-    #[doc(alias = "g_source_get_context")]
-    #[doc(alias = "get_context")]
-    pub fn context(&self) -> Option<MainContext> {
-        unsafe { from_glib_none(ffi::g_source_get_context(self.to_glib_none().0)) }
     }
 
     #[doc(alias = "g_source_get_name")]

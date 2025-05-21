@@ -18,32 +18,17 @@ glib::wrapper! {
 impl Rect {
     #[doc(alias = "graphene_rect_contains_point")]
     pub fn contains_point(&self, p: &Point) -> bool {
-        unsafe {
-            from_glib(ffi::graphene_rect_contains_point(
-                self.to_glib_none().0,
-                p.to_glib_none().0,
-            ))
-        }
+        unsafe { ffi::graphene_rect_contains_point(self.to_glib_none().0, p.to_glib_none().0) }
     }
 
     #[doc(alias = "graphene_rect_contains_rect")]
     pub fn contains_rect(&self, b: &Rect) -> bool {
-        unsafe {
-            from_glib(ffi::graphene_rect_contains_rect(
-                self.to_glib_none().0,
-                b.to_glib_none().0,
-            ))
-        }
+        unsafe { ffi::graphene_rect_contains_rect(self.to_glib_none().0, b.to_glib_none().0) }
     }
 
     #[doc(alias = "graphene_rect_equal")]
     fn equal(&self, b: &Rect) -> bool {
-        unsafe {
-            from_glib(ffi::graphene_rect_equal(
-                self.to_glib_none().0,
-                b.to_glib_none().0,
-            ))
-        }
+        unsafe { ffi::graphene_rect_equal(self.to_glib_none().0, b.to_glib_none().0) }
     }
 
     #[doc(alias = "graphene_rect_expand")]
@@ -176,11 +161,11 @@ impl Rect {
     pub fn intersection(&self, b: &Rect) -> Option<Rect> {
         unsafe {
             let mut res = Rect::uninitialized();
-            let ret = from_glib(ffi::graphene_rect_intersection(
+            let ret = ffi::graphene_rect_intersection(
                 self.to_glib_none().0,
                 b.to_glib_none().0,
                 res.to_glib_none_mut().0,
-            ));
+            );
             if ret {
                 Some(res)
             } else {

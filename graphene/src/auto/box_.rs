@@ -18,32 +18,17 @@ glib::wrapper! {
 impl Box {
     #[doc(alias = "graphene_box_contains_box")]
     pub fn contains_box(&self, b: &Box) -> bool {
-        unsafe {
-            from_glib(ffi::graphene_box_contains_box(
-                self.to_glib_none().0,
-                b.to_glib_none().0,
-            ))
-        }
+        unsafe { ffi::graphene_box_contains_box(self.to_glib_none().0, b.to_glib_none().0) }
     }
 
     #[doc(alias = "graphene_box_contains_point")]
     pub fn contains_point(&self, point: &Point3D) -> bool {
-        unsafe {
-            from_glib(ffi::graphene_box_contains_point(
-                self.to_glib_none().0,
-                point.to_glib_none().0,
-            ))
-        }
+        unsafe { ffi::graphene_box_contains_point(self.to_glib_none().0, point.to_glib_none().0) }
     }
 
     #[doc(alias = "graphene_box_equal")]
     fn equal(&self, b: &Box) -> bool {
-        unsafe {
-            from_glib(ffi::graphene_box_equal(
-                self.to_glib_none().0,
-                b.to_glib_none().0,
-            ))
-        }
+        unsafe { ffi::graphene_box_equal(self.to_glib_none().0, b.to_glib_none().0) }
     }
 
     #[doc(alias = "graphene_box_expand")]
@@ -180,11 +165,11 @@ impl Box {
     pub fn intersection(&self, b: &Box) -> Option<Box> {
         unsafe {
             let mut res = Box::uninitialized();
-            let ret = from_glib(ffi::graphene_box_intersection(
+            let ret = ffi::graphene_box_intersection(
                 self.to_glib_none().0,
                 b.to_glib_none().0,
                 res.to_glib_none_mut().0,
-            ));
+            );
             if ret {
                 Some(res)
             } else {

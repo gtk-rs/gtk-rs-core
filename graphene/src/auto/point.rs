@@ -40,12 +40,7 @@ impl Point {
 
     #[doc(alias = "graphene_point_equal")]
     fn equal(&self, b: &Point) -> bool {
-        unsafe {
-            from_glib(ffi::graphene_point_equal(
-                self.to_glib_none().0,
-                b.to_glib_none().0,
-            ))
-        }
+        unsafe { ffi::graphene_point_equal(self.to_glib_none().0, b.to_glib_none().0) }
     }
 
     #[doc(alias = "graphene_point_interpolate")]
@@ -65,13 +60,7 @@ impl Point {
 
     #[doc(alias = "graphene_point_near")]
     pub fn near(&self, b: &Point, epsilon: f32) -> bool {
-        unsafe {
-            from_glib(ffi::graphene_point_near(
-                self.to_glib_none().0,
-                b.to_glib_none().0,
-                epsilon,
-            ))
-        }
+        unsafe { ffi::graphene_point_near(self.to_glib_none().0, b.to_glib_none().0, epsilon) }
     }
 
     #[doc(alias = "graphene_point_to_vec2")]

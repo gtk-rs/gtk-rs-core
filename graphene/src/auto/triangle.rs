@@ -18,22 +18,12 @@ glib::wrapper! {
 impl Triangle {
     #[doc(alias = "graphene_triangle_contains_point")]
     pub fn contains_point(&self, p: &Point3D) -> bool {
-        unsafe {
-            from_glib(ffi::graphene_triangle_contains_point(
-                self.to_glib_none().0,
-                p.to_glib_none().0,
-            ))
-        }
+        unsafe { ffi::graphene_triangle_contains_point(self.to_glib_none().0, p.to_glib_none().0) }
     }
 
     #[doc(alias = "graphene_triangle_equal")]
     fn equal(&self, b: &Triangle) -> bool {
-        unsafe {
-            from_glib(ffi::graphene_triangle_equal(
-                self.to_glib_none().0,
-                b.to_glib_none().0,
-            ))
-        }
+        unsafe { ffi::graphene_triangle_equal(self.to_glib_none().0, b.to_glib_none().0) }
     }
 
     #[doc(alias = "graphene_triangle_get_area")]
@@ -47,11 +37,11 @@ impl Triangle {
     pub fn barycoords(&self, p: Option<&Point3D>) -> Option<Vec2> {
         unsafe {
             let mut res = Vec2::uninitialized();
-            let ret = from_glib(ffi::graphene_triangle_get_barycoords(
+            let ret = ffi::graphene_triangle_get_barycoords(
                 self.to_glib_none().0,
                 p.to_glib_none().0,
                 res.to_glib_none_mut().0,
-            ));
+            );
             if ret {
                 Some(res)
             } else {
@@ -125,14 +115,14 @@ impl Triangle {
     pub fn uv(&self, p: Option<&Point3D>, uv_a: &Vec2, uv_b: &Vec2, uv_c: &Vec2) -> Option<Vec2> {
         unsafe {
             let mut res = Vec2::uninitialized();
-            let ret = from_glib(ffi::graphene_triangle_get_uv(
+            let ret = ffi::graphene_triangle_get_uv(
                 self.to_glib_none().0,
                 p.to_glib_none().0,
                 uv_a.to_glib_none().0,
                 uv_b.to_glib_none().0,
                 uv_c.to_glib_none().0,
                 res.to_glib_none_mut().0,
-            ));
+            );
             if ret {
                 Some(res)
             } else {
