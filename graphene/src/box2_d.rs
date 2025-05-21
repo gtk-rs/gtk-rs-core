@@ -92,7 +92,7 @@ impl Box2D {
     }
 
     #[doc(alias = "graphene_box2d_init_from_rect")]
-    pub fn init_from_rect(src: &Rect) -> Self {
+    pub fn from_rect(src: &Rect) -> Self {
         assert_initialized_main_thread!();
         unsafe {
             let mut b = Self::uninitialized();
