@@ -83,7 +83,7 @@
 <a href=#10 id=10 data-nosnippet>10</a><span class="kw">mod </span><a href="error_domain_derive.rs.html#3-64">error_domain_derive</a>;
 <a href=#11 id=11 data-nosnippet>11</a><span class="kw">mod </span><a href="flags_attribute.rs.html#3-520">flags_attribute</a>;
 <a href=#12 id=12 data-nosnippet>12</a><span class="kw">mod </span><a href="object_impl_attributes.rs.html#3-136">object_impl_attributes</a>;
-<a href=#13 id=13 data-nosnippet>13</a><span class="kw">mod </span><a href="properties.rs.html#3-772">properties</a>;
+<a href=#13 id=13 data-nosnippet>13</a><span class="kw">mod </span><a href="properties.rs.html#3-835">properties</a>;
 <a href=#14 id=14 data-nosnippet>14</a><span class="kw">mod </span><a href="shared_boxed_derive.rs.html#3-319">shared_boxed_derive</a>;
 <a href=#15 id=15 data-nosnippet>15</a><span class="kw">mod </span><a href="value_delegate_derive.rs.html#3-200">value_delegate_derive</a>;
 <a href=#16 id=16 data-nosnippet>16</a><span class="kw">mod </span><a href="variant_derive.rs.html#3-692">variant_derive</a>;
@@ -1417,246 +1417,261 @@
 <a href=#1344 id=1344 data-nosnippet>1344</a>/// * `connect_$property_notify()`
 <a href=#1345 id=1345 data-nosnippet>1345</a>/// * `notify_$property()`
 <a href=#1346 id=1346 data-nosnippet>1346</a>///
-<a href=#1347 id=1347 data-nosnippet>1347</a>/// ## Extension trait
-<a href=#1348 id=1348 data-nosnippet>1348</a>/// You can choose to move the method definitions to a trait by using `#[properties(wrapper_type = super::MyType, ext_trait = MyTypePropertiesExt)]`.
-<a href=#1349 id=1349 data-nosnippet>1349</a>/// The trait name is optional, and defaults to `MyTypePropertiesExt`, where `MyType` is extracted from the wrapper type.
-<a href=#1350 id=1350 data-nosnippet>1350</a>/// Note: The trait is defined in the same module where the `#[derive(Properties)]` call happens, and is implemented on the wrapper type.
-<a href=#1351 id=1351 data-nosnippet>1351</a>///
-<a href=#1352 id=1352 data-nosnippet>1352</a>/// Notice: You can't reimplement the generated methods on the wrapper type, unless you move them to a trait.
-<a href=#1353 id=1353 data-nosnippet>1353</a>/// You can change the behavior of the generated getter/setter methods by using a custom internal getter/setter.
-<a href=#1354 id=1354 data-nosnippet>1354</a>///
-<a href=#1355 id=1355 data-nosnippet>1355</a>/// # Internal getters and setters
-<a href=#1356 id=1356 data-nosnippet>1356</a>/// By default, they are generated for you. However, you can use a custom getter/setter
-<a href=#1357 id=1357 data-nosnippet>1357</a>/// by assigning an expression to `get`/`set` `#[property]` attributes: `#[property(get = |_| 2, set)]` or `#[property(get, set = custom_setter_func)]`.
+<a href=#1347 id=1347 data-nosnippet>1347</a>/// # Documentation
+<a href=#1348 id=1348 data-nosnippet>1348</a>///
+<a href=#1349 id=1349 data-nosnippet>1349</a>/// Doc comments preceding a `#[property]` attribute will be copied to the generated getter and setter methods. You can specify different comments by the getter and setter by using `# Getter` and `# Setter` headings. The text under the header will be copied to the respective method.
+<a href=#1350 id=1350 data-nosnippet>1350</a>///
+<a href=#1351 id=1351 data-nosnippet>1351</a>/// ## Extension trait
+<a href=#1352 id=1352 data-nosnippet>1352</a>/// You can choose to move the method definitions to a trait by using `#[properties(wrapper_type = super::MyType, ext_trait = MyTypePropertiesExt)]`.
+<a href=#1353 id=1353 data-nosnippet>1353</a>/// The trait name is optional, and defaults to `MyTypePropertiesExt`, where `MyType` is extracted from the wrapper type.
+<a href=#1354 id=1354 data-nosnippet>1354</a>/// Note: The trait is defined in the same module where the `#[derive(Properties)]` call happens, and is implemented on the wrapper type.
+<a href=#1355 id=1355 data-nosnippet>1355</a>///
+<a href=#1356 id=1356 data-nosnippet>1356</a>/// Notice: You can't reimplement the generated methods on the wrapper type, unless you move them to a trait.
+<a href=#1357 id=1357 data-nosnippet>1357</a>/// You can change the behavior of the generated getter/setter methods by using a custom internal getter/setter.
 <a href=#1358 id=1358 data-nosnippet>1358</a>///
-<a href=#1359 id=1359 data-nosnippet>1359</a>/// # Supported types
-<a href=#1360 id=1360 data-nosnippet>1360</a>/// Every type implementing the trait [`Property`] is supported.
-<a href=#1361 id=1361 data-nosnippet>1361</a>/// The type `Option&lt;T&gt;` is supported as a property only if `Option&lt;T&gt;` implements [`ToValueOptional`].
-<a href=#1362 id=1362 data-nosnippet>1362</a>/// Optional types also require the `nullable` attribute: without it, the generated setter on the wrapper type
-<a href=#1363 id=1363 data-nosnippet>1363</a>/// will take `T` instead of `Option&lt;T&gt;`, preventing the user from ever calling the setter with a `None` value.
-<a href=#1364 id=1364 data-nosnippet>1364</a>///
-<a href=#1365 id=1365 data-nosnippet>1365</a>/// ## Adding support for custom types
-<a href=#1366 id=1366 data-nosnippet>1366</a>/// ### Types wrapping an existing &lt;code&gt;T: [ToValue] + [HasParamSpec]&lt;/code&gt;
-<a href=#1367 id=1367 data-nosnippet>1367</a>/// If you have declared a newtype as
-<a href=#1368 id=1368 data-nosnippet>1368</a>/// ```rust
-<a href=#1369 id=1369 data-nosnippet>1369</a>/// struct MyInt(i32);
-<a href=#1370 id=1370 data-nosnippet>1370</a>/// ```
-<a href=#1371 id=1371 data-nosnippet>1371</a>/// you can use it as a property by deriving [`ValueDelegate`].
-<a href=#1372 id=1372 data-nosnippet>1372</a>///
-<a href=#1373 id=1373 data-nosnippet>1373</a>/// ### Types with inner mutability
-<a href=#1374 id=1374 data-nosnippet>1374</a>/// The trait [`Property`] must be implemented.
-<a href=#1375 id=1375 data-nosnippet>1375</a>/// The traits [`PropertyGet`] and [`PropertySet`] should be implemented to enable the Properties macro
-<a href=#1376 id=1376 data-nosnippet>1376</a>/// to generate a default internal getter/setter.
-<a href=#1377 id=1377 data-nosnippet>1377</a>/// If possible, implementing [`PropertySetNested`] is preferred over `PropertySet`, because it
-<a href=#1378 id=1378 data-nosnippet>1378</a>/// enables this macro to access the contained type and provide access to its fields,
-<a href=#1379 id=1379 data-nosnippet>1379</a>/// using the `member = $structfield` syntax.
-<a href=#1380 id=1380 data-nosnippet>1380</a>///
-<a href=#1381 id=1381 data-nosnippet>1381</a>/// ### Types without [`HasParamSpec`][HasParamSpec]
-<a href=#1382 id=1382 data-nosnippet>1382</a>/// If you have encountered a type &lt;code&gt;T: [ToValue]&lt;/code&gt;, inside the gtk-rs crate, which doesn't implement [`HasParamSpec`][HasParamSpec],
-<a href=#1383 id=1383 data-nosnippet>1383</a>/// then it's a bug and you should report it.
-<a href=#1384 id=1384 data-nosnippet>1384</a>/// If you need to support a `ToValue` type with a [`ParamSpec`] not provided by gtk-rs, then you need to
-<a href=#1385 id=1385 data-nosnippet>1385</a>/// implement `HasParamSpec` on that type.
-<a href=#1386 id=1386 data-nosnippet>1386</a>///
-<a href=#1387 id=1387 data-nosnippet>1387</a>/// # Example
-<a href=#1388 id=1388 data-nosnippet>1388</a>/// ```
-<a href=#1389 id=1389 data-nosnippet>1389</a>/// use std::cell::RefCell;
-<a href=#1390 id=1390 data-nosnippet>1390</a>/// use glib::prelude::*;
-<a href=#1391 id=1391 data-nosnippet>1391</a>/// use glib::subclass::prelude::*;
-<a href=#1392 id=1392 data-nosnippet>1392</a>/// use glib_macros::Properties;
-<a href=#1393 id=1393 data-nosnippet>1393</a>///
-<a href=#1394 id=1394 data-nosnippet>1394</a>/// #[derive(Default, Clone)]
-<a href=#1395 id=1395 data-nosnippet>1395</a>/// struct Author {
-<a href=#1396 id=1396 data-nosnippet>1396</a>///     name: String,
-<a href=#1397 id=1397 data-nosnippet>1397</a>///     nick: String,
-<a href=#1398 id=1398 data-nosnippet>1398</a>/// }
-<a href=#1399 id=1399 data-nosnippet>1399</a>///
-<a href=#1400 id=1400 data-nosnippet>1400</a>/// pub mod imp {
-<a href=#1401 id=1401 data-nosnippet>1401</a>///     use std::rc::Rc;
-<a href=#1402 id=1402 data-nosnippet>1402</a>///
-<a href=#1403 id=1403 data-nosnippet>1403</a>///     use super::*;
-<a href=#1404 id=1404 data-nosnippet>1404</a>///
-<a href=#1405 id=1405 data-nosnippet>1405</a>///     #[derive(Properties, Default)]
-<a href=#1406 id=1406 data-nosnippet>1406</a>///     #[properties(wrapper_type = super::Foo)]
-<a href=#1407 id=1407 data-nosnippet>1407</a>///     pub struct Foo {
-<a href=#1408 id=1408 data-nosnippet>1408</a>///         #[property(get, set = Self::set_fizz)]
-<a href=#1409 id=1409 data-nosnippet>1409</a>///         fizz: RefCell&lt;String&gt;,
-<a href=#1410 id=1410 data-nosnippet>1410</a>///         #[property(name = "author-name", get, set, type = String, member = name)]
-<a href=#1411 id=1411 data-nosnippet>1411</a>///         #[property(name = "author-nick", get, set, type = String, member = nick)]
-<a href=#1412 id=1412 data-nosnippet>1412</a>///         author: RefCell&lt;Author&gt;,
-<a href=#1413 id=1413 data-nosnippet>1413</a>///         #[property(get, set, explicit_notify, lax_validation)]
-<a href=#1414 id=1414 data-nosnippet>1414</a>///         custom_flags: RefCell&lt;String&gt;,
-<a href=#1415 id=1415 data-nosnippet>1415</a>///         #[property(get, set, minimum = 0, maximum = 3)]
-<a href=#1416 id=1416 data-nosnippet>1416</a>///         numeric_builder: RefCell&lt;u32&gt;,
-<a href=#1417 id=1417 data-nosnippet>1417</a>///         #[property(get, set, builder('c'))]
-<a href=#1418 id=1418 data-nosnippet>1418</a>///         builder_with_required_param: RefCell&lt;char&gt;,
-<a href=#1419 id=1419 data-nosnippet>1419</a>///         #[property(get, set, nullable)]
-<a href=#1420 id=1420 data-nosnippet>1420</a>///         optional: RefCell&lt;Option&lt;String&gt;&gt;,
-<a href=#1421 id=1421 data-nosnippet>1421</a>///         #[property(get, set)]
-<a href=#1422 id=1422 data-nosnippet>1422</a>///         smart_pointer: Rc&lt;RefCell&lt;String&gt;&gt;,
-<a href=#1423 id=1423 data-nosnippet>1423</a>///     }
-<a href=#1424 id=1424 data-nosnippet>1424</a>///     
-<a href=#1425 id=1425 data-nosnippet>1425</a>///     #[glib::derived_properties]
-<a href=#1426 id=1426 data-nosnippet>1426</a>///     impl ObjectImpl for Foo {}
-<a href=#1427 id=1427 data-nosnippet>1427</a>///
-<a href=#1428 id=1428 data-nosnippet>1428</a>///     #[glib::object_subclass]
-<a href=#1429 id=1429 data-nosnippet>1429</a>///     impl ObjectSubclass for Foo {
-<a href=#1430 id=1430 data-nosnippet>1430</a>///         const NAME: &amp;'static str = "MyFoo";
-<a href=#1431 id=1431 data-nosnippet>1431</a>///         type Type = super::Foo;
-<a href=#1432 id=1432 data-nosnippet>1432</a>///     }
-<a href=#1433 id=1433 data-nosnippet>1433</a>///
-<a href=#1434 id=1434 data-nosnippet>1434</a>///     impl Foo {
-<a href=#1435 id=1435 data-nosnippet>1435</a>///         fn set_fizz(&amp;self, value: String) {
-<a href=#1436 id=1436 data-nosnippet>1436</a>///             *self.fizz.borrow_mut() = format!("custom set: {}", value);
-<a href=#1437 id=1437 data-nosnippet>1437</a>///         }
+<a href=#1359 id=1359 data-nosnippet>1359</a>/// # Internal getters and setters
+<a href=#1360 id=1360 data-nosnippet>1360</a>/// By default, they are generated for you. However, you can use a custom getter/setter
+<a href=#1361 id=1361 data-nosnippet>1361</a>/// by assigning an expression to `get`/`set` `#[property]` attributes: `#[property(get = |_| 2, set)]` or `#[property(get, set = custom_setter_func)]`.
+<a href=#1362 id=1362 data-nosnippet>1362</a>///
+<a href=#1363 id=1363 data-nosnippet>1363</a>/// # Supported types
+<a href=#1364 id=1364 data-nosnippet>1364</a>/// Every type implementing the trait [`Property`] is supported.
+<a href=#1365 id=1365 data-nosnippet>1365</a>/// The type `Option&lt;T&gt;` is supported as a property only if `Option&lt;T&gt;` implements [`ToValueOptional`].
+<a href=#1366 id=1366 data-nosnippet>1366</a>/// Optional types also require the `nullable` attribute: without it, the generated setter on the wrapper type
+<a href=#1367 id=1367 data-nosnippet>1367</a>/// will take `T` instead of `Option&lt;T&gt;`, preventing the user from ever calling the setter with a `None` value.
+<a href=#1368 id=1368 data-nosnippet>1368</a>///
+<a href=#1369 id=1369 data-nosnippet>1369</a>/// ## Adding support for custom types
+<a href=#1370 id=1370 data-nosnippet>1370</a>/// ### Types wrapping an existing &lt;code&gt;T: [ToValue] + [HasParamSpec]&lt;/code&gt;
+<a href=#1371 id=1371 data-nosnippet>1371</a>/// If you have declared a newtype as
+<a href=#1372 id=1372 data-nosnippet>1372</a>/// ```rust
+<a href=#1373 id=1373 data-nosnippet>1373</a>/// struct MyInt(i32);
+<a href=#1374 id=1374 data-nosnippet>1374</a>/// ```
+<a href=#1375 id=1375 data-nosnippet>1375</a>/// you can use it as a property by deriving [`ValueDelegate`].
+<a href=#1376 id=1376 data-nosnippet>1376</a>///
+<a href=#1377 id=1377 data-nosnippet>1377</a>/// ### Types with inner mutability
+<a href=#1378 id=1378 data-nosnippet>1378</a>/// The trait [`Property`] must be implemented.
+<a href=#1379 id=1379 data-nosnippet>1379</a>/// The traits [`PropertyGet`] and [`PropertySet`] should be implemented to enable the Properties macro
+<a href=#1380 id=1380 data-nosnippet>1380</a>/// to generate a default internal getter/setter.
+<a href=#1381 id=1381 data-nosnippet>1381</a>/// If possible, implementing [`PropertySetNested`] is preferred over `PropertySet`, because it
+<a href=#1382 id=1382 data-nosnippet>1382</a>/// enables this macro to access the contained type and provide access to its fields,
+<a href=#1383 id=1383 data-nosnippet>1383</a>/// using the `member = $structfield` syntax.
+<a href=#1384 id=1384 data-nosnippet>1384</a>///
+<a href=#1385 id=1385 data-nosnippet>1385</a>/// ### Types without [`HasParamSpec`][HasParamSpec]
+<a href=#1386 id=1386 data-nosnippet>1386</a>/// If you have encountered a type &lt;code&gt;T: [ToValue]&lt;/code&gt;, inside the gtk-rs crate, which doesn't implement [`HasParamSpec`][HasParamSpec],
+<a href=#1387 id=1387 data-nosnippet>1387</a>/// then it's a bug and you should report it.
+<a href=#1388 id=1388 data-nosnippet>1388</a>/// If you need to support a `ToValue` type with a [`ParamSpec`] not provided by gtk-rs, then you need to
+<a href=#1389 id=1389 data-nosnippet>1389</a>/// implement `HasParamSpec` on that type.
+<a href=#1390 id=1390 data-nosnippet>1390</a>///
+<a href=#1391 id=1391 data-nosnippet>1391</a>/// # Example
+<a href=#1392 id=1392 data-nosnippet>1392</a>/// ```
+<a href=#1393 id=1393 data-nosnippet>1393</a>/// use std::cell::RefCell;
+<a href=#1394 id=1394 data-nosnippet>1394</a>/// use glib::prelude::*;
+<a href=#1395 id=1395 data-nosnippet>1395</a>/// use glib::subclass::prelude::*;
+<a href=#1396 id=1396 data-nosnippet>1396</a>/// use glib_macros::Properties;
+<a href=#1397 id=1397 data-nosnippet>1397</a>///
+<a href=#1398 id=1398 data-nosnippet>1398</a>/// #[derive(Default, Clone)]
+<a href=#1399 id=1399 data-nosnippet>1399</a>/// struct Author {
+<a href=#1400 id=1400 data-nosnippet>1400</a>///     name: String,
+<a href=#1401 id=1401 data-nosnippet>1401</a>///     nick: String,
+<a href=#1402 id=1402 data-nosnippet>1402</a>/// }
+<a href=#1403 id=1403 data-nosnippet>1403</a>///
+<a href=#1404 id=1404 data-nosnippet>1404</a>/// pub mod imp {
+<a href=#1405 id=1405 data-nosnippet>1405</a>///     use std::rc::Rc;
+<a href=#1406 id=1406 data-nosnippet>1406</a>///
+<a href=#1407 id=1407 data-nosnippet>1407</a>///     use super::*;
+<a href=#1408 id=1408 data-nosnippet>1408</a>///
+<a href=#1409 id=1409 data-nosnippet>1409</a>///     #[derive(Properties, Default)]
+<a href=#1410 id=1410 data-nosnippet>1410</a>///     #[properties(wrapper_type = super::Foo)]
+<a href=#1411 id=1411 data-nosnippet>1411</a>///     pub struct Foo {
+<a href=#1412 id=1412 data-nosnippet>1412</a>///         #[property(get, set = Self::set_fizz)]
+<a href=#1413 id=1413 data-nosnippet>1413</a>///         fizz: RefCell&lt;String&gt;,
+<a href=#1414 id=1414 data-nosnippet>1414</a>///         /// The author's name
+<a href=#1415 id=1415 data-nosnippet>1415</a>///         #[property(name = "author-name", get, set, type = String, member = name)]
+<a href=#1416 id=1416 data-nosnippet>1416</a>///         /// The author's childhood nickname
+<a href=#1417 id=1417 data-nosnippet>1417</a>///         #[property(name = "author-nick", get, set, type = String, member = nick)]
+<a href=#1418 id=1418 data-nosnippet>1418</a>///         author: RefCell&lt;Author&gt;,
+<a href=#1419 id=1419 data-nosnippet>1419</a>///         #[property(get, set, explicit_notify, lax_validation)]
+<a href=#1420 id=1420 data-nosnippet>1420</a>///         custom_flags: RefCell&lt;String&gt;,
+<a href=#1421 id=1421 data-nosnippet>1421</a>///         #[property(get, set, minimum = 0, maximum = 3)]
+<a href=#1422 id=1422 data-nosnippet>1422</a>///         numeric_builder: RefCell&lt;u32&gt;,
+<a href=#1423 id=1423 data-nosnippet>1423</a>///         #[property(get, set, builder('c'))]
+<a href=#1424 id=1424 data-nosnippet>1424</a>///         builder_with_required_param: RefCell&lt;char&gt;,
+<a href=#1425 id=1425 data-nosnippet>1425</a>///         #[property(get, set, nullable)]
+<a href=#1426 id=1426 data-nosnippet>1426</a>///         optional: RefCell&lt;Option&lt;String&gt;&gt;,
+<a href=#1427 id=1427 data-nosnippet>1427</a>///         #[property(get, set)]
+<a href=#1428 id=1428 data-nosnippet>1428</a>///         smart_pointer: Rc&lt;RefCell&lt;String&gt;&gt;,
+<a href=#1429 id=1429 data-nosnippet>1429</a>///         /// # Getter
+<a href=#1430 id=1430 data-nosnippet>1430</a>///         ///
+<a href=#1431 id=1431 data-nosnippet>1431</a>///         /// Get the value of the property `extra_comments`
+<a href=#1432 id=1432 data-nosnippet>1432</a>///         ///
+<a href=#1433 id=1433 data-nosnippet>1433</a>///         /// # Setter
+<a href=#1434 id=1434 data-nosnippet>1434</a>///         ///
+<a href=#1435 id=1435 data-nosnippet>1435</a>///         /// This is the comment for the setter of the `extra_comments` field.
+<a href=#1436 id=1436 data-nosnippet>1436</a>///         #[property(get, set)]
+<a href=#1437 id=1437 data-nosnippet>1437</a>///         extra_comments: RefCell&lt;bool&gt;,
 <a href=#1438 id=1438 data-nosnippet>1438</a>///     }
-<a href=#1439 id=1439 data-nosnippet>1439</a>/// }
-<a href=#1440 id=1440 data-nosnippet>1440</a>///
-<a href=#1441 id=1441 data-nosnippet>1441</a>/// glib::wrapper! {
-<a href=#1442 id=1442 data-nosnippet>1442</a>///     pub struct Foo(ObjectSubclass&lt;imp::Foo&gt;);
-<a href=#1443 id=1443 data-nosnippet>1443</a>/// }
-<a href=#1444 id=1444 data-nosnippet>1444</a>///
-<a href=#1445 id=1445 data-nosnippet>1445</a>/// fn main() {
-<a href=#1446 id=1446 data-nosnippet>1446</a>///   let myfoo: Foo = glib::object::Object::new();
-<a href=#1447 id=1447 data-nosnippet>1447</a>///
-<a href=#1448 id=1448 data-nosnippet>1448</a>///   myfoo.set_fizz("test value");
-<a href=#1449 id=1449 data-nosnippet>1449</a>///   assert_eq!(myfoo.fizz(), "custom set: test value".to_string());
-<a href=#1450 id=1450 data-nosnippet>1450</a>/// }
-<a href=#1451 id=1451 data-nosnippet>1451</a>/// ```
-<a href=#1452 id=1452 data-nosnippet>1452</a>///
-<a href=#1453 id=1453 data-nosnippet>1453</a>/// [`Property`]: ../glib/property/trait.Property.html
-<a href=#1454 id=1454 data-nosnippet>1454</a>/// [`PropertyGet`]: ../glib/property/trait.PropertyGet.html
-<a href=#1455 id=1455 data-nosnippet>1455</a>/// [`PropertyGet::get`]: ../glib/property/trait.PropertyGet.html#tymethod.get
-<a href=#1456 id=1456 data-nosnippet>1456</a>/// [`PropertySet`]: ../glib/property/trait.PropertySet.html
-<a href=#1457 id=1457 data-nosnippet>1457</a>/// [`PropertySet::set`]: ../glib/property/trait.PropertySet.html#tymethod.set
-<a href=#1458 id=1458 data-nosnippet>1458</a>/// [`PropertySetNested`]: ../glib/property/trait.PropertySetNested.html
-<a href=#1459 id=1459 data-nosnippet>1459</a>/// [`ObjectExt::property`]: ../glib/object/trait.ObjectExt.html#tymethod.property
-<a href=#1460 id=1460 data-nosnippet>1460</a>/// [HasParamSpec]: ../glib/trait.HasParamSpec.html
-<a href=#1461 id=1461 data-nosnippet>1461</a>/// [`ParamSpec`]: ../glib/struct.ParamSpec.html
-<a href=#1462 id=1462 data-nosnippet>1462</a>/// [`ToValueOptional`]: ../glib/value/trait.ToValueOptional.html
-<a href=#1463 id=1463 data-nosnippet>1463</a>/// [ToValue]: ../glib/value/trait.ToValue.html
-<a href=#1464 id=1464 data-nosnippet>1464</a></span><span class="attr">#[allow(clippy::needless_doctest_main)]
-<a href=#1465 id=1465 data-nosnippet>1465</a>#[proc_macro_derive(Properties, attributes(properties, property))]
-<a href=#1466 id=1466 data-nosnippet>1466</a></span><span class="kw">pub fn </span><a href="../../glib_macros/derive.Properties.html">derive_props</a>(input: <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a> {
-<a href=#1467 id=1467 data-nosnippet>1467</a>    <span class="kw">let </span>input = <a class="macro" href="https://docs.rs/syn/2.0.101/syn/macro.parse_macro_input.html">parse_macro_input!</a>(input <span class="kw">as </span>properties::PropsMacroInput);
-<a href=#1468 id=1468 data-nosnippet>1468</a>    <a href="properties.rs.html#714-772">properties::impl_derive_props</a>(<a href="#1467">input</a>)
-<a href=#1469 id=1469 data-nosnippet>1469</a>}
-<a href=#1470 id=1470 data-nosnippet>1470</a>
-<a href=#1471 id=1471 data-nosnippet>1471</a><span class="doccomment">/// When applied to `ObjectImpl`
-<a href=#1472 id=1472 data-nosnippet>1472</a>/// ```ignore
-<a href=#1473 id=1473 data-nosnippet>1473</a>/// #[glib::derived_properties]
-<a href=#1474 id=1474 data-nosnippet>1474</a>/// impl ObjectImpl for CustomObject
-<a href=#1475 id=1475 data-nosnippet>1475</a>/// ```
-<a href=#1476 id=1476 data-nosnippet>1476</a>/// this macro generates
-<a href=#1477 id=1477 data-nosnippet>1477</a>/// ```ignore
-<a href=#1478 id=1478 data-nosnippet>1478</a>/// impl ObjectImpl for CustomObject {
-<a href=#1479 id=1479 data-nosnippet>1479</a>///     fn properties() -&gt; &amp;'static [glib::ParamSpec] {
-<a href=#1480 id=1480 data-nosnippet>1480</a>///         Self::derived_properties()
-<a href=#1481 id=1481 data-nosnippet>1481</a>///     }
-<a href=#1482 id=1482 data-nosnippet>1482</a>///     fn set_property(&amp;self, id: usize, value: &amp;glib::Value, pspec: &amp;glib::ParamSpec) {
-<a href=#1483 id=1483 data-nosnippet>1483</a>///         self.derived_set_property(id, value, pspec)
-<a href=#1484 id=1484 data-nosnippet>1484</a>///     }
-<a href=#1485 id=1485 data-nosnippet>1485</a>///     fn property(&amp;self, id: usize, pspec: &amp;glib::ParamSpec) -&gt; glib::Value {
-<a href=#1486 id=1486 data-nosnippet>1486</a>///         self.derived_property(id, pspec)
-<a href=#1487 id=1487 data-nosnippet>1487</a>///     }
-<a href=#1488 id=1488 data-nosnippet>1488</a>/// }
-<a href=#1489 id=1489 data-nosnippet>1489</a>/// ```
-<a href=#1490 id=1490 data-nosnippet>1490</a></span><span class="attr">#[proc_macro_attribute]
-<a href=#1491 id=1491 data-nosnippet>1491</a></span><span class="kw">pub fn </span><a href="../../glib_macros/attr.derived_properties.html">derived_properties</a>(_attr: <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a>, item: <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a> {
-<a href=#1492 id=1492 data-nosnippet>1492</a>    <a href="https://docs.rs/syn/2.0.101/syn/fn.parse.html">syn::parse</a>::&lt;<a href="https://docs.rs/syn/2.0.101/syn/item/struct.ItemImpl.html">syn::ItemImpl</a>&gt;(<a href="#1491">item</a>)
-<a href=#1493 id=1493 data-nosnippet>1493</a>        .<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.map_err">map_err</a>(|<span class="kw">_</span>| {
-<a href=#1494 id=1494 data-nosnippet>1494</a>            <a href="https://docs.rs/syn/2.0.101/syn/error/struct.Error.html#method.new">syn::Error::new</a>(
-<a href=#1495 id=1495 data-nosnippet>1495</a>                <a href="https://docs.rs/proc-macro2/1.0.95/proc_macro2/struct.Span.html#method.call_site">Span::call_site</a>(),
-<a href=#1496 id=1496 data-nosnippet>1496</a>                <a href="derived_properties_attribute.rs.html#6-7">derived_properties_attribute::WRONG_PLACE_MSG</a>,
-<a href=#1497 id=1497 data-nosnippet>1497</a>            )
-<a href=#1498 id=1498 data-nosnippet>1498</a>        })
-<a href=#1499 id=1499 data-nosnippet>1499</a>        .<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.and_then">and_then</a>(|input| <a href="derived_properties_attribute.rs.html#9-75">derived_properties_attribute::impl_derived_properties</a>(<span class="kw-2">&amp;</span><a href="#1499">input</a>))
-<a href=#1500 id=1500 data-nosnippet>1500</a>        .<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap_or_else">unwrap_or_else</a>(syn::Error::into_compile_error)
-<a href=#1501 id=1501 data-nosnippet>1501</a>        .<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>()
-<a href=#1502 id=1502 data-nosnippet>1502</a>}
-<a href=#1503 id=1503 data-nosnippet>1503</a>
-<a href=#1504 id=1504 data-nosnippet>1504</a><span class="doccomment">/// # Example
-<a href=#1505 id=1505 data-nosnippet>1505</a>/// ```
-<a href=#1506 id=1506 data-nosnippet>1506</a>/// use glib::prelude::*;
-<a href=#1507 id=1507 data-nosnippet>1507</a>/// use glib::ValueDelegate;
-<a href=#1508 id=1508 data-nosnippet>1508</a>///
-<a href=#1509 id=1509 data-nosnippet>1509</a>/// #[derive(ValueDelegate, Debug, PartialEq)]
-<a href=#1510 id=1510 data-nosnippet>1510</a>/// struct MyInt(i32);
-<a href=#1511 id=1511 data-nosnippet>1511</a>///
-<a href=#1512 id=1512 data-nosnippet>1512</a>/// let myv = MyInt(2);
-<a href=#1513 id=1513 data-nosnippet>1513</a>/// let convertedv = myv.to_value();
-<a href=#1514 id=1514 data-nosnippet>1514</a>/// assert_eq!(convertedv.get::&lt;MyInt&gt;(), Ok(myv));
-<a href=#1515 id=1515 data-nosnippet>1515</a>///
-<a href=#1516 id=1516 data-nosnippet>1516</a>///
-<a href=#1517 id=1517 data-nosnippet>1517</a>/// #[derive(ValueDelegate, Debug, PartialEq)]
-<a href=#1518 id=1518 data-nosnippet>1518</a>/// #[value_delegate(from = u32)]
-<a href=#1519 id=1519 data-nosnippet>1519</a>/// enum MyEnum {
-<a href=#1520 id=1520 data-nosnippet>1520</a>///     Zero,
-<a href=#1521 id=1521 data-nosnippet>1521</a>///     NotZero(u32)
-<a href=#1522 id=1522 data-nosnippet>1522</a>/// }
+<a href=#1439 id=1439 data-nosnippet>1439</a>///     
+<a href=#1440 id=1440 data-nosnippet>1440</a>///     #[glib::derived_properties]
+<a href=#1441 id=1441 data-nosnippet>1441</a>///     impl ObjectImpl for Foo {}
+<a href=#1442 id=1442 data-nosnippet>1442</a>///
+<a href=#1443 id=1443 data-nosnippet>1443</a>///     #[glib::object_subclass]
+<a href=#1444 id=1444 data-nosnippet>1444</a>///     impl ObjectSubclass for Foo {
+<a href=#1445 id=1445 data-nosnippet>1445</a>///         const NAME: &amp;'static str = "MyFoo";
+<a href=#1446 id=1446 data-nosnippet>1446</a>///         type Type = super::Foo;
+<a href=#1447 id=1447 data-nosnippet>1447</a>///     }
+<a href=#1448 id=1448 data-nosnippet>1448</a>///
+<a href=#1449 id=1449 data-nosnippet>1449</a>///     impl Foo {
+<a href=#1450 id=1450 data-nosnippet>1450</a>///         fn set_fizz(&amp;self, value: String) {
+<a href=#1451 id=1451 data-nosnippet>1451</a>///             *self.fizz.borrow_mut() = format!("custom set: {}", value);
+<a href=#1452 id=1452 data-nosnippet>1452</a>///         }
+<a href=#1453 id=1453 data-nosnippet>1453</a>///     }
+<a href=#1454 id=1454 data-nosnippet>1454</a>/// }
+<a href=#1455 id=1455 data-nosnippet>1455</a>///
+<a href=#1456 id=1456 data-nosnippet>1456</a>/// glib::wrapper! {
+<a href=#1457 id=1457 data-nosnippet>1457</a>///     pub struct Foo(ObjectSubclass&lt;imp::Foo&gt;);
+<a href=#1458 id=1458 data-nosnippet>1458</a>/// }
+<a href=#1459 id=1459 data-nosnippet>1459</a>///
+<a href=#1460 id=1460 data-nosnippet>1460</a>/// fn main() {
+<a href=#1461 id=1461 data-nosnippet>1461</a>///   let myfoo: Foo = glib::object::Object::new();
+<a href=#1462 id=1462 data-nosnippet>1462</a>///
+<a href=#1463 id=1463 data-nosnippet>1463</a>///   myfoo.set_fizz("test value");
+<a href=#1464 id=1464 data-nosnippet>1464</a>///   assert_eq!(myfoo.fizz(), "custom set: test value".to_string());
+<a href=#1465 id=1465 data-nosnippet>1465</a>/// }
+<a href=#1466 id=1466 data-nosnippet>1466</a>/// ```
+<a href=#1467 id=1467 data-nosnippet>1467</a>///
+<a href=#1468 id=1468 data-nosnippet>1468</a>/// [`Property`]: ../glib/property/trait.Property.html
+<a href=#1469 id=1469 data-nosnippet>1469</a>/// [`PropertyGet`]: ../glib/property/trait.PropertyGet.html
+<a href=#1470 id=1470 data-nosnippet>1470</a>/// [`PropertyGet::get`]: ../glib/property/trait.PropertyGet.html#tymethod.get
+<a href=#1471 id=1471 data-nosnippet>1471</a>/// [`PropertySet`]: ../glib/property/trait.PropertySet.html
+<a href=#1472 id=1472 data-nosnippet>1472</a>/// [`PropertySet::set`]: ../glib/property/trait.PropertySet.html#tymethod.set
+<a href=#1473 id=1473 data-nosnippet>1473</a>/// [`PropertySetNested`]: ../glib/property/trait.PropertySetNested.html
+<a href=#1474 id=1474 data-nosnippet>1474</a>/// [`ObjectExt::property`]: ../glib/object/trait.ObjectExt.html#tymethod.property
+<a href=#1475 id=1475 data-nosnippet>1475</a>/// [HasParamSpec]: ../glib/trait.HasParamSpec.html
+<a href=#1476 id=1476 data-nosnippet>1476</a>/// [`ParamSpec`]: ../glib/struct.ParamSpec.html
+<a href=#1477 id=1477 data-nosnippet>1477</a>/// [`ToValueOptional`]: ../glib/value/trait.ToValueOptional.html
+<a href=#1478 id=1478 data-nosnippet>1478</a>/// [ToValue]: ../glib/value/trait.ToValue.html
+<a href=#1479 id=1479 data-nosnippet>1479</a></span><span class="attr">#[allow(clippy::needless_doctest_main)]
+<a href=#1480 id=1480 data-nosnippet>1480</a>#[proc_macro_derive(Properties, attributes(properties, property))]
+<a href=#1481 id=1481 data-nosnippet>1481</a></span><span class="kw">pub fn </span><a href="../../glib_macros/derive.Properties.html">derive_props</a>(input: <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a> {
+<a href=#1482 id=1482 data-nosnippet>1482</a>    <span class="kw">let </span>input = <a class="macro" href="https://docs.rs/syn/2.0.101/syn/macro.parse_macro_input.html">parse_macro_input!</a>(input <span class="kw">as </span>properties::PropsMacroInput);
+<a href=#1483 id=1483 data-nosnippet>1483</a>    <a href="properties.rs.html#777-835">properties::impl_derive_props</a>(<a href="#1482">input</a>)
+<a href=#1484 id=1484 data-nosnippet>1484</a>}
+<a href=#1485 id=1485 data-nosnippet>1485</a>
+<a href=#1486 id=1486 data-nosnippet>1486</a><span class="doccomment">/// When applied to `ObjectImpl`
+<a href=#1487 id=1487 data-nosnippet>1487</a>/// ```ignore
+<a href=#1488 id=1488 data-nosnippet>1488</a>/// #[glib::derived_properties]
+<a href=#1489 id=1489 data-nosnippet>1489</a>/// impl ObjectImpl for CustomObject
+<a href=#1490 id=1490 data-nosnippet>1490</a>/// ```
+<a href=#1491 id=1491 data-nosnippet>1491</a>/// this macro generates
+<a href=#1492 id=1492 data-nosnippet>1492</a>/// ```ignore
+<a href=#1493 id=1493 data-nosnippet>1493</a>/// impl ObjectImpl for CustomObject {
+<a href=#1494 id=1494 data-nosnippet>1494</a>///     fn properties() -&gt; &amp;'static [glib::ParamSpec] {
+<a href=#1495 id=1495 data-nosnippet>1495</a>///         Self::derived_properties()
+<a href=#1496 id=1496 data-nosnippet>1496</a>///     }
+<a href=#1497 id=1497 data-nosnippet>1497</a>///     fn set_property(&amp;self, id: usize, value: &amp;glib::Value, pspec: &amp;glib::ParamSpec) {
+<a href=#1498 id=1498 data-nosnippet>1498</a>///         self.derived_set_property(id, value, pspec)
+<a href=#1499 id=1499 data-nosnippet>1499</a>///     }
+<a href=#1500 id=1500 data-nosnippet>1500</a>///     fn property(&amp;self, id: usize, pspec: &amp;glib::ParamSpec) -&gt; glib::Value {
+<a href=#1501 id=1501 data-nosnippet>1501</a>///         self.derived_property(id, pspec)
+<a href=#1502 id=1502 data-nosnippet>1502</a>///     }
+<a href=#1503 id=1503 data-nosnippet>1503</a>/// }
+<a href=#1504 id=1504 data-nosnippet>1504</a>/// ```
+<a href=#1505 id=1505 data-nosnippet>1505</a></span><span class="attr">#[proc_macro_attribute]
+<a href=#1506 id=1506 data-nosnippet>1506</a></span><span class="kw">pub fn </span><a href="../../glib_macros/attr.derived_properties.html">derived_properties</a>(_attr: <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a>, item: <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a> {
+<a href=#1507 id=1507 data-nosnippet>1507</a>    <a href="https://docs.rs/syn/2.0.101/syn/fn.parse.html">syn::parse</a>::&lt;<a href="https://docs.rs/syn/2.0.101/syn/item/struct.ItemImpl.html">syn::ItemImpl</a>&gt;(<a href="#1506">item</a>)
+<a href=#1508 id=1508 data-nosnippet>1508</a>        .<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.map_err">map_err</a>(|<span class="kw">_</span>| {
+<a href=#1509 id=1509 data-nosnippet>1509</a>            <a href="https://docs.rs/syn/2.0.101/syn/error/struct.Error.html#method.new">syn::Error::new</a>(
+<a href=#1510 id=1510 data-nosnippet>1510</a>                <a href="https://docs.rs/proc-macro2/1.0.95/proc_macro2/struct.Span.html#method.call_site">Span::call_site</a>(),
+<a href=#1511 id=1511 data-nosnippet>1511</a>                <a href="derived_properties_attribute.rs.html#6-7">derived_properties_attribute::WRONG_PLACE_MSG</a>,
+<a href=#1512 id=1512 data-nosnippet>1512</a>            )
+<a href=#1513 id=1513 data-nosnippet>1513</a>        })
+<a href=#1514 id=1514 data-nosnippet>1514</a>        .<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.and_then">and_then</a>(|input| <a href="derived_properties_attribute.rs.html#9-75">derived_properties_attribute::impl_derived_properties</a>(<span class="kw-2">&amp;</span><a href="#1514">input</a>))
+<a href=#1515 id=1515 data-nosnippet>1515</a>        .<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap_or_else">unwrap_or_else</a>(syn::Error::into_compile_error)
+<a href=#1516 id=1516 data-nosnippet>1516</a>        .<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>()
+<a href=#1517 id=1517 data-nosnippet>1517</a>}
+<a href=#1518 id=1518 data-nosnippet>1518</a>
+<a href=#1519 id=1519 data-nosnippet>1519</a><span class="doccomment">/// # Example
+<a href=#1520 id=1520 data-nosnippet>1520</a>/// ```
+<a href=#1521 id=1521 data-nosnippet>1521</a>/// use glib::prelude::*;
+<a href=#1522 id=1522 data-nosnippet>1522</a>/// use glib::ValueDelegate;
 <a href=#1523 id=1523 data-nosnippet>1523</a>///
-<a href=#1524 id=1524 data-nosnippet>1524</a>/// impl From&lt;u32&gt; for MyEnum {
-<a href=#1525 id=1525 data-nosnippet>1525</a>///     fn from(v: u32) -&gt; Self {
-<a href=#1526 id=1526 data-nosnippet>1526</a>///         match v {
-<a href=#1527 id=1527 data-nosnippet>1527</a>///             0 =&gt; MyEnum::Zero,
-<a href=#1528 id=1528 data-nosnippet>1528</a>///             x =&gt; MyEnum::NotZero(x)
-<a href=#1529 id=1529 data-nosnippet>1529</a>///         }
-<a href=#1530 id=1530 data-nosnippet>1530</a>///     }
-<a href=#1531 id=1531 data-nosnippet>1531</a>/// }
-<a href=#1532 id=1532 data-nosnippet>1532</a>/// impl&lt;'a&gt; From&lt;&amp;'a MyEnum&gt; for u32 {
-<a href=#1533 id=1533 data-nosnippet>1533</a>///     fn from(v: &amp;'a MyEnum) -&gt; Self {
-<a href=#1534 id=1534 data-nosnippet>1534</a>///         match v {
-<a href=#1535 id=1535 data-nosnippet>1535</a>///             MyEnum::Zero =&gt; 0,
-<a href=#1536 id=1536 data-nosnippet>1536</a>///             MyEnum::NotZero(x) =&gt; *x
-<a href=#1537 id=1537 data-nosnippet>1537</a>///         }
-<a href=#1538 id=1538 data-nosnippet>1538</a>///     }
-<a href=#1539 id=1539 data-nosnippet>1539</a>/// }
-<a href=#1540 id=1540 data-nosnippet>1540</a>/// impl From&lt;MyEnum&gt; for u32 {
-<a href=#1541 id=1541 data-nosnippet>1541</a>///     fn from(v: MyEnum) -&gt; Self {
-<a href=#1542 id=1542 data-nosnippet>1542</a>///         match v {
-<a href=#1543 id=1543 data-nosnippet>1543</a>///             MyEnum::Zero =&gt; 0,
-<a href=#1544 id=1544 data-nosnippet>1544</a>///             MyEnum::NotZero(x) =&gt; x
-<a href=#1545 id=1545 data-nosnippet>1545</a>///         }
-<a href=#1546 id=1546 data-nosnippet>1546</a>///     }
-<a href=#1547 id=1547 data-nosnippet>1547</a>/// }
-<a href=#1548 id=1548 data-nosnippet>1548</a>///
-<a href=#1549 id=1549 data-nosnippet>1549</a>/// let myv = MyEnum::NotZero(34);
-<a href=#1550 id=1550 data-nosnippet>1550</a>/// let convertedv = myv.to_value();
-<a href=#1551 id=1551 data-nosnippet>1551</a>/// assert_eq!(convertedv.get::&lt;MyEnum&gt;(), Ok(myv));
-<a href=#1552 id=1552 data-nosnippet>1552</a>///
-<a href=#1553 id=1553 data-nosnippet>1553</a>///
-<a href=#1554 id=1554 data-nosnippet>1554</a>/// // If you want your type to be usable inside an `Option`, you can derive `ToValueOptional`
-<a href=#1555 id=1555 data-nosnippet>1555</a>/// // by adding `nullable` as follows
-<a href=#1556 id=1556 data-nosnippet>1556</a>/// #[derive(ValueDelegate, Debug, PartialEq)]
-<a href=#1557 id=1557 data-nosnippet>1557</a>/// #[value_delegate(nullable)]
-<a href=#1558 id=1558 data-nosnippet>1558</a>/// struct MyString(String);
-<a href=#1559 id=1559 data-nosnippet>1559</a>///
-<a href=#1560 id=1560 data-nosnippet>1560</a>/// let myv = Some(MyString("Hello world".to_string()));
-<a href=#1561 id=1561 data-nosnippet>1561</a>/// let convertedv = myv.to_value();
-<a href=#1562 id=1562 data-nosnippet>1562</a>/// assert_eq!(convertedv.get::&lt;Option&lt;MyString&gt;&gt;(), Ok(myv));
-<a href=#1563 id=1563 data-nosnippet>1563</a>/// let convertedv = None::&lt;MyString&gt;.to_value();
-<a href=#1564 id=1564 data-nosnippet>1564</a>/// assert_eq!(convertedv.get::&lt;Option&lt;MyString&gt;&gt;(), Ok(None::&lt;MyString&gt;));
-<a href=#1565 id=1565 data-nosnippet>1565</a>/// ```
-<a href=#1566 id=1566 data-nosnippet>1566</a></span><span class="attr">#[proc_macro_derive(ValueDelegate, attributes(value_delegate))]
-<a href=#1567 id=1567 data-nosnippet>1567</a></span><span class="kw">pub fn </span><a href="../../glib_macros/derive.ValueDelegate.html">derive_value_delegate</a>(input: <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a> {
-<a href=#1568 id=1568 data-nosnippet>1568</a>    <span class="kw">let </span>input = <a class="macro" href="https://docs.rs/syn/2.0.101/syn/macro.parse_macro_input.html">parse_macro_input!</a>(input <span class="kw">as </span>value_delegate_derive::ValueDelegateInput);
-<a href=#1569 id=1569 data-nosnippet>1569</a>    <a href="value_delegate_derive.rs.html#114-200">value_delegate_derive::impl_value_delegate</a>(<a href="#1568">input</a>).<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>()
-<a href=#1570 id=1570 data-nosnippet>1570</a>}
-<a href=#1571 id=1571 data-nosnippet>1571</a>
-<a href=#1572 id=1572 data-nosnippet>1572</a><span class="doccomment">/// An attribute macro for writing asynchronous test functions.
-<a href=#1573 id=1573 data-nosnippet>1573</a>///
-<a href=#1574 id=1574 data-nosnippet>1574</a>/// This macro is designed to wrap an asynchronous test function and ensure that
-<a href=#1575 id=1575 data-nosnippet>1575</a>/// it runs within a `glib::MainContext`. It helps in writing async tests that
-<a href=#1576 id=1576 data-nosnippet>1576</a>/// require the use of an event loop for the asynchronous execution.
-<a href=#1577 id=1577 data-nosnippet>1577</a>///
-<a href=#1578 id=1578 data-nosnippet>1578</a>/// # Example
-<a href=#1579 id=1579 data-nosnippet>1579</a>///
+<a href=#1524 id=1524 data-nosnippet>1524</a>/// #[derive(ValueDelegate, Debug, PartialEq)]
+<a href=#1525 id=1525 data-nosnippet>1525</a>/// struct MyInt(i32);
+<a href=#1526 id=1526 data-nosnippet>1526</a>///
+<a href=#1527 id=1527 data-nosnippet>1527</a>/// let myv = MyInt(2);
+<a href=#1528 id=1528 data-nosnippet>1528</a>/// let convertedv = myv.to_value();
+<a href=#1529 id=1529 data-nosnippet>1529</a>/// assert_eq!(convertedv.get::&lt;MyInt&gt;(), Ok(myv));
+<a href=#1530 id=1530 data-nosnippet>1530</a>///
+<a href=#1531 id=1531 data-nosnippet>1531</a>///
+<a href=#1532 id=1532 data-nosnippet>1532</a>/// #[derive(ValueDelegate, Debug, PartialEq)]
+<a href=#1533 id=1533 data-nosnippet>1533</a>/// #[value_delegate(from = u32)]
+<a href=#1534 id=1534 data-nosnippet>1534</a>/// enum MyEnum {
+<a href=#1535 id=1535 data-nosnippet>1535</a>///     Zero,
+<a href=#1536 id=1536 data-nosnippet>1536</a>///     NotZero(u32)
+<a href=#1537 id=1537 data-nosnippet>1537</a>/// }
+<a href=#1538 id=1538 data-nosnippet>1538</a>///
+<a href=#1539 id=1539 data-nosnippet>1539</a>/// impl From&lt;u32&gt; for MyEnum {
+<a href=#1540 id=1540 data-nosnippet>1540</a>///     fn from(v: u32) -&gt; Self {
+<a href=#1541 id=1541 data-nosnippet>1541</a>///         match v {
+<a href=#1542 id=1542 data-nosnippet>1542</a>///             0 =&gt; MyEnum::Zero,
+<a href=#1543 id=1543 data-nosnippet>1543</a>///             x =&gt; MyEnum::NotZero(x)
+<a href=#1544 id=1544 data-nosnippet>1544</a>///         }
+<a href=#1545 id=1545 data-nosnippet>1545</a>///     }
+<a href=#1546 id=1546 data-nosnippet>1546</a>/// }
+<a href=#1547 id=1547 data-nosnippet>1547</a>/// impl&lt;'a&gt; From&lt;&amp;'a MyEnum&gt; for u32 {
+<a href=#1548 id=1548 data-nosnippet>1548</a>///     fn from(v: &amp;'a MyEnum) -&gt; Self {
+<a href=#1549 id=1549 data-nosnippet>1549</a>///         match v {
+<a href=#1550 id=1550 data-nosnippet>1550</a>///             MyEnum::Zero =&gt; 0,
+<a href=#1551 id=1551 data-nosnippet>1551</a>///             MyEnum::NotZero(x) =&gt; *x
+<a href=#1552 id=1552 data-nosnippet>1552</a>///         }
+<a href=#1553 id=1553 data-nosnippet>1553</a>///     }
+<a href=#1554 id=1554 data-nosnippet>1554</a>/// }
+<a href=#1555 id=1555 data-nosnippet>1555</a>/// impl From&lt;MyEnum&gt; for u32 {
+<a href=#1556 id=1556 data-nosnippet>1556</a>///     fn from(v: MyEnum) -&gt; Self {
+<a href=#1557 id=1557 data-nosnippet>1557</a>///         match v {
+<a href=#1558 id=1558 data-nosnippet>1558</a>///             MyEnum::Zero =&gt; 0,
+<a href=#1559 id=1559 data-nosnippet>1559</a>///             MyEnum::NotZero(x) =&gt; x
+<a href=#1560 id=1560 data-nosnippet>1560</a>///         }
+<a href=#1561 id=1561 data-nosnippet>1561</a>///     }
+<a href=#1562 id=1562 data-nosnippet>1562</a>/// }
+<a href=#1563 id=1563 data-nosnippet>1563</a>///
+<a href=#1564 id=1564 data-nosnippet>1564</a>/// let myv = MyEnum::NotZero(34);
+<a href=#1565 id=1565 data-nosnippet>1565</a>/// let convertedv = myv.to_value();
+<a href=#1566 id=1566 data-nosnippet>1566</a>/// assert_eq!(convertedv.get::&lt;MyEnum&gt;(), Ok(myv));
+<a href=#1567 id=1567 data-nosnippet>1567</a>///
+<a href=#1568 id=1568 data-nosnippet>1568</a>///
+<a href=#1569 id=1569 data-nosnippet>1569</a>/// // If you want your type to be usable inside an `Option`, you can derive `ToValueOptional`
+<a href=#1570 id=1570 data-nosnippet>1570</a>/// // by adding `nullable` as follows
+<a href=#1571 id=1571 data-nosnippet>1571</a>/// #[derive(ValueDelegate, Debug, PartialEq)]
+<a href=#1572 id=1572 data-nosnippet>1572</a>/// #[value_delegate(nullable)]
+<a href=#1573 id=1573 data-nosnippet>1573</a>/// struct MyString(String);
+<a href=#1574 id=1574 data-nosnippet>1574</a>///
+<a href=#1575 id=1575 data-nosnippet>1575</a>/// let myv = Some(MyString("Hello world".to_string()));
+<a href=#1576 id=1576 data-nosnippet>1576</a>/// let convertedv = myv.to_value();
+<a href=#1577 id=1577 data-nosnippet>1577</a>/// assert_eq!(convertedv.get::&lt;Option&lt;MyString&gt;&gt;(), Ok(myv));
+<a href=#1578 id=1578 data-nosnippet>1578</a>/// let convertedv = None::&lt;MyString&gt;.to_value();
+<a href=#1579 id=1579 data-nosnippet>1579</a>/// assert_eq!(convertedv.get::&lt;Option&lt;MyString&gt;&gt;(), Ok(None::&lt;MyString&gt;));
 <a href=#1580 id=1580 data-nosnippet>1580</a>/// ```
-<a href=#1581 id=1581 data-nosnippet>1581</a>/// #[glib::async_test]
-<a href=#1582 id=1582 data-nosnippet>1582</a>/// async fn my_async_test() {
-<a href=#1583 id=1583 data-nosnippet>1583</a>///     // Test code that runs asynchronously
-<a href=#1584 id=1584 data-nosnippet>1584</a>/// }
-<a href=#1585 id=1585 data-nosnippet>1585</a>/// ```
-<a href=#1586 id=1586 data-nosnippet>1586</a></span><span class="attr">#[proc_macro_attribute]
-<a href=#1587 id=1587 data-nosnippet>1587</a></span><span class="kw">pub fn </span><a href="../../glib_macros/attr.async_test.html">async_test</a>(args: <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a>, item: <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a> {
-<a href=#1588 id=1588 data-nosnippet>1588</a>    <a href="async_test.rs.html#6-47">async_test::async_test</a>(<a href="#1587">args</a>, <a href="#1587">item</a>)
-<a href=#1589 id=1589 data-nosnippet>1589</a>}</code></pre></div></section></main></body></html>
+<a href=#1581 id=1581 data-nosnippet>1581</a></span><span class="attr">#[proc_macro_derive(ValueDelegate, attributes(value_delegate))]
+<a href=#1582 id=1582 data-nosnippet>1582</a></span><span class="kw">pub fn </span><a href="../../glib_macros/derive.ValueDelegate.html">derive_value_delegate</a>(input: <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a> {
+<a href=#1583 id=1583 data-nosnippet>1583</a>    <span class="kw">let </span>input = <a class="macro" href="https://docs.rs/syn/2.0.101/syn/macro.parse_macro_input.html">parse_macro_input!</a>(input <span class="kw">as </span>value_delegate_derive::ValueDelegateInput);
+<a href=#1584 id=1584 data-nosnippet>1584</a>    <a href="value_delegate_derive.rs.html#114-200">value_delegate_derive::impl_value_delegate</a>(<a href="#1583">input</a>).<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>()
+<a href=#1585 id=1585 data-nosnippet>1585</a>}
+<a href=#1586 id=1586 data-nosnippet>1586</a>
+<a href=#1587 id=1587 data-nosnippet>1587</a><span class="doccomment">/// An attribute macro for writing asynchronous test functions.
+<a href=#1588 id=1588 data-nosnippet>1588</a>///
+<a href=#1589 id=1589 data-nosnippet>1589</a>/// This macro is designed to wrap an asynchronous test function and ensure that
+<a href=#1590 id=1590 data-nosnippet>1590</a>/// it runs within a `glib::MainContext`. It helps in writing async tests that
+<a href=#1591 id=1591 data-nosnippet>1591</a>/// require the use of an event loop for the asynchronous execution.
+<a href=#1592 id=1592 data-nosnippet>1592</a>///
+<a href=#1593 id=1593 data-nosnippet>1593</a>/// # Example
+<a href=#1594 id=1594 data-nosnippet>1594</a>///
+<a href=#1595 id=1595 data-nosnippet>1595</a>/// ```
+<a href=#1596 id=1596 data-nosnippet>1596</a>/// #[glib::async_test]
+<a href=#1597 id=1597 data-nosnippet>1597</a>/// async fn my_async_test() {
+<a href=#1598 id=1598 data-nosnippet>1598</a>///     // Test code that runs asynchronously
+<a href=#1599 id=1599 data-nosnippet>1599</a>/// }
+<a href=#1600 id=1600 data-nosnippet>1600</a>/// ```
+<a href=#1601 id=1601 data-nosnippet>1601</a></span><span class="attr">#[proc_macro_attribute]
+<a href=#1602 id=1602 data-nosnippet>1602</a></span><span class="kw">pub fn </span><a href="../../glib_macros/attr.async_test.html">async_test</a>(args: <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a>, item: <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a> {
+<a href=#1603 id=1603 data-nosnippet>1603</a>    <a href="async_test.rs.html#6-47">async_test::async_test</a>(<a href="#1602">args</a>, <a href="#1602">item</a>)
+<a href=#1604 id=1604 data-nosnippet>1604</a>}</code></pre></div></section></main></body></html>

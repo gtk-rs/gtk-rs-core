@@ -71,7 +71,7 @@
 </script>
 
 
-<nav class="mobile-topbar"><button class="sidebar-menu-toggle" title="show sidebar"></button></nav><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../glib/index.html">glib</a><span class="version">0.21.0</span></h2></div><div class="sidebar-elems"><section id="rustdoc-toc"><h2 class="location"><a href="#">Properties</a></h2><h3><a href="#">Sections</a></h3><ul class="block top-toc"><li><a href="#supported-property-attributes" title="Supported `#[property]` attributes">Supported <code>#[property]</code> attributes</a><ul><li><a href="#using-rust-keywords-as-property-names" title="Using Rust keywords as property names">Using Rust keywords as property names</a></li></ul></li><li><a href="#generated-methods" title="Generated methods">Generated methods</a><ul><li><a href="#extension-trait" title="Extension trait">Extension trait</a></li></ul></li><li><a href="#internal-getters-and-setters" title="Internal getters and setters">Internal getters and setters</a></li><li><a href="#supported-types" title="Supported types">Supported types</a><ul><li><a href="#adding-support-for-custom-types" title="Adding support for custom types">Adding support for custom types</a></li></ul></li><li><a href="#example" title="Example">Example</a></li></ul></section><div id="rustdoc-modnav"><h2 class="in-crate"><a href="index.html">In crate glib</a></h2></div></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><div class="width-limiter"><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><div class="rustdoc-breadcrumbs"><a href="index.html">glib</a></div><h1>Derive Macro <span class="derive">Properties</span><button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><rustdoc-toolbar></rustdoc-toolbar><span class="sub-heading"><a class="src" href="../src/glib_macros/lib.rs.html#1466">Source</a> </span></div><pre class="rust item-decl"><code>#[derive(Properties)]
+<nav class="mobile-topbar"><button class="sidebar-menu-toggle" title="show sidebar"></button></nav><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../glib/index.html">glib</a><span class="version">0.21.0</span></h2></div><div class="sidebar-elems"><section id="rustdoc-toc"><h2 class="location"><a href="#">Properties</a></h2><h3><a href="#">Sections</a></h3><ul class="block top-toc"><li><a href="#supported-property-attributes" title="Supported `#[property]` attributes">Supported <code>#[property]</code> attributes</a><ul><li><a href="#using-rust-keywords-as-property-names" title="Using Rust keywords as property names">Using Rust keywords as property names</a></li></ul></li><li><a href="#generated-methods" title="Generated methods">Generated methods</a></li><li><a href="#documentation" title="Documentation">Documentation</a><ul><li><a href="#extension-trait" title="Extension trait">Extension trait</a></li></ul></li><li><a href="#internal-getters-and-setters" title="Internal getters and setters">Internal getters and setters</a></li><li><a href="#supported-types" title="Supported types">Supported types</a><ul><li><a href="#adding-support-for-custom-types" title="Adding support for custom types">Adding support for custom types</a></li></ul></li><li><a href="#example" title="Example">Example</a></li></ul></section><div id="rustdoc-modnav"><h2 class="in-crate"><a href="index.html">In crate glib</a></h2></div></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><div class="width-limiter"><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><div class="rustdoc-breadcrumbs"><a href="index.html">glib</a></div><h1>Derive Macro <span class="derive">Properties</span><button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><rustdoc-toolbar></rustdoc-toolbar><span class="sub-heading"><a class="src" href="../src/glib_macros/lib.rs.html#1481">Source</a> </span></div><pre class="rust item-decl"><code>#[derive(Properties)]
 {
     <span class="comment">// Attributes available to this derive:</span>
     #[properties]
@@ -105,6 +105,8 @@ To use those names, you can make use of the raw identifier feature of Rust. Simp
 <li><code>connect_$property_notify()</code></li>
 <li><code>notify_$property()</code></li>
 </ul>
+<h2 id="documentation"><a class="doc-anchor" href="#documentation">§</a>Documentation</h2>
+<p>Doc comments preceding a <code>#[property]</code> attribute will be copied to the generated getter and setter methods. You can specify different comments by the getter and setter by using <code># Getter</code> and <code># Setter</code> headings. The text under the header will be copied to the respective method.</p>
 <h3 id="extension-trait"><a class="doc-anchor" href="#extension-trait">§</a>Extension trait</h3>
 <p>You can choose to move the method definitions to a trait by using <code>#[properties(wrapper_type = super::MyType, ext_trait = MyTypePropertiesExt)]</code>.
 The trait name is optional, and defaults to <code>MyTypePropertiesExt</code>, where <code>MyType</code> is extracted from the wrapper type.
@@ -158,8 +160,10 @@ implement <code>HasParamSpec</code> on that type.</p>
     </span><span class="kw">pub struct </span>Foo {
         <span class="attr">#[property(get, set = <span class="self">Self</span>::set_fizz)]
         </span>fizz: RefCell&lt;String&gt;,
-        <span class="attr">#[property(name = <span class="string">"author-name"</span>, get, set, <span class="kw">type </span>= String, member = name)]
-        #[property(name = <span class="string">"author-nick"</span>, get, set, <span class="kw">type </span>= String, member = nick)]
+        <span class="doccomment">/// The author's name
+        </span><span class="attr">#[property(name = <span class="string">"author-name"</span>, get, set, <span class="kw">type </span>= String, member = name)]
+        </span><span class="doccomment">/// The author's childhood nickname
+        </span><span class="attr">#[property(name = <span class="string">"author-nick"</span>, get, set, <span class="kw">type </span>= String, member = nick)]
         </span>author: RefCell&lt;Author&gt;,
         <span class="attr">#[property(get, set, explicit_notify, lax_validation)]
         </span>custom_flags: RefCell&lt;String&gt;,
@@ -171,6 +175,15 @@ implement <code>HasParamSpec</code> on that type.</p>
         </span>optional: RefCell&lt;<span class="prelude-ty">Option</span>&lt;String&gt;&gt;,
         <span class="attr">#[property(get, set)]
         </span>smart_pointer: Rc&lt;RefCell&lt;String&gt;&gt;,
+        <span class="doccomment">/// # Getter
+        ///
+        /// Get the value of the property `extra_comments`
+        ///
+        /// # Setter
+        ///
+        /// This is the comment for the setter of the `extra_comments` field.
+        </span><span class="attr">#[property(get, set)]
+        </span>extra_comments: RefCell&lt;bool&gt;,
     }
      
     <span class="attr">#[glib::derived_properties]
