@@ -5,6 +5,9 @@ pub use libc::passwd;
 #[allow(unused_imports)]
 use libc::{c_char, c_int, c_ushort, c_void};
 
+pub use libc::c_int as gint;
+pub use libc::c_uint as guint;
+
 pub type GType = libc::size_t;
 
 #[cfg(all(not(unix), docsrs))]
