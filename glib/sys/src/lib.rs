@@ -6260,31 +6260,31 @@ extern "C" {
         expr: *const c_char,
     );
     pub fn g_atexit(func: GVoidFunc);
-    pub fn g_atomic_int_add(atomic: *mut c_int, val: c_int) -> c_int;
-    pub fn g_atomic_int_and(atomic: *mut c_uint, val: c_uint) -> c_uint;
+    pub fn g_atomic_int_add(atomic: *mut gint, val: c_int) -> c_int;
+    pub fn g_atomic_int_and(atomic: *mut guint, val: c_uint) -> c_uint;
     pub fn g_atomic_int_compare_and_exchange(
-        atomic: *mut c_int,
+        atomic: *mut gint,
         oldval: c_int,
         newval: c_int,
     ) -> gboolean;
     #[cfg(feature = "v2_74")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
     pub fn g_atomic_int_compare_and_exchange_full(
-        atomic: *mut c_int,
+        atomic: *mut gint,
         oldval: c_int,
         newval: c_int,
         preval: *mut c_int,
     ) -> gboolean;
-    pub fn g_atomic_int_dec_and_test(atomic: *mut c_int) -> gboolean;
+    pub fn g_atomic_int_dec_and_test(atomic: *mut gint) -> gboolean;
     #[cfg(feature = "v2_74")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
-    pub fn g_atomic_int_exchange(atomic: *mut c_int, newval: c_int) -> c_int;
-    pub fn g_atomic_int_exchange_and_add(atomic: *mut c_int, val: c_int) -> c_int;
-    pub fn g_atomic_int_get(atomic: *const c_int) -> c_int;
-    pub fn g_atomic_int_inc(atomic: *mut c_int);
-    pub fn g_atomic_int_or(atomic: *mut c_uint, val: c_uint) -> c_uint;
-    pub fn g_atomic_int_set(atomic: *mut c_int, newval: c_int);
-    pub fn g_atomic_int_xor(atomic: *mut c_uint, val: c_uint) -> c_uint;
+    pub fn g_atomic_int_exchange(atomic: *mut gint, newval: c_int) -> c_int;
+    pub fn g_atomic_int_exchange_and_add(atomic: *mut gint, val: c_int) -> c_int;
+    pub fn g_atomic_int_get(atomic: *const volatile) -> c_int;
+    pub fn g_atomic_int_inc(atomic: *mut gint);
+    pub fn g_atomic_int_or(atomic: *mut guint, val: c_uint) -> c_uint;
+    pub fn g_atomic_int_set(atomic: *mut gint, newval: c_int);
+    pub fn g_atomic_int_xor(atomic: *mut guint, val: c_uint) -> c_uint;
     pub fn g_atomic_pointer_add(atomic: *mut c_void, val: ssize_t) -> intptr_t;
     pub fn g_atomic_pointer_and(atomic: *mut c_void, val: size_t) -> uintptr_t;
     pub fn g_atomic_pointer_compare_and_exchange(
@@ -6365,19 +6365,19 @@ extern "C" {
         save: *mut c_int,
     ) -> size_t;
     pub fn g_basename(file_name: *const c_char) -> *const c_char;
-    pub fn g_bit_lock(address: *mut c_int, lock_bit: c_int);
+    pub fn g_bit_lock(address: *mut gint, lock_bit: c_int);
     #[cfg(feature = "v2_86")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_86")))]
-    pub fn g_bit_lock_and_get(address: *mut c_int, lock_bit: c_uint, out_val: *mut c_int);
+    pub fn g_bit_lock_and_get(address: *mut gint, lock_bit: c_uint, out_val: *mut c_int);
     pub fn g_bit_nth_lsf(mask: c_ulong, nth_bit: c_int) -> c_int;
     pub fn g_bit_nth_msf(mask: c_ulong, nth_bit: c_int) -> c_int;
     pub fn g_bit_storage(number: c_ulong) -> c_uint;
-    pub fn g_bit_trylock(address: *mut c_int, lock_bit: c_int) -> gboolean;
-    pub fn g_bit_unlock(address: *mut c_int, lock_bit: c_int);
+    pub fn g_bit_trylock(address: *mut gint, lock_bit: c_int) -> gboolean;
+    pub fn g_bit_unlock(address: *mut gint, lock_bit: c_int);
     #[cfg(feature = "v2_86")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_86")))]
     pub fn g_bit_unlock_and_set(
-        address: *mut c_int,
+        address: *mut gint,
         lock_bit: c_uint,
         new_val: c_int,
         preserve_mask: c_int,
