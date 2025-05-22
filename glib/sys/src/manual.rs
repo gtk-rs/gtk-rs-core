@@ -120,3 +120,7 @@ mod win32 {
         pub fn g_win32_get_windows_version() -> c_uint;
     }
 }
+
+extern "C" {
+    pub fn g_atomic_int_get(atomic: *const c_int) -> c_int;
+}

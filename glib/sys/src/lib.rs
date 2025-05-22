@@ -6280,7 +6280,6 @@ extern "C" {
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
     pub fn g_atomic_int_exchange(atomic: *mut gint, newval: c_int) -> c_int;
     pub fn g_atomic_int_exchange_and_add(atomic: *mut gint, val: c_int) -> c_int;
-    pub fn g_atomic_int_get(atomic: *const volatile) -> c_int;
     pub fn g_atomic_int_inc(atomic: *mut gint);
     pub fn g_atomic_int_or(atomic: *mut guint, val: c_uint) -> c_uint;
     pub fn g_atomic_int_set(atomic: *mut gint, newval: c_int);
