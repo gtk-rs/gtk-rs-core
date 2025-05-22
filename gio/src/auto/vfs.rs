@@ -38,11 +38,11 @@ unsafe impl Sync for Vfs {}
 pub trait VfsExt: IsA<Vfs> + 'static {
     #[doc(alias = "g_vfs_get_file_for_path")]
     #[doc(alias = "get_file_for_path")]
-    fn file_for_path(&self, path: &str) -> File {
+    fn file_for_path(&self, path: impl AsRef<std::path::Path>) -> File {
         unsafe {
             from_glib_full(ffi::g_vfs_get_file_for_path(
                 self.as_ref().to_glib_none().0,
-                path.to_glib_none().0,
+                path.as_ref().to_glib_none().0,
             ))
         }
     }
