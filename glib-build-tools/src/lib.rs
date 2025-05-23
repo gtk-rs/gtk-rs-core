@@ -2,12 +2,7 @@
 
 #![doc = include_str!("../README.md")]
 
-use gio::glib;
-use std::{
-    env,
-    path::{Path, PathBuf},
-    process::Command,
-};
+use std::{env, path::Path, process::Command};
 
 // rustdoc-stripper-ignore-next
 /// Call to run `glib-compile-resources` to generate compiled gresources to embed
@@ -65,35 +60,26 @@ pub fn compile_resources<P: AsRef<Path>>(source_dirs: &[P], gresource: &str, tar
 
 // rustdoc-stripper-ignore-next
 /// Call to run `glib-compile-schemas` to generate compiled gschemas from `.gschema.xml` schemas
-/// files from specified directories and store `gschemas.compiled` into `glib-2.0` schema cache
-/// directory.
-///
-/// If `target_dir` is `None`, the default schema cache directory is used:
-/// - Unix: `$HOME/.local/share/glib-2.0/schemas/`
-/// - Windows: `C:/ProgramData/glib-2.0/schemas/`
+/// files.
 ///
 /// ```no_run
 /// glib_build_tools::compile_schemas(
-///     &["schemas"],
-///     None
+///     &["schemas"]
 /// );
 /// ```
-pub fn compile_schemas(schemas_dir: &[&str], target_dir: Option<&str>) {
-    let target_dir = match target_dir {
-        Some(base) => PathBuf::from(base),
-        None => {
-            let prefix = if cfg!(windows) {
-                PathBuf::from("C:/ProgramData")
-            } else {
-                glib::user_data_dir()
-            };
+pub fn compile_schemas(schemas_dir: &[&str]) {
+    let out_dir = env::var("OUT_DIR").unwrap();
+    let out_dir = Path::new(&out_dir);
 
-            Path::new(&prefix).join("glib-2.0").join("schemas")
-        }
-    };
+    let target_dir = out_dir.join("gschemas");
 
     // Ensure target_dir exists
     std::fs::create_dir_all(&target_dir).expect("Failed to create target directory");
+
+    println!(
+        "cargo:rustc-env=GSETTINGS_SCHEMA_DIR={}",
+        target_dir.to_str().unwrap()
+    );
 
     // Recursively copy all files with .gschema.xml extension from schema_dir to target_dir
     for schema_dir in schemas_dir {
