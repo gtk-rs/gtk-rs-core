@@ -464,7 +464,7 @@ pub trait AppInfoExt: IsA<AppInfo> + 'static {
     #[doc(alias = "g_app_info_launch")]
     fn launch(
         &self,
-        files: &[File],
+        files: Option<&[File]>,
         context: Option<&impl IsA<AppLaunchContext>>,
     ) -> Result<(), glib::Error> {
         unsafe {
@@ -487,7 +487,7 @@ pub trait AppInfoExt: IsA<AppInfo> + 'static {
     #[doc(alias = "g_app_info_launch_uris")]
     fn launch_uris(
         &self,
-        uris: &[&str],
+        uris: Option<&[&str]>,
         context: Option<&impl IsA<AppLaunchContext>>,
     ) -> Result<(), glib::Error> {
         unsafe {

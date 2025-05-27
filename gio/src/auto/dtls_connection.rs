@@ -330,7 +330,7 @@ pub trait DtlsConnectionExt: IsA<DtlsConnection> + 'static {
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     #[doc(alias = "g_dtls_connection_set_advertised_protocols")]
     #[doc(alias = "advertised-protocols")]
-    fn set_advertised_protocols(&self, protocols: &[&str]) {
+    fn set_advertised_protocols(&self, protocols: Option<&[&str]>) {
         unsafe {
             ffi::g_dtls_connection_set_advertised_protocols(
                 self.as_ref().to_glib_none().0,
