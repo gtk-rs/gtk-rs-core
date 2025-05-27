@@ -63,7 +63,7 @@ pub trait AppLaunchContextExt: IsA<AppLaunchContext> + 'static {
     fn startup_notify_id(
         &self,
         info: Option<&impl IsA<AppInfo>>,
-        files: &[File],
+        files: Option<&[File]>,
     ) -> Option<glib::GString> {
         unsafe {
             from_glib_full(ffi::g_app_launch_context_get_startup_notify_id(
