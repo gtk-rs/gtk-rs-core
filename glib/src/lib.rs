@@ -120,7 +120,7 @@ mod exit_code;
 pub use exit_code::{ExitCode, InvalidExitCode};
 
 pub mod collections;
-pub use collections::{List, PtrSlice, SList, Slice, StrV};
+pub use collections::{CStrV, List, PtrSlice, SList, Slice, StrV};
 
 pub use self::auto::*;
 #[allow(clippy::too_many_arguments)]

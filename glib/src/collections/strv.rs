@@ -123,6 +123,20 @@ impl std::ops::Deref for StrV {
     }
 }
 
+impl AsRef<CStrV> for StrV {
+    #[inline]
+    fn as_ref(&self) -> &CStrV {
+        self.into()
+    }
+}
+
+impl std::borrow::Borrow<CStrV> for StrV {
+    #[inline]
+    fn borrow(&self) -> &CStrV {
+        self.into()
+    }
+}
+
 impl std::iter::Extend<GString> for StrV {
     #[inline]
     fn extend<I: IntoIterator<Item = GString>>(&mut self, iter: I) {
@@ -1356,6 +1370,49 @@ impl<const N: usize> IntoStrV for [&'_ String; N] {
     #[inline]
     fn run_with_strv<R, F: FnOnce(&[*mut c_char]) -> R>(self, f: F) -> R {
         self.as_slice().run_with_strv(f)
+    }
+}
+
+// rustdoc-stripper-ignore-next
+/// Representation of a borrowed `NULL`-terminated C array of `NULL`-terminated UTF-8 strings.
+///
+/// It can be constructed safely from a `&StrV` and unsafely from a pointer to a C array.
+/// This type is very similar to `[GStringPtr]`, but with one added constraint: the underlying C array must be `NULL`-terminated.
+#[repr(transparent)]
+pub struct CStrV {
+    inner: [GStringPtr],
+}
+
+impl CStrV {
+    // rustdoc-stripper-ignore-next
+    /// Borrows a C array.
+    /// # Safety
+    ///
+    /// The provided pointer **must** be `NULL`-terminated. It is undefined behavior to
+    /// pass a pointer that does not uphold this condition.
+    #[inline]
+    pub unsafe fn from_glib_borrow<'a>(ptr: *const *const c_char) -> &'a CStrV {
+        let slice = StrV::from_glib_borrow(ptr);
+        &*(slice as *const [GStringPtr] as *const CStrV)
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Returns the underlying pointer.
+    ///
+    /// This is guaranteed to be nul-terminated.
+    #[inline]
+    pub const fn as_ptr(&self) -> *const *const c_char {
+        self.inner.as_ptr() as *const *const _
+    }
+}
+
+impl<'a> From<&'a StrV> for &'a CStrV {
+    fn from(value: &'a StrV) -> Self {
+        let slice = value.as_slice();
+        // Safety: `&StrV` is a null-terminated C array of nul-terminated UTF-8 strings,
+        // therefore `&StrV::as_slice()` return a a null-terminated slice of nul-terminated UTF-8 strings,
+        // thus it is safe to convert it to `&CStr`.
+        unsafe { &*(slice as *const [GStringPtr] as *const CStrV) }
     }
 }
 
