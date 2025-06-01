@@ -382,7 +382,7 @@ unsafe extern "C" fn action_get_enabled<T: ActionImpl>(actionptr: *mut ffi::GAct
     let instance = &*(actionptr as *mut T::Instance);
     let imp = instance.imp();
 
-    imp.is_enabled() as gboolean
+    imp.is_enabled().into_glib()
 }
 
 unsafe extern "C" fn action_get_state<T: ActionImpl>(
