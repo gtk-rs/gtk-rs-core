@@ -4,6 +4,63 @@ use std::{iter::FusedIterator, ptr};
 
 use crate::{ffi, PathDataType};
 
+/// A path of segments, representing a series of moveto, lineto, curveto, and closepath operations
+/// that define a path to draw.
+///
+/// A [`Path`] can be thought of as a list of commands that define how to draw a particular shape,
+/// akin to drawing a shape with pen and paper. Each command is represented by a [`PathSegment`],
+/// which define a specific operation to perform with the pen.
+///
+/// Paths are created by calling [`Context::copy_path`] and [`Context::copy_path_flat`], which
+/// returns a copy of the current path that the context is using. This allows you to inspect the
+/// path that has been drawn so far.
+///
+/// # Examples
+///
+/// ```
+/// # fn main() -> Result<(), cairo::Error> {
+/// # use cairo::{Context, Format, ImageSurface};
+/// # let surface = ImageSurface::create(Format::ARgb32, 100, 100)?;
+/// # let ctx = Context::new(&surface)?;
+/// // paint the background black
+/// ctx.paint()?;
+///
+/// // draw a 5-pointed star with a white fill, in similar manner to how a human would
+/// let angle = std::f64::consts::TAU / 2.5;
+/// ctx.set_source_rgb(1.0, 1.0, 1.0);
+/// for i in 0..5 {
+///     let x = 50.0 + 40.0 * (i as f64 * angle).cos();
+///     let y = 50.0 + 40.0 * (i as f64 * angle).sin();
+///     if i == 0 {
+///         ctx.move_to(x, y);
+///     } else {
+///         ctx.line_to(x, y);
+///     }
+/// }
+/// ctx.close_path();
+///
+/// // print the path details before filling (will clear the context path)
+/// let path = ctx.copy_path()?;
+/// for element in path.iter() {
+///     println!("{:?}", element);
+/// }
+///
+/// ctx.fill()?;
+///
+/// // output:
+/// // MoveTo((90.0, 50.0))
+/// // LineTo((17.640625, 73.51171875))
+/// // LineTo((62.359375, 11.95703125))
+/// // LineTo((62.359375, 88.04296875))
+/// // LineTo((17.640625, 26.48828125))
+/// // ClosePath
+/// // MoveTo((90.0, 50.0))
+/// # Ok(())
+/// # }
+/// ```
+///
+/// [`Context::copy_path`]: crate::Context::copy_path
+/// [`Context::copy_path_flat`]: crate::Context::copy_path_flat
 #[derive(Debug)]
 #[doc(alias = "cairo_path_t")]
 pub struct Path(ptr::NonNull<ffi::cairo_path_t>);
@@ -20,6 +77,7 @@ impl Path {
         Path(ptr::NonNull::new_unchecked(pointer))
     }
 
+    /// Returns an iterator over the segments of the path.
     pub fn iter(&self) -> PathSegments {
         use std::slice;
 
@@ -51,14 +109,31 @@ impl Drop for Path {
     }
 }
 
+/// A segment of a path, representing a single moveto, lineto, curveto, or closepath operation.
+///
+/// See the documentation for [`Path`] for more information.
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub enum PathSegment {
+    /// Lift up the "pen" and move it to the given point, starting a new subpath.
     MoveTo((f64, f64)),
+
+    /// Draw a straight line from the current point to the given point.
     LineTo((f64, f64)),
+
+    /// Draw a cubic Bézier curve from the current point to the given point, using the two control
+    /// points to define the curve.
+    ///
+    /// The first and second points are the control points, and the third point is the end point.
     CurveTo((f64, f64), (f64, f64), (f64, f64)),
+
+    /// Draw a straight line from the current point to the starting point of the subpath, closing
+    /// it.
     ClosePath,
 }
 
+/// An iterator over the segments of a [`Path`].
+///
+/// This struct is created by the [`Path::iter`] method.
 pub struct PathSegments<'a> {
     data: &'a [ffi::cairo_path_data],
     i: usize,
