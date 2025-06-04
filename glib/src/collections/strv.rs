@@ -114,12 +114,26 @@ impl std::borrow::Borrow<[GStringPtr]> for StrV {
     }
 }
 
+impl AsRef<CStrV> for StrV {
+    #[inline]
+    fn as_ref(&self) -> &CStrV {
+        self.into()
+    }
+}
+
+impl std::borrow::Borrow<CStrV> for StrV {
+    #[inline]
+    fn borrow(&self) -> &CStrV {
+        self.into()
+    }
+}
+
 impl std::ops::Deref for StrV {
-    type Target = [GStringPtr];
+    type Target = CStrV;
 
     #[inline]
-    fn deref(&self) -> &[GStringPtr] {
-        self.as_slice()
+    fn deref(&self) -> &CStrV {
+        self.into()
     }
 }
 
@@ -1356,6 +1370,208 @@ impl<const N: usize> IntoStrV for [&'_ String; N] {
     #[inline]
     fn run_with_strv<R, F: FnOnce(&[*mut c_char]) -> R>(self, f: F) -> R {
         self.as_slice().run_with_strv(f)
+    }
+}
+
+// rustdoc-stripper-ignore-next
+/// Representation of a borrowed `NULL`-terminated C array of `NULL`-terminated UTF-8 strings.
+///
+/// It can be constructed safely from a `&StrV` and unsafely from a pointer to a C array.
+/// This type is very similar to `[GStringPtr]`, but with one added constraint: the underlying C array must be `NULL`-terminated.
+#[repr(transparent)]
+pub struct CStrV {
+    inner: [GStringPtr],
+}
+
+impl CStrV {
+    // rustdoc-stripper-ignore-next
+    /// Borrows a C array.
+    /// # Safety
+    ///
+    /// The provided pointer **must** be `NULL`-terminated. It is undefined behavior to
+    /// pass a pointer that does not uphold this condition.
+    #[inline]
+    pub unsafe fn from_glib_borrow<'a>(ptr: *const *const c_char) -> &'a CStrV {
+        let slice = StrV::from_glib_borrow(ptr);
+        &*(slice as *const [GStringPtr] as *const CStrV)
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Borrows a C array.
+    /// # Safety
+    ///
+    /// The provided pointer **must** be `NULL`-terminated. It is undefined behavior to
+    /// pass a pointer that does not uphold this condition.
+    #[inline]
+    pub unsafe fn from_glib_borrow_num<'a>(ptr: *const *const c_char, len: usize) -> &'a CStrV {
+        let slice = StrV::from_glib_borrow_num(ptr, len);
+        &*(slice as *const [GStringPtr] as *const CStrV)
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Returns the underlying pointer.
+    ///
+    /// This is guaranteed to be nul-terminated.
+    #[inline]
+    pub const fn as_ptr(&self) -> *const *const c_char {
+        self.inner.as_ptr() as *const *const _
+    }
+}
+
+impl fmt::Debug for CStrV {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        self.inner.fmt(f)
+    }
+}
+
+unsafe impl Send for CStrV {}
+
+unsafe impl Sync for CStrV {}
+
+impl PartialEq for CStrV {
+    #[inline]
+    fn eq(&self, other: &Self) -> bool {
+        self.inner == other.inner
+    }
+}
+
+impl Eq for CStrV {}
+
+impl PartialOrd for CStrV {
+    #[inline]
+    fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
+        Some(self.cmp(other))
+    }
+}
+
+impl Ord for CStrV {
+    fn cmp(&self, other: &Self) -> std::cmp::Ordering {
+        self.inner.cmp(&other.inner)
+    }
+}
+
+impl std::hash::Hash for CStrV {
+    #[inline]
+    fn hash<H: std::hash::Hasher>(&self, state: &mut H) {
+        self.inner.hash(state)
+    }
+}
+
+impl PartialEq<[&'_ str]> for CStrV {
+    fn eq(&self, other: &[&'_ str]) -> bool {
+        for (a, b) in Iterator::zip(self.iter(), other.iter()) {
+            if a != b {
+                return false;
+            }
+        }
+
+        true
+    }
+}
+
+impl PartialEq<CStrV> for [&'_ str] {
+    #[inline]
+    fn eq(&self, other: &CStrV) -> bool {
+        other.eq(self)
+    }
+}
+
+impl Default for &CStrV {
+    #[inline]
+    fn default() -> Self {
+        const SLICE: &[*const c_char] = &[ptr::null()];
+        // SAFETY: `SLICE` is indeed a valid nul-terminated array.
+        unsafe { CStrV::from_glib_borrow(SLICE.as_ptr()) }
+    }
+}
+
+impl std::ops::Deref for CStrV {
+    type Target = [GStringPtr];
+
+    #[inline]
+    fn deref(&self) -> &[GStringPtr] {
+        &self.inner
+    }
+}
+
+impl<'a> std::iter::IntoIterator for &'a CStrV {
+    type Item = &'a GStringPtr;
+    type IntoIter = std::slice::Iter<'a, GStringPtr>;
+
+    #[inline]
+    fn into_iter(self) -> Self::IntoIter {
+        self.inner.iter()
+    }
+}
+
+impl<'a> From<&'a StrV> for &'a CStrV {
+    fn from(value: &'a StrV) -> Self {
+        let slice = value.as_slice();
+        // Safety: `&StrV` is a null-terminated C array of nul-terminated UTF-8 strings,
+        // therefore `&StrV::as_slice()` return a a null-terminated slice of nul-terminated UTF-8 strings,
+        // thus it is safe to convert it to `&CStr`.
+        unsafe { &*(slice as *const [GStringPtr] as *const CStrV) }
+    }
+}
+
+impl FromGlibContainer<*mut c_char, *const *const c_char> for &CStrV {
+    unsafe fn from_glib_none_num(ptr: *const *const c_char, num: usize) -> Self {
+        CStrV::from_glib_borrow_num(ptr, num)
+    }
+
+    unsafe fn from_glib_container_num(_ptr: *const *const c_char, _num: usize) -> Self {
+        unimplemented!();
+    }
+
+    unsafe fn from_glib_full_num(_ptr: *const *const c_char, _num: usize) -> Self {
+        unimplemented!();
+    }
+}
+
+impl FromGlibPtrContainer<*mut c_char, *const *const c_char> for &CStrV {
+    #[inline]
+    unsafe fn from_glib_none(ptr: *const *const c_char) -> Self {
+        CStrV::from_glib_borrow(ptr)
+    }
+
+    unsafe fn from_glib_container(_ptr: *const *const c_char) -> Self {
+        unimplemented!();
+    }
+
+    unsafe fn from_glib_full(_ptr: *const *const c_char) -> Self {
+        unimplemented!();
+    }
+}
+
+impl<'a> ToGlibPtr<'a, *const *const c_char> for CStrV {
+    type Storage = PhantomData<&'a Self>;
+
+    #[inline]
+    fn to_glib_none(&'a self) -> Stash<'a, *const *const c_char, Self> {
+        Stash(self.as_ptr(), PhantomData)
+    }
+}
+
+impl IntoGlibPtr<*const *const c_char> for &CStrV {
+    #[inline]
+    fn into_glib_ptr(self) -> *const *const c_char {
+        self.as_ptr()
+    }
+}
+
+impl StaticType for CStrV {
+    #[inline]
+    fn static_type() -> crate::Type {
+        <Vec<String>>::static_type()
+    }
+}
+
+unsafe impl<'a> crate::value::FromValue<'a> for &'a CStrV {
+    type Checker = crate::value::GenericValueTypeChecker<Self>;
+
+    unsafe fn from_value(value: &'a crate::value::Value) -> Self {
+        let ptr = gobject_ffi::g_value_get_boxed(value.to_glib_none().0) as *const *const c_char;
+        CStrV::from_glib_borrow(ptr)
     }
 }
 
