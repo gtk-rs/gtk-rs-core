@@ -1366,6 +1366,9 @@ pub fn cstr_bytes(item: TokenStream) -> TokenStream {
 /// Optional types also require the `nullable` attribute: without it, the generated setter on the wrapper type
 /// will take `T` instead of `Option<T>`, preventing the user from ever calling the setter with a `None` value.
 ///
+/// Notice: For enums that derive [`Enum`] or are C-style enums, you must explicitly specify the
+/// default value of the enum using the `builder` parameter in the `#[property]` attribute.
+///
 /// ## Adding support for custom types
 /// ### Types wrapping an existing <code>T: [ToValue] + [HasParamSpec]</code>
 /// If you have declared a newtype as
@@ -1390,7 +1393,7 @@ pub fn cstr_bytes(item: TokenStream) -> TokenStream {
 ///
 /// # Example
 /// ```
-/// use std::cell::RefCell;
+/// use std::cell::{Cell, RefCell};
 /// use glib::prelude::*;
 /// use glib::subclass::prelude::*;
 /// use glib_macros::Properties;
@@ -1399,6 +1402,13 @@ pub fn cstr_bytes(item: TokenStream) -> TokenStream {
 /// struct Author {
 ///     name: String,
 ///     nick: String,
+/// }
+///
+/// #[derive(Debug, Copy, Clone, PartialEq, Eq, glib::Enum)]
+/// #[enum_type(name = "MyEnum")]
+/// enum MyEnum {
+///     Val,
+///     OtherVal
 /// }
 ///
 /// pub mod imp {
@@ -1426,6 +1436,8 @@ pub fn cstr_bytes(item: TokenStream) -> TokenStream {
 ///         optional: RefCell<Option<String>>,
 ///         #[property(get, set)]
 ///         smart_pointer: Rc<RefCell<String>>,
+///         #[property(get, set, builder(MyEnum::Val))]
+///         my_enum: Cell<MyEnum>,
 ///         /// # Getter
 ///         ///
 ///         /// Get the value of the property `extra_comments`
