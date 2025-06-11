@@ -562,6 +562,10 @@ pub fn closure_local(item: TokenStream) -> TokenStream {
 /// }
 /// ```
 ///
+/// When using the [`Properties`] macro with enums that derive [`Enum`], the default value must be
+/// explicitly set via the `builder` parameter of the `#[property]` attribute. See
+/// [here](Properties#supported-types) for details.
+///
 /// An enum can be registered as a dynamic type by setting the derive macro
 /// helper attribute `enum_dynamic`:
 ///
