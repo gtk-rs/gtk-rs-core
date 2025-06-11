@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/gobject/binding_group.rs`."><title>binding_group.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-84e720fa.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.89.0-nightly (6f6971078 2025-05-28)" data-channel="nightly" data-search-js="search-f7877310.js" data-settings-js="settings-5514c975.js" ><script src="../../../static.files/storage-4e99c027.js"></script><script defer src="../../../static.files/src-script-63605ae7.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-fd3af306.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-32bb7600.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/gobject/binding_group.rs`."><title>binding_group.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-84e720fa.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.89.0-nightly (1677d46cb 2025-06-10)" data-channel="nightly" data-search-js="search-f7877310.js" data-settings-js="settings-5514c975.js" ><script src="../../../static.files/storage-4e99c027.js"></script><script defer src="../../../static.files/src-script-63605ae7.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-fd3af306.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-32bb7600.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -76,11 +76,11 @@
 <a href=#3 id=3 data-nosnippet>3</a></span><span class="kw">use </span>std::{<a href="https://doc.rust-lang.org/nightly/alloc/fmt/index.html">fmt</a>, <a href="https://doc.rust-lang.org/nightly/core/ptr/index.html">ptr</a>};
 <a href=#4 id=4 data-nosnippet>4</a>
 <a href=#5 id=5 data-nosnippet>5</a><span class="kw">use crate</span>::{
-<a href=#6 id=6 data-nosnippet>6</a>    ffi, <a href="../../../gobject_sys/index.html">gobject_ffi</a>, <a href="../object.rs.html#380-382">object::ObjectRef</a>, <a href="../lib.rs.html#159">prelude</a>::<span class="kw-2">*</span>, <a href="../lib.rs.html#164">translate</a>::<span class="kw-2">*</span>, <a href="auto/binding.rs.html#7-265">Binding</a>, <a href="auto/flags.rs.html#7-37">BindingFlags</a>,
-<a href=#7 id=7 data-nosnippet>7</a>    <a href="auto/binding_group.rs.html#14-60">BindingGroup</a>, <a href="../error.rs.html#278-286">BoolError</a>, <a href="../object.rs.html#1376-1379">Object</a>, <a href="../param_spec.rs.html#19-42">ParamSpec</a>, <a href="../value.rs.html#478-512">Value</a>,
+<a href=#6 id=6 data-nosnippet>6</a>    ffi, <a href="../../../gobject_sys/index.html">gobject_ffi</a>, <a href="../object.rs.html#380-382">object::ObjectRef</a>, <a href="../lib.rs.html#159">prelude</a>::<span class="kw-2">*</span>, <a href="../lib.rs.html#164">translate</a>::<span class="kw-2">*</span>, <a href="auto/binding.rs.html#7-139">Binding</a>, <a href="auto/flags.rs.html#7-37">BindingFlags</a>,
+<a href=#7 id=7 data-nosnippet>7</a>    <a href="auto/binding_group.rs.html#14-40">BindingGroup</a>, <a href="../error.rs.html#243-251">BoolError</a>, <a href="../object.rs.html#1376-1379">Object</a>, <a href="../param_spec.rs.html#19-42">ParamSpec</a>, <a href="../value.rs.html#478-512">Value</a>,
 <a href=#8 id=8 data-nosnippet>8</a>};
 <a href=#9 id=9 data-nosnippet>9</a>
-<a href=#10 id=10 data-nosnippet>10</a><span class="kw">impl </span><a href="auto/binding_group.rs.html#14-60">BindingGroup</a> {
+<a href=#10 id=10 data-nosnippet>10</a><span class="kw">impl </span><a href="auto/binding_group.rs.html#14-40">BindingGroup</a> {
 <a href=#11 id=11 data-nosnippet>11</a>    <span class="doccomment">/// Creates a binding between `source_property` on the source object
 <a href=#12 id=12 data-nosnippet>12</a>    /// and `target_property` on `target`. Whenever the `source_property`
 <a href=#13 id=13 data-nosnippet>13</a>    /// is changed the `target_property` is updated using the same value.
@@ -106,13 +106,13 @@
 <a href=#33 id=33 data-nosnippet>33</a>    }
 <a href=#34 id=34 data-nosnippet>34</a>}
 <a href=#35 id=35 data-nosnippet>35</a>
-<a href=#36 id=36 data-nosnippet>36</a><span class="kw">type </span>TransformFn = <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box</a>&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><a href="auto/binding.rs.html#7-265">Binding</a>, <span class="kw-2">&amp;</span><a href="../value.rs.html#478-512">Value</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="../value.rs.html#478-512">Value</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>&gt;&gt;;
+<a href=#36 id=36 data-nosnippet>36</a><span class="kw">type </span>TransformFn = <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box</a>&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><a href="auto/binding.rs.html#7-139">Binding</a>, <span class="kw-2">&amp;</span><a href="../value.rs.html#478-512">Value</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="../value.rs.html#478-512">Value</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>&gt;&gt;;
 <a href=#37 id=37 data-nosnippet>37</a>
 <a href=#38 id=38 data-nosnippet>38</a><span class="comment">// rustdoc-stripper-ignore-next
 <a href=#39 id=39 data-nosnippet>39</a></span><span class="doccomment">/// Builder for binding group bindings.
 <a href=#40 id=40 data-nosnippet>40</a></span><span class="attr">#[must_use = <span class="string">"The builder must be built to be used"</span>]
 <a href=#41 id=41 data-nosnippet>41</a></span><span class="kw">pub struct </span><a href="../../../glib/struct.BindingGroupBuilder.html">BindingGroupBuilder</a>&lt;<span class="lifetime">'a</span>&gt; {
-<a href=#42 id=42 data-nosnippet>42</a>    group: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="auto/binding_group.rs.html#14-60">BindingGroup</a>,
+<a href=#42 id=42 data-nosnippet>42</a>    group: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="auto/binding_group.rs.html#14-40">BindingGroup</a>,
 <a href=#43 id=43 data-nosnippet>43</a>    source_property: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
 <a href=#44 id=44 data-nosnippet>44</a>    target: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="../object.rs.html#380-382">ObjectRef</a>,
 <a href=#45 id=45 data-nosnippet>45</a>    target_property: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
@@ -135,7 +135,7 @@
 <a href=#62 id=62 data-nosnippet>62</a>
 <a href=#63 id=63 data-nosnippet>63</a><span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; <a href="#41-49">BindingGroupBuilder</a>&lt;<span class="lifetime">'a</span>&gt; {
 <a href=#64 id=64 data-nosnippet>64</a>    <span class="kw">fn </span>new(
-<a href=#65 id=65 data-nosnippet>65</a>        group: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="auto/binding_group.rs.html#14-60">BindingGroup</a>,
+<a href=#65 id=65 data-nosnippet>65</a>        group: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="auto/binding_group.rs.html#14-40">BindingGroup</a>,
 <a href=#66 id=66 data-nosnippet>66</a>        source_property: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
 <a href=#67 id=67 data-nosnippet>67</a>        target: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw">impl </span><a href="../object.rs.html#22-52">ObjectType</a>,
 <a href=#68 id=68 data-nosnippet>68</a>        target_property: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
@@ -153,7 +153,7 @@
 <a href=#80 id=80 data-nosnippet>80</a>
 <a href=#81 id=81 data-nosnippet>81</a>    <span class="comment">// rustdoc-stripper-ignore-next
 <a href=#82 id=82 data-nosnippet>82</a>    </span><span class="doccomment">/// Transform changed property values from the target object to the source object with the given closure.
-<a href=#83 id=83 data-nosnippet>83</a>    </span><span class="kw">pub fn </span>transform_from&lt;F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><a href="auto/binding.rs.html#7-265">Binding</a>, <span class="kw-2">&amp;</span><a href="../value.rs.html#478-512">Value</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="../value.rs.html#478-512">Value</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>&gt;(
+<a href=#83 id=83 data-nosnippet>83</a>    </span><span class="kw">pub fn </span>transform_from&lt;F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><a href="auto/binding.rs.html#7-139">Binding</a>, <span class="kw-2">&amp;</span><a href="../value.rs.html#478-512">Value</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="../value.rs.html#478-512">Value</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>&gt;(
 <a href=#84 id=84 data-nosnippet>84</a>        <span class="self">self</span>,
 <a href=#85 id=85 data-nosnippet>85</a>        func: F,
 <a href=#86 id=86 data-nosnippet>86</a>    ) -&gt; <span class="self">Self </span>{
@@ -165,7 +165,7 @@
 <a href=#92 id=92 data-nosnippet>92</a>
 <a href=#93 id=93 data-nosnippet>93</a>    <span class="comment">// rustdoc-stripper-ignore-next
 <a href=#94 id=94 data-nosnippet>94</a>    </span><span class="doccomment">/// Transform changed property values from the source object to the target object with the given closure.
-<a href=#95 id=95 data-nosnippet>95</a>    </span><span class="kw">pub fn </span>transform_to&lt;F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><a href="auto/binding.rs.html#7-265">Binding</a>, <span class="kw-2">&amp;</span><a href="../value.rs.html#478-512">Value</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="../value.rs.html#478-512">Value</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>&gt;(
+<a href=#95 id=95 data-nosnippet>95</a>    </span><span class="kw">pub fn </span>transform_to&lt;F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><a href="auto/binding.rs.html#7-139">Binding</a>, <span class="kw-2">&amp;</span><a href="../value.rs.html#478-512">Value</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="../value.rs.html#478-512">Value</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>&gt;(
 <a href=#96 id=96 data-nosnippet>96</a>        <span class="self">self</span>,
 <a href=#97 id=97 data-nosnippet>97</a>        func: F,
 <a href=#98 id=98 data-nosnippet>98</a>    ) -&gt; <span class="self">Self </span>{
@@ -206,7 +206,7 @@
 <a href=#133 id=133 data-nosnippet>133</a>    </span><span class="doccomment">/// Establish the property binding.
 <a href=#134 id=134 data-nosnippet>134</a>    ///
 <a href=#135 id=135 data-nosnippet>135</a>    /// This fails if the provided properties do not exist.
-<a href=#136 id=136 data-nosnippet>136</a>    </span><span class="kw">pub fn </span>try_build(<span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(), <a href="../error.rs.html#278-286">BoolError</a>&gt; {
+<a href=#136 id=136 data-nosnippet>136</a>    </span><span class="kw">pub fn </span>try_build(<span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(), <a href="../error.rs.html#243-251">BoolError</a>&gt; {
 <a href=#137 id=137 data-nosnippet>137</a>        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>transform_to_trampoline(
 <a href=#138 id=138 data-nosnippet>138</a>            binding: <span class="kw-2">*mut </span><a href="../../../gobject_sys/struct.GBinding.html">gobject_ffi::GBinding</a>,
 <a href=#139 id=139 data-nosnippet>139</a>            from_value: <span class="kw-2">*const </span><a href="../../../gobject_sys/struct.GValue.html">gobject_ffi::GValue</a>,
@@ -229,7 +229,7 @@
 <a href=#156 id=156 data-nosnippet>156</a>                        transform_data.<span class="number">3</span>.value_type(),
 <a href=#157 id=157 data-nosnippet>157</a>                        res.type_()
 <a href=#158 id=158 data-nosnippet>158</a>                    );
-<a href=#159 id=159 data-nosnippet>159</a>                    <span class="kw-2">*</span><a href="#140">to_value</a> = <a href="#151">res</a>.<a href="../value.rs.html#745-750">into_raw</a>();
+<a href=#159 id=159 data-nosnippet>159</a>                    <span class="kw-2">*</span><a href="#140">to_value</a> = <a href="#151">res</a>.<a href="../value.rs.html#704-709">into_raw</a>();
 <a href=#160 id=160 data-nosnippet>160</a>                    <span class="bool-val">true
 <a href=#161 id=161 data-nosnippet>161</a>                </span>}
 <a href=#162 id=162 data-nosnippet>162</a>            }
@@ -264,7 +264,7 @@
 <a href=#191 id=191 data-nosnippet>191</a>                        pspec.value_type(),
 <a href=#192 id=192 data-nosnippet>192</a>                        res.type_()
 <a href=#193 id=193 data-nosnippet>193</a>                    );
-<a href=#194 id=194 data-nosnippet>194</a>                    <span class="kw-2">*</span><a href="#169">to_value</a> = <a href="#181">res</a>.<a href="../value.rs.html#745-750">into_raw</a>();
+<a href=#194 id=194 data-nosnippet>194</a>                    <span class="kw-2">*</span><a href="#169">to_value</a> = <a href="#181">res</a>.<a href="../value.rs.html#704-709">into_raw</a>();
 <a href=#195 id=195 data-nosnippet>195</a>                    <span class="bool-val">true
 <a href=#196 id=196 data-nosnippet>196</a>                </span>}
 <a href=#197 id=197 data-nosnippet>197</a>            }
@@ -276,9 +276,9 @@
 <a href=#203 id=203 data-nosnippet>203</a>        }
 <a href=#204 id=204 data-nosnippet>204</a>
 <a href=#205 id=205 data-nosnippet>205</a>        <span class="kw">let </span><span class="kw-2">mut </span>_source_property_name_cstr = <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a>;
-<a href=#206 id=206 data-nosnippet>206</a>        <span class="kw">let </span>source_property_name = <span class="kw">if let </span><a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(source) = <a class="self" href="#136">self</a>.group.<a href="auto/binding_group.rs.html#92-98">source</a>() {
+<a href=#206 id=206 data-nosnippet>206</a>        <span class="kw">let </span>source_property_name = <span class="kw">if let </span><a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(source) = <a class="self" href="#136">self</a>.group.<a href="auto/binding_group.rs.html#60-66">source</a>() {
 <a href=#207 id=207 data-nosnippet>207</a>            <span class="kw">let </span>source_property = <a href="#206">source</a>.<a href="../object.rs.html#1770">find_property</a>(<a class="self" href="#136">self</a>.source_property).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.ok_or_else">ok_or_else</a>(|| {
-<a href=#208 id=208 data-nosnippet>208</a>                <a class="macro" href="../error.rs.html#224-246">bool_error!</a>(
+<a href=#208 id=208 data-nosnippet>208</a>                <a class="macro" href="../error.rs.html#189-211">bool_error!</a>(
 <a href=#209 id=209 data-nosnippet>209</a>                    <span class="string">"Source property {} on type {} not found"</span>,
 <a href=#210 id=210 data-nosnippet>210</a>                    <span class="self">self</span>.source_property,
 <a href=#211 id=211 data-nosnippet>211</a>                    source.type_()
@@ -300,7 +300,7 @@
 <a href=#227 id=227 data-nosnippet>227</a>            <span class="kw">let </span>target: <a href="../object.rs.html#1376-1379">Object</a> = <a href="../translate.rs.html#1629-1631">from_glib_none</a>(<a class="self" href="#136">self</a>.target.<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">clone</a>().<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>);
 <a href=#228 id=228 data-nosnippet>228</a>
 <a href=#229 id=229 data-nosnippet>229</a>            <span class="kw">let </span>target_property = <a href="#227">target</a>.<a href="../object.rs.html#1770">find_property</a>(<a class="self" href="#136">self</a>.target_property).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.ok_or_else">ok_or_else</a>(|| {
-<a href=#230 id=230 data-nosnippet>230</a>                <a class="macro" href="../error.rs.html#224-246">bool_error!</a>(
+<a href=#230 id=230 data-nosnippet>230</a>                <a class="macro" href="../error.rs.html#189-211">bool_error!</a>(
 <a href=#231 id=231 data-nosnippet>231</a>                    <span class="string">"Target property {} on type {} not found"</span>,
 <a href=#232 id=232 data-nosnippet>232</a>                    <span class="self">self</span>.target_property,
 <a href=#233 id=233 data-nosnippet>233</a>                    target.type_()
