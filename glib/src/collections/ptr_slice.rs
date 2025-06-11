@@ -658,13 +658,21 @@ impl<T: TransparentPtrType> PtrSlice<T> {
     /// This is guaranteed to be `NULL`-terminated.
     #[inline]
     pub fn into_raw(mut self) -> *mut <T as GlibPtrDefault>::GlibType {
+        // Make sure to allocate a valid pointer that points to a
+        // NULL-pointer.
         if self.len == 0 {
-            ptr::null_mut()
-        } else {
-            self.len = 0;
-            self.capacity = 0;
-            self.ptr.as_ptr()
+            self.reserve(0);
+            unsafe {
+                ptr::write(
+                    self.ptr.as_ptr().add(0),
+                    Ptr::from(ptr::null_mut::<<T as GlibPtrDefault>::GlibType>()),
+                );
+            }
         }
+
+        self.len = 0;
+        self.capacity = 0;
+        self.ptr.as_ptr()
     }
 
     // rustdoc-stripper-ignore-next

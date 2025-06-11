@@ -546,8 +546,6 @@ impl<T: TransparentType> Slice<T> {
 
     // rustdoc-stripper-ignore-next
     /// Returns the underlying pointer.
-    ///
-    /// This is guaranteed to be `NULL`-terminated.
     #[inline]
     pub fn as_ptr(&self) -> *const T::GlibType {
         if self.len == 0 {
@@ -559,8 +557,6 @@ impl<T: TransparentType> Slice<T> {
 
     // rustdoc-stripper-ignore-next
     /// Returns the underlying pointer.
-    ///
-    /// This is guaranteed to be `NULL`-terminated.
     #[inline]
     pub fn as_mut_ptr(&mut self) -> *mut T::GlibType {
         if self.len == 0 {
@@ -572,8 +568,6 @@ impl<T: TransparentType> Slice<T> {
 
     // rustdoc-stripper-ignore-next
     /// Consumes the slice and returns the underlying pointer.
-    ///
-    /// This is guaranteed to be `NULL`-terminated.
     #[inline]
     pub fn into_raw(mut self) -> *mut T::GlibType {
         if self.len == 0 {
