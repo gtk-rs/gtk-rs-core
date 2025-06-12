@@ -1408,9 +1408,10 @@ pub fn cstr_bytes(item: TokenStream) -> TokenStream {
 ///     nick: String,
 /// }
 ///
-/// #[derive(Debug, Copy, Clone, PartialEq, Eq, glib::Enum)]
+/// #[derive(Debug, Copy, Clone, PartialEq, Eq, glib::Enum, Default)]
 /// #[enum_type(name = "MyEnum")]
 /// enum MyEnum {
+///     #[default]
 ///     Val,
 ///     OtherVal
 /// }
