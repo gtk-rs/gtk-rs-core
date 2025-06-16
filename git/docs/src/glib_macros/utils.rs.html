@@ -77,15 +77,15 @@
 <a href=#4 id=4 data-nosnippet>4</a><span class="kw">use </span>proc_macro_crate::crate_name;
 <a href=#5 id=5 data-nosnippet>5</a><span class="kw">use </span>quote::{<a href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote</a>, <a href="https://docs.rs/quote/1.0.40/quote/macro.quote_spanned.html">quote_spanned</a>, <a href="https://docs.rs/quote/1.0.40/quote/to_tokens/trait.ToTokens.html">ToTokens</a>};
 <a href=#6 id=6 data-nosnippet>6</a><span class="kw">use </span>syn::{
-<a href=#7 id=7 data-nosnippet>7</a>    <a href="https://docs.rs/syn/2.0.101/syn/meta/struct.ParseNestedMeta.html">meta::ParseNestedMeta</a>, <a href="https://docs.rs/syn/2.0.101/syn/parse/trait.Parse.html">parse::Parse</a>, <a href="https://docs.rs/syn/2.0.101/syn/punctuated/struct.Punctuated.html">punctuated::Punctuated</a>, <a href="https://docs.rs/syn/2.0.101/syn/spanned/trait.Spanned.html">spanned::Spanned</a>, token::Comma,
-<a href=#8 id=8 data-nosnippet>8</a>    <a href="https://docs.rs/syn/2.0.101/syn/macro.Token.html">Token</a>, <a href="https://docs.rs/syn/2.0.101/syn/data/struct.Variant.html">Variant</a>,
+<a href=#7 id=7 data-nosnippet>7</a>    <a href="https://docs.rs/syn/2.0.103/syn/meta/struct.ParseNestedMeta.html">meta::ParseNestedMeta</a>, <a href="https://docs.rs/syn/2.0.103/syn/parse/trait.Parse.html">parse::Parse</a>, <a href="https://docs.rs/syn/2.0.103/syn/punctuated/struct.Punctuated.html">punctuated::Punctuated</a>, <a href="https://docs.rs/syn/2.0.103/syn/spanned/trait.Spanned.html">spanned::Spanned</a>, token::Comma,
+<a href=#8 id=8 data-nosnippet>8</a>    <a href="https://docs.rs/syn/2.0.103/syn/macro.Token.html">Token</a>, <a href="https://docs.rs/syn/2.0.103/syn/data/struct.Variant.html">Variant</a>,
 <a href=#9 id=9 data-nosnippet>9</a>};
 <a href=#10 id=10 data-nosnippet>10</a>
 <a href=#11 id=11 data-nosnippet>11</a><span class="kw">pub trait </span>ParseNestedMetaItem {
 <a href=#12 id=12 data-nosnippet>12</a>    <span class="kw">fn </span>get_name(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'static </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>;
 <a href=#13 id=13 data-nosnippet>13</a>    <span class="kw">fn </span>get_found(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>;
 <a href=#14 id=14 data-nosnippet>14</a>    <span class="kw">fn </span>get_required(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>;
-<a href=#15 id=15 data-nosnippet>15</a>    <span class="kw">fn </span>parse_nested(<span class="kw-2">&amp;mut </span><span class="self">self</span>, meta: <span class="kw-2">&amp;</span><a href="https://docs.rs/syn/2.0.101/syn/meta/struct.ParseNestedMeta.html">ParseNestedMeta</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="https://docs.rs/syn/2.0.101/syn/error/type.Result.html">syn::Result</a>&lt;()&gt;&gt;;
+<a href=#15 id=15 data-nosnippet>15</a>    <span class="kw">fn </span>parse_nested(<span class="kw-2">&amp;mut </span><span class="self">self</span>, meta: <span class="kw-2">&amp;</span><a href="https://docs.rs/syn/2.0.103/syn/meta/struct.ParseNestedMeta.html">ParseNestedMeta</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="https://docs.rs/syn/2.0.103/syn/error/type.Result.html">syn::Result</a>&lt;()&gt;&gt;;
 <a href=#16 id=16 data-nosnippet>16</a>}
 <a href=#17 id=17 data-nosnippet>17</a>
 <a href=#18 id=18 data-nosnippet>18</a><span class="attr">#[derive(Default)]
@@ -97,7 +97,7 @@
 <a href=#24 id=24 data-nosnippet>24</a>    <span class="kw">pub </span>value: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;T&gt;,
 <a href=#25 id=25 data-nosnippet>25</a>}
 <a href=#26 id=26 data-nosnippet>26</a>
-<a href=#27 id=27 data-nosnippet>27</a><span class="kw">impl</span>&lt;T: <a href="https://docs.rs/syn/2.0.101/syn/parse/trait.Parse.html">Parse</a> + <a href="https://docs.rs/quote/1.0.40/quote/to_tokens/trait.ToTokens.html">ToTokens</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html">std::fmt::Debug</a> <span class="kw">for </span><a href="#19-25">NestedMetaItem</a>&lt;T&gt; {
+<a href=#27 id=27 data-nosnippet>27</a><span class="kw">impl</span>&lt;T: <a href="https://docs.rs/syn/2.0.103/syn/parse/trait.Parse.html">Parse</a> + <a href="https://docs.rs/quote/1.0.40/quote/to_tokens/trait.ToTokens.html">ToTokens</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html">std::fmt::Debug</a> <span class="kw">for </span><a href="#19-25">NestedMetaItem</a>&lt;T&gt; {
 <a href=#28 id=28 data-nosnippet>28</a>    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span><a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html">std::fmt::Formatter</a>&lt;<span class="lifetime">'_</span>&gt;) -&gt; <a href="https://doc.rust-lang.org/nightly/core/fmt/type.Result.html">std::fmt::Result</a> {
 <a href=#29 id=29 data-nosnippet>29</a>        <a href="#28">f</a>.<a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html#method.debug_struct">debug_struct</a>(<span class="string">"NestedMetaItem"</span>)
 <a href=#30 id=30 data-nosnippet>30</a>            .<a href="https://doc.rust-lang.org/nightly/core/fmt/builders/struct.DebugStruct.html#method.field">field</a>(<span class="string">"name"</span>, <span class="kw-2">&amp;</span><a class="self" href="#28">self</a>.name)
@@ -109,7 +109,7 @@
 <a href=#36 id=36 data-nosnippet>36</a>    }
 <a href=#37 id=37 data-nosnippet>37</a>}
 <a href=#38 id=38 data-nosnippet>38</a>
-<a href=#39 id=39 data-nosnippet>39</a><span class="kw">impl</span>&lt;T: <a href="https://docs.rs/syn/2.0.101/syn/parse/trait.Parse.html">Parse</a>&gt; <a href="#19-25">NestedMetaItem</a>&lt;T&gt; {
+<a href=#39 id=39 data-nosnippet>39</a><span class="kw">impl</span>&lt;T: <a href="https://docs.rs/syn/2.0.103/syn/parse/trait.Parse.html">Parse</a>&gt; <a href="#19-25">NestedMetaItem</a>&lt;T&gt; {
 <a href=#40 id=40 data-nosnippet>40</a>    <span class="kw">pub const fn </span>new(name: <span class="kw-2">&amp;</span><span class="lifetime">'static </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="self">Self </span>{
 <a href=#41 id=41 data-nosnippet>41</a>        <span class="self">Self </span>{
 <a href=#42 id=42 data-nosnippet>42</a>            required: <span class="bool-val">false</span>,
@@ -133,19 +133,19 @@
 <a href=#60 id=60 data-nosnippet>60</a>        <a class="self" href="#59">self</a>.value_required = <span class="bool-val">false</span>;
 <a href=#61 id=61 data-nosnippet>61</a>        <span class="self"><a href="#59">self</a>
 <a href=#62 id=62 data-nosnippet>62</a>    </span>}
-<a href=#63 id=63 data-nosnippet>63</a>    <span class="kw">fn </span>parse_nested_forced(<span class="kw-2">&amp;mut </span><span class="self">self</span>, meta: <span class="kw-2">&amp;</span><a href="https://docs.rs/syn/2.0.101/syn/meta/struct.ParseNestedMeta.html">ParseNestedMeta</a>) -&gt; <a href="https://docs.rs/syn/2.0.101/syn/error/type.Result.html">syn::Result</a>&lt;()&gt; {
+<a href=#63 id=63 data-nosnippet>63</a>    <span class="kw">fn </span>parse_nested_forced(<span class="kw-2">&amp;mut </span><span class="self">self</span>, meta: <span class="kw-2">&amp;</span><a href="https://docs.rs/syn/2.0.103/syn/meta/struct.ParseNestedMeta.html">ParseNestedMeta</a>) -&gt; <a href="https://docs.rs/syn/2.0.103/syn/error/type.Result.html">syn::Result</a>&lt;()&gt; {
 <a href=#64 id=64 data-nosnippet>64</a>        <span class="kw">if </span><span class="self">self</span>.value_required || meta.input.peek(<span class="macro">Token!</span>[=]) {
-<a href=#65 id=65 data-nosnippet>65</a>            <span class="kw">let </span>_eq: <a class="macro" href="https://docs.rs/syn/2.0.101/syn/macro.Token.html">Token!</a>[=] = <a href="#63">meta</a>.input.<a href="https://docs.rs/syn/2.0.101/syn/parse/struct.ParseBuffer.html#method.parse">parse</a>()<span class="question-mark">?</span>;
-<a href=#66 id=66 data-nosnippet>66</a>            <a class="self" href="#63">self</a>.value = <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#63">meta</a>.input.<a href="https://docs.rs/syn/2.0.101/syn/parse/struct.ParseBuffer.html#method.parse">parse</a>()<span class="question-mark">?</span>);
+<a href=#65 id=65 data-nosnippet>65</a>            <span class="kw">let </span>_eq: <a class="macro" href="https://docs.rs/syn/2.0.103/syn/macro.Token.html">Token!</a>[=] = <a href="#63">meta</a>.input.<a href="https://docs.rs/syn/2.0.103/syn/parse/struct.ParseBuffer.html#method.parse">parse</a>()<span class="question-mark">?</span>;
+<a href=#66 id=66 data-nosnippet>66</a>            <a class="self" href="#63">self</a>.value = <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#63">meta</a>.input.<a href="https://docs.rs/syn/2.0.103/syn/parse/struct.ParseBuffer.html#method.parse">parse</a>()<span class="question-mark">?</span>);
 <a href=#67 id=67 data-nosnippet>67</a>        }
 <a href=#68 id=68 data-nosnippet>68</a>        <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(())
 <a href=#69 id=69 data-nosnippet>69</a>    }
 <a href=#70 id=70 data-nosnippet>70</a>}
-<a href=#71 id=71 data-nosnippet>71</a><span class="kw">impl</span>&lt;T: <a href="https://docs.rs/syn/2.0.101/syn/parse/trait.Parse.html">Parse</a>&gt; <a href="#11-16">ParseNestedMetaItem</a> <span class="kw">for </span><a href="#19-25">NestedMetaItem</a>&lt;T&gt; {
+<a href=#71 id=71 data-nosnippet>71</a><span class="kw">impl</span>&lt;T: <a href="https://docs.rs/syn/2.0.103/syn/parse/trait.Parse.html">Parse</a>&gt; <a href="#11-16">ParseNestedMetaItem</a> <span class="kw">for </span><a href="#19-25">NestedMetaItem</a>&lt;T&gt; {
 <a href=#72 id=72 data-nosnippet>72</a>    <span class="kw">fn </span>get_name(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'static </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a> {
 <a href=#73 id=73 data-nosnippet>73</a>        <a class="self" href="#72">self</a>.name
 <a href=#74 id=74 data-nosnippet>74</a>    }
-<a href=#75 id=75 data-nosnippet>75</a>    <span class="kw">fn </span>parse_nested(<span class="kw-2">&amp;mut </span><span class="self">self</span>, meta: <span class="kw-2">&amp;</span><a href="https://docs.rs/syn/2.0.101/syn/meta/struct.ParseNestedMeta.html">ParseNestedMeta</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="https://docs.rs/syn/2.0.101/syn/error/type.Result.html">syn::Result</a>&lt;()&gt;&gt; {
+<a href=#75 id=75 data-nosnippet>75</a>    <span class="kw">fn </span>parse_nested(<span class="kw-2">&amp;mut </span><span class="self">self</span>, meta: <span class="kw-2">&amp;</span><a href="https://docs.rs/syn/2.0.103/syn/meta/struct.ParseNestedMeta.html">ParseNestedMeta</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="https://docs.rs/syn/2.0.103/syn/error/type.Result.html">syn::Result</a>&lt;()&gt;&gt; {
 <a href=#76 id=76 data-nosnippet>76</a>        <span class="kw">if </span>meta.path.is_ident(<span class="self">self</span>.name) {
 <a href=#77 id=77 data-nosnippet>77</a>            <a class="self" href="#75">self</a>.found = <span class="bool-val">true</span>;
 <a href=#78 id=78 data-nosnippet>78</a>            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a class="self" href="#75">self</a>.<a href="#63-69">parse_nested_forced</a>(<a href="#75">meta</a>))
@@ -161,8 +161,8 @@
 <a href=#88 id=88 data-nosnippet>88</a>    }
 <a href=#89 id=89 data-nosnippet>89</a>}
 <a href=#90 id=90 data-nosnippet>90</a>
-<a href=#91 id=91 data-nosnippet>91</a><span class="kw">pub fn </span>check_meta_items(span: <a href="https://docs.rs/proc-macro2/1.0.95/proc_macro2/struct.Span.html">Span</a>, items: <span class="kw-2">&amp;mut </span>[<span class="kw-2">&amp;mut </span><span class="kw">dyn </span><a href="#11-16">ParseNestedMetaItem</a>]) -&gt; <a href="https://docs.rs/syn/2.0.101/syn/error/type.Result.html">syn::Result</a>&lt;()&gt; {
-<a href=#92 id=92 data-nosnippet>92</a>    <span class="kw">let </span><span class="kw-2">mut </span>err: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="https://docs.rs/syn/2.0.101/syn/error/struct.Error.html">syn::Error</a>&gt; = <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a>;
+<a href=#91 id=91 data-nosnippet>91</a><span class="kw">pub fn </span>check_meta_items(span: <a href="https://docs.rs/proc-macro2/1.0.95/proc_macro2/struct.Span.html">Span</a>, items: <span class="kw-2">&amp;mut </span>[<span class="kw-2">&amp;mut </span><span class="kw">dyn </span><a href="#11-16">ParseNestedMetaItem</a>]) -&gt; <a href="https://docs.rs/syn/2.0.103/syn/error/type.Result.html">syn::Result</a>&lt;()&gt; {
+<a href=#92 id=92 data-nosnippet>92</a>    <span class="kw">let </span><span class="kw-2">mut </span>err: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="https://docs.rs/syn/2.0.103/syn/error/struct.Error.html">syn::Error</a>&gt; = <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a>;
 <a href=#93 id=93 data-nosnippet>93</a>    <span class="kw">for </span>item <span class="kw">in </span><span class="kw-2">&amp;mut *</span>items {
 <a href=#94 id=94 data-nosnippet>94</a>        <span class="kw">if </span>item.get_required() &amp;&amp; !item.get_found() {
 <a href=#95 id=95 data-nosnippet>95</a>            <span class="kw">let </span>nerr = syn::Error::new(
@@ -183,17 +183,17 @@
 <a href=#110 id=110 data-nosnippet>110</a>}
 <a href=#111 id=111 data-nosnippet>111</a><span class="kw">fn </span>parse_nested_meta_items_from_fn(
 <a href=#112 id=112 data-nosnippet>112</a>    parse_nested_meta: <span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>(
-<a href=#113 id=113 data-nosnippet>113</a>        <span class="kw-2">&amp;mut </span><span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnMut.html">FnMut</a>(<a href="https://docs.rs/syn/2.0.101/syn/meta/struct.ParseNestedMeta.html">ParseNestedMeta</a>) -&gt; <a href="https://docs.rs/syn/2.0.101/syn/error/type.Result.html">syn::Result</a>&lt;()&gt;,
-<a href=#114 id=114 data-nosnippet>114</a>    ) -&gt; <a href="https://docs.rs/syn/2.0.101/syn/error/type.Result.html">syn::Result</a>&lt;()&gt;,
+<a href=#113 id=113 data-nosnippet>113</a>        <span class="kw-2">&amp;mut </span><span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnMut.html">FnMut</a>(<a href="https://docs.rs/syn/2.0.103/syn/meta/struct.ParseNestedMeta.html">ParseNestedMeta</a>) -&gt; <a href="https://docs.rs/syn/2.0.103/syn/error/type.Result.html">syn::Result</a>&lt;()&gt;,
+<a href=#114 id=114 data-nosnippet>114</a>    ) -&gt; <a href="https://docs.rs/syn/2.0.103/syn/error/type.Result.html">syn::Result</a>&lt;()&gt;,
 <a href=#115 id=115 data-nosnippet>115</a>    items: <span class="kw-2">&amp;mut </span>[<span class="kw-2">&amp;mut </span><span class="kw">dyn </span><a href="#11-16">ParseNestedMetaItem</a>],
-<a href=#116 id=116 data-nosnippet>116</a>) -&gt; <a href="https://docs.rs/syn/2.0.101/syn/error/type.Result.html">syn::Result</a>&lt;()&gt; {
+<a href=#116 id=116 data-nosnippet>116</a>) -&gt; <a href="https://docs.rs/syn/2.0.103/syn/error/type.Result.html">syn::Result</a>&lt;()&gt; {
 <a href=#117 id=117 data-nosnippet>117</a>    <a href="#112">parse_nested_meta</a>(<span class="kw-2">&amp;mut </span>|meta| {
 <a href=#118 id=118 data-nosnippet>118</a>        <span class="kw">for </span>item <span class="kw">in </span><span class="kw-2">&amp;mut *</span>items {
 <a href=#119 id=119 data-nosnippet>119</a>            <span class="kw">if let </span><span class="prelude-val">Some</span>(res) = item.parse_nested(<span class="kw-2">&amp;</span>meta) {
 <a href=#120 id=120 data-nosnippet>120</a>                <span class="kw">return </span>res;
 <a href=#121 id=121 data-nosnippet>121</a>            }
 <a href=#122 id=122 data-nosnippet>122</a>        }
-<a href=#123 id=123 data-nosnippet>123</a>        <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="#117">meta</a>.<a href="https://docs.rs/syn/2.0.101/syn/meta/struct.ParseNestedMeta.html#method.error">error</a>(<a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.format.html">format!</a>(
+<a href=#123 id=123 data-nosnippet>123</a>        <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="#117">meta</a>.<a href="https://docs.rs/syn/2.0.103/syn/meta/struct.ParseNestedMeta.html#method.error">error</a>(<a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.format.html">format!</a>(
 <a href=#124 id=124 data-nosnippet>124</a>            <span class="string">"unknown attribute `{}`. Possible attributes are {}"</span>,
 <a href=#125 id=125 data-nosnippet>125</a>            meta.path.get_ident().unwrap(),
 <a href=#126 id=126 data-nosnippet>126</a>            items
@@ -209,11 +209,11 @@
 <a href=#136 id=136 data-nosnippet>136</a><span class="kw">pub fn </span>parse_nested_meta_items_from_stream(
 <a href=#137 id=137 data-nosnippet>137</a>    input: <a href="https://docs.rs/proc-macro2/1.0.95/proc_macro2/struct.TokenStream.html">TokenStream</a>,
 <a href=#138 id=138 data-nosnippet>138</a>    items: <span class="kw-2">&amp;mut </span>[<span class="kw-2">&amp;mut </span><span class="kw">dyn </span><a href="#11-16">ParseNestedMetaItem</a>],
-<a href=#139 id=139 data-nosnippet>139</a>) -&gt; <a href="https://docs.rs/syn/2.0.101/syn/error/type.Result.html">syn::Result</a>&lt;()&gt; {
+<a href=#139 id=139 data-nosnippet>139</a>) -&gt; <a href="https://docs.rs/syn/2.0.103/syn/error/type.Result.html">syn::Result</a>&lt;()&gt; {
 <a href=#140 id=140 data-nosnippet>140</a>    <a href="#111-134">parse_nested_meta_items_from_fn</a>(
 <a href=#141 id=141 data-nosnippet>141</a>        |f| {
-<a href=#142 id=142 data-nosnippet>142</a>            <span class="kw">let </span>p = <a href="https://docs.rs/syn/2.0.101/syn/meta/fn.parser.html">syn::meta::parser</a>(<a href="#141">f</a>);
-<a href=#143 id=143 data-nosnippet>143</a>            <a href="https://docs.rs/syn/2.0.101/syn/parse/trait.Parser.html#tymethod.parse">syn::parse::Parser::parse</a>(<a href="#142">p</a>, <a href="#137">input</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>())
+<a href=#142 id=142 data-nosnippet>142</a>            <span class="kw">let </span>p = <a href="https://docs.rs/syn/2.0.103/syn/meta/fn.parser.html">syn::meta::parser</a>(<a href="#141">f</a>);
+<a href=#143 id=143 data-nosnippet>143</a>            <a href="https://docs.rs/syn/2.0.103/syn/parse/trait.Parser.html#tymethod.parse">syn::parse::Parser::parse</a>(<a href="#142">p</a>, <a href="#137">input</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>())
 <a href=#144 id=144 data-nosnippet>144</a>        },
 <a href=#145 id=145 data-nosnippet>145</a>        <a href="#138">items</a>,
 <a href=#146 id=146 data-nosnippet>146</a>    )<span class="question-mark">?</span>;
@@ -221,16 +221,16 @@
 <a href=#148 id=148 data-nosnippet>148</a>}
 <a href=#149 id=149 data-nosnippet>149</a>
 <a href=#150 id=150 data-nosnippet>150</a><span class="kw">pub fn </span>parse_nested_meta_items&lt;<span class="lifetime">'a</span>&gt;(
-<a href=#151 id=151 data-nosnippet>151</a>    attrs: <span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.IntoIterator.html">IntoIterator</a>&lt;Item = <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://docs.rs/syn/2.0.101/syn/attr/struct.Attribute.html">syn::Attribute</a>&gt;,
+<a href=#151 id=151 data-nosnippet>151</a>    attrs: <span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.IntoIterator.html">IntoIterator</a>&lt;Item = <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://docs.rs/syn/2.0.103/syn/attr/struct.Attribute.html">syn::Attribute</a>&gt;,
 <a href=#152 id=152 data-nosnippet>152</a>    attr_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
 <a href=#153 id=153 data-nosnippet>153</a>    items: <span class="kw-2">&amp;mut </span>[<span class="kw-2">&amp;mut </span><span class="kw">dyn </span><a href="#11-16">ParseNestedMetaItem</a>],
-<a href=#154 id=154 data-nosnippet>154</a>) -&gt; <a href="https://docs.rs/syn/2.0.101/syn/error/type.Result.html">syn::Result</a>&lt;<a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://docs.rs/syn/2.0.101/syn/attr/struct.Attribute.html">syn::Attribute</a>&gt;&gt; {
+<a href=#154 id=154 data-nosnippet>154</a>) -&gt; <a href="https://docs.rs/syn/2.0.103/syn/error/type.Result.html">syn::Result</a>&lt;<a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://docs.rs/syn/2.0.103/syn/attr/struct.Attribute.html">syn::Attribute</a>&gt;&gt; {
 <a href=#155 id=155 data-nosnippet>155</a>    <span class="kw">let </span>attr = <a href="#151">attrs</a>
 <a href=#156 id=156 data-nosnippet>156</a>        .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.IntoIterator.html#tymethod.into_iter">into_iter</a>()
-<a href=#157 id=157 data-nosnippet>157</a>        .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.find">find</a>(|attr| <a href="#157">attr</a>.<a href="https://docs.rs/syn/2.0.101/syn/attr/struct.Attribute.html#method.path">path</a>().<a href="https://docs.rs/syn/2.0.101/syn/path/struct.Path.html#method.is_ident">is_ident</a>(<a href="#152">attr_name</a>));
+<a href=#157 id=157 data-nosnippet>157</a>        .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.find">find</a>(|attr| <a href="#157">attr</a>.<a href="https://docs.rs/syn/2.0.103/syn/attr/struct.Attribute.html#method.path">path</a>().<a href="https://docs.rs/syn/2.0.103/syn/path/struct.Path.html#method.is_ident">is_ident</a>(<a href="#152">attr_name</a>));
 <a href=#158 id=158 data-nosnippet>158</a>    <span class="kw">if let </span><a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(attr) = <a href="#155">attr</a> {
-<a href=#159 id=159 data-nosnippet>159</a>        <a href="#111-134">parse_nested_meta_items_from_fn</a>(|x| <a href="#158">attr</a>.<a href="https://docs.rs/syn/2.0.101/syn/attr/struct.Attribute.html#method.parse_nested_meta">parse_nested_meta</a>(<a href="#159">x</a>), <a href="#153">items</a>)<span class="question-mark">?</span>;
-<a href=#160 id=160 data-nosnippet>160</a>        <a href="#91-110">check_meta_items</a>(<a href="#158">attr</a>.<a href="https://docs.rs/syn/2.0.101/syn/spanned/trait.Spanned.html#tymethod.span">span</a>(), <a href="#153">items</a>)<span class="question-mark">?</span>;
+<a href=#159 id=159 data-nosnippet>159</a>        <a href="#111-134">parse_nested_meta_items_from_fn</a>(|x| <a href="#158">attr</a>.<a href="https://docs.rs/syn/2.0.103/syn/attr/struct.Attribute.html#method.parse_nested_meta">parse_nested_meta</a>(<a href="#159">x</a>), <a href="#153">items</a>)<span class="question-mark">?</span>;
+<a href=#160 id=160 data-nosnippet>160</a>        <a href="#91-110">check_meta_items</a>(<a href="#158">attr</a>.<a href="https://docs.rs/syn/2.0.103/syn/spanned/trait.Spanned.html#tymethod.span">span</a>(), <a href="#153">items</a>)<span class="question-mark">?</span>;
 <a href=#161 id=161 data-nosnippet>161</a>        <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(<a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#158">attr</a>))
 <a href=#162 id=162 data-nosnippet>162</a>    } <span class="kw">else </span>{
 <a href=#163 id=163 data-nosnippet>163</a>        <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(<a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a>)
@@ -238,19 +238,19 @@
 <a href=#165 id=165 data-nosnippet>165</a>}
 <a href=#166 id=166 data-nosnippet>166</a>
 <a href=#167 id=167 data-nosnippet>167</a><span class="kw">pub fn </span>parse_optional_nested_meta_items&lt;<span class="lifetime">'a</span>&gt;(
-<a href=#168 id=168 data-nosnippet>168</a>    attrs: <span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.IntoIterator.html">IntoIterator</a>&lt;Item = <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://docs.rs/syn/2.0.101/syn/attr/struct.Attribute.html">syn::Attribute</a>&gt;,
+<a href=#168 id=168 data-nosnippet>168</a>    attrs: <span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.IntoIterator.html">IntoIterator</a>&lt;Item = <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://docs.rs/syn/2.0.103/syn/attr/struct.Attribute.html">syn::Attribute</a>&gt;,
 <a href=#169 id=169 data-nosnippet>169</a>    attr_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
 <a href=#170 id=170 data-nosnippet>170</a>    items: <span class="kw-2">&amp;mut </span>[<span class="kw-2">&amp;mut </span><span class="kw">dyn </span><a href="#11-16">ParseNestedMetaItem</a>],
-<a href=#171 id=171 data-nosnippet>171</a>) -&gt; <a href="https://docs.rs/syn/2.0.101/syn/error/type.Result.html">syn::Result</a>&lt;<a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://docs.rs/syn/2.0.101/syn/attr/struct.Attribute.html">syn::Attribute</a>&gt;&gt; {
+<a href=#171 id=171 data-nosnippet>171</a>) -&gt; <a href="https://docs.rs/syn/2.0.103/syn/error/type.Result.html">syn::Result</a>&lt;<a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://docs.rs/syn/2.0.103/syn/attr/struct.Attribute.html">syn::Attribute</a>&gt;&gt; {
 <a href=#172 id=172 data-nosnippet>172</a>    <span class="kw">let </span>attr = <a href="#168">attrs</a>
 <a href=#173 id=173 data-nosnippet>173</a>        .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.IntoIterator.html#tymethod.into_iter">into_iter</a>()
-<a href=#174 id=174 data-nosnippet>174</a>        .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.find">find</a>(|attr| <a href="#174">attr</a>.<a href="https://docs.rs/syn/2.0.101/syn/attr/struct.Attribute.html#method.path">path</a>().<a href="https://docs.rs/syn/2.0.101/syn/path/struct.Path.html#method.is_ident">is_ident</a>(<a href="#169">attr_name</a>));
+<a href=#174 id=174 data-nosnippet>174</a>        .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.find">find</a>(|attr| <a href="#174">attr</a>.<a href="https://docs.rs/syn/2.0.103/syn/attr/struct.Attribute.html#method.path">path</a>().<a href="https://docs.rs/syn/2.0.103/syn/path/struct.Path.html#method.is_ident">is_ident</a>(<a href="#169">attr_name</a>));
 <a href=#175 id=175 data-nosnippet>175</a>    <span class="kw">if let </span><a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(attr) = <a href="#172">attr</a> {
-<a href=#176 id=176 data-nosnippet>176</a>        <span class="kw">if let </span><a href="https://docs.rs/syn/2.0.101/syn/attr/enum.Meta.html#variant.Path">syn::Meta::Path</a>(<span class="kw">_</span>) = <a href="#175">attr</a>.meta {
+<a href=#176 id=176 data-nosnippet>176</a>        <span class="kw">if let </span><a href="https://docs.rs/syn/2.0.103/syn/attr/enum.Meta.html#variant.Path">syn::Meta::Path</a>(<span class="kw">_</span>) = <a href="#175">attr</a>.meta {
 <a href=#177 id=177 data-nosnippet>177</a>            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(<a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#175">attr</a>))
 <a href=#178 id=178 data-nosnippet>178</a>        } <span class="kw">else </span>{
-<a href=#179 id=179 data-nosnippet>179</a>            <a href="#111-134">parse_nested_meta_items_from_fn</a>(|x| <a href="#175">attr</a>.<a href="https://docs.rs/syn/2.0.101/syn/attr/struct.Attribute.html#method.parse_nested_meta">parse_nested_meta</a>(<a href="#179">x</a>), <a href="#170">items</a>)<span class="question-mark">?</span>;
-<a href=#180 id=180 data-nosnippet>180</a>            <a href="#91-110">check_meta_items</a>(<a href="#175">attr</a>.<a href="https://docs.rs/syn/2.0.101/syn/spanned/trait.Spanned.html#tymethod.span">span</a>(), <a href="#170">items</a>)<span class="question-mark">?</span>;
+<a href=#179 id=179 data-nosnippet>179</a>            <a href="#111-134">parse_nested_meta_items_from_fn</a>(|x| <a href="#175">attr</a>.<a href="https://docs.rs/syn/2.0.103/syn/attr/struct.Attribute.html#method.parse_nested_meta">parse_nested_meta</a>(<a href="#179">x</a>), <a href="#170">items</a>)<span class="question-mark">?</span>;
+<a href=#180 id=180 data-nosnippet>180</a>            <a href="#91-110">check_meta_items</a>(<a href="#175">attr</a>.<a href="https://docs.rs/syn/2.0.103/syn/spanned/trait.Spanned.html#tymethod.span">span</a>(), <a href="#170">items</a>)<span class="question-mark">?</span>;
 <a href=#181 id=181 data-nosnippet>181</a>            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(<a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#175">attr</a>))
 <a href=#182 id=182 data-nosnippet>182</a>        }
 <a href=#183 id=183 data-nosnippet>183</a>    } <span class="kw">else </span>{
@@ -295,10 +295,10 @@
 <a href=#222 id=222 data-nosnippet>222</a>//   }
 <a href=#223 id=223 data-nosnippet>223</a></span><span class="kw">pub fn </span>gen_enum_from_glib(
 <a href=#224 id=224 data-nosnippet>224</a>    enum_name: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.95/proc_macro2/struct.Ident.html">Ident</a>,
-<a href=#225 id=225 data-nosnippet>225</a>    enum_variants: <span class="kw-2">&amp;</span><a href="https://docs.rs/syn/2.0.101/syn/punctuated/struct.Punctuated.html">Punctuated</a>&lt;<a href="https://docs.rs/syn/2.0.101/syn/data/struct.Variant.html">Variant</a>, <a href="https://docs.rs/syn/2.0.101/syn/token/struct.Comma.html">Comma</a>&gt;,
+<a href=#225 id=225 data-nosnippet>225</a>    enum_variants: <span class="kw-2">&amp;</span><a href="https://docs.rs/syn/2.0.103/syn/punctuated/struct.Punctuated.html">Punctuated</a>&lt;<a href="https://docs.rs/syn/2.0.103/syn/data/struct.Variant.html">Variant</a>, <a href="https://docs.rs/syn/2.0.103/syn/token/struct.Comma.html">Comma</a>&gt;,
 <a href=#226 id=226 data-nosnippet>226</a>) -&gt; <a href="https://docs.rs/proc-macro2/1.0.95/proc_macro2/struct.TokenStream.html">TokenStream</a> {
 <a href=#227 id=227 data-nosnippet>227</a>    <span class="comment">// FIXME: can we express this with a match()?
-<a href=#228 id=228 data-nosnippet>228</a>    </span><span class="kw">let </span>recurse = <a href="#225">enum_variants</a>.<a href="https://docs.rs/syn/2.0.101/syn/punctuated/struct.Punctuated.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|v| {
+<a href=#228 id=228 data-nosnippet>228</a>    </span><span class="kw">let </span>recurse = <a href="#225">enum_variants</a>.<a href="https://docs.rs/syn/2.0.103/syn/punctuated/struct.Punctuated.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|v| {
 <a href=#229 id=229 data-nosnippet>229</a>        <span class="kw">let </span>name = <span class="kw-2">&amp;</span><a href="#228">v</a>.ident;
 <a href=#230 id=230 data-nosnippet>230</a>        <a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote_spanned.html">quote_spanned!</a> { v.span() =&gt;
 <a href=#231 id=231 data-nosnippet>231</a>            <span class="kw">if </span>value == #enum_name::#name <span class="kw">as </span>i32 {

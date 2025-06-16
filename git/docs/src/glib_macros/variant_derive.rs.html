@@ -76,22 +76,22 @@
 <a href=#3 id=3 data-nosnippet>3</a></span><span class="kw">use </span>heck::ToKebabCase;
 <a href=#4 id=4 data-nosnippet>4</a><span class="kw">use </span><a href="https://docs.rs/proc-macro2/1.0.95/proc_macro2/struct.TokenStream.html">proc_macro2::TokenStream</a>;
 <a href=#5 id=5 data-nosnippet>5</a><span class="kw">use </span>quote::{<a href="https://docs.rs/quote/1.0.40/quote/macro.format_ident.html">format_ident</a>, <a href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote</a>};
-<a href=#6 id=6 data-nosnippet>6</a><span class="kw">use </span>syn::{<a href="https://docs.rs/syn/2.0.101/syn/derive/enum.Data.html">Data</a>, <a href="https://docs.rs/syn/2.0.101/syn/derive/struct.DeriveInput.html">DeriveInput</a>, <a href="https://docs.rs/syn/2.0.101/syn/data/enum.Fields.html">Fields</a>, <a href="https://docs.rs/syn/2.0.101/syn/data/struct.FieldsNamed.html">FieldsNamed</a>, <a href="https://docs.rs/syn/2.0.101/syn/data/struct.FieldsUnnamed.html">FieldsUnnamed</a>, <a href="https://docs.rs/syn/2.0.101/syn/generics/struct.Generics.html">Generics</a>, Ident, <a href="https://docs.rs/syn/2.0.101/syn/ty/enum.Type.html">Type</a>};
+<a href=#6 id=6 data-nosnippet>6</a><span class="kw">use </span>syn::{<a href="https://docs.rs/syn/2.0.103/syn/derive/enum.Data.html">Data</a>, <a href="https://docs.rs/syn/2.0.103/syn/derive/struct.DeriveInput.html">DeriveInput</a>, <a href="https://docs.rs/syn/2.0.103/syn/data/enum.Fields.html">Fields</a>, <a href="https://docs.rs/syn/2.0.103/syn/data/struct.FieldsNamed.html">FieldsNamed</a>, <a href="https://docs.rs/syn/2.0.103/syn/data/struct.FieldsUnnamed.html">FieldsUnnamed</a>, <a href="https://docs.rs/syn/2.0.103/syn/generics/struct.Generics.html">Generics</a>, Ident, <a href="https://docs.rs/syn/2.0.103/syn/ty/enum.Type.html">Type</a>};
 <a href=#7 id=7 data-nosnippet>7</a>
 <a href=#8 id=8 data-nosnippet>8</a><span class="kw">use </span><a href="utils.rs.html#188-215"><span class="kw">crate</span>::utils::crate_ident_new</a>;
 <a href=#9 id=9 data-nosnippet>9</a>
-<a href=#10 id=10 data-nosnippet>10</a><span class="kw">pub fn </span>impl_variant(input: <a href="https://docs.rs/syn/2.0.101/syn/derive/struct.DeriveInput.html">DeriveInput</a>) -&gt; <a href="https://docs.rs/syn/2.0.101/syn/error/type.Result.html">syn::Result</a>&lt;<a href="https://docs.rs/proc-macro2/1.0.95/proc_macro2/struct.TokenStream.html">TokenStream</a>&gt; {
+<a href=#10 id=10 data-nosnippet>10</a><span class="kw">pub fn </span>impl_variant(input: <a href="https://docs.rs/syn/2.0.103/syn/derive/struct.DeriveInput.html">DeriveInput</a>) -&gt; <a href="https://docs.rs/syn/2.0.103/syn/error/type.Result.html">syn::Result</a>&lt;<a href="https://docs.rs/proc-macro2/1.0.95/proc_macro2/struct.TokenStream.html">TokenStream</a>&gt; {
 <a href=#11 id=11 data-nosnippet>11</a>    <span class="kw">match </span><a href="#10">input</a>.data {
-<a href=#12 id=12 data-nosnippet>12</a>        <a href="https://docs.rs/syn/2.0.101/syn/derive/enum.Data.html#variant.Struct">Data::Struct</a>(data_struct) =&gt; <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(<a href="#41-251">derive_variant_for_struct</a>(
+<a href=#12 id=12 data-nosnippet>12</a>        <a href="https://docs.rs/syn/2.0.103/syn/derive/enum.Data.html#variant.Struct">Data::Struct</a>(data_struct) =&gt; <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(<a href="#41-251">derive_variant_for_struct</a>(
 <a href=#13 id=13 data-nosnippet>13</a>            <a href="#10">input</a>.ident,
 <a href=#14 id=14 data-nosnippet>14</a>            <a href="#10">input</a>.generics,
 <a href=#15 id=15 data-nosnippet>15</a>            <a href="#12">data_struct</a>,
 <a href=#16 id=16 data-nosnippet>16</a>        )),
-<a href=#17 id=17 data-nosnippet>17</a>        <a href="https://docs.rs/syn/2.0.101/syn/derive/enum.Data.html#variant.Enum">Data::Enum</a>(data_enum) =&gt; {
+<a href=#17 id=17 data-nosnippet>17</a>        <a href="https://docs.rs/syn/2.0.103/syn/derive/enum.Data.html#variant.Enum">Data::Enum</a>(data_enum) =&gt; {
 <a href=#18 id=18 data-nosnippet>18</a>            <span class="kw">let </span>mode = <a href="#630-678">get_enum_mode</a>(<span class="kw-2">&amp;</span><a href="#10">input</a>.attrs)<span class="question-mark">?</span>;
 <a href=#19 id=19 data-nosnippet>19</a>            <span class="kw">let </span>has_data = <a href="#17">data_enum</a>
 <a href=#20 id=20 data-nosnippet>20</a>                .variants
-<a href=#21 id=21 data-nosnippet>21</a>                .<a href="https://docs.rs/syn/2.0.101/syn/punctuated/struct.Punctuated.html#method.iter">iter</a>()
+<a href=#21 id=21 data-nosnippet>21</a>                .<a href="https://docs.rs/syn/2.0.103/syn/punctuated/struct.Punctuated.html#method.iter">iter</a>()
 <a href=#22 id=22 data-nosnippet>22</a>                .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.any">any</a>(|v| !<a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.matches.html">matches!</a>(v.fields, syn::Fields::Unit));
 <a href=#23 id=23 data-nosnippet>23</a>            <span class="kw">if </span>has_data {
 <a href=#24 id=24 data-nosnippet>24</a>                <a href="#292-495">derive_variant_for_enum</a>(<a href="#10">input</a>.ident, <a href="#10">input</a>.generics, <a href="#17">data_enum</a>, <a href="#18">mode</a>)
@@ -104,7 +104,7 @@
 <a href=#31 id=31 data-nosnippet>31</a>                ))
 <a href=#32 id=32 data-nosnippet>32</a>            }
 <a href=#33 id=33 data-nosnippet>33</a>        }
-<a href=#34 id=34 data-nosnippet>34</a>        <a href="https://docs.rs/syn/2.0.101/syn/derive/enum.Data.html#variant.Union">Data::Union</a>(..) =&gt; <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="https://docs.rs/syn/2.0.101/syn/error/struct.Error.html#method.new_spanned">syn::Error::new_spanned</a>(
+<a href=#34 id=34 data-nosnippet>34</a>        <a href="https://docs.rs/syn/2.0.103/syn/derive/enum.Data.html#variant.Union">Data::Union</a>(..) =&gt; <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="https://docs.rs/syn/2.0.103/syn/error/struct.Error.html#method.new_spanned">syn::Error::new_spanned</a>(
 <a href=#35 id=35 data-nosnippet>35</a>            <a href="#10">input</a>,
 <a href=#36 id=36 data-nosnippet>36</a>            <span class="string">"#[derive(glib::Variant)] is not available for unions."</span>,
 <a href=#37 id=37 data-nosnippet>37</a>        )),
@@ -113,16 +113,16 @@
 <a href=#40 id=40 data-nosnippet>40</a>
 <a href=#41 id=41 data-nosnippet>41</a><span class="kw">fn </span>derive_variant_for_struct(
 <a href=#42 id=42 data-nosnippet>42</a>    ident: <a href="https://docs.rs/proc-macro2/1.0.95/proc_macro2/struct.Ident.html">Ident</a>,
-<a href=#43 id=43 data-nosnippet>43</a>    generics: <a href="https://docs.rs/syn/2.0.101/syn/generics/struct.Generics.html">Generics</a>,
-<a href=#44 id=44 data-nosnippet>44</a>    data_struct: <a href="https://docs.rs/syn/2.0.101/syn/derive/struct.DataStruct.html">syn::DataStruct</a>,
+<a href=#43 id=43 data-nosnippet>43</a>    generics: <a href="https://docs.rs/syn/2.0.103/syn/generics/struct.Generics.html">Generics</a>,
+<a href=#44 id=44 data-nosnippet>44</a>    data_struct: <a href="https://docs.rs/syn/2.0.103/syn/derive/struct.DataStruct.html">syn::DataStruct</a>,
 <a href=#45 id=45 data-nosnippet>45</a>) -&gt; <a href="https://docs.rs/proc-macro2/1.0.95/proc_macro2/struct.TokenStream.html">TokenStream</a> {
 <a href=#46 id=46 data-nosnippet>46</a>    <span class="kw">let </span>glib = <a href="utils.rs.html#188-215">crate_ident_new</a>();
-<a href=#47 id=47 data-nosnippet>47</a>    <span class="kw">let </span>(impl_generics, type_generics, where_clause) = <a href="#43">generics</a>.<a href="https://docs.rs/syn/2.0.101/syn/generics/struct.Generics.html#method.split_for_impl">split_for_impl</a>();
+<a href=#47 id=47 data-nosnippet>47</a>    <span class="kw">let </span>(impl_generics, type_generics, where_clause) = <a href="#43">generics</a>.<a href="https://docs.rs/syn/2.0.103/syn/generics/struct.Generics.html#method.split_for_impl">split_for_impl</a>();
 <a href=#48 id=48 data-nosnippet>48</a>    <span class="kw">let </span>(static_variant_type, to_variant, from_variant) = <span class="kw">match </span><a href="#44">data_struct</a>.fields {
-<a href=#49 id=49 data-nosnippet>49</a>        <a href="https://docs.rs/syn/2.0.101/syn/data/enum.Fields.html#variant.Unnamed">Fields::Unnamed</a>(FieldsUnnamed { unnamed, .. }) =&gt; {
+<a href=#49 id=49 data-nosnippet>49</a>        <a href="https://docs.rs/syn/2.0.103/syn/data/enum.Fields.html#variant.Unnamed">Fields::Unnamed</a>(FieldsUnnamed { unnamed, .. }) =&gt; {
 <a href=#50 id=50 data-nosnippet>50</a>            <span class="kw">let </span>types = <a href="#49">unnamed</a>
-<a href=#51 id=51 data-nosnippet>51</a>                .<a href="https://docs.rs/syn/2.0.101/syn/punctuated/struct.Punctuated.html#method.into_pairs">into_pairs</a>()
-<a href=#52 id=52 data-nosnippet>52</a>                .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|pair| <a href="#52">pair</a>.<a href="https://docs.rs/syn/2.0.101/syn/punctuated/enum.Pair.html#method.into_value">into_value</a>())
+<a href=#51 id=51 data-nosnippet>51</a>                .<a href="https://docs.rs/syn/2.0.103/syn/punctuated/struct.Punctuated.html#method.into_pairs">into_pairs</a>()
+<a href=#52 id=52 data-nosnippet>52</a>                .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|pair| <a href="#52">pair</a>.<a href="https://docs.rs/syn/2.0.103/syn/punctuated/enum.Pair.html#method.into_value">into_value</a>())
 <a href=#53 id=53 data-nosnippet>53</a>                .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|field| <a href="#53">field</a>.ty)
 <a href=#54 id=54 data-nosnippet>54</a>                .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.collect">collect</a>::&lt;<a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html">Vec</a>&lt;<span class="kw">_</span>&gt;&gt;();
 <a href=#55 id=55 data-nosnippet>55</a>
@@ -194,10 +194,10 @@
 <a href=#121 id=121 data-nosnippet>121</a>
 <a href=#122 id=122 data-nosnippet>122</a>            (<a href="#59">static_variant_type</a>, <a href="#82">to_variant</a>, <a href="#104">from_variant</a>)
 <a href=#123 id=123 data-nosnippet>123</a>        }
-<a href=#124 id=124 data-nosnippet>124</a>        <a href="https://docs.rs/syn/2.0.101/syn/data/enum.Fields.html#variant.Named">Fields::Named</a>(FieldsNamed { named, .. }) =&gt; {
-<a href=#125 id=125 data-nosnippet>125</a>            <span class="kw">let </span>fields: <a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html">Vec</a>&lt;(<a href="https://docs.rs/proc-macro2/1.0.95/proc_macro2/struct.Ident.html">Ident</a>, <a href="https://docs.rs/syn/2.0.101/syn/ty/enum.Type.html">Type</a>)&gt; = <a href="#124">named</a>
-<a href=#126 id=126 data-nosnippet>126</a>                .<a href="https://docs.rs/syn/2.0.101/syn/punctuated/struct.Punctuated.html#method.into_pairs">into_pairs</a>()
-<a href=#127 id=127 data-nosnippet>127</a>                .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|pair| <a href="#127">pair</a>.<a href="https://docs.rs/syn/2.0.101/syn/punctuated/enum.Pair.html#method.into_value">into_value</a>())
+<a href=#124 id=124 data-nosnippet>124</a>        <a href="https://docs.rs/syn/2.0.103/syn/data/enum.Fields.html#variant.Named">Fields::Named</a>(FieldsNamed { named, .. }) =&gt; {
+<a href=#125 id=125 data-nosnippet>125</a>            <span class="kw">let </span>fields: <a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html">Vec</a>&lt;(<a href="https://docs.rs/proc-macro2/1.0.95/proc_macro2/struct.Ident.html">Ident</a>, <a href="https://docs.rs/syn/2.0.103/syn/ty/enum.Type.html">Type</a>)&gt; = <a href="#124">named</a>
+<a href=#126 id=126 data-nosnippet>126</a>                .<a href="https://docs.rs/syn/2.0.103/syn/punctuated/struct.Punctuated.html#method.into_pairs">into_pairs</a>()
+<a href=#127 id=127 data-nosnippet>127</a>                .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|pair| <a href="#127">pair</a>.<a href="https://docs.rs/syn/2.0.103/syn/punctuated/enum.Pair.html#method.into_value">into_value</a>())
 <a href=#128 id=128 data-nosnippet>128</a>                .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|field| (<a href="#128">field</a>.ident.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.expect">expect</a>(<span class="string">"Field ident is specified"</span>), <a href="#128">field</a>.ty))
 <a href=#129 id=129 data-nosnippet>129</a>                .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.collect">collect</a>();
 <a href=#130 id=130 data-nosnippet>130</a>
@@ -276,7 +276,7 @@
 <a href=#203 id=203 data-nosnippet>203</a>
 <a href=#204 id=204 data-nosnippet>204</a>            (<a href="#135">static_variant_type</a>, <a href="#164">to_variant</a>, <a href="#186">from_variant</a>)
 <a href=#205 id=205 data-nosnippet>205</a>        }
-<a href=#206 id=206 data-nosnippet>206</a>        <a href="https://docs.rs/syn/2.0.101/syn/data/enum.Fields.html#variant.Unit">Fields::Unit</a> =&gt; {
+<a href=#206 id=206 data-nosnippet>206</a>        <a href="https://docs.rs/syn/2.0.103/syn/data/enum.Fields.html#variant.Unit">Fields::Unit</a> =&gt; {
 <a href=#207 id=207 data-nosnippet>207</a>            <span class="kw">let </span>static_variant_type = <a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a> {
 <a href=#208 id=208 data-nosnippet>208</a>                <span class="kw">impl </span>#impl_generics #glib::variant::StaticVariantType <span class="kw">for </span>#ident #type_generics #where_clause {
 <a href=#209 id=209 data-nosnippet>209</a>                    <span class="attr">#[inline]
@@ -364,15 +364,15 @@
 <a href=#291 id=291 data-nosnippet>291</a>
 <a href=#292 id=292 data-nosnippet>292</a><span class="kw">fn </span>derive_variant_for_enum(
 <a href=#293 id=293 data-nosnippet>293</a>    ident: <a href="https://docs.rs/proc-macro2/1.0.95/proc_macro2/struct.Ident.html">Ident</a>,
-<a href=#294 id=294 data-nosnippet>294</a>    generics: <a href="https://docs.rs/syn/2.0.101/syn/generics/struct.Generics.html">Generics</a>,
-<a href=#295 id=295 data-nosnippet>295</a>    data_enum: <a href="https://docs.rs/syn/2.0.101/syn/derive/struct.DataEnum.html">syn::DataEnum</a>,
+<a href=#294 id=294 data-nosnippet>294</a>    generics: <a href="https://docs.rs/syn/2.0.103/syn/generics/struct.Generics.html">Generics</a>,
+<a href=#295 id=295 data-nosnippet>295</a>    data_enum: <a href="https://docs.rs/syn/2.0.103/syn/derive/struct.DataEnum.html">syn::DataEnum</a>,
 <a href=#296 id=296 data-nosnippet>296</a>    mode: <a href="#253-258">EnumMode</a>,
-<a href=#297 id=297 data-nosnippet>297</a>) -&gt; <a href="https://docs.rs/syn/2.0.101/syn/error/type.Result.html">syn::Result</a>&lt;<a href="https://docs.rs/proc-macro2/1.0.95/proc_macro2/struct.TokenStream.html">TokenStream</a>&gt; {
+<a href=#297 id=297 data-nosnippet>297</a>) -&gt; <a href="https://docs.rs/syn/2.0.103/syn/error/type.Result.html">syn::Result</a>&lt;<a href="https://docs.rs/proc-macro2/1.0.95/proc_macro2/struct.TokenStream.html">TokenStream</a>&gt; {
 <a href=#298 id=298 data-nosnippet>298</a>    <span class="kw">let </span>glib = <a href="utils.rs.html#188-215">crate_ident_new</a>();
 <a href=#299 id=299 data-nosnippet>299</a>    <span class="kw">let </span>static_variant_type = <a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.format.html">format!</a>(<span class="string">"({}v)"</span>, mode.tag_type());
-<a href=#300 id=300 data-nosnippet>300</a>    <span class="kw">let </span>(impl_generics, type_generics, where_clause) = <a href="#294">generics</a>.<a href="https://docs.rs/syn/2.0.101/syn/generics/struct.Generics.html#method.split_for_impl">split_for_impl</a>();
+<a href=#300 id=300 data-nosnippet>300</a>    <span class="kw">let </span>(impl_generics, type_generics, where_clause) = <a href="#294">generics</a>.<a href="https://docs.rs/syn/2.0.103/syn/generics/struct.Generics.html#method.split_for_impl">split_for_impl</a>();
 <a href=#301 id=301 data-nosnippet>301</a>
-<a href=#302 id=302 data-nosnippet>302</a>    <span class="kw">let </span>to = <a href="#295">data_enum</a>.variants.<a href="https://docs.rs/syn/2.0.101/syn/punctuated/struct.Punctuated.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.enumerate">enumerate</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|(index, v)| {
+<a href=#302 id=302 data-nosnippet>302</a>    <span class="kw">let </span>to = <a href="#295">data_enum</a>.variants.<a href="https://docs.rs/syn/2.0.103/syn/punctuated/struct.Punctuated.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.enumerate">enumerate</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|(index, v)| {
 <a href=#303 id=303 data-nosnippet>303</a>        <span class="kw">let </span>ident = <span class="kw-2">&amp;</span><a href="#302">v</a>.ident;
 <a href=#304 id=304 data-nosnippet>304</a>        <span class="kw">let </span>tag = <span class="kw">match </span><span class="kw-2">&amp;</span><a href="#296">mode</a> {
 <a href=#305 id=305 data-nosnippet>305</a>            <a href="#254">EnumMode::String</a> =&gt; {
@@ -385,15 +385,15 @@
 <a href=#312 id=312 data-nosnippet>312</a>        <span class="kw">if </span>!<span class="macro">matches!</span>(v.fields, syn::Fields::Unit) {
 <a href=#313 id=313 data-nosnippet>313</a>            <span class="kw">match </span><span class="kw-2">&amp;</span><a href="#296">mode</a> {
 <a href=#314 id=314 data-nosnippet>314</a>                <a href="#256">EnumMode::Enum</a> { .. } =&gt;
-<a href=#315 id=315 data-nosnippet>315</a>                    <span class="kw">return </span><a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="https://docs.rs/syn/2.0.101/syn/error/struct.Error.html#method.new_spanned">syn::Error::new_spanned</a>(<a href="#302">v</a>, <span class="string">"#[variant_enum(enum) only allowed with C-style enums using #[derive(glib::Enum)]"</span>)),
+<a href=#315 id=315 data-nosnippet>315</a>                    <span class="kw">return </span><a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="https://docs.rs/syn/2.0.103/syn/error/struct.Error.html#method.new_spanned">syn::Error::new_spanned</a>(<a href="#302">v</a>, <span class="string">"#[variant_enum(enum) only allowed with C-style enums using #[derive(glib::Enum)]"</span>)),
 <a href=#316 id=316 data-nosnippet>316</a>                <a href="#257">EnumMode::Flags</a> { .. } =&gt;
-<a href=#317 id=317 data-nosnippet>317</a>                    <span class="kw">return </span><a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="https://docs.rs/syn/2.0.101/syn/error/struct.Error.html#method.new_spanned">syn::Error::new_spanned</a>(<a href="#302">v</a>, <span class="string">"#[variant_enum(flags) only allowed with bitflags using #[glib::flags]"</span>)),
+<a href=#317 id=317 data-nosnippet>317</a>                    <span class="kw">return </span><a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="https://docs.rs/syn/2.0.103/syn/error/struct.Error.html#method.new_spanned">syn::Error::new_spanned</a>(<a href="#302">v</a>, <span class="string">"#[variant_enum(flags) only allowed with bitflags using #[glib::flags]"</span>)),
 <a href=#318 id=318 data-nosnippet>318</a>                <span class="kw">_ </span>=&gt; (),
 <a href=#319 id=319 data-nosnippet>319</a>            }
 <a href=#320 id=320 data-nosnippet>320</a>        }
 <a href=#321 id=321 data-nosnippet>321</a>        <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(<span class="kw">match </span><span class="kw-2">&amp;</span><a href="#302">v</a>.fields {
-<a href=#322 id=322 data-nosnippet>322</a>            <a href="https://docs.rs/syn/2.0.101/syn/data/enum.Fields.html#variant.Named">syn::Fields::Named</a>(FieldsNamed { named, .. }) =&gt; {
-<a href=#323 id=323 data-nosnippet>323</a>                <span class="kw">let </span>field_names = <a href="#322">named</a>.<a href="https://docs.rs/syn/2.0.101/syn/punctuated/struct.Punctuated.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|f| <a href="#323">f</a>.ident.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_ref">as_ref</a>().<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap">unwrap</a>());
+<a href=#322 id=322 data-nosnippet>322</a>            <a href="https://docs.rs/syn/2.0.103/syn/data/enum.Fields.html#variant.Named">syn::Fields::Named</a>(FieldsNamed { named, .. }) =&gt; {
+<a href=#323 id=323 data-nosnippet>323</a>                <span class="kw">let </span>field_names = <a href="#322">named</a>.<a href="https://docs.rs/syn/2.0.103/syn/punctuated/struct.Punctuated.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|f| <a href="#323">f</a>.ident.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_ref">as_ref</a>().<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap">unwrap</a>());
 <a href=#324 id=324 data-nosnippet>324</a>                <span class="kw">let </span>field_names2 = <a href="#323">field_names</a>.<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">clone</a>();
 <a href=#325 id=325 data-nosnippet>325</a>                <a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a> {
 <a href=#326 id=326 data-nosnippet>326</a>                    <span class="self">Self</span>::#ident { #(#field_names),* } =&gt; #glib::variant::ToVariant::to_variant(<span class="kw-2">&amp;</span>(
@@ -404,8 +404,8 @@
 <a href=#331 id=331 data-nosnippet>331</a>                    ))
 <a href=#332 id=332 data-nosnippet>332</a>                }
 <a href=#333 id=333 data-nosnippet>333</a>            },
-<a href=#334 id=334 data-nosnippet>334</a>            <a href="https://docs.rs/syn/2.0.101/syn/data/enum.Fields.html#variant.Unnamed">syn::Fields::Unnamed</a>(FieldsUnnamed  { unnamed, .. }) =&gt; {
-<a href=#335 id=335 data-nosnippet>335</a>                <span class="kw">let </span>field_names = <a href="#334">unnamed</a>.<a href="https://docs.rs/syn/2.0.101/syn/punctuated/struct.Punctuated.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.enumerate">enumerate</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|(i, <span class="kw">_</span>)| {
+<a href=#334 id=334 data-nosnippet>334</a>            <a href="https://docs.rs/syn/2.0.103/syn/data/enum.Fields.html#variant.Unnamed">syn::Fields::Unnamed</a>(FieldsUnnamed  { unnamed, .. }) =&gt; {
+<a href=#335 id=335 data-nosnippet>335</a>                <span class="kw">let </span>field_names = <a href="#334">unnamed</a>.<a href="https://docs.rs/syn/2.0.103/syn/punctuated/struct.Punctuated.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.enumerate">enumerate</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|(i, <span class="kw">_</span>)| {
 <a href=#336 id=336 data-nosnippet>336</a>                    <a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.format_ident.html">format_ident!</a>(<span class="string">"field{}"</span>, i)
 <a href=#337 id=337 data-nosnippet>337</a>                });
 <a href=#338 id=338 data-nosnippet>338</a>                <span class="kw">let </span>field_names2 = <a href="#335">field_names</a>.<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">clone</a>();
@@ -418,7 +418,7 @@
 <a href=#345 id=345 data-nosnippet>345</a>                    ))
 <a href=#346 id=346 data-nosnippet>346</a>                }
 <a href=#347 id=347 data-nosnippet>347</a>            },
-<a href=#348 id=348 data-nosnippet>348</a>            <a href="https://docs.rs/syn/2.0.101/syn/data/enum.Fields.html#variant.Unit">syn::Fields::Unit</a> =&gt; {
+<a href=#348 id=348 data-nosnippet>348</a>            <a href="https://docs.rs/syn/2.0.103/syn/data/enum.Fields.html#variant.Unit">syn::Fields::Unit</a> =&gt; {
 <a href=#349 id=349 data-nosnippet>349</a>                <a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a> {
 <a href=#350 id=350 data-nosnippet>350</a>                    <span class="self">Self</span>::#ident =&gt; #glib::variant::ToVariant::to_variant(<span class="kw-2">&amp;</span>(
 <a href=#351 id=351 data-nosnippet>351</a>                        #tag,
@@ -428,7 +428,7 @@
 <a href=#355 id=355 data-nosnippet>355</a>            },
 <a href=#356 id=356 data-nosnippet>356</a>        })
 <a href=#357 id=357 data-nosnippet>357</a>    }).<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.collect">collect</a>::&lt;<a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html">Vec</a>&lt;<span class="kw">_</span>&gt;, <span class="kw">_</span>&gt;&gt;()<span class="question-mark">?</span>;
-<a href=#358 id=358 data-nosnippet>358</a>    <span class="kw">let </span>into = <a href="#295">data_enum</a>.variants.<a href="https://docs.rs/syn/2.0.101/syn/punctuated/struct.Punctuated.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.enumerate">enumerate</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|(index, v)| {
+<a href=#358 id=358 data-nosnippet>358</a>    <span class="kw">let </span>into = <a href="#295">data_enum</a>.variants.<a href="https://docs.rs/syn/2.0.103/syn/punctuated/struct.Punctuated.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.enumerate">enumerate</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|(index, v)| {
 <a href=#359 id=359 data-nosnippet>359</a>        <span class="kw">let </span>field_ident = <span class="kw-2">&amp;</span><a href="#358">v</a>.ident;
 <a href=#360 id=360 data-nosnippet>360</a>        <span class="kw">let </span>tag = <span class="kw">match </span><span class="kw-2">&amp;</span><a href="#296">mode</a> {
 <a href=#361 id=361 data-nosnippet>361</a>            <a href="#254">EnumMode::String</a> =&gt; {
@@ -439,8 +439,8 @@
 <a href=#366 id=366 data-nosnippet>366</a>            <span class="kw">_ </span>=&gt; <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.unimplemented.html">unimplemented!</a>(),
 <a href=#367 id=367 data-nosnippet>367</a>        };
 <a href=#368 id=368 data-nosnippet>368</a>        <span class="kw">match </span><span class="kw-2">&amp;</span><a href="#358">v</a>.fields {
-<a href=#369 id=369 data-nosnippet>369</a>            <a href="https://docs.rs/syn/2.0.101/syn/data/enum.Fields.html#variant.Named">syn::Fields::Named</a>(FieldsNamed { named, .. }) =&gt; {
-<a href=#370 id=370 data-nosnippet>370</a>                <span class="kw">let </span>field_names = <a href="#369">named</a>.<a href="https://docs.rs/syn/2.0.101/syn/punctuated/struct.Punctuated.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|f| <a href="#370">f</a>.ident.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_ref">as_ref</a>().<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap">unwrap</a>());
+<a href=#369 id=369 data-nosnippet>369</a>            <a href="https://docs.rs/syn/2.0.103/syn/data/enum.Fields.html#variant.Named">syn::Fields::Named</a>(FieldsNamed { named, .. }) =&gt; {
+<a href=#370 id=370 data-nosnippet>370</a>                <span class="kw">let </span>field_names = <a href="#369">named</a>.<a href="https://docs.rs/syn/2.0.103/syn/punctuated/struct.Punctuated.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|f| <a href="#370">f</a>.ident.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_ref">as_ref</a>().<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap">unwrap</a>());
 <a href=#371 id=371 data-nosnippet>371</a>                <span class="kw">let </span>field_names2 = <a href="#370">field_names</a>.<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">clone</a>();
 <a href=#372 id=372 data-nosnippet>372</a>                <a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a> {
 <a href=#373 id=373 data-nosnippet>373</a>                    #ident::#field_ident { #(#field_names),* } =&gt; #glib::variant::ToVariant::to_variant(<span class="kw-2">&amp;</span>(
@@ -451,9 +451,9 @@
 <a href=#378 id=378 data-nosnippet>378</a>                    ))
 <a href=#379 id=379 data-nosnippet>379</a>                }
 <a href=#380 id=380 data-nosnippet>380</a>            }
-<a href=#381 id=381 data-nosnippet>381</a>            <a href="https://docs.rs/syn/2.0.101/syn/data/enum.Fields.html#variant.Unnamed">syn::Fields::Unnamed</a>(FieldsUnnamed { unnamed, .. }) =&gt; {
+<a href=#381 id=381 data-nosnippet>381</a>            <a href="https://docs.rs/syn/2.0.103/syn/data/enum.Fields.html#variant.Unnamed">syn::Fields::Unnamed</a>(FieldsUnnamed { unnamed, .. }) =&gt; {
 <a href=#382 id=382 data-nosnippet>382</a>                <span class="kw">let </span>field_names = <a href="#381">unnamed</a>
-<a href=#383 id=383 data-nosnippet>383</a>                    .<a href="https://docs.rs/syn/2.0.101/syn/punctuated/struct.Punctuated.html#method.iter">iter</a>()
+<a href=#383 id=383 data-nosnippet>383</a>                    .<a href="https://docs.rs/syn/2.0.103/syn/punctuated/struct.Punctuated.html#method.iter">iter</a>()
 <a href=#384 id=384 data-nosnippet>384</a>                    .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.enumerate">enumerate</a>()
 <a href=#385 id=385 data-nosnippet>385</a>                    .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|(i, <span class="kw">_</span>)| <a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.format_ident.html">format_ident!</a>(<span class="string">"field{}"</span>, i));
 <a href=#386 id=386 data-nosnippet>386</a>                <span class="kw">let </span>field_names2 = <a href="#382">field_names</a>.<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">clone</a>();
@@ -466,7 +466,7 @@
 <a href=#393 id=393 data-nosnippet>393</a>                    ))
 <a href=#394 id=394 data-nosnippet>394</a>                }
 <a href=#395 id=395 data-nosnippet>395</a>            }
-<a href=#396 id=396 data-nosnippet>396</a>            <a href="https://docs.rs/syn/2.0.101/syn/data/enum.Fields.html#variant.Unit">syn::Fields::Unit</a> =&gt; {
+<a href=#396 id=396 data-nosnippet>396</a>            <a href="https://docs.rs/syn/2.0.103/syn/data/enum.Fields.html#variant.Unit">syn::Fields::Unit</a> =&gt; {
 <a href=#397 id=397 data-nosnippet>397</a>                <a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a> {
 <a href=#398 id=398 data-nosnippet>398</a>                    #ident::#field_ident =&gt; #glib::variant::ToVariant::to_variant(<span class="kw-2">&amp;</span>(
 <a href=#399 id=399 data-nosnippet>399</a>                        #tag,
@@ -476,7 +476,7 @@
 <a href=#403 id=403 data-nosnippet>403</a>            }
 <a href=#404 id=404 data-nosnippet>404</a>        }
 <a href=#405 id=405 data-nosnippet>405</a>    });
-<a href=#406 id=406 data-nosnippet>406</a>    <span class="kw">let </span>from = <a href="#295">data_enum</a>.variants.<a href="https://docs.rs/syn/2.0.101/syn/punctuated/struct.Punctuated.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.enumerate">enumerate</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|(index, v)| {
+<a href=#406 id=406 data-nosnippet>406</a>    <span class="kw">let </span>from = <a href="#295">data_enum</a>.variants.<a href="https://docs.rs/syn/2.0.103/syn/punctuated/struct.Punctuated.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.enumerate">enumerate</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|(index, v)| {
 <a href=#407 id=407 data-nosnippet>407</a>        <span class="kw">let </span>ident = <span class="kw-2">&amp;</span><a href="#406">v</a>.ident;
 <a href=#408 id=408 data-nosnippet>408</a>        <span class="kw">let </span>tag = <span class="kw">match </span><span class="kw-2">&amp;</span><a href="#296">mode</a> {
 <a href=#409 id=409 data-nosnippet>409</a>            <a href="#254">EnumMode::String</a> =&gt; {
@@ -487,8 +487,8 @@
 <a href=#414 id=414 data-nosnippet>414</a>            <span class="kw">_ </span>=&gt; <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.unimplemented.html">unimplemented!</a>(),
 <a href=#415 id=415 data-nosnippet>415</a>        };
 <a href=#416 id=416 data-nosnippet>416</a>        <span class="kw">match </span><span class="kw-2">&amp;</span><a href="#406">v</a>.fields {
-<a href=#417 id=417 data-nosnippet>417</a>            <a href="https://docs.rs/syn/2.0.101/syn/data/enum.Fields.html#variant.Named">syn::Fields::Named</a>(FieldsNamed { named, .. }) =&gt; {
-<a href=#418 id=418 data-nosnippet>418</a>                <span class="kw">let </span>fields = <a href="#417">named</a>.<a href="https://docs.rs/syn/2.0.101/syn/punctuated/struct.Punctuated.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.enumerate">enumerate</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|(index, f)| {
+<a href=#417 id=417 data-nosnippet>417</a>            <a href="https://docs.rs/syn/2.0.103/syn/data/enum.Fields.html#variant.Named">syn::Fields::Named</a>(FieldsNamed { named, .. }) =&gt; {
+<a href=#418 id=418 data-nosnippet>418</a>                <span class="kw">let </span>fields = <a href="#417">named</a>.<a href="https://docs.rs/syn/2.0.103/syn/punctuated/struct.Punctuated.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.enumerate">enumerate</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|(index, f)| {
 <a href=#419 id=419 data-nosnippet>419</a>                    <span class="kw">let </span>name = <a href="#418">f</a>.ident.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_ref">as_ref</a>().<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap">unwrap</a>();
 <a href=#420 id=420 data-nosnippet>420</a>                    <span class="kw">let </span>repr = <span class="kw-2">&amp;</span><a href="#418">f</a>.ty;
 <a href=#421 id=421 data-nosnippet>421</a>                    <a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a> {
@@ -499,9 +499,9 @@
 <a href=#426 id=426 data-nosnippet>426</a>                });
 <a href=#427 id=427 data-nosnippet>427</a>                <a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a> { #tag =&gt; ::core::option::Option::Some(<span class="self">Self</span>::#ident { #(#fields),* }), }
 <a href=#428 id=428 data-nosnippet>428</a>            }
-<a href=#429 id=429 data-nosnippet>429</a>            <a href="https://docs.rs/syn/2.0.101/syn/data/enum.Fields.html#variant.Unnamed">syn::Fields::Unnamed</a>(FieldsUnnamed { unnamed, .. }) =&gt; {
-<a href=#430 id=430 data-nosnippet>430</a>                <span class="kw">let </span>indices = <span class="number">0</span>..<a href="#429">unnamed</a>.<a href="https://docs.rs/syn/2.0.101/syn/punctuated/struct.Punctuated.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.count">count</a>();
-<a href=#431 id=431 data-nosnippet>431</a>                <span class="kw">let </span>repr = <a href="#429">unnamed</a>.<a href="https://docs.rs/syn/2.0.101/syn/punctuated/struct.Punctuated.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|f| <span class="kw-2">&amp;</span><a href="#431">f</a>.ty);
+<a href=#429 id=429 data-nosnippet>429</a>            <a href="https://docs.rs/syn/2.0.103/syn/data/enum.Fields.html#variant.Unnamed">syn::Fields::Unnamed</a>(FieldsUnnamed { unnamed, .. }) =&gt; {
+<a href=#430 id=430 data-nosnippet>430</a>                <span class="kw">let </span>indices = <span class="number">0</span>..<a href="#429">unnamed</a>.<a href="https://docs.rs/syn/2.0.103/syn/punctuated/struct.Punctuated.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.count">count</a>();
+<a href=#431 id=431 data-nosnippet>431</a>                <span class="kw">let </span>repr = <a href="#429">unnamed</a>.<a href="https://docs.rs/syn/2.0.103/syn/punctuated/struct.Punctuated.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|f| <span class="kw-2">&amp;</span><a href="#431">f</a>.ty);
 <a href=#432 id=432 data-nosnippet>432</a>                <a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a> {
 <a href=#433 id=433 data-nosnippet>433</a>                    #tag =&gt; ::core::option::Option::Some(<span class="self">Self</span>::#ident(
 <a href=#434 id=434 data-nosnippet>434</a>                        #(
@@ -512,7 +512,7 @@
 <a href=#439 id=439 data-nosnippet>439</a>                    )),
 <a href=#440 id=440 data-nosnippet>440</a>                }
 <a href=#441 id=441 data-nosnippet>441</a>            }
-<a href=#442 id=442 data-nosnippet>442</a>            <a href="https://docs.rs/syn/2.0.101/syn/data/enum.Fields.html#variant.Unit">syn::Fields::Unit</a> =&gt; {
+<a href=#442 id=442 data-nosnippet>442</a>            <a href="https://docs.rs/syn/2.0.103/syn/data/enum.Fields.html#variant.Unit">syn::Fields::Unit</a> =&gt; {
 <a href=#443 id=443 data-nosnippet>443</a>                <a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a> { #tag =&gt; ::core::option::Option::Some(<span class="self">Self</span>::#ident), }
 <a href=#444 id=444 data-nosnippet>444</a>            }
 <a href=#445 id=445 data-nosnippet>445</a>        }
@@ -569,18 +569,18 @@
 <a href=#496 id=496 data-nosnippet>496</a>
 <a href=#497 id=497 data-nosnippet>497</a><span class="kw">fn </span>derive_variant_for_c_enum(
 <a href=#498 id=498 data-nosnippet>498</a>    ident: <a href="https://docs.rs/proc-macro2/1.0.95/proc_macro2/struct.Ident.html">Ident</a>,
-<a href=#499 id=499 data-nosnippet>499</a>    generics: <a href="https://docs.rs/syn/2.0.101/syn/generics/struct.Generics.html">Generics</a>,
-<a href=#500 id=500 data-nosnippet>500</a>    data_enum: <a href="https://docs.rs/syn/2.0.101/syn/derive/struct.DataEnum.html">syn::DataEnum</a>,
+<a href=#499 id=499 data-nosnippet>499</a>    generics: <a href="https://docs.rs/syn/2.0.103/syn/generics/struct.Generics.html">Generics</a>,
+<a href=#500 id=500 data-nosnippet>500</a>    data_enum: <a href="https://docs.rs/syn/2.0.103/syn/derive/struct.DataEnum.html">syn::DataEnum</a>,
 <a href=#501 id=501 data-nosnippet>501</a>    mode: <a href="#253-258">EnumMode</a>,
 <a href=#502 id=502 data-nosnippet>502</a>) -&gt; <a href="https://docs.rs/proc-macro2/1.0.95/proc_macro2/struct.TokenStream.html">TokenStream</a> {
 <a href=#503 id=503 data-nosnippet>503</a>    <span class="kw">let </span>glib = <a href="utils.rs.html#188-215">crate_ident_new</a>();
 <a href=#504 id=504 data-nosnippet>504</a>    <span class="kw">let </span>static_variant_type = <a href="#501">mode</a>.<a href="#261-289">tag_type</a>().<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html#tymethod.to_string">to_string</a>();
-<a href=#505 id=505 data-nosnippet>505</a>    <span class="kw">let </span>(impl_generics, type_generics, where_clause) = <a href="#499">generics</a>.<a href="https://docs.rs/syn/2.0.101/syn/generics/struct.Generics.html#method.split_for_impl">split_for_impl</a>();
+<a href=#505 id=505 data-nosnippet>505</a>    <span class="kw">let </span>(impl_generics, type_generics, where_clause) = <a href="#499">generics</a>.<a href="https://docs.rs/syn/2.0.103/syn/generics/struct.Generics.html#method.split_for_impl">split_for_impl</a>();
 <a href=#506 id=506 data-nosnippet>506</a>
 <a href=#507 id=507 data-nosnippet>507</a>    <span class="kw">let </span>(to_variant, from_variant) = <span class="kw">match </span><a href="#501">mode</a> {
 <a href=#508 id=508 data-nosnippet>508</a>        <a href="#254">EnumMode::String</a> =&gt; {
-<a href=#509 id=509 data-nosnippet>509</a>            <span class="kw">let </span>idents = <a href="#500">data_enum</a>.variants.<a href="https://docs.rs/syn/2.0.101/syn/punctuated/struct.Punctuated.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|v| <span class="kw-2">&amp;</span><a href="#509">v</a>.ident);
-<a href=#510 id=510 data-nosnippet>510</a>            <span class="kw">let </span>nicks = <a href="#500">data_enum</a>.variants.<a href="https://docs.rs/syn/2.0.101/syn/punctuated/struct.Punctuated.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|v| {
+<a href=#509 id=509 data-nosnippet>509</a>            <span class="kw">let </span>idents = <a href="#500">data_enum</a>.variants.<a href="https://docs.rs/syn/2.0.103/syn/punctuated/struct.Punctuated.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|v| <span class="kw-2">&amp;</span><a href="#509">v</a>.ident);
+<a href=#510 id=510 data-nosnippet>510</a>            <span class="kw">let </span>nicks = <a href="#500">data_enum</a>.variants.<a href="https://docs.rs/syn/2.0.103/syn/punctuated/struct.Punctuated.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|v| {
 <a href=#511 id=511 data-nosnippet>511</a>                <span class="kw">let </span>nick = ToKebabCase::to_kebab_case(<a href="#510">v</a>.ident.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html#tymethod.to_string">to_string</a>().<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html#method.as_str">as_str</a>());
 <a href=#512 id=512 data-nosnippet>512</a>                <a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a> { #nick }
 <a href=#513 id=513 data-nosnippet>513</a>            });
@@ -602,7 +602,7 @@
 <a href=#529 id=529 data-nosnippet>529</a>            )
 <a href=#530 id=530 data-nosnippet>530</a>        }
 <a href=#531 id=531 data-nosnippet>531</a>        <a href="#255">EnumMode::Repr</a>(repr) =&gt; {
-<a href=#532 id=532 data-nosnippet>532</a>            <span class="kw">let </span>idents = <a href="#500">data_enum</a>.variants.<a href="https://docs.rs/syn/2.0.101/syn/punctuated/struct.Punctuated.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|v| <span class="kw-2">&amp;</span><a href="#532">v</a>.ident);
+<a href=#532 id=532 data-nosnippet>532</a>            <span class="kw">let </span>idents = <a href="#500">data_enum</a>.variants.<a href="https://docs.rs/syn/2.0.103/syn/punctuated/struct.Punctuated.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|v| <span class="kw-2">&amp;</span><a href="#532">v</a>.ident);
 <a href=#533 id=533 data-nosnippet>533</a>            (
 <a href=#534 id=534 data-nosnippet>534</a>                <a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a> {
 <a href=#535 id=535 data-nosnippet>535</a>                    #glib::variant::ToVariant::to_variant(<span class="kw-2">&amp;</span>(<span class="kw-2">*</span><span class="self">self </span><span class="kw">as </span>#repr))
@@ -700,8 +700,8 @@
 <a href=#627 id=627 data-nosnippet>627</a>    }
 <a href=#628 id=628 data-nosnippet>628</a>}
 <a href=#629 id=629 data-nosnippet>629</a>
-<a href=#630 id=630 data-nosnippet>630</a><span class="kw">fn </span>get_enum_mode(attrs: <span class="kw-2">&amp;</span>[<a href="https://docs.rs/syn/2.0.101/syn/attr/struct.Attribute.html">syn::Attribute</a>]) -&gt; <a href="https://docs.rs/syn/2.0.101/syn/error/type.Result.html">syn::Result</a>&lt;<a href="#253-258">EnumMode</a>&gt; {
-<a href=#631 id=631 data-nosnippet>631</a>    <span class="kw">let </span>attr = <a href="#630">attrs</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.find">find</a>(|a| <a href="#631">a</a>.<a href="https://docs.rs/syn/2.0.101/syn/attr/struct.Attribute.html#method.path">path</a>().<a href="https://docs.rs/syn/2.0.101/syn/path/struct.Path.html#method.is_ident">is_ident</a>(<span class="string">"variant_enum"</span>));
+<a href=#630 id=630 data-nosnippet>630</a><span class="kw">fn </span>get_enum_mode(attrs: <span class="kw-2">&amp;</span>[<a href="https://docs.rs/syn/2.0.103/syn/attr/struct.Attribute.html">syn::Attribute</a>]) -&gt; <a href="https://docs.rs/syn/2.0.103/syn/error/type.Result.html">syn::Result</a>&lt;<a href="#253-258">EnumMode</a>&gt; {
+<a href=#631 id=631 data-nosnippet>631</a>    <span class="kw">let </span>attr = <a href="#630">attrs</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.find">find</a>(|a| <a href="#631">a</a>.<a href="https://docs.rs/syn/2.0.103/syn/attr/struct.Attribute.html#method.path">path</a>().<a href="https://docs.rs/syn/2.0.103/syn/path/struct.Path.html#method.is_ident">is_ident</a>(<span class="string">"variant_enum"</span>));
 <a href=#632 id=632 data-nosnippet>632</a>
 <a href=#633 id=633 data-nosnippet>633</a>    <span class="kw">let </span><a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(attr) = <a href="#631">attr</a> <span class="kw">else </span>{
 <a href=#634 id=634 data-nosnippet>634</a>        <span class="kw">return </span><a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(<a href="#254">EnumMode::String</a>);
@@ -709,8 +709,8 @@
 <a href=#636 id=636 data-nosnippet>636</a>
 <a href=#637 id=637 data-nosnippet>637</a>    <span class="kw">let </span><span class="kw-2">mut </span>repr_attr = <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a>;
 <a href=#638 id=638 data-nosnippet>638</a>    <span class="kw">let </span><span class="kw-2">mut </span>mode = <a href="#254">EnumMode::String</a>;
-<a href=#639 id=639 data-nosnippet>639</a>    <a href="#633">attr</a>.<a href="https://docs.rs/syn/2.0.101/syn/attr/struct.Attribute.html#method.parse_nested_meta">parse_nested_meta</a>(|meta| {
-<a href=#640 id=640 data-nosnippet>640</a>        <span class="kw">match </span><a href="#639">meta</a>.path.<a href="https://docs.rs/syn/2.0.101/syn/path/struct.Path.html#method.get_ident">get_ident</a>().<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|id| <a href="#640">id</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html#tymethod.to_string">to_string</a>()).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_deref">as_deref</a>() {
+<a href=#639 id=639 data-nosnippet>639</a>    <a href="#633">attr</a>.<a href="https://docs.rs/syn/2.0.103/syn/attr/struct.Attribute.html#method.parse_nested_meta">parse_nested_meta</a>(|meta| {
+<a href=#640 id=640 data-nosnippet>640</a>        <span class="kw">match </span><a href="#639">meta</a>.path.<a href="https://docs.rs/syn/2.0.103/syn/path/struct.Path.html#method.get_ident">get_ident</a>().<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|id| <a href="#640">id</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html#tymethod.to_string">to_string</a>()).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_deref">as_deref</a>() {
 <a href=#641 id=641 data-nosnippet>641</a>            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<span class="string">"repr"</span>) =&gt; {
 <a href=#642 id=642 data-nosnippet>642</a>                <a href="#637">repr_attr</a> = <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#639">meta</a>.path);
 <a href=#643 id=643 data-nosnippet>643</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(())
@@ -723,7 +723,7 @@
 <a href=#650 id=650 data-nosnippet>650</a>                <a href="#638">mode</a> = <a href="#257">EnumMode::Flags</a> { repr: <span class="bool-val">false </span>};
 <a href=#651 id=651 data-nosnippet>651</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(())
 <a href=#652 id=652 data-nosnippet>652</a>            }
-<a href=#653 id=653 data-nosnippet>653</a>            <span class="kw">_ </span>=&gt; <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="https://docs.rs/syn/2.0.101/syn/error/struct.Error.html#method.new_spanned">syn::Error::new_spanned</a>(
+<a href=#653 id=653 data-nosnippet>653</a>            <span class="kw">_ </span>=&gt; <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="https://docs.rs/syn/2.0.103/syn/error/struct.Error.html#method.new_spanned">syn::Error::new_spanned</a>(
 <a href=#654 id=654 data-nosnippet>654</a>                <a href="#639">meta</a>.path,
 <a href=#655 id=655 data-nosnippet>655</a>                <span class="string">"unknown type in #[variant_enum] attribute"</span>,
 <a href=#656 id=656 data-nosnippet>656</a>            )),
@@ -733,7 +733,7 @@
 <a href=#660 id=660 data-nosnippet>660</a>        <a href="#254">EnumMode::String</a> <span class="kw">if </span><a href="#637">repr_attr</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.is_some">is_some</a>() =&gt; {
 <a href=#661 id=661 data-nosnippet>661</a>            <span class="kw">let </span>repr_attr = <a href="#637">repr_attr</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap">unwrap</a>();
 <a href=#662 id=662 data-nosnippet>662</a>            <span class="kw">let </span>repr = <a href="#680-692">get_repr</a>(<a href="#630">attrs</a>).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.ok_or_else">ok_or_else</a>(|| {
-<a href=#663 id=663 data-nosnippet>663</a>                <a href="https://docs.rs/syn/2.0.101/syn/error/struct.Error.html#method.new_spanned">syn::Error::new_spanned</a>(
+<a href=#663 id=663 data-nosnippet>663</a>                <a href="https://docs.rs/syn/2.0.103/syn/error/struct.Error.html#method.new_spanned">syn::Error::new_spanned</a>(
 <a href=#664 id=664 data-nosnippet>664</a>                    <a href="#661">repr_attr</a>,
 <a href=#665 id=665 data-nosnippet>665</a>                    <span class="string">"Must have #[repr] attribute with one of i8, i16, i32, i64, u8, u16, u32, u64"</span>,
 <a href=#666 id=666 data-nosnippet>666</a>                )
@@ -750,11 +750,11 @@
 <a href=#677 id=677 data-nosnippet>677</a>    })
 <a href=#678 id=678 data-nosnippet>678</a>}
 <a href=#679 id=679 data-nosnippet>679</a>
-<a href=#680 id=680 data-nosnippet>680</a><span class="kw">fn </span>get_repr(attrs: <span class="kw-2">&amp;</span>[<a href="https://docs.rs/syn/2.0.101/syn/attr/struct.Attribute.html">syn::Attribute</a>]) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="https://docs.rs/proc-macro2/1.0.95/proc_macro2/struct.Ident.html">Ident</a>&gt; {
-<a href=#681 id=681 data-nosnippet>681</a>    <span class="kw">let </span>attr = <a href="#680">attrs</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.find">find</a>(|a| <a href="#681">a</a>.<a href="https://docs.rs/syn/2.0.101/syn/attr/struct.Attribute.html#method.path">path</a>().<a href="https://docs.rs/syn/2.0.101/syn/path/struct.Path.html#method.is_ident">is_ident</a>(<span class="string">"repr"</span>))<span class="question-mark">?</span>;
+<a href=#680 id=680 data-nosnippet>680</a><span class="kw">fn </span>get_repr(attrs: <span class="kw-2">&amp;</span>[<a href="https://docs.rs/syn/2.0.103/syn/attr/struct.Attribute.html">syn::Attribute</a>]) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="https://docs.rs/proc-macro2/1.0.95/proc_macro2/struct.Ident.html">Ident</a>&gt; {
+<a href=#681 id=681 data-nosnippet>681</a>    <span class="kw">let </span>attr = <a href="#680">attrs</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.find">find</a>(|a| <a href="#681">a</a>.<a href="https://docs.rs/syn/2.0.103/syn/attr/struct.Attribute.html#method.path">path</a>().<a href="https://docs.rs/syn/2.0.103/syn/path/struct.Path.html#method.is_ident">is_ident</a>(<span class="string">"repr"</span>))<span class="question-mark">?</span>;
 <a href=#682 id=682 data-nosnippet>682</a>    <span class="kw">let </span><span class="kw-2">mut </span>repr_ty = <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a>;
-<a href=#683 id=683 data-nosnippet>683</a>    <a href="#681">attr</a>.<a href="https://docs.rs/syn/2.0.101/syn/attr/struct.Attribute.html#method.parse_nested_meta">parse_nested_meta</a>(|meta| {
-<a href=#684 id=684 data-nosnippet>684</a>        <a href="#682">repr_ty</a> = <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#683">meta</a>.path.<a href="https://docs.rs/syn/2.0.101/syn/path/struct.Path.html#method.get_ident">get_ident</a>().<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap">unwrap</a>().<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">clone</a>());
+<a href=#683 id=683 data-nosnippet>683</a>    <a href="#681">attr</a>.<a href="https://docs.rs/syn/2.0.103/syn/attr/struct.Attribute.html#method.parse_nested_meta">parse_nested_meta</a>(|meta| {
+<a href=#684 id=684 data-nosnippet>684</a>        <a href="#682">repr_ty</a> = <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#683">meta</a>.path.<a href="https://docs.rs/syn/2.0.103/syn/path/struct.Path.html#method.get_ident">get_ident</a>().<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap">unwrap</a>().<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">clone</a>());
 <a href=#685 id=685 data-nosnippet>685</a>        <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(())
 <a href=#686 id=686 data-nosnippet>686</a>    })
 <a href=#687 id=687 data-nosnippet>687</a>    .<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>();

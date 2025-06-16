@@ -75,7 +75,7 @@
 <a href=#2 id=2 data-nosnippet>2</a>
 <a href=#3 id=3 data-nosnippet>3</a></span><span class="kw">use </span><a href="https://docs.rs/proc-macro2/1.0.95/proc_macro2/struct.TokenStream.html">proc_macro2::TokenStream</a>;
 <a href=#4 id=4 data-nosnippet>4</a><span class="kw">use </span>quote::{<a href="https://docs.rs/quote/1.0.40/quote/macro.format_ident.html">format_ident</a>, <a href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote</a>};
-<a href=#5 id=5 data-nosnippet>5</a><span class="kw">use </span>syn::{<a href="https://docs.rs/syn/2.0.101/syn/data/enum.Fields.html">Fields</a>, <a href="https://docs.rs/syn/2.0.101/syn/data/struct.FieldsNamed.html">FieldsNamed</a>, <a href="https://docs.rs/syn/2.0.101/syn/data/struct.FieldsUnnamed.html">FieldsUnnamed</a>, Ident, <a href="https://docs.rs/syn/2.0.101/syn/ty/enum.Type.html">Type</a>};
+<a href=#5 id=5 data-nosnippet>5</a><span class="kw">use </span>syn::{<a href="https://docs.rs/syn/2.0.103/syn/data/enum.Fields.html">Fields</a>, <a href="https://docs.rs/syn/2.0.103/syn/data/struct.FieldsNamed.html">FieldsNamed</a>, <a href="https://docs.rs/syn/2.0.103/syn/data/struct.FieldsUnnamed.html">FieldsUnnamed</a>, Ident, <a href="https://docs.rs/syn/2.0.103/syn/ty/enum.Type.html">Type</a>};
 <a href=#6 id=6 data-nosnippet>6</a>
 <a href=#7 id=7 data-nosnippet>7</a><span class="kw">use </span><a href="../utils.rs.html#188-215"><span class="kw">crate</span>::utils::crate_ident_new</a>;
 <a href=#8 id=8 data-nosnippet>8</a>
@@ -171,13 +171,13 @@
 <a href=#98 id=98 data-nosnippet>98</a>///     y: glib::clone::Upgrade::upgrade(y)?,
 <a href=#99 id=99 data-nosnippet>99</a>/// }
 <a href=#100 id=100 data-nosnippet>100</a>/// ```
-<a href=#101 id=101 data-nosnippet>101</a></span><span class="kw">pub fn </span>derive_downgrade_fields(fields: <a href="https://docs.rs/syn/2.0.101/syn/data/enum.Fields.html">syn::Fields</a>) -&gt; <a href="#10-21">DowngradeStructParts</a> {
+<a href=#101 id=101 data-nosnippet>101</a></span><span class="kw">pub fn </span>derive_downgrade_fields(fields: <a href="https://docs.rs/syn/2.0.103/syn/data/enum.Fields.html">syn::Fields</a>) -&gt; <a href="#10-21">DowngradeStructParts</a> {
 <a href=#102 id=102 data-nosnippet>102</a>    <span class="kw">let </span>glib = <a href="../utils.rs.html#188-215">crate_ident_new</a>();
 <a href=#103 id=103 data-nosnippet>103</a>    <span class="kw">match </span><a href="#101">fields</a> {
-<a href=#104 id=104 data-nosnippet>104</a>        <a href="https://docs.rs/syn/2.0.101/syn/data/enum.Fields.html#variant.Unnamed">Fields::Unnamed</a>(FieldsUnnamed { unnamed, .. }) =&gt; {
-<a href=#105 id=105 data-nosnippet>105</a>            <span class="kw">let </span>fields: <a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html">Vec</a>&lt;<a href="https://docs.rs/syn/2.0.101/syn/ty/enum.Type.html">Type</a>&gt; = <a href="#104">unnamed</a>
-<a href=#106 id=106 data-nosnippet>106</a>                .<a href="https://docs.rs/syn/2.0.101/syn/punctuated/struct.Punctuated.html#method.into_pairs">into_pairs</a>()
-<a href=#107 id=107 data-nosnippet>107</a>                .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|pair| <a href="#107">pair</a>.<a href="https://docs.rs/syn/2.0.101/syn/punctuated/enum.Pair.html#method.into_value">into_value</a>())
+<a href=#104 id=104 data-nosnippet>104</a>        <a href="https://docs.rs/syn/2.0.103/syn/data/enum.Fields.html#variant.Unnamed">Fields::Unnamed</a>(FieldsUnnamed { unnamed, .. }) =&gt; {
+<a href=#105 id=105 data-nosnippet>105</a>            <span class="kw">let </span>fields: <a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html">Vec</a>&lt;<a href="https://docs.rs/syn/2.0.103/syn/ty/enum.Type.html">Type</a>&gt; = <a href="#104">unnamed</a>
+<a href=#106 id=106 data-nosnippet>106</a>                .<a href="https://docs.rs/syn/2.0.103/syn/punctuated/struct.Punctuated.html#method.into_pairs">into_pairs</a>()
+<a href=#107 id=107 data-nosnippet>107</a>                .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|pair| <a href="#107">pair</a>.<a href="https://docs.rs/syn/2.0.103/syn/punctuated/enum.Pair.html#method.into_value">into_value</a>())
 <a href=#108 id=108 data-nosnippet>108</a>                .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|field| <a href="#108">field</a>.ty)
 <a href=#109 id=109 data-nosnippet>109</a>                .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.collect">collect</a>();
 <a href=#110 id=110 data-nosnippet>110</a>
@@ -217,10 +217,10 @@
 <a href=#144 id=144 data-nosnippet>144</a>                },
 <a href=#145 id=145 data-nosnippet>145</a>            }
 <a href=#146 id=146 data-nosnippet>146</a>        }
-<a href=#147 id=147 data-nosnippet>147</a>        <a href="https://docs.rs/syn/2.0.101/syn/data/enum.Fields.html#variant.Named">Fields::Named</a>(FieldsNamed { named, .. }) =&gt; {
-<a href=#148 id=148 data-nosnippet>148</a>            <span class="kw">let </span>fields: <a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html">Vec</a>&lt;(<a href="https://docs.rs/proc-macro2/1.0.95/proc_macro2/struct.Ident.html">Ident</a>, <a href="https://docs.rs/syn/2.0.101/syn/ty/enum.Type.html">Type</a>)&gt; = <a href="#147">named</a>
-<a href=#149 id=149 data-nosnippet>149</a>                .<a href="https://docs.rs/syn/2.0.101/syn/punctuated/struct.Punctuated.html#method.into_pairs">into_pairs</a>()
-<a href=#150 id=150 data-nosnippet>150</a>                .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|pair| <a href="#150">pair</a>.<a href="https://docs.rs/syn/2.0.101/syn/punctuated/enum.Pair.html#method.into_value">into_value</a>())
+<a href=#147 id=147 data-nosnippet>147</a>        <a href="https://docs.rs/syn/2.0.103/syn/data/enum.Fields.html#variant.Named">Fields::Named</a>(FieldsNamed { named, .. }) =&gt; {
+<a href=#148 id=148 data-nosnippet>148</a>            <span class="kw">let </span>fields: <a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html">Vec</a>&lt;(<a href="https://docs.rs/proc-macro2/1.0.95/proc_macro2/struct.Ident.html">Ident</a>, <a href="https://docs.rs/syn/2.0.103/syn/ty/enum.Type.html">Type</a>)&gt; = <a href="#147">named</a>
+<a href=#149 id=149 data-nosnippet>149</a>                .<a href="https://docs.rs/syn/2.0.103/syn/punctuated/struct.Punctuated.html#method.into_pairs">into_pairs</a>()
+<a href=#150 id=150 data-nosnippet>150</a>                .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|pair| <a href="#150">pair</a>.<a href="https://docs.rs/syn/2.0.103/syn/punctuated/enum.Pair.html#method.into_value">into_value</a>())
 <a href=#151 id=151 data-nosnippet>151</a>                .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|field| (<a href="#151">field</a>.ident.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.expect">expect</a>(<span class="string">"Field ident is specified"</span>), <a href="#151">field</a>.ty))
 <a href=#152 id=152 data-nosnippet>152</a>                .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.collect">collect</a>();
 <a href=#153 id=153 data-nosnippet>153</a>
@@ -259,7 +259,7 @@
 <a href=#186 id=186 data-nosnippet>186</a>                },
 <a href=#187 id=187 data-nosnippet>187</a>            }
 <a href=#188 id=188 data-nosnippet>188</a>        }
-<a href=#189 id=189 data-nosnippet>189</a>        <a href="https://docs.rs/syn/2.0.101/syn/data/enum.Fields.html#variant.Unit">Fields::Unit</a> =&gt; <a href="#10-21">DowngradeStructParts</a> {
+<a href=#189 id=189 data-nosnippet>189</a>        <a href="https://docs.rs/syn/2.0.103/syn/data/enum.Fields.html#variant.Unit">Fields::Unit</a> =&gt; <a href="#10-21">DowngradeStructParts</a> {
 <a href=#190 id=190 data-nosnippet>190</a>            weak_fields: <a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a> {},
 <a href=#191 id=191 data-nosnippet>191</a>            end_of_struct: <a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a> { ; },
 <a href=#192 id=192 data-nosnippet>192</a>            destruct: <a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a> {},
