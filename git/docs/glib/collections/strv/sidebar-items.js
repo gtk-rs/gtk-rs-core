@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":["IntoIter","StrV"],"trait":["IntoStrV"]};
+window.SIDEBAR_ITEMS = {"struct":["IntoIter","StrV","StrVRef"],"trait":["IntoStrV"]};
