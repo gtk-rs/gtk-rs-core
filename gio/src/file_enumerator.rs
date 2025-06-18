@@ -3,6 +3,7 @@
 use crate::{prelude::*, FileEnumerator, FileInfo};
 use futures_core::future::LocalBoxFuture;
 use futures_util::FutureExt;
+use glib::translate::{from_glib, from_glib_full, ToGlibPtr};
 use std::{iter::FusedIterator, task::Poll};
 
 impl Iterator for FileEnumerator {
@@ -28,6 +29,22 @@ pub trait FileEnumeratorExtManual: IsA<FileEnumerator> {
             future,
             num_files,
             priority,
+        }
+    }
+
+    #[doc(alias = "g_file_enumerator_close")]
+    fn close(
+        &self,
+        cancellable: Option<&impl IsA<crate::Cancellable>>,
+    ) -> (bool, Option<glib::Error>) {
+        unsafe {
+            let mut error = std::ptr::null_mut();
+            let ret = crate::ffi::g_file_enumerator_close(
+                self.as_ref().to_glib_none().0,
+                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                &mut error,
+            );
+            (from_glib(ret), from_glib_full(error))
         }
     }
 }
