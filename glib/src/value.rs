@@ -586,7 +586,9 @@ impl Value {
     // rustdoc-stripper-ignore-next
     /// Tries to get a value of an owned type `T`.
     #[inline]
-    pub fn get_owned<T>(&self) -> Result<T, <<T as FromValue>::Checker as ValueTypeChecker>::Error>
+    pub fn get_owned<T>(
+        &self,
+    ) -> Result<T, <<T as FromValue<'_>>::Checker as ValueTypeChecker>::Error>
     where
         T: for<'b> FromValue<'b> + 'static,
     {

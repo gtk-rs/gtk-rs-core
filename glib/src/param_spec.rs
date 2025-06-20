@@ -1129,14 +1129,14 @@ impl ParamSpecEnum {
     pub fn builder_with_default<T: StaticType + FromGlib<i32> + IntoGlib<GlibType = i32>>(
         name: &str,
         default_value: T,
-    ) -> ParamSpecEnumBuilder<T> {
+    ) -> ParamSpecEnumBuilder<'_, T> {
         ParamSpecEnumBuilder::new(name, default_value)
     }
 
     #[doc(alias = "g_param_spec_enum")]
     pub fn builder<T: StaticType + FromGlib<i32> + IntoGlib<GlibType = i32> + Default>(
         name: &str,
-    ) -> ParamSpecEnumBuilder<T> {
+    ) -> ParamSpecEnumBuilder<'_, T> {
         ParamSpecEnumBuilder::new(name, T::default())
     }
 }
@@ -1272,7 +1272,7 @@ impl ParamSpecFlags {
     #[doc(alias = "g_param_spec_flags")]
     pub fn builder<T: StaticType + FromGlib<u32> + IntoGlib<GlibType = u32>>(
         name: &str,
-    ) -> ParamSpecFlagsBuilder<T> {
+    ) -> ParamSpecFlagsBuilder<'_, T> {
         ParamSpecFlagsBuilder::new(name)
     }
 }
@@ -1442,7 +1442,7 @@ impl ParamSpecString {
     }
 
     #[doc(alias = "g_param_spec_string")]
-    pub fn builder(name: &str) -> ParamSpecStringBuilder {
+    pub fn builder(name: &str) -> ParamSpecStringBuilder<'_> {
         ParamSpecStringBuilder::new(name)
     }
 }
@@ -1577,7 +1577,7 @@ impl ParamSpecBoxed {
     }
 
     #[doc(alias = "g_param_spec_boxed")]
-    pub fn builder<T: StaticType>(name: &str) -> ParamSpecBoxedBuilder<T> {
+    pub fn builder<T: StaticType>(name: &str) -> ParamSpecBoxedBuilder<'_, T> {
         ParamSpecBoxedBuilder::new(name)
     }
 }
@@ -1736,7 +1736,7 @@ impl ParamSpecValueArray {
     }
 
     #[doc(alias = "g_param_spec_value_array")]
-    pub fn builder(name: &str) -> ParamSpecValueArrayBuilder {
+    pub fn builder(name: &str) -> ParamSpecValueArrayBuilder<'_> {
         ParamSpecValueArrayBuilder::new(name)
     }
 }
@@ -1833,7 +1833,7 @@ impl ParamSpecObject {
     }
 
     #[doc(alias = "g_param_spec_object")]
-    pub fn builder<T: StaticType + IsA<Object>>(name: &str) -> ParamSpecObjectBuilder<T> {
+    pub fn builder<T: StaticType + IsA<Object>>(name: &str) -> ParamSpecObjectBuilder<'_, T> {
         ParamSpecObjectBuilder::new(name)
     }
 }

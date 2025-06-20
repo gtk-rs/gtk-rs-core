@@ -84,7 +84,7 @@ impl ImageSurface {
 
     #[doc(alias = "cairo_image_surface_get_data")]
     #[doc(alias = "get_data")]
-    pub fn data(&mut self) -> Result<ImageSurfaceData, BorrowError> {
+    pub fn data(&mut self) -> Result<ImageSurfaceData<'_>, BorrowError> {
         unsafe {
             if ffi::cairo_surface_get_reference_count(self.to_raw_none()) > 1 {
                 return Err(BorrowError::NonExclusive);
