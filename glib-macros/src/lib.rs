@@ -562,6 +562,10 @@ pub fn closure_local(item: TokenStream) -> TokenStream {
 /// }
 /// ```
 ///
+/// When using the [`Properties`] macro with enums that derive [`Enum`], the default value must be
+/// explicitly set via the `builder` parameter of the `#[property]` attribute. See
+/// [here](Properties#supported-types) for details.
+///
 /// An enum can be registered as a dynamic type by setting the derive macro
 /// helper attribute `enum_dynamic`:
 ///
@@ -1381,6 +1385,10 @@ pub fn cstr_bytes(item: TokenStream) -> TokenStream {
 /// * `connect_$property_notify()`
 /// * `notify_$property()`
 ///
+/// # Documentation
+///
+/// Doc comments preceding a `#[property]` attribute will be copied to the generated getter and setter methods. You can specify different comments by the getter and setter by using `# Getter` and `# Setter` headings. The text under the header will be copied to the respective method.
+///
 /// ## Extension trait
 /// You can choose to move the method definitions to a trait by using `#[properties(wrapper_type = super::MyType, ext_trait = MyTypePropertiesExt)]`.
 /// The trait name is optional, and defaults to `MyTypePropertiesExt`, where `MyType` is extracted from the wrapper type.
@@ -1398,6 +1406,9 @@ pub fn cstr_bytes(item: TokenStream) -> TokenStream {
 /// The type `Option<T>` is supported as a property only if `Option<T>` implements [`ToValueOptional`].
 /// Optional types also require the `nullable` attribute: without it, the generated setter on the wrapper type
 /// will take `T` instead of `Option<T>`, preventing the user from ever calling the setter with a `None` value.
+///
+/// Notice: For enums that derive [`Enum`] or are C-style enums, you must explicitly specify the
+/// default value of the enum using the `builder` parameter in the `#[property]` attribute.
 ///
 /// ## Adding support for custom types
 /// ### Types wrapping an existing <code>T: [ToValue] + [HasParamSpec]</code>
@@ -1423,7 +1434,7 @@ pub fn cstr_bytes(item: TokenStream) -> TokenStream {
 ///
 /// # Example
 /// ```
-/// use std::cell::RefCell;
+/// use std::cell::{Cell, RefCell};
 /// use glib::prelude::*;
 /// use glib::subclass::prelude::*;
 /// use glib_macros::Properties;
@@ -1432,6 +1443,14 @@ pub fn cstr_bytes(item: TokenStream) -> TokenStream {
 /// struct Author {
 ///     name: String,
 ///     nick: String,
+/// }
+///
+/// #[derive(Debug, Copy, Clone, PartialEq, Eq, glib::Enum, Default)]
+/// #[enum_type(name = "MyEnum")]
+/// pub enum MyEnum {
+///     #[default]
+///     Val,
+///     OtherVal
 /// }
 ///
 /// pub mod imp {
@@ -1444,7 +1463,9 @@ pub fn cstr_bytes(item: TokenStream) -> TokenStream {
 ///     pub struct Foo {
 ///         #[property(get, set = Self::set_fizz)]
 ///         fizz: RefCell<String>,
+///         /// The author's name
 ///         #[property(name = "author-name", get, set, type = String, member = name)]
+///         /// The author's childhood nickname
 ///         #[property(name = "author-nick", get, set, type = String, member = nick)]
 ///         author: RefCell<Author>,
 ///         #[property(get, set, explicit_notify, lax_validation)]
@@ -1457,6 +1478,17 @@ pub fn cstr_bytes(item: TokenStream) -> TokenStream {
 ///         optional: RefCell<Option<String>>,
 ///         #[property(get, set)]
 ///         smart_pointer: Rc<RefCell<String>>,
+///         #[property(get, set, builder(MyEnum::Val))]
+///         my_enum: Cell<MyEnum>,
+///         /// # Getter
+///         ///
+///         /// Get the value of the property `extra_comments`
+///         ///
+///         /// # Setter
+///         ///
+///         /// This is the comment for the setter of the `extra_comments` field.
+///         #[property(get, set)]
+///         extra_comments: RefCell<bool>,
 ///     }
 ///     
 ///     #[glib::derived_properties]

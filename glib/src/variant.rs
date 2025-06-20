@@ -841,7 +841,7 @@ impl Variant {
     /// }
     /// # Ok::<(), Box<dyn std::error::Error>>(())
     /// ```
-    pub fn array_iter_str(&self) -> Result<VariantStrIter, VariantTypeMismatchError> {
+    pub fn array_iter_str(&self) -> Result<VariantStrIter<'_>, VariantTypeMismatchError> {
         let child_ty = String::static_variant_type();
         let actual_ty = self.type_();
         let expected_ty = child_ty.as_array();

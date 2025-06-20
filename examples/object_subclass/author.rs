@@ -14,8 +14,20 @@ mod imp {
     #[derive(Properties, Default)]
     #[properties(wrapper_type = super::Author)]
     pub struct Author {
+        /// The name of the author
+        ///
+        /// Just their given name, not their surname.
         #[property(get, set)]
+        /// A helpful name-surname combination.
+        #[property(name = "name-surname", get = |author: &Self| format!("{} {}", author.name.borrow(), author.surname.borrow()))]
         name: RefCell<String>,
+        /// # Getter
+        ///
+        /// This is how you can get the surname of the author.
+        ///
+        /// # Setter
+        ///
+        /// You can change the surname of the author too if you want.
         #[property(get, set)]
         surname: RefCell<String>,
     }

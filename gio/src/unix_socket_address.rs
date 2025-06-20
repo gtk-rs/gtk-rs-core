@@ -73,7 +73,7 @@ mod sealed {
 pub trait UnixSocketAddressExtManual: sealed::Sealed + IsA<UnixSocketAddress> + 'static {
     #[doc(alias = "g_unix_socket_address_get_path")]
     #[doc(alias = "get_path")]
-    fn path(&self) -> Option<UnixSocketAddressPath> {
+    fn path(&self) -> Option<UnixSocketAddressPath<'_>> {
         use self::UnixSocketAddressPath::*;
 
         let path = unsafe {

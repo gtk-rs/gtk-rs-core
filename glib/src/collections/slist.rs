@@ -101,14 +101,14 @@ impl<T: TransparentPtrType> SList<T> {
     // rustdoc-stripper-ignore-next
     /// Create a non-destructive iterator over the `SList`.
     #[inline]
-    pub fn iter(&self) -> Iter<T> {
+    pub fn iter(&self) -> Iter<'_, T> {
         Iter::new(self)
     }
 
     // rustdoc-stripper-ignore-next
     /// Create a non-destructive mutable iterator over the `SList`.
     #[inline]
-    pub fn iter_mut(&mut self) -> IterMut<T> {
+    pub fn iter_mut(&mut self) -> IterMut<'_, T> {
         IterMut::new(self)
     }
 
