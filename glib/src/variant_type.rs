@@ -588,7 +588,7 @@ impl VariantTy {
     /// # Panics
     ///
     /// This function panics if not called with a tuple or dictionary entry type.
-    pub fn tuple_types(&self) -> VariantTyIterator {
+    pub fn tuple_types(&self) -> VariantTyIterator<'_> {
         VariantTyIterator::new(self).expect("VariantTy does not represent a tuple")
     }
 

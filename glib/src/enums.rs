@@ -748,14 +748,14 @@ impl FlagsClass {
     // rustdoc-stripper-ignore-next
     /// Returns a new `FlagsBuilder` for conveniently setting/unsetting flags
     /// and building a `Value`.
-    pub fn builder(&self) -> FlagsBuilder {
+    pub fn builder(&self) -> FlagsBuilder<'_> {
         FlagsBuilder::new(self)
     }
 
     // rustdoc-stripper-ignore-next
     /// Returns a new `FlagsBuilder` for conveniently setting/unsetting flags
     /// and building a `Value`. The `Value` is initialized with `value`.
-    pub fn builder_with_value(&self, value: Value) -> Option<FlagsBuilder> {
+    pub fn builder_with_value(&self, value: Value) -> Option<FlagsBuilder<'_>> {
         if self.type_() != value.type_() {
             return None;
         }
@@ -966,12 +966,12 @@ pub type FlagsValues = EnumerationValues<FlagsValue>;
 #[must_use = "The builder must be built to be used"]
 pub struct FlagsBuilder<'a>(&'a FlagsClass, Option<Value>);
 impl FlagsBuilder<'_> {
-    fn new(flags_class: &FlagsClass) -> FlagsBuilder {
+    fn new(flags_class: &FlagsClass) -> FlagsBuilder<'_> {
         let value = unsafe { Value::from_type_unchecked(flags_class.type_()) };
         FlagsBuilder(flags_class, Some(value))
     }
 
-    fn with_value(flags_class: &FlagsClass, value: Value) -> FlagsBuilder {
+    fn with_value(flags_class: &FlagsClass, value: Value) -> FlagsBuilder<'_> {
         FlagsBuilder(flags_class, Some(value))
     }
 

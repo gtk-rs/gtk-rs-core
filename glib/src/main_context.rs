@@ -161,7 +161,7 @@ impl MainContext {
     ///
     /// This will fail if the main context is owned already by another thread.
     #[doc(alias = "g_main_context_acquire")]
-    pub fn acquire(&self) -> Result<MainContextAcquireGuard, crate::BoolError> {
+    pub fn acquire(&self) -> Result<MainContextAcquireGuard<'_>, crate::BoolError> {
         unsafe {
             let ret: bool = from_glib(ffi::g_main_context_acquire(self.to_glib_none().0));
             if ret {
@@ -189,7 +189,7 @@ impl Drop for MainContextAcquireGuard<'_> {
 struct ThreadDefaultContext<'a>(&'a MainContext);
 
 impl ThreadDefaultContext<'_> {
-    fn new(ctx: &MainContext) -> ThreadDefaultContext {
+    fn new(ctx: &MainContext) -> ThreadDefaultContext<'_> {
         unsafe {
             ffi::g_main_context_push_thread_default(ctx.to_glib_none().0);
         }

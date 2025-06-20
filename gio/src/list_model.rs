@@ -26,7 +26,7 @@ pub trait ListModelExtManual: IsA<ListModel> + Sized {
     /// # Panics
     ///
     /// Panics if `T::static_type().is_a(self.item_type())` is not true.
-    fn iter<LT: IsA<glib::Object>>(&self) -> ListModelIter<LT> {
+    fn iter<LT: IsA<glib::Object>>(&self) -> ListModelIter<'_, LT> {
         assert!(self.item_type().is_a(LT::static_type()));
 
         let len = self.n_items();

@@ -159,7 +159,7 @@ impl Device {
     }
 
     #[doc(alias = "cairo_device_acquire")]
-    pub fn acquire(&self) -> Result<DeviceAcquireGuard, Error> {
+    pub fn acquire(&self) -> Result<DeviceAcquireGuard<'_>, Error> {
         unsafe {
             let status = ffi::cairo_device_acquire(self.to_raw_none());
             status_to_result(status)?;
