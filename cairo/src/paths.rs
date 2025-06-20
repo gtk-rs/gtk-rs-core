@@ -20,7 +20,7 @@ impl Path {
         Path(ptr::NonNull::new_unchecked(pointer))
     }
 
-    pub fn iter(&self) -> PathSegments {
+    pub fn iter(&self) -> PathSegments<'_> {
         use std::slice;
 
         unsafe {

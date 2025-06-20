@@ -1683,7 +1683,7 @@ pub trait ObjectExt: ObjectType {
     ///
     /// `None` is returned if the object does not implement the interface `T`.
     #[doc(alias = "get_interface")]
-    fn interface<T: IsInterface>(&self) -> Option<InterfaceRef<T>>;
+    fn interface<T: IsInterface>(&self) -> Option<InterfaceRef<'_, T>>;
 
     // rustdoc-stripper-ignore-next
     /// Sets the property `property_name` of the object to value `value`.
@@ -2300,7 +2300,7 @@ impl<T: ObjectType> ObjectExt for T {
     }
 
     #[inline]
-    fn interface<U: IsInterface>(&self) -> Option<InterfaceRef<U>> {
+    fn interface<U: IsInterface>(&self) -> Option<InterfaceRef<'_, U>> {
         Interface::from_class(self.object_class())
     }
 
@@ -4032,7 +4032,7 @@ impl<T: IsClass> Class<T> {
     /// Gets the parent class struct, if any.
     #[doc(alias = "g_type_class_peek_parent")]
     #[inline]
-    pub fn parent(&self) -> Option<ClassRef<T>> {
+    pub fn parent(&self) -> Option<ClassRef<'_, T>> {
         unsafe {
             let ptr = gobject_ffi::g_type_class_peek_parent(&self.0 as *const _ as *mut _);
             if ptr.is_null() {
@@ -4171,7 +4171,7 @@ impl<T: IsInterface> Interface<T> {
     ///
     /// This will return `None` if `klass` is not implementing `Self`.
     #[inline]
-    pub fn from_class<U: IsClass>(klass: &Class<U>) -> Option<InterfaceRef<T>> {
+    pub fn from_class<U: IsClass>(klass: &Class<U>) -> Option<InterfaceRef<'_, T>> {
         if !klass.type_().is_a(T::static_type()) {
             return None;
         }
@@ -4241,7 +4241,7 @@ impl<T: IsInterface> Interface<T> {
     /// interface.
     #[doc(alias = "g_type_interface_peek_parent")]
     #[inline]
-    pub fn parent(&self) -> Option<InterfaceRef<T>> {
+    pub fn parent(&self) -> Option<InterfaceRef<'_, T>> {
         unsafe {
             let ptr = gobject_ffi::g_type_interface_peek_parent(&self.0 as *const _ as *mut _);
             if ptr.is_null() {
