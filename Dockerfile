@@ -23,7 +23,7 @@ RUN git clone https://gitlab.gnome.org/GNOME/glib.git --depth=1 && \
         meson install -C builddir) && \
     git clone https://gitlab.gnome.org/GNOME/gdk-pixbuf.git --depth=1 && \
     (cd /gdk-pixbuf && \
-        meson setup builddir --prefix=/usr --buildtype release -Dintrospection=enabled -Dtests=false -Dman=false -Dinstalled_tests=false -Dgio_sniffing=false -Dglycin=disabled && \
+        meson setup builddir --prefix=/usr --buildtype release -Dintrospection=enabled -Ddocumentation=false -Dtests=false -Dman=false -Dinstalled_tests=false -Dgio_sniffing=false -Dglycin=disabled && \
         meson install -C builddir) && \
     git clone https://github.com/ebassi/graphene.git --depth=1 && \
     (cd /graphene && \
