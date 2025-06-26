@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/auto/dbus_connection.rs`."><title>dbus_connection.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-84e720fa.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.90.0-nightly (28f1c8079 2025-06-24)" data-channel="nightly" data-search-js="search-92309212.js" data-settings-js="settings-5514c975.js" ><script src="../../../static.files/storage-4e99c027.js"></script><script defer src="../../../static.files/src-script-813739b1.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-340f468f.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-32bb7600.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/auto/dbus_connection.rs`."><title>dbus_connection.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-84e720fa.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.90.0-nightly (0fa4ec6cd 2025-06-25)" data-channel="nightly" data-search-js="search-92309212.js" data-settings-js="settings-5514c975.js" ><script src="../../../static.files/storage-4e99c027.js"></script><script defer src="../../../static.files/src-script-813739b1.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-340f468f.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-32bb7600.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -80,8 +80,8 @@
 <a href=#7 id=7 data-nosnippet>7</a>#[cfg_attr(docsrs, doc(cfg(unix)))]
 <a href=#8 id=8 data-nosnippet>8</a></span><span class="kw">use </span><a href="unix_fd_list.rs.html#8-33"><span class="kw">crate</span>::UnixFDList</a>;
 <a href=#9 id=9 data-nosnippet>9</a><span class="kw">use crate</span>::{
-<a href=#10 id=10 data-nosnippet>10</a>    <a href="../../../gio_sys/index.html">ffi</a>, <a href="async_initable.rs.html#9-123">AsyncInitable</a>, <a href="async_result.rs.html#8-106">AsyncResult</a>, <a href="cancellable.rs.html#8-86">Cancellable</a>, <a href="credentials.rs.html#8-54">Credentials</a>, <a href="dbus_auth_observer.rs.html#14-107">DBusAuthObserver</a>, <a href="flags.rs.html#610-628">DBusCallFlags</a>,
-<a href=#11 id=11 data-nosnippet>11</a>    <a href="flags.rs.html#702-715">DBusCapabilityFlags</a>, <a href="flags.rs.html#789-831">DBusConnectionFlags</a>, <a href="dbus_message.rs.html#19-38">DBusMessage</a>, <a href="flags.rs.html#1377-1391">DBusSendMessageFlags</a>, <a href="io_stream.rs.html#13-94">IOStream</a>,
+<a href=#10 id=10 data-nosnippet>10</a>    <a href="../../../gio_sys/index.html">ffi</a>, <a href="async_initable.rs.html#9-123">AsyncInitable</a>, <a href="async_result.rs.html#8-106">AsyncResult</a>, <a href="cancellable.rs.html#8-86">Cancellable</a>, <a href="credentials.rs.html#8-54">Credentials</a>, <a href="dbus_auth_observer.rs.html#14-107">DBusAuthObserver</a>, <a href="flags.rs.html#611-629">DBusCallFlags</a>,
+<a href=#11 id=11 data-nosnippet>11</a>    <a href="flags.rs.html#703-716">DBusCapabilityFlags</a>, <a href="flags.rs.html#790-832">DBusConnectionFlags</a>, <a href="dbus_message.rs.html#19-38">DBusMessage</a>, <a href="flags.rs.html#1378-1392">DBusSendMessageFlags</a>, <a href="io_stream.rs.html#13-94">IOStream</a>,
 <a href=#12 id=12 data-nosnippet>12</a>    <a href="initable.rs.html#8-43">Initable</a>,
 <a href=#13 id=13 data-nosnippet>13</a>};
 <a href=#14 id=14 data-nosnippet>14</a><span class="kw">use </span>glib::{
@@ -307,7 +307,7 @@
 <a href=#234 id=234 data-nosnippet>234</a>    #[doc(alias = <span class="string">"new_for_address_sync"</span>)]
 <a href=#235 id=235 data-nosnippet>235</a>    </span><span class="kw">pub fn </span>for_address_sync(
 <a href=#236 id=236 data-nosnippet>236</a>        address: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
-<a href=#237 id=237 data-nosnippet>237</a>        flags: <a href="flags.rs.html#789-831">DBusConnectionFlags</a>,
+<a href=#237 id=237 data-nosnippet>237</a>        flags: <a href="flags.rs.html#790-832">DBusConnectionFlags</a>,
 <a href=#238 id=238 data-nosnippet>238</a>        observer: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="dbus_auth_observer.rs.html#14-107">DBusAuthObserver</a>&gt;,
 <a href=#239 id=239 data-nosnippet>239</a>        cancellable: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span><a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="cancellable.rs.html#8-86">Cancellable</a>&gt;&gt;,
 <a href=#240 id=240 data-nosnippet>240</a>    ) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="#22-200">DBusConnection</a>, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt; {
@@ -362,7 +362,7 @@
 <a href=#289 id=289 data-nosnippet>289</a>    </span><span class="kw">pub fn </span>new_sync(
 <a href=#290 id=290 data-nosnippet>290</a>        stream: <span class="kw-2">&amp;</span><span class="kw">impl </span><a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="io_stream.rs.html#13-94">IOStream</a>&gt;,
 <a href=#291 id=291 data-nosnippet>291</a>        guid: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;,
-<a href=#292 id=292 data-nosnippet>292</a>        flags: <a href="flags.rs.html#789-831">DBusConnectionFlags</a>,
+<a href=#292 id=292 data-nosnippet>292</a>        flags: <a href="flags.rs.html#790-832">DBusConnectionFlags</a>,
 <a href=#293 id=293 data-nosnippet>293</a>        observer: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="dbus_auth_observer.rs.html#14-107">DBusAuthObserver</a>&gt;,
 <a href=#294 id=294 data-nosnippet>294</a>        cancellable: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span><a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="cancellable.rs.html#8-86">Cancellable</a>&gt;&gt;,
 <a href=#295 id=295 data-nosnippet>295</a>    ) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="#22-200">DBusConnection</a>, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt; {
@@ -468,7 +468,7 @@
 <a href=#395 id=395 data-nosnippet>395</a>        method_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
 <a href=#396 id=396 data-nosnippet>396</a>        parameters: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="../../../glib/variant/struct.Variant.html">glib::Variant</a>&gt;,
 <a href=#397 id=397 data-nosnippet>397</a>        reply_type: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="../../../glib/variant_type/struct.VariantTy.html">glib::VariantTy</a>&gt;,
-<a href=#398 id=398 data-nosnippet>398</a>        flags: <a href="flags.rs.html#610-628">DBusCallFlags</a>,
+<a href=#398 id=398 data-nosnippet>398</a>        flags: <a href="flags.rs.html#611-629">DBusCallFlags</a>,
 <a href=#399 id=399 data-nosnippet>399</a>        timeout_msec: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
 <a href=#400 id=400 data-nosnippet>400</a>        cancellable: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span><a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="cancellable.rs.html#8-86">Cancellable</a>&gt;&gt;,
 <a href=#401 id=401 data-nosnippet>401</a>        callback: P,
@@ -531,7 +531,7 @@
 <a href=#458 id=458 data-nosnippet>458</a>        method_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
 <a href=#459 id=459 data-nosnippet>459</a>        parameters: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="../../../glib/variant/struct.Variant.html">glib::Variant</a>&gt;,
 <a href=#460 id=460 data-nosnippet>460</a>        reply_type: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="../../../glib/variant_type/struct.VariantTy.html">glib::VariantTy</a>&gt;,
-<a href=#461 id=461 data-nosnippet>461</a>        flags: <a href="flags.rs.html#610-628">DBusCallFlags</a>,
+<a href=#461 id=461 data-nosnippet>461</a>        flags: <a href="flags.rs.html#611-629">DBusCallFlags</a>,
 <a href=#462 id=462 data-nosnippet>462</a>        timeout_msec: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
 <a href=#463 id=463 data-nosnippet>463</a>    ) -&gt; <a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html">Pin</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html">std::future::Future</a>&lt;Output = <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="../../../glib/variant/struct.Variant.html">glib::Variant</a>, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt;&gt; + <span class="lifetime">'static</span>&gt;&gt;
 <a href=#464 id=464 data-nosnippet>464</a>    {
@@ -637,7 +637,7 @@
 <a href=#564 id=564 data-nosnippet>564</a>        method_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
 <a href=#565 id=565 data-nosnippet>565</a>        parameters: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="../../../glib/variant/struct.Variant.html">glib::Variant</a>&gt;,
 <a href=#566 id=566 data-nosnippet>566</a>        reply_type: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="../../../glib/variant_type/struct.VariantTy.html">glib::VariantTy</a>&gt;,
-<a href=#567 id=567 data-nosnippet>567</a>        flags: <a href="flags.rs.html#610-628">DBusCallFlags</a>,
+<a href=#567 id=567 data-nosnippet>567</a>        flags: <a href="flags.rs.html#611-629">DBusCallFlags</a>,
 <a href=#568 id=568 data-nosnippet>568</a>        timeout_msec: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
 <a href=#569 id=569 data-nosnippet>569</a>        cancellable: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span><a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="cancellable.rs.html#8-86">Cancellable</a>&gt;&gt;,
 <a href=#570 id=570 data-nosnippet>570</a>    ) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="../../../glib/variant/struct.Variant.html">glib::Variant</a>, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt; {
@@ -719,7 +719,7 @@
 <a href=#646 id=646 data-nosnippet>646</a>        method_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
 <a href=#647 id=647 data-nosnippet>647</a>        parameters: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="../../../glib/variant/struct.Variant.html">glib::Variant</a>&gt;,
 <a href=#648 id=648 data-nosnippet>648</a>        reply_type: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="../../../glib/variant_type/struct.VariantTy.html">glib::VariantTy</a>&gt;,
-<a href=#649 id=649 data-nosnippet>649</a>        flags: <a href="flags.rs.html#610-628">DBusCallFlags</a>,
+<a href=#649 id=649 data-nosnippet>649</a>        flags: <a href="flags.rs.html#611-629">DBusCallFlags</a>,
 <a href=#650 id=650 data-nosnippet>650</a>        timeout_msec: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
 <a href=#651 id=651 data-nosnippet>651</a>        fd_list: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span><a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="unix_fd_list.rs.html#8-33">UnixFDList</a>&gt;&gt;,
 <a href=#652 id=652 data-nosnippet>652</a>        cancellable: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span><a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="cancellable.rs.html#8-86">Cancellable</a>&gt;&gt;,
@@ -792,7 +792,7 @@
 <a href=#719 id=719 data-nosnippet>719</a>        method_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
 <a href=#720 id=720 data-nosnippet>720</a>        parameters: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="../../../glib/variant/struct.Variant.html">glib::Variant</a>&gt;,
 <a href=#721 id=721 data-nosnippet>721</a>        reply_type: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="../../../glib/variant_type/struct.VariantTy.html">glib::VariantTy</a>&gt;,
-<a href=#722 id=722 data-nosnippet>722</a>        flags: <a href="flags.rs.html#610-628">DBusCallFlags</a>,
+<a href=#722 id=722 data-nosnippet>722</a>        flags: <a href="flags.rs.html#611-629">DBusCallFlags</a>,
 <a href=#723 id=723 data-nosnippet>723</a>        timeout_msec: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
 <a href=#724 id=724 data-nosnippet>724</a>        fd_list: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span>(<span class="kw">impl </span><a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="unix_fd_list.rs.html#8-33">UnixFDList</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">Clone</a> + <span class="lifetime">'static</span>)&gt;,
 <a href=#725 id=725 data-nosnippet>725</a>    ) -&gt; <a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html">Pin</a>&lt;
@@ -878,7 +878,7 @@
 <a href=#805 id=805 data-nosnippet>805</a>        method_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
 <a href=#806 id=806 data-nosnippet>806</a>        parameters: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="../../../glib/variant/struct.Variant.html">glib::Variant</a>&gt;,
 <a href=#807 id=807 data-nosnippet>807</a>        reply_type: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="../../../glib/variant_type/struct.VariantTy.html">glib::VariantTy</a>&gt;,
-<a href=#808 id=808 data-nosnippet>808</a>        flags: <a href="flags.rs.html#610-628">DBusCallFlags</a>,
+<a href=#808 id=808 data-nosnippet>808</a>        flags: <a href="flags.rs.html#611-629">DBusCallFlags</a>,
 <a href=#809 id=809 data-nosnippet>809</a>        timeout_msec: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
 <a href=#810 id=810 data-nosnippet>810</a>        fd_list: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span><a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="unix_fd_list.rs.html#8-33">UnixFDList</a>&gt;&gt;,
 <a href=#811 id=811 data-nosnippet>811</a>        cancellable: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span><a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="cancellable.rs.html#8-86">Cancellable</a>&gt;&gt;,
@@ -1196,7 +1196,7 @@
 <a href=#1123 id=1123 data-nosnippet>1123</a>    /// zero or more flags from the #GDBusCapabilityFlags enumeration
 <a href=#1124 id=1124 data-nosnippet>1124</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_dbus_connection_get_capabilities"</span>)]
 <a href=#1125 id=1125 data-nosnippet>1125</a>    #[doc(alias = <span class="string">"get_capabilities"</span>)]
-<a href=#1126 id=1126 data-nosnippet>1126</a>    </span><span class="kw">pub fn </span>capabilities(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="flags.rs.html#702-715">DBusCapabilityFlags</a> {
+<a href=#1126 id=1126 data-nosnippet>1126</a>    </span><span class="kw">pub fn </span>capabilities(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="flags.rs.html#703-716">DBusCapabilityFlags</a> {
 <a href=#1127 id=1127 data-nosnippet>1127</a>        <span class="kw">unsafe </span>{
 <a href=#1128 id=1128 data-nosnippet>1128</a>            <a href="../../../glib/translate/fn.from_glib.html">from_glib</a>(<a href="../../../gio_sys/fn.g_dbus_connection_get_capabilities.html">ffi::g_dbus_connection_get_capabilities</a>(
 <a href=#1129 id=1129 data-nosnippet>1129</a>                <a class="self" href="#1126">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
@@ -1232,7 +1232,7 @@
 <a href=#1159 id=1159 data-nosnippet>1159</a>    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"v2_60"</span>)))]
 <a href=#1160 id=1160 data-nosnippet>1160</a>    #[doc(alias = <span class="string">"g_dbus_connection_get_flags"</span>)]
 <a href=#1161 id=1161 data-nosnippet>1161</a>    #[doc(alias = <span class="string">"get_flags"</span>)]
-<a href=#1162 id=1162 data-nosnippet>1162</a>    </span><span class="kw">pub fn </span>flags(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="flags.rs.html#789-831">DBusConnectionFlags</a> {
+<a href=#1162 id=1162 data-nosnippet>1162</a>    </span><span class="kw">pub fn </span>flags(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="flags.rs.html#790-832">DBusConnectionFlags</a> {
 <a href=#1163 id=1163 data-nosnippet>1163</a>        <span class="kw">unsafe </span>{ <a href="../../../glib/translate/fn.from_glib.html">from_glib</a>(<a href="../../../gio_sys/fn.g_dbus_connection_get_flags.html">ffi::g_dbus_connection_get_flags</a>(<a class="self" href="#1162">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>)) }
 <a href=#1164 id=1164 data-nosnippet>1164</a>    }
 <a href=#1165 id=1165 data-nosnippet>1165</a>
@@ -1374,7 +1374,7 @@
 <a href=#1301 id=1301 data-nosnippet>1301</a>    </span><span class="kw">pub fn </span>send_message(
 <a href=#1302 id=1302 data-nosnippet>1302</a>        <span class="kw-2">&amp;</span><span class="self">self</span>,
 <a href=#1303 id=1303 data-nosnippet>1303</a>        message: <span class="kw-2">&amp;</span><a href="dbus_message.rs.html#19-38">DBusMessage</a>,
-<a href=#1304 id=1304 data-nosnippet>1304</a>        flags: <a href="flags.rs.html#1377-1391">DBusSendMessageFlags</a>,
+<a href=#1304 id=1304 data-nosnippet>1304</a>        flags: <a href="flags.rs.html#1378-1392">DBusSendMessageFlags</a>,
 <a href=#1305 id=1305 data-nosnippet>1305</a>    ) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt; {
 <a href=#1306 id=1306 data-nosnippet>1306</a>        <span class="kw">unsafe </span>{
 <a href=#1307 id=1307 data-nosnippet>1307</a>            <span class="kw">let </span><span class="kw-2">mut </span>out_serial = <a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.uninit">std::mem::MaybeUninit::uninit</a>();
@@ -1448,7 +1448,7 @@
 <a href=#1375 id=1375 data-nosnippet>1375</a>    </span><span class="kw">pub fn </span>send_message_with_reply&lt;P: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>(<a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="dbus_message.rs.html#19-38">DBusMessage</a>, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt;) + <span class="lifetime">'static</span>&gt;(
 <a href=#1376 id=1376 data-nosnippet>1376</a>        <span class="kw-2">&amp;</span><span class="self">self</span>,
 <a href=#1377 id=1377 data-nosnippet>1377</a>        message: <span class="kw-2">&amp;</span><a href="dbus_message.rs.html#19-38">DBusMessage</a>,
-<a href=#1378 id=1378 data-nosnippet>1378</a>        flags: <a href="flags.rs.html#1377-1391">DBusSendMessageFlags</a>,
+<a href=#1378 id=1378 data-nosnippet>1378</a>        flags: <a href="flags.rs.html#1378-1392">DBusSendMessageFlags</a>,
 <a href=#1379 id=1379 data-nosnippet>1379</a>        timeout_msec: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
 <a href=#1380 id=1380 data-nosnippet>1380</a>        cancellable: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span><a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="cancellable.rs.html#8-86">Cancellable</a>&gt;&gt;,
 <a href=#1381 id=1381 data-nosnippet>1381</a>        callback: P,
@@ -1508,7 +1508,7 @@
 <a href=#1435 id=1435 data-nosnippet>1435</a>    <span class="kw">pub fn </span>send_message_with_reply_future(
 <a href=#1436 id=1436 data-nosnippet>1436</a>        <span class="kw-2">&amp;</span><span class="self">self</span>,
 <a href=#1437 id=1437 data-nosnippet>1437</a>        message: <span class="kw-2">&amp;</span><a href="dbus_message.rs.html#19-38">DBusMessage</a>,
-<a href=#1438 id=1438 data-nosnippet>1438</a>        flags: <a href="flags.rs.html#1377-1391">DBusSendMessageFlags</a>,
+<a href=#1438 id=1438 data-nosnippet>1438</a>        flags: <a href="flags.rs.html#1378-1392">DBusSendMessageFlags</a>,
 <a href=#1439 id=1439 data-nosnippet>1439</a>        timeout_msec: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
 <a href=#1440 id=1440 data-nosnippet>1440</a>    ) -&gt; <a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html">Pin</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html">std::future::Future</a>&lt;Output = <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="dbus_message.rs.html#19-38">DBusMessage</a>, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt;&gt; + <span class="lifetime">'static</span>&gt;&gt;
 <a href=#1441 id=1441 data-nosnippet>1441</a>    {
@@ -1582,7 +1582,7 @@
 <a href=#1509 id=1509 data-nosnippet>1509</a>    </span><span class="kw">pub fn </span>send_message_with_reply_sync(
 <a href=#1510 id=1510 data-nosnippet>1510</a>        <span class="kw-2">&amp;</span><span class="self">self</span>,
 <a href=#1511 id=1511 data-nosnippet>1511</a>        message: <span class="kw-2">&amp;</span><a href="dbus_message.rs.html#19-38">DBusMessage</a>,
-<a href=#1512 id=1512 data-nosnippet>1512</a>        flags: <a href="flags.rs.html#1377-1391">DBusSendMessageFlags</a>,
+<a href=#1512 id=1512 data-nosnippet>1512</a>        flags: <a href="flags.rs.html#1378-1392">DBusSendMessageFlags</a>,
 <a href=#1513 id=1513 data-nosnippet>1513</a>        timeout_msec: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
 <a href=#1514 id=1514 data-nosnippet>1514</a>        cancellable: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span><a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="cancellable.rs.html#8-86">Cancellable</a>&gt;&gt;,
 <a href=#1515 id=1515 data-nosnippet>1515</a>    ) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(<a href="dbus_message.rs.html#19-38">DBusMessage</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>), <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt; {
@@ -1683,7 +1683,7 @@
 <a href=#1610 id=1610 data-nosnippet>1610</a>    </span><span class="kw">pub fn </span>new&lt;P: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>(<a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="#22-200">DBusConnection</a>, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt;) + <span class="lifetime">'static</span>&gt;(
 <a href=#1611 id=1611 data-nosnippet>1611</a>        stream: <span class="kw-2">&amp;</span><span class="kw">impl </span><a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="io_stream.rs.html#13-94">IOStream</a>&gt;,
 <a href=#1612 id=1612 data-nosnippet>1612</a>        guid: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;,
-<a href=#1613 id=1613 data-nosnippet>1613</a>        flags: <a href="flags.rs.html#789-831">DBusConnectionFlags</a>,
+<a href=#1613 id=1613 data-nosnippet>1613</a>        flags: <a href="flags.rs.html#790-832">DBusConnectionFlags</a>,
 <a href=#1614 id=1614 data-nosnippet>1614</a>        observer: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="dbus_auth_observer.rs.html#14-107">DBusAuthObserver</a>&gt;,
 <a href=#1615 id=1615 data-nosnippet>1615</a>        cancellable: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span><a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="cancellable.rs.html#8-86">Cancellable</a>&gt;&gt;,
 <a href=#1616 id=1616 data-nosnippet>1616</a>        callback: P,
@@ -1736,7 +1736,7 @@
 <a href=#1663 id=1663 data-nosnippet>1663</a>    <span class="kw">pub fn </span>new_future(
 <a href=#1664 id=1664 data-nosnippet>1664</a>        stream: <span class="kw-2">&amp;</span>(<span class="kw">impl </span><a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="io_stream.rs.html#13-94">IOStream</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">Clone</a> + <span class="lifetime">'static</span>),
 <a href=#1665 id=1665 data-nosnippet>1665</a>        guid: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;,
-<a href=#1666 id=1666 data-nosnippet>1666</a>        flags: <a href="flags.rs.html#789-831">DBusConnectionFlags</a>,
+<a href=#1666 id=1666 data-nosnippet>1666</a>        flags: <a href="flags.rs.html#790-832">DBusConnectionFlags</a>,
 <a href=#1667 id=1667 data-nosnippet>1667</a>        observer: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="dbus_auth_observer.rs.html#14-107">DBusAuthObserver</a>&gt;,
 <a href=#1668 id=1668 data-nosnippet>1668</a>    ) -&gt; <a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html">Pin</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html">std::future::Future</a>&lt;Output = <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="#22-200">DBusConnection</a>, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt;&gt; + <span class="lifetime">'static</span>&gt;&gt;
 <a href=#1669 id=1669 data-nosnippet>1669</a>    {
@@ -1796,7 +1796,7 @@
 <a href=#1723 id=1723 data-nosnippet>1723</a>    #[doc(alias = <span class="string">"new_for_address"</span>)]
 <a href=#1724 id=1724 data-nosnippet>1724</a>    </span><span class="kw">pub fn </span>for_address&lt;P: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>(<a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="#22-200">DBusConnection</a>, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt;) + <span class="lifetime">'static</span>&gt;(
 <a href=#1725 id=1725 data-nosnippet>1725</a>        address: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
-<a href=#1726 id=1726 data-nosnippet>1726</a>        flags: <a href="flags.rs.html#789-831">DBusConnectionFlags</a>,
+<a href=#1726 id=1726 data-nosnippet>1726</a>        flags: <a href="flags.rs.html#790-832">DBusConnectionFlags</a>,
 <a href=#1727 id=1727 data-nosnippet>1727</a>        observer: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="dbus_auth_observer.rs.html#14-107">DBusAuthObserver</a>&gt;,
 <a href=#1728 id=1728 data-nosnippet>1728</a>        cancellable: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span><a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="cancellable.rs.html#8-86">Cancellable</a>&gt;&gt;,
 <a href=#1729 id=1729 data-nosnippet>1729</a>        callback: P,
@@ -1847,7 +1847,7 @@
 <a href=#1774 id=1774 data-nosnippet>1774</a>
 <a href=#1775 id=1775 data-nosnippet>1775</a>    <span class="kw">pub fn </span>for_address_future(
 <a href=#1776 id=1776 data-nosnippet>1776</a>        address: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
-<a href=#1777 id=1777 data-nosnippet>1777</a>        flags: <a href="flags.rs.html#789-831">DBusConnectionFlags</a>,
+<a href=#1777 id=1777 data-nosnippet>1777</a>        flags: <a href="flags.rs.html#790-832">DBusConnectionFlags</a>,
 <a href=#1778 id=1778 data-nosnippet>1778</a>        observer: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="dbus_auth_observer.rs.html#14-107">DBusAuthObserver</a>&gt;,
 <a href=#1779 id=1779 data-nosnippet>1779</a>    ) -&gt; <a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html">Pin</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html">std::future::Future</a>&lt;Output = <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="#22-200">DBusConnection</a>, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt;&gt; + <span class="lifetime">'static</span>&gt;&gt;
 <a href=#1780 id=1780 data-nosnippet>1780</a>    {

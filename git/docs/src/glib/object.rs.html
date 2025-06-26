@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/object.rs`."><title>object.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-84e720fa.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.90.0-nightly (28f1c8079 2025-06-24)" data-channel="nightly" data-search-js="search-92309212.js" data-settings-js="settings-5514c975.js" ><script src="../../static.files/storage-4e99c027.js"></script><script defer src="../../static.files/src-script-813739b1.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-340f468f.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-32bb7600.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/object.rs`."><title>object.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-84e720fa.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.90.0-nightly (0fa4ec6cd 2025-06-25)" data-channel="nightly" data-search-js="search-92309212.js" data-settings-js="settings-5514c975.js" ><script src="../../static.files/storage-4e99c027.js"></script><script defer src="../../static.files/src-script-813739b1.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-340f468f.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-32bb7600.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -80,7 +80,7 @@
 <a href=#7 id=7 data-nosnippet>7</a>
 <a href=#8 id=8 data-nosnippet>8</a><span class="kw">use crate</span>::{
 <a href=#9 id=9 data-nosnippet>9</a>    <a href="closure.rs.html#356-358">closure::TryFromClosureReturnValue</a>,
-<a href=#10 id=10 data-nosnippet>10</a>    ffi, <a href="../../gobject_sys/index.html">gobject_ffi</a>,
+<a href=#10 id=10 data-nosnippet>10</a>    <a href="../../glib_sys/index.html">ffi</a>, <a href="../../gobject_sys/index.html">gobject_ffi</a>,
 <a href=#11 id=11 data-nosnippet>11</a>    <a href="lib.rs.html#159">prelude</a>::<span class="kw-2">*</span>,
 <a href=#12 id=12 data-nosnippet>12</a>    <a href="quark.rs.html#10">quark::Quark</a>,
 <a href=#13 id=13 data-nosnippet>13</a>    subclass::{<a href="subclass/mod.rs.html#442-458">prelude</a>::<span class="kw-2">*</span>, <a href="subclass/signal.rs.html#175">SignalId</a>, <a href="subclass/signal.rs.html#92">SignalQuery</a>},
@@ -2558,13 +2558,13 @@
 <a href=#2485 id=2485 data-nosnippet>2485</a>    }
 <a href=#2486 id=2486 data-nosnippet>2486</a>
 <a href=#2487 id=2487 data-nosnippet>2487</a>    <span class="kw">unsafe fn </span>set_qdata&lt;QD: <span class="lifetime">'static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, key: <a href="quark.rs.html#10">Quark</a>, value: QD) {
-<a href=#2488 id=2488 data-nosnippet>2488</a>        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>drop_value&lt;QD&gt;(ptr: ffi::gpointer) {
+<a href=#2488 id=2488 data-nosnippet>2488</a>        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>drop_value&lt;QD&gt;(ptr: <a href="../../glib_sys/type.gpointer.html">ffi::gpointer</a>) {
 <a href=#2489 id=2489 data-nosnippet>2489</a>            <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert.html">debug_assert!</a>(!ptr.is_null());
 <a href=#2490 id=2490 data-nosnippet>2490</a>            <span class="kw">let </span>value: <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box</a>&lt;QD&gt; = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.from_raw">Box::from_raw</a>(<a href="#2488">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span>QD);
 <a href=#2491 id=2491 data-nosnippet>2491</a>            <a href="https://doc.rust-lang.org/nightly/core/mem/fn.drop.html">drop</a>(<a href="#2490">value</a>)
 <a href=#2492 id=2492 data-nosnippet>2492</a>        }
 <a href=#2493 id=2493 data-nosnippet>2493</a>
-<a href=#2494 id=2494 data-nosnippet>2494</a>        <span class="kw">let </span>ptr = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.into_raw">Box::into_raw</a>(<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">Box::new</a>(<a href="#2487">value</a>)) <span class="kw">as </span>ffi::gpointer;
+<a href=#2494 id=2494 data-nosnippet>2494</a>        <span class="kw">let </span>ptr = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.into_raw">Box::into_raw</a>(<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">Box::new</a>(<a href="#2487">value</a>)) <span class="kw">as </span><a href="../../glib_sys/type.gpointer.html">ffi::gpointer</a>;
 <a href=#2495 id=2495 data-nosnippet>2495</a>        <a href="../../gobject_sys/fn.g_object_set_qdata_full.html">gobject_ffi::g_object_set_qdata_full</a>(
 <a href=#2496 id=2496 data-nosnippet>2496</a>            <a class="self" href="#2487">self</a>.<a href="#48">as_object_ref</a>().<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
 <a href=#2497 id=2497 data-nosnippet>2497</a>            <a href="#2487">key</a>.<a href="translate.rs.html#334">into_glib</a>(),
@@ -3136,7 +3136,7 @@
 <a href=#3063 id=3063 data-nosnippet>3063</a>        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>notify_trampoline&lt;P, F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span>P, <span class="kw-2">&amp;</span><a href="param_spec.rs.html#19-42"><span class="kw">crate</span>::ParamSpec</a>)&gt;(
 <a href=#3064 id=3064 data-nosnippet>3064</a>            this: <span class="kw-2">*mut </span><a href="../../gobject_sys/struct.GObject.html">gobject_ffi::GObject</a>,
 <a href=#3065 id=3065 data-nosnippet>3065</a>            param_spec: <span class="kw-2">*mut </span><a href="../../gobject_sys/struct.GParamSpec.html">gobject_ffi::GParamSpec</a>,
-<a href=#3066 id=3066 data-nosnippet>3066</a>            f: ffi::gpointer,
+<a href=#3066 id=3066 data-nosnippet>3066</a>            f: <a href="../../glib_sys/type.gpointer.html">ffi::gpointer</a>,
 <a href=#3067 id=3067 data-nosnippet>3067</a>        ) <span class="kw">where
 <a href=#3068 id=3068 data-nosnippet>3068</a>            </span>P: <a href="#22-52">ObjectType</a>,
 <a href=#3069 id=3069 data-nosnippet>3069</a>        {
@@ -3222,7 +3222,7 @@
 <a href=#3149 id=3149 data-nosnippet>3149</a>        <span class="kw">let </span>stash = <a class="self" href="#3148">self</a>.<a href="#48">as_object_ref</a>().<a href="translate.rs.html#441">to_glib_none</a>();
 <a href=#3150 id=3150 data-nosnippet>3150</a>        <span class="kw">let </span>ptr: <span class="kw-2">*mut </span><a href="../../gobject_sys/struct.GObject.html">gobject_ffi::GObject</a> = <a href="#3149">stash</a>.<span class="number">0</span>;
 <a href=#3151 id=3151 data-nosnippet>3151</a>
-<a href=#3152 id=3152 data-nosnippet>3152</a>        <span class="kw">unsafe </span>{ ffi::g_atomic_int_get(<span class="kw-2">&amp;</span>(<span class="kw-2">*</span><a href="#3150">ptr</a>).ref_count <span class="kw">as </span><span class="kw-2">*const </span><a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a> <span class="kw">as </span><span class="kw-2">*const </span><a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>) <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a> }
+<a href=#3152 id=3152 data-nosnippet>3152</a>        <span class="kw">unsafe </span>{ <a href="../../glib_sys/manual/fn.g_atomic_int_get.html">ffi::g_atomic_int_get</a>(<span class="kw-2">&amp;</span>(<span class="kw-2">*</span><a href="#3150">ptr</a>).ref_count <span class="kw">as </span><span class="kw-2">*const </span><a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a> <span class="kw">as </span><span class="kw-2">*const </span><a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>) <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a> }
 <a href=#3153 id=3153 data-nosnippet>3153</a>    }
 <a href=#3154 id=3154 data-nosnippet>3154</a>
 <a href=#3155 id=3155 data-nosnippet>3155</a>    <span class="attr">#[inline]
@@ -3474,7 +3474,7 @@
 <a href=#3401 id=3401 data-nosnippet>3401</a>    data: <a href="#3395">WeakRefNotifyData</a>,
 <a href=#3402 id=3402 data-nosnippet>3402</a>}
 <a href=#3403 id=3403 data-nosnippet>3403</a>
-<a href=#3404 id=3404 data-nosnippet>3404</a><span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>notify_func(data: ffi::gpointer, _obj: <span class="kw-2">*mut </span><a href="../../gobject_sys/struct.GObject.html">gobject_ffi::GObject</a>) {
+<a href=#3404 id=3404 data-nosnippet>3404</a><span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>notify_func(data: <a href="../../glib_sys/type.gpointer.html">ffi::gpointer</a>, _obj: <span class="kw-2">*mut </span><a href="../../gobject_sys/struct.GObject.html">gobject_ffi::GObject</a>) {
 <a href=#3405 id=3405 data-nosnippet>3405</a>    <span class="comment">// SAFETY: Call to FFI with pointers that must be valid due to Pin and lifetimes.
 <a href=#3406 id=3406 data-nosnippet>3406</a>    //         ManuallyDrop and Pin are elided because the pointer only points to Box&lt;Box&lt;dyn FnOnce()&gt;&gt;.
 <a href=#3407 id=3407 data-nosnippet>3407</a>    </span><span class="kw">let </span>callback: <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box</a>&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>()&gt;&gt; = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.from_raw">Box::from_raw</a>(<a href="#3404">data</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
@@ -3871,8 +3871,8 @@
 <a href=#3798 id=3798 data-nosnippet>3798</a>            binding: <span class="kw-2">*mut </span><a href="../../gobject_sys/struct.GBinding.html">gobject_ffi::GBinding</a>,
 <a href=#3799 id=3799 data-nosnippet>3799</a>            from_value: <span class="kw-2">*const </span><a href="../../gobject_sys/struct.GValue.html">gobject_ffi::GValue</a>,
 <a href=#3800 id=3800 data-nosnippet>3800</a>            to_value: <span class="kw-2">*mut </span><a href="../../gobject_sys/struct.GValue.html">gobject_ffi::GValue</a>,
-<a href=#3801 id=3801 data-nosnippet>3801</a>            user_data: ffi::gpointer,
-<a href=#3802 id=3802 data-nosnippet>3802</a>        ) -&gt; ffi::gboolean {
+<a href=#3801 id=3801 data-nosnippet>3801</a>            user_data: <a href="../../glib_sys/type.gpointer.html">ffi::gpointer</a>,
+<a href=#3802 id=3802 data-nosnippet>3802</a>        ) -&gt; <a href="../../glib_sys/type.gboolean.html">ffi::gboolean</a> {
 <a href=#3803 id=3803 data-nosnippet>3803</a>            <span class="kw">let </span>transform_data = <span class="kw-2">&amp;*</span>(<a href="#3801">user_data</a>
 <a href=#3804 id=3804 data-nosnippet>3804</a>                <span class="kw">as </span><span class="kw-2">*const </span>(<a href="#3639-3640">TransformFn</a>, <a href="#3639-3640">TransformFn</a>, <a href="param_spec.rs.html#19-42"><span class="kw">crate</span>::ParamSpec</a>, <a href="param_spec.rs.html#19-42"><span class="kw">crate</span>::ParamSpec</a>));
 <a href=#3805 id=3805 data-nosnippet>3805</a>
@@ -3900,8 +3900,8 @@
 <a href=#3827 id=3827 data-nosnippet>3827</a>            binding: <span class="kw-2">*mut </span><a href="../../gobject_sys/struct.GBinding.html">gobject_ffi::GBinding</a>,
 <a href=#3828 id=3828 data-nosnippet>3828</a>            from_value: <span class="kw-2">*const </span><a href="../../gobject_sys/struct.GValue.html">gobject_ffi::GValue</a>,
 <a href=#3829 id=3829 data-nosnippet>3829</a>            to_value: <span class="kw-2">*mut </span><a href="../../gobject_sys/struct.GValue.html">gobject_ffi::GValue</a>,
-<a href=#3830 id=3830 data-nosnippet>3830</a>            user_data: ffi::gpointer,
-<a href=#3831 id=3831 data-nosnippet>3831</a>        ) -&gt; ffi::gboolean {
+<a href=#3830 id=3830 data-nosnippet>3830</a>            user_data: <a href="../../glib_sys/type.gpointer.html">ffi::gpointer</a>,
+<a href=#3831 id=3831 data-nosnippet>3831</a>        ) -&gt; <a href="../../glib_sys/type.gboolean.html">ffi::gboolean</a> {
 <a href=#3832 id=3832 data-nosnippet>3832</a>            <span class="kw">let </span>transform_data = <span class="kw-2">&amp;*</span>(<a href="#3830">user_data</a>
 <a href=#3833 id=3833 data-nosnippet>3833</a>                <span class="kw">as </span><span class="kw-2">*const </span>(<a href="#3639-3640">TransformFn</a>, <a href="#3639-3640">TransformFn</a>, <a href="param_spec.rs.html#19-42"><span class="kw">crate</span>::ParamSpec</a>, <a href="param_spec.rs.html#19-42"><span class="kw">crate</span>::ParamSpec</a>));
 <a href=#3834 id=3834 data-nosnippet>3834</a>
@@ -3925,7 +3925,7 @@
 <a href=#3852 id=3852 data-nosnippet>3852</a>            .<a href="translate.rs.html#334">into_glib</a>()
 <a href=#3853 id=3853 data-nosnippet>3853</a>        }
 <a href=#3854 id=3854 data-nosnippet>3854</a>
-<a href=#3855 id=3855 data-nosnippet>3855</a>        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>free_transform_data(data: ffi::gpointer) {
+<a href=#3855 id=3855 data-nosnippet>3855</a>        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>free_transform_data(data: <a href="../../glib_sys/type.gpointer.html">ffi::gpointer</a>) {
 <a href=#3856 id=3856 data-nosnippet>3856</a>            <span class="kw">let _ </span>= <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.from_raw">Box::from_raw</a>(
 <a href=#3857 id=3857 data-nosnippet>3857</a>                <a href="#3855">data</a> <span class="kw">as </span><span class="kw-2">*mut </span>(<a href="#3639-3640">TransformFn</a>, <a href="#3639-3640">TransformFn</a>, <a href="param_spec.rs.html#19-42"><span class="kw">crate</span>::ParamSpec</a>, <a href="param_spec.rs.html#19-42"><span class="kw">crate</span>::ParamSpec</a>),
 <a href=#3858 id=3858 data-nosnippet>3858</a>            );
@@ -3992,7 +3992,7 @@
 <a href=#3919 id=3919 data-nosnippet>3919</a>                } <span class="kw">else </span>{
 <a href=#3920 id=3920 data-nosnippet>3920</a>                    <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None"><a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a>
 <a href=#3921 id=3921 data-nosnippet>3921</a>                </a>},
-<a href=#3922 id=3922 data-nosnippet>3922</a>                <a href="#3895">transform_data</a> <span class="kw">as </span>ffi::gpointer,
+<a href=#3922 id=3922 data-nosnippet>3922</a>                <a href="#3895">transform_data</a> <span class="kw">as </span><a href="../../glib_sys/type.gpointer.html">ffi::gpointer</a>,
 <a href=#3923 id=3923 data-nosnippet>3923</a>                <span class="kw">if </span>transform_data.is_null() {
 <a href=#3924 id=3924 data-nosnippet>3924</a>                    <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None"><a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a>
 <a href=#3925 id=3925 data-nosnippet>3925</a>                </a>} <span class="kw">else </span>{
