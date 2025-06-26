@@ -76,7 +76,7 @@ pub trait FontExt: IsA<Font> + 'static {
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_46")))]
     #[doc(alias = "pango_font_get_face")]
     #[doc(alias = "get_face")]
-    fn face(&self) -> FontFace {
+    fn face(&self) -> Option<FontFace> {
         unsafe { from_glib_none(ffi::pango_font_get_face(self.as_ref().to_glib_none().0)) }
     }
 
