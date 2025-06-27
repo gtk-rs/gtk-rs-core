@@ -282,9 +282,9 @@ mod ps;
 #[cfg(feature = "svg")]
 mod svg;
 
-#[cfg(target_os = "macos")]
+#[cfg(all(target_os = "macos", feature = "quartz-surface"))]
 mod quartz_surface;
-#[cfg(target_os = "macos")]
+#[cfg(all(target_os = "macos", feature = "quartz-surface"))]
 pub use quartz_surface::QuartzSurface;
 
 #[cfg(all(windows, feature = "win32-surface"))]
