@@ -20,24 +20,6 @@ impl FileEnumerator {
 }
 
 pub trait FileEnumeratorExt: IsA<FileEnumerator> + 'static {
-    #[doc(alias = "g_file_enumerator_close")]
-    fn close(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<(), glib::Error> {
-        unsafe {
-            let mut error = std::ptr::null_mut();
-            let is_ok = ffi::g_file_enumerator_close(
-                self.as_ref().to_glib_none().0,
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
-                &mut error,
-            );
-            debug_assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
-            if error.is_null() {
-                Ok(())
-            } else {
-                Err(from_glib_full(error))
-            }
-        }
-    }
-
     #[doc(alias = "g_file_enumerator_close_async")]
     fn close_async<P: FnOnce(Result<(), glib::Error>) + 'static>(
         &self,
