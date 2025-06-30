@@ -205,7 +205,7 @@ impl DesktopAppInfo {
         launch_context: Option<&impl IsA<AppLaunchContext>>,
         spawn_flags: glib::SpawnFlags,
         user_setup: Option<Box_<dyn FnOnce() + 'static>>,
-        pid_callback: Option<&mut dyn (FnMut(&DesktopAppInfo, glib::Pid))>,
+        pid_callback: Option<&mut dyn FnMut(&DesktopAppInfo, glib::Pid)>,
     ) -> Result<(), glib::Error> {
         let user_setup_data: Box_<Option<Box_<dyn FnOnce() + 'static>>> = Box_::new(user_setup);
         unsafe extern "C" fn user_setup_func(data: glib::ffi::gpointer) {
@@ -218,7 +218,7 @@ impl DesktopAppInfo {
         } else {
             None
         };
-        let mut pid_callback_data: Option<&mut dyn (FnMut(&DesktopAppInfo, glib::Pid))> =
+        let mut pid_callback_data: Option<&mut dyn FnMut(&DesktopAppInfo, glib::Pid)> =
             pid_callback;
         unsafe extern "C" fn pid_callback_func(
             appinfo: *mut ffi::GDesktopAppInfo,
@@ -227,7 +227,7 @@ impl DesktopAppInfo {
         ) {
             let appinfo = from_glib_borrow(appinfo);
             let pid = from_glib(pid);
-            let callback = user_data as *mut Option<&mut dyn (FnMut(&DesktopAppInfo, glib::Pid))>;
+            let callback = user_data as *mut Option<&mut dyn FnMut(&DesktopAppInfo, glib::Pid)>;
             if let Some(ref mut callback) = *callback {
                 callback(&appinfo, pid)
             } else {
@@ -240,7 +240,7 @@ impl DesktopAppInfo {
             None
         };
         let super_callback0: Box_<Option<Box_<dyn FnOnce() + 'static>>> = user_setup_data;
-        let super_callback1: &mut Option<&mut dyn (FnMut(&DesktopAppInfo, glib::Pid))> =
+        let super_callback1: &mut Option<&mut dyn FnMut(&DesktopAppInfo, glib::Pid)> =
             &mut pid_callback_data;
         unsafe {
             let mut error = std::ptr::null_mut();
