@@ -266,8 +266,7 @@ impl Capture {
             CaptureKind::Weak => match weak_upgrade_failure_kind {
                 UpgradeBehaviour::Panic => {
                     let err_msg = format!(
-                        "Failed to upgrade `{}`. If you don't want to panic, use `#[upgrade_or]`, `#[upgrade_or_else]` or `#[upgrade_or_default]`",
-                        alias,
+                        "Failed to upgrade `{alias}`. If you don't want to panic, use `#[upgrade_or]`, `#[upgrade_or_else]` or `#[upgrade_or_default]`",
                     );
                     quote! {
                         let Some(#alias) = #crate_ident::clone::Upgrade::upgrade(&#alias) else {
@@ -278,7 +277,7 @@ impl Capture {
                 UpgradeBehaviour::Default
                 | UpgradeBehaviour::Expression(_)
                 | UpgradeBehaviour::Closure(_) => {
-                    let err_msg = format!("Failed to upgrade `{}`", alias);
+                    let err_msg = format!("Failed to upgrade `{alias}`");
                     quote! {
                         let Some(#alias) = #crate_ident::clone::Upgrade::upgrade(&#alias) else {
                             #crate_ident::g_debug!(
@@ -290,7 +289,7 @@ impl Capture {
                     }
                 }
                 UpgradeBehaviour::Unit => {
-                    let err_msg = format!("Failed to upgrade `{}`", alias);
+                    let err_msg = format!("Failed to upgrade `{alias}`");
                     let unit_return = unit_return.unwrap_or_else(|| {
                         quote! { return; }
                     });

@@ -173,14 +173,14 @@ mod foo {
                 String::from("Hello world!")
             }
             fn set_fizz(&self, value: String) {
-                *self.fizz.borrow_mut() = format!("custom set: {}", value);
+                *self.fizz.borrow_mut() = format!("custom set: {value}");
             }
             fn overridden(&self) -> u32 {
                 43
             }
             fn set_construct_only_custom(&self, value: Option<String>) {
                 self.construct_only_custom_setter
-                    .set(value.map(|v| format!("custom set: {}", v)))
+                    .set(value.map(|v| format!("custom set: {v}")))
                     .expect("Setter to be only called once");
             }
         }
