@@ -2415,16 +2415,17 @@ impl ToValue for Vec<GString> {
 
 impl From<Vec<GString>> for Value {
     #[inline]
-    fn from(mut v: Vec<GString>) -> Self {
+    fn from(v: Vec<GString>) -> Self {
         unsafe {
+            let v_ptr =
+                ffi::g_malloc(mem::size_of::<*mut c_char>() * (v.len() + 1)) as *mut *mut c_char;
+            v_ptr.add(v.len()).write(ptr::null_mut());
+            for (i, s) in v.into_iter().enumerate() {
+                v_ptr.add(i).write(s.into_glib_ptr());
+            }
+
             let mut value = Value::for_value_type::<Vec<GString>>();
-            let container =
-                ToGlibContainerFromSlice::<*mut *mut c_char>::to_glib_container_from_slice(&v);
-            gobject_ffi::g_value_take_boxed(
-                value.to_glib_none_mut().0,
-                container.0 as *const c_void,
-            );
-            v.set_len(0);
+            gobject_ffi::g_value_take_boxed(value.to_glib_none_mut().0, v_ptr as *const c_void);
             value
         }
     }
@@ -2596,6 +2597,21 @@ mod tests {
         let v: &[u8] = b"foo";
         let s: GString = GString::from_utf8(Vec::from(v)).unwrap();
         assert_eq!(s.as_str(), "foo");
+    }
+
+    #[test]
+    fn test_value_from_vec_gstring() {
+        fn roundtrip(s: GString) {
+            let vec = vec![s.clone()];
+            let value = crate::Value::from(vec);
+            let vec: Vec<GString> = value.get().unwrap();
+            assert_eq!(vec.len(), 1);
+            assert_eq!(s, vec[0]);
+        }
+
+        roundtrip(GString::from("foo"));
+        roundtrip(GString::from("very very very long string".to_owned()));
+        roundtrip(GString::from(gstr!("very very very long string")));
     }
 
     #[test]
