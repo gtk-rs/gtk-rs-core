@@ -54,7 +54,7 @@ pub trait DesktopAppInfoExtManual: IsA<DesktopAppInfo> {
         launch_context: Option<&P>,
         spawn_flags: glib::SpawnFlags,
         user_setup: Option<Box_<dyn FnOnce() + 'static>>,
-        pid_callback: Option<&mut dyn (FnMut(&DesktopAppInfo, glib::Pid))>,
+        pid_callback: Option<&mut dyn FnMut(&DesktopAppInfo, glib::Pid)>,
         stdin_fd: Option<impl AsFd>,
         stdout_fd: Option<impl AsFd>,
         stderr_fd: Option<impl AsFd>,
@@ -71,7 +71,7 @@ pub trait DesktopAppInfoExtManual: IsA<DesktopAppInfo> {
         } else {
             None
         };
-        let pid_callback_data: Option<&mut dyn (FnMut(&DesktopAppInfo, glib::Pid))> = pid_callback;
+        let pid_callback_data: Option<&mut dyn FnMut(&DesktopAppInfo, glib::Pid)> = pid_callback;
         unsafe extern "C" fn pid_callback_func(
             appinfo: *mut ffi::GDesktopAppInfo,
             pid: glib::ffi::GPid,
@@ -79,7 +79,7 @@ pub trait DesktopAppInfoExtManual: IsA<DesktopAppInfo> {
         ) {
             let appinfo = from_glib_borrow(appinfo);
             let pid = from_glib(pid);
-            let callback = user_data as *mut Option<&mut dyn (FnMut(&DesktopAppInfo, glib::Pid))>;
+            let callback = user_data as *mut Option<&mut dyn FnMut(&DesktopAppInfo, glib::Pid)>;
             if let Some(ref mut callback) = *callback {
                 callback(&appinfo, pid)
             } else {
@@ -92,7 +92,7 @@ pub trait DesktopAppInfoExtManual: IsA<DesktopAppInfo> {
             None
         };
         let super_callback0: Box_<Option<Box_<dyn FnOnce() + 'static>>> = user_setup_data;
-        let super_callback1: &Option<&mut dyn (FnMut(&DesktopAppInfo, glib::Pid))> =
+        let super_callback1: &Option<&mut dyn FnMut(&DesktopAppInfo, glib::Pid)> =
             &pid_callback_data;
 
         let stdin_raw_fd = stdin_fd.map_or(-1, |fd| fd.as_fd().as_raw_fd());
