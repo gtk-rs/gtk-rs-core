@@ -75,7 +75,7 @@
 <a href=#2 id=2 data-nosnippet>2</a>
 <a href=#3 id=3 data-nosnippet>3</a></span><span class="kw">use </span>std::{<a href="https://doc.rust-lang.org/nightly/core/ffi/primitives/type.c_char.html">ffi::c_char</a>, <a href="https://doc.rust-lang.org/nightly/alloc/fmt/index.html">fmt</a>, <a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">marker::PhantomData</a>, <a href="https://doc.rust-lang.org/nightly/core/mem/index.html">mem</a>, <a href="https://doc.rust-lang.org/nightly/core/ptr/index.html">ptr</a>};
 <a href=#4 id=4 data-nosnippet>4</a>
-<a href=#5 id=5 data-nosnippet>5</a><span class="kw">use crate</span>::{ffi, <a href="../../../gobject_sys/index.html">gobject_ffi</a>, <a href="../lib.rs.html#159">prelude</a>::<span class="kw-2">*</span>, <a href="../lib.rs.html#164">translate</a>::<span class="kw-2">*</span>, <a href="../gstring.rs.html#24">GStr</a>, <a href="../gstring.rs.html#1073">GString</a>, <a href="../gstring.rs.html#749">GStringPtr</a>};
+<a href=#5 id=5 data-nosnippet>5</a><span class="kw">use crate</span>::{ffi, gobject_ffi, <a href="../lib.rs.html#159">prelude</a>::<span class="kw-2">*</span>, <a href="../lib.rs.html#164">translate</a>::<span class="kw-2">*</span>, <a href="../gstring.rs.html#24">GStr</a>, <a href="../gstring.rs.html#1073">GString</a>, <a href="../gstring.rs.html#749">GStringPtr</a>};
 <a href=#6 id=6 data-nosnippet>6</a>
 <a href=#7 id=7 data-nosnippet>7</a><span class="comment">// rustdoc-stripper-ignore-next
 <a href=#8 id=8 data-nosnippet>8</a></span><span class="doccomment">/// Minimum size of the `StrV` allocation.
@@ -981,8 +981,8 @@
 <a href=#908 id=908 data-nosnippet>908</a>    </span><span class="doccomment">/// Joins the strings into a longer string, with an optional separator
 <a href=#909 id=909 data-nosnippet>909</a>    </span><span class="attr">#[inline]
 <a href=#910 id=910 data-nosnippet>910</a>    #[doc(alias = <span class="string">"g_strjoinv"</span>)]
-<a href=#911 id=911 data-nosnippet>911</a>    </span><span class="kw">pub fn </span>join(<span class="kw-2">&amp;</span><span class="self">self</span>, separator: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw">impl </span><a href="../gstring.rs.html#2438-2440">IntoGStr</a>&gt;) -&gt; <a href="../gstring.rs.html#1073">GString</a> {
-<a href=#912 id=912 data-nosnippet>912</a>        <a href="#911">separator</a>.<a href="../gstring.rs.html#2515">run_with_gstr</a>(|separator| <span class="kw">unsafe </span>{
+<a href=#911 id=911 data-nosnippet>911</a>    </span><span class="kw">pub fn </span>join(<span class="kw-2">&amp;</span><span class="self">self</span>, separator: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw">impl </span><a href="../gstring.rs.html#2439-2441">IntoGStr</a>&gt;) -&gt; <a href="../gstring.rs.html#1073">GString</a> {
+<a href=#912 id=912 data-nosnippet>912</a>        <a href="#911">separator</a>.<a href="../gstring.rs.html#2516">run_with_gstr</a>(|separator| <span class="kw">unsafe </span>{
 <a href=#913 id=913 data-nosnippet>913</a>            <a href="../translate.rs.html#1638-1640">from_glib_full</a>(ffi::g_strjoinv(
 <a href=#914 id=914 data-nosnippet>914</a>                <a href="#912">separator</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
 <a href=#915 id=915 data-nosnippet>915</a>                <a class="self" href="#911">self</a>.<a href="#647-655">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
@@ -994,8 +994,8 @@
 <a href=#921 id=921 data-nosnippet>921</a>    </span><span class="doccomment">/// Checks whether the `StrV` contains the specified string
 <a href=#922 id=922 data-nosnippet>922</a>    </span><span class="attr">#[inline]
 <a href=#923 id=923 data-nosnippet>923</a>    #[doc(alias = <span class="string">"g_strv_contains"</span>)]
-<a href=#924 id=924 data-nosnippet>924</a>    </span><span class="kw">pub fn </span>contains(<span class="kw-2">&amp;</span><span class="self">self</span>, s: <span class="kw">impl </span><a href="../gstring.rs.html#2438-2440">IntoGStr</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
-<a href=#925 id=925 data-nosnippet>925</a>        <a href="#924">s</a>.<a href="../gstring.rs.html#2439">run_with_gstr</a>(|s| <span class="kw">unsafe </span>{
+<a href=#924 id=924 data-nosnippet>924</a>    </span><span class="kw">pub fn </span>contains(<span class="kw-2">&amp;</span><span class="self">self</span>, s: <span class="kw">impl </span><a href="../gstring.rs.html#2439-2441">IntoGStr</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
+<a href=#925 id=925 data-nosnippet>925</a>        <a href="#924">s</a>.<a href="../gstring.rs.html#2440">run_with_gstr</a>(|s| <span class="kw">unsafe </span>{
 <a href=#926 id=926 data-nosnippet>926</a>            <a href="../translate.rs.html#1421-1423">from_glib</a>(ffi::g_strv_contains(
 <a href=#927 id=927 data-nosnippet>927</a>                <a class="self" href="#924">self</a>.<a href="#647-655">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
 <a href=#928 id=928 data-nosnippet>928</a>                <a href="#925">s</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
@@ -1128,8 +1128,8 @@
 <a href=#1055 id=1055 data-nosnippet>1055</a><span class="kw">unsafe impl</span>&lt;<span class="lifetime">'a</span>&gt; <a href="../value.rs.html#272-283"><span class="kw">crate</span>::value::FromValue</a>&lt;<span class="lifetime">'a</span>&gt; <span class="kw">for </span><a href="#17-25">StrV</a> {
 <a href=#1056 id=1056 data-nosnippet>1056</a>    <span class="kw">type </span>Checker = <a href="../value.rs.html#149"><span class="kw">crate</span>::value::GenericValueTypeChecker</a>&lt;<span class="self">Self</span>&gt;;
 <a href=#1057 id=1057 data-nosnippet>1057</a>
-<a href=#1058 id=1058 data-nosnippet>1058</a>    <span class="kw">unsafe fn </span>from_value(value: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="../value.rs.html#478-512"><span class="kw">crate</span>::value::Value</a>) -&gt; <span class="self">Self </span>{
-<a href=#1059 id=1059 data-nosnippet>1059</a>        <span class="kw">let </span>ptr = <a href="../../../gobject_sys/fn.g_value_dup_boxed.html">gobject_ffi::g_value_dup_boxed</a>(<a href="#1058">value</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>) <span class="kw">as </span><span class="kw-2">*mut *mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/primitives/type.c_char.html">c_char</a>;
+<a href=#1058 id=1058 data-nosnippet>1058</a>    <span class="kw">unsafe fn </span>from_value(value: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="../value.rs.html#478-501"><span class="kw">crate</span>::value::Value</a>) -&gt; <span class="self">Self </span>{
+<a href=#1059 id=1059 data-nosnippet>1059</a>        <span class="kw">let </span>ptr = gobject_ffi::g_value_dup_boxed(<a href="#1058">value</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>) <span class="kw">as </span><span class="kw-2">*mut *mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/primitives/type.c_char.html">c_char</a>;
 <a href=#1060 id=1060 data-nosnippet>1060</a>        <a href="../translate.rs.html#1942">FromGlibPtrContainer::from_glib_full</a>(<a href="#1059">ptr</a>)
 <a href=#1061 id=1061 data-nosnippet>1061</a>    }
 <a href=#1062 id=1062 data-nosnippet>1062</a>}
@@ -1137,17 +1137,17 @@
 <a href=#1064 id=1064 data-nosnippet>1064</a><span class="kw">unsafe impl</span>&lt;<span class="lifetime">'a</span>&gt; <a href="../value.rs.html#272-283"><span class="kw">crate</span>::value::FromValue</a>&lt;<span class="lifetime">'a</span>&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span>[<a href="../gstring.rs.html#749">GStringPtr</a>] {
 <a href=#1065 id=1065 data-nosnippet>1065</a>    <span class="kw">type </span>Checker = <a href="../value.rs.html#149"><span class="kw">crate</span>::value::GenericValueTypeChecker</a>&lt;<span class="self">Self</span>&gt;;
 <a href=#1066 id=1066 data-nosnippet>1066</a>
-<a href=#1067 id=1067 data-nosnippet>1067</a>    <span class="kw">unsafe fn </span>from_value(value: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="../value.rs.html#478-512"><span class="kw">crate</span>::value::Value</a>) -&gt; <span class="self">Self </span>{
-<a href=#1068 id=1068 data-nosnippet>1068</a>        <span class="kw">let </span>ptr = <a href="../../../gobject_sys/fn.g_value_get_boxed.html">gobject_ffi::g_value_get_boxed</a>(<a href="#1067">value</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>) <span class="kw">as </span><span class="kw-2">*const *const </span><a href="https://doc.rust-lang.org/nightly/core/ffi/primitives/type.c_char.html">c_char</a>;
+<a href=#1067 id=1067 data-nosnippet>1067</a>    <span class="kw">unsafe fn </span>from_value(value: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="../value.rs.html#478-501"><span class="kw">crate</span>::value::Value</a>) -&gt; <span class="self">Self </span>{
+<a href=#1068 id=1068 data-nosnippet>1068</a>        <span class="kw">let </span>ptr = gobject_ffi::g_value_get_boxed(<a href="#1067">value</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>) <span class="kw">as </span><span class="kw-2">*const *const </span><a href="https://doc.rust-lang.org/nightly/core/ffi/primitives/type.c_char.html">c_char</a>;
 <a href=#1069 id=1069 data-nosnippet>1069</a>        <a href="#455-463">StrV::from_glib_borrow</a>(<a href="#1068">ptr</a>)
 <a href=#1070 id=1070 data-nosnippet>1070</a>    }
 <a href=#1071 id=1071 data-nosnippet>1071</a>}
 <a href=#1072 id=1072 data-nosnippet>1072</a>
 <a href=#1073 id=1073 data-nosnippet>1073</a><span class="kw">impl </span><a href="../value.rs.html#371-381"><span class="kw">crate</span>::value::ToValue</a> <span class="kw">for </span><a href="#17-25">StrV</a> {
-<a href=#1074 id=1074 data-nosnippet>1074</a>    <span class="kw">fn </span>to_value(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="../value.rs.html#478-512"><span class="kw">crate</span>::value::Value</a> {
+<a href=#1074 id=1074 data-nosnippet>1074</a>    <span class="kw">fn </span>to_value(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="../value.rs.html#478-501"><span class="kw">crate</span>::value::Value</a> {
 <a href=#1075 id=1075 data-nosnippet>1075</a>        <span class="kw">unsafe </span>{
 <a href=#1076 id=1076 data-nosnippet>1076</a>            <span class="kw">let </span><span class="kw-2">mut </span>value = <span class="kw">crate</span>::value::Value::for_value_type::&lt;<span class="self">Self</span>&gt;();
-<a href=#1077 id=1077 data-nosnippet>1077</a>            <a href="../../../gobject_sys/fn.g_value_set_boxed.html">gobject_ffi::g_value_set_boxed</a>(
+<a href=#1077 id=1077 data-nosnippet>1077</a>            gobject_ffi::g_value_set_boxed(
 <a href=#1078 id=1078 data-nosnippet>1078</a>                <a href="#1076">value</a>.<a href="../translate.rs.html#471">to_glib_none_mut</a>().<span class="number">0</span>,
 <a href=#1079 id=1079 data-nosnippet>1079</a>                <a class="self" href="#1074">self</a>.<a href="#647-655">as_ptr</a>() <span class="kw">as </span>ffi::gpointer,
 <a href=#1080 id=1080 data-nosnippet>1080</a>            );
@@ -1160,12 +1160,12 @@
 <a href=#1087 id=1087 data-nosnippet>1087</a>    }
 <a href=#1088 id=1088 data-nosnippet>1088</a>}
 <a href=#1089 id=1089 data-nosnippet>1089</a>
-<a href=#1090 id=1090 data-nosnippet>1090</a><span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html">From</a>&lt;<a href="#17-25">StrV</a>&gt; <span class="kw">for </span><a href="../value.rs.html#478-512"><span class="kw">crate</span>::Value</a> {
+<a href=#1090 id=1090 data-nosnippet>1090</a><span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html">From</a>&lt;<a href="#17-25">StrV</a>&gt; <span class="kw">for </span><a href="../value.rs.html#478-501"><span class="kw">crate</span>::Value</a> {
 <a href=#1091 id=1091 data-nosnippet>1091</a>    <span class="attr">#[inline]
 <a href=#1092 id=1092 data-nosnippet>1092</a>    </span><span class="kw">fn </span>from(s: <a href="#17-25">StrV</a>) -&gt; <span class="self">Self </span>{
 <a href=#1093 id=1093 data-nosnippet>1093</a>        <span class="kw">unsafe </span>{
 <a href=#1094 id=1094 data-nosnippet>1094</a>            <span class="kw">let </span><span class="kw-2">mut </span>value = <span class="kw">crate</span>::value::Value::for_value_type::&lt;<a href="#17-25">StrV</a>&gt;();
-<a href=#1095 id=1095 data-nosnippet>1095</a>            <a href="../../../gobject_sys/fn.g_value_take_boxed.html">gobject_ffi::g_value_take_boxed</a>(
+<a href=#1095 id=1095 data-nosnippet>1095</a>            gobject_ffi::g_value_take_boxed(
 <a href=#1096 id=1096 data-nosnippet>1096</a>                <a href="#1094">value</a>.<a href="../translate.rs.html#471">to_glib_none_mut</a>().<span class="number">0</span>,
 <a href=#1097 id=1097 data-nosnippet>1097</a>                <a href="#1092">s</a>.<a href="#662-675">into_raw</a>() <span class="kw">as </span>ffi::gpointer,
 <a href=#1098 id=1098 data-nosnippet>1098</a>            );
@@ -1647,8 +1647,8 @@
 <a href=#1574 id=1574 data-nosnippet>1574</a><span class="kw">unsafe impl</span>&lt;<span class="lifetime">'a</span>&gt; <a href="../value.rs.html#272-283"><span class="kw">crate</span>::value::FromValue</a>&lt;<span class="lifetime">'a</span>&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#1387-1389">StrVRef</a> {
 <a href=#1575 id=1575 data-nosnippet>1575</a>    <span class="kw">type </span>Checker = <a href="../value.rs.html#149"><span class="kw">crate</span>::value::GenericValueTypeChecker</a>&lt;<span class="self">Self</span>&gt;;
 <a href=#1576 id=1576 data-nosnippet>1576</a>
-<a href=#1577 id=1577 data-nosnippet>1577</a>    <span class="kw">unsafe fn </span>from_value(value: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="../value.rs.html#478-512"><span class="kw">crate</span>::value::Value</a>) -&gt; <span class="self">Self </span>{
-<a href=#1578 id=1578 data-nosnippet>1578</a>        <span class="kw">let </span>ptr = <a href="../../../gobject_sys/fn.g_value_get_boxed.html">gobject_ffi::g_value_get_boxed</a>(<a href="#1577">value</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>) <span class="kw">as </span><span class="kw-2">*const *const </span><a href="https://doc.rust-lang.org/nightly/core/ffi/primitives/type.c_char.html">c_char</a>;
+<a href=#1577 id=1577 data-nosnippet>1577</a>    <span class="kw">unsafe fn </span>from_value(value: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="../value.rs.html#478-501"><span class="kw">crate</span>::value::Value</a>) -&gt; <span class="self">Self </span>{
+<a href=#1578 id=1578 data-nosnippet>1578</a>        <span class="kw">let </span>ptr = gobject_ffi::g_value_get_boxed(<a href="#1577">value</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>) <span class="kw">as </span><span class="kw-2">*const *const </span><a href="https://doc.rust-lang.org/nightly/core/ffi/primitives/type.c_char.html">c_char</a>;
 <a href=#1579 id=1579 data-nosnippet>1579</a>        <a href="#1399-1402">StrVRef::from_glib_borrow</a>(<a href="#1578">ptr</a>)
 <a href=#1580 id=1580 data-nosnippet>1580</a>    }
 <a href=#1581 id=1581 data-nosnippet>1581</a>}
