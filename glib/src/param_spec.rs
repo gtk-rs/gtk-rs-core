@@ -2174,6 +2174,20 @@ pub trait HasParamSpec {
     fn param_spec_builder() -> Self::BuilderFn;
 }
 
+// unless a custom `default` attribute is specified, the macro will use this trait.
+pub trait HasParamSpecDefaulted: HasParamSpec + Default {
+    type BuilderFnDefaulted;
+    fn param_spec_builder_defaulted() -> Self::BuilderFnDefaulted;
+}
+
+// Manually implement the trait for every Enum
+impl<T: HasParamSpec<ParamSpec = ParamSpecEnum> + StaticType + FromGlib<i32> + IntoGlib<GlibType = i32> + Default> HasParamSpecDefaulted for T {
+    type BuilderFnDefaulted = fn(name: &str) -> ParamSpecEnumBuilder<T>;
+    fn param_spec_builder_defaulted() -> Self::BuilderFnDefaulted {
+        |name| Self::ParamSpec::builder(name)
+    }
+}
+
 impl<T: crate::value::ToValueOptional + HasParamSpec> HasParamSpec for Option<T> {
     type ParamSpec = T::ParamSpec;
     type SetValue = T::SetValue;
