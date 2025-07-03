@@ -2181,10 +2181,25 @@ pub trait HasParamSpecDefaulted: HasParamSpec + Default {
 }
 
 // Manually implement the trait for every Enum
-impl<T: HasParamSpec<ParamSpec = ParamSpecEnum> + StaticType + FromGlib<i32> + IntoGlib<GlibType = i32> + Default> HasParamSpecDefaulted for T {
+impl<
+        T: HasParamSpec<ParamSpec = ParamSpecEnum>
+            + StaticType
+            + FromGlib<i32>
+            + IntoGlib<GlibType = i32>
+            + Default,
+    > HasParamSpecDefaulted for T
+{
     type BuilderFnDefaulted = fn(name: &str) -> ParamSpecEnumBuilder<T>;
     fn param_spec_builder_defaulted() -> Self::BuilderFnDefaulted {
         |name| Self::ParamSpec::builder(name)
+    }
+}
+
+// Manually implement the trait for chars
+impl HasParamSpecDefaulted for char {
+    type BuilderFnDefaulted = fn(name: &str) -> ParamSpecUnicharBuilder;
+    fn param_spec_builder_defaulted() -> Self::BuilderFnDefaulted {
+        |name| Self::ParamSpec::builder(name, Default::default())
     }
 }
 
