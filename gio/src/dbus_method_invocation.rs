@@ -30,11 +30,11 @@ impl DBusMethodInvocation {
     // rustdoc-stripper-ignore-next
     /// Return a result for this invocation.
     ///
-    /// If `Ok` return the contained value with [`return_value`].  If the return
+    /// If `Ok` return the contained value with [`Self::return_value`].  If the return
     /// value is not a tuple, automatically convert it to a one-element tuple, as
     /// DBus return values must be tuples.
     ///
-    /// If `Err` return the contained error with [`return_gerror`].
+    /// If `Err` return the contained error with [`Self::return_gerror`].
     pub fn return_result(self, result: Result<Option<glib::Variant>, glib::Error>) {
         match result {
             Ok(Some(value)) if !value.is_type(VariantTy::TUPLE) => {
@@ -50,7 +50,7 @@ impl DBusMethodInvocation {
     /// Return an async result for this invocation.
     ///
     /// Spawn the given future on the thread-default main context, and return the
-    /// the result with [`return_result`].  Specifically, if a variant is returned
+    /// the result with [`Self::return_result`].  Specifically, if a variant is returned
     /// that is not a tuple it is automatically wrapped into a tuple.
     ///
     /// The given `Future` does not have to be `Send`.
