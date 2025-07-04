@@ -138,6 +138,9 @@ enum PropAttr {
 
     // ident = "literal"
     Name(syn::LitStr),
+
+    // ident
+    Default,
 }
 
 impl Parse for PropAttr {
@@ -194,6 +197,7 @@ impl Parse for PropAttr {
                         ),
                     ))
                 }
+                "default" => PropAttr::Default,
                 _ => PropAttr::BuilderField((name, None)),
             }
         };
@@ -213,6 +217,7 @@ struct ReceivedAttrs {
     name: Option<syn::LitStr>,
     builder: Option<(Punctuated<syn::Expr, Token![,]>, TokenStream2)>,
     builder_fields: HashMap<syn::Ident, Option<syn::Expr>>,
+    use_default: bool,
 }
 
 impl Parse for ReceivedAttrs {
@@ -244,6 +249,9 @@ impl ReceivedAttrs {
             PropAttr::BuilderField((ident, expr)) => {
                 self.builder_fields.insert(ident, expr);
             }
+            PropAttr::Default => {
+                self.use_default = true;
+            }
         }
     }
 }
@@ -265,6 +273,7 @@ struct PropDesc {
     builder: Option<(Punctuated<syn::Expr, Token![,]>, TokenStream2)>,
     builder_fields: HashMap<syn::Ident, Option<syn::Expr>>,
     is_construct_only: bool,
+    use_default: bool,
 }
 
 impl PropDesc {
@@ -286,6 +295,7 @@ impl PropDesc {
             name,
             builder,
             builder_fields,
+            use_default,
         } = attrs;
 
         let is_construct_only = builder_fields.iter().any(|(k, _)| *k == "construct_only");
@@ -333,6 +343,7 @@ impl PropDesc {
             builder,
             builder_fields,
             is_construct_only,
+            use_default,
         })
     }
     fn is_overriding(&self) -> bool {
@@ -343,7 +354,11 @@ impl PropDesc {
 fn expand_param_spec(prop: &PropDesc) -> TokenStream2 {
     let crate_ident = crate_ident_new();
     let PropDesc {
-        ty, name, builder, ..
+        ty,
+        name,
+        builder,
+        use_default,
+        ..
     } = prop;
     let stripped_name = strip_raw_prefix_from_name(name);
 
@@ -385,9 +400,20 @@ fn expand_param_spec(prop: &PropDesc) -> TokenStream2 {
     let builder_fields = prop.builder_fields.iter().map(|(k, v)| quote!(.#k(#v)));
 
     let span = prop.attrs_span;
+
+    // Figure out if we should use the default version or the one that explicitly sets the `Default` value.
+    let (trait_name, fn_name) = if *use_default {
+        (
+            quote!(HasParamSpecDefaulted),
+            quote!(param_spec_builder_defaulted),
+        )
+    } else {
+        (quote!(HasParamSpec), quote!(param_spec_builder))
+    };
+
     quote_spanned! {span=>
-        <<#ty as #crate_ident::property::Property>::Value as #crate_ident::prelude::HasParamSpec>
-            ::param_spec_builder() #builder_call
+        <<#ty as #crate_ident::property::Property>::Value as #crate_ident::#trait_name>
+            ::#fn_name() #builder_call
             #rw_flags
             #(#builder_fields)*
             .build()
