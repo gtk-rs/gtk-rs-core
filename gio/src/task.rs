@@ -237,6 +237,13 @@ macro_rules! task_impl {
                 unsafe { from_glib(ffi::g_task_return_error_if_cancelled(self.to_glib_none().0)) }
             }
 
+            // rustdoc-stripper-ignore-next
+            /// Set the result of the task
+            ///
+            /// # Safety
+            ///
+            /// The value must be read with [`Task::propagate`],
+            /// `g_task_propagate_value` or `g_task_propagate_pointer`.
             #[doc(alias = "g_task_return_value")]
             #[doc(alias = "g_task_return_pointer")]
             #[doc(alias = "g_task_return_error")]
@@ -270,6 +277,13 @@ macro_rules! task_impl {
                 }
             }
 
+            // rustdoc-stripper-ignore-next
+            /// Set the result of the task as a boolean
+            ///
+            /// # Safety
+            ///
+            /// The value must be read with [`Task::propagate_boolean`],
+            /// or `g_task_propagate_boolean`.
             #[doc(alias = "g_task_return_boolean")]
             #[allow(unused_unsafe)]
             pub $($safety)? fn return_boolean_result(self, result: Result<bool, glib::Error>) {
@@ -279,6 +293,13 @@ macro_rules! task_impl {
                 }
             }
 
+            // rustdoc-stripper-ignore-next
+            /// Set the result of the task as an int
+            ///
+            /// # Safety
+            ///
+            /// The value must be read with [`Task::propagate_int`],
+            /// or `g_task_propagate_int`.
             #[doc(alias = "g_task_return_int")]
             #[allow(unused_unsafe)]
             pub $($safety)? fn return_int_result(self, result: Result<isize, glib::Error>) {
@@ -289,10 +310,18 @@ macro_rules! task_impl {
             }
 
 
+            // rustdoc-stripper-ignore-next
+            /// Gets the result of the task and transfers ownership of it
+            ///
+            /// # Safety
+            ///
+            /// This must only be called once, and only if the result was set
+            /// via [`Task::return_result`], `g_task_return_value` or
+            /// `g_task_return_pointer`.
             #[doc(alias = "g_task_propagate_value")]
             #[doc(alias = "g_task_propagate_pointer")]
             #[allow(unused_unsafe)]
-            pub $($safety)? fn propagate(self) -> Result<V, glib::Error> {
+            pub unsafe fn propagate(self) -> Result<V, glib::Error> {
                 let mut error = ptr::null_mut();
 
                 unsafe {
@@ -329,9 +358,16 @@ macro_rules! task_impl {
                 }
             }
 
+            // rustdoc-stripper-ignore-next
+            /// Gets the result of the task as a boolean, or the error
+            ///
+            /// # Safety
+            ///
+            /// This must only be called once, and only if the result was set
+            /// via [`Task::return_boolean_result`], or `g_task_return_boolean`.
             #[doc(alias = "g_task_propagate_boolean")]
             #[allow(unused_unsafe)]
-            pub $($safety)? fn propagate_boolean(self) -> Result<bool, glib::Error> {
+            pub unsafe fn propagate_boolean(self) -> Result<bool, glib::Error> {
                 let mut error = ptr::null_mut();
 
                 unsafe {
@@ -345,9 +381,16 @@ macro_rules! task_impl {
                 }
             }
 
+            // rustdoc-stripper-ignore-next
+            /// Gets the result of the task as an int, or the error
+            ///
+            /// # Safety
+            ///
+            /// This must only be called once, and only if the result was set
+            /// via [`Task::return_int_result`], or `g_task_return_int`.
             #[doc(alias = "g_task_propagate_int")]
             #[allow(unused_unsafe)]
-            pub $($safety)? fn propagate_int(self) -> Result<isize, glib::Error> {
+            pub unsafe fn propagate_int(self) -> Result<isize, glib::Error> {
                 let mut error = ptr::null_mut();
 
                 unsafe {
