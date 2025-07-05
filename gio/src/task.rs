@@ -238,8 +238,6 @@ macro_rules! task_impl {
             }
 
             #[doc(alias = "g_task_return_value")]
-            #[doc(alias = "g_task_return_boolean")]
-            #[doc(alias = "g_task_return_int")]
             #[doc(alias = "g_task_return_pointer")]
             #[doc(alias = "g_task_return_error")]
             #[allow(unused_unsafe)]
@@ -272,9 +270,26 @@ macro_rules! task_impl {
                 }
             }
 
+            #[doc(alias = "g_task_return_boolean")]
+            #[allow(unused_unsafe)]
+            pub $($safety)? fn return_boolean_result(self, result: Result<bool, glib::Error>) {
+                match result {
+                    Ok(v) =>  unsafe { ffi::g_task_return_boolean(self.to_glib_none().0, v as i32) },
+                    Err(e) => unsafe { ffi::g_task_return_error(self.to_glib_none().0, e.into_glib_ptr()) },
+                }
+            }
+
+            #[doc(alias = "g_task_return_int")]
+            #[allow(unused_unsafe)]
+            pub $($safety)? fn return_int_result(self, result: Result<isize, glib::Error>) {
+                match result {
+                    Ok(v) =>  unsafe { ffi::g_task_return_int(self.to_glib_none().0, v) },
+                    Err(e) => unsafe { ffi::g_task_return_error(self.to_glib_none().0, e.into_glib_ptr()) },
+                }
+            }
+
+
             #[doc(alias = "g_task_propagate_value")]
-            #[doc(alias = "g_task_propagate_boolean")]
-            #[doc(alias = "g_task_propagate_int")]
             #[doc(alias = "g_task_propagate_pointer")]
             #[allow(unused_unsafe)]
             pub $($safety)? fn propagate(self) -> Result<V, glib::Error> {
@@ -310,6 +325,38 @@ macro_rules! task_impl {
                         } else {
                             Err(from_glib_full(error))
                         }
+                    }
+                }
+            }
+
+            #[doc(alias = "g_task_propagate_boolean")]
+            #[allow(unused_unsafe)]
+            pub $($safety)? fn propagate_boolean(self) -> Result<bool, glib::Error> {
+                let mut error = ptr::null_mut();
+
+                unsafe {
+                    let res = ffi::g_task_propagate_boolean(self.to_glib_none().0, &mut error);
+
+                    if error.is_null() {
+                        Ok(res != 0)
+                    } else {
+                        Err(from_glib_full(error))
+                    }
+                }
+            }
+
+            #[doc(alias = "g_task_propagate_int")]
+            #[allow(unused_unsafe)]
+            pub $($safety)? fn propagate_int(self) -> Result<isize, glib::Error> {
+                let mut error = ptr::null_mut();
+
+                unsafe {
+                    let res = ffi::g_task_propagate_int(self.to_glib_none().0, &mut error);
+
+                    if error.is_null() {
+                        Ok(res)
+                    } else {
+                        Err(from_glib_full(error))
                     }
                 }
             }
@@ -447,7 +494,7 @@ mod test {
     use crate::{prelude::*, test_util::run_async_local};
 
     #[test]
-    fn test_int_async_result() {
+    fn test_int_value_async_result() {
         let fut = run_async_local(|tx, l| {
             let cancellable = crate::Cancellable::new();
             let task = unsafe {
@@ -461,6 +508,52 @@ mod test {
                 )
             };
             task.return_result(Ok(100_i32));
+        });
+
+        match fut {
+            Err(_) => panic!(),
+            Ok(i) => assert_eq!(i, 100),
+        }
+    }
+
+    #[test]
+    fn test_boolean_async_result() {
+        let fut = run_async_local(|tx, l| {
+            let cancellable = crate::Cancellable::new();
+            let task = unsafe {
+                crate::LocalTask::new(
+                    None,
+                    Some(&cancellable),
+                    move |t: LocalTask<bool>, _b: Option<&glib::Object>| {
+                        tx.send(t.propagate_boolean()).unwrap();
+                        l.quit();
+                    },
+                )
+            };
+            task.return_boolean_result(Ok(true));
+        });
+
+        match fut {
+            Err(_) => panic!(),
+            Ok(i) => assert!(i),
+        }
+    }
+
+    #[test]
+    fn test_int_async_result() {
+        let fut = run_async_local(|tx, l| {
+            let cancellable = crate::Cancellable::new();
+            let task = unsafe {
+                crate::LocalTask::new(
+                    None,
+                    Some(&cancellable),
+                    move |t: LocalTask<i32>, _b: Option<&glib::Object>| {
+                        tx.send(t.propagate_int()).unwrap();
+                        l.quit();
+                    },
+                )
+            };
+            task.return_int_result(Ok(100_isize));
         });
 
         match fut {
