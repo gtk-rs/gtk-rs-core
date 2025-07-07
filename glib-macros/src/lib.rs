@@ -525,9 +525,12 @@ pub fn closure_local(item: TokenStream) -> TokenStream {
 /// }
 /// ```
 ///
-/// When using the [`Properties`] macro with enums that derive [`Enum`], the default value must be
-/// explicitly set via the `builder` parameter of the `#[property]` attribute. See
-/// [here](Properties#supported-types) for details.
+/// When using the [`Properties`] macro with enums that derive [`Enum`], the
+/// default value can be explicitly set via the `builder` parameter of the
+/// `#[property]` attribute. If the enum implements or derives
+/// `Default`, you can specify that should be the default value
+/// via the `default` parameter. See [here](Properties#supported-types) for
+/// details.
 ///
 /// An enum can be registered as a dynamic type by setting the derive macro
 /// helper attribute `enum_dynamic`:
@@ -1333,7 +1336,8 @@ pub fn cstr_bytes(item: TokenStream) -> TokenStream {
 /// | `construct` | Specify that the property is construct property. Ensures that the property is always set during construction (if not explicitly then the default value is used). The use of a custom internal setter is supported. | | `#[property(get, construct)]` or `#[property(get, set = set_prop, construct)]` |
 /// | `construct_only` | Specify that the property is construct only. This will not generate a public setter and only allow the property to be set during object construction. The use of a custom internal setter is supported. | | `#[property(get, construct_only)]` or `#[property(get, set = set_prop, construct_only)]` |
 /// | `builder(<required-params>)[.ident]*` | Used to input required params or add optional Param Spec builder fields | | `#[property(builder(SomeEnum::default()))]`, `#[builder().default_value(1).minimum(0).maximum(5)]`, etc.  |
-/// | `default` | Sets the `default_value` field of the Param Spec builder | | `#[property(default = 1)]` |
+/// | `default` | Sets the param spec builder field to the default value | | `#[property(default)]` |
+/// | `default = expr` | Sets the `default_value` field of the Param Spec builder | | `#[property(default = 1)]` |
 /// | `<optional-pspec-builder-fields> = expr` | Used to add optional Param Spec builder fields | | `#[property(minimum = 0)` , `#[property(minimum = 0, maximum = 1)]`, etc. |
 /// | `<optional-pspec-builder-fields>` | Used to add optional Param Spec builder fields | | `#[property(explicit_notify)]` , `#[property(construct_only)]`, etc. |
 ///
@@ -1443,6 +1447,8 @@ pub fn cstr_bytes(item: TokenStream) -> TokenStream {
 ///         smart_pointer: Rc<RefCell<String>>,
 ///         #[property(get, set, builder(MyEnum::Val))]
 ///         my_enum: Cell<MyEnum>,
+///         #[property(get, set, default)]
+///         my_enum_with_default: Cell<MyEnum>,
 ///         /// # Getter
 ///         ///
 ///         /// Get the value of the property `extra_comments`
