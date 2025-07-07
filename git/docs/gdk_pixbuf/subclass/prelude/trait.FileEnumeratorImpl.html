@@ -1,0 +1,122 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="API documentation for the Rust `FileEnumeratorImpl` trait in crate `gdk_pixbuf`."><title>FileEnumeratorImpl in gdk_pixbuf::subclass::prelude - Rust</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-aa0817cf.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gdk_pixbuf" data-themes="" data-resource-suffix="" data-rustdoc-version="1.90.0-nightly (a84ab0ce6 2025-07-06)" data-channel="nightly" data-search-js="search-179e01a3.js" data-settings-js="settings-5514c975.js" ><script src="../../../static.files/storage-4e99c027.js"></script><script defer src="sidebar-items.js"></script><script defer src="../../../static.files/main-673ee1e0.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-32bb7600.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc trait"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
+
+    function checkDocsLatestStable() {
+        function popup(msg, url) { return `
+            <style scoped="scoped">
+                .popup {
+                    max-width: 16em;
+                    background-color: #fff;
+                    position: fixed;
+                    z-index: 1;
+                    margin-left: auto;
+                    bottom: 1em;
+                    right: 1em;
+                    border-radius: 5px;
+                    box-shadow: 1px 1px 4px #777;
+                }
+
+                .popup a.version {
+                    color: #e57300;
+                    padding: 0.6em 1em;
+                    display: block;
+                }
+                .popup a.version:hover {
+                    color: #b25900;
+                }
+
+                .popup a.close {
+                    color: white;
+                    background: grey;
+                    border-radius: 99px;
+                    display: inline-block;
+                    width: 19px;
+                    line-height: 19px;
+                    font-weight: bold;
+                    text-align: center;
+                    margin: 0.6em;
+                    float: right;
+                }
+                .popup a.close:hover {
+                    background: black;
+                }
+            </style>
+            <section class="popup" id="gir_docs_popup">
+                <a class="close" href="#" onclick="document.getElementById('gir_docs_popup').remove(); return false">×</a>
+                <a class="version" href="https://gtk-rs.org/gtk-rs-core/stable/latest/docs">
+                    ⚠ ${msg}
+                </a>
+            </section>
+        ` };
+
+        if ("main" == "main") {
+            document.body.insertAdjacentHTML(
+                'beforeend',
+                popup("This is the development version. Go to latest stable version.", "stable/latest")
+            );
+        } else {
+            fetch('https://gtk-rs.org/gtk-rs-core/LATEST_RELEASE_BRANCH')
+                .then(response => response.text())
+                .then(latest_branch => {
+                    if (latest_branch.trim() != "main") {
+                        document.body.insertAdjacentHTML(
+                            'beforeend',
+                            popup("This version is outdated. Go to latest version.", "stable/latest")
+                        );
+                    }
+                });
+        }
+    }
+</script>
+
+
+<nav class="mobile-topbar"><button class="sidebar-menu-toggle" title="show sidebar"></button></nav><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../../../gdk_pixbuf/index.html">gdk_<wbr>pixbuf</a><span class="version">0.21.0</span></h2></div><div class="sidebar-elems"><section id="rustdoc-toc"><h2 class="location"><a href="#">File<wbr>Enumerator<wbr>Impl</a></h2><h3><a href="#provided-methods">Provided Methods</a></h3><ul class="block"><li><a href="#method.close" title="close">close</a></li><li><a href="#method.next_file" title="next_file">next_file</a></li></ul><h3><a href="#dyn-compatibility">Dyn Compatibility</a></h3><h3><a href="#implementors">Implementors</a></h3></section><div id="rustdoc-modnav"><h2><a href="index.html">In gdk_<wbr>pixbuf::<wbr>subclass::<wbr>prelude</a></h2></div></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><div class="width-limiter"><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><div class="rustdoc-breadcrumbs"><a href="../../index.html">gdk_pixbuf</a>::<wbr><a href="../index.html">subclass</a>::<wbr><a href="index.html">prelude</a></div><h1>Trait <span class="trait">FileEnumeratorImpl</span><button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><rustdoc-toolbar></rustdoc-toolbar><span class="sub-heading"><a class="src" href="../../../src/gio/subclass/file_enumerator.rs.html#9">Source</a> </span></div><pre class="rust item-decl"><code>pub trait FileEnumeratorImpl: <a class="trait" href="trait.ObjectImpl.html" title="trait gdk_pixbuf::subclass::prelude::ObjectImpl">ObjectImpl</a> + <a class="trait" href="trait.ObjectSubclass.html" title="trait gdk_pixbuf::subclass::prelude::ObjectSubclass">ObjectSubclass</a><div class="where">where
+    Self::<a class="associatedtype" href="trait.ObjectSubclass.html#associatedtype.Type" title="type gdk_pixbuf::subclass::prelude::ObjectSubclass::Type">Type</a>: <a class="trait" href="../../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../../../gio/auto/file_enumerator/struct.FileEnumerator.html" title="struct gio::auto::file_enumerator::FileEnumerator">FileEnumerator</a>&gt;,</div>{
+    // Provided methods
+    fn <a href="#method.next_file" class="fn">next_file</a>(
+        &amp;self,
+        cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="struct" href="../../../gio/auto/cancellable/struct.Cancellable.html" title="struct gio::auto::cancellable::Cancellable">Cancellable</a>&gt;,
+    ) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../../gio/auto/file_info/struct.FileInfo.html" title="struct gio::auto::file_info::FileInfo">FileInfo</a>&gt;, <a class="struct" href="../../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.close" class="fn">close</a>(&amp;self, cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="struct" href="../../../gio/auto/cancellable/struct.Cancellable.html" title="struct gio::auto::cancellable::Cancellable">Cancellable</a>&gt;) -&gt; (<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>, <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;) { ... }
+}</code></pre><h2 id="provided-methods" class="section-header">Provided Methods<a href="#provided-methods" class="anchor">§</a></h2><div class="methods"><details class="toggle method-toggle" open><summary><section id="method.next_file" class="method"><a class="src rightside" href="../../../src/gio/subclass/file_enumerator.rs.html#29-32">Source</a><h4 class="code-header">fn <a href="#method.next_file" class="fn">next_file</a>(
+    &amp;self,
+    cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="struct" href="../../../gio/auto/cancellable/struct.Cancellable.html" title="struct gio::auto::cancellable::Cancellable">Cancellable</a>&gt;,
+) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../../gio/auto/file_info/struct.FileInfo.html" title="struct gio::auto::file_info::FileInfo">FileInfo</a>&gt;, <a class="struct" href="../../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;</h4></section></summary><div class="docblock"><p>Returns information for the next file in the enumerated object.
+Will block until the information is available. The #GFileInfo
+returned from this function will contain attributes that match the
+attribute string that was passed when the #GFileEnumerator was created.</p>
+<p>See the documentation of #GFileEnumerator for information about the
+order of returned files.</p>
+<p>On error, returns <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a> and sets @error to the error. If the
+enumerator is at the end, <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a> will be returned and @error will
+be unset.</p>
+<h6 id="cancellable"><a class="doc-anchor" href="#cancellable">§</a><code>cancellable</code></h6>
+<p>optional #GCancellable object, <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a> to ignore.</p>
+<h5 id="returns"><a class="doc-anchor" href="#returns">§</a>Returns</h5>
+<p>A #GFileInfo or <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a> on error
+or end of enumerator.  Free the returned object with
+g_object_unref() when no longer needed.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.close" class="method"><a class="src rightside" href="../../../src/gio/subclass/file_enumerator.rs.html#66">Source</a><h4 class="code-header">fn <a href="#method.close" class="fn">close</a>(&amp;self, cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="struct" href="../../../gio/auto/cancellable/struct.Cancellable.html" title="struct gio::auto::cancellable::Cancellable">Cancellable</a>&gt;) -&gt; (<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>, <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;)</h4></section></summary><div class="docblock"><p>Closes the enumerator (see <a href="../auto/file_enumerator/trait.FileEnumeratorExt.html#method.close"><code>FileEnumeratorExt::close</code></a>).</p>
+<p>NOTE: If the enumerator has not been explicitly closed, GIO closes it when the object is dropped.
+But GIO does it by calling <code>close</code> vfunc in <code>finalize</code>, which is not safe and could lead to undefined behavior,
+such as accessing freed memory or resources, which can cause crashes or other unexpected behavior.</p>
+<p>An issue has been opened in GLib to address this: <a href="https://gitlab.gnome.org/GNOME/glib/-/issues/3713">https://gitlab.gnome.org/GNOME/glib/-/issues/3713</a> and a MR has been opened to fix it: <a href="https://gitlab.gnome.org/GNOME/glib/-/merge_requests/4672">https://gitlab.gnome.org/GNOME/glib/-/merge_requests/4672</a>.</p>
+<p>Until this is fixed, it is unsafe to rely on the enumerator being closed when the object is dropped.
+It is recommended to close the enumerator explicitly before dropping it, by calling <a href="../auto/file_enumerator/trait.FileEnumeratorExt.html#method.close"><code>FileEnumeratorExt::close</code></a>,
+or to implement the <a href="../../glib/subclass/object/trait.ObjectImpl.html#method.dispose"><code>ObjectImpl::dispose</code></a> method and call <a href="../auto/file_enumerator/trait.FileEnumeratorExt.html#method.close"><code>FileEnumeratorExt::close</code></a> there (it is safe to access the object there):</p>
+
+<div class="example-wrap ignore"><a href="#" class="tooltip" title="This example is not tested">ⓘ</a><pre class="rust rust-example-rendered"><code><span class="kw">pub struct </span>MyFileEnumerator();
+
+<span class="attr">#[glib::object_subclass]
+</span><span class="kw">impl </span>ObjectSubclass <span class="kw">for </span>MyFileEnumerator { ... }
+
+<span class="kw">impl </span>ObjectImpl <span class="kw">for </span>MyFileEnumerator {
+    <span class="kw">fn </span>dispose(<span class="kw-2">&amp;</span><span class="self">self</span>) {
+        <span class="comment">// close the enumerator here is safe and avoids `finalize` to call close.
+        </span><span class="kw">let _ </span>= <span class="self">self</span>.obj().close(Cancellable::NONE);
+    }
+}
+
+<span class="kw">impl </span>FileEnumeratorImpl <span class="kw">for </span>MyFileEnumerator { ... }</code></pre></div>
+</div></details></div><h2 id="dyn-compatibility" class="section-header">Dyn Compatibility<a href="#dyn-compatibility" class="anchor">§</a></h2><div class="dyn-compatibility-info"><p>This trait is <b>not</b> <a href="https://doc.rust-lang.org/nightly/reference/items/traits.html#dyn-compatibility">dyn compatible</a>.</p><p><i>In older versions of Rust, dyn compatibility was called "object safety", so this trait is not object safe.</i></p></div><h2 id="implementors" class="section-header">Implementors<a href="#implementors" class="anchor">§</a></h2><div id="implementors-list"></div><script src="../../../trait.impl/gio/subclass/file_enumerator/trait.FileEnumeratorImpl.js" async></script></section></div></main></body></html>
