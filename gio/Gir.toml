@@ -891,6 +891,11 @@ manual_traits = ["FileEnumeratorExtManual"]
     name = "iterate"
     # better with rust iterators
     ignore = true
+    [[object.function]]
+    name = "close"
+    # Return value does not indicate success or error: despite the documentation, this function could return TRUE and an error in same time.
+    # see https://gitlab.gnome.org/GNOME/glib/-/blob/dc6f9447cd2a01012731422afed6facff1eea81a/gio/gfileenumerator.c#L290-297
+    manual = true
 
 [[object]]
 name = "Gio.FileInfo"
