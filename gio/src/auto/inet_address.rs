@@ -27,6 +27,14 @@ impl InetAddress {
         unsafe { from_glib_full(ffi::g_inet_address_new_any(family.into_glib())) }
     }
 
+    //#[cfg(feature = "v2_86")]
+    //#[cfg_attr(docsrs, doc(cfg(feature = "v2_86")))]
+    //#[doc(alias = "g_inet_address_new_from_bytes_with_ipv6_info")]
+    //#[doc(alias = "new_from_bytes_with_ipv6_info")]
+    //pub fn from_bytes_with_ipv6_info(bytes: &[u8], family: SocketFamily, flowinfo: u32, scope_id: u32) -> InetAddress {
+    //    unsafe { TODO: call ffi:g_inet_address_new_from_bytes_with_ipv6_info() }
+    //}
+
     #[doc(alias = "g_inet_address_new_from_string")]
     #[doc(alias = "new_from_string")]
     pub fn from_string(string: &str) -> Option<InetAddress> {
@@ -68,6 +76,14 @@ pub trait InetAddressExt: IsA<InetAddress> + 'static {
                 self.as_ref().to_glib_none().0,
             ))
         }
+    }
+
+    #[cfg(feature = "v2_86")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_86")))]
+    #[doc(alias = "g_inet_address_get_flowinfo")]
+    #[doc(alias = "get_flowinfo")]
+    fn flowinfo(&self) -> u32 {
+        unsafe { ffi::g_inet_address_get_flowinfo(self.as_ref().to_glib_none().0) }
     }
 
     #[doc(alias = "g_inet_address_get_is_any")]
@@ -184,6 +200,15 @@ pub trait InetAddressExt: IsA<InetAddress> + 'static {
     #[doc(alias = "get_native_size")]
     fn native_size(&self) -> usize {
         unsafe { ffi::g_inet_address_get_native_size(self.as_ref().to_glib_none().0) }
+    }
+
+    #[cfg(feature = "v2_86")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_86")))]
+    #[doc(alias = "g_inet_address_get_scope_id")]
+    #[doc(alias = "get_scope_id")]
+    #[doc(alias = "scope-id")]
+    fn scope_id(&self) -> u32 {
+        unsafe { ffi::g_inet_address_get_scope_id(self.as_ref().to_glib_none().0) }
     }
 
     #[doc(alias = "g_inet_address_to_string")]
