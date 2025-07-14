@@ -69,6 +69,7 @@ mod foo {
     pub enum SimpleEnum {
         #[default]
         One,
+        Two,
     }
 
     #[derive(Default, Clone)]
@@ -129,10 +130,14 @@ mod foo {
             builder_fields_without_builder: RefCell<u32>,
             #[property(get, set, builder('c'))]
             builder_with_required_param: RefCell<char>,
+            #[property(get, set, default)]
+            char_default: RefCell<char>,
             #[property(get, set)]
             boxed: RefCell<SimpleBoxedString>,
-            #[property(get, set, builder(SimpleEnum::One))]
+            #[property(get, set, builder(SimpleEnum::Two))]
             fenum: RefCell<SimpleEnum>,
+            #[property(get, set, default)]
+            fenum_default: RefCell<SimpleEnum>,
             #[property(get, set, nullable)]
             object: RefCell<Option<glib::Object>>,
             #[property(get, set, nullable)]
@@ -206,6 +211,8 @@ mod foo {
 
 #[test]
 fn props() {
+    use crate::foo::SimpleEnum;
+
     let myfoo: foo::Foo = glib::object::Object::new();
 
     // Read values
@@ -272,6 +279,25 @@ fn props() {
             .get::<String>()
             .unwrap(),
         "hello".to_string()
+    );
+
+    assert_eq!(
+        myfoo
+            .find_property("fenum")
+            .unwrap()
+            .default_value()
+            .get::<SimpleEnum>()
+            .unwrap(),
+        SimpleEnum::Two
+    );
+    assert_eq!(
+        myfoo
+            .find_property("fenum_default")
+            .unwrap()
+            .default_value()
+            .get::<SimpleEnum>()
+            .unwrap(),
+        SimpleEnum::One
     );
 
     // numeric builder
