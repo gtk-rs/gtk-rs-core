@@ -26,7 +26,9 @@ impl FileSize {
         callback: Q,
     ) {
         let closure = move |task: gio::LocalTask<i64>, source_object: Option<&glib::Object>| {
-            let value = task.propagate().unwrap();
+            // SAFETY: this is safe because we call propagate just once and the
+            // task sets the result as a value
+            let value = unsafe { task.propagate() }.unwrap();
             let source_object = source_object.unwrap().downcast_ref::<FileSize>().unwrap();
             callback(value, source_object);
         };
@@ -68,7 +70,8 @@ impl FileSize {
         callback: Q,
     ) {
         let closure = move |task: gio::Task<i64>, source_object: Option<&FileSize>| {
-            // SAFETY: this is safe because we call propagate just once
+            // SAFETY: this is safe because we call propagate just once and the
+            // task sets the result as a value
             let value = unsafe { task.propagate().unwrap() };
             let source_object = source_object.unwrap().downcast_ref::<FileSize>().unwrap();
             callback(value, source_object);
