@@ -12236,6 +12236,14 @@ extern "C" {
         bytes: *const u8,
         family: GSocketFamily,
     ) -> *mut GInetAddress;
+    #[cfg(feature = "v2_86")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_86")))]
+    pub fn g_inet_address_new_from_bytes_with_ipv6_info(
+        bytes: *const u8,
+        family: GSocketFamily,
+        flowinfo: u32,
+        scope_id: u32,
+    ) -> *mut GInetAddress;
     pub fn g_inet_address_new_from_string(string: *const c_char) -> *mut GInetAddress;
     pub fn g_inet_address_new_loopback(family: GSocketFamily) -> *mut GInetAddress;
     pub fn g_inet_address_equal(
@@ -12243,6 +12251,9 @@ extern "C" {
         other_address: *mut GInetAddress,
     ) -> gboolean;
     pub fn g_inet_address_get_family(address: *mut GInetAddress) -> GSocketFamily;
+    #[cfg(feature = "v2_86")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_86")))]
+    pub fn g_inet_address_get_flowinfo(address: *mut GInetAddress) -> u32;
     pub fn g_inet_address_get_is_any(address: *mut GInetAddress) -> gboolean;
     pub fn g_inet_address_get_is_link_local(address: *mut GInetAddress) -> gboolean;
     pub fn g_inet_address_get_is_loopback(address: *mut GInetAddress) -> gboolean;
@@ -12254,6 +12265,9 @@ extern "C" {
     pub fn g_inet_address_get_is_multicast(address: *mut GInetAddress) -> gboolean;
     pub fn g_inet_address_get_is_site_local(address: *mut GInetAddress) -> gboolean;
     pub fn g_inet_address_get_native_size(address: *mut GInetAddress) -> size_t;
+    #[cfg(feature = "v2_86")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_86")))]
+    pub fn g_inet_address_get_scope_id(address: *mut GInetAddress) -> u32;
     pub fn g_inet_address_to_bytes(address: *mut GInetAddress) -> *const u8;
     pub fn g_inet_address_to_string(address: *mut GInetAddress) -> *mut c_char;
 

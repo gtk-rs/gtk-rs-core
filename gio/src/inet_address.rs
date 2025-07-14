@@ -40,6 +40,31 @@ impl InetAddress {
             ))
         }
     }
+
+    #[cfg(feature = "v2_86")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_86")))]
+    #[doc(alias = "g_inet_address_new_from_bytes_with_ipv6_info")]
+    #[doc(alias = "new_from_bytes_with_ipv6_info")]
+    pub fn from_bytes_with_ipv6_info(
+        inet_address_bytes: InetAddressBytes,
+        flowinfo: u32,
+        scope_id: u32,
+    ) -> InetAddress {
+        let bytes = inet_address_bytes.deref();
+
+        let family = match inet_address_bytes {
+            InetAddressBytes::V4(_) => SocketFamily::Ipv4,
+            InetAddressBytes::V6(_) => SocketFamily::Ipv6,
+        };
+        unsafe {
+            from_glib_full(ffi::g_inet_address_new_from_bytes_with_ipv6_info(
+                bytes.to_glib_none().0,
+                family.into_glib(),
+                flowinfo,
+                scope_id,
+            ))
+        }
+    }
 }
 
 pub trait InetAddressExtManual: IsA<InetAddress> + 'static {
