@@ -173,7 +173,7 @@
 <a href=#100 id=100 data-nosnippet>100</a>    <span class="kw">let </span>cancellable = <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>::&lt;<a href="../auto/cancellable.rs.html#8-86">Cancellable</a>&gt;::from_glib_none(<a href="#94">cancellable</a>);
 <a href=#101 id=101 data-nosnippet>101</a>
 <a href=#102 id=102 data-nosnippet>102</a>    <span class="kw">let </span>task = <a href="#95">callback</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|callback| {
-<a href=#103 id=103 data-nosnippet>103</a>        <span class="kw">let </span>task = <a href="../task.rs.html#880">LocalTask::new</a>(
+<a href=#103 id=103 data-nosnippet>103</a>        <span class="kw">let </span>task = <a href="../task.rs.html#970">LocalTask::new</a>(
 <a href=#104 id=104 data-nosnippet>104</a>            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#99">imp</a>.<a href="../../../glib/subclass/types/trait.ObjectSubclassExt.html#tymethod.obj">obj</a>().<a href="../../../glib/object/trait.Cast.html#tymethod.unsafe_cast_ref">unsafe_cast_ref</a>::&lt;<a href="../../../glib/object/struct.Object.html">glib::Object</a>&gt;()),
 <a href=#105 id=105 data-nosnippet>105</a>            <a href="#100">cancellable</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_ref">as_ref</a>(),
 <a href=#106 id=106 data-nosnippet>106</a>            <span class="kw">move </span>|task, obj| {
@@ -183,8 +183,8 @@
 <a href=#110 id=110 data-nosnippet>110</a>                <a href="#102">callback</a>(<a href="#109">obj</a>, <a href="#107">result</a>, <a href="#96">user_data</a>);
 <a href=#111 id=111 data-nosnippet>111</a>            },
 <a href=#112 id=112 data-nosnippet>112</a>        );
-<a href=#113 id=113 data-nosnippet>113</a>        <a href="#103">task</a>.<a href="../task.rs.html#880">set_check_cancellable</a>(<span class="bool-val">true</span>);
-<a href=#114 id=114 data-nosnippet>114</a>        <a href="#103">task</a>.<a href="../task.rs.html#880">set_return_on_cancel</a>(<span class="bool-val">true</span>);
+<a href=#113 id=113 data-nosnippet>113</a>        <a href="#103">task</a>.<a href="../task.rs.html#970">set_check_cancellable</a>(<span class="bool-val">true</span>);
+<a href=#114 id=114 data-nosnippet>114</a>        <a href="#103">task</a>.<a href="../task.rs.html#970">set_return_on_cancel</a>(<span class="bool-val">true</span>);
 <a href=#115 id=115 data-nosnippet>115</a>        <a href="#103">task</a>
 <a href=#116 id=116 data-nosnippet>116</a>    });
 <a href=#117 id=117 data-nosnippet>117</a>
@@ -199,7 +199,7 @@
 <a href=#126 id=126 data-nosnippet>126</a>            <a href="#99">imp</a>.<a href="#12-17">init_future</a>(<a href="#119">io_priority</a>).<span class="kw">await
 <a href=#127 id=127 data-nosnippet>127</a>        </span>};
 <a href=#128 id=128 data-nosnippet>128</a>        <span class="kw">if let </span><a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(task) = <a href="#102">task</a> {
-<a href=#129 id=129 data-nosnippet>129</a>            <a href="#128">task</a>.<a href="../task.rs.html#880">return_result</a>(<a href="#120">res</a>.<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.map">map</a>(|_t| <span class="bool-val">true</span>));
+<a href=#129 id=129 data-nosnippet>129</a>            <a href="#128">task</a>.<a href="../task.rs.html#970">return_result</a>(<a href="#120">res</a>.<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.map">map</a>(|_t| <span class="bool-val">true</span>));
 <a href=#130 id=130 data-nosnippet>130</a>        }
 <a href=#131 id=131 data-nosnippet>131</a>    });
 <a href=#132 id=132 data-nosnippet>132</a>}
@@ -221,7 +221,7 @@
 <a href=#148 id=148 data-nosnippet>148</a>        <a class="macro" href="https://doc.rust-lang.org/nightly/std/macro.panic.html">panic!</a>(<span class="string">"Task is not valid for source object"</span>);
 <a href=#149 id=149 data-nosnippet>149</a>    }
 <a href=#150 id=150 data-nosnippet>150</a>
-<a href=#151 id=151 data-nosnippet>151</a>    <span class="kw">match </span><a href="#141">task</a>.<a href="../task.rs.html#880">propagate</a>() {
+<a href=#151 id=151 data-nosnippet>151</a>    <span class="kw">match </span><a href="#141">task</a>.<a href="../task.rs.html#970">propagate</a>() {
 <a href=#152 id=152 data-nosnippet>152</a>        <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(v) =&gt; {
 <a href=#153 id=153 data-nosnippet>153</a>            <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert.html">debug_assert!</a>(v);
 <a href=#154 id=154 data-nosnippet>154</a>            <span class="bool-val">true</span>.<a href="../../../glib/translate/trait.IntoGlib.html#tymethod.into_glib">into_glib</a>()
