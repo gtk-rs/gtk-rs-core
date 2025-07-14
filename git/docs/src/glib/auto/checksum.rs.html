@@ -75,7 +75,7 @@
 <a href=#2 id=2 data-nosnippet>2</a>// from gir-files (https://github.com/gtk-rs/gir-files)
 <a href=#3 id=3 data-nosnippet>3</a>// DO NOT EDIT
 <a href=#4 id=4 data-nosnippet>4</a>
-<a href=#5 id=5 data-nosnippet>5</a></span><span class="kw">use crate</span>::{<a href="../../../glib_sys/index.html">ffi</a>, <a href="../lib.rs.html#164">translate</a>::<span class="kw-2">*</span>, <a href="enums.rs.html#15-33">ChecksumType</a>};
+<a href=#5 id=5 data-nosnippet>5</a></span><span class="kw">use crate</span>::{ffi, <a href="../lib.rs.html#164">translate</a>::<span class="kw-2">*</span>, <a href="enums.rs.html#15-33">ChecksumType</a>};
 <a href=#6 id=6 data-nosnippet>6</a>
 <a href=#7 id=7 data-nosnippet>7</a><a class="macro" href="../wrapper.rs.html#276-443">crate::wrapper!</a> {
 <a href=#8 id=8 data-nosnippet>8</a>    <span class="doccomment">/// GLib provides a generic API for computing checksums (or ‘digests’)
@@ -95,7 +95,7 @@
 <a href=#22 id=22 data-nosnippet>22</a>    /// one go, use the convenience functions [`compute_checksum_for_data()`][crate::compute_checksum_for_data()]
 <a href=#23 id=23 data-nosnippet>23</a>    /// and `compute_checksum_for_string()`, respectively.
 <a href=#24 id=24 data-nosnippet>24</a>    </span><span class="attr">#[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
-<a href=#25 id=25 data-nosnippet>25</a>    </span><span class="kw">pub struct </span><a href="../../../glib/struct.Checksum.html">Checksum</a>(Boxed&lt;<a href="../../../glib_sys/struct.GChecksum.html">ffi::GChecksum</a>&gt;);
+<a href=#25 id=25 data-nosnippet>25</a>    </span><span class="kw">pub struct </span><a href="../../../glib/struct.Checksum.html">Checksum</a>(Boxed&lt;ffi::GChecksum&gt;);
 <a href=#26 id=26 data-nosnippet>26</a>
 <a href=#27 id=27 data-nosnippet>27</a>    <span class="kw">match fn </span>{
 <a href=#28 id=28 data-nosnippet>28</a>        copy =&gt; |ptr| ffi::g_checksum_copy(ptr),
@@ -127,14 +127,14 @@
 <a href=#54 id=54 data-nosnippet>54</a>    ///   Use g_checksum_free() to free the memory allocated by it.
 <a href=#55 id=55 data-nosnippet>55</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_checksum_new"</span>)]
 <a href=#56 id=56 data-nosnippet>56</a>    </span><span class="kw">pub fn </span>new(checksum_type: <a href="enums.rs.html#15-33">ChecksumType</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="#7-32">Checksum</a>&gt; {
-<a href=#57 id=57 data-nosnippet>57</a>        <span class="kw">unsafe </span>{ <a href="../translate.rs.html#1638-1640">from_glib_full</a>(<a href="../../../glib_sys/fn.g_checksum_new.html">ffi::g_checksum_new</a>(<a href="#56">checksum_type</a>.<a href="../translate.rs.html#334">into_glib</a>())) }
+<a href=#57 id=57 data-nosnippet>57</a>        <span class="kw">unsafe </span>{ <a href="../translate.rs.html#1638-1640">from_glib_full</a>(ffi::g_checksum_new(<a href="#56">checksum_type</a>.<a href="../translate.rs.html#334">into_glib</a>())) }
 <a href=#58 id=58 data-nosnippet>58</a>    }
 <a href=#59 id=59 data-nosnippet>59</a>
 <a href=#60 id=60 data-nosnippet>60</a>    <span class="doccomment">/// Resets the state of the @self back to its initial state.
 <a href=#61 id=61 data-nosnippet>61</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_checksum_reset"</span>)]
 <a href=#62 id=62 data-nosnippet>62</a>    </span><span class="kw">pub fn </span>reset(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
 <a href=#63 id=63 data-nosnippet>63</a>        <span class="kw">unsafe </span>{
-<a href=#64 id=64 data-nosnippet>64</a>            <a href="../../../glib_sys/fn.g_checksum_reset.html">ffi::g_checksum_reset</a>(<a class="self" href="#62">self</a>.<a href="../translate.rs.html#471">to_glib_none_mut</a>().<span class="number">0</span>);
+<a href=#64 id=64 data-nosnippet>64</a>            ffi::g_checksum_reset(<a class="self" href="#62">self</a>.<a href="../translate.rs.html#471">to_glib_none_mut</a>().<span class="number">0</span>);
 <a href=#65 id=65 data-nosnippet>65</a>        }
 <a href=#66 id=66 data-nosnippet>66</a>    }
 <a href=#67 id=67 data-nosnippet>67</a>
@@ -147,7 +147,7 @@
 <a href=#74 id=74 data-nosnippet>74</a>    </span><span class="kw">pub fn </span>update(<span class="kw-2">&amp;mut </span><span class="self">self</span>, data: <span class="kw-2">&amp;</span>[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]) {
 <a href=#75 id=75 data-nosnippet>75</a>        <span class="kw">let </span>length = <a href="#74">data</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.len">len</a>() <span class="kw">as _</span>;
 <a href=#76 id=76 data-nosnippet>76</a>        <span class="kw">unsafe </span>{
-<a href=#77 id=77 data-nosnippet>77</a>            <a href="../../../glib_sys/fn.g_checksum_update.html">ffi::g_checksum_update</a>(<a class="self" href="#74">self</a>.<a href="../translate.rs.html#471">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#74">data</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>, <a href="#75">length</a>);
+<a href=#77 id=77 data-nosnippet>77</a>            ffi::g_checksum_update(<a class="self" href="#74">self</a>.<a href="../translate.rs.html#471">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#74">data</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>, <a href="#75">length</a>);
 <a href=#78 id=78 data-nosnippet>78</a>        }
 <a href=#79 id=79 data-nosnippet>79</a>    }
 <a href=#80 id=80 data-nosnippet>80</a>
@@ -161,7 +161,7 @@
 <a href=#88 id=88 data-nosnippet>88</a>    /// not supported.
 <a href=#89 id=89 data-nosnippet>89</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_checksum_type_get_length"</span>)]
 <a href=#90 id=90 data-nosnippet>90</a>    </span><span class="kw">pub fn </span>type_get_length(checksum_type: <a href="enums.rs.html#15-33">ChecksumType</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.isize.html">isize</a> {
-<a href=#91 id=91 data-nosnippet>91</a>        <span class="kw">unsafe </span>{ <a href="../../../glib_sys/fn.g_checksum_type_get_length.html">ffi::g_checksum_type_get_length</a>(<a href="#90">checksum_type</a>.<a href="../translate.rs.html#334">into_glib</a>()) }
+<a href=#91 id=91 data-nosnippet>91</a>        <span class="kw">unsafe </span>{ ffi::g_checksum_type_get_length(<a href="#90">checksum_type</a>.<a href="../translate.rs.html#334">into_glib</a>()) }
 <a href=#92 id=92 data-nosnippet>92</a>    }
 <a href=#93 id=93 data-nosnippet>93</a>}
 <a href=#94 id=94 data-nosnippet>94</a>
