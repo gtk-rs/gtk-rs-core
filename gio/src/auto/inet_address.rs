@@ -27,14 +27,6 @@ impl InetAddress {
         unsafe { from_glib_full(ffi::g_inet_address_new_any(family.into_glib())) }
     }
 
-    //#[cfg(feature = "v2_86")]
-    //#[cfg_attr(docsrs, doc(cfg(feature = "v2_86")))]
-    //#[doc(alias = "g_inet_address_new_from_bytes_with_ipv6_info")]
-    //#[doc(alias = "new_from_bytes_with_ipv6_info")]
-    //pub fn from_bytes_with_ipv6_info(bytes: &[u8], family: SocketFamily, flowinfo: u32, scope_id: u32) -> InetAddress {
-    //    unsafe { TODO: call ffi:g_inet_address_new_from_bytes_with_ipv6_info() }
-    //}
-
     #[doc(alias = "g_inet_address_new_from_string")]
     #[doc(alias = "new_from_string")]
     pub fn from_string(string: &str) -> Option<InetAddress> {
