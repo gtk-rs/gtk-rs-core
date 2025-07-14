@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/auto/socket.rs`."><title>socket.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-aa0817cf.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.90.0-nightly (a84ab0ce6 2025-07-06)" data-channel="nightly" data-search-js="search-179e01a3.js" data-settings-js="settings-5514c975.js" ><script src="../../../static.files/storage-4e99c027.js"></script><script defer src="../../../static.files/src-script-813739b1.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-673ee1e0.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-32bb7600.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/auto/socket.rs`."><title>socket.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-aa0817cf.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.90.0-nightly (e9182f195 2025-07-13)" data-channel="nightly" data-search-js="search-179e01a3.js" data-settings-js="settings-5514c975.js" ><script src="../../../static.files/storage-4e99c027.js"></script><script defer src="../../../static.files/src-script-813739b1.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-673ee1e0.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-32bb7600.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -298,7 +298,7 @@
 <a href=#225 id=225 data-nosnippet>225</a>                <a href="#218">protocol</a>.<a href="../../../glib/translate/trait.IntoGlib.html#tymethod.into_glib">into_glib</a>(),
 <a href=#226 id=226 data-nosnippet>226</a>                <span class="kw-2">&amp;mut </span><a href="#221">error</a>,
 <a href=#227 id=227 data-nosnippet>227</a>            );
-<a href=#228 id=228 data-nosnippet>228</a>            <span class="kw">if </span>error.is_null() {
+<a href=#228 id=228 data-nosnippet>228</a>            <span class="kw">if </span><a href="#221">error</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/foreigntype.mut_ptr.html#method.is_null">is_null</a>() {
 <a href=#229 id=229 data-nosnippet>229</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(<a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#222">ret</a>))
 <a href=#230 id=230 data-nosnippet>230</a>            } <span class="kw">else </span>{
 <a href=#231 id=231 data-nosnippet>231</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#221">error</a>))
@@ -339,7 +339,7 @@
 <a href=#266 id=266 data-nosnippet>266</a>                <a href="#261">cancellable</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|p| <a href="#266">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>()).<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
 <a href=#267 id=267 data-nosnippet>267</a>                <span class="kw-2">&amp;mut </span><a href="#263">error</a>,
 <a href=#268 id=268 data-nosnippet>268</a>            );
-<a href=#269 id=269 data-nosnippet>269</a>            <span class="kw">if </span>error.is_null() {
+<a href=#269 id=269 data-nosnippet>269</a>            <span class="kw">if </span><a href="#263">error</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/foreigntype.mut_ptr.html#method.is_null">is_null</a>() {
 <a href=#270 id=270 data-nosnippet>270</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(<a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#264">ret</a>))
 <a href=#271 id=271 data-nosnippet>271</a>            } <span class="kw">else </span>{
 <a href=#272 id=272 data-nosnippet>272</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#263">error</a>))
@@ -393,7 +393,7 @@
 <a href=#320 id=320 data-nosnippet>320</a>                <span class="kw-2">&amp;mut </span><a href="#315">error</a>,
 <a href=#321 id=321 data-nosnippet>321</a>            );
 <a href=#322 id=322 data-nosnippet>322</a>            <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert_eq.html">debug_assert_eq!</a>(is_ok == glib::ffi::GFALSE, !error.is_null());
-<a href=#323 id=323 data-nosnippet>323</a>            <span class="kw">if </span>error.is_null() {
+<a href=#323 id=323 data-nosnippet>323</a>            <span class="kw">if </span><a href="#315">error</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/foreigntype.mut_ptr.html#method.is_null">is_null</a>() {
 <a href=#324 id=324 data-nosnippet>324</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(())
 <a href=#325 id=325 data-nosnippet>325</a>            } <span class="kw">else </span>{
 <a href=#326 id=326 data-nosnippet>326</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#315">error</a>))
@@ -415,7 +415,7 @@
 <a href=#342 id=342 data-nosnippet>342</a>            <span class="kw">let </span>is_ok =
 <a href=#343 id=343 data-nosnippet>343</a>                <a href="../../../gio_sys/fn.g_socket_check_connect_result.html">ffi::g_socket_check_connect_result</a>(<a class="self" href="#339">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <span class="kw-2">&amp;mut </span><a href="#341">error</a>);
 <a href=#344 id=344 data-nosnippet>344</a>            <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert_eq.html">debug_assert_eq!</a>(is_ok == glib::ffi::GFALSE, !error.is_null());
-<a href=#345 id=345 data-nosnippet>345</a>            <span class="kw">if </span>error.is_null() {
+<a href=#345 id=345 data-nosnippet>345</a>            <span class="kw">if </span><a href="#341">error</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/foreigntype.mut_ptr.html#method.is_null">is_null</a>() {
 <a href=#346 id=346 data-nosnippet>346</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(())
 <a href=#347 id=347 data-nosnippet>347</a>            } <span class="kw">else </span>{
 <a href=#348 id=348 data-nosnippet>348</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#341">error</a>))
@@ -462,7 +462,7 @@
 <a href=#389 id=389 data-nosnippet>389</a>            <span class="kw">let </span><span class="kw-2">mut </span>error = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">std::ptr::null_mut</a>();
 <a href=#390 id=390 data-nosnippet>390</a>            <span class="kw">let </span>is_ok = <a href="../../../gio_sys/fn.g_socket_close.html">ffi::g_socket_close</a>(<a class="self" href="#387">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <span class="kw-2">&amp;mut </span><a href="#389">error</a>);
 <a href=#391 id=391 data-nosnippet>391</a>            <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert_eq.html">debug_assert_eq!</a>(is_ok == glib::ffi::GFALSE, !error.is_null());
-<a href=#392 id=392 data-nosnippet>392</a>            <span class="kw">if </span>error.is_null() {
+<a href=#392 id=392 data-nosnippet>392</a>            <span class="kw">if </span><a href="#389">error</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/foreigntype.mut_ptr.html#method.is_null">is_null</a>() {
 <a href=#393 id=393 data-nosnippet>393</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(())
 <a href=#394 id=394 data-nosnippet>394</a>            } <span class="kw">else </span>{
 <a href=#395 id=395 data-nosnippet>395</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#389">error</a>))
@@ -546,7 +546,7 @@
 <a href=#473 id=473 data-nosnippet>473</a>                <span class="kw-2">&amp;mut </span><a href="#467">error</a>,
 <a href=#474 id=474 data-nosnippet>474</a>            );
 <a href=#475 id=475 data-nosnippet>475</a>            <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert_eq.html">debug_assert_eq!</a>(is_ok == glib::ffi::GFALSE, !error.is_null());
-<a href=#476 id=476 data-nosnippet>476</a>            <span class="kw">if </span>error.is_null() {
+<a href=#476 id=476 data-nosnippet>476</a>            <span class="kw">if </span><a href="#467">error</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/foreigntype.mut_ptr.html#method.is_null">is_null</a>() {
 <a href=#477 id=477 data-nosnippet>477</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(())
 <a href=#478 id=478 data-nosnippet>478</a>            } <span class="kw">else </span>{
 <a href=#479 id=479 data-nosnippet>479</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#467">error</a>))
@@ -587,7 +587,7 @@
 <a href=#514 id=514 data-nosnippet>514</a>                <span class="kw-2">&amp;mut </span><a href="#509">error</a>,
 <a href=#515 id=515 data-nosnippet>515</a>            );
 <a href=#516 id=516 data-nosnippet>516</a>            <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert_eq.html">debug_assert_eq!</a>(is_ok == glib::ffi::GFALSE, !error.is_null());
-<a href=#517 id=517 data-nosnippet>517</a>            <span class="kw">if </span>error.is_null() {
+<a href=#517 id=517 data-nosnippet>517</a>            <span class="kw">if </span><a href="#509">error</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/foreigntype.mut_ptr.html#method.is_null">is_null</a>() {
 <a href=#518 id=518 data-nosnippet>518</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(())
 <a href=#519 id=519 data-nosnippet>519</a>            } <span class="kw">else </span>{
 <a href=#520 id=520 data-nosnippet>520</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#509">error</a>))
@@ -634,7 +634,7 @@
 <a href=#561 id=561 data-nosnippet>561</a>                <span class="kw-2">&amp;mut </span><a href="#556">error</a>,
 <a href=#562 id=562 data-nosnippet>562</a>            );
 <a href=#563 id=563 data-nosnippet>563</a>            <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert_eq.html">debug_assert_eq!</a>(is_ok == glib::ffi::GFALSE, !error.is_null());
-<a href=#564 id=564 data-nosnippet>564</a>            <span class="kw">if </span>error.is_null() {
+<a href=#564 id=564 data-nosnippet>564</a>            <span class="kw">if </span><a href="#556">error</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/foreigntype.mut_ptr.html#method.is_null">is_null</a>() {
 <a href=#565 id=565 data-nosnippet>565</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(())
 <a href=#566 id=566 data-nosnippet>566</a>            } <span class="kw">else </span>{
 <a href=#567 id=567 data-nosnippet>567</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#556">error</a>))
@@ -738,7 +738,7 @@
 <a href=#665 id=665 data-nosnippet>665</a>        <span class="kw">unsafe </span>{
 <a href=#666 id=666 data-nosnippet>666</a>            <span class="kw">let </span><span class="kw-2">mut </span>error = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">std::ptr::null_mut</a>();
 <a href=#667 id=667 data-nosnippet>667</a>            <span class="kw">let </span>ret = <a href="../../../gio_sys/fn.g_socket_get_credentials.html">ffi::g_socket_get_credentials</a>(<a class="self" href="#664">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <span class="kw-2">&amp;mut </span><a href="#666">error</a>);
-<a href=#668 id=668 data-nosnippet>668</a>            <span class="kw">if </span>error.is_null() {
+<a href=#668 id=668 data-nosnippet>668</a>            <span class="kw">if </span><a href="#666">error</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/foreigntype.mut_ptr.html#method.is_null">is_null</a>() {
 <a href=#669 id=669 data-nosnippet>669</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(<a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#667">ret</a>))
 <a href=#670 id=670 data-nosnippet>670</a>            } <span class="kw">else </span>{
 <a href=#671 id=671 data-nosnippet>671</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#666">error</a>))
@@ -798,7 +798,7 @@
 <a href=#725 id=725 data-nosnippet>725</a>        <span class="kw">unsafe </span>{
 <a href=#726 id=726 data-nosnippet>726</a>            <span class="kw">let </span><span class="kw-2">mut </span>error = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">std::ptr::null_mut</a>();
 <a href=#727 id=727 data-nosnippet>727</a>            <span class="kw">let </span>ret = <a href="../../../gio_sys/fn.g_socket_get_local_address.html">ffi::g_socket_get_local_address</a>(<a class="self" href="#724">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <span class="kw-2">&amp;mut </span><a href="#726">error</a>);
-<a href=#728 id=728 data-nosnippet>728</a>            <span class="kw">if </span>error.is_null() {
+<a href=#728 id=728 data-nosnippet>728</a>            <span class="kw">if </span><a href="#726">error</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/foreigntype.mut_ptr.html#method.is_null">is_null</a>() {
 <a href=#729 id=729 data-nosnippet>729</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(<a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#727">ret</a>))
 <a href=#730 id=730 data-nosnippet>730</a>            } <span class="kw">else </span>{
 <a href=#731 id=731 data-nosnippet>731</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#726">error</a>))
@@ -877,7 +877,7 @@
 <a href=#804 id=804 data-nosnippet>804</a>                <span class="kw-2">&amp;mut </span><a href="#798">error</a>,
 <a href=#805 id=805 data-nosnippet>805</a>            );
 <a href=#806 id=806 data-nosnippet>806</a>            <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert_eq.html">debug_assert_eq!</a>(is_ok == glib::ffi::GFALSE, !error.is_null());
-<a href=#807 id=807 data-nosnippet>807</a>            <span class="kw">if </span>error.is_null() {
+<a href=#807 id=807 data-nosnippet>807</a>            <span class="kw">if </span><a href="#798">error</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/foreigntype.mut_ptr.html#method.is_null">is_null</a>() {
 <a href=#808 id=808 data-nosnippet>808</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(<a href="#797">value</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.assume_init">assume_init</a>())
 <a href=#809 id=809 data-nosnippet>809</a>            } <span class="kw">else </span>{
 <a href=#810 id=810 data-nosnippet>810</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#798">error</a>))
@@ -911,7 +911,7 @@
 <a href=#838 id=838 data-nosnippet>838</a>        <span class="kw">unsafe </span>{
 <a href=#839 id=839 data-nosnippet>839</a>            <span class="kw">let </span><span class="kw-2">mut </span>error = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">std::ptr::null_mut</a>();
 <a href=#840 id=840 data-nosnippet>840</a>            <span class="kw">let </span>ret = <a href="../../../gio_sys/fn.g_socket_get_remote_address.html">ffi::g_socket_get_remote_address</a>(<a class="self" href="#837">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <span class="kw-2">&amp;mut </span><a href="#839">error</a>);
-<a href=#841 id=841 data-nosnippet>841</a>            <span class="kw">if </span>error.is_null() {
+<a href=#841 id=841 data-nosnippet>841</a>            <span class="kw">if </span><a href="#839">error</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/foreigntype.mut_ptr.html#method.is_null">is_null</a>() {
 <a href=#842 id=842 data-nosnippet>842</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(<a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#840">ret</a>))
 <a href=#843 id=843 data-nosnippet>843</a>            } <span class="kw">else </span>{
 <a href=#844 id=844 data-nosnippet>844</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#839">error</a>))
@@ -1025,7 +1025,7 @@
 <a href=#952 id=952 data-nosnippet>952</a>                <span class="kw-2">&amp;mut </span><a href="#946">error</a>,
 <a href=#953 id=953 data-nosnippet>953</a>            );
 <a href=#954 id=954 data-nosnippet>954</a>            <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert_eq.html">debug_assert_eq!</a>(is_ok == glib::ffi::GFALSE, !error.is_null());
-<a href=#955 id=955 data-nosnippet>955</a>            <span class="kw">if </span>error.is_null() {
+<a href=#955 id=955 data-nosnippet>955</a>            <span class="kw">if </span><a href="#946">error</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/foreigntype.mut_ptr.html#method.is_null">is_null</a>() {
 <a href=#956 id=956 data-nosnippet>956</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(())
 <a href=#957 id=957 data-nosnippet>957</a>            } <span class="kw">else </span>{
 <a href=#958 id=958 data-nosnippet>958</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#946">error</a>))
@@ -1076,7 +1076,7 @@
 <a href=#1003 id=1003 data-nosnippet>1003</a>                <span class="kw-2">&amp;mut </span><a href="#997">error</a>,
 <a href=#1004 id=1004 data-nosnippet>1004</a>            );
 <a href=#1005 id=1005 data-nosnippet>1005</a>            <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert_eq.html">debug_assert_eq!</a>(is_ok == glib::ffi::GFALSE, !error.is_null());
-<a href=#1006 id=1006 data-nosnippet>1006</a>            <span class="kw">if </span>error.is_null() {
+<a href=#1006 id=1006 data-nosnippet>1006</a>            <span class="kw">if </span><a href="#997">error</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/foreigntype.mut_ptr.html#method.is_null">is_null</a>() {
 <a href=#1007 id=1007 data-nosnippet>1007</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(())
 <a href=#1008 id=1008 data-nosnippet>1008</a>            } <span class="kw">else </span>{
 <a href=#1009 id=1009 data-nosnippet>1009</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#997">error</a>))
@@ -1120,7 +1120,7 @@
 <a href=#1047 id=1047 data-nosnippet>1047</a>                <span class="kw-2">&amp;mut </span><a href="#1041">error</a>,
 <a href=#1048 id=1048 data-nosnippet>1048</a>            );
 <a href=#1049 id=1049 data-nosnippet>1049</a>            <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert_eq.html">debug_assert_eq!</a>(is_ok == glib::ffi::GFALSE, !error.is_null());
-<a href=#1050 id=1050 data-nosnippet>1050</a>            <span class="kw">if </span>error.is_null() {
+<a href=#1050 id=1050 data-nosnippet>1050</a>            <span class="kw">if </span><a href="#1041">error</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/foreigntype.mut_ptr.html#method.is_null">is_null</a>() {
 <a href=#1051 id=1051 data-nosnippet>1051</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(())
 <a href=#1052 id=1052 data-nosnippet>1052</a>            } <span class="kw">else </span>{
 <a href=#1053 id=1053 data-nosnippet>1053</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#1041">error</a>))
@@ -1162,7 +1162,7 @@
 <a href=#1089 id=1089 data-nosnippet>1089</a>                <span class="kw-2">&amp;mut </span><a href="#1083">error</a>,
 <a href=#1090 id=1090 data-nosnippet>1090</a>            );
 <a href=#1091 id=1091 data-nosnippet>1091</a>            <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert_eq.html">debug_assert_eq!</a>(is_ok == glib::ffi::GFALSE, !error.is_null());
-<a href=#1092 id=1092 data-nosnippet>1092</a>            <span class="kw">if </span>error.is_null() {
+<a href=#1092 id=1092 data-nosnippet>1092</a>            <span class="kw">if </span><a href="#1083">error</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/foreigntype.mut_ptr.html#method.is_null">is_null</a>() {
 <a href=#1093 id=1093 data-nosnippet>1093</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(())
 <a href=#1094 id=1094 data-nosnippet>1094</a>            } <span class="kw">else </span>{
 <a href=#1095 id=1095 data-nosnippet>1095</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#1083">error</a>))
@@ -1188,7 +1188,7 @@
 <a href=#1115 id=1115 data-nosnippet>1115</a>            <span class="kw">let </span><span class="kw-2">mut </span>error = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">std::ptr::null_mut</a>();
 <a href=#1116 id=1116 data-nosnippet>1116</a>            <span class="kw">let </span>is_ok = <a href="../../../gio_sys/fn.g_socket_listen.html">ffi::g_socket_listen</a>(<a class="self" href="#1113">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <span class="kw-2">&amp;mut </span><a href="#1115">error</a>);
 <a href=#1117 id=1117 data-nosnippet>1117</a>            <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert_eq.html">debug_assert_eq!</a>(is_ok == glib::ffi::GFALSE, !error.is_null());
-<a href=#1118 id=1118 data-nosnippet>1118</a>            <span class="kw">if </span>error.is_null() {
+<a href=#1118 id=1118 data-nosnippet>1118</a>            <span class="kw">if </span><a href="#1115">error</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/foreigntype.mut_ptr.html#method.is_null">is_null</a>() {
 <a href=#1119 id=1119 data-nosnippet>1119</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(())
 <a href=#1120 id=1120 data-nosnippet>1120</a>            } <span class="kw">else </span>{
 <a href=#1121 id=1121 data-nosnippet>1121</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#1115">error</a>))
@@ -1333,7 +1333,7 @@
 <a href=#1260 id=1260 data-nosnippet>1260</a>                <span class="kw-2">&amp;mut </span><a href="#1254">error</a>,
 <a href=#1261 id=1261 data-nosnippet>1261</a>            );
 <a href=#1262 id=1262 data-nosnippet>1262</a>            <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert_eq.html">debug_assert_eq!</a>(is_ok == glib::ffi::GFALSE, !error.is_null());
-<a href=#1263 id=1263 data-nosnippet>1263</a>            <span class="kw">if </span>error.is_null() {
+<a href=#1263 id=1263 data-nosnippet>1263</a>            <span class="kw">if </span><a href="#1254">error</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/foreigntype.mut_ptr.html#method.is_null">is_null</a>() {
 <a href=#1264 id=1264 data-nosnippet>1264</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(())
 <a href=#1265 id=1265 data-nosnippet>1265</a>            } <span class="kw">else </span>{
 <a href=#1266 id=1266 data-nosnippet>1266</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#1254">error</a>))
@@ -1416,7 +1416,7 @@
 <a href=#1343 id=1343 data-nosnippet>1343</a>                <span class="kw-2">&amp;mut </span><a href="#1338">error</a>,
 <a href=#1344 id=1344 data-nosnippet>1344</a>            );
 <a href=#1345 id=1345 data-nosnippet>1345</a>            <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert_eq.html">debug_assert_eq!</a>(is_ok == glib::ffi::GFALSE, !error.is_null());
-<a href=#1346 id=1346 data-nosnippet>1346</a>            <span class="kw">if </span>error.is_null() {
+<a href=#1346 id=1346 data-nosnippet>1346</a>            <span class="kw">if </span><a href="#1338">error</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/foreigntype.mut_ptr.html#method.is_null">is_null</a>() {
 <a href=#1347 id=1347 data-nosnippet>1347</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(())
 <a href=#1348 id=1348 data-nosnippet>1348</a>            } <span class="kw">else </span>{
 <a href=#1349 id=1349 data-nosnippet>1349</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#1338">error</a>))

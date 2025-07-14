@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/subclass/output_stream.rs`."><title>output_stream.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-aa0817cf.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.90.0-nightly (a84ab0ce6 2025-07-06)" data-channel="nightly" data-search-js="search-179e01a3.js" data-settings-js="settings-5514c975.js" ><script src="../../../static.files/storage-4e99c027.js"></script><script defer src="../../../static.files/src-script-813739b1.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-673ee1e0.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-32bb7600.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/subclass/output_stream.rs`."><title>output_stream.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-aa0817cf.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.90.0-nightly (e9182f195 2025-07-13)" data-channel="nightly" data-search-js="search-179e01a3.js" data-settings-js="settings-5514c975.js" ><script src="../../../static.files/storage-4e99c027.js"></script><script defer src="../../../static.files/src-script-813739b1.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-673ee1e0.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-32bb7600.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -155,7 +155,7 @@
 <a href=#82 id=82 data-nosnippet>82</a>                <a href="#66">cancellable</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
 <a href=#83 id=83 data-nosnippet>83</a>                <span class="kw-2">&amp;mut </span><a href="#74">err</a>,
 <a href=#84 id=84 data-nosnippet>84</a>            );
-<a href=#85 id=85 data-nosnippet>85</a>            <span class="kw">if </span>res == -<span class="number">1 </span>{
+<a href=#85 id=85 data-nosnippet>85</a>            <span class="kw">if </span><a href="#75">res</a> == -<span class="number">1 </span>{
 <a href=#86 id=86 data-nosnippet>86</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#74">err</a>))
 <a href=#87 id=87 data-nosnippet>87</a>            } <span class="kw">else </span>{
 <a href=#88 id=88 data-nosnippet>88</a>                <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert.html">debug_assert!</a>(res &gt;= <span class="number">0</span>);
@@ -172,13 +172,13 @@
 <a href=#99 id=99 data-nosnippet>99</a>            <span class="kw">let </span>parent_class = <a href="#98">data</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().<a href="../../../glib/subclass/types/struct.TypeData.html#method.parent_class">parent_class</a>() <span class="kw">as </span><span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GOutputStreamClass.html">ffi::GOutputStreamClass</a>;
 <a href=#100 id=100 data-nosnippet>100</a>            <span class="kw">let </span><span class="kw-2">mut </span>err = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
 <a href=#101 id=101 data-nosnippet>101</a>            <span class="kw">if let </span><a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(f) = (<span class="kw-2">*</span><a href="#99">parent_class</a>).close_fn {
-<a href=#102 id=102 data-nosnippet>102</a>                <span class="kw">if </span>from_glib(f(
-<a href=#103 id=103 data-nosnippet>103</a>                    <span class="self">self</span>.obj()
-<a href=#104 id=104 data-nosnippet>104</a>                        .unsafe_cast_ref::&lt;OutputStream&gt;()
-<a href=#105 id=105 data-nosnippet>105</a>                        .to_glib_none()
+<a href=#102 id=102 data-nosnippet>102</a>                <span class="kw">if </span><a href="../../../glib/translate/fn.from_glib.html">from_glib</a>(<a href="#101">f</a>(
+<a href=#103 id=103 data-nosnippet>103</a>                    <a class="self" href="#96">self</a>.<a href="../../../glib/subclass/types/trait.ObjectSubclassExt.html#tymethod.obj">obj</a>()
+<a href=#104 id=104 data-nosnippet>104</a>                        .<a href="../../../glib/object/trait.Cast.html#tymethod.unsafe_cast_ref">unsafe_cast_ref</a>::&lt;<a href="../auto/output_stream.rs.html#9-39">OutputStream</a>&gt;()
+<a href=#105 id=105 data-nosnippet>105</a>                        .<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>()
 <a href=#106 id=106 data-nosnippet>106</a>                        .<span class="number">0</span>,
-<a href=#107 id=107 data-nosnippet>107</a>                    cancellable.to_glib_none().<span class="number">0</span>,
-<a href=#108 id=108 data-nosnippet>108</a>                    <span class="kw-2">&amp;mut </span>err,
+<a href=#107 id=107 data-nosnippet>107</a>                    <a href="#96">cancellable</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+<a href=#108 id=108 data-nosnippet>108</a>                    <span class="kw-2">&amp;mut </span><a href="#100">err</a>,
 <a href=#109 id=109 data-nosnippet>109</a>                )) {
 <a href=#110 id=110 data-nosnippet>110</a>                    <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(())
 <a href=#111 id=111 data-nosnippet>111</a>                } <span class="kw">else </span>{
@@ -196,13 +196,13 @@
 <a href=#123 id=123 data-nosnippet>123</a>            <span class="kw">let </span>parent_class = <a href="#122">data</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().<a href="../../../glib/subclass/types/struct.TypeData.html#method.parent_class">parent_class</a>() <span class="kw">as </span><span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GOutputStreamClass.html">ffi::GOutputStreamClass</a>;
 <a href=#124 id=124 data-nosnippet>124</a>            <span class="kw">let </span><span class="kw-2">mut </span>err = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
 <a href=#125 id=125 data-nosnippet>125</a>            <span class="kw">if let </span><a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(f) = (<span class="kw-2">*</span><a href="#123">parent_class</a>).flush {
-<a href=#126 id=126 data-nosnippet>126</a>                <span class="kw">if </span>from_glib(f(
-<a href=#127 id=127 data-nosnippet>127</a>                    <span class="self">self</span>.obj()
-<a href=#128 id=128 data-nosnippet>128</a>                        .unsafe_cast_ref::&lt;OutputStream&gt;()
-<a href=#129 id=129 data-nosnippet>129</a>                        .to_glib_none()
+<a href=#126 id=126 data-nosnippet>126</a>                <span class="kw">if </span><a href="../../../glib/translate/fn.from_glib.html">from_glib</a>(<a href="#125">f</a>(
+<a href=#127 id=127 data-nosnippet>127</a>                    <a class="self" href="#120">self</a>.<a href="../../../glib/subclass/types/trait.ObjectSubclassExt.html#tymethod.obj">obj</a>()
+<a href=#128 id=128 data-nosnippet>128</a>                        .<a href="../../../glib/object/trait.Cast.html#tymethod.unsafe_cast_ref">unsafe_cast_ref</a>::&lt;<a href="../auto/output_stream.rs.html#9-39">OutputStream</a>&gt;()
+<a href=#129 id=129 data-nosnippet>129</a>                        .<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>()
 <a href=#130 id=130 data-nosnippet>130</a>                        .<span class="number">0</span>,
-<a href=#131 id=131 data-nosnippet>131</a>                    cancellable.to_glib_none().<span class="number">0</span>,
-<a href=#132 id=132 data-nosnippet>132</a>                    <span class="kw-2">&amp;mut </span>err,
+<a href=#131 id=131 data-nosnippet>131</a>                    <a href="#120">cancellable</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+<a href=#132 id=132 data-nosnippet>132</a>                    <span class="kw-2">&amp;mut </span><a href="#124">err</a>,
 <a href=#133 id=133 data-nosnippet>133</a>                )) {
 <a href=#134 id=134 data-nosnippet>134</a>                    <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(())
 <a href=#135 id=135 data-nosnippet>135</a>                } <span class="kw">else </span>{
@@ -237,7 +237,7 @@
 <a href=#164 id=164 data-nosnippet>164</a>                <a href="#148">cancellable</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
 <a href=#165 id=165 data-nosnippet>165</a>                <span class="kw-2">&amp;mut </span><a href="#153">err</a>,
 <a href=#166 id=166 data-nosnippet>166</a>            );
-<a href=#167 id=167 data-nosnippet>167</a>            <span class="kw">if </span>res == -<span class="number">1 </span>{
+<a href=#167 id=167 data-nosnippet>167</a>            <span class="kw">if </span><a href="#157">res</a> == -<span class="number">1 </span>{
 <a href=#168 id=168 data-nosnippet>168</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#153">err</a>))
 <a href=#169 id=169 data-nosnippet>169</a>            } <span class="kw">else </span>{
 <a href=#170 id=170 data-nosnippet>170</a>                <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert.html">debug_assert!</a>(res &gt;= <span class="number">0</span>);
@@ -275,7 +275,7 @@
 <a href=#202 id=202 data-nosnippet>202</a>    <span class="kw">let </span>imp = <a href="#201">instance</a>.<a href="../../../glib/subclass/types/trait.InstanceStructExt.html#tymethod.imp">imp</a>();
 <a href=#203 id=203 data-nosnippet>203</a>
 <a href=#204 id=204 data-nosnippet>204</a>    <span class="kw">match </span><a href="#202">imp</a>.<a href="#10-12">write</a>(
-<a href=#205 id=205 data-nosnippet>205</a>        <span class="kw">if </span>count == <span class="number">0 </span>{
+<a href=#205 id=205 data-nosnippet>205</a>        <span class="kw">if </span><a href="#195">count</a> == <span class="number">0 </span>{
 <a href=#206 id=206 data-nosnippet>206</a>            <span class="kw-2">&amp;</span>[]
 <a href=#207 id=207 data-nosnippet>207</a>        } <span class="kw">else </span>{
 <a href=#208 id=208 data-nosnippet>208</a>            <a href="https://doc.rust-lang.org/nightly/core/slice/raw/fn.from_raw_parts.html">std::slice::from_raw_parts</a>(<a href="#194">buffer</a> <span class="kw">as </span><span class="kw-2">*const </span><a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>, <a href="#195">count</a>)
@@ -290,7 +290,7 @@
 <a href=#217 id=217 data-nosnippet>217</a>            <a href="#214">res</a> <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.isize.html">isize</a>
 <a href=#218 id=218 data-nosnippet>218</a>        }
 <a href=#219 id=219 data-nosnippet>219</a>        <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(e) =&gt; {
-<a href=#220 id=220 data-nosnippet>220</a>            <span class="kw">if </span>!err.is_null() {
+<a href=#220 id=220 data-nosnippet>220</a>            <span class="kw">if </span>!<a href="#197">err</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/foreigntype.mut_ptr.html#method.is_null">is_null</a>() {
 <a href=#221 id=221 data-nosnippet>221</a>                <span class="kw-2">*</span><a href="#197">err</a> = <a href="#219">e</a>.<a href="../../../glib/translate/trait.IntoGlibPtr.html#tymethod.into_glib_ptr">into_glib_ptr</a>();
 <a href=#222 id=222 data-nosnippet>222</a>            }
 <a href=#223 id=223 data-nosnippet>223</a>            -<span class="number">1
@@ -313,7 +313,7 @@
 <a href=#240 id=240 data-nosnippet>240</a>    ) {
 <a href=#241 id=241 data-nosnippet>241</a>        <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(<span class="kw">_</span>) =&gt; <a href="../../../glib_sys/constant.GTRUE.html">glib::ffi::GTRUE</a>,
 <a href=#242 id=242 data-nosnippet>242</a>        <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(e) =&gt; {
-<a href=#243 id=243 data-nosnippet>243</a>            <span class="kw">if </span>!err.is_null() {
+<a href=#243 id=243 data-nosnippet>243</a>            <span class="kw">if </span>!<a href="#231">err</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/foreigntype.mut_ptr.html#method.is_null">is_null</a>() {
 <a href=#244 id=244 data-nosnippet>244</a>                <span class="kw-2">*</span><a href="#231">err</a> = <a href="#242">e</a>.<a href="../../../glib/translate/trait.IntoGlibPtr.html#tymethod.into_glib_ptr">into_glib_ptr</a>();
 <a href=#245 id=245 data-nosnippet>245</a>            }
 <a href=#246 id=246 data-nosnippet>246</a>            <a href="../../../glib_sys/constant.GFALSE.html">glib::ffi::GFALSE</a>
@@ -336,7 +336,7 @@
 <a href=#263 id=263 data-nosnippet>263</a>    ) {
 <a href=#264 id=264 data-nosnippet>264</a>        <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(<span class="kw">_</span>) =&gt; <a href="../../../glib_sys/constant.GTRUE.html">glib::ffi::GTRUE</a>,
 <a href=#265 id=265 data-nosnippet>265</a>        <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(e) =&gt; {
-<a href=#266 id=266 data-nosnippet>266</a>            <span class="kw">if </span>!err.is_null() {
+<a href=#266 id=266 data-nosnippet>266</a>            <span class="kw">if </span>!<a href="#254">err</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/foreigntype.mut_ptr.html#method.is_null">is_null</a>() {
 <a href=#267 id=267 data-nosnippet>267</a>                <span class="kw-2">*</span><a href="#254">err</a> = <a href="#265">e</a>.<a href="../../../glib/translate/trait.IntoGlibPtr.html#tymethod.into_glib_ptr">into_glib_ptr</a>();
 <a href=#268 id=268 data-nosnippet>268</a>            }
 <a href=#269 id=269 data-nosnippet>269</a>            <a href="../../../glib_sys/constant.GFALSE.html">glib::ffi::GFALSE</a>
@@ -366,7 +366,7 @@
 <a href=#293 id=293 data-nosnippet>293</a>            <a href="#291">res</a> <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.isize.html">isize</a>
 <a href=#294 id=294 data-nosnippet>294</a>        }
 <a href=#295 id=295 data-nosnippet>295</a>        <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(e) =&gt; {
-<a href=#296 id=296 data-nosnippet>296</a>            <span class="kw">if </span>!err.is_null() {
+<a href=#296 id=296 data-nosnippet>296</a>            <span class="kw">if </span>!<a href="#279">err</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/foreigntype.mut_ptr.html#method.is_null">is_null</a>() {
 <a href=#297 id=297 data-nosnippet>297</a>                <span class="kw-2">*</span><a href="#279">err</a> = <a href="#295">e</a>.<a href="../../../glib/translate/trait.IntoGlibPtr.html#tymethod.into_glib_ptr">into_glib_ptr</a>();
 <a href=#298 id=298 data-nosnippet>298</a>            }
 <a href=#299 id=299 data-nosnippet>299</a>            -<span class="number">1

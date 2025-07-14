@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/collections/slice.rs`."><title>slice.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-aa0817cf.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.90.0-nightly (a84ab0ce6 2025-07-06)" data-channel="nightly" data-search-js="search-179e01a3.js" data-settings-js="settings-5514c975.js" ><script src="../../../static.files/storage-4e99c027.js"></script><script defer src="../../../static.files/src-script-813739b1.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-673ee1e0.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-32bb7600.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/collections/slice.rs`."><title>slice.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-aa0817cf.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.90.0-nightly (e9182f195 2025-07-13)" data-channel="nightly" data-search-js="search-179e01a3.js" data-settings-js="settings-5514c975.js" ><script src="../../../static.files/storage-4e99c027.js"></script><script defer src="../../../static.files/src-script-813739b1.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-673ee1e0.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-32bb7600.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -75,7 +75,7 @@
 <a href=#2 id=2 data-nosnippet>2</a>
 <a href=#3 id=3 data-nosnippet>3</a></span><span class="kw">use </span>std::{<a href="https://doc.rust-lang.org/nightly/alloc/fmt/index.html">fmt</a>, <a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">marker::PhantomData</a>, <a href="https://doc.rust-lang.org/nightly/core/mem/index.html">mem</a>, <a href="https://doc.rust-lang.org/nightly/core/ptr/index.html">ptr</a>};
 <a href=#4 id=4 data-nosnippet>4</a>
-<a href=#5 id=5 data-nosnippet>5</a><span class="kw">use crate</span>::{ffi, <a href="../lib.rs.html#164">translate</a>::<span class="kw-2">*</span>};
+<a href=#5 id=5 data-nosnippet>5</a><span class="kw">use crate</span>::{<a href="../../../glib_sys/index.html">ffi</a>, <a href="../lib.rs.html#164">translate</a>::<span class="kw-2">*</span>};
 <a href=#6 id=6 data-nosnippet>6</a>
 <a href=#7 id=7 data-nosnippet>7</a><span class="comment">// rustdoc-stripper-ignore-next
 <a href=#8 id=8 data-nosnippet>8</a></span><span class="doccomment">/// Minimum size of the `Slice` allocation in bytes.
@@ -149,14 +149,14 @@
 <a href=#76 id=76 data-nosnippet>76</a>    <span class="attr">#[inline]
 <a href=#77 id=77 data-nosnippet>77</a>    </span><span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
 <a href=#78 id=78 data-nosnippet>78</a>        <span class="kw">unsafe </span>{
-<a href=#79 id=79 data-nosnippet>79</a>            <span class="kw">if </span>mem::needs_drop::&lt;T&gt;() {
+<a href=#79 id=79 data-nosnippet>79</a>            <span class="kw">if </span><a href="https://doc.rust-lang.org/nightly/core/mem/fn.needs_drop.html">mem::needs_drop</a>::&lt;T&gt;() {
 <a href=#80 id=80 data-nosnippet>80</a>                <span class="kw">for </span>i <span class="kw">in </span><span class="number">0</span>..<span class="self">self</span>.len {
 <a href=#81 id=81 data-nosnippet>81</a>                    ptr::drop_in_place::&lt;T&gt;(<span class="self">self</span>.ptr.as_ptr().add(i) <span class="kw">as </span><span class="kw-2">*mut </span>T);
 <a href=#82 id=82 data-nosnippet>82</a>                }
 <a href=#83 id=83 data-nosnippet>83</a>            }
 <a href=#84 id=84 data-nosnippet>84</a>
-<a href=#85 id=85 data-nosnippet>85</a>            <span class="kw">if </span><span class="self">self</span>.capacity != <span class="number">0 </span>{
-<a href=#86 id=86 data-nosnippet>86</a>                ffi::g_free(<a class="self" href="#77">self</a>.ptr.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span>ffi::gpointer);
+<a href=#85 id=85 data-nosnippet>85</a>            <span class="kw">if </span><a class="self" href="#77">self</a>.capacity != <span class="number">0 </span>{
+<a href=#86 id=86 data-nosnippet>86</a>                <a href="../../../glib_sys/fn.g_free.html">ffi::g_free</a>(<a class="self" href="#77">self</a>.ptr.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><a href="../../../glib_sys/type.gpointer.html">ffi::gpointer</a>);
 <a href=#87 id=87 data-nosnippet>87</a>            }
 <a href=#88 id=88 data-nosnippet>88</a>        }
 <a href=#89 id=89 data-nosnippet>89</a>    }
@@ -303,7 +303,7 @@
 <a href=#230 id=230 data-nosnippet>230</a>    </span><span class="attr">#[inline]
 <a href=#231 id=231 data-nosnippet>231</a>    </span><span class="kw">pub fn </span>as_slice(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[T] {
 <a href=#232 id=232 data-nosnippet>232</a>        <span class="kw">unsafe </span>{
-<a href=#233 id=233 data-nosnippet>233</a>            <span class="kw">if </span><span class="self">self</span>.len == <span class="number">0 </span>{
+<a href=#233 id=233 data-nosnippet>233</a>            <span class="kw">if </span><a class="self" href="#231">self</a>.len == <span class="number">0 </span>{
 <a href=#234 id=234 data-nosnippet>234</a>                <span class="kw-2">&amp;</span>[]
 <a href=#235 id=235 data-nosnippet>235</a>            } <span class="kw">else </span>{
 <a href=#236 id=236 data-nosnippet>236</a>                <a href="https://doc.rust-lang.org/nightly/core/slice/raw/fn.from_raw_parts.html">std::slice::from_raw_parts</a>(<a class="self" href="#231">self</a>.idx.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span>T, <a class="self" href="#231">self</a>.len)
@@ -316,7 +316,7 @@
 <a href=#243 id=243 data-nosnippet>243</a>    </span><span class="attr">#[inline]
 <a href=#244 id=244 data-nosnippet>244</a>    </span><span class="kw">pub fn </span>as_mut_slice(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span>[T] {
 <a href=#245 id=245 data-nosnippet>245</a>        <span class="kw">unsafe </span>{
-<a href=#246 id=246 data-nosnippet>246</a>            <span class="kw">if </span><span class="self">self</span>.len == <span class="number">0 </span>{
+<a href=#246 id=246 data-nosnippet>246</a>            <span class="kw">if </span><a class="self" href="#244">self</a>.len == <span class="number">0 </span>{
 <a href=#247 id=247 data-nosnippet>247</a>                <span class="kw-2">&amp;mut </span>[]
 <a href=#248 id=248 data-nosnippet>248</a>            } <span class="kw">else </span>{
 <a href=#249 id=249 data-nosnippet>249</a>                <a href="https://doc.rust-lang.org/nightly/core/slice/raw/fn.from_raw_parts_mut.html">std::slice::from_raw_parts_mut</a>(<a class="self" href="#244">self</a>.idx.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span>T, <a class="self" href="#244">self</a>.len)
@@ -329,14 +329,14 @@
 <a href=#256 id=256 data-nosnippet>256</a>    <span class="attr">#[inline]
 <a href=#257 id=257 data-nosnippet>257</a>    </span><span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
 <a href=#258 id=258 data-nosnippet>258</a>        <span class="kw">unsafe </span>{
-<a href=#259 id=259 data-nosnippet>259</a>            <span class="kw">if </span>mem::needs_drop::&lt;T&gt;() {
+<a href=#259 id=259 data-nosnippet>259</a>            <span class="kw">if </span><a href="https://doc.rust-lang.org/nightly/core/mem/fn.needs_drop.html">mem::needs_drop</a>::&lt;T&gt;() {
 <a href=#260 id=260 data-nosnippet>260</a>                <span class="kw">for </span>i <span class="kw">in </span><span class="number">0</span>..<span class="self">self</span>.len {
 <a href=#261 id=261 data-nosnippet>261</a>                    ptr::drop_in_place::&lt;T&gt;(<span class="self">self</span>.idx.as_ptr().add(i) <span class="kw">as </span><span class="kw-2">*mut </span>T);
 <a href=#262 id=262 data-nosnippet>262</a>                }
 <a href=#263 id=263 data-nosnippet>263</a>            }
 <a href=#264 id=264 data-nosnippet>264</a>
-<a href=#265 id=265 data-nosnippet>265</a>            <span class="kw">if </span>!<span class="self">self</span>.empty {
-<a href=#266 id=266 data-nosnippet>266</a>                ffi::g_free(<a class="self" href="#257">self</a>.ptr.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span>ffi::gpointer);
+<a href=#265 id=265 data-nosnippet>265</a>            <span class="kw">if </span>!<a class="self" href="#257">self</a>.empty {
+<a href=#266 id=266 data-nosnippet>266</a>                <a href="../../../glib_sys/fn.g_free.html">ffi::g_free</a>(<a class="self" href="#257">self</a>.ptr.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><a href="../../../glib_sys/type.gpointer.html">ffi::gpointer</a>);
 <a href=#267 id=267 data-nosnippet>267</a>            }
 <a href=#268 id=268 data-nosnippet>268</a>        }
 <a href=#269 id=269 data-nosnippet>269</a>    }
@@ -347,7 +347,7 @@
 <a href=#274 id=274 data-nosnippet>274</a>
 <a href=#275 id=275 data-nosnippet>275</a>    <span class="attr">#[inline]
 <a href=#276 id=276 data-nosnippet>276</a>    </span><span class="kw">fn </span>next(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="self">Self</span>::Item&gt; {
-<a href=#277 id=277 data-nosnippet>277</a>        <span class="kw">if </span><span class="self">self</span>.len == <span class="number">0 </span>{
+<a href=#277 id=277 data-nosnippet>277</a>        <span class="kw">if </span><a class="self" href="#276">self</a>.len == <span class="number">0 </span>{
 <a href=#278 id=278 data-nosnippet>278</a>            <span class="kw">return </span><a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a>;
 <a href=#279 id=279 data-nosnippet>279</a>        }
 <a href=#280 id=280 data-nosnippet>280</a>
@@ -371,7 +371,7 @@
 <a href=#298 id=298 data-nosnippet>298</a>
 <a href=#299 id=299 data-nosnippet>299</a>    <span class="attr">#[inline]
 <a href=#300 id=300 data-nosnippet>300</a>    </span><span class="kw">fn </span>last(<span class="kw-2">mut </span><span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;T&gt; {
-<a href=#301 id=301 data-nosnippet>301</a>        <span class="kw">if </span><span class="self">self</span>.len == <span class="number">0 </span>{
+<a href=#301 id=301 data-nosnippet>301</a>        <span class="kw">if </span><a class="self" href="#300">self</a>.len == <span class="number">0 </span>{
 <a href=#302 id=302 data-nosnippet>302</a>            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None"><a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a>
 <a href=#303 id=303 data-nosnippet>303</a>        </a>} <span class="kw">else </span>{
 <a href=#304 id=304 data-nosnippet>304</a>            <a class="self" href="#300">self</a>.len -= <span class="number">1</span>;
@@ -383,7 +383,7 @@
 <a href=#310 id=310 data-nosnippet>310</a><span class="kw">impl</span>&lt;T: <a href="../translate.rs.html#2650-2652">TransparentType</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/iter/traits/double_ended/trait.DoubleEndedIterator.html">DoubleEndedIterator</a> <span class="kw">for </span><a href="#209-214">IntoIter</a>&lt;T&gt; {
 <a href=#311 id=311 data-nosnippet>311</a>    <span class="attr">#[inline]
 <a href=#312 id=312 data-nosnippet>312</a>    </span><span class="kw">fn </span>next_back(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;T&gt; {
-<a href=#313 id=313 data-nosnippet>313</a>        <span class="kw">if </span><span class="self">self</span>.len == <span class="number">0 </span>{
+<a href=#313 id=313 data-nosnippet>313</a>        <span class="kw">if </span><a class="self" href="#312">self</a>.len == <span class="number">0 </span>{
 <a href=#314 id=314 data-nosnippet>314</a>            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None"><a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a>
 <a href=#315 id=315 data-nosnippet>315</a>        </a>} <span class="kw">else </span>{
 <a href=#316 id=316 data-nosnippet>316</a>            <a class="self" href="#312">self</a>.len -= <span class="number">1</span>;
@@ -479,7 +479,7 @@
 <a href=#406 id=406 data-nosnippet>406</a>        <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert_eq.html">debug_assert_eq!</a>(mem::size_of::&lt;T&gt;(), mem::size_of::&lt;T::GlibType&gt;());
 <a href=#407 id=407 data-nosnippet>407</a>        <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert.html">debug_assert!</a>(!ptr.is_null() || len == <span class="number">0</span>);
 <a href=#408 id=408 data-nosnippet>408</a>
-<a href=#409 id=409 data-nosnippet>409</a>        <span class="kw">if </span>len == <span class="number">0 </span>{
+<a href=#409 id=409 data-nosnippet>409</a>        <span class="kw">if </span><a href="#405">len</a> == <span class="number">0 </span>{
 <a href=#410 id=410 data-nosnippet>410</a>            <span class="kw-2">&amp;</span>[]
 <a href=#411 id=411 data-nosnippet>411</a>        } <span class="kw">else </span>{
 <a href=#412 id=412 data-nosnippet>412</a>            <a href="https://doc.rust-lang.org/nightly/core/slice/raw/fn.from_raw_parts.html">std::slice::from_raw_parts</a>(<a href="#405">ptr</a> <span class="kw">as </span><span class="kw-2">*const </span>T, <a href="#405">len</a>)
@@ -493,7 +493,7 @@
 <a href=#420 id=420 data-nosnippet>420</a>        <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert_eq.html">debug_assert_eq!</a>(mem::size_of::&lt;T&gt;(), mem::size_of::&lt;T::GlibType&gt;());
 <a href=#421 id=421 data-nosnippet>421</a>        <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert.html">debug_assert!</a>(!ptr.is_null() || len == <span class="number">0</span>);
 <a href=#422 id=422 data-nosnippet>422</a>
-<a href=#423 id=423 data-nosnippet>423</a>        <span class="kw">if </span>len == <span class="number">0 </span>{
+<a href=#423 id=423 data-nosnippet>423</a>        <span class="kw">if </span><a href="#419">len</a> == <span class="number">0 </span>{
 <a href=#424 id=424 data-nosnippet>424</a>            <span class="kw-2">&amp;mut </span>[]
 <a href=#425 id=425 data-nosnippet>425</a>        } <span class="kw">else </span>{
 <a href=#426 id=426 data-nosnippet>426</a>            <a href="https://doc.rust-lang.org/nightly/core/slice/raw/fn.from_raw_parts_mut.html">std::slice::from_raw_parts_mut</a>(<a href="#419">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span>T, <a href="#419">len</a>)
@@ -510,7 +510,7 @@
 <a href=#437 id=437 data-nosnippet>437</a>        <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert_eq.html">debug_assert_eq!</a>(mem::size_of::&lt;T&gt;(), mem::size_of::&lt;T::GlibType&gt;());
 <a href=#438 id=438 data-nosnippet>438</a>        <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert.html">debug_assert!</a>(!ptr.is_null() || len == <span class="number">0</span>);
 <a href=#439 id=439 data-nosnippet>439</a>
-<a href=#440 id=440 data-nosnippet>440</a>        <span class="kw">if </span>len == <span class="number">0 </span>{
+<a href=#440 id=440 data-nosnippet>440</a>        <span class="kw">if </span><a href="#435">len</a> == <span class="number">0 </span>{
 <a href=#441 id=441 data-nosnippet>441</a>            <span class="kw-2">&amp;</span>[]
 <a href=#442 id=442 data-nosnippet>442</a>        } <span class="kw">else </span>{
 <a href=#443 id=443 data-nosnippet>443</a>            <a href="https://doc.rust-lang.org/nightly/core/slice/raw/fn.from_raw_parts.html">std::slice::from_raw_parts</a>(<a href="#434">ptr</a> <span class="kw">as </span><span class="kw-2">*const &amp;</span>T, <a href="#435">len</a>)
@@ -527,7 +527,7 @@
 <a href=#454 id=454 data-nosnippet>454</a>        <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert_eq.html">debug_assert_eq!</a>(mem::size_of::&lt;T&gt;(), mem::size_of::&lt;T::GlibType&gt;());
 <a href=#455 id=455 data-nosnippet>455</a>        <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert.html">debug_assert!</a>(!ptr.is_null() || len == <span class="number">0</span>);
 <a href=#456 id=456 data-nosnippet>456</a>
-<a href=#457 id=457 data-nosnippet>457</a>        <span class="kw">if </span>len == <span class="number">0 </span>{
+<a href=#457 id=457 data-nosnippet>457</a>        <span class="kw">if </span><a href="#452">len</a> == <span class="number">0 </span>{
 <a href=#458 id=458 data-nosnippet>458</a>            <span class="kw-2">&amp;mut </span>[]
 <a href=#459 id=459 data-nosnippet>459</a>        } <span class="kw">else </span>{
 <a href=#460 id=460 data-nosnippet>460</a>            <a href="https://doc.rust-lang.org/nightly/core/slice/raw/fn.from_raw_parts_mut.html">std::slice::from_raw_parts_mut</a>(<a href="#451">ptr</a> <span class="kw">as </span><span class="kw-2">*mut &amp;mut </span>T, <a href="#452">len</a>)
@@ -541,7 +541,7 @@
 <a href=#468 id=468 data-nosnippet>468</a>        <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert_eq.html">debug_assert_eq!</a>(mem::size_of::&lt;T&gt;(), mem::size_of::&lt;T::GlibType&gt;());
 <a href=#469 id=469 data-nosnippet>469</a>        <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert.html">debug_assert!</a>(!ptr.is_null() || len == <span class="number">0</span>);
 <a href=#470 id=470 data-nosnippet>470</a>
-<a href=#471 id=471 data-nosnippet>471</a>        <span class="kw">if </span>len == <span class="number">0 </span>{
+<a href=#471 id=471 data-nosnippet>471</a>        <span class="kw">if </span><a href="#467">len</a> == <span class="number">0 </span>{
 <a href=#472 id=472 data-nosnippet>472</a>            <a href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html#tymethod.default">Slice::default</a>()
 <a href=#473 id=473 data-nosnippet>473</a>        } <span class="kw">else </span>{
 <a href=#474 id=474 data-nosnippet>474</a>            <span class="comment">// Need to fully copy the array here.
@@ -557,13 +557,13 @@
 <a href=#484 id=484 data-nosnippet>484</a>        <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert_eq.html">debug_assert_eq!</a>(mem::size_of::&lt;T&gt;(), mem::size_of::&lt;T::GlibType&gt;());
 <a href=#485 id=485 data-nosnippet>485</a>        <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert.html">debug_assert!</a>(!ptr.is_null() || len == <span class="number">0</span>);
 <a href=#486 id=486 data-nosnippet>486</a>
-<a href=#487 id=487 data-nosnippet>487</a>        <span class="kw">if </span>len == <span class="number">0 </span>{
-<a href=#488 id=488 data-nosnippet>488</a>            ffi::g_free(<a href="#483">ptr</a> <span class="kw">as </span>ffi::gpointer);
+<a href=#487 id=487 data-nosnippet>487</a>        <span class="kw">if </span><a href="#483">len</a> == <span class="number">0 </span>{
+<a href=#488 id=488 data-nosnippet>488</a>            <a href="../../../glib_sys/fn.g_free.html">ffi::g_free</a>(<a href="#483">ptr</a> <span class="kw">as </span><a href="../../../glib_sys/type.gpointer.html">ffi::gpointer</a>);
 <a href=#489 id=489 data-nosnippet>489</a>            <a href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html#tymethod.default">Slice::default</a>()
 <a href=#490 id=490 data-nosnippet>490</a>        } <span class="kw">else </span>{
 <a href=#491 id=491 data-nosnippet>491</a>            <span class="comment">// Need to clone every item because we don't own it here but only
 <a href=#492 id=492 data-nosnippet>492</a>            // if this type requires explicit drop.
-<a href=#493 id=493 data-nosnippet>493</a>            </span><span class="kw">if </span>mem::needs_drop::&lt;T&gt;() {
+<a href=#493 id=493 data-nosnippet>493</a>            </span><span class="kw">if </span><a href="https://doc.rust-lang.org/nightly/core/mem/fn.needs_drop.html">mem::needs_drop</a>::&lt;T&gt;() {
 <a href=#494 id=494 data-nosnippet>494</a>                <span class="kw">for </span>i <span class="kw">in </span><span class="number">0</span>..len {
 <a href=#495 id=495 data-nosnippet>495</a>                    <span class="kw">let </span>p = ptr.add(i) <span class="kw">as </span><span class="kw-2">*mut </span>T;
 <a href=#496 id=496 data-nosnippet>496</a>                    <span class="kw">let </span>clone: T = (<span class="kw-2">*</span>p).clone();
@@ -583,8 +583,8 @@
 <a href=#510 id=510 data-nosnippet>510</a>        <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert_eq.html">debug_assert_eq!</a>(mem::size_of::&lt;T&gt;(), mem::size_of::&lt;T::GlibType&gt;());
 <a href=#511 id=511 data-nosnippet>511</a>        <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert.html">debug_assert!</a>(!ptr.is_null() || len == <span class="number">0</span>);
 <a href=#512 id=512 data-nosnippet>512</a>
-<a href=#513 id=513 data-nosnippet>513</a>        <span class="kw">if </span>len == <span class="number">0 </span>{
-<a href=#514 id=514 data-nosnippet>514</a>            ffi::g_free(<a href="#509">ptr</a> <span class="kw">as </span>ffi::gpointer);
+<a href=#513 id=513 data-nosnippet>513</a>        <span class="kw">if </span><a href="#509">len</a> == <span class="number">0 </span>{
+<a href=#514 id=514 data-nosnippet>514</a>            <a href="../../../glib_sys/fn.g_free.html">ffi::g_free</a>(<a href="#509">ptr</a> <span class="kw">as </span><a href="../../../glib_sys/type.gpointer.html">ffi::gpointer</a>);
 <a href=#515 id=515 data-nosnippet>515</a>            <a href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html#tymethod.default">Slice::default</a>()
 <a href=#516 id=516 data-nosnippet>516</a>        } <span class="kw">else </span>{
 <a href=#517 id=517 data-nosnippet>517</a>            <a href="#15-19">Slice</a> {
@@ -621,7 +621,7 @@
 <a href=#548 id=548 data-nosnippet>548</a>    </span><span class="doccomment">/// Returns the underlying pointer.
 <a href=#549 id=549 data-nosnippet>549</a>    </span><span class="attr">#[inline]
 <a href=#550 id=550 data-nosnippet>550</a>    </span><span class="kw">pub fn </span>as_ptr(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">*const </span>T::GlibType {
-<a href=#551 id=551 data-nosnippet>551</a>        <span class="kw">if </span><span class="self">self</span>.len == <span class="number">0 </span>{
+<a href=#551 id=551 data-nosnippet>551</a>        <span class="kw">if </span><a class="self" href="#550">self</a>.len == <span class="number">0 </span>{
 <a href=#552 id=552 data-nosnippet>552</a>            <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null.html">ptr::null</a>()
 <a href=#553 id=553 data-nosnippet>553</a>        } <span class="kw">else </span>{
 <a href=#554 id=554 data-nosnippet>554</a>            <a class="self" href="#550">self</a>.ptr.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>()
@@ -632,7 +632,7 @@
 <a href=#559 id=559 data-nosnippet>559</a>    </span><span class="doccomment">/// Returns the underlying pointer.
 <a href=#560 id=560 data-nosnippet>560</a>    </span><span class="attr">#[inline]
 <a href=#561 id=561 data-nosnippet>561</a>    </span><span class="kw">pub fn </span>as_mut_ptr(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">*mut </span>T::GlibType {
-<a href=#562 id=562 data-nosnippet>562</a>        <span class="kw">if </span><span class="self">self</span>.len == <span class="number">0 </span>{
+<a href=#562 id=562 data-nosnippet>562</a>        <span class="kw">if </span><a class="self" href="#561">self</a>.len == <span class="number">0 </span>{
 <a href=#563 id=563 data-nosnippet>563</a>            <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>()
 <a href=#564 id=564 data-nosnippet>564</a>        } <span class="kw">else </span>{
 <a href=#565 id=565 data-nosnippet>565</a>            <a class="self" href="#561">self</a>.ptr.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>()
@@ -643,7 +643,7 @@
 <a href=#570 id=570 data-nosnippet>570</a>    </span><span class="doccomment">/// Consumes the slice and returns the underlying pointer.
 <a href=#571 id=571 data-nosnippet>571</a>    </span><span class="attr">#[inline]
 <a href=#572 id=572 data-nosnippet>572</a>    </span><span class="kw">pub fn </span>into_raw(<span class="kw-2">mut </span><span class="self">self</span>) -&gt; <span class="kw-2">*mut </span>T::GlibType {
-<a href=#573 id=573 data-nosnippet>573</a>        <span class="kw">if </span><span class="self">self</span>.len == <span class="number">0 </span>{
+<a href=#573 id=573 data-nosnippet>573</a>        <span class="kw">if </span><a class="self" href="#572">self</a>.len == <span class="number">0 </span>{
 <a href=#574 id=574 data-nosnippet>574</a>            <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>()
 <a href=#575 id=575 data-nosnippet>575</a>        } <span class="kw">else </span>{
 <a href=#576 id=576 data-nosnippet>576</a>            <a class="self" href="#572">self</a>.len = <span class="number">0</span>;
@@ -687,7 +687,7 @@
 <a href=#614 id=614 data-nosnippet>614</a>    </span><span class="doccomment">/// Reserves at least this much additional capacity.
 <a href=#615 id=615 data-nosnippet>615</a>    </span><span class="kw">pub fn </span>reserve(<span class="kw-2">&amp;mut </span><span class="self">self</span>, additional: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) {
 <a href=#616 id=616 data-nosnippet>616</a>        <span class="comment">// Nothing new to reserve as there's still enough space
-<a href=#617 id=617 data-nosnippet>617</a>        </span><span class="kw">if </span><span class="self">self</span>.len + additional &lt;= <span class="self">self</span>.capacity {
+<a href=#617 id=617 data-nosnippet>617</a>        </span><span class="kw">if </span><a class="self" href="#615">self</a>.len + <a href="#615">additional</a> &lt;= <a class="self" href="#615">self</a>.capacity {
 <a href=#618 id=618 data-nosnippet>618</a>            <span class="kw">return</span>;
 <a href=#619 id=619 data-nosnippet>619</a>        }
 <a href=#620 id=620 data-nosnippet>620</a>
@@ -699,13 +699,13 @@
 <a href=#626 id=626 data-nosnippet>626</a>        <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.assert.html">assert!</a>(new_capacity &gt; <span class="self">self</span>.capacity);
 <a href=#627 id=627 data-nosnippet>627</a>
 <a href=#628 id=628 data-nosnippet>628</a>        <span class="kw">unsafe </span>{
-<a href=#629 id=629 data-nosnippet>629</a>            <span class="kw">let </span>ptr = <span class="kw">if </span><span class="self">self</span>.capacity == <span class="number">0 </span>{
+<a href=#629 id=629 data-nosnippet>629</a>            <span class="kw">let </span>ptr = <span class="kw">if </span><a class="self" href="#615">self</a>.capacity == <span class="number">0 </span>{
 <a href=#630 id=630 data-nosnippet>630</a>                <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>()
 <a href=#631 id=631 data-nosnippet>631</a>            } <span class="kw">else </span>{
 <a href=#632 id=632 data-nosnippet>632</a>                <a class="self" href="#615">self</a>.ptr.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_
 <a href=#633 id=633 data-nosnippet>633</a>            </span>};
 <a href=#634 id=634 data-nosnippet>634</a>            <span class="kw">let </span>new_ptr =
-<a href=#635 id=635 data-nosnippet>635</a>                ffi::g_realloc(<a href="#629">ptr</a>, <a href="https://doc.rust-lang.org/nightly/core/mem/fn.size_of.html">mem::size_of</a>::&lt;T&gt;().<a href="https://doc.rust-lang.org/nightly/core/foreigntype.num.html#method.checked_mul">checked_mul</a>(<a href="#621">new_capacity</a>).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap">unwrap</a>())
+<a href=#635 id=635 data-nosnippet>635</a>                <a href="../../../glib_sys/fn.g_realloc.html">ffi::g_realloc</a>(<a href="#629">ptr</a>, <a href="https://doc.rust-lang.org/nightly/core/mem/fn.size_of.html">mem::size_of</a>::&lt;T&gt;().<a href="https://doc.rust-lang.org/nightly/core/foreigntype.num.html#method.checked_mul">checked_mul</a>(<a href="#621">new_capacity</a>).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap">unwrap</a>())
 <a href=#636 id=636 data-nosnippet>636</a>                    <span class="kw">as </span><span class="kw-2">*mut </span>T::GlibType;
 <a href=#637 id=637 data-nosnippet>637</a>            <a class="self" href="#615">self</a>.ptr = <a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.new_unchecked">ptr::NonNull::new_unchecked</a>(<a href="#634">new_ptr</a>);
 <a href=#638 id=638 data-nosnippet>638</a>            <a class="self" href="#615">self</a>.capacity = <a href="#621">new_capacity</a>;
@@ -717,7 +717,7 @@
 <a href=#644 id=644 data-nosnippet>644</a>    </span><span class="attr">#[inline]
 <a href=#645 id=645 data-nosnippet>645</a>    </span><span class="kw">pub fn </span>as_slice(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[T] {
 <a href=#646 id=646 data-nosnippet>646</a>        <span class="kw">unsafe </span>{
-<a href=#647 id=647 data-nosnippet>647</a>            <span class="kw">if </span><span class="self">self</span>.len == <span class="number">0 </span>{
+<a href=#647 id=647 data-nosnippet>647</a>            <span class="kw">if </span><a class="self" href="#645">self</a>.len == <span class="number">0 </span>{
 <a href=#648 id=648 data-nosnippet>648</a>                <span class="kw-2">&amp;</span>[]
 <a href=#649 id=649 data-nosnippet>649</a>            } <span class="kw">else </span>{
 <a href=#650 id=650 data-nosnippet>650</a>                <a href="https://doc.rust-lang.org/nightly/core/slice/raw/fn.from_raw_parts.html">std::slice::from_raw_parts</a>(<a class="self" href="#645">self</a>.ptr.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span>T, <a class="self" href="#645">self</a>.len)
@@ -730,7 +730,7 @@
 <a href=#657 id=657 data-nosnippet>657</a>    </span><span class="attr">#[inline]
 <a href=#658 id=658 data-nosnippet>658</a>    </span><span class="kw">pub fn </span>as_mut_slice(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span>[T] {
 <a href=#659 id=659 data-nosnippet>659</a>        <span class="kw">unsafe </span>{
-<a href=#660 id=660 data-nosnippet>660</a>            <span class="kw">if </span><span class="self">self</span>.len == <span class="number">0 </span>{
+<a href=#660 id=660 data-nosnippet>660</a>            <span class="kw">if </span><a class="self" href="#658">self</a>.len == <span class="number">0 </span>{
 <a href=#661 id=661 data-nosnippet>661</a>                <span class="kw-2">&amp;mut </span>[]
 <a href=#662 id=662 data-nosnippet>662</a>            } <span class="kw">else </span>{
 <a href=#663 id=663 data-nosnippet>663</a>                <a href="https://doc.rust-lang.org/nightly/core/slice/raw/fn.from_raw_parts_mut.html">std::slice::from_raw_parts_mut</a>(<a class="self" href="#658">self</a>.ptr.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span>T, <a class="self" href="#658">self</a>.len)
@@ -743,7 +743,7 @@
 <a href=#670 id=670 data-nosnippet>670</a>    </span><span class="attr">#[inline]
 <a href=#671 id=671 data-nosnippet>671</a>    </span><span class="kw">pub fn </span>clear(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
 <a href=#672 id=672 data-nosnippet>672</a>        <span class="kw">unsafe </span>{
-<a href=#673 id=673 data-nosnippet>673</a>            <span class="kw">if </span>mem::needs_drop::&lt;T&gt;() {
+<a href=#673 id=673 data-nosnippet>673</a>            <span class="kw">if </span><a href="https://doc.rust-lang.org/nightly/core/mem/fn.needs_drop.html">mem::needs_drop</a>::&lt;T&gt;() {
 <a href=#674 id=674 data-nosnippet>674</a>                <span class="kw">for </span>i <span class="kw">in </span><span class="number">0</span>..<span class="self">self</span>.len {
 <a href=#675 id=675 data-nosnippet>675</a>                    ptr::drop_in_place::&lt;T&gt;(<span class="self">self</span>.ptr.as_ptr().add(i) <span class="kw">as </span><span class="kw-2">*mut </span>T);
 <a href=#676 id=676 data-nosnippet>676</a>                }
@@ -758,7 +758,7 @@
 <a href=#685 id=685 data-nosnippet>685</a>    </span><span class="attr">#[inline]
 <a href=#686 id=686 data-nosnippet>686</a>    </span><span class="kw">pub fn </span>extend_from_slice(<span class="kw-2">&amp;mut </span><span class="self">self</span>, other: <span class="kw-2">&amp;</span>[T]) {
 <a href=#687 id=687 data-nosnippet>687</a>        <span class="comment">// Nothing new to reserve as there's still enough space
-<a href=#688 id=688 data-nosnippet>688</a>        </span><span class="kw">if </span><span class="self">self</span>.len + other.len() &gt; <span class="self">self</span>.capacity {
+<a href=#688 id=688 data-nosnippet>688</a>        </span><span class="kw">if </span><a class="self" href="#686">self</a>.len + <a href="#686">other</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.len">len</a>() &gt; <a class="self" href="#686">self</a>.capacity {
 <a href=#689 id=689 data-nosnippet>689</a>            <a class="self" href="#686">self</a>.<a href="#615-640">reserve</a>(<a href="#686">other</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.len">len</a>());
 <a href=#690 id=690 data-nosnippet>690</a>        }
 <a href=#691 id=691 data-nosnippet>691</a>
@@ -779,12 +779,12 @@
 <a href=#706 id=706 data-nosnippet>706</a>        <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.assert.html">assert!</a>(index &lt;= <span class="self">self</span>.len);
 <a href=#707 id=707 data-nosnippet>707</a>
 <a href=#708 id=708 data-nosnippet>708</a>        <span class="comment">// Nothing new to reserve as there's still enough space
-<a href=#709 id=709 data-nosnippet>709</a>        </span><span class="kw">if </span><span class="self">self</span>.len + <span class="number">1 </span>&gt; <span class="self">self</span>.capacity {
+<a href=#709 id=709 data-nosnippet>709</a>        </span><span class="kw">if </span><a class="self" href="#705">self</a>.len + <span class="number">1 </span>&gt; <a class="self" href="#705">self</a>.capacity {
 <a href=#710 id=710 data-nosnippet>710</a>            <a class="self" href="#705">self</a>.<a href="#615-640">reserve</a>(<span class="number">1</span>);
 <a href=#711 id=711 data-nosnippet>711</a>        }
 <a href=#712 id=712 data-nosnippet>712</a>
 <a href=#713 id=713 data-nosnippet>713</a>        <span class="kw">unsafe </span>{
-<a href=#714 id=714 data-nosnippet>714</a>            <span class="kw">if </span>index == <span class="self">self</span>.len {
+<a href=#714 id=714 data-nosnippet>714</a>            <span class="kw">if </span><a href="#705">index</a> == <a class="self" href="#705">self</a>.len {
 <a href=#715 id=715 data-nosnippet>715</a>                <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.write.html">ptr::write</a>(<a class="self" href="#705">self</a>.ptr.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>().<a href="https://doc.rust-lang.org/nightly/core/ptr/foreigntype.mut_ptr.html#method.add">add</a>(<a class="self" href="#705">self</a>.len) <span class="kw">as </span><span class="kw-2">*mut </span>T, <a href="#705">item</a>);
 <a href=#716 id=716 data-nosnippet>716</a>            } <span class="kw">else </span>{
 <a href=#717 id=717 data-nosnippet>717</a>                <span class="kw">let </span>p = <a class="self" href="#705">self</a>.ptr.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>().<a href="https://doc.rust-lang.org/nightly/core/ptr/foreigntype.mut_ptr.html#method.add">add</a>(<a href="#705">index</a>);
@@ -802,7 +802,7 @@
 <a href=#729 id=729 data-nosnippet>729</a>    #[allow(clippy::int_plus_one)]
 <a href=#730 id=730 data-nosnippet>730</a>    </span><span class="kw">pub fn </span>push(<span class="kw-2">&amp;mut </span><span class="self">self</span>, item: T) {
 <a href=#731 id=731 data-nosnippet>731</a>        <span class="comment">// Nothing new to reserve as there's still enough space
-<a href=#732 id=732 data-nosnippet>732</a>        </span><span class="kw">if </span><span class="self">self</span>.len + <span class="number">1 </span>&gt; <span class="self">self</span>.capacity {
+<a href=#732 id=732 data-nosnippet>732</a>        </span><span class="kw">if </span><a class="self" href="#730">self</a>.len + <span class="number">1 </span>&gt; <a class="self" href="#730">self</a>.capacity {
 <a href=#733 id=733 data-nosnippet>733</a>            <a class="self" href="#730">self</a>.<a href="#615-640">reserve</a>(<span class="number">1</span>);
 <a href=#734 id=734 data-nosnippet>734</a>        }
 <a href=#735 id=735 data-nosnippet>735</a>
@@ -834,7 +834,7 @@
 <a href=#761 id=761 data-nosnippet>761</a>    </span><span class="doccomment">/// Removes the last item of the slice and returns it.
 <a href=#762 id=762 data-nosnippet>762</a>    </span><span class="attr">#[inline]
 <a href=#763 id=763 data-nosnippet>763</a>    </span><span class="kw">pub fn </span>pop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;T&gt; {
-<a href=#764 id=764 data-nosnippet>764</a>        <span class="kw">if </span><span class="self">self</span>.len == <span class="number">0 </span>{
+<a href=#764 id=764 data-nosnippet>764</a>        <span class="kw">if </span><a class="self" href="#763">self</a>.len == <span class="number">0 </span>{
 <a href=#765 id=765 data-nosnippet>765</a>            <span class="kw">return </span><a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a>;
 <a href=#766 id=766 data-nosnippet>766</a>        }
 <a href=#767 id=767 data-nosnippet>767</a>
@@ -853,7 +853,7 @@
 <a href=#780 id=780 data-nosnippet>780</a>    /// If there are fewer than `len` items then this has no effect.
 <a href=#781 id=781 data-nosnippet>781</a>    </span><span class="attr">#[inline]
 <a href=#782 id=782 data-nosnippet>782</a>    </span><span class="kw">pub fn </span>truncate(<span class="kw-2">&amp;mut </span><span class="self">self</span>, len: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) {
-<a href=#783 id=783 data-nosnippet>783</a>        <span class="kw">if </span><span class="self">self</span>.len &lt;= len {
+<a href=#783 id=783 data-nosnippet>783</a>        <span class="kw">if </span><a class="self" href="#782">self</a>.len &lt;= <a href="#782">len</a> {
 <a href=#784 id=784 data-nosnippet>784</a>            <span class="kw">return</span>;
 <a href=#785 id=785 data-nosnippet>785</a>        }
 <a href=#786 id=786 data-nosnippet>786</a>
@@ -908,7 +908,7 @@
 <a href=#835 id=835 data-nosnippet>835</a>    <span class="attr">#[inline]
 <a href=#836 id=836 data-nosnippet>836</a>    </span><span class="kw">fn </span>to_glib_container(<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="self">self</span>) -&gt; <a href="../translate.rs.html#259-262">Stash</a>&lt;<span class="lifetime">'a</span>, <span class="kw-2">*mut </span>T::GlibType, <span class="self">Self</span>&gt; {
 <a href=#837 id=837 data-nosnippet>837</a>        <span class="kw">unsafe </span>{
-<a href=#838 id=838 data-nosnippet>838</a>            <span class="kw">let </span>ptr = ffi::g_malloc(<a href="https://doc.rust-lang.org/nightly/core/mem/fn.size_of.html">mem::size_of</a>::&lt;T&gt;().<a href="https://doc.rust-lang.org/nightly/core/foreigntype.num.html#method.checked_mul">checked_mul</a>(<a class="self" href="#836">self</a>.<a href="#585-587">len</a>()).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap">unwrap</a>())
+<a href=#838 id=838 data-nosnippet>838</a>            <span class="kw">let </span>ptr = <a href="../../../glib_sys/fn.g_malloc.html">ffi::g_malloc</a>(<a href="https://doc.rust-lang.org/nightly/core/mem/fn.size_of.html">mem::size_of</a>::&lt;T&gt;().<a href="https://doc.rust-lang.org/nightly/core/foreigntype.num.html#method.checked_mul">checked_mul</a>(<a class="self" href="#836">self</a>.<a href="#585-587">len</a>()).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap">unwrap</a>())
 <a href=#839 id=839 data-nosnippet>839</a>                <span class="kw">as </span><span class="kw-2">*mut </span>T::GlibType;
 <a href=#840 id=840 data-nosnippet>840</a>            <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.copy_nonoverlapping.html">ptr::copy_nonoverlapping</a>(<a class="self" href="#836">self</a>.<a href="#550-556">as_ptr</a>(), <a href="#838">ptr</a>, <a class="self" href="#836">self</a>.<a href="#585-587">len</a>());
 <a href=#841 id=841 data-nosnippet>841</a>            <a href="../translate.rs.html#259-262">Stash</a>(<a href="#838">ptr</a>, <a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">PhantomData</a>)
