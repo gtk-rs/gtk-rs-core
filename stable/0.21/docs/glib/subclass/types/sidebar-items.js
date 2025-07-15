@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["register_dynamic_type","register_type"],"struct":["InitializingObject","InitializingType","TypeData"],"trait":["ClassStruct","FromObject","InstanceStruct","InstanceStructExt","InterfaceList","InterfaceStruct","IsImplementable","IsSubclassable","IsSubclassableExt","ObjectSubclass","ObjectSubclassExt","ObjectSubclassIsExt","ObjectSubclassType"]};

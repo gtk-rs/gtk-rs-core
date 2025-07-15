@@ -1,0 +1,109 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="`Value` binding and helper traits."><title>glib::value - Rust</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-aa0817cf.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.90.0-nightly (a00149764 2025-07-14)" data-channel="nightly" data-search-js="search-179e01a3.js" data-settings-js="settings-5514c975.js" ><script src="../../static.files/storage-4e99c027.js"></script><script defer src="../sidebar-items.js"></script><script defer src="../../static.files/main-673ee1e0.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-32bb7600.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc mod"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
+
+    function checkDocsLatestStable() {
+        function popup(msg, url) { return `
+            <style scoped="scoped">
+                .popup {
+                    max-width: 16em;
+                    background-color: #fff;
+                    position: fixed;
+                    z-index: 1;
+                    margin-left: auto;
+                    bottom: 1em;
+                    right: 1em;
+                    border-radius: 5px;
+                    box-shadow: 1px 1px 4px #777;
+                }
+
+                .popup a.version {
+                    color: #e57300;
+                    padding: 0.6em 1em;
+                    display: block;
+                }
+                .popup a.version:hover {
+                    color: #b25900;
+                }
+
+                .popup a.close {
+                    color: white;
+                    background: grey;
+                    border-radius: 99px;
+                    display: inline-block;
+                    width: 19px;
+                    line-height: 19px;
+                    font-weight: bold;
+                    text-align: center;
+                    margin: 0.6em;
+                    float: right;
+                }
+                .popup a.close:hover {
+                    background: black;
+                }
+            </style>
+            <section class="popup" id="gir_docs_popup">
+                <a class="close" href="#" onclick="document.getElementById('gir_docs_popup').remove(); return false">×</a>
+                <a class="version" href="https://gtk-rs.org/gtk-rs-core/stable/latest/docs">
+                    ⚠ ${msg}
+                </a>
+            </section>
+        ` };
+
+        if ("0.21" == "main") {
+            document.body.insertAdjacentHTML(
+                'beforeend',
+                popup("This is the development version. Go to latest stable version.", "stable/latest")
+            );
+        } else {
+            fetch('https://gtk-rs.org/gtk-rs-core/LATEST_RELEASE_BRANCH')
+                .then(response => response.text())
+                .then(latest_branch => {
+                    if (latest_branch.trim() != "0.21") {
+                        document.body.insertAdjacentHTML(
+                            'beforeend',
+                            popup("This version is outdated. Go to latest version.", "stable/latest")
+                        );
+                    }
+                });
+        }
+    }
+</script>
+
+
+<nav class="mobile-topbar"><button class="sidebar-menu-toggle" title="show sidebar"></button></nav><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../../glib/index.html">glib</a><span class="version">0.21.0</span></h2></div><div class="sidebar-elems"><section id="rustdoc-toc"><h2 class="location"><a href="#">Module value</a></h2><h3><a href="#">Sections</a></h3><ul class="block top-toc"><li><a href="#examples" title="Examples">Examples</a></li></ul><h3><a href="#structs">Module Items</a></h3><ul class="block"><li><a href="#structs" title="Structs">Structs</a></li><li><a href="#enums" title="Enums">Enums</a></li><li><a href="#traits" title="Traits">Traits</a></li></ul></section><div id="rustdoc-modnav"><h2 class="in-crate"><a href="../index.html">In crate glib</a></h2></div></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><div class="width-limiter"><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><div class="rustdoc-breadcrumbs"><a href="../index.html">glib</a></div><h1>Module <span>value</span><button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><rustdoc-toolbar></rustdoc-toolbar><span class="sub-heading"><a class="src" href="../../src/glib/value.rs.html#4-1751">Source</a> </span></div><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p><code>Value</code> binding and helper traits.</p>
+<p>The type of a <a href="struct.Value.html"><code>Value</code></a> is dynamic in that it generally
+isn’t known at compile time but once created a <code>Value</code> can’t change its
+type.</p>
+<p><a href="struct.SendValue.html"><code>SendValue</code></a> is a version of <a href="struct.Value.html"><code>Value</code></a>
+that can only store types that implement <code>Send</code> and as such implements <code>Send</code> itself. It
+dereferences to <code>Value</code> so it can be used everywhere <code>Value</code> references are accepted.</p>
+<p>Supported types are <code>bool</code>, <code>i8</code>, <code>u8</code>, <code>i32</code>, <code>u32</code>, <code>i64</code>, <code>u64</code>, <code>f32</code>,
+<code>f64</code>, <code>String</code> and objects (<code>T: IsA&lt;Object&gt;</code>).</p>
+<h2 id="examples"><a class="doc-anchor" href="#examples">§</a>Examples</h2>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>glib::prelude::<span class="kw-2">*</span>; <span class="comment">// or `use gtk::prelude::*;`
+</span><span class="kw">use </span>glib::Value;
+
+<span class="comment">// Value implement From&lt;&amp;i32&gt;, From&lt;&amp;str&gt; and From&lt;Option&lt;&amp;str&gt;&gt;.
+// Another option is the `ToValue` trait.
+</span><span class="kw">let </span><span class="kw-2">mut </span>num = <span class="number">10</span>.to_value();
+<span class="kw">let </span><span class="kw-2">mut </span>hello = Value::from(<span class="string">"Hello!"</span>);
+<span class="kw">let </span>none: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt; = <span class="prelude-val">None</span>;
+<span class="kw">let </span>str_none = none.to_value();
+
+<span class="comment">// `is` tests the type of the value.
+</span><span class="macro">assert!</span>(num.is::&lt;i32&gt;());
+<span class="macro">assert!</span>(hello.is::&lt;String&gt;());
+
+<span class="comment">// `get` tries to get an optional value of the specified type
+// and returns an `Err` if the type doesn't match.
+</span><span class="macro">assert_eq!</span>(num.get(), <span class="prelude-val">Ok</span>(<span class="number">10</span>));
+<span class="macro">assert!</span>(num.get::&lt;String&gt;().is_err());
+<span class="macro">assert_eq!</span>(hello.get(), <span class="prelude-val">Ok</span>(String::from(<span class="string">"Hello!"</span>)));
+<span class="macro">assert_eq!</span>(hello.get::&lt;String&gt;(), <span class="prelude-val">Ok</span>(String::from(<span class="string">"Hello!"</span>)));
+<span class="macro">assert_eq!</span>(str_none.get::&lt;<span class="prelude-ty">Option</span>&lt;String&gt;&gt;(), <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>));</code></pre></div>
+</div></details><h2 id="structs" class="section-header">Structs<a href="#structs" class="anchor">§</a></h2><dl class="item-table"><dt><a class="struct" href="struct.BoxedValue.html" title="struct glib::value::BoxedValue">Boxed<wbr>Value</a></dt><dd>A <a href="struct.Value.html" title="struct glib::value::Value"><code>Value</code></a> containing another <a href="struct.Value.html" title="struct glib::value::Value"><code>Value</code></a>.</dd><dt><a class="struct" href="struct.CharTypeChecker.html" title="struct glib::value::CharTypeChecker">Char<wbr>Type<wbr>Checker</a></dt><dt><a class="struct" href="struct.GenericValueTypeChecker.html" title="struct glib::value::GenericValueTypeChecker">Generic<wbr>Value<wbr>Type<wbr>Checker</a></dt><dd>Generic <code>Value</code> type checker for types.</dd><dt><a class="struct" href="struct.GenericValueTypeOrNoneChecker.html" title="struct glib::value::GenericValueTypeOrNoneChecker">Generic<wbr>Value<wbr>Type<wbr>OrNone<wbr>Checker</a></dt><dd>Generic <code>Value</code> type checker for optional types.</dd><dt><a class="struct" href="struct.NopChecker.html" title="struct glib::value::NopChecker">NopChecker</a></dt><dt><a class="struct" href="struct.SendValue.html" title="struct glib::value::SendValue">Send<wbr>Value</a></dt><dd>A version of <a href="struct.Value.html"><code>Value</code></a> for storing <code>Send</code> types, that implements Send
+itself.</dd><dt><a class="struct" href="struct.Value.html" title="struct glib::value::Value">Value</a></dt><dd>A generic value capable of carrying various types.</dd><dt><a class="struct" href="struct.ValueTypeMismatchError.html" title="struct glib::value::ValueTypeMismatchError">Value<wbr>Type<wbr>Mismatch<wbr>Error</a></dt><dd>An error returned from the <a href="struct.Value.html#method.get"><code>get</code></a> function
+on a <a href="struct.Value.html"><code>Value</code></a> for non-optional types an <code>Option</code>.</dd><dt><a class="struct" href="struct.ValueTypeOrNoneChecker.html" title="struct glib::value::ValueTypeOrNoneChecker">Value<wbr>Type<wbr>OrNone<wbr>Checker</a></dt><dd>Wrapped <code>Value</code> type checker for optional types.</dd></dl><h2 id="enums" class="section-header">Enums<a href="#enums" class="anchor">§</a></h2><dl class="item-table"><dt><a class="enum" href="enum.InvalidCharError.html" title="enum glib::value::InvalidCharError">Invalid<wbr>Char<wbr>Error</a></dt><dd>An error returned from the <a href="struct.Value.html#method.get"><code>get</code></a> function
+on a <a href="struct.Value.html"><code>Value</code></a> for char (which are internally u32) types.</dd><dt><a class="enum" href="enum.ValueTypeMismatchOrNoneError.html" title="enum glib::value::ValueTypeMismatchOrNoneError">Value<wbr>Type<wbr>Mismatch<wbr>OrNone<wbr>Error</a></dt><dd>An error returned from the <a href="struct.Value.html#method.get"><code>get</code></a>
+function on a <a href="struct.Value.html"><code>Value</code></a> for optional types.</dd></dl><h2 id="traits" class="section-header">Traits<a href="#traits" class="anchor">§</a></h2><dl class="item-table"><dt><a class="trait" href="trait.FromValue.html" title="trait glib::value::FromValue">From<wbr>Value</a></dt><dd>Trait to retrieve the contained value from a <code>Value</code>.</dd><dt><a class="trait" href="trait.FromValueOptional.html" title="trait glib::value::FromValueOptional">From<wbr>Value<wbr>Optional</a></dt><dd>Trait for types that implement <code>FromValue</code> and are Optional.</dd><dt><a class="trait" href="trait.ToSendValue.html" title="trait glib::value::ToSendValue">ToSend<wbr>Value</a></dt><dd>Converts to <code>SendValue</code>.</dd><dt><a class="trait" href="trait.ToValue.html" title="trait glib::value::ToValue">ToValue</a></dt><dd>Trait to convert a value to a <code>Value</code>.</dd><dt><a class="trait" href="trait.ToValueOptional.html" title="trait glib::value::ToValueOptional">ToValue<wbr>Optional</a></dt><dd>Trait to convert an <code>Option</code> to a <code>Value</code> for optional types.</dd><dt><a class="trait" href="trait.ValueType.html" title="trait glib::value::ValueType">Value<wbr>Type</a></dt><dd>A type that can be stored in <code>Value</code>s.</dd><dt><a class="trait" href="trait.ValueTypeChecker.html" title="trait glib::value::ValueTypeChecker">Value<wbr>Type<wbr>Checker</a></dt><dd>Trait for <code>Value</code> type checkers.</dd><dt><a class="trait" href="trait.ValueTypeOptional.html" title="trait glib::value::ValueTypeOptional">Value<wbr>Type<wbr>Optional</a></dt><dd>A type that can be stored in <code>Value</code>s and is optional.</dd></dl></section></div></main></body></html>

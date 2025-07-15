@@ -1,0 +1,133 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Trait containing all `struct@AsyncInitable` methods."><title>AsyncInitableExt in gio::prelude - Rust</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-aa0817cf.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.90.0-nightly (a00149764 2025-07-14)" data-channel="nightly" data-search-js="search-179e01a3.js" data-settings-js="settings-5514c975.js" ><script src="../../static.files/storage-4e99c027.js"></script><script defer src="sidebar-items.js"></script><script defer src="../../static.files/main-673ee1e0.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-32bb7600.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc trait"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
+
+    function checkDocsLatestStable() {
+        function popup(msg, url) { return `
+            <style scoped="scoped">
+                .popup {
+                    max-width: 16em;
+                    background-color: #fff;
+                    position: fixed;
+                    z-index: 1;
+                    margin-left: auto;
+                    bottom: 1em;
+                    right: 1em;
+                    border-radius: 5px;
+                    box-shadow: 1px 1px 4px #777;
+                }
+
+                .popup a.version {
+                    color: #e57300;
+                    padding: 0.6em 1em;
+                    display: block;
+                }
+                .popup a.version:hover {
+                    color: #b25900;
+                }
+
+                .popup a.close {
+                    color: white;
+                    background: grey;
+                    border-radius: 99px;
+                    display: inline-block;
+                    width: 19px;
+                    line-height: 19px;
+                    font-weight: bold;
+                    text-align: center;
+                    margin: 0.6em;
+                    float: right;
+                }
+                .popup a.close:hover {
+                    background: black;
+                }
+            </style>
+            <section class="popup" id="gir_docs_popup">
+                <a class="close" href="#" onclick="document.getElementById('gir_docs_popup').remove(); return false">×</a>
+                <a class="version" href="https://gtk-rs.org/gtk-rs-core/stable/latest/docs">
+                    ⚠ ${msg}
+                </a>
+            </section>
+        ` };
+
+        if ("0.21" == "main") {
+            document.body.insertAdjacentHTML(
+                'beforeend',
+                popup("This is the development version. Go to latest stable version.", "stable/latest")
+            );
+        } else {
+            fetch('https://gtk-rs.org/gtk-rs-core/LATEST_RELEASE_BRANCH')
+                .then(response => response.text())
+                .then(latest_branch => {
+                    if (latest_branch.trim() != "0.21") {
+                        document.body.insertAdjacentHTML(
+                            'beforeend',
+                            popup("This version is outdated. Go to latest version.", "stable/latest")
+                        );
+                    }
+                });
+        }
+    }
+</script>
+
+
+<nav class="mobile-topbar"><button class="sidebar-menu-toggle" title="show sidebar"></button></nav><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../../gio/index.html">gio</a><span class="version">0.21.0</span></h2></div><div class="sidebar-elems"><section id="rustdoc-toc"><h2 class="location"><a href="#">Async<wbr>Initable<wbr>Ext</a></h2><h3><a href="#">Sections</a></h3><ul class="block top-toc"><li><a href="#implementors-1" title="Implementors">Implementors</a></li></ul><h3><a href="#provided-methods">Provided Methods</a></h3><ul class="block"><li><a href="#method.init_async" title="init_async">init_async</a></li><li><a href="#method.init_future" title="init_future">init_future</a></li></ul><h3><a href="#dyn-compatibility">Dyn Compatibility</a></h3><h3><a href="#implementors">Implementors</a></h3></section><div id="rustdoc-modnav"><h2><a href="index.html">In gio::<wbr>prelude</a></h2></div></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><div class="width-limiter"><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><div class="rustdoc-breadcrumbs"><a href="../index.html">gio</a>::<wbr><a href="index.html">prelude</a></div><h1>Trait <span class="trait">AsyncInitableExt</span><button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><rustdoc-toolbar></rustdoc-toolbar><span class="sub-heading"><a class="src" href="../../src/gio/auto/async_initable.rs.html#134-236">Source</a> </span></div><pre class="rust item-decl"><code>pub trait AsyncInitableExt: <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.AsyncInitable.html" title="struct gio::AsyncInitable">AsyncInitable</a>&gt; + 'static {
+    // Provided methods
+    unsafe fn <a href="#method.init_async" class="fn">init_async</a>&lt;P: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html" title="trait core::ops::function::FnOnce">FnOnce</a>(<a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;) + 'static&gt;(
+        &amp;self,
+        io_priority: <a class="struct" href="../../glib/source/struct.Priority.html" title="struct glib::source::Priority">Priority</a>,
+        cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.Cancellable.html" title="struct gio::Cancellable">Cancellable</a>&gt;&gt;,
+        callback: P,
+    ) { ... }
+<span class="item-spacer"></span>    unsafe fn <a href="#method.init_future" class="fn">init_future</a>(
+        &amp;self,
+        io_priority: <a class="struct" href="../../glib/source/struct.Priority.html" title="struct glib::source::Priority">Priority</a>,
+    ) -&gt; <a class="struct" href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html" title="struct core::pin::Pin">Pin</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box_</a>&lt;dyn <a class="trait" href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html" title="trait core::future::future::Future">Future</a>&lt;Output = <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;&gt; + 'static&gt;&gt; { ... }
+}</code></pre><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>Trait containing all <a href="../struct.AsyncInitable.html" title="struct gio::AsyncInitable"><code>AsyncInitable</code></a> methods.</p>
+<h2 id="implementors-1"><a class="doc-anchor" href="#implementors-1">§</a>Implementors</h2>
+<p><a href="../struct.AsyncInitable.html" title="struct gio::AsyncInitable"><code>AsyncInitable</code></a>, <a href="../struct.DBusConnection.html" title="struct gio::DBusConnection"><code>DBusConnection</code></a>, <a href="../struct.DBusProxy.html" title="struct gio::DBusProxy"><code>DBusProxy</code></a></p>
+</div></details><h2 id="provided-methods" class="section-header">Provided Methods<a href="#provided-methods" class="anchor">§</a></h2><div class="methods"><details class="toggle method-toggle" open><summary><section id="method.init_async" class="method"><a class="src rightside" href="../../src/gio/auto/async_initable.rs.html#178-221">Source</a><h4 class="code-header">unsafe fn <a href="#method.init_async" class="fn">init_async</a>&lt;P: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html" title="trait core::ops::function::FnOnce">FnOnce</a>(<a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;) + 'static&gt;(
+    &amp;self,
+    io_priority: <a class="struct" href="../../glib/source/struct.Priority.html" title="struct glib::source::Priority">Priority</a>,
+    cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.Cancellable.html" title="struct gio::Cancellable">Cancellable</a>&gt;&gt;,
+    callback: P,
+)</h4></section></summary><div class="docblock"><p>Starts asynchronous initialization of the object implementing the
+interface. This must be done before any real use of the object after
+initial construction. If the object also implements #GInitable you can
+optionally call g_initable_init() instead.</p>
+<p>This method is intended for language bindings. If writing in C,
+g_async_initable_new_async() should typically be used instead.</p>
+<p>When the initialization is finished, @callback will be called. You can
+then call g_async_initable_init_finish() to get the result of the
+initialization.</p>
+<p>Implementations may also support cancellation. If @cancellable is not
+<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a>, then initialization can be cancelled by triggering the cancellable
+object from another thread. If the operation was cancelled, the error
+<a href="../enum.IOErrorEnum.html#variant.Cancelled" title="variant gio::IOErrorEnum::Cancelled"><code>IOErrorEnum::Cancelled</code></a> will be returned. If @cancellable is not <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a>, and
+the object doesn’t support cancellable initialization, the error
+<a href="../enum.IOErrorEnum.html#variant.NotSupported" title="variant gio::IOErrorEnum::NotSupported"><code>IOErrorEnum::NotSupported</code></a> will be returned.</p>
+<p>As with #GInitable, if the object is not initialized, or initialization
+returns with an error, then all operations on the object except
+g_object_ref() and g_object_unref() are considered to be invalid, and
+have undefined behaviour. They will often fail with g_critical() or
+g_warning(), but this must not be relied on.</p>
+<p>Callers should not assume that a class which implements #GAsyncInitable can
+be initialized multiple times; for more information, see g_initable_init().
+If a class explicitly supports being initialized multiple times,
+implementation requires yielding all subsequent calls to init_async() on the
+results of the first call.</p>
+<p>For classes that also support the #GInitable interface, the default
+implementation of this method will run the g_initable_init() function
+in a thread, so if you want to support asynchronous initialization via
+threads, just implement the #GAsyncInitable interface without overriding
+any interface methods.</p>
+<h6 id="io_priority"><a class="doc-anchor" href="#io_priority">§</a><code>io_priority</code></h6>
+<p>the <a href="iface.AsyncResult.html#io-priority">I/O priority</a> of the operation</p>
+<h6 id="cancellable"><a class="doc-anchor" href="#cancellable">§</a><code>cancellable</code></h6>
+<p>optional #GCancellable object, <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a> to ignore.</p>
+<h6 id="callback"><a class="doc-anchor" href="#callback">§</a><code>callback</code></h6>
+<p>a #GAsyncReadyCallback to call when the request is satisfied</p>
+</div></details><section id="method.init_future" class="method"><a class="src rightside" href="../../src/gio/auto/async_initable.rs.html#223-235">Source</a><h4 class="code-header">unsafe fn <a href="#method.init_future" class="fn">init_future</a>(
+    &amp;self,
+    io_priority: <a class="struct" href="../../glib/source/struct.Priority.html" title="struct glib::source::Priority">Priority</a>,
+) -&gt; <a class="struct" href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html" title="struct core::pin::Pin">Pin</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box_</a>&lt;dyn <a class="trait" href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html" title="trait core::future::future::Future">Future</a>&lt;Output = <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;&gt; + 'static&gt;&gt;</h4></section></div><h2 id="dyn-compatibility" class="section-header">Dyn Compatibility<a href="#dyn-compatibility" class="anchor">§</a></h2><div class="dyn-compatibility-info"><p>This trait is <b>not</b> <a href="https://doc.rust-lang.org/nightly/reference/items/traits.html#dyn-compatibility">dyn compatible</a>.</p><p><i>In older versions of Rust, dyn compatibility was called "object safety", so this trait is not object safe.</i></p></div><h2 id="implementors" class="section-header">Implementors<a href="#implementors" class="anchor">§</a></h2><div id="implementors-list"><section id="impl-AsyncInitableExt-for-O" class="impl"><a class="src rightside" href="../../src/gio/auto/async_initable.rs.html#238">Source</a><a href="#impl-AsyncInitableExt-for-O" class="anchor">§</a><h3 class="code-header">impl&lt;O: <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.AsyncInitable.html" title="struct gio::AsyncInitable">AsyncInitable</a>&gt;&gt; <a class="trait" href="trait.AsyncInitableExt.html" title="trait gio::prelude::AsyncInitableExt">AsyncInitableExt</a> for O</h3></section></div><script src="../../trait.impl/gio/auto/async_initable/trait.AsyncInitableExt.js" async></script></section></div></main></body></html>

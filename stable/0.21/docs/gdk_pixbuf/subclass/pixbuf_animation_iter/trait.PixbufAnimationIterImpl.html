@@ -1,0 +1,131 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="API documentation for the Rust `PixbufAnimationIterImpl` trait in crate `gdk_pixbuf`."><title>PixbufAnimationIterImpl in gdk_pixbuf::subclass::pixbuf_animation_iter - Rust</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-aa0817cf.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gdk_pixbuf" data-themes="" data-resource-suffix="" data-rustdoc-version="1.90.0-nightly (a00149764 2025-07-14)" data-channel="nightly" data-search-js="search-179e01a3.js" data-settings-js="settings-5514c975.js" ><script src="../../../static.files/storage-4e99c027.js"></script><script defer src="sidebar-items.js"></script><script defer src="../../../static.files/main-673ee1e0.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-32bb7600.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc trait"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
+
+    function checkDocsLatestStable() {
+        function popup(msg, url) { return `
+            <style scoped="scoped">
+                .popup {
+                    max-width: 16em;
+                    background-color: #fff;
+                    position: fixed;
+                    z-index: 1;
+                    margin-left: auto;
+                    bottom: 1em;
+                    right: 1em;
+                    border-radius: 5px;
+                    box-shadow: 1px 1px 4px #777;
+                }
+
+                .popup a.version {
+                    color: #e57300;
+                    padding: 0.6em 1em;
+                    display: block;
+                }
+                .popup a.version:hover {
+                    color: #b25900;
+                }
+
+                .popup a.close {
+                    color: white;
+                    background: grey;
+                    border-radius: 99px;
+                    display: inline-block;
+                    width: 19px;
+                    line-height: 19px;
+                    font-weight: bold;
+                    text-align: center;
+                    margin: 0.6em;
+                    float: right;
+                }
+                .popup a.close:hover {
+                    background: black;
+                }
+            </style>
+            <section class="popup" id="gir_docs_popup">
+                <a class="close" href="#" onclick="document.getElementById('gir_docs_popup').remove(); return false">×</a>
+                <a class="version" href="https://gtk-rs.org/gtk-rs-core/stable/latest/docs">
+                    ⚠ ${msg}
+                </a>
+            </section>
+        ` };
+
+        if ("0.21" == "main") {
+            document.body.insertAdjacentHTML(
+                'beforeend',
+                popup("This is the development version. Go to latest stable version.", "stable/latest")
+            );
+        } else {
+            fetch('https://gtk-rs.org/gtk-rs-core/LATEST_RELEASE_BRANCH')
+                .then(response => response.text())
+                .then(latest_branch => {
+                    if (latest_branch.trim() != "0.21") {
+                        document.body.insertAdjacentHTML(
+                            'beforeend',
+                            popup("This version is outdated. Go to latest version.", "stable/latest")
+                        );
+                    }
+                });
+        }
+    }
+</script>
+
+
+<nav class="mobile-topbar"><button class="sidebar-menu-toggle" title="show sidebar"></button></nav><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../../../gdk_pixbuf/index.html">gdk_<wbr>pixbuf</a><span class="version">0.21.0</span></h2></div><div class="sidebar-elems"><section id="rustdoc-toc"><h2 class="location"><a href="#">Pixbuf<wbr>Animation<wbr>Iter<wbr>Impl</a></h2><h3><a href="#provided-methods">Provided Methods</a></h3><ul class="block"><li><a href="#method.advance" title="advance">advance</a></li><li><a href="#method.delay_time" title="delay_time">delay_time</a></li><li><a href="#method.on_currently_loading_frame" title="on_currently_loading_frame">on_currently_loading_frame</a></li><li><a href="#method.pixbuf" title="pixbuf">pixbuf</a></li></ul><h3><a href="#dyn-compatibility">Dyn Compatibility</a></h3><h3><a href="#implementors">Implementors</a></h3></section><div id="rustdoc-modnav"><h2><a href="index.html">In gdk_<wbr>pixbuf::<wbr>subclass::<wbr>pixbuf_<wbr>animation_<wbr>iter</a></h2></div></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><div class="width-limiter"><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><div class="rustdoc-breadcrumbs"><a href="../../index.html">gdk_pixbuf</a>::<wbr><a href="../index.html">subclass</a>::<wbr><a href="index.html">pixbuf_animation_iter</a></div><h1>Trait <span class="trait">PixbufAnimationIterImpl</span><button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><rustdoc-toolbar></rustdoc-toolbar><span class="sub-heading"><a class="src" href="../../../src/gdk_pixbuf/subclass/pixbuf_animation_iter.rs.html#15-105">Source</a> </span></div><pre class="rust item-decl"><code>pub trait PixbufAnimationIterImpl: <a class="trait" href="../prelude/trait.ObjectImpl.html" title="trait gdk_pixbuf::subclass::prelude::ObjectImpl">ObjectImpl</a> + <a class="trait" href="../prelude/trait.ObjectSubclass.html" title="trait gdk_pixbuf::subclass::prelude::ObjectSubclass">ObjectSubclass</a>&lt;Type: <a class="trait" href="../../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../../struct.PixbufAnimationIter.html" title="struct gdk_pixbuf::PixbufAnimationIter">PixbufAnimationIter</a>&gt;&gt; {
+    // Provided methods
+    fn <a href="#method.delay_time" class="fn">delay_time</a>(&amp;self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/core/time/struct.Duration.html" title="struct core::time::Duration">Duration</a>&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.pixbuf" class="fn">pixbuf</a>(&amp;self) -&gt; <a class="struct" href="../../struct.Pixbuf.html" title="struct gdk_pixbuf::Pixbuf">Pixbuf</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.on_currently_loading_frame" class="fn">on_currently_loading_frame</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.advance" class="fn">advance</a>(&amp;self, current_time: <a class="struct" href="https://doc.rust-lang.org/nightly/std/time/struct.SystemTime.html" title="struct std::time::SystemTime">SystemTime</a>) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> { ... }
+}</code></pre><h2 id="provided-methods" class="section-header">Provided Methods<a href="#provided-methods" class="anchor">§</a></h2><div class="methods"><details class="toggle method-toggle" open><summary><section id="method.delay_time" class="method"><a class="src rightside" href="../../../src/gdk_pixbuf/subclass/pixbuf_animation_iter.rs.html#34-36">Source</a><h4 class="code-header">fn <a href="#method.delay_time" class="fn">delay_time</a>(&amp;self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/core/time/struct.Duration.html" title="struct core::time::Duration">Duration</a>&gt;</h4></section></summary><div class="docblock"><p>Time in milliseconds, returning <code>None</code> implies showing the same pixbuf forever.
+Gets the number of milliseconds the current pixbuf should be displayed,
+or -1 if the current pixbuf should be displayed forever.</p>
+<p>The <code>g_timeout_add()</code> function conveniently takes a timeout in milliseconds,
+so you can use a timeout to schedule the next update.</p>
+<p>Note that some formats, like GIF, might clamp the timeout values in the
+image file to avoid updates that are just too quick. The minimum timeout
+for GIF images is currently 20 milliseconds.</p>
+<h5 id="returns"><a class="doc-anchor" href="#returns">§</a>Returns</h5>
+<p>delay time in milliseconds (thousandths of a second)</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.pixbuf" class="method"><a class="src rightside" href="../../../src/gdk_pixbuf/subclass/pixbuf_animation_iter.rs.html#57-59">Source</a><h4 class="code-header">fn <a href="#method.pixbuf" class="fn">pixbuf</a>(&amp;self) -&gt; <a class="struct" href="../../struct.Pixbuf.html" title="struct gdk_pixbuf::Pixbuf">Pixbuf</a></h4></section></summary><div class="docblock"><p>Gets the current pixbuf which should be displayed.</p>
+<p>The pixbuf might not be the same size as the animation itself
+(gdk_pixbuf_animation_get_width(), gdk_pixbuf_animation_get_height()).</p>
+<p>This pixbuf should be displayed for gdk_pixbuf_animation_iter_get_delay_time()
+milliseconds.</p>
+<p>The caller of this function does not own a reference to the returned
+pixbuf; the returned pixbuf will become invalid when the iterator
+advances to the next frame, which may happen anytime you call
+gdk_pixbuf_animation_iter_advance().</p>
+<p>Copy the pixbuf to keep it (don’t just add a reference), as it may get
+recycled as you advance the iterator.</p>
+<h5 id="returns-1"><a class="doc-anchor" href="#returns-1">§</a>Returns</h5>
+<p>the pixbuf to be displayed</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.on_currently_loading_frame" class="method"><a class="src rightside" href="../../../src/gdk_pixbuf/subclass/pixbuf_animation_iter.rs.html#71-73">Source</a><h4 class="code-header">fn <a href="#method.on_currently_loading_frame" class="fn">on_currently_loading_frame</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a></h4></section></summary><div class="docblock"><p>Used to determine how to respond to the area_updated signal on
+#GdkPixbufLoader when loading an animation.</p>
+<p>The <code>::area_updated</code> signal is emitted for an area of the frame currently
+streaming in to the loader. So if you’re on the currently loading frame,
+you will need to redraw the screen for the updated area.</p>
+<h5 id="returns-2"><a class="doc-anchor" href="#returns-2">§</a>Returns</h5>
+<p><code>TRUE</code> if the frame we’re on is partially loaded, or the last frame</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.advance" class="method"><a class="src rightside" href="../../../src/gdk_pixbuf/subclass/pixbuf_animation_iter.rs.html#102-104">Source</a><h4 class="code-header">fn <a href="#method.advance" class="fn">advance</a>(&amp;self, current_time: <a class="struct" href="https://doc.rust-lang.org/nightly/std/time/struct.SystemTime.html" title="struct std::time::SystemTime">SystemTime</a>) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a></h4></section></summary><div class="docblock"><p>Possibly advances an animation to a new frame.</p>
+<p>Chooses the frame based on the start time passed to
+gdk_pixbuf_animation_get_iter().</p>
+<p>@current_time would normally come from g_get_current_time(), and
+must be greater than or equal to the time passed to
+gdk_pixbuf_animation_get_iter(), and must increase or remain
+unchanged each time gdk_pixbuf_animation_iter_get_pixbuf() is
+called. That is, you can’t go backward in time; animations only
+play forward.</p>
+<p>As a shortcut, pass <code>NULL</code> for the current time and g_get_current_time()
+will be invoked on your behalf. So you only need to explicitly pass
+@current_time if you’re doing something odd like playing the animation
+at double speed.</p>
+<p>If this function returns <code>FALSE</code>, there’s no need to update the animation
+display, assuming the display had been rendered prior to advancing;
+if <code>TRUE</code>, you need to call gdk_pixbuf_animation_iter_get_pixbuf()
+and update the display with the new pixbuf.</p>
+<h6 id="current_time"><a class="doc-anchor" href="#current_time">§</a><code>current_time</code></h6>
+<p>current time</p>
+<h5 id="returns-3"><a class="doc-anchor" href="#returns-3">§</a>Returns</h5>
+<p><code>TRUE</code> if the image may need updating</p>
+</div></details></div><h2 id="dyn-compatibility" class="section-header">Dyn Compatibility<a href="#dyn-compatibility" class="anchor">§</a></h2><div class="dyn-compatibility-info"><p>This trait is <b>not</b> <a href="https://doc.rust-lang.org/nightly/reference/items/traits.html#dyn-compatibility">dyn compatible</a>.</p><p><i>In older versions of Rust, dyn compatibility was called "object safety", so this trait is not object safe.</i></p></div><h2 id="implementors" class="section-header">Implementors<a href="#implementors" class="anchor">§</a></h2><div id="implementors-list"></div><script src="../../../trait.impl/gdk_pixbuf/subclass/pixbuf_animation_iter/trait.PixbufAnimationIterImpl.js" async></script></section></div></main></body></html>

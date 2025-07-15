@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["Propagation"],"fn":["connect_raw","signal_handler_block","signal_handler_disconnect","signal_handler_unblock","signal_has_handler_pending","signal_stop_emission_by_name"],"struct":["SignalHandlerId"]};

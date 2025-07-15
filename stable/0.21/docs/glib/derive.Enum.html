@@ -1,0 +1,184 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Derive macro to register a Rust enum in the GLib type system and derive the `glib::Value` traits."><title>Enum in glib - Rust</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../static.files/rustdoc-aa0817cf.css"><meta name="rustdoc-vars" data-root-path="../" data-static-root-path="../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.90.0-nightly (a00149764 2025-07-14)" data-channel="nightly" data-search-js="search-179e01a3.js" data-settings-js="settings-5514c975.js" ><script src="../static.files/storage-4e99c027.js"></script><script defer src="sidebar-items.js"></script><script defer src="../static.files/main-673ee1e0.js"></script><noscript><link rel="stylesheet" href="../static.files/noscript-32bb7600.css"></noscript><link rel="alternate icon" type="image/png" href="../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../static.files/favicon-044be391.svg"></head><body class="rustdoc derive"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
+
+    function checkDocsLatestStable() {
+        function popup(msg, url) { return `
+            <style scoped="scoped">
+                .popup {
+                    max-width: 16em;
+                    background-color: #fff;
+                    position: fixed;
+                    z-index: 1;
+                    margin-left: auto;
+                    bottom: 1em;
+                    right: 1em;
+                    border-radius: 5px;
+                    box-shadow: 1px 1px 4px #777;
+                }
+
+                .popup a.version {
+                    color: #e57300;
+                    padding: 0.6em 1em;
+                    display: block;
+                }
+                .popup a.version:hover {
+                    color: #b25900;
+                }
+
+                .popup a.close {
+                    color: white;
+                    background: grey;
+                    border-radius: 99px;
+                    display: inline-block;
+                    width: 19px;
+                    line-height: 19px;
+                    font-weight: bold;
+                    text-align: center;
+                    margin: 0.6em;
+                    float: right;
+                }
+                .popup a.close:hover {
+                    background: black;
+                }
+            </style>
+            <section class="popup" id="gir_docs_popup">
+                <a class="close" href="#" onclick="document.getElementById('gir_docs_popup').remove(); return false">×</a>
+                <a class="version" href="https://gtk-rs.org/gtk-rs-core/stable/latest/docs">
+                    ⚠ ${msg}
+                </a>
+            </section>
+        ` };
+
+        if ("0.21" == "main") {
+            document.body.insertAdjacentHTML(
+                'beforeend',
+                popup("This is the development version. Go to latest stable version.", "stable/latest")
+            );
+        } else {
+            fetch('https://gtk-rs.org/gtk-rs-core/LATEST_RELEASE_BRANCH')
+                .then(response => response.text())
+                .then(latest_branch => {
+                    if (latest_branch.trim() != "0.21") {
+                        document.body.insertAdjacentHTML(
+                            'beforeend',
+                            popup("This version is outdated. Go to latest version.", "stable/latest")
+                        );
+                    }
+                });
+        }
+    }
+</script>
+
+
+<nav class="mobile-topbar"><button class="sidebar-menu-toggle" title="show sidebar"></button></nav><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../glib/index.html">glib</a><span class="version">0.21.0</span></h2></div><div class="sidebar-elems"><section id="rustdoc-toc"><h2 class="location"><a href="#">Enum</a></h2><h3><a href="#">Sections</a></h3><ul class="block top-toc"><li><a href="#example" title="Example">Example</a></li></ul></section><div id="rustdoc-modnav"><h2 class="in-crate"><a href="index.html">In crate glib</a></h2></div></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><div class="width-limiter"><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><div class="rustdoc-breadcrumbs"><a href="index.html">glib</a></div><h1>Derive Macro <span class="derive">Enum</span><button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><rustdoc-toolbar></rustdoc-toolbar><span class="sub-heading"><a class="src" href="../src/glib_macros/lib.rs.html#633">Source</a> </span></div><pre class="rust item-decl"><code>#[derive(Enum)]
+{
+    <span class="comment">// Attributes available to this derive:</span>
+    #[enum_type]
+    #[enum_dynamic]
+    #[enum_value]
+}
+</code></pre><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>Derive macro to register a Rust enum in the GLib type system and derive the
+<a href="../glib/value/struct.Value.html"><code>glib::Value</code></a> traits.</p>
+<h2 id="example"><a class="doc-anchor" href="#example">§</a>Example</h2>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>glib::prelude::<span class="kw-2">*</span>;
+<span class="kw">use </span>glib::subclass::prelude::<span class="kw-2">*</span>;
+
+<span class="attr">#[derive(Debug, Copy, Clone, PartialEq, Eq, glib::Enum)]
+#[enum_type(name = <span class="string">"MyEnum"</span>)]
+</span><span class="kw">enum </span>MyEnum {
+    Val,
+    <span class="attr">#[enum_value(name = <span class="string">"My Val"</span>)]
+    </span>ValWithCustomName,
+    <span class="attr">#[enum_value(name = <span class="string">"My Other Val"</span>, nick = <span class="string">"other"</span>)]
+    </span>ValWithCustomNameAndNick,
+}</code></pre></div>
+<p>When using the <a href="derive.Properties.html" title="derive glib::Properties"><code>Properties</code></a> macro with enums that derive <a href="derive.Enum.html" title="derive glib::Enum"><code>Enum</code></a>, the
+default value can be explicitly set via the <code>builder</code> parameter of the
+<code>#[property]</code> attribute. If the enum implements or derives
+<code>Default</code>, you can specify that should be the default value
+via the <code>default</code> parameter. See <a href="derive.Properties.html#supported-types" title="derive glib::Properties">here</a> for
+details.</p>
+<p>An enum can be registered as a dynamic type by setting the derive macro
+helper attribute <code>enum_dynamic</code>:</p>
+
+<div class="example-wrap ignore"><a href="#" class="tooltip" title="This example is not tested">ⓘ</a><pre class="rust rust-example-rendered"><code><span class="kw">use </span>glib::prelude::<span class="kw-2">*</span>;
+<span class="kw">use </span>glib::subclass::prelude::<span class="kw-2">*</span>;
+
+<span class="attr">#[derive(Debug, Copy, Clone, PartialEq, Eq, glib::Enum)]
+#[enum_type(name = <span class="string">"MyEnum"</span>)]
+#[enum_dynamic]
+</span><span class="kw">enum </span>MyEnum {
+    ...
+}</code></pre></div>
+<p>As a dynamic type, an enum must be explicitly registered when the system
+loads the implementation (see <a href="../glib/gobject/type_plugin/struct.TypePlugin.html"><code>TypePlugin</code></a> and <a href="../glib/gobject/type_module/struct.TypeModule.html"><code>TypeModule</code></a>).
+Therefore, whereas an enum can be registered only once as a static type,
+it can be registered several times as a dynamic type.</p>
+<p>An enum registered as a dynamic type is never unregistered. The system
+calls <a href="../glib/gobject/type_plugin/trait.TypePluginExt."><code>TypePluginExt::unuse</code></a> to unload the implementation. If the
+<a href="../glib/gobject/type_plugin/struct.TypePlugin.html"><code>TypePlugin</code></a> subclass is a <a href="../glib/gobject/type_module/struct.TypeModule.html"><code>TypeModule</code></a>, the enum registered as a
+dynamic type is marked as unloaded and must be registered again when the
+module is reloaded.</p>
+<p>The derive macro helper attribute <code>enum_dynamic</code> provides two behaviors
+when registering an enum as a dynamic type:</p>
+<ul>
+<li>lazy registration: by default an enum is registered as a dynamic type
+when the system loads the implementation (e.g. when the module is loaded).
+Optionally setting <code>lazy_registration</code> to <code>true</code> postpones registration on
+the first use (when <code>static_type()</code> is called for the first time):</li>
+</ul>
+
+<div class="example-wrap ignore"><a href="#" class="tooltip" title="This example is not tested">ⓘ</a><pre class="rust rust-example-rendered"><code><span class="attr">#[derive(Debug, Copy, Clone, PartialEq, Eq, glib::Enum)]
+#[enum_type(name = <span class="string">"MyEnum"</span>)]
+#[enum_dynamic(lazy_registration = <span class="bool-val">true</span>)]
+</span><span class="kw">enum </span>MyEnum {
+    ...
+}</code></pre></div>
+<ul>
+<li>registration within <a href="../glib/gobject/type_module/struct.TypeModule.html"><code>TypeModule</code></a> subclass or within <a href="../glib/gobject/type_plugin/struct.TypePlugin.html"><code>TypePlugin</code></a>
+subclass: an enum is usually registered as a dynamic type within a
+<a href="../glib/gobject/type_module/struct.TypeModule.html"><code>TypeModule</code></a> subclass:</li>
+</ul>
+
+<div class="example-wrap ignore"><a href="#" class="tooltip" title="This example is not tested">ⓘ</a><pre class="rust rust-example-rendered"><code><span class="attr">#[derive(Debug, Copy, Clone, PartialEq, Eq, glib::Enum)]
+#[enum_type(name = <span class="string">"MyModuleEnum"</span>)]
+#[enum_dynamic]
+</span><span class="kw">enum </span>MyModuleEnum {
+    ...
+}
+...
+<span class="attr">#[derive(Default)]
+</span><span class="kw">pub struct </span>MyModule;
+...
+<span class="kw">impl </span>TypeModuleImpl <span class="kw">for </span>MyModule {
+    <span class="kw">fn </span>load(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        <span class="comment">// registers enums as dynamic types.
+        </span><span class="kw">let </span>my_module = <span class="self">self</span>.obj();
+        <span class="kw">let </span>type_module: <span class="kw-2">&amp;</span>glib::TypeModule = my_module.upcast_ref();
+        MyModuleEnum::on_implementation_load(type_module)
+    }
+    ...
+}</code></pre></div>
+<p>Optionally setting <code>plugin_type</code> allows to register an enum as a dynamic
+type within a <a href="../glib/gobject/type_plugin/struct.TypePlugin.html"><code>TypePlugin</code></a> subclass that is not a <a href="../glib/gobject/type_module/struct.TypeModule.html"><code>TypeModule</code></a>:</p>
+
+<div class="example-wrap ignore"><a href="#" class="tooltip" title="This example is not tested">ⓘ</a><pre class="rust rust-example-rendered"><code><span class="attr">#[derive(Debug, Copy, Clone, PartialEq, Eq, glib::Enum)]
+#[enum_type(name = <span class="string">"MyPluginEnum"</span>)]
+#[enum_dynamic(plugin_type = MyPlugin)]
+</span><span class="kw">enum </span>MyPluginEnum {
+    ...
+}
+...
+<span class="attr">#[derive(Default)]
+</span><span class="kw">pub struct </span>MyPlugin;
+...
+<span class="kw">impl </span>TypePluginImpl <span class="kw">for </span>MyPlugin {
+    <span class="kw">fn </span>use_plugin(<span class="kw-2">&amp;</span><span class="self">self</span>) {
+        <span class="comment">// register enums as dynamic types.
+        </span><span class="kw">let </span>my_plugin = <span class="self">self</span>.obj();
+        MyPluginEnum::on_implementation_load(my_plugin.as_ref());
+    }
+    ...
+}</code></pre></div>
+</div></details></section></div></main></body></html>

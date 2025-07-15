@@ -1,0 +1,644 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Trait containing all `struct@SocketClient` methods."><title>SocketClientExt in gio::prelude - Rust</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-aa0817cf.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.90.0-nightly (a00149764 2025-07-14)" data-channel="nightly" data-search-js="search-179e01a3.js" data-settings-js="settings-5514c975.js" ><script src="../../static.files/storage-4e99c027.js"></script><script defer src="sidebar-items.js"></script><script defer src="../../static.files/main-673ee1e0.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-32bb7600.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc trait"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
+
+    function checkDocsLatestStable() {
+        function popup(msg, url) { return `
+            <style scoped="scoped">
+                .popup {
+                    max-width: 16em;
+                    background-color: #fff;
+                    position: fixed;
+                    z-index: 1;
+                    margin-left: auto;
+                    bottom: 1em;
+                    right: 1em;
+                    border-radius: 5px;
+                    box-shadow: 1px 1px 4px #777;
+                }
+
+                .popup a.version {
+                    color: #e57300;
+                    padding: 0.6em 1em;
+                    display: block;
+                }
+                .popup a.version:hover {
+                    color: #b25900;
+                }
+
+                .popup a.close {
+                    color: white;
+                    background: grey;
+                    border-radius: 99px;
+                    display: inline-block;
+                    width: 19px;
+                    line-height: 19px;
+                    font-weight: bold;
+                    text-align: center;
+                    margin: 0.6em;
+                    float: right;
+                }
+                .popup a.close:hover {
+                    background: black;
+                }
+            </style>
+            <section class="popup" id="gir_docs_popup">
+                <a class="close" href="#" onclick="document.getElementById('gir_docs_popup').remove(); return false">×</a>
+                <a class="version" href="https://gtk-rs.org/gtk-rs-core/stable/latest/docs">
+                    ⚠ ${msg}
+                </a>
+            </section>
+        ` };
+
+        if ("0.21" == "main") {
+            document.body.insertAdjacentHTML(
+                'beforeend',
+                popup("This is the development version. Go to latest stable version.", "stable/latest")
+            );
+        } else {
+            fetch('https://gtk-rs.org/gtk-rs-core/LATEST_RELEASE_BRANCH')
+                .then(response => response.text())
+                .then(latest_branch => {
+                    if (latest_branch.trim() != "0.21") {
+                        document.body.insertAdjacentHTML(
+                            'beforeend',
+                            popup("This version is outdated. Go to latest version.", "stable/latest")
+                        );
+                    }
+                });
+        }
+    }
+</script>
+
+
+<nav class="mobile-topbar"><button class="sidebar-menu-toggle" title="show sidebar"></button></nav><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../../gio/index.html">gio</a><span class="version">0.21.0</span></h2></div><div class="sidebar-elems"><section id="rustdoc-toc"><h2 class="location"><a href="#">Socket<wbr>Client<wbr>Ext</a></h2><h3><a href="#">Sections</a></h3><ul class="block top-toc"><li><a href="#implementors-1" title="Implementors">Implementors</a></li></ul><h3><a href="#provided-methods">Provided Methods</a></h3><ul class="block"><li><a href="#method.add_application_proxy" title="add_application_proxy">add_application_proxy</a></li><li><a href="#method.connect" title="connect">connect</a></li><li><a href="#method.connect_async" title="connect_async">connect_async</a></li><li><a href="#method.connect_enable_proxy_notify" title="connect_enable_proxy_notify">connect_enable_proxy_notify</a></li><li><a href="#method.connect_event" title="connect_event">connect_event</a></li><li><a href="#method.connect_family_notify" title="connect_family_notify">connect_family_notify</a></li><li><a href="#method.connect_future" title="connect_future">connect_future</a></li><li><a href="#method.connect_local_address_notify" title="connect_local_address_notify">connect_local_address_notify</a></li><li><a href="#method.connect_protocol_notify" title="connect_protocol_notify">connect_protocol_notify</a></li><li><a href="#method.connect_proxy_resolver_notify" title="connect_proxy_resolver_notify">connect_proxy_resolver_notify</a></li><li><a href="#method.connect_timeout_notify" title="connect_timeout_notify">connect_timeout_notify</a></li><li><a href="#method.connect_tls_notify" title="connect_tls_notify">connect_tls_notify</a></li><li><a href="#method.connect_tls_validation_flags_notify" title="connect_tls_validation_flags_notify">connect_tls_validation_flags_notify</a></li><li><a href="#method.connect_to_host" title="connect_to_host">connect_to_host</a></li><li><a href="#method.connect_to_host_async" title="connect_to_host_async">connect_to_host_async</a></li><li><a href="#method.connect_to_host_future" title="connect_to_host_future">connect_to_host_future</a></li><li><a href="#method.connect_to_service" title="connect_to_service">connect_to_service</a></li><li><a href="#method.connect_to_service_async" title="connect_to_service_async">connect_to_service_async</a></li><li><a href="#method.connect_to_service_future" title="connect_to_service_future">connect_to_service_future</a></li><li><a href="#method.connect_to_uri" title="connect_to_uri">connect_to_uri</a></li><li><a href="#method.connect_to_uri_async" title="connect_to_uri_async">connect_to_uri_async</a></li><li><a href="#method.connect_to_uri_future" title="connect_to_uri_future">connect_to_uri_future</a></li><li><a href="#method.connect_type_notify" title="connect_type_notify">connect_type_notify</a></li><li><a href="#method.enables_proxy" title="enables_proxy">enables_proxy</a></li><li><a href="#method.family" title="family">family</a></li><li><a href="#method.is_tls" title="is_tls">is_tls</a></li><li><a href="#method.local_address" title="local_address">local_address</a></li><li><a href="#method.protocol" title="protocol">protocol</a></li><li><a href="#method.proxy_resolver" title="proxy_resolver">proxy_resolver</a></li><li><a href="#method.set_enable_proxy" title="set_enable_proxy">set_enable_proxy</a></li><li><a href="#method.set_family" title="set_family">set_family</a></li><li><a href="#method.set_local_address" title="set_local_address">set_local_address</a></li><li><a href="#method.set_protocol" title="set_protocol">set_protocol</a></li><li><a href="#method.set_proxy_resolver" title="set_proxy_resolver">set_proxy_resolver</a></li><li><a href="#method.set_socket_type" title="set_socket_type">set_socket_type</a></li><li><a href="#method.set_timeout" title="set_timeout">set_timeout</a></li><li><a href="#method.set_tls" title="set_tls">set_tls</a></li><li><a href="#method.set_tls_validation_flags" title="set_tls_validation_flags">set_tls_validation_flags</a></li><li><a href="#method.set_type" title="set_type">set_type</a></li><li><a href="#method.socket_type" title="socket_type">socket_type</a></li><li><a href="#method.timeout" title="timeout">timeout</a></li><li><a href="#method.tls_validation_flags" title="tls_validation_flags">tls_validation_flags</a></li><li><a href="#method.type_" title="type_">type_</a></li></ul><h3><a href="#dyn-compatibility">Dyn Compatibility</a></h3><h3><a href="#implementors">Implementors</a></h3></section><div id="rustdoc-modnav"><h2><a href="index.html">In gio::<wbr>prelude</a></h2></div></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><div class="width-limiter"><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><div class="rustdoc-breadcrumbs"><a href="../index.html">gio</a>::<wbr><a href="index.html">prelude</a></div><h1>Trait <span class="trait">SocketClientExt</span><button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><rustdoc-toolbar></rustdoc-toolbar><span class="sub-heading"><a class="src" href="../../src/gio/auto/socket_client.rs.html#198-1460">Source</a> </span></div><pre class="rust item-decl"><code>pub trait SocketClientExt: <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.SocketClient.html" title="struct gio::SocketClient">SocketClient</a>&gt; + 'static {
+<details class="toggle type-contents-toggle"><summary class="hideme"><span>Show 43 methods</span></summary>    // Provided methods
+    fn <a href="#method.add_application_proxy" class="fn">add_application_proxy</a>(&amp;self, protocol: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.connect" class="fn">connect</a>(
+        &amp;self,
+        connectable: &amp;impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.SocketConnectable.html" title="struct gio::SocketConnectable">SocketConnectable</a>&gt;,
+        cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.Cancellable.html" title="struct gio::Cancellable">Cancellable</a>&gt;&gt;,
+    ) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="../struct.SocketConnection.html" title="struct gio::SocketConnection">SocketConnection</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.connect_async" class="fn">connect_async</a>&lt;P: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html" title="trait core::ops::function::FnOnce">FnOnce</a>(<a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="../struct.SocketConnection.html" title="struct gio::SocketConnection">SocketConnection</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;) + 'static&gt;(
+        &amp;self,
+        connectable: &amp;impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.SocketConnectable.html" title="struct gio::SocketConnectable">SocketConnectable</a>&gt;,
+        cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.Cancellable.html" title="struct gio::Cancellable">Cancellable</a>&gt;&gt;,
+        callback: P,
+    ) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.connect_future" class="fn">connect_future</a>(
+        &amp;self,
+        connectable: &amp;(impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.SocketConnectable.html" title="struct gio::SocketConnectable">SocketConnectable</a>&gt; + <a class="trait" href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html" title="trait core::clone::Clone">Clone</a> + 'static),
+    ) -&gt; <a class="struct" href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html" title="struct core::pin::Pin">Pin</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box_</a>&lt;dyn <a class="trait" href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html" title="trait core::future::future::Future">Future</a>&lt;Output = <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="../struct.SocketConnection.html" title="struct gio::SocketConnection">SocketConnection</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;&gt; + 'static&gt;&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.connect_to_host" class="fn">connect_to_host</a>(
+        &amp;self,
+        host_and_port: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+        default_port: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u16.html">u16</a>,
+        cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.Cancellable.html" title="struct gio::Cancellable">Cancellable</a>&gt;&gt;,
+    ) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="../struct.SocketConnection.html" title="struct gio::SocketConnection">SocketConnection</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.connect_to_host_async" class="fn">connect_to_host_async</a>&lt;P: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html" title="trait core::ops::function::FnOnce">FnOnce</a>(<a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="../struct.SocketConnection.html" title="struct gio::SocketConnection">SocketConnection</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;) + 'static&gt;(
+        &amp;self,
+        host_and_port: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+        default_port: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u16.html">u16</a>,
+        cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.Cancellable.html" title="struct gio::Cancellable">Cancellable</a>&gt;&gt;,
+        callback: P,
+    ) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.connect_to_host_future" class="fn">connect_to_host_future</a>(
+        &amp;self,
+        host_and_port: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+        default_port: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u16.html">u16</a>,
+    ) -&gt; <a class="struct" href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html" title="struct core::pin::Pin">Pin</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box_</a>&lt;dyn <a class="trait" href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html" title="trait core::future::future::Future">Future</a>&lt;Output = <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="../struct.SocketConnection.html" title="struct gio::SocketConnection">SocketConnection</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;&gt; + 'static&gt;&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.connect_to_service" class="fn">connect_to_service</a>(
+        &amp;self,
+        domain: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+        service: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+        cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.Cancellable.html" title="struct gio::Cancellable">Cancellable</a>&gt;&gt;,
+    ) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="../struct.SocketConnection.html" title="struct gio::SocketConnection">SocketConnection</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.connect_to_service_async" class="fn">connect_to_service_async</a>&lt;P: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html" title="trait core::ops::function::FnOnce">FnOnce</a>(<a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="../struct.SocketConnection.html" title="struct gio::SocketConnection">SocketConnection</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;) + 'static&gt;(
+        &amp;self,
+        domain: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+        service: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+        cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.Cancellable.html" title="struct gio::Cancellable">Cancellable</a>&gt;&gt;,
+        callback: P,
+    ) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.connect_to_service_future" class="fn">connect_to_service_future</a>(
+        &amp;self,
+        domain: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+        service: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+    ) -&gt; <a class="struct" href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html" title="struct core::pin::Pin">Pin</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box_</a>&lt;dyn <a class="trait" href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html" title="trait core::future::future::Future">Future</a>&lt;Output = <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="../struct.SocketConnection.html" title="struct gio::SocketConnection">SocketConnection</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;&gt; + 'static&gt;&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.connect_to_uri" class="fn">connect_to_uri</a>(
+        &amp;self,
+        uri: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+        default_port: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u16.html">u16</a>,
+        cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.Cancellable.html" title="struct gio::Cancellable">Cancellable</a>&gt;&gt;,
+    ) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="../struct.SocketConnection.html" title="struct gio::SocketConnection">SocketConnection</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.connect_to_uri_async" class="fn">connect_to_uri_async</a>&lt;P: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html" title="trait core::ops::function::FnOnce">FnOnce</a>(<a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="../struct.SocketConnection.html" title="struct gio::SocketConnection">SocketConnection</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;) + 'static&gt;(
+        &amp;self,
+        uri: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+        default_port: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u16.html">u16</a>,
+        cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.Cancellable.html" title="struct gio::Cancellable">Cancellable</a>&gt;&gt;,
+        callback: P,
+    ) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.connect_to_uri_future" class="fn">connect_to_uri_future</a>(
+        &amp;self,
+        uri: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+        default_port: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u16.html">u16</a>,
+    ) -&gt; <a class="struct" href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html" title="struct core::pin::Pin">Pin</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box_</a>&lt;dyn <a class="trait" href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html" title="trait core::future::future::Future">Future</a>&lt;Output = <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="../struct.SocketConnection.html" title="struct gio::SocketConnection">SocketConnection</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;&gt; + 'static&gt;&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.enables_proxy" class="fn">enables_proxy</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.family" class="fn">family</a>(&amp;self) -&gt; <a class="enum" href="../enum.SocketFamily.html" title="enum gio::SocketFamily">SocketFamily</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.local_address" class="fn">local_address</a>(&amp;self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../struct.SocketAddress.html" title="struct gio::SocketAddress">SocketAddress</a>&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.protocol" class="fn">protocol</a>(&amp;self) -&gt; <a class="enum" href="../enum.SocketProtocol.html" title="enum gio::SocketProtocol">SocketProtocol</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.proxy_resolver" class="fn">proxy_resolver</a>(&amp;self) -&gt; <a class="struct" href="../struct.ProxyResolver.html" title="struct gio::ProxyResolver">ProxyResolver</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.socket_type" class="fn">socket_type</a>(&amp;self) -&gt; <a class="enum" href="../enum.SocketType.html" title="enum gio::SocketType">SocketType</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.timeout" class="fn">timeout</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.is_tls" class="fn">is_tls</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.tls_validation_flags" class="fn">tls_validation_flags</a>(&amp;self) -&gt; <a class="struct" href="../struct.TlsCertificateFlags.html" title="struct gio::TlsCertificateFlags">TlsCertificateFlags</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.set_enable_proxy" class="fn">set_enable_proxy</a>(&amp;self, enable: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.set_family" class="fn">set_family</a>(&amp;self, family: <a class="enum" href="../enum.SocketFamily.html" title="enum gio::SocketFamily">SocketFamily</a>) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.set_local_address" class="fn">set_local_address</a>(&amp;self, address: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.SocketAddress.html" title="struct gio::SocketAddress">SocketAddress</a>&gt;&gt;) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.set_protocol" class="fn">set_protocol</a>(&amp;self, protocol: <a class="enum" href="../enum.SocketProtocol.html" title="enum gio::SocketProtocol">SocketProtocol</a>) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.set_proxy_resolver" class="fn">set_proxy_resolver</a>(
+        &amp;self,
+        proxy_resolver: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.ProxyResolver.html" title="struct gio::ProxyResolver">ProxyResolver</a>&gt;&gt;,
+    ) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.set_socket_type" class="fn">set_socket_type</a>(&amp;self, type_: <a class="enum" href="../enum.SocketType.html" title="enum gio::SocketType">SocketType</a>) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.set_timeout" class="fn">set_timeout</a>(&amp;self, timeout: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.set_tls" class="fn">set_tls</a>(&amp;self, tls: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.set_tls_validation_flags" class="fn">set_tls_validation_flags</a>(&amp;self, flags: <a class="struct" href="../struct.TlsCertificateFlags.html" title="struct gio::TlsCertificateFlags">TlsCertificateFlags</a>) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.type_" class="fn">type_</a>(&amp;self) -&gt; <a class="enum" href="../enum.SocketType.html" title="enum gio::SocketType">SocketType</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.set_type" class="fn">set_type</a>(&amp;self, type_: <a class="enum" href="../enum.SocketType.html" title="enum gio::SocketType">SocketType</a>) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.connect_event" class="fn">connect_event</a>&lt;F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;Self, <a class="enum" href="../enum.SocketClientEvent.html" title="enum gio::SocketClientEvent">SocketClientEvent</a>, &amp;<a class="struct" href="../struct.SocketConnectable.html" title="struct gio::SocketConnectable">SocketConnectable</a>, <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="struct" href="../struct.IOStream.html" title="struct gio::IOStream">IOStream</a>&gt;) + 'static&gt;(
+        &amp;self,
+        f: F,
+    ) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.connect_enable_proxy_notify" class="fn">connect_enable_proxy_notify</a>&lt;F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;Self) + 'static&gt;(
+        &amp;self,
+        f: F,
+    ) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.connect_family_notify" class="fn">connect_family_notify</a>&lt;F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;Self) + 'static&gt;(
+        &amp;self,
+        f: F,
+    ) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.connect_local_address_notify" class="fn">connect_local_address_notify</a>&lt;F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;Self) + 'static&gt;(
+        &amp;self,
+        f: F,
+    ) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.connect_protocol_notify" class="fn">connect_protocol_notify</a>&lt;F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;Self) + 'static&gt;(
+        &amp;self,
+        f: F,
+    ) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.connect_proxy_resolver_notify" class="fn">connect_proxy_resolver_notify</a>&lt;F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;Self) + 'static&gt;(
+        &amp;self,
+        f: F,
+    ) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.connect_timeout_notify" class="fn">connect_timeout_notify</a>&lt;F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;Self) + 'static&gt;(
+        &amp;self,
+        f: F,
+    ) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.connect_tls_notify" class="fn">connect_tls_notify</a>&lt;F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;Self) + 'static&gt;(
+        &amp;self,
+        f: F,
+    ) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.connect_tls_validation_flags_notify" class="fn">connect_tls_validation_flags_notify</a>&lt;F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;Self) + 'static&gt;(
+        &amp;self,
+        f: F,
+    ) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.connect_type_notify" class="fn">connect_type_notify</a>&lt;F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;Self) + 'static&gt;(
+        &amp;self,
+        f: F,
+    ) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a> { ... }
+</details>}</code></pre><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>Trait containing all <a href="../struct.SocketClient.html" title="struct gio::SocketClient"><code>SocketClient</code></a> methods.</p>
+<h2 id="implementors-1"><a class="doc-anchor" href="#implementors-1">§</a>Implementors</h2>
+<p><a href="../struct.SocketClient.html" title="struct gio::SocketClient"><code>SocketClient</code></a></p>
+</div></details><h2 id="provided-methods" class="section-header">Provided Methods<a href="#provided-methods" class="anchor">§</a></h2><div class="methods"><details class="toggle method-toggle" open><summary><section id="method.add_application_proxy" class="method"><a class="src rightside" href="../../src/gio/auto/socket_client.rs.html#221-228">Source</a><h4 class="code-header">fn <a href="#method.add_application_proxy" class="fn">add_application_proxy</a>(&amp;self, protocol: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>)</h4></section></summary><div class="docblock"><p>Enable proxy protocols to be handled by the application. When the
+indicated proxy protocol is returned by the #GProxyResolver,
+#GSocketClient will consider this protocol as supported but will
+not try to find a #GProxy instance to handle handshaking. The
+application must check for this case by calling
+g_socket_connection_get_remote_address() on the returned
+#GSocketConnection, and seeing if it’s a #GProxyAddress of the
+appropriate type, to determine whether or not it needs to handle
+the proxy handshaking itself.</p>
+<p>This should be used for proxy protocols that are dialects of
+another protocol such as HTTP proxy. It also allows cohabitation of
+proxy protocols that are reused between protocols. A good example
+is HTTP. It can be used to proxy HTTP, FTP and Gopher and can also
+be use as generic socket proxy through the HTTP CONNECT method.</p>
+<p>When the proxy is detected as being an application proxy, TLS handshake
+will be skipped. This is required to let the application do the proxy
+specific handshake.</p>
+<h6 id="protocol"><a class="doc-anchor" href="#protocol">§</a><code>protocol</code></h6>
+<p>The proxy protocol</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.connect" class="method"><a class="src rightside" href="../../src/gio/auto/socket_client.rs.html#257-276">Source</a><h4 class="code-header">fn <a href="#method.connect" class="fn">connect</a>(
+    &amp;self,
+    connectable: &amp;impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.SocketConnectable.html" title="struct gio::SocketConnectable">SocketConnectable</a>&gt;,
+    cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.Cancellable.html" title="struct gio::Cancellable">Cancellable</a>&gt;&gt;,
+) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="../struct.SocketConnection.html" title="struct gio::SocketConnection">SocketConnection</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;</h4></section></summary><div class="docblock"><p>Tries to resolve the @connectable and make a network connection to it.</p>
+<p>Upon a successful connection, a new #GSocketConnection is constructed
+and returned.  The caller owns this new object and must drop their
+reference to it when finished with it.</p>
+<p>The type of the #GSocketConnection object returned depends on the type of
+the underlying socket that is used. For instance, for a TCP/IP connection
+it will be a #GTcpConnection.</p>
+<p>The socket created will be the same family as the address that the
+@connectable resolves to, unless family is set with g_socket_client_set_family()
+or indirectly via g_socket_client_set_local_address(). The socket type
+defaults to <a href="../enum.SocketType.html#variant.Stream" title="variant gio::SocketType::Stream"><code>SocketType::Stream</code></a> but can be set with
+g_socket_client_set_socket_type().</p>
+<p>If a local address is specified with g_socket_client_set_local_address() the
+socket will be bound to this address before connecting.</p>
+<h6 id="connectable"><a class="doc-anchor" href="#connectable">§</a><code>connectable</code></h6>
+<p>a #GSocketConnectable specifying the remote address.</p>
+<h6 id="cancellable"><a class="doc-anchor" href="#cancellable">§</a><code>cancellable</code></h6>
+<p>optional #GCancellable object, <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a> to ignore.</p>
+<h5 id="returns"><a class="doc-anchor" href="#returns">§</a>Returns</h5>
+<p>a #GSocketConnection on success, <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a> on error.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.connect_async" class="method"><a class="src rightside" href="../../src/gio/auto/socket_client.rs.html#299-347">Source</a><h4 class="code-header">fn <a href="#method.connect_async" class="fn">connect_async</a>&lt;P: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html" title="trait core::ops::function::FnOnce">FnOnce</a>(<a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="../struct.SocketConnection.html" title="struct gio::SocketConnection">SocketConnection</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;) + 'static&gt;(
+    &amp;self,
+    connectable: &amp;impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.SocketConnectable.html" title="struct gio::SocketConnectable">SocketConnectable</a>&gt;,
+    cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.Cancellable.html" title="struct gio::Cancellable">Cancellable</a>&gt;&gt;,
+    callback: P,
+)</h4></section></summary><div class="docblock"><p>This is the asynchronous version of g_socket_client_connect().</p>
+<p>You may wish to prefer the asynchronous version even in synchronous
+command line programs because, since 2.60, it implements
+<a href="https://tools.ietf.org/html/rfc8305">RFC 8305</a> “Happy Eyeballs”
+recommendations to work around long connection timeouts in networks
+where IPv6 is broken by performing an IPv4 connection simultaneously
+without waiting for IPv6 to time out, which is not supported by the
+synchronous call. (This is not an API guarantee, and may change in
+the future.)</p>
+<p>When the operation is finished @callback will be
+called. You can then call g_socket_client_connect_finish() to get
+the result of the operation.</p>
+<h6 id="connectable-1"><a class="doc-anchor" href="#connectable-1">§</a><code>connectable</code></h6>
+<p>a #GSocketConnectable specifying the remote address.</p>
+<h6 id="cancellable-1"><a class="doc-anchor" href="#cancellable-1">§</a><code>cancellable</code></h6>
+<p>a #GCancellable, or <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a></p>
+<h6 id="callback"><a class="doc-anchor" href="#callback">§</a><code>callback</code></h6>
+<p>a #GAsyncReadyCallback</p>
+</div></details><section id="method.connect_future" class="method"><a class="src rightside" href="../../src/gio/auto/socket_client.rs.html#349-363">Source</a><h4 class="code-header">fn <a href="#method.connect_future" class="fn">connect_future</a>(
+    &amp;self,
+    connectable: &amp;(impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.SocketConnectable.html" title="struct gio::SocketConnectable">SocketConnectable</a>&gt; + <a class="trait" href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html" title="trait core::clone::Clone">Clone</a> + 'static),
+) -&gt; <a class="struct" href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html" title="struct core::pin::Pin">Pin</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box_</a>&lt;dyn <a class="trait" href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html" title="trait core::future::future::Future">Future</a>&lt;Output = <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="../struct.SocketConnection.html" title="struct gio::SocketConnection">SocketConnection</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;&gt; + 'static&gt;&gt;</h4></section><details class="toggle method-toggle" open><summary><section id="method.connect_to_host" class="method"><a class="src rightside" href="../../src/gio/auto/socket_client.rs.html#406-427">Source</a><h4 class="code-header">fn <a href="#method.connect_to_host" class="fn">connect_to_host</a>(
+    &amp;self,
+    host_and_port: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+    default_port: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u16.html">u16</a>,
+    cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.Cancellable.html" title="struct gio::Cancellable">Cancellable</a>&gt;&gt;,
+) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="../struct.SocketConnection.html" title="struct gio::SocketConnection">SocketConnection</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;</h4></section></summary><div class="docblock"><p>This is a helper function for g_socket_client_connect().</p>
+<p>Attempts to create a TCP connection to the named host.</p>
+<p>@host_and_port may be in any of a number of recognized formats; an IPv6
+address, an IPv4 address, or a domain name (in which case a DNS
+lookup is performed).  Quoting with [] is supported for all address
+types.  A port override may be specified in the usual way with a
+colon.  Ports may be given as decimal numbers or symbolic names (in
+which case an /etc/services lookup is performed).</p>
+<p>If no port override is given in @host_and_port then @default_port will be
+used as the port number to connect to.</p>
+<p>In general, @host_and_port is expected to be provided by the user (allowing
+them to give the hostname, and a port override if necessary) and
+@default_port is expected to be provided by the application.</p>
+<p>In the case that an IP address is given, a single connection
+attempt is made.  In the case that a name is given, multiple
+connection attempts may be made, in turn and according to the
+number of address records in DNS, until a connection succeeds.</p>
+<p>Upon a successful connection, a new #GSocketConnection is constructed
+and returned.  The caller owns this new object and must drop their
+reference to it when finished with it.</p>
+<p>In the event of any failure (DNS error, service not found, no hosts
+connectable) <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a> is returned and @error (if non-<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a>) is set
+accordingly.</p>
+<h6 id="host_and_port"><a class="doc-anchor" href="#host_and_port">§</a><code>host_and_port</code></h6>
+<p>the name and optionally port of the host to connect to</p>
+<h6 id="default_port"><a class="doc-anchor" href="#default_port">§</a><code>default_port</code></h6>
+<p>the default port to connect to</p>
+<h6 id="cancellable-2"><a class="doc-anchor" href="#cancellable-2">§</a><code>cancellable</code></h6>
+<p>a #GCancellable, or <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a></p>
+<h5 id="returns-1"><a class="doc-anchor" href="#returns-1">§</a>Returns</h5>
+<p>a #GSocketConnection on success, <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a> on error.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.connect_to_host_async" class="method"><a class="src rightside" href="../../src/gio/auto/socket_client.rs.html#443-496">Source</a><h4 class="code-header">fn <a href="#method.connect_to_host_async" class="fn">connect_to_host_async</a>&lt;P: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html" title="trait core::ops::function::FnOnce">FnOnce</a>(<a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="../struct.SocketConnection.html" title="struct gio::SocketConnection">SocketConnection</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;) + 'static&gt;(
+    &amp;self,
+    host_and_port: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+    default_port: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u16.html">u16</a>,
+    cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.Cancellable.html" title="struct gio::Cancellable">Cancellable</a>&gt;&gt;,
+    callback: P,
+)</h4></section></summary><div class="docblock"><p>This is the asynchronous version of g_socket_client_connect_to_host().</p>
+<p>When the operation is finished @callback will be
+called. You can then call g_socket_client_connect_to_host_finish() to get
+the result of the operation.</p>
+<h6 id="host_and_port-1"><a class="doc-anchor" href="#host_and_port-1">§</a><code>host_and_port</code></h6>
+<p>the name and optionally the port of the host to connect to</p>
+<h6 id="default_port-1"><a class="doc-anchor" href="#default_port-1">§</a><code>default_port</code></h6>
+<p>the default port to connect to</p>
+<h6 id="cancellable-3"><a class="doc-anchor" href="#cancellable-3">§</a><code>cancellable</code></h6>
+<p>a #GCancellable, or <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a></p>
+<h6 id="callback-1"><a class="doc-anchor" href="#callback-1">§</a><code>callback</code></h6>
+<p>a #GAsyncReadyCallback</p>
+</div></details><section id="method.connect_to_host_future" class="method"><a class="src rightside" href="../../src/gio/auto/socket_client.rs.html#498-518">Source</a><h4 class="code-header">fn <a href="#method.connect_to_host_future" class="fn">connect_to_host_future</a>(
+    &amp;self,
+    host_and_port: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+    default_port: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u16.html">u16</a>,
+) -&gt; <a class="struct" href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html" title="struct core::pin::Pin">Pin</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box_</a>&lt;dyn <a class="trait" href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html" title="trait core::future::future::Future">Future</a>&lt;Output = <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="../struct.SocketConnection.html" title="struct gio::SocketConnection">SocketConnection</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;&gt; + 'static&gt;&gt;</h4></section><details class="toggle method-toggle" open><summary><section id="method.connect_to_service" class="method"><a class="src rightside" href="../../src/gio/auto/socket_client.rs.html#545-566">Source</a><h4 class="code-header">fn <a href="#method.connect_to_service" class="fn">connect_to_service</a>(
+    &amp;self,
+    domain: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+    service: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+    cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.Cancellable.html" title="struct gio::Cancellable">Cancellable</a>&gt;&gt;,
+) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="../struct.SocketConnection.html" title="struct gio::SocketConnection">SocketConnection</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;</h4></section></summary><div class="docblock"><p>Attempts to create a TCP connection to a service.</p>
+<p>This call looks up the SRV record for @service at @domain for the
+“tcp” protocol.  It then attempts to connect, in turn, to each of
+the hosts providing the service until either a connection succeeds
+or there are no hosts remaining.</p>
+<p>Upon a successful connection, a new #GSocketConnection is constructed
+and returned.  The caller owns this new object and must drop their
+reference to it when finished with it.</p>
+<p>In the event of any failure (DNS error, service not found, no hosts
+connectable) <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a> is returned and @error (if non-<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a>) is set
+accordingly.</p>
+<h6 id="domain"><a class="doc-anchor" href="#domain">§</a><code>domain</code></h6>
+<p>a domain name</p>
+<h6 id="service"><a class="doc-anchor" href="#service">§</a><code>service</code></h6>
+<p>the name of the service to connect to</p>
+<h6 id="cancellable-4"><a class="doc-anchor" href="#cancellable-4">§</a><code>cancellable</code></h6>
+<p>a #GCancellable, or <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a></p>
+<h5 id="returns-2"><a class="doc-anchor" href="#returns-2">§</a>Returns</h5>
+<p>a #GSocketConnection if successful, or <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a> on error</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.connect_to_service_async" class="method"><a class="src rightside" href="../../src/gio/auto/socket_client.rs.html#579-632">Source</a><h4 class="code-header">fn <a href="#method.connect_to_service_async" class="fn">connect_to_service_async</a>&lt;P: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html" title="trait core::ops::function::FnOnce">FnOnce</a>(<a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="../struct.SocketConnection.html" title="struct gio::SocketConnection">SocketConnection</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;) + 'static&gt;(
+    &amp;self,
+    domain: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+    service: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+    cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.Cancellable.html" title="struct gio::Cancellable">Cancellable</a>&gt;&gt;,
+    callback: P,
+)</h4></section></summary><div class="docblock"><p>This is the asynchronous version of
+g_socket_client_connect_to_service().</p>
+<h6 id="domain-1"><a class="doc-anchor" href="#domain-1">§</a><code>domain</code></h6>
+<p>a domain name</p>
+<h6 id="service-1"><a class="doc-anchor" href="#service-1">§</a><code>service</code></h6>
+<p>the name of the service to connect to</p>
+<h6 id="cancellable-5"><a class="doc-anchor" href="#cancellable-5">§</a><code>cancellable</code></h6>
+<p>a #GCancellable, or <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a></p>
+<h6 id="callback-2"><a class="doc-anchor" href="#callback-2">§</a><code>callback</code></h6>
+<p>a #GAsyncReadyCallback</p>
+</div></details><section id="method.connect_to_service_future" class="method"><a class="src rightside" href="../../src/gio/auto/socket_client.rs.html#634-650">Source</a><h4 class="code-header">fn <a href="#method.connect_to_service_future" class="fn">connect_to_service_future</a>(
+    &amp;self,
+    domain: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+    service: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+) -&gt; <a class="struct" href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html" title="struct core::pin::Pin">Pin</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box_</a>&lt;dyn <a class="trait" href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html" title="trait core::future::future::Future">Future</a>&lt;Output = <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="../struct.SocketConnection.html" title="struct gio::SocketConnection">SocketConnection</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;&gt; + 'static&gt;&gt;</h4></section><details class="toggle method-toggle" open><summary><section id="method.connect_to_uri" class="method"><a class="src rightside" href="../../src/gio/auto/socket_client.rs.html#684-705">Source</a><h4 class="code-header">fn <a href="#method.connect_to_uri" class="fn">connect_to_uri</a>(
+    &amp;self,
+    uri: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+    default_port: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u16.html">u16</a>,
+    cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.Cancellable.html" title="struct gio::Cancellable">Cancellable</a>&gt;&gt;,
+) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="../struct.SocketConnection.html" title="struct gio::SocketConnection">SocketConnection</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;</h4></section></summary><div class="docblock"><p>This is a helper function for g_socket_client_connect().</p>
+<p>Attempts to create a TCP connection with a network URI.</p>
+<p>@uri may be any valid URI containing an “authority” (hostname/port)
+component. If a port is not specified in the URI, @default_port
+will be used. TLS will be negotiated if #GSocketClient:tls is <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>true</code></a>.
+(#GSocketClient does not know to automatically assume TLS for
+certain URI schemes.)</p>
+<p>Using this rather than g_socket_client_connect() or
+g_socket_client_connect_to_host() allows #GSocketClient to
+determine when to use application-specific proxy protocols.</p>
+<p>Upon a successful connection, a new #GSocketConnection is constructed
+and returned.  The caller owns this new object and must drop their
+reference to it when finished with it.</p>
+<p>In the event of any failure (DNS error, service not found, no hosts
+connectable) <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a> is returned and @error (if non-<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a>) is set
+accordingly.</p>
+<h6 id="uri"><a class="doc-anchor" href="#uri">§</a><code>uri</code></h6>
+<p>A network URI</p>
+<h6 id="default_port-2"><a class="doc-anchor" href="#default_port-2">§</a><code>default_port</code></h6>
+<p>the default port to connect to</p>
+<h6 id="cancellable-6"><a class="doc-anchor" href="#cancellable-6">§</a><code>cancellable</code></h6>
+<p>a #GCancellable, or <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a></p>
+<h5 id="returns-3"><a class="doc-anchor" href="#returns-3">§</a>Returns</h5>
+<p>a #GSocketConnection on success, <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a> on error.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.connect_to_uri_async" class="method"><a class="src rightside" href="../../src/gio/auto/socket_client.rs.html#721-774">Source</a><h4 class="code-header">fn <a href="#method.connect_to_uri_async" class="fn">connect_to_uri_async</a>&lt;P: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html" title="trait core::ops::function::FnOnce">FnOnce</a>(<a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="../struct.SocketConnection.html" title="struct gio::SocketConnection">SocketConnection</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;) + 'static&gt;(
+    &amp;self,
+    uri: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+    default_port: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u16.html">u16</a>,
+    cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.Cancellable.html" title="struct gio::Cancellable">Cancellable</a>&gt;&gt;,
+    callback: P,
+)</h4></section></summary><div class="docblock"><p>This is the asynchronous version of g_socket_client_connect_to_uri().</p>
+<p>When the operation is finished @callback will be
+called. You can then call g_socket_client_connect_to_uri_finish() to get
+the result of the operation.</p>
+<h6 id="uri-1"><a class="doc-anchor" href="#uri-1">§</a><code>uri</code></h6>
+<p>a network uri</p>
+<h6 id="default_port-3"><a class="doc-anchor" href="#default_port-3">§</a><code>default_port</code></h6>
+<p>the default port to connect to</p>
+<h6 id="cancellable-7"><a class="doc-anchor" href="#cancellable-7">§</a><code>cancellable</code></h6>
+<p>a #GCancellable, or <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a></p>
+<h6 id="callback-3"><a class="doc-anchor" href="#callback-3">§</a><code>callback</code></h6>
+<p>a #GAsyncReadyCallback</p>
+</div></details><section id="method.connect_to_uri_future" class="method"><a class="src rightside" href="../../src/gio/auto/socket_client.rs.html#776-791">Source</a><h4 class="code-header">fn <a href="#method.connect_to_uri_future" class="fn">connect_to_uri_future</a>(
+    &amp;self,
+    uri: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+    default_port: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u16.html">u16</a>,
+) -&gt; <a class="struct" href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html" title="struct core::pin::Pin">Pin</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box_</a>&lt;dyn <a class="trait" href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html" title="trait core::future::future::Future">Future</a>&lt;Output = <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="../struct.SocketConnection.html" title="struct gio::SocketConnection">SocketConnection</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;&gt; + 'static&gt;&gt;</h4></section><details class="toggle method-toggle" open><summary><section id="method.enables_proxy" class="method"><a class="src rightside" href="../../src/gio/auto/socket_client.rs.html#801-807">Source</a><h4 class="code-header">fn <a href="#method.enables_proxy" class="fn">enables_proxy</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a></h4></section></summary><div class="docblock"><p>Gets the proxy enable state; see g_socket_client_set_enable_proxy()</p>
+<h5 id="returns-4"><a class="doc-anchor" href="#returns-4">§</a>Returns</h5>
+<p>whether proxying is enabled</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.family" class="method"><a class="src rightside" href="../../src/gio/auto/socket_client.rs.html#818-824">Source</a><h4 class="code-header">fn <a href="#method.family" class="fn">family</a>(&amp;self) -&gt; <a class="enum" href="../enum.SocketFamily.html" title="enum gio::SocketFamily">SocketFamily</a></h4></section></summary><div class="docblock"><p>Gets the socket family of the socket client.</p>
+<p>See g_socket_client_set_family() for details.</p>
+<h5 id="returns-5"><a class="doc-anchor" href="#returns-5">§</a>Returns</h5>
+<p>a #GSocketFamily</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.local_address" class="method"><a class="src rightside" href="../../src/gio/auto/socket_client.rs.html#836-842">Source</a><h4 class="code-header">fn <a href="#method.local_address" class="fn">local_address</a>(&amp;self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../struct.SocketAddress.html" title="struct gio::SocketAddress">SocketAddress</a>&gt;</h4></section></summary><div class="docblock"><p>Gets the local address of the socket client.</p>
+<p>See g_socket_client_set_local_address() for details.</p>
+<h5 id="returns-6"><a class="doc-anchor" href="#returns-6">§</a>Returns</h5>
+<p>a #GSocketAddress or <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a>. Do not free.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.protocol" class="method"><a class="src rightside" href="../../src/gio/auto/socket_client.rs.html#853-859">Source</a><h4 class="code-header">fn <a href="#method.protocol" class="fn">protocol</a>(&amp;self) -&gt; <a class="enum" href="../enum.SocketProtocol.html" title="enum gio::SocketProtocol">SocketProtocol</a></h4></section></summary><div class="docblock"><p>Gets the protocol name type of the socket client.</p>
+<p>See g_socket_client_set_protocol() for details.</p>
+<h5 id="returns-7"><a class="doc-anchor" href="#returns-7">§</a>Returns</h5>
+<p>a #GSocketProtocol</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.proxy_resolver" class="method"><a class="src rightside" href="../../src/gio/auto/socket_client.rs.html#872-878">Source</a><h4 class="code-header">fn <a href="#method.proxy_resolver" class="fn">proxy_resolver</a>(&amp;self) -&gt; <a class="struct" href="../struct.ProxyResolver.html" title="struct gio::ProxyResolver">ProxyResolver</a></h4></section></summary><div class="docblock"><p>Gets the #GProxyResolver being used by @self. Normally, this will
+be the resolver returned by g_proxy_resolver_get_default(), but you
+can override it with g_socket_client_set_proxy_resolver().</p>
+<h5 id="returns-8"><a class="doc-anchor" href="#returns-8">§</a>Returns</h5>
+<p>The #GProxyResolver being used by
+@self.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.socket_type" class="method"><a class="src rightside" href="../../src/gio/auto/socket_client.rs.html#889-895">Source</a><h4 class="code-header">fn <a href="#method.socket_type" class="fn">socket_type</a>(&amp;self) -&gt; <a class="enum" href="../enum.SocketType.html" title="enum gio::SocketType">SocketType</a></h4></section></summary><div class="docblock"><p>Gets the socket type of the socket client.</p>
+<p>See g_socket_client_set_socket_type() for details.</p>
+<h5 id="returns-9"><a class="doc-anchor" href="#returns-9">§</a>Returns</h5>
+<p>a #GSocketFamily</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.timeout" class="method"><a class="src rightside" href="../../src/gio/auto/socket_client.rs.html#906-908">Source</a><h4 class="code-header">fn <a href="#method.timeout" class="fn">timeout</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a></h4></section></summary><div class="docblock"><p>Gets the I/O timeout time for sockets created by @self.</p>
+<p>See g_socket_client_set_timeout() for details.</p>
+<h5 id="returns-10"><a class="doc-anchor" href="#returns-10">§</a>Returns</h5>
+<p>the timeout in seconds</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.is_tls" class="method"><a class="src rightside" href="../../src/gio/auto/socket_client.rs.html#919-921">Source</a><h4 class="code-header">fn <a href="#method.is_tls" class="fn">is_tls</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a></h4></section></summary><div class="docblock"><p>Gets whether @self creates TLS connections. See
+g_socket_client_set_tls() for details.</p>
+<h5 id="returns-11"><a class="doc-anchor" href="#returns-11">§</a>Returns</h5>
+<p>whether @self uses TLS</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.tls_validation_flags" class="method"><a class="src rightside" href="../../src/gio/auto/socket_client.rs.html#942-948">Source</a><h4 class="code-header">fn <a href="#method.tls_validation_flags" class="fn">tls_validation_flags</a>(&amp;self) -&gt; <a class="struct" href="../struct.TlsCertificateFlags.html" title="struct gio::TlsCertificateFlags">TlsCertificateFlags</a></h4></section><span class="item-info"><div class="stab deprecated"><span class="emoji">👎</span><span>Deprecated: Since 2.72</span></div></span></summary><div class="docblock"><p>Gets the TLS validation flags used creating TLS connections via
+@self.</p>
+<p>This function does not work as originally designed and is impossible
+to use correctly. See #GSocketClient:tls-validation-flags for more
+information.</p>
+<h5 id="deprecated-since-272"><a class="doc-anchor" href="#deprecated-since-272">§</a>Deprecated since 2.72</h5>
+<p>Do not attempt to ignore validation errors.</p>
+<h5 id="returns-12"><a class="doc-anchor" href="#returns-12">§</a>Returns</h5>
+<p>the TLS validation flags</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.set_enable_proxy" class="method"><a class="src rightside" href="../../src/gio/auto/socket_client.rs.html#960-967">Source</a><h4 class="code-header">fn <a href="#method.set_enable_proxy" class="fn">set_enable_proxy</a>(&amp;self, enable: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>)</h4></section></summary><div class="docblock"><p>Sets whether or not @self attempts to make connections via a
+proxy server. When enabled (the default), #GSocketClient will use a
+#GProxyResolver to determine if a proxy protocol such as SOCKS is
+needed, and automatically do the necessary proxy negotiation.</p>
+<p>See also g_socket_client_set_proxy_resolver().</p>
+<h6 id="enable"><a class="doc-anchor" href="#enable">§</a><code>enable</code></h6>
+<p>whether to enable proxies</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.set_family" class="method"><a class="src rightside" href="../../src/gio/auto/socket_client.rs.html#981-985">Source</a><h4 class="code-header">fn <a href="#method.set_family" class="fn">set_family</a>(&amp;self, family: <a class="enum" href="../enum.SocketFamily.html" title="enum gio::SocketFamily">SocketFamily</a>)</h4></section></summary><div class="docblock"><p>Sets the socket family of the socket client.
+If this is set to something other than <a href="../enum.SocketFamily.html#variant.Invalid" title="variant gio::SocketFamily::Invalid"><code>SocketFamily::Invalid</code></a>
+then the sockets created by this object will be of the specified
+family.</p>
+<p>This might be useful for instance if you want to force the local
+connection to be an ipv4 socket, even though the address might
+be an ipv6 mapped to ipv4 address.</p>
+<h6 id="family"><a class="doc-anchor" href="#family">§</a><code>family</code></h6>
+<p>a #GSocketFamily</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.set_local_address" class="method"><a class="src rightside" href="../../src/gio/auto/socket_client.rs.html#998-1005">Source</a><h4 class="code-header">fn <a href="#method.set_local_address" class="fn">set_local_address</a>(&amp;self, address: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.SocketAddress.html" title="struct gio::SocketAddress">SocketAddress</a>&gt;&gt;)</h4></section></summary><div class="docblock"><p>Sets the local address of the socket client.
+The sockets created by this object will bound to the
+specified address (if not <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a>) before connecting.</p>
+<p>This is useful if you want to ensure that the local
+side of the connection is on a specific port, or on
+a specific interface.</p>
+<h6 id="address"><a class="doc-anchor" href="#address">§</a><code>address</code></h6>
+<p>a #GSocketAddress, or <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a></p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.set_protocol" class="method"><a class="src rightside" href="../../src/gio/auto/socket_client.rs.html#1017-1021">Source</a><h4 class="code-header">fn <a href="#method.set_protocol" class="fn">set_protocol</a>(&amp;self, protocol: <a class="enum" href="../enum.SocketProtocol.html" title="enum gio::SocketProtocol">SocketProtocol</a>)</h4></section></summary><div class="docblock"><p>Sets the protocol of the socket client.
+The sockets created by this object will use of the specified
+protocol.</p>
+<p>If @protocol is <a href="../enum.SocketProtocol.html#variant.Default" title="variant gio::SocketProtocol::Default"><code>SocketProtocol::Default</code></a> that means to use the default
+protocol for the socket family and type.</p>
+<h6 id="protocol-1"><a class="doc-anchor" href="#protocol-1">§</a><code>protocol</code></h6>
+<p>a #GSocketProtocol</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.set_proxy_resolver" class="method"><a class="src rightside" href="../../src/gio/auto/socket_client.rs.html#1035-1042">Source</a><h4 class="code-header">fn <a href="#method.set_proxy_resolver" class="fn">set_proxy_resolver</a>(&amp;self, proxy_resolver: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.ProxyResolver.html" title="struct gio::ProxyResolver">ProxyResolver</a>&gt;&gt;)</h4></section></summary><div class="docblock"><p>Overrides the #GProxyResolver used by @self. You can call this if
+you want to use specific proxies, rather than using the system
+default proxy settings.</p>
+<p>Note that whether or not the proxy resolver is actually used
+depends on the setting of #GSocketClient:enable-proxy, which is not
+changed by this function (but which is <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>true</code></a> by default)</p>
+<h6 id="proxy_resolver"><a class="doc-anchor" href="#proxy_resolver">§</a><code>proxy_resolver</code></h6>
+<p>a #GProxyResolver, or <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a> for the
+default.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.set_socket_type" class="method"><a class="src rightside" href="../../src/gio/auto/socket_client.rs.html#1053-1057">Source</a><h4 class="code-header">fn <a href="#method.set_socket_type" class="fn">set_socket_type</a>(&amp;self, type_: <a class="enum" href="../enum.SocketType.html" title="enum gio::SocketType">SocketType</a>)</h4></section></summary><div class="docblock"><p>Sets the socket type of the socket client.
+The sockets created by this object will be of the specified
+type.</p>
+<p>It doesn’t make sense to specify a type of <a href="../enum.SocketType.html#variant.Datagram" title="variant gio::SocketType::Datagram"><code>SocketType::Datagram</code></a>,
+as GSocketClient is used for connection oriented services.</p>
+<h6 id="type_"><a class="doc-anchor" href="#type_">§</a><code>type_</code></h6>
+<p>a #GSocketType</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.set_timeout" class="method"><a class="src rightside" href="../../src/gio/auto/socket_client.rs.html#1069-1073">Source</a><h4 class="code-header">fn <a href="#method.set_timeout" class="fn">set_timeout</a>(&amp;self, timeout: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>)</h4></section></summary><div class="docblock"><p>Sets the I/O timeout for sockets created by @self. @timeout is a
+time in seconds, or 0 for no timeout (the default).</p>
+<p>The timeout value affects the initial connection attempt as well,
+so setting this may cause calls to g_socket_client_connect(), etc,
+to fail with <a href="../enum.IOErrorEnum.html#variant.TimedOut" title="variant gio::IOErrorEnum::TimedOut"><code>IOErrorEnum::TimedOut</code></a>.</p>
+<h6 id="timeout"><a class="doc-anchor" href="#timeout">§</a><code>timeout</code></h6>
+<p>the timeout</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.set_tls" class="method"><a class="src rightside" href="../../src/gio/auto/socket_client.rs.html#1097-1101">Source</a><h4 class="code-header">fn <a href="#method.set_tls" class="fn">set_tls</a>(&amp;self, tls: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>)</h4></section></summary><div class="docblock"><p>Sets whether @self creates TLS (aka SSL) connections. If @tls is
+<a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>true</code></a>, @self will wrap its connections in a #GTlsClientConnection
+and perform a TLS handshake when connecting.</p>
+<p>Note that since #GSocketClient must return a #GSocketConnection,
+but #GTlsClientConnection is not a #GSocketConnection, this
+actually wraps the resulting #GTlsClientConnection in a
+#GTcpWrapperConnection when returning it. You can use
+g_tcp_wrapper_connection_get_base_io_stream() on the return value
+to extract the #GTlsClientConnection.</p>
+<p>If you need to modify the behavior of the TLS handshake (eg, by
+setting a client-side certificate to use, or connecting to the
+#GTlsConnection::accept-certificate signal), you can connect to
+@self’s #GSocketClient::event signal and wait for it to be
+emitted with <a href="../enum.SocketClientEvent.html#variant.TlsHandshaking" title="variant gio::SocketClientEvent::TlsHandshaking"><code>SocketClientEvent::TlsHandshaking</code></a>, which will give you
+a chance to see the #GTlsClientConnection before the handshake
+starts.</p>
+<h6 id="tls"><a class="doc-anchor" href="#tls">§</a><code>tls</code></h6>
+<p>whether to use TLS</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.set_tls_validation_flags" class="method"><a class="src rightside" href="../../src/gio/auto/socket_client.rs.html#1119-1126">Source</a><h4 class="code-header">fn <a href="#method.set_tls_validation_flags" class="fn">set_tls_validation_flags</a>(&amp;self, flags: <a class="struct" href="../struct.TlsCertificateFlags.html" title="struct gio::TlsCertificateFlags">TlsCertificateFlags</a>)</h4></section><span class="item-info"><div class="stab deprecated"><span class="emoji">👎</span><span>Deprecated: Since 2.72</span></div></span></summary><div class="docblock"><p>Sets the TLS validation flags used when creating TLS connections
+via @self. The default value is <a href="../struct.TlsCertificateFlags.html#associatedconstant.VALIDATE_ALL" title="associated constant gio::TlsCertificateFlags::VALIDATE_ALL"><code>TlsCertificateFlags::VALIDATE_ALL</code></a>.</p>
+<p>This function does not work as originally designed and is impossible
+to use correctly. See #GSocketClient:tls-validation-flags for more
+information.</p>
+<h5 id="deprecated-since-272-1"><a class="doc-anchor" href="#deprecated-since-272-1">§</a>Deprecated since 2.72</h5>
+<p>Do not attempt to ignore validation errors.</p>
+<h6 id="flags"><a class="doc-anchor" href="#flags">§</a><code>flags</code></h6>
+<p>the validation flags</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.type_" class="method"><a class="src rightside" href="../../src/gio/auto/socket_client.rs.html#1130-1132">Source</a><h4 class="code-header">fn <a href="#method.type_" class="fn">type_</a>(&amp;self) -&gt; <a class="enum" href="../enum.SocketType.html" title="enum gio::SocketType">SocketType</a></h4></section></summary><div class="docblock"><p>The type to use for socket construction.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.set_type" class="method"><a class="src rightside" href="../../src/gio/auto/socket_client.rs.html#1136-1138">Source</a><h4 class="code-header">fn <a href="#method.set_type" class="fn">set_type</a>(&amp;self, type_: <a class="enum" href="../enum.SocketType.html" title="enum gio::SocketType">SocketType</a>)</h4></section></summary><div class="docblock"><p>The type to use for socket construction.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.connect_event" class="method"><a class="src rightside" href="../../src/gio/auto/socket_client.rs.html#1196-1233">Source</a><h4 class="code-header">fn <a href="#method.connect_event" class="fn">connect_event</a>&lt;F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;Self, <a class="enum" href="../enum.SocketClientEvent.html" title="enum gio::SocketClientEvent">SocketClientEvent</a>, &amp;<a class="struct" href="../struct.SocketConnectable.html" title="struct gio::SocketConnectable">SocketConnectable</a>, <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="struct" href="../struct.IOStream.html" title="struct gio::IOStream">IOStream</a>&gt;) + 'static&gt;(
+    &amp;self,
+    f: F,
+) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a></h4></section></summary><div class="docblock"><p>Emitted when @client’s activity on @connectable changes state.
+Among other things, this can be used to provide progress
+information about a network connection in the UI. The meanings of
+the different @event values are as follows:</p>
+<ul>
+<li>
+<p><a href="../enum.SocketClientEvent.html#variant.Resolving" title="variant gio::SocketClientEvent::Resolving"><code>SocketClientEvent::Resolving</code></a>: @client is about to look up @connectable
+in DNS. @connection will be <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a>.</p>
+</li>
+<li>
+<p><a href="../enum.SocketClientEvent.html#variant.Resolved" title="variant gio::SocketClientEvent::Resolved"><code>SocketClientEvent::Resolved</code></a>:  @client has successfully resolved
+@connectable in DNS. @connection will be <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a>.</p>
+</li>
+<li>
+<p><a href="../enum.SocketClientEvent.html#variant.Connecting" title="variant gio::SocketClientEvent::Connecting"><code>SocketClientEvent::Connecting</code></a>: @client is about to make a connection
+to a remote host; either a proxy server or the destination server
+itself. @connection is the #GSocketConnection, which is not yet
+connected.  Since GLib 2.40, you can access the remote
+address via g_socket_connection_get_remote_address().</p>
+</li>
+<li>
+<p><a href="../enum.SocketClientEvent.html#variant.Connected" title="variant gio::SocketClientEvent::Connected"><code>SocketClientEvent::Connected</code></a>: @client has successfully connected
+to a remote host. @connection is the connected #GSocketConnection.</p>
+</li>
+<li>
+<p><a href="../enum.SocketClientEvent.html#variant.ProxyNegotiating" title="variant gio::SocketClientEvent::ProxyNegotiating"><code>SocketClientEvent::ProxyNegotiating</code></a>: @client is about to negotiate
+with a proxy to get it to connect to @connectable. @connection is
+the #GSocketConnection to the proxy server.</p>
+</li>
+<li>
+<p><a href="../enum.SocketClientEvent.html#variant.ProxyNegotiated" title="variant gio::SocketClientEvent::ProxyNegotiated"><code>SocketClientEvent::ProxyNegotiated</code></a>: @client has negotiated a
+connection to @connectable through a proxy server. @connection is
+the stream returned from g_proxy_connect(), which may or may not
+be a #GSocketConnection.</p>
+</li>
+<li>
+<p><a href="../enum.SocketClientEvent.html#variant.TlsHandshaking" title="variant gio::SocketClientEvent::TlsHandshaking"><code>SocketClientEvent::TlsHandshaking</code></a>: @client is about to begin a TLS
+handshake. @connection is a #GTlsClientConnection.</p>
+</li>
+<li>
+<p><a href="../enum.SocketClientEvent.html#variant.TlsHandshaked" title="variant gio::SocketClientEvent::TlsHandshaked"><code>SocketClientEvent::TlsHandshaked</code></a>: @client has successfully completed
+the TLS handshake. @connection is a #GTlsClientConnection.</p>
+</li>
+<li>
+<p><a href="../enum.SocketClientEvent.html#variant.Complete" title="variant gio::SocketClientEvent::Complete"><code>SocketClientEvent::Complete</code></a>: @client has either successfully connected
+to @connectable (in which case @connection is the #GSocketConnection
+that it will be returning to the caller) or has failed (in which
+case @connection is <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a> and the client is about to return an error).</p>
+</li>
+</ul>
+<p>Each event except <a href="../enum.SocketClientEvent.html#variant.Complete" title="variant gio::SocketClientEvent::Complete"><code>SocketClientEvent::Complete</code></a> may be emitted
+multiple times (or not at all) for a given connectable (in
+particular, if @client ends up attempting to connect to more than
+one address). However, if @client emits the #GSocketClient::event
+signal at all for a given connectable, then it will always emit
+it with <a href="../enum.SocketClientEvent.html#variant.Complete" title="variant gio::SocketClientEvent::Complete"><code>SocketClientEvent::Complete</code></a> when it is done.</p>
+<p>Note that there may be additional #GSocketClientEvent values in
+the future; unrecognized @event values should be ignored.</p>
+<h6 id="event"><a class="doc-anchor" href="#event">§</a><code>event</code></h6>
+<p>the event that is occurring</p>
+<h6 id="connectable-2"><a class="doc-anchor" href="#connectable-2">§</a><code>connectable</code></h6>
+<p>the #GSocketConnectable that @event is occurring on</p>
+<h6 id="connection"><a class="doc-anchor" href="#connection">§</a><code>connection</code></h6>
+<p>the current representation of the connection</p>
+</div></details><section id="method.connect_enable_proxy_notify" class="method"><a class="src rightside" href="../../src/gio/auto/socket_client.rs.html#1236-1259">Source</a><h4 class="code-header">fn <a href="#method.connect_enable_proxy_notify" class="fn">connect_enable_proxy_notify</a>&lt;F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;Self) + 'static&gt;(
+    &amp;self,
+    f: F,
+) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a></h4></section><section id="method.connect_family_notify" class="method"><a class="src rightside" href="../../src/gio/auto/socket_client.rs.html#1262-1282">Source</a><h4 class="code-header">fn <a href="#method.connect_family_notify" class="fn">connect_family_notify</a>&lt;F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;Self) + 'static&gt;(&amp;self, f: F) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a></h4></section><section id="method.connect_local_address_notify" class="method"><a class="src rightside" href="../../src/gio/auto/socket_client.rs.html#1285-1308">Source</a><h4 class="code-header">fn <a href="#method.connect_local_address_notify" class="fn">connect_local_address_notify</a>&lt;F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;Self) + 'static&gt;(
+    &amp;self,
+    f: F,
+) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a></h4></section><section id="method.connect_protocol_notify" class="method"><a class="src rightside" href="../../src/gio/auto/socket_client.rs.html#1311-1334">Source</a><h4 class="code-header">fn <a href="#method.connect_protocol_notify" class="fn">connect_protocol_notify</a>&lt;F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;Self) + 'static&gt;(
+    &amp;self,
+    f: F,
+) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a></h4></section><section id="method.connect_proxy_resolver_notify" class="method"><a class="src rightside" href="../../src/gio/auto/socket_client.rs.html#1337-1360">Source</a><h4 class="code-header">fn <a href="#method.connect_proxy_resolver_notify" class="fn">connect_proxy_resolver_notify</a>&lt;F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;Self) + 'static&gt;(
+    &amp;self,
+    f: F,
+) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a></h4></section><section id="method.connect_timeout_notify" class="method"><a class="src rightside" href="../../src/gio/auto/socket_client.rs.html#1363-1386">Source</a><h4 class="code-header">fn <a href="#method.connect_timeout_notify" class="fn">connect_timeout_notify</a>&lt;F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;Self) + 'static&gt;(
+    &amp;self,
+    f: F,
+) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a></h4></section><section id="method.connect_tls_notify" class="method"><a class="src rightside" href="../../src/gio/auto/socket_client.rs.html#1389-1409">Source</a><h4 class="code-header">fn <a href="#method.connect_tls_notify" class="fn">connect_tls_notify</a>&lt;F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;Self) + 'static&gt;(&amp;self, f: F) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a></h4></section><section id="method.connect_tls_validation_flags_notify" class="method"><a class="src rightside" href="../../src/gio/auto/socket_client.rs.html#1413-1436">Source</a><h4 class="code-header">fn <a href="#method.connect_tls_validation_flags_notify" class="fn">connect_tls_validation_flags_notify</a>&lt;F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;Self) + 'static&gt;(
+    &amp;self,
+    f: F,
+) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a></h4></section><span class="item-info"><div class="stab deprecated"><span class="emoji">👎</span><span>Deprecated: Since 2.72</span></div></span><section id="method.connect_type_notify" class="method"><a class="src rightside" href="../../src/gio/auto/socket_client.rs.html#1439-1459">Source</a><h4 class="code-header">fn <a href="#method.connect_type_notify" class="fn">connect_type_notify</a>&lt;F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;Self) + 'static&gt;(&amp;self, f: F) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a></h4></section></div><h2 id="dyn-compatibility" class="section-header">Dyn Compatibility<a href="#dyn-compatibility" class="anchor">§</a></h2><div class="dyn-compatibility-info"><p>This trait is <b>not</b> <a href="https://doc.rust-lang.org/nightly/reference/items/traits.html#dyn-compatibility">dyn compatible</a>.</p><p><i>In older versions of Rust, dyn compatibility was called "object safety", so this trait is not object safe.</i></p></div><h2 id="implementors" class="section-header">Implementors<a href="#implementors" class="anchor">§</a></h2><div id="implementors-list"><section id="impl-SocketClientExt-for-O" class="impl"><a class="src rightside" href="../../src/gio/auto/socket_client.rs.html#1462">Source</a><a href="#impl-SocketClientExt-for-O" class="anchor">§</a><h3 class="code-header">impl&lt;O: <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.SocketClient.html" title="struct gio::SocketClient">SocketClient</a>&gt;&gt; <a class="trait" href="trait.SocketClientExt.html" title="trait gio::prelude::SocketClientExt">SocketClientExt</a> for O</h3></section></div><script src="../../trait.impl/gio/auto/socket_client/trait.SocketClientExt.js" async></script></section></div></main></body></html>
