@@ -1,12 +1,12 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
 #[cfg(unix)]
-use std::os::unix::io::{AsRawFd, FromRawFd, RawFd};
+use std::os::unix::io::{AsFd, AsRawFd, BorrowedFd, FromRawFd, RawFd};
 
 use crate::ffi;
 use glib::{prelude::*, translate::*};
 #[cfg(all(not(unix), docsrs))]
-use socket::{AsRawFd, FromRawFd, IntoRawFd, RawFd};
+use socket::{AsFd, AsRawFd, BorrowedFd, FromRawFd, IntoRawFd, RawFd};
 
 glib::wrapper! {
     #[doc(alias = "GFileDescriptorBased")]
@@ -24,6 +24,12 @@ impl FileDescriptorBased {
 impl AsRawFd for FileDescriptorBased {
     fn as_raw_fd(&self) -> RawFd {
         unsafe { ffi::g_file_descriptor_based_get_fd(self.to_glib_none().0) as _ }
+    }
+}
+
+impl AsFd for FileDescriptorBased {
+    fn as_fd(&self) -> BorrowedFd<'_> {
+        unsafe { BorrowedFd::borrow_raw(self.as_raw_fd()) }
     }
 }
 
