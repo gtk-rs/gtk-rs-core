@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/subclass/types.rs`."><title>types.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-aa0817cf.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.90.0-nightly (a00149764 2025-07-14)" data-channel="nightly" data-search-js="search-179e01a3.js" data-settings-js="settings-5514c975.js" ><script src="../../../static.files/storage-4e99c027.js"></script><script defer src="../../../static.files/src-script-813739b1.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-673ee1e0.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-32bb7600.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/subclass/types.rs`."><title>types.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-aa0817cf.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.90.0-nightly (3014e79f9 2025-07-15)" data-channel="nightly" data-search-js="search-179e01a3.js" data-settings-js="settings-5514c975.js" ><script src="../../../static.files/storage-4e99c027.js"></script><script defer src="../../../static.files/src-script-813739b1.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-673ee1e0.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-32bb7600.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -80,7 +80,7 @@
 <a href=#7 id=7 data-nosnippet>7</a>
 <a href=#8 id=8 data-nosnippet>8</a><span class="kw">use super</span>::{<a href="interface.rs.html#82-152">interface::ObjectInterface</a>, <a href="signal.rs.html#175">SignalId</a>};
 <a href=#9 id=9 data-nosnippet>9</a><span class="kw">use crate</span>::{
-<a href=#10 id=10 data-nosnippet>10</a>    ffi, <a href="../../../gobject_sys/index.html">gobject_ffi</a>,
+<a href=#10 id=10 data-nosnippet>10</a>    <a href="../../../glib_sys/index.html">ffi</a>, <a href="../../../gobject_sys/index.html">gobject_ffi</a>,
 <a href=#11 id=11 data-nosnippet>11</a>    object::{<a href="../object.rs.html#4137">IsClass</a>, <a href="../object.rs.html#4369">IsInterface</a>, <a href="../object.rs.html#4109-4111">ObjectSubclassIs</a>, <a href="../object.rs.html#4102-4104">ParentClassIs</a>},
 <a href=#12 id=12 data-nosnippet>12</a>    <a href="../lib.rs.html#159">prelude</a>::<span class="kw-2">*</span>,
 <a href=#13 id=13 data-nosnippet>13</a>    <a href="../lib.rs.html#164">translate</a>::<span class="kw-2">*</span>,
@@ -95,10 +95,10 @@
 <a href=#22 id=22 data-nosnippet>22</a></span><span class="kw">pub struct </span><a href="../../../glib/subclass/types/struct.InitializingType.html">InitializingType</a>&lt;T&gt;(<span class="kw">pub</span>(<span class="kw">crate</span>) <a href="../types.rs.html#22">Type</a>, <span class="kw">pub</span>(<span class="kw">crate</span>) <a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">marker::PhantomData</a>&lt;<span class="kw-2">*const </span>T&gt;);
 <a href=#23 id=23 data-nosnippet>23</a>
 <a href=#24 id=24 data-nosnippet>24</a><span class="kw">impl</span>&lt;T&gt; <a href="../translate.rs.html#331-335">IntoGlib</a> <span class="kw">for </span><a href="#22">InitializingType</a>&lt;T&gt; {
-<a href=#25 id=25 data-nosnippet>25</a>    <span class="kw">type </span>GlibType = ffi::GType;
+<a href=#25 id=25 data-nosnippet>25</a>    <span class="kw">type </span>GlibType = <a href="../../../glib_sys/manual/type.GType.html">ffi::GType</a>;
 <a href=#26 id=26 data-nosnippet>26</a>
 <a href=#27 id=27 data-nosnippet>27</a>    <span class="attr">#[inline]
-<a href=#28 id=28 data-nosnippet>28</a>    </span><span class="kw">fn </span>into_glib(<span class="self">self</span>) -&gt; ffi::GType {
+<a href=#28 id=28 data-nosnippet>28</a>    </span><span class="kw">fn </span>into_glib(<span class="self">self</span>) -&gt; <a href="../../../glib_sys/manual/type.GType.html">ffi::GType</a> {
 <a href=#29 id=29 data-nosnippet>29</a>        <a class="self" href="#28">self</a>.<span class="number">0</span>.<a href="../translate.rs.html#334">into_glib</a>()
 <a href=#30 id=30 data-nosnippet>30</a>    }
 <a href=#31 id=31 data-nosnippet>31</a>}
@@ -392,8 +392,8 @@
 <a href=#319 id=319 data-nosnippet>319</a>}
 <a href=#320 id=320 data-nosnippet>320</a>
 <a href=#321 id=321 data-nosnippet>321</a><span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>interface_init&lt;T: <a href="#601-736">ObjectSubclass</a>, A: <a href="#306-319">IsImplementable</a>&lt;T&gt;&gt;(
-<a href=#322 id=322 data-nosnippet>322</a>    iface: ffi::gpointer,
-<a href=#323 id=323 data-nosnippet>323</a>    _iface_data: ffi::gpointer,
+<a href=#322 id=322 data-nosnippet>322</a>    iface: <a href="../../../glib_sys/type.gpointer.html">ffi::gpointer</a>,
+<a href=#323 id=323 data-nosnippet>323</a>    _iface_data: <a href="../../../glib_sys/type.gpointer.html">ffi::gpointer</a>,
 <a href=#324 id=324 data-nosnippet>324</a>) <span class="kw">where
 <a href=#325 id=325 data-nosnippet>325</a>    </span>&lt;A <span class="kw">as </span>ObjectType&gt;::GlibClassType: <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Copy.html">Copy</a>,
 <a href=#326 id=326 data-nosnippet>326</a>{
@@ -409,7 +409,7 @@
 <a href=#336 id=336 data-nosnippet>336</a>            .parent_ifaces
 <a href=#337 id=337 data-nosnippet>337</a>            .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_mut">as_mut</a>()
 <a href=#338 id=338 data-nosnippet>338</a>            .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap">unwrap</a>()
-<a href=#339 id=339 data-nosnippet>339</a>            .<a href="https://doc.rust-lang.org/nightly/alloc/collections/btree/map/struct.BTreeMap.html#method.insert">insert</a>(<a href="../types.rs.html#293">A::static_type</a>(), <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.into_raw">Box::into_raw</a>(<a href="#334">copy</a>) <span class="kw">as </span>ffi::gpointer);
+<a href=#339 id=339 data-nosnippet>339</a>            .<a href="https://doc.rust-lang.org/nightly/alloc/collections/btree/map/struct.BTreeMap.html#method.insert">insert</a>(<a href="../types.rs.html#293">A::static_type</a>(), <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.into_raw">Box::into_raw</a>(<a href="#334">copy</a>) <span class="kw">as </span><a href="../../../glib_sys/type.gpointer.html">ffi::gpointer</a>);
 <a href=#340 id=340 data-nosnippet>340</a>    }
 <a href=#341 id=341 data-nosnippet>341</a>
 <a href=#342 id=342 data-nosnippet>342</a>    <a href="#312">A::interface_init</a>(<a href="#327">iface</a>);
@@ -511,8 +511,8 @@
 <a href=#438 id=438 data-nosnippet>438</a><span class="doccomment">/// Type-specific data that is filled in during type creation.
 <a href=#439 id=439 data-nosnippet>439</a></span><span class="kw">pub struct </span><a href="../../../glib/subclass/types/struct.TypeData.html">TypeData</a> {
 <a href=#440 id=440 data-nosnippet>440</a>    type_: <a href="../types.rs.html#22">Type</a>,
-<a href=#441 id=441 data-nosnippet>441</a>    parent_class: ffi::gpointer,
-<a href=#442 id=442 data-nosnippet>442</a>    parent_ifaces: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/collections/btree/map/struct.BTreeMap.html">BTreeMap</a>&lt;<a href="../types.rs.html#22">Type</a>, ffi::gpointer&gt;&gt;,
+<a href=#441 id=441 data-nosnippet>441</a>    parent_class: <a href="../../../glib_sys/type.gpointer.html">ffi::gpointer</a>,
+<a href=#442 id=442 data-nosnippet>442</a>    parent_ifaces: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/collections/btree/map/struct.BTreeMap.html">BTreeMap</a>&lt;<a href="../types.rs.html#22">Type</a>, <a href="../../../glib_sys/type.gpointer.html">ffi::gpointer</a>&gt;&gt;,
 <a href=#443 id=443 data-nosnippet>443</a>    class_data: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/collections/btree/map/struct.BTreeMap.html">BTreeMap</a>&lt;<a href="../types.rs.html#22">Type</a>, <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box</a>&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/any/trait.Any.html">Any</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a>&gt;&gt;&gt;,
 <a href=#444 id=444 data-nosnippet>444</a>    private_offset: <a href="https://doc.rust-lang.org/nightly/std/primitive.isize.html">isize</a>,
 <a href=#445 id=445 data-nosnippet>445</a>    private_imp_offset: <a href="https://doc.rust-lang.org/nightly/std/primitive.isize.html">isize</a>,
@@ -548,7 +548,7 @@
 <a href=#475 id=475 data-nosnippet>475</a>    /// of virtual methods.
 <a href=#476 id=476 data-nosnippet>476</a>    </span><span class="attr">#[doc(alias = <span class="string">"get_parent_class"</span>)]
 <a href=#477 id=477 data-nosnippet>477</a>    #[inline]
-<a href=#478 id=478 data-nosnippet>478</a>    </span><span class="kw">pub fn </span>parent_class(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; ffi::gpointer {
+<a href=#478 id=478 data-nosnippet>478</a>    </span><span class="kw">pub fn </span>parent_class(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="../../../glib_sys/type.gpointer.html">ffi::gpointer</a> {
 <a href=#479 id=479 data-nosnippet>479</a>        <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert.html">debug_assert!</a>(!<span class="self">self</span>.parent_class.is_null());
 <a href=#480 id=480 data-nosnippet>480</a>        <a class="self" href="#478">self</a>.parent_class
 <a href=#481 id=481 data-nosnippet>481</a>    }
@@ -564,7 +564,7 @@
 <a href=#491 id=491 data-nosnippet>491</a>    /// This function panics if the type to which the `TypeData` belongs does not implement the
 <a href=#492 id=492 data-nosnippet>492</a>    /// given interface or was not registered yet.
 <a href=#493 id=493 data-nosnippet>493</a>    </span><span class="attr">#[doc(alias = <span class="string">"get_parent_interface"</span>)]
-<a href=#494 id=494 data-nosnippet>494</a>    </span><span class="kw">pub fn </span>parent_interface&lt;I: <a href="../object.rs.html#4369"><span class="kw">crate</span>::object::IsInterface</a>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; ffi::gpointer {
+<a href=#494 id=494 data-nosnippet>494</a>    </span><span class="kw">pub fn </span>parent_interface&lt;I: <a href="../object.rs.html#4369"><span class="kw">crate</span>::object::IsInterface</a>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="../../../glib_sys/type.gpointer.html">ffi::gpointer</a> {
 <a href=#495 id=495 data-nosnippet>495</a>        <span class="kw">match </span><a class="self" href="#494">self</a>.parent_ifaces {
 <a href=#496 id=496 data-nosnippet>496</a>            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None"><a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a> </a>=&gt; <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.unreachable.html">unreachable!</a>(<span class="string">"No parent interfaces"</span>),
 <a href=#497 id=497 data-nosnippet>497</a>            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<span class="kw-2">ref </span>parent_ifaces) =&gt; <span class="kw-2">*</span><a href="#497">parent_ifaces</a>
@@ -967,8 +967,8 @@
 <a href=#894 id=894 data-nosnippet>894</a>}
 <a href=#895 id=895 data-nosnippet>895</a>
 <a href=#896 id=896 data-nosnippet>896</a><span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>class_init&lt;T: <a href="#601-736">ObjectSubclass</a>&gt;(
-<a href=#897 id=897 data-nosnippet>897</a>    klass: ffi::gpointer,
-<a href=#898 id=898 data-nosnippet>898</a>    _klass_data: ffi::gpointer,
+<a href=#897 id=897 data-nosnippet>897</a>    klass: <a href="../../../glib_sys/type.gpointer.html">ffi::gpointer</a>,
+<a href=#898 id=898 data-nosnippet>898</a>    _klass_data: <a href="../../../glib_sys/type.gpointer.html">ffi::gpointer</a>,
 <a href=#899 id=899 data-nosnippet>899</a>) {
 <a href=#900 id=900 data-nosnippet>900</a>    <span class="kw">let </span><span class="kw-2">mut </span>data = <a href="#580">T::type_data</a>();
 <a href=#901 id=901 data-nosnippet>901</a>
@@ -990,11 +990,11 @@
 <a href=#917 id=917 data-nosnippet>917</a>    // class initialization function.
 <a href=#918 id=918 data-nosnippet>918</a>    </span>{
 <a href=#919 id=919 data-nosnippet>919</a>        <span class="kw">let </span>klass = <span class="kw-2">&amp;mut *</span>(<a href="#897">klass</a> <span class="kw">as </span><span class="kw-2">*mut </span>T::Class);
-<a href=#920 id=920 data-nosnippet>920</a>        <span class="kw">let </span>parent_class = <a href="../../../gobject_sys/fn.g_type_class_peek_parent.html">gobject_ffi::g_type_class_peek_parent</a>(<a href="#919">klass</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_ as </span>ffi::gpointer)
+<a href=#920 id=920 data-nosnippet>920</a>        <span class="kw">let </span>parent_class = <a href="../../../gobject_sys/fn.g_type_class_peek_parent.html">gobject_ffi::g_type_class_peek_parent</a>(<a href="#919">klass</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_ as </span><a href="../../../glib_sys/type.gpointer.html">ffi::gpointer</a>)
 <a href=#921 id=921 data-nosnippet>921</a>            <span class="kw">as </span><span class="kw-2">*mut </span>&lt;T::ParentType <span class="kw">as </span>ObjectType&gt;::GlibClassType;
 <a href=#922 id=922 data-nosnippet>922</a>        <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert.html">debug_assert!</a>(!parent_class.is_null());
 <a href=#923 id=923 data-nosnippet>923</a>
-<a href=#924 id=924 data-nosnippet>924</a>        <a href="#900">data</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_mut">as_mut</a>().parent_class = <a href="#920">parent_class</a> <span class="kw">as </span>ffi::gpointer;
+<a href=#924 id=924 data-nosnippet>924</a>        <a href="#900">data</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_mut">as_mut</a>().parent_class = <a href="#920">parent_class</a> <span class="kw">as </span><a href="../../../glib_sys/type.gpointer.html">ffi::gpointer</a>;
 <a href=#925 id=925 data-nosnippet>925</a>
 <a href=#926 id=926 data-nosnippet>926</a>        <a href="#919">klass</a>.<a href="#189-197">class_init</a>();
 <a href=#927 id=927 data-nosnippet>927</a>        <a href="#699">T::class_init</a>(<a href="#919">klass</a>);
@@ -1003,7 +1003,7 @@
 <a href=#930 id=930 data-nosnippet>930</a>
 <a href=#931 id=931 data-nosnippet>931</a><span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>instance_init&lt;T: <a href="#601-736">ObjectSubclass</a>&gt;(
 <a href=#932 id=932 data-nosnippet>932</a>    obj: <span class="kw-2">*mut </span><a href="../../../gobject_sys/struct.GTypeInstance.html">gobject_ffi::GTypeInstance</a>,
-<a href=#933 id=933 data-nosnippet>933</a>    klass: ffi::gpointer,
+<a href=#933 id=933 data-nosnippet>933</a>    klass: <a href="../../../glib_sys/type.gpointer.html">ffi::gpointer</a>,
 <a href=#934 id=934 data-nosnippet>934</a>) {
 <a href=#935 id=935 data-nosnippet>935</a>    <span class="comment">// Get offset to the storage of our private struct, create it
 <a href=#936 id=936 data-nosnippet>936</a>    // and actually store it in that place.
@@ -1261,7 +1261,7 @@
 <a href=#1188 id=1188 data-nosnippet>1188</a>
 <a href=#1189 id=1189 data-nosnippet>1189</a><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">unsafe fn </span>signal_override_class_handler&lt;F&gt;(
 <a href=#1190 id=1190 data-nosnippet>1190</a>    name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
-<a href=#1191 id=1191 data-nosnippet>1191</a>    type_: ffi::GType,
+<a href=#1191 id=1191 data-nosnippet>1191</a>    type_: <a href="../../../glib_sys/manual/type.GType.html">ffi::GType</a>,
 <a href=#1192 id=1192 data-nosnippet>1192</a>    class_handler: F,
 <a href=#1193 id=1193 data-nosnippet>1193</a>) <span class="kw">where
 <a href=#1194 id=1194 data-nosnippet>1194</a>    </span>F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><a href="signal.rs.html#42-52"><span class="kw">super</span>::SignalClassHandlerToken</a>, <span class="kw-2">&amp;</span>[<a href="../value.rs.html#478-512">Value</a>]) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="../value.rs.html#478-512">Value</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>,
