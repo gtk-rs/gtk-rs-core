@@ -1,7 +1,7 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
 use std::{
-    mem, ptr,
+    mem::ManuallyDrop,
     sync::atomic::{AtomicUsize, Ordering},
 };
 fn next_thread_id() -> usize {
@@ -23,7 +23,9 @@ pub fn thread_id() -> usize {
 /// Thread guard that only gives access to the contained value on the thread it was created on.
 pub struct ThreadGuard<T> {
     thread_id: usize,
-    value: T,
+    // This is a `ManuallyDrop` so that the automatic drop glue does not drop `T`
+    // if this `ThreadGuard` is dropped on the wrong thread.
+    value: ManuallyDrop<T>,
 }
 
 impl<T> ThreadGuard<T> {
@@ -38,7 +40,7 @@ impl<T> ThreadGuard<T> {
     pub fn new(value: T) -> Self {
         Self {
             thread_id: thread_id(),
-            value,
+            value: ManuallyDrop::new(value),
         }
     }
 
@@ -90,7 +92,11 @@ impl<T> ThreadGuard<T> {
             "Value accessed from different thread than where it was created"
         );
 
-        unsafe { ptr::read(&mem::ManuallyDrop::new(self).value) }
+        // We wrap `self` in `ManuallyDrop` to defuse `ThreadGuard`'s `Drop` impl.
+        let mut this = ManuallyDrop::new(self);
+
+        // SAFETY: We are on the right thread, and this.value will not be touched after this
+        unsafe { ManuallyDrop::take(&mut this.value) }
     }
 
     // rustdoc-stripper-ignore-next
@@ -108,6 +114,9 @@ impl<T> Drop for ThreadGuard<T> {
             self.thread_id == thread_id(),
             "Value dropped on a different thread than where it was created"
         );
+
+        // SAFETY: We are on the right thread, and self.value will not be touched after this
+        unsafe { ManuallyDrop::drop(&mut self.value) }
     }
 }
 
