@@ -150,34 +150,53 @@ impl ListStore {
             (*func)(&a).into_glib()
         }
 
-        unsafe {
-            // GIO requires a non-NULL item to be passed in so we're constructing a fake item here.
-            // See https://gitlab.gnome.org/GNOME/glib/-/merge_requests/3284
+        let mut func = equal_func;
+        let func_obj: &mut (dyn FnMut(&Object) -> bool) = &mut func;
+        let func_ptr = &func_obj as *const &mut (dyn FnMut(&Object) -> bool) as glib::ffi::gpointer;
+        let mut position = std::mem::MaybeUninit::uninit();
+
+        // GIO prior to 2.76 requires a non-NULL item to be passed in so we're constructing a fake item here.
+        // See https://gitlab.gnome.org/GNOME/glib/-/merge_requests/3284
+        #[cfg(not(feature = "v2_76"))]
+        let result = unsafe {
+            let g_class: *mut glib::gobject_ffi::GTypeClass =
+                glib::gobject_ffi::g_type_class_peek(self.item_type().into_glib()) as *mut _;
+
+            // g_class will be `NULL` when no instance of the `item-type` has been created yet.
+            // See https://github.com/gtk-rs/gtk-rs-core/issues/1767
+            if g_class.is_null() {
+                return None;
+            }
+
             let item = glib::gobject_ffi::GObject {
-                g_type_instance: glib::gobject_ffi::GTypeInstance {
-                    g_class: glib::gobject_ffi::g_type_class_peek(self.item_type().into_glib())
-                        as *mut _,
-                },
+                g_type_instance: glib::gobject_ffi::GTypeInstance { g_class },
                 ref_count: 1,
                 qdata: std::ptr::null_mut(),
             };
-            let mut func = equal_func;
-            let func_obj: &mut (dyn FnMut(&Object) -> bool) = &mut func;
-            let func_ptr =
-                &func_obj as *const &mut (dyn FnMut(&Object) -> bool) as glib::ffi::gpointer;
 
-            let mut position = std::mem::MaybeUninit::uninit();
-
-            let found = bool::from_glib(ffi::g_list_store_find_with_equal_func_full(
+            bool::from_glib(ffi::g_list_store_find_with_equal_func_full(
                 self.to_glib_none().0,
                 mut_override(&item as *const _),
                 Some(equal_func_trampoline),
                 func_ptr,
                 position.as_mut_ptr(),
-            ));
+            ))
+            .then(|| position.assume_init())
+        };
 
-            found.then(|| position.assume_init())
-        }
+        #[cfg(feature = "v2_76")]
+        let result = unsafe {
+            bool::from_glib(ffi::g_list_store_find_with_equal_func_full(
+                self.to_glib_none().0,
+                std::ptr::null_mut(),
+                Some(equal_func_trampoline),
+                func_ptr,
+                position.as_mut_ptr(),
+            ))
+            .then(|| position.assume_init())
+        };
+
+        result
     }
 }
 
