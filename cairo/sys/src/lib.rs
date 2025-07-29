@@ -1523,7 +1523,7 @@ extern "C" {
     pub fn cairo_script_create_for_stream(
         write_func: cairo_write_func_t,
         closure: *mut c_void,
-    ) -> cairo_status_t;
+    ) -> *mut cairo_device_t;
     #[cfg(feature = "script")]
     #[cfg_attr(docsrs, doc(cfg(feature = "script")))]
     pub fn cairo_script_from_recording_surface(
