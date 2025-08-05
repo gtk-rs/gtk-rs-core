@@ -200,7 +200,7 @@ struct MutableCallbackEnvironment {
 // so code outside of the `catch_unwind` call must never panic.
 extern "C" fn write_callback<W: io::Write + 'static>(
     env: *mut c_void,
-    data: *mut c_uchar,
+    data: *const c_uchar,
     length: c_uint,
 ) -> ffi::cairo_status_t {
     // This is consistent with the type of `env` in `Surface::_for_stream`.
