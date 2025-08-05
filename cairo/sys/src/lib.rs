@@ -262,7 +262,7 @@ pub type cairo_destroy_func_t = Option<unsafe extern "C" fn(*mut c_void)>;
 pub type cairo_read_func_t =
     Option<unsafe extern "C" fn(*mut c_void, *mut c_uchar, c_uint) -> cairo_status_t>;
 pub type cairo_write_func_t =
-    Option<unsafe extern "C" fn(*mut c_void, *mut c_uchar, c_uint) -> cairo_status_t>;
+    Option<unsafe extern "C" fn(*mut c_void, *const c_uchar, c_uint) -> cairo_status_t>;
 
 #[cfg(feature = "freetype")]
 #[cfg_attr(docsrs, doc(cfg(feature = "freetype")))]
