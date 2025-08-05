@@ -57,7 +57,7 @@ struct WriteEnv<'a, W: 'a + Write> {
 
 unsafe extern "C" fn write_func<W: Write>(
     closure: *mut c_void,
-    data: *mut u8,
+    data: *const u8,
     len: c_uint,
 ) -> crate::ffi::cairo_status_t {
     let write_env: &mut WriteEnv<W> = &mut *(closure as *mut WriteEnv<W>);
