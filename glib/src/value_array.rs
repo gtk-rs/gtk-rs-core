@@ -118,7 +118,7 @@ impl ValueArray {
             b: ffi::gconstpointer,
             func: ffi::gpointer,
         ) -> i32 {
-            let func = func as *mut &mut (dyn FnMut(&Value, &Value) -> Ordering);
+            let func = func as *mut &mut dyn FnMut(&Value, &Value) -> Ordering;
 
             let a = &*(a as *const Value);
             let b = &*(b as *const Value);
@@ -127,9 +127,9 @@ impl ValueArray {
         }
         unsafe {
             let mut func = compare_func;
-            let func_obj: &mut (dyn FnMut(&Value, &Value) -> Ordering) = &mut func;
+            let func_obj: &mut dyn FnMut(&Value, &Value) -> Ordering = &mut func;
             let func_ptr =
-                &func_obj as *const &mut (dyn FnMut(&Value, &Value) -> Ordering) as ffi::gpointer;
+                &func_obj as *const &mut dyn FnMut(&Value, &Value) -> Ordering as ffi::gpointer;
 
             gobject_ffi::g_value_array_sort_with_data(
                 self.to_glib_none_mut().0,
