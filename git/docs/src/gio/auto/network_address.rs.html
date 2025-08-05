@@ -1,84 +1,11 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/auto/network_address.rs`."><title>network_address.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-aa0817cf.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.90.0-nightly (e46629662 2025-07-17)" data-channel="nightly" data-search-js="search-179e01a3.js" data-settings-js="settings-5514c975.js" ><script src="../../../static.files/storage-4e99c027.js"></script><script defer src="../../../static.files/src-script-813739b1.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-673ee1e0.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-32bb7600.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
-<script type="text/javascript">
-    document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
-
-    function checkDocsLatestStable() {
-        function popup(msg, url) { return `
-            <style scoped="scoped">
-                .popup {
-                    max-width: 16em;
-                    background-color: #fff;
-                    position: fixed;
-                    z-index: 1;
-                    margin-left: auto;
-                    bottom: 1em;
-                    right: 1em;
-                    border-radius: 5px;
-                    box-shadow: 1px 1px 4px #777;
-                }
-
-                .popup a.version {
-                    color: #e57300;
-                    padding: 0.6em 1em;
-                    display: block;
-                }
-                .popup a.version:hover {
-                    color: #b25900;
-                }
-
-                .popup a.close {
-                    color: white;
-                    background: grey;
-                    border-radius: 99px;
-                    display: inline-block;
-                    width: 19px;
-                    line-height: 19px;
-                    font-weight: bold;
-                    text-align: center;
-                    margin: 0.6em;
-                    float: right;
-                }
-                .popup a.close:hover {
-                    background: black;
-                }
-            </style>
-            <section class="popup" id="gir_docs_popup">
-                <a class="close" href="#" onclick="document.getElementById('gir_docs_popup').remove(); return false">×</a>
-                <a class="version" href="https://gtk-rs.org/gtk-rs-core/stable/latest/docs">
-                    ⚠ ${msg}
-                </a>
-            </section>
-        ` };
-
-        if ("main" == "main") {
-            document.body.insertAdjacentHTML(
-                'beforeend',
-                popup("This is the development version. Go to latest stable version.", "stable/latest")
-            );
-        } else {
-            fetch('https://gtk-rs.org/gtk-rs-core/LATEST_RELEASE_BRANCH')
-                .then(response => response.text())
-                .then(latest_branch => {
-                    if (latest_branch.trim() != "main") {
-                        document.body.insertAdjacentHTML(
-                            'beforeend',
-                            popup("This version is outdated. Go to latest version.", "stable/latest")
-                        );
-                    }
-                });
-        }
-    }
-</script>
-
-
-<nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">gio/auto/</div>network_address.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-3"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/auto/network_address.rs`."><title>network_address.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-aa0817cf.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.91.0-nightly (0060d5a2a 2025-08-04)" data-channel="nightly" data-search-js="search-fa3e91e5.js" data-settings-js="settings-5514c975.js" ><script src="../../../static.files/storage-68b7e25d.js"></script><script defer src="../../../static.files/src-script-813739b1.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-eebb9057.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-32bb7600.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">gio/auto/</div>network_address.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-3"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)
 <a href=#2 id=2 data-nosnippet>2</a>// from gir-files (https://github.com/gtk-rs/gir-files)
 <a href=#3 id=3 data-nosnippet>3</a>// DO NOT EDIT
 <a href=#4 id=4 data-nosnippet>4</a>
-<a href=#5 id=5 data-nosnippet>5</a></span><span class="kw">use crate</span>::{<a href="../../../gio_sys/index.html">ffi</a>, <a href="socket_connectable.rs.html#8-78">SocketConnectable</a>};
-<a href=#6 id=6 data-nosnippet>6</a><span class="kw">use </span>glib::{<a href="../../../glib/prelude/index.html">prelude</a>::<span class="kw-2">*</span>, <a href="../../../glib/translate/index.html">translate</a>::<span class="kw-2">*</span>};
+<a href=#5 id=5 data-nosnippet>5</a></span><span class="kw">use crate</span>::{ffi, SocketConnectable};
+<a href=#6 id=6 data-nosnippet>6</a><span class="kw">use </span>glib::{prelude::<span class="kw-2">*</span>, translate::<span class="kw-2">*</span>};
 <a href=#7 id=7 data-nosnippet>7</a>
-<a href=#8 id=8 data-nosnippet>8</a><a class="macro" href="../../../glib/macro.wrapper.html">glib::wrapper!</a> {
+<a href=#8 id=8 data-nosnippet>8</a><span class="macro">glib::wrapper!</span> {
 <a href=#9 id=9 data-nosnippet>9</a>    <span class="doccomment">/// `GNetworkAddress` provides an easy way to resolve a hostname and
 <a href=#10 id=10 data-nosnippet>10</a>    /// then attempt to connect to that host, handling the possibility of
 <a href=#11 id=11 data-nosnippet>11</a>    /// multiple IP addresses and multiple address families.
@@ -114,15 +41,15 @@
 <a href=#41 id=41 data-nosnippet>41</a>    ///
 <a href=#42 id=42 data-nosnippet>42</a>    /// [`NetworkAddressExt`][trait@crate::prelude::NetworkAddressExt], [`trait@glib::ObjectExt`], [`SocketConnectableExt`][trait@crate::prelude::SocketConnectableExt]
 <a href=#43 id=43 data-nosnippet>43</a>    </span><span class="attr">#[doc(alias = <span class="string">"GNetworkAddress"</span>)]
-<a href=#44 id=44 data-nosnippet>44</a>    </span><span class="kw">pub struct </span><a href="../../../gio/struct.NetworkAddress.html">NetworkAddress</a>(Object&lt;<a href="../../../gio_sys/struct.GNetworkAddress.html">ffi::GNetworkAddress</a>, <a href="../../../gio_sys/struct.GNetworkAddressClass.html">ffi::GNetworkAddressClass</a>&gt;) @implements <a href="socket_connectable.rs.html#8-78">SocketConnectable</a>;
+<a href=#44 id=44 data-nosnippet>44</a>    </span><span class="kw">pub struct </span>NetworkAddress(Object&lt;ffi::GNetworkAddress, ffi::GNetworkAddressClass&gt;) @implements SocketConnectable;
 <a href=#45 id=45 data-nosnippet>45</a>
 <a href=#46 id=46 data-nosnippet>46</a>    <span class="kw">match fn </span>{
 <a href=#47 id=47 data-nosnippet>47</a>        type_ =&gt; || ffi::g_network_address_get_type(),
 <a href=#48 id=48 data-nosnippet>48</a>    }
 <a href=#49 id=49 data-nosnippet>49</a>}
 <a href=#50 id=50 data-nosnippet>50</a>
-<a href=#51 id=51 data-nosnippet>51</a><span class="kw">impl </span><a href="#8-49">NetworkAddress</a> {
-<a href=#52 id=52 data-nosnippet>52</a>    <span class="kw">pub const </span>NONE: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'static </span><a href="#8-49">NetworkAddress</a>&gt; = <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a>;
+<a href=#51 id=51 data-nosnippet>51</a><span class="kw">impl </span>NetworkAddress {
+<a href=#52 id=52 data-nosnippet>52</a>    <span class="kw">pub const </span>NONE: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'static </span>NetworkAddress&gt; = <span class="prelude-val">None</span>;
 <a href=#53 id=53 data-nosnippet>53</a>
 <a href=#54 id=54 data-nosnippet>54</a>    <span class="doccomment">/// Creates a new #GSocketConnectable for connecting to the given
 <a href=#55 id=55 data-nosnippet>55</a>    /// @hostname and @port.
@@ -141,8 +68,8 @@
 <a href=#68 id=68 data-nosnippet>68</a>    ///
 <a href=#69 id=69 data-nosnippet>69</a>    /// the new #GNetworkAddress
 <a href=#70 id=70 data-nosnippet>70</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_network_address_new"</span>)]
-<a href=#71 id=71 data-nosnippet>71</a>    </span><span class="kw">pub fn </span>new(hostname: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, port: <a href="https://doc.rust-lang.org/nightly/std/primitive.u16.html">u16</a>) -&gt; <a href="#8-49">NetworkAddress</a> {
-<a href=#72 id=72 data-nosnippet>72</a>        <span class="kw">unsafe </span>{ <a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="../../../gio_sys/fn.g_network_address_new.html">ffi::g_network_address_new</a>(<a href="#71">hostname</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#71">port</a>)) }
+<a href=#71 id=71 data-nosnippet>71</a>    </span><span class="kw">pub fn </span>new(hostname: <span class="kw-2">&amp;</span>str, port: u16) -&gt; NetworkAddress {
+<a href=#72 id=72 data-nosnippet>72</a>        <span class="kw">unsafe </span>{ from_glib_full(ffi::g_network_address_new(hostname.to_glib_none().<span class="number">0</span>, port)) }
 <a href=#73 id=73 data-nosnippet>73</a>    }
 <a href=#74 id=74 data-nosnippet>74</a>
 <a href=#75 id=75 data-nosnippet>75</a>    <span class="doccomment">/// Creates a new #GSocketConnectable for connecting to the local host
@@ -164,8 +91,8 @@
 <a href=#91 id=91 data-nosnippet>91</a>    ///
 <a href=#92 id=92 data-nosnippet>92</a>    /// the new #GNetworkAddress
 <a href=#93 id=93 data-nosnippet>93</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_network_address_new_loopback"</span>)]
-<a href=#94 id=94 data-nosnippet>94</a>    </span><span class="kw">pub fn </span>new_loopback(port: <a href="https://doc.rust-lang.org/nightly/std/primitive.u16.html">u16</a>) -&gt; <a href="#8-49">NetworkAddress</a> {
-<a href=#95 id=95 data-nosnippet>95</a>        <span class="kw">unsafe </span>{ <a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="../../../gio_sys/fn.g_network_address_new_loopback.html">ffi::g_network_address_new_loopback</a>(<a href="#94">port</a>)) }
+<a href=#94 id=94 data-nosnippet>94</a>    </span><span class="kw">pub fn </span>new_loopback(port: u16) -&gt; NetworkAddress {
+<a href=#95 id=95 data-nosnippet>95</a>        <span class="kw">unsafe </span>{ from_glib_full(ffi::g_network_address_new_loopback(port)) }
 <a href=#96 id=96 data-nosnippet>96</a>    }
 <a href=#97 id=97 data-nosnippet>97</a>
 <a href=#98 id=98 data-nosnippet>98</a>    <span class="doccomment">/// Creates a new #GSocketConnectable for connecting to the given
@@ -199,18 +126,18 @@
 <a href=#126 id=126 data-nosnippet>126</a>    /// the new
 <a href=#127 id=127 data-nosnippet>127</a>    ///   #GNetworkAddress, or [`None`] on error
 <a href=#128 id=128 data-nosnippet>128</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_network_address_parse"</span>)]
-<a href=#129 id=129 data-nosnippet>129</a>    </span><span class="kw">pub fn </span>parse(host_and_port: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, default_port: <a href="https://doc.rust-lang.org/nightly/std/primitive.u16.html">u16</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="#8-49">NetworkAddress</a>, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt; {
+<a href=#129 id=129 data-nosnippet>129</a>    </span><span class="kw">pub fn </span>parse(host_and_port: <span class="kw-2">&amp;</span>str, default_port: u16) -&gt; <span class="prelude-ty">Result</span>&lt;NetworkAddress, glib::Error&gt; {
 <a href=#130 id=130 data-nosnippet>130</a>        <span class="kw">unsafe </span>{
-<a href=#131 id=131 data-nosnippet>131</a>            <span class="kw">let </span><span class="kw-2">mut </span>error = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">std::ptr::null_mut</a>();
-<a href=#132 id=132 data-nosnippet>132</a>            <span class="kw">let </span>ret = <a href="../../../gio_sys/fn.g_network_address_parse.html">ffi::g_network_address_parse</a>(
-<a href=#133 id=133 data-nosnippet>133</a>                <a href="#129">host_and_port</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
-<a href=#134 id=134 data-nosnippet>134</a>                <a href="#129">default_port</a>,
-<a href=#135 id=135 data-nosnippet>135</a>                <span class="kw-2">&amp;mut </span><a href="#131">error</a>,
+<a href=#131 id=131 data-nosnippet>131</a>            <span class="kw">let </span><span class="kw-2">mut </span>error = std::ptr::null_mut();
+<a href=#132 id=132 data-nosnippet>132</a>            <span class="kw">let </span>ret = ffi::g_network_address_parse(
+<a href=#133 id=133 data-nosnippet>133</a>                host_and_port.to_glib_none().<span class="number">0</span>,
+<a href=#134 id=134 data-nosnippet>134</a>                default_port,
+<a href=#135 id=135 data-nosnippet>135</a>                <span class="kw-2">&amp;mut </span>error,
 <a href=#136 id=136 data-nosnippet>136</a>            );
-<a href=#137 id=137 data-nosnippet>137</a>            <span class="kw">if </span><a href="#131">error</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/foreigntype.mut_ptr.html#method.is_null">is_null</a>() {
-<a href=#138 id=138 data-nosnippet>138</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(<a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#132">ret</a>))
+<a href=#137 id=137 data-nosnippet>137</a>            <span class="kw">if </span>error.is_null() {
+<a href=#138 id=138 data-nosnippet>138</a>                <span class="prelude-val">Ok</span>(from_glib_full(ret))
 <a href=#139 id=139 data-nosnippet>139</a>            } <span class="kw">else </span>{
-<a href=#140 id=140 data-nosnippet>140</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#131">error</a>))
+<a href=#140 id=140 data-nosnippet>140</a>                <span class="prelude-val">Err</span>(from_glib_full(error))
 <a href=#141 id=141 data-nosnippet>141</a>            }
 <a href=#142 id=142 data-nosnippet>142</a>        }
 <a href=#143 id=143 data-nosnippet>143</a>    }
@@ -231,29 +158,29 @@
 <a href=#158 id=158 data-nosnippet>158</a>    /// the new
 <a href=#159 id=159 data-nosnippet>159</a>    ///   #GNetworkAddress, or [`None`] on error
 <a href=#160 id=160 data-nosnippet>160</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_network_address_parse_uri"</span>)]
-<a href=#161 id=161 data-nosnippet>161</a>    </span><span class="kw">pub fn </span>parse_uri(uri: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, default_port: <a href="https://doc.rust-lang.org/nightly/std/primitive.u16.html">u16</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="#8-49">NetworkAddress</a>, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt; {
+<a href=#161 id=161 data-nosnippet>161</a>    </span><span class="kw">pub fn </span>parse_uri(uri: <span class="kw-2">&amp;</span>str, default_port: u16) -&gt; <span class="prelude-ty">Result</span>&lt;NetworkAddress, glib::Error&gt; {
 <a href=#162 id=162 data-nosnippet>162</a>        <span class="kw">unsafe </span>{
-<a href=#163 id=163 data-nosnippet>163</a>            <span class="kw">let </span><span class="kw-2">mut </span>error = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">std::ptr::null_mut</a>();
+<a href=#163 id=163 data-nosnippet>163</a>            <span class="kw">let </span><span class="kw-2">mut </span>error = std::ptr::null_mut();
 <a href=#164 id=164 data-nosnippet>164</a>            <span class="kw">let </span>ret =
-<a href=#165 id=165 data-nosnippet>165</a>                <a href="../../../gio_sys/fn.g_network_address_parse_uri.html">ffi::g_network_address_parse_uri</a>(<a href="#161">uri</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#161">default_port</a>, <span class="kw-2">&amp;mut </span><a href="#163">error</a>);
-<a href=#166 id=166 data-nosnippet>166</a>            <span class="kw">if </span><a href="#163">error</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/foreigntype.mut_ptr.html#method.is_null">is_null</a>() {
-<a href=#167 id=167 data-nosnippet>167</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(<a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#164">ret</a>))
+<a href=#165 id=165 data-nosnippet>165</a>                ffi::g_network_address_parse_uri(uri.to_glib_none().<span class="number">0</span>, default_port, <span class="kw-2">&amp;mut </span>error);
+<a href=#166 id=166 data-nosnippet>166</a>            <span class="kw">if </span>error.is_null() {
+<a href=#167 id=167 data-nosnippet>167</a>                <span class="prelude-val">Ok</span>(from_glib_full(ret))
 <a href=#168 id=168 data-nosnippet>168</a>            } <span class="kw">else </span>{
-<a href=#169 id=169 data-nosnippet>169</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#163">error</a>))
+<a href=#169 id=169 data-nosnippet>169</a>                <span class="prelude-val">Err</span>(from_glib_full(error))
 <a href=#170 id=170 data-nosnippet>170</a>            }
 <a href=#171 id=171 data-nosnippet>171</a>        }
 <a href=#172 id=172 data-nosnippet>172</a>    }
 <a href=#173 id=173 data-nosnippet>173</a>}
 <a href=#174 id=174 data-nosnippet>174</a>
-<a href=#175 id=175 data-nosnippet>175</a><span class="kw">unsafe impl </span><a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> <span class="kw">for </span><a href="#8-49">NetworkAddress</a> {}
-<a href=#176 id=176 data-nosnippet>176</a><span class="kw">unsafe impl </span><a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> <span class="kw">for </span><a href="#8-49">NetworkAddress</a> {}
+<a href=#175 id=175 data-nosnippet>175</a><span class="kw">unsafe impl </span>Send <span class="kw">for </span>NetworkAddress {}
+<a href=#176 id=176 data-nosnippet>176</a><span class="kw">unsafe impl </span>Sync <span class="kw">for </span>NetworkAddress {}
 <a href=#177 id=177 data-nosnippet>177</a>
 <a href=#178 id=178 data-nosnippet>178</a><span class="doccomment">/// Trait containing all [`struct@NetworkAddress`] methods.
 <a href=#179 id=179 data-nosnippet>179</a>///
 <a href=#180 id=180 data-nosnippet>180</a>/// # Implementors
 <a href=#181 id=181 data-nosnippet>181</a>///
 <a href=#182 id=182 data-nosnippet>182</a>/// [`NetworkAddress`][struct@crate::NetworkAddress]
-<a href=#183 id=183 data-nosnippet>183</a></span><span class="kw">pub trait </span><a href="../../../gio/prelude/trait.NetworkAddressExt.html">NetworkAddressExt</a>: <a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="#8-49">NetworkAddress</a>&gt; + <span class="lifetime">'static </span>{
+<a href=#183 id=183 data-nosnippet>183</a></span><span class="kw">pub trait </span>NetworkAddressExt: IsA&lt;NetworkAddress&gt; + <span class="lifetime">'static </span>{
 <a href=#184 id=184 data-nosnippet>184</a>    <span class="doccomment">/// Gets @self's hostname. This might be either UTF-8 or ASCII-encoded,
 <a href=#185 id=185 data-nosnippet>185</a>    /// depending on what @self was created with.
 <a href=#186 id=186 data-nosnippet>186</a>    ///
@@ -262,10 +189,10 @@
 <a href=#189 id=189 data-nosnippet>189</a>    /// @self's hostname
 <a href=#190 id=190 data-nosnippet>190</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_network_address_get_hostname"</span>)]
 <a href=#191 id=191 data-nosnippet>191</a>    #[doc(alias = <span class="string">"get_hostname"</span>)]
-<a href=#192 id=192 data-nosnippet>192</a>    </span><span class="kw">fn </span>hostname(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="../../../glib/gstring/struct.GString.html">glib::GString</a> {
+<a href=#192 id=192 data-nosnippet>192</a>    </span><span class="kw">fn </span>hostname(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; glib::GString {
 <a href=#193 id=193 data-nosnippet>193</a>        <span class="kw">unsafe </span>{
-<a href=#194 id=194 data-nosnippet>194</a>            <a href="../../../glib/translate/fn.from_glib_none.html">from_glib_none</a>(<a href="../../../gio_sys/fn.g_network_address_get_hostname.html">ffi::g_network_address_get_hostname</a>(
-<a href=#195 id=195 data-nosnippet>195</a>                <a class="self" href="#192">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+<a href=#194 id=194 data-nosnippet>194</a>            from_glib_none(ffi::g_network_address_get_hostname(
+<a href=#195 id=195 data-nosnippet>195</a>                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
 <a href=#196 id=196 data-nosnippet>196</a>            ))
 <a href=#197 id=197 data-nosnippet>197</a>        }
 <a href=#198 id=198 data-nosnippet>198</a>    }
@@ -277,8 +204,8 @@
 <a href=#204 id=204 data-nosnippet>204</a>    /// @self's port (which may be 0)
 <a href=#205 id=205 data-nosnippet>205</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_network_address_get_port"</span>)]
 <a href=#206 id=206 data-nosnippet>206</a>    #[doc(alias = <span class="string">"get_port"</span>)]
-<a href=#207 id=207 data-nosnippet>207</a>    </span><span class="kw">fn </span>port(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.u16.html">u16</a> {
-<a href=#208 id=208 data-nosnippet>208</a>        <span class="kw">unsafe </span>{ <a href="../../../gio_sys/fn.g_network_address_get_port.html">ffi::g_network_address_get_port</a>(<a class="self" href="#207">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>) }
+<a href=#207 id=207 data-nosnippet>207</a>    </span><span class="kw">fn </span>port(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; u16 {
+<a href=#208 id=208 data-nosnippet>208</a>        <span class="kw">unsafe </span>{ ffi::g_network_address_get_port(<span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>) }
 <a href=#209 id=209 data-nosnippet>209</a>    }
 <a href=#210 id=210 data-nosnippet>210</a>
 <a href=#211 id=211 data-nosnippet>211</a>    <span class="doccomment">/// Gets @self's scheme
@@ -288,13 +215,13 @@
 <a href=#215 id=215 data-nosnippet>215</a>    /// @self's scheme ([`None`] if not built from URI)
 <a href=#216 id=216 data-nosnippet>216</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_network_address_get_scheme"</span>)]
 <a href=#217 id=217 data-nosnippet>217</a>    #[doc(alias = <span class="string">"get_scheme"</span>)]
-<a href=#218 id=218 data-nosnippet>218</a>    </span><span class="kw">fn </span>scheme(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="../../../glib/gstring/struct.GString.html">glib::GString</a>&gt; {
+<a href=#218 id=218 data-nosnippet>218</a>    </span><span class="kw">fn </span>scheme(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;glib::GString&gt; {
 <a href=#219 id=219 data-nosnippet>219</a>        <span class="kw">unsafe </span>{
-<a href=#220 id=220 data-nosnippet>220</a>            <a href="../../../glib/translate/fn.from_glib_none.html">from_glib_none</a>(<a href="../../../gio_sys/fn.g_network_address_get_scheme.html">ffi::g_network_address_get_scheme</a>(
-<a href=#221 id=221 data-nosnippet>221</a>                <a class="self" href="#218">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+<a href=#220 id=220 data-nosnippet>220</a>            from_glib_none(ffi::g_network_address_get_scheme(
+<a href=#221 id=221 data-nosnippet>221</a>                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
 <a href=#222 id=222 data-nosnippet>222</a>            ))
 <a href=#223 id=223 data-nosnippet>223</a>        }
 <a href=#224 id=224 data-nosnippet>224</a>    }
 <a href=#225 id=225 data-nosnippet>225</a>}
 <a href=#226 id=226 data-nosnippet>226</a>
-<a href=#227 id=227 data-nosnippet>227</a><span class="kw">impl</span>&lt;O: <a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="#8-49">NetworkAddress</a>&gt;&gt; <a href="#183-225">NetworkAddressExt</a> <span class="kw">for </span>O {}</code></pre></div></section></main></body></html>
+<a href=#227 id=227 data-nosnippet>227</a><span class="kw">impl</span>&lt;O: IsA&lt;NetworkAddress&gt;&gt; NetworkAddressExt <span class="kw">for </span>O {}</code></pre></div></section></main></body></html>

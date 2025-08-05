@@ -1,87 +1,14 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `graphene/src/auto/box2_d.rs`."><title>box2_d.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-aa0817cf.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="graphene" data-themes="" data-resource-suffix="" data-rustdoc-version="1.90.0-nightly (e46629662 2025-07-17)" data-channel="nightly" data-search-js="search-179e01a3.js" data-settings-js="settings-5514c975.js" ><script src="../../../static.files/storage-4e99c027.js"></script><script defer src="../../../static.files/src-script-813739b1.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-673ee1e0.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-32bb7600.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
-<script type="text/javascript">
-    document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
-
-    function checkDocsLatestStable() {
-        function popup(msg, url) { return `
-            <style scoped="scoped">
-                .popup {
-                    max-width: 16em;
-                    background-color: #fff;
-                    position: fixed;
-                    z-index: 1;
-                    margin-left: auto;
-                    bottom: 1em;
-                    right: 1em;
-                    border-radius: 5px;
-                    box-shadow: 1px 1px 4px #777;
-                }
-
-                .popup a.version {
-                    color: #e57300;
-                    padding: 0.6em 1em;
-                    display: block;
-                }
-                .popup a.version:hover {
-                    color: #b25900;
-                }
-
-                .popup a.close {
-                    color: white;
-                    background: grey;
-                    border-radius: 99px;
-                    display: inline-block;
-                    width: 19px;
-                    line-height: 19px;
-                    font-weight: bold;
-                    text-align: center;
-                    margin: 0.6em;
-                    float: right;
-                }
-                .popup a.close:hover {
-                    background: black;
-                }
-            </style>
-            <section class="popup" id="gir_docs_popup">
-                <a class="close" href="#" onclick="document.getElementById('gir_docs_popup').remove(); return false">×</a>
-                <a class="version" href="https://gtk-rs.org/gtk-rs-core/stable/latest/docs">
-                    ⚠ ${msg}
-                </a>
-            </section>
-        ` };
-
-        if ("main" == "main") {
-            document.body.insertAdjacentHTML(
-                'beforeend',
-                popup("This is the development version. Go to latest stable version.", "stable/latest")
-            );
-        } else {
-            fetch('https://gtk-rs.org/gtk-rs-core/LATEST_RELEASE_BRANCH')
-                .then(response => response.text())
-                .then(latest_branch => {
-                    if (latest_branch.trim() != "main") {
-                        document.body.insertAdjacentHTML(
-                            'beforeend',
-                            popup("This version is outdated. Go to latest version.", "stable/latest")
-                        );
-                    }
-                });
-        }
-    }
-</script>
-
-
-<nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">graphene/auto/</div>box2_d.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-3"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `graphene/src/auto/box2_d.rs`."><title>box2_d.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-aa0817cf.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="graphene" data-themes="" data-resource-suffix="" data-rustdoc-version="1.91.0-nightly (0060d5a2a 2025-08-04)" data-channel="nightly" data-search-js="search-fa3e91e5.js" data-settings-js="settings-5514c975.js" ><script src="../../../static.files/storage-68b7e25d.js"></script><script defer src="../../../static.files/src-script-813739b1.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-eebb9057.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-32bb7600.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">graphene/auto/</div>box2_d.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-3"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)
 <a href=#2 id=2 data-nosnippet>2</a>// from gir-files (https://github.com/gtk-rs/gir-files)
 <a href=#3 id=3 data-nosnippet>3</a>// DO NOT EDIT
 <a href=#4 id=4 data-nosnippet>4</a>
-<a href=#5 id=5 data-nosnippet>5</a></span><span class="kw">use crate</span>::{<a href="../../../graphene_sys/index.html">ffi</a>, <a href="point.rs.html#8-17">Point</a>, <a href="rect.rs.html#8-28">Rect</a>, <a href="vec2.rs.html#8-20">Vec2</a>};
-<a href=#6 id=6 data-nosnippet>6</a><span class="kw">use </span><a href="../../../glib/translate/index.html">glib::translate</a>::<span class="kw-2">*</span>;
+<a href=#5 id=5 data-nosnippet>5</a></span><span class="kw">use crate</span>::{ffi, Point, Rect, Vec2};
+<a href=#6 id=6 data-nosnippet>6</a><span class="kw">use </span>glib::translate::<span class="kw-2">*</span>;
 <a href=#7 id=7 data-nosnippet>7</a>
-<a href=#8 id=8 data-nosnippet>8</a><a class="macro" href="../../../glib/macro.wrapper.html">glib::wrapper!</a> {
+<a href=#8 id=8 data-nosnippet>8</a><span class="macro">glib::wrapper!</span> {
 <a href=#9 id=9 data-nosnippet>9</a>    <span class="doccomment">/// A 2D box, described as the axis-aligned area between a minimum and
 <a href=#10 id=10 data-nosnippet>10</a>    /// a maximum vertices lying on the same plane.
-<a href=#11 id=11 data-nosnippet>11</a>    </span><span class="kw">pub struct </span><a href="../../../graphene/struct.Box2D.html">Box2D</a>(BoxedInline&lt;<a href="../../../graphene_sys/struct.graphene_box2d_t.html">ffi::graphene_box2d_t</a>&gt;);
+<a href=#11 id=11 data-nosnippet>11</a>    </span><span class="kw">pub struct </span>Box2D(BoxedInline&lt;ffi::graphene_box2d_t&gt;);
 <a href=#12 id=12 data-nosnippet>12</a>
 <a href=#13 id=13 data-nosnippet>13</a>    <span class="kw">match fn </span>{
 <a href=#14 id=14 data-nosnippet>14</a>        copy =&gt; |ptr| glib::gobject_ffi::g_boxed_copy(ffi::graphene_box2d_get_type(), ptr <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>) <span class="kw">as </span><span class="kw-2">*mut </span>ffi::graphene_box2d_t,
@@ -90,7 +17,7 @@
 <a href=#17 id=17 data-nosnippet>17</a>    }
 <a href=#18 id=18 data-nosnippet>18</a>}
 <a href=#19 id=19 data-nosnippet>19</a>
-<a href=#20 id=20 data-nosnippet>20</a><span class="kw">impl </span><a href="#8-18">Box2D</a> {
+<a href=#20 id=20 data-nosnippet>20</a><span class="kw">impl </span>Box2D {
 <a href=#21 id=21 data-nosnippet>21</a>    <span class="doccomment">/// Checks whether the [`Box2D`][crate::Box2D] `self` contains the given
 <a href=#22 id=22 data-nosnippet>22</a>    /// [`Box2D`][crate::Box2D] `b`.
 <a href=#23 id=23 data-nosnippet>23</a>    /// ## `b`
@@ -100,8 +27,8 @@
 <a href=#27 id=27 data-nosnippet>27</a>    ///
 <a href=#28 id=28 data-nosnippet>28</a>    /// `true` if the box is contained in the given box
 <a href=#29 id=29 data-nosnippet>29</a>    </span><span class="attr">#[doc(alias = <span class="string">"graphene_box2d_contains_box"</span>)]
-<a href=#30 id=30 data-nosnippet>30</a>    </span><span class="kw">pub fn </span>contains_box(<span class="kw-2">&amp;</span><span class="self">self</span>, b: <span class="kw-2">&amp;</span><a href="#8-18">Box2D</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
-<a href=#31 id=31 data-nosnippet>31</a>        <span class="kw">unsafe </span>{ <a href="../../../graphene_sys/fn.graphene_box2d_contains_box.html">ffi::graphene_box2d_contains_box</a>(<a class="self" href="#30">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#30">b</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>) }
+<a href=#30 id=30 data-nosnippet>30</a>    </span><span class="kw">pub fn </span>contains_box(<span class="kw-2">&amp;</span><span class="self">self</span>, b: <span class="kw-2">&amp;</span>Box2D) -&gt; bool {
+<a href=#31 id=31 data-nosnippet>31</a>        <span class="kw">unsafe </span>{ ffi::graphene_box2d_contains_box(<span class="self">self</span>.to_glib_none().<span class="number">0</span>, b.to_glib_none().<span class="number">0</span>) }
 <a href=#32 id=32 data-nosnippet>32</a>    }
 <a href=#33 id=33 data-nosnippet>33</a>
 <a href=#34 id=34 data-nosnippet>34</a>    <span class="doccomment">/// Checks whether `self` contains the given `point`.
@@ -112,8 +39,8 @@
 <a href=#39 id=39 data-nosnippet>39</a>    ///
 <a href=#40 id=40 data-nosnippet>40</a>    /// `true` if the point is contained in the given box
 <a href=#41 id=41 data-nosnippet>41</a>    </span><span class="attr">#[doc(alias = <span class="string">"graphene_box2d_contains_point"</span>)]
-<a href=#42 id=42 data-nosnippet>42</a>    </span><span class="kw">pub fn </span>contains_point(<span class="kw-2">&amp;</span><span class="self">self</span>, point: <span class="kw-2">&amp;</span><a href="point.rs.html#8-17">Point</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
-<a href=#43 id=43 data-nosnippet>43</a>        <span class="kw">unsafe </span>{ <a href="../../../graphene_sys/fn.graphene_box2d_contains_point.html">ffi::graphene_box2d_contains_point</a>(<a class="self" href="#42">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#42">point</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>) }
+<a href=#42 id=42 data-nosnippet>42</a>    </span><span class="kw">pub fn </span>contains_point(<span class="kw-2">&amp;</span><span class="self">self</span>, point: <span class="kw-2">&amp;</span>Point) -&gt; bool {
+<a href=#43 id=43 data-nosnippet>43</a>        <span class="kw">unsafe </span>{ ffi::graphene_box2d_contains_point(<span class="self">self</span>.to_glib_none().<span class="number">0</span>, point.to_glib_none().<span class="number">0</span>) }
 <a href=#44 id=44 data-nosnippet>44</a>    }
 <a href=#45 id=45 data-nosnippet>45</a>
 <a href=#46 id=46 data-nosnippet>46</a>    <span class="doccomment">/// Checks whether `self` contains the given `rect`.
@@ -124,13 +51,13 @@
 <a href=#51 id=51 data-nosnippet>51</a>    ///
 <a href=#52 id=52 data-nosnippet>52</a>    /// `true` if the rectangle is contained in the given box
 <a href=#53 id=53 data-nosnippet>53</a>    </span><span class="attr">#[doc(alias = <span class="string">"graphene_box2d_contains_rect"</span>)]
-<a href=#54 id=54 data-nosnippet>54</a>    </span><span class="kw">pub fn </span>contains_rect(<span class="kw-2">&amp;</span><span class="self">self</span>, rect: <span class="kw-2">&amp;</span><a href="rect.rs.html#8-28">Rect</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
-<a href=#55 id=55 data-nosnippet>55</a>        <span class="kw">unsafe </span>{ <a href="../../../graphene_sys/fn.graphene_box2d_contains_rect.html">ffi::graphene_box2d_contains_rect</a>(<a class="self" href="#54">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#54">rect</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>) }
+<a href=#54 id=54 data-nosnippet>54</a>    </span><span class="kw">pub fn </span>contains_rect(<span class="kw-2">&amp;</span><span class="self">self</span>, rect: <span class="kw-2">&amp;</span>Rect) -&gt; bool {
+<a href=#55 id=55 data-nosnippet>55</a>        <span class="kw">unsafe </span>{ ffi::graphene_box2d_contains_rect(<span class="self">self</span>.to_glib_none().<span class="number">0</span>, rect.to_glib_none().<span class="number">0</span>) }
 <a href=#56 id=56 data-nosnippet>56</a>    }
 <a href=#57 id=57 data-nosnippet>57</a>
 <a href=#58 id=58 data-nosnippet>58</a>    <span class="attr">#[doc(alias = <span class="string">"graphene_box2d_equal"</span>)]
-<a href=#59 id=59 data-nosnippet>59</a>    </span><span class="kw">fn </span>equal(<span class="kw-2">&amp;</span><span class="self">self</span>, b: <span class="kw-2">&amp;</span><a href="#8-18">Box2D</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
-<a href=#60 id=60 data-nosnippet>60</a>        <span class="kw">unsafe </span>{ <a href="../../../graphene_sys/fn.graphene_box2d_equal.html">ffi::graphene_box2d_equal</a>(<a class="self" href="#59">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#59">b</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>) }
+<a href=#59 id=59 data-nosnippet>59</a>    </span><span class="kw">fn </span>equal(<span class="kw-2">&amp;</span><span class="self">self</span>, b: <span class="kw-2">&amp;</span>Box2D) -&gt; bool {
+<a href=#60 id=60 data-nosnippet>60</a>        <span class="kw">unsafe </span>{ ffi::graphene_box2d_equal(<span class="self">self</span>.to_glib_none().<span class="number">0</span>, b.to_glib_none().<span class="number">0</span>) }
 <a href=#61 id=61 data-nosnippet>61</a>    }
 <a href=#62 id=62 data-nosnippet>62</a>
 <a href=#63 id=63 data-nosnippet>63</a>    <span class="doccomment">/// Expands the dimensions of `self` to include the coordinates at `point`.
@@ -144,15 +71,15 @@
 <a href=#71 id=71 data-nosnippet>71</a>    /// return location for the expanded box
 <a href=#72 id=72 data-nosnippet>72</a>    </span><span class="attr">#[doc(alias = <span class="string">"graphene_box2d_expand"</span>)]
 <a href=#73 id=73 data-nosnippet>73</a>    #[must_use]
-<a href=#74 id=74 data-nosnippet>74</a>    </span><span class="kw">pub fn </span>expand(<span class="kw-2">&amp;</span><span class="self">self</span>, point: <span class="kw-2">&amp;</span><a href="point.rs.html#8-17">Point</a>) -&gt; <a href="#8-18">Box2D</a> {
+<a href=#74 id=74 data-nosnippet>74</a>    </span><span class="kw">pub fn </span>expand(<span class="kw-2">&amp;</span><span class="self">self</span>, point: <span class="kw-2">&amp;</span>Point) -&gt; Box2D {
 <a href=#75 id=75 data-nosnippet>75</a>        <span class="kw">unsafe </span>{
-<a href=#76 id=76 data-nosnippet>76</a>            <span class="kw">let </span><span class="kw-2">mut </span>res = <a href="../../../glib/translate/trait.Uninitialized.html#tymethod.uninitialized">Box2D::uninitialized</a>();
-<a href=#77 id=77 data-nosnippet>77</a>            <a href="../../../graphene_sys/fn.graphene_box2d_expand.html">ffi::graphene_box2d_expand</a>(
-<a href=#78 id=78 data-nosnippet>78</a>                <a class="self" href="#74">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
-<a href=#79 id=79 data-nosnippet>79</a>                <a href="#74">point</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
-<a href=#80 id=80 data-nosnippet>80</a>                <a href="#76">res</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html#tymethod.to_glib_none_mut">to_glib_none_mut</a>().<span class="number">0</span>,
+<a href=#76 id=76 data-nosnippet>76</a>            <span class="kw">let </span><span class="kw-2">mut </span>res = Box2D::uninitialized();
+<a href=#77 id=77 data-nosnippet>77</a>            ffi::graphene_box2d_expand(
+<a href=#78 id=78 data-nosnippet>78</a>                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
+<a href=#79 id=79 data-nosnippet>79</a>                point.to_glib_none().<span class="number">0</span>,
+<a href=#80 id=80 data-nosnippet>80</a>                res.to_glib_none_mut().<span class="number">0</span>,
 <a href=#81 id=81 data-nosnippet>81</a>            );
-<a href=#82 id=82 data-nosnippet>82</a>            <a href="#76">res</a>
+<a href=#82 id=82 data-nosnippet>82</a>            res
 <a href=#83 id=83 data-nosnippet>83</a>        }
 <a href=#84 id=84 data-nosnippet>84</a>    }
 <a href=#85 id=85 data-nosnippet>85</a>
@@ -170,15 +97,15 @@
 <a href=#97 id=97 data-nosnippet>97</a>    /// return location for the expanded box
 <a href=#98 id=98 data-nosnippet>98</a>    </span><span class="attr">#[doc(alias = <span class="string">"graphene_box2d_expand_scalar"</span>)]
 <a href=#99 id=99 data-nosnippet>99</a>    #[must_use]
-<a href=#100 id=100 data-nosnippet>100</a>    </span><span class="kw">pub fn </span>expand_scalar(<span class="kw-2">&amp;</span><span class="self">self</span>, scalar: <a href="https://doc.rust-lang.org/nightly/std/primitive.f32.html">f32</a>) -&gt; <a href="#8-18">Box2D</a> {
+<a href=#100 id=100 data-nosnippet>100</a>    </span><span class="kw">pub fn </span>expand_scalar(<span class="kw-2">&amp;</span><span class="self">self</span>, scalar: f32) -&gt; Box2D {
 <a href=#101 id=101 data-nosnippet>101</a>        <span class="kw">unsafe </span>{
-<a href=#102 id=102 data-nosnippet>102</a>            <span class="kw">let </span><span class="kw-2">mut </span>res = <a href="../../../glib/translate/trait.Uninitialized.html#tymethod.uninitialized">Box2D::uninitialized</a>();
-<a href=#103 id=103 data-nosnippet>103</a>            <a href="../../../graphene_sys/fn.graphene_box2d_expand_scalar.html">ffi::graphene_box2d_expand_scalar</a>(
-<a href=#104 id=104 data-nosnippet>104</a>                <a class="self" href="#100">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
-<a href=#105 id=105 data-nosnippet>105</a>                <a href="#100">scalar</a>,
-<a href=#106 id=106 data-nosnippet>106</a>                <a href="#102">res</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html#tymethod.to_glib_none_mut">to_glib_none_mut</a>().<span class="number">0</span>,
+<a href=#102 id=102 data-nosnippet>102</a>            <span class="kw">let </span><span class="kw-2">mut </span>res = Box2D::uninitialized();
+<a href=#103 id=103 data-nosnippet>103</a>            ffi::graphene_box2d_expand_scalar(
+<a href=#104 id=104 data-nosnippet>104</a>                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
+<a href=#105 id=105 data-nosnippet>105</a>                scalar,
+<a href=#106 id=106 data-nosnippet>106</a>                res.to_glib_none_mut().<span class="number">0</span>,
 <a href=#107 id=107 data-nosnippet>107</a>            );
-<a href=#108 id=108 data-nosnippet>108</a>            <a href="#102">res</a>
+<a href=#108 id=108 data-nosnippet>108</a>            res
 <a href=#109 id=109 data-nosnippet>109</a>        }
 <a href=#110 id=110 data-nosnippet>110</a>    }
 <a href=#111 id=111 data-nosnippet>111</a>
@@ -194,15 +121,15 @@
 <a href=#121 id=121 data-nosnippet>121</a>    /// return location for the expanded box
 <a href=#122 id=122 data-nosnippet>122</a>    </span><span class="attr">#[doc(alias = <span class="string">"graphene_box2d_expand_vec2"</span>)]
 <a href=#123 id=123 data-nosnippet>123</a>    #[must_use]
-<a href=#124 id=124 data-nosnippet>124</a>    </span><span class="kw">pub fn </span>expand_vec2(<span class="kw-2">&amp;</span><span class="self">self</span>, vec: <span class="kw-2">&amp;</span><a href="vec2.rs.html#8-20">Vec2</a>) -&gt; <a href="#8-18">Box2D</a> {
+<a href=#124 id=124 data-nosnippet>124</a>    </span><span class="kw">pub fn </span>expand_vec2(<span class="kw-2">&amp;</span><span class="self">self</span>, vec: <span class="kw-2">&amp;</span>Vec2) -&gt; Box2D {
 <a href=#125 id=125 data-nosnippet>125</a>        <span class="kw">unsafe </span>{
-<a href=#126 id=126 data-nosnippet>126</a>            <span class="kw">let </span><span class="kw-2">mut </span>res = <a href="../../../glib/translate/trait.Uninitialized.html#tymethod.uninitialized">Box2D::uninitialized</a>();
-<a href=#127 id=127 data-nosnippet>127</a>            <a href="../../../graphene_sys/fn.graphene_box2d_expand_vec2.html">ffi::graphene_box2d_expand_vec2</a>(
-<a href=#128 id=128 data-nosnippet>128</a>                <a class="self" href="#124">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
-<a href=#129 id=129 data-nosnippet>129</a>                <a href="#124">vec</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
-<a href=#130 id=130 data-nosnippet>130</a>                <a href="#126">res</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html#tymethod.to_glib_none_mut">to_glib_none_mut</a>().<span class="number">0</span>,
+<a href=#126 id=126 data-nosnippet>126</a>            <span class="kw">let </span><span class="kw-2">mut </span>res = Box2D::uninitialized();
+<a href=#127 id=127 data-nosnippet>127</a>            ffi::graphene_box2d_expand_vec2(
+<a href=#128 id=128 data-nosnippet>128</a>                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
+<a href=#129 id=129 data-nosnippet>129</a>                vec.to_glib_none().<span class="number">0</span>,
+<a href=#130 id=130 data-nosnippet>130</a>                res.to_glib_none_mut().<span class="number">0</span>,
 <a href=#131 id=131 data-nosnippet>131</a>            );
-<a href=#132 id=132 data-nosnippet>132</a>            <a href="#126">res</a>
+<a href=#132 id=132 data-nosnippet>132</a>            res
 <a href=#133 id=133 data-nosnippet>133</a>        }
 <a href=#134 id=134 data-nosnippet>134</a>    }
 <a href=#135 id=135 data-nosnippet>135</a>
@@ -216,11 +143,11 @@
 <a href=#143 id=143 data-nosnippet>143</a>    ///  the center
 <a href=#144 id=144 data-nosnippet>144</a>    </span><span class="attr">#[doc(alias = <span class="string">"graphene_box2d_get_center"</span>)]
 <a href=#145 id=145 data-nosnippet>145</a>    #[doc(alias = <span class="string">"get_center"</span>)]
-<a href=#146 id=146 data-nosnippet>146</a>    </span><span class="kw">pub fn </span>center(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="point.rs.html#8-17">Point</a> {
+<a href=#146 id=146 data-nosnippet>146</a>    </span><span class="kw">pub fn </span>center(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Point {
 <a href=#147 id=147 data-nosnippet>147</a>        <span class="kw">unsafe </span>{
-<a href=#148 id=148 data-nosnippet>148</a>            <span class="kw">let </span><span class="kw-2">mut </span>center = <a href="../../../glib/translate/trait.Uninitialized.html#tymethod.uninitialized">Point::uninitialized</a>();
-<a href=#149 id=149 data-nosnippet>149</a>            <a href="../../../graphene_sys/fn.graphene_box2d_get_center.html">ffi::graphene_box2d_get_center</a>(<a class="self" href="#146">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#148">center</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html#tymethod.to_glib_none_mut">to_glib_none_mut</a>().<span class="number">0</span>);
-<a href=#150 id=150 data-nosnippet>150</a>            <a href="#148">center</a>
+<a href=#148 id=148 data-nosnippet>148</a>            <span class="kw">let </span><span class="kw-2">mut </span>center = Point::uninitialized();
+<a href=#149 id=149 data-nosnippet>149</a>            ffi::graphene_box2d_get_center(<span class="self">self</span>.to_glib_none().<span class="number">0</span>, center.to_glib_none_mut().<span class="number">0</span>);
+<a href=#150 id=150 data-nosnippet>150</a>            center
 <a href=#151 id=151 data-nosnippet>151</a>        }
 <a href=#152 id=152 data-nosnippet>152</a>    }
 <a href=#153 id=153 data-nosnippet>153</a>
@@ -231,8 +158,8 @@
 <a href=#158 id=158 data-nosnippet>158</a>    /// the height of the box
 <a href=#159 id=159 data-nosnippet>159</a>    </span><span class="attr">#[doc(alias = <span class="string">"graphene_box2d_get_height"</span>)]
 <a href=#160 id=160 data-nosnippet>160</a>    #[doc(alias = <span class="string">"get_height"</span>)]
-<a href=#161 id=161 data-nosnippet>161</a>    </span><span class="kw">pub fn </span>height(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.f32.html">f32</a> {
-<a href=#162 id=162 data-nosnippet>162</a>        <span class="kw">unsafe </span>{ <a href="../../../graphene_sys/fn.graphene_box2d_get_height.html">ffi::graphene_box2d_get_height</a>(<a class="self" href="#161">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>) }
+<a href=#161 id=161 data-nosnippet>161</a>    </span><span class="kw">pub fn </span>height(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; f32 {
+<a href=#162 id=162 data-nosnippet>162</a>        <span class="kw">unsafe </span>{ ffi::graphene_box2d_get_height(<span class="self">self</span>.to_glib_none().<span class="number">0</span>) }
 <a href=#163 id=163 data-nosnippet>163</a>    }
 <a href=#164 id=164 data-nosnippet>164</a>
 <a href=#165 id=165 data-nosnippet>165</a>    <span class="doccomment">/// Retrieves the coordinates of the maximum point of the given
@@ -245,11 +172,11 @@
 <a href=#172 id=172 data-nosnippet>172</a>    /// return location for the maximum point
 <a href=#173 id=173 data-nosnippet>173</a>    </span><span class="attr">#[doc(alias = <span class="string">"graphene_box2d_get_max"</span>)]
 <a href=#174 id=174 data-nosnippet>174</a>    #[doc(alias = <span class="string">"get_max"</span>)]
-<a href=#175 id=175 data-nosnippet>175</a>    </span><span class="kw">pub fn </span>max(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="point.rs.html#8-17">Point</a> {
+<a href=#175 id=175 data-nosnippet>175</a>    </span><span class="kw">pub fn </span>max(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Point {
 <a href=#176 id=176 data-nosnippet>176</a>        <span class="kw">unsafe </span>{
-<a href=#177 id=177 data-nosnippet>177</a>            <span class="kw">let </span><span class="kw-2">mut </span>max = <a href="../../../glib/translate/trait.Uninitialized.html#tymethod.uninitialized">Point::uninitialized</a>();
-<a href=#178 id=178 data-nosnippet>178</a>            <a href="../../../graphene_sys/fn.graphene_box2d_get_max.html">ffi::graphene_box2d_get_max</a>(<a class="self" href="#175">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#177">max</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html#tymethod.to_glib_none_mut">to_glib_none_mut</a>().<span class="number">0</span>);
-<a href=#179 id=179 data-nosnippet>179</a>            <a href="#177">max</a>
+<a href=#177 id=177 data-nosnippet>177</a>            <span class="kw">let </span><span class="kw-2">mut </span>max = Point::uninitialized();
+<a href=#178 id=178 data-nosnippet>178</a>            ffi::graphene_box2d_get_max(<span class="self">self</span>.to_glib_none().<span class="number">0</span>, max.to_glib_none_mut().<span class="number">0</span>);
+<a href=#179 id=179 data-nosnippet>179</a>            max
 <a href=#180 id=180 data-nosnippet>180</a>        }
 <a href=#181 id=181 data-nosnippet>181</a>    }
 <a href=#182 id=182 data-nosnippet>182</a>
@@ -263,11 +190,11 @@
 <a href=#190 id=190 data-nosnippet>190</a>    /// return location for the minimum point
 <a href=#191 id=191 data-nosnippet>191</a>    </span><span class="attr">#[doc(alias = <span class="string">"graphene_box2d_get_min"</span>)]
 <a href=#192 id=192 data-nosnippet>192</a>    #[doc(alias = <span class="string">"get_min"</span>)]
-<a href=#193 id=193 data-nosnippet>193</a>    </span><span class="kw">pub fn </span>min(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="point.rs.html#8-17">Point</a> {
+<a href=#193 id=193 data-nosnippet>193</a>    </span><span class="kw">pub fn </span>min(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Point {
 <a href=#194 id=194 data-nosnippet>194</a>        <span class="kw">unsafe </span>{
-<a href=#195 id=195 data-nosnippet>195</a>            <span class="kw">let </span><span class="kw-2">mut </span>min = <a href="../../../glib/translate/trait.Uninitialized.html#tymethod.uninitialized">Point::uninitialized</a>();
-<a href=#196 id=196 data-nosnippet>196</a>            <a href="../../../graphene_sys/fn.graphene_box2d_get_min.html">ffi::graphene_box2d_get_min</a>(<a class="self" href="#193">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#195">min</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html#tymethod.to_glib_none_mut">to_glib_none_mut</a>().<span class="number">0</span>);
-<a href=#197 id=197 data-nosnippet>197</a>            <a href="#195">min</a>
+<a href=#195 id=195 data-nosnippet>195</a>            <span class="kw">let </span><span class="kw-2">mut </span>min = Point::uninitialized();
+<a href=#196 id=196 data-nosnippet>196</a>            ffi::graphene_box2d_get_min(<span class="self">self</span>.to_glib_none().<span class="number">0</span>, min.to_glib_none_mut().<span class="number">0</span>);
+<a href=#197 id=197 data-nosnippet>197</a>            min
 <a href=#198 id=198 data-nosnippet>198</a>        }
 <a href=#199 id=199 data-nosnippet>199</a>    }
 <a href=#200 id=200 data-nosnippet>200</a>
@@ -284,16 +211,16 @@
 <a href=#211 id=211 data-nosnippet>211</a>    /// return location for the maximum point
 <a href=#212 id=212 data-nosnippet>212</a>    </span><span class="attr">#[doc(alias = <span class="string">"graphene_box2d_get_minmax"</span>)]
 <a href=#213 id=213 data-nosnippet>213</a>    #[doc(alias = <span class="string">"get_minmax"</span>)]
-<a href=#214 id=214 data-nosnippet>214</a>    </span><span class="kw">pub fn </span>minmax(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; (<a href="point.rs.html#8-17">Point</a>, <a href="point.rs.html#8-17">Point</a>) {
+<a href=#214 id=214 data-nosnippet>214</a>    </span><span class="kw">pub fn </span>minmax(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; (Point, Point) {
 <a href=#215 id=215 data-nosnippet>215</a>        <span class="kw">unsafe </span>{
-<a href=#216 id=216 data-nosnippet>216</a>            <span class="kw">let </span><span class="kw-2">mut </span>min = <a href="../../../glib/translate/trait.Uninitialized.html#tymethod.uninitialized">Point::uninitialized</a>();
-<a href=#217 id=217 data-nosnippet>217</a>            <span class="kw">let </span><span class="kw-2">mut </span>max = <a href="../../../glib/translate/trait.Uninitialized.html#tymethod.uninitialized">Point::uninitialized</a>();
-<a href=#218 id=218 data-nosnippet>218</a>            <a href="../../../graphene_sys/fn.graphene_box2d_get_minmax.html">ffi::graphene_box2d_get_minmax</a>(
-<a href=#219 id=219 data-nosnippet>219</a>                <a class="self" href="#214">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
-<a href=#220 id=220 data-nosnippet>220</a>                <a href="#216">min</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html#tymethod.to_glib_none_mut">to_glib_none_mut</a>().<span class="number">0</span>,
-<a href=#221 id=221 data-nosnippet>221</a>                <a href="#217">max</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html#tymethod.to_glib_none_mut">to_glib_none_mut</a>().<span class="number">0</span>,
+<a href=#216 id=216 data-nosnippet>216</a>            <span class="kw">let </span><span class="kw-2">mut </span>min = Point::uninitialized();
+<a href=#217 id=217 data-nosnippet>217</a>            <span class="kw">let </span><span class="kw-2">mut </span>max = Point::uninitialized();
+<a href=#218 id=218 data-nosnippet>218</a>            ffi::graphene_box2d_get_minmax(
+<a href=#219 id=219 data-nosnippet>219</a>                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
+<a href=#220 id=220 data-nosnippet>220</a>                min.to_glib_none_mut().<span class="number">0</span>,
+<a href=#221 id=221 data-nosnippet>221</a>                max.to_glib_none_mut().<span class="number">0</span>,
 <a href=#222 id=222 data-nosnippet>222</a>            );
-<a href=#223 id=223 data-nosnippet>223</a>            (<a href="#216">min</a>, <a href="#217">max</a>)
+<a href=#223 id=223 data-nosnippet>223</a>            (min, max)
 <a href=#224 id=224 data-nosnippet>224</a>        }
 <a href=#225 id=225 data-nosnippet>225</a>    }
 <a href=#226 id=226 data-nosnippet>226</a>
@@ -307,11 +234,11 @@
 <a href=#234 id=234 data-nosnippet>234</a>    /// return location for the size
 <a href=#235 id=235 data-nosnippet>235</a>    </span><span class="attr">#[doc(alias = <span class="string">"graphene_box2d_get_size"</span>)]
 <a href=#236 id=236 data-nosnippet>236</a>    #[doc(alias = <span class="string">"get_size"</span>)]
-<a href=#237 id=237 data-nosnippet>237</a>    </span><span class="kw">pub fn </span>size(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="vec2.rs.html#8-20">Vec2</a> {
+<a href=#237 id=237 data-nosnippet>237</a>    </span><span class="kw">pub fn </span>size(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec2 {
 <a href=#238 id=238 data-nosnippet>238</a>        <span class="kw">unsafe </span>{
-<a href=#239 id=239 data-nosnippet>239</a>            <span class="kw">let </span><span class="kw-2">mut </span>size = <a href="../../../glib/translate/trait.Uninitialized.html#tymethod.uninitialized">Vec2::uninitialized</a>();
-<a href=#240 id=240 data-nosnippet>240</a>            <a href="../../../graphene_sys/fn.graphene_box2d_get_size.html">ffi::graphene_box2d_get_size</a>(<a class="self" href="#237">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#239">size</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html#tymethod.to_glib_none_mut">to_glib_none_mut</a>().<span class="number">0</span>);
-<a href=#241 id=241 data-nosnippet>241</a>            <a href="#239">size</a>
+<a href=#239 id=239 data-nosnippet>239</a>            <span class="kw">let </span><span class="kw-2">mut </span>size = Vec2::uninitialized();
+<a href=#240 id=240 data-nosnippet>240</a>            ffi::graphene_box2d_get_size(<span class="self">self</span>.to_glib_none().<span class="number">0</span>, size.to_glib_none_mut().<span class="number">0</span>);
+<a href=#241 id=241 data-nosnippet>241</a>            size
 <a href=#242 id=242 data-nosnippet>242</a>        }
 <a href=#243 id=243 data-nosnippet>243</a>    }
 <a href=#244 id=244 data-nosnippet>244</a>
@@ -322,8 +249,8 @@
 <a href=#249 id=249 data-nosnippet>249</a>    /// the width of the box
 <a href=#250 id=250 data-nosnippet>250</a>    </span><span class="attr">#[doc(alias = <span class="string">"graphene_box2d_get_width"</span>)]
 <a href=#251 id=251 data-nosnippet>251</a>    #[doc(alias = <span class="string">"get_width"</span>)]
-<a href=#252 id=252 data-nosnippet>252</a>    </span><span class="kw">pub fn </span>width(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.f32.html">f32</a> {
-<a href=#253 id=253 data-nosnippet>253</a>        <span class="kw">unsafe </span>{ <a href="../../../graphene_sys/fn.graphene_box2d_get_width.html">ffi::graphene_box2d_get_width</a>(<a class="self" href="#252">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>) }
+<a href=#252 id=252 data-nosnippet>252</a>    </span><span class="kw">pub fn </span>width(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; f32 {
+<a href=#253 id=253 data-nosnippet>253</a>        <span class="kw">unsafe </span>{ ffi::graphene_box2d_get_width(<span class="self">self</span>.to_glib_none().<span class="number">0</span>) }
 <a href=#254 id=254 data-nosnippet>254</a>    }
 <a href=#255 id=255 data-nosnippet>255</a>
 <a href=#256 id=256 data-nosnippet>256</a>    <span class="doccomment">/// Intersects the two given [`Box2D`][crate::Box2D].
@@ -340,19 +267,19 @@
 <a href=#267 id=267 data-nosnippet>267</a>    /// ## `res`
 <a href=#268 id=268 data-nosnippet>268</a>    /// return location for the result
 <a href=#269 id=269 data-nosnippet>269</a>    </span><span class="attr">#[doc(alias = <span class="string">"graphene_box2d_intersection"</span>)]
-<a href=#270 id=270 data-nosnippet>270</a>    </span><span class="kw">pub fn </span>intersection(<span class="kw-2">&amp;</span><span class="self">self</span>, b: <span class="kw-2">&amp;</span><a href="#8-18">Box2D</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="#8-18">Box2D</a>&gt; {
+<a href=#270 id=270 data-nosnippet>270</a>    </span><span class="kw">pub fn </span>intersection(<span class="kw-2">&amp;</span><span class="self">self</span>, b: <span class="kw-2">&amp;</span>Box2D) -&gt; <span class="prelude-ty">Option</span>&lt;Box2D&gt; {
 <a href=#271 id=271 data-nosnippet>271</a>        <span class="kw">unsafe </span>{
-<a href=#272 id=272 data-nosnippet>272</a>            <span class="kw">let </span><span class="kw-2">mut </span>res = <a href="../../../glib/translate/trait.Uninitialized.html#tymethod.uninitialized">Box2D::uninitialized</a>();
-<a href=#273 id=273 data-nosnippet>273</a>            <span class="kw">let </span>ret = <a href="../../../graphene_sys/fn.graphene_box2d_intersection.html">ffi::graphene_box2d_intersection</a>(
-<a href=#274 id=274 data-nosnippet>274</a>                <a class="self" href="#270">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
-<a href=#275 id=275 data-nosnippet>275</a>                <a href="#270">b</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
-<a href=#276 id=276 data-nosnippet>276</a>                <a href="#272">res</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html#tymethod.to_glib_none_mut">to_glib_none_mut</a>().<span class="number">0</span>,
+<a href=#272 id=272 data-nosnippet>272</a>            <span class="kw">let </span><span class="kw-2">mut </span>res = Box2D::uninitialized();
+<a href=#273 id=273 data-nosnippet>273</a>            <span class="kw">let </span>ret = ffi::graphene_box2d_intersection(
+<a href=#274 id=274 data-nosnippet>274</a>                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
+<a href=#275 id=275 data-nosnippet>275</a>                b.to_glib_none().<span class="number">0</span>,
+<a href=#276 id=276 data-nosnippet>276</a>                res.to_glib_none_mut().<span class="number">0</span>,
 <a href=#277 id=277 data-nosnippet>277</a>            );
-<a href=#278 id=278 data-nosnippet>278</a>            <span class="kw">if </span><a href="#273">ret</a> {
-<a href=#279 id=279 data-nosnippet>279</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#272">res</a>)
+<a href=#278 id=278 data-nosnippet>278</a>            <span class="kw">if </span>ret {
+<a href=#279 id=279 data-nosnippet>279</a>                <span class="prelude-val">Some</span>(res)
 <a href=#280 id=280 data-nosnippet>280</a>            } <span class="kw">else </span>{
-<a href=#281 id=281 data-nosnippet>281</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None"><a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a>
-<a href=#282 id=282 data-nosnippet>282</a>            </a>}
+<a href=#281 id=281 data-nosnippet>281</a>                <span class="prelude-val">None
+<a href=#282 id=282 data-nosnippet>282</a>            </span>}
 <a href=#283 id=283 data-nosnippet>283</a>        }
 <a href=#284 id=284 data-nosnippet>284</a>    }
 <a href=#285 id=285 data-nosnippet>285</a>
@@ -366,8 +293,8 @@
 <a href=#293 id=293 data-nosnippet>293</a>    ///
 <a href=#294 id=294 data-nosnippet>294</a>    /// true if the boxes intersect, and false otherwise
 <a href=#295 id=295 data-nosnippet>295</a>    </span><span class="attr">#[doc(alias = <span class="string">"graphene_box2d_intersects"</span>)]
-<a href=#296 id=296 data-nosnippet>296</a>    </span><span class="kw">pub fn </span>intersects(<span class="kw-2">&amp;</span><span class="self">self</span>, b: <span class="kw-2">&amp;</span><a href="#8-18">Box2D</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
-<a href=#297 id=297 data-nosnippet>297</a>        <span class="kw">unsafe </span>{ <a href="../../../graphene_sys/fn.graphene_box2d_intersects.html">ffi::graphene_box2d_intersects</a>(<a class="self" href="#296">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#296">b</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>) }
+<a href=#296 id=296 data-nosnippet>296</a>    </span><span class="kw">pub fn </span>intersects(<span class="kw-2">&amp;</span><span class="self">self</span>, b: <span class="kw-2">&amp;</span>Box2D) -&gt; bool {
+<a href=#297 id=297 data-nosnippet>297</a>        <span class="kw">unsafe </span>{ ffi::graphene_box2d_intersects(<span class="self">self</span>.to_glib_none().<span class="number">0</span>, b.to_glib_none().<span class="number">0</span>) }
 <a href=#298 id=298 data-nosnippet>298</a>    }
 <a href=#299 id=299 data-nosnippet>299</a>
 <a href=#300 id=300 data-nosnippet>300</a>    <span class="doccomment">/// Applies a scale and an offset to the vertices of the given box.
@@ -387,16 +314,16 @@
 <a href=#314 id=314 data-nosnippet>314</a>    /// the transformed box
 <a href=#315 id=315 data-nosnippet>315</a>    </span><span class="attr">#[doc(alias = <span class="string">"graphene_box2d_scale_offset"</span>)]
 <a href=#316 id=316 data-nosnippet>316</a>    #[must_use]
-<a href=#317 id=317 data-nosnippet>317</a>    </span><span class="kw">pub fn </span>scale_offset(<span class="kw-2">&amp;</span><span class="self">self</span>, scale: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="vec2.rs.html#8-20">Vec2</a>&gt;, offset: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="point.rs.html#8-17">Point</a>&gt;) -&gt; <a href="#8-18">Box2D</a> {
+<a href=#317 id=317 data-nosnippet>317</a>    </span><span class="kw">pub fn </span>scale_offset(<span class="kw-2">&amp;</span><span class="self">self</span>, scale: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Vec2&gt;, offset: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Point&gt;) -&gt; Box2D {
 <a href=#318 id=318 data-nosnippet>318</a>        <span class="kw">unsafe </span>{
-<a href=#319 id=319 data-nosnippet>319</a>            <span class="kw">let </span><span class="kw-2">mut </span>res = <a href="../../../glib/translate/trait.Uninitialized.html#tymethod.uninitialized">Box2D::uninitialized</a>();
-<a href=#320 id=320 data-nosnippet>320</a>            <a href="../../../graphene_sys/fn.graphene_box2d_scale_offset.html">ffi::graphene_box2d_scale_offset</a>(
-<a href=#321 id=321 data-nosnippet>321</a>                <a class="self" href="#317">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
-<a href=#322 id=322 data-nosnippet>322</a>                <a href="#317">scale</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
-<a href=#323 id=323 data-nosnippet>323</a>                <a href="#317">offset</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
-<a href=#324 id=324 data-nosnippet>324</a>                <a href="#319">res</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html#tymethod.to_glib_none_mut">to_glib_none_mut</a>().<span class="number">0</span>,
+<a href=#319 id=319 data-nosnippet>319</a>            <span class="kw">let </span><span class="kw-2">mut </span>res = Box2D::uninitialized();
+<a href=#320 id=320 data-nosnippet>320</a>            ffi::graphene_box2d_scale_offset(
+<a href=#321 id=321 data-nosnippet>321</a>                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
+<a href=#322 id=322 data-nosnippet>322</a>                scale.to_glib_none().<span class="number">0</span>,
+<a href=#323 id=323 data-nosnippet>323</a>                offset.to_glib_none().<span class="number">0</span>,
+<a href=#324 id=324 data-nosnippet>324</a>                res.to_glib_none_mut().<span class="number">0</span>,
 <a href=#325 id=325 data-nosnippet>325</a>            );
-<a href=#326 id=326 data-nosnippet>326</a>            <a href="#319">res</a>
+<a href=#326 id=326 data-nosnippet>326</a>            res
 <a href=#327 id=327 data-nosnippet>327</a>        }
 <a href=#328 id=328 data-nosnippet>328</a>    }
 <a href=#329 id=329 data-nosnippet>329</a>
@@ -409,11 +336,11 @@
 <a href=#336 id=336 data-nosnippet>336</a>    /// ## `rect`
 <a href=#337 id=337 data-nosnippet>337</a>    /// the rectangle to initialize
 <a href=#338 id=338 data-nosnippet>338</a>    </span><span class="attr">#[doc(alias = <span class="string">"graphene_box2d_to_rect"</span>)]
-<a href=#339 id=339 data-nosnippet>339</a>    </span><span class="kw">pub fn </span>to_rect(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="rect.rs.html#8-28">Rect</a> {
+<a href=#339 id=339 data-nosnippet>339</a>    </span><span class="kw">pub fn </span>to_rect(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Rect {
 <a href=#340 id=340 data-nosnippet>340</a>        <span class="kw">unsafe </span>{
-<a href=#341 id=341 data-nosnippet>341</a>            <span class="kw">let </span><span class="kw-2">mut </span>rect = <a href="../../../glib/translate/trait.Uninitialized.html#tymethod.uninitialized">Rect::uninitialized</a>();
-<a href=#342 id=342 data-nosnippet>342</a>            <a href="../../../graphene_sys/fn.graphene_box2d_to_rect.html">ffi::graphene_box2d_to_rect</a>(<a class="self" href="#339">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#341">rect</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html#tymethod.to_glib_none_mut">to_glib_none_mut</a>().<span class="number">0</span>);
-<a href=#343 id=343 data-nosnippet>343</a>            <a href="#341">rect</a>
+<a href=#341 id=341 data-nosnippet>341</a>            <span class="kw">let </span><span class="kw-2">mut </span>rect = Rect::uninitialized();
+<a href=#342 id=342 data-nosnippet>342</a>            ffi::graphene_box2d_to_rect(<span class="self">self</span>.to_glib_none().<span class="number">0</span>, rect.to_glib_none_mut().<span class="number">0</span>);
+<a href=#343 id=343 data-nosnippet>343</a>            rect
 <a href=#344 id=344 data-nosnippet>344</a>        }
 <a href=#345 id=345 data-nosnippet>345</a>    }
 <a href=#346 id=346 data-nosnippet>346</a>
@@ -428,15 +355,15 @@
 <a href=#355 id=355 data-nosnippet>355</a>    /// return location for the result
 <a href=#356 id=356 data-nosnippet>356</a>    </span><span class="attr">#[doc(alias = <span class="string">"graphene_box2d_union"</span>)]
 <a href=#357 id=357 data-nosnippet>357</a>    #[must_use]
-<a href=#358 id=358 data-nosnippet>358</a>    </span><span class="kw">pub fn </span>union(<span class="kw-2">&amp;</span><span class="self">self</span>, b: <span class="kw-2">&amp;</span><a href="#8-18">Box2D</a>) -&gt; <a href="#8-18">Box2D</a> {
+<a href=#358 id=358 data-nosnippet>358</a>    </span><span class="kw">pub fn </span>union(<span class="kw-2">&amp;</span><span class="self">self</span>, b: <span class="kw-2">&amp;</span>Box2D) -&gt; Box2D {
 <a href=#359 id=359 data-nosnippet>359</a>        <span class="kw">unsafe </span>{
-<a href=#360 id=360 data-nosnippet>360</a>            <span class="kw">let </span><span class="kw-2">mut </span>res = <a href="../../../glib/translate/trait.Uninitialized.html#tymethod.uninitialized">Box2D::uninitialized</a>();
-<a href=#361 id=361 data-nosnippet>361</a>            <a href="../../../graphene_sys/fn.graphene_box2d_union.html">ffi::graphene_box2d_union</a>(
-<a href=#362 id=362 data-nosnippet>362</a>                <a class="self" href="#358">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
-<a href=#363 id=363 data-nosnippet>363</a>                <a href="#358">b</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
-<a href=#364 id=364 data-nosnippet>364</a>                <a href="#360">res</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html#tymethod.to_glib_none_mut">to_glib_none_mut</a>().<span class="number">0</span>,
+<a href=#360 id=360 data-nosnippet>360</a>            <span class="kw">let </span><span class="kw-2">mut </span>res = Box2D::uninitialized();
+<a href=#361 id=361 data-nosnippet>361</a>            ffi::graphene_box2d_union(
+<a href=#362 id=362 data-nosnippet>362</a>                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
+<a href=#363 id=363 data-nosnippet>363</a>                b.to_glib_none().<span class="number">0</span>,
+<a href=#364 id=364 data-nosnippet>364</a>                res.to_glib_none_mut().<span class="number">0</span>,
 <a href=#365 id=365 data-nosnippet>365</a>            );
-<a href=#366 id=366 data-nosnippet>366</a>            <a href="#360">res</a>
+<a href=#366 id=366 data-nosnippet>366</a>            res
 <a href=#367 id=367 data-nosnippet>367</a>        }
 <a href=#368 id=368 data-nosnippet>368</a>    }
 <a href=#369 id=369 data-nosnippet>369</a>
@@ -448,9 +375,9 @@
 <a href=#375 id=375 data-nosnippet>375</a>    ///
 <a href=#376 id=376 data-nosnippet>376</a>    /// a [`Box2D`][crate::Box2D]
 <a href=#377 id=377 data-nosnippet>377</a>    </span><span class="attr">#[doc(alias = <span class="string">"graphene_box2d_empty"</span>)]
-<a href=#378 id=378 data-nosnippet>378</a>    </span><span class="kw">pub fn </span>empty() -&gt; <a href="#8-18">Box2D</a> {
+<a href=#378 id=378 data-nosnippet>378</a>    </span><span class="kw">pub fn </span>empty() -&gt; Box2D {
 <a href=#379 id=379 data-nosnippet>379</a>        <span class="macro">assert_initialized_main_thread!</span>();
-<a href=#380 id=380 data-nosnippet>380</a>        <span class="kw">unsafe </span>{ <a href="../../../glib/translate/fn.from_glib_none.html">from_glib_none</a>(<a href="../../../graphene_sys/fn.graphene_box2d_empty.html">ffi::graphene_box2d_empty</a>()) }
+<a href=#380 id=380 data-nosnippet>380</a>        <span class="kw">unsafe </span>{ from_glib_none(ffi::graphene_box2d_empty()) }
 <a href=#381 id=381 data-nosnippet>381</a>    }
 <a href=#382 id=382 data-nosnippet>382</a>
 <a href=#383 id=383 data-nosnippet>383</a>    <span class="doccomment">/// A degenerate [`Box2D`][crate::Box2D] that cannot be expanded.
@@ -461,9 +388,9 @@
 <a href=#388 id=388 data-nosnippet>388</a>    ///
 <a href=#389 id=389 data-nosnippet>389</a>    /// a [`Box2D`][crate::Box2D]
 <a href=#390 id=390 data-nosnippet>390</a>    </span><span class="attr">#[doc(alias = <span class="string">"graphene_box2d_infinite"</span>)]
-<a href=#391 id=391 data-nosnippet>391</a>    </span><span class="kw">pub fn </span>infinite() -&gt; <a href="#8-18">Box2D</a> {
+<a href=#391 id=391 data-nosnippet>391</a>    </span><span class="kw">pub fn </span>infinite() -&gt; Box2D {
 <a href=#392 id=392 data-nosnippet>392</a>        <span class="macro">assert_initialized_main_thread!</span>();
-<a href=#393 id=393 data-nosnippet>393</a>        <span class="kw">unsafe </span>{ <a href="../../../glib/translate/fn.from_glib_none.html">from_glib_none</a>(<a href="../../../graphene_sys/fn.graphene_box2d_infinite.html">ffi::graphene_box2d_infinite</a>()) }
+<a href=#393 id=393 data-nosnippet>393</a>        <span class="kw">unsafe </span>{ from_glib_none(ffi::graphene_box2d_infinite()) }
 <a href=#394 id=394 data-nosnippet>394</a>    }
 <a href=#395 id=395 data-nosnippet>395</a>
 <a href=#396 id=396 data-nosnippet>396</a>    <span class="doccomment">/// A [`Box2D`][crate::Box2D] with the minimum vertex set at (-1, -1) and the
@@ -475,9 +402,9 @@
 <a href=#402 id=402 data-nosnippet>402</a>    ///
 <a href=#403 id=403 data-nosnippet>403</a>    /// a [`Box2D`][crate::Box2D]
 <a href=#404 id=404 data-nosnippet>404</a>    </span><span class="attr">#[doc(alias = <span class="string">"graphene_box2d_minus_one"</span>)]
-<a href=#405 id=405 data-nosnippet>405</a>    </span><span class="kw">pub fn </span>minus_one() -&gt; <a href="#8-18">Box2D</a> {
+<a href=#405 id=405 data-nosnippet>405</a>    </span><span class="kw">pub fn </span>minus_one() -&gt; Box2D {
 <a href=#406 id=406 data-nosnippet>406</a>        <span class="macro">assert_initialized_main_thread!</span>();
-<a href=#407 id=407 data-nosnippet>407</a>        <span class="kw">unsafe </span>{ <a href="../../../glib/translate/fn.from_glib_none.html">from_glib_none</a>(<a href="../../../graphene_sys/fn.graphene_box2d_minus_one.html">ffi::graphene_box2d_minus_one</a>()) }
+<a href=#407 id=407 data-nosnippet>407</a>        <span class="kw">unsafe </span>{ from_glib_none(ffi::graphene_box2d_minus_one()) }
 <a href=#408 id=408 data-nosnippet>408</a>    }
 <a href=#409 id=409 data-nosnippet>409</a>
 <a href=#410 id=410 data-nosnippet>410</a>    <span class="doccomment">/// A [`Box2D`][crate::Box2D] with the minimum vertex set at (0, 0) and the
@@ -489,9 +416,9 @@
 <a href=#416 id=416 data-nosnippet>416</a>    ///
 <a href=#417 id=417 data-nosnippet>417</a>    /// a [`Box2D`][crate::Box2D]
 <a href=#418 id=418 data-nosnippet>418</a>    </span><span class="attr">#[doc(alias = <span class="string">"graphene_box2d_one"</span>)]
-<a href=#419 id=419 data-nosnippet>419</a>    </span><span class="kw">pub fn </span>one() -&gt; <a href="#8-18">Box2D</a> {
+<a href=#419 id=419 data-nosnippet>419</a>    </span><span class="kw">pub fn </span>one() -&gt; Box2D {
 <a href=#420 id=420 data-nosnippet>420</a>        <span class="macro">assert_initialized_main_thread!</span>();
-<a href=#421 id=421 data-nosnippet>421</a>        <span class="kw">unsafe </span>{ <a href="../../../glib/translate/fn.from_glib_none.html">from_glib_none</a>(<a href="../../../graphene_sys/fn.graphene_box2d_one.html">ffi::graphene_box2d_one</a>()) }
+<a href=#421 id=421 data-nosnippet>421</a>        <span class="kw">unsafe </span>{ from_glib_none(ffi::graphene_box2d_one()) }
 <a href=#422 id=422 data-nosnippet>422</a>    }
 <a href=#423 id=423 data-nosnippet>423</a>
 <a href=#424 id=424 data-nosnippet>424</a>    <span class="doccomment">/// A [`Box2D`][crate::Box2D] with the minimum vertex set at (-1, -1) and the
@@ -503,9 +430,9 @@
 <a href=#430 id=430 data-nosnippet>430</a>    ///
 <a href=#431 id=431 data-nosnippet>431</a>    /// a [`Box2D`][crate::Box2D]
 <a href=#432 id=432 data-nosnippet>432</a>    </span><span class="attr">#[doc(alias = <span class="string">"graphene_box2d_one_minus_one"</span>)]
-<a href=#433 id=433 data-nosnippet>433</a>    </span><span class="kw">pub fn </span>one_minus_one() -&gt; <a href="#8-18">Box2D</a> {
+<a href=#433 id=433 data-nosnippet>433</a>    </span><span class="kw">pub fn </span>one_minus_one() -&gt; Box2D {
 <a href=#434 id=434 data-nosnippet>434</a>        <span class="macro">assert_initialized_main_thread!</span>();
-<a href=#435 id=435 data-nosnippet>435</a>        <span class="kw">unsafe </span>{ <a href="../../../glib/translate/fn.from_glib_none.html">from_glib_none</a>(<a href="../../../graphene_sys/fn.graphene_box2d_one_minus_one.html">ffi::graphene_box2d_one_minus_one</a>()) }
+<a href=#435 id=435 data-nosnippet>435</a>        <span class="kw">unsafe </span>{ from_glib_none(ffi::graphene_box2d_one_minus_one()) }
 <a href=#436 id=436 data-nosnippet>436</a>    }
 <a href=#437 id=437 data-nosnippet>437</a>
 <a href=#438 id=438 data-nosnippet>438</a>    <span class="doccomment">/// A [`Box2D`][crate::Box2D] with both the minimum and maximum vertices set at (0, 0).
@@ -516,17 +443,17 @@
 <a href=#443 id=443 data-nosnippet>443</a>    ///
 <a href=#444 id=444 data-nosnippet>444</a>    /// a [`Box2D`][crate::Box2D]
 <a href=#445 id=445 data-nosnippet>445</a>    </span><span class="attr">#[doc(alias = <span class="string">"graphene_box2d_zero"</span>)]
-<a href=#446 id=446 data-nosnippet>446</a>    </span><span class="kw">pub fn </span>zero() -&gt; <a href="#8-18">Box2D</a> {
+<a href=#446 id=446 data-nosnippet>446</a>    </span><span class="kw">pub fn </span>zero() -&gt; Box2D {
 <a href=#447 id=447 data-nosnippet>447</a>        <span class="macro">assert_initialized_main_thread!</span>();
-<a href=#448 id=448 data-nosnippet>448</a>        <span class="kw">unsafe </span>{ <a href="../../../glib/translate/fn.from_glib_none.html">from_glib_none</a>(<a href="../../../graphene_sys/fn.graphene_box2d_zero.html">ffi::graphene_box2d_zero</a>()) }
+<a href=#448 id=448 data-nosnippet>448</a>        <span class="kw">unsafe </span>{ from_glib_none(ffi::graphene_box2d_zero()) }
 <a href=#449 id=449 data-nosnippet>449</a>    }
 <a href=#450 id=450 data-nosnippet>450</a>}
 <a href=#451 id=451 data-nosnippet>451</a>
-<a href=#452 id=452 data-nosnippet>452</a><span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html">PartialEq</a> <span class="kw">for </span><a href="#8-18">Box2D</a> {
+<a href=#452 id=452 data-nosnippet>452</a><span class="kw">impl </span>PartialEq <span class="kw">for </span>Box2D {
 <a href=#453 id=453 data-nosnippet>453</a>    <span class="attr">#[inline]
-<a href=#454 id=454 data-nosnippet>454</a>    </span><span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
-<a href=#455 id=455 data-nosnippet>455</a>        <a class="self" href="#454">self</a>.<a href="#59-61">equal</a>(<a href="#454">other</a>)
+<a href=#454 id=454 data-nosnippet>454</a>    </span><span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; bool {
+<a href=#455 id=455 data-nosnippet>455</a>        <span class="self">self</span>.equal(other)
 <a href=#456 id=456 data-nosnippet>456</a>    }
 <a href=#457 id=457 data-nosnippet>457</a>}
 <a href=#458 id=458 data-nosnippet>458</a>
-<a href=#459 id=459 data-nosnippet>459</a><span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/cmp/trait.Eq.html">Eq</a> <span class="kw">for </span><a href="#8-18">Box2D</a> {}</code></pre></div></section></main></body></html>
+<a href=#459 id=459 data-nosnippet>459</a><span class="kw">impl </span>Eq <span class="kw">for </span>Box2D {}</code></pre></div></section></main></body></html>

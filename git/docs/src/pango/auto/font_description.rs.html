@@ -1,84 +1,11 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `pango/src/auto/font_description.rs`."><title>font_description.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-aa0817cf.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="pango" data-themes="" data-resource-suffix="" data-rustdoc-version="1.90.0-nightly (e46629662 2025-07-17)" data-channel="nightly" data-search-js="search-179e01a3.js" data-settings-js="settings-5514c975.js" ><script src="../../../static.files/storage-4e99c027.js"></script><script defer src="../../../static.files/src-script-813739b1.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-673ee1e0.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-32bb7600.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
-<script type="text/javascript">
-    document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
-
-    function checkDocsLatestStable() {
-        function popup(msg, url) { return `
-            <style scoped="scoped">
-                .popup {
-                    max-width: 16em;
-                    background-color: #fff;
-                    position: fixed;
-                    z-index: 1;
-                    margin-left: auto;
-                    bottom: 1em;
-                    right: 1em;
-                    border-radius: 5px;
-                    box-shadow: 1px 1px 4px #777;
-                }
-
-                .popup a.version {
-                    color: #e57300;
-                    padding: 0.6em 1em;
-                    display: block;
-                }
-                .popup a.version:hover {
-                    color: #b25900;
-                }
-
-                .popup a.close {
-                    color: white;
-                    background: grey;
-                    border-radius: 99px;
-                    display: inline-block;
-                    width: 19px;
-                    line-height: 19px;
-                    font-weight: bold;
-                    text-align: center;
-                    margin: 0.6em;
-                    float: right;
-                }
-                .popup a.close:hover {
-                    background: black;
-                }
-            </style>
-            <section class="popup" id="gir_docs_popup">
-                <a class="close" href="#" onclick="document.getElementById('gir_docs_popup').remove(); return false">×</a>
-                <a class="version" href="https://gtk-rs.org/gtk-rs-core/stable/latest/docs">
-                    ⚠ ${msg}
-                </a>
-            </section>
-        ` };
-
-        if ("main" == "main") {
-            document.body.insertAdjacentHTML(
-                'beforeend',
-                popup("This is the development version. Go to latest stable version.", "stable/latest")
-            );
-        } else {
-            fetch('https://gtk-rs.org/gtk-rs-core/LATEST_RELEASE_BRANCH')
-                .then(response => response.text())
-                .then(latest_branch => {
-                    if (latest_branch.trim() != "main") {
-                        document.body.insertAdjacentHTML(
-                            'beforeend',
-                            popup("This version is outdated. Go to latest version.", "stable/latest")
-                        );
-                    }
-                });
-        }
-    }
-</script>
-
-
-<nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">pango/auto/</div>font_description.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-3"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `pango/src/auto/font_description.rs`."><title>font_description.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-aa0817cf.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="pango" data-themes="" data-resource-suffix="" data-rustdoc-version="1.91.0-nightly (0060d5a2a 2025-08-04)" data-channel="nightly" data-search-js="search-fa3e91e5.js" data-settings-js="settings-5514c975.js" ><script src="../../../static.files/storage-68b7e25d.js"></script><script defer src="../../../static.files/src-script-813739b1.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-eebb9057.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-32bb7600.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">pango/auto/</div>font_description.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-3"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)
 <a href=#2 id=2 data-nosnippet>2</a>// from gir-files (https://github.com/gtk-rs/gir-files)
 <a href=#3 id=3 data-nosnippet>3</a>// DO NOT EDIT
 <a href=#4 id=4 data-nosnippet>4</a>
-<a href=#5 id=5 data-nosnippet>5</a></span><span class="kw">use crate</span>::{<a href="../../../pango_sys/index.html">ffi</a>, <a href="flags.rs.html#8-46">FontMask</a>, <a href="enums.rs.html#1277-1295">Gravity</a>, <a href="enums.rs.html#2465-2495">Stretch</a>, <a href="enums.rs.html#2595-2607">Style</a>, <a href="enums.rs.html#3085-3127">Variant</a>, <a href="enums.rs.html#3236-3275">Weight</a>};
-<a href=#6 id=6 data-nosnippet>6</a><span class="kw">use </span><a href="../../../glib/translate/index.html">glib::translate</a>::<span class="kw-2">*</span>;
+<a href=#5 id=5 data-nosnippet>5</a></span><span class="kw">use crate</span>::{ffi, FontMask, Gravity, Stretch, Style, Variant, Weight};
+<a href=#6 id=6 data-nosnippet>6</a><span class="kw">use </span>glib::translate::<span class="kw-2">*</span>;
 <a href=#7 id=7 data-nosnippet>7</a>
-<a href=#8 id=8 data-nosnippet>8</a><a class="macro" href="../../../glib/macro.wrapper.html">glib::wrapper!</a> {
+<a href=#8 id=8 data-nosnippet>8</a><span class="macro">glib::wrapper!</span> {
 <a href=#9 id=9 data-nosnippet>9</a>    <span class="doccomment">/// A [`FontDescription`][crate::FontDescription] describes a font in an implementation-independent
 <a href=#10 id=10 data-nosnippet>10</a>    /// manner.
 <a href=#11 id=11 data-nosnippet>11</a>    ///
@@ -86,7 +13,7 @@
 <a href=#13 id=13 data-nosnippet>13</a>    /// available on the system and also for specifying the characteristics of
 <a href=#14 id=14 data-nosnippet>14</a>    /// a font to load.
 <a href=#15 id=15 data-nosnippet>15</a>    </span><span class="attr">#[derive(Debug, PartialOrd, Ord)]
-<a href=#16 id=16 data-nosnippet>16</a>    </span><span class="kw">pub struct </span><a href="../../../pango/struct.FontDescription.html">FontDescription</a>(Boxed&lt;<a href="../../../pango_sys/struct.PangoFontDescription.html">ffi::PangoFontDescription</a>&gt;);
+<a href=#16 id=16 data-nosnippet>16</a>    </span><span class="kw">pub struct </span>FontDescription(Boxed&lt;ffi::PangoFontDescription&gt;);
 <a href=#17 id=17 data-nosnippet>17</a>
 <a href=#18 id=18 data-nosnippet>18</a>    <span class="kw">match fn </span>{
 <a href=#19 id=19 data-nosnippet>19</a>        copy =&gt; |ptr| ffi::pango_font_description_copy(ptr),
@@ -95,7 +22,7 @@
 <a href=#22 id=22 data-nosnippet>22</a>    }
 <a href=#23 id=23 data-nosnippet>23</a>}
 <a href=#24 id=24 data-nosnippet>24</a>
-<a href=#25 id=25 data-nosnippet>25</a><span class="kw">impl </span><a href="#8-23">FontDescription</a> {
+<a href=#25 id=25 data-nosnippet>25</a><span class="kw">impl </span>FontDescription {
 <a href=#26 id=26 data-nosnippet>26</a>    <span class="doccomment">/// Creates a new font description structure with all fields unset.
 <a href=#27 id=27 data-nosnippet>27</a>    ///
 <a href=#28 id=28 data-nosnippet>28</a>    /// # Returns
@@ -103,8 +30,8 @@
 <a href=#30 id=30 data-nosnippet>30</a>    /// the newly allocated [`FontDescription`][crate::FontDescription],
 <a href=#31 id=31 data-nosnippet>31</a>    ///   which should be freed using `Pango::FontDescription::free()`.
 <a href=#32 id=32 data-nosnippet>32</a>    </span><span class="attr">#[doc(alias = <span class="string">"pango_font_description_new"</span>)]
-<a href=#33 id=33 data-nosnippet>33</a>    </span><span class="kw">pub fn </span>new() -&gt; <a href="#8-23">FontDescription</a> {
-<a href=#34 id=34 data-nosnippet>34</a>        <span class="kw">unsafe </span>{ <a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="../../../pango_sys/fn.pango_font_description_new.html">ffi::pango_font_description_new</a>()) }
+<a href=#33 id=33 data-nosnippet>33</a>    </span><span class="kw">pub fn </span>new() -&gt; FontDescription {
+<a href=#34 id=34 data-nosnippet>34</a>        <span class="kw">unsafe </span>{ from_glib_full(ffi::pango_font_description_new()) }
 <a href=#35 id=35 data-nosnippet>35</a>    }
 <a href=#36 id=36 data-nosnippet>36</a>
 <a href=#37 id=37 data-nosnippet>37</a>    <span class="doccomment">/// Determines if the style attributes of @new_match are a closer match
@@ -129,24 +56,24 @@
 <a href=#56 id=56 data-nosnippet>56</a>    </span><span class="attr">#[doc(alias = <span class="string">"pango_font_description_better_match"</span>)]
 <a href=#57 id=57 data-nosnippet>57</a>    </span><span class="kw">pub fn </span>better_match(
 <a href=#58 id=58 data-nosnippet>58</a>        <span class="kw-2">&amp;</span><span class="self">self</span>,
-<a href=#59 id=59 data-nosnippet>59</a>        old_match: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="#8-23">FontDescription</a>&gt;,
-<a href=#60 id=60 data-nosnippet>60</a>        new_match: <span class="kw-2">&amp;</span><a href="#8-23">FontDescription</a>,
-<a href=#61 id=61 data-nosnippet>61</a>    ) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
+<a href=#59 id=59 data-nosnippet>59</a>        old_match: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>FontDescription&gt;,
+<a href=#60 id=60 data-nosnippet>60</a>        new_match: <span class="kw-2">&amp;</span>FontDescription,
+<a href=#61 id=61 data-nosnippet>61</a>    ) -&gt; bool {
 <a href=#62 id=62 data-nosnippet>62</a>        <span class="kw">unsafe </span>{
-<a href=#63 id=63 data-nosnippet>63</a>            <a href="../../../glib/translate/fn.from_glib.html">from_glib</a>(<a href="../../../pango_sys/fn.pango_font_description_better_match.html">ffi::pango_font_description_better_match</a>(
-<a href=#64 id=64 data-nosnippet>64</a>                <a class="self" href="#58">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
-<a href=#65 id=65 data-nosnippet>65</a>                <a href="#59">old_match</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
-<a href=#66 id=66 data-nosnippet>66</a>                <a href="#60">new_match</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+<a href=#63 id=63 data-nosnippet>63</a>            from_glib(ffi::pango_font_description_better_match(
+<a href=#64 id=64 data-nosnippet>64</a>                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
+<a href=#65 id=65 data-nosnippet>65</a>                old_match.to_glib_none().<span class="number">0</span>,
+<a href=#66 id=66 data-nosnippet>66</a>                new_match.to_glib_none().<span class="number">0</span>,
 <a href=#67 id=67 data-nosnippet>67</a>            ))
 <a href=#68 id=68 data-nosnippet>68</a>        }
 <a href=#69 id=69 data-nosnippet>69</a>    }
 <a href=#70 id=70 data-nosnippet>70</a>
 <a href=#71 id=71 data-nosnippet>71</a>    <span class="attr">#[doc(alias = <span class="string">"pango_font_description_equal"</span>)]
-<a href=#72 id=72 data-nosnippet>72</a>    </span><span class="kw">fn </span>equal(<span class="kw-2">&amp;</span><span class="self">self</span>, desc2: <span class="kw-2">&amp;</span><a href="#8-23">FontDescription</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
+<a href=#72 id=72 data-nosnippet>72</a>    </span><span class="kw">fn </span>equal(<span class="kw-2">&amp;</span><span class="self">self</span>, desc2: <span class="kw-2">&amp;</span>FontDescription) -&gt; bool {
 <a href=#73 id=73 data-nosnippet>73</a>        <span class="kw">unsafe </span>{
-<a href=#74 id=74 data-nosnippet>74</a>            <a href="../../../glib/translate/fn.from_glib.html">from_glib</a>(<a href="../../../pango_sys/fn.pango_font_description_equal.html">ffi::pango_font_description_equal</a>(
-<a href=#75 id=75 data-nosnippet>75</a>                <a class="self" href="#72">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
-<a href=#76 id=76 data-nosnippet>76</a>                <a href="#72">desc2</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+<a href=#74 id=74 data-nosnippet>74</a>            from_glib(ffi::pango_font_description_equal(
+<a href=#75 id=75 data-nosnippet>75</a>                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
+<a href=#76 id=76 data-nosnippet>76</a>                desc2.to_glib_none().<span class="number">0</span>,
 <a href=#77 id=77 data-nosnippet>77</a>            ))
 <a href=#78 id=78 data-nosnippet>78</a>        }
 <a href=#79 id=79 data-nosnippet>79</a>    }
@@ -162,10 +89,10 @@
 <a href=#89 id=89 data-nosnippet>89</a>    ///   life-time as the font description itself and should not be freed.
 <a href=#90 id=90 data-nosnippet>90</a>    </span><span class="attr">#[doc(alias = <span class="string">"pango_font_description_get_family"</span>)]
 <a href=#91 id=91 data-nosnippet>91</a>    #[doc(alias = <span class="string">"get_family"</span>)]
-<a href=#92 id=92 data-nosnippet>92</a>    </span><span class="kw">pub fn </span>family(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="../../../glib/gstring/struct.GString.html">glib::GString</a>&gt; {
+<a href=#92 id=92 data-nosnippet>92</a>    </span><span class="kw">pub fn </span>family(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;glib::GString&gt; {
 <a href=#93 id=93 data-nosnippet>93</a>        <span class="kw">unsafe </span>{
-<a href=#94 id=94 data-nosnippet>94</a>            <a href="../../../glib/translate/fn.from_glib_none.html">from_glib_none</a>(<a href="../../../pango_sys/fn.pango_font_description_get_family.html">ffi::pango_font_description_get_family</a>(
-<a href=#95 id=95 data-nosnippet>95</a>                <a class="self" href="#92">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+<a href=#94 id=94 data-nosnippet>94</a>            from_glib_none(ffi::pango_font_description_get_family(
+<a href=#95 id=95 data-nosnippet>95</a>                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
 <a href=#96 id=96 data-nosnippet>96</a>            ))
 <a href=#97 id=97 data-nosnippet>97</a>        }
 <a href=#98 id=98 data-nosnippet>98</a>    }
@@ -183,10 +110,10 @@
 <a href=#110 id=110 data-nosnippet>110</a>    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"v1_56"</span>)))]
 <a href=#111 id=111 data-nosnippet>111</a>    #[doc(alias = <span class="string">"pango_font_description_get_features"</span>)]
 <a href=#112 id=112 data-nosnippet>112</a>    #[doc(alias = <span class="string">"get_features"</span>)]
-<a href=#113 id=113 data-nosnippet>113</a>    </span><span class="kw">pub fn </span>features(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="../../../glib/gstring/struct.GString.html">glib::GString</a>&gt; {
+<a href=#113 id=113 data-nosnippet>113</a>    </span><span class="kw">pub fn </span>features(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;glib::GString&gt; {
 <a href=#114 id=114 data-nosnippet>114</a>        <span class="kw">unsafe </span>{
-<a href=#115 id=115 data-nosnippet>115</a>            <a href="../../../glib/translate/fn.from_glib_none.html">from_glib_none</a>(<a href="../../../pango_sys/fn.pango_font_description_get_features.html">ffi::pango_font_description_get_features</a>(
-<a href=#116 id=116 data-nosnippet>116</a>                <a class="self" href="#113">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+<a href=#115 id=115 data-nosnippet>115</a>            from_glib_none(ffi::pango_font_description_get_features(
+<a href=#116 id=116 data-nosnippet>116</a>                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
 <a href=#117 id=117 data-nosnippet>117</a>            ))
 <a href=#118 id=118 data-nosnippet>118</a>        }
 <a href=#119 id=119 data-nosnippet>119</a>    }
@@ -202,10 +129,10 @@
 <a href=#129 id=129 data-nosnippet>129</a>    ///   if the field was explicitly set or not.
 <a href=#130 id=130 data-nosnippet>130</a>    </span><span class="attr">#[doc(alias = <span class="string">"pango_font_description_get_gravity"</span>)]
 <a href=#131 id=131 data-nosnippet>131</a>    #[doc(alias = <span class="string">"get_gravity"</span>)]
-<a href=#132 id=132 data-nosnippet>132</a>    </span><span class="kw">pub fn </span>gravity(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="enums.rs.html#1277-1295">Gravity</a> {
+<a href=#132 id=132 data-nosnippet>132</a>    </span><span class="kw">pub fn </span>gravity(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Gravity {
 <a href=#133 id=133 data-nosnippet>133</a>        <span class="kw">unsafe </span>{
-<a href=#134 id=134 data-nosnippet>134</a>            <a href="../../../glib/translate/fn.from_glib.html">from_glib</a>(<a href="../../../pango_sys/fn.pango_font_description_get_gravity.html">ffi::pango_font_description_get_gravity</a>(
-<a href=#135 id=135 data-nosnippet>135</a>                <a class="self" href="#132">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+<a href=#134 id=134 data-nosnippet>134</a>            from_glib(ffi::pango_font_description_get_gravity(
+<a href=#135 id=135 data-nosnippet>135</a>                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
 <a href=#136 id=136 data-nosnippet>136</a>            ))
 <a href=#137 id=137 data-nosnippet>137</a>        }
 <a href=#138 id=138 data-nosnippet>138</a>    }
@@ -218,10 +145,10 @@
 <a href=#145 id=145 data-nosnippet>145</a>    ///   fields in @self that have been set.
 <a href=#146 id=146 data-nosnippet>146</a>    </span><span class="attr">#[doc(alias = <span class="string">"pango_font_description_get_set_fields"</span>)]
 <a href=#147 id=147 data-nosnippet>147</a>    #[doc(alias = <span class="string">"get_set_fields"</span>)]
-<a href=#148 id=148 data-nosnippet>148</a>    </span><span class="kw">pub fn </span>set_fields(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="flags.rs.html#8-46">FontMask</a> {
+<a href=#148 id=148 data-nosnippet>148</a>    </span><span class="kw">pub fn </span>set_fields(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; FontMask {
 <a href=#149 id=149 data-nosnippet>149</a>        <span class="kw">unsafe </span>{
-<a href=#150 id=150 data-nosnippet>150</a>            <a href="../../../glib/translate/fn.from_glib.html">from_glib</a>(<a href="../../../pango_sys/fn.pango_font_description_get_set_fields.html">ffi::pango_font_description_get_set_fields</a>(
-<a href=#151 id=151 data-nosnippet>151</a>                <a class="self" href="#148">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+<a href=#150 id=150 data-nosnippet>150</a>            from_glib(ffi::pango_font_description_get_set_fields(
+<a href=#151 id=151 data-nosnippet>151</a>                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
 <a href=#152 id=152 data-nosnippet>152</a>            ))
 <a href=#153 id=153 data-nosnippet>153</a>        }
 <a href=#154 id=154 data-nosnippet>154</a>    }
@@ -241,8 +168,8 @@
 <a href=#168 id=168 data-nosnippet>168</a>    ///   if the field was explicitly set or not.
 <a href=#169 id=169 data-nosnippet>169</a>    </span><span class="attr">#[doc(alias = <span class="string">"pango_font_description_get_size"</span>)]
 <a href=#170 id=170 data-nosnippet>170</a>    #[doc(alias = <span class="string">"get_size"</span>)]
-<a href=#171 id=171 data-nosnippet>171</a>    </span><span class="kw">pub fn </span>size(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a> {
-<a href=#172 id=172 data-nosnippet>172</a>        <span class="kw">unsafe </span>{ <a href="../../../pango_sys/fn.pango_font_description_get_size.html">ffi::pango_font_description_get_size</a>(<a class="self" href="#171">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>) }
+<a href=#171 id=171 data-nosnippet>171</a>    </span><span class="kw">pub fn </span>size(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; i32 {
+<a href=#172 id=172 data-nosnippet>172</a>        <span class="kw">unsafe </span>{ ffi::pango_font_description_get_size(<span class="self">self</span>.to_glib_none().<span class="number">0</span>) }
 <a href=#173 id=173 data-nosnippet>173</a>    }
 <a href=#174 id=174 data-nosnippet>174</a>
 <a href=#175 id=175 data-nosnippet>175</a>    <span class="doccomment">/// Determines whether the size of the font is in points (not absolute)
@@ -259,10 +186,10 @@
 <a href=#186 id=186 data-nosnippet>186</a>    ///   set or not.
 <a href=#187 id=187 data-nosnippet>187</a>    </span><span class="attr">#[doc(alias = <span class="string">"pango_font_description_get_size_is_absolute"</span>)]
 <a href=#188 id=188 data-nosnippet>188</a>    #[doc(alias = <span class="string">"get_size_is_absolute"</span>)]
-<a href=#189 id=189 data-nosnippet>189</a>    </span><span class="kw">pub fn </span>is_size_absolute(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
+<a href=#189 id=189 data-nosnippet>189</a>    </span><span class="kw">pub fn </span>is_size_absolute(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
 <a href=#190 id=190 data-nosnippet>190</a>        <span class="kw">unsafe </span>{
-<a href=#191 id=191 data-nosnippet>191</a>            <a href="../../../glib/translate/fn.from_glib.html">from_glib</a>(<a href="../../../pango_sys/fn.pango_font_description_get_size_is_absolute.html">ffi::pango_font_description_get_size_is_absolute</a>(
-<a href=#192 id=192 data-nosnippet>192</a>                <a class="self" href="#189">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+<a href=#191 id=191 data-nosnippet>191</a>            from_glib(ffi::pango_font_description_get_size_is_absolute(
+<a href=#192 id=192 data-nosnippet>192</a>                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
 <a href=#193 id=193 data-nosnippet>193</a>            ))
 <a href=#194 id=194 data-nosnippet>194</a>        }
 <a href=#195 id=195 data-nosnippet>195</a>    }
@@ -278,10 +205,10 @@
 <a href=#205 id=205 data-nosnippet>205</a>    ///   out if the field was explicitly set or not.
 <a href=#206 id=206 data-nosnippet>206</a>    </span><span class="attr">#[doc(alias = <span class="string">"pango_font_description_get_stretch"</span>)]
 <a href=#207 id=207 data-nosnippet>207</a>    #[doc(alias = <span class="string">"get_stretch"</span>)]
-<a href=#208 id=208 data-nosnippet>208</a>    </span><span class="kw">pub fn </span>stretch(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="enums.rs.html#2465-2495">Stretch</a> {
+<a href=#208 id=208 data-nosnippet>208</a>    </span><span class="kw">pub fn </span>stretch(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Stretch {
 <a href=#209 id=209 data-nosnippet>209</a>        <span class="kw">unsafe </span>{
-<a href=#210 id=210 data-nosnippet>210</a>            <a href="../../../glib/translate/fn.from_glib.html">from_glib</a>(<a href="../../../pango_sys/fn.pango_font_description_get_stretch.html">ffi::pango_font_description_get_stretch</a>(
-<a href=#211 id=211 data-nosnippet>211</a>                <a class="self" href="#208">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+<a href=#210 id=210 data-nosnippet>210</a>            from_glib(ffi::pango_font_description_get_stretch(
+<a href=#211 id=211 data-nosnippet>211</a>                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
 <a href=#212 id=212 data-nosnippet>212</a>            ))
 <a href=#213 id=213 data-nosnippet>213</a>        }
 <a href=#214 id=214 data-nosnippet>214</a>    }
@@ -297,8 +224,8 @@
 <a href=#224 id=224 data-nosnippet>224</a>    ///   find out if the field was explicitly set or not.
 <a href=#225 id=225 data-nosnippet>225</a>    </span><span class="attr">#[doc(alias = <span class="string">"pango_font_description_get_style"</span>)]
 <a href=#226 id=226 data-nosnippet>226</a>    #[doc(alias = <span class="string">"get_style"</span>)]
-<a href=#227 id=227 data-nosnippet>227</a>    </span><span class="kw">pub fn </span>style(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="enums.rs.html#2595-2607">Style</a> {
-<a href=#228 id=228 data-nosnippet>228</a>        <span class="kw">unsafe </span>{ <a href="../../../glib/translate/fn.from_glib.html">from_glib</a>(<a href="../../../pango_sys/fn.pango_font_description_get_style.html">ffi::pango_font_description_get_style</a>(<a class="self" href="#227">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>)) }
+<a href=#227 id=227 data-nosnippet>227</a>    </span><span class="kw">pub fn </span>style(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Style {
+<a href=#228 id=228 data-nosnippet>228</a>        <span class="kw">unsafe </span>{ from_glib(ffi::pango_font_description_get_style(<span class="self">self</span>.to_glib_none().<span class="number">0</span>)) }
 <a href=#229 id=229 data-nosnippet>229</a>    }
 <a href=#230 id=230 data-nosnippet>230</a>
 <a href=#231 id=231 data-nosnippet>231</a>    <span class="doccomment">/// Gets the variant field of a [`FontDescription`][crate::FontDescription].
@@ -312,10 +239,10 @@
 <a href=#239 id=239 data-nosnippet>239</a>    ///   out if the field was explicitly set or not.
 <a href=#240 id=240 data-nosnippet>240</a>    </span><span class="attr">#[doc(alias = <span class="string">"pango_font_description_get_variant"</span>)]
 <a href=#241 id=241 data-nosnippet>241</a>    #[doc(alias = <span class="string">"get_variant"</span>)]
-<a href=#242 id=242 data-nosnippet>242</a>    </span><span class="kw">pub fn </span>variant(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="enums.rs.html#3085-3127">Variant</a> {
+<a href=#242 id=242 data-nosnippet>242</a>    </span><span class="kw">pub fn </span>variant(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Variant {
 <a href=#243 id=243 data-nosnippet>243</a>        <span class="kw">unsafe </span>{
-<a href=#244 id=244 data-nosnippet>244</a>            <a href="../../../glib/translate/fn.from_glib.html">from_glib</a>(<a href="../../../pango_sys/fn.pango_font_description_get_variant.html">ffi::pango_font_description_get_variant</a>(
-<a href=#245 id=245 data-nosnippet>245</a>                <a class="self" href="#242">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+<a href=#244 id=244 data-nosnippet>244</a>            from_glib(ffi::pango_font_description_get_variant(
+<a href=#245 id=245 data-nosnippet>245</a>                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
 <a href=#246 id=246 data-nosnippet>246</a>            ))
 <a href=#247 id=247 data-nosnippet>247</a>        }
 <a href=#248 id=248 data-nosnippet>248</a>    }
@@ -333,10 +260,10 @@
 <a href=#260 id=260 data-nosnippet>260</a>    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"v1_42"</span>)))]
 <a href=#261 id=261 data-nosnippet>261</a>    #[doc(alias = <span class="string">"pango_font_description_get_variations"</span>)]
 <a href=#262 id=262 data-nosnippet>262</a>    #[doc(alias = <span class="string">"get_variations"</span>)]
-<a href=#263 id=263 data-nosnippet>263</a>    </span><span class="kw">pub fn </span>variations(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="../../../glib/gstring/struct.GString.html">glib::GString</a>&gt; {
+<a href=#263 id=263 data-nosnippet>263</a>    </span><span class="kw">pub fn </span>variations(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;glib::GString&gt; {
 <a href=#264 id=264 data-nosnippet>264</a>        <span class="kw">unsafe </span>{
-<a href=#265 id=265 data-nosnippet>265</a>            <a href="../../../glib/translate/fn.from_glib_none.html">from_glib_none</a>(<a href="../../../pango_sys/fn.pango_font_description_get_variations.html">ffi::pango_font_description_get_variations</a>(
-<a href=#266 id=266 data-nosnippet>266</a>                <a class="self" href="#263">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+<a href=#265 id=265 data-nosnippet>265</a>            from_glib_none(ffi::pango_font_description_get_variations(
+<a href=#266 id=266 data-nosnippet>266</a>                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
 <a href=#267 id=267 data-nosnippet>267</a>            ))
 <a href=#268 id=268 data-nosnippet>268</a>        }
 <a href=#269 id=269 data-nosnippet>269</a>    }
@@ -352,17 +279,17 @@
 <a href=#279 id=279 data-nosnippet>279</a>    ///   out if the field was explicitly set or not.
 <a href=#280 id=280 data-nosnippet>280</a>    </span><span class="attr">#[doc(alias = <span class="string">"pango_font_description_get_weight"</span>)]
 <a href=#281 id=281 data-nosnippet>281</a>    #[doc(alias = <span class="string">"get_weight"</span>)]
-<a href=#282 id=282 data-nosnippet>282</a>    </span><span class="kw">pub fn </span>weight(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="enums.rs.html#3236-3275">Weight</a> {
+<a href=#282 id=282 data-nosnippet>282</a>    </span><span class="kw">pub fn </span>weight(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Weight {
 <a href=#283 id=283 data-nosnippet>283</a>        <span class="kw">unsafe </span>{
-<a href=#284 id=284 data-nosnippet>284</a>            <a href="../../../glib/translate/fn.from_glib.html">from_glib</a>(<a href="../../../pango_sys/fn.pango_font_description_get_weight.html">ffi::pango_font_description_get_weight</a>(
-<a href=#285 id=285 data-nosnippet>285</a>                <a class="self" href="#282">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+<a href=#284 id=284 data-nosnippet>284</a>            from_glib(ffi::pango_font_description_get_weight(
+<a href=#285 id=285 data-nosnippet>285</a>                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
 <a href=#286 id=286 data-nosnippet>286</a>            ))
 <a href=#287 id=287 data-nosnippet>287</a>        }
 <a href=#288 id=288 data-nosnippet>288</a>    }
 <a href=#289 id=289 data-nosnippet>289</a>
 <a href=#290 id=290 data-nosnippet>290</a>    <span class="attr">#[doc(alias = <span class="string">"pango_font_description_hash"</span>)]
-<a href=#291 id=291 data-nosnippet>291</a>    </span><span class="kw">fn </span>hash(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a> {
-<a href=#292 id=292 data-nosnippet>292</a>        <span class="kw">unsafe </span>{ <a href="../../../pango_sys/fn.pango_font_description_hash.html">ffi::pango_font_description_hash</a>(<a class="self" href="#291">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>) }
+<a href=#291 id=291 data-nosnippet>291</a>    </span><span class="kw">fn </span>hash(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; u32 {
+<a href=#292 id=292 data-nosnippet>292</a>        <span class="kw">unsafe </span>{ ffi::pango_font_description_hash(<span class="self">self</span>.to_glib_none().<span class="number">0</span>) }
 <a href=#293 id=293 data-nosnippet>293</a>    }
 <a href=#294 id=294 data-nosnippet>294</a>
 <a href=#295 id=295 data-nosnippet>295</a>    <span class="doccomment">/// Merges the fields that are set in @desc_to_merge into the fields in
@@ -381,12 +308,12 @@
 <a href=#308 id=308 data-nosnippet>308</a>    ///   corresponding values from @desc_to_merge, even if they
 <a href=#309 id=309 data-nosnippet>309</a>    ///   are already exist.
 <a href=#310 id=310 data-nosnippet>310</a>    </span><span class="attr">#[doc(alias = <span class="string">"pango_font_description_merge"</span>)]
-<a href=#311 id=311 data-nosnippet>311</a>    </span><span class="kw">pub fn </span>merge(<span class="kw-2">&amp;mut </span><span class="self">self</span>, desc_to_merge: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="#8-23">FontDescription</a>&gt;, replace_existing: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>) {
+<a href=#311 id=311 data-nosnippet>311</a>    </span><span class="kw">pub fn </span>merge(<span class="kw-2">&amp;mut </span><span class="self">self</span>, desc_to_merge: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>FontDescription&gt;, replace_existing: bool) {
 <a href=#312 id=312 data-nosnippet>312</a>        <span class="kw">unsafe </span>{
-<a href=#313 id=313 data-nosnippet>313</a>            <a href="../../../pango_sys/fn.pango_font_description_merge.html">ffi::pango_font_description_merge</a>(
-<a href=#314 id=314 data-nosnippet>314</a>                <a class="self" href="#311">self</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html#tymethod.to_glib_none_mut">to_glib_none_mut</a>().<span class="number">0</span>,
-<a href=#315 id=315 data-nosnippet>315</a>                <a href="#311">desc_to_merge</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
-<a href=#316 id=316 data-nosnippet>316</a>                <a href="#311">replace_existing</a>.<a href="../../../glib/translate/trait.IntoGlib.html#tymethod.into_glib">into_glib</a>(),
+<a href=#313 id=313 data-nosnippet>313</a>            ffi::pango_font_description_merge(
+<a href=#314 id=314 data-nosnippet>314</a>                <span class="self">self</span>.to_glib_none_mut().<span class="number">0</span>,
+<a href=#315 id=315 data-nosnippet>315</a>                desc_to_merge.to_glib_none().<span class="number">0</span>,
+<a href=#316 id=316 data-nosnippet>316</a>                replace_existing.into_glib(),
 <a href=#317 id=317 data-nosnippet>317</a>            );
 <a href=#318 id=318 data-nosnippet>318</a>        }
 <a href=#319 id=319 data-nosnippet>319</a>    }
@@ -400,9 +327,9 @@
 <a href=#327 id=327 data-nosnippet>327</a>    ///   in one device unit. For an output backend where a device unit is a pixel,
 <a href=#328 id=328 data-nosnippet>328</a>    ///   a @size value of 10 * PANGO_SCALE gives a 10 pixel font.
 <a href=#329 id=329 data-nosnippet>329</a>    </span><span class="attr">#[doc(alias = <span class="string">"pango_font_description_set_absolute_size"</span>)]
-<a href=#330 id=330 data-nosnippet>330</a>    </span><span class="kw">pub fn </span>set_absolute_size(<span class="kw-2">&amp;mut </span><span class="self">self</span>, size: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>) {
+<a href=#330 id=330 data-nosnippet>330</a>    </span><span class="kw">pub fn </span>set_absolute_size(<span class="kw-2">&amp;mut </span><span class="self">self</span>, size: f64) {
 <a href=#331 id=331 data-nosnippet>331</a>        <span class="kw">unsafe </span>{
-<a href=#332 id=332 data-nosnippet>332</a>            <a href="../../../pango_sys/fn.pango_font_description_set_absolute_size.html">ffi::pango_font_description_set_absolute_size</a>(<a class="self" href="#330">self</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html#tymethod.to_glib_none_mut">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#330">size</a>);
+<a href=#332 id=332 data-nosnippet>332</a>            ffi::pango_font_description_set_absolute_size(<span class="self">self</span>.to_glib_none_mut().<span class="number">0</span>, size);
 <a href=#333 id=333 data-nosnippet>333</a>        }
 <a href=#334 id=334 data-nosnippet>334</a>    }
 <a href=#335 id=335 data-nosnippet>335</a>
@@ -416,11 +343,11 @@
 <a href=#343 id=343 data-nosnippet>343</a>    /// ## `family`
 <a href=#344 id=344 data-nosnippet>344</a>    /// a string representing the family name.
 <a href=#345 id=345 data-nosnippet>345</a>    </span><span class="attr">#[doc(alias = <span class="string">"pango_font_description_set_family"</span>)]
-<a href=#346 id=346 data-nosnippet>346</a>    </span><span class="kw">pub fn </span>set_family(<span class="kw-2">&amp;mut </span><span class="self">self</span>, family: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) {
+<a href=#346 id=346 data-nosnippet>346</a>    </span><span class="kw">pub fn </span>set_family(<span class="kw-2">&amp;mut </span><span class="self">self</span>, family: <span class="kw-2">&amp;</span>str) {
 <a href=#347 id=347 data-nosnippet>347</a>        <span class="kw">unsafe </span>{
-<a href=#348 id=348 data-nosnippet>348</a>            <a href="../../../pango_sys/fn.pango_font_description_set_family.html">ffi::pango_font_description_set_family</a>(
-<a href=#349 id=349 data-nosnippet>349</a>                <a class="self" href="#346">self</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html#tymethod.to_glib_none_mut">to_glib_none_mut</a>().<span class="number">0</span>,
-<a href=#350 id=350 data-nosnippet>350</a>                <a href="#346">family</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+<a href=#348 id=348 data-nosnippet>348</a>            ffi::pango_font_description_set_family(
+<a href=#349 id=349 data-nosnippet>349</a>                <span class="self">self</span>.to_glib_none_mut().<span class="number">0</span>,
+<a href=#350 id=350 data-nosnippet>350</a>                family.to_glib_none().<span class="number">0</span>,
 <a href=#351 id=351 data-nosnippet>351</a>            );
 <a href=#352 id=352 data-nosnippet>352</a>        }
 <a href=#353 id=353 data-nosnippet>353</a>    }
@@ -454,11 +381,11 @@
 <a href=#381 id=381 data-nosnippet>381</a>    </span><span class="attr">#[cfg(feature = <span class="string">"v1_56"</span>)]
 <a href=#382 id=382 data-nosnippet>382</a>    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"v1_56"</span>)))]
 <a href=#383 id=383 data-nosnippet>383</a>    #[doc(alias = <span class="string">"pango_font_description_set_features"</span>)]
-<a href=#384 id=384 data-nosnippet>384</a>    </span><span class="kw">pub fn </span>set_features(<span class="kw-2">&amp;mut </span><span class="self">self</span>, features: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;) {
+<a href=#384 id=384 data-nosnippet>384</a>    </span><span class="kw">pub fn </span>set_features(<span class="kw-2">&amp;mut </span><span class="self">self</span>, features: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt;) {
 <a href=#385 id=385 data-nosnippet>385</a>        <span class="kw">unsafe </span>{
-<a href=#386 id=386 data-nosnippet>386</a>            <a href="../../../pango_sys/fn.pango_font_description_set_features.html">ffi::pango_font_description_set_features</a>(
-<a href=#387 id=387 data-nosnippet>387</a>                <a class="self" href="#384">self</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html#tymethod.to_glib_none_mut">to_glib_none_mut</a>().<span class="number">0</span>,
-<a href=#388 id=388 data-nosnippet>388</a>                <a href="#384">features</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+<a href=#386 id=386 data-nosnippet>386</a>            ffi::pango_font_description_set_features(
+<a href=#387 id=387 data-nosnippet>387</a>                <span class="self">self</span>.to_glib_none_mut().<span class="number">0</span>,
+<a href=#388 id=388 data-nosnippet>388</a>                features.to_glib_none().<span class="number">0</span>,
 <a href=#389 id=389 data-nosnippet>389</a>            );
 <a href=#390 id=390 data-nosnippet>390</a>        }
 <a href=#391 id=391 data-nosnippet>391</a>    }
@@ -475,9 +402,9 @@
 <a href=#402 id=402 data-nosnippet>402</a>    /// ## `gravity`
 <a href=#403 id=403 data-nosnippet>403</a>    /// the gravity for the font description.
 <a href=#404 id=404 data-nosnippet>404</a>    </span><span class="attr">#[doc(alias = <span class="string">"pango_font_description_set_gravity"</span>)]
-<a href=#405 id=405 data-nosnippet>405</a>    </span><span class="kw">pub fn </span>set_gravity(<span class="kw-2">&amp;mut </span><span class="self">self</span>, gravity: <a href="enums.rs.html#1277-1295">Gravity</a>) {
+<a href=#405 id=405 data-nosnippet>405</a>    </span><span class="kw">pub fn </span>set_gravity(<span class="kw-2">&amp;mut </span><span class="self">self</span>, gravity: Gravity) {
 <a href=#406 id=406 data-nosnippet>406</a>        <span class="kw">unsafe </span>{
-<a href=#407 id=407 data-nosnippet>407</a>            <a href="../../../pango_sys/fn.pango_font_description_set_gravity.html">ffi::pango_font_description_set_gravity</a>(<a class="self" href="#405">self</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html#tymethod.to_glib_none_mut">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#405">gravity</a>.<a href="../../../glib/translate/trait.IntoGlib.html#tymethod.into_glib">into_glib</a>());
+<a href=#407 id=407 data-nosnippet>407</a>            ffi::pango_font_description_set_gravity(<span class="self">self</span>.to_glib_none_mut().<span class="number">0</span>, gravity.into_glib());
 <a href=#408 id=408 data-nosnippet>408</a>        }
 <a href=#409 id=409 data-nosnippet>409</a>    }
 <a href=#410 id=410 data-nosnippet>410</a>
@@ -495,9 +422,9 @@
 <a href=#422 id=422 data-nosnippet>422</a>    ///   Use [`set_absolute_size()`][Self::set_absolute_size()] if you need
 <a href=#423 id=423 data-nosnippet>423</a>    ///   a particular size in device units.
 <a href=#424 id=424 data-nosnippet>424</a>    </span><span class="attr">#[doc(alias = <span class="string">"pango_font_description_set_size"</span>)]
-<a href=#425 id=425 data-nosnippet>425</a>    </span><span class="kw">pub fn </span>set_size(<span class="kw-2">&amp;mut </span><span class="self">self</span>, size: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>) {
+<a href=#425 id=425 data-nosnippet>425</a>    </span><span class="kw">pub fn </span>set_size(<span class="kw-2">&amp;mut </span><span class="self">self</span>, size: i32) {
 <a href=#426 id=426 data-nosnippet>426</a>        <span class="kw">unsafe </span>{
-<a href=#427 id=427 data-nosnippet>427</a>            <a href="../../../pango_sys/fn.pango_font_description_set_size.html">ffi::pango_font_description_set_size</a>(<a class="self" href="#425">self</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html#tymethod.to_glib_none_mut">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#425">size</a>);
+<a href=#427 id=427 data-nosnippet>427</a>            ffi::pango_font_description_set_size(<span class="self">self</span>.to_glib_none_mut().<span class="number">0</span>, size);
 <a href=#428 id=428 data-nosnippet>428</a>        }
 <a href=#429 id=429 data-nosnippet>429</a>    }
 <a href=#430 id=430 data-nosnippet>430</a>
@@ -508,9 +435,9 @@
 <a href=#435 id=435 data-nosnippet>435</a>    /// ## `stretch`
 <a href=#436 id=436 data-nosnippet>436</a>    /// the stretch for the font description
 <a href=#437 id=437 data-nosnippet>437</a>    </span><span class="attr">#[doc(alias = <span class="string">"pango_font_description_set_stretch"</span>)]
-<a href=#438 id=438 data-nosnippet>438</a>    </span><span class="kw">pub fn </span>set_stretch(<span class="kw-2">&amp;mut </span><span class="self">self</span>, stretch: <a href="enums.rs.html#2465-2495">Stretch</a>) {
+<a href=#438 id=438 data-nosnippet>438</a>    </span><span class="kw">pub fn </span>set_stretch(<span class="kw-2">&amp;mut </span><span class="self">self</span>, stretch: Stretch) {
 <a href=#439 id=439 data-nosnippet>439</a>        <span class="kw">unsafe </span>{
-<a href=#440 id=440 data-nosnippet>440</a>            <a href="../../../pango_sys/fn.pango_font_description_set_stretch.html">ffi::pango_font_description_set_stretch</a>(<a class="self" href="#438">self</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html#tymethod.to_glib_none_mut">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#438">stretch</a>.<a href="../../../glib/translate/trait.IntoGlib.html#tymethod.into_glib">into_glib</a>());
+<a href=#440 id=440 data-nosnippet>440</a>            ffi::pango_font_description_set_stretch(<span class="self">self</span>.to_glib_none_mut().<span class="number">0</span>, stretch.into_glib());
 <a href=#441 id=441 data-nosnippet>441</a>        }
 <a href=#442 id=442 data-nosnippet>442</a>    }
 <a href=#443 id=443 data-nosnippet>443</a>
@@ -527,9 +454,9 @@
 <a href=#454 id=454 data-nosnippet>454</a>    /// ## `style`
 <a href=#455 id=455 data-nosnippet>455</a>    /// the style for the font description
 <a href=#456 id=456 data-nosnippet>456</a>    </span><span class="attr">#[doc(alias = <span class="string">"pango_font_description_set_style"</span>)]
-<a href=#457 id=457 data-nosnippet>457</a>    </span><span class="kw">pub fn </span>set_style(<span class="kw-2">&amp;mut </span><span class="self">self</span>, style: <a href="enums.rs.html#2595-2607">Style</a>) {
+<a href=#457 id=457 data-nosnippet>457</a>    </span><span class="kw">pub fn </span>set_style(<span class="kw-2">&amp;mut </span><span class="self">self</span>, style: Style) {
 <a href=#458 id=458 data-nosnippet>458</a>        <span class="kw">unsafe </span>{
-<a href=#459 id=459 data-nosnippet>459</a>            <a href="../../../pango_sys/fn.pango_font_description_set_style.html">ffi::pango_font_description_set_style</a>(<a class="self" href="#457">self</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html#tymethod.to_glib_none_mut">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#457">style</a>.<a href="../../../glib/translate/trait.IntoGlib.html#tymethod.into_glib">into_glib</a>());
+<a href=#459 id=459 data-nosnippet>459</a>            ffi::pango_font_description_set_style(<span class="self">self</span>.to_glib_none_mut().<span class="number">0</span>, style.into_glib());
 <a href=#460 id=460 data-nosnippet>460</a>        }
 <a href=#461 id=461 data-nosnippet>461</a>    }
 <a href=#462 id=462 data-nosnippet>462</a>
@@ -540,9 +467,9 @@
 <a href=#467 id=467 data-nosnippet>467</a>    /// ## `variant`
 <a href=#468 id=468 data-nosnippet>468</a>    /// the variant type for the font description.
 <a href=#469 id=469 data-nosnippet>469</a>    </span><span class="attr">#[doc(alias = <span class="string">"pango_font_description_set_variant"</span>)]
-<a href=#470 id=470 data-nosnippet>470</a>    </span><span class="kw">pub fn </span>set_variant(<span class="kw-2">&amp;mut </span><span class="self">self</span>, variant: <a href="enums.rs.html#3085-3127">Variant</a>) {
+<a href=#470 id=470 data-nosnippet>470</a>    </span><span class="kw">pub fn </span>set_variant(<span class="kw-2">&amp;mut </span><span class="self">self</span>, variant: Variant) {
 <a href=#471 id=471 data-nosnippet>471</a>        <span class="kw">unsafe </span>{
-<a href=#472 id=472 data-nosnippet>472</a>            <a href="../../../pango_sys/fn.pango_font_description_set_variant.html">ffi::pango_font_description_set_variant</a>(<a class="self" href="#470">self</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html#tymethod.to_glib_none_mut">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#470">variant</a>.<a href="../../../glib/translate/trait.IntoGlib.html#tymethod.into_glib">into_glib</a>());
+<a href=#472 id=472 data-nosnippet>472</a>            ffi::pango_font_description_set_variant(<span class="self">self</span>.to_glib_none_mut().<span class="number">0</span>, variant.into_glib());
 <a href=#473 id=473 data-nosnippet>473</a>        }
 <a href=#474 id=474 data-nosnippet>474</a>    }
 <a href=#475 id=475 data-nosnippet>475</a>
@@ -567,11 +494,11 @@
 <a href=#494 id=494 data-nosnippet>494</a>    </span><span class="attr">#[cfg(feature = <span class="string">"v1_42"</span>)]
 <a href=#495 id=495 data-nosnippet>495</a>    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"v1_42"</span>)))]
 <a href=#496 id=496 data-nosnippet>496</a>    #[doc(alias = <span class="string">"pango_font_description_set_variations"</span>)]
-<a href=#497 id=497 data-nosnippet>497</a>    </span><span class="kw">pub fn </span>set_variations(<span class="kw-2">&amp;mut </span><span class="self">self</span>, variations: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;) {
+<a href=#497 id=497 data-nosnippet>497</a>    </span><span class="kw">pub fn </span>set_variations(<span class="kw-2">&amp;mut </span><span class="self">self</span>, variations: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt;) {
 <a href=#498 id=498 data-nosnippet>498</a>        <span class="kw">unsafe </span>{
-<a href=#499 id=499 data-nosnippet>499</a>            <a href="../../../pango_sys/fn.pango_font_description_set_variations.html">ffi::pango_font_description_set_variations</a>(
-<a href=#500 id=500 data-nosnippet>500</a>                <a class="self" href="#497">self</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html#tymethod.to_glib_none_mut">to_glib_none_mut</a>().<span class="number">0</span>,
-<a href=#501 id=501 data-nosnippet>501</a>                <a href="#497">variations</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+<a href=#499 id=499 data-nosnippet>499</a>            ffi::pango_font_description_set_variations(
+<a href=#500 id=500 data-nosnippet>500</a>                <span class="self">self</span>.to_glib_none_mut().<span class="number">0</span>,
+<a href=#501 id=501 data-nosnippet>501</a>                variations.to_glib_none().<span class="number">0</span>,
 <a href=#502 id=502 data-nosnippet>502</a>            );
 <a href=#503 id=503 data-nosnippet>503</a>        }
 <a href=#504 id=504 data-nosnippet>504</a>    }
@@ -585,9 +512,9 @@
 <a href=#512 id=512 data-nosnippet>512</a>    /// ## `weight`
 <a href=#513 id=513 data-nosnippet>513</a>    /// the weight for the font description.
 <a href=#514 id=514 data-nosnippet>514</a>    </span><span class="attr">#[doc(alias = <span class="string">"pango_font_description_set_weight"</span>)]
-<a href=#515 id=515 data-nosnippet>515</a>    </span><span class="kw">pub fn </span>set_weight(<span class="kw-2">&amp;mut </span><span class="self">self</span>, weight: <a href="enums.rs.html#3236-3275">Weight</a>) {
+<a href=#515 id=515 data-nosnippet>515</a>    </span><span class="kw">pub fn </span>set_weight(<span class="kw-2">&amp;mut </span><span class="self">self</span>, weight: Weight) {
 <a href=#516 id=516 data-nosnippet>516</a>        <span class="kw">unsafe </span>{
-<a href=#517 id=517 data-nosnippet>517</a>            <a href="../../../pango_sys/fn.pango_font_description_set_weight.html">ffi::pango_font_description_set_weight</a>(<a class="self" href="#515">self</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html#tymethod.to_glib_none_mut">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#515">weight</a>.<a href="../../../glib/translate/trait.IntoGlib.html#tymethod.into_glib">into_glib</a>());
+<a href=#517 id=517 data-nosnippet>517</a>            ffi::pango_font_description_set_weight(<span class="self">self</span>.to_glib_none_mut().<span class="number">0</span>, weight.into_glib());
 <a href=#518 id=518 data-nosnippet>518</a>        }
 <a href=#519 id=519 data-nosnippet>519</a>    }
 <a href=#520 id=520 data-nosnippet>520</a>
@@ -602,10 +529,10 @@
 <a href=#529 id=529 data-nosnippet>529</a>    ///
 <a href=#530 id=530 data-nosnippet>530</a>    /// a new string that must be freed with g_free().
 <a href=#531 id=531 data-nosnippet>531</a>    </span><span class="attr">#[doc(alias = <span class="string">"pango_font_description_to_filename"</span>)]
-<a href=#532 id=532 data-nosnippet>532</a>    </span><span class="kw">pub fn </span>to_filename(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="../../../glib/gstring/struct.GString.html">glib::GString</a>&gt; {
+<a href=#532 id=532 data-nosnippet>532</a>    </span><span class="kw">pub fn </span>to_filename(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;glib::GString&gt; {
 <a href=#533 id=533 data-nosnippet>533</a>        <span class="kw">unsafe </span>{
-<a href=#534 id=534 data-nosnippet>534</a>            <a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="../../../pango_sys/fn.pango_font_description_to_filename.html">ffi::pango_font_description_to_filename</a>(
-<a href=#535 id=535 data-nosnippet>535</a>                <a class="self" href="#532">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+<a href=#534 id=534 data-nosnippet>534</a>            from_glib_full(ffi::pango_font_description_to_filename(
+<a href=#535 id=535 data-nosnippet>535</a>                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
 <a href=#536 id=536 data-nosnippet>536</a>            ))
 <a href=#537 id=537 data-nosnippet>537</a>        }
 <a href=#538 id=538 data-nosnippet>538</a>    }
@@ -622,8 +549,8 @@
 <a href=#549 id=549 data-nosnippet>549</a>    /// a new string that must be freed with g_free().
 <a href=#550 id=550 data-nosnippet>550</a>    </span><span class="attr">#[doc(alias = <span class="string">"pango_font_description_to_string"</span>)]
 <a href=#551 id=551 data-nosnippet>551</a>    #[doc(alias = <span class="string">"to_string"</span>)]
-<a href=#552 id=552 data-nosnippet>552</a>    </span><span class="kw">pub fn </span>to_str(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="../../../glib/gstring/struct.GString.html">glib::GString</a> {
-<a href=#553 id=553 data-nosnippet>553</a>        <span class="kw">unsafe </span>{ <a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="../../../pango_sys/fn.pango_font_description_to_string.html">ffi::pango_font_description_to_string</a>(<a class="self" href="#552">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>)) }
+<a href=#552 id=552 data-nosnippet>552</a>    </span><span class="kw">pub fn </span>to_str(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; glib::GString {
+<a href=#553 id=553 data-nosnippet>553</a>        <span class="kw">unsafe </span>{ from_glib_full(ffi::pango_font_description_to_string(<span class="self">self</span>.to_glib_none().<span class="number">0</span>)) }
 <a href=#554 id=554 data-nosnippet>554</a>    }
 <a href=#555 id=555 data-nosnippet>555</a>
 <a href=#556 id=556 data-nosnippet>556</a>    <span class="doccomment">/// Unsets some of the fields in a [`FontDescription`][crate::FontDescription].
@@ -632,11 +559,11 @@
 <a href=#559 id=559 data-nosnippet>559</a>    /// ## `to_unset`
 <a href=#560 id=560 data-nosnippet>560</a>    /// bitmask of fields in the @self to unset.
 <a href=#561 id=561 data-nosnippet>561</a>    </span><span class="attr">#[doc(alias = <span class="string">"pango_font_description_unset_fields"</span>)]
-<a href=#562 id=562 data-nosnippet>562</a>    </span><span class="kw">pub fn </span>unset_fields(<span class="kw-2">&amp;mut </span><span class="self">self</span>, to_unset: <a href="flags.rs.html#8-46">FontMask</a>) {
+<a href=#562 id=562 data-nosnippet>562</a>    </span><span class="kw">pub fn </span>unset_fields(<span class="kw-2">&amp;mut </span><span class="self">self</span>, to_unset: FontMask) {
 <a href=#563 id=563 data-nosnippet>563</a>        <span class="kw">unsafe </span>{
-<a href=#564 id=564 data-nosnippet>564</a>            <a href="../../../pango_sys/fn.pango_font_description_unset_fields.html">ffi::pango_font_description_unset_fields</a>(
-<a href=#565 id=565 data-nosnippet>565</a>                <a class="self" href="#562">self</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html#tymethod.to_glib_none_mut">to_glib_none_mut</a>().<span class="number">0</span>,
-<a href=#566 id=566 data-nosnippet>566</a>                <a href="#562">to_unset</a>.<a href="../../../glib/translate/trait.IntoGlib.html#tymethod.into_glib">into_glib</a>(),
+<a href=#564 id=564 data-nosnippet>564</a>            ffi::pango_font_description_unset_fields(
+<a href=#565 id=565 data-nosnippet>565</a>                <span class="self">self</span>.to_glib_none_mut().<span class="number">0</span>,
+<a href=#566 id=566 data-nosnippet>566</a>                to_unset.into_glib(),
 <a href=#567 id=567 data-nosnippet>567</a>            );
 <a href=#568 id=568 data-nosnippet>568</a>        }
 <a href=#569 id=569 data-nosnippet>569</a>    }
@@ -697,46 +624,46 @@
 <a href=#624 id=624 data-nosnippet>624</a>    ///
 <a href=#625 id=625 data-nosnippet>625</a>    /// a new [`FontDescription`][crate::FontDescription].
 <a href=#626 id=626 data-nosnippet>626</a>    </span><span class="attr">#[doc(alias = <span class="string">"pango_font_description_from_string"</span>)]
-<a href=#627 id=627 data-nosnippet>627</a>    </span><span class="kw">pub fn </span>from_string(str: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a href="#8-23">FontDescription</a> {
+<a href=#627 id=627 data-nosnippet>627</a>    </span><span class="kw">pub fn </span>from_string(str: <span class="kw-2">&amp;</span>str) -&gt; FontDescription {
 <a href=#628 id=628 data-nosnippet>628</a>        <span class="kw">unsafe </span>{
-<a href=#629 id=629 data-nosnippet>629</a>            <a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="../../../pango_sys/fn.pango_font_description_from_string.html">ffi::pango_font_description_from_string</a>(
-<a href=#630 id=630 data-nosnippet>630</a>                <a href="#627">str</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+<a href=#629 id=629 data-nosnippet>629</a>            from_glib_full(ffi::pango_font_description_from_string(
+<a href=#630 id=630 data-nosnippet>630</a>                str.to_glib_none().<span class="number">0</span>,
 <a href=#631 id=631 data-nosnippet>631</a>            ))
 <a href=#632 id=632 data-nosnippet>632</a>        }
 <a href=#633 id=633 data-nosnippet>633</a>    }
 <a href=#634 id=634 data-nosnippet>634</a>}
 <a href=#635 id=635 data-nosnippet>635</a>
-<a href=#636 id=636 data-nosnippet>636</a><span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html">Default</a> <span class="kw">for </span><a href="#8-23">FontDescription</a> {
+<a href=#636 id=636 data-nosnippet>636</a><span class="kw">impl </span>Default <span class="kw">for </span>FontDescription {
 <a href=#637 id=637 data-nosnippet>637</a>    <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
-<a href=#638 id=638 data-nosnippet>638</a>        <a href="#33-35"><span class="self">Self</span>::new</a>()
+<a href=#638 id=638 data-nosnippet>638</a>        <span class="self">Self</span>::new()
 <a href=#639 id=639 data-nosnippet>639</a>    }
 <a href=#640 id=640 data-nosnippet>640</a>}
 <a href=#641 id=641 data-nosnippet>641</a>
-<a href=#642 id=642 data-nosnippet>642</a><span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html">PartialEq</a> <span class="kw">for </span><a href="#8-23">FontDescription</a> {
+<a href=#642 id=642 data-nosnippet>642</a><span class="kw">impl </span>PartialEq <span class="kw">for </span>FontDescription {
 <a href=#643 id=643 data-nosnippet>643</a>    <span class="attr">#[inline]
-<a href=#644 id=644 data-nosnippet>644</a>    </span><span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
-<a href=#645 id=645 data-nosnippet>645</a>        <a class="self" href="#644">self</a>.<a href="#72-79">equal</a>(<a href="#644">other</a>)
+<a href=#644 id=644 data-nosnippet>644</a>    </span><span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; bool {
+<a href=#645 id=645 data-nosnippet>645</a>        <span class="self">self</span>.equal(other)
 <a href=#646 id=646 data-nosnippet>646</a>    }
 <a href=#647 id=647 data-nosnippet>647</a>}
 <a href=#648 id=648 data-nosnippet>648</a>
-<a href=#649 id=649 data-nosnippet>649</a><span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/cmp/trait.Eq.html">Eq</a> <span class="kw">for </span><a href="#8-23">FontDescription</a> {}
+<a href=#649 id=649 data-nosnippet>649</a><span class="kw">impl </span>Eq <span class="kw">for </span>FontDescription {}
 <a href=#650 id=650 data-nosnippet>650</a>
-<a href=#651 id=651 data-nosnippet>651</a><span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Display.html">std::fmt::Display</a> <span class="kw">for </span><a href="#8-23">FontDescription</a> {
+<a href=#651 id=651 data-nosnippet>651</a><span class="kw">impl </span>std::fmt::Display <span class="kw">for </span>FontDescription {
 <a href=#652 id=652 data-nosnippet>652</a>    <span class="attr">#[inline]
-<a href=#653 id=653 data-nosnippet>653</a>    </span><span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span><a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html">std::fmt::Formatter</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/core/fmt/type.Result.html">std::fmt::Result</a> {
-<a href=#654 id=654 data-nosnippet>654</a>        <a href="#653">f</a>.<a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html#method.write_str">write_str</a>(<span class="kw-2">&amp;</span><a class="self" href="#653">self</a>.<a href="#552-554">to_str</a>())
+<a href=#653 id=653 data-nosnippet>653</a>    </span><span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>std::fmt::Formatter) -&gt; std::fmt::Result {
+<a href=#654 id=654 data-nosnippet>654</a>        f.write_str(<span class="kw-2">&amp;</span><span class="self">self</span>.to_str())
 <a href=#655 id=655 data-nosnippet>655</a>    }
 <a href=#656 id=656 data-nosnippet>656</a>}
 <a href=#657 id=657 data-nosnippet>657</a>
-<a href=#658 id=658 data-nosnippet>658</a><span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/hash/trait.Hash.html">std::hash::Hash</a> <span class="kw">for </span><a href="#8-23">FontDescription</a> {
+<a href=#658 id=658 data-nosnippet>658</a><span class="kw">impl </span>std::hash::Hash <span class="kw">for </span>FontDescription {
 <a href=#659 id=659 data-nosnippet>659</a>    <span class="attr">#[inline]
 <a href=#660 id=660 data-nosnippet>660</a>    </span><span class="kw">fn </span>hash&lt;H&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, state: <span class="kw-2">&amp;mut </span>H)
 <a href=#661 id=661 data-nosnippet>661</a>    <span class="kw">where
-<a href=#662 id=662 data-nosnippet>662</a>        </span>H: <a href="https://doc.rust-lang.org/nightly/core/hash/trait.Hasher.html">std::hash::Hasher</a>,
+<a href=#662 id=662 data-nosnippet>662</a>        </span>H: std::hash::Hasher,
 <a href=#663 id=663 data-nosnippet>663</a>    {
-<a href=#664 id=664 data-nosnippet>664</a>        <a href="https://doc.rust-lang.org/nightly/core/hash/trait.Hash.html#tymethod.hash">std::hash::Hash::hash</a>(<span class="kw-2">&amp;</span><a class="self" href="#660">self</a>.<a href="#291-293">hash</a>(), <a href="#660">state</a>)
+<a href=#664 id=664 data-nosnippet>664</a>        std::hash::Hash::hash(<span class="kw-2">&amp;</span><span class="self">self</span>.hash(), state)
 <a href=#665 id=665 data-nosnippet>665</a>    }
 <a href=#666 id=666 data-nosnippet>666</a>}
 <a href=#667 id=667 data-nosnippet>667</a>
-<a href=#668 id=668 data-nosnippet>668</a><span class="kw">unsafe impl </span><a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> <span class="kw">for </span><a href="#8-23">FontDescription</a> {}
-<a href=#669 id=669 data-nosnippet>669</a><span class="kw">unsafe impl </span><a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> <span class="kw">for </span><a href="#8-23">FontDescription</a> {}</code></pre></div></section></main></body></html>
+<a href=#668 id=668 data-nosnippet>668</a><span class="kw">unsafe impl </span>Send <span class="kw">for </span>FontDescription {}
+<a href=#669 id=669 data-nosnippet>669</a><span class="kw">unsafe impl </span>Sync <span class="kw">for </span>FontDescription {}</code></pre></div></section></main></body></html>

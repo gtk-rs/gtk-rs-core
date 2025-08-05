@@ -1,89 +1,16 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `graphene/src/auto/vec4.rs`."><title>vec4.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-aa0817cf.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="graphene" data-themes="" data-resource-suffix="" data-rustdoc-version="1.90.0-nightly (e46629662 2025-07-17)" data-channel="nightly" data-search-js="search-179e01a3.js" data-settings-js="settings-5514c975.js" ><script src="../../../static.files/storage-4e99c027.js"></script><script defer src="../../../static.files/src-script-813739b1.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-673ee1e0.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-32bb7600.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
-<script type="text/javascript">
-    document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
-
-    function checkDocsLatestStable() {
-        function popup(msg, url) { return `
-            <style scoped="scoped">
-                .popup {
-                    max-width: 16em;
-                    background-color: #fff;
-                    position: fixed;
-                    z-index: 1;
-                    margin-left: auto;
-                    bottom: 1em;
-                    right: 1em;
-                    border-radius: 5px;
-                    box-shadow: 1px 1px 4px #777;
-                }
-
-                .popup a.version {
-                    color: #e57300;
-                    padding: 0.6em 1em;
-                    display: block;
-                }
-                .popup a.version:hover {
-                    color: #b25900;
-                }
-
-                .popup a.close {
-                    color: white;
-                    background: grey;
-                    border-radius: 99px;
-                    display: inline-block;
-                    width: 19px;
-                    line-height: 19px;
-                    font-weight: bold;
-                    text-align: center;
-                    margin: 0.6em;
-                    float: right;
-                }
-                .popup a.close:hover {
-                    background: black;
-                }
-            </style>
-            <section class="popup" id="gir_docs_popup">
-                <a class="close" href="#" onclick="document.getElementById('gir_docs_popup').remove(); return false">×</a>
-                <a class="version" href="https://gtk-rs.org/gtk-rs-core/stable/latest/docs">
-                    ⚠ ${msg}
-                </a>
-            </section>
-        ` };
-
-        if ("main" == "main") {
-            document.body.insertAdjacentHTML(
-                'beforeend',
-                popup("This is the development version. Go to latest stable version.", "stable/latest")
-            );
-        } else {
-            fetch('https://gtk-rs.org/gtk-rs-core/LATEST_RELEASE_BRANCH')
-                .then(response => response.text())
-                .then(latest_branch => {
-                    if (latest_branch.trim() != "main") {
-                        document.body.insertAdjacentHTML(
-                            'beforeend',
-                            popup("This version is outdated. Go to latest version.", "stable/latest")
-                        );
-                    }
-                });
-        }
-    }
-</script>
-
-
-<nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">graphene/auto/</div>vec4.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-3"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `graphene/src/auto/vec4.rs`."><title>vec4.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-aa0817cf.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="graphene" data-themes="" data-resource-suffix="" data-rustdoc-version="1.91.0-nightly (0060d5a2a 2025-08-04)" data-channel="nightly" data-search-js="search-fa3e91e5.js" data-settings-js="settings-5514c975.js" ><script src="../../../static.files/storage-68b7e25d.js"></script><script defer src="../../../static.files/src-script-813739b1.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-eebb9057.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-32bb7600.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">graphene/auto/</div>vec4.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-3"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)
 <a href=#2 id=2 data-nosnippet>2</a>// from gir-files (https://github.com/gtk-rs/gir-files)
 <a href=#3 id=3 data-nosnippet>3</a>// DO NOT EDIT
 <a href=#4 id=4 data-nosnippet>4</a>
-<a href=#5 id=5 data-nosnippet>5</a></span><span class="kw">use crate</span>::{<a href="../../../graphene_sys/index.html">ffi</a>, <a href="vec2.rs.html#8-20">Vec2</a>, <a href="vec3.rs.html#8-20">Vec3</a>};
-<a href=#6 id=6 data-nosnippet>6</a><span class="kw">use </span><a href="../../../glib/translate/index.html">glib::translate</a>::<span class="kw-2">*</span>;
+<a href=#5 id=5 data-nosnippet>5</a></span><span class="kw">use crate</span>::{ffi, Vec2, Vec3};
+<a href=#6 id=6 data-nosnippet>6</a><span class="kw">use </span>glib::translate::<span class="kw-2">*</span>;
 <a href=#7 id=7 data-nosnippet>7</a>
-<a href=#8 id=8 data-nosnippet>8</a><a class="macro" href="../../../glib/macro.wrapper.html">glib::wrapper!</a> {
+<a href=#8 id=8 data-nosnippet>8</a><span class="macro">glib::wrapper!</span> {
 <a href=#9 id=9 data-nosnippet>9</a>    <span class="doccomment">/// A structure capable of holding a vector with four dimensions: x, y, z, and w.
 <a href=#10 id=10 data-nosnippet>10</a>    ///
 <a href=#11 id=11 data-nosnippet>11</a>    /// The contents of the [`Vec4`][crate::Vec4] structure are private and should
 <a href=#12 id=12 data-nosnippet>12</a>    /// never be accessed directly.
-<a href=#13 id=13 data-nosnippet>13</a>    </span><span class="kw">pub struct </span><a href="../../../graphene/struct.Vec4.html">Vec4</a>(BoxedInline&lt;<a href="../../../graphene_sys/struct.graphene_vec4_t.html">ffi::graphene_vec4_t</a>&gt;);
+<a href=#13 id=13 data-nosnippet>13</a>    </span><span class="kw">pub struct </span>Vec4(BoxedInline&lt;ffi::graphene_vec4_t&gt;);
 <a href=#14 id=14 data-nosnippet>14</a>
 <a href=#15 id=15 data-nosnippet>15</a>    <span class="kw">match fn </span>{
 <a href=#16 id=16 data-nosnippet>16</a>        copy =&gt; |ptr| glib::gobject_ffi::g_boxed_copy(ffi::graphene_vec4_get_type(), ptr <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>) <span class="kw">as </span><span class="kw-2">*mut </span>ffi::graphene_vec4_t,
@@ -92,7 +19,7 @@
 <a href=#19 id=19 data-nosnippet>19</a>    }
 <a href=#20 id=20 data-nosnippet>20</a>}
 <a href=#21 id=21 data-nosnippet>21</a>
-<a href=#22 id=22 data-nosnippet>22</a><span class="kw">impl </span><a href="#8-20">Vec4</a> {
+<a href=#22 id=22 data-nosnippet>22</a><span class="kw">impl </span>Vec4 {
 <a href=#23 id=23 data-nosnippet>23</a>    <span class="doccomment">/// Adds each component of the two given vectors.
 <a href=#24 id=24 data-nosnippet>24</a>    /// ## `b`
 <a href=#25 id=25 data-nosnippet>25</a>    /// a [`Vec4`][crate::Vec4]
@@ -104,15 +31,15 @@
 <a href=#31 id=31 data-nosnippet>31</a>    /// return location for the resulting vector
 <a href=#32 id=32 data-nosnippet>32</a>    </span><span class="attr">#[doc(alias = <span class="string">"graphene_vec4_add"</span>)]
 <a href=#33 id=33 data-nosnippet>33</a>    #[must_use]
-<a href=#34 id=34 data-nosnippet>34</a>    </span><span class="kw">pub fn </span>add(<span class="kw-2">&amp;</span><span class="self">self</span>, b: <span class="kw-2">&amp;</span><a href="#8-20">Vec4</a>) -&gt; <a href="#8-20">Vec4</a> {
+<a href=#34 id=34 data-nosnippet>34</a>    </span><span class="kw">pub fn </span>add(<span class="kw-2">&amp;</span><span class="self">self</span>, b: <span class="kw-2">&amp;</span>Vec4) -&gt; Vec4 {
 <a href=#35 id=35 data-nosnippet>35</a>        <span class="kw">unsafe </span>{
-<a href=#36 id=36 data-nosnippet>36</a>            <span class="kw">let </span><span class="kw-2">mut </span>res = <a href="../../../glib/translate/trait.Uninitialized.html#tymethod.uninitialized">Vec4::uninitialized</a>();
-<a href=#37 id=37 data-nosnippet>37</a>            <a href="../../../graphene_sys/fn.graphene_vec4_add.html">ffi::graphene_vec4_add</a>(
-<a href=#38 id=38 data-nosnippet>38</a>                <a class="self" href="#34">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
-<a href=#39 id=39 data-nosnippet>39</a>                <a href="#34">b</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
-<a href=#40 id=40 data-nosnippet>40</a>                <a href="#36">res</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html#tymethod.to_glib_none_mut">to_glib_none_mut</a>().<span class="number">0</span>,
+<a href=#36 id=36 data-nosnippet>36</a>            <span class="kw">let </span><span class="kw-2">mut </span>res = Vec4::uninitialized();
+<a href=#37 id=37 data-nosnippet>37</a>            ffi::graphene_vec4_add(
+<a href=#38 id=38 data-nosnippet>38</a>                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
+<a href=#39 id=39 data-nosnippet>39</a>                b.to_glib_none().<span class="number">0</span>,
+<a href=#40 id=40 data-nosnippet>40</a>                res.to_glib_none_mut().<span class="number">0</span>,
 <a href=#41 id=41 data-nosnippet>41</a>            );
-<a href=#42 id=42 data-nosnippet>42</a>            <a href="#36">res</a>
+<a href=#42 id=42 data-nosnippet>42</a>            res
 <a href=#43 id=43 data-nosnippet>43</a>        }
 <a href=#44 id=44 data-nosnippet>44</a>    }
 <a href=#45 id=45 data-nosnippet>45</a>
@@ -129,15 +56,15 @@
 <a href=#56 id=56 data-nosnippet>56</a>    /// return location for the resulting vector
 <a href=#57 id=57 data-nosnippet>57</a>    </span><span class="attr">#[doc(alias = <span class="string">"graphene_vec4_divide"</span>)]
 <a href=#58 id=58 data-nosnippet>58</a>    #[must_use]
-<a href=#59 id=59 data-nosnippet>59</a>    </span><span class="kw">pub fn </span>divide(<span class="kw-2">&amp;</span><span class="self">self</span>, b: <span class="kw-2">&amp;</span><a href="#8-20">Vec4</a>) -&gt; <a href="#8-20">Vec4</a> {
+<a href=#59 id=59 data-nosnippet>59</a>    </span><span class="kw">pub fn </span>divide(<span class="kw-2">&amp;</span><span class="self">self</span>, b: <span class="kw-2">&amp;</span>Vec4) -&gt; Vec4 {
 <a href=#60 id=60 data-nosnippet>60</a>        <span class="kw">unsafe </span>{
-<a href=#61 id=61 data-nosnippet>61</a>            <span class="kw">let </span><span class="kw-2">mut </span>res = <a href="../../../glib/translate/trait.Uninitialized.html#tymethod.uninitialized">Vec4::uninitialized</a>();
-<a href=#62 id=62 data-nosnippet>62</a>            <a href="../../../graphene_sys/fn.graphene_vec4_divide.html">ffi::graphene_vec4_divide</a>(
-<a href=#63 id=63 data-nosnippet>63</a>                <a class="self" href="#59">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
-<a href=#64 id=64 data-nosnippet>64</a>                <a href="#59">b</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
-<a href=#65 id=65 data-nosnippet>65</a>                <a href="#61">res</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html#tymethod.to_glib_none_mut">to_glib_none_mut</a>().<span class="number">0</span>,
+<a href=#61 id=61 data-nosnippet>61</a>            <span class="kw">let </span><span class="kw-2">mut </span>res = Vec4::uninitialized();
+<a href=#62 id=62 data-nosnippet>62</a>            ffi::graphene_vec4_divide(
+<a href=#63 id=63 data-nosnippet>63</a>                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
+<a href=#64 id=64 data-nosnippet>64</a>                b.to_glib_none().<span class="number">0</span>,
+<a href=#65 id=65 data-nosnippet>65</a>                res.to_glib_none_mut().<span class="number">0</span>,
 <a href=#66 id=66 data-nosnippet>66</a>            );
-<a href=#67 id=67 data-nosnippet>67</a>            <a href="#61">res</a>
+<a href=#67 id=67 data-nosnippet>67</a>            res
 <a href=#68 id=68 data-nosnippet>68</a>        }
 <a href=#69 id=69 data-nosnippet>69</a>    }
 <a href=#70 id=70 data-nosnippet>70</a>
@@ -149,13 +76,13 @@
 <a href=#76 id=76 data-nosnippet>76</a>    ///
 <a href=#77 id=77 data-nosnippet>77</a>    /// the value of the dot product
 <a href=#78 id=78 data-nosnippet>78</a>    </span><span class="attr">#[doc(alias = <span class="string">"graphene_vec4_dot"</span>)]
-<a href=#79 id=79 data-nosnippet>79</a>    </span><span class="kw">pub fn </span>dot(<span class="kw-2">&amp;</span><span class="self">self</span>, b: <span class="kw-2">&amp;</span><a href="#8-20">Vec4</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.f32.html">f32</a> {
-<a href=#80 id=80 data-nosnippet>80</a>        <span class="kw">unsafe </span>{ <a href="../../../graphene_sys/fn.graphene_vec4_dot.html">ffi::graphene_vec4_dot</a>(<a class="self" href="#79">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#79">b</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>) }
+<a href=#79 id=79 data-nosnippet>79</a>    </span><span class="kw">pub fn </span>dot(<span class="kw-2">&amp;</span><span class="self">self</span>, b: <span class="kw-2">&amp;</span>Vec4) -&gt; f32 {
+<a href=#80 id=80 data-nosnippet>80</a>        <span class="kw">unsafe </span>{ ffi::graphene_vec4_dot(<span class="self">self</span>.to_glib_none().<span class="number">0</span>, b.to_glib_none().<span class="number">0</span>) }
 <a href=#81 id=81 data-nosnippet>81</a>    }
 <a href=#82 id=82 data-nosnippet>82</a>
 <a href=#83 id=83 data-nosnippet>83</a>    <span class="attr">#[doc(alias = <span class="string">"graphene_vec4_equal"</span>)]
-<a href=#84 id=84 data-nosnippet>84</a>    </span><span class="kw">fn </span>equal(<span class="kw-2">&amp;</span><span class="self">self</span>, v2: <span class="kw-2">&amp;</span><a href="#8-20">Vec4</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
-<a href=#85 id=85 data-nosnippet>85</a>        <span class="kw">unsafe </span>{ <a href="../../../graphene_sys/fn.graphene_vec4_equal.html">ffi::graphene_vec4_equal</a>(<a class="self" href="#84">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#84">v2</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>) }
+<a href=#84 id=84 data-nosnippet>84</a>    </span><span class="kw">fn </span>equal(<span class="kw-2">&amp;</span><span class="self">self</span>, v2: <span class="kw-2">&amp;</span>Vec4) -&gt; bool {
+<a href=#85 id=85 data-nosnippet>85</a>        <span class="kw">unsafe </span>{ ffi::graphene_vec4_equal(<span class="self">self</span>.to_glib_none().<span class="number">0</span>, v2.to_glib_none().<span class="number">0</span>) }
 <a href=#86 id=86 data-nosnippet>86</a>    }
 <a href=#87 id=87 data-nosnippet>87</a>
 <a href=#88 id=88 data-nosnippet>88</a>    <span class="doccomment">/// Retrieves the value of the fourth component of the given [`Vec4`][crate::Vec4].
@@ -165,8 +92,8 @@
 <a href=#92 id=92 data-nosnippet>92</a>    /// the value of the fourth component
 <a href=#93 id=93 data-nosnippet>93</a>    </span><span class="attr">#[doc(alias = <span class="string">"graphene_vec4_get_w"</span>)]
 <a href=#94 id=94 data-nosnippet>94</a>    #[doc(alias = <span class="string">"get_w"</span>)]
-<a href=#95 id=95 data-nosnippet>95</a>    </span><span class="kw">pub fn </span>w(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.f32.html">f32</a> {
-<a href=#96 id=96 data-nosnippet>96</a>        <span class="kw">unsafe </span>{ <a href="../../../graphene_sys/fn.graphene_vec4_get_w.html">ffi::graphene_vec4_get_w</a>(<a class="self" href="#95">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>) }
+<a href=#95 id=95 data-nosnippet>95</a>    </span><span class="kw">pub fn </span>w(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; f32 {
+<a href=#96 id=96 data-nosnippet>96</a>        <span class="kw">unsafe </span>{ ffi::graphene_vec4_get_w(<span class="self">self</span>.to_glib_none().<span class="number">0</span>) }
 <a href=#97 id=97 data-nosnippet>97</a>    }
 <a href=#98 id=98 data-nosnippet>98</a>
 <a href=#99 id=99 data-nosnippet>99</a>    <span class="doccomment">/// Retrieves the value of the first component of the given [`Vec4`][crate::Vec4].
@@ -176,8 +103,8 @@
 <a href=#103 id=103 data-nosnippet>103</a>    /// the value of the first component
 <a href=#104 id=104 data-nosnippet>104</a>    </span><span class="attr">#[doc(alias = <span class="string">"graphene_vec4_get_x"</span>)]
 <a href=#105 id=105 data-nosnippet>105</a>    #[doc(alias = <span class="string">"get_x"</span>)]
-<a href=#106 id=106 data-nosnippet>106</a>    </span><span class="kw">pub fn </span>x(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.f32.html">f32</a> {
-<a href=#107 id=107 data-nosnippet>107</a>        <span class="kw">unsafe </span>{ <a href="../../../graphene_sys/fn.graphene_vec4_get_x.html">ffi::graphene_vec4_get_x</a>(<a class="self" href="#106">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>) }
+<a href=#106 id=106 data-nosnippet>106</a>    </span><span class="kw">pub fn </span>x(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; f32 {
+<a href=#107 id=107 data-nosnippet>107</a>        <span class="kw">unsafe </span>{ ffi::graphene_vec4_get_x(<span class="self">self</span>.to_glib_none().<span class="number">0</span>) }
 <a href=#108 id=108 data-nosnippet>108</a>    }
 <a href=#109 id=109 data-nosnippet>109</a>
 <a href=#110 id=110 data-nosnippet>110</a>    <span class="doccomment">/// Creates a [`Vec2`][crate::Vec2] that contains the first two components
@@ -190,11 +117,11 @@
 <a href=#117 id=117 data-nosnippet>117</a>    /// return location for a [`Vec2`][crate::Vec2]
 <a href=#118 id=118 data-nosnippet>118</a>    </span><span class="attr">#[doc(alias = <span class="string">"graphene_vec4_get_xy"</span>)]
 <a href=#119 id=119 data-nosnippet>119</a>    #[doc(alias = <span class="string">"get_xy"</span>)]
-<a href=#120 id=120 data-nosnippet>120</a>    </span><span class="kw">pub fn </span>xy(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="vec2.rs.html#8-20">Vec2</a> {
+<a href=#120 id=120 data-nosnippet>120</a>    </span><span class="kw">pub fn </span>xy(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec2 {
 <a href=#121 id=121 data-nosnippet>121</a>        <span class="kw">unsafe </span>{
-<a href=#122 id=122 data-nosnippet>122</a>            <span class="kw">let </span><span class="kw-2">mut </span>res = <a href="../../../glib/translate/trait.Uninitialized.html#tymethod.uninitialized">Vec2::uninitialized</a>();
-<a href=#123 id=123 data-nosnippet>123</a>            <a href="../../../graphene_sys/fn.graphene_vec4_get_xy.html">ffi::graphene_vec4_get_xy</a>(<a class="self" href="#120">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#122">res</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html#tymethod.to_glib_none_mut">to_glib_none_mut</a>().<span class="number">0</span>);
-<a href=#124 id=124 data-nosnippet>124</a>            <a href="#122">res</a>
+<a href=#122 id=122 data-nosnippet>122</a>            <span class="kw">let </span><span class="kw-2">mut </span>res = Vec2::uninitialized();
+<a href=#123 id=123 data-nosnippet>123</a>            ffi::graphene_vec4_get_xy(<span class="self">self</span>.to_glib_none().<span class="number">0</span>, res.to_glib_none_mut().<span class="number">0</span>);
+<a href=#124 id=124 data-nosnippet>124</a>            res
 <a href=#125 id=125 data-nosnippet>125</a>        }
 <a href=#126 id=126 data-nosnippet>126</a>    }
 <a href=#127 id=127 data-nosnippet>127</a>
@@ -208,11 +135,11 @@
 <a href=#135 id=135 data-nosnippet>135</a>    /// return location for a graphene_vec3_t
 <a href=#136 id=136 data-nosnippet>136</a>    </span><span class="attr">#[doc(alias = <span class="string">"graphene_vec4_get_xyz"</span>)]
 <a href=#137 id=137 data-nosnippet>137</a>    #[doc(alias = <span class="string">"get_xyz"</span>)]
-<a href=#138 id=138 data-nosnippet>138</a>    </span><span class="kw">pub fn </span>xyz(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="vec3.rs.html#8-20">Vec3</a> {
+<a href=#138 id=138 data-nosnippet>138</a>    </span><span class="kw">pub fn </span>xyz(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec3 {
 <a href=#139 id=139 data-nosnippet>139</a>        <span class="kw">unsafe </span>{
-<a href=#140 id=140 data-nosnippet>140</a>            <span class="kw">let </span><span class="kw-2">mut </span>res = <a href="../../../glib/translate/trait.Uninitialized.html#tymethod.uninitialized">Vec3::uninitialized</a>();
-<a href=#141 id=141 data-nosnippet>141</a>            <a href="../../../graphene_sys/fn.graphene_vec4_get_xyz.html">ffi::graphene_vec4_get_xyz</a>(<a class="self" href="#138">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#140">res</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html#tymethod.to_glib_none_mut">to_glib_none_mut</a>().<span class="number">0</span>);
-<a href=#142 id=142 data-nosnippet>142</a>            <a href="#140">res</a>
+<a href=#140 id=140 data-nosnippet>140</a>            <span class="kw">let </span><span class="kw-2">mut </span>res = Vec3::uninitialized();
+<a href=#141 id=141 data-nosnippet>141</a>            ffi::graphene_vec4_get_xyz(<span class="self">self</span>.to_glib_none().<span class="number">0</span>, res.to_glib_none_mut().<span class="number">0</span>);
+<a href=#142 id=142 data-nosnippet>142</a>            res
 <a href=#143 id=143 data-nosnippet>143</a>        }
 <a href=#144 id=144 data-nosnippet>144</a>    }
 <a href=#145 id=145 data-nosnippet>145</a>
@@ -223,8 +150,8 @@
 <a href=#150 id=150 data-nosnippet>150</a>    /// the value of the second component
 <a href=#151 id=151 data-nosnippet>151</a>    </span><span class="attr">#[doc(alias = <span class="string">"graphene_vec4_get_y"</span>)]
 <a href=#152 id=152 data-nosnippet>152</a>    #[doc(alias = <span class="string">"get_y"</span>)]
-<a href=#153 id=153 data-nosnippet>153</a>    </span><span class="kw">pub fn </span>y(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.f32.html">f32</a> {
-<a href=#154 id=154 data-nosnippet>154</a>        <span class="kw">unsafe </span>{ <a href="../../../graphene_sys/fn.graphene_vec4_get_y.html">ffi::graphene_vec4_get_y</a>(<a class="self" href="#153">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>) }
+<a href=#153 id=153 data-nosnippet>153</a>    </span><span class="kw">pub fn </span>y(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; f32 {
+<a href=#154 id=154 data-nosnippet>154</a>        <span class="kw">unsafe </span>{ ffi::graphene_vec4_get_y(<span class="self">self</span>.to_glib_none().<span class="number">0</span>) }
 <a href=#155 id=155 data-nosnippet>155</a>    }
 <a href=#156 id=156 data-nosnippet>156</a>
 <a href=#157 id=157 data-nosnippet>157</a>    <span class="doccomment">/// Retrieves the value of the third component of the given [`Vec4`][crate::Vec4].
@@ -234,8 +161,8 @@
 <a href=#161 id=161 data-nosnippet>161</a>    /// the value of the third component
 <a href=#162 id=162 data-nosnippet>162</a>    </span><span class="attr">#[doc(alias = <span class="string">"graphene_vec4_get_z"</span>)]
 <a href=#163 id=163 data-nosnippet>163</a>    #[doc(alias = <span class="string">"get_z"</span>)]
-<a href=#164 id=164 data-nosnippet>164</a>    </span><span class="kw">pub fn </span>z(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.f32.html">f32</a> {
-<a href=#165 id=165 data-nosnippet>165</a>        <span class="kw">unsafe </span>{ <a href="../../../graphene_sys/fn.graphene_vec4_get_z.html">ffi::graphene_vec4_get_z</a>(<a class="self" href="#164">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>) }
+<a href=#164 id=164 data-nosnippet>164</a>    </span><span class="kw">pub fn </span>z(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; f32 {
+<a href=#165 id=165 data-nosnippet>165</a>        <span class="kw">unsafe </span>{ ffi::graphene_vec4_get_z(<span class="self">self</span>.to_glib_none().<span class="number">0</span>) }
 <a href=#166 id=166 data-nosnippet>166</a>    }
 <a href=#167 id=167 data-nosnippet>167</a>
 <a href=#168 id=168 data-nosnippet>168</a>    <span class="doccomment">/// Linearly interpolates `self` and `v2` using the given `factor`.
@@ -251,16 +178,16 @@
 <a href=#178 id=178 data-nosnippet>178</a>    /// the interpolated vector
 <a href=#179 id=179 data-nosnippet>179</a>    </span><span class="attr">#[doc(alias = <span class="string">"graphene_vec4_interpolate"</span>)]
 <a href=#180 id=180 data-nosnippet>180</a>    #[must_use]
-<a href=#181 id=181 data-nosnippet>181</a>    </span><span class="kw">pub fn </span>interpolate(<span class="kw-2">&amp;</span><span class="self">self</span>, v2: <span class="kw-2">&amp;</span><a href="#8-20">Vec4</a>, factor: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>) -&gt; <a href="#8-20">Vec4</a> {
+<a href=#181 id=181 data-nosnippet>181</a>    </span><span class="kw">pub fn </span>interpolate(<span class="kw-2">&amp;</span><span class="self">self</span>, v2: <span class="kw-2">&amp;</span>Vec4, factor: f64) -&gt; Vec4 {
 <a href=#182 id=182 data-nosnippet>182</a>        <span class="kw">unsafe </span>{
-<a href=#183 id=183 data-nosnippet>183</a>            <span class="kw">let </span><span class="kw-2">mut </span>res = <a href="../../../glib/translate/trait.Uninitialized.html#tymethod.uninitialized">Vec4::uninitialized</a>();
-<a href=#184 id=184 data-nosnippet>184</a>            <a href="../../../graphene_sys/fn.graphene_vec4_interpolate.html">ffi::graphene_vec4_interpolate</a>(
-<a href=#185 id=185 data-nosnippet>185</a>                <a class="self" href="#181">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
-<a href=#186 id=186 data-nosnippet>186</a>                <a href="#181">v2</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
-<a href=#187 id=187 data-nosnippet>187</a>                <a href="#181">factor</a>,
-<a href=#188 id=188 data-nosnippet>188</a>                <a href="#183">res</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html#tymethod.to_glib_none_mut">to_glib_none_mut</a>().<span class="number">0</span>,
+<a href=#183 id=183 data-nosnippet>183</a>            <span class="kw">let </span><span class="kw-2">mut </span>res = Vec4::uninitialized();
+<a href=#184 id=184 data-nosnippet>184</a>            ffi::graphene_vec4_interpolate(
+<a href=#185 id=185 data-nosnippet>185</a>                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
+<a href=#186 id=186 data-nosnippet>186</a>                v2.to_glib_none().<span class="number">0</span>,
+<a href=#187 id=187 data-nosnippet>187</a>                factor,
+<a href=#188 id=188 data-nosnippet>188</a>                res.to_glib_none_mut().<span class="number">0</span>,
 <a href=#189 id=189 data-nosnippet>189</a>            );
-<a href=#190 id=190 data-nosnippet>190</a>            <a href="#183">res</a>
+<a href=#190 id=190 data-nosnippet>190</a>            res
 <a href=#191 id=191 data-nosnippet>191</a>        }
 <a href=#192 id=192 data-nosnippet>192</a>    }
 <a href=#193 id=193 data-nosnippet>193</a>
@@ -270,8 +197,8 @@
 <a href=#197 id=197 data-nosnippet>197</a>    ///
 <a href=#198 id=198 data-nosnippet>198</a>    /// the length of the vector
 <a href=#199 id=199 data-nosnippet>199</a>    </span><span class="attr">#[doc(alias = <span class="string">"graphene_vec4_length"</span>)]
-<a href=#200 id=200 data-nosnippet>200</a>    </span><span class="kw">pub fn </span>length(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.f32.html">f32</a> {
-<a href=#201 id=201 data-nosnippet>201</a>        <span class="kw">unsafe </span>{ <a href="../../../graphene_sys/fn.graphene_vec4_length.html">ffi::graphene_vec4_length</a>(<a class="self" href="#200">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>) }
+<a href=#200 id=200 data-nosnippet>200</a>    </span><span class="kw">pub fn </span>length(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; f32 {
+<a href=#201 id=201 data-nosnippet>201</a>        <span class="kw">unsafe </span>{ ffi::graphene_vec4_length(<span class="self">self</span>.to_glib_none().<span class="number">0</span>) }
 <a href=#202 id=202 data-nosnippet>202</a>    }
 <a href=#203 id=203 data-nosnippet>203</a>
 <a href=#204 id=204 data-nosnippet>204</a>    <span class="doccomment">/// Compares each component of the two given vectors and creates a
@@ -286,15 +213,15 @@
 <a href=#213 id=213 data-nosnippet>213</a>    /// return location for the result vector
 <a href=#214 id=214 data-nosnippet>214</a>    </span><span class="attr">#[doc(alias = <span class="string">"graphene_vec4_max"</span>)]
 <a href=#215 id=215 data-nosnippet>215</a>    #[must_use]
-<a href=#216 id=216 data-nosnippet>216</a>    </span><span class="kw">pub fn </span>max(<span class="kw-2">&amp;</span><span class="self">self</span>, b: <span class="kw-2">&amp;</span><a href="#8-20">Vec4</a>) -&gt; <a href="#8-20">Vec4</a> {
+<a href=#216 id=216 data-nosnippet>216</a>    </span><span class="kw">pub fn </span>max(<span class="kw-2">&amp;</span><span class="self">self</span>, b: <span class="kw-2">&amp;</span>Vec4) -&gt; Vec4 {
 <a href=#217 id=217 data-nosnippet>217</a>        <span class="kw">unsafe </span>{
-<a href=#218 id=218 data-nosnippet>218</a>            <span class="kw">let </span><span class="kw-2">mut </span>res = <a href="../../../glib/translate/trait.Uninitialized.html#tymethod.uninitialized">Vec4::uninitialized</a>();
-<a href=#219 id=219 data-nosnippet>219</a>            <a href="../../../graphene_sys/fn.graphene_vec4_max.html">ffi::graphene_vec4_max</a>(
-<a href=#220 id=220 data-nosnippet>220</a>                <a class="self" href="#216">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
-<a href=#221 id=221 data-nosnippet>221</a>                <a href="#216">b</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
-<a href=#222 id=222 data-nosnippet>222</a>                <a href="#218">res</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html#tymethod.to_glib_none_mut">to_glib_none_mut</a>().<span class="number">0</span>,
+<a href=#218 id=218 data-nosnippet>218</a>            <span class="kw">let </span><span class="kw-2">mut </span>res = Vec4::uninitialized();
+<a href=#219 id=219 data-nosnippet>219</a>            ffi::graphene_vec4_max(
+<a href=#220 id=220 data-nosnippet>220</a>                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
+<a href=#221 id=221 data-nosnippet>221</a>                b.to_glib_none().<span class="number">0</span>,
+<a href=#222 id=222 data-nosnippet>222</a>                res.to_glib_none_mut().<span class="number">0</span>,
 <a href=#223 id=223 data-nosnippet>223</a>            );
-<a href=#224 id=224 data-nosnippet>224</a>            <a href="#218">res</a>
+<a href=#224 id=224 data-nosnippet>224</a>            res
 <a href=#225 id=225 data-nosnippet>225</a>        }
 <a href=#226 id=226 data-nosnippet>226</a>    }
 <a href=#227 id=227 data-nosnippet>227</a>
@@ -310,15 +237,15 @@
 <a href=#237 id=237 data-nosnippet>237</a>    /// return location for the result vector
 <a href=#238 id=238 data-nosnippet>238</a>    </span><span class="attr">#[doc(alias = <span class="string">"graphene_vec4_min"</span>)]
 <a href=#239 id=239 data-nosnippet>239</a>    #[must_use]
-<a href=#240 id=240 data-nosnippet>240</a>    </span><span class="kw">pub fn </span>min(<span class="kw-2">&amp;</span><span class="self">self</span>, b: <span class="kw-2">&amp;</span><a href="#8-20">Vec4</a>) -&gt; <a href="#8-20">Vec4</a> {
+<a href=#240 id=240 data-nosnippet>240</a>    </span><span class="kw">pub fn </span>min(<span class="kw-2">&amp;</span><span class="self">self</span>, b: <span class="kw-2">&amp;</span>Vec4) -&gt; Vec4 {
 <a href=#241 id=241 data-nosnippet>241</a>        <span class="kw">unsafe </span>{
-<a href=#242 id=242 data-nosnippet>242</a>            <span class="kw">let </span><span class="kw-2">mut </span>res = <a href="../../../glib/translate/trait.Uninitialized.html#tymethod.uninitialized">Vec4::uninitialized</a>();
-<a href=#243 id=243 data-nosnippet>243</a>            <a href="../../../graphene_sys/fn.graphene_vec4_min.html">ffi::graphene_vec4_min</a>(
-<a href=#244 id=244 data-nosnippet>244</a>                <a class="self" href="#240">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
-<a href=#245 id=245 data-nosnippet>245</a>                <a href="#240">b</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
-<a href=#246 id=246 data-nosnippet>246</a>                <a href="#242">res</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html#tymethod.to_glib_none_mut">to_glib_none_mut</a>().<span class="number">0</span>,
+<a href=#242 id=242 data-nosnippet>242</a>            <span class="kw">let </span><span class="kw-2">mut </span>res = Vec4::uninitialized();
+<a href=#243 id=243 data-nosnippet>243</a>            ffi::graphene_vec4_min(
+<a href=#244 id=244 data-nosnippet>244</a>                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
+<a href=#245 id=245 data-nosnippet>245</a>                b.to_glib_none().<span class="number">0</span>,
+<a href=#246 id=246 data-nosnippet>246</a>                res.to_glib_none_mut().<span class="number">0</span>,
 <a href=#247 id=247 data-nosnippet>247</a>            );
-<a href=#248 id=248 data-nosnippet>248</a>            <a href="#242">res</a>
+<a href=#248 id=248 data-nosnippet>248</a>            res
 <a href=#249 id=249 data-nosnippet>249</a>        }
 <a href=#250 id=250 data-nosnippet>250</a>    }
 <a href=#251 id=251 data-nosnippet>251</a>
@@ -333,15 +260,15 @@
 <a href=#260 id=260 data-nosnippet>260</a>    /// return location for the resulting vector
 <a href=#261 id=261 data-nosnippet>261</a>    </span><span class="attr">#[doc(alias = <span class="string">"graphene_vec4_multiply"</span>)]
 <a href=#262 id=262 data-nosnippet>262</a>    #[must_use]
-<a href=#263 id=263 data-nosnippet>263</a>    </span><span class="kw">pub fn </span>multiply(<span class="kw-2">&amp;</span><span class="self">self</span>, b: <span class="kw-2">&amp;</span><a href="#8-20">Vec4</a>) -&gt; <a href="#8-20">Vec4</a> {
+<a href=#263 id=263 data-nosnippet>263</a>    </span><span class="kw">pub fn </span>multiply(<span class="kw-2">&amp;</span><span class="self">self</span>, b: <span class="kw-2">&amp;</span>Vec4) -&gt; Vec4 {
 <a href=#264 id=264 data-nosnippet>264</a>        <span class="kw">unsafe </span>{
-<a href=#265 id=265 data-nosnippet>265</a>            <span class="kw">let </span><span class="kw-2">mut </span>res = <a href="../../../glib/translate/trait.Uninitialized.html#tymethod.uninitialized">Vec4::uninitialized</a>();
-<a href=#266 id=266 data-nosnippet>266</a>            <a href="../../../graphene_sys/fn.graphene_vec4_multiply.html">ffi::graphene_vec4_multiply</a>(
-<a href=#267 id=267 data-nosnippet>267</a>                <a class="self" href="#263">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
-<a href=#268 id=268 data-nosnippet>268</a>                <a href="#263">b</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
-<a href=#269 id=269 data-nosnippet>269</a>                <a href="#265">res</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html#tymethod.to_glib_none_mut">to_glib_none_mut</a>().<span class="number">0</span>,
+<a href=#265 id=265 data-nosnippet>265</a>            <span class="kw">let </span><span class="kw-2">mut </span>res = Vec4::uninitialized();
+<a href=#266 id=266 data-nosnippet>266</a>            ffi::graphene_vec4_multiply(
+<a href=#267 id=267 data-nosnippet>267</a>                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
+<a href=#268 id=268 data-nosnippet>268</a>                b.to_glib_none().<span class="number">0</span>,
+<a href=#269 id=269 data-nosnippet>269</a>                res.to_glib_none_mut().<span class="number">0</span>,
 <a href=#270 id=270 data-nosnippet>270</a>            );
-<a href=#271 id=271 data-nosnippet>271</a>            <a href="#265">res</a>
+<a href=#271 id=271 data-nosnippet>271</a>            res
 <a href=#272 id=272 data-nosnippet>272</a>        }
 <a href=#273 id=273 data-nosnippet>273</a>    }
 <a href=#274 id=274 data-nosnippet>274</a>
@@ -356,8 +283,8 @@
 <a href=#283 id=283 data-nosnippet>283</a>    ///
 <a href=#284 id=284 data-nosnippet>284</a>    /// `true` if the two vectors are near each other
 <a href=#285 id=285 data-nosnippet>285</a>    </span><span class="attr">#[doc(alias = <span class="string">"graphene_vec4_near"</span>)]
-<a href=#286 id=286 data-nosnippet>286</a>    </span><span class="kw">pub fn </span>near(<span class="kw-2">&amp;</span><span class="self">self</span>, v2: <span class="kw-2">&amp;</span><a href="#8-20">Vec4</a>, epsilon: <a href="https://doc.rust-lang.org/nightly/std/primitive.f32.html">f32</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
-<a href=#287 id=287 data-nosnippet>287</a>        <span class="kw">unsafe </span>{ <a href="../../../graphene_sys/fn.graphene_vec4_near.html">ffi::graphene_vec4_near</a>(<a class="self" href="#286">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#286">v2</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#286">epsilon</a>) }
+<a href=#286 id=286 data-nosnippet>286</a>    </span><span class="kw">pub fn </span>near(<span class="kw-2">&amp;</span><span class="self">self</span>, v2: <span class="kw-2">&amp;</span>Vec4, epsilon: f32) -&gt; bool {
+<a href=#287 id=287 data-nosnippet>287</a>        <span class="kw">unsafe </span>{ ffi::graphene_vec4_near(<span class="self">self</span>.to_glib_none().<span class="number">0</span>, v2.to_glib_none().<span class="number">0</span>, epsilon) }
 <a href=#288 id=288 data-nosnippet>288</a>    }
 <a href=#289 id=289 data-nosnippet>289</a>
 <a href=#290 id=290 data-nosnippet>290</a>    <span class="doccomment">/// Negates the given [`Vec4`][crate::Vec4].
@@ -369,11 +296,11 @@
 <a href=#296 id=296 data-nosnippet>296</a>    /// return location for the result vector
 <a href=#297 id=297 data-nosnippet>297</a>    </span><span class="attr">#[doc(alias = <span class="string">"graphene_vec4_negate"</span>)]
 <a href=#298 id=298 data-nosnippet>298</a>    #[must_use]
-<a href=#299 id=299 data-nosnippet>299</a>    </span><span class="kw">pub fn </span>negate(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="#8-20">Vec4</a> {
+<a href=#299 id=299 data-nosnippet>299</a>    </span><span class="kw">pub fn </span>negate(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec4 {
 <a href=#300 id=300 data-nosnippet>300</a>        <span class="kw">unsafe </span>{
-<a href=#301 id=301 data-nosnippet>301</a>            <span class="kw">let </span><span class="kw-2">mut </span>res = <a href="../../../glib/translate/trait.Uninitialized.html#tymethod.uninitialized">Vec4::uninitialized</a>();
-<a href=#302 id=302 data-nosnippet>302</a>            <a href="../../../graphene_sys/fn.graphene_vec4_negate.html">ffi::graphene_vec4_negate</a>(<a class="self" href="#299">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#301">res</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html#tymethod.to_glib_none_mut">to_glib_none_mut</a>().<span class="number">0</span>);
-<a href=#303 id=303 data-nosnippet>303</a>            <a href="#301">res</a>
+<a href=#301 id=301 data-nosnippet>301</a>            <span class="kw">let </span><span class="kw-2">mut </span>res = Vec4::uninitialized();
+<a href=#302 id=302 data-nosnippet>302</a>            ffi::graphene_vec4_negate(<span class="self">self</span>.to_glib_none().<span class="number">0</span>, res.to_glib_none_mut().<span class="number">0</span>);
+<a href=#303 id=303 data-nosnippet>303</a>            res
 <a href=#304 id=304 data-nosnippet>304</a>        }
 <a href=#305 id=305 data-nosnippet>305</a>    }
 <a href=#306 id=306 data-nosnippet>306</a>
@@ -387,11 +314,11 @@
 <a href=#314 id=314 data-nosnippet>314</a>    ///  vector
 <a href=#315 id=315 data-nosnippet>315</a>    </span><span class="attr">#[doc(alias = <span class="string">"graphene_vec4_normalize"</span>)]
 <a href=#316 id=316 data-nosnippet>316</a>    #[must_use]
-<a href=#317 id=317 data-nosnippet>317</a>    </span><span class="kw">pub fn </span>normalize(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="#8-20">Vec4</a> {
+<a href=#317 id=317 data-nosnippet>317</a>    </span><span class="kw">pub fn </span>normalize(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec4 {
 <a href=#318 id=318 data-nosnippet>318</a>        <span class="kw">unsafe </span>{
-<a href=#319 id=319 data-nosnippet>319</a>            <span class="kw">let </span><span class="kw-2">mut </span>res = <a href="../../../glib/translate/trait.Uninitialized.html#tymethod.uninitialized">Vec4::uninitialized</a>();
-<a href=#320 id=320 data-nosnippet>320</a>            <a href="../../../graphene_sys/fn.graphene_vec4_normalize.html">ffi::graphene_vec4_normalize</a>(<a class="self" href="#317">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#319">res</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html#tymethod.to_glib_none_mut">to_glib_none_mut</a>().<span class="number">0</span>);
-<a href=#321 id=321 data-nosnippet>321</a>            <a href="#319">res</a>
+<a href=#319 id=319 data-nosnippet>319</a>            <span class="kw">let </span><span class="kw-2">mut </span>res = Vec4::uninitialized();
+<a href=#320 id=320 data-nosnippet>320</a>            ffi::graphene_vec4_normalize(<span class="self">self</span>.to_glib_none().<span class="number">0</span>, res.to_glib_none_mut().<span class="number">0</span>);
+<a href=#321 id=321 data-nosnippet>321</a>            res
 <a href=#322 id=322 data-nosnippet>322</a>        }
 <a href=#323 id=323 data-nosnippet>323</a>    }
 <a href=#324 id=324 data-nosnippet>324</a>
@@ -406,11 +333,11 @@
 <a href=#333 id=333 data-nosnippet>333</a>    /// return location for the result vector
 <a href=#334 id=334 data-nosnippet>334</a>    </span><span class="attr">#[doc(alias = <span class="string">"graphene_vec4_scale"</span>)]
 <a href=#335 id=335 data-nosnippet>335</a>    #[must_use]
-<a href=#336 id=336 data-nosnippet>336</a>    </span><span class="kw">pub fn </span>scale(<span class="kw-2">&amp;</span><span class="self">self</span>, factor: <a href="https://doc.rust-lang.org/nightly/std/primitive.f32.html">f32</a>) -&gt; <a href="#8-20">Vec4</a> {
+<a href=#336 id=336 data-nosnippet>336</a>    </span><span class="kw">pub fn </span>scale(<span class="kw-2">&amp;</span><span class="self">self</span>, factor: f32) -&gt; Vec4 {
 <a href=#337 id=337 data-nosnippet>337</a>        <span class="kw">unsafe </span>{
-<a href=#338 id=338 data-nosnippet>338</a>            <span class="kw">let </span><span class="kw-2">mut </span>res = <a href="../../../glib/translate/trait.Uninitialized.html#tymethod.uninitialized">Vec4::uninitialized</a>();
-<a href=#339 id=339 data-nosnippet>339</a>            <a href="../../../graphene_sys/fn.graphene_vec4_scale.html">ffi::graphene_vec4_scale</a>(<a class="self" href="#336">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#336">factor</a>, <a href="#338">res</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html#tymethod.to_glib_none_mut">to_glib_none_mut</a>().<span class="number">0</span>);
-<a href=#340 id=340 data-nosnippet>340</a>            <a href="#338">res</a>
+<a href=#338 id=338 data-nosnippet>338</a>            <span class="kw">let </span><span class="kw-2">mut </span>res = Vec4::uninitialized();
+<a href=#339 id=339 data-nosnippet>339</a>            ffi::graphene_vec4_scale(<span class="self">self</span>.to_glib_none().<span class="number">0</span>, factor, res.to_glib_none_mut().<span class="number">0</span>);
+<a href=#340 id=340 data-nosnippet>340</a>            res
 <a href=#341 id=341 data-nosnippet>341</a>        }
 <a href=#342 id=342 data-nosnippet>342</a>    }
 <a href=#343 id=343 data-nosnippet>343</a>
@@ -427,15 +354,15 @@
 <a href=#354 id=354 data-nosnippet>354</a>    /// return location for the resulting vector
 <a href=#355 id=355 data-nosnippet>355</a>    </span><span class="attr">#[doc(alias = <span class="string">"graphene_vec4_subtract"</span>)]
 <a href=#356 id=356 data-nosnippet>356</a>    #[must_use]
-<a href=#357 id=357 data-nosnippet>357</a>    </span><span class="kw">pub fn </span>subtract(<span class="kw-2">&amp;</span><span class="self">self</span>, b: <span class="kw-2">&amp;</span><a href="#8-20">Vec4</a>) -&gt; <a href="#8-20">Vec4</a> {
+<a href=#357 id=357 data-nosnippet>357</a>    </span><span class="kw">pub fn </span>subtract(<span class="kw-2">&amp;</span><span class="self">self</span>, b: <span class="kw-2">&amp;</span>Vec4) -&gt; Vec4 {
 <a href=#358 id=358 data-nosnippet>358</a>        <span class="kw">unsafe </span>{
-<a href=#359 id=359 data-nosnippet>359</a>            <span class="kw">let </span><span class="kw-2">mut </span>res = <a href="../../../glib/translate/trait.Uninitialized.html#tymethod.uninitialized">Vec4::uninitialized</a>();
-<a href=#360 id=360 data-nosnippet>360</a>            <a href="../../../graphene_sys/fn.graphene_vec4_subtract.html">ffi::graphene_vec4_subtract</a>(
-<a href=#361 id=361 data-nosnippet>361</a>                <a class="self" href="#357">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
-<a href=#362 id=362 data-nosnippet>362</a>                <a href="#357">b</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
-<a href=#363 id=363 data-nosnippet>363</a>                <a href="#359">res</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html#tymethod.to_glib_none_mut">to_glib_none_mut</a>().<span class="number">0</span>,
+<a href=#359 id=359 data-nosnippet>359</a>            <span class="kw">let </span><span class="kw-2">mut </span>res = Vec4::uninitialized();
+<a href=#360 id=360 data-nosnippet>360</a>            ffi::graphene_vec4_subtract(
+<a href=#361 id=361 data-nosnippet>361</a>                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
+<a href=#362 id=362 data-nosnippet>362</a>                b.to_glib_none().<span class="number">0</span>,
+<a href=#363 id=363 data-nosnippet>363</a>                res.to_glib_none_mut().<span class="number">0</span>,
 <a href=#364 id=364 data-nosnippet>364</a>            );
-<a href=#365 id=365 data-nosnippet>365</a>            <a href="#359">res</a>
+<a href=#365 id=365 data-nosnippet>365</a>            res
 <a href=#366 id=366 data-nosnippet>366</a>        }
 <a href=#367 id=367 data-nosnippet>367</a>    }
 <a href=#368 id=368 data-nosnippet>368</a>
@@ -446,9 +373,9 @@
 <a href=#373 id=373 data-nosnippet>373</a>    ///
 <a href=#374 id=374 data-nosnippet>374</a>    /// a constant vector
 <a href=#375 id=375 data-nosnippet>375</a>    </span><span class="attr">#[doc(alias = <span class="string">"graphene_vec4_one"</span>)]
-<a href=#376 id=376 data-nosnippet>376</a>    </span><span class="kw">pub fn </span>one() -&gt; <a href="#8-20">Vec4</a> {
+<a href=#376 id=376 data-nosnippet>376</a>    </span><span class="kw">pub fn </span>one() -&gt; Vec4 {
 <a href=#377 id=377 data-nosnippet>377</a>        <span class="macro">assert_initialized_main_thread!</span>();
-<a href=#378 id=378 data-nosnippet>378</a>        <span class="kw">unsafe </span>{ <a href="../../../glib/translate/fn.from_glib_none.html">from_glib_none</a>(<a href="../../../graphene_sys/fn.graphene_vec4_one.html">ffi::graphene_vec4_one</a>()) }
+<a href=#378 id=378 data-nosnippet>378</a>        <span class="kw">unsafe </span>{ from_glib_none(ffi::graphene_vec4_one()) }
 <a href=#379 id=379 data-nosnippet>379</a>    }
 <a href=#380 id=380 data-nosnippet>380</a>
 <a href=#381 id=381 data-nosnippet>381</a>    <span class="doccomment">/// Retrieves a pointer to a [`Vec4`][crate::Vec4] with its
@@ -458,9 +385,9 @@
 <a href=#385 id=385 data-nosnippet>385</a>    ///
 <a href=#386 id=386 data-nosnippet>386</a>    /// a constant vector
 <a href=#387 id=387 data-nosnippet>387</a>    </span><span class="attr">#[doc(alias = <span class="string">"graphene_vec4_w_axis"</span>)]
-<a href=#388 id=388 data-nosnippet>388</a>    </span><span class="kw">pub fn </span>w_axis() -&gt; <a href="#8-20">Vec4</a> {
+<a href=#388 id=388 data-nosnippet>388</a>    </span><span class="kw">pub fn </span>w_axis() -&gt; Vec4 {
 <a href=#389 id=389 data-nosnippet>389</a>        <span class="macro">assert_initialized_main_thread!</span>();
-<a href=#390 id=390 data-nosnippet>390</a>        <span class="kw">unsafe </span>{ <a href="../../../glib/translate/fn.from_glib_none.html">from_glib_none</a>(<a href="../../../graphene_sys/fn.graphene_vec4_w_axis.html">ffi::graphene_vec4_w_axis</a>()) }
+<a href=#390 id=390 data-nosnippet>390</a>        <span class="kw">unsafe </span>{ from_glib_none(ffi::graphene_vec4_w_axis()) }
 <a href=#391 id=391 data-nosnippet>391</a>    }
 <a href=#392 id=392 data-nosnippet>392</a>
 <a href=#393 id=393 data-nosnippet>393</a>    <span class="doccomment">/// Retrieves a pointer to a [`Vec4`][crate::Vec4] with its
@@ -470,9 +397,9 @@
 <a href=#397 id=397 data-nosnippet>397</a>    ///
 <a href=#398 id=398 data-nosnippet>398</a>    /// a constant vector
 <a href=#399 id=399 data-nosnippet>399</a>    </span><span class="attr">#[doc(alias = <span class="string">"graphene_vec4_x_axis"</span>)]
-<a href=#400 id=400 data-nosnippet>400</a>    </span><span class="kw">pub fn </span>x_axis() -&gt; <a href="#8-20">Vec4</a> {
+<a href=#400 id=400 data-nosnippet>400</a>    </span><span class="kw">pub fn </span>x_axis() -&gt; Vec4 {
 <a href=#401 id=401 data-nosnippet>401</a>        <span class="macro">assert_initialized_main_thread!</span>();
-<a href=#402 id=402 data-nosnippet>402</a>        <span class="kw">unsafe </span>{ <a href="../../../glib/translate/fn.from_glib_none.html">from_glib_none</a>(<a href="../../../graphene_sys/fn.graphene_vec4_x_axis.html">ffi::graphene_vec4_x_axis</a>()) }
+<a href=#402 id=402 data-nosnippet>402</a>        <span class="kw">unsafe </span>{ from_glib_none(ffi::graphene_vec4_x_axis()) }
 <a href=#403 id=403 data-nosnippet>403</a>    }
 <a href=#404 id=404 data-nosnippet>404</a>
 <a href=#405 id=405 data-nosnippet>405</a>    <span class="doccomment">/// Retrieves a pointer to a [`Vec4`][crate::Vec4] with its
@@ -482,9 +409,9 @@
 <a href=#409 id=409 data-nosnippet>409</a>    ///
 <a href=#410 id=410 data-nosnippet>410</a>    /// a constant vector
 <a href=#411 id=411 data-nosnippet>411</a>    </span><span class="attr">#[doc(alias = <span class="string">"graphene_vec4_y_axis"</span>)]
-<a href=#412 id=412 data-nosnippet>412</a>    </span><span class="kw">pub fn </span>y_axis() -&gt; <a href="#8-20">Vec4</a> {
+<a href=#412 id=412 data-nosnippet>412</a>    </span><span class="kw">pub fn </span>y_axis() -&gt; Vec4 {
 <a href=#413 id=413 data-nosnippet>413</a>        <span class="macro">assert_initialized_main_thread!</span>();
-<a href=#414 id=414 data-nosnippet>414</a>        <span class="kw">unsafe </span>{ <a href="../../../glib/translate/fn.from_glib_none.html">from_glib_none</a>(<a href="../../../graphene_sys/fn.graphene_vec4_y_axis.html">ffi::graphene_vec4_y_axis</a>()) }
+<a href=#414 id=414 data-nosnippet>414</a>        <span class="kw">unsafe </span>{ from_glib_none(ffi::graphene_vec4_y_axis()) }
 <a href=#415 id=415 data-nosnippet>415</a>    }
 <a href=#416 id=416 data-nosnippet>416</a>
 <a href=#417 id=417 data-nosnippet>417</a>    <span class="doccomment">/// Retrieves a pointer to a [`Vec4`][crate::Vec4] with its
@@ -494,9 +421,9 @@
 <a href=#421 id=421 data-nosnippet>421</a>    ///
 <a href=#422 id=422 data-nosnippet>422</a>    /// a constant vector
 <a href=#423 id=423 data-nosnippet>423</a>    </span><span class="attr">#[doc(alias = <span class="string">"graphene_vec4_z_axis"</span>)]
-<a href=#424 id=424 data-nosnippet>424</a>    </span><span class="kw">pub fn </span>z_axis() -&gt; <a href="#8-20">Vec4</a> {
+<a href=#424 id=424 data-nosnippet>424</a>    </span><span class="kw">pub fn </span>z_axis() -&gt; Vec4 {
 <a href=#425 id=425 data-nosnippet>425</a>        <span class="macro">assert_initialized_main_thread!</span>();
-<a href=#426 id=426 data-nosnippet>426</a>        <span class="kw">unsafe </span>{ <a href="../../../glib/translate/fn.from_glib_none.html">from_glib_none</a>(<a href="../../../graphene_sys/fn.graphene_vec4_z_axis.html">ffi::graphene_vec4_z_axis</a>()) }
+<a href=#426 id=426 data-nosnippet>426</a>        <span class="kw">unsafe </span>{ from_glib_none(ffi::graphene_vec4_z_axis()) }
 <a href=#427 id=427 data-nosnippet>427</a>    }
 <a href=#428 id=428 data-nosnippet>428</a>
 <a href=#429 id=429 data-nosnippet>429</a>    <span class="doccomment">/// Retrieves a pointer to a [`Vec4`][crate::Vec4] with all its
@@ -506,17 +433,17 @@
 <a href=#433 id=433 data-nosnippet>433</a>    ///
 <a href=#434 id=434 data-nosnippet>434</a>    /// a constant vector
 <a href=#435 id=435 data-nosnippet>435</a>    </span><span class="attr">#[doc(alias = <span class="string">"graphene_vec4_zero"</span>)]
-<a href=#436 id=436 data-nosnippet>436</a>    </span><span class="kw">pub fn </span>zero() -&gt; <a href="#8-20">Vec4</a> {
+<a href=#436 id=436 data-nosnippet>436</a>    </span><span class="kw">pub fn </span>zero() -&gt; Vec4 {
 <a href=#437 id=437 data-nosnippet>437</a>        <span class="macro">assert_initialized_main_thread!</span>();
-<a href=#438 id=438 data-nosnippet>438</a>        <span class="kw">unsafe </span>{ <a href="../../../glib/translate/fn.from_glib_none.html">from_glib_none</a>(<a href="../../../graphene_sys/fn.graphene_vec4_zero.html">ffi::graphene_vec4_zero</a>()) }
+<a href=#438 id=438 data-nosnippet>438</a>        <span class="kw">unsafe </span>{ from_glib_none(ffi::graphene_vec4_zero()) }
 <a href=#439 id=439 data-nosnippet>439</a>    }
 <a href=#440 id=440 data-nosnippet>440</a>}
 <a href=#441 id=441 data-nosnippet>441</a>
-<a href=#442 id=442 data-nosnippet>442</a><span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html">PartialEq</a> <span class="kw">for </span><a href="#8-20">Vec4</a> {
+<a href=#442 id=442 data-nosnippet>442</a><span class="kw">impl </span>PartialEq <span class="kw">for </span>Vec4 {
 <a href=#443 id=443 data-nosnippet>443</a>    <span class="attr">#[inline]
-<a href=#444 id=444 data-nosnippet>444</a>    </span><span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
-<a href=#445 id=445 data-nosnippet>445</a>        <a class="self" href="#444">self</a>.<a href="#84-86">equal</a>(<a href="#444">other</a>)
+<a href=#444 id=444 data-nosnippet>444</a>    </span><span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; bool {
+<a href=#445 id=445 data-nosnippet>445</a>        <span class="self">self</span>.equal(other)
 <a href=#446 id=446 data-nosnippet>446</a>    }
 <a href=#447 id=447 data-nosnippet>447</a>}
 <a href=#448 id=448 data-nosnippet>448</a>
-<a href=#449 id=449 data-nosnippet>449</a><span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/cmp/trait.Eq.html">Eq</a> <span class="kw">for </span><a href="#8-20">Vec4</a> {}</code></pre></div></section></main></body></html>
+<a href=#449 id=449 data-nosnippet>449</a><span class="kw">impl </span>Eq <span class="kw">for </span>Vec4 {}</code></pre></div></section></main></body></html>
