@@ -14,13 +14,14 @@ mod properties;
 mod shared_boxed_derive;
 mod value_delegate_derive;
 mod variant_derive;
+mod signals;
 
 mod utils;
 
 use flags_attribute::AttrInput;
 use proc_macro::TokenStream;
 use proc_macro2::Span;
-use syn::{parse_macro_input, DeriveInput};
+use syn::{parse_macro_input, DeriveInput, Error};
 use utils::{parse_nested_meta_items_from_stream, NestedMetaItem};
 
 /// Macro for passing variables as strong or weak references into a closure.
@@ -1624,4 +1625,20 @@ pub fn derive_value_delegate(input: TokenStream) -> TokenStream {
 #[proc_macro_attribute]
 pub fn async_test(args: TokenStream, item: TokenStream) -> TokenStream {
     async_test::async_test(args, item)
+}
+
+#[proc_macro_attribute]
+pub fn signals(attr: TokenStream, item: TokenStream) -> TokenStream {
+    let args = parse_macro_input!(attr as signals::SignalsArgs);
+    match syn::parse::<syn::ItemImpl>(item) {
+        Ok(input) => signals::impl_signals(input, args)
+            .unwrap_or_else(syn::Error::into_compile_error)
+            .into(),
+        Err(_) => Error::new(
+            Span::call_site(),
+            signals::WRONG_PLACE_MSG,
+        )
+        .into_compile_error()
+        .into(),
+    }
 }
