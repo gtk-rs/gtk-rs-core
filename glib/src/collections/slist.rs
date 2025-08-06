@@ -350,7 +350,7 @@ impl<T: TransparentPtrType> SList<T> {
             unsafe {
                 let mut ptr = head.as_ptr();
                 while !ptr.is_null() {
-                    let item = &*((*ptr).data as *const ffi::gpointer as *const T);
+                    let item = &*(&(*ptr).data as *const ffi::gpointer as *const T);
                     let next = (*ptr).next;
                     if !f(item) {
                         ptr::drop_in_place(&mut (*ptr).data as *mut ffi::gpointer as *mut T);
@@ -902,6 +902,12 @@ mod test {
         let mut list_items = list2.iter().cloned().collect::<Vec<_>>();
         list_items.reverse();
         assert_eq!(&items[1..], &list_items);
+
+        list.reverse();
+        let mut list3 = list.clone();
+        list3.retain(|item| item.seconds() >= 14.0);
+        let list_items = list3.iter().cloned().collect::<Vec<_>>();
+        assert_eq!(&items[2..], &list_items);
     }
 
     #[test]
