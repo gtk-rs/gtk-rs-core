@@ -772,7 +772,7 @@ impl StrV {
     #[inline]
     pub fn extend_from_slice<S: AsRef<str>>(&mut self, other: &[S]) {
         // Nothing new to reserve as there's still enough space
-        if self.len + other.len() + 1 > self.capacity {
+        if other.len() >= self.capacity - self.len {
             self.reserve(other.len());
         }
 
@@ -1790,5 +1790,27 @@ mod test {
         // An old implementation of `reserve` used the condition `self.len +
         // additional + 1 <= self.capacity`, which was prone to overflow
         strv.reserve(usize::MAX - 3);
+    }
+
+    #[test]
+    #[should_panic]
+    fn test_extend_from_slice_overflow() {
+        // We need a zero-sized type because only a slice of ZST can legally
+        // contain up to `usize::MAX` elements.
+        #[derive(Clone, Copy)]
+        struct ImplicitStr;
+
+        impl AsRef<str> for ImplicitStr {
+            fn as_ref(&self) -> &str {
+                ""
+            }
+        }
+
+        let mut strv = StrV::from(&[crate::gstr!(""); 3][..]);
+
+        // An old implementation of `extend_from_slice` used the condition
+        // `self.len + other.len() + 1 <= self.capacity`, which was prone to
+        // overflow
+        strv.extend_from_slice(&[ImplicitStr; usize::MAX - 3]);
     }
 }
