@@ -712,7 +712,7 @@ impl StrV {
     #[allow(clippy::int_plus_one)]
     pub fn reserve(&mut self, additional: usize) {
         // Nothing new to reserve as there's still enough space
-        if self.len + additional + 1 <= self.capacity {
+        if additional < self.capacity - self.len {
             return;
         }
 
@@ -1780,5 +1780,15 @@ mod test {
         let strv = StrV::from(&items[..]);
         assert!(strv.contains("str2"));
         assert!(!strv.contains("str4"));
+    }
+
+    #[test]
+    #[should_panic]
+    fn test_reserve_overflow() {
+        let mut strv = StrV::from(&[crate::gstr!("foo"); 3][..]);
+
+        // An old implementation of `reserve` used the condition `self.len +
+        // additional + 1 <= self.capacity`, which was prone to overflow
+        strv.reserve(usize::MAX - 3);
     }
 }
