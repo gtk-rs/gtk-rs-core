@@ -1466,6 +1466,10 @@ impl std::hash::Hash for StrVRef {
 
 impl PartialEq<[&'_ str]> for StrVRef {
     fn eq(&self, other: &[&'_ str]) -> bool {
+        if self.len() != other.len() {
+            return false;
+        }
+
         for (a, b) in Iterator::zip(self.iter(), other.iter()) {
             if a != b {
                 return false;
@@ -1846,5 +1850,17 @@ mod test {
             }
             assert!((*strv.as_ptr().add(strv.len())).is_null());
         }
+    }
+
+    #[test]
+    fn test_strv_ref_eq_str_slice() {
+        let strv = StrV::from(&[crate::gstr!("a")][..]);
+        let strv_ref: &StrVRef = strv.as_ref();
+
+        // Test `impl PartialEq<[&'_ str]> for StrVRef`
+        assert_eq!(strv_ref, &["a"][..]);
+        assert_ne!(strv_ref, &[][..]);
+        assert_ne!(strv_ref, &["a", "b"][..]);
+        assert_ne!(strv_ref, &["b"][..]);
     }
 }
