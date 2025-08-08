@@ -17,6 +17,7 @@ mod app_info;
 mod application;
 pub use action_entry::{ActionEntry, ActionEntryBuilder};
 pub use application::{ApplicationBusyGuard, ApplicationHoldGuard};
+mod application_command_line;
 mod async_initable;
 mod cancellable;
 pub use cancellable::CancelledHandlerId;
