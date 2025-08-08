@@ -780,9 +780,11 @@ impl StrV {
             for item in other {
                 *self.ptr.as_ptr().add(self.len) = GString::from(item.as_ref()).into_glib_ptr();
                 self.len += 1;
-            }
 
-            *self.ptr.as_ptr().add(self.len) = ptr::null_mut();
+                // Add null terminator on every iteration because `as_ref`
+                // may panic
+                *self.ptr.as_ptr().add(self.len) = ptr::null_mut();
+            }
         }
     }
 
@@ -1812,5 +1814,37 @@ mod test {
         // `self.len + other.len() + 1 <= self.capacity`, which was prone to
         // overflow
         strv.extend_from_slice(&[ImplicitStr; usize::MAX - 3]);
+    }
+
+    #[test]
+    fn test_extend_from_slice_panic_safe() {
+        struct MayPanic(bool);
+
+        impl AsRef<str> for MayPanic {
+            fn as_ref(&self) -> &str {
+                if self.0 {
+                    panic!("panicking as per request");
+                } else {
+                    ""
+                }
+            }
+        }
+
+        let mut strv = StrV::from(&[crate::gstr!(""); 3][..]);
+        strv.clear();
+
+        // Write one element and panic while getting the second element
+        _ = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
+            strv.extend_from_slice(&[MayPanic(false), MayPanic(true)]);
+        }));
+
+        // Check that it contains up to one element is null-terminated
+        assert!(strv.len() <= 1);
+        unsafe {
+            for i in 0..strv.len() {
+                assert!(!(*strv.as_ptr().add(i)).is_null());
+            }
+            assert!((*strv.as_ptr().add(strv.len())).is_null());
+        }
     }
 }
