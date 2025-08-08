@@ -32,7 +32,8 @@ pub use crate::win32_input_stream::Win32InputStreamExt;
 #[cfg(windows)]
 pub use crate::win32_output_stream::Win32OutputStreamExt;
 pub use crate::{
-    action_map::ActionMapExtManual, application::ApplicationExtManual, auto::traits::*,
+    action_map::ActionMapExtManual, application::ApplicationExtManual,
+    application_command_line::ApplicationCommandLineExtManual, auto::traits::*,
     cancellable::CancellableExtManual, converter::ConverterExtManual,
     data_input_stream::DataInputStreamExtManual, datagram_based::DatagramBasedExtManual,
     dbus_connection::DBusMethodCall, dbus_proxy::DBusProxyExtManual, file::FileExtManual,

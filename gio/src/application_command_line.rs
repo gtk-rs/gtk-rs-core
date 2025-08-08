@@ -1,17 +1,10 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use std::{boxed::Box as Box_, mem::transmute, ops::ControlFlow};
+use glib::{prelude::*, translate::*, ExitCode};
 
-use glib::{
-    prelude::*,
-    signal::{connect_raw, SignalHandlerId},
-    translate::*,
-    ExitCode, GString,
-};
+use crate::{ffi, ApplicationCommandLine};
 
-use crate::{ffi, Application, ApplicationCommandLine, ExitCode, File};
-
-pub trait ApplicationCommandLineExtManual: IsA<Application> {
+pub trait ApplicationCommandLineExtManual: IsA<ApplicationCommandLine> {
     #[doc(alias = "g_application_command_line_get_exit_status")]
     #[doc(alias = "get_exit_status")]
     fn exit_code(&self) -> ExitCode {
@@ -33,4 +26,4 @@ pub trait ApplicationCommandLineExtManual: IsA<Application> {
     }
 }
 
-impl<O: IsA<Application>> ApplicationExtManual for O {}
+impl<O: IsA<ApplicationCommandLine>> ApplicationCommandLineExtManual for O {}
