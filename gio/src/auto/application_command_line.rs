@@ -79,12 +79,6 @@ pub trait ApplicationCommandLineExt: IsA<ApplicationCommandLine> + 'static {
         }
     }
 
-    #[doc(alias = "g_application_command_line_get_exit_status")]
-    #[doc(alias = "get_exit_status")]
-    fn exit_status(&self) -> i32 {
-        unsafe { ffi::g_application_command_line_get_exit_status(self.as_ref().to_glib_none().0) }
-    }
-
     #[doc(alias = "g_application_command_line_get_is_remote")]
     #[doc(alias = "get_is_remote")]
     #[doc(alias = "is-remote")]
@@ -166,16 +160,6 @@ pub trait ApplicationCommandLineExt: IsA<ApplicationCommandLine> + 'static {
             ffi::g_application_command_line_printerr_literal(
                 self.as_ref().to_glib_none().0,
                 message.to_glib_none().0,
-            );
-        }
-    }
-
-    #[doc(alias = "g_application_command_line_set_exit_status")]
-    fn set_exit_status(&self, exit_status: i32) {
-        unsafe {
-            ffi::g_application_command_line_set_exit_status(
-                self.as_ref().to_glib_none().0,
-                exit_status,
             );
         }
     }
