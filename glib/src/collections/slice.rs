@@ -614,7 +614,7 @@ impl<T: TransparentType> Slice<T> {
     /// Reserves at least this much additional capacity.
     pub fn reserve(&mut self, additional: usize) {
         // Nothing new to reserve as there's still enough space
-        if self.len + additional <= self.capacity {
+        if additional <= self.capacity - self.len {
             return;
         }
 
@@ -685,7 +685,7 @@ impl<T: TransparentType> Slice<T> {
     #[inline]
     pub fn extend_from_slice(&mut self, other: &[T]) {
         // Nothing new to reserve as there's still enough space
-        if self.len + other.len() > self.capacity {
+        if other.len() > self.capacity - self.len {
             self.reserve(other.len());
         }
 
@@ -706,7 +706,7 @@ impl<T: TransparentType> Slice<T> {
         assert!(index <= self.len);
 
         // Nothing new to reserve as there's still enough space
-        if self.len + 1 > self.capacity {
+        if 1 > self.capacity - self.len {
             self.reserve(1);
         }
 
@@ -729,7 +729,7 @@ impl<T: TransparentType> Slice<T> {
     #[allow(clippy::int_plus_one)]
     pub fn push(&mut self, item: T) {
         // Nothing new to reserve as there's still enough space
-        if self.len + 1 > self.capacity {
+        if 1 > self.capacity - self.len {
             self.reserve(1);
         }
 
