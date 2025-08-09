@@ -713,7 +713,7 @@ impl<T: TransparentPtrType> PtrSlice<T> {
     #[allow(clippy::int_plus_one)]
     pub fn reserve(&mut self, additional: usize) {
         // Nothing new to reserve as there's still enough space
-        if self.len + additional + 1 <= self.capacity {
+        if additional < self.capacity - self.len {
             return;
         }
 
@@ -788,7 +788,7 @@ impl<T: TransparentPtrType> PtrSlice<T> {
     #[inline]
     pub fn extend_from_slice(&mut self, other: &[T]) {
         // Nothing new to reserve as there's still enough space
-        if self.len + other.len() + 1 > self.capacity {
+        if other.len() >= self.capacity - self.len {
             self.reserve(other.len());
         }
 
@@ -815,7 +815,7 @@ impl<T: TransparentPtrType> PtrSlice<T> {
         assert!(index <= self.len);
 
         // Nothing new to reserve as there's still enough space
-        if self.len + 1 + 1 > self.capacity {
+        if 1 >= self.capacity - self.len {
             self.reserve(1);
         }
 
@@ -842,7 +842,7 @@ impl<T: TransparentPtrType> PtrSlice<T> {
     #[inline]
     pub fn push(&mut self, item: T) {
         // Nothing new to reserve as there's still enough space
-        if self.len + 1 + 1 > self.capacity {
+        if 1 >= self.capacity - self.len {
             self.reserve(1);
         }
 

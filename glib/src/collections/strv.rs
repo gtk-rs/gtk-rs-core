@@ -800,7 +800,7 @@ impl StrV {
         assert!(index <= self.len);
 
         // Nothing new to reserve as there's still enough space
-        if self.len + 1 + 1 > self.capacity {
+        if 1 >= self.capacity - self.len {
             self.reserve(1);
         }
 
@@ -824,7 +824,7 @@ impl StrV {
     #[inline]
     pub fn push(&mut self, item: GString) {
         // Nothing new to reserve as there's still enough space
-        if self.len + 1 + 1 > self.capacity {
+        if 1 >= self.capacity - self.len {
             self.reserve(1);
         }
 
